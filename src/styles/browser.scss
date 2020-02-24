@@ -1,0 +1,42 @@
+.browser {
+  flex: 1;
+  padding: 1rem 0;
+  background-color: #f5fbef;
+
+  .tree,
+  .tree-node-group {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tree-node {
+    padding: 0.25rem 1rem;
+    cursor: pointer;
+  }
+
+  .tree-node--focused {
+    background-color: #d4e09b;
+  }
+
+  .tree-node--selected {
+    background-color: #c0da74;
+    font-weight: 600;
+  }
+
+  @for $i from 1 through 10 {
+    .tree-node__leaf[aria-level='#{$i}'],
+    [aria-level='#{$i}'] > .tree-node__branch {
+      padding-left: 0.25rem + ($i) * 0.75rem;
+    }
+  }
+
+  [tabindex] {
+    outline: none;
+  }
+
+  .icon {
+    vertical-align: middle;
+    padding-right: 5px;
+  }
+}
