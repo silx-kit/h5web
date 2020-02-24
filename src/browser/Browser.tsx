@@ -1,60 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TreeView, { flattenTree } from 'react-accessible-treeview';
 import TreeNodeIcon from './TreeNodeIcon';
+import { RawData, hdf5ToTree, TreeElement } from '../utils';
 
-const data = flattenTree({
-  name: '',
-  children: [
-    {
-      name: 'entry_0000',
-      children: [
-        {
-          name: '0_measurement',
-          children: [
-            { name: 'diode' },
-            { name: 'images' },
-            { name: 'ring_curent' },
-            { name: 'timestamps' },
-          ],
-        },
-        {
-          name: '1_integration',
-          children: [
-            { name: 'configuration' },
-            { name: 'date' },
-            { name: 'value' },
-          ],
-        },
-        { name: 'program_name' },
-        { name: 'start_time' },
-        { name: 'title' },
-      ],
-    },
-    {
-      name: 'entry_0001',
-      children: [{ name: 'program_name' }],
-    },
-    {
-      name: 'entry_0002',
-      children: [{ name: 'program_name' }],
-    },
-  ],
-});
+interface Props {
+  rawData: RawData;
+}
 
-function Browser(): JSX.Element {
+function Browser(props: Props): JSX.Element {
+  const { rawData } = props;
+  const [treeData, setTreeData] = useState<TreeElement[]>();
+
+  useEffect(() => {
+    setTreeData(flattenTree(hdf5ToTree(rawData, '/')));
+  }, [rawData]);
+
   return (
     <div className="browser">
       <p className="browser__filename">water_224.h5</p>
-
-      <TreeView
-        data={data}
-        nodeRenderer={({ element, getNodeProps, isBranch, isExpanded }) => (
-          <div {...getNodeProps()}>
-            {<TreeNodeIcon isBranch={isBranch} isExpanded={isExpanded} />}{' '}
-            {element.name}
-          </div>
-        )}
-      />
+      {treeData && (
+        <TreeView
+          data={treeData}
+          nodeRenderer={({ element, getNodeProps, isBranch, isExpanded }) => (
+            <div {...getNodeProps()}>
+              {<TreeNodeIcon isBranch={isBranch} isExpanded={isExpanded} />}{' '}
+              {element.name}
+            </div>
+          )}
+        />
+      )}
     </div>
   );
 }
