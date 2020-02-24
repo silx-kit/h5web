@@ -1,5 +1,6 @@
 import React from 'react';
 import TreeView from 'react-accessible-treeview';
+import TreeNodeIcon from './TreeNodeIcon';
 
 const data = [
   { name: '', children: [1, 4, 9, 10, 11], id: 0, parent: null },
@@ -21,8 +22,11 @@ function Browser(): JSX.Element {
     <div className="browser">
       <TreeView
         data={data}
-        nodeRenderer={({ element, getNodeProps }) => (
-          <div {...getNodeProps()}>{element.name}</div>
+        nodeRenderer={({ element, getNodeProps, isBranch, isExpanded }) => (
+          <div {...getNodeProps()}>
+            {<TreeNodeIcon isBranch={isBranch} isExpanded={isExpanded} />}{' '}
+            {element.name}
+          </div>
         )}
       />
     </div>

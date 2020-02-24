@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
-import Browser from './Browser';
+import Browser from './browser/Browser';
 import Viewer from './Viewer';
 
 function App(): JSX.Element {
