@@ -27,6 +27,8 @@ declare module 'react-accessible-treeview' {
     }) => void;
   }
 
+  export const flattenTree: (obj: object) => TreeElement[];
+
   const TreeView: React.FunctionComponent<TreeViewProps>;
   export default TreeView;
 }

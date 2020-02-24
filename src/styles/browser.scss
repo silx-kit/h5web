@@ -1,7 +1,12 @@
 .browser {
   flex: 1;
-  padding: 1rem 0;
   background-color: #f5fbef;
+
+  &__filename {
+    margin: 0;
+    padding: 1rem;
+    font-weight: 600;
+  }
 
   .tree,
   .tree-node-group {
