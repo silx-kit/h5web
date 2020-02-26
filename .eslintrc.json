@@ -1,0 +1,26 @@
+{
+  "extends": ["@wsmd/eslint-config/all"],
+  "rules": {
+    "spaced-comment": [
+      "error",
+      "always",
+      {
+        "markers": ["/"]
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "react/jsx-props-no-spreading": [
+      "error",
+      {
+        "html": "ignore",
+        "custom": "enforce"
+      }
+    ],
+    "prettier/prettier": "off"
+  }
+}
