@@ -1,4 +1,6 @@
-# HDF5 Web Viewer
+# H5Web, a web-based HDF5 file viewer
+
+H5Web is built with React. Check out the demo at https://h5web.netlify.com/.
 
 ## Quick start 🚀
 
@@ -17,11 +19,12 @@ npm start
 - `npm run lint:ts` - lint all TS and JS files with ESLint
 - `npm run lint:pretty` - check that all files have been formatted with Prettier
 
-### Auto-fixing and formatting
+### Automatic fixing and formatting
 
 - `npm run lint:ts --fix` - auto-fix linting issues
 - `npm run lint:pretty --write` - format all files with Prettier
 
 ### Editor integration
 
-For VSCode, just install the recommended extensions. Files will then be automatically fixed and formatted on save.
+Most editors support fixing and formatting files automatically on save. The configuration for VSCode is provided out of
+the box, so all you need to do is install the recommended extensions.

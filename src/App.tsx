@@ -34,12 +34,12 @@ function App(): JSX.Element {
         <ReflexElement minSize={500}>
           <ReflexContainer orientation="horizontal">
             <ReflexElement minSize={250}>
-              <DatasetVisualizer dataset={lastSelectedDataset} />
+              <DatasetVisualizer link={lastSelectedDataset} />
             </ReflexElement>
 
             <ReflexSplitter />
 
-            <ReflexElement flex={0.4} minSize={250}>
+            <ReflexElement flex={0.7} minSize={250}>
               <MetadataViewer link={selectedLink} />
             </ReflexElement>
           </ReflexContainer>

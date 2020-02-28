@@ -1,6 +1,12 @@
 import React from 'react';
-import { HDF5Link } from '../models/metadata';
+import { HDF5Link, HDF5Collection, HDF5Metadata } from '../models/metadata';
 import styles from './MetadataViewer.module.css';
+import mockMetadata from '../mock/metadata.json';
+
+const ENTITY_TYPE: Record<HDF5Collection, string> = {
+  [HDF5Collection.Datasets]: 'dataset',
+  [HDF5Collection.Groups]: 'group',
+};
 
 interface Props {
   link?: HDF5Link;
@@ -9,13 +15,31 @@ interface Props {
 function MetadataViewer(props: Props): JSX.Element {
   const { link } = props;
 
+  if (!link) {
+    return (
+      <div className={styles.viewer}>
+        <p>No entity selected.</p>
+      </div>
+    );
+  }
+
+  const { collection, title, id } = link;
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const entity = (mockMetadata as HDF5Metadata)[collection]![id];
+
   return (
     <div className={styles.viewer}>
-      {link ? (
-        <p>Selected entity: {link.title}.</p>
-      ) : (
-        <p>No entity selected.</p>
-      )}
+      <h2 className={styles.heading}>
+        Metadata for {ENTITY_TYPE[collection]} <code>{title}</code>
+      </h2>
+      <pre>
+        {JSON.stringify(
+          entity,
+          (key, value) => (key === 'links' ? undefined : value),
+          2
+        )}
+      </pre>
     </div>
   );
 }
