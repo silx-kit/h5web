@@ -1,0 +1,11 @@
+.btn-clean {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+  white-space: normal;
+  cursor: pointer;
+}

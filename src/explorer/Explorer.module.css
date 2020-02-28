@@ -1,0 +1,10 @@
+.explorer {
+  flex: 1 1 0%;
+  background-color: #f5fbef;
+}
+
+.filename {
+  margin: 0;
+  padding: 1rem;
+  font-weight: 600;
+}

@@ -1,0 +1,22 @@
+.group {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.btn {
+  composes: btn-clean from global;
+  display: block;
+  width: 100%;
+  padding: 0.25rem 1rem 0.25rem calc(0.25rem + var(--level) * 0.75rem);
+}
+
+.btn:focus {
+  background-color: #d4e09b;
+  outline: none;
+}
+
+.btn[aria-selected='true'] {
+  background-color: #c0da74;
+  font-weight: bold;
+}

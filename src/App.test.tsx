@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders', () => {
   const { getByText } = render(<App />);
-  const elem = getByText(/Viewer/i);
+  const elem = getByText(/No entity/i);
   expect(elem).toBeInTheDocument();
 });

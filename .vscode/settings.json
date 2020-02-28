@@ -1,6 +1,7 @@
 {
   "javascript.format.enable": false,
   "json.format.enable": false,
+  "css.validate": false,
 
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {

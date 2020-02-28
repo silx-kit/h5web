@@ -1,0 +1,155 @@
+{
+  "apiVersion": "0.0.0",
+  "id": "e203fee7-89b4-4216-894d-7aef0e3a199d",
+  "root": "903d1d75-e617-4767-a3bf-0cb3ee509027",
+  "groups": {
+    "903d1d75-e617-4767-a3bf-0cb3ee509027": {
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "scan_0000",
+          "collection": "groups",
+          "id": "abcdefgh"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "scan_0001",
+          "collection": "groups",
+          "id": "ijklmnop"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "scan_0002",
+          "collection": "groups",
+          "id": "qrstuvwx"
+        }
+      ]
+    },
+    "ijklmnop": {
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset1",
+          "collection": "datasets",
+          "id": "30292613-8d2a-4dc4-a277-b9d59d5b0d20"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset2",
+          "collection": "datasets",
+          "id": "0a68caca-629a-44aa-9f37-311e7ffb8417"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset3",
+          "collection": "datasets",
+          "id": "4b43748e-817f-44c6-a9f1-16e242fd374b"
+        }
+      ]
+    },
+    "abcdefgh": {
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset1",
+          "collection": "datasets",
+          "id": "30292613-8d2a-4dc4-a277-b9d59d5b0d20"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset2",
+          "collection": "datasets",
+          "id": "0a68caca-629a-44aa-9f37-311e7ffb8417"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset3",
+          "collection": "datasets",
+          "id": "4b43748e-817f-44c6-a9f1-16e242fd374b"
+        }
+      ]
+    },
+    "qrstuvwx": {
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset1",
+          "collection": "datasets",
+          "id": "30292613-8d2a-4dc4-a277-b9d59d5b0d20"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset2",
+          "collection": "datasets",
+          "id": "0a68caca-629a-44aa-9f37-311e7ffb8417"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "title": "dset3",
+          "collection": "datasets",
+          "id": "4b43748e-817f-44c6-a9f1-16e242fd374b"
+        }
+      ]
+    }
+  },
+  "datasets": {
+    "30292613-8d2a-4dc4-a277-b9d59d5b0d20": {
+      "type": {
+        "class": "H5T_INTEGER",
+        "base": "H5T_STD_I32BE"
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [10, 10],
+        "maxdims": [10, 10]
+      }
+    },
+    "0a68caca-629a-44aa-9f37-311e7ffb8417": {
+      "type": {
+        "class": "H5T_COMPOUND",
+        "fields": [
+          {
+            "name": "a",
+            "type": {
+              "class": "H5T_INTEGER",
+              "base": "H5T_STD_I32BE"
+            }
+          },
+          {
+            "name": "b",
+            "type": {
+              "class": "H5T_FLOAT",
+              "base": "H5T_IEEE_F32BE"
+            }
+          },
+          {
+            "name": "c",
+            "type": {
+              "class": "H5T_FLOAT",
+              "base": "H5T_IEEE_F64BE"
+            }
+          }
+        ]
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [5],
+        "maxdims": [5]
+      }
+    },
+    "4b43748e-817f-44c6-a9f1-16e242fd374b": {
+      "type": {
+        "class": "H5T_VLEN",
+        "base": {
+          "class": "H5T_INTEGER",
+          "base": "H5T_STD_I32LE"
+        }
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [4],
+        "maxdims": [4]
+      }
+    }
+  }
+}

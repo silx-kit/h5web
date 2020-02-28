@@ -1,0 +1,7 @@
+.app {
+  height: 100vh;
+}
+
+.explorer {
+  display: flex;
+}
