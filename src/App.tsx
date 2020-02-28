@@ -31,9 +31,9 @@ function App(): JSX.Element {
 
         <ReflexSplitter />
 
-        <ReflexElement>
+        <ReflexElement minSize={500}>
           <ReflexContainer orientation="horizontal">
-            <ReflexElement>
+            <ReflexElement minSize={250}>
               <DatasetVisualizer dataset={lastSelectedDataset} />
             </ReflexElement>
 
