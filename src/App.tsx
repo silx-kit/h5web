@@ -3,12 +3,14 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
 import mockMetadata from './mock/metadata.json';
 import Explorer from './explorer/Explorer';
-import Viewer from './viewer/Viewer';
-import { HDF5Metadata, HDF5Link } from './models/metadata';
+import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
+import { HDF5Metadata, HDF5Link, HDF5Collection } from './models/metadata';
 import styles from './App.module.css';
+import MetadataViewer from './metadata-viewer/MetadataViewer';
 
 function App(): JSX.Element {
-  const [selectedEntity, setSelectedEntity] = useState<HDF5Link>();
+  const [selectedLink, setSelectedLink] = useState<HDF5Link>();
+  const [lastSelectedDataset, setLastSelectedDataset] = useState<HDF5Link>();
 
   return (
     <div className={styles.app}>
@@ -17,14 +19,30 @@ function App(): JSX.Element {
           <Explorer
             filename="water_224.h5"
             metadata={mockMetadata as HDF5Metadata}
-            onSelect={setSelectedEntity}
+            onSelect={link => {
+              setSelectedLink(link);
+
+              if (link.collection === HDF5Collection.Datasets) {
+                setLastSelectedDataset(link);
+              }
+            }}
           />
         </ReflexElement>
 
         <ReflexSplitter />
 
         <ReflexElement>
-          <Viewer entity={selectedEntity} />
+          <ReflexContainer orientation="horizontal">
+            <ReflexElement>
+              <DatasetVisualizer dataset={lastSelectedDataset} />
+            </ReflexElement>
+
+            <ReflexSplitter />
+
+            <ReflexElement flex={0.4} minSize={250}>
+              <MetadataViewer link={selectedLink} />
+            </ReflexElement>
+          </ReflexContainer>
         </ReflexElement>
       </ReflexContainer>
     </div>
