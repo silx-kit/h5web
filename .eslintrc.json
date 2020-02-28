@@ -1,6 +1,7 @@
 {
   "extends": ["@wsmd/eslint-config/all"],
   "rules": {
+    "no-console": "warn",
     "spaced-comment": [
       "error",
       "always",
@@ -22,5 +23,13 @@
       }
     ],
     "prettier/prettier": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "warn"
+      }
+    }
+  ]
 }
