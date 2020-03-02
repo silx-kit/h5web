@@ -5,6 +5,7 @@ import { Tree, TreeNode } from './models';
 import TreeView from './TreeView';
 
 import styles from './Explorer.module.css';
+import Icon from './Icon';
 
 interface Props {
   filename: string;
@@ -34,8 +35,11 @@ function Explorer(props: Props): JSX.Element {
       <TreeView
         nodes={tree}
         selectedNode={selectedNode}
-        onSelect={setSelectedNode}
         isRoot
+        onSelect={setSelectedNode}
+        renderIcon={(data, isBranch, isExpanded) => (
+          <Icon data={data} isBranch={isBranch} isExpanded={isExpanded} />
+        )}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
-import mockMetadata from './mock/metadata.json';
+import mockMetadata from './mock/classic/metadata.json';
 import Explorer from './explorer/Explorer';
 import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
 import { HDF5Metadata, HDF5Link, HDF5Collection } from './models/metadata';
