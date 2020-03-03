@@ -1,5 +1,5 @@
 import { buildTree } from './utils';
-import { HDF5Metadata } from '../../models/metadata';
+import { HDF5Metadata } from '../providers/models';
 
 describe('Explorer Utils', () => {
   describe('buildTree', () => {

@@ -4,7 +4,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import mockMetadata from '../demo-app/mock-data/metadata.json';
 import Explorer from './explorer/Explorer';
 import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
-import { HDF5Metadata, HDF5Link, HDF5Collection } from '../models/metadata';
+import { HDF5Metadata, HDF5Link, HDF5Collection } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 
@@ -34,13 +34,25 @@ function App(): JSX.Element {
         <ReflexElement minSize={500}>
           <ReflexContainer orientation="horizontal">
             <ReflexElement minSize={250}>
-              <DatasetVisualizer link={lastSelectedDataset} />
+              {lastSelectedDataset ? (
+                <DatasetVisualizer link={lastSelectedDataset} />
+              ) : (
+                <div className={styles.empty}>
+                  <p>No dataset selected.</p>
+                </div>
+              )}
             </ReflexElement>
 
             <ReflexSplitter />
 
             <ReflexElement flex={0.7} minSize={250}>
-              <MetadataViewer link={selectedLink} />
+              {selectedLink ? (
+                <MetadataViewer link={selectedLink} />
+              ) : (
+                <div className={styles.empty}>
+                  <p>No entity selected.</p>
+                </div>
+              )}
             </ReflexElement>
           </ReflexContainer>
         </ReflexElement>

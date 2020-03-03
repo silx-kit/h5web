@@ -1,5 +1,5 @@
 import nanoid from 'nanoid';
-import { HDF5Metadata, HDF5Collection, HDF5Link } from '../../models/metadata';
+import { HDF5Metadata, HDF5Collection, HDF5Link } from '../providers/models';
 import { Tree } from './models';
 
 export function buildTree(

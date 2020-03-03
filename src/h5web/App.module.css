@@ -5,3 +5,7 @@
 .explorer {
   display: flex;
 }
+
+.empty {
+  padding: 1rem;
+}

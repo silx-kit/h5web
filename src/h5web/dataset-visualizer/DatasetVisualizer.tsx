@@ -1,25 +1,17 @@
 import React from 'react';
-import { HDF5Link, HDF5Values } from '../../models/metadata';
-import mockValues from '../../demo-app/mock-data/values.json';
+import { HDF5Link } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
+import { useValues } from '../providers/hooks';
 
 interface Props {
-  link?: HDF5Link;
+  link: HDF5Link;
 }
 
 function DatasetVisualizer(props: Props): JSX.Element {
   const { link } = props;
+  const { title } = link;
 
-  if (!link) {
-    return (
-      <div className={styles.visualizer}>
-        <p>No dataset selected.</p>
-      </div>
-    );
-  }
-
-  const { title, id } = link;
-  const dataset = (mockValues as HDF5Values)[id];
+  const values = useValues(link);
 
   return (
     <div className={styles.visualizer}>
@@ -27,7 +19,7 @@ function DatasetVisualizer(props: Props): JSX.Element {
         Dataset <code>{title}</code>
       </h2>
       <pre>
-        {JSON.stringify(dataset, null)
+        {JSON.stringify(values, null)
           .replace(/\[{2}/g, '[\n  [')
           .replace(/\]{2}/g, ']\n]')
           .replace(/\],\[/g, '],\n  [')
