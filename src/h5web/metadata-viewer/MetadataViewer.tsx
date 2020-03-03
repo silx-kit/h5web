@@ -1,7 +1,7 @@
 import React from 'react';
-import { HDF5Link, HDF5Collection, HDF5Metadata } from '../models/metadata';
+import { HDF5Link, HDF5Collection, HDF5Metadata } from '../../models/metadata';
 import styles from './MetadataViewer.module.css';
-import mockMetadata from '../mock/classic/metadata.json';
+import mockMetadata from '../../demo-app/mock-data/metadata.json';
 
 const ENTITY_TYPE: Record<HDF5Collection, string> = {
   [HDF5Collection.Datasets]: 'dataset',

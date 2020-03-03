@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
-import mockMetadata from './mock/classic/metadata.json';
+import mockMetadata from '../demo-app/mock-data/metadata.json';
 import Explorer from './explorer/Explorer';
 import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
-import { HDF5Metadata, HDF5Link, HDF5Collection } from './models/metadata';
-import styles from './App.module.css';
+import { HDF5Metadata, HDF5Link, HDF5Collection } from '../models/metadata';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
+import styles from './App.module.css';
 
 function App(): JSX.Element {
   const [selectedLink, setSelectedLink] = useState<HDF5Link>();

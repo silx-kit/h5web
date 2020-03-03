@@ -4,6 +4,6 @@ import ReactDOM from 'react-dom';
 import 'react-reflex/styles.css';
 import './styles/index.css';
 
-import App from './App';
+import DemoApp from './demo-app/DemoApp';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<DemoApp />, document.getElementById('root'));

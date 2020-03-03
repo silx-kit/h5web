@@ -8,7 +8,7 @@ import {
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 
-import { HDF5Link, HDF5Collection } from '../models/metadata';
+import { HDF5Link, HDF5Collection } from '../../models/metadata';
 
 import styles from './Icon.module.css';
 

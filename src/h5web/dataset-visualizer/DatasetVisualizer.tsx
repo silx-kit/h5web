@@ -1,6 +1,6 @@
 import React from 'react';
-import { HDF5Link, HDF5Values } from '../models/metadata';
-import mockValues from '../mock/classic/values.json';
+import { HDF5Link, HDF5Values } from '../../models/metadata';
+import mockValues from '../../demo-app/mock-data/values.json';
 import styles from './DatasetVisualizer.module.css';
 
 interface Props {

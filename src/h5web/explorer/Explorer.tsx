@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { HDF5Metadata, HDF5Link } from '../models/metadata';
+import { HDF5Metadata, HDF5Link } from '../../models/metadata';
 import { buildTree } from './utils';
 import { Tree, TreeNode } from './models';
 import TreeView from './TreeView';

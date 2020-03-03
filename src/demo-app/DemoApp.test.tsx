@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import App from './App';
+import DemoApp from './DemoApp';
 
 test('renders', () => {
-  const { getByText } = render(<App />);
+  const { getByText } = render(<DemoApp />);
   const elem = getByText(/No entity/i);
   expect(elem).toBeInTheDocument();
 });
