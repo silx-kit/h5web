@@ -2,7 +2,8 @@ import React from 'react';
 import { HDF5Link, HDF5Collection } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import { useMetadata } from '../providers/hooks';
-import { isHardLink } from '../providers/type-guards';
+import { isBaseType, isDataset, isHardLink } from '../providers/type-guards';
+import ShapeRenderer from './ShapeRenderer';
 
 const ENTITY_TYPE: Record<HDF5Collection, string> = {
   [HDF5Collection.Datasets]: 'dataset',
@@ -25,6 +26,29 @@ function MetadataViewer(props: Props): JSX.Element {
         Metadata for {isHardLink(link) ? ENTITY_TYPE[link.collection] : 'link'}{' '}
         <code>{link.title}</code>
       </h2>
+      {!!metadata && isHardLink(link) && isDataset(metadata, link) && (
+        <table>
+          <thead>
+            <tr>
+              <th>Dataset info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>HDF5 type</th>
+              <td>
+                {isBaseType(metadata.type) ? metadata.type.class : 'Complex'}
+              </td>
+            </tr>
+            <tr>
+              <th>Shape</th>
+              <td>
+                <ShapeRenderer shape={metadata.shape} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      )}
       <pre>
         {JSON.stringify(
           metadata,

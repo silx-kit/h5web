@@ -69,35 +69,35 @@ interface HDF5ExternalLink {
 /* ----------------- */
 /* ----- SHAPE ----- */
 
-type HDF5Shape = HDF5SimpleShape | HDF5ScalarShape | HDF5NullShape;
+export type HDF5Shape = HDF5SimpleShape | HDF5ScalarShape | HDF5NullShape;
 
-enum HDF5ShapeClass {
+export enum HDF5ShapeClass {
   Simple = 'H5S_SIMPLE',
   Scalar = 'H5S_SCALAR',
   Null = 'H5S_NUL',
 }
 
-interface HDF5SimpleShape {
+export interface HDF5SimpleShape {
   class: HDF5ShapeClass.Simple;
   dims: number[];
   maxdims?: number[];
 }
 
-interface HDF5ScalarShape {
+export interface HDF5ScalarShape {
   class: HDF5ShapeClass.Scalar;
 }
 
-interface HDF5NullShape {
+export interface HDF5NullShape {
   class: HDF5ShapeClass.Null;
 }
 
 /* ---------------- */
 /* ----- TYPE ----- */
 
-type HDF5Type = HDF5BaseType | HDF5AdvancedType;
+export type HDF5Type = HDF5BaseType | HDF5AdvancedType;
 
 // https://support.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html
-type HDF5BaseType = HDF5IntegerType | HDF5FloatType | HDF5StringType;
+export type HDF5BaseType = HDF5IntegerType | HDF5FloatType | HDF5StringType;
 
 type HDF5AdvancedType =
   | HDF5Id
@@ -105,7 +105,7 @@ type HDF5AdvancedType =
   | HDF5VLenType
   | HDF5CompoundType;
 
-enum HDF5TypeClass {
+export enum HDF5TypeClass {
   Integer = 'H5T_INTEGER',
   Float = 'H5T_FLOAT',
   String = 'H5T_STRING',
