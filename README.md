@@ -29,3 +29,16 @@ npm start
 
 Most editors support fixing and formatting files automatically on save. The configuration for VSCode is provided out of
 the box, so all you need to do is install the recommended extensions.
+
+## Continuous integration and deployment
+
+[GitHub Actions](https://github.com/silx-kit/h5web/actions) is used for continuous integration. The current workflow
+runs the `lint` and `test` scripts above on push (to any branch).
+
+[Netlify](https://www.netlify.com/) is used for continuous deployment. The project's `master` branch is deployed
+automatically to https://h5web.netlify.com/. Netlify also adds its own GitHub Actions workflow and deploys each branch,
+commit and pull request individually to URLs of the form:
+
+- https://<branch-name>--h5web.netlify.com/
+- https://<commit-sha>--h5web.netlify.com/
+- https://deploy-preview-<pr-number>--h5web.netlify.com/
