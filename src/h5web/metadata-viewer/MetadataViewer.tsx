@@ -2,12 +2,8 @@ import React from 'react';
 import { HDF5Link, HDF5Collection } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import { useMetadata } from '../providers/hooks';
-import {
-  isBaseType,
-  isDataset,
-  isHardLink,
-  isSimpleShape,
-} from '../providers/type-guards';
+import { isBaseType, isDataset, isHardLink } from '../providers/type-guards';
+import ShapeRenderer from './ShapeRenderer';
 
 const ENTITY_TYPE: Record<HDF5Collection, string> = {
   [HDF5Collection.Datasets]: 'dataset',
@@ -42,8 +38,7 @@ function MetadataViewer(props: Props): JSX.Element {
             <tr>
               <th>Shape</th>
               <td>
-                {isSimpleShape(metadata.shape) &&
-                  metadata.shape.dims.toString()}
+                <ShapeRenderer shape={metadata.shape} />
               </td>
             </tr>
           </tbody>
