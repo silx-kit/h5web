@@ -28,6 +28,11 @@ function MetadataViewer(props: Props): JSX.Element {
       </h2>
       {!!metadata && isHardLink(link) && isDataset(metadata, link) && (
         <table>
+          <thead>
+            <tr>
+              <th>Dataset info</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
               <th>HDF5 type</th>

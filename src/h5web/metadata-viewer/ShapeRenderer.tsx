@@ -6,7 +6,7 @@ interface Props {
   shape: HDF5Shape;
 }
 
-function renderShapeDims(dims: number[]): string {
+export function renderShapeDims(dims: number[]): string {
   if (dims.length > 1) {
     return `${dims.join(' x ')} = ${dims.reduce((acc, value) => acc * value)}`;
   }
