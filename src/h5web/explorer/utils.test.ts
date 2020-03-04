@@ -61,7 +61,7 @@ describe('Explorer Utils', () => {
           '913d8791': { links: [link1] },
           '0a68caca': { links: [link2] },
         },
-      } as HDF5Metadata;
+      } as MockHDF5Metadata;
 
       expect(buildTree(nestedMetadata)).toEqual([
         {
