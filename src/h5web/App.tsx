@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
-import mockMetadata from '../demo-app/mock-data/metadata.json';
 import Explorer from './explorer/Explorer';
 import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
 import { HDF5Link, HDF5Collection, HDF5HardLink } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
-import { MockHDF5Metadata } from '../demo-app/mock-data/models';
 import { isHardLink } from './providers/type-guards';
 
 function App(): JSX.Element {
@@ -20,7 +18,6 @@ function App(): JSX.Element {
         <ReflexElement className={styles.explorer} flex={0.3} minSize={250}>
           <Explorer
             filename="water_224.h5"
-            metadata={mockMetadata as MockHDF5Metadata}
             onSelect={link => {
               setSelectedLink(link);
 

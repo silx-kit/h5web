@@ -1,10 +1,5 @@
-import {
-  HDF5Link,
-  HDF5Dataset,
-  HDF5Datatype,
-  HDF5Group,
-  HDF5HardLink,
-} from './models';
+import { useState, useEffect } from 'react';
+import { HDF5Link, HDF5HardLink, HDF5Entity } from './models';
 import mockMetadata from '../../demo-app/mock-data/metadata.json';
 import mockValues from '../../demo-app/mock-data/values.json';
 import {
@@ -12,10 +7,20 @@ import {
   MockHDF5Values,
 } from '../../demo-app/mock-data/models';
 import { isHardLink } from './type-guards';
+import { buildTree } from '../explorer/utils';
+import { Tree } from '../explorer/models';
 
-export function useMetadata(
-  link: HDF5Link
-): HDF5Group | HDF5Dataset | HDF5Datatype | undefined {
+export function useMetadataTree(): Tree<HDF5Link> {
+  const [tree, setTree] = useState<Tree<HDF5Link>>([]);
+
+  useEffect(() => {
+    setTree(buildTree(mockMetadata as MockHDF5Metadata));
+  }, []);
+
+  return tree;
+}
+
+export function useEntityMetadata(link: HDF5Link): HDF5Entity | undefined {
   if (!isHardLink(link)) {
     return undefined;
   }
