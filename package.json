@@ -17,8 +17,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "run-p lint:*",
-    "lint:ts": "eslint \"**/*.{ts,tsx,js,jsx}\"",
-    "lint:pretty": "prettier --check \"**/*.{ts,tsx,js,jsx,css,json,md,yml}\""
+    "lint:eslint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
+    "lint:tsc": "tsc --noEmit",
+    "lint:prettier": "prettier --check \"**/*.{ts,tsx,js,jsx,css,json,md,yml}\""
   },
   "dependencies": {
     "classnames": "^2.2.6",

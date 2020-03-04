@@ -16,13 +16,14 @@ npm start
 ## Code quality 🔎
 
 - `npm run lint` - run all linting and code formatting commands
-- `npm run lint:ts` - lint all TS and JS files with ESLint
-- `npm run lint:pretty` - check that all files have been formatted with Prettier
+- `npm run lint:eslint` - lint all TS and JS files with ESLint
+- `npm run lint:tsc` - type-check the whole project, test files included
+- `npm run lint:prettier` - check that all files have been formatted with Prettier
 
 ### Automatic fixing and formatting
 
-- `npm run lint:ts --fix` - auto-fix linting issues
-- `npm run lint:pretty --write` - format all files with Prettier
+- `npm run lint:eslint --fix` - auto-fix linting issues
+- `npm run lint:prettier --write` - format all files with Prettier
 
 ### Editor integration
 
