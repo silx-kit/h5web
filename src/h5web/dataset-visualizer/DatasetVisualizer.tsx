@@ -1,10 +1,10 @@
 import React from 'react';
-import { HDF5Link } from '../providers/models';
+import { HDF5HardLink } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import { useValues } from '../providers/hooks';
 
 interface Props {
-  link: HDF5Link;
+  link: HDF5HardLink;
 }
 
 function DatasetVisualizer(props: Props): JSX.Element {

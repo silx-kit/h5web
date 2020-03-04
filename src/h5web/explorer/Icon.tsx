@@ -5,12 +5,14 @@ import {
   FiChevronDown,
   FiChevronRight,
   FiLayers,
+  FiLink,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 
 import { HDF5Link, HDF5Collection } from '../providers/models';
 
 import styles from './Icon.module.css';
+import { isHardLink } from '../providers/type-guards';
 
 const LEAF_ICONS: Record<HDF5Collection, IconType> = {
   [HDF5Collection.Groups]: FiFolder,
@@ -35,8 +37,12 @@ function Icon(props: Props): JSX.Element {
     );
   }
 
-  const LeafIcon = LEAF_ICONS[data.collection];
-  return <LeafIcon className={styles.icon} />;
+  if (isHardLink(data)) {
+    const LeafIcon = LEAF_ICONS[data.collection];
+    return <LeafIcon className={styles.icon} />;
+  }
+
+  return <FiLink className={styles.icon} />;
 }
 
 export default Icon;
