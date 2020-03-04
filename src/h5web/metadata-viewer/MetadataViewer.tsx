@@ -1,7 +1,7 @@
 import React from 'react';
 import { HDF5Link, HDF5Collection } from '../providers/models';
 import styles from './MetadataViewer.module.css';
-import { useMetadata } from '../providers/hooks';
+import { useEntityMetadata } from '../providers/hooks';
 import { isBaseType, isDataset, isHardLink } from '../providers/type-guards';
 import ShapeRenderer from './ShapeRenderer';
 
@@ -18,7 +18,7 @@ interface Props {
 function MetadataViewer(props: Props): JSX.Element {
   const { link } = props;
 
-  const metadata = useMetadata(link);
+  const metadata = useEntityMetadata(link);
 
   return (
     <div className={styles.viewer}>
