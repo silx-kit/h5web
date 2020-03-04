@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { HDF5Metadata, HDF5Link } from '../providers/models';
+import { HDF5Link } from '../providers/models';
 import { buildTree } from './utils';
 import { Tree, TreeNode } from './models';
 import TreeView from './TreeView';
-
 import styles from './Explorer.module.css';
 import Icon from './Icon';
+import { MockHDF5Metadata } from '../../demo-app/mock-data/models';
 
 interface Props {
   filename: string;
-  metadata: HDF5Metadata;
+  metadata: MockHDF5Metadata;
   onSelect: (link: HDF5Link) => void;
 }
 

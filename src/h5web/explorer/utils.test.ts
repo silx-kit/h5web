@@ -1,5 +1,5 @@
 import { buildTree } from './utils';
-import { HDF5Metadata } from '../providers/models';
+import { MockHDF5Metadata } from '../../demo-app/mock-data/models';
 
 describe('Explorer Utils', () => {
   describe('buildTree', () => {
@@ -27,7 +27,7 @@ describe('Explorer Utils', () => {
         groups: {
           '913d8791': { links: [link] },
         },
-      } as HDF5Metadata;
+      } as MockHDF5Metadata;
 
       expect(buildTree(simpleMetadata)).toEqual([
         {
