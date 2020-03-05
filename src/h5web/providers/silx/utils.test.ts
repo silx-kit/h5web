@@ -1,7 +1,7 @@
 import { buildTree } from './utils';
-import { MockHDF5Metadata } from '../../demo-app/mock-data/models';
+import { SilxMetadata } from './models';
 
-describe('Explorer Utils', () => {
+describe('Silx Provider utilities', () => {
   describe('buildTree', () => {
     it('should process empty metadata', () => {
       const emptyMetadata = {
@@ -27,7 +27,7 @@ describe('Explorer Utils', () => {
         groups: {
           '913d8791': { links: [link] },
         },
-      } as MockHDF5Metadata;
+      } as SilxMetadata;
 
       expect(buildTree(simpleMetadata)).toEqual([
         {
@@ -61,7 +61,7 @@ describe('Explorer Utils', () => {
           '913d8791': { links: [link1] },
           '0a68caca': { links: [link2] },
         },
-      } as MockHDF5Metadata;
+      } as SilxMetadata;
 
       expect(buildTree(nestedMetadata)).toEqual([
         {

@@ -1,11 +1,11 @@
 import nanoid from 'nanoid';
-import { HDF5Collection, HDF5Link } from '../providers/models';
-import { Tree } from './models';
-import { MockHDF5Metadata } from '../../demo-app/mock-data/models';
-import { isHardLink } from '../providers/type-guards';
+import { HDF5Collection, HDF5Link } from '../models';
+import { Tree } from '../../explorer/models';
+import { isHardLink } from '../type-guards';
+import { SilxMetadata } from './models';
 
 export function buildTree(
-  metadata: MockHDF5Metadata,
+  metadata: SilxMetadata,
   groupId = metadata.root,
   level = 1
 ): Tree<HDF5Link> {

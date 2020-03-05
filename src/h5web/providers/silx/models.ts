@@ -4,9 +4,9 @@ import {
   HDF5Group,
   HDF5Dataset,
   HDF5Datatype,
-} from '../../h5web/providers/models';
+} from '../models';
 
-export interface MockHDF5Metadata {
+export interface SilxMetadata {
   id?: HDF5Id;
   root: HDF5Id;
   [HDF5Collection.Groups]: Record<HDF5Id, HDF5Group>;
@@ -15,4 +15,4 @@ export interface MockHDF5Metadata {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type MockHDF5Values = Record<HDF5Id, any>;
+export type SilxValues = Record<HDF5Id, any>;
