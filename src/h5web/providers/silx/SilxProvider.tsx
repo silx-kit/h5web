@@ -14,6 +14,10 @@ interface Props {
 function SilxProvider(props: Props): JSX.Element {
   const { api, children } = props;
 
+  function getDomain(): string {
+    return api.getDomain();
+  }
+
   async function getMetadataTree(): Promise<Tree<HDF5Link>> {
     const metadata = await api.getMetadata();
     return buildTree(metadata);
@@ -37,7 +41,7 @@ function SilxProvider(props: Props): JSX.Element {
 
   return (
     <DataProviderContext.Provider
-      value={{ getMetadataTree, getEntity, getValue }}
+      value={{ getDomain, getMetadataTree, getEntity, getValue }}
     >
       {children}
     </DataProviderContext.Provider>

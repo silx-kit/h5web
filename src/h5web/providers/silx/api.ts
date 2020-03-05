@@ -8,10 +8,14 @@ export class SilxApi {
 
   private values?: SilxValues;
 
-  constructor(domain: string) {
+  constructor(private readonly domain: string) {
     this.client = axios.create({
-      baseURL: `https://www.silx.org/pub/h5web/${domain}`,
+      baseURL: `https://www.silx.org/pub/h5web/${this.domain}`,
     });
+  }
+
+  public getDomain(): string {
+    return this.domain;
   }
 
   public async getMetadata(): Promise<SilxMetadata> {

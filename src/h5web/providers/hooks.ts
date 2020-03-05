@@ -3,6 +3,11 @@ import { HDF5Link, HDF5HardLink, HDF5Entity } from './models';
 import { Tree } from '../explorer/models';
 import { DataProviderContext } from './context';
 
+export function useDomain(): string {
+  const { getDomain } = useContext(DataProviderContext);
+  return getDomain();
+}
+
 export function useMetadataTree(): Tree<HDF5Link> {
   const { getMetadataTree } = useContext(DataProviderContext);
   const [tree, setTree] = useState<Tree<HDF5Link>>([]);

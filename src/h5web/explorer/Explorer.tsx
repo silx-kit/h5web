@@ -4,15 +4,16 @@ import { TreeNode } from './models';
 import TreeView from './TreeView';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
-import { useMetadataTree } from '../providers/hooks';
+import { useMetadataTree, useDomain } from '../providers/hooks';
 
 interface Props {
-  filename: string;
   onSelect: (link: HDF5Link) => void;
 }
 
 function Explorer(props: Props): JSX.Element {
-  const { filename, onSelect } = props;
+  const { onSelect } = props;
+
+  const domain = useDomain();
   const tree = useMetadataTree();
 
   const [selectedNode, setSelectedNode] = useState<TreeNode<HDF5Link>>();
@@ -25,7 +26,7 @@ function Explorer(props: Props): JSX.Element {
 
   return (
     <div className={styles.explorer}>
-      <p className={styles.filename}>{filename}</p>
+      <p className={styles.domain}>{domain}</p>
 
       <TreeView
         nodes={tree}
