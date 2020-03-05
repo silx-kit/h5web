@@ -37,7 +37,10 @@ function App(): JSX.Element {
           <ReflexContainer orientation="horizontal">
             <ReflexElement minSize={250}>
               {selectedDataset ? (
-                <DatasetVisualizer link={selectedDataset} />
+                <DatasetVisualizer
+                  key={JSON.stringify(selectedDataset)}
+                  link={selectedDataset}
+                />
               ) : (
                 <div className={styles.empty}>
                   <p>No dataset selected.</p>
@@ -49,7 +52,10 @@ function App(): JSX.Element {
 
             <ReflexElement flex={0.7} minSize={250}>
               {selectedLink ? (
-                <MetadataViewer link={selectedLink} />
+                <MetadataViewer
+                  key={JSON.stringify(selectedLink)}
+                  link={selectedLink}
+                />
               ) : (
                 <div className={styles.empty}>
                   <p>No entity selected.</p>
