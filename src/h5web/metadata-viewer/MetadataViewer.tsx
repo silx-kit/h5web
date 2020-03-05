@@ -1,7 +1,7 @@
 import React from 'react';
 import { HDF5Link, HDF5Collection } from '../providers/models';
 import styles from './MetadataViewer.module.css';
-import { useEntityMetadata } from '../providers/hooks';
+import { useEntity } from '../providers/hooks';
 import { isBaseType, isDataset, isHardLink } from '../providers/type-guards';
 import ShapeRenderer from './ShapeRenderer';
 
@@ -12,13 +12,14 @@ const ENTITY_TYPE: Record<HDF5Collection, string> = {
 };
 
 interface Props {
+  key: string;
   link: HDF5Link;
 }
 
 function MetadataViewer(props: Props): JSX.Element {
   const { link } = props;
 
-  const metadata = useEntityMetadata(link);
+  const metadata = useEntity(link);
 
   return (
     <div className={styles.viewer}>
@@ -26,7 +27,7 @@ function MetadataViewer(props: Props): JSX.Element {
         Metadata for {isHardLink(link) ? ENTITY_TYPE[link.collection] : 'link'}{' '}
         <code>{link.title}</code>
       </h2>
-      {!!metadata && isHardLink(link) && isDataset(metadata, link) && (
+      {metadata && isHardLink(link) && isDataset(metadata, link) && (
         <table>
           <thead>
             <tr>
@@ -49,13 +50,15 @@ function MetadataViewer(props: Props): JSX.Element {
           </tbody>
         </table>
       )}
-      <pre>
-        {JSON.stringify(
-          metadata,
-          (key, value) => (key === 'links' ? undefined : value),
-          2
-        )}
-      </pre>
+      {metadata && (
+        <pre>
+          {JSON.stringify(
+            metadata,
+            (key, value) => (key === 'links' ? undefined : value),
+            2
+          )}
+        </pre>
+      )}
     </div>
   );
 }

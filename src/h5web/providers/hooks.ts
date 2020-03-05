@@ -1,35 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { HDF5Link, HDF5HardLink, HDF5Entity } from './models';
-import mockMetadata from '../../demo-app/mock-data/metadata.json';
-import mockValues from '../../demo-app/mock-data/values.json';
-import {
-  MockHDF5Metadata,
-  MockHDF5Values,
-} from '../../demo-app/mock-data/models';
-import { isHardLink } from './type-guards';
-import { buildTree } from '../explorer/utils';
 import { Tree } from '../explorer/models';
+import { DataProviderContext } from './context';
 
 export function useMetadataTree(): Tree<HDF5Link> {
+  const { getMetadataTree } = useContext(DataProviderContext);
   const [tree, setTree] = useState<Tree<HDF5Link>>([]);
 
   useEffect(() => {
-    setTree(buildTree(mockMetadata as MockHDF5Metadata));
-  }, []);
+    getMetadataTree().then(setTree);
+  }, [getMetadataTree]);
 
   return tree;
 }
 
-export function useEntityMetadata(link: HDF5Link): HDF5Entity | undefined {
-  if (!isHardLink(link)) {
-    return undefined;
-  }
+export function useEntity(link: HDF5Link): HDF5Entity | undefined {
+  const { getEntity } = useContext(DataProviderContext);
+  const [entity, setEntity] = useState<HDF5Entity | undefined>();
 
-  const { collection, id } = link;
-  return (mockMetadata as MockHDF5Metadata)[collection]![id]; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+  useEffect(() => {
+    getEntity(link).then(setEntity);
+  }, [link, getEntity]);
+
+  return entity;
 }
 
-export function useValues(link: HDF5HardLink): MockHDF5Values {
-  const { id } = link;
-  return (mockValues as MockHDF5Values)[id];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useValue(hardLink: HDF5HardLink): any {
+  const { getValue } = useContext(DataProviderContext);
+  const [value, setValue] = useState<any>(); // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  useEffect(() => {
+    getValue(hardLink).then(setValue);
+  }, [hardLink, getValue]);
+
+  return value;
 }
