@@ -6,3 +6,8 @@
   font-weight: 500;
   font-size: 1.375rem;
 }
+
+.table_head {
+  border-top: darkslategrey solid 1px;
+  border-bottom: darkslategrey solid 1px;
+}
