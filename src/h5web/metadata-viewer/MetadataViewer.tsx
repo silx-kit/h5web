@@ -19,7 +19,7 @@ interface Props {
 function MetadataViewer(props: Props): JSX.Element {
   const { link } = props;
 
-  const metadata = useEntity(link);
+  const entity = useEntity(link);
 
   return (
     <div className={styles.viewer}>
@@ -27,7 +27,7 @@ function MetadataViewer(props: Props): JSX.Element {
         Metadata for {isHardLink(link) ? ENTITY_TYPE[link.collection] : 'link'}{' '}
         <code>{link.title}</code>
       </h2>
-      {metadata && isHardLink(link) && isDataset(metadata, link) && (
+      {entity && isHardLink(link) && isDataset(entity, link) && (
         <table>
           <thead>
             <tr>
@@ -37,23 +37,21 @@ function MetadataViewer(props: Props): JSX.Element {
           <tbody>
             <tr>
               <th>HDF5 type</th>
-              <td>
-                {isBaseType(metadata.type) ? metadata.type.class : 'Complex'}
-              </td>
+              <td>{isBaseType(entity.type) ? entity.type.class : 'Complex'}</td>
             </tr>
             <tr>
               <th>Shape</th>
               <td>
-                <ShapeRenderer shape={metadata.shape} />
+                <ShapeRenderer shape={entity.shape} />
               </td>
             </tr>
           </tbody>
         </table>
       )}
-      {metadata && (
+      {entity && (
         <pre>
           {JSON.stringify(
-            metadata,
+            entity,
             (key, value) => (key === 'links' ? undefined : value),
             2
           )}
