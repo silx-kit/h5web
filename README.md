@@ -39,6 +39,6 @@ runs the `lint` and `test` scripts above on push (to any branch).
 automatically to https://h5web.netlify.com/. Netlify also adds its own GitHub Actions workflow and deploys each branch,
 commit and pull request individually to URLs of the form:
 
-- https://<branch-name\>--h5web.netlify.com/
-- https://<commit-sha\>--h5web.netlify.com/
-- https://deploy-preview-<pr-number\>--h5web.netlify.com/
+- https:\//<branch-name\>--h5web.netlify.com/
+- https:\//<commit-sha\>--h5web.netlify.com/
+- https:\//deploy-preview-<pr-number\>--h5web.netlify.com/
