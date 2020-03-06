@@ -4,14 +4,18 @@ import { SilxMetadata, SilxValues } from './models';
 export class SilxApi {
   private readonly client: AxiosInstance;
 
-  private readonly metadata?: SilxMetadata;
+  private metadata?: SilxMetadata;
 
-  private readonly values?: SilxValues;
+  private values?: SilxValues;
 
-  constructor(domain: string) {
+  constructor(private readonly domain: string) {
     this.client = axios.create({
-      baseURL: `http://www.silx.org/pub/h5web/${domain}`,
+      baseURL: `https://www.silx.org/pub/h5web/${this.domain}`,
     });
+  }
+
+  public getDomain(): string {
+    return this.domain;
   }
 
   public async getMetadata(): Promise<SilxMetadata> {
@@ -19,11 +23,10 @@ export class SilxApi {
       return this.metadata;
     }
 
-    // const { data } = await this.client.get<SilxMetadata>('/metadata.json');
-    // return data;
+    const { data } = await this.client.get<SilxMetadata>('/metadata.json');
 
-    return (await import('../../../demo-app/mock-data/metadata.json'))
-      .default as SilxMetadata;
+    this.metadata = data;
+    return this.metadata;
   }
 
   public async getValues(): Promise<SilxValues> {
@@ -31,10 +34,9 @@ export class SilxApi {
       return this.values;
     }
 
-    // const { data } = await this.client.get<SilxValues>('/values.json');
-    // return data;
+    const { data } = await this.client.get<SilxValues>('/values.json');
 
-    return (await import('../../../demo-app/mock-data/values.json'))
-      .default as SilxValues;
+    this.values = data;
+    return this.values;
   }
 }

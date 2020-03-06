@@ -17,7 +17,6 @@ function App(): JSX.Element {
       <ReflexContainer orientation="vertical" windowResizeAware>
         <ReflexElement className={styles.explorer} flex={0.3} minSize={250}>
           <Explorer
-            filename="water_224.h5"
             onSelect={link => {
               setSelectedLink(link);
 
