@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FiFileText } from 'react-icons/fi';
 import { HDF5Link } from '../providers/models';
 import { TreeNode } from './models';
 import TreeView from './TreeView';
@@ -52,6 +53,7 @@ function Explorer(props: Props): JSX.Element {
           setSelectedNode(tree);
         }}
       >
+        <FiFileText className={styles.domainIcon} />
         {domain}
       </button>
 

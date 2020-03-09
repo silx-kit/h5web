@@ -35,3 +35,16 @@
 .domainBtn {
   composes: btn domain;
 }
+
+.icon {
+  vertical-align: middle;
+  padding-right: 0.25em;
+  padding-bottom: 0.125em;
+}
+
+.domainIcon {
+  composes: icon;
+  font-size: 1.25em;
+  margin-left: -0.375rem;
+  margin-right: 0.125rem;
+}
