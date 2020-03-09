@@ -1,5 +1,13 @@
 import { buildTree } from './utils';
 import { SilxMetadata } from './models';
+import { HDF5Collection, HDF5HardLink, HDF5LinkClass } from '../models';
+
+const rootLink: HDF5HardLink = {
+  class: HDF5LinkClass.Hard,
+  collection: HDF5Collection.Groups,
+  title: 'domain',
+  id: '913d8791',
+};
 
 describe('Silx Provider utilities', () => {
   describe('buildTree', () => {
@@ -10,7 +18,13 @@ describe('Silx Provider utilities', () => {
         groups: { '913d8791': {} },
       };
 
-      expect(buildTree(emptyMetadata)).toEqual([]);
+      expect(buildTree(emptyMetadata, 'domain')).toEqual({
+        uid: expect.any(String),
+        label: 'domain',
+        level: 0,
+        data: rootLink,
+        children: [],
+      });
     });
 
     it('should process metadata with single dataset in root group', () => {
@@ -29,14 +43,20 @@ describe('Silx Provider utilities', () => {
         },
       } as SilxMetadata;
 
-      expect(buildTree(simpleMetadata)).toEqual([
-        {
-          uid: expect.any(String),
-          label: link.title,
-          level: 1,
-          data: link,
-        },
-      ]);
+      expect(buildTree(simpleMetadata, 'domain')).toEqual({
+        uid: expect.any(String),
+        label: 'domain',
+        level: 0,
+        data: rootLink,
+        children: [
+          {
+            uid: expect.any(String),
+            label: link.title,
+            level: 1,
+            data: link,
+          },
+        ],
+      });
     });
 
     it('should process metadata with nested groups', () => {
@@ -63,22 +83,28 @@ describe('Silx Provider utilities', () => {
         },
       } as SilxMetadata;
 
-      expect(buildTree(nestedMetadata)).toEqual([
-        {
-          uid: expect.any(String),
-          label: link1.title,
-          level: 1,
-          data: link1,
-          children: [
-            {
-              uid: expect.any(String),
-              label: link2.title,
-              level: 2,
-              data: link2,
-            },
-          ],
-        },
-      ]);
+      expect(buildTree(nestedMetadata, 'domain')).toEqual({
+        uid: expect.any(String),
+        label: 'domain',
+        level: 0,
+        data: rootLink,
+        children: [
+          {
+            uid: expect.any(String),
+            label: link1.title,
+            level: 1,
+            data: link1,
+            children: [
+              {
+                uid: expect.any(String),
+                label: link2.title,
+                level: 2,
+                data: link2,
+              },
+            ],
+          },
+        ],
+      });
     });
   });
 });

@@ -1,10 +1,10 @@
 import { createContext } from 'react';
 import { HDF5Link, HDF5Entity, HDF5HardLink } from './models';
-import { Tree } from '../explorer/models';
+import { TreeNode } from '../explorer/models';
 
 interface DataProvider {
   getDomain: () => string;
-  getMetadataTree: () => Promise<Tree<HDF5Link>>;
+  getMetadataTree: () => Promise<TreeNode<HDF5Link>>;
   getEntity: (link: HDF5Link) => Promise<HDF5Entity | undefined>;
   getValue: (link: HDF5HardLink) => Promise<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
