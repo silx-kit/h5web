@@ -11,7 +11,7 @@ import { IconType } from 'react-icons';
 
 import { HDF5Link, HDF5Collection } from '../providers/models';
 
-import styles from './Icon.module.css';
+import styles from './Explorer.module.css';
 import { isHardLink } from '../providers/type-guards';
 
 const LEAF_ICONS: Record<HDF5Collection, IconType> = {

@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
-import { Tree, TreeNode } from './models';
+import { TreeNode } from './models';
 
-import styles from './TreeView.module.css';
+import styles from './Explorer.module.css';
 
 type ExpandedNodes = Record<string, boolean>;
 
 interface Props<T> {
-  nodes: Tree<T>;
+  nodes: TreeNode<T>[];
   selectedNode?: TreeNode<T>;
-  isRoot?: boolean;
   onSelect: (node: TreeNode<T>) => void;
   renderIcon: (data: T, isBranch: boolean, isExpanded: boolean) => JSX.Element;
 }
 
 function TreeView<T>(props: Props<T>): JSX.Element {
-  const { nodes, selectedNode, isRoot, onSelect, renderIcon } = props;
+  const { nodes, selectedNode, onSelect, renderIcon } = props;
   const [expandedNodes, setExpandedNodes] = useState<ExpandedNodes>({});
 
   return (
-    <ul className={styles.group} role={isRoot ? 'tree' : 'group'}>
+    <ul className={styles.group} role="group">
       {nodes.map(node => {
         const { uid, label, level, data, children } = node;
         const isBranch = !!children;

@@ -1,24 +1,49 @@
 import nanoid from 'nanoid';
-import { HDF5Collection, HDF5Link } from '../models';
-import { Tree } from '../../explorer/models';
-import { isHardLink } from '../type-guards';
+import {
+  HDF5Collection,
+  HDF5Link,
+  HDF5HardLink,
+  HDF5LinkClass,
+} from '../models';
+import { TreeNode } from '../../explorer/models';
 import { SilxMetadata } from './models';
+import { isHardLink } from '../type-guards';
 
-export function buildTree(
+function buildTreeNode(
   metadata: SilxMetadata,
-  groupId = metadata.root,
-  level = 1
-): Tree<HDF5Link> {
-  const group = metadata.groups[groupId];
-  const { links } = group;
+  link: HDF5Link,
+  level = 0
+): TreeNode<HDF5Link> {
+  const group =
+    isHardLink(link) && link.collection === HDF5Collection.Groups
+      ? metadata.groups[link.id]
+      : undefined;
 
-  return (links || []).map(link => ({
+  return {
     uid: nanoid(),
     label: link.title,
     level,
     data: link,
-    ...(isHardLink(link) && link.collection === HDF5Collection.Groups
-      ? { children: buildTree(metadata, link.id, level + 1) }
+    ...(group
+      ? {
+          children: (group.links || []).map(lk =>
+            buildTreeNode(metadata, lk, level + 1)
+          ),
+        }
       : {}),
-  }));
+  };
+}
+
+export function buildTree(
+  metadata: SilxMetadata,
+  domain: string
+): TreeNode<HDF5Link> {
+  const rootLink: HDF5HardLink = {
+    class: HDF5LinkClass.Hard,
+    collection: HDF5Collection.Groups,
+    title: domain,
+    id: metadata.root,
+  };
+
+  return buildTreeNode(metadata, rootLink);
 }

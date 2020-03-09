@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { DataProviderContext } from '../context';
 import { buildTree } from './utils';
-import { Tree } from '../../explorer/models';
+import { TreeNode } from '../../explorer/models';
 import { HDF5Link, HDF5Entity, HDF5HardLink } from '../models';
 import { isHardLink } from '../type-guards';
 import { SilxApi } from './api';
@@ -18,9 +18,9 @@ function SilxProvider(props: Props): JSX.Element {
     return api.getDomain();
   }
 
-  async function getMetadataTree(): Promise<Tree<HDF5Link>> {
+  async function getMetadataTree(): Promise<TreeNode<HDF5Link>> {
     const metadata = await api.getMetadata();
-    return buildTree(metadata);
+    return buildTree(metadata, api.getDomain());
   }
 
   async function getEntity(link: HDF5Link): Promise<HDF5Entity | undefined> {

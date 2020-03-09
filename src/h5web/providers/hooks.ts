@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { HDF5Link, HDF5HardLink, HDF5Entity } from './models';
-import { Tree } from '../explorer/models';
+import { TreeNode } from '../explorer/models';
 import { DataProviderContext } from './context';
 
 export function useDomain(): string {
@@ -8,9 +8,9 @@ export function useDomain(): string {
   return getDomain();
 }
 
-export function useMetadataTree(): Tree<HDF5Link> {
+export function useMetadataTree(): TreeNode<HDF5Link> | undefined {
   const { getMetadataTree } = useContext(DataProviderContext);
-  const [tree, setTree] = useState<Tree<HDF5Link>>([]);
+  const [tree, setTree] = useState<TreeNode<HDF5Link>>();
 
   useEffect(() => {
     getMetadataTree().then(setTree);
