@@ -22,11 +22,12 @@ export interface HDF5Datatype {
 /* ---------------------- */
 /* ----- ATTRIBUTES ----- */
 
-interface HDF5Attribute {
+export interface HDF5Attribute {
   name: string;
   shape: HDF5Shape;
   type: HDF5Type;
-  value: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any;
 }
 
 /* ----------------- */

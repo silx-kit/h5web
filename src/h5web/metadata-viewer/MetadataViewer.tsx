@@ -1,9 +1,10 @@
 import React from 'react';
-import { HDF5Link, HDF5Collection } from '../providers/models';
+import { HDF5Collection, HDF5Link } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import { useEntity } from '../providers/hooks';
 import { isBaseType, isDataset, isHardLink } from '../providers/type-guards';
 import ShapeRenderer from './ShapeRenderer';
+import AttributesRenderer from './AttributesRenderer';
 
 const ENTITY_TYPE: Record<HDF5Collection, string> = {
   [HDF5Collection.Datasets]: 'dataset',
@@ -19,7 +20,7 @@ interface Props {
 function MetadataViewer(props: Props): JSX.Element {
   const { link } = props;
 
-  const metadata = useEntity(link);
+  const entity = useEntity(link);
 
   return (
     <div className={styles.viewer}>
@@ -27,33 +28,40 @@ function MetadataViewer(props: Props): JSX.Element {
         Metadata for {isHardLink(link) ? ENTITY_TYPE[link.collection] : 'link'}{' '}
         <code>{link.title}</code>
       </h2>
-      {metadata && isHardLink(link) && isDataset(metadata, link) && (
+      {entity && (
         <table>
-          <thead>
-            <tr>
-              <th>Dataset info</th>
-            </tr>
-          </thead>
           <tbody>
-            <tr>
-              <th>HDF5 type</th>
-              <td>
-                {isBaseType(metadata.type) ? metadata.type.class : 'Complex'}
-              </td>
-            </tr>
-            <tr>
-              <th>Shape</th>
-              <td>
-                <ShapeRenderer shape={metadata.shape} />
-              </td>
-            </tr>
+            {isHardLink(link) && isDataset(entity, link) && (
+              <>
+                <tr>
+                  <th className={styles.table_head} colSpan={2}>
+                    Dataset info
+                  </th>
+                </tr>
+                <tr>
+                  <th>HDF5 type</th>
+                  <td>
+                    {isBaseType(entity.type) ? entity.type.class : 'Complex'}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Shape</th>
+                  <td>
+                    <ShapeRenderer shape={entity.shape} />
+                  </td>
+                </tr>
+              </>
+            )}
+            {'attributes' in entity && (
+              <AttributesRenderer attributes={entity.attributes} />
+            )}
           </tbody>
         </table>
       )}
-      {metadata && (
+      {entity && (
         <pre>
           {JSON.stringify(
-            metadata,
+            entity,
             (key, value) => (key === 'links' ? undefined : value),
             2
           )}
