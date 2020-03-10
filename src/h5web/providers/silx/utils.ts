@@ -2,12 +2,11 @@ import nanoid from 'nanoid';
 import {
   HDF5Collection,
   HDF5Link,
-  HDF5HardLink,
+  HDF5RootLink,
   HDF5LinkClass,
 } from '../models';
 import { TreeNode } from '../../explorer/models';
 import { SilxMetadata } from './models';
-import { isHardLink } from '../type-guards';
 
 function buildTreeNode(
   metadata: SilxMetadata,
@@ -15,7 +14,8 @@ function buildTreeNode(
   level = 0
 ): TreeNode<HDF5Link> {
   const group =
-    isHardLink(link) && link.collection === HDF5Collection.Groups
+    (link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root) &&
+    link.collection === HDF5Collection.Groups
       ? metadata.groups[link.id]
       : undefined;
 
@@ -34,14 +34,11 @@ function buildTreeNode(
   };
 }
 
-export function buildTree(
-  metadata: SilxMetadata,
-  domain: string
-): TreeNode<HDF5Link> {
-  const rootLink: HDF5HardLink = {
-    class: HDF5LinkClass.Hard,
+export function buildTree(metadata: SilxMetadata): TreeNode<HDF5Link> {
+  const rootLink: HDF5RootLink = {
+    class: HDF5LinkClass.Root,
     collection: HDF5Collection.Groups,
-    title: domain,
+    title: '',
     id: metadata.root,
   };
 

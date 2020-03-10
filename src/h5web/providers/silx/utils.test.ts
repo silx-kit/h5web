@@ -1,11 +1,11 @@
 import { buildTree } from './utils';
 import { SilxMetadata } from './models';
-import { HDF5Collection, HDF5HardLink, HDF5LinkClass } from '../models';
+import { HDF5Collection, HDF5LinkClass, HDF5RootLink } from '../models';
 
-const rootLink: HDF5HardLink = {
-  class: HDF5LinkClass.Hard,
+const rootLink: HDF5RootLink = {
+  class: HDF5LinkClass.Root,
   collection: HDF5Collection.Groups,
-  title: 'domain',
+  title: '',
   id: '913d8791',
 };
 
@@ -18,9 +18,9 @@ describe('Silx Provider utilities', () => {
         groups: { '913d8791': {} },
       };
 
-      expect(buildTree(emptyMetadata, 'domain')).toEqual({
+      expect(buildTree(emptyMetadata)).toEqual({
         uid: expect.any(String),
-        label: 'domain',
+        label: '',
         level: 0,
         data: rootLink,
         children: [],
@@ -43,9 +43,9 @@ describe('Silx Provider utilities', () => {
         },
       } as SilxMetadata;
 
-      expect(buildTree(simpleMetadata, 'domain')).toEqual({
+      expect(buildTree(simpleMetadata)).toEqual({
         uid: expect.any(String),
-        label: 'domain',
+        label: '',
         level: 0,
         data: rootLink,
         children: [
@@ -83,9 +83,9 @@ describe('Silx Provider utilities', () => {
         },
       } as SilxMetadata;
 
-      expect(buildTree(nestedMetadata, 'domain')).toEqual({
+      expect(buildTree(nestedMetadata)).toEqual({
         uid: expect.any(String),
-        label: 'domain',
+        label: '',
         level: 0,
         data: rootLink,
         children: [
