@@ -33,9 +33,14 @@ export interface HDF5Attribute {
 /* ----------------- */
 /* ----- LINKS ----- */
 
-export type HDF5Link = HDF5HardLink | HDF5SoftLink | HDF5ExternalLink;
+export type HDF5Link =
+  | HDF5HardLink
+  | HDF5RootLink
+  | HDF5SoftLink
+  | HDF5ExternalLink;
 
 export enum HDF5LinkClass {
+  Root = 'ROOT',
   Hard = 'H5L_TYPE_HARD',
   Soft = 'H5L_TYPE_SOFT',
   External = 'H5L_TYPE_EXTERNAL',
@@ -45,6 +50,13 @@ export enum HDF5Collection {
   Groups = 'groups',
   Datasets = 'datasets',
   Datatypes = 'datatypes',
+}
+
+export interface HDF5RootLink {
+  class: HDF5LinkClass.Root;
+  title: '';
+  collection: HDF5Collection.Groups;
+  id: HDF5Id;
 }
 
 export interface HDF5HardLink {

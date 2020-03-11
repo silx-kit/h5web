@@ -20,7 +20,7 @@ function SilxProvider(props: Props): JSX.Element {
 
   async function getMetadataTree(): Promise<TreeNode<HDF5Link>> {
     const metadata = await api.getMetadata();
-    return buildTree(metadata, api.getDomain());
+    return buildTree(metadata);
   }
 
   async function getEntity(link: HDF5Link): Promise<HDF5Entity | undefined> {
