@@ -11,3 +11,21 @@
   border-top: darkslategrey solid 1px;
   border-bottom: darkslategrey solid 1px;
 }
+
+.rawInfo {
+  margin: 1.5rem -1rem;
+}
+
+.rawHeading {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.rawHeading:hover {
+  text-decoration: underline;
+}
+
+.rawContent {
+  margin: 0;
+  padding: 0.5rem 1rem;
+}
