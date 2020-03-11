@@ -6,6 +6,7 @@ import { isBaseType, isDataset, isHardLink } from '../providers/type-guards';
 import ShapeRenderer from './ShapeRenderer';
 import AttributesRenderer from './AttributesRenderer';
 import LinkInfo from './LinkInfo';
+import RawInfo from './RawInfo';
 
 const ENTITY_TYPE: Record<HDF5Collection, string> = {
   [HDF5Collection.Datasets]: 'dataset',
@@ -62,15 +63,7 @@ function MetadataViewer(props: Props): JSX.Element {
           )}
         </tbody>
       </table>
-      {entity && (
-        <pre>
-          {JSON.stringify(
-            entity,
-            (key, value) => (key === 'links' ? undefined : value),
-            2
-          )}
-        </pre>
-      )}
+      <RawInfo link={link} entity={entity} />
     </div>
   );
 }
