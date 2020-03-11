@@ -1,8 +1,28 @@
+/* ------------------ */
+/* ----- COMMON ----- */
+
+export type HDF5Id = string;
+
+export enum HDF5Collection {
+  Groups = 'groups',
+  Datasets = 'datasets',
+  Datatypes = 'datatypes',
+}
+
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
-export type HDF5Entity = HDF5Group | HDF5Dataset | HDF5Datatype;
-export type HDF5Id = string;
+export type HDF5GenericEntity = HDF5Entity<HDF5Collection>;
+export type HDF5Entity<C extends HDF5Collection> = HDF5EntityMapping[C] & {
+  id: HDF5Id;
+  collection: C;
+};
+
+interface HDF5EntityMapping {
+  [HDF5Collection.Groups]: HDF5Group;
+  [HDF5Collection.Datasets]: HDF5Dataset;
+  [HDF5Collection.Datatypes]: HDF5Datatype;
+}
 
 export interface HDF5Group {
   attributes?: HDF5Attribute[];
@@ -44,12 +64,6 @@ export enum HDF5LinkClass {
   Hard = 'H5L_TYPE_HARD',
   Soft = 'H5L_TYPE_SOFT',
   External = 'H5L_TYPE_EXTERNAL',
-}
-
-export enum HDF5Collection {
-  Groups = 'groups',
-  Datasets = 'datasets',
-  Datatypes = 'datatypes',
 }
 
 export interface HDF5RootLink {

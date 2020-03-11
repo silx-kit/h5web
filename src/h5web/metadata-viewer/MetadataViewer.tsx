@@ -35,7 +35,7 @@ function MetadataViewer(props: Props): JSX.Element {
           <LinkInfo link={link} />
           {entity && (
             <>
-              {isHardLink(link) && isDataset(entity, link) && (
+              {isDataset(entity) && (
                 <>
                   <tr>
                     <th className={styles.table_head} colSpan={2}>

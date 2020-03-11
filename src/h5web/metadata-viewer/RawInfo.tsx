@@ -1,11 +1,11 @@
 import React from 'react';
-import { HDF5Link, HDF5Entity } from '../providers/models';
+import { HDF5Link, HDF5GenericEntity } from '../providers/models';
 
 import styles from './MetadataViewer.module.css';
 
 interface Props {
   link: HDF5Link;
-  entity?: HDF5Entity;
+  entity?: HDF5GenericEntity;
 }
 
 function RawInfo(props: Props): JSX.Element {

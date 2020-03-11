@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { DataProviderContext } from '../context';
 import { buildTree } from './utils';
 import { TreeNode } from '../../explorer/models';
-import { HDF5Link, HDF5Entity, HDF5HardLink } from '../models';
+import { HDF5Link, HDF5HardLink, HDF5GenericEntity } from '../models';
 import { isHardLink } from '../type-guards';
 import { SilxApi } from './api';
 
@@ -23,14 +23,26 @@ function SilxProvider(props: Props): JSX.Element {
     return buildTree(metadata);
   }
 
-  async function getEntity(link: HDF5Link): Promise<HDF5Entity | undefined> {
+  async function getEntity(
+    link: HDF5Link
+  ): Promise<HDF5GenericEntity | undefined> {
     if (!isHardLink(link)) {
       return undefined;
     }
 
     const { collection, id } = link;
     const metadata = await api.getMetadata();
-    return metadata[collection]![id]; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+    const dict = metadata[collection];
+
+    if (!dict) {
+      return undefined;
+    }
+
+    return {
+      id,
+      collection,
+      ...dict[id],
+    };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
