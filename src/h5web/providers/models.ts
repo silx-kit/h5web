@@ -46,8 +46,7 @@ export interface HDF5Attribute {
   name: string;
   shape: HDF5Shape;
   type: HDF5Type;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any;
+  value: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 /* ----------------- */

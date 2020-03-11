@@ -13,7 +13,7 @@ function LinkInfo(props: Props): JSX.Element {
   return (
     <>
       <tr>
-        <th className={styles.table_head} colSpan={2}>
+        <th className={styles.headingCell} colSpan={2}>
           Link info
         </th>
       </tr>
@@ -31,7 +31,7 @@ function LinkInfo(props: Props): JSX.Element {
       )}
       {'collection' in link && (
         <tr>
-          <th scope="row">Entity collection</th>
+          <th scope="row">Collection</th>
           <td>{link.collection}</td>
         </tr>
       )}
