@@ -1,6 +1,5 @@
 import {
   HDF5Collection,
-  HDF5Dataset,
   HDF5Entity,
   HDF5HardLink,
   HDF5Link,
@@ -11,6 +10,7 @@ import {
   HDF5BaseType,
   HDF5Type,
   HDF5TypeClass,
+  HDF5GenericEntity,
 } from './models';
 
 export function isHardLink(link: HDF5Link): link is HDF5HardLink {
@@ -18,10 +18,9 @@ export function isHardLink(link: HDF5Link): link is HDF5HardLink {
 }
 
 export function isDataset(
-  entity: HDF5Entity,
-  link: HDF5HardLink
-): entity is HDF5Dataset {
-  return link.collection === HDF5Collection.Datasets;
+  entity: HDF5GenericEntity
+): entity is HDF5Entity<HDF5Collection.Datasets> {
+  return entity.collection === HDF5Collection.Datasets;
 }
 
 export function isSimpleShape(shape: HDF5Shape): shape is HDF5SimpleShape {
