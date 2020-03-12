@@ -49,7 +49,11 @@ function App(): JSX.Element {
 
             <ReflexSplitter />
 
-            <ReflexElement flex={0.7} minSize={250}>
+            <ReflexElement
+              className={styles.metadataViewer}
+              flex={0.7}
+              minSize={250}
+            >
               {selectedLink ? (
                 <MetadataViewer
                   key={JSON.stringify(selectedLink)}

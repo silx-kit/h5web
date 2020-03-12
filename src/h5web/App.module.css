@@ -4,6 +4,12 @@
 
 .explorer {
   display: flex;
+  scrollbar-width: thin;
+}
+
+.metadataViewer {
+  overflow: scroll !important;
+  scrollbar-width: thin;
 }
 
 .empty {

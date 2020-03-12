@@ -14,21 +14,23 @@ function AttributesInfo(props: Props): JSX.Element {
   }
 
   return (
-    <>
-      <tr>
-        <th className={styles.headingCell} colSpan={2}>
-          Attributes
-        </th>
-      </tr>
-      {attributes.map(
-        ({ name, value }: HDF5Attribute): JSX.Element => (
-          <tr key={name}>
-            <th>{name}</th>
-            <td>{value}</td>
-          </tr>
-        )
-      )}
-    </>
+    <table className={styles.table}>
+      <thead>
+        <tr>
+          <th colSpan={2}>Attributes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {attributes.map(
+          ({ name, value }: HDF5Attribute): JSX.Element => (
+            <tr key={name}>
+              <th>{name}</th>
+              <td>{value}</td>
+            </tr>
+          )
+        )}
+      </tbody>
+    </table>
   );
 }
 
