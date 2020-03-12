@@ -6,7 +6,7 @@ interface Props {
   attributes?: HDF5Attribute[];
 }
 
-function AttributesRenderer(props: Props): JSX.Element {
+function AttributesInfo(props: Props): JSX.Element {
   const { attributes } = props;
 
   if (!attributes || attributes.length === 0) {
@@ -16,22 +16,20 @@ function AttributesRenderer(props: Props): JSX.Element {
   return (
     <>
       <tr>
-        <th className={styles.table_head} colSpan={2}>
+        <th className={styles.headingCell} colSpan={2}>
           Attributes
         </th>
       </tr>
       {attributes.map(
-        (attribute: HDF5Attribute): JSX.Element => {
-          return (
-            <tr>
-              <th>{attribute.name}</th>
-              <td>{attribute.value}</td>
-            </tr>
-          );
-        }
+        ({ name, value }: HDF5Attribute): JSX.Element => (
+          <tr key={name}>
+            <th>{name}</th>
+            <td>{value}</td>
+          </tr>
+        )
       )}
     </>
   );
 }
 
-export default AttributesRenderer;
+export default AttributesInfo;
