@@ -1,26 +1,43 @@
-.viewer {
-  padding: 1rem;
+.table {
+  width: 100%;
+  margin-bottom: 0.25rem;
+  text-align: left;
+  border-collapse: collapse;
 }
 
-.headingCell {
-  border-top: darkslategrey solid 1px;
-  border-bottom: darkslategrey solid 1px;
+.table:not(:first-child) {
+  margin-top: 1rem;
 }
 
-.rawInfo {
-  margin: 1.5rem -1rem;
+.table th {
+  font-weight: 500;
 }
 
-.rawHeading {
+.table thead th {
+  padding: 0.675rem 1rem;
+  background-color: #f5fbef;
+  font-size: 1.25rem;
+}
+
+.table tbody th,
+.table tbody td {
   padding: 0.5rem 1rem;
-  cursor: pointer;
+  vertical-align: top;
 }
 
-.rawHeading:hover {
-  text-decoration: underline;
+.table tbody th {
+  width: 15%; /* acts as min-width */
 }
 
-.rawContent {
-  margin: 0;
-  padding: 0.5rem 1rem;
+.table tbody td.raw {
+  padding: 0;
+}
+
+.table tbody tr:first-child > th,
+.table tbody tr:first-child > td {
+  padding-top: 1rem;
+}
+
+.table tbody tr:first-child > td.raw {
+  padding-top: 0.5rem;
 }
