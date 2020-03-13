@@ -1,0 +1,16 @@
+.grid {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+    monospace;
+  scrollbar-width: thin;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding-right: 0.25rem;
+}
+
+.cell[data-bg] {
+  background-color: rgba(64, 201, 162, 0.1);
+}
