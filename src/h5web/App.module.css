@@ -7,6 +7,10 @@
   scrollbar-width: thin;
 }
 
+.dataVisualizer {
+  display: flex;
+}
+
 .metadataViewer {
   overflow: scroll !important;
   scrollbar-width: thin;

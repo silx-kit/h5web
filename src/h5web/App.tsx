@@ -34,7 +34,7 @@ function App(): JSX.Element {
 
         <ReflexElement minSize={500}>
           <ReflexContainer orientation="horizontal">
-            <ReflexElement minSize={250}>
+            <ReflexElement className={styles.dataVisualizer} minSize={250}>
               {selectedDataset ? (
                 <DatasetVisualizer
                   key={JSON.stringify(selectedDataset)}
