@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { HDF5Link, HDF5GenericEntity, HDF5Id } from './models';
+import { HDF5Link, HDF5GenericEntity, HDF5Id, HDF5Value } from './models';
 import { TreeNode } from '../explorer/models';
 import { DataProviderContext } from './context';
 
@@ -30,14 +30,13 @@ export function useEntity(link?: HDF5Link): HDF5GenericEntity | undefined {
   return entity;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useValue(id: HDF5Id): any {
+export function useValue(id: HDF5Id): HDF5Value {
   const { getValue } = useContext(DataProviderContext);
-  const [value, setValue] = useState<any>(); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const [value, setValue] = useState<HDF5Value>();
 
   useEffect(() => {
     getValue(id).then(setValue);
-  }, [getValue, id]);
+  }, [id, getValue]);
 
   return value;
 }

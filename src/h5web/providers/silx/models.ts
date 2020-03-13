@@ -4,6 +4,7 @@ import {
   HDF5Group,
   HDF5Dataset,
   HDF5Datatype,
+  HDF5Value,
 } from '../models';
 
 export interface SilxMetadata {
@@ -14,5 +15,4 @@ export interface SilxMetadata {
   [HDF5Collection.Datatypes]?: Record<HDF5Id, HDF5Datatype>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type SilxValues = Record<HDF5Id, any>;
+export type SilxValues = Record<HDF5Id, HDF5Value>;

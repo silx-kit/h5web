@@ -1,12 +1,12 @@
 import { createContext } from 'react';
-import { HDF5Link, HDF5GenericEntity, HDF5Id } from './models';
+import { HDF5Link, HDF5GenericEntity, HDF5Id, HDF5Value } from './models';
 import { TreeNode } from '../explorer/models';
 
 interface DataProvider {
   getDomain: () => string;
   getMetadataTree: () => Promise<TreeNode<HDF5Link>>;
   getEntity: (link?: HDF5Link) => Promise<HDF5GenericEntity | undefined>;
-  getValue: (id: HDF5Id) => Promise<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  getValue: (id: HDF5Id) => Promise<HDF5Value>;
 }
 
 function missing(): never {
