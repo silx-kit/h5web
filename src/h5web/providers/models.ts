@@ -2,6 +2,7 @@
 /* ----- COMMON ----- */
 
 export type HDF5Id = string;
+export type HDF5Value = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export enum HDF5Collection {
   Groups = 'groups',
@@ -46,7 +47,7 @@ export interface HDF5Attribute {
   name: string;
   shape: HDF5Shape;
   type: HDF5Type;
-  value: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  value: HDF5Value;
 }
 
 /* ----------------- */
