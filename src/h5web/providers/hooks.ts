@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { HDF5Link, HDF5HardLink, HDF5GenericEntity } from './models';
+import { HDF5Link, HDF5GenericEntity, HDF5Id } from './models';
 import { TreeNode } from '../explorer/models';
 import { DataProviderContext } from './context';
 
@@ -19,7 +19,7 @@ export function useMetadataTree(): TreeNode<HDF5Link> | undefined {
   return tree;
 }
 
-export function useEntity(link: HDF5Link): HDF5GenericEntity | undefined {
+export function useEntity(link?: HDF5Link): HDF5GenericEntity | undefined {
   const { getEntity } = useContext(DataProviderContext);
   const [entity, setEntity] = useState<HDF5GenericEntity | undefined>();
 
@@ -31,13 +31,13 @@ export function useEntity(link: HDF5Link): HDF5GenericEntity | undefined {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useValue(hardLink: HDF5HardLink): any {
+export function useValue(id: HDF5Id): any {
   const { getValue } = useContext(DataProviderContext);
   const [value, setValue] = useState<any>(); // eslint-disable-line @typescript-eslint/no-explicit-any
 
   useEffect(() => {
-    getValue(hardLink).then(setValue);
-  }, [hardLink, getValue]);
+    getValue(id).then(setValue);
+  }, [getValue, id]);
 
   return value;
 }

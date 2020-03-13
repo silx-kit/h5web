@@ -1,25 +1,22 @@
 import React from 'react';
-import { HDF5HardLink } from '../providers/models';
+import { HDF5Entity, HDF5Collection } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import { useValue } from '../providers/hooks';
 
 interface Props {
-  link: HDF5HardLink;
+  dataset: HDF5Entity<HDF5Collection.Datasets>;
 }
 
 function DatasetVisualizer(props: Props): JSX.Element {
-  const { link } = props;
-  const { title } = link;
+  const { dataset } = props;
+  const { id } = dataset;
 
-  const value = useValue(link);
+  const value = useValue(id);
 
   return (
     <div className={styles.visualizer}>
-      <h2 className={styles.heading}>
-        Dataset <code>{title}</code>
-      </h2>
       {value !== undefined && (
-        <pre>
+        <pre className={styles.raw}>
           {JSON.stringify(value, null)
             .replace(/\[{2}/g, '[\n  [')
             .replace(/\]{2}/g, ']\n]')

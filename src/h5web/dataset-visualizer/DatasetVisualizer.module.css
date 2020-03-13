@@ -2,7 +2,6 @@
   padding: 1rem;
 }
 
-.heading {
-  font-weight: 500;
-  font-size: 1.375rem;
+.raw {
+  margin: 0;
 }

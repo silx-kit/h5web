@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { DataProviderContext } from '../context';
 import { buildTree } from './utils';
 import { TreeNode } from '../../explorer/models';
-import { HDF5Link, HDF5HardLink, HDF5GenericEntity } from '../models';
+import { HDF5Link, HDF5GenericEntity, HDF5Id } from '../models';
 import { isHardLink } from '../type-guards';
 import { SilxApi } from './api';
 
@@ -24,9 +24,9 @@ function SilxProvider(props: Props): JSX.Element {
   }
 
   async function getEntity(
-    link: HDF5Link
+    link?: HDF5Link
   ): Promise<HDF5GenericEntity | undefined> {
-    if (!isHardLink(link)) {
+    if (!link || !isHardLink(link)) {
       return undefined;
     }
 
@@ -46,9 +46,9 @@ function SilxProvider(props: Props): JSX.Element {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function getValue(hardLink: HDF5HardLink): Promise<any> {
+  async function getValue(id: HDF5Id): Promise<any> {
     const values = await api.getValues();
-    return values[hardLink.id];
+    return values[id];
   }
 
   return (
