@@ -1,6 +1,5 @@
 import React from 'react';
-import { HDF5Link } from '../providers/models';
-import { useEntity } from '../providers/hooks';
+import { HDF5Link, HDF5GenericEntity } from '../providers/models';
 import AttributesInfo from './AttributesInfo';
 import LinkInfo from './LinkInfo';
 import EntityInfo from './EntityInfo';
@@ -8,12 +7,11 @@ import EntityInfo from './EntityInfo';
 interface Props {
   key: string;
   link: HDF5Link;
+  entity?: HDF5GenericEntity;
 }
 
 function MetadataViewer(props: Props): JSX.Element {
-  const { link } = props;
-
-  const entity = useEntity(link);
+  const { link, entity } = props;
 
   return (
     <>
