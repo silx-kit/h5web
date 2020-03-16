@@ -3,7 +3,7 @@ import { FixedSizeGrid as Grid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import numeral from 'numeral';
 import { HDF5Value } from '../providers/models';
-import styles from './TableVis.module.css';
+import styles from './MatrixVis.module.css';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AccessorFunc = (row: number, col: number) => any;
@@ -13,7 +13,7 @@ interface Props {
   data: HDF5Value;
 }
 
-function TableVis(props: Props): JSX.Element {
+function MatrixVis(props: Props): JSX.Element {
   const { dims, data } = props;
 
   const accessor: AccessorFunc =
@@ -46,4 +46,4 @@ function TableVis(props: Props): JSX.Element {
   );
 }
 
-export default TableVis;
+export default MatrixVis;
