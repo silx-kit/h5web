@@ -3,7 +3,7 @@ import { HDF5Entity, HDF5Collection } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import { useValue } from '../providers/hooks';
 import { isBaseType, isSimpleShape } from '../providers/type-guards';
-import TableVis from './TableVis';
+import MatrixVis from './MatrixVis';
 
 interface Props {
   dataset: HDF5Entity<HDF5Collection.Datasets>;
@@ -21,7 +21,7 @@ function DatasetVisualizer(props: Props): JSX.Element {
       isBaseType(type) &&
       isSimpleShape(shape) &&
       [1, 2].includes(shape.dims.length) ? (
-        <TableVis dims={shape.dims} data={value} />
+        <MatrixVis dims={shape.dims} data={value} />
       ) : (
         <pre className={styles.raw}>{JSON.stringify(value)}</pre>
       )}
