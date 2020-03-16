@@ -10,7 +10,7 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   line-height: 1.2;
-  color: #454545;
+  color: var(--black);
 }
 
 @media (min-width: 50em) {

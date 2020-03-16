@@ -1,6 +1,6 @@
 .explorer {
   flex: 1 1 0%;
-  background-color: #f5fbef;
+  background-color: var(--primary-bg);
 }
 
 .group {
@@ -17,12 +17,12 @@
 }
 
 .btn:focus {
-  background-color: #d4e09b;
+  background-color: var(--primary-light);
   outline: none;
 }
 
 .btn[aria-selected='true'] {
-  background-color: #c0da74;
+  background-color: var(--primary);
   font-weight: bold;
 }
 

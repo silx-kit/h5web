@@ -12,5 +12,5 @@
 }
 
 .cell[data-bg] {
-  background-color: rgba(64, 201, 162, 0.1);
+  background-color: rgba(var(--secondary-rgb), 0.1);
 }
