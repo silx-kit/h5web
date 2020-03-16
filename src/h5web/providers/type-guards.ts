@@ -11,10 +11,18 @@ import {
   HDF5Type,
   HDF5TypeClass,
   HDF5GenericEntity,
+  HDF5RootLink,
 } from './models';
 
 export function isHardLink(link: HDF5Link): link is HDF5HardLink {
   return link.class === HDF5LinkClass.Hard;
+}
+
+export function isReachable(
+  link: HDF5Link
+): link is HDF5HardLink | HDF5RootLink {
+  // Only hard and root links are considered as reachable for now
+  return link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root;
 }
 
 export function isDataset(

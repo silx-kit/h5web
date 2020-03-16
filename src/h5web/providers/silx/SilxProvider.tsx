@@ -3,7 +3,7 @@ import { DataProviderContext } from '../context';
 import { buildTree } from './utils';
 import { TreeNode } from '../../explorer/models';
 import { HDF5Link, HDF5GenericEntity, HDF5Id, HDF5Value } from '../models';
-import { isHardLink } from '../type-guards';
+import { isReachable } from '../type-guards';
 import { SilxApi } from './api';
 
 interface Props {
@@ -26,7 +26,7 @@ function SilxProvider(props: Props): JSX.Element {
   async function getEntity(
     link?: HDF5Link
   ): Promise<HDF5GenericEntity | undefined> {
-    if (!link || !isHardLink(link)) {
+    if (!link || !isReachable(link)) {
       return undefined;
     }
 

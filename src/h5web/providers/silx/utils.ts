@@ -7,6 +7,7 @@ import {
 } from '../models';
 import { TreeNode } from '../../explorer/models';
 import { SilxMetadata } from './models';
+import { isReachable } from '../type-guards';
 
 function buildTreeNode(
   metadata: SilxMetadata,
@@ -14,8 +15,7 @@ function buildTreeNode(
   level = 0
 ): TreeNode<HDF5Link> {
   const group =
-    (link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root) &&
-    link.collection === HDF5Collection.Groups
+    isReachable(link) && link.collection === HDF5Collection.Groups
       ? metadata.groups[link.id]
       : undefined;
 
