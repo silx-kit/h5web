@@ -1,25 +1,11 @@
 import {
-  HDF5Collection,
   HDF5Id,
   HDF5Shape,
   HDF5Type,
   HDF5Link,
   HDF5Attribute,
-  HDF5Group,
-  HDF5Dataset,
-  HDF5Datatype,
   HDF5Value,
 } from '../models';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type HsdsValues = any;
-
-export interface HsdsMetadata {
-  root: HDF5Id;
-  [HDF5Collection.Groups]: Record<HDF5Id, HDF5Group>;
-  [HDF5Collection.Datasets]?: Record<HDF5Id, HDF5Dataset>;
-  [HDF5Collection.Datatypes]?: Record<HDF5Id, HDF5Datatype>;
-}
 
 export interface HsdsGroupResponse {
   id: HDF5Id;

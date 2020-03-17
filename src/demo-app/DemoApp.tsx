@@ -1,12 +1,12 @@
 import React from 'react';
 import App from '../h5web/App';
-import Silx from '../h5web/providers/silx/Silx';
+import SilxProvider from '../h5web/providers/silx/SilxProvider';
 
 function DemoApp(): JSX.Element {
   return (
-    <Silx domain="bsa_002_000-integrate-sub">
+    <SilxProvider domain="bsa_002_000-integrate-sub">
       <App />
-    </Silx>
+    </SilxProvider>
   );
 }
 

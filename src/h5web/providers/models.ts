@@ -10,6 +10,13 @@ export enum HDF5Collection {
   Datatypes = 'datatypes',
 }
 
+export interface HDF5Metadata {
+  root: HDF5Id;
+  [HDF5Collection.Groups]: Record<HDF5Id, HDF5Group>;
+  [HDF5Collection.Datasets]?: Record<HDF5Id, HDF5Dataset>;
+  [HDF5Collection.Datatypes]?: Record<HDF5Id, HDF5Datatype>;
+}
+
 /* -------------------- */
 /* ----- ENTITIES ----- */
 

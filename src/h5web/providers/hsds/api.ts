@@ -1,10 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import {
-  HsdsValues,
   HsdsDatasetResponse,
   HsdsDatatypeResponse,
   HsdsGroupResponse,
-  HsdsMetadata,
   HsdsAttributesResponse,
   HsdsLinksResponse,
   HsdsRootResponse,
@@ -19,23 +17,20 @@ import {
   HDF5Id,
   HDF5RootLink,
   HDF5Value,
+  HDF5Metadata,
 } from '../models';
 import { isReachable } from '../utils';
+import { ProviderAPI } from '../context';
 
-export class HsdsApi {
+export class HsdsApi implements ProviderAPI {
   private readonly client: AxiosInstance;
+  private readonly config: AxiosRequestConfig;
 
-  private config: AxiosRequestConfig;
-
-  private metadata?: HsdsMetadata;
-
+  private metadata?: HDF5Metadata;
   private groups: Record<HDF5Id, HDF5Group> = {};
-
   private datasets: Record<HDF5Id, HDF5Dataset> = {};
-
   private datatypes: Record<HDF5Id, HDF5Datatype> = {};
-
-  private values: Record<HDF5Id, HsdsValues> = {};
+  private values: Record<HDF5Id, HDF5Value> = {};
 
   constructor(private readonly domain: string) {
     this.config = {
@@ -154,7 +149,7 @@ export class HsdsApi {
   }
 
   /* Others */
-  public async getMetadata(): Promise<HsdsMetadata> {
+  public async getMetadata(): Promise<HDF5Metadata> {
     if (this.metadata) {
       return this.metadata;
     }
