@@ -51,7 +51,7 @@ function App(): JSX.Element {
 
             <ReflexElement
               className={styles.metadataViewer}
-              flex={0.6}
+              flex={0.4}
               minSize={250}
             >
               {selectedLink ? (
