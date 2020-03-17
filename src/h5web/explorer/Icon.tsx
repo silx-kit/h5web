@@ -12,7 +12,7 @@ import { IconType } from 'react-icons';
 import { HDF5Link, HDF5Collection } from '../providers/models';
 
 import styles from './Explorer.module.css';
-import { isHardLink } from '../providers/type-guards';
+import { isHardLink } from '../providers/utils';
 
 const LEAF_ICONS: Record<HDF5Collection, IconType> = {
   [HDF5Collection.Groups]: FiFolder,

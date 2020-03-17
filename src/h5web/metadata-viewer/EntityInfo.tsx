@@ -1,7 +1,7 @@
 import React from 'react';
 import { HDF5GenericEntity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
-import { isBaseType, isSimpleShape } from '../providers/type-guards';
+import { isBaseType, isSimpleShape } from '../providers/utils';
 import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 

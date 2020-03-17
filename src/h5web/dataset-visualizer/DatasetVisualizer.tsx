@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { HDF5Entity, HDF5Collection } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import { useValue } from '../providers/hooks';
-import { isBaseType, isSimpleShape } from '../providers/type-guards';
-import MatrixVis from './MatrixVis';
+import VisSelector from './VisSelector';
+import { Vis } from './models';
+import { getSupportedVis } from './utils';
+import VisDisplay from './VisDisplay';
 
 interface Props {
   dataset: HDF5Entity<HDF5Collection.Datasets>;
@@ -11,19 +13,22 @@ interface Props {
 
 function DatasetVisualizer(props: Props): JSX.Element {
   const { dataset } = props;
-  const { id, type, shape } = dataset;
 
-  const value = useValue(id);
+  const value = useValue(dataset.id);
+
+  const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
+  const [activeVis, setActiveVis] = useState<Vis>(supportedVis[0]);
 
   return (
     <div className={styles.visualizer}>
-      {value &&
-      isBaseType(type) &&
-      isSimpleShape(shape) &&
-      [1, 2].includes(shape.dims.length) ? (
-        <MatrixVis dims={shape.dims} data={value} />
-      ) : (
-        <pre className={styles.raw}>{JSON.stringify(value)}</pre>
+      <VisSelector
+        activeVis={activeVis}
+        choices={supportedVis}
+        onChange={setActiveVis}
+      />
+
+      {value !== undefined && (
+        <VisDisplay vis={activeVis} dataset={dataset} value={value} />
       )}
     </div>
   );

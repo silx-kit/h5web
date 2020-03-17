@@ -3,7 +3,7 @@ import { DataProviderContext } from '../context';
 import { buildTree } from '../silx/utils';
 import { TreeNode } from '../../explorer/models';
 import { HDF5GenericEntity, HDF5Link, HDF5Id, HDF5Value } from '../models';
-import { isReachable } from '../type-guards';
+import { isReachable } from '../utils';
 import { HsdsApi } from './api';
 
 interface Props {
