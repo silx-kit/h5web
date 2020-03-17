@@ -22,8 +22,8 @@ npm start
 
 ### Automatic fixing and formatting
 
-- `npm run lint:eslint --fix` - auto-fix linting issues
-- `npm run lint:prettier --write` - format all files with Prettier
+- `npm run lint:eslint -- --fix` - auto-fix linting issues
+- `npm run lint:prettier -- --write` - format all files with Prettier
 
 ### Editor integration
 
