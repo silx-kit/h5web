@@ -7,7 +7,7 @@ import {
 } from '../models';
 import { TreeNode } from '../../explorer/models';
 import { SilxMetadata } from './models';
-import { isReachable } from '../type-guards';
+import { isReachable } from '../utils';
 
 function buildTreeNode(
   metadata: SilxMetadata,

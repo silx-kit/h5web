@@ -20,7 +20,7 @@ import {
   HDF5RootLink,
   HDF5Value,
 } from '../models';
-import { isReachable } from '../type-guards';
+import { isReachable } from '../utils';
 
 export class HsdsApi {
   private readonly client: AxiosInstance;

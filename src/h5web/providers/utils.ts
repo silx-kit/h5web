@@ -35,6 +35,11 @@ export function isSimpleShape(shape: HDF5Shape): shape is HDF5SimpleShape {
   return shape.class === HDF5ShapeClass.Simple;
 }
 
+export function hasSimpleDims(shape: HDF5SimpleShape): boolean {
+  const { length: len } = shape.dims;
+  return len === 1 || len === 2;
+}
+
 export function isBaseType(type: HDF5Type): type is HDF5BaseType {
   return (
     typeof type !== 'string' &&

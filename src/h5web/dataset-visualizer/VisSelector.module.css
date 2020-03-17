@@ -1,0 +1,8 @@
+.btn {
+  display: flex;
+  align-items: center;
+}
+
+.btn[aria-selected='true'] {
+  font-weight: bold;
+}

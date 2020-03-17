@@ -6,7 +6,7 @@ import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
 import { HDF5Link, HDF5Collection, HDF5Entity } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
-import { isDataset } from './providers/type-guards';
+import { isDataset } from './providers/utils';
 import { useEntity } from './providers/hooks';
 
 function App(): JSX.Element {
