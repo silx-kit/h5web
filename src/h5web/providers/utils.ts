@@ -11,9 +11,9 @@ import {
   HDF5BaseType,
   HDF5Type,
   HDF5TypeClass,
-  HDF5GenericEntity,
   HDF5RootLink,
   HDF5Metadata,
+  HDF5Dataset,
 } from './models';
 import { TreeNode } from '../explorer/models';
 
@@ -28,9 +28,7 @@ export function isReachable(
   return link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root;
 }
 
-export function isDataset(
-  entity: HDF5GenericEntity
-): entity is HDF5Entity<HDF5Collection.Datasets> {
+export function isDataset(entity: HDF5Entity): entity is HDF5Dataset {
   return entity.collection === HDF5Collection.Datasets;
 }
 

@@ -1,17 +1,12 @@
 import React from 'react';
-import {
-  HDF5Value,
-  HDF5Entity,
-  HDF5Collection,
-  HDF5SimpleShape,
-} from '../providers/models';
+import { HDF5Value, HDF5SimpleShape, HDF5Dataset } from '../providers/models';
 import { Vis } from './models';
 import RawVis from './vis/RawVis';
 import MatrixVis from './vis/MatrixVis';
 
 interface Props {
   vis: Vis;
-  dataset: HDF5Entity<HDF5Collection.Datasets>;
+  dataset: HDF5Dataset;
   value: HDF5Value;
 }
 

@@ -1,12 +1,12 @@
 import React from 'react';
-import { HDF5GenericEntity } from '../providers/models';
+import { HDF5Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import { isBaseType, isSimpleShape } from '../providers/utils';
 import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 
 interface Props {
-  entity: HDF5GenericEntity;
+  entity: HDF5Entity;
 }
 
 function EntityInfo(props: Props): JSX.Element {

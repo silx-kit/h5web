@@ -20,30 +20,26 @@ export interface HDF5Metadata {
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
-export type HDF5GenericEntity = HDF5Entity<HDF5Collection>;
-export type HDF5Entity<C extends HDF5Collection> = HDF5EntityMapping[C] & {
-  id: HDF5Id;
-  collection: C;
-};
-
-interface HDF5EntityMapping {
-  [HDF5Collection.Groups]: HDF5Group;
-  [HDF5Collection.Datasets]: HDF5Dataset;
-  [HDF5Collection.Datatypes]: HDF5Datatype;
-}
+export type HDF5Entity = HDF5Group | HDF5Dataset | HDF5Datatype;
 
 export interface HDF5Group {
+  id: HDF5Id;
+  collection: HDF5Collection.Groups;
   attributes?: HDF5Attribute[];
   links?: HDF5Link[];
 }
 
 export interface HDF5Dataset {
+  id: HDF5Id;
+  collection: HDF5Collection.Datasets;
   attributes?: HDF5Attribute[];
   shape: HDF5Shape;
   type: HDF5Type;
 }
 
 export interface HDF5Datatype {
+  id: HDF5Id;
+  collection: HDF5Collection.Datatypes;
   type: HDF5Type;
 }
 

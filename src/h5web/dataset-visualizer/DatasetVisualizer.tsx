@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { HDF5Entity, HDF5Collection } from '../providers/models';
+import { HDF5Dataset } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import { useValue } from '../providers/hooks';
 import VisSelector from './VisSelector';
@@ -8,7 +8,7 @@ import { getSupportedVis } from './utils';
 import VisDisplay from './VisDisplay';
 
 interface Props {
-  dataset: HDF5Entity<HDF5Collection.Datasets>;
+  dataset: HDF5Dataset;
 }
 
 function DatasetVisualizer(props: Props): JSX.Element {

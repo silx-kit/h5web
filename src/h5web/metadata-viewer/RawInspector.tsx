@@ -1,10 +1,10 @@
 import React from 'react';
-import { HDF5Link, HDF5GenericEntity } from '../providers/models';
+import { HDF5Link, HDF5Entity } from '../providers/models';
 
 import styles from './RawInspector.module.css';
 
 interface Props {
-  data: HDF5Link | HDF5GenericEntity;
+  data: HDF5Link | HDF5Entity;
 }
 
 function RawInspector(props: Props): JSX.Element {
