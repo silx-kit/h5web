@@ -13,3 +13,47 @@
 .cell[data-bg] {
   background-color: var(--secondary-light-bg);
 }
+
+.indexCell {
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-bg);
+}
+
+.indexCell[data-bg] {
+  background-color: var(--primary-light-bg);
+}
+
+.indexRow {
+  display: flex;
+  z-index: 2;
+}
+
+.indexColumn {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.indexRow[data-sticky],
+.indexColumn[data-sticky] {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.btn {
+  composes: btn-clean from global;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.btn:hover,
+.btn[data-bg] {
+  background-color: var(--primary-dark-bg);
+}
