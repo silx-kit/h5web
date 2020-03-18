@@ -1,12 +1,10 @@
 import { createContext } from 'react';
-import { HDF5Link, HDF5GenericEntity, HDF5Id, HDF5Value } from './models';
-import { TreeNode } from '../explorer/models';
+import { HDF5Id, HDF5Value, HDF5Metadata } from './models';
 
-interface DataProvider {
-  getDomain: () => string;
-  getMetadataTree: () => Promise<TreeNode<HDF5Link>>;
-  getEntity: (link?: HDF5Link) => Promise<HDF5GenericEntity | undefined>;
-  getValue: (id: HDF5Id) => Promise<HDF5Value>;
+export abstract class ProviderAPI {
+  abstract getDomain: () => string;
+  abstract getMetadata: () => Promise<HDF5Metadata>;
+  abstract getValue: (id: HDF5Id) => Promise<HDF5Value>;
 }
 
 function missing(): never {
@@ -15,9 +13,8 @@ function missing(): never {
   );
 }
 
-export const DataProviderContext = createContext<DataProvider>({
+export const ProviderContext = createContext<ProviderAPI>({
   getDomain: missing as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-  getMetadataTree: missing as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-  getEntity: missing as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+  getMetadata: missing as any, // eslint-disable-line @typescript-eslint/no-explicit-any
   getValue: missing as any, // eslint-disable-line @typescript-eslint/no-explicit-any
 });

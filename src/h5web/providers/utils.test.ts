@@ -1,6 +1,10 @@
+import {
+  HDF5Collection,
+  HDF5LinkClass,
+  HDF5RootLink,
+  HDF5Metadata,
+} from './models';
 import { buildTree } from './utils';
-import { SilxMetadata } from './models';
-import { HDF5Collection, HDF5LinkClass, HDF5RootLink } from '../models';
 
 const rootLink: HDF5RootLink = {
   class: HDF5LinkClass.Root,
@@ -9,11 +13,10 @@ const rootLink: HDF5RootLink = {
   id: '913d8791',
 };
 
-describe('Silx Provider utilities', () => {
+describe('Provider utilities', () => {
   describe('buildTree', () => {
     it('should process empty metadata', () => {
       const emptyMetadata = {
-        apiVersion: '0.0.0',
         root: '913d8791',
         groups: { '913d8791': {} },
       };
@@ -36,12 +39,11 @@ describe('Silx Provider utilities', () => {
       };
 
       const simpleMetadata = {
-        apiVersion: '0.0.0',
         root: '913d8791',
         groups: {
           '913d8791': { links: [link] },
         },
-      } as SilxMetadata;
+      } as HDF5Metadata;
 
       expect(buildTree(simpleMetadata)).toEqual({
         uid: expect.any(String),
@@ -75,13 +77,12 @@ describe('Silx Provider utilities', () => {
       };
 
       const nestedMetadata = {
-        apiVersion: '0.0.0',
         root: '913d8791',
         groups: {
           '913d8791': { links: [link1] },
           '0a68caca': { links: [link2] },
         },
-      } as SilxMetadata;
+      } as HDF5Metadata;
 
       expect(buildTree(nestedMetadata)).toEqual({
         uid: expect.any(String),

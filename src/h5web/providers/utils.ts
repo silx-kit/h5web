@@ -1,3 +1,4 @@
+import nanoid from 'nanoid';
 import {
   HDF5Collection,
   HDF5Entity,
@@ -12,7 +13,9 @@ import {
   HDF5TypeClass,
   HDF5GenericEntity,
   HDF5RootLink,
+  HDF5Metadata,
 } from './models';
+import { TreeNode } from '../explorer/models';
 
 export function isHardLink(link: HDF5Link): link is HDF5HardLink {
   return link.class === HDF5LinkClass.Hard;
@@ -47,4 +50,40 @@ export function isBaseType(type: HDF5Type): type is HDF5BaseType {
       type.class
     )
   );
+}
+
+function buildTreeNode(
+  metadata: HDF5Metadata,
+  link: HDF5Link,
+  level = 0
+): TreeNode<HDF5Link> {
+  const group =
+    isReachable(link) && link.collection === HDF5Collection.Groups
+      ? metadata.groups[link.id]
+      : undefined;
+
+  return {
+    uid: nanoid(),
+    label: link.title,
+    level,
+    data: link,
+    ...(group
+      ? {
+          children: (group.links || []).map(lk =>
+            buildTreeNode(metadata, lk, level + 1)
+          ),
+        }
+      : {}),
+  };
+}
+
+export function buildTree(metadata: HDF5Metadata): TreeNode<HDF5Link> {
+  const rootLink: HDF5RootLink = {
+    class: HDF5LinkClass.Root,
+    collection: HDF5Collection.Groups,
+    title: '',
+    id: metadata.root,
+  };
+
+  return buildTreeNode(metadata, rootLink);
 }

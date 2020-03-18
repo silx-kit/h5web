@@ -1,62 +1,21 @@
-import React, { ReactNode } from 'react';
-import { DataProviderContext } from '../context';
-import { buildTree } from './utils';
-import { TreeNode } from '../../explorer/models';
-import { HDF5Link, HDF5GenericEntity, HDF5Id, HDF5Value } from '../models';
-import { isReachable } from '../utils';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { SilxApi } from './api';
+import Provider from '../Provider';
 
 interface Props {
-  api: SilxApi;
+  domain: string;
   children: ReactNode;
 }
 
 function SilxProvider(props: Props): JSX.Element {
-  const { api, children } = props;
+  const { domain, children } = props;
+  const [api, setApi] = useState<SilxApi>();
 
-  function getDomain(): string {
-    return api.getDomain();
-  }
+  useEffect(() => {
+    setApi(new SilxApi(domain));
+  }, [domain]);
 
-  async function getMetadataTree(): Promise<TreeNode<HDF5Link>> {
-    const metadata = await api.getMetadata();
-    return buildTree(metadata);
-  }
-
-  async function getEntity(
-    link?: HDF5Link
-  ): Promise<HDF5GenericEntity | undefined> {
-    if (!link || !isReachable(link)) {
-      return undefined;
-    }
-
-    const { collection, id } = link;
-    const metadata = await api.getMetadata();
-    const dict = metadata[collection];
-
-    if (!dict) {
-      return undefined;
-    }
-
-    return {
-      id,
-      collection,
-      ...dict[id],
-    };
-  }
-
-  async function getValue(id: HDF5Id): Promise<HDF5Value> {
-    const values = await api.getValues();
-    return values[id];
-  }
-
-  return (
-    <DataProviderContext.Provider
-      value={{ getDomain, getMetadataTree, getEntity, getValue }}
-    >
-      {children}
-    </DataProviderContext.Provider>
-  );
+  return <Provider api={api}>{children}</Provider>;
 }
 
 export default SilxProvider;
