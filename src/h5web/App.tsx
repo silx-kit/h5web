@@ -3,7 +3,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
 import Explorer from './explorer/Explorer';
 import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
-import { HDF5Link, HDF5Collection, HDF5Entity } from './providers/models';
+import { HDF5Link, HDF5Dataset } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import { isDataset } from './providers/utils';
@@ -11,9 +11,7 @@ import { useEntity } from './providers/hooks';
 
 function App(): JSX.Element {
   const [selectedLink, setSelectedLink] = useState<HDF5Link>();
-  const [selectedDataset, setSelectedDataset] = useState<
-    HDF5Entity<HDF5Collection.Datasets>
-  >();
+  const [selectedDataset, setSelectedDataset] = useState<HDF5Dataset>();
 
   const selectedEntity = useEntity(selectedLink);
 

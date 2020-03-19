@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { HDF5Link, HDF5GenericEntity, HDF5Id, HDF5Value } from './models';
+import { HDF5Link, HDF5Entity, HDF5Id, HDF5Value } from './models';
 import { TreeNode } from '../explorer/models';
 import { ProviderContext } from './context';
 import { buildTree, isReachable } from './utils';
@@ -22,9 +22,9 @@ export function useMetadataTree(): TreeNode<HDF5Link> | undefined {
   return tree;
 }
 
-export function useEntity(link?: HDF5Link): HDF5GenericEntity | undefined {
+export function useEntity(link?: HDF5Link): HDF5Entity | undefined {
   const { getMetadata } = useContext(ProviderContext);
-  const [entity, setEntity] = useState<HDF5GenericEntity | undefined>();
+  const [entity, setEntity] = useState<HDF5Entity | undefined>();
 
   useEffect(() => {
     if (!link || !isReachable(link)) {
@@ -35,7 +35,7 @@ export function useEntity(link?: HDF5Link): HDF5GenericEntity | undefined {
     getMetadata().then(metadata => {
       const { collection, id } = link;
       const dict = metadata[collection];
-      setEntity(dict && { id, collection, ...dict[id] });
+      setEntity(dict && dict[id]);
     });
   }, [link, getMetadata]);
 

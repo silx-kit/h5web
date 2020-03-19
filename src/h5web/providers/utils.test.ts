@@ -3,6 +3,7 @@ import {
   HDF5LinkClass,
   HDF5RootLink,
   HDF5Metadata,
+  HDF5Group,
 } from './models';
 import { buildTree } from './utils';
 
@@ -18,7 +19,12 @@ describe('Provider utilities', () => {
     it('should process empty metadata', () => {
       const emptyMetadata = {
         root: '913d8791',
-        groups: { '913d8791': {} },
+        groups: {
+          '913d8791': {
+            id: '913d8791',
+            collection: HDF5Collection.Groups,
+          } as HDF5Group,
+        },
       };
 
       expect(buildTree(emptyMetadata)).toEqual({
@@ -41,7 +47,11 @@ describe('Provider utilities', () => {
       const simpleMetadata = {
         root: '913d8791',
         groups: {
-          '913d8791': { links: [link] },
+          '913d8791': {
+            id: '913d8791',
+            collection: HDF5Collection.Groups,
+            links: [link],
+          },
         },
       } as HDF5Metadata;
 
@@ -79,8 +89,16 @@ describe('Provider utilities', () => {
       const nestedMetadata = {
         root: '913d8791',
         groups: {
-          '913d8791': { links: [link1] },
-          '0a68caca': { links: [link2] },
+          '913d8791': {
+            id: '913d8791',
+            collection: HDF5Collection.Groups,
+            links: [link1],
+          },
+          '0a68caca': {
+            id: '0a68caca',
+            collection: HDF5Collection.Groups,
+            links: [link2],
+          },
         },
       } as HDF5Metadata;
 

@@ -24,6 +24,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
+    "lodash-es": "^4.17.15",
     "nanoid": "^2.1.11",
     "normalize.css": "^8.0.1",
     "numeral": "^2.0.6",
@@ -39,6 +40,7 @@
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.9.1",
+    "@types/lodash-es": "^4.17.3",
     "@types/nanoid": "^2.1.0",
     "@types/node": "^12.12.28",
     "@types/numeral": "0.0.26",
@@ -56,7 +58,10 @@
     "typescript": "^3.8.2"
   },
   "jest": {
-    "resetMocks": true
+    "resetMocks": true,
+    "transformIgnorePatterns": [
+      "/node_modules/(?!lodash-es/.*)"
+    ]
   },
   "browserslist": {
     "production": [

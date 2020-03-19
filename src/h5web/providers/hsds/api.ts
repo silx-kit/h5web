@@ -18,6 +18,8 @@ import {
   HDF5RootLink,
   HDF5Value,
   HDF5Metadata,
+  HDF5Attribute,
+  HDF5Link,
 } from '../models';
 import { isReachable } from '../utils';
 import { ProviderAPI } from '../context';
@@ -54,9 +56,9 @@ export class HsdsApi implements ProviderAPI {
     return this.domain;
   }
 
-  private async fetchRoot(): Promise<HsdsRootResponse> {
+  private async fetchRoot(): Promise<HDF5Id> {
     const { data } = await this.client.get<HsdsRootResponse>('/', this.config);
-    return data;
+    return data.root;
   }
 
   private async fetchDataset(id: HDF5Id): Promise<HsdsDatasetResponse> {
@@ -83,69 +85,81 @@ export class HsdsApi implements ProviderAPI {
     return data;
   }
 
-  private async fetchLinks(id: HDF5Id): Promise<HsdsLinksResponse> {
+  private async fetchLinks(id: HDF5Id): Promise<HDF5Link[]> {
     const { data } = await this.client.get<HsdsLinksResponse>(
       `/groups/${id}/links`,
       this.config
     );
-    return data;
+    return data.links;
   }
 
   private async fetchAttributes(
     collection: HDF5Collection,
     id: HDF5Id
-  ): Promise<HsdsAttributesResponse> {
+  ): Promise<HDF5Attribute[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
       `/${collection}/${id}/attributes`,
       this.config
     );
-    return data;
+    return data.attributes;
   }
 
-  private async fetchValue(id: HDF5Id): Promise<HsdsValueResponse> {
+  private async fetchValue(id: HDF5Id): Promise<HDF5Value> {
     const { data } = await this.client.get<HsdsValueResponse>(
       `/datasets/${id}/value`,
       this.config
     );
-    return data;
+    return data.value;
   }
 
   /* Processing methods to fetch links and attributes in addition to the entity. Also updates API members. */
 
   private async processGroup(id: HDF5Id): Promise<void> {
-    const response = await this.fetchGroup(id);
+    const { attributeCount, linkCount, ...group } = await this.fetchGroup(id);
 
-    const { attributes } =
-      response.attributeCount > 0
-        ? await this.fetchAttributes(HDF5Collection.Groups, id)
-        : { attributes: undefined };
-    const { links } =
-      response.linkCount > 0 ? await this.fetchLinks(id) : { links: undefined };
+    const [attributes, links] = await Promise.all([
+      attributeCount > 0
+        ? this.fetchAttributes(HDF5Collection.Groups, id)
+        : Promise.resolve(undefined),
+      linkCount > 0 ? this.fetchLinks(id) : Promise.resolve(undefined),
+    ]);
 
-    this.groups[id] = { attributes, links };
+    this.groups[id] = {
+      collection: HDF5Collection.Groups,
+      ...group,
+      ...(attributes ? { attributes } : {}),
+      ...(links ? { links } : {}),
+    };
 
     if (links) {
-      const linksResolutions = links
-        .filter(isReachable)
-        .map(link => this.resolveLink(link));
-      await Promise.all(linksResolutions);
+      await Promise.all(
+        links.filter(isReachable).map(this.resolveLink.bind(this))
+      );
     }
   }
 
   private async processDataset(id: HDF5Id): Promise<void> {
-    const response = await this.fetchDataset(id);
+    const { attributeCount, ...dataset } = await this.fetchDataset(id);
 
-    const { attributes } =
-      response.attributeCount > 0
+    const attributes =
+      attributeCount > 0
         ? await this.fetchAttributes(HDF5Collection.Datasets, id)
-        : { attributes: undefined };
+        : undefined;
 
-    this.datasets[id] = { ...response, attributes };
+    this.datasets[id] = {
+      collection: HDF5Collection.Datasets,
+      ...dataset,
+      ...(attributes ? { attributes } : {}),
+    };
   }
 
   private async processDatatype(id: HDF5Id): Promise<void> {
-    // So far, HsdsDatatype and HDF5Datatype are the same
-    this.datatypes[id] = await this.fetchDatatype(id);
+    const datatype = await this.fetchDatatype(id);
+
+    this.datatypes[id] = {
+      collection: HDF5Collection.Datatypes,
+      ...datatype,
+    };
   }
 
   /* Others */
@@ -154,9 +168,9 @@ export class HsdsApi implements ProviderAPI {
       return this.metadata;
     }
 
-    const { root: rootId } = await this.fetchRoot();
-
+    const rootId = await this.fetchRoot();
     await this.processGroup(rootId);
+
     this.metadata = {
       root: rootId,
       groups: this.groups,
