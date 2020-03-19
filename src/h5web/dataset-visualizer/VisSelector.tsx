@@ -19,7 +19,7 @@ function VisSelector(props: Props): JSX.Element {
   const { activeVis, choices, onChange } = props;
 
   return (
-    <div role="tablist" aria-label="Visualization">
+    <div className={styles.selector} role="tablist" aria-label="Visualization">
       {choices.map(vis => {
         const Icon = VIS_ICONS[vis];
         return (
@@ -33,7 +33,7 @@ function VisSelector(props: Props): JSX.Element {
               onChange(vis);
             }}
           >
-            <Icon />
+            <Icon className={styles.icon} />
             {vis}
           </button>
         );

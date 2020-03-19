@@ -3,7 +3,9 @@
   --primary: #c0da74;
   --primary-light: #d4e09b;
   --primary-bg: #f5fbef;
-  --secondary: #40c9a2;
-  --secondary-rgb: 64, 201, 162;
+  --secondary: #8cdfc7;
+  --secondary-light: #b3e9da;
+  --secondary-bg: #d9f4ec;
+  --secondary-light-bg: #ecfaf6;
   --secondary-dark: #1b998b;
 }

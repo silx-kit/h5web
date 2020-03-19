@@ -8,7 +8,7 @@ interface Props {
 
 function RawVis(props: Props): JSX.Element {
   const { data } = props;
-  return <pre className={styles.raw}>{JSON.stringify(data)}</pre>;
+  return <pre className={styles.raw}>{JSON.stringify(data, null, 2)}</pre>;
 }
 
 export default RawVis;
