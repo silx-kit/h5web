@@ -24,7 +24,7 @@ function App(): JSX.Element {
   return (
     <div className={styles.app}>
       <ReflexContainer orientation="vertical" windowResizeAware>
-        <ReflexElement className={styles.explorer} flex={0.3} minSize={250}>
+        <ReflexElement className={styles.explorer} flex={0.25} minSize={250}>
           <Explorer onSelect={setSelectedLink} />
         </ReflexElement>
 
@@ -49,8 +49,8 @@ function App(): JSX.Element {
 
             <ReflexElement
               className={styles.metadataViewer}
-              flex={0.4}
-              minSize={250}
+              flex={0.25}
+              minSize={100}
             >
               {selectedLink ? (
                 <MetadataViewer

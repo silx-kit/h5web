@@ -5,6 +5,7 @@
 .explorer {
   display: flex;
   scrollbar-width: thin;
+  background-color: var(--primary-bg);
 }
 
 .dataVisualizer {

@@ -26,10 +26,11 @@ function DatasetVisualizer(props: Props): JSX.Element {
         choices={supportedVis}
         onChange={setActiveVis}
       />
-
-      {value !== undefined && (
-        <VisDisplay vis={activeVis} dataset={dataset} value={value} />
-      )}
+      <div className={styles.displayArea}>
+        {value !== undefined && (
+          <VisDisplay vis={activeVis} dataset={dataset} value={value} />
+        )}
+      </div>
     </div>
   );
 }
