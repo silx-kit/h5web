@@ -7,6 +7,7 @@ import {
   HsdsLinksResponse,
   HsdsRootResponse,
   HsdsValueResponse,
+  HsdsAttributeWithValueResponse,
 } from './models';
 import {
   HDF5Collection,
@@ -94,14 +95,22 @@ export class HsdsApi implements ProviderAPI {
   }
 
   private async fetchAttributes(
-    collection: HDF5Collection,
-    id: HDF5Id
+    entityCollection: HDF5Collection,
+    entityId: HDF5Id
   ): Promise<HDF5Attribute[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
-      `/${collection}/${id}/attributes`,
+      `/${entityCollection}/${entityId}/attributes`,
       this.config
     );
-    return data.attributes;
+    const attrsPromises = data.attributes.map(attr =>
+      this.client
+        .get<HsdsAttributeWithValueResponse>(
+          `/${entityCollection}/${entityId}/attributes/${attr.name}`,
+          this.config
+        )
+        .then(response => response.data)
+    );
+    return Promise.all(attrsPromises);
   }
 
   private async fetchValue(id: HDF5Id): Promise<HDF5Value> {
