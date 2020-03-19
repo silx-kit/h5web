@@ -26,8 +26,10 @@ export interface HsdsDatatypeResponse {
 }
 
 export interface HsdsAttributesResponse {
-  attributes: HDF5Attribute[];
+  attributes: Omit<HDF5Attribute, 'value'>[];
 }
+
+export type HsdsAttributeWithValueResponse = HDF5Attribute;
 
 export interface HsdsLinksResponse {
   links: HDF5Link[];
