@@ -1,6 +1,5 @@
 .grid {
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
-    monospace;
+  font-family: var(--monospace);
   scrollbar-width: thin;
 }
 

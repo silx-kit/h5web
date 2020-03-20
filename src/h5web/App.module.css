@@ -10,6 +10,7 @@
 
 .dataVisualizer {
   display: flex;
+  scrollbar-width: thin;
 }
 
 .metadataViewer {

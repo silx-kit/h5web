@@ -8,4 +8,6 @@
   --secondary-bg: #d9f4ec;
   --secondary-light-bg: #ecfaf6;
   --secondary-dark: #1b998b;
+  --monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+    monospace;
 }
