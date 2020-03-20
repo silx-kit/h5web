@@ -1,12 +1,15 @@
-import { supportsMatrixVis } from './vis/MatrixVis';
 import { Vis } from './models';
 import { HDF5Dataset } from '../providers/models';
+import { isBaseType, isSimpleShape, hasSimpleDims } from '../providers/utils';
 
 type SupportFunction = (dataset: HDF5Dataset) => boolean;
 
 const SUPPORT_CHECKS: Record<Vis, SupportFunction> = {
   [Vis.Raw]: () => true,
-  [Vis.Matrix]: supportsMatrixVis,
+  [Vis.Matrix]: dataset => {
+    const { type, shape } = dataset;
+    return isBaseType(type) && isSimpleShape(shape) && hasSimpleDims(shape);
+  },
 };
 
 export function getSupportedVis(dataset: HDF5Dataset): Vis[] {
