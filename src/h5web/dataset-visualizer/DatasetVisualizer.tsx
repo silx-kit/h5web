@@ -17,7 +17,9 @@ function DatasetVisualizer(props: Props): JSX.Element {
   const value = useValue(dataset.id);
 
   const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
-  const [activeVis, setActiveVis] = useState<Vis>(supportedVis[0]);
+  const [activeVis, setActiveVis] = useState<Vis>(
+    supportedVis[supportedVis.length - 1]
+  );
 
   return (
     <div className={styles.visualizer}>
