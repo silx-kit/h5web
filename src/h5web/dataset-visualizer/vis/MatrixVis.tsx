@@ -2,13 +2,8 @@ import React from 'react';
 import { FixedSizeGrid as Grid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import numeral from 'numeral';
-import { HDF5Value, HDF5Dataset } from '../../providers/models';
+import { HDF5Value } from '../../providers/models';
 import styles from './MatrixVis.module.css';
-import {
-  isBaseType,
-  isSimpleShape,
-  hasSimpleDims,
-} from '../../providers/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AccessorFunc = (row: number, col: number) => any;
@@ -49,11 +44,6 @@ function MatrixVis(props: Props): JSX.Element {
       )}
     </AutoSizer>
   );
-}
-
-export function supportsMatrixVis(dataset: HDF5Dataset): boolean {
-  const { type, shape } = dataset;
-  return isBaseType(type) && isSimpleShape(shape) && hasSimpleDims(shape);
 }
 
 export default MatrixVis;
