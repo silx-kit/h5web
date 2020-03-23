@@ -42,3 +42,8 @@ commit and pull request individually to URLs of the form:
 - https:\//<branch-name\>--h5web.netlify.com/
 - https:\//<commit-sha\>--h5web.netlify.com/
 - https:\//deploy-preview-<pr-number\>--h5web.netlify.com/
+
+## Icon set
+
+H5Web uses the [Feather icon set](https://react-icons.netlify.com/#/icons/fi). Icons can be imported as React components
+from `react-icons/fi`.
