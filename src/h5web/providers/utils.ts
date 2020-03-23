@@ -14,6 +14,7 @@ import {
   HDF5RootLink,
   HDF5Metadata,
   HDF5Dataset,
+  HDF5ScalarShape,
 } from './models';
 import { TreeNode } from '../explorer/models';
 
@@ -34,6 +35,10 @@ export function isDataset(entity: HDF5Entity): entity is HDF5Dataset {
 
 export function isSimpleShape(shape: HDF5Shape): shape is HDF5SimpleShape {
   return shape.class === HDF5ShapeClass.Simple;
+}
+
+export function isScalarShape(shape: HDF5Shape): shape is HDF5ScalarShape {
+  return shape.class === HDF5ShapeClass.Scalar;
 }
 
 export function hasSimpleDims(shape: HDF5SimpleShape): boolean {

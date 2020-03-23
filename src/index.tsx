@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import 'react-reflex/styles.css';
+import 'normalize.css';
 import './styles/index.css';
 
 import DemoApp from './demo-app/DemoApp';

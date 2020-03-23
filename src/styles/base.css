@@ -37,6 +37,10 @@ dl {
   margin-bottom: 1rem;
 }
 
+pre {
+  font-family: var(--monospace);
+}
+
 [hidden] {
   display: none !important;
 }

@@ -11,6 +11,44 @@ const base = { id: 'dataset', collection: HDF5Collection.Datasets as const };
 
 describe('Dataset Visualizer utilities', () => {
   describe('getSupportedVis', () => {
+    it('should include Scalar Vis when passed a supported dataset', () => {
+      const supportedDatasets: HDF5Dataset[] = [
+        {
+          ...base,
+          type: { class: HDF5TypeClass.Integer, base: 'H5T_STD_I32LE' },
+          shape: { class: HDF5ShapeClass.Scalar },
+        },
+        {
+          ...base,
+          type: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F64LE' },
+          shape: { class: HDF5ShapeClass.Scalar },
+        },
+      ];
+
+      supportedDatasets.forEach(dataset => {
+        expect(getSupportedVis(dataset)).toContain(Vis.Scalar);
+      });
+    });
+
+    it('should not include Scalar Vis when passed an unsupported dataset', () => {
+      const unsupportedDatasets: HDF5Dataset[] = [
+        {
+          ...base,
+          type: { class: HDF5TypeClass.Integer, base: 'H5T_STD_I32LE' },
+          shape: { class: HDF5ShapeClass.Null }, // shape class not supported
+        },
+        {
+          ...base,
+          type: { class: HDF5TypeClass.Compound, fields: [] }, // type class not supported
+          shape: { class: HDF5ShapeClass.Scalar },
+        },
+      ];
+
+      unsupportedDatasets.forEach(dataset => {
+        expect(getSupportedVis(dataset)).not.toContain(Vis.Scalar);
+      });
+    });
+
     it('should include Matrix Vis when passed a supported dataset', () => {
       const supportedDatasets: HDF5Dataset[] = [
         {
@@ -20,18 +58,13 @@ describe('Dataset Visualizer utilities', () => {
         },
         {
           ...base,
-          type: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F64LE' },
-          shape: { class: HDF5ShapeClass.Simple, dims: [4, 2] },
-        },
-        {
-          ...base,
           type: {
             class: HDF5TypeClass.String,
             charSet: 'H5T_CSET_ASCII',
             strPad: 'H5T_STR_NULLPAD',
             length: 1,
           },
-          shape: { class: HDF5ShapeClass.Simple, dims: [10] },
+          shape: { class: HDF5ShapeClass.Simple, dims: [10, 12345] },
         },
       ];
 
