@@ -36,7 +36,10 @@ function Explorer(props: Props): JSX.Element {
   if (!tree) {
     return (
       <div className={styles.explorer}>
-        <p className={styles.domain}>{domain}</p>
+        <p className={styles.domain}>
+          <FiFileText className={styles.domainIcon} />
+          {domain}
+        </p>
         <p className={styles.loading}>Loading...</p>
       </div>
     );
