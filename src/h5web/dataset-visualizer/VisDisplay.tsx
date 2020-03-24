@@ -2,7 +2,7 @@ import React from 'react';
 import { HDF5Value, HDF5SimpleShape, HDF5Dataset } from '../providers/models';
 import { Vis } from './models';
 import RawVis from './vis/RawVis';
-import MatrixVis from './vis/MatrixVis';
+import MatrixVis from './vis/matrix/MatrixVis';
 import ScalarVis from './vis/ScalarVis';
 import LineVis from './vis/LineVis';
 
