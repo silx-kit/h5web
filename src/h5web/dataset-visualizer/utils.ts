@@ -5,6 +5,7 @@ import {
   isSimpleShape,
   hasSimpleDims,
   isScalarShape,
+  isNumericType,
 } from '../providers/utils';
 
 type SupportFunction = (dataset: HDF5Dataset) => boolean;
@@ -18,6 +19,12 @@ const SUPPORT_CHECKS: Record<Vis, SupportFunction> = {
   [Vis.Matrix]: dataset => {
     const { type, shape } = dataset;
     return isBaseType(type) && isSimpleShape(shape) && hasSimpleDims(shape);
+  },
+  [Vis.Line]: dataset => {
+    const { type, shape } = dataset;
+    return (
+      isNumericType(type) && isSimpleShape(shape) && shape.dims.length === 1
+    );
   },
 };
 

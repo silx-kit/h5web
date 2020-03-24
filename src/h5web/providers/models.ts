@@ -127,7 +127,8 @@ export interface HDF5NullShape {
 export type HDF5Type = HDF5BaseType | HDF5AdvancedType;
 
 // https://support.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html
-export type HDF5BaseType = HDF5IntegerType | HDF5FloatType | HDF5StringType;
+export type HDF5BaseType = HDF5NumericType | HDF5StringType;
+export type HDF5NumericType = HDF5IntegerType | HDF5FloatType;
 
 type HDF5AdvancedType =
   | HDF5Id

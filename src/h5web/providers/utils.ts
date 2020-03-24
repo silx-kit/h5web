@@ -15,6 +15,7 @@ import {
   HDF5Metadata,
   HDF5Dataset,
   HDF5ScalarShape,
+  HDF5NumericType,
 } from './models';
 import { TreeNode } from '../explorer/models';
 
@@ -52,6 +53,13 @@ export function isBaseType(type: HDF5Type): type is HDF5BaseType {
     [HDF5TypeClass.Integer, HDF5TypeClass.Float, HDF5TypeClass.String].includes(
       type.class
     )
+  );
+}
+
+export function isNumericType(type: HDF5Type): type is HDF5NumericType {
+  return (
+    typeof type !== 'string' &&
+    [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(type.class)
   );
 }
 

@@ -4,6 +4,7 @@ import { Vis } from './models';
 import RawVis from './vis/RawVis';
 import MatrixVis from './vis/MatrixVis';
 import ScalarVis from './vis/ScalarVis';
+import LineVis from './vis/LineVis';
 
 interface Props {
   vis: Vis;
@@ -26,6 +27,10 @@ function VisDisplay(props: Props): JSX.Element {
     return (
       <MatrixVis dims={(dataset.shape as HDF5SimpleShape).dims} data={value} />
     );
+  }
+
+  if (vis === Vis.Line) {
+    return <LineVis data={value} />;
   }
 
   throw new Error('Visualization not supported');
