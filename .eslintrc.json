@@ -16,13 +16,7 @@
         "devDependencies": true
       }
     ],
-    "react/jsx-props-no-spreading": [
-      "error",
-      {
-        "html": "ignore",
-        "custom": "enforce"
-      }
-    ],
+    "react/jsx-props-no-spreading": "off",
     "prettier/prettier": "off"
   },
   "overrides": [
