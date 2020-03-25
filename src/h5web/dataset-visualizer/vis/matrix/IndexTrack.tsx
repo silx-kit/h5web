@@ -22,6 +22,7 @@ function IndexTrack(props: Props): JSX.Element {
       {range(cellCount).map(index => {
         return (
           <div
+            key={index.toString()}
             className={styles.indexCell}
             style={{ ...cellSize }}
             data-bg={index % 2 === 1 ? '' : undefined}

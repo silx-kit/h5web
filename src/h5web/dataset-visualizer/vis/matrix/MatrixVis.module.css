@@ -22,7 +22,13 @@
   background-color: var(--primary-bg);
 }
 
-.indexCell[data-bg] {
+.anchorCell {
+  composes: indexCell;
+  z-index: 3;
+}
+
+.indexCell[data-bg],
+.anchorCell[data-bg] {
   background-color: var(--primary-light-bg);
 }
 
@@ -38,7 +44,8 @@
 }
 
 .indexRow[data-sticky],
-.indexColumn[data-sticky] {
+.indexColumn[data-sticky],
+.anchorCell[data-sticky] {
   position: sticky !important;
   top: 0 !important;
   left: 0 !important;

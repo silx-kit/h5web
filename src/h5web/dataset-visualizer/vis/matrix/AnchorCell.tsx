@@ -12,7 +12,11 @@ function AnchorCell(props: Props): JSX.Element {
   const { stickyIndices, toggleStickyIndices } = useContext(StickyContext);
 
   return (
-    <div className={styles.indexCell} style={style}>
+    <div
+      className={styles.anchorCell}
+      style={style}
+      data-sticky={stickyIndices || undefined}
+    >
       <button
         name="Toggle sticky indices"
         className={styles.btn}

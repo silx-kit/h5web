@@ -2,7 +2,6 @@ import React, { useState, forwardRef, Ref } from 'react';
 import { FixedSizeGrid as Grid, GridChildComponentProps } from 'react-window';
 import StickyProvider from './StickyContext';
 import styles from './MatrixVis.module.css';
-import AnchorCell from './AnchorCell';
 import IndexTrack from './IndexTrack';
 import { GridSettings } from './utils';
 
