@@ -1,28 +1,25 @@
 import React, { useContext } from 'react';
 import { FiAnchor } from 'react-icons/fi';
-import { StickyContext } from './StickyContext';
 import styles from './MatrixVis.module.css';
+import { GridSettingsContext } from './GridSettingsContext';
 
 interface Props {
-  style: React.CSSProperties;
+  onToggle: () => void;
+  sticky: boolean;
 }
 
 function AnchorCell(props: Props): JSX.Element {
-  const { style } = props;
-  const { stickyIndices, toggleStickyIndices } = useContext(StickyContext);
+  const { onToggle, sticky } = props;
+  const { cellSize } = useContext(GridSettingsContext);
 
   return (
-    <div
-      className={styles.anchorCell}
-      style={style}
-      data-sticky={stickyIndices || undefined}
-    >
+    <div className={styles.anchorCell} style={cellSize}>
       <button
-        name="Toggle sticky indices"
-        className={styles.btn}
+        className={styles.anchorBtn}
         type="button"
-        data-bg={stickyIndices || undefined}
-        onClick={toggleStickyIndices}
+        aria-label="Toggle sticky indices"
+        aria-pressed={sticky}
+        onClick={onToggle}
       >
         <FiAnchor />
       </button>

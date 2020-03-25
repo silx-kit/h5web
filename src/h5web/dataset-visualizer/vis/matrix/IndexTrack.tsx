@@ -1,36 +1,31 @@
-import React, { useContext } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import { range } from 'lodash-es';
-import { StickyContext } from './StickyContext';
+import { GridSettingsContext } from './GridSettingsContext';
 import styles from './MatrixVis.module.css';
-import AnchorCell from './AnchorCell';
-import { CellSize } from './utils';
 
 interface Props {
-  anchorCell?: boolean;
   cellCount: number;
-  cellSize: CellSize;
   className: string;
+  children?: ReactNode;
 }
 
 function IndexTrack(props: Props): JSX.Element {
-  const { anchorCell, cellCount, cellSize, className } = props;
-  const { stickyIndices } = useContext(StickyContext);
+  const { cellCount, className, children } = props;
+  const { cellSize } = useContext(GridSettingsContext);
 
   return (
-    <div className={className} data-sticky={stickyIndices || undefined}>
-      {anchorCell && <AnchorCell key="anchor" style={{ ...cellSize }} />}
-      {range(cellCount).map(index => {
-        return (
-          <div
-            key={index.toString()}
-            className={styles.indexCell}
-            style={{ ...cellSize }}
-            data-bg={index % 2 === 1 ? '' : undefined}
-          >
-            {index >= 0 && index}
-          </div>
-        );
-      })}
+    <div className={className}>
+      {children}
+      {range(cellCount).map(index => (
+        <div
+          key={index.toString()}
+          className={styles.indexCell}
+          style={cellSize}
+          data-bg={index % 2 === 1 ? '' : undefined}
+        >
+          {index >= 0 && index}
+        </div>
+      ))}
     </div>
   );
 }

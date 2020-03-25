@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
+import { FixedSizeGrid as IndexedGrid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { HDF5Value } from '../../../providers/models';
-import ValueCell from './ValueCell';
-import IndexedGrid from './IndexedGrid';
-import { AccessorFunc } from './utils';
+import styles from './MatrixVis.module.css';
+import GridSettingsProvider from './GridSettingsContext';
+import StickyGrid from './StickyGrid';
+import Cell from './Cell';
+
+const CELL_SIZE = { width: 116, height: 32 };
 
 interface Props {
   dims: number[];
@@ -12,28 +16,36 @@ interface Props {
 
 function MatrixVis(props: Props): JSX.Element {
   const { dims, data } = props;
-  const myGridSettings = {
-    cellSize: { width: 116, height: 32 },
-    rowCount: dims[0] + 1, // includes IndexRow
-    columnCount: (dims.length === 2 ? dims[1] : 1) + 1, // includes IndexColumn
-  };
 
-  const valueAccessor: AccessorFunc =
-    dims.length === 1 ? row => data[row] : (row, col) => data[row][col];
+  const rowCount = dims[0] + 1; // includes IndexRow
+  const columnCount = (dims.length === 2 ? dims[1] : 1) + 1; // includes IndexColumn
 
   return (
-    <AutoSizer>
-      {({ width, height }) => (
-        <IndexedGrid
-          itemData={{ valueAccessor }}
-          width={width}
-          height={height}
-          gridSettings={myGridSettings}
-        >
-          {ValueCell}
-        </IndexedGrid>
-      )}
-    </AutoSizer>
+    <GridSettingsProvider
+      cellSize={CELL_SIZE}
+      rowCount={rowCount}
+      columnCount={columnCount}
+      valueAccessor={
+        dims.length === 1 ? row => data[row] : (row, col) => data[row][col]
+      }
+    >
+      <AutoSizer>
+        {({ width, height }) => (
+          <IndexedGrid
+            className={styles.grid}
+            innerElementType={forwardRef(StickyGrid)}
+            columnWidth={CELL_SIZE.width}
+            rowHeight={CELL_SIZE.height}
+            columnCount={columnCount}
+            rowCount={rowCount}
+            width={width}
+            height={height}
+          >
+            {Cell}
+          </IndexedGrid>
+        )}
+      </AutoSizer>
+    </GridSettingsProvider>
   );
 }
 

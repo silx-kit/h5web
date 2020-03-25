@@ -16,55 +16,54 @@
 
 .indexCell {
   display: flex;
-  font-weight: 600;
   align-items: center;
   justify-content: center;
   background-color: var(--primary-bg);
+  font-weight: 600;
 }
 
-.anchorCell {
-  composes: indexCell;
-  z-index: 3;
-}
-
-.indexCell[data-bg],
-.anchorCell[data-bg] {
+.indexCell[data-bg] {
   background-color: var(--primary-light-bg);
 }
 
-.indexRow {
-  display: flex;
-  z-index: 2;
-}
-
-.indexColumn {
-  display: flex;
-  flex-direction: column;
-  z-index: 1;
-}
-
-.indexRow[data-sticky],
-.indexColumn[data-sticky],
-.anchorCell[data-sticky] {
+.stickyGrid[data-sticky] .stickyElement {
   position: sticky !important;
   top: 0 !important;
   left: 0 !important;
 }
 
-.rowContainer {
+.indexRow {
+  composes: stickyElement;
+  display: flex;
+  z-index: 2;
+}
+
+.indexColumn {
+  composes: stickyElement;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.anchorCell {
+  composes: indexCell stickyElement;
+  align-items: stretch;
+  z-index: 3;
+}
+
+.innerContainer {
   display: flex;
 }
 
-.btn {
+.anchorBtn {
   composes: btn-clean from global;
+  flex: 1 1 0%;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  width: 100%;
 }
 
-.btn:hover,
-.btn[data-bg] {
+.anchorBtn:hover,
+.anchorBtn[aria-pressed='true'] {
   background-color: var(--primary-dark-bg);
 }
