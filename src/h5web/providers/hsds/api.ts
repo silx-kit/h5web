@@ -211,7 +211,7 @@ export class HsdsApi implements ProviderAPI {
       return this.values[id];
     }
 
-    const { value } = await this.fetchValue(id);
+    const value = await this.fetchValue(id);
 
     this.values[id] = value;
     return this.values[id];
