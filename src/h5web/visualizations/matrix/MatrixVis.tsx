@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { FixedSizeGrid as IndexedGrid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { HDF5Value } from '../../../providers/models';
+import { HDF5Value } from '../../providers/models';
 import styles from './MatrixVis.module.css';
 import GridSettingsProvider from './GridSettingsContext';
 import StickyGrid from './StickyGrid';
