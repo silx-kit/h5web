@@ -1,5 +1,5 @@
 import React, { ReactNode, createContext } from 'react';
-import { HDF5Value } from '../../../providers/models';
+import { HDF5Value } from '../../providers/models';
 
 export interface GridSettings {
   cellSize: { width: number; height: number };
