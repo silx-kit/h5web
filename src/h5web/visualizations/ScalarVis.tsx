@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ScalarVis.module.css';
-import { HDF5Value } from '../../providers/models';
+import { HDF5Value } from '../providers/models';
 
 interface Props {
   data: HDF5Value;
