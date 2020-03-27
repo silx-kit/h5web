@@ -8,6 +8,7 @@ import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import { isDataset } from './providers/utils';
 import { useEntity } from './providers/hooks';
+import EmptyVisualizer from './dataset-visualizer/EmptyVisualizer';
 
 function App(): JSX.Element {
   const [selectedLink, setSelectedLink] = useState<HDF5Link>();
@@ -18,6 +19,8 @@ function App(): JSX.Element {
   useEffect(() => {
     if (selectedEntity && isDataset(selectedEntity)) {
       setSelectedDataset(selectedEntity);
+    } else {
+      setSelectedDataset(undefined);
     }
   }, [selectedEntity]);
 
@@ -39,9 +42,7 @@ function App(): JSX.Element {
                   dataset={selectedDataset}
                 />
               ) : (
-                <div className={styles.empty}>
-                  <p>No dataset selected.</p>
-                </div>
+                <EmptyVisualizer />
               )}
             </ReflexElement>
 
