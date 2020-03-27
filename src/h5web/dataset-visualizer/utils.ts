@@ -28,7 +28,10 @@ const SUPPORT_CHECKS: Record<Vis, SupportFunction> = {
   },
 };
 
-export function getSupportedVis(dataset: HDF5Dataset): Vis[] {
+export function getSupportedVis(dataset?: HDF5Dataset): Vis[] {
+  if (!dataset) {
+    return [];
+  }
   const supported = Object.entries(SUPPORT_CHECKS).reduce<Vis[]>(
     (arr, [vis, check]) => (check(dataset) ? [...arr, vis as Vis] : arr),
     []
