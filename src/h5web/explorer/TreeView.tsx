@@ -22,6 +22,7 @@ function TreeView<T>(props: Props<T>): JSX.Element {
         const { uid, label, level, data, children } = node;
         const isBranch = !!children;
         const isExpanded = !!expandedNodes[node.uid];
+        const isSelected = node === selectedNode;
 
         return (
           <li
@@ -34,11 +35,11 @@ function TreeView<T>(props: Props<T>): JSX.Element {
               type="button"
               role="treeitem"
               aria-expanded={isExpanded}
-              aria-selected={node === selectedNode}
+              aria-selected={isSelected}
               onClick={() => {
                 onSelect(node);
 
-                if (isBranch) {
+                if (isBranch && (!isExpanded || isSelected)) {
                   setExpandedNodes({
                     ...expandedNodes,
                     [node.uid]: !isExpanded,
