@@ -18,6 +18,8 @@ function App(): JSX.Element {
   useEffect(() => {
     if (selectedEntity && isDataset(selectedEntity)) {
       setSelectedDataset(selectedEntity);
+    } else {
+      setSelectedDataset(undefined);
     }
   }, [selectedEntity]);
 
@@ -33,16 +35,10 @@ function App(): JSX.Element {
         <ReflexElement minSize={500}>
           <ReflexContainer orientation="horizontal">
             <ReflexElement className={styles.dataVisualizer} minSize={250}>
-              {selectedDataset ? (
-                <DatasetVisualizer
-                  key={JSON.stringify(selectedDataset)}
-                  dataset={selectedDataset}
-                />
-              ) : (
-                <div className={styles.empty}>
-                  <p>No dataset selected.</p>
-                </div>
-              )}
+              <DatasetVisualizer
+                key={JSON.stringify(selectedDataset)}
+                dataset={selectedDataset}
+              />
             </ReflexElement>
 
             <ReflexSplitter />

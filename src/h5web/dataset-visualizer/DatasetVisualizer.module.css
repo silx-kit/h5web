@@ -7,3 +7,8 @@
 .displayArea {
   flex: 1 1 0%;
 }
+
+.noVis {
+  padding: 1em;
+  color: var(--secondary-dark);
+}

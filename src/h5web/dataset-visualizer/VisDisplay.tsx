@@ -1,16 +1,21 @@
 import React from 'react';
-import { HDF5Value, HDF5SimpleShape, HDF5Dataset } from '../providers/models';
+import { HDF5SimpleShape, HDF5Dataset } from '../providers/models';
 import { Vis } from './models';
 import { RawVis, ScalarVis, MatrixVis, LineVis } from '../visualizations';
+import { useValue } from '../providers/hooks';
 
 interface Props {
   vis: Vis;
   dataset: HDF5Dataset;
-  value: HDF5Value;
 }
 
 function VisDisplay(props: Props): JSX.Element {
-  const { vis, dataset, value } = props;
+  const { vis, dataset } = props;
+  const value = useValue(dataset.id);
+
+  if (value === undefined) {
+    return <></>;
+  }
 
   if (vis === Vis.Raw) {
     return <RawVis data={value} />;
