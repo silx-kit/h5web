@@ -15,7 +15,7 @@ function HeatmapVis(props: Props): JSX.Element {
   return (
     <Canvas orthographic>
       <ambientLight />
-      <Mesh dims={dims} textureData={textureData} />
+      {textureData && <Mesh dims={dims} textureData={textureData} />}
     </Canvas>
   );
 }
