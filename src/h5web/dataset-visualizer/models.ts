@@ -3,4 +3,5 @@ export enum Vis {
   Scalar = 'Scalar',
   Matrix = 'Matrix',
   Line = 'Line',
+  Heatmap = 'Heatmap',
 }

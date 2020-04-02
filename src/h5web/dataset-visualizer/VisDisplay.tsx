@@ -1,7 +1,13 @@
 import React from 'react';
 import { HDF5SimpleShape, HDF5Dataset } from '../providers/models';
 import { Vis } from './models';
-import { RawVis, ScalarVis, MatrixVis, LineVis } from '../visualizations';
+import {
+  RawVis,
+  ScalarVis,
+  MatrixVis,
+  LineVis,
+  HeatmapVis,
+} from '../visualizations';
 import { useValue } from '../providers/hooks';
 
 interface Props {
@@ -33,6 +39,15 @@ function VisDisplay(props: Props): JSX.Element {
 
   if (vis === Vis.Line) {
     return <LineVis data={value} />;
+  }
+
+  if (vis === Vis.Heatmap) {
+    return (
+      <HeatmapVis
+        dims={(dataset.shape as HDF5SimpleShape).dims as [number, number]}
+        data={value}
+      />
+    );
   }
 
   throw new Error('Visualization not supported');
