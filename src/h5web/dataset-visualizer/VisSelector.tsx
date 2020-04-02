@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiCpu, FiGrid, FiCode, FiActivity } from 'react-icons/fi';
+import { FiCpu, FiGrid, FiCode, FiActivity, FiMap } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { Vis } from './models';
 import styles from './VisSelector.module.css';
@@ -9,6 +9,7 @@ const VIS_ICONS: Record<Vis, IconType> = {
   [Vis.Scalar]: FiCode,
   [Vis.Matrix]: FiGrid,
   [Vis.Line]: FiActivity,
+  [Vis.Heatmap]: FiMap,
 };
 
 interface Props {

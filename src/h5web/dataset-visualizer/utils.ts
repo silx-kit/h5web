@@ -26,6 +26,12 @@ const SUPPORT_CHECKS: Record<Vis, SupportFunction> = {
       isNumericType(type) && isSimpleShape(shape) && shape.dims.length === 1
     );
   },
+  [Vis.Heatmap]: dataset => {
+    const { type, shape } = dataset;
+    return (
+      isNumericType(type) && isSimpleShape(shape) && shape.dims.length === 2
+    );
+  },
 };
 
 export function getSupportedVis(dataset?: HDF5Dataset): Vis[] {
