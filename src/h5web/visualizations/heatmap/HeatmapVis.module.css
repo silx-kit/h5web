@@ -1,0 +1,56 @@
+.chart {
+  display: grid;
+  background-color: var(--primary-light-bg);
+  grid-template-areas:
+    'not-used top-area'
+    'left-area map-area';
+  grid-template-columns: 4em 1fr;
+  grid-template-rows: 2em 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.heatmap {
+  width: 100%;
+  height: 100%;
+}
+
+.mapArea {
+  grid-area: map-area;
+  min-width: 0;
+  min-height: 0;
+}
+
+.leftArea {
+  grid-area: left-area;
+  display: flex;
+  flex-direction: column;
+}
+
+.topArea {
+  grid-area: top-area;
+  display: flex;
+}
+
+.axis {
+  display: block;
+  overflow: visible;
+  flex: 1 1 auto;
+}
+
+.axis[data-orientation='left'] {
+  text-anchor: end;
+  dominant-baseline: middle;
+  min-height: 0;
+}
+
+.axis[data-orientation='top'] {
+  min-width: 0;
+  text-anchor: middle;
+  dominant-baseline: end;
+}
+
+.tick {
+  text-anchor: inherit;
+  dominant-baseline: inherit;
+}
