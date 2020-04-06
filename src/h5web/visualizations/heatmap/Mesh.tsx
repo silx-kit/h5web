@@ -1,6 +1,8 @@
 import React from 'react';
-import { useThree } from 'react-three-fiber';
-import { RGBFormat } from 'three';
+import { useThree, PointerEvent } from 'react-three-fiber';
+import { RGBFormat, OrthographicCamera } from 'three';
+
+const ZOOM_FACTOR = 0.95;
 
 interface Props {
   dims: [number, number];
@@ -14,8 +16,20 @@ function Mesh(props: Props): JSX.Element {
   const { size } = useThree();
   const { width, height } = size;
 
+  function handleWheel(evt: PointerEvent): void {
+    evt.stopPropagation();
+
+    // Fix react-three-fiber typings
+    const camera = evt.camera as OrthographicCamera;
+    const wheelEvt = evt as React.WheelEvent<HTMLDivElement>;
+
+    const factor = wheelEvt.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
+    camera.zoom = Math.max(1, camera.zoom * factor);
+    camera.updateProjectionMatrix();
+  }
+
   return (
-    <mesh>
+    <mesh onWheel={handleWheel}>
       <planeBufferGeometry attach="geometry" args={[width, height]} />
       <meshBasicMaterial attach="material">
         <dataTexture attach="map" args={[textureData, cols, rows, RGBFormat]} />
