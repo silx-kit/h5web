@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
 import { Canvas } from 'react-three-fiber';
+import React, { useMemo } from 'react';
 import Mesh from './Mesh';
 import { computeTextureData } from './utils';
 
