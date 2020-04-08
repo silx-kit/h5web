@@ -2,6 +2,8 @@ import { Canvas } from 'react-three-fiber';
 import React, { useMemo } from 'react';
 import Mesh from './Mesh';
 import { computeTextureData } from './utils';
+import styles from './HeatmapVis.module.css';
+import IndexAxis from './IndexAxis';
 
 interface Props {
   dims: [number, number];
@@ -13,10 +15,24 @@ function HeatmapVis(props: Props): JSX.Element {
   const textureData = useMemo(() => computeTextureData(data), [data]);
 
   return (
-    <Canvas orthographic>
-      <ambientLight />
-      {textureData && <Mesh dims={dims} textureData={textureData} />}
-    </Canvas>
+    <div className={styles.chart}>
+      <div className={styles.mapArea}>
+        <Canvas className={styles.heatmap} orthographic>
+          <ambientLight />
+          {textureData && <Mesh dims={dims} textureData={textureData} />}
+        </Canvas>
+      </div>
+      <IndexAxis
+        className={styles.topArea}
+        orientation="top"
+        numberPixels={dims[1]}
+      />
+      <IndexAxis
+        className={styles.leftArea}
+        orientation="left"
+        numberPixels={dims[0]}
+      />
+    </div>
   );
 }
 
