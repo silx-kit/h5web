@@ -1,6 +1,6 @@
 import React from 'react';
 import { useThree } from 'react-three-fiber';
-import { RGBFormat, OrthographicCamera } from 'three';
+import { RGBFormat } from 'three';
 import { usePanZoom } from './utils';
 
 interface Props {
@@ -10,12 +10,12 @@ interface Props {
 
 function Mesh(props: Props): JSX.Element {
   const { dims, textureData } = props;
-  const [rows, cols] = dims;
 
-  const { camera, size } = useThree();
+  const { size } = useThree();
+  const pointerHandlers = usePanZoom();
+
   const { width, height } = size;
-
-  const pointerHandlers = usePanZoom(camera as OrthographicCamera);
+  const [rows, cols] = dims;
 
   return (
     <mesh {...pointerHandlers}>

@@ -3,8 +3,9 @@ import { extent } from 'd3-array';
 import { rgb } from 'd3-color';
 import { scaleSequential } from 'd3-scale';
 import { interpolateMagma } from 'd3-scale-chromatic';
-import { OrthographicCamera, Vector3 } from 'three';
-import { ReactThreeFiber, PointerEvent } from 'react-three-fiber';
+import { Vector3 } from 'three';
+import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
+import { clamp } from 'lodash-es';
 
 const ZOOM_FACTOR = 0.95;
 
@@ -29,8 +30,28 @@ export function computeTextureData(matrix: number[][]): Uint8Array | undefined {
   return Uint8Array.from(colors.flat());
 }
 
-export function usePanZoom(camera: OrthographicCamera): ReactThreeFiber.Events {
+export function usePanZoom(): ReactThreeFiber.Events {
+  const { size, camera } = useThree();
+  const { width, height } = size;
+
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
+
+  const moveCamera = useCallback(
+    (x: number, y: number) => {
+      const { position, zoom } = camera;
+
+      const factor = (1 - 1 / zoom) / 2;
+      const xBound = width * factor;
+      const yBound = height * factor;
+
+      position.set(
+        clamp(x, -xBound, xBound),
+        clamp(y, -yBound, yBound),
+        position.z
+      );
+    },
+    [camera, height, width]
+  );
 
   const onPointerDown = useCallback(
     (evt: PointerEvent) => {
@@ -66,9 +87,9 @@ export function usePanZoom(camera: OrthographicCamera): ReactThreeFiber.Events {
       const { x: pointX, y: pointY } = projectedPoint;
       const { x: startX, y: startY } = startOffsetPosition.current;
 
-      camera.position.set(startX - pointX, startY - pointY, camera.position.z);
+      moveCamera(startX - pointX, startY - pointY);
     },
-    [camera, startOffsetPosition]
+    [camera, moveCamera]
   );
 
   const onWheel = useCallback(
