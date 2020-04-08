@@ -13,6 +13,11 @@ interface Props {
   numberPixels: number;
 }
 
+const adaptedNumTicks = scaleLinear()
+  .domain([300, 900])
+  .rangeRound([3, 10])
+  .clamp(true);
+
 function IndexAxis(props: Props): JSX.Element {
   const { orientation, numberPixels, className } = props;
   const [divRef, { width, height }] = useMeasure();
@@ -31,7 +36,7 @@ function IndexAxis(props: Props): JSX.Element {
           orientation={orientation}
           strokeWidth={0}
           tickFormat={format('0')}
-          numTicks={Math.min(numberPixels, 5)}
+          numTicks={Math.min(numberPixels, adaptedNumTicks(range[1]))}
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           tickLabelProps={(value, index) =>
             isLeftAxis
