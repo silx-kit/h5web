@@ -1,6 +1,6 @@
 # H5Web, a web-based HDF5 file viewer
 
-[https://img.shields.io/badge/demo-netlify-green.svg](https://h5web.netlify.app/)
+[![Demo](https://img.shields.io/badge/demo-netlify-green.svg)](https://h5web.netlify.app/)
 
 H5Web is web-based viewer to explore HDF5 files. It is built with React and uses `react-three-fiber` for visualizations.
 
