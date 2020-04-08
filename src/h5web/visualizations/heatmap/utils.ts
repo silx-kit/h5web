@@ -36,7 +36,7 @@ export function usePanZoom(): ReactThreeFiber.Events {
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
 
-  const moveCamera = useCallback(
+  const moveCameraTo = useCallback(
     (x: number, y: number) => {
       const { position, zoom } = camera;
 
@@ -84,12 +84,12 @@ export function usePanZoom(): ReactThreeFiber.Events {
       evt.stopPropagation();
 
       const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
-      const { x: pointX, y: pointY } = projectedPoint;
+      const { x: pointerX, y: pointerY } = projectedPoint;
       const { x: startX, y: startY } = startOffsetPosition.current;
 
-      moveCamera(startX - pointX, startY - pointY);
+      moveCameraTo(startX - pointerX, startY - pointerY);
     },
-    [camera, moveCamera]
+    [camera, moveCameraTo]
   );
 
   const onWheel = useCallback(
@@ -102,8 +102,17 @@ export function usePanZoom(): ReactThreeFiber.Events {
       // eslint-disable-next-line no-param-reassign
       camera.zoom = Math.max(1, camera.zoom * factor);
       camera.updateProjectionMatrix();
+
+      const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
+      const { x: pointerX, y: pointerY } = projectedPoint;
+      const { x: camX, y: camY } = camera.position;
+
+      moveCameraTo(
+        camX + pointerX * (1 - 1 / factor),
+        camY + pointerY * (1 - 1 / factor)
+      );
     },
-    [camera]
+    [camera, moveCameraTo]
   );
 
   return {
