@@ -2,10 +2,10 @@
   display: grid;
   background-color: var(--primary-light-bg);
   grid-template-areas:
-    'not-used top-area'
-    'left-area map-area';
+    'left-area map-area'
+    'not-used bottom-area';
   grid-template-columns: 4em 1fr;
-  grid-template-rows: 2em 1fr;
+  grid-template-rows: 1fr 2em;
   width: 100%;
   height: 100%;
 }
@@ -27,8 +27,8 @@
   flex-direction: column;
 }
 
-.topArea {
-  grid-area: top-area;
+.bottomArea {
+  grid-area: bottom-area;
   display: flex;
 }
 
@@ -44,10 +44,10 @@
   min-height: 0;
 }
 
-.axis[data-orientation='top'] {
+.axis[data-orientation='bottom'] {
   min-width: 0;
   text-anchor: middle;
-  dominant-baseline: end;
+  dominant-baseline: start;
 }
 
 .tick {

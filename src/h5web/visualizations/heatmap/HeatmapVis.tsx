@@ -23,14 +23,14 @@ function HeatmapVis(props: Props): JSX.Element {
         </Canvas>
       </div>
       <IndexAxis
-        className={styles.topArea}
-        orientation="top"
-        numberPixels={dims[1]}
-      />
-      <IndexAxis
         className={styles.leftArea}
         orientation="left"
         numberPixels={dims[0]}
+      />
+      <IndexAxis
+        className={styles.bottomArea}
+        orientation="bottom"
+        numberPixels={dims[1]}
       />
     </div>
   );
