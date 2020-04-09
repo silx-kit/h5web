@@ -24,7 +24,7 @@ export function useMetadataTree(): TreeNode<HDF5Link> | undefined {
 
 export function useEntity(link?: HDF5Link): HDF5Entity | undefined {
   const { getMetadata } = useContext(ProviderContext);
-  const [entity, setEntity] = useState<HDF5Entity | undefined>();
+  const [entity, setEntity] = useState<HDF5Entity>();
 
   useEffect(() => {
     if (!link || !isReachable(link)) {

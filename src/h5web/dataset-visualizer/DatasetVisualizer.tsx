@@ -17,8 +17,8 @@ function DatasetVisualizer(props: Props): JSX.Element {
   const [activeVis, setActiveVis] = useState<Vis>();
 
   useEffect(() => {
-    setActiveVis(dataset && supportedVis[supportedVis.length - 1]);
-  }, [dataset, supportedVis]);
+    setActiveVis(supportedVis[supportedVis.length - 1]);
+  }, [supportedVis]);
 
   return (
     <div className={styles.visualizer}>
