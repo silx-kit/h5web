@@ -1,34 +1,44 @@
 import React, { useCallback, useRef } from 'react';
 import { extent } from 'd3-array';
 import { rgb } from 'd3-color';
-import { scaleSequential } from 'd3-scale';
-import { interpolateMagma } from 'd3-scale-chromatic';
+import { scaleLinear, scaleSequential } from 'd3-scale';
 import { Vector3 } from 'three';
 import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
 
 const ZOOM_FACTOR = 0.95;
 
-export function computeTextureData(matrix: number[][]): Uint8Array | undefined {
-  const values = matrix.flat();
-  const [min, max] = extent(values);
-
-  if (min === undefined || max === undefined) {
+export function computeTextureData(
+  values: number[],
+  domain: [number, number] | undefined,
+  interpolator: (t: number) => string
+): Uint8Array | undefined {
+  if (domain === undefined) {
     return undefined;
   }
-
-  // Generate D3 color map from domain
-  const colorMap = scaleSequential<string>(interpolateMagma);
-  colorMap.domain([min, max]);
-
+  const scale = scaleSequential(interpolator).domain(domain);
   // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
   const colors = values.map(val => {
-    const { r, g, b } = rgb(colorMap(val)); // `colorMap` returns CSS RGB strings
+    const { r, g, b } = rgb(scale(val)); // `colorMap` returns CSS RGB strings
     return [r, g, b];
   });
 
   return Uint8Array.from(colors.flat());
 }
+
+export function findDomain(values: number[]): [number, number] | undefined {
+  const [min, max] = extent(values);
+
+  if (min === undefined || max === undefined) {
+    return undefined;
+  }
+  return [min, max];
+}
+
+export const adaptedNumTicks = scaleLinear()
+  .domain([300, 900])
+  .rangeRound([3, 10])
+  .clamp(true);
 
 export function usePanZoom(): ReactThreeFiber.Events {
   const { size, camera } = useThree();

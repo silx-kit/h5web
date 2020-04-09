@@ -1,9 +1,10 @@
 import React from 'react';
-import useMeasure from 'react-use-measure';
+import { useMeasure } from 'react-use';
 import { Axis } from '@vx/axis';
 import { format } from 'd3-format';
 import { scaleLinear } from 'd3-scale';
 import styles from './HeatmapVis.module.css';
+import { adaptedNumTicks } from './utils';
 
 type Orientation = 'bottom' | 'left';
 
@@ -12,11 +13,6 @@ interface Props {
   className: string;
   numberPixels: number;
 }
-
-const adaptedNumTicks = scaleLinear()
-  .domain([300, 900])
-  .rangeRound([3, 10])
-  .clamp(true);
 
 function IndexAxis(props: Props): JSX.Element {
   const { orientation, numberPixels, className } = props;
