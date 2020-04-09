@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { HDF5Dataset } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
@@ -14,9 +14,11 @@ function DatasetVisualizer(props: Props): JSX.Element {
   const { dataset } = props;
 
   const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
-  const [activeVis, setActiveVis] = useState<Vis | undefined>(
-    dataset && supportedVis[supportedVis.length - 1]
-  );
+  const [activeVis, setActiveVis] = useState<Vis>();
+
+  useEffect(() => {
+    setActiveVis(supportedVis[supportedVis.length - 1]);
+  }, [supportedVis]);
 
   return (
     <div className={styles.visualizer}>
@@ -36,4 +38,5 @@ function DatasetVisualizer(props: Props): JSX.Element {
   );
 }
 
-export default DatasetVisualizer;
+// Optimise consecutive renders when selecting a link in the explorer
+export default React.memo(DatasetVisualizer);

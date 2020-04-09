@@ -24,4 +24,5 @@ function MetadataViewer(props: Props): JSX.Element {
   );
 }
 
-export default MetadataViewer;
+// Optimise consecutive renders when selecting a link in the explorer
+export default React.memo(MetadataViewer);
