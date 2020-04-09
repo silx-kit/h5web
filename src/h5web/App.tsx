@@ -35,10 +35,7 @@ function App(): JSX.Element {
         <ReflexElement minSize={500}>
           <ReflexContainer orientation="horizontal">
             <ReflexElement className={styles.dataVisualizer} minSize={250}>
-              <DatasetVisualizer
-                key={JSON.stringify(selectedDataset)}
-                dataset={selectedDataset}
-              />
+              <DatasetVisualizer dataset={selectedDataset} />
             </ReflexElement>
 
             <ReflexSplitter />
