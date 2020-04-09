@@ -2,9 +2,9 @@
   display: grid;
   background-color: var(--primary-light-bg);
   grid-template-areas:
-    'left-area map-area'
-    'not-used bottom-area';
-  grid-template-columns: 4em 1fr;
+    'left-area map-area right-area'
+    '. bottom-area .';
+  grid-template-columns: 4em 1fr 6em;
   grid-template-rows: 1fr 2em;
   width: 100%;
   height: 100%;
@@ -32,10 +32,27 @@
   display: flex;
 }
 
+.rightArea {
+  grid-area: right-area;
+  display: flex;
+  padding: 1em;
+  min-height: 0;
+}
+
+.colorBarAxis {
+  display: block;
+  overflow: visible;
+  align-self: center;
+}
+
+.gradient {
+  flex: 1 0 auto;
+  border: 1px solid black;
+}
+
 .axis {
   display: block;
   overflow: visible;
-  flex: 1 1 auto;
 }
 
 .axis[data-orientation='left'] {

@@ -39,7 +39,6 @@
     "react-icons": "^3.9.0",
     "react-three-fiber": "^4.0.23",
     "react-use": "^13.26.3",
-    "react-use-measure": "^2.0.0",
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.5",
     "recharts": "^1.8.5",
