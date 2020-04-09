@@ -36,4 +36,4 @@ function HeatmapVis(props: Props): JSX.Element {
   );
 }
 
-export default React.memo(HeatmapVis);
+export default HeatmapVis;

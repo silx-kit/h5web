@@ -36,4 +36,5 @@ function DatasetVisualizer(props: Props): JSX.Element {
   );
 }
 
-export default DatasetVisualizer;
+// Optimise consecutive renders when selecting a link in the explorer
+export default React.memo(DatasetVisualizer);
