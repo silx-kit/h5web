@@ -4,10 +4,11 @@ import { AxisRight } from '@vx/axis';
 import { useMeasure } from 'react-use';
 import { adaptedNumTicks, generateCSSLinearGradient } from './utils';
 import styles from './HeatmapVis.module.css';
+import { D3Interpolator } from './interpolators';
 
 interface Props {
   className: string;
-  interpolator: (t: number) => string;
+  interpolator: D3Interpolator;
   dataBounds: [number, number];
 }
 
