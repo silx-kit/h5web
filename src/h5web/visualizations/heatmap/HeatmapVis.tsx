@@ -23,7 +23,7 @@ function HeatmapVis(props: Props): JSX.Element {
   return (
     <div className={styles.chart}>
       <div className={styles.mapArea}>
-        <Canvas className={styles.heatmap} orthographic>
+        <Canvas className={styles.heatmap} orthographic invalidateFrameloop>
           <ambientLight />
           {textureData && <Mesh dims={dims} textureData={textureData} />}
         </Canvas>
