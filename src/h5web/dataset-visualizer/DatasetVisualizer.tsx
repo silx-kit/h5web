@@ -24,7 +24,9 @@ function DatasetVisualizer(props: Props): JSX.Element {
       />
       <div className={styles.displayArea}>
         {dataset ? (
-          activeVis && <VisDisplay vis={activeVis} dataset={dataset} />
+          activeVis && (
+            <VisDisplay key={dataset.id} vis={activeVis} dataset={dataset} />
+          )
         ) : (
           <p className={styles.noVis}>Nothing to visualize</p>
         )}
