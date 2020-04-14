@@ -1,9 +1,8 @@
 import React from 'react';
-import { range } from 'lodash-es';
 import { scaleLinear } from 'd3-scale';
 import { AxisRight } from '@vx/axis';
 import { useMeasure } from 'react-use';
-import { adaptedNumTicks } from './utils';
+import { adaptedNumTicks, generateCSSLinearGradient } from './utils';
 import styles from './HeatmapVis.module.css';
 
 interface Props {
@@ -14,9 +13,6 @@ interface Props {
 
 function ColorBar(props: Props): JSX.Element {
   const { className, interpolator, dataBounds } = props;
-  const gradientColors = range(0, 1.1, 0.1)
-    .map(interpolator)
-    .reduce((acc, val) => `${acc},${val}`);
 
   const [gradientRef, { height: gradientHeight }] = useMeasure();
 
@@ -26,7 +22,7 @@ function ColorBar(props: Props): JSX.Element {
         ref={gradientRef}
         className={styles.gradient}
         style={{
-          backgroundImage: `linear-gradient(to top, ${gradientColors})`,
+          backgroundImage: generateCSSLinearGradient(interpolator, 'top'),
         }}
       />
       <svg className={styles.colorBarAxis} height={gradientHeight} width="2em">
