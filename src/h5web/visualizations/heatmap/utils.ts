@@ -1,26 +1,35 @@
-import React, { useCallback, useRef, useEffect } from 'react';
 import { extent } from 'd3-array';
 import { rgb } from 'd3-color';
-import { scaleLinear, scaleSequential } from 'd3-scale';
-import { Vector3 } from 'three';
-import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
-import { clamp, range } from 'lodash-es';
+import {
+  scaleSequential,
+  ScaleLinear,
+  ScaleSymLog,
+  scaleLinear,
+  scaleSymlog,
+} from 'd3-scale';
+import { range } from 'lodash-es';
 import { D3Interpolator } from './interpolators';
 
-const ZOOM_FACTOR = 0.95;
+export type ColorScale =
+  | ScaleLinear<number, number>
+  | ScaleSymLog<number, number>;
 
 export function computeTextureData(
   values: number[],
-  domain: [number, number] | undefined,
-  interpolator: D3Interpolator
+  interpolator: D3Interpolator,
+  colorScale?: ColorScale
 ): Uint8Array | undefined {
-  if (domain === undefined) {
+  if (colorScale === undefined) {
     return undefined;
   }
-  const scale = scaleSequential(interpolator).domain(domain);
+
+  // Map colors to the output of colorScale
+  const scale = scaleSequential(interpolator).domain(
+    colorScale.range() as [number, number]
+  );
   // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
   const colors = values.map(val => {
-    const { r, g, b } = rgb(scale(val)); // `colorMap` returns CSS RGB strings
+    const { r, g, b } = rgb(scale(colorScale(val))); // `scale` returns CSS RGB strings
     return [r, g, b];
   });
 
@@ -41,106 +50,6 @@ export const adaptedNumTicks = scaleLinear()
   .rangeRound([3, 10])
   .clamp(true);
 
-export function usePanZoom(): ReactThreeFiber.Events {
-  const { size, camera, invalidate } = useThree();
-  const { width, height } = size;
-
-  const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
-
-  const moveCameraTo = useCallback(
-    (x: number, y: number) => {
-      const { position, zoom } = camera;
-
-      const factor = (1 - 1 / zoom) / 2;
-      const xBound = width * factor;
-      const yBound = height * factor;
-
-      position.set(
-        clamp(x, -xBound, xBound),
-        clamp(y, -yBound, yBound),
-        position.z
-      );
-
-      invalidate();
-    },
-    [camera, height, invalidate, width]
-  );
-
-  const onPointerDown = useCallback(
-    (evt: PointerEvent) => {
-      evt.stopPropagation();
-
-      const { currentTarget, pointerId } = evt as React.PointerEvent;
-      currentTarget.setPointerCapture(pointerId);
-
-      const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
-      startOffsetPosition.current = camera.position.clone().add(projectedPoint);
-    },
-    [camera]
-  );
-
-  const onPointerUp = useCallback((evt: PointerEvent) => {
-    evt.stopPropagation();
-
-    const { currentTarget, pointerId } = evt as React.PointerEvent;
-    currentTarget.releasePointerCapture(pointerId);
-
-    startOffsetPosition.current = undefined;
-  }, []);
-
-  const onPointerMove = useCallback(
-    (evt: PointerEvent) => {
-      if (!startOffsetPosition.current) {
-        return;
-      }
-
-      evt.stopPropagation();
-
-      const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
-      const { x: pointerX, y: pointerY } = projectedPoint;
-      const { x: startX, y: startY } = startOffsetPosition.current;
-
-      moveCameraTo(startX - pointerX, startY - pointerY);
-    },
-    [camera, moveCameraTo]
-  );
-
-  const onWheel = useCallback(
-    (evt: PointerEvent) => {
-      evt.stopPropagation();
-
-      const { deltaY } = evt as React.WheelEvent;
-      const factor = deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
-
-      // eslint-disable-next-line no-param-reassign
-      camera.zoom = Math.max(1, camera.zoom * factor);
-      camera.updateProjectionMatrix();
-
-      const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
-      const { x: pointerX, y: pointerY } = projectedPoint;
-      const { x: camX, y: camY } = camera.position;
-
-      moveCameraTo(
-        camX + pointerX * (1 - 1 / factor),
-        camY + pointerY * (1 - 1 / factor)
-      );
-    },
-    [camera, moveCameraTo]
-  );
-
-  useEffect(() => {
-    // Move camera on resize to stay within mesh bounds
-    moveCameraTo(camera.position.x, camera.position.y);
-  }, [camera, moveCameraTo, size]); // `size` is key here
-
-  return {
-    onPointerDown,
-    onPointerUp,
-    onPointerMove,
-    onWheel,
-  };
-}
-
 export function generateCSSLinearGradient(
   interpolator: D3Interpolator,
   direction: 'top' | 'bottom' | 'right' | 'left'
@@ -150,4 +59,16 @@ export function generateCSSLinearGradient(
     .reduce((acc, val) => `${acc},${val}`);
 
   return `linear-gradient(to ${direction}, ${gradientColors})`;
+}
+
+export function getColorScale(
+  domain: [number, number] | undefined,
+  logScale: boolean
+): ColorScale | undefined {
+  if (domain === undefined) {
+    return undefined;
+  }
+
+  const scaleFunction = logScale ? scaleSymlog : scaleLinear;
+  return scaleFunction().domain(domain) as ColorScale;
 }
