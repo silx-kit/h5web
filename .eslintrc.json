@@ -16,6 +16,7 @@
         "devDependencies": true
       }
     ],
+    "import/no-unresolved": "off",
     "react/jsx-props-no-spreading": "off",
     "prettier/prettier": "off"
   },
