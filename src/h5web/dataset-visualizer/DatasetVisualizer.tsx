@@ -1,9 +1,8 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { HDF5Dataset } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
-import { Vis } from './models';
-import { getSupportedVis } from './utils';
+import { getSupportedVis, useActiveVis } from './utils';
 import VisDisplay from './VisDisplay';
 
 interface Props {
@@ -14,11 +13,7 @@ function DatasetVisualizer(props: Props): JSX.Element {
   const { dataset } = props;
 
   const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
-  const [activeVis, setActiveVis] = useState<Vis>();
-
-  useEffect(() => {
-    setActiveVis(supportedVis[supportedVis.length - 1]);
-  }, [supportedVis]);
+  const [activeVis, setActiveVis] = useActiveVis(supportedVis);
 
   return (
     <div className={styles.visualizer}>
@@ -28,8 +23,10 @@ function DatasetVisualizer(props: Props): JSX.Element {
         onChange={setActiveVis}
       />
       <div className={styles.displayArea}>
-        {dataset && activeVis ? (
-          <VisDisplay vis={activeVis} dataset={dataset} />
+        {dataset ? (
+          activeVis && (
+            <VisDisplay key={dataset.id} vis={activeVis} dataset={dataset} />
+          )
         ) : (
           <p className={styles.noVis}>Nothing to visualize</p>
         )}

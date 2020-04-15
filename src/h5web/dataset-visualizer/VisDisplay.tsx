@@ -11,6 +11,7 @@ import {
 import { useValue } from '../providers/hooks';
 
 interface Props {
+  key: string; // reset states when switching between datasets
   vis: Vis;
   dataset: HDF5Dataset;
 }

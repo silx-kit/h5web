@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Vis } from './models';
 import { HDF5Dataset } from '../providers/models';
 import {
@@ -45,4 +46,21 @@ export function getSupportedVis(dataset?: HDF5Dataset): Vis[] {
 
   // Remove Raw vis if any other vis is supported
   return supported.length > 1 ? supported.slice(1) : supported;
+}
+
+export function useActiveVis(
+  supportedVis: Vis[]
+): [Vis | undefined, (vis: Vis) => void] {
+  const [activeVis, setActiveVis] = useState<Vis>();
+
+  // When switching between two datasets, `activeVis` may become stale for one render
+  const isValid = activeVis && supportedVis.includes(activeVis);
+
+  useEffect(() => {
+    if (!isValid) {
+      setActiveVis(supportedVis[supportedVis.length - 1]);
+    }
+  }, [isValid, supportedVis]);
+
+  return [isValid ? activeVis : undefined, setActiveVis];
 }
