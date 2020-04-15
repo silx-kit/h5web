@@ -1,11 +1,12 @@
 import { Canvas } from 'react-three-fiber';
-import React from 'react';
-import { interpolateMagma } from 'd3-scale-chromatic';
+import React, { useState } from 'react';
 import Mesh from './Mesh';
 import { computeTextureData, findDomain } from './utils';
 import styles from './HeatmapVis.module.css';
 import IndexAxis from './IndexAxis';
 import ColorBar from './ColorBar';
+import ColorMapSelector from './ColorMapSelector';
+import { ColorMap, INTERPOLATORS } from './interpolators';
 
 interface Props {
   dims: [number, number];
@@ -16,9 +17,13 @@ function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
   const values = data.flat();
 
-  const interpolator = interpolateMagma;
   const domain = findDomain(values);
-  const textureData = computeTextureData(values, domain, interpolator);
+  const [colorMap, setColorMap] = useState<ColorMap>('Magma');
+  const textureData = computeTextureData(
+    values,
+    domain,
+    INTERPOLATORS[colorMap]
+  );
 
   return (
     <div className={styles.chart}>
@@ -41,10 +46,15 @@ function HeatmapVis(props: Props): JSX.Element {
       {domain && (
         <ColorBar
           className={styles.rightArea}
-          interpolator={interpolator}
+          interpolator={INTERPOLATORS[colorMap]}
           dataBounds={domain}
         />
       )}
+      <ColorMapSelector
+        className={styles.bottomRightArea}
+        currentColorMap={colorMap}
+        changeColorMap={setColorMap}
+      />
     </div>
   );
 }

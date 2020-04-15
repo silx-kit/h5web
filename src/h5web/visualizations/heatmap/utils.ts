@@ -4,14 +4,15 @@ import { rgb } from 'd3-color';
 import { scaleLinear, scaleSequential } from 'd3-scale';
 import { Vector3 } from 'three';
 import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
-import { clamp } from 'lodash-es';
+import { clamp, range } from 'lodash-es';
+import { D3Interpolator } from './interpolators';
 
 const ZOOM_FACTOR = 0.95;
 
 export function computeTextureData(
   values: number[],
   domain: [number, number] | undefined,
-  interpolator: (t: number) => string
+  interpolator: D3Interpolator
 ): Uint8Array | undefined {
   if (domain === undefined) {
     return undefined;
@@ -138,4 +139,15 @@ export function usePanZoom(): ReactThreeFiber.Events {
     onPointerMove,
     onWheel,
   };
+}
+
+export function generateCSSLinearGradient(
+  interpolator: D3Interpolator,
+  direction: 'top' | 'bottom' | 'right' | 'left'
+): string {
+  const gradientColors = range(0, 1.1, 0.1)
+    .map(interpolator)
+    .reduce((acc, val) => `${acc},${val}`);
+
+  return `linear-gradient(to ${direction}, ${gradientColors})`;
 }

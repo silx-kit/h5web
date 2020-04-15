@@ -3,7 +3,7 @@
   background-color: var(--primary-light-bg);
   grid-template-areas:
     'left-area map-area right-area'
-    '. bottom-area .';
+    '. bottom-area bottom-right-area';
   grid-template-columns: 4em 1fr 6em;
   grid-template-rows: 1fr 2em;
   width: 100%;
@@ -37,6 +37,10 @@
   display: flex;
   padding: 1em;
   min-height: 0;
+}
+
+.bottomRightArea {
+  grid-area: bottom-right-area;
 }
 
 .colorBarAxis {
