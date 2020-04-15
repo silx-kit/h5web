@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useThree } from 'react-three-fiber';
-import { RGBFormat } from 'three';
+import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
 import { usePanZoom } from './utils';
 
 interface Props {
@@ -12,17 +12,19 @@ function Mesh(props: Props): JSX.Element {
   const { dims, textureData } = props;
 
   const { size } = useThree();
+  const { width, height } = size;
+
+  const material = useMemo(() => {
+    return new MeshBasicMaterial({
+      map: new DataTexture(textureData, dims[1], dims[0], RGBFormat),
+    });
+  }, [dims, textureData]);
+
   const pointerHandlers = usePanZoom();
 
-  const { width, height } = size;
-  const [rows, cols] = dims;
-
   return (
-    <mesh {...pointerHandlers}>
+    <mesh material={material} {...pointerHandlers}>
       <planeBufferGeometry attach="geometry" args={[width, height]} />
-      <meshBasicMaterial attach="material">
-        <dataTexture attach="map" args={[textureData, cols, rows, RGBFormat]} />
-      </meshBasicMaterial>
     </mesh>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { extent } from 'd3-array';
 import { rgb } from 'd3-color';
 import { scaleLinear, scaleSequential } from 'd3-scale';
@@ -41,7 +41,7 @@ export const adaptedNumTicks = scaleLinear()
   .clamp(true);
 
 export function usePanZoom(): ReactThreeFiber.Events {
-  const { size, camera } = useThree();
+  const { size, camera, invalidate } = useThree();
   const { width, height } = size;
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
@@ -59,8 +59,10 @@ export function usePanZoom(): ReactThreeFiber.Events {
         clamp(y, -yBound, yBound),
         position.z
       );
+
+      invalidate();
     },
-    [camera, height, width]
+    [camera, height, invalidate, width]
   );
 
   const onPointerDown = useCallback(
@@ -124,6 +126,11 @@ export function usePanZoom(): ReactThreeFiber.Events {
     },
     [camera, moveCameraTo]
   );
+
+  useEffect(() => {
+    // Move camera on resize to stay within mesh bounds
+    moveCameraTo(camera.position.x, camera.position.y);
+  }, [camera, moveCameraTo, size]); // `size` is key here
 
   return {
     onPointerDown,
