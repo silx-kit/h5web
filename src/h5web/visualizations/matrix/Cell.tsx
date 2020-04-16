@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { GridChildComponentProps } from 'react-window';
-import numeral from 'numeral';
+import { format } from 'd3-format';
 import styles from './MatrixVis.module.css';
 import { GridSettingsContext } from './GridSettingsContext';
 
@@ -19,7 +19,7 @@ function Cell(props: GridChildComponentProps): JSX.Element {
       style={style}
       data-bg={(rowIndex + columnIndex) % 2 === 1 ? '' : undefined}
     >
-      {numeral(dataValue).format('0.000e+0')}
+      {format('.3e')(dataValue)}
     </div>
   );
 }
