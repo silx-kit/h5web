@@ -63,12 +63,12 @@ export function generateCSSLinearGradient(
 
 export function getColorScale(
   domain: [number, number] | undefined,
-  logScale: boolean
+  hasLogScale: boolean
 ): ColorScale | undefined {
   if (domain === undefined) {
     return undefined;
   }
 
-  const scaleFunction = logScale ? scaleSymlog : scaleLinear;
+  const scaleFunction = hasLogScale ? scaleSymlog : scaleLinear;
   return scaleFunction().domain(domain) as ColorScale;
 }

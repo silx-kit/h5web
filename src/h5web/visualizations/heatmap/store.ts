@@ -5,12 +5,20 @@ import { ColorMap } from './interpolators';
 interface HeatmapState {
   colorMap: ColorMap;
   setColorMap: Action<HeatmapState, ColorMap>;
+
+  hasLogScale: boolean;
+  toggleLogScale: Action<HeatmapState>;
 }
 
 export const HeatmapStore = createContextStore<HeatmapState>({
   colorMap: 'Magma',
   setColorMap: action((state, colorMap) => {
     state.colorMap = colorMap;
+  }),
+
+  hasLogScale: false,
+  toggleLogScale: action(state => {
+    state.hasLogScale = !state.hasLogScale;
   }),
 });
 
@@ -19,5 +27,5 @@ export function useHeatmapState(): State<HeatmapState> {
 }
 
 export function useHeatmapActions(): Actions<HeatmapState> {
-  return HeatmapStore.useStoreActions(state => state);
+  return HeatmapStore.useStoreActions(actions => actions);
 }

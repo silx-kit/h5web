@@ -21,12 +21,10 @@ function HeatmapVis(props: Props): JSX.Element {
   const values = data.flat();
   const domain = findDomain(values);
 
-  const { colorMap } = useHeatmapState();
+  const { colorMap, hasLogScale } = useHeatmapState();
   const interpolator = INTERPOLATORS[colorMap];
 
-  const [logScale, setLogScale] = useState<boolean>(false);
-
-  const colorScale = getColorScale(domain, logScale);
+  const colorScale = getColorScale(domain, hasLogScale);
   const textureData = computeTextureData(values, interpolator, colorScale);
 
   return (
@@ -49,7 +47,7 @@ function HeatmapVis(props: Props): JSX.Element {
       />
       {colorScale && (
         <div className={styles.rightArea}>
-          <LogScaleToggler value={logScale} onChange={setLogScale} />
+          <LogScaleToggler />
           <ColorBar
             interpolator={INTERPOLATORS[colorMap]}
             colorScale={colorScale}
