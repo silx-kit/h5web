@@ -17,19 +17,18 @@ interface Props {
 function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
 
-  const { interpolator, dataScale } = useHeatmapState();
+  const { colorScale, dataScale } = useHeatmapState();
   const { findDomain } = useHeatmapActions();
 
   const values = useMemo(() => data.flat(), [data]);
+  const textureData = useMemo(
+    () => computeTextureData(values, colorScale, dataScale),
+    [dataScale, colorScale, values]
+  );
 
   useEffect(() => {
     findDomain(values);
   }, [findDomain, values]);
-
-  const textureData = useMemo(
-    () => computeTextureData(values, interpolator, dataScale),
-    [dataScale, interpolator, values]
-  );
 
   return (
     <div className={styles.chart}>
@@ -49,12 +48,10 @@ function HeatmapVis(props: Props): JSX.Element {
         orientation="bottom"
         numberPixels={dims[1]}
       />
-      {dataScale && (
-        <div className={styles.rightArea}>
-          <LogScaleToggler />
-          <ColorBar dataScale={dataScale} />
-        </div>
-      )}
+      <div className={styles.rightArea}>
+        <LogScaleToggler />
+        <ColorBar />
+      </div>
       <ColorMapSelector className={styles.bottomRightArea} />
     </div>
   );

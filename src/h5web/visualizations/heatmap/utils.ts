@@ -1,21 +1,17 @@
 import { rgb } from 'd3-color';
-import { scaleSequential, scaleLinear } from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { range } from 'lodash-es';
-import { D3Interpolator, DataScale } from './store';
+import { D3Interpolator, DataScale, ColorScale } from './store';
 
 export function computeTextureData(
   values: number[],
-  interpolator: D3Interpolator,
+  colorScale: ColorScale,
   dataScale?: DataScale
 ): Uint8Array | undefined {
   if (dataScale === undefined) {
     return undefined;
   }
 
-  // Map colors to the output of colorScale
-  const colorScale = scaleSequential(interpolator).domain(
-    dataScale.range() as [number, number]
-  );
   // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
   const colors = values.map(val => {
     const { r, g, b } = rgb(colorScale(dataScale(val))); // `scale` returns CSS RGB strings

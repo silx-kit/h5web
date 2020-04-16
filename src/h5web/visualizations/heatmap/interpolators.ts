@@ -81,5 +81,3 @@ export const INTERPOLATORS = {
   Rainbow: interpolateRainbow,
   Sinebow: interpolateSinebow,
 };
-
-export type ColorMap = keyof typeof INTERPOLATORS;

@@ -9,10 +9,19 @@ import {
   computed,
 } from 'easy-peasy';
 import { extent } from 'd3-array';
-import { ScaleLinear, ScaleSymLog, scaleSymlog, scaleLinear } from 'd3-scale';
-import { ColorMap, INTERPOLATORS } from './interpolators';
+import {
+  ScaleLinear,
+  ScaleSymLog,
+  scaleSymlog,
+  scaleLinear,
+  ScaleSequential,
+  scaleSequential,
+} from 'd3-scale';
+import { INTERPOLATORS } from './interpolators';
 
+export type ColorMap = keyof typeof INTERPOLATORS;
 export type D3Interpolator = (t: number) => string;
+export type ColorScale = ScaleSequential<string>;
 export type DataScale =
   | ScaleLinear<number, number>
   | ScaleSymLog<number, number>;
@@ -28,6 +37,7 @@ interface HeatmapState {
   toggleLogScale: Action<HeatmapState>;
 
   interpolator: Computed<HeatmapState, D3Interpolator>;
+  colorScale: Computed<HeatmapState, ColorScale>;
   dataScale: Computed<HeatmapState, DataScale | undefined>;
 }
 
@@ -50,6 +60,7 @@ export const HeatmapStore = createContextStore<HeatmapState>({
   }),
 
   interpolator: computed(state => INTERPOLATORS[state.colorMap]),
+  colorScale: computed(state => scaleSequential(state.interpolator)),
   dataScale: computed(state => {
     if (state.domain === undefined) {
       return undefined;
