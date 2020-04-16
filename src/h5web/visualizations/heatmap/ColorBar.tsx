@@ -1,26 +1,20 @@
 import React from 'react';
 import { AxisRight } from '@vx/axis';
 import { useMeasure } from 'react-use';
-import {
-  adaptedNumTicks,
-  generateCSSLinearGradient,
-  ColorScale,
-} from './utils';
+import { adaptedNumTicks, generateCSSLinearGradient } from './utils';
 import styles from './HeatmapVis.module.css';
-import { D3Interpolator } from './interpolators';
+import { useHeatmapState } from './store';
 
-interface Props {
-  interpolator: D3Interpolator;
-  colorScale: ColorScale;
-}
-
-function ColorBar(props: Props): JSX.Element {
-  const { interpolator, colorScale } = props;
-
+function ColorBar(): JSX.Element {
+  const { dataScale, interpolator } = useHeatmapState();
   const [gradientRef, { height: gradientHeight }] = useMeasure();
-  const scale = colorScale
-    .copy()
-    .range([gradientHeight, 0]) as typeof colorScale;
+
+  if (!dataScale) {
+    return <></>;
+  }
+
+  const axisScale = dataScale.copy();
+  axisScale.range([gradientHeight, 0]);
 
   return (
     <div className={styles.colorBar}>
@@ -33,10 +27,13 @@ function ColorBar(props: Props): JSX.Element {
       />
       <svg className={styles.colorBarAxis} height={gradientHeight} width="2em">
         <AxisRight
-          scale={scale}
+          scale={axisScale}
           hideAxisLine
           numTicks={adaptedNumTicks(gradientHeight)}
-          tickFormat={scale.tickFormat(adaptedNumTicks(gradientHeight), '.3')}
+          tickFormat={axisScale.tickFormat(
+            adaptedNumTicks(gradientHeight),
+            '.3'
+          )}
         />
       </svg>
     </div>

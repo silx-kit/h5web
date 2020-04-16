@@ -2,8 +2,8 @@ import React, { CSSProperties } from 'react';
 import Select, { components } from 'react-select';
 import { FiChevronUp } from 'react-icons/fi';
 import { generateCSSLinearGradient } from './utils';
-import { ColorMap, INTERPOLATORS } from './interpolators';
-import { useHeatmapState, useHeatmapActions } from './store';
+import { INTERPOLATORS } from './interpolators';
+import { useHeatmapState, useHeatmapActions, ColorMap } from './store';
 
 interface Props {
   className: string;
@@ -31,13 +31,10 @@ function ColorMapSelector(props: Props): JSX.Element {
   const gradientStyles = {
     option: (
       styles: CSSProperties,
-      { data }: { data: { label: ColorMap } }
+      { data: { label } }: { data: { label: ColorMap } }
     ) => ({
       ...styles,
-      backgroundImage: generateCSSLinearGradient(
-        INTERPOLATORS[data.label],
-        'right'
-      ),
+      backgroundImage: generateCSSLinearGradient(INTERPOLATORS[label], 'right'),
       marginTop: '1px',
       marginBottom: '1px',
     }),

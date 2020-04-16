@@ -1,26 +1,23 @@
 import React from 'react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import styles from './HeatmapVis.module.css';
+import { useHeatmapState, useHeatmapActions } from './store';
 
-interface Props {
-  value: boolean;
-  onChange: (val: boolean) => void;
-}
-
-function LogScaleToggler(props: Props): JSX.Element {
-  const { value, onChange } = props;
+function LogScaleToggler(): JSX.Element {
+  const { hasLogScale } = useHeatmapState();
+  const { toggleLogScale } = useHeatmapActions();
 
   return (
     <button
-      onClick={() => {
-        onChange(!value);
-      }}
+      className={styles.scaleTypeSelector}
       type="button"
       role="switch"
-      aria-checked={value}
-      className={styles.scaleTypeSelector}
+      aria-checked={hasLogScale}
+      onClick={() => {
+        toggleLogScale();
+      }}
     >
-      {value ? <FiEye /> : <FiEyeOff />}
+      {hasLogScale ? <FiEye /> : <FiEyeOff />}
       SymLog scale
     </button>
   );

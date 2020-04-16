@@ -38,8 +38,6 @@ import {
   interpolateTurbo,
 } from 'd3-scale-chromatic';
 
-export type D3Interpolator = (t: number) => string;
-
 export const INTERPOLATORS = {
   // Diverging
   BrBG: interpolateBrBG,
@@ -83,5 +81,3 @@ export const INTERPOLATORS = {
   Rainbow: interpolateRainbow,
   Sinebow: interpolateSinebow,
 };
-
-export type ColorMap = keyof typeof INTERPOLATORS;

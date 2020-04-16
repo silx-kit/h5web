@@ -1,48 +1,24 @@
-import { extent } from 'd3-array';
 import { rgb } from 'd3-color';
-import {
-  scaleSequential,
-  ScaleLinear,
-  ScaleSymLog,
-  scaleLinear,
-  scaleSymlog,
-} from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { range } from 'lodash-es';
-import { D3Interpolator } from './interpolators';
-
-export type ColorScale =
-  | ScaleLinear<number, number>
-  | ScaleSymLog<number, number>;
+import { D3Interpolator, DataScale, ColorScale } from './store';
 
 export function computeTextureData(
   values: number[],
-  interpolator: D3Interpolator,
-  colorScale?: ColorScale
+  colorScale: ColorScale,
+  dataScale?: DataScale
 ): Uint8Array | undefined {
-  if (colorScale === undefined) {
+  if (dataScale === undefined) {
     return undefined;
   }
 
-  // Map colors to the output of colorScale
-  const scale = scaleSequential(interpolator).domain(
-    colorScale.range() as [number, number]
-  );
   // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
   const colors = values.map(val => {
-    const { r, g, b } = rgb(scale(colorScale(val))); // `scale` returns CSS RGB strings
+    const { r, g, b } = rgb(colorScale(dataScale(val))); // `scale` returns CSS RGB strings
     return [r, g, b];
   });
 
   return Uint8Array.from(colors.flat());
-}
-
-export function findDomain(values: number[]): [number, number] | undefined {
-  const [min, max] = extent(values);
-
-  if (min === undefined || max === undefined) {
-    return undefined;
-  }
-  return [min, max];
 }
 
 export const adaptedNumTicks = scaleLinear()
@@ -59,16 +35,4 @@ export function generateCSSLinearGradient(
     .reduce((acc, val) => `${acc},${val}`);
 
   return `linear-gradient(to ${direction}, ${gradientColors})`;
-}
-
-export function getColorScale(
-  domain: [number, number] | undefined,
-  logScale: boolean
-): ColorScale | undefined {
-  if (domain === undefined) {
-    return undefined;
-  }
-
-  const scaleFunction = logScale ? scaleSymlog : scaleLinear;
-  return scaleFunction().domain(domain) as ColorScale;
 }

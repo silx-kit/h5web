@@ -1,14 +1,13 @@
 import { Canvas } from 'react-three-fiber';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Mesh from './Mesh';
-import { computeTextureData, findDomain, getColorScale } from './utils';
+import { computeTextureData } from './utils';
 import styles from './HeatmapVis.module.css';
 import IndexAxis from './IndexAxis';
 import ColorBar from './ColorBar';
 import ColorMapSelector from './ColorMapSelector';
-import { INTERPOLATORS } from './interpolators';
 import LogScaleToggler from './LogScaleToggler';
-import { useHeatmapState } from './store';
+import { useHeatmapState, useHeatmapActions } from './store';
 
 interface Props {
   dims: [number, number];
@@ -18,16 +17,18 @@ interface Props {
 function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
 
-  const values = data.flat();
-  const domain = findDomain(values);
+  const { colorScale, dataScale } = useHeatmapState();
+  const { findDomain } = useHeatmapActions();
 
-  const { colorMap } = useHeatmapState();
-  const interpolator = INTERPOLATORS[colorMap];
+  const values = useMemo(() => data.flat(), [data]);
+  const textureData = useMemo(
+    () => computeTextureData(values, colorScale, dataScale),
+    [dataScale, colorScale, values]
+  );
 
-  const [logScale, setLogScale] = useState<boolean>(false);
-
-  const colorScale = getColorScale(domain, logScale);
-  const textureData = computeTextureData(values, interpolator, colorScale);
+  useEffect(() => {
+    findDomain(values);
+  }, [findDomain, values]);
 
   return (
     <div className={styles.chart}>
@@ -40,22 +41,17 @@ function HeatmapVis(props: Props): JSX.Element {
       <IndexAxis
         className={styles.leftArea}
         orientation="left"
-        numberPixels={dims[0]}
+        indicesCount={dims[0]}
       />
       <IndexAxis
         className={styles.bottomArea}
         orientation="bottom"
-        numberPixels={dims[1]}
+        indicesCount={dims[1]}
       />
-      {colorScale && (
-        <div className={styles.rightArea}>
-          <LogScaleToggler value={logScale} onChange={setLogScale} />
-          <ColorBar
-            interpolator={INTERPOLATORS[colorMap]}
-            colorScale={colorScale}
-          />
-        </div>
-      )}
+      <div className={styles.rightArea}>
+        <LogScaleToggler />
+        <ColorBar />
+      </div>
       <ColorMapSelector className={styles.bottomRightArea} />
     </div>
   );
