@@ -1,12 +1,13 @@
 import { Canvas } from 'react-three-fiber';
 import React, { useState } from 'react';
 import Mesh from './Mesh';
-import { computeTextureData, findDomain } from './utils';
+import { computeTextureData, findDomain, getColorScale } from './utils';
 import styles from './HeatmapVis.module.css';
 import IndexAxis from './IndexAxis';
 import ColorBar from './ColorBar';
 import ColorMapSelector from './ColorMapSelector';
 import { ColorMap, INTERPOLATORS } from './interpolators';
+import LogScaleToggler from './LogScaleToggler';
 
 interface Props {
   dims: [number, number];
@@ -19,10 +20,13 @@ function HeatmapVis(props: Props): JSX.Element {
 
   const domain = findDomain(values);
   const [colorMap, setColorMap] = useState<ColorMap>('Magma');
+  const [logScale, setLogScale] = useState<boolean>(false);
+
+  const colorScale = getColorScale(domain, logScale);
   const textureData = computeTextureData(
     values,
-    domain,
-    INTERPOLATORS[colorMap]
+    INTERPOLATORS[colorMap],
+    colorScale
   );
 
   return (
@@ -43,12 +47,14 @@ function HeatmapVis(props: Props): JSX.Element {
         orientation="bottom"
         numberPixels={dims[1]}
       />
-      {domain && (
-        <ColorBar
-          className={styles.rightArea}
-          interpolator={INTERPOLATORS[colorMap]}
-          dataBounds={domain}
-        />
+      {colorScale && (
+        <div className={styles.rightArea}>
+          <LogScaleToggler value={logScale} onChange={setLogScale} />
+          <ColorBar
+            interpolator={INTERPOLATORS[colorMap]}
+            colorScale={colorScale}
+          />
+        </div>
       )}
       <ColorMapSelector
         className={styles.bottomRightArea}

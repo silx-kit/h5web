@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useThree } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
-import { usePanZoom } from './utils';
+import { usePanZoom } from './hooks';
 
 interface Props {
   dims: [number, number];

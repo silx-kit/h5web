@@ -35,12 +35,19 @@
 .rightArea {
   grid-area: right-area;
   display: flex;
-  padding: 1em;
+  flex-direction: column;
   min-height: 0;
 }
 
 .bottomRightArea {
   grid-area: bottom-right-area;
+}
+
+.colorBar {
+  display: flex;
+  padding: 1em;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .colorBarAxis {
@@ -74,4 +81,19 @@
 .tick {
   text-anchor: inherit;
   dominant-baseline: inherit;
+}
+
+.scaleTypeSelector {
+  composes: btn-clean from global;
+  font-size: small;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: var(--primary-light-bg);
+}
+
+.scaleTypeSelector:hover,
+.scaleTypeSelector[aria-checked='true'] {
+  background-color: var(--primary-dark-bg);
 }
