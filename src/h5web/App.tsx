@@ -9,9 +9,15 @@ import styles from './App.module.css';
 import { isDataset } from './providers/utils';
 import { useEntity } from './providers/hooks';
 
+enum Role {
+  Inspect,
+  Display,
+}
+
 function App(): JSX.Element {
   const [selectedLink, setSelectedLink] = useState<HDF5Link>();
   const [selectedDataset, setSelectedDataset] = useState<HDF5Dataset>();
+  const [role, setRole] = useState<Role>(Role.Inspect);
 
   const selectedEntity = useEntity(selectedLink);
 
@@ -32,32 +38,43 @@ function App(): JSX.Element {
 
         <ReflexSplitter />
 
-        <ReflexElement minSize={500}>
-          <ReflexContainer orientation="horizontal">
-            <ReflexElement className={styles.dataVisualizer} minSize={250}>
-              <DatasetVisualizer dataset={selectedDataset} />
-            </ReflexElement>
-
-            <ReflexSplitter />
-
-            <ReflexElement
-              className={styles.metadataViewer}
-              flex={0.25}
-              minSize={100}
-            >
-              {selectedLink ? (
-                <MetadataViewer
-                  key={JSON.stringify(selectedLink)}
-                  link={selectedLink}
-                  entity={selectedEntity}
-                />
-              ) : (
-                <div className={styles.empty}>
-                  <p>No entity selected.</p>
-                </div>
-              )}
-            </ReflexElement>
-          </ReflexContainer>
+        <ReflexElement className={styles.mainArea} minSize={500}>
+          <div className={styles.toolbar}>
+            {' '}
+            <div className={styles.roleToggler}>
+              <button
+                type="button"
+                role="tab"
+                className={styles.btn}
+                aria-selected={role === Role.Inspect}
+                onClick={() => {
+                  setRole(Role.Inspect);
+                }}
+              >
+                Inspect
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className={styles.btn}
+                aria-selected={role === Role.Display}
+                onClick={() => {
+                  setRole(Role.Display);
+                }}
+              >
+                Display
+              </button>
+            </div>
+          </div>
+          {role === Role.Display ? (
+            <DatasetVisualizer dataset={selectedDataset} />
+          ) : (
+            <MetadataViewer
+              key={JSON.stringify(selectedLink)}
+              link={selectedLink}
+              entity={selectedEntity}
+            />
+          )}
         </ReflexElement>
       </ReflexContainer>
     </div>
