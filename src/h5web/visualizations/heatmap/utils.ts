@@ -8,7 +8,7 @@ import {
   scaleSymlog,
 } from 'd3-scale';
 import { range } from 'lodash-es';
-import { D3Interpolator } from './interpolators';
+import { D3Interpolator } from './store';
 
 export type ColorScale =
   | ScaleLinear<number, number>

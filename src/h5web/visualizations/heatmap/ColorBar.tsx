@@ -7,15 +7,15 @@ import {
   ColorScale,
 } from './utils';
 import styles from './HeatmapVis.module.css';
-import { D3Interpolator } from './interpolators';
+import { useHeatmapState } from './store';
 
 interface Props {
-  interpolator: D3Interpolator;
   colorScale: ColorScale;
 }
 
 function ColorBar(props: Props): JSX.Element {
-  const { interpolator, colorScale } = props;
+  const { colorScale } = props;
+  const { interpolator } = useHeatmapState();
 
   const [gradientRef, { height: gradientHeight }] = useMeasure();
   const scale = colorScale

@@ -31,13 +31,10 @@ function ColorMapSelector(props: Props): JSX.Element {
   const gradientStyles = {
     option: (
       styles: CSSProperties,
-      { data }: { data: { label: ColorMap } }
+      { data: { label } }: { data: { label: ColorMap } }
     ) => ({
       ...styles,
-      backgroundImage: generateCSSLinearGradient(
-        INTERPOLATORS[data.label],
-        'right'
-      ),
+      backgroundImage: generateCSSLinearGradient(INTERPOLATORS[label], 'right'),
       marginTop: '1px',
       marginBottom: '1px',
     }),

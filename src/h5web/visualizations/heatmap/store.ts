@@ -1,6 +1,16 @@
 /* eslint-disable no-param-reassign */
-import { createContextStore, Action, State, action, Actions } from 'easy-peasy';
-import { ColorMap } from './interpolators';
+import {
+  createContextStore,
+  Action,
+  State,
+  action,
+  Actions,
+  Computed,
+  computed,
+} from 'easy-peasy';
+import { ColorMap, INTERPOLATORS } from './interpolators';
+
+export type D3Interpolator = (t: number) => string;
 
 interface HeatmapState {
   colorMap: ColorMap;
@@ -8,6 +18,8 @@ interface HeatmapState {
 
   hasLogScale: boolean;
   toggleLogScale: Action<HeatmapState>;
+
+  interpolator: Computed<HeatmapState, D3Interpolator>;
 }
 
 export const HeatmapStore = createContextStore<HeatmapState>({
@@ -20,6 +32,8 @@ export const HeatmapStore = createContextStore<HeatmapState>({
   toggleLogScale: action(state => {
     state.hasLogScale = !state.hasLogScale;
   }),
+
+  interpolator: computed(state => INTERPOLATORS[state.colorMap]),
 });
 
 export function useHeatmapState(): State<HeatmapState> {

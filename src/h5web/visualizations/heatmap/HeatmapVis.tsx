@@ -1,12 +1,11 @@
 import { Canvas } from 'react-three-fiber';
-import React, { useState } from 'react';
+import React from 'react';
 import Mesh from './Mesh';
 import { computeTextureData, findDomain, getColorScale } from './utils';
 import styles from './HeatmapVis.module.css';
 import IndexAxis from './IndexAxis';
 import ColorBar from './ColorBar';
 import ColorMapSelector from './ColorMapSelector';
-import { INTERPOLATORS } from './interpolators';
 import LogScaleToggler from './LogScaleToggler';
 import { useHeatmapState } from './store';
 
@@ -21,8 +20,7 @@ function HeatmapVis(props: Props): JSX.Element {
   const values = data.flat();
   const domain = findDomain(values);
 
-  const { colorMap, hasLogScale } = useHeatmapState();
-  const interpolator = INTERPOLATORS[colorMap];
+  const { interpolator, hasLogScale } = useHeatmapState();
 
   const colorScale = getColorScale(domain, hasLogScale);
   const textureData = computeTextureData(values, interpolator, colorScale);
@@ -48,10 +46,7 @@ function HeatmapVis(props: Props): JSX.Element {
       {colorScale && (
         <div className={styles.rightArea}>
           <LogScaleToggler />
-          <ColorBar
-            interpolator={INTERPOLATORS[colorMap]}
-            colorScale={colorScale}
-          />
+          <ColorBar colorScale={colorScale} />
         </div>
       )}
       <ColorMapSelector className={styles.bottomRightArea} />
