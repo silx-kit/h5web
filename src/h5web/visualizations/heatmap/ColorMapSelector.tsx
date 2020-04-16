@@ -21,9 +21,7 @@ const DropdownIndicator = (props: any): JSX.Element => {
 
 // react-select expects to work with objects of type {label: string, value: string}
 // So I use the color map name as both label and value
-const colorMapOptions = Object.keys(INTERPOLATORS).map(label => {
-  return { label };
-});
+const colorMapOptions = Object.keys(INTERPOLATORS).map(label => ({ label }));
 
 function ColorMapSelector(props: Props): JSX.Element {
   const { className, currentColorMap, changeColorMap } = props;
@@ -32,18 +30,17 @@ function ColorMapSelector(props: Props): JSX.Element {
     option: (
       styles: CSSProperties,
       { data }: { data: { label: ColorMap } }
-    ) => {
-      return {
-        ...styles,
-        backgroundImage: generateCSSLinearGradient(
-          INTERPOLATORS[data.label],
-          'right'
-        ),
-        marginTop: '1px',
-        marginBottom: '1px',
-      };
-    },
+    ) => ({
+      ...styles,
+      backgroundImage: generateCSSLinearGradient(
+        INTERPOLATORS[data.label],
+        'right'
+      ),
+      marginTop: '1px',
+      marginBottom: '1px',
+    }),
   };
+
   return (
     <div className={className}>
       <Select
