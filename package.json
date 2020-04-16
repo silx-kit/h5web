@@ -30,6 +30,7 @@
     "d3-format": "^1.4.4",
     "d3-scale": "^3.2.1",
     "d3-scale-chromatic": "^1.5.0",
+    "easy-peasy": "^3.3.0",
     "lodash-es": "^4.17.15",
     "nanoid": "^2.1.11",
     "normalize.css": "^8.0.1",

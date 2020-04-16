@@ -24,7 +24,6 @@
 .leftArea {
   grid-area: left-area;
   display: flex;
-  flex-direction: column;
 }
 
 .bottomArea {
@@ -64,21 +63,23 @@
 .axis {
   display: block;
   overflow: visible;
+  flex: 1 1 0%;
 }
 
 .axis[data-orientation='left'] {
   text-anchor: end;
-  dominant-baseline: middle;
   min-height: 0;
 }
 
 .axis[data-orientation='bottom'] {
   min-width: 0;
   text-anchor: middle;
-  dominant-baseline: start;
 }
 
-.tick {
+.tick > text {
+  fill: currentColor;
+  font-family: inherit;
+  font-size: inherit;
   text-anchor: inherit;
   dominant-baseline: inherit;
 }

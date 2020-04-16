@@ -6,8 +6,9 @@ import styles from './HeatmapVis.module.css';
 import IndexAxis from './IndexAxis';
 import ColorBar from './ColorBar';
 import ColorMapSelector from './ColorMapSelector';
-import { ColorMap, INTERPOLATORS } from './interpolators';
+import { INTERPOLATORS } from './interpolators';
 import LogScaleToggler from './LogScaleToggler';
+import { useHeatmapState } from './store';
 
 interface Props {
   dims: [number, number];
@@ -16,18 +17,17 @@ interface Props {
 
 function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
-  const values = data.flat();
 
+  const values = data.flat();
   const domain = findDomain(values);
-  const [colorMap, setColorMap] = useState<ColorMap>('Magma');
+
+  const { colorMap } = useHeatmapState();
+  const interpolator = INTERPOLATORS[colorMap];
+
   const [logScale, setLogScale] = useState<boolean>(false);
 
   const colorScale = getColorScale(domain, logScale);
-  const textureData = computeTextureData(
-    values,
-    INTERPOLATORS[colorMap],
-    colorScale
-  );
+  const textureData = computeTextureData(values, interpolator, colorScale);
 
   return (
     <div className={styles.chart}>
@@ -56,11 +56,7 @@ function HeatmapVis(props: Props): JSX.Element {
           />
         </div>
       )}
-      <ColorMapSelector
-        className={styles.bottomRightArea}
-        currentColorMap={colorMap}
-        changeColorMap={setColorMap}
-      />
+      <ColorMapSelector className={styles.bottomRightArea} />
     </div>
   );
 }

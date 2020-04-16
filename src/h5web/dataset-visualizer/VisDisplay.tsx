@@ -9,6 +9,7 @@ import {
   HeatmapVis,
 } from '../visualizations';
 import { useValue } from '../providers/hooks';
+import { HeatmapStore } from '../visualizations/heatmap/store';
 
 interface Props {
   key: string; // reset states when switching between datasets
@@ -44,10 +45,12 @@ function VisDisplay(props: Props): JSX.Element {
 
   if (vis === Vis.Heatmap) {
     return (
-      <HeatmapVis
-        dims={(dataset.shape as HDF5SimpleShape).dims as [number, number]}
-        data={value}
-      />
+      <HeatmapStore.Provider>
+        <HeatmapVis
+          dims={(dataset.shape as HDF5SimpleShape).dims as [number, number]}
+          data={value}
+        />
+      </HeatmapStore.Provider>
     );
   }
 
