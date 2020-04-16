@@ -34,6 +34,8 @@ import {
   interpolateYlOrRd,
   interpolateRainbow,
   interpolateSinebow,
+  interpolateCividis,
+  interpolateTurbo,
 } from 'd3-scale-chromatic';
 
 export type D3Interpolator = (t: number) => string;
@@ -57,12 +59,12 @@ export const INTERPOLATORS = {
   Purples: interpolatePurples,
   Reds: interpolateReds,
   // Sequential (multi-hue)
-  // Turbo missing !
+  Turbo: interpolateTurbo,
   Viridis: interpolateViridis,
   Inferno: interpolateInferno,
   Magma: interpolateMagma,
   Plasma: interpolatePlasma,
-  // Cividis missing !
+  Cividis: interpolateCividis,
   Warm: interpolateWarm,
   Cool: interpolateCool,
   BuGn: interpolateBuGn,
