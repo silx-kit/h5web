@@ -3,11 +3,10 @@ import Select, { components } from 'react-select';
 import { FiChevronUp } from 'react-icons/fi';
 import { generateCSSLinearGradient } from './utils';
 import { ColorMap, INTERPOLATORS } from './interpolators';
+import { useHeatmapState, useHeatmapActions } from './store';
 
 interface Props {
   className: string;
-  currentColorMap: ColorMap;
-  changeColorMap: React.Dispatch<React.SetStateAction<ColorMap>>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,7 +23,10 @@ const DropdownIndicator = (props: any): JSX.Element => {
 const colorMapOptions = Object.keys(INTERPOLATORS).map(label => ({ label }));
 
 function ColorMapSelector(props: Props): JSX.Element {
-  const { className, currentColorMap, changeColorMap } = props;
+  const { className } = props;
+
+  const { colorMap } = useHeatmapState();
+  const { setColorMap } = useHeatmapActions();
 
   const gradientStyles = {
     option: (
@@ -44,11 +46,11 @@ function ColorMapSelector(props: Props): JSX.Element {
   return (
     <div className={className}>
       <Select
-        defaultValue={{ label: currentColorMap }}
+        defaultValue={{ label: colorMap }}
         options={colorMapOptions}
         onChange={selection => {
           const colorOption = selection as { label: ColorMap };
-          changeColorMap(colorOption.label);
+          setColorMap(colorOption.label);
         }}
         menuPlacement="top"
         styles={gradientStyles}

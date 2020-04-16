@@ -38,7 +38,7 @@ import {
 
 export type D3Interpolator = (t: number) => string;
 
-export const INTERPOLATORS: Record<string, D3Interpolator> = {
+export const INTERPOLATORS = {
   // Diverging
   BrBG: interpolateBrBG,
   PRGn: interpolatePRGn,
