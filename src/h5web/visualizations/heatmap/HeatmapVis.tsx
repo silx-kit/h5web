@@ -41,12 +41,12 @@ function HeatmapVis(props: Props): JSX.Element {
       <IndexAxis
         className={styles.leftArea}
         orientation="left"
-        numberPixels={dims[0]}
+        indicesCount={dims[0]}
       />
       <IndexAxis
         className={styles.bottomArea}
         orientation="bottom"
-        numberPixels={dims[1]}
+        indicesCount={dims[1]}
       />
       <div className={styles.rightArea}>
         <LogScaleToggler />

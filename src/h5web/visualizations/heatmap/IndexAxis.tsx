@@ -11,22 +11,22 @@ type Orientation = 'bottom' | 'left';
 interface Props {
   orientation: Orientation;
   className: string;
-  numberPixels: number;
+  indicesCount: number;
 }
 
 function IndexAxis(props: Props): JSX.Element {
-  const { orientation, numberPixels, className } = props;
+  const { orientation, indicesCount, className } = props;
 
   const [divRef, { width, height }] = useMeasure();
   const isLeftAxis = orientation === 'left';
   const Axis = isLeftAxis ? AxisLeft : AxisBottom;
 
   const scale = scaleLinear()
-    .domain([-0.5, numberPixels - 0.5])
+    .domain([-0.5, indicesCount - 0.5])
     .range(isLeftAxis ? [height, 0] : [0, width]);
 
   const numTicks = Math.min(
-    numberPixels,
+    indicesCount,
     adaptedNumTicks(isLeftAxis ? height : width)
   );
 
