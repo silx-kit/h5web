@@ -9,26 +9,26 @@ import {
 import { range } from 'lodash-es';
 import { D3Interpolator } from './store';
 
-export type ColorScale =
+export type DataScale =
   | ScaleLinear<number, number>
   | ScaleSymLog<number, number>;
 
 export function computeTextureData(
   values: number[],
   interpolator: D3Interpolator,
-  colorScale?: ColorScale
+  dataScale?: DataScale
 ): Uint8Array | undefined {
-  if (colorScale === undefined) {
+  if (dataScale === undefined) {
     return undefined;
   }
 
   // Map colors to the output of colorScale
-  const scale = scaleSequential(interpolator).domain(
-    colorScale.range() as [number, number]
+  const colorScale = scaleSequential(interpolator).domain(
+    dataScale.range() as [number, number]
   );
   // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
   const colors = values.map(val => {
-    const { r, g, b } = rgb(scale(colorScale(val))); // `scale` returns CSS RGB strings
+    const { r, g, b } = rgb(colorScale(dataScale(val))); // `scale` returns CSS RGB strings
     return [r, g, b];
   });
 
@@ -51,14 +51,14 @@ export function generateCSSLinearGradient(
   return `linear-gradient(to ${direction}, ${gradientColors})`;
 }
 
-export function getColorScale(
+export function getDataScale(
   domain: [number, number] | undefined,
   hasLogScale: boolean
-): ColorScale | undefined {
+): DataScale | undefined {
   if (domain === undefined) {
     return undefined;
   }
 
   const scaleFunction = hasLogScale ? scaleSymlog : scaleLinear;
-  return scaleFunction().domain(domain) as ColorScale;
+  return scaleFunction().domain(domain) as DataScale;
 }
