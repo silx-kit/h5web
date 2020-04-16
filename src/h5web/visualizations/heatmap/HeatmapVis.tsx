@@ -1,13 +1,13 @@
 import { Canvas } from 'react-three-fiber';
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Mesh from './Mesh';
-import { computeTextureData, findDomain, getColorScale } from './utils';
+import { computeTextureData, getColorScale } from './utils';
 import styles from './HeatmapVis.module.css';
 import IndexAxis from './IndexAxis';
 import ColorBar from './ColorBar';
 import ColorMapSelector from './ColorMapSelector';
 import LogScaleToggler from './LogScaleToggler';
-import { useHeatmapState } from './store';
+import { useHeatmapState, useHeatmapActions } from './store';
 
 interface Props {
   dims: [number, number];
@@ -17,13 +17,20 @@ interface Props {
 function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
 
-  const values = data.flat();
-  const domain = findDomain(values);
+  const { domain, interpolator, hasLogScale } = useHeatmapState();
+  const { findDomain } = useHeatmapActions();
 
-  const { interpolator, hasLogScale } = useHeatmapState();
+  const values = useMemo(() => data.flat(), [data]);
+
+  useEffect(() => {
+    findDomain(values);
+  }, [findDomain, values]);
 
   const colorScale = getColorScale(domain, hasLogScale);
-  const textureData = computeTextureData(values, interpolator, colorScale);
+  const textureData = useMemo(
+    () => computeTextureData(values, interpolator, colorScale),
+    [colorScale, interpolator, values]
+  );
 
   return (
     <div className={styles.chart}>

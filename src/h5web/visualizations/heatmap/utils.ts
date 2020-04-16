@@ -1,4 +1,3 @@
-import { extent } from 'd3-array';
 import { rgb } from 'd3-color';
 import {
   scaleSequential,
@@ -34,15 +33,6 @@ export function computeTextureData(
   });
 
   return Uint8Array.from(colors.flat());
-}
-
-export function findDomain(values: number[]): [number, number] | undefined {
-  const [min, max] = extent(values);
-
-  if (min === undefined || max === undefined) {
-    return undefined;
-  }
-  return [min, max];
 }
 
 export const adaptedNumTicks = scaleLinear()
