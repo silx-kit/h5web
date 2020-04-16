@@ -9,9 +9,13 @@ import {
   computed,
 } from 'easy-peasy';
 import { extent } from 'd3-array';
+import { ScaleLinear, ScaleSymLog, scaleSymlog, scaleLinear } from 'd3-scale';
 import { ColorMap, INTERPOLATORS } from './interpolators';
 
 export type D3Interpolator = (t: number) => string;
+export type DataScale =
+  | ScaleLinear<number, number>
+  | ScaleSymLog<number, number>;
 
 interface HeatmapState {
   domain?: [number, number];
@@ -24,6 +28,7 @@ interface HeatmapState {
   toggleLogScale: Action<HeatmapState>;
 
   interpolator: Computed<HeatmapState, D3Interpolator>;
+  dataScale: Computed<HeatmapState, DataScale | undefined>;
 }
 
 export const HeatmapStore = createContextStore<HeatmapState>({
@@ -45,6 +50,16 @@ export const HeatmapStore = createContextStore<HeatmapState>({
   }),
 
   interpolator: computed(state => INTERPOLATORS[state.colorMap]),
+  dataScale: computed(state => {
+    if (state.domain === undefined) {
+      return undefined;
+    }
+
+    const scale = (state.hasLogScale ? scaleSymlog : scaleLinear)();
+    scale.domain(state.domain);
+
+    return scale;
+  }),
 });
 
 export function useHeatmapState(): State<HeatmapState> {

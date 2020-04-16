@@ -1,17 +1,7 @@
 import { rgb } from 'd3-color';
-import {
-  scaleSequential,
-  ScaleLinear,
-  ScaleSymLog,
-  scaleLinear,
-  scaleSymlog,
-} from 'd3-scale';
+import { scaleSequential, scaleLinear } from 'd3-scale';
 import { range } from 'lodash-es';
-import { D3Interpolator } from './store';
-
-export type DataScale =
-  | ScaleLinear<number, number>
-  | ScaleSymLog<number, number>;
+import { D3Interpolator, DataScale } from './store';
 
 export function computeTextureData(
   values: number[],
@@ -49,16 +39,4 @@ export function generateCSSLinearGradient(
     .reduce((acc, val) => `${acc},${val}`);
 
   return `linear-gradient(to ${direction}, ${gradientColors})`;
-}
-
-export function getDataScale(
-  domain: [number, number] | undefined,
-  hasLogScale: boolean
-): DataScale | undefined {
-  if (domain === undefined) {
-    return undefined;
-  }
-
-  const scaleFunction = hasLogScale ? scaleSymlog : scaleLinear;
-  return scaleFunction().domain(domain) as DataScale;
 }

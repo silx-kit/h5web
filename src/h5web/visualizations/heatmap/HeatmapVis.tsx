@@ -1,7 +1,7 @@
 import { Canvas } from 'react-three-fiber';
 import React, { useEffect, useMemo } from 'react';
 import Mesh from './Mesh';
-import { computeTextureData, getDataScale } from './utils';
+import { computeTextureData } from './utils';
 import styles from './HeatmapVis.module.css';
 import IndexAxis from './IndexAxis';
 import ColorBar from './ColorBar';
@@ -17,7 +17,7 @@ interface Props {
 function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
 
-  const { domain, interpolator, hasLogScale } = useHeatmapState();
+  const { interpolator, dataScale } = useHeatmapState();
   const { findDomain } = useHeatmapActions();
 
   const values = useMemo(() => data.flat(), [data]);
@@ -26,7 +26,6 @@ function HeatmapVis(props: Props): JSX.Element {
     findDomain(values);
   }, [findDomain, values]);
 
-  const dataScale = getDataScale(domain, hasLogScale);
   const textureData = useMemo(
     () => computeTextureData(values, interpolator, dataScale),
     [dataScale, interpolator, values]

@@ -1,9 +1,9 @@
 import React from 'react';
 import { AxisRight } from '@vx/axis';
 import { useMeasure } from 'react-use';
-import { adaptedNumTicks, generateCSSLinearGradient, DataScale } from './utils';
+import { adaptedNumTicks, generateCSSLinearGradient } from './utils';
 import styles from './HeatmapVis.module.css';
-import { useHeatmapState } from './store';
+import { useHeatmapState, DataScale } from './store';
 
 interface Props {
   dataScale: DataScale;
