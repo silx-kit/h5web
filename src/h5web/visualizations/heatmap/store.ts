@@ -68,6 +68,8 @@ export const HeatmapStore = createContextStore<HeatmapState>({
 
     const scale = (state.hasLogScale ? scaleSymlog : scaleLinear)();
     scale.domain(state.domain);
+    // Extend the domain to "nice" values to have nice ticks afterwards
+    scale.nice();
 
     return scale;
   }),
