@@ -4,6 +4,6 @@ import DemoApp from './DemoApp';
 
 test('renders', async () => {
   const { findByText } = render(<DemoApp />);
-  const elem = await findByText(/No entity/i);
+  const elem = await findByText(/Nothing to visualize/i);
   expect(elem).toBeInTheDocument();
 });

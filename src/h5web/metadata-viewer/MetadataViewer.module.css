@@ -43,7 +43,7 @@
 }
 
 .metadataViewer {
-  overflow: scroll !important;
+  overflow-y: scroll;
   scrollbar-width: thin;
 }
 

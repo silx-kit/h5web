@@ -34,6 +34,7 @@
   padding: 0.2rem 0.8rem;
   padding-bottom: 0.3rem;
   background-color: var(--secondary-light-bg);
+  transition: background-color 0s ease-out;
 }
 
 .btn:hover,

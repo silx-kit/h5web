@@ -13,7 +13,7 @@
   border-bottom: 0.25rem solid transparent;
   line-height: 1;
   outline-offset: -1px;
-  transition: background-color 0s ease-out, border-color 0s ease-out;
+  transition: border-color 0s ease-out;
 }
 
 .btn:hover,
