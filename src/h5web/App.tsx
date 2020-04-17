@@ -17,7 +17,7 @@ enum Role {
 function App(): JSX.Element {
   const [selectedLink, setSelectedLink] = useState<HDF5Link>();
   const [selectedDataset, setSelectedDataset] = useState<HDF5Dataset>();
-  const [role, setRole] = useState<Role>(Role.Inspect);
+  const [role, setRole] = useState<Role>(Role.Display);
 
   const selectedEntity = useEntity(selectedLink);
 
@@ -46,23 +46,23 @@ function App(): JSX.Element {
                 type="button"
                 role="tab"
                 className={styles.btn}
-                aria-selected={role === Role.Inspect}
-                onClick={() => {
-                  setRole(Role.Inspect);
-                }}
-              >
-                Inspect
-              </button>
-              <button
-                type="button"
-                role="tab"
-                className={styles.btn}
                 aria-selected={role === Role.Display}
                 onClick={() => {
                   setRole(Role.Display);
                 }}
               >
                 Display
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className={styles.btn}
+                aria-selected={role === Role.Inspect}
+                onClick={() => {
+                  setRole(Role.Inspect);
+                }}
+              >
+                Inspect
               </button>
             </div>
           </div>
