@@ -41,3 +41,12 @@
 .table tbody tr:first-child > td.raw {
   padding-top: 0.5rem;
 }
+
+.metadataViewer {
+  overflow: scroll !important;
+  scrollbar-width: thin;
+}
+
+.empty {
+  padding: 1rem;
+}
