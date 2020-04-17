@@ -3,15 +3,14 @@ import { useThree } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
 import { usePanZoom } from './hooks';
 
-const AXIS_OFFSETS = [72, 36];
-
 interface Props {
   dims: [number, number];
   textureData: Uint8Array;
+  axisOffsets: [number, number];
 }
 
 function Mesh(props: Props): JSX.Element {
-  const { dims, textureData } = props;
+  const { dims, textureData, axisOffsets } = props;
 
   const { size } = useThree();
   const { width, height } = size;
@@ -22,7 +21,7 @@ function Mesh(props: Props): JSX.Element {
     });
   }, [dims, textureData]);
 
-  const [leftAxisWidth, bottomAxisHeight] = AXIS_OFFSETS;
+  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
   const pointerHandlers = usePanZoom(leftAxisWidth, bottomAxisHeight);
 
   return (

@@ -9,6 +9,8 @@ import LogScaleToggler from './LogScaleToggler';
 import { useHeatmapState, useHeatmapActions } from './store';
 import AxisGrid from './AxisGrid';
 
+const AXIS_OFFSETS: [number, number] = [72, 36];
+
 interface Props {
   dims: [number, number];
   data: number[][];
@@ -35,8 +37,14 @@ function HeatmapVis(props: Props): JSX.Element {
       <div className={styles.mapArea}>
         <Canvas className={styles.heatmap} orthographic invalidateFrameloop>
           <ambientLight />
-          {textureData && <Mesh dims={dims} textureData={textureData} />}
-          <AxisGrid dims={dims} />
+          {textureData && (
+            <Mesh
+              dims={dims}
+              textureData={textureData}
+              axisOffsets={AXIS_OFFSETS}
+            />
+          )}
+          <AxisGrid dims={dims} axisOffsets={AXIS_OFFSETS} />
         </Canvas>
       </div>
       <div className={styles.colorBarArea}>
