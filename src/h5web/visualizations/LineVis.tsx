@@ -7,8 +7,8 @@ import {
   Tooltip,
   CartesianGrid,
 } from 'recharts';
-import AutoSizer from 'react-virtualized-auto-sizer';
 
+import { useMeasure } from 'react-use';
 import styles from './LineVis.module.css';
 
 interface Props {
@@ -18,13 +18,16 @@ interface Props {
 function LineVis(props: Props): JSX.Element {
   const { data } = props;
 
+  const [divRef, { width, height }] = useMeasure();
+  const isVisible = width > 0 && height > 0;
+
   const chartData = useMemo(() => {
     return data.map((val, index) => ({ x: index + 1, y: val }));
   }, [data]);
 
   return (
-    <AutoSizer>
-      {({ width, height }) => (
+    <div ref={divRef} className={styles.root}>
+      {isVisible && (
         <LineChart
           className={styles.chart}
           data={chartData}
@@ -39,7 +42,7 @@ function LineVis(props: Props): JSX.Element {
           <Line dataKey="y" dot={false} isAnimationActive={false} />
         </LineChart>
       )}
-    </AutoSizer>
+    </div>
   );
 }
 

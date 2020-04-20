@@ -25,17 +25,23 @@ function ColorBar(): JSX.Element {
           backgroundImage: generateCSSLinearGradient(interpolator, 'top'),
         }}
       />
-      <svg className={styles.colorBarAxis} height={gradientHeight} width="2em">
-        <AxisRight
-          scale={axisScale}
-          hideAxisLine
-          numTicks={adaptedNumTicks(gradientHeight)}
-          tickFormat={axisScale.tickFormat(
-            adaptedNumTicks(gradientHeight),
-            '.3'
-          )}
-        />
-      </svg>
+      {gradientHeight > 0 && (
+        <svg
+          className={styles.colorBarAxis}
+          height={gradientHeight}
+          width="2em"
+        >
+          <AxisRight
+            scale={axisScale}
+            hideAxisLine
+            numTicks={adaptedNumTicks(gradientHeight)}
+            tickFormat={axisScale.tickFormat(
+              adaptedNumTicks(gradientHeight),
+              '.3'
+            )}
+          />
+        </svg>
+      )}
     </div>
   );
 }
