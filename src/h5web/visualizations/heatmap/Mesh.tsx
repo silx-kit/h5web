@@ -6,10 +6,11 @@ import { usePanZoom } from './hooks';
 interface Props {
   dims: [number, number];
   textureData: Uint8Array;
+  axisOffsets: [number, number];
 }
 
 function Mesh(props: Props): JSX.Element {
-  const { dims, textureData } = props;
+  const { dims, textureData, axisOffsets } = props;
 
   const { size } = useThree();
   const { width, height } = size;
@@ -20,11 +21,19 @@ function Mesh(props: Props): JSX.Element {
     });
   }, [dims, textureData]);
 
-  const pointerHandlers = usePanZoom();
+  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
+  const pointerHandlers = usePanZoom(leftAxisWidth, bottomAxisHeight);
 
   return (
-    <mesh material={material} {...pointerHandlers}>
-      <planeBufferGeometry attach="geometry" args={[width, height]} />
+    <mesh
+      position={[leftAxisWidth / 2, bottomAxisHeight / 2, 0]}
+      material={material}
+      {...pointerHandlers}
+    >
+      <planeBufferGeometry
+        attach="geometry"
+        args={[width - leftAxisWidth, height - bottomAxisHeight]}
+      />
     </mesh>
   );
 }

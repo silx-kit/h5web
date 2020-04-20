@@ -19,6 +19,7 @@ import {
 } from 'd3-scale';
 import { INTERPOLATORS } from './interpolators';
 
+export type Domain = [number, number];
 export type ColorMap = keyof typeof INTERPOLATORS;
 export type D3Interpolator = (t: number) => string;
 export type ColorScale = ScaleSequential<string>;
@@ -27,7 +28,7 @@ export type DataScale =
   | ScaleSymLog<number, number>;
 
 interface HeatmapState {
-  domain?: [number, number];
+  domain?: Domain;
   findDomain: Action<HeatmapState, number[]>;
 
   colorMap: ColorMap;

@@ -5,7 +5,10 @@ import { clamp } from 'lodash-es';
 
 const ZOOM_FACTOR = 0.95;
 
-export function usePanZoom(): ReactThreeFiber.Events {
+export function usePanZoom(
+  leftAxisWidth: number,
+  bottomAxisHeight: number
+): ReactThreeFiber.Events {
   const { size, camera, invalidate } = useThree();
   const { width, height } = size;
 
@@ -19,15 +22,19 @@ export function usePanZoom(): ReactThreeFiber.Events {
       const xBound = width * factor;
       const yBound = height * factor;
 
+      const axisOffsetFactor = 1 - 1 / zoom;
+      const xBoundOffset = leftAxisWidth * axisOffsetFactor;
+      const yBoundOffset = bottomAxisHeight * axisOffsetFactor;
+
       position.set(
-        clamp(x, -xBound, xBound),
-        clamp(y, -yBound, yBound),
+        clamp(x, -xBound + xBoundOffset, xBound),
+        clamp(y, -yBound + yBoundOffset, yBound),
         position.z
       );
 
       invalidate();
     },
-    [camera, height, invalidate, width]
+    [camera, height, invalidate, width, bottomAxisHeight, leftAxisWidth]
   );
 
   const onPointerDown = useCallback(

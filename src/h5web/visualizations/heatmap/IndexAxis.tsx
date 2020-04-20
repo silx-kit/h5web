@@ -5,28 +5,30 @@ import { format } from 'd3-format';
 import { scaleLinear } from 'd3-scale';
 import styles from './HeatmapVis.module.css';
 import { adaptedNumTicks } from './utils';
+import { Domain } from './store';
 
 type Orientation = 'bottom' | 'left';
 
 interface Props {
-  orientation: Orientation;
   className: string;
-  indicesCount: number;
+  domain: Domain;
+  orientation: Orientation;
 }
 
 function IndexAxis(props: Props): JSX.Element {
-  const { orientation, indicesCount, className } = props;
-
+  const { className, domain, orientation } = props;
   const [divRef, { width, height }] = useMeasure();
+
+  const [min, max] = domain;
   const isLeftAxis = orientation === 'left';
   const Axis = isLeftAxis ? AxisLeft : AxisBottom;
 
   const scale = scaleLinear()
-    .domain([-0.5, indicesCount - 0.5])
+    .domain([min - 0.5, max - 0.5])
     .range(isLeftAxis ? [height, 0] : [0, width]);
 
   const numTicks = Math.min(
-    indicesCount,
+    max - min,
     adaptedNumTicks(isLeftAxis ? height : width)
   );
 

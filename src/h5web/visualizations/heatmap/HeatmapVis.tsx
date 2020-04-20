@@ -3,11 +3,13 @@ import React, { useEffect, useMemo } from 'react';
 import Mesh from './Mesh';
 import { computeTextureData } from './utils';
 import styles from './HeatmapVis.module.css';
-import IndexAxis from './IndexAxis';
 import ColorBar from './ColorBar';
 import ColorMapSelector from './ColorMapSelector';
 import LogScaleToggler from './LogScaleToggler';
 import { useHeatmapState, useHeatmapActions } from './store';
+import AxisGrid from './AxisGrid';
+
+const AXIS_OFFSETS: [number, number] = [72, 36];
 
 interface Props {
   dims: [number, number];
@@ -31,28 +33,25 @@ function HeatmapVis(props: Props): JSX.Element {
   }, [findDomain, values]);
 
   return (
-    <div className={styles.chart}>
+    <div className={styles.root}>
       <div className={styles.mapArea}>
         <Canvas className={styles.heatmap} orthographic invalidateFrameloop>
           <ambientLight />
-          {textureData && <Mesh dims={dims} textureData={textureData} />}
+          {textureData && (
+            <Mesh
+              dims={dims}
+              textureData={textureData}
+              axisOffsets={AXIS_OFFSETS}
+            />
+          )}
+          <AxisGrid dims={dims} axisOffsets={AXIS_OFFSETS} />
         </Canvas>
       </div>
-      <IndexAxis
-        className={styles.leftArea}
-        orientation="left"
-        indicesCount={dims[0]}
-      />
-      <IndexAxis
-        className={styles.bottomArea}
-        orientation="bottom"
-        indicesCount={dims[1]}
-      />
-      <div className={styles.rightArea}>
+      <div className={styles.colorBarArea}>
         <LogScaleToggler />
         <ColorBar />
+        <ColorMapSelector className={styles.bottomRightArea} />
       </div>
-      <ColorMapSelector className={styles.bottomRightArea} />
     </div>
   );
 }
