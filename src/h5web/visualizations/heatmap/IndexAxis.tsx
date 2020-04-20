@@ -17,11 +17,13 @@ interface Props {
 
 function IndexAxis(props: Props): JSX.Element {
   const { className, domain, orientation } = props;
-  const [divRef, { width, height }] = useMeasure();
 
   const [min, max] = domain;
   const isLeftAxis = orientation === 'left';
   const Axis = isLeftAxis ? AxisLeft : AxisBottom;
+
+  const [divRef, { width, height }] = useMeasure();
+  const isVisible = width > 0 && height > 0;
 
   const scale = scaleLinear()
     .domain([min - 0.5, max - 0.5])
@@ -34,19 +36,21 @@ function IndexAxis(props: Props): JSX.Element {
 
   return (
     <div ref={divRef} className={className}>
-      <svg className={styles.axis} data-orientation={orientation}>
-        <Axis
-          scale={scale}
-          left={isLeftAxis ? width : 0}
-          numTicks={numTicks}
-          hideAxisLine
-          tickFormat={format('0')}
-          tickClassName={styles.tick}
-          tickComponent={({ formattedValue, ...tickProps }) => (
-            <text {...tickProps}>{formattedValue}</text>
-          )}
-        />
-      </svg>
+      {isVisible && (
+        <svg className={styles.axis} data-orientation={orientation}>
+          <Axis
+            scale={scale}
+            left={isLeftAxis ? width : 0}
+            numTicks={numTicks}
+            hideAxisLine
+            tickFormat={format('0')}
+            tickClassName={styles.tick}
+            tickComponent={({ formattedValue, ...tickProps }) => (
+              <text {...tickProps}>{formattedValue}</text>
+            )}
+          />
+        </svg>
+      )}
     </div>
   );
 }
