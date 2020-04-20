@@ -66,6 +66,7 @@ export function isNumericType(type: HDF5Type): type is HDF5NumericType {
 function buildTreeNode(
   metadata: HDF5Metadata,
   link: HDF5Link,
+  parents: HDF5Link[],
   level = 0
 ): TreeNode<HDF5Link> {
   const group =
@@ -78,23 +79,27 @@ function buildTreeNode(
     label: link.title,
     level,
     data: link,
+    parents,
     ...(group
       ? {
           children: (group.links || []).map(lk =>
-            buildTreeNode(metadata, lk, level + 1)
+            buildTreeNode(metadata, lk, [...parents, link], level + 1)
           ),
         }
       : {}),
   };
 }
 
-export function buildTree(metadata: HDF5Metadata): TreeNode<HDF5Link> {
+export function buildTree(
+  metadata: HDF5Metadata,
+  domain: string
+): TreeNode<HDF5Link> {
   const rootLink: HDF5RootLink = {
     class: HDF5LinkClass.Root,
     collection: HDF5Collection.Groups,
-    title: '',
+    title: domain,
     id: metadata.root,
   };
 
-  return buildTreeNode(metadata, rootLink);
+  return buildTreeNode(metadata, rootLink, []);
 }

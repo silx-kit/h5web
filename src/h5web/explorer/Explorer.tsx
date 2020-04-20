@@ -1,37 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FiFileText } from 'react-icons/fi';
 import { HDF5Link } from '../providers/models';
 import { TreeNode } from './models';
 import TreeView from './TreeView';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
-import { useMetadataTree, useDomain } from '../providers/hooks';
+import { useDomain, useMetadataTree } from '../providers/hooks';
 
 interface Props {
-  onSelect: (link: HDF5Link) => void;
+  onSelect: (node: TreeNode<HDF5Link>) => void;
+  selectedNode?: TreeNode<HDF5Link>;
 }
 
 function Explorer(props: Props): JSX.Element {
-  const { onSelect } = props;
+  const { onSelect, selectedNode } = props;
 
   const domain = useDomain();
   const tree = useMetadataTree();
 
-  const [selectedNode, setSelectedNode] = useState<TreeNode<HDF5Link>>();
-
   useEffect(() => {
     if (tree) {
       // Select root node when tree is ready
-      setSelectedNode(tree);
+      onSelect(tree);
     }
-  }, [tree]);
-
-  useEffect(() => {
-    if (selectedNode) {
-      // Propagate selected link to parent component
-      onSelect(selectedNode.data);
-    }
-  }, [selectedNode, onSelect]);
+  }, [onSelect, tree]);
 
   if (!tree) {
     return (
@@ -53,7 +45,7 @@ function Explorer(props: Props): JSX.Element {
         role="treeitem"
         aria-selected={selectedNode === tree}
         onClick={() => {
-          setSelectedNode(tree);
+          onSelect(tree);
         }}
       >
         <FiFileText className={styles.domainIcon} />
@@ -64,7 +56,7 @@ function Explorer(props: Props): JSX.Element {
         <TreeView
           nodes={tree.children}
           selectedNode={selectedNode}
-          onSelect={setSelectedNode}
+          onSelect={onSelect}
           renderIcon={(data, isBranch, isExpanded) => (
             <Icon data={data} isBranch={isBranch} isExpanded={isExpanded} />
           )}

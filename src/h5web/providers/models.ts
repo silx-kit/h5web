@@ -71,7 +71,7 @@ export enum HDF5LinkClass {
 
 export interface HDF5RootLink {
   class: HDF5LinkClass.Root;
-  title: '';
+  title: string;
   collection: HDF5Collection.Groups;
   id: HDF5Id;
 }
