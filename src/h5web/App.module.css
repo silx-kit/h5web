@@ -18,7 +18,7 @@
   justify-content: flex-end;
   font-size: 0.9rem;
   background-color: var(--secondary-bg);
-  padding: 0.4rem;
+  padding: calc(0.5rem - 1px) 1rem 0.5rem;
 }
 
 .roleToggler {
@@ -31,8 +31,7 @@
   composes: btn-clean from global;
   display: flex;
   align-items: center;
-  padding: 0.2rem 0.8rem;
-  padding-bottom: 0.3rem;
+  padding: 0.2rem 0.8rem 0.3rem;
   background-color: var(--secondary-light-bg);
   transition: background-color 0s ease-out;
 }
@@ -46,7 +45,14 @@
   background-color: var(--secondary-light);
 }
 
-.btn[aria-selected='true'] {
+.btn[aria-selected='true'],
+.btn[aria-pressed='true'] {
   background-color: var(--secondary);
   font-weight: bold;
+}
+
+.sidebarBtn {
+  composes: btn;
+  margin-right: 1rem;
+  border-radius: 0.5rem;
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
+import { FiSidebar } from 'react-icons/fi';
 import Explorer from './explorer/Explorer';
 import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
 import { HDF5Link, HDF5Dataset } from './providers/models';
@@ -17,6 +18,8 @@ enum Role {
 function App(): JSX.Element {
   const [selectedLink, setSelectedLink] = useState<HDF5Link>();
   const [selectedDataset, setSelectedDataset] = useState<HDF5Dataset>();
+
+  const [isExplorerOpen, setExplorerOpen] = useState(true);
   const [role, setRole] = useState<Role>(Role.Display);
 
   const selectedEntity = useEntity(selectedLink);
@@ -32,15 +35,34 @@ function App(): JSX.Element {
   return (
     <div className={styles.app}>
       <ReflexContainer orientation="vertical" windowResizeAware>
-        <ReflexElement className={styles.explorer} flex={0.25} minSize={250}>
+        <ReflexElement
+          className={styles.explorer}
+          style={{ display: isExplorerOpen ? undefined : 'none' }}
+          flex={0.25}
+          minSize={250}
+        >
           <Explorer onSelect={setSelectedLink} />
         </ReflexElement>
 
         <ReflexSplitter />
 
-        <ReflexElement className={styles.mainArea} minSize={500}>
+        <ReflexElement
+          className={styles.mainArea}
+          flex={isExplorerOpen ? 0.75 : 1}
+          minSize={500}
+        >
           <div className={styles.toolbar}>
-            {' '}
+            <button
+              className={styles.sidebarBtn}
+              type="button"
+              aria-label="Toggle explorer sidebar"
+              aria-pressed={isExplorerOpen}
+              onClick={() => {
+                setExplorerOpen(!isExplorerOpen);
+              }}
+            >
+              <FiSidebar />
+            </button>{' '}
             <div className={styles.roleToggler}>
               <button
                 type="button"
