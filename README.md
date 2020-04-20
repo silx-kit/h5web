@@ -38,11 +38,8 @@ the box, so all you need to do is install the recommended extensions.
 runs the `lint` and `test` scripts above on push (to any branch).
 
 [Netlify](https://www.netlify.com/) is used for continuous deployment. The project's `master` branch is deployed
-automatically to https://h5web.netlify.app/. Netlify also adds its own GitHub Actions workflow and deploys each branch,
-commit and pull request individually to URLs of the form:
+automatically to https://h5web.netlify.app/. Netlify also deploys each pull request individually to URLs of the form:
 
-- https:\//<branch-name\>--h5web.netlify.app/
-- https:\//<commit-sha\>--h5web.netlify.app/
 - https:\//deploy-preview-<pr-number\>--h5web.netlify.app/
 
 ## Icon set
