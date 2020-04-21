@@ -1,17 +1,23 @@
 .root {
   flex: 1 1 0%;
   display: flex;
-  background-color: var(--primary-light-bg);
   min-width: 0;
 }
 
 .mapArea {
   flex: 1 1 0%;
   min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heatmap {
+  flex: none;
 }
 
 /* R3F's <Dom /> element*/
-.mapArea > div > div {
+.heatmap > div > div {
   transform: none !important;
   pointer-events: none;
 }

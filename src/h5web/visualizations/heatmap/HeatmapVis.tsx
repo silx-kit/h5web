@@ -8,6 +8,7 @@ import ColorMapSelector from './ColorMapSelector';
 import LogScaleToggler from './LogScaleToggler';
 import { useHeatmapState, useHeatmapActions } from './store';
 import AxisGrid from './AxisGrid';
+import { useHeatmapSize } from './hooks';
 
 const AXIS_OFFSETS: [number, number] = [72, 36];
 
@@ -22,6 +23,8 @@ function HeatmapVis(props: Props): JSX.Element {
   const { colorScale, dataScale } = useHeatmapState();
   const { findDomain } = useHeatmapActions();
 
+  const [mapAreaRef, heatmapSize] = useHeatmapSize(dims, AXIS_OFFSETS);
+
   const values = useMemo(() => data.flat(), [data]);
   const textureData = useMemo(
     () => computeTextureData(values, colorScale, dataScale),
@@ -34,18 +37,22 @@ function HeatmapVis(props: Props): JSX.Element {
 
   return (
     <div className={styles.root}>
-      <div className={styles.mapArea}>
-        <Canvas className={styles.heatmap} orthographic invalidateFrameloop>
-          <ambientLight />
-          {textureData && (
-            <Mesh
-              dims={dims}
-              textureData={textureData}
-              axisOffsets={AXIS_OFFSETS}
-            />
-          )}
-          <AxisGrid dims={dims} axisOffsets={AXIS_OFFSETS} />
-        </Canvas>
+      <div ref={mapAreaRef} className={styles.mapArea}>
+        {heatmapSize && (
+          <div className={styles.heatmap} style={heatmapSize}>
+            <Canvas orthographic invalidateFrameloop>
+              <ambientLight />
+              {textureData && (
+                <Mesh
+                  dims={dims}
+                  textureData={textureData}
+                  axisOffsets={AXIS_OFFSETS}
+                />
+              )}
+              <AxisGrid dims={dims} axisOffsets={AXIS_OFFSETS} />
+            </Canvas>
+          </div>
+        )}
       </div>
       <div className={styles.colorBarArea}>
         <LogScaleToggler />
