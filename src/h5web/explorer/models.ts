@@ -4,4 +4,5 @@ export interface TreeNode<T> {
   level: number;
   data: T;
   children?: TreeNode<T>[];
+  parents: T[];
 }

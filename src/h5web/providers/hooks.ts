@@ -12,12 +12,13 @@ export function useDomain(): string {
 export function useMetadataTree(): TreeNode<HDF5Link> | undefined {
   const { getMetadata } = useContext(ProviderContext);
   const [tree, setTree] = useState<TreeNode<HDF5Link>>();
+  const domain = useDomain();
 
   useEffect(() => {
     getMetadata()
-      .then(buildTree)
+      .then(metadata => buildTree(metadata, domain))
       .then(setTree);
-  }, [getMetadata]);
+  }, [domain, getMetadata]);
 
   return tree;
 }

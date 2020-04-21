@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
-import { FiSidebar } from 'react-icons/fi';
 import Explorer from './explorer/Explorer';
 import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
 import { HDF5Link, HDF5Dataset } from './providers/models';
@@ -9,19 +8,17 @@ import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import { isDataset } from './providers/utils';
 import { useEntity } from './providers/hooks';
-
-enum Role {
-  Inspect,
-  Display,
-}
+import { TreeNode } from './explorer/models';
+import BreadcrumbsBar from './BreadcrumbsBar';
 
 function App(): JSX.Element {
-  const [selectedLink, setSelectedLink] = useState<HDF5Link>();
   const [selectedDataset, setSelectedDataset] = useState<HDF5Dataset>();
+  const [selectedNode, setSelectedNode] = useState<TreeNode<HDF5Link>>();
 
   const [isExplorerOpen, setExplorerOpen] = useState(true);
-  const [role, setRole] = useState<Role>(Role.Display);
+  const [isInspecting, setInspecting] = useState(false);
 
+  const selectedLink = selectedNode?.data;
   const selectedEntity = useEntity(selectedLink);
 
   useEffect(() => {
@@ -41,7 +38,7 @@ function App(): JSX.Element {
           flex={0.25}
           minSize={250}
         >
-          <Explorer onSelect={setSelectedLink} />
+          <Explorer selectedNode={selectedNode} onSelect={setSelectedNode} />
         </ReflexElement>
 
         <ReflexSplitter />
@@ -51,51 +48,21 @@ function App(): JSX.Element {
           flex={isExplorerOpen ? 0.75 : 1}
           minSize={500}
         >
-          <div className={styles.toolbar}>
-            <button
-              className={styles.sidebarBtn}
-              type="button"
-              aria-label="Toggle explorer sidebar"
-              aria-pressed={isExplorerOpen}
-              onClick={() => {
-                setExplorerOpen(!isExplorerOpen);
-              }}
-            >
-              <FiSidebar />
-            </button>{' '}
-            <div className={styles.roleToggler}>
-              <button
-                type="button"
-                role="tab"
-                className={styles.btn}
-                aria-selected={role === Role.Display}
-                onClick={() => {
-                  setRole(Role.Display);
-                }}
-              >
-                Display
-              </button>
-              <button
-                type="button"
-                role="tab"
-                className={styles.btn}
-                aria-selected={role === Role.Inspect}
-                onClick={() => {
-                  setRole(Role.Inspect);
-                }}
-              >
-                Inspect
-              </button>
-            </div>
-          </div>
-          {role === Role.Display ? (
-            <DatasetVisualizer dataset={selectedDataset} />
-          ) : (
+          <BreadcrumbsBar
+            isExplorerOpen={isExplorerOpen}
+            onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
+            isInspecting={isInspecting}
+            onSetInspecting={setInspecting}
+            selectedNode={selectedNode}
+          />
+          {isInspecting ? (
             <MetadataViewer
               key={JSON.stringify(selectedLink)}
               link={selectedLink}
               entity={selectedEntity}
             />
+          ) : (
+            <DatasetVisualizer dataset={selectedDataset} />
           )}
         </ReflexElement>
       </ReflexContainer>
