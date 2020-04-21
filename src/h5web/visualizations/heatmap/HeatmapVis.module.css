@@ -13,6 +13,7 @@
 /* R3F's <Dom /> element*/
 .mapArea > div > div {
   transform: none !important;
+  pointer-events: none;
 }
 
 .axisGrid {
@@ -30,16 +31,19 @@
   content: '';
 }
 
-.leftAxisCell {
-  grid-area: left-axis;
+.leftAxisCell,
+.bottomAxisCell {
   display: flex;
   background-color: #fff;
+  pointer-events: all;
+}
+
+.leftAxisCell {
+  grid-area: left-axis;
 }
 
 .bottomAxisCell {
   grid-area: bottom-axis;
-  display: flex;
-  background-color: #fff;
 }
 
 .colorBarArea {
