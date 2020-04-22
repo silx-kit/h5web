@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useThree } from 'react-three-fiber';
+import { useThree, useFrame } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
 import { usePanZoom } from './hooks';
 
@@ -12,8 +12,22 @@ interface Props {
 function Mesh(props: Props): JSX.Element {
   const { dims, textureData, axisOffsets } = props;
 
-  const { size } = useThree();
+  const { gl, size } = useThree();
   const { width, height } = size;
+  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
+
+  useFrame(() => {
+    /*
+     * Set viewport of WebGL renderer to allow camera-related computations to be performed
+     * as if axis didn't exist and mesh filled entire canvas.
+     */
+    gl.setViewport(
+      leftAxisWidth,
+      bottomAxisHeight,
+      width - leftAxisWidth,
+      height - bottomAxisHeight
+    );
+  });
 
   const material = useMemo(() => {
     return new MeshBasicMaterial({
@@ -21,19 +35,11 @@ function Mesh(props: Props): JSX.Element {
     });
   }, [dims, textureData]);
 
-  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
-  const pointerHandlers = usePanZoom(leftAxisWidth, bottomAxisHeight);
+  const pointerHandlers = usePanZoom();
 
   return (
-    <mesh
-      position={[leftAxisWidth / 2, bottomAxisHeight / 2, 0]}
-      material={material}
-      {...pointerHandlers}
-    >
-      <planeBufferGeometry
-        attach="geometry"
-        args={[width - leftAxisWidth, height - bottomAxisHeight]}
-      />
+    <mesh material={material} {...pointerHandlers}>
+      <planeBufferGeometry attach="geometry" args={[width, height]} />
     </mesh>
   );
 }

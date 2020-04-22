@@ -19,7 +19,7 @@
 /* R3F's <Dom /> element*/
 .heatmap > div > div {
   transform: none !important;
-  pointer-events: none;
+  user-select: none; /* prevent text selection of tick labels when dragging */
 }
 
 .axisGrid {
@@ -27,29 +27,21 @@
   grid-template-areas:
     'left-axis .'
     'empty bottom-axis';
-  grid-template-columns: 72px 1fr;
-  grid-template-rows: 1fr 36px;
 }
 
 .axisGrid::before {
   grid-area: empty;
-  background-color: #fff;
   content: '';
-}
-
-.leftAxisCell,
-.bottomAxisCell {
-  display: flex;
-  background-color: #fff;
-  pointer-events: all;
 }
 
 .leftAxisCell {
   grid-area: left-axis;
+  display: flex;
 }
 
 .bottomAxisCell {
   grid-area: bottom-axis;
+  display: flex;
 }
 
 .colorBarArea {
