@@ -31,7 +31,7 @@ function App(): JSX.Element {
 
   return (
     <div className={styles.app}>
-      <ReflexContainer orientation="vertical" windowResizeAware>
+      <ReflexContainer orientation="vertical">
         <ReflexElement
           className={styles.explorer}
           style={{ display: isExplorerOpen ? undefined : 'none' }}
@@ -41,7 +41,7 @@ function App(): JSX.Element {
           <Explorer selectedNode={selectedNode} onSelect={setSelectedNode} />
         </ReflexElement>
 
-        <ReflexSplitter />
+        {isExplorerOpen && <ReflexSplitter />}
 
         <ReflexElement
           className={styles.mainArea}
