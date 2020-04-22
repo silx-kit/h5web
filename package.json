@@ -30,7 +30,6 @@
     "d3-format": "^1.4.4",
     "d3-scale": "^3.2.1",
     "d3-scale-chromatic": "^1.5.0",
-    "easy-peasy": "^3.3.0",
     "lodash-es": "^4.17.15",
     "nanoid": "^2.1.11",
     "normalize.css": "^8.0.1",
@@ -42,7 +41,8 @@
     "react-use": "^13.26.3",
     "react-window": "^1.8.5",
     "recharts": "^1.8.5",
-    "three": "^0.115.0"
+    "three": "^0.115.0",
+    "zustand": "^2.2.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",

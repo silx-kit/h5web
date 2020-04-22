@@ -44,17 +44,10 @@
   display: flex;
 }
 
-.colorBarArea {
-  display: flex;
-  flex-direction: column;
-  width: 6em;
-  min-height: 0;
-}
-
 .colorBar {
   display: flex;
   padding: 1em;
-  flex: 1 1 auto;
+  width: 6em;
   min-height: 0;
 }
 
@@ -91,19 +84,4 @@
   font-size: inherit;
   text-anchor: inherit;
   dominant-baseline: inherit;
-}
-
-.scaleTypeSelector {
-  composes: btn-clean from global;
-  font-size: small;
-  height: 2em;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  background-color: var(--primary-light-bg);
-}
-
-.scaleTypeSelector:hover,
-.scaleTypeSelector[aria-checked='true'] {
-  background-color: var(--primary-dark-bg);
 }

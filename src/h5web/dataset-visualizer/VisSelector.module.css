@@ -1,6 +1,5 @@
 .selector {
   display: flex;
-  background-color: var(--secondary-light-bg);
   font-size: 0.875em;
   min-height: 2em;
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
-import styles from './HeatmapVis.module.css';
-import { useHeatmapState, useHeatmapActions } from './store';
+import styles from './HeatmapToolbar.module.css';
+import { useHeatmapStore } from './store';
 
 function LogScaleToggler(): JSX.Element {
-  const { hasLogScale } = useHeatmapState();
-  const { toggleLogScale } = useHeatmapActions();
+  const hasLogScale = useHeatmapStore(state => state.hasLogScale);
+  const toggleLogScale = useHeatmapStore(state => state.toggleLogScale);
 
   return (
     <button

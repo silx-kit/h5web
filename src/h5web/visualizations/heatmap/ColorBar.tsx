@@ -3,10 +3,15 @@ import { AxisRight } from '@vx/axis';
 import { useMeasure } from 'react-use';
 import { adaptedNumTicks, generateCSSLinearGradient } from './utils';
 import styles from './HeatmapVis.module.css';
-import { useHeatmapState } from './store';
+import {
+  useHeatmapStore,
+  dataScaleSelector,
+  interpolatorSelector,
+} from './store';
 
 function ColorBar(): JSX.Element {
-  const { dataScale, interpolator } = useHeatmapState();
+  const interpolator = useHeatmapStore(interpolatorSelector);
+  const dataScale = useHeatmapStore(dataScaleSelector);
   const [gradientRef, { height: gradientHeight }] = useMeasure();
 
   if (!dataScale) {

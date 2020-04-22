@@ -1,13 +1,4 @@
 /* eslint-disable no-param-reassign */
-import {
-  createContextStore,
-  Action,
-  State,
-  action,
-  Actions,
-  Computed,
-  computed,
-} from 'easy-peasy';
 import { extent } from 'd3-array';
 import {
   ScaleLinear,
@@ -17,6 +8,7 @@ import {
   ScaleSequential,
   scaleSequential,
 } from 'd3-scale';
+import create from 'zustand';
 import { INTERPOLATORS } from './interpolators';
 
 export type Domain = [number, number];
@@ -27,63 +19,55 @@ export type DataScale =
   | ScaleLinear<number, number>
   | ScaleSymLog<number, number>;
 
-interface HeatmapState {
+export interface HeatmapState {
   domain?: Domain;
-  findDomain: Action<HeatmapState, number[]>;
+  findDomain: (values: number[]) => void;
 
   colorMap: ColorMap;
-  setColorMap: Action<HeatmapState, ColorMap>;
+  setColorMap: (colorMap: ColorMap) => void;
 
   hasLogScale: boolean;
-  toggleLogScale: Action<HeatmapState>;
+  toggleLogScale: () => void;
 
   keepAspectRatio: boolean;
-
-  interpolator: Computed<HeatmapState, D3Interpolator>;
-  colorScale: Computed<HeatmapState, ColorScale>;
-  dataScale: Computed<HeatmapState, DataScale | undefined>;
 }
 
-export const HeatmapStore = createContextStore<HeatmapState>({
+export const [useHeatmapStore] = create<HeatmapState>(set => ({
   domain: undefined,
-  findDomain: action((state, values) => {
-    const [min, max] = extent(values);
-    state.domain =
-      min === undefined || max === undefined ? undefined : [min, max];
-  }),
+  findDomain: (values: number[]) =>
+    set(() => {
+      const [min, max] = extent(values);
+      return {
+        domain: min === undefined || max === undefined ? undefined : [min, max],
+      };
+    }),
 
   colorMap: 'Magma',
-  setColorMap: action((state, colorMap) => {
-    state.colorMap = colorMap;
-  }),
+  setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
   hasLogScale: false,
-  toggleLogScale: action(state => {
-    state.hasLogScale = !state.hasLogScale;
-  }),
+  toggleLogScale: () => set(state => ({ hasLogScale: !state.hasLogScale })),
 
   keepAspectRatio: true,
+}));
 
-  interpolator: computed(state => INTERPOLATORS[state.colorMap]),
-  colorScale: computed(state => scaleSequential(state.interpolator)),
-  dataScale: computed(state => {
-    if (state.domain === undefined) {
-      return undefined;
-    }
-
-    const scale = (state.hasLogScale ? scaleSymlog : scaleLinear)();
-    scale.domain(state.domain);
-    // Extend the domain to "nice" values to have nice ticks afterwards
-    scale.nice();
-
-    return scale;
-  }),
-});
-
-export function useHeatmapState(): State<HeatmapState> {
-  return HeatmapStore.useStoreState(state => state);
+export function interpolatorSelector(state: HeatmapState): D3Interpolator {
+  return INTERPOLATORS[state.colorMap];
 }
 
-export function useHeatmapActions(): Actions<HeatmapState> {
-  return HeatmapStore.useStoreActions(actions => actions);
+export function colorScaleSelector(state: HeatmapState): ColorScale {
+  return scaleSequential(interpolatorSelector(state));
+}
+
+export function dataScaleSelector(state: HeatmapState): DataScale | undefined {
+  if (state.domain === undefined) {
+    return undefined;
+  }
+
+  const scale = (state.hasLogScale ? scaleSymlog : scaleLinear)();
+  scale.domain(state.domain);
+  // Extend the domain to "nice" values to have nice ticks afterwards
+  scale.nice();
+
+  return scale;
 }

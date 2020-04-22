@@ -1,0 +1,23 @@
+.toolbar {
+  display: flex;
+  padding: 0 0.5rem;
+  align-items: stretch;
+  font-size: 0.875rem;
+}
+
+.scaleTypeSelector {
+  padding: 0 0.5rem;
+  composes: btn-clean from global;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.scaleTypeSelector:hover,
+.scaleTypeSelector[aria-checked='true'] {
+  background-color: var(--primary-dark-bg);
+}
+
+.colorMapSelector {
+  min-width: 8rem;
+}
