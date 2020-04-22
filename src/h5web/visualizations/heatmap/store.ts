@@ -37,6 +37,8 @@ interface HeatmapState {
   hasLogScale: boolean;
   toggleLogScale: Action<HeatmapState>;
 
+  keepAspectRatio: boolean;
+
   interpolator: Computed<HeatmapState, D3Interpolator>;
   colorScale: Computed<HeatmapState, ColorScale>;
   dataScale: Computed<HeatmapState, DataScale | undefined>;
@@ -59,6 +61,8 @@ export const HeatmapStore = createContextStore<HeatmapState>({
   toggleLogScale: action(state => {
     state.hasLogScale = !state.hasLogScale;
   }),
+
+  keepAspectRatio: true,
 
   interpolator: computed(state => INTERPOLATORS[state.colorMap]),
   colorScale: computed(state => scaleSequential(state.interpolator)),
