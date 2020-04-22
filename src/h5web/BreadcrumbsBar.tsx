@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { FiSidebar, FiChevronRight } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
 import { TreeNode } from './explorer/models';
@@ -38,12 +38,10 @@ function BreadcrumbsBar(props: Props): JSX.Element {
       {selectedNode && (
         <div className={styles.breadCrumbs}>
           {selectedNode?.parents.slice(firstParentIndex).map(member => (
-            <>
-              <span className={styles.crumb} key={(member as HDF5HardLink).id}>
-                {member.title}
-              </span>
+            <Fragment key={(member as HDF5HardLink).id}>
+              <span className={styles.crumb}>{member.title}</span>
               <FiChevronRight />
-            </>
+            </Fragment>
           ))}
           <span className={styles.crumb} data-current>
             {selectedNode.data.title}

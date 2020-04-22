@@ -48,11 +48,8 @@ export function useHeatmapSize<T>(
   ];
 }
 
-export function usePanZoom(
-  leftAxisWidth: number,
-  bottomAxisHeight: number
-): ReactThreeFiber.Events {
-  const { size, camera, invalidate } = useThree();
+export function usePanZoom(): ReactThreeFiber.Events {
+  const { camera, invalidate, size } = useThree();
   const { width, height } = size;
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
@@ -65,19 +62,15 @@ export function usePanZoom(
       const xBound = width * factor;
       const yBound = height * factor;
 
-      const axisOffsetFactor = 1 - 1 / zoom;
-      const xBoundOffset = leftAxisWidth * axisOffsetFactor;
-      const yBoundOffset = bottomAxisHeight * axisOffsetFactor;
-
       position.set(
-        clamp(x, -xBound + xBoundOffset, xBound),
-        clamp(y, -yBound + yBoundOffset, yBound),
+        clamp(x, -xBound, xBound),
+        clamp(y, -yBound, yBound),
         position.z
       );
 
       invalidate();
     },
-    [camera, height, invalidate, width, bottomAxisHeight, leftAxisWidth]
+    [camera, height, invalidate, width]
   );
 
   const onPointerDown = useCallback(
@@ -145,7 +138,7 @@ export function usePanZoom(
   useEffect(() => {
     // Move camera on resize to stay within mesh bounds
     moveCameraTo(camera.position.x, camera.position.y);
-  }, [camera, moveCameraTo, size]); // `size` is key here
+  }, [camera, moveCameraTo]);
 
   return {
     onPointerDown,

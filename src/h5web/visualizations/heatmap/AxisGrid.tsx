@@ -18,7 +18,6 @@ interface Props {
 function AxisGrid(props: Props): JSX.Element {
   const { dims, axisOffsets } = props;
   const [rows, cols] = dims;
-  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
 
   const { camera, size } = useThree();
   const { width, height } = size;
@@ -29,8 +28,8 @@ function AxisGrid(props: Props): JSX.Element {
   });
 
   // Axis bounds in R3F camera coordinates
-  const leftAxisBounds: Domain = [-height / 2 + bottomAxisHeight, height / 2];
-  const bottomAxisBounds: Domain = [-width / 2 + leftAxisWidth, width / 2];
+  const leftAxisBounds = [-height / 2, height / 2];
+  const bottomAxisBounds = [-width / 2, width / 2];
 
   // Scales R3F camera coordinates to axis bounds
   const leftAxisScale = scaleLinear()
@@ -56,7 +55,15 @@ function AxisGrid(props: Props): JSX.Element {
 
   return (
     <Dom>
-      <div className={styles.axisGrid} style={{ width, height }}>
+      <div
+        className={styles.axisGrid}
+        style={{
+          width,
+          height,
+          gridTemplateColumns: `${axisOffsets[0]}px 1fr`,
+          gridTemplateRows: `1fr ${axisOffsets[1]}px`,
+        }}
+      >
         <IndexAxis
           className={styles.leftAxisCell}
           orientation="left"
