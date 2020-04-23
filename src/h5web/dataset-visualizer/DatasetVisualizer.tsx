@@ -4,7 +4,7 @@ import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
 import { getSupportedVis, useActiveVis } from './utils';
 import VisDisplay from './VisDisplay';
-import VisToolbar from './VisToolbar';
+import VisBar from './VisBar';
 
 interface Props {
   dataset?: HDF5Dataset;
@@ -18,13 +18,13 @@ function DatasetVisualizer(props: Props): JSX.Element {
 
   return (
     <div className={styles.visualizer}>
-      <div className={styles.toolbar}>
+      <div className={styles.visBar}>
         <VisSelector
           activeVis={activeVis}
           choices={supportedVis}
           onChange={setActiveVis}
         />
-        <VisToolbar vis={activeVis} />
+        <VisBar vis={activeVis} />
       </div>
       <div className={styles.displayArea}>
         {dataset ? (

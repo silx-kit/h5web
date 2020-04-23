@@ -4,11 +4,7 @@ import Mesh from './Mesh';
 import { computeTextureData } from './utils';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
-import {
-  useHeatmapStore,
-  dataScaleSelector,
-  colorScaleSelector,
-} from './store';
+import { useHeatmapStore, selectDataScale, selectColorScale } from './store';
 import AxisGrid from './AxisGrid';
 import { useHeatmapSize } from './hooks';
 
@@ -23,8 +19,8 @@ function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
 
   const findDomain = useHeatmapStore(state => state.findDomain);
-  const colorScale = useHeatmapStore(colorScaleSelector);
-  const dataScale = useHeatmapStore(dataScaleSelector);
+  const colorScale = useHeatmapStore(selectColorScale);
+  const dataScale = useHeatmapStore(selectDataScale);
 
   const [mapAreaRef, heatmapSize] = useHeatmapSize(dims, AXIS_OFFSETS);
 

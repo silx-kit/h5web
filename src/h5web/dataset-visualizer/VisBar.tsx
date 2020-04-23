@@ -6,7 +6,7 @@ interface Props {
   vis?: Vis;
 }
 
-function VisToolbar(props: Props): JSX.Element {
+function VisBar(props: Props): JSX.Element {
   const { vis } = props;
 
   if (vis === Vis.Heatmap) {
@@ -15,4 +15,4 @@ function VisToolbar(props: Props): JSX.Element {
   return <></>;
 }
 
-export default VisToolbar;
+export default VisBar;

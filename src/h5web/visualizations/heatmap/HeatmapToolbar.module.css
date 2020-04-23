@@ -1,20 +1,19 @@
 .toolbar {
   display: flex;
   padding: 0 0.5rem;
-  align-items: stretch;
   font-size: 0.875rem;
 }
 
-.scaleTypeSelector {
+.toggler {
   padding: 0 0.5rem;
   composes: btn-clean from global;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: left;
 }
 
-.scaleTypeSelector:hover,
-.scaleTypeSelector[aria-checked='true'] {
+.toggler:hover,
+.toggler[aria-checked='true'] {
   background-color: var(--primary-dark-bg);
 }
 

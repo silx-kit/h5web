@@ -1,6 +1,7 @@
 import React, { CSSProperties } from 'react';
 import Select, { components } from 'react-select';
 import { FiChevronDown } from 'react-icons/fi';
+import shallow from 'zustand/shallow';
 import { generateCSSLinearGradient } from './utils';
 import { INTERPOLATORS } from './interpolators';
 import { ColorMap, useHeatmapStore } from './store';
@@ -20,8 +21,11 @@ const DropdownIndicator = (props: any): JSX.Element => {
 const colorMapOptions = Object.keys(INTERPOLATORS).map(label => ({ label }));
 
 function ColorMapSelector(): JSX.Element {
-  const colorMap = useHeatmapStore(state => state.colorMap);
-  const setColorMap = useHeatmapStore(state => state.setColorMap);
+  const [colorMap, setColorMap] = useHeatmapStore(state => [
+    state.colorMap,
+    state.setColorMap,
+    shallow,
+  ]);
 
   const gradientStyles = {
     option: (

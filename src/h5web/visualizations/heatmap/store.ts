@@ -30,17 +30,17 @@ export interface HeatmapState {
   toggleLogScale: () => void;
 
   keepAspectRatio: boolean;
+  toggleAspectRatio: () => void;
 }
 
 export const [useHeatmapStore] = create<HeatmapState>(set => ({
   domain: undefined,
-  findDomain: (values: number[]) =>
-    set(() => {
-      const [min, max] = extent(values);
-      return {
-        domain: min === undefined || max === undefined ? undefined : [min, max],
-      };
-    }),
+  findDomain: (values: number[]) => {
+    const [min, max] = extent(values);
+    set({
+      domain: min === undefined || max === undefined ? undefined : [min, max],
+    });
+  },
 
   colorMap: 'Magma',
   setColorMap: (colorMap: ColorMap) => set({ colorMap }),
@@ -49,17 +49,19 @@ export const [useHeatmapStore] = create<HeatmapState>(set => ({
   toggleLogScale: () => set(state => ({ hasLogScale: !state.hasLogScale })),
 
   keepAspectRatio: true,
+  toggleAspectRatio: () =>
+    set(state => ({ keepAspectRatio: !state.keepAspectRatio })),
 }));
 
-export function interpolatorSelector(state: HeatmapState): D3Interpolator {
+export function selectInterpolator(state: HeatmapState): D3Interpolator {
   return INTERPOLATORS[state.colorMap];
 }
 
-export function colorScaleSelector(state: HeatmapState): ColorScale {
-  return scaleSequential(interpolatorSelector(state));
+export function selectColorScale(state: HeatmapState): ColorScale {
+  return scaleSequential(selectInterpolator(state));
 }
 
-export function dataScaleSelector(state: HeatmapState): DataScale | undefined {
+export function selectDataScale(state: HeatmapState): DataScale | undefined {
   if (state.domain === undefined) {
     return undefined;
   }
