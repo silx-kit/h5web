@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useRef, useEffect, CSSProperties } from 'react';
 import { Vector3 } from 'three';
 import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
@@ -7,10 +7,12 @@ import { useHeatmapStore } from './store';
 
 const ZOOM_FACTOR = 0.95;
 
-export function useHeatmapSize<T>(
+export function useHeatmapStyles<T>(
   dims: [number, number],
   axisOffset: [number, number]
-): [(elem: T) => void, { width: number; height: number } | undefined] {
+): [(elem: T) => void, CSSProperties | undefined] {
+  const [leftAxisWidth, bottomAxisHeight] = axisOffset;
+
   const keepAspectRatio = useHeatmapStore(state => state.keepAspectRatio);
   const [wrapperRef, { width, height }] = useMeasure();
 
@@ -19,31 +21,41 @@ export function useHeatmapSize<T>(
   }
 
   if (!keepAspectRatio) {
-    return [wrapperRef, { width, height }];
+    return [
+      wrapperRef,
+      {
+        width,
+        height,
+        paddingBottom: bottomAxisHeight,
+        paddingLeft: leftAxisWidth,
+      },
+    ];
   }
 
   const [rows, cols] = dims;
   const aspectRatio = rows / cols;
 
-  const [leftAxisWidth, bottomAxisHeight] = axisOffset;
   const availableWidth = width - leftAxisWidth;
   const availableHeight = height - bottomAxisHeight;
 
-  // Determine how to compute mesh size to fit available space while maintaining aspect ratio
+  // Determine how to compute canvas size to fit available space while maintaining aspect ratio
   const shouldAdjustWidth = availableWidth >= availableHeight * aspectRatio;
 
-  const meshWidth = shouldAdjustWidth
+  const canvasWidth = shouldAdjustWidth
     ? availableHeight * aspectRatio
     : availableWidth;
-  const meshHeight = shouldAdjustWidth
+  const canvasHeight = shouldAdjustWidth
     ? availableHeight
     : availableWidth / aspectRatio;
 
   return [
     wrapperRef,
     {
-      width: meshWidth + leftAxisWidth,
-      height: meshHeight + bottomAxisHeight,
+      boxSizing: 'content-box',
+      width: canvasWidth,
+      height: canvasHeight,
+      paddingBottom: bottomAxisHeight,
+      paddingLeft: leftAxisWidth,
     },
   ];
 }

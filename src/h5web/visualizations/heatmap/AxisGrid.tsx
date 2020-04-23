@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dom, useThree, useFrame } from 'react-three-fiber';
+import { useThree, useFrame, Dom } from 'react-three-fiber';
 import { scaleLinear } from 'd3-scale';
 import IndexAxis from './IndexAxis';
 import styles from './HeatmapVis.module.css';
@@ -18,6 +18,7 @@ interface Props {
 function AxisGrid(props: Props): JSX.Element {
   const { dims, axisOffsets } = props;
   const [rows, cols] = dims;
+  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
 
   const { camera, size } = useThree();
   const { width, height } = size;
@@ -54,16 +55,18 @@ function AxisGrid(props: Props): JSX.Element {
   });
 
   return (
-    <Dom>
-      <div
-        className={styles.axisGrid}
-        style={{
-          width,
-          height,
-          gridTemplateColumns: `${axisOffsets[0]}px 1fr`,
-          gridTemplateRows: `1fr ${axisOffsets[1]}px`,
-        }}
-      >
+    <Dom
+      className={styles.axisGrid}
+      style={{
+        // Take over space reserved for axis by `useHeatmapStyles` hook
+        width: width + leftAxisWidth,
+        height: height + bottomAxisHeight,
+        left: -leftAxisWidth,
+        gridTemplateColumns: `${leftAxisWidth}px 1fr`,
+        gridTemplateRows: `1fr ${bottomAxisHeight}px`,
+      }}
+    >
+      <>
         <IndexAxis
           className={styles.leftAxisCell}
           orientation="left"
@@ -74,7 +77,7 @@ function AxisGrid(props: Props): JSX.Element {
           orientation="bottom"
           domain={domains.bottom}
         />
-      </div>
+      </>
     </Dom>
   );
 }
