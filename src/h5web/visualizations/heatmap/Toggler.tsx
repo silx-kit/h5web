@@ -16,9 +16,7 @@ function Toggler(props: Props): JSX.Element {
       type="button"
       role="switch"
       aria-checked={value}
-      onClick={() => {
-        onChange();
-      }}
+      onClick={onChange}
     >
       {value ? <FiToggleRight /> : <FiToggleLeft />}
       <span className={styles.togglerLabel}>{label}</span>
