@@ -1,0 +1,22 @@
+.toolbar {
+  display: flex;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+}
+
+.toggler {
+  padding: 0 0.5rem;
+  composes: btn-clean from global;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.toggler:hover,
+.toggler[aria-checked='true'] {
+  background-color: var(--primary-dark-bg);
+}
+
+.colorMapSelector {
+  min-width: 8rem;
+}

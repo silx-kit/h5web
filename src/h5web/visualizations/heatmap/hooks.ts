@@ -3,7 +3,7 @@ import { Vector3 } from 'three';
 import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
 import { useMeasure } from 'react-use';
-import { useHeatmapState } from './store';
+import { useHeatmapStore } from './store';
 
 const ZOOM_FACTOR = 0.95;
 
@@ -11,7 +11,7 @@ export function useHeatmapSize<T>(
   dims: [number, number],
   axisOffset: [number, number]
 ): [(elem: T) => void, { width: number; height: number } | undefined] {
-  const { keepAspectRatio } = useHeatmapState();
+  const keepAspectRatio = useHeatmapStore(state => state.keepAspectRatio);
   const [wrapperRef, { width, height }] = useMeasure();
 
   if (width === 0 && height === 0) {

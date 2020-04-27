@@ -4,9 +4,7 @@ import Mesh from './Mesh';
 import { computeTextureData } from './utils';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
-import ColorMapSelector from './ColorMapSelector';
-import LogScaleToggler from './LogScaleToggler';
-import { useHeatmapState, useHeatmapActions } from './store';
+import { useHeatmapStore, selectDataScale, selectColorScale } from './store';
 import AxisGrid from './AxisGrid';
 import { useHeatmapSize } from './hooks';
 
@@ -20,8 +18,9 @@ interface Props {
 function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
 
-  const { colorScale, dataScale } = useHeatmapState();
-  const { findDomain } = useHeatmapActions();
+  const findDomain = useHeatmapStore(state => state.findDomain);
+  const colorScale = useHeatmapStore(selectColorScale);
+  const dataScale = useHeatmapStore(selectDataScale);
 
   const [mapAreaRef, heatmapSize] = useHeatmapSize(dims, AXIS_OFFSETS);
 
@@ -54,11 +53,7 @@ function HeatmapVis(props: Props): JSX.Element {
           </div>
         )}
       </div>
-      <div className={styles.colorBarArea}>
-        <LogScaleToggler />
-        <ColorBar />
-        <ColorMapSelector className={styles.bottomRightArea} />
-      </div>
+      <ColorBar />
     </div>
   );
 }

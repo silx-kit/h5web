@@ -16,3 +16,9 @@
   padding: 1em;
   color: var(--secondary-dark);
 }
+
+.visBar {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--secondary-light-bg);
+}
