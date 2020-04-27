@@ -1,12 +1,12 @@
 import { Canvas } from 'react-three-fiber';
 import React, { useEffect, useMemo } from 'react';
-import Mesh from './Mesh';
 import { computeTextureData } from './utils';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import { useHeatmapStore, selectDataScale, selectColorScale } from './store';
+import { useHeatmapStyles } from './hooks';
 import AxisGrid from './AxisGrid';
-import { useHeatmapSize } from './hooks';
+import Mesh from './Mesh';
 
 const AXIS_OFFSETS: [number, number] = [72, 36];
 
@@ -22,7 +22,7 @@ function HeatmapVis(props: Props): JSX.Element {
   const colorScale = useHeatmapStore(selectColorScale);
   const dataScale = useHeatmapStore(selectDataScale);
 
-  const [mapAreaRef, heatmapSize] = useHeatmapSize(dims, AXIS_OFFSETS);
+  const [mapAreaRef, heatmapStyles] = useHeatmapStyles(dims, AXIS_OFFSETS);
 
   const values = useMemo(() => data.flat(), [data]);
   const textureData = useMemo(
@@ -37,18 +37,16 @@ function HeatmapVis(props: Props): JSX.Element {
   return (
     <div className={styles.root}>
       <div ref={mapAreaRef} className={styles.mapArea}>
-        {heatmapSize && (
-          <div className={styles.heatmap} style={heatmapSize}>
-            <Canvas orthographic invalidateFrameloop>
+        {heatmapStyles && (
+          <div className={styles.heatmap} style={heatmapStyles}>
+            <Canvas
+              className={styles.canvasWrapper}
+              orthographic
+              invalidateFrameloop
+            >
               <ambientLight />
-              {textureData && (
-                <Mesh
-                  dims={dims}
-                  textureData={textureData}
-                  axisOffsets={AXIS_OFFSETS}
-                />
-              )}
               <AxisGrid dims={dims} axisOffsets={AXIS_OFFSETS} />
+              {textureData && <Mesh dims={dims} textureData={textureData} />}
             </Canvas>
           </div>
         )}
