@@ -7,6 +7,7 @@ import { useHeatmapStore, selectDataScale, selectColorScale } from './store';
 import { useHeatmapStyles } from './hooks';
 import AxisGrid from './AxisGrid';
 import Mesh from './Mesh';
+import Tooltip from './Tooltip';
 
 const AXIS_OFFSETS: [number, number] = [72, 36];
 
@@ -46,6 +47,7 @@ function HeatmapVis(props: Props): JSX.Element {
             >
               <ambientLight />
               <AxisGrid dims={dims} axisOffsets={AXIS_OFFSETS} />
+              <Tooltip dims={dims} data={data} />
               {textureData && <Mesh dims={dims} textureData={textureData} />}
             </Canvas>
           </div>

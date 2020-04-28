@@ -31,7 +31,7 @@
 }
 
 .axisGrid {
-  position: absolute;
+  position: relative;
   top: 0;
   display: grid;
   grid-template-areas:
@@ -89,4 +89,16 @@
   font-size: inherit;
   text-anchor: inherit;
   dominant-baseline: inherit;
+}
+
+.tooltip {
+  color: inherit !important;
+  background-color: rgba(245, 251, 239, 0.7) !important;
+}
+
+.tooltipValue {
+  display: block;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  font-size: 1.125em;
 }

@@ -87,8 +87,6 @@ export function usePanZoom(): ReactThreeFiber.Events {
 
   const onPointerDown = useCallback(
     (evt: PointerEvent) => {
-      evt.stopPropagation();
-
       const { currentTarget, pointerId } = evt as React.PointerEvent;
       currentTarget.setPointerCapture(pointerId);
 
@@ -99,8 +97,6 @@ export function usePanZoom(): ReactThreeFiber.Events {
   );
 
   const onPointerUp = useCallback((evt: PointerEvent) => {
-    evt.stopPropagation();
-
     const { currentTarget, pointerId } = evt as React.PointerEvent;
     currentTarget.releasePointerCapture(pointerId);
 
@@ -113,6 +109,7 @@ export function usePanZoom(): ReactThreeFiber.Events {
         return;
       }
 
+      // Prevent events from reaching tooltip mesh when panning
       evt.stopPropagation();
 
       const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
@@ -126,8 +123,6 @@ export function usePanZoom(): ReactThreeFiber.Events {
 
   const onWheel = useCallback(
     (evt: PointerEvent) => {
-      evt.stopPropagation();
-
       const { deltaY } = evt as React.WheelEvent;
       const factor = deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
 

@@ -5,7 +5,7 @@
 }
 
 .toggler {
-  padding: 0 0.5rem;
+  padding: 0 0.75rem;
   composes: btn-clean from global;
   display: flex;
   align-items: center;
@@ -15,6 +15,10 @@
 .toggler:hover,
 .toggler[aria-checked='true'] {
   background-color: var(--primary-dark-bg);
+}
+
+.togglerLabel {
+  margin-left: 0.5rem;
 }
 
 .colorMapSelector {
