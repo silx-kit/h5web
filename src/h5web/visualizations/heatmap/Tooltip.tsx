@@ -53,7 +53,7 @@ function Tooltip(props: Props): ReactElement {
     [yCoordScale, camera, height, xCoordScale, showTooltip, width]
   );
 
-  // Hide tooltip when pointer leaves mesh or user starts to pan
+  // Hide tooltip when pointer leaves mesh or user starts panning
   const onPointerOut = useCallback(hideTooltip, [hideTooltip]);
   const onPointerDown = useCallback(hideTooltip, [hideTooltip]);
 

@@ -21,7 +21,7 @@ function Toggler(props: Props): JSX.Element {
       }}
     >
       {value ? <FiToggleRight /> : <FiToggleLeft />}
-      {label}
+      <span className={styles.togglerLabel}>{label}</span>
     </button>
   );
 }
