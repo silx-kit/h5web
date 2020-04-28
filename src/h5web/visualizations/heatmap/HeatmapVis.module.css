@@ -10,11 +10,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden; /* prevent heatmap overflow when enabling `keepAspectRatio` */
 }
 
 .heatmap {
   flex: none;
-  overflow: hidden;
 }
 
 /* R3F's root element */
