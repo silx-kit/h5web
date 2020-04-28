@@ -28,11 +28,11 @@ function Tooltip(props: Props): ReactElement {
 
   // Scales to compute data coordinates from unprojected mesh coordinates
   const xCoordScale = scaleLinear()
-    .domain([-height / 2, height / 2])
-    .range([0, rows]);
-  const yCoordScale = scaleLinear()
     .domain([-width / 2, width / 2])
     .range([0, cols]);
+  const yCoordScale = scaleLinear()
+    .domain([-height / 2, height / 2])
+    .range([0, rows]);
 
   // Update tooltip when pointer moves
   // When panning, events are handled and stopped by texture mesh and do not reach this mesh (which is behind)
@@ -41,8 +41,8 @@ function Tooltip(props: Props): ReactElement {
       const { zoom } = camera;
       const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
 
-      const xCoord = Math.floor(xCoordScale(evt.unprojectedPoint.y));
-      const yCoord = Math.floor(yCoordScale(evt.unprojectedPoint.x));
+      const xCoord = Math.floor(xCoordScale(evt.unprojectedPoint.x));
+      const yCoord = Math.floor(yCoordScale(evt.unprojectedPoint.y));
 
       showTooltip({
         tooltipLeft: projectedPoint.x * zoom + width / 2,
@@ -75,7 +75,7 @@ function Tooltip(props: Props): ReactElement {
           >
             {`x=${tooltipData[0]}, y=${tooltipData[1]}`}
             <span className={styles.tooltipValue}>
-              {format('.3e')(data[tooltipData[0]][tooltipData[1]])}
+              {format('.3')(data[tooltipData[1]][tooltipData[0]])}
             </span>
           </TooltipWithBounds>
         ) : (
