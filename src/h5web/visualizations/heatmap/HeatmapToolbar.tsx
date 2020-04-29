@@ -4,6 +4,7 @@ import styles from './HeatmapToolbar.module.css';
 import ColorMapSelector from './ColorMapSelector';
 import Toggler from './Toggler';
 import { useHeatmapStore } from './store';
+import DomainSlider from './DomainSlider';
 
 function HeatmapToolbar(): JSX.Element {
   const [
@@ -18,9 +19,9 @@ function HeatmapToolbar(): JSX.Element {
     state.toggleAspectRatio,
     shallow,
   ]);
-
   return (
     <div className={styles.toolbar}>
+      <DomainSlider />
       <ColorMapSelector />
       <Toggler
         label="Log scale"

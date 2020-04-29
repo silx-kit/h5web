@@ -21,4 +21,5 @@
   display: flex;
   justify-content: space-between;
   background-color: var(--secondary-light-bg);
+  height: 2.5rem;
 }
