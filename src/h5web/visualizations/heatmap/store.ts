@@ -20,8 +20,10 @@ export type DataScale =
   | ScaleSymLog<number, number>;
 
 export interface HeatmapState {
-  domain?: Domain;
-  findDomain: (values: number[]) => void;
+  dataDomain?: Domain;
+  customDomain?: Domain;
+  findDataDomain: (values: number[]) => void;
+  setCustomDomain: (customDomain: Domain) => void;
 
   colorMap: ColorMap;
   setColorMap: (colorMap: ColorMap) => void;
@@ -34,13 +36,17 @@ export interface HeatmapState {
 }
 
 export const [useHeatmapStore] = create<HeatmapState>(set => ({
-  domain: undefined,
-  findDomain: (values: number[]) => {
+  customDomain: undefined,
+  findDataDomain: (values: number[]) => {
     const [min, max] = extent(values);
+    const dataDomain: Domain | undefined =
+      min === undefined || max === undefined ? undefined : [min, max];
     set({
-      domain: min === undefined || max === undefined ? undefined : [min, max],
+      dataDomain,
+      customDomain: dataDomain && [dataDomain[0], dataDomain[1]],
     });
   },
+  setCustomDomain: (customDomain: Domain) => set({ customDomain }),
 
   colorMap: 'Magma',
   setColorMap: (colorMap: ColorMap) => set({ colorMap }),
@@ -57,19 +63,34 @@ export function selectInterpolator(state: HeatmapState): D3Interpolator {
   return INTERPOLATORS[state.colorMap];
 }
 
+export function selectGetExtendedDomain(
+  state: HeatmapState
+): (n: number) => Domain | undefined {
+  return (extendPercentage: number) => {
+    if (state.dataDomain === undefined) {
+      return undefined;
+    }
+    const domainExtension =
+      extendPercentage * (state.dataDomain[1] - state.dataDomain[0]);
+
+    return [
+      state.dataDomain[0] - domainExtension,
+      state.dataDomain[1] + domainExtension,
+    ];
+  };
+}
+
 export function selectColorScale(state: HeatmapState): ColorScale {
   return scaleSequential(selectInterpolator(state));
 }
 
 export function selectDataScale(state: HeatmapState): DataScale | undefined {
-  if (state.domain === undefined) {
+  if (state.customDomain === undefined) {
     return undefined;
   }
 
   const scale = (state.hasLogScale ? scaleSymlog : scaleLinear)();
-  scale.domain(state.domain);
-  // Extend the domain to "nice" values to have nice ticks afterwards
-  scale.nice();
+  scale.domain(state.customDomain);
 
   return scale;
 }

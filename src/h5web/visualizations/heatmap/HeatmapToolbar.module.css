@@ -21,6 +21,11 @@
   margin-left: 0.5rem;
 }
 
+.selectorWrapper {
+  display: flex;
+  align-items: center;
+}
+
 .colorMapSelector {
   width: 8rem;
 }

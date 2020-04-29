@@ -1,7 +1,6 @@
 .selector {
   display: flex;
   font-size: 0.875em;
-  min-height: 2em;
 }
 
 .btn {

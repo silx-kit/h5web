@@ -19,7 +19,7 @@ interface Props {
 function HeatmapVis(props: Props): JSX.Element {
   const { dims, data } = props;
 
-  const findDomain = useHeatmapStore(state => state.findDomain);
+  const findDataDomain = useHeatmapStore(state => state.findDataDomain);
   const colorScale = useHeatmapStore(selectColorScale);
   const dataScale = useHeatmapStore(selectDataScale);
 
@@ -32,8 +32,8 @@ function HeatmapVis(props: Props): JSX.Element {
   );
 
   useEffect(() => {
-    findDomain(values);
-  }, [findDomain, values]);
+    findDataDomain(values);
+  }, [findDataDomain, values]);
 
   return (
     <div className={styles.root}>
