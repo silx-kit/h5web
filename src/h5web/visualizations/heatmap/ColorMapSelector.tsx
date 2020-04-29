@@ -104,27 +104,29 @@ function ColorMapSelector(): JSX.Element {
   };
 
   return (
-    <Select
-      className={styles.colorMapSelector}
-      defaultValue={{ label: colorMap, value: colorMap }}
-      options={colorMapOptions}
-      onChange={selection => {
-        setColorMap((selection as OptionType).value);
-      }}
-      components={{ DropdownIndicator, Option, SingleValue }}
-      styles={customStyles}
-      theme={theme => ({
-        ...theme,
-        borderRadius: 0,
-        colors: {
-          ...theme.colors,
-          primary: 'var(--secondary-dark)',
-          primary75: 'var(--secondary)',
-          primary50: 'var(--secondary-light)',
-          primary25: 'var(--secondary-light-bg)',
-        },
-      })}
-    />
+    <div className={styles.selectorWrapper}>
+      <Select
+        className={styles.colorMapSelector}
+        defaultValue={{ label: colorMap, value: colorMap }}
+        options={colorMapOptions}
+        onChange={selection => {
+          setColorMap((selection as OptionType).value);
+        }}
+        components={{ DropdownIndicator, Option, SingleValue }}
+        styles={customStyles}
+        theme={theme => ({
+          ...theme,
+          borderRadius: 0,
+          colors: {
+            ...theme.colors,
+            primary: 'var(--secondary-dark)',
+            primary75: 'var(--secondary)',
+            primary50: 'var(--secondary-light)',
+            primary25: 'var(--secondary-light-bg)',
+          },
+        })}
+      />
+    </div>
   );
 }
 
