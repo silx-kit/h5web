@@ -1,26 +1,29 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, ReactElement } from 'react';
 import { useThree } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
-import { usePanZoom } from './hooks';
+import { usePanZoom, useProps, useTextureData } from './hooks';
 
-interface Props {
-  dims: [number, number];
-  textureData: Uint8Array;
-}
-
-function Mesh(props: Props): JSX.Element {
-  const { dims, textureData } = props;
+function Mesh(): ReactElement {
+  const { dims } = useProps();
 
   const { size } = useThree();
   const { width, height } = size;
 
+  const textureData = useTextureData();
   const material = useMemo(() => {
-    return new MeshBasicMaterial({
-      map: new DataTexture(textureData, dims[1], dims[0], RGBFormat),
-    });
+    return (
+      textureData &&
+      new MeshBasicMaterial({
+        map: new DataTexture(textureData, dims[1], dims[0], RGBFormat),
+      })
+    );
   }, [dims, textureData]);
 
   const pointerHandlers = usePanZoom();
+
+  if (!material) {
+    return <></>;
+  }
 
   return (
     <mesh material={material} {...pointerHandlers}>

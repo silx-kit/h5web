@@ -9,8 +9,9 @@ import { FiChevronDown } from 'react-icons/fi';
 import shallow from 'zustand/shallow';
 import { generateCSSLinearGradient } from './utils';
 import { INTERPOLATORS } from './interpolators';
-import { ColorMap, useHeatmapStore } from './store';
+import { useHeatmapConfig } from './config';
 import styles from './HeatmapToolbar.module.css';
+import { ColorMap } from './models';
 
 type OptionType = {
   label: ColorMap;
@@ -77,7 +78,7 @@ const colorMapOptions = Object.keys(INTERPOLATORS).map(
 );
 
 function ColorMapSelector(): JSX.Element {
-  const [colorMap, setColorMap] = useHeatmapStore(state => [
+  const [colorMap, setColorMap] = useHeatmapConfig(state => [
     state.colorMap,
     state.setColorMap,
     shallow,

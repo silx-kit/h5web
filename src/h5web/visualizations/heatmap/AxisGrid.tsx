@@ -3,20 +3,16 @@ import { useThree, useFrame, Dom } from 'react-three-fiber';
 import { scaleLinear } from 'd3-scale';
 import IndexAxis from './IndexAxis';
 import styles from './HeatmapVis.module.css';
-import { Domain } from './store';
+import { useProps } from './hooks';
+import { Domain } from './models';
 
 interface AxisDomains {
   left: Domain;
   bottom: Domain;
 }
 
-interface Props {
-  dims: [number, number];
-  axisOffsets: [number, number];
-}
-
-function AxisGrid(props: Props): JSX.Element {
-  const { dims, axisOffsets } = props;
+function AxisGrid(): JSX.Element {
+  const { dims, axisOffsets } = useProps();
   const [rows, cols] = dims;
   const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
 

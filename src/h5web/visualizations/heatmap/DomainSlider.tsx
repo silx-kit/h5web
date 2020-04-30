@@ -4,28 +4,33 @@ import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import { round } from 'lodash-es';
 import styles from './DomainSlider.module.css';
-import { useHeatmapStore, Domain, selectGetExtendedDomain } from './store';
+import { useHeatmapConfig } from './config';
+import { Domain } from './models';
 
 const EXTEND_PERCENTAGE = 0.2;
 const MIN_DECIMALS = 1;
 
 function DomainSlider(): JSX.Element {
-  const [customDomain, setCustomDomain] = useHeatmapStore(state => [
+  const [
+    dataDomain,
+    customDomain,
+    setCustomDomain,
+  ] = useHeatmapConfig(state => [
+    state.dataDomain,
     state.customDomain,
     state.setCustomDomain,
     shallow,
   ]);
-  const getExtendedDomain = useHeatmapStore(selectGetExtendedDomain);
-  const extendedDomain = getExtendedDomain(EXTEND_PERCENTAGE);
 
-  if (extendedDomain === undefined) {
+  if (!dataDomain) {
     return <></>;
   }
 
-  const step = Math.max(
-    (extendedDomain[1] - extendedDomain[0]) / 100,
-    10 ** -MIN_DECIMALS
-  );
+  const [min, max] = dataDomain;
+  const extension = (max - min) * EXTEND_PERCENTAGE;
+  const extendedMin = min - extension;
+  const extendedMax = max + extension;
+  const step = Math.max((extendedMax - extendedMin) / 100, 10 ** -MIN_DECIMALS);
 
   return (
     <ReactSlider
@@ -35,16 +40,16 @@ function DomainSlider(): JSX.Element {
       renderThumb={(props, state) => (
         <div {...props}>{format(`.${MIN_DECIMALS}f`)(state.valueNow)}</div>
       )}
-      defaultValue={customDomain}
-      min={extendedDomain[0]}
-      max={extendedDomain[1]}
+      value={[...(customDomain || dataDomain)]}
+      min={extendedMin}
+      max={extendedMax}
       step={step}
       pearling
       onAfterChange={values => {
-        const roundedValues = (values as Domain).map(value =>
+        const roundedDomain = (values as number[]).map(value =>
           round(value, MIN_DECIMALS)
-        );
-        setCustomDomain(roundedValues as Domain);
+        ) as Domain;
+        setCustomDomain(roundedDomain);
       }}
     />
   );
