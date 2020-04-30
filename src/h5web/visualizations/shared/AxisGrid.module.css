@@ -1,0 +1,42 @@
+.axisGrid {
+  position: relative;
+  top: 0;
+  display: grid;
+  grid-template-areas:
+    'left-axis .'
+    '. bottom-axis';
+}
+
+.leftAxisCell {
+  grid-area: left-axis;
+  display: flex;
+}
+
+.bottomAxisCell {
+  grid-area: bottom-axis;
+  display: flex;
+}
+
+.axis {
+  display: block;
+  overflow: visible;
+  flex: 1 1 0%;
+}
+
+.axis[data-orientation='left'] {
+  text-anchor: end;
+  min-height: 0;
+}
+
+.axis[data-orientation='bottom'] {
+  min-width: 0;
+  text-anchor: middle;
+}
+
+.tick > text {
+  fill: currentColor;
+  font-family: inherit;
+  font-size: inherit;
+  text-anchor: inherit;
+  dominant-baseline: inherit;
+}
