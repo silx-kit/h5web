@@ -1,11 +1,7 @@
 import { scaleLinear, scaleSymlog } from 'd3-scale';
 import { range } from 'lodash-es';
-import { D3Interpolator, Domain, DataScale } from './models';
-
-export const adaptedNumTicks = scaleLinear()
-  .domain([300, 900])
-  .rangeRound([3, 10])
-  .clamp(true);
+import { D3Interpolator, DataScale } from './models';
+import { Domain } from '../shared/models';
 
 export function getDataScale(domain: Domain, isLog: boolean): DataScale {
   const scale = (isLog ? scaleSymlog : scaleLinear)();

@@ -10,7 +10,8 @@ import {
 } from '../visualizations';
 import { useValue } from '../providers/hooks';
 import HeatmapProvider from '../visualizations/heatmap/HeatmapProvider';
-import { Dims, AxisOffsets } from '../visualizations/heatmap/models';
+import { AxisOffsets } from '../visualizations/shared/models';
+import { Dims } from '../visualizations/heatmap/models';
 
 const AXIS_OFFSETS: AxisOffsets = [72, 36];
 

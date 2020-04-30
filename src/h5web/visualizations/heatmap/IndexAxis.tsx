@@ -4,8 +4,8 @@ import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
 import { scaleLinear } from 'd3-scale';
 import styles from './HeatmapVis.module.css';
-import { adaptedNumTicks } from './utils';
-import { Domain } from './models';
+import { adaptedNumTicks } from '../shared/utils';
+import { Domain } from '../shared/models';
 
 type Orientation = 'bottom' | 'left';
 

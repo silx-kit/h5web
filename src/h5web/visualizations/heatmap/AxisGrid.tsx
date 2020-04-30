@@ -4,7 +4,7 @@ import { scaleLinear } from 'd3-scale';
 import IndexAxis from './IndexAxis';
 import styles from './HeatmapVis.module.css';
 import { useProps } from './hooks';
-import { Domain } from './models';
+import { Domain } from '../shared/models';
 
 interface AxisDomains {
   left: Domain;
