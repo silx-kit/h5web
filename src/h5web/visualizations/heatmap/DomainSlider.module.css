@@ -37,6 +37,11 @@
   cursor: grab;
 }
 
+.sliderThumb:global(.active) {
+  cursor: none;
+  border-color: var(--secondary-dark);
+}
+
 .resetButton {
   composes: btn-clean from global;
   composes: sliderButton;

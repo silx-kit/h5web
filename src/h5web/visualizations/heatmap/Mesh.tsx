@@ -1,7 +1,8 @@
 import React, { useMemo, ReactElement } from 'react';
-import { useThree } from 'react-three-fiber';
+import { useThree, Dom } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
 import { usePanZoom, useProps, useTextureData } from './hooks';
+import styles from './HeatmapVis.module.css';
 
 function Mesh(): ReactElement {
   const { dims } = useProps();
@@ -9,7 +10,7 @@ function Mesh(): ReactElement {
   const { size } = useThree();
   const { width, height } = size;
 
-  const textureData = useTextureData();
+  const { textureData, loading } = useTextureData();
   const material = useMemo(() => {
     return (
       textureData &&
@@ -21,14 +22,21 @@ function Mesh(): ReactElement {
 
   const pointerHandlers = usePanZoom();
 
-  if (!material) {
-    return <></>;
-  }
-
   return (
-    <mesh material={material} {...pointerHandlers}>
-      <planeBufferGeometry attach="geometry" args={[width, height]} />
-    </mesh>
+    <>
+      {material && (
+        <mesh material={material} {...pointerHandlers}>
+          <planeBufferGeometry attach="geometry" args={[width, height]} />
+        </mesh>
+      )}
+      <Dom>
+        <div
+          className={styles.textureLoader}
+          style={{ width, height }}
+          data-visible={loading || undefined}
+        />
+      </Dom>
+    </>
   );
 }
 

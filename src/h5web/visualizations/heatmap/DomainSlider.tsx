@@ -38,7 +38,7 @@ function DomainSlider(): JSX.Element {
       round(value, NB_DECIMALS)
     ) as Domain;
     setCustomDomain(roundedDomain);
-  }, 200);
+  }, 500);
 
   return (
     <div className={styles.sliderWrapper}>
