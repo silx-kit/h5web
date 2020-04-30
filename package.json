@@ -26,6 +26,7 @@
     "@vx/tooltip": "0.0.195",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
+    "comlink": "^4.3.0",
     "d3-array": "^2.4.0",
     "d3-color": "^1.4.0",
     "d3-format": "^1.4.4",
@@ -41,6 +42,7 @@
     "react-slider": "^1.0.4",
     "react-three-fiber": "^4.0.23",
     "react-use": "^13.26.3",
+    "react-use-comlink": "^2.0.1",
     "react-window": "^1.8.5",
     "recharts": "^1.8.5",
     "three": "^0.115.0",
@@ -73,13 +75,17 @@
     "prettier": "^1.19.1",
     "react-reflex": "^3.0.22",
     "react-scripts": "3.4.0",
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.2",
+    "worker-loader": "^2.0.0"
   },
   "jest": {
     "resetMocks": true,
     "transformIgnorePatterns": [
-      "/node_modules/(?!lodash-es/.*)"
-    ]
+      "/node_modules/(?!lodash-es|react-use-comlink)/.*"
+    ],
+    "moduleNameMapper": {
+      "worker-loader!.*": "<rootDir>/src/workerLoaderMock.js"
+    }
   },
   "browserslist": {
     "production": [
