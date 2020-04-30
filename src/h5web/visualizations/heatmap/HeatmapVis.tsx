@@ -9,6 +9,7 @@ import TooltipMesh from './TooltipMesh';
 import HeatmapProvider from './HeatmapProvider';
 import { useHeatmapConfig } from './config';
 import { Domain } from '../shared/models';
+import PanZoomMesh from '../shared/PanZoomMesh';
 
 function HeatmapVis(): JSX.Element {
   const props = useProps();
@@ -43,6 +44,7 @@ function HeatmapVis(): JSX.Element {
                   axisOffsets={axisOffsets}
                 />
                 <TooltipMesh dims={dims} data={data} />
+                <PanZoomMesh />
                 <Mesh />
               </HeatmapProvider>
             </Canvas>
