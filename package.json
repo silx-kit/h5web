@@ -44,7 +44,6 @@
     "react-use": "^13.26.3",
     "react-use-comlink": "^2.0.1",
     "react-window": "^1.8.5",
-    "recharts": "^1.8.5",
     "three": "^0.115.0",
     "zustand": "^2.2.3"
   },
@@ -67,7 +66,6 @@
     "@types/react-slider": "^1.0.0",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.1",
-    "@types/recharts": "^1.8.9",
     "@wsmd/eslint-config": "^1.2.0",
     "eslint": "^6.8.0",
     "node-sass": "^4.13.1",
