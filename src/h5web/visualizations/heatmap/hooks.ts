@@ -5,18 +5,23 @@ import React, {
   CSSProperties,
   useContext,
   useMemo,
+  useState,
 } from 'react';
 import { Vector3 } from 'three';
 import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
+import { useComlink } from 'react-use-comlink';
 import { useMeasure } from 'react-use';
-import { scaleSymlog, scaleLinear, scaleSequential } from 'd3-scale';
-import { rgb } from 'd3-color';
 import shallow from 'zustand/shallow';
 import { useHeatmapConfig } from './config';
 import { HeatmapProps, HeatmapContext } from './HeatmapProvider';
-import { DataScale, D3Interpolator } from './models';
+import { D3Interpolator } from './models';
 import { INTERPOLATORS } from './interpolators';
+import { TextureWorker } from './worker';
+
+// eslint-disable-next-line
+// @ts-ignore
+import Worker from 'worker-loader!./worker'; // eslint-disable-line
 
 const ZOOM_FACTOR = 0.95;
 
@@ -40,44 +45,40 @@ export function useInterpolator(): D3Interpolator {
   return INTERPOLATORS[colorMap];
 }
 
-export function useDataScale(): DataScale | undefined {
-  const [dataDomain, customDomain, hasLogScale] = useHeatmapConfig(
-    state => [state.dataDomain, state.customDomain, state.hasLogScale],
+export function useTextureData(): Uint8Array | undefined {
+  const [dataDomain, customDomain, hasLogScale, colorMap] = useHeatmapConfig(
+    state => [
+      state.dataDomain,
+      state.customDomain,
+      state.hasLogScale,
+      state.colorMap,
+    ],
     shallow
   );
 
-  return useMemo(() => {
-    if (!dataDomain) {
-      return undefined;
-    }
-
-    const scale = (hasLogScale ? scaleSymlog : scaleLinear)();
-    scale.domain(customDomain || dataDomain);
-
-    return scale;
-  }, [customDomain, dataDomain, hasLogScale]);
-}
-
-export function useTextureData(): Uint8Array | undefined {
-  const dataScale = useDataScale();
-  const interpolator = useInterpolator();
   const values = useValues();
 
-  return useMemo(() => {
-    if (!dataScale) {
-      return undefined;
+  const { proxy } = useComlink<TextureWorker>(() => new Worker(), []);
+  const [textureData, setTextureData] = useState<Uint8Array>();
+
+  useEffect(() => {
+    if (!dataDomain) {
+      return;
     }
 
-    const colorScale = scaleSequential(interpolator);
+    (async () => {
+      setTextureData(
+        await proxy.computeTextureData(
+          values,
+          customDomain || dataDomain,
+          hasLogScale,
+          colorMap
+        )
+      );
+    })();
+  }, [colorMap, customDomain, dataDomain, hasLogScale, proxy, values]);
 
-    // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
-    const colors = values.map(val => {
-      const { r, g, b } = rgb(colorScale(dataScale(val))); // `scale` returns CSS RGB strings
-      return [r, g, b];
-    });
-
-    return Uint8Array.from(colors.flat());
-  }, [dataScale, interpolator, values]);
+  return textureData;
 }
 
 export function useHeatmapStyles<T>(): [
