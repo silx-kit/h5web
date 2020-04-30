@@ -33,7 +33,7 @@ function HeatmapVis(): JSX.Element {
               <ambientLight />
               {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
               <HeatmapProvider {...props}>
-                <AxisGrid />
+                <AxisGrid {...props} />
                 <Tooltip />
                 <Mesh />
               </HeatmapProvider>
