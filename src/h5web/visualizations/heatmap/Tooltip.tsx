@@ -4,17 +4,15 @@ import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import { scaleLinear } from 'd3-scale';
 import { format } from 'd3-format';
 import styles from './HeatmapVis.module.css';
+import { useProps } from './hooks';
 
-interface Props {
-  data: number[][];
-  dims: [number, number];
-}
+type Coords = [number, number];
 
-function Tooltip(props: Props): ReactElement {
-  const { data, dims } = props;
+function Tooltip(): ReactElement {
+  const { dims, data } = useProps();
   const [rows, cols] = dims;
 
-  const { camera, size, intersect } = useThree();
+  const { camera, size } = useThree();
   const { width, height } = size;
 
   const {
@@ -24,7 +22,7 @@ function Tooltip(props: Props): ReactElement {
     tooltipData,
     showTooltip,
     hideTooltip,
-  } = useTooltip<[number, number]>();
+  } = useTooltip<Coords>();
 
   // Scales to compute data coordinates from unprojected mesh coordinates
   const xCoordScale = scaleLinear()
@@ -57,12 +55,9 @@ function Tooltip(props: Props): ReactElement {
   const onPointerOut = useCallback(hideTooltip, [hideTooltip]);
   const onPointerDown = useCallback(hideTooltip, [hideTooltip]);
 
-  // Trigger `pointermove` when user stops panning to show tooltip if pointer still intersects with mesh
-  const onPointerUp = useCallback(intersect, [intersect]);
-
   return (
     <>
-      <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
+      <mesh {...{ onPointerMove, onPointerOut, onPointerDown }}>
         <planeBufferGeometry attach="geometry" args={[width, height]} />
       </mesh>
       <Dom style={{ width, height }}>

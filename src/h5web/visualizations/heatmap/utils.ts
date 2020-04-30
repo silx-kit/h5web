@@ -1,25 +1,6 @@
-import { rgb } from 'd3-color';
 import { scaleLinear } from 'd3-scale';
 import { range } from 'lodash-es';
-import { D3Interpolator, DataScale, ColorScale } from './store';
-
-export function computeTextureData(
-  values: number[],
-  colorScale: ColorScale,
-  dataScale?: DataScale
-): Uint8Array | undefined {
-  if (dataScale === undefined) {
-    return undefined;
-  }
-
-  // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
-  const colors = values.map(val => {
-    const { r, g, b } = rgb(colorScale(dataScale(val))); // `scale` returns CSS RGB strings
-    return [r, g, b];
-  });
-
-  return Uint8Array.from(colors.flat());
-}
+import { D3Interpolator } from './models';
 
 export const adaptedNumTicks = scaleLinear()
   .domain([300, 900])

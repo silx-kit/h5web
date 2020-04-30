@@ -3,7 +3,7 @@ import shallow from 'zustand/shallow';
 import styles from './HeatmapToolbar.module.css';
 import ColorMapSelector from './ColorMapSelector';
 import Toggler from './Toggler';
-import { useHeatmapStore } from './store';
+import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
 
 function HeatmapToolbar(): JSX.Element {
@@ -12,13 +12,14 @@ function HeatmapToolbar(): JSX.Element {
     toggleLogScale,
     keepAspectRatio,
     toggleAspectRatio,
-  ] = useHeatmapStore(state => [
+  ] = useHeatmapConfig(state => [
     state.hasLogScale,
     state.toggleLogScale,
     state.keepAspectRatio,
     state.toggleAspectRatio,
     shallow,
   ]);
+
   return (
     <div className={styles.toolbar}>
       <DomainSlider />

@@ -1,19 +1,93 @@
-import React, { useCallback, useRef, useEffect, CSSProperties } from 'react';
+import React, {
+  useCallback,
+  useRef,
+  useEffect,
+  CSSProperties,
+  useContext,
+  useMemo,
+} from 'react';
 import { Vector3 } from 'three';
 import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
 import { useMeasure } from 'react-use';
-import { useHeatmapStore } from './store';
+import { scaleSymlog, scaleLinear, scaleSequential } from 'd3-scale';
+import { rgb } from 'd3-color';
+import shallow from 'zustand/shallow';
+import { useHeatmapConfig } from './config';
+import { HeatmapProps, HeatmapContext } from './HeatmapProvider';
+import { DataScale, D3Interpolator } from './models';
+import { INTERPOLATORS } from './interpolators';
 
 const ZOOM_FACTOR = 0.95;
 
-export function useHeatmapStyles<T>(
-  dims: [number, number],
-  axisOffset: [number, number]
-): [(elem: T) => void, CSSProperties | undefined] {
-  const [leftAxisWidth, bottomAxisHeight] = axisOffset;
+export function useProps(): HeatmapProps {
+  const props = useContext(HeatmapContext);
 
-  const keepAspectRatio = useHeatmapStore(state => state.keepAspectRatio);
+  if (!props) {
+    throw new Error('Missing Heatmap provider.');
+  }
+
+  return props;
+}
+
+export function useValues(): number[] {
+  const { data } = useProps();
+  return useMemo(() => data.flat(), [data]);
+}
+
+export function useInterpolator(): D3Interpolator {
+  const colorMap = useHeatmapConfig(state => state.colorMap);
+  return INTERPOLATORS[colorMap];
+}
+
+export function useDataScale(): DataScale | undefined {
+  const [dataDomain, customDomain, hasLogScale] = useHeatmapConfig(
+    state => [state.dataDomain, state.customDomain, state.hasLogScale],
+    shallow
+  );
+
+  return useMemo(() => {
+    if (!dataDomain) {
+      return undefined;
+    }
+
+    const scale = (hasLogScale ? scaleSymlog : scaleLinear)();
+    scale.domain(customDomain || dataDomain);
+
+    return scale;
+  }, [customDomain, dataDomain, hasLogScale]);
+}
+
+export function useTextureData(): Uint8Array | undefined {
+  const dataScale = useDataScale();
+  const interpolator = useInterpolator();
+  const values = useValues();
+
+  return useMemo(() => {
+    if (!dataScale) {
+      return undefined;
+    }
+
+    const colorScale = scaleSequential(interpolator);
+
+    // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
+    const colors = values.map(val => {
+      const { r, g, b } = rgb(colorScale(dataScale(val))); // `scale` returns CSS RGB strings
+      return [r, g, b];
+    });
+
+    return Uint8Array.from(colors.flat());
+  }, [dataScale, interpolator, values]);
+}
+
+export function useHeatmapStyles<T>(): [
+  (elem: T) => void,
+  CSSProperties | undefined
+] {
+  const { dims, axisOffsets } = useProps();
+  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
+
+  const keepAspectRatio = useHeatmapConfig(state => state.keepAspectRatio);
   const [wrapperRef, { width, height }] = useMeasure();
 
   if (width === 0 && height === 0) {

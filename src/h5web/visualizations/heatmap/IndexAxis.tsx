@@ -5,7 +5,7 @@ import { format } from 'd3-format';
 import { scaleLinear } from 'd3-scale';
 import styles from './HeatmapVis.module.css';
 import { adaptedNumTicks } from './utils';
-import { Domain } from './store';
+import { Domain } from './models';
 
 type Orientation = 'bottom' | 'left';
 
