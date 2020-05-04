@@ -2,7 +2,7 @@ import React from 'react';
 import ReactSlider from 'react-slider';
 import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
-import { round } from 'lodash-es';
+import { round, debounce } from 'lodash-es';
 import { FiRotateCcw } from 'react-icons/fi';
 import styles from './DomainSlider.module.css';
 import { useHeatmapConfig } from './config';
@@ -33,6 +33,13 @@ function DomainSlider(): JSX.Element {
   const extendedMax = max + extension;
   const step = Math.max((extendedMax - extendedMin) / 100, 10 ** -NB_DECIMALS);
 
+  const updateCustomDomain = debounce(values => {
+    const roundedDomain = (values as number[]).map(value =>
+      round(value, NB_DECIMALS)
+    ) as Domain;
+    setCustomDomain(roundedDomain);
+  }, 200);
+
   return (
     <div className={styles.sliderWrapper}>
       <button
@@ -44,23 +51,19 @@ function DomainSlider(): JSX.Element {
         <FiRotateCcw />
       </button>
       <ReactSlider
+        key={JSON.stringify(customDomain || dataDomain)}
         className={styles.slider}
         trackClassName={styles.sliderTrack}
         thumbClassName={styles.sliderThumb}
         renderThumb={(props, state) => (
           <div {...props}>{format(`.${NB_DECIMALS}f`)(state.valueNow)}</div>
         )}
-        value={[...(customDomain || dataDomain)]}
+        defaultValue={[...(customDomain || dataDomain)]}
+        onChange={updateCustomDomain}
         min={extendedMin}
         max={extendedMax}
         step={step}
         pearling
-        onAfterChange={values => {
-          const roundedDomain = (values as number[]).map(value =>
-            round(value, NB_DECIMALS)
-          ) as Domain;
-          setCustomDomain(roundedDomain);
-        }}
       />
     </div>
   );
