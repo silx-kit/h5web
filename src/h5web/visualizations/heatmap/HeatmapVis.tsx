@@ -5,19 +5,18 @@ import ColorBar from './ColorBar';
 import { useHeatmapStyles, useProps, useValues } from './hooks';
 import AxisGrid from '../shared/AxisGrid';
 import Mesh from './Mesh';
-import Tooltip from './Tooltip';
+import TooltipMesh from './TooltipMesh';
 import HeatmapProvider from './HeatmapProvider';
 import { useHeatmapConfig } from './config';
+import { Domain } from '../shared/models';
 
 function HeatmapVis(): JSX.Element {
   const props = useProps();
   const [mapAreaRef, heatmapStyles] = useHeatmapStyles();
 
-  const { dims, axisOffsets } = props;
-  const axisDomains = {
-    left: [0, dims[0]] as [number, number],
-    bottom: [0, dims[1]] as [number, number],
-  };
+  const { dims, axisOffsets, data } = props;
+  const xDomain: Domain = [0, dims[1]];
+  const yDomain: Domain = [0, dims[0]];
 
   const values = useValues();
   const initDataDomain = useHeatmapConfig(state => state.initDataDomain);
@@ -39,8 +38,11 @@ function HeatmapVis(): JSX.Element {
               <ambientLight />
               {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
               <HeatmapProvider {...props}>
-                <AxisGrid axisDomains={axisDomains} axisOffsets={axisOffsets} />
-                <Tooltip />
+                <AxisGrid
+                  axisDomains={{ left: yDomain, bottom: xDomain }}
+                  axisOffsets={axisOffsets}
+                />
+                <TooltipMesh dims={dims} data={data} />
                 <Mesh />
               </HeatmapProvider>
             </Canvas>
