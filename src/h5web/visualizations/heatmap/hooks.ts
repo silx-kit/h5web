@@ -5,13 +5,12 @@ import React, {
   CSSProperties,
   useContext,
   useMemo,
-  useState,
 } from 'react';
 import { Vector3 } from 'three';
 import { ReactThreeFiber, PointerEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
 import { useComlink } from 'react-use-comlink';
-import { useMeasure } from 'react-use';
+import { useMeasure, useSetState } from 'react-use';
 import shallow from 'zustand/shallow';
 import { useHeatmapConfig } from './config';
 import { HeatmapProps, HeatmapContext } from './HeatmapProvider';
@@ -45,7 +44,12 @@ export function useInterpolator(): D3Interpolator {
   return INTERPOLATORS[colorMap];
 }
 
-export function useTextureData(): Uint8Array | undefined {
+export interface TextureDataState {
+  loading?: boolean;
+  textureData?: Uint8Array;
+}
+
+export function useTextureData(): TextureDataState {
   const [dataDomain, customDomain, hasLogScale, colorMap] = useHeatmapConfig(
     state => [
       state.dataDomain,
@@ -57,9 +61,9 @@ export function useTextureData(): Uint8Array | undefined {
   );
 
   const values = useValues();
-
   const { proxy } = useComlink<TextureWorker>(() => new Worker(), []);
-  const [textureData, setTextureData] = useState<Uint8Array>();
+
+  const [state, mergeState] = useSetState<TextureDataState>({});
 
   useEffect(() => {
     if (!dataDomain) {
@@ -67,18 +71,28 @@ export function useTextureData(): Uint8Array | undefined {
     }
 
     (async () => {
-      setTextureData(
-        await proxy.computeTextureData(
+      mergeState({ loading: true }); // keep existing texture data, if any
+      mergeState({
+        loading: false,
+        textureData: await proxy.computeTextureData(
           values,
           customDomain || dataDomain,
           hasLogScale,
           colorMap
-        )
-      );
+        ),
+      });
     })();
-  }, [colorMap, customDomain, dataDomain, hasLogScale, proxy, values]);
+  }, [
+    colorMap,
+    customDomain,
+    dataDomain,
+    hasLogScale,
+    proxy,
+    mergeState,
+    values,
+  ]);
 
-  return textureData;
+  return state;
 }
 
 export function useHeatmapStyles<T>(): [
