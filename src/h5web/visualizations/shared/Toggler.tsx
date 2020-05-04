@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiToggleLeft, FiToggleRight } from 'react-icons/fi';
-import styles from './HeatmapToolbar.module.css';
+import styles from './Toggler.module.css';
 
 interface Props {
   label: string;
