@@ -1,4 +1,5 @@
 import { CSSProperties, useContext, useMemo, useEffect } from 'react';
+import { transfer } from 'comlink';
 import { useComlink } from 'react-use-comlink';
 import { useMeasure, useSetState } from 'react-use';
 import shallow from 'zustand/shallow';
@@ -58,12 +59,17 @@ export function useTextureData(): TextureDataState {
       return;
     }
 
+    // Keep existing texture data, if any
+    mergeState({ loading: true });
+
+    // Prepare transferable buffer to avoid cloning values array
+    const typedValues = Float64Array.from(values);
+
     (async () => {
-      mergeState({ loading: true }); // keep existing texture data, if any
       mergeState({
         loading: false,
         textureData: await proxy.computeTextureData(
-          values,
+          transfer(typedValues, [typedValues.buffer]),
           customDomain || dataDomain,
           hasLogScale,
           colorMap
