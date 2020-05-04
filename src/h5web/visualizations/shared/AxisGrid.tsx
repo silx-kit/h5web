@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useThree, useFrame, Dom } from 'react-three-fiber';
 import { scaleLinear } from 'd3-scale';
-import IndexAxis from './IndexAxis';
+import Axis from './Axis';
 import styles from './AxisGrid.module.css';
 import { Domain, AxisOffsets } from './models';
 
@@ -11,18 +11,22 @@ interface AxisDomains {
 }
 
 interface Props {
-  axisDomains: AxisDomains;
+  abscissaDomain: Domain;
+  ordinateDomain: Domain;
   axisOffsets: AxisOffsets;
 }
 
 function AxisGrid(props: Props): JSX.Element {
-  const { axisDomains, axisOffsets } = props;
+  const { abscissaDomain, ordinateDomain, axisOffsets } = props;
   const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
 
   const { camera, size } = useThree();
   const { width, height } = size;
 
-  const [domains, setDomains] = useState<AxisDomains>(axisDomains);
+  const [domains, setDomains] = useState<AxisDomains>({
+    left: ordinateDomain,
+    bottom: abscissaDomain,
+  });
 
   // Axis bounds in R3F camera coordinates
   const leftAxisBounds = [-height / 2, height / 2];
@@ -31,10 +35,10 @@ function AxisGrid(props: Props): JSX.Element {
   // Scales R3F camera coordinates to axis bounds
   const leftAxisScale = scaleLinear()
     .domain(leftAxisBounds)
-    .range(axisDomains.left);
+    .range(ordinateDomain);
   const bottomAxisScale = scaleLinear()
     .domain(bottomAxisBounds)
-    .range(axisDomains.bottom);
+    .range(abscissaDomain);
 
   useFrame(() => {
     const { position, zoom } = camera;
@@ -63,12 +67,12 @@ function AxisGrid(props: Props): JSX.Element {
       }}
     >
       <>
-        <IndexAxis
+        <Axis
           className={styles.leftAxisCell}
           orientation="left"
           domain={domains.left}
         />
-        <IndexAxis
+        <Axis
           className={styles.bottomAxisCell}
           orientation="bottom"
           domain={domains.bottom}

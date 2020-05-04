@@ -8,7 +8,6 @@ import Mesh from './Mesh';
 import TooltipMesh from './TooltipMesh';
 import HeatmapProvider from './HeatmapProvider';
 import { useHeatmapConfig } from './config';
-import { Domain } from '../shared/models';
 import PanZoomMesh from '../shared/PanZoomMesh';
 
 function HeatmapVis(): JSX.Element {
@@ -16,8 +15,7 @@ function HeatmapVis(): JSX.Element {
   const [mapAreaRef, heatmapStyles] = useHeatmapStyles();
 
   const { dims, axisOffsets, data } = props;
-  const xDomain: Domain = [0, dims[1]];
-  const yDomain: Domain = [0, dims[0]];
+  const [rows, cols] = dims;
 
   const values = useValues();
   const initDataDomain = useHeatmapConfig(state => state.initDataDomain);
@@ -40,7 +38,9 @@ function HeatmapVis(): JSX.Element {
               {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
               <HeatmapProvider {...props}>
                 <AxisGrid
-                  axisDomains={{ left: yDomain, bottom: xDomain }}
+                  // -0.5 to have ticks at the center of pixels
+                  abscissaDomain={[-0.5, cols - 0.5]}
+                  ordinateDomain={[-0.5, rows - 0.5]}
                   axisOffsets={axisOffsets}
                 />
                 <TooltipMesh dims={dims} data={data} />

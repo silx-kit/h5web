@@ -15,18 +15,18 @@ interface Props {
   orientation: Orientation;
 }
 
-function IndexAxis(props: Props): JSX.Element {
+function Axis(props: Props): JSX.Element {
   const { className, domain, orientation } = props;
 
   const [min, max] = domain;
   const isLeftAxis = orientation === 'left';
-  const Axis = isLeftAxis ? AxisLeft : AxisBottom;
+  const DirectionalAxis = isLeftAxis ? AxisLeft : AxisBottom;
 
   const [divRef, { width, height }] = useMeasure();
   const isVisible = width > 0 && height > 0;
 
   const scale = scaleLinear()
-    .domain([min - 0.5, max - 0.5])
+    .domain(domain)
     .range(isLeftAxis ? [height, 0] : [0, width]);
 
   const numTicks = Math.min(
@@ -38,7 +38,7 @@ function IndexAxis(props: Props): JSX.Element {
     <div ref={divRef} className={className}>
       {isVisible && (
         <svg className={styles.axis} data-orientation={orientation}>
-          <Axis
+          <DirectionalAxis
             scale={scale}
             left={isLeftAxis ? width : 0}
             numTicks={numTicks}
@@ -55,4 +55,4 @@ function IndexAxis(props: Props): JSX.Element {
   );
 }
 
-export default IndexAxis;
+export default Axis;
