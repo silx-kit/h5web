@@ -3,14 +3,21 @@ import { Dom, PointerEvent, useThree } from 'react-three-fiber';
 import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import { scaleLinear } from 'd3-scale';
 import { format } from 'd3-format';
-import styles from './HeatmapVis.module.css';
-import { useProps } from './hooks';
+import styles from './TooltipMesh.module.css';
+import { Dims } from './models';
 
 type Coords = [number, number];
 
-function Tooltip(): ReactElement {
-  const { dims, data } = useProps();
-  const [rows, cols] = dims;
+interface Props {
+  dims: Dims;
+  data: number[][];
+}
+
+function TooltipMesh(props: Props): ReactElement {
+  const {
+    dims: [rows, cols],
+    data,
+  } = props;
 
   const { camera, size } = useThree();
   const { width, height } = size;
@@ -81,4 +88,4 @@ function Tooltip(): ReactElement {
   );
 }
 
-export default Tooltip;
+export default TooltipMesh;

@@ -2,8 +2,9 @@ import { expose } from 'comlink';
 import { rgb } from 'd3-color';
 import { scaleSequential } from 'd3-scale';
 import { getDataScale } from './utils';
-import { Domain, ColorMap } from './models';
+import { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
+import { Domain } from '../shared/models';
 
 function computeTextureData(
   values: number[],

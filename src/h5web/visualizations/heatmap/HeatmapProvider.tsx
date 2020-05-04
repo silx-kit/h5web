@@ -1,5 +1,6 @@
 import React, { createContext, ReactElement, ReactNode } from 'react';
-import { Dims, AxisOffsets } from './models';
+import { Dims } from './models';
+import { AxisOffsets } from '../shared/models';
 
 export interface HeatmapProps {
   dims: Dims;

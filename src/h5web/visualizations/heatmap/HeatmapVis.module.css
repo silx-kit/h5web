@@ -56,25 +56,6 @@
   }
 }
 
-.axisGrid {
-  position: relative;
-  top: 0;
-  display: grid;
-  grid-template-areas:
-    'left-axis .'
-    '. bottom-axis';
-}
-
-.leftAxisCell {
-  grid-area: left-axis;
-  display: flex;
-}
-
-.bottomAxisCell {
-  grid-area: bottom-axis;
-  display: flex;
-}
-
 .colorBar {
   display: flex;
   padding: 1em;
@@ -91,40 +72,4 @@
 .gradient {
   flex: 1 0 auto;
   border: 1px solid black;
-}
-
-.axis {
-  display: block;
-  overflow: visible;
-  flex: 1 1 0%;
-}
-
-.axis[data-orientation='left'] {
-  text-anchor: end;
-  min-height: 0;
-}
-
-.axis[data-orientation='bottom'] {
-  min-width: 0;
-  text-anchor: middle;
-}
-
-.tick > text {
-  fill: currentColor;
-  font-family: inherit;
-  font-size: inherit;
-  text-anchor: inherit;
-  dominant-baseline: inherit;
-}
-
-.tooltip {
-  color: inherit !important;
-  background-color: rgba(245, 251, 239, 0.7) !important;
-}
-
-.tooltipValue {
-  display: block;
-  font-weight: 600;
-  margin-top: 0.25rem;
-  font-size: 1.125em;
 }

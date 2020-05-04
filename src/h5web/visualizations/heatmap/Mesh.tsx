@@ -1,7 +1,7 @@
 import React, { useMemo, ReactElement } from 'react';
 import { useThree, Dom } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
-import { usePanZoom, useProps, useTextureData } from './hooks';
+import { useProps, useTextureData } from './hooks';
 import styles from './HeatmapVis.module.css';
 
 function Mesh(): ReactElement {
@@ -20,12 +20,10 @@ function Mesh(): ReactElement {
     );
   }, [dims, textureData]);
 
-  const pointerHandlers = usePanZoom();
-
   return (
     <>
       {material && (
-        <mesh material={material} {...pointerHandlers}>
+        <mesh material={material}>
           <planeBufferGeometry attach="geometry" args={[width, height]} />
         </mesh>
       )}

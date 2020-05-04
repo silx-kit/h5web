@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { extent } from 'd3-array';
-import { ColorMap, Domain } from './models';
+import { ColorMap } from './models';
+import { Domain } from '../shared/models';
 
 export interface HeatmapConfig {
   dataDomain: Domain | undefined;

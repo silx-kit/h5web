@@ -2,7 +2,7 @@ import React from 'react';
 import shallow from 'zustand/shallow';
 import styles from './HeatmapToolbar.module.css';
 import ColorMapSelector from './ColorMapSelector';
-import Toggler from './Toggler';
+import Toggler from '../shared/Toggler';
 import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
 
