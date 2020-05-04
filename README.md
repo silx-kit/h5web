@@ -1,6 +1,6 @@
 # H5Web, a web-based HDF5 file viewer
 
-[![Demo](https://img.shields.io/badge/demo-netlify-green.svg)](https://h5web.netlify.app/)
+[![Demo](https://img.shields.io/badge/demo-netlify-green.svg)](https://h5web.panosc.eu/)
 
 H5Web is web-based viewer to explore HDF5 files. It is built with React and uses `react-three-fiber` for visualizations.
 
@@ -38,7 +38,7 @@ the box, so all you need to do is install the recommended extensions.
 runs the `lint` and `test` scripts above on push (to any branch).
 
 [Netlify](https://www.netlify.com/) is used for continuous deployment. The project's `master` branch is deployed
-automatically to https://h5web.netlify.app/. Netlify also deploys each pull request individually to URLs of the form:
+automatically to https://h5web.panosc.eu/. Netlify also deploys each pull request individually to URLs of the form:
 
 - https:\//deploy-preview-<pr-number\>--h5web.netlify.app/
 
