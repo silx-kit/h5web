@@ -1,4 +1,4 @@
-import { expose } from 'comlink';
+import { expose, transfer } from 'comlink';
 import { rgb } from 'd3-color';
 import { scaleSequential } from 'd3-scale';
 import { getDataScale } from './utils';
@@ -7,7 +7,7 @@ import { INTERPOLATORS } from './interpolators';
 import { Domain } from '../shared/models';
 
 function computeTextureData(
-  values: number[],
+  values: Float64Array,
   domain: Domain,
   hasLogScale: boolean,
   colorMap: ColorMap
@@ -16,12 +16,15 @@ function computeTextureData(
   const colorScale = scaleSequential(INTERPOLATORS[colorMap]);
 
   // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
-  const colors = values.map(val => {
+  const colors = values.reduce<number[]>((acc, val) => {
     const { r, g, b } = rgb(colorScale(dataScale(val))); // `colorScale` returns CSS RGB strings
-    return [r, g, b];
-  });
+    acc.push(r, g, b);
+    return acc;
+  }, []);
 
-  return Uint8Array.from(colors.flat());
+  // Transfer colors buffer instead of returning to avoid cloning
+  const typedColors = Uint8Array.from(colors);
+  return transfer(typedColors, [typedColors.buffer]);
 }
 
 export interface TextureWorker {
