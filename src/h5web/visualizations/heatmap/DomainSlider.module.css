@@ -1,6 +1,7 @@
-.sliderTitle {
-  margin-top: 0.25rem;
-  color: var(--secondary-dark);
+.sliderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slider {
@@ -10,7 +11,7 @@
   margin: 0 0.5rem 0.125rem;
   flex: 0 0 auto;
   width: 10rem;
-  min-height: 1.5rem;
+  min-height: 1.75rem;
 }
 
 .sliderTrack {
@@ -18,17 +19,30 @@
   background-color: var(--secondary-dark);
 }
 
-.sliderThumb {
+.sliderButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.625rem;
-  height: 1.5rem;
-  min-width: 1.5rem;
   padding: 0.125rem;
-  color: black;
-  cursor: grab;
   background-color: var(--primary-bg);
   border: 2px solid var(--secondary);
   border-radius: 1.5em;
+}
+
+.sliderThumb {
+  composes: sliderButton;
+  font-size: 0.625rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  cursor: grab;
+}
+
+.resetButton {
+  composes: btn-clean from global;
+  composes: sliderButton;
+}
+
+.resetButton:disabled {
+  color: #ccc;
+  cursor: default;
 }

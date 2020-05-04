@@ -7,7 +7,7 @@ export interface HeatmapConfig {
   initDataDomain: (values: number[]) => void;
 
   customDomain: Domain | undefined;
-  setCustomDomain: (customDomain: Domain) => void;
+  setCustomDomain: (customDomain: Domain | undefined) => void;
 
   colorMap: ColorMap;
   setColorMap: (colorMap: ColorMap) => void;
@@ -36,7 +36,7 @@ export const [useHeatmapConfig] = create<HeatmapConfig>(set => ({
   },
 
   customDomain: undefined,
-  setCustomDomain: (customDomain: Domain) => set({ customDomain }),
+  setCustomDomain: (customDomain: Domain | undefined) => set({ customDomain }),
 
   colorMap: 'Magma',
   setColorMap: (colorMap: ColorMap) => set({ colorMap }),
