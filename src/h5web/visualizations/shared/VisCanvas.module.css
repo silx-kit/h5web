@@ -1,0 +1,25 @@
+.visArea {
+  flex: 1 1 0%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* prevent overflow when enabling `keepAspectRatio` */
+}
+
+.vis {
+  flex: none;
+}
+
+/* R3F's root element */
+.canvasWrapper {
+  overflow: visible !important; /* show child axis grid, which is bigger than canvas */
+}
+
+/* R3F's <Dom /> element */
+.canvasWrapper > div {
+  transform: none !important;
+  /* - Prevent panning/zooming from axis when zoomed in.
+   * - Prevent text selection of tick labels when panning with touchpad. */
+  pointer-events: none;
+}

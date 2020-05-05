@@ -1,7 +1,7 @@
-import { CSSProperties, useContext, useMemo, useEffect } from 'react';
+import { useContext, useMemo, useEffect } from 'react';
 import { transfer } from 'comlink';
 import { useComlink } from 'react-use-comlink';
-import { useMeasure, useSetState } from 'react-use';
+import { useSetState } from 'react-use';
 import shallow from 'zustand/shallow';
 import { useHeatmapConfig } from './config';
 import { HeatmapProps, HeatmapContext } from './HeatmapProvider';
@@ -87,58 +87,4 @@ export function useTextureData(): TextureDataState {
   ]);
 
   return state;
-}
-
-export function useHeatmapStyles<T>(): [
-  (elem: T) => void,
-  CSSProperties | undefined
-] {
-  const { dims, axisOffsets } = useProps();
-  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
-
-  const keepAspectRatio = useHeatmapConfig(state => state.keepAspectRatio);
-  const [wrapperRef, { width, height }] = useMeasure();
-
-  if (width === 0 && height === 0) {
-    return [wrapperRef, undefined];
-  }
-
-  if (!keepAspectRatio) {
-    return [
-      wrapperRef,
-      {
-        width,
-        height,
-        paddingBottom: bottomAxisHeight,
-        paddingLeft: leftAxisWidth,
-      },
-    ];
-  }
-
-  const [rows, cols] = dims;
-  const aspectRatio = rows / cols;
-
-  const availableWidth = width - leftAxisWidth;
-  const availableHeight = height - bottomAxisHeight;
-
-  // Determine how to compute canvas size to fit available space while maintaining aspect ratio
-  const shouldAdjustWidth = availableWidth >= availableHeight * aspectRatio;
-
-  const canvasWidth = shouldAdjustWidth
-    ? availableHeight * aspectRatio
-    : availableWidth;
-  const canvasHeight = shouldAdjustWidth
-    ? availableHeight
-    : availableWidth / aspectRatio;
-
-  return [
-    wrapperRef,
-    {
-      boxSizing: 'content-box',
-      width: canvasWidth,
-      height: canvasHeight,
-      paddingBottom: bottomAxisHeight,
-      paddingLeft: leftAxisWidth,
-    },
-  ];
 }
