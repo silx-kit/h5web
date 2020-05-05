@@ -1,9 +1,9 @@
-import create from 'zustand';
 import { extent } from 'd3-array';
 import { ColorMap } from './models';
 import { Domain } from '../shared/models';
+import { StorageConfig, createPersistableState } from '../../storage-utils';
 
-export interface HeatmapConfig {
+interface HeatmapConfig {
   dataDomain: Domain | undefined;
   initDataDomain: (values: number[]) => void;
 
@@ -20,32 +20,41 @@ export interface HeatmapConfig {
   toggleAspectRatio: () => void;
 }
 
-export const [useHeatmapConfig] = create<HeatmapConfig>(set => ({
-  dataDomain: undefined,
-  initDataDomain: (values: number[]) => {
-    const [min, max] = extent(values);
+const STORAGE_CONFIG: StorageConfig = {
+  storageId: 'h5web:heatmap',
+  itemsToPersist: ['colorMap', 'hasLogScale', 'keepAspectRatio'],
+};
 
-    if (min === undefined || max === undefined) {
-      set({ dataDomain: undefined, customDomain: undefined });
-      return;
-    }
+export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
+  STORAGE_CONFIG,
+  set => ({
+    dataDomain: undefined,
+    initDataDomain: (values: number[]) => {
+      const [min, max] = extent(values);
 
-    set({
-      dataDomain: [min, max],
-      customDomain: undefined, // reset custom domain
-    });
-  },
+      if (min === undefined || max === undefined) {
+        set({ dataDomain: undefined, customDomain: undefined });
+        return;
+      }
 
-  customDomain: undefined,
-  setCustomDomain: (customDomain: Domain | undefined) => set({ customDomain }),
+      set({
+        dataDomain: [min, max],
+        customDomain: undefined, // reset custom domain
+      });
+    },
 
-  colorMap: 'Magma',
-  setColorMap: (colorMap: ColorMap) => set({ colorMap }),
+    customDomain: undefined,
+    setCustomDomain: (customDomain: Domain | undefined) =>
+      set({ customDomain }),
 
-  hasLogScale: false,
-  toggleLogScale: () => set(state => ({ hasLogScale: !state.hasLogScale })),
+    colorMap: 'Magma',
+    setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
-  keepAspectRatio: true,
-  toggleAspectRatio: () =>
-    set(state => ({ keepAspectRatio: !state.keepAspectRatio })),
-}));
+    hasLogScale: false,
+    toggleLogScale: () => set(state => ({ hasLogScale: !state.hasLogScale })),
+
+    keepAspectRatio: true,
+    toggleAspectRatio: () =>
+      set(state => ({ keepAspectRatio: !state.keepAspectRatio })),
+  })
+);
