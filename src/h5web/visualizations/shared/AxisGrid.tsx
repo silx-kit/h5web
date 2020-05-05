@@ -3,30 +3,20 @@ import { useThree, useFrame, Dom } from 'react-three-fiber';
 import { scaleLinear } from 'd3-scale';
 import Axis from './Axis';
 import styles from './AxisGrid.module.css';
-import { Domain, AxisOffsets } from './models';
-
-interface AxisDomains {
-  left: Domain;
-  bottom: Domain;
-}
+import { Domain, AxisOffsets, AxisDomains } from './models';
 
 interface Props {
-  abscissaDomain: Domain;
-  ordinateDomain: Domain;
+  axisDomains: AxisDomains;
   axisOffsets: AxisOffsets;
 }
 
 function AxisGrid(props: Props): JSX.Element {
-  const { abscissaDomain, ordinateDomain, axisOffsets } = props;
-  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
+  const { axisDomains, axisOffsets } = props;
 
   const { camera, size } = useThree();
   const { width, height } = size;
 
-  const [domains, setDomains] = useState<AxisDomains>({
-    left: ordinateDomain,
-    bottom: abscissaDomain,
-  });
+  const [domains, setDomains] = useState<AxisDomains>(axisDomains);
 
   // Axis bounds in R3F camera coordinates
   const leftAxisBounds = [-height / 2, height / 2];
@@ -35,10 +25,10 @@ function AxisGrid(props: Props): JSX.Element {
   // Scales R3F camera coordinates to axis bounds
   const leftAxisScale = scaleLinear()
     .domain(leftAxisBounds)
-    .range(ordinateDomain);
+    .range(axisDomains.left);
   const bottomAxisScale = scaleLinear()
     .domain(bottomAxisBounds)
-    .range(abscissaDomain);
+    .range(axisDomains.bottom);
 
   useFrame(() => {
     const { position, zoom } = camera;
@@ -59,11 +49,11 @@ function AxisGrid(props: Props): JSX.Element {
       className={styles.axisGrid}
       style={{
         // Take over space reserved for axis by `useHeatmapStyles` hook
-        width: width + leftAxisWidth,
-        height: height + bottomAxisHeight,
-        left: -leftAxisWidth,
-        gridTemplateColumns: `${leftAxisWidth}px 1fr`,
-        gridTemplateRows: `1fr ${bottomAxisHeight}px`,
+        width: width + axisOffsets.left,
+        height: height + axisOffsets.bottom,
+        left: -axisOffsets.left,
+        gridTemplateColumns: `${axisOffsets.left}px 1fr`,
+        gridTemplateRows: `1fr ${axisOffsets.bottom}px`,
       }}
     >
       <>

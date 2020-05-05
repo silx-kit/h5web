@@ -1,43 +1,34 @@
-import React, { ReactNode, CSSProperties } from 'react';
+import React, { ReactNode } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { useMeasure } from 'react-use';
 import styles from './VisCanvas.module.css';
-import { AxisOffsets } from './models';
-import { computeSizeFromAspectRatio } from './utils';
+import { AxisOffsets, AxisDomains } from './models';
+import { computeVisSize } from './utils';
+import AxisGrid from './AxisGrid';
 
 interface Props {
+  axisDomains: AxisDomains;
   axisOffsets: AxisOffsets;
   aspectRatio?: number;
   children: ReactNode;
 }
 
 function VisCanvas(props: Props): JSX.Element {
-  const { axisOffsets, aspectRatio, children } = props;
+  const { axisDomains, axisOffsets, aspectRatio, children } = props;
+  const [visAreaRef, visAreaSize] = useMeasure();
 
-  const [visAreaRef, { width, height }] = useMeasure();
-  const zeroSize = width === 0 && height === 0;
-
-  const [leftAxisWidth, bottomAxisHeight] = axisOffsets;
-  const visSize = aspectRatio
-    ? ({
-        ...computeSizeFromAspectRatio(
-          width - leftAxisWidth,
-          height - bottomAxisHeight,
-          aspectRatio
-        ),
-        boxSizing: 'content-box',
-      } as CSSProperties)
-    : { width, height };
+  const visSize = computeVisSize(visAreaSize, axisOffsets, aspectRatio);
 
   return (
     <div ref={visAreaRef} className={styles.visArea}>
-      {!zeroSize && (
+      {visSize && (
         <div
           className={styles.vis}
           style={{
             ...visSize,
-            paddingBottom: bottomAxisHeight,
-            paddingLeft: leftAxisWidth,
+            paddingBottom: axisOffsets.bottom,
+            paddingLeft: axisOffsets.left,
+            boxSizing: 'content-box',
           }}
         >
           <Canvas
@@ -46,6 +37,7 @@ function VisCanvas(props: Props): JSX.Element {
             invalidateFrameloop
           >
             <ambientLight />
+            <AxisGrid axisDomains={axisDomains} axisOffsets={axisOffsets} />
             {children}
           </Canvas>
         </div>

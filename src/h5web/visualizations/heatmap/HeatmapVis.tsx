@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import { useProps, useValues } from './hooks';
-import AxisGrid from '../shared/AxisGrid';
 import Mesh from './Mesh';
 import TooltipMesh from './TooltipMesh';
 import HeatmapProvider from './HeatmapProvider';
@@ -27,15 +26,14 @@ function HeatmapVis(): JSX.Element {
 
   return (
     <div className={styles.root}>
-      <VisCanvas axisOffsets={axisOffsets} aspectRatio={aspectRatio}>
+      <VisCanvas
+        // -0.5 to have ticks at the center of pixels
+        axisDomains={{ left: [-0.5, rows - 0.5], bottom: [-0.5, cols - 0.5] }}
+        axisOffsets={axisOffsets}
+        aspectRatio={aspectRatio}
+      >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <HeatmapProvider {...props}>
-          <AxisGrid
-            // -0.5 to have ticks at the center of pixels
-            abscissaDomain={[-0.5, cols - 0.5]}
-            ordinateDomain={[-0.5, rows - 0.5]}
-            axisOffsets={axisOffsets}
-          />
           <TooltipMesh dims={dims} data={data} />
           <PanZoomMesh />
           <Mesh />
