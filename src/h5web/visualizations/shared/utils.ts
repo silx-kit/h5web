@@ -17,12 +17,12 @@ export function computeVisSize(
     return undefined;
   }
 
-  if (!aspectRatio) {
-    return { width, height };
-  }
-
   const availableWidth = width - axisOffsets.left;
   const availableHeight = height - axisOffsets.bottom;
+
+  if (!aspectRatio) {
+    return { width: availableWidth, height: availableHeight };
+  }
 
   // Determine how to compute canvas size to fit available space while maintaining aspect ratio
   const shouldAdjustWidth = availableWidth >= availableHeight * aspectRatio;
