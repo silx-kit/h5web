@@ -13,7 +13,7 @@ import HeatmapProvider from '../visualizations/heatmap/HeatmapProvider';
 import { AxisOffsets } from '../visualizations/shared/models';
 import { Dims } from '../visualizations/heatmap/models';
 
-const AXIS_OFFSETS: AxisOffsets = [72, 36];
+const AXIS_OFFSETS: AxisOffsets = { left: 72, bottom: 36 };
 
 interface Props {
   key: string; // reset states when switching between datasets
