@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { useThree, useFrame, Dom } from 'react-three-fiber';
 import { scaleLinear } from 'd3-scale';
-import Axis from './Axis';
-import styles from './AxisGrid.module.css';
+import { AxisLeft, AxisBottom } from '@vx/axis';
+import { format } from 'd3-format';
+import { TickRendererProps } from '@vx/axis/lib/types';
+import styles from './AxisSystem.module.css';
 import { Domain, AxisOffsets, AxisDomains } from './models';
+import { adaptedNumTicks } from './utils';
 
 interface Props {
   axisDomains: AxisDomains;
   axisOffsets: AxisOffsets;
 }
 
-function AxisGrid(props: Props): JSX.Element {
+function AxisSystem(props: Props): JSX.Element {
   const { axisDomains, axisOffsets } = props;
 
   const { camera, size } = useThree();
@@ -44,11 +47,26 @@ function AxisGrid(props: Props): JSX.Element {
     });
   });
 
+  const axisProps = {
+    hideAxisLine: true,
+    tickFormat: format('0'),
+    tickClassName: styles.tick,
+    tickComponent: ({ formattedValue, ...tickProps }: TickRendererProps) => (
+      <text {...tickProps}>{formattedValue}</text>
+    ),
+  };
+  const yScale = scaleLinear()
+    .domain(domains.left)
+    .range([height, 0]);
+  const xScale = scaleLinear()
+    .domain(domains.bottom)
+    .range([0, width]);
+
   return (
     <Dom
-      className={styles.axisGrid}
+      className={styles.axisSystem}
       style={{
-        // Take over space reserved for axis by `useHeatmapStyles` hook
+        // Take over space reserved for axis by VisCanvas
         width: width + axisOffsets.left,
         height: height + axisOffsets.bottom,
         left: -axisOffsets.left,
@@ -57,19 +75,28 @@ function AxisGrid(props: Props): JSX.Element {
       }}
     >
       <>
-        <Axis
-          className={styles.leftAxisCell}
-          orientation="left"
-          domain={domains.left}
-        />
-        <Axis
-          className={styles.bottomAxisCell}
-          orientation="bottom"
-          domain={domains.bottom}
-        />
+        <div className={styles.leftAxisCell}>
+          <svg className={styles.axis} data-orientation="left">
+            <AxisLeft
+              scale={yScale}
+              left={axisOffsets.left}
+              numTicks={adaptedNumTicks(height)}
+              {...axisProps}
+            />
+          </svg>
+        </div>
+        <div className={styles.bottomAxisCell}>
+          <svg className={styles.axis} data-orientation="bottom">
+            <AxisBottom
+              scale={xScale}
+              numTicks={adaptedNumTicks(width)}
+              {...axisProps}
+            />
+          </svg>
+        </div>
       </>
     </Dom>
   );
 }
 
-export default AxisGrid;
+export default AxisSystem;

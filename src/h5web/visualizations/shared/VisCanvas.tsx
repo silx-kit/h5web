@@ -4,7 +4,7 @@ import { useMeasure } from 'react-use';
 import styles from './VisCanvas.module.css';
 import { AxisOffsets, AxisDomains } from './models';
 import { computeVisSize } from './utils';
-import AxisGrid from './AxisGrid';
+import AxisSystem from './AxisSystem';
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -39,7 +39,7 @@ function VisCanvas(props: Props): JSX.Element {
           >
             <ambientLight />
             {axisDomains && (
-              <AxisGrid axisDomains={axisDomains} axisOffsets={axisOffsets} />
+              <AxisSystem axisDomains={axisDomains} axisOffsets={axisOffsets} />
             )}
             {children}
           </Canvas>
