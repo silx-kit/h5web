@@ -10,11 +10,12 @@ interface Props {
   axisOffsets: AxisOffsets;
   axisDomains?: AxisDomains;
   aspectRatio?: number;
+  showGrid?: boolean;
   children: ReactNode;
 }
 
 function VisCanvas(props: Props): JSX.Element {
-  const { axisDomains, axisOffsets, aspectRatio, children } = props;
+  const { axisDomains, axisOffsets, aspectRatio, children, showGrid } = props;
   const [visAreaRef, visAreaSize] = useMeasure();
 
   const visSize = computeVisSize(visAreaSize, axisOffsets, aspectRatio);
@@ -39,7 +40,11 @@ function VisCanvas(props: Props): JSX.Element {
           >
             <ambientLight />
             {axisDomains && (
-              <AxisSystem axisDomains={axisDomains} axisOffsets={axisOffsets} />
+              <AxisSystem
+                axisDomains={axisDomains}
+                axisOffsets={axisOffsets}
+                showGrid={showGrid}
+              />
             )}
             {children}
           </Canvas>

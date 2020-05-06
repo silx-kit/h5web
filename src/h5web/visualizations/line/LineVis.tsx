@@ -14,7 +14,7 @@ function LineVis(): JSX.Element {
 
   return (
     <div className={styles.root}>
-      <VisCanvas axisOffsets={axisOffsets} axisDomains={axisDomains}>
+      <VisCanvas axisOffsets={axisOffsets} axisDomains={axisDomains} showGrid>
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <LineVisProvider {...props}>
           <PanZoomMesh />

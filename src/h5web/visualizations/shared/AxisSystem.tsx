@@ -4,6 +4,7 @@ import { scaleLinear } from 'd3-scale';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
+import { Grid } from '@vx/grid';
 import styles from './AxisSystem.module.css';
 import { Domain, AxisOffsets, AxisDomains } from './models';
 import { adaptedNumTicks } from './utils';
@@ -11,10 +12,11 @@ import { adaptedNumTicks } from './utils';
 interface Props {
   axisDomains: AxisDomains;
   axisOffsets: AxisOffsets;
+  showGrid?: boolean;
 }
 
 function AxisSystem(props: Props): JSX.Element {
-  const { axisDomains, axisOffsets } = props;
+  const { axisDomains, axisOffsets, showGrid } = props;
 
   const { camera, size } = useThree();
   const { width, height } = size;
@@ -55,12 +57,16 @@ function AxisSystem(props: Props): JSX.Element {
       <text {...tickProps}>{formattedValue}</text>
     ),
   };
+
   const yScale = scaleLinear()
     .domain(domains.left)
     .range([height, 0]);
+  const yTicksNum = adaptedNumTicks(height);
+
   const xScale = scaleLinear()
     .domain(domains.bottom)
     .range([0, width]);
+  const xTicksNum = adaptedNumTicks(width);
 
   return (
     <Dom
@@ -75,25 +81,35 @@ function AxisSystem(props: Props): JSX.Element {
       }}
     >
       <>
+        <div className={styles.bottomAxisCell}>
+          <svg className={styles.axis} data-orientation="bottom">
+            <AxisBottom scale={xScale} numTicks={xTicksNum} {...axisProps} />
+          </svg>
+        </div>
         <div className={styles.leftAxisCell}>
           <svg className={styles.axis} data-orientation="left">
             <AxisLeft
               scale={yScale}
               left={axisOffsets.left}
-              numTicks={adaptedNumTicks(height)}
+              numTicks={yTicksNum}
               {...axisProps}
             />
           </svg>
         </div>
-        <div className={styles.bottomAxisCell}>
-          <svg className={styles.axis} data-orientation="bottom">
-            <AxisBottom
-              scale={xScale}
-              numTicks={adaptedNumTicks(width)}
-              {...axisProps}
-            />
-          </svg>
-        </div>
+        {showGrid && (
+          <div className={styles.axisGridCell}>
+            <svg width={width} height={height}>
+              <Grid
+                xScale={xScale}
+                yScale={yScale}
+                width={width}
+                height={height}
+                numTicksColumns={xTicksNum}
+                numTicksRows={yTicksNum}
+              />
+            </svg>
+          </div>
+        )}
       </>
     </Dom>
   );
