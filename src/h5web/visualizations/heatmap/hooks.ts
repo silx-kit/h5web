@@ -3,15 +3,15 @@ import { transfer } from 'comlink';
 import { useComlink } from 'react-use-comlink';
 import { useSetState } from 'react-use';
 import shallow from 'zustand/shallow';
+
+// @ts-ignore
+import Worker from 'worker-loader!./worker';
+
 import { useHeatmapConfig } from './config';
 import { HeatmapProps, HeatmapContext } from './HeatmapProvider';
 import { D3Interpolator } from './models';
 import { INTERPOLATORS } from './interpolators';
 import { TextureWorker } from './worker';
-
-// eslint-disable-next-line
-// @ts-ignore
-import Worker from 'worker-loader!./worker'; // eslint-disable-line
 
 export function useProps(): HeatmapProps {
   const props = useContext(HeatmapContext);
