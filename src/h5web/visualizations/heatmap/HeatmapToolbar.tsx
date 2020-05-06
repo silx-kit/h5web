@@ -5,6 +5,7 @@ import ColorMapSelector from './ColorMapSelector';
 import Toggler from '../shared/Toggler';
 import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
+import ScreenshotButton from '../shared/ScreenshotButton';
 
 function HeatmapToolbar(): JSX.Element {
   const [
@@ -34,6 +35,7 @@ function HeatmapToolbar(): JSX.Element {
         value={keepAspectRatio}
         onChange={toggleAspectRatio}
       />
+      <ScreenshotButton />
     </div>
   );
 }

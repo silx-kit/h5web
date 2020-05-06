@@ -34,7 +34,8 @@ function VisCanvas(props: Props): JSX.Element {
           <Canvas
             className={styles.canvasWrapper}
             orthographic
-            invalidateFrameloop
+            invalidateFrameloop // disable game loop
+            gl={{ preserveDrawingBuffer: true }} // for screenshot feature
           >
             <ambientLight />
             {axisDomains && (

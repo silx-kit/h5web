@@ -1,0 +1,11 @@
+.link {
+  color: inherit;
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  font-size: 1.125em;
+}
+
+.link:hover {
+  background-color: var(--secondary-light);
+}
