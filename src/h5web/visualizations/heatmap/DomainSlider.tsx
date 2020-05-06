@@ -7,8 +7,9 @@ import { FiRotateCcw } from 'react-icons/fi';
 import styles from './DomainSlider.module.css';
 import { useHeatmapConfig } from './config';
 import { Domain } from '../shared/models';
+import { extendDomain } from '../shared/utils';
 
-const EXTEND_PERCENTAGE = 0.2;
+const EXTEND_FACTOR = 0.2;
 const NB_DECIMALS = 1;
 
 function DomainSlider(): JSX.Element {
@@ -27,10 +28,7 @@ function DomainSlider(): JSX.Element {
     return <></>;
   }
 
-  const [min, max] = dataDomain;
-  const extension = (max - min) * EXTEND_PERCENTAGE;
-  const extendedMin = min - extension;
-  const extendedMax = max + extension;
+  const [extendedMin, extendedMax] = extendDomain(dataDomain, EXTEND_FACTOR);
   const step = Math.max((extendedMax - extendedMin) / 100, 10 ** -NB_DECIMALS);
 
   const updateCustomDomain = debounce(values => {

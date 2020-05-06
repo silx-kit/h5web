@@ -1,7 +1,7 @@
-import { extent } from 'd3-array';
 import { ColorMap } from './models';
 import { Domain } from '../shared/models';
 import { StorageConfig, createPersistableState } from '../../storage-utils';
+import { findDomain } from '../shared/utils';
 
 interface HeatmapConfig {
   dataDomain: Domain | undefined;
@@ -30,15 +30,8 @@ export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
   set => ({
     dataDomain: undefined,
     initDataDomain: (values: number[]) => {
-      const [min, max] = extent(values);
-
-      if (min === undefined || max === undefined) {
-        set({ dataDomain: undefined, customDomain: undefined });
-        return;
-      }
-
       set({
-        dataDomain: [min, max],
+        dataDomain: findDomain(values),
         customDomain: undefined, // reset custom domain
       });
     },

@@ -12,6 +12,7 @@ import { useValue } from '../providers/hooks';
 import HeatmapProvider from '../visualizations/heatmap/HeatmapProvider';
 import { AxisOffsets } from '../visualizations/shared/models';
 import { Dims } from '../visualizations/heatmap/models';
+import LineVisProvider from '../visualizations/line/LineVisProvider';
 
 const AXIS_OFFSETS: AxisOffsets = { left: 72, bottom: 36 };
 
@@ -44,7 +45,11 @@ function VisDisplay(props: Props): JSX.Element {
   }
 
   if (vis === Vis.Line) {
-    return <LineVis data={value} />;
+    return (
+      <LineVisProvider axisOffsets={AXIS_OFFSETS} data={value}>
+        <LineVis />
+      </LineVisProvider>
+    );
   }
 
   if (vis === Vis.Heatmap) {

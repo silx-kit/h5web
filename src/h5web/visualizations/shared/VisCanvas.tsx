@@ -7,8 +7,8 @@ import { computeVisSize } from './utils';
 import AxisGrid from './AxisGrid';
 
 interface Props {
-  axisDomains: AxisDomains;
   axisOffsets: AxisOffsets;
+  axisDomains?: AxisDomains;
   aspectRatio?: number;
   children: ReactNode;
 }
@@ -37,7 +37,9 @@ function VisCanvas(props: Props): JSX.Element {
             invalidateFrameloop
           >
             <ambientLight />
-            <AxisGrid axisDomains={axisDomains} axisOffsets={axisOffsets} />
+            {axisDomains && (
+              <AxisGrid axisDomains={axisDomains} axisOffsets={axisOffsets} />
+            )}
             {children}
           </Canvas>
         </div>

@@ -1,5 +1,6 @@
 import { scaleLinear } from 'd3-scale';
-import { AxisOffsets, Size } from './models';
+import { extent } from 'd3-array';
+import { AxisOffsets, Size, Domain } from './models';
 
 export const adaptedNumTicks = scaleLinear()
   .domain([300, 900])
@@ -30,4 +31,18 @@ export function computeVisSize(
   return shouldAdjustWidth
     ? { width: availableHeight * aspectRatio, height: availableHeight }
     : { width: availableWidth, height: availableWidth * aspectRatio };
+}
+
+export function extendDomain(bareDomain: Domain, extendFactor: number): Domain {
+  const [min, max] = bareDomain;
+  const extension = (max - min) * extendFactor;
+
+  return [min - extension, max + extension];
+}
+
+export function findDomain(data: number[]): Domain | undefined {
+  const domain = extent(data);
+  return domain[0] !== undefined && domain[1] !== undefined
+    ? domain
+    : undefined;
 }
