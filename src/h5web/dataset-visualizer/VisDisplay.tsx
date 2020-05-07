@@ -14,7 +14,7 @@ import { AxisOffsets } from '../visualizations/shared/models';
 import { Dims } from '../visualizations/heatmap/models';
 import LineProvider from '../visualizations/line/LineProvider';
 
-const AXIS_OFFSETS: AxisOffsets = { left: 72, bottom: 36 };
+const AXIS_OFFSETS: AxisOffsets = { left: 72, bottom: 36, top: 10, right: 10 };
 
 interface Props {
   key: string; // reset states when switching between datasets

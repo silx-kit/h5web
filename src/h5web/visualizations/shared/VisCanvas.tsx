@@ -18,8 +18,8 @@ function VisCanvas(props: Props): JSX.Element {
   const { axisDomains, axisOffsets, aspectRatio, children, showGrid } = props;
   const [visAreaRef, visAreaSize] = useMeasure();
   const availableSize = {
-    width: visAreaSize.width - axisOffsets.left,
-    height: visAreaSize.height - axisOffsets.bottom,
+    width: visAreaSize.width - axisOffsets.left - axisOffsets.right,
+    height: visAreaSize.height - axisOffsets.bottom - axisOffsets.top,
   };
 
   const visSize = computeVisSize(availableSize, aspectRatio);
@@ -33,6 +33,8 @@ function VisCanvas(props: Props): JSX.Element {
             ...visSize,
             paddingBottom: axisOffsets.bottom,
             paddingLeft: axisOffsets.left,
+            paddingTop: axisOffsets.top,
+            paddingRight: axisOffsets.right,
             boxSizing: 'content-box',
           }}
         >

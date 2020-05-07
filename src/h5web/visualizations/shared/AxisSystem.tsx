@@ -65,11 +65,12 @@ function AxisSystem(props: Props): JSX.Element {
       className={styles.axisSystem}
       style={{
         // Take over space reserved for axis by VisCanvas
-        width: width + axisOffsets.left,
-        height: height + axisOffsets.bottom,
+        width: width + axisOffsets.left + axisOffsets.right,
+        height: height + axisOffsets.bottom + axisOffsets.top,
+        top: -axisOffsets.top,
         left: -axisOffsets.left,
-        gridTemplateColumns: `${axisOffsets.left}px 1fr`,
-        gridTemplateRows: `1fr ${axisOffsets.bottom}px`,
+        gridTemplateColumns: `${axisOffsets.left}px 1fr ${axisOffsets.right}px`,
+        gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
       }}
     >
       <>

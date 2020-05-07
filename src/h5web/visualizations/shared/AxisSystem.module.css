@@ -3,8 +3,9 @@
   top: 0;
   display: grid;
   grid-template-areas:
-    'left-axis axis-grid'
-    '. bottom-axis';
+    '. top-axis .'
+    'left-axis axis-grid right-axis'
+    '. bottom-axis .';
 }
 
 .leftAxisCell {
