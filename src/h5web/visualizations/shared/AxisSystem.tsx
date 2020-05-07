@@ -50,6 +50,7 @@ function AxisSystem(props: Props): JSX.Element {
   });
 
   const axisProps = {
+    tickStroke: '#8cdfc7', // var(--secondary)
     hideAxisLine: true,
     tickFormat: format('0'),
     tickClassName: styles.tick,
@@ -106,6 +107,8 @@ function AxisSystem(props: Props): JSX.Element {
                 height={height}
                 numTicksColumns={xTicksNum}
                 numTicksRows={yTicksNum}
+                stroke={axisProps.tickStroke}
+                strokeOpacity={0.5}
               />
             </svg>
           </div>

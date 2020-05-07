@@ -39,7 +39,7 @@
 }
 
 .tick > text {
-  fill: currentColor;
+  fill: var(--secondary-dark);
   font-family: inherit;
   font-size: inherit;
   text-anchor: inherit;
