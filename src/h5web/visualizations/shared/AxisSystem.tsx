@@ -31,10 +31,10 @@ function AxisSystem(props: Props): JSX.Element {
   const cameraToBounds = {
     x: scaleLinear()
       .domain(axisCoords.x)
-      .range(axisDomains.bottom),
+      .range(axisDomains.x),
     y: scaleLinear()
       .domain(axisCoords.y)
-      .range(axisDomains.left),
+      .range(axisDomains.y),
   };
 
   const [axisScales, setAxisScales] = useState<TwoDimScale>(

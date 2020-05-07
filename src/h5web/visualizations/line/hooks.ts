@@ -22,8 +22,8 @@ export function useAxisDomains(): AxisDomains | undefined {
 
   return dataDomain
     ? {
-        bottom: extendDomain([0, data.length - 1], 0.01),
-        left: extendDomain(dataDomain, 0.01),
+        x: extendDomain([0, data.length - 1], 0.01),
+        y: extendDomain(dataDomain, 0.01),
       }
     : undefined;
 }
@@ -41,10 +41,10 @@ export function useDataPoints(): Vector3[] | undefined {
     }
 
     const xScale = scaleLinear()
-      .domain(axisDomains.bottom)
+      .domain(axisDomains.x)
       .range([-width / 2, width / 2]);
     const yScale = scaleLinear()
-      .domain(axisDomains.left)
+      .domain(axisDomains.y)
       .range([-height / 2, height / 2]);
 
     return data.map((val, index) => new Vector3(xScale(index), yScale(val), 0));
