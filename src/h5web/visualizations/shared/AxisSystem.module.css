@@ -10,6 +10,8 @@
 .leftAxisCell {
   grid-area: left-axis;
   display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .bottomAxisCell {
