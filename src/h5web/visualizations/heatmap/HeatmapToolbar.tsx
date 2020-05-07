@@ -13,11 +13,15 @@ function HeatmapToolbar(): JSX.Element {
     toggleLogScale,
     keepAspectRatio,
     toggleAspectRatio,
+    showGrid,
+    toggleGrid,
   ] = useHeatmapConfig(state => [
     state.hasLogScale,
     state.toggleLogScale,
     state.keepAspectRatio,
     state.toggleAspectRatio,
+    state.showGrid,
+    state.toggleGrid,
     shallow,
   ]);
 
@@ -35,6 +39,7 @@ function HeatmapToolbar(): JSX.Element {
         value={keepAspectRatio}
         onChange={toggleAspectRatio}
       />
+      <Toggler label="Show grid" value={showGrid} onChange={toggleGrid} />
       <ScreenshotButton />
     </div>
   );
