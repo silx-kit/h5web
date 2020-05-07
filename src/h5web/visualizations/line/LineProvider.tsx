@@ -1,9 +1,7 @@
 import React, { createContext, ReactElement, ReactNode } from 'react';
-import { AxisOffsets } from '../shared/models';
 
 export interface LineProps {
   data: number[];
-  axisOffsets: AxisOffsets;
 }
 
 export const LineContext = createContext<LineProps | undefined>(undefined);
@@ -13,12 +11,10 @@ type Props = LineProps & {
 };
 
 function LineProvider(props: Props): ReactElement {
-  const { data, axisOffsets, children } = props;
+  const { data, children } = props;
 
   return (
-    <LineContext.Provider value={{ data, axisOffsets }}>
-      {children}
-    </LineContext.Provider>
+    <LineContext.Provider value={{ data }}>{children}</LineContext.Provider>
   );
 }
 

@@ -2,12 +2,13 @@ import React, { ReactNode } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { useMeasure } from 'react-use';
 import styles from './VisCanvas.module.css';
-import { AxisOffsets, AxisDomains } from './models';
+import { AxisDomains } from './models';
 import { computeVisSize } from './utils';
 import AxisSystem from './AxisSystem';
 
+const AXIS_OFFSETS = { vertical: 72, horizontal: 36, fallback: 10 };
+
 interface Props {
-  axisOffsets: AxisOffsets;
   axisDomains?: AxisDomains;
   aspectRatio?: number;
   showGrid?: boolean;
@@ -15,11 +16,31 @@ interface Props {
 }
 
 function VisCanvas(props: Props): JSX.Element {
-  const { axisDomains, axisOffsets, aspectRatio, children, showGrid } = props;
+  const { axisDomains, aspectRatio, children, showGrid } = props;
   const [visAreaRef, visAreaSize] = useMeasure();
+
+  const axisOffsets = {
+    left:
+      axisDomains && axisDomains.left
+        ? AXIS_OFFSETS.vertical
+        : AXIS_OFFSETS.fallback,
+    right:
+      axisDomains && axisDomains.right
+        ? AXIS_OFFSETS.vertical
+        : AXIS_OFFSETS.fallback,
+    top:
+      axisDomains && axisDomains.top
+        ? AXIS_OFFSETS.horizontal
+        : AXIS_OFFSETS.fallback,
+    bottom:
+      axisDomains && axisDomains.bottom
+        ? AXIS_OFFSETS.horizontal
+        : AXIS_OFFSETS.fallback,
+  };
+
   const availableSize = {
-    width: visAreaSize.width - axisOffsets.left,
-    height: visAreaSize.height - axisOffsets.bottom,
+    width: visAreaSize.width - axisOffsets.left - axisOffsets.right,
+    height: visAreaSize.height - axisOffsets.bottom - axisOffsets.top,
   };
 
   const visSize = computeVisSize(availableSize, aspectRatio);
@@ -33,6 +54,8 @@ function VisCanvas(props: Props): JSX.Element {
             ...visSize,
             paddingBottom: axisOffsets.bottom,
             paddingLeft: axisOffsets.left,
+            paddingTop: axisOffsets.top,
+            paddingRight: axisOffsets.right,
             boxSizing: 'content-box',
           }}
         >
