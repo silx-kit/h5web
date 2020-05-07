@@ -2,15 +2,15 @@ import { useContext, useMemo } from 'react';
 import { Vector3 } from 'three';
 import { scaleLinear } from 'd3-scale';
 import { useThree } from 'react-three-fiber';
-import { LineVisProps, LineVisContext } from './LineVisProvider';
+import { LineProps, LineContext } from './LineProvider';
 import { AxisDomains } from '../shared/models';
 import { extendDomain, findDomain } from '../shared/utils';
 
-export function useProps(): LineVisProps {
-  const props = useContext(LineVisContext);
+export function useProps(): LineProps {
+  const props = useContext(LineContext);
 
   if (!props) {
-    throw new Error('Missing LineVis provider.');
+    throw new Error('Missing Line provider.');
   }
 
   return props;
@@ -22,8 +22,8 @@ export function useAxisDomains(): AxisDomains | undefined {
 
   return dataDomain
     ? {
-        bottom: extendDomain([0, data.length - 1], 0.05),
-        left: extendDomain(dataDomain, 0.05),
+        bottom: extendDomain([0, data.length - 1], 0.01),
+        left: extendDomain(dataDomain, 0.01),
       }
     : undefined;
 }

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import shallow from 'zustand/shallow';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import { useProps, useValues } from './hooks';
@@ -14,7 +15,10 @@ function HeatmapVis(): JSX.Element {
   const { dims, axisOffsets, data } = props;
   const [rows, cols] = dims;
 
-  const keepAspectRatio = useHeatmapConfig(state => state.keepAspectRatio);
+  const [keepAspectRatio, showGrid] = useHeatmapConfig(
+    state => [state.keepAspectRatio, state.showGrid],
+    shallow
+  );
   const aspectRatio = keepAspectRatio ? rows / cols : undefined;
 
   const values = useValues();
@@ -31,6 +35,7 @@ function HeatmapVis(): JSX.Element {
         axisDomains={{ left: [-0.5, rows - 0.5], bottom: [-0.5, cols - 0.5] }}
         axisOffsets={axisOffsets}
         aspectRatio={aspectRatio}
+        showGrid={showGrid}
       >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <HeatmapProvider {...props}>

@@ -1,6 +1,5 @@
 import React from 'react';
 import shallow from 'zustand/shallow';
-import styles from './HeatmapToolbar.module.css';
 import ColorMapSelector from './ColorMapSelector';
 import Toggler from '../shared/Toggler';
 import { useHeatmapConfig } from './config';
@@ -13,16 +12,20 @@ function HeatmapToolbar(): JSX.Element {
     toggleLogScale,
     keepAspectRatio,
     toggleAspectRatio,
+    showGrid,
+    toggleGrid,
   ] = useHeatmapConfig(state => [
     state.hasLogScale,
     state.toggleLogScale,
     state.keepAspectRatio,
     state.toggleAspectRatio,
+    state.showGrid,
+    state.toggleGrid,
     shallow,
   ]);
 
   return (
-    <div className={styles.toolbar}>
+    <>
       <DomainSlider />
       <ColorMapSelector />
       <Toggler
@@ -35,8 +38,9 @@ function HeatmapToolbar(): JSX.Element {
         value={keepAspectRatio}
         onChange={toggleAspectRatio}
       />
+      <Toggler label="Show grid" value={showGrid} onChange={toggleGrid} />
       <ScreenshotButton />
-    </div>
+    </>
   );
 }
 

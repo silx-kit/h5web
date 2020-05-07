@@ -18,11 +18,14 @@ interface HeatmapConfig {
 
   keepAspectRatio: boolean;
   toggleAspectRatio: () => void;
+
+  showGrid: boolean;
+  toggleGrid: () => void;
 }
 
 const STORAGE_CONFIG: StorageConfig = {
   storageId: 'h5web:heatmap',
-  itemsToPersist: ['colorMap', 'hasLogScale', 'keepAspectRatio'],
+  itemsToPersist: ['colorMap', 'hasLogScale', 'keepAspectRatio', 'showGrid'],
 };
 
 export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
@@ -49,5 +52,8 @@ export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
     keepAspectRatio: true,
     toggleAspectRatio: () =>
       set(state => ({ keepAspectRatio: !state.keepAspectRatio })),
+
+    showGrid: false,
+    toggleGrid: () => set(state => ({ showGrid: !state.showGrid })),
   })
 );
