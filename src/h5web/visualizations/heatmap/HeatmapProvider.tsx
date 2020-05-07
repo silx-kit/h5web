@@ -1,11 +1,9 @@
 import React, { createContext, ReactElement, ReactNode } from 'react';
 import { Dims } from './models';
-import { AxisOffsets } from '../shared/models';
 
 export interface HeatmapProps {
   dims: Dims;
   data: number[][];
-  axisOffsets: AxisOffsets;
 }
 
 export const HeatmapContext = createContext<HeatmapProps | undefined>(
@@ -17,10 +15,10 @@ type Props = HeatmapProps & {
 };
 
 function HeatmapProvider(props: Props): ReactElement {
-  const { dims, data, axisOffsets, children } = props;
+  const { dims, data, children } = props;
 
   return (
-    <HeatmapContext.Provider value={{ dims, data, axisOffsets }}>
+    <HeatmapContext.Provider value={{ dims, data }}>
       {children}
     </HeatmapContext.Provider>
   );

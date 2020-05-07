@@ -47,18 +47,19 @@ export function findDomain(data: number[]): Domain | undefined {
 export function computeAxisScales(
   camera: Camera,
   size: Size,
-  cameraToBounds: TwoDimScale,
-  axisCoords: { x: Domain; y: Domain }
+  cameraToBounds: TwoDimScale
 ): TwoDimScale {
   const { position, zoom } = camera;
   const { width, height } = size;
 
-  const xBounds = axisCoords.x.map(bound =>
-    cameraToBounds.x(bound / zoom + position.x)
-  );
-  const yBounds = axisCoords.y.map(bound =>
-    cameraToBounds.y(bound / zoom + position.y)
-  );
+  const xBounds = [
+    cameraToBounds.x(-width / (2 * zoom) + position.x),
+    cameraToBounds.x(width / (2 * zoom) + position.x),
+  ];
+  const yBounds = [
+    cameraToBounds.y(-height / (2 * zoom) + position.y),
+    cameraToBounds.y(height / (2 * zoom) + position.y),
+  ];
 
   return {
     x: scaleLinear()

@@ -10,11 +10,8 @@ import {
 } from '../visualizations';
 import { useValue } from '../providers/hooks';
 import HeatmapProvider from '../visualizations/heatmap/HeatmapProvider';
-import { AxisOffsets } from '../visualizations/shared/models';
 import { Dims } from '../visualizations/heatmap/models';
 import LineProvider from '../visualizations/line/LineProvider';
-
-const AXIS_OFFSETS: AxisOffsets = { left: 72, bottom: 36 };
 
 interface Props {
   key: string; // reset states when switching between datasets
@@ -46,7 +43,7 @@ function VisDisplay(props: Props): JSX.Element {
 
   if (vis === Vis.Line) {
     return (
-      <LineProvider axisOffsets={AXIS_OFFSETS} data={value}>
+      <LineProvider data={value}>
         <LineVis />
       </LineProvider>
     );
@@ -57,7 +54,6 @@ function VisDisplay(props: Props): JSX.Element {
       <HeatmapProvider
         dims={(dataset.shape as HDF5SimpleShape).dims as Dims}
         data={value}
-        axisOffsets={AXIS_OFFSETS}
       >
         <HeatmapVis />
       </HeatmapProvider>

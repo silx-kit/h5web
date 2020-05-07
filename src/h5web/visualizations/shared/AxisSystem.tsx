@@ -6,7 +6,7 @@ import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
 import { Grid } from '@vx/grid';
 import styles from './AxisSystem.module.css';
-import { Domain, AxisOffsets, AxisDomains, TwoDimScale } from './models';
+import { AxisOffsets, AxisDomains, TwoDimScale } from './models';
 import { adaptedNumTicks, computeAxisScales } from './utils';
 
 interface Props {
@@ -21,28 +21,22 @@ function AxisSystem(props: Props): JSX.Element {
   const { camera, size } = useThree();
   const { width, height } = size;
 
-  // Axis bounds in R3F camera coordinates
-  const axisCoords = {
-    x: [-width / 2, width / 2] as Domain,
-    y: [-height / 2, height / 2] as Domain,
-  };
-
   // Scales R3F camera coordinates to data bounds
   const cameraToBounds = {
     x: scaleLinear()
-      .domain(axisCoords.x)
+      .domain([-width / 2, width / 2])
       .range(axisDomains.bottom),
     y: scaleLinear()
-      .domain(axisCoords.y)
+      .domain([-height / 2, height / 2])
       .range(axisDomains.left),
   };
 
   const [axisScales, setAxisScales] = useState<TwoDimScale>(
-    computeAxisScales(camera, size, cameraToBounds, axisCoords)
+    computeAxisScales(camera, size, cameraToBounds)
   );
 
   useFrame(() => {
-    setAxisScales(computeAxisScales(camera, size, cameraToBounds, axisCoords));
+    setAxisScales(computeAxisScales(camera, size, cameraToBounds));
   });
 
   const sharedAxisProps = {
@@ -65,11 +59,12 @@ function AxisSystem(props: Props): JSX.Element {
       className={styles.axisSystem}
       style={{
         // Take over space reserved for axis by VisCanvas
-        width: width + axisOffsets.left,
-        height: height + axisOffsets.bottom,
+        width: width + axisOffsets.left + axisOffsets.right,
+        height: height + axisOffsets.bottom + axisOffsets.top,
+        top: -axisOffsets.top,
         left: -axisOffsets.left,
-        gridTemplateColumns: `${axisOffsets.left}px 1fr`,
-        gridTemplateRows: `1fr ${axisOffsets.bottom}px`,
+        gridTemplateColumns: `${axisOffsets.left}px 1fr ${axisOffsets.right}px`,
+        gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
       }}
     >
       <>

@@ -12,7 +12,7 @@ import VisCanvas from '../shared/VisCanvas';
 
 function HeatmapVis(): JSX.Element {
   const props = useProps();
-  const { dims, axisOffsets, data } = props;
+  const { dims, data } = props;
   const [rows, cols] = dims;
 
   const [keepAspectRatio, showGrid] = useHeatmapConfig(
@@ -32,8 +32,7 @@ function HeatmapVis(): JSX.Element {
     <div className={styles.root}>
       <VisCanvas
         // -0.5 to have ticks at the center of pixels
-        axisDomains={{ left: [-0.5, rows - 0.5], bottom: [-0.5, cols - 0.5] }}
-        axisOffsets={axisOffsets}
+        axisDomains={{ bottom: [-0.5, cols - 0.5], left: [-0.5, rows - 0.5] }}
         aspectRatio={aspectRatio}
         showGrid={showGrid}
       >
