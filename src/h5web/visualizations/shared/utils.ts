@@ -1,6 +1,6 @@
 import { scaleLinear } from 'd3-scale';
 import { extent } from 'd3-array';
-import { AxisOffsets, Size, Domain } from './models';
+import { Size, Domain } from './models';
 
 export const adaptedNumTicks = scaleLinear()
   .domain([300, 900])
@@ -8,29 +8,25 @@ export const adaptedNumTicks = scaleLinear()
   .clamp(true);
 
 export function computeVisSize(
-  visAreaSize: Size,
-  axisOffsets: AxisOffsets,
+  availableSize: Size,
   aspectRatio?: number
 ): Size | undefined {
-  const { width, height } = visAreaSize;
+  const { width, height } = availableSize;
 
-  if (width === 0 && height === 0) {
+  if (width <= 0 && height <= 0) {
     return undefined;
   }
 
-  const availableWidth = width - axisOffsets.left;
-  const availableHeight = height - axisOffsets.bottom;
-
   if (!aspectRatio) {
-    return { width: availableWidth, height: availableHeight };
+    return availableSize;
   }
 
   // Determine how to compute canvas size to fit available space while maintaining aspect ratio
-  const shouldAdjustWidth = availableWidth >= availableHeight * aspectRatio;
+  const shouldAdjustWidth = width >= height * aspectRatio;
 
   return shouldAdjustWidth
-    ? { width: availableHeight * aspectRatio, height: availableHeight }
-    : { width: availableWidth, height: availableWidth * aspectRatio };
+    ? { width: height * aspectRatio, height }
+    : { width, height: width * aspectRatio };
 }
 
 export function extendDomain(bareDomain: Domain, extendFactor: number): Domain {

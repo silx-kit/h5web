@@ -17,8 +17,12 @@ interface Props {
 function VisCanvas(props: Props): JSX.Element {
   const { axisDomains, axisOffsets, aspectRatio, children, showGrid } = props;
   const [visAreaRef, visAreaSize] = useMeasure();
+  const availableSize = {
+    width: visAreaSize.width - axisOffsets.left,
+    height: visAreaSize.height - axisOffsets.bottom,
+  };
 
-  const visSize = computeVisSize(visAreaSize, axisOffsets, aspectRatio);
+  const visSize = computeVisSize(availableSize, aspectRatio);
 
   return (
     <div ref={visAreaRef} className={styles.visArea}>
