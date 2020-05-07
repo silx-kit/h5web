@@ -24,7 +24,9 @@ function DatasetVisualizer(props: Props): JSX.Element {
           choices={supportedVis}
           onChange={setActiveVis}
         />
-        <VisBar vis={activeVis} />
+        <div className={styles.toolbar}>
+          <VisBar vis={activeVis} />
+        </div>
       </div>
       <div className={styles.displayArea}>
         {dataset ? (

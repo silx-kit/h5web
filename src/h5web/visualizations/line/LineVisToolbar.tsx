@@ -2,7 +2,6 @@ import React from 'react';
 import shallow from 'zustand/shallow';
 import Toggler from '../shared/Toggler';
 import { useLineVisConfig } from './config';
-import styles from './LineVisToolbar.module.css';
 
 function LineVisToolbar(): JSX.Element {
   const [showGrid, toggleGrid] = useLineVisConfig(
@@ -11,9 +10,9 @@ function LineVisToolbar(): JSX.Element {
   );
 
   return (
-    <div className={styles.toolbar}>
+    <>
       <Toggler label="Show grid" value={showGrid} onChange={toggleGrid} />
-    </div>
+    </>
   );
 }
 
