@@ -1,7 +1,7 @@
 import React from 'react';
 import { Vis } from './models';
 import HeatmapToolbar from '../visualizations/heatmap/HeatmapToolbar';
-import LineVisToolbar from '../visualizations/line/LineVisToolbar';
+import LineToolbar from '../visualizations/line/LineToolbar';
 
 interface Props {
   vis?: Vis;
@@ -15,7 +15,7 @@ function VisBar(props: Props): JSX.Element {
   }
 
   if (vis === Vis.Line) {
-    return <LineVisToolbar />;
+    return <LineToolbar />;
   }
   return <></>;
 }

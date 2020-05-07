@@ -1,16 +1,16 @@
 import { StorageConfig, createPersistableState } from '../../storage-utils';
 
-type LineVisConfig = {
+type LineConfig = {
   showGrid: boolean;
   toggleGrid: () => void;
 };
 
 const STORAGE_CONFIG: StorageConfig = {
-  storageId: 'h5web:linevis',
+  storageId: 'h5web:line',
   itemsToPersist: ['showGrid'],
 };
 
-export const [useLineVisConfig] = createPersistableState<LineVisConfig>(
+export const [useLineConfig] = createPersistableState<LineConfig>(
   STORAGE_CONFIG,
   set => ({
     showGrid: true,

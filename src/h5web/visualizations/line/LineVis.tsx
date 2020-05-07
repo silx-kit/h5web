@@ -4,13 +4,13 @@ import DataLine from './DataLine';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import { useProps, useAxisDomains } from './hooks';
-import LineVisProvider from './LineVisProvider';
-import { useLineVisConfig } from './config';
+import LineProvider from './LineProvider';
+import { useLineConfig } from './config';
 
 function LineVis(): JSX.Element {
   const props = useProps();
   const { axisOffsets } = props;
-  const showGrid = useLineVisConfig(state => state.showGrid);
+  const showGrid = useLineConfig(state => state.showGrid);
 
   const axisDomains = useAxisDomains();
 
@@ -22,10 +22,10 @@ function LineVis(): JSX.Element {
         showGrid={showGrid}
       >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
-        <LineVisProvider {...props}>
+        <LineProvider {...props}>
           <PanZoomMesh />
           <DataLine />
-        </LineVisProvider>
+        </LineProvider>
       </VisCanvas>
     </div>
   );

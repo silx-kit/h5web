@@ -1,10 +1,10 @@
 import React from 'react';
 import shallow from 'zustand/shallow';
 import Toggler from '../shared/Toggler';
-import { useLineVisConfig } from './config';
+import { useLineConfig } from './config';
 
-function LineVisToolbar(): JSX.Element {
-  const [showGrid, toggleGrid] = useLineVisConfig(
+function LineToolbar(): JSX.Element {
+  const [showGrid, toggleGrid] = useLineConfig(
     state => [state.showGrid, state.toggleGrid],
     shallow
   );
@@ -16,4 +16,4 @@ function LineVisToolbar(): JSX.Element {
   );
 }
 
-export default LineVisToolbar;
+export default LineToolbar;
