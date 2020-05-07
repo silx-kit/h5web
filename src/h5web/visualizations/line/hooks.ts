@@ -22,8 +22,8 @@ export function useAxisDomains(): AxisDomains | undefined {
 
   return dataDomain
     ? {
-        bottom: extendDomain([0, data.length - 1], 0.05),
-        left: extendDomain(dataDomain, 0.05),
+        bottom: extendDomain([0, data.length - 1], 0.01),
+        left: extendDomain(dataDomain, 0.01),
       }
     : undefined;
 }

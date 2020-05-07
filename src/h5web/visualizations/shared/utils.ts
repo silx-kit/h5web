@@ -1,6 +1,7 @@
 import { scaleLinear } from 'd3-scale';
 import { extent } from 'd3-array';
-import { Size, Domain } from './models';
+import { Camera } from 'react-three-fiber';
+import { Size, Domain, TwoDimScale } from './models';
 
 export const adaptedNumTicks = scaleLinear()
   .domain([300, 900])
@@ -41,4 +42,30 @@ export function findDomain(data: number[]): Domain | undefined {
   return domain[0] !== undefined && domain[1] !== undefined
     ? domain
     : undefined;
+}
+
+export function computeAxisScales(
+  camera: Camera,
+  size: Size,
+  cameraToBounds: TwoDimScale,
+  axisCoords: { x: Domain; y: Domain }
+): TwoDimScale {
+  const { position, zoom } = camera;
+  const { width, height } = size;
+
+  const xBounds = axisCoords.x.map(bound =>
+    cameraToBounds.x(bound / zoom + position.x)
+  );
+  const yBounds = axisCoords.y.map(bound =>
+    cameraToBounds.y(bound / zoom + position.y)
+  );
+
+  return {
+    x: scaleLinear()
+      .domain(xBounds)
+      .range([0, width]),
+    y: scaleLinear()
+      .domain(yBounds)
+      .range([height, 0]),
+  };
 }

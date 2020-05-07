@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 import { useThree, useFrame, Dom } from 'react-three-fiber';
-import { scaleLinear, ScaleLinear } from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
 import { Grid } from '@vx/grid';
 import styles from './AxisSystem.module.css';
-import { AxisOffsets, AxisDomains } from './models';
-import { adaptedNumTicks } from './utils';
+import { Domain, AxisOffsets, AxisDomains, TwoDimScale } from './models';
+import { adaptedNumTicks, computeAxisScales } from './utils';
 
 interface Props {
   axisDomains: AxisDomains;
   axisOffsets: AxisOffsets;
   showGrid?: boolean;
-}
-
-interface AxisScales {
-  x: ScaleLinear<number, number>;
-  y: ScaleLinear<number, number>;
 }
 
 function AxisSystem(props: Props): JSX.Element {
@@ -26,15 +21,10 @@ function AxisSystem(props: Props): JSX.Element {
   const { camera, size } = useThree();
   const { width, height } = size;
 
-  const [axisScales, setAxisScales] = useState<AxisScales>({
-    x: scaleLinear(),
-    y: scaleLinear(),
-  });
-
   // Axis bounds in R3F camera coordinates
   const axisCoords = {
-    x: [-width / 2, width / 2],
-    y: [-height / 2, height / 2],
+    x: [-width / 2, width / 2] as Domain,
+    y: [-height / 2, height / 2] as Domain,
   };
 
   // Scales R3F camera coordinates to data bounds
@@ -47,23 +37,12 @@ function AxisSystem(props: Props): JSX.Element {
       .range(axisDomains.left),
   };
 
-  useFrame(() => {
-    const { position, zoom } = camera;
-    const xBounds = axisCoords.x.map(bound =>
-      cameraToBounds.x(bound / zoom + position.x)
-    );
-    const yBounds = axisCoords.y.map(bound =>
-      cameraToBounds.y(bound / zoom + position.y)
-    );
+  const [axisScales, setAxisScales] = useState<TwoDimScale>(
+    computeAxisScales(camera, size, cameraToBounds, axisCoords)
+  );
 
-    setAxisScales({
-      x: scaleLinear()
-        .domain(xBounds)
-        .range([0, width]),
-      y: scaleLinear()
-        .domain(yBounds)
-        .range([height, 0]),
-    });
+  useFrame(() => {
+    setAxisScales(computeAxisScales(camera, size, cameraToBounds, axisCoords));
   });
 
   const sharedAxisProps = {
