@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useThree, useFrame, Dom } from 'react-three-fiber';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, ScaleLinear } from 'd3-scale';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
 import { Grid } from '@vx/grid';
 import styles from './AxisSystem.module.css';
-import { Domain, AxisOffsets, AxisDomains } from './models';
+import { AxisOffsets, AxisDomains } from './models';
 import { adaptedNumTicks } from './utils';
 
 interface Props {
@@ -15,42 +15,59 @@ interface Props {
   showGrid?: boolean;
 }
 
+interface AxisScales {
+  x: ScaleLinear<number, number>;
+  y: ScaleLinear<number, number>;
+}
+
 function AxisSystem(props: Props): JSX.Element {
   const { axisDomains, axisOffsets, showGrid } = props;
 
   const { camera, size } = useThree();
   const { width, height } = size;
 
-  const [domains, setDomains] = useState<AxisDomains>(axisDomains);
+  const [axisScales, setAxisScales] = useState<AxisScales>({
+    x: scaleLinear(),
+    y: scaleLinear(),
+  });
 
   // Axis bounds in R3F camera coordinates
-  const leftAxisBounds = [-height / 2, height / 2];
-  const bottomAxisBounds = [-width / 2, width / 2];
+  const axisCoords = {
+    x: [-width / 2, width / 2],
+    y: [-height / 2, height / 2],
+  };
 
-  // Scales R3F camera coordinates to axis bounds
-  const leftAxisScale = scaleLinear()
-    .domain(leftAxisBounds)
-    .range(axisDomains.left);
-  const bottomAxisScale = scaleLinear()
-    .domain(bottomAxisBounds)
-    .range(axisDomains.bottom);
+  // Scales R3F camera coordinates to data bounds
+  const cameraToBounds = {
+    x: scaleLinear()
+      .domain(axisCoords.x)
+      .range(axisDomains.bottom),
+    y: scaleLinear()
+      .domain(axisCoords.y)
+      .range(axisDomains.left),
+  };
 
   useFrame(() => {
     const { position, zoom } = camera;
+    const xBounds = axisCoords.x.map(bound =>
+      cameraToBounds.x(bound / zoom + position.x)
+    );
+    const yBounds = axisCoords.y.map(bound =>
+      cameraToBounds.y(bound / zoom + position.y)
+    );
 
-    // Scale bounds according to zoom and shift by camera position
-    setDomains({
-      left: leftAxisBounds.map(bound =>
-        leftAxisScale(bound / zoom + position.y)
-      ) as Domain,
-      bottom: bottomAxisBounds.map(bound =>
-        bottomAxisScale(bound / zoom + position.x)
-      ) as Domain,
+    setAxisScales({
+      x: scaleLinear()
+        .domain(xBounds)
+        .range([0, width]),
+      y: scaleLinear()
+        .domain(yBounds)
+        .range([height, 0]),
     });
   });
 
-  const axisProps = {
-    tickStroke: '#8cdfc7', // var(--secondary)
+  const sharedAxisProps = {
+    tickStroke: 'grey',
     hideAxisLine: true,
     tickFormat: format('0'),
     tickClassName: styles.tick,
@@ -59,15 +76,10 @@ function AxisSystem(props: Props): JSX.Element {
     ),
   };
 
-  const yScale = scaleLinear()
-    .domain(domains.left)
-    .range([height, 0]);
-  const yTicksNum = adaptedNumTicks(height);
-
-  const xScale = scaleLinear()
-    .domain(domains.bottom)
-    .range([0, width]);
-  const xTicksNum = adaptedNumTicks(width);
+  const adaptedTicksNum = {
+    x: adaptedNumTicks(width),
+    y: adaptedNumTicks(height),
+  };
 
   return (
     <Dom
@@ -84,16 +96,20 @@ function AxisSystem(props: Props): JSX.Element {
       <>
         <div className={styles.bottomAxisCell}>
           <svg className={styles.axis} data-orientation="bottom">
-            <AxisBottom scale={xScale} numTicks={xTicksNum} {...axisProps} />
+            <AxisBottom
+              scale={axisScales.x}
+              numTicks={adaptedTicksNum.x}
+              {...sharedAxisProps}
+            />
           </svg>
         </div>
         <div className={styles.leftAxisCell}>
           <svg className={styles.axis} data-orientation="left">
             <AxisLeft
-              scale={yScale}
+              scale={axisScales.y}
               left={axisOffsets.left}
-              numTicks={yTicksNum}
-              {...axisProps}
+              numTicks={adaptedTicksNum.y}
+              {...sharedAxisProps}
             />
           </svg>
         </div>
@@ -101,14 +117,14 @@ function AxisSystem(props: Props): JSX.Element {
           <div className={styles.axisGridCell}>
             <svg width={width} height={height}>
               <Grid
-                xScale={xScale}
-                yScale={yScale}
+                xScale={axisScales.x}
+                yScale={axisScales.y}
                 width={width}
                 height={height}
-                numTicksColumns={xTicksNum}
-                numTicksRows={yTicksNum}
-                stroke={axisProps.tickStroke}
-                strokeOpacity={0.5}
+                numTicksColumns={adaptedTicksNum.x}
+                numTicksRows={adaptedTicksNum.y}
+                stroke={sharedAxisProps.tickStroke}
+                strokeOpacity={0.33}
               />
             </svg>
           </div>
