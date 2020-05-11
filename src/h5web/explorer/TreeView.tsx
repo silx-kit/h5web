@@ -1,42 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { TreeNode } from './models';
+import React from 'react';
+import { TreeNode, ExpandedNodes } from './models';
 
 import styles from './Explorer.module.css';
 
-type ExpandedNodes = Record<string, boolean>;
-
 interface Props<T> {
+  level: number;
   nodes: TreeNode<T>[];
-  defaultPath: number[];
   selectedNode?: TreeNode<T>;
+  expandedNodes: ExpandedNodes;
   onSelect: (node: TreeNode<T>) => void;
   renderIcon: (data: T, isBranch: boolean, isExpanded: boolean) => JSX.Element;
 }
 
 function TreeView<T>(props: Props<T>): JSX.Element {
-  const { nodes, defaultPath, selectedNode, onSelect, renderIcon } = props;
-
-  // Find first node in default path, if any
-  const defaultNode = nodes[defaultPath[0] ?? -1];
-
-  const [expandedNodes, setExpandedNodes] = useState<ExpandedNodes>(
-    defaultNode && defaultNode.children ? { [defaultNode.uid]: true } : {}
-  );
-
-  useEffect(() => {
-    // Select default node if last in default path
-    if (defaultNode && defaultPath.length === 1) {
-      onSelect(defaultNode);
-    }
-  }, [defaultNode, defaultPath, onSelect]);
+  const {
+    level,
+    nodes,
+    selectedNode,
+    expandedNodes,
+    onSelect,
+    renderIcon,
+  } = props;
 
   return (
     <ul className={styles.group} role="group">
       {nodes.map(node => {
-        const { uid, label, level, data, children } = node;
+        const { uid, label, data, children } = node;
         const isBranch = !!children;
         const isExpanded = !!expandedNodes[node.uid];
-        const isSelected = node === selectedNode;
 
         return (
           <li
@@ -49,16 +40,9 @@ function TreeView<T>(props: Props<T>): JSX.Element {
               type="button"
               role="treeitem"
               aria-expanded={isExpanded}
-              aria-selected={isSelected}
+              aria-selected={node === selectedNode}
               onClick={() => {
                 onSelect(node);
-
-                if (isBranch && (!isExpanded || isSelected)) {
-                  setExpandedNodes({
-                    ...expandedNodes,
-                    [node.uid]: !isExpanded,
-                  });
-                }
               }}
             >
               {renderIcon(data, isBranch, isExpanded)}
@@ -67,9 +51,10 @@ function TreeView<T>(props: Props<T>): JSX.Element {
 
             {children && isExpanded && (
               <TreeView
+                level={level + 1}
                 nodes={children}
-                defaultPath={defaultPath.slice(1)} // slice default path relevant to sub-tree
                 selectedNode={selectedNode}
+                expandedNodes={expandedNodes}
                 onSelect={onSelect}
                 renderIcon={renderIcon}
               />

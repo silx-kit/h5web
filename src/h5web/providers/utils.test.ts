@@ -31,7 +31,6 @@ describe('Provider utilities', () => {
       expect(buildTree(emptyMetadata, domain)).toEqual({
         uid: expect.any(String),
         label: domain,
-        level: 0,
         data: rootLink,
         children: [],
         parents: [],
@@ -60,14 +59,12 @@ describe('Provider utilities', () => {
       expect(buildTree(simpleMetadata, domain)).toEqual({
         uid: expect.any(String),
         label: domain,
-        level: 0,
         data: rootLink,
         parents: [],
         children: [
           {
             uid: expect.any(String),
             label: link.title,
-            level: 1,
             data: link,
             parents: [rootLink],
           },
@@ -109,21 +106,18 @@ describe('Provider utilities', () => {
       expect(buildTree(nestedMetadata, domain)).toEqual({
         uid: expect.any(String),
         label: domain,
-        level: 0,
         data: rootLink,
         parents: [],
         children: [
           {
             uid: expect.any(String),
             label: link1.title,
-            level: 1,
             data: link1,
             parents: [rootLink],
             children: [
               {
                 uid: expect.any(String),
                 label: link2.title,
-                level: 2,
                 data: link2,
                 parents: [rootLink, link1],
               },
