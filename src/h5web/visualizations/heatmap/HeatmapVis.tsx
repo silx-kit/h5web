@@ -32,7 +32,7 @@ function HeatmapVis(): JSX.Element {
     <div className={styles.root}>
       <VisCanvas
         // -0.5 to have ticks at the center of pixels
-        axisDomains={{ bottom: [-0.5, cols - 0.5], left: [-0.5, rows - 0.5] }}
+        axisDomains={{ x: [-0.5, cols - 0.5], y: [-0.5, rows - 0.5] }}
         aspectRatio={aspectRatio}
         showGrid={showGrid}
       >
