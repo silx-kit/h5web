@@ -66,8 +66,7 @@ export function isNumericType(type: HDF5Type): type is HDF5NumericType {
 function buildTreeNode(
   metadata: HDF5Metadata,
   link: HDF5Link,
-  parents: HDF5Link[],
-  level = 0
+  parents: HDF5Link[]
 ): TreeNode<HDF5Link> {
   const group =
     isReachable(link) && link.collection === HDF5Collection.Groups
@@ -77,13 +76,12 @@ function buildTreeNode(
   return {
     uid: nanoid(),
     label: link.title,
-    level,
     data: link,
     parents,
     ...(group
       ? {
           children: (group.links || []).map(lk =>
-            buildTreeNode(metadata, lk, [...parents, link], level + 1)
+            buildTreeNode(metadata, lk, [...parents, link])
           ),
         }
       : {}),
