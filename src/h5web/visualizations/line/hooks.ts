@@ -1,10 +1,9 @@
 import { useContext, useMemo } from 'react';
 import { Vector3 } from 'three';
-import { scaleLinear } from 'd3-scale';
 import { useThree } from 'react-three-fiber';
 import { LineProps, LineContext } from './LineProvider';
 import { AxisDomains } from '../shared/models';
-import { extendDomain, findDomain } from '../shared/utils';
+import { extendDomain, findDomain, sceneToAxisScales } from '../shared/utils';
 
 export function useProps(): LineProps {
   const props = useContext(LineContext);
@@ -31,22 +30,19 @@ export function useAxisDomains(): AxisDomains | undefined {
 export function useDataPoints(): Vector3[] | undefined {
   const { data } = useProps();
   const axisDomains = useAxisDomains();
-  const {
-    size: { height, width },
-  } = useThree();
+  const { size } = useThree();
 
   return useMemo(() => {
     if (axisDomains === undefined) {
       return undefined;
     }
 
-    const xScale = scaleLinear()
-      .domain(axisDomains.bottom)
-      .range([-width / 2, width / 2]);
-    const yScale = scaleLinear()
-      .domain(axisDomains.left)
-      .range([-height / 2, height / 2]);
+    // sceneToAxis is used to compute scene coordinates from data values (axis) through invert
+    const sceneToAxis = sceneToAxisScales(size, axisDomains);
 
-    return data.map((val, index) => new Vector3(xScale(index), yScale(val), 0));
-  }, [axisDomains, data, height, width]);
+    return data.map(
+      (val, index) =>
+        new Vector3(sceneToAxis.x.invert(index), sceneToAxis.y.invert(val), 0)
+    );
+  }, [axisDomains, data, size]);
 }
