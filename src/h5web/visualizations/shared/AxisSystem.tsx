@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useThree, useFrame, Dom } from 'react-three-fiber';
-import { scaleLinear } from 'd3-scale';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
 import { Grid } from '@vx/grid';
+import { scaleLinear } from 'd3-scale';
 import styles from './AxisSystem.module.css';
-import { AxisOffsets, AxisDomains, TwoDimScale } from './models';
-import { adaptedNumTicks, computeAxisScales } from './utils';
+import { AxisOffsets, AxisDomains } from './models';
+import { adaptedNumTicks, sceneToAxisScales } from './utils';
 
 interface Props {
   axisDomains: AxisDomains;
@@ -19,24 +19,36 @@ function AxisSystem(props: Props): JSX.Element {
   const { axisDomains, axisOffsets, showGrid } = props;
 
   const { camera, size } = useThree();
+  const { position, zoom } = camera;
   const { width, height } = size;
 
-  // Scales R3F camera coordinates to data bounds
-  const cameraToBounds = {
+  const [domains, setDomains] = useState<AxisDomains>({
+    left: axisDomains.left,
+    bottom: axisDomains.bottom,
+  });
+
+  const sceneToAxis = sceneToAxisScales(size, axisDomains);
+
+  const axisScales = {
     x: scaleLinear()
-      .domain([-width / 2, width / 2])
-      .range(axisDomains.bottom),
+      .domain(domains.bottom)
+      .range([0, width]),
     y: scaleLinear()
-      .domain([-height / 2, height / 2])
-      .range(axisDomains.left),
+      .domain(domains.left)
+      .range([height, 0]),
   };
 
-  const [axisScales, setAxisScales] = useState<TwoDimScale>(
-    computeAxisScales(camera, size, cameraToBounds)
-  );
-
   useFrame(() => {
-    setAxisScales(computeAxisScales(camera, size, cameraToBounds));
+    setDomains({
+      bottom: [
+        sceneToAxis.x(-width / (2 * zoom) + position.x),
+        sceneToAxis.x(width / (2 * zoom) + position.x),
+      ],
+      left: [
+        sceneToAxis.y(-height / (2 * zoom) + position.y),
+        sceneToAxis.y(height / (2 * zoom) + position.y),
+      ],
+    });
   });
 
   const sharedAxisProps = {
