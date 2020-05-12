@@ -36,7 +36,7 @@ function BreadcrumbsBar(props: Props): JSX.Element {
         <FiSidebar />
       </button>
       {selectedNode && (
-        <div className={styles.breadCrumbs}>
+        <h1 className={styles.breadCrumbs}>
           {selectedNode?.parents.slice(firstParentIndex).map(member => (
             <Fragment key={(member as HDF5HardLink).id}>
               <span className={styles.crumb}>{member.title}</span>
@@ -46,7 +46,7 @@ function BreadcrumbsBar(props: Props): JSX.Element {
           <span className={styles.crumb} data-current>
             {selectedNode.data.title}
           </span>
-        </div>
+        </h1>
       )}
       <div role="tablist" className={styles.modeToggler}>
         <button

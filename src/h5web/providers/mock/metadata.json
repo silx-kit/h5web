@@ -1,0 +1,1022 @@
+{
+  "root": "388a7044-5e02-11ea-88b6-478d93326ed6",
+  "groups": {
+    "388a7044-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7044-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/"],
+      "attributes": [
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000"
+        },
+        {
+          "name": "file_update_time",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "2020-02-21T10:00:41+01:00"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "388a7045-5e02-11ea-88b6-478d93326ed6",
+          "title": "entry_0000"
+        }
+      ]
+    },
+    "388a7045-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7045-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/entry_0000"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXentry"
+        },
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000/3_azimuthal_integration/results"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "388a7046-5e02-11ea-88b6-478d93326ed6",
+          "title": "0_measurement"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "388a7048-5e02-11ea-88b6-478d93326ed6",
+          "title": "1_cormap"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "388a7052-5e02-11ea-88b6-478d93326ed6",
+          "title": "2_buffer_subtraction"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "388a7059-5e02-11ea-88b6-478d93326ed6",
+          "title": "3_azimuthal_integration"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7064-5e02-11ea-88b6-478d93326ed6",
+          "title": "end_time"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7065-5e02-11ea-88b6-478d93326ed6",
+          "title": "program_name"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7066-5e02-11ea-88b6-478d93326ed6",
+          "title": "start_time"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7067-5e02-11ea-88b6-478d93326ed6",
+          "title": "title"
+        }
+      ]
+    },
+    "388a7046-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7046-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/entry_0000/0_measurement"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXcollection"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_EXTERNAL",
+          "file": "/mntdirect/_scisoft/users/kieffer/BM29/dahu/bsa_001_000-integrate.h5",
+          "h5path": "/entry_0000",
+          "title": "buffer_0"
+        },
+        {
+          "class": "H5L_TYPE_EXTERNAL",
+          "file": "/mntdirect/_scisoft/users/kieffer/BM29/dahu/bsa_003_000-integrate.h5",
+          "h5path": "/entry_0000",
+          "title": "buffer_1"
+        },
+        {
+          "class": "H5L_TYPE_EXTERNAL",
+          "file": "bsa_002_000-integrate.h5",
+          "h5path": "/entry_0000",
+          "title": "sample"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7047-5e02-11ea-88b6-478d93326ed6",
+          "title": "sequence_index"
+        }
+      ]
+    },
+    "388a7048-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7048-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/entry_0000/1_cormap"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXprocess"
+        },
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000/1_cormap/results"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7049-5e02-11ea-88b6-478d93326ed6",
+          "title": "date"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a704a-5e02-11ea-88b6-478d93326ed6",
+          "title": "fidelity"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a704b-5e02-11ea-88b6-478d93326ed6",
+          "title": "program"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "388a704c-5e02-11ea-88b6-478d93326ed6",
+          "title": "results"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a704f-5e02-11ea-88b6-478d93326ed6",
+          "title": "sequence_index"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7050-5e02-11ea-88b6-478d93326ed6",
+          "title": "to_merge"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7051-5e02-11ea-88b6-478d93326ed6",
+          "title": "version"
+        }
+      ]
+    },
+    "388a704c-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a704c-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/entry_0000/1_cormap/results"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXdata"
+        },
+        {
+          "name": "signal",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "probability"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a704d-5e02-11ea-88b6-478d93326ed6",
+          "title": "count"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a704e-5e02-11ea-88b6-478d93326ed6",
+          "title": "probability"
+        }
+      ]
+    },
+    "388a7052-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7052-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/entry_0000/2_buffer_subtraction"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXprocess"
+        },
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000/2_buffer_subtraction/results"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7053-5e02-11ea-88b6-478d93326ed6",
+          "title": "program"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "388a7054-5e02-11ea-88b6-478d93326ed6",
+          "title": "results"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7057-5e02-11ea-88b6-478d93326ed6",
+          "title": "sequence_index"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7058-5e02-11ea-88b6-478d93326ed6",
+          "title": "version"
+        }
+      ]
+    },
+    "388a7054-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7054-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/entry_0000/2_buffer_subtraction/results"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXdata"
+        },
+        {
+          "name": "signal",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "intensity_normed"
+        }
+      ],
+      "links": []
+    },
+    "388a7059-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7059-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/entry_0000/3_azimuthal_integration"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXprocess"
+        },
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000/3_azimuthal_integration/results"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a705a-5e02-11ea-88b6-478d93326ed6",
+          "title": "configuration"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a705b-5e02-11ea-88b6-478d93326ed6",
+          "title": "date"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a705c-5e02-11ea-88b6-478d93326ed6",
+          "title": "polarization_factor"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a705d-5e02-11ea-88b6-478d93326ed6",
+          "title": "program"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "388a705e-5e02-11ea-88b6-478d93326ed6",
+          "title": "results"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7062-5e02-11ea-88b6-478d93326ed6",
+          "title": "sequence_index"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "388a7063-5e02-11ea-88b6-478d93326ed6",
+          "title": "version"
+        }
+      ]
+    },
+    "388a705e-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a705e-5e02-11ea-88b6-478d93326ed6",
+      "collection": "groups",
+      "alias": ["/entry_0000/3_azimuthal_integration/results"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXdata"
+        },
+        {
+          "name": "axes",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "q"
+        },
+        {
+          "name": "signal",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "I"
+        }
+      ],
+      "links": []
+    }
+  },
+  "datasets": {
+    "388a7047-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7047-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/0_measurement/sequence_index"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "base": "H5T_STD_I64LE",
+        "class": "H5T_INTEGER"
+      }
+    },
+    "388a7049-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7049-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/1_cormap/date"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a704a-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a704a-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/1_cormap/fidelity"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "base": "H5T_STD_I64LE",
+        "class": "H5T_INTEGER"
+      }
+    },
+    "388a704b-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a704b-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/1_cormap/program"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a704d-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a704d-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/1_cormap/results/count"],
+      "attributes": [
+        {
+          "name": "interpretation",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "image"
+        },
+        {
+          "name": "long_name",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "Longest sequence where curves do not cross each other"
+        }
+      ],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [2, 2]
+      },
+      "type": {
+        "base": "H5T_STD_U16LE",
+        "class": "H5T_INTEGER"
+      }
+    },
+    "388a704e-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a704e-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/1_cormap/results/probability"],
+      "attributes": [
+        {
+          "name": "interpretation",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "image"
+        },
+        {
+          "name": "long_name",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "Probability to be the same"
+        }
+      ],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [2, 2]
+      },
+      "type": {
+        "base": "H5T_IEEE_F32LE",
+        "class": "H5T_FLOAT"
+      }
+    },
+    "388a704f-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a704f-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/1_cormap/sequence_index"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "base": "H5T_STD_I64LE",
+        "class": "H5T_INTEGER"
+      }
+    },
+    "388a7050-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7050-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/1_cormap/to_merge"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [2]
+      },
+      "type": {
+        "base": "H5T_STD_U16LE",
+        "class": "H5T_INTEGER"
+      }
+    },
+    "388a7051-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7051-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/1_cormap/version"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a7053-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7053-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/2_buffer_subtraction/program"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a7057-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7057-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/2_buffer_subtraction/sequence_index"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "base": "H5T_STD_I64LE",
+        "class": "H5T_INTEGER"
+      }
+    },
+    "388a7058-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7058-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/2_buffer_subtraction/version"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a705a-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a705a-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/3_azimuthal_integration/configuration"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a705b-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a705b-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/3_azimuthal_integration/date"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a705c-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a705c-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/3_azimuthal_integration/polarization_factor"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "base": "H5T_IEEE_F64LE",
+        "class": "H5T_FLOAT"
+      }
+    },
+    "388a705d-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a705d-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/3_azimuthal_integration/program"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a7062-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7062-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/3_azimuthal_integration/sequence_index"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "base": "H5T_STD_I64LE",
+        "class": "H5T_INTEGER"
+      }
+    },
+    "388a7063-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7063-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/3_azimuthal_integration/version"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a7064-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7064-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/end_time"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a7065-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7065-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/program_name"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a7066-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7066-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/start_time"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    },
+    "388a7067-5e02-11ea-88b6-478d93326ed6": {
+      "id": "388a7067-5e02-11ea-88b6-478d93326ed6",
+      "collection": "datasets",
+      "alias": ["/entry_0000/title"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_ALLOC",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SCALAR"
+      },
+      "type": {
+        "charSet": "H5T_CSET_UTF8",
+        "class": "H5T_STRING",
+        "length": "H5T_VARIABLE",
+        "strPad": "H5T_STR_NULLTERM"
+      }
+    }
+  },
+  "datatypes": {}
+}
