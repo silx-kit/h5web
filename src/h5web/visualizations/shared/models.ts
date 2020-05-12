@@ -14,8 +14,8 @@ export type AxisOffsets = {
 export interface AxisDomains {
   left: Domain;
   bottom: Domain;
-  right?: number;
-  top?: number;
+  right?: Domain;
+  top?: Domain;
 }
 
 export interface TwoDimScale {
