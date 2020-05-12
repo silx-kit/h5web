@@ -29,7 +29,7 @@ function HeatmapToolbar(): JSX.Element {
       <DomainSlider />
       <ColorMapSelector />
       <Toggler
-        label="Log scale"
+        label="SymLog scale"
         value={hasLogScale}
         onChange={toggleLogScale}
       />

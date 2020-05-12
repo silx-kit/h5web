@@ -1,4 +1,4 @@
-import { ScaleLinear } from 'd3-scale';
+import { ScaleLinear, ScaleSymLog, scaleSymlog, scaleLinear } from 'd3-scale';
 
 export type Domain = [number, number];
 
@@ -12,13 +12,12 @@ export type AxisOffsets = {
 };
 
 export interface AxisDomains {
-  left: Domain;
-  bottom: Domain;
-  right?: Domain;
-  top?: Domain;
+  x: Domain;
+  y: Domain;
 }
 
-export interface TwoDimScale {
-  x: ScaleLinear<number, number>;
-  y: ScaleLinear<number, number>;
-}
+export type DataScaleFn = typeof scaleSymlog | typeof scaleLinear;
+
+export type DataScale =
+  | ScaleLinear<number, number>
+  | ScaleSymLog<number, number>;

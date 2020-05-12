@@ -5,6 +5,7 @@ import styles from './VisCanvas.module.css';
 import { AxisDomains } from './models';
 import { computeVisSize } from './utils';
 import AxisSystem from './AxisSystem';
+import AxisSystemProvider from './AxisSystemProvider';
 
 const AXIS_OFFSETS = { vertical: 72, horizontal: 36, fallback: 10 };
 
@@ -12,30 +13,27 @@ interface Props {
   axisDomains?: AxisDomains;
   aspectRatio?: number;
   showGrid?: boolean;
+  hasXLogScale?: boolean;
+  hasYLogScale?: boolean;
   children: ReactNode;
 }
 
 function VisCanvas(props: Props): JSX.Element {
-  const { axisDomains, aspectRatio, children, showGrid } = props;
+  const {
+    axisDomains,
+    aspectRatio,
+    children,
+    showGrid,
+    hasXLogScale,
+    hasYLogScale,
+  } = props;
   const [visAreaRef, visAreaSize] = useMeasure();
 
   const axisOffsets = {
-    left:
-      axisDomains && axisDomains.left
-        ? AXIS_OFFSETS.vertical
-        : AXIS_OFFSETS.fallback,
-    right:
-      axisDomains && axisDomains.right
-        ? AXIS_OFFSETS.vertical
-        : AXIS_OFFSETS.fallback,
-    top:
-      axisDomains && axisDomains.top
-        ? AXIS_OFFSETS.horizontal
-        : AXIS_OFFSETS.fallback,
-    bottom:
-      axisDomains && axisDomains.bottom
-        ? AXIS_OFFSETS.horizontal
-        : AXIS_OFFSETS.fallback,
+    left: axisDomains ? AXIS_OFFSETS.vertical : AXIS_OFFSETS.fallback,
+    right: AXIS_OFFSETS.fallback,
+    top: AXIS_OFFSETS.fallback,
+    bottom: axisDomains ? AXIS_OFFSETS.horizontal : AXIS_OFFSETS.fallback,
   };
 
   const availableSize = {
@@ -67,13 +65,16 @@ function VisCanvas(props: Props): JSX.Element {
           >
             <ambientLight />
             {axisDomains && (
-              <AxisSystem
+              <AxisSystemProvider
                 axisDomains={axisDomains}
-                axisOffsets={axisOffsets}
                 showGrid={showGrid}
-              />
+                hasXLogScale={hasXLogScale}
+                hasYLogScale={hasYLogScale}
+              >
+                <AxisSystem axisOffsets={axisOffsets} />
+                {children}
+              </AxisSystemProvider>
             )}
-            {children}
           </Canvas>
         </div>
       )}

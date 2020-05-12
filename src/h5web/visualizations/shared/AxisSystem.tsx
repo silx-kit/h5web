@@ -1,52 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useThree, useFrame, Dom } from 'react-three-fiber';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
 import { Grid } from '@vx/grid';
-import { scaleLinear } from 'd3-scale';
 import styles from './AxisSystem.module.css';
 import { AxisOffsets, AxisDomains } from './models';
-import { adaptedNumTicks, sceneToAxisScales } from './utils';
+import { adaptedNumTicks, useAbscissaScale, useOrdinateScale } from './utils';
+import { AxisSystemContext } from './AxisSystemProvider';
 
 interface Props {
-  axisDomains: AxisDomains;
   axisOffsets: AxisOffsets;
-  showGrid?: boolean;
 }
 
 function AxisSystem(props: Props): JSX.Element {
-  const { axisDomains, axisOffsets, showGrid } = props;
+  const { axisOffsets } = props;
 
   const { camera, size } = useThree();
   const { position, zoom } = camera;
   const { width, height } = size;
 
-  const [domains, setDomains] = useState<AxisDomains>({
-    left: axisDomains.left,
-    bottom: axisDomains.bottom,
-  });
+  const { axisDomains, showGrid } = useContext(AxisSystemContext);
 
-  const sceneToAxis = sceneToAxisScales(size, axisDomains);
+  // axisDomains are the complete domains. visibleDomains change with the camera
+  const [visibleDomains, setVisibleDomains] = useState<AxisDomains>(
+    axisDomains
+  );
 
-  const axisScales = {
-    x: scaleLinear()
-      .domain(domains.bottom)
-      .range([0, width]),
-    y: scaleLinear()
-      .domain(domains.left)
-      .range([height, 0]),
-  };
-
+  // Finds the visible domains from the camera FOV (zoom and position).
+  const { abscissaScale, abscissaScaleFn } = useAbscissaScale();
+  const { ordinateScale, ordinateScaleFn } = useOrdinateScale();
   useFrame(() => {
-    setDomains({
-      bottom: [
-        sceneToAxis.x(-width / (2 * zoom) + position.x),
-        sceneToAxis.x(width / (2 * zoom) + position.x),
+    setVisibleDomains({
+      x: [
+        abscissaScale.invert(-width / (2 * zoom) + position.x),
+        abscissaScale.invert(width / (2 * zoom) + position.x),
       ],
-      left: [
-        sceneToAxis.y(-height / (2 * zoom) + position.y),
-        sceneToAxis.y(height / (2 * zoom) + position.y),
+      y: [
+        ordinateScale.invert(-height / (2 * zoom) + position.y),
+        ordinateScale.invert(height / (2 * zoom) + position.y),
       ],
     });
   });
@@ -61,10 +53,17 @@ function AxisSystem(props: Props): JSX.Element {
     ),
   };
 
-  const adaptedTicksNum = {
-    x: adaptedNumTicks(width),
-    y: adaptedNumTicks(height),
-  };
+  // Restrain axis scales to visible domains
+  const xAxisScale = abscissaScaleFn();
+  xAxisScale.domain(visibleDomains.x);
+  xAxisScale.range([0, width]);
+
+  const yAxisScale = ordinateScaleFn();
+  yAxisScale.domain(visibleDomains.y);
+  yAxisScale.range([height, 0]);
+
+  const abscissaTicksNumber = adaptedNumTicks(width);
+  const ordinateTicksNumber = adaptedNumTicks(height);
 
   return (
     <Dom
@@ -83,8 +82,8 @@ function AxisSystem(props: Props): JSX.Element {
         <div className={styles.bottomAxisCell}>
           <svg className={styles.axis} data-orientation="bottom">
             <AxisBottom
-              scale={axisScales.x}
-              numTicks={adaptedTicksNum.x}
+              scale={xAxisScale}
+              numTicks={abscissaTicksNumber}
               {...sharedAxisProps}
             />
           </svg>
@@ -92,9 +91,9 @@ function AxisSystem(props: Props): JSX.Element {
         <div className={styles.leftAxisCell}>
           <svg className={styles.axis} data-orientation="left">
             <AxisLeft
-              scale={axisScales.y}
+              scale={yAxisScale}
               left={axisOffsets.left}
-              numTicks={adaptedTicksNum.y}
+              numTicks={ordinateTicksNumber}
               {...sharedAxisProps}
             />
           </svg>
@@ -103,12 +102,12 @@ function AxisSystem(props: Props): JSX.Element {
           <div className={styles.axisGridCell}>
             <svg width={width} height={height}>
               <Grid
-                xScale={axisScales.x}
-                yScale={axisScales.y}
+                xScale={xAxisScale}
+                yScale={yAxisScale}
                 width={width}
                 height={height}
-                numTicksColumns={adaptedTicksNum.x}
-                numTicksRows={adaptedTicksNum.y}
+                numTicksColumns={abscissaTicksNumber}
+                numTicksRows={ordinateTicksNumber}
                 stroke={sharedAxisProps.tickStroke}
                 strokeOpacity={0.33}
               />

@@ -1,6 +1,9 @@
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleSymlog } from 'd3-scale';
 import { extent } from 'd3-array';
-import { Size, Domain, TwoDimScale, AxisDomains } from './models';
+import { useThree } from 'react-three-fiber';
+import { useContext } from 'react';
+import { Size, Domain, DataScale, DataScaleFn } from './models';
+import { AxisSystemContext } from './AxisSystemProvider';
 
 export const adaptedNumTicks = scaleLinear()
   .domain([300, 900])
@@ -43,19 +46,38 @@ export function findDomain(data: number[]): Domain | undefined {
     : undefined;
 }
 
-export function sceneToAxisScales(
-  size: Size,
-  axisDomains: AxisDomains
-): TwoDimScale {
-  const { width, height } = size;
+export function getDataScaleFn(isLog: boolean): DataScaleFn {
+  return isLog ? scaleSymlog : scaleLinear;
+}
 
-  // Scales R3F scene coordinates to axis domains
-  return {
-    x: scaleLinear()
-      .domain([-width / 2, width / 2])
-      .range(axisDomains.bottom),
-    y: scaleLinear()
-      .domain([-height / 2, height / 2])
-      .range(axisDomains.left),
-  };
+export function useAbscissaScale(): {
+  abscissaScale: DataScale;
+  abscissaScaleFn: DataScaleFn;
+} {
+  const { size } = useThree();
+  const { width } = size;
+  const { axisDomains, hasXLogScale: log } = useContext(AxisSystemContext);
+
+  const abscissaScaleFn = getDataScaleFn(!!log);
+  const abscissaScale = abscissaScaleFn();
+  abscissaScale.domain(axisDomains.x);
+  abscissaScale.range([-width / 2, width / 2]);
+
+  return { abscissaScale, abscissaScaleFn };
+}
+
+export function useOrdinateScale(): {
+  ordinateScale: DataScale;
+  ordinateScaleFn: DataScaleFn;
+} {
+  const { size } = useThree();
+  const { height } = size;
+  const { axisDomains, hasYLogScale: log } = useContext(AxisSystemContext);
+
+  const ordinateScaleFn = getDataScaleFn(!!log);
+  const ordinateScale = ordinateScaleFn();
+  ordinateScale.domain(axisDomains.y);
+  ordinateScale.range([-height / 2, height / 2]);
+
+  return { ordinateScale, ordinateScaleFn };
 }

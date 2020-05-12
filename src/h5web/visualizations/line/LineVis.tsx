@@ -1,4 +1,5 @@
 import React from 'react';
+import shallow from 'zustand/shallow';
 import styles from './LineVis.module.css';
 import DataLine from './DataLine';
 import VisCanvas from '../shared/VisCanvas';
@@ -9,13 +10,20 @@ import { useLineConfig } from './config';
 
 function LineVis(): JSX.Element {
   const props = useProps();
-  const showGrid = useLineConfig(state => state.showGrid);
+  const [showGrid, hasYLogScale] = useLineConfig(
+    state => [state.showGrid, state.hasYLogScale],
+    shallow
+  );
 
   const axisDomains = useAxisDomains();
 
   return (
     <div className={styles.root}>
-      <VisCanvas axisDomains={axisDomains} showGrid={showGrid}>
+      <VisCanvas
+        axisDomains={axisDomains}
+        showGrid={showGrid}
+        hasYLogScale={hasYLogScale}
+      >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <LineProvider {...props}>
           <PanZoomMesh />
