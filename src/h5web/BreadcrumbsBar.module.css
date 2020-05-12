@@ -9,6 +9,9 @@
 .breadCrumbs {
   display: flex;
   align-items: center;
+  margin-bottom: 0;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .crumb {
