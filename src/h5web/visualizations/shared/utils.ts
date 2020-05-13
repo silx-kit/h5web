@@ -25,11 +25,12 @@ export function computeVisSize(
   }
 
   // Determine how to compute canvas size to fit available space while maintaining aspect ratio
-  const shouldAdjustWidth = width >= height * aspectRatio;
+  const idealHeight = width / aspectRatio;
+  const shouldReduceWidth = idealHeight > height;
 
-  return shouldAdjustWidth
+  return shouldReduceWidth
     ? { width: height * aspectRatio, height }
-    : { width, height: width * aspectRatio };
+    : { width, height: width / aspectRatio };
 }
 
 export function extendDomain(bareDomain: Domain, extendFactor: number): Domain {
