@@ -21,7 +21,7 @@ function HeatmapVis(): JSX.Element {
     shallow
   );
 
-  // width / height <=> cols/rows
+  // width / height <=> cols / rows
   const aspectRatio = keepAspectRatio ? cols / rows : undefined;
 
   const values = useValues();

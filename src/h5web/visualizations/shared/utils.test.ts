@@ -23,7 +23,7 @@ describe('Shared visualization utilities', () => {
     });
 
     describe('with aspect ratio < 1', () => {
-      it('should return available size with width adjusted', () => {
+      it('should return available size with width reduced', () => {
         const availableSize = { width: 20, height: 10 };
         const size = computeVisSize(availableSize, 0.5);
 
@@ -32,7 +32,7 @@ describe('Shared visualization utilities', () => {
         expect(size).toEqual({ width: 10 * 0.5, height: 10 });
       });
 
-      it('should return available size with height adjusted', () => {
+      it('should return available size with height reduced', () => {
         const availableSize = { width: 12, height: 50 };
         const size = computeVisSize(availableSize, 0.75);
 
