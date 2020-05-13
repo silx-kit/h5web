@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import shallow from 'zustand/shallow';
+import { format } from 'd3-format';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import { useProps, useValues } from './hooks';
 import Mesh from './Mesh';
-import TooltipMesh from './TooltipMesh';
+import TooltipMesh from '../shared/TooltipMesh';
 import HeatmapProvider from './HeatmapProvider';
 import { useHeatmapConfig } from './config';
 import PanZoomMesh from '../shared/PanZoomMesh';
@@ -38,7 +39,14 @@ function HeatmapVis(): JSX.Element {
       >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <HeatmapProvider {...props}>
-          <TooltipMesh dims={dims} data={data} />
+          <TooltipMesh
+            formatIndex={([x, y]) =>
+              `x=${Math.floor(x + 0.5)}, y=${Math.floor(y + 0.5)}`
+            }
+            formatValue={([x, y]) =>
+              format('.3')(data[Math.floor(y + 0.5)][Math.floor(x + 0.5)])
+            }
+          />
           <PanZoomMesh />
           <Mesh />
         </HeatmapProvider>
