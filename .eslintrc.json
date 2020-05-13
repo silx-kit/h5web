@@ -19,6 +19,7 @@
     ],
     "import/no-unresolved": "off",
     "import/no-webpack-loader-syntax": "off",
+    "jest/no-focused-tests": "warn",
     "react/jsx-props-no-spreading": "off",
     "prettier/prettier": "off"
   },

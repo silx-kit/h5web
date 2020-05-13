@@ -41,7 +41,9 @@ function App(): JSX.Element {
           <Explorer selectedNode={selectedNode} onSelect={setSelectedNode} />
         </ReflexElement>
 
-        {isExplorerOpen && <ReflexSplitter />}
+        <ReflexSplitter
+          style={{ display: isExplorerOpen ? undefined : 'none' }}
+        />
 
         <ReflexElement
           className={styles.mainArea}
