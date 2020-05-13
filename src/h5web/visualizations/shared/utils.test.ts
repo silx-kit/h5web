@@ -1,4 +1,4 @@
-import { computeVisSize } from './utils';
+import { computeVisSize, findDomain } from './utils';
 
 describe('Shared visualization utilities', () => {
   describe('computeVisSize', () => {
@@ -50,6 +50,19 @@ describe('Shared visualization utilities', () => {
     it('should return `undefined` when no space is available for visualization', () => {
       const size = computeVisSize({ width: 0, height: 0 }, 1);
       expect(size).toBeUndefined();
+    });
+  });
+
+  describe('findDomain', () => {
+    it('should return the domain of the data', () => {
+      const data = [2, 0, 10, 5, 2, -1];
+      const domain = findDomain(data);
+      expect(domain).toEqual([-1, 10]);
+    });
+
+    it('should return undefined when the data is empty', () => {
+      const domain = findDomain([]);
+      expect(domain).toBeUndefined();
     });
   });
 });

@@ -57,9 +57,9 @@ export function useAbscissaScale(): {
 } {
   const { size } = useThree();
   const { width } = size;
-  const { axisDomains, hasXLogScale: log } = useContext(AxisSystemContext);
+  const { axisDomains, hasXLogScale } = useContext(AxisSystemContext);
 
-  const abscissaScaleFn = getDataScaleFn(!!log);
+  const abscissaScaleFn = getDataScaleFn(!!hasXLogScale);
   const abscissaScale = abscissaScaleFn();
   abscissaScale.domain(axisDomains.x);
   abscissaScale.range([-width / 2, width / 2]);
@@ -73,9 +73,9 @@ export function useOrdinateScale(): {
 } {
   const { size } = useThree();
   const { height } = size;
-  const { axisDomains, hasYLogScale: log } = useContext(AxisSystemContext);
+  const { axisDomains, hasYLogScale } = useContext(AxisSystemContext);
 
-  const ordinateScaleFn = getDataScaleFn(!!log);
+  const ordinateScaleFn = getDataScaleFn(!!hasYLogScale);
   const ordinateScale = ordinateScaleFn();
   ordinateScale.domain(axisDomains.y);
   ordinateScale.range([-height / 2, height / 2]);
