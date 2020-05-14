@@ -17,7 +17,6 @@ function AxisSystem(props: Props): JSX.Element {
   const { axisOffsets } = props;
 
   const { camera, size } = useThree();
-  const { position, zoom } = camera;
   const { width, height } = size;
 
   const { axisDomains, showGrid } = useContext(AxisSystemContext);
@@ -30,7 +29,10 @@ function AxisSystem(props: Props): JSX.Element {
   // Finds the visible domains from the camera FOV (zoom and position).
   const { abscissaScale, abscissaScaleFn } = useAbscissaScale();
   const { ordinateScale, ordinateScaleFn } = useOrdinateScale();
+
   useFrame(() => {
+    const { position, zoom } = camera;
+
     setVisibleDomains({
       x: [
         abscissaScale.invert(-width / (2 * zoom) + position.x),
