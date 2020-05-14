@@ -12,6 +12,7 @@ import { INTERPOLATORS } from './interpolators';
 import { useHeatmapConfig } from './config';
 import styles from './HeatmapToolbar.module.css';
 import { ColorMap } from './models';
+import { customThemeForSelect } from '../shared/utils';
 
 type OptionType = {
   label: ColorMap;
@@ -115,17 +116,7 @@ function ColorMapSelector(): JSX.Element {
         }}
         components={{ DropdownIndicator, Option, SingleValue }}
         styles={customStyles}
-        theme={theme => ({
-          ...theme,
-          borderRadius: 0,
-          colors: {
-            ...theme.colors,
-            primary: 'var(--secondary-dark)',
-            primary75: 'var(--secondary)',
-            primary50: 'var(--secondary-light)',
-            primary25: 'var(--secondary-light-bg)',
-          },
-        })}
+        theme={customThemeForSelect}
       />
     </div>
   );
