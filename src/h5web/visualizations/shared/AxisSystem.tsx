@@ -5,7 +5,7 @@ import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
 import { Grid } from '@vx/grid';
 import styles from './AxisSystem.module.css';
-import { AxisOffsets, AxisDomains } from './models';
+import { AxisOffsets, Domain } from './models';
 import { adaptedNumTicks, useAbscissaScale, useOrdinateScale } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
 
@@ -19,30 +19,30 @@ function AxisSystem(props: Props): JSX.Element {
   const { camera, size } = useThree();
   const { width, height } = size;
 
-  const { axisDomains, showGrid } = useContext(AxisSystemContext);
+  const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
+  const abscissa = useAbscissaScale();
+  const ordinate = useOrdinateScale();
 
   // axisDomains are the complete domains. visibleDomains change with the camera
-  const [visibleDomains, setVisibleDomains] = useState<AxisDomains>(
-    axisDomains
-  );
-
-  // Finds the visible domains from the camera FOV (zoom and position).
-  const { abscissaScale, abscissaScaleFn } = useAbscissaScale();
-  const { ordinateScale, ordinateScaleFn } = useOrdinateScale();
+  const [visibleDomains, setVisibleDomains] = useState<[Domain, Domain]>([
+    abscissa.domain,
+    ordinate.domain,
+  ]);
 
   useFrame(() => {
     const { position, zoom } = camera;
 
-    setVisibleDomains({
-      x: [
-        abscissaScale.invert(-width / (2 * zoom) + position.x),
-        abscissaScale.invert(width / (2 * zoom) + position.x),
+    // Finds the visible domains from the camera FOV (zoom and position).
+    setVisibleDomains([
+      [
+        abscissa.scale.invert(-width / (2 * zoom) + position.x),
+        abscissa.scale.invert(width / (2 * zoom) + position.x),
       ],
-      y: [
-        ordinateScale.invert(-height / (2 * zoom) + position.y),
-        ordinateScale.invert(height / (2 * zoom) + position.y),
+      [
+        ordinate.scale.invert(-height / (2 * zoom) + position.y),
+        ordinate.scale.invert(height / (2 * zoom) + position.y),
       ],
-    });
+    ]);
   });
 
   const sharedAxisProps = {
@@ -56,12 +56,12 @@ function AxisSystem(props: Props): JSX.Element {
   };
 
   // Restrain axis scales to visible domains
-  const xAxisScale = abscissaScaleFn();
-  xAxisScale.domain(visibleDomains.x);
+  const xAxisScale = abscissa.scaleFn();
+  xAxisScale.domain(visibleDomains[0]);
   xAxisScale.range([0, width]);
 
-  const yAxisScale = ordinateScaleFn();
-  yAxisScale.domain(visibleDomains.y);
+  const yAxisScale = ordinate.scaleFn();
+  yAxisScale.domain(visibleDomains[1]);
   yAxisScale.range([height, 0]);
 
   const abscissaTicksNumber = adaptedNumTicks(width);
@@ -100,7 +100,7 @@ function AxisSystem(props: Props): JSX.Element {
             />
           </svg>
         </div>
-        {showGrid && (
+        {abscissaConfig.showGrid && ordinateConfig.showGrid && (
           <div className={styles.axisGridCell}>
             <svg width={width} height={height}>
               <Grid
