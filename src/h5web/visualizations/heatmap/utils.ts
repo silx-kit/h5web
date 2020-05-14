@@ -9,5 +9,5 @@ export function generateCSSLinearGradient(
     .map(interpolator)
     .reduce((acc, val) => `${acc},${val}`);
 
-  return `linear-gradient(to ${direction}, ${gradientColors})`;
+  return `linear-gradient(to ${direction},${gradientColors})`;
 }

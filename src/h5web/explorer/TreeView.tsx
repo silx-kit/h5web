@@ -39,7 +39,7 @@ function TreeView<T>(props: Props<T>): JSX.Element {
               className={styles.btn}
               type="button"
               role="treeitem"
-              aria-expanded={isExpanded}
+              aria-expanded={isBranch ? isExpanded : undefined} // Leaves cannot be expanded
               aria-selected={node === selectedNode}
               onClick={() => {
                 onSelect(node);
