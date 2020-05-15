@@ -1,19 +1,22 @@
 import React, { ReactElement, useCallback } from 'react';
 import { Dom, PointerEvent, useThree } from 'react-three-fiber';
 import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
+import { Line } from '@vx/shape';
 
 import styles from './TooltipMesh.module.css';
 import { useAbscissaScale, useOrdinateScale } from './utils';
 
 type Coords = [number, number];
+type Guides = 'horizontal' | 'vertical' | 'both';
 
 interface Props {
   formatIndex: (t: Coords) => string;
   formatValue: (t: Coords) => string | undefined;
+  guides?: Guides;
 }
 
 function TooltipMesh(props: Props): ReactElement {
-  const { formatIndex, formatValue } = props;
+  const { formatIndex, formatValue, guides } = props;
 
   const { camera, size } = useThree();
   const { width, height } = size;
@@ -26,6 +29,14 @@ function TooltipMesh(props: Props): ReactElement {
     showTooltip,
     hideTooltip,
   } = useTooltip<Coords>();
+
+  const guideAspect = {
+    stroke: 'gray',
+    strokeWidth: 1.5,
+    strokeOpacity: 0.5,
+  };
+  const verticalGuide = guides === 'vertical' || guides === 'both';
+  const horizontalGuide = guides === 'horizontal' || guides === 'both';
 
   // Scales to compute data coordinates from unprojected mesh coordinates
   const { abscissaScale } = useAbscissaScale();
@@ -63,15 +74,35 @@ function TooltipMesh(props: Props): ReactElement {
       </mesh>
       <Dom style={{ width, height }}>
         {tooltipOpen && tooltipData && value ? (
-          <TooltipWithBounds
-            key={Math.random()}
-            className={styles.tooltip}
-            top={tooltipTop}
-            left={tooltipLeft}
-          >
-            {formatIndex(tooltipData)}
-            <span className={styles.tooltipValue}>{value}</span>
-          </TooltipWithBounds>
+          <>
+            <TooltipWithBounds
+              key={Math.random()}
+              className={styles.tooltip}
+              top={tooltipTop}
+              left={tooltipLeft}
+            >
+              {formatIndex(tooltipData)}
+              <span className={styles.tooltipValue}>{value}</span>
+            </TooltipWithBounds>
+            {guides && (
+              <svg width={width} height={height}>
+                {verticalGuide && (
+                  <Line
+                    from={{ x: tooltipLeft, y: 0 }}
+                    to={{ x: tooltipLeft, y: height }}
+                    {...guideAspect}
+                  />
+                )}
+                {horizontalGuide && (
+                  <Line
+                    from={{ x: 0, y: tooltipTop }}
+                    to={{ x: width, y: tooltipTop }}
+                    {...guideAspect}
+                  />
+                )}
+              </svg>
+            )}
+          </>
         ) : (
           <></>
         )}

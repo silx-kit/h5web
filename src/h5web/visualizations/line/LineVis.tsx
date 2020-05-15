@@ -36,6 +36,7 @@ function LineVis(): JSX.Element {
                 ? format('.3f')(data[Math.floor(x)])
                 : undefined
             }
+            guides="vertical"
           />
           <PanZoomMesh />
           <DataCurve />

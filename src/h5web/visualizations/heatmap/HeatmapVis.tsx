@@ -48,6 +48,7 @@ function HeatmapVis(): JSX.Element {
             formatValue={([x, y]) =>
               format('.3')(data[Math.floor(y + 0.5)][Math.floor(x + 0.5)])
             }
+            guides="both"
           />
           <PanZoomMesh />
           <Mesh />
