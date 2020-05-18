@@ -38,25 +38,24 @@ import {
   interpolateTurbo,
 } from 'd3-scale-chromatic';
 
-export const INTERPOLATORS = {
-  // Diverging
-  BrBG: interpolateBrBG,
-  PRGn: interpolatePRGn,
-  PiYG: interpolatePiYG,
-  PuOr: interpolatePuOr,
+export const MOST_USED = {
+  Viridis: interpolateViridis,
+  Inferno: interpolateInferno,
+  Greys: interpolateGreys,
   RdBu: interpolateRdBu,
-  RdGy: interpolateRdGy,
-  RdYlBu: interpolateRdYlBu,
-  RdYlGn: interpolateRdYlGn,
-  Spectral: interpolateSpectral,
-  // Sequential (single hue)
+  Rainbow: interpolateRainbow,
+};
+
+export const SINGLE_HUE = {
   Blues: interpolateBlues,
   Greens: interpolateGreens,
   Greys: interpolateGreys,
   Oranges: interpolateOranges,
   Purples: interpolatePurples,
   Reds: interpolateReds,
-  // Sequential (multi-hue)
+};
+
+export const MULTI_HUE = {
   Turbo: interpolateTurbo,
   Viridis: interpolateViridis,
   Inferno: interpolateInferno,
@@ -77,7 +76,28 @@ export const INTERPOLATORS = {
   YlGn: interpolateYlGn,
   YlOrBr: interpolateYlOrBr,
   YlOrRd: interpolateYlOrRd,
-  // Cyclical
+};
+
+export const CYCLICAL = {
   Rainbow: interpolateRainbow,
   Sinebow: interpolateSinebow,
+};
+
+export const DIVERGING = {
+  BrBG: interpolateBrBG,
+  PRGn: interpolatePRGn,
+  PiYG: interpolatePiYG,
+  PuOr: interpolatePuOr,
+  RdBu: interpolateRdBu,
+  RdGy: interpolateRdGy,
+  RdYlBu: interpolateRdYlBu,
+  RdYlGn: interpolateRdYlGn,
+  Spectral: interpolateSpectral,
+};
+
+export const INTERPOLATORS = {
+  ...SINGLE_HUE,
+  ...MULTI_HUE,
+  ...CYCLICAL,
+  ...DIVERGING,
 };

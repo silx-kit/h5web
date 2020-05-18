@@ -1,5 +1,5 @@
 import { range } from 'lodash-es';
-import { D3Interpolator } from './models';
+import { D3Interpolator, ColorMapOption, ColorMap } from './models';
 
 export function generateCSSLinearGradient(
   interpolator: D3Interpolator,
@@ -10,4 +10,12 @@ export function generateCSSLinearGradient(
     .reduce((acc, val) => `${acc},${val}`);
 
   return `linear-gradient(to ${direction},${gradientColors})`;
+}
+
+export function convertToOptions(
+  interpolators: Partial<Record<ColorMap, D3Interpolator>>
+): ColorMapOption[] {
+  return Object.keys(interpolators).map(
+    colormap => ({ label: colormap, value: colormap } as ColorMapOption)
+  );
 }

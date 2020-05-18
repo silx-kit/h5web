@@ -43,7 +43,7 @@ export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
     setCustomDomain: (customDomain: Domain | undefined) =>
       set({ customDomain }),
 
-    colorMap: 'Magma',
+    colorMap: 'Viridis',
     setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
     hasLogScale: false,
