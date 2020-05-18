@@ -5,27 +5,38 @@ import styles from './LineVis.module.css';
 import DataCurve from './DataCurve';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
-import { useProps, useAxisDomains } from './hooks';
+import { useProps, useDataDomain } from './hooks';
 import LineProvider from './LineProvider';
 import { useLineConfig } from './config';
 import TooltipMesh from '../shared/TooltipMesh';
+import { extendDomain } from '../shared/utils';
 
 function LineVis(): JSX.Element {
   const props = useProps();
   const { data } = props;
+
   const [showGrid, hasYLogScale] = useLineConfig(
     state => [state.showGrid, state.hasYLogScale],
     shallow
   );
 
-  const axisDomains = useAxisDomains();
+  const dataDomain = useDataDomain();
+  if (!dataDomain) {
+    return <></>;
+  }
 
   return (
     <div className={styles.root}>
       <VisCanvas
-        axisDomains={axisDomains}
-        showGrid={showGrid}
-        hasYLogScale={hasYLogScale}
+        abscissaConfig={{
+          indexDomain: extendDomain([0, data.length - 1], 0.01),
+          showGrid,
+        }}
+        ordinateConfig={{
+          dataDomain: extendDomain(dataDomain, 0.01),
+          showGrid,
+          isLog: hasYLogScale,
+        }}
       >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <LineProvider {...props}>

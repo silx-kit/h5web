@@ -3,7 +3,14 @@ import { extent } from 'd3-array';
 import { useThree } from 'react-three-fiber';
 import { useContext } from 'react';
 import { Theme } from 'react-select';
-import { Size, Domain, DataScale, DataScaleFn } from './models';
+import {
+  Size,
+  Domain,
+  DataScaleFn,
+  AxisConfig,
+  IndexAxisConfig,
+  AxisScale,
+} from './models';
 import { AxisSystemContext } from './AxisSystemProvider';
 
 export const adaptedNumTicks = scaleLinear()
@@ -48,40 +55,48 @@ export function findDomain(data: number[]): Domain | undefined {
     : undefined;
 }
 
+export function isIndexAxisConfig(
+  config: AxisConfig
+): config is IndexAxisConfig {
+  return 'indexDomain' in config;
+}
+
 export function getDataScaleFn(isLog: boolean): DataScaleFn {
   return isLog ? scaleSymlog : scaleLinear;
 }
 
-export function useAbscissaScale(): {
-  abscissaScale: DataScale;
-  abscissaScaleFn: DataScaleFn;
-} {
-  const { size } = useThree();
-  const { width } = size;
-  const { axisDomains, hasXLogScale } = useContext(AxisSystemContext);
+function useAxisScale(config: AxisConfig, rangeSize: number): AxisScale {
+  if (isIndexAxisConfig(config)) {
+    const { indexDomain } = config;
+    const scaleFn = scaleLinear;
 
-  const abscissaScaleFn = getDataScaleFn(!!hasXLogScale);
-  const abscissaScale = abscissaScaleFn();
-  abscissaScale.domain(axisDomains.x);
-  abscissaScale.range([-width / 2, width / 2]);
+    const scale = scaleFn();
+    scale.domain(indexDomain);
+    scale.range([-rangeSize / 2, rangeSize / 2]);
 
-  return { abscissaScale, abscissaScaleFn };
+    return { scale, scaleFn, domain: indexDomain };
+  }
+
+  const { dataDomain, isLog = false } = config;
+  const scaleFn = getDataScaleFn(isLog);
+
+  const scale = scaleFn();
+  scale.domain(dataDomain);
+  scale.range([-rangeSize / 2, rangeSize / 2]);
+
+  return { scale, scaleFn, domain: dataDomain };
 }
 
-export function useOrdinateScale(): {
-  ordinateScale: DataScale;
-  ordinateScaleFn: DataScaleFn;
-} {
+export function useAbscissaScale(): AxisScale {
   const { size } = useThree();
-  const { height } = size;
-  const { axisDomains, hasYLogScale } = useContext(AxisSystemContext);
+  const { abscissaConfig } = useContext(AxisSystemContext);
+  return useAxisScale(abscissaConfig, size.width);
+}
 
-  const ordinateScaleFn = getDataScaleFn(!!hasYLogScale);
-  const ordinateScale = ordinateScaleFn();
-  ordinateScale.domain(axisDomains.y);
-  ordinateScale.range([-height / 2, height / 2]);
-
-  return { ordinateScale, ordinateScaleFn };
+export function useOrdinateScale(): AxisScale {
+  const { size } = useThree();
+  const { ordinateConfig } = useContext(AxisSystemContext);
+  return useAxisScale(ordinateConfig, size.height);
 }
 
 export function customThemeForSelect(theme: Theme): Theme {

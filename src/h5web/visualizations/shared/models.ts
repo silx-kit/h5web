@@ -1,8 +1,28 @@
 import { ScaleLinear, ScaleSymLog, scaleSymlog, scaleLinear } from 'd3-scale';
 
+export type Size = { width: number; height: number };
+
 export type Domain = [number, number];
 
-export type Size = { width: number; height: number };
+export interface IndexAxisConfig {
+  indexDomain: Domain;
+  showGrid?: boolean;
+  isLog?: never; // invalid
+}
+
+export interface DataAxisConfig {
+  dataDomain: Domain;
+  showGrid?: boolean;
+  isLog?: boolean;
+}
+
+export type AxisConfig = IndexAxisConfig | DataAxisConfig;
+
+export interface AxisScale {
+  scale: DataScale;
+  scaleFn: DataScaleFn;
+  domain: Domain;
+}
 
 export type AxisOffsets = {
   left: number;
@@ -10,11 +30,6 @@ export type AxisOffsets = {
   right: number;
   top: number;
 };
-
-export interface AxisDomains {
-  x: Domain;
-  y: Domain;
-}
 
 export type DataScaleFn = typeof scaleSymlog | typeof scaleLinear;
 

@@ -39,8 +39,8 @@ function TooltipMesh(props: Props): ReactElement {
   const horizontalGuide = guides === 'horizontal' || guides === 'both';
 
   // Scales to compute data coordinates from unprojected mesh coordinates
-  const { abscissaScale } = useAbscissaScale();
-  const { ordinateScale } = useOrdinateScale();
+  const { scale: abscissaScale } = useAbscissaScale();
+  const { scale: ordinateScale } = useOrdinateScale();
 
   // Update tooltip when pointer moves
   // When panning, events are handled and stopped by texture mesh and do not reach this mesh (which is behind)
@@ -49,13 +49,13 @@ function TooltipMesh(props: Props): ReactElement {
       const { zoom } = camera;
       const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
 
-      const abscissa = abscissaScale.invert(evt.unprojectedPoint.x);
-      const ordinate = ordinateScale.invert(evt.unprojectedPoint.y);
+      const abscissaCoord = abscissaScale.invert(evt.unprojectedPoint.x);
+      const ordinateCoord = ordinateScale.invert(evt.unprojectedPoint.y);
 
       showTooltip({
         tooltipLeft: projectedPoint.x * zoom + width / 2,
         tooltipTop: -projectedPoint.y * zoom + height / 2,
-        tooltipData: [abscissa, ordinate],
+        tooltipData: [abscissaCoord, ordinateCoord],
       });
     },
     [camera, abscissaScale, ordinateScale, showTooltip, width, height]

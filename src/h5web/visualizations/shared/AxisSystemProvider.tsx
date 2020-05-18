@@ -1,28 +1,24 @@
 import React, { createContext, ReactElement, ReactNode } from 'react';
-import { AxisDomains } from './models';
+import { AxisConfig } from './models';
 
 export interface DisplayAxisProps {
-  axisDomains: AxisDomains;
-  showGrid?: boolean;
-  hasXLogScale?: boolean;
-  hasYLogScale?: boolean;
+  abscissaConfig: AxisConfig;
+  ordinateConfig: AxisConfig;
 }
 
-export const AxisSystemContext = createContext<DisplayAxisProps>({
-  axisDomains: { x: [0, 1], y: [0, 1] },
-});
+export const AxisSystemContext = createContext<DisplayAxisProps>(
+  {} as DisplayAxisProps
+);
 
 type Props = DisplayAxisProps & {
   children: ReactNode;
 };
 
 function AxisSystemProvider(props: Props): ReactElement {
-  const { axisDomains, showGrid, hasXLogScale, hasYLogScale, children } = props;
+  const { children, ...valueProps } = props;
 
   return (
-    <AxisSystemContext.Provider
-      value={{ axisDomains, showGrid, hasXLogScale, hasYLogScale }}
-    >
+    <AxisSystemContext.Provider value={valueProps}>
       {children}
     </AxisSystemContext.Provider>
   );

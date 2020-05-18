@@ -1,9 +1,8 @@
 import { useContext, useMemo } from 'react';
 import { Vector3 } from 'three';
 import { LineProps, LineContext } from './LineProvider';
-import { AxisDomains } from '../shared/models';
+import { Domain } from '../shared/models';
 import {
-  extendDomain,
   findDomain,
   useAbscissaScale,
   useOrdinateScale,
@@ -19,22 +18,15 @@ export function useProps(): LineProps {
   return props;
 }
 
-export function useAxisDomains(): AxisDomains | undefined {
+export function useDataDomain(): Domain | undefined {
   const { data } = useProps();
-  const dataDomain = useMemo(() => findDomain(data), [data]);
-
-  return dataDomain
-    ? {
-        x: extendDomain([0, data.length - 1], 0.01),
-        y: extendDomain(dataDomain, 0.01),
-      }
-    : undefined;
+  return useMemo(() => findDomain(data), [data]);
 }
 
 export function useDataPoints(): Vector3[] | undefined {
   const { data } = useProps();
-  const { abscissaScale } = useAbscissaScale();
-  const { ordinateScale } = useOrdinateScale();
+  const { scale: abscissaScale } = useAbscissaScale();
+  const { scale: ordinateScale } = useOrdinateScale();
 
   return useMemo(() => {
     return data.map(
