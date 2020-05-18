@@ -2,6 +2,7 @@ import { scaleLinear, scaleSymlog } from 'd3-scale';
 import { extent } from 'd3-array';
 import { useThree } from 'react-three-fiber';
 import { useContext } from 'react';
+import { Theme } from 'react-select';
 import { Size, Domain, DataScale, DataScaleFn } from './models';
 import { AxisSystemContext } from './AxisSystemProvider';
 
@@ -81,4 +82,18 @@ export function useOrdinateScale(): {
   ordinateScale.range([-height / 2, height / 2]);
 
   return { ordinateScale, ordinateScaleFn };
+}
+
+export function customThemeForSelect(theme: Theme): Theme {
+  return {
+    ...theme,
+    borderRadius: 0,
+    colors: {
+      ...theme.colors,
+      primary: 'var(--secondary-dark)',
+      primary75: 'var(--secondary)',
+      primary50: 'var(--secondary-light)',
+      primary25: 'var(--secondary-light-bg)',
+    },
+  };
 }

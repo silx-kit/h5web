@@ -2,7 +2,7 @@ import React from 'react';
 import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import styles from './LineVis.module.css';
-import DataLine from './DataLine';
+import DataCurve from './DataCurve';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import { useProps, useAxisDomains } from './hooks';
@@ -38,7 +38,7 @@ function LineVis(): JSX.Element {
             }
           />
           <PanZoomMesh />
-          <DataLine />
+          <DataCurve />
         </LineProvider>
       </VisCanvas>
     </div>
