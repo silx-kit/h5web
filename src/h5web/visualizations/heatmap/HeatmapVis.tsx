@@ -36,7 +36,7 @@ function HeatmapVis(): JSX.Element {
       <VisCanvas
         // -0.5 to have ticks at the center of pixels
         abscissaConfig={{ indexDomain: [-0.5, cols - 0.5], showGrid }}
-        ordinateConfig={{ indexDomain: [-0.5, cols - 0.5], showGrid }}
+        ordinateConfig={{ indexDomain: [-0.5, rows - 0.5], showGrid }}
         aspectRatio={aspectRatio}
       >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
