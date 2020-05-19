@@ -13,8 +13,10 @@ type OptionType = {
 };
 
 const glyphOptions = [
-  { label: 'Line', value: Glyph.Line },
-  { label: 'Points', value: Glyph.Square },
+  { label: 'Line', value: Glyph.None },
+  { label: 'Squares', value: Glyph.Square },
+  { label: 'Circles', value: Glyph.Circle },
+  { label: 'Crosses', value: Glyph.Cross },
 ];
 
 function LineToolbar(): JSX.Element {

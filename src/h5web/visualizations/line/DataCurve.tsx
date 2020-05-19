@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useUpdate } from 'react-three-fiber';
 import { BufferGeometry } from 'three';
 import { useDataPoints } from './hooks';
 import { useLineConfig } from './config';
 import { Glyph } from './models';
+import DataCurveMaterial from './DataCurveMaterial';
 
 function DataCurve(): JSX.Element {
   const points = useDataPoints();
@@ -18,7 +19,8 @@ function DataCurve(): JSX.Element {
   const glyph = useLineConfig(state => state.glyph);
   const color = '#1b998b';
 
-  if (glyph === Glyph.Line) {
+  // No glyph -> display as line
+  if (glyph === Glyph.None) {
     return (
       <line>
         <bufferGeometry attach="geometry" ref={ref} />
@@ -27,16 +29,14 @@ function DataCurve(): JSX.Element {
     );
   }
 
-  if (glyph === Glyph.Square) {
-    return (
+  return (
+    <Suspense fallback={<></>}>
       <points>
         <bufferGeometry attach="geometry" ref={ref} />
-        <pointsMaterial attach="material" color={color} size={5} />
+        <DataCurveMaterial glyph={glyph} color={color} />
       </points>
-    );
-  }
-
-  return <></>;
+    </Suspense>
+  );
 }
 
 export default DataCurve;

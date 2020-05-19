@@ -18,7 +18,7 @@ const STORAGE_CONFIG: StorageConfig = {
 export const [useLineConfig] = createPersistableState<LineConfig>(
   STORAGE_CONFIG,
   set => ({
-    glyph: Glyph.Line,
+    glyph: Glyph.None,
     setGlyph: (g: Glyph) => set({ glyph: g }),
     showGrid: true,
     toggleGrid: () => set(state => ({ showGrid: !state.showGrid })),
