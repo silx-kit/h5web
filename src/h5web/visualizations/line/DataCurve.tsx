@@ -1,40 +1,35 @@
-import React, { Suspense } from 'react';
-import { useUpdate } from 'react-three-fiber';
+import React, { Suspense, useMemo } from 'react';
 import { BufferGeometry } from 'three';
+import { Line } from 'react-three-fiber/components';
 import { useDataPoints } from './hooks';
 import { useLineConfig } from './config';
-import { Glyph } from './models';
-import DataCurveMaterial from './DataCurveMaterial';
+import { CurveType } from './models';
+import DataGlyphs from './DataGlyphs';
+
+const COLOR = '#1b998b';
 
 function DataCurve(): JSX.Element {
   const points = useDataPoints();
-  const ref = useUpdate(
-    (geometry: BufferGeometry) => {
-      if (points) {
-        geometry.setFromPoints(points);
-      }
-    },
-    [points]
-  );
-  const glyph = useLineConfig(state => state.glyph);
-  const color = '#1b998b';
+  const dataGeometry = useMemo(() => {
+    const geometry = new BufferGeometry();
+    if (points) {
+      geometry.setFromPoints(points);
+    }
+    return geometry;
+  }, [points]);
 
-  // No glyph -> display as line
-  if (glyph === Glyph.None) {
-    return (
-      <line>
-        <bufferGeometry attach="geometry" ref={ref} />
-        <lineBasicMaterial attach="material" color={color} linewidth={2} />
-      </line>
-    );
-  }
+  const curveType = useLineConfig(state => state.curveType);
+  const showLine = curveType !== CurveType.OnlyGlyphs;
+  const showGlyphs = curveType !== CurveType.OnlyLine;
 
   return (
     <Suspense fallback={<></>}>
-      <points>
-        <bufferGeometry attach="geometry" ref={ref} />
-        <DataCurveMaterial glyph={glyph} color={color} />
-      </points>
+      {showGlyphs && <DataGlyphs geometry={dataGeometry} color={COLOR} />}
+      {showLine && (
+        <Line geometry={dataGeometry}>
+          <lineBasicMaterial attach="material" color={COLOR} linewidth={2} />
+        </Line>
+      )}
     </Suspense>
   );
 }

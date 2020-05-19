@@ -1,9 +1,9 @@
 import { StorageConfig, createPersistableState } from '../../storage-utils';
-import { Glyph } from './models';
+import { CurveType } from './models';
 
 type LineConfig = {
-  glyph: Glyph;
-  setGlyph: (g: Glyph) => void;
+  curveType: CurveType;
+  setCurveType: (type: CurveType) => void;
   showGrid: boolean;
   toggleGrid: () => void;
   hasYLogScale: boolean;
@@ -12,14 +12,14 @@ type LineConfig = {
 
 const STORAGE_CONFIG: StorageConfig = {
   storageId: 'h5web:line',
-  itemsToPersist: ['glyph', 'showGrid', 'hasYLogScale'],
+  itemsToPersist: ['curveType', 'showGrid', 'hasYLogScale'],
 };
 
 export const [useLineConfig] = createPersistableState<LineConfig>(
   STORAGE_CONFIG,
   set => ({
-    glyph: Glyph.None,
-    setGlyph: (g: Glyph) => set({ glyph: g }),
+    curveType: CurveType.OnlyLine,
+    setCurveType: (type: CurveType) => set({ curveType: type }),
     showGrid: true,
     toggleGrid: () => set(state => ({ showGrid: !state.showGrid })),
     hasYLogScale: false,
