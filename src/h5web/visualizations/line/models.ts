@@ -1,8 +1,15 @@
-export enum Glyph {
-  None = 'None',
-  Square = 'Square',
-  Circle = 'Circle',
-  Cross = 'Cross',
+import circleURL from './sprites/circle.png';
+import crossURL from './sprites/cross.png';
+import squareURL from './sprites/square.png';
+
+export enum CurveType {
+  OnlyLine = 'OnlyLine',
+  OnlyGlyphs = 'OnlyGlyphs',
+  LineAndGlyphs = 'LineAndGlyphs',
 }
 
-export type SpriteGlyph = Exclude<Glyph, Glyph.None>;
+export const GLYPH_URLS = {
+  Circle: circleURL,
+  Cross: crossURL,
+  Square: squareURL,
+};

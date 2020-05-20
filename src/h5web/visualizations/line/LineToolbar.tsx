@@ -1,36 +1,23 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import shallow from 'zustand/shallow';
-import Select from 'react-select';
 import Toggler from '../shared/Toggler';
 import { useLineConfig } from './config';
-import { customThemeForSelect } from '../shared/utils';
-import { Glyph } from './models';
+import { CurveType } from './models';
 import styles from './LineToolbar.module.css';
-
-type OptionType = {
-  label: string;
-  value: Glyph;
-};
-
-const glyphOptions = [
-  { label: 'Line', value: Glyph.None },
-  { label: 'Squares', value: Glyph.Square },
-  { label: 'Circles', value: Glyph.Circle },
-  { label: 'Crosses', value: Glyph.Cross },
-];
+import ButtonGroup from '../shared/ButtonGroup';
 
 function LineToolbar(): JSX.Element {
   const [
-    glyph,
-    setGlyph,
+    curveType,
+    setCurveType,
     showGrid,
     toggleGrid,
     hasYLogScale,
     toggleYLogScale,
   ] = useLineConfig(
     state => [
-      state.glyph,
-      state.setGlyph,
+      state.curveType,
+      state.setCurveType,
       state.showGrid,
       state.toggleGrid,
       state.hasYLogScale,
@@ -41,23 +28,26 @@ function LineToolbar(): JSX.Element {
 
   return (
     <>
-      <Select
-        className={styles.glyphSelector}
-        defaultValue={glyphOptions.find(o => o.value === glyph)}
-        options={glyphOptions}
-        onChange={selection => {
-          if (selection) {
-            setGlyph((selection as OptionType).value);
-          }
-        }}
-        styles={{
-          control: (provided: CSSProperties) => ({
-            ...provided,
-            backgroundColor: 'transparent',
-            borderWidth: '0 1px',
-          }),
-        }}
-        theme={customThemeForSelect}
+      <ButtonGroup
+        className={styles.curveTypeButtonGroup}
+        buttonClassName={styles.btn}
+        buttons={[
+          {
+            label: 'Line',
+            isSelected: curveType === CurveType.OnlyLine,
+            onClick: () => setCurveType(CurveType.OnlyLine),
+          },
+          {
+            label: 'Points',
+            isSelected: curveType === CurveType.OnlyGlyphs,
+            onClick: () => setCurveType(CurveType.OnlyGlyphs),
+          },
+          {
+            label: 'Line and points',
+            isSelected: curveType === CurveType.LineAndGlyphs,
+            onClick: () => setCurveType(CurveType.LineAndGlyphs),
+          },
+        ]}
       />
       <Toggler label="Show grid" value={showGrid} onChange={toggleGrid} />
       <Toggler
