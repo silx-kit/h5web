@@ -35,18 +35,16 @@ function HeatmapVis(): JSX.Element {
     <div className={styles.root}>
       <VisCanvas
         // -0.5 to have ticks at the center of pixels
-        abscissaConfig={{ indexDomain: [-0.5, cols - 0.5], showGrid }}
-        ordinateConfig={{ indexDomain: [-0.5, rows - 0.5], showGrid }}
+        abscissaConfig={{ indexDomain: [0, cols], showGrid }}
+        ordinateConfig={{ indexDomain: [0, rows], showGrid }}
         aspectRatio={aspectRatio}
       >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <HeatmapProvider {...props}>
           <TooltipMesh
-            formatIndex={([x, y]) =>
-              `x=${Math.floor(x + 0.5)}, y=${Math.floor(y + 0.5)}`
-            }
+            formatIndex={([x, y]) => `x=${Math.floor(x)}, y=${Math.floor(y)}`}
             formatValue={([x, y]) =>
-              format('.3')(data[Math.floor(y + 0.5)][Math.floor(x + 0.5)])
+              format('.3')(data[Math.floor(y)][Math.floor(x)])
             }
             guides="both"
           />

@@ -3,11 +3,21 @@ import { useThree, useFrame, Dom } from 'react-three-fiber';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
-import { Grid } from '@vx/grid';
+import { GridColumns, GridRows } from '@vx/grid';
 import styles from './AxisSystem.module.css';
 import { AxisOffsets, Domain } from './models';
-import { adaptedNumTicks, useAbscissaScale, useOrdinateScale } from './utils';
+import { useAbscissaScale, useOrdinateScale, getTicksProp } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
+
+const SHARED_PROPS = {
+  tickStroke: 'grey',
+  hideAxisLine: true,
+  tickFormat: format('0'),
+  tickClassName: styles.tick,
+  tickComponent: ({ formattedValue, ...tickProps }: TickRendererProps) => (
+    <text {...tickProps}>{formattedValue}</text>
+  ),
+};
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -45,27 +55,17 @@ function AxisSystem(props: Props): JSX.Element {
     ]);
   });
 
-  const sharedAxisProps = {
-    tickStroke: 'grey',
-    hideAxisLine: true,
-    tickFormat: format('0'),
-    tickClassName: styles.tick,
-    tickComponent: ({ formattedValue, ...tickProps }: TickRendererProps) => (
-      <text {...tickProps}>{formattedValue}</text>
-    ),
-  };
+  // Restrain ticks scales to visible domains
+  const xTicksScale = abscissa.scaleFn();
+  xTicksScale.domain(visibleDomains[0]);
+  xTicksScale.range([0, width]);
 
-  // Restrain axis scales to visible domains
-  const xAxisScale = abscissa.scaleFn();
-  xAxisScale.domain(visibleDomains[0]);
-  xAxisScale.range([0, width]);
+  const yTicksScale = ordinate.scaleFn();
+  yTicksScale.domain(visibleDomains[1]);
+  yTicksScale.range([height, 0]);
 
-  const yAxisScale = ordinate.scaleFn();
-  yAxisScale.domain(visibleDomains[1]);
-  yAxisScale.range([height, 0]);
-
-  const abscissaTicksNumber = adaptedNumTicks(width);
-  const ordinateTicksNumber = adaptedNumTicks(height);
+  const xTicksProp = getTicksProp(abscissaConfig, visibleDomains[0], width);
+  const yTicksProp = getTicksProp(ordinateConfig, visibleDomains[1], height);
 
   return (
     <Dom
@@ -83,39 +83,43 @@ function AxisSystem(props: Props): JSX.Element {
       <>
         <div className={styles.bottomAxisCell}>
           <svg className={styles.axis} data-orientation="bottom">
-            <AxisBottom
-              scale={xAxisScale}
-              numTicks={abscissaTicksNumber}
-              {...sharedAxisProps}
-            />
+            <AxisBottom scale={xTicksScale} {...xTicksProp} {...SHARED_PROPS} />
           </svg>
         </div>
         <div className={styles.leftAxisCell}>
           <svg className={styles.axis} data-orientation="left">
             <AxisLeft
-              scale={yAxisScale}
+              scale={yTicksScale}
               left={axisOffsets.left}
-              numTicks={ordinateTicksNumber}
-              {...sharedAxisProps}
+              {...yTicksProp}
+              {...SHARED_PROPS}
             />
           </svg>
         </div>
-        {abscissaConfig.showGrid && ordinateConfig.showGrid && (
-          <div className={styles.axisGridCell}>
-            <svg width={width} height={height}>
-              <Grid
-                xScale={xAxisScale}
-                yScale={yAxisScale}
+        <div className={styles.axisGridCell}>
+          <svg width={width} height={height}>
+            {abscissaConfig.showGrid && (
+              <GridColumns
+                scale={xTicksScale}
+                {...xTicksProp}
                 width={width}
                 height={height}
-                numTicksColumns={abscissaTicksNumber}
-                numTicksRows={ordinateTicksNumber}
-                stroke={sharedAxisProps.tickStroke}
+                stroke={SHARED_PROPS.tickStroke}
                 strokeOpacity={0.33}
               />
-            </svg>
-          </div>
-        )}
+            )}
+            {ordinateConfig.showGrid && (
+              <GridRows
+                scale={yTicksScale}
+                {...yTicksProp}
+                width={width}
+                height={height}
+                stroke={SHARED_PROPS.tickStroke}
+                strokeOpacity={0.33}
+              />
+            )}
+          </svg>
+        </div>
       </>
     </Dom>
   );
