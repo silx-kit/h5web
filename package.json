@@ -9,7 +9,7 @@
     "url": "https://github.com/silx-kit/h5web"
   },
   "engines": {
-    "nodejs": "12.x",
+    "node": "12.x",
     "npm": "6.x"
   },
   "scripts": {
