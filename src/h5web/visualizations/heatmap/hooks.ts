@@ -1,4 +1,4 @@
-import { useContext, useMemo, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { transfer } from 'comlink';
 import { useComlink } from 'react-use-comlink';
 import { useSetState } from 'react-use';
@@ -8,23 +8,33 @@ import shallow from 'zustand/shallow';
 import Worker from 'worker-loader!./worker';
 
 import { useHeatmapConfig } from './config';
-import { HeatmapProps, HeatmapContext } from './HeatmapProvider';
-import { D3Interpolator } from './models';
+import { D3Interpolator, Dims } from './models';
 import { INTERPOLATORS } from './interpolators';
 import { TextureWorker } from './worker';
+import { useVisProps } from '../../dataset-visualizer/VisProvider';
 
-export function useProps(): HeatmapProps {
-  const props = useContext(HeatmapContext);
+export function useData(): number[][] {
+  const { rawValues, rawDims } = useVisProps();
 
-  if (!props) {
-    throw new Error('Missing Heatmap provider.');
+  if (rawDims.length === 2) {
+    return rawValues;
   }
 
-  return props;
+  throw new Error('Data not supported by HeatmapVis');
+}
+
+export function useDims(): Dims {
+  const { rawDims } = useVisProps();
+
+  if (rawDims.length === 2) {
+    return rawDims as Dims;
+  }
+
+  throw new Error('Data not supported by HeatmapVis');
 }
 
 export function useValues(): number[] {
-  const { data } = useProps();
+  const data = useData();
   return useMemo(() => data.flat(), [data]);
 }
 

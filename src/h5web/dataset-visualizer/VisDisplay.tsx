@@ -9,12 +9,8 @@ import {
   HeatmapVis,
 } from '../visualizations';
 import { useValue } from '../providers/hooks';
-import HeatmapProvider from '../visualizations/heatmap/HeatmapProvider';
-import { Dims } from '../visualizations/heatmap/models';
-import LineProvider from '../visualizations/line/LineProvider';
 
 interface Props {
-  key: string; // reset states when switching between datasets
   vis: Vis;
   dataset: HDF5Dataset;
 }
@@ -42,22 +38,11 @@ function VisDisplay(props: Props): JSX.Element {
   }
 
   if (vis === Vis.Line) {
-    return (
-      <LineProvider data={value}>
-        <LineVis />
-      </LineProvider>
-    );
+    return <LineVis />;
   }
 
   if (vis === Vis.Heatmap) {
-    return (
-      <HeatmapProvider
-        dims={(dataset.shape as HDF5SimpleShape).dims as Dims}
-        data={value}
-      >
-        <HeatmapVis />
-      </HeatmapProvider>
-    );
+    return <HeatmapVis />;
   }
 
   throw new Error('Visualization not supported');

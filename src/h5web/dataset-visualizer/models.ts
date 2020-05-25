@@ -5,3 +5,8 @@ export enum Vis {
   Line = 'Line',
   Heatmap = 'Heatmap',
 }
+
+export interface DimensionMapping {
+  x: number;
+  y: number;
+}
