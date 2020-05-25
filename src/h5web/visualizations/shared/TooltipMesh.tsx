@@ -1,10 +1,17 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useCallback, useContext } from 'react';
 import { Dom, PointerEvent, useThree } from 'react-three-fiber';
 import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import { Line } from '@vx/shape';
 
 import styles from './TooltipMesh.module.css';
-import { useAbscissaScale, useOrdinateScale } from './utils';
+import { getAxisScale } from './utils';
+import { AxisSystemContext } from './AxisSystemProvider';
+
+const GUIDE_PROPS = {
+  stroke: 'gray',
+  strokeWidth: 1.5,
+  strokeOpacity: 0.5,
+};
 
 type Coords = [number, number];
 type Guides = 'horizontal' | 'vertical' | 'both';
@@ -18,8 +25,13 @@ interface Props {
 function TooltipMesh(props: Props): ReactElement {
   const { formatIndex, formatValue, guides } = props;
 
+  const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
   const { camera, size } = useThree();
   const { width, height } = size;
+
+  // Scales to compute data coordinates from unprojected mesh coordinates
+  const abscissaScale = getAxisScale(abscissaInfo, width);
+  const ordinateScale = getAxisScale(ordinateInfo, height);
 
   const {
     tooltipOpen,
@@ -29,18 +41,6 @@ function TooltipMesh(props: Props): ReactElement {
     showTooltip,
     hideTooltip,
   } = useTooltip<Coords>();
-
-  const guideAspect = {
-    stroke: 'gray',
-    strokeWidth: 1.5,
-    strokeOpacity: 0.5,
-  };
-  const verticalGuide = guides === 'vertical' || guides === 'both';
-  const horizontalGuide = guides === 'horizontal' || guides === 'both';
-
-  // Scales to compute data coordinates from unprojected mesh coordinates
-  const { scale: abscissaScale } = useAbscissaScale();
-  const { scale: ordinateScale } = useOrdinateScale();
 
   // Update tooltip when pointer moves
   // When panning, events are handled and stopped by texture mesh and do not reach this mesh (which is behind)
@@ -86,18 +86,18 @@ function TooltipMesh(props: Props): ReactElement {
             </TooltipWithBounds>
             {guides && (
               <svg width={width} height={height}>
-                {verticalGuide && (
+                {guides !== 'horizontal' && (
                   <Line
                     from={{ x: tooltipLeft, y: 0 }}
                     to={{ x: tooltipLeft, y: height }}
-                    {...guideAspect}
+                    {...GUIDE_PROPS}
                   />
                 )}
-                {horizontalGuide && (
+                {guides !== 'vertical' && (
                   <Line
                     from={{ x: 0, y: tooltipTop }}
                     to={{ x: width, y: tooltipTop }}
-                    {...guideAspect}
+                    {...GUIDE_PROPS}
                   />
                 )}
               </svg>

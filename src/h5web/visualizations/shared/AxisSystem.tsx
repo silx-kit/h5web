@@ -6,10 +6,10 @@ import { TickRendererProps } from '@vx/axis/lib/types';
 import { GridColumns, GridRows } from '@vx/grid';
 import styles from './AxisSystem.module.css';
 import { AxisOffsets, Domain } from './models';
-import { useAbscissaScale, useOrdinateScale, getTicksProp } from './utils';
+import { getTicksProp, getAxisScale } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
 
-const SHARED_PROPS = {
+const AXIS_PROPS = {
   tickStroke: 'grey',
   hideAxisLine: true,
   tickFormat: format('0'),
@@ -26,17 +26,17 @@ interface Props {
 function AxisSystem(props: Props): JSX.Element {
   const { axisOffsets } = props;
 
+  const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
   const { camera, size } = useThree();
   const { width, height } = size;
 
-  const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
-  const abscissa = useAbscissaScale();
-  const ordinate = useOrdinateScale();
+  const abscissaScale = getAxisScale(abscissaInfo, width);
+  const ordinateScale = getAxisScale(ordinateInfo, height);
 
   // axisDomains are the complete domains. visibleDomains change with the camera
   const [visibleDomains, setVisibleDomains] = useState<[Domain, Domain]>([
-    abscissa.domain,
-    ordinate.domain,
+    abscissaInfo.domain,
+    ordinateInfo.domain,
   ]);
 
   useFrame(() => {
@@ -45,27 +45,27 @@ function AxisSystem(props: Props): JSX.Element {
     // Finds the visible domains from the camera FOV (zoom and position).
     setVisibleDomains([
       [
-        abscissa.scale.invert(-width / (2 * zoom) + position.x),
-        abscissa.scale.invert(width / (2 * zoom) + position.x),
+        abscissaScale.invert(-width / (2 * zoom) + position.x),
+        abscissaScale.invert(width / (2 * zoom) + position.x),
       ],
       [
-        ordinate.scale.invert(-height / (2 * zoom) + position.y),
-        ordinate.scale.invert(height / (2 * zoom) + position.y),
+        ordinateScale.invert(-height / (2 * zoom) + position.y),
+        ordinateScale.invert(height / (2 * zoom) + position.y),
       ],
     ]);
   });
 
   // Restrain ticks scales to visible domains
-  const xTicksScale = abscissa.scaleFn();
+  const xTicksScale = abscissaInfo.scaleFn();
   xTicksScale.domain(visibleDomains[0]);
   xTicksScale.range([0, width]);
 
-  const yTicksScale = ordinate.scaleFn();
+  const yTicksScale = ordinateInfo.scaleFn();
   yTicksScale.domain(visibleDomains[1]);
   yTicksScale.range([height, 0]);
 
-  const xTicksProp = getTicksProp(abscissaConfig, visibleDomains[0], width);
-  const yTicksProp = getTicksProp(ordinateConfig, visibleDomains[1], height);
+  const xTicksProp = getTicksProp(abscissaInfo, visibleDomains[0], width);
+  const yTicksProp = getTicksProp(ordinateInfo, visibleDomains[1], height);
 
   return (
     <Dom
@@ -83,7 +83,7 @@ function AxisSystem(props: Props): JSX.Element {
       <>
         <div className={styles.bottomAxisCell}>
           <svg className={styles.axis} data-orientation="bottom">
-            <AxisBottom scale={xTicksScale} {...xTicksProp} {...SHARED_PROPS} />
+            <AxisBottom scale={xTicksScale} {...xTicksProp} {...AXIS_PROPS} />
           </svg>
         </div>
         <div className={styles.leftAxisCell}>
@@ -92,29 +92,29 @@ function AxisSystem(props: Props): JSX.Element {
               scale={yTicksScale}
               left={axisOffsets.left}
               {...yTicksProp}
-              {...SHARED_PROPS}
+              {...AXIS_PROPS}
             />
           </svg>
         </div>
         <div className={styles.axisGridCell}>
           <svg width={width} height={height}>
-            {abscissaConfig.showGrid && (
+            {abscissaInfo.showGrid && (
               <GridColumns
                 scale={xTicksScale}
                 {...xTicksProp}
                 width={width}
                 height={height}
-                stroke={SHARED_PROPS.tickStroke}
+                stroke={AXIS_PROPS.tickStroke}
                 strokeOpacity={0.33}
               />
             )}
-            {ordinateConfig.showGrid && (
+            {ordinateInfo.showGrid && (
               <GridRows
                 scale={yTicksScale}
                 {...yTicksProp}
                 width={width}
                 height={height}
-                stroke={SHARED_PROPS.tickStroke}
+                stroke={AXIS_PROPS.tickStroke}
                 strokeOpacity={0.33}
               />
             )}
