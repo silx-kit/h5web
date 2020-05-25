@@ -41,12 +41,11 @@ function LineVis(): JSX.Element {
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <LineProvider {...props}>
           <TooltipMesh
-            formatIndex={([x]) => `x=${Math.floor(x)}`}
-            formatValue={([x]) =>
-              data[Math.floor(x)]
-                ? format('.3f')(data[Math.floor(x)])
-                : undefined
-            }
+            formatIndex={([x]) => `x=${Math.round(x)}`}
+            formatValue={([x]) => {
+              const value = data[Math.round(x)];
+              return value !== undefined ? format('.3f')(value) : undefined;
+            }}
             guides="vertical"
           />
           <PanZoomMesh />
