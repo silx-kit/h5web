@@ -18,10 +18,18 @@ export interface DataAxisConfig {
 
 export type AxisConfig = IndexAxisConfig | DataAxisConfig;
 
-export interface AxisScale {
-  scale: DataScale;
-  scaleFn: DataScaleFn;
+export type AxisScaleFn = typeof scaleSymlog | typeof scaleLinear;
+
+export type AxisScale =
+  | ScaleLinear<number, number>
+  | ScaleSymLog<number, number>;
+
+export interface AxisInfo {
+  isIndexAxis: boolean;
+  scaleFn: AxisScaleFn;
   domain: Domain;
+  isLog: boolean;
+  showGrid: boolean;
 }
 
 export type AxisOffsets = {
@@ -30,9 +38,3 @@ export type AxisOffsets = {
   right: number;
   top: number;
 };
-
-export type DataScaleFn = typeof scaleSymlog | typeof scaleLinear;
-
-export type DataScale =
-  | ScaleLinear<number, number>
-  | ScaleSymLog<number, number>;

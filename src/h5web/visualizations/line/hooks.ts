@@ -1,12 +1,10 @@
 import { useContext, useMemo } from 'react';
 import { Vector3 } from 'three';
+import { useThree } from 'react-three-fiber';
 import { LineProps, LineContext } from './LineProvider';
 import { Domain } from '../shared/models';
-import {
-  findDomain,
-  useAbscissaScale,
-  useOrdinateScale,
-} from '../shared/utils';
+import { findDomain, getAxisScale } from '../shared/utils';
+import { AxisSystemContext } from '../shared/AxisSystemProvider';
 
 export function useProps(): LineProps {
   const props = useContext(LineContext);
@@ -25,8 +23,13 @@ export function useDataDomain(): Domain | undefined {
 
 export function useDataPoints(): Vector3[] | undefined {
   const { data } = useProps();
-  const { scale: abscissaScale } = useAbscissaScale();
-  const { scale: ordinateScale } = useOrdinateScale();
+
+  const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
+  const { size } = useThree();
+  const { width, height } = size;
+
+  const abscissaScale = getAxisScale(abscissaInfo, width);
+  const ordinateScale = getAxisScale(ordinateInfo, height);
 
   return useMemo(() => {
     return data.map(

@@ -1,5 +1,11 @@
 import { range } from 'lodash-es';
-import { D3Interpolator, ColorMapOption, ColorMap } from './models';
+import { scaleSymlog, scaleLinear } from 'd3-scale';
+import {
+  D3Interpolator,
+  ColorMapOption,
+  ColorMap,
+  DataScaleFn,
+} from './models';
 
 export function generateCSSLinearGradient(
   interpolator: D3Interpolator,
@@ -10,6 +16,10 @@ export function generateCSSLinearGradient(
     .reduce((acc, val) => `${acc},${val}`);
 
   return `linear-gradient(to ${direction},${gradientColors})`;
+}
+
+export function getDataScaleFn(isLog: boolean): DataScaleFn {
+  return isLog ? scaleSymlog : scaleLinear;
 }
 
 export function convertToOptions(

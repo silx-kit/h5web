@@ -2,11 +2,11 @@ import React from 'react';
 import { AxisRight } from '@vx/axis';
 import { useMeasure } from 'react-use';
 import shallow from 'zustand/shallow';
-import { adaptedNumTicks, getDataScaleFn } from '../shared/utils';
+import { adaptedNumTicks } from '../shared/utils';
 import { useInterpolator } from './hooks';
 import { useHeatmapConfig } from './config';
 import styles from './HeatmapVis.module.css';
-import { generateCSSLinearGradient } from './utils';
+import { generateCSSLinearGradient, getDataScaleFn } from './utils';
 
 function ColorBar(): JSX.Element {
   const [dataDomain, customDomain, hasLogScale] = useHeatmapConfig(

@@ -1,10 +1,10 @@
 import { expose, transfer } from 'comlink';
 import { rgb } from 'd3-color';
 import { scaleSequential } from 'd3-scale';
-import { getDataScaleFn } from '../shared/utils';
 import { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
 import { Domain } from '../shared/models';
+import { getDataScaleFn } from './utils';
 
 function computeTextureData(
   values: Float64Array,
@@ -14,6 +14,7 @@ function computeTextureData(
 ): Uint8Array | undefined {
   const dataScale = getDataScaleFn(hasLogScale)();
   dataScale.domain(domain);
+
   const colorScale = scaleSequential(INTERPOLATORS[colorMap]);
 
   // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`

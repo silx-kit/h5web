@@ -1,17 +1,14 @@
-import { scaleLinear, scaleSymlog } from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { extent, tickStep } from 'd3-array';
-import { useThree } from 'react-three-fiber';
-import { useContext } from 'react';
 import { Theme } from 'react-select';
 import {
   Size,
   Domain,
-  DataScaleFn,
   AxisConfig,
   IndexAxisConfig,
   AxisScale,
+  AxisInfo,
 } from './models';
-import { AxisSystemContext } from './AxisSystemProvider';
 
 export const adaptedNumTicks = scaleLinear()
   .domain([300, 900])
@@ -61,42 +58,14 @@ export function isIndexAxisConfig(
   return 'indexDomain' in config;
 }
 
-export function getDataScaleFn(isLog: boolean): DataScaleFn {
-  return isLog ? scaleSymlog : scaleLinear;
-}
-
-function getAxisScale(config: AxisConfig, rangeSize: number): AxisScale {
-  if (isIndexAxisConfig(config)) {
-    const { indexDomain } = config;
-    const scaleFn = scaleLinear;
-
-    const scale = scaleFn();
-    scale.domain(indexDomain);
-    scale.range([-rangeSize / 2, rangeSize / 2]);
-
-    return { scale, scaleFn, domain: indexDomain };
-  }
-
-  const { dataDomain, isLog = false } = config;
-  const scaleFn = getDataScaleFn(isLog);
+export function getAxisScale(info: AxisInfo, rangeSize: number): AxisScale {
+  const { scaleFn, domain } = info;
 
   const scale = scaleFn();
-  scale.domain(dataDomain);
+  scale.domain(domain);
   scale.range([-rangeSize / 2, rangeSize / 2]);
 
-  return { scale, scaleFn, domain: dataDomain };
-}
-
-export function useAbscissaScale(): AxisScale {
-  const { size } = useThree();
-  const { abscissaConfig } = useContext(AxisSystemContext);
-  return getAxisScale(abscissaConfig, size.width);
-}
-
-export function useOrdinateScale(): AxisScale {
-  const { size } = useThree();
-  const { ordinateConfig } = useContext(AxisSystemContext);
-  return getAxisScale(ordinateConfig, size.height);
+  return scale;
 }
 
 /**
@@ -134,13 +103,13 @@ function getIntegerTicks(domain: Domain, count: number): number[] {
 }
 
 export function getTicksProp(
-  config: AxisConfig,
+  info: AxisInfo,
   visibleDomain: Domain,
   availableSize: number
 ): { tickValues: number[] } | { numTicks: number } {
   const numTicks = adaptedNumTicks(availableSize);
 
-  return isIndexAxisConfig(config)
+  return info.isIndexAxis
     ? { tickValues: getIntegerTicks(visibleDomain, numTicks) }
     : { numTicks };
 }
