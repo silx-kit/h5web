@@ -1,21 +1,17 @@
 import React, { forwardRef } from 'react';
 import { FixedSizeGrid as IndexedGrid } from 'react-window';
 import { useMeasure } from 'react-use';
-import { HDF5Value } from '../../providers/models';
 import styles from './MatrixVis.module.css';
 import GridSettingsProvider from './GridSettingsContext';
 import StickyGrid from './StickyGrid';
 import Cell from './Cell';
+import { useData, useDims } from './hooks';
 
 const CELL_SIZE = { width: 116, height: 32 };
 
-interface Props {
-  dims: number[];
-  data: HDF5Value;
-}
-
-function MatrixVis(props: Props): JSX.Element {
-  const { dims, data } = props;
+function MatrixVis(): JSX.Element {
+  const data = useData();
+  const dims = useDims();
 
   const [divRef, { width, height }] = useMeasure();
   const isVisible = width > 0 && height > 0;

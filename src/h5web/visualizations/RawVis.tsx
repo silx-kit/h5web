@@ -1,14 +1,10 @@
 import React from 'react';
 import styles from './RawVis.module.css';
-import { HDF5Value } from '../providers/models';
+import { useVisProps } from '../dataset-visualizer/VisProvider';
 
-interface Props {
-  data: HDF5Value;
-}
-
-function RawVis(props: Props): JSX.Element {
-  const { data } = props;
-  return <pre className={styles.raw}>{JSON.stringify(data, null, 2)}</pre>;
+function RawVis(): JSX.Element {
+  const { rawValues } = useVisProps();
+  return <pre className={styles.raw}>{JSON.stringify(rawValues, null, 2)}</pre>;
 }
 
 export default RawVis;
