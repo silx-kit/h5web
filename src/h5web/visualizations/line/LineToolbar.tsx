@@ -1,34 +1,24 @@
 import React from 'react';
-import shallow from 'zustand/shallow';
 import { MdGridOn, MdLinearScale } from 'react-icons/md';
 import Toggler from '../shared/Toggler';
 import { useLineConfig } from './config';
 import { CurveType } from './models';
 import styles from './LineToolbar.module.css';
 import ButtonGroup from '../shared/ButtonGroup';
+import Toolbar from '../shared/Toolbar';
 
 function LineToolbar(): JSX.Element {
-  const [
+  const {
     curveType,
     setCurveType,
     showGrid,
     toggleGrid,
     hasYLogScale,
     toggleYLogScale,
-  ] = useLineConfig(
-    state => [
-      state.curveType,
-      state.setCurveType,
-      state.showGrid,
-      state.toggleGrid,
-      state.hasYLogScale,
-      state.toggleYLogScale,
-    ],
-    shallow
-  );
+  } = useLineConfig();
 
   return (
-    <>
+    <Toolbar>
       <ButtonGroup
         className={styles.curveTypeButtonGroup}
         buttonClassName={styles.btn}
@@ -63,7 +53,7 @@ function LineToolbar(): JSX.Element {
         value={showGrid}
         onChange={toggleGrid}
       />
-    </>
+    </Toolbar>
   );
 }
 

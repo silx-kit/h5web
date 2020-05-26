@@ -1,5 +1,4 @@
-import React from 'react';
-import shallow from 'zustand/shallow';
+import React, { ReactElement } from 'react';
 import { MdAspectRatio, MdGridOn, MdLinearScale } from 'react-icons/md';
 import ColorMapSelector from './ColorMapSelector';
 import Toggler from '../shared/Toggler';
@@ -7,27 +6,20 @@ import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
 import ScreenshotButton from '../shared/ScreenshotButton';
 import Separator from '../shared/Separator';
+import Toolbar from '../shared/Toolbar';
 
-function HeatmapToolbar(): JSX.Element {
-  const [
+function HeatmapToolbar(): ReactElement {
+  const {
     hasLogScale,
     toggleLogScale,
     keepAspectRatio,
     toggleAspectRatio,
     showGrid,
     toggleGrid,
-  ] = useHeatmapConfig(state => [
-    state.hasLogScale,
-    state.toggleLogScale,
-    state.keepAspectRatio,
-    state.toggleAspectRatio,
-    state.showGrid,
-    state.toggleGrid,
-    shallow,
-  ]);
+  } = useHeatmapConfig();
 
   return (
-    <>
+    <Toolbar>
       <DomainSlider />
       <Separator />
       <ColorMapSelector />
@@ -52,7 +44,7 @@ function HeatmapToolbar(): JSX.Element {
       />
       <Separator />
       <ScreenshotButton />
-    </>
+    </Toolbar>
   );
 }
 

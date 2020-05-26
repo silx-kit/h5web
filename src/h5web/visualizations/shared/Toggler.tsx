@@ -16,8 +16,7 @@ function Toggler(props: Props): JSX.Element {
     <button
       className={styles.toggler}
       type="button"
-      role="switch"
-      aria-checked={value}
+      aria-pressed={value}
       onClick={onChange}
     >
       <span className={styles.box}>
