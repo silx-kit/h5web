@@ -112,7 +112,7 @@ function ColorMapSelector(): JSX.Element {
     control: (provided: CSSProperties) => ({
       ...provided,
       backgroundColor: 'transparent',
-      borderWidth: '0 1px',
+      border: 'none',
     }),
     indicatorSeparator: () => ({}),
   };

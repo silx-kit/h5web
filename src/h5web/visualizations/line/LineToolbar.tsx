@@ -1,5 +1,6 @@
 import React from 'react';
 import shallow from 'zustand/shallow';
+import { MdGridOn, MdLinearScale } from 'react-icons/md';
 import Toggler from '../shared/Toggler';
 import { useLineConfig } from './config';
 import { CurveType } from './models';
@@ -50,11 +51,17 @@ function LineToolbar(): JSX.Element {
           },
         ]}
       />
-      <Toggler label="Show grid" value={showGrid} onChange={toggleGrid} />
       <Toggler
-        label="Y SymLog scale"
+        label="Symlog"
+        icon={MdLinearScale}
         value={hasYLogScale}
         onChange={toggleYLogScale}
+      />
+      <Toggler
+        label="Grid"
+        icon={MdGridOn}
+        value={showGrid}
+        onChange={toggleGrid}
       />
     </>
   );
