@@ -5,15 +5,13 @@ import styles from './LineVis.module.css';
 import DataCurve from './DataCurve';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
-import { useProps, useDataDomain } from './hooks';
-import LineProvider from './LineProvider';
+import { useDataDomain, useData } from './hooks';
 import { useLineConfig } from './config';
 import TooltipMesh from '../shared/TooltipMesh';
 import { extendDomain } from '../shared/utils';
 
 function LineVis(): JSX.Element {
-  const props = useProps();
-  const { data } = props;
+  const data = useData();
 
   const [showGrid, hasYLogScale] = useLineConfig(
     state => [state.showGrid, state.hasYLogScale],
@@ -39,18 +37,16 @@ function LineVis(): JSX.Element {
         }}
       >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
-        <LineProvider {...props}>
-          <TooltipMesh
-            formatIndex={([x]) => `x=${Math.round(x)}`}
-            formatValue={([x]) => {
-              const value = data[Math.round(x)];
-              return value !== undefined ? format('.3f')(value) : undefined;
-            }}
-            guides="vertical"
-          />
-          <PanZoomMesh />
-          <DataCurve />
-        </LineProvider>
+        <TooltipMesh
+          formatIndex={([x]) => `x=${Math.round(x)}`}
+          formatValue={([x]) => {
+            const value = data[Math.round(x)];
+            return value !== undefined ? format('.3f')(value) : undefined;
+          }}
+          guides="vertical"
+        />
+        <PanZoomMesh />
+        <DataCurve />
       </VisCanvas>
     </div>
   );

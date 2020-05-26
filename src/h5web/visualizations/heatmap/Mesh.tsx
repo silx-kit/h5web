@@ -1,11 +1,11 @@
 import React, { useMemo, ReactElement } from 'react';
 import { useThree, Dom } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
-import { useProps, useTextureData } from './hooks';
+import { useTextureData, useDims } from './hooks';
 import styles from './HeatmapVis.module.css';
 
 function Mesh(): ReactElement {
-  const { dims } = useProps();
+  const dims = useDims();
 
   const { size } = useThree();
   const { width, height } = size;

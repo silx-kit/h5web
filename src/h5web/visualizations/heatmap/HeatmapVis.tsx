@@ -3,17 +3,16 @@ import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
-import { useProps, useValues } from './hooks';
+import { useValues, useData, useDims } from './hooks';
 import Mesh from './Mesh';
 import TooltipMesh from '../shared/TooltipMesh';
-import HeatmapProvider from './HeatmapProvider';
 import { useHeatmapConfig } from './config';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 
 function HeatmapVis(): JSX.Element {
-  const props = useProps();
-  const { dims, data } = props;
+  const data = useData();
+  const dims = useDims();
   const [rows, cols] = dims;
 
   const [keepAspectRatio, showGrid] = useHeatmapConfig(
@@ -40,17 +39,15 @@ function HeatmapVis(): JSX.Element {
         aspectRatio={aspectRatio}
       >
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
-        <HeatmapProvider {...props}>
-          <TooltipMesh
-            formatIndex={([x, y]) => `x=${Math.floor(x)}, y=${Math.floor(y)}`}
-            formatValue={([x, y]) =>
-              format('.3')(data[Math.floor(y)][Math.floor(x)])
-            }
-            guides="both"
-          />
-          <PanZoomMesh />
-          <Mesh />
-        </HeatmapProvider>
+        <TooltipMesh
+          formatIndex={([x, y]) => `x=${Math.floor(x)}, y=${Math.floor(y)}`}
+          formatValue={([x, y]) =>
+            format('.3')(data[Math.floor(y)][Math.floor(x)])
+          }
+          guides="both"
+        />
+        <PanZoomMesh />
+        <Mesh />
       </VisCanvas>
       <ColorBar />
     </div>

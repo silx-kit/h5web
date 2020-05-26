@@ -1,28 +1,28 @@
-import { useContext, useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 import { Vector3 } from 'three';
 import { useThree } from 'react-three-fiber';
-import { LineProps, LineContext } from './LineProvider';
 import { Domain } from '../shared/models';
 import { findDomain, getAxisScale } from '../shared/utils';
 import { AxisSystemContext } from '../shared/AxisSystemProvider';
+import { useVisProps } from '../../dataset-visualizer/VisProvider';
 
-export function useProps(): LineProps {
-  const props = useContext(LineContext);
+export function useData(): number[] {
+  const { rawValues, rawDims } = useVisProps();
 
-  if (!props) {
-    throw new Error('Missing Line provider.');
+  if (rawDims.length === 1) {
+    return rawValues;
   }
 
-  return props;
+  throw new Error('Data not supported by LineVis');
 }
 
 export function useDataDomain(): Domain | undefined {
-  const { data } = useProps();
+  const data = useData();
   return useMemo(() => findDomain(data), [data]);
 }
 
 export function useDataPoints(): Vector3[] | undefined {
-  const { data } = useProps();
+  const data = useData();
 
   const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
   const { size } = useThree();
