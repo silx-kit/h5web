@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { FiCamera } from 'react-icons/fi';
+import { MdCameraAlt } from 'react-icons/md';
 import styles from './ScreenshotButton.module.css';
 
 function ScreenshotButton(): ReactElement {
@@ -24,7 +24,9 @@ function ScreenshotButton(): ReactElement {
         }
       }}
     >
-      <FiCamera />
+      <span className={styles.box}>
+        <MdCameraAlt className={styles.icon} />
+      </span>
     </a>
   );
 }
