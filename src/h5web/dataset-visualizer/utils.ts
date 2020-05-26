@@ -23,9 +23,7 @@ const SUPPORT_CHECKS: Record<Vis, SupportFunction> = {
   },
   [Vis.Line]: dataset => {
     const { type, shape } = dataset;
-    return (
-      isNumericType(type) && isSimpleShape(shape) && shape.dims.length === 1
-    );
+    return isNumericType(type) && isSimpleShape(shape) && hasSimpleDims(shape);
   },
   [Vis.Heatmap]: dataset => {
     const { type, shape } = dataset;
