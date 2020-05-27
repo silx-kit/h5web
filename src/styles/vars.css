@@ -7,10 +7,11 @@
   --primary-light-bg: #fafdf7;
   --primary-dark-bg: #dde2d7;
   --secondary: #8cdfc7;
-  --secondary-light: #b3e9da;
+  --secondary-light: #b7fcf3;
   --secondary-bg: #d9f4ec;
   --secondary-light-bg: #ecfaf6;
   --secondary-dark: #1b998b;
+  --secondary-darker: #0e5846;
   --monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
   --sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',

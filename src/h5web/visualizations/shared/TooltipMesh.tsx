@@ -65,11 +65,22 @@ function TooltipMesh(props: Props): ReactElement {
   const onPointerOut = useCallback(hideTooltip, [hideTooltip]);
   const onPointerDown = useCallback(hideTooltip, [hideTooltip]);
 
+  // Show tooltip after dragging unless pointer has left canvas
+  const onPointerUp = useCallback(
+    (evt: PointerEvent) => {
+      const { offsetX: x, offsetY: y } = evt.nativeEvent;
+      if (x >= 0 && x <= width && y >= 0 && y <= height) {
+        onPointerMove(evt);
+      }
+    },
+    [height, onPointerMove, width]
+  );
+
   const value = tooltipData && formatValue(tooltipData);
 
   return (
     <>
-      <mesh {...{ onPointerMove, onPointerOut, onPointerDown }}>
+      <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <planeBufferGeometry attach="geometry" args={[width, height]} />
       </mesh>
       <Dom style={{ width, height }}>

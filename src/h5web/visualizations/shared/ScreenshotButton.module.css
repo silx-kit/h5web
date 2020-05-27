@@ -1,11 +1,23 @@
 .link {
-  color: inherit;
   display: flex;
   align-items: center;
-  padding: 0 0.75rem;
-  font-size: 1.125em;
+  padding: 0 0.25rem;
+  color: inherit;
 }
 
-.link:hover {
+.box {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+}
+
+.icon {
+  padding-top: 1px;
+  font-size: 1.5em;
+}
+
+.link:hover > .box {
   background-color: var(--secondary-light);
 }

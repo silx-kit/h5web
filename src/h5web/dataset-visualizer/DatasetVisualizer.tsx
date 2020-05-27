@@ -1,10 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { ElementType } from 'react';
 import { HDF5Dataset } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
 import { getSupportedVis, useActiveVis } from './utils';
-import VisBar from './VisBar';
 import VisDisplay from './VisDisplay';
+import { Vis } from './models';
+import LineToolbar from '../visualizations/line/LineToolbar';
+import HeatmapToolbar from '../visualizations/heatmap/HeatmapToolbar';
+
+const VIS_TOOLBARS: Record<string, ElementType> = {
+  [Vis.Line]: LineToolbar,
+  [Vis.Heatmap]: HeatmapToolbar,
+};
 
 interface Props {
   dataset?: HDF5Dataset;
@@ -13,8 +20,10 @@ interface Props {
 function DatasetVisualizer(props: Props): JSX.Element {
   const { dataset } = props;
 
-  const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
+  const supportedVis = getSupportedVis(dataset);
   const [activeVis, setActiveVis] = useActiveVis(supportedVis);
+
+  const VisToolbar = activeVis && VIS_TOOLBARS[activeVis];
 
   return (
     <div className={styles.visualizer}>
@@ -24,9 +33,7 @@ function DatasetVisualizer(props: Props): JSX.Element {
           choices={supportedVis}
           onChange={setActiveVis}
         />
-        <div className={styles.toolbar}>
-          <VisBar vis={activeVis} />
-        </div>
+        {VisToolbar && <VisToolbar />}
       </div>
       <div className={styles.displayArea}>
         {dataset ? (

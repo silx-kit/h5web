@@ -1,25 +1,28 @@
 import React from 'react';
-import { FiToggleLeft, FiToggleRight } from 'react-icons/fi';
+import { IconType } from 'react-icons';
 import styles from './Toggler.module.css';
 
 interface Props {
   label: string;
+  icon?: IconType;
   value: boolean;
   onChange: () => void;
 }
 
 function Toggler(props: Props): JSX.Element {
-  const { label, value, onChange } = props;
+  const { label, icon: Icon, value, onChange } = props;
+
   return (
     <button
       className={styles.toggler}
       type="button"
-      role="switch"
-      aria-checked={value}
+      aria-pressed={value}
       onClick={onChange}
     >
-      {value ? <FiToggleRight /> : <FiToggleLeft />}
-      <span className={styles.togglerLabel}>{label}</span>
+      <span className={styles.box}>
+        {Icon && <Icon className={styles.icon} />}
+        <span className={styles.label}>{label}</span>
+      </span>
     </button>
   );
 }
