@@ -16,12 +16,12 @@
   display: flex;
 }
 
-.buttonGroupLabel {
+.dimensionName {
+  font-family: serif;
   margin-right: 0.5rem;
 }
 
-.btn {
-  composes: btn-clean from global;
+.btnAspect {
   display: flex;
   align-items: center;
   padding: 0.25rem 0.75rem 0.375rem;
@@ -29,6 +29,11 @@
   transition: background-color 0s ease-out;
   color: white;
   border-radius: 10%;
+}
+
+.btn {
+  composes: btn-clean from global;
+  composes: btnAspect;
 }
 
 .btn:hover {
@@ -46,6 +51,12 @@
   flex-direction: column;
   align-items: center;
   margin: 1rem 0;
+}
+
+.sliderLabel {
+  composes: btnAspect;
+  background-color: var(--secondary-dark);
+  font-weight: bold;
 }
 
 .slider {

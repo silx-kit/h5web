@@ -3,10 +3,10 @@ import { useVisProps } from '../../dataset-visualizer/VisProvider';
 type Dims = [number] | [number, number];
 
 export function useData(): number[][] {
-  const { rawValues, rawDims } = useVisProps();
+  const { values, rawDims } = useVisProps();
 
   if (rawDims.length === 1 || rawDims.length === 2) {
-    return rawValues;
+    return values;
   }
 
   throw new Error('Data not supported by MatrixVis');
