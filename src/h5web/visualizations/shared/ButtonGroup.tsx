@@ -10,17 +10,18 @@ interface Props {
   buttons: Button[];
   className?: string;
   buttonClassName?: string;
+  ariaLabel?: string;
 }
 
 function ButtonGroup(props: Props): JSX.Element {
-  const { buttons, className, buttonClassName } = props;
+  const { buttons, className, buttonClassName, ariaLabel } = props;
 
   if (buttons.length === 0) {
     return <></>;
   }
 
   return (
-    <div role="radiogroup" className={className} aria-label="curve type">
+    <div role="radiogroup" className={className} aria-label={ariaLabel}>
       {buttons.map(button => {
         return (
           <button

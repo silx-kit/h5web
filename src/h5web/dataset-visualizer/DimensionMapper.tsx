@@ -20,6 +20,7 @@ function DimensionMapper(props: Props): JSX.Element {
         <div className={styles.buttonGroupWrapper}>
           <span className={styles.buttonGroupLabel}>X</span>
           <ButtonGroup
+            ariaLabel="Dimension as X"
             className={styles.buttonGroup}
             buttonClassName={styles.btn}
             buttons={Object.keys(rawDims).map(dimKey => {

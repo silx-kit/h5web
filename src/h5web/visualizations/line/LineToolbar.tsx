@@ -31,6 +31,7 @@ function LineToolbar(): JSX.Element {
       <ButtonGroup
         className={styles.curveTypeButtonGroup}
         buttonClassName={styles.btn}
+        ariaLabel="Curve type"
         buttons={[
           {
             label: 'Line',
