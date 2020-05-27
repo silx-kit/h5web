@@ -1,17 +1,11 @@
-import React, { ElementType, useState, ReactElement, useMemo } from 'react';
+import React, { useState, ReactElement, useMemo } from 'react';
 import { HDF5Dataset } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
 import { getSupportedVis } from './utils';
 import VisDisplay from './VisDisplay';
 import { Vis } from './models';
-import LineToolbar from '../visualizations/line/LineToolbar';
-import HeatmapToolbar from '../visualizations/heatmap/HeatmapToolbar';
-
-const VIS_TOOLBARS: Record<string, ElementType> = {
-  [Vis.Line]: LineToolbar,
-  [Vis.Heatmap]: HeatmapToolbar,
-};
+import { VIS_DEFS } from '../visualizations';
 
 interface Props {
   dataset?: HDF5Dataset;
@@ -35,7 +29,7 @@ function DatasetVisualizer(props: Props): ReactElement {
     );
   }
 
-  const VisToolbar = activeVis && VIS_TOOLBARS[activeVis];
+  const VisToolbar = activeVis && VIS_DEFS[activeVis].Toolbar;
 
   return (
     <div className={styles.visualizer}>
