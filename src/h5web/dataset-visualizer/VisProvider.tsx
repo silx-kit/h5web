@@ -3,6 +3,7 @@ import React, {
   ReactElement,
   ReactNode,
   useContext,
+  useMemo,
 } from 'react';
 import { DimensionMapping } from './models';
 import { HDF5Dataset, HDF5Value } from '../providers/models';
@@ -18,7 +19,6 @@ export interface VisProps {
 export const VisContext = createContext<VisProps | undefined>(undefined);
 
 type Props = {
-  key: string; // reset states when switching between datasets
   mapping: DimensionMapping;
   dataset: HDF5Dataset;
   children: ReactNode;
@@ -48,6 +48,12 @@ export function useVisProps(): VisProps {
   }
 
   return props;
+}
+
+export function useFlatValues(): number[] {
+  const { rawValues } = useVisProps();
+
+  return useMemo(() => rawValues.flat(Infinity), [rawValues]);
 }
 
 export default VisProvider;

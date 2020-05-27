@@ -4,23 +4,7 @@ import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
 import { getSupportedVis, useActiveVis } from './utils';
 import VisBar from './VisBar';
-import VisProvider from './VisProvider';
-import { Vis } from './models';
-import {
-  RawVis,
-  ScalarVis,
-  MatrixVis,
-  LineVis,
-  HeatmapVis,
-} from '../visualizations';
-
-const VIS_COMPONENTS = {
-  [Vis.Raw]: RawVis,
-  [Vis.Scalar]: ScalarVis,
-  [Vis.Matrix]: MatrixVis,
-  [Vis.Line]: LineVis,
-  [Vis.Heatmap]: HeatmapVis,
-};
+import VisDisplay from './VisDisplay';
 
 interface Props {
   dataset?: HDF5Dataset;
@@ -28,11 +12,9 @@ interface Props {
 
 function DatasetVisualizer(props: Props): JSX.Element {
   const { dataset } = props;
-  const dimensionMapping = { x: 0, y: 1 };
 
   const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
   const [activeVis, setActiveVis] = useActiveVis(supportedVis);
-  const ActiveVis = activeVis && VIS_COMPONENTS[activeVis];
 
   return (
     <div className={styles.visualizer}>
@@ -48,14 +30,12 @@ function DatasetVisualizer(props: Props): JSX.Element {
       </div>
       <div className={styles.displayArea}>
         {dataset ? (
-          ActiveVis && (
-            <VisProvider
+          activeVis && (
+            <VisDisplay
               key={dataset.id}
-              mapping={dimensionMapping}
+              activeVis={activeVis}
               dataset={dataset}
-            >
-              <ActiveVis />
-            </VisProvider>
+            />
           )
         ) : (
           <p className={styles.noVis}>Nothing to visualize</p>

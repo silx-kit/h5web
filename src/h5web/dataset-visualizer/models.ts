@@ -8,5 +8,6 @@ export enum Vis {
 
 export interface DimensionMapping {
   x: number;
-  y: number;
+  y?: number;
+  slicingIndices: Record<number, number>;
 }
