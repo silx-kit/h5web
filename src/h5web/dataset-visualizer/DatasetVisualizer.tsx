@@ -1,29 +1,35 @@
-import React, { ElementType } from 'react';
+import React, { useState, ReactElement, useMemo } from 'react';
 import { HDF5Dataset } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
-import { getSupportedVis, useActiveVis } from './utils';
+import { getSupportedVis } from './utils';
 import VisDisplay from './VisDisplay';
 import { Vis } from './models';
-import LineToolbar from '../visualizations/line/LineToolbar';
-import HeatmapToolbar from '../visualizations/heatmap/HeatmapToolbar';
-
-const VIS_TOOLBARS: Record<string, ElementType> = {
-  [Vis.Line]: LineToolbar,
-  [Vis.Heatmap]: HeatmapToolbar,
-};
+import { VIS_DEFS } from '../visualizations';
 
 interface Props {
   dataset?: HDF5Dataset;
 }
 
-function DatasetVisualizer(props: Props): JSX.Element {
+function DatasetVisualizer(props: Props): ReactElement {
   const { dataset } = props;
 
-  const supportedVis = getSupportedVis(dataset);
-  const [activeVis, setActiveVis] = useActiveVis(supportedVis);
+  const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
+  const [prevDataset, setPrevDataset] = useState(dataset);
+  const [activeVis, setActiveVis] = useState<Vis>();
 
-  const VisToolbar = activeVis && VIS_TOOLBARS[activeVis];
+  // Update active vis when dataset changes
+  // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
+  if (dataset !== prevDataset) {
+    setPrevDataset(dataset);
+    setActiveVis(
+      activeVis && supportedVis.includes(activeVis)
+        ? activeVis
+        : supportedVis[supportedVis.length - 1]
+    );
+  }
+
+  const VisToolbar = activeVis && VIS_DEFS[activeVis].Toolbar;
 
   return (
     <div className={styles.visualizer}>
@@ -36,14 +42,12 @@ function DatasetVisualizer(props: Props): JSX.Element {
         {VisToolbar && <VisToolbar />}
       </div>
       <div className={styles.displayArea}>
-        {dataset ? (
-          activeVis && (
-            <VisDisplay
-              key={dataset.id}
-              activeVis={activeVis}
-              dataset={dataset}
-            />
-          )
+        {dataset && activeVis ? (
+          <VisDisplay
+            key={dataset.id}
+            activeVis={activeVis}
+            dataset={dataset}
+          />
         ) : (
           <p className={styles.noVis}>Nothing to visualize</p>
         )}
