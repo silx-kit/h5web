@@ -3,17 +3,17 @@ import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
-import { useValues, useData, useDims } from './hooks';
+import { useValues } from './hooks';
 import Mesh from './Mesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { useHeatmapConfig } from './config';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
+import { useDataArray } from '../../dataset-visualizer/VisProvider';
 
 function HeatmapVis(): JSX.Element {
-  const data = useData();
-  const dims = useDims();
-  const [rows, cols] = dims;
+  const dataArray = useDataArray();
+  const [rows, cols] = dataArray.shape;
 
   const [keepAspectRatio, showGrid] = useHeatmapConfig(
     (state) => [state.keepAspectRatio, state.showGrid],
@@ -43,7 +43,7 @@ function HeatmapVis(): JSX.Element {
           formatIndex={([x, y]) => `x=${Math.floor(x)}, y=${Math.floor(y)}`}
           formatValue={([x, y]) => {
             return x < cols && y < rows
-              ? format('.3')(data[Math.floor(y)][Math.floor(x)])
+              ? format('.3')(dataArray.get(Math.floor(y), Math.floor(x)))
               : undefined;
           }}
           guides="both"

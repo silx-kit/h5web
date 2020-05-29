@@ -5,13 +5,14 @@ import styles from './LineVis.module.css';
 import DataCurve from './DataCurve';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
-import { useDataDomain, useData } from './hooks';
+import { useDataDomain } from './hooks';
 import { useLineConfig } from './config';
 import TooltipMesh from '../shared/TooltipMesh';
 import { extendDomain } from '../shared/utils';
+import { useDataArray } from '../../dataset-visualizer/VisProvider';
 
 function LineVis(): JSX.Element {
-  const data = useData();
+  const dataArray = useDataArray();
 
   const [showGrid, hasYLogScale] = useLineConfig(
     (state) => [state.showGrid, state.hasYLogScale],
@@ -27,7 +28,7 @@ function LineVis(): JSX.Element {
     <div className={styles.root}>
       <VisCanvas
         abscissaConfig={{
-          indexDomain: extendDomain([0, data.length - 1], 0.01),
+          indexDomain: extendDomain([0, dataArray.size - 1], 0.01),
           showGrid,
         }}
         ordinateConfig={{
@@ -40,7 +41,7 @@ function LineVis(): JSX.Element {
         <TooltipMesh
           formatIndex={([x]) => `x=${Math.round(x)}`}
           formatValue={([x]) => {
-            const value = data[Math.round(x)];
+            const value = dataArray.get(Math.round(x));
             return value !== undefined ? format('.3f')(value) : undefined;
           }}
           guides="vertical"
