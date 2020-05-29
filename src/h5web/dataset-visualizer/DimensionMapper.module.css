@@ -7,6 +7,12 @@
 
 .buttonGroupWrapper {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dimensionButtonWrapper {
+  display: flex;
   align-items: center;
   justify-content: space-evenly;
   margin: 0.25rem;

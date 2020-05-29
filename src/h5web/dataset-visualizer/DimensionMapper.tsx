@@ -13,7 +13,7 @@ interface Props {
 }
 
 function DimensionMapper(props: Props): JSX.Element {
-  const { activeVis, rawDims, mapperState, onChange } = props;
+  const { rawDims, mapperState, onChange } = props;
 
   function renderSlicingSlider(
     slicingIndex: MappingType,
@@ -54,41 +54,45 @@ function DimensionMapper(props: Props): JSX.Element {
     );
   }
 
-  if (activeVis === Vis.Line && rawDims.length === 2) {
+  function renderDimensionButton(dimension: 'x' | 'y'): JSX.Element {
     return (
-      <div className={styles.mapper}>
-        <div className={styles.buttonGroupWrapper}>
-          <span className={styles.dimensionName}>X</span>
-          <ButtonGroup
-            ariaLabel="Dimension as X"
-            className={styles.buttonGroup}
-            buttonClassName={styles.btn}
-            buttons={Object.keys(rawDims).map(dimKey => {
-              const dimIndex = Number(dimKey);
-              return {
-                label: `D${dimIndex}`,
-                isSelected: mapperState[dimIndex] === 'x',
-                onClick: () => {
-                  const prevX = mapperState.indexOf('x');
-                  if (prevX !== dimIndex) {
-                    const newMapperState = mapperState.slice();
-                    newMapperState[prevX] = 0;
-                    newMapperState[dimIndex] = 'x';
-                    onChange(newMapperState);
-                  }
-                },
-              };
-            })}
-          />
-        </div>
-        <div className={styles.sliderWrapper}>
-          {mapperState.map(renderSlicingSlider)}
-        </div>
+      <div className={styles.dimensionButtonWrapper}>
+        <span className={styles.dimensionName}>{dimension}</span>
+        <ButtonGroup
+          ariaLabel={`Dimension as ${dimension}`}
+          className={styles.buttonGroup}
+          buttonClassName={styles.btn}
+          buttons={Object.keys(rawDims).map(dimKey => {
+            const dimIndex = Number(dimKey);
+            return {
+              label: `D${dimIndex}`,
+              isSelected: mapperState[dimIndex] === dimension,
+              onClick: () => {
+                const prevX = mapperState.indexOf(dimension);
+                if (prevX !== dimIndex) {
+                  const newMapperState = mapperState.slice();
+                  newMapperState[prevX] = 0;
+                  newMapperState[dimIndex] = dimension;
+                  onChange(newMapperState);
+                }
+              },
+            };
+          })}
+        />
       </div>
     );
   }
 
-  return <></>;
+  return (
+    <div className={styles.mapper}>
+      <div className={styles.buttonGroupWrapper}>
+        {renderDimensionButton('x')}
+      </div>
+      <div className={styles.sliderWrapper}>
+        {mapperState.map(renderSlicingSlider)}
+      </div>
+    </div>
+  );
 }
 
 export default DimensionMapper;
