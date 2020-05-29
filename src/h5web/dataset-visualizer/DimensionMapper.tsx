@@ -1,24 +1,64 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactSlider from 'react-slider';
-import { Vis, DimensionMapping } from './models';
-import { useVisProps } from './VisProvider';
+import { isNumber } from 'lodash-es';
+import { Vis, DimensionMapping, MappingType } from './models';
 import ButtonGroup from '../visualizations/shared/ButtonGroup';
 import styles from './DimensionMapper.module.css';
 
 interface Props {
   activeVis: Vis;
+  rawDims: number[];
+  mapperState: DimensionMapping;
   onChange: (d: DimensionMapping) => void;
 }
 
 function DimensionMapper(props: Props): JSX.Element {
-  const { activeVis, onChange } = props;
-  const { rawDims, mapping } = useVisProps();
+  const { activeVis, rawDims, mapperState, onChange } = props;
+
+  function renderSlicingSlider(
+    slicingIndex: MappingType,
+    dimension: number
+  ): JSX.Element | undefined {
+    // Do not show a slider for 'x' or 'y'
+    if (!isNumber(slicingIndex)) {
+      return undefined;
+    }
+
+    return (
+      // eslint-disable-next-line react/no-array-index-key
+      <Fragment key={dimension}>
+        <span className={styles.sliderLabel}>D{dimension}</span>
+        <ReactSlider
+          className={styles.slider}
+          trackClassName={styles.sliderTrack}
+          thumbClassName={styles.sliderThumb}
+          renderThumb={(thumbProps, state) => (
+            <div {...thumbProps}>{state.valueNow}</div>
+          )}
+          defaultValue={slicingIndex}
+          onChange={value => {
+            if (!isNumber(value)) {
+              return;
+            }
+            const newMapperState = mapperState.slice();
+            newMapperState[dimension] = value;
+            onChange(newMapperState);
+          }}
+          min={0}
+          max={rawDims[dimension] - 1}
+          step={1}
+          orientation="vertical"
+          invert
+        />
+      </Fragment>
+    );
+  }
 
   if (activeVis === Vis.Line && rawDims.length === 2) {
     return (
       <div className={styles.mapper}>
         <div className={styles.buttonGroupWrapper}>
-          <span className={styles.buttonGroupLabel}>X</span>
+          <span className={styles.dimensionName}>X</span>
           <ButtonGroup
             ariaLabel="Dimension as X"
             className={styles.buttonGroup}
@@ -26,15 +66,15 @@ function DimensionMapper(props: Props): JSX.Element {
             buttons={Object.keys(rawDims).map(dimKey => {
               const dimIndex = Number(dimKey);
               return {
-                label: dimKey,
-                isSelected: mapping.x === dimIndex,
+                label: `D${dimIndex}`,
+                isSelected: mapperState[dimIndex] === 'x',
                 onClick: () => {
-                  if (mapping.x !== dimIndex) {
-                    const newMapping: DimensionMapping = {
-                      x: dimIndex,
-                      slicingIndices: { [mapping.x]: 0 },
-                    };
-                    onChange(newMapping);
+                  const prevX = mapperState.indexOf('x');
+                  if (prevX !== dimIndex) {
+                    const newMapperState = mapperState.slice();
+                    newMapperState[prevX] = 0;
+                    newMapperState[dimIndex] = 'x';
+                    onChange(newMapperState);
                   }
                 },
               };
@@ -42,47 +82,7 @@ function DimensionMapper(props: Props): JSX.Element {
           />
         </div>
         <div className={styles.sliderWrapper}>
-          {Object.entries(mapping.slicingIndices).map(
-            ([dimNumber, slicingIndex]) => (
-              <>
-                <button
-                  type="button"
-                  className={styles.btn}
-                  aria-pressed="true"
-                >
-                  {dimNumber}
-                </button>
-                <ReactSlider
-                  key={dimNumber}
-                  className={styles.slider}
-                  trackClassName={styles.sliderTrack}
-                  thumbClassName={styles.sliderThumb}
-                  renderThumb={(thumbProps, state) => (
-                    <div {...thumbProps}>{state.valueNow}</div>
-                  )}
-                  defaultValue={slicingIndex}
-                  onChange={values => {
-                    if (values === undefined) {
-                      return;
-                    }
-                    const newMapping: DimensionMapping = {
-                      x: mapping.x,
-                      slicingIndices: {
-                        ...mapping.slicingIndices,
-                        [Number(dimNumber)]: values as number,
-                      },
-                    };
-                    onChange(newMapping);
-                  }}
-                  min={0}
-                  max={rawDims[Number(dimNumber)] - 1}
-                  step={1}
-                  orientation="vertical"
-                  invert
-                />
-              </>
-            )
-          )}
+          {mapperState.map(renderSlicingSlider)}
         </div>
       </div>
     );

@@ -18,18 +18,40 @@ function VisDisplay(props: Props): JSX.Element {
   const { Component: VisComponent } = VIS_DEFS[activeVis];
 
   const datasetDims = isSimpleShape(dataset.shape) ? dataset.shape.dims : [];
-  const [dimensionMapping, setMapping] = useState<DimensionMapping>({
-    x: 0,
-    slicingIndices: range(1, datasetDims.length).reduce((acc, dimIndex) => {
-      return { ...acc, [dimIndex]: 0 };
-    }, {}),
-  });
+  const [mapperState, setMapperState] = useState<DimensionMapping | undefined>(
+    undefined
+  );
+  const [prevVis, setPrevVis] = useState(activeVis);
+
+  // Update mapping when vis changes
+  // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
+  if (activeVis !== prevVis) {
+    setPrevVis(activeVis);
+    setMapperState(
+      activeVis === Vis.Line
+        ? [...range(0, datasetDims.length - 1).fill(0), 'x']
+        : undefined
+    );
+  }
 
   return (
-    <VisProvider mapping={dimensionMapping} dataset={dataset}>
-      <DimensionMapper activeVis={activeVis} onChange={setMapping} />
-      <VisComponent />
-    </VisProvider>
+    <>
+      {mapperState && (
+        <DimensionMapper
+          activeVis={activeVis}
+          rawDims={datasetDims}
+          mapperState={mapperState}
+          onChange={setMapperState}
+        />
+      )}
+      <VisProvider
+        activeVis={activeVis}
+        mapperState={mapperState}
+        dataset={dataset}
+      >
+        <VisComponent />
+      </VisProvider>
+    </>
   );
 }
 

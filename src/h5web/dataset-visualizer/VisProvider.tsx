@@ -5,36 +5,59 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
-import { DimensionMapping } from './models';
+import { transpose } from 'd3-array';
+import { isNumber } from 'lodash-es';
+import { DimensionMapping, Vis } from './models';
 import { HDF5Dataset, HDF5Value } from '../providers/models';
 import { useValue } from '../providers/hooks';
 import { isSimpleShape } from '../providers/utils';
 
 export interface VisProps {
-  mapping: DimensionMapping;
-  rawValues: HDF5Value;
+  values: HDF5Value;
   rawDims: number[];
+  slicingIndices?: number[];
 }
 
 export const VisContext = createContext<VisProps | undefined>(undefined);
 
 type Props = {
-  mapping: DimensionMapping;
+  activeVis: Vis;
+  mapperState?: DimensionMapping;
   dataset: HDF5Dataset;
   children: ReactNode;
 };
 
 function VisProvider(props: Props): ReactElement {
-  const { dataset, mapping, children } = props;
+  const { dataset, mapperState, children } = props;
   const rawValues = useValue(dataset.id);
   const rawDims = isSimpleShape(dataset.shape) ? dataset.shape.dims : [];
 
-  if (rawValues === undefined) {
+  const xDim = mapperState ? mapperState.indexOf('x') : -1;
+
+  const mappedValues = useMemo(() => {
+    if (!rawValues) {
+      return undefined;
+    }
+
+    if (rawDims.length === 2 && xDim === 0) {
+      return transpose(rawValues);
+    }
+
+    return rawValues;
+  }, [rawValues, rawDims.length, xDim]);
+
+  if (mappedValues === undefined) {
     return <></>;
   }
 
   return (
-    <VisContext.Provider value={{ rawValues, rawDims, mapping }}>
+    <VisContext.Provider
+      value={{
+        values: mappedValues,
+        rawDims,
+        slicingIndices: mapperState && mapperState.filter(isNumber),
+      }}
+    >
       {children}
     </VisContext.Provider>
   );
@@ -48,12 +71,6 @@ export function useVisProps(): VisProps {
   }
 
   return props;
-}
-
-export function useFlatValues(): number[] {
-  const { rawValues } = useVisProps();
-
-  return useMemo(() => rawValues.flat(Infinity), [rawValues]);
 }
 
 export default VisProvider;

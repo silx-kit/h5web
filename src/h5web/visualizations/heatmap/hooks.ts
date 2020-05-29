@@ -14,13 +14,9 @@ import { TextureWorker } from './worker';
 import { useVisProps } from '../../dataset-visualizer/VisProvider';
 
 export function useData(): number[][] {
-  const { rawValues, rawDims } = useVisProps();
+  const { values } = useVisProps();
 
-  if (rawDims.length === 2) {
-    return rawValues;
-  }
-
-  throw new Error('Data not supported by HeatmapVis');
+  return values;
 }
 
 export function useDims(): Dims {

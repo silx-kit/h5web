@@ -4,30 +4,16 @@ import { useThree } from 'react-three-fiber';
 import { Domain } from '../shared/models';
 import { findDomain, getAxisScale } from '../shared/utils';
 import { AxisSystemContext } from '../shared/AxisSystemProvider';
-import {
-  useVisProps,
-  useFlatValues,
-} from '../../dataset-visualizer/VisProvider';
+import { useVisProps } from '../../dataset-visualizer/VisProvider';
 
 export function useData(): number[] {
-  const { rawValues, rawDims, mapping } = useVisProps();
-  const values = useFlatValues();
+  const { values, slicingIndices } = useVisProps();
 
-  if (rawDims.length === 1) {
-    return rawValues;
+  if (slicingIndices) {
+    return (values as number[][])[slicingIndices[0]];
   }
 
-  if (rawDims.length === 2) {
-    if (mapping.x === 1) {
-      return rawValues[mapping.slicingIndices[0]];
-    }
-
-    return values.filter(
-      (v, i) => i % rawDims[1] === mapping.slicingIndices[1]
-    );
-  }
-
-  throw new Error('Data not supported by LineVis');
+  return values as number[];
 }
 
 export function useDataDomain(): Domain | undefined {

@@ -6,8 +6,6 @@ export enum Vis {
   Heatmap = 'Heatmap',
 }
 
-export interface DimensionMapping {
-  x: number;
-  y?: number;
-  slicingIndices: Record<number, number>;
-}
+export type MappingType = number | 'x' | 'y';
+
+export type DimensionMapping = MappingType[];
