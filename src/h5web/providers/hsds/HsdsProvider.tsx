@@ -3,18 +3,20 @@ import { HsdsApi } from './api';
 import Provider from '../Provider';
 
 interface Props {
-  domain: string;
+  username: string;
+  password: string;
+  filepath: string;
   children: ReactNode;
 }
 
 /* Provider of metadata and values by HSDS */
 function HsdsProvider(props: Props): JSX.Element {
-  const { domain, children } = props;
+  const { username, password, filepath, children } = props;
   const [api, setApi] = useState<HsdsApi>();
 
   useEffect(() => {
-    setApi(new HsdsApi(domain));
-  }, [domain]);
+    setApi(new HsdsApi(username, password, filepath));
+  }, [filepath, password, username]);
 
   return <Provider api={api}>{children}</Provider>;
 }

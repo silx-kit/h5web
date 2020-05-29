@@ -27,6 +27,7 @@ import { ProviderAPI } from '../context';
 
 export class HsdsApi implements ProviderAPI {
   private readonly client: AxiosInstance;
+  private readonly domain: string;
   private readonly config: AxiosRequestConfig;
 
   private metadata?: HDF5Metadata;
@@ -35,12 +36,13 @@ export class HsdsApi implements ProviderAPI {
   private datatypes: Record<HDF5Id, HDF5Datatype> = {};
   private values: Record<HDF5Id, HDF5Value> = {};
 
-  constructor(private readonly domain: string) {
+  constructor(username: string, password: string, filepath: string) {
+    this.domain = `/home/${username}/${filepath}`;
     this.config = {
       params: { domain: this.domain },
       auth: {
-        username: 'test_user1',
-        password: 'test',
+        username,
+        password,
       },
     };
     // Giving the config to the client should set the headers and params for all client requests but it does not (bug axios 0.19.2) !
