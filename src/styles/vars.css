@@ -1,17 +1,17 @@
 :root {
   --black: #020402;
   --primary: #c0da74;
-  --primary-dark: #9aae5d;
   --primary-light: #d4e09b;
+  --primary-dark: #9aae5d;
   --primary-bg: #f5fbef;
   --primary-light-bg: #fafdf7;
   --primary-dark-bg: #dde2d7;
   --secondary: #8cdfc7;
   --secondary-light: #b7fcf3;
-  --secondary-bg: #d9f4ec;
-  --secondary-light-bg: #ecfaf6;
   --secondary-dark: #1b998b;
   --secondary-darker: #0e5846;
+  --secondary-bg: #d9f4ec;
+  --secondary-light-bg: #ecfaf6;
   --monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
   --sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',

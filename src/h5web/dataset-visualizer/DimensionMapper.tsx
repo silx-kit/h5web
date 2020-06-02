@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import ReactSlider from 'react-slider';
 import { isNumber } from 'lodash-es';
 import { Vis, DimensionMapping, MappingType } from './models';
-import ButtonGroup from '../visualizations/shared/ButtonGroup';
 import styles from './DimensionMapper.module.css';
+import ToggleGroup from '../visualizations/shared/ToggleGroup';
 
 interface Props {
   activeVis: Vis;
@@ -54,40 +54,36 @@ function DimensionMapper(props: Props): JSX.Element {
     );
   }
 
-  function renderDimensionButton(dimension: 'x' | 'y'): JSX.Element {
+  function renderAxisMapper(axis: 'x' | 'y'): JSX.Element {
+    const selectedDim = mapperState.indexOf('x');
     return (
-      <div className={styles.dimensionButtonWrapper}>
-        <span className={styles.dimensionName}>{dimension}</span>
-        <ButtonGroup
-          ariaLabel={`Dimension as ${dimension}`}
-          className={styles.buttonGroup}
-          buttonClassName={styles.btn}
-          buttons={Object.keys(rawDims).map(dimKey => {
-            const dimIndex = Number(dimKey);
-            return {
-              label: `D${dimIndex}`,
-              isSelected: mapperState[dimIndex] === dimension,
-              onClick: () => {
-                const prevX = mapperState.indexOf(dimension);
-                if (prevX !== dimIndex) {
-                  const newMapperState = mapperState.slice();
-                  newMapperState[prevX] = 0;
-                  newMapperState[dimIndex] = dimension;
-                  onChange(newMapperState);
-                }
-              },
-            };
-          })}
-        />
+      <div className={styles.axisMapper}>
+        <span className={styles.axisName}>{axis}</span>
+        <ToggleGroup
+          role="radiogroup"
+          ariaLabel={`Dimension as ${axis} axis`}
+          value={selectedDim.toString()}
+          onChange={val => {
+            const newDim = Number(val);
+            if (selectedDim !== newDim) {
+              const newMapperState = mapperState.slice();
+              newMapperState[selectedDim] = 0; // reset slicing index of previously selected dimension
+              newMapperState[newDim] = axis; // assign axis to newly selected dimension
+              onChange(newMapperState);
+            }
+          }}
+        >
+          {Object.keys(rawDims).map(dimKey => (
+            <ToggleGroup.Btn key={dimKey} label={`D${dimKey}`} value={dimKey} />
+          ))}
+        </ToggleGroup>
       </div>
     );
   }
 
   return (
     <div className={styles.mapper}>
-      <div className={styles.buttonGroupWrapper}>
-        {renderDimensionButton('x')}
-      </div>
+      <div className={styles.axisMapperWrapper}>{renderAxisMapper('x')}</div>
       <div className={styles.sliderWrapper}>
         {mapperState.map(renderSlicingSlider)}
       </div>

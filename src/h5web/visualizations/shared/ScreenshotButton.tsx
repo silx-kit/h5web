@@ -24,7 +24,7 @@ function ScreenshotButton(): ReactElement {
         }
       }}
     >
-      <span className={styles.box}>
+      <span className={styles.btnLike}>
         <MdCameraAlt className={styles.icon} />
       </span>
     </a>

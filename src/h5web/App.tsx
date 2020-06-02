@@ -54,7 +54,7 @@ function App(): JSX.Element {
             isExplorerOpen={isExplorerOpen}
             onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
             isInspecting={isInspecting}
-            onSetInspecting={setInspecting}
+            onChangeInspecting={setInspecting}
             selectedNode={selectedNode}
           />
           {isInspecting ? (

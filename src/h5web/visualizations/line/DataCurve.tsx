@@ -19,8 +19,8 @@ function DataCurve(): JSX.Element {
   }, [points]);
 
   const curveType = useLineConfig(state => state.curveType);
-  const showLine = curveType !== CurveType.OnlyGlyphs;
-  const showGlyphs = curveType !== CurveType.OnlyLine;
+  const showLine = curveType !== CurveType.GlyphsOnly;
+  const showGlyphs = curveType !== CurveType.LineOnly;
 
   return (
     <Suspense fallback={<></>}>

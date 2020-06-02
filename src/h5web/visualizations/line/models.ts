@@ -3,8 +3,8 @@ import crossURL from './sprites/cross.png';
 import squareURL from './sprites/square.png';
 
 export enum CurveType {
-  OnlyLine = 'OnlyLine',
-  OnlyGlyphs = 'OnlyGlyphs',
+  LineOnly = 'OnlyLine',
+  GlyphsOnly = 'OnlyGlyphs',
   LineAndGlyphs = 'LineAndGlyphs',
 }
 
