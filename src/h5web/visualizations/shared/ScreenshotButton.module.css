@@ -5,7 +5,7 @@
   color: inherit;
 }
 
-.box {
+.btnLike {
   display: flex;
   align-items: center;
   padding: 0.25rem 0.5rem;
@@ -18,6 +18,6 @@
   font-size: 1.5em;
 }
 
-.link:hover > .box {
+.link:hover > .btnLike {
   background-color: var(--secondary-light);
 }

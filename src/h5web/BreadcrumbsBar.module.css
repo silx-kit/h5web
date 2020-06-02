@@ -3,7 +3,7 @@
   justify-content: space-between;
   font-size: 0.875rem;
   background-color: var(--secondary-bg);
-  padding: calc(0.5rem - 1px) 1rem 0.5rem;
+  padding: calc(0.5rem - 1px) 0.75rem 0.5rem;
 }
 
 .breadCrumbs {

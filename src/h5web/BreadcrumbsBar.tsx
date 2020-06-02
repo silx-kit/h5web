@@ -3,12 +3,14 @@ import { FiSidebar, FiChevronRight } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
 import { TreeNode } from './explorer/models';
 import { HDF5Link, HDF5HardLink } from './providers/models';
+import ToggleGroup from './visualizations/shared/ToggleGroup';
+import ToggleBtn from './visualizations/shared/ToggleBtn';
 
 interface Props {
   isExplorerOpen: boolean;
   onToggleExplorer: () => void;
   isInspecting: boolean;
-  onSetInspecting: (b: boolean) => void;
+  onChangeInspecting: (b: boolean) => void;
   selectedNode?: TreeNode<HDF5Link>;
 }
 
@@ -17,7 +19,7 @@ function BreadcrumbsBar(props: Props): JSX.Element {
     isExplorerOpen,
     onToggleExplorer,
     isInspecting,
-    onSetInspecting,
+    onChangeInspecting,
     selectedNode,
   } = props;
 
@@ -26,15 +28,13 @@ function BreadcrumbsBar(props: Props): JSX.Element {
 
   return (
     <div className={styles.bar}>
-      <button
-        className={styles.sidebarBtn}
-        type="button"
-        aria-label="Toggle explorer sidebar"
-        aria-pressed={isExplorerOpen}
-        onClick={onToggleExplorer}
-      >
-        <FiSidebar />
-      </button>
+      <ToggleBtn
+        label="Toggle explorer sidebar"
+        icon={FiSidebar}
+        hideLabel
+        value={isExplorerOpen}
+        onChange={onToggleExplorer}
+      />
       {selectedNode && (
         <h1 className={styles.breadCrumbs}>
           {selectedNode?.parents.slice(firstParentIndex).map(member => (
@@ -48,26 +48,17 @@ function BreadcrumbsBar(props: Props): JSX.Element {
           </span>
         </h1>
       )}
-      <div role="tablist" className={styles.modeToggler}>
-        <button
-          type="button"
-          role="tab"
-          className={styles.btn}
-          aria-selected={!isInspecting}
-          onClick={() => onSetInspecting(false)}
-        >
-          Display
-        </button>
-        <button
-          type="button"
-          role="tab"
-          className={styles.btn}
-          aria-selected={isInspecting}
-          onClick={() => onSetInspecting(true)}
-        >
-          Inspect
-        </button>
-      </div>
+      <ToggleGroup
+        role="tablist"
+        ariaLabel="Viewer mode"
+        value={String(isInspecting)}
+        onChange={val => {
+          onChangeInspecting(val === 'true' || false);
+        }}
+      >
+        <ToggleGroup.Btn label="Display" value="false" />
+        <ToggleGroup.Btn label="Inspect" value="true" />
+      </ToggleGroup>
     </div>
   );
 }

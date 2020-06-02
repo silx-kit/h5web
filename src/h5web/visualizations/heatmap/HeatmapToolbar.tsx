@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { MdAspectRatio, MdGridOn, MdLinearScale } from 'react-icons/md';
 import ColorMapSelector from './ColorMapSelector';
-import Toggler from '../shared/Toggler';
+import ToggleBtn from '../shared/ToggleBtn';
 import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
 import ScreenshotButton from '../shared/ScreenshotButton';
@@ -24,24 +24,26 @@ function HeatmapToolbar(): ReactElement {
       <Separator />
       <ColorMapSelector />
       <Separator />
-      <Toggler
+
+      <ToggleBtn
         label="Symlog"
         icon={MdLinearScale}
         value={hasLogScale}
         onChange={toggleLogScale}
       />
-      <Toggler
+      <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
         value={keepAspectRatio}
         onChange={toggleAspectRatio}
       />
-      <Toggler
+      <ToggleBtn
         label="Grid"
         icon={MdGridOn}
         value={showGrid}
         onChange={toggleGrid}
       />
+
       <Separator />
       <ScreenshotButton />
     </Toolbar>

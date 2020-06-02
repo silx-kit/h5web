@@ -18,7 +18,7 @@ const STORAGE_CONFIG: StorageConfig = {
 export const [useLineConfig] = createPersistableState<LineConfig>(
   STORAGE_CONFIG,
   set => ({
-    curveType: CurveType.OnlyLine,
+    curveType: CurveType.LineOnly,
     setCurveType: (type: CurveType) => set({ curveType: type }),
     showGrid: true,
     toggleGrid: () => set(state => ({ showGrid: !state.showGrid })),

@@ -1,11 +1,11 @@
 import React from 'react';
 import { MdGridOn, MdLinearScale } from 'react-icons/md';
-import Toggler from '../shared/Toggler';
+import ToggleBtn from '../shared/ToggleBtn';
 import { useLineConfig } from './config';
 import { CurveType } from './models';
-import styles from './LineToolbar.module.css';
-import ButtonGroup from '../shared/ButtonGroup';
+import ToggleGroup from '../shared/ToggleGroup';
 import Toolbar from '../shared/Toolbar';
+import Separator from '../shared/Separator';
 
 function LineToolbar(): JSX.Element {
   const {
@@ -19,35 +19,26 @@ function LineToolbar(): JSX.Element {
 
   return (
     <Toolbar>
-      <ButtonGroup
-        className={styles.curveTypeButtonGroup}
-        buttonClassName={styles.btn}
+      <ToggleGroup
+        role="radiogroup"
         ariaLabel="Curve type"
-        buttons={[
-          {
-            label: 'Line',
-            isSelected: curveType === CurveType.OnlyLine,
-            onClick: () => setCurveType(CurveType.OnlyLine),
-          },
-          {
-            label: 'Points',
-            isSelected: curveType === CurveType.OnlyGlyphs,
-            onClick: () => setCurveType(CurveType.OnlyGlyphs),
-          },
-          {
-            label: 'Line and points',
-            isSelected: curveType === CurveType.LineAndGlyphs,
-            onClick: () => setCurveType(CurveType.LineAndGlyphs),
-          },
-        ]}
-      />
-      <Toggler
+        value={curveType}
+        onChange={setCurveType}
+      >
+        <ToggleGroup.Btn label="Line" value={CurveType.LineOnly} />
+        <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />
+        <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
+      </ToggleGroup>
+
+      <Separator />
+
+      <ToggleBtn
         label="Symlog"
         icon={MdLinearScale}
         value={hasYLogScale}
         onChange={toggleYLogScale}
       />
-      <Toggler
+      <ToggleBtn
         label="Grid"
         icon={MdGridOn}
         value={showGrid}
