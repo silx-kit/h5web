@@ -16,7 +16,9 @@ function DatasetVisualizer(props: Props): ReactElement {
 
   const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
   const [prevDataset, setPrevDataset] = useState(dataset);
-  const [activeVis, setActiveVis] = useState<Vis>();
+  const [activeVis, setActiveVis] = useState<Vis>(
+    supportedVis[supportedVis.length - 1]
+  );
 
   // Update active vis when dataset changes
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
