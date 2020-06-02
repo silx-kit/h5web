@@ -15,13 +15,10 @@ interface Props {
 
 function VisDisplay(props: Props): JSX.Element {
   const { activeVis, dataset } = props;
-  const { Component: VisComponent } = VIS_DEFS[activeVis];
-
   const datasetDims = isSimpleShape(dataset.shape) ? dataset.shape.dims : [];
-  const [mapperState, setMapperState] = useState<DimensionMapping | undefined>(
-    undefined
-  );
-  const [prevVis, setPrevVis] = useState(activeVis);
+
+  const [prevVis, setPrevVis] = useState<Vis>();
+  const [mapperState, setMapperState] = useState<DimensionMapping>();
 
   // Update mapping when vis changes
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
@@ -33,6 +30,8 @@ function VisDisplay(props: Props): JSX.Element {
         : undefined
     );
   }
+
+  const VisComponent = VIS_DEFS[activeVis].Component;
 
   return (
     <>

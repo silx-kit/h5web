@@ -9,7 +9,7 @@ import { useVisProps } from '../../dataset-visualizer/VisProvider';
 export function useData(): number[] {
   const { values, slicingIndices } = useVisProps();
 
-  if (slicingIndices) {
+  if (slicingIndices && slicingIndices.length > 0) {
     return (values as number[][])[slicingIndices[0]];
   }
 
