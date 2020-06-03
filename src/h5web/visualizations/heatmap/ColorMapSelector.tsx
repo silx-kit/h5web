@@ -1,136 +1,82 @@
-import React, { CSSProperties } from 'react';
-import Select, {
-  components,
-  OptionProps,
-  IndicatorProps,
-  SingleValueProps,
-} from 'react-select';
-import { FiChevronDown } from 'react-icons/fi';
-import shallow from 'zustand/shallow';
-import { generateCSSLinearGradient, convertToOptions } from './utils';
-import {
-  INTERPOLATORS,
-  MOST_USED,
-  SINGLE_HUE,
-  MULTI_HUE,
-  CYCLICAL,
-  DIVERGING,
-} from './interpolators';
-import { useHeatmapConfig } from './config';
-import styles from './HeatmapToolbar.module.css';
-import { ColorMapOption } from './models';
-import { customThemeForSelect } from '../shared/utils';
+import React, { ReactElement } from 'react';
+import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
 
-const colorMapOptions = [
-  {
-    label: 'Common',
-    options: convertToOptions(MOST_USED),
-  },
-  {
-    label: 'Single hue',
-    options: convertToOptions(SINGLE_HUE),
-  },
-  {
-    label: 'Multi hue',
-    options: convertToOptions(MULTI_HUE),
-  },
-  {
-    label: 'Cyclical',
-    options: convertToOptions(CYCLICAL),
-  },
-  {
-    label: 'Diverging',
-    options: convertToOptions(DIVERGING),
-  },
-];
+import { MdArrowDropDown } from 'react-icons/md';
+import { useWindowSize } from 'react-use';
+import styles from './ColorMapSelector.module.css';
+import { INTERPOLATOR_GROUPS, INTERPOLATORS } from './interpolators';
+import { ColorMap, D3Interpolator } from './models';
+import { generateCSSLinearGradient } from './utils';
 
-function ColorMapLabel(props: ColorMapOption): JSX.Element {
-  const { label, value } = props;
+const MENU_IDEAL_HEIGHT = 320; // 20rem
+const MENU_TOP = 87; // HACK: height of breadcrumbs bar + height of toolbar
+const MENU_BOTTOM = 16; // offset from bottom of viewport
 
-  const interpolator = INTERPOLATORS[value];
+interface GradientProps {
+  interpolator: D3Interpolator;
+}
+
+function Gradient(props: GradientProps): JSX.Element {
+  const { interpolator } = props;
   const backgroundImage = generateCSSLinearGradient(interpolator, 'right');
-
-  return (
-    <>
-      {label}
-      <div
-        style={{
-          backgroundImage,
-          width: '2rem',
-          marginLeft: '0.5rem',
-        }}
-      />
-    </>
-  );
+  return <div className={styles.gradient} style={{ backgroundImage }} />;
 }
 
-function Option(props: OptionProps<ColorMapOption>): JSX.Element {
-  const { data } = props;
-  return (
-    <components.Option {...props}>
-      <ColorMapLabel {...data} />
-    </components.Option>
-  );
+interface Props {
+  value: ColorMap;
+  onChange(colorMap: ColorMap): void;
 }
 
-function SingleValue(props: SingleValueProps<ColorMapOption>): JSX.Element {
-  const { data } = props;
-  return (
-    <components.SingleValue {...props}>
-      <ColorMapLabel {...data} />
-    </components.SingleValue>
-  );
-}
+function ColorMapSelector(props: Props): ReactElement {
+  const { value, onChange } = props;
 
-function DropdownIndicator(props: IndicatorProps<ColorMapOption>): JSX.Element {
-  return (
-    <components.DropdownIndicator {...props}>
-      <FiChevronDown />
-    </components.DropdownIndicator>
-  );
-}
-
-function ColorMapSelector(): JSX.Element {
-  const [colorMap, setColorMap] = useHeatmapConfig(state => [
-    state.colorMap,
-    state.setColorMap,
-    shallow,
-  ]);
-
-  const customStyles = {
-    option: (provided: CSSProperties) => ({
-      ...provided,
-      display: 'flex',
-      justifyContent: 'space-between',
-    }),
-    singleValue: (provided: CSSProperties) => ({
-      ...provided,
-      display: 'flex',
-      justifyContent: 'space-between',
-      width: '100%',
-    }),
-    control: (provided: CSSProperties) => ({
-      ...provided,
-      backgroundColor: 'transparent',
-      border: 'none',
-    }),
-    indicatorSeparator: () => ({}),
-  };
+  const { height: winHeight } = useWindowSize();
+  const menuMaxHeight = winHeight - MENU_TOP - MENU_BOTTOM;
 
   return (
-    <div className={styles.selectorWrapper}>
-      <Select
-        className={styles.colorMapSelector}
-        defaultValue={{ label: colorMap, value: colorMap }}
-        options={colorMapOptions}
-        onChange={selection => {
-          setColorMap((selection as ColorMapOption).value);
-        }}
-        components={{ Option, SingleValue, DropdownIndicator }}
-        styles={customStyles}
-        theme={customThemeForSelect}
-      />
-    </div>
+    <Wrapper className={styles.wrapper} onSelection={onChange}>
+      <Button className={styles.btn} tag="button">
+        <div className={styles.btnLike}>
+          <span className={styles.selectedColorMap}>
+            {value}
+            <Gradient interpolator={INTERPOLATORS[value]} />
+          </span>
+          <MdArrowDropDown className={styles.icon} />
+        </div>
+      </Button>
+
+      <Menu
+        className={styles.menu}
+        style={{ maxHeight: Math.min(MENU_IDEAL_HEIGHT, menuMaxHeight) }}
+      >
+        <ul className={styles.list}>
+          {Object.entries(INTERPOLATOR_GROUPS).map(
+            ([groupLabel, interpolators]) => (
+              <li key={groupLabel}>
+                <span className={styles.groupLabel}>{groupLabel}</span>
+                <ul className={styles.list}>
+                  {Object.entries(interpolators).map(
+                    ([colorMap, interpolator]) => (
+                      <li key={colorMap}>
+                        <MenuItem
+                          className={styles.option}
+                          text={colorMap}
+                          value={colorMap}
+                          data-selected={colorMap === value || undefined}
+                        >
+                          {colorMap}
+                          <Gradient interpolator={interpolator} />
+                        </MenuItem>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </li>
+            )
+          )}
+        </ul>
+      </Menu>
+    </Wrapper>
   );
 }
 
