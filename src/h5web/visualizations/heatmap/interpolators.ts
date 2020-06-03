@@ -38,7 +38,7 @@ import {
   interpolateTurbo,
 } from 'd3-scale-chromatic';
 
-export const MOST_USED = {
+const MOST_USED = {
   Viridis: interpolateViridis,
   Inferno: interpolateInferno,
   Greys: interpolateGreys,
@@ -46,7 +46,7 @@ export const MOST_USED = {
   Rainbow: interpolateRainbow,
 };
 
-export const SINGLE_HUE = {
+const SINGLE_HUE = {
   Blues: interpolateBlues,
   Greens: interpolateGreens,
   Greys: interpolateGreys,
@@ -55,7 +55,7 @@ export const SINGLE_HUE = {
   Reds: interpolateReds,
 };
 
-export const MULTI_HUE = {
+const MULTI_HUE = {
   Turbo: interpolateTurbo,
   Viridis: interpolateViridis,
   Inferno: interpolateInferno,
@@ -78,12 +78,12 @@ export const MULTI_HUE = {
   YlOrRd: interpolateYlOrRd,
 };
 
-export const CYCLICAL = {
+const CYCLICAL = {
   Rainbow: interpolateRainbow,
   Sinebow: interpolateSinebow,
 };
 
-export const DIVERGING = {
+const DIVERGING = {
   BrBG: interpolateBrBG,
   PRGn: interpolatePRGn,
   PiYG: interpolatePiYG,
@@ -100,4 +100,12 @@ export const INTERPOLATORS = {
   ...MULTI_HUE,
   ...CYCLICAL,
   ...DIVERGING,
+};
+
+export const INTERPOLATOR_GROUPS = {
+  Common: MOST_USED,
+  'Single hue': SINGLE_HUE,
+  'Multi hue': MULTI_HUE,
+  Cyclical: CYCLICAL,
+  Diverging: DIVERGING,
 };

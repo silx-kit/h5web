@@ -1,11 +1,6 @@
 import { range } from 'lodash-es';
 import { scaleSymlog, scaleLinear } from 'd3-scale';
-import {
-  D3Interpolator,
-  ColorMapOption,
-  ColorMap,
-  DataScaleFn,
-} from './models';
+import { D3Interpolator, DataScaleFn } from './models';
 
 export function generateCSSLinearGradient(
   interpolator: D3Interpolator,
@@ -20,12 +15,4 @@ export function generateCSSLinearGradient(
 
 export function getDataScaleFn(isLog: boolean): DataScaleFn {
   return isLog ? scaleSymlog : scaleLinear;
-}
-
-export function convertToOptions(
-  interpolators: Partial<Record<ColorMap, D3Interpolator>>
-): ColorMapOption[] {
-  return Object.keys(interpolators).map(
-    colormap => ({ label: colormap, value: colormap } as ColorMapOption)
-  );
 }

@@ -1,6 +1,5 @@
 import { scaleLinear } from 'd3-scale';
 import { extent, tickStep } from 'd3-array';
-import { Theme } from 'react-select';
 import {
   Size,
   Domain,
@@ -112,18 +111,4 @@ export function getTicksProp(
   return info.isIndexAxis
     ? { tickValues: getIntegerTicks(visibleDomain, numTicks) }
     : { numTicks };
-}
-
-export function customThemeForSelect(theme: Theme): Theme {
-  return {
-    ...theme,
-    borderRadius: 0,
-    colors: {
-      ...theme.colors,
-      primary: 'var(--secondary-dark)',
-      primary75: 'var(--secondary)',
-      primary50: 'var(--secondary-light)',
-      primary25: 'var(--secondary-light-bg)',
-    },
-  };
 }

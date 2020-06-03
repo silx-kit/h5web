@@ -1,15 +1,17 @@
 import React, { ReactElement } from 'react';
 import { MdAspectRatio, MdGridOn, MdLinearScale } from 'react-icons/md';
-import ColorMapSelector from './ColorMapSelector';
 import ToggleBtn from '../shared/ToggleBtn';
 import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
 import ScreenshotButton from '../shared/ScreenshotButton';
 import Separator from '../shared/Separator';
 import Toolbar from '../shared/Toolbar';
+import ColorMapSelector from './ColorMapSelector';
 
 function HeatmapToolbar(): ReactElement {
   const {
+    colorMap,
+    setColorMap,
     hasLogScale,
     toggleLogScale,
     keepAspectRatio,
@@ -22,7 +24,8 @@ function HeatmapToolbar(): ReactElement {
     <Toolbar>
       <DomainSlider />
       <Separator />
-      <ColorMapSelector />
+
+      <ColorMapSelector value={colorMap} onChange={setColorMap} />
       <Separator />
 
       <ToggleBtn

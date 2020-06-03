@@ -1,0 +1,116 @@
+.wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+}
+
+.btn {
+  composes: btn-clean from global;
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  padding: 0 0.25rem;
+}
+
+.btnLike {
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  height: 1.875rem;
+  padding: 0 0.375rem 0 0.625rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+  white-space: nowrap;
+}
+
+.icon {
+  align-self: center;
+  margin-top: 1px;
+  margin-left: 1px;
+  color: #555;
+  font-size: 1.25em;
+}
+
+.btn:hover > .btnLike {
+  background-color: white;
+  box-shadow: -1px -1px 2px 0 inset var(--secondary);
+}
+
+.btn[aria-expanded='true'] > .btnLike {
+  background-color: white;
+  box-shadow: 1px 1px 2px 0 inset var(--secondary);
+}
+
+.btn[aria-expanded='true']:hover > .btnLike {
+  box-shadow: 1px 1px 2px 0 inset var(--secondary-dark);
+}
+
+.btn[aria-expanded='true'] .icon {
+  transform: rotate(180deg);
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  padding-top: 0.25rem;
+  background-color: white;
+  overflow: hidden scroll;
+  scrollbar-width: thin;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 4px 11px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+  padding-left: 0;
+  margin-bottom: 0.25rem;
+  list-style-type: none;
+}
+
+.groupLabel {
+  display: block;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  padding-left: 0.75rem;
+  color: #777;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.colorMap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectedColorMap {
+  composes: colorMap;
+  flex: 1 1 0%;
+}
+
+.option {
+  composes: colorMap;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: var(--secondary-light-bg);
+}
+
+.option[data-selected] {
+  background-color: var(--secondary-light);
+}
+
+.gradient {
+  position: relative;
+  top: 1px;
+  width: 2rem;
+  height: 1.25em;
+  margin-left: 0.625rem;
+}
