@@ -16,7 +16,7 @@
   overflow: visible !important; /* show child axis grid, which is bigger than canvas */
 }
 
-/* R3F's <Dom /> element */
+/* R3F's <HTML /> element */
 .canvasWrapper > div {
   transform: none !important;
   /* - Prevent panning/zooming from axis when zoomed in.
