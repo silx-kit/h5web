@@ -1,5 +1,5 @@
-import { ColorMap } from './models';
-import { Domain } from '../shared/models';
+import type { ColorMap } from './models';
+import type { Domain } from '../shared/models';
 import { StorageConfig, createPersistableState } from '../../storage-utils';
 import { findDomain } from '../shared/utils';
 

@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { mapValues } from 'lodash-es';
-import { ProviderAPI } from '../context';
+import type { ProviderAPI } from '../context';
 import { HDF5Id, HDF5Value, HDF5Metadata, HDF5Collection } from '../models';
-import { SilxValuesResponse, SilxMetadataResponse } from './models';
+import type { SilxValuesResponse, SilxMetadataResponse } from './models';
 
 export class SilxApi implements ProviderAPI {
   private readonly client: AxiosInstance;

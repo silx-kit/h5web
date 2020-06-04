@@ -6,7 +6,7 @@ import { round, debounce } from 'lodash-es';
 import { FiRotateCcw } from 'react-icons/fi';
 import styles from './DomainSlider.module.css';
 import { useHeatmapConfig } from './config';
-import { Domain } from '../shared/models';
+import type { Domain } from '../shared/models';
 import { extendDomain } from '../shared/utils';
 
 const EXTEND_FACTOR = 0.2;

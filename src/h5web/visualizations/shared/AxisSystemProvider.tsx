@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode, createContext } from 'react';
 import { scaleLinear, scaleSymlog } from 'd3-scale';
-import { AxisConfig, AxisInfo } from './models';
+import type { AxisConfig, AxisInfo } from './models';
 import { isIndexAxisConfig } from './utils';
 
 export interface AxisConfigs {

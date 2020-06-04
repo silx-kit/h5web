@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useEffect } from 'react';
-import { Vector3 } from 'three';
+import type { Vector3 } from 'three';
 import { PointerEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
 

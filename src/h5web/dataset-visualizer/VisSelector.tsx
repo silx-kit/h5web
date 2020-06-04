@@ -1,5 +1,5 @@
 import React from 'react';
-import { Vis } from './models';
+import type { Vis } from './models';
 import styles from './VisSelector.module.css';
 import { VIS_DEFS } from '../visualizations';
 

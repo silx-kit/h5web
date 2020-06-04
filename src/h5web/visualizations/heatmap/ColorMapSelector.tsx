@@ -5,7 +5,7 @@ import { MdArrowDropDown } from 'react-icons/md';
 import { useWindowSize } from 'react-use';
 import styles from './ColorMapSelector.module.css';
 import { INTERPOLATOR_GROUPS, INTERPOLATORS } from './interpolators';
-import { ColorMap, D3Interpolator } from './models';
+import type { ColorMap, D3Interpolator } from './models';
 import { generateCSSLinearGradient } from './utils';
 
 const MENU_IDEAL_HEIGHT = 320; // 20rem

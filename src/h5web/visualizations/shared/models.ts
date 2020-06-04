@@ -1,4 +1,9 @@
-import { ScaleLinear, ScaleSymLog, scaleSymlog, scaleLinear } from 'd3-scale';
+import type {
+  ScaleLinear,
+  ScaleSymLog,
+  scaleSymlog,
+  scaleLinear,
+} from 'd3-scale';
 
 export type Size = { width: number; height: number };
 

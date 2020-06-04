@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { FiSidebar, FiChevronRight } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
-import { TreeNode } from './explorer/models';
-import { HDF5Link, HDF5HardLink } from './providers/models';
+import type { TreeNode } from './explorer/models';
+import type { HDF5Link, HDF5HardLink } from './providers/models';
 import ToggleGroup from './visualizations/shared/ToggleGroup';
 import ToggleBtn from './visualizations/shared/ToggleBtn';
 

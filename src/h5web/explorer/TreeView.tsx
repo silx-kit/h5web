@@ -1,5 +1,5 @@
 import React from 'react';
-import { TreeNode, ExpandedNodes } from './models';
+import type { TreeNode, ExpandedNodes } from './models';
 
 import styles from './Explorer.module.css';
 

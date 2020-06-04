@@ -1,4 +1,4 @@
-import {
+import type {
   HDF5Id,
   HDF5Shape,
   HDF5Type,

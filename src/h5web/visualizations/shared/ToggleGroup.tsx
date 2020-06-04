@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, ReactElement } from 'react';
-import { IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
 import styles from './ToggleGroup.module.css';
 
 interface ToggleGroupProps {

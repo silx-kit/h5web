@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import ReactSlider from 'react-slider';
 import { isNumber } from 'lodash-es';
-import { Vis, DimensionMapping, MappingType } from './models';
+import type { Vis, DimensionMapping, MappingType } from './models';
 import styles from './DimensionMapper.module.css';
 import ToggleGroup from '../visualizations/shared/ToggleGroup';
 

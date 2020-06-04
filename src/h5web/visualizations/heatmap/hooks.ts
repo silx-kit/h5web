@@ -8,9 +8,9 @@ import shallow from 'zustand/shallow';
 import Worker from 'worker-loader!./worker';
 
 import { useHeatmapConfig } from './config';
-import { D3Interpolator, Dims } from './models';
+import type { D3Interpolator, Dims } from './models';
 import { INTERPOLATORS } from './interpolators';
-import { TextureWorker } from './worker';
+import type { TextureWorker } from './worker';
 import { useVisProps } from '../../dataset-visualizer/VisProvider';
 
 export function useData(): number[][] {

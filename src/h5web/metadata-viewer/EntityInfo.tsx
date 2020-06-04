@@ -1,5 +1,5 @@
 import React from 'react';
-import { HDF5Entity } from '../providers/models';
+import type { HDF5Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import { isBaseType, isSimpleShape } from '../providers/utils';
 import { renderShapeDims } from './utils';

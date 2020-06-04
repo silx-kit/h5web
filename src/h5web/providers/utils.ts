@@ -17,7 +17,7 @@ import {
   HDF5ScalarShape,
   HDF5NumericType,
 } from './models';
-import { TreeNode } from '../explorer/models';
+import type { TreeNode } from '../explorer/models';
 
 export function isHardLink(link: HDF5Link): link is HDF5HardLink {
   return link.class === HDF5LinkClass.Hard;

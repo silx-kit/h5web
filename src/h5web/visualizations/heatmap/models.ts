@@ -1,5 +1,5 @@
-import { scaleSymlog, scaleLinear } from 'd3-scale';
-import { INTERPOLATORS } from './interpolators';
+import type { scaleSymlog, scaleLinear } from 'd3-scale';
+import type { INTERPOLATORS } from './interpolators';
 
 export type Dims = [number, number];
 

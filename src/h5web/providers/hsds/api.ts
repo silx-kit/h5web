@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import {
+import type {
   HsdsDatasetResponse,
   HsdsDatatypeResponse,
   HsdsGroupResponse,
@@ -23,7 +23,7 @@ import {
   HDF5Link,
 } from '../models';
 import { isReachable } from '../utils';
-import { ProviderAPI } from '../context';
+import type { ProviderAPI } from '../context';
 
 export class HsdsApi implements ProviderAPI {
   private readonly client: AxiosInstance;

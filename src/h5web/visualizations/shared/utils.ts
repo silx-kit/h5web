@@ -1,6 +1,6 @@
 import { scaleLinear } from 'd3-scale';
 import { extent, tickStep } from 'd3-array';
-import {
+import type {
   Size,
   Domain,
   AxisConfig,

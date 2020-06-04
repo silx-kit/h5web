@@ -1,6 +1,6 @@
 import { range } from 'lodash-es';
 import { scaleSymlog, scaleLinear } from 'd3-scale';
-import { D3Interpolator, DataScaleFn } from './models';
+import type { D3Interpolator, DataScaleFn } from './models';
 
 export function generateCSSLinearGradient(
   interpolator: D3Interpolator,

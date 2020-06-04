@@ -1,9 +1,9 @@
 import { expose, transfer } from 'comlink';
 import { rgb } from 'd3-color';
 import { scaleSequential } from 'd3-scale';
-import { ColorMap } from './models';
+import type { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
-import { Domain } from '../shared/models';
+import type { Domain } from '../shared/models';
 import { getDataScaleFn } from './utils';
 
 function computeTextureData(

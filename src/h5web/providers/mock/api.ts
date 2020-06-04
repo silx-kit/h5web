@@ -1,5 +1,5 @@
-import { ProviderAPI } from '../context';
-import { HDF5Id, HDF5Value, HDF5Metadata } from '../models';
+import type { ProviderAPI } from '../context';
+import type { HDF5Id, HDF5Value, HDF5Metadata } from '../models';
 
 /**
  * File mocked: `bsa_002_000-integrate-sub.h5`

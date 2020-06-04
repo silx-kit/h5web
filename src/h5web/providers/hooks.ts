@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
-import { HDF5Link, HDF5Entity, HDF5Id, HDF5Value } from './models';
-import { TreeNode } from '../explorer/models';
+import type { HDF5Link, HDF5Entity, HDF5Id, HDF5Value } from './models';
+import type { TreeNode } from '../explorer/models';
 import { ProviderContext } from './context';
 import { buildTree, isReachable } from './utils';
 

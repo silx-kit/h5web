@@ -1,6 +1,6 @@
-import { ElementType } from 'react';
+import type { ElementType } from 'react';
 import { FiCode, FiGrid, FiActivity, FiMap, FiCpu } from 'react-icons/fi';
-import { IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
 import RawVis from './RawVis';
 import MatrixVis from './matrix/MatrixVis';
 import ScalarVis from './ScalarVis';
@@ -9,7 +9,7 @@ import HeatmapVis from './heatmap/HeatmapVis';
 import { Vis } from '../dataset-visualizer/models';
 import LineToolbar from './line/LineToolbar';
 import HeatmapToolbar from './heatmap/HeatmapToolbar';
-import { HDF5Dataset } from '../providers/models';
+import type { HDF5Dataset } from '../providers/models';
 import {
   isScalarShape,
   isBaseType,
