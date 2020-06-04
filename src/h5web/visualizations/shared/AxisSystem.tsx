@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { useThree, useFrame, Dom } from 'react-three-fiber';
+import { useThree, useFrame } from 'react-three-fiber';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
 import { TickRendererProps } from '@vx/axis/lib/types';
 import { GridColumns, GridRows } from '@vx/grid';
+import { HTML } from 'drei';
 import styles from './AxisSystem.module.css';
 import { AxisOffsets, Domain } from './models';
 import { getTicksProp, getAxisScale } from './utils';
@@ -68,7 +69,7 @@ function AxisSystem(props: Props): JSX.Element {
   const yTicksProp = getTicksProp(ordinateInfo, visibleDomains[1], height);
 
   return (
-    <Dom
+    <HTML
       className={styles.axisSystem}
       style={{
         // Take over space reserved for axis by VisCanvas
@@ -121,7 +122,7 @@ function AxisSystem(props: Props): JSX.Element {
           </svg>
         </div>
       </>
-    </Dom>
+    </HTML>
   );
 }
 

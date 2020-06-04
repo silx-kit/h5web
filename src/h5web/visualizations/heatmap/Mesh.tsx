@@ -1,6 +1,7 @@
 import React, { useMemo, ReactElement } from 'react';
-import { useThree, Dom } from 'react-three-fiber';
+import { useThree } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
+import { HTML } from 'drei';
 import { useTextureData, useDims } from './hooks';
 import styles from './HeatmapVis.module.css';
 
@@ -27,13 +28,13 @@ function Mesh(): ReactElement {
           <planeBufferGeometry attach="geometry" args={[width, height]} />
         </mesh>
       )}
-      <Dom>
+      <HTML>
         <div
           className={styles.textureLoader}
           style={{ width, height }}
           data-visible={loading || undefined}
         />
-      </Dom>
+      </HTML>
     </>
   );
 }
