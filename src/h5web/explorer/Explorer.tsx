@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FiFileText } from 'react-icons/fi';
-import { HDF5Link } from '../providers/models';
-import { TreeNode, ExpandedNodes } from './models';
+import type { HDF5Link } from '../providers/models';
+import type { TreeNode, ExpandedNodes } from './models';
 import TreeView from './TreeView';
 import styles from './Explorer.module.css';
 import Icon from './Icon';

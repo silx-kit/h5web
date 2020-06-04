@@ -2,11 +2,11 @@ import React, { useState, useContext } from 'react';
 import { useThree, useFrame } from 'react-three-fiber';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { format } from 'd3-format';
-import { TickRendererProps } from '@vx/axis/lib/types';
+import type { TickRendererProps } from '@vx/axis/lib/types';
 import { GridColumns, GridRows } from '@vx/grid';
 import { HTML } from 'drei';
 import styles from './AxisSystem.module.css';
-import { AxisOffsets, Domain } from './models';
+import type { AxisOffsets, Domain } from './models';
 import { getTicksProp, getAxisScale } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
 

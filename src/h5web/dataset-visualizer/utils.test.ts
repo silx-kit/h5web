@@ -25,7 +25,7 @@ describe('Dataset Visualizer utilities', () => {
         },
       ];
 
-      supportedDatasets.forEach(dataset => {
+      supportedDatasets.forEach((dataset) => {
         expect(getSupportedVis(dataset)).toContain(Vis.Scalar);
       });
     });
@@ -44,7 +44,7 @@ describe('Dataset Visualizer utilities', () => {
         },
       ];
 
-      unsupportedDatasets.forEach(dataset => {
+      unsupportedDatasets.forEach((dataset) => {
         expect(getSupportedVis(dataset)).not.toContain(Vis.Scalar);
       });
     });
@@ -68,7 +68,7 @@ describe('Dataset Visualizer utilities', () => {
         },
       ];
 
-      supportedDatasets.forEach(dataset => {
+      supportedDatasets.forEach((dataset) => {
         expect(getSupportedVis(dataset)).toContain(Vis.Matrix);
       });
     });
@@ -97,7 +97,7 @@ describe('Dataset Visualizer utilities', () => {
         },
       ];
 
-      unsupportedDatasets.forEach(dataset => {
+      unsupportedDatasets.forEach((dataset) => {
         expect(getSupportedVis(dataset)).not.toContain(Vis.Matrix);
       });
     });
@@ -121,7 +121,7 @@ describe('Dataset Visualizer utilities', () => {
         },
       ];
 
-      supportedDatasets.forEach(dataset => {
+      supportedDatasets.forEach((dataset) => {
         expect(getSupportedVis(dataset)).toContain(Vis.Line);
       });
     });
@@ -150,7 +150,7 @@ describe('Dataset Visualizer utilities', () => {
         },
       ];
 
-      unsupportedDatasets.forEach(dataset => {
+      unsupportedDatasets.forEach((dataset) => {
         expect(getSupportedVis(dataset)).not.toContain(Vis.Line);
       });
     });
@@ -169,7 +169,7 @@ describe('Dataset Visualizer utilities', () => {
         },
       ];
 
-      supportedDatasets.forEach(dataset => {
+      supportedDatasets.forEach((dataset) => {
         expect(getSupportedVis(dataset)).toContain(Vis.Heatmap);
       });
     });
@@ -198,7 +198,7 @@ describe('Dataset Visualizer utilities', () => {
         },
       ];
 
-      unsupportedDatasets.forEach(dataset => {
+      unsupportedDatasets.forEach((dataset) => {
         expect(getSupportedVis(dataset)).not.toContain(Vis.Heatmap);
       });
     });

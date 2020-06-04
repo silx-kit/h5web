@@ -1,5 +1,5 @@
 import { getNodesOnPath } from './utils';
-import { TreeNode } from './models';
+import type { TreeNode } from './models';
 
 const dataA = {};
 const dataB = {};

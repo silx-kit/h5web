@@ -14,7 +14,7 @@ function LineVis(): JSX.Element {
   const data = useData();
 
   const [showGrid, hasYLogScale] = useLineConfig(
-    state => [state.showGrid, state.hasYLogScale],
+    (state) => [state.showGrid, state.hasYLogScale],
     shallow
   );
 

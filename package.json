@@ -19,7 +19,7 @@
     "lint": "run-p lint:*",
     "lint:eslint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
     "lint:tsc": "tsc --noEmit",
-    "lint:prettier": "prettier --check \"**/*.{ts,tsx,js,jsx,css,json,md,yml}\""
+    "lint:prettier": "prettier --check ."
   },
   "dependencies": {
     "@vx/axis": "0.0.195",
@@ -73,7 +73,7 @@
     "@wsmd/eslint-config": "^1.2.0",
     "eslint": "^6.8.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.5",
     "react-scripts": "^3.4.1",
     "typescript": "^3.9.3",
     "worker-loader": "^2.0.0"

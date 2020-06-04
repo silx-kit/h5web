@@ -17,13 +17,13 @@ const STORAGE_CONFIG: StorageConfig = {
 
 export const [useLineConfig] = createPersistableState<LineConfig>(
   STORAGE_CONFIG,
-  set => ({
+  (set) => ({
     curveType: CurveType.LineOnly,
     setCurveType: (type: CurveType) => set({ curveType: type }),
     showGrid: true,
-    toggleGrid: () => set(state => ({ showGrid: !state.showGrid })),
+    toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
     hasYLogScale: false,
     toggleYLogScale: () =>
-      set(state => ({ hasYLogScale: !state.hasYLogScale })),
+      set((state) => ({ hasYLogScale: !state.hasYLogScale })),
   })
 );

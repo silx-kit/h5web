@@ -1,5 +1,5 @@
 import React from 'react';
-import { HDF5Link, HDF5Entity } from '../providers/models';
+import type { HDF5Link, HDF5Entity } from '../providers/models';
 import AttributesInfo from './AttributesInfo';
 import LinkInfo from './LinkInfo';
 import EntityInfo from './EntityInfo';

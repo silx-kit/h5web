@@ -3,7 +3,7 @@ import { range } from 'lodash-es';
 import { Vis, DimensionMapping } from './models';
 import DimensionMapper from './DimensionMapper';
 import VisProvider from './VisProvider';
-import { HDF5Dataset } from '../providers/models';
+import type { HDF5Dataset } from '../providers/models';
 import { isSimpleShape } from '../providers/utils';
 import { VIS_DEFS } from '../visualizations';
 

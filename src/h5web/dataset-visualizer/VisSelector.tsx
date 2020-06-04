@@ -1,5 +1,5 @@
 import React from 'react';
-import { Vis } from './models';
+import type { Vis } from './models';
 import styles from './VisSelector.module.css';
 import { VIS_DEFS } from '../visualizations';
 
@@ -14,7 +14,7 @@ function VisSelector(props: Props): JSX.Element {
 
   return (
     <div className={styles.selector} role="tablist" aria-label="Visualization">
-      {choices.map(vis => {
+      {choices.map((vis) => {
         const { Icon } = VIS_DEFS[vis];
         return (
           <button

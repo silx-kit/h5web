@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { HDF5Id, HDF5Value, HDF5Metadata } from './models';
+import type { HDF5Id, HDF5Value, HDF5Metadata } from './models';
 
 export abstract class ProviderAPI {
   abstract getDomain: () => string;

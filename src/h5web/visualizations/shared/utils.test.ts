@@ -1,6 +1,6 @@
 import { tickStep } from 'd3-array';
 import { computeVisSize, findDomain, getTicksProp } from './utils';
-import { AxisInfo } from './models';
+import type { AxisInfo } from './models';
 
 describe('Shared visualization utilities', () => {
   describe('computeVisSize', () => {

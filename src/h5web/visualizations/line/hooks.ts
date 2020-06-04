@@ -1,7 +1,7 @@
 import { useMemo, useContext } from 'react';
 import { Vector3 } from 'three';
 import { useThree } from 'react-three-fiber';
-import { Domain } from '../shared/models';
+import type { Domain } from '../shared/models';
 import { findDomain, getAxisScale } from '../shared/utils';
 import { AxisSystemContext } from '../shared/AxisSystemProvider';
 import { useVisProps } from '../../dataset-visualizer/VisProvider';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { HDF5Attribute } from '../providers/models';
+import type { HDF5Attribute } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 
 interface Props {

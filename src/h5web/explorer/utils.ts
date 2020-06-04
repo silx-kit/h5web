@@ -1,4 +1,4 @@
-import { TreeNode } from './models';
+import type { TreeNode } from './models';
 
 export function getNodesOnPath<T>(
   tree: TreeNode<T>,

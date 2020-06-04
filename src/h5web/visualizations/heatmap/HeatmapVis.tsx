@@ -16,7 +16,7 @@ function HeatmapVis(): JSX.Element {
   const [rows, cols] = dims;
 
   const [keepAspectRatio, showGrid] = useHeatmapConfig(
-    state => [state.keepAspectRatio, state.showGrid],
+    (state) => [state.keepAspectRatio, state.showGrid],
     shallow
   );
 
@@ -24,7 +24,7 @@ function HeatmapVis(): JSX.Element {
   const aspectRatio = keepAspectRatio ? cols / rows : undefined;
 
   const values = useValues();
-  const initDataDomain = useHeatmapConfig(state => state.initDataDomain);
+  const initDataDomain = useHeatmapConfig((state) => state.initDataDomain);
 
   useEffect(() => {
     initDataDomain(values);

@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 import { transpose } from 'd3-array';
 import { isNumber } from 'lodash-es';
-import { DimensionMapping, Vis } from './models';
-import { HDF5Dataset, HDF5Value } from '../providers/models';
+import type { DimensionMapping, Vis } from './models';
+import type { HDF5Dataset, HDF5Value } from '../providers/models';
 import { useValue } from '../providers/hooks';
 import { isSimpleShape } from '../providers/utils';
 

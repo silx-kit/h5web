@@ -8,9 +8,9 @@ import shallow from 'zustand/shallow';
 import Worker from 'worker-loader!./worker';
 
 import { useHeatmapConfig } from './config';
-import { D3Interpolator, Dims } from './models';
+import type { D3Interpolator, Dims } from './models';
 import { INTERPOLATORS } from './interpolators';
-import { TextureWorker } from './worker';
+import type { TextureWorker } from './worker';
 import { useVisProps } from '../../dataset-visualizer/VisProvider';
 
 export function useData(): number[][] {
@@ -35,7 +35,7 @@ export function useValues(): number[] {
 }
 
 export function useInterpolator(): D3Interpolator {
-  const colorMap = useHeatmapConfig(state => state.colorMap);
+  const colorMap = useHeatmapConfig((state) => state.colorMap);
   return INTERPOLATORS[colorMap];
 }
 
@@ -46,7 +46,7 @@ export interface TextureDataState {
 
 export function useTextureData(): TextureDataState {
   const [dataDomain, customDomain, hasLogScale, colorMap] = useHeatmapConfig(
-    state => [
+    (state) => [
       state.dataDomain,
       state.customDomain,
       state.hasLogScale,

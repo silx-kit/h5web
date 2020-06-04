@@ -1,10 +1,10 @@
 import React, { useState, ReactElement, useMemo } from 'react';
-import { HDF5Dataset } from '../providers/models';
+import type { HDF5Dataset } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
 import { getSupportedVis } from './utils';
 import VisDisplay from './VisDisplay';
-import { Vis } from './models';
+import type { Vis } from './models';
 import { VIS_DEFS } from '../visualizations';
 
 interface Props {

@@ -7,7 +7,7 @@ import {
   FiLayers,
   FiLink,
 } from 'react-icons/fi';
-import { IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
 
 import { HDF5Link, HDF5Collection } from '../providers/models';
 
