@@ -1,4 +1,4 @@
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import {
   HDF5Collection,
   HDF5Entity,
