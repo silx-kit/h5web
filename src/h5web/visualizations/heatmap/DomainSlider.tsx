@@ -17,7 +17,7 @@ function DomainSlider(): JSX.Element {
     dataDomain,
     customDomain,
     setCustomDomain,
-  ] = useHeatmapConfig(state => [
+  ] = useHeatmapConfig((state) => [
     state.dataDomain,
     state.customDomain,
     state.setCustomDomain,
@@ -31,8 +31,8 @@ function DomainSlider(): JSX.Element {
   const [extendedMin, extendedMax] = extendDomain(dataDomain, EXTEND_FACTOR);
   const step = Math.max((extendedMax - extendedMin) / 100, 10 ** -NB_DECIMALS);
 
-  const updateCustomDomain = debounce(values => {
-    const roundedDomain = (values as number[]).map(value =>
+  const updateCustomDomain = debounce((values) => {
+    const roundedDomain = (values as number[]).map((value) =>
       round(value, NB_DECIMALS)
     ) as Domain;
     setCustomDomain(roundedDomain);

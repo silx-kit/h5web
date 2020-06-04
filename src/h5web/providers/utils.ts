@@ -80,7 +80,7 @@ function buildTreeNode(
     parents,
     ...(group
       ? {
-          children: (group.links || []).map(lk =>
+          children: (group.links || []).map((lk) =>
             buildTreeNode(metadata, lk, [...parents, link])
           ),
         }

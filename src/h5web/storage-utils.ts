@@ -31,7 +31,7 @@ export function createPersistableState<S extends State>(
     // Invoke provided state creator to retrieve initial state
     const initialState = createState(
       // Monkey patch `set` to persist state on every call
-      args => {
+      (args) => {
         set(args);
 
         // Retrieve new state to persist, keeping only the relevant keys

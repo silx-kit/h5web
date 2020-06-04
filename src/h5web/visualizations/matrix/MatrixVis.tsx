@@ -25,7 +25,7 @@ function MatrixVis(): JSX.Element {
       rowCount={rowCount}
       columnCount={columnCount}
       valueAccessor={
-        dims.length === 1 ? row => data[row] : (row, col) => data[row][col]
+        dims.length === 1 ? (row) => data[row] : (row, col) => data[row][col]
       }
     >
       <div ref={divRef} className={styles.wrapper}>

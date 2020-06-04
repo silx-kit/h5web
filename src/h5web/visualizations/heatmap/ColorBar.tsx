@@ -10,7 +10,7 @@ import { generateCSSLinearGradient, getDataScaleFn } from './utils';
 
 function ColorBar(): JSX.Element {
   const [dataDomain, customDomain, hasLogScale] = useHeatmapConfig(
-    state => [state.dataDomain, state.customDomain, state.hasLogScale],
+    (state) => [state.dataDomain, state.customDomain, state.hasLogScale],
     shallow
   );
 

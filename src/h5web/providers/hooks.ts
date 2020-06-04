@@ -16,7 +16,7 @@ export function useMetadataTree(): TreeNode<HDF5Link> | undefined {
 
   useEffect(() => {
     getMetadata()
-      .then(metadata => buildTree(metadata, domain))
+      .then((metadata) => buildTree(metadata, domain))
       .then(setTree);
   }, [domain, getMetadata]);
 
@@ -33,7 +33,7 @@ export function useEntity(link?: HDF5Link): HDF5Entity | undefined {
       return;
     }
 
-    getMetadata().then(metadata => {
+    getMetadata().then((metadata) => {
       const { collection, id } = link;
       const dict = metadata[collection];
       setEntity(dict && dict[id]);

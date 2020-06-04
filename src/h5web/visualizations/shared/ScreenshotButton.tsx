@@ -9,7 +9,7 @@ function ScreenshotButton(): ReactElement {
       href="/"
       target="_blank"
       aria-label="Screenshot"
-      onClick={evt => {
+      onClick={(evt) => {
         const canvas = document.querySelector('canvas');
 
         // Create data URL from canvas

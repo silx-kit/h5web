@@ -14,7 +14,7 @@ function VisSelector(props: Props): JSX.Element {
 
   return (
     <div className={styles.selector} role="tablist" aria-label="Visualization">
-      {choices.map(vis => {
+      {choices.map((vis) => {
         const { Icon } = VIS_DEFS[vis];
         return (
           <button

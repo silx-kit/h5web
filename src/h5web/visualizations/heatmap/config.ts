@@ -30,7 +30,7 @@ const STORAGE_CONFIG: StorageConfig = {
 
 export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
   STORAGE_CONFIG,
-  set => ({
+  (set) => ({
     dataDomain: undefined,
     initDataDomain: (values: number[]) => {
       set({
@@ -47,13 +47,13 @@ export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
     setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
     hasLogScale: false,
-    toggleLogScale: () => set(state => ({ hasLogScale: !state.hasLogScale })),
+    toggleLogScale: () => set((state) => ({ hasLogScale: !state.hasLogScale })),
 
     keepAspectRatio: true,
     toggleAspectRatio: () =>
-      set(state => ({ keepAspectRatio: !state.keepAspectRatio })),
+      set((state) => ({ keepAspectRatio: !state.keepAspectRatio })),
 
     showGrid: false,
-    toggleGrid: () => set(state => ({ showGrid: !state.showGrid })),
+    toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
   })
 );

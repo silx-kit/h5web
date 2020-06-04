@@ -24,7 +24,7 @@ function TreeView<T>(props: Props<T>): JSX.Element {
 
   return (
     <ul className={styles.group} role="group">
-      {nodes.map(node => {
+      {nodes.map((node) => {
         const { uid, label, data, children } = node;
         const isBranch = !!children;
         const isExpanded = !!expandedNodes[node.uid];

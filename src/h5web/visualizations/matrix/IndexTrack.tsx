@@ -16,7 +16,7 @@ function IndexTrack(props: Props): JSX.Element {
   return (
     <div className={className}>
       {children}
-      {range(cellCount).map(index => (
+      {range(cellCount).map((index) => (
         <div
           key={index.toString()}
           className={styles.indexCell}

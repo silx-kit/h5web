@@ -34,7 +34,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
   [Vis.Scalar]: {
     Component: ScalarVis,
     Icon: FiCode,
-    supportsDataset: dataset => {
+    supportsDataset: (dataset) => {
       const { type, shape } = dataset;
       return isBaseType(type) && isScalarShape(shape);
     },
@@ -42,7 +42,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
   [Vis.Matrix]: {
     Component: MatrixVis,
     Icon: FiGrid,
-    supportsDataset: dataset => {
+    supportsDataset: (dataset) => {
       const { type, shape } = dataset;
       return isBaseType(type) && isSimpleShape(shape) && hasSimpleDims(shape);
     },
@@ -51,7 +51,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Component: LineVis,
     Icon: FiActivity,
     Toolbar: LineToolbar,
-    supportsDataset: dataset => {
+    supportsDataset: (dataset) => {
       const { type, shape } = dataset;
       return (
         isNumericType(type) && isSimpleShape(shape) && hasSimpleDims(shape)
@@ -62,7 +62,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Component: HeatmapVis,
     Icon: FiMap,
     Toolbar: HeatmapToolbar,
-    supportsDataset: dataset => {
+    supportsDataset: (dataset) => {
       const { type, shape } = dataset;
       return (
         isNumericType(type) && isSimpleShape(shape) && shape.dims.length === 2

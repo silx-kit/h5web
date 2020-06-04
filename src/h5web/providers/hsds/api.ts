@@ -104,13 +104,13 @@ export class HsdsApi implements ProviderAPI {
       `/${entityCollection}/${entityId}/attributes`,
       this.config
     );
-    const attrsPromises = data.attributes.map(attr =>
+    const attrsPromises = data.attributes.map((attr) =>
       this.client
         .get<HsdsAttributeWithValueResponse>(
           `/${entityCollection}/${entityId}/attributes/${attr.name}`,
           this.config
         )
-        .then(response => response.data)
+        .then((response) => response.data)
     );
     return Promise.all(attrsPromises);
   }

@@ -37,7 +37,7 @@ function BreadcrumbsBar(props: Props): JSX.Element {
       />
       {selectedNode && (
         <h1 className={styles.breadCrumbs}>
-          {selectedNode?.parents.slice(firstParentIndex).map(member => (
+          {selectedNode?.parents.slice(firstParentIndex).map((member) => (
             <Fragment key={(member as HDF5HardLink).id}>
               <span className={styles.crumb}>{member.title}</span>
               <FiChevronRight />
@@ -52,7 +52,7 @@ function BreadcrumbsBar(props: Props): JSX.Element {
         role="tablist"
         ariaLabel="Viewer mode"
         value={String(isInspecting)}
-        onChange={val => {
+        onChange={(val) => {
           onChangeInspecting(val === 'true' || false);
         }}
       >

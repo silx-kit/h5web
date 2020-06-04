@@ -35,7 +35,7 @@ export function useValues(): number[] {
 }
 
 export function useInterpolator(): D3Interpolator {
-  const colorMap = useHeatmapConfig(state => state.colorMap);
+  const colorMap = useHeatmapConfig((state) => state.colorMap);
   return INTERPOLATORS[colorMap];
 }
 
@@ -46,7 +46,7 @@ export interface TextureDataState {
 
 export function useTextureData(): TextureDataState {
   const [dataDomain, customDomain, hasLogScale, colorMap] = useHeatmapConfig(
-    state => [
+    (state) => [
       state.dataDomain,
       state.customDomain,
       state.hasLogScale,

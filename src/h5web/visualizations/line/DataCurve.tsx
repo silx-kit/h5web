@@ -18,7 +18,7 @@ function DataCurve(): JSX.Element {
     return geometry;
   }, [points]);
 
-  const curveType = useLineConfig(state => state.curveType);
+  const curveType = useLineConfig((state) => state.curveType);
   const showLine = curveType !== CurveType.GlyphsOnly;
   const showGlyphs = curveType !== CurveType.LineOnly;
 

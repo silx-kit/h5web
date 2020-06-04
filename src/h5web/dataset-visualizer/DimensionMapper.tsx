@@ -36,7 +36,7 @@ function DimensionMapper(props: Props): JSX.Element {
             <div {...thumbProps}>{state.valueNow}</div>
           )}
           defaultValue={slicingIndex}
-          onChange={value => {
+          onChange={(value) => {
             if (!isNumber(value)) {
               return;
             }
@@ -63,7 +63,7 @@ function DimensionMapper(props: Props): JSX.Element {
           role="radiogroup"
           ariaLabel={`Dimension as ${axis} axis`}
           value={selectedDim.toString()}
-          onChange={val => {
+          onChange={(val) => {
             const newDim = Number(val);
             if (selectedDim !== newDim) {
               const newMapperState = mapperState.slice();
@@ -73,7 +73,7 @@ function DimensionMapper(props: Props): JSX.Element {
             }
           }}
         >
-          {Object.keys(rawDims).map(dimKey => (
+          {Object.keys(rawDims).map((dimKey) => (
             <ToggleGroup.Btn key={dimKey} label={`D${dimKey}`} value={dimKey} />
           ))}
         </ToggleGroup>
