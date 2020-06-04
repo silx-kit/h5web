@@ -41,9 +41,11 @@ function HeatmapVis(): JSX.Element {
         {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <TooltipMesh
           formatIndex={([x, y]) => `x=${Math.floor(x)}, y=${Math.floor(y)}`}
-          formatValue={([x, y]) =>
-            format('.3')(data[Math.floor(y)][Math.floor(x)])
-          }
+          formatValue={([x, y]) => {
+            return x < cols && y < rows
+              ? format('.3')(data[Math.floor(y)][Math.floor(x)])
+              : undefined;
+          }}
           guides="both"
         />
         <PanZoomMesh />
