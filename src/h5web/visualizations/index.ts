@@ -54,7 +54,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     supportsDataset: (dataset) => {
       const { type, shape } = dataset;
       return (
-        isNumericType(type) && isSimpleShape(shape) && hasSimpleDims(shape)
+        isNumericType(type) && isSimpleShape(shape) && shape.dims.length === 1
       );
     },
   },
