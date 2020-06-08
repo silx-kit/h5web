@@ -32,20 +32,27 @@ function DomainSlider(props: Props): ReactElement {
   return (
     <div className={styles.sliderWrapper}>
       <button
-        className={styles.resetButton}
+        className={styles.resetBtn}
         type="button"
         onClick={() => onChange(undefined)}
         disabled={!value}
       >
-        <FiRotateCcw />
+        <span className={styles.resetBtnLike}>
+          <FiRotateCcw className={styles.resetIcon} />
+        </span>
       </button>
       <ReactSlider
         key={JSON.stringify(value || dataDomain)}
         className={styles.slider}
-        trackClassName={styles.sliderTrack}
-        thumbClassName={styles.sliderThumb}
+        trackClassName={styles.track}
+        thumbClassName={styles.thumb}
+        thumbActiveClassName={styles.thumbActive}
         renderThumb={(thumbProps, { valueNow }) => (
-          <div {...thumbProps}>{format(`.${NB_DECIMALS}f`)(valueNow)}</div>
+          <div {...thumbProps}>
+            <div className={styles.thumbBtnLike}>
+              {format(`.${NB_DECIMALS}f`)(valueNow)}
+            </div>
+          </div>
         )}
         defaultValue={[...(value || dataDomain)]}
         onChange={updateCustomDomain}

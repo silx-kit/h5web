@@ -11,7 +11,7 @@
   height: 1.875rem;
   padding: 0 0.5rem;
   border-radius: 0.5rem;
-  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+  transition: background-color 0.05s ease-in-out;
 }
 
 .icon {
