@@ -1,62 +1,60 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
-import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import { round, debounce } from 'lodash-es';
 import { FiRotateCcw } from 'react-icons/fi';
 import styles from './DomainSlider.module.css';
-import { useHeatmapConfig } from './config';
 import type { Domain } from '../shared/models';
 import { extendDomain } from '../shared/utils';
 
 const EXTEND_FACTOR = 0.2;
 const NB_DECIMALS = 1;
 
-function DomainSlider(): JSX.Element {
-  const [
-    dataDomain,
-    customDomain,
-    setCustomDomain,
-  ] = useHeatmapConfig((state) => [
-    state.dataDomain,
-    state.customDomain,
-    state.setCustomDomain,
-    shallow,
-  ]);
+interface Props {
+  dataDomain: Domain;
+  value?: Domain;
+  onChange: (value: Domain | undefined) => void;
+}
 
-  if (!dataDomain) {
-    return <></>;
-  }
+function DomainSlider(props: Props): ReactElement {
+  const { dataDomain, value, onChange } = props;
 
   const [extendedMin, extendedMax] = extendDomain(dataDomain, EXTEND_FACTOR);
   const step = Math.max((extendedMax - extendedMin) / 100, 10 ** -NB_DECIMALS);
 
-  const updateCustomDomain = debounce((values) => {
-    const roundedDomain = (values as number[]).map((value) =>
-      round(value, NB_DECIMALS)
+  const updateCustomDomain = debounce((bounds) => {
+    const roundedDomain = (bounds as number[]).map((val) =>
+      round(val, NB_DECIMALS)
     ) as Domain;
-    setCustomDomain(roundedDomain);
+    onChange(roundedDomain);
   }, 500);
 
   return (
     <div className={styles.sliderWrapper}>
       <button
-        className={styles.resetButton}
+        className={styles.resetBtn}
         type="button"
-        onClick={() => setCustomDomain(undefined)}
-        disabled={!customDomain}
+        onClick={() => onChange(undefined)}
+        disabled={!value}
       >
-        <FiRotateCcw />
+        <span className={styles.resetBtnLike}>
+          <FiRotateCcw className={styles.resetIcon} />
+        </span>
       </button>
       <ReactSlider
-        key={JSON.stringify(customDomain || dataDomain)}
+        key={JSON.stringify(value || dataDomain)}
         className={styles.slider}
-        trackClassName={styles.sliderTrack}
-        thumbClassName={styles.sliderThumb}
-        renderThumb={(props, state) => (
-          <div {...props}>{format(`.${NB_DECIMALS}f`)(state.valueNow)}</div>
+        trackClassName={styles.track}
+        thumbClassName={styles.thumb}
+        thumbActiveClassName={styles.thumbActive}
+        renderThumb={(thumbProps, { valueNow }) => (
+          <div {...thumbProps}>
+            <div className={styles.thumbBtnLike}>
+              {format(`.${NB_DECIMALS}f`)(valueNow)}
+            </div>
+          </div>
         )}
-        defaultValue={[...(customDomain || dataDomain)]}
+        defaultValue={[...(value || dataDomain)]}
         onChange={updateCustomDomain}
         min={extendedMin}
         max={extendedMax}

@@ -10,6 +10,9 @@ import ColorMapSelector from './ColorMapSelector';
 
 function HeatmapToolbar(): ReactElement {
   const {
+    dataDomain,
+    customDomain,
+    setCustomDomain,
     colorMap,
     setColorMap,
     hasLogScale,
@@ -22,7 +25,13 @@ function HeatmapToolbar(): ReactElement {
 
   return (
     <Toolbar>
-      <DomainSlider />
+      {dataDomain && (
+        <DomainSlider
+          dataDomain={dataDomain}
+          value={customDomain}
+          onChange={setCustomDomain}
+        />
+      )}
       <Separator />
 
       <ColorMapSelector value={colorMap} onChange={setColorMap} />
