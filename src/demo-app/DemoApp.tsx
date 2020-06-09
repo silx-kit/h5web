@@ -15,7 +15,7 @@ function DemoApp(): JSX.Element {
     <Router>
       <Switch>
         <Route path="/mock">
-          <MockProvider domain="Mocked bsa_002_000-integrate-sub">
+          <MockProvider domain="source.h5">
             <App />
           </MockProvider>
         </Route>

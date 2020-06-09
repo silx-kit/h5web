@@ -1,522 +1,7 @@
 {
-  "root": "388a7044-5e02-11ea-88b6-478d93326ed6",
-  "groups": {
-    "388a7044-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7044-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/"],
-      "attributes": [
-        {
-          "name": "default",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "/entry_0000"
-        },
-        {
-          "name": "file_update_time",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "2020-02-21T10:00:41+01:00"
-        }
-      ],
-      "links": [
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "groups",
-          "id": "388a7045-5e02-11ea-88b6-478d93326ed6",
-          "title": "entry_0000"
-        }
-      ]
-    },
-    "388a7045-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7045-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/entry_0000"],
-      "attributes": [
-        {
-          "name": "NX_class",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "NXentry"
-        },
-        {
-          "name": "default",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "/entry_0000/3_azimuthal_integration/results"
-        }
-      ],
-      "links": [
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "groups",
-          "id": "388a7046-5e02-11ea-88b6-478d93326ed6",
-          "title": "0_measurement"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "groups",
-          "id": "388a7048-5e02-11ea-88b6-478d93326ed6",
-          "title": "1_cormap"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "groups",
-          "id": "388a7052-5e02-11ea-88b6-478d93326ed6",
-          "title": "2_buffer_subtraction"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "groups",
-          "id": "388a7059-5e02-11ea-88b6-478d93326ed6",
-          "title": "3_azimuthal_integration"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7064-5e02-11ea-88b6-478d93326ed6",
-          "title": "end_time"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7065-5e02-11ea-88b6-478d93326ed6",
-          "title": "program_name"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7066-5e02-11ea-88b6-478d93326ed6",
-          "title": "start_time"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7067-5e02-11ea-88b6-478d93326ed6",
-          "title": "title"
-        }
-      ]
-    },
-    "388a7046-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7046-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/entry_0000/0_measurement"],
-      "attributes": [
-        {
-          "name": "NX_class",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "NXcollection"
-        }
-      ],
-      "links": [
-        {
-          "class": "H5L_TYPE_EXTERNAL",
-          "file": "/mntdirect/_scisoft/users/kieffer/BM29/dahu/bsa_001_000-integrate.h5",
-          "h5path": "/entry_0000",
-          "title": "buffer_0"
-        },
-        {
-          "class": "H5L_TYPE_EXTERNAL",
-          "file": "/mntdirect/_scisoft/users/kieffer/BM29/dahu/bsa_003_000-integrate.h5",
-          "h5path": "/entry_0000",
-          "title": "buffer_1"
-        },
-        {
-          "class": "H5L_TYPE_EXTERNAL",
-          "file": "bsa_002_000-integrate.h5",
-          "h5path": "/entry_0000",
-          "title": "sample"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7047-5e02-11ea-88b6-478d93326ed6",
-          "title": "sequence_index"
-        }
-      ]
-    },
-    "388a7048-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7048-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/entry_0000/1_cormap"],
-      "attributes": [
-        {
-          "name": "NX_class",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "NXprocess"
-        },
-        {
-          "name": "default",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "/entry_0000/1_cormap/results"
-        }
-      ],
-      "links": [
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7049-5e02-11ea-88b6-478d93326ed6",
-          "title": "date"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a704a-5e02-11ea-88b6-478d93326ed6",
-          "title": "fidelity"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a704b-5e02-11ea-88b6-478d93326ed6",
-          "title": "program"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "groups",
-          "id": "388a704c-5e02-11ea-88b6-478d93326ed6",
-          "title": "results"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a704f-5e02-11ea-88b6-478d93326ed6",
-          "title": "sequence_index"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7050-5e02-11ea-88b6-478d93326ed6",
-          "title": "to_merge"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7051-5e02-11ea-88b6-478d93326ed6",
-          "title": "version"
-        }
-      ]
-    },
-    "388a704c-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a704c-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/entry_0000/1_cormap/results"],
-      "attributes": [
-        {
-          "name": "NX_class",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "NXdata"
-        },
-        {
-          "name": "signal",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "probability"
-        }
-      ],
-      "links": [
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a704d-5e02-11ea-88b6-478d93326ed6",
-          "title": "count"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a704e-5e02-11ea-88b6-478d93326ed6",
-          "title": "probability"
-        }
-      ]
-    },
-    "388a7052-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7052-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/entry_0000/2_buffer_subtraction"],
-      "attributes": [
-        {
-          "name": "NX_class",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "NXprocess"
-        },
-        {
-          "name": "default",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "/entry_0000/2_buffer_subtraction/results"
-        }
-      ],
-      "links": [
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7053-5e02-11ea-88b6-478d93326ed6",
-          "title": "program"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "groups",
-          "id": "388a7054-5e02-11ea-88b6-478d93326ed6",
-          "title": "results"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7057-5e02-11ea-88b6-478d93326ed6",
-          "title": "sequence_index"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7058-5e02-11ea-88b6-478d93326ed6",
-          "title": "version"
-        }
-      ]
-    },
-    "388a7054-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7054-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/entry_0000/2_buffer_subtraction/results"],
-      "attributes": [
-        {
-          "name": "NX_class",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "NXdata"
-        },
-        {
-          "name": "signal",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "intensity_normed"
-        }
-      ],
-      "links": []
-    },
-    "388a7059-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7059-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/entry_0000/3_azimuthal_integration"],
-      "attributes": [
-        {
-          "name": "NX_class",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "NXprocess"
-        },
-        {
-          "name": "default",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "/entry_0000/3_azimuthal_integration/results"
-        }
-      ],
-      "links": [
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a705a-5e02-11ea-88b6-478d93326ed6",
-          "title": "configuration"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a705b-5e02-11ea-88b6-478d93326ed6",
-          "title": "date"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a705c-5e02-11ea-88b6-478d93326ed6",
-          "title": "polarization_factor"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a705d-5e02-11ea-88b6-478d93326ed6",
-          "title": "program"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "groups",
-          "id": "388a705e-5e02-11ea-88b6-478d93326ed6",
-          "title": "results"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7062-5e02-11ea-88b6-478d93326ed6",
-          "title": "sequence_index"
-        },
-        {
-          "class": "H5L_TYPE_HARD",
-          "collection": "datasets",
-          "id": "388a7063-5e02-11ea-88b6-478d93326ed6",
-          "title": "version"
-        }
-      ]
-    },
-    "388a705e-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a705e-5e02-11ea-88b6-478d93326ed6",
-      "collection": "groups",
-      "alias": ["/entry_0000/3_azimuthal_integration/results"],
-      "attributes": [
-        {
-          "name": "NX_class",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "NXdata"
-        },
-        {
-          "name": "axes",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "q"
-        },
-        {
-          "name": "signal",
-          "shape": {
-            "class": "H5S_SCALAR"
-          },
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM"
-          },
-          "value": "I"
-        }
-      ],
-      "links": []
-    }
-  },
+  "apiVersion": "1.1.1",
   "datasets": {
-    "388a7047-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7047-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c09-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/0_measurement/sequence_index"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -534,9 +19,7 @@
       },
       "value": 0
     },
-    "388a7049-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7049-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c0b-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/1_cormap/date"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -556,9 +39,7 @@
       },
       "value": "2020-02-21T10:00:41+01:00"
     },
-    "388a704a-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a704a-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c0c-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/1_cormap/fidelity"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -576,9 +57,7 @@
       },
       "value": 0
     },
-    "388a704b-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a704b-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c0d-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/1_cormap/program"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -598,9 +77,7 @@
       },
       "value": "freesas"
     },
-    "388a704d-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a704d-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c0f-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/1_cormap/results/count"],
       "attributes": [
         {
@@ -650,9 +127,7 @@
         [18, 0]
       ]
     },
-    "388a704e-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a704e-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c10-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/1_cormap/results/probability"],
       "attributes": [
         {
@@ -698,13 +173,11 @@
         "class": "H5T_FLOAT"
       },
       "value": [
-        [1, 0.003746873466297984],
-        [0.003746873466297984, 1]
+        [1.0, 0.003746873466297984],
+        [0.003746873466297984, 1.0]
       ]
     },
-    "388a704f-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a704f-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c11-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/1_cormap/sequence_index"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -722,9 +195,7 @@
       },
       "value": 1
     },
-    "388a7050-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7050-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c12-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/1_cormap/to_merge"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -743,9 +214,7 @@
       },
       "value": [0, 1]
     },
-    "388a7051-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7051-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c13-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/1_cormap/version"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -765,9 +234,7 @@
       },
       "value": "0.7.1"
     },
-    "388a7053-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7053-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c15-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/2_buffer_subtraction/program"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -787,9 +254,7 @@
       },
       "value": "bm29.subtracte.subtractbuffer"
     },
-    "388a7057-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7057-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c17-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/2_buffer_subtraction/sequence_index"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -807,9 +272,7 @@
       },
       "value": 2
     },
-    "388a7058-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7058-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c18-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/2_buffer_subtraction/version"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -829,9 +292,7 @@
       },
       "value": "0.1.0"
     },
-    "388a705a-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a705a-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c1a-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/3_azimuthal_integration/configuration"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -851,9 +312,7 @@
       },
       "value": "{\"poni_version\": 2, \"detector\": \"Pilatus1M\", \"detector_config\": {}, \"dist\": 2.872, \"poni1\": 0.01548, \"poni2\": 0.15394, \"rot1\": 0.0, \"rot2\": 0.0, \"rot3\": 0.0, \"wavelength\": 9.918735874656021e-11}"
     },
-    "388a705b-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a705b-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c1b-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/3_azimuthal_integration/date"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -873,9 +332,7 @@
       },
       "value": "2020-02-21T10:00:41+01:00"
     },
-    "388a705c-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a705c-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c1c-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/3_azimuthal_integration/polarization_factor"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -893,9 +350,7 @@
       },
       "value": 0.9
     },
-    "388a705d-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a705d-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c1d-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/3_azimuthal_integration/program"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -915,9 +370,7 @@
       },
       "value": "pyFAI"
     },
-    "388a7062-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7062-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c1f-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/3_azimuthal_integration/sequence_index"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -935,9 +388,7 @@
       },
       "value": 3
     },
-    "388a7063-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7063-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c20-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/3_azimuthal_integration/version"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -957,9 +408,7 @@
       },
       "value": "0.19.0"
     },
-    "388a7064-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7064-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c21-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/end_time"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -979,9 +428,7 @@
       },
       "value": "2020-02-21T10:00:41+01:00"
     },
-    "388a7065-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7065-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c22-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/program_name"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -1001,9 +448,7 @@
       },
       "value": "bm29.subtractbuffer"
     },
-    "388a7066-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7066-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c23-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/start_time"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -1023,9 +468,7 @@
       },
       "value": "2020-02-21T10:00:41+01:00"
     },
-    "388a7067-5e02-11ea-88b6-478d93326ed6": {
-      "id": "388a7067-5e02-11ea-88b6-478d93326ed6",
-      "collection": "datasets",
+    "c8f60c24-aae2-11ea-84a9-b94ddd2ec9e8": {
       "alias": ["/entry_0000/title"],
       "creationProperties": {
         "allocTime": "H5D_ALLOC_TIME_LATE",
@@ -1044,7 +487,4359 @@
         "strPad": "H5T_STR_NULLTERM"
       },
       "value": "BioSaxs buffer subtraction"
+    },
+    "c8f60c26-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/nD/fourD"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [10, 2, 5, 8]
+      },
+      "type": {
+        "base": "H5T_IEEE_F64LE",
+        "class": "H5T_FLOAT"
+      },
+      "value": [
+        [
+          [
+            [
+              0.6336205521238713,
+              0.6185369706333641,
+              0.043883104819221086,
+              0.14086175686455538,
+              0.8602737491730259,
+              0.5958625082751874,
+              0.545518213136318,
+              0.7197074000492172
+            ],
+            [
+              0.535569070899699,
+              0.8003419473119391,
+              0.4535640550574628,
+              0.5629303347347857,
+              0.9565201029637247,
+              0.2197464944273151,
+              0.850207702143082,
+              0.6707194110410419
+            ],
+            [
+              0.19896700210006213,
+              0.018606894178100797,
+              0.006832361893895911,
+              0.5810502370611431,
+              0.9278727801486267,
+              0.7941994609835766,
+              0.49121435302213723,
+              0.5276273217818431
+            ],
+            [
+              0.3438793672843362,
+              0.9763907682472394,
+              0.1404153245360069,
+              0.5618597777583508,
+              0.09102756694715586,
+              0.6991554059714973,
+              0.36643469430717235,
+              0.3082404514542646
+            ],
+            [
+              0.09884833227956746,
+              0.969782112078833,
+              0.32964745086304614,
+              0.5325328725024203,
+              0.08978563691303831,
+              0.0070306672140655335,
+              0.5534085873970546,
+              0.9722478501651056
+            ]
+          ],
+          [
+            [
+              0.19887948947528633,
+              0.9127598000723905,
+              0.8984256940815484,
+              0.2937894349899052,
+              0.6996265368362395,
+              0.16993397463866844,
+              0.4258871687380761,
+              0.9810548770929356
+            ],
+            [
+              0.6336820327167554,
+              0.40282686223658115,
+              0.19445900517185,
+              0.2679571711139963,
+              0.39085672537815874,
+              0.16334477717059026,
+              0.8722658966677699,
+              0.17641878716389625
+            ],
+            [
+              0.4668470342653124,
+              0.7303474581135131,
+              0.3142430339835305,
+              0.27320498825532213,
+              0.9669686997321837,
+              0.3171495346005869,
+              0.9978552181090398,
+              0.851961927884337
+            ],
+            [
+              0.43616640843758203,
+              0.6172726208524771,
+              0.6167943939347995,
+              0.9799687258191956,
+              0.0044044666486035,
+              0.7713372379568533,
+              0.1879778255048209,
+              0.13760904546426878
+            ],
+            [
+              0.6437184154502821,
+              0.8575736473173846,
+              0.8717268933584879,
+              0.3786286489194851,
+              0.7428841254784458,
+              0.6351710056475462,
+              0.17512661143737596,
+              0.8630437014887574
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.27605425429609065,
+              0.3169469772835679,
+              0.9277124247078432,
+              0.5679297493704335,
+              0.816398789960643,
+              0.5914625590228522,
+              0.27302062959386186,
+              0.021044746465062603
+            ],
+            [
+              0.1845748684237305,
+              0.2737560710811139,
+              0.6280327209436328,
+              0.9503543859740263,
+              0.6197545769601431,
+              0.9035223149824098,
+              0.19155449264079283,
+              0.5140366849115546
+            ],
+            [
+              0.40666166327845066,
+              0.2452366789643845,
+              0.005988996448618611,
+              0.579579025674951,
+              0.041778862343798906,
+              0.718314700009484,
+              0.863330526172168,
+              0.7665192666595351
+            ],
+            [
+              0.8816629346846563,
+              0.7854959837176341,
+              0.7008197550584517,
+              0.3161462186450016,
+              0.3547922938134068,
+              0.09335610007105644,
+              0.9331348221989786,
+              0.00419637563479025
+            ],
+            [
+              0.6911659576296297,
+              0.4245452553630865,
+              0.1871306598335204,
+              0.5693893297360527,
+              0.9427929439966778,
+              0.7983976564518805,
+              0.3876574694581344,
+              0.7573753283054816
+            ]
+          ],
+          [
+            [
+              0.3190248780740659,
+              0.38676022171696656,
+              0.9809013118327659,
+              0.7659476380563077,
+              0.039153940788259955,
+              0.3183999277783536,
+              0.5721261605376994,
+              0.8186619758611267
+            ],
+            [
+              0.28527680580479176,
+              0.9679912138859313,
+              0.3757885268336093,
+              0.9176729233684029,
+              0.5130425619478821,
+              0.9841306119840283,
+              0.8131913715208001,
+              0.9698204024795708
+            ],
+            [
+              0.45483432583623096,
+              0.8153225783989153,
+              0.4914942495710307,
+              0.2947669059046131,
+              0.007927301799717679,
+              0.026319068886723973,
+              0.6630263469276818,
+              0.608700321586097
+            ],
+            [
+              0.8740792146010066,
+              0.04608787199708919,
+              0.4591681565914357,
+              0.8140522663771976,
+              0.22800837727089807,
+              0.8128237764622412,
+              0.737647745893335,
+              0.8338348573759189
+            ],
+            [
+              0.34756092564486607,
+              0.0031483716233714487,
+              0.35610790128625125,
+              0.3934625193871294,
+              0.8045298612431027,
+              0.7602723446148639,
+              0.6665658037308441,
+              0.9809190837115105
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.16040081437937903,
+              0.49795338127701205,
+              0.24828696252019078,
+              0.06966800909371762,
+              0.4715768935530674,
+              0.7794989811296137,
+              0.947033782803557,
+              0.5038345318413887
+            ],
+            [
+              0.5226170530645327,
+              0.5183798502407134,
+              0.6049179526979,
+              0.6500591109153778,
+              0.2958435341988853,
+              0.39131231402656497,
+              0.1706378375986951,
+              0.8705372466107975
+            ],
+            [
+              0.520304516873842,
+              0.9796035917088595,
+              0.3704957728964736,
+              0.1504203480459383,
+              0.8435509788132632,
+              0.30417490566380645,
+              0.3207468804562633,
+              0.4908724728474385
+            ],
+            [
+              0.9235220461300986,
+              0.8040576375678712,
+              0.36094064397158976,
+              0.9467903173009883,
+              0.14450043370826937,
+              0.1977204144562612,
+              0.2047520103847852,
+              0.8176802272058046
+            ],
+            [
+              0.3687402136318031,
+              0.8782432729383814,
+              0.6689960104759753,
+              0.4971233236730127,
+              0.2897379764290874,
+              0.01818031354166738,
+              0.21828946662227033,
+              0.695287805050621
+            ]
+          ],
+          [
+            [
+              0.43855462093548914,
+              0.07795502373989427,
+              0.7268005109571294,
+              0.5729538242218272,
+              0.6647677589036096,
+              0.24012561842027336,
+              0.7088323945939493,
+              0.4231507536253344
+            ],
+            [
+              0.6061117025182005,
+              0.6729435633578609,
+              0.405119174003,
+              0.27147307882475413,
+              0.04475297082787566,
+              0.5337822792468102,
+              0.5015318826406332,
+              0.7325219180498097
+            ],
+            [
+              0.0740111319244835,
+              0.9711996670234322,
+              0.5128278125080027,
+              0.12288143079852754,
+              0.2989688833163021,
+              0.6707664601102663,
+              0.902487497797924,
+              0.25832946023641845
+            ],
+            [
+              0.17934597242880612,
+              0.7164534791126357,
+              0.21440386038632564,
+              0.491252445343362,
+              0.8416302049585466,
+              0.8245802500920806,
+              0.40174339357303446,
+              0.5183402890480067
+            ],
+            [
+              0.10778677429547312,
+              0.5794934209299691,
+              0.06458689256208916,
+              0.3911959861709162,
+              0.8961393248950608,
+              0.31699759472403655,
+              0.8060029797449256,
+              0.9170524144401194
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.7823121296232635,
+              0.4276250334569386,
+              0.2371982531630138,
+              0.41024908810207406,
+              0.043169553358329615,
+              0.6574278911613579,
+              0.9819115365136858,
+              0.6038369383198487
+            ],
+            [
+              0.6713783768370171,
+              0.930648791883861,
+              0.7170445714503711,
+              0.9333038232473752,
+              0.26601641647538776,
+              0.1577158175036385,
+              0.01447334066710837,
+              0.5537094625718034
+            ],
+            [
+              0.254341688900795,
+              0.33592525644072,
+              0.9817786195367324,
+              0.46678108563764,
+              0.7582087476206344,
+              0.8269986853204527,
+              0.8799423694608619,
+              0.22934551459117258
+            ],
+            [
+              0.7334319735532033,
+              0.28669927898151226,
+              0.32776353853814755,
+              0.0754472245937784,
+              0.6069439706576663,
+              0.4795478221471948,
+              0.5582204030809425,
+              0.593000563382809
+            ],
+            [
+              0.889526927341705,
+              0.728895372049427,
+              0.17195025192706648,
+              0.10051818741763241,
+              0.6379189589232513,
+              0.535602460019474,
+              0.30113776857041674,
+              0.05959943050854344
+            ]
+          ],
+          [
+            [
+              0.5159780294318383,
+              0.6765473115016162,
+              0.11978921653856944,
+              0.4075966621008277,
+              0.9001208994740648,
+              0.5293111808931985,
+              0.1077997730287481,
+              0.0498037114586769
+            ],
+            [
+              0.8635822120838093,
+              0.31547110531335854,
+              0.509943848491687,
+              0.6948638300642973,
+              0.9190136355049802,
+              0.4236607283683328,
+              0.03774629218305092,
+              0.4750064543785052
+            ],
+            [
+              0.2930657679254892,
+              0.9511012552384909,
+              0.5413064690500402,
+              0.21358637977457928,
+              0.954302602364828,
+              0.6876849190839567,
+              0.2550339661053789,
+              0.21681377076263275
+            ],
+            [
+              0.02898534780611639,
+              0.5975265745304764,
+              0.9154275933062703,
+              0.18705699355864314,
+              0.582763079519968,
+              0.32750681372004564,
+              0.9194380303790369,
+              0.9595114700457089
+            ],
+            [
+              0.10671649689881324,
+              0.8430716170436094,
+              0.5941175360001966,
+              0.29808113387222224,
+              0.20397200961392103,
+              0.7864759332865895,
+              0.2953853292980684,
+              0.647838826859492
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.02545382240542382,
+              0.027586787458946382,
+              0.35806898126367737,
+              0.9248313538262233,
+              0.9845336998805431,
+              0.8418648698971751,
+              0.7096326655324412,
+              0.9966796903996429
+            ],
+            [
+              0.303297224063942,
+              0.8242296535776688,
+              0.06368040657610907,
+              0.7467541494651716,
+              0.3338705436304108,
+              0.19803767339860412,
+              0.4248548136413285,
+              0.8466130372911846
+            ],
+            [
+              0.6976990773622054,
+              0.1498512188826081,
+              0.8544702196964138,
+              0.6731695200904843,
+              0.8905484868513461,
+              0.02596517507391527,
+              0.354051504760321,
+              0.7026879615463218
+            ],
+            [
+              0.628650238150454,
+              0.20481124049586297,
+              0.27507907218842176,
+              0.021377177240996525,
+              0.13443612350049794,
+              0.32117700106523683,
+              0.7150171511970748,
+              0.4937333985575588
+            ],
+            [
+              0.9256352250792595,
+              0.43378533442739664,
+              0.8950168592429104,
+              0.03814125954749148,
+              0.8383518946489782,
+              0.5020837088277695,
+              0.9777933998486432,
+              0.7039607398793627
+            ]
+          ],
+          [
+            [
+              0.31113474594426915,
+              0.3771246207055019,
+              0.7473145877673629,
+              0.25582948986872267,
+              0.6631956914824965,
+              0.09892712572640117,
+              0.7110591324238064,
+              0.8590905993665015
+            ],
+            [
+              0.7514915018321645,
+              0.46815624385376386,
+              0.22461162713870997,
+              0.2519793905549672,
+              0.17456187955435432,
+              0.2540932788236976,
+              0.1295338401632461,
+              0.8979913064857765
+            ],
+            [
+              0.39586513901950016,
+              0.7522509662842926,
+              0.24368770109372606,
+              0.08275716199534833,
+              0.1600453817504125,
+              0.9842852761579397,
+              0.8647200628336723,
+              0.8944459721131583
+            ],
+            [
+              0.14973127471932635,
+              0.3624650320198328,
+              0.7039976259374258,
+              0.6315997088099893,
+              0.6757505421447462,
+              0.5784764912493109,
+              0.25024314176945395,
+              0.47875765508899015
+            ],
+            [
+              0.4729520134479668,
+              0.39536583398016145,
+              0.9519759239541544,
+              0.8898298568683797,
+              0.255022998064921,
+              0.5394419658542351,
+              0.8448546659327489,
+              0.6176139655099778
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.7609172216415377,
+              0.556593814170361,
+              0.6555521296667955,
+              0.9831737973476127,
+              0.26334273960673993,
+              0.6296337699673025,
+              0.1501923228195482,
+              0.693405434175584
+            ],
+            [
+              0.5161899327504752,
+              0.1396951727622996,
+              0.8409618177373325,
+              0.40613152455635126,
+              0.5679497163169445,
+              0.8489758848590969,
+              0.1691875669023818,
+              0.0997441348296213
+            ],
+            [
+              0.40540188738595595,
+              0.2339050804180477,
+              0.45274509169866084,
+              0.6097199874443991,
+              0.8672275501230573,
+              0.0030189708223410383,
+              0.4106065114157541,
+              0.31718967542583454
+            ],
+            [
+              0.5166126328697254,
+              0.24066152988270528,
+              0.6951843307111024,
+              0.37439587107363925,
+              0.6842367314718761,
+              0.13414844147220817,
+              0.369944330521391,
+              0.881474911977326
+            ],
+            [
+              0.729335803499427,
+              0.44362894561262656,
+              0.501138820513455,
+              0.5992243899432166,
+              0.5168436798395672,
+              0.14099542169903434,
+              0.8442555885072256,
+              0.5331184589509425
+            ]
+          ],
+          [
+            [
+              0.6770730094020155,
+              0.4241223286691602,
+              0.5088874657894802,
+              0.030766848578149042,
+              0.6904979523017118,
+              0.8454536196567936,
+              0.8350025092537793,
+              0.3113704802921956
+            ],
+            [
+              0.5445984249460634,
+              0.5757584082126613,
+              0.7973679330008608,
+              0.4436255578688788,
+              0.4356627214191551,
+              0.8405285612577763,
+              0.6730872149110512,
+              0.2985385050839302
+            ],
+            [
+              0.9606072206291285,
+              0.024843021250050223,
+              0.42070941728408406,
+              0.608693943881888,
+              0.40259401996222977,
+              0.31187243517073027,
+              0.41713627018812016,
+              0.1975898896125411
+            ],
+            [
+              0.9574042848807338,
+              0.20611089365277202,
+              0.43339884704146114,
+              0.41671153393079374,
+              0.24322443948638606,
+              0.16242763333625176,
+              0.5505637767664586,
+              0.5558284295563178
+            ],
+            [
+              0.2932699891691727,
+              0.10794094131144605,
+              0.8793452159230469,
+              0.5466197448275796,
+              0.5768631381415337,
+              0.3077319690920075,
+              0.617846470606055,
+              0.8026678332937474
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.5365395108724827,
+              0.4603859891868841,
+              0.5959990947105288,
+              0.3712407741560261,
+              0.9642181114708283,
+              0.951074957625328,
+              0.5903167990684807,
+              0.3604334098495966
+            ],
+            [
+              0.13933699127394428,
+              0.6762948777045333,
+              0.533600359484816,
+              0.78124155892029,
+              0.4559767865671236,
+              0.20197459869587353,
+              0.2869857321974446,
+              0.1669150639847965
+            ],
+            [
+              0.1509521218059151,
+              0.5306677845293978,
+              0.49584907444892246,
+              0.7500755829173278,
+              0.2167311457641833,
+              0.010044128830622223,
+              0.9315259433805164,
+              0.10096238846694694
+            ],
+            [
+              0.014134341496740976,
+              0.48901758087299607,
+              0.7624036911566677,
+              0.4601508229239275,
+              0.5207840874213988,
+              0.38972760667957385,
+              0.43392169045871054,
+              0.2884999233530494
+            ],
+            [
+              0.7484525089079889,
+              0.431196107457153,
+              0.45600769186664947,
+              0.9603829017985993,
+              0.505090917647087,
+              0.1283400288239014,
+              0.3000462786762148,
+              0.305402806541765
+            ]
+          ],
+          [
+            [
+              0.2857556739343037,
+              0.4635117421804328,
+              0.34460673371337647,
+              0.09970795503329388,
+              0.42654292559576845,
+              0.3864009567899047,
+              0.13710595382431645,
+              0.5740129506289187
+            ],
+            [
+              0.583492865999491,
+              0.016039678428363957,
+              0.7378381277293405,
+              0.594419893279405,
+              0.8886712551429303,
+              0.634104440231681,
+              0.42456753706285144,
+              0.923599960358416
+            ],
+            [
+              0.33500947104863377,
+              0.9527500454905546,
+              0.15616597032975832,
+              0.541758799506043,
+              0.7536981202775156,
+              0.5427586826167129,
+              0.3387679088372402,
+              0.012772434023516799
+            ],
+            [
+              0.9858895664051638,
+              0.6833580144246398,
+              0.12524509848187337,
+              0.12645044556563034,
+              0.7213704787649252,
+              0.957754533508076,
+              0.4323970808448545,
+              0.590289163680884
+            ],
+            [
+              0.9824182362462967,
+              0.7750512557646104,
+              0.7577636123076233,
+              0.6401109158718853,
+              0.2785607945595169,
+              0.7728010207827563,
+              0.7671959225173146,
+              0.776470993553869
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.22732577731465908,
+              0.642291889377242,
+              0.9128390258612658,
+              0.058068941453947365,
+              0.21593360993308863,
+              0.7392998358658514,
+              0.06065302519081717,
+              0.5485335743638367
+            ],
+            [
+              0.40282929887768115,
+              0.00018288108411557147,
+              0.9721036428813491,
+              0.5671789567497872,
+              0.39281043137735183,
+              0.9972785657374927,
+              0.11589697358869233,
+              0.9975543873637702
+            ],
+            [
+              0.9343249221213302,
+              0.9392860442878774,
+              0.6513358150174523,
+              0.8443840933486678,
+              0.02342996220987903,
+              0.46522640517496683,
+              0.664758321322087,
+              0.6645107661399623
+            ],
+            [
+              0.9784620047801005,
+              0.8145958972099029,
+              0.06680778183471425,
+              0.5240079945773006,
+              0.048367872898760655,
+              0.3060690470778219,
+              0.9936492419025281,
+              0.8591114778398558
+            ],
+            [
+              0.8791796659860526,
+              0.9728962888804223,
+              0.8505881361897233,
+              0.553978137344179,
+              0.6355598013059679,
+              0.4253217294829842,
+              0.003159602984899923,
+              0.7512611190216023
+            ]
+          ],
+          [
+            [
+              0.9703519733149206,
+              0.16436502663980368,
+              0.4086229070101044,
+              0.7486947371385205,
+              0.21582981423502645,
+              0.6030237805448908,
+              0.012520032207260279,
+              0.2733764282086971
+            ],
+            [
+              0.9538436744015767,
+              0.6925044355150416,
+              0.3943578932060572,
+              0.11327180142675886,
+              0.2588434487123439,
+              0.7634012817022698,
+              0.852876878975282,
+              0.9500496605197226
+            ],
+            [
+              0.5822631642535392,
+              0.1601629604344763,
+              0.2778624971684608,
+              0.8027653691249637,
+              0.031783468052363095,
+              0.3319157218225941,
+              0.7927629027471689,
+              0.018857952486299068
+            ],
+            [
+              0.12003592826165232,
+              0.3549982533760808,
+              0.08690883265561633,
+              0.7318464798550479,
+              0.14912200752674665,
+              0.5668489654609441,
+              0.5597175876357203,
+              0.4926367664418604
+            ],
+            [
+              0.11061947043775722,
+              0.2749614999032234,
+              0.44337445239199536,
+              0.13615189515604653,
+              0.8589426523341287,
+              0.2057669263833274,
+              0.7002040611949358,
+              0.027190667138959124
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.2155049611337807,
+              0.4492116989947831,
+              0.6046610012214813,
+              0.7223180937345229,
+              0.11436537320192741,
+              0.057247238793586175,
+              0.8085132592465496,
+              0.8008042634184571
+            ],
+            [
+              0.22220181213456847,
+              0.5711582530364103,
+              0.15326066112091574,
+              0.06841476058046814,
+              0.7751960728601848,
+              0.7438385535849568,
+              0.7090589549496733,
+              0.10993684497804956
+            ],
+            [
+              0.012312768793869555,
+              0.14898313489599524,
+              0.15387199076454094,
+              0.8424889270752007,
+              0.1730316957374437,
+              0.6586478770510548,
+              0.49263618162715106,
+              0.821288406987177
+            ],
+            [
+              0.9784445469442862,
+              0.7992464218431233,
+              0.5501787731691209,
+              0.9863943197174909,
+              0.776642183257868,
+              0.15938770493768573,
+              0.19610221338076494,
+              0.34624068998811697
+            ],
+            [
+              0.11861392571325413,
+              0.4660774640138121,
+              0.600093833781531,
+              0.39117375981848235,
+              0.505245739296977,
+              0.3116349345065076,
+              0.6228046690277566,
+              0.6495924526781754
+            ]
+          ],
+          [
+            [
+              0.984014688755382,
+              0.014126504011716556,
+              0.3033903072673809,
+              0.7847682647138113,
+              0.007289335612530756,
+              0.04260005104172038,
+              0.07247756366445202,
+              0.7444212823005786
+            ],
+            [
+              0.3975063826604147,
+              0.6602825180062739,
+              0.5778496250694101,
+              0.9240397544742927,
+              0.29486390163272547,
+              0.6793407323652435,
+              0.9930113613049997,
+              0.4867377265950562
+            ],
+            [
+              0.7144140865496754,
+              0.9004467295294907,
+              0.6974829485853692,
+              0.014573795579159055,
+              0.925607014220885,
+              0.8006292705912982,
+              0.24521108615257348,
+              0.29874360126491206
+            ],
+            [
+              0.11286177141029752,
+              0.21164957221365022,
+              0.3179952121095103,
+              0.370589972903445,
+              0.41700393303018024,
+              0.8159982903547063,
+              0.02926463181479888,
+              0.6998049812090624
+            ],
+            [
+              0.3687018426165398,
+              0.7434680399127167,
+              0.9620088800925386,
+              0.3262216235556583,
+              0.4325040215545476,
+              0.6192812517798268,
+              0.9525147595758826,
+              0.8354868473763762
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.3543316990468781,
+              0.9364184768037319,
+              0.7652363633174413,
+              0.4625892764772268,
+              0.7361121101182344,
+              0.5827912989914766,
+              0.36554220468609366,
+              0.3828744720334757
+            ],
+            [
+              0.5557312504428236,
+              0.7998360965295358,
+              0.6924891829647609,
+              0.12065102972161024,
+              0.09180116136046923,
+              0.3416097782934332,
+              0.3075926539925691,
+              0.394645066585671
+            ],
+            [
+              0.4732292042209232,
+              0.4230239417556606,
+              0.5874533650053947,
+              0.670916748549572,
+              0.42825654710497185,
+              0.4053928233560554,
+              0.8232175489658591,
+              0.501130736886753
+            ],
+            [
+              0.7263819469246211,
+              0.33790629870216404,
+              0.10173410421556184,
+              0.6962635266120866,
+              0.9861215097185696,
+              0.2898768225710251,
+              0.4037067500826571,
+              0.6125982396002077
+            ],
+            [
+              0.3438669870192004,
+              0.7201791834094763,
+              0.00010766674392459485,
+              0.7325575215110612,
+              0.34807238368485016,
+              0.7188026094680398,
+              0.31192111005875767,
+              0.7765115743990605
+            ]
+          ],
+          [
+            [
+              0.9777084923698226,
+              0.349121297628188,
+              0.5522292738705202,
+              0.32237246708301703,
+              0.5041177444089958,
+              0.39502993435356903,
+              0.38680162235412097,
+              0.728717584573505
+            ],
+            [
+              0.778444564655652,
+              0.2270185851688279,
+              0.7795185817762948,
+              0.38394946738509306,
+              0.9896827848383335,
+              0.1530085032310381,
+              0.9250361751753351,
+              0.21186059937654522
+            ],
+            [
+              0.4924740200018026,
+              0.046302418209218876,
+              0.871438007817339,
+              0.7246037866874809,
+              0.5201853096657103,
+              0.6599172417347592,
+              0.9139021869711943,
+              0.2514428904989271
+            ],
+            [
+              0.6596638019943799,
+              0.42790802260059535,
+              0.9901152619547445,
+              0.10939878586752216,
+              0.30597042790746554,
+              0.39958316688995044,
+              0.7200572815828837,
+              0.05748588907275087
+            ],
+            [
+              0.758216152529641,
+              0.7663593397773361,
+              0.3297236714640014,
+              0.38405732205520327,
+              0.4011415427952205,
+              0.6356810811475339,
+              0.7660485776307643,
+              0.1728367208030237
+            ]
+          ]
+        ]
+      ]
+    },
+    "c8f60c27-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/nD/oneD"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [40]
+      },
+      "type": {
+        "base": "H5T_IEEE_F64LE",
+        "class": "H5T_FLOAT"
+      },
+      "value": [
+        -20.0,
+        -19.0,
+        -18.0,
+        -17.0,
+        -16.0,
+        -15.0,
+        -14.0,
+        -13.0,
+        -12.0,
+        -11.0,
+        -10.0,
+        -9.0,
+        -8.0,
+        -7.0,
+        -6.0,
+        -5.0,
+        -4.0,
+        -3.0,
+        -2.0,
+        -1.0,
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0,
+        13.0,
+        14.0,
+        15.0,
+        16.0,
+        17.0,
+        18.0,
+        19.0
+      ]
+    },
+    "c8f60c28-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/nD/threeD"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [2, 40, 20]
+      },
+      "type": {
+        "base": "H5T_IEEE_F64LE",
+        "class": "H5T_FLOAT"
+      },
+      "value": [
+        [
+          [
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0,
+            400.0
+          ],
+          [
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0
+          ],
+          [
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0
+          ],
+          [
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0
+          ],
+          [
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0
+          ],
+          [
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0
+          ],
+          [
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0
+          ],
+          [
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0
+          ],
+          [
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0
+          ],
+          [
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0
+          ],
+          [
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0
+          ],
+          [
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0
+          ],
+          [
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0
+          ],
+          [
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0
+          ],
+          [
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0
+          ],
+          [
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0
+          ],
+          [
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0
+          ],
+          [
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0
+          ],
+          [
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0
+          ],
+          [
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0,
+            9.0
+          ],
+          [
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+            16.0
+          ],
+          [
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0,
+            25.0
+          ],
+          [
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0,
+            36.0
+          ],
+          [
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0,
+            49.0
+          ],
+          [
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0
+          ],
+          [
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0,
+            81.0
+          ],
+          [
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0,
+            100.0
+          ],
+          [
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0,
+            121.0
+          ],
+          [
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0,
+            144.0
+          ],
+          [
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0,
+            169.0
+          ],
+          [
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0,
+            196.0
+          ],
+          [
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0,
+            225.0
+          ],
+          [
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0,
+            256.0
+          ],
+          [
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0,
+            289.0
+          ],
+          [
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0,
+            324.0
+          ],
+          [
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0,
+            361.0
+          ]
+        ],
+        [
+          [
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0,
+            -8000.0
+          ],
+          [
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0,
+            -6859.0
+          ],
+          [
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0,
+            -5832.0
+          ],
+          [
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0,
+            -4913.0
+          ],
+          [
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0,
+            -4096.0
+          ],
+          [
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0,
+            -3375.0
+          ],
+          [
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0,
+            -2744.0
+          ],
+          [
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0,
+            -2197.0
+          ],
+          [
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0,
+            -1728.0
+          ],
+          [
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0,
+            -1331.0
+          ],
+          [
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0,
+            -1000.0
+          ],
+          [
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0,
+            -729.0
+          ],
+          [
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0,
+            -512.0
+          ],
+          [
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0,
+            -343.0
+          ],
+          [
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0,
+            -216.0
+          ],
+          [
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0,
+            -125.0
+          ],
+          [
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0,
+            -64.0
+          ],
+          [
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0,
+            -27.0
+          ],
+          [
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0,
+            -8.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0
+          ],
+          [
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0
+          ],
+          [
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0,
+            64.0
+          ],
+          [
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0,
+            125.0
+          ],
+          [
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0,
+            216.0
+          ],
+          [
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0,
+            343.0
+          ],
+          [
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0,
+            512.0
+          ],
+          [
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0,
+            729.0
+          ],
+          [
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0,
+            1000.0
+          ],
+          [
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0,
+            1331.0
+          ],
+          [
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0,
+            1728.0
+          ],
+          [
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0,
+            2197.0
+          ],
+          [
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0,
+            2744.0
+          ],
+          [
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0,
+            3375.0
+          ],
+          [
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0,
+            4096.0
+          ],
+          [
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0,
+            4913.0
+          ],
+          [
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0,
+            5832.0
+          ],
+          [
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0,
+            6859.0
+          ]
+        ]
+      ]
+    },
+    "c8f60c29-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/nD/twoD"],
+      "creationProperties": {
+        "allocTime": "H5D_ALLOC_TIME_LATE",
+        "fillTime": "H5D_FILL_TIME_IFSET",
+        "layout": {
+          "class": "H5D_CONTIGUOUS"
+        }
+      },
+      "shape": {
+        "class": "H5S_SIMPLE",
+        "dims": [40, 20]
+      },
+      "type": {
+        "base": "H5T_IEEE_F64LE",
+        "class": "H5T_FLOAT"
+      },
+      "value": [
+        [
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0,
+          400.0
+        ],
+        [
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0
+        ],
+        [
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0
+        ],
+        [
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0
+        ],
+        [
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0
+        ],
+        [
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0
+        ],
+        [
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0
+        ],
+        [
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0
+        ],
+        [
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0
+        ],
+        [
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0
+        ],
+        [
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        [
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0
+        ],
+        [
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0
+        ],
+        [
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0
+        ],
+        [
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0
+        ],
+        [
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0
+        ],
+        [
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0
+        ],
+        [
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0
+        ],
+        [
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        [
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0,
+          9.0
+        ],
+        [
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+          16.0
+        ],
+        [
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0,
+          25.0
+        ],
+        [
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0,
+          36.0
+        ],
+        [
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0,
+          49.0
+        ],
+        [
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0,
+          64.0
+        ],
+        [
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0,
+          81.0
+        ],
+        [
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        [
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0,
+          121.0
+        ],
+        [
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0,
+          144.0
+        ],
+        [
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0,
+          169.0
+        ],
+        [
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0,
+          196.0
+        ],
+        [
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0,
+          225.0
+        ],
+        [
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0,
+          256.0
+        ],
+        [
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0,
+          289.0
+        ],
+        [
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0,
+          324.0
+        ],
+        [
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0,
+          361.0
+        ]
+      ]
     }
   },
-  "datatypes": {}
+  "groups": {
+    "c8f60c06-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/"],
+      "attributes": [
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000"
+        },
+        {
+          "name": "file_update_time",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "2020-02-21T10:00:41+01:00"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c07-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "entry_0000"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c25-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "nD"
+        }
+      ]
+    },
+    "c8f60c07-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/entry_0000"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXentry"
+        },
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000/3_azimuthal_integration/results"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c08-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "0_measurement"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c0a-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "1_cormap"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c14-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "2_buffer_subtraction"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c19-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "3_azimuthal_integration"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c21-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "end_time"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c22-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "program_name"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c23-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "start_time"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c24-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "title"
+        }
+      ]
+    },
+    "c8f60c08-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/entry_0000/0_measurement"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXcollection"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_EXTERNAL",
+          "file": "/mntdirect/_scisoft/users/kieffer/BM29/dahu/bsa_001_000-integrate.h5",
+          "h5path": "/entry_0000",
+          "title": "buffer_0"
+        },
+        {
+          "class": "H5L_TYPE_EXTERNAL",
+          "file": "/mntdirect/_scisoft/users/kieffer/BM29/dahu/bsa_003_000-integrate.h5",
+          "h5path": "/entry_0000",
+          "title": "buffer_1"
+        },
+        {
+          "class": "H5L_TYPE_EXTERNAL",
+          "file": "bsa_002_000-integrate.h5",
+          "h5path": "/entry_0000",
+          "title": "sample"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c09-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "sequence_index"
+        }
+      ]
+    },
+    "c8f60c0a-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/entry_0000/1_cormap"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXprocess"
+        },
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000/1_cormap/results"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c0b-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "date"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c0c-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "fidelity"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c0d-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "program"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c0e-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "results"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c11-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "sequence_index"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c12-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "to_merge"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c13-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "version"
+        }
+      ]
+    },
+    "c8f60c0e-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/entry_0000/1_cormap/results"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXdata"
+        },
+        {
+          "name": "signal",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "probability"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c0f-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "count"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c10-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "probability"
+        }
+      ]
+    },
+    "c8f60c14-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/entry_0000/2_buffer_subtraction"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXprocess"
+        },
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000/2_buffer_subtraction/results"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c15-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "program"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c16-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "results"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c17-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "sequence_index"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c18-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "version"
+        }
+      ]
+    },
+    "c8f60c16-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/entry_0000/2_buffer_subtraction/results"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXdata"
+        },
+        {
+          "name": "signal",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "intensity_normed"
+        }
+      ]
+    },
+    "c8f60c19-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/entry_0000/3_azimuthal_integration"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXprocess"
+        },
+        {
+          "name": "default",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "/entry_0000/3_azimuthal_integration/results"
+        }
+      ],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c1a-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "configuration"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c1b-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "date"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c1c-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "polarization_factor"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c1d-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "program"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "groups",
+          "id": "c8f60c1e-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "results"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c1f-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "sequence_index"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c20-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "version"
+        }
+      ]
+    },
+    "c8f60c1e-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/entry_0000/3_azimuthal_integration/results"],
+      "attributes": [
+        {
+          "name": "NX_class",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "NXdata"
+        },
+        {
+          "name": "axes",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "q"
+        },
+        {
+          "name": "signal",
+          "shape": {
+            "class": "H5S_SCALAR"
+          },
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM"
+          },
+          "value": "I"
+        }
+      ]
+    },
+    "c8f60c25-aae2-11ea-84a9-b94ddd2ec9e8": {
+      "alias": ["/nD"],
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c26-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "fourD"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c27-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "oneD"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c28-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "threeD"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "collection": "datasets",
+          "id": "c8f60c29-aae2-11ea-84a9-b94ddd2ec9e8",
+          "title": "twoD"
+        }
+      ]
+    }
+  },
+  "root": "c8f60c06-aae2-11ea-84a9-b94ddd2ec9e8"
 }
