@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './ScalarVis.module.css';
-import { useVisProps } from '../dataset-visualizer/VisProvider';
+import { useScalarData } from '../dataset-visualizer/VisProvider';
 
 function ScalarVis(): JSX.Element {
-  const { values } = useVisProps();
-  return <div className={styles.scalar}>{values.toString()}</div>;
+  const value = useScalarData();
+  return <div className={styles.scalar}>{value.toString()}</div>;
 }
 
 export default ScalarVis;

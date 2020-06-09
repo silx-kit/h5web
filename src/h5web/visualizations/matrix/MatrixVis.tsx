@@ -5,13 +5,13 @@ import styles from './MatrixVis.module.css';
 import GridSettingsProvider from './GridSettingsContext';
 import StickyGrid from './StickyGrid';
 import Cell from './Cell';
-import { useData, useDims } from './hooks';
+import { useDataArray } from '../../dataset-visualizer/VisProvider';
 
 const CELL_SIZE = { width: 116, height: 32 };
 
 function MatrixVis(): JSX.Element {
-  const data = useData();
-  const dims = useDims();
+  const dataArray = useDataArray();
+  const dims = dataArray.shape;
 
   const [divRef, { width, height }] = useMeasure();
   const isVisible = width > 0 && height > 0;
@@ -25,7 +25,9 @@ function MatrixVis(): JSX.Element {
       rowCount={rowCount}
       columnCount={columnCount}
       valueAccessor={
-        dims.length === 1 ? (row) => data[row] : (row, col) => data[row][col]
+        dims.length === 1
+          ? (row) => dataArray.get(row)
+          : (row, col) => dataArray.get(row, col)
       }
     >
       <div ref={divRef} className={styles.wrapper}>

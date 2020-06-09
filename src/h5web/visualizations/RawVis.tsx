@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './RawVis.module.css';
-import { useVisProps } from '../dataset-visualizer/VisProvider';
+import { VisContext } from '../dataset-visualizer/VisProvider';
 
 function RawVis(): JSX.Element {
-  const { values } = useVisProps();
+  const values = useContext(VisContext);
   return <pre className={styles.raw}>{JSON.stringify(values, null, 2)}</pre>;
 }
 

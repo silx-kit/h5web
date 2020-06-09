@@ -11,27 +11,16 @@ import { useHeatmapConfig } from './config';
 import type { D3Interpolator, Dims } from './models';
 import { INTERPOLATORS } from './interpolators';
 import type { TextureWorker } from './worker';
-import { useVisProps } from '../../dataset-visualizer/VisProvider';
-
-export function useData(): number[][] {
-  const { values } = useVisProps();
-
-  return values;
-}
+import { useDataArray } from '../../dataset-visualizer/VisProvider';
 
 export function useDims(): Dims {
-  const { rawDims } = useVisProps();
-
-  if (rawDims.length === 2) {
-    return rawDims as Dims;
-  }
-
-  throw new Error('Data not supported by HeatmapVis');
+  const dataArray = useDataArray();
+  return dataArray.shape as Dims;
 }
 
 export function useValues(): number[] {
-  const data = useData();
-  return useMemo(() => data.flat(), [data]);
+  const dataArray = useDataArray();
+  return useMemo(() => dataArray.data as number[], [dataArray]);
 }
 
 export function useInterpolator(): D3Interpolator {

@@ -36,7 +36,12 @@ export class HsdsApi implements ProviderAPI {
   private datatypes: Record<HDF5Id, HDF5Datatype> = {};
   private values: Record<HDF5Id, HDF5Value> = {};
 
-  constructor(username: string, password: string, filepath: string) {
+  constructor(
+    url: string,
+    username: string,
+    password: string,
+    filepath: string
+  ) {
     this.domain = `/home/${username}/${filepath}`;
     this.config = {
       params: { domain: this.domain },
@@ -49,7 +54,7 @@ export class HsdsApi implements ProviderAPI {
     // The fix is merged but not released (https://github.com/axios/axios/releases).
     // In the mean time, we put this.config in arg to all client requests.
     this.client = axios.create({
-      baseURL: `http://localhost:80`,
+      baseURL: url,
       ...this.config,
     });
   }

@@ -6,7 +6,7 @@ import type { AxisConfig } from './models';
 import { computeVisSize } from './utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
-import { useVisProps, VisContext } from '../../dataset-visualizer/VisProvider';
+import { useDataArray, VisContext } from '../../dataset-visualizer/VisProvider';
 
 const AXIS_OFFSETS = { vertical: 72, horizontal: 36, fallback: 10 };
 
@@ -19,7 +19,7 @@ interface Props {
 
 function VisCanvas(props: Props): JSX.Element {
   const { abscissaConfig, ordinateConfig, aspectRatio, children } = props;
-  const visProps = useVisProps();
+  const visProps = useDataArray();
 
   const [visAreaRef, visAreaSize] = useMeasure();
 

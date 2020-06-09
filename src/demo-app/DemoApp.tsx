@@ -5,6 +5,11 @@ import SilxProvider from '../h5web/providers/silx/SilxProvider';
 import MockProvider from '../h5web/providers/mock/MockProvider';
 import HsdsProvider from '../h5web/providers/hsds/HsdsProvider';
 
+const HSDS_URL = process.env.REACT_APP_HSDS_URL || '';
+const HSDS_USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';
+const HSDS_PASSWORD = process.env.REACT_APP_HSDS_PASSWORD || '';
+const HSDS_FILEPATH = process.env.REACT_APP_HSDS_FILEPATH || '';
+
 function DemoApp(): JSX.Element {
   return (
     <Router>
@@ -16,9 +21,10 @@ function DemoApp(): JSX.Element {
         </Route>
         <Route path="/hsds">
           <HsdsProvider
-            username="test_user1"
-            password="test"
-            filepath="test/tall.h5"
+            url={HSDS_URL}
+            username={HSDS_USERNAME}
+            password={HSDS_PASSWORD}
+            filepath={HSDS_FILEPATH}
           >
             <App />
           </HsdsProvider>
