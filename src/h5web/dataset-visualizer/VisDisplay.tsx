@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { range } from 'lodash-es';
-import { Vis, DimensionMapping } from './models';
+import type { Vis, DimensionMapping } from './models';
 import DimensionMapper from './DimensionMapper';
 import VisProvider from './VisProvider';
 import type { HDF5Dataset } from '../providers/models';
@@ -24,11 +23,7 @@ function VisDisplay(props: Props): JSX.Element {
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
   if (activeVis !== prevVis) {
     setPrevVis(activeVis);
-    setMapperState(
-      activeVis === Vis.Line
-        ? [...range(0, datasetDims.length - 1).fill(0), 'x']
-        : undefined
-    );
+    setMapperState(VIS_DEFS[activeVis].defaultMappingState(datasetDims));
   }
 
   const VisComponent = VIS_DEFS[activeVis].Component;

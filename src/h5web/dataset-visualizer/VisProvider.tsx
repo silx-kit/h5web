@@ -34,23 +34,27 @@ function VisProvider(props: Props): ReactElement {
       return undefined;
     }
 
-    if (rawDims.length !== 0) {
-      const rawDataArray = ndarray(rawValues.flat(Infinity), rawDims);
-      if (mapperState === undefined) {
-        return rawDataArray;
-      }
-      const slicingIndices = mapperState.map((val) =>
-        isNumber(val) ? val : null
-      );
-      // The dimensions untouched by the slicing are only the ones of 'x' and 'y'
-      const slicedDims = rawDims.filter((d, i) => !isNumber(mapperState[i]));
-      return ndarray(
-        unpack(rawDataArray.pick(...slicingIndices)).flat(Infinity),
-        slicedDims
-      );
+    if (rawDims.length === 0) {
+      return rawValues;
     }
 
-    return rawValues;
+    const rawDataArray = ndarray(rawValues.flat(Infinity), rawDims);
+    if (mapperState === undefined) {
+      return rawDataArray;
+    }
+    const slicingIndices = mapperState.map((val) =>
+      isNumber(val) ? val : null
+    );
+
+    const xIsBeforeY =
+      mapperState.includes('y') &&
+      mapperState.indexOf('x') < mapperState.indexOf('y');
+
+    const viewOfDataArray = xIsBeforeY
+      ? rawDataArray.pick(...slicingIndices).transpose(1, 0)
+      : rawDataArray.pick(...slicingIndices);
+    // Create a new ndarray with the data from the view and its shape
+    return ndarray(unpack(viewOfDataArray).flat(), viewOfDataArray.shape);
   }, [rawValues, rawDims, mapperState]);
 
   if (values === undefined) {
