@@ -11,13 +11,9 @@ import type { HDF5Id, HDF5Value, HDF5Metadata } from '../models';
  * - /entry_0000/3_azimuthal_integration/results/errors (id = 388a7060-5e02-11ea-88b6-478d93326ed6)
  * - /entry_0000/3_azimuthal_integration/results/q (id = 388a7061-5e02-11ea-88b6-478d93326ed6)
  */
-import mockMetadata from './metadata.json';
-import mockValues from './values.json';
+import mockData from './data.json';
 
 export class MockApi implements ProviderAPI {
-  private metadata = mockMetadata as HDF5Metadata;
-  private values: Record<string, HDF5Value> = mockValues;
-
   constructor(private readonly domain: string) {}
 
   public getDomain(): string {
@@ -25,10 +21,10 @@ export class MockApi implements ProviderAPI {
   }
 
   public async getMetadata(): Promise<HDF5Metadata> {
-    return this.metadata;
+    return mockData as HDF5Metadata;
   }
 
   public async getValue(id: HDF5Id): Promise<HDF5Value> {
-    return this.values[id];
+    return (mockData as any).datasets[id].value; // eslint-disable-line @typescript-eslint/no-explicit-any
   }
 }

@@ -531,7 +531,8 @@
       "type": {
         "base": "H5T_STD_I64LE",
         "class": "H5T_INTEGER"
-      }
+      },
+      "value": 0
     },
     "388a7049-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7049-5e02-11ea-88b6-478d93326ed6",
@@ -552,7 +553,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "2020-02-21T10:00:41+01:00"
     },
     "388a704a-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a704a-5e02-11ea-88b6-478d93326ed6",
@@ -571,7 +573,8 @@
       "type": {
         "base": "H5T_STD_I64LE",
         "class": "H5T_INTEGER"
-      }
+      },
+      "value": 0
     },
     "388a704b-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a704b-5e02-11ea-88b6-478d93326ed6",
@@ -592,7 +595,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "freesas"
     },
     "388a704d-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a704d-5e02-11ea-88b6-478d93326ed6",
@@ -640,7 +644,11 @@
       "type": {
         "base": "H5T_STD_U16LE",
         "class": "H5T_INTEGER"
-      }
+      },
+      "value": [
+        [0, 18],
+        [18, 0]
+      ]
     },
     "388a704e-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a704e-5e02-11ea-88b6-478d93326ed6",
@@ -688,7 +696,11 @@
       "type": {
         "base": "H5T_IEEE_F32LE",
         "class": "H5T_FLOAT"
-      }
+      },
+      "value": [
+        [1, 0.003746873466297984],
+        [0.003746873466297984, 1]
+      ]
     },
     "388a704f-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a704f-5e02-11ea-88b6-478d93326ed6",
@@ -707,7 +719,8 @@
       "type": {
         "base": "H5T_STD_I64LE",
         "class": "H5T_INTEGER"
-      }
+      },
+      "value": 1
     },
     "388a7050-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7050-5e02-11ea-88b6-478d93326ed6",
@@ -727,7 +740,8 @@
       "type": {
         "base": "H5T_STD_U16LE",
         "class": "H5T_INTEGER"
-      }
+      },
+      "value": [0, 1]
     },
     "388a7051-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7051-5e02-11ea-88b6-478d93326ed6",
@@ -748,7 +762,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "0.7.1"
     },
     "388a7053-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7053-5e02-11ea-88b6-478d93326ed6",
@@ -769,7 +784,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "bm29.subtracte.subtractbuffer"
     },
     "388a7057-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7057-5e02-11ea-88b6-478d93326ed6",
@@ -788,7 +804,8 @@
       "type": {
         "base": "H5T_STD_I64LE",
         "class": "H5T_INTEGER"
-      }
+      },
+      "value": 2
     },
     "388a7058-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7058-5e02-11ea-88b6-478d93326ed6",
@@ -809,7 +826,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "0.1.0"
     },
     "388a705a-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a705a-5e02-11ea-88b6-478d93326ed6",
@@ -830,7 +848,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "{\"poni_version\": 2, \"detector\": \"Pilatus1M\", \"detector_config\": {}, \"dist\": 2.872, \"poni1\": 0.01548, \"poni2\": 0.15394, \"rot1\": 0.0, \"rot2\": 0.0, \"rot3\": 0.0, \"wavelength\": 9.918735874656021e-11}"
     },
     "388a705b-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a705b-5e02-11ea-88b6-478d93326ed6",
@@ -851,7 +870,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "2020-02-21T10:00:41+01:00"
     },
     "388a705c-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a705c-5e02-11ea-88b6-478d93326ed6",
@@ -870,7 +890,8 @@
       "type": {
         "base": "H5T_IEEE_F64LE",
         "class": "H5T_FLOAT"
-      }
+      },
+      "value": 0.9
     },
     "388a705d-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a705d-5e02-11ea-88b6-478d93326ed6",
@@ -891,7 +912,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "pyFAI"
     },
     "388a7062-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7062-5e02-11ea-88b6-478d93326ed6",
@@ -910,7 +932,8 @@
       "type": {
         "base": "H5T_STD_I64LE",
         "class": "H5T_INTEGER"
-      }
+      },
+      "value": 3
     },
     "388a7063-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7063-5e02-11ea-88b6-478d93326ed6",
@@ -931,7 +954,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "0.19.0"
     },
     "388a7064-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7064-5e02-11ea-88b6-478d93326ed6",
@@ -952,7 +976,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "2020-02-21T10:00:41+01:00"
     },
     "388a7065-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7065-5e02-11ea-88b6-478d93326ed6",
@@ -973,7 +998,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "bm29.subtractbuffer"
     },
     "388a7066-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7066-5e02-11ea-88b6-478d93326ed6",
@@ -994,7 +1020,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "2020-02-21T10:00:41+01:00"
     },
     "388a7067-5e02-11ea-88b6-478d93326ed6": {
       "id": "388a7067-5e02-11ea-88b6-478d93326ed6",
@@ -1015,7 +1042,8 @@
         "class": "H5T_STRING",
         "length": "H5T_VARIABLE",
         "strPad": "H5T_STR_NULLTERM"
-      }
+      },
+      "value": "BioSaxs buffer subtraction"
     }
   },
   "datatypes": {}
