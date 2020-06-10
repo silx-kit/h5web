@@ -60,7 +60,7 @@ function ToggleGroup(props: Props): JSX.Element {
 
   return (
     <ToggleGroupContext.Provider value={{ role, value, onChange }}>
-      <div className={styles.toggleGroup} role={role} aria-label={ariaLabel}>
+      <div className={styles.group} role={role} aria-label={ariaLabel}>
         {children}
       </div>
     </ToggleGroupContext.Provider>

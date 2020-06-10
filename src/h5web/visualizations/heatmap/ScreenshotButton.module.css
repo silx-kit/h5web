@@ -1,0 +1,16 @@
+.link {
+  composes: btn from '../shared/Toolbar.module.css';
+  color: inherit;
+}
+
+.btnLike {
+  composes: btnLike from '../shared/Toolbar.module.css';
+}
+
+.icon {
+  composes: icon from '../shared/Toolbar.module.css';
+}
+
+.link:hover > .btnLike {
+  background-color: var(--secondary-light);
+}
