@@ -28,13 +28,14 @@ function DimensionMapper(props: Props): JSX.Element {
       <div key={dimension} className={styles.sliderWrapper}>
         <span className={styles.sliderLabel}>D{dimension}</span>
         <ReactSlider
+          key={String(mapperState.includes('y'))}
           className={styles.slider}
           trackClassName={styles.sliderTrack}
           thumbClassName={styles.sliderThumb}
           renderThumb={(thumbProps, state) => (
             <div {...thumbProps}>{state.valueNow}</div>
           )}
-          defaultValue={slicingIndex}
+          value={slicingIndex}
           onChange={(value) => {
             if (!isNumber(value)) {
               return;

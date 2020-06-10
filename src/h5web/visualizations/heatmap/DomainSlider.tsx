@@ -42,7 +42,6 @@ function DomainSlider(props: Props): ReactElement {
         </span>
       </button>
       <ReactSlider
-        key={JSON.stringify(value || dataDomain)}
         className={styles.slider}
         trackClassName={styles.track}
         thumbClassName={styles.thumb}
@@ -54,7 +53,7 @@ function DomainSlider(props: Props): ReactElement {
             </div>
           </div>
         )}
-        defaultValue={[...(value || dataDomain)]}
+        value={[...(value || dataDomain)]}
         onChange={updateCustomDomain}
         min={extendedMin}
         max={extendedMax}
