@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import ReactSlider from 'react-slider';
 import { isNumber } from 'lodash-es';
-import type { Vis, DimensionMapping, MappingType } from './models';
+import type { Vis, DimensionMapping, MappingType, Axis } from './models';
 import styles from './DimensionMapper.module.css';
 import ToggleGroup from '../visualizations/shared/ToggleGroup';
 
@@ -25,8 +25,7 @@ function DimensionMapper(props: Props): JSX.Element {
     }
 
     return (
-      // eslint-disable-next-line react/no-array-index-key
-      <Fragment key={dimension}>
+      <div key={dimension} className={styles.sliderWrapper}>
         <span className={styles.sliderLabel}>D{dimension}</span>
         <ReactSlider
           className={styles.slider}
@@ -50,15 +49,15 @@ function DimensionMapper(props: Props): JSX.Element {
           orientation="vertical"
           invert
         />
-      </Fragment>
+      </div>
     );
   }
 
-  function renderAxisMapper(axis: 'x' | 'y'): JSX.Element {
-    const selectedDim = mapperState.indexOf('x');
+  function renderAxisMapper(axis: Axis): JSX.Element {
+    const selectedDim = mapperState.indexOf(axis);
     return (
       <div className={styles.axisMapper}>
-        <span className={styles.axisName}>{axis}</span>
+        <span className={styles.axisLabel}>{axis}</span>
         <ToggleGroup
           role="radiogroup"
           ariaLabel={`Dimension as ${axis} axis`}
@@ -67,7 +66,10 @@ function DimensionMapper(props: Props): JSX.Element {
             const newDim = Number(val);
             if (selectedDim !== newDim) {
               const newMapperState = mapperState.slice();
-              newMapperState[selectedDim] = 0; // reset slicing index of previously selected dimension
+              // Invert mappings or reset slicing index of previously selected dimension
+              newMapperState[selectedDim] = isNumber(mapperState[newDim])
+                ? 0
+                : mapperState[newDim];
               newMapperState[newDim] = axis; // assign axis to newly selected dimension
               onChange(newMapperState);
             }
@@ -83,8 +85,20 @@ function DimensionMapper(props: Props): JSX.Element {
 
   return (
     <div className={styles.mapper}>
-      <div className={styles.axisMapperWrapper}>{renderAxisMapper('x')}</div>
-      <div className={styles.sliderWrapper}>
+      <div className={styles.axisMapperWrapper}>
+        <div className={styles.dims}>
+          <span className={styles.dimsLabel}>n</span>
+          {rawDims.map((d, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <span key={`${i}${d}`} className={styles.dimSize}>
+              {d}
+            </span>
+          ))}
+        </div>
+        {renderAxisMapper('x')}
+        {mapperState.includes('y') && renderAxisMapper('y')}
+      </div>
+      <div className={styles.sliders}>
         {mapperState.map(renderSlicingSlider)}
       </div>
     </div>

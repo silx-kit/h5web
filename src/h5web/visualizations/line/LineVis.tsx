@@ -37,7 +37,6 @@ function LineVis(): JSX.Element {
           isLog: hasYLogScale,
         }}
       >
-        {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
         <TooltipMesh
           formatIndex={([x]) => `x=${Math.round(x)}`}
           formatValue={([x]) => {

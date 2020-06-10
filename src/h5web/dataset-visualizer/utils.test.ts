@@ -66,6 +66,11 @@ describe('Dataset Visualizer utilities', () => {
           },
           shape: { class: HDF5ShapeClass.Simple, dims: [10, 12345] },
         },
+        {
+          ...base,
+          type: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F64LE' },
+          shape: { class: HDF5ShapeClass.Simple, dims: [4, 2, 3] }, // dims length supported with mapping
+        },
       ];
 
       supportedDatasets.forEach((dataset) => {
@@ -89,11 +94,6 @@ describe('Dataset Visualizer utilities', () => {
           ...base,
           type: { class: HDF5TypeClass.Integer, base: 'H5T_STD_I32LE' },
           shape: { class: HDF5ShapeClass.Simple, dims: [] }, // dims length not supported
-        },
-        {
-          ...base,
-          type: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F64LE' },
-          shape: { class: HDF5ShapeClass.Simple, dims: [4, 2, 3] }, // dims length not supported
         },
       ];
 
@@ -167,6 +167,11 @@ describe('Dataset Visualizer utilities', () => {
           type: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F64LE' },
           shape: { class: HDF5ShapeClass.Simple, dims: [4, 15] },
         },
+        {
+          ...base,
+          type: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F64LE' },
+          shape: { class: HDF5ShapeClass.Simple, dims: [4, 2, 5] }, // dims length supported with mapping
+        },
       ];
 
       supportedDatasets.forEach((dataset) => {
@@ -190,11 +195,6 @@ describe('Dataset Visualizer utilities', () => {
           ...base,
           type: { class: HDF5TypeClass.Integer, base: 'H5T_STD_I32LE' },
           shape: { class: HDF5ShapeClass.Simple, dims: [1] }, // dims length not supported
-        },
-        {
-          ...base,
-          type: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F64LE' },
-          shape: { class: HDF5ShapeClass.Simple, dims: [4, 2, 5] }, // dims length not supported
         },
       ];
 
