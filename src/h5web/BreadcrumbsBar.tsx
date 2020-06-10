@@ -31,7 +31,7 @@ function BreadcrumbsBar(props: Props): JSX.Element {
       <ToggleBtn
         label="Toggle explorer sidebar"
         icon={FiSidebar}
-        hideLabel
+        iconOnly
         value={isExplorerOpen}
         onChange={onToggleExplorer}
       />

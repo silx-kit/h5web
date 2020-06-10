@@ -5,25 +5,25 @@ import styles from './ToggleBtn.module.css';
 interface Props {
   label: string;
   icon?: IconType;
-  hideLabel?: boolean;
+  iconOnly?: boolean;
   value: boolean;
   onChange: () => void;
 }
 
 function ToggleBtn(props: Props): JSX.Element {
-  const { label, icon: Icon, hideLabel, value, onChange } = props;
+  const { label, icon: Icon, iconOnly, value, onChange } = props;
 
   return (
     <button
       className={styles.btn}
       type="button"
-      aria-label={hideLabel ? label : undefined}
+      aria-label={iconOnly ? label : undefined}
       aria-pressed={value}
       onClick={onChange}
     >
       <span className={styles.btnLike}>
         {Icon && <Icon className={styles.icon} />}
-        {!hideLabel && <span className={styles.label}>{label}</span>}
+        {!iconOnly && <span className={styles.label}>{label}</span>}
       </span>
     </button>
   );
