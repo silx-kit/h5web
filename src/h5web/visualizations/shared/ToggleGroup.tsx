@@ -26,14 +26,16 @@ interface BtnProps {
   label: string;
   value: string;
   icon?: IconType;
+  disabled?: boolean;
 }
 
 function Btn(props: BtnProps): ReactElement {
-  const { label, value, icon: Icon } = props;
+  const { label, value, icon: Icon, disabled = false } = props;
   const { role, value: selectedValue, onChange } = useToggleGroupProps();
 
   return (
     <button
+      disabled={disabled}
       className={styles.btn}
       type="button"
       role={role === 'tablist' ? 'tab' : 'radio'}

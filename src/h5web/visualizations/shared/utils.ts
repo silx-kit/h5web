@@ -37,10 +37,18 @@ export function computeVisSize(
     : { width, height: width / aspectRatio };
 }
 
-export function extendDomain(bareDomain: Domain, extendFactor: number): Domain {
+export function extendDomain(
+  bareDomain: Domain,
+  extendFactor: number,
+  log?: boolean
+): Domain {
   const [min, max] = bareDomain;
-  const extension = (max - min) * extendFactor;
 
+  if (log) {
+    return [min / (1 + extendFactor), max * (1 + extendFactor)];
+  }
+
+  const extension = (max - min) * extendFactor;
   return [min - extension, max + extension];
 }
 
@@ -70,7 +78,7 @@ export function getAxisScale(info: AxisInfo, rangeSize: number): AxisScale {
 /**
  * We can't rely on the axis scale's `ticks` method to get integer tick values because
  * `d3.tickStep` sometimes returns incoherent step values - e.g. `d3.tickStep(0, 2, 3)`
- * returns 0.5 intead of 1.
+ * returns 0.5 instead of 1.
  *
  * So we implement our own, simplified version of `d3.ticks` that always outputs integer values.
  */

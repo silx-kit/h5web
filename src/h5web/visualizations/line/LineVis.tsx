@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement } from 'react';
 import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
@@ -8,7 +8,8 @@ import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import { useLineConfig } from './config';
 import TooltipMesh from '../shared/TooltipMesh';
-import { extendDomain, findDomain } from '../shared/utils';
+import { extendDomain } from '../shared/utils';
+import { useAxisDomain } from './hooks';
 
 interface Props {
   dataArray: ndarray<number>;
@@ -17,14 +18,12 @@ interface Props {
 function LineVis(props: Props): ReactElement {
   const { dataArray } = props;
 
-  const [showGrid, hasYLogScale] = useLineConfig(
-    (state) => [state.showGrid, state.hasYLogScale],
+  const [showGrid, scaleType] = useLineConfig(
+    (state) => [state.showGrid, state.scaleType],
     shallow
   );
 
-  const dataDomain = useMemo(() => {
-    return findDomain(dataArray.data as number[]);
-  }, [dataArray]);
+  const dataDomain = useAxisDomain(dataArray, scaleType);
 
   if (!dataDomain) {
     return <></>;
@@ -38,9 +37,9 @@ function LineVis(props: Props): ReactElement {
           showGrid,
         }}
         ordinateConfig={{
-          dataDomain: extendDomain(dataDomain, 0.01),
+          dataDomain,
           showGrid,
-          isLog: hasYLogScale,
+          scaleType,
         }}
       >
         <TooltipMesh
