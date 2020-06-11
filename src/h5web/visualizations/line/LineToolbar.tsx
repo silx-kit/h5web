@@ -1,11 +1,12 @@
 import React from 'react';
-import { MdGridOn, MdLinearScale } from 'react-icons/md';
+import { MdGridOn, MdGraphicEq, MdSort, MdFilterList } from 'react-icons/md';
 import ToggleBtn from '../shared/ToggleBtn';
 import { useLineConfig } from './config';
 import { CurveType } from './models';
 import ToggleGroup from '../shared/ToggleGroup';
 import Toolbar from '../shared/Toolbar';
 import Separator from '../shared/Separator';
+import { ScaleType } from '../shared/models';
 
 function LineToolbar(): JSX.Element {
   const {
@@ -13,8 +14,8 @@ function LineToolbar(): JSX.Element {
     setCurveType,
     showGrid,
     toggleGrid,
-    hasYLogScale,
-    toggleYLogScale,
+    scaleType,
+    setScaleType,
   } = useLineConfig();
 
   return (
@@ -32,12 +33,31 @@ function LineToolbar(): JSX.Element {
 
       <Separator />
 
-      <ToggleBtn
-        label="Symlog"
-        icon={MdLinearScale}
-        value={hasYLogScale}
-        onChange={toggleYLogScale}
-      />
+      <ToggleGroup
+        role="radiogroup"
+        ariaLabel="Scale type"
+        value={scaleType}
+        onChange={setScaleType}
+      >
+        <ToggleGroup.Btn
+          icon={MdSort}
+          label="Linear"
+          value={ScaleType.Linear}
+        />
+        <ToggleGroup.Btn
+          icon={MdFilterList}
+          label="Log"
+          value={ScaleType.Log}
+        />
+        <ToggleGroup.Btn
+          icon={(props) => <MdGraphicEq {...props} transform="rotate(90)" />}
+          label="SymLog"
+          value={ScaleType.SymLog}
+        />
+      </ToggleGroup>
+
+      <Separator />
+
       <ToggleBtn
         label="Grid"
         icon={MdGridOn}

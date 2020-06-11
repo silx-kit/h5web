@@ -19,21 +19,29 @@ function DataCurve(props: Props): JSX.Element {
   const { values, color = DEFAULT_COLOR } = props;
 
   const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
-  const { size } = useThree();
+  const { camera, size } = useThree();
   const { width, height } = size;
 
   const dataGeometry = useMemo(() => {
     const abscissaScale = getAxisScale(abscissaInfo, width);
     const ordinateScale = getAxisScale(ordinateInfo, height);
 
-    const points = values.map(
-      (val, index) => new Vector3(abscissaScale(index), ordinateScale(val), 0)
-    );
+    const points = values.map((val, index) => {
+      const ordinate = ordinateScale(val);
+      return new Vector3(
+        abscissaScale(index),
+        // This is to avoid a three.js warning when ordinateScale(val) is Infinity
+        Number.isFinite(ordinate) ? ordinate : 0,
+        // Move NaN/Infinity out of the camera FOV (negative val for logScale).
+        // This allows to have only curve segments for the positive values
+        Number.isFinite(ordinate) ? 0 : camera.far
+      );
+    });
 
     const geometry = new BufferGeometry();
     geometry.setFromPoints(points);
     return geometry;
-  }, [abscissaInfo, height, ordinateInfo, values, width]);
+  }, [abscissaInfo, camera, height, ordinateInfo, values, width]);
 
   const curveType = useLineConfig((state) => state.curveType);
   const showLine = curveType !== CurveType.GlyphsOnly;
