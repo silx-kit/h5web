@@ -6,20 +6,20 @@ import { useTextureData, useDims } from './hooks';
 import styles from './HeatmapVis.module.css';
 
 function Mesh(): ReactElement {
-  const dims = useDims();
-
   const { size } = useThree();
   const { width, height } = size;
 
+  const { rows, cols } = useDims();
   const { textureData, loading } = useTextureData();
+
   const material = useMemo(() => {
     return (
       textureData &&
       new MeshBasicMaterial({
-        map: new DataTexture(textureData, dims[1], dims[0], RGBFormat),
+        map: new DataTexture(textureData, cols, rows, RGBFormat),
       })
     );
-  }, [dims, textureData]);
+  }, [cols, rows, textureData]);
 
   return (
     <>

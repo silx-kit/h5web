@@ -1,7 +1,10 @@
 import type { scaleSymlog, scaleLinear } from 'd3-scale';
 import type { INTERPOLATORS } from './interpolators';
 
-export type Dims = [number, number];
+export type Dims = {
+  rows: number;
+  cols: number;
+};
 
 export type D3Interpolator = (t: number) => string;
 
