@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { transfer } from 'comlink';
 import { useComlink } from 'react-use-comlink';
 import { useSetState } from 'react-use';
@@ -14,8 +14,9 @@ import type { TextureWorker } from './worker';
 import { useDataArray } from '../../dataset-visualizer/VisProvider';
 
 export function useDims(): Dims {
-  const dataArray = useDataArray();
-  return dataArray.shape as Dims;
+  const { shape } = useDataArray();
+  const [rows, cols] = shape;
+  return { rows, cols };
 }
 
 export function useValues(): number[] {
@@ -80,6 +81,15 @@ export function useTextureData(): TextureDataState {
     mergeState,
     values,
   ]);
+
+  const { rows, cols } = useDims();
+  const dims = `${rows}x${cols}`;
+  const [prevDims, setPrevDims] = useState<string>(dims);
+
+  if (prevDims !== dims) {
+    setPrevDims(dims);
+    mergeState({ textureData: undefined });
+  }
 
   return state;
 }

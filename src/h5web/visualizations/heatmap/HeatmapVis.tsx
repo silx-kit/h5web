@@ -3,7 +3,7 @@ import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
-import { useValues } from './hooks';
+import { useValues, useDims } from './hooks';
 import Mesh from './Mesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { useHeatmapConfig } from './config';
@@ -13,14 +13,13 @@ import { useDataArray } from '../../dataset-visualizer/VisProvider';
 
 function HeatmapVis(): JSX.Element {
   const dataArray = useDataArray();
-  const [rows, cols] = dataArray.shape;
-
   const [keepAspectRatio, showGrid] = useHeatmapConfig(
     (state) => [state.keepAspectRatio, state.showGrid],
     shallow
   );
 
   // width / height <=> cols / rows
+  const { rows, cols } = useDims();
   const aspectRatio = keepAspectRatio ? cols / rows : undefined;
 
   const values = useValues();
