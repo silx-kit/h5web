@@ -5,22 +5,12 @@
 }
 
 .btn {
-  composes: btn-clean from global;
-  flex: 1 1 0%;
-  display: flex;
-  align-items: center;
-  padding: 0 0.25rem;
+  composes: btn from '../shared/Toolbar.module.css';
 }
 
 .btnLike {
-  flex: 1 1 0%;
-  display: flex;
-  align-items: center;
-  height: 1.875rem;
+  composes: btnLike from '../shared/Toolbar.module.css';
   padding: 0 0.375rem 0 0.625rem;
-  border-radius: 0.5rem;
-  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
-  white-space: nowrap;
 }
 
 .icon {
@@ -29,20 +19,6 @@
   margin-left: 1px;
   color: #555;
   font-size: 1.25em;
-}
-
-.btn:hover > .btnLike {
-  background-color: white;
-  box-shadow: -1px -1px 2px 0 inset var(--secondary);
-}
-
-.btn[aria-expanded='true'] > .btnLike {
-  background-color: white;
-  box-shadow: 1px 1px 2px 0 inset var(--secondary);
-}
-
-.btn[aria-expanded='true']:hover > .btnLike {
-  box-shadow: 1px 1px 2px 0 inset var(--secondary-dark);
 }
 
 .btn[aria-expanded='true'] .icon {

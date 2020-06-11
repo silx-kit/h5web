@@ -3,7 +3,7 @@ import { MdAspectRatio, MdGridOn, MdLinearScale } from 'react-icons/md';
 import ToggleBtn from '../shared/ToggleBtn';
 import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
-import ScreenshotButton from '../shared/ScreenshotButton';
+import ScreenshotButton from './ScreenshotButton';
 import Separator from '../shared/Separator';
 import Toolbar from '../shared/Toolbar';
 import ColorMapSelector from './ColorMapSelector';

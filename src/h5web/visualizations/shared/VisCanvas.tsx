@@ -8,7 +8,7 @@ import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
 import { VisContext } from '../../dataset-visualizer/VisProvider';
 
-const AXIS_OFFSETS = { vertical: 72, horizontal: 36, fallback: 10 };
+const AXIS_OFFSETS = { vertical: 72, horizontal: 36, fallback: 16 };
 
 interface Props {
   abscissaConfig: AxisConfig;
