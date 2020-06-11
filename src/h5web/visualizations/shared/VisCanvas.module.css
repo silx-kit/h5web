@@ -14,6 +14,7 @@
 /* R3F's root element */
 .canvasWrapper {
   overflow: visible !important; /* show child axis grid, which is bigger than canvas */
+  z-index: 0; /* stacking context for child `<HTML />` elements */
 }
 
 /* R3F's <HTML /> element */
