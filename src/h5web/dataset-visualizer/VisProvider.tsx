@@ -38,10 +38,17 @@ function VisProvider(props: Props): ReactElement {
       return rawValues;
     }
 
-    const rawDataArray = ndarray(rawValues.flat(Infinity), rawDims);
-    if (mapperState === undefined) {
-      return rawDataArray;
+    return ndarray(rawValues.flat(Infinity), rawDims);
+  }, [rawDims, rawValues]);
+
+  const visValues = useMemo(() => {
+    if (values === undefined) {
+      return undefined;
     }
+    if (mapperState === undefined) {
+      return values;
+    }
+
     const slicingIndices = mapperState.map((val) =>
       isNumber(val) ? val : null
     );
@@ -51,17 +58,20 @@ function VisProvider(props: Props): ReactElement {
       mapperState.indexOf('x') < mapperState.indexOf('y');
 
     const viewOfDataArray = xIsBeforeY
-      ? rawDataArray.pick(...slicingIndices).transpose(1, 0)
-      : rawDataArray.pick(...slicingIndices);
+      ? values.pick(...slicingIndices).transpose(1, 0)
+      : values.pick(...slicingIndices);
+
     // Create a new ndarray with the data from the view and its shape
     return ndarray(unpack(viewOfDataArray).flat(), viewOfDataArray.shape);
-  }, [rawValues, rawDims, mapperState]);
+  }, [mapperState, values]);
 
-  if (values === undefined) {
+  if (visValues === undefined) {
     return <></>;
   }
 
-  return <VisContext.Provider value={values}>{children}</VisContext.Provider>;
+  return (
+    <VisContext.Provider value={visValues}>{children}</VisContext.Provider>
+  );
 }
 
 export function useDataArray(): DataArray {
