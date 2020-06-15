@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import { isNumber } from 'lodash-es';
-import ndarray from 'ndarray';
+import pack from 'ndarray-pack';
 import unpack from 'ndarray-unpack';
 import type { DimensionMapping, Vis, ScalarData, DataArray } from './models';
 import type { HDF5Dataset } from '../providers/models';
@@ -38,7 +38,7 @@ function VisProvider(props: Props): ReactElement {
       return rawValues;
     }
 
-    return ndarray(rawValues.flat(Infinity), rawDims);
+    return pack(rawValues);
   }, [rawDims, rawValues]);
 
   const visValues = useMemo(() => {
@@ -62,7 +62,7 @@ function VisProvider(props: Props): ReactElement {
       : values.pick(...slicingIndices);
 
     // Create a new ndarray with the data from the view and its shape
-    return ndarray(unpack(viewOfDataArray).flat(), viewOfDataArray.shape);
+    return pack(unpack(viewOfDataArray));
   }, [mapperState, values]);
 
   if (visValues === undefined) {

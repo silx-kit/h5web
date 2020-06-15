@@ -22,8 +22,10 @@ export function useDataPoints(): Vector3[] | undefined {
   const ordinateScale = getAxisScale(ordinateInfo, height);
 
   return useMemo(() => {
-    return (dataArray.data as number[]).map(
-      (val, index) => new Vector3(abscissaScale(index), ordinateScale(val), 0)
-    );
+    const points: Vector3[] = [];
+    dataArray.data.forEach((val: number, index: number) => {
+      points.push(new Vector3(abscissaScale(index), ordinateScale(val), 0));
+    });
+    return points;
   }, [abscissaScale, ordinateScale, dataArray]);
 }
