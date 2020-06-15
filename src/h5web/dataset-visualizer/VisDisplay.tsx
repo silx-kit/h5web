@@ -1,29 +1,34 @@
 import React, { ReactElement } from 'react';
 import type { Vis, DimensionMapping } from './models';
-import VisProvider from './VisProvider';
-import type { HDF5Dataset } from '../providers/models';
+import type {
+  HDF5Dataset,
+  HDF5SimpleShape,
+  HDF5Value,
+} from '../providers/models';
 import { VIS_DEFS } from '../visualizations';
+import DimensionMapper from './mapper/DimensionMapper';
 
 interface Props {
-  key: string; // reset states when switching between datasets
   activeVis: Vis;
   dataset: HDF5Dataset;
-  mapperState: DimensionMapping | undefined;
+  value: HDF5Value;
+  mapperState: DimensionMapping;
+  onMapperStateChange(mapperState: DimensionMapping): void;
 }
 
 function VisDisplay(props: Props): ReactElement {
-  const { activeVis, dataset, mapperState } = props;
-  const VisComponent = VIS_DEFS[activeVis].Component;
+  const { activeVis, dataset, value, mapperState, onMapperStateChange } = props;
+  const { render: renderVis } = VIS_DEFS[activeVis];
 
   return (
     <>
-      <VisProvider
+      <DimensionMapper
         activeVis={activeVis}
+        rawDims={(dataset.shape as HDF5SimpleShape).dims}
         mapperState={mapperState}
-        dataset={dataset}
-      >
-        <VisComponent />
-      </VisProvider>
+        onChange={onMapperStateChange}
+      />
+      {value !== undefined && renderVis(value, dataset, mapperState)}
     </>
   );
 }

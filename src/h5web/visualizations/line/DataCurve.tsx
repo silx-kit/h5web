@@ -1,22 +1,39 @@
-import React, { Suspense, useMemo } from 'react';
-import { BufferGeometry } from 'three';
+import React, { Suspense, useMemo, useContext } from 'react';
+import { BufferGeometry, Vector3 } from 'three';
 import { Line } from 'react-three-fiber/components';
-import { useDataPoints } from './hooks';
+import { useThree } from 'react-three-fiber';
 import { useLineConfig } from './config';
 import { CurveType } from './models';
 import DataGlyphs from './DataGlyphs';
+import { AxisSystemContext } from '../shared/AxisSystemProvider';
+import { getAxisScale } from '../shared/utils';
 
-const COLOR = '#1b998b';
+const DEFAULT_COLOR = '#1b998b';
 
-function DataCurve(): JSX.Element {
-  const points = useDataPoints();
+interface Props {
+  values: number[];
+  color?: string;
+}
+
+function DataCurve(props: Props): JSX.Element {
+  const { values, color = DEFAULT_COLOR } = props;
+
+  const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
+  const { size } = useThree();
+  const { width, height } = size;
+
   const dataGeometry = useMemo(() => {
+    const abscissaScale = getAxisScale(abscissaInfo, width);
+    const ordinateScale = getAxisScale(ordinateInfo, height);
+
+    const points = values.map(
+      (val, index) => new Vector3(abscissaScale(index), ordinateScale(val), 0)
+    );
+
     const geometry = new BufferGeometry();
-    if (points) {
-      geometry.setFromPoints(points);
-    }
+    geometry.setFromPoints(points);
     return geometry;
-  }, [points]);
+  }, [abscissaInfo, height, ordinateInfo, values, width]);
 
   const curveType = useLineConfig((state) => state.curveType);
   const showLine = curveType !== CurveType.GlyphsOnly;
@@ -24,10 +41,10 @@ function DataCurve(): JSX.Element {
 
   return (
     <Suspense fallback={<></>}>
-      {showGlyphs && <DataGlyphs geometry={dataGeometry} color={COLOR} />}
+      {showGlyphs && <DataGlyphs geometry={dataGeometry} color={color} />}
       {showLine && (
         <Line geometry={dataGeometry}>
-          <lineBasicMaterial attach="material" color={COLOR} linewidth={2} />
+          <lineBasicMaterial attach="material" color={color} linewidth={2} />
         </Line>
       )}
     </Suspense>

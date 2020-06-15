@@ -13,13 +13,14 @@ function Cell(props: GridChildComponentProps): JSX.Element {
 
   // -1 to account for the index row and column
   const dataValue = valueAccessor(rowIndex - 1, columnIndex - 1);
+
   return (
     <div
       className={styles.cell}
       style={style}
       data-bg={(rowIndex + columnIndex) % 2 === 1 ? '' : undefined}
     >
-      {format('.3e')(dataValue)}
+      {typeof dataValue === 'number' ? format('.3e')(dataValue) : dataValue}
     </div>
   );
 }

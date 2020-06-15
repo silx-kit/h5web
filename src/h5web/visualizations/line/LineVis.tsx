@@ -1,25 +1,31 @@
-import React from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
+import type ndarray from 'ndarray';
 import styles from './LineVis.module.css';
 import DataCurve from './DataCurve';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
-import { useDataDomain } from './hooks';
 import { useLineConfig } from './config';
 import TooltipMesh from '../shared/TooltipMesh';
-import { extendDomain } from '../shared/utils';
-import { useDataArray } from '../../dataset-visualizer/VisProvider';
+import { extendDomain, findDomain } from '../shared/utils';
 
-function LineVis(): JSX.Element {
-  const dataArray = useDataArray();
+interface Props {
+  dataArray: ndarray<number>;
+}
+
+function LineVis(props: Props): ReactElement {
+  const { dataArray } = props;
 
   const [showGrid, hasYLogScale] = useLineConfig(
     (state) => [state.showGrid, state.hasYLogScale],
     shallow
   );
 
-  const dataDomain = useDataDomain();
+  const dataDomain = useMemo(() => {
+    return findDomain(dataArray.data as number[]);
+  }, [dataArray]);
+
   if (!dataDomain) {
     return <></>;
   }
@@ -46,7 +52,7 @@ function LineVis(): JSX.Element {
           guides="vertical"
         />
         <PanZoomMesh />
-        <DataCurve />
+        <DataCurve values={dataArray.data as number[]} />
       </VisCanvas>
     </div>
   );

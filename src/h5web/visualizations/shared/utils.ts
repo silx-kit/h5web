@@ -112,3 +112,15 @@ export function getTicksProp(
     ? { tickValues: getIntegerTicks(visibleDomain, numTicks) }
     : { numTicks };
 }
+
+export function assertNumOrStr(val: unknown): asserts val is number | string {
+  if (typeof val !== 'number' && typeof val !== 'string') {
+    throw new Error('Expected number or string');
+  }
+}
+
+export function assertArray<T>(val: unknown): asserts val is T[] {
+  if (!Array.isArray(val)) {
+    throw new Error('Expected array');
+  }
+}

@@ -10,7 +10,6 @@ export enum Vis {
 
 export type Axis = 'x' | 'y';
 export type MappingType = number | Axis;
-export type DimensionMapping = MappingType[];
+export type DimensionMapping = MappingType[] | undefined;
 
-export type ScalarData = string | number;
 export type DataArray = ndarray<number>;

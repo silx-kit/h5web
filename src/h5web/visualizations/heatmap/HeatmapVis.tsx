@@ -1,28 +1,34 @@
 import React, { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
+import type ndarray from 'ndarray';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
-import { useValues, useDims } from './hooks';
 import Mesh from './Mesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { useHeatmapConfig } from './config';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { useDataArray } from '../../dataset-visualizer/VisProvider';
+import { getDims } from './utils';
 
-function HeatmapVis(): JSX.Element {
-  const dataArray = useDataArray();
+interface Props {
+  dataArray: ndarray<number>;
+}
+
+function HeatmapVis(props: Props): JSX.Element {
+  const { dataArray } = props;
+
+  const { rows, cols } = getDims(dataArray);
+  const values = dataArray.data as number[];
+
   const [keepAspectRatio, showGrid] = useHeatmapConfig(
     (state) => [state.keepAspectRatio, state.showGrid],
     shallow
   );
 
   // width / height <=> cols / rows
-  const { rows, cols } = useDims();
   const aspectRatio = keepAspectRatio ? cols / rows : undefined;
 
-  const values = useValues();
   const initDataDomain = useHeatmapConfig((state) => state.initDataDomain);
 
   useEffect(() => {
@@ -46,7 +52,7 @@ function HeatmapVis(): JSX.Element {
           guides="both"
         />
         <PanZoomMesh />
-        <Mesh />
+        <Mesh rows={rows} cols={cols} values={values} />
       </VisCanvas>
       <ColorBar />
     </div>

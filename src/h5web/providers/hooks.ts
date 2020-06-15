@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import type { HDF5Link, HDF5Entity, HDF5Id, HDF5Value } from './models';
+import type { HDF5Link, HDF5Entity } from './models';
 import type { TreeNode } from '../explorer/models';
 import { ProviderContext } from './context';
 import { buildTree, isReachable } from './utils';
@@ -41,15 +41,4 @@ export function useEntity(link?: HDF5Link): HDF5Entity | undefined {
   }, [link, getMetadata]);
 
   return entity;
-}
-
-export function useValue(id: HDF5Id): HDF5Value {
-  const { getValue } = useContext(ProviderContext);
-  const [value, setValue] = useState<HDF5Value>();
-
-  useEffect(() => {
-    getValue(id).then(setValue);
-  }, [id, getValue]);
-
-  return value;
 }

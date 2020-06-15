@@ -1,14 +1,13 @@
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement, useMemo, useEffect, useContext } from 'react';
 import { useSetState } from 'react-use';
-import type { HDF5Dataset } from '../providers/models';
+import type { HDF5Dataset, HDF5Value } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
 import { getSupportedVis } from './utils';
 import VisDisplay from './VisDisplay';
 import type { Vis, DimensionMapping } from './models';
 import { VIS_DEFS } from '../visualizations';
-import { isSimpleShape } from '../providers/utils';
-import DimensionMapper from './DimensionMapper';
+import { ProviderContext } from '../providers/context';
 
 interface Props {
   dataset?: HDF5Dataset;
@@ -16,6 +15,7 @@ interface Props {
 
 interface State {
   activeVis?: Vis;
+  value?: HDF5Value;
   mapperState?: DimensionMapping;
   prevDataset?: HDF5Dataset;
 }
@@ -24,13 +24,11 @@ function DatasetVisualizer(props: Props): ReactElement {
   const { dataset } = props;
 
   const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
-  const datasetDims =
-    dataset && isSimpleShape(dataset.shape) ? dataset.shape.dims : [];
 
   const [state, mergeState] = useSetState<State>({});
-  const { activeVis, mapperState, prevDataset } = state;
+  const { activeVis, value, mapperState, prevDataset } = state;
 
-  // Update state when dataset changes
+  // Reset state when dataset changes
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
   if (dataset !== prevDataset) {
     const nextActiveVis =
@@ -40,10 +38,22 @@ function DatasetVisualizer(props: Props): ReactElement {
 
     mergeState({
       activeVis: nextActiveVis,
-      mapperState: VIS_DEFS[nextActiveVis].defaultMappingState(datasetDims),
+      value: undefined, // reset value
+      mapperState:
+        dataset && VIS_DEFS[nextActiveVis].defaultMappingState(dataset),
       prevDataset: dataset,
     });
   }
+
+  // Fetch dataset value asynchronously
+  const { getValue } = useContext(ProviderContext);
+  useEffect(() => {
+    if (dataset) {
+      getValue(dataset.id).then((val) => {
+        mergeState({ value: val });
+      });
+    }
+  }, [dataset, getValue, mergeState]);
 
   const VisToolbar = activeVis && VIS_DEFS[activeVis].Toolbar;
 
@@ -56,7 +66,8 @@ function DatasetVisualizer(props: Props): ReactElement {
           onChange={(vis) => {
             mergeState({
               activeVis: vis,
-              mapperState: VIS_DEFS[vis].defaultMappingState(datasetDims),
+              mapperState:
+                dataset && VIS_DEFS[vis].defaultMappingState(dataset),
             });
           }}
         />
@@ -64,24 +75,15 @@ function DatasetVisualizer(props: Props): ReactElement {
       </div>
       <div className={styles.displayArea}>
         {dataset && activeVis ? (
-          <>
-            {mapperState && (
-              <DimensionMapper
-                activeVis={activeVis}
-                rawDims={datasetDims}
-                mapperState={mapperState}
-                onChange={(nextMapperState) => {
-                  mergeState({ mapperState: nextMapperState });
-                }}
-              />
-            )}
-            <VisDisplay
-              key={dataset.id}
-              activeVis={activeVis}
-              dataset={dataset}
-              mapperState={mapperState}
-            />
-          </>
+          <VisDisplay
+            activeVis={activeVis}
+            dataset={dataset}
+            value={value}
+            mapperState={mapperState}
+            onMapperStateChange={(nextMapperState) => {
+              mergeState({ mapperState: nextMapperState });
+            }}
+          />
         ) : (
           <p className={styles.noVis}>Nothing to visualize</p>
         )}
