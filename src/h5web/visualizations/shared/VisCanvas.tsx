@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { useMeasure } from 'react-use';
 import styles from './VisCanvas.module.css';
@@ -6,7 +6,6 @@ import type { AxisConfig } from './models';
 import { computeVisSize } from './utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
-import { VisContext } from '../../dataset-visualizer/VisProvider';
 
 const AXIS_OFFSETS = { vertical: 72, horizontal: 36, fallback: 16 };
 
@@ -19,7 +18,6 @@ interface Props {
 
 function VisCanvas(props: Props): JSX.Element {
   const { abscissaConfig, ordinateConfig, aspectRatio, children } = props;
-  const visContextValue = useContext(VisContext);
 
   const [visAreaRef, visAreaSize] = useMeasure();
 
@@ -63,10 +61,7 @@ function VisCanvas(props: Props): JSX.Element {
               ordinateConfig={ordinateConfig}
             >
               <AxisSystem axisOffsets={axisOffsets} />
-              {/* Provide context again - https://github.com/react-spring/react-three-fiber/issues/262 */}
-              <VisContext.Provider value={visContextValue}>
-                {children}
-              </VisContext.Provider>
+              {children}
             </AxisSystemProvider>
           </Canvas>
         </div>

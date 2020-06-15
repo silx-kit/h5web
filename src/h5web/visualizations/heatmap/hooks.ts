@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { transfer } from 'comlink';
 import { useComlink } from 'react-use-comlink';
 import { useSetState } from 'react-use';
@@ -8,21 +8,9 @@ import shallow from 'zustand/shallow';
 import Worker from 'worker-loader!./worker';
 
 import { useHeatmapConfig } from './config';
-import type { D3Interpolator, Dims } from './models';
+import type { D3Interpolator } from './models';
 import { INTERPOLATORS } from './interpolators';
 import type { TextureWorker } from './worker';
-import { useDataArray } from '../../dataset-visualizer/VisProvider';
-
-export function useDims(): Dims {
-  const { shape } = useDataArray();
-  const [rows, cols] = shape;
-  return { rows, cols };
-}
-
-export function useValues(): number[] {
-  const dataArray = useDataArray();
-  return useMemo(() => dataArray.data as number[], [dataArray]);
-}
 
 export function useInterpolator(): D3Interpolator {
   const colorMap = useHeatmapConfig((state) => state.colorMap);
@@ -32,9 +20,14 @@ export function useInterpolator(): D3Interpolator {
 export interface TextureDataState {
   loading?: boolean;
   textureData?: Uint8Array;
+  prevDims?: string;
 }
 
-export function useTextureData(): TextureDataState {
+export function useTextureData(
+  rows: number,
+  cols: number,
+  values: number[]
+): TextureDataState {
   const [dataDomain, customDomain, hasLogScale, colorMap] = useHeatmapConfig(
     (state) => [
       state.dataDomain,
@@ -45,13 +38,13 @@ export function useTextureData(): TextureDataState {
     shallow
   );
 
-  const values = useValues();
-  const { proxy } = useComlink<TextureWorker>(() => new Worker(), []);
+  const domain = customDomain || dataDomain;
 
+  const { proxy } = useComlink<TextureWorker>(() => new Worker(), []);
   const [state, mergeState] = useSetState<TextureDataState>({});
 
   useEffect(() => {
-    if (!dataDomain) {
+    if (!domain) {
       return;
     }
 
@@ -66,29 +59,18 @@ export function useTextureData(): TextureDataState {
         loading: false,
         textureData: await proxy.computeTextureData(
           transfer(typedValues, [typedValues.buffer]),
-          customDomain || dataDomain,
+          domain,
           hasLogScale,
           colorMap
         ),
       });
     })();
-  }, [
-    colorMap,
-    customDomain,
-    dataDomain,
-    hasLogScale,
-    proxy,
-    mergeState,
-    values,
-  ]);
+  }, [colorMap, domain, hasLogScale, proxy, mergeState, values]);
 
-  const { rows, cols } = useDims();
+  // Reset texture when dimensions change to avoid rendering glitch while computing new texture
   const dims = `${rows}x${cols}`;
-  const [prevDims, setPrevDims] = useState<string>(dims);
-
-  if (prevDims !== dims) {
-    setPrevDims(dims);
-    mergeState({ textureData: undefined });
+  if (dims !== state.prevDims) {
+    mergeState({ textureData: undefined, prevDims: dims });
   }
 
   return state;

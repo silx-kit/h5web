@@ -1,6 +1,12 @@
 import { range } from 'lodash-es';
 import { scaleSymlog, scaleLinear } from 'd3-scale';
-import type { D3Interpolator, DataScaleFn } from './models';
+import type { D3Interpolator, DataScaleFn, Dims } from './models';
+import type { DataArray } from '../../dataset-visualizer/models';
+
+export function getDims(dataArray: DataArray): Dims {
+  const [rows, cols] = dataArray.shape;
+  return { rows, cols };
+}
 
 export function generateCSSLinearGradient(
   interpolator: D3Interpolator,

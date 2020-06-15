@@ -1,17 +1,21 @@
 import React, { forwardRef } from 'react';
 import { FixedSizeGrid as IndexedGrid } from 'react-window';
 import { useMeasure } from 'react-use';
+import type ndarray from 'ndarray';
 import styles from './MatrixVis.module.css';
 import GridSettingsProvider from './GridSettingsContext';
 import StickyGrid from './StickyGrid';
 import Cell from './Cell';
-import { useDataArray } from '../../dataset-visualizer/VisProvider';
 
 const CELL_SIZE = { width: 116, height: 32 };
 
-function MatrixVis(): JSX.Element {
-  const dataArray = useDataArray();
-  const dims = dataArray.shape;
+interface Props {
+  dataArray: ndarray<string | number>;
+}
+
+function MatrixVis(props: Props): JSX.Element {
+  const { dataArray } = props;
+  const dims = dataArray.shape as [number] | [number, number];
 
   const [divRef, { width, height }] = useMeasure();
   const isVisible = width > 0 && height > 0;

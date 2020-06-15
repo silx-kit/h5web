@@ -1,50 +1,34 @@
-import React, { useState } from 'react';
+import React, { ReactElement } from 'react';
 import type { Vis, DimensionMapping } from './models';
-import DimensionMapper from './DimensionMapper';
-import VisProvider from './VisProvider';
-import type { HDF5Dataset } from '../providers/models';
-import { isSimpleShape } from '../providers/utils';
+import type {
+  HDF5Dataset,
+  HDF5SimpleShape,
+  HDF5Value,
+} from '../providers/models';
 import { VIS_DEFS } from '../visualizations';
+import DimensionMapper from './mapper/DimensionMapper';
 
 interface Props {
-  key: string; // reset states when switching between datasets
   activeVis: Vis;
   dataset: HDF5Dataset;
+  value: HDF5Value;
+  mapperState: DimensionMapping;
+  onMapperStateChange(mapperState: DimensionMapping): void;
 }
 
-function VisDisplay(props: Props): JSX.Element {
-  const { activeVis, dataset } = props;
-  const datasetDims = isSimpleShape(dataset.shape) ? dataset.shape.dims : [];
-
-  const [prevVis, setPrevVis] = useState<Vis>();
-  const [mapperState, setMapperState] = useState<DimensionMapping>();
-
-  // Update mapping when vis changes
-  // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
-  if (activeVis !== prevVis) {
-    setPrevVis(activeVis);
-    setMapperState(VIS_DEFS[activeVis].defaultMappingState(datasetDims));
-  }
-
-  const VisComponent = VIS_DEFS[activeVis].Component;
+function VisDisplay(props: Props): ReactElement {
+  const { activeVis, dataset, value, mapperState, onMapperStateChange } = props;
+  const { render: renderVis } = VIS_DEFS[activeVis];
 
   return (
     <>
-      {mapperState && (
-        <DimensionMapper
-          activeVis={activeVis}
-          rawDims={datasetDims}
-          mapperState={mapperState}
-          onChange={setMapperState}
-        />
-      )}
-      <VisProvider
+      <DimensionMapper
         activeVis={activeVis}
+        rawDims={(dataset.shape as HDF5SimpleShape).dims}
         mapperState={mapperState}
-        dataset={dataset}
-      >
-        <VisComponent />
-      </VisProvider>
+        onChange={onMapperStateChange}
+      />
+      {value !== undefined && renderVis(value, dataset, mapperState)}
     </>
   );
 }

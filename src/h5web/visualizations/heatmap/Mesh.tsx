@@ -2,15 +2,22 @@ import React, { useMemo, ReactElement } from 'react';
 import { useThree } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
 import { HTML } from 'drei';
-import { useTextureData, useDims } from './hooks';
+import { useTextureData } from './hooks';
 import styles from './HeatmapVis.module.css';
 
-function Mesh(): ReactElement {
+interface Props {
+  rows: number;
+  cols: number;
+  values: number[];
+}
+
+function Mesh(props: Props): ReactElement {
+  const { rows, cols, values } = props;
+
   const { size } = useThree();
   const { width, height } = size;
 
-  const { rows, cols } = useDims();
-  const { textureData, loading } = useTextureData();
+  const { textureData, loading } = useTextureData(rows, cols, values);
 
   const material = useMemo(() => {
     return (

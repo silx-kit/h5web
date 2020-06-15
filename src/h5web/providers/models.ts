@@ -2,7 +2,7 @@
 /* ----- COMMON ----- */
 
 export type HDF5Id = string;
-export type HDF5Value = any; // eslint-disable-line @typescript-eslint/no-explicit-any
+export type HDF5Value = unknown;
 
 export enum HDF5Collection {
   Groups = 'groups',

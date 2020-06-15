@@ -25,7 +25,7 @@ function AttributesInfo(props: Props): JSX.Element {
           ({ name, value }: HDF5Attribute): JSX.Element => (
             <tr key={name}>
               <th>{name}</th>
-              <td>{value.toString()}</td>
+              <td>{JSON.stringify(value)}</td>
             </tr>
           )
         )}

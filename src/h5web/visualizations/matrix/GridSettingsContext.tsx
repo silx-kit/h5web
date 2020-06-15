@@ -1,12 +1,11 @@
 import React, { ReactNode, createContext } from 'react';
-import type { HDF5Value } from '../../providers/models';
 import type { Size } from '../shared/models';
 
 export interface GridSettings {
   cellSize: Size;
   rowCount: number;
   columnCount: number;
-  valueAccessor: (row: number, col: number) => HDF5Value;
+  valueAccessor: (row: number, col: number) => number | string;
 }
 
 export const GridSettingsContext = createContext<GridSettings>({
