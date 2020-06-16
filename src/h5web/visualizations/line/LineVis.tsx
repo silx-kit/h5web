@@ -33,10 +33,6 @@ function LineVis(props: Props): ReactElement {
     return rawDomain && extendDomain(rawDomain, 0.05, isLogScale);
   }, [scaleType, values]);
 
-  if (!dataDomain) {
-    return <></>;
-  }
-
   return (
     <div className={styles.root}>
       <VisCanvas
@@ -45,7 +41,7 @@ function LineVis(props: Props): ReactElement {
           showGrid,
         }}
         ordinateConfig={{
-          dataDomain,
+          dataDomain: dataDomain || [0.1, 1],
           showGrid,
           scaleType,
         }}
@@ -59,7 +55,7 @@ function LineVis(props: Props): ReactElement {
           guides="vertical"
         />
         <PanZoomMesh />
-        <DataCurve values={dataArray.data as number[]} />
+        {dataDomain && <DataCurve values={dataArray.data as number[]} />}
       </VisCanvas>
     </div>
   );
