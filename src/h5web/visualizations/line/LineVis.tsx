@@ -9,6 +9,7 @@ import PanZoomMesh from '../shared/PanZoomMesh';
 import { useLineConfig } from './config';
 import TooltipMesh from '../shared/TooltipMesh';
 import { extendDomain, findDomain } from '../shared/utils';
+import { ScaleType } from '../shared/models';
 
 interface Props {
   dataArray: ndarray<number>;
@@ -17,18 +18,20 @@ interface Props {
 function LineVis(props: Props): ReactElement {
   const { dataArray } = props;
 
-  const [showGrid, hasYLogScale] = useLineConfig(
-    (state) => [state.showGrid, state.hasYLogScale],
+  const [showGrid, scaleType] = useLineConfig(
+    (state) => [state.showGrid, state.scaleType],
     shallow
   );
 
+  const values = dataArray.data as number[];
   const dataDomain = useMemo(() => {
-    return findDomain(dataArray.data as number[]);
-  }, [dataArray]);
+    const isLogScale = scaleType === ScaleType.Log;
+    const rawDomain = findDomain(
+      isLogScale ? values.filter((x) => x > 0) : values
+    );
 
-  if (!dataDomain) {
-    return <></>;
-  }
+    return rawDomain && extendDomain(rawDomain, 0.05, isLogScale);
+  }, [scaleType, values]);
 
   return (
     <div className={styles.root}>
@@ -38,9 +41,9 @@ function LineVis(props: Props): ReactElement {
           showGrid,
         }}
         ordinateConfig={{
-          dataDomain: extendDomain(dataDomain, 0.01),
+          dataDomain: dataDomain || [0.1, 1],
           showGrid,
-          isLog: hasYLogScale,
+          scaleType,
         }}
       >
         <TooltipMesh
@@ -52,7 +55,7 @@ function LineVis(props: Props): ReactElement {
           guides="vertical"
         />
         <PanZoomMesh />
-        <DataCurve values={dataArray.data as number[]} />
+        {dataDomain && <DataCurve values={dataArray.data as number[]} />}
       </VisCanvas>
     </div>
   );
