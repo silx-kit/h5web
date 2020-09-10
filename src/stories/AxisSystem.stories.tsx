@@ -55,6 +55,29 @@ NoGrid.args = {
   ordinateConfig: { dataDomain: [0, 2], showGrid: false },
 };
 
+export const InheritedStyles = Template.bind({});
+
+InheritedStyles.args = {
+  abscissaConfig: { indexDomain: [0, 50], showGrid: true },
+  ordinateConfig: { indexDomain: [0, 3], showGrid: true },
+};
+
+InheritedStyles.decorators = [
+  (VisCanvasStory: Story) => (
+    <div
+      style={{
+        flex: '1 1 0%',
+        display: 'flex',
+        fontFamily: 'monospace',
+        fontWeight: 'bold',
+        fontSize: '1.125rem',
+      }}
+    >
+      <VisCanvasStory />
+    </div>
+  ),
+];
+
 export default {
   title: 'VisCanvas/AxisSystem',
   component: VisCanvas,
