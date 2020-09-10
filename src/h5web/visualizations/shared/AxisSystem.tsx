@@ -5,6 +5,7 @@ import { format } from 'd3-format';
 import type { TickRendererProps } from '@vx/axis/lib/types';
 import { GridColumns, GridRows } from '@vx/grid';
 import { HTML } from 'drei';
+import { useUpdateEffect } from 'react-use';
 import styles from './AxisSystem.module.css';
 import type { AxisOffsets, Domain } from './models';
 import { getTicksProp, getAxisScale } from './utils';
@@ -34,11 +35,15 @@ function AxisSystem(props: Props): JSX.Element {
   const abscissaScale = getAxisScale(abscissaInfo, width);
   const ordinateScale = getAxisScale(ordinateInfo, height);
 
-  // axisDomains are the complete domains. visibleDomains change with the camera
+  // `axisDomains` are the complete domains; `visibleDomains` change with the camera
   const [visibleDomains, setVisibleDomains] = useState<[Domain, Domain]>([
     abscissaInfo.domain,
     ordinateInfo.domain,
   ]);
+
+  useUpdateEffect(() => {
+    setVisibleDomains([abscissaInfo.domain, ordinateInfo.domain]);
+  }, [abscissaInfo.domain, ordinateInfo.domain]);
 
   useFrame(() => {
     const { position, zoom } = camera;

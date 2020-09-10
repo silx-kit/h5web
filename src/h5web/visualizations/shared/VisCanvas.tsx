@@ -70,4 +70,5 @@ function VisCanvas(props: Props): JSX.Element {
   );
 }
 
+export type { Props as VisCanvasProps };
 export default VisCanvas;

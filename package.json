@@ -21,7 +21,7 @@
     "lint:tsc": "tsc --noEmit",
     "lint:prettier": "prettier --check .",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "storybook:build": "build-storybook -s public"
   },
   "dependencies": {
     "@vx/axis": "0.0.195",
