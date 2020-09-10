@@ -12,6 +12,13 @@ npm install
 npm start
 ```
 
+## Storybook 📚
+
+Some components are tested in isolation in [Storybook](https://storybook.js.org/docs/react/get-started/introduction).
+
+- `npm run storybook` - run Storybook dev server at http://localhost:6006
+- `npm run storybook:build` - build static documentation site
+
 ## Testing 🐙
 
 - `npm test`
