@@ -19,7 +19,9 @@
     "lint": "run-p lint:*",
     "lint:eslint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
     "lint:tsc": "tsc --noEmit",
-    "lint:prettier": "prettier --check ."
+    "lint:prettier": "prettier --check .",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "dependencies": {
     "@vx/axis": "0.0.195",
@@ -54,6 +56,13 @@
     "zustand": "^2.2.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@storybook/addon-actions": "^6.0.21",
+    "@storybook/addon-essentials": "^6.0.21",
+    "@storybook/addon-links": "^6.0.21",
+    "@storybook/node-logger": "^6.0.21",
+    "@storybook/preset-create-react-app": "^3.1.4",
+    "@storybook/react": "^6.0.21",
     "@testing-library/jest-dom": "^5.9.0",
     "@testing-library/react": "^10.1.0",
     "@testing-library/user-event": "^10.4.1",
@@ -74,9 +83,11 @@
     "@types/react-slider": "^1.0.0",
     "@types/react-window": "^1.8.2",
     "@wsmd/eslint-config": "^1.2.0",
+    "babel-loader": "^8.1.0",
     "eslint": "^6.8.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
+    "react-is": "^16.13.1",
     "react-scripts": "^3.4.1",
     "typescript": "^3.9.3",
     "worker-loader": "^2.0.0"
