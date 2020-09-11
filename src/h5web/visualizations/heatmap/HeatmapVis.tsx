@@ -59,4 +59,5 @@ function HeatmapVis(props: Props): JSX.Element {
   );
 }
 
+export type { Props as HeatmapVisProps };
 export default HeatmapVis;
