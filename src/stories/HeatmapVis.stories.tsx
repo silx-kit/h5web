@@ -18,8 +18,8 @@ export const Default = Template.bind({});
 Default.args = {
   dataArray: ndarray<number>(
     dataset1.value.flat(Infinity) as number[],
-    dataset1.shape.dims.slice(0).reverse()
-  ),
+    dataset1.shape.dims
+  ).transpose(1, 0), // makes for a nicer-looking heatmap
 };
 
 export default {
