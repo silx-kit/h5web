@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { MdAspectRatio, MdGridOn, MdLinearScale } from 'react-icons/md';
+import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 import ToggleBtn from '../shared/ToggleBtn';
 import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
@@ -7,6 +7,7 @@ import ScreenshotButton from './ScreenshotButton';
 import Separator from '../shared/Separator';
 import Toolbar from '../shared/Toolbar';
 import ColorMapSelector from './ColorMapSelector';
+import ScaleSelector from '../shared/ScaleSelector';
 
 function HeatmapToolbar(): ReactElement {
   const {
@@ -15,8 +16,8 @@ function HeatmapToolbar(): ReactElement {
     setCustomDomain,
     colorMap,
     setColorMap,
-    hasLogScale,
-    toggleLogScale,
+    scaleType,
+    setScaleType,
     keepAspectRatio,
     toggleAspectRatio,
     showGrid,
@@ -32,17 +33,17 @@ function HeatmapToolbar(): ReactElement {
           onChange={setCustomDomain}
         />
       )}
+
       <Separator />
 
       <ColorMapSelector value={colorMap} onChange={setColorMap} />
+
       <Separator />
 
-      <ToggleBtn
-        label="Symlog"
-        icon={MdLinearScale}
-        value={hasLogScale}
-        onChange={toggleLogScale}
-      />
+      <ScaleSelector value={scaleType} onScaleChange={setScaleType} />
+
+      <Separator />
+
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
@@ -57,6 +58,7 @@ function HeatmapToolbar(): ReactElement {
       />
 
       <Separator />
+
       <ScreenshotButton />
     </Toolbar>
   );

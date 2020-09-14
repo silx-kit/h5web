@@ -1,4 +1,3 @@
-import type { scaleSymlog, scaleLinear } from 'd3-scale';
 import type { INTERPOLATORS } from './interpolators';
 
 export type Dims = {
@@ -14,5 +13,3 @@ export type ColorMapOption = {
   label: ColorMap;
   value: ColorMap;
 };
-
-export type DataScaleFn = typeof scaleSymlog | typeof scaleLinear;

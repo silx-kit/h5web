@@ -28,11 +28,11 @@ export function useTextureData(
   cols: number,
   values: number[]
 ): TextureDataState {
-  const [dataDomain, customDomain, hasLogScale, colorMap] = useHeatmapConfig(
+  const [dataDomain, customDomain, scaleType, colorMap] = useHeatmapConfig(
     (state) => [
       state.dataDomain,
       state.customDomain,
-      state.hasLogScale,
+      state.scaleType,
       state.colorMap,
     ],
     shallow
@@ -49,7 +49,7 @@ export function useTextureData(
    * > is triggered, during which `dataDomain` has not yet been recomputed. We must wait for
    * > `domain` to be updated before recomputing the texture.
    */
-  const deps = [colorMap, domain, hasLogScale, proxy, mergeState];
+  const deps = [colorMap, domain, scaleType, proxy, mergeState];
 
   useEffect(() => {
     if (!domain) {
@@ -68,7 +68,7 @@ export function useTextureData(
         textureData: await proxy.computeTextureData(
           transfer(typedValues, [typedValues.buffer]),
           domain,
-          hasLogScale,
+          scaleType,
           colorMap
         ),
       });
