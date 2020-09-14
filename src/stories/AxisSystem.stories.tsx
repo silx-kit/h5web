@@ -4,6 +4,7 @@ import VisCanvas, {
   VisCanvasProps,
 } from '../h5web/visualizations/shared/VisCanvas';
 import { ScaleType } from '../h5web/visualizations/shared/models';
+import FillHeight from '../../.storybook/decorators/FillHeight';
 
 const Template: Story<VisCanvasProps> = (args): ReactElement => (
   <VisCanvas {...args}>
@@ -79,14 +80,8 @@ InheritedStyles.decorators = [
 ];
 
 export default {
-  title: 'VisCanvas/AxisSystem',
+  title: 'Canvas/AxisSystem',
   component: VisCanvas,
   parameters: { layout: 'fullscreen' },
-  decorators: [
-    (VisCanvasStory: Story) => (
-      <div style={{ display: 'flex', height: '100vh' }}>
-        <VisCanvasStory />
-      </div>
-    ),
-  ],
+  decorators: [FillHeight],
 };
