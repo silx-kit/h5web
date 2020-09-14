@@ -1,13 +1,7 @@
 import React, { ReactElement, ReactNode, createContext } from 'react';
-import { scaleLinear, scaleLog, scaleSymlog } from 'd3-scale';
-import { AxisConfig, AxisInfo, ScaleType, AxisScaleFn } from './models';
+import { scaleLinear } from 'd3-scale';
+import { AxisConfig, AxisInfo, ScaleType, SCALE_FUNCTIONS } from './models';
 import { isIndexAxisConfig } from './utils';
-
-const SCALE_FUNCTIONS: Record<ScaleType, AxisScaleFn> = {
-  [ScaleType.Linear]: scaleLinear,
-  [ScaleType.Log]: scaleLog,
-  [ScaleType.SymLog]: scaleSymlog,
-};
 
 export interface AxisConfigs {
   abscissaInfo: AxisInfo;

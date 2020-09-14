@@ -3,16 +3,15 @@ import { rgb } from 'd3-color';
 import { scaleSequential } from 'd3-scale';
 import type { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
-import type { Domain } from '../shared/models';
-import { getDataScaleFn } from './utils';
+import { Domain, ScaleType, SCALE_FUNCTIONS } from '../shared/models';
 
 function computeTextureData(
   values: Float64Array,
   domain: Domain,
-  hasLogScale: boolean,
+  scaleType: ScaleType,
   colorMap: ColorMap
 ): Uint8Array | undefined {
-  const dataScale = getDataScaleFn(hasLogScale)();
+  const dataScale = SCALE_FUNCTIONS[scaleType]();
   dataScale.domain(domain);
 
   const colorScale = scaleSequential(INTERPOLATORS[colorMap]);

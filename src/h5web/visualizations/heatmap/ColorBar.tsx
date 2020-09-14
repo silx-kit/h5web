@@ -6,11 +6,12 @@ import { adaptedNumTicks } from '../shared/utils';
 import { useInterpolator } from './hooks';
 import { useHeatmapConfig } from './config';
 import styles from './HeatmapVis.module.css';
-import { generateCSSLinearGradient, getDataScaleFn } from './utils';
+import { generateCSSLinearGradient } from './utils';
+import { SCALE_FUNCTIONS } from '../shared/models';
 
 function ColorBar(): JSX.Element {
-  const [dataDomain, customDomain, hasLogScale] = useHeatmapConfig(
-    (state) => [state.dataDomain, state.customDomain, state.hasLogScale],
+  const [dataDomain, customDomain, scaleType] = useHeatmapConfig(
+    (state) => [state.dataDomain, state.customDomain, state.scaleType],
     shallow
   );
 
@@ -21,7 +22,7 @@ function ColorBar(): JSX.Element {
     return <></>;
   }
 
-  const axisScale = getDataScaleFn(hasLogScale)();
+  const axisScale = SCALE_FUNCTIONS[scaleType]();
   axisScale.domain(customDomain || dataDomain);
   axisScale.range([gradientHeight, 0]);
 

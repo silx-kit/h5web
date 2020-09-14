@@ -1,4 +1,4 @@
-import type {
+import {
   ScaleLinear,
   ScaleLogarithmic,
   ScaleSymLog,
@@ -12,6 +12,12 @@ export enum ScaleType {
   Log = 'Log',
   SymLog = 'SymLog',
 }
+
+export const SCALE_FUNCTIONS: Record<ScaleType, ScaleFn> = {
+  [ScaleType.Linear]: scaleLinear,
+  [ScaleType.Log]: scaleLog,
+  [ScaleType.SymLog]: scaleSymlog,
+};
 
 export type Size = { width: number; height: number };
 
@@ -31,10 +37,7 @@ export interface DataAxisConfig {
 
 export type AxisConfig = IndexAxisConfig | DataAxisConfig;
 
-export type AxisScaleFn =
-  | typeof scaleLinear
-  | typeof scaleLog
-  | typeof scaleSymlog;
+export type ScaleFn = typeof scaleLinear | typeof scaleLog | typeof scaleSymlog;
 
 export type AxisScale =
   | ScaleLinear<number, number>
@@ -43,7 +46,7 @@ export type AxisScale =
 
 export interface AxisInfo {
   isIndexAxis: boolean;
-  scaleFn: AxisScaleFn;
+  scaleFn: ScaleFn;
   domain: Domain;
   scaleType: ScaleType;
   showGrid: boolean;

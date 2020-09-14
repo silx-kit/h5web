@@ -1,5 +1,5 @@
 import type { ColorMap } from './models';
-import type { Domain } from '../shared/models';
+import { Domain, ScaleType } from '../shared/models';
 import { StorageConfig, createPersistableState } from '../../storage-utils';
 import { findDomain } from '../shared/utils';
 
@@ -13,8 +13,8 @@ interface HeatmapConfig {
   colorMap: ColorMap;
   setColorMap: (colorMap: ColorMap) => void;
 
-  hasLogScale: boolean;
-  toggleLogScale: () => void;
+  scaleType: ScaleType;
+  setScaleType: (scaleType: ScaleType) => void;
 
   keepAspectRatio: boolean;
   toggleAspectRatio: () => void;
@@ -25,7 +25,7 @@ interface HeatmapConfig {
 
 const STORAGE_CONFIG: StorageConfig = {
   storageId: 'h5web:heatmap',
-  itemsToPersist: ['colorMap', 'hasLogScale', 'keepAspectRatio', 'showGrid'],
+  itemsToPersist: ['colorMap', 'scaleType', 'keepAspectRatio', 'showGrid'],
 };
 
 export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
@@ -46,8 +46,8 @@ export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
     colorMap: 'Viridis',
     setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
-    hasLogScale: false,
-    toggleLogScale: () => set((state) => ({ hasLogScale: !state.hasLogScale })),
+    scaleType: ScaleType.Linear,
+    setScaleType: (scaleType: ScaleType) => set({ scaleType }),
 
     keepAspectRatio: true,
     toggleAspectRatio: () =>
