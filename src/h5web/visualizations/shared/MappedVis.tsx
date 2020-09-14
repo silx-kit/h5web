@@ -1,7 +1,7 @@
 import React, { ReactElement, useMemo, ElementType } from 'react';
 import { isNumber } from 'lodash-es';
 import ndarray from 'ndarray';
-import unpack from 'ndarray-unpack';
+import ops from 'ndarray-ops';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
 import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
 
@@ -16,9 +16,11 @@ function MappedVis<T>(props: Props<T>): ReactElement {
   const { component: Component, dataset, value, mapperState } = props;
   const rawDims = (dataset.shape as HDF5SimpleShape).dims;
 
-  const dataArray = useMemo(() => {
-    const baseArray = ndarray<T>(value.flat(Infinity) as T[], rawDims);
+  const baseArray = useMemo(() => {
+    return ndarray<T>(value.flat(Infinity) as T[], rawDims);
+  }, [rawDims, value]);
 
+  const dataArray = useMemo(() => {
     if (mapperState === undefined) {
       return baseArray;
     }
@@ -32,8 +34,11 @@ function MappedVis<T>(props: Props<T>): ReactElement {
     const mappedView = isXBeforeY ? slicedView.transpose(1, 0) : slicedView;
 
     // Create ndarray from mapped view so `dataArray.data` only contains values relevant to vis
-    return ndarray<T>(unpack(mappedView).flat(), mappedView.shape);
-  }, [value, rawDims, mapperState]);
+    const mappedArray = ndarray<T>([], mappedView.shape);
+    ops.assign(mappedArray, mappedView);
+
+    return mappedArray;
+  }, [mapperState, baseArray]);
 
   return <Component dataArray={dataArray} />;
 }

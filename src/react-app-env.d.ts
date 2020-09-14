@@ -8,3 +8,9 @@ declare module 'ndarray-unpack' {
 
   export = unpack;
 }
+
+declare module 'ndarray-ops' {
+  function assign(a: ndarray<T>, b: ndarray<T>);
+
+  export = { assign };
+}
