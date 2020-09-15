@@ -1,6 +1,6 @@
 import React, { useRef, useCallback, useEffect } from 'react';
 import type { Vector3 } from 'three';
-import { PointerEvent, useThree } from 'react-three-fiber';
+import { PointerEvent, WheelEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
 
 const ZOOM_FACTOR = 0.95;
@@ -32,7 +32,7 @@ function PanZoomMesh(): JSX.Element {
 
   const onPointerDown = useCallback(
     (evt: PointerEvent) => {
-      const { currentTarget, pointerId } = evt as React.PointerEvent;
+      const { currentTarget, pointerId } = evt;
       currentTarget.setPointerCapture(pointerId);
 
       const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
@@ -42,7 +42,7 @@ function PanZoomMesh(): JSX.Element {
   );
 
   const onPointerUp = useCallback((evt: PointerEvent) => {
-    const { currentTarget, pointerId } = evt as React.PointerEvent;
+    const { currentTarget, pointerId } = evt;
     currentTarget.releasePointerCapture(pointerId);
 
     startOffsetPosition.current = undefined;
@@ -67,9 +67,8 @@ function PanZoomMesh(): JSX.Element {
   );
 
   const onWheel = useCallback(
-    (evt: PointerEvent) => {
-      const { deltaY } = evt as React.WheelEvent;
-      const factor = deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
+    (evt: WheelEvent) => {
+      const factor = evt.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
 
       // eslint-disable-next-line no-param-reassign
       camera.zoom = Math.max(1, camera.zoom * factor);
