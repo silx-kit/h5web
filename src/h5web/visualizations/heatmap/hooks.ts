@@ -2,20 +2,13 @@ import { useEffect } from 'react';
 import { transfer } from 'comlink';
 import { useComlink } from 'react-use-comlink';
 import { useSetState } from 'react-use';
-import shallow from 'zustand/shallow';
 
 // @ts-ignore
 import Worker from 'worker-loader!./worker';
 
-import { useHeatmapConfig } from './config';
-import type { D3Interpolator } from './models';
-import { INTERPOLATORS } from './interpolators';
 import type { TextureWorker } from './worker';
-
-export function useInterpolator(): D3Interpolator {
-  const colorMap = useHeatmapConfig((state) => state.colorMap);
-  return INTERPOLATORS[colorMap];
-}
+import type { Domain, ScaleType } from '../shared/models';
+import type { ColorMap } from './models';
 
 export interface TextureDataState {
   loading?: boolean;
@@ -26,20 +19,11 @@ export interface TextureDataState {
 export function useTextureData(
   rows: number,
   cols: number,
-  values: number[]
+  values: number[],
+  domain: Domain | undefined,
+  scaleType: ScaleType,
+  colorMap: ColorMap
 ): TextureDataState {
-  const [dataDomain, customDomain, scaleType, colorMap] = useHeatmapConfig(
-    (state) => [
-      state.dataDomain,
-      state.customDomain,
-      state.scaleType,
-      state.colorMap,
-    ],
-    shallow
-  );
-
-  const domain = customDomain || dataDomain;
-
   const { proxy } = useComlink<TextureWorker>(() => new Worker(), []);
   const [state, mergeState] = useSetState<TextureDataState>({});
 

@@ -18,7 +18,10 @@ function computeTextureData(
 
   // Compute RGB color array for each datapoint `[[<r>, <g>, <b>], [<r>, <g>, <b>], ...]`
   const colors = values.reduce<number[]>((acc, val) => {
-    const { r, g, b } = rgb(colorScale(dataScale(val))); // `colorScale` returns CSS RGB strings
+    const dataValue = dataScale(val);
+    const { r, g, b } = Number.isFinite(dataValue)
+      ? rgb(colorScale(dataScale(val)))
+      : rgb(255, 255, 255); // `colorScale` returns CSS RGB strings
     acc.push(r, g, b);
     return acc;
   }, []);

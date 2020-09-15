@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import styles from './HeatmapVis.module.css';
@@ -9,7 +8,7 @@ import TooltipMesh from '../shared/TooltipMesh';
 import { useHeatmapConfig } from './config';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { getDims } from './utils';
+import { getDims, useMemoColorScaleDomain } from './utils';
 
 interface Props {
   dataArray: ndarray<number>;
@@ -21,19 +20,29 @@ function HeatmapVis(props: Props): JSX.Element {
   const { rows, cols } = getDims(dataArray);
   const values = dataArray.data as number[];
 
-  const [keepAspectRatio, showGrid] = useHeatmapConfig(
-    (state) => [state.keepAspectRatio, state.showGrid],
-    shallow
-  );
+  const {
+    dataDomain,
+    customDomain,
+    scaleType,
+    colorMap,
+    keepAspectRatio,
+    showGrid,
+    initDataDomain,
+  } = useHeatmapConfig();
 
   // width / height <=> cols / rows
   const aspectRatio = keepAspectRatio ? cols / rows : undefined;
 
-  const initDataDomain = useHeatmapConfig((state) => state.initDataDomain);
-
   useEffect(() => {
     initDataDomain(values);
   }, [initDataDomain, values]);
+
+  const domain = useMemoColorScaleDomain(
+    scaleType,
+    values,
+    dataDomain,
+    customDomain
+  );
 
   return (
     <div className={styles.root}>
@@ -52,9 +61,16 @@ function HeatmapVis(props: Props): JSX.Element {
           guides="both"
         />
         <PanZoomMesh />
-        <Mesh rows={rows} cols={cols} values={values} />
+        <Mesh
+          rows={rows}
+          cols={cols}
+          values={values}
+          domain={domain}
+          scaleType={scaleType}
+          colorMap={colorMap}
+        />
       </VisCanvas>
-      <ColorBar />
+      <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
     </div>
   );
 }

@@ -1,29 +1,30 @@
 import React from 'react';
 import { AxisRight } from '@vx/axis';
 import { useMeasure } from 'react-use';
-import shallow from 'zustand/shallow';
 import { adaptedNumTicks } from '../shared/utils';
-import { useInterpolator } from './hooks';
-import { useHeatmapConfig } from './config';
 import styles from './HeatmapVis.module.css';
 import { generateCSSLinearGradient } from './utils';
-import { SCALE_FUNCTIONS } from '../shared/models';
+import { SCALE_FUNCTIONS, ScaleType, Domain } from '../shared/models';
+import type { ColorMap } from './models';
+import { INTERPOLATORS } from './interpolators';
 
-function ColorBar(): JSX.Element {
-  const [dataDomain, customDomain, scaleType] = useHeatmapConfig(
-    (state) => [state.dataDomain, state.customDomain, state.scaleType],
-    shallow
-  );
+interface Props {
+  domain?: Domain;
+  scaleType: ScaleType;
+  colorMap: ColorMap;
+}
 
-  const interpolator = useInterpolator();
+function ColorBar(props: Props): JSX.Element {
+  const { domain, scaleType, colorMap } = props;
+  const interpolator = INTERPOLATORS[colorMap];
   const [gradientRef, { height: gradientHeight }] = useMeasure();
 
-  if (!dataDomain) {
+  if (!domain) {
     return <></>;
   }
 
   const axisScale = SCALE_FUNCTIONS[scaleType]();
-  axisScale.domain(customDomain || dataDomain);
+  axisScale.domain(domain);
   axisScale.range([gradientHeight, 0]);
 
   return (
