@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
+import { usePrevious } from 'react-use';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import Mesh from './Mesh';
@@ -8,7 +9,9 @@ import TooltipMesh from '../shared/TooltipMesh';
 import { useHeatmapConfig } from './config';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { getDims, useMemoColorScaleDomain } from './utils';
+import { getDims } from './utils';
+import { findDomain } from '../shared/utils';
+import { useMemoColorScaleDomain } from './hooks';
 
 interface Props {
   dataArray: ndarray<number>;
@@ -21,21 +24,27 @@ function HeatmapVis(props: Props): JSX.Element {
   const values = dataArray.data as number[];
 
   const {
-    dataDomain,
-    customDomain,
+    requestedDomain,
     scaleType,
     colorMap,
     keepAspectRatio,
     showGrid,
-    initDataDomain,
+    resetDomains,
   } = useHeatmapConfig();
 
-  // width / height <=> cols / rows
-  const aspectRatio = keepAspectRatio ? cols / rows : undefined;
+  const dataDomain = useMemo(() => findDomain(values), [values]);
+  const prevDataDomain = usePrevious(dataDomain);
+
+  // If `dataDomain` just changed, use `undefined` custom domain for this render until config's `requestedDomain` is updated through `useEffect` below
+  const customDomain =
+    dataDomain !== prevDataDomain ? undefined : requestedDomain;
 
   useEffect(() => {
-    initDataDomain(values);
-  }, [initDataDomain, values]);
+    // When `dataDomain` changes:
+    // - set data domain in config so toolbar can render domain slider with correct bounds;
+    // - reset requested domain in config so toolbar can reset value of domain slider, and so Heatmap can use in its next render.
+    resetDomains(dataDomain);
+  }, [dataDomain, resetDomains]);
 
   const domain = useMemoColorScaleDomain(
     scaleType,
@@ -43,6 +52,9 @@ function HeatmapVis(props: Props): JSX.Element {
     dataDomain,
     customDomain
   );
+
+  // width / height <=> cols / rows
+  const aspectRatio = keepAspectRatio ? cols / rows : undefined;
 
   return (
     <div className={styles.root}>

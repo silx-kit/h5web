@@ -22,7 +22,7 @@ function DomainSlider(props: Props): ReactElement {
   const [extendedMin, extendedMax] = extendDomain(dataDomain, EXTEND_FACTOR);
   const step = Math.max((extendedMax - extendedMin) / 100, 10 ** -NB_DECIMALS);
 
-  const updateCustomDomain = debounce((bounds) => {
+  const updateDomain = debounce((bounds) => {
     const roundedDomain = (bounds as number[]).map((val) =>
       round(val, NB_DECIMALS)
     ) as Domain;
@@ -54,7 +54,7 @@ function DomainSlider(props: Props): ReactElement {
           </div>
         )}
         value={[...(value || dataDomain)]}
-        onChange={updateCustomDomain}
+        onChange={updateDomain}
         min={extendedMin}
         max={extendedMax}
         step={step}
