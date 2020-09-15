@@ -8,7 +8,7 @@ interface Props {
 function Profiler(props: Props): ReactElement {
   const { id, children } = props;
 
-  if (!process.env.REACT_APP_PROFILING_ENABLED) {
+  if (process.env.REACT_APP_PROFILING_ENABLED !== 'true') {
     return children;
   }
 
