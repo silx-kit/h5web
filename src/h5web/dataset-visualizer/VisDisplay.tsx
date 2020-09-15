@@ -7,6 +7,7 @@ import type {
 } from '../providers/models';
 import { VIS_DEFS } from '../visualizations';
 import DimensionMapper from './mapper/DimensionMapper';
+import Profiler from '../Profiler';
 
 interface Props {
   activeVis: Vis;
@@ -28,7 +29,11 @@ function VisDisplay(props: Props): ReactElement {
         mapperState={mapperState}
         onChange={onMapperStateChange}
       />
-      {value !== undefined && renderVis(value, dataset, mapperState)}
+      {value !== undefined && (
+        <Profiler id={activeVis}>
+          {renderVis(value, dataset, mapperState)}
+        </Profiler>
+      )}
     </>
   );
 }
