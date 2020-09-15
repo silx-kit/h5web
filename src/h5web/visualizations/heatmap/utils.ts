@@ -1,5 +1,4 @@
 import { range } from 'lodash-es';
-import { createMemo } from 'react-use';
 import type { D3Interpolator, Dims } from './models';
 import type { DataArray } from '../../dataset-visualizer/models';
 import { ScaleType, Domain } from '../shared/models';
@@ -21,7 +20,7 @@ export function generateCSSLinearGradient(
   return `linear-gradient(to ${direction},${gradientColors})`;
 }
 
-function getColorScaleDomain(
+export function getColorScaleDomain(
   scaleType: ScaleType,
   values: number[],
   dataDomain?: Domain,
@@ -47,5 +46,3 @@ function getColorScaleDomain(
 
   return supportedDomain;
 }
-
-export const useMemoColorScaleDomain = createMemo(getColorScaleDomain);

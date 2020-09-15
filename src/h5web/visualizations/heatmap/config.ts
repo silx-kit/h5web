@@ -1,14 +1,13 @@
 import type { ColorMap } from './models';
 import { Domain, ScaleType } from '../shared/models';
 import { StorageConfig, createPersistableState } from '../../storage-utils';
-import { findDomain } from '../shared/utils';
 
 interface HeatmapConfig {
   dataDomain: Domain | undefined;
-  initDataDomain: (values: number[]) => void;
+  resetDomains: (dataDomain: Domain | undefined) => void;
 
-  customDomain: Domain | undefined;
-  setCustomDomain: (customDomain: Domain | undefined) => void;
+  requestedDomain: Domain | undefined;
+  setRequestedDomain: (requestedDomain: Domain | undefined) => void;
 
   colorMap: ColorMap;
   setColorMap: (colorMap: ColorMap) => void;
@@ -32,16 +31,16 @@ export const [useHeatmapConfig] = createPersistableState<HeatmapConfig>(
   STORAGE_CONFIG,
   (set) => ({
     dataDomain: undefined,
-    initDataDomain: (values: number[]) => {
+    resetDomains: (dataDomain: Domain | undefined) => {
       set({
-        dataDomain: findDomain(values),
-        customDomain: undefined, // reset custom domain
+        dataDomain,
+        requestedDomain: undefined,
       });
     },
 
-    customDomain: undefined,
-    setCustomDomain: (customDomain: Domain | undefined) =>
-      set({ customDomain }),
+    requestedDomain: undefined,
+    setRequestedDomain: (requestedDomain: Domain | undefined) =>
+      set({ requestedDomain }),
 
     colorMap: 'Viridis',
     setColorMap: (colorMap: ColorMap) => set({ colorMap }),

@@ -11,7 +11,7 @@ interface Props {
   rows: number;
   cols: number;
   values: number[];
-  domain: Domain | undefined;
+  domain: Domain;
   scaleType: ScaleType;
   colorMap: ColorMap;
 }

@@ -12,8 +12,8 @@ import ScaleSelector from '../shared/ScaleSelector';
 function HeatmapToolbar(): ReactElement {
   const {
     dataDomain,
-    customDomain,
-    setCustomDomain,
+    requestedDomain,
+    setRequestedDomain,
     colorMap,
     setColorMap,
     scaleType,
@@ -29,8 +29,8 @@ function HeatmapToolbar(): ReactElement {
       {dataDomain && (
         <DomainSlider
           dataDomain={dataDomain}
-          value={customDomain}
-          onChange={setCustomDomain}
+          value={requestedDomain}
+          onChange={setRequestedDomain}
         />
       )}
 

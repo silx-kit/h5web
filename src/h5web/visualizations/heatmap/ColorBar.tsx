@@ -9,7 +9,7 @@ import type { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
 
 interface Props {
-  domain?: Domain;
+  domain: Domain;
   scaleType: ScaleType;
   colorMap: ColorMap;
 }
@@ -18,10 +18,6 @@ function ColorBar(props: Props): JSX.Element {
   const { domain, scaleType, colorMap } = props;
   const interpolator = INTERPOLATORS[colorMap];
   const [gradientRef, { height: gradientHeight }] = useMeasure();
-
-  if (!domain) {
-    return <></>;
-  }
 
   const axisScale = SCALE_FUNCTIONS[scaleType]();
   axisScale.domain(domain);
