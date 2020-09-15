@@ -21,7 +21,7 @@ export function useTextureData(
   rows: number,
   cols: number,
   values: number[],
-  domain: Domain | undefined,
+  domain: Domain,
   scaleType: ScaleType,
   colorMap: ColorMap
 ): TextureDataState {
@@ -37,10 +37,6 @@ export function useTextureData(
   const deps = [colorMap, domain, scaleType, proxy, mergeState];
 
   useEffect(() => {
-    if (!domain) {
-      return;
-    }
-
     // Keep existing texture data, if any
     mergeState({ loading: true });
 

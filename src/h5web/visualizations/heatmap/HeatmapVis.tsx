@@ -56,6 +56,10 @@ function HeatmapVis(props: Props): JSX.Element {
   // width / height <=> cols / rows
   const aspectRatio = keepAspectRatio ? cols / rows : undefined;
 
+  if (!domain) {
+    return <p className={styles.domainError}>Unable to compute domain</p>;
+  }
+
   return (
     <div className={styles.root}>
       <VisCanvas

@@ -12,6 +12,7 @@
   --secondary-darker: #0e5846;
   --secondary-bg: #d9f4ec;
   --secondary-light-bg: #ecfaf6;
+  --danger: #99231b;
   --monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
   --sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
