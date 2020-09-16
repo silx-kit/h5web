@@ -26,6 +26,34 @@ Default.args = {
   colorMap: 'Viridis',
 };
 
+export const ColorMapTemplate = Template.bind({});
+ColorMapTemplate.storyName = 'Color Map';
+ColorMapTemplate.args = { ...Default.args, colorMap: 'Blues' };
+
+export const DomainTemplate = Template.bind({});
+DomainTemplate.storyName = 'Domain';
+DomainTemplate.args = { ...Default.args, domainMin: -10, domainMax: 10 };
+
+export const LogScale = Template.bind({});
+LogScale.args = { ...Default.args, scaleType: ScaleType.Log };
+
+export const NegativeLogScale = Template.bind({});
+NegativeLogScale.storyName = 'Log Scale with negative values';
+NegativeLogScale.args = {
+  ...Default.args,
+  scaleType: ScaleType.Log,
+  domainMin: -10,
+  domainMax: -1,
+};
+
+export const SymLogScale = Template.bind({});
+SymLogScale.args = {
+  ...Default.args,
+  scaleType: ScaleType.SymLog,
+  domainMin: -6,
+  domainMax: 6,
+};
+
 export default {
   title: 'Visualizations/HeatmapVis/ColorBar',
   component: ColorBar,
