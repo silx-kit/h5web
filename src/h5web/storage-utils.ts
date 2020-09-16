@@ -1,4 +1,4 @@
-import create, { State, StateCreator, StoreApi, UseStore } from 'zustand';
+import create, { State, StateCreator, UseStore } from 'zustand';
 
 export interface StorageConfig {
   storageId: string;
@@ -21,7 +21,7 @@ function fromStorage<T>(id: string): T | undefined {
 export function createPersistableState<S extends State>(
   config: StorageConfig,
   createState: StateCreator<S>
-): [UseStore<S>, StoreApi<S>] {
+): UseStore<S> {
   const { storageId, itemsToPersist } = config;
 
   return create<S>((set, get, api) => {
@@ -31,8 +31,8 @@ export function createPersistableState<S extends State>(
     // Invoke provided state creator to retrieve initial state
     const initialState = createState(
       // Monkey patch `set` to persist state on every call
-      (args) => {
-        set(args);
+      (arg) => {
+        set(arg);
 
         // Retrieve new state to persist, keeping only the relevant keys
         const newStateStr = JSON.stringify(get(), itemsToPersist);
