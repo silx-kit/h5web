@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useThree, useFrame } from 'react-three-fiber';
-import { AxisLeft, AxisBottom } from '@vx/axis';
+import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
 import { format } from 'd3-format';
-import type { TickRendererProps } from '@vx/axis/lib/types';
 import { GridColumns, GridRows } from '@vx/grid';
 import { HTML } from 'drei';
 import { useUpdateEffect } from 'react-use';

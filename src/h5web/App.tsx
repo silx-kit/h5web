@@ -35,7 +35,7 @@ function App(): JSX.Element {
         <ReflexElement
           className={styles.explorer}
           style={{ display: isExplorerOpen ? undefined : 'none' }}
-          flex={0.25}
+          flex={25}
           minSize={250}
         >
           <Explorer selectedNode={selectedNode} onSelect={setSelectedNode} />
@@ -45,11 +45,7 @@ function App(): JSX.Element {
           style={{ display: isExplorerOpen ? undefined : 'none' }}
         />
 
-        <ReflexElement
-          className={styles.mainArea}
-          flex={isExplorerOpen ? 0.75 : 1}
-          minSize={500}
-        >
+        <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
           <BreadcrumbsBar
             isExplorerOpen={isExplorerOpen}
             onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
