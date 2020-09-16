@@ -3,10 +3,10 @@ import { extent, tickStep } from 'd3-array';
 import type {
   Size,
   Domain,
-  AxisConfig,
-  IndexAxisConfig,
   AxisScale,
+  AxisConfig,
   AxisInfo,
+  IndexAxisConfig,
 } from './models';
 
 export const adaptedNumTicks = scaleLinear()
@@ -110,13 +110,13 @@ function getIntegerTicks(domain: Domain, count: number): number[] {
 }
 
 export function getTicksProp(
-  info: AxisInfo,
   visibleDomain: Domain,
-  availableSize: number
+  availableSize: number,
+  onlyIntegers?: boolean
 ): { tickValues: number[] } | { numTicks: number } {
   const numTicks = adaptedNumTicks(availableSize);
 
-  return info.isIndexAxis
+  return onlyIntegers
     ? { tickValues: getIntegerTicks(visibleDomain, numTicks) }
     : { numTicks };
 }

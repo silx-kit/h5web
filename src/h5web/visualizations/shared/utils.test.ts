@@ -1,6 +1,5 @@
 import { tickStep } from 'd3-array';
 import { computeVisSize, findDomain, getTicksProp } from './utils';
-import type { AxisInfo } from './models';
 
 describe('Shared visualization utilities', () => {
   describe('computeVisSize', () => {
@@ -69,50 +68,48 @@ describe('Shared visualization utilities', () => {
   });
 
   describe('getTicksProp', () => {
-    describe('with data axis config', () => {
-      const axisInfo = { isIndexAxis: false } as AxisInfo;
-
+    describe('without forcing to integers', () => {
       it('should return number of ticks allowed for available size regardless of visible domain', () => {
-        const prop1 = getTicksProp(axisInfo, [0, 1], 200);
+        const prop1 = getTicksProp([0, 1], 200);
         expect(prop1).toEqual({ numTicks: 3 });
 
-        const prop2 = getTicksProp(axisInfo, [5, 20], 1000);
+        const prop2 = getTicksProp([5, 20], 1000);
         expect(prop2).toEqual({ numTicks: 10 });
       });
     });
 
-    describe('with index axis config', () => {
-      const axisInfo = { isIndexAxis: true } as AxisInfo;
+    describe('with only integers', () => {
+      const onlyIntegers = true;
 
       it('should return zero tick values when visible domain spans zero indices', () => {
-        const prop1 = getTicksProp(axisInfo, [0.2, 0.8], 10);
+        const prop1 = getTicksProp([0.2, 0.8], 10, onlyIntegers);
         expect(prop1).toEqual({ tickValues: [] });
 
-        const prop2 = getTicksProp(axisInfo, [5.01, 5.02], 10);
+        const prop2 = getTicksProp([5.01, 5.02], 10, onlyIntegers);
         expect(prop2).toEqual({ tickValues: [] });
       });
 
       it('should return as many integer tick values as indices when space allows for it', () => {
-        const prop1 = getTicksProp(axisInfo, [0, 3], 1000);
+        const prop1 = getTicksProp([0, 3], 1000, onlyIntegers);
         expect(prop1).toEqual({ tickValues: [0, 1, 2, 3] });
 
-        const prop2 = getTicksProp(axisInfo, [5.4, 6.9], 1000);
+        const prop2 = getTicksProp([5.4, 6.9], 1000, onlyIntegers);
         expect(prop2).toEqual({ tickValues: [6] });
       });
 
       it('should return evenly-spaced tick values for available space', () => {
-        const prop1 = getTicksProp(axisInfo, [0.8, 20.2], 1000); // domain has 20 potential ticks but space allows for 10
+        const prop1 = getTicksProp([0.8, 20.2], 1000, onlyIntegers); // domain has 20 potential ticks but space allows for 10
         expect(prop1).toEqual({
           tickValues: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
         });
 
-        const prop2 = getTicksProp(axisInfo, [2, 7], 200); // domain has 8 potential ticks but space allows for 3
+        const prop2 = getTicksProp([2, 7], 200, onlyIntegers); // domain has 8 potential ticks but space allows for 3
         expect(prop2).toEqual({ tickValues: [2, 4, 6] });
       });
 
       it('should always return integer tick values', () => {
         // Tick count is not always respected, which is acceptable
-        const prop1 = getTicksProp(axisInfo, [0, 4], 200); // domain has 5 potential ticks but space allows for 3
+        const prop1 = getTicksProp([0, 4], 200, onlyIntegers); // domain has 5 potential ticks but space allows for 3
         expect(prop1).toEqual({ tickValues: [0, 1, 2, 3, 4] });
 
         // This is because `d3.tickStep` is not too worried about the count...
@@ -122,7 +119,7 @@ describe('Shared visualization utilities', () => {
         expect(tickStep(0, 2, 3)).toBe(0.5); // we'd end up with `[0, 0.5, 1, 1.5, 2]` instead of `[0, 1, 2]`
 
         // So we specifically work around it by forcing the step to be greater than or equal to 1
-        const prop2 = getTicksProp(axisInfo, [0, 2], 200);
+        const prop2 = getTicksProp([0, 2], 200, onlyIntegers);
         expect(prop2).toEqual({ tickValues: [0, 1, 2] });
       });
     });

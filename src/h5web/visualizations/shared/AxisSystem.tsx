@@ -70,8 +70,16 @@ function AxisSystem(props: Props): JSX.Element {
   yTicksScale.domain(visibleDomains[1]);
   yTicksScale.range([height, 0]);
 
-  const xTicksProp = getTicksProp(abscissaInfo, visibleDomains[0], width);
-  const yTicksProp = getTicksProp(ordinateInfo, visibleDomains[1], height);
+  const xTicksProp = getTicksProp(
+    visibleDomains[0],
+    width,
+    abscissaInfo.isIndexAxis
+  );
+  const yTicksProp = getTicksProp(
+    visibleDomains[1],
+    height,
+    ordinateInfo.isIndexAxis
+  );
 
   return (
     <HTML
