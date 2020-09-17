@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import type { TreeNode, ExpandedNodes } from './models';
 
 import styles from './Explorer.module.css';
@@ -32,7 +32,7 @@ function TreeView<T>(props: Props<T>): JSX.Element {
         return (
           <li
             key={uid}
-            style={{ '--level': level } as React.CSSProperties}
+            style={{ '--level': level } as CSSProperties}
             role="none"
           >
             <button
