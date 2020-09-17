@@ -19,7 +19,7 @@ interface Props {
 
 function VisDisplay(props: Props): ReactElement {
   const { activeVis, dataset, value, mapperState, onMapperStateChange } = props;
-  const { render: renderVis } = VIS_DEFS[activeVis];
+  const { Component: VisComponent } = VIS_DEFS[activeVis];
 
   return (
     <>
@@ -31,7 +31,11 @@ function VisDisplay(props: Props): ReactElement {
       />
       {value !== undefined && (
         <Profiler id={activeVis}>
-          {renderVis(value, dataset, mapperState)}
+          <VisComponent
+            value={value}
+            dataset={dataset}
+            mapperState={mapperState}
+          />
         </Profiler>
       )}
     </>
