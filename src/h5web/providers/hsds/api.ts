@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import type {
   HsdsDatasetResponse,
   HsdsDatatypeResponse,
@@ -28,7 +28,6 @@ import type { ProviderAPI } from '../context';
 export class HsdsApi implements ProviderAPI {
   private readonly client: AxiosInstance;
   private readonly domain: string;
-  private readonly config: AxiosRequestConfig;
 
   private metadata?: HDF5Metadata;
   private groups: Record<HDF5Id, HDF5Group> = {};
@@ -43,19 +42,10 @@ export class HsdsApi implements ProviderAPI {
     filepath: string
   ) {
     this.domain = `/home/${username}/${filepath}`;
-    this.config = {
-      params: { domain: this.domain },
-      auth: {
-        username,
-        password,
-      },
-    };
-    // Giving the config to the client should set the headers and params for all client requests but it does not (bug axios 0.19.2) !
-    // The fix is merged but not released (https://github.com/axios/axios/releases).
-    // In the mean time, we put this.config in arg to all client requests.
     this.client = axios.create({
       baseURL: url,
-      ...this.config,
+      params: { domain: this.domain },
+      auth: { username, password },
     });
   }
 
@@ -65,38 +55,32 @@ export class HsdsApi implements ProviderAPI {
   }
 
   private async fetchRoot(): Promise<HDF5Id> {
-    const { data } = await this.client.get<HsdsRootResponse>('/', this.config);
+    const { data } = await this.client.get<HsdsRootResponse>('/');
     return data.root;
   }
 
   private async fetchDataset(id: HDF5Id): Promise<HsdsDatasetResponse> {
     const { data } = await this.client.get<HsdsDatasetResponse>(
-      `/datasets/${id}`,
-      this.config
+      `/datasets/${id}`
     );
     return data;
   }
 
   private async fetchDatatype(id: HDF5Id): Promise<HsdsDatatypeResponse> {
     const { data } = await this.client.get<HsdsDatatypeResponse>(
-      `/datatypes/${id}`,
-      this.config
+      `/datatypes/${id}`
     );
     return data;
   }
 
   private async fetchGroup(id: HDF5Id): Promise<HsdsGroupResponse> {
-    const { data } = await this.client.get<HsdsGroupResponse>(
-      `/groups/${id}`,
-      this.config
-    );
+    const { data } = await this.client.get<HsdsGroupResponse>(`/groups/${id}`);
     return data;
   }
 
   private async fetchLinks(id: HDF5Id): Promise<HDF5Link[]> {
     const { data } = await this.client.get<HsdsLinksResponse>(
-      `/groups/${id}/links`,
-      this.config
+      `/groups/${id}/links`
     );
     return data.links;
   }
@@ -106,14 +90,12 @@ export class HsdsApi implements ProviderAPI {
     entityId: HDF5Id
   ): Promise<HDF5Attribute[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
-      `/${entityCollection}/${entityId}/attributes`,
-      this.config
+      `/${entityCollection}/${entityId}/attributes`
     );
     const attrsPromises = data.attributes.map((attr) =>
       this.client
         .get<HsdsAttributeWithValueResponse>(
-          `/${entityCollection}/${entityId}/attributes/${attr.name}`,
-          this.config
+          `/${entityCollection}/${entityId}/attributes/${attr.name}`
         )
         .then((response) => response.data)
     );
@@ -122,8 +104,7 @@ export class HsdsApi implements ProviderAPI {
 
   private async fetchValue(id: HDF5Id): Promise<HDF5Value> {
     const { data } = await this.client.get<HsdsValueResponse>(
-      `/datasets/${id}/value`,
-      this.config
+      `/datasets/${id}/value`
     );
     return data.value;
   }

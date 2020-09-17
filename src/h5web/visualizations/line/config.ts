@@ -1,16 +1,12 @@
+import { combine } from 'zustand/middleware';
 import { StorageConfig, createPersistableState } from '../../storage-utils';
 import { CurveType } from './models';
 import { ScaleType } from '../shared/models';
 
 type LineConfig = {
   curveType: CurveType;
-  setCurveType: (type: CurveType) => void;
-
   showGrid: boolean;
-  toggleGrid: () => void;
-
   scaleType: ScaleType;
-  setScaleType: (type: ScaleType) => void;
 };
 
 const STORAGE_CONFIG: StorageConfig = {
@@ -18,16 +14,17 @@ const STORAGE_CONFIG: StorageConfig = {
   itemsToPersist: ['curveType', 'showGrid', 'scaleType'],
 };
 
-export const [useLineConfig] = createPersistableState<LineConfig>(
+const INITIAL_STATE: LineConfig = {
+  curveType: CurveType.LineOnly,
+  showGrid: true,
+  scaleType: ScaleType.Linear,
+};
+
+export const useLineConfig = createPersistableState(
   STORAGE_CONFIG,
-  (set) => ({
-    curveType: CurveType.LineOnly,
+  combine(INITIAL_STATE, (set) => ({
     setCurveType: (type: CurveType) => set({ curveType: type }),
-
-    showGrid: true,
     toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
-
-    scaleType: ScaleType.Linear,
     setScaleType: (type: ScaleType) => set({ scaleType: type }),
-  })
+  }))
 );

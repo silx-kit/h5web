@@ -98,5 +98,8 @@
 
 .sliderThumb:global(.active) {
   border-color: var(--secondary-dark);
+}
+
+.sliderThumb:active {
   cursor: none;
 }

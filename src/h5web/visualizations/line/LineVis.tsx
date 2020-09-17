@@ -55,7 +55,7 @@ function LineVis(props: Props): ReactElement {
           guides="vertical"
         />
         <PanZoomMesh />
-        {dataDomain && <DataCurve values={dataArray.data as number[]} />}
+        {dataDomain && <DataCurve values={values} />}
       </VisCanvas>
     </div>
   );

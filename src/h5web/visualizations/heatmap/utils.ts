@@ -41,7 +41,7 @@ export function getColorScaleDomain(
   const supportedDomain = findDomain(values.filter((x) => x > 0));
   if (supportedDomain && customDomain) {
     // Clamp custom domain minimum to the first positive value
-    return [supportedDomain[0], customDomain[1]] as Domain;
+    return [supportedDomain[0], customDomain[1]];
   }
 
   return supportedDomain;
