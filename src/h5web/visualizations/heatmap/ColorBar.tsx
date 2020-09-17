@@ -1,8 +1,8 @@
 import React from 'react';
-import { AxisRight } from '@vx/axis';
+import { AxisRight, AxisBottom } from '@vx/axis';
 import { useMeasure } from 'react-use';
 import { adaptedNumTicks } from '../shared/utils';
-import styles from './HeatmapVis.module.css';
+import styles from './ColorBar.module.css';
 import { generateCSSLinearGradient } from './utils';
 import { SCALE_FUNCTIONS, ScaleType, Domain } from '../shared/models';
 import type { ColorMap } from './models';
@@ -12,38 +12,48 @@ interface Props {
   domain: Domain;
   scaleType: ScaleType;
   colorMap: ColorMap;
+  horizontal?: boolean;
 }
 
 function ColorBar(props: Props): JSX.Element {
-  const { domain, scaleType, colorMap } = props;
+  const { domain, scaleType, colorMap, horizontal } = props;
   const interpolator = INTERPOLATORS[colorMap];
-  const [gradientRef, { height: gradientHeight }] = useMeasure();
+  const [
+    gradientRef,
+    { height: gradientHeight, width: gradientWidth },
+  ] = useMeasure();
+
+  const gradientLength = horizontal ? gradientWidth : gradientHeight;
+  const Axis = horizontal ? AxisBottom : AxisRight;
 
   const axisScale = SCALE_FUNCTIONS[scaleType]();
   axisScale.domain(domain);
-  axisScale.range([gradientHeight, 0]);
+  axisScale.range(horizontal ? [0, gradientWidth] : [gradientHeight, 0]);
 
   return (
-    <div className={styles.colorBar}>
+    <div className={styles.colorBar} data-horizontal={horizontal || undefined}>
       <div
         ref={gradientRef}
         className={styles.gradient}
         style={{
-          backgroundImage: generateCSSLinearGradient(interpolator, 'top'),
+          backgroundImage: generateCSSLinearGradient(
+            interpolator,
+            horizontal ? 'right' : 'top'
+          ),
         }}
       />
-      {gradientHeight > 0 && (
+      {gradientLength > 0 && (
         <svg
           className={styles.colorBarAxis}
-          height={gradientHeight}
-          width="2em"
+          height={horizontal ? '2em' : gradientHeight}
+          width={horizontal ? gradientWidth : '2em'}
         >
-          <AxisRight
+          <Axis
             scale={axisScale}
             hideAxisLine
-            numTicks={adaptedNumTicks(gradientHeight)}
+            numTicks={adaptedNumTicks(gradientLength)}
             tickFormat={axisScale.tickFormat(
-              adaptedNumTicks(gradientHeight),
+              adaptedNumTicks(gradientLength),
               '.3'
             )}
           />

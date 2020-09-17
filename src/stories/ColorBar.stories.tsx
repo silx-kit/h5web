@@ -10,6 +10,7 @@ interface Props {
   domainMax: number;
   scaleType: ScaleType;
   colorMap: ColorMap;
+  horizontal?: boolean;
 }
 
 const Template: Story<Props> = (args): ReactElement => {
@@ -52,6 +53,12 @@ SymLogScale.args = {
   scaleType: ScaleType.SymLog,
   domainMin: -6,
   domainMax: 6,
+};
+
+export const Horizontal = Template.bind({});
+Horizontal.args = {
+  ...Default.args,
+  horizontal: true,
 };
 
 export default {

@@ -30,24 +30,6 @@
   }
 }
 
-.colorBar {
-  display: flex;
-  padding: 1em;
-  width: 6em;
-  min-height: 0;
-}
-
-.colorBarAxis {
-  display: block;
-  overflow: visible;
-  align-self: center;
-}
-
-.gradient {
-  flex: 1 0 auto;
-  border: 1px solid black;
-}
-
 .domainError {
   padding: 1em;
   color: var(--danger);
