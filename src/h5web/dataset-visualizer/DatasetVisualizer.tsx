@@ -1,13 +1,13 @@
-import React, { ReactElement, useMemo, useEffect, useContext } from 'react';
+import React, { ReactElement, useEffect, useContext } from 'react';
 import { useSetState } from 'react-use';
 import type { HDF5Dataset, HDF5Value } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
-import { getSupportedVis } from './utils';
 import VisDisplay from './VisDisplay';
 import type { Vis, DimensionMapping } from './models';
 import { VIS_DEFS } from '../visualizations';
 import { ProviderContext } from '../providers/context';
+import { useSupportedVis } from './hooks';
 
 interface Props {
   dataset?: HDF5Dataset;
@@ -23,8 +23,7 @@ interface State {
 function DatasetVisualizer(props: Props): ReactElement {
   const { dataset } = props;
 
-  const supportedVis = useMemo(() => getSupportedVis(dataset), [dataset]);
-
+  const supportedVis = useSupportedVis(dataset);
   const [state, mergeState] = useSetState<State>({});
   const { activeVis, value, mapperState, prevDataset } = state;
 

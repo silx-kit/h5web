@@ -2,8 +2,10 @@ import ndarray from 'ndarray';
 import { useMemo } from 'react';
 import { isNumber } from 'lodash-es';
 import { assign } from 'ndarray-ops';
+import { createMemo } from 'react-use';
 import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
+import { findDomain } from './utils';
 
 export function useMappedArray<T>(
   dataset: HDF5Dataset,
@@ -36,3 +38,5 @@ export function useMappedArray<T>(
     return mappedArray;
   }, [mapperState, baseArray]);
 }
+
+export const useDataDomain = createMemo(findDomain);

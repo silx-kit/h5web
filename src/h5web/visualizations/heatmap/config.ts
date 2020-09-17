@@ -5,7 +5,7 @@ import { StorageConfig, createPersistableState } from '../../storage-utils';
 
 type HeatmapConfig = {
   dataDomain: Domain | undefined;
-  requestedDomain: Domain | undefined;
+  customDomain: Domain | undefined;
   colorMap: ColorMap;
   scaleType: ScaleType;
   keepAspectRatio: boolean;
@@ -19,7 +19,7 @@ const STORAGE_CONFIG: StorageConfig = {
 
 const INITIAL_STATE: HeatmapConfig = {
   dataDomain: undefined,
-  requestedDomain: undefined,
+  customDomain: undefined,
   colorMap: 'Viridis',
   scaleType: ScaleType.Linear,
   keepAspectRatio: true,
@@ -30,10 +30,10 @@ export const useHeatmapConfig = createPersistableState(
   STORAGE_CONFIG,
   combine(INITIAL_STATE, (set) => ({
     resetDomains: (dataDomain: Domain | undefined) =>
-      set({ dataDomain, requestedDomain: undefined }),
+      set({ dataDomain, customDomain: undefined }),
 
-    setRequestedDomain: (requestedDomain: Domain | undefined) =>
-      set({ requestedDomain }),
+    setCustomDomain: (customDomain: Domain | undefined) =>
+      set({ customDomain }),
 
     setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 

@@ -9,7 +9,7 @@ import Worker from 'worker-loader!./worker';
 import type { TextureWorker } from './worker';
 import type { Domain, ScaleType } from '../shared/models';
 import type { ColorMap } from './models';
-import { getColorScaleDomain } from './utils';
+import { getSupportedDomain } from './utils';
 
 export interface TextureDataState {
   loading?: boolean;
@@ -57,4 +57,4 @@ export function useTextureData(
   return state;
 }
 
-export const useMemoColorScaleDomain = createMemo(getColorScaleDomain);
+export const useSupportedDomain = createMemo(getSupportedDomain);

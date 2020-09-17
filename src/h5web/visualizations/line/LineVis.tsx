@@ -1,50 +1,50 @@
 import React, { ReactElement, useMemo } from 'react';
-import shallow from 'zustand/shallow';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import styles from './LineVis.module.css';
 import DataCurve from './DataCurve';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
-import { useLineConfig } from './config';
 import TooltipMesh from '../shared/TooltipMesh';
-import { extendDomain, findDomain } from '../shared/utils';
-import { ScaleType } from '../shared/models';
+import { extendDomain } from '../shared/utils';
+import { ScaleType, Domain } from '../shared/models';
+import { CurveType } from './models';
+import { useSupportedDomain } from '../heatmap/hooks';
+
+const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
 interface Props {
   dataArray: ndarray<number>;
+  domain: Domain | undefined;
+  scaleType?: ScaleType;
+  curveType?: CurveType;
+  showGrid?: boolean;
 }
 
 function LineVis(props: Props): ReactElement {
-  const { dataArray } = props;
-
-  const [showGrid, scaleType] = useLineConfig(
-    (state) => [state.showGrid, state.scaleType],
-    shallow
-  );
+  const {
+    dataArray,
+    domain,
+    curveType = CurveType.LineOnly,
+    showGrid = true,
+    scaleType = ScaleType.Linear,
+  } = props;
 
   const values = dataArray.data as number[];
-  const dataDomain = useMemo(() => {
-    const isLogScale = scaleType === ScaleType.Log;
-    const rawDomain = findDomain(
-      isLogScale ? values.filter((x) => x > 0) : values
-    );
+  const supportedDomain = useSupportedDomain(domain, scaleType, values);
 
-    return rawDomain && extendDomain(rawDomain, 0.05, isLogScale);
-  }, [scaleType, values]);
+  const indexDomain = extendDomain([0, dataArray.size - 1], 0.01);
+  const dataDomain = useMemo(() => {
+    return supportedDomain
+      ? extendDomain(supportedDomain, 0.05, scaleType === ScaleType.Log)
+      : DEFAULT_DOMAIN;
+  }, [scaleType, supportedDomain]);
 
   return (
     <div className={styles.root}>
       <VisCanvas
-        abscissaConfig={{
-          indexDomain: extendDomain([0, dataArray.size - 1], 0.01),
-          showGrid,
-        }}
-        ordinateConfig={{
-          dataDomain: dataDomain || [0.1, 1],
-          showGrid,
-          scaleType,
-        }}
+        abscissaConfig={{ indexDomain, showGrid }}
+        ordinateConfig={{ dataDomain, showGrid, scaleType }}
       >
         <TooltipMesh
           formatIndex={([x]) => `x=${Math.round(x)}`}
@@ -55,7 +55,7 @@ function LineVis(props: Props): ReactElement {
           guides="vertical"
         />
         <PanZoomMesh />
-        {dataDomain && <DataCurve values={values} />}
+        {dataDomain && <DataCurve curveType={curveType} values={values} />}
       </VisCanvas>
     </div>
   );
