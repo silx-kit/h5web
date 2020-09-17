@@ -1,26 +1,22 @@
-import React, { ReactElement, useMemo, ElementType } from 'react';
-import { isNumber } from 'lodash-es';
 import ndarray from 'ndarray';
-import ops from 'ndarray-ops';
-import type { DimensionMapping } from '../../dataset-visualizer/models';
+import { useMemo } from 'react';
+import { isNumber } from 'lodash-es';
+import { assign } from 'ndarray-ops';
 import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
+import type { DimensionMapping } from '../../dataset-visualizer/models';
 
-type Props<T> = {
-  component: ElementType<{ dataArray: ndarray<T> }>;
-  dataset: HDF5Dataset;
-  value: T[];
-  mapperState: DimensionMapping;
-};
-
-function MappedVis<T>(props: Props<T>): ReactElement {
-  const { component: Component, dataset, value, mapperState } = props;
+export function useMappedArray<T>(
+  dataset: HDF5Dataset,
+  value: T[],
+  mapperState: DimensionMapping
+): ndarray<T> {
   const rawDims = (dataset.shape as HDF5SimpleShape).dims;
 
   const baseArray = useMemo(() => {
     return ndarray<T>(value.flat(Infinity) as T[], rawDims);
   }, [rawDims, value]);
 
-  const dataArray = useMemo(() => {
+  return useMemo(() => {
     if (mapperState === undefined) {
       return baseArray;
     }
@@ -35,12 +31,8 @@ function MappedVis<T>(props: Props<T>): ReactElement {
 
     // Create ndarray from mapped view so `dataArray.data` only contains values relevant to vis
     const mappedArray = ndarray<T>([], mappedView.shape);
-    ops.assign(mappedArray, mappedView);
+    assign(mappedArray, mappedView);
 
     return mappedArray;
   }, [mapperState, baseArray]);
-
-  return <Component dataArray={dataArray} />;
 }
-
-export default MappedVis;
