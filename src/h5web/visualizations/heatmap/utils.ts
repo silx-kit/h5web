@@ -20,29 +20,24 @@ export function generateCSSLinearGradient(
   return `linear-gradient(to ${direction},${gradientColors})`;
 }
 
-export function getColorScaleDomain(
+export function getSupportedDomain(
+  domain: Domain | undefined,
   scaleType: ScaleType,
-  values: number[],
-  dataDomain?: Domain,
-  customDomain?: Domain
+  values: number[]
 ): Domain | undefined {
-  const domain = customDomain || dataDomain;
   if (!domain) {
     return undefined;
   }
 
-  // If the scale is not log or if the domain does not cross zero, the domain does not need to be adjusted
+  // If scale is not log or domain does not cross zero, domain is supported
   if (scaleType !== ScaleType.Log || domain[0] * domain[1] > 0) {
     return domain;
   }
 
-  // Log only supports positives values.
-  // Given the condition above, supportedDomain is only undefined if the domain is [-X, 0].
+  // Find domain again but only amongst positive values
+  // Note that [-X, 0] is not supported at all and will return `undefined`
   const supportedDomain = findDomain(values.filter((x) => x > 0));
-  if (supportedDomain && customDomain) {
-    // Clamp custom domain minimum to the first positive value
-    return [supportedDomain[0], customDomain[1]];
-  }
 
-  return supportedDomain;
+  // Clamp domain minimum to the first positive value
+  return supportedDomain && [supportedDomain[0], domain[1]];
 }

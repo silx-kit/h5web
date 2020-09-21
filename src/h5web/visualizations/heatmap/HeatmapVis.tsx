@@ -1,64 +1,41 @@
-import React, { useMemo, useEffect } from 'react';
+import React from 'react';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
-import { usePrevious } from 'react-use';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import Mesh from './Mesh';
 import TooltipMesh from '../shared/TooltipMesh';
-import { useHeatmapConfig } from './config';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
-import { findDomain } from '../shared/utils';
-import { useMemoColorScaleDomain } from './hooks';
+import { useSupportedDomain } from './hooks';
+import { Domain, ScaleType } from '../shared/models';
+import type { ColorMap } from './models';
 
 interface Props {
   dataArray: ndarray<number>;
+  domain: Domain | undefined;
+  colorMap?: ColorMap;
+  scaleType?: ScaleType;
+  keepAspectRatio?: boolean;
+  showGrid?: boolean;
 }
 
 function HeatmapVis(props: Props): JSX.Element {
-  const { dataArray } = props;
+  const {
+    dataArray,
+    domain,
+    colorMap = 'Viridis',
+    scaleType = ScaleType.Linear,
+    keepAspectRatio = true,
+    showGrid = false,
+  } = props;
+
+  const values = dataArray.data as number[];
+  const supportedDomain = useSupportedDomain(domain, scaleType, values);
 
   const { rows, cols } = getDims(dataArray);
-  const values = dataArray.data as number[];
-
-  const {
-    requestedDomain,
-    scaleType,
-    colorMap,
-    keepAspectRatio,
-    showGrid,
-    resetDomains,
-  } = useHeatmapConfig();
-
-  const dataDomain = useMemo(() => findDomain(values), [values]);
-  const prevDataDomain = usePrevious(dataDomain);
-
-  // If `dataDomain` just changed, use `undefined` custom domain for this render until config's `requestedDomain` is updated through `useEffect` below
-  const customDomain =
-    dataDomain !== prevDataDomain ? undefined : requestedDomain;
-
-  useEffect(() => {
-    // When `dataDomain` changes:
-    // - set data domain in config so toolbar can render domain slider with correct bounds;
-    // - reset requested domain in config so toolbar can reset value of domain slider, and so Heatmap can use in its next render.
-    resetDomains(dataDomain);
-  }, [dataDomain, resetDomains]);
-
-  const domain = useMemoColorScaleDomain(
-    scaleType,
-    values,
-    dataDomain,
-    customDomain
-  );
-
-  // width / height <=> cols / rows
-  const aspectRatio = keepAspectRatio ? cols / rows : undefined;
-
-  if (!domain) {
-    return <p className={styles.domainError}>Unable to compute domain</p>;
-  }
+  const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
 
   return (
     <div className={styles.root}>
@@ -77,16 +54,24 @@ function HeatmapVis(props: Props): JSX.Element {
           guides="both"
         />
         <PanZoomMesh />
-        <Mesh
-          rows={rows}
-          cols={cols}
-          values={values}
-          domain={domain}
+        {supportedDomain && (
+          <Mesh
+            rows={rows}
+            cols={cols}
+            values={values}
+            domain={supportedDomain}
+            scaleType={scaleType}
+            colorMap={colorMap}
+          />
+        )}
+      </VisCanvas>
+      {supportedDomain && (
+        <ColorBar
+          domain={supportedDomain}
           scaleType={scaleType}
           colorMap={colorMap}
         />
-      </VisCanvas>
-      <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
+      )}
     </div>
   );
 }

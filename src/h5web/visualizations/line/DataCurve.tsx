@@ -2,7 +2,6 @@ import React, { Suspense, useMemo, useContext } from 'react';
 import { BufferGeometry, Vector3 } from 'three';
 import { Line } from 'react-three-fiber/components';
 import { useThree } from 'react-three-fiber';
-import { useLineConfig } from './config';
 import { CurveType } from './models';
 import DataGlyphs from './DataGlyphs';
 import { AxisSystemContext } from '../shared/AxisSystemProvider';
@@ -13,10 +12,15 @@ const DEFAULT_COLOR = '#1b998b';
 interface Props {
   values: number[];
   color?: string;
+  curveType?: CurveType;
 }
 
 function DataCurve(props: Props): JSX.Element {
-  const { values, color = DEFAULT_COLOR } = props;
+  const {
+    values,
+    color = DEFAULT_COLOR,
+    curveType = CurveType.LineOnly,
+  } = props;
 
   const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
   const { camera, size } = useThree();
@@ -43,7 +47,6 @@ function DataCurve(props: Props): JSX.Element {
     return geometry;
   }, [abscissaInfo, camera, height, ordinateInfo, values, width]);
 
-  const curveType = useLineConfig((state) => state.curveType);
   const showLine = curveType !== CurveType.GlyphsOnly;
   const showGlyphs = curveType !== CurveType.LineOnly;
 
