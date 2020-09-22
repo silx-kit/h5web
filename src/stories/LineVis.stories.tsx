@@ -2,23 +2,20 @@ import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import FillHeight from '../../.storybook/decorators/FillHeight';
-import HeatmapVis, {
-  HeatmapVisProps,
-} from '../h5web/visualizations/heatmap/HeatmapVis';
 import mockData from '../h5web/providers/mock/data.json';
 import { findDomain } from '../h5web/visualizations/shared/utils';
 import { ScaleType } from '../h5web/visualizations/shared/models';
-import { INTERPOLATORS } from '../h5web/visualizations/heatmap/interpolators';
+import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
+import { CurveType } from '../h5web/visualizations/line/models';
 
-// A 2D dataset
-const dataset = mockData.datasets['c8f60c29-aae2-11ea-84a9-b94ddd2ec9e8'];
-const values = dataset.value.flat(Infinity) as number[];
+const oneDimDataset = mockData.datasets['c8f60c27-aae2-11ea-84a9-b94ddd2ec9e8'];
+const values = oneDimDataset.value as number[];
 
-const dataArray = ndarray<number>(values, dataset.shape.dims).transpose(1, 0); // makes for a nicer-looking heatmap
+const dataArray = ndarray<number>(values, oneDimDataset.shape.dims);
 const domain = findDomain(values);
 
-const Template: Story<HeatmapVisProps> = (args): ReactElement => (
-  <HeatmapVis {...args} />
+const Template: Story<LineVisProps> = (args): ReactElement => (
+  <LineVis {...args} />
 );
 
 export const Default = Template.bind({});
@@ -32,15 +29,23 @@ export const Domain = Template.bind({});
 
 Domain.args = {
   dataArray,
-  domain,
+  domain: [-100, 100],
 };
 
-export const ColorMap = Template.bind({});
+export const OnlyGlyphs = Template.bind({});
 
-ColorMap.args = {
+OnlyGlyphs.args = {
   dataArray,
   domain,
-  colorMap: 'Rainbow',
+  curveType: CurveType.GlyphsOnly,
+};
+
+export const LineAndGlyphs = Template.bind({});
+
+LineAndGlyphs.args = {
+  dataArray,
+  domain,
+  curveType: CurveType.LineAndGlyphs,
 };
 
 export const LogScale = Template.bind({});
@@ -59,14 +64,6 @@ SymLogScale.args = {
   scaleType: ScaleType.SymLog,
 };
 
-export const AspectRatio = Template.bind({});
-
-AspectRatio.args = {
-  dataArray,
-  domain,
-  keepAspectRatio: false,
-};
-
 export const NoGrid = Template.bind({});
 
 NoGrid.args = {
@@ -76,18 +73,22 @@ NoGrid.args = {
 };
 
 export default {
-  title: 'Visualizations/HeatmapVis',
-  component: HeatmapVis,
+  title: 'Visualizations/LineVis',
+  component: LineVis,
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
   argTypes: {
     dataArray: {}, // To keep mandatory args above optional ones.
     domain: {},
-    colorMap: {
-      defaultValue: 'Viridis',
+    curveType: {
+      defaultValue: CurveType.LineOnly,
       control: {
-        type: 'select',
-        options: Object.keys(INTERPOLATORS),
+        type: 'inline-radio',
+        options: [
+          CurveType.LineOnly,
+          CurveType.GlyphsOnly,
+          CurveType.LineAndGlyphs,
+        ],
       },
     },
     scaleType: {
@@ -96,9 +97,6 @@ export default {
         type: 'inline-radio',
         options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
       },
-    },
-    keepAspectRatio: {
-      defaultValue: true,
     },
     showGrid: {
       defaultValue: true,
