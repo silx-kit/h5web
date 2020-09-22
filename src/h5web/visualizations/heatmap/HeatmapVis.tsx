@@ -19,6 +19,7 @@ interface Props {
   scaleType?: ScaleType;
   keepAspectRatio?: boolean;
   showGrid?: boolean;
+  showLoader?: boolean;
 }
 
 function HeatmapVis(props: Props): JSX.Element {
@@ -29,6 +30,7 @@ function HeatmapVis(props: Props): JSX.Element {
     scaleType = ScaleType.Linear,
     keepAspectRatio = true,
     showGrid = false,
+    showLoader = true,
   } = props;
 
   const values = dataArray.data as number[];
@@ -62,6 +64,7 @@ function HeatmapVis(props: Props): JSX.Element {
             domain={supportedDomain}
             scaleType={scaleType}
             colorMap={colorMap}
+            showLoader={showLoader}
           />
         )}
       </VisCanvas>

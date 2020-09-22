@@ -14,10 +14,11 @@ interface Props {
   domain: Domain;
   scaleType: ScaleType;
   colorMap: ColorMap;
+  showLoader: boolean;
 }
 
 function Mesh(props: Props): ReactElement {
-  const { rows, cols, values, domain, scaleType, colorMap } = props;
+  const { rows, cols, values, domain, scaleType, colorMap, showLoader } = props;
 
   const { size } = useThree();
   const { width, height } = size;
@@ -47,13 +48,15 @@ function Mesh(props: Props): ReactElement {
           <planeBufferGeometry attach="geometry" args={[width, height]} />
         </mesh>
       )}
-      <HTML>
-        <div
-          className={styles.textureLoader}
-          style={{ width, height }}
-          data-visible={loading || undefined}
-        />
-      </HTML>
+      {showLoader && (
+        <HTML>
+          <div
+            className={styles.textureLoader}
+            style={{ width, height }}
+            data-visible={loading || undefined}
+          />
+        </HTML>
+      )}
     </>
   );
 }
