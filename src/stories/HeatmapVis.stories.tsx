@@ -32,7 +32,7 @@ export const Domain = Template.bind({});
 
 Domain.args = {
   dataArray,
-  domain,
+  domain: [-400, 400],
 };
 
 export const ColorMap = Template.bind({});
