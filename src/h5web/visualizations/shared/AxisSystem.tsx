@@ -1,19 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { useThree, useFrame } from 'react-three-fiber';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
-import { format } from 'd3-format';
 import { GridColumns, GridRows } from '@vx/grid';
 import { HTML } from 'drei';
 import { useUpdateEffect } from 'react-use';
 import styles from './AxisSystem.module.css';
 import type { AxisOffsets, Domain } from './models';
-import { getTicksProp, getAxisScale } from './utils';
+import { adaptedNumTicks, getTicksProp, getAxisScale } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
 
 const AXIS_PROPS = {
   tickStroke: 'grey',
   hideAxisLine: true,
-  tickFormat: format('0'),
   tickClassName: styles.tick,
   tickComponent: ({ formattedValue, ...tickProps }: TickRendererProps) => (
     <text {...tickProps}>{formattedValue}</text>
@@ -96,7 +94,12 @@ function AxisSystem(props: Props): JSX.Element {
       <>
         <div className={styles.bottomAxisCell}>
           <svg className={styles.axis} data-orientation="bottom">
-            <AxisBottom scale={xTicksScale} {...xTicksProp} {...AXIS_PROPS} />
+            <AxisBottom
+              scale={xTicksScale}
+              tickFormat={xTicksScale.tickFormat(adaptedNumTicks(width), '~f')}
+              {...xTicksProp}
+              {...AXIS_PROPS}
+            />
           </svg>
         </div>
         <div className={styles.leftAxisCell}>
@@ -104,6 +107,7 @@ function AxisSystem(props: Props): JSX.Element {
             <AxisLeft
               scale={yTicksScale}
               left={axisOffsets.left}
+              tickFormat={yTicksScale.tickFormat(adaptedNumTicks(height), '~f')}
               {...yTicksProp}
               {...AXIS_PROPS}
             />
