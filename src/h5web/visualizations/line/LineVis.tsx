@@ -61,4 +61,5 @@ function LineVis(props: Props): ReactElement {
   );
 }
 
+export type { Props as LineVisProps };
 export default LineVis;
