@@ -19,6 +19,8 @@ Some components are tested in isolation in [Storybook](https://storybook.js.org/
 - `npm run storybook` - run Storybook dev server at http://localhost:6006
 - `npm run storybook:build` - build static documentation site
 
+The Storybook app is continuously deployed to GitHub Pages.
+
 ## Testing 🐙
 
 - `npm test`
