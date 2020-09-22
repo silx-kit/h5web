@@ -1,6 +1,7 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
+import { useInterval } from 'react-use';
 import FillHeight from '../../.storybook/decorators/FillHeight';
 import HeatmapVis, {
   HeatmapVisProps,
@@ -73,6 +74,30 @@ NoGrid.args = {
   dataArray,
   domain,
   showGrid: false,
+};
+
+export const LiveDataWithoutLoader: Story<HeatmapVisProps> = (
+  args
+): ReactElement => {
+  const [shuffledArray, setShuffledArray] = useState(args.dataArray);
+
+  useInterval(() => {
+    const shuffledValues = shuffledArray.data
+      .slice(0)
+      .sort(() => 0.5 - Math.random());
+
+    setShuffledArray(
+      ndarray<number>(shuffledValues, dataset.shape.dims).transpose(1, 0)
+    );
+  }, 5000);
+
+  return <HeatmapVis {...args} dataArray={shuffledArray} />;
+};
+
+LiveDataWithoutLoader.args = {
+  dataArray,
+  domain,
+  showLoader: false,
 };
 
 export default {
