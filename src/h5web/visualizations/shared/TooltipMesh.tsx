@@ -3,7 +3,7 @@ import { PointerEvent, useThree } from 'react-three-fiber';
 import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import { Line } from '@vx/shape';
 
-import { HTML } from 'drei';
+import { Html } from 'drei';
 import styles from './TooltipMesh.module.css';
 import { getAxisScale } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
@@ -84,7 +84,7 @@ function TooltipMesh(props: Props): ReactElement {
       <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <planeBufferGeometry attach="geometry" args={[width, height]} />
       </mesh>
-      <HTML style={{ width, height }}>
+      <Html style={{ width, height }}>
         {tooltipOpen && tooltipData && value ? (
           <>
             <TooltipWithBounds
@@ -118,7 +118,7 @@ function TooltipMesh(props: Props): ReactElement {
         ) : (
           <></>
         )}
-      </HTML>
+      </Html>
     </>
   );
 }

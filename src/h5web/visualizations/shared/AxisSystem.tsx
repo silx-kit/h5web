@@ -3,7 +3,7 @@ import { useThree, useFrame } from 'react-three-fiber';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
 import { format } from 'd3-format';
 import { GridColumns, GridRows } from '@vx/grid';
-import { HTML } from 'drei';
+import { Html } from 'drei';
 import { useUpdateEffect } from 'react-use';
 import styles from './AxisSystem.module.css';
 import type { AxisOffsets, Domain } from './models';
@@ -81,7 +81,7 @@ function AxisSystem(props: Props): JSX.Element {
   );
 
   return (
-    <HTML
+    <Html
       className={styles.axisSystem}
       style={{
         // Take over space reserved for axis by VisCanvas
@@ -134,7 +134,7 @@ function AxisSystem(props: Props): JSX.Element {
           </svg>
         </div>
       </>
-    </HTML>
+    </Html>
   );
 }
 
