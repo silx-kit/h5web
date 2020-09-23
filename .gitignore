@@ -1,6 +1,8 @@
 /node_modules/
 /build/
 /storybook-static/
+/lib/node_modules
+/lib/dist
 
 /.env.*
 

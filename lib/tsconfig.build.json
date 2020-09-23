@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "es5",
+    "declaration": true,
+    "noEmit": false,
+    "outDir": "dist"
+  },
+  "exclude": ["../src/stories"]
+}
