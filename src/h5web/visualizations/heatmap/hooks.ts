@@ -4,9 +4,9 @@ import { useComlink } from 'react-use-comlink';
 import { useSetState, createMemo } from 'react-use';
 
 // @ts-ignore
-import Worker from 'worker-loader!./worker';
+import Worker from 'worker-loader?inline=no-fallback!./heatmap.worker';
 
-import type { TextureWorker } from './worker';
+import type { TextureWorker } from './heatmap.worker';
 import type { Domain, ScaleType } from '../shared/models';
 import type { ColorMap } from './models';
 import { getSupportedDomain } from './utils';

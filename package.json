@@ -100,7 +100,7 @@
       "/node_modules/(?!lodash-es|react-use-comlink)/.*"
     ],
     "moduleNameMapper": {
-      "worker-loader!.*": "<rootDir>/src/moduleMock.js",
+      "worker-loader*": "<rootDir>/src/moduleMock.js",
       "troika": "<rootDir>/src/moduleMock.js"
     }
   },
