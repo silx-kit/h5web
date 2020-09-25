@@ -5,7 +5,7 @@ import { assign } from 'ndarray-ops';
 import { createMemo } from 'react-use';
 import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
-import { findDomain } from './utils';
+import { findDomain, getSupportedDomain } from './utils';
 
 export function useMappedArray<T>(
   dataset: HDF5Dataset,
@@ -40,3 +40,5 @@ export function useMappedArray<T>(
 }
 
 export const useDataDomain = createMemo(findDomain);
+
+export const useSupportedDomain = createMemo(getSupportedDomain);

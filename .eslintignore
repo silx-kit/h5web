@@ -1,1 +1,5 @@
-/build
+node_modules/
+
+/build/
+/storybook-static/
+/packages/dist-*/

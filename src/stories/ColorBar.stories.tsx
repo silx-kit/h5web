@@ -62,7 +62,7 @@ Horizontal.args = {
 };
 
 export default {
-  title: 'Visualizations/HeatmapVis/ColorBar',
+  title: 'Building Blocks/ColorBar',
   component: ColorBar,
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],

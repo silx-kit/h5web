@@ -3,12 +3,12 @@ import { scaleLinear } from 'd3-scale';
 import { AxisConfig, AxisInfo, ScaleType, SCALE_FUNCTIONS } from './models';
 import { isIndexAxisConfig } from './utils';
 
-export interface AxisConfigs {
+export interface AxisInfos {
   abscissaInfo: AxisInfo;
   ordinateInfo: AxisInfo;
 }
 
-export const AxisSystemContext = createContext<AxisConfigs>({} as AxisConfigs);
+export const AxisSystemContext = createContext<AxisInfos>({} as AxisInfos);
 
 function getAxisInfo(config: AxisConfig): AxisInfo {
   if (isIndexAxisConfig(config)) {

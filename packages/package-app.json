@@ -1,0 +1,17 @@
+{
+  "name": "@h5web/app",
+  "version": "0.0.2",
+  "description": "Web-based HDF5 file viewer",
+  "author": "European Synchrotron Radiation Facility",
+  "license": "MIT",
+  "main": "app.js",
+  "types": "packages/app.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silx-kit/h5web"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16"
+  }
+}

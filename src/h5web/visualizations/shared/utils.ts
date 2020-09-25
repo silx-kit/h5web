@@ -1,12 +1,13 @@
 import { scaleLinear } from 'd3-scale';
 import { extent, tickStep } from 'd3-array';
-import type {
+import {
   Size,
   Domain,
   AxisScale,
   AxisConfig,
   AxisInfo,
   IndexAxisConfig,
+  ScaleType,
 } from './models';
 
 export const adaptedNumTicks = scaleLinear()
@@ -37,6 +38,35 @@ export function computeVisSize(
     : { width, height: width / aspectRatio };
 }
 
+export function findDomain(data: number[]): Domain | undefined {
+  const domain = extent(data);
+  return domain[0] !== undefined && domain[1] !== undefined
+    ? domain
+    : undefined;
+}
+
+export function getSupportedDomain(
+  domain: Domain | undefined,
+  scaleType: ScaleType,
+  values: number[]
+): Domain | undefined {
+  if (!domain) {
+    return undefined;
+  }
+
+  // If scale is not log or domain does not cross zero, domain is supported
+  if (scaleType !== ScaleType.Log || domain[0] * domain[1] > 0) {
+    return domain;
+  }
+
+  // Find domain again but only amongst positive values
+  // Note that [-X, 0] is not supported at all and will return `undefined`
+  const supportedDomain = findDomain(values.filter((x) => x > 0));
+
+  // Clamp domain minimum to the first positive value
+  return supportedDomain && [supportedDomain[0], domain[1]];
+}
+
 export function extendDomain(
   bareDomain: Domain,
   extendFactor: number,
@@ -50,13 +80,6 @@ export function extendDomain(
 
   const extension = (max - min) * extendFactor;
   return [min - extension, max + extension];
-}
-
-export function findDomain(data: number[]): Domain | undefined {
-  const domain = extent(data);
-  return domain[0] !== undefined && domain[1] !== undefined
-    ? domain
-    : undefined;
 }
 
 export function isIndexAxisConfig(

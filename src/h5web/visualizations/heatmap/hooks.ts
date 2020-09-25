@@ -1,15 +1,14 @@
 import { useEffect } from 'react';
 import { transfer } from 'comlink';
 import { useComlink } from 'react-use-comlink';
-import { useSetState, createMemo } from 'react-use';
+import { useSetState } from 'react-use';
 
 // @ts-ignore
-import Worker from 'worker-loader!./worker';
+import Worker from 'worker-loader?inline=no-fallback!./heatmap.worker';
 
-import type { TextureWorker } from './worker';
+import type { TextureWorker } from './heatmap.worker';
 import type { Domain, ScaleType } from '../shared/models';
 import type { ColorMap } from './models';
-import { getSupportedDomain } from './utils';
 
 export interface TextureDataState {
   loading?: boolean;
@@ -56,5 +55,3 @@ export function useTextureData(
 
   return state;
 }
-
-export const useSupportedDomain = createMemo(getSupportedDomain);

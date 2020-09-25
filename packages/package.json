@@ -1,0 +1,47 @@
+{
+  "name": "h5web-packages",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Web-based HDF5 file viewer",
+  "author": "European Synchrotron Radiation Facility",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silx-kit/h5web"
+  },
+  "engines": {
+    "node": "12.x",
+    "npm": "6.x"
+  },
+  "scripts": {
+    "prebuild": "rm -Rf dist-*",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^6.1.1",
+    "css-loader": "^4.2.2",
+    "file-loader": "^6.1.0",
+    "mini-css-extract-plugin": "^0.11.1",
+    "style-loader": "^1.2.1",
+    "ts-loader": "^8.0.3",
+    "typescript": "^3.9.7",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "worker-loader": "^3.0.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

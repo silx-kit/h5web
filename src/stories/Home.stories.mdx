@@ -1,0 +1,108 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+
+<Meta title="Home" />
+
+# H5Web Component Library
+
+A library of React components and utilities for data visualization, based on [react-three-fiber](https://github.com/pmndrs/react-three-fiber).
+
+The components are organised in two categories:
+
+- 🎨 **Visualizations**: the top-level visualization components — i.e. the components you will most likely need.
+- 🧱 **Building Blocks**: the low-level components used by the visualization components — for advanced uses only.
+
+## Getting started
+
+1. Make you sure you have `react` and `react-dom` v16 or greater installed.
+1. Install the library:
+
+   ```bash
+   npm install @h5web/lib
+   ```
+
+1. Import and use a visualization component:
+
+   ```tsx
+   import { ScalarVis } from '@h5web/lib';
+
+   // ...
+
+   <ScalarVis value={1024} />;
+   ```
+
+1. Other visualization components expect to receive an `ndarray` and a domain as props.
+
+   1. Install `ndarray` and its corresponding types package (if you use TypeScript):
+
+      ```bash
+      npm install ndarray
+      npm install --save-dev @types/ndarray
+      ```
+
+   1. Pass an `ndarray` and domain to the visualization:
+
+      ```tsx
+      import ndarray from 'ndarray';
+      import { HeatmapVis, findDomain } from '@h5web/lib';
+
+      // Source 2D array
+      const values = [
+        [0, 1, 2],
+        [3, 4, 5],
+      ];
+
+      // Flatten array
+      const flatValues: number[] = values.flat(Infinity);
+
+      // Convert to ndarray and find domain
+      const dataArray = ndarray<number>(flatValues, [2, 3]);
+      const domain = findDomain(flatValues);
+
+      // ...
+
+      <HeatmapVis dataArray={dataArray} domain={domain} />;
+      ```
+
+1. Configure the visualization:
+
+   ```tsx
+   import { HeatmapVis, findDomain, ScaleType } from '@h5web/lib';
+
+   // ...
+
+   <HeatmapVis
+     dataArray={dataArray}
+     domain={domain}
+     colorMap="Inferno"
+     scaleType={ScaleType.Log}
+     showLoader={false}
+     ...
+   />;
+   ```
+
+## Mock data
+
+The library exposes a mock data object for testing purposes:
+
+```ts
+import { mockData } from '@h5web/lib';
+
+const dataset = mockData.datasets['c8f60c29-aae2-11ea-84a9-b94ddd2ec9e8'];
+
+const values: number[] = dataset.value.flat(Infinity);
+const dataArray = ndarray<number>(values, dataset.shape.dims);
+```
+
+## Utilities
+
+The library exposes a number of utility functions, which are documented below, as well as all the enums and types used by these utility functions.
+If you use only the top-level visualization components, the only utilities you need are `findDomain` and/or `useDataDomain`.
+
+- **`findDomain(data: number[]): Domain | undefined`** - Find the min and max values contained in a flat array of numbers. Uses [`extent`](https://github.com/d3/d3-array#extent) from `d3-array`.
+- **`useDataDomain(...args): Domain | undefined`** - Memoised React hook wrapper of `findDomain`.
+- **`getSupportedDomain(domain: Domain | undefined, scaleType: ScaleType, values: number[]): Domain | undefined`** - Check that a domain is supported by a given scale type. If the domain is not supported, find a domain that is (with `findDomain`).
+- **`useSupportedDomain(...args): Domain | undefined`** - Memoised React hook wrapper of `getSupportedDomain`.
+- **`extendDomain(bareDomain: Domain, extendFactor: number, isLog?: boolean): Domain`** - Extend a domain by a given factor.
+- **`computeVisSize(availableSize: Size, aspectRatio?: number): Size | undefined`** - Compute the optimal size for a visualization to fill the available space given an optional aspect ratio.
+- **`getDims(dataArray: DataArray): Dims`** - Get the dimensions of a `ndarray` as a `{ rows, cols }` object.
+- **`generateCSSLinearGradient(interpolator: D3Interpolator, direction: 'top' | 'bottom' | 'right' | 'left'): string`** - Generate a CSS linear gradient for a given D3 interpolator, to be used as `background-image`.
