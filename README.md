@@ -59,8 +59,10 @@ from `react-icons/fi`.
 
 ## NPM packages 📚
 
-The `src/packages` folder contains entry points for packages that are published to NPM. Follow the steps below to build
-and publish these packages:
+The `src/packages` folder contains entry points for packages published to NPM.
+
+To publish the packages, bump their version numbers in their respective `packages/package-<name>.json` files, then
+follow the steps below:
 
 ```bash
 cd packages

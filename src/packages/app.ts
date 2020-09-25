@@ -1,3 +1,5 @@
+import 'react-app-polyfill/stable';
+
 import 'react-reflex/styles.css';
 import 'normalize.css';
 import '../styles/base.css';

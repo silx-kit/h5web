@@ -1,3 +1,5 @@
+import 'react-app-polyfill/stable';
+
 // Visualizations
 export { default as ScalarVis } from '../h5web/visualizations/ScalarVis';
 export { default as LineVis } from '../h5web/visualizations/line/LineVis';
