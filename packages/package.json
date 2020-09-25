@@ -1,11 +1,10 @@
 {
-  "name": "h5web",
-  "version": "0.1.0",
-  "description": "Data visualization library",
+  "name": "h5web-packages",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Web-based HDF5 file viewer",
   "author": "European Synchrotron Radiation Facility",
   "license": "MIT",
-  "main": "dist/lib.js",
-  "types": "dist/lib.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/silx-kit/h5web"
@@ -15,19 +14,13 @@
     "npm": "6.x"
   },
   "scripts": {
-    "prebuild": "rm -rf dist/*",
+    "prebuild": "rm -Rf dist-*",
     "build": "webpack"
-  },
-  "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  },
-  "optionalDependencies": {
-    "ndarray": "^1.0.19"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^6.1.1",
     "css-loader": "^4.2.2",
     "file-loader": "^6.1.0",
     "mini-css-extract-plugin": "^0.11.1",

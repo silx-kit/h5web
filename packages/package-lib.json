@@ -1,0 +1,20 @@
+{
+  "name": "@h5web/lib",
+  "version": "0.0.1",
+  "description": "Data visualization library",
+  "author": "European Synchrotron Radiation Facility",
+  "license": "MIT",
+  "main": "lib.js",
+  "types": "packages/lib.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silx-kit/h5web"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "optionalDependencies": {
+    "ndarray": "^1.0.19"
+  }
+}

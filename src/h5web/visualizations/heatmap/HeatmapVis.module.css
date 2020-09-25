@@ -29,8 +29,3 @@
     background-position-x: 150%;
   }
 }
-
-.domainError {
-  padding: 1em;
-  color: var(--danger);
-}

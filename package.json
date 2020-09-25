@@ -1,5 +1,6 @@
 {
   "name": "h5web",
+  "private": true,
   "version": "0.1.0",
   "description": "Web-based HDF5 file viewer",
   "author": "European Synchrotron Radiation Facility",
