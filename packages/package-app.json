@@ -11,10 +11,7 @@
     "url": "https://github.com/silx-kit/h5web"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  },
-  "optionalDependencies": {
-    "ndarray": "^1.0.19"
+    "react": ">=16",
+    "react-dom": ">=16"
   }
 }

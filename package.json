@@ -14,7 +14,6 @@
     "npm": "6.x"
   },
   "scripts": {
-    "build:lib": "cd lib && npm install && npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom-fourteen",
