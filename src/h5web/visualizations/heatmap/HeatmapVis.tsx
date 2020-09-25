@@ -8,7 +8,7 @@ import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
-import { useSupportedDomain } from './hooks';
+import { useSupportedDomain } from '../shared/hooks';
 import { Domain, ScaleType } from '../shared/models';
 import type { ColorMap } from './models';
 

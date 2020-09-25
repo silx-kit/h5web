@@ -9,7 +9,7 @@ import TooltipMesh from '../shared/TooltipMesh';
 import { extendDomain } from '../shared/utils';
 import { ScaleType, Domain } from '../shared/models';
 import { CurveType } from './models';
-import { useSupportedDomain } from '../heatmap/hooks';
+import { useSupportedDomain } from '../shared/hooks';
 
 const DEFAULT_DOMAIN: Domain = [0.1, 1];
 

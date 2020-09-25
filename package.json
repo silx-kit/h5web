@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom-fourteen",
     "lint": "run-p lint:*",
-    "lint:eslint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
+    "lint:eslint": "eslint \"**/*.{ts,tsx,js,jsx}\" --max-warnings=0",
     "lint:tsc": "tsc --noEmit",
     "lint:prettier": "prettier --check .",
     "storybook": "start-storybook -p 6006 -s public",
