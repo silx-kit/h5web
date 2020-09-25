@@ -32,20 +32,20 @@ Domain.args = {
   domain: [-100, 100],
 };
 
-export const OnlyGlyphs = Template.bind({});
-
-OnlyGlyphs.args = {
-  dataArray,
-  domain,
-  curveType: CurveType.GlyphsOnly,
-};
-
 export const LineAndGlyphs = Template.bind({});
 
 LineAndGlyphs.args = {
   dataArray,
   domain,
   curveType: CurveType.LineAndGlyphs,
+};
+
+export const GlyphsOnly = Template.bind({});
+
+GlyphsOnly.args = {
+  dataArray,
+  domain,
+  curveType: CurveType.GlyphsOnly,
 };
 
 export const LogScale = Template.bind({});

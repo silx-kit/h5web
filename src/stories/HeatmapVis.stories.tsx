@@ -60,9 +60,9 @@ SymLogScale.args = {
   scaleType: ScaleType.SymLog,
 };
 
-export const AspectRatio = Template.bind({});
+export const IgnoreAspectRatio = Template.bind({});
 
-AspectRatio.args = {
+IgnoreAspectRatio.args = {
   dataArray,
   domain,
   keepAspectRatio: false,
