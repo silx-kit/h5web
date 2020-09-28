@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdGridOn } from 'react-icons/md';
+import { MdGridOn, MdDomain } from 'react-icons/md';
 import ToggleBtn from '../shared/ToggleBtn';
 import { useLineConfig } from './config';
 import { CurveType } from './models';
@@ -16,10 +16,23 @@ function LineToolbar(): JSX.Element {
     toggleGrid,
     scaleType,
     setScaleType,
+    autoScale,
+    toggleAutoScale,
+    isAutoScaleDisabled,
   } = useLineConfig();
 
   return (
     <Toolbar>
+      <ToggleBtn
+        label="Auto-scale"
+        icon={MdDomain}
+        value={autoScale}
+        onChange={toggleAutoScale}
+        disabled={isAutoScaleDisabled}
+      />
+
+      <Separator />
+
       <ToggleGroup
         role="radiogroup"
         ariaLabel="Curve type"

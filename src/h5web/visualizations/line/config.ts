@@ -7,17 +7,21 @@ type LineConfig = {
   curveType: CurveType;
   showGrid: boolean;
   scaleType: ScaleType;
+  autoScale: boolean;
+  isAutoScaleDisabled: boolean;
 };
 
 const STORAGE_CONFIG: StorageConfig = {
   storageId: 'h5web:line',
-  itemsToPersist: ['curveType', 'showGrid', 'scaleType'],
+  itemsToPersist: ['curveType', 'showGrid', 'scaleType', 'autoScale'],
 };
 
 const INITIAL_STATE: LineConfig = {
   curveType: CurveType.LineOnly,
   showGrid: true,
   scaleType: ScaleType.Linear,
+  autoScale: false,
+  isAutoScaleDisabled: false,
 };
 
 export const useLineConfig = createPersistableState(
@@ -26,5 +30,8 @@ export const useLineConfig = createPersistableState(
     setCurveType: (type: CurveType) => set({ curveType: type }),
     toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
     setScaleType: (type: ScaleType) => set({ scaleType: type }),
+    toggleAutoScale: () => set((state) => ({ autoScale: !state.autoScale })),
+    disableAutoScale: (isAutoScaleDisabled: boolean) =>
+      set({ isAutoScaleDisabled }),
   }))
 );
