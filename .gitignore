@@ -2,7 +2,7 @@ node_modules/
 
 /build/
 /storybook-static/
-/packages/dist-*/
+/packages/**/dist/
 
 /.env.*
 
