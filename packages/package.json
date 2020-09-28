@@ -14,7 +14,7 @@
     "npm": "6.x"
   },
   "scripts": {
-    "prebuild": "rm -Rf dist-*",
+    "prebuild": "rm -Rf */dist",
     "build": "webpack"
   },
   "devDependencies": {

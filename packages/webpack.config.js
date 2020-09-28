@@ -8,7 +8,7 @@ const packages = fs.readdirSync(packagesPath);
 
 function getConfig(pkg) {
   const name = path.basename(pkg, '.ts');
-  const outDir = path.resolve(__dirname, `dist-${name}`);
+  const outDir = path.resolve(__dirname, `${name}/dist`);
 
   return {
     mode: 'production',
@@ -77,8 +77,9 @@ function getConfig(pkg) {
       new CopyWebpackPlugin({
         patterns: [
           {
-            from: `package-${name}.json`,
-            to: `package.json`,
+            from: `${name}/*`,
+            to: outDir,
+            flatten: true,
           },
         ],
       }),
