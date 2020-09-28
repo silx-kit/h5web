@@ -3,7 +3,7 @@ import type { HDF5Dataset, HDF5Value } from '../providers/models';
 import type { DimensionMapping } from '../dataset-visualizer/models';
 import LineVis from './line/LineVis';
 import { assertArray } from './shared/utils';
-import { useMappedArray, useDataDomain } from './shared/hooks';
+import { useMappedArray, useDataDomain, useBaseArray } from './shared/hooks';
 import { useLineConfig } from './line/config';
 
 interface Props {
@@ -18,7 +18,8 @@ function MappedLineVis(props: Props): ReactElement {
 
   const { scaleType, curveType, showGrid } = useLineConfig();
 
-  const dataArray = useMappedArray(dataset, value, mapperState);
+  const baseArray = useBaseArray(dataset, value);
+  const dataArray = useMappedArray(baseArray, mapperState);
   const dataDomain = useDataDomain(dataArray.data as number[]);
 
   return (
