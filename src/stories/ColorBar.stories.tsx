@@ -27,13 +27,13 @@ Default.args = {
   colorMap: 'Viridis',
 };
 
-export const ColorMapTemplate = Template.bind({});
-ColorMapTemplate.storyName = 'Color Map';
-ColorMapTemplate.args = { ...Default.args, colorMap: 'Blues' };
+export const ColorMapStory = Template.bind({});
+ColorMapStory.storyName = 'Color Map';
+ColorMapStory.args = { ...Default.args, colorMap: 'Blues' };
 
-export const DomainTemplate = Template.bind({});
-DomainTemplate.storyName = 'Domain';
-DomainTemplate.args = { ...Default.args, domainMin: -10, domainMax: 10 };
+export const DomainStory = Template.bind({});
+DomainStory.storyName = 'Domain';
+DomainStory.args = { ...Default.args, domainMin: -10, domainMax: 10 };
 
 export const LogScale = Template.bind({});
 LogScale.args = { ...Default.args, scaleType: ScaleType.Log };
