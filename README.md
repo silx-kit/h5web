@@ -61,15 +61,15 @@ from `react-icons/fi`.
 
 The `src/packages` folder contains entry points for packages published to NPM.
 
-To publish the packages, bump their version numbers in their respective `packages/package-<name>.json` files, then
+To publish the packages, bump their version numbers in their respective `packages/<name>/package.json` files, then
 follow the steps below:
 
 ```bash
 cd packages
 npm install
 npm run build
-cd dist-lib && npm publish
-cd ../dist-app && npm publish
+cd lib/dist && npm publish
+cd ../../app/dist && npm publish
 ```
 
 > To test the packages locally, run `npm link` instead of `npm publish`, and then `npm link @h5web/<package>` in your
