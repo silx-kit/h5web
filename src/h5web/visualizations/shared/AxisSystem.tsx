@@ -3,8 +3,8 @@ import { useThree, useFrame } from 'react-three-fiber';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
 import { format } from 'd3-format';
 import { GridColumns, GridRows } from '@vx/grid';
-import { Html } from 'drei/misc/Html';
 import { useUpdateEffect } from 'react-use';
+import Html from './Html';
 import styles from './AxisSystem.module.css';
 import type { AxisOffsets, Domain } from './models';
 import { getTicksProp, getAxisScale } from './utils';
@@ -85,55 +85,53 @@ function AxisSystem(props: Props): JSX.Element {
       className={styles.axisSystem}
       style={{
         // Take over space reserved for axis by VisCanvas
-        width: width + axisOffsets.left + axisOffsets.right,
-        height: height + axisOffsets.bottom + axisOffsets.top,
         top: -axisOffsets.top,
         left: -axisOffsets.left,
+        width: width + axisOffsets.left + axisOffsets.right,
+        height: height + axisOffsets.bottom + axisOffsets.top,
         gridTemplateColumns: `${axisOffsets.left}px 1fr ${axisOffsets.right}px`,
         gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
       }}
     >
-      <>
-        <div className={styles.bottomAxisCell}>
-          <svg className={styles.axis} data-orientation="bottom">
-            <AxisBottom scale={xTicksScale} {...xTicksProp} {...AXIS_PROPS} />
-          </svg>
-        </div>
-        <div className={styles.leftAxisCell}>
-          <svg className={styles.axis} data-orientation="left">
-            <AxisLeft
-              scale={yTicksScale}
-              left={axisOffsets.left}
-              {...yTicksProp}
-              {...AXIS_PROPS}
+      <div className={styles.bottomAxisCell}>
+        <svg className={styles.axis} data-orientation="bottom">
+          <AxisBottom scale={xTicksScale} {...xTicksProp} {...AXIS_PROPS} />
+        </svg>
+      </div>
+      <div className={styles.leftAxisCell}>
+        <svg className={styles.axis} data-orientation="left">
+          <AxisLeft
+            scale={yTicksScale}
+            left={axisOffsets.left}
+            {...yTicksProp}
+            {...AXIS_PROPS}
+          />
+        </svg>
+      </div>
+      <div className={styles.axisGridCell}>
+        <svg width={width} height={height}>
+          {abscissaInfo.showGrid && (
+            <GridColumns
+              scale={xTicksScale}
+              {...xTicksProp}
+              width={width}
+              height={height}
+              stroke={AXIS_PROPS.tickStroke}
+              strokeOpacity={0.33}
             />
-          </svg>
-        </div>
-        <div className={styles.axisGridCell}>
-          <svg width={width} height={height}>
-            {abscissaInfo.showGrid && (
-              <GridColumns
-                scale={xTicksScale}
-                {...xTicksProp}
-                width={width}
-                height={height}
-                stroke={AXIS_PROPS.tickStroke}
-                strokeOpacity={0.33}
-              />
-            )}
-            {ordinateInfo.showGrid && (
-              <GridRows
-                scale={yTicksScale}
-                {...yTicksProp}
-                width={width}
-                height={height}
-                stroke={AXIS_PROPS.tickStroke}
-                strokeOpacity={0.33}
-              />
-            )}
-          </svg>
-        </div>
-      </>
+          )}
+          {ordinateInfo.showGrid && (
+            <GridRows
+              scale={yTicksScale}
+              {...yTicksProp}
+              width={width}
+              height={height}
+              stroke={AXIS_PROPS.tickStroke}
+              strokeOpacity={0.33}
+            />
+          )}
+        </svg>
+      </div>
     </Html>
   );
 }

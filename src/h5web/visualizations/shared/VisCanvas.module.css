@@ -14,13 +14,4 @@
 /* R3F's root element */
 .canvasWrapper {
   overflow: visible !important; /* show child axis grid, which is bigger than canvas */
-  z-index: 0; /* stacking context for child `<Html />` elements */
-}
-
-/* R3F's <Html /> element */
-.canvasWrapper > div {
-  transform: none !important;
-  /* - Prevent panning/zooming from axis when zoomed in.
-   * - Prevent text selection of tick labels when panning with touchpad. */
-  pointer-events: none;
 }
