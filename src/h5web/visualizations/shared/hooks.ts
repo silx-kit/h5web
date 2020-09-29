@@ -7,17 +7,18 @@ import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
 import { findDomain, getSupportedDomain } from './utils';
 
-export function useMappedArray<T>(
-  dataset: HDF5Dataset,
-  value: T[],
-  mapperState: DimensionMapping
-): ndarray<T> {
+export function useBaseArray<T>(dataset: HDF5Dataset, value: T[]): ndarray<T> {
   const rawDims = (dataset.shape as HDF5SimpleShape).dims;
 
-  const baseArray = useMemo(() => {
+  return useMemo(() => {
     return ndarray<T>(value.flat(Infinity) as T[], rawDims);
   }, [rawDims, value]);
+}
 
+export function useMappedArray<T>(
+  baseArray: ndarray<T>,
+  mapperState: DimensionMapping
+): ndarray<T> {
   return useMemo(() => {
     if (mapperState === undefined) {
       return baseArray;

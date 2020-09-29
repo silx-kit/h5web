@@ -8,10 +8,11 @@ interface Props {
   iconOnly?: boolean;
   value: boolean;
   onChange: () => void;
+  disabled?: boolean;
 }
 
 function ToggleBtn(props: Props): JSX.Element {
-  const { label, icon: Icon, iconOnly, value, onChange } = props;
+  const { label, icon: Icon, iconOnly, value, onChange, disabled } = props;
 
   return (
     <button
@@ -20,6 +21,7 @@ function ToggleBtn(props: Props): JSX.Element {
       aria-label={iconOnly ? label : undefined}
       aria-pressed={value}
       onClick={onChange}
+      disabled={disabled}
     >
       <span className={styles.btnLike}>
         {Icon && <Icon className={styles.icon} />}
