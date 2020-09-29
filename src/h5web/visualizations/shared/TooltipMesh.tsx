@@ -3,7 +3,7 @@ import { PointerEvent, useThree } from 'react-three-fiber';
 import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import { Line } from '@vx/shape';
 
-import { Html } from 'drei';
+import { Html } from 'drei/misc/Html';
 import styles from './TooltipMesh.module.css';
 import { getAxisScale } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';

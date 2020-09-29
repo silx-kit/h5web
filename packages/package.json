@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
+    "@yushijinhun/three-minifier-webpack": "^0.2.0-alpha.2",
     "babel-loader": "^8.1.0",
     "copy-webpack-plugin": "^6.1.1",
     "css-loader": "^4.2.2",

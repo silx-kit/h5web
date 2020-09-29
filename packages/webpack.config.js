@@ -2,9 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ThreeMinifierPlugin = require('@yushijinhun/three-minifier-webpack');
 
 const packagesPath = path.resolve(__dirname, '../src/packages');
 const packages = fs.readdirSync(packagesPath);
+const threeMinifier = new ThreeMinifierPlugin();
 
 function getConfig(pkg) {
   const name = path.basename(pkg, '.ts');
@@ -26,6 +28,7 @@ function getConfig(pkg) {
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.wasm', '.mjs', '.js', '.json'],
+      plugins: [threeMinifier.resolver],
     },
     module: {
       rules: [
@@ -73,6 +76,7 @@ function getConfig(pkg) {
       ],
     },
     plugins: [
+      threeMinifier,
       new MiniCssExtractPlugin(),
       new CopyWebpackPlugin({
         patterns: [

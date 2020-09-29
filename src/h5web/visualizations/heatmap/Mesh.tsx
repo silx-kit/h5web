@@ -1,7 +1,7 @@
 import React, { useMemo, ReactElement } from 'react';
 import { useThree } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
-import { Html } from 'drei';
+import { Html } from 'drei/misc/Html';
 import { useTextureData } from './hooks';
 import styles from './HeatmapVis.module.css';
 import type { Domain, ScaleType } from '../shared/models';

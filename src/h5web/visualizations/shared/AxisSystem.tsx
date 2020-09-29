@@ -3,7 +3,7 @@ import { useThree, useFrame } from 'react-three-fiber';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
 import { format } from 'd3-format';
 import { GridColumns, GridRows } from '@vx/grid';
-import { Html } from 'drei';
+import { Html } from 'drei/misc/Html';
 import { useUpdateEffect } from 'react-use';
 import styles from './AxisSystem.module.css';
 import type { AxisOffsets, Domain } from './models';
