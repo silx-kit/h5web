@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { MdAspectRatio, MdGridOn } from 'react-icons/md';
+import { MdAspectRatio, MdDomain, MdGridOn } from 'react-icons/md';
 import ToggleBtn from '../shared/ToggleBtn';
 import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
@@ -22,10 +22,23 @@ function HeatmapToolbar(): ReactElement {
     toggleAspectRatio,
     showGrid,
     toggleGrid,
+    autoScale,
+    toggleAutoScale,
+    isAutoScaleDisabled,
   } = useHeatmapConfig();
 
   return (
     <Toolbar>
+      <ToggleBtn
+        label="Auto-scale"
+        icon={MdDomain}
+        value={autoScale}
+        onChange={toggleAutoScale}
+        disabled={isAutoScaleDisabled}
+      />
+
+      <Separator />
+
       {dataDomain && (
         <DomainSlider
           dataDomain={dataDomain}
