@@ -5,16 +5,18 @@ import { ScaleType } from './models';
 
 interface Props {
   value: ScaleType;
+  disabled?: boolean;
   onScaleChange: (scale: ScaleType) => void;
 }
 
 function ScaleSelector(props: Props): ReactElement {
-  const { value, onScaleChange } = props;
+  const { value, disabled, onScaleChange } = props;
   return (
     <ToggleGroup
       role="radiogroup"
       ariaLabel="Scale type"
       value={value}
+      disabled={disabled}
       onChange={onScaleChange}
     >
       <ToggleGroup.Btn icon={MdSort} label="Linear" value={ScaleType.Linear} />

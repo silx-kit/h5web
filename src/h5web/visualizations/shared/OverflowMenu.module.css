@@ -1,0 +1,35 @@
+.root {
+  position: relative;
+  display: flex;
+}
+
+.btn {
+  composes: btn from '../shared/Toolbar.module.css';
+}
+
+.btnLike {
+  composes: btnLike from '../shared/Toolbar.module.css';
+}
+
+.icon {
+  composes: icon from '../shared/Toolbar.module.css';
+}
+
+.menu {
+  position: absolute;
+  bottom: 0;
+  right: 0.25rem;
+  transform: translateY(100%);
+  margin: 0;
+  padding: 0.375rem 0.25rem;
+  background-color: var(--secondary-light-bg);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 4px 11px;
+  list-style-type: none;
+}
+
+.menu > li {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 2.25rem;
+}

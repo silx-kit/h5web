@@ -1,7 +1,25 @@
 .toolbar {
+  flex: 1 1 0%;
   display: flex;
+  min-width: 0;
   padding: 0 0.5rem;
   font-size: 0.875rem;
+}
+
+.controls {
+  flex: 1 1 0%;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.measuringContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.measuredControl {
+  position: absolute;
 }
 
 .btn {
@@ -11,7 +29,8 @@
   padding: 0 0.25rem;
 }
 
-.btn:disabled {
+.btn:disabled,
+.btn[aria-disabled='true'] {
   opacity: 0.5;
   pointer-events: none;
 }

@@ -3,7 +3,7 @@ import { MdAspectRatio, MdDomain, MdGridOn } from 'react-icons/md';
 import ToggleBtn from '../shared/ToggleBtn';
 import { useHeatmapConfig } from './config';
 import DomainSlider from './DomainSlider';
-import ScreenshotButton from './ScreenshotButton';
+import SnapshotButton from './SnapshotButton';
 import Separator from '../shared/Separator';
 import Toolbar from '../shared/Toolbar';
 import ColorMapSelector from './ColorMapSelector';
@@ -37,7 +37,7 @@ function HeatmapToolbar(): ReactElement {
         />
       )}
 
-      <Separator />
+      {dataDomain && <Separator />}
 
       <ColorMapSelector value={colorMap} onChange={setColorMap} />
 
@@ -69,7 +69,7 @@ function HeatmapToolbar(): ReactElement {
 
       <Separator />
 
-      <ScreenshotButton />
+      <SnapshotButton />
     </Toolbar>
   );
 }
