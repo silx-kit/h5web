@@ -2,8 +2,7 @@ import React, { ReactElement, useCallback, useContext } from 'react';
 import { PointerEvent, useThree } from 'react-three-fiber';
 import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import { Line } from '@vx/shape';
-
-import { Html } from 'drei/misc/Html';
+import Html from './Html';
 import styles from './TooltipMesh.module.css';
 import { getAxisScale } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
@@ -84,8 +83,8 @@ function TooltipMesh(props: Props): ReactElement {
       <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <planeBufferGeometry attach="geometry" args={[width, height]} />
       </mesh>
-      <Html style={{ width, height }}>
-        {tooltipOpen && tooltipData && value ? (
+      <Html>
+        {tooltipOpen && tooltipData && value && (
           <>
             <TooltipWithBounds
               key={Math.random()}
@@ -115,8 +114,6 @@ function TooltipMesh(props: Props): ReactElement {
               </svg>
             )}
           </>
-        ) : (
-          <></>
         )}
       </Html>
     </>

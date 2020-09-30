@@ -1,7 +1,7 @@
 import React, { useMemo, ReactElement } from 'react';
 import { useThree } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
-import { Html } from 'drei/misc/Html';
+import Html from '../shared/Html';
 import { useTextureData } from './hooks';
 import styles from './HeatmapVis.module.css';
 import type { Domain, ScaleType } from '../shared/models';
@@ -49,13 +49,10 @@ function Mesh(props: Props): ReactElement {
         </mesh>
       )}
       {showLoader && (
-        <Html>
-          <div
-            className={styles.textureLoader}
-            style={{ width, height }}
-            data-visible={loading || undefined}
-          />
-        </Html>
+        <Html
+          className={styles.textureLoader}
+          data-visible={loading || undefined}
+        />
       )}
     </>
   );

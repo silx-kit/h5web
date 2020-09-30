@@ -1,11 +1,13 @@
 .axisSystem {
-  position: relative;
-  top: 0;
   display: grid;
   grid-template-areas:
     '. top-axis .'
     'left-axis axis-grid right-axis'
     '. bottom-axis .';
+
+  /* - Prevent panning/zooming from axis when zoomed in.
+   * - Prevent text selection of tick labels when panning with touchpad. */
+  pointer-events: none;
 }
 
 .leftAxisCell {
