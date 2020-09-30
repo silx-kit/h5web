@@ -10,11 +10,19 @@ type HeatmapConfig = {
   scaleType: ScaleType;
   keepAspectRatio: boolean;
   showGrid: boolean;
+  autoScale: boolean;
+  isAutoScaleDisabled: boolean;
 };
 
 const STORAGE_CONFIG: StorageConfig = {
   storageId: 'h5web:heatmap',
-  itemsToPersist: ['colorMap', 'scaleType', 'keepAspectRatio', 'showGrid'],
+  itemsToPersist: [
+    'colorMap',
+    'scaleType',
+    'keepAspectRatio',
+    'showGrid',
+    'autoScale',
+  ],
 };
 
 const INITIAL_STATE: HeatmapConfig = {
@@ -24,6 +32,8 @@ const INITIAL_STATE: HeatmapConfig = {
   scaleType: ScaleType.Linear,
   keepAspectRatio: true,
   showGrid: false,
+  autoScale: false,
+  isAutoScaleDisabled: false,
 };
 
 export const useHeatmapConfig = createPersistableState(
@@ -43,5 +53,10 @@ export const useHeatmapConfig = createPersistableState(
       set((state) => ({ keepAspectRatio: !state.keepAspectRatio })),
 
     toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
+
+    toggleAutoScale: () => set((state) => ({ autoScale: !state.autoScale })),
+
+    disableAutoScale: (isAutoScaleDisabled: boolean) =>
+      set({ isAutoScaleDisabled }),
   }))
 );

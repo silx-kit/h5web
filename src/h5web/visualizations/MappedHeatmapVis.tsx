@@ -24,12 +24,21 @@ function MappedHeatmapVis(props: Props): ReactElement {
     keepAspectRatio,
     showGrid,
     resetDomains,
+    autoScale,
+    disableAutoScale,
   } = useHeatmapConfig();
 
   const baseArray = useBaseArray(dataset, value);
   const dataArray = useMappedArray(baseArray, mapperState);
-  const dataDomain = useDataDomain(dataArray.data as number[]);
+  const dataDomain = useDataDomain(
+    (autoScale ? dataArray.data : baseArray.data) as number[]
+  );
   const prevDataDomain = usePrevious(dataDomain);
+
+  // Disable `autoScale` for 2D datasets (baseArray and dataArray span the same values)
+  useEffect(() => {
+    disableAutoScale(!baseArray.shape || baseArray.shape.length <= 2);
+  }, [baseArray.shape, disableAutoScale]);
 
   // Use `customDomain` if any, unless `dataDomain` just changed (in which case it is stale and needs to be reset - cf. `useEffect` below)
   const domain =
