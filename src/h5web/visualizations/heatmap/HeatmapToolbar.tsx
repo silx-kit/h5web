@@ -29,16 +29,6 @@ function HeatmapToolbar(): ReactElement {
 
   return (
     <Toolbar>
-      <ToggleBtn
-        label="Auto-scale"
-        icon={MdDomain}
-        value={autoScale}
-        onChange={toggleAutoScale}
-        disabled={isAutoScaleDisabled}
-      />
-
-      <Separator />
-
       {dataDomain && (
         <DomainSlider
           dataDomain={dataDomain}
@@ -57,6 +47,13 @@ function HeatmapToolbar(): ReactElement {
 
       <Separator />
 
+      <ToggleBtn
+        label="Auto-scale"
+        icon={MdDomain}
+        value={autoScale}
+        onChange={toggleAutoScale}
+        disabled={isAutoScaleDisabled}
+      />
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}

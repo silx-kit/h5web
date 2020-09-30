@@ -23,16 +23,6 @@ function LineToolbar(): JSX.Element {
 
   return (
     <Toolbar>
-      <ToggleBtn
-        label="Auto-scale"
-        icon={MdDomain}
-        value={autoScale}
-        onChange={toggleAutoScale}
-        disabled={isAutoScaleDisabled}
-      />
-
-      <Separator />
-
       <ToggleGroup
         role="radiogroup"
         ariaLabel="Curve type"
@@ -50,6 +40,13 @@ function LineToolbar(): JSX.Element {
 
       <Separator />
 
+      <ToggleBtn
+        label="Auto-scale"
+        icon={MdDomain}
+        value={autoScale}
+        onChange={toggleAutoScale}
+        disabled={isAutoScaleDisabled}
+      />
       <ToggleBtn
         label="Grid"
         icon={MdGridOn}
