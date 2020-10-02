@@ -1,5 +1,6 @@
 import { scaleLinear } from 'd3-scale';
 import { extent, tickStep } from 'd3-array';
+import { format } from 'd3-format';
 import {
   Size,
   Domain,
@@ -10,10 +11,16 @@ import {
   ScaleType,
 } from './models';
 
+const TICK_FORMAT = format('0');
+
 export const adaptedNumTicks = scaleLinear()
   .domain([300, 900])
   .rangeRound([3, 10])
   .clamp(true);
+
+const adaptedLogTicksThreshold = scaleLinear()
+  .domain([300, 500])
+  .range([0.8, 1.4]);
 
 export function computeVisSize(
   availableSize: Size,
@@ -142,6 +149,29 @@ export function getTicksProp(
   return onlyIntegers
     ? { tickValues: getIntegerTicks(visibleDomain, numTicks) }
     : { numTicks };
+}
+
+export function getTickFormatter(
+  domain: Domain,
+  availableSize: number,
+  scaleType: ScaleType
+): (val: number | { valueOf(): number }) => string {
+  if (scaleType !== ScaleType.Log) {
+    return TICK_FORMAT;
+  }
+
+  // If available size allows for all log ticks to be rendered without overlap, use default formatter
+  const threshold = adaptedLogTicksThreshold(availableSize);
+  if (Math.log10(domain[1]) - Math.log10(domain[0]) < threshold) {
+    return TICK_FORMAT;
+  }
+
+  // Otherwise, use formatter that hides non-exact powers of 10
+  return (val) => {
+    const loggedVal = Math.log10(val.valueOf());
+    if (loggedVal !== Math.floor(loggedVal)) return '';
+    return TICK_FORMAT(val);
+  };
 }
 
 export function assertNumOrStr(val: unknown): asserts val is number | string {
