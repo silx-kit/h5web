@@ -8,17 +8,27 @@ import type {
 import { VIS_DEFS } from '../visualizations';
 import DimensionMapper from './mapper/DimensionMapper';
 import Profiler from '../Profiler';
+import Loader from './Loader';
 
 interface Props {
   activeVis: Vis;
   dataset: HDF5Dataset;
   value: HDF5Value;
+  loading: boolean;
   mapperState: DimensionMapping;
   onMapperStateChange(mapperState: DimensionMapping): void;
 }
 
 function VisDisplay(props: Props): ReactElement {
-  const { activeVis, dataset, value, mapperState, onMapperStateChange } = props;
+  const {
+    activeVis,
+    dataset,
+    value,
+    loading,
+    mapperState,
+    onMapperStateChange,
+  } = props;
+
   const { Component: VisComponent } = VIS_DEFS[activeVis];
 
   return (
@@ -29,14 +39,18 @@ function VisDisplay(props: Props): ReactElement {
         mapperState={mapperState}
         onChange={onMapperStateChange}
       />
-      {value !== undefined && (
-        <Profiler id={activeVis}>
-          <VisComponent
-            value={value}
-            dataset={dataset}
-            mapperState={mapperState}
-          />
-        </Profiler>
+      {loading ? (
+        <Loader message="Loading dataset" />
+      ) : (
+        value !== undefined && (
+          <Profiler id={activeVis}>
+            <VisComponent
+              value={value}
+              dataset={dataset}
+              mapperState={mapperState}
+            />
+          </Profiler>
+        )
       )}
     </>
   );
