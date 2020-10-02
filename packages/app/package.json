@@ -6,6 +6,7 @@
   "license": "MIT",
   "main": "app.js",
   "types": "packages/app.d.ts",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/silx-kit/h5web"
