@@ -3,8 +3,8 @@ import { FiSidebar, FiChevronRight } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
 import type { TreeNode } from './explorer/models';
 import type { HDF5Link, HDF5HardLink } from './providers/models';
-import ToggleGroup from './visualizations/shared/ToggleGroup';
-import ToggleBtn from './visualizations/shared/ToggleBtn';
+import ToggleGroup from './toolbar/controls/ToggleGroup';
+import ToggleBtn from './toolbar/controls/ToggleBtn';
 
 interface Props {
   isExplorerOpen: boolean;

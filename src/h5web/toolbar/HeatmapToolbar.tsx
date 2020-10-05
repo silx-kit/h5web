@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 import { MdAspectRatio, MdDomain, MdGridOn } from 'react-icons/md';
-import ToggleBtn from '../shared/ToggleBtn';
-import { useHeatmapConfig } from './config';
-import DomainSlider from './DomainSlider';
-import SnapshotButton from './SnapshotButton';
-import Separator from '../shared/Separator';
-import Toolbar from '../shared/Toolbar';
-import ColorMapSelector from './ColorMapSelector';
-import ScaleSelector from '../shared/ScaleSelector';
+import ToggleBtn from './controls/ToggleBtn';
+import { useHeatmapConfig } from '../visualizations/heatmap/config';
+import DomainSlider from './controls/DomainSlider';
+import SnapshotButton from './controls/SnapshotButton';
+import Separator from './Separator';
+import Toolbar from './Toolbar';
+import ColorMapSelector from './controls/ColorMapSelector';
+import ScaleSelector from './controls/ScaleSelector';
 
 function HeatmapToolbar(): ReactElement {
   const {

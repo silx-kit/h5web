@@ -1,12 +1,12 @@
 import React from 'react';
 import { MdGridOn, MdDomain } from 'react-icons/md';
-import ToggleBtn from '../shared/ToggleBtn';
-import { useLineConfig } from './config';
-import { CurveType } from './models';
-import ToggleGroup from '../shared/ToggleGroup';
-import Toolbar from '../shared/Toolbar';
-import Separator from '../shared/Separator';
-import ScaleSelector from '../shared/ScaleSelector';
+import ToggleBtn from './controls/ToggleBtn';
+import { useLineConfig } from '../visualizations/line/config';
+import { CurveType } from '../visualizations/line/models';
+import ToggleGroup from './controls/ToggleGroup';
+import Toolbar from './Toolbar';
+import Separator from './Separator';
+import ScaleSelector from './controls/ScaleSelector';
 
 function LineToolbar(): JSX.Element {
   const {

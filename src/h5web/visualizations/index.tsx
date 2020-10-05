@@ -5,8 +5,8 @@ import { range } from 'lodash-es';
 import RawVis from './RawVis';
 import ScalarVis from './ScalarVis';
 import { Vis, DimensionMapping } from '../dataset-visualizer/models';
-import LineToolbar from './line/LineToolbar';
-import HeatmapToolbar from './heatmap/HeatmapToolbar';
+import LineToolbar from '../toolbar/LineToolbar';
+import HeatmapToolbar from '../toolbar/HeatmapToolbar';
 import type {
   HDF5Dataset,
   HDF5Value,
@@ -18,9 +18,9 @@ import {
   isSimpleShape,
   isNumericType,
 } from '../providers/utils';
-import MappedMatrixVis from './MappedMatrixVis';
-import MappedLineVis from './MappedLineVis';
-import MappedHeatmapVis from './MappedHeatmapVis';
+import MappedMatrixVis from './matrix/MappedMatrixVis';
+import MappedLineVis from './line/MappedLineVis';
+import MappedHeatmapVis from './heatmap/MappedHeatmapVis';
 
 interface VisDef {
   Icon: IconType;

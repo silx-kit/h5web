@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { MdSort, MdFilterList, MdGraphicEq } from 'react-icons/md';
 import ToggleGroup from './ToggleGroup';
-import { ScaleType } from './models';
+import { ScaleType } from '../../visualizations/shared/models';
 
 interface Props {
   value: ScaleType;

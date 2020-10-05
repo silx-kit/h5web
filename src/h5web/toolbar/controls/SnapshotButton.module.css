@@ -1,0 +1,21 @@
+.link {
+  composes: btn from '../Toolbar.module.css';
+  color: inherit;
+  text-decoration: none;
+}
+
+.btnLike {
+  composes: btnLike from '../Toolbar.module.css';
+}
+
+.icon {
+  composes: icon from '../Toolbar.module.css';
+}
+
+.label {
+  composes: label from '../Toolbar.module.css';
+}
+
+.link:hover > .btnLike {
+  background-color: var(--secondary-light);
+}

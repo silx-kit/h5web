@@ -1,10 +1,10 @@
 import React, { ReactElement, useEffect } from 'react';
-import type { HDF5Dataset, HDF5Value } from '../providers/models';
-import type { DimensionMapping } from '../dataset-visualizer/models';
-import LineVis from './line/LineVis';
-import { assertArray } from './shared/utils';
-import { useMappedArray, useDataDomain, useBaseArray } from './shared/hooks';
-import { useLineConfig } from './line/config';
+import type { HDF5Dataset, HDF5Value } from '../../providers/models';
+import type { DimensionMapping } from '../../dataset-visualizer/models';
+import LineVis from './LineVis';
+import { assertArray } from '../shared/utils';
+import { useMappedArray, useDataDomain, useBaseArray } from '../shared/hooks';
+import { useLineConfig } from './config';
 
 interface Props {
   value: HDF5Value;
