@@ -11,6 +11,11 @@
   cursor: pointer;
 }
 
+.slider:global(.disabled) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .track {
   align-self: center;
   height: 0.375rem;

@@ -1,6 +1,7 @@
 .link {
   composes: btn from '../shared/Toolbar.module.css';
   color: inherit;
+  text-decoration: none;
 }
 
 .btnLike {
@@ -9,6 +10,10 @@
 
 .icon {
   composes: icon from '../shared/Toolbar.module.css';
+}
+
+.label {
+  composes: label from '../shared/Toolbar.module.css';
 }
 
 .link:hover > .btnLike {

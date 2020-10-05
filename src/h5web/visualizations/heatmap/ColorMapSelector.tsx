@@ -24,18 +24,19 @@ function Gradient(props: GradientProps): JSX.Element {
 
 interface Props {
   value: ColorMap;
+  disabled?: boolean;
   onChange(colorMap: ColorMap): void;
 }
 
 function ColorMapSelector(props: Props): ReactElement {
-  const { value, onChange } = props;
+  const { value, disabled, onChange } = props;
 
   const { height: winHeight } = useWindowSize();
   const menuMaxHeight = winHeight - MENU_TOP - MENU_BOTTOM;
 
   return (
     <Wrapper className={styles.wrapper} onSelection={onChange}>
-      <Button className={styles.btn} tag="button">
+      <Button className={styles.btn} tag="button" disabled={disabled}>
         <div className={styles.btnLike}>
           <span className={styles.selectedColorMap}>
             {value}

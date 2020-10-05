@@ -5,6 +5,7 @@ import styles from './ToggleGroup.module.css';
 interface ToggleGroupProps {
   role: 'tablist' | 'radiogroup';
   value: string;
+  disabled?: boolean;
   onChange(val: string): void;
 }
 
@@ -31,11 +32,16 @@ interface BtnProps {
 
 function Btn(props: BtnProps): ReactElement {
   const { label, value, icon: Icon, disabled = false } = props;
-  const { role, value: selectedValue, onChange } = useToggleGroupProps();
+  const {
+    role,
+    value: selectedValue,
+    disabled: isGroupDisabled,
+    onChange,
+  } = useToggleGroupProps();
 
   return (
     <button
-      disabled={disabled}
+      disabled={disabled || isGroupDisabled}
       className={styles.btn}
       type="button"
       role={role === 'tablist' ? 'tab' : 'radio'}
@@ -58,10 +64,10 @@ type Props = ToggleGroupProps & {
 };
 
 function ToggleGroup(props: Props): JSX.Element {
-  const { value, onChange, role, ariaLabel, children } = props;
+  const { role, ariaLabel, value, disabled, onChange, children } = props;
 
   return (
-    <ToggleGroupContext.Provider value={{ role, value, onChange }}>
+    <ToggleGroupContext.Provider value={{ role, value, disabled, onChange }}>
       <div className={styles.group} role={role} aria-label={ariaLabel}>
         {children}
       </div>
