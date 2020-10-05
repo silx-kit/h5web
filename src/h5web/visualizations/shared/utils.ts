@@ -161,14 +161,15 @@ export function getTickFormatter(
   }
 
   // If available size allows for all log ticks to be rendered without overlap, use default formatter
+  const [min, max] = domain[0] > 0 ? domain : [-domain[1], -[domain[0]]];
   const threshold = adaptedLogTicksThreshold(availableSize);
-  if (Math.log10(domain[1]) - Math.log10(domain[0]) < threshold) {
+  if (max / min < 10 ** threshold) {
     return TICK_FORMAT;
   }
 
   // Otherwise, use formatter that hides non-exact powers of 10
   return (val) => {
-    const loggedVal = Math.log10(val.valueOf());
+    const loggedVal = Math.log10(Math.abs(val.valueOf()));
     if (loggedVal !== Math.floor(loggedVal)) return '';
     return TICK_FORMAT(val);
   };
