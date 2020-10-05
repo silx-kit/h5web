@@ -56,6 +56,14 @@ LogScale.args = {
   scaleType: ScaleType.Log,
 };
 
+export const NegativeLogScale = Template.bind({});
+NegativeLogScale.storyName = 'Log Scale with negative values';
+NegativeLogScale.args = {
+  dataArray,
+  domain: [-20, -1],
+  scaleType: ScaleType.Log,
+};
+
 export const SymLogScale = Template.bind({});
 
 SymLogScale.args = {
