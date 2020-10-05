@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import type { HDF5Dataset, HDF5Value } from '../providers/models';
-import type { DimensionMapping } from '../dataset-visualizer/models';
-import MatrixVis from './matrix/MatrixVis';
-import { assertArray } from './shared/utils';
-import { useMappedArray, useBaseArray } from './shared/hooks';
+import type { HDF5Dataset, HDF5Value } from '../../providers/models';
+import type { DimensionMapping } from '../../dataset-visualizer/models';
+import MatrixVis from './MatrixVis';
+import { assertArray } from '../shared/utils';
+import { useMappedArray, useBaseArray } from '../shared/hooks';
 
 interface Props {
   value: HDF5Value;

@@ -1,11 +1,11 @@
 import React, { ReactElement, useEffect } from 'react';
 import { usePrevious } from 'react-use';
-import type { HDF5Dataset, HDF5Value } from '../providers/models';
-import type { DimensionMapping } from '../dataset-visualizer/models';
-import HeatmapVis from './heatmap/HeatmapVis';
-import { assertArray } from './shared/utils';
-import { useMappedArray, useDataDomain, useBaseArray } from './shared/hooks';
-import { useHeatmapConfig } from './heatmap/config';
+import type { HDF5Dataset, HDF5Value } from '../../providers/models';
+import type { DimensionMapping } from '../../dataset-visualizer/models';
+import HeatmapVis from './HeatmapVis';
+import { assertArray } from '../shared/utils';
+import { useMappedArray, useDataDomain, useBaseArray } from '../shared/hooks';
+import { useHeatmapConfig } from './config';
 
 interface Props {
   value: HDF5Value;

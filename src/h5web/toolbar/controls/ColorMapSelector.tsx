@@ -4,9 +4,15 @@ import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
 import { MdArrowDropDown } from 'react-icons/md';
 import { useWindowSize } from 'react-use';
 import styles from './ColorMapSelector.module.css';
-import { INTERPOLATOR_GROUPS, INTERPOLATORS } from './interpolators';
-import type { ColorMap, D3Interpolator } from './models';
-import { generateCSSLinearGradient } from './utils';
+import {
+  INTERPOLATOR_GROUPS,
+  INTERPOLATORS,
+} from '../../visualizations/heatmap/interpolators';
+import type {
+  ColorMap,
+  D3Interpolator,
+} from '../../visualizations/heatmap/models';
+import { generateCSSLinearGradient } from '../../visualizations/heatmap/utils';
 
 const MENU_IDEAL_HEIGHT = 320; // 20rem
 const MENU_TOP = 87; // HACK: height of breadcrumbs bar + height of toolbar

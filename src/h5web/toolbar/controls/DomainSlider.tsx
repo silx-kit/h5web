@@ -4,8 +4,8 @@ import { format } from 'd3-format';
 import { round } from 'lodash-es';
 import { FiRotateCcw } from 'react-icons/fi';
 import styles from './DomainSlider.module.css';
-import type { Domain } from '../shared/models';
-import { extendDomain } from '../shared/utils';
+import type { Domain } from '../../visualizations/shared/models';
+import { extendDomain } from '../../visualizations/shared/utils';
 
 const EXTEND_FACTOR = 0.2;
 const NB_DECIMALS = 1;
