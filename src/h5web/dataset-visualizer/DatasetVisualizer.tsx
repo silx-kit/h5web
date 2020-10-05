@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useContext } from 'react';
-import { useSetState } from 'react-use';
+import { useSetState, useTimeoutFn } from 'react-use';
 import type { HDF5Dataset, HDF5Value } from '../providers/models';
 import styles from './DatasetVisualizer.module.css';
 import VisSelector from './VisSelector';
@@ -16,6 +16,7 @@ interface Props {
 interface State {
   activeVis?: Vis;
   value?: HDF5Value;
+  loading?: boolean;
   mapperState?: DimensionMapping;
   prevDataset?: HDF5Dataset;
 }
@@ -25,7 +26,7 @@ function DatasetVisualizer(props: Props): ReactElement {
 
   const supportedVis = useSupportedVis(dataset);
   const [state, mergeState] = useSetState<State>({});
-  const { activeVis, value, mapperState, prevDataset } = state;
+  const { activeVis, value, loading, mapperState, prevDataset } = state;
 
   // Reset state when dataset changes
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
@@ -44,15 +45,24 @@ function DatasetVisualizer(props: Props): ReactElement {
     });
   }
 
-  // Fetch dataset value asynchronously
   const { getValue } = useContext(ProviderContext);
+  const [scheduleLoadingFlag, cancelLoadingFlag] = useTimeoutFn(() => {
+    mergeState({ loading: true });
+  }, 50);
+
+  // Fetch dataset value asynchronously
   useEffect(() => {
-    if (dataset) {
-      getValue(dataset.id).then((val) => {
-        mergeState({ value: val });
-      });
+    if (!dataset) {
+      return;
     }
-  }, [dataset, getValue, mergeState]);
+
+    scheduleLoadingFlag(); // in case retrieving value takes too long (e.g. initial fetch of `SilxProvider`)
+
+    getValue(dataset.id).then((val) => {
+      cancelLoadingFlag();
+      mergeState({ value: val, loading: false });
+    });
+  }, [cancelLoadingFlag, dataset, getValue, mergeState, scheduleLoadingFlag]);
 
   const VisToolbar = activeVis && VIS_DEFS[activeVis].Toolbar;
 
@@ -78,6 +88,7 @@ function DatasetVisualizer(props: Props): ReactElement {
             activeVis={activeVis}
             dataset={dataset}
             value={value}
+            loading={!!loading}
             mapperState={mapperState}
             onMapperStateChange={(nextMapperState) => {
               mergeState({ mapperState: nextMapperState });
