@@ -40,7 +40,7 @@ function BreadcrumbsBar(props: Props): JSX.Element {
           {selectedNode?.parents.slice(firstParentIndex).map((member) => (
             <Fragment key={(member as HDF5HardLink).id}>
               <span className={styles.crumb}>{member.title}</span>
-              <FiChevronRight />
+              <FiChevronRight className={styles.separator} />
             </Fragment>
           ))}
           <span className={styles.crumb} data-current>
