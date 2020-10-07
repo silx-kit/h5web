@@ -4,7 +4,7 @@ import styles from './VisSelector.module.css';
 import { VIS_DEFS } from '../visualizations';
 
 interface Props {
-  activeVis?: Vis;
+  activeVis: Vis;
   choices: Vis[];
   onChange: (vis: Vis) => void;
 }

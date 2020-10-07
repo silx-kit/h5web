@@ -12,11 +12,6 @@
   display: flex;
 }
 
-.noVis {
-  padding: 1em;
-  color: var(--secondary-dark);
-}
-
 .visBar {
   position: relative;
   z-index: 1;
@@ -24,4 +19,9 @@
   justify-content: space-between;
   background-color: var(--secondary-light-bg);
   min-height: 2.5rem;
+}
+
+.fallback {
+  padding: 1em;
+  color: var(--secondary-dark);
 }

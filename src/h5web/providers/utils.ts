@@ -16,6 +16,7 @@ import {
   HDF5Dataset,
   HDF5ScalarShape,
   HDF5NumericType,
+  HDF5Group,
 } from './models';
 import type { TreeNode } from '../explorer/models';
 
@@ -32,6 +33,10 @@ export function isReachable(
 
 export function isDataset(entity: HDF5Entity): entity is HDF5Dataset {
   return entity.collection === HDF5Collection.Datasets;
+}
+
+export function isGroup(entity: HDF5Entity): entity is HDF5Group {
+  return entity.collection === HDF5Collection.Groups;
 }
 
 export function isSimpleShape(shape: HDF5Shape): shape is HDF5SimpleShape {
