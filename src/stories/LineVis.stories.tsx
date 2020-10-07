@@ -2,16 +2,16 @@ import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import FillHeight from '../../.storybook/decorators/FillHeight';
-import mockData from '../h5web/providers/mock/data.json';
 import { findDomain } from '../h5web/visualizations/shared/utils';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';
+import { getMockedDataset } from '../h5web/providers/mock/utils';
 
-const oneDimDataset = mockData.datasets['c8f60c27-aae2-11ea-84a9-b94ddd2ec9e8'];
-const values = oneDimDataset.value as number[];
+const oneDimDataset = getMockedDataset<number[]>('/nD/oneD');
+const values = oneDimDataset.value;
 
-const dataArray = ndarray<number>(values, oneDimDataset.shape.dims);
+const dataArray = ndarray<number>(values, oneDimDataset.dims);
 const domain = findDomain(values);
 
 const Template: Story<LineVisProps> = (args): ReactElement => (

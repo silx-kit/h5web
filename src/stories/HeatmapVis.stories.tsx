@@ -6,16 +6,16 @@ import FillHeight from '../../.storybook/decorators/FillHeight';
 import HeatmapVis, {
   HeatmapVisProps,
 } from '../h5web/visualizations/heatmap/HeatmapVis';
-import mockData from '../h5web/providers/mock/data.json';
 import { findDomain } from '../h5web/visualizations/shared/utils';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import { INTERPOLATORS } from '../h5web/visualizations/heatmap/interpolators';
+import { getMockedDataset } from '../h5web/providers/mock/utils';
 
 // A 2D dataset
-const dataset = mockData.datasets['c8f60c29-aae2-11ea-84a9-b94ddd2ec9e8'];
+const dataset = getMockedDataset<number[][]>('/nD/twoD');
 const values = dataset.value.flat(Infinity) as number[];
 
-const dataArray = ndarray<number>(values, dataset.shape.dims).transpose(1, 0); // makes for a nicer-looking heatmap
+const dataArray = ndarray<number>(values, dataset.dims).transpose(1, 0); // makes for a nicer-looking heatmap
 const domain = findDomain(values);
 
 const Template: Story<HeatmapVisProps> = (args): ReactElement => (
@@ -87,7 +87,7 @@ export const LiveDataWithoutLoader: Story<HeatmapVisProps> = (
       .sort(() => 0.5 - Math.random());
 
     setShuffledArray(
-      ndarray<number>(shuffledValues, dataset.shape.dims).transpose(1, 0)
+      ndarray<number>(shuffledValues, dataset.dims).transpose(1, 0)
     );
   }, 5000);
 
