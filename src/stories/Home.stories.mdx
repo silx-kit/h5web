@@ -88,9 +88,9 @@ The components are organised in two categories:
 The library exposes a mock data object for testing purposes:
 
 ```ts
-import { mockData } from '@h5web/lib';
+import { getMocked2dDataset } from '@h5web/lib';
 
-const dataset = mockData.datasets['c8f60c29-aae2-11ea-84a9-b94ddd2ec9e8'];
+const dataset = getMocked2dDataset();
 
 const values: number[] = dataset.value.flat(Infinity);
 const dataArray = ndarray<number>(values, dataset.shape.dims);

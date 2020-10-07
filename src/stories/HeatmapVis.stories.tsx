@@ -12,7 +12,9 @@ import { ScaleType } from '../h5web/visualizations/shared/models';
 import { INTERPOLATORS } from '../h5web/visualizations/heatmap/interpolators';
 
 // A 2D dataset
-const dataset = mockData.datasets['c8f60c29-aae2-11ea-84a9-b94ddd2ec9e8'];
+const dataset = Object.values(mockData.datasets).find(
+  (d) => d.alias[0] === '/nD/twoD'
+) as { value: number[][]; shape: { dims: number[] } };
 const values = dataset.value.flat(Infinity) as number[];
 
 const dataArray = ndarray<number>(values, dataset.shape.dims).transpose(1, 0); // makes for a nicer-looking heatmap
