@@ -1,25 +1,15 @@
 import mockData from './data.json';
+import type { HDF5SimpleShape } from '../models';
 
-type TwoDDataset = {
-  value: number[][];
-  shape: { dims: number[] };
-};
+const datasets = Object.values(mockData.datasets);
 
-export function getMocked2dDataset(): TwoDDataset {
-  const dataset = Object.values(mockData.datasets).find(
-    (d) => d.alias[0] === '/nD/twoD'
-  ) as TwoDDataset;
-  return dataset;
-}
+export function getMockedDataset<
+  T extends number[] | number[][] | number[][][] | number[][][][]
+>(name: string): { value: T; dims: number[] } {
+  const dataset = datasets.find((d) => d.alias[0] === name);
 
-type OneDDataset = {
-  value: number[];
-  shape: { dims: number[] };
-};
-
-export function getMocked1dDataset(): OneDDataset {
-  const dataset = Object.values(mockData.datasets).find(
-    (d) => d.alias[0] === '/nD/oneD'
-  ) as OneDDataset;
-  return dataset;
+  return {
+    value: dataset?.value as T,
+    dims: (dataset?.shape as HDF5SimpleShape).dims,
+  };
 }

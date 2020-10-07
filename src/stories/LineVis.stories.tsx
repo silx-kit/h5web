@@ -6,12 +6,12 @@ import { findDomain } from '../h5web/visualizations/shared/utils';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';
-import { getMocked1dDataset } from '../h5web/providers/mock/utils';
+import { getMockedDataset } from '../h5web/providers/mock/utils';
 
-const oneDimDataset = getMocked1dDataset();
+const oneDimDataset = getMockedDataset<number[]>('/nD/oneD');
 const values = oneDimDataset.value;
 
-const dataArray = ndarray<number>(values, oneDimDataset.shape.dims);
+const dataArray = ndarray<number>(values, oneDimDataset.dims);
 const domain = findDomain(values);
 
 const Template: Story<LineVisProps> = (args): ReactElement => (
