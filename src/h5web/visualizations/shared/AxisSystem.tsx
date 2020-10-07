@@ -1,22 +1,12 @@
 import React, { useContext } from 'react';
 import { useThree } from 'react-three-fiber';
-import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
-import { GridColumns, GridRows } from '@vx/grid';
 import Html from './Html';
 import styles from './AxisSystem.module.css';
 import type { AxisOffsets, Domain } from './models';
-import { getTicksProp, getAxisScale, getTickFormatter } from './utils';
+import { getAxisScale } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
 import { useFrameRendering } from './hooks';
-
-const AXIS_PROPS = {
-  tickStroke: 'grey',
-  hideAxisLine: true,
-  tickClassName: styles.tick,
-  tickComponent: ({ formattedValue, ...tickProps }: TickRendererProps) => (
-    <text {...tickProps}>{formattedValue}</text>
-  ),
-};
+import Axis from './Axis';
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -57,28 +47,6 @@ function AxisSystem(props: Props): JSX.Element {
   // Re-render on every R3F frame (i.e. on every change of camera zoom/position)
   useFrameRendering();
 
-  const xTicksProp = getTicksProp(
-    xVisibleDomain,
-    width,
-    abscissaInfo.isIndexAxis
-  );
-  const yTicksProp = getTicksProp(
-    yVisibleDomain,
-    height,
-    ordinateInfo.isIndexAxis
-  );
-
-  const xTickFormat = getTickFormatter(
-    xVisibleDomain,
-    width,
-    abscissaInfo.scaleType
-  );
-  const yTickFormat = getTickFormatter(
-    yVisibleDomain,
-    height,
-    ordinateInfo.scaleType
-  );
-
   return (
     <Html
       className={styles.axisSystem}
@@ -92,51 +60,20 @@ function AxisSystem(props: Props): JSX.Element {
         gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
       }}
     >
-      <div className={styles.bottomAxisCell}>
-        <svg className={styles.axis} data-orientation="bottom">
-          <AxisBottom
-            scale={xTicksScale}
-            tickFormat={xTickFormat}
-            {...xTicksProp}
-            {...AXIS_PROPS}
-          />
-        </svg>
-      </div>
-      <div className={styles.leftAxisCell}>
-        <svg className={styles.axis} data-orientation="left">
-          <AxisLeft
-            scale={yTicksScale}
-            left={axisOffsets.left}
-            tickFormat={yTickFormat}
-            {...yTicksProp}
-            {...AXIS_PROPS}
-          />
-        </svg>
-      </div>
-      <div className={styles.axisGridCell}>
-        <svg width={width} height={height}>
-          {abscissaInfo.showGrid && (
-            <GridColumns
-              scale={xTicksScale}
-              {...xTicksProp}
-              width={width}
-              height={height}
-              stroke={AXIS_PROPS.tickStroke}
-              strokeOpacity={0.33}
-            />
-          )}
-          {ordinateInfo.showGrid && (
-            <GridRows
-              scale={yTicksScale}
-              {...yTicksProp}
-              width={width}
-              height={height}
-              stroke={AXIS_PROPS.tickStroke}
-              strokeOpacity={0.33}
-            />
-          )}
-        </svg>
-      </div>
+      <Axis
+        type="abscissa"
+        scale={xTicksScale}
+        domain={xVisibleDomain}
+        info={abscissaInfo}
+        canvasSize={size}
+      />
+      <Axis
+        type="ordinate"
+        scale={yTicksScale}
+        domain={yVisibleDomain}
+        info={ordinateInfo}
+        canvasSize={size}
+      />
     </Html>
   );
 }

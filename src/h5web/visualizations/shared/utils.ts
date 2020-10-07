@@ -112,7 +112,7 @@ export function getAxisScale(info: AxisInfo, rangeSize: number): AxisScale {
  *
  * So we implement our own, simplified version of `d3.ticks` that always outputs integer values.
  */
-function getIntegerTicks(domain: Domain, count: number): number[] {
+export function getIntegerTicks(domain: Domain, count: number): number[] {
   const [min, max] = domain;
   const intMin = Math.ceil(min);
   const intMax = Math.floor(max);
@@ -137,18 +137,6 @@ function getIntegerTicks(domain: Domain, count: number): number[] {
   }
 
   return ticks;
-}
-
-export function getTicksProp(
-  visibleDomain: Domain,
-  availableSize: number,
-  onlyIntegers?: boolean
-): { tickValues: number[] } | { numTicks: number } {
-  const numTicks = adaptedNumTicks(availableSize);
-
-  return onlyIntegers
-    ? { tickValues: getIntegerTicks(visibleDomain, numTicks) }
-    : { numTicks };
 }
 
 export function getTickFormatter(
