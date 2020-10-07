@@ -48,3 +48,4 @@ export type {
 
 // Mock data
 export { default as mockData } from '../h5web/providers/mock/data.json';
+export { getMockedDataset } from '../h5web/providers/mock/utils';
