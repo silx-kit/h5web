@@ -2,7 +2,7 @@
   display: grid;
   grid-template-areas:
     '. top-axis .'
-    'left-axis axis-grid right-axis'
+    '. axis-grid right-axis'
     '. bottom-axis .';
 
   /* - Prevent panning/zooming from axis when zoomed in.
@@ -10,37 +10,24 @@
   pointer-events: none;
 }
 
-.leftAxisCell {
-  grid-area: left-axis;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.bottomAxisCell {
-  grid-area: bottom-axis;
-  display: flex;
-}
-
-.axisGridCell {
-  grid-area: axis-grid;
-  display: flex;
-}
-
+.grid,
 .axis {
   display: block;
   overflow: visible;
-  flex: 1 1 0%;
 }
 
-.axis[data-orientation='left'] {
-  text-anchor: end;
-  min-height: 0;
-}
-
-.axis[data-orientation='bottom'] {
-  min-width: 0;
+.axis[data-type='abscissa'] {
+  grid-area: bottom-axis;
   text-anchor: middle;
+}
+
+.axis[data-type='ordinate'] {
+  grid-area: axis-grid; /* `AxisLeft` aligns ticks to the outer left of its own bounding box  */
+  text-anchor: end;
+}
+
+.grid {
+  grid-area: axis-grid;
 }
 
 .tick > text {
