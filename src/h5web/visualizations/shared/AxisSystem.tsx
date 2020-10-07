@@ -1,13 +1,13 @@
-import React, { useState, useContext } from 'react';
-import { useThree, useFrame } from 'react-three-fiber';
+import React, { useContext } from 'react';
+import { useThree } from 'react-three-fiber';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
 import { GridColumns, GridRows } from '@vx/grid';
-import { useUpdateEffect } from 'react-use';
 import Html from './Html';
 import styles from './AxisSystem.module.css';
 import type { AxisOffsets, Domain } from './models';
 import { getTicksProp, getAxisScale, getTickFormatter } from './utils';
 import { AxisSystemContext } from './AxisSystemProvider';
+import { useFrameRendering } from './hooks';
 
 const AXIS_PROPS = {
   tickStroke: 'grey',
@@ -26,65 +26,55 @@ function AxisSystem(props: Props): JSX.Element {
   const { axisOffsets } = props;
 
   const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
+
   const { camera, size } = useThree();
+  const { position, zoom } = camera;
   const { width, height } = size;
 
   const abscissaScale = getAxisScale(abscissaInfo, width);
   const ordinateScale = getAxisScale(ordinateInfo, height);
 
-  // `axisDomains` are the complete domains; `visibleDomains` change with the camera
-  const [visibleDomains, setVisibleDomains] = useState<[Domain, Domain]>([
-    abscissaInfo.domain,
-    ordinateInfo.domain,
-  ]);
+  // Find visible domains from camera's zoom and position
+  const xVisibleDomain: Domain = [
+    abscissaScale.invert(-width / (2 * zoom) + position.x),
+    abscissaScale.invert(width / (2 * zoom) + position.x),
+  ];
 
-  useUpdateEffect(() => {
-    setVisibleDomains([abscissaInfo.domain, ordinateInfo.domain]);
-  }, [abscissaInfo.domain, ordinateInfo.domain]);
-
-  useFrame(() => {
-    const { position, zoom } = camera;
-
-    // Finds the visible domains from the camera FOV (zoom and position).
-    setVisibleDomains([
-      [
-        abscissaScale.invert(-width / (2 * zoom) + position.x),
-        abscissaScale.invert(width / (2 * zoom) + position.x),
-      ],
-      [
-        ordinateScale.invert(-height / (2 * zoom) + position.y),
-        ordinateScale.invert(height / (2 * zoom) + position.y),
-      ],
-    ]);
-  });
+  const yVisibleDomain: Domain = [
+    ordinateScale.invert(-height / (2 * zoom) + position.y),
+    ordinateScale.invert(height / (2 * zoom) + position.y),
+  ];
 
   // Restrain ticks scales to visible domains
   const xTicksScale = abscissaInfo.scaleFn();
-  xTicksScale.domain(visibleDomains[0]);
+  xTicksScale.domain(xVisibleDomain);
   xTicksScale.range([0, width]);
 
   const yTicksScale = ordinateInfo.scaleFn();
-  yTicksScale.domain(visibleDomains[1]);
+  yTicksScale.domain(yVisibleDomain);
   yTicksScale.range([height, 0]);
 
+  // Re-render on every R3F frame (i.e. on every change of camera zoom/position)
+  useFrameRendering();
+
   const xTicksProp = getTicksProp(
-    visibleDomains[0],
+    xVisibleDomain,
     width,
     abscissaInfo.isIndexAxis
   );
   const yTicksProp = getTicksProp(
-    visibleDomains[1],
+    yVisibleDomain,
     height,
     ordinateInfo.isIndexAxis
   );
 
   const xTickFormat = getTickFormatter(
-    visibleDomains[0],
+    xVisibleDomain,
     width,
     abscissaInfo.scaleType
   );
   const yTickFormat = getTickFormatter(
-    visibleDomains[1],
+    yVisibleDomain,
     height,
     ordinateInfo.scaleType
   );

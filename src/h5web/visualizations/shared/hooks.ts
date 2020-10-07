@@ -1,8 +1,9 @@
 import ndarray from 'ndarray';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { isNumber } from 'lodash-es';
 import { assign } from 'ndarray-ops';
 import { createMemo } from 'react-use';
+import { useFrame } from 'react-three-fiber';
 import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
 import { findDomain, getSupportedDomain } from './utils';
@@ -43,3 +44,11 @@ export function useMappedArray<T>(
 export const useDataDomain = createMemo(findDomain);
 
 export const useSupportedDomain = createMemo(getSupportedDomain);
+
+export function useFrameRendering(): void {
+  const [, setNum] = useState();
+
+  useFrame(() => {
+    setNum(Math.random());
+  });
+}
