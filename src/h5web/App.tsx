@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
 import Explorer from './explorer/Explorer';
-import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
-import type { HDF5Link, HDF5Dataset } from './providers/models';
+import type { HDF5Link } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
-import { isDataset } from './providers/utils';
 import { useEntity } from './providers/hooks';
 import type { TreeNode } from './explorer/models';
 import BreadcrumbsBar from './BreadcrumbsBar';
+import Visualizer from './Visualizer';
 
 function App(): JSX.Element {
-  const [selectedDataset, setSelectedDataset] = useState<HDF5Dataset>();
   const [selectedNode, setSelectedNode] = useState<TreeNode<HDF5Link>>();
 
   const [isExplorerOpen, setExplorerOpen] = useState(true);
@@ -20,14 +18,6 @@ function App(): JSX.Element {
 
   const selectedLink = selectedNode?.data;
   const selectedEntity = useEntity(selectedLink);
-
-  useEffect(() => {
-    if (selectedEntity && isDataset(selectedEntity)) {
-      setSelectedDataset(selectedEntity);
-    } else {
-      setSelectedDataset(undefined);
-    }
-  }, [selectedEntity]);
 
   return (
     <div className={styles.app}>
@@ -60,7 +50,7 @@ function App(): JSX.Element {
               entity={selectedEntity}
             />
           ) : (
-            <DatasetVisualizer dataset={selectedDataset} />
+            <Visualizer entity={selectedEntity} />
           )}
         </ReflexElement>
       </ReflexContainer>
