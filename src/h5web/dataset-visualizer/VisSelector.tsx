@@ -6,7 +6,7 @@ import { VIS_DEFS } from '../visualizations';
 interface Props {
   activeVis: Vis;
   choices: Vis[];
-  onChange: (vis: Vis) => void;
+  onChange?: (vis: Vis) => void;
 }
 
 function VisSelector(props: Props): JSX.Element {
@@ -16,6 +16,7 @@ function VisSelector(props: Props): JSX.Element {
     <div className={styles.selector} role="tablist" aria-label="Visualization">
       {choices.map((vis) => {
         const { Icon } = VIS_DEFS[vis];
+        const onClick = onChange ? () => onChange(vis) : undefined;
         return (
           <button
             key={vis}
@@ -23,9 +24,7 @@ function VisSelector(props: Props): JSX.Element {
             type="button"
             role="tab"
             aria-selected={vis === activeVis}
-            onClick={() => {
-              onChange(vis);
-            }}
+            onClick={onClick}
           >
             <Icon className={styles.icon} />
             {vis}
