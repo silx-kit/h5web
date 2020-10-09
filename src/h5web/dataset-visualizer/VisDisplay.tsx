@@ -1,4 +1,5 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext, useEffect } from 'react';
+import { useSetState, useTimeoutFn } from 'react-use';
 import type { Vis, DimensionMapping } from './models';
 import type {
   HDF5Dataset,
@@ -9,25 +10,40 @@ import { VIS_DEFS } from '../visualizations';
 import DimensionMapper from './mapper/DimensionMapper';
 import Profiler from '../Profiler';
 import Loader from './Loader';
+import { ProviderContext } from '../providers/context';
 
 interface Props {
   activeVis: Vis;
   dataset: HDF5Dataset;
-  value: HDF5Value;
-  loading: boolean;
+}
+
+interface State {
   mapperState: DimensionMapping;
-  onMapperStateChange(mapperState: DimensionMapping): void;
+  value?: HDF5Value;
+  loading?: boolean;
 }
 
 function VisDisplay(props: Props): ReactElement {
-  const {
-    activeVis,
-    dataset,
-    value,
-    loading,
-    mapperState,
-    onMapperStateChange,
-  } = props;
+  const { activeVis, dataset } = props;
+
+  const [{ value, loading, mapperState }, mergeState] = useSetState<State>({
+    mapperState: VIS_DEFS[activeVis].defaultMappingState(dataset),
+  });
+
+  const { getValue } = useContext(ProviderContext);
+  const [scheduleLoadingFlag, cancelLoadingFlag] = useTimeoutFn(() => {
+    mergeState({ loading: true });
+  }, 50);
+
+  // Fetch dataset value asynchronously
+  useEffect(() => {
+    scheduleLoadingFlag(); // in case retrieving value takes too long (e.g. initial fetch of `SilxProvider`)
+
+    getValue(dataset.id).then((val) => {
+      cancelLoadingFlag();
+      mergeState({ value: val, loading: false });
+    });
+  }, [cancelLoadingFlag, dataset, getValue, mergeState, scheduleLoadingFlag]);
 
   const { Component: VisComponent } = VIS_DEFS[activeVis];
 
@@ -37,7 +53,9 @@ function VisDisplay(props: Props): ReactElement {
         activeVis={activeVis}
         rawDims={(dataset.shape as HDF5SimpleShape).dims}
         mapperState={mapperState}
-        onChange={onMapperStateChange}
+        onChange={(nextMapperState) => {
+          mergeState({ mapperState: nextMapperState });
+        }}
       />
       {loading ? (
         <Loader message="Loading dataset" />
