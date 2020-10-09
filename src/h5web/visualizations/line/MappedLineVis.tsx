@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
-import type { HDF5Dataset, HDF5Value } from '../../providers/models';
+import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
 import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
@@ -8,12 +8,12 @@ import { useLineConfig } from './config';
 
 interface Props {
   value: HDF5Value;
-  dataset: HDF5Dataset;
+  rawDims: number[];
   mapperState: DimensionMapping;
 }
 
 function MappedLineVis(props: Props): ReactElement {
-  const { value, dataset, mapperState } = props;
+  const { value, rawDims, mapperState } = props;
   assertArray<number>(value);
 
   const {
@@ -24,7 +24,7 @@ function MappedLineVis(props: Props): ReactElement {
     disableAutoScale,
   } = useLineConfig();
 
-  const baseArray = useBaseArray(dataset, value);
+  const baseArray = useBaseArray(value, rawDims);
   const dataArray = useMappedArray(baseArray, mapperState);
 
   // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)

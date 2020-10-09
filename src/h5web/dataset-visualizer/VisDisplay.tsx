@@ -46,12 +46,13 @@ function VisDisplay(props: Props): ReactElement {
   }, [cancelLoadingFlag, dataset, getValue, mergeState, scheduleLoadingFlag]);
 
   const { Component: VisComponent } = VIS_DEFS[activeVis];
+  const rawDims = (dataset.shape as HDF5SimpleShape).dims;
 
   return (
     <>
       <DimensionMapper
         activeVis={activeVis}
-        rawDims={(dataset.shape as HDF5SimpleShape).dims}
+        rawDims={rawDims}
         mapperState={mapperState}
         onChange={(nextMapperState) => {
           mergeState({ mapperState: nextMapperState });
@@ -64,7 +65,7 @@ function VisDisplay(props: Props): ReactElement {
           <Profiler id={activeVis}>
             <VisComponent
               value={value}
-              dataset={dataset}
+              rawDims={rawDims}
               mapperState={mapperState}
             />
           </Profiler>

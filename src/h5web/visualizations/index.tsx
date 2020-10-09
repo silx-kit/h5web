@@ -27,7 +27,7 @@ interface VisDef {
   Toolbar?: ElementType<{}>;
   Component: ElementType<{
     value: HDF5Value;
-    dataset: HDF5Dataset;
+    rawDims: number[];
     mapperState: DimensionMapping;
   }>;
   supportsDataset(dataset: HDF5Dataset): boolean;

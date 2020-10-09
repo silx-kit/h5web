@@ -1,21 +1,21 @@
 import React, { ReactElement } from 'react';
-import type { HDF5Dataset, HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
 import MatrixVis from './MatrixVis';
 import { assertArray } from '../shared/utils';
 import { useMappedArray, useBaseArray } from '../shared/hooks';
+import type { HDF5Value } from '../../providers/models';
 
 interface Props {
   value: HDF5Value;
-  dataset: HDF5Dataset;
+  rawDims: number[];
   mapperState: DimensionMapping;
 }
 
 function MappedMatrixVis(props: Props): ReactElement {
-  const { value, dataset, mapperState } = props;
+  const { value, rawDims, mapperState } = props;
   assertArray<number | string>(value);
 
-  const baseArray = useBaseArray(dataset, value);
+  const baseArray = useBaseArray(value, rawDims);
   const dataArray = useMappedArray(baseArray, mapperState);
   return <MatrixVis dataArray={dataArray} />;
 }

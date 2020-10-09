@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import { usePrevious } from 'react-use';
-import type { HDF5Dataset, HDF5Value } from '../../providers/models';
+import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
 import HeatmapVis from './HeatmapVis';
 import { assertArray } from '../shared/utils';
@@ -9,12 +9,12 @@ import { useHeatmapConfig } from './config';
 
 interface Props {
   value: HDF5Value;
-  dataset: HDF5Dataset;
+  rawDims: number[];
   mapperState: DimensionMapping;
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {
-  const { value, dataset, mapperState } = props;
+  const { value, rawDims, mapperState } = props;
   assertArray<number>(value);
 
   const {
@@ -28,7 +28,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
     disableAutoScale,
   } = useHeatmapConfig();
 
-  const baseArray = useBaseArray(dataset, value);
+  const baseArray = useBaseArray(value, rawDims);
   const dataArray = useMappedArray(baseArray, mapperState);
   const dataDomain = useDataDomain(
     (autoScale ? dataArray.data : baseArray.data) as number[]
