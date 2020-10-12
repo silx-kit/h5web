@@ -101,10 +101,8 @@ const dataArray = ndarray<number>(values, dataset.dims);
 The library exposes a number of utility functions, which are documented below, as well as all the enums and types used by these utility functions.
 If you use only the top-level visualization components, the only utilities you need are `findDomain` and/or `useDataDomain`.
 
-- **`findDomain(data: number[]): Domain | undefined`** - Find the min and max values contained in a flat array of numbers. Uses [`extent`](https://github.com/d3/d3-array#extent) from `d3-array`.
-- **`useDataDomain(...args): Domain | undefined`** - Memoised React hook wrapper of `findDomain`.
-- **`getSupportedDomain(domain: Domain | undefined, scaleType: ScaleType, values: number[]): Domain | undefined`** - Check that a domain is supported by a given scale type. If the domain is not supported, find a domain that is (with `findDomain`).
-- **`useSupportedDomain(...args): Domain | undefined`** - Memoised React hook wrapper of `getSupportedDomain`.
+- **`getDataDomain(values: number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined`** - Find the min and max values contained in a flat array of numbers. If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
+- **`useDataDomain(...args): Domain | undefined`** - Memoised React hook wrapper of `getDataDomain`.
 - **`extendDomain(bareDomain: Domain, extendFactor: number, isLog?: boolean): Domain`** - Extend a domain by a given factor.
 - **`computeVisSize(availableSize: Size, aspectRatio?: number): Size | undefined`** - Compute the optimal size for a visualization to fill the available space given an optional aspect ratio.
 - **`getDims(dataArray: DataArray): Dims`** - Get the dimensions of a `ndarray` as a `{ rows, cols }` object.

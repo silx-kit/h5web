@@ -2,17 +2,18 @@ import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import FillHeight from '../../.storybook/decorators/FillHeight';
-import { findDomain } from '../h5web/visualizations/shared/utils';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';
 import { getMockedDataset } from '../h5web/providers/mock/utils';
+import { getDataDomain } from '../packages/lib';
 
 const oneDimDataset = getMockedDataset<number[]>('/nD/oneD');
 const values = oneDimDataset.value;
 
 const dataArray = ndarray<number>(values, oneDimDataset.dims);
-const domain = findDomain(values);
+const domain = getDataDomain(values);
+const logSafeDomain = getDataDomain(values, ScaleType.Log);
 
 const Template: Story<LineVisProps> = (args): ReactElement => (
   <LineVis {...args} />
@@ -52,7 +53,7 @@ export const LogScale = Template.bind({});
 
 LogScale.args = {
   dataArray,
-  domain,
+  domain: logSafeDomain,
   scaleType: ScaleType.Log,
 };
 

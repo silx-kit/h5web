@@ -10,15 +10,11 @@ export { default as ColorBar } from '../h5web/visualizations/heatmap/ColorBar';
 // Utilities
 export {
   computeVisSize,
-  findDomain,
-  getSupportedDomain,
+  getDataDomain,
   extendDomain,
 } from '../h5web/visualizations/shared/utils';
 
-export {
-  useDataDomain,
-  useSupportedDomain,
-} from '../h5web/visualizations/shared/hooks';
+export { useDataDomain } from '../h5web/visualizations/shared/hooks';
 
 export {
   getDims,

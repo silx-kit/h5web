@@ -6,17 +6,18 @@ import FillHeight from '../../.storybook/decorators/FillHeight';
 import HeatmapVis, {
   HeatmapVisProps,
 } from '../h5web/visualizations/heatmap/HeatmapVis';
-import { findDomain } from '../h5web/visualizations/shared/utils';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import { INTERPOLATORS } from '../h5web/visualizations/heatmap/interpolators';
 import { getMockedDataset } from '../h5web/providers/mock/utils';
+import { getDataDomain } from '../packages/lib';
 
 // A 2D dataset
 const dataset = getMockedDataset<number[][]>('/nD/twoD');
 const values = dataset.value.flat(Infinity) as number[];
 
 const dataArray = ndarray<number>(values, dataset.dims).transpose(1, 0); // makes for a nicer-looking heatmap
-const domain = findDomain(values);
+const domain = getDataDomain(values);
+const logSafeDomain = getDataDomain(values, ScaleType.Log);
 
 const Template: Story<HeatmapVisProps> = (args): ReactElement => (
   <HeatmapVis {...args} />
@@ -48,7 +49,7 @@ export const LogScale = Template.bind({});
 
 LogScale.args = {
   dataArray,
-  domain,
+  domain: logSafeDomain,
   scaleType: ScaleType.Log,
 };
 

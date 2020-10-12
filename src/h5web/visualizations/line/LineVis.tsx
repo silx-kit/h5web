@@ -9,7 +9,6 @@ import TooltipMesh from '../shared/TooltipMesh';
 import { extendDomain } from '../shared/utils';
 import { ScaleType, Domain } from '../shared/models';
 import { CurveType } from './models';
-import { useSupportedDomain } from '../shared/hooks';
 
 const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -30,15 +29,12 @@ function LineVis(props: Props): ReactElement {
     scaleType = ScaleType.Linear,
   } = props;
 
-  const values = dataArray.data as number[];
-  const supportedDomain = useSupportedDomain(domain, scaleType, values);
-
   const indexDomain = extendDomain([0, dataArray.size - 1], 0.01);
   const dataDomain = useMemo(() => {
-    return supportedDomain
-      ? extendDomain(supportedDomain, 0.05, scaleType === ScaleType.Log)
+    return domain
+      ? extendDomain(domain, 0.05, scaleType === ScaleType.Log)
       : DEFAULT_DOMAIN;
-  }, [scaleType, supportedDomain]);
+  }, [scaleType, domain]);
 
   return (
     <div className={styles.root}>
@@ -55,7 +51,12 @@ function LineVis(props: Props): ReactElement {
           guides="vertical"
         />
         <PanZoomMesh />
-        {dataDomain && <DataCurve curveType={curveType} values={values} />}
+        {dataDomain && (
+          <DataCurve
+            curveType={curveType}
+            values={dataArray.data as number[]}
+          />
+        )}
       </VisCanvas>
     </div>
   );
