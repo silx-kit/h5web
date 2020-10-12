@@ -33,7 +33,8 @@ function MappedLineVis(props: Props): ReactElement {
   }, [baseArray.shape, disableAutoScale]);
 
   const dataDomain = useDataDomain(
-    (autoScale ? dataArray.data : baseArray.data) as number[]
+    (autoScale ? dataArray.data : baseArray.data) as number[],
+    scaleType
   );
 
   return (

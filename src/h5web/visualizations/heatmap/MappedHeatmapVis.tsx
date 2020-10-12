@@ -31,7 +31,8 @@ function MappedHeatmapVis(props: Props): ReactElement {
   const baseArray = useBaseArray(dataset, value);
   const dataArray = useMappedArray(baseArray, mapperState);
   const dataDomain = useDataDomain(
-    (autoScale ? dataArray.data : baseArray.data) as number[]
+    (autoScale ? dataArray.data : baseArray.data) as number[],
+    scaleType
   );
   const prevDataDomain = usePrevious(dataDomain);
 

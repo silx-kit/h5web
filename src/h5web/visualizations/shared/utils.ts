@@ -1,5 +1,5 @@
 import { scaleLinear } from 'd3-scale';
-import { extent, tickStep } from 'd3-array';
+import { tickStep } from 'd3-array';
 import { format } from 'd3-format';
 import {
   Size,
@@ -45,33 +45,37 @@ export function computeVisSize(
     : { width, height: width / aspectRatio };
 }
 
-export function findDomain(data: number[]): Domain | undefined {
-  const domain = extent(data);
-  return domain[0] !== undefined && domain[1] !== undefined
-    ? domain
-    : undefined;
-}
-
-export function getSupportedDomain(
-  domain: Domain | undefined,
-  scaleType: ScaleType,
-  values: number[]
+export function getDataDomain(
+  values: number[],
+  scaleType: ScaleType = ScaleType.Linear
 ): Domain | undefined {
-  if (!domain) {
+  if (values.length === 0) {
     return undefined;
   }
 
-  // If scale is not log or domain does not cross zero, domain is supported
-  if (scaleType !== ScaleType.Log || domain[0] * domain[1] > 0) {
-    return domain;
+  const [min, max, positiveMin] = values.reduce<
+    [number, number, number | undefined]
+  >(
+    (acc, val) => {
+      const [accMin, accMax, accPositiveMin] = acc;
+      return [
+        accMin > val ? val : accMin,
+        accMax < val ? val : accMax,
+        val > 0 && (accPositiveMin === undefined || accPositiveMin > val)
+          ? val
+          : accPositiveMin,
+      ];
+    },
+    [values[0], values[0], undefined]
+  );
+
+  if (scaleType !== ScaleType.Log || min * max > 0) {
+    return [min, max];
   }
 
-  // Find domain again but only amongst positive values
-  // Note that [-X, 0] is not supported at all and will return `undefined`
-  const supportedDomain = findDomain(values.filter((x) => x > 0));
-
-  // Clamp domain minimum to the first positive value
-  return supportedDomain && [supportedDomain[0], domain[1]];
+  // Clamp domain minimum to first positive value,
+  // or return `undefined` if domain is not unsupported: `[-x, 0]`
+  return positiveMin !== undefined ? [positiveMin, max] : undefined;
 }
 
 export function extendDomain(

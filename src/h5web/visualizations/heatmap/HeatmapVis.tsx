@@ -8,7 +8,6 @@ import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
-import { useSupportedDomain } from '../shared/hooks';
 import { Domain, ScaleType } from '../shared/models';
 import type { ColorMap } from './models';
 
@@ -33,9 +32,6 @@ function HeatmapVis(props: Props): JSX.Element {
     showLoader = true,
   } = props;
 
-  const values = dataArray.data as number[];
-  const supportedDomain = useSupportedDomain(domain, scaleType, values);
-
   const { rows, cols } = getDims(dataArray);
   const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
 
@@ -56,24 +52,20 @@ function HeatmapVis(props: Props): JSX.Element {
           guides="both"
         />
         <PanZoomMesh />
-        {supportedDomain && (
+        {domain && (
           <Mesh
             rows={rows}
             cols={cols}
-            values={values}
-            domain={supportedDomain}
+            values={dataArray.data as number[]}
+            domain={domain}
             scaleType={scaleType}
             colorMap={colorMap}
             showLoader={showLoader}
           />
         )}
       </VisCanvas>
-      {supportedDomain && (
-        <ColorBar
-          domain={supportedDomain}
-          scaleType={scaleType}
-          colorMap={colorMap}
-        />
+      {domain && (
+        <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
       )}
     </div>
   );
