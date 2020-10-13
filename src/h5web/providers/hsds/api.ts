@@ -26,10 +26,9 @@ import { isReachable } from '../utils';
 import type { ProviderAPI } from '../context';
 
 export class HsdsApi implements ProviderAPI {
+  public readonly domain: string;
   private readonly client: AxiosInstance;
-  private readonly domain: string;
 
-  private metadata?: HDF5Metadata;
   private groups: Record<HDF5Id, HDF5Group> = {};
   private datasets: Record<HDF5Id, HDF5Dataset> = {};
   private datatypes: Record<HDF5Id, HDF5Datatype> = {};
@@ -49,9 +48,27 @@ export class HsdsApi implements ProviderAPI {
     });
   }
 
-  /* Basic API methods */
-  public getDomain(): string {
-    return this.domain;
+  public async getMetadata(): Promise<HDF5Metadata> {
+    const rootId = await this.fetchRoot();
+    await this.processGroup(rootId);
+
+    return {
+      root: rootId,
+      groups: this.groups,
+      datasets: this.datasets,
+      datatypes: this.datatypes,
+    };
+  }
+
+  public async getValue(id: HDF5Id): Promise<HDF5Value> {
+    if (id in this.values) {
+      return this.values[id];
+    }
+
+    const value = await this.fetchValue(id);
+
+    this.values[id] = value;
+    return this.values[id];
   }
 
   private async fetchRoot(): Promise<HDF5Id> {
@@ -159,25 +176,6 @@ export class HsdsApi implements ProviderAPI {
     };
   }
 
-  /* Others */
-  public async getMetadata(): Promise<HDF5Metadata> {
-    if (this.metadata) {
-      return this.metadata;
-    }
-
-    const rootId = await this.fetchRoot();
-    await this.processGroup(rootId);
-
-    this.metadata = {
-      root: rootId,
-      groups: this.groups,
-      datasets: this.datasets,
-      datatypes: this.datatypes,
-    };
-
-    return this.metadata;
-  }
-
   private async resolveLink(link: HDF5HardLink | HDF5RootLink): Promise<void> {
     const { collection, id } = link;
 
@@ -192,16 +190,5 @@ export class HsdsApi implements ProviderAPI {
     }
 
     throw new Error('Unknown collection !');
-  }
-
-  public async getValue(id: HDF5Id): Promise<HDF5Value> {
-    if (id in this.values) {
-      return this.values[id];
-    }
-
-    const value = await this.fetchValue(id);
-
-    this.values[id] = value;
-    return this.values[id];
   }
 }

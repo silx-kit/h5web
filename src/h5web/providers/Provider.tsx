@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { useAsync } from 'react-use';
 import { ProviderAPI, ProviderContext } from './context';
 
 interface Props {
@@ -9,15 +10,18 @@ interface Props {
 function Provider(props: Props): JSX.Element {
   const { api, children } = props;
 
-  if (!api) {
+  // Wait until metadata is fetched before rendering app
+  const { value: metadata } = useAsync(async () => api?.getMetadata(), [api]);
+
+  if (!api || !metadata) {
     return <></>;
   }
 
   return (
     <ProviderContext.Provider
       value={{
-        getDomain: api.getDomain.bind(api),
-        getMetadata: api.getMetadata.bind(api),
+        domain: api.domain,
+        metadata,
         getValue: api.getValue.bind(api),
       }}
     >
