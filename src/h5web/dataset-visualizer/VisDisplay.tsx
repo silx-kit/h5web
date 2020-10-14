@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect } from 'react';
-import { useSetState, useTimeoutFn } from 'react-use';
+import { useSetState, useTimeoutFn, usePromise } from 'react-use';
 import type { Vis, DimensionMapping } from './models';
 import type {
   HDF5Dataset,
@@ -31,6 +31,7 @@ function VisDisplay(props: Props): ReactElement {
   });
 
   const { getValue } = useContext(ProviderContext);
+  const ifMounted = usePromise();
   const [scheduleLoadingFlag, cancelLoadingFlag] = useTimeoutFn(() => {
     mergeState({ loading: true });
   }, 50);
@@ -39,11 +40,18 @@ function VisDisplay(props: Props): ReactElement {
   useEffect(() => {
     scheduleLoadingFlag(); // in case retrieving value takes too long (e.g. initial fetch of `SilxProvider`)
 
-    getValue(dataset.id).then((val) => {
+    ifMounted(getValue(dataset.id)).then((val) => {
       cancelLoadingFlag();
       mergeState({ value: val, loading: false });
     });
-  }, [cancelLoadingFlag, dataset, getValue, mergeState, scheduleLoadingFlag]);
+  }, [
+    cancelLoadingFlag,
+    dataset,
+    getValue,
+    mergeState,
+    ifMounted,
+    scheduleLoadingFlag,
+  ]);
 
   const { Component: VisComponent } = VIS_DEFS[activeVis];
 

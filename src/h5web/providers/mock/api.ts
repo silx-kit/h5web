@@ -27,11 +27,7 @@ function addMissingProperties<T extends HDF5Entity>(
 }
 
 export class MockApi implements ProviderAPI {
-  constructor(private readonly domain: string) {}
-
-  public getDomain(): string {
-    return this.domain;
-  }
+  constructor(public readonly domain: string) {}
 
   public async getMetadata(): Promise<HDF5Metadata> {
     const typedMockData = mockData as MockHDF5Metadata;

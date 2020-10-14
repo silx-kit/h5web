@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, memo } from 'react';
+import React, { ReactElement, useState } from 'react';
 import type { HDF5Dataset } from '../providers/models';
 import styles from '../Visualizer.module.css';
 import VisSelector from './VisSelector';
@@ -44,5 +44,4 @@ function DatasetVisualizer(props: Props): ReactElement {
   );
 }
 
-// Optimise consecutive renders when selecting a link in the explorer
-export default memo(DatasetVisualizer);
+export default DatasetVisualizer;

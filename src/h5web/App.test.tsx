@@ -43,7 +43,7 @@ test('switch between "display" and "inspect" modes', async () => {
     queryByText,
   } = renderApp();
 
-  const inspectBtn = getByRole('tab', { name: 'Inspect' });
+  const inspectBtn = await findByRole('tab', { name: 'Inspect' });
   const displayBtn = getByRole('tab', { name: 'Display' });
 
   // Switch to "inspect" mode
@@ -127,12 +127,8 @@ test('navigate groups in explorer', async () => {
   fireEvent.click(groupBtn);
 
   expect(queryByRole('treeitem', { name: '1_cormap' })).not.toBeInTheDocument();
-
-  // `waitFor` avoids warning due to async work occurring after completion of test
-  await waitFor(() => {
-    expect(groupBtn).toHaveAttribute('aria-selected', 'true');
-    expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
-  });
+  expect(groupBtn).toHaveAttribute('aria-selected', 'true');
+  expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
 });
 
 test('visualise a scalar dataset', async () => {
@@ -175,10 +171,13 @@ test('switch visualisations', async () => {
   expect(matrixTab).toBeVisible();
   expect(matrixTab).toHaveAttribute('aria-selected', 'false');
 
-  // Switching visualisations
+  // Switch to Matrix visualisation
   fireEvent.click(matrixTab);
-  expect(matrixTab).toHaveAttribute('aria-selected', 'true');
-  expect(lineTab).toHaveAttribute('aria-selected', 'false');
+
+  await waitFor(() => {
+    expect(matrixTab).toHaveAttribute('aria-selected', 'true');
+    expect(lineTab).toHaveAttribute('aria-selected', 'false');
+  });
 });
 
 test('inspect a dataset', async () => {
@@ -233,10 +232,13 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
 
   // Ensure that the swap from [0, 'x'] to ['x', 0] works
   fireEvent.click(xDimsButtons[0]);
-  expect(xDimsButtons[0]).toBeChecked();
-  expect(xDimsButtons[1]).not.toBeChecked();
-  const D1Slider = getByRole('slider');
-  expect(D1Slider).toHaveAttribute('aria-valueNow', '0');
+
+  await waitFor(() => {
+    expect(xDimsButtons[0]).toBeChecked();
+    expect(xDimsButtons[1]).not.toBeChecked();
+    const D1Slider = getByRole('slider');
+    expect(D1Slider).toHaveAttribute('aria-valueNow', '0');
+  });
 });
 
 test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
@@ -274,7 +276,12 @@ test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap',
 });
 
 test('display one dimension slider and mappings for X and Y axes when visualizing 3D dataset as Matrix', async () => {
-  const { getByRole, getByLabelText, findByRole } = renderApp();
+  const {
+    getByRole,
+    getByLabelText,
+    findByRole,
+    findByLabelText,
+  } = renderApp();
 
   // Select the 3D dataset nD/threeD
   fireEvent.click(await findByRole('treeitem', { name: 'nD' }));
@@ -284,7 +291,7 @@ test('display one dimension slider and mappings for X and Y axes when visualizin
   fireEvent.click(await findByRole('tab', { name: 'Matrix' }));
 
   // Ensure that the dimension mapper is visible for X and Y
-  const xRadioGroup = getByLabelText('Dimension as x axis');
+  const xRadioGroup = await findByLabelText('Dimension as x axis');
   expect(xRadioGroup).toBeVisible();
   const xDimsButtons = getAllByRoleInElement(xRadioGroup, 'radio');
   expect(xDimsButtons).toHaveLength(3);

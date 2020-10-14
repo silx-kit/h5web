@@ -5,32 +5,23 @@ import { HDF5Id, HDF5Value, HDF5Metadata, HDF5Collection } from '../models';
 import type { SilxValuesResponse, SilxMetadataResponse } from './models';
 
 export class SilxApi implements ProviderAPI {
+  public readonly domain: string;
   private readonly client: AxiosInstance;
-
-  private metadata?: HDF5Metadata;
   private values?: Record<string, HDF5Value>;
 
-  constructor(private readonly domain: string) {
+  constructor(domain: string) {
+    this.domain = domain;
     this.client = axios.create({
       baseURL: `https://www.silx.org/pub/h5web/${this.domain}`,
     });
   }
 
-  public getDomain(): string {
-    return this.domain;
-  }
-
   public async getMetadata(): Promise<HDF5Metadata> {
-    if (this.metadata) {
-      return this.metadata;
-    }
-
     const { data } = await this.client.get<SilxMetadataResponse>(
       '/metadata.json'
     );
 
-    this.metadata = this.transformMetadata(data);
-    return this.metadata;
+    return this.transformMetadata(data);
   }
 
   public async getValue(id: HDF5Id): Promise<HDF5Value> {

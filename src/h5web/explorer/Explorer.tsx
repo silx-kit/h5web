@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { FiFileText } from 'react-icons/fi';
 import type { HDF5Link } from '../providers/models';
 import type { TreeNode, ExpandedNodes } from './models';
 import TreeView from './TreeView';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
-import { useDomain, useMetadataTree } from '../providers/hooks';
 import { getNodesOnPath } from './utils';
+import { buildTree } from '../providers/utils';
+import { ProviderContext } from '../providers/context';
 
 const DEFAULT_PATH: number[] = JSON.parse(
   process.env.REACT_APP_DEFAULT_PATH || '[]'
@@ -20,8 +21,8 @@ interface Props {
 function Explorer(props: Props): JSX.Element {
   const { onSelect, selectedNode } = props;
 
-  const domain = useDomain();
-  const tree = useMetadataTree();
+  const { domain, metadata } = useContext(ProviderContext);
+  const tree = useMemo(() => buildTree(metadata, domain), [domain, metadata]);
 
   const [expandedNodes, setExpandedNodes] = useState<ExpandedNodes>({});
 
