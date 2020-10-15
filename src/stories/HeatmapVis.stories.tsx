@@ -2,6 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import { useInterval } from 'react-use';
+import { assign } from 'ndarray-ops';
 import FillHeight from '../../.storybook/decorators/FillHeight';
 import HeatmapVis, {
   HeatmapVisProps,
@@ -15,7 +16,10 @@ import { getDataDomain } from '../packages/lib';
 const dataset = getMockedDataset<number[][]>('/nD/twoD');
 const values = dataset.value.flat(Infinity) as number[];
 
-const dataArray = ndarray<number>(values, dataset.dims).transpose(1, 0); // makes for a nicer-looking heatmap
+const transposedArray = ndarray<number>(values, dataset.dims).transpose(1, 0); // makes for a nicer-looking heatmap
+// Work with the real array and not the transposed view
+const dataArray = ndarray<number>([], transposedArray.shape);
+assign(dataArray, transposedArray);
 const domain = getDataDomain(values);
 const logSafeDomain = getDataDomain(values, ScaleType.Log);
 
@@ -87,9 +91,7 @@ export const LiveDataWithoutLoader: Story<HeatmapVisProps> = (
       .slice(0)
       .sort(() => 0.5 - Math.random());
 
-    setShuffledArray(
-      ndarray<number>(shuffledValues, dataset.dims).transpose(1, 0)
-    );
+    setShuffledArray(ndarray<number>(shuffledValues, dataArray.shape));
   }, 5000);
 
   return <HeatmapVis {...args} dataArray={shuffledArray} />;
