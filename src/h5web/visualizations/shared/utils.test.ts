@@ -1,5 +1,5 @@
 import { tickStep } from 'd3-array';
-import { computeVisSize, getIntegerTicks, getDataDomain } from './utils';
+import { computeVisSize, getIntegerTicks, getDomain } from './utils';
 import { ScaleType } from './models';
 
 describe('Shared visualization utilities', () => {
@@ -55,31 +55,31 @@ describe('Shared visualization utilities', () => {
     });
   });
 
-  describe('getDataDomain', () => {
+  describe('getDomain', () => {
     it('should return min and max values of data array', () => {
       const data = [2, 0, 10, 5, 2, -1];
-      const domain = getDataDomain(data);
+      const domain = getDomain(data);
       expect(domain).toEqual([-1, 10]);
     });
 
     it('should return `undefined` if data is empty', () => {
-      const domain = getDataDomain([]);
+      const domain = getDomain([]);
       expect(domain).toBeUndefined();
     });
 
     describe('with log scale', () => {
       it('should support negative domain', () => {
-        const domain = getDataDomain([-2, -10, -5, -2, -1], ScaleType.Log);
+        const domain = getDomain([-2, -10, -5, -2, -1], ScaleType.Log);
         expect(domain).toEqual([-10, -1]);
       });
 
       it('should clamp domain min to first positive value when domain crosses zero', () => {
-        const domain = getDataDomain([2, 0, 10, 5, 2, -1], ScaleType.Log);
+        const domain = getDomain([2, 0, 10, 5, 2, -1], ScaleType.Log);
         expect(domain).toEqual([2, 10]);
       });
 
       it('should return `undefined` if domain is not supported', () => {
-        const domain = getDataDomain([-2, 0, -10, -5, -2, -1], ScaleType.Log);
+        const domain = getDomain([-2, 0, -10, -5, -2, -1], ScaleType.Log);
         expect(domain).toBeUndefined();
       });
     });

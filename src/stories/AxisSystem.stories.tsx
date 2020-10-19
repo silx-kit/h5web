@@ -15,27 +15,27 @@ const Template: Story<VisCanvasProps> = (args): ReactElement => (
 export const IndexDomains = Template.bind({});
 
 IndexDomains.args = {
-  abscissaConfig: { indexDomain: [0, 3], showGrid: true },
-  ordinateConfig: { indexDomain: [50, 100], showGrid: true },
+  abscissaConfig: { domain: [0, 3], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { domain: [50, 100], showGrid: true, isIndexAxis: true },
 };
 
-export const DataDomains = Template.bind({});
+export const ArbitraryDomains = Template.bind({});
 
-DataDomains.args = {
-  abscissaConfig: { dataDomain: [0, 3], showGrid: true },
-  ordinateConfig: { dataDomain: [50, 100], showGrid: true },
+ArbitraryDomains.args = {
+  abscissaConfig: { domain: [0, 3], showGrid: true },
+  ordinateConfig: { domain: [50, 100], showGrid: true },
 };
 
 export const LogScales = Template.bind({});
 
 LogScales.args = {
   abscissaConfig: {
-    dataDomain: [1, 10],
+    domain: [1, 10],
     showGrid: true,
     scaleType: ScaleType.Log,
   },
   ordinateConfig: {
-    dataDomain: [-10, 10],
+    domain: [-10, 10],
     showGrid: true,
     scaleType: ScaleType.SymLog,
   },
@@ -44,23 +44,23 @@ LogScales.args = {
 export const AspectRatio = Template.bind({});
 
 AspectRatio.args = {
-  abscissaConfig: { indexDomain: [0, 10], showGrid: true },
-  ordinateConfig: { indexDomain: [0, 2], showGrid: true },
+  abscissaConfig: { domain: [0, 10], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { domain: [0, 2], showGrid: true, isIndexAxis: true },
   aspectRatio: 10 / 2,
 };
 
 export const NoGrid = Template.bind({});
 
 NoGrid.args = {
-  abscissaConfig: { indexDomain: [-5, 20], showGrid: false },
-  ordinateConfig: { dataDomain: [0, 2], showGrid: false },
+  abscissaConfig: { domain: [-5, 20], showGrid: false, isIndexAxis: true },
+  ordinateConfig: { domain: [0, 2], showGrid: false },
 };
 
 export const InheritedStyles = Template.bind({});
 
 InheritedStyles.args = {
-  abscissaConfig: { indexDomain: [0, 50], showGrid: true },
-  ordinateConfig: { indexDomain: [0, 3], showGrid: true },
+  abscissaConfig: { domain: [0, 50], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { domain: [0, 3], showGrid: true, isIndexAxis: true },
 };
 
 InheritedStyles.decorators = [

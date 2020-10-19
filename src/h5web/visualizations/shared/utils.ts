@@ -1,15 +1,7 @@
-import { scaleLinear } from 'd3-scale';
-import { tickStep } from 'd3-array';
+import { scaleLinear, scaleThreshold, ScaleThreshold } from 'd3-scale';
+import { tickStep, range } from 'd3-array';
 import { format } from 'd3-format';
-import {
-  Size,
-  Domain,
-  AxisScale,
-  AxisConfig,
-  AxisInfo,
-  IndexAxisConfig,
-  ScaleType,
-} from './models';
+import { Size, Domain, AxisScale, AxisInfo, ScaleType } from './models';
 
 const TICK_FORMAT = format('0');
 
@@ -45,7 +37,7 @@ export function computeVisSize(
     : { width, height: width / aspectRatio };
 }
 
-export function getDataDomain(
+export function getDomain(
   values: number[],
   scaleType: ScaleType = ScaleType.Linear
 ): Domain | undefined {
@@ -93,10 +85,21 @@ export function extendDomain(
   return [min - extension, max + extension];
 }
 
-export function isIndexAxisConfig(
-  config: AxisConfig
-): config is IndexAxisConfig {
-  return 'indexDomain' in config;
+export function getValueToIndexScale(
+  values: number[],
+  switchAtMidpoints?: boolean
+): ScaleThreshold<number, number> {
+  const indices = range(values.length);
+
+  const thresholds = switchAtMidpoints
+    ? values.map((x, i) => values[i - 1] + (values[i] - values[i - 1]) / 2) // Shift the thresholds for the switch from i-1 to i to happen between values[i-1] and values[i]
+    : values; // Else, the switch from i-1 to i will happen at values[i]
+
+  const valueToIndexScale = scaleThreshold();
+  valueToIndexScale.domain(thresholds.slice(1)); // First threshold (going from 0 to 1) should be for the second value. Scaling the first value should return at 0.
+  valueToIndexScale.range(indices);
+
+  return valueToIndexScale;
 }
 
 export function getAxisScale(info: AxisInfo, rangeSize: number): AxisScale {

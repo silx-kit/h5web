@@ -23,19 +23,12 @@ export type Size = { width: number; height: number };
 
 export type Domain = [number, number];
 
-export interface IndexAxisConfig {
-  indexDomain: Domain;
-  showGrid?: boolean;
-  scaleType?: never; // invalid
-}
-
-export interface DataAxisConfig {
-  dataDomain: Domain;
+export interface AxisConfig {
+  isIndexAxis?: boolean;
+  domain: Domain;
   showGrid?: boolean;
   scaleType?: ScaleType;
 }
-
-export type AxisConfig = IndexAxisConfig | DataAxisConfig;
 
 export type ScaleFn = typeof scaleLinear | typeof scaleLog | typeof scaleSymlog;
 
@@ -45,7 +38,7 @@ export type AxisScale =
   | ScaleSymLog<number, number>;
 
 export interface AxisInfo {
-  isIndexAxis: boolean;
+  onlyIntegers?: boolean;
   scaleFn: ScaleFn;
   domain: Domain;
   scaleType: ScaleType;

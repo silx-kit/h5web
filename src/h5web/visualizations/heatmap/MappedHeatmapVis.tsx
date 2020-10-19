@@ -4,7 +4,7 @@ import type { HDF5Dataset, HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
 import HeatmapVis from './HeatmapVis';
 import { assertArray } from '../shared/utils';
-import { useMappedArray, useDataDomain, useBaseArray } from '../shared/hooks';
+import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useHeatmapConfig } from './config';
 
 interface Props {
@@ -30,7 +30,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
 
   const baseArray = useBaseArray(dataset, value);
   const dataArray = useMappedArray(baseArray, mapperState);
-  const dataDomain = useDataDomain(
+  const dataDomain = useDomain(
     (autoScale ? dataArray.data : baseArray.data) as number[],
     scaleType
   );

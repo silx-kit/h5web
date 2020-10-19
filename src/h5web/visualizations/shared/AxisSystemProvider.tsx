@@ -1,7 +1,6 @@
 import React, { ReactElement, ReactNode, createContext } from 'react';
 import { scaleLinear } from 'd3-scale';
 import { AxisConfig, AxisInfo, ScaleType, SCALE_FUNCTIONS } from './models';
-import { isIndexAxisConfig } from './utils';
 
 export interface AxisInfos {
   abscissaInfo: AxisInfo;
@@ -11,24 +10,19 @@ export interface AxisInfos {
 export const AxisSystemContext = createContext<AxisInfos>({} as AxisInfos);
 
 function getAxisInfo(config: AxisConfig): AxisInfo {
-  if (isIndexAxisConfig(config)) {
-    const { indexDomain, showGrid = false } = config;
-    return {
-      isIndexAxis: true,
-      scaleFn: scaleLinear,
-      domain: indexDomain,
-      scaleType: ScaleType.Linear,
-      showGrid,
-    };
-  }
+  const {
+    domain,
+    scaleType = ScaleType.Linear,
+    isIndexAxis,
+    showGrid = false,
+  } = config;
 
-  const { dataDomain, scaleType = ScaleType.Linear, showGrid = false } = config;
   return {
-    isIndexAxis: false,
-    scaleFn: SCALE_FUNCTIONS[scaleType],
-    domain: dataDomain,
-    scaleType,
+    onlyIntegers: isIndexAxis,
+    scaleFn: isIndexAxis ? scaleLinear : SCALE_FUNCTIONS[scaleType],
+    scaleType: isIndexAxis ? ScaleType.Linear : scaleType,
     showGrid,
+    domain,
   };
 }
 

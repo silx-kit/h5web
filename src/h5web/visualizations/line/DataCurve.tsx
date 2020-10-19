@@ -10,14 +10,16 @@ import { getAxisScale } from '../shared/utils';
 const DEFAULT_COLOR = '#1b998b';
 
 interface Props {
-  values: number[];
+  abscissas: number[];
+  ordinates: number[];
   color?: string;
   curveType?: CurveType;
 }
 
 function DataCurve(props: Props): JSX.Element {
   const {
-    values,
+    abscissas,
+    ordinates,
     color = DEFAULT_COLOR,
     curveType = CurveType.LineOnly,
   } = props;
@@ -30,10 +32,10 @@ function DataCurve(props: Props): JSX.Element {
     const abscissaScale = getAxisScale(abscissaInfo, width);
     const ordinateScale = getAxisScale(ordinateInfo, height);
 
-    const points = values.map((val, index) => {
+    const points = ordinates.map((val, index) => {
       const ordinate = ordinateScale(val);
       return new Vector3(
-        abscissaScale(index),
+        abscissaScale(abscissas[index]),
         // This is to avoid a three.js warning when ordinateScale(val) is Infinity
         Number.isFinite(ordinate) ? ordinate : 0,
         // Move NaN/Infinity out of the camera FOV (negative val for logScale).
@@ -45,7 +47,7 @@ function DataCurve(props: Props): JSX.Element {
     const geometry = new BufferGeometry();
     geometry.setFromPoints(points);
     return geometry;
-  }, [abscissaInfo, camera, height, ordinateInfo, values, width]);
+  }, [abscissaInfo, abscissas, camera, height, ordinateInfo, ordinates, width]);
 
   const showLine = curveType !== CurveType.GlyphsOnly;
   const showGlyphs = curveType !== CurveType.LineOnly;
