@@ -6,14 +6,14 @@ import { ScaleType } from '../h5web/visualizations/shared/models';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';
 import { getMockedDataset } from '../h5web/providers/mock/utils';
-import { getDataDomain } from '../packages/lib';
+import { getDomain } from '../packages/lib';
 
 const oneDimDataset = getMockedDataset<number[]>('/nD/oneD');
 const values = oneDimDataset.value;
 
 const dataArray = ndarray<number>(values, oneDimDataset.dims);
-const domain = getDataDomain(values);
-const logSafeDomain = getDataDomain(values, ScaleType.Log);
+const domain = getDomain(values);
+const logSafeDomain = getDomain(values, ScaleType.Log);
 
 const Template: Story<LineVisProps> = (args): ReactElement => (
   <LineVis {...args} />
@@ -79,6 +79,16 @@ NoGrid.args = {
   dataArray,
   domain,
   showGrid: false,
+};
+
+export const CustomAbscissas = Template.bind({});
+
+CustomAbscissas.args = {
+  dataArray,
+  domain,
+  abscissas: Array(dataArray.size)
+    .fill(0)
+    .map((x, i) => -10 + 0.5 * i),
 };
 
 export default {

@@ -6,7 +6,7 @@ import { createMemo } from 'react-use';
 import { useFrame } from 'react-three-fiber';
 import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
-import { getDataDomain } from './utils';
+import { getDomain } from './utils';
 
 export function useBaseArray<T>(dataset: HDF5Dataset, value: T[]): ndarray<T> {
   const rawDims = (dataset.shape as HDF5SimpleShape).dims;
@@ -41,7 +41,7 @@ export function useMappedArray<T>(
   }, [mapperState, baseArray]);
 }
 
-export const useDataDomain = createMemo(getDataDomain);
+export const useDomain = createMemo(getDomain);
 
 export function useFrameRendering(): void {
   const [, setNum] = useState();

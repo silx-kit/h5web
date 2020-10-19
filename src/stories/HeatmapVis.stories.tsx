@@ -10,7 +10,7 @@ import HeatmapVis, {
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import { INTERPOLATORS } from '../h5web/visualizations/heatmap/interpolators';
 import { getMockedDataset } from '../h5web/providers/mock/utils';
-import { getDataDomain } from '../packages/lib';
+import { getDomain } from '../packages/lib';
 
 // A 2D dataset
 const dataset = getMockedDataset<number[][]>('/nD/twoD');
@@ -20,8 +20,8 @@ const transposedArray = ndarray<number>(values, dataset.dims).transpose(1, 0); /
 // Work with the real array and not the transposed view
 const dataArray = ndarray<number>([], transposedArray.shape);
 assign(dataArray, transposedArray);
-const domain = getDataDomain(values);
-const logSafeDomain = getDataDomain(values, ScaleType.Log);
+const domain = getDomain(values);
+const logSafeDomain = getDomain(values, ScaleType.Log);
 
 const Template: Story<HeatmapVisProps> = (args): ReactElement => (
   <HeatmapVis {...args} />
@@ -101,6 +101,19 @@ LiveDataWithoutLoader.args = {
   dataArray,
   domain,
   showLoader: false,
+};
+
+export const CustomCoordinates = Template.bind({});
+
+CustomCoordinates.args = {
+  dataArray,
+  domain,
+  abscissas: Array(dataArray.shape[1] + 1)
+    .fill(0)
+    .map((x, i) => 100 + 10 * i),
+  ordinates: Array(dataArray.shape[0] + 1)
+    .fill(0)
+    .map((x, i) => -5 + 0.5 * i),
 };
 
 export default {

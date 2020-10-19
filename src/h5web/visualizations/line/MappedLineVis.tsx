@@ -3,7 +3,7 @@ import type { HDF5Dataset, HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dataset-visualizer/models';
 import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
-import { useMappedArray, useDataDomain, useBaseArray } from '../shared/hooks';
+import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
 
 interface Props {
@@ -32,7 +32,7 @@ function MappedLineVis(props: Props): ReactElement {
     disableAutoScale(!baseArray.shape || baseArray.shape.length <= 1);
   }, [baseArray.shape, disableAutoScale]);
 
-  const dataDomain = useDataDomain(
+  const dataDomain = useDomain(
     (autoScale ? dataArray.data : baseArray.data) as number[],
     scaleType
   );

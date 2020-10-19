@@ -29,7 +29,7 @@ interface Props {
 
 function Axis(props: Props): ReactElement {
   const { type, scale, domain, info, canvasSize } = props;
-  const { scaleType, showGrid, isIndexAxis } = info;
+  const { scaleType, showGrid, onlyIntegers } = info;
 
   const { width, height } = canvasSize;
   const axisLength = type === 'abscissa' ? width : height;
@@ -37,7 +37,7 @@ function Axis(props: Props): ReactElement {
   const [AxisComponent, GridComponent] = COMPONENTS[type];
 
   const numTicks = adaptedNumTicks(axisLength);
-  const ticksProp = isIndexAxis
+  const ticksProp = onlyIntegers
     ? { tickValues: getIntegerTicks(domain, numTicks) }
     : { numTicks };
 
