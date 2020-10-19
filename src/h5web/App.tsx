@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
-
 import Explorer from './explorer/Explorer';
 import type { HDF5Link } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
-import { useEntity } from './providers/hooks';
 import type { TreeNode } from './explorer/models';
 import BreadcrumbsBar from './BreadcrumbsBar';
 import Visualizer from './Visualizer';
+import { getEntity } from './providers/utils';
+import { ProviderContext } from './providers/context';
 
 function App(): JSX.Element {
-  const [selectedNode, setSelectedNode] = useState<TreeNode<HDF5Link>>();
+  const { metadata } = useContext(ProviderContext);
 
+  const [selectedNode, setSelectedNode] = useState<TreeNode<HDF5Link>>();
   const [isExplorerOpen, setExplorerOpen] = useState(true);
   const [isInspecting, setInspecting] = useState(false);
 
   const selectedLink = selectedNode?.data;
-  const selectedEntity = useEntity(selectedLink);
+  const selectedEntity = getEntity(selectedLink, metadata);
 
   return (
     <div className={styles.app}>

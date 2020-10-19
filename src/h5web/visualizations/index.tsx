@@ -1,101 +1,152 @@
 import type { ElementType } from 'react';
 import { FiCode, FiGrid, FiActivity, FiMap, FiCpu } from 'react-icons/fi';
 import type { IconType } from 'react-icons';
-import { range } from 'lodash-es';
-import RawVis from './RawVis';
-import ScalarVis from './ScalarVis';
-import { Vis, DimensionMapping } from '../dataset-visualizer/models';
+import { Vis } from '../dataset-visualizer/models';
 import LineToolbar from '../toolbar/LineToolbar';
 import HeatmapToolbar from '../toolbar/HeatmapToolbar';
-import type {
-  HDF5Dataset,
-  HDF5Value,
-  HDF5SimpleShape,
-} from '../providers/models';
+import type { HDF5Entity, HDF5Metadata } from '../providers/models';
 import {
   isScalarShape,
   isBaseType,
   isSimpleShape,
   isNumericType,
+  isDataset,
+  isGroup,
 } from '../providers/utils';
-import MappedMatrixVis from './matrix/MappedMatrixVis';
-import MappedLineVis from './line/MappedLineVis';
-import MappedHeatmapVis from './heatmap/MappedHeatmapVis';
+import RawViscontainer from './RawVisContainer';
+import type { VisContainerProps } from './shared/models';
+import ScalarVisContainer from './ScalarVisContainer';
+import MatrixVisContainer from './matrix/MatrixVisContainer';
+import LineVisContainer from './line/LineVisContainer';
+import HeatmapVisContainer from './heatmap/HeatmapVisContainer';
+import NxSpectrumContainer from './nexus/NxSpectrumContainer';
+import {
+  isNxDataGroup,
+  getSignalDataset,
+  getAttributeValue,
+  isNxInterpretation,
+} from './nexus/utils';
+import { NxInterpretation } from './nexus/models';
+import NxImageContainer from './nexus/NxImageContainer';
 
 interface VisDef {
   Icon: IconType;
   Toolbar?: ElementType<{}>;
-  Component: ElementType<{
-    value: HDF5Value;
-    dataset: HDF5Dataset;
-    mapperState: DimensionMapping;
-  }>;
-  supportsDataset(dataset: HDF5Dataset): boolean;
-  defaultMappingState(dataset: HDF5Dataset): DimensionMapping;
+  Container: ElementType<VisContainerProps>;
+  supportsEntity(entity: HDF5Entity, metadata: HDF5Metadata): boolean;
 }
 
 export const VIS_DEFS: Record<Vis, VisDef> = {
   [Vis.Raw]: {
     Icon: FiCpu,
-    Component: RawVis,
-    supportsDataset: () => true,
-    defaultMappingState: () => undefined,
+    Container: RawViscontainer,
+    supportsEntity: isDataset,
   },
 
   [Vis.Scalar]: {
     Icon: FiCode,
-    Component: ScalarVis,
-    supportsDataset: (dataset) => {
-      const { type, shape } = dataset;
-      return isBaseType(type) && isScalarShape(shape);
+    Container: ScalarVisContainer,
+    supportsEntity: (entity) => {
+      return (
+        isDataset(entity) &&
+        isBaseType(entity.type) &&
+        isScalarShape(entity.shape)
+      );
     },
-    defaultMappingState: () => undefined,
   },
 
   [Vis.Matrix]: {
     Icon: FiGrid,
-    Component: MappedMatrixVis,
-    supportsDataset: (dataset) => {
-      const { type, shape } = dataset;
-      return isBaseType(type) && isSimpleShape(shape) && shape.dims.length >= 1;
-    },
-    defaultMappingState: (dataset) => {
-      const { dims } = dataset.shape as HDF5SimpleShape;
-      return dims.length === 1
-        ? ['x']
-        : [...range(dims.length - 2).fill(0), 'y', 'x'];
+    Container: MatrixVisContainer,
+    supportsEntity: (entity) => {
+      return (
+        isDataset(entity) &&
+        isBaseType(entity.type) &&
+        isSimpleShape(entity.shape) &&
+        entity.shape.dims.length >= 1
+      );
     },
   },
 
   [Vis.Line]: {
     Icon: FiActivity,
     Toolbar: LineToolbar,
-    Component: MappedLineVis,
-    supportsDataset: (dataset) => {
-      const { type, shape } = dataset;
+    Container: LineVisContainer,
+    supportsEntity: (entity) => {
       return (
-        isNumericType(type) && isSimpleShape(shape) && shape.dims.length >= 1
+        isDataset(entity) &&
+        isNumericType(entity.type) &&
+        isSimpleShape(entity.shape) &&
+        entity.shape.dims.length >= 1
       );
-    },
-    defaultMappingState: (dataset) => {
-      const { dims } = dataset.shape as HDF5SimpleShape;
-      return [...range(dims.length - 1).fill(0), 'x'];
     },
   },
 
   [Vis.Heatmap]: {
     Icon: FiMap,
     Toolbar: HeatmapToolbar,
-    Component: MappedHeatmapVis,
-    supportsDataset: (dataset) => {
-      const { type, shape } = dataset;
+    Container: HeatmapVisContainer,
+    supportsEntity: (entity) => {
       return (
-        isNumericType(type) && isSimpleShape(shape) && shape.dims.length >= 2
+        isDataset(entity) &&
+        isNumericType(entity.type) &&
+        isSimpleShape(entity.shape) &&
+        entity.shape.dims.length >= 2
       );
     },
-    defaultMappingState: (dataset) => {
-      const { dims } = dataset.shape as HDF5SimpleShape;
-      return [...range(dims.length - 2).fill(0), 'y', 'x'];
+  },
+
+  [Vis.NxSpectrum]: {
+    Icon: FiActivity,
+    Toolbar: LineToolbar,
+    Container: NxSpectrumContainer,
+    supportsEntity: (entity, metadata) => {
+      if (!isGroup(entity) || !isNxDataGroup(entity)) {
+        return false;
+      }
+
+      const dataset = getSignalDataset(entity, metadata);
+      if (!dataset) {
+        return false;
+      }
+
+      const interpretation = getAttributeValue(dataset, 'interpretation');
+      if (isNxInterpretation(interpretation)) {
+        return interpretation === NxInterpretation.Spectrum;
+      }
+
+      return (
+        isNumericType(dataset.type) &&
+        isSimpleShape(dataset.shape) &&
+        dataset.shape.dims.length === 1
+      );
+    },
+  },
+
+  [Vis.NxImage]: {
+    Icon: FiMap,
+    Toolbar: HeatmapToolbar,
+    Container: NxImageContainer,
+    supportsEntity: (entity, metadata) => {
+      if (!isGroup(entity) || !isNxDataGroup(entity)) {
+        return false;
+      }
+
+      const dataset = getSignalDataset(entity, metadata);
+      if (!dataset) {
+        return false;
+      }
+
+      const interpretation = getAttributeValue(dataset, 'interpretation');
+      if (isNxInterpretation(interpretation)) {
+        return interpretation === NxInterpretation.Image;
+      }
+
+      return (
+        isNumericType(dataset.type) &&
+        isSimpleShape(dataset.shape) &&
+        dataset.shape.dims.length >= 2
+      );
     },
   },
 };

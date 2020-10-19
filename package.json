@@ -55,6 +55,7 @@
     "react-use-comlink": "^2.0.1",
     "react-window": "^1.8.5",
     "three": "^0.120.1",
+    "use-async-resource": "^2.2.0",
     "zustand": "^3.1.2"
   },
   "devDependencies": {

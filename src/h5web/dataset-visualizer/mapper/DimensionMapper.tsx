@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
 import { isNumber } from 'lodash-es';
-import type { Vis, DimensionMapping } from '../models';
+import type { DimensionMapping } from '../models';
 import styles from './DimensionMapper.module.css';
 import SlicingSlider from './SlicingSlider';
 import AxisMapper from './AxisMapper';
 
 interface Props {
-  activeVis: Vis;
   rawDims: number[];
   mapperState: DimensionMapping;
   onChange: (d: DimensionMapping) => void;

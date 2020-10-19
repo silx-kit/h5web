@@ -1,9 +1,12 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
+import { AsyncResourceContent } from 'use-async-resource';
 import type { HDF5Entity } from './providers/models';
-import DatasetVisualizer from './dataset-visualizer/DatasetVisualizer';
-import { isDataset, isGroup } from './providers/utils';
-import NexusVisualizer from './nexus-visualizer/NexusVisualizer';
 import styles from './Visualizer.module.css';
+import { useSupportedVis } from './dataset-visualizer/hooks';
+import type { Vis } from './dataset-visualizer/models';
+import { VIS_DEFS } from './visualizations';
+import VisSelector from './dataset-visualizer/VisSelector';
+import Loader from './dataset-visualizer/Loader';
 
 interface Props {
   entity?: HDF5Entity;
@@ -12,19 +15,45 @@ interface Props {
 function Visualizer(props: Props): ReactElement {
   const { entity } = props;
 
-  if (entity && isDataset(entity)) {
-    return <DatasetVisualizer dataset={entity} />;
-  }
+  const supportedVis = useSupportedVis(entity);
+  const [activeVis, setActiveVis] = useState<Vis>();
 
-  if (
-    entity &&
-    isGroup(entity) &&
-    entity.attributes?.find(({ value }) => value === 'NXdata')
+  // Update `activeVis` state as needed
+  if (activeVis && supportedVis.length === 0) {
+    setActiveVis(undefined);
+  } else if (
+    (!activeVis && supportedVis.length > 0) ||
+    (activeVis && !supportedVis.includes(activeVis))
   ) {
-    return <NexusVisualizer group={entity} />;
+    setActiveVis(supportedVis[supportedVis.length - 1]);
   }
 
-  return <p className={styles.fallback}>Nothing to visualize</p>;
+  if (!entity || !activeVis) {
+    return <p className={styles.fallback}>Nothing to visualize</p>;
+  }
+
+  const { Container, Toolbar } = activeVis && VIS_DEFS[activeVis];
+
+  return (
+    <div className={styles.visualizer}>
+      <div className={styles.visBar}>
+        <VisSelector
+          activeVis={activeVis}
+          choices={supportedVis}
+          onChange={setActiveVis}
+        />
+        {Toolbar && <Toolbar />}
+      </div>
+      <div className={styles.displayArea}>
+        <AsyncResourceContent
+          fallback={<Loader />}
+          errorMessage={(err) => <p className={styles.error}>{err.message}</p>}
+        >
+          <Container key={entity.id} entity={entity} />
+        </AsyncResourceContent>
+      </div>
+    </div>
+  );
 }
 
 export default Visualizer;

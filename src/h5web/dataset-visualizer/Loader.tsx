@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { useTimeout } from 'react-use';
 import styles from './Loader.module.css';
 
 interface Props {
@@ -7,6 +8,13 @@ interface Props {
 
 function Loader(props: Props): ReactElement {
   const { message = 'Loading' } = props;
+
+  // Wait a bit before showing loader to avoid flash
+  const [isReady] = useTimeout(50);
+
+  if (!isReady()) {
+    return <></>;
+  }
 
   return (
     <div className={styles.loader}>

@@ -35,8 +35,22 @@ export function isDataset(entity: HDF5Entity): entity is HDF5Dataset {
   return entity.collection === HDF5Collection.Datasets;
 }
 
+export function assertDataset(
+  entity: HDF5Entity
+): asserts entity is HDF5Dataset {
+  if (!isDataset(entity)) {
+    throw new Error('Expected dataset');
+  }
+}
+
 export function isGroup(entity: HDF5Entity): entity is HDF5Group {
   return entity.collection === HDF5Collection.Groups;
+}
+
+export function assertGroup(entity: HDF5Entity): asserts entity is HDF5Group {
+  if (!isGroup(entity)) {
+    throw new Error('Expected group');
+  }
 }
 
 export function isSimpleShape(shape: HDF5Shape): shape is HDF5SimpleShape {
@@ -61,6 +75,19 @@ export function isNumericType(type: HDF5Type): type is HDF5NumericType {
     typeof type !== 'string' &&
     [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(type.class)
   );
+}
+
+export function getEntity(
+  link: HDF5Link | undefined,
+  metadata: HDF5Metadata
+): HDF5Entity | undefined {
+  if (!link || !isReachable(link)) {
+    return undefined;
+  }
+
+  const { collection, id } = link;
+  const dict = metadata[collection];
+  return dict && dict[id];
 }
 
 function buildTreeNode(
