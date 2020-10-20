@@ -6,6 +6,8 @@ export enum Vis {
   Matrix = 'Matrix',
   Line = 'Line',
   Heatmap = 'Heatmap',
+  NxSpectrum = 'NX Spectrum',
+  NxImage = 'NX Image',
 }
 
 export type Axis = 'x' | 'y';

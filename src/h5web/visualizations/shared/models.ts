@@ -6,6 +6,11 @@ import {
   scaleLinear,
   scaleSymlog,
 } from 'd3-scale';
+import type { HDF5Entity } from '../../providers/models';
+
+export interface VisContainerProps {
+  entity: HDF5Entity;
+}
 
 export enum ScaleType {
   Linear = 'Linear',

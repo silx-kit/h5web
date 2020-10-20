@@ -25,3 +25,8 @@
   padding: 1em;
   color: var(--secondary-dark);
 }
+
+.error {
+  padding: 1em;
+  color: var(--danger);
+}
