@@ -10,12 +10,20 @@ interface Props {
   value: HDF5Value;
   dims: number[];
   mapperState: DimensionMapping;
+  valueLabel?: string;
   axesLabels?: (string | undefined)[];
   axesValues?: Record<string, HDF5Value>;
 }
 
 function MappedLineVis(props: Props): ReactElement {
-  const { value, axesLabels = [], axesValues = {}, dims, mapperState } = props;
+  const {
+    value,
+    valueLabel,
+    axesLabels = [],
+    axesValues = {},
+    dims,
+    mapperState,
+  } = props;
   assertArray<number>(value);
 
   const {
@@ -40,19 +48,23 @@ function MappedLineVis(props: Props): ReactElement {
   );
 
   const abscissaLabel = mapperState && axesLabels[mapperState.indexOf('x')];
-  const abscissas = abscissaLabel && axesValues[abscissaLabel];
-  if (abscissas) {
-    assertArray<number>(abscissas);
+  const abscissasValue = abscissaLabel && axesValues[abscissaLabel];
+  if (abscissasValue) {
+    assertArray<number>(abscissasValue);
   }
 
   return (
     <LineVis
       dataArray={dataArray}
-      abscissas={abscissas as number[]}
       domain={dataDomain}
       scaleType={scaleType}
       curveType={curveType}
       showGrid={showGrid}
+      abscissaParams={{
+        label: abscissaLabel,
+        values: abscissasValue as number[],
+      }}
+      ordinateLabel={valueLabel}
     />
   );
 }

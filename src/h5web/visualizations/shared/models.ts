@@ -28,6 +28,7 @@ export interface AxisConfig {
   domain: Domain;
   showGrid?: boolean;
   scaleType?: ScaleType;
+  label?: string;
 }
 
 export type ScaleFn = typeof scaleLinear | typeof scaleLog | typeof scaleSymlog;
@@ -43,6 +44,7 @@ export interface AxisInfo {
   domain: Domain;
   scaleType: ScaleType;
   showGrid: boolean;
+  label?: string;
 }
 
 export type AxisOffsets = {
@@ -51,3 +53,8 @@ export type AxisOffsets = {
   right: number;
   top: number;
 };
+
+export interface AxisParams {
+  label?: string;
+  values?: number[];
+}

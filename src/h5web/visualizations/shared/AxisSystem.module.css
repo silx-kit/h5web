@@ -37,3 +37,10 @@
   text-anchor: inherit;
   dominant-baseline: inherit;
 }
+
+.label {
+  fill: darkslategrey;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+}

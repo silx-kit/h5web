@@ -2,28 +2,31 @@ import React, { ReactElement, useState, useContext } from 'react';
 import { range } from 'lodash-es';
 import { HDF5SimpleShape } from '../../providers/models';
 import { useDatasetValue } from './hooks';
-import { assertGroup } from '../../providers/utils';
+import { assertGroup, isDataset } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import { ProviderContext } from '../../providers/context';
-import { getSignalDataset } from '../nexus/utils';
+import { getAttributeValue, getLinkedEntity } from '../nexus/utils';
 import { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
+import { assertStr } from '../shared/utils';
 
 function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertGroup(entity);
 
   const { metadata } = useContext(ProviderContext);
-  const dataset = getSignalDataset(entity, metadata);
+  const signal = getAttributeValue(entity, 'signal');
+  assertStr(signal);
+  const signalDataset = getLinkedEntity(entity, metadata, signal);
 
-  if (!dataset) {
+  if (!signalDataset || !isDataset(signalDataset)) {
     throw new Error('Signal dataset not found');
   }
 
-  const { dims } = dataset.shape as HDF5SimpleShape;
+  const { dims } = signalDataset.shape as HDF5SimpleShape;
   if (dims.length < 2) {
-    throw new Error('Expected dataset with at least two dimensions');
+    throw new Error('Expected signal dataset with at least two dimensions');
   }
 
   const [mapperState, setMapperState] = useState<DimensionMapping>([
@@ -32,7 +35,7 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
     'x',
   ]);
 
-  const value = useDatasetValue(dataset.id);
+  const value = useDatasetValue(signalDataset.id);
 
   if (!value) {
     return <></>;

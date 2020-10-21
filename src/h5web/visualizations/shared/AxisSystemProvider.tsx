@@ -15,6 +15,7 @@ function getAxisInfo(config: AxisConfig): AxisInfo {
     scaleType = ScaleType.Linear,
     isIndexAxis,
     showGrid = false,
+    label,
   } = config;
 
   return {
@@ -23,6 +24,7 @@ function getAxisInfo(config: AxisConfig): AxisInfo {
     scaleType: isIndexAxis ? ScaleType.Linear : scaleType,
     showGrid,
     domain,
+    label,
   };
 }
 

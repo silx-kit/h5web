@@ -9,6 +9,9 @@ const AXIS_PROPS = {
   tickStroke: 'grey',
   hideAxisLine: true,
   tickClassName: styles.tick,
+  labelClassName: styles.label,
+  labelProps: {}, // To avoid any styling props on the parent svg
+  labelOffset: 32,
   tickComponent: ({ formattedValue, ...tickProps }: TickRendererProps) => (
     <text {...tickProps}>{formattedValue}</text>
   ),
@@ -47,6 +50,7 @@ function Axis(props: Props): ReactElement {
         <AxisComponent
           scale={scale}
           tickFormat={getTickFormatter(domain, axisLength, scaleType)}
+          label={info.label}
           {...ticksProp}
           {...AXIS_PROPS}
         />
