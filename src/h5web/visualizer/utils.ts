@@ -1,17 +1,13 @@
-import { useContext } from 'react';
-import type { HDF5Entity } from '../providers/models';
+import type { HDF5Entity, HDF5Metadata } from '../providers/models';
 import { VIS_DEFS, Vis } from '../visualizations';
-import { ProviderContext } from '../providers/context';
 
-export function useSupportedVis(entity?: HDF5Entity): Vis[] {
-  const { metadata } = useContext(ProviderContext);
-
-  if (!entity) {
-    return [];
-  }
-
+export function getSupportedVis(
+  entity: HDF5Entity,
+  metadata: HDF5Metadata
+): Vis[] {
   const supported = Object.entries(VIS_DEFS).reduce<Vis[]>(
-    (arr, [vis, { supportsEntity }]) => {
+    (arr, visDefEntry) => {
+      const [vis, { supportsEntity }] = visDefEntry;
       return supportsEntity(entity, metadata) ? [...arr, vis as Vis] : arr;
     },
     []

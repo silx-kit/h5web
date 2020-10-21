@@ -1,5 +1,11 @@
 import { tickStep } from 'd3-array';
-import { computeVisSize, getIntegerTicks, getDomain } from './utils';
+import {
+  computeVisSize,
+  getDomain,
+  extendDomain,
+  getValueToIndexScale,
+  getIntegerTicks,
+} from './utils';
 import { ScaleType } from './models';
 
 describe('Shared visualization utilities', () => {
@@ -82,6 +88,41 @@ describe('Shared visualization utilities', () => {
         const domain = getDomain([-2, 0, -10, -5, -2, -1], ScaleType.Log);
         expect(domain).toBeUndefined();
       });
+    });
+  });
+
+  describe('extendDomain', () => {
+    it('should extend domain by factor', () => {
+      const extendedDomain = extendDomain([0, 100], 0.5);
+      expect(extendedDomain).toEqual([-50, 150]);
+    });
+
+    it('should extend domain by factor for use with log scale', () => {
+      const extendedDomain = extendDomain([1, 100], 0.25, true);
+      expect(extendedDomain).toEqual([0.8, 125]);
+    });
+  });
+
+  describe('getValueToIndexScale', () => {
+    it('should create threshold scale from values to indices', () => {
+      const scale = getValueToIndexScale([10, 20, 30]);
+
+      expect(scale(0)).toEqual(0);
+      expect(scale(10)).toEqual(0);
+      expect(scale(19.9)).toEqual(0);
+      expect(scale(20)).toEqual(1);
+      expect(scale(100)).toEqual(2);
+    });
+
+    it('should allow scale to switch at midpoints', () => {
+      const scale = getValueToIndexScale([10, 20, 30], true);
+
+      expect(scale(0)).toEqual(0);
+      expect(scale(14.9)).toEqual(0);
+      expect(scale(15)).toEqual(1);
+      expect(scale(24.9)).toEqual(1);
+      expect(scale(25)).toEqual(2);
+      expect(scale(100)).toEqual(2);
     });
   });
 
