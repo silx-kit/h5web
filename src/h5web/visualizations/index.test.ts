@@ -5,8 +5,7 @@ import {
   HDF5Metadata,
   HDF5Entity,
 } from '../providers/models';
-import { Vis } from '../dataset-visualizer/models';
-import { VIS_DEFS } from '.';
+import { Vis, VIS_DEFS } from '.';
 
 const baseGroup = { id: 'group', collection: HDF5Collection.Groups as const };
 const baseDataset = {

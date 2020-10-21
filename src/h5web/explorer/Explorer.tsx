@@ -5,8 +5,7 @@ import type { TreeNode, ExpandedNodes } from './models';
 import TreeView from './TreeView';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
-import { getNodesOnPath } from './utils';
-import { buildTree } from '../providers/utils';
+import { buildTree, getNodesOnPath } from './utils';
 import { ProviderContext } from '../providers/context';
 
 const DEFAULT_PATH: number[] = JSON.parse(

@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import type { HDF5Dataset, HDF5Value } from '../../providers/models';
-import type { DimensionMapping } from '../../dataset-visualizer/models';
+import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';

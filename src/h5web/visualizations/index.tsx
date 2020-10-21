@@ -1,7 +1,6 @@
 import type { ElementType } from 'react';
 import { FiCode, FiGrid, FiActivity, FiMap, FiCpu } from 'react-icons/fi';
 import type { IconType } from 'react-icons';
-import { Vis } from '../dataset-visualizer/models';
 import LineToolbar from '../toolbar/LineToolbar';
 import HeatmapToolbar from '../toolbar/HeatmapToolbar';
 import type { HDF5Entity, HDF5Metadata } from '../providers/models';
@@ -13,13 +12,7 @@ import {
   isDataset,
   isGroup,
 } from '../providers/utils';
-import RawViscontainer from './RawVisContainer';
-import type { VisContainerProps } from './shared/models';
-import ScalarVisContainer from './ScalarVisContainer';
-import MatrixVisContainer from './matrix/MatrixVisContainer';
-import LineVisContainer from './line/LineVisContainer';
-import HeatmapVisContainer from './heatmap/HeatmapVisContainer';
-import NxSpectrumContainer from './nexus/NxSpectrumContainer';
+import type { VisContainerProps } from './containers/models';
 import {
   isNxDataGroup,
   getSignalDataset,
@@ -27,7 +20,25 @@ import {
   isNxInterpretation,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
-import NxImageContainer from './nexus/NxImageContainer';
+import {
+  RawViscontainer,
+  ScalarVisContainer,
+  MatrixVisContainer,
+  LineVisContainer,
+  HeatmapVisContainer,
+  NxSpectrumContainer,
+  NxImageContainer,
+} from './containers';
+
+export enum Vis {
+  Raw = 'Raw',
+  Scalar = 'Scalar',
+  Matrix = 'Matrix',
+  Line = 'Line',
+  Heatmap = 'Heatmap',
+  NxSpectrum = 'NX Spectrum',
+  NxImage = 'NX Image',
+}
 
 interface VisDef {
   Icon: IconType;

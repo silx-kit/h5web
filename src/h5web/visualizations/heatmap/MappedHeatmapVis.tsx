@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
 import { usePrevious } from 'react-use';
 import type { HDF5Dataset, HDF5Value } from '../../providers/models';
-import type { DimensionMapping } from '../../dataset-visualizer/models';
+import type { DimensionMapping } from '../../dimension-mapper/models';
 import HeatmapVis from './HeatmapVis';
 import { assertArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';

@@ -6,7 +6,7 @@ import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import type { TreeNode } from './explorer/models';
 import BreadcrumbsBar from './BreadcrumbsBar';
-import Visualizer from './Visualizer';
+import Visualizer from './visualizer/Visualizer';
 import { getEntity } from './providers/utils';
 import { ProviderContext } from './providers/context';
 

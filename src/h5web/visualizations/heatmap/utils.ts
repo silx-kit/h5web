@@ -1,8 +1,8 @@
 import { range } from 'lodash-es';
+import type ndarray from 'ndarray';
 import type { D3Interpolator, Dims } from './models';
-import type { DataArray } from '../../dataset-visualizer/models';
 
-export function getDims(dataArray: DataArray): Dims {
+export function getDims(dataArray: ndarray<number>): Dims {
   const [rows, cols] = dataArray.shape;
   return { rows, cols };
 }

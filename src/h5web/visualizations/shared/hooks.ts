@@ -1,25 +1,12 @@
 import ndarray from 'ndarray';
-import { useMemo, useState, useContext } from 'react';
+import { useMemo, useState } from 'react';
 import { isNumber } from 'lodash-es';
 import { assign } from 'ndarray-ops';
 import { createMemo } from 'react-use';
 import { useFrame } from 'react-three-fiber';
-import { useAsyncResource } from 'use-async-resource';
-import type {
-  HDF5Dataset,
-  HDF5SimpleShape,
-  HDF5Id,
-  HDF5Value,
-} from '../../providers/models';
-import type { DimensionMapping } from '../../dataset-visualizer/models';
+import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
+import type { DimensionMapping } from '../../dimension-mapper/models';
 import { getDomain } from './utils';
-import { ProviderContext } from '../../providers/context';
-
-export function useDatasetValue(id: HDF5Id): HDF5Value | undefined {
-  const { getValue } = useContext(ProviderContext);
-  const [valueReader] = useAsyncResource(getValue, id);
-  return valueReader();
-}
 
 export function useBaseArray<T>(dataset: HDF5Dataset, value: T[]): ndarray<T> {
   const rawDims = (dataset.shape as HDF5SimpleShape).dims;
