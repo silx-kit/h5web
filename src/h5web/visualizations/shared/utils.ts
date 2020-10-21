@@ -170,6 +170,12 @@ export function getTickFormatter(
   };
 }
 
+export function assertStr(val: unknown): asserts val is string {
+  if (typeof val !== 'string') {
+    throw new Error('Expected string');
+  }
+}
+
 export function assertNumOrStr(val: unknown): asserts val is number | string {
   if (typeof val !== 'number' && typeof val !== 'string') {
     throw new Error('Expected number or string');

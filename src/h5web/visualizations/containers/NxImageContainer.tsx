@@ -45,11 +45,7 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
         mapperState={mapperState}
         onChange={setMapperState}
       />
-      <MappedHeatmapVis
-        value={value}
-        dataset={dataset}
-        mapperState={mapperState}
-      />
+      <MappedHeatmapVis value={value} dims={dims} mapperState={mapperState} />
     </>
   );
 }

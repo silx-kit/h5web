@@ -1,13 +1,17 @@
 import React, { ReactElement, useState, useContext } from 'react';
 import { range } from 'lodash-es';
-import { HDF5SimpleShape } from '../../providers/models';
-import { useDatasetValue } from './hooks';
-import { assertGroup } from '../../providers/utils';
+import { HDF5SimpleShape, HDF5Id } from '../../providers/models';
+import { useDatasetValues } from './hooks';
+import { assertGroup, isDataset } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import MappedLineVis from '../line/MappedLineVis';
 import { ProviderContext } from '../../providers/context';
-import { getSignalDataset } from '../nexus/utils';
+import {
+  getSignalDataset,
+  getLinkedEntity,
+  getAxesLabels,
+} from '../nexus/utils';
 import { VisContainerProps } from './models';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
@@ -15,25 +19,39 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   assertGroup(entity);
 
   const { metadata } = useContext(ProviderContext);
-  const dataset = getSignalDataset(entity, metadata);
+  const signalDataset = getSignalDataset(entity, metadata);
 
-  if (!dataset) {
+  if (!signalDataset) {
     throw new Error('Signal dataset not found');
   }
 
-  const { dims } = dataset.shape as HDF5SimpleShape;
+  const { dims } = signalDataset.shape as HDF5SimpleShape;
   if (dims.length < 1) {
     throw new Error('Expected dataset with at least one dimension');
   }
+
+  const axesLabels = getAxesLabels(entity);
+
+  const axesIds = axesLabels.reduce<Record<string, HDF5Id>>((acc, axis) => {
+    if (!axis) {
+      return acc;
+    }
+
+    const dataset = getLinkedEntity(entity, metadata, axis);
+    if (dataset && isDataset(dataset)) {
+      acc[axis] = dataset.id;
+    }
+    return acc;
+  }, {});
 
   const [mapperState, setMapperState] = useState<DimensionMapping>([
     ...range(dims.length - 1).fill(0),
     'x',
   ]);
 
-  const value = useDatasetValue(dataset.id);
+  const values = useDatasetValues({ signal: signalDataset.id, ...axesIds });
 
-  if (!value) {
+  if (!values || !values.signal) {
     return <></>;
   }
 
@@ -45,8 +63,10 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
         onChange={setMapperState}
       />
       <MappedLineVis
-        value={value}
-        dataset={dataset}
+        value={values.signal}
+        axesLabels={axesLabels}
+        axesValues={values}
+        dims={dims}
         mapperState={mapperState}
       />
     </>

@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
-import type { HDF5Dataset, HDF5Value } from '../../providers/models';
+import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
@@ -8,12 +8,14 @@ import { useLineConfig } from './config';
 
 interface Props {
   value: HDF5Value;
-  dataset: HDF5Dataset;
+  dims: number[];
   mapperState: DimensionMapping;
+  axesLabels?: (string | undefined)[];
+  axesValues?: Record<string, HDF5Value>;
 }
 
 function MappedLineVis(props: Props): ReactElement {
-  const { value, dataset, mapperState } = props;
+  const { value, axesLabels = [], axesValues = {}, dims, mapperState } = props;
   assertArray<number>(value);
 
   const {
@@ -24,7 +26,7 @@ function MappedLineVis(props: Props): ReactElement {
     disableAutoScale,
   } = useLineConfig();
 
-  const baseArray = useBaseArray(dataset, value);
+  const baseArray = useBaseArray(value, dims);
   const dataArray = useMappedArray(baseArray, mapperState);
 
   // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
@@ -37,9 +39,16 @@ function MappedLineVis(props: Props): ReactElement {
     scaleType
   );
 
+  const abscissaLabel = mapperState && axesLabels[mapperState.indexOf('x')];
+  const abscissas = abscissaLabel && axesValues[abscissaLabel];
+  if (abscissas) {
+    assertArray<number>(abscissas);
+  }
+
   return (
     <LineVis
       dataArray={dataArray}
+      abscissas={abscissas as number[]}
       domain={dataDomain}
       scaleType={scaleType}
       curveType={curveType}

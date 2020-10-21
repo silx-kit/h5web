@@ -30,11 +30,7 @@ function MatrixVisContainer(props: VisContainerProps): ReactElement {
         mapperState={mapperState}
         onChange={setMapperState}
       />
-      <MappedMatrixVis
-        value={value}
-        dataset={entity}
-        mapperState={mapperState}
-      />
+      <MappedMatrixVis value={value} dims={dims} mapperState={mapperState} />
     </>
   );
 }

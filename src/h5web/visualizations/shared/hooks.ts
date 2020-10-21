@@ -4,13 +4,10 @@ import { isNumber } from 'lodash-es';
 import { assign } from 'ndarray-ops';
 import { createMemo } from 'react-use';
 import { useFrame } from 'react-three-fiber';
-import type { HDF5Dataset, HDF5SimpleShape } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import { getDomain } from './utils';
 
-export function useBaseArray<T>(dataset: HDF5Dataset, value: T[]): ndarray<T> {
-  const rawDims = (dataset.shape as HDF5SimpleShape).dims;
-
+export function useBaseArray<T>(value: T[], rawDims: number[]): ndarray<T> {
   return useMemo(() => {
     return ndarray<T>(value.flat(Infinity) as T[], rawDims);
   }, [rawDims, value]);
