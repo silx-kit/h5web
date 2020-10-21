@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { isNumber } from 'lodash-es';
-import type { DimensionMapping } from '../models';
+import type { DimensionMapping } from './models';
 import styles from './DimensionMapper.module.css';
 import SlicingSlider from './SlicingSlider';
 import AxisMapper from './AxisMapper';

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
 import styles from './DimensionMapper.module.css';
-import type { DimensionMapping } from '../models';
+import type { DimensionMapping } from './models';
 
 interface Props {
   dimension: number;

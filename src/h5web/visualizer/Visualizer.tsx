@@ -1,12 +1,11 @@
 import React, { ReactElement, useState } from 'react';
 import { AsyncResourceContent } from 'use-async-resource';
-import type { HDF5Entity } from './providers/models';
+import type { HDF5Entity } from '../providers/models';
 import styles from './Visualizer.module.css';
-import { useSupportedVis } from './dataset-visualizer/hooks';
-import type { Vis } from './dataset-visualizer/models';
-import { VIS_DEFS } from './visualizations';
-import VisSelector from './dataset-visualizer/VisSelector';
-import Loader from './dataset-visualizer/Loader';
+import { useSupportedVis } from './hooks';
+import { VIS_DEFS, Vis } from '../visualizations';
+import VisSelector from './VisSelector';
+import Loader from './Loader';
 
 interface Props {
   entity?: HDF5Entity;

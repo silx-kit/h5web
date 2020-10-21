@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { isNumber } from 'lodash-es';
-import ToggleGroup from '../../toolbar/controls/ToggleGroup';
+import ToggleGroup from '../toolbar/controls/ToggleGroup';
 import styles from './DimensionMapper.module.css';
-import type { Axis, DimensionMapping } from '../models';
+import type { Axis, DimensionMapping } from './models';
 
 interface Props {
   axis: Axis;

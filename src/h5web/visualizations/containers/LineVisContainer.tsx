@@ -1,12 +1,12 @@
 import React, { ReactElement, useState } from 'react';
 import { range } from 'lodash-es';
 import { HDF5SimpleShape } from '../../providers/models';
-import { useDatasetValue } from '../shared/hooks';
+import { useDatasetValue } from './hooks';
 import { assertDataset } from '../../providers/utils';
-import DimensionMapper from '../../dataset-visualizer/mapper/DimensionMapper';
-import { DimensionMapping } from '../../dataset-visualizer/models';
-import MappedLineVis from './MappedLineVis';
-import { VisContainerProps } from '../shared/models';
+import DimensionMapper from '../../dimension-mapper/DimensionMapper';
+import { DimensionMapping } from '../../dimension-mapper/models';
+import MappedLineVis from '../line/MappedLineVis';
+import { VisContainerProps } from './models';
 
 function LineVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;

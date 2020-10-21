@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import type { HDF5Entity } from '../providers/models';
-import { Vis } from './models';
-import { VIS_DEFS } from '../visualizations';
+import { VIS_DEFS, Vis } from '../visualizations';
 import { ProviderContext } from '../providers/context';
 
 export function useSupportedVis(entity?: HDF5Entity): Vis[] {

@@ -1,16 +1,16 @@
 import React, { ReactElement, useState, useContext } from 'react';
 import { range } from 'lodash-es';
 import { HDF5SimpleShape } from '../../providers/models';
-import { useDatasetValue } from '../shared/hooks';
+import { useDatasetValue } from './hooks';
 import { assertGroup } from '../../providers/utils';
-import DimensionMapper from '../../dataset-visualizer/mapper/DimensionMapper';
-import { DimensionMapping } from '../../dataset-visualizer/models';
+import DimensionMapper from '../../dimension-mapper/DimensionMapper';
+import { DimensionMapping } from '../../dimension-mapper/models';
+import MappedLineVis from '../line/MappedLineVis';
 import { ProviderContext } from '../../providers/context';
-import { getSignalDataset } from './utils';
-import { VisContainerProps } from '../shared/models';
-import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
+import { getSignalDataset } from '../nexus/utils';
+import { VisContainerProps } from './models';
 
-function NxImageContainer(props: VisContainerProps): ReactElement {
+function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertGroup(entity);
 
@@ -22,13 +22,12 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   }
 
   const { dims } = dataset.shape as HDF5SimpleShape;
-  if (dims.length < 2) {
-    throw new Error('Expected dataset with at least two dimensions');
+  if (dims.length < 1) {
+    throw new Error('Expected dataset with at least one dimension');
   }
 
   const [mapperState, setMapperState] = useState<DimensionMapping>([
-    ...range(dims.length - 2).fill(0),
-    'y',
+    ...range(dims.length - 1).fill(0),
     'x',
   ]);
 
@@ -45,7 +44,7 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
         mapperState={mapperState}
         onChange={setMapperState}
       />
-      <MappedHeatmapVis
+      <MappedLineVis
         value={value}
         dataset={dataset}
         mapperState={mapperState}
@@ -54,4 +53,4 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   );
 }
 
-export default NxImageContainer;
+export default NxSpectrumContainer;

@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
-import ScalarVis from './ScalarVis';
-import { useDatasetValue } from './shared/hooks';
-import { assertDataset } from '../providers/utils';
-import { VisContainerProps } from './shared/models';
+import ScalarVis from '../ScalarVis';
+import { useDatasetValue } from './hooks';
+import { assertDataset } from '../../providers/utils';
+import { VisContainerProps } from './models';
 
 function ScalarVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
