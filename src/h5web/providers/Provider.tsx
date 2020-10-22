@@ -17,12 +17,20 @@ function Provider(props: Props): JSX.Element {
     return <></>;
   }
 
+  const getValue = api.getValue.bind(api);
+
   return (
     <ProviderContext.Provider
       value={{
         domain: api.domain,
         metadata,
-        getValue: api.getValue.bind(api),
+        getValue,
+        getValues: (idsRecord) =>
+          Promise.all(
+            Object.entries(idsRecord).map(([name, id]) =>
+              getValue(id).then((val) => [name, val])
+            )
+          ).then(Object.fromEntries),
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import type { HDF5Dataset, HDF5Value } from '../../providers/models';
+import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import MatrixVis from './MatrixVis';
 import { assertArray } from '../shared/utils';
@@ -7,15 +7,15 @@ import { useMappedArray, useBaseArray } from '../shared/hooks';
 
 interface Props {
   value: HDF5Value;
-  dataset: HDF5Dataset;
+  dims: number[];
   mapperState: DimensionMapping;
 }
 
 function MappedMatrixVis(props: Props): ReactElement {
-  const { value, dataset, mapperState } = props;
+  const { value, dims, mapperState } = props;
   assertArray<number | string>(value);
 
-  const baseArray = useBaseArray(dataset, value);
+  const baseArray = useBaseArray(value, dims);
   const dataArray = useMappedArray(baseArray, mapperState);
   return <MatrixVis dataArray={dataArray} />;
 }

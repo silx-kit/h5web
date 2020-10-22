@@ -36,11 +36,7 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
         mapperState={mapperState}
         onChange={setMapperState}
       />
-      <MappedHeatmapVis
-        value={value}
-        dataset={entity}
-        mapperState={mapperState}
-      />
+      <MappedHeatmapVis value={value} dims={dims} mapperState={mapperState} />
     </>
   );
 }

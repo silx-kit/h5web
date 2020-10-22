@@ -1,4 +1,4 @@
-export type NxAttribute = 'signal' | 'interpretation';
+export type NxAttribute = 'signal' | 'interpretation' | 'axes';
 
 export enum NxInterpretation {
   Spectrum = 'spectrum',
