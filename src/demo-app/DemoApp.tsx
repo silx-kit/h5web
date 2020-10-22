@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from '../h5web/App';
+import Loader from '../h5web/visualizer/Loader';
 import SilxProvider from '../h5web/providers/silx/SilxProvider';
-import MockProvider from '../h5web/providers/mock/MockProvider';
 import HsdsProvider from '../h5web/providers/hsds/HsdsProvider';
+
+// Split mock data generation code out of main bundle
+const MockProvider = lazy(() => import('../h5web/providers/mock/MockProvider'));
 
 const HSDS_URL = process.env.REACT_APP_HSDS_URL || '';
 const HSDS_USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';
@@ -15,9 +18,11 @@ function DemoApp(): JSX.Element {
     <Router>
       <Switch>
         <Route path="/mock">
-          <MockProvider domain="source.h5">
-            <App />
-          </MockProvider>
+          <Suspense fallback={<Loader />}>
+            <MockProvider domain="source.h5">
+              <App />
+            </MockProvider>
+          </Suspense>
         </Route>
         <Route path="/hsds">
           <HsdsProvider
