@@ -92,7 +92,7 @@ export function getValueToIndexScale(
   const indices = range(values.length);
 
   const thresholds = switchAtMidpoints
-    ? values.map((x, i) => values[i - 1] + (values[i] - values[i - 1]) / 2) // Shift the thresholds for the switch from i-1 to i to happen between values[i-1] and values[i]
+    ? values.map((_, i) => values[i - 1] + (values[i] - values[i - 1]) / 2) // Shift the thresholds for the switch from i-1 to i to happen between values[i-1] and values[i]
     : values; // Else, the switch from i-1 to i will happen at values[i]
 
   const valueToIndexScale = scaleThreshold();

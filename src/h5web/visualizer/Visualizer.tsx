@@ -1,11 +1,12 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useContext } from 'react';
 import { AsyncResourceContent } from 'use-async-resource';
 import type { HDF5Entity } from '../providers/models';
 import styles from './Visualizer.module.css';
-import { useSupportedVis } from './hooks';
+import { getSupportedVis } from './utils';
 import { VIS_DEFS, Vis } from '../visualizations';
 import VisSelector from './VisSelector';
 import Loader from './Loader';
+import { ProviderContext } from '../providers/context';
 
 interface Props {
   entity?: HDF5Entity;
@@ -13,8 +14,9 @@ interface Props {
 
 function Visualizer(props: Props): ReactElement {
   const { entity } = props;
+  const { metadata } = useContext(ProviderContext);
 
-  const supportedVis = useSupportedVis(entity);
+  const supportedVis = entity ? getSupportedVis(entity, metadata) : [];
   const [activeVis, setActiveVis] = useState<Vis>();
 
   // Update `activeVis` state as needed
