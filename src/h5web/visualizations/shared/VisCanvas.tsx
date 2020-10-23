@@ -23,7 +23,9 @@ function VisCanvas(props: Props): JSX.Element {
 
   const axisOffsets = {
     left: AXIS_OFFSETS.vertical,
-    bottom: AXIS_OFFSETS.horizontal,
+    bottom: abscissaConfig.label
+      ? AXIS_OFFSETS.horizontal + AXIS_OFFSETS.fallback
+      : AXIS_OFFSETS.horizontal,
     right: AXIS_OFFSETS.fallback,
     top: AXIS_OFFSETS.fallback,
   };

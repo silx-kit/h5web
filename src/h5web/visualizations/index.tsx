@@ -15,9 +15,9 @@ import {
 import type { VisContainerProps } from './containers/models';
 import {
   isNxDataGroup,
-  getSignalDataset,
   getAttributeValue,
   isNxInterpretation,
+  getLinkedEntity,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
 import {
@@ -116,8 +116,12 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return false;
       }
 
-      const dataset = getSignalDataset(entity, metadata);
-      if (!dataset) {
+      const signal = getAttributeValue(entity, 'signal');
+      if (typeof signal !== 'string') {
+        return false;
+      }
+      const dataset = getLinkedEntity(entity, metadata, signal);
+      if (!dataset || !isDataset(dataset)) {
         return false;
       }
 
@@ -143,8 +147,12 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return false;
       }
 
-      const dataset = getSignalDataset(entity, metadata);
-      if (!dataset) {
+      const signal = getAttributeValue(entity, 'signal');
+      if (typeof signal !== 'string') {
+        return false;
+      }
+      const dataset = getLinkedEntity(entity, metadata, signal);
+      if (!dataset || !isDataset(dataset)) {
         return false;
       }
 

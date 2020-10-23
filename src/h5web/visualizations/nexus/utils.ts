@@ -5,9 +5,9 @@ import type {
   HDF5Value,
   HDF5Entity,
 } from '../../providers/models';
-import { getEntity, isDataset } from '../../providers/utils';
+import { getEntity } from '../../providers/utils';
 import { NxAttribute, NX_INTERPRETATIONS } from './models';
-import { assertArray, assertStr } from '../shared/utils';
+import { assertArray } from '../shared/utils';
 
 export function isNxDataGroup(group: HDF5Group): boolean {
   return !!group.attributes?.find(({ value }) => value === 'NXdata');
@@ -40,21 +40,6 @@ export function getLinkedEntity(
   const childLink = group.links?.find((l) => l.title === entityName);
 
   return getEntity(childLink, metadata);
-}
-
-export function getSignalDataset(
-  group: HDF5Group,
-  metadata: HDF5Metadata
-): HDF5Dataset | undefined {
-  const signal = getAttributeValue(group, 'signal');
-  if (!signal) {
-    return undefined;
-  }
-
-  assertStr(signal);
-  const signalDataset = getLinkedEntity(group, metadata, signal);
-
-  return signalDataset && isDataset(signalDataset) ? signalDataset : undefined;
 }
 
 export function getAxesLabels(group: HDF5Group): Array<string | undefined> {

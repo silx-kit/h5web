@@ -7,7 +7,7 @@ import DataCurve from './DataCurve';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
-import { ScaleType, Domain } from '../shared/models';
+import { ScaleType, Domain, AxisParams } from '../shared/models';
 import { CurveType } from './models';
 import { getValueToIndexScale, getDomain, extendDomain } from '../shared/utils';
 
@@ -19,7 +19,8 @@ interface Props {
   scaleType?: ScaleType;
   curveType?: CurveType;
   showGrid?: boolean;
-  abscissas?: number[];
+  abscissaParams?: AxisParams;
+  ordinateLabel?: string;
 }
 
 function LineVis(props: Props): ReactElement {
@@ -29,8 +30,14 @@ function LineVis(props: Props): ReactElement {
     curveType = CurveType.LineOnly,
     showGrid = true,
     scaleType = ScaleType.Linear,
-    abscissas = range(dataArray.size),
+    abscissaParams = {},
+    ordinateLabel,
   } = props;
+
+  const {
+    label: abscissaLabel,
+    values: abscissas = range(dataArray.size),
+  } = abscissaParams;
 
   if (abscissas.length !== dataArray.size) {
     throw new Error(
@@ -62,16 +69,20 @@ function LineVis(props: Props): ReactElement {
           domain: abscissaDomain,
           showGrid,
           isIndexAxis: !abscissas,
+          label: abscissaLabel,
         }}
         ordinateConfig={{
           domain: dataDomain,
           showGrid,
           scaleType,
+          label: ordinateLabel,
         }}
       >
         <TooltipMesh
           formatIndex={([x]) =>
-            `x=${format('0')(abscissas[abscissaToIndex(x)])}`
+            `${abscissaLabel || 'x'}=${format('0')(
+              abscissas[abscissaToIndex(x)]
+            )}`
           }
           formatValue={([x]) => {
             const value = dataArray.get(abscissaToIndex(x));

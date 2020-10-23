@@ -56,11 +56,28 @@ NoGrid.args = {
   ordinateConfig: { domain: [0, 2], showGrid: false },
 };
 
+export const AxesLabels = Template.bind({});
+
+AxesLabels.args = {
+  abscissaConfig: { domain: [0, 3], showGrid: true, label: 'Abscissas' },
+  ordinateConfig: { domain: [50, 100], showGrid: true, label: 'Ordinates' },
+};
+
 export const InheritedStyles = Template.bind({});
 
 InheritedStyles.args = {
-  abscissaConfig: { domain: [0, 50], showGrid: true, isIndexAxis: true },
-  ordinateConfig: { domain: [0, 3], showGrid: true, isIndexAxis: true },
+  abscissaConfig: {
+    domain: [0, 50],
+    showGrid: true,
+    isIndexAxis: true,
+    label: 'X values',
+  },
+  ordinateConfig: {
+    domain: [0, 3],
+    showGrid: true,
+    isIndexAxis: true,
+    label: 'Y values',
+  },
 };
 
 InheritedStyles.decorators = [

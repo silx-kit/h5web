@@ -8,20 +8,23 @@ import { DimensionMapping } from '../../dimension-mapper/models';
 import MappedLineVis from '../line/MappedLineVis';
 import { ProviderContext } from '../../providers/context';
 import {
-  getSignalDataset,
+  getAttributeValue,
   getLinkedEntity,
   getAxesLabels,
 } from '../nexus/utils';
 import { VisContainerProps } from './models';
+import { assertStr } from '../shared/utils';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertGroup(entity);
 
   const { metadata } = useContext(ProviderContext);
-  const signalDataset = getSignalDataset(entity, metadata);
+  const signal = getAttributeValue(entity, 'signal');
+  assertStr(signal);
+  const signalDataset = getLinkedEntity(entity, metadata, signal);
 
-  if (!signalDataset) {
+  if (!signalDataset || !isDataset(signalDataset)) {
     throw new Error('Signal dataset not found');
   }
 
@@ -64,6 +67,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
       />
       <MappedLineVis
         value={values.signal}
+        valueLabel={signal}
         axesLabels={axesLabels}
         axesValues={values}
         dims={dims}
