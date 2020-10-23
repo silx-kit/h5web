@@ -120,20 +120,26 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       if (typeof signal !== 'string') {
         return false;
       }
+
       const dataset = getLinkedEntity(entity, metadata, signal);
-      if (!dataset || !isDataset(dataset)) {
+      if (
+        !dataset ||
+        !isDataset(dataset) ||
+        !isNumericType(dataset.type) ||
+        !isSimpleShape(dataset.shape)
+      ) {
+        return false;
+      }
+
+      const dimsCount = dataset.shape.dims.length;
+      if (dimsCount === 0) {
         return false;
       }
 
       const interpretation = getAttributeValue(dataset, 'interpretation');
-      if (isNxInterpretation(interpretation)) {
-        return interpretation === NxInterpretation.Spectrum;
-      }
-
       return (
-        isNumericType(dataset.type) &&
-        isSimpleShape(dataset.shape) &&
-        dataset.shape.dims.length === 1
+        (!isNxInterpretation(interpretation) && dimsCount === 1) || // NxImage already suports datasets with 2+ dimensions
+        interpretation === NxInterpretation.Spectrum
       );
     },
   },
@@ -151,20 +157,26 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       if (typeof signal !== 'string') {
         return false;
       }
+
       const dataset = getLinkedEntity(entity, metadata, signal);
-      if (!dataset || !isDataset(dataset)) {
+      if (
+        !dataset ||
+        !isDataset(dataset) ||
+        !isNumericType(dataset.type) ||
+        !isSimpleShape(dataset.shape)
+      ) {
+        return false;
+      }
+
+      const dimsCount = dataset.shape.dims.length;
+      if (dimsCount < 2) {
         return false;
       }
 
       const interpretation = getAttributeValue(dataset, 'interpretation');
-      if (isNxInterpretation(interpretation)) {
-        return interpretation === NxInterpretation.Image;
-      }
-
       return (
-        isNumericType(dataset.type) &&
-        isSimpleShape(dataset.shape) &&
-        dataset.shape.dims.length >= 2
+        !isNxInterpretation(interpretation) ||
+        interpretation === NxInterpretation.Image
       );
     },
   },

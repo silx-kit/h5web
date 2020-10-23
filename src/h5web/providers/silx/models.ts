@@ -1,5 +1,4 @@
 import {
-  HDF5Value,
   HDF5Id,
   HDF5Collection,
   HDF5Entity,
@@ -16,5 +15,3 @@ export interface SilxMetadataResponse {
   [HDF5Collection.Datasets]?: Record<HDF5Id, BareEntity<HDF5Dataset>>;
   [HDF5Collection.Datatypes]?: Record<HDF5Id, BareEntity<HDF5Datatype>>;
 }
-
-export type SilxValuesResponse = Record<string, HDF5Value>;

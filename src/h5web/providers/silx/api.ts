@@ -1,13 +1,19 @@
 import axios, { AxiosInstance } from 'axios';
 import { mapValues } from 'lodash-es';
 import type { ProviderAPI } from '../context';
-import { HDF5Id, HDF5Value, HDF5Metadata, HDF5Collection } from '../models';
-import type { SilxValuesResponse, SilxMetadataResponse } from './models';
+import {
+  HDF5Id,
+  HDF5Value,
+  HDF5Metadata,
+  HDF5Collection,
+  HDF5Values,
+} from '../models';
+import type { SilxMetadataResponse } from './models';
 
 export class SilxApi implements ProviderAPI {
   public readonly domain: string;
   private readonly client: AxiosInstance;
-  private values?: Record<string, HDF5Value>;
+  private values?: HDF5Values;
 
   constructor(domain: string) {
     this.domain = domain;
@@ -29,7 +35,7 @@ export class SilxApi implements ProviderAPI {
       return this.values[id];
     }
 
-    const { data } = await this.client.get<SilxValuesResponse>('/values.json');
+    const { data } = await this.client.get<HDF5Values>('/values.json');
 
     this.values = data;
     return this.values[id];
