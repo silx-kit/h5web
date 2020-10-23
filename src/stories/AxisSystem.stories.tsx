@@ -63,6 +63,14 @@ AxesLabels.args = {
   ordinateConfig: { domain: [50, 100], showGrid: true, label: 'Ordinates' },
 };
 
+export const GraphTitle = Template.bind({});
+
+GraphTitle.args = {
+  abscissaConfig: { domain: [0, 3], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { domain: [50, 100], showGrid: true, isIndexAxis: true },
+  canvasTitle: 'This is a graph',
+};
+
 export const InheritedStyles = Template.bind({});
 
 InheritedStyles.args = {
@@ -78,6 +86,7 @@ InheritedStyles.args = {
     isIndexAxis: true,
     label: 'Y values',
   },
+  canvasTitle: 'The title',
 };
 
 InheritedStyles.decorators = [

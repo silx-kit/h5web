@@ -44,3 +44,12 @@
   font-size: inherit;
   font-weight: 600;
 }
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: top-axis;
+  color: darkslategrey;
+  font-size: 1.125em;
+}

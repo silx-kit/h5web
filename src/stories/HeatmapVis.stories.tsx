@@ -116,6 +116,14 @@ CustomCoordinates.args = {
     .map((x, i) => -5 + 0.5 * i),
 };
 
+export const WithTitle = Template.bind({});
+
+WithTitle.args = {
+  dataArray,
+  domain,
+  dataLabel: 'Pretty colors',
+};
+
 export default {
   title: 'Visualizations/HeatmapVis',
   component: HeatmapVis,

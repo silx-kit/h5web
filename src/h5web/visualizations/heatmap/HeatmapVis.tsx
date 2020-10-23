@@ -23,6 +23,7 @@ interface Props {
   showLoader?: boolean;
   abscissas?: number[];
   ordinates?: number[];
+  dataLabel?: string;
 }
 
 function HeatmapVis(props: Props): JSX.Element {
@@ -34,6 +35,7 @@ function HeatmapVis(props: Props): JSX.Element {
     keepAspectRatio = true,
     showGrid = false,
     showLoader = true,
+    dataLabel,
   } = props;
 
   const { rows, cols } = getDims(dataArray);
@@ -88,6 +90,7 @@ function HeatmapVis(props: Props): JSX.Element {
           isIndexAxis: !ordinates,
         }}
         aspectRatio={aspectRatio}
+        canvasTitle={dataLabel}
       >
         <TooltipMesh
           formatIndex={([x, y]) => {

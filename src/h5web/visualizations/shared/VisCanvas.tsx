@@ -13,11 +13,18 @@ interface Props {
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   aspectRatio?: number;
+  canvasTitle?: string;
   children: ReactNode;
 }
 
 function VisCanvas(props: Props): JSX.Element {
-  const { abscissaConfig, ordinateConfig, aspectRatio, children } = props;
+  const {
+    abscissaConfig,
+    ordinateConfig,
+    aspectRatio,
+    canvasTitle,
+    children,
+  } = props;
 
   const [visAreaRef, visAreaSize] = useMeasure();
 
@@ -27,7 +34,7 @@ function VisCanvas(props: Props): JSX.Element {
       ? AXIS_OFFSETS.horizontal + AXIS_OFFSETS.fallback
       : AXIS_OFFSETS.horizontal,
     right: AXIS_OFFSETS.fallback,
-    top: AXIS_OFFSETS.fallback,
+    top: canvasTitle ? AXIS_OFFSETS.horizontal : AXIS_OFFSETS.fallback,
   };
 
   const availableSize = {
@@ -62,7 +69,7 @@ function VisCanvas(props: Props): JSX.Element {
               abscissaConfig={abscissaConfig}
               ordinateConfig={ordinateConfig}
             >
-              <AxisSystem axisOffsets={axisOffsets} />
+              <AxisSystem title={canvasTitle} axisOffsets={axisOffsets} />
               {children}
             </AxisSystemProvider>
           </Canvas>
