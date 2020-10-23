@@ -17,3 +17,31 @@ export function generateCSSLinearGradient(
 
   return `linear-gradient(to ${direction},${gradientColors})`;
 }
+
+export function getPixelEdges(
+  pixelCoordinates: number[] | undefined,
+  nPixels: number
+): number[] {
+  if (!pixelCoordinates) {
+    return range(nPixels + 1);
+  }
+
+  if (pixelCoordinates.length === nPixels + 1) {
+    return pixelCoordinates;
+  }
+
+  if (pixelCoordinates.length === nPixels) {
+    // Add the last edge assuming the pixelCoordinates are regularly spaced
+    const deltaCoord = pixelCoordinates[1] - pixelCoordinates[0];
+    return [
+      ...pixelCoordinates,
+      pixelCoordinates[pixelCoordinates.length - 1] + deltaCoord,
+    ];
+  }
+
+  throw new Error(
+    `Supplied pixel coordinate array (${
+      pixelCoordinates.length
+    }) has not the expected length (${nPixels} or ${nPixels + 1})`
+  );
+}

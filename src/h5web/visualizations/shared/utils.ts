@@ -187,3 +187,11 @@ export function assertArray<T>(val: unknown): asserts val is T[] {
     throw new Error('Expected array');
   }
 }
+
+export function assertOptionalArray<T>(
+  val: unknown
+): asserts val is T[] | undefined {
+  if (val !== undefined) {
+    assertArray<T>(val);
+  }
+}
