@@ -3,6 +3,8 @@
 
 export type HDF5Id = string;
 export type HDF5Value = unknown;
+export type HDF5Values = Record<HDF5Id, HDF5Value>;
+export type HDF5Dims = number[];
 
 export enum HDF5Collection {
   Groups = 'groups',
@@ -109,8 +111,8 @@ export enum HDF5ShapeClass {
 
 export interface HDF5SimpleShape {
   class: HDF5ShapeClass.Simple;
-  dims: number[];
-  maxdims?: number[];
+  dims: HDF5Dims;
+  maxdims?: HDF5Dims;
 }
 
 export interface HDF5ScalarShape {
@@ -130,7 +132,7 @@ export type HDF5Type = HDF5BaseType | HDF5AdvancedType;
 export type HDF5BaseType = HDF5NumericType | HDF5StringType;
 export type HDF5NumericType = HDF5IntegerType | HDF5FloatType;
 
-type HDF5AdvancedType =
+export type HDF5AdvancedType =
   | HDF5Id
   | HDF5ArrayType
   | HDF5VLenType
@@ -145,7 +147,7 @@ export enum HDF5TypeClass {
   Compound = 'H5T_COMPOUND',
 }
 
-interface HDF5IntegerType {
+export interface HDF5IntegerType {
   class: HDF5TypeClass.Integer;
   base:
     | 'H5T_STD_I8BE'
@@ -174,7 +176,7 @@ interface HDF5IntegerType {
     | 'H5T_STD_B64LE';
 }
 
-interface HDF5FloatType {
+export interface HDF5FloatType {
   class: HDF5TypeClass.Float;
   base:
     | 'H5T_IEEE_F32BE'
@@ -183,7 +185,7 @@ interface HDF5FloatType {
     | 'H5T_IEEE_F64LE';
 }
 
-interface HDF5StringType {
+export interface HDF5StringType {
   class: HDF5TypeClass.String;
   charSet: 'H5T_CSET_ASCII' | 'H5T_CSET_UTF8';
   strPad: 'H5T_STR_SPACEPAD' | 'H5T_STR_NULLTERM' | 'H5T_STR_NULLPAD';
@@ -193,7 +195,7 @@ interface HDF5StringType {
 interface HDF5ArrayType {
   class: HDF5TypeClass.Array;
   base: HDF5BaseType;
-  dims: number[];
+  dims: HDF5Dims;
 }
 
 interface HDF5VLenType {
