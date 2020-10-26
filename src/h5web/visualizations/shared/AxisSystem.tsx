@@ -10,10 +10,11 @@ import Axis from './Axis';
 
 interface Props {
   axisOffsets: AxisOffsets;
+  title?: string;
 }
 
 function AxisSystem(props: Props): JSX.Element {
-  const { axisOffsets } = props;
+  const { axisOffsets, title } = props;
 
   const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
 
@@ -60,6 +61,7 @@ function AxisSystem(props: Props): JSX.Element {
         gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
       }}
     >
+      {title && <div className={styles.title}>{title}</div>}
       <Axis
         type="abscissa"
         scale={xTicksScale}

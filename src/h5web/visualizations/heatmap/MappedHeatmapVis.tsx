@@ -11,10 +11,11 @@ interface Props {
   value: HDF5Value;
   dims: number[];
   mapperState: DimensionMapping;
+  valueLabel?: string;
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {
-  const { value, dims, mapperState } = props;
+  const { value, dims, valueLabel, mapperState } = props;
   assertArray<number>(value);
 
   const {
@@ -52,6 +53,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
   return (
     <HeatmapVis
       dataArray={dataArray}
+      dataLabel={valueLabel}
       domain={domain}
       colorMap={colorMap}
       scaleType={scaleType}
