@@ -15,8 +15,11 @@ import {
   makeMetadata,
   withAttributes,
   makeDatasetHardLink,
-  makeNxDataGroup,
+  makeNxData,
   floatType,
+  makeNxEntry,
+  makeNxRoot,
+  makeGroupHardLink,
 } from '../providers/mock/data';
 
 const datasetIntScalar = makeDataset('dataset_int', intType, scalarShape);
@@ -28,6 +31,19 @@ const datasetInt2D = makeSimpleDataset('dataset_int_2d', intType, [5, 3]);
 const datasetStr1D = makeSimpleDataset('dataset_str_1d', stringType, [5]);
 const datasetStr2D = makeSimpleDataset('dataset_str_2d', stringType, [5, 3]);
 const datasetFlt3D = makeSimpleDataset('dataset_flt_3d', intType, [5, 3, 1]);
+
+const nxImageDataset = makeSimpleDataset(
+  'dataset_int_2d_nx',
+  intType,
+  [4, 6],
+  [makeStrAttr('interpretation', NxInterpretation.Image)]
+);
+const nxSpectrumDataset = makeSimpleDataset(
+  'dataset_int_1d_nx',
+  intType,
+  [6],
+  [makeStrAttr('interpretation', NxInterpretation.Spectrum)]
+);
 
 const groupEmpty = makeGroup('group_empty');
 const datatypeInt = makeDatatype('datatype_int', intType);
@@ -161,7 +177,7 @@ describe('Visualization definitions', () => {
     const supportsEntity = makeSupportFn(Vis.NxSpectrum);
 
     it('should support NXdata group referencing signal with spectrum interpretation', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
@@ -178,7 +194,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should support NXdata group referencing signal with numeric type, simple shape, one dimension and no interpretation', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
@@ -188,7 +204,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should support NXdata group referencing signal with numeric type, simple shape, one dimension and unknown interpretation', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
@@ -205,7 +221,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with non-numeric type', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetStr1D.id },
       });
@@ -215,7 +231,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with non-simple shape', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetIntScalar.id },
       });
@@ -225,7 +241,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with no dimension', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt0D.id },
       });
@@ -235,7 +251,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with non-spectrum interpretation', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
@@ -252,7 +268,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with spectrum interpretation but non-supported type/shape', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetIntScalar.id },
       });
@@ -268,8 +284,8 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(group, metadata)).toBe(false);
     });
 
-    it('should not support NXdata group referencing inexistent signal', () => {
-      const group = makeNxDataGroup('foo', {
+    it('should not support NXdata group referencing nonexistant signal', () => {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
@@ -279,7 +295,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group with missing signal link', () => {
-      const group = makeNxDataGroup('foo', { signal: 'my_signal' });
+      const group = makeNxData('foo', { signal: 'my_signal' });
       const metadata = makeMetadata({ datasets: [datasetInt1D] });
       expect(supportsEntity(group, metadata)).toBe(false);
     });
@@ -304,13 +320,204 @@ describe('Visualization definitions', () => {
       const metadata = makeMetadata({ datasets: [datasetInt1D] });
       expect(supportsEntity(group, metadata)).toBe(false);
     });
+
+    it('should support a NXentity with default being a relative path to a valid NXdata group', () => {
+      const group = makeNxData('spectrum', {
+        signal: 'my_signal',
+        ids: { my_signal: nxSpectrumDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: 'spectrum',
+        ids: { spectrum: group.id },
+      });
+
+      const metadata = makeMetadata({
+        datasets: [nxSpectrumDataset],
+        groups: [group, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(true);
+    });
+
+    it('should support a NXentity with default being an absolute path to a valid NXdata group', () => {
+      const group = makeNxData('spectrum', {
+        signal: 'my_signal',
+        ids: { my_signal: nxSpectrumDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: '/entry/spectrum',
+        ids: { spectrum: group.id },
+      });
+
+      const root = makeNxRoot('root', {
+        ids: { entry: entry.id },
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxSpectrumDataset],
+        groups: [root, group, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(true);
+    });
+
+    it('should support a NXentity with default being a deep path to a valid NXdata group', () => {
+      const group = makeNxData('spectrum', {
+        signal: 'my_signal',
+        ids: { my_signal: nxSpectrumDataset.id },
+      });
+
+      const intermediateGroup = makeGroup(
+        'intermediate',
+        [],
+        [makeGroupHardLink('spectrum', group.id)]
+      );
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: 'intermediate/spectrum',
+        ids: { intermediate: intermediateGroup.id },
+      });
+
+      const metadata = makeMetadata({
+        datasets: [nxSpectrumDataset],
+        groups: [group, intermediateGroup, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(true);
+    });
+
+    it('should support a NXroot with a default attribute pointing to a valid NXentity with a valid default (relative paths)', () => {
+      const group = makeNxData('spectrum', {
+        signal: 'my_signal',
+        ids: { my_signal: nxSpectrumDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: 'spectrum',
+        ids: { spectrum: group.id },
+      });
+
+      const root = makeNxRoot('root', {
+        defaultPath: 'entry',
+        ids: { entry: entry.id },
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxSpectrumDataset],
+        groups: [root, entry, group],
+      });
+
+      expect(supportsEntity(root, metadata)).toBe(true);
+    });
+
+    it('should support a NXroot with a default attribute pointing to a valid NXentity with a valid default (absolute paths)', () => {
+      const group = makeNxData('spectrum', {
+        signal: 'my_signal',
+        ids: { my_signal: nxSpectrumDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: '/entry/spectrum',
+        ids: { spectrum: group.id },
+      });
+
+      const root = makeNxRoot('root', {
+        defaultPath: '/entry',
+        ids: { entry: entry.id },
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxSpectrumDataset],
+        groups: [root, entry, group],
+      });
+
+      expect(supportsEntity(root, metadata)).toBe(true);
+    });
+
+    it('should not support a NXentity without default attribute', () => {
+      const group = makeNxData('spectrum', {
+        signal: 'my_signal',
+        ids: { my_signal: nxSpectrumDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        ids: { spectrum: group.id }, // missing default attribute
+      });
+
+      const metadata = makeMetadata({
+        datasets: [nxSpectrumDataset],
+        groups: [group, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(false);
+    });
+
+    it('should not support a NXentity with default being an absolute path to a non-NXdata entity', () => {
+      const group = makeGroup(
+        'nonValidSpectrum',
+        [makeStrAttr('signal', 'my_signal')], // missing NXdata attribute
+        [makeDatasetHardLink('my_signal', nxSpectrumDataset.id)]
+      );
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: '/entry/image',
+        ids: { nonValidSpectrum: group.id },
+      });
+
+      const root = makeNxRoot('root', {
+        ids: { entry: entry.id },
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxSpectrumDataset],
+        groups: [root, group, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(false);
+    });
+
+    it('should not support a NXroot without default attribute', () => {
+      const group = makeNxData('spectrum', {
+        signal: 'my_signal',
+        ids: { my_signal: nxSpectrumDataset.id },
+      });
+
+      const intermediateGroup = makeGroup(
+        'intermediate',
+        [],
+        [makeGroupHardLink('spectrum', group.id)]
+      );
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: '/entry/intermediate/spectrum',
+        ids: { intermediate: intermediateGroup.id },
+      });
+
+      const root = makeNxRoot('root', {
+        ids: { entry: entry.id }, // missing default attribute
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxSpectrumDataset],
+        groups: [root, entry, intermediateGroup, group],
+      });
+
+      expect(supportsEntity(root, metadata)).toBe(false);
+    });
   });
 
   describe('Vis.NxImage', () => {
     const supportsEntity = makeSupportFn(Vis.NxImage);
 
     it('should support NXdata group referencing signal with image interpretation', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt2D.id },
       });
@@ -327,7 +534,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should support NXdata group referencing signal with numeric type, simple shape, two dimensions and no interpretation', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt2D.id },
       });
@@ -337,7 +544,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should support NXdata group referencing signal with numeric type, simple shape, more than two dimensions and unknown interpretation', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetFlt3D.id },
       });
@@ -354,7 +561,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with non-numeric type', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetStr2D.id },
       });
@@ -364,7 +571,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with non-simple shape', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetIntScalar.id },
       });
@@ -374,7 +581,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with less than two dimensions', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
@@ -384,7 +591,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with non-image interpretation', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt2D.id },
       });
@@ -401,7 +608,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing signal with image interpretation but non-supported type/shape', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetIntScalar.id },
       });
@@ -418,7 +625,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group referencing inexistent signal', () => {
-      const group = makeNxDataGroup('foo', {
+      const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
@@ -428,7 +635,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support NXdata group with missing signal link', () => {
-      const group = makeNxDataGroup('foo', { signal: 'my_signal' });
+      const group = makeNxData('foo', { signal: 'my_signal' });
       const metadata = makeMetadata({ datasets: [datasetInt2D] });
       expect(supportsEntity(group, metadata)).toBe(false);
     });
@@ -452,6 +659,197 @@ describe('Visualization definitions', () => {
 
       const metadata = makeMetadata({ datasets: [datasetInt2D] });
       expect(supportsEntity(group, metadata)).toBe(false);
+    });
+
+    it('should support a NXentity with default being a relative path to a valid NXdata group', () => {
+      const group = makeNxData('image', {
+        signal: 'my_signal',
+        ids: { my_signal: nxImageDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: 'image',
+        ids: { image: group.id },
+      });
+
+      const metadata = makeMetadata({
+        datasets: [nxImageDataset],
+        groups: [group, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(true);
+    });
+
+    it('should support a NXentity with default being an absolute path to a valid NXdata group', () => {
+      const group = makeNxData('image', {
+        signal: 'my_signal',
+        ids: { my_signal: nxImageDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: '/entry/image',
+        ids: { image: group.id },
+      });
+
+      const root = makeNxRoot('root', {
+        ids: { entry: entry.id },
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxImageDataset],
+        groups: [root, group, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(true);
+    });
+
+    it('should support a NXentity with default being a deep path to a valid NXdata group', () => {
+      const group = makeNxData('image', {
+        signal: 'my_signal',
+        ids: { my_signal: nxImageDataset.id },
+      });
+
+      const intermediateGroup = makeGroup(
+        'intermediate',
+        [],
+        [makeGroupHardLink('image', group.id)]
+      );
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: 'intermediate/image',
+        ids: { intermediate: intermediateGroup.id },
+      });
+
+      const metadata = makeMetadata({
+        datasets: [nxImageDataset],
+        groups: [group, intermediateGroup, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(true);
+    });
+
+    it('should support a NXroot with a default attribute pointing to a valid NXentity with a valid default (relative paths)', () => {
+      const group = makeNxData('image', {
+        signal: 'my_signal',
+        ids: { my_signal: nxImageDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: 'image',
+        ids: { image: group.id },
+      });
+
+      const root = makeNxRoot('root', {
+        defaultPath: 'entry',
+        ids: { entry: entry.id },
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxImageDataset],
+        groups: [root, entry, group],
+      });
+
+      expect(supportsEntity(root, metadata)).toBe(true);
+    });
+
+    it('should support a NXroot with a default attribute pointing to a valid NXentity with a valid default (absolute paths)', () => {
+      const group = makeNxData('image', {
+        signal: 'my_signal',
+        ids: { my_signal: nxImageDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: '/entry/image',
+        ids: { image: group.id },
+      });
+
+      const root = makeNxRoot('root', {
+        defaultPath: '/entry',
+        ids: { entry: entry.id },
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxImageDataset],
+        groups: [root, entry, group],
+      });
+
+      expect(supportsEntity(root, metadata)).toBe(true);
+    });
+
+    it('should not support a NXentity without default attribute', () => {
+      const group = makeNxData('image', {
+        signal: 'my_signal',
+        ids: { my_signal: nxImageDataset.id },
+      });
+
+      const entry = makeNxEntry('entry', {
+        ids: { image: group.id }, // missing default attribute
+      });
+
+      const metadata = makeMetadata({
+        datasets: [nxImageDataset],
+        groups: [group, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(false);
+    });
+
+    it('should not support a NXentity with default being an absolute path to a non-NXdata entity', () => {
+      const group = makeGroup(
+        'nonValidImage',
+        [makeStrAttr('signal', 'my_signal')], // missing NXdata attribute
+        [makeDatasetHardLink('my_signal', nxImageDataset.id)]
+      );
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: '/entry/image',
+        ids: { nonValidImage: group.id },
+      });
+
+      const root = makeNxRoot('root', {
+        ids: { entry: entry.id },
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxImageDataset],
+        groups: [root, group, entry],
+      });
+
+      expect(supportsEntity(entry, metadata)).toBe(false);
+    });
+
+    it('should not support a NXroot without default attribute', () => {
+      const group = makeNxData('image', {
+        signal: 'my_signal',
+        ids: { my_signal: nxImageDataset.id },
+      });
+
+      const intermediateGroup = makeGroup(
+        'intermediate',
+        [],
+        [makeGroupHardLink('image', group.id)]
+      );
+
+      const entry = makeNxEntry('entry', {
+        defaultPath: '/entry/intermediate/image',
+        ids: { intermediate: intermediateGroup.id },
+      });
+
+      const root = makeNxRoot('root', {
+        ids: { entry: entry.id }, // missing default attribute
+      });
+
+      const metadata = makeMetadata({
+        root: root.id,
+        datasets: [nxImageDataset],
+        groups: [root, entry, intermediateGroup, group],
+      });
+
+      expect(supportsEntity(root, metadata)).toBe(false);
     });
   });
 });

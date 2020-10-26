@@ -6,7 +6,12 @@ import { assertGroup, isDataset } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import { ProviderContext } from '../../providers/context';
-import { getAttributeValue, getLinkedEntity, getNxAxes } from '../nexus/utils';
+import {
+  getAttributeValue,
+  getLinkedEntity,
+  getNxAxes,
+  getNxDataGroup,
+} from '../nexus/utils';
 import { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { assertStr } from '../shared/utils';
@@ -16,9 +21,15 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   assertGroup(entity);
 
   const { metadata } = useContext(ProviderContext);
-  const signal = getAttributeValue(entity, 'signal');
+
+  const nxDataGroup = getNxDataGroup(entity, metadata);
+  if (!nxDataGroup) {
+    throw new Error('NXdata group not found');
+  }
+
+  const signal = getAttributeValue(nxDataGroup, 'signal');
   assertStr(signal);
-  const signalDataset = getLinkedEntity(entity, metadata, signal);
+  const signalDataset = getLinkedEntity(nxDataGroup, metadata, signal);
 
   if (!signalDataset || !isDataset(signalDataset)) {
     throw new Error('Signal dataset not found');
@@ -35,7 +46,7 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
     'x',
   ]);
 
-  const axes = getNxAxes(entity, metadata);
+  const axes = getNxAxes(nxDataGroup, metadata);
 
   const values = useDatasetValues({ signal: signalDataset.id, ...axes.ids });
 

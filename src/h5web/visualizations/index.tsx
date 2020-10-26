@@ -10,14 +10,13 @@ import {
   isSimpleShape,
   isNumericType,
   isDataset,
-  isGroup,
 } from '../providers/utils';
 import type { VisContainerProps } from './containers/models';
 import {
-  isNxDataGroup,
   getAttributeValue,
   isNxInterpretation,
   getLinkedEntity,
+  getNxDataGroup,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
 import {
@@ -112,16 +111,18 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Toolbar: LineToolbar,
     Container: NxSpectrumContainer,
     supportsEntity: (entity, metadata) => {
-      if (!isGroup(entity) || !isNxDataGroup(entity)) {
+      const group = getNxDataGroup(entity, metadata);
+
+      if (!group) {
         return false;
       }
 
-      const signal = getAttributeValue(entity, 'signal');
+      const signal = getAttributeValue(group, 'signal');
       if (typeof signal !== 'string') {
         return false;
       }
 
-      const dataset = getLinkedEntity(entity, metadata, signal);
+      const dataset = getLinkedEntity(group, metadata, signal);
       if (
         !dataset ||
         !isDataset(dataset) ||
@@ -138,7 +139,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
 
       const interpretation = getAttributeValue(dataset, 'interpretation');
       return (
-        (!isNxInterpretation(interpretation) && dimsCount === 1) || // NxImage already suports datasets with 2+ dimensions
+        (!isNxInterpretation(interpretation) && dimsCount === 1) || // NxImage already supports datasets with 2+ dimensions
         interpretation === NxInterpretation.Spectrum
       );
     },
@@ -149,16 +150,18 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Toolbar: HeatmapToolbar,
     Container: NxImageContainer,
     supportsEntity: (entity, metadata) => {
-      if (!isGroup(entity) || !isNxDataGroup(entity)) {
+      const group = getNxDataGroup(entity, metadata);
+
+      if (!group) {
         return false;
       }
 
-      const signal = getAttributeValue(entity, 'signal');
+      const signal = getAttributeValue(group, 'signal');
       if (typeof signal !== 'string') {
         return false;
       }
 
-      const dataset = getLinkedEntity(entity, metadata, signal);
+      const dataset = getLinkedEntity(group, metadata, signal);
       if (
         !dataset ||
         !isDataset(dataset) ||
