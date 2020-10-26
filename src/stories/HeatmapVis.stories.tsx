@@ -103,17 +103,47 @@ LiveDataWithoutLoader.args = {
   showLoader: false,
 };
 
-export const CustomCoordinates = Template.bind({});
+export const CustomEdges = Template.bind({});
 
-CustomCoordinates.args = {
+CustomEdges.args = {
   dataArray,
   domain,
-  abscissas: Array(dataArray.shape[1] + 1)
-    .fill(0)
-    .map((x, i) => 100 + 10 * i),
-  ordinates: Array(dataArray.shape[0] + 1)
-    .fill(0)
-    .map((x, i) => -5 + 0.5 * i),
+  abscissaParams: {
+    values: Array(dataArray.shape[1] + 1)
+      .fill(0)
+      .map((_, i) => 100 + 10 * i),
+  },
+  ordinateParams: {
+    values: Array(dataArray.shape[0] + 1)
+      .fill(0)
+      .map((_, i) => -5 + 0.5 * i),
+  },
+};
+
+export const CustomEdgesWithExtension = Template.bind({});
+
+CustomEdgesWithExtension.args = {
+  dataArray,
+  domain,
+  abscissaParams: {
+    values: Array(dataArray.shape[1])
+      .fill(0)
+      .map((_, i) => 100 + 10 * i),
+  },
+  ordinateParams: {
+    values: Array(dataArray.shape[0])
+      .fill(0)
+      .map((_, i) => -5 + 0.5 * i),
+  },
+};
+
+export const WithAxesLabels = Template.bind({});
+
+WithAxesLabels.args = {
+  dataArray,
+  domain,
+  abscissaParams: { label: 'Latitude' },
+  ordinateParams: { label: 'Longitude' },
 };
 
 export const WithTitle = Template.bind({});

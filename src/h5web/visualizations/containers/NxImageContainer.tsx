@@ -1,12 +1,12 @@
 import React, { ReactElement, useState, useContext } from 'react';
 import { range } from 'lodash-es';
 import { HDF5SimpleShape } from '../../providers/models';
-import { useDatasetValue } from './hooks';
+import { useDatasetValues } from './hooks';
 import { assertGroup, isDataset } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import { ProviderContext } from '../../providers/context';
-import { getAttributeValue, getLinkedEntity } from '../nexus/utils';
+import { getAttributeValue, getLinkedEntity, getNxAxes } from '../nexus/utils';
 import { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { assertStr } from '../shared/utils';
@@ -35,9 +35,11 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
     'x',
   ]);
 
-  const value = useDatasetValue(signalDataset.id);
+  const axes = getNxAxes(entity, metadata);
 
-  if (!value) {
+  const values = useDatasetValues({ signal: signalDataset.id, ...axes.ids });
+
+  if (!values || !values.signal) {
     return <></>;
   }
 
@@ -49,10 +51,12 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
         onChange={setMapperState}
       />
       <MappedHeatmapVis
-        value={value}
+        value={values.signal}
         valueLabel={signal}
         dims={dims}
         mapperState={mapperState}
+        axesLabels={axes.labels}
+        axesValues={values}
       />
     </>
   );

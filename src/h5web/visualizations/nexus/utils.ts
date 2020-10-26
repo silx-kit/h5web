@@ -4,8 +4,9 @@ import type {
   HDF5Dataset,
   HDF5Value,
   HDF5Entity,
+  HDF5Id,
 } from '../../providers/models';
-import { getEntity } from '../../providers/utils';
+import { getEntity, isDataset } from '../../providers/utils';
 import { NxAttribute, NX_INTERPRETATIONS } from './models';
 import { assertArray } from '../shared/utils';
 
@@ -42,15 +43,31 @@ export function getLinkedEntity(
   return getEntity(childLink, metadata);
 }
 
-export function getAxesLabels(group: HDF5Group): Array<string | undefined> {
+export function getNxAxes(
+  group: HDF5Group,
+  metadata: HDF5Metadata
+): { labels: Array<string | undefined>; ids: Record<string, HDF5Id> } {
   const axesList = getAttributeValue(group, 'axes');
 
   if (!axesList) {
-    return [];
+    return { labels: [], ids: {} };
   }
 
   const axes = typeof axesList === 'string' ? [axesList] : axesList;
   assertArray<string>(axes);
 
-  return axes.map((a) => (a === '.' ? undefined : a));
+  const axesLabels = axes.map((a) => (a === '.' ? undefined : a));
+  const axesIds = axesLabels.reduce<Record<string, HDF5Id>>((acc, axis) => {
+    if (!axis) {
+      return acc;
+    }
+
+    const dataset = getLinkedEntity(group, metadata, axis);
+    if (dataset && isDataset(dataset)) {
+      acc[axis] = dataset.id;
+    }
+    return acc;
+  }, {});
+
+  return { labels: axesLabels, ids: axesIds };
 }

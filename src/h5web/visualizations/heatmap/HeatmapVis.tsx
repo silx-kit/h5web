@@ -1,15 +1,14 @@
 import React, { useMemo } from 'react';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
-import { range } from 'd3-array';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import Mesh from './Mesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { getDims } from './utils';
-import { Domain, ScaleType } from '../shared/models';
+import { getDims, getPixelEdges } from './utils';
+import { Domain, ScaleType, AxisParams } from '../shared/models';
 import type { ColorMap } from './models';
 import { getDomain, getValueToIndexScale } from '../shared/utils';
 
@@ -21,9 +20,9 @@ interface Props {
   keepAspectRatio?: boolean;
   showGrid?: boolean;
   showLoader?: boolean;
-  abscissas?: number[];
-  ordinates?: number[];
   dataLabel?: string;
+  abscissaParams?: AxisParams;
+  ordinateParams?: AxisParams;
 }
 
 function HeatmapVis(props: Props): JSX.Element {
@@ -36,27 +35,15 @@ function HeatmapVis(props: Props): JSX.Element {
     showGrid = false,
     showLoader = true,
     dataLabel,
+    abscissaParams = {},
+    ordinateParams = {},
   } = props;
 
   const { rows, cols } = getDims(dataArray);
   const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
 
-  const { abscissas = range(cols + 1), ordinates = range(rows + 1) } = props;
-
-  if (abscissas.length !== cols + 1) {
-    throw new Error(
-      `Abscissas size (${
-        abscissas.length
-      }) does not match data length along X (${cols + 1})`
-    );
-  }
-  if (ordinates.length !== rows + 1) {
-    throw new Error(
-      `Ordinate size (${
-        ordinates.length
-      }) does not match data length along Y (${rows + 1})`
-    );
-  }
+  const abscissas = getPixelEdges(abscissaParams.values, cols);
+  const ordinates = getPixelEdges(ordinateParams.values, rows);
 
   const abscissaToIndex = getValueToIndexScale(abscissas);
 
@@ -83,20 +70,22 @@ function HeatmapVis(props: Props): JSX.Element {
           domain: abscissaDomain,
           showGrid,
           isIndexAxis: !abscissas,
+          label: abscissaParams.label,
         }}
         ordinateConfig={{
           domain: ordinateDomain,
           showGrid,
           isIndexAxis: !ordinates,
+          label: ordinateParams.label,
         }}
         aspectRatio={aspectRatio}
         canvasTitle={dataLabel}
       >
         <TooltipMesh
           formatIndex={([x, y]) => {
-            return `x=${abscissas[abscissaToIndex(x)]}, y=${
-              ordinates[ordinateToIndex(y)]
-            }`;
+            return `${abscissaParams.label || 'x'}=${
+              abscissas[abscissaToIndex(x)]
+            }, ${ordinateParams.label || 'y'}=${ordinates[ordinateToIndex(y)]}`;
           }}
           formatValue={([x, y]) => {
             return format('.3')(

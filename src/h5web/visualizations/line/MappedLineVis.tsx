@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from 'react';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
-import { assertArray } from '../shared/utils';
+import { assertArray, assertOptionalArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
 
@@ -48,10 +48,8 @@ function MappedLineVis(props: Props): ReactElement {
   );
 
   const abscissaLabel = mapperState && axesLabels[mapperState.indexOf('x')];
-  const abscissasValue = abscissaLabel && axesValues[abscissaLabel];
-  if (abscissasValue) {
-    assertArray<number>(abscissasValue);
-  }
+  const abscissas = abscissaLabel && axesValues[abscissaLabel];
+  assertOptionalArray<number>(abscissas);
 
   return (
     <LineVis
@@ -62,7 +60,7 @@ function MappedLineVis(props: Props): ReactElement {
       showGrid={showGrid}
       abscissaParams={{
         label: abscissaLabel,
-        values: abscissasValue as number[],
+        values: abscissas,
       }}
       ordinateLabel={valueLabel}
     />
