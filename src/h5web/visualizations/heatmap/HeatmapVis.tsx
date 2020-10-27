@@ -69,13 +69,13 @@ function HeatmapVis(props: Props): JSX.Element {
         abscissaConfig={{
           domain: abscissaDomain,
           showGrid,
-          isIndexAxis: !abscissas,
+          isIndexAxis: !abscissaParams.values,
           label: abscissaParams.label,
         }}
         ordinateConfig={{
           domain: ordinateDomain,
           showGrid,
-          isIndexAxis: !ordinates,
+          isIndexAxis: !ordinateParams.values,
           label: ordinateParams.label,
         }}
         aspectRatio={aspectRatio}

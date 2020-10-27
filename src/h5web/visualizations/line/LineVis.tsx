@@ -68,7 +68,7 @@ function LineVis(props: Props): ReactElement {
         abscissaConfig={{
           domain: abscissaDomain,
           showGrid,
-          isIndexAxis: !abscissas,
+          isIndexAxis: !abscissaParams.values,
           label: abscissaLabel,
         }}
         ordinateConfig={{
