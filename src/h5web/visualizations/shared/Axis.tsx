@@ -2,7 +2,7 @@ import React, { ReactElement, ReactType } from 'react';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
 import { GridColumns, GridRows } from '@vx/grid';
 import styles from './AxisSystem.module.css';
-import type { AxisInfo, AxisScale, Domain, Size } from './models';
+import { Domain, Size, ScaleType, SCALE_FUNCTIONS, AxisConfig } from './models';
 import { adaptedNumTicks, getIntegerTicks, getTickFormatter } from './utils';
 
 const AXIS_PROPS = {
@@ -24,23 +24,28 @@ const COMPONENTS: Record<string, [ReactType, ReactType]> = {
 
 interface Props {
   type: 'abscissa' | 'ordinate';
-  scale: AxisScale;
+  config: AxisConfig;
   domain: Domain;
-  info: AxisInfo;
   canvasSize: Size;
+  flipAxis?: boolean;
 }
 
 function Axis(props: Props): ReactElement {
-  const { type, scale, domain, info, canvasSize } = props;
-  const { scaleType, showGrid, onlyIntegers } = info;
+  const { type, config, domain, canvasSize, flipAxis } = props;
 
   const { width, height } = canvasSize;
   const axisLength = type === 'abscissa' ? width : height;
 
+  const { scaleType = ScaleType.Linear, isIndexAxis, showGrid, label } = config;
+  // Restrain ticks scales to visible domains
+  const scale = SCALE_FUNCTIONS[scaleType]();
+  scale.domain(domain);
+  scale.range(flipAxis ? [axisLength, 0] : [0, axisLength]);
+
   const [AxisComponent, GridComponent] = COMPONENTS[type];
 
   const numTicks = adaptedNumTicks(axisLength);
-  const ticksProp = onlyIntegers
+  const ticksProp = isIndexAxis
     ? { tickValues: getIntegerTicks(domain, numTicks) }
     : { numTicks };
 
@@ -50,7 +55,7 @@ function Axis(props: Props): ReactElement {
         <AxisComponent
           scale={scale}
           tickFormat={getTickFormatter(domain, axisLength, scaleType)}
-          label={info.label}
+          label={label}
           {...ticksProp}
           {...AXIS_PROPS}
         />

@@ -4,8 +4,8 @@ import { Line } from 'react-three-fiber/components';
 import { useThree } from 'react-three-fiber';
 import { CurveType } from './models';
 import DataGlyphs from './DataGlyphs';
-import { AxisSystemContext } from '../shared/AxisSystemProvider';
-import { getAxisScale } from '../shared/utils';
+import AxisSystemContext from '../shared/AxisSystemContext';
+import { getCanvasScale } from '../shared/utils';
 
 const DEFAULT_COLOR = '#1b998b';
 
@@ -24,13 +24,13 @@ function DataCurve(props: Props): JSX.Element {
     curveType = CurveType.LineOnly,
   } = props;
 
-  const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
+  const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
   const { camera, size } = useThree();
   const { width, height } = size;
 
   const dataGeometry = useMemo(() => {
-    const abscissaScale = getAxisScale(abscissaInfo, width);
-    const ordinateScale = getAxisScale(ordinateInfo, height);
+    const abscissaScale = getCanvasScale(abscissaConfig, width);
+    const ordinateScale = getCanvasScale(ordinateConfig, height);
 
     const points = ordinates.map((val, index) => {
       const ordinate = ordinateScale(val);
@@ -47,7 +47,15 @@ function DataCurve(props: Props): JSX.Element {
     const geometry = new BufferGeometry();
     geometry.setFromPoints(points);
     return geometry;
-  }, [abscissaInfo, abscissas, camera, height, ordinateInfo, ordinates, width]);
+  }, [
+    abscissaConfig,
+    abscissas,
+    camera,
+    height,
+    ordinateConfig,
+    ordinates,
+    width,
+  ]);
 
   const showLine = curveType !== CurveType.GlyphsOnly;
   const showGlyphs = curveType !== CurveType.LineOnly;

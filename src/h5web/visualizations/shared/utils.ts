@@ -1,7 +1,14 @@
 import { scaleLinear, scaleThreshold, ScaleThreshold } from 'd3-scale';
 import { tickStep, range } from 'd3-array';
 import { format } from 'd3-format';
-import { Size, Domain, AxisScale, AxisInfo, ScaleType } from './models';
+import {
+  Size,
+  Domain,
+  AxisScale,
+  ScaleType,
+  AxisConfig,
+  SCALE_FUNCTIONS,
+} from './models';
 
 const TICK_FORMAT = format('0');
 
@@ -102,12 +109,15 @@ export function getValueToIndexScale(
   return valueToIndexScale;
 }
 
-export function getAxisScale(info: AxisInfo, rangeSize: number): AxisScale {
-  const { scaleFn, domain } = info;
+export function getCanvasScale(
+  config: AxisConfig,
+  canvasSize: number
+): AxisScale {
+  const { scaleType, domain } = config;
 
-  const scale = scaleFn();
+  const scale = SCALE_FUNCTIONS[scaleType || ScaleType.Linear]();
   scale.domain(domain);
-  scale.range([-rangeSize / 2, rangeSize / 2]);
+  scale.range([-canvasSize / 2, canvasSize / 2]);
 
   return scale;
 }
