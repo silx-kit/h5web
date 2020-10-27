@@ -52,7 +52,7 @@ export class MockApi implements ProviderAPI {
     };
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value> {
+  public async getValue(id: HDF5Id): Promise<HDF5Value | undefined> {
     return (mockData as any).datasets[id].value; // eslint-disable-line @typescript-eslint/no-explicit-any
   }
 }
