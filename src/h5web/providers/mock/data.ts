@@ -132,7 +132,7 @@ export function makeGroupHardLink(title: string, id: string): HDF5HardLink {
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-export function makeNxDataGroup(
+export function makeNxData(
   id: string,
   opts: {
     signal: string;
@@ -150,6 +150,38 @@ export function makeNxDataGroup(
       ...(axes ? [makeStrAttr('axes', axes)] : []),
     ],
     Object.entries(ids).map(([...args]) => makeDatasetHardLink(...args))
+  );
+}
+
+export function makeNxEntry(
+  id: string,
+  opts: {
+    defaultPath?: string;
+    ids?: Record<string, HDF5Id>;
+  }
+): HDF5Group {
+  const { ids = {}, defaultPath } = opts;
+
+  return makeGroup(
+    id,
+    [makeStrAttr('NX_class', 'NXentry'), makeStrAttr('default', defaultPath)],
+    Object.entries(ids).map(([...args]) => makeGroupHardLink(...args))
+  );
+}
+
+export function makeNxRoot(
+  id: string,
+  opts: {
+    defaultPath?: string;
+    ids?: Record<string, HDF5Id>;
+  }
+): HDF5Group {
+  const { ids = {}, defaultPath } = opts;
+
+  return makeGroup(
+    id,
+    [makeStrAttr('NX_class', 'NXroot'), makeStrAttr('default', defaultPath)],
+    Object.entries(ids).map(([...args]) => makeGroupHardLink(...args))
   );
 }
 

@@ -6,7 +6,7 @@ import type {
   HDF5Entity,
   HDF5Id,
 } from '../../providers/models';
-import { getEntity, isDataset } from '../../providers/utils';
+import { getEntity, isDataset, isGroup } from '../../providers/utils';
 import { NxAttribute, NX_INTERPRETATIONS } from './models';
 import { assertArray } from '../shared/utils';
 
@@ -70,4 +70,39 @@ export function getNxAxes(
   }, {});
 
   return { labels: axesLabels, ids: axesIds };
+}
+
+export function getNxDataGroup(
+  entity: HDF5Entity | undefined,
+  metadata: HDF5Metadata
+): HDF5Group | undefined {
+  if (!entity || !isGroup(entity)) {
+    return undefined;
+  }
+
+  if (isNxDataGroup(entity)) {
+    return entity;
+  }
+
+  const defaultPath = getAttributeValue(entity, 'default');
+
+  if (typeof defaultPath !== 'string') {
+    return undefined;
+  }
+
+  const relativePath = defaultPath.startsWith('/')
+    ? defaultPath.slice(1)
+    : defaultPath;
+
+  const defaultEntity = relativePath.split('/').reduce<HDF5Entity | undefined>(
+    (previousEntity, currentComponent) => {
+      if (!previousEntity || !isGroup(previousEntity)) {
+        return undefined;
+      }
+      return getLinkedEntity(previousEntity, metadata, currentComponent);
+    },
+    defaultPath.startsWith('/') ? metadata.groups[metadata.root] : entity
+  );
+
+  return getNxDataGroup(defaultEntity, metadata);
 }

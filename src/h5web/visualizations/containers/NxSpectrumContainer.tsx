@@ -7,7 +7,12 @@ import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import MappedLineVis from '../line/MappedLineVis';
 import { ProviderContext } from '../../providers/context';
-import { getAttributeValue, getLinkedEntity, getNxAxes } from '../nexus/utils';
+import {
+  getAttributeValue,
+  getLinkedEntity,
+  getNxAxes,
+  getNxDataGroup,
+} from '../nexus/utils';
 import { VisContainerProps } from './models';
 import { assertStr } from '../shared/utils';
 
@@ -16,9 +21,15 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   assertGroup(entity);
 
   const { metadata } = useContext(ProviderContext);
-  const signal = getAttributeValue(entity, 'signal');
+
+  const nxDataGroup = getNxDataGroup(entity, metadata);
+  if (!nxDataGroup) {
+    throw new Error('NXdata group not found');
+  }
+
+  const signal = getAttributeValue(nxDataGroup, 'signal');
   assertStr(signal);
-  const signalDataset = getLinkedEntity(entity, metadata, signal);
+  const signalDataset = getLinkedEntity(nxDataGroup, metadata, signal);
 
   if (!signalDataset || !isDataset(signalDataset)) {
     throw new Error('Signal dataset not found');
@@ -29,7 +40,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
     throw new Error('Expected dataset with at least one dimension');
   }
 
-  const axes = getNxAxes(entity, metadata);
+  const axes = getNxAxes(nxDataGroup, metadata);
 
   const [mapperState, setMapperState] = useState<DimensionMapping>([
     ...range(dims.length - 1).fill(0),

@@ -35,22 +35,15 @@ test('renders with root group selected', async () => {
 });
 
 test('switch between "display" and "inspect" modes', async () => {
-  const {
-    findByRole,
-    findByText,
-    getByRole,
-    queryByRole,
-    queryByText,
-  } = renderApp();
+  const { findByRole, getByRole, queryByRole } = renderApp();
 
   const inspectBtn = await findByRole('tab', { name: 'Inspect' });
   const displayBtn = getByRole('tab', { name: 'Display' });
 
   // Switch to "inspect" mode
   fireEvent.click(inspectBtn);
-
-  const noVisText1 = queryByText('Nothing to visualize');
-  expect(noVisText1).not.toBeInTheDocument();
+  const visSelector1 = queryByRole('tablist', { name: 'Visualization' });
+  expect(visSelector1).not.toBeInTheDocument();
 
   const groupIdRow1 = await findByRole('row', { name: /Entity ID/ });
   expect(groupIdRow1).toBeVisible();
@@ -61,8 +54,8 @@ test('switch between "display" and "inspect" modes', async () => {
   const groupIdRow2 = queryByRole('row', { name: /Entity ID/ });
   expect(groupIdRow2).not.toBeInTheDocument();
 
-  const noVisText2 = await findByText('Nothing to visualize');
-  expect(noVisText2).toBeVisible();
+  const visSelector2 = await findByRole('tablist', { name: 'Visualization' });
+  expect(visSelector2).toBeVisible();
 });
 
 test('toggle explorer sidebar', async () => {
