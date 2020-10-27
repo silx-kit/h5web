@@ -1,6 +1,7 @@
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import Provider from '../Provider';
-import { MockApi } from './api';
+import { mockMetadata, mockValues } from './data';
+import { HDF5Id, HDF5Values } from '../models';
 
 interface Props {
   domain: string;
@@ -9,13 +10,18 @@ interface Props {
 
 function MockProvider(props: Props): JSX.Element {
   const { domain, children } = props;
-  const [api, setApi] = useState<MockApi>();
 
-  useEffect(() => {
-    setApi(new MockApi(domain));
-  }, [domain]);
-
-  return <Provider api={api}>{children}</Provider>;
+  return (
+    <Provider
+      api={{
+        domain,
+        getMetadata: async () => mockMetadata,
+        getValue: async (id: HDF5Id) => (mockValues as HDF5Values)[id],
+      }}
+    >
+      {children}
+    </Provider>
+  );
 }
 
 export default MockProvider;

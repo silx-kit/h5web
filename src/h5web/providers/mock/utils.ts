@@ -1,15 +1,13 @@
-import mockData from './data.json';
-import type { HDF5SimpleShape } from '../models';
+import { mockMetadata } from './data';
+import { assertSimpleShape } from '../utils';
 
-const datasets = Object.values(mockData.datasets);
+export function getMockDatasetDims(name: string): number[] {
+  const dataset = mockMetadata.datasets?.[name];
 
-export function getMockedDataset<
-  T extends number[] | number[][] | number[][][] | number[][][][]
->(name: string): { value: T; dims: number[] } {
-  const dataset = datasets.find((d) => d.alias[0] === name);
+  if (!dataset) {
+    throw new Error("Dataset doesn't exist");
+  }
 
-  return {
-    value: dataset?.value as T,
-    dims: (dataset?.shape as HDF5SimpleShape).dims,
-  };
+  assertSimpleShape(dataset.shape);
+  return dataset.shape.dims;
 }

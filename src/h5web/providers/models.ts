@@ -91,7 +91,7 @@ interface HDF5SoftLink {
   h5path: string;
 }
 
-interface HDF5ExternalLink {
+export interface HDF5ExternalLink {
   class: HDF5LinkClass.External;
   title: string;
   file: string;
@@ -203,7 +203,7 @@ interface HDF5VLenType {
   base: HDF5BaseType;
 }
 
-interface HDF5CompoundType {
+export interface HDF5CompoundType {
   class: HDF5TypeClass.Compound;
   fields: HDF5CompoundTypeField[];
 }

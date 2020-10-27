@@ -6,7 +6,7 @@ import {
   intType,
   makeGroup,
   makeDatatype,
-  advancedType,
+  compoundType,
   makeDataset,
   scalarShape,
   makeSimpleShape,
@@ -79,7 +79,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support dataset with advanced type', () => {
-      const dataset = makeDataset('foo', advancedType, scalarShape);
+      const dataset = makeDataset('foo', compoundType, scalarShape);
       expect(supportsEntity(dataset)).toBe(false);
     });
 
@@ -103,7 +103,7 @@ describe('Visualization definitions', () => {
     });
 
     it('should not support dataset with advanced type', () => {
-      const dataset = makeDataset('foo', advancedType, makeSimpleShape([1]));
+      const dataset = makeDataset('foo', compoundType, makeSimpleShape([1]));
       expect(supportsEntity(dataset)).toBe(false);
     });
 

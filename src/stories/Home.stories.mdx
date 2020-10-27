@@ -85,15 +85,13 @@ The components are organised in two categories:
 
 ## Mock data
 
-The library exposes a mock data object and a `getMockedDataset` utility function for testing purposes:
+The library exposes mock metadata, values and utilities for testing purposes:
 
 ```ts
-import { getMockedDataset } from '@h5web/lib';
+import { mockMetadata, mockValues, getMockDatasetDims } from '@h5web/lib';
 
-const dataset = getMockedDataset('/nD/twoD');
-
-const values = dataset.value.flat(Infinity) as number[];
-const dataArray = ndarray<number>(values, dataset.dims);
+const values = mockValues.twoD.flat(Infinity) as number[];
+const dataArray = ndarray<number>(values, getMockDatasetDims('twoD'));
 ```
 
 ## Utilities
