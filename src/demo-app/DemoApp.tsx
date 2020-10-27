@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from '../h5web/App';
-import Loader from '../h5web/visualizer/Loader';
 import SilxProvider from '../h5web/providers/silx/SilxProvider';
 import HsdsProvider from '../h5web/providers/hsds/HsdsProvider';
 
@@ -18,7 +17,7 @@ function DemoApp(): JSX.Element {
     <Router>
       <Switch>
         <Route path="/mock">
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<></>}>
             <MockProvider domain="source.h5">
               <App />
             </MockProvider>
