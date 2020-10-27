@@ -4,8 +4,8 @@ import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import { Line } from '@vx/shape';
 import Html from './Html';
 import styles from './TooltipMesh.module.css';
-import { getAxisScale } from './utils';
-import { AxisSystemContext } from './AxisSystemProvider';
+import { getCanvasScale } from './utils';
+import AxisSystemContext from './AxisSystemContext';
 
 const GUIDE_PROPS = {
   stroke: 'gray',
@@ -25,13 +25,13 @@ interface Props {
 function TooltipMesh(props: Props): ReactElement {
   const { formatIndex, formatValue, guides } = props;
 
-  const { abscissaInfo, ordinateInfo } = useContext(AxisSystemContext);
+  const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
   const { camera, size } = useThree();
   const { width, height } = size;
 
   // Scales to compute data coordinates from unprojected mesh coordinates
-  const abscissaScale = getAxisScale(abscissaInfo, width);
-  const ordinateScale = getAxisScale(ordinateInfo, height);
+  const abscissaScale = getCanvasScale(abscissaConfig, width);
+  const ordinateScale = getCanvasScale(ordinateConfig, height);
 
   const {
     tooltipOpen,

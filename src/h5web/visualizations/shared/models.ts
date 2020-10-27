@@ -38,15 +38,6 @@ export type AxisScale =
   | ScaleLogarithmic<number, number>
   | ScaleSymLog<number, number>;
 
-export interface AxisInfo {
-  onlyIntegers?: boolean;
-  scaleFn: ScaleFn;
-  domain: Domain;
-  scaleType: ScaleType;
-  showGrid: boolean;
-  label?: string;
-}
-
 export type AxisOffsets = {
   left: number;
   bottom: number;

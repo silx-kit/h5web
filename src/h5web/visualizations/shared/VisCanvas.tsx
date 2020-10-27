@@ -2,10 +2,10 @@ import React, { ReactNode } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { useMeasure } from 'react-use';
 import styles from './VisCanvas.module.css';
-import type { AxisConfig } from './models';
+import { AxisConfig } from './models';
 import { computeVisSize } from './utils';
 import AxisSystem from './AxisSystem';
-import AxisSystemProvider from './AxisSystemProvider';
+import AxisSystemContext from './AxisSystemContext';
 
 const AXIS_OFFSETS = { vertical: 72, horizontal: 36, fallback: 16 };
 
@@ -65,13 +65,12 @@ function VisCanvas(props: Props): JSX.Element {
             gl={{ preserveDrawingBuffer: true }} // for screenshot feature
           >
             <ambientLight />
-            <AxisSystemProvider
-              abscissaConfig={abscissaConfig}
-              ordinateConfig={ordinateConfig}
+            <AxisSystemContext.Provider
+              value={{ abscissaConfig, ordinateConfig }}
             >
               <AxisSystem title={canvasTitle} axisOffsets={axisOffsets} />
               {children}
-            </AxisSystemProvider>
+            </AxisSystemContext.Provider>
           </Canvas>
         </div>
       )}
