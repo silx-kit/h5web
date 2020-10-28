@@ -1,5 +1,5 @@
 import React from 'react';
-import { AxisRight, AxisBottom } from '@vx/axis';
+import { AxisRight, AxisBottom } from '@visx/axis';
 import { useMeasure } from 'react-use';
 import { adaptedNumTicks } from '../shared/utils';
 import styles from './ColorBar.module.css';
