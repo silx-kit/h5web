@@ -75,6 +75,14 @@ export function assertGroup(entity: HDF5Entity): asserts entity is HDF5Group {
   }
 }
 
+export function assertSimpleShape(
+  shape: HDF5Shape
+): asserts shape is HDF5SimpleShape {
+  if (shape.class !== HDF5ShapeClass.Simple) {
+    throw new Error('Expected simple shape');
+  }
+}
+
 export function getEntity(
   link: HDF5Link | undefined,
   metadata: HDF5Metadata

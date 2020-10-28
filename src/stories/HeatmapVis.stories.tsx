@@ -2,24 +2,18 @@ import React, { ReactElement, useState } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import { useInterval } from 'react-use';
-import { assign } from 'ndarray-ops';
 import FillHeight from '../../.storybook/decorators/FillHeight';
 import HeatmapVis, {
   HeatmapVisProps,
 } from '../h5web/visualizations/heatmap/HeatmapVis';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import { INTERPOLATORS } from '../h5web/visualizations/heatmap/interpolators';
-import { getMockedDataset } from '../h5web/providers/mock/utils';
-import { getDomain } from '../packages/lib';
+import { getDomain, mockValues } from '../packages/lib';
+import { getMockDatasetDims } from '../h5web/providers/mock/utils';
 
-// A 2D dataset
-const dataset = getMockedDataset<number[][]>('/nD/twoD');
-const values = dataset.value.flat(Infinity) as number[];
-
-const transposedArray = ndarray<number>(values, dataset.dims).transpose(1, 0); // makes for a nicer-looking heatmap
-// Work with the real array and not the transposed view
-const dataArray = ndarray<number>([], transposedArray.shape);
-assign(dataArray, transposedArray);
+// Prepare 2D data array
+const values = mockValues.twoD.flat(Infinity) as number[];
+const dataArray = ndarray<number>(values, getMockDatasetDims('twoD'));
 const domain = getDomain(values);
 const logSafeDomain = getDomain(values, ScaleType.Log);
 

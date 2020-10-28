@@ -30,7 +30,7 @@ export class SilxApi implements ProviderAPI {
     return this.transformMetadata(data);
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value> {
+  public async getValue(id: HDF5Id): Promise<HDF5Value | undefined> {
     if (this.values) {
       return this.values[id];
     }

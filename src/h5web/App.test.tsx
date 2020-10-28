@@ -10,7 +10,7 @@ import {
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
 
-const DOMAIN = 'bsa_002_000-integrate-sub';
+const DOMAIN = 'source.h5';
 
 function renderApp(): RenderResult {
   return render(
@@ -81,21 +81,21 @@ test('toggle explorer sidebar', async () => {
 test('navigate groups in explorer', async () => {
   const { findByRole, queryByRole, getByRole } = renderApp();
 
-  const groupBtn = await findByRole('treeitem', { name: 'entry_0000' });
+  const groupBtn = await findByRole('treeitem', { name: 'entities' });
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
 
-  // Expand `entry_0000` group
+  // Expand `entities` group
   fireEvent.click(groupBtn);
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
 
-  const childGroupBtn = getByRole('treeitem', { name: '1_cormap' });
+  const childGroupBtn = getByRole('treeitem', { name: 'empty_group' });
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
-  // Expand `1_cormap` child group
+  // Expand `empty_group` child group
   fireEvent.click(childGroupBtn);
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
@@ -103,57 +103,73 @@ test('navigate groups in explorer', async () => {
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'true');
 
-  // Collapse `1_cormap` child group
+  // Collapse `empty_group` child group
   fireEvent.click(childGroupBtn);
 
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
-  // Select `entry_0000` group
+  // Select `entities` group
   fireEvent.click(groupBtn);
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true'); // remains expanded as it wasn't previously selected
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
 
-  // Collapse `entry_0000` group
+  // Collapse `entities` group
   fireEvent.click(groupBtn);
 
-  expect(queryByRole('treeitem', { name: '1_cormap' })).not.toBeInTheDocument();
+  expect(
+    queryByRole('treeitem', { name: 'empty_group' })
+  ).not.toBeInTheDocument();
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('visualise a scalar dataset', async () => {
-  const { findByRole, getByRole, getByText } = renderApp();
+test('visualise scalar dataset', async () => {
+  const { findByRole, getByRole, findByText, getByText } = renderApp();
 
-  // Select the scalar dataset entry_0000/1_cormap/version
-  fireEvent.click(await findByRole('treeitem', { name: 'entry_0000' }));
-  fireEvent.click(getByRole('treeitem', { name: '1_cormap' }));
-
-  const datasetBtn = getByRole('treeitem', { name: 'version' });
+  fireEvent.click(await findByRole('treeitem', { name: 'entities' }));
+  const datasetBtn = getByRole('treeitem', { name: 'scalar_int' });
   expect(datasetBtn).toBeVisible();
 
   fireEvent.click(datasetBtn);
   expect(datasetBtn).toHaveAttribute('aria-selected', 'true');
-  expect(datasetBtn).not.toHaveAttribute('aria-expanded'); // A dataset cannot be expanded
+  expect(datasetBtn).not.toHaveAttribute('aria-expanded'); // a dataset cannot be expanded
 
   const scalarTab = await findByRole('tab', { name: 'Scalar' });
   expect(scalarTab).toBeVisible();
   expect(scalarTab).toHaveAttribute('aria-selected', 'true');
+  expect(getByText('0')).toBeVisible();
 
-  const datasetValue = getByText('0.7.1');
-  expect(datasetValue).toBeVisible();
+  fireEvent.click(getByRole('treeitem', { name: 'scalar_str' }));
+  expect(await findByText('foo')).toBeVisible();
+});
+
+test('inspect scalar dataset', async () => {
+  const { getByRole, queryByRole, findByRole } = renderApp();
+
+  // Select the datatype entities/scalar_int
+  fireEvent.click(await findByRole('treeitem', { name: 'entities' }));
+  fireEvent.click(getByRole('treeitem', { name: 'scalar_int' }));
+
+  // Switch to "inspect" mode
+  const inspectBtn = await findByRole('tab', { name: 'Inspect' });
+  fireEvent.click(inspectBtn);
+
+  const visSelector1 = queryByRole('tablist', { name: 'Visualization' });
+  expect(visSelector1).not.toBeInTheDocument();
+
+  const shapeRow = getByRole('row', { name: /Shape/ });
+  expect(shapeRow).toBeVisible();
 });
 
 test('switch visualisations', async () => {
   const { findByRole, getByRole } = renderApp();
 
-  // Select the 1D dataset entry_0000/1_cormap/to_merge
-  fireEvent.click(await findByRole('treeitem', { name: 'entry_0000' }));
-  fireEvent.click(getByRole('treeitem', { name: '1_cormap' }));
-
-  const datasetBtn = getByRole('treeitem', { name: 'to_merge' });
+  // Select the 1D dataset nD_datasets/oneD
+  fireEvent.click(await findByRole('treeitem', { name: 'nD_datasets' }));
+  const datasetBtn = getByRole('treeitem', { name: 'oneD' });
   fireEvent.click(datasetBtn);
 
   const lineTab = await findByRole('tab', { name: 'Line' });
@@ -173,27 +189,6 @@ test('switch visualisations', async () => {
   });
 });
 
-test('inspect a dataset', async () => {
-  const { getByRole, queryByRole, findByRole } = renderApp();
-
-  // Select the 2D dataset entry_0000/1_cormap/results/count
-  fireEvent.click(await findByRole('treeitem', { name: 'entry_0000' }));
-  fireEvent.click(getByRole('treeitem', { name: '1_cormap' }));
-  fireEvent.click(getByRole('treeitem', { name: 'results' }));
-  fireEvent.click(getByRole('treeitem', { name: 'count' }));
-
-  const inspectBtn = await findByRole('tab', { name: 'Inspect' });
-
-  // Switch to "inspect" mode
-  fireEvent.click(inspectBtn);
-
-  const visSelector1 = queryByRole('tablist', { name: 'Visualization' });
-  expect(visSelector1).not.toBeInTheDocument();
-
-  const shapeRow = getByRole('row', { name: /Shape/ });
-  expect(shapeRow).toBeVisible();
-});
-
 test('display mapping for X axis when visualizing 2D dataset as Line', async () => {
   const {
     getByRole,
@@ -202,8 +197,8 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
     findByRole,
   } = renderApp();
 
-  // Select the 2D dataset nD/twoD
-  fireEvent.click(await findByRole('treeitem', { name: 'nD' }));
+  // Select the 2D dataset nD_datasets/twoD
+  fireEvent.click(await findByRole('treeitem', { name: 'nD_datasets' }));
   fireEvent.click(getByRole('treeitem', { name: 'twoD' }));
 
   // Select the line vis
@@ -237,8 +232,8 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
 test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
   const { getByRole, getByLabelText, findByRole } = renderApp();
 
-  // Select the 2D dataset nD/twoD
-  fireEvent.click(await findByRole('treeitem', { name: 'nD' }));
+  // Select the 2D dataset nD_datasets/twoD
+  fireEvent.click(await findByRole('treeitem', { name: 'nD_datasets' }));
   fireEvent.click(getByRole('treeitem', { name: 'twoD' }));
 
   // Ensure that the heatmap vis is selected
@@ -276,8 +271,8 @@ test('display one dimension slider and mappings for X and Y axes when visualizin
     findByLabelText,
   } = renderApp();
 
-  // Select the 3D dataset nD/threeD
-  fireEvent.click(await findByRole('treeitem', { name: 'nD' }));
+  // Select the 3D dataset nD_datasets/threeD
+  fireEvent.click(await findByRole('treeitem', { name: 'nD_datasets' }));
   fireEvent.click(getByRole('treeitem', { name: 'threeD' }));
 
   // Select the matrix vis

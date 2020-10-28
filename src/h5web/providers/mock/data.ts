@@ -1,16 +1,17 @@
+import { range } from 'lodash-es';
 import {
   HDF5Id,
   HDF5LinkClass,
+  HDF5ExternalLink,
   HDF5Collection,
   HDF5Attribute,
   HDF5Dataset,
   HDF5Metadata,
-  HDF5Values,
   HDF5TypeClass,
   HDF5IntegerType,
   HDF5FloatType,
   HDF5StringType,
-  HDF5AdvancedType,
+  HDF5CompoundType,
   HDF5SimpleShape,
   HDF5Dims,
   HDF5ShapeClass,
@@ -44,9 +45,9 @@ export const stringType: HDF5StringType = {
   length: 1,
 };
 
-export const advancedType: HDF5AdvancedType = {
+export const compoundType: HDF5CompoundType = {
   class: HDF5TypeClass.Compound,
-  fields: [],
+  fields: [{ name: 'int', type: intType }],
 };
 
 /* ------------------ */
@@ -61,8 +62,17 @@ export function makeSimpleShape(dims: HDF5Dims): HDF5SimpleShape {
 /* ---------------------- */
 /* ----- ATTRIBUTES ----- */
 
+export function makeAttr(
+  name: string,
+  shape: HDF5Shape,
+  type: HDF5Type,
+  value: HDF5Value
+): HDF5Attribute {
+  return { name, type, shape, value };
+}
+
 export function makeStrAttr(name: string, value: HDF5Value): HDF5Attribute {
-  return { name, value, type: stringType, shape: scalarShape };
+  return makeAttr(name, scalarShape, stringType, value);
 }
 
 /* -------------------- */
@@ -111,22 +121,28 @@ export function withAttributes<T extends HDF5Dataset | HDF5Group>(
 /* ----------------- */
 /* ----- LINKS ----- */
 
-export function makeDatasetHardLink(title: string, id: string): HDF5HardLink {
-  return {
-    class: HDF5LinkClass.Hard,
-    title,
-    collection: HDF5Collection.Datasets,
-    id,
-  };
+export function makeHardLink(
+  collection: HDF5Collection,
+  title: string,
+  id = title
+): HDF5HardLink {
+  return { class: HDF5LinkClass.Hard, title, collection, id };
 }
 
-export function makeGroupHardLink(title: string, id: string): HDF5HardLink {
-  return {
-    class: HDF5LinkClass.Hard,
-    title,
-    collection: HDF5Collection.Groups,
-    id,
-  };
+export function makeDatasetHardLink(title: string, id = title): HDF5HardLink {
+  return makeHardLink(HDF5Collection.Datasets, title, id);
+}
+
+export function makeGroupHardLink(title: string, id = title): HDF5HardLink {
+  return makeHardLink(HDF5Collection.Groups, title, id);
+}
+
+export function makeExternalLink(
+  title: string,
+  file: string,
+  h5path: string
+): HDF5ExternalLink {
+  return { class: HDF5LinkClass.External, title, file, h5path };
 }
 
 /* ----------------- */
@@ -185,6 +201,10 @@ export function makeNxRoot(
   );
 }
 
+export function makeNxAxesAttr(axes: string[]): HDF5Attribute {
+  return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
+}
+
 /* -------------------- */
 /* ----- METADATA ----- */
 
@@ -206,7 +226,128 @@ export function makeMetadata(
   };
 }
 
+export const mockMetadata = makeMetadata({
+  root: 'root',
+  groups: [
+    makeGroup(
+      'root',
+      [
+        makeStrAttr('NX_class', 'NXroot'),
+        makeStrAttr('default', 'nexus_entry'),
+      ],
+      [
+        makeGroupHardLink('entities'),
+        makeGroupHardLink('nD_datasets'),
+        makeGroupHardLink('nexus_entry'),
+      ]
+    ),
+
+    // ==> Top-level groups
+    makeGroup('entities', undefined, [
+      makeGroupHardLink('empty_group'),
+      makeExternalLink('external_link', 'my_file', 'entry_000/dataset'),
+      makeHardLink(HDF5Collection.Datatypes, 'datatype'),
+      makeDatasetHardLink('raw'),
+      makeDatasetHardLink('scalar_int'),
+      makeDatasetHardLink('scalar_str'),
+    ]),
+    makeGroup('nD_datasets', undefined, [
+      makeDatasetHardLink('oneD'),
+      makeDatasetHardLink('twoD'),
+      makeDatasetHardLink('threeD'),
+      makeDatasetHardLink('fourD'),
+    ]),
+    makeGroup(
+      'nexus_entry',
+      [
+        makeStrAttr('NX_class', 'NXentry'),
+        makeStrAttr('default', 'nx_process/nx_data'),
+      ],
+      [
+        makeGroupHardLink('nx_process'),
+        makeGroupHardLink('spectrum'),
+        makeGroupHardLink('image'),
+      ]
+    ),
+
+    // ==> Inner groups
+    makeGroup('empty_group'),
+    makeGroup(
+      'nx_process',
+      [makeStrAttr('NX_class', 'NXprocess')], // intentionally has no `default` attribute
+      [makeGroupHardLink('nx_data')]
+    ),
+    makeGroup(
+      'nx_data',
+      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'twoD')],
+      [makeDatasetHardLink('twoD')]
+    ),
+    makeGroup(
+      'spectrum',
+      [
+        makeStrAttr('NX_class', 'NXdata'),
+        makeStrAttr('signal', 'oneD'),
+        makeStrAttr('interpretation', 'spectrum'),
+        makeNxAxesAttr(['X']),
+      ],
+      [makeDatasetHardLink('oneD'), makeDatasetHardLink('X')]
+    ),
+    makeGroup(
+      'image',
+      [
+        makeStrAttr('NX_class', 'NXdata'),
+        makeStrAttr('signal', 'fourD'),
+        makeStrAttr('interpretation', 'image'),
+        makeNxAxesAttr(['.', '.', 'Y', 'X']),
+      ],
+      [
+        makeDatasetHardLink('fourD'),
+        makeDatasetHardLink('X'),
+        makeDatasetHardLink('Y'),
+      ]
+    ),
+  ],
+  datasets: [
+    makeSimpleDataset('oneD', intType, [41]),
+    makeSimpleDataset('twoD', intType, [20, 41]),
+    makeSimpleDataset('threeD', intType, [9, 20, 41]),
+    makeSimpleDataset('fourD', intType, [3, 9, 20, 41]),
+    makeDataset('raw', compoundType, scalarShape),
+    makeDataset('scalar_int', intType, scalarShape),
+    makeDataset('scalar_str', stringType, scalarShape),
+    makeSimpleDataset('X', intType, [41]),
+    makeSimpleDataset('Y', intType, [20]),
+  ],
+  datatypes: [makeDatatype('datatype', compoundType)],
+});
+
 /* ------------------ */
 /* ----- VALUES ----- */
 
-export const mockValues: HDF5Values = {};
+const arr1 = range(-20, 21);
+const arr2 = range(0, 100, 5);
+const arr3 = range(-1, 1.25, 0.25);
+const arr4 = range(10, 40, 10);
+
+const oneD = arr1.map((val) => val ** 2);
+const twoD = arr2.map((offset) => oneD.map((val) => val - offset));
+const threeD = arr3.map((multiplier) =>
+  twoD.map((arrOneD) => arrOneD.map((val) => val * multiplier))
+);
+const fourD = arr4.map((divider) =>
+  threeD.map((arrTwoD) =>
+    arrTwoD.map((arrOneD) => arrOneD.map((val) => Math.sin(val / divider)))
+  )
+);
+
+export const mockValues = {
+  raw: { int: 42 },
+  scalar_int: 0,
+  scalar_str: 'foo',
+  oneD,
+  twoD,
+  threeD,
+  fourD,
+  X: arr1,
+  Y: arr2,
+};
