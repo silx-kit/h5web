@@ -1,34 +1,15 @@
 {
-  "extends": ["@wsmd/eslint-config/all"],
+  "extends": ["react-app", "react-app/jest"],
   "rules": {
     "no-console": "warn",
-    "lines-between-class-members": "off",
-    "spaced-comment": [
-      "error",
-      "always",
-      {
-        "markers": ["/"]
-      }
-    ],
-    "import/named": "off",
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": true
-      }
-    ],
-    "import/no-unresolved": "off",
-    "import/no-webpack-loader-syntax": "off",
     "jest/no-focused-tests": "warn",
-    "react/jsx-props-no-spreading": "off",
-    "prettier/prettier": "off"
+    "import/no-anonymous-default-export": "off" // allow anonymous objects: `export default { ... }`
   },
   "overrides": [
     {
       "files": ["**/*.ts?(x)"],
       "rules": {
-        "@typescript-eslint/no-unused-vars": "warn",
-        "@typescript-eslint/ban-ts-ignore": "off"
+        "@typescript-eslint/no-unused-vars": "warn"
       }
     }
   ]

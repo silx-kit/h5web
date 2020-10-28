@@ -49,7 +49,9 @@ function Visualizer(props: Props): ReactElement {
       <div className={styles.displayArea}>
         <AsyncResourceContent
           fallback={<Loader />}
-          errorMessage={(err) => <p className={styles.error}>{err.message}</p>}
+          errorMessage={(err: Error) => (
+            <p className={styles.error}>{err.message}</p>
+          )}
         >
           <Profiler id={activeVis}>
             <Container key={entity.id} entity={entity} />
