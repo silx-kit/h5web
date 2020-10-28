@@ -11,7 +11,6 @@ const AXIS_PROPS = {
   tickClassName: styles.tick,
   labelClassName: styles.label,
   labelProps: {}, // To avoid any styling props on the parent svg
-  labelOffset: 32,
   tickComponent: ({ formattedValue, ...tickProps }: TickRendererProps) => (
     <text {...tickProps}>{formattedValue}</text>
   ),
@@ -56,6 +55,7 @@ function Axis(props: Props): ReactElement {
           scale={scale}
           tickFormat={getTickFormatter(domain, axisLength, scaleType)}
           label={label}
+          labelOffset={type === 'abscissa' ? 22 : 42}
           {...ticksProp}
           {...AXIS_PROPS}
         />
