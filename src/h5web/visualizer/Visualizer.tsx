@@ -7,6 +7,7 @@ import { VIS_DEFS, Vis } from '../visualizations';
 import VisSelector from './VisSelector';
 import Loader from './Loader';
 import { ProviderContext } from '../providers/context';
+import Profiler from '../Profiler';
 
 interface Props {
   entity?: HDF5Entity;
@@ -50,7 +51,9 @@ function Visualizer(props: Props): ReactElement {
           fallback={<Loader />}
           errorMessage={(err) => <p className={styles.error}>{err.message}</p>}
         >
-          <Container key={entity.id} entity={entity} />
+          <Profiler id={activeVis}>
+            <Container key={entity.id} entity={entity} />
+          </Profiler>
         </AsyncResourceContent>
       </div>
     </div>
