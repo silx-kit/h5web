@@ -41,7 +41,7 @@ export function useMappedArray<T>(
 export const useDomain = createMemo(getDomain);
 
 export function useFrameRendering(): void {
-  const [, setNum] = useState();
+  const [, setNum] = useState(0);
 
   useFrame(() => {
     setNum(Math.random());

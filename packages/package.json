@@ -18,7 +18,7 @@
     "build": "webpack"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
+    "@babel/core": "^7.12.3",
     "@yushijinhun/three-minifier-webpack": "^0.2.0-alpha.2",
     "babel-loader": "^8.1.0",
     "copy-webpack-plugin": "^6.1.1",
@@ -26,8 +26,8 @@
     "file-loader": "^6.1.0",
     "mini-css-extract-plugin": "^0.11.1",
     "style-loader": "^1.2.1",
-    "ts-loader": "^8.0.3",
-    "typescript": "^3.9.7",
+    "ts-loader": "^8.0.7",
+    "typescript": "^4.0.5",
     "url-loader": "^4.1.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
@@ -35,14 +35,10 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      ">1%",
+      "not ie 11",
+      "not op_mini all",
+      "not dead"
     ]
   }
 }
