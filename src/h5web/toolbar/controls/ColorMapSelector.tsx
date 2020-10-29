@@ -22,7 +22,7 @@ interface GradientProps {
   interpolator: D3Interpolator;
 }
 
-function Gradient(props: GradientProps): JSX.Element {
+function Gradient(props: GradientProps): ReactElement {
   const { interpolator } = props;
   const backgroundImage = generateCSSLinearGradient(interpolator, 'right');
   return <div className={styles.gradient} style={{ backgroundImage }} />;

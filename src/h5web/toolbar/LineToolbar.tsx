@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
 import { useLineConfig } from '../visualizations/line/config';
@@ -8,7 +8,7 @@ import Toolbar from './Toolbar';
 import Separator from './Separator';
 import ScaleSelector from './controls/ScaleSelector';
 
-function LineToolbar(): JSX.Element {
+function LineToolbar(): ReactElement {
   const {
     curveType,
     setCurveType,

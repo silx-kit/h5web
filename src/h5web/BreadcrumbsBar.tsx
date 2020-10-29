@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactElement } from 'react';
 import { FiSidebar, FiChevronRight } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
 import type { TreeNode } from './explorer/models';
@@ -14,7 +14,7 @@ interface Props {
   selectedNode?: TreeNode<HDF5Link>;
 }
 
-function BreadcrumbsBar(props: Props): JSX.Element {
+function BreadcrumbsBar(props: Props): ReactElement {
   const {
     isExplorerOpen,
     onToggleExplorer,

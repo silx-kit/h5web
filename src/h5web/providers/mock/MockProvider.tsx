@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import Provider from '../Provider';
 import { mockMetadata, mockValues } from './data';
 import { HDF5Id, HDF5Values } from '../models';
@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode;
 }
 
-function MockProvider(props: Props): JSX.Element {
+function MockProvider(props: Props): ReactElement {
   const { domain, children } = props;
 
   return (

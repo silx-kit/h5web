@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import type { HDF5Link, HDF5Entity } from '../providers/models';
 
 import styles from './RawInspector.module.css';
@@ -7,7 +7,7 @@ interface Props {
   data: HDF5Link | HDF5Entity;
 }
 
-function RawInspector(props: Props): JSX.Element {
+function RawInspector(props: Props): ReactElement {
   const { data } = props;
 
   return (

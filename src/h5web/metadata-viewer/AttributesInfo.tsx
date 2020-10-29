@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import type { HDF5Attribute } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 
@@ -6,7 +6,7 @@ interface Props {
   attributes?: HDF5Attribute[];
 }
 
-function AttributesInfo(props: Props): JSX.Element {
+function AttributesInfo(props: Props): ReactElement {
   const { attributes } = props;
 
   if (!attributes || attributes.length === 0) {
@@ -22,7 +22,7 @@ function AttributesInfo(props: Props): JSX.Element {
       </thead>
       <tbody>
         {attributes.map(
-          ({ name, value }: HDF5Attribute): JSX.Element => (
+          ({ name, value }: HDF5Attribute): ReactElement => (
             <tr key={name}>
               <th>{name}</th>
               <td>{JSON.stringify(value)}</td>

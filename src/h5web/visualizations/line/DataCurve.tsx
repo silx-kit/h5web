@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useContext } from 'react';
+import React, { Suspense, useMemo, useContext, ReactElement } from 'react';
 import { BufferGeometry, Vector3 } from 'three';
 import { Line } from 'react-three-fiber/components';
 import { useThree } from 'react-three-fiber';
@@ -16,7 +16,7 @@ interface Props {
   curveType?: CurveType;
 }
 
-function DataCurve(props: Props): JSX.Element {
+function DataCurve(props: Props): ReactElement {
   const {
     abscissas,
     ordinates,

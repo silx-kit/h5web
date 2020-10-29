@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import type { IconType } from 'react-icons';
 import styles from '../Toolbar.module.css';
 
@@ -11,7 +11,7 @@ interface Props {
   disabled?: boolean;
 }
 
-function ToggleBtn(props: Props): JSX.Element {
+function ToggleBtn(props: Props): ReactElement {
   const { label, icon: Icon, iconOnly, value, onChange, disabled } = props;
 
   return (

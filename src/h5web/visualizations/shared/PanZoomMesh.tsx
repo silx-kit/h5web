@@ -1,11 +1,11 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect, ReactElement } from 'react';
 import type { Vector3 } from 'three';
 import { PointerEvent, WheelEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
 
 const ZOOM_FACTOR = 0.95;
 
-function PanZoomMesh(): JSX.Element {
+function PanZoomMesh(): ReactElement {
   const { camera, invalidate, size } = useThree();
   const { width, height } = size;
 

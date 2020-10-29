@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { useAsync } from 'react-use';
 import { ProviderAPI, ProviderContext } from './context';
 
@@ -7,7 +7,7 @@ interface Props {
   children: ReactNode;
 }
 
-function Provider(props: Props): JSX.Element {
+function Provider(props: Props): ReactElement {
   const { api, children } = props;
 
   // Wait until metadata is fetched before rendering app

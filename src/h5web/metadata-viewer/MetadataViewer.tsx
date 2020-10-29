@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import type { HDF5Link, HDF5Entity } from '../providers/models';
 import AttributesInfo from './AttributesInfo';
 import LinkInfo from './LinkInfo';
@@ -11,7 +11,7 @@ interface Props {
   entity?: HDF5Entity;
 }
 
-function MetadataViewer(props: Props): JSX.Element {
+function MetadataViewer(props: Props): ReactElement {
   const { link, entity } = props;
 
   return link ? (

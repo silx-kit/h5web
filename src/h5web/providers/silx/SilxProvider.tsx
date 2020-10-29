@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect, ReactElement } from 'react';
 import { SilxApi } from './api';
 import Provider from '../Provider';
 
@@ -7,7 +7,7 @@ interface Props {
   children: ReactNode;
 }
 
-function SilxProvider(props: Props): JSX.Element {
+function SilxProvider(props: Props): ReactElement {
   const { domain, children } = props;
   const [api, setApi] = useState<SilxApi>();
 

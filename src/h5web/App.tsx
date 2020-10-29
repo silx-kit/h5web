@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, ReactElement } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
 import type { HDF5Link } from './providers/models';
@@ -10,7 +10,7 @@ import Visualizer from './visualizer/Visualizer';
 import { getEntity } from './providers/utils';
 import { ProviderContext } from './providers/context';
 
-function App(): JSX.Element {
+function App(): ReactElement {
   const { metadata } = useContext(ProviderContext);
 
   const [selectedNode, setSelectedNode] = useState<TreeNode<HDF5Link>>();

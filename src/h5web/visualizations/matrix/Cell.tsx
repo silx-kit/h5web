@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import type { GridChildComponentProps } from 'react-window';
 import { format } from 'd3-format';
 import styles from './MatrixVis.module.css';
 import { GridSettingsContext } from './GridSettingsContext';
 
-function Cell(props: GridChildComponentProps): JSX.Element {
+function Cell(props: GridChildComponentProps): ReactElement {
   const { rowIndex, columnIndex, style } = props;
   const { valueAccessor } = useContext(GridSettingsContext);
 

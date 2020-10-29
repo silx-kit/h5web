@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactType } from 'react';
+import React, { ElementType, ReactElement } from 'react';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
 import { GridColumns, GridRows } from '@vx/grid';
 import styles from './AxisSystem.module.css';
@@ -16,7 +16,7 @@ const AXIS_PROPS = {
   ),
 };
 
-const COMPONENTS: Record<string, [ReactType, ReactType]> = {
+const COMPONENTS: Record<string, [ElementType, ElementType]> = {
   abscissa: [AxisBottom, GridColumns],
   ordinate: [AxisLeft, GridRows],
 };

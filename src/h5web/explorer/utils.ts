@@ -1,4 +1,4 @@
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import type { TreeNode } from './models';
 import {
   HDF5Collection,

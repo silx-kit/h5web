@@ -1,4 +1,10 @@
-import React, { ReactNode, Ref, useContext, useState } from 'react';
+import React, {
+  ReactElement,
+  ReactNode,
+  Ref,
+  useContext,
+  useState,
+} from 'react';
 import IndexTrack from './IndexTrack';
 import { GridSettingsContext } from './GridSettingsContext';
 import AnchorCell from './AnchorCell';
@@ -9,7 +15,7 @@ interface Props {
   style: React.CSSProperties;
 }
 
-function StickyGrid(props: Props, ref: Ref<HTMLDivElement>): JSX.Element {
+function StickyGrid(props: Props, ref: Ref<HTMLDivElement>): ReactElement {
   const { children, style } = props;
   const { rowCount, columnCount } = useContext(GridSettingsContext);
 
