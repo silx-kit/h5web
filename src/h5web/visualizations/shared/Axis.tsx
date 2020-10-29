@@ -1,6 +1,6 @@
 import React, { ElementType, ReactElement } from 'react';
-import { AxisLeft, AxisBottom, TickRendererProps } from '@visx/axis';
-import { GridColumns, GridRows } from '@visx/grid';
+import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
+import { GridColumns, GridRows } from '@vx/grid';
 import styles from './AxisSystem.module.css';
 import { Domain, Size, ScaleType, SCALE_FUNCTIONS, AxisConfig } from './models';
 import { adaptedNumTicks, getIntegerTicks, getTickFormatter } from './utils';

@@ -25,10 +25,10 @@
     "storybook:build": "build-storybook -s public"
   },
   "dependencies": {
-    "@visx/axis": "^1.1.0",
-    "@visx/grid": "^1.1.0",
-    "@visx/shape": "^1.1.0",
-    "@visx/tooltip": "^1.1.0",
+    "@vx/axis": "0.0.199",
+    "@vx/grid": "0.0.199",
+    "@vx/shape": "0.0.199",
+    "@vx/tooltip": "0.0.199",
     "axios": "^0.21.0",
     "comlink": "^4.3.0",
     "d3-array": "^2.8.0",
@@ -72,7 +72,7 @@
     "@types/d3-array": "^2.3.0",
     "@types/d3-color": "^2.0.0",
     "@types/d3-format": "^2.0.0",
-    "@types/d3-scale": "^3.2.0",
+    "@types/d3-scale": "2.2.0",
     "@types/d3-scale-chromatic": "^2.0.0",
     "@types/jest": "^26.0.15",
     "@types/lodash-es": "^4.17.3",

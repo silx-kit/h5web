@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useContext } from 'react';
 import { PointerEvent, useThree } from 'react-three-fiber';
-import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
-import { Line } from '@visx/shape';
+import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
+import { Line } from '@vx/shape';
 import Html from './Html';
 import styles from './TooltipMesh.module.css';
 import { getCanvasScale } from './utils';
