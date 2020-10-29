@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import {
   FiHash,
   FiFolder,
@@ -26,7 +26,7 @@ interface Props {
   isExpanded: boolean;
 }
 
-function Icon(props: Props): JSX.Element {
+function Icon(props: Props): ReactElement {
   const { data, isBranch, isExpanded } = props;
 
   if (isBranch) {

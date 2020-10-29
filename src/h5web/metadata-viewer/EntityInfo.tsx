@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import type { HDF5Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import { isBaseType, isSimpleShape } from '../providers/utils';
@@ -9,7 +9,7 @@ interface Props {
   entity: HDF5Entity;
 }
 
-function EntityInfo(props: Props): JSX.Element {
+function EntityInfo(props: Props): ReactElement {
   const { entity } = props;
   const { collection } = entity;
 

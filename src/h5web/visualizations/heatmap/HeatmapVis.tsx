@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import styles from './HeatmapVis.module.css';
@@ -25,7 +25,7 @@ interface Props {
   ordinateParams?: AxisParams;
 }
 
-function HeatmapVis(props: Props): JSX.Element {
+function HeatmapVis(props: Props): ReactElement {
   const {
     dataArray,
     domain,

@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useMemo, useContext } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useContext,
+  ReactElement,
+} from 'react';
 import { FiFileText } from 'react-icons/fi';
 import type { HDF5Link } from '../providers/models';
 import type { TreeNode, ExpandedNodes } from './models';
@@ -17,7 +23,7 @@ interface Props {
   selectedNode?: TreeNode<HDF5Link>;
 }
 
-function Explorer(props: Props): JSX.Element {
+function Explorer(props: Props): ReactElement {
   const { onSelect, selectedNode } = props;
 
   const { domain, metadata } = useContext(ProviderContext);

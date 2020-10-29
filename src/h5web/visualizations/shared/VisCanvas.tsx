@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { useMeasure } from 'react-use';
 import styles from './VisCanvas.module.css';
@@ -17,7 +17,7 @@ interface Props {
   children: ReactNode;
 }
 
-function VisCanvas(props: Props): JSX.Element {
+function VisCanvas(props: Props): ReactElement {
   const {
     abscissaConfig,
     ordinateConfig,

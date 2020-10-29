@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styles from './VisSelector.module.css';
 import { VIS_DEFS, Vis } from '../visualizations';
 
@@ -8,7 +8,7 @@ interface Props {
   onChange?: (vis: Vis) => void;
 }
 
-function VisSelector(props: Props): JSX.Element {
+function VisSelector(props: Props): ReactElement {
   const { activeVis, choices, onChange } = props;
 
   return (

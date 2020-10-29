@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useLoader } from 'react-three-fiber';
 import { TextureLoader, BufferGeometry } from 'three';
 import { GLYPH_URLS } from './models';
@@ -9,7 +9,7 @@ interface Props {
   glyphURL?: string;
 }
 
-function DataGlyphs(props: Props): JSX.Element {
+function DataGlyphs(props: Props): ReactElement {
   const { geometry, color, glyphURL } = props;
   const sprite = useLoader(TextureLoader, glyphURL || GLYPH_URLS.Cross);
 

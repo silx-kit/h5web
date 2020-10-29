@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, ReactElement, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from '../h5web/App';
 import SilxProvider from '../h5web/providers/silx/SilxProvider';
@@ -12,7 +12,7 @@ const HSDS_USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';
 const HSDS_PASSWORD = process.env.REACT_APP_HSDS_PASSWORD || '';
 const HSDS_FILEPATH = process.env.REACT_APP_HSDS_FILEPATH || '';
 
-function DemoApp(): JSX.Element {
+function DemoApp(): ReactElement {
   return (
     <Router>
       <Switch>

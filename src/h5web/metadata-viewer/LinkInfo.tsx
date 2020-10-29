@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { HDF5Link, HDF5LinkClass } from '../providers/models';
 
 import styles from './MetadataViewer.module.css';
@@ -8,7 +8,7 @@ interface Props {
   link: HDF5Link;
 }
 
-function LinkInfo(props: Props): JSX.Element {
+function LinkInfo(props: Props): ReactElement {
   const { link } = props;
 
   return (

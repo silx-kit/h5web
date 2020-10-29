@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactElement, ReactNode, useContext } from 'react';
 import { range } from 'lodash-es';
 import { GridSettingsContext } from './GridSettingsContext';
 import styles from './MatrixVis.module.css';
@@ -9,7 +9,7 @@ interface Props {
   children?: ReactNode;
 }
 
-function IndexTrack(props: Props): JSX.Element {
+function IndexTrack(props: Props): ReactElement {
   const { cellCount, className, children } = props;
   const { cellSize } = useContext(GridSettingsContext);
 

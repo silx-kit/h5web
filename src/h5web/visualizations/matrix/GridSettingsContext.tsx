@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext } from 'react';
+import React, { ReactNode, createContext, ReactElement } from 'react';
 import type { Size } from '../shared/models';
 
 export interface GridSettings {
@@ -17,7 +17,7 @@ export const GridSettingsContext = createContext<GridSettings>({
 
 type Props = GridSettings & { children: ReactNode };
 
-function GridSettingsProvider(props: Props): JSX.Element {
+function GridSettingsProvider(props: Props): ReactElement {
   const { children, ...settings } = props;
 
   return (

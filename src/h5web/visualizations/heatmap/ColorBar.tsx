@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { AxisRight, AxisBottom } from '@visx/axis';
 import { useMeasure } from 'react-use';
 import { adaptedNumTicks } from '../shared/utils';
@@ -15,7 +15,7 @@ interface Props {
   horizontal?: boolean;
 }
 
-function ColorBar(props: Props): JSX.Element {
+function ColorBar(props: Props): ReactElement {
   const { domain, scaleType, colorMap, horizontal } = props;
   const interpolator = INTERPOLATORS[colorMap];
   const [

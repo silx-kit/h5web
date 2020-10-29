@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect, ReactElement } from 'react';
 import { HsdsApi } from './api';
 import Provider from '../Provider';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 /* Provider of metadata and values by HSDS */
-function HsdsProvider(props: Props): JSX.Element {
+function HsdsProvider(props: Props): ReactElement {
   const { url, username, password, filepath, children } = props;
   const [api, setApi] = useState<HsdsApi>();
 

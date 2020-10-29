@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { FiAnchor } from 'react-icons/fi';
 import styles from './MatrixVis.module.css';
 import { GridSettingsContext } from './GridSettingsContext';
@@ -8,7 +8,7 @@ interface Props {
   sticky: boolean;
 }
 
-function AnchorCell(props: Props): JSX.Element {
+function AnchorCell(props: Props): ReactElement {
   const { onToggle, sticky } = props;
   const { cellSize } = useContext(GridSettingsContext);
 

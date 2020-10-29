@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ReactElement } from 'react';
 import type { TreeNode, ExpandedNodes } from './models';
 
 import styles from './Explorer.module.css';
@@ -12,7 +12,7 @@ interface Props<T> {
   renderIcon: (data: T, isBranch: boolean, isExpanded: boolean) => JSX.Element;
 }
 
-function TreeView<T>(props: Props<T>): JSX.Element {
+function TreeView<T>(props: Props<T>): ReactElement {
   const {
     level,
     nodes,

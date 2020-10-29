@@ -63,7 +63,7 @@ type Props = ToggleGroupProps & {
   children: ReactNode;
 };
 
-function ToggleGroup(props: Props): JSX.Element {
+function ToggleGroup(props: Props): ReactElement {
   const { role, ariaLabel, value, disabled, onChange, children } = props;
 
   return (
