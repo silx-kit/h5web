@@ -3,7 +3,7 @@ import type { ColorMap } from './models';
 import { Domain, ScaleType } from '../shared/models';
 import { StorageConfig, createPersistableState } from '../../storage-utils';
 
-type HeatmapConfig = {
+interface HeatmapConfig {
   dataDomain: Domain | undefined;
   customDomain: Domain | undefined;
   colorMap: ColorMap;
@@ -12,7 +12,7 @@ type HeatmapConfig = {
   showGrid: boolean;
   autoScale: boolean;
   isAutoScaleDisabled: boolean;
-};
+}
 
 const STORAGE_CONFIG: StorageConfig = {
   storageId: 'h5web:heatmap',
@@ -38,7 +38,7 @@ const INITIAL_STATE: HeatmapConfig = {
 
 export const useHeatmapConfig = createPersistableState(
   STORAGE_CONFIG,
-  combine(INITIAL_STATE, (set) => ({
+  combine({ ...INITIAL_STATE }, (set) => ({
     resetDomains: (dataDomain: Domain | undefined) =>
       set({ dataDomain, customDomain: undefined }),
 

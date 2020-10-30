@@ -9,7 +9,9 @@ function Cell(props: GridChildComponentProps): ReactElement {
   const { valueAccessor } = useContext(GridSettingsContext);
 
   // Disable index columns (rendering done by the innerElementType)
-  if (rowIndex * columnIndex === 0) return <></>;
+  if (rowIndex * columnIndex === 0) {
+    return <></>;
+  }
 
   // -1 to account for the index row and column
   const dataValue = valueAccessor(rowIndex - 1, columnIndex - 1);

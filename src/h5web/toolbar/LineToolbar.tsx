@@ -27,7 +27,9 @@ function LineToolbar(): ReactElement {
         role="radiogroup"
         ariaLabel="Curve type"
         value={curveType}
-        onChange={setCurveType}
+        onChange={(val) => {
+          setCurveType(val as CurveType);
+        }}
       >
         <ToggleGroup.Btn label="Line" value={CurveType.LineOnly} />
         <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />

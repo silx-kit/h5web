@@ -9,7 +9,7 @@ interface Props {
   // Toolbar controls must:
   // - be direct children of `Toolbar` (no fragment),
   // - have a `disabled` prop to accessibly disable the interactive elements they contain.
-  children: Array<ReactElement<{ disabled: boolean }> | undefined>;
+  children: (ReactElement<{ disabled: boolean }> | undefined)[];
 }
 
 function Toolbar(props: Props): ReactElement {
@@ -31,10 +31,10 @@ function Toolbar(props: Props): ReactElement {
   );
 
   // Measure cumulative widths to find index of first overflowing child
-  const cumulativeWidths = measuredChildren.reduce((acc, child) => {
+  const cumulativeWidths = measuredChildren.reduce<number[]>((acc, child) => {
     const width = childrenWidths[child.key as string];
     return [...acc, (acc[acc.length - 1] ?? 0) + width];
-  }, [] as number[]);
+  }, []);
 
   const firstOverflowIndex = [...cumulativeWidths, Infinity].findIndex(
     (width) => width > availableWidth
@@ -61,7 +61,7 @@ function Toolbar(props: Props): ReactElement {
       <div className={styles.measuringContainer} aria-hidden="true">
         {allChildren.map((child) => (
           <Measure
-            key={`measure-${child.key}`}
+            key={`measure-${child.key || ''}`}
             onResize={({ entry }) => {
               if (entry) {
                 setChildWidth(child.key as string, entry.width);

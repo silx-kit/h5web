@@ -10,7 +10,7 @@ import { getMockDatasetDims } from '../h5web/providers/mock/utils';
 
 // Prepare 1D data array
 const values = mockValues.oneD;
-const dataArray = ndarray<number>(values, getMockDatasetDims('oneD'));
+const dataArray = ndarray(values, getMockDatasetDims('oneD'));
 const domain = getDomain(values);
 const logSafeDomain = getDomain(values, ScaleType.Log);
 
@@ -86,9 +86,7 @@ CustomAbscissas.args = {
   dataArray,
   domain,
   abscissaParams: {
-    values: Array(dataArray.size)
-      .fill(0)
-      .map((_, i) => -10 + 0.5 * i),
+    values: new Array(dataArray.size).fill(0).map((_, i) => -10 + 0.5 * i),
   },
 };
 

@@ -7,9 +7,7 @@ import { ScaleType } from '../h5web/visualizations/shared/models';
 import FillHeight from '../../.storybook/decorators/FillHeight';
 
 const Template: Story<VisCanvasProps> = (args): ReactElement => (
-  <VisCanvas {...args}>
-    <></>
-  </VisCanvas>
+  <VisCanvas {...args} />
 );
 
 export const IndexDomains = Template.bind({});

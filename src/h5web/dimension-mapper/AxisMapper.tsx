@@ -8,7 +8,7 @@ interface Props {
   axis: Axis;
   rawDims: number[];
   mapperState: NonNullable<DimensionMapping>;
-  onChange(mapperState: DimensionMapping): void;
+  onChange: (mapperState: DimensionMapping) => void;
 }
 
 function AxisMapper(props: Props): ReactElement {

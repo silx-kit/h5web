@@ -15,7 +15,7 @@ export class SilxApi implements ProviderAPI {
   private readonly client: AxiosInstance;
   private values?: HDF5Values;
 
-  constructor(domain: string) {
+  public constructor(domain: string) {
     this.domain = domain;
     this.client = axios.create({
       baseURL: `https://www.silx.org/pub/h5web/${this.domain}`,

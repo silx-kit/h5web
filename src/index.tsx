@@ -9,4 +9,4 @@ import './styles/index.css';
 
 import DemoApp from './demo-app/DemoApp';
 
-ReactDOM.render(<DemoApp />, document.getElementById('root'));
+ReactDOM.render(<DemoApp />, document.querySelector('#root'));

@@ -17,7 +17,9 @@ function ScaleSelector(props: Props): ReactElement {
       ariaLabel="Scale type"
       value={value}
       disabled={disabled}
-      onChange={onScaleChange}
+      onChange={(val) => {
+        onScaleChange(val as ScaleType);
+      }}
     >
       <ToggleGroup.Btn icon={MdSort} label="Linear" value={ScaleType.Linear} />
       <ToggleGroup.Btn icon={MdFilterList} label="Log" value={ScaleType.Log} />

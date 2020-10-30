@@ -4,7 +4,7 @@ import { useComlink } from 'react-use-comlink';
 import { useSetState } from 'react-use';
 
 // @ts-ignore
-import Worker from 'worker-loader?inline=no-fallback!./heatmap.worker'; // eslint-disable-line
+import Worker from 'worker-loader?inline=no-fallback!./heatmap.worker'; // eslint-disable-line import/no-webpack-loader-syntax
 
 import type { TextureWorker } from './heatmap.worker';
 import type { Domain, ScaleType } from '../shared/models';

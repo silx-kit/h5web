@@ -14,7 +14,7 @@ import { getValueToIndexScale, getDomain, extendDomain } from '../shared/utils';
 const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
 interface Props {
-  dataArray: ndarray<number>;
+  dataArray: ndarray;
   domain?: Domain;
   scaleType?: ScaleType;
   curveType?: CurveType;
@@ -52,8 +52,8 @@ function LineVis(props: Props): ReactElement {
     return rawDomain && extendDomain(rawDomain, 0.01);
   }, [abscissas]);
 
-  if (abscissaDomain === undefined) {
-    throw new Error(`Abscissas (${abscissas}) have an empty domain`);
+  if (!abscissaDomain) {
+    throw new Error(`Abscissas have undefined domain`);
   }
 
   const dataDomain = useMemo(() => {

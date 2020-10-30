@@ -15,7 +15,7 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
   const value = useDatasetValue(entity.id);
 
   const { dims } = entity.shape as HDF5SimpleShape;
-  if (dims.length < 1) {
+  if (dims.length === 0) {
     throw new Error('Expected dataset with at least one dimension');
   }
 

@@ -6,7 +6,6 @@ import EntityInfo from './EntityInfo';
 import styles from './MetadataViewer.module.css';
 
 interface Props {
-  key: string;
   link?: HDF5Link;
   entity?: HDF5Entity;
 }

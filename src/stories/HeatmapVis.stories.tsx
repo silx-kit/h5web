@@ -13,7 +13,7 @@ import { getMockDatasetDims } from '../h5web/providers/mock/utils';
 
 // Prepare 2D data array
 const values = mockValues.twoD.flat(Infinity) as number[];
-const dataArray = ndarray<number>(values, getMockDatasetDims('twoD'));
+const dataArray = ndarray(values, getMockDatasetDims('twoD'));
 const domain = getDomain(values);
 const logSafeDomain = getDomain(values, ScaleType.Log);
 
@@ -85,7 +85,7 @@ export const LiveDataWithoutLoader: Story<HeatmapVisProps> = (
       .slice(0)
       .sort(() => 0.5 - Math.random());
 
-    setShuffledArray(ndarray<number>(shuffledValues, dataArray.shape));
+    setShuffledArray(ndarray(shuffledValues, dataArray.shape));
   }, 5000);
 
   return <HeatmapVis {...args} dataArray={shuffledArray} />;
@@ -103,12 +103,12 @@ CustomEdges.args = {
   dataArray,
   domain,
   abscissaParams: {
-    values: Array(dataArray.shape[1] + 1)
+    values: new Array(dataArray.shape[1] + 1)
       .fill(0)
       .map((_, i) => 100 + 10 * i),
   },
   ordinateParams: {
-    values: Array(dataArray.shape[0] + 1)
+    values: new Array(dataArray.shape[0] + 1)
       .fill(0)
       .map((_, i) => -5 + 0.5 * i),
   },
@@ -120,14 +120,10 @@ CustomEdgesWithExtension.args = {
   dataArray,
   domain,
   abscissaParams: {
-    values: Array(dataArray.shape[1])
-      .fill(0)
-      .map((_, i) => 100 + 10 * i),
+    values: new Array(dataArray.shape[1]).fill(0).map((_, i) => 100 + 10 * i),
   },
   ordinateParams: {
-    values: Array(dataArray.shape[0])
-      .fill(0)
-      .map((_, i) => -5 + 0.5 * i),
+    values: new Array(dataArray.shape[0]).fill(0).map((_, i) => -5 + 0.5 * i),
   },
 };
 
