@@ -20,7 +20,7 @@ interface Props {
   keepAspectRatio?: boolean;
   showGrid?: boolean;
   showLoader?: boolean;
-  dataLabel?: string;
+  title?: string;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
 }
@@ -34,7 +34,7 @@ function HeatmapVis(props: Props): ReactElement {
     keepAspectRatio = true,
     showGrid = false,
     showLoader = true,
-    dataLabel,
+    title,
     abscissaParams = {},
     ordinateParams = {},
   } = props;
@@ -75,7 +75,7 @@ function HeatmapVis(props: Props): ReactElement {
           label: ordinateParams.label,
         }}
         aspectRatio={aspectRatio}
-        canvasTitle={dataLabel}
+        canvasTitle={title}
       >
         <TooltipMesh
           formatIndex={([x, y]) => {

@@ -35,7 +35,7 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
         mapperState={mapperState}
         onChange={setMapperState}
       />
-      <MappedLineVis value={value} dims={dims} mapperState={mapperState} />
+      <MappedLineVis value={value} dims={dims} dimensionMapping={mapperState} />
     </>
   );
 }

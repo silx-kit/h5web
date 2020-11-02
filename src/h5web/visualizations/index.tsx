@@ -122,7 +122,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return false;
       }
 
-      const dataset = getLinkedEntity(group, metadata, signal);
+      const dataset = getLinkedEntity(signal, group, metadata);
       if (
         !dataset ||
         !isDataset(dataset) ||
@@ -161,7 +161,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return false;
       }
 
-      const dataset = getLinkedEntity(group, metadata, signal);
+      const dataset = getLinkedEntity(signal, group, metadata);
       if (
         !dataset ||
         !isDataset(dataset) ||

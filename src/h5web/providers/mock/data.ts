@@ -308,15 +308,30 @@ export const mockMetadata = makeMetadata({
     ),
   ],
   datasets: [
-    makeSimpleDataset('oneD', intType, [41]),
+    makeSimpleDataset(
+      'oneD',
+      intType,
+      [41],
+      [makeStrAttr('units', 'arb. units')]
+    ),
     makeSimpleDataset('twoD', intType, [20, 41]),
     makeSimpleDataset('threeD', intType, [9, 20, 41]),
-    makeSimpleDataset('fourD', intType, [3, 9, 20, 41]),
+    makeSimpleDataset(
+      'fourD',
+      intType,
+      [3, 9, 20, 41],
+      [makeStrAttr('long_name', 'Interference fringes')]
+    ),
     makeDataset('raw', compoundType, scalarShape),
     makeDataset('scalar_int', intType, scalarShape),
     makeDataset('scalar_str', stringType, scalarShape),
-    makeSimpleDataset('X', intType, [41]),
-    makeSimpleDataset('Y', intType, [20]),
+    makeSimpleDataset('X', intType, [41], [makeStrAttr('units', 'nm')]),
+    makeSimpleDataset(
+      'Y',
+      intType,
+      [20],
+      [makeStrAttr('units', 'deg'), makeStrAttr('long_name', 'Angle (degrees)')]
+    ),
   ],
   datatypes: [makeDatatype('datatype', compoundType)],
 });

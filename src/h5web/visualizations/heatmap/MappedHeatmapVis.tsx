@@ -3,27 +3,28 @@ import { usePrevious } from 'react-use';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import HeatmapVis from './HeatmapVis';
-import { assertArray, assertOptionalArray } from '../shared/utils';
+import { assertArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useHeatmapConfig } from './config';
+import { AxisParams } from '../shared/models';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
-  mapperState: DimensionMapping;
-  valueLabel?: string;
-  axesLabels?: (string | undefined)[];
-  axesValues?: Record<string, HDF5Value>;
+  dimensionMapping: DimensionMapping;
+  title?: string;
+  axisMapping?: (string | undefined)[];
+  axesParams?: Record<string, AxisParams>;
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {
   const {
     value,
-    axesLabels = [],
-    axesValues = {},
-    valueLabel,
+    axisMapping = [],
+    axesParams = {},
+    title,
     dims,
-    mapperState,
+    dimensionMapping,
   } = props;
   assertArray<number>(value);
 
@@ -39,7 +40,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
   } = useHeatmapConfig();
 
   const baseArray = useBaseArray(value, dims);
-  const dataArray = useMappedArray(baseArray, mapperState);
+  const dataArray = useMappedArray(baseArray, dimensionMapping);
   const dataDomain = useDomain(
     (autoScale ? dataArray.data : baseArray.data) as number[],
     scaleType
@@ -59,25 +60,22 @@ function MappedHeatmapVis(props: Props): ReactElement {
     resetDomains(dataDomain); // in config, update `dataDomain` and reset `customDomain`
   }, [dataDomain, resetDomains]);
 
-  const abscissaLabel = mapperState && axesLabels[mapperState.indexOf('x')];
-  const abscissas = abscissaLabel && axesValues[abscissaLabel];
-  assertOptionalArray<number>(abscissas);
-
-  const ordinateLabel = mapperState && axesLabels[mapperState.indexOf('y')];
-  const ordinates = ordinateLabel && axesValues[ordinateLabel];
-  assertOptionalArray<number>(ordinates);
+  const abscissaName =
+    dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
+  const ordinateName =
+    dimensionMapping && axisMapping[dimensionMapping.indexOf('y')];
 
   return (
     <HeatmapVis
       dataArray={dataArray}
-      dataLabel={valueLabel}
+      title={title}
       domain={domain}
       colorMap={colorMap}
       scaleType={scaleType}
       keepAspectRatio={keepAspectRatio}
       showGrid={showGrid}
-      abscissaParams={{ label: abscissaLabel, values: abscissas }}
-      ordinateParams={{ label: ordinateLabel, values: ordinates }}
+      abscissaParams={abscissaName ? axesParams[abscissaName] : undefined}
+      ordinateParams={ordinateName ? axesParams[ordinateName] : undefined}
     />
   );
 }
