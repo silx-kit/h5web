@@ -36,7 +36,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   }
 
   const { dims } = signalDataset.shape as HDF5SimpleShape;
-  if (dims.length < 1) {
+  if (dims.length === 0) {
     throw new Error('Expected dataset with at least one dimension');
   }
 

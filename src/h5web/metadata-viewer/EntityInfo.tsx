@@ -14,8 +14,7 @@ function EntityInfo(props: Props): ReactElement {
   const { collection } = entity;
 
   const entityKind =
-    collection.charAt(0).toUpperCase() +
-    collection.substr(1, collection.length - 2);
+    collection.charAt(0).toUpperCase() + collection.slice(1, -1);
 
   return (
     <table className={styles.table}>

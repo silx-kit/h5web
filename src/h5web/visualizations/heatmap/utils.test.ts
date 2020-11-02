@@ -10,8 +10,9 @@ describe('generateCSSLinearGradient', () => {
     const lastColor = interpolateRdBu(1)
       .replace('(', '\\(')
       .replace(')', '\\)');
-    const regexp = RegExp(
-      `linear-gradient\\(to top,${firstColor},.*${lastColor}\\)`
+    const regexp = new RegExp(
+      `linear-gradient\\(to top,${firstColor},.*${lastColor}\\)`,
+      'u'
     );
     const result = generateCSSLinearGradient(interpolateRdBu, 'top');
     expect(result).toEqual(expect.stringMatching(regexp));

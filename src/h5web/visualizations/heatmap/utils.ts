@@ -2,7 +2,7 @@ import { range } from 'lodash-es';
 import type ndarray from 'ndarray';
 import type { D3Interpolator, Dims } from './models';
 
-export function getDims(dataArray: ndarray<number>): Dims {
+export function getDims(dataArray: ndarray): Dims {
   const [rows, cols] = dataArray.shape;
   return { rows, cols };
 }

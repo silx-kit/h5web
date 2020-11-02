@@ -13,7 +13,7 @@ import type { ColorMap } from './models';
 import { getDomain, getValueToIndexScale } from '../shared/utils';
 
 interface Props {
-  dataArray: ndarray<number>;
+  dataArray: ndarray;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: ScaleType;
@@ -47,20 +47,16 @@ function HeatmapVis(props: Props): ReactElement {
 
   const abscissaToIndex = getValueToIndexScale(abscissas);
 
-  const abscissaDomain = useMemo(() => {
-    return getDomain(abscissas);
-  }, [abscissas]);
-  if (abscissaDomain === undefined) {
-    throw new Error(`Abscissas (${abscissas}) have an empty domain`);
+  const abscissaDomain = useMemo(() => getDomain(abscissas), [abscissas]);
+  if (!abscissaDomain) {
+    throw new Error(`Abscissas have undefined domain`);
   }
 
   const ordinateToIndex = getValueToIndexScale(ordinates);
 
-  const ordinateDomain = useMemo(() => {
-    return getDomain(ordinates);
-  }, [ordinates]);
-  if (ordinateDomain === undefined) {
-    throw new Error(`Ordinates (${ordinates}) have an empty domain`);
+  const ordinateDomain = useMemo(() => getDomain(ordinates), [ordinates]);
+  if (!ordinateDomain) {
+    throw new Error(`Ordinates have undefined domain`);
   }
 
   return (

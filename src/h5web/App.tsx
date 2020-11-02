@@ -45,11 +45,7 @@ function App(): ReactElement {
             selectedNode={selectedNode}
           />
           {isInspecting ? (
-            <MetadataViewer
-              key={JSON.stringify(selectedLink)}
-              link={selectedLink}
-              entity={selectedEntity}
-            />
+            <MetadataViewer link={selectedLink} entity={selectedEntity} />
           ) : (
             <Visualizer entity={selectedEntity} />
           )}

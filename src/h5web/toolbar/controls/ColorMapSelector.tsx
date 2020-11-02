@@ -31,7 +31,7 @@ function Gradient(props: GradientProps): ReactElement {
 interface Props {
   value: ColorMap;
   disabled?: boolean;
-  onChange(colorMap: ColorMap): void;
+  onChange: (colorMap: ColorMap) => void;
 }
 
 function ColorMapSelector(props: Props): ReactElement {

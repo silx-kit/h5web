@@ -175,26 +175,25 @@ export function getTickFormatter(
   // Otherwise, use formatter that hides non-exact powers of 10
   return (val) => {
     const loggedVal = Math.log10(Math.abs(val.valueOf()));
-    if (loggedVal !== Math.floor(loggedVal)) return '';
-    return TICK_FORMAT(val);
+    return loggedVal === Math.floor(loggedVal) ? TICK_FORMAT(val) : ''; // eslint-disable-line new-cap
   };
 }
 
 export function assertStr(val: unknown): asserts val is string {
   if (typeof val !== 'string') {
-    throw new Error('Expected string');
+    throw new TypeError('Expected string');
   }
 }
 
 export function assertNumOrStr(val: unknown): asserts val is number | string {
   if (typeof val !== 'number' && typeof val !== 'string') {
-    throw new Error('Expected number or string');
+    throw new TypeError('Expected number or string');
   }
 }
 
 export function assertArray<T>(val: unknown): asserts val is T[] {
   if (!Array.isArray(val)) {
-    throw new Error('Expected array');
+    throw new TypeError('Expected array');
   }
 }
 

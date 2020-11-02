@@ -19,7 +19,10 @@ export const SCALE_FUNCTIONS: Record<ScaleType, ScaleFn> = {
   [ScaleType.SymLog]: scaleSymlog,
 };
 
-export type Size = { width: number; height: number };
+export interface Size {
+  width: number;
+  height: number;
+}
 
 export type Domain = [number, number];
 
@@ -38,12 +41,12 @@ export type AxisScale =
   | ScaleLogarithmic<number, number>
   | ScaleSymLog<number, number>;
 
-export type AxisOffsets = {
+export interface AxisOffsets {
   left: number;
   bottom: number;
   right: number;
   top: number;
-};
+}
 
 export interface AxisParams {
   label?: string;

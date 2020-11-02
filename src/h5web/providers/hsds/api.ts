@@ -34,7 +34,7 @@ export class HsdsApi implements ProviderAPI {
   private datatypes: Record<HDF5Id, HDF5Datatype> = {};
   private values: Record<HDF5Id, HDF5Value> = {};
 
-  constructor(
+  public constructor(
     url: string,
     username: string,
     password: string,
@@ -109,13 +109,14 @@ export class HsdsApi implements ProviderAPI {
     const { data } = await this.client.get<HsdsAttributesResponse>(
       `/${entityCollection}/${entityId}/attributes`
     );
-    const attrsPromises = data.attributes.map((attr) =>
-      this.client
-        .get<HsdsAttributeWithValueResponse>(
-          `/${entityCollection}/${entityId}/attributes/${attr.name}`
-        )
-        .then((response) => response.data)
-    );
+
+    const attrsPromises = data.attributes.map(async (attr) => {
+      const { data } = await this.client.get<HsdsAttributeWithValueResponse>(
+        `/${entityCollection}/${entityId}/attributes/${attr.name}`
+      );
+      return data;
+    });
+
     return Promise.all(attrsPromises);
   }
 

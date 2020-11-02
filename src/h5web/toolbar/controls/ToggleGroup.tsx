@@ -6,7 +6,7 @@ interface ToggleGroupProps {
   role: 'tablist' | 'radiogroup';
   value: string;
   disabled?: boolean;
-  onChange(val: string): void;
+  onChange: (val: string) => void;
 }
 
 const ToggleGroupContext = createContext<ToggleGroupProps | undefined>(

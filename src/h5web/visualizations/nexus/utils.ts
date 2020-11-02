@@ -46,7 +46,7 @@ export function getLinkedEntity(
 export function getNxAxes(
   group: HDF5Group,
   metadata: HDF5Metadata
-): { labels: Array<string | undefined>; ids: Record<string, HDF5Id> } {
+): { labels: (string | undefined)[]; ids: Record<string, HDF5Id> } {
   const axesList = getAttributeValue(group, 'axes');
 
   if (!axesList) {

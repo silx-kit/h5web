@@ -5,7 +5,12 @@ import SilxProvider from '../h5web/providers/silx/SilxProvider';
 import HsdsProvider from '../h5web/providers/hsds/HsdsProvider';
 
 // Split mock data generation code out of main bundle
-const MockProvider = lazy(() => import('../h5web/providers/mock/MockProvider'));
+const MockProvider = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "mock" */ '../h5web/providers/mock/MockProvider'
+    )
+);
 
 const HSDS_URL = process.env.REACT_APP_HSDS_URL || '';
 const HSDS_USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';

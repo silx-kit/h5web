@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { useThree } from 'react-three-fiber';
 
 // Simplified version of `drei`'s `<Html>` component
-// https://github.com/pmndrs/drei/blob/master/src/misc/Html.tsx
+// https://github.com/pmndrs/drei/blob/v2.2.3/src/Html.tsx
 function Html(props: React.HTMLAttributes<HTMLDivElement>): ReactElement {
   const { className, style, children, ...divProps } = props;
 
@@ -18,12 +18,12 @@ function Html(props: React.HTMLAttributes<HTMLDivElement>): ReactElement {
     el.style.cssText = `position: absolute; top: 0; left: 0; z-index: 0;`;
 
     if (parentElement) {
-      parentElement.appendChild(el);
+      parentElement.append(el);
     }
 
     return () => {
       if (parentElement) {
-        parentElement.removeChild(el);
+        el.remove();
       }
 
       ReactDOM.unmountComponentAtNode(el);

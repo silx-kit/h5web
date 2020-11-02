@@ -33,7 +33,7 @@ function getConfig(pkg) {
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
+          test: /\.tsx?$/u,
           use: [
             {
               loader: 'ts-loader',
@@ -46,12 +46,12 @@ function getConfig(pkg) {
           ],
         },
         {
-          test: /\.(png|jpe?g|gif)$/i,
+          test: /\.(png|jpe?g|gif)$/iu,
           use: [{ loader: 'url-loader' }],
         },
         {
-          test: /\.css$/,
-          include: /\.module\.css$/,
+          test: /\.css$/u,
+          include: /\.module\.css$/u,
           use: [
             { loader: 'style-loader' },
             {
@@ -66,8 +66,8 @@ function getConfig(pkg) {
           ],
         },
         {
-          test: /\.css$/,
-          exclude: /\.module\.css$/,
+          test: /\.css$/u,
+          exclude: /\.module\.css$/u,
           use: [
             { loader: MiniCssExtractPlugin.loader },
             { loader: 'css-loader' },

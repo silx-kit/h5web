@@ -1,9 +1,9 @@
 import type { INTERPOLATORS } from './interpolators';
 
-export type Dims = {
+export interface Dims {
   rows: number;
   cols: number;
-};
+}
 
 export type D3Interpolator = (t: number) => string;
 
