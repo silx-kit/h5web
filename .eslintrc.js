@@ -52,8 +52,6 @@ module.exports = createConfig({
     {
       files: jestFiles,
       rules: {
-        'jest/require-top-level-describe': 'off', // until App.test.tsx is split into multiple files
-
         'jest-formatting/padding-around-all': 'off', // allow writing concise two-line tests
         'jest/prefer-strict-equal': 'off', // `toEqual` is shorter and sufficient in most cases
         'testing-library/await-fire-event': 'off', // not supported by React Testing Library
