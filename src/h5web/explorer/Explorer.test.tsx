@@ -1,14 +1,15 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { DOMAIN, renderApp } from '../test-utils';
+import { MOCK_DOMAIN } from '../providers/mock/MockProvider';
+import { renderApp } from '../test-utils';
 
 describe('Explorer', () => {
   test('select root group by default', async () => {
     renderApp();
 
-    const title = await screen.findByRole('heading', { name: DOMAIN });
+    const title = await screen.findByRole('heading', { name: MOCK_DOMAIN });
     expect(title).toBeVisible();
 
-    const domainBtn = screen.getByRole('treeitem', { name: DOMAIN });
+    const domainBtn = screen.getByRole('treeitem', { name: MOCK_DOMAIN });
     expect(domainBtn).toBeVisible();
     expect(domainBtn).toHaveAttribute('aria-selected', 'true');
   });
@@ -16,7 +17,9 @@ describe('Explorer', () => {
   test('toggle explorer sidebar', async () => {
     renderApp();
 
-    const domainBtn = await screen.findByRole('treeitem', { name: DOMAIN });
+    const domainBtn = await screen.findByRole('treeitem', {
+      name: MOCK_DOMAIN,
+    });
     const sidebarBtn = screen.getByRole('button', {
       name: 'Toggle explorer sidebar',
     });

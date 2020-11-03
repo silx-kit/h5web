@@ -20,7 +20,7 @@ import { App, MockProvider } from '@h5web/app';
 
 function MyApp(): ReactElement {
   return (
-    <MockProvider domain="source.h5">
+    <MockProvider>
       <App />
     </MockProvider>
   );

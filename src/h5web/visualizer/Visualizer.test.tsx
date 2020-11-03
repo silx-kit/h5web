@@ -1,5 +1,9 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { renderApp } from '../test-utils';
+import React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { mockValues } from '../../packages/lib';
+import App from '../App';
+import { prepareForConsoleError, renderApp } from '../test-utils';
+import { MockProvider } from '../../packages/app';
 
 describe('Visualizer', () => {
   test('visualise scalar dataset', async () => {
@@ -47,5 +51,25 @@ describe('Visualizer', () => {
       expect(matrixTab).toHaveAttribute('aria-selected', 'true');
       expect(lineTab).toHaveAttribute('aria-selected', 'false');
     });
+  });
+
+  test("display error when dataset value can't be fetched", async () => {
+    render(
+      <MockProvider errorOnId="raw">
+        <App />
+      </MockProvider>
+    );
+
+    fireEvent.click(await screen.findByRole('treeitem', { name: 'entities' }));
+
+    const { consoleError, resetConsole } = prepareForConsoleError();
+    fireEvent.click(screen.getByRole('treeitem', { name: 'raw' }));
+
+    expect(await screen.findByText('error')).toBeVisible();
+    expect(consoleError).toHaveBeenCalledTimes(2); // React logs two stack traces
+    resetConsole();
+
+    fireEvent.click(screen.getByRole('treeitem', { name: 'scalar_str' }));
+    expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
   });
 });
