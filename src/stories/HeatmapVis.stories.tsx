@@ -141,7 +141,7 @@ export const WithTitle = Template.bind({});
 WithTitle.args = {
   dataArray,
   domain,
-  dataLabel: 'Pretty colors',
+  title: 'Pretty colors',
 };
 
 export default {

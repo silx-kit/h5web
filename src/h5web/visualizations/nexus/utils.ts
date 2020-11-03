@@ -4,11 +4,11 @@ import type {
   HDF5Dataset,
   HDF5Value,
   HDF5Entity,
-  HDF5Id,
 } from '../../providers/models';
 import { getEntity, isDataset, isGroup } from '../../providers/utils';
 import { NxAttribute, NX_INTERPRETATIONS } from './models';
-import { assertArray } from '../shared/utils';
+import { assertArray, assertOptionalArray } from '../shared/utils';
+import { AxisParams } from '../shared/models';
 
 export function isNxDataGroup(group: HDF5Group): boolean {
   return !!group.attributes?.find(({ value }) => value === 'NXdata');
@@ -34,42 +34,25 @@ export function getAttributeValue(
 }
 
 export function getLinkedEntity(
+  entityName: string,
   group: HDF5Group,
-  metadata: HDF5Metadata,
-  entityName: string
+  metadata: HDF5Metadata
 ): HDF5Entity | undefined {
   const childLink = group.links?.find((l) => l.title === entityName);
 
   return getEntity(childLink, metadata);
 }
 
-export function getNxAxes(
-  group: HDF5Group,
-  metadata: HDF5Metadata
-): { labels: (string | undefined)[]; ids: Record<string, HDF5Id> } {
-  const axesList = getAttributeValue(group, 'axes');
+export function getNxAxisMapping(group: HDF5Group) {
+  const axisList = getAttributeValue(group, 'axes');
 
-  if (!axesList) {
-    return { labels: [], ids: {} };
+  if (!axisList) {
+    return [];
   }
 
-  const axes = typeof axesList === 'string' ? [axesList] : axesList;
-  assertArray<string>(axes);
-
-  const axesLabels = axes.map((a) => (a === '.' ? undefined : a));
-  const axesIds = axesLabels.reduce<Record<string, HDF5Id>>((acc, axis) => {
-    if (!axis) {
-      return acc;
-    }
-
-    const dataset = getLinkedEntity(group, metadata, axis);
-    if (dataset && isDataset(dataset)) {
-      acc[axis] = dataset.id;
-    }
-    return acc;
-  }, {});
-
-  return { labels: axesLabels, ids: axesIds };
+  const axisMapping = typeof axisList === 'string' ? [axisList] : axisList;
+  assertArray<string>(axisMapping);
+  return axisMapping.map((a) => (a !== '.' ? a : undefined));
 }
 
 export function getNxDataGroup(
@@ -99,10 +82,57 @@ export function getNxDataGroup(
       if (!previousEntity || !isGroup(previousEntity)) {
         return undefined;
       }
-      return getLinkedEntity(previousEntity, metadata, currentComponent);
+      return getLinkedEntity(currentComponent, previousEntity, metadata);
     },
     defaultPath.startsWith('/') ? metadata.groups[metadata.root] : entity
   );
 
   return getNxDataGroup(defaultEntity, metadata);
+}
+
+export function getDatasetLabel(
+  dataset: HDF5Dataset,
+  datasetName: string
+): string {
+  const longName = getAttributeValue(dataset, 'long_name');
+  if (longName && typeof longName === 'string') {
+    return longName;
+  }
+
+  const units = getAttributeValue(dataset, 'units');
+  if (units && typeof units === 'string') {
+    return `${datasetName} (${units})`;
+  }
+
+  return datasetName;
+}
+
+export function getLinkedDatasets(
+  names: string[],
+  nxDataGroup: HDF5Group,
+  metadata: HDF5Metadata
+): Record<string, HDF5Dataset> {
+  const datasetEntries = names
+    .map<[string, HDF5Entity | undefined]>((name) => {
+      return [name, getLinkedEntity(name, nxDataGroup, metadata)];
+    })
+    .filter((entry): entry is [string, HDF5Dataset] => {
+      const [, dataset] = entry;
+      return !!dataset && isDataset(dataset);
+    });
+
+  return Object.fromEntries(datasetEntries);
+}
+
+export function getNxAxesParams(
+  nxDatasets: Record<string, HDF5Dataset>,
+  datasetValues: Record<string, HDF5Value> | undefined
+): Record<string, AxisParams> {
+  const paramsEntries = Object.entries(nxDatasets).map(([axis, dataset]) => {
+    const values = datasetValues && datasetValues[axis];
+    assertOptionalArray<number>(values);
+    return [axis, { values, label: getDatasetLabel(dataset, axis) }];
+  });
+
+  return Object.fromEntries(paramsEntries);
 }

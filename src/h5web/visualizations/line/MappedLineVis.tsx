@@ -2,27 +2,28 @@ import React, { ReactElement, useEffect } from 'react';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
-import { assertArray, assertOptionalArray } from '../shared/utils';
+import { assertArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
+import { AxisParams } from '../shared/models';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
-  mapperState: DimensionMapping;
+  dimensionMapping: DimensionMapping;
   valueLabel?: string;
-  axesLabels?: (string | undefined)[];
-  axesValues?: Record<string, HDF5Value>;
+  axisMapping?: (string | undefined)[];
+  axesParams?: Record<string, AxisParams>;
 }
 
 function MappedLineVis(props: Props): ReactElement {
   const {
     value,
     valueLabel,
-    axesLabels = [],
-    axesValues = {},
+    axisMapping = [],
+    axesParams = {},
     dims,
-    mapperState,
+    dimensionMapping,
   } = props;
   assertArray<number>(value);
 
@@ -35,7 +36,7 @@ function MappedLineVis(props: Props): ReactElement {
   } = useLineConfig();
 
   const baseArray = useBaseArray(value, dims);
-  const dataArray = useMappedArray(baseArray, mapperState);
+  const dataArray = useMappedArray(baseArray, dimensionMapping);
 
   // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
   useEffect(() => {
@@ -47,9 +48,8 @@ function MappedLineVis(props: Props): ReactElement {
     scaleType
   );
 
-  const abscissaLabel = mapperState && axesLabels[mapperState.indexOf('x')];
-  const abscissas = abscissaLabel && axesValues[abscissaLabel];
-  assertOptionalArray<number>(abscissas);
+  const abscissaName =
+    dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
 
   return (
     <LineVis
@@ -58,10 +58,7 @@ function MappedLineVis(props: Props): ReactElement {
       scaleType={scaleType}
       curveType={curveType}
       showGrid={showGrid}
-      abscissaParams={{
-        label: abscissaLabel,
-        values: abscissas,
-      }}
+      abscissaParams={abscissaName ? axesParams[abscissaName] : undefined}
       ordinateLabel={valueLabel}
     />
   );
