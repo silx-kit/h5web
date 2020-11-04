@@ -23,7 +23,7 @@ function DemoApp(): ReactElement {
       <Switch>
         <Route path="/mock">
           <Suspense fallback={<></>}>
-            <MockProvider domain="source.h5">
+            <MockProvider>
               <App />
             </MockProvider>
           </Suspense>

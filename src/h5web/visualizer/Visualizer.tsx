@@ -48,13 +48,14 @@ function Visualizer(props: Props): ReactElement {
       </div>
       <div className={styles.displayArea}>
         <AsyncResourceContent
+          key={entity.id}
           fallback={<Loader />}
           errorMessage={(err: Error) => (
             <p className={styles.error}>{err.message}</p>
           )}
         >
           <Profiler id={activeVis}>
-            <Container key={entity.id} entity={entity} />
+            <Container entity={entity} />
           </Profiler>
         </AsyncResourceContent>
       </div>
