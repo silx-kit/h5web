@@ -52,8 +52,9 @@ module.exports = createConfig({
     {
       files: jestFiles,
       rules: {
-        'jest-formatting/padding-around-all': 'off', // allow writing concise two-line tests
+        'jest/no-focused-tests': 'warn', // warning instead of error
         'jest/prefer-strict-equal': 'off', // `toEqual` is shorter and sufficient in most cases
+        'jest-formatting/padding-around-all': 'off', // allow writing concise two-line tests
         'testing-library/await-fire-event': 'off', // not supported by React Testing Library
 
         // Tests in different `describe` blocks may have the same names and identical functions

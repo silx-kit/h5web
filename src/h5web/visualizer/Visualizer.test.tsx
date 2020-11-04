@@ -1,32 +1,140 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { mockValues } from '../../packages/lib';
 import App from '../App';
 import { prepareForConsoleError, renderApp } from '../test-utils';
 import { MockProvider } from '../../packages/app';
+import { Vis } from '../visualizations';
+
+async function findVisSelectorTabs() {
+  return within(
+    await screen.findByRole('tablist', { name: 'Visualization' })
+  ).getAllByRole('tab');
+}
 
 describe('Visualizer', () => {
-  test('visualise scalar dataset', async () => {
+  test('show "Raw" tab for dataset with complex type', async () => {
     renderApp();
 
     fireEvent.click(await screen.findByRole('treeitem', { name: 'entities' }));
-    const datasetBtn = screen.getByRole('treeitem', { name: 'scalar_int' });
-    expect(datasetBtn).toBeVisible();
+    fireEvent.click(screen.getByRole('treeitem', { name: 'raw' }));
 
-    fireEvent.click(datasetBtn);
-    expect(datasetBtn).toHaveAttribute('aria-selected', 'true');
-    expect(datasetBtn).not.toHaveAttribute('aria-expanded'); // a dataset cannot be expanded
-
-    const scalarTab = await screen.findByRole('tab', { name: 'Scalar' });
-    expect(scalarTab).toBeVisible();
-    expect(scalarTab).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByText('0')).toBeVisible();
-
-    fireEvent.click(screen.getByRole('treeitem', { name: 'scalar_str' }));
-    expect(await screen.findByText('foo')).toBeVisible();
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(1);
+    expect(tabs[0]).toHaveTextContent(Vis.Raw);
+    expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
   });
 
-  test('switch visualisations', async () => {
+  test('show "Scalar" tab for scalar dataset with basic type', async () => {
+    renderApp();
+
+    fireEvent.click(await screen.findByRole('treeitem', { name: 'entities' }));
+    fireEvent.click(screen.getByRole('treeitem', { name: 'scalar_int' }));
+
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(1);
+    expect(tabs[0]).toHaveTextContent(Vis.Scalar);
+    expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
+  });
+
+  test('show "Matrix" and "Line" tabs for 1D dataset', async () => {
+    renderApp();
+
+    fireEvent.click(
+      await screen.findByRole('treeitem', { name: 'nD_datasets' })
+    );
+    fireEvent.click(screen.getByRole('treeitem', { name: 'oneD' }));
+
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(2);
+    expect(tabs[0]).toHaveTextContent(Vis.Matrix);
+    expect(tabs[1]).toHaveTextContent(Vis.Line);
+    expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+  });
+
+  test('show "Matrix", "Line" and "Heatmap" tabs for 2D datasets', async () => {
+    renderApp();
+
+    fireEvent.click(
+      await screen.findByRole('treeitem', { name: 'nD_datasets' })
+    );
+    fireEvent.click(screen.getByRole('treeitem', { name: 'twoD' }));
+
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(3);
+    expect(tabs[0]).toHaveTextContent(Vis.Matrix);
+    expect(tabs[1]).toHaveTextContent(Vis.Line);
+    expect(tabs[2]).toHaveTextContent(Vis.Heatmap);
+    expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
+  });
+
+  test('show "NX Spectrum" tab for NXdata group with "spectrum" interpretation', async () => {
+    renderApp();
+
+    fireEvent.click(
+      await screen.findByRole('treeitem', { name: 'nexus_entry' })
+    );
+    fireEvent.click(screen.getByRole('treeitem', { name: 'spectrum' }));
+
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(1);
+    expect(tabs[0]).toHaveTextContent(Vis.NxSpectrum);
+  });
+
+  test('show "NX Image" tab for NXdata group with "image" interpretation', async () => {
+    renderApp();
+
+    fireEvent.click(
+      await screen.findByRole('treeitem', { name: 'nexus_entry' })
+    );
+    fireEvent.click(screen.getByRole('treeitem', { name: 'image' }));
+
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(1);
+    expect(tabs[0]).toHaveTextContent(Vis.NxImage);
+  });
+
+  test('show "NX Image" tab for NXdata group with 2D signal', async () => {
+    renderApp();
+
+    fireEvent.click(
+      await screen.findByRole('treeitem', { name: 'nexus_entry' })
+    );
+    fireEvent.click(screen.getByRole('treeitem', { name: 'nx_process' }));
+    fireEvent.click(screen.getByRole('treeitem', { name: 'nx_data' }));
+
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(1);
+    expect(tabs[0]).toHaveTextContent(Vis.NxImage);
+  });
+
+  test('show "NX Image" tab for NXentry group with 2D default signal', async () => {
+    renderApp();
+
+    fireEvent.click(
+      await screen.findByRole('treeitem', { name: 'nexus_entry' })
+    );
+
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(1);
+    expect(tabs[0]).toHaveTextContent(Vis.NxImage);
+  });
+
+  test('show "NX Image" tab for NXroot group with 2D default signal', async () => {
+    renderApp();
+
+    const tabs = await findVisSelectorTabs();
+    expect(tabs).toHaveLength(1);
+    expect(tabs[0]).toHaveTextContent(Vis.NxImage);
+  });
+
+  test('switch between visualisations', async () => {
     renderApp();
 
     // Select the 1D dataset nD_datasets/oneD
@@ -51,6 +159,14 @@ describe('Visualizer', () => {
       expect(matrixTab).toHaveAttribute('aria-selected', 'true');
       expect(lineTab).toHaveAttribute('aria-selected', 'false');
     });
+  });
+
+  test("don't show visualization selector for basic group", async () => {
+    renderApp();
+    fireEvent.click(await screen.findByRole('treeitem', { name: 'entities' }));
+
+    expect(await screen.findByText('Nothing to visualize')).toBeInTheDocument();
+    expect(screen.queryByRole('tablist', { name: 'Visualization' })).toBeNull();
   });
 
   test("display error when dataset value can't be fetched", async () => {
