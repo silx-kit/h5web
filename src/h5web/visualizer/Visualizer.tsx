@@ -11,10 +11,11 @@ import Profiler from '../Profiler';
 
 interface Props {
   entity?: HDF5Entity;
+  entityName?: string;
 }
 
 function Visualizer(props: Props): ReactElement {
-  const { entity } = props;
+  const { entity, entityName } = props;
   const { metadata } = useContext(ProviderContext);
 
   const supportedVis = entity ? getSupportedVis(entity, metadata) : [];
@@ -55,7 +56,7 @@ function Visualizer(props: Props): ReactElement {
           )}
         >
           <Profiler id={activeVis}>
-            <Container entity={entity} />
+            <Container entity={entity} entityName={entityName} />
           </Profiler>
         </AsyncResourceContent>
       </div>
