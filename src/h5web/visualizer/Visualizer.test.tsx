@@ -1,29 +1,21 @@
 import React from 'react';
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { mockValues } from '../../packages/lib';
 import App from '../App';
-import { prepareForConsoleError, renderApp } from '../test-utils';
+import {
+  findVisSelectorTabs,
+  prepareForConsoleError,
+  queryVisSelector,
+  renderApp,
+  selectExplorerNode,
+} from '../test-utils';
 import { MockProvider } from '../../packages/app';
 import { Vis } from '../visualizations';
-
-async function findVisSelectorTabs() {
-  return within(
-    await screen.findByRole('tablist', { name: 'Visualization' })
-  ).getAllByRole('tab');
-}
 
 describe('Visualizer', () => {
   test('show "Raw" tab for dataset with complex type', async () => {
     renderApp();
-
-    fireEvent.click(await screen.findByRole('treeitem', { name: 'entities' }));
-    fireEvent.click(screen.getByRole('treeitem', { name: 'raw' }));
+    await selectExplorerNode('entities/raw');
 
     const tabs = await findVisSelectorTabs();
     expect(tabs).toHaveLength(1);
@@ -33,9 +25,7 @@ describe('Visualizer', () => {
 
   test('show "Scalar" tab for scalar dataset with basic type', async () => {
     renderApp();
-
-    fireEvent.click(await screen.findByRole('treeitem', { name: 'entities' }));
-    fireEvent.click(screen.getByRole('treeitem', { name: 'scalar_int' }));
+    await selectExplorerNode('entities/scalar_int');
 
     const tabs = await findVisSelectorTabs();
     expect(tabs).toHaveLength(1);
@@ -45,11 +35,7 @@ describe('Visualizer', () => {
 
   test('show "Matrix" and "Line" tabs for 1D dataset', async () => {
     renderApp();
-
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nD_datasets' })
-    );
-    fireEvent.click(screen.getByRole('treeitem', { name: 'oneD' }));
+    await selectExplorerNode('nD_datasets/oneD');
 
     const tabs = await findVisSelectorTabs();
     expect(tabs).toHaveLength(2);
@@ -60,11 +46,7 @@ describe('Visualizer', () => {
 
   test('show "Matrix", "Line" and "Heatmap" tabs for 2D datasets', async () => {
     renderApp();
-
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nD_datasets' })
-    );
-    fireEvent.click(screen.getByRole('treeitem', { name: 'twoD' }));
+    await selectExplorerNode('nD_datasets/twoD');
 
     const tabs = await findVisSelectorTabs();
     expect(tabs).toHaveLength(3);
@@ -76,11 +58,7 @@ describe('Visualizer', () => {
 
   test('show "NX Spectrum" tab for NXdata group with "spectrum" interpretation', async () => {
     renderApp();
-
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nexus_entry' })
-    );
-    fireEvent.click(screen.getByRole('treeitem', { name: 'spectrum' }));
+    await selectExplorerNode('nexus_entry/spectrum');
 
     const tabs = await findVisSelectorTabs();
     expect(tabs).toHaveLength(1);
@@ -89,11 +67,7 @@ describe('Visualizer', () => {
 
   test('show "NX Image" tab for NXdata group with "image" interpretation', async () => {
     renderApp();
-
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nexus_entry' })
-    );
-    fireEvent.click(screen.getByRole('treeitem', { name: 'image' }));
+    await selectExplorerNode('nexus_entry/image');
 
     const tabs = await findVisSelectorTabs();
     expect(tabs).toHaveLength(1);
@@ -102,12 +76,7 @@ describe('Visualizer', () => {
 
   test('show "NX Image" tab for NXdata group with 2D signal', async () => {
     renderApp();
-
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nexus_entry' })
-    );
-    fireEvent.click(screen.getByRole('treeitem', { name: 'nx_process' }));
-    fireEvent.click(screen.getByRole('treeitem', { name: 'nx_data' }));
+    await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
     const tabs = await findVisSelectorTabs();
     expect(tabs).toHaveLength(1);
@@ -116,10 +85,7 @@ describe('Visualizer', () => {
 
   test('show "NX Image" tab for NXentry group with 2D default signal', async () => {
     renderApp();
-
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nexus_entry' })
-    );
+    await selectExplorerNode('nexus_entry');
 
     const tabs = await findVisSelectorTabs();
     expect(tabs).toHaveLength(1);
@@ -136,13 +102,7 @@ describe('Visualizer', () => {
 
   test('switch between visualisations', async () => {
     renderApp();
-
-    // Select the 1D dataset nD_datasets/oneD
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nD_datasets' })
-    );
-    const datasetBtn = screen.getByRole('treeitem', { name: 'oneD' });
-    fireEvent.click(datasetBtn);
+    await selectExplorerNode('nD_datasets/oneD');
 
     const lineTab = await screen.findByRole('tab', { name: 'Line' });
     expect(lineTab).toBeVisible();
@@ -154,19 +114,16 @@ describe('Visualizer', () => {
 
     // Switch to Matrix visualisation
     fireEvent.click(matrixTab);
-
-    await waitFor(() => {
-      expect(matrixTab).toHaveAttribute('aria-selected', 'true');
-      expect(lineTab).toHaveAttribute('aria-selected', 'false');
-    });
+    expect(matrixTab).toHaveAttribute('aria-selected', 'true');
+    expect(lineTab).toHaveAttribute('aria-selected', 'false');
   });
 
   test("don't show visualization selector for basic group", async () => {
     renderApp();
-    fireEvent.click(await screen.findByRole('treeitem', { name: 'entities' }));
+    await selectExplorerNode('entities');
 
     expect(await screen.findByText('Nothing to visualize')).toBeInTheDocument();
-    expect(screen.queryByRole('tablist', { name: 'Visualization' })).toBeNull();
+    expect(queryVisSelector()).not.toBeInTheDocument();
   });
 
   test("display error when dataset value can't be fetched", async () => {
@@ -176,16 +133,14 @@ describe('Visualizer', () => {
       </MockProvider>
     );
 
-    fireEvent.click(await screen.findByRole('treeitem', { name: 'entities' }));
-
-    const { consoleError, resetConsole } = prepareForConsoleError();
-    fireEvent.click(screen.getByRole('treeitem', { name: 'raw' }));
+    const { consoleErrorMock, resetConsole } = prepareForConsoleError();
+    await selectExplorerNode('entities/raw');
 
     expect(await screen.findByText('error')).toBeVisible();
-    expect(consoleError).toHaveBeenCalledTimes(2); // React logs two stack traces
+    expect(consoleErrorMock).toHaveBeenCalledTimes(2); // React logs two stack traces
     resetConsole();
 
-    fireEvent.click(screen.getByRole('treeitem', { name: 'scalar_str' }));
+    await selectExplorerNode('scalar_str');
     expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
   });
 });

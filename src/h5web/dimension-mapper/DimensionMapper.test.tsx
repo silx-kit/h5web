@@ -1,18 +1,12 @@
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
-import { renderApp } from '../test-utils';
+import { fireEvent, screen, within } from '@testing-library/react';
+import { renderApp, selectExplorerNode, selectVisTab } from '../test-utils';
+import { Vis } from '../visualizations';
 
 describe('DimensionMapper', () => {
   test('display mapping for X axis when visualizing 2D dataset as Line', async () => {
     renderApp();
-
-    // Select the 2D dataset nD_datasets/twoD
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nD_datasets' })
-    );
-    fireEvent.click(screen.getByRole('treeitem', { name: 'twoD' }));
-
-    // Select the line vis
-    fireEvent.click(await screen.findByRole('tab', { name: 'Line' }));
+    await selectExplorerNode('nD_datasets/twoD');
+    await selectVisTab(Vis.Line);
 
     // Ensure that the dimension mapper is only visible for X (and not for Y)
     const xRadioGroup = screen.getByLabelText('Dimension as x axis');
@@ -31,26 +25,16 @@ describe('DimensionMapper', () => {
     // Ensure that the swap from [0, 'x'] to ['x', 0] works
     fireEvent.click(xDimsButtons[0]);
 
-    await waitFor(() => {
-      expect(xDimsButtons[0]).toBeChecked();
-      expect(xDimsButtons[1]).not.toBeChecked();
-      const D1Slider = screen.getByRole('slider');
-      expect(D1Slider).toHaveAttribute('aria-valueNow', '0');
-    });
+    expect(xDimsButtons[0]).toBeChecked();
+    expect(xDimsButtons[1]).not.toBeChecked();
+    const D1Slider = screen.getByRole('slider');
+    expect(D1Slider).toHaveAttribute('aria-valueNow', '0');
   });
 
   test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
     renderApp();
-
-    // Select the 2D dataset nD_datasets/twoD
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nD_datasets' })
-    );
-    fireEvent.click(screen.getByRole('treeitem', { name: 'twoD' }));
-
-    // Ensure that the heatmap vis is selected
-    const heatmapTab = await screen.findByRole('tab', { name: 'Heatmap' });
-    expect(heatmapTab).toHaveAttribute('aria-selected', 'true');
+    await selectExplorerNode('nD_datasets/twoD');
+    await selectVisTab(Vis.Heatmap);
 
     // Ensure that the dimension mapper is visible for X and Y
     const xRadioGroup = screen.getByLabelText('Dimension as x axis');
@@ -77,15 +61,8 @@ describe('DimensionMapper', () => {
 
   test('display one dimension slider and mappings for X and Y axes when visualizing 3D dataset as Matrix', async () => {
     renderApp();
-
-    // Select the 3D dataset nD_datasets/threeD
-    fireEvent.click(
-      await screen.findByRole('treeitem', { name: 'nD_datasets' })
-    );
-    fireEvent.click(screen.getByRole('treeitem', { name: 'threeD' }));
-
-    // Select the matrix vis
-    fireEvent.click(await screen.findByRole('tab', { name: 'Matrix' }));
+    await selectExplorerNode('nD_datasets/threeD');
+    await selectVisTab(Vis.Matrix);
 
     // Ensure that the dimension mapper is visible for X and Y
     const xRadioGroup = await screen.findByLabelText('Dimension as x axis');
