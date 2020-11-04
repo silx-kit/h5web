@@ -21,6 +21,7 @@ interface Props {
   showGrid?: boolean;
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
+  title?: string;
 }
 
 function LineVis(props: Props): ReactElement {
@@ -32,6 +33,7 @@ function LineVis(props: Props): ReactElement {
     scaleType = ScaleType.Linear,
     abscissaParams = {},
     ordinateLabel,
+    title,
   } = props;
 
   const {
@@ -77,6 +79,7 @@ function LineVis(props: Props): ReactElement {
           scaleType,
           label: ordinateLabel,
         }}
+        canvasTitle={title}
       >
         <TooltipMesh
           formatIndex={([x]) =>

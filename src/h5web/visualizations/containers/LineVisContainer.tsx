@@ -9,7 +9,7 @@ import MappedLineVis from '../line/MappedLineVis';
 import { VisContainerProps } from './models';
 
 function LineVisContainer(props: VisContainerProps): ReactElement {
-  const { entity } = props;
+  const { entity, entityName } = props;
   assertDataset(entity);
 
   const value = useDatasetValue(entity.id);
@@ -35,7 +35,12 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
         mapperState={mapperState}
         onChange={setMapperState}
       />
-      <MappedLineVis value={value} dims={dims} dimensionMapping={mapperState} />
+      <MappedLineVis
+        value={value}
+        dims={dims}
+        dimensionMapping={mapperState}
+        title={entityName}
+      />
     </>
   );
 }

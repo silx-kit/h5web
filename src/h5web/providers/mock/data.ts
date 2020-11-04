@@ -252,6 +252,7 @@ export const mockMetadata = makeMetadata({
       makeDatasetHardLink('scalar_str'),
     ]),
     makeGroup('nD_datasets', undefined, [
+      makeDatasetHardLink('oneD_linear'),
       makeDatasetHardLink('oneD'),
       makeDatasetHardLink('twoD'),
       makeDatasetHardLink('threeD'),
@@ -308,6 +309,7 @@ export const mockMetadata = makeMetadata({
     ),
   ],
   datasets: [
+    makeSimpleDataset('oneD_linear', intType, [41]),
     makeSimpleDataset(
       'oneD',
       intType,
@@ -359,6 +361,7 @@ export const mockValues = {
   raw: { int: 42 },
   scalar_int: 0,
   scalar_str: 'foo',
+  oneD_linear: arr1,
   oneD,
   twoD,
   threeD,

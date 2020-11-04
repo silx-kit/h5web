@@ -9,7 +9,7 @@ import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { VisContainerProps } from './models';
 
 function HeatmapVisContainer(props: VisContainerProps): ReactElement {
-  const { entity } = props;
+  const { entity, entityName } = props;
   assertDataset(entity);
 
   const value = useDatasetValue(entity.id);
@@ -40,6 +40,7 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
         value={value}
         dims={dims}
         dimensionMapping={mapperState}
+        title={entityName}
       />
     </>
   );

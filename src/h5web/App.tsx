@@ -47,7 +47,10 @@ function App(): ReactElement {
           {isInspecting ? (
             <MetadataViewer link={selectedLink} entity={selectedEntity} />
           ) : (
-            <Visualizer entity={selectedEntity} />
+            <Visualizer
+              entity={selectedEntity}
+              entityName={selectedLink && selectedLink.title}
+            />
           )}
         </ReflexElement>
       </ReflexContainer>

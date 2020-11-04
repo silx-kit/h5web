@@ -14,6 +14,7 @@ interface Props {
   valueLabel?: string;
   axisMapping?: (string | undefined)[];
   axesParams?: Record<string, AxisParams>;
+  title?: string;
 }
 
 function MappedLineVis(props: Props): ReactElement {
@@ -24,6 +25,7 @@ function MappedLineVis(props: Props): ReactElement {
     axesParams = {},
     dims,
     dimensionMapping,
+    title,
   } = props;
   assertArray<number>(value);
 
@@ -60,6 +62,7 @@ function MappedLineVis(props: Props): ReactElement {
       showGrid={showGrid}
       abscissaParams={abscissaName ? axesParams[abscissaName] : undefined}
       ordinateLabel={valueLabel}
+      title={title}
     />
   );
 }
