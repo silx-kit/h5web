@@ -26,6 +26,7 @@ function StickyGrid(props: Props, ref: Ref<HTMLDivElement>): ReactElement {
       className={styles.stickyGrid}
       ref={ref}
       style={style}
+      role="table"
       data-sticky={sticky || undefined}
     >
       <IndexTrack className={styles.indexRow} cellCount={columnCount - 1}>

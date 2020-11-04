@@ -20,6 +20,9 @@ function Cell(props: GridChildComponentProps): ReactElement {
     <div
       className={styles.cell}
       style={style}
+      role="cell"
+      aria-rowindex={rowIndex}
+      aria-colindex={columnIndex}
       data-bg={(rowIndex + columnIndex) % 2 === 1 ? '' : undefined}
     >
       {typeof dataValue === 'number' ? format('.3e')(dataValue) : dataValue}
