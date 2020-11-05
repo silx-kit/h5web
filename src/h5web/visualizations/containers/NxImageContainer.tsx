@@ -50,17 +50,25 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   ]);
 
   const nxAxisMapping = getNxAxisMapping(nxDataGroup);
-  const axisDatasets = getLinkedDatasets(
-    nxAxisMapping.filter((v): v is string => !!v),
+  const auxiliaryDatasets = getLinkedDatasets(
+    ['title', ...nxAxisMapping.filter((v): v is string => !!v)],
     nxDataGroup,
     metadata
   );
+
   const datasetValues = useDatasetValues({
     [signalName]: signalDataset.id,
     ...Object.fromEntries(
-      Object.entries(axisDatasets).map(([axis, dataset]) => [axis, dataset.id])
+      Object.entries(auxiliaryDatasets).map(([name, dataset]) => [
+        name,
+        dataset.id,
+      ])
     ),
   });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { title: _, ...axisDatasets } = auxiliaryDatasets;
+
   const nxAxesParams = getNxAxesParams(axisDatasets, datasetValues);
 
   if (!datasetValues || !datasetValues[signalName]) {
@@ -76,7 +84,11 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
       />
       <MappedHeatmapVis
         value={datasetValues[signalName]}
-        title={getDatasetLabel(signalDataset, signalName)}
+        title={
+          typeof datasetValues.title === 'string'
+            ? datasetValues.title
+            : getDatasetLabel(signalDataset, signalName)
+        }
         dims={dims}
         dimensionMapping={dimensionMapping}
         axisMapping={nxAxisMapping}

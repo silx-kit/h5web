@@ -281,7 +281,7 @@ export const mockMetadata = makeMetadata({
     makeGroup(
       'nx_data',
       [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'twoD')],
-      [makeDatasetHardLink('twoD')]
+      [makeDatasetHardLink('twoD'), makeDatasetHardLink('title', 'title_twoD')]
     ),
     makeGroup(
       'spectrum',
@@ -334,6 +334,7 @@ export const mockMetadata = makeMetadata({
       [20],
       [makeStrAttr('units', 'deg'), makeStrAttr('long_name', 'Angle (degrees)')]
     ),
+    makeDataset('title_twoD', stringType, scalarShape),
   ],
   datatypes: [makeDatatype('datatype', compoundType)],
 });
@@ -368,4 +369,5 @@ export const mockValues = {
   fourD,
   X: arr1,
   Y: arr2,
+  title_twoD: 'NeXus 2D',
 };
