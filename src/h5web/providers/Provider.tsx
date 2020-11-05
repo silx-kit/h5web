@@ -25,15 +25,8 @@ function Provider(props: Props): ReactElement {
         domain: api.domain,
         metadata,
         getValue,
-        getValues: async (idsRecord) =>
-          Object.fromEntries(
-            await Promise.all(
-              Object.entries(idsRecord).map(async ([name, id]) => {
-                const val = await getValue(id);
-                return [name, val];
-              })
-            )
-          ),
+        getValues: async (ids) =>
+          Promise.all(ids.map((id) => (id ? getValue(id) : undefined))),
       }}
     >
       {children}

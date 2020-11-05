@@ -111,7 +111,7 @@ export function getLinkedDatasets(
   names: string[],
   nxDataGroup: HDF5Group,
   metadata: HDF5Metadata
-): Record<string, HDF5Dataset> {
+): Map<string, HDF5Dataset> {
   const datasetEntries = names
     .map<[string, HDF5Entity | undefined]>((name) => {
       return [name, getLinkedEntity(name, nxDataGroup, metadata)];
@@ -121,15 +121,15 @@ export function getLinkedDatasets(
       return !!dataset && isDataset(dataset);
     });
 
-  return Object.fromEntries(datasetEntries);
+  return new Map(datasetEntries);
 }
 
 export function getNxAxesParams(
-  nxDatasets: Record<string, HDF5Dataset>,
-  datasetValues: Record<string, HDF5Value> | undefined
+  nxDatasets: Map<string, HDF5Dataset>,
+  axisValues: (HDF5Value | undefined)[]
 ): Record<string, AxisParams> {
-  const paramsEntries = Object.entries(nxDatasets).map(([axis, dataset]) => {
-    const values = datasetValues && datasetValues[axis];
+  const paramsEntries = Object.entries(nxDatasets).map(([axis, dataset], i) => {
+    const values = axisValues[i];
     assertOptionalArray<number>(values);
     return [axis, { values, label: getDatasetLabel(dataset, axis) }];
   });

@@ -16,7 +16,7 @@ import {
   getNxAxesParams,
 } from '../nexus/utils';
 import { VisContainerProps } from './models';
-import { assertStr } from '../shared/utils';
+import { assertArray, assertStr } from '../shared/utils';
 import { useDatasetValues } from './hooks';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
@@ -50,30 +50,31 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   ]);
 
   const nxAxisMapping = getNxAxisMapping(nxDataGroup);
-  const auxiliaryDatasets = getLinkedDatasets(
-    ['title', ...nxAxisMapping.filter((v): v is string => !!v)],
+  const axisDatasets = getLinkedDatasets(
+    nxAxisMapping.filter((v): v is string => !!v),
     nxDataGroup,
     metadata
   );
+  const titleDataset = getLinkedEntity('title', nxDataGroup, metadata);
 
-  const datasetValues = useDatasetValues({
-    [signalName]: signalDataset.id,
-    ...Object.fromEntries(
-      Object.entries(auxiliaryDatasets).map(([name, dataset]) => [
-        name,
-        dataset.id,
-      ])
-    ),
-  });
+  const datasetValues = useDatasetValues([
+    signalDataset.id,
+    titleDataset && isDataset(titleDataset) ? titleDataset.id : undefined,
+    ...Object.values(axisDatasets).map((d) => d.id),
+  ]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { title: _, ...axisDatasets } = auxiliaryDatasets;
-
-  const nxAxesParams = getNxAxesParams(axisDatasets, datasetValues);
-
-  if (!datasetValues || !datasetValues[signalName]) {
+  if (!datasetValues) {
     return <></>;
   }
+
+  const [signalValue, title, ...axisValues] = datasetValues;
+  assertArray<number>(signalValue);
+
+  if (!signalValue) {
+    return <></>;
+  }
+
+  const nxAxesParams = getNxAxesParams(axisDatasets, axisValues);
 
   return (
     <>
@@ -83,15 +84,15 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
         onChange={setDimensionMapping}
       />
       <MappedLineVis
-        value={datasetValues[signalName]}
+        value={signalValue}
         valueLabel={getDatasetLabel(signalDataset, signalName)}
         axisMapping={nxAxisMapping}
         axesParams={nxAxesParams}
         dims={dims}
         dimensionMapping={dimensionMapping}
         title={
-          typeof datasetValues.title === 'string'
-            ? datasetValues.title
+          typeof title === 'string'
+            ? title
             : getDatasetLabel(signalDataset, signalName)
         }
       />
