@@ -1,6 +1,8 @@
 node_modules/
 
 /build/
+/cypress/screenshots/
+/cypress/videos/
 /storybook-static/
 /packages/**/dist/
 

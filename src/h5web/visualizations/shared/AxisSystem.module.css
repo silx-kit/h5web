@@ -56,6 +56,7 @@
   justify-content: center;
   align-items: center;
   grid-area: top-axis;
+  margin-bottom: 0;
   color: darkslategrey;
   font-size: 1.125em;
 }

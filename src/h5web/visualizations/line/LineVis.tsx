@@ -65,7 +65,7 @@ function LineVis(props: Props): ReactElement {
   }, [scaleType, domain]);
 
   return (
-    <div className={styles.root}>
+    <figure className={styles.root} aria-labelledby="vis-title">
       <VisCanvas
         abscissaConfig={{
           domain: abscissaDomain,
@@ -100,7 +100,7 @@ function LineVis(props: Props): ReactElement {
           ordinates={dataArray.data as number[]}
         />
       </VisCanvas>
-    </div>
+    </figure>
   );
 }
 

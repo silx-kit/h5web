@@ -60,7 +60,7 @@ function HeatmapVis(props: Props): ReactElement {
   }
 
   return (
-    <div className={styles.root}>
+    <figure className={styles.root} aria-labelledby="vis-title">
       <VisCanvas
         abscissaConfig={{
           domain: abscissaDomain,
@@ -106,7 +106,7 @@ function HeatmapVis(props: Props): ReactElement {
       {domain && (
         <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
       )}
-    </div>
+    </figure>
   );
 }
 
