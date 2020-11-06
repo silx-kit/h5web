@@ -52,3 +52,5 @@ export interface AxisParams {
   label?: string;
   values?: number[];
 }
+
+export type AxisMapping = AxisParams | undefined;

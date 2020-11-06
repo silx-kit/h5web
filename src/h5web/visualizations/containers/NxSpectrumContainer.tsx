@@ -1,23 +1,13 @@
 import React, { ReactElement, useState, useContext } from 'react';
 import { range } from 'lodash-es';
-import { HDF5SimpleShape } from '../../providers/models';
-import { assertGroup, isDataset } from '../../providers/utils';
+import { assertGroup } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import MappedLineVis from '../line/MappedLineVis';
 import { ProviderContext } from '../../providers/context';
-import {
-  getAttributeValue,
-  getLinkedEntity,
-  getNxDataGroup,
-  getNxAxisMapping,
-  getLinkedDatasets,
-  getDatasetLabel,
-  getNxAxesParams,
-} from '../nexus/utils';
+import { getNxDataGroup } from '../nexus/utils';
 import { VisContainerProps } from './models';
-import { assertStr } from '../shared/utils';
-import { useDatasetValues } from './hooks';
+import { useNxData } from '../nexus/hooks';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -30,16 +20,9 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
     throw new Error('NXdata group not found');
   }
 
-  const signalName = getAttributeValue(nxDataGroup, 'signal');
-  assertStr(signalName);
+  const nxData = useNxData(nxDataGroup, metadata);
 
-  const signalDataset = getLinkedEntity(signalName, nxDataGroup, metadata);
-
-  if (!signalDataset || !isDataset(signalDataset)) {
-    throw new Error('Signal dataset not found');
-  }
-
-  const { dims } = signalDataset.shape as HDF5SimpleShape;
+  const { dims } = nxData.signal;
   if (dims.length === 0) {
     throw new Error('Expected dataset with at least one dimension');
   }
@@ -49,29 +32,9 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
     'x',
   ]);
 
-  const nxAxisMapping = getNxAxisMapping(nxDataGroup);
-  const auxiliaryDatasets = getLinkedDatasets(
-    ['title', ...nxAxisMapping.filter((v): v is string => !!v)],
-    nxDataGroup,
-    metadata
-  );
+  const { signal, title, axisMapping } = nxData;
 
-  const datasetValues = useDatasetValues({
-    [signalName]: signalDataset.id,
-    ...Object.fromEntries(
-      Object.entries(auxiliaryDatasets).map(([name, dataset]) => [
-        name,
-        dataset.id,
-      ])
-    ),
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { title: _, ...axisDatasets } = auxiliaryDatasets;
-
-  const nxAxesParams = getNxAxesParams(axisDatasets, datasetValues);
-
-  if (!datasetValues || !datasetValues[signalName]) {
+  if (!signal.value) {
     return <></>;
   }
 
@@ -83,17 +46,12 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
         onChange={setDimensionMapping}
       />
       <MappedLineVis
-        value={datasetValues[signalName]}
-        valueLabel={getDatasetLabel(signalDataset, signalName)}
-        axisMapping={nxAxisMapping}
-        axesParams={nxAxesParams}
+        value={signal.value}
+        valueLabel={signal.label}
+        axisMapping={axisMapping}
         dims={dims}
         dimensionMapping={dimensionMapping}
-        title={
-          typeof datasetValues.title === 'string'
-            ? datasetValues.title
-            : getDatasetLabel(signalDataset, signalName)
-        }
+        title={title || signal.label}
       />
     </>
   );

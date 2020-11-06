@@ -5,15 +5,14 @@ import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
-import { AxisParams } from '../shared/models';
+import { AxisMapping } from '../shared/models';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
   dimensionMapping: DimensionMapping;
   valueLabel?: string;
-  axisMapping?: (string | undefined)[];
-  axesParams?: Record<string, AxisParams>;
+  axisMapping?: AxisMapping[];
   title?: string;
 }
 
@@ -22,7 +21,6 @@ function MappedLineVis(props: Props): ReactElement {
     value,
     valueLabel,
     axisMapping = [],
-    axesParams = {},
     dims,
     dimensionMapping,
     title,
@@ -50,9 +48,6 @@ function MappedLineVis(props: Props): ReactElement {
     scaleType
   );
 
-  const abscissaName =
-    dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
-
   return (
     <LineVis
       dataArray={dataArray}
@@ -60,7 +55,9 @@ function MappedLineVis(props: Props): ReactElement {
       scaleType={scaleType}
       curveType={curveType}
       showGrid={showGrid}
-      abscissaParams={abscissaName ? axesParams[abscissaName] : undefined}
+      abscissaParams={
+        dimensionMapping && axisMapping[dimensionMapping.indexOf('x')]
+      }
       ordinateLabel={valueLabel}
       title={title}
     />

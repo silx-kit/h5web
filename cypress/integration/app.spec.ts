@@ -98,6 +98,7 @@ describe('App', () => {
 
       cy.findByRole('heading', { name: 'nexus_entry / image' }).should('exist');
       cy.findByRole('tab', { name: 'NX Image' }).should('exist');
+      cy.wait(500);
     });
 
     it('use signal name and units to compute title', () => {

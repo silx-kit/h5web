@@ -1,14 +1,13 @@
-import type {
+import {
   HDF5Group,
   HDF5Metadata,
   HDF5Dataset,
   HDF5Value,
   HDF5Entity,
 } from '../../providers/models';
-import { getEntity, isDataset, isGroup } from '../../providers/utils';
+import { getEntity, isGroup } from '../../providers/utils';
 import { NxAttribute, NX_INTERPRETATIONS } from './models';
-import { assertArray, assertOptionalArray } from '../shared/utils';
-import { AxisParams } from '../shared/models';
+import { assertArray } from '../shared/utils';
 
 export function isNxDataGroup(group: HDF5Group): boolean {
   return !!group.attributes?.find(({ value }) => value === 'NXdata');
@@ -43,16 +42,16 @@ export function getLinkedEntity(
   return getEntity(childLink, metadata);
 }
 
-export function getNxAxisMapping(group: HDF5Group) {
+export function getNxAxisNames(group: HDF5Group): (string | undefined)[] {
   const axisList = getAttributeValue(group, 'axes');
 
   if (!axisList) {
     return [];
   }
 
-  const axisMapping = typeof axisList === 'string' ? [axisList] : axisList;
-  assertArray<string>(axisMapping);
-  return axisMapping.map((a) => (a !== '.' ? a : undefined));
+  const axisNames = typeof axisList === 'string' ? [axisList] : axisList;
+  assertArray<string>(axisNames);
+  return axisNames.map((a) => (a !== '.' ? a : undefined));
 }
 
 export function getNxDataGroup(
@@ -105,34 +104,4 @@ export function getDatasetLabel(
   }
 
   return datasetName;
-}
-
-export function getLinkedDatasets(
-  names: string[],
-  nxDataGroup: HDF5Group,
-  metadata: HDF5Metadata
-): Record<string, HDF5Dataset> {
-  const datasetEntries = names
-    .map<[string, HDF5Entity | undefined]>((name) => {
-      return [name, getLinkedEntity(name, nxDataGroup, metadata)];
-    })
-    .filter((entry): entry is [string, HDF5Dataset] => {
-      const [, dataset] = entry;
-      return !!dataset && isDataset(dataset);
-    });
-
-  return Object.fromEntries(datasetEntries);
-}
-
-export function getNxAxesParams(
-  nxDatasets: Record<string, HDF5Dataset>,
-  datasetValues: Record<string, HDF5Value> | undefined
-): Record<string, AxisParams> {
-  const paramsEntries = Object.entries(nxDatasets).map(([axis, dataset]) => {
-    const values = datasetValues && datasetValues[axis];
-    assertOptionalArray<number>(values);
-    return [axis, { values, label: getDatasetLabel(dataset, axis) }];
-  });
-
-  return Object.fromEntries(paramsEntries);
 }

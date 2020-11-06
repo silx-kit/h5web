@@ -6,26 +6,18 @@ import HeatmapVis from './HeatmapVis';
 import { assertArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useHeatmapConfig } from './config';
-import { AxisParams } from '../shared/models';
+import { AxisMapping } from '../shared/models';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
   dimensionMapping: DimensionMapping;
   title?: string;
-  axisMapping?: (string | undefined)[];
-  axesParams?: Record<string, AxisParams>;
+  axisMapping?: AxisMapping[];
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {
-  const {
-    value,
-    axisMapping = [],
-    axesParams = {},
-    title,
-    dims,
-    dimensionMapping,
-  } = props;
+  const { value, axisMapping = [], title, dims, dimensionMapping } = props;
   assertArray<number>(value);
 
   const {
@@ -60,11 +52,6 @@ function MappedHeatmapVis(props: Props): ReactElement {
     resetDomains(dataDomain); // in config, update `dataDomain` and reset `customDomain`
   }, [dataDomain, resetDomains]);
 
-  const abscissaName =
-    dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
-  const ordinateName =
-    dimensionMapping && axisMapping[dimensionMapping.indexOf('y')];
-
   return (
     <HeatmapVis
       dataArray={dataArray}
@@ -74,8 +61,12 @@ function MappedHeatmapVis(props: Props): ReactElement {
       scaleType={scaleType}
       keepAspectRatio={keepAspectRatio}
       showGrid={showGrid}
-      abscissaParams={abscissaName ? axesParams[abscissaName] : undefined}
-      ordinateParams={ordinateName ? axesParams[ordinateName] : undefined}
+      abscissaParams={
+        dimensionMapping && axisMapping[dimensionMapping.indexOf('x')]
+      }
+      ordinateParams={
+        dimensionMapping && axisMapping[dimensionMapping.indexOf('y')]
+      }
     />
   );
 }
