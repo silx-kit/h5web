@@ -38,12 +38,12 @@ export class HsdsApi implements ProviderAPI {
     url: string,
     username: string,
     password: string,
-    filepath: string
+    domain: string
   ) {
-    this.domain = `/home/${username}/${filepath}`;
+    this.domain = domain;
     this.client = axios.create({
       baseURL: url,
-      params: { domain: this.domain },
+      params: { domain },
       auth: { username, password },
     });
   }

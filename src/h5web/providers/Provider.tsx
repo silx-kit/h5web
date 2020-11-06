@@ -1,9 +1,10 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { useAsync } from 'react-use';
 import { ProviderAPI, ProviderContext } from './context';
+import styles from '../visualizer/Visualizer.module.css';
 
 interface Props {
-  api?: ProviderAPI;
+  api: ProviderAPI;
   children: ReactNode;
 }
 
@@ -11,10 +12,16 @@ function Provider(props: Props): ReactElement {
   const { api, children } = props;
 
   // Wait until metadata is fetched before rendering app
-  const { value: metadata } = useAsync(async () => api?.getMetadata(), [api]);
+  const { value: metadata, error } = useAsync(async () => api.getMetadata(), [
+    api,
+  ]);
 
-  if (!api || !metadata) {
-    return <></>;
+  if (error) {
+    return <p className={styles.error}>Error: {error.message}</p>;
+  }
+
+  if (!metadata) {
+    return <p className={styles.fallback}>Loading...</p>;
   }
 
   const getValue = api.getValue.bind(api);
