@@ -1,3 +1,4 @@
 /build/
+/cypress/
 /storybook-static/
 /packages/**/dist/

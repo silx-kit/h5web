@@ -52,7 +52,11 @@ function AxisSystem(props: Props): ReactElement {
         gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
       }}
     >
-      {title && <div className={styles.title}>{title}</div>}
+      {title && (
+        <p id="vis-title" className={styles.title}>
+          {title}
+        </p>
+      )}
       <Axis
         type="abscissa"
         config={abscissaConfig}

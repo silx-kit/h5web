@@ -26,6 +26,7 @@ function DimensionMapper(props: Props): ReactElement {
           {rawDims.map((d, i) => (
             // eslint-disable-next-line react/no-array-index-key
             <span key={`${i}${d}`} className={styles.dimSize}>
+              {' '}
               {d}
             </span>
           ))}
