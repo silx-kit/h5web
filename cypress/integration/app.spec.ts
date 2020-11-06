@@ -2,7 +2,7 @@
 
 describe('App', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/mock');
   });
 
   it('visualize 1D dataset as Line', () => {

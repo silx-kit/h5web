@@ -17,6 +17,7 @@ npm start
 ### Testing
 
 - `npm test` - run unit and feature tests with Jest
+- `npm run cypress` - run end-to-end tests with Cypress against local dev server running in separate terminal
 - `npm run storybook` - manually test components in isolation in
   [Storybook](https://storybook.js.org/docs/react/get-started/introduction), at http://localhost:6006
 
@@ -48,9 +49,11 @@ the box, so all you need to do is install the recommended extensions.
   [Netlify](https://www.netlify.com/).
 - Netlify also deploys each pull request individually to URLs of the form:
   https:\//deploy-preview-<pr-number\>--h5web.netlify.app/
-- A [GitHub Action](https://github.com/silx-kit/h5web/actions) runs the `lint` and `test` scripts on push to any branch.
-- A GitHub Action is also used to continuously deploy the Component Library's Storybook documentation site to GitHub
-  Pages: https://h5web-docs.panosc.eu
+- On push to any branch, a [GitHub Action](https://github.com/silx-kit/h5web/actions):
+  - runs the `lint` and `test` scripts;
+  - runs end-to-end tests with Cypress.
+- On push to `master`, another GitHub Action continuously deploys the Component Library's Storybook documentation site
+  to GitHub Pages: https://h5web-docs.panosc.eu
 
 ### Icon set
 
