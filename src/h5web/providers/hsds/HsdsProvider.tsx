@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect, ReactElement } from 'react';
+import React, { ReactNode, ReactElement, useMemo } from 'react';
 import { HsdsApi } from './api';
 import Provider from '../Provider';
 
@@ -6,18 +6,19 @@ interface Props {
   url: string;
   username: string;
   password: string;
-  filepath: string;
+  domain: string;
   children: ReactNode;
 }
 
 /* Provider of metadata and values by HSDS */
 function HsdsProvider(props: Props): ReactElement {
-  const { url, username, password, filepath, children } = props;
-  const [api, setApi] = useState<HsdsApi>();
-
-  useEffect(() => {
-    setApi(new HsdsApi(url, username, password, filepath));
-  }, [filepath, password, url, username]);
+  const { url, username, password, domain, children } = props;
+  const api = useMemo(() => new HsdsApi(url, username, password, domain), [
+    domain,
+    password,
+    url,
+    username,
+  ]);
 
   return <Provider api={api}>{children}</Provider>;
 }
