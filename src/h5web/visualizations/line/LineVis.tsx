@@ -10,6 +10,7 @@ import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../shared/models';
 import { CurveType } from './models';
 import { getValueToIndexScale, getDomain, extendDomain } from '../shared/utils';
+import ErrorBarCurve from './ErrorBarCurve';
 
 const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -22,6 +23,7 @@ interface Props {
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
   title?: string;
+  errors?: number[];
 }
 
 function LineVis(props: Props): ReactElement {
@@ -34,6 +36,7 @@ function LineVis(props: Props): ReactElement {
     abscissaParams = {},
     ordinateLabel,
     title,
+    errors,
   } = props;
 
   const {
@@ -44,6 +47,12 @@ function LineVis(props: Props): ReactElement {
   if (abscissas.length !== dataArray.size) {
     throw new Error(
       `Abscissas size (${abscissas.length}) does not match data length (${dataArray.size})`
+    );
+  }
+
+  if (errors && errors.length !== dataArray.size) {
+    throw new Error(
+      `Error size (${errors.length}) does not match data length (${dataArray.size})`
     );
   }
 
@@ -88,8 +97,17 @@ function LineVis(props: Props): ReactElement {
             )}`
           }
           formatValue={([x]) => {
-            const value = dataArray.get(abscissaToIndex(x));
-            return value !== undefined ? format('.3f')(value) : undefined;
+            const index = abscissaToIndex(x);
+            const value = dataArray.get(index);
+
+            if (value === undefined) {
+              return undefined;
+            }
+
+            const error = errors && errors[index];
+            return error
+              ? `${format('.3f')(value)} ±${format('.3f')(error)}`
+              : `${format('.3f')(value)}`;
           }}
           guides="vertical"
         />
@@ -99,6 +117,13 @@ function LineVis(props: Props): ReactElement {
           abscissas={abscissas}
           ordinates={dataArray.data as number[]}
         />
+        {errors && (
+          <ErrorBarCurve
+            abscissas={abscissas}
+            ordinates={dataArray.data as number[]}
+            errors={errors}
+          />
+        )}
       </VisCanvas>
     </figure>
   );

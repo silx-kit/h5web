@@ -107,6 +107,16 @@ WithTitle.args = {
   title: 'A simple curve',
 };
 
+export const ErrorBars = Template.bind({});
+
+ErrorBars.args = {
+  dataArray,
+  domain: [-31, 31], // Extend domain to fit error bars
+  errors: new Array(dataArray.size)
+    .fill(0)
+    .map((_, i) => Math.abs(10 - 0.5 * i)),
+};
+
 export default {
   title: 'Visualizations/LineVis',
   component: LineVis,
