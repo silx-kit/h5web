@@ -1,3 +1,5 @@
+import { AxisMapping } from '../shared/models';
+
 export type NxAttribute =
   | 'signal'
   | 'interpretation'
@@ -12,3 +14,9 @@ export enum NxInterpretation {
 }
 
 export const NX_INTERPRETATIONS = Object.values<string>(NxInterpretation);
+
+export interface NxData {
+  signal: { label?: string; value?: number[]; dims: number[] };
+  title?: string;
+  axisMapping?: AxisMapping[];
+}
