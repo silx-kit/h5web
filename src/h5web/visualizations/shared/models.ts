@@ -50,7 +50,7 @@ export interface AxisOffsets {
 
 export interface AxisParams {
   label?: string;
-  values?: number[];
+  value?: number[];
 }
 
 export type AxisMapping = AxisParams | undefined;

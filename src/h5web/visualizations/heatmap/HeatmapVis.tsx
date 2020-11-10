@@ -42,8 +42,8 @@ function HeatmapVis(props: Props): ReactElement {
   const { rows, cols } = getDims(dataArray);
   const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
 
-  const abscissas = getPixelEdges(abscissaParams.values, cols);
-  const ordinates = getPixelEdges(ordinateParams.values, rows);
+  const abscissas = getPixelEdges(abscissaParams.value, cols);
+  const ordinates = getPixelEdges(ordinateParams.value, rows);
 
   const abscissaToIndex = getValueToIndexScale(abscissas);
 
@@ -65,13 +65,13 @@ function HeatmapVis(props: Props): ReactElement {
         abscissaConfig={{
           domain: abscissaDomain,
           showGrid,
-          isIndexAxis: !abscissaParams.values,
+          isIndexAxis: !abscissaParams.value,
           label: abscissaParams.label,
         }}
         ordinateConfig={{
           domain: ordinateDomain,
           showGrid,
-          isIndexAxis: !ordinateParams.values,
+          isIndexAxis: !ordinateParams.value,
           label: ordinateParams.label,
         }}
         aspectRatio={aspectRatio}

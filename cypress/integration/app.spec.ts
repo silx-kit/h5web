@@ -98,7 +98,7 @@ describe('App', () => {
 
       cy.findByRole('heading', { name: 'nexus_entry / image' }).should('exist');
       cy.findByRole('tab', { name: 'NX Image' }).should('exist');
-      cy.wait(500);
+      cy.wait(500); // Monkey-patch: sometimes this test makes the following test hanging if the texture computation didn't end.
     });
 
     it('use signal name and units to compute title', () => {
@@ -129,6 +129,16 @@ describe('App', () => {
       cy.get('svg[data-type="ordinate"] svg').should(
         'have.text',
         'Angle (degrees)'
+      );
+    });
+
+    it('use axis values to compute axis ticks', () => {
+      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
+      cy.findByRole('treeitem', { name: 'image' }).click();
+
+      cy.get('svg[data-type="abscissa"] .vx-axis-tick').should(
+        'have.text',
+        ['−20', '−10', '0', '10', '20'].join('') // Tick text uses minus sign − (U+2212) rather than hyphen minus - (U+002D)
       );
     });
   });
