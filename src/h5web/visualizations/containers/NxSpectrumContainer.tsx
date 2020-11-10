@@ -32,10 +32,16 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
     'x',
   ]);
 
-  const { signal, title, axisMapping } = nxData;
+  const { signal, title, errors, axisMapping } = nxData;
 
   if (!signal.value) {
     return <></>;
+  }
+
+  if (errors && signal.value.length !== errors.length) {
+    throw new Error(
+      `Error dataset has size ${errors.length} which is different from signal dataset size ${signal.value.length}`
+    );
   }
 
   return (
@@ -52,6 +58,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
         dims={dims}
         dimensionMapping={dimensionMapping}
         title={title || signal.label}
+        errors={errors}
       />
     </>
   );
