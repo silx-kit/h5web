@@ -41,7 +41,7 @@ function LineVis(props: Props): ReactElement {
 
   const {
     label: abscissaLabel,
-    values: abscissas = range(dataArray.size),
+    value: abscissas = range(dataArray.size),
   } = abscissaParams;
 
   if (abscissas.length !== dataArray.size) {
@@ -79,7 +79,7 @@ function LineVis(props: Props): ReactElement {
         abscissaConfig={{
           domain: abscissaDomain,
           showGrid,
-          isIndexAxis: !abscissaParams.values,
+          isIndexAxis: !abscissaParams.value,
           label: abscissaLabel,
         }}
         ordinateConfig={{

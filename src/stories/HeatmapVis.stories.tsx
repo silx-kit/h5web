@@ -103,12 +103,12 @@ CustomEdges.args = {
   dataArray,
   domain,
   abscissaParams: {
-    values: new Array(dataArray.shape[1] + 1)
+    value: new Array(dataArray.shape[1] + 1)
       .fill(0)
       .map((_, i) => 100 + 10 * i),
   },
   ordinateParams: {
-    values: new Array(dataArray.shape[0] + 1)
+    value: new Array(dataArray.shape[0] + 1)
       .fill(0)
       .map((_, i) => -5 + 0.5 * i),
   },
@@ -120,10 +120,10 @@ CustomEdgesWithExtension.args = {
   dataArray,
   domain,
   abscissaParams: {
-    values: new Array(dataArray.shape[1]).fill(0).map((_, i) => 100 + 10 * i),
+    value: new Array(dataArray.shape[1]).fill(0).map((_, i) => 100 + 10 * i),
   },
   ordinateParams: {
-    values: new Array(dataArray.shape[0]).fill(0).map((_, i) => -5 + 0.5 * i),
+    value: new Array(dataArray.shape[0]).fill(0).map((_, i) => -5 + 0.5 * i),
   },
 };
 

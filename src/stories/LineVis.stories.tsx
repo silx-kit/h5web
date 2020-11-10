@@ -86,7 +86,7 @@ CustomAbscissas.args = {
   dataArray,
   domain,
   abscissaParams: {
-    values: new Array(dataArray.size).fill(0).map((_, i) => -10 + 0.5 * i),
+    value: new Array(dataArray.size).fill(0).map((_, i) => -10 + 0.5 * i),
   },
 };
 
