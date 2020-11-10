@@ -14,16 +14,34 @@ interface Props {
 function ErrorBarCurve(props: Props): ReactElement {
   const { abscissas, ordinates, errors, color = DEFAULT_COLOR } = props;
 
+  const capLength = 0.1 * (abscissas[1] - abscissas[0]);
+
   const errorAbscissas = [];
   const errorOrdinates = [];
   for (const [index, x] of abscissas.entries()) {
     const y = ordinates[index];
     const yerr = errors[index];
 
-    // Error bar segment: [x, y - yerr] to [x, y + yerr]
+    if (yerr === 0) {
+      continue;
+    }
+
+    // First segment: bottom cap
+    errorAbscissas.push(x - capLength);
+    errorOrdinates.push(y - yerr);
+    errorAbscissas.push(x + capLength);
+    errorOrdinates.push(y - yerr);
+
+    // Second segment: error bar
     errorAbscissas.push(x);
     errorOrdinates.push(y - yerr);
     errorAbscissas.push(x);
+    errorOrdinates.push(y + yerr);
+
+    // Third segment: top cap
+    errorAbscissas.push(x - capLength);
+    errorOrdinates.push(y + yerr);
+    errorAbscissas.push(x + capLength);
     errorOrdinates.push(y + yerr);
   }
 
