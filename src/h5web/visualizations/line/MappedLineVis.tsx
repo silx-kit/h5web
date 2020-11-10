@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useMemo } from 'react';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
@@ -14,6 +14,7 @@ interface Props {
   valueLabel?: string;
   axisMapping?: AxisMapping[];
   title?: string;
+  errors?: number[];
 }
 
 function MappedLineVis(props: Props): ReactElement {
@@ -24,6 +25,7 @@ function MappedLineVis(props: Props): ReactElement {
     dims,
     dimensionMapping,
     title,
+    errors,
   } = props;
   assertArray<number>(value);
 
@@ -43,10 +45,17 @@ function MappedLineVis(props: Props): ReactElement {
     disableAutoScale(!baseArray.shape || baseArray.shape.length <= 1);
   }, [baseArray.shape, disableAutoScale]);
 
-  const dataDomain = useDomain(
-    (autoScale ? dataArray.data : baseArray.data) as number[],
-    scaleType
-  );
+  const dataWithErrors = useMemo(() => {
+    const data = (autoScale ? dataArray.data : baseArray.data) as number[];
+
+    if (!errors) {
+      return data;
+    }
+
+    return data.flatMap((value, i) => [value - errors[i], value + errors[i]]);
+  }, [autoScale, baseArray.data, dataArray.data, errors]);
+
+  const dataDomain = useDomain(dataWithErrors, scaleType);
 
   return (
     <LineVis
@@ -60,6 +69,7 @@ function MappedLineVis(props: Props): ReactElement {
       }
       ordinateLabel={valueLabel}
       title={title}
+      errors={errors}
     />
   );
 }

@@ -291,7 +291,11 @@ export const mockMetadata = makeMetadata({
         makeStrAttr('interpretation', 'spectrum'),
         makeNxAxesAttr(['X']),
       ],
-      [makeDatasetHardLink('oneD'), makeDatasetHardLink('X')]
+      [
+        makeDatasetHardLink('oneD'),
+        makeDatasetHardLink('X'),
+        makeDatasetHardLink('errors', 'errors_oneD'),
+      ]
     ),
     makeGroup(
       'image',
@@ -335,6 +339,7 @@ export const mockMetadata = makeMetadata({
       [makeStrAttr('units', 'deg'), makeStrAttr('long_name', 'Angle (degrees)')]
     ),
     makeDataset('title_twoD', stringType, scalarShape),
+    makeSimpleDataset('errors_oneD', floatType, [41]),
   ],
   datatypes: [makeDatatype('datatype', compoundType)],
 });
@@ -370,4 +375,5 @@ export const mockValues = {
   X: arr1,
   Y: arr2,
   title_twoD: 'NeXus 2D',
+  errors_oneD: arr1,
 };

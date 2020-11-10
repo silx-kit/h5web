@@ -17,6 +17,7 @@ export const NX_INTERPRETATIONS = Object.values<string>(NxInterpretation);
 
 export interface NxData {
   signal: { label?: string; value?: number[]; dims: number[] };
+  errors?: number[];
   title?: string;
   axisMapping?: AxisMapping[];
 }

@@ -82,12 +82,16 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
     return { value, label: getDatasetLabel(dataset, name) };
   });
 
+  const errors = datasetValues && datasetValues.errors;
+  assertOptionalArray<number>(errors);
+
   return {
     signal: {
       label: getDatasetLabel(signalDataset, signalName),
       value: signalValue,
       dims: (signalDataset.shape as HDF5SimpleShape).dims,
     },
+    errors,
     title:
       datasetValues && typeof datasetValues.title === 'string'
         ? datasetValues.title
