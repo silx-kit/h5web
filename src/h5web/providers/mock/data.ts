@@ -317,7 +317,10 @@ export const mockMetadata = makeMetadata({
       [
         makeStrAttr('NX_class', 'NXdata'),
         makeStrAttr('signal', 'oneD'),
-        makeStrAttr('SILX_style', JSON.stringify({ axes_scale_type: ['log'] })),
+        makeStrAttr(
+          'SILX_style',
+          JSON.stringify({ axes_scale_type: ['log'], signal_scale_type: 'log' })
+        ),
         makeStrAttr('interpretation', 'spectrum'),
         makeNxAxesAttr(['X_log']),
       ],

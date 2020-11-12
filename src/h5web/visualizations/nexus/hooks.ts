@@ -67,7 +67,7 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
   const axesNames = getNxAxisNames(group);
 
   const silxStyle = parseSilxStyleAttribute(group);
-  const { axes_scale_type } = silxStyle;
+  const { axes_scale_type, signal_scale_type } = silxStyle;
 
   const axisMapping = axesNames.map((name, i) => {
     if (!name) {
@@ -98,6 +98,7 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
       label: getDatasetLabel(signalDataset, signalName),
       value: signalValue,
       dims: (signalDataset.shape as HDF5SimpleShape).dims,
+      scaleType: signal_scale_type,
     },
     errors,
     title:
