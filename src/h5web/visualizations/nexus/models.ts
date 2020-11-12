@@ -1,4 +1,4 @@
-import { AxisMapping, ScaleType } from '../shared/models';
+import { AxisMapping, ScaleType, AxisParams } from '../shared/models';
 
 export type NxAttribute =
   | 'signal'
@@ -16,8 +16,12 @@ export enum NxInterpretation {
 
 export const NX_INTERPRETATIONS = Object.values<string>(NxInterpretation);
 
+interface SignalParams extends AxisParams {
+  dims: number[];
+}
+
 export interface NxData {
-  signal: { label?: string; value?: number[]; dims: number[] };
+  signal: SignalParams;
   errors?: number[];
   title?: string;
   axisMapping?: AxisMapping[];
