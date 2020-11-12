@@ -42,6 +42,7 @@ function LineVis(props: Props): ReactElement {
   const {
     label: abscissaLabel,
     value: abscissas = range(dataArray.size),
+    scaleType: abscissaScaleType,
   } = abscissaParams;
 
   if (abscissas.length !== dataArray.size) {
@@ -59,9 +60,12 @@ function LineVis(props: Props): ReactElement {
   const abscissaToIndex = getValueToIndexScale(abscissas, true);
 
   const abscissaDomain = useMemo(() => {
-    const rawDomain = getDomain(abscissas);
-    return rawDomain && extendDomain(rawDomain, 0.01);
-  }, [abscissas]);
+    const rawDomain = getDomain(abscissas, abscissaScaleType);
+    return (
+      rawDomain &&
+      extendDomain(rawDomain, 0.01, abscissaScaleType === ScaleType.Log)
+    );
+  }, [abscissas, abscissaScaleType]);
 
   if (!abscissaDomain) {
     throw new Error(`Abscissas have undefined domain`);
@@ -79,6 +83,7 @@ function LineVis(props: Props): ReactElement {
         abscissaConfig={{
           domain: abscissaDomain,
           showGrid,
+          scaleType: abscissaScaleType,
           isIndexAxis: !abscissaParams.value,
           label: abscissaLabel,
         }}

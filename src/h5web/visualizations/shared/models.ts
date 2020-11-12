@@ -8,9 +8,9 @@ import {
 } from 'd3-scale';
 
 export enum ScaleType {
-  Linear = 'Linear',
-  Log = 'Log',
-  SymLog = 'SymLog',
+  Linear = 'linear',
+  Log = 'log',
+  SymLog = 'symlog',
 }
 
 export const SCALE_FUNCTIONS: Record<ScaleType, ScaleFn> = {
@@ -51,6 +51,7 @@ export interface AxisOffsets {
 export interface AxisParams {
   label?: string;
   value?: number[];
+  scaleType?: ScaleType;
 }
 
 export type AxisMapping = AxisParams | undefined;

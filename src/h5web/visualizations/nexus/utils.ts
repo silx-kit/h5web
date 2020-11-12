@@ -6,8 +6,13 @@ import {
   HDF5Entity,
 } from '../../providers/models';
 import { getEntity, isGroup } from '../../providers/utils';
-import { NxAttribute, NX_INTERPRETATIONS } from './models';
-import { assertArray } from '../shared/utils';
+import {
+  NxAttribute,
+  NX_INTERPRETATIONS,
+  RawSilxStyle,
+  SilxStyle,
+} from './models';
+import { assertArray, isScaleType } from '../shared/utils';
 
 export function isNxDataGroup(group: HDF5Group): boolean {
   return !!group.attributes?.find(({ value }) => value === 'NXdata');
@@ -104,4 +109,25 @@ export function getDatasetLabel(
   }
 
   return datasetName;
+}
+
+export function parseSilxStyleAttribute(group: HDF5Group): SilxStyle {
+  const silxStyle = getAttributeValue(group, 'SILX_style');
+
+  if (!silxStyle || typeof silxStyle !== 'string') {
+    return {};
+  }
+
+  const rawSilxStyle: RawSilxStyle = JSON.parse(silxStyle);
+  const { axes_scale_type, signal_scale_type } = rawSilxStyle;
+
+  return {
+    signal_scale_type: isScaleType(signal_scale_type)
+      ? signal_scale_type
+      : undefined,
+    axes_scale_type:
+      Array.isArray(axes_scale_type) && axes_scale_type.every(isScaleType)
+        ? axes_scale_type
+        : undefined,
+  };
 }

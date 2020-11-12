@@ -268,6 +268,7 @@ export const mockMetadata = makeMetadata({
         makeGroupHardLink('nx_process'),
         makeGroupHardLink('spectrum'),
         makeGroupHardLink('image'),
+        makeGroupHardLink('log_spectrum'),
       ]
     ),
 
@@ -311,6 +312,17 @@ export const mockMetadata = makeMetadata({
         makeDatasetHardLink('Y'),
       ]
     ),
+    makeGroup(
+      'log_spectrum',
+      [
+        makeStrAttr('NX_class', 'NXdata'),
+        makeStrAttr('signal', 'oneD'),
+        makeStrAttr('SILX_style', JSON.stringify({ axes_scale_type: ['log'] })),
+        makeStrAttr('interpretation', 'spectrum'),
+        makeNxAxesAttr(['X_log']),
+      ],
+      [makeDatasetHardLink('oneD', 'oneD'), makeDatasetHardLink('X_log')]
+    ),
   ],
   datasets: [
     makeSimpleDataset('oneD_linear', intType, [41]),
@@ -340,6 +352,7 @@ export const mockMetadata = makeMetadata({
     ),
     makeDataset('title_twoD', stringType, scalarShape),
     makeSimpleDataset('errors_oneD', floatType, [41]),
+    makeSimpleDataset('X_log', floatType, [41]),
   ],
   datatypes: [makeDatatype('datatype', compoundType)],
 });
@@ -374,6 +387,7 @@ export const mockValues = {
   fourD,
   X: arr1,
   Y: arr2,
+  X_log: arr1.map((_, i) => (i + 1) * 0.1),
   title_twoD: 'NeXus 2D',
   errors_oneD: arr1,
 };
