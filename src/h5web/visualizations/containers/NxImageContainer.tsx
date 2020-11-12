@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useContext } from 'react';
+import React, { ReactElement, useState, useContext, useEffect } from 'react';
 import { range } from 'lodash-es';
 import { assertGroup } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
@@ -8,6 +8,7 @@ import { getNxDataGroup } from '../nexus/utils';
 import { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { useNxData } from '../nexus/hooks';
+import { useHeatmapConfig } from '../heatmap/config';
 
 function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -34,6 +35,14 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   ]);
 
   const { signal, title, axisMapping } = nxData;
+
+  const { setScaleType } = useHeatmapConfig();
+
+  useEffect(() => {
+    if (signal.scaleType) {
+      setScaleType(signal.scaleType);
+    }
+  }, [setScaleType, signal.scaleType]);
 
   if (!signal.value) {
     return <></>;

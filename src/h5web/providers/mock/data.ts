@@ -281,7 +281,14 @@ export const mockMetadata = makeMetadata({
     ),
     makeGroup(
       'nx_data',
-      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'twoD')],
+      [
+        makeStrAttr('NX_class', 'NXdata'),
+        makeStrAttr('signal', 'twoD'),
+        makeStrAttr(
+          'SILX_style',
+          JSON.stringify({ signal_scale_type: 'symlog' })
+        ),
+      ],
       [makeDatasetHardLink('twoD'), makeDatasetHardLink('title', 'title_twoD')]
     ),
     makeGroup(
@@ -304,6 +311,7 @@ export const mockMetadata = makeMetadata({
         makeStrAttr('NX_class', 'NXdata'),
         makeStrAttr('signal', 'fourD'),
         makeStrAttr('interpretation', 'image'),
+        makeStrAttr('SILX_style', JSON.stringify({ signal_scale_type: 'log' })),
         makeNxAxesAttr(['.', '.', 'Y', 'X']),
       ],
       [
@@ -392,5 +400,5 @@ export const mockValues = {
   Y: arr2,
   X_log: arr1.map((_, i) => (i + 1) * 0.1),
   title_twoD: 'NeXus 2D',
-  errors_oneD: arr1,
+  errors_oneD: arr1.map(Math.abs),
 };
