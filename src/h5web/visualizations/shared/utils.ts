@@ -204,3 +204,11 @@ export function assertOptionalArray<T>(
     assertArray<T>(val);
   }
 }
+
+export function isScaleType(val: unknown): val is ScaleType {
+  if (typeof val !== 'string') {
+    return false;
+  }
+
+  return Object.values<string>(ScaleType).includes(val);
+}

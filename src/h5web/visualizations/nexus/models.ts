@@ -1,4 +1,4 @@
-import { AxisMapping } from '../shared/models';
+import { AxisMapping, ScaleType } from '../shared/models';
 
 export type NxAttribute =
   | 'signal'
@@ -6,7 +6,8 @@ export type NxAttribute =
   | 'axes'
   | 'default'
   | 'long_name'
-  | 'units';
+  | 'units'
+  | 'SILX_style';
 
 export enum NxInterpretation {
   Spectrum = 'spectrum',
@@ -20,4 +21,14 @@ export interface NxData {
   errors?: number[];
   title?: string;
   axisMapping?: AxisMapping[];
+}
+
+export interface RawSilxStyle {
+  signal_scale_type?: unknown;
+  axes_scale_type?: unknown;
+}
+
+export interface SilxStyle {
+  signal_scale_type?: ScaleType;
+  axes_scale_type?: ScaleType[];
 }

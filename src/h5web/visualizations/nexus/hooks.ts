@@ -19,6 +19,7 @@ import {
   getLinkedEntity,
   getDatasetLabel,
   getNxAxisNames,
+  parseSilxStyleAttribute,
 } from './utils';
 
 export function useLinkedDatasetValues(
@@ -65,7 +66,10 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
 
   const axesNames = getNxAxisNames(group);
 
-  const axisMapping = axesNames.map((name) => {
+  const silxStyle = parseSilxStyleAttribute(group);
+  const { axes_scale_type } = silxStyle;
+
+  const axisMapping = axesNames.map((name, i) => {
     if (!name) {
       return undefined;
     }
@@ -79,7 +83,11 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
     const value = datasetValues && datasetValues[name];
     assertOptionalArray<number>(value);
 
-    return { value, label: getDatasetLabel(dataset, name) };
+    return {
+      value,
+      label: getDatasetLabel(dataset, name),
+      scaleType: axes_scale_type && axes_scale_type[i],
+    };
   });
 
   const errors = datasetValues && datasetValues.errors;
