@@ -2,6 +2,8 @@ name: Cypress
 
 on:
   push:
+    branches-ignore:
+      - 'update-snapshots'
   workflow_dispatch:
     inputs:
       updateSnapshots:
@@ -34,7 +36,7 @@ jobs:
         env:
           CYPRESS_TAKE_SNAPSHOTS: true
 
-      - name: Upload debug screenshots and diffs on failure 🎁
+      - name: Upload debug screenshots and diffs on failure 🖼️
         uses: actions/upload-artifact@v2
         if: failure()
         with:
@@ -43,7 +45,7 @@ jobs:
             cypress/debug/
             cypress/snapshots/**/__diff_output__/
 
-      - name: Open PR to update reference snapshots ✔️
+      - name: Open PR to update reference snapshots 🎁
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.USER_TOKEN }}

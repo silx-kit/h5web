@@ -1,6 +1,9 @@
 name: Lint & Test
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - 'update-snapshots'
 
 jobs:
   lint:
