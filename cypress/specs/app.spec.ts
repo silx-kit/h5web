@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-
 describe('App', () => {
   beforeEach(() => {
     cy.visit('/mock');
@@ -12,6 +10,11 @@ describe('App', () => {
     cy.findByRole('heading', { name: 'nD_datasets / oneD' }).should('exist');
     cy.findByRole('tab', { name: 'Line' }).should('exist');
     cy.findByRole('figure', { name: 'oneD' }).should('exist');
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(50);
+      cy.matchImageSnapshot('line_1D');
+    }
   });
 
   it('visualize 1D dataset as Matrix', () => {
@@ -30,14 +33,25 @@ describe('App', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'twoD' }).click();
 
+    cy.get('[data-visible]').should('exist');
+    cy.get('[data-visible]').should('not.exist');
+
     cy.findByRole('heading', { name: 'nD_datasets / twoD' }).should('exist');
     cy.findByRole('tab', { name: 'Heatmap' }).should('exist');
     cy.findByRole('figure', { name: 'twoD' }).should('exist');
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(50);
+      cy.matchImageSnapshot('heatmap_2D');
+    }
   });
 
   it('map dimensions of 4D dataset when visualized as Heatmap', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'fourD' }).click();
+
+    cy.get('[data-visible]').should('exist');
+    cy.get('[data-visible]').should('not.exist');
 
     cy.findByText('n').parent().should('have.text', 'n 3 9 20 41');
 
@@ -66,11 +80,22 @@ describe('App', () => {
     cy.get('@xAxis').should('have.text', [0, 10, 20, 30, 40].join(''));
     cy.get('@yAxis').should('have.text', [0, 5, 10, 15, 20].join(''));
 
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(50);
+      cy.matchImageSnapshot('heatmap_4d_default');
+    }
+
     // Change ordinate mapping and check that axis ticks have changed
     cy.get('@yRadioGroup').within(() => {
       cy.findByRole('radio', { name: 'D1' }).click();
     });
+
     cy.get('@yAxis').should('have.text', [0, 2, 4, 6, 8].join(''));
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(50);
+      cy.matchImageSnapshot('heatmap_4d_remapped');
+    }
   });
 
   context('NeXus', () => {
@@ -90,46 +115,34 @@ describe('App', () => {
         'exist'
       );
       cy.findByRole('tab', { name: 'NX Spectrum' }).should('exist');
+      cy.findByRole('figure', { name: 'oneD (arb. units)' }).should('exist');
+      cy.get('svg[data-type="abscissa"] svg').should('have.text', 'X (nm)');
+
+      if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.wait(50);
+        cy.matchImageSnapshot('nxspectrum');
+      }
     });
 
     it('visualize dataset with image interpretation as NxImage', () => {
       cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
       cy.findByRole('treeitem', { name: 'image' }).click();
 
+      cy.get('[data-visible]').should('exist');
+      cy.get('[data-visible]').should('not.exist');
+
       cy.findByRole('heading', { name: 'nexus_entry / image' }).should('exist');
       cy.findByRole('tab', { name: 'NX Image' }).should('exist');
-      cy.wait(500); // Monkey-patch: sometimes this test makes the following test hanging if the texture computation didn't end.
-    });
-
-    it('use signal name and units to compute title', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'spectrum' }).click();
-
-      cy.findByRole('figure', { name: 'oneD (arb. units)' }).should('exist');
-    });
-
-    it('use signal long name to compute title', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'image' }).click();
-
       cy.findByRole('figure', { name: 'Interference fringes' }).should('exist');
-    });
-
-    it('use axis name and units to compute axis label', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'spectrum' }).click();
-
-      cy.get('svg[data-type="abscissa"] svg').should('have.text', 'X (nm)');
-    });
-
-    it('use axis long name to compute axis label', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'image' }).click();
-
       cy.get('svg[data-type="ordinate"] svg').should(
         'have.text',
         'Angle (degrees)'
       );
+
+      if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.wait(50);
+        cy.matchImageSnapshot('nximage');
+      }
     });
 
     it('use axis values to compute axis ticks', () => {

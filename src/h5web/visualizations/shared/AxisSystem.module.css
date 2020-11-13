@@ -11,14 +11,13 @@
 }
 
 .axisSystem > svg {
-  width: 0;
-  height: 0;
-}
-
-.grid,
-.axis {
   display: block;
   overflow: visible;
+
+  /* Avoid potential overflow caused by default intrinsic size of `svg` elements. */
+  /* Chrome/Edge require values greater than 0. */
+  width: 1px;
+  height: 1px;
 }
 
 .axis[data-type='abscissa'] {

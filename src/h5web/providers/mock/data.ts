@@ -376,7 +376,7 @@ const arr2 = range(0, 100, 5);
 const arr3 = range(-1, 1.25, 0.25);
 const arr4 = range(10, 40, 10);
 
-const oneD = arr1.map((val) => val ** 2);
+const oneD = arr1.map((val) => val ** 3);
 const twoD = arr2.map((offset) => oneD.map((val) => val - offset));
 const threeD = arr3.map((multiplier) =>
   twoD.map((arrOneD) => arrOneD.map((val) => val * multiplier))

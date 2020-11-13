@@ -21,6 +21,25 @@ npm start
 - `npm run storybook` - manually test components in isolation in
   [Storybook](https://storybook.js.org/docs/react/get-started/introduction), at http://localhost:6006
 
+#### Cypress
+
+[Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) is used to perform end-to-end and visual regression
+testing. To avoid rendering inconsistencies between platforms, Cypress must always be run inside a docker container.
+
+The workflow is as follows:
+
+1. Install and start Docker.
+1. In one terminal, start the app with `npm start`.
+1. In a second terminal, run `npm run cypress`. This script will download the `cypress/included` Docker image, run it,
+   and perform the tests with Cypress.
+1. If a visual regression is detected in one of the tests, a snapshot diff is created under
+   `cypress/snapshots/app.spec.ts/__diff_output__`. If you wish to approve the changes, run `npm run cypress:approve`.
+
+On Windows, use `npm run cypress-win` and `npm run cypress-win:approve`.
+
+In the CI, if a test fails because of a visual regression, the generated snapshot diffs are uploaded as CI artifacts,
+which you can then download and review.
+
 ### Build
 
 - `npm run build` - build H5Web for production
