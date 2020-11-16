@@ -1,11 +1,13 @@
 import ndarray from 'ndarray';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { isNumber } from 'lodash-es';
 import { assign } from 'ndarray-ops';
 import { createMemo } from 'react-use';
-import { useFrame } from 'react-three-fiber';
+import { useFrame, useThree } from 'react-three-fiber';
 import type { DimensionMapping } from '../../dimension-mapper/models';
-import { getDomain } from './utils';
+import { getCanvasScale, getDomain } from './utils';
+import AxisSystemContext from './AxisSystemContext';
+import { AxisScale } from './models';
 
 export function useBaseArray<T>(value: T[], rawDims: number[]): ndarray<T> {
   return useMemo(() => {
@@ -46,4 +48,18 @@ export function useFrameRendering(): void {
   useFrame(() => {
     setNum(Math.random());
   });
+}
+
+export function useCanvasScales(): {
+  abscissaScale: AxisScale;
+  ordinateScale: AxisScale;
+} {
+  const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
+  const { size } = useThree();
+  const { width, height } = size;
+
+  return {
+    abscissaScale: getCanvasScale(abscissaConfig, width),
+    ordinateScale: getCanvasScale(ordinateConfig, height),
+  };
 }

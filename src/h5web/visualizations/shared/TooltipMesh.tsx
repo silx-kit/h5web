@@ -1,11 +1,10 @@
-import React, { ReactElement, useCallback, useContext } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { PointerEvent, useThree } from 'react-three-fiber';
 import { TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import { Line } from '@vx/shape';
 import Html from './Html';
 import styles from './TooltipMesh.module.css';
-import { getCanvasScale } from './utils';
-import AxisSystemContext from './AxisSystemContext';
+import { useCanvasScales } from './hooks';
 
 const GUIDE_PROPS = {
   stroke: 'gray',
@@ -25,13 +24,11 @@ interface Props {
 function TooltipMesh(props: Props): ReactElement {
   const { formatIndex, formatValue, guides } = props;
 
-  const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
   const { camera, size } = useThree();
   const { width, height } = size;
 
   // Scales to compute data coordinates from unprojected mesh coordinates
-  const abscissaScale = getCanvasScale(abscissaConfig, width);
-  const ordinateScale = getCanvasScale(ordinateConfig, height);
+  const { abscissaScale, ordinateScale } = useCanvasScales();
 
   const {
     tooltipOpen,
