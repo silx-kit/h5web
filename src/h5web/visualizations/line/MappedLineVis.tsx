@@ -52,7 +52,11 @@ function MappedLineVis(props: Props): ReactElement {
       return data;
     }
 
-    return data.flatMap((value, i) => [value - errors[i], value + errors[i]]);
+    return data.flatMap((value, i) => [
+      value - errors[i],
+      value,
+      value + errors[i],
+    ]);
   }, [autoScale, baseArray.data, dataArray.data, errors]);
 
   const dataDomain = useDomain(dataWithErrors, scaleType);
