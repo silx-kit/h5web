@@ -17,28 +17,53 @@ npm start
 ### Testing
 
 - `npm test` - run unit and feature tests with Jest
-- `npm run cypress` - run end-to-end tests with Cypress against local dev server running in separate terminal
+- `npm run cypress` - open the [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end test
+  runner (local dev server must be running in separate terminal)
+- `npm run cypress:run` - run end-to-end tests once (local dev server must be running in separate terminal)
 - `npm run storybook` - manually test components in isolation in
   [Storybook](https://storybook.js.org/docs/react/get-started/introduction), at http://localhost:6006
 
-#### Cypress
+#### Visual regression
 
-[Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) is used to perform end-to-end and visual regression
-testing. To avoid rendering inconsistencies between platforms, Cypress must always be run inside a docker container.
+Cypress is used for end-to-end testing, but also for visual regression testing. The idea is to take screenshots
+(referred to as "snapshots") of the app in various situations and compare them with previously approved "reference
+snapshots". If any pixel has changed, the test fails and a diff image that highlights the differences is created.
 
-The workflow is as follows:
+Cypress is unable to take consistent screenshots across platforms because the exact rendering depends on the GPU (even
+when running in Docker). For this reason, visual regression tests are only run on the CI CI. Environment variable
+`CYPRESS_TAKE_SCREENSHOTS` is used to enable visual regression testing in the CI. This variable is set automatically in
+the `cypress.yml` GitHub workflow, which runs on push to any branch.
 
-1. Install and start Docker.
-1. In one terminal, start the app with `npm start`.
-1. In a second terminal, run `npm run cypress`. This script will download the `cypress/included` Docker image, run it,
-   and perform the tests with Cypress.
-1. If a visual regression is detected in one of the tests, a snapshot diff is created under
-   `cypress/snapshots/app.spec.ts/__diff_output__`. If you wish to approve the changes, run `npm run cypress:approve`.
+Visual regression tests may fail in the CI, either expectedly (e.g. when implementing a new feature) or unexpectedly
+(when detecting a regression). When this happens, the diff images and debug screenshots that Cypress generates are
+uploaded as workflow artifacts, which can be downloaded and reviewed.
 
-On Windows, use `npm run cypress-win` and `npm run cypress-win:approve`.
+If the visual regressions are expected, the version-controlled reference snapshots can be updated by posting a comment
+in the Pull Request with the following text: `/cypress updateSnapshots=true`. This command triggers a new run of the
+visual regression tests in which Cypress is told to update the reference snapshots when it finds differences (instead of
+failing the tests).
 
-In the CI, if a test fails because of a visual regression, the generated snapshot diffs are uploaded as CI artifacts,
-which you can then download and review.
+When Cypress updates a reference snapshot (or takes one for the first time), the `cypress.yml` workflow automatically
+opens a new Pull Request to merge the new snapshots into the working branch. Once this PR is merged, the visual
+regression tests in the working branch should succeed.
+
+Here is the summarised workflow (also described with screenshots in
+[PR #306](https://github.com/silx-kit/h5web/pull/306)):
+
+1. Push your working branch and open a PR.
+2. If the `cypress.yml` CI workflow fails, check out the logs.
+3. If the fail was caused by a visual regression (i.e. if a test failed on a `cy.matchImageSnapshot()` call), download
+   the workflow's artifacts.
+4. Review the snapshot diffs:
+
+   - If the visual regressions were unexpected: fix the bug, push it and start from step 2 again.
+   - If the visual regressions were expected: continue to step 5.
+
+5. In the PR, post a comment with the following text: `/cypress updateSnapshots=true`.
+6. Go to the _Actions_ page and wait for the new run of the `cypress.yml` workflow to complete.
+7. Go to the newly opened PR titled _Update Cypress reference snapshots_.
+8. Review the new reference snapshots and merge the PR.
+9. Go back to your main PR and wait for the `cypress.yml` workflow to succeed.
 
 ### Build
 
