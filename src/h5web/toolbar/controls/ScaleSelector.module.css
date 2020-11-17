@@ -1,0 +1,10 @@
+.icon {
+  composes: icon from '../Toolbar.module.css';
+}
+
+.label {
+  display: flex;
+  color: var(--secondary-dark);
+  align-items: center;
+  margin-left: 0.5em;
+}

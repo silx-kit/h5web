@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useContext, useEffect } from 'react';
+import React, { ReactElement, useState, useContext } from 'react';
 import { range } from 'lodash-es';
 import { assertGroup } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
@@ -8,7 +8,6 @@ import { ProviderContext } from '../../providers/context';
 import { getNxDataGroup } from '../nexus/utils';
 import { VisContainerProps } from './models';
 import { useNxData } from '../nexus/hooks';
-import { useLineConfig } from '../line/config';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -35,14 +34,6 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
 
   const { signal, title, errors, axisMapping } = nxData;
 
-  const { setScaleType } = useLineConfig();
-
-  useEffect(() => {
-    if (signal.scaleType) {
-      setScaleType(signal.scaleType);
-    }
-  }, [setScaleType, signal.scaleType]);
-
   if (!signal.value) {
     return <></>;
   }
@@ -63,6 +54,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
       <MappedLineVis
         value={signal.value}
         valueLabel={signal.label}
+        valueScaleType={signal.scaleType}
         axisMapping={axisMapping}
         dims={dims}
         dimensionMapping={dimensionMapping}

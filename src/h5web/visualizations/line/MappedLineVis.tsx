@@ -5,13 +5,14 @@ import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
-import { AxisMapping } from '../shared/models';
+import { AxisMapping, ScaleType } from '../shared/models';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
   dimensionMapping: DimensionMapping;
   valueLabel?: string;
+  valueScaleType?: ScaleType;
   axisMapping?: AxisMapping[];
   title?: string;
   errors?: number[];
@@ -21,6 +22,7 @@ function MappedLineVis(props: Props): ReactElement {
   const {
     value,
     valueLabel,
+    valueScaleType,
     axisMapping = [],
     dims,
     dimensionMapping,
@@ -30,7 +32,10 @@ function MappedLineVis(props: Props): ReactElement {
   assertArray<number>(value);
 
   const {
-    scaleType,
+    yScaleType,
+    setYScaleType,
+    xScaleType,
+    setXScaleType,
     curveType,
     showGrid,
     autoScale,
@@ -59,18 +64,34 @@ function MappedLineVis(props: Props): ReactElement {
     ]);
   }, [autoScale, baseArray.data, dataArray.data, errors]);
 
-  const dataDomain = useDomain(dataWithErrors, scaleType);
+  const dataDomain = useDomain(dataWithErrors, yScaleType);
+  const mappedAbscissaParams =
+    dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
+
+  useEffect(() => {
+    if (mappedAbscissaParams?.scaleType) {
+      setXScaleType(mappedAbscissaParams?.scaleType);
+    }
+  }, [mappedAbscissaParams?.scaleType, setXScaleType]);
+
+  useEffect(() => {
+    if (valueScaleType) {
+      setYScaleType(valueScaleType);
+    }
+  }, [setYScaleType, valueScaleType]);
 
   return (
     <LineVis
       dataArray={dataArray}
       domain={dataDomain}
-      scaleType={scaleType}
+      scaleType={yScaleType}
       curveType={curveType}
       showGrid={showGrid}
-      abscissaParams={
-        dimensionMapping && axisMapping[dimensionMapping.indexOf('x')]
-      }
+      abscissaParams={{
+        label: mappedAbscissaParams?.label,
+        value: mappedAbscissaParams?.value,
+        scaleType: xScaleType,
+      }}
       ordinateLabel={valueLabel}
       title={title}
       errors={errors}

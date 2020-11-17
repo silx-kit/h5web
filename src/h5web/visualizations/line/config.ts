@@ -6,20 +6,28 @@ import { ScaleType } from '../shared/models';
 interface LineConfig {
   curveType: CurveType;
   showGrid: boolean;
-  scaleType: ScaleType;
+  xScaleType: ScaleType;
+  yScaleType: ScaleType;
   autoScale: boolean;
   isAutoScaleDisabled: boolean;
 }
 
 const STORAGE_CONFIG: StorageConfig = {
   storageId: 'h5web:line',
-  itemsToPersist: ['curveType', 'showGrid', 'scaleType', 'autoScale'],
+  itemsToPersist: [
+    'curveType',
+    'showGrid',
+    'xScaleType',
+    'yScaleType',
+    'autoScale',
+  ],
 };
 
 const INITIAL_STATE: LineConfig = {
   curveType: CurveType.LineOnly,
   showGrid: true,
-  scaleType: ScaleType.Linear,
+  xScaleType: ScaleType.Linear,
+  yScaleType: ScaleType.Linear,
   autoScale: false,
   isAutoScaleDisabled: false,
 };
@@ -29,7 +37,8 @@ export const useLineConfig = createPersistableState(
   combine({ ...INITIAL_STATE }, (set) => ({
     setCurveType: (type: CurveType) => set({ curveType: type }),
     toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
-    setScaleType: (type: ScaleType) => set({ scaleType: type }),
+    setXScaleType: (type: ScaleType) => set({ xScaleType: type }),
+    setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
     toggleAutoScale: () => set((state) => ({ autoScale: !state.autoScale })),
     disableAutoScale: (isAutoScaleDisabled: boolean) =>
       set({ isAutoScaleDisabled }),

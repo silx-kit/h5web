@@ -1,36 +1,56 @@
 import React, { ReactElement } from 'react';
+import { IconType } from 'react-icons/lib';
 import { MdSort, MdFilterList, MdGraphicEq } from 'react-icons/md';
-import ToggleGroup from './ToggleGroup';
 import { ScaleType } from '../../visualizations/shared/models';
+import Selector from './Selector/Selector';
+import styles from './ScaleSelector.module.css';
+
+const ICONS: Record<ScaleType, IconType> = {
+  [ScaleType.Linear]: MdSort,
+  [ScaleType.Log]: MdFilterList,
+  [ScaleType.SymLog]: (iconProps) => (
+    <MdGraphicEq transform="rotate(90)" {...iconProps} />
+  ),
+};
+
+const LABELS: Record<ScaleType, string> = {
+  [ScaleType.Linear]: 'Linear',
+  [ScaleType.Log]: 'Log',
+  [ScaleType.SymLog]: 'SymLog',
+};
 
 interface Props {
   value: ScaleType;
+  label?: string;
   disabled?: boolean;
   onScaleChange: (scale: ScaleType) => void;
 }
 
-function ScaleSelector(props: Props): ReactElement {
-  const { value, disabled, onScaleChange } = props;
+function ScaleOption(props: { option: ScaleType }): ReactElement {
+  const { option } = props;
+  const Icon = ICONS[option];
   return (
-    <ToggleGroup
-      role="radiogroup"
-      ariaLabel="Scale type"
-      value={value}
-      disabled={disabled}
-      onChange={(val) => {
-        onScaleChange(val as ScaleType);
-      }}
-    >
-      <ToggleGroup.Btn icon={MdSort} label="Linear" value={ScaleType.Linear} />
-      <ToggleGroup.Btn icon={MdFilterList} label="Log" value={ScaleType.Log} />
-      <ToggleGroup.Btn
-        icon={(iconProps) => (
-          <MdGraphicEq {...iconProps} transform="rotate(90)" />
-        )}
-        label="SymLog"
-        value={ScaleType.SymLog}
+    <>
+      <Icon className={styles.icon} />
+      {LABELS[option]}
+    </>
+  );
+}
+
+function ScaleSelector(props: Props): ReactElement {
+  const { value, label, disabled, onScaleChange } = props;
+
+  return (
+    <>
+      {label && <span className={styles.label}>{label}</span>}
+      <Selector
+        value={value}
+        onChange={onScaleChange}
+        disabled={disabled}
+        options={Object.values(ScaleType)}
+        optionComponent={ScaleOption}
       />
-    </ToggleGroup>
+    </>
   );
 }
 
