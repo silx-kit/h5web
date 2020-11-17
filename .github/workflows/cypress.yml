@@ -1,7 +1,7 @@
 name: Cypress
 
 on:
-  push:
+  pull_request:
     branches-ignore:
       - 'update-snapshots'
   workflow_dispatch:
@@ -48,8 +48,8 @@ jobs:
       - name: Open PR to update reference snapshots 🎁
         uses: peter-evans/create-pull-request@v3
         with:
+          base: ${{ github.head_ref }}
           token: ${{ secrets.USER_TOKEN }}
-          add: 'cypress/snapshots/**/*.png'
-          commit-message: 'Update Cypress reference snapshots'
-          title: 'Update Cypress reference snapshots'
           branch: update-snapshots
+          title: 'Update Cypress reference snapshots'
+          commit-message: 'Update Cypress reference snapshots'
