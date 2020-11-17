@@ -1,51 +1,73 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { LineSegments } from 'react-three-fiber/components';
-import { useDataGeometry } from './hooks';
+import { BufferGeometry } from 'three';
+import { lineSegment } from '../shared/utils';
+import { useCanvasScales } from '../shared/hooks';
 
 const DEFAULT_COLOR = '#1b998b';
+
+const CAP_LENGTH = 10;
 
 interface Props {
   abscissas: number[];
   ordinates: number[];
   errors: number[];
   color?: string;
+  capLength?: number;
 }
 
 function ErrorBarCurve(props: Props): ReactElement {
-  const { abscissas, ordinates, errors, color = DEFAULT_COLOR } = props;
+  const {
+    abscissas,
+    ordinates,
+    errors,
+    color = DEFAULT_COLOR,
+    capLength = CAP_LENGTH,
+  } = props;
 
-  const capLength = 0.1 * (abscissas[1] - abscissas[0]);
+  const { abscissaScale, ordinateScale } = useCanvasScales();
 
-  const errorAbscissas = [];
-  const errorOrdinates = [];
-  for (const [index, x] of abscissas.entries()) {
-    const y = ordinates[index];
-    const yerr = errors[index];
+  const errorGeometry = useMemo(() => {
+    const points = ordinates.flatMap((val, index) => {
+      const [x, y] = [abscissaScale(abscissas[index]), ordinateScale(val)];
 
-    if (yerr === 0) {
-      continue;
-    }
+      if (!Number.isFinite(y)) {
+        return [];
+      }
 
-    // First segment: bottom cap
-    errorAbscissas.push(x - capLength);
-    errorOrdinates.push(y - yerr);
-    errorAbscissas.push(x + capLength);
-    errorOrdinates.push(y - yerr);
+      const error = errors[index];
+      if (error === 0) {
+        return [];
+      }
+      const yerr_min = ordinateScale(val - error);
+      const yerr_max = ordinateScale(val + error);
 
-    // Second segment: error bar
-    errorAbscissas.push(x);
-    errorOrdinates.push(y - yerr);
-    errorAbscissas.push(x);
-    errorOrdinates.push(y + yerr);
+      return [
+        // First segment: bottom cap
+        ...lineSegment(
+          x - capLength / 2,
+          yerr_min,
+          x + capLength / 2,
+          yerr_min
+        ),
+        // Second segment: bottom error bar
+        ...lineSegment(x, yerr_min, x, y),
+        // Third segment: top error bar
+        ...lineSegment(x, y, x, yerr_max),
+        // Fourth segment: top cap
+        ...lineSegment(
+          x - capLength / 2,
+          yerr_max,
+          x + capLength / 2,
+          yerr_max
+        ),
+      ];
+    });
 
-    // Third segment: top cap
-    errorAbscissas.push(x - capLength);
-    errorOrdinates.push(y + yerr);
-    errorAbscissas.push(x + capLength);
-    errorOrdinates.push(y + yerr);
-  }
-
-  const errorGeometry = useDataGeometry(errorAbscissas, errorOrdinates);
+    const geometry = new BufferGeometry();
+    geometry.setFromPoints(points);
+    return geometry;
+  }, [abscissaScale, abscissas, capLength, errors, ordinateScale, ordinates]);
 
   return (
     <LineSegments geometry={errorGeometry}>

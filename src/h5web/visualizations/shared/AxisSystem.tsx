@@ -3,10 +3,9 @@ import { useThree } from 'react-three-fiber';
 import Html from './Html';
 import styles from './AxisSystem.module.css';
 import { AxisOffsets, Domain } from './models';
-import { getCanvasScale } from './utils';
-import AxisSystemContext from './AxisSystemContext';
-import { useFrameRendering } from './hooks';
+import { useFrameRendering, useCanvasScales } from './hooks';
 import Axis from './Axis';
+import AxisSystemContext from './AxisSystemContext';
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -22,8 +21,7 @@ function AxisSystem(props: Props): ReactElement {
   const { position, zoom } = camera;
   const { width, height } = size;
 
-  const abscissaScale = getCanvasScale(abscissaConfig, width);
-  const ordinateScale = getCanvasScale(ordinateConfig, height);
+  const { abscissaScale, ordinateScale } = useCanvasScales();
 
   // Find visible domains from camera's zoom and position
   const xVisibleDomain: Domain = [

@@ -9,6 +9,7 @@ import {
   AxisConfig,
   SCALE_FUNCTIONS,
 } from './models';
+import { Vector3 } from 'three';
 
 const TICK_FORMAT = format('0');
 
@@ -211,4 +212,15 @@ export function isScaleType(val: unknown): val is ScaleType {
   }
 
   return Object.values<string>(ScaleType).includes(val);
+}
+
+export function lineSegment(
+  startX: number,
+  startY: number,
+  endX: number,
+  endY: number
+): [Vector3, Vector3] | [] {
+  return [startX, startY, endX, endY].every(isFinite)
+    ? [new Vector3(startX, startY, 0), new Vector3(endX, endY, 0)]
+    : [];
 }
