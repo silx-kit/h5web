@@ -1,4 +1,4 @@
-name: Deploy Storybook
+name: Storybook
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🏷️
@@ -24,7 +24,7 @@ jobs:
         run: npm run storybook:build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@3.6.1
+        uses: JamesIves/github-pages-deploy-action@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
