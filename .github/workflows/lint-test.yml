@@ -1,6 +1,9 @@
-name: CI
+name: Lint & Test
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - 'update-snapshots'
 
 jobs:
   lint:
@@ -38,26 +41,3 @@ jobs:
         run: npm test
         env:
           CI: true
-
-  cypress:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout 🏷️
-        uses: actions/checkout@v2
-
-      - name: Use Node 12 🕹️
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12'
-
-      - name: Install ⚙️
-        run: npm ci
-
-      - name: Build 🛠️
-        run: npm run build
-
-      - name: Serve ⚡️
-        run: npx serve -s build -l 3000 & npx wait-on http://localhost:3000
-
-      - name: Run Cypress 🌳
-        run: npx cypress run --browser firefox

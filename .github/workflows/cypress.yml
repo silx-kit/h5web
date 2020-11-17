@@ -1,0 +1,55 @@
+name: Cypress
+
+on:
+  pull_request:
+    branches-ignore:
+      - 'update-snapshots'
+  workflow_dispatch:
+    inputs:
+      updateSnapshots:
+        description: 'Whether to update the reference snapshots'
+        default: 'false'
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🏷️
+        uses: actions/checkout@v2
+
+      - name: Use Node 12 🕹️
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Install ⚙️
+        run: npm ci
+
+      - name: Build 🛠️
+        run: npm run build
+
+      - name: Serve ⚡️
+        run: npx serve -s build -l 3000 & npx wait-on http://localhost:3000
+
+      - name: Run Cypress 🌳
+        run: npm run cypress:run -- --env updateSnapshots=${{ github.event.inputs.updateSnapshots }}
+        env:
+          CYPRESS_TAKE_SNAPSHOTS: true
+
+      - name: Upload debug screenshots and diffs on failure 🖼️
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress
+          path: |
+            cypress/debug/
+            cypress/snapshots/**/__diff_output__/
+
+      - name: Open PR to update reference snapshots 🎁
+        uses: peter-evans/create-pull-request@v3
+        with:
+          base: ${{ github.head_ref }}
+          token: ${{ secrets.USER_TOKEN }}
+          branch: update-snapshots
+          title: 'Update Cypress reference snapshots'
+          commit-message: 'Update Cypress reference snapshots'

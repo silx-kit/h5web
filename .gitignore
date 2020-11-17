@@ -1,8 +1,8 @@
 node_modules/
 
 /build/
-/cypress/screenshots/
-/cypress/videos/
+/cypress/debug/
+/cypress/snapshots/**/__diff_output__
 /storybook-static/
 /packages/**/dist/
 
