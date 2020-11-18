@@ -1,3 +1,5 @@
+const SNAPSHOT_DELAY = 100;
+
 describe('App', () => {
   beforeEach(() => {
     cy.visit('/mock');
@@ -12,7 +14,7 @@ describe('App', () => {
     cy.findByRole('figure', { name: 'oneD' }).should('exist');
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
-      cy.wait(50);
+      cy.wait(SNAPSHOT_DELAY);
       cy.matchImageSnapshot('line_1D');
     }
   });
@@ -41,7 +43,7 @@ describe('App', () => {
     cy.findByRole('figure', { name: 'twoD' }).should('exist');
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
-      cy.wait(50);
+      cy.wait(SNAPSHOT_DELAY);
       cy.matchImageSnapshot('heatmap_2D');
     }
   });
@@ -81,7 +83,7 @@ describe('App', () => {
     cy.get('@yAxis').should('have.text', [0, 5, 10, 15, 20].join(''));
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
-      cy.wait(50);
+      cy.wait(SNAPSHOT_DELAY);
       cy.matchImageSnapshot('heatmap_4d_default');
     }
 
@@ -93,7 +95,7 @@ describe('App', () => {
     cy.get('@yAxis').should('have.text', [0, 2, 4, 6, 8].join(''));
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
-      cy.wait(50);
+      cy.wait(SNAPSHOT_DELAY);
       cy.matchImageSnapshot('heatmap_4d_remapped');
     }
   });
@@ -119,7 +121,7 @@ describe('App', () => {
       cy.get('svg[data-type="abscissa"] svg').should('have.text', 'X (nm)');
 
       if (!!Cypress.env('TAKE_SNAPSHOTS')) {
-        cy.wait(50);
+        cy.wait(SNAPSHOT_DELAY);
         cy.matchImageSnapshot('nxspectrum');
       }
     });
@@ -140,7 +142,7 @@ describe('App', () => {
       );
 
       if (!!Cypress.env('TAKE_SNAPSHOTS')) {
-        cy.wait(50);
+        cy.wait(SNAPSHOT_DELAY);
         cy.matchImageSnapshot('nximage');
       }
     });
@@ -166,7 +168,7 @@ describe('App', () => {
       cy.findAllByRole('button', { name: 'Log' }).should('have.length', 2);
 
       if (!!Cypress.env('TAKE_SNAPSHOTS')) {
-        cy.wait(50);
+        cy.wait(SNAPSHOT_DELAY);
         cy.matchImageSnapshot('logspectrum');
       }
     });
