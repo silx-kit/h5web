@@ -107,7 +107,7 @@ describe('App', () => {
       cy.findByRole('figure', { name: 'NeXus 2D' }).should('exist');
     });
 
-    it('visualize dataset with spectrum interpretation as NxSprectrum', () => {
+    it('visualize dataset with spectrum interpretation as NxSpectrum', () => {
       cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
       cy.findByRole('treeitem', { name: 'spectrum' }).click();
 
@@ -153,6 +153,22 @@ describe('App', () => {
         'have.text',
         ['−20', '−10', '0', '10', '20'].join('') // Tick text uses minus sign − (U+2212) rather than hyphen minus - (U+002D)
       );
+    });
+
+    it('visualize dataset with log scales on both axes on NxSpectrum with SILX_style', () => {
+      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
+      cy.findByRole('treeitem', { name: 'log_spectrum' }).click();
+
+      cy.findByRole('heading', { name: 'nexus_entry / log_spectrum' }).should(
+        'exist'
+      );
+      cy.findByRole('tab', { name: 'NX Spectrum' }).should('exist');
+      cy.findAllByRole('button', { name: 'Log' }).should('have.length', 2);
+
+      if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.wait(50);
+        cy.matchImageSnapshot('logspectrum');
+      }
     });
   });
 });

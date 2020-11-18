@@ -14,8 +14,10 @@ function LineToolbar(): ReactElement {
     setCurveType,
     showGrid,
     toggleGrid,
-    scaleType,
-    setScaleType,
+    xScaleType,
+    setXScaleType,
+    yScaleType,
+    setYScaleType,
     autoScale,
     toggleAutoScale,
     isAutoScaleDisabled,
@@ -38,7 +40,19 @@ function LineToolbar(): ReactElement {
 
       <Separator />
 
-      <ScaleSelector value={scaleType} onScaleChange={setScaleType} />
+      <ScaleSelector
+        label="X"
+        value={xScaleType}
+        onScaleChange={setXScaleType}
+      />
+
+      <Separator />
+
+      <ScaleSelector
+        label="Y"
+        value={yScaleType}
+        onScaleChange={setYScaleType}
+      />
 
       <Separator />
 
