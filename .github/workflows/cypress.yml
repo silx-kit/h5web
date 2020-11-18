@@ -23,7 +23,7 @@ jobs:
           node-version: '12'
 
       - name: Install ⚙️
-      - uses: bahmutov/npm-install@v1
+        uses: bahmutov/npm-install@v1
 
       - name: Build 🛠️
         run: npm run build
