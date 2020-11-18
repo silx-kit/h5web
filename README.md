@@ -31,7 +31,7 @@ snapshots". If any pixel has changed, the test fails and a diff image that highl
 
 Cypress is unable to take consistent screenshots across platforms because the exact rendering depends on the GPU (even
 when running in Docker). For this reason, visual regression tests are only run on the CI. Environment variable
-`CYPRESS_TAKE_SCREENSHOTS` is used to enable visual regression testing in the CI. This variable is set automatically in
+`CYPRESS_TAKE_SNAPSHOTS` is used to enable visual regression testing in the CI. This variable is set automatically in
 the `cypress.yml` GitHub workflow, which runs on push to any branch.
 
 Visual regression tests may fail in the CI, either expectedly (e.g. when implementing a new feature) or unexpectedly
