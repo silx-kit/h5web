@@ -239,6 +239,7 @@ export const mockMetadata = makeMetadata({
         makeGroupHardLink('entities'),
         makeGroupHardLink('nD_datasets'),
         makeGroupHardLink('nexus_entry'),
+        makeGroupHardLink('nexus_malformed'),
       ]
     ),
 
@@ -271,6 +272,18 @@ export const mockMetadata = makeMetadata({
         makeGroupHardLink('log_spectrum'),
       ]
     ),
+    makeGroup('nexus_malformed', undefined, [
+      makeGroupHardLink('default_not_string'),
+      makeGroupHardLink('default_empty'),
+      makeGroupHardLink('default_not_found'),
+      makeGroupHardLink('no_signal'),
+      makeGroupHardLink('signal_not_string'),
+      makeGroupHardLink('signal_not_found'),
+      makeGroupHardLink('signal_not_dataset'),
+      makeGroupHardLink('signal_dataset_not_numeric'),
+      makeGroupHardLink('signal_dataset_not_simple'),
+      makeGroupHardLink('signal_dataset_zero_dim'),
+    ]),
 
     // ==> Inner groups
     makeGroup('empty_group'),
@@ -334,6 +347,40 @@ export const mockMetadata = makeMetadata({
       ],
       [makeDatasetHardLink('oneD', 'oneD'), makeDatasetHardLink('X_log')]
     ),
+    makeGroup('default_not_string', [
+      makeAttr('default', scalarShape, intType, 42),
+    ]),
+    makeGroup('default_empty', [makeStrAttr('default', '')]),
+    makeGroup('default_not_found', [makeStrAttr('default', '/test')]),
+    makeGroup('no_signal', [makeStrAttr('NX_class', 'NXdata')]),
+    makeGroup('signal_not_string', [
+      makeStrAttr('NX_class', 'NXdata'),
+      makeAttr('signal', scalarShape, intType, 42),
+    ]),
+    makeGroup('signal_not_found', [
+      makeStrAttr('NX_class', 'NXdata'),
+      makeStrAttr('signal', 'unknown'),
+    ]),
+    makeGroup(
+      'signal_not_dataset',
+      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'empty_group')],
+      [makeGroupHardLink('empty_group')]
+    ),
+    makeGroup(
+      'signal_dataset_not_numeric',
+      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'oneD_str')],
+      [makeDatasetHardLink('oneD_str')]
+    ),
+    makeGroup(
+      'signal_dataset_not_simple',
+      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'scalar_int')],
+      [makeDatasetHardLink('scalar_int')]
+    ),
+    makeGroup(
+      'signal_dataset_zero_dim',
+      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'zeroD')],
+      [makeDatasetHardLink('zeroD', 'null')]
+    ),
   ],
   datasets: [
     makeSimpleDataset('oneD_linear', intType, [41]),
@@ -364,6 +411,8 @@ export const mockMetadata = makeMetadata({
     makeDataset('title_twoD', stringType, scalarShape),
     makeSimpleDataset('errors_oneD', floatType, [41]),
     makeSimpleDataset('X_log', floatType, [41]),
+    makeSimpleDataset('oneD_str', stringType, [2]),
+    makeSimpleDataset('null', intType, []),
   ],
   datatypes: [makeDatatype('datatype', compoundType)],
 });
@@ -388,6 +437,7 @@ const fourD = arr4.map((divider) =>
 );
 
 export const mockValues = {
+  null: null,
   raw: { int: 42 },
   scalar_int: 0,
   scalar_str: 'foo',
@@ -401,4 +451,5 @@ export const mockValues = {
   X_log: arr1.map((_, i) => (i + 1) * 0.1),
   title_twoD: 'NeXus 2D',
   errors_oneD: arr1.map(Math.abs),
+  oneD_str: ['foo', 'bar'],
 };

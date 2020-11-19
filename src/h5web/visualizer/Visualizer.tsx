@@ -18,7 +18,7 @@ function Visualizer(props: Props): ReactElement {
   const { entity, entityName } = props;
   const { metadata } = useContext(ProviderContext);
 
-  const supportedVis = entity ? getSupportedVis(entity, metadata) : [];
+  const { supportedVis, error } = getSupportedVis(entity, metadata);
   const [activeVis, setActiveVis] = useState<Vis>();
 
   // Update `activeVis` state as needed
@@ -29,6 +29,10 @@ function Visualizer(props: Props): ReactElement {
     (activeVis && !supportedVis.includes(activeVis))
   ) {
     setActiveVis(supportedVis[supportedVis.length - 1]);
+  }
+
+  if (error) {
+    return <p className={styles.error}>{error.message}</p>;
   }
 
   if (!entity || !activeVis) {

@@ -1,52 +1,51 @@
 import { getSupportedVis } from './utils';
-import {
-  HDF5Metadata,
-  HDF5ShapeClass,
-  HDF5Collection,
-  HDF5TypeClass,
-  HDF5Dataset,
-  HDF5Group,
-} from '../providers/models';
 import { Vis } from '../visualizations';
+import {
+  makeDataset,
+  makeSimpleDataset,
+  makeAttr,
+  makeStrAttr,
+  intType,
+  compoundType,
+  scalarShape,
+  makeGroup,
+  makeMetadata,
+} from '../providers/mock/data';
 
-const metadata = {} as HDF5Metadata;
-const baseDataset = {
-  id: 'dataset',
-  collection: HDF5Collection.Datasets as const,
-};
+const metadata = makeMetadata();
 
 describe('Visualizer utilities', () => {
   describe('getSupportedVis', () => {
     it('should identify dataset as supporting raw vis', () => {
-      const dataset = {
-        ...baseDataset,
-        type: '',
-        shape: { class: HDF5ShapeClass.Null },
-      } as HDF5Dataset;
-
+      const dataset = makeDataset('foo', compoundType, scalarShape);
       const supportedVis = getSupportedVis(dataset, metadata);
-      expect(supportedVis).toEqual([Vis.Raw]);
+      expect(supportedVis).toEqual({ supportedVis: [Vis.Raw] });
     });
 
     it('should not include raw vis if any other visualization is supported', () => {
-      const dataset = {
-        ...baseDataset,
-        type: { class: HDF5TypeClass.Integer, base: 'H5T_STD_I32LE' },
-        shape: { class: HDF5ShapeClass.Simple, dims: [4] },
-      } as HDF5Dataset;
-
+      const dataset = makeSimpleDataset('foo', intType, [4]);
       const supportedVis = getSupportedVis(dataset, metadata);
-      expect(supportedVis).toEqual([Vis.Matrix, Vis.Line]);
+      expect(supportedVis).toEqual({ supportedVis: [Vis.Matrix, Vis.Line] });
     });
 
     it('should return empty array if no visualization supports entity', () => {
-      const group = {
-        id: 'group',
-        collection: HDF5Collection.Groups,
-      } as HDF5Group;
+      const group = makeGroup('foo');
+      const supportedVis = getSupportedVis(group, metadata);
+      expect(supportedVis).toEqual({ supportedVis: [] });
+    });
+
+    it('should return error if entity has malformed NeXus metadata', () => {
+      const group = makeGroup('foo', [
+        makeStrAttr('NX_class', 'NXdata'),
+        makeAttr('signal', scalarShape, intType, 42),
+      ]);
 
       const supportedVis = getSupportedVis(group, metadata);
-      expect(supportedVis).toEqual([]);
+
+      expect(supportedVis).toEqual({
+        supportedVis: [],
+        error: expect.any(TypeError),
+      });
     });
   });
 });

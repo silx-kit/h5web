@@ -180,9 +180,21 @@ export function getTickFormatter(
   };
 }
 
-export function assertStr(val: unknown): asserts val is string {
+export function assertDefined<T>(
+  val: T,
+  message = 'Expected some value'
+): asserts val is NonNullable<T> {
+  if (val === undefined) {
+    throw new TypeError(message);
+  }
+}
+
+export function assertStr(
+  val: unknown,
+  message = 'Expected string'
+): asserts val is string {
   if (typeof val !== 'string') {
-    throw new TypeError('Expected string');
+    throw new TypeError(message);
   }
 }
 
