@@ -118,15 +118,15 @@ describe('Visualizer', () => {
     expect(lineTab).toHaveAttribute('aria-selected', 'false');
   });
 
-  test("don't show visualization selector for basic group", async () => {
+  test('show fallback message when no visualization is supported', async () => {
     renderApp();
-    await selectExplorerNode('entities');
+    await selectExplorerNode('entities'); // simple group
 
     expect(await screen.findByText('Nothing to visualize')).toBeInTheDocument();
     expect(queryVisSelector()).not.toBeInTheDocument();
   });
 
-  test("display error when dataset value can't be fetched", async () => {
+  test("show error when dataset value can't be fetched", async () => {
     render(
       <MockProvider errorOnId="raw">
         <App />
@@ -142,5 +142,40 @@ describe('Visualizer', () => {
 
     await selectExplorerNode('scalar_str');
     expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
+  });
+
+  test('show error when encountering malformed NeXus metadata', async () => {
+    renderApp();
+    await selectExplorerNode('nexus_malformed');
+
+    await selectExplorerNode('default_not_string');
+    expect(await screen.findByText(/to be a string/u)).toBeVisible();
+
+    await selectExplorerNode('default_empty');
+    expect(await screen.findByText(/to find NXdata/u)).toBeVisible();
+
+    await selectExplorerNode('default_not_found');
+    expect(await screen.findByText(/to find NXdata/u)).toBeVisible();
+
+    await selectExplorerNode('no_signal');
+    expect(await screen.findByText(/'signal' attribute/u)).toBeVisible();
+
+    await selectExplorerNode('signal_not_string');
+    expect(await screen.findByText(/to be a string/u)).toBeVisible();
+
+    await selectExplorerNode('signal_not_found');
+    expect(await screen.findByText(/to exist/u)).toBeVisible();
+
+    await selectExplorerNode('signal_not_dataset');
+    expect(await screen.findByText(/to be a dataset/u)).toBeVisible();
+
+    await selectExplorerNode('signal_dataset_not_numeric');
+    expect(await screen.findByText(/numeric type/u)).toBeVisible();
+
+    await selectExplorerNode('signal_dataset_not_simple');
+    expect(await screen.findByText(/simple shape/u)).toBeVisible();
+
+    await selectExplorerNode('signal_dataset_zero_dim');
+    expect(await screen.findByText(/at least one/u)).toBeVisible();
   });
 });

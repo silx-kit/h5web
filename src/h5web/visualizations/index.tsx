@@ -117,7 +117,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     supportsEntity: (entity, metadata) => {
       const group = getNxDataGroup(entity, metadata);
       if (!group) {
-        return false; // entity is not a group and doesn't have a `default` attribute
+        return false; // entity is not a group or doesn't have a `default` attribute
       }
 
       const signal = getAttributeValue(group, 'signal');
@@ -139,7 +139,9 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
 
       const dimsCount = dataset.shape.dims.length;
       if (dimsCount === 0) {
-        throw new Error('Expected dataset to have at least one dimension');
+        throw new Error(
+          `Expected "${signal}" dataset to have at least one dimension`
+        );
       }
 
       const interpretation = getAttributeValue(dataset, 'interpretation');
@@ -158,7 +160,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     supportsEntity: (entity, metadata) => {
       const group = getNxDataGroup(entity, metadata);
       if (!group) {
-        return false; // entity is not a group and doesn't have a `default` attribute
+        return false; // entity is not a group or doesn't have a `default` attribute
       }
 
       const signal = getAttributeValue(group, 'signal');
