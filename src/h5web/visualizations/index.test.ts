@@ -220,34 +220,34 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(group, metadata)).toBe(true);
     });
 
-    it('should not support NXdata group referencing signal with non-numeric type', () => {
+    it('should throw with NXdata group referencing signal with non-numeric type', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetStr1D.id },
       });
 
       const metadata = makeMetadata({ datasets: [datasetStr1D] });
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/numeric type/u);
     });
 
-    it('should not support NXdata group referencing signal with non-simple shape', () => {
+    it('should throw with NXdata group referencing signal with non-simple shape', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetIntScalar.id },
       });
 
       const metadata = makeMetadata({ datasets: [datasetIntScalar] });
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/simple shape/u);
     });
 
-    it('should not support NXdata group referencing signal with no dimension', () => {
+    it('should throw with NXdata group referencing signal with no dimension', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt0D.id },
       });
 
       const metadata = makeMetadata({ datasets: [datasetInt0D] });
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/at least one/u);
     });
 
     it('should not support NXdata group referencing signal with non-spectrum interpretation', () => {
@@ -267,7 +267,7 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(group, metadata)).toBe(false);
     });
 
-    it('should not support NXdata group referencing signal with spectrum interpretation but non-supported type/shape', () => {
+    it('should throw with NXdata group referencing signal with spectrum interpretation but non-supported type/shape', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetIntScalar.id },
@@ -281,23 +281,23 @@ describe('Visualization definitions', () => {
         ],
       });
 
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/simple shape/u);
     });
 
-    it('should not support NXdata group referencing nonexistant signal', () => {
+    it('should throw with NXdata group referencing nonexistant signal', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
 
       const metadata = makeMetadata();
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/to exist/u);
     });
 
     it('should not support NXdata group with missing signal link', () => {
       const group = makeNxData('foo', { signal: 'my_signal' });
       const metadata = makeMetadata({ datasets: [datasetInt1D] });
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/to exist/u);
     });
 
     it('should not support non-NXdata group', () => {
@@ -457,7 +457,7 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(entry, metadata)).toBe(false);
     });
 
-    it('should not support a NXentity with default being an absolute path to a non-NXdata entity', () => {
+    it('should throw with NXentity with default being an absolute path to a non-NXdata entity', () => {
       const group = makeGroup(
         'nonValidSpectrum',
         [makeStrAttr('signal', 'my_signal')], // missing NXdata attribute
@@ -479,7 +479,7 @@ describe('Visualization definitions', () => {
         groups: [root, group, entry],
       });
 
-      expect(supportsEntity(entry, metadata)).toBe(false);
+      expect(() => supportsEntity(entry, metadata)).toThrow(/to find NXdata/u);
     });
 
     it('should not support a NXroot without default attribute', () => {
@@ -560,24 +560,24 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(group, metadata)).toBe(true);
     });
 
-    it('should not support NXdata group referencing signal with non-numeric type', () => {
+    it('should throw with NXdata group referencing signal with non-numeric type', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetStr2D.id },
       });
 
       const metadata = makeMetadata({ datasets: [datasetStr2D] });
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/numeric type/u);
     });
 
-    it('should not support NXdata group referencing signal with non-simple shape', () => {
+    it('should throw with NXdata group referencing signal with non-simple shape', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetIntScalar.id },
       });
 
       const metadata = makeMetadata({ datasets: [datasetIntScalar] });
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/simple shape/u);
     });
 
     it('should not support NXdata group referencing signal with less than two dimensions', () => {
@@ -607,7 +607,7 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(group, metadata)).toBe(false);
     });
 
-    it('should not support NXdata group referencing signal with image interpretation but non-supported type/shape', () => {
+    it('should throw with NXdata group referencing signal with image interpretation but non-supported type/shape', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetIntScalar.id },
@@ -621,23 +621,23 @@ describe('Visualization definitions', () => {
         ],
       });
 
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/simple shape/u);
     });
 
-    it('should not support NXdata group referencing inexistent signal', () => {
+    it('should throw with NXdata group referencing inexistent signal', () => {
       const group = makeNxData('foo', {
         signal: 'my_signal',
         ids: { my_signal: datasetInt1D.id },
       });
 
       const metadata = makeMetadata();
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/to exist/u);
     });
 
-    it('should not support NXdata group with missing signal link', () => {
+    it('should throw with NXdata group with missing signal link', () => {
       const group = makeNxData('foo', { signal: 'my_signal' });
       const metadata = makeMetadata({ datasets: [datasetInt2D] });
-      expect(supportsEntity(group, metadata)).toBe(false);
+      expect(() => supportsEntity(group, metadata)).toThrow(/to exist/u);
     });
 
     it('should not support non-NXdata group', () => {
@@ -797,7 +797,7 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(entry, metadata)).toBe(false);
     });
 
-    it('should not support a NXentity with default being an absolute path to a non-NXdata entity', () => {
+    it('should throw with NXentity with default being an absolute path to a non-NXdata entity', () => {
       const group = makeGroup(
         'nonValidImage',
         [makeStrAttr('signal', 'my_signal')], // missing NXdata attribute
@@ -819,7 +819,7 @@ describe('Visualization definitions', () => {
         groups: [root, group, entry],
       });
 
-      expect(supportsEntity(entry, metadata)).toBe(false);
+      expect(() => supportsEntity(entry, metadata)).toThrow(/to find NXdata/u);
     });
 
     it('should not support a NXroot without default attribute', () => {

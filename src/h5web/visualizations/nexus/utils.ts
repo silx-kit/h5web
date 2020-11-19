@@ -12,11 +12,7 @@ import {
   RawSilxStyle,
   SilxStyle,
 } from './models';
-import { assertArray, isScaleType } from '../shared/utils';
-
-export function isNxDataGroup(group: HDF5Group): boolean {
-  return !!group.attributes?.find(({ value }) => value === 'NXdata');
-}
+import { assertArray, assertStr, isScaleType } from '../shared/utils';
 
 export function isNxInterpretation(attrValue: HDF5Value): boolean {
   return (
@@ -43,7 +39,6 @@ export function getLinkedEntity(
   metadata: HDF5Metadata
 ): HDF5Entity | undefined {
   const childLink = group.links?.find((l) => l.title === entityName);
-
   return getEntity(childLink, metadata);
 }
 
@@ -67,31 +62,35 @@ export function getNxDataGroup(
     return undefined;
   }
 
-  if (isNxDataGroup(entity)) {
-    return entity;
+  if (getAttributeValue(entity, 'NX_class') === 'NXdata') {
+    return entity; // `NXdata` group found
   }
 
   const defaultPath = getAttributeValue(entity, 'default');
-
-  if (typeof defaultPath !== 'string') {
-    return undefined;
+  if (defaultPath === undefined) {
+    return undefined; // group has no `default` attribute
   }
 
-  const relativePath = defaultPath.startsWith('/')
-    ? defaultPath.slice(1)
-    : defaultPath;
+  assertStr(defaultPath, `Expected 'default' attribute to be a string`);
 
-  const defaultEntity = relativePath.split('/').reduce<HDF5Entity | undefined>(
-    (previousEntity, currentComponent) => {
-      if (!previousEntity || !isGroup(previousEntity)) {
-        return undefined;
-      }
-      return getLinkedEntity(currentComponent, previousEntity, metadata);
+  const isAbsolutePath = defaultPath.startsWith('/');
+  const pathSegments = defaultPath.slice(isAbsolutePath ? 1 : 0).split('/');
+
+  const defaultEntity = pathSegments.reduce<HDF5Entity | undefined>(
+    (parentEntity, currSegment) => {
+      return parentEntity && isGroup(parentEntity)
+        ? getLinkedEntity(currSegment, parentEntity, metadata)
+        : undefined;
     },
-    defaultPath.startsWith('/') ? metadata.groups[metadata.root] : entity
+    isAbsolutePath ? metadata.groups[metadata.root] : entity
   );
 
-  return getNxDataGroup(defaultEntity, metadata);
+  const nxDataGroup = getNxDataGroup(defaultEntity, metadata);
+  if (!nxDataGroup) {
+    throw new Error(`Expected to find NXdata group at path "${defaultPath}"`);
+  }
+
+  return nxDataGroup;
 }
 
 export function getDatasetLabel(

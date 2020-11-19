@@ -62,10 +62,11 @@ export function isNumericType(type: HDF5Type): type is HDF5NumericType {
 }
 
 export function assertDataset(
-  entity: HDF5Entity
+  entity: HDF5Entity,
+  message = 'Expected dataset'
 ): asserts entity is HDF5Dataset {
   if (!isDataset(entity)) {
-    throw new Error('Expected dataset');
+    throw new Error(message);
   }
 }
 
@@ -75,11 +76,21 @@ export function assertGroup(entity: HDF5Entity): asserts entity is HDF5Group {
   }
 }
 
+export function assertNumericType(
+  type: HDF5Type,
+  message = 'Expected numeric type'
+): asserts type is HDF5NumericType {
+  if (!isNumericType(type)) {
+    throw new Error(message);
+  }
+}
+
 export function assertSimpleShape(
-  shape: HDF5Shape
+  shape: HDF5Shape,
+  message = 'Expected simple shape'
 ): asserts shape is HDF5SimpleShape {
-  if (shape.class !== HDF5ShapeClass.Simple) {
-    throw new Error('Expected simple shape');
+  if (!isSimpleShape(shape)) {
+    throw new Error(message);
   }
 }
 

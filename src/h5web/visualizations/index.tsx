@@ -10,13 +10,16 @@ import {
   isSimpleShape,
   isNumericType,
   isDataset,
+  assertDataset,
+  assertNumericType,
+  assertSimpleShape,
 } from '../providers/utils';
 import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
-  isNxInterpretation,
   getLinkedEntity,
   getNxDataGroup,
+  isNxInterpretation,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
 import {
@@ -28,6 +31,7 @@ import {
   NxSpectrumContainer,
   NxImageContainer,
 } from './containers';
+import { assertDefined, assertStr } from './shared/utils';
 
 export enum Vis {
   Raw = 'Raw',
@@ -112,36 +116,38 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Container: NxSpectrumContainer,
     supportsEntity: (entity, metadata) => {
       const group = getNxDataGroup(entity, metadata);
-
       if (!group) {
-        return false;
+        return false; // entity is not a group and doesn't have a `default` attribute
       }
 
       const signal = getAttributeValue(group, 'signal');
-      if (typeof signal !== 'string') {
-        return false;
-      }
+      assertDefined(signal, "Expected 'signal' attribute");
+      assertStr(signal, "Expected 'signal' attribute to be a string");
 
       const dataset = getLinkedEntity(signal, group, metadata);
-      if (
-        !dataset ||
-        !isDataset(dataset) ||
-        !isNumericType(dataset.type) ||
-        !isSimpleShape(dataset.shape)
-      ) {
-        return false;
-      }
+      assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
+      assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
+
+      assertNumericType(
+        dataset.type,
+        `Expected "${signal}" dataset to have numeric type`
+      );
+      assertSimpleShape(
+        dataset.shape,
+        `Expected "${signal}" dataset to have simple shape`
+      );
 
       const dimsCount = dataset.shape.dims.length;
       if (dimsCount === 0) {
-        return false;
+        throw new Error('Expected dataset to have at least one dimension');
       }
 
       const interpretation = getAttributeValue(dataset, 'interpretation');
-      return (
-        (!isNxInterpretation(interpretation) && dimsCount === 1) || // NxImage already supports datasets with 2+ dimensions
-        interpretation === NxInterpretation.Spectrum
-      );
+      if (isNxInterpretation(interpretation)) {
+        return interpretation === NxInterpretation.Spectrum;
+      }
+
+      return dimsCount === 1; // NxImage already supports datasets with 2+ dimensions
     },
   },
 
@@ -151,25 +157,26 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Container: NxImageContainer,
     supportsEntity: (entity, metadata) => {
       const group = getNxDataGroup(entity, metadata);
-
       if (!group) {
-        return false;
+        return false; // entity is not a group and doesn't have a `default` attribute
       }
 
       const signal = getAttributeValue(group, 'signal');
-      if (typeof signal !== 'string') {
-        return false;
-      }
+      assertDefined(signal, "Expected 'signal' attribute");
+      assertStr(signal, "Expected 'signal' attribute to be a string");
 
       const dataset = getLinkedEntity(signal, group, metadata);
-      if (
-        !dataset ||
-        !isDataset(dataset) ||
-        !isNumericType(dataset.type) ||
-        !isSimpleShape(dataset.shape)
-      ) {
-        return false;
-      }
+      assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
+      assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
+
+      assertNumericType(
+        dataset.type,
+        `Expected "${signal}" dataset to have numeric type`
+      );
+      assertSimpleShape(
+        dataset.shape,
+        `Expected "${signal}" dataset to have simple shape`
+      );
 
       const dimsCount = dataset.shape.dims.length;
       if (dimsCount < 2) {
@@ -177,10 +184,11 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       }
 
       const interpretation = getAttributeValue(dataset, 'interpretation');
-      return (
-        !isNxInterpretation(interpretation) ||
-        interpretation === NxInterpretation.Image
-      );
+      if (isNxInterpretation(interpretation)) {
+        return interpretation === NxInterpretation.Image;
+      }
+
+      return true;
     },
   },
 };
