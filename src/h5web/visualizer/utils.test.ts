@@ -1,46 +1,50 @@
 import { getSupportedVis } from './utils';
 import { Vis } from '../visualizations';
-import {
-  makeDataset,
-  makeSimpleDataset,
-  makeAttr,
-  makeStrAttr,
-  intType,
-  compoundType,
-  scalarShape,
-  makeGroup,
-  makeMetadata,
-} from '../providers/mock/data';
-
-const metadata = makeMetadata();
+import { mockMetadata } from '../providers/mock/data';
 
 describe('Visualizer utilities', () => {
   describe('getSupportedVis', () => {
-    it('should identify dataset as supporting raw vis', () => {
-      const dataset = makeDataset('foo', compoundType, scalarShape);
-      const supportedVis = getSupportedVis(dataset, metadata);
+    it('should return supported visualizations', () => {
+      const supportedVis = getSupportedVis(
+        mockMetadata.datasets?.raw,
+        mockMetadata
+      );
+
       expect(supportedVis).toEqual({ supportedVis: [Vis.Raw] });
     });
 
-    it('should not include raw vis if any other visualization is supported', () => {
-      const dataset = makeSimpleDataset('foo', intType, [4]);
-      const supportedVis = getSupportedVis(dataset, metadata);
+    it('should not include Raw vis if any other visualization is supported', () => {
+      const supportedVis = getSupportedVis(
+        mockMetadata.datasets?.oneD,
+        mockMetadata
+      );
+
       expect(supportedVis).toEqual({ supportedVis: [Vis.Matrix, Vis.Line] });
     });
 
-    it('should return empty array if no visualization supports entity', () => {
-      const group = makeGroup('foo');
-      const supportedVis = getSupportedVis(group, metadata);
+    it('should not include NxSpectrum vis if any other visualization is supported', () => {
+      const supportedVis = getSupportedVis(
+        mockMetadata.groups?.nx_data,
+        mockMetadata
+      );
+
+      expect(supportedVis).toEqual({ supportedVis: [Vis.NxImage] });
+    });
+
+    it('should return empty array if no visualization is supported', () => {
+      const supportedVis = getSupportedVis(
+        mockMetadata.groups?.empty_group,
+        mockMetadata
+      );
+
       expect(supportedVis).toEqual({ supportedVis: [] });
     });
 
     it('should return error if entity has malformed NeXus metadata', () => {
-      const group = makeGroup('foo', [
-        makeStrAttr('NX_class', 'NXdata'),
-        makeAttr('signal', scalarShape, intType, 42),
-      ]);
-
-      const supportedVis = getSupportedVis(group, metadata);
+      const supportedVis = getSupportedVis(
+        mockMetadata.groups?.signal_not_string,
+        mockMetadata
+      );
 
       expect(supportedVis).toEqual({
         supportedVis: [],
