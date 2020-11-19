@@ -16,6 +16,7 @@ interface Props {
   axisMapping?: AxisMapping[];
   title?: string;
   errors?: number[];
+  showErrors?: boolean;
 }
 
 function MappedLineVis(props: Props): ReactElement {
@@ -28,6 +29,7 @@ function MappedLineVis(props: Props): ReactElement {
     dimensionMapping,
     title,
     errors,
+    showErrors,
   } = props;
   assertArray<number>(value);
 
@@ -95,6 +97,7 @@ function MappedLineVis(props: Props): ReactElement {
       ordinateLabel={valueLabel}
       title={title}
       errors={errors}
+      showErrors={showErrors}
     />
   );
 }

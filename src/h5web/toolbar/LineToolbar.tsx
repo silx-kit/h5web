@@ -7,8 +7,10 @@ import ToggleGroup from './controls/ToggleGroup';
 import Toolbar from './Toolbar';
 import Separator from './Separator';
 import ScaleSelector from './controls/ScaleSelector';
+import { ToolbarProps } from '../visualizations/containers/models';
 
-function LineToolbar(): ReactElement {
+function LineToolbar(props: ToolbarProps): ReactElement {
+  const { children } = props;
   const {
     curveType,
     setCurveType,
@@ -69,6 +71,7 @@ function LineToolbar(): ReactElement {
         value={showGrid}
         onChange={toggleGrid}
       />
+      {children}
     </Toolbar>
   );
 }

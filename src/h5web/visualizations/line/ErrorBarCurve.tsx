@@ -14,6 +14,7 @@ interface Props {
   errors: number[];
   color?: string;
   capLength?: number;
+  visible?: boolean;
 }
 
 function ErrorBarCurve(props: Props): ReactElement {
@@ -23,6 +24,7 @@ function ErrorBarCurve(props: Props): ReactElement {
     errors,
     color = DEFAULT_COLOR,
     capLength = CAP_LENGTH,
+    visible,
   } = props;
 
   const { abscissaScale, ordinateScale } = useCanvasScales();
@@ -70,7 +72,7 @@ function ErrorBarCurve(props: Props): ReactElement {
   }, [abscissaScale, abscissas, capLength, errors, ordinateScale, ordinates]);
 
   return (
-    <LineSegments geometry={errorGeometry}>
+    <LineSegments visible={visible} geometry={errorGeometry}>
       <lineBasicMaterial attach="material" color={color} linewidth={2} />
     </LineSegments>
   );

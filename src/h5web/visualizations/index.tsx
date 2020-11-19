@@ -14,7 +14,7 @@ import {
   assertNumericType,
   assertSimpleShape,
 } from '../providers/utils';
-import type { VisContainerProps } from './containers/models';
+import type { ToolbarProps, VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
   getLinkedEntity,
@@ -32,6 +32,7 @@ import {
   NxImageContainer,
 } from './containers';
 import { assertDefined, assertStr } from './shared/utils';
+import NxSpectrumToolbar from '../toolbar/NxSpectrumToolbar';
 
 export enum Vis {
   Raw = 'Raw',
@@ -45,7 +46,7 @@ export enum Vis {
 
 interface VisDef {
   Icon: IconType;
-  Toolbar?: ElementType<{}>;
+  Toolbar?: ElementType<ToolbarProps>;
   Container: ElementType<VisContainerProps>;
   supportsEntity(entity: HDF5Entity, metadata: HDF5Metadata): boolean;
 }
@@ -112,7 +113,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
 
   [Vis.NxSpectrum]: {
     Icon: FiActivity,
-    Toolbar: LineToolbar,
+    Toolbar: NxSpectrumToolbar,
     Container: NxSpectrumContainer,
     supportsEntity: (entity, metadata) => {
       const group = getNxDataGroup(entity, metadata);
