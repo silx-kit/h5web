@@ -4,10 +4,9 @@ import ToggleBtn from './controls/ToggleBtn';
 import { useLineConfig } from '../visualizations/line/config';
 import { CurveType } from '../visualizations/line/models';
 import ToggleGroup from './controls/ToggleGroup';
-import Toolbar from './Toolbar';
+import Toolbar, { ToolbarProps } from './Toolbar';
 import Separator from './Separator';
 import ScaleSelector from './controls/ScaleSelector';
-import { ToolbarProps } from '../visualizations/containers/models';
 
 function LineToolbar(props: ToolbarProps): ReactElement {
   const { children } = props;
@@ -71,7 +70,10 @@ function LineToolbar(props: ToolbarProps): ReactElement {
         value={showGrid}
         onChange={toggleGrid}
       />
-      {children}
+
+      {
+        children as any // eslint-disable-line @typescript-eslint/no-explicit-any
+      }
     </Toolbar>
   );
 }

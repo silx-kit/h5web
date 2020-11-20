@@ -14,7 +14,7 @@ import {
   assertNumericType,
   assertSimpleShape,
 } from '../providers/utils';
-import type { ToolbarProps, VisContainerProps } from './containers/models';
+import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
   getLinkedEntity,
@@ -33,6 +33,7 @@ import {
 } from './containers';
 import { assertDefined, assertStr } from './shared/utils';
 import NxSpectrumToolbar from '../toolbar/NxSpectrumToolbar';
+import { ToolbarProps } from '../toolbar/Toolbar';
 
 export enum Vis {
   Raw = 'Raw',
