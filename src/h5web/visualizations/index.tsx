@@ -13,12 +13,13 @@ import {
   assertDataset,
   assertNumericType,
   assertSimpleShape,
+  isGroup,
 } from '../providers/utils';
 import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
   getLinkedEntity,
-  getNxDataGroup,
+  findNxDataGroup,
   isNxInterpretation,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
@@ -117,7 +118,11 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Toolbar: NxSpectrumToolbar,
     Container: NxSpectrumContainer,
     supportsEntity: (entity, metadata) => {
-      const group = getNxDataGroup(entity, metadata);
+      if (!isGroup(entity)) {
+        return false;
+      }
+
+      const group = findNxDataGroup(entity, metadata);
       if (!group) {
         return false; // entity is not a group or doesn't have a `default` attribute
       }
@@ -160,7 +165,11 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Toolbar: HeatmapToolbar,
     Container: NxImageContainer,
     supportsEntity: (entity, metadata) => {
-      const group = getNxDataGroup(entity, metadata);
+      if (!isGroup(entity)) {
+        return false;
+      }
+
+      const group = findNxDataGroup(entity, metadata);
       if (!group) {
         return false; // entity is not a group or doesn't have a `default` attribute
       }

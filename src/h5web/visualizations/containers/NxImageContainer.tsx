@@ -4,22 +4,20 @@ import { assertGroup } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import { ProviderContext } from '../../providers/context';
-import { getNxDataGroup } from '../nexus/utils';
+import { findNxDataGroup } from '../nexus/utils';
 import { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { useNxData } from '../nexus/hooks';
 import { useHeatmapConfig } from '../heatmap/config';
+import { assertDefined } from '../shared/utils';
 
 function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertGroup(entity);
 
   const { metadata } = useContext(ProviderContext);
-
-  const nxDataGroup = getNxDataGroup(entity, metadata);
-  if (!nxDataGroup) {
-    throw new Error('NXdata group not found');
-  }
+  const nxDataGroup = findNxDataGroup(entity, metadata);
+  assertDefined(nxDataGroup, 'Expected to find NXdata group');
 
   const nxData = useNxData(nxDataGroup, metadata);
 
