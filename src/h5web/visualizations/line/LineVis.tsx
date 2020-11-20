@@ -9,7 +9,12 @@ import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../shared/models';
 import { CurveType } from './models';
-import { getValueToIndexScale, getDomain, extendDomain } from '../shared/utils';
+import {
+  getValueToIndexScale,
+  getDomain,
+  extendDomain,
+  assertDefined,
+} from '../shared/utils';
 import ErrorBarCurve from './ErrorBarCurve';
 
 const DEFAULT_DOMAIN: Domain = [0.1, 1];
@@ -69,9 +74,7 @@ function LineVis(props: Props): ReactElement {
     );
   }, [abscissas, abscissaScaleType]);
 
-  if (!abscissaDomain) {
-    throw new Error(`Abscissas have undefined domain`);
-  }
+  assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
   const dataDomain = useMemo(() => {
     return domain

@@ -1,8 +1,11 @@
 import React, { ReactElement, useState } from 'react';
 import { range } from 'lodash-es';
-import { HDF5SimpleShape } from '../../providers/models';
 import { useDatasetValue } from './hooks';
-import { assertDataset } from '../../providers/utils';
+import {
+  assertDataset,
+  assertNumericType,
+  assertSimpleShape,
+} from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
@@ -11,10 +14,10 @@ import { VisContainerProps } from './models';
 function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   const { entity, entityName } = props;
   assertDataset(entity);
+  assertSimpleShape(entity);
+  assertNumericType(entity);
 
-  const value = useDatasetValue(entity.id);
-
-  const { dims } = entity.shape as HDF5SimpleShape;
+  const { dims } = entity.shape;
   if (dims.length < 2) {
     throw new Error('Expected dataset with at least two dimensions');
   }
@@ -25,6 +28,7 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
     'x',
   ]);
 
+  const value = useDatasetValue(entity.id);
   if (!value) {
     return <></>;
   }

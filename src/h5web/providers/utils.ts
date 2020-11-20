@@ -79,21 +79,25 @@ export function assertGroup(
   }
 }
 
-export function assertNumericType(
-  type: HDF5Type,
-  message = 'Expected numeric type'
-): asserts type is HDF5NumericType {
-  if (!isNumericType(type)) {
-    throw new Error(message);
+export function assertNumericType<S extends HDF5Shape>(
+  dataset: HDF5Dataset<S>
+): asserts dataset is HDF5Dataset<S, HDF5NumericType> {
+  if (!isNumericType(dataset.type)) {
+    throw new Error('Expected dataset to have numeric type');
   }
 }
 
-export function assertSimpleShape(
-  shape: HDF5Shape,
-  message = 'Expected simple shape'
-): asserts shape is HDF5SimpleShape {
+export function assertSimpleShape<T extends HDF5Type>(
+  dataset: HDF5Dataset<HDF5Shape, T>
+): asserts dataset is HDF5Dataset<HDF5SimpleShape, T> {
+  const { shape } = dataset;
+
   if (!isSimpleShape(shape)) {
-    throw new Error(message);
+    throw new Error('Expected dataset to have simple shape');
+  }
+
+  if (shape.dims.length === 0) {
+    throw new Error('Expected dataset with simple shape to have dimensions');
   }
 }
 

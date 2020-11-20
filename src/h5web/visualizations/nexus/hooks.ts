@@ -3,16 +3,22 @@ import {
   HDF5Group,
   HDF5Id,
   HDF5Metadata,
-  HDF5SimpleShape,
 } from '../../providers/models';
 import {
   assertDataset,
+  assertNumericType,
+  assertSimpleShape,
   getEntity,
   isDataset,
   isReachable,
 } from '../../providers/utils';
 import { useDatasetValues } from '../containers/hooks';
-import { assertStr, assertArray, assertOptionalArray } from '../shared/utils';
+import {
+  assertStr,
+  assertArray,
+  assertOptionalArray,
+  assertDefined,
+} from '../shared/utils';
 import { NxData } from './models';
 import {
   getAttributeValue,
@@ -47,23 +53,19 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
 
   const signalName = getAttributeValue(group, 'signal');
   assertStr(signalName);
-  const signalDataset = getLinkedEntity(signalName, group, metadata);
 
-  if (!signalDataset) {
-    throw new Error('Signal dataset not found');
-  }
+  const signalDataset = getLinkedEntity(signalName, group, metadata);
+  assertDefined(signalDataset, 'Signal dataset not found');
   assertDataset(signalDataset);
+  assertNumericType(signalDataset);
+  assertSimpleShape(signalDataset);
 
   const signalValue = datasetValues && datasetValues[signalName];
   if (!signalValue) {
-    return {
-      signal: {
-        dims: (signalDataset.shape as HDF5SimpleShape).dims,
-      },
-    };
+    return { signal: { dims: signalDataset.shape.dims } };
   }
-  assertArray<number>(signalValue);
 
+  assertArray<number>(signalValue);
   const axesNames = getNxAxisNames(group);
 
   const silxStyle = parseSilxStyleAttribute(group);
@@ -97,7 +99,7 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
     signal: {
       label: getDatasetLabel(signalDataset, signalName),
       value: signalValue,
-      dims: (signalDataset.shape as HDF5SimpleShape).dims,
+      dims: signalDataset.shape.dims,
       scaleType: signal_scale_type,
     },
     errors,

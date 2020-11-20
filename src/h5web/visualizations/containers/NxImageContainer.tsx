@@ -33,7 +33,6 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   ]);
 
   const { signal, title, axisMapping } = nxData;
-
   const { setScaleType } = useHeatmapConfig();
 
   useEffect(() => {

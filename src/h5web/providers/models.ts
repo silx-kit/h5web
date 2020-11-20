@@ -31,18 +31,21 @@ export interface HDF5Group {
   links?: HDF5Link[];
 }
 
-export interface HDF5Dataset {
+export interface HDF5Dataset<
+  S extends HDF5Shape = HDF5Shape,
+  T extends HDF5Type = HDF5Type
+> {
   id: HDF5Id;
   collection: HDF5Collection.Datasets;
   attributes?: HDF5Attribute[];
-  shape: HDF5Shape;
-  type: HDF5Type;
+  shape: S;
+  type: T;
 }
 
-export interface HDF5Datatype {
+export interface HDF5Datatype<T = HDF5Type> {
   id: HDF5Id;
   collection: HDF5Collection.Datatypes;
-  type: HDF5Type;
+  type: T;
 }
 
 /* ---------------------- */

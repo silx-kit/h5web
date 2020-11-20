@@ -179,6 +179,6 @@ describe('Visualizer', () => {
     expect(await screen.findByText(/simple shape/u)).toBeVisible();
 
     await selectExplorerNode('signal_dataset_zero_dim');
-    expect(await screen.findByText(/at least one/u)).toBeVisible();
+    expect(await screen.findByText(/to have dimensions/u)).toBeVisible();
   });
 });
