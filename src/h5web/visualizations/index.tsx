@@ -32,6 +32,8 @@ import {
   NxImageContainer,
 } from './containers';
 import { assertDefined, assertStr } from './shared/utils';
+import NxSpectrumToolbar from '../toolbar/NxSpectrumToolbar';
+import { ToolbarProps } from '../toolbar/Toolbar';
 
 export enum Vis {
   Raw = 'Raw',
@@ -45,7 +47,7 @@ export enum Vis {
 
 interface VisDef {
   Icon: IconType;
-  Toolbar?: ElementType<{}>;
+  Toolbar?: ElementType<ToolbarProps>;
   Container: ElementType<VisContainerProps>;
   supportsEntity(entity: HDF5Entity, metadata: HDF5Metadata): boolean;
 }
@@ -112,7 +114,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
 
   [Vis.NxSpectrum]: {
     Icon: FiActivity,
-    Toolbar: LineToolbar,
+    Toolbar: NxSpectrumToolbar,
     Container: NxSpectrumContainer,
     supportsEntity: (entity, metadata) => {
       const group = getNxDataGroup(entity, metadata);

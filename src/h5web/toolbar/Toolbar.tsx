@@ -5,14 +5,15 @@ import styles from './Toolbar.module.css';
 import Separator from './Separator';
 import OverflowMenu from './OverflowMenu';
 
-interface Props {
-  // Toolbar controls must:
-  // - be direct children of `Toolbar` (no fragment),
-  // - have a `disabled` prop to accessibly disable the interactive elements they contain.
-  children: (ReactElement<{ disabled: boolean }> | undefined)[];
+// Controls must have a `disabled` prop to accessibly disable the interactive elements they contain
+type ToolbarControl = ReactElement<{ disabled: boolean }>;
+
+export interface ToolbarProps {
+  // Toolbar controls must be direct children of `Toolbar` (no fragment)
+  children?: (ToolbarControl | undefined)[] | ToolbarControl;
 }
 
-function Toolbar(props: Props): ReactElement {
+function Toolbar(props: ToolbarProps): ReactElement {
   const { children } = props;
   const allChildren = Children.toArray(children) as ReactElement[];
 

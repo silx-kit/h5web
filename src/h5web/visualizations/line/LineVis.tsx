@@ -24,6 +24,7 @@ interface Props {
   ordinateLabel?: string;
   title?: string;
   errors?: number[];
+  showErrors?: boolean;
 }
 
 function LineVis(props: Props): ReactElement {
@@ -37,6 +38,7 @@ function LineVis(props: Props): ReactElement {
     ordinateLabel,
     title,
     errors,
+    showErrors,
   } = props;
 
   const {
@@ -127,6 +129,7 @@ function LineVis(props: Props): ReactElement {
             abscissas={abscissas}
             ordinates={dataArray.data as number[]}
             errors={errors}
+            visible={showErrors}
           />
         )}
       </VisCanvas>

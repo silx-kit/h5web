@@ -49,12 +49,10 @@ function DataCurve(props: Props): ReactElement {
 
   return (
     <Suspense fallback={<></>}>
-      {showGlyphs && <DataGlyphs geometry={dataGeometry} color={color} />}
-      {showLine && (
-        <Line geometry={dataGeometry}>
-          <lineBasicMaterial attach="material" color={color} linewidth={2} />
-        </Line>
-      )}
+      <DataGlyphs geometry={dataGeometry} color={color} visible={showGlyphs} />
+      <Line geometry={dataGeometry} visible={showLine}>
+        <lineBasicMaterial attach="material" color={color} linewidth={2} />
+      </Line>
     </Suspense>
   );
 }

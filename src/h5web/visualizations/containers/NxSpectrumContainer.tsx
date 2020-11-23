@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useContext } from 'react';
+import React, { ReactElement, useState, useContext, useEffect } from 'react';
 import { range } from 'lodash-es';
 import { assertGroup } from '../../providers/utils';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
@@ -8,6 +8,7 @@ import { ProviderContext } from '../../providers/context';
 import { getNxDataGroup } from '../nexus/utils';
 import { VisContainerProps } from './models';
 import { useNxData } from '../nexus/hooks';
+import { useNxSpectrumConfig } from '../nexus/config';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -33,6 +34,12 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   ]);
 
   const { signal, title, errors, axisMapping } = nxData;
+
+  const { showErrors, disableErrors } = useNxSpectrumConfig();
+
+  useEffect(() => {
+    disableErrors(!errors);
+  }, [disableErrors, errors]);
 
   if (!signal.value) {
     return <></>;
@@ -60,6 +67,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
         dimensionMapping={dimensionMapping}
         title={title || signal.label}
         errors={errors}
+        showErrors={showErrors}
       />
     </>
   );
