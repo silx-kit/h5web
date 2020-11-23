@@ -5,14 +5,19 @@ import {
   HDF5Value,
   HDF5Entity,
 } from '../../providers/models';
-import { getEntity, isGroup } from '../../providers/utils';
+import { assertGroup, getEntity, isGroup } from '../../providers/utils';
 import {
   NxAttribute,
   NX_INTERPRETATIONS,
   RawSilxStyle,
   SilxStyle,
 } from './models';
-import { assertArray, assertStr, isScaleType } from '../shared/utils';
+import {
+  assertArray,
+  assertDefined,
+  assertStr,
+  isScaleType,
+} from '../shared/utils';
 
 export function isNxInterpretation(attrValue: HDF5Value): boolean {
   return (
@@ -54,19 +59,15 @@ export function getNxAxisNames(group: HDF5Group): (string | undefined)[] {
   return axisNames.map((a) => (a !== '.' ? a : undefined));
 }
 
-export function getNxDataGroup(
-  entity: HDF5Entity | undefined,
+export function findNxDataGroup(
+  group: HDF5Group,
   metadata: HDF5Metadata
 ): HDF5Group | undefined {
-  if (!entity || !isGroup(entity)) {
-    return undefined;
+  if (getAttributeValue(group, 'NX_class') === 'NXdata') {
+    return group; // `NXdata` group found
   }
 
-  if (getAttributeValue(entity, 'NX_class') === 'NXdata') {
-    return entity; // `NXdata` group found
-  }
-
-  const defaultPath = getAttributeValue(entity, 'default');
+  const defaultPath = getAttributeValue(group, 'default');
   if (defaultPath === undefined) {
     return undefined; // group has no `default` attribute
   }
@@ -82,15 +83,13 @@ export function getNxDataGroup(
         ? getLinkedEntity(currSegment, parentEntity, metadata)
         : undefined;
     },
-    isAbsolutePath ? metadata.groups[metadata.root] : entity
+    isAbsolutePath ? metadata.groups[metadata.root] : group
   );
 
-  const nxDataGroup = getNxDataGroup(defaultEntity, metadata);
-  if (!nxDataGroup) {
-    throw new Error(`Expected to find NXdata group at path "${defaultPath}"`);
-  }
+  assertDefined(defaultEntity, `Expected entity at path "${defaultPath}"`);
+  assertGroup(defaultEntity, `Expected group at path "${defaultPath}"`);
 
-  return nxDataGroup;
+  return findNxDataGroup(defaultEntity, metadata);
 }
 
 export function getDatasetLabel(

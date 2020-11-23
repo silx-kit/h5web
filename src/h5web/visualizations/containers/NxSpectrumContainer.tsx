@@ -5,9 +5,10 @@ import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 import { DimensionMapping } from '../../dimension-mapper/models';
 import MappedLineVis from '../line/MappedLineVis';
 import { ProviderContext } from '../../providers/context';
-import { getNxDataGroup } from '../nexus/utils';
+import { findNxDataGroup } from '../nexus/utils';
 import { VisContainerProps } from './models';
 import { useNxData } from '../nexus/hooks';
+import { assertDefined } from '../shared/utils';
 import { useNxSpectrumConfig } from '../nexus/config';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
@@ -15,11 +16,8 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   assertGroup(entity);
 
   const { metadata } = useContext(ProviderContext);
-
-  const nxDataGroup = getNxDataGroup(entity, metadata);
-  if (!nxDataGroup) {
-    throw new Error('NXdata group not found');
-  }
+  const nxDataGroup = findNxDataGroup(entity, metadata);
+  assertDefined(nxDataGroup, 'Expected to find NXdata group');
 
   const nxData = useNxData(nxDataGroup, metadata);
 

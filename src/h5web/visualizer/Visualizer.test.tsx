@@ -152,10 +152,13 @@ describe('Visualizer', () => {
     expect(await screen.findByText(/to be a string/u)).toBeVisible();
 
     await selectExplorerNode('default_empty');
-    expect(await screen.findByText(/to find NXdata/u)).toBeVisible();
+    expect(await screen.findByText(/entity at path/u)).toBeVisible();
 
     await selectExplorerNode('default_not_found');
-    expect(await screen.findByText(/to find NXdata/u)).toBeVisible();
+    expect(await screen.findByText(/entity at path/u)).toBeVisible();
+
+    await selectExplorerNode('default_not_group');
+    expect(await screen.findByText(/group at path/u)).toBeVisible();
 
     await selectExplorerNode('no_signal');
     expect(await screen.findByText(/'signal' attribute/u)).toBeVisible();

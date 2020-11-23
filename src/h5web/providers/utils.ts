@@ -70,9 +70,12 @@ export function assertDataset(
   }
 }
 
-export function assertGroup(entity: HDF5Entity): asserts entity is HDF5Group {
+export function assertGroup(
+  entity: HDF5Entity,
+  message = 'Expected group'
+): asserts entity is HDF5Group {
   if (!isGroup(entity)) {
-    throw new Error('Expected group');
+    throw new Error(message);
   }
 }
 

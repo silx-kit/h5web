@@ -276,6 +276,7 @@ export const mockMetadata = makeMetadata({
       makeGroupHardLink('default_not_string'),
       makeGroupHardLink('default_empty'),
       makeGroupHardLink('default_not_found'),
+      makeGroupHardLink('default_not_group'),
       makeGroupHardLink('no_signal'),
       makeGroupHardLink('signal_not_string'),
       makeGroupHardLink('signal_not_found'),
@@ -352,6 +353,11 @@ export const mockMetadata = makeMetadata({
     ]),
     makeGroup('default_empty', [makeStrAttr('default', '')]),
     makeGroup('default_not_found', [makeStrAttr('default', '/test')]),
+    makeGroup(
+      'default_not_group',
+      [makeStrAttr('default', 'scalar_int')],
+      [makeDatasetHardLink('scalar_int')]
+    ),
     makeGroup('no_signal', [makeStrAttr('NX_class', 'NXdata')]),
     makeGroup('signal_not_string', [
       makeStrAttr('NX_class', 'NXdata'),
