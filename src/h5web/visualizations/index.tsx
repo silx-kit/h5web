@@ -149,7 +149,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return interpretation === NxInterpretation.Spectrum;
       }
 
-      return dimsCount === 1; // NxImage already supports datasets with 2+ dimensions
+      return true;
     },
   },
 
@@ -181,6 +181,12 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       );
 
       const dimsCount = dataset.shape.dims.length;
+      if (dimsCount === 0) {
+        throw new Error(
+          `Expected "${signal}" dataset to have at least one dimension`
+        );
+      }
+
       if (dimsCount < 2) {
         return false;
       }
