@@ -16,6 +16,7 @@ import {
   HDF5ScalarShape,
   HDF5NumericType,
   HDF5Group,
+  HDF5Datatype,
 } from './models';
 
 export function isHardLink(link: HDF5Link): link is HDF5HardLink {
@@ -33,31 +34,43 @@ export function isDataset(entity: HDF5Entity): entity is HDF5Dataset {
   return entity.collection === HDF5Collection.Datasets;
 }
 
+export function isDatatype(entity: HDF5Entity): entity is HDF5Datatype {
+  return entity.collection === HDF5Collection.Datatypes;
+}
+
 export function isGroup(entity: HDF5Entity): entity is HDF5Group {
   return entity.collection === HDF5Collection.Groups;
 }
 
-export function isSimpleShape(shape: HDF5Shape): shape is HDF5SimpleShape {
-  return shape.class === HDF5ShapeClass.Simple;
+export function hasSimpleShape<T extends HDF5Type>(
+  dataset: HDF5Dataset<HDF5Shape, T>
+): dataset is HDF5Dataset<HDF5SimpleShape, T> {
+  return dataset.shape.class === HDF5ShapeClass.Simple;
 }
 
-export function isScalarShape(shape: HDF5Shape): shape is HDF5ScalarShape {
-  return shape.class === HDF5ShapeClass.Scalar;
+export function hasScalarShape<T extends HDF5Type>(
+  dataset: HDF5Dataset<HDF5Shape, T>
+): dataset is HDF5Dataset<HDF5ScalarShape, T> {
+  return dataset.shape.class === HDF5ShapeClass.Scalar;
 }
 
-export function isBaseType(type: HDF5Type): type is HDF5BaseType {
+export function hasBaseType<S extends HDF5Shape>(
+  entity: HDF5Dataset<S>
+): entity is HDF5Dataset<S, HDF5BaseType> {
   return (
-    typeof type !== 'string' &&
+    typeof entity.type !== 'string' &&
     [HDF5TypeClass.Integer, HDF5TypeClass.Float, HDF5TypeClass.String].includes(
-      type.class
+      entity.type.class
     )
   );
 }
 
-export function isNumericType(type: HDF5Type): type is HDF5NumericType {
+export function hasNumericType<S extends HDF5Shape>(
+  dataset: HDF5Dataset<S>
+): dataset is HDF5Dataset<S, HDF5NumericType> {
   return (
-    typeof type !== 'string' &&
-    [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(type.class)
+    typeof dataset.type !== 'string' &&
+    [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(dataset.type.class)
   );
 }
 
@@ -82,7 +95,7 @@ export function assertGroup(
 export function assertNumericType<S extends HDF5Shape>(
   dataset: HDF5Dataset<S>
 ): asserts dataset is HDF5Dataset<S, HDF5NumericType> {
-  if (!isNumericType(dataset.type)) {
+  if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
   }
 }
@@ -90,13 +103,11 @@ export function assertNumericType<S extends HDF5Shape>(
 export function assertSimpleShape<T extends HDF5Type>(
   dataset: HDF5Dataset<HDF5Shape, T>
 ): asserts dataset is HDF5Dataset<HDF5SimpleShape, T> {
-  const { shape } = dataset;
-
-  if (!isSimpleShape(shape)) {
+  if (!hasSimpleShape(dataset)) {
     throw new Error('Expected dataset to have simple shape');
   }
 
-  if (shape.dims.length === 0) {
+  if (dataset.shape.dims.length === 0) {
     throw new Error('Expected dataset with simple shape to have dimensions');
   }
 }

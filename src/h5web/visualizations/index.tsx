@@ -5,10 +5,10 @@ import LineToolbar from '../toolbar/LineToolbar';
 import HeatmapToolbar from '../toolbar/HeatmapToolbar';
 import type { HDF5Entity, HDF5Metadata } from '../providers/models';
 import {
-  isScalarShape,
-  isBaseType,
-  isSimpleShape,
-  isNumericType,
+  hasScalarShape,
+  hasBaseType,
+  hasSimpleShape,
+  hasNumericType,
   isDataset,
   assertDataset,
   assertNumericType,
@@ -64,11 +64,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Icon: FiCode,
     Container: ScalarVisContainer,
     supportsEntity: (entity) => {
-      return (
-        isDataset(entity) &&
-        isBaseType(entity.type) &&
-        isScalarShape(entity.shape)
-      );
+      return isDataset(entity) && hasBaseType(entity) && hasScalarShape(entity);
     },
   },
 
@@ -78,8 +74,8 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     supportsEntity: (entity) => {
       return (
         isDataset(entity) &&
-        isBaseType(entity.type) &&
-        isSimpleShape(entity.shape) &&
+        hasBaseType(entity) &&
+        hasSimpleShape(entity) &&
         entity.shape.dims.length >= 1
       );
     },
@@ -92,8 +88,8 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     supportsEntity: (entity) => {
       return (
         isDataset(entity) &&
-        isNumericType(entity.type) &&
-        isSimpleShape(entity.shape) &&
+        hasNumericType(entity) &&
+        hasSimpleShape(entity) &&
         entity.shape.dims.length >= 1
       );
     },
@@ -106,8 +102,8 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     supportsEntity: (entity) => {
       return (
         isDataset(entity) &&
-        isNumericType(entity.type) &&
-        isSimpleShape(entity.shape) &&
+        hasNumericType(entity) &&
+        hasSimpleShape(entity) &&
         entity.shape.dims.length >= 2
       );
     },
