@@ -4,8 +4,17 @@ import {
   HDF5Dataset,
   HDF5Value,
   HDF5Entity,
+  HDF5NumericType,
+  HDF5SimpleShape,
 } from '../../providers/models';
-import { assertGroup, getLinkedEntity, isGroup } from '../../providers/utils';
+import {
+  assertGroup,
+  assertDataset,
+  assertNumericType,
+  assertSimpleShape,
+  getLinkedEntity,
+  isGroup,
+} from '../../providers/utils';
 import {
   NxAttribute,
   NxInterpretation,
@@ -57,6 +66,30 @@ export function findNxDataGroup(
   assertGroup(defaultEntity, `Expected group at path "${defaultPath}"`);
 
   return findNxDataGroup(defaultEntity, metadata);
+}
+
+export function findSignalName(group: HDF5Group): string {
+  const signal = getAttributeValue(group, 'signal');
+
+  assertDefined(signal, "Expected 'signal' attribute");
+  assertStr(signal, "Expected 'signal' attribute to be a string");
+
+  return signal;
+}
+
+export function findSignalDataset(
+  signalName: string,
+  group: HDF5Group,
+  metadata: HDF5Metadata
+): HDF5Dataset<HDF5SimpleShape, HDF5NumericType> {
+  const dataset = getLinkedEntity(signalName, group, metadata);
+
+  assertDefined(dataset, `Expected "${signalName}" signal entity to exist`);
+  assertDataset(dataset, `Expected "${signalName}" signal to be a dataset`);
+  assertNumericType(dataset);
+  assertSimpleShape(dataset);
+
+  return dataset;
 }
 
 export function isNxInterpretation(
