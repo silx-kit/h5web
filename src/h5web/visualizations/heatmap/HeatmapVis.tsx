@@ -10,7 +10,11 @@ import VisCanvas from '../shared/VisCanvas';
 import { getDims, getPixelEdges } from './utils';
 import { Domain, ScaleType, AxisParams } from '../shared/models';
 import type { ColorMap } from './models';
-import { getDomain, getValueToIndexScale } from '../shared/utils';
+import {
+  assertDefined,
+  getDomain,
+  getValueToIndexScale,
+} from '../shared/utils';
 
 interface Props {
   dataArray: ndarray;
@@ -43,21 +47,14 @@ function HeatmapVis(props: Props): ReactElement {
   const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
 
   const abscissas = getPixelEdges(abscissaParams.value, cols);
-  const ordinates = getPixelEdges(ordinateParams.value, rows);
-
   const abscissaToIndex = getValueToIndexScale(abscissas);
-
   const abscissaDomain = useMemo(() => getDomain(abscissas), [abscissas]);
-  if (!abscissaDomain) {
-    throw new Error(`Abscissas have undefined domain`);
-  }
+  assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
+  const ordinates = getPixelEdges(ordinateParams.value, rows);
   const ordinateToIndex = getValueToIndexScale(ordinates);
-
   const ordinateDomain = useMemo(() => getDomain(ordinates), [ordinates]);
-  if (!ordinateDomain) {
-    throw new Error(`Ordinates have undefined domain`);
-  }
+  assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 
   return (
     <figure className={styles.root} aria-labelledby="vis-title">

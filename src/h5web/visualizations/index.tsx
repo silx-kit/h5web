@@ -134,22 +134,8 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       const dataset = getLinkedEntity(signal, group, metadata);
       assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
       assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
-
-      assertNumericType(
-        dataset.type,
-        `Expected "${signal}" dataset to have numeric type`
-      );
-      assertSimpleShape(
-        dataset.shape,
-        `Expected "${signal}" dataset to have simple shape`
-      );
-
-      const dimsCount = dataset.shape.dims.length;
-      if (dimsCount === 0) {
-        throw new Error(
-          `Expected "${signal}" dataset to have at least one dimension`
-        );
-      }
+      assertNumericType(dataset);
+      assertSimpleShape(dataset);
 
       const interpretation = getAttributeValue(dataset, 'interpretation');
       if (isNxInterpretation(interpretation)) {
@@ -182,23 +168,10 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
       assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
 
-      assertNumericType(
-        dataset.type,
-        `Expected "${signal}" dataset to have numeric type`
-      );
-      assertSimpleShape(
-        dataset.shape,
-        `Expected "${signal}" dataset to have simple shape`
-      );
+      assertNumericType(dataset);
+      assertSimpleShape(dataset);
 
-      const dimsCount = dataset.shape.dims.length;
-      if (dimsCount === 0) {
-        throw new Error(
-          `Expected "${signal}" dataset to have at least one dimension`
-        );
-      }
-
-      if (dimsCount < 2) {
+      if (dataset.shape.dims.length < 2) {
         return false;
       }
 

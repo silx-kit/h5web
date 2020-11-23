@@ -22,10 +22,6 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const nxData = useNxData(nxDataGroup, metadata);
 
   const { dims } = nxData.signal;
-  if (dims.length === 0) {
-    throw new Error('Expected dataset with at least one dimension');
-  }
-
   const [dimensionMapping, setDimensionMapping] = useState<DimensionMapping>([
     ...range(dims.length - 1).fill(0),
     'x',
