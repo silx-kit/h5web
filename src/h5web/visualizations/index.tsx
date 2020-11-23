@@ -14,11 +14,11 @@ import {
   assertNumericType,
   assertSimpleShape,
   isGroup,
+  getLinkedEntity,
 } from '../providers/utils';
 import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
-  getLinkedEntity,
   findNxDataGroup,
   isNxInterpretation,
 } from './nexus/utils';

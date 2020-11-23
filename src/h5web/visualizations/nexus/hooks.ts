@@ -9,6 +9,7 @@ import {
   assertNumericType,
   assertSimpleShape,
   getEntity,
+  getLinkedEntity,
   isDataset,
   isReachable,
 } from '../../providers/utils';
@@ -22,7 +23,6 @@ import {
 import { NxData } from './models';
 import {
   getAttributeValue,
-  getLinkedEntity,
   getDatasetLabel,
   getNxAxisNames,
   parseSilxStyleAttribute,

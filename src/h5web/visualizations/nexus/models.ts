@@ -15,8 +15,6 @@ export enum NxInterpretation {
   Image = 'image',
 }
 
-export const NX_INTERPRETATIONS = Object.values<string>(NxInterpretation);
-
 interface SignalParams extends AxisParams {
   dims: number[];
 }
