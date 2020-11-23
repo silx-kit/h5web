@@ -144,7 +144,7 @@ describe('Visualizer', () => {
     expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
   });
 
-  test('show error when encountering malformed NeXus metadata', async () => {
+  test('show error when encountering malformed NeXus metadata (default)', async () => {
     renderApp();
     await selectExplorerNode('nexus_malformed');
 
@@ -159,6 +159,11 @@ describe('Visualizer', () => {
 
     await selectExplorerNode('default_not_group');
     expect(await screen.findByText(/group at path/u)).toBeVisible();
+  });
+
+  test('show error when encountering malformed NeXus metadata (signal)', async () => {
+    renderApp();
+    await selectExplorerNode('nexus_malformed');
 
     await selectExplorerNode('no_signal');
     expect(await screen.findByText(/'signal' attribute/u)).toBeVisible();
