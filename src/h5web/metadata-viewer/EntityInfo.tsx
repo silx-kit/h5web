@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import type { HDF5Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
-import { isBaseType, isSimpleShape } from '../providers/utils';
+import { isDataset, isDatatype, hasSimpleShape } from '../providers/utils';
 import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 
@@ -24,17 +24,21 @@ function EntityInfo(props: Props): ReactElement {
         </tr>
       </thead>
       <tbody>
-        {'type' in entity && (
+        {(isDataset(entity) || isDatatype(entity)) && (
           <tr>
             <th scope="row">Type</th>
-            <td>{isBaseType(entity.type) ? entity.type.class : 'Complex'}</td>
+            <td>
+              {typeof entity.type === 'string'
+                ? entity.type
+                : entity.type.class}
+            </td>
           </tr>
         )}
-        {'shape' in entity && (
+        {isDataset(entity) && (
           <tr>
             <th scope="row">Shape</th>
             <td>
-              {isSimpleShape(entity.shape)
+              {hasSimpleShape(entity)
                 ? renderShapeDims(entity.shape.dims)
                 : entity.shape.class}
             </td>

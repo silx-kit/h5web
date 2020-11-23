@@ -1,6 +1,6 @@
 import { mockMetadata } from './data';
 import { assertSimpleShape } from '../utils';
-import { assertDefined } from 'src/h5web/visualizations/shared/utils';
+import { assertDefined } from '../../visualizations/shared/utils';
 
 export function getMockDatasetDims(name: string): number[] {
   const dataset = mockMetadata.datasets?.[name];
