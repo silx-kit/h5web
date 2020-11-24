@@ -10,17 +10,15 @@ import {
   hasSimpleShape,
   hasNumericType,
   isDataset,
-  assertDataset,
-  assertNumericType,
-  assertSimpleShape,
   isGroup,
 } from '../providers/utils';
 import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
-  getLinkedEntity,
   findNxDataGroup,
   isNxInterpretation,
+  findSignalDataset,
+  findSignalName,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
 import {
@@ -32,7 +30,6 @@ import {
   NxSpectrumContainer,
   NxImageContainer,
 } from './containers';
-import { assertDefined, assertStr } from './shared/utils';
 import NxSpectrumToolbar from '../toolbar/NxSpectrumToolbar';
 import { ToolbarProps } from '../toolbar/Toolbar';
 
@@ -123,22 +120,14 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return false; // entity is not a group or doesn't have a `default` attribute
       }
 
-      const signal = getAttributeValue(group, 'signal');
-      assertDefined(signal, "Expected 'signal' attribute");
-      assertStr(signal, "Expected 'signal' attribute to be a string");
-
-      const dataset = getLinkedEntity(signal, group, metadata);
-      assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
-      assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
-      assertNumericType(dataset);
-      assertSimpleShape(dataset);
-
+      const signal = findSignalName(group);
+      const dataset = findSignalDataset(signal, group, metadata);
       const interpretation = getAttributeValue(dataset, 'interpretation');
-      if (isNxInterpretation(interpretation)) {
-        return interpretation === NxInterpretation.Spectrum;
-      }
 
-      return true;
+      return (
+        !isNxInterpretation(interpretation) ||
+        interpretation === NxInterpretation.Spectrum
+      );
     },
   },
 
@@ -156,27 +145,17 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return false; // entity is not a group or doesn't have a `default` attribute
       }
 
-      const signal = getAttributeValue(group, 'signal');
-      assertDefined(signal, "Expected 'signal' attribute");
-      assertStr(signal, "Expected 'signal' attribute to be a string");
-
-      const dataset = getLinkedEntity(signal, group, metadata);
-      assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
-      assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
-
-      assertNumericType(dataset);
-      assertSimpleShape(dataset);
-
+      const signal = findSignalName(group);
+      const dataset = findSignalDataset(signal, group, metadata);
       if (dataset.shape.dims.length < 2) {
         return false;
       }
 
       const interpretation = getAttributeValue(dataset, 'interpretation');
-      if (isNxInterpretation(interpretation)) {
-        return interpretation === NxInterpretation.Image;
-      }
-
-      return true;
+      return (
+        !isNxInterpretation(interpretation) ||
+        interpretation === NxInterpretation.Image
+      );
     },
   },
 };

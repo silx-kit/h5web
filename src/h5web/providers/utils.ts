@@ -124,3 +124,12 @@ export function getEntity(
   const dict = metadata[collection];
   return dict && dict[id];
 }
+
+export function getLinkedEntity(
+  entityName: string,
+  group: HDF5Group,
+  metadata: HDF5Metadata
+): HDF5Entity | undefined {
+  const childLink = group.links?.find((l) => l.title === entityName);
+  return getEntity(childLink, metadata);
+}

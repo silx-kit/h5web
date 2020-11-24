@@ -4,11 +4,20 @@ import {
   HDF5Dataset,
   HDF5Value,
   HDF5Entity,
+  HDF5NumericType,
+  HDF5SimpleShape,
 } from '../../providers/models';
-import { assertGroup, getEntity, isGroup } from '../../providers/utils';
+import {
+  assertGroup,
+  assertDataset,
+  assertNumericType,
+  assertSimpleShape,
+  getLinkedEntity,
+  isGroup,
+} from '../../providers/utils';
 import {
   NxAttribute,
-  NX_INTERPRETATIONS,
+  NxInterpretation,
   RawSilxStyle,
   SilxStyle,
 } from './models';
@@ -19,44 +28,11 @@ import {
   isScaleType,
 } from '../shared/utils';
 
-export function isNxInterpretation(attrValue: HDF5Value): boolean {
-  return (
-    attrValue &&
-    typeof attrValue === 'string' &&
-    NX_INTERPRETATIONS.includes(attrValue)
-  );
-}
-
 export function getAttributeValue(
   entity: HDF5Dataset | HDF5Group,
   attributeName: NxAttribute
 ): HDF5Value | undefined {
-  if (!entity.attributes) {
-    return undefined;
-  }
-
-  return entity.attributes.find((attr) => attr.name === attributeName)?.value;
-}
-
-export function getLinkedEntity(
-  entityName: string,
-  group: HDF5Group,
-  metadata: HDF5Metadata
-): HDF5Entity | undefined {
-  const childLink = group.links?.find((l) => l.title === entityName);
-  return getEntity(childLink, metadata);
-}
-
-export function getNxAxisNames(group: HDF5Group): (string | undefined)[] {
-  const axisList = getAttributeValue(group, 'axes');
-
-  if (!axisList) {
-    return [];
-  }
-
-  const axisNames = typeof axisList === 'string' ? [axisList] : axisList;
-  assertArray<string>(axisNames);
-  return axisNames.map((a) => (a !== '.' ? a : undefined));
+  return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }
 
 export function findNxDataGroup(
@@ -90,6 +66,50 @@ export function findNxDataGroup(
   assertGroup(defaultEntity, `Expected group at path "${defaultPath}"`);
 
   return findNxDataGroup(defaultEntity, metadata);
+}
+
+export function findSignalName(group: HDF5Group): string {
+  const signal = getAttributeValue(group, 'signal');
+
+  assertDefined(signal, "Expected 'signal' attribute");
+  assertStr(signal, "Expected 'signal' attribute to be a string");
+
+  return signal;
+}
+
+export function findSignalDataset(
+  signalName: string,
+  group: HDF5Group,
+  metadata: HDF5Metadata
+): HDF5Dataset<HDF5SimpleShape, HDF5NumericType> {
+  const dataset = getLinkedEntity(signalName, group, metadata);
+
+  assertDefined(dataset, `Expected "${signalName}" signal entity to exist`);
+  assertDataset(dataset, `Expected "${signalName}" signal to be a dataset`);
+  assertNumericType(dataset);
+  assertSimpleShape(dataset);
+
+  return dataset;
+}
+
+export function isNxInterpretation(
+  attrValue: HDF5Value
+): attrValue is NxInterpretation {
+  return (
+    typeof attrValue === 'string' &&
+    Object.values<string>(NxInterpretation).includes(attrValue)
+  );
+}
+
+export function getNxAxisNames(group: HDF5Group): (string | undefined)[] {
+  const axisList = getAttributeValue(group, 'axes');
+  if (!axisList) {
+    return [];
+  }
+
+  const axisNames = typeof axisList === 'string' ? [axisList] : axisList;
+  assertArray<string>(axisNames);
+  return axisNames.map((a) => (a !== '.' ? a : undefined));
 }
 
 export function getDatasetLabel(

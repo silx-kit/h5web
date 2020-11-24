@@ -219,11 +219,9 @@ export function assertOptionalArray<T>(
 }
 
 export function isScaleType(val: unknown): val is ScaleType {
-  if (typeof val !== 'string') {
-    return false;
-  }
-
-  return Object.values<string>(ScaleType).includes(val);
+  return (
+    typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
+  );
 }
 
 export function lineSegment(

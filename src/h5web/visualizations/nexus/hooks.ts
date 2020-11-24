@@ -6,23 +6,17 @@ import {
 } from '../../providers/models';
 import {
   assertDataset,
-  assertNumericType,
-  assertSimpleShape,
   getEntity,
+  getLinkedEntity,
   isDataset,
   isReachable,
 } from '../../providers/utils';
 import { useDatasetValues } from '../containers/hooks';
-import {
-  assertStr,
-  assertArray,
-  assertOptionalArray,
-  assertDefined,
-} from '../shared/utils';
+import { assertArray, assertOptionalArray } from '../shared/utils';
 import { NxData } from './models';
 import {
-  getAttributeValue,
-  getLinkedEntity,
+  findSignalDataset,
+  findSignalName,
   getDatasetLabel,
   getNxAxisNames,
   parseSilxStyleAttribute,
@@ -51,14 +45,8 @@ export function useLinkedDatasetValues(
 export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
   const datasetValues = useLinkedDatasetValues(group, metadata);
 
-  const signalName = getAttributeValue(group, 'signal');
-  assertStr(signalName);
-
-  const signalDataset = getLinkedEntity(signalName, group, metadata);
-  assertDefined(signalDataset, 'Signal dataset not found');
-  assertDataset(signalDataset);
-  assertNumericType(signalDataset);
-  assertSimpleShape(signalDataset);
+  const signalName = findSignalName(group);
+  const signalDataset = findSignalDataset(signalName, group, metadata);
 
   const signalValue = datasetValues && datasetValues[signalName];
   if (!signalValue) {
