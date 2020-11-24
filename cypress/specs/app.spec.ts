@@ -1,4 +1,4 @@
-const SNAPSHOT_DELAY = 150;
+const SNAPSHOT_DELAY = 200;
 
 describe('App', () => {
   beforeEach(() => {
@@ -117,7 +117,9 @@ describe('App', () => {
         'exist'
       );
       cy.findByRole('tab', { name: 'NX Spectrum' }).should('exist');
-      cy.findByRole('figure', { name: 'oneD (arb. units)' }).should('exist');
+      cy.findByRole('figure', { name: 'twoD_spectrum (arb. units)' }).should(
+        'exist'
+      );
       cy.get('svg[data-type="abscissa"] svg').should('have.text', 'X (nm)');
 
       if (!!Cypress.env('TAKE_SNAPSHOTS')) {

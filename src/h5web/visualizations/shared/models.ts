@@ -55,3 +55,5 @@ export interface AxisParams {
 }
 
 export type AxisMapping = AxisParams | undefined;
+
+export type Bounds = [number, number, number];

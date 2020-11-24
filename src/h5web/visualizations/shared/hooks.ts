@@ -9,18 +9,21 @@ import { getCanvasScale, getDomain } from './utils';
 import AxisSystemContext from './AxisSystemContext';
 import { AxisScale } from './models';
 
-export function useBaseArray<T>(value: T[], rawDims: number[]): ndarray<T> {
+export function useBaseArray<T>(
+  value: T[] | undefined,
+  rawDims: number[]
+): ndarray<T> | undefined {
   return useMemo(() => {
-    return ndarray<T>(value.flat(Infinity) as T[], rawDims);
+    return value && ndarray<T>(value.flat(Infinity) as T[], rawDims);
   }, [rawDims, value]);
 }
 
 export function useMappedArray<T>(
-  baseArray: ndarray<T>,
+  baseArray: ndarray<T> | undefined,
   mapperState: DimensionMapping
-): ndarray<T> {
+): ndarray<T> | undefined {
   return useMemo(() => {
-    if (mapperState === undefined) {
+    if (!baseArray || !mapperState) {
       return baseArray;
     }
 
@@ -38,6 +41,20 @@ export function useMappedArray<T>(
 
     return mappedArray;
   }, [mapperState, baseArray]);
+}
+
+export function useDataArrays<T>(
+  value: T[],
+  rawDims: number[],
+  dimensionMapping: DimensionMapping
+): { baseArray: ndarray<T>; mappedArray: ndarray<T> } {
+  // useBaseArray and useMappedArray returns undefined if and only if value is undefined but TS cannot enforce this.
+  // This hook makes the necessary assertions in the case value is defined
+  const baseArray = useBaseArray(value, rawDims) as ndarray<T>;
+  return {
+    baseArray,
+    mappedArray: useMappedArray(baseArray, dimensionMapping) as ndarray<T>,
+  };
 }
 
 export const useDomain = createMemo(getDomain);

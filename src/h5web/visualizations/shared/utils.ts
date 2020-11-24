@@ -8,6 +8,7 @@ import {
   ScaleType,
   AxisConfig,
   SCALE_FUNCTIONS,
+  Bounds,
 } from './models';
 import { Vector3 } from 'three';
 
@@ -45,28 +46,39 @@ export function computeVisSize(
     : { width, height: width / aspectRatio };
 }
 
+export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
+  const [minBound, maxBound, minPositiveBound] = oldBounds;
+  return [
+    Math.min(value, minBound),
+    Math.max(value, maxBound),
+    value > 0 ? Math.min(value, minPositiveBound) : minPositiveBound,
+  ];
+}
+
 export function getDomain(
   values: number[],
-  scaleType: ScaleType = ScaleType.Linear
+  scaleType: ScaleType = ScaleType.Linear,
+  errors?: number[]
 ): Domain | undefined {
   if (values.length === 0) {
     return undefined;
   }
 
-  const [min, max, positiveMin] = values.reduce<
-    [number, number, number | undefined]
-  >(
-    (acc, val) => {
-      const [accMin, accMax, accPositiveMin] = acc;
-      return [
-        accMin > val ? val : accMin,
-        accMax < val ? val : accMax,
-        val > 0 && (accPositiveMin === undefined || accPositiveMin > val)
-          ? val
-          : accPositiveMin,
-      ];
+  if (errors && errors.length !== values.length) {
+    throw new Error(
+      `Errors length (${errors.length}) does not match data length (${values.length})`
+    );
+  }
+
+  const [min, max, positiveMin] = values.reduce<Bounds>(
+    (acc, val, i) => {
+      const newBounds = getNewBounds(acc, val);
+      const err = errors && errors[i];
+      return err
+        ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
+        : newBounds;
     },
-    [values[0], values[0], undefined]
+    [values[0], values[0], Infinity]
   );
 
   if (scaleType !== ScaleType.Log || min * max > 0) {
@@ -75,7 +87,7 @@ export function getDomain(
 
   // Clamp domain minimum to first positive value,
   // or return `undefined` if domain is not unsupported: `[-x, 0]`
-  return positiveMin !== undefined ? [positiveMin, max] : undefined;
+  return positiveMin !== Infinity ? [positiveMin, max] : undefined;
 }
 
 export function extendDomain(

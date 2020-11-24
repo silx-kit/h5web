@@ -4,7 +4,7 @@ import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import HeatmapVis from './HeatmapVis';
 import { assertArray } from '../shared/utils';
-import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
+import { useDomain, useDataArrays } from '../shared/hooks';
 import { useHeatmapConfig } from './config';
 import { AxisMapping } from '../shared/models';
 
@@ -31,8 +31,11 @@ function MappedHeatmapVis(props: Props): ReactElement {
     disableAutoScale,
   } = useHeatmapConfig();
 
-  const baseArray = useBaseArray(value, dims);
-  const dataArray = useMappedArray(baseArray, dimensionMapping);
+  const { baseArray, mappedArray: dataArray } = useDataArrays(
+    value,
+    dims,
+    dimensionMapping
+  );
   const dataDomain = useDomain(
     (autoScale ? dataArray.data : baseArray.data) as number[],
     scaleType
