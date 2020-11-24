@@ -112,6 +112,10 @@ export function assertSimpleShape<T extends HDF5Type>(
   }
 }
 
+export function getLink(name: string, group: HDF5Group): HDF5Link | undefined {
+  return group.links?.find((l) => l.title === name);
+}
+
 export function getEntity(
   link: HDF5Link | undefined,
   metadata: HDF5Metadata
@@ -130,6 +134,6 @@ export function getLinkedEntity(
   group: HDF5Group,
   metadata: HDF5Metadata
 ): HDF5Entity | undefined {
-  const childLink = group.links?.find((l) => l.title === entityName);
-  return getEntity(childLink, metadata);
+  const link = getLink(entityName, group);
+  return getEntity(link, metadata);
 }

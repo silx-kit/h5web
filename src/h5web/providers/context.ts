@@ -11,7 +11,5 @@ export const ProviderContext = createContext<{
   domain: string;
   metadata: HDF5Metadata;
   getValue: ProviderAPI['getValue'];
-  getValues: (
-    idsRecord: Record<string, HDF5Id>
-  ) => Promise<Record<string, HDF5Value>>;
+  getValues: (ids: HDF5Id[]) => Promise<Record<HDF5Id, HDF5Value | undefined>>;
 }>({} as any); // eslint-disable-line @typescript-eslint/no-explicit-any

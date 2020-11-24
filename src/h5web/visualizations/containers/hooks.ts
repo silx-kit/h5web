@@ -10,10 +10,10 @@ export function useDatasetValue(id: HDF5Id): HDF5Value | undefined {
 }
 
 export function useDatasetValues(
-  datasetsRecord: Record<string, HDF5Id>
-): Record<string, HDF5Value> | undefined {
+  ids: HDF5Id[]
+): Record<HDF5Id, HDF5Value | undefined> {
   const { getValues } = useContext(ProviderContext);
-  const [valuesReader] = useAsyncResource(getValues, datasetsRecord);
+  const [valuesReader] = useAsyncResource(getValues, ids);
 
-  return valuesReader();
+  return valuesReader() || {};
 }

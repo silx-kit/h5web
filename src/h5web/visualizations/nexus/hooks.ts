@@ -3,16 +3,20 @@ import {
   HDF5Group,
   HDF5Id,
   HDF5Metadata,
+  HDF5Value,
 } from '../../providers/models';
 import {
   assertDataset,
-  getEntity,
+  getLink,
   getLinkedEntity,
-  isDataset,
   isReachable,
 } from '../../providers/utils';
 import { useDatasetValues } from '../containers/hooks';
-import { assertArray, assertOptionalArray } from '../shared/utils';
+import {
+  assertArray,
+  assertDefined,
+  assertOptionalArray,
+} from '../shared/utils';
 import { NxData } from './models';
 import {
   findSignalDataset,
@@ -23,32 +27,23 @@ import {
 } from './utils';
 
 export function useLinkedDatasetValues(
-  group: HDF5Group,
-  metadata: HDF5Metadata
-) {
-  const datasetLinks =
-    group.links?.filter(
-      (link) => isReachable(link) && link.collection === HDF5Collection.Datasets
-    ) || [];
+  group: HDF5Group
+): Record<HDF5Id, HDF5Value | undefined> {
+  const datasetIds = group.links
+    ?.filter(isReachable)
+    .filter((link) => link.collection === HDF5Collection.Datasets)
+    .map((link) => link.id);
 
-  const datasetEntries = datasetLinks
-    .map((link) => {
-      const entity = getEntity(link, metadata);
-
-      return entity && isDataset(entity) ? [link.title, entity.id] : undefined;
-    })
-    .filter((entry): entry is [string, HDF5Id] => !!entry);
-
-  return useDatasetValues(Object.fromEntries(datasetEntries));
+  return useDatasetValues(datasetIds || []);
 }
 
 export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
-  const datasetValues = useLinkedDatasetValues(group, metadata);
+  const values = useLinkedDatasetValues(group);
 
   const signalName = findSignalName(group);
   const signalDataset = findSignalDataset(signalName, group, metadata);
 
-  const signalValue = datasetValues && datasetValues[signalName];
+  const signalValue = values[signalDataset.id];
   if (!signalValue) {
     return { signal: { dims: signalDataset.shape.dims } };
   }
@@ -59,29 +54,33 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
   const silxStyle = parseSilxStyleAttribute(group);
   const { axes_scale_type, signal_scale_type } = silxStyle;
 
-  const axisMapping = axesNames.map((name, i) => {
-    if (!name) {
+  const axisMapping = axesNames.map((axisName, i) => {
+    if (!axisName) {
       return undefined;
     }
 
-    const dataset = getLinkedEntity(name, group, metadata);
-    if (!dataset) {
-      return undefined;
-    }
-    assertDataset(dataset);
+    const axisDataset = getLinkedEntity(axisName, group, metadata);
+    assertDefined(axisDataset);
+    assertDataset(axisDataset);
 
-    const value = datasetValues && datasetValues[name];
-    assertOptionalArray<number>(value);
+    const axisValue = values[axisDataset.id];
+    assertOptionalArray<number>(axisValue);
 
     return {
-      value,
-      label: getDatasetLabel(dataset, name),
+      value: axisValue,
+      label: getDatasetLabel(axisDataset, axisName),
       scaleType: axes_scale_type && axes_scale_type[i],
     };
   });
 
-  const errors = datasetValues && datasetValues.errors;
-  assertOptionalArray<number>(errors);
+  const errorsLink = getLink('errors', group);
+  const errorsValue =
+    errorsLink && isReachable(errorsLink) && values[errorsLink.id];
+  assertOptionalArray<number>(errorsValue);
+
+  const titleLink = getLink('title', group);
+  const titleValue =
+    titleLink && isReachable(titleLink) && values[titleLink.id];
 
   return {
     signal: {
@@ -90,11 +89,8 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
       dims: signalDataset.shape.dims,
       scaleType: signal_scale_type,
     },
-    errors,
-    title:
-      datasetValues && typeof datasetValues.title === 'string'
-        ? datasetValues.title
-        : undefined,
+    errors: errorsValue,
+    title: typeof titleValue === 'string' ? titleValue : undefined,
     axisMapping,
   };
 }
