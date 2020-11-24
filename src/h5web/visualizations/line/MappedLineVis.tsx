@@ -1,9 +1,14 @@
-import React, { ReactElement, useEffect, useMemo } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
-import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
+import {
+  useMappedArray,
+  useDomain,
+  useBaseArray,
+  useDataArrays,
+} from '../shared/hooks';
 import { useLineConfig } from './config';
 import { AxisMapping, ScaleType } from '../shared/models';
 
@@ -44,32 +49,28 @@ function MappedLineVis(props: Props): ReactElement {
     disableAutoScale,
   } = useLineConfig();
 
-  const baseArray = useBaseArray(value, dims);
-  const dataArray = useMappedArray(baseArray, dimensionMapping);
+  const { baseArray: baseDataArray, mappedArray: dataArray } = useDataArrays(
+    value,
+    dims,
+    dimensionMapping
+  );
+
+  const baseErrorsArray = useBaseArray(errors, dims);
+  const errorArray = useMappedArray(baseErrorsArray, dimensionMapping);
 
   // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
   useEffect(() => {
-    disableAutoScale(!baseArray.shape || baseArray.shape.length <= 1);
-  }, [baseArray.shape, disableAutoScale]);
+    disableAutoScale(!baseDataArray.shape || baseDataArray.shape.length <= 1);
+  }, [baseDataArray.shape, disableAutoScale]);
 
-  const dataWithErrors = useMemo(() => {
-    const data = (autoScale ? dataArray.data : baseArray.data) as number[];
+  const dataValues = (autoScale ? dataArray : baseDataArray).data as number[];
+  const errorValues = autoScale
+    ? errorArray && (errorArray.data as number[])
+    : baseErrorsArray && (baseErrorsArray.data as number[]);
+  const dataDomain = useDomain(dataValues, yScaleType, errorValues);
 
-    if (!errors) {
-      return data;
-    }
-
-    return data.flatMap((value, i) => [
-      value - errors[i],
-      value,
-      value + errors[i],
-    ]);
-  }, [autoScale, baseArray.data, dataArray.data, errors]);
-
-  const dataDomain = useDomain(dataWithErrors, yScaleType);
   const mappedAbscissaParams =
     dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
-
   useEffect(() => {
     if (mappedAbscissaParams?.scaleType) {
       setXScaleType(mappedAbscissaParams?.scaleType);
@@ -96,7 +97,7 @@ function MappedLineVis(props: Props): ReactElement {
       }}
       ordinateLabel={valueLabel}
       title={title}
-      errors={errors}
+      errors={errorArray && (errorArray.data as number[])}
       showErrors={showErrors}
     />
   );
