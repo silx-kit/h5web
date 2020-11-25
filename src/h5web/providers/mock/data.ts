@@ -309,27 +309,25 @@ export const mockMetadata = makeMetadata({
       'spectrum',
       [
         makeStrAttr('NX_class', 'NXdata'),
-        makeStrAttr('signal', 'oneD'),
-        makeStrAttr('interpretation', 'spectrum'),
-        makeNxAxesAttr(['X']),
+        makeStrAttr('signal', 'twoD_spectrum'),
+        makeNxAxesAttr(['.', 'X']),
       ],
       [
-        makeDatasetHardLink('oneD'),
+        makeDatasetHardLink('twoD_spectrum'),
         makeDatasetHardLink('X'),
-        makeDatasetHardLink('errors', 'errors_oneD'),
+        makeDatasetHardLink('errors', 'errors_twoD'),
       ]
     ),
     makeGroup(
       'image',
       [
         makeStrAttr('NX_class', 'NXdata'),
-        makeStrAttr('signal', 'fourD'),
-        makeStrAttr('interpretation', 'image'),
+        makeStrAttr('signal', 'fourD_image'),
         makeStrAttr('SILX_style', JSON.stringify({ signal_scale_type: 'log' })),
         makeNxAxesAttr(['.', '.', 'Y', 'X']),
       ],
       [
-        makeDatasetHardLink('fourD'),
+        makeDatasetHardLink('fourD_image'),
         makeDatasetHardLink('X'),
         makeDatasetHardLink('Y'),
       ]
@@ -390,20 +388,10 @@ export const mockMetadata = makeMetadata({
   ],
   datasets: [
     makeSimpleDataset('oneD_linear', intType, [41]),
-    makeSimpleDataset(
-      'oneD',
-      intType,
-      [41],
-      [makeStrAttr('units', 'arb. units')]
-    ),
+    makeSimpleDataset('oneD', intType, [41]),
     makeSimpleDataset('twoD', intType, [20, 41]),
     makeSimpleDataset('threeD', intType, [9, 20, 41]),
-    makeSimpleDataset(
-      'fourD',
-      intType,
-      [3, 9, 20, 41],
-      [makeStrAttr('long_name', 'Interference fringes')]
-    ),
+    makeSimpleDataset('fourD', intType, [3, 9, 20, 41]),
     makeDataset('raw', compoundType, scalarShape),
     makeDataset('scalar_int', intType, scalarShape),
     makeDataset('scalar_str', stringType, scalarShape),
@@ -415,10 +403,28 @@ export const mockMetadata = makeMetadata({
       [makeStrAttr('units', 'deg'), makeStrAttr('long_name', 'Angle (degrees)')]
     ),
     makeDataset('title_twoD', stringType, scalarShape),
-    makeSimpleDataset('errors_oneD', floatType, [41]),
     makeSimpleDataset('X_log', floatType, [41]),
     makeSimpleDataset('oneD_str', stringType, [2]),
     makeSimpleDataset('null', intType, []),
+    makeSimpleDataset(
+      'twoD_spectrum',
+      intType,
+      [20, 41],
+      [
+        makeStrAttr('interpretation', 'spectrum'),
+        makeStrAttr('units', 'arb. units'),
+      ]
+    ),
+    makeSimpleDataset('errors_twoD', floatType, [20, 41]),
+    makeSimpleDataset(
+      'fourD_image',
+      intType,
+      [3, 9, 20, 41],
+      [
+        makeStrAttr('long_name', 'Interference fringes'),
+        makeStrAttr('interpretation', 'image'),
+      ]
+    ),
   ],
   datatypes: [makeDatatype('datatype', compoundType)],
 });
@@ -450,12 +456,14 @@ export const mockValues = {
   oneD_linear: arr1,
   oneD,
   twoD,
+  twoD_spectrum: twoD,
   threeD,
   fourD,
   X: arr1,
   Y: arr2,
   X_log: arr1.map((_, i) => (i + 1) * 0.1),
   title_twoD: 'NeXus 2D',
-  errors_oneD: arr1.map(Math.abs),
   oneD_str: ['foo', 'bar'],
+  errors_twoD: arr2.map((offset) => arr1.map((val) => Math.abs(val - offset))),
+  fourD_image: fourD,
 };
