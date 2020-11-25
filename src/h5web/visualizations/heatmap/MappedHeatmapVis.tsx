@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { usePrevious } from 'react-use';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
@@ -7,17 +7,17 @@ import { assertArray } from '../shared/utils';
 import { useDomain, useDataArrays } from '../shared/hooks';
 import { useHeatmapConfig } from './config';
 import { AxisMapping } from '../shared/models';
+import DimensionMapper from 'src/h5web/dimension-mapper/DimensionMapper';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
-  dimensionMapping: DimensionMapping;
   title?: string;
   axisMapping?: AxisMapping[];
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {
-  const { value, axisMapping = [], title, dims, dimensionMapping } = props;
+  const { value, axisMapping = [], title, dims } = props;
   assertArray<number>(value);
 
   const {
@@ -30,6 +30,12 @@ function MappedHeatmapVis(props: Props): ReactElement {
     autoScale,
     disableAutoScale,
   } = useHeatmapConfig();
+
+  const [dimensionMapping, setDimensionMapping] = useState<DimensionMapping>([
+    ...new Array(dims.length - 2).fill(0),
+    'y',
+    'x',
+  ]);
 
   const { baseArray, mappedArray: dataArray } = useDataArrays(
     value,
@@ -44,7 +50,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
 
   // Disable `autoScale` for 2D datasets (baseArray and dataArray span the same values)
   useEffect(() => {
-    disableAutoScale(!baseArray.shape || baseArray.shape.length <= 2);
+    disableAutoScale(baseArray.shape.length <= 2);
   }, [baseArray.shape, disableAutoScale]);
 
   // Use `customDomain` if any, unless `dataDomain` just changed (in which case it is stale and needs to be reset - cf. `useEffect` below)
@@ -56,21 +62,28 @@ function MappedHeatmapVis(props: Props): ReactElement {
   }, [dataDomain, resetDomains]);
 
   return (
-    <HeatmapVis
-      dataArray={dataArray}
-      title={title}
-      domain={domain}
-      colorMap={colorMap}
-      scaleType={scaleType}
-      keepAspectRatio={keepAspectRatio}
-      showGrid={showGrid}
-      abscissaParams={
-        dimensionMapping && axisMapping[dimensionMapping.indexOf('x')]
-      }
-      ordinateParams={
-        dimensionMapping && axisMapping[dimensionMapping.indexOf('y')]
-      }
-    />
+    <>
+      <DimensionMapper
+        rawDims={dims}
+        mapperState={dimensionMapping}
+        onChange={setDimensionMapping}
+      />
+      <HeatmapVis
+        dataArray={dataArray}
+        title={title}
+        domain={domain}
+        colorMap={colorMap}
+        scaleType={scaleType}
+        keepAspectRatio={keepAspectRatio}
+        showGrid={showGrid}
+        abscissaParams={
+          dimensionMapping && axisMapping[dimensionMapping.indexOf('x')]
+        }
+        ordinateParams={
+          dimensionMapping && axisMapping[dimensionMapping.indexOf('y')]
+        }
+      />
+    </>
   );
 }
 
