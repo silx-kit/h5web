@@ -73,7 +73,8 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
     };
   });
 
-  const errorsLink = getLink('errors', group);
+  const errorsLink =
+    getLink(`${signalName}_errors`, group) || getLink('errors', group);
   const errorsValue =
     errorsLink && isReachable(errorsLink) && values[errorsLink.id];
   assertOptionalArray<number>(errorsValue);

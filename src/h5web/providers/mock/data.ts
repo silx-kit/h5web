@@ -341,10 +341,13 @@ export const mockMetadata = makeMetadata({
           'SILX_style',
           JSON.stringify({ axes_scale_type: ['log'], signal_scale_type: 'log' })
         ),
-        makeStrAttr('interpretation', 'spectrum'),
         makeNxAxesAttr(['X_log']),
       ],
-      [makeDatasetHardLink('oneD', 'oneD'), makeDatasetHardLink('X_log')]
+      [
+        makeDatasetHardLink('oneD', 'oneD'),
+        makeDatasetHardLink('X_log'),
+        makeDatasetHardLink('oneD_errors'),
+      ]
     ),
     makeGroup('default_not_string', [
       makeAttr('default', scalarShape, intType, 42),
@@ -425,6 +428,7 @@ export const mockMetadata = makeMetadata({
         makeStrAttr('interpretation', 'image'),
       ]
     ),
+    makeSimpleDataset('oneD_errors', intType, [41]),
   ],
   datatypes: [makeDatatype('datatype', compoundType)],
 });
@@ -466,4 +470,5 @@ export const mockValues = {
   oneD_str: ['foo', 'bar'],
   errors_twoD: arr2.map((offset) => arr1.map((val) => Math.abs(val - offset))),
   fourD_image: fourD,
+  oneD_errors: oneD.map((x) => Math.abs(x) / 10),
 };
