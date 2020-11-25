@@ -13,6 +13,11 @@ const values = mockValues.oneD_linear;
 const dataArray = ndarray(values, getMockDatasetDims('oneD_linear'));
 const domain = getDomain(values);
 
+const errorsArray = ndarray(
+  new Array(dataArray.size).fill(0).map((_, i) => Math.abs(10 - 0.5 * i)),
+  dataArray.shape
+);
+
 const Template: Story<LineVisProps> = (args): ReactElement => (
   <LineVis {...args} />
 );
@@ -36,9 +41,7 @@ export const ErrorBars = Template.bind({});
 ErrorBars.args = {
   dataArray,
   domain: [-31, 31], // Extend domain to fit error bars
-  errors: new Array(dataArray.size)
-    .fill(0)
-    .map((_, i) => Math.abs(10 - 0.5 * i)),
+  errorsArray,
 };
 
 const LineVisStoriesConfig = {

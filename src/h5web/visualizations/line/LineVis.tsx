@@ -28,7 +28,7 @@ interface Props {
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
   title?: string;
-  errors?: number[];
+  errorsArray?: ndarray;
   showErrors?: boolean;
 }
 
@@ -42,7 +42,7 @@ function LineVis(props: Props): ReactElement {
     abscissaParams = {},
     ordinateLabel,
     title,
-    errors,
+    errorsArray,
     showErrors,
   } = props;
 
@@ -58,9 +58,9 @@ function LineVis(props: Props): ReactElement {
     );
   }
 
-  if (errors && errors.length !== dataArray.size) {
+  if (errorsArray && errorsArray.size !== dataArray.size) {
     throw new Error(
-      `Error size (${errors.length}) does not match data length (${dataArray.size})`
+      `Error size (${errorsArray.size}) does not match data length (${dataArray.size})`
     );
   }
 
@@ -114,7 +114,7 @@ function LineVis(props: Props): ReactElement {
               return undefined;
             }
 
-            const error = errors && errors[index];
+            const error = errorsArray && errorsArray.get(index);
             return error
               ? `${format('.3f')(value)} ±${format('.3f')(error)}`
               : `${format('.3f')(value)}`;
@@ -127,11 +127,11 @@ function LineVis(props: Props): ReactElement {
           abscissas={abscissas}
           ordinates={dataArray.data as number[]}
         />
-        {errors && (
+        {errorsArray && (
           <ErrorBarCurve
             abscissas={abscissas}
             ordinates={dataArray.data as number[]}
-            errors={errors}
+            errors={errorsArray.data as number[]}
             visible={showErrors}
           />
         )}

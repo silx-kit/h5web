@@ -108,7 +108,7 @@ function MappedLineVis(props: Props): ReactElement {
         }}
         ordinateLabel={valueLabel}
         title={title}
-        errors={errorArray && (errorArray.data as number[])}
+        errorsArray={errorArray}
         showErrors={showErrors}
       />
     </>
