@@ -1,8 +1,5 @@
-import React, { ReactElement, useState, useContext, useEffect } from 'react';
-import { range } from 'lodash-es';
+import React, { ReactElement, useContext, useEffect } from 'react';
 import { assertGroup } from '../../providers/utils';
-import DimensionMapper from '../../dimension-mapper/DimensionMapper';
-import { DimensionMapping } from '../../dimension-mapper/models';
 import MappedLineVis from '../line/MappedLineVis';
 import { ProviderContext } from '../../providers/context';
 import { findNxDataGroup } from '../nexus/utils';
@@ -20,17 +17,9 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   assertDefined(nxDataGroup, 'Expected to find NXdata group');
 
   const nxData = useNxData(nxDataGroup, metadata);
-
-  const { dims } = nxData.signal;
-  const [dimensionMapping, setDimensionMapping] = useState<DimensionMapping>([
-    ...range(dims.length - 1).fill(0),
-    'x',
-  ]);
-
   const { signal, title, errors, axisMapping } = nxData;
 
   const { showErrors, disableErrors } = useNxSpectrumConfig();
-
   useEffect(() => {
     disableErrors(!errors);
   }, [disableErrors, errors]);
@@ -46,24 +35,16 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   }
 
   return (
-    <>
-      <DimensionMapper
-        rawDims={dims}
-        mapperState={dimensionMapping}
-        onChange={setDimensionMapping}
-      />
-      <MappedLineVis
-        value={signal.value}
-        valueLabel={signal.label}
-        valueScaleType={signal.scaleType}
-        axisMapping={axisMapping}
-        dims={dims}
-        dimensionMapping={dimensionMapping}
-        title={title || signal.label}
-        errors={errors}
-        showErrors={showErrors}
-      />
-    </>
+    <MappedLineVis
+      value={signal.value}
+      valueLabel={signal.label}
+      valueScaleType={signal.scaleType}
+      axisMapping={axisMapping}
+      dims={nxData.signal.dims}
+      title={title || signal.label}
+      errors={errors}
+      showErrors={showErrors}
+    />
   );
 }
 

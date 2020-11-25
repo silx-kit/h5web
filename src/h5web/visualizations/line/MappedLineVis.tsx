@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
@@ -11,11 +11,11 @@ import {
 } from '../shared/hooks';
 import { useLineConfig } from './config';
 import { AxisMapping, ScaleType } from '../shared/models';
+import DimensionMapper from 'src/h5web/dimension-mapper/DimensionMapper';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
-  dimensionMapping: DimensionMapping;
   valueLabel?: string;
   valueScaleType?: ScaleType;
   axisMapping?: AxisMapping[];
@@ -31,7 +31,6 @@ function MappedLineVis(props: Props): ReactElement {
     valueScaleType,
     axisMapping = [],
     dims,
-    dimensionMapping,
     title,
     errors,
     showErrors,
@@ -49,6 +48,11 @@ function MappedLineVis(props: Props): ReactElement {
     disableAutoScale,
   } = useLineConfig();
 
+  const [dimensionMapping, setDimensionMapping] = useState<DimensionMapping>([
+    ...new Array(dims.length - 1).fill(0),
+    'x',
+  ]);
+
   const { baseArray: baseDataArray, mappedArray: dataArray } = useDataArrays(
     value,
     dims,
@@ -60,7 +64,7 @@ function MappedLineVis(props: Props): ReactElement {
 
   // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
   useEffect(() => {
-    disableAutoScale(!baseDataArray.shape || baseDataArray.shape.length <= 1);
+    disableAutoScale(baseDataArray.shape.length <= 1);
   }, [baseDataArray.shape, disableAutoScale]);
 
   const dataValues = (autoScale ? dataArray : baseDataArray).data as number[];
@@ -71,6 +75,7 @@ function MappedLineVis(props: Props): ReactElement {
 
   const mappedAbscissaParams =
     dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
+
   useEffect(() => {
     if (mappedAbscissaParams?.scaleType) {
       setXScaleType(mappedAbscissaParams?.scaleType);
@@ -84,22 +89,29 @@ function MappedLineVis(props: Props): ReactElement {
   }, [setYScaleType, valueScaleType]);
 
   return (
-    <LineVis
-      dataArray={dataArray}
-      domain={dataDomain}
-      scaleType={yScaleType}
-      curveType={curveType}
-      showGrid={showGrid}
-      abscissaParams={{
-        label: mappedAbscissaParams?.label,
-        value: mappedAbscissaParams?.value,
-        scaleType: xScaleType,
-      }}
-      ordinateLabel={valueLabel}
-      title={title}
-      errors={errorArray && (errorArray.data as number[])}
-      showErrors={showErrors}
-    />
+    <>
+      <DimensionMapper
+        rawDims={dims}
+        mapperState={dimensionMapping}
+        onChange={setDimensionMapping}
+      />
+      <LineVis
+        dataArray={dataArray}
+        domain={dataDomain}
+        scaleType={yScaleType}
+        curveType={curveType}
+        showGrid={showGrid}
+        abscissaParams={{
+          label: mappedAbscissaParams?.label,
+          value: mappedAbscissaParams?.value,
+          scaleType: xScaleType,
+        }}
+        ordinateLabel={valueLabel}
+        title={title}
+        errors={errorArray && (errorArray.data as number[])}
+        showErrors={showErrors}
+      />
+    </>
   );
 }
 

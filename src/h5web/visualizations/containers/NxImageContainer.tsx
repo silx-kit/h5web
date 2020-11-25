@@ -1,8 +1,5 @@
-import React, { ReactElement, useState, useContext, useEffect } from 'react';
-import { range } from 'lodash-es';
+import React, { ReactElement, useContext, useEffect } from 'react';
 import { assertGroup } from '../../providers/utils';
-import DimensionMapper from '../../dimension-mapper/DimensionMapper';
-import { DimensionMapping } from '../../dimension-mapper/models';
 import { ProviderContext } from '../../providers/context';
 import { findNxDataGroup } from '../nexus/utils';
 import { VisContainerProps } from './models';
@@ -26,12 +23,6 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
     throw new Error('Expected signal dataset with at least two dimensions');
   }
 
-  const [dimensionMapping, setDimensionMapping] = useState<DimensionMapping>([
-    ...range(dims.length - 2).fill(0),
-    'y',
-    'x',
-  ]);
-
   const { signal, title, axisMapping } = nxData;
   const { setScaleType } = useHeatmapConfig();
 
@@ -46,20 +37,12 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   }
 
   return (
-    <>
-      <DimensionMapper
-        rawDims={dims}
-        mapperState={dimensionMapping}
-        onChange={setDimensionMapping}
-      />
-      <MappedHeatmapVis
-        value={signal.value}
-        title={title || signal.label}
-        dims={dims}
-        dimensionMapping={dimensionMapping}
-        axisMapping={axisMapping}
-      />
-    </>
+    <MappedHeatmapVis
+      value={signal.value}
+      title={title || signal.label}
+      dims={dims}
+      axisMapping={axisMapping}
+    />
   );
 }
 
