@@ -122,7 +122,7 @@ export interface HDF5ScalarShape {
   class: HDF5ShapeClass.Scalar;
 }
 
-export interface HDF5NullShape {
+interface HDF5NullShape {
   class: HDF5ShapeClass.Null;
 }
 
@@ -135,7 +135,7 @@ export type HDF5Type = HDF5BaseType | HDF5AdvancedType;
 export type HDF5BaseType = HDF5NumericType | HDF5StringType;
 export type HDF5NumericType = HDF5IntegerType | HDF5FloatType;
 
-export type HDF5AdvancedType =
+type HDF5AdvancedType =
   | HDF5Id
   | HDF5ArrayType
   | HDF5VLenType

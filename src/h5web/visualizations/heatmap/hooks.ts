@@ -10,7 +10,7 @@ import type { TextureWorker } from './heatmap.worker';
 import type { Domain, ScaleType } from '../shared/models';
 import type { ColorMap } from './models';
 
-export interface TextureDataState {
+interface TextureDataState {
   loading?: boolean;
   textureData?: Uint8Array;
   prevDims?: string;

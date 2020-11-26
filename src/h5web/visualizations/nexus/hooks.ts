@@ -26,7 +26,7 @@ import {
   parseSilxStyleAttribute,
 } from './utils';
 
-export function useLinkedDatasetValues(
+function useLinkedDatasetValues(
   group: HDF5Group
 ): Record<HDF5Id, HDF5Value | undefined> {
   const datasetIds = group.links

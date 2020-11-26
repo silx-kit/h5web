@@ -46,7 +46,7 @@ export function computeVisSize(
     : { width, height: width / aspectRatio };
 }
 
-export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
+function getNewBounds(oldBounds: Bounds, value: number): Bounds {
   const [minBound, maxBound, minPositiveBound] = oldBounds;
   return [
     Math.min(value, minBound),

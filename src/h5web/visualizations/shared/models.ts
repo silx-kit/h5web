@@ -13,6 +13,8 @@ export enum ScaleType {
   SymLog = 'symlog',
 }
 
+type ScaleFn = typeof scaleLinear | typeof scaleLog | typeof scaleSymlog;
+
 export const SCALE_FUNCTIONS: Record<ScaleType, ScaleFn> = {
   [ScaleType.Linear]: scaleLinear,
   [ScaleType.Log]: scaleLog,
@@ -33,8 +35,6 @@ export interface AxisConfig {
   scaleType?: ScaleType;
   label?: string;
 }
-
-export type ScaleFn = typeof scaleLinear | typeof scaleLog | typeof scaleSymlog;
 
 export type AxisScale =
   | ScaleLinear<number, number>

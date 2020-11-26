@@ -1,7 +1,7 @@
 import React, { ReactNode, createContext, ReactElement } from 'react';
 import type { Size } from '../shared/models';
 
-export interface GridSettings {
+interface GridSettings {
   cellSize: Size;
   rowCount: number;
   columnCount: number;
