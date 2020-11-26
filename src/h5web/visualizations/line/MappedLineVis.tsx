@@ -3,12 +3,7 @@ import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
-import {
-  useMappedArray,
-  useDomain,
-  useBaseArray,
-  useDataArrays,
-} from '../shared/hooks';
+import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
 import { AxisMapping, ScaleType } from '../shared/models';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
@@ -53,11 +48,8 @@ function MappedLineVis(props: Props): ReactElement {
     'x',
   ]);
 
-  const { baseArray: baseDataArray, mappedArray: dataArray } = useDataArrays(
-    value,
-    dims,
-    dimensionMapping
-  );
+  const baseDataArray = useBaseArray(value, dims);
+  const dataArray = useMappedArray(baseDataArray, dimensionMapping);
 
   const baseErrorsArray = useBaseArray(errors, dims);
   const errorArray = useMappedArray(baseErrorsArray, dimensionMapping);
