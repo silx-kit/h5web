@@ -11,7 +11,7 @@ import {
 } from '../shared/hooks';
 import { useLineConfig } from './config';
 import { AxisMapping, ScaleType } from '../shared/models';
-import DimensionMapper from 'src/h5web/dimension-mapper/DimensionMapper';
+import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 
 interface Props {
   value: HDF5Value;
@@ -73,9 +73,7 @@ function MappedLineVis(props: Props): ReactElement {
     : baseErrorsArray && (baseErrorsArray.data as number[]);
   const dataDomain = useDomain(dataValues, yScaleType, errorValues);
 
-  const mappedAbscissaParams =
-    dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
-
+  const mappedAbscissaParams = axisMapping[dimensionMapping.indexOf('x')];
   useEffect(() => {
     if (mappedAbscissaParams?.scaleType) {
       setXScaleType(mappedAbscissaParams?.scaleType);

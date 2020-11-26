@@ -7,7 +7,7 @@ import type { Axis, DimensionMapping } from './models';
 interface Props {
   axis: Axis;
   rawDims: number[];
-  mapperState: NonNullable<DimensionMapping>;
+  mapperState: DimensionMapping;
   onChange: (mapperState: DimensionMapping) => void;
 }
 
