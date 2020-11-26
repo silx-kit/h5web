@@ -3,6 +3,10 @@ node_modules/
 /build/
 /cypress/debug/
 /cypress/snapshots/**/__diff_output__
+
+# Ignore failed snapshot attempts so CI doesn't open unnecessary PRs
+/cypress/snapshots/**/*attempt*.snap.png
+
 /storybook-static/
 /packages/**/dist/
 
