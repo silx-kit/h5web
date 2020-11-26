@@ -3,15 +3,10 @@ import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
-import {
-  useMappedArray,
-  useDomain,
-  useBaseArray,
-  useDataArrays,
-} from '../shared/hooks';
+import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
 import { AxisMapping, ScaleType } from '../shared/models';
-import DimensionMapper from 'src/h5web/dimension-mapper/DimensionMapper';
+import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 
 interface Props {
   value: HDF5Value;
@@ -53,11 +48,8 @@ function MappedLineVis(props: Props): ReactElement {
     'x',
   ]);
 
-  const { baseArray: baseDataArray, mappedArray: dataArray } = useDataArrays(
-    value,
-    dims,
-    dimensionMapping
-  );
+  const baseDataArray = useBaseArray(value, dims);
+  const dataArray = useMappedArray(baseDataArray, dimensionMapping);
 
   const baseErrorsArray = useBaseArray(errors, dims);
   const errorArray = useMappedArray(baseErrorsArray, dimensionMapping);
@@ -73,9 +65,7 @@ function MappedLineVis(props: Props): ReactElement {
     : baseErrorsArray && (baseErrorsArray.data as number[]);
   const dataDomain = useDomain(dataValues, yScaleType, errorValues);
 
-  const mappedAbscissaParams =
-    dimensionMapping && axisMapping[dimensionMapping.indexOf('x')];
-
+  const mappedAbscissaParams = axisMapping[dimensionMapping.indexOf('x')];
   useEffect(() => {
     if (mappedAbscissaParams?.scaleType) {
       setXScaleType(mappedAbscissaParams?.scaleType);
@@ -108,7 +98,7 @@ function MappedLineVis(props: Props): ReactElement {
         }}
         ordinateLabel={valueLabel}
         title={title}
-        errors={errorArray && (errorArray.data as number[])}
+        errorsArray={errorArray}
         showErrors={showErrors}
       />
     </>

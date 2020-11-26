@@ -9,6 +9,12 @@ import { getCanvasScale, getDomain } from './utils';
 import AxisSystemContext from './AxisSystemContext';
 import { AxisScale } from './models';
 
+export function useBaseArray<T>(value: T[], rawDims: number[]): ndarray<T>;
+export function useBaseArray<T>(
+  value: T[] | undefined,
+  rawDims: number[]
+): ndarray<T> | undefined;
+
 export function useBaseArray<T>(
   value: T[] | undefined,
   rawDims: number[]
@@ -19,19 +25,27 @@ export function useBaseArray<T>(
 }
 
 export function useMappedArray<T>(
+  baseArray: ndarray<T>,
+  mapping: DimensionMapping
+): ndarray<T>;
+export function useMappedArray<T>(
   baseArray: ndarray<T> | undefined,
-  mapperState: DimensionMapping
+  mapping: DimensionMapping
+): ndarray<T> | undefined;
+
+export function useMappedArray<T>(
+  baseArray: ndarray<T> | undefined,
+  mapping: DimensionMapping
 ): ndarray<T> | undefined {
   return useMemo(() => {
-    if (!baseArray || !mapperState) {
+    if (!baseArray || !mapping) {
       return baseArray;
     }
 
     const isXBeforeY =
-      mapperState.includes('y') &&
-      mapperState.indexOf('x') < mapperState.indexOf('y');
+      mapping.includes('y') && mapping.indexOf('x') < mapping.indexOf('y');
 
-    const slicingState = mapperState.map((val) => (isNumber(val) ? val : null));
+    const slicingState = mapping.map((val) => (isNumber(val) ? val : null));
     const slicedView = baseArray.pick(...slicingState);
     const mappedView = isXBeforeY ? slicedView.transpose(1, 0) : slicedView;
 
@@ -40,21 +54,7 @@ export function useMappedArray<T>(
     assign(mappedArray, mappedView);
 
     return mappedArray;
-  }, [mapperState, baseArray]);
-}
-
-export function useDataArrays<T>(
-  value: T[],
-  rawDims: number[],
-  dimensionMapping: DimensionMapping
-): { baseArray: ndarray<T>; mappedArray: ndarray<T> } {
-  // useBaseArray and useMappedArray returns undefined if and only if value is undefined but TS cannot enforce this.
-  // This hook makes the necessary assertions in the case value is defined
-  const baseArray = useBaseArray(value, rawDims) as ndarray<T>;
-  return {
-    baseArray,
-    mappedArray: useMappedArray(baseArray, dimensionMapping) as ndarray<T>,
-  };
+  }, [mapping, baseArray]);
 }
 
 export const useDomain = createMemo(getDomain);

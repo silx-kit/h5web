@@ -7,7 +7,7 @@ interface Props {
   dimension: number;
   slicingIndex: number;
   rawDims: number[];
-  mapperState: NonNullable<DimensionMapping>;
+  mapperState: DimensionMapping;
   onChange: (mapperState: DimensionMapping) => void;
 }
 

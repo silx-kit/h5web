@@ -4,10 +4,10 @@ import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import HeatmapVis from './HeatmapVis';
 import { assertArray } from '../shared/utils';
-import { useDomain, useDataArrays } from '../shared/hooks';
+import { useDomain, useBaseArray, useMappedArray } from '../shared/hooks';
 import { useHeatmapConfig } from './config';
 import { AxisMapping } from '../shared/models';
-import DimensionMapper from 'src/h5web/dimension-mapper/DimensionMapper';
+import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 
 interface Props {
   value: HDF5Value;
@@ -37,11 +37,9 @@ function MappedHeatmapVis(props: Props): ReactElement {
     'x',
   ]);
 
-  const { baseArray, mappedArray: dataArray } = useDataArrays(
-    value,
-    dims,
-    dimensionMapping
-  );
+  const baseArray = useBaseArray(value, dims);
+  const dataArray = useMappedArray(baseArray, dimensionMapping);
+
   const dataDomain = useDomain(
     (autoScale ? dataArray.data : baseArray.data) as number[],
     scaleType
@@ -76,12 +74,8 @@ function MappedHeatmapVis(props: Props): ReactElement {
         scaleType={scaleType}
         keepAspectRatio={keepAspectRatio}
         showGrid={showGrid}
-        abscissaParams={
-          dimensionMapping && axisMapping[dimensionMapping.indexOf('x')]
-        }
-        ordinateParams={
-          dimensionMapping && axisMapping[dimensionMapping.indexOf('y')]
-        }
+        abscissaParams={axisMapping[dimensionMapping.indexOf('x')]}
+        ordinateParams={axisMapping[dimensionMapping.indexOf('y')]}
       />
     </>
   );
