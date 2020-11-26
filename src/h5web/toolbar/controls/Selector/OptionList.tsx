@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { MenuItem } from 'react-aria-menubutton';
-import { OptionComponent } from './models';
+import type { OptionComponent } from './models';
 import styles from './Selector.module.css';
 
 interface Props<T> {

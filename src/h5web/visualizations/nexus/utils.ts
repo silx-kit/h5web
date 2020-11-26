@@ -1,4 +1,4 @@
-import {
+import type {
   HDF5Group,
   HDF5Metadata,
   HDF5Dataset,

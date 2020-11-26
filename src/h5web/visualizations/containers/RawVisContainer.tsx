@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import RawVis from '../RawVis';
-import { VisContainerProps } from './models';
+import type { VisContainerProps } from './models';
 import { useDatasetValue } from './hooks';
 import { assertDataset } from '../../providers/utils';
 

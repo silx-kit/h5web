@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { useDatasetValue } from './hooks';
 import { assertDataset, assertSimpleShape } from '../../providers/utils';
 import MappedMatrixVis from '../matrix/MappedMatrixVis';
-import { VisContainerProps } from './models';
+import type { VisContainerProps } from './models';
 
 function MatrixVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;

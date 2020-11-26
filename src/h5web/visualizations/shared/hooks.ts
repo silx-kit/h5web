@@ -7,7 +7,7 @@ import { useFrame, useThree } from 'react-three-fiber';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import { getCanvasScale, getDomain } from './utils';
 import AxisSystemContext from './AxisSystemContext';
-import { AxisScale } from './models';
+import type { AxisScale } from './models';
 
 export function useBaseArray<T>(value: T[], rawDims: number[]): ndarray<T>;
 export function useBaseArray<T>(

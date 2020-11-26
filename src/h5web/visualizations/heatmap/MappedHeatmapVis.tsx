@@ -6,7 +6,7 @@ import HeatmapVis from './HeatmapVis';
 import { assertArray } from '../shared/utils';
 import { useDomain, useBaseArray, useMappedArray } from '../shared/hooks';
 import { useHeatmapConfig } from './config';
-import { AxisMapping } from '../shared/models';
+import type { AxisMapping } from '../shared/models';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 
 interface Props {

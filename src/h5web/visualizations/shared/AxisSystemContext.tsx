@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { AxisConfig } from './models';
+import type { AxisConfig } from './models';
 
 export interface AxisConfigs {
   abscissaConfig: AxisConfig;

@@ -31,7 +31,7 @@ import {
   NxImageContainer,
 } from './containers';
 import NxSpectrumToolbar from '../toolbar/NxSpectrumToolbar';
-import { ToolbarProps } from '../toolbar/Toolbar';
+import type { ToolbarProps } from '../toolbar/Toolbar';
 
 export enum Vis {
   Raw = 'Raw',

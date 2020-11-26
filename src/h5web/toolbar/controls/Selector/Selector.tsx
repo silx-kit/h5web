@@ -3,7 +3,7 @@ import { Wrapper, Button, Menu } from 'react-aria-menubutton';
 
 import { MdArrowDropDown } from 'react-icons/md';
 import { useWindowSize } from 'react-use';
-import { OptionComponent } from './models';
+import type { OptionComponent } from './models';
 import OptionList from './OptionList';
 import styles from './Selector.module.css';
 

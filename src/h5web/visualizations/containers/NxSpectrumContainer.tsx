@@ -3,7 +3,7 @@ import { assertGroup } from '../../providers/utils';
 import MappedLineVis from '../line/MappedLineVis';
 import { ProviderContext } from '../../providers/context';
 import { findNxDataGroup } from '../nexus/utils';
-import { VisContainerProps } from './models';
+import type { VisContainerProps } from './models';
 import { useNxData } from '../nexus/hooks';
 import { assertDefined } from '../shared/utils';
 import { useNxSpectrumConfig } from '../nexus/config';

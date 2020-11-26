@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { useMeasure } from 'react-use';
 import styles from './VisCanvas.module.css';
-import { AxisConfig } from './models';
+import type { AxisConfig } from './models';
 import { computeVisSize } from './utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemContext from './AxisSystemContext';

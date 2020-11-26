@@ -1,4 +1,4 @@
-import { HDF5Metadata, HDF5Entity } from '../providers/models';
+import type { HDF5Metadata, HDF5Entity } from '../providers/models';
 import { Vis, VIS_DEFS } from '.';
 import { NxInterpretation } from './nexus/models';
 import {

@@ -6,7 +6,7 @@ import {
   assertSimpleShape,
 } from '../../providers/utils';
 import MappedLineVis from '../line/MappedLineVis';
-import { VisContainerProps } from './models';
+import type { VisContainerProps } from './models';
 
 function LineVisContainer(props: VisContainerProps): ReactElement {
   const { entity, entityName } = props;

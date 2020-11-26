@@ -6,7 +6,7 @@ import {
   assertSimpleShape,
 } from '../../providers/utils';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
-import { VisContainerProps } from './models';
+import type { VisContainerProps } from './models';
 
 function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   const { entity, entityName } = props;

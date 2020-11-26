@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react';
 import Provider from '../Provider';
 import { mockMetadata, mockValues } from './data';
-import { HDF5Id, HDF5Values } from '../models';
+import type { HDF5Id, HDF5Values } from '../models';
 
 export const MOCK_DOMAIN = 'source.h5';
 

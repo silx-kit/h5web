@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { IconType } from 'react-icons/lib';
+import type { IconType } from 'react-icons/lib';
 import { MdSort, MdFilterList, MdGraphicEq } from 'react-icons/md';
 import { ScaleType } from '../../visualizations/shared/models';
 import Selector from './Selector/Selector';

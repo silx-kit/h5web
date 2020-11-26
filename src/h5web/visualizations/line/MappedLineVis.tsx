@@ -5,7 +5,7 @@ import LineVis from './LineVis';
 import { assertArray } from '../shared/utils';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
-import { AxisMapping, ScaleType } from '../shared/models';
+import type { AxisMapping, ScaleType } from '../shared/models';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 
 interface Props {

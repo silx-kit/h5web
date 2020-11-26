@@ -8,7 +8,7 @@ import {
 } from '@testing-library/react';
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
-import { Vis } from './visualizations';
+import type { Vis } from './visualizations';
 
 export function renderApp(): RenderResult {
   return render(

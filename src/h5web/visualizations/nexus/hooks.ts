@@ -17,7 +17,7 @@ import {
   assertDefined,
   assertOptionalArray,
 } from '../shared/utils';
-import { NxData } from './models';
+import type { NxData } from './models';
 import {
   findSignalDataset,
   findSignalName,

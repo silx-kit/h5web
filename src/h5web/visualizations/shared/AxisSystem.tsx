@@ -2,7 +2,7 @@ import React, { ReactElement, useContext } from 'react';
 import { useThree } from 'react-three-fiber';
 import Html from './Html';
 import styles from './AxisSystem.module.css';
-import { AxisOffsets, Domain } from './models';
+import type { AxisOffsets, Domain } from './models';
 import { useFrameRendering, useCanvasScales } from './hooks';
 import Axis from './Axis';
 import AxisSystemContext from './AxisSystemContext';

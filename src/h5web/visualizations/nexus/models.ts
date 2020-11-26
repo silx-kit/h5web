@@ -1,4 +1,4 @@
-import { AxisMapping, ScaleType, AxisParams } from '../shared/models';
+import type { AxisMapping, ScaleType, AxisParams } from '../shared/models';
 
 export type NxAttribute =
   | 'NX_class'

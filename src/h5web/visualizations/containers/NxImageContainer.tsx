@@ -2,7 +2,7 @@ import React, { ReactElement, useContext, useEffect } from 'react';
 import { assertGroup } from '../../providers/utils';
 import { ProviderContext } from '../../providers/context';
 import { findNxDataGroup } from '../nexus/utils';
-import { VisContainerProps } from './models';
+import type { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { useNxData } from '../nexus/hooks';
 import { useHeatmapConfig } from '../heatmap/config';
