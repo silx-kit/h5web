@@ -31,6 +31,9 @@ module.exports = createConfig({
     {
       files: tsFiles,
       rules: {
+        '@typescript-eslint/no-confusing-void-expression': 'off', // not yet supported by CRA
+        'testing-library/no-await-sync-events': 'off', // not yet supported by CRA
+
         '@typescript-eslint/ban-ts-comment': 'off', // too strict
         '@typescript-eslint/no-floating-promises': 'off', // big crash sometimes better than silent fail
         '@typescript-eslint/lines-between-class-members': 'off', // allow grouping single-line members
