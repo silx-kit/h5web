@@ -1,4 +1,4 @@
-const SNAPSHOT_DELAY = 350;
+const SNAPSHOT_DELAY = 100;
 
 describe('App', () => {
   beforeEach(() => {
