@@ -153,7 +153,7 @@ describe('App', () => {
       cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
       cy.findByRole('treeitem', { name: 'image' }).click();
 
-      cy.get('svg[data-type="abscissa"] .vx-axis-tick').should(
+      cy.get('svg[data-type="abscissa"] .visx-axis-tick').should(
         'have.text',
         ['−20', '−10', '0', '10', '20'].join('') // Tick text uses minus sign − (U+2212) rather than hyphen minus - (U+002D)
       );
