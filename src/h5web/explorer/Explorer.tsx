@@ -47,10 +47,6 @@ function Explorer(props: Props): ReactElement {
   }
 
   useEffect(() => {
-    if (!tree) {
-      return;
-    }
-
     // Get nodes on default path
     const nodes = getNodesOnPath(tree, DEFAULT_PATH);
 
@@ -64,18 +60,6 @@ function Explorer(props: Props): ReactElement {
       nodesToExpand.reduce((acc, node) => ({ ...acc, [node.uid]: true }), {})
     );
   }, [onSelect, tree]);
-
-  if (!tree) {
-    return (
-      <div className={styles.explorer}>
-        <p className={styles.domain}>
-          <FiFileText className={styles.domainIcon} />
-          {domain}
-        </p>
-        <p className={styles.loading}>Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.explorer} role="tree">
