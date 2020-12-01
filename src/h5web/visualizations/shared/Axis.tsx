@@ -1,9 +1,14 @@
 import React, { ElementType, ReactElement } from 'react';
-import { AxisLeft, AxisBottom, TickRendererProps } from '@vx/axis';
-import { GridColumns, GridRows } from '@vx/grid';
+import { AxisLeft, AxisBottom, TickRendererProps } from '@visx/axis';
+import { GridColumns, GridRows } from '@visx/grid';
 import styles from './AxisSystem.module.css';
-import { Domain, Size, ScaleType, SCALE_FUNCTIONS, AxisConfig } from './models';
-import { adaptedNumTicks, getIntegerTicks, getTickFormatter } from './utils';
+import { Domain, Size, ScaleType, AxisConfig } from './models';
+import {
+  adaptedNumTicks,
+  getIntegerTicks,
+  getTickFormatter,
+  createAxisScale,
+} from './utils';
 
 const AXIS_PROPS = {
   tickStroke: 'grey',
@@ -37,9 +42,11 @@ function Axis(props: Props): ReactElement {
 
   const { scaleType = ScaleType.Linear, isIndexAxis, showGrid, label } = config;
   // Restrain ticks scales to visible domains
-  const scale = SCALE_FUNCTIONS[scaleType]();
-  scale.domain(domain);
-  scale.range(flipAxis ? [axisLength, 0] : [0, axisLength]);
+  const scale = createAxisScale({
+    domain,
+    range: flipAxis ? [axisLength, 0] : [0, axisLength],
+    type: scaleType,
+  });
 
   const [AxisComponent, GridComponent] = COMPONENTS[type];
 

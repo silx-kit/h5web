@@ -1,4 +1,11 @@
-import { scaleLinear, scaleThreshold, ScaleThreshold } from 'd3-scale';
+import {
+  scaleLinear,
+  scaleLog,
+  scaleSymlog,
+  scaleThreshold,
+  PickScaleConfig,
+  PickD3Scale,
+} from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import { format } from 'd3-format';
 import {
@@ -7,21 +14,43 @@ import {
   AxisScale,
   ScaleType,
   AxisConfig,
-  SCALE_FUNCTIONS,
   Bounds,
 } from './models';
 import { Vector3 } from 'three';
 
 const TICK_FORMAT = format('0');
 
-export const adaptedNumTicks = scaleLinear()
-  .domain([300, 900])
-  .rangeRound([3, 10])
-  .clamp(true);
+export const adaptedNumTicks = scaleLinear({
+  domain: [300, 900],
+  range: [3, 10],
+  clamp: true,
+  round: true,
+});
 
-const adaptedLogTicksThreshold = scaleLinear()
-  .domain([300, 500])
-  .range([0.8, 1.4]);
+const adaptedLogTicksThreshold = scaleLinear({
+  domain: [300, 500],
+  range: [0.8, 1.4],
+});
+
+export function createAxisScale(
+  config: PickScaleConfig<'linear' | 'log' | 'symlog', number>
+): AxisScale {
+  const { type } = config;
+
+  if (type === 'linear') {
+    return scaleLinear<number>(config);
+  }
+
+  if (type === 'log') {
+    return scaleLog<number>(config);
+  }
+
+  if (type === 'symlog') {
+    return scaleSymlog<number>(config);
+  }
+
+  throw new Error('Unknown type');
+}
 
 export function computeVisSize(
   availableSize: Size,
@@ -108,18 +137,18 @@ export function extendDomain(
 export function getValueToIndexScale(
   values: number[],
   switchAtMidpoints?: boolean
-): ScaleThreshold<number, number> {
+): PickD3Scale<'threshold', number, number, number> {
   const indices = range(values.length);
 
   const thresholds = switchAtMidpoints
     ? values.map((_, i) => values[i - 1] + (values[i] - values[i - 1]) / 2) // Shift the thresholds for the switch from i-1 to i to happen between values[i-1] and values[i]
     : values; // Else, the switch from i-1 to i will happen at values[i]
 
-  const valueToIndexScale = scaleThreshold();
-  valueToIndexScale.domain(thresholds.slice(1)); // First threshold (going from 0 to 1) should be for the second value. Scaling the first value should return at 0.
-  valueToIndexScale.range(indices);
-
-  return valueToIndexScale;
+  // First threshold (going from 0 to 1) should be for the second value. Scaling the first value should return at 0.
+  return scaleThreshold<number, number>({
+    domain: thresholds.slice(1),
+    range: indices,
+  });
 }
 
 export function getCanvasScale(
@@ -128,11 +157,11 @@ export function getCanvasScale(
 ): AxisScale {
   const { scaleType, domain } = config;
 
-  const scale = SCALE_FUNCTIONS[scaleType || ScaleType.Linear]();
-  scale.domain(domain);
-  scale.range([-canvasSize / 2, canvasSize / 2]);
-
-  return scale;
+  return createAxisScale({
+    domain,
+    range: [-canvasSize / 2, canvasSize / 2],
+    type: scaleType || ScaleType.Linear,
+  });
 }
 
 /**

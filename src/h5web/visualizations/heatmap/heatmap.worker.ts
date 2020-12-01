@@ -1,9 +1,10 @@
 import { expose, transfer } from 'comlink';
 import { rgb } from 'd3-color';
-import { scaleSequential } from 'd3-scale';
 import type { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
-import { Domain, ScaleType, SCALE_FUNCTIONS } from '../shared/models';
+import { Domain, ScaleType } from '../shared/models';
+import { createAxisScale } from '../shared/utils';
+import { scaleSequential } from 'd3-scale';
 
 function computeTextureData(
   values: Float64Array,
@@ -11,8 +12,7 @@ function computeTextureData(
   scaleType: ScaleType,
   colorMap: ColorMap
 ): Uint8Array | undefined {
-  const dataScale = SCALE_FUNCTIONS[scaleType]();
-  dataScale.domain(domain);
+  const dataScale = createAxisScale({ domain, type: scaleType });
 
   const colorScale = scaleSequential(INTERPOLATORS[colorMap]);
 

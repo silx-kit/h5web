@@ -1,25 +1,10 @@
-import {
-  ScaleLinear,
-  ScaleLogarithmic,
-  ScaleSymLog,
-  scaleLog,
-  scaleLinear,
-  scaleSymlog,
-} from 'd3-scale';
+import { PickD3Scale } from '@visx/scale';
 
 export enum ScaleType {
   Linear = 'linear',
   Log = 'log',
   SymLog = 'symlog',
 }
-
-type ScaleFn = typeof scaleLinear | typeof scaleLog | typeof scaleSymlog;
-
-export const SCALE_FUNCTIONS: Record<ScaleType, ScaleFn> = {
-  [ScaleType.Linear]: scaleLinear,
-  [ScaleType.Log]: scaleLog,
-  [ScaleType.SymLog]: scaleSymlog,
-};
 
 export interface Size {
   width: number;
@@ -36,10 +21,11 @@ export interface AxisConfig {
   label?: string;
 }
 
-export type AxisScale =
-  | ScaleLinear<number, number>
-  | ScaleLogarithmic<number, number>
-  | ScaleSymLog<number, number>;
+export type AxisScale = PickD3Scale<
+  ScaleType.Linear | ScaleType.Log | ScaleType.SymLog,
+  number,
+  number
+>;
 
 export interface AxisOffsets {
   left: number;
