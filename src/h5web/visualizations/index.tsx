@@ -47,7 +47,7 @@ interface VisDef {
   Icon: IconType;
   Toolbar?: ElementType<ToolbarProps>;
   Container: ElementType<VisContainerProps>;
-  supportsEntity(entity: HDF5Entity, metadata: HDF5Metadata): boolean;
+  supportsEntity: (entity: HDF5Entity, metadata: HDF5Metadata) => boolean;
 }
 
 export const VIS_DEFS: Record<Vis, VisDef> = {
