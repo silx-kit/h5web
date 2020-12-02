@@ -4,17 +4,15 @@ import { MyHDF5Entity } from '../providers/models';
 import Icon from './Icon';
 import { isMyGroup } from '../providers/utils';
 
-export type ExpandedGroups = Record<string, boolean>;
-
 interface Props {
   level: number;
   entities: MyHDF5Entity[];
   selectedEntity?: MyHDF5Entity;
-  expandedGroups: ExpandedGroups;
+  expandedGroups: Set<string>;
   onSelect: (entity: MyHDF5Entity) => void;
 }
 
-function TreeView(props: Props): ReactElement {
+function EntityList(props: Props): ReactElement {
   const { level, entities, selectedEntity, expandedGroups, onSelect } = props;
 
   if (entities.length === 0) {
@@ -25,7 +23,7 @@ function TreeView(props: Props): ReactElement {
     <ul className={styles.group} role="group">
       {entities.map((entity) => {
         const { uid, name } = entity;
-        const isExpanded = !!expandedGroups[entity.uid];
+        const isExpanded = expandedGroups.has(entity.uid);
 
         return (
           <li
@@ -37,7 +35,7 @@ function TreeView(props: Props): ReactElement {
               className={styles.btn}
               type="button"
               role="treeitem"
-              aria-expanded={isMyGroup(entity) ? isExpanded : undefined} // Leaves cannot be expanded
+              aria-expanded={isMyGroup(entity) ? isExpanded : undefined}
               aria-selected={entity === selectedEntity}
               onClick={() => {
                 onSelect(entity);
@@ -48,7 +46,7 @@ function TreeView(props: Props): ReactElement {
             </button>
 
             {isMyGroup(entity) && isExpanded && (
-              <TreeView
+              <EntityList
                 level={level + 1}
                 entities={entity.children}
                 selectedEntity={selectedEntity}
@@ -63,4 +61,4 @@ function TreeView(props: Props): ReactElement {
   );
 }
 
-export default TreeView;
+export default EntityList;

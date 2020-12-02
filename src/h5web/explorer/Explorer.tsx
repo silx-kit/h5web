@@ -1,17 +1,12 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useContext,
-  ReactElement,
-} from 'react';
+import React, { useEffect, useMemo, useContext, ReactElement } from 'react';
 import { FiFileText } from 'react-icons/fi';
 import type { MyHDF5Entity } from '../providers/models';
-import TreeView, { ExpandedGroups } from './TreeView';
+import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import { buildTree, getEntityAtPath } from './utils';
 import { ProviderContext } from '../providers/context';
 import { isMyGroup } from '../providers/utils';
+import { useSet } from 'react-use';
 
 const DEFAULT_PATH: number[] = JSON.parse(
   process.env.REACT_APP_DEFAULT_PATH || '[]'
@@ -28,33 +23,35 @@ function Explorer(props: Props): ReactElement {
   const { domain, metadata } = useContext(ProviderContext);
   const root = useMemo(() => buildTree(metadata, domain), [domain, metadata]);
 
-  const [expandedGroups, setExpandedGroups] = useState<ExpandedGroups>({});
+  const [
+    expandedGroups,
+    { add: expandGroup, toggle: toggleGroup },
+  ] = useSet<string>();
 
   function handleSelect(entity: MyHDF5Entity): void {
-    const isExpanded = !!expandedGroups[entity.uid];
+    const isExpanded = expandedGroups.has(entity.uid);
     const isSelected = entity === selectedEntity;
     onSelect(entity);
 
+    // Expand if collapsed; collapse is expanded and selected
     if (isMyGroup(entity) && (!isExpanded || isSelected)) {
-      setExpandedGroups({
-        ...expandedGroups,
-        [entity.uid]: !isExpanded,
-      });
+      toggleGroup(entity.uid);
     }
   }
 
   useEffect(() => {
+    // Find and select entity at default path
     const entityToSelect = getEntityAtPath(root, DEFAULT_PATH);
     onSelect(entityToSelect);
 
-    // Expand groups on default path and selected entity if group
-    setExpandedGroups(
-      entityToSelect.parents.reduce(
-        (acc, group) => ({ ...acc, [group.uid]: true }),
-        isMyGroup(entityToSelect) ? { [entityToSelect.uid]: true } : {}
-      )
-    );
-  }, [onSelect, root]);
+    // Expand entity if group
+    if (isMyGroup(entityToSelect)) {
+      expandGroup(entityToSelect.uid);
+    }
+
+    // Expand parent groups
+    entityToSelect.parents.forEach((group) => expandGroup(group.uid));
+  }, [expandGroup, onSelect, root]);
 
   return (
     <div className={styles.explorer} role="tree">
@@ -71,7 +68,7 @@ function Explorer(props: Props): ReactElement {
         {domain}
       </button>
 
-      <TreeView
+      <EntityList
         level={0}
         entities={root.children}
         selectedEntity={selectedEntity}
