@@ -17,11 +17,10 @@ import {
   HDF5NumericType,
   HDF5Group,
   HDF5Datatype,
+  MyHDF5Entity,
+  MyHDF5EntityKind,
+  MyHDF5Group,
 } from './models';
-
-export function isHardLink(link: HDF5Link): link is HDF5HardLink {
-  return link.class === HDF5LinkClass.Hard;
-}
 
 export function isReachable(
   link: HDF5Link
@@ -40,6 +39,10 @@ export function isDatatype(entity: HDF5Entity): entity is HDF5Datatype {
 
 export function isGroup(entity: HDF5Entity): entity is HDF5Group {
   return entity.collection === HDF5Collection.Groups;
+}
+
+export function isMyGroup(entity: MyHDF5Entity): entity is MyHDF5Group {
+  return entity.kind === MyHDF5EntityKind.Group;
 }
 
 export function hasSimpleShape<T extends HDF5Type>(
@@ -116,7 +119,7 @@ export function getLink(name: string, group: HDF5Group): HDF5Link | undefined {
   return group.links?.find((l) => l.title === name);
 }
 
-export function getEntity(
+function getEntity(
   link: HDF5Link | undefined,
   metadata: HDF5Metadata
 ): HDF5Entity | undefined {

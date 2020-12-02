@@ -1,24 +1,16 @@
-import React, { useState, useContext, ReactElement } from 'react';
+import React, { useState, ReactElement } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
-import type { HDF5Link } from './providers/models';
+import type { MyHDF5Entity } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
-import type { TreeNode } from './explorer/models';
 import BreadcrumbsBar from './BreadcrumbsBar';
 import Visualizer from './visualizer/Visualizer';
-import { getEntity } from './providers/utils';
-import { ProviderContext } from './providers/context';
 
 function App(): ReactElement {
-  const { metadata } = useContext(ProviderContext);
-
-  const [selectedNode, setSelectedNode] = useState<TreeNode<HDF5Link>>();
+  const [selectedEntity, setSelectedEntity] = useState<MyHDF5Entity>();
   const [isExplorerOpen, setExplorerOpen] = useState(true);
   const [isInspecting, setInspecting] = useState(false);
-
-  const selectedLink = selectedNode?.data;
-  const selectedEntity = getEntity(selectedLink, metadata);
 
   return (
     <div className={styles.app}>
@@ -29,7 +21,10 @@ function App(): ReactElement {
           flex={25}
           minSize={250}
         >
-          <Explorer selectedNode={selectedNode} onSelect={setSelectedNode} />
+          <Explorer
+            selectedEntity={selectedEntity}
+            onSelect={setSelectedEntity}
+          />
         </ReflexElement>
 
         <ReflexSplitter
@@ -42,14 +37,17 @@ function App(): ReactElement {
             onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
             isInspecting={isInspecting}
             onChangeInspecting={setInspecting}
-            selectedNode={selectedNode}
+            selectedEntity={selectedEntity}
           />
           {isInspecting ? (
-            <MetadataViewer link={selectedLink} entity={selectedEntity} />
+            <MetadataViewer
+              link={selectedEntity?.rawLink}
+              entity={selectedEntity?.rawEntity}
+            />
           ) : (
             <Visualizer
-              entity={selectedEntity}
-              entityName={selectedLink && selectedLink.title}
+              entity={selectedEntity?.rawEntity}
+              entityName={selectedEntity?.name}
             />
           )}
         </ReflexElement>

@@ -26,14 +26,11 @@
   font-weight: bold;
 }
 
-.domain {
+.domainBtn {
+  composes: btn;
   margin: 0;
   padding: 1rem;
   font-weight: 600;
-}
-
-.domainBtn {
-  composes: btn domain;
 }
 
 .icon {
@@ -47,8 +44,4 @@
   font-size: 1.25em;
   margin-left: -0.375rem;
   margin-right: 0.125rem;
-}
-
-.loading {
-  padding: 0.25rem 1rem;
 }
