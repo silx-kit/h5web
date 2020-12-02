@@ -63,7 +63,11 @@ function MappedLineVis(props: Props): ReactElement {
   const errorValues = autoScale
     ? errorArray && (errorArray.data as number[])
     : baseErrorsArray && (baseErrorsArray.data as number[]);
-  const dataDomain = useDomain(dataValues, yScaleType, errorValues);
+  const dataDomain = useDomain(
+    dataValues,
+    yScaleType,
+    showErrors ? errorValues : undefined
+  );
 
   const mappedAbscissaParams = axisMapping[dimensionMapping.indexOf('x')];
   useEffect(() => {
