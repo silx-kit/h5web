@@ -6,60 +6,55 @@ import React, {
   ReactElement,
 } from 'react';
 import { FiFileText } from 'react-icons/fi';
-import type { HDF5Link } from '../providers/models';
-import type { TreeNode, ExpandedNodes } from './models';
-import TreeView from './TreeView';
+import type { MyHDF5Entity } from '../providers/models';
+import TreeView, { ExpandedGroups } from './TreeView';
 import styles from './Explorer.module.css';
-import Icon from './Icon';
-import { buildTree, getNodesOnPath } from './utils';
+import { buildTree, getEntityAtPath } from './utils';
 import { ProviderContext } from '../providers/context';
+import { isMyGroup } from '../providers/utils';
 
 const DEFAULT_PATH: number[] = JSON.parse(
   process.env.REACT_APP_DEFAULT_PATH || '[]'
 );
 
 interface Props {
-  onSelect: (node: TreeNode<HDF5Link>) => void;
-  selectedNode?: TreeNode<HDF5Link>;
+  onSelect: (entity: MyHDF5Entity) => void;
+  selectedEntity?: MyHDF5Entity;
 }
 
 function Explorer(props: Props): ReactElement {
-  const { onSelect, selectedNode } = props;
+  const { onSelect, selectedEntity } = props;
 
   const { domain, metadata } = useContext(ProviderContext);
-  const tree = useMemo(() => buildTree(metadata, domain), [domain, metadata]);
+  const root = useMemo(() => buildTree(metadata, domain), [domain, metadata]);
 
-  const [expandedNodes, setExpandedNodes] = useState<ExpandedNodes>({});
+  const [expandedGroups, setExpandedGroups] = useState<ExpandedGroups>({});
 
-  function handleNodeSelect(node: TreeNode<HDF5Link>): void {
-    const isBranch = !!node.children;
-    const isExpanded = !!expandedNodes[node.uid];
-    const isSelected = node === selectedNode;
+  function handleSelect(entity: MyHDF5Entity): void {
+    const isExpanded = !!expandedGroups[entity.uid];
+    const isSelected = entity === selectedEntity;
+    onSelect(entity);
 
-    onSelect(node);
-
-    if (isBranch && (!isExpanded || isSelected)) {
-      setExpandedNodes({
-        ...expandedNodes,
-        [node.uid]: !isExpanded,
+    if (isMyGroup(entity) && (!isExpanded || isSelected)) {
+      setExpandedGroups({
+        ...expandedGroups,
+        [entity.uid]: !isExpanded,
       });
     }
   }
 
   useEffect(() => {
-    // Get nodes on default path
-    const nodes = getNodesOnPath(tree, DEFAULT_PATH);
+    const entityToSelect = getEntityAtPath(root, DEFAULT_PATH);
+    onSelect(entityToSelect);
 
-    // Select last node in path, or root node of tree if default path was empty
-    const nodeToSelect = nodes[nodes.length - 1] || tree;
-    onSelect(nodeToSelect);
-
-    // Expand nodes on default path, excluding last node if not a branch
-    const nodesToExpand = nodeToSelect.children ? nodes : nodes.slice(0, -1);
-    setExpandedNodes(
-      nodesToExpand.reduce((acc, node) => ({ ...acc, [node.uid]: true }), {})
+    // Expand groups on default path and selected entity if group
+    setExpandedGroups(
+      entityToSelect.parents.reduce(
+        (acc, group) => ({ ...acc, [group.uid]: true }),
+        isMyGroup(entityToSelect) ? { [entityToSelect.uid]: true } : {}
+      )
     );
-  }, [onSelect, tree]);
+  }, [onSelect, root]);
 
   return (
     <div className={styles.explorer} role="tree">
@@ -67,27 +62,22 @@ function Explorer(props: Props): ReactElement {
         className={styles.domainBtn}
         type="button"
         role="treeitem"
-        aria-selected={selectedNode === tree}
+        aria-selected={selectedEntity === root}
         onClick={() => {
-          onSelect(tree);
+          onSelect(root);
         }}
       >
         <FiFileText className={styles.domainIcon} />
         {domain}
       </button>
 
-      {tree.children && (
-        <TreeView
-          level={0}
-          nodes={tree.children}
-          selectedNode={selectedNode}
-          expandedNodes={expandedNodes}
-          onSelect={handleNodeSelect}
-          renderIcon={(data, isBranch, isExpanded) => (
-            <Icon data={data} isBranch={isBranch} isExpanded={isExpanded} />
-          )}
-        />
-      )}
+      <TreeView
+        level={0}
+        entities={root.children}
+        selectedEntity={selectedEntity}
+        expandedGroups={expandedGroups}
+        onSelect={handleSelect}
+      />
     </div>
   );
 }

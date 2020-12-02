@@ -1,8 +1,7 @@
 import React, { Fragment, ReactElement } from 'react';
 import { FiSidebar, FiChevronRight } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
-import type { TreeNode } from './explorer/models';
-import type { HDF5Link, HDF5HardLink } from './providers/models';
+import type { MyHDF5Entity } from './providers/models';
 import ToggleGroup from './toolbar/controls/ToggleGroup';
 import ToggleBtn from './toolbar/controls/ToggleBtn';
 
@@ -11,7 +10,7 @@ interface Props {
   onToggleExplorer: () => void;
   isInspecting: boolean;
   onChangeInspecting: (b: boolean) => void;
-  selectedNode?: TreeNode<HDF5Link>;
+  selectedEntity?: MyHDF5Entity;
 }
 
 function BreadcrumbsBar(props: Props): ReactElement {
@@ -20,7 +19,7 @@ function BreadcrumbsBar(props: Props): ReactElement {
     onToggleExplorer,
     isInspecting,
     onChangeInspecting,
-    selectedNode,
+    selectedEntity,
   } = props;
 
   // Excludes the first parent (the domain) if the explorer is opened
@@ -35,16 +34,16 @@ function BreadcrumbsBar(props: Props): ReactElement {
         value={isExplorerOpen}
         onChange={onToggleExplorer}
       />
-      {selectedNode && (
+      {selectedEntity && (
         <h1 className={styles.breadCrumbs}>
-          {selectedNode?.parents.slice(firstParentIndex).map((member) => (
-            <Fragment key={(member as HDF5HardLink).id}>
-              <span className={styles.crumb}>{member.title}</span>
+          {selectedEntity?.parents.slice(firstParentIndex).map((parent) => (
+            <Fragment key={parent.id}>
+              <span className={styles.crumb}>{parent.name}</span>
               <FiChevronRight className={styles.separator} title="/" />
             </Fragment>
           ))}
           <span className={styles.crumb} data-current>
-            {selectedNode.data.title}
+            {selectedEntity.name}
           </span>
         </h1>
       )}

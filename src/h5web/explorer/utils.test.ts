@@ -1,12 +1,21 @@
-import { getNodesOnPath, buildTree } from './utils';
-import type { TreeNode } from './models';
+import { buildTree } from './utils';
 import {
   HDF5Collection,
-  HDF5Group,
   HDF5RootLink,
   HDF5LinkClass,
-  HDF5Metadata,
+  MyHDF5EntityKind,
+  MyHDF5Dataset,
+  MyHDF5Group,
 } from '../providers/models';
+import {
+  intType,
+  makeDataset,
+  makeGroup,
+  makeHardLink,
+  makeMetadata,
+  makeStrAttr,
+  scalarShape,
+} from '../providers/mock/data';
 
 const domain = 'domain';
 const rootLink: HDF5RootLink = {
@@ -16,157 +25,131 @@ const rootLink: HDF5RootLink = {
   id: '913d8791',
 };
 
-const dataA = {};
-const dataB = {};
-const dataC = {};
-
-const nodeC: TreeNode<{}> = {
-  uid: 'c',
-  label: 'C',
-  data: dataC,
-  parents: [dataB],
-};
-
-const nodeB: TreeNode<{}> = {
-  uid: 'b',
-  label: 'B',
-  data: dataB,
-  children: [nodeC],
-  parents: [dataA],
-};
-
-const nodeA: TreeNode<{}> = {
-  uid: 'a',
-  label: 'A',
-  data: dataA,
-  children: [nodeB],
-  parents: [],
-};
-
 describe('Explorer utilities', () => {
   describe('buildTree', () => {
     it('should process empty metadata', () => {
-      const emptyMetadata = {
+      const rootGroup = makeGroup('913d8791');
+      const emptyMetadata = makeMetadata({
         root: '913d8791',
-        groups: {
-          '913d8791': {
-            id: '913d8791',
-            collection: HDF5Collection.Groups,
-          } as HDF5Group,
-        },
-      };
+        groups: [rootGroup],
+      });
 
       expect(buildTree(emptyMetadata, domain)).toEqual({
         uid: expect.any(String),
-        label: domain,
-        data: rootLink,
-        children: [],
+        id: '913d8791',
+        name: domain,
+        kind: MyHDF5EntityKind.Group,
         parents: [],
+        children: [],
+        attributes: [],
+        rawLink: rootLink,
+        rawEntity: rootGroup,
       });
     });
 
     it('should process metadata with single dataset in root group', () => {
-      const link = {
-        class: 'H5L_TYPE_HARD',
-        id: '1203fee7',
-        title: 'foo',
-        collection: 'datasets',
+      const dataset = makeDataset('1203fee7', intType, scalarShape);
+      const link = makeHardLink(HDF5Collection.Datasets, 'foo', '1203fee7');
+      const rootGroup = makeGroup('913d8791', undefined, [link]);
+
+      const simpleMetadata = makeMetadata({
+        root: '913d8791',
+        groups: [rootGroup],
+        datasets: [dataset],
+      });
+
+      const expectedTree: MyHDF5Group = {
+        uid: expect.any(String),
+        id: '913d8791',
+        name: domain,
+        kind: MyHDF5EntityKind.Group,
+        parents: [],
+        children: [],
+        attributes: [],
+        rawLink: rootLink,
+        rawEntity: rootGroup,
       };
 
-      const simpleMetadata = {
-        root: '913d8791',
-        groups: {
-          '913d8791': {
-            id: '913d8791',
-            collection: HDF5Collection.Groups,
-            links: [link],
-          },
-        },
-      } as HDF5Metadata;
-
-      expect(buildTree(simpleMetadata, domain)).toEqual({
+      const expectedChild: MyHDF5Dataset = {
         uid: expect.any(String),
-        label: domain,
-        data: rootLink,
-        parents: [],
-        children: [
-          {
-            uid: expect.any(String),
-            label: link.title,
-            data: link,
-            parents: [rootLink],
-          },
-        ],
-      });
+        id: '1203fee7',
+        name: link.title,
+        kind: MyHDF5EntityKind.Dataset,
+        parents: [expectedTree],
+        attributes: [],
+        shape: scalarShape,
+        type: intType,
+        rawLink: link,
+        rawEntity: dataset,
+      };
+
+      expectedTree.children.push(expectedChild);
+      expect(buildTree(simpleMetadata, domain)).toEqual(expectedTree);
     });
 
     it('should process metadata with nested groups', () => {
-      const link1 = {
-        class: 'H5L_TYPE_HARD',
-        id: '0a68caca',
-        title: 'foo',
-        collection: 'groups',
-      };
+      const dataset = makeDataset('1203fee7', intType, scalarShape);
+      const datasetLink = makeHardLink(
+        HDF5Collection.Datasets,
+        'foo',
+        '1203fee7'
+      );
 
-      const link2 = {
-        class: 'H5L_TYPE_HARD',
-        id: '1203fee7',
-        title: 'bar',
-        collection: 'datasets',
-      };
+      const groupAttr = makeStrAttr('attr', 'foo');
+      const group = makeGroup('0a68caca', [groupAttr], [datasetLink]);
+      const groupLink = makeHardLink(
+        HDF5Collection.Groups,
+        'group',
+        '0a68caca'
+      );
 
-      const nestedMetadata = {
+      const rootGroup = makeGroup('913d8791', undefined, [groupLink]);
+      const nestedMetadata = makeMetadata({
         root: '913d8791',
-        groups: {
-          '913d8791': {
-            id: '913d8791',
-            collection: HDF5Collection.Groups,
-            links: [link1],
-          },
-          '0a68caca': {
-            id: '0a68caca',
-            collection: HDF5Collection.Groups,
-            links: [link2],
-          },
-        },
-      } as HDF5Metadata;
-
-      expect(buildTree(nestedMetadata, domain)).toEqual({
-        uid: expect.any(String),
-        label: domain,
-        data: rootLink,
-        parents: [],
-        children: [
-          {
-            uid: expect.any(String),
-            label: link1.title,
-            data: link1,
-            parents: [rootLink],
-            children: [
-              {
-                uid: expect.any(String),
-                label: link2.title,
-                data: link2,
-                parents: [rootLink, link1],
-              },
-            ],
-          },
-        ],
+        groups: [rootGroup, group],
+        datasets: [dataset],
       });
-    });
-  });
 
-  describe('getNodesOnPath', () => {
-    it('should return nodes on path', () => {
-      expect(getNodesOnPath(nodeA, [])).toEqual([]);
-      expect(getNodesOnPath(nodeA, [0])).toEqual([nodeB]);
-      expect(getNodesOnPath(nodeA, [0, 0])).toEqual([nodeB, nodeC]);
-    });
+      const expectedTree: MyHDF5Group = {
+        uid: expect.any(String),
+        id: '913d8791',
+        name: domain,
+        kind: MyHDF5EntityKind.Group,
+        parents: [],
+        children: [],
+        attributes: [],
+        rawLink: rootLink,
+        rawEntity: rootGroup,
+      };
 
-    it('should process invalid path as far as possible', () => {
-      expect(getNodesOnPath(nodeA, [1, 0])).toEqual([]);
-      expect(getNodesOnPath(nodeA, [0, 1])).toEqual([nodeB]);
-      expect(getNodesOnPath(nodeA, [0, 0, 1])).toEqual([nodeB, nodeC]);
+      const expectedChildGroup: MyHDF5Group = {
+        uid: expect.any(String),
+        id: '0a68caca',
+        name: 'group',
+        kind: MyHDF5EntityKind.Group,
+        parents: [expectedTree],
+        children: [],
+        attributes: [groupAttr],
+        rawLink: groupLink,
+        rawEntity: group,
+      };
+
+      const expectedChildDataset: MyHDF5Dataset = {
+        uid: expect.any(String),
+        id: '1203fee7',
+        name: 'foo',
+        kind: MyHDF5EntityKind.Dataset,
+        parents: [expectedTree, expectedChildGroup],
+        attributes: [],
+        shape: scalarShape,
+        type: intType,
+        rawLink: datasetLink,
+        rawEntity: dataset,
+      };
+
+      expectedTree.children.push(expectedChildGroup);
+      expectedChildGroup.children.push(expectedChildDataset);
+      expect(buildTree(nestedMetadata, domain)).toEqual(expectedTree);
     });
   });
 });

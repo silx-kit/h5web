@@ -1,43 +1,107 @@
 import { nanoid } from 'nanoid';
-import type { TreeNode } from './models';
 import {
   HDF5Collection,
-  HDF5Link,
   HDF5LinkClass,
   HDF5RootLink,
   HDF5Metadata,
+  MyHDF5Entity,
+  MyHDF5Group,
+  MyHDF5Dataset,
+  MyHDF5Datatype,
+  HDF5HardLink,
+  MyHDF5EntityKind,
 } from '../providers/models';
-import { isReachable } from '../providers/utils';
+import { isMyGroup, isReachable } from '../providers/utils';
 
-function buildTreeNode(
-  metadata: HDF5Metadata,
-  link: HDF5Link,
-  parents: HDF5Link[]
-): TreeNode<HDF5Link> {
-  const group =
-    isReachable(link) && link.collection === HDF5Collection.Groups
-      ? metadata.groups[link.id]
-      : undefined;
-
+function prepareEntity(
+  link: HDF5HardLink | HDF5RootLink,
+  parents: MyHDF5Group[]
+): Omit<MyHDF5Entity, 'kind'> {
   return {
     uid: nanoid(),
-    label: link.title,
-    data: link,
+    id: link.id,
+    name: link.title,
     parents,
-    ...(group
-      ? {
-          children: (group.links || []).map((lk) =>
-            buildTreeNode(metadata, lk, [...parents, link])
-          ),
-        }
-      : {}),
+    attributes: [],
+    rawLink: link,
   };
 }
 
-export function buildTree(
+function buildDataset(
   metadata: HDF5Metadata,
-  domain: string
-): TreeNode<HDF5Link> {
+  link: HDF5HardLink | HDF5RootLink,
+  parents: MyHDF5Group[]
+): MyHDF5Dataset {
+  const rawDataset = metadata.datasets![link.id]; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+
+  return {
+    ...prepareEntity(link, parents),
+    kind: MyHDF5EntityKind.Dataset,
+    attributes: rawDataset.attributes || [],
+    shape: rawDataset.shape,
+    type: rawDataset.type,
+    rawEntity: rawDataset,
+  };
+}
+
+function buildDatatype(
+  metadata: HDF5Metadata,
+  link: HDF5HardLink | HDF5RootLink,
+  parents: MyHDF5Group[]
+): MyHDF5Datatype {
+  const rawDatatype = metadata.datatypes![link.id]; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+
+  return {
+    ...prepareEntity(link, parents),
+    kind: MyHDF5EntityKind.Datatype,
+    type: rawDatatype.type,
+    rawEntity: rawDatatype,
+  };
+}
+
+function buildGroup(
+  metadata: HDF5Metadata,
+  link: HDF5HardLink | HDF5RootLink,
+  parents: MyHDF5Group[]
+): MyHDF5Group {
+  const rawGroup = metadata.groups[link.id];
+
+  const group: MyHDF5Group = {
+    ...prepareEntity(link, parents),
+    kind: MyHDF5EntityKind.Group,
+    attributes: rawGroup.attributes || [],
+    children: [],
+    rawEntity: rawGroup,
+  };
+
+  const newParents = [...parents, group];
+
+  group.children = (rawGroup.links || []).map((link) => {
+    if (!isReachable(link)) {
+      return {
+        uid: nanoid(),
+        name: link.title,
+        kind: MyHDF5EntityKind.Link,
+        parents: newParents,
+        attributes: [],
+        rawLink: link,
+      };
+    }
+
+    switch (link.collection) {
+      case HDF5Collection.Groups:
+        return buildGroup(metadata, link, newParents);
+      case HDF5Collection.Datasets:
+        return buildDataset(metadata, link, newParents);
+      default:
+        return buildDatatype(metadata, link, newParents);
+    }
+  });
+
+  return group;
+}
+
+export function buildTree(metadata: HDF5Metadata, domain: string): MyHDF5Group {
   const rootLink: HDF5RootLink = {
     class: HDF5LinkClass.Root,
     collection: HDF5Collection.Groups,
@@ -45,13 +109,18 @@ export function buildTree(
     id: metadata.root,
   };
 
-  return buildTreeNode(metadata, rootLink, []);
+  return buildGroup(metadata, rootLink, []);
 }
 
-export function getNodesOnPath<T>(
-  tree: TreeNode<T>,
+export function getEntityAtPath(
+  entity: MyHDF5Entity,
   path: number[]
-): TreeNode<T>[] {
-  const node = tree.children?.[path[0] ?? -1];
-  return node ? [node, ...getNodesOnPath(node, path.slice(1))] : [];
+): MyHDF5Entity {
+  if (path.length === 0 || !isMyGroup(entity)) {
+    return entity;
+  }
+
+  const [nextIndex, ...rest] = path;
+  const nextEntity = entity.children[nextIndex];
+  return nextEntity ? getEntityAtPath(nextEntity, rest) : entity; // go as far as possible
 }

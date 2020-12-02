@@ -8,28 +8,26 @@ import {
   FiLink,
 } from 'react-icons/fi';
 import type { IconType } from 'react-icons';
-
-import { HDF5Link, HDF5Collection } from '../providers/models';
-
+import { MyHDF5Entity, MyHDF5EntityKind } from '../providers/models';
 import styles from './Explorer.module.css';
-import { isHardLink } from '../providers/utils';
+import { isMyGroup } from '../providers/utils';
 
-const LEAF_ICONS: Record<HDF5Collection, IconType> = {
-  [HDF5Collection.Groups]: FiFolder,
-  [HDF5Collection.Datasets]: FiLayers,
-  [HDF5Collection.Datatypes]: FiHash,
+const LEAF_ICONS: Record<MyHDF5EntityKind, IconType> = {
+  [MyHDF5EntityKind.Group]: FiFolder,
+  [MyHDF5EntityKind.Dataset]: FiLayers,
+  [MyHDF5EntityKind.Datatype]: FiHash,
+  [MyHDF5EntityKind.Link]: FiLink,
 };
 
 interface Props {
-  data: HDF5Link;
-  isBranch: boolean;
+  entity: MyHDF5Entity;
   isExpanded: boolean;
 }
 
 function Icon(props: Props): ReactElement {
-  const { data, isBranch, isExpanded } = props;
+  const { entity, isExpanded } = props;
 
-  if (isBranch) {
+  if (isMyGroup(entity)) {
     return isExpanded ? (
       <FiChevronDown className={styles.icon} />
     ) : (
@@ -37,12 +35,8 @@ function Icon(props: Props): ReactElement {
     );
   }
 
-  if (isHardLink(data)) {
-    const LeafIcon = LEAF_ICONS[data.collection];
-    return <LeafIcon className={styles.icon} />;
-  }
-
-  return <FiLink className={styles.icon} />;
+  const LeafIcon = LEAF_ICONS[entity.kind];
+  return <LeafIcon className={styles.icon} />;
 }
 
 export default Icon;
