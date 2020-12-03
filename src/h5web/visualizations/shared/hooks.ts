@@ -9,11 +9,10 @@ import { getCanvasScale, getDomain } from './utils';
 import AxisSystemContext from './AxisSystemContext';
 import type { AxisScale } from './models';
 
-export function useBaseArray<T>(value: T[], rawDims: number[]): ndarray<T>;
-export function useBaseArray<T>(
-  value: T[] | undefined,
+export function useBaseArray<T extends unknown[] | undefined>(
+  value: T,
   rawDims: number[]
-): ndarray<T> | undefined;
+): T extends (infer U)[] ? ndarray<U> : undefined;
 
 export function useBaseArray<T>(
   value: T[] | undefined,
@@ -24,14 +23,10 @@ export function useBaseArray<T>(
   }, [rawDims, value]);
 }
 
-export function useMappedArray<T>(
-  baseArray: ndarray<T>,
+export function useMappedArray<T extends ndarray<unknown> | undefined>(
+  baseArray: T,
   mapping: DimensionMapping
-): ndarray<T>;
-export function useMappedArray<T>(
-  baseArray: ndarray<T> | undefined,
-  mapping: DimensionMapping
-): ndarray<T> | undefined;
+): T extends ndarray<infer U> ? ndarray<U> : undefined;
 
 export function useMappedArray<T>(
   baseArray: ndarray<T> | undefined,
