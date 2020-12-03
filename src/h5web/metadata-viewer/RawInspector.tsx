@@ -1,19 +1,28 @@
 import React, { ReactElement } from 'react';
-import type { HDF5Link, HDF5Entity } from '../providers/models';
+import type { MyHDF5Entity } from '../providers/models';
 
 import styles from './RawInspector.module.css';
 
 interface Props {
-  data: HDF5Link | HDF5Entity;
+  entity: MyHDF5Entity;
 }
 
 function RawInspector(props: Props): ReactElement {
-  const { data } = props;
+  const { entity } = props;
 
   return (
     <details>
       <summary className={styles.heading}>Inspect</summary>
-      <pre className={styles.content}>{JSON.stringify(data, null, 2)}</pre>
+      <pre className={styles.content}>
+        {JSON.stringify(
+          entity,
+          (key, value) => {
+            // Bypass cyclic dependencies
+            return key !== 'parents' && key !== 'children' ? value : undefined;
+          },
+          2
+        )}
+      </pre>
     </details>
   );
 }

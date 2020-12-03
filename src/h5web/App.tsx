@@ -40,10 +40,7 @@ function App(): ReactElement {
             selectedEntity={selectedEntity}
           />
           {isInspecting ? (
-            <MetadataViewer
-              link={selectedEntity?.rawLink}
-              entity={selectedEntity?.rawEntity}
-            />
+            <MetadataViewer entity={selectedEntity} />
           ) : (
             <Visualizer
               entity={selectedEntity?.rawEntity}

@@ -1,29 +1,28 @@
 import React, { ReactElement } from 'react';
-import type { HDF5Link, HDF5Entity } from '../providers/models';
+import type { MyHDF5Entity } from '../providers/models';
 import AttributesInfo from './AttributesInfo';
-import LinkInfo from './LinkInfo';
 import EntityInfo from './EntityInfo';
 import styles from './MetadataViewer.module.css';
 
 interface Props {
-  link?: HDF5Link;
-  entity?: HDF5Entity;
+  entity?: MyHDF5Entity;
 }
 
 function MetadataViewer(props: Props): ReactElement {
-  const { link, entity } = props;
+  const { entity } = props;
 
-  return link ? (
+  if (!entity) {
+    return (
+      <div className={styles.empty}>
+        <p>No entity selected.</p>
+      </div>
+    );
+  }
+
+  return (
     <div className={styles.metadataViewer}>
-      <LinkInfo link={link} />
-      {entity && <EntityInfo entity={entity} />}
-      {entity && 'attributes' in entity && (
-        <AttributesInfo attributes={entity.attributes} />
-      )}
-    </div>
-  ) : (
-    <div className={styles.empty}>
-      <p>No entity selected.</p>
+      <EntityInfo entity={entity} />
+      <AttributesInfo attributes={entity.attributes} />
     </div>
   );
 }

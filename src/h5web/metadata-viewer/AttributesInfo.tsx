@@ -3,13 +3,13 @@ import type { HDF5Attribute } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 
 interface Props {
-  attributes?: HDF5Attribute[];
+  attributes: HDF5Attribute[];
 }
 
 function AttributesInfo(props: Props): ReactElement {
   const { attributes } = props;
 
-  if (!attributes || attributes.length === 0) {
+  if (attributes.length === 0) {
     return <></>;
   }
 

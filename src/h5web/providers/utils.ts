@@ -16,10 +16,12 @@ import {
   HDF5ScalarShape,
   HDF5NumericType,
   HDF5Group,
-  HDF5Datatype,
   MyHDF5Entity,
   MyHDF5EntityKind,
   MyHDF5Group,
+  MyHDF5Datatype,
+  MyHDF5Dataset,
+  MyHDF5Link,
 } from './models';
 
 export function isReachable(
@@ -33,10 +35,6 @@ export function isDataset(entity: HDF5Entity): entity is HDF5Dataset {
   return entity.collection === HDF5Collection.Datasets;
 }
 
-export function isDatatype(entity: HDF5Entity): entity is HDF5Datatype {
-  return entity.collection === HDF5Collection.Datatypes;
-}
-
 export function isGroup(entity: HDF5Entity): entity is HDF5Group {
   return entity.collection === HDF5Collection.Groups;
 }
@@ -45,9 +43,27 @@ export function isMyGroup(entity: MyHDF5Entity): entity is MyHDF5Group {
   return entity.kind === MyHDF5EntityKind.Group;
 }
 
+export function isMyDataset(entity: MyHDF5Entity): entity is MyHDF5Dataset {
+  return entity.kind === MyHDF5EntityKind.Dataset;
+}
+
+export function isMyDatatype(entity: MyHDF5Entity): entity is MyHDF5Datatype {
+  return entity.kind === MyHDF5EntityKind.Datatype;
+}
+
+export function isMyLink(entity: MyHDF5Entity): entity is MyHDF5Link {
+  return entity.kind === MyHDF5EntityKind.Link;
+}
+
 export function hasSimpleShape<T extends HDF5Type>(
   dataset: HDF5Dataset<HDF5Shape, T>
 ): dataset is HDF5Dataset<HDF5SimpleShape, T> {
+  return dataset.shape.class === HDF5ShapeClass.Simple;
+}
+
+export function hasMySimpleShape<T extends HDF5Type>(
+  dataset: MyHDF5Dataset<HDF5Shape, T>
+): dataset is MyHDF5Dataset<HDF5SimpleShape, T> {
   return dataset.shape.class === HDF5ShapeClass.Simple;
 }
 

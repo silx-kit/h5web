@@ -1,30 +1,54 @@
 import React, { ReactElement } from 'react';
-import type { HDF5Entity } from '../providers/models';
+import type { MyHDF5Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
-import { isDataset, isDatatype, hasSimpleShape } from '../providers/utils';
+import {
+  hasMySimpleShape,
+  isMyDataset,
+  isMyDatatype,
+  isMyLink,
+} from '../providers/utils';
 import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
+import LinkInfo from './LinkInfo';
+import { capitalize } from 'lodash-es';
 
 interface Props {
-  entity: HDF5Entity;
+  entity: MyHDF5Entity;
 }
 
 function EntityInfo(props: Props): ReactElement {
   const { entity } = props;
-  const { collection } = entity;
-
-  const entityKind =
-    collection.charAt(0).toUpperCase() + collection.slice(1, -1);
+  const { id, name, kind, parents } = entity;
 
   return (
     <table className={styles.table}>
       <thead>
         <tr>
-          <th colSpan={2}>{entityKind} info</th>
+          <th colSpan={2}>{capitalize(kind)}</th>
         </tr>
       </thead>
       <tbody>
-        {(isDataset(entity) || isDatatype(entity)) && (
+        {id !== undefined && (
+          <tr>
+            <th scope="row">ID</th>
+            <td>{id}</td>
+          </tr>
+        )}
+        <tr>
+          <th scope="row">Name</th>
+          <td>{name}</td>
+        </tr>
+        <tr>
+          <th scope="row">Path</th>
+          <td>
+            /
+            {[...parents, entity]
+              .slice(1)
+              .map(({ name }) => name)
+              .join('/')}
+          </td>
+        </tr>
+        {(isMyDataset(entity) || isMyDatatype(entity)) && (
           <tr>
             <th scope="row">Type</th>
             <td>
@@ -34,20 +58,21 @@ function EntityInfo(props: Props): ReactElement {
             </td>
           </tr>
         )}
-        {isDataset(entity) && (
+        {isMyDataset(entity) && (
           <tr>
             <th scope="row">Shape</th>
             <td>
-              {hasSimpleShape(entity)
+              {hasMySimpleShape(entity)
                 ? renderShapeDims(entity.shape.dims)
                 : entity.shape.class}
             </td>
           </tr>
         )}
+        {isMyLink(entity) && <LinkInfo link={entity.rawLink} />}
         <tr>
           <th scope="row">Raw</th>
           <td className={styles.raw}>
-            <RawInspector data={entity} />
+            <RawInspector entity={entity} />
           </td>
         </tr>
       </tbody>

@@ -1,8 +1,5 @@
 import React, { ReactElement } from 'react';
-import { HDF5Link, HDF5LinkClass } from '../providers/models';
-
-import styles from './MetadataViewer.module.css';
-import RawInspector from './RawInspector';
+import { HDF5Link } from '../providers/models';
 
 interface Props {
   link: HDF5Link;
@@ -12,57 +9,32 @@ function LinkInfo(props: Props): ReactElement {
   const { link } = props;
 
   return (
-    <table className={styles.table}>
-      <thead>
+    <>
+      {'collection' in link && (
         <tr>
-          <th colSpan={2}>Link info</th>
+          <th scope="row">Collection</th>
+          <td>{link.collection}</td>
         </tr>
-      </thead>
-      <tbody>
-        {link.class !== HDF5LinkClass.Root && (
-          <>
-            <tr>
-              <th scope="row">Title</th>
-              <td>{link.title}</td>
-            </tr>
-            <tr>
-              <th scope="row">Class</th>
-              <td>{link.class}</td>
-            </tr>
-          </>
-        )}
-        {'collection' in link && (
-          <tr>
-            <th scope="row">Collection</th>
-            <td>{link.collection}</td>
-          </tr>
-        )}
-        {'id' in link && (
-          <tr>
-            <th scope="row">Entity ID</th>
-            <td>{link.id}</td>
-          </tr>
-        )}
-        {'file' in link && (
-          <tr>
-            <th scope="row">File</th>
-            <td>{link.file}</td>
-          </tr>
-        )}
-        {'h5path' in link && (
-          <tr>
-            <th scope="row">Path</th>
-            <td>{link.h5path}</td>
-          </tr>
-        )}
+      )}
+      {'id' in link && (
         <tr>
-          <th scope="row">Raw</th>
-          <td className={styles.raw}>
-            <RawInspector data={link} />
-          </td>
+          <th scope="row">Entity ID</th>
+          <td>{link.id}</td>
         </tr>
-      </tbody>
-    </table>
+      )}
+      {'file' in link && (
+        <tr>
+          <th scope="row">File</th>
+          <td>{link.file}</td>
+        </tr>
+      )}
+      {'h5path' in link && (
+        <tr>
+          <th scope="row">H5Path</th>
+          <td>{link.h5path}</td>
+        </tr>
+      )}
+    </>
   );
 }
 
