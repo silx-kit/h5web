@@ -67,15 +67,15 @@ export function hasMySimpleShape<T extends HDF5Type>(
   return dataset.shape.class === HDF5ShapeClass.Simple;
 }
 
-export function hasScalarShape<T extends HDF5Type>(
-  dataset: HDF5Dataset<HDF5Shape, T>
-): dataset is HDF5Dataset<HDF5ScalarShape, T> {
+export function hasMyScalarShape<T extends HDF5Type>(
+  dataset: MyHDF5Dataset<HDF5Shape, T>
+): dataset is MyHDF5Dataset<HDF5ScalarShape, T> {
   return dataset.shape.class === HDF5ShapeClass.Scalar;
 }
 
-export function hasBaseType<S extends HDF5Shape>(
-  entity: HDF5Dataset<S>
-): entity is HDF5Dataset<S, HDF5BaseType> {
+export function hasMyBaseType<S extends HDF5Shape>(
+  entity: MyHDF5Dataset<S>
+): entity is MyHDF5Dataset<S, HDF5BaseType> {
   return (
     typeof entity.type !== 'string' &&
     [HDF5TypeClass.Integer, HDF5TypeClass.Float, HDF5TypeClass.String].includes(
@@ -84,9 +84,19 @@ export function hasBaseType<S extends HDF5Shape>(
   );
 }
 
-export function hasNumericType<S extends HDF5Shape>(
+function hasNumericType<S extends HDF5Shape>(
   dataset: HDF5Dataset<S>
 ): dataset is HDF5Dataset<S, HDF5NumericType> {
+  return (
+    typeof dataset.type !== 'string' &&
+    [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(dataset.type.class)
+  );
+}
+
+// eslint-disable-next-line sonarjs/no-identical-functions
+export function hasMyNumericType<S extends HDF5Shape>(
+  dataset: MyHDF5Dataset<S>
+): dataset is MyHDF5Dataset<S, HDF5NumericType> {
   return (
     typeof dataset.type !== 'string' &&
     [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(dataset.type.class)
@@ -102,11 +112,29 @@ export function assertDataset(
   }
 }
 
+export function assertMyDataset(
+  entity: MyHDF5Entity,
+  message = 'Expected dataset'
+): asserts entity is MyHDF5Dataset {
+  if (!isMyDataset(entity)) {
+    throw new Error(message);
+  }
+}
+
 export function assertGroup(
   entity: HDF5Entity,
   message = 'Expected group'
 ): asserts entity is HDF5Group {
   if (!isGroup(entity)) {
+    throw new Error(message);
+  }
+}
+
+export function assertMyGroup(
+  entity: MyHDF5Entity,
+  message = 'Expected group'
+): asserts entity is MyHDF5Group {
+  if (!isMyGroup(entity)) {
     throw new Error(message);
   }
 }
@@ -119,10 +147,30 @@ export function assertNumericType<S extends HDF5Shape>(
   }
 }
 
+export function assertMyNumericType<S extends HDF5Shape>(
+  dataset: MyHDF5Dataset<S>
+): asserts dataset is MyHDF5Dataset<S, HDF5NumericType> {
+  if (!hasMyNumericType(dataset)) {
+    throw new Error('Expected dataset to have numeric type');
+  }
+}
+
 export function assertSimpleShape<T extends HDF5Type>(
   dataset: HDF5Dataset<HDF5Shape, T>
 ): asserts dataset is HDF5Dataset<HDF5SimpleShape, T> {
   if (!hasSimpleShape(dataset)) {
+    throw new Error('Expected dataset to have simple shape');
+  }
+
+  if (dataset.shape.dims.length === 0) {
+    throw new Error('Expected dataset with simple shape to have dimensions');
+  }
+}
+
+export function assertMySimpleShape<T extends HDF5Type>(
+  dataset: MyHDF5Dataset<HDF5Shape, T>
+): asserts dataset is MyHDF5Dataset<HDF5SimpleShape, T> {
+  if (!hasMySimpleShape(dataset)) {
     throw new Error('Expected dataset to have simple shape');
   }
 

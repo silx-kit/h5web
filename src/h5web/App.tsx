@@ -42,10 +42,7 @@ function App(): ReactElement {
           {isInspecting ? (
             <MetadataViewer entity={selectedEntity} />
           ) : (
-            <Visualizer
-              entity={selectedEntity?.rawEntity}
-              entityName={selectedEntity?.name}
-            />
+            <Visualizer entity={selectedEntity} />
           )}
         </ReflexElement>
       </ReflexContainer>

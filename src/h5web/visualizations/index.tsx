@@ -3,22 +3,22 @@ import { FiCode, FiGrid, FiActivity, FiMap, FiCpu } from 'react-icons/fi';
 import type { IconType } from 'react-icons';
 import LineToolbar from '../toolbar/LineToolbar';
 import HeatmapToolbar from '../toolbar/HeatmapToolbar';
-import type { HDF5Entity, HDF5Metadata } from '../providers/models';
+import type { MyHDF5Entity } from '../providers/models';
 import {
-  hasScalarShape,
-  hasBaseType,
-  hasSimpleShape,
-  hasNumericType,
-  isDataset,
-  isGroup,
+  hasMyScalarShape,
+  hasMyBaseType,
+  hasMySimpleShape,
+  hasMyNumericType,
+  isMyDataset,
+  isMyGroup,
 } from '../providers/utils';
 import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
-  findNxDataGroup,
   isNxInterpretation,
-  findSignalDataset,
   findSignalName,
+  findMyNxDataGroup,
+  findMySignalDataset,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
 import {
@@ -47,21 +47,23 @@ interface VisDef {
   Icon: IconType;
   Toolbar?: ElementType<ToolbarProps>;
   Container: ElementType<VisContainerProps>;
-  supportsEntity: (entity: HDF5Entity, metadata: HDF5Metadata) => boolean;
+  supportsEntity: (entity: MyHDF5Entity) => boolean;
 }
 
 export const VIS_DEFS: Record<Vis, VisDef> = {
   [Vis.Raw]: {
     Icon: FiCpu,
     Container: RawViscontainer,
-    supportsEntity: isDataset,
+    supportsEntity: isMyDataset,
   },
 
   [Vis.Scalar]: {
     Icon: FiCode,
     Container: ScalarVisContainer,
     supportsEntity: (entity) => {
-      return isDataset(entity) && hasBaseType(entity) && hasScalarShape(entity);
+      return (
+        isMyDataset(entity) && hasMyBaseType(entity) && hasMyScalarShape(entity)
+      );
     },
   },
 
@@ -70,9 +72,9 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Container: MatrixVisContainer,
     supportsEntity: (entity) => {
       return (
-        isDataset(entity) &&
-        hasBaseType(entity) &&
-        hasSimpleShape(entity) &&
+        isMyDataset(entity) &&
+        hasMyBaseType(entity) &&
+        hasMySimpleShape(entity) &&
         entity.shape.dims.length >= 1
       );
     },
@@ -84,9 +86,9 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Container: LineVisContainer,
     supportsEntity: (entity) => {
       return (
-        isDataset(entity) &&
-        hasNumericType(entity) &&
-        hasSimpleShape(entity) &&
+        isMyDataset(entity) &&
+        hasMyNumericType(entity) &&
+        hasMySimpleShape(entity) &&
         entity.shape.dims.length >= 1
       );
     },
@@ -98,9 +100,9 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Container: HeatmapVisContainer,
     supportsEntity: (entity) => {
       return (
-        isDataset(entity) &&
-        hasNumericType(entity) &&
-        hasSimpleShape(entity) &&
+        isMyDataset(entity) &&
+        hasMyNumericType(entity) &&
+        hasMySimpleShape(entity) &&
         entity.shape.dims.length >= 2
       );
     },
@@ -110,18 +112,18 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Icon: FiActivity,
     Toolbar: NxSpectrumToolbar,
     Container: NxSpectrumContainer,
-    supportsEntity: (entity, metadata) => {
-      if (!isGroup(entity)) {
+    supportsEntity: (entity) => {
+      if (!isMyGroup(entity)) {
         return false;
       }
 
-      const group = findNxDataGroup(entity, metadata);
+      const group = findMyNxDataGroup(entity);
       if (!group) {
         return false; // entity is not a group or doesn't have a `default` attribute
       }
 
       const signal = findSignalName(group);
-      const dataset = findSignalDataset(signal, group, metadata);
+      const dataset = findMySignalDataset(group, signal);
       const interpretation = getAttributeValue(dataset, 'interpretation');
 
       return (
@@ -135,18 +137,18 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Icon: FiMap,
     Toolbar: HeatmapToolbar,
     Container: NxImageContainer,
-    supportsEntity: (entity, metadata) => {
-      if (!isGroup(entity)) {
+    supportsEntity: (entity) => {
+      if (!isMyGroup(entity)) {
         return false;
       }
 
-      const group = findNxDataGroup(entity, metadata);
+      const group = findMyNxDataGroup(entity);
       if (!group) {
         return false; // entity is not a group or doesn't have a `default` attribute
       }
 
       const signal = findSignalName(group);
-      const dataset = findSignalDataset(signal, group, metadata);
+      const dataset = findMySignalDataset(group, signal);
       if (dataset.shape.dims.length < 2) {
         return false;
       }

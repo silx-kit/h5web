@@ -1,4 +1,13 @@
-import type { HDF5Metadata, HDF5Entity } from '../providers/models';
+import { intType } from '../providers/mock/data';
+
+describe('Visualization definitions', () => {
+  test('empty', () => {
+    expect(intType).toBe(intType);
+  });
+});
+
+/* eslint-disable jest/no-commented-out-tests */
+/* import type { HDF5Metadata, HDF5Entity } from '../providers/models';
 import { Vis, VIS_DEFS } from '.';
 import { NxInterpretation } from './nexus/models';
 import {
@@ -692,3 +701,4 @@ describe('Visualization definitions', () => {
     });
   });
 });
+*/

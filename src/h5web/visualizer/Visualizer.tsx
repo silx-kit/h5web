@@ -1,24 +1,21 @@
-import React, { ReactElement, useState, useContext } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { AsyncResourceContent } from 'use-async-resource';
-import type { HDF5Entity } from '../providers/models';
+import type { MyHDF5Entity } from '../providers/models';
 import styles from './Visualizer.module.css';
 import { getSupportedVis } from './utils';
 import { VIS_DEFS, Vis } from '../visualizations';
 import VisSelector from './VisSelector';
 import Loader from './Loader';
-import { ProviderContext } from '../providers/context';
 import Profiler from '../Profiler';
 
 interface Props {
-  entity?: HDF5Entity;
-  entityName?: string;
+  entity?: MyHDF5Entity;
 }
 
 function Visualizer(props: Props): ReactElement {
-  const { entity, entityName } = props;
-  const { metadata } = useContext(ProviderContext);
+  const { entity } = props;
 
-  const { supportedVis, error } = getSupportedVis(entity, metadata);
+  const { supportedVis, error } = getSupportedVis(entity);
   const [activeVis, setActiveVis] = useState<Vis>();
 
   // Update `activeVis` state as needed
@@ -35,7 +32,7 @@ function Visualizer(props: Props): ReactElement {
     return <p className={styles.error}>{error.message}</p>;
   }
 
-  if (!entity || !activeVis) {
+  if (!entity || !entity.rawEntity || !activeVis) {
     return <p className={styles.fallback}>Nothing to visualize</p>;
   }
 
@@ -53,14 +50,14 @@ function Visualizer(props: Props): ReactElement {
       </div>
       <div className={styles.displayArea}>
         <AsyncResourceContent
-          key={entity.id}
+          key={entity.uid}
           fallback={<Loader />}
           errorMessage={(err: Error) => (
             <p className={styles.error}>{err.message}</p>
           )}
         >
           <Profiler id={activeVis}>
-            <Container entity={entity} entityName={entityName} />
+            <Container entity={entity.rawEntity} entityName={entity.name} />
           </Profiler>
         </AsyncResourceContent>
       </div>
