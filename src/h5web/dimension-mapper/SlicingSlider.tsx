@@ -1,7 +1,10 @@
 import React, { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
-import styles from './DimensionMapper.module.css';
+import { useMeasure } from 'react-use';
+import styles from './SlicingSlider.module.css';
 import type { DimensionMapping } from './models';
+
+const MIN_HEIGHT_PER_MARK = 25;
 
 interface Props {
   dimension: number;
@@ -13,17 +16,18 @@ interface Props {
 
 function SlicingSlider(props: Props): ReactElement {
   const { dimension, slicingIndex, rawDims, mapperState, onChange } = props;
+  const [containerRef, { height }] = useMeasure();
 
   return (
-    <div key={dimension} className={styles.sliderWrapper}>
-      <span className={styles.sliderLabel}>D{dimension}</span>
+    <div key={dimension} ref={containerRef} className={styles.container}>
+      <span className={styles.label}>D{dimension}</span>
       <ReactSlider
         // Force refresh when slider height changes - i.e. when Y-axis mapper appears/disappears
         // https://github.com/zillow/react-slider/issues/172
         key={`${mapperState.includes('y')}`}
         className={styles.slider}
-        trackClassName={styles.sliderTrack}
-        thumbClassName={styles.sliderThumb}
+        trackClassName={styles.track}
+        thumbClassName={styles.thumb}
         renderThumb={(thumbProps, state) => (
           <div {...thumbProps}>{state.valueNow}</div>
         )}
@@ -35,6 +39,8 @@ function SlicingSlider(props: Props): ReactElement {
         }}
         min={0}
         max={rawDims[dimension] - 1}
+        marks={height / rawDims[dimension] >= MIN_HEIGHT_PER_MARK}
+        markClassName={styles.mark}
         step={1}
         orientation="vertical"
         invert

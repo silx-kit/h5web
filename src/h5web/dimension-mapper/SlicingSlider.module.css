@@ -1,0 +1,59 @@
+.container {
+  flex: 0 1 4rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0.5rem;
+  --thumb-height: 1.5rem;
+  --mark-height: 0.4375rem;
+}
+
+.label {
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.slider {
+  flex: 1 1 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 5rem;
+  cursor: pointer;
+}
+
+.track {
+  width: 2px;
+  background-color: var(--secondary-dark);
+}
+
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem;
+  background-color: var(--primary-bg);
+  border: 2px solid var(--secondary);
+  border-radius: 1.5em;
+  height: var(--thumb-height);
+  min-width: 1.5rem;
+  font-size: 0.625rem;
+  cursor: grab;
+}
+
+.thumb:global(.active) {
+  border-color: var(--secondary-dark);
+}
+
+.thumb:active {
+  cursor: none;
+}
+
+.mark {
+  position: absolute;
+  background-color: var(--primary-bg);
+  border: 2px solid var(--secondary-dark);
+  border-radius: 50%;
+  margin: calc(var(--thumb-height) / 2 - var(--mark-height) / 2) 1px;
+  height: var(--mark-height);
+  width: var(--mark-height);
+}
