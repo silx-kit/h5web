@@ -10,6 +10,10 @@ function LinkInfo(props: Props): ReactElement {
 
   return (
     <>
+      <tr>
+        <th scope="row">Class</th>
+        <td>{link.class}</td>
+      </tr>
       {'collection' in link && (
         <tr>
           <th scope="row">Collection</th>
