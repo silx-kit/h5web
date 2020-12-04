@@ -62,7 +62,7 @@ export interface MyHDF5Entity {
   kind: MyHDF5EntityKind;
   parents: MyHDF5Group[];
   attributes: HDF5Attribute[];
-  rawLink: HDF5Link;
+  rawLink?: HDF5Link;
   rawEntity?: HDF5Entity;
 }
 

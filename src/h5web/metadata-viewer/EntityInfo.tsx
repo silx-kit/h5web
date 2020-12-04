@@ -68,7 +68,9 @@ function EntityInfo(props: Props): ReactElement {
             </td>
           </tr>
         )}
-        {isMyLink(entity) && <LinkInfo link={entity.rawLink} />}
+        {isMyLink(entity) && entity.rawLink && (
+          <LinkInfo link={entity.rawLink} />
+        )}
         <tr>
           <th scope="row">Raw</th>
           <td className={styles.raw}>
