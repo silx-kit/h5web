@@ -1,4 +1,4 @@
-import { buildTree } from './utils';
+import { buildTree, getEntityAtPath } from './utils';
 import {
   HDF5Collection,
   HDF5RootLink,
@@ -16,6 +16,7 @@ import {
   makeStrAttr,
   scalarShape,
 } from '../providers/mock/data';
+import { makeMyDataset, makeMyGroup } from '../test-utils';
 
 const domain = 'domain';
 const rootLink: HDF5RootLink = {
@@ -150,6 +151,31 @@ describe('Explorer utilities', () => {
       expectedTree.children.push(expectedChildGroup);
       expectedChildGroup.children.push(expectedChildDataset);
       expect(buildTree(nestedMetadata, domain)).toEqual(expectedTree);
+    });
+  });
+
+  describe('getEntityAtPath', () => {
+    const dataset = makeMyDataset('dataset', scalarShape, intType);
+    const group = makeMyGroup('foo', [
+      makeMyGroup('bar'),
+      makeMyGroup('baz', [dataset]),
+    ]);
+
+    it('should return entity at path', () => {
+      expect(getEntityAtPath(group, [0]).name).toBe('bar');
+      expect(getEntityAtPath(group, [1, 0]).name).toBe('dataset');
+    });
+
+    it('should process invalid path as far as possible', () => {
+      expect(getEntityAtPath(group, [1, 1]).name).toBe('baz');
+    });
+
+    it('should return given entity if path is empty', () => {
+      expect(getEntityAtPath(group, [])).toBe(group);
+    });
+
+    it('should return given entity if not a group', () => {
+      expect(getEntityAtPath(dataset, [0])).toBe(dataset);
     });
   });
 });

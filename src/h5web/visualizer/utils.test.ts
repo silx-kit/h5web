@@ -1,59 +1,59 @@
-import { intType } from '../providers/mock/data';
-
-describe('Visualizer utilities', () => {
-  test('empty', () => {
-    expect(intType).toBe(intType);
-  });
-});
-
-/* eslint-disable jest/no-commented-out-tests */
-/* import { getSupportedVis } from './utils';
+import { getSupportedVis } from './utils';
 import { Vis } from '../visualizations';
-import { mockMetadata } from '../providers/mock/data';
+import {
+  compoundType,
+  intType,
+  makeAttr,
+  makeStrAttr,
+  scalarShape,
+} from '../providers/mock/data';
+import {
+  makeMyDataset,
+  makeMyGroup,
+  makeMyNxDataGroup,
+  makeMySimpleDataset,
+} from '../test-utils';
 
 describe('Visualizer utilities', () => {
   describe('getSupportedVis', () => {
     it('should return supported visualizations', () => {
-      const supportedVis = getSupportedVis(
-        mockMetadata.datasets?.raw,
-        mockMetadata
-      );
+      const datasetRaw = makeMyDataset('raw', scalarShape, compoundType);
+      const supportedVis = getSupportedVis(datasetRaw);
 
       expect(supportedVis).toEqual({ supportedVis: [Vis.Raw] });
     });
 
     it('should not include Raw vis if any other visualization is supported', () => {
-      const supportedVis = getSupportedVis(
-        mockMetadata.datasets?.oneD,
-        mockMetadata
-      );
+      const datasetInt1D = makeMySimpleDataset('dataset', intType, [5]);
+      const supportedVis = getSupportedVis(datasetInt1D);
 
       expect(supportedVis).toEqual({ supportedVis: [Vis.Matrix, Vis.Line] });
     });
 
     it('should not include NxSpectrum vis if any other visualization is supported', () => {
-      const supportedVis = getSupportedVis(
-        mockMetadata.groups?.nx_data,
-        mockMetadata
-      );
+      const datasetInt2D = makeMySimpleDataset('dataset', intType, [5, 3]);
+      const nxDataSignal2D = makeMyNxDataGroup('foo', datasetInt2D);
+      const supportedVis = getSupportedVis(nxDataSignal2D);
 
       expect(supportedVis).toEqual({ supportedVis: [Vis.NxImage] });
     });
 
     it('should return empty array if no visualization is supported', () => {
-      const supportedVis = getSupportedVis(
-        mockMetadata.groups?.empty_group,
-        mockMetadata
-      );
+      const groupEmpty = makeMyGroup('group_empty');
+      const supportedVis = getSupportedVis(groupEmpty);
 
       expect(supportedVis).toEqual({ supportedVis: [] });
     });
 
     it('should return error if entity has malformed NeXus metadata', () => {
-      const supportedVis = getSupportedVis(
-        mockMetadata.groups?.signal_not_string,
-        mockMetadata
-      );
+      const nxDataMalformed = makeMyGroup('foo', [], {
+        attributes: [
+          makeStrAttr('NX_class', 'NXdata'),
+          makeAttr('signal', scalarShape, intType, 42), // `signal` attribute should be string
+        ],
+      });
+
+      const supportedVis = getSupportedVis(nxDataMalformed);
 
       expect(supportedVis).toEqual({
         supportedVis: [],
@@ -62,4 +62,3 @@ describe('Visualizer utilities', () => {
     });
   });
 });
-*/

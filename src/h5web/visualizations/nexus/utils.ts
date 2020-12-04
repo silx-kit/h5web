@@ -104,7 +104,7 @@ export function findMyNxDataGroup(group: MyHDF5Group): MyHDF5Group | undefined {
         ? getChildEntity(parentEntity, currSegment)
         : undefined;
     },
-    isAbsolutePath ? group.parents[0] : group
+    isAbsolutePath && group.parents.length > 0 ? group.parents[0] : group
   );
 
   assertDefined(defaultEntity, `Expected entity at path "${defaultPath}"`);
