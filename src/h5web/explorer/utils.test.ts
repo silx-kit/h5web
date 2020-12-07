@@ -44,7 +44,6 @@ describe('Explorer utilities', () => {
         children: [],
         attributes: [],
         rawLink: rootLink,
-        rawEntity: rootGroup,
       });
     });
 
@@ -68,7 +67,6 @@ describe('Explorer utilities', () => {
         children: [],
         attributes: [],
         rawLink: rootLink,
-        rawEntity: rootGroup,
       };
 
       const expectedChild: MyHDF5Dataset = {
@@ -81,7 +79,6 @@ describe('Explorer utilities', () => {
         shape: scalarShape,
         type: intType,
         rawLink: link,
-        rawEntity: dataset,
       };
 
       expectedTree.children.push(expectedChild);
@@ -120,7 +117,6 @@ describe('Explorer utilities', () => {
         children: [],
         attributes: [],
         rawLink: rootLink,
-        rawEntity: rootGroup,
       };
 
       const expectedChildGroup: MyHDF5Group = {
@@ -132,7 +128,6 @@ describe('Explorer utilities', () => {
         children: [],
         attributes: [groupAttr],
         rawLink: groupLink,
-        rawEntity: group,
       };
 
       const expectedChildDataset: MyHDF5Dataset = {
@@ -145,7 +140,6 @@ describe('Explorer utilities', () => {
         shape: scalarShape,
         type: intType,
         rawLink: datasetLink,
-        rawEntity: dataset,
       };
 
       expectedTree.children.push(expectedChildGroup);

@@ -1,16 +1,5 @@
-import {
-  HDF5Collection,
-  HDF5Group,
-  HDF5Id,
-  HDF5Metadata,
-  HDF5Value,
-} from '../../providers/models';
-import {
-  assertDataset,
-  getLink,
-  getLinkedEntity,
-  isReachable,
-} from '../../providers/utils';
+import { MyHDF5Group } from '../../providers/models';
+import { assertMyDataset, isMyDataset } from '../../providers/utils';
 import { useDatasetValues } from '../containers/hooks';
 import {
   assertArray,
@@ -19,29 +8,21 @@ import {
 } from '../shared/utils';
 import type { NxData } from './models';
 import {
-  findSignalDataset,
+  findMySignalDataset,
   findSignalName,
+  getChildEntity,
   getDatasetLabel,
   getNxAxisNames,
   parseSilxStyleAttribute,
 } from './utils';
 
-function useLinkedDatasetValues(
-  group: HDF5Group
-): Record<HDF5Id, HDF5Value | undefined> {
-  const datasetIds = group.links
-    ?.filter(isReachable)
-    .filter((link) => link.collection === HDF5Collection.Datasets)
-    .map((link) => link.id);
-
-  return useDatasetValues(datasetIds || []);
-}
-
-export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
-  const values = useLinkedDatasetValues(group);
+export function useNxData(group: MyHDF5Group): NxData {
+  const values = useDatasetValues(
+    group.children.filter(isMyDataset).map((child) => child.id)
+  );
 
   const signalName = findSignalName(group);
-  const signalDataset = findSignalDataset(signalName, group, metadata);
+  const signalDataset = findMySignalDataset(group, signalName);
 
   const signalValue = values[signalDataset.id];
   if (!signalValue) {
@@ -59,9 +40,9 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
       return undefined;
     }
 
-    const axisDataset = getLinkedEntity(axisName, group, metadata);
+    const axisDataset = getChildEntity(group, axisName);
     assertDefined(axisDataset);
-    assertDataset(axisDataset);
+    assertMyDataset(axisDataset);
 
     const axisValue = values[axisDataset.id];
     assertOptionalArray<number>(axisValue);
@@ -73,15 +54,16 @@ export function useNxData(group: HDF5Group, metadata: HDF5Metadata): NxData {
     };
   });
 
-  const errorsLink =
-    getLink(`${signalName}_errors`, group) || getLink('errors', group);
+  const errorsDataset =
+    getChildEntity(group, `${signalName}_errors`) ||
+    getChildEntity(group, 'errors');
   const errorsValue =
-    errorsLink && isReachable(errorsLink) && values[errorsLink.id];
+    errorsDataset && isMyDataset(errorsDataset) && values[errorsDataset.id];
   assertOptionalArray<number>(errorsValue);
 
-  const titleLink = getLink('title', group);
+  const titleDataset = getChildEntity(group, 'title');
   const titleValue =
-    titleLink && isReachable(titleLink) && values[titleLink.id];
+    titleDataset && isMyDataset(titleDataset) && values[titleDataset.id];
 
   return {
     signal: {

@@ -63,10 +63,10 @@ export interface MyHDF5Entity {
   parents: MyHDF5Group[];
   attributes: HDF5Attribute[];
   rawLink?: HDF5Link;
-  rawEntity?: HDF5Entity;
 }
 
 export interface MyHDF5Group extends MyHDF5Entity {
+  id: HDF5Id;
   kind: MyHDF5EntityKind.Group;
   children: MyHDF5Entity[];
 }
@@ -75,12 +75,14 @@ export interface MyHDF5Dataset<
   S extends HDF5Shape = HDF5Shape,
   T extends HDF5Type = HDF5Type
 > extends MyHDF5Entity {
+  id: HDF5Id;
   kind: MyHDF5EntityKind.Dataset;
   shape: S;
   type: T;
 }
 
 export interface MyHDF5Datatype<T = HDF5Type> extends MyHDF5Entity {
+  id: HDF5Id;
   kind: MyHDF5EntityKind.Datatype;
   type: T;
 }

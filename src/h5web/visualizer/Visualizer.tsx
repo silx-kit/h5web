@@ -32,7 +32,7 @@ function Visualizer(props: Props): ReactElement {
     return <p className={styles.error}>{error.message}</p>;
   }
 
-  if (!entity || !entity.rawEntity || !activeVis) {
+  if (!entity || !activeVis) {
     return <p className={styles.fallback}>Nothing to visualize</p>;
   }
 
@@ -57,7 +57,7 @@ function Visualizer(props: Props): ReactElement {
           )}
         >
           <Profiler id={activeVis}>
-            <Container entity={entity.rawEntity} entityName={entity.name} />
+            <Container entity={entity} />
           </Profiler>
         </AsyncResourceContent>
       </div>

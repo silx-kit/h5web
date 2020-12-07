@@ -43,7 +43,7 @@ export function getAttributeValue(
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }
 
-function getChildEntity(
+export function getChildEntity(
   group: MyHDF5Group,
   entityName: string
 ): MyHDF5Entity | undefined {
@@ -166,7 +166,7 @@ export function isNxInterpretation(
   );
 }
 
-export function getNxAxisNames(group: HDF5Group): (string | undefined)[] {
+export function getNxAxisNames(group: MyHDF5Group): (string | undefined)[] {
   const axisList = getAttributeValue(group, 'axes');
   if (!axisList) {
     return [];
@@ -174,11 +174,12 @@ export function getNxAxisNames(group: HDF5Group): (string | undefined)[] {
 
   const axisNames = typeof axisList === 'string' ? [axisList] : axisList;
   assertArray<string>(axisNames);
+
   return axisNames.map((a) => (a !== '.' ? a : undefined));
 }
 
 export function getDatasetLabel(
-  dataset: HDF5Dataset,
+  dataset: MyHDF5Dataset,
   datasetName: string
 ): string {
   const longName = getAttributeValue(dataset, 'long_name');
@@ -194,7 +195,7 @@ export function getDatasetLabel(
   return datasetName;
 }
 
-export function parseSilxStyleAttribute(group: HDF5Group): SilxStyle {
+export function parseSilxStyleAttribute(group: MyHDF5Group): SilxStyle {
   const silxStyle = getAttributeValue(group, 'SILX_style');
 
   if (!silxStyle || typeof silxStyle !== 'string') {

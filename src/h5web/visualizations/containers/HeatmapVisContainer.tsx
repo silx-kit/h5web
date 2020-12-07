@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react';
 import { useDatasetValue } from './hooks';
 import {
-  assertDataset,
-  assertNumericType,
-  assertSimpleShape,
+  assertMyDataset,
+  assertMyNumericType,
+  assertMySimpleShape,
 } from '../../providers/utils';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from './models';
 
 function HeatmapVisContainer(props: VisContainerProps): ReactElement {
-  const { entity, entityName } = props;
-  assertDataset(entity);
-  assertSimpleShape(entity);
-  assertNumericType(entity);
+  const { entity } = props;
+  assertMyDataset(entity);
+  assertMySimpleShape(entity);
+  assertMyNumericType(entity);
 
   const { dims } = entity.shape;
   if (dims.length < 2) {
@@ -24,7 +24,7 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
     return <></>;
   }
 
-  return <MappedHeatmapVis value={value} dims={dims} title={entityName} />;
+  return <MappedHeatmapVis value={value} dims={dims} title={entity.name} />;
 }
 
 export default HeatmapVisContainer;
