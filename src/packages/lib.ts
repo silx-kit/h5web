@@ -4,7 +4,7 @@ export { default as LineVis } from '../h5web/visualizations/line/LineVis';
 export { default as HeatmapVis } from '../h5web/visualizations/heatmap/HeatmapVis';
 
 // Building blocks
-export { default as AxisSystem } from '../h5web/visualizations/shared/AxisSystem';
+export { default as VisCanvas } from '../h5web/visualizations/shared/VisCanvas';
 export { default as ColorBar } from '../h5web/visualizations/heatmap/ColorBar';
 
 // Utilities
@@ -29,7 +29,6 @@ export type {
   Domain,
   Size,
   AxisConfig,
-  AxisOffsets,
 } from '../h5web/visualizations/shared/models';
 
 export type {
