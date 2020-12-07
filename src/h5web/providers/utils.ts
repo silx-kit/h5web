@@ -1,6 +1,4 @@
 import {
-  HDF5Collection,
-  HDF5Entity,
   HDF5HardLink,
   HDF5Link,
   HDF5LinkClass,
@@ -11,17 +9,16 @@ import {
   HDF5Type,
   HDF5TypeClass,
   HDF5RootLink,
-  HDF5Metadata,
   HDF5Dataset,
   HDF5ScalarShape,
   HDF5NumericType,
-  HDF5Group,
   MyHDF5Entity,
   MyHDF5EntityKind,
   MyHDF5Group,
   MyHDF5Datatype,
   MyHDF5Dataset,
   MyHDF5Link,
+  MyHDF5ResolvedEntity,
 } from './models';
 
 export function isReachable(
@@ -31,31 +28,29 @@ export function isReachable(
   return link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root;
 }
 
-export function isDataset(entity: HDF5Entity): entity is HDF5Dataset {
-  return entity.collection === HDF5Collection.Datasets;
+export function isResolved(
+  entity: MyHDF5Entity
+): entity is MyHDF5ResolvedEntity {
+  return 'id' in entity;
 }
 
-export function isGroup(entity: HDF5Entity): entity is HDF5Group {
-  return entity.collection === HDF5Collection.Groups;
-}
-
-export function isMyGroup(entity: MyHDF5Entity): entity is MyHDF5Group {
+export function isGroup(entity: MyHDF5Entity): entity is MyHDF5Group {
   return entity.kind === MyHDF5EntityKind.Group;
 }
 
-export function isMyDataset(entity: MyHDF5Entity): entity is MyHDF5Dataset {
+export function isDataset(entity: MyHDF5Entity): entity is MyHDF5Dataset {
   return entity.kind === MyHDF5EntityKind.Dataset;
 }
 
-export function isMyDatatype(entity: MyHDF5Entity): entity is MyHDF5Datatype {
+export function isDatatype(entity: MyHDF5Entity): entity is MyHDF5Datatype {
   return entity.kind === MyHDF5EntityKind.Datatype;
 }
 
-export function isMyLink(entity: MyHDF5Entity): entity is MyHDF5Link {
+export function isLink(entity: MyHDF5Entity): entity is MyHDF5Link {
   return entity.kind === MyHDF5EntityKind.Link;
 }
 
-export function hasSimpleShape<T extends HDF5Type>(
+function hasSimpleShape<T extends HDF5Type>(
   dataset: HDF5Dataset<HDF5Shape, T>
 ): dataset is HDF5Dataset<HDF5SimpleShape, T> {
   return dataset.shape.class === HDF5ShapeClass.Simple;
@@ -67,13 +62,13 @@ export function hasMySimpleShape<T extends HDF5Type>(
   return dataset.shape.class === HDF5ShapeClass.Simple;
 }
 
-export function hasMyScalarShape<T extends HDF5Type>(
+export function hasScalarShape<T extends HDF5Type>(
   dataset: MyHDF5Dataset<HDF5Shape, T>
 ): dataset is MyHDF5Dataset<HDF5ScalarShape, T> {
   return dataset.shape.class === HDF5ShapeClass.Scalar;
 }
 
-export function hasMyBaseType<S extends HDF5Shape>(
+export function hasBaseType<S extends HDF5Shape>(
   entity: MyHDF5Dataset<S>
 ): entity is MyHDF5Dataset<S, HDF5BaseType> {
   return (
@@ -84,17 +79,7 @@ export function hasMyBaseType<S extends HDF5Shape>(
   );
 }
 
-function hasNumericType<S extends HDF5Shape>(
-  dataset: HDF5Dataset<S>
-): dataset is HDF5Dataset<S, HDF5NumericType> {
-  return (
-    typeof dataset.type !== 'string' &&
-    [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(dataset.type.class)
-  );
-}
-
-// eslint-disable-next-line sonarjs/no-identical-functions
-export function hasMyNumericType<S extends HDF5Shape>(
+export function hasNumericType<S extends HDF5Shape>(
   dataset: MyHDF5Dataset<S>
 ): dataset is MyHDF5Dataset<S, HDF5NumericType> {
   return (
@@ -104,53 +89,27 @@ export function hasMyNumericType<S extends HDF5Shape>(
 }
 
 export function assertDataset(
-  entity: HDF5Entity,
+  entity: MyHDF5Entity,
   message = 'Expected dataset'
-): asserts entity is HDF5Dataset {
+): asserts entity is MyHDF5Dataset {
   if (!isDataset(entity)) {
     throw new Error(message);
   }
 }
 
-export function assertMyDataset(
-  entity: MyHDF5Entity,
-  message = 'Expected dataset'
-): asserts entity is MyHDF5Dataset {
-  if (!isMyDataset(entity)) {
-    throw new Error(message);
-  }
-}
-
 export function assertGroup(
-  entity: HDF5Entity,
+  entity: MyHDF5Entity,
   message = 'Expected group'
-): asserts entity is HDF5Group {
+): asserts entity is MyHDF5Group {
   if (!isGroup(entity)) {
     throw new Error(message);
   }
 }
 
-export function assertMyGroup(
-  entity: MyHDF5Entity,
-  message = 'Expected group'
-): asserts entity is MyHDF5Group {
-  if (!isMyGroup(entity)) {
-    throw new Error(message);
-  }
-}
-
 export function assertNumericType<S extends HDF5Shape>(
-  dataset: HDF5Dataset<S>
-): asserts dataset is HDF5Dataset<S, HDF5NumericType> {
-  if (!hasNumericType(dataset)) {
-    throw new Error('Expected dataset to have numeric type');
-  }
-}
-
-export function assertMyNumericType<S extends HDF5Shape>(
   dataset: MyHDF5Dataset<S>
 ): asserts dataset is MyHDF5Dataset<S, HDF5NumericType> {
-  if (!hasMyNumericType(dataset)) {
+  if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
   }
 }
@@ -177,30 +136,4 @@ export function assertMySimpleShape<T extends HDF5Type>(
   if (dataset.shape.dims.length === 0) {
     throw new Error('Expected dataset with simple shape to have dimensions');
   }
-}
-
-export function getLink(name: string, group: HDF5Group): HDF5Link | undefined {
-  return group.links?.find((l) => l.title === name);
-}
-
-function getEntity(
-  link: HDF5Link | undefined,
-  metadata: HDF5Metadata
-): HDF5Entity | undefined {
-  if (!link || !isReachable(link)) {
-    return undefined;
-  }
-
-  const { collection, id } = link;
-  const dict = metadata[collection];
-  return dict && dict[id];
-}
-
-export function getLinkedEntity(
-  entityName: string,
-  group: HDF5Group,
-  metadata: HDF5Metadata
-): HDF5Entity | undefined {
-  const link = getLink(entityName, group);
-  return getEntity(link, metadata);
 }

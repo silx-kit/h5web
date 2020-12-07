@@ -10,7 +10,7 @@ import {
 import type { IconType } from 'react-icons';
 import { MyHDF5Entity, MyHDF5EntityKind } from '../providers/models';
 import styles from './Explorer.module.css';
-import { isMyGroup } from '../providers/utils';
+import { isGroup } from '../providers/utils';
 
 const LEAF_ICONS: Record<MyHDF5EntityKind, IconType> = {
   [MyHDF5EntityKind.Group]: FiFolder,
@@ -27,7 +27,7 @@ interface Props {
 function Icon(props: Props): ReactElement {
   const { entity, isExpanded } = props;
 
-  if (isMyGroup(entity)) {
+  if (isGroup(entity)) {
     return isExpanded ? (
       <FiChevronDown className={styles.icon} />
     ) : (

@@ -5,20 +5,20 @@ import LineToolbar from '../toolbar/LineToolbar';
 import HeatmapToolbar from '../toolbar/HeatmapToolbar';
 import type { MyHDF5Entity } from '../providers/models';
 import {
-  hasMyScalarShape,
-  hasMyBaseType,
+  hasScalarShape,
+  hasBaseType,
   hasMySimpleShape,
-  hasMyNumericType,
-  isMyDataset,
-  isMyGroup,
+  hasNumericType,
+  isDataset,
+  isGroup,
 } from '../providers/utils';
 import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
   isNxInterpretation,
   findSignalName,
-  findMyNxDataGroup,
-  findMySignalDataset,
+  findNxDataGroup,
+  findSignalDataset,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
 import {
@@ -54,16 +54,14 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
   [Vis.Raw]: {
     Icon: FiCpu,
     Container: RawViscontainer,
-    supportsEntity: isMyDataset,
+    supportsEntity: isDataset,
   },
 
   [Vis.Scalar]: {
     Icon: FiCode,
     Container: ScalarVisContainer,
     supportsEntity: (entity) => {
-      return (
-        isMyDataset(entity) && hasMyBaseType(entity) && hasMyScalarShape(entity)
-      );
+      return isDataset(entity) && hasBaseType(entity) && hasScalarShape(entity);
     },
   },
 
@@ -72,8 +70,8 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Container: MatrixVisContainer,
     supportsEntity: (entity) => {
       return (
-        isMyDataset(entity) &&
-        hasMyBaseType(entity) &&
+        isDataset(entity) &&
+        hasBaseType(entity) &&
         hasMySimpleShape(entity) &&
         entity.shape.dims.length >= 1
       );
@@ -86,8 +84,8 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Container: LineVisContainer,
     supportsEntity: (entity) => {
       return (
-        isMyDataset(entity) &&
-        hasMyNumericType(entity) &&
+        isDataset(entity) &&
+        hasNumericType(entity) &&
         hasMySimpleShape(entity) &&
         entity.shape.dims.length >= 1
       );
@@ -100,8 +98,8 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Container: HeatmapVisContainer,
     supportsEntity: (entity) => {
       return (
-        isMyDataset(entity) &&
-        hasMyNumericType(entity) &&
+        isDataset(entity) &&
+        hasNumericType(entity) &&
         hasMySimpleShape(entity) &&
         entity.shape.dims.length >= 2
       );
@@ -113,17 +111,17 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Toolbar: NxSpectrumToolbar,
     Container: NxSpectrumContainer,
     supportsEntity: (entity) => {
-      if (!isMyGroup(entity)) {
+      if (!isGroup(entity)) {
         return false;
       }
 
-      const group = findMyNxDataGroup(entity);
+      const group = findNxDataGroup(entity);
       if (!group) {
         return false; // group is not NXdata and doesn't have `default` attribute
       }
 
       const signal = findSignalName(group);
-      const dataset = findMySignalDataset(group, signal);
+      const dataset = findSignalDataset(group, signal);
       const interpretation = getAttributeValue(dataset, 'interpretation');
 
       return (
@@ -138,17 +136,17 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Toolbar: HeatmapToolbar,
     Container: NxImageContainer,
     supportsEntity: (entity) => {
-      if (!isMyGroup(entity)) {
+      if (!isGroup(entity)) {
         return false;
       }
 
-      const group = findMyNxDataGroup(entity);
+      const group = findNxDataGroup(entity);
       if (!group) {
         return false; // group is not NXdata and doesn't have `default` attribute
       }
 
       const signal = findSignalName(group);
-      const dataset = findMySignalDataset(group, signal);
+      const dataset = findSignalDataset(group, signal);
       if (dataset.shape.dims.length < 2) {
         return false;
       }

@@ -11,7 +11,7 @@ import {
   HDF5HardLink,
   MyHDF5EntityKind,
 } from '../providers/models';
-import { isMyGroup, isReachable } from '../providers/utils';
+import { isGroup, isReachable } from '../providers/utils';
 
 function prepareEntity(
   link: HDF5HardLink | HDF5RootLink,
@@ -113,7 +113,7 @@ export function getEntityAtPath(
   entity: MyHDF5Entity,
   path: number[]
 ): MyHDF5Entity {
-  if (path.length === 0 || !isMyGroup(entity)) {
+  if (path.length === 0 || !isGroup(entity)) {
     return entity;
   }
 
