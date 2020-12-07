@@ -108,8 +108,8 @@ from `react-icons/fi`.
 
 The `src/packages` folder contains entry points for packages published to NPM.
 
-To publish the packages, bump their version numbers in their respective `packages/<name>/package.json` files, then
-follow the steps below:
+To publish the packages, bump their version numbers in their respective `packages/<name>/package.json` files, log in to
+NPM locally with `npm login`, then follow the steps below:
 
 ```bash
 cd packages
