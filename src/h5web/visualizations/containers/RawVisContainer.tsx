@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react';
 import RawVis from '../RawVis';
 import type { VisContainerProps } from './models';
 import { useDatasetValue } from './hooks';
-import { assertDataset } from '../../providers/utils';
+import { assertMyDataset } from '../../providers/utils';
 
 function RawViscontainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
-  assertDataset(entity);
+  assertMyDataset(entity);
 
   const value = useDatasetValue(entity.id);
   if (value === undefined) {

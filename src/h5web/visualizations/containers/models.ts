@@ -1,6 +1,5 @@
-import type { HDF5Entity } from '../../providers/models';
+import type { MyHDF5Entity } from '../../providers/models';
 
 export interface VisContainerProps {
-  entity: HDF5Entity;
-  entityName?: string;
+  entity: MyHDF5Entity;
 }

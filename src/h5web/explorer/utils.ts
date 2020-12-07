@@ -16,7 +16,7 @@ import { isMyGroup, isReachable } from '../providers/utils';
 function prepareEntity(
   link: HDF5HardLink | HDF5RootLink,
   parents: MyHDF5Group[]
-): Omit<MyHDF5Entity, 'kind'> {
+): Omit<MyHDF5Group | MyHDF5Dataset | MyHDF5Datatype, 'kind'> {
   return {
     uid: nanoid(),
     id: link.id,
@@ -40,7 +40,6 @@ function buildDataset(
     attributes: rawDataset.attributes || [],
     shape: rawDataset.shape,
     type: rawDataset.type,
-    rawEntity: rawDataset,
   };
 }
 
@@ -55,7 +54,6 @@ function buildDatatype(
     ...prepareEntity(link, parents),
     kind: MyHDF5EntityKind.Datatype,
     type: rawDatatype.type,
-    rawEntity: rawDatatype,
   };
 }
 
@@ -71,7 +69,6 @@ function buildGroup(
     kind: MyHDF5EntityKind.Group,
     attributes: rawGroup.attributes || [],
     children: [],
-    rawEntity: rawGroup,
   };
 
   const newParents = [...parents, group];
