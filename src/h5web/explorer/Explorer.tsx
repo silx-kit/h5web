@@ -5,7 +5,7 @@ import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import { buildTree, getEntityAtPath } from './utils';
 import { ProviderContext } from '../providers/context';
-import { isMyGroup } from '../providers/utils';
+import { isGroup } from '../providers/utils';
 import { useSet } from 'react-use';
 
 const DEFAULT_PATH: number[] = JSON.parse(
@@ -34,7 +34,7 @@ function Explorer(props: Props): ReactElement {
     onSelect(entity);
 
     // Expand if collapsed; collapse is expanded and selected
-    if (isMyGroup(entity) && (!isExpanded || isSelected)) {
+    if (isGroup(entity) && (!isExpanded || isSelected)) {
       toggleGroup(entity.uid);
     }
   }
@@ -45,7 +45,7 @@ function Explorer(props: Props): ReactElement {
     onSelect(entityToSelect);
 
     // Expand entity if group
-    if (isMyGroup(entityToSelect)) {
+    if (isGroup(entityToSelect)) {
       expandGroup(entityToSelect.uid);
     }
 

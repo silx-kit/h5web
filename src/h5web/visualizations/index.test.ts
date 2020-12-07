@@ -15,7 +15,7 @@ import {
   makeMyDatatype,
   makeMyGroup,
   makeMyNxDataGroup,
-  makeMyNxEntity as makeMyNxEntityGroup,
+  makeMyNxEntityGroup,
   makeMySimpleDataset,
   withMyAttributes,
   withMyInterpretation,

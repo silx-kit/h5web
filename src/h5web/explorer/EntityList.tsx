@@ -2,7 +2,7 @@ import React, { CSSProperties, ReactElement } from 'react';
 import styles from './Explorer.module.css';
 import { MyHDF5Entity } from '../providers/models';
 import Icon from './Icon';
-import { isMyGroup } from '../providers/utils';
+import { isGroup } from '../providers/utils';
 
 interface Props {
   level: number;
@@ -35,7 +35,7 @@ function EntityList(props: Props): ReactElement {
               className={styles.btn}
               type="button"
               role="treeitem"
-              aria-expanded={isMyGroup(entity) ? isExpanded : undefined}
+              aria-expanded={isGroup(entity) ? isExpanded : undefined}
               aria-selected={entity === selectedEntity}
               onClick={() => {
                 onSelect(entity);
@@ -45,7 +45,7 @@ function EntityList(props: Props): ReactElement {
               {name}
             </button>
 
-            {isMyGroup(entity) && isExpanded && (
+            {isGroup(entity) && isExpanded && (
               <EntityList
                 level={level + 1}
                 entities={entity.children}

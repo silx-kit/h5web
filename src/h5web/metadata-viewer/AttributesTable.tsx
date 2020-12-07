@@ -6,7 +6,7 @@ interface Props {
   attributes: HDF5Attribute[];
 }
 
-function AttributesInfo(props: Props): ReactElement {
+function AttributesTable(props: Props): ReactElement {
   const { attributes } = props;
 
   if (attributes.length === 0) {
@@ -34,4 +34,4 @@ function AttributesInfo(props: Props): ReactElement {
   );
 }
 
-export default AttributesInfo;
+export default AttributesTable;

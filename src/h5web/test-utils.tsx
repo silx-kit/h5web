@@ -219,7 +219,7 @@ export function makeMyNxDataGroupWithAxes(
   });
 }
 
-export function makeMyNxEntity(
+export function makeMyNxEntityGroup(
   name: string,
   type: 'NXroot' | 'NXentry' | 'NXprocess',
   opts: { defaultPath?: string; children?: MyHDF5Entity[] } & Opts = {}

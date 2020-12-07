@@ -3,9 +3,10 @@ import type { MyHDF5Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import {
   hasMySimpleShape,
-  isMyDataset,
-  isMyDatatype,
-  isMyLink,
+  isDataset,
+  isDatatype,
+  isLink,
+  isResolved,
 } from '../providers/utils';
 import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
@@ -16,9 +17,9 @@ interface Props {
   entity: MyHDF5Entity;
 }
 
-function EntityInfo(props: Props): ReactElement {
+function EntityTable(props: Props): ReactElement {
   const { entity } = props;
-  const { id, name, kind, parents } = entity;
+  const { name, kind, parents } = entity;
 
   return (
     <table className={styles.table}>
@@ -28,10 +29,10 @@ function EntityInfo(props: Props): ReactElement {
         </tr>
       </thead>
       <tbody>
-        {id !== undefined && (
+        {isResolved(entity) && (
           <tr>
             <th scope="row">ID</th>
-            <td>{id}</td>
+            <td>{entity.id}</td>
           </tr>
         )}
         <tr>
@@ -48,7 +49,7 @@ function EntityInfo(props: Props): ReactElement {
               .join('/')}
           </td>
         </tr>
-        {(isMyDataset(entity) || isMyDatatype(entity)) && (
+        {(isDataset(entity) || isDatatype(entity)) && (
           <tr>
             <th scope="row">Type</th>
             <td>
@@ -58,7 +59,7 @@ function EntityInfo(props: Props): ReactElement {
             </td>
           </tr>
         )}
-        {isMyDataset(entity) && (
+        {isDataset(entity) && (
           <tr>
             <th scope="row">Shape</th>
             <td>
@@ -68,9 +69,7 @@ function EntityInfo(props: Props): ReactElement {
             </td>
           </tr>
         )}
-        {isMyLink(entity) && entity.rawLink && (
-          <LinkInfo link={entity.rawLink} />
-        )}
+        {isLink(entity) && entity.rawLink && <LinkInfo link={entity.rawLink} />}
         <tr>
           <th scope="row">Raw</th>
           <td className={styles.raw}>
@@ -82,4 +81,4 @@ function EntityInfo(props: Props): ReactElement {
   );
 }
 
-export default EntityInfo;
+export default EntityTable;
