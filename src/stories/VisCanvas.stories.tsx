@@ -104,7 +104,7 @@ InheritedStyles.decorators = [
 ];
 
 export default {
-  title: 'Building Blocks/AxisSystem',
+  title: 'Building Blocks/VisCanvas',
   component: VisCanvas,
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
