@@ -134,3 +134,15 @@ The library is documented in a Storybook site accessible at https://h5web-docs.p
 ### @h5web/app
 
 H5Web's top-level `App` component and data providers (`SilxProvider`, etc.)
+
+## HSDS demo
+
+h5web can display data requested to a [HSDS](https://github.com/HDFGroup/hsds) server instance. A demo is available on
+https://h5web.panosc.eu/hsds with several files (or domains) available:
+
+- `/home/reader/water` (**default**): A file containing similar data to the demo https://h5web.panosc.eu/. Some datasets
+  do not work as bitshuffle compression is not supported by HSDS yet.
+- `/home/reader/tall`: The demo file of HSDS.
+- `/home/reader/chunked`: A file containing a simple 2D chunked dataset.
+
+The different domains can be reached through `https://h5web.panosc.eu/hsds?domain=<domain_name>`.
