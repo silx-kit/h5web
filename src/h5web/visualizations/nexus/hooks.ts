@@ -1,5 +1,5 @@
 import { MyHDF5Group } from '../../providers/models';
-import { assertMyDataset, isMyDataset } from '../../providers/utils';
+import { assertDataset, isDataset } from '../../providers/utils';
 import { useDatasetValues } from '../containers/hooks';
 import {
   assertArray,
@@ -8,7 +8,7 @@ import {
 } from '../shared/utils';
 import type { NxData } from './models';
 import {
-  findMySignalDataset,
+  findSignalDataset,
   findSignalName,
   getChildEntity,
   getDatasetLabel,
@@ -18,11 +18,11 @@ import {
 
 export function useNxData(group: MyHDF5Group): NxData {
   const values = useDatasetValues(
-    group.children.filter(isMyDataset).map((child) => child.id)
+    group.children.filter(isDataset).map((child) => child.id)
   );
 
   const signalName = findSignalName(group);
-  const signalDataset = findMySignalDataset(group, signalName);
+  const signalDataset = findSignalDataset(group, signalName);
 
   const signalValue = values[signalDataset.id];
   if (!signalValue) {
@@ -42,7 +42,7 @@ export function useNxData(group: MyHDF5Group): NxData {
 
     const axisDataset = getChildEntity(group, axisName);
     assertDefined(axisDataset);
-    assertMyDataset(axisDataset);
+    assertDataset(axisDataset);
 
     const axisValue = values[axisDataset.id];
     assertOptionalArray<number>(axisValue);
@@ -58,12 +58,12 @@ export function useNxData(group: MyHDF5Group): NxData {
     getChildEntity(group, `${signalName}_errors`) ||
     getChildEntity(group, 'errors');
   const errorsValue =
-    errorsDataset && isMyDataset(errorsDataset) && values[errorsDataset.id];
+    errorsDataset && isDataset(errorsDataset) && values[errorsDataset.id];
   assertOptionalArray<number>(errorsValue);
 
   const titleDataset = getChildEntity(group, 'title');
   const titleValue =
-    titleDataset && isMyDataset(titleDataset) && values[titleDataset.id];
+    titleDataset && isDataset(titleDataset) && values[titleDataset.id];
 
   return {
     signal: {

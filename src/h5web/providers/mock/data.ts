@@ -87,7 +87,7 @@ export function makeDataset(
   return { id, collection: HDF5Collection.Datasets, type, shape, attributes };
 }
 
-export function makeSimpleDataset(
+function makeSimpleDataset(
   id: HDF5Id,
   type: HDF5Type,
   dims: HDF5Dims,
@@ -104,18 +104,8 @@ export function makeGroup(
   return { id, collection: HDF5Collection.Groups, attributes, links };
 }
 
-export function makeDatatype(id: HDF5Id, type: HDF5Type): HDF5Datatype {
+function makeDatatype(id: HDF5Id, type: HDF5Type): HDF5Datatype {
   return { id, collection: HDF5Collection.Datatypes, type };
-}
-
-export function withAttributes<T extends HDF5Dataset | HDF5Group>(
-  datasetOrGroup: T,
-  attributes: HDF5Attribute[]
-): T {
-  return {
-    ...datasetOrGroup,
-    attributes: [...(datasetOrGroup.attributes || []), ...attributes],
-  };
 }
 
 /* ----------------- */
@@ -129,15 +119,15 @@ export function makeHardLink(
   return { class: HDF5LinkClass.Hard, title, collection, id };
 }
 
-export function makeDatasetHardLink(title: string, id = title): HDF5HardLink {
+function makeDatasetHardLink(title: string, id = title): HDF5HardLink {
   return makeHardLink(HDF5Collection.Datasets, title, id);
 }
 
-export function makeGroupHardLink(title: string, id = title): HDF5HardLink {
+function makeGroupHardLink(title: string, id = title): HDF5HardLink {
   return makeHardLink(HDF5Collection.Groups, title, id);
 }
 
-export function makeExternalLink(
+function makeExternalLink(
   title: string,
   file: string,
   h5path: string
@@ -148,60 +138,7 @@ export function makeExternalLink(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-export function makeNxData(
-  id: string,
-  opts: {
-    signal: string;
-    axes?: string | string[];
-    ids?: Record<string, HDF5Id>;
-  }
-): HDF5Group {
-  const { signal, axes, ids = {} } = opts;
-
-  return makeGroup(
-    id,
-    [
-      makeStrAttr('NX_class', 'NXdata'),
-      makeStrAttr('signal', signal),
-      ...(axes ? [makeStrAttr('axes', axes)] : []),
-    ],
-    Object.entries(ids).map(([...args]) => makeDatasetHardLink(...args))
-  );
-}
-
-export function makeNxEntry(
-  id: string,
-  opts: {
-    defaultPath?: string;
-    ids?: Record<string, HDF5Id>;
-  }
-): HDF5Group {
-  const { ids = {}, defaultPath } = opts;
-
-  return makeGroup(
-    id,
-    [makeStrAttr('NX_class', 'NXentry'), makeStrAttr('default', defaultPath)],
-    Object.entries(ids).map(([...args]) => makeGroupHardLink(...args))
-  );
-}
-
-export function makeNxRoot(
-  id: string,
-  opts: {
-    defaultPath?: string;
-    ids?: Record<string, HDF5Id>;
-  }
-): HDF5Group {
-  const { ids = {}, defaultPath } = opts;
-
-  return makeGroup(
-    id,
-    [makeStrAttr('NX_class', 'NXroot'), makeStrAttr('default', defaultPath)],
-    Object.entries(ids).map(([...args]) => makeGroupHardLink(...args))
-  );
-}
-
-export function makeNxAxesAttr(axes: string[]): HDF5Attribute {
+function makeNxAxesAttr(axes: string[]): HDF5Attribute {
   return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
 }
 

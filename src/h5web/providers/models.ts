@@ -57,7 +57,6 @@ export enum MyHDF5EntityKind {
 
 export interface MyHDF5Entity {
   uid: string;
-  id?: HDF5Id;
   name: string;
   kind: MyHDF5EntityKind;
   parents: MyHDF5Group[];
@@ -65,8 +64,11 @@ export interface MyHDF5Entity {
   rawLink?: HDF5Link;
 }
 
-export interface MyHDF5Group extends MyHDF5Entity {
+export interface MyHDF5ResolvedEntity extends MyHDF5Entity {
   id: HDF5Id;
+}
+
+export interface MyHDF5Group extends MyHDF5ResolvedEntity {
   kind: MyHDF5EntityKind.Group;
   children: MyHDF5Entity[];
 }
@@ -74,15 +76,13 @@ export interface MyHDF5Group extends MyHDF5Entity {
 export interface MyHDF5Dataset<
   S extends HDF5Shape = HDF5Shape,
   T extends HDF5Type = HDF5Type
-> extends MyHDF5Entity {
-  id: HDF5Id;
+> extends MyHDF5ResolvedEntity {
   kind: MyHDF5EntityKind.Dataset;
   shape: S;
   type: T;
 }
 
-export interface MyHDF5Datatype<T = HDF5Type> extends MyHDF5Entity {
-  id: HDF5Id;
+export interface MyHDF5Datatype<T = HDF5Type> extends MyHDF5ResolvedEntity {
   kind: MyHDF5EntityKind.Datatype;
   type: T;
 }
