@@ -1,19 +1,17 @@
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement, Suspense, useMemo } from 'react';
 import { LineSegments } from 'react-three-fiber/components';
-import { BufferGeometry } from 'three';
-import { lineSegment } from '../shared/utils';
+import { BufferGeometry, Vector2 } from 'three';
 import { useCanvasScales } from '../shared/hooks';
+import DataGlyphs from './DataGlyphs';
+import { GLYPH_URLS } from './models';
 
 const DEFAULT_COLOR = '#1b998b';
-
-const CAP_LENGTH = 10;
 
 interface Props {
   abscissas: number[];
   ordinates: number[];
   errors: number[];
   color?: string;
-  capLength?: number;
   visible?: boolean;
 }
 
@@ -23,58 +21,65 @@ function ErrorBarCurve(props: Props): ReactElement {
     ordinates,
     errors,
     color = DEFAULT_COLOR,
-    capLength = CAP_LENGTH,
     visible,
   } = props;
 
   const { abscissaScale, ordinateScale } = useCanvasScales();
 
-  const errorGeometry = useMemo(() => {
-    const points = ordinates.flatMap((val, index) => {
-      const [x, y] = [abscissaScale(abscissas[index]), ordinateScale(val)];
+  const [barsGeometry, capsGeometry] = useMemo(() => {
+    const capPoints: Vector2[] = [];
+    const barSegments: Vector2[] = [];
 
-      if (!Number.isFinite(y)) {
-        return [];
+    for (const index of ordinates.keys()) {
+      const ordinate = ordinates[index];
+      const x = abscissaScale(abscissas[index]);
+      const y = ordinateScale(ordinate);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) {
+        continue;
       }
-
       const error = errors[index];
       if (error === 0) {
-        return [];
+        continue;
       }
-      const yerr_min = ordinateScale(val - error);
-      const yerr_max = ordinateScale(val + error);
 
-      return [
-        // First segment: bottom cap
-        ...lineSegment(
-          x - capLength / 2,
-          yerr_min,
-          x + capLength / 2,
-          yerr_min
-        ),
-        // Second segment: bottom error bar
-        ...lineSegment(x, yerr_min, x, y),
-        // Third segment: top error bar
-        ...lineSegment(x, y, x, yerr_max),
-        // Fourth segment: top cap
-        ...lineSegment(
-          x - capLength / 2,
-          yerr_max,
-          x + capLength / 2,
-          yerr_max
-        ),
-      ];
+      const yBottom = ordinateScale(ordinate - error);
+      const yTop = ordinateScale(ordinate + error);
+
+      const xyVector = new Vector2(x, y);
+
+      if (Number.isFinite(yBottom)) {
+        const bottomVector = new Vector2(x, yBottom);
+        capPoints.push(bottomVector);
+        barSegments.push(xyVector, bottomVector);
+      }
+
+      if (Number.isFinite(yTop)) {
+        const topVector = new Vector2(x, yTop);
+        capPoints.push(topVector);
+        barSegments.push(xyVector, topVector);
+      }
+    }
+
+    return [barSegments, capPoints].map((points) => {
+      const geometry = new BufferGeometry();
+      geometry.setFromPoints(points);
+      return geometry;
     });
-
-    const geometry = new BufferGeometry();
-    geometry.setFromPoints(points);
-    return geometry;
-  }, [abscissaScale, abscissas, capLength, errors, ordinateScale, ordinates]);
+  }, [abscissaScale, abscissas, errors, ordinateScale, ordinates]);
 
   return (
-    <LineSegments visible={visible} geometry={errorGeometry}>
-      <lineBasicMaterial attach="material" color={color} linewidth={2} />
-    </LineSegments>
+    <Suspense fallback={<></>}>
+      <LineSegments visible={visible} geometry={barsGeometry}>
+        <lineBasicMaterial attach="material" color={color} linewidth={2} />
+      </LineSegments>
+      <DataGlyphs
+        visible={visible}
+        geometry={capsGeometry}
+        glyphURL={GLYPH_URLS.Cap}
+        color={color}
+        size={8}
+      />
+    </Suspense>
   );
 }
 
