@@ -35,16 +35,17 @@ describe('Explorer utilities', () => {
         groups: [rootGroup],
       });
 
-      expect(buildTree(emptyMetadata, domain)).toEqual({
+      const expectedTree: MyHDF5Group = {
         uid: expect.any(String),
         id: '913d8791',
         name: domain,
         kind: MyHDF5EntityKind.Group,
-        parents: [],
         children: [],
         attributes: [],
         rawLink: rootLink,
-      });
+      };
+
+      expect(buildTree(emptyMetadata, domain)).toEqual(expectedTree);
     });
 
     it('should process metadata with single dataset in root group', () => {
@@ -63,7 +64,6 @@ describe('Explorer utilities', () => {
         id: '913d8791',
         name: domain,
         kind: MyHDF5EntityKind.Group,
-        parents: [],
         children: [],
         attributes: [],
         rawLink: rootLink,
@@ -74,7 +74,7 @@ describe('Explorer utilities', () => {
         id: '1203fee7',
         name: link.title,
         kind: MyHDF5EntityKind.Dataset,
-        parents: [expectedTree],
+        parent: expectedTree,
         attributes: [],
         shape: scalarShape,
         type: intType,
@@ -113,7 +113,6 @@ describe('Explorer utilities', () => {
         id: '913d8791',
         name: domain,
         kind: MyHDF5EntityKind.Group,
-        parents: [],
         children: [],
         attributes: [],
         rawLink: rootLink,
@@ -124,7 +123,7 @@ describe('Explorer utilities', () => {
         id: '0a68caca',
         name: 'group',
         kind: MyHDF5EntityKind.Group,
-        parents: [expectedTree],
+        parent: expectedTree,
         children: [],
         attributes: [groupAttr],
         rawLink: groupLink,
@@ -135,7 +134,7 @@ describe('Explorer utilities', () => {
         id: '1203fee7',
         name: 'foo',
         kind: MyHDF5EntityKind.Dataset,
-        parents: [expectedTree, expectedChildGroup],
+        parent: expectedChildGroup,
         attributes: [],
         shape: scalarShape,
         type: intType,

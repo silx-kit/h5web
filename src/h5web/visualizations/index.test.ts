@@ -211,13 +211,17 @@ describe('Visualization definitions', () => {
     });
 
     it('should support group with absolute `default` path to supported NXdata group', () => {
-      const group = makeMyNxEntityGroup('foo', 'NXentry', {
-        defaultPath: '/foo/bar',
-        children: [makeMyNxDataGroup('bar', spectrumDatasetInt1D)],
-        parents: [makeMyNxEntityGroup('root', 'NXroot')],
+      const rootGroup = makeMyNxEntityGroup('root', 'NXroot', {
+        children: [
+          makeMyNxEntityGroup('foo', 'NXentry', {
+            defaultPath: '/foo/bar',
+            children: [makeMyNxDataGroup('bar', spectrumDatasetInt1D)],
+          }),
+        ],
       });
 
-      expect(supportsEntity(group)).toBe(true);
+      const [groupWithDefault] = rootGroup.children;
+      expect(supportsEntity(groupWithDefault)).toBe(true);
     });
 
     it('should support group with multi-step `default` path to supported NXdata group', () => {
@@ -292,13 +296,17 @@ describe('Visualization definitions', () => {
     });
 
     it('should support group with absolute `default` path to supported NXdata group', () => {
-      const group = makeMyNxEntityGroup('foo', 'NXentry', {
-        defaultPath: '/foo/bar',
-        children: [makeMyNxDataGroup('bar', imageDatasetInt2D)],
-        parents: [makeMyNxEntityGroup('root', 'NXroot')],
+      const rootGroup = makeMyNxEntityGroup('root', 'NXroot', {
+        children: [
+          makeMyNxEntityGroup('foo', 'NXentry', {
+            defaultPath: '/foo/bar',
+            children: [makeMyNxDataGroup('bar', imageDatasetInt2D)],
+          }),
+        ],
       });
 
-      expect(supportsEntity(group)).toBe(true);
+      const [groupWithDefault] = rootGroup.children;
+      expect(supportsEntity(groupWithDefault)).toBe(true);
     });
 
     it('should support group with multi-step `default` path to supported NXdata group', () => {

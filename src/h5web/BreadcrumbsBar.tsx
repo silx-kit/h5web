@@ -4,6 +4,7 @@ import styles from './BreadcrumbsBar.module.css';
 import type { MyHDF5Entity } from './providers/models';
 import ToggleGroup from './toolbar/controls/ToggleGroup';
 import ToggleBtn from './toolbar/controls/ToggleBtn';
+import { getParents } from './explorer/utils';
 
 interface Props {
   isExplorerOpen: boolean;
@@ -36,12 +37,14 @@ function BreadcrumbsBar(props: Props): ReactElement {
       />
       {selectedEntity && (
         <h1 className={styles.breadCrumbs}>
-          {selectedEntity?.parents.slice(firstParentIndex).map((parent) => (
-            <Fragment key={parent.id}>
-              <span className={styles.crumb}>{parent.name}</span>
-              <FiChevronRight className={styles.separator} title="/" />
-            </Fragment>
-          ))}
+          {getParents(selectedEntity)
+            .slice(firstParentIndex)
+            .map((parent) => (
+              <Fragment key={parent.id}>
+                <span className={styles.crumb}>{parent.name}</span>
+                <FiChevronRight className={styles.separator} title="/" />
+              </Fragment>
+            ))}
           <span className={styles.crumb} data-current>
             {selectedEntity.name}
           </span>

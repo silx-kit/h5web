@@ -12,6 +12,7 @@ import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 import LinkInfo from './LinkInfo';
 import { capitalize } from 'lodash-es';
+import { getParents } from '../explorer/utils';
 
 interface Props {
   entity: MyHDF5Entity;
@@ -19,7 +20,7 @@ interface Props {
 
 function EntityTable(props: Props): ReactElement {
   const { entity } = props;
-  const { name, kind, parents } = entity;
+  const { name, kind } = entity;
 
   return (
     <table className={styles.table}>
@@ -43,7 +44,7 @@ function EntityTable(props: Props): ReactElement {
           <th scope="row">Path</th>
           <td>
             /
-            {[...parents, entity]
+            {[...getParents(entity), entity]
               .slice(1)
               .map(({ name }) => name)
               .join('/')}
