@@ -94,9 +94,10 @@ export function makeMyGroup(
     attributes,
   };
 
-  group.children.forEach((child) => {
-    child.parent = group;
-  });
+  group.children = group.children.map((child) => ({
+    ...child,
+    parent: group,
+  }));
 
   return group;
 }
