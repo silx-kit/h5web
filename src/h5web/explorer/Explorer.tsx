@@ -3,7 +3,7 @@ import { FiFileText } from 'react-icons/fi';
 import type { MyHDF5Entity } from '../providers/models';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
-import { buildTree, getEntityAtPath } from './utils';
+import { buildTree, getEntityAtPath, getParents } from './utils';
 import { ProviderContext } from '../providers/context';
 import { isGroup } from '../providers/utils';
 import { useSet } from 'react-use';
@@ -50,7 +50,7 @@ function Explorer(props: Props): ReactElement {
     }
 
     // Expand parent groups
-    entityToSelect.parents.forEach((group) => expandGroup(group.uid));
+    getParents(entityToSelect).forEach((group) => expandGroup(group.uid));
   }, [expandGroup, onSelect, root]);
 
   return (
