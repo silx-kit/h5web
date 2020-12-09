@@ -6,12 +6,13 @@ import { GLYPH_URLS } from './models';
 interface Props {
   geometry: BufferGeometry;
   color: string;
+  size: number;
   glyphURL?: string;
-  visible: boolean;
+  visible?: boolean;
 }
 
 function DataGlyphs(props: Props): ReactElement {
-  const { geometry, color, glyphURL, visible } = props;
+  const { geometry, color, size, glyphURL, visible } = props;
   const sprite = useLoader(TextureLoader, glyphURL || GLYPH_URLS.Cross);
 
   return (
@@ -20,7 +21,7 @@ function DataGlyphs(props: Props): ReactElement {
         attach="material"
         map={sprite}
         color={color}
-        size={6}
+        size={size}
         transparent
       />
     </points>
