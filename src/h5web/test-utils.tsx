@@ -76,31 +76,26 @@ export function prepareForConsoleError() {
 }
 /* eslint-enable no-console */
 
-type Opts = Partial<Pick<MyHDF5Dataset, 'id' | 'parents' | 'attributes'>>;
+type Opts = Partial<Pick<MyHDF5Dataset, 'id' | 'attributes'>>;
 
 export function makeMyGroup(
   name: string,
   children: MyHDF5Entity[] = [],
   opts: Opts = {}
 ): MyHDF5Group {
-  const { id = name, parents = [], attributes = [] } = opts;
+  const { id = name, attributes = [] } = opts;
 
   const group: MyHDF5Group = {
     uid: nanoid(),
     id,
     name,
     kind: MyHDF5EntityKind.Group,
-    parents,
     children,
     attributes,
   };
 
-  group.parents.forEach((parent) => {
-    parent.children = [...parent.children, group];
-  });
-
   group.children.forEach((child) => {
-    child.parents = [group, ...child.parents];
+    child.parent = group;
   });
 
   return group;
@@ -112,24 +107,17 @@ export function makeMyDataset<S extends HDF5Shape, T extends HDF5Type>(
   type: T,
   opts: Opts = {}
 ): MyHDF5Dataset<S, T> {
-  const { id = name, parents = [], attributes = [] } = opts;
+  const { id = name, attributes = [] } = opts;
 
-  const dataset: MyHDF5Dataset<S, T> = {
+  return {
     uid: nanoid(),
     id,
     name,
     kind: MyHDF5EntityKind.Dataset,
-    parents,
     attributes,
     shape,
     type,
   };
-
-  dataset.parents.forEach((parent) => {
-    parent.children = [...parent.children, dataset];
-  });
-
-  return dataset;
 }
 
 export function makeMySimpleDataset<T extends HDF5Type>(
@@ -146,23 +134,16 @@ export function makeMyDatatype<T extends HDF5Type>(
   type: T,
   opts: Opts = {}
 ): MyHDF5Datatype<T> {
-  const { id = name, parents = [], attributes = [] } = opts;
+  const { id = name, attributes = [] } = opts;
 
-  const datatype: MyHDF5Datatype<T> = {
+  return {
     uid: nanoid(),
     id,
     name,
     kind: MyHDF5EntityKind.Datatype,
-    parents,
     attributes,
     type,
   };
-
-  datatype.parents.forEach((parent) => {
-    parent.children = [...parent.children, datatype];
-  });
-
-  return datatype;
 }
 
 export function withMyAttributes<T extends MyHDF5Entity>(

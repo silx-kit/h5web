@@ -27,6 +27,7 @@ import {
   assertStr,
   isScaleType,
 } from '../shared/utils';
+import { findRoot } from '../../explorer/utils';
 
 export function getAttributeValue(
   entity: HDF5Dataset | HDF5Group | MyHDF5Entity,
@@ -63,7 +64,7 @@ export function findNxDataGroup(group: MyHDF5Group): MyHDF5Group | undefined {
         ? getChildEntity(parentEntity, currSegment)
         : undefined;
     },
-    isAbsolutePath && group.parents.length > 0 ? group.parents[0] : group
+    (isAbsolutePath && findRoot(group)) || group
   );
 
   assertDefined(defaultEntity, `Expected entity at path "${defaultPath}"`);

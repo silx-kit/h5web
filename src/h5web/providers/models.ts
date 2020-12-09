@@ -59,7 +59,7 @@ export interface MyHDF5Entity {
   uid: string;
   name: string;
   kind: MyHDF5EntityKind;
-  parents: MyHDF5Group[];
+  parent?: MyHDF5Group;
   attributes: HDF5Attribute[];
   rawLink?: HDF5Link;
 }
