@@ -16,7 +16,7 @@ import {
   makeStrAttr,
   scalarShape,
 } from '../providers/mock/data';
-import { makeMyDataset, makeMyGroup } from '../test-utils';
+import { makeMyDataset, makeMyGroup } from '../providers/my-utils';
 
 const domain = 'domain';
 const rootLink: HDF5RootLink = {

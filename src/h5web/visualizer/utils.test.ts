@@ -12,7 +12,7 @@ import {
   makeMyGroup,
   makeMyNxDataGroup,
   makeMySimpleDataset,
-} from '../test-utils';
+} from '../providers/my-utils';
 
 describe('Visualizer utilities', () => {
   describe('getSupportedVis', () => {
