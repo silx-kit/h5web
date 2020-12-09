@@ -98,7 +98,7 @@ export function makeDataset(
   return { id, collection: HDF5Collection.Datasets, type, shape, attributes };
 }
 
-function makeSimpleDataset(
+export function makeSimpleDataset(
   id: HDF5Id,
   type: HDF5Type,
   dims: HDF5Dims,
@@ -115,7 +115,7 @@ export function makeGroup(
   return { id, collection: HDF5Collection.Groups, attributes, links };
 }
 
-function makeDatatype(id: HDF5Id, type: HDF5Type): HDF5Datatype {
+export function makeDatatype(id: HDF5Id, type: HDF5Type): HDF5Datatype {
   return { id, collection: HDF5Collection.Datatypes, type };
 }
 
@@ -130,15 +130,15 @@ export function makeHardLink(
   return { class: HDF5LinkClass.Hard, title, collection, id };
 }
 
-function makeDatasetHardLink(title: string, id = title): HDF5HardLink {
+export function makeDatasetHardLink(title: string, id = title): HDF5HardLink {
   return makeHardLink(HDF5Collection.Datasets, title, id);
 }
 
-function makeGroupHardLink(title: string, id = title): HDF5HardLink {
+export function makeGroupHardLink(title: string, id = title): HDF5HardLink {
   return makeHardLink(HDF5Collection.Groups, title, id);
 }
 
-function makeExternalLink(
+export function makeExternalLink(
   title: string,
   file: string,
   h5path: string
@@ -149,7 +149,7 @@ function makeExternalLink(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-function makeNxAxesAttr(axes: string[]): HDF5Attribute {
+export function makeNxAxesAttr(axes: string[]): HDF5Attribute {
   return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
 }
 
@@ -176,7 +176,7 @@ export function makeMetadata(
 
 export const mockDomain = 'source.h5';
 
-export const myMockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
+export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
   defaultPath: 'nexus_entry',
   children: [
     makeMyGroup('entities', [
@@ -313,213 +313,6 @@ export const myMockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
       ),
     ]),
   ],
-});
-
-export const mockMetadata = makeMetadata({
-  root: 'root',
-  groups: [
-    makeGroup(
-      'root',
-      [
-        makeStrAttr('NX_class', 'NXroot'),
-        makeStrAttr('default', 'nexus_entry'),
-      ],
-      [
-        makeGroupHardLink('entities'),
-        makeGroupHardLink('nD_datasets'),
-        makeGroupHardLink('nexus_entry'),
-        makeGroupHardLink('nexus_malformed'),
-      ]
-    ),
-
-    // ==> Top-level groups
-    makeGroup('entities', undefined, [
-      makeGroupHardLink('empty_group'),
-      makeExternalLink('external_link', 'my_file', 'entry_000/dataset'),
-      makeHardLink(HDF5Collection.Datatypes, 'datatype'),
-      makeDatasetHardLink('raw'),
-      makeDatasetHardLink('scalar_int'),
-      makeDatasetHardLink('scalar_str'),
-    ]),
-    makeGroup('nD_datasets', undefined, [
-      makeDatasetHardLink('oneD_linear'),
-      makeDatasetHardLink('oneD'),
-      makeDatasetHardLink('twoD'),
-      makeDatasetHardLink('threeD'),
-      makeDatasetHardLink('fourD'),
-    ]),
-    makeGroup(
-      'nexus_entry',
-      [
-        makeStrAttr('NX_class', 'NXentry'),
-        makeStrAttr('default', 'nx_process/nx_data'),
-      ],
-      [
-        makeGroupHardLink('nx_process'),
-        makeGroupHardLink('spectrum'),
-        makeGroupHardLink('image'),
-        makeGroupHardLink('log_spectrum'),
-      ]
-    ),
-    makeGroup('nexus_malformed', undefined, [
-      makeGroupHardLink('default_not_string'),
-      makeGroupHardLink('default_empty'),
-      makeGroupHardLink('default_not_found'),
-      makeGroupHardLink('default_not_group'),
-      makeGroupHardLink('no_signal'),
-      makeGroupHardLink('signal_not_string'),
-      makeGroupHardLink('signal_not_found'),
-      makeGroupHardLink('signal_not_dataset'),
-      makeGroupHardLink('signal_dataset_not_numeric'),
-      makeGroupHardLink('signal_dataset_not_simple'),
-      makeGroupHardLink('signal_dataset_zero_dim'),
-    ]),
-
-    // ==> Inner groups
-    makeGroup('empty_group'),
-    makeGroup(
-      'nx_process',
-      [makeStrAttr('NX_class', 'NXprocess')], // intentionally has no `default` attribute
-      [makeGroupHardLink('nx_data')]
-    ),
-    makeGroup(
-      'nx_data',
-      [
-        makeStrAttr('NX_class', 'NXdata'),
-        makeStrAttr('signal', 'twoD'),
-        makeStrAttr(
-          'SILX_style',
-          JSON.stringify({ signal_scale_type: 'symlog' })
-        ),
-      ],
-      [makeDatasetHardLink('twoD'), makeDatasetHardLink('title', 'title_twoD')]
-    ),
-    makeGroup(
-      'spectrum',
-      [
-        makeStrAttr('NX_class', 'NXdata'),
-        makeStrAttr('signal', 'twoD_spectrum'),
-        makeNxAxesAttr(['.', 'X']),
-      ],
-      [
-        makeDatasetHardLink('twoD_spectrum'),
-        makeDatasetHardLink('X'),
-        makeDatasetHardLink('errors', 'errors_twoD'),
-      ]
-    ),
-    makeGroup(
-      'image',
-      [
-        makeStrAttr('NX_class', 'NXdata'),
-        makeStrAttr('signal', 'fourD_image'),
-        makeStrAttr('SILX_style', JSON.stringify({ signal_scale_type: 'log' })),
-        makeNxAxesAttr(['.', '.', 'Y', 'X']),
-      ],
-      [
-        makeDatasetHardLink('fourD_image'),
-        makeDatasetHardLink('X'),
-        makeDatasetHardLink('Y'),
-      ]
-    ),
-    makeGroup(
-      'log_spectrum',
-      [
-        makeStrAttr('NX_class', 'NXdata'),
-        makeStrAttr('signal', 'oneD'),
-        makeStrAttr(
-          'SILX_style',
-          JSON.stringify({ axes_scale_type: ['log'], signal_scale_type: 'log' })
-        ),
-        makeNxAxesAttr(['X_log']),
-      ],
-      [
-        makeDatasetHardLink('oneD', 'oneD'),
-        makeDatasetHardLink('X_log'),
-        makeDatasetHardLink('oneD_errors'),
-      ]
-    ),
-    makeGroup('default_not_string', [
-      makeAttr('default', scalarShape, intType, 42),
-    ]),
-    makeGroup('default_empty', [makeStrAttr('default', '')]),
-    makeGroup('default_not_found', [makeStrAttr('default', '/test')]),
-    makeGroup(
-      'default_not_group',
-      [makeStrAttr('default', 'scalar_int')],
-      [makeDatasetHardLink('scalar_int')]
-    ),
-    makeGroup('no_signal', [makeStrAttr('NX_class', 'NXdata')]),
-    makeGroup('signal_not_string', [
-      makeStrAttr('NX_class', 'NXdata'),
-      makeAttr('signal', scalarShape, intType, 42),
-    ]),
-    makeGroup('signal_not_found', [
-      makeStrAttr('NX_class', 'NXdata'),
-      makeStrAttr('signal', 'unknown'),
-    ]),
-    makeGroup(
-      'signal_not_dataset',
-      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'empty_group')],
-      [makeGroupHardLink('empty_group')]
-    ),
-    makeGroup(
-      'signal_dataset_not_numeric',
-      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'oneD_str')],
-      [makeDatasetHardLink('oneD_str')]
-    ),
-    makeGroup(
-      'signal_dataset_not_simple',
-      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'scalar_int')],
-      [makeDatasetHardLink('scalar_int')]
-    ),
-    makeGroup(
-      'signal_dataset_zero_dim',
-      [makeStrAttr('NX_class', 'NXdata'), makeStrAttr('signal', 'zeroD')],
-      [makeDatasetHardLink('zeroD', 'null')]
-    ),
-  ],
-  datasets: [
-    makeSimpleDataset('oneD_linear', intType, [41]),
-    makeSimpleDataset('oneD', intType, [41]),
-    makeSimpleDataset('twoD', intType, [20, 41]),
-    makeSimpleDataset('threeD', intType, [9, 20, 41]),
-    makeSimpleDataset('fourD', intType, [3, 9, 20, 41]),
-    makeDataset('raw', compoundType, scalarShape),
-    makeDataset('scalar_int', intType, scalarShape),
-    makeDataset('scalar_str', stringType, scalarShape),
-    makeSimpleDataset('X', intType, [41], [makeStrAttr('units', 'nm')]),
-    makeSimpleDataset(
-      'Y',
-      intType,
-      [20],
-      [makeStrAttr('units', 'deg'), makeStrAttr('long_name', 'Angle (degrees)')]
-    ),
-    makeDataset('title_twoD', stringType, scalarShape),
-    makeSimpleDataset('X_log', floatType, [41]),
-    makeSimpleDataset('oneD_str', stringType, [2]),
-    makeSimpleDataset('null', intType, []),
-    makeSimpleDataset(
-      'twoD_spectrum',
-      intType,
-      [20, 41],
-      [
-        makeStrAttr('interpretation', 'spectrum'),
-        makeStrAttr('units', 'arb. units'),
-      ]
-    ),
-    makeSimpleDataset('errors_twoD', floatType, [20, 41]),
-    makeSimpleDataset(
-      'fourD_image',
-      intType,
-      [3, 9, 20, 41],
-      [
-        makeStrAttr('long_name', 'Interference fringes'),
-        makeStrAttr('interpretation', 'image'),
-      ]
-    ),
-    makeSimpleDataset('oneD_errors', intType, [41]),
-  ],
-  datatypes: [makeDatatype('datatype', compoundType)],
 });
 
 /* ------------------ */

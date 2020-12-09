@@ -1,4 +1,4 @@
-import { mockValues, myMockMetadata } from './data';
+import { mockValues, mockMetadata } from './data';
 import {
   assertDataset,
   assertMySimpleShape,
@@ -19,7 +19,7 @@ export function getMockDataArray(path: string): ndarray {
         ? getChildEntity(parentEntity, currSegment)
         : undefined;
     },
-    myMockMetadata
+    mockMetadata
   );
 
   assertDefined(dataset, `Expected entity at path "${path}"`);
