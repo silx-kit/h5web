@@ -19,7 +19,7 @@ import {
   makeMySimpleDataset,
   withMyAttributes,
   withMyInterpretation,
-} from '../test-utils';
+} from '../providers/my-utils';
 
 const datasetIntScalar = makeMyDataset('dataset_int', scalarShape, intType);
 const datasetFltScalar = makeMyDataset('dataset_flt', scalarShape, floatType);
