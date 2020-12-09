@@ -1,21 +1,17 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
-import ndarray from 'ndarray';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
-import { getDomain, mockValues } from '../packages/lib';
-import { getMockDatasetDims } from '../h5web/providers/mock/utils';
+import { getDomain } from '../packages/lib';
+import { getMockDataArray } from '../h5web/providers/mock/utils';
 import LineVisStoriesConfig from './LineVis.stories';
 
-// Prepare 1D data array
-const values = mockValues.oneD_linear;
-const dataArray = ndarray(values, getMockDatasetDims('oneD_linear'));
-const domain = getDomain(values);
-const logSafeDomain = getDomain(values, ScaleType.Log);
+const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
+const domain = getDomain(dataArray.data as number[]);
+const logSafeDomain = getDomain(dataArray.data as number[], ScaleType.Log);
 
-const valuesForXLog = mockValues.X_log;
-const dataArrayForXLog = ndarray(valuesForXLog, getMockDatasetDims('X_log'));
-const domainForXLog = getDomain(valuesForXLog);
+const dataArrayForXLog = getMockDataArray('/nexus_entry/log_spectrum/X_log');
+const domainForXLog = getDomain(dataArrayForXLog.data as number[]);
 
 const Template: Story<LineVisProps> = (args): ReactElement => (
   <LineVis {...args} />

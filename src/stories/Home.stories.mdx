@@ -85,19 +85,19 @@ The components are organised in two categories:
 
 ## Mock data
 
-The library exposes mock metadata, values and utilities for testing purposes:
+The library exposes a utility function to retrieve a mock ndarray for testing purposes.
+You can browse through the available mock data at https://h5web.panosc.eu/mock.
 
 ```ts
-import { mockMetadata, mockValues, getMockDatasetDims } from '@h5web/lib';
+import { getMockDataArray } from '@h5web/lib';
 
-const values = mockValues.twoD.flat(Infinity) as number[];
-const dataArray = ndarray<number>(values, getMockDatasetDims('twoD'));
+const dataArray = getMockDataArray('/nD_datasets/twoD');
 ```
 
 ## Utilities
 
 The library exposes a number of utility functions, which are documented below, as well as all the enums and types used by these utility functions.
-If you use only the top-level visualization components, the only utilities you need are `findDomain` and/or `useDomain`.
+If you use only the top-level visualization components, the only utilities you need are `getDomain` and/or `useDomain`.
 
 - **`getDomain(values: number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined`** - Find the min and max values contained in a flat array of numbers. If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
 - **`useDomain(...args): Domain | undefined`** - Memoised React hook wrapper of `getDomain`.

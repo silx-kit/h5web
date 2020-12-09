@@ -5,13 +5,11 @@ import FillHeight from '../../.storybook/decorators/FillHeight';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';
-import { getDomain, mockValues } from '../packages/lib';
-import { getMockDatasetDims } from '../h5web/providers/mock/utils';
+import { getDomain } from '../packages/lib';
+import { getMockDataArray } from '../h5web/providers/mock/utils';
 
-// Prepare 1D data array
-const values = mockValues.oneD_linear;
-const dataArray = ndarray(values, getMockDatasetDims('oneD_linear'));
-const domain = getDomain(values);
+const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
+const domain = getDomain(dataArray.data as number[]);
 
 const errorsArray = ndarray(
   new Array(dataArray.size).fill(0).map((_, i) => Math.abs(10 - 0.5 * i)),
