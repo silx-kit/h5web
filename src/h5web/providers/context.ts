@@ -1,15 +1,15 @@
 import { createContext } from 'react';
-import type { HDF5Id, HDF5Value, HDF5Metadata } from './models';
+import type { HDF5Id, HDF5Value, HDF5Metadata, MyHDF5Group } from './models';
 
 export abstract class ProviderAPI {
   abstract domain: string;
-  abstract getMetadata(): Promise<HDF5Metadata>;
+  abstract getMetadata(): Promise<HDF5Metadata | MyHDF5Group>;
   abstract getValue(id: HDF5Id): Promise<HDF5Value | undefined>;
 }
 
 export const ProviderContext = createContext<{
   domain: string;
-  metadata: HDF5Metadata;
+  metadata: HDF5Metadata | MyHDF5Group;
   getValue: ProviderAPI['getValue'];
   getValues: (ids: HDF5Id[]) => Promise<Record<HDF5Id, HDF5Value | undefined>>;
 }>({} as any); // eslint-disable-line @typescript-eslint/no-explicit-any
