@@ -6,7 +6,7 @@ import {
   makeAttr,
   makeStrAttr,
   scalarShape,
-} from '../providers/mock/data';
+} from '../providers/raw-utils';
 import {
   makeMyDataset,
   makeMyGroup,

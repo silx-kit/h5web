@@ -16,7 +16,7 @@ import {
   makeMetadata,
   makeStrAttr,
   scalarShape,
-} from '../providers/mock/data';
+} from '../providers/raw-utils';
 import { makeMyDataset, makeMyGroup } from '../providers/my-utils';
 
 const domain = 'domain';
