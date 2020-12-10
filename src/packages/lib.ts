@@ -10,7 +10,6 @@ export { default as TooltipMesh } from '../h5web/visualizations/shared/TooltipMe
 export { default as ColorBar } from '../h5web/visualizations/heatmap/ColorBar';
 export { default as HeatmapMesh } from '../h5web/visualizations/heatmap/Mesh';
 export { default as DataCurve } from '../h5web/visualizations/line/DataCurve';
-export { default as ErrorBarCurve } from '../h5web/visualizations/line/ErrorBarCurve';
 
 // Utilities
 export {

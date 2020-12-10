@@ -15,7 +15,6 @@ import {
   extendDomain,
   assertDefined,
 } from '../shared/utils';
-import ErrorBarCurve from './ErrorBarCurve';
 
 const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -126,15 +125,9 @@ function LineVis(props: Props): ReactElement {
           curveType={curveType}
           abscissas={abscissas}
           ordinates={dataArray.data as number[]}
+          errors={errorsArray && (errorsArray.data as number[])}
+          showErrors={showErrors}
         />
-        {errorsArray && (
-          <ErrorBarCurve
-            abscissas={abscissas}
-            ordinates={dataArray.data as number[]}
-            errors={errorsArray.data as number[]}
-            visible={showErrors}
-          />
-        )}
       </VisCanvas>
     </figure>
   );
