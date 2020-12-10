@@ -3,6 +3,7 @@ import {
   HDF5Attribute,
   HDF5Dims,
   HDF5ExternalLink,
+  HDF5Link,
   HDF5LinkClass,
   HDF5NumericType,
   HDF5ScalarShape,
@@ -16,11 +17,14 @@ import {
   MyHDF5EntityKind,
   MyHDF5Group,
   MyHDF5Link,
+  MyHDF5ResolvedEntity,
 } from '../providers/models';
-import { makeSimpleShape, makeStrAttr } from '../providers/mock/data';
 import { NxInterpretation, SilxStyle } from '../visualizations/nexus/models';
+import { makeSimpleShape, makeStrAttr } from './raw-utils';
 
-type EntityOpts = Partial<Pick<MyHDF5Dataset, 'id' | 'attributes'>>;
+type EntityOpts = Partial<
+  Pick<MyHDF5ResolvedEntity, 'id' | 'attributes' | 'rawLink'>
+>;
 type GroupOpts = EntityOpts & { children?: MyHDF5Entity[] };
 type AllOrNone<T> = T | { [K in keyof T]?: never };
 
@@ -29,7 +33,7 @@ export function makeMyGroup(
   children: MyHDF5Entity[] = [],
   opts: Omit<GroupOpts, 'children'> = {}
 ): MyHDF5Group {
-  const { id = name, attributes = [] } = opts;
+  const { id = name, attributes = [], rawLink } = opts;
 
   const group: MyHDF5Group = {
     uid: nanoid(),
@@ -38,6 +42,7 @@ export function makeMyGroup(
     kind: MyHDF5EntityKind.Group,
     children,
     attributes,
+    rawLink,
   };
 
   group.children.forEach((child) => {
@@ -53,7 +58,7 @@ export function makeMyDataset<S extends HDF5Shape, T extends HDF5Type>(
   type: T,
   opts: EntityOpts = {}
 ): MyHDF5Dataset<S, T> {
-  const { id = name, attributes = [] } = opts;
+  const { id = name, attributes = [], rawLink } = opts;
 
   return {
     uid: nanoid(),
@@ -63,6 +68,7 @@ export function makeMyDataset<S extends HDF5Shape, T extends HDF5Type>(
     attributes,
     shape,
     type,
+    rawLink,
   };
 }
 
@@ -80,7 +86,7 @@ export function makeMyDatatype<T extends HDF5Type>(
   type: T,
   opts: EntityOpts = {}
 ): MyHDF5Datatype<T> {
-  const { id = name, attributes = [] } = opts;
+  const { id = name, attributes = [], rawLink } = opts;
 
   return {
     uid: nanoid(),
@@ -89,29 +95,31 @@ export function makeMyDatatype<T extends HDF5Type>(
     kind: MyHDF5EntityKind.Datatype,
     attributes,
     type,
+    rawLink,
+  };
+}
+
+export function makeMyLink<T extends HDF5Link>(rawLink: T): MyHDF5Link<T> {
+  return {
+    uid: nanoid(),
+    name: rawLink.title,
+    kind: MyHDF5EntityKind.Link,
+    attributes: [],
+    rawLink,
   };
 }
 
 export function makeMyExternalLink(
   name: string,
   file: string,
-  h5path: string,
-  opts: Omit<EntityOpts, 'id'> = {}
+  h5path: string
 ): MyHDF5Link<HDF5ExternalLink> {
-  const { attributes = [] } = opts;
-
-  return {
-    uid: nanoid(),
-    name,
-    kind: MyHDF5EntityKind.Link,
-    attributes,
-    rawLink: {
-      class: HDF5LinkClass.External,
-      title: name,
-      file,
-      h5path,
-    },
-  };
+  return makeMyLink({
+    class: HDF5LinkClass.External,
+    title: name,
+    file,
+    h5path,
+  });
 }
 
 export function withMyAttributes<T extends MyHDF5Entity>(
