@@ -87,8 +87,10 @@ export interface MyHDF5Datatype<T = HDF5Type> extends MyHDF5ResolvedEntity {
   type: T;
 }
 
-export interface MyHDF5Link extends MyHDF5Entity {
+export interface MyHDF5Link<T extends HDF5Link = HDF5Link>
+  extends MyHDF5Entity {
   kind: MyHDF5EntityKind.Link;
+  rawLink: T;
 }
 
 /* ---------------------- */
