@@ -32,7 +32,7 @@ describe('Visualizer utilities', () => {
 
     it('should not include NxSpectrum vis if any other visualization is supported', () => {
       const datasetInt2D = makeMySimpleDataset('dataset', intType, [5, 3]);
-      const nxDataSignal2D = makeMyNxDataGroup('foo', datasetInt2D);
+      const nxDataSignal2D = makeMyNxDataGroup('foo', { signal: datasetInt2D });
       const supportedVis = getSupportedVis(nxDataSignal2D);
 
       expect(supportedVis).toEqual({ supportedVis: [Vis.NxImage] });

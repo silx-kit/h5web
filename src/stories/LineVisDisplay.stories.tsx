@@ -1,16 +1,13 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
-import ndarray from 'ndarray';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';
-import { getDomain, mockValues } from '../packages/lib';
-import { getMockDatasetDims } from '../h5web/providers/mock/utils';
+import { getDomain } from '../packages/lib';
+import { getMockDataArray } from '../h5web/providers/mock/utils';
 import LineVisStoriesConfig from './LineVis.stories';
 
-// Prepare 1D data array
-const values = mockValues.oneD_linear;
-const dataArray = ndarray(values, getMockDatasetDims('oneD_linear'));
-const domain = getDomain(values);
+const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
+const domain = getDomain(dataArray.data as number[]);
 
 const Template: Story<LineVisProps> = (args): ReactElement => (
   <LineVis {...args} />

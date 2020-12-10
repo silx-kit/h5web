@@ -19,7 +19,15 @@ import {
   MyHDF5Dataset,
   MyHDF5Link,
   MyHDF5ResolvedEntity,
+  HDF5Metadata,
+  MyHDF5Metadata,
 } from './models';
+
+export function isMyMetadata(
+  metadata: HDF5Metadata | MyHDF5Metadata
+): metadata is MyHDF5Metadata {
+  return 'kind' in metadata;
+}
 
 export function isReachable(
   link: HDF5Link

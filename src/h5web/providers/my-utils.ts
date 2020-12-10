@@ -2,25 +2,32 @@ import { nanoid } from 'nanoid';
 import {
   HDF5Attribute,
   HDF5Dims,
+  HDF5ExternalLink,
+  HDF5LinkClass,
   HDF5NumericType,
+  HDF5ScalarShape,
   HDF5Shape,
   HDF5SimpleShape,
+  HDF5StringType,
   HDF5Type,
   MyHDF5Dataset,
   MyHDF5Datatype,
   MyHDF5Entity,
   MyHDF5EntityKind,
   MyHDF5Group,
+  MyHDF5Link,
 } from '../providers/models';
 import { makeSimpleShape, makeStrAttr } from '../providers/mock/data';
-import { NxInterpretation } from '../visualizations/nexus/models';
+import { NxInterpretation, SilxStyle } from '../visualizations/nexus/models';
 
-type Opts = Partial<Pick<MyHDF5Dataset, 'id' | 'attributes'>>;
+type EntityOpts = Partial<Pick<MyHDF5Dataset, 'id' | 'attributes'>>;
+type GroupOpts = EntityOpts & { children?: MyHDF5Entity[] };
+type AllOrNone<T> = T | { [K in keyof T]?: never };
 
 export function makeMyGroup(
   name: string,
   children: MyHDF5Entity[] = [],
-  opts: Opts = {}
+  opts: Omit<GroupOpts, 'children'> = {}
 ): MyHDF5Group {
   const { id = name, attributes = [] } = opts;
 
@@ -33,10 +40,9 @@ export function makeMyGroup(
     attributes,
   };
 
-  group.children = group.children.map((child) => ({
-    ...child,
-    parent: group,
-  }));
+  group.children.forEach((child) => {
+    child.parent = group;
+  });
 
   return group;
 }
@@ -45,7 +51,7 @@ export function makeMyDataset<S extends HDF5Shape, T extends HDF5Type>(
   name: string,
   shape: S,
   type: T,
-  opts: Opts = {}
+  opts: EntityOpts = {}
 ): MyHDF5Dataset<S, T> {
   const { id = name, attributes = [] } = opts;
 
@@ -64,7 +70,7 @@ export function makeMySimpleDataset<T extends HDF5Type>(
   name: string,
   type: T,
   dims: HDF5Dims,
-  opts: Opts = {}
+  opts: EntityOpts = {}
 ): MyHDF5Dataset<HDF5SimpleShape, T> {
   return makeMyDataset(name, makeSimpleShape(dims), type, opts);
 }
@@ -72,7 +78,7 @@ export function makeMySimpleDataset<T extends HDF5Type>(
 export function makeMyDatatype<T extends HDF5Type>(
   name: string,
   type: T,
-  opts: Opts = {}
+  opts: EntityOpts = {}
 ): MyHDF5Datatype<T> {
   const { id = name, attributes = [] } = opts;
 
@@ -83,6 +89,28 @@ export function makeMyDatatype<T extends HDF5Type>(
     kind: MyHDF5EntityKind.Datatype,
     attributes,
     type,
+  };
+}
+
+export function makeMyExternalLink(
+  name: string,
+  file: string,
+  h5path: string,
+  opts: Omit<EntityOpts, 'id'> = {}
+): MyHDF5Link<HDF5ExternalLink> {
+  const { attributes = [] } = opts;
+
+  return {
+    uid: nanoid(),
+    name,
+    kind: MyHDF5EntityKind.Link,
+    attributes,
+    rawLink: {
+      class: HDF5LinkClass.External,
+      title: name,
+      file,
+      h5path,
+    },
   };
 }
 
@@ -104,46 +132,55 @@ export function withMyInterpretation<
   ]);
 }
 
-export function makeMyNxDataGroup(
-  name: string,
-  signal: MyHDF5Dataset,
-  opts: Opts = {}
-): MyHDF5Group {
-  return makeMyGroup(name, [signal], {
-    ...opts,
-    attributes: [
-      ...(opts.attributes || []),
-      makeStrAttr('NX_class', 'NXdata'),
-      makeStrAttr('signal', signal.name),
-    ],
-  });
-}
-
-export function makeMyNxDataGroupWithAxes(
+export function makeMyNxDataGroup<
+  T extends Record<string, MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>>
+>(
   name: string,
   opts: {
     signal: MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>;
-    axes: Record<string, MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>>;
-    axesAttr: (keyof typeof opts.axes | '.')[];
-  } & Opts
+    errors?: MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>;
+    title?: MyHDF5Dataset<HDF5ScalarShape, HDF5StringType>;
+    silxStyle?: SilxStyle;
+  } & AllOrNone<{ axes: T; axesAttr: (keyof T | '.')[] }> &
+    GroupOpts
 ): MyHDF5Group {
-  const { signal, axes, axesAttr, ...groupOpts } = opts;
+  const {
+    signal,
+    title,
+    errors,
+    silxStyle,
+    axes = {},
+    axesAttr,
+    ...groupOpts
+  } = opts;
 
-  return makeMyGroup(name, [signal, ...Object.values(axes)], {
-    ...groupOpts,
-    attributes: [
-      ...(groupOpts.attributes || []),
-      makeStrAttr('NX_class', 'NXdata'),
-      makeStrAttr('signal', signal.name),
-      makeStrAttr('axes', axesAttr),
+  return makeMyGroup(
+    name,
+    [
+      signal,
+      ...(title ? [title] : []),
+      ...(errors ? [errors] : []),
+      ...Object.values<MyHDF5Dataset>(axes),
     ],
-  });
+    {
+      ...groupOpts,
+      attributes: [
+        ...(groupOpts.attributes || []),
+        makeStrAttr('NX_class', 'NXdata'),
+        makeStrAttr('signal', signal.name),
+        makeStrAttr('axes', axesAttr),
+        ...(silxStyle
+          ? [makeStrAttr('SILX_style', JSON.stringify(silxStyle))]
+          : []),
+      ],
+    }
+  );
 }
 
 export function makeMyNxEntityGroup(
   name: string,
   type: 'NXroot' | 'NXentry' | 'NXprocess',
-  opts: { defaultPath?: string; children?: MyHDF5Entity[] } & Opts = {}
+  opts: { defaultPath?: string } & GroupOpts = {}
 ): MyHDF5Group {
   const { defaultPath, children, ...groupOpts } = opts;
 
@@ -153,6 +190,31 @@ export function makeMyNxEntityGroup(
       ...(groupOpts.attributes || []),
       makeStrAttr('NX_class', type),
       ...(defaultPath ? [makeStrAttr('default', defaultPath)] : []),
+    ],
+  });
+}
+
+export function makeMyNxDataset(
+  name: string,
+  type: HDF5NumericType,
+  dims: HDF5Dims,
+  opts: {
+    interpretation?: string;
+    longName?: string;
+    units?: string;
+  } & EntityOpts = {}
+): MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType> {
+  const { interpretation, longName, units } = opts;
+
+  return makeMySimpleDataset(name, type, dims, {
+    ...opts,
+    attributes: [
+      ...(opts.attributes || []),
+      ...(interpretation
+        ? [makeStrAttr('interpretation', interpretation)]
+        : []),
+      ...(longName ? [makeStrAttr('long_name', longName)] : []),
+      ...(units ? [makeStrAttr('units', units)] : []),
     ],
   });
 }

@@ -43,4 +43,4 @@ export type {
 
 // Mock data
 export { mockMetadata, mockValues } from '../h5web/providers/mock/data';
-export { getMockDatasetDims } from '../h5web/providers/mock/utils';
+export { getMockDataArray } from '../h5web/providers/mock/utils';

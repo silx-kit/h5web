@@ -176,35 +176,34 @@ describe('Visualization definitions', () => {
     const supportsEntity = makeSupportFn(Vis.NxSpectrum);
 
     it('should support NXdata group referencing signal with spectrum interpretation', () => {
-      const group = makeMyNxDataGroup('foo', spectrumDatasetInt1D);
+      const group = makeMyNxDataGroup('foo', { signal: spectrumDatasetInt1D });
       expect(supportsEntity(group)).toBe(true);
     });
 
     it('should support NXdata group referencing signal with numeric type, simple shape, one dimension and no interpretation', () => {
-      const group = makeMyNxDataGroup('foo', datasetInt1D);
+      const group = makeMyNxDataGroup('foo', { signal: datasetInt1D });
       expect(supportsEntity(group)).toBe(true);
     });
 
     it('should support NXdata group referencing signal with numeric type, simple shape, one dimension and unknown interpretation', () => {
-      const group = makeMyNxDataGroup(
-        'foo',
-        withMyAttributes(datasetInt1D, [
+      const group = makeMyNxDataGroup('foo', {
+        signal: withMyAttributes(datasetInt1D, [
           makeStrAttr('interpretation', 'unknown'),
-        ])
-      );
+        ]),
+      });
 
       expect(supportsEntity(group)).toBe(true);
     });
 
     it('should not support NXdata group referencing signal with non-spectrum interpretation', () => {
-      const group = makeMyNxDataGroup('foo', imageDatasetInt1D);
+      const group = makeMyNxDataGroup('foo', { signal: imageDatasetInt1D });
       expect(supportsEntity(group)).toBe(false);
     });
 
     it('should support group with relative `default` path to supported NXdata group', () => {
       const group = makeMyNxEntityGroup('foo', 'NXentry', {
         defaultPath: 'bar',
-        children: [makeMyNxDataGroup('bar', spectrumDatasetInt1D)],
+        children: [makeMyNxDataGroup('bar', { signal: spectrumDatasetInt1D })],
       });
 
       expect(supportsEntity(group)).toBe(true);
@@ -215,7 +214,9 @@ describe('Visualization definitions', () => {
         children: [
           makeMyNxEntityGroup('foo', 'NXentry', {
             defaultPath: '/foo/bar',
-            children: [makeMyNxDataGroup('bar', spectrumDatasetInt1D)],
+            children: [
+              makeMyNxDataGroup('bar', { signal: spectrumDatasetInt1D }),
+            ],
           }),
         ],
       });
@@ -230,7 +231,9 @@ describe('Visualization definitions', () => {
         children: [
           makeMyNxEntityGroup('foo', 'NXentry', {
             defaultPath: 'bar',
-            children: [makeMyNxDataGroup('bar', spectrumDatasetInt1D)],
+            children: [
+              makeMyNxDataGroup('bar', { signal: spectrumDatasetInt1D }),
+            ],
           }),
         ],
       });
@@ -256,40 +259,39 @@ describe('Visualization definitions', () => {
     const supportsEntity = makeSupportFn(Vis.NxImage);
 
     it('should support NXdata group referencing signal with image interpretation', () => {
-      const group = makeMyNxDataGroup('foo', imageDatasetInt2D);
+      const group = makeMyNxDataGroup('foo', { signal: imageDatasetInt2D });
       expect(supportsEntity(group)).toBe(true);
     });
 
     it('should support NXdata group referencing signal with numeric type, simple shape, two dimensions and no interpretation', () => {
-      const group = makeMyNxDataGroup('foo', datasetInt2D);
+      const group = makeMyNxDataGroup('foo', { signal: datasetInt2D });
       expect(supportsEntity(group)).toBe(true);
     });
 
     it('should support NXdata group referencing signal with numeric type, simple shape, more than two dimensions and unknown interpretation', () => {
-      const group = makeMyNxDataGroup(
-        'foo',
-        withMyAttributes(datasetFlt3D, [
+      const group = makeMyNxDataGroup('foo', {
+        signal: withMyAttributes(datasetFlt3D, [
           makeStrAttr('interpretation', 'unknown'),
-        ])
-      );
+        ]),
+      });
 
       expect(supportsEntity(group)).toBe(true);
     });
 
     it('should not support NXdata group referencing signal with less than two dimensions', () => {
-      const group = makeMyNxDataGroup('foo', datasetInt1D);
+      const group = makeMyNxDataGroup('foo', { signal: datasetInt1D });
       expect(supportsEntity(group)).toBe(false);
     });
 
     it('should not support NXdata group referencing signal with non-image interpretation', () => {
-      const group = makeMyNxDataGroup('foo', spectrumDatasetInt2D);
+      const group = makeMyNxDataGroup('foo', { signal: spectrumDatasetInt2D });
       expect(supportsEntity(group)).toBe(false);
     });
 
     it('should support group with relative `default` path to supported NXdata group', () => {
       const group = makeMyNxEntityGroup('foo', 'NXentry', {
         defaultPath: 'bar',
-        children: [makeMyNxDataGroup('bar', imageDatasetInt2D)],
+        children: [makeMyNxDataGroup('bar', { signal: imageDatasetInt2D })],
       });
 
       expect(supportsEntity(group)).toBe(true);
@@ -300,7 +302,7 @@ describe('Visualization definitions', () => {
         children: [
           makeMyNxEntityGroup('foo', 'NXentry', {
             defaultPath: '/foo/bar',
-            children: [makeMyNxDataGroup('bar', imageDatasetInt2D)],
+            children: [makeMyNxDataGroup('bar', { signal: imageDatasetInt2D })],
           }),
         ],
       });
@@ -315,7 +317,7 @@ describe('Visualization definitions', () => {
         children: [
           makeMyNxEntityGroup('foo', 'NXentry', {
             defaultPath: 'bar',
-            children: [makeMyNxDataGroup('bar', imageDatasetInt2D)],
+            children: [makeMyNxDataGroup('bar', { signal: imageDatasetInt2D })],
           }),
         ],
       });
