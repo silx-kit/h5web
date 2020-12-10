@@ -55,6 +55,8 @@ export enum MyHDF5EntityKind {
   Link = 'link',
 }
 
+export type MyHDF5Metadata = MyHDF5Group;
+
 export interface MyHDF5Entity {
   uid: string;
   name: string;

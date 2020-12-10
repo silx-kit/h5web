@@ -6,6 +6,7 @@ import {
   MyHDF5EntityKind,
   MyHDF5Dataset,
   MyHDF5Group,
+  MyHDF5Metadata,
 } from '../providers/models';
 import {
   intType,
@@ -35,7 +36,7 @@ describe('Explorer utilities', () => {
         groups: [rootGroup],
       });
 
-      const expectedTree: MyHDF5Group = {
+      const expectedTree: MyHDF5Metadata = {
         uid: expect.any(String),
         id: '913d8791',
         name: domain,
@@ -59,7 +60,7 @@ describe('Explorer utilities', () => {
         datasets: [dataset],
       });
 
-      const expectedTree: MyHDF5Group = {
+      const expectedTree: MyHDF5Metadata = {
         uid: expect.any(String),
         id: '913d8791',
         name: domain,
@@ -108,7 +109,7 @@ describe('Explorer utilities', () => {
         datasets: [dataset],
       });
 
-      const expectedTree: MyHDF5Group = {
+      const expectedTree: MyHDF5Metadata = {
         uid: expect.any(String),
         id: '913d8791',
         name: domain,

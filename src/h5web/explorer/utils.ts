@@ -10,6 +10,7 @@ import {
   MyHDF5Datatype,
   HDF5HardLink,
   MyHDF5EntityKind,
+  MyHDF5Metadata,
 } from '../providers/models';
 import { isGroup, isReachable } from '../providers/utils';
 
@@ -98,7 +99,10 @@ function buildGroup(
   return group;
 }
 
-export function buildTree(metadata: HDF5Metadata, domain: string): MyHDF5Group {
+export function buildTree(
+  metadata: HDF5Metadata,
+  domain: string
+): MyHDF5Metadata {
   const rootLink: HDF5RootLink = {
     class: HDF5LinkClass.Root,
     collection: HDF5Collection.Groups,
@@ -130,7 +134,7 @@ export function getParents(
   return parent ? getParents(parent, [parent, ...prevParents]) : prevParents;
 }
 
-export function findRoot(entity: MyHDF5Entity): MyHDF5Group | undefined {
+export function findRoot(entity: MyHDF5Entity): MyHDF5Metadata | undefined {
   if (!entity.parent) {
     return isGroup(entity) ? entity : undefined;
   }

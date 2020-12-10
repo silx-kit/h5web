@@ -10,8 +10,8 @@ import ndarray from 'ndarray';
 import { MyHDF5Entity } from '../models';
 import { getChildEntity } from '../../visualizations/nexus/utils';
 
-export function getMockDataArray(path: string): ndarray {
-  const pathSegments = path.slice(1).split('/');
+export function getMockDataArray(absolutePath: string): ndarray {
+  const pathSegments = absolutePath.slice(1).split('/');
 
   const dataset = pathSegments.reduce<MyHDF5Entity | undefined>(
     (parentEntity, currSegment) => {
@@ -22,8 +22,8 @@ export function getMockDataArray(path: string): ndarray {
     mockMetadata
   );
 
-  assertDefined(dataset, `Expected entity at path "${path}"`);
-  assertDataset(dataset, `Expected group at path "${path}"`);
+  assertDefined(dataset, `Expected entity at path "${absolutePath}"`);
+  assertDataset(dataset, `Expected group at path "${absolutePath}"`);
   assertNumericType(dataset);
   assertMySimpleShape(dataset);
 

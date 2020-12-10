@@ -5,7 +5,7 @@ import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import { buildTree, getEntityAtPath, getParents } from './utils';
 import { ProviderContext } from '../providers/context';
-import { isGroup, isMetadataMyGroup } from '../providers/utils';
+import { isGroup, isMyMetadata } from '../providers/utils';
 import { useSet } from 'react-use';
 
 const DEFAULT_PATH: number[] = JSON.parse(
@@ -22,7 +22,7 @@ function Explorer(props: Props): ReactElement {
   const { domain, metadata } = useContext(ProviderContext);
 
   const root = useMemo(() => {
-    return isMetadataMyGroup(metadata) ? metadata : buildTree(metadata, domain);
+    return isMyMetadata(metadata) ? metadata : buildTree(metadata, domain);
   }, [domain, metadata]);
 
   const [

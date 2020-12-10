@@ -27,7 +27,7 @@ type AllOrNone<T> = T | { [K in keyof T]?: never };
 export function makeMyGroup(
   name: string,
   children: MyHDF5Entity[] = [],
-  opts: EntityOpts = {}
+  opts: Omit<GroupOpts, 'children'> = {}
 ): MyHDF5Group {
   const { id = name, attributes = [] } = opts;
 
@@ -133,7 +133,7 @@ export function withMyInterpretation<
 }
 
 export function makeMyNxDataGroup<
-  U extends Record<string, MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>>
+  T extends Record<string, MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>>
 >(
   name: string,
   opts: {
@@ -141,7 +141,7 @@ export function makeMyNxDataGroup<
     errors?: MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>;
     title?: MyHDF5Dataset<HDF5ScalarShape, HDF5StringType>;
     silxStyle?: SilxStyle;
-  } & AllOrNone<{ axes: U; axesAttr: (keyof U | '.')[] }> &
+  } & AllOrNone<{ axes: T; axesAttr: (keyof T | '.')[] }> &
     GroupOpts
 ): MyHDF5Group {
   const {

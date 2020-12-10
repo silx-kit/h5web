@@ -20,11 +20,12 @@ import {
   MyHDF5Link,
   MyHDF5ResolvedEntity,
   HDF5Metadata,
+  MyHDF5Metadata,
 } from './models';
 
-export function isMetadataMyGroup(
-  metadata: HDF5Metadata | MyHDF5Group
-): metadata is MyHDF5Group {
+export function isMyMetadata(
+  metadata: HDF5Metadata | MyHDF5Metadata
+): metadata is MyHDF5Metadata {
   return 'kind' in metadata;
 }
 
