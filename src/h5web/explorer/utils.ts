@@ -17,6 +17,7 @@ import {
   makeMyLink,
 } from '../providers/my-utils';
 import { isGroup, isReachable } from '../providers/utils';
+import { getChildEntity } from '../visualizations/nexus/utils';
 
 function buildDataset(
   metadata: HDF5Metadata,
@@ -87,17 +88,32 @@ export function buildTree(
   });
 }
 
+function findRoot(entity: MyHDF5Entity): MyHDF5Entity {
+  const { parent } = entity;
+  return parent ? findRoot(parent) : entity;
+}
+
 export function getEntityAtPath(
-  entity: MyHDF5Entity,
-  path: number[]
-): MyHDF5Entity {
-  if (path.length === 0 || !isGroup(entity)) {
-    return entity;
+  baseGroup: MyHDF5Group,
+  path: string,
+  allowSelf = true
+): MyHDF5Entity | undefined {
+  const isAbsolutePath = path.startsWith('/');
+  const startingGroup = isAbsolutePath ? findRoot(baseGroup) : baseGroup;
+
+  if (path === '/' || path === '') {
+    return allowSelf || startingGroup !== baseGroup ? startingGroup : undefined;
   }
 
-  const [nextIndex, ...rest] = path;
-  const nextEntity = entity.children[nextIndex];
-  return nextEntity ? getEntityAtPath(nextEntity, rest) : entity; // go as far as possible
+  const pathSegments = path.slice(isAbsolutePath ? 1 : 0).split('/');
+  return pathSegments.reduce<MyHDF5Entity | undefined>(
+    (parentEntity, currSegment) => {
+      return parentEntity && isGroup(parentEntity)
+        ? getChildEntity(parentEntity, currSegment)
+        : undefined;
+    },
+    startingGroup
+  );
 }
 
 export function getParents(
@@ -106,12 +122,4 @@ export function getParents(
 ): MyHDF5Group[] {
   const { parent } = entity;
   return parent ? getParents(parent, [parent, ...prevParents]) : prevParents;
-}
-
-export function findRoot(entity: MyHDF5Entity): MyHDF5Metadata | undefined {
-  if (!entity.parent) {
-    return isGroup(entity) ? entity : undefined;
-  }
-
-  return findRoot(entity.parent);
 }

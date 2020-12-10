@@ -8,9 +8,7 @@ import { ProviderContext } from '../providers/context';
 import { isGroup, isMyMetadata } from '../providers/utils';
 import { useSet } from 'react-use';
 
-const DEFAULT_PATH: number[] = JSON.parse(
-  process.env.REACT_APP_DEFAULT_PATH || '[]'
-);
+const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 
 interface Props {
   onSelect: (entity: MyHDF5Entity) => void;
@@ -43,7 +41,7 @@ function Explorer(props: Props): ReactElement {
 
   useEffect(() => {
     // Find and select entity at default path
-    const entityToSelect = getEntityAtPath(root, DEFAULT_PATH);
+    const entityToSelect = getEntityAtPath(root, DEFAULT_PATH) || root;
     onSelect(entityToSelect);
 
     // Expand entity if group

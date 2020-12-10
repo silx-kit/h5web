@@ -13,7 +13,6 @@ import {
   assertDataset,
   assertNumericType,
   assertMySimpleShape,
-  isGroup,
 } from '../../providers/utils';
 import {
   NxAttribute,
@@ -27,7 +26,7 @@ import {
   assertStr,
   isScaleType,
 } from '../shared/utils';
-import { findRoot } from '../../explorer/utils';
+import { getEntityAtPath } from '../../explorer/utils';
 
 export function getAttributeValue(
   entity: HDF5Dataset | HDF5Group | MyHDF5Entity,
@@ -55,18 +54,7 @@ export function findNxDataGroup(group: MyHDF5Group): MyHDF5Group | undefined {
 
   assertStr(defaultPath, `Expected 'default' attribute to be a string`);
 
-  const isAbsolutePath = defaultPath.startsWith('/');
-  const pathSegments = defaultPath.slice(isAbsolutePath ? 1 : 0).split('/');
-
-  const defaultEntity = pathSegments.reduce<MyHDF5Entity | undefined>(
-    (parentEntity, currSegment) => {
-      return parentEntity && isGroup(parentEntity)
-        ? getChildEntity(parentEntity, currSegment)
-        : undefined;
-    },
-    (isAbsolutePath && findRoot(group)) || group
-  );
-
+  const defaultEntity = getEntityAtPath(group, defaultPath, false);
   assertDefined(defaultEntity, `Expected entity at path "${defaultPath}"`);
   assertGroup(defaultEntity, `Expected group at path "${defaultPath}"`);
 

@@ -150,26 +150,41 @@ describe('Explorer utilities', () => {
 
   describe('getEntityAtPath', () => {
     const dataset = makeMyDataset('dataset', scalarShape, intType);
-    const group = makeMyGroup('foo', [
-      makeMyGroup('bar'),
-      makeMyGroup('baz', [dataset]),
-    ]);
+    const childGroup1 = makeMyGroup('child1');
+    const childGroup2 = makeMyGroup('child2', [dataset]);
+    const rootGroup = makeMyGroup('root', [childGroup1, childGroup2]);
 
-    it('should return entity at path', () => {
-      expect(getEntityAtPath(group, [0]).name).toBe('bar');
-      expect(getEntityAtPath(group, [1, 0]).name).toBe('dataset');
+    it('should process relative path', () => {
+      expect(getEntityAtPath(rootGroup, '')).toBe(rootGroup);
+      expect(getEntityAtPath(childGroup1, '')).toBe(childGroup1);
+      expect(getEntityAtPath(rootGroup, 'child2/dataset')).toBe(dataset);
+      expect(getEntityAtPath(childGroup2, 'dataset')).toBe(dataset);
     });
 
-    it('should process invalid path as far as possible', () => {
-      expect(getEntityAtPath(group, [1, 1]).name).toBe('baz');
+    it('should process absolute path when passed root group', () => {
+      expect(getEntityAtPath(rootGroup, '/')).toBe(rootGroup);
+      expect(getEntityAtPath(rootGroup, '/child1')).toBe(childGroup1);
+      expect(getEntityAtPath(rootGroup, '/child2/dataset')).toBe(dataset);
     });
 
-    it('should return given entity if path is empty', () => {
-      expect(getEntityAtPath(group, [])).toBe(group);
+    it('should process absolute path when passed any child group', () => {
+      expect(getEntityAtPath(childGroup1, '/')).toBe(rootGroup);
+      expect(getEntityAtPath(childGroup1, '/child1')).toBe(childGroup1);
+      expect(getEntityAtPath(childGroup1, '/child2/dataset')).toBe(dataset);
     });
 
-    it('should return given entity if not a group', () => {
-      expect(getEntityAtPath(dataset, [0])).toBe(dataset);
+    it('should return `undefined` for invalid paths', () => {
+      expect(getEntityAtPath(rootGroup, 'child1/foo')).toBeUndefined();
+      expect(getEntityAtPath(rootGroup, '/child1/foo')).toBeUndefined();
+      expect(getEntityAtPath(childGroup1, 'foo')).toBeUndefined();
+      expect(getEntityAtPath(childGroup1, '/child2/foo')).toBeUndefined();
+    });
+
+    it('should support forbidding to retrieve same entity', () => {
+      expect(getEntityAtPath(rootGroup, '', false)).toBeUndefined();
+      expect(getEntityAtPath(rootGroup, '/', false)).toBeUndefined();
+      expect(getEntityAtPath(childGroup1, '', false)).toBeUndefined();
+      expect(getEntityAtPath(childGroup1, '/', false)).toBe(rootGroup);
     });
   });
 });
