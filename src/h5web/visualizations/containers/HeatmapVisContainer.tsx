@@ -3,7 +3,7 @@ import { useDatasetValue } from './hooks';
 import {
   assertDataset,
   assertNumericType,
-  assertMySimpleShape,
+  assertSimpleShape,
 } from '../../providers/utils';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from './models';
@@ -11,7 +11,7 @@ import type { VisContainerProps } from './models';
 function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertDataset(entity);
-  assertMySimpleShape(entity);
+  assertSimpleShape(entity);
   assertNumericType(entity);
 
   const { dims } = entity.shape;

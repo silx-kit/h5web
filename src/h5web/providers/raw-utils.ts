@@ -70,7 +70,7 @@ export function makeAttr(
   return { name, type, shape, value };
 }
 
-export function makeStrAttr(name: string, value: HDF5Value): HDF5Attribute {
+export function makeStrAttr(name: string, value: string): HDF5Attribute {
   return makeAttr(name, scalarShape, stringType, value);
 }
 

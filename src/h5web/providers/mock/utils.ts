@@ -1,9 +1,5 @@
 import { mockValues, mockMetadata } from './data';
-import {
-  assertDataset,
-  assertMySimpleShape,
-  assertNumericType,
-} from '../utils';
+import { assertDataset, assertSimpleShape, assertNumericType } from '../utils';
 import { assertArray, assertDefined } from '../../visualizations/shared/utils';
 import ndarray from 'ndarray';
 import { getEntityAtPath } from '../../explorer/utils';
@@ -13,7 +9,7 @@ export function getMockDataArray(path: string): ndarray {
   assertDefined(dataset, `Expected entity at path "${path}"`);
   assertDataset(dataset, `Expected group at path "${path}"`);
   assertNumericType(dataset);
-  assertMySimpleShape(dataset);
+  assertSimpleShape(dataset);
 
   const value = mockValues[dataset.id as keyof typeof mockValues];
   assertArray<number>(value);
