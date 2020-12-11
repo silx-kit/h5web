@@ -20,13 +20,12 @@ import {
   MyHDF5ResolvedEntity,
 } from '../providers/models';
 import { NxInterpretation, SilxStyle } from '../visualizations/nexus/models';
-import { makeSimpleShape, makeStrAttr } from './raw-utils';
+import { makeNxAxesAttr, makeSimpleShape, makeStrAttr } from './raw-utils';
 
 type EntityOpts = Partial<
   Pick<MyHDF5ResolvedEntity, 'id' | 'attributes' | 'rawLink'>
 >;
 type GroupOpts = EntityOpts & { children?: MyHDF5Entity[] };
-type AllOrNone<T> = T | { [K in keyof T]?: never };
 
 export function makeMyGroup(
   name: string,
@@ -149,7 +148,10 @@ export function makeMyNxDataGroup<
     errors?: MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>;
     title?: MyHDF5Dataset<HDF5ScalarShape, HDF5StringType>;
     silxStyle?: SilxStyle;
-  } & AllOrNone<{ axes: T; axesAttr: (keyof T | '.')[] }> &
+  } & (
+    | { axes: T; axesAttr: (Extract<keyof T, string> | '.')[] }
+    | { axes?: never; axesAttr?: never }
+  ) &
     GroupOpts
 ): MyHDF5Group {
   const {
@@ -176,7 +178,7 @@ export function makeMyNxDataGroup<
         ...(groupOpts.attributes || []),
         makeStrAttr('NX_class', 'NXdata'),
         makeStrAttr('signal', signal.name),
-        makeStrAttr('axes', axesAttr),
+        ...(axesAttr ? [makeNxAxesAttr(axesAttr)] : []),
         ...(silxStyle
           ? [makeStrAttr('SILX_style', JSON.stringify(silxStyle))]
           : []),
