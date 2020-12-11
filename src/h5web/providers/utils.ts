@@ -9,7 +9,6 @@ import {
   HDF5Type,
   HDF5TypeClass,
   HDF5RootLink,
-  HDF5Dataset,
   HDF5ScalarShape,
   HDF5NumericType,
   MyHDF5Entity,
@@ -58,13 +57,7 @@ export function isLink(entity: MyHDF5Entity): entity is MyHDF5Link {
   return entity.kind === MyHDF5EntityKind.Link;
 }
 
-function hasSimpleShape<T extends HDF5Type>(
-  dataset: HDF5Dataset<HDF5Shape, T>
-): dataset is HDF5Dataset<HDF5SimpleShape, T> {
-  return dataset.shape.class === HDF5ShapeClass.Simple;
-}
-
-export function hasMySimpleShape<T extends HDF5Type>(
+export function hasSimpleShape<T extends HDF5Type>(
   dataset: MyHDF5Dataset<HDF5Shape, T>
 ): dataset is MyHDF5Dataset<HDF5SimpleShape, T> {
   return dataset.shape.class === HDF5ShapeClass.Simple;
@@ -123,21 +116,9 @@ export function assertNumericType<S extends HDF5Shape>(
 }
 
 export function assertSimpleShape<T extends HDF5Type>(
-  dataset: HDF5Dataset<HDF5Shape, T>
-): asserts dataset is HDF5Dataset<HDF5SimpleShape, T> {
-  if (!hasSimpleShape(dataset)) {
-    throw new Error('Expected dataset to have simple shape');
-  }
-
-  if (dataset.shape.dims.length === 0) {
-    throw new Error('Expected dataset with simple shape to have dimensions');
-  }
-}
-
-export function assertMySimpleShape<T extends HDF5Type>(
   dataset: MyHDF5Dataset<HDF5Shape, T>
 ): asserts dataset is MyHDF5Dataset<HDF5SimpleShape, T> {
-  if (!hasMySimpleShape(dataset)) {
+  if (!hasSimpleShape(dataset)) {
     throw new Error('Expected dataset to have simple shape');
   }
 

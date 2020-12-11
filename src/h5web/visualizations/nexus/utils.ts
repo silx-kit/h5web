@@ -12,7 +12,7 @@ import {
   assertGroup,
   assertDataset,
   assertNumericType,
-  assertMySimpleShape,
+  assertSimpleShape,
 } from '../../providers/utils';
 import {
   NxAttribute,
@@ -85,7 +85,7 @@ export function findSignalDataset(
   assertDefined(dataset, `Expected "${signalName}" signal entity to exist`);
   assertDataset(dataset, `Expected "${signalName}" signal to be a dataset`);
   assertNumericType(dataset);
-  assertMySimpleShape(dataset);
+  assertSimpleShape(dataset);
 
   return dataset;
 }

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import type { MyHDF5Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import {
-  hasMySimpleShape,
+  hasSimpleShape,
   isDataset,
   isDatatype,
   isLink,
@@ -64,7 +64,7 @@ function EntityTable(props: Props): ReactElement {
           <tr>
             <th scope="row">Shape</th>
             <td>
-              {hasMySimpleShape(entity)
+              {hasSimpleShape(entity)
                 ? renderShapeDims(entity.shape.dims)
                 : entity.shape.class}
             </td>

@@ -7,7 +7,7 @@ import type { MyHDF5Entity } from '../providers/models';
 import {
   hasScalarShape,
   hasBaseType,
-  hasMySimpleShape,
+  hasSimpleShape,
   hasNumericType,
   isDataset,
   isGroup,
@@ -72,7 +72,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       return (
         isDataset(entity) &&
         hasBaseType(entity) &&
-        hasMySimpleShape(entity) &&
+        hasSimpleShape(entity) &&
         entity.shape.dims.length >= 1
       );
     },
@@ -86,7 +86,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       return (
         isDataset(entity) &&
         hasNumericType(entity) &&
-        hasMySimpleShape(entity) &&
+        hasSimpleShape(entity) &&
         entity.shape.dims.length >= 1
       );
     },
@@ -100,7 +100,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
       return (
         isDataset(entity) &&
         hasNumericType(entity) &&
-        hasMySimpleShape(entity) &&
+        hasSimpleShape(entity) &&
         entity.shape.dims.length >= 2
       );
     },

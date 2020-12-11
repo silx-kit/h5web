@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 import { useDatasetValue } from './hooks';
-import { assertDataset, assertMySimpleShape } from '../../providers/utils';
+import { assertDataset, assertSimpleShape } from '../../providers/utils';
 import MappedMatrixVis from '../matrix/MappedMatrixVis';
 import type { VisContainerProps } from './models';
 
 function MatrixVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertDataset(entity);
-  assertMySimpleShape(entity);
+  assertSimpleShape(entity);
 
   const value = useDatasetValue(entity.id);
   if (!value) {
