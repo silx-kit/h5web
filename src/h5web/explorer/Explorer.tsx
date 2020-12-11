@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useContext, ReactElement } from 'react';
+import React, { useEffect, useContext, ReactElement } from 'react';
 import { FiFileText } from 'react-icons/fi';
 import type { MyHDF5Entity } from '../providers/models';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
-import { buildTree, getEntityAtPath, getParents } from './utils';
+import { getEntityAtPath, getParents } from './utils';
 import { ProviderContext } from '../providers/context';
-import { isGroup, isMyMetadata } from '../providers/utils';
+import { isGroup } from '../providers/utils';
 import { useSet } from 'react-use';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
@@ -17,11 +17,7 @@ interface Props {
 
 function Explorer(props: Props): ReactElement {
   const { onSelect, selectedEntity } = props;
-  const { domain, metadata } = useContext(ProviderContext);
-
-  const root = useMemo(() => {
-    return isMyMetadata(metadata) ? metadata : buildTree(metadata, domain);
-  }, [domain, metadata]);
+  const { domain, metadata: root } = useContext(ProviderContext);
 
   const [
     expandedGroups,
