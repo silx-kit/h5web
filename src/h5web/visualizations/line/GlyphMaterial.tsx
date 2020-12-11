@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useLoader } from 'react-three-fiber';
-import { TextureLoader } from 'three';
+import { NearestFilter, TextureLoader } from 'three';
 import { GLYPH_URLS } from './models';
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
 function GlyphMaterial(props: Props): ReactElement {
   const { color, size, glyphURL } = props;
   const sprite = useLoader(TextureLoader, glyphURL || GLYPH_URLS.Cross);
+  sprite.magFilter = NearestFilter;
 
   return (
     <pointsMaterial

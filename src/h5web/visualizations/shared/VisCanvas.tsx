@@ -63,6 +63,7 @@ function VisCanvas(props: Props): ReactElement {
             orthographic
             invalidateFrameloop // disable game loop
             gl={{ preserveDrawingBuffer: true }} // for screenshot feature
+            pixelRatio={window.devicePixelRatio}
           >
             <ambientLight />
             <AxisSystemContext.Provider

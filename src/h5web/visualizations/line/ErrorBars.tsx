@@ -30,7 +30,7 @@ function ErrorBars(props: Props): ReactElement {
         <bufferGeometry attach="geometry" ref={barsGeometry} />
       </lineSegments>
       <points visible={visible}>
-        <GlyphMaterial glyphURL={GLYPH_URLS.Cap} color={color} size={8} />
+        <GlyphMaterial glyphURL={GLYPH_URLS.Cap} color={color} size={9} />
         <bufferGeometry attach="geometry" ref={capsGeometry} />
       </points>
     </>
