@@ -30,10 +30,10 @@ const rootLink: HDF5RootLink = {
 describe('Explorer utilities', () => {
   describe('buildTree', () => {
     it('should process empty metadata', () => {
-      const rootGroup = makeGroup('913d8791');
+      const rootGroup = makeGroup();
       const emptyMetadata = makeMetadata({
         root: '913d8791',
-        groups: [rootGroup],
+        groups: { '913d8791': rootGroup },
       });
 
       const expectedTree: MyHDF5Metadata = {
@@ -50,14 +50,14 @@ describe('Explorer utilities', () => {
     });
 
     it('should process metadata with single dataset in root group', () => {
-      const dataset = makeDataset('1203fee7', intType, scalarShape);
+      const dataset = makeDataset(intType, scalarShape);
       const link = makeHardLink(HDF5Collection.Datasets, 'foo', '1203fee7');
-      const rootGroup = makeGroup('913d8791', undefined, [link]);
+      const rootGroup = makeGroup(undefined, [link]);
 
       const simpleMetadata = makeMetadata({
         root: '913d8791',
-        groups: [rootGroup],
-        datasets: [dataset],
+        groups: { '913d8791': rootGroup },
+        datasets: { '1203fee7': dataset },
       });
 
       const expectedTree: MyHDF5Metadata = {
@@ -87,7 +87,7 @@ describe('Explorer utilities', () => {
     });
 
     it('should process metadata with nested groups', () => {
-      const dataset = makeDataset('1203fee7', intType, scalarShape);
+      const dataset = makeDataset(intType, scalarShape);
       const datasetLink = makeHardLink(
         HDF5Collection.Datasets,
         'foo',
@@ -95,18 +95,18 @@ describe('Explorer utilities', () => {
       );
 
       const groupAttr = makeStrAttr('attr', 'foo');
-      const group = makeGroup('0a68caca', [groupAttr], [datasetLink]);
+      const group = makeGroup([groupAttr], [datasetLink]);
       const groupLink = makeHardLink(
         HDF5Collection.Groups,
         'group',
         '0a68caca'
       );
 
-      const rootGroup = makeGroup('913d8791', undefined, [groupLink]);
+      const rootGroup = makeGroup(undefined, [groupLink]);
       const nestedMetadata = makeMetadata({
         root: '913d8791',
-        groups: [rootGroup, group],
-        datasets: [dataset],
+        groups: { '913d8791': rootGroup, '0a68caca': group },
+        datasets: { '1203fee7': dataset },
       });
 
       const expectedTree: MyHDF5Metadata = {

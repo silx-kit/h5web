@@ -1,14 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import { mapValues } from 'lodash-es';
 import type { ProviderAPI } from '../context';
-import {
-  HDF5Id,
-  HDF5Value,
-  HDF5Metadata,
-  HDF5Collection,
-  HDF5Values,
-} from '../models';
-import type { SilxMetadataResponse } from './models';
+import { HDF5Id, HDF5Value, HDF5Metadata, HDF5Values } from '../models';
 
 export class SilxApi implements ProviderAPI {
   public readonly domain: string;
@@ -23,11 +15,8 @@ export class SilxApi implements ProviderAPI {
   }
 
   public async getMetadata(): Promise<HDF5Metadata> {
-    const { data } = await this.client.get<SilxMetadataResponse>(
-      '/metadata.json'
-    );
-
-    return this.transformMetadata(data);
+    const { data } = await this.client.get<HDF5Metadata>('/metadata.json');
+    return data;
   }
 
   public async getValue(id: HDF5Id): Promise<HDF5Value | undefined> {
@@ -39,28 +28,5 @@ export class SilxApi implements ProviderAPI {
 
     this.values = data;
     return this.values[id];
-  }
-
-  private transformMetadata(response: SilxMetadataResponse): HDF5Metadata {
-    const { root, groups, datasets, datatypes } = response;
-
-    return {
-      root,
-      groups: mapValues(groups, (group, id) => ({
-        id,
-        collection: HDF5Collection.Groups as const,
-        ...group,
-      })),
-      datasets: mapValues(datasets || {}, (dataset, id) => ({
-        id,
-        collection: HDF5Collection.Datasets as const,
-        ...dataset,
-      })),
-      datatypes: mapValues(datatypes || {}, (datatype, id) => ({
-        id,
-        collection: HDF5Collection.Datatypes as const,
-        ...datatype,
-      })),
-    };
   }
 }

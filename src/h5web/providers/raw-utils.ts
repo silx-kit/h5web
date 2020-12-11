@@ -78,33 +78,30 @@ export function makeStrAttr(name: string, value: string): HDF5Attribute {
 /* ----- ENTITIES ----- */
 
 export function makeDataset(
-  id: HDF5Id,
   type: HDF5Type,
   shape: HDF5Shape,
   attributes?: HDF5Attribute[]
 ): HDF5Dataset {
-  return { id, collection: HDF5Collection.Datasets, type, shape, attributes };
+  return { type, shape, attributes };
 }
 
 export function makeSimpleDataset(
-  id: HDF5Id,
   type: HDF5Type,
   dims: HDF5Dims,
   attributes?: HDF5Attribute[]
 ): HDF5Dataset {
-  return makeDataset(id, type, makeSimpleShape(dims), attributes);
+  return makeDataset(type, makeSimpleShape(dims), attributes);
 }
 
 export function makeGroup(
-  id: HDF5Id,
   attributes?: HDF5Attribute[],
   links?: HDF5Link[]
 ): HDF5Group {
-  return { id, collection: HDF5Collection.Groups, attributes, links };
+  return { attributes, links };
 }
 
-export function makeDatatype(id: HDF5Id, type: HDF5Type): HDF5Datatype {
-  return { id, collection: HDF5Collection.Datatypes, type };
+export function makeDatatype(type: HDF5Type): HDF5Datatype {
+  return { type };
 }
 
 /* ----------------- */
@@ -147,17 +144,11 @@ export function makeNxAxesAttr(axes: string[]): HDF5Attribute {
 export function makeMetadata(
   opts: {
     root?: HDF5Id;
-    datasets?: HDF5Dataset[];
-    groups?: HDF5Group[];
-    datatypes?: HDF5Datatype[];
+    datasets?: Record<HDF5Id, HDF5Dataset>;
+    groups?: Record<HDF5Id, HDF5Group>;
+    datatypes?: Record<HDF5Id, HDF5Datatype>;
   } = {}
 ): HDF5Metadata {
-  const { root = '', datasets = [], groups = [], datatypes = [] } = opts;
-
-  return {
-    root,
-    datasets: Object.fromEntries(datasets.map((ds) => [ds.id, ds])),
-    groups: Object.fromEntries(groups.map((gr) => [gr.id, gr])),
-    datatypes: Object.fromEntries(datatypes.map((dt) => [dt.id, dt])),
-  };
+  const { root = '', datasets = {}, groups = {}, datatypes = {} } = opts;
+  return { root, datasets, groups, datatypes };
 }

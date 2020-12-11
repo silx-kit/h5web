@@ -140,7 +140,6 @@ export class HsdsApi implements ProviderAPI {
     ]);
 
     this.groups[id] = {
-      collection: HDF5Collection.Groups,
       ...group,
       ...(attributes ? { attributes } : {}),
       ...(links ? { links } : {}),
@@ -162,7 +161,6 @@ export class HsdsApi implements ProviderAPI {
         : undefined;
 
     this.datasets[id] = {
-      collection: HDF5Collection.Datasets,
       ...dataset,
       ...(attributes ? { attributes } : {}),
     };
@@ -170,11 +168,7 @@ export class HsdsApi implements ProviderAPI {
 
   private async processDatatype(id: HDF5Id): Promise<void> {
     const datatype = await this.fetchDatatype(id);
-
-    this.datatypes[id] = {
-      collection: HDF5Collection.Datatypes,
-      ...datatype,
-    };
+    this.datatypes[id] = datatype;
   }
 
   private async resolveLink(link: HDF5HardLink | HDF5RootLink): Promise<void> {
