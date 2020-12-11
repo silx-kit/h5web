@@ -2,7 +2,7 @@ import React, { Suspense, ReactElement, useMemo } from 'react';
 import { Line } from 'react-three-fiber/components';
 import { CurveType } from './models';
 import GlyphMaterial from './GlyphMaterial';
-import { useThree, useUpdate } from 'react-three-fiber';
+import { useThree } from 'react-three-fiber';
 import { BufferGeometry, Vector3 } from 'three';
 import { useCanvasScales } from '../shared/hooks';
 import ErrorBars from './ErrorBars';
@@ -74,21 +74,21 @@ function DataCurve(props: Props): ReactElement {
     return { data: dataPoints, bars: errorBarSegments, caps: errorCapPoints };
   }, [abscissaScale, abscissas, camera.far, errors, ordinateScale, ordinates]);
 
-  const ref = useUpdate(
-    (geometry: BufferGeometry) => geometry.setFromPoints(points.data),
-    [points]
-  );
+  const dataGeometry = useMemo(() => {
+    const geometry = new BufferGeometry();
+    geometry.setFromPoints(points.data);
+    return geometry;
+  }, [points.data]);
 
   const showLine = curveType !== CurveType.GlyphsOnly;
   const showGlyphs = curveType !== CurveType.LineOnly;
 
   return (
     <Suspense fallback={<></>}>
-      <Line visible={showLine}>
+      <Line visible={showLine} geometry={dataGeometry}>
         <lineBasicMaterial attach="material" color={color} linewidth={2} />
-        <bufferGeometry attach="geometry" ref={ref} />
       </Line>
-      <points visible={showGlyphs} geometry={ref.current}>
+      <points visible={showGlyphs} geometry={dataGeometry}>
         <GlyphMaterial color={color} size={6} />
       </points>
       {showErrors && errors && (
