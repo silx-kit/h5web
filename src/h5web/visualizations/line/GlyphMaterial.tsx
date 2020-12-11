@@ -13,7 +13,6 @@ function GlyphMaterial(props: Props): ReactElement {
   const { color, size, glyphURL } = props;
   const sprite = useLoader(TextureLoader, glyphURL || GLYPH_URLS.Cross);
   sprite.magFilter = NearestFilter;
-  sprite.minFilter = NearestFilter;
 
   return (
     <pointsMaterial
