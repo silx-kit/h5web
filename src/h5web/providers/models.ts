@@ -25,8 +25,6 @@ export interface HDF5Metadata {
 export type HDF5Entity = HDF5Group | HDF5Dataset | HDF5Datatype;
 
 export interface HDF5Group {
-  id: HDF5Id;
-  collection: HDF5Collection.Groups;
   attributes?: HDF5Attribute[];
   links?: HDF5Link[];
 }
@@ -35,16 +33,12 @@ export interface HDF5Dataset<
   S extends HDF5Shape = HDF5Shape,
   T extends HDF5Type = HDF5Type
 > {
-  id: HDF5Id;
-  collection: HDF5Collection.Datasets;
   attributes?: HDF5Attribute[];
   shape: S;
   type: T;
 }
 
 export interface HDF5Datatype<T = HDF5Type> {
-  id: HDF5Id;
-  collection: HDF5Collection.Datatypes;
   type: T;
 }
 

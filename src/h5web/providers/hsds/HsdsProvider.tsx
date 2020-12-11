@@ -10,9 +10,9 @@ interface Props {
   children: ReactNode;
 }
 
-/* Provider of metadata and values by HSDS */
 function HsdsProvider(props: Props): ReactElement {
   const { url, username, password, domain, children } = props;
+
   const api = useMemo(() => new HsdsApi(url, username, password, domain), [
     domain,
     password,

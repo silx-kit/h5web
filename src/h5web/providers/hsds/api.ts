@@ -18,12 +18,13 @@ import {
   HDF5Id,
   HDF5RootLink,
   HDF5Value,
-  HDF5Metadata,
   HDF5Attribute,
   HDF5Link,
+  MyHDF5Metadata,
 } from '../models';
 import { isReachable } from '../utils';
 import type { ProviderAPI } from '../context';
+import { buildTree } from '../../explorer/utils';
 
 export class HsdsApi implements ProviderAPI {
   public readonly domain: string;
@@ -48,16 +49,19 @@ export class HsdsApi implements ProviderAPI {
     });
   }
 
-  public async getMetadata(): Promise<HDF5Metadata> {
+  public async getMetadata(): Promise<MyHDF5Metadata> {
     const rootId = await this.fetchRoot();
     await this.processGroup(rootId);
 
-    return {
-      root: rootId,
-      groups: this.groups,
-      datasets: this.datasets,
-      datatypes: this.datatypes,
-    };
+    return buildTree(
+      {
+        root: rootId,
+        groups: this.groups,
+        datasets: this.datasets,
+        datatypes: this.datatypes,
+      },
+      this.domain
+    );
   }
 
   public async getValue(id: HDF5Id): Promise<HDF5Value | undefined> {
@@ -140,7 +144,6 @@ export class HsdsApi implements ProviderAPI {
     ]);
 
     this.groups[id] = {
-      collection: HDF5Collection.Groups,
       ...group,
       ...(attributes ? { attributes } : {}),
       ...(links ? { links } : {}),
@@ -162,7 +165,6 @@ export class HsdsApi implements ProviderAPI {
         : undefined;
 
     this.datasets[id] = {
-      collection: HDF5Collection.Datasets,
       ...dataset,
       ...(attributes ? { attributes } : {}),
     };
@@ -170,11 +172,7 @@ export class HsdsApi implements ProviderAPI {
 
   private async processDatatype(id: HDF5Id): Promise<void> {
     const datatype = await this.fetchDatatype(id);
-
-    this.datatypes[id] = {
-      collection: HDF5Collection.Datatypes,
-      ...datatype,
-    };
+    this.datatypes[id] = datatype;
   }
 
   private async resolveLink(link: HDF5HardLink | HDF5RootLink): Promise<void> {
