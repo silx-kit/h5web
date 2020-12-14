@@ -8,7 +8,20 @@ interface Props {
 
 function RawVis(props: Props): ReactElement {
   const { value } = props;
-  return <pre className={styles.raw}>{JSON.stringify(value, null, 2)}</pre>;
+  const valueAsStr = JSON.stringify(value, null, 2);
+
+  if (valueAsStr.length > 1000) {
+    // eslint-disable-next-line no-console
+    console.log(valueAsStr);
+    return (
+      <p className={styles.fallback}>
+        The dataset is too big to be displayed. The values were printed in the
+        console.
+      </p>
+    );
+  }
+
+  return <pre className={styles.raw}>{valueAsStr}</pre>;
 }
 
 export default RawVis;
