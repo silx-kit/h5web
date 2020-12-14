@@ -1,3 +1,4 @@
+import { SilxStyle } from '../visualizations/nexus/models';
 import {
   HDF5Id,
   HDF5LinkClass,
@@ -136,6 +137,18 @@ export function makeExternalLink(
 
 export function makeNxAxesAttr(axes: string[]): HDF5Attribute {
   return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
+}
+
+export function makeSilxStyleAttr(style: SilxStyle): HDF5Attribute {
+  const { signalScaleType, axesScaleType } = style;
+
+  return makeStrAttr(
+    'SILX_style',
+    JSON.stringify({
+      signal_scale_type: signalScaleType,
+      axes_scale_type: axesScaleType,
+    })
+  );
 }
 
 /* -------------------- */

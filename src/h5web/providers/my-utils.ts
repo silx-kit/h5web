@@ -20,7 +20,12 @@ import {
   MyHDF5ResolvedEntity,
 } from '../providers/models';
 import { NxInterpretation, SilxStyle } from '../visualizations/nexus/models';
-import { makeNxAxesAttr, makeSimpleShape, makeStrAttr } from './raw-utils';
+import {
+  makeNxAxesAttr,
+  makeSilxStyleAttr,
+  makeSimpleShape,
+  makeStrAttr,
+} from './raw-utils';
 
 type EntityOpts = Partial<
   Pick<MyHDF5ResolvedEntity, 'id' | 'attributes' | 'rawLink'>
@@ -179,9 +184,7 @@ export function makeMyNxDataGroup<
         makeStrAttr('NX_class', 'NXdata'),
         makeStrAttr('signal', signal.name),
         ...(axesAttr ? [makeNxAxesAttr(axesAttr)] : []),
-        ...(silxStyle
-          ? [makeStrAttr('SILX_style', JSON.stringify(silxStyle))]
-          : []),
+        ...(silxStyle ? [makeSilxStyleAttr(silxStyle)] : []),
       ],
     }
   );

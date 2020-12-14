@@ -26,12 +26,7 @@ export interface NxData {
   axisMapping?: AxisMapping[];
 }
 
-export interface RawSilxStyle {
-  signal_scale_type?: unknown;
-  axes_scale_type?: unknown;
-}
-
 export interface SilxStyle {
-  signal_scale_type?: ScaleType;
-  axes_scale_type?: ScaleType[];
+  signalScaleType?: ScaleType;
+  axesScaleType?: ScaleType[];
 }

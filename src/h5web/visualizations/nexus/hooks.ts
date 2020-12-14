@@ -33,7 +33,7 @@ export function useNxData(group: MyHDF5Group): NxData {
   const axesNames = getNxAxisNames(group);
 
   const silxStyle = parseSilxStyleAttribute(group);
-  const { axes_scale_type, signal_scale_type } = silxStyle;
+  const { axesScaleType, signalScaleType } = silxStyle;
 
   const axisMapping = axesNames.map((axisName, i) => {
     if (!axisName) {
@@ -50,7 +50,7 @@ export function useNxData(group: MyHDF5Group): NxData {
     return {
       value: axisValue,
       label: getDatasetLabel(axisDataset, axisName),
-      scaleType: axes_scale_type && axes_scale_type[i],
+      scaleType: axesScaleType && axesScaleType[i],
     };
   });
 
@@ -70,7 +70,7 @@ export function useNxData(group: MyHDF5Group): NxData {
       label: getDatasetLabel(signalDataset, signalName),
       value: signalValue,
       dims: signalDataset.shape.dims,
-      scaleType: signal_scale_type,
+      scaleType: signalScaleType,
     },
     errors: errorsValue,
     title: typeof titleValue === 'string' ? titleValue : undefined,

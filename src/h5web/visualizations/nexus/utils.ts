@@ -14,12 +14,7 @@ import {
   assertNumericType,
   assertSimpleShape,
 } from '../../providers/utils';
-import {
-  NxAttribute,
-  NxInterpretation,
-  RawSilxStyle,
-  SilxStyle,
-} from './models';
+import { NxAttribute, NxInterpretation, SilxStyle } from './models';
 import {
   assertArray,
   assertDefined,
@@ -135,14 +130,14 @@ export function parseSilxStyleAttribute(group: MyHDF5Group): SilxStyle {
     return {};
   }
 
-  const rawSilxStyle: RawSilxStyle = JSON.parse(silxStyle);
+  const rawSilxStyle = JSON.parse(silxStyle);
   const { axes_scale_type, signal_scale_type } = rawSilxStyle;
 
   return {
-    signal_scale_type: isScaleType(signal_scale_type)
+    signalScaleType: isScaleType(signal_scale_type)
       ? signal_scale_type
       : undefined,
-    axes_scale_type:
+    axesScaleType:
       Array.isArray(axes_scale_type) && axes_scale_type.every(isScaleType)
         ? axes_scale_type
         : undefined,
