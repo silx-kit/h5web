@@ -11,7 +11,7 @@ import {
   hasNumericType,
   isDataset,
   isGroup,
-} from '../providers/utils';
+} from '../guards';
 import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,

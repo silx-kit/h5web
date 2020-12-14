@@ -4,7 +4,7 @@ import {
   assertDataset,
   assertNumericType,
   assertSimpleShape,
-} from '../../providers/utils';
+} from '../../guards';
 import MappedLineVis from '../line/MappedLineVis';
 import type { VisContainerProps } from './models';
 

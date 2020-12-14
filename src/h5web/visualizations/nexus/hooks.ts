@@ -1,11 +1,12 @@
 import { MyHDF5Group } from '../../providers/models';
-import { assertDataset, isDataset } from '../../providers/utils';
 import { useDatasetValues } from '../containers/hooks';
 import {
   assertArray,
   assertDefined,
   assertOptionalArray,
-} from '../shared/utils';
+  assertDataset,
+  isDataset,
+} from '../../guards';
 import type { NxData } from './models';
 import {
   findSignalDataset,

@@ -9,18 +9,16 @@ import type {
   MyHDF5Dataset,
 } from '../../providers/models';
 import {
+  assertArray,
+  assertDefined,
+  assertStr,
   assertGroup,
   assertDataset,
   assertNumericType,
   assertSimpleShape,
-} from '../../providers/utils';
+} from '../../guards';
 import { NxAttribute, NxInterpretation, SilxStyle } from './models';
-import {
-  assertArray,
-  assertDefined,
-  assertStr,
-  isScaleType,
-} from '../shared/utils';
+import { isScaleType } from '../shared/utils';
 import { getEntityAtPath } from '../../explorer/utils';
 
 export function getAttributeValue(

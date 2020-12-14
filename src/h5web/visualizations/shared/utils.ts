@@ -220,44 +220,6 @@ export function getTickFormatter(
   };
 }
 
-export function assertDefined<T>(
-  val: T,
-  message = 'Expected some value'
-): asserts val is NonNullable<T> {
-  if (val === undefined) {
-    throw new TypeError(message);
-  }
-}
-
-export function assertStr(
-  val: unknown,
-  message = 'Expected string'
-): asserts val is string {
-  if (typeof val !== 'string') {
-    throw new TypeError(message);
-  }
-}
-
-export function assertNumOrStr(val: unknown): asserts val is number | string {
-  if (typeof val !== 'number' && typeof val !== 'string') {
-    throw new TypeError('Expected number or string');
-  }
-}
-
-export function assertArray<T>(val: unknown): asserts val is T[] {
-  if (!Array.isArray(val)) {
-    throw new TypeError('Expected array');
-  }
-}
-
-export function assertOptionalArray<T>(
-  val: unknown
-): asserts val is T[] | undefined {
-  if (val !== undefined) {
-    assertArray<T>(val);
-  }
-}
-
 export function isScaleType(val: unknown): val is ScaleType {
   return (
     typeof val === 'string' && Object.values<string>(ScaleType).includes(val)

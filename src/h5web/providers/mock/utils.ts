@@ -1,6 +1,11 @@
 import { mockValues, mockMetadata } from './data';
-import { assertDataset, assertSimpleShape, assertNumericType } from '../utils';
-import { assertArray, assertDefined } from '../../visualizations/shared/utils';
+import {
+  assertDefined,
+  assertArray,
+  assertDataset,
+  assertSimpleShape,
+  assertNumericType,
+} from '../../guards';
 import ndarray from 'ndarray';
 import { getEntityAtPath } from '../../explorer/utils';
 

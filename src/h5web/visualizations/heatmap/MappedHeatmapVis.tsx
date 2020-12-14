@@ -3,7 +3,7 @@ import { usePrevious } from 'react-use';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import HeatmapVis from './HeatmapVis';
-import { assertArray } from '../shared/utils';
+import { assertArray } from '../../guards';
 import { useDomain, useBaseArray, useMappedArray } from '../shared/hooks';
 import { useHeatmapConfig } from './config';
 import type { AxisMapping } from '../shared/models';

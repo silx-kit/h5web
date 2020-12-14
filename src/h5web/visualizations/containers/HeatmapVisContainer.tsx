@@ -4,7 +4,7 @@ import {
   assertDataset,
   assertNumericType,
   assertSimpleShape,
-} from '../../providers/utils';
+} from '../../guards';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from './models';
 

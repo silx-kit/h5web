@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import MatrixVis from './MatrixVis';
-import { assertArray } from '../shared/utils';
+import { assertArray } from '../../guards';
 import { useBaseArray, useMappedArray } from '../shared/hooks';
 import DimensionMapper from '../../dimension-mapper/DimensionMapper';
 

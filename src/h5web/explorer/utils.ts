@@ -16,7 +16,7 @@ import {
   makeMyGroup,
   makeMyLink,
 } from '../providers/my-utils';
-import { isGroup, isReachable } from '../providers/utils';
+import { isGroup, isReachable } from '../guards';
 import { getChildEntity } from '../visualizations/nexus/utils';
 
 function buildDataset(

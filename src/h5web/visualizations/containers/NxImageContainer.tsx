@@ -1,11 +1,10 @@
 import React, { ReactElement, useEffect } from 'react';
-import { assertGroup } from '../../providers/utils';
+import { assertDefined, assertGroup } from '../../guards';
 import { findNxDataGroup } from '../nexus/utils';
 import type { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { useNxData } from '../nexus/hooks';
 import { useHeatmapConfig } from '../heatmap/config';
-import { assertDefined } from '../shared/utils';
 
 function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;

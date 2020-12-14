@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import RawVis from '../RawVis';
 import type { VisContainerProps } from './models';
 import { useDatasetValue } from './hooks';
-import { assertDataset } from '../../providers/utils';
+import { assertDataset } from '../../guards';
 
 function RawVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;

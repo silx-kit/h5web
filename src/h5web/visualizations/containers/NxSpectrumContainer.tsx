@@ -1,10 +1,9 @@
 import React, { ReactElement, useEffect } from 'react';
-import { assertGroup } from '../../providers/utils';
+import { assertDefined, assertGroup } from '../../guards';
 import MappedLineVis from '../line/MappedLineVis';
 import { findNxDataGroup } from '../nexus/utils';
 import type { VisContainerProps } from './models';
 import { useNxData } from '../nexus/hooks';
-import { assertDefined } from '../shared/utils';
 import { useNxSpectrumConfig } from '../nexus/config';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
