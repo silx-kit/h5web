@@ -22,7 +22,7 @@ import {
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
 import {
-  RawViscontainer,
+  RawVisContainer,
   ScalarVisContainer,
   MatrixVisContainer,
   LineVisContainer,
@@ -53,7 +53,7 @@ interface VisDef {
 export const VIS_DEFS: Record<Vis, VisDef> = {
   [Vis.Raw]: {
     Icon: FiCpu,
-    Container: RawViscontainer,
+    Container: RawVisContainer,
     supportsEntity: isDataset,
   },
 
