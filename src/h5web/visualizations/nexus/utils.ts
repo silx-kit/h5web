@@ -130,16 +130,21 @@ export function parseSilxStyleAttribute(group: MyHDF5Group): SilxStyle {
     return {};
   }
 
-  const rawSilxStyle = JSON.parse(silxStyle);
-  const { axes_scale_type, signal_scale_type } = rawSilxStyle;
+  try {
+    const rawSilxStyle = JSON.parse(silxStyle);
+    const { axes_scale_type, signal_scale_type } = rawSilxStyle;
 
-  return {
-    signalScaleType: isScaleType(signal_scale_type)
-      ? signal_scale_type
-      : undefined,
-    axesScaleType:
-      Array.isArray(axes_scale_type) && axes_scale_type.every(isScaleType)
-        ? axes_scale_type
+    return {
+      signalScaleType: isScaleType(signal_scale_type)
+        ? signal_scale_type
         : undefined,
-  };
+      axesScaleType:
+        Array.isArray(axes_scale_type) && axes_scale_type.every(isScaleType)
+          ? axes_scale_type
+          : undefined,
+    };
+  } catch {
+    console.warn(`Malformed 'SILX_style' attribute: ${silxStyle}`); // eslint-disable-line no-console
+    return {};
+  }
 }
