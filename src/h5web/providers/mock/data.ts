@@ -9,7 +9,7 @@ import {
   makeMyNxDataset,
   makeMyNxEntityGroup,
   makeMySimpleDataset,
-} from '../my-utils';
+} from './utils';
 import {
   compoundType,
   floatType,

@@ -24,7 +24,7 @@ import {
 } from '../models';
 import { isReachable } from '../../guards';
 import type { ProviderAPI } from '../context';
-import { buildTree } from '../../explorer/utils';
+import { buildTree } from '../utils';
 
 export class HsdsApi implements ProviderAPI {
   public readonly domain: string;

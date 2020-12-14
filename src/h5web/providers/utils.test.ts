@@ -1,4 +1,4 @@
-import { buildTree, getEntityAtPath } from './utils';
+import { buildTree } from './utils';
 import {
   HDF5Collection,
   HDF5RootLink,
@@ -7,7 +7,7 @@ import {
   MyHDF5Dataset,
   MyHDF5Group,
   MyHDF5Metadata,
-} from '../providers/models';
+} from './models';
 import {
   intType,
   makeDataset,
@@ -16,8 +16,7 @@ import {
   makeMetadata,
   makeStrAttr,
   scalarShape,
-} from '../providers/raw-utils';
-import { makeMyDataset, makeMyGroup } from '../providers/my-utils';
+} from './raw-utils';
 
 const domain = 'domain';
 const rootLink: HDF5RootLink = {
@@ -27,7 +26,7 @@ const rootLink: HDF5RootLink = {
   id: '913d8791',
 };
 
-describe('Explorer utilities', () => {
+describe('Provider utilities', () => {
   describe('buildTree', () => {
     it('should process empty metadata', () => {
       const rootGroup = makeGroup();
@@ -145,46 +144,6 @@ describe('Explorer utilities', () => {
       expectedTree.children.push(expectedChildGroup);
       expectedChildGroup.children.push(expectedChildDataset);
       expect(buildTree(nestedMetadata, domain)).toEqual(expectedTree);
-    });
-  });
-
-  describe('getEntityAtPath', () => {
-    const dataset = makeMyDataset('dataset', scalarShape, intType);
-    const childGroup1 = makeMyGroup('child1');
-    const childGroup2 = makeMyGroup('child2', [dataset]);
-    const rootGroup = makeMyGroup('root', [childGroup1, childGroup2]);
-
-    it('should process relative path', () => {
-      expect(getEntityAtPath(rootGroup, '')).toBe(rootGroup);
-      expect(getEntityAtPath(childGroup1, '')).toBe(childGroup1);
-      expect(getEntityAtPath(rootGroup, 'child2/dataset')).toBe(dataset);
-      expect(getEntityAtPath(childGroup2, 'dataset')).toBe(dataset);
-    });
-
-    it('should process absolute path when passed root group', () => {
-      expect(getEntityAtPath(rootGroup, '/')).toBe(rootGroup);
-      expect(getEntityAtPath(rootGroup, '/child1')).toBe(childGroup1);
-      expect(getEntityAtPath(rootGroup, '/child2/dataset')).toBe(dataset);
-    });
-
-    it('should process absolute path when passed any child group', () => {
-      expect(getEntityAtPath(childGroup1, '/')).toBe(rootGroup);
-      expect(getEntityAtPath(childGroup1, '/child1')).toBe(childGroup1);
-      expect(getEntityAtPath(childGroup1, '/child2/dataset')).toBe(dataset);
-    });
-
-    it('should return `undefined` for invalid paths', () => {
-      expect(getEntityAtPath(rootGroup, 'child1/foo')).toBeUndefined();
-      expect(getEntityAtPath(rootGroup, '/child1/foo')).toBeUndefined();
-      expect(getEntityAtPath(childGroup1, 'foo')).toBeUndefined();
-      expect(getEntityAtPath(childGroup1, '/child2/foo')).toBeUndefined();
-    });
-
-    it('should support forbidding to retrieve same entity', () => {
-      expect(getEntityAtPath(rootGroup, '', false)).toBeUndefined();
-      expect(getEntityAtPath(rootGroup, '/', false)).toBeUndefined();
-      expect(getEntityAtPath(childGroup1, '', false)).toBeUndefined();
-      expect(getEntityAtPath(childGroup1, '/', false)).toBe(rootGroup);
     });
   });
 });

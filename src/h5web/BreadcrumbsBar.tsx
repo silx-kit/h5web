@@ -4,7 +4,7 @@ import styles from './BreadcrumbsBar.module.css';
 import type { MyHDF5Entity } from './providers/models';
 import ToggleGroup from './toolbar/controls/ToggleGroup';
 import ToggleBtn from './toolbar/controls/ToggleBtn';
-import { getParents } from './explorer/utils';
+import { getParents } from './utils';
 
 interface Props {
   isExplorerOpen: boolean;

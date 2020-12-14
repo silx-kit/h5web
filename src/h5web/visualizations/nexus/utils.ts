@@ -19,7 +19,7 @@ import {
 } from '../../guards';
 import { NxAttribute, NxInterpretation, SilxStyle } from './models';
 import { isScaleType } from '../shared/utils';
-import { getEntityAtPath } from '../../explorer/utils';
+import { getEntityAtPath } from '../../utils';
 
 export function getAttributeValue(
   entity: HDF5Dataset | HDF5Group | MyHDF5Entity,

@@ -12,7 +12,7 @@ import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 import LinkInfo from './LinkInfo';
 import { capitalize } from 'lodash-es';
-import { getParents } from '../explorer/utils';
+import { getParents } from '../utils';
 
 interface Props {
   entity: MyHDF5Entity;
