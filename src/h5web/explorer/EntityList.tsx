@@ -2,7 +2,7 @@ import React, { CSSProperties, ReactElement } from 'react';
 import styles from './Explorer.module.css';
 import { MyHDF5Entity } from '../providers/models';
 import Icon from './Icon';
-import { isGroup } from '../providers/utils';
+import { isGroup } from '../guards';
 
 interface Props {
   level: number;

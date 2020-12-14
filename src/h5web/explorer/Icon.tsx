@@ -10,7 +10,7 @@ import {
 import type { IconType } from 'react-icons';
 import { MyHDF5Entity, MyHDF5EntityKind } from '../providers/models';
 import styles from './Explorer.module.css';
-import { isGroup } from '../providers/utils';
+import { isGroup } from '../guards';
 
 const LEAF_ICONS: Record<MyHDF5EntityKind, IconType> = {
   [MyHDF5EntityKind.Group]: FiFolder,

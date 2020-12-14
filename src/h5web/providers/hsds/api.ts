@@ -22,7 +22,7 @@ import {
   HDF5Link,
   MyHDF5Metadata,
 } from '../models';
-import { isReachable } from '../utils';
+import { isReachable } from '../../guards';
 import type { ProviderAPI } from '../context';
 import { buildTree } from '../../explorer/utils';
 

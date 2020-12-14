@@ -7,7 +7,7 @@ import {
   isDatatype,
   isLink,
   isResolved,
-} from '../providers/utils';
+} from '../guards';
 import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 import LinkInfo from './LinkInfo';

@@ -50,7 +50,7 @@ export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
           children: [
             makeMyNxDataGroup('nx_data', {
               signal: makeMyNxDataset('twoD', intType, [20, 41]),
-              silxStyle: { signal_scale_type: ScaleType.SymLog },
+              silxStyle: { signalScaleType: ScaleType.SymLog },
               title: makeMyDataset('title', scalarShape, stringType, {
                 id: 'title_twoD',
               }),
@@ -81,7 +81,7 @@ export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
             }),
           },
           axesAttr: ['.', '.', 'Y', 'X'],
-          silxStyle: { signal_scale_type: ScaleType.Log },
+          silxStyle: { signalScaleType: ScaleType.Log },
         }),
         makeMyNxDataGroup('log_spectrum', {
           signal: makeMyNxDataset('oneD', intType, [41]),
@@ -89,8 +89,8 @@ export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
           axes: { X_log: makeMyNxDataset('X_log', floatType, [41]) },
           axesAttr: ['X_log'],
           silxStyle: {
-            signal_scale_type: ScaleType.Log,
-            axes_scale_type: [ScaleType.Log],
+            signalScaleType: ScaleType.Log,
+            axesScaleType: [ScaleType.Log],
           },
         }),
       ],

@@ -9,23 +9,16 @@ import type {
   MyHDF5Dataset,
 } from '../../providers/models';
 import {
+  assertArray,
+  assertDefined,
+  assertStr,
   assertGroup,
   assertDataset,
   assertNumericType,
   assertSimpleShape,
-} from '../../providers/utils';
-import {
-  NxAttribute,
-  NxInterpretation,
-  RawSilxStyle,
-  SilxStyle,
-} from './models';
-import {
-  assertArray,
-  assertDefined,
-  assertStr,
-  isScaleType,
-} from '../shared/utils';
+} from '../../guards';
+import { NxAttribute, NxInterpretation, SilxStyle } from './models';
+import { isScaleType } from '../shared/utils';
 import { getEntityAtPath } from '../../explorer/utils';
 
 export function getAttributeValue(
@@ -135,16 +128,21 @@ export function parseSilxStyleAttribute(group: MyHDF5Group): SilxStyle {
     return {};
   }
 
-  const rawSilxStyle: RawSilxStyle = JSON.parse(silxStyle);
-  const { axes_scale_type, signal_scale_type } = rawSilxStyle;
+  try {
+    const rawSilxStyle = JSON.parse(silxStyle);
+    const { axes_scale_type, signal_scale_type } = rawSilxStyle;
 
-  return {
-    signal_scale_type: isScaleType(signal_scale_type)
-      ? signal_scale_type
-      : undefined,
-    axes_scale_type:
-      Array.isArray(axes_scale_type) && axes_scale_type.every(isScaleType)
-        ? axes_scale_type
+    return {
+      signalScaleType: isScaleType(signal_scale_type)
+        ? signal_scale_type
         : undefined,
-  };
+      axesScaleType:
+        Array.isArray(axes_scale_type) && axes_scale_type.every(isScaleType)
+          ? axes_scale_type
+          : undefined,
+    };
+  } catch {
+    console.warn(`Malformed 'SILX_style' attribute: ${silxStyle}`); // eslint-disable-line no-console
+    return {};
+  }
 }

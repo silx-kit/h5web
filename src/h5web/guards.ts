@@ -18,13 +18,44 @@ import {
   MyHDF5Dataset,
   MyHDF5Link,
   MyHDF5ResolvedEntity,
-} from './models';
+} from './providers/models';
 
-export function isReachable(
-  link: HDF5Link
-): link is HDF5HardLink | HDF5RootLink {
-  // Only hard and root links are considered as reachable for now
-  return link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root;
+export function assertDefined<T>(
+  val: T,
+  message = 'Expected some value'
+): asserts val is NonNullable<T> {
+  if (val === undefined) {
+    throw new TypeError(message);
+  }
+}
+
+export function assertStr(
+  val: unknown,
+  message = 'Expected string'
+): asserts val is string {
+  if (typeof val !== 'string') {
+    throw new TypeError(message);
+  }
+}
+
+export function assertNumOrStr(val: unknown): asserts val is number | string {
+  if (typeof val !== 'number' && typeof val !== 'string') {
+    throw new TypeError('Expected number or string');
+  }
+}
+
+export function assertArray<T>(val: unknown): asserts val is T[] {
+  if (!Array.isArray(val)) {
+    throw new TypeError('Expected array');
+  }
+}
+
+export function assertOptionalArray<T>(
+  val: unknown
+): asserts val is T[] | undefined {
+  if (val !== undefined) {
+    assertArray<T>(val);
+  }
 }
 
 export function isResolved(
@@ -47,6 +78,13 @@ export function isDatatype(entity: MyHDF5Entity): entity is MyHDF5Datatype {
 
 export function isLink(entity: MyHDF5Entity): entity is MyHDF5Link {
   return entity.kind === MyHDF5EntityKind.Link;
+}
+
+export function isReachable(
+  link: HDF5Link
+): link is HDF5HardLink | HDF5RootLink {
+  // Only hard and root links are considered as reachable for now
+  return link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root;
 }
 
 export function hasSimpleShape<T extends HDF5Type>(

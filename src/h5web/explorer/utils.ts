@@ -9,83 +9,110 @@ import {
   MyHDF5Datatype,
   HDF5HardLink,
   MyHDF5Metadata,
+  MyHDF5EntityKind,
+  HDF5Datatype,
+  HDF5Dataset,
 } from '../providers/models';
-import {
-  makeMyDataset,
-  makeMyDatatype,
-  makeMyGroup,
-  makeMyLink,
-} from '../providers/my-utils';
-import { isGroup, isReachable } from '../providers/utils';
+import { isGroup, isReachable } from '../guards';
 import { getChildEntity } from '../visualizations/nexus/utils';
+import { nanoid } from 'nanoid';
 
-function buildDataset(
-  metadata: HDF5Metadata,
-  link: HDF5HardLink
-): MyHDF5Dataset {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { shape, type, attributes } = metadata.datasets![link.id];
+function buildDataset(dataset: HDF5Dataset, link: HDF5HardLink): MyHDF5Dataset {
+  const { shape, type, attributes = [] } = dataset;
 
-  return makeMyDataset(link.title, shape, type, {
+  return {
+    uid: nanoid(),
     id: link.id,
+    name: link.title,
+    kind: MyHDF5EntityKind.Dataset,
     attributes,
+    shape,
+    type,
     rawLink: link,
-  });
+  };
 }
 
 function buildDatatype(
-  metadata: HDF5Metadata,
+  datatype: HDF5Datatype,
   link: HDF5HardLink
 ): MyHDF5Datatype {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { type } = metadata.datatypes![link.id];
+  const { type } = datatype;
 
-  return makeMyDatatype(link.title, type, {
+  return {
+    uid: nanoid(),
     id: link.id,
+    name: link.title,
+    kind: MyHDF5EntityKind.Datatype,
+    attributes: [],
+    type,
     rawLink: link,
-  });
+  };
 }
 
 function buildGroup(
-  metadata: HDF5Metadata,
+  metadata: Required<HDF5Metadata>,
   link: HDF5HardLink | HDF5RootLink
 ): MyHDF5Group {
   const rawGroup = metadata.groups[link.id];
 
   const children = (rawGroup.links || []).map((link) => {
     if (!isReachable(link)) {
-      return makeMyLink(link);
+      return {
+        uid: nanoid(),
+        name: link.title,
+        kind: MyHDF5EntityKind.Link,
+        attributes: [],
+        rawLink: link,
+      };
     }
 
     switch (link.collection) {
       case HDF5Collection.Groups:
         return buildGroup(metadata, link);
       case HDF5Collection.Datasets:
-        return buildDataset(metadata, link);
+        return buildDataset(metadata.datasets[link.id], link);
       case HDF5Collection.Datatypes:
-        return buildDatatype(metadata, link);
+        return buildDatatype(metadata.datatypes[link.id], link);
       default:
         throw new Error('Expected link with known HDF5 collection');
     }
   });
 
-  return makeMyGroup(link.title, children, {
+  const group: MyHDF5Group = {
+    uid: nanoid(),
     id: link.id,
-    attributes: rawGroup.attributes,
+    name: link.title,
+    kind: MyHDF5EntityKind.Group,
+    attributes: rawGroup.attributes || [],
+    children,
     rawLink: link,
+  };
+
+  group.children.forEach((child) => {
+    child.parent = group;
   });
+
+  return group;
 }
 
 export function buildTree(
-  metadata: HDF5Metadata,
+  rawMetadata: HDF5Metadata,
   domain: string
 ): MyHDF5Metadata {
-  return buildGroup(metadata, {
-    class: HDF5LinkClass.Root,
-    collection: HDF5Collection.Groups,
+  const metadata = {
+    ...rawMetadata,
+    datasets: rawMetadata.datasets || {},
+    datatypes: rawMetadata.datatypes || {},
+  };
+
+  const rootGroup = {
+    class: HDF5LinkClass.Root as const,
+    collection: HDF5Collection.Groups as const,
     title: domain,
     id: metadata.root,
-  });
+  };
+
+  return buildGroup(metadata, rootGroup);
 }
 
 function findRoot(entity: MyHDF5Entity): MyHDF5Entity {

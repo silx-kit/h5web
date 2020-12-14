@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useDatasetValue } from './hooks';
-import { assertDataset, assertSimpleShape } from '../../providers/utils';
+import { assertDataset, assertSimpleShape } from '../../guards';
 import MappedMatrixVis from '../matrix/MappedMatrixVis';
 import type { VisContainerProps } from './models';
 

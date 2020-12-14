@@ -5,7 +5,7 @@ import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import { getEntityAtPath, getParents } from './utils';
 import { ProviderContext } from '../providers/context';
-import { isGroup } from '../providers/utils';
+import { isGroup } from '../guards';
 import { useSet } from 'react-use';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';

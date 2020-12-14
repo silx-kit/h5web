@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './ScalarVis.module.css';
 import type { HDF5Value } from '../providers/models';
-import { assertNumOrStr } from './shared/utils';
+import { assertNumOrStr } from '../guards';
 
 interface Props {
   value: HDF5Value;

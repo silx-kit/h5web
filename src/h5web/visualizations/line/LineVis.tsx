@@ -9,12 +9,8 @@ import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../shared/models';
 import { CurveType } from './models';
-import {
-  getValueToIndexScale,
-  getDomain,
-  extendDomain,
-  assertDefined,
-} from '../shared/utils';
+import { getValueToIndexScale, getDomain, extendDomain } from '../shared/utils';
+import { assertDefined } from '../../guards';
 
 const DEFAULT_DOMAIN: Domain = [0.1, 1];
 

@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import type { HDF5Value } from '../../providers/models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import LineVis from './LineVis';
-import { assertArray } from '../shared/utils';
+import { assertArray } from '../../guards';
 import { useMappedArray, useDomain, useBaseArray } from '../shared/hooks';
 import { useLineConfig } from './config';
 import type { AxisMapping, ScaleType } from '../shared/models';

@@ -10,11 +10,8 @@ import VisCanvas from '../shared/VisCanvas';
 import { getDims, getPixelEdges } from './utils';
 import { Domain, ScaleType, AxisParams } from '../shared/models';
 import type { ColorMap } from './models';
-import {
-  assertDefined,
-  getDomain,
-  getValueToIndexScale,
-} from '../shared/utils';
+import { getDomain, getValueToIndexScale } from '../shared/utils';
+import { assertDefined } from '../../guards';
 
 interface Props {
   dataArray: ndarray;
