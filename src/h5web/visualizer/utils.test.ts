@@ -8,7 +8,7 @@ import {
   makeStrAttr,
   makeDataset,
   makeGroup,
-  makeNxData,
+  makeNxDataGroup,
   makeSimpleDataset,
 } from '../providers/mock/utils';
 
@@ -30,7 +30,7 @@ describe('Visualizer utilities', () => {
 
     it('should not include NxSpectrum vis if any other visualization is supported', () => {
       const datasetInt2D = makeSimpleDataset('dataset', intType, [5, 3]);
-      const nxDataSignal2D = makeNxData('foo', { signal: datasetInt2D });
+      const nxDataSignal2D = makeNxDataGroup('foo', { signal: datasetInt2D });
       const supportedVis = getSupportedVis(nxDataSignal2D);
 
       expect(supportedVis).toEqual({ supportedVis: [Vis.NxImage] });

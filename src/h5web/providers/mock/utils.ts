@@ -192,6 +192,10 @@ export function makeExternalLink(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
+function makeNxAxesAttr(axes: string[]): HDF5Attribute {
+  return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
+}
+
 function makeSilxStyleAttr(style: SilxStyle): HDF5Attribute {
   const { signalScaleType, axesScaleType } = style;
 
@@ -204,11 +208,24 @@ function makeSilxStyleAttr(style: SilxStyle): HDF5Attribute {
   );
 }
 
-function makeNxAxesAttr(axes: string[]): HDF5Attribute {
-  return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
+export function makeNxGroup(
+  name: string,
+  type: 'NXroot' | 'NXentry' | 'NXprocess' | 'NXdata',
+  opts: { defaultPath?: string } & GroupOpts = {}
+): Group {
+  const { defaultPath, children, ...groupOpts } = opts;
+
+  return makeGroup(name, children, {
+    ...groupOpts,
+    attributes: [
+      ...(groupOpts.attributes || []),
+      makeStrAttr('NX_class', type),
+      ...(defaultPath ? [makeStrAttr('default', defaultPath)] : []),
+    ],
+  });
 }
 
-export function makeNxData<
+export function makeNxDataGroup<
   T extends Record<string, Dataset<HDF5SimpleShape, HDF5NumericType>>
 >(
   name: string,
@@ -233,40 +250,19 @@ export function makeNxData<
     ...groupOpts
   } = opts;
 
-  return makeGroup(
-    name,
-    [
+  return makeNxGroup(name, 'NXdata', {
+    ...groupOpts,
+    attributes: [
+      ...(groupOpts.attributes || []),
+      makeStrAttr('signal', signal.name),
+      ...(axesAttr ? [makeNxAxesAttr(axesAttr)] : []),
+      ...(silxStyle ? [makeSilxStyleAttr(silxStyle)] : []),
+    ],
+    children: [
       signal,
       ...(title ? [title] : []),
       ...(errors ? [errors] : []),
       ...Object.values<Dataset>(axes),
-    ],
-    {
-      ...groupOpts,
-      attributes: [
-        ...(groupOpts.attributes || []),
-        makeStrAttr('NX_class', 'NXdata'),
-        makeStrAttr('signal', signal.name),
-        ...(axesAttr ? [makeNxAxesAttr(axesAttr)] : []),
-        ...(silxStyle ? [makeSilxStyleAttr(silxStyle)] : []),
-      ],
-    }
-  );
-}
-
-export function makeNxGroup(
-  name: string,
-  type: 'NXroot' | 'NXentry' | 'NXprocess',
-  opts: { defaultPath?: string } & GroupOpts = {}
-): Group {
-  const { defaultPath, children, ...groupOpts } = opts;
-
-  return makeGroup(name, children, {
-    ...groupOpts,
-    attributes: [
-      ...(groupOpts.attributes || []),
-      makeStrAttr('NX_class', type),
-      ...(defaultPath ? [makeStrAttr('default', defaultPath)] : []),
     ],
   });
 }
