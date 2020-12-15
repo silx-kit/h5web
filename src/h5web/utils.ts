@@ -1,10 +1,16 @@
 import { MyHDF5Entity, MyHDF5Group } from './providers/models';
 import { isGroup } from './guards';
-import { getChildEntity } from './visualizations/nexus/utils';
 
 function findRoot(entity: MyHDF5Entity): MyHDF5Entity {
   const { parent } = entity;
   return parent ? findRoot(parent) : entity;
+}
+
+export function getChildEntity(
+  group: MyHDF5Group,
+  entityName: string
+): MyHDF5Entity | undefined {
+  return group.children.find((child) => child.name === entityName);
 }
 
 export function getEntityAtPath(

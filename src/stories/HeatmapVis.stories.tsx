@@ -9,7 +9,7 @@ import HeatmapVis, {
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import { INTERPOLATORS } from '../h5web/visualizations/heatmap/interpolators';
 import { getDomain } from '../packages/lib';
-import { getMockDataArray } from '../h5web/providers/mock/utils';
+import { getMockDataArray } from '../h5web/providers/mock/data';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 const domain = getDomain(dataArray.data as number[]);

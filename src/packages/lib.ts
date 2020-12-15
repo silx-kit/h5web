@@ -42,5 +42,8 @@ export type {
 } from '../h5web/visualizations/heatmap/models';
 
 // Mock data
-export { mockMetadata, mockValues } from '../h5web/providers/mock/data';
-export { getMockDataArray } from '../h5web/providers/mock/utils';
+export {
+  mockMetadata,
+  mockValues,
+  getMockDataArray,
+} from '../h5web/providers/mock/data';

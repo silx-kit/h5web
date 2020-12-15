@@ -6,7 +6,7 @@ import { ScaleType } from '../h5web/visualizations/shared/models';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';
 import { getDomain } from '../packages/lib';
-import { getMockDataArray } from '../h5web/providers/mock/utils';
+import { getMockDataArray } from '../h5web/providers/mock/data';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray.data as number[]);

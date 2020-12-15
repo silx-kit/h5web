@@ -1,13 +1,3 @@
-import { mockValues, mockMetadata } from './data';
-import {
-  assertDefined,
-  assertArray,
-  assertDataset,
-  assertSimpleShape,
-  assertNumericType,
-} from '../../guards';
-import ndarray from 'ndarray';
-import { getEntityAtPath } from '../../utils';
 import { nanoid } from 'nanoid';
 import {
   HDF5Attribute,
@@ -310,20 +300,4 @@ export function withMyInterpretation<
   return withMyAttributes(dataset, [
     makeStrAttr('interpretation', interpretation),
   ]);
-}
-
-/* ------------------ */
-/* ----- VALUES ----- */
-
-export function getMockDataArray(path: string): ndarray {
-  const dataset = getEntityAtPath(mockMetadata, path);
-  assertDefined(dataset, `Expected entity at path "${path}"`);
-  assertDataset(dataset, `Expected group at path "${path}"`);
-  assertNumericType(dataset);
-  assertSimpleShape(dataset);
-
-  const value = mockValues[dataset.id as keyof typeof mockValues];
-  assertArray<number>(value);
-
-  return ndarray(value, dataset.shape.dims);
 }
