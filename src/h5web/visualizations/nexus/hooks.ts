@@ -22,10 +22,6 @@ export function useNxData(group: Group): NxData {
 
   const signalDataset = findSignalDataset(group);
   const signalValue = values[signalDataset.name];
-  if (!signalValue) {
-    return { signal: { dims: signalDataset.shape.dims } };
-  }
-
   assertArray<number>(signalValue);
 
   const silxStyle = parseSilxStyleAttribute(group);

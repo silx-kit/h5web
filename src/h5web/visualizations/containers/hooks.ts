@@ -16,5 +16,5 @@ export function useDatasetValues(
   const { getValues } = useContext(ProviderContext);
   const [valuesReader] = useAsyncResource(getValues, datasets);
 
-  return valuesReader() || {};
+  return valuesReader();
 }
