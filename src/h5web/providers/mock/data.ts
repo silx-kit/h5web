@@ -1,6 +1,22 @@
 import { range } from 'lodash-es';
+import ndarray from 'ndarray';
+import {
+  assertArray,
+  assertDataset,
+  assertDefined,
+  assertNumericType,
+  assertSimpleShape,
+} from '../../guards';
+import { getEntityAtPath } from '../../utils';
 import { ScaleType } from '../../visualizations/shared/models';
 import {
+  compoundType,
+  floatType,
+  intType,
+  scalarShape,
+  stringType,
+  makeAttr,
+  makeStrAttr,
   makeMyDataset,
   makeMyDatatype,
   makeMyExternalLink,
@@ -9,16 +25,7 @@ import {
   makeMyNxDataset,
   makeMyNxEntityGroup,
   makeMySimpleDataset,
-} from '../my-utils';
-import {
-  compoundType,
-  floatType,
-  intType,
-  makeAttr,
-  makeStrAttr,
-  scalarShape,
-  stringType,
-} from '../raw-utils';
+} from './utils';
 
 /* -------------------- */
 /* ----- METADATA ----- */
@@ -203,3 +210,16 @@ export const mockValues = {
   fourD_image: fourD,
   oneD_errors: oneD.map((x) => Math.abs(x) / 10),
 };
+
+export function getMockDataArray(path: string): ndarray {
+  const dataset = getEntityAtPath(mockMetadata, path);
+  assertDefined(dataset, `Expected entity at path "${path}"`);
+  assertDataset(dataset, `Expected group at path "${path}"`);
+  assertNumericType(dataset);
+  assertSimpleShape(dataset);
+
+  const value = mockValues[dataset.id as keyof typeof mockValues];
+  assertArray<number>(value);
+
+  return ndarray(value, dataset.shape.dims);
+}

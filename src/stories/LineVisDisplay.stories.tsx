@@ -3,7 +3,7 @@ import type { Story } from '@storybook/react/types-6-0';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';
 import { getDomain } from '../packages/lib';
-import { getMockDataArray } from '../h5web/providers/mock/utils';
+import { getMockDataArray } from '../h5web/providers/mock/data';
 import LineVisStoriesConfig from './LineVis.stories';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');

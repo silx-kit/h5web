@@ -3,16 +3,14 @@ import { Vis } from '../visualizations';
 import {
   compoundType,
   intType,
+  scalarShape,
   makeAttr,
   makeStrAttr,
-  scalarShape,
-} from '../providers/raw-utils';
-import {
   makeMyDataset,
   makeMyGroup,
   makeMyNxDataGroup,
   makeMySimpleDataset,
-} from '../providers/my-utils';
+} from '../providers/mock/utils';
 
 describe('Visualizer utilities', () => {
   describe('getSupportedVis', () => {

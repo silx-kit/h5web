@@ -22,8 +22,6 @@ export interface HDF5Metadata {
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
-export type HDF5Entity = HDF5Group | HDF5Dataset | HDF5Datatype;
-
 export interface HDF5Group {
   attributes?: HDF5Attribute[];
   links?: HDF5Link[];

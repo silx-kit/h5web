@@ -3,7 +3,7 @@ import { FiFileText } from 'react-icons/fi';
 import type { MyHDF5Entity } from '../providers/models';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
-import { getEntityAtPath, getParents } from './utils';
+import { getEntityAtPath, getParents } from '../utils';
 import { ProviderContext } from '../providers/context';
 import { isGroup } from '../guards';
 import { useSet } from 'react-use';

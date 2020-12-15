@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { buildTree } from '../../explorer/utils';
+import { buildTree } from '../utils';
 import type { ProviderAPI } from '../context';
 import {
   HDF5Id,

@@ -19,20 +19,13 @@ import {
 } from '../../guards';
 import { NxAttribute, NxInterpretation, SilxStyle } from './models';
 import { isScaleType } from '../shared/utils';
-import { getEntityAtPath } from '../../explorer/utils';
+import { getChildEntity, getEntityAtPath } from '../../utils';
 
 export function getAttributeValue(
   entity: HDF5Dataset | HDF5Group | MyHDF5Entity,
   attributeName: NxAttribute
 ): HDF5Value | undefined {
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
-}
-
-export function getChildEntity(
-  group: MyHDF5Group,
-  entityName: string
-): MyHDF5Entity | undefined {
-  return group.children.find((child) => child.name === entityName);
 }
 
 export function findNxDataGroup(group: MyHDF5Group): MyHDF5Group | undefined {

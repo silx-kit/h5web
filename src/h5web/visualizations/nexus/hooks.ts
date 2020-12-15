@@ -11,11 +11,11 @@ import type { NxData } from './models';
 import {
   findSignalDataset,
   findSignalName,
-  getChildEntity,
   getDatasetLabel,
   getNxAxisNames,
   parseSilxStyleAttribute,
 } from './utils';
+import { getChildEntity } from '../../utils';
 
 export function useNxData(group: MyHDF5Group): NxData {
   const values = useDatasetValues(
