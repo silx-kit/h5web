@@ -12,8 +12,8 @@ import type { NxData } from './models';
 import {
   findSignalDataset,
   getDatasetLabel,
-  getNxAxisNames,
-  parseSilxStyleAttribute,
+  getNxAxes,
+  getSilxStyle,
 } from './utils';
 import { getChildEntity } from '../../utils';
 
@@ -24,11 +24,10 @@ export function useNxData(group: Group): NxData {
   const signalValue = values[signalDataset.name];
   assertArray<number>(signalValue);
 
-  const silxStyle = parseSilxStyleAttribute(group);
+  const silxStyle = getSilxStyle(group);
   const { axesScaleType, signalScaleType } = silxStyle;
 
-  const axesNames = getNxAxisNames(group);
-  const axisMapping = axesNames.map((axisName, i) => {
+  const axisMapping = getNxAxes(group).map((axisName, i) => {
     if (axisName === '.') {
       return undefined;
     }

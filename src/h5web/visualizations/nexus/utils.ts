@@ -76,7 +76,7 @@ export function isNxInterpretation(
   );
 }
 
-export function getNxAxisNames(group: Group): string[] {
+export function getNxAxes(group: Group): string[] {
   const axisList = getAttributeValue(group, 'axes');
   if (!axisList) {
     return [];
@@ -102,7 +102,7 @@ export function getDatasetLabel(dataset: Dataset): string {
   return dataset.name;
 }
 
-export function parseSilxStyleAttribute(group: Group): SilxStyle {
+export function getSilxStyle(group: Group): SilxStyle {
   const silxStyle = getAttributeValue(group, 'SILX_style');
 
   if (!silxStyle || typeof silxStyle !== 'string') {
