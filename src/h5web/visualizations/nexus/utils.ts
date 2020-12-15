@@ -76,7 +76,7 @@ export function isNxInterpretation(
   );
 }
 
-export function getNxAxisNames(group: Group): (string | undefined)[] {
+export function getNxAxisNames(group: Group): string[] {
   const axisList = getAttributeValue(group, 'axes');
   if (!axisList) {
     return [];
@@ -85,7 +85,7 @@ export function getNxAxisNames(group: Group): (string | undefined)[] {
   const axisNames = typeof axisList === 'string' ? [axisList] : axisList;
   assertArray<string>(axisNames);
 
-  return axisNames.map((a) => (a !== '.' ? a : undefined));
+  return axisNames;
 }
 
 export function getDatasetLabel(dataset: Dataset): string {
