@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { AsyncResourceContent } from 'use-async-resource';
-import type { MyHDF5Entity } from '../providers/models';
+import type { Entity } from '../providers/models';
 import styles from './Visualizer.module.css';
 import { getSupportedVis } from './utils';
 import { VIS_DEFS, Vis } from '../visualizations';
@@ -9,7 +9,7 @@ import Loader from './Loader';
 import Profiler from '../Profiler';
 
 interface Props {
-  entity?: MyHDF5Entity;
+  entity?: Entity;
 }
 
 function Visualizer(props: Props): ReactElement {

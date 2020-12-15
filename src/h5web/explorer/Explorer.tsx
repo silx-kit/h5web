@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, ReactElement } from 'react';
 import { FiFileText } from 'react-icons/fi';
-import type { MyHDF5Entity } from '../providers/models';
+import type { Entity } from '../providers/models';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import { getEntityAtPath, getParents } from '../utils';
@@ -11,8 +11,8 @@ import { useSet } from 'react-use';
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 
 interface Props {
-  onSelect: (entity: MyHDF5Entity) => void;
-  selectedEntity?: MyHDF5Entity;
+  onSelect: (entity: Entity) => void;
+  selectedEntity?: Entity;
 }
 
 function Explorer(props: Props): ReactElement {
@@ -24,7 +24,7 @@ function Explorer(props: Props): ReactElement {
     { add: expandGroup, toggle: toggleGroup },
   ] = useSet<string>();
 
-  function handleSelect(entity: MyHDF5Entity): void {
+  function handleSelect(entity: Entity): void {
     const isExpanded = expandedGroups.has(entity.uid);
     const isSelected = entity === selectedEntity;
     onSelect(entity);

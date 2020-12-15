@@ -1,6 +1,6 @@
 import { useAsyncResource } from 'use-async-resource';
 import { useContext } from 'react';
-import type { HDF5Id, HDF5Value } from '../../providers/models';
+import type { HDF5Id, HDF5Value } from '../../providers/hdf5-models';
 import { ProviderContext } from '../../providers/context';
 
 export function useDatasetValue(id: HDF5Id): HDF5Value | undefined {

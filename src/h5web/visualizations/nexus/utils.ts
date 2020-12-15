@@ -1,13 +1,11 @@
+import type { Group, Entity, Dataset } from '../../providers/models';
 import type {
   HDF5Group,
   HDF5Dataset,
   HDF5Value,
   HDF5NumericType,
   HDF5SimpleShape,
-  MyHDF5Group,
-  MyHDF5Entity,
-  MyHDF5Dataset,
-} from '../../providers/models';
+} from '../../providers/hdf5-models';
 import {
   assertArray,
   assertDefined,
@@ -22,13 +20,13 @@ import { isScaleType } from '../shared/utils';
 import { getChildEntity, getEntityAtPath } from '../../utils';
 
 export function getAttributeValue(
-  entity: HDF5Dataset | HDF5Group | MyHDF5Entity,
+  entity: HDF5Dataset | HDF5Group | Entity,
   attributeName: NxAttribute
 ): HDF5Value | undefined {
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }
 
-export function findNxDataGroup(group: MyHDF5Group): MyHDF5Group | undefined {
+export function findNxDataGroup(group: Group): Group | undefined {
   if (getAttributeValue(group, 'NX_class') === 'NXdata') {
     return group; // `NXdata` group found
   }
@@ -53,7 +51,7 @@ export function findNxDataGroup(group: MyHDF5Group): MyHDF5Group | undefined {
   return nxDataGroup;
 }
 
-export function findSignalName(group: HDF5Group | MyHDF5Group): string {
+export function findSignalName(group: HDF5Group | Group): string {
   const signal = getAttributeValue(group, 'signal');
 
   assertDefined(signal, "Expected 'signal' attribute");
@@ -63,9 +61,9 @@ export function findSignalName(group: HDF5Group | MyHDF5Group): string {
 }
 
 export function findSignalDataset(
-  group: MyHDF5Group,
+  group: Group,
   signalName: string
-): MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType> {
+): Dataset<HDF5SimpleShape, HDF5NumericType> {
   const dataset = getChildEntity(group, signalName);
 
   assertDefined(dataset, `Expected "${signalName}" signal entity to exist`);
@@ -85,7 +83,7 @@ export function isNxInterpretation(
   );
 }
 
-export function getNxAxisNames(group: MyHDF5Group): (string | undefined)[] {
+export function getNxAxisNames(group: Group): (string | undefined)[] {
   const axisList = getAttributeValue(group, 'axes');
   if (!axisList) {
     return [];
@@ -97,10 +95,7 @@ export function getNxAxisNames(group: MyHDF5Group): (string | undefined)[] {
   return axisNames.map((a) => (a !== '.' ? a : undefined));
 }
 
-export function getDatasetLabel(
-  dataset: MyHDF5Dataset,
-  datasetName: string
-): string {
+export function getDatasetLabel(dataset: Dataset, datasetName: string): string {
   const longName = getAttributeValue(dataset, 'long_name');
   if (longName && typeof longName === 'string') {
     return longName;
@@ -114,7 +109,7 @@ export function getDatasetLabel(
   return datasetName;
 }
 
-export function parseSilxStyleAttribute(group: MyHDF5Group): SilxStyle {
+export function parseSilxStyleAttribute(group: Group): SilxStyle {
   const silxStyle = getAttributeValue(group, 'SILX_style');
 
   if (!silxStyle || typeof silxStyle !== 'string') {

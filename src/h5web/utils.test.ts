@@ -1,17 +1,17 @@
 import {
   intType,
   scalarShape,
-  makeMyDataset,
-  makeMyGroup,
+  makeDataset,
+  makeGroup,
 } from './providers/mock/utils';
 import { getEntityAtPath } from './utils';
 
 describe('Global utilities', () => {
   describe('getEntityAtPath', () => {
-    const dataset = makeMyDataset('dataset', scalarShape, intType);
-    const childGroup1 = makeMyGroup('child1');
-    const childGroup2 = makeMyGroup('child2', [dataset]);
-    const rootGroup = makeMyGroup('root', [childGroup1, childGroup2]);
+    const dataset = makeDataset('dataset', scalarShape, intType);
+    const childGroup1 = makeGroup('child1');
+    const childGroup2 = makeGroup('child2', [dataset]);
+    const rootGroup = makeGroup('root', [childGroup1, childGroup2]);
 
     it('should process relative path', () => {
       expect(getEntityAtPath(rootGroup, '')).toBe(rootGroup);

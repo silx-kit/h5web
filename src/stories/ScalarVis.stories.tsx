@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
-import type { HDF5Value } from '../h5web/providers/models';
+import type { HDF5Value } from '../h5web/providers/hdf5-models';
 import { ScalarVis } from '../packages/lib';
 
 const numberData = 1024;

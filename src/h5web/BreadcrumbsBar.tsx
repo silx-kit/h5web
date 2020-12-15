@@ -1,7 +1,7 @@
 import React, { Fragment, ReactElement } from 'react';
 import { FiSidebar, FiChevronRight } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
-import type { MyHDF5Entity } from './providers/models';
+import type { Entity } from './providers/models';
 import ToggleGroup from './toolbar/controls/ToggleGroup';
 import ToggleBtn from './toolbar/controls/ToggleBtn';
 import { getParents } from './utils';
@@ -11,7 +11,7 @@ interface Props {
   onToggleExplorer: () => void;
   isInspecting: boolean;
   onChangeInspecting: (b: boolean) => void;
-  selectedEntity?: MyHDF5Entity;
+  selectedEntity?: Entity;
 }
 
 function BreadcrumbsBar(props: Props): ReactElement {

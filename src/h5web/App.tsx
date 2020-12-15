@@ -1,14 +1,14 @@
 import React, { useState, ReactElement } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
-import type { MyHDF5Entity } from './providers/models';
+import type { Entity } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import BreadcrumbsBar from './BreadcrumbsBar';
 import Visualizer from './visualizer/Visualizer';
 
 function App(): ReactElement {
-  const [selectedEntity, setSelectedEntity] = useState<MyHDF5Entity>();
+  const [selectedEntity, setSelectedEntity] = useState<Entity>();
   const [isExplorerOpen, setExplorerOpen] = useState(true);
   const [isInspecting, setInspecting] = useState(false);
 

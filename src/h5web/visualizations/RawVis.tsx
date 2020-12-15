@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './RawVis.module.css';
-import type { HDF5Value } from '../providers/models';
+import type { HDF5Value } from '../providers/hdf5-models';
 
 interface Props {
   value: HDF5Value;

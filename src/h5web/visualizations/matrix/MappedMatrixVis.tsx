@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import type { HDF5Value } from '../../providers/models';
+import type { HDF5Value } from '../../providers/hdf5-models';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import MatrixVis from './MatrixVis';
 import { assertArray } from '../../guards';

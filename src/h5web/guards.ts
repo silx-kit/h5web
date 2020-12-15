@@ -1,4 +1,13 @@
 import {
+  Entity,
+  EntityKind,
+  Group,
+  Datatype,
+  Dataset,
+  Link,
+  ResolvedEntity,
+} from './providers/models';
+import {
   HDF5HardLink,
   HDF5Link,
   HDF5LinkClass,
@@ -11,14 +20,7 @@ import {
   HDF5RootLink,
   HDF5ScalarShape,
   HDF5NumericType,
-  MyHDF5Entity,
-  MyHDF5EntityKind,
-  MyHDF5Group,
-  MyHDF5Datatype,
-  MyHDF5Dataset,
-  MyHDF5Link,
-  MyHDF5ResolvedEntity,
-} from './providers/models';
+} from './providers/hdf5-models';
 
 export function assertDefined<T>(
   val: T,
@@ -58,26 +60,24 @@ export function assertOptionalArray<T>(
   }
 }
 
-export function isResolved(
-  entity: MyHDF5Entity
-): entity is MyHDF5ResolvedEntity {
+export function isResolved(entity: Entity): entity is ResolvedEntity {
   return 'id' in entity;
 }
 
-export function isGroup(entity: MyHDF5Entity): entity is MyHDF5Group {
-  return entity.kind === MyHDF5EntityKind.Group;
+export function isGroup(entity: Entity): entity is Group {
+  return entity.kind === EntityKind.Group;
 }
 
-export function isDataset(entity: MyHDF5Entity): entity is MyHDF5Dataset {
-  return entity.kind === MyHDF5EntityKind.Dataset;
+export function isDataset(entity: Entity): entity is Dataset {
+  return entity.kind === EntityKind.Dataset;
 }
 
-export function isDatatype(entity: MyHDF5Entity): entity is MyHDF5Datatype {
-  return entity.kind === MyHDF5EntityKind.Datatype;
+export function isDatatype(entity: Entity): entity is Datatype {
+  return entity.kind === EntityKind.Datatype;
 }
 
-export function isLink(entity: MyHDF5Entity): entity is MyHDF5Link {
-  return entity.kind === MyHDF5EntityKind.Link;
+export function isLink(entity: Entity): entity is Link {
+  return entity.kind === EntityKind.Link;
 }
 
 export function isReachable(
@@ -88,20 +88,20 @@ export function isReachable(
 }
 
 export function hasSimpleShape<T extends HDF5Type>(
-  dataset: MyHDF5Dataset<HDF5Shape, T>
-): dataset is MyHDF5Dataset<HDF5SimpleShape, T> {
+  dataset: Dataset<HDF5Shape, T>
+): dataset is Dataset<HDF5SimpleShape, T> {
   return dataset.shape.class === HDF5ShapeClass.Simple;
 }
 
 export function hasScalarShape<T extends HDF5Type>(
-  dataset: MyHDF5Dataset<HDF5Shape, T>
-): dataset is MyHDF5Dataset<HDF5ScalarShape, T> {
+  dataset: Dataset<HDF5Shape, T>
+): dataset is Dataset<HDF5ScalarShape, T> {
   return dataset.shape.class === HDF5ShapeClass.Scalar;
 }
 
 export function hasBaseType<S extends HDF5Shape>(
-  entity: MyHDF5Dataset<S>
-): entity is MyHDF5Dataset<S, HDF5BaseType> {
+  entity: Dataset<S>
+): entity is Dataset<S, HDF5BaseType> {
   return (
     typeof entity.type !== 'string' &&
     [HDF5TypeClass.Integer, HDF5TypeClass.Float, HDF5TypeClass.String].includes(
@@ -111,8 +111,8 @@ export function hasBaseType<S extends HDF5Shape>(
 }
 
 export function hasNumericType<S extends HDF5Shape>(
-  dataset: MyHDF5Dataset<S>
-): dataset is MyHDF5Dataset<S, HDF5NumericType> {
+  dataset: Dataset<S>
+): dataset is Dataset<S, HDF5NumericType> {
   return (
     typeof dataset.type !== 'string' &&
     [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(dataset.type.class)
@@ -120,34 +120,34 @@ export function hasNumericType<S extends HDF5Shape>(
 }
 
 export function assertDataset(
-  entity: MyHDF5Entity,
+  entity: Entity,
   message = 'Expected dataset'
-): asserts entity is MyHDF5Dataset {
+): asserts entity is Dataset {
   if (!isDataset(entity)) {
     throw new Error(message);
   }
 }
 
 export function assertGroup(
-  entity: MyHDF5Entity,
+  entity: Entity,
   message = 'Expected group'
-): asserts entity is MyHDF5Group {
+): asserts entity is Group {
   if (!isGroup(entity)) {
     throw new Error(message);
   }
 }
 
 export function assertNumericType<S extends HDF5Shape>(
-  dataset: MyHDF5Dataset<S>
-): asserts dataset is MyHDF5Dataset<S, HDF5NumericType> {
+  dataset: Dataset<S>
+): asserts dataset is Dataset<S, HDF5NumericType> {
   if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
   }
 }
 
 export function assertSimpleShape<T extends HDF5Type>(
-  dataset: MyHDF5Dataset<HDF5Shape, T>
-): asserts dataset is MyHDF5Dataset<HDF5SimpleShape, T> {
+  dataset: Dataset<HDF5Shape, T>
+): asserts dataset is Dataset<HDF5SimpleShape, T> {
   if (!hasSimpleShape(dataset)) {
     throw new Error('Expected dataset to have simple shape');
   }
