@@ -3,11 +3,9 @@ import { Vis } from '../visualizations';
 import {
   compoundType,
   intType,
+  scalarShape,
   makeAttr,
   makeStrAttr,
-  scalarShape,
-} from '../providers/raw-utils';
-import {
   makeMyDataset,
   makeMyGroup,
   makeMyNxDataGroup,

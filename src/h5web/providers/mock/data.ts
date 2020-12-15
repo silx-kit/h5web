@@ -1,6 +1,13 @@
 import { range } from 'lodash-es';
 import { ScaleType } from '../../visualizations/shared/models';
 import {
+  compoundType,
+  floatType,
+  intType,
+  scalarShape,
+  stringType,
+  makeAttr,
+  makeStrAttr,
   makeMyDataset,
   makeMyDatatype,
   makeMyExternalLink,
@@ -10,15 +17,6 @@ import {
   makeMyNxEntityGroup,
   makeMySimpleDataset,
 } from './utils';
-import {
-  compoundType,
-  floatType,
-  intType,
-  makeAttr,
-  makeStrAttr,
-  scalarShape,
-  stringType,
-} from '../raw-utils';
 
 /* -------------------- */
 /* ----- METADATA ----- */

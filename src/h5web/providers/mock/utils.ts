@@ -11,16 +11,22 @@ import { getEntityAtPath } from '../../utils';
 import { nanoid } from 'nanoid';
 import {
   HDF5Attribute,
+  HDF5CompoundType,
   HDF5Dims,
   HDF5ExternalLink,
+  HDF5FloatType,
+  HDF5IntegerType,
   HDF5Link,
   HDF5LinkClass,
   HDF5NumericType,
   HDF5ScalarShape,
   HDF5Shape,
+  HDF5ShapeClass,
   HDF5SimpleShape,
   HDF5StringType,
   HDF5Type,
+  HDF5TypeClass,
+  HDF5Value,
   MyHDF5Dataset,
   MyHDF5Datatype,
   MyHDF5Entity,
@@ -30,16 +36,71 @@ import {
   MyHDF5ResolvedEntity,
 } from '../models';
 import { NxInterpretation, SilxStyle } from '../../visualizations/nexus/models';
-import {
-  makeNxAxesAttr,
-  makeSilxStyleAttr,
-  makeSimpleShape,
-  makeStrAttr,
-} from '../raw-utils';
+
+/* -------------------------- */
+/* ----- TYPES & SHAPES ----- */
+
+export const intType: HDF5IntegerType = {
+  class: HDF5TypeClass.Integer,
+  base: 'H5T_STD_I32LE',
+};
+
+export const floatType: HDF5FloatType = {
+  class: HDF5TypeClass.Float,
+  base: 'H5T_IEEE_F64LE',
+};
+
+export const stringType: HDF5StringType = {
+  class: HDF5TypeClass.String,
+  charSet: 'H5T_CSET_ASCII',
+  strPad: 'H5T_STR_NULLPAD',
+  length: 'H5T_VARIABLE',
+};
+
+export const compoundType: HDF5CompoundType = {
+  class: HDF5TypeClass.Compound,
+  fields: [{ name: 'int', type: intType }],
+};
+
+export const scalarShape: HDF5ScalarShape = { class: HDF5ShapeClass.Scalar };
+
+export function makeSimpleShape(dims: HDF5Dims): HDF5SimpleShape {
+  return { class: HDF5ShapeClass.Simple, dims };
+}
+
+/* ---------------------- */
+/* ----- ATTRIBUTES ----- */
+
+export function makeAttr(
+  name: string,
+  shape: HDF5Shape,
+  type: HDF5Type,
+  value: HDF5Value
+): HDF5Attribute {
+  return { name, type, shape, value };
+}
+
+export function makeStrAttr(name: string, value: string): HDF5Attribute {
+  return makeAttr(name, { class: HDF5ShapeClass.Scalar }, stringType, value);
+}
+
+export function withMyAttributes<T extends MyHDF5Entity>(
+  entity: T,
+  attributes: HDF5Attribute[]
+): T {
+  return {
+    ...entity,
+    attributes: [...entity.attributes, ...attributes],
+  };
+}
+
+/* -------------------- */
+/* ----- ENTITIES ----- */
 
 type EntityOpts = Partial<
   Pick<MyHDF5ResolvedEntity, 'id' | 'attributes' | 'rawLink'>
 >;
+
 type GroupOpts = EntityOpts & { children?: MyHDF5Entity[] };
 
 export function makeMyGroup(
@@ -113,7 +174,7 @@ export function makeMyDatatype<T extends HDF5Type>(
   };
 }
 
-export function makeMyLink<T extends HDF5Link>(rawLink: T): MyHDF5Link<T> {
+function makeMyLink<T extends HDF5Link>(rawLink: T): MyHDF5Link<T> {
   return {
     uid: nanoid(),
     name: rawLink.title,
@@ -136,22 +197,23 @@ export function makeMyExternalLink(
   });
 }
 
-export function withMyAttributes<T extends MyHDF5Entity>(
-  entity: T,
-  attributes: HDF5Attribute[]
-): T {
-  return {
-    ...entity,
-    attributes: [...entity.attributes, ...attributes],
-  };
+/* ----------------- */
+/* ----- NEXUS ----- */
+
+function makeSilxStyleAttr(style: SilxStyle): HDF5Attribute {
+  const { signalScaleType, axesScaleType } = style;
+
+  return makeStrAttr(
+    'SILX_style',
+    JSON.stringify({
+      signal_scale_type: signalScaleType,
+      axes_scale_type: axesScaleType,
+    })
+  );
 }
 
-export function withMyInterpretation<
-  T extends MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>
->(dataset: T, interpretation: NxInterpretation): T {
-  return withMyAttributes(dataset, [
-    makeStrAttr('interpretation', interpretation),
-  ]);
+function makeNxAxesAttr(axes: string[]): HDF5Attribute {
+  return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
 }
 
 export function makeMyNxDataGroup<
@@ -242,6 +304,17 @@ export function makeMyNxDataset(
   });
 }
 
+export function withMyInterpretation<
+  T extends MyHDF5Dataset<HDF5SimpleShape, HDF5NumericType>
+>(dataset: T, interpretation: NxInterpretation): T {
+  return withMyAttributes(dataset, [
+    makeStrAttr('interpretation', interpretation),
+  ]);
+}
+
+/* ------------------ */
+/* ----- VALUES ----- */
+
 export function getMockDataArray(path: string): ndarray {
   const dataset = getEntityAtPath(mockMetadata, path);
   assertDefined(dataset, `Expected entity at path "${path}"`);
@@ -252,5 +325,5 @@ export function getMockDataArray(path: string): ndarray {
   const value = mockValues[dataset.id as keyof typeof mockValues];
   assertArray<number>(value);
 
-  return ndarray(value.flat(Infinity), dataset.shape.dims);
+  return ndarray(value, dataset.shape.dims);
 }

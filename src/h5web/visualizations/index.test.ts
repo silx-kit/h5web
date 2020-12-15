@@ -5,12 +5,10 @@ import {
   intType,
   compoundType,
   scalarShape,
-  makeSimpleShape,
   stringType,
-  makeStrAttr,
   floatType,
-} from '../providers/raw-utils';
-import {
+  makeStrAttr,
+  makeSimpleShape,
   makeMyDataset,
   makeMyDatatype,
   makeMyGroup,

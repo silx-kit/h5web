@@ -1,5 +1,9 @@
-import { makeMyDataset, makeMyGroup } from './providers/mock/utils';
-import { intType, scalarShape } from './providers/raw-utils';
+import {
+  intType,
+  scalarShape,
+  makeMyDataset,
+  makeMyGroup,
+} from './providers/mock/utils';
 import { getEntityAtPath } from './utils';
 
 describe('Global utilities', () => {

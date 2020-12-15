@@ -8,15 +8,7 @@ import {
   MyHDF5Group,
   MyHDF5Metadata,
 } from './models';
-import {
-  intType,
-  makeDataset,
-  makeGroup,
-  makeHardLink,
-  makeMetadata,
-  makeStrAttr,
-  scalarShape,
-} from './raw-utils';
+import { intType, scalarShape, makeStrAttr } from './mock/utils';
 
 const domain = 'domain';
 const rootLink: HDF5RootLink = {
@@ -29,11 +21,10 @@ const rootLink: HDF5RootLink = {
 describe('Provider utilities', () => {
   describe('buildTree', () => {
     it('should process empty metadata', () => {
-      const rootGroup = makeGroup();
-      const emptyMetadata = makeMetadata({
+      const emptyMetadata = {
         root: '913d8791',
-        groups: { '913d8791': rootGroup },
-      });
+        groups: { '913d8791': {} },
+      };
 
       const expectedTree: MyHDF5Metadata = {
         uid: expect.any(String),
@@ -49,15 +40,17 @@ describe('Provider utilities', () => {
     });
 
     it('should process metadata with single dataset in root group', () => {
-      const dataset = makeDataset(intType, scalarShape);
-      const link = makeHardLink(HDF5Collection.Datasets, 'foo', '1203fee7');
-      const rootGroup = makeGroup(undefined, [link]);
-
-      const simpleMetadata = makeMetadata({
+      const link = {
+        class: HDF5LinkClass.Hard as const,
+        collection: HDF5Collection.Datasets,
+        title: 'foo',
+        id: '1203fee7',
+      };
+      const simpleMetadata = {
         root: '913d8791',
-        groups: { '913d8791': rootGroup },
-        datasets: { '1203fee7': dataset },
-      });
+        groups: { '913d8791': { links: [link] } },
+        datasets: { '1203fee7': { type: intType, shape: scalarShape } },
+      };
 
       const expectedTree: MyHDF5Metadata = {
         uid: expect.any(String),
@@ -86,27 +79,29 @@ describe('Provider utilities', () => {
     });
 
     it('should process metadata with nested groups', () => {
-      const dataset = makeDataset(intType, scalarShape);
-      const datasetLink = makeHardLink(
-        HDF5Collection.Datasets,
-        'foo',
-        '1203fee7'
-      );
+      const datasetLink = {
+        class: HDF5LinkClass.Hard as const,
+        collection: HDF5Collection.Datasets,
+        title: 'foo',
+        id: '1203fee7',
+      };
 
       const groupAttr = makeStrAttr('attr', 'foo');
-      const group = makeGroup([groupAttr], [datasetLink]);
-      const groupLink = makeHardLink(
-        HDF5Collection.Groups,
-        'group',
-        '0a68caca'
-      );
+      const groupLink = {
+        class: HDF5LinkClass.Hard as const,
+        collection: HDF5Collection.Groups,
+        title: 'group',
+        id: '0a68caca',
+      };
 
-      const rootGroup = makeGroup(undefined, [groupLink]);
-      const nestedMetadata = makeMetadata({
+      const nestedMetadata = {
         root: '913d8791',
-        groups: { '913d8791': rootGroup, '0a68caca': group },
-        datasets: { '1203fee7': dataset },
-      });
+        groups: {
+          '913d8791': { links: [groupLink] },
+          '0a68caca': { attributes: [groupAttr], links: [datasetLink] },
+        },
+        datasets: { '1203fee7': { type: intType, shape: scalarShape } },
+      };
 
       const expectedTree: MyHDF5Metadata = {
         uid: expect.any(String),
