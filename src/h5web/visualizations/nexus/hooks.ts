@@ -6,11 +6,11 @@ import {
   assertOptionalArray,
   assertDataset,
   isDataset,
+  assertOptionalStr,
 } from '../../guards';
 import type { NxData } from './models';
 import {
   findSignalDataset,
-  findSignalName,
   getDatasetLabel,
   getNxAxisNames,
   parseSilxStyleAttribute,
@@ -18,14 +18,10 @@ import {
 import { getChildEntity } from '../../utils';
 
 export function useNxData(group: Group): NxData {
-  const values = useDatasetValues(
-    group.children.filter(isDataset).map((child) => child.id)
-  );
+  const values = useDatasetValues(group.children.filter(isDataset));
 
-  const signalName = findSignalName(group);
-  const signalDataset = findSignalDataset(group, signalName);
-
-  const signalValue = values[signalDataset.id];
+  const signalDataset = findSignalDataset(group);
+  const signalValue = values[signalDataset.name];
   if (!signalValue) {
     return { signal: { dims: signalDataset.shape.dims } };
   }
@@ -45,36 +41,31 @@ export function useNxData(group: Group): NxData {
     assertDefined(axisDataset);
     assertDataset(axisDataset);
 
-    const axisValue = values[axisDataset.id];
+    const axisValue = values[axisDataset.name];
     assertOptionalArray<number>(axisValue);
 
     return {
       value: axisValue,
-      label: getDatasetLabel(axisDataset, axisName),
+      label: getDatasetLabel(axisDataset),
       scaleType: axesScaleType && axesScaleType[i],
     };
   });
 
-  const errorsDataset =
-    getChildEntity(group, `${signalName}_errors`) ||
-    getChildEntity(group, 'errors');
-  const errorsValue =
-    errorsDataset && isDataset(errorsDataset) && values[errorsDataset.id];
+  const errorsValue = values[`${signalDataset.name}_errors`] || values.errors;
   assertOptionalArray<number>(errorsValue);
 
-  const titleDataset = getChildEntity(group, 'title');
-  const titleValue =
-    titleDataset && isDataset(titleDataset) && values[titleDataset.id];
+  const titleValue = values.title;
+  assertOptionalStr(titleValue);
 
   return {
     signal: {
-      label: getDatasetLabel(signalDataset, signalName),
+      label: getDatasetLabel(signalDataset),
       value: signalValue,
       dims: signalDataset.shape.dims,
       scaleType: signalScaleType,
     },
     errors: errorsValue,
-    title: typeof titleValue === 'string' ? titleValue : undefined,
+    title: titleValue,
     axisMapping,
   };
 }

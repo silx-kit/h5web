@@ -32,9 +32,11 @@ function Provider(props: Props): ReactElement {
         domain: api.domain,
         metadata,
         getValue,
-        getValues: async (ids) =>
+        getValues: async (datasets) =>
           Object.fromEntries(
-            await Promise.all(ids.map(async (id) => [id, await getValue(id)]))
+            await Promise.all(
+              datasets.map(async ({ id, name }) => [name, await getValue(id)])
+            )
           ),
       }}
     >
