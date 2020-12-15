@@ -16,7 +16,6 @@ import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
   isNxInterpretation,
-  findSignalName,
   findNxDataGroup,
   findSignalDataset,
 } from './nexus/utils';
@@ -120,8 +119,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return false; // group is not NXdata and doesn't have `default` attribute
       }
 
-      const signal = findSignalName(group);
-      const dataset = findSignalDataset(group, signal);
+      const dataset = findSignalDataset(group);
       const interpretation = getAttributeValue(dataset, 'interpretation');
 
       return (
@@ -145,8 +143,7 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
         return false; // group is not NXdata and doesn't have `default` attribute
       }
 
-      const signal = findSignalName(group);
-      const dataset = findSignalDataset(group, signal);
+      const dataset = findSignalDataset(group);
       if (dataset.shape.dims.length < 2) {
         return false;
       }

@@ -45,29 +45,22 @@ export function findNxDataGroup(group: Group): Group | undefined {
   const nxDataGroup = findNxDataGroup(defaultEntity);
   assertDefined(
     nxDataGroup,
-    `Expected NXdata group or group with 'default' attribute`
+    `Expected NXdata group, or group with 'default' attribute`
   );
 
   return nxDataGroup;
 }
 
-export function findSignalName(group: HDF5Group | Group): string {
+export function findSignalDataset(
+  group: Group
+): Dataset<HDF5SimpleShape, HDF5NumericType> {
   const signal = getAttributeValue(group, 'signal');
-
   assertDefined(signal, "Expected 'signal' attribute");
   assertStr(signal, "Expected 'signal' attribute to be a string");
 
-  return signal;
-}
-
-export function findSignalDataset(
-  group: Group,
-  signalName: string
-): Dataset<HDF5SimpleShape, HDF5NumericType> {
-  const dataset = getChildEntity(group, signalName);
-
-  assertDefined(dataset, `Expected "${signalName}" signal entity to exist`);
-  assertDataset(dataset, `Expected "${signalName}" signal to be a dataset`);
+  const dataset = getChildEntity(group, signal);
+  assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
+  assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
   assertNumericType(dataset);
   assertSimpleShape(dataset);
 
@@ -95,7 +88,7 @@ export function getNxAxisNames(group: Group): (string | undefined)[] {
   return axisNames.map((a) => (a !== '.' ? a : undefined));
 }
 
-export function getDatasetLabel(dataset: Dataset, datasetName: string): string {
+export function getDatasetLabel(dataset: Dataset): string {
   const longName = getAttributeValue(dataset, 'long_name');
   if (longName && typeof longName === 'string') {
     return longName;
@@ -103,10 +96,10 @@ export function getDatasetLabel(dataset: Dataset, datasetName: string): string {
 
   const units = getAttributeValue(dataset, 'units');
   if (units && typeof units === 'string') {
-    return `${datasetName} (${units})`;
+    return `${dataset.name} (${units})`;
   }
 
-  return datasetName;
+  return dataset.name;
 }
 
 export function parseSilxStyleAttribute(group: Group): SilxStyle {

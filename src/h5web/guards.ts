@@ -40,6 +40,14 @@ export function assertStr(
   }
 }
 
+export function assertOptionalStr(
+  val: unknown
+): asserts val is string | undefined {
+  if (val !== undefined) {
+    assertStr(val);
+  }
+}
+
 export function assertNumOrStr(val: unknown): asserts val is number | string {
   if (typeof val !== 'number' && typeof val !== 'string') {
     throw new TypeError('Expected number or string');
