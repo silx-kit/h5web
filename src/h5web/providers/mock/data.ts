@@ -21,7 +21,7 @@ import {
   makeDatatype,
   makeExternalLink,
   makeGroup,
-  makeNxData,
+  makeNxDataGroup,
   makeNxDataset,
   makeNxGroup,
   makeSimpleDataset,
@@ -55,7 +55,7 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
       children: [
         makeNxGroup('nx_process', 'NXprocess', {
           children: [
-            makeNxData('nx_data', {
+            makeNxDataGroup('nx_data', {
               signal: makeNxDataset('twoD', intType, [20, 41]),
               silxStyle: { signalScaleType: ScaleType.SymLog },
               title: makeDataset('title', scalarShape, stringType, {
@@ -64,7 +64,7 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
             }),
           ],
         }),
-        makeNxData('spectrum', {
+        makeNxDataGroup('spectrum', {
           signal: makeNxDataset('twoD_spectrum', intType, [20, 41], {
             interpretation: 'spectrum',
             units: 'arb. units',
@@ -75,7 +75,7 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
           axes: { X: makeNxDataset('X', intType, [41], { units: 'nm' }) },
           axesAttr: ['.', 'X'],
         }),
-        makeNxData('image', {
+        makeNxDataGroup('image', {
           signal: makeNxDataset('fourD_image', intType, [3, 9, 20, 41], {
             longName: 'Interference fringes',
             interpretation: 'image',
@@ -90,7 +90,7 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
           axesAttr: ['.', '.', 'Y', 'X'],
           silxStyle: { signalScaleType: ScaleType.Log },
         }),
-        makeNxData('log_spectrum', {
+        makeNxDataGroup('log_spectrum', {
           signal: makeNxDataset('oneD', intType, [41]),
           errors: makeNxDataset('oneD_errors', intType, [41]),
           axes: { X_log: makeNxDataset('X_log', floatType, [41]) },
