@@ -9,6 +9,7 @@ import type {
   HsdsValueResponse,
   HsdsAttributeWithValueResponse,
 } from './models';
+import { Metadata } from '../models';
 import {
   HDF5Collection,
   HDF5Dataset,
@@ -20,8 +21,7 @@ import {
   HDF5Value,
   HDF5Attribute,
   HDF5Link,
-  MyHDF5Metadata,
-} from '../models';
+} from '../hdf5-models';
 import { isReachable } from '../../guards';
 import type { ProviderAPI } from '../context';
 import { buildTree } from '../utils';
@@ -49,7 +49,7 @@ export class HsdsApi implements ProviderAPI {
     });
   }
 
-  public async getMetadata(): Promise<MyHDF5Metadata> {
+  public async getMetadata(): Promise<Metadata> {
     const rootId = await this.fetchRoot();
     await this.processGroup(rootId);
 

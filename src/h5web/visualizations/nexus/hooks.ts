@@ -1,4 +1,4 @@
-import { MyHDF5Group } from '../../providers/models';
+import { Group } from '../../providers/models';
 import { useDatasetValues } from '../containers/hooks';
 import {
   assertArray,
@@ -17,7 +17,7 @@ import {
 } from './utils';
 import { getChildEntity } from '../../utils';
 
-export function useNxData(group: MyHDF5Group): NxData {
+export function useNxData(group: Group): NxData {
   const values = useDatasetValues(
     group.children.filter(isDataset).map((child) => child.id)
   );

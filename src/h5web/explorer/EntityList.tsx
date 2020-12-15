@@ -1,15 +1,15 @@
 import React, { CSSProperties, ReactElement } from 'react';
 import styles from './Explorer.module.css';
-import { MyHDF5Entity } from '../providers/models';
+import { Entity } from '../providers/models';
 import Icon from './Icon';
 import { isGroup } from '../guards';
 
 interface Props {
   level: number;
-  entities: MyHDF5Entity[];
-  selectedEntity?: MyHDF5Entity;
+  entities: Entity[];
+  selectedEntity?: Entity;
   expandedGroups: Set<string>;
-  onSelect: (entity: MyHDF5Entity) => void;
+  onSelect: (entity: Entity) => void;
 }
 
 function EntityList(props: Props): ReactElement {

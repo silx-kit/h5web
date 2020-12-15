@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import type { MyHDF5Entity } from '../providers/models';
+import type { Entity } from '../providers/models';
 import AttributesTable from './AttributesTable';
 import EntityTable from './EntityTable';
 import styles from './MetadataViewer.module.css';
 
 interface Props {
-  entity?: MyHDF5Entity;
+  entity?: Entity;
 }
 
 function MetadataViewer(props: Props): ReactElement {

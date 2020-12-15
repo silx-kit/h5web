@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { HDF5Link } from '../providers/models';
+import { HDF5Link } from '../providers/hdf5-models';
 
 interface Props {
   link: HDF5Link;

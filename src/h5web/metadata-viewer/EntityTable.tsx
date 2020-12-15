@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import type { MyHDF5Entity } from '../providers/models';
+import type { Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import {
   hasSimpleShape,
@@ -15,7 +15,7 @@ import { capitalize } from 'lodash-es';
 import { getParents } from '../utils';
 
 interface Props {
-  entity: MyHDF5Entity;
+  entity: Entity;
 }
 
 function EntityTable(props: Props): ReactElement {

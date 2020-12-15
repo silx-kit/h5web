@@ -1,13 +1,6 @@
 import { buildTree } from './utils';
-import {
-  HDF5Collection,
-  HDF5RootLink,
-  HDF5LinkClass,
-  MyHDF5EntityKind,
-  MyHDF5Dataset,
-  MyHDF5Group,
-  MyHDF5Metadata,
-} from './models';
+import { EntityKind, Dataset, Group, Metadata } from './models';
+import { HDF5Collection, HDF5RootLink, HDF5LinkClass } from './hdf5-models';
 import { intType, scalarShape, makeStrAttr } from './mock/utils';
 
 const domain = 'domain';
@@ -26,11 +19,11 @@ describe('Provider utilities', () => {
         groups: { '913d8791': {} },
       };
 
-      const expectedTree: MyHDF5Metadata = {
+      const expectedTree: Metadata = {
         uid: expect.any(String),
         id: '913d8791',
         name: domain,
-        kind: MyHDF5EntityKind.Group,
+        kind: EntityKind.Group,
         children: [],
         attributes: [],
         rawLink: rootLink,
@@ -52,21 +45,21 @@ describe('Provider utilities', () => {
         datasets: { '1203fee7': { type: intType, shape: scalarShape } },
       };
 
-      const expectedTree: MyHDF5Metadata = {
+      const expectedTree: Metadata = {
         uid: expect.any(String),
         id: '913d8791',
         name: domain,
-        kind: MyHDF5EntityKind.Group,
+        kind: EntityKind.Group,
         children: [],
         attributes: [],
         rawLink: rootLink,
       };
 
-      const expectedChild: MyHDF5Dataset = {
+      const expectedChild: Dataset = {
         uid: expect.any(String),
         id: '1203fee7',
         name: link.title,
-        kind: MyHDF5EntityKind.Dataset,
+        kind: EntityKind.Dataset,
         parent: expectedTree,
         attributes: [],
         shape: scalarShape,
@@ -103,32 +96,32 @@ describe('Provider utilities', () => {
         datasets: { '1203fee7': { type: intType, shape: scalarShape } },
       };
 
-      const expectedTree: MyHDF5Metadata = {
+      const expectedTree: Metadata = {
         uid: expect.any(String),
         id: '913d8791',
         name: domain,
-        kind: MyHDF5EntityKind.Group,
+        kind: EntityKind.Group,
         children: [],
         attributes: [],
         rawLink: rootLink,
       };
 
-      const expectedChildGroup: MyHDF5Group = {
+      const expectedChildGroup: Group = {
         uid: expect.any(String),
         id: '0a68caca',
         name: 'group',
-        kind: MyHDF5EntityKind.Group,
+        kind: EntityKind.Group,
         parent: expectedTree,
         children: [],
         attributes: [groupAttr],
         rawLink: groupLink,
       };
 
-      const expectedChildDataset: MyHDF5Dataset = {
+      const expectedChildDataset: Dataset = {
         uid: expect.any(String),
         id: '1203fee7',
         name: 'foo',
-        kind: MyHDF5EntityKind.Dataset,
+        kind: EntityKind.Dataset,
         parent: expectedChildGroup,
         attributes: [],
         shape: scalarShape,

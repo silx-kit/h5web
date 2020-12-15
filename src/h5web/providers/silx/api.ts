@@ -1,13 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { buildTree } from '../utils';
 import type { ProviderAPI } from '../context';
-import {
-  HDF5Id,
-  HDF5Value,
-  HDF5Metadata,
-  HDF5Values,
-  MyHDF5Metadata,
-} from '../models';
+import { HDF5Id, HDF5Value, HDF5Metadata, HDF5Values } from '../hdf5-models';
+import { Metadata } from '../models';
 
 export class SilxApi implements ProviderAPI {
   public readonly domain: string;
@@ -21,7 +16,7 @@ export class SilxApi implements ProviderAPI {
     });
   }
 
-  public async getMetadata(): Promise<MyHDF5Metadata> {
+  public async getMetadata(): Promise<Metadata> {
     const { data } = await this.client.get<HDF5Metadata>('/metadata.json');
     return buildTree(data, this.domain);
   }

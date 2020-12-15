@@ -1,28 +1,24 @@
+import { Group, Dataset, Datatype, Metadata, EntityKind } from './models';
 import {
   HDF5Collection,
   HDF5LinkClass,
   HDF5RootLink,
   HDF5Metadata,
-  MyHDF5Group,
-  MyHDF5Dataset,
-  MyHDF5Datatype,
-  HDF5HardLink,
-  MyHDF5Metadata,
-  MyHDF5EntityKind,
   HDF5Datatype,
   HDF5Dataset,
-} from './models';
+  HDF5HardLink,
+} from './hdf5-models';
 import { isReachable } from '../guards';
 import { nanoid } from 'nanoid';
 
-function buildDataset(dataset: HDF5Dataset, link: HDF5HardLink): MyHDF5Dataset {
+function buildDataset(dataset: HDF5Dataset, link: HDF5HardLink): Dataset {
   const { shape, type, attributes = [] } = dataset;
 
   return {
     uid: nanoid(),
     id: link.id,
     name: link.title,
-    kind: MyHDF5EntityKind.Dataset,
+    kind: EntityKind.Dataset,
     attributes,
     shape,
     type,
@@ -30,17 +26,14 @@ function buildDataset(dataset: HDF5Dataset, link: HDF5HardLink): MyHDF5Dataset {
   };
 }
 
-function buildDatatype(
-  datatype: HDF5Datatype,
-  link: HDF5HardLink
-): MyHDF5Datatype {
+function buildDatatype(datatype: HDF5Datatype, link: HDF5HardLink): Datatype {
   const { type } = datatype;
 
   return {
     uid: nanoid(),
     id: link.id,
     name: link.title,
-    kind: MyHDF5EntityKind.Datatype,
+    kind: EntityKind.Datatype,
     attributes: [],
     type,
     rawLink: link,
@@ -50,7 +43,7 @@ function buildDatatype(
 function buildGroup(
   metadata: Required<HDF5Metadata>,
   link: HDF5HardLink | HDF5RootLink
-): MyHDF5Group {
+): Group {
   const rawGroup = metadata.groups[link.id];
 
   const children = (rawGroup.links || []).map((link) => {
@@ -58,7 +51,7 @@ function buildGroup(
       return {
         uid: nanoid(),
         name: link.title,
-        kind: MyHDF5EntityKind.Link,
+        kind: EntityKind.Link,
         attributes: [],
         rawLink: link,
       };
@@ -76,11 +69,11 @@ function buildGroup(
     }
   });
 
-  const group: MyHDF5Group = {
+  const group: Group = {
     uid: nanoid(),
     id: link.id,
     name: link.title,
-    kind: MyHDF5EntityKind.Group,
+    kind: EntityKind.Group,
     attributes: rawGroup.attributes || [],
     children,
     rawLink: link,
@@ -93,10 +86,7 @@ function buildGroup(
   return group;
 }
 
-export function buildTree(
-  rawMetadata: HDF5Metadata,
-  domain: string
-): MyHDF5Metadata {
+export function buildTree(rawMetadata: HDF5Metadata, domain: string): Metadata {
   const metadata = {
     ...rawMetadata,
     datasets: rawMetadata.datasets || {},

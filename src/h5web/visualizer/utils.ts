@@ -1,4 +1,4 @@
-import type { MyHDF5Entity } from '../providers/models';
+import type { Entity } from '../providers/models';
 import { VIS_DEFS, Vis } from '../visualizations';
 
 const REDUNDANT_VIS = new Set([Vis.Raw, Vis.NxSpectrum]);
@@ -12,7 +12,7 @@ function removeRedundantVis(visArr: Vis[]): Vis[] {
 }
 
 export function getSupportedVis(
-  entity: MyHDF5Entity | undefined
+  entity: Entity | undefined
 ): { supportedVis: Vis[]; error?: Error } {
   if (!entity) {
     return { supportedVis: [] };

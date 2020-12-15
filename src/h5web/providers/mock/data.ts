@@ -17,14 +17,14 @@ import {
   stringType,
   makeAttr,
   makeStrAttr,
-  makeMyDataset,
-  makeMyDatatype,
-  makeMyExternalLink,
-  makeMyGroup,
-  makeMyNxDataGroup,
-  makeMyNxDataset,
-  makeMyNxEntityGroup,
-  makeMySimpleDataset,
+  makeDataset,
+  makeDatatype,
+  makeExternalLink,
+  makeGroup,
+  makeNxData,
+  makeNxDataset,
+  makeNxGroup,
+  makeSimpleDataset,
 } from './utils';
 
 /* -------------------- */
@@ -32,57 +32,57 @@ import {
 
 export const mockDomain = 'source.h5';
 
-export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
+export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
   defaultPath: 'nexus_entry',
   children: [
-    makeMyGroup('entities', [
-      makeMyGroup('empty_group'),
-      makeMyExternalLink('external_link', 'my_file', 'entry_000/dataset'),
-      makeMyDatatype('datatype', compoundType),
-      makeMyDataset('raw', scalarShape, compoundType),
-      makeMyDataset('scalar_int', scalarShape, intType),
-      makeMyDataset('scalar_str', scalarShape, stringType),
+    makeGroup('entities', [
+      makeGroup('empty_group'),
+      makeExternalLink('external_link', 'my_file', 'entry_000/dataset'),
+      makeDatatype('datatype', compoundType),
+      makeDataset('raw', scalarShape, compoundType),
+      makeDataset('scalar_int', scalarShape, intType),
+      makeDataset('scalar_str', scalarShape, stringType),
     ]),
-    makeMyGroup('nD_datasets', [
-      makeMySimpleDataset('oneD_linear', intType, [41]),
-      makeMySimpleDataset('oneD', intType, [41]),
-      makeMySimpleDataset('twoD', intType, [20, 41]),
-      makeMySimpleDataset('threeD', intType, [9, 20, 41]),
-      makeMySimpleDataset('fourD', intType, [3, 9, 20, 41]),
+    makeGroup('nD_datasets', [
+      makeSimpleDataset('oneD_linear', intType, [41]),
+      makeSimpleDataset('oneD', intType, [41]),
+      makeSimpleDataset('twoD', intType, [20, 41]),
+      makeSimpleDataset('threeD', intType, [9, 20, 41]),
+      makeSimpleDataset('fourD', intType, [3, 9, 20, 41]),
     ]),
-    makeMyNxEntityGroup('nexus_entry', 'NXentry', {
+    makeNxGroup('nexus_entry', 'NXentry', {
       defaultPath: 'nx_process/nx_data',
       children: [
-        makeMyNxEntityGroup('nx_process', 'NXprocess', {
+        makeNxGroup('nx_process', 'NXprocess', {
           children: [
-            makeMyNxDataGroup('nx_data', {
-              signal: makeMyNxDataset('twoD', intType, [20, 41]),
+            makeNxData('nx_data', {
+              signal: makeNxDataset('twoD', intType, [20, 41]),
               silxStyle: { signalScaleType: ScaleType.SymLog },
-              title: makeMyDataset('title', scalarShape, stringType, {
+              title: makeDataset('title', scalarShape, stringType, {
                 id: 'title_twoD',
               }),
             }),
           ],
         }),
-        makeMyNxDataGroup('spectrum', {
-          signal: makeMyNxDataset('twoD_spectrum', intType, [20, 41], {
+        makeNxData('spectrum', {
+          signal: makeNxDataset('twoD_spectrum', intType, [20, 41], {
             interpretation: 'spectrum',
             units: 'arb. units',
           }),
-          errors: makeMyNxDataset('errors', floatType, [20, 41], {
+          errors: makeNxDataset('errors', floatType, [20, 41], {
             id: 'errors_twoD',
           }),
-          axes: { X: makeMyNxDataset('X', intType, [41], { units: 'nm' }) },
+          axes: { X: makeNxDataset('X', intType, [41], { units: 'nm' }) },
           axesAttr: ['.', 'X'],
         }),
-        makeMyNxDataGroup('image', {
-          signal: makeMyNxDataset('fourD_image', intType, [3, 9, 20, 41], {
+        makeNxData('image', {
+          signal: makeNxDataset('fourD_image', intType, [3, 9, 20, 41], {
             longName: 'Interference fringes',
             interpretation: 'image',
           }),
           axes: {
-            X: makeMyNxDataset('X', intType, [41], { units: 'nm' }),
-            Y: makeMyNxDataset('Y', intType, [20], {
+            X: makeNxDataset('X', intType, [41], { units: 'nm' }),
+            Y: makeNxDataset('Y', intType, [20], {
               units: 'deg',
               longName: 'Angle (degrees)',
             }),
@@ -90,10 +90,10 @@ export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
           axesAttr: ['.', '.', 'Y', 'X'],
           silxStyle: { signalScaleType: ScaleType.Log },
         }),
-        makeMyNxDataGroup('log_spectrum', {
-          signal: makeMyNxDataset('oneD', intType, [41]),
-          errors: makeMyNxDataset('oneD_errors', intType, [41]),
-          axes: { X_log: makeMyNxDataset('X_log', floatType, [41]) },
+        makeNxData('log_spectrum', {
+          signal: makeNxDataset('oneD', intType, [41]),
+          errors: makeNxDataset('oneD_errors', intType, [41]),
+          axes: { X_log: makeNxDataset('X_log', floatType, [41]) },
           axesAttr: ['X_log'],
           silxStyle: {
             signalScaleType: ScaleType.Log,
@@ -102,44 +102,44 @@ export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
         }),
       ],
     }),
-    makeMyGroup('nexus_malformed', [
-      makeMyGroup('default_not_string', [], {
+    makeGroup('nexus_malformed', [
+      makeGroup('default_not_string', [], {
         attributes: [makeAttr('default', scalarShape, intType, 42)],
       }),
-      makeMyGroup('default_empty', [], {
+      makeGroup('default_empty', [], {
         attributes: [makeStrAttr('default', '')],
       }),
-      makeMyGroup('default_not_found', [], {
+      makeGroup('default_not_found', [], {
         attributes: [makeStrAttr('default', '/test')],
       }),
-      makeMyNxEntityGroup('default_not_group', 'NXentry', {
+      makeNxGroup('default_not_group', 'NXentry', {
         defaultPath: 'scalar_int',
-        children: [makeMyDataset('scalar_int', scalarShape, intType)],
+        children: [makeDataset('scalar_int', scalarShape, intType)],
       }),
-      makeMyGroup('no_signal', [], {
+      makeGroup('no_signal', [], {
         attributes: [makeStrAttr('NX_class', 'NXdata')],
       }),
-      makeMyGroup('signal_not_string', [], {
+      makeGroup('signal_not_string', [], {
         attributes: [
           makeStrAttr('NX_class', 'NXdata'),
           makeAttr('signal', scalarShape, intType, 42),
         ],
       }),
-      makeMyGroup('signal_not_found', [], {
+      makeGroup('signal_not_found', [], {
         attributes: [
           makeStrAttr('NX_class', 'NXdata'),
           makeStrAttr('signal', 'unknown'),
         ],
       }),
-      makeMyGroup('signal_not_dataset', [makeMyGroup('empty_group')], {
+      makeGroup('signal_not_dataset', [makeGroup('empty_group')], {
         attributes: [
           makeStrAttr('NX_class', 'NXdata'),
           makeStrAttr('signal', 'empty_group'),
         ],
       }),
-      makeMyGroup(
+      makeGroup(
         'signal_dataset_not_numeric',
-        [makeMySimpleDataset('oneD_str', stringType, [2])],
+        [makeSimpleDataset('oneD_str', stringType, [2])],
         {
           attributes: [
             makeStrAttr('NX_class', 'NXdata'),
@@ -147,9 +147,9 @@ export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
           ],
         }
       ),
-      makeMyGroup(
+      makeGroup(
         'signal_dataset_not_simple',
-        [makeMyDataset('scalar_int', scalarShape, intType)],
+        [makeDataset('scalar_int', scalarShape, intType)],
         {
           attributes: [
             makeStrAttr('NX_class', 'NXdata'),
@@ -157,9 +157,9 @@ export const mockMetadata = makeMyNxEntityGroup(mockDomain, 'NXroot', {
           ],
         }
       ),
-      makeMyGroup(
+      makeGroup(
         'signal_dataset_zero_dim',
-        [makeMySimpleDataset('zeroD', intType, [], { id: 'null' })],
+        [makeSimpleDataset('zeroD', intType, [], { id: 'null' })],
         {
           attributes: [
             makeStrAttr('NX_class', 'NXdata'),

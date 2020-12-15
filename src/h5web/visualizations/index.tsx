@@ -3,7 +3,7 @@ import { FiCode, FiGrid, FiActivity, FiMap, FiCpu } from 'react-icons/fi';
 import type { IconType } from 'react-icons';
 import LineToolbar from '../toolbar/LineToolbar';
 import HeatmapToolbar from '../toolbar/HeatmapToolbar';
-import type { MyHDF5Entity } from '../providers/models';
+import type { Entity } from '../providers/models';
 import {
   hasScalarShape,
   hasBaseType,
@@ -47,7 +47,7 @@ interface VisDef {
   Icon: IconType;
   Toolbar?: ElementType<ToolbarProps>;
   Container: ElementType<VisContainerProps>;
-  supportsEntity: (entity: MyHDF5Entity) => boolean;
+  supportsEntity: (entity: Entity) => boolean;
 }
 
 export const VIS_DEFS: Record<Vis, VisDef> = {

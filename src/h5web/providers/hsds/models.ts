@@ -5,7 +5,7 @@ import type {
   HDF5Link,
   HDF5Attribute,
   HDF5Value,
-} from '../models';
+} from '../hdf5-models';
 
 export interface HsdsGroupResponse {
   id: HDF5Id;

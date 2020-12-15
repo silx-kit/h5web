@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
-import type { MyHDF5Entity } from '../providers/models';
+import type { Entity } from '../providers/models';
 
 import styles from './RawInspector.module.css';
 
 interface Props {
-  entity: MyHDF5Entity;
+  entity: Entity;
 }
 
 function RawInspector(props: Props): ReactElement {
