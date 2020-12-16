@@ -15,9 +15,6 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
   assertNumericType(entity);
 
   const value = useDatasetValue(entity.id);
-  if (!value) {
-    return <></>;
-  }
 
   return (
     <MappedLineVis value={value} dims={entity.shape.dims} title={entity.name} />

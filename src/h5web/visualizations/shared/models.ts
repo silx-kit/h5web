@@ -40,6 +40,6 @@ export interface AxisParams {
   scaleType?: ScaleType;
 }
 
-export type AxisMapping = AxisParams | undefined;
+export type AxisMapping = (AxisParams | undefined)[];
 
 export type Bounds = [number, number, number];

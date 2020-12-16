@@ -13,7 +13,7 @@ interface Props {
   dims: number[];
   valueLabel?: string;
   valueScaleType?: ScaleType;
-  axisMapping?: AxisMapping[];
+  axisMapping?: AxisMapping;
   title?: string;
   errors?: number[];
   showErrors?: boolean;

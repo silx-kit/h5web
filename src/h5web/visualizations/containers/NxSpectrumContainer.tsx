@@ -21,10 +21,6 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
     disableErrors(!errors);
   }, [disableErrors, errors]);
 
-  if (!signal.value) {
-    return <></>;
-  }
-
   if (errors && signal.value.length !== errors.length) {
     throw new Error(
       `Error dataset has size ${errors.length} which is different from signal dataset size ${signal.value.length}`

@@ -20,10 +20,6 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   }
 
   const value = useDatasetValue(entity.id);
-  if (!value) {
-    return <></>;
-  }
-
   return <MappedHeatmapVis value={value} dims={dims} title={entity.name} />;
 }
 

@@ -21,7 +21,7 @@ export class SilxApi implements ProviderAPI {
     return buildTree(data, this.domain);
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value | undefined> {
+  public async getValue(id: HDF5Id): Promise<HDF5Value> {
     if (this.values) {
       return this.values[id];
     }

@@ -13,7 +13,7 @@ interface Props {
   value: HDF5Value;
   dims: number[];
   title?: string;
-  axisMapping?: AxisMapping[];
+  axisMapping?: AxisMapping;
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {

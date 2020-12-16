@@ -22,7 +22,7 @@ import { getChildEntity, getEntityAtPath } from '../../utils';
 export function getAttributeValue(
   entity: HDF5Dataset | HDF5Group | Entity,
   attributeName: NxAttribute
-): HDF5Value | undefined {
+): HDF5Value {
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }
 
