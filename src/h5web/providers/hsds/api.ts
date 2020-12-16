@@ -64,7 +64,7 @@ export class HsdsApi implements ProviderAPI {
     );
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value | undefined> {
+  public async getValue(id: HDF5Id): Promise<HDF5Value> {
     if (id in this.values) {
       return this.values[id];
     }
