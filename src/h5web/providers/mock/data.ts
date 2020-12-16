@@ -221,5 +221,5 @@ export function getMockDataArray(path: string): ndarray {
   const value = mockValues[dataset.id as keyof typeof mockValues];
   assertArray<number>(value);
 
-  return ndarray(value, dataset.shape.dims);
+  return ndarray(value.flat(Infinity), dataset.shape.dims);
 }
