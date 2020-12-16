@@ -24,7 +24,7 @@ export interface NxData {
   signal: SignalParams;
   errors?: number[];
   title?: string;
-  axisMapping: AxisMapping[];
+  axisMapping: AxisMapping;
 }
 
 export interface SilxStyle {
