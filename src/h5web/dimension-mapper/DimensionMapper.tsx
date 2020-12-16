@@ -14,10 +14,6 @@ interface Props {
 function DimensionMapper(props: Props): ReactElement {
   const { rawDims, mapperState, onChange } = props;
 
-  if (!mapperState) {
-    return <></>;
-  }
-
   return (
     <div className={styles.mapper}>
       <div className={styles.axisMapperWrapper}>
