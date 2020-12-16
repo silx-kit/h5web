@@ -9,10 +9,6 @@ function RawVisContainer(props: VisContainerProps): ReactElement {
   assertDataset(entity);
 
   const value = useDatasetValue(entity.id);
-  if (value === undefined) {
-    return <></>;
-  }
-
   return <RawVis value={value} />;
 }
 

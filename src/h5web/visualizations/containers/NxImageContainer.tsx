@@ -29,10 +29,6 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
     }
   }, [setScaleType, signal.scaleType]);
 
-  if (!signal.value) {
-    return <></>;
-  }
-
   return (
     <MappedHeatmapVis
       value={signal.value}

@@ -17,6 +17,7 @@ export enum NxInterpretation {
 
 interface SignalParams extends AxisParams {
   dims: number[];
+  value: number[];
 }
 
 export interface NxData {
