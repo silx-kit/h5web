@@ -54,19 +54,20 @@ function MappedLineVis(props: Props): ReactElement {
   const baseErrorsArray = useBaseArray(errors, dims);
   const errorArray = useMappedArray(baseErrorsArray, dimensionMapping);
 
-  // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
   useEffect(() => {
-    disableAutoScale(baseDataArray.shape.length <= 1);
-  }, [baseDataArray.shape, disableAutoScale]);
+    // Disable `autoScale` for 1D datasets without errors
+    disableAutoScale(baseDataArray.shape.length <= 1 && !errors);
+  }, [baseDataArray.shape, disableAutoScale, errors]);
 
   const dataValues = (autoScale ? dataArray : baseDataArray).data as number[];
   const errorValues = autoScale
     ? errorArray && (errorArray.data as number[])
     : baseErrorsArray && (baseErrorsArray.data as number[]);
+
   const dataDomain = useDomain(
     dataValues,
     yScaleType,
-    showErrors ? errorValues : undefined
+    showErrors || !autoScale ? errorValues : undefined
   );
 
   const mappedAbscissaParams = axisMapping[dimensionMapping.indexOf('x')];
