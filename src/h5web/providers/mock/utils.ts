@@ -76,6 +76,10 @@ export function makeStrAttr(name: string, value: string): HDF5Attribute {
   return makeAttr(name, { class: HDF5ShapeClass.Scalar }, stringType, value);
 }
 
+export function makeIntAttr(name: string, value: number): HDF5Attribute {
+  return makeAttr(name, { class: HDF5ShapeClass.Scalar }, intType, value);
+}
+
 export function withAttributes<T extends Entity>(
   entity: T,
   attributes: HDF5Attribute[]
@@ -192,11 +196,11 @@ export function makeExternalLink(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-function makeNxAxesAttr(axes: string[]): HDF5Attribute {
+export function makeNxAxesAttr(axes: string[]): HDF5Attribute {
   return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
 }
 
-function makeSilxStyleAttr(style: SilxStyle): HDF5Attribute {
+export function makeSilxStyleAttr(style: SilxStyle): HDF5Attribute {
   const { signalScaleType, axesScaleType } = style;
 
   return makeStrAttr(

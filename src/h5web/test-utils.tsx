@@ -41,20 +41,20 @@ export async function selectVisTab(vis: Vis): Promise<void> {
 }
 
 /**
- * Mock `console.error` method in test.
- * Call returned `resetConsole` function to restore original method.
+ * Mock console method in test.
+ * To restore original method, call `resetConsole`.
  */
 /* eslint-disable no-console */
-export function prepareForConsoleError() {
-  const original = console.error;
+export function mockConsoleMethod(method: keyof typeof console) {
+  const original = console[method];
 
   const mock = jest.fn();
-  console.error = mock;
+  console[method] = mock;
 
   return {
-    consoleErrorMock: mock,
+    consoleMock: mock,
     resetConsole: () => {
-      console.error = original;
+      console[method] = original;
     },
   };
 }

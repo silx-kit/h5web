@@ -4,7 +4,7 @@ import { mockValues } from '../providers/mock/data';
 import App from '../App';
 import {
   findVisSelectorTabs,
-  prepareForConsoleError,
+  mockConsoleMethod,
   queryVisSelector,
   renderApp,
   selectExplorerNode,
@@ -133,57 +133,28 @@ describe('Visualizer', () => {
       </MockProvider>
     );
 
-    const { consoleErrorMock, resetConsole } = prepareForConsoleError();
+    const { consoleMock, resetConsole } = mockConsoleMethod('error');
     await selectExplorerNode('entities/raw');
 
     expect(await screen.findByText('error')).toBeVisible();
-    expect(consoleErrorMock).toHaveBeenCalledTimes(2); // React logs two stack traces
+    expect(consoleMock).toHaveBeenCalledTimes(2); // React logs two stack traces
     resetConsole();
 
     await selectExplorerNode('scalar_str');
     expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
   });
 
-  test('show error when encountering malformed NeXus metadata (default)', async () => {
+  test('show error when encountering malformed NeXus metadata', async () => {
     renderApp();
     await selectExplorerNode('nexus_malformed');
-
-    await selectExplorerNode('default_not_string');
-    expect(await screen.findByText(/to be a string/u)).toBeVisible();
-
-    await selectExplorerNode('default_empty');
-    expect(await screen.findByText(/entity at path/u)).toBeVisible();
 
     await selectExplorerNode('default_not_found');
     expect(await screen.findByText(/entity at path/u)).toBeVisible();
 
-    await selectExplorerNode('default_not_group');
-    expect(await screen.findByText(/group at path/u)).toBeVisible();
-  });
-
-  test('show error when encountering malformed NeXus metadata (signal)', async () => {
-    renderApp();
-    await selectExplorerNode('nexus_malformed');
-
     await selectExplorerNode('no_signal');
     expect(await screen.findByText(/'signal' attribute/u)).toBeVisible();
 
-    await selectExplorerNode('signal_not_string');
-    expect(await screen.findByText(/to be a string/u)).toBeVisible();
-
     await selectExplorerNode('signal_not_found');
     expect(await screen.findByText(/to exist/u)).toBeVisible();
-
-    await selectExplorerNode('signal_not_dataset');
-    expect(await screen.findByText(/to be a dataset/u)).toBeVisible();
-
-    await selectExplorerNode('signal_dataset_not_numeric');
-    expect(await screen.findByText(/numeric type/u)).toBeVisible();
-
-    await selectExplorerNode('signal_dataset_not_simple');
-    expect(await screen.findByText(/simple shape/u)).toBeVisible();
-
-    await selectExplorerNode('signal_dataset_zero_dim');
-    expect(await screen.findByText(/to have dimensions/u)).toBeVisible();
   });
 });
