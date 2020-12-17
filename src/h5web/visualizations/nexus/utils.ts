@@ -61,8 +61,8 @@ export function findSignalDataset(
   const dataset = getChildEntity(group, signal);
   assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
   assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
-  assertNumericType(dataset);
   assertSimpleShape(dataset);
+  assertNumericType(dataset);
 
   return dataset;
 }
@@ -113,13 +113,16 @@ export function getSilxStyle(group: Group): SilxStyle {
     const rawSilxStyle = JSON.parse(silxStyle);
     const { axes_scale_type, signal_scale_type } = rawSilxStyle;
 
+    const axesScaleType =
+      typeof axes_scale_type === 'string' ? [axes_scale_type] : axes_scale_type;
+
     return {
       signalScaleType: isScaleType(signal_scale_type)
         ? signal_scale_type
         : undefined,
       axesScaleType:
-        Array.isArray(axes_scale_type) && axes_scale_type.every(isScaleType)
-          ? axes_scale_type
+        Array.isArray(axesScaleType) && axesScaleType.every(isScaleType)
+          ? axesScaleType
           : undefined,
     };
   } catch {

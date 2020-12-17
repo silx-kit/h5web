@@ -11,12 +11,12 @@ function RawVis(props: Props): ReactElement {
   const valueAsStr = JSON.stringify(value, null, 2);
 
   if (valueAsStr.length > 1000) {
-    // eslint-disable-next-line no-console
-    console.log(valueAsStr);
+    console.log(value); // eslint-disable-line no-console
+
     return (
       <p className={styles.fallback}>
-        The dataset is too big to be displayed. The values were printed in the
-        console.
+        The dataset is too big to be displayed and was logged to the console
+        instead.
       </p>
     );
   }

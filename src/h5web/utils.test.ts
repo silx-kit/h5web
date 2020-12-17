@@ -4,9 +4,24 @@ import {
   makeDataset,
   makeGroup,
 } from './providers/mock/utils';
-import { getEntityAtPath } from './utils';
+import { getChildEntity, getEntityAtPath, getParents } from './utils';
 
 describe('Global utilities', () => {
+  describe('getChildEntity', () => {
+    const dataset = makeDataset('dataset', scalarShape, intType);
+    const childGroup = makeGroup('group');
+    const rootGroup = makeGroup('root', [childGroup, dataset]);
+
+    it('should return child entity', () => {
+      expect(getChildEntity(rootGroup, 'dataset')).toBe(dataset);
+      expect(getChildEntity(rootGroup, 'group')).toBe(childGroup);
+    });
+
+    it("should return `undefined` if child doesn't exist", () => {
+      expect(getChildEntity(childGroup, 'unknown')).toBeUndefined();
+    });
+  });
+
   describe('getEntityAtPath', () => {
     const dataset = makeDataset('dataset', scalarShape, intType);
     const childGroup1 = makeGroup('child1');
@@ -44,6 +59,18 @@ describe('Global utilities', () => {
       expect(getEntityAtPath(rootGroup, '/', false)).toBeUndefined();
       expect(getEntityAtPath(childGroup1, '', false)).toBeUndefined();
       expect(getEntityAtPath(childGroup1, '/', false)).toBe(rootGroup);
+    });
+  });
+
+  describe('getParents', () => {
+    const dataset = makeDataset('dataset', scalarShape, intType);
+    const childGroup = makeGroup('group', [dataset]);
+    const rootGroup = makeGroup('root', [childGroup]);
+
+    it('should return array of parent groups', () => {
+      expect(getParents(dataset)).toEqual([rootGroup, childGroup]);
+      expect(getParents(childGroup)).toEqual([rootGroup]);
+      expect(getParents(rootGroup)).toEqual([]);
     });
   });
 });

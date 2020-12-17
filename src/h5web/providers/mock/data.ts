@@ -15,7 +15,6 @@ import {
   intType,
   scalarShape,
   stringType,
-  makeAttr,
   makeStrAttr,
   makeDataset,
   makeDatatype,
@@ -40,6 +39,7 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
       makeExternalLink('external_link', 'my_file', 'entry_000/dataset'),
       makeDatatype('datatype', compoundType),
       makeDataset('raw', scalarShape, compoundType),
+      makeDataset('raw_large', scalarShape, compoundType),
       makeDataset('scalar_int', scalarShape, intType),
       makeDataset('scalar_str', scalarShape, stringType),
     ]),
@@ -103,27 +103,11 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
       ],
     }),
     makeGroup('nexus_malformed', [
-      makeGroup('default_not_string', [], {
-        attributes: [makeAttr('default', scalarShape, intType, 42)],
-      }),
-      makeGroup('default_empty', [], {
-        attributes: [makeStrAttr('default', '')],
-      }),
       makeGroup('default_not_found', [], {
         attributes: [makeStrAttr('default', '/test')],
       }),
-      makeNxGroup('default_not_group', 'NXentry', {
-        defaultPath: 'scalar_int',
-        children: [makeDataset('scalar_int', scalarShape, intType)],
-      }),
       makeGroup('no_signal', [], {
         attributes: [makeStrAttr('NX_class', 'NXdata')],
-      }),
-      makeGroup('signal_not_string', [], {
-        attributes: [
-          makeStrAttr('NX_class', 'NXdata'),
-          makeAttr('signal', scalarShape, intType, 42),
-        ],
       }),
       makeGroup('signal_not_found', [], {
         attributes: [
@@ -131,42 +115,6 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
           makeStrAttr('signal', 'unknown'),
         ],
       }),
-      makeGroup('signal_not_dataset', [makeGroup('empty_group')], {
-        attributes: [
-          makeStrAttr('NX_class', 'NXdata'),
-          makeStrAttr('signal', 'empty_group'),
-        ],
-      }),
-      makeGroup(
-        'signal_dataset_not_numeric',
-        [makeSimpleDataset('oneD_str', stringType, [2])],
-        {
-          attributes: [
-            makeStrAttr('NX_class', 'NXdata'),
-            makeStrAttr('signal', 'oneD_str'),
-          ],
-        }
-      ),
-      makeGroup(
-        'signal_dataset_not_simple',
-        [makeDataset('scalar_int', scalarShape, intType)],
-        {
-          attributes: [
-            makeStrAttr('NX_class', 'NXdata'),
-            makeStrAttr('signal', 'scalar_int'),
-          ],
-        }
-      ),
-      makeGroup(
-        'signal_dataset_zero_dim',
-        [makeSimpleDataset('zeroD', intType, [], { id: 'null' })],
-        {
-          attributes: [
-            makeStrAttr('NX_class', 'NXdata'),
-            makeStrAttr('signal', 'zeroD'),
-          ],
-        }
-      ),
     ]),
   ],
 });
@@ -193,6 +141,7 @@ const fourD = arr4.map((divider) =>
 export const mockValues = {
   null: null,
   raw: { int: 42 },
+  raw_large: { str: '.'.repeat(1000) },
   scalar_int: 0,
   scalar_str: 'foo',
   oneD_linear: arr1,

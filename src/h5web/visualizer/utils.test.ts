@@ -4,12 +4,12 @@ import {
   compoundType,
   intType,
   scalarShape,
-  makeAttr,
   makeStrAttr,
   makeDataset,
   makeGroup,
   makeNxDataGroup,
   makeSimpleDataset,
+  makeIntAttr,
 } from '../providers/mock/utils';
 
 describe('Visualizer utilities', () => {
@@ -47,7 +47,7 @@ describe('Visualizer utilities', () => {
       const nxDataMalformed = makeGroup('foo', [], {
         attributes: [
           makeStrAttr('NX_class', 'NXdata'),
-          makeAttr('signal', scalarShape, intType, 42), // `signal` attribute should be string
+          makeIntAttr('signal', 42), // `signal` attribute should be string
         ],
       });
 
