@@ -32,23 +32,20 @@ const adaptedLogTicksThreshold = scaleLinear({
 });
 
 export function createAxisScale(
-  config: PickScaleConfig<'linear' | 'log' | 'symlog', number>
+  config: PickScaleConfig<ScaleType, number>
 ): AxisScale {
   const { type } = config;
 
-  if (type === 'linear') {
-    return scaleLinear<number>(config);
+  switch (type) {
+    case ScaleType.Linear:
+      return scaleLinear<number>(config);
+    case ScaleType.Log:
+      return scaleLog<number>(config);
+    case ScaleType.SymLog:
+      return scaleSymlog<number>(config);
+    default:
+      throw new Error('Unknown type');
   }
-
-  if (type === 'log') {
-    return scaleLog<number>(config);
-  }
-
-  if (type === 'symlog') {
-    return scaleSymlog<number>(config);
-  }
-
-  throw new Error('Unknown type');
 }
 
 export function computeVisSize(
