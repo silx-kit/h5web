@@ -24,7 +24,8 @@
     "storybook": "start-storybook -p 6006 -s public",
     "storybook:build": "build-storybook -s public",
     "cypress": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "@visx/axis": "^1.2.0",
