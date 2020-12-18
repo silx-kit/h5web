@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from '../h5web/App';
 import SilxProvider from '../h5web/providers/silx/SilxProvider';
 import HsdsApp from './HsdsApp';
+import JupyterApp from './JupyterApp';
 
 // Split mock data generation code out of main bundle
 const MockProvider = lazy(
@@ -25,6 +26,9 @@ function DemoApp(): ReactElement {
         </Route>
         <Route path="/hsds">
           <HsdsApp />
+        </Route>
+        <Route path="/jupyter">
+          <JupyterApp />
         </Route>
         <Route exact path="/">
           <SilxProvider domain="bsa_002_000-integrate-sub">
