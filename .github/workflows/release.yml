@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🏷️
+        uses: actions/checkout@v2
+
+      - name: Match tag to package version 🧐
+        uses: geritol/match-tag-to-package-version@0.0.2
+        env:
+          TAG_PREFIX: refs/tags/v
+
+      - name: Expose version as env var 🤓
+        uses: nyaayaya/package-version@v1
+
+      - name: Use Node 12 🕹️
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Install ⚙️
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: packages
+
+      - name: Build 🛠️
+        run: cd packages && npm run build
+
+      - name: Set @h5web/app version 📌
+        uses: reedyuk/npm-version@vlatest
+        with:
+          version: ${{ env.PACKAGE_VERSION }}
+          package: 'packages/app/dist'
+
+      - name: Set @h5web/lib version 📌
+        uses: reedyuk/npm-version@vlatest
+        with:
+          version: ${{ env.PACKAGE_VERSION }}
+          package: 'packages/lib/dist'
+
+      - name: Publish @h5web/app 🥳
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          path: 'packages/app/dist'
+          token: ${{ secrets.NPM_TOKEN }}
+          access: public
+
+      - name: Publish @h5web/lib 🤩
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          path: 'packages/lib/dist'
+          token: ${{ secrets.NPM_TOKEN }}
+          access: public
