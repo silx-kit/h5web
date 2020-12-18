@@ -80,7 +80,7 @@ export interface HDF5HardLink {
   id: HDF5Id;
 }
 
-interface HDF5SoftLink {
+export interface HDF5SoftLink {
   class: HDF5LinkClass.Soft;
   title: string;
   h5path: string;
