@@ -7,6 +7,8 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    if: contains(github.event.comment.html_url, '/pull/')
+
     steps:
       - name: Get branch name based on PR ID
         uses: andrevalentin/get-branch-name-by-pr@v1
