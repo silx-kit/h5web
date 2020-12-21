@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactElement } from 'react';
 import styles from './Explorer.module.css';
-import { Entity } from '../providers/models';
+import type { Entity } from '../providers/models';
 import Icon from './Icon';
 import { isGroup } from '../guards';
 

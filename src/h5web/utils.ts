@@ -1,4 +1,4 @@
-import { Entity, Group } from './providers/models';
+import type { Entity, Group } from './providers/models';
 import { isGroup } from './guards';
 
 function findRoot(entity: Entity): Entity {
