@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
-import FillHeight from '../../.storybook/decorators/FillHeight';
+import FillHeight from './decorators/FillHeight';
 import { ScaleType } from '../h5web/visualizations/shared/models';
 import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
 import { CurveType } from '../h5web/visualizations/line/models';

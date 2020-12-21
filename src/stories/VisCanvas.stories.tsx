@@ -4,7 +4,7 @@ import VisCanvas, {
   VisCanvasProps,
 } from '../h5web/visualizations/shared/VisCanvas';
 import { ScaleType } from '../h5web/visualizations/shared/models';
-import FillHeight from '../../.storybook/decorators/FillHeight';
+import FillHeight from './decorators/FillHeight';
 
 const Template: Story<VisCanvasProps> = (args): ReactElement => (
   <VisCanvas {...args} />

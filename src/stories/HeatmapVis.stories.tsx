@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import { useInterval } from 'react-use';
-import FillHeight from '../../.storybook/decorators/FillHeight';
+import FillHeight from './decorators/FillHeight';
 import HeatmapVis, {
   HeatmapVisProps,
 } from '../h5web/visualizations/heatmap/HeatmapVis';
