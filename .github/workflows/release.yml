@@ -50,13 +50,13 @@ jobs:
       - name: Publish @h5web/app 🥳
         uses: JS-DevTools/npm-publish@v1
         with:
-          package: 'packages/app/dist'
+          package: 'packages/app/dist/package.json'
           token: ${{ secrets.NPM_TOKEN }}
           access: public
 
       - name: Publish @h5web/lib 🤩
         uses: JS-DevTools/npm-publish@v1
         with:
-          package: 'packages/lib/dist'
+          package: 'packages/lib/dist/package.json'
           token: ${{ secrets.NPM_TOKEN }}
           access: public
