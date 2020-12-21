@@ -60,3 +60,14 @@ jobs:
           package: 'packages/lib/dist/package.json'
           token: ${{ secrets.NPM_TOKEN }}
           access: public
+
+      - name: Build Storybook 🛠️
+        run: npm run storybook:build
+
+      - name: Deploy Storybook 🚀
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: storybook-static
+          CLEAN: true

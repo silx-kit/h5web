@@ -21,7 +21,7 @@ jobs:
         id: cypressApprove
         uses: peter-evans/slash-command-dispatch@v2
         with:
-          token: ${{ secrets.USER_TOKEN }} # GH scret containing a Personal Access Token owned by @axelboc
+          token: ${{ secrets.USER_TOKEN }} # GH secret containing a Personal Access Token owned by @axelboc
           commands: cypress
           issue-type: pull-request
           dispatch-type: workflow
