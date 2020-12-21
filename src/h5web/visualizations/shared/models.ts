@@ -1,4 +1,4 @@
-import { PickD3Scale } from '@visx/scale';
+import type { PickD3Scale } from '@visx/scale';
 
 export enum ScaleType {
   Linear = 'linear',

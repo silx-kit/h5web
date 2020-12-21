@@ -1,8 +1,13 @@
 import axios, { AxiosInstance } from 'axios';
 import { buildTree } from '../utils';
 import type { ProviderAPI } from '../context';
-import { HDF5Id, HDF5Value, HDF5Metadata, HDF5Values } from '../hdf5-models';
-import { Metadata } from '../models';
+import type {
+  HDF5Id,
+  HDF5Value,
+  HDF5Metadata,
+  HDF5Values,
+} from '../hdf5-models';
+import type { Metadata } from '../models';
 
 export class SilxApi implements ProviderAPI {
   public readonly domain: string;

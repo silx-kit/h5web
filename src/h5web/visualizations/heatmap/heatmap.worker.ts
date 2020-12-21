@@ -2,7 +2,7 @@ import { expose, transfer } from 'comlink';
 import { rgb } from 'd3-color';
 import type { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
-import { Domain, ScaleType } from '../shared/models';
+import type { Domain, ScaleType } from '../shared/models';
 import { createAxisScale } from '../shared/utils';
 import { scaleSequential } from 'd3-scale';
 

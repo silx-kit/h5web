@@ -1,4 +1,4 @@
-import { Group } from '../../providers/models';
+import type { Group } from '../../providers/models';
 import { useDatasetValues } from '../containers/hooks';
 import {
   assertArray,

@@ -4,7 +4,7 @@ import { useMeasure } from 'react-use';
 import { adaptedNumTicks, createAxisScale } from '../shared/utils';
 import styles from './ColorBar.module.css';
 import { generateCSSLinearGradient } from './utils';
-import { ScaleType, Domain } from '../shared/models';
+import type { ScaleType, Domain } from '../shared/models';
 import type { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
 

@@ -9,7 +9,7 @@ import type {
   HsdsValueResponse,
   HsdsAttributeWithValueResponse,
 } from './models';
-import { Metadata } from '../models';
+import type { Metadata } from '../models';
 import {
   HDF5Collection,
   HDF5Dataset,

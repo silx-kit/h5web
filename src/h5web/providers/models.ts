@@ -1,4 +1,4 @@
-import {
+import type {
   HDF5Attribute,
   HDF5Id,
   HDF5Link,
