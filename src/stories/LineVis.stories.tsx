@@ -1,12 +1,15 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
-import FillHeight from '../../.storybook/decorators/FillHeight';
-import { ScaleType } from '../h5web/visualizations/shared/models';
-import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
-import { CurveType } from '../h5web/visualizations/line/models';
-import { getDomain } from '../packages/lib';
-import { getMockDataArray } from '../h5web/providers/mock/data';
+import FillHeight from './decorators/FillHeight';
+import {
+  LineVis,
+  LineVisProps,
+  ScaleType,
+  CurveType,
+  getDomain,
+  getMockDataArray,
+} from '../packages/lib';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray.data as number[]);

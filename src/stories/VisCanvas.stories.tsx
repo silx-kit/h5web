@@ -1,10 +1,7 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
-import VisCanvas, {
-  VisCanvasProps,
-} from '../h5web/visualizations/shared/VisCanvas';
-import { ScaleType } from '../h5web/visualizations/shared/models';
-import FillHeight from '../../.storybook/decorators/FillHeight';
+import FillHeight from './decorators/FillHeight';
+import { VisCanvas, VisCanvasProps, ScaleType } from '../packages/lib';
 
 const Template: Story<VisCanvasProps> = (args): ReactElement => (
   <VisCanvas {...args} />

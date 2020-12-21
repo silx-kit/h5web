@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
-import type { HDF5Value } from '../h5web/providers/hdf5-models';
-import { ScalarVis } from '../packages/lib';
+import { ScalarVis, ScalarVisProps } from '../packages/lib';
 
 const numberData = 1024;
 const stringData = 'This is a scalar';
 
-const Template: Story<{ value: HDF5Value }> = (args): ReactElement => {
+const Template: Story<ScalarVisProps> = (args): ReactElement => {
   const { value } = args;
   return <ScalarVis value={value} />;
 };
