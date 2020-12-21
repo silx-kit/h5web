@@ -40,7 +40,7 @@ jobs:
           package: 'packages/app/dist'
 
       - name: Set @h5web/lib version 📌
-        uses: reedyuk/npm-version@vlatest
+        uses: reedyuk/npm-version@1.0.1
         with:
           version: ${{ env.PACKAGE_VERSION }}
           package: 'packages/lib/dist'
