@@ -1,9 +1,7 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import FillHeight from './decorators/FillHeight';
-import ColorBar from '../h5web/visualizations/heatmap/ColorBar';
-import { ScaleType } from '../h5web/visualizations/shared/models';
-import type { ColorMap } from '../h5web/visualizations/heatmap/models';
+import { ColorBar, ScaleType, ColorMap } from '../packages/lib';
 
 interface Props {
   domainMin: number;

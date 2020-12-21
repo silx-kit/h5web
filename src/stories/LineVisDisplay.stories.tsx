@@ -1,10 +1,13 @@
 import React, { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
-import LineVis, { LineVisProps } from '../h5web/visualizations/line/LineVis';
-import { CurveType } from '../h5web/visualizations/line/models';
-import { getDomain } from '../packages/lib';
-import { getMockDataArray } from '../h5web/providers/mock/data';
 import LineVisStoriesConfig from './LineVis.stories';
+import {
+  LineVis,
+  LineVisProps,
+  CurveType,
+  getDomain,
+  getMockDataArray,
+} from '../packages/lib';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray.data as number[]);

@@ -3,13 +3,14 @@ import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import { useInterval } from 'react-use';
 import FillHeight from './decorators/FillHeight';
-import HeatmapVis, {
+import {
+  HeatmapVis,
   HeatmapVisProps,
-} from '../h5web/visualizations/heatmap/HeatmapVis';
-import { ScaleType } from '../h5web/visualizations/shared/models';
-import { INTERPOLATORS } from '../h5web/visualizations/heatmap/interpolators';
-import { getDomain } from '../packages/lib';
-import { getMockDataArray } from '../h5web/providers/mock/data';
+  ScaleType,
+  getDomain,
+  getMockDataArray,
+  INTERPOLATORS,
+} from '../packages/lib';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 const domain = getDomain(dataArray.data as number[]);

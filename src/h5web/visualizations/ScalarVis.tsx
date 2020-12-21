@@ -13,4 +13,5 @@ function ScalarVis(props: Props): ReactElement {
   return <div className={styles.scalar}>{value.toString()}</div>;
 }
 
+export type { Props as ScalarVisProps };
 export default ScalarVis;
