@@ -34,7 +34,7 @@ jobs:
         run: cd packages && npm run build
 
       - name: Set @h5web/app version 📌
-        uses: reedyuk/npm-version@vlatest
+        uses: reedyuk/npm-version@1.0.1
         with:
           version: ${{ env.PACKAGE_VERSION }}
           package: 'packages/app/dist'
