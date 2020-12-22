@@ -32,38 +32,38 @@ snapshots". If any pixel has changed, the test fails and a diff image that highl
 Cypress is unable to take consistent screenshots across platforms because the exact rendering depends on the GPU (even
 when running in Docker). For this reason, visual regression tests are only run on the CI. Environment variable
 `CYPRESS_TAKE_SNAPSHOTS` is used to enable visual regression testing in the CI. This variable is set automatically in
-the `cypress.yml` GitHub workflow, which runs on push to any branch.
+the _Cypress_ GitHub workflow, which runs on push to any branch.
 
 Visual regression tests may fail in the CI, either expectedly (e.g. when implementing a new feature) or unexpectedly
 (when detecting a regression). When this happens, the diff images and debug screenshots that Cypress generates are
 uploaded as workflow artifacts, which can be downloaded and reviewed.
 
 If the visual regressions are expected, the version-controlled reference snapshots can be updated by posting a comment
-in the Pull Request with the following text: `/cypress updateSnapshots=true`. This command triggers a new run of the
-visual regression tests in which Cypress is told to update the reference snapshots when it finds differences (instead of
+in the Pull Request with the following text: `/approve`. This action triggers the _Approve snapshots_ workflow, which
+runs Cypress again but this time telling it to update the reference snapshots when it finds differences (instead of
 failing the tests).
 
-When Cypress updates a reference snapshot (or takes one for the first time), the `cypress.yml` workflow automatically
-opens a new Pull Request to merge the new snapshots into the working branch. Once this PR is merged, the visual
-regression tests in the working branch should succeed.
+Once Cypress has updated the reference snapshots, the _Approve snapshots_ workflow automatically opens a Pull Request to
+merge the new and/or updated snapshots into the working branch. After this PR is merged, the visual regression tests in
+the working branch should succeed.
 
 Here is the summarised workflow (also described with screenshots in
 [PR #306](https://github.com/silx-kit/h5web/pull/306)):
 
 1. Push your working branch and open a PR.
-2. If the `cypress.yml` CI workflow fails, check out the logs.
-3. If the fail was caused by a visual regression (i.e. if a test failed on a `cy.matchImageSnapshot()` call), download
-   the workflow's artifacts.
+2. If the _Cypress_ CI workflow fails, check out the logs.
+3. If the fail is caused by a visual regression (i.e. if a test fails on a `cy.matchImageSnapshot()` call), download the
+   workflow's artifacts.
 4. Review the snapshot diffs:
 
-   - If the visual regressions were unexpected: fix the bug, push it and start from step 2 again.
-   - If the visual regressions were expected: continue to step 5.
+   - If the visual regressions are unexpected: fix the bug, push it and start from step 2 again.
+   - If the visual regressions are expected: continue to step 5.
 
-5. In the PR, post a comment with the following text: `/cypress updateSnapshots=true`.
-6. Go to the _Actions_ page and wait for the new run of the `cypress.yml` workflow to complete.
+5. In the PR, post a comment with the following text: `/approve`.
+6. Go to the _Actions_ page and wait for the _Approve snapshots_ workflow to complete.
 7. Go to the newly opened PR titled _Update Cypress reference snapshots_.
 8. Review the new reference snapshots and merge the PR.
-9. Go back to your main PR and wait for the `cypress.yml` workflow to succeed.
+9. Go back to your main PR and wait for the _Cypress_ workflow to succeed.
 
 ### Build
 

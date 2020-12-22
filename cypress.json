@@ -5,6 +5,5 @@
   "supportFile": "cypress/support.js",
   "screenshotsFolder": "cypress/debug",
   "fixturesFolder": false,
-  "video": false,
-  "retries": 3
+  "video": false
 }
