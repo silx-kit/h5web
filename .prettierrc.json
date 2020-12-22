@@ -5,7 +5,6 @@
     {
       "files": "*.md",
       "options": {
-        "printWidth": 120,
         "proseWrap": "always"
       }
     }
