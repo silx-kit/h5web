@@ -8,6 +8,7 @@ import type {
   HsdsRootResponse,
   HsdsValueResponse,
   HsdsAttributeWithValueResponse,
+  HsdsLink,
 } from './models';
 import type { Metadata } from '../models';
 import {
@@ -25,6 +26,7 @@ import {
 import { isReachable } from '../../guards';
 import type { ProviderAPI } from '../context';
 import { buildTree } from '../utils';
+import { isHsdsExternalLink } from './utils';
 
 export class HsdsApi implements ProviderAPI {
   public readonly domain: string;
@@ -99,7 +101,7 @@ export class HsdsApi implements ProviderAPI {
     return data;
   }
 
-  private async fetchLinks(id: HDF5Id): Promise<HDF5Link[]> {
+  private async fetchLinks(id: HDF5Id): Promise<HsdsLink[]> {
     const { data } = await this.client.get<HsdsLinksResponse>(
       `/groups/${id}/links`
     );
@@ -136,12 +138,18 @@ export class HsdsApi implements ProviderAPI {
   private async processGroup(id: HDF5Id): Promise<void> {
     const { attributeCount, linkCount, ...group } = await this.fetchGroup(id);
 
-    const [attributes, links] = await Promise.all([
+    const [attributes, hsdsLinks] = await Promise.all([
       attributeCount > 0
         ? this.fetchAttributes(HDF5Collection.Groups, id)
         : Promise.resolve(undefined),
       linkCount > 0 ? this.fetchLinks(id) : Promise.resolve(undefined),
     ]);
+
+    const links =
+      hsdsLinks &&
+      hsdsLinks.map<HDF5Link>((link: HsdsLink) =>
+        isHsdsExternalLink(link) ? { ...link, file: link.h5domain } : link
+      );
 
     this.groups[id] = {
       ...group,
