@@ -2,9 +2,12 @@ import type {
   HDF5Id,
   HDF5Shape,
   HDF5Type,
-  HDF5Link,
   HDF5Attribute,
   HDF5Value,
+  HDF5ExternalLink,
+  HDF5RootLink,
+  HDF5HardLink,
+  HDF5SoftLink,
 } from '../hdf5-models';
 
 export interface HsdsGroupResponse {
@@ -31,8 +34,18 @@ export interface HsdsAttributesResponse {
 
 export type HsdsAttributeWithValueResponse = HDF5Attribute;
 
+export interface HsdsExternalLink extends Omit<HDF5ExternalLink, 'file'> {
+  h5domain: string;
+}
+
+export type HsdsLink =
+  | HDF5RootLink
+  | HDF5HardLink
+  | HDF5SoftLink
+  | HsdsExternalLink;
+
 export interface HsdsLinksResponse {
-  links: HDF5Link[];
+  links: HsdsLink[];
 }
 
 export interface HsdsRootResponse {
