@@ -89,7 +89,7 @@
     "@types/react-dom": "^16.9.10",
     "@types/react-measure": "^2.0.6",
     "@types/react-router-dom": "^5.1.6",
-    "@types/react-slider": "^1.0.0",
+    "@types/react-slider": "^1.1.0",
     "@types/react-window": "^1.8.2",
     "babel-loader": "^8.1.0",
     "cypress": "^6.0.0",
