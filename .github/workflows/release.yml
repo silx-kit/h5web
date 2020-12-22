@@ -6,7 +6,7 @@ on:
       - v*
 
 jobs:
-  deploy:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🏷️

@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-  dispatch:
+  approve:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && github.event.comment.body == '/approve'
 
