@@ -36,7 +36,7 @@ the _Cypress_ GitHub workflow, which runs on push to any branch.
 
 Visual regression tests may fail in the CI, either expectedly (e.g. when implementing a new feature) or unexpectedly
 (when detecting a regression). When this happens, the diff images and debug screenshots that Cypress generates are
-uploaded as workflow artifacts, which can be downloaded and reviewed.
+uploaded as artifacts of the workflow, which can be downloaded and reviewed.
 
 If the visual regressions are expected, the version-controlled reference snapshots can be updated by posting a comment
 in the Pull Request with the following text: `/approve`. This action triggers the _Approve snapshots_ workflow, which
