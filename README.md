@@ -48,11 +48,12 @@ This demo is available at https://h5web.panosc.eu/jupyter.
 The following HDF5 files can be reached with a URL of the form
 `https://h5web.panosc.eu/jupyter?domain=<name>`:
 
-- `/home/reader/water` (**default**): A file with data similar to the main demo
-  https://h5web.panosc.eu/. Some datasets cannot be displayed as bitshuffle
-  compression is not supported by HSDS yet.
-- `/home/reader/tall`: The demo file of HSDS.
-- `/home/reader/chunked`: A file containing a simple 2D chunked dataset.
+- `water_224.h5` (**default**): A file with data similar to the main demo
+  https://h5web.panosc.eu/.
+- `compressed.h5`: A file with datasets compressed with various filters to test
+  decompression.
+- `links.h5`: A file with external links, soft links and a virtual dataset to
+  test link resolution.
 
 ### [HSDS](https://github.com/HDFGroup/hsds)
 
@@ -61,8 +62,8 @@ This demo is available at https://h5web.panosc.eu/hsds.
 The following HDF5 files can be reached with a URL of the form
 `https://h5web.panosc.eu/hsds?domain=<name>`:
 
-- `/home/reader/water` (**default**): A file with data similar to the main demo
-  https://h5web.panosc.eu/. Some datasets cannot be displayed as bitshuffle
-  compression is not supported by HSDS yet.
+- `/home/reader/water` (**default**): The file `water_224.h5`. Some datasets
+  cannot be displayed as bitshuffle compression is not supported by HSDS yet.
+- `/home/reader/links`: The file `links.h5`.
+- `/home/reader/compressed`: The file `compressed.h5`.
 - `/home/reader/tall`: The demo file of HSDS.
-- `/home/reader/chunked`: A file containing a simple 2D chunked dataset.
