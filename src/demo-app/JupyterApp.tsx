@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { useLocation } from 'react-router-dom';
 import JupyterProvider from '../h5web/providers/jupyter/JupyterProvider';
 import { App } from '../packages/app';

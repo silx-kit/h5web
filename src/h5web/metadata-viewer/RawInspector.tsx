@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type { Entity } from '../providers/models';
 
 import styles from './RawInspector.module.css';

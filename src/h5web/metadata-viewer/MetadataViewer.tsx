@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import type { Entity } from '../providers/models';
 import AttributesTable from './AttributesTable';
 import EntityTable from './EntityTable';
@@ -28,4 +28,4 @@ function MetadataViewer(props: Props): ReactElement {
 }
 
 // Optimise consecutive renders when selecting a link in the explorer
-export default React.memo(MetadataViewer);
+export default memo(MetadataViewer);

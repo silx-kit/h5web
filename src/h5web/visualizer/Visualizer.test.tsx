@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { mockValues } from '../providers/mock/data';
 import App from '../App';

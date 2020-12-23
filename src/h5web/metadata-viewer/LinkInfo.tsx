@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type { HDF5Link } from '../providers/hdf5-models';
 
 interface Props {

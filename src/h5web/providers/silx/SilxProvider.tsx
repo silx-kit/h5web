@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement, useMemo } from 'react';
+import { ReactNode, ReactElement, useMemo } from 'react';
 import { SilxApi } from './api';
 import Provider from '../Provider';
 

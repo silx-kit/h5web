@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { useAsync } from 'react-use';
 import { ProviderAPI, ProviderContext } from './context';
 import styles from '../visualizer/Visualizer.module.css';

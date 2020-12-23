@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, ReactElement } from 'react';
+import { useEffect, useContext, ReactElement } from 'react';
 import { FiFileText } from 'react-icons/fi';
 import type { Entity } from '../providers/models';
 import EntityList from './EntityList';

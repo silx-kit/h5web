@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, ReactElement } from 'react';
+import { ReactNode, createContext, ReactElement } from 'react';
 import type { Size } from '../shared/models';
 
 interface GridSettings {

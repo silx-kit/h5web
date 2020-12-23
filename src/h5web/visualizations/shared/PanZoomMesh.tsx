@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect, ReactElement } from 'react';
+import { useRef, useCallback, useEffect, ReactElement } from 'react';
 import type { Vector3 } from 'three';
 import { PointerEvent, WheelEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';

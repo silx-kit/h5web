@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import { ReactElement, useContext } from 'react';
 import type { GridChildComponentProps } from 'react-window';
 import { format } from 'd3-format';
 import styles from './MatrixVis.module.css';

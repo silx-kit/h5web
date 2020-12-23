@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type { HDF5Attribute } from '../providers/hdf5-models';
 import styles from './MetadataViewer.module.css';
 

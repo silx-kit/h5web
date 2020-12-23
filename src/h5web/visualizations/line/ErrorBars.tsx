@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { useUpdate } from 'react-three-fiber';
 import type { BufferGeometry, Vector2, Vector3 } from 'three';
 import GlyphMaterial from './GlyphMaterial';

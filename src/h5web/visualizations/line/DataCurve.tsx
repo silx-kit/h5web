@@ -1,4 +1,4 @@
-import React, { Suspense, ReactElement, useMemo } from 'react';
+import { Suspense, ReactElement, useMemo } from 'react';
 import { Line } from 'react-three-fiber/components';
 import { CurveType } from './models';
 import GlyphMaterial from './GlyphMaterial';

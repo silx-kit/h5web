@@ -1,10 +1,4 @@
-import React, {
-  ReactElement,
-  ReactNode,
-  Ref,
-  useContext,
-  useState,
-} from 'react';
+import { ReactElement, ReactNode, Ref, useContext, useState } from 'react';
 import IndexTrack from './IndexTrack';
 import { GridSettingsContext } from './GridSettingsContext';
 import AnchorCell from './AnchorCell';

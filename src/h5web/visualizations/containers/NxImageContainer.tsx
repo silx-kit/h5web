@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { assertDefined, assertGroup } from '../../guards';
 import { findNxDataGroup } from '../nexus/utils';
 import type { VisContainerProps } from './models';

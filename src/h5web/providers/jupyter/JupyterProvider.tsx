@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement, useMemo } from 'react';
+import { ReactNode, ReactElement, useMemo } from 'react';
 import { JupyterApi } from './api';
 import Provider from '../Provider';
 

@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef, Children, cloneElement } from 'react';
+import { ReactElement, useRef, Children, cloneElement } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import { useToggle, useClickAway } from 'react-use';
 import Separator from './Separator';

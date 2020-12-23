@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { AsyncResourceContent } from 'use-async-resource';
 import type { Entity } from '../providers/models';
 import styles from './Visualizer.module.css';

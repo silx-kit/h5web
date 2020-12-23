@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { useLoader } from 'react-three-fiber';
 import { NearestFilter, TextureLoader } from 'three';
 import { GLYPH_URLS } from './models';

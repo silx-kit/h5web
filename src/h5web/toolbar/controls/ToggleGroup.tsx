@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, ReactElement } from 'react';
+import { useContext, createContext, ReactNode, ReactElement } from 'react';
 import type { IconType } from 'react-icons';
 import styles from './ToggleGroup.module.css';
 
@@ -14,7 +14,7 @@ const ToggleGroupContext = createContext<ToggleGroupProps | undefined>(
 );
 
 function useToggleGroupProps(): ToggleGroupProps {
-  const context = React.useContext(ToggleGroupContext);
+  const context = useContext(ToggleGroupContext);
 
   if (!context) {
     throw new Error('Missing Toggle Group provider.');

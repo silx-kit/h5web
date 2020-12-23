@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import styles from './Explorer.module.css';
 import type { Entity } from '../providers/models';
 import Icon from './Icon';

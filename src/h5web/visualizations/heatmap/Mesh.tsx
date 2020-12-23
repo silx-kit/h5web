@@ -1,4 +1,4 @@
-import React, { useMemo, ReactElement } from 'react';
+import { useMemo, ReactElement } from 'react';
 import { useThree } from 'react-three-fiber';
 import { RGBFormat, MeshBasicMaterial, DataTexture } from 'three';
 import Html from '../shared/Html';

@@ -33,6 +33,8 @@ npm start
 - `npm run lint:tsc` - type-check the whole project, test files included
 - `npm run lint:prettier` - check that all files have been formatted with
   Prettier
+- `npm run analyze` - inspect the size and content of the JS bundles (after
+  `npm run build`)
 
 ### Automatic fixing and formatting
 

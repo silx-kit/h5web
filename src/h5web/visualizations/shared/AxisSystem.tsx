@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import { ReactElement, useContext } from 'react';
 import { useThree } from 'react-three-fiber';
 import Html from './Html';
 import styles from './AxisSystem.module.css';

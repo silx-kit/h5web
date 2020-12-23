@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { isNumber } from 'lodash-es';
 import ToggleGroup from '../toolbar/controls/ToggleGroup';
 import styles from './DimensionMapper.module.css';
