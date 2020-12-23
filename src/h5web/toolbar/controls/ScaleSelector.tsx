@@ -41,7 +41,7 @@ function ScaleSelector(props: Props): ReactElement {
   const { value, label, disabled, onScaleChange } = props;
 
   return (
-    <>
+    <div className={styles.root}>
       {label && <span className={styles.label}>{label}</span>}
       <Selector
         value={value}
@@ -50,7 +50,7 @@ function ScaleSelector(props: Props): ReactElement {
         options={Object.values(ScaleType)}
         optionComponent={ScaleOption}
       />
-    </>
+    </div>
   );
 }
 

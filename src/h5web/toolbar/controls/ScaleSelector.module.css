@@ -1,3 +1,7 @@
+.root {
+  display: flex;
+}
+
 .icon {
   composes: icon from '../Toolbar.module.css';
 }
