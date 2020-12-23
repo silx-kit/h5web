@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import { ScalarVis, ScalarVisProps } from '../packages/lib';
 

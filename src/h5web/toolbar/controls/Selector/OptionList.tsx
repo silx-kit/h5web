@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { MenuItem } from 'react-aria-menubutton';
 import type { OptionComponent } from './models';
 import styles from './Selector.module.css';

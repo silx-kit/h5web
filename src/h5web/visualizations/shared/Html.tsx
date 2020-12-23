@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactElement } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import { useThree } from 'react-three-fiber';
 

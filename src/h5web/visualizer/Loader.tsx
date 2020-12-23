@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { useTimeout } from 'react-use';
 import styles from './Loader.module.css';
 

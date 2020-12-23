@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import styles from './RawVis.module.css';
 import type { HDF5Value } from '../providers/hdf5-models';
 

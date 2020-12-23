@@ -1,4 +1,4 @@
-import React, { ElementType, ReactElement } from 'react';
+import type { ElementType, ReactElement } from 'react';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
 import styles from './AxisSystem.module.css';

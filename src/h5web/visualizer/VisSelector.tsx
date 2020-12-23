@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import styles from './VisSelector.module.css';
 import { VIS_DEFS, Vis } from '../visualizations';
 

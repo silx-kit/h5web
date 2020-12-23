@@ -1,4 +1,4 @@
-import React, { lazy, ReactElement, Suspense } from 'react';
+import { lazy, ReactElement, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from '../h5web/App';
 import SilxProvider from '../h5web/providers/silx/SilxProvider';

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type { IconType } from 'react-icons';
 import styles from '../Toolbar.module.css';
 

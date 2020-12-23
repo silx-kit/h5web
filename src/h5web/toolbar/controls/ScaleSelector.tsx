@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { MdSort, MdFilterList, MdGraphicEq } from 'react-icons/md';
 import { ScaleType } from '../../visualizations/shared/models';

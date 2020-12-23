@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { usePrevious } from 'react-use';
 import type { HDF5Value } from '../../providers/hdf5-models';
 import type { DimensionMapping } from '../../dimension-mapper/models';

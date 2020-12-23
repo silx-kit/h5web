@@ -1,4 +1,4 @@
-import React, { Profiler as ReactProfiler, ReactElement } from 'react';
+import { Profiler as ReactProfiler, ReactElement } from 'react';
 
 interface Props {
   id: string;

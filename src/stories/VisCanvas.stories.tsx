@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import FillHeight from './decorators/FillHeight';
 import { VisCanvas, VisCanvasProps, ScaleType } from '../packages/lib';

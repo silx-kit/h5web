@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import { ReactElement, useContext } from 'react';
 import { FiAnchor } from 'react-icons/fi';
 import styles from './MatrixVis.module.css';
 import { GridSettingsContext } from './GridSettingsContext';

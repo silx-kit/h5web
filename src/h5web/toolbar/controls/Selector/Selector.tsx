@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { Wrapper, Button, Menu } from 'react-aria-menubutton';
 
 import { MdArrowDropDown } from 'react-icons/md';

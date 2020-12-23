@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import RawVis from '../RawVis';
 import type { VisContainerProps } from './models';
 import { useDatasetValue } from './hooks';

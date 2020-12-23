@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { MdCameraAlt } from 'react-icons/md';
 import styles from './SnapshotButton.module.css';
 

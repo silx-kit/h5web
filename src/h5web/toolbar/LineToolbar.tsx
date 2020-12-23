@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
 import { useLineConfig } from '../visualizations/line/config';

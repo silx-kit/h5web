@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useContext } from 'react';
+import { ReactElement, ReactNode, useContext } from 'react';
 import { range } from 'lodash-es';
 import { GridSettingsContext } from './GridSettingsContext';
 import styles from './MatrixVis.module.css';

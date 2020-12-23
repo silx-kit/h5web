@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
 import { format } from 'd3-format';
 import { round } from 'lodash-es';

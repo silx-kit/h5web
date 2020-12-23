@@ -1,4 +1,4 @@
-import React, { ReactElement, Children, cloneElement, Fragment } from 'react';
+import { ReactElement, Children, cloneElement, Fragment } from 'react';
 import Measure from 'react-measure';
 import { useMeasure, useMap } from 'react-use';
 import styles from './Toolbar.module.css';

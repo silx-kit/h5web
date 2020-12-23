@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { FiItalic } from 'react-icons/fi';
 import { useNxSpectrumConfig } from '../visualizations/nexus/config';
 import ToggleBtn from './controls/ToggleBtn';
