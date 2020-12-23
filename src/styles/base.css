@@ -55,3 +55,7 @@ pre {
     animation: none !important;
   }
 }
+
+#root {
+  height: 100vh;
+}
