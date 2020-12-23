@@ -13,40 +13,38 @@ function App(): ReactElement {
   const [isInspecting, setInspecting] = useState(false);
 
   return (
-    <div className={styles.app}>
-      <ReflexContainer orientation="vertical">
-        <ReflexElement
-          className={styles.explorer}
-          style={{ display: isExplorerOpen ? undefined : 'none' }}
-          flex={25}
-          minSize={250}
-        >
-          <Explorer
-            selectedEntity={selectedEntity}
-            onSelect={setSelectedEntity}
-          />
-        </ReflexElement>
-
-        <ReflexSplitter
-          style={{ display: isExplorerOpen ? undefined : 'none' }}
+    <ReflexContainer orientation="vertical">
+      <ReflexElement
+        className={styles.explorer}
+        style={{ display: isExplorerOpen ? undefined : 'none' }}
+        flex={25}
+        minSize={250}
+      >
+        <Explorer
+          selectedEntity={selectedEntity}
+          onSelect={setSelectedEntity}
         />
+      </ReflexElement>
 
-        <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
-          <BreadcrumbsBar
-            isExplorerOpen={isExplorerOpen}
-            onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
-            isInspecting={isInspecting}
-            onChangeInspecting={setInspecting}
-            selectedEntity={selectedEntity}
-          />
-          {isInspecting ? (
-            <MetadataViewer entity={selectedEntity} />
-          ) : (
-            <Visualizer entity={selectedEntity} />
-          )}
-        </ReflexElement>
-      </ReflexContainer>
-    </div>
+      <ReflexSplitter
+        style={{ display: isExplorerOpen ? undefined : 'none' }}
+      />
+
+      <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
+        <BreadcrumbsBar
+          isExplorerOpen={isExplorerOpen}
+          onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
+          isInspecting={isInspecting}
+          onChangeInspecting={setInspecting}
+          selectedEntity={selectedEntity}
+        />
+        {isInspecting ? (
+          <MetadataViewer entity={selectedEntity} />
+        ) : (
+          <Visualizer entity={selectedEntity} />
+        )}
+      </ReflexElement>
+    </ReflexContainer>
   );
 }
 
