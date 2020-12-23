@@ -63,6 +63,8 @@ jobs:
 
       - name: Build Storybook 🛠️
         run: npm run storybook:build
+        env:
+          INPUT_TOKEN: '' # workaround for https://github.com/JS-DevTools/npm-publish/issues/15
 
       - name: Deploy Storybook 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
