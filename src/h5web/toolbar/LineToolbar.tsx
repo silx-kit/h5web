@@ -47,8 +47,6 @@ function LineToolbar(props: ToolbarProps): ReactElement {
         onScaleChange={setXScaleType}
       />
 
-      <Separator />
-
       <ScaleSelector
         label="Y"
         value={yScaleType}
