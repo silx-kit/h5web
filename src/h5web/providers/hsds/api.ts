@@ -35,7 +35,6 @@ export class HsdsApi implements ProviderAPI {
   private groups: Record<HDF5Id, HDF5Group> = {};
   private datasets: Record<HDF5Id, HDF5Dataset> = {};
   private datatypes: Record<HDF5Id, HDF5Datatype> = {};
-  private values: Record<HDF5Id, HDF5Value> = {};
 
   public constructor(
     url: string,
@@ -51,7 +50,7 @@ export class HsdsApi implements ProviderAPI {
     });
   }
 
-  public async getMetadata(): Promise<Metadata> {
+  public async fetchMetadata(): Promise<Metadata> {
     const rootId = await this.fetchRoot();
     await this.processGroup(rootId);
 
@@ -66,15 +65,11 @@ export class HsdsApi implements ProviderAPI {
     );
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value> {
-    if (id in this.values) {
-      return this.values[id];
-    }
-
-    const value = await this.fetchValue(id);
-
-    this.values[id] = value;
-    return this.values[id];
+  public async fetchValue(id: HDF5Id): Promise<HDF5Value> {
+    const { data } = await this.client.get<HsdsValueResponse>(
+      `/datasets/${id}/value`
+    );
+    return data.value;
   }
 
   private async fetchRoot(): Promise<HDF5Id> {
@@ -124,13 +119,6 @@ export class HsdsApi implements ProviderAPI {
     });
 
     return Promise.all(attrsPromises);
-  }
-
-  private async fetchValue(id: HDF5Id): Promise<HDF5Value> {
-    const { data } = await this.client.get<HsdsValueResponse>(
-      `/datasets/${id}/value`
-    );
-    return data.value;
   }
 
   /* Processing methods to fetch links and attributes in addition to the entity. Also updates API members. */

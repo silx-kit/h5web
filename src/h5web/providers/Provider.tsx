@@ -8,13 +8,15 @@ interface Props {
   children: ReactNode;
 }
 
+const values = new Map();
+
 function Provider(props: Props): ReactElement {
   const { api, children } = props;
 
   // Wait until metadata is fetched before rendering app
-  const { value: metadata, error } = useAsync(async () => api.getMetadata(), [
-    api,
-  ]);
+  const { value: metadata, error } = useAsync(async () => {
+    return api.fetchMetadata();
+  }, [api]);
 
   if (error) {
     return <p className={styles.error}>Error: {error.message}</p>;
@@ -24,20 +26,17 @@ function Provider(props: Props): ReactElement {
     return <p className={styles.fallback}>Loading...</p>;
   }
 
-  const getValue = api.getValue.bind(api);
+  const fetchValue = api.fetchValue.bind(api);
 
   return (
     <ProviderContext.Provider
       value={{
         domain: api.domain,
         metadata,
-        getValue,
-        getValues: async (datasets) =>
-          Object.fromEntries(
-            await Promise.all(
-              datasets.map(async ({ id, name }) => [name, await getValue(id)])
-            )
-          ),
+        values,
+        fetchValue,
+        fetchValues: async (datasets) =>
+          Promise.all(datasets.map(async ({ id }) => fetchValue(id))),
       }}
     >
       {children}

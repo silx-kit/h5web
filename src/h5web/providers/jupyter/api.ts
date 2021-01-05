@@ -15,7 +15,6 @@ import type {
 import { nanoid } from 'nanoid';
 import { makeStrAttr, floatType } from '../mock/utils';
 import {
-  HDF5Id,
   HDF5LinkClass,
   HDF5ShapeClass,
   HDF5Value,
@@ -27,8 +26,6 @@ export class JupyterApi implements ProviderAPI {
   public readonly domain: string;
   private readonly client: AxiosInstance;
 
-  private values: Record<HDF5Id, HDF5Value> = {};
-
   public constructor(url: string, domain: string) {
     this.domain = domain;
     this.client = axios.create({
@@ -36,21 +33,18 @@ export class JupyterApi implements ProviderAPI {
     });
   }
 
-  public async getMetadata(): Promise<Metadata> {
+  public async fetchMetadata(): Promise<Metadata> {
     const rootId = '/';
     const rootGrp = await this.processEntity(rootId);
     assertGroup(rootGrp);
     return rootGrp;
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value | undefined> {
-    if (id in this.values) {
-      return this.values[id];
-    }
-
-    const value = await this.fetchValue(id);
-    this.values[id] = value;
-    return this.values[id];
+  public async fetchValue(path: string): Promise<HDF5Value> {
+    const { data } = await this.client.get<JupyterDataResponse>(
+      `/data/${this.domain}?uri=${path}`
+    );
+    return data;
   }
 
   private async fetchAttributes(path: string): Promise<JupyterAttrsResponse> {
@@ -60,7 +54,7 @@ export class JupyterApi implements ProviderAPI {
     return data;
   }
 
-  private async fetchMetadata(path: string): Promise<JupyterMetaResponse> {
+  private async _fetchMetadata(path: string): Promise<JupyterMetaResponse> {
     const { data } = await this.client.get<JupyterMetaResponse>(
       `/meta/${this.domain}?uri=${path}`
     );
@@ -74,18 +68,11 @@ export class JupyterApi implements ProviderAPI {
     return data;
   }
 
-  private async fetchValue(path: string): Promise<HDF5Value> {
-    const { data } = await this.client.get<JupyterDataResponse>(
-      `/data/${this.domain}?uri=${path}`
-    );
-    return data;
-  }
-
   /** The main tree-building method */
   private async processEntity(
     path: string
   ): Promise<Group | Dataset | Link<HDF5SoftLink>> {
-    const response = await this.fetchMetadata(path);
+    const response = await this._fetchMetadata(path);
     const { attributeCount } = response;
 
     const attrReponse =

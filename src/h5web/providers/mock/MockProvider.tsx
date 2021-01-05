@@ -15,8 +15,8 @@ function MockProvider(props: Props): ReactElement {
     <Provider
       api={{
         domain,
-        getMetadata: async () => mockMetadata,
-        getValue: async (id: keyof typeof mockValues) => {
+        fetchMetadata: async () => mockMetadata,
+        fetchValue: async (id: keyof typeof mockValues) => {
           if (id === errorOnId) {
             // Throw error when fetching value with specific ID
             throw new Error('error');
