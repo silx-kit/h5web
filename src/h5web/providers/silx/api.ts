@@ -21,12 +21,12 @@ export class SilxApi implements ProviderAPI {
     });
   }
 
-  public async getMetadata(): Promise<Metadata> {
+  public async fetchMetadata(): Promise<Metadata> {
     const { data } = await this.client.get<HDF5Metadata>('/metadata.json');
     return buildTree(data, this.domain);
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value> {
+  public async fetchValue(id: HDF5Id): Promise<HDF5Value> {
     if (this.values) {
       return this.values[id];
     }

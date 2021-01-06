@@ -1,6 +1,8 @@
-import type { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import { useAsync } from 'react-use';
+import { createFetchStore } from 'react-suspense-fetch';
 import { ProviderAPI, ProviderContext } from './context';
+import ErrorMessage from '../visualizer/ErrorMessage';
 import styles from '../visualizer/Visualizer.module.css';
 
 interface Props {
@@ -12,32 +14,29 @@ function Provider(props: Props): ReactElement {
   const { api, children } = props;
 
   // Wait until metadata is fetched before rendering app
-  const { value: metadata, error } = useAsync(async () => api.getMetadata(), [
-    api,
-  ]);
+  const { value: metadata, error } = useAsync(async () => {
+    return api.fetchMetadata();
+  }, [api]);
+
+  const valuesStore = useMemo(
+    () => createFetchStore(api.fetchValue.bind(api)),
+    [api]
+  );
 
   if (error) {
-    return <p className={styles.error}>Error: {error.message}</p>;
+    return <ErrorMessage error={error} />;
   }
 
   if (!metadata) {
     return <p className={styles.fallback}>Loading...</p>;
   }
 
-  const getValue = api.getValue.bind(api);
-
   return (
     <ProviderContext.Provider
       value={{
         domain: api.domain,
         metadata,
-        getValue,
-        getValues: async (datasets) =>
-          Object.fromEntries(
-            await Promise.all(
-              datasets.map(async ({ id, name }) => [name, await getValue(id)])
-            )
-          ),
+        valuesStore,
       }}
     >
       {children}

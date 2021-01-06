@@ -135,7 +135,7 @@ describe('Visualizer', () => {
     const { consoleMock, resetConsole } = mockConsoleMethod('error');
     await selectExplorerNode('entities/raw');
 
-    expect(await screen.findByText('error')).toBeVisible();
+    expect(await screen.findByText('Error: error')).toBeVisible();
     expect(consoleMock).toHaveBeenCalledTimes(2); // React logs two stack traces
     resetConsole();
 

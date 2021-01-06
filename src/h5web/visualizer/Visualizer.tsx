@@ -1,5 +1,4 @@
-import { ReactElement, useState } from 'react';
-import { AsyncResourceContent } from 'use-async-resource';
+import { ReactElement, Suspense, useState } from 'react';
 import type { Entity } from '../providers/models';
 import styles from './Visualizer.module.css';
 import { getSupportedVis } from './utils';
@@ -7,6 +6,8 @@ import { VIS_DEFS, Vis } from '../visualizations';
 import VisSelector from './VisSelector';
 import Loader from './Loader';
 import Profiler from '../Profiler';
+import ErrorMessage from './ErrorMessage';
+import { ErrorBoundary } from 'react-error-boundary';
 
 interface Props {
   entity?: Entity;
@@ -29,7 +30,7 @@ function Visualizer(props: Props): ReactElement {
   }
 
   if (error) {
-    return <p className={styles.error}>{error.message}</p>;
+    return <ErrorMessage error={error} />;
   }
 
   if (!entity || !activeVis) {
@@ -49,17 +50,13 @@ function Visualizer(props: Props): ReactElement {
         {Toolbar && <Toolbar />}
       </div>
       <div className={styles.displayArea}>
-        <AsyncResourceContent
-          key={entity.uid}
-          fallback={<Loader />}
-          errorMessage={(err: Error) => (
-            <p className={styles.error}>{err.message}</p>
-          )}
-        >
-          <Profiler id={activeVis}>
-            <Container entity={entity} />
-          </Profiler>
-        </AsyncResourceContent>
+        <ErrorBoundary key={entity.uid} FallbackComponent={ErrorMessage}>
+          <Suspense fallback={<Loader />}>
+            <Profiler id={activeVis}>
+              <Container entity={entity} />
+            </Profiler>
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   );
