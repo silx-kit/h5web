@@ -1,14 +1,14 @@
-import type { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import { useAsync } from 'react-use';
+import { createFetchStore } from 'react-suspense-fetch';
 import { ProviderAPI, ProviderContext } from './context';
+import ErrorMessage from '../visualizer/ErrorMessage';
 import styles from '../visualizer/Visualizer.module.css';
 
 interface Props {
   api: ProviderAPI;
   children: ReactNode;
 }
-
-const values = new Map();
 
 function Provider(props: Props): ReactElement {
   const { api, children } = props;
@@ -18,25 +18,25 @@ function Provider(props: Props): ReactElement {
     return api.fetchMetadata();
   }, [api]);
 
+  const valuesStore = useMemo(
+    () => createFetchStore(api.fetchValue.bind(api)),
+    [api]
+  );
+
   if (error) {
-    return <p className={styles.error}>Error: {error.message}</p>;
+    return <ErrorMessage error={error} />;
   }
 
   if (!metadata) {
     return <p className={styles.fallback}>Loading...</p>;
   }
 
-  const fetchValue = api.fetchValue.bind(api);
-
   return (
     <ProviderContext.Provider
       value={{
         domain: api.domain,
         metadata,
-        values,
-        fetchValue,
-        fetchValues: async (datasets) =>
-          Promise.all(datasets.map(async ({ id }) => fetchValue(id))),
+        valuesStore,
       }}
     >
       {children}
