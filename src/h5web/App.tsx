@@ -1,4 +1,4 @@
-import { useState, ReactElement } from 'react';
+import { useState, ReactElement, useContext, Suspense } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
 import type { Entity } from './providers/models';
@@ -6,8 +6,12 @@ import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import BreadcrumbsBar from './BreadcrumbsBar';
 import Visualizer from './visualizer/Visualizer';
+import { getEntityAtPath } from './utils';
+import { ProviderContext } from './providers/context';
 
 function App(): ReactElement {
+  const { metadata } = useContext(ProviderContext);
+
   const [selectedEntity, setSelectedEntity] = useState<Entity>();
   const [isExplorerOpen, setExplorerOpen] = useState(true);
   const [isInspecting, setInspecting] = useState(false);
@@ -20,10 +24,13 @@ function App(): ReactElement {
         flex={25}
         minSize={250}
       >
-        <Explorer
-          selectedEntity={selectedEntity}
-          onSelect={setSelectedEntity}
-        />
+        <Suspense fallback={<p className={styles.fallback}>Loading...</p>}>
+          <Explorer
+            onSelect={(path: string) => {
+              setSelectedEntity(getEntityAtPath(metadata, path));
+            }}
+          />
+        </Suspense>
       </ReflexElement>
 
       <ReflexSplitter

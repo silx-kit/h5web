@@ -10,7 +10,7 @@ import type {
   HsdsAttributeWithValueResponse,
   HsdsLink,
 } from './models';
-import type { Metadata } from '../models';
+import type { Group, Metadata } from '../models';
 import {
   HDF5Collection,
   HDF5Dataset,
@@ -50,7 +50,7 @@ export class HsdsApi implements ProviderAPI {
     });
   }
 
-  public async fetchMetadata(): Promise<Metadata> {
+  public async getMetadata(): Promise<Metadata> {
     const rootId = await this.fetchRoot();
     await this.processGroup(rootId);
 
@@ -65,7 +65,11 @@ export class HsdsApi implements ProviderAPI {
     );
   }
 
-  public async fetchValue(id: HDF5Id): Promise<HDF5Value> {
+  public async getGroup(): Promise<Group> {
+    throw new Error('not supported');
+  }
+
+  public async getValue(id: HDF5Id): Promise<HDF5Value> {
     const { data } = await this.client.get<HsdsValueResponse>(
       `/datasets/${id}/value`
     );

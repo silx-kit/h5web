@@ -22,8 +22,7 @@
 }
 
 .fallback {
-  padding: 1em;
-  color: var(--secondary-dark);
+  composes: fallback from '../App.module.css';
 }
 
 .error {

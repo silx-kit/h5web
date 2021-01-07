@@ -1,19 +1,30 @@
-import type { CSSProperties, ReactElement } from 'react';
+import {
+  CSSProperties,
+  ReactElement,
+  Suspense,
+  useContext,
+  useEffect,
+} from 'react';
 import styles from './Explorer.module.css';
 import type { Entity } from '../providers/models';
 import Icon from './Icon';
 import { isGroup } from '../guards';
+import { ProviderContext } from '../providers/context';
+import { FiRefreshCw } from 'react-icons/fi';
 
 interface Props {
   level: number;
-  entities: Entity[];
-  selectedEntity?: Entity;
+  parentPath: string;
+  selectedPath: string;
   expandedGroups: Set<string>;
-  onSelect: (entity: Entity) => void;
+  onSelect: (entity: Entity, path: string) => void;
 }
 
 function EntityList(props: Props): ReactElement {
-  const { level, entities, selectedEntity, expandedGroups, onSelect } = props;
+  const { level, parentPath, selectedPath, expandedGroups, onSelect } = props;
+
+  const { groupsStore } = useContext(ProviderContext);
+  const entities = groupsStore.get(parentPath).children;
 
   if (entities.length === 0) {
     return <></>;
@@ -23,11 +34,13 @@ function EntityList(props: Props): ReactElement {
     <ul className={styles.group} role="group">
       {entities.map((entity) => {
         const { uid, name } = entity;
+        const path = `${parentPath === '/' ? '' : parentPath}/${name}`;
         const isExpanded = expandedGroups.has(entity.uid);
 
         return (
           <li
             key={uid}
+            className={styles.entity}
             style={{ '--level': level } as CSSProperties}
             role="none"
           >
@@ -36,23 +49,29 @@ function EntityList(props: Props): ReactElement {
               type="button"
               role="treeitem"
               aria-expanded={isGroup(entity) ? isExpanded : undefined}
-              aria-selected={entity === selectedEntity}
-              onClick={() => {
-                onSelect(entity);
-              }}
+              aria-selected={path === selectedPath}
+              onClick={() => onSelect(entity, path)}
             >
               <Icon entity={entity} isExpanded={isExpanded} />
               {name}
             </button>
 
             {isGroup(entity) && isExpanded && (
-              <EntityList
-                level={level + 1}
-                entities={entity.children}
-                selectedEntity={selectedEntity}
-                expandedGroups={expandedGroups}
-                onSelect={onSelect}
-              />
+              <Suspense
+                fallback={
+                  <FiRefreshCw className={styles.spinner}>
+                    Loading...
+                  </FiRefreshCw>
+                }
+              >
+                <EntityList
+                  level={level + 1}
+                  parentPath={path}
+                  selectedPath={selectedPath}
+                  expandedGroups={expandedGroups}
+                  onSelect={onSelect}
+                />
+              </Suspense>
             )}
           </li>
         );

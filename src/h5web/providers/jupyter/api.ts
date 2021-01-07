@@ -33,14 +33,18 @@ export class JupyterApi implements ProviderAPI {
     });
   }
 
-  public async fetchMetadata(): Promise<Metadata> {
+  public async getMetadata(): Promise<Metadata> {
     const rootId = '/';
     const rootGrp = await this.processEntity(rootId);
     assertGroup(rootGrp);
     return rootGrp;
   }
 
-  public async fetchValue(path: string): Promise<HDF5Value> {
+  public async getGroup(): Promise<Group> {
+    throw new Error('not supported');
+  }
+
+  public async getValue(path: string): Promise<HDF5Value> {
     const { data } = await this.client.get<JupyterDataResponse>(
       `/data/${this.domain}?uri=${path}`
     );

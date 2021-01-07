@@ -7,7 +7,7 @@ import type {
   HDF5Metadata,
   HDF5Values,
 } from '../hdf5-models';
-import type { Metadata } from '../models';
+import type { Group, Metadata } from '../models';
 
 export class SilxApi implements ProviderAPI {
   public readonly domain: string;
@@ -21,12 +21,16 @@ export class SilxApi implements ProviderAPI {
     });
   }
 
-  public async fetchMetadata(): Promise<Metadata> {
+  public async getMetadata(): Promise<Metadata> {
     const { data } = await this.client.get<HDF5Metadata>('/metadata.json');
     return buildTree(data, this.domain);
   }
 
-  public async fetchValue(id: HDF5Id): Promise<HDF5Value> {
+  public async getGroup(): Promise<Group> {
+    throw new Error('not supported');
+  }
+
+  public async getValue(id: HDF5Id): Promise<HDF5Value> {
     if (this.values) {
       return this.values[id];
     }
