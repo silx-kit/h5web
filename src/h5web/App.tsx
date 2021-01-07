@@ -1,4 +1,4 @@
-import { useState, ReactElement, useContext, Suspense } from 'react';
+import { useState, ReactElement, useContext } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
 import type { Entity } from './providers/models';
@@ -24,13 +24,11 @@ function App(): ReactElement {
         flex={25}
         minSize={250}
       >
-        <Suspense fallback={<p className={styles.fallback}>Loading...</p>}>
-          <Explorer
-            onSelect={(path: string) => {
-              setSelectedEntity(getEntityAtPath(metadata, path));
-            }}
-          />
-        </Suspense>
+        <Explorer
+          onSelect={(path: string) => {
+            setSelectedEntity(getEntityAtPath(metadata, path));
+          }}
+        />
       </ReflexElement>
 
       <ReflexSplitter

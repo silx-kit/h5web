@@ -49,7 +49,9 @@ describe('Explorer', () => {
     expect(groupBtn).toHaveAttribute('aria-selected', 'true');
     expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
 
-    const childGroupBtn = screen.getByRole('treeitem', { name: 'empty_group' });
+    const childGroupBtn = await screen.findByRole('treeitem', {
+      name: 'empty_group',
+    });
     expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
     expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 

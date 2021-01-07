@@ -1,27 +1,17 @@
-import {
-  CSSProperties,
-  ReactElement,
-  Suspense,
-  useContext,
-  useEffect,
-} from 'react';
+import { ReactElement, useContext } from 'react';
 import styles from './Explorer.module.css';
-import type { Entity } from '../providers/models';
-import Icon from './Icon';
-import { isGroup } from '../guards';
 import { ProviderContext } from '../providers/context';
-import { FiRefreshCw } from 'react-icons/fi';
+import EntityItem from './EntityItem';
 
 interface Props {
   level: number;
   parentPath: string;
   selectedPath: string;
-  expandedGroups: Set<string>;
-  onSelect: (entity: Entity, path: string) => void;
+  onSelect: (path: string) => void;
 }
 
 function EntityList(props: Props): ReactElement {
-  const { level, parentPath, selectedPath, expandedGroups, onSelect } = props;
+  const { level, parentPath, selectedPath, onSelect } = props;
 
   const { groupsStore } = useContext(ProviderContext);
   const entities = groupsStore.get(parentPath).children;
@@ -35,45 +25,16 @@ function EntityList(props: Props): ReactElement {
       {entities.map((entity) => {
         const { uid, name } = entity;
         const path = `${parentPath === '/' ? '' : parentPath}/${name}`;
-        const isExpanded = expandedGroups.has(entity.uid);
 
         return (
-          <li
+          <EntityItem
             key={uid}
-            className={styles.entity}
-            style={{ '--level': level } as CSSProperties}
-            role="none"
-          >
-            <button
-              className={styles.btn}
-              type="button"
-              role="treeitem"
-              aria-expanded={isGroup(entity) ? isExpanded : undefined}
-              aria-selected={path === selectedPath}
-              onClick={() => onSelect(entity, path)}
-            >
-              <Icon entity={entity} isExpanded={isExpanded} />
-              {name}
-            </button>
-
-            {isGroup(entity) && isExpanded && (
-              <Suspense
-                fallback={
-                  <FiRefreshCw className={styles.spinner}>
-                    Loading...
-                  </FiRefreshCw>
-                }
-              >
-                <EntityList
-                  level={level + 1}
-                  parentPath={path}
-                  selectedPath={selectedPath}
-                  expandedGroups={expandedGroups}
-                  onSelect={onSelect}
-                />
-              </Suspense>
-            )}
-          </li>
+            path={path}
+            entity={entity}
+            level={level}
+            selectedPath={selectedPath}
+            onSelect={onSelect}
+          />
         );
       })}
     </ul>
