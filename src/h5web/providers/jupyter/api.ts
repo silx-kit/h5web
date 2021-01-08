@@ -3,6 +3,7 @@ import { Group, Dataset, Metadata, EntityKind, Link } from '../models';
 import type { ProviderAPI } from '../context';
 import {
   assertGroupContent,
+  assertGroupResponse,
   isDatasetResponse,
   isGroupResponse,
 } from './utils';
@@ -33,14 +34,38 @@ export class JupyterApi implements ProviderAPI {
     });
   }
 
-  public async fetchMetadata(): Promise<Metadata> {
+  public async getMetadata(): Promise<Metadata> {
     const rootId = '/';
     const rootGrp = await this.processEntity(rootId);
     assertGroup(rootGrp);
     return rootGrp;
   }
 
-  public async fetchValue(path: string): Promise<HDF5Value> {
+  public async getGroup(path: string): Promise<Group> {
+    const [metadata, children] = await Promise.all([
+      this.fetchMetadata(path),
+      this.fetchContents(path),
+    ]);
+
+    assertGroupResponse(metadata);
+    assertGroupContent(children);
+
+    return {
+      uid: nanoid(),
+      name: metadata.name,
+      id: path,
+      kind: EntityKind.Group,
+      attributes: [],
+      children: children.map((c) => ({
+        uid: nanoid(),
+        name: c.name,
+        kind: c.type,
+        attributes: [],
+      })),
+    };
+  }
+
+  public async getValue(path: string): Promise<HDF5Value> {
     const { data } = await this.client.get<JupyterDataResponse>(
       `/data/${this.domain}?uri=${path}`
     );
@@ -54,7 +79,7 @@ export class JupyterApi implements ProviderAPI {
     return data;
   }
 
-  private async _fetchMetadata(path: string): Promise<JupyterMetaResponse> {
+  private async fetchMetadata(path: string): Promise<JupyterMetaResponse> {
     const { data } = await this.client.get<JupyterMetaResponse>(
       `/meta/${this.domain}?uri=${path}`
     );
@@ -72,7 +97,7 @@ export class JupyterApi implements ProviderAPI {
   private async processEntity(
     path: string
   ): Promise<Group | Dataset | Link<HDF5SoftLink>> {
-    const response = await this._fetchMetadata(path);
+    const response = await this.fetchMetadata(path);
     const { attributeCount } = response;
 
     const attrReponse =

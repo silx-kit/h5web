@@ -10,7 +10,7 @@ import type {
   HsdsAttributeWithValueResponse,
   HsdsLink,
 } from './models';
-import type { Metadata } from '../models';
+import { Entity, EntityKind, Group, Metadata } from '../models';
 import {
   HDF5Collection,
   HDF5Dataset,
@@ -23,14 +23,18 @@ import {
   HDF5Attribute,
   HDF5Link,
 } from '../hdf5-models';
-import { isReachable } from '../../guards';
+import { assertDefined, assertGroup, isReachable } from '../../guards';
 import type { ProviderAPI } from '../context';
 import { buildTree } from '../utils';
-import { isHsdsExternalLink } from './utils';
+import { COLLECTION_TO_KIND, isHsdsExternalLink } from './utils';
+import { nanoid } from 'nanoid';
 
 export class HsdsApi implements ProviderAPI {
   public readonly domain: string;
   private readonly client: AxiosInstance;
+
+  private rootId?: string;
+  private readonly groupsByPath: Map<string, Group> = new Map();
 
   private groups: Record<HDF5Id, HDF5Group> = {};
   private datasets: Record<HDF5Id, HDF5Dataset> = {};
@@ -50,8 +54,8 @@ export class HsdsApi implements ProviderAPI {
     });
   }
 
-  public async fetchMetadata(): Promise<Metadata> {
-    const rootId = await this.fetchRoot();
+  public async getMetadata(): Promise<Metadata> {
+    const rootId = await this.getRootId();
     await this.processGroup(rootId);
 
     return buildTree(
@@ -65,14 +69,86 @@ export class HsdsApi implements ProviderAPI {
     );
   }
 
-  public async fetchValue(id: HDF5Id): Promise<HDF5Value> {
+  public async getGroup(path: string): Promise<Group> {
+    if (this.groupsByPath.has(path)) {
+      return this.groupsByPath.get(path) as Group;
+    }
+
+    if (path === '/') {
+      const rootId = await this.getRootId();
+      const rootGroup: Group = {
+        uid: nanoid(),
+        name: this.domain,
+        id: rootId,
+        kind: EntityKind.Group,
+        attributes: [],
+        children: await this.getGroupChildren(rootId),
+      };
+
+      this.groupsByPath.set('/', rootGroup);
+      return rootGroup;
+    }
+
+    const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
+    const parentGroup = await this.getGroup(parentPath);
+
+    const childName = path.slice(path.lastIndexOf('/') + 1);
+    const child = parentGroup.children.find(({ name }) => name === childName);
+    assertDefined(child);
+    assertGroup(child);
+
+    const group: Group = {
+      ...child,
+      children: await this.getGroupChildren(child.id),
+    };
+
+    this.groupsByPath.set(path, group);
+    return group;
+  }
+
+  public async getValue(id: HDF5Id): Promise<HDF5Value> {
     const { data } = await this.client.get<HsdsValueResponse>(
       `/datasets/${id}/value`
     );
     return data.value;
   }
 
-  private async fetchRoot(): Promise<HDF5Id> {
+  private async getRootId(): Promise<HDF5Id> {
+    if (!this.rootId) {
+      this.rootId = await this.fetchRootId();
+    }
+
+    return this.rootId;
+  }
+
+  private async getGroupChildren(id: HDF5Id): Promise<Entity[]> {
+    const linksResponse = await this.fetchLinks(id);
+
+    return linksResponse.map<Entity>((hsdsLink: HsdsLink) => {
+      const link = isHsdsExternalLink(hsdsLink)
+        ? { ...hsdsLink, file: hsdsLink.h5domain }
+        : hsdsLink;
+
+      const baseEntity = {
+        uid: nanoid(),
+        name: hsdsLink.title,
+        attributes: [],
+      };
+
+      if (!isReachable(link)) {
+        return { ...baseEntity, kind: EntityKind.Link, rawLink: link };
+      }
+
+      return {
+        ...baseEntity,
+        id: link.id,
+        kind: COLLECTION_TO_KIND[link.collection],
+        rawLink: link,
+      };
+    });
+  }
+
+  private async fetchRootId(): Promise<HDF5Id> {
     const { data } = await this.client.get<HsdsRootResponse>('/');
     return data.root;
   }

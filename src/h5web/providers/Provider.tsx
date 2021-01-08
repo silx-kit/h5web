@@ -15,13 +15,18 @@ function Provider(props: Props): ReactElement {
 
   // Wait until metadata is fetched before rendering app
   const { value: metadata, error } = useAsync(async () => {
-    return api.fetchMetadata();
+    return api.getMetadata();
   }, [api]);
 
-  const valuesStore = useMemo(
-    () => createFetchStore(api.fetchValue.bind(api)),
-    [api]
-  );
+  const groupsStore = useMemo(() => {
+    const store = createFetchStore(api.getGroup.bind(api));
+    store.prefetch('/'); // pre-fetch root group
+    return store;
+  }, [api]);
+
+  const valuesStore = useMemo(() => {
+    return createFetchStore(api.getValue.bind(api));
+  }, [api]);
 
   if (error) {
     return <ErrorMessage error={error} />;
@@ -36,6 +41,7 @@ function Provider(props: Props): ReactElement {
       value={{
         domain: api.domain,
         metadata,
+        groupsStore,
         valuesStore,
       }}
     >

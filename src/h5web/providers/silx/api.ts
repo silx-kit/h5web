@@ -7,11 +7,14 @@ import type {
   HDF5Metadata,
   HDF5Values,
 } from '../hdf5-models';
-import type { Metadata } from '../models';
+import type { Group, Metadata } from '../models';
+import { getEntityAtPath } from '../../utils';
+import { assertDefined, assertGroup } from '../../guards';
 
 export class SilxApi implements ProviderAPI {
   public readonly domain: string;
   private readonly client: AxiosInstance;
+  private metadata?: Metadata;
   private values?: HDF5Values;
 
   public constructor(domain: string) {
@@ -21,19 +24,31 @@ export class SilxApi implements ProviderAPI {
     });
   }
 
-  public async fetchMetadata(): Promise<Metadata> {
-    const { data } = await this.client.get<HDF5Metadata>('/metadata.json');
-    return buildTree(data, this.domain);
-  }
-
-  public async fetchValue(id: HDF5Id): Promise<HDF5Value> {
-    if (this.values) {
-      return this.values[id];
+  public async getMetadata(): Promise<Metadata> {
+    if (!this.metadata) {
+      const { data } = await this.client.get<HDF5Metadata>('/metadata.json');
+      this.metadata = buildTree(data, this.domain);
     }
 
-    const { data } = await this.client.get<HDF5Values>('/values.json');
+    return this.metadata;
+  }
 
-    this.values = data;
+  public async getGroup(path: string): Promise<Group> {
+    const metadata = this.metadata || (await this.getMetadata());
+
+    const group = getEntityAtPath(metadata, path);
+    assertDefined(group);
+    assertGroup(group);
+
+    return group;
+  }
+
+  public async getValue(id: HDF5Id): Promise<HDF5Value> {
+    if (!this.values) {
+      const { data } = await this.client.get<HDF5Values>('/values.json');
+      this.values = data;
+    }
+
     return this.values[id];
   }
 }

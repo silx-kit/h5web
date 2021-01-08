@@ -7,7 +7,7 @@ interface Props {
 
 function ErrorMessage(props: Props): ReactElement {
   const { error } = props;
-  return <p className={styles.error}>Error: {error.message}</p>;
+  return <p className={styles.error}>{error.message}</p>;
 }
 
 export default ErrorMessage;
