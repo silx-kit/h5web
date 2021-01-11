@@ -10,7 +10,7 @@ import type {
   HsdsAttributeWithValueResponse,
   HsdsLink,
 } from './models';
-import { Entity, EntityKind, Group, Metadata } from '../models';
+import type { Group, Metadata } from '../models';
 import {
   HDF5Collection,
   HDF5Dataset,
@@ -22,12 +22,13 @@ import {
   HDF5Value,
   HDF5Attribute,
   HDF5Link,
+  HDF5LinkClass,
+  HDF5Metadata,
 } from '../hdf5-models';
-import { assertDefined, assertGroup, isReachable } from '../../guards';
+import { assertDefined, assertReachable, isReachable } from '../../guards';
 import type { ProviderAPI } from '../context';
-import { buildTree } from '../utils';
-import { COLLECTION_TO_KIND, isHsdsExternalLink } from './utils';
-import { nanoid } from 'nanoid';
+import { buildGroup, buildTree } from '../utils';
+import { isHsdsExternalLink } from './utils';
 
 export class HsdsApi implements ProviderAPI {
   public readonly domain: string;
@@ -57,16 +58,7 @@ export class HsdsApi implements ProviderAPI {
   public async getMetadata(): Promise<Metadata> {
     const rootId = await this.getRootId();
     await this.processGroup(rootId);
-
-    return buildTree(
-      {
-        root: rootId,
-        groups: this.groups,
-        datasets: this.datasets,
-        datatypes: this.datatypes,
-      },
-      this.domain
-    );
+    return buildTree(await this.getHdf5Metadata(), this.domain);
   }
 
   public async getGroup(path: string): Promise<Group> {
@@ -74,34 +66,10 @@ export class HsdsApi implements ProviderAPI {
       return this.groupsByPath.get(path) as Group;
     }
 
-    if (path === '/') {
-      const rootId = await this.getRootId();
-      const rootGroup: Group = {
-        uid: nanoid(),
-        name: this.domain,
-        id: rootId,
-        kind: EntityKind.Group,
-        attributes: [],
-        children: await this.getGroupChildren(rootId),
-      };
+    const groupLink = await this.getLinkTo(path);
+    await this.processGroup(groupLink.id, 1);
 
-      this.groupsByPath.set('/', rootGroup);
-      return rootGroup;
-    }
-
-    const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
-    const parentGroup = await this.getGroup(parentPath);
-
-    const childName = path.slice(path.lastIndexOf('/') + 1);
-    const child = parentGroup.children.find(({ name }) => name === childName);
-    assertDefined(child);
-    assertGroup(child);
-
-    const group: Group = {
-      ...child,
-      children: await this.getGroupChildren(child.id),
-    };
-
+    const group = buildGroup(await this.getHdf5Metadata(), groupLink);
     this.groupsByPath.set(path, group);
     return group;
   }
@@ -121,31 +89,46 @@ export class HsdsApi implements ProviderAPI {
     return this.rootId;
   }
 
-  private async getGroupChildren(id: HDF5Id): Promise<Entity[]> {
-    const linksResponse = await this.fetchLinks(id);
-
-    return linksResponse.map<Entity>((hsdsLink: HsdsLink) => {
-      const link = isHsdsExternalLink(hsdsLink)
-        ? { ...hsdsLink, file: hsdsLink.h5domain }
-        : hsdsLink;
-
-      const baseEntity = {
-        uid: nanoid(),
-        name: hsdsLink.title,
-        attributes: [],
-      };
-
-      if (!isReachable(link)) {
-        return { ...baseEntity, kind: EntityKind.Link, rawLink: link };
-      }
-
+  private async getLinkTo(path: string): Promise<HDF5HardLink | HDF5RootLink> {
+    if (path === '/') {
+      const rootId = await this.getRootId();
       return {
-        ...baseEntity,
-        id: link.id,
-        kind: COLLECTION_TO_KIND[link.collection],
-        rawLink: link,
+        class: HDF5LinkClass.Root as const,
+        collection: HDF5Collection.Groups as const,
+        title: this.domain,
+        id: rootId,
       };
-    });
+    }
+
+    const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
+    const parentLink = await this.getLinkTo(parentPath);
+    const parentGroup = await this.getHdf5Group(parentLink.id);
+
+    const childName = path.slice(path.lastIndexOf('/') + 1);
+    const childLink = (parentGroup.links || []).find(
+      ({ title }) => title === childName
+    );
+    assertDefined(childLink);
+    assertReachable(childLink);
+
+    return childLink;
+  }
+
+  private async getHdf5Group(id: HDF5Id): Promise<HDF5Group> {
+    if (!this.groups[id]) {
+      await this.processGroup(id, 1);
+    }
+
+    return this.groups[id];
+  }
+
+  private async getHdf5Metadata(): Promise<Required<HDF5Metadata>> {
+    return {
+      root: await this.getRootId(),
+      groups: this.groups,
+      datasets: this.datasets,
+      datatypes: this.datatypes,
+    };
   }
 
   private async fetchRootId(): Promise<HDF5Id> {
@@ -199,14 +182,16 @@ export class HsdsApi implements ProviderAPI {
 
   /* Processing methods to fetch links and attributes in addition to the entity. Also updates API members. */
 
-  private async processGroup(id: HDF5Id): Promise<void> {
+  private async processGroup(id: HDF5Id, depth = Infinity): Promise<void> {
     const { attributeCount, linkCount, ...group } = await this.fetchGroup(id);
 
     const [attributes, hsdsLinks] = await Promise.all([
       attributeCount > 0
         ? this.fetchAttributes(HDF5Collection.Groups, id)
         : Promise.resolve(undefined),
-      linkCount > 0 ? this.fetchLinks(id) : Promise.resolve(undefined),
+      linkCount > 0 && depth > 0
+        ? this.fetchLinks(id)
+        : Promise.resolve(undefined),
     ]);
 
     const links =
@@ -223,7 +208,9 @@ export class HsdsApi implements ProviderAPI {
 
     if (links) {
       await Promise.all(
-        links.filter(isReachable).map(this.resolveLink.bind(this))
+        links
+          .filter(isReachable)
+          .map((link) => this.resolveLink(link, depth - 1))
       );
     }
   }
@@ -247,11 +234,14 @@ export class HsdsApi implements ProviderAPI {
     this.datatypes[id] = datatype;
   }
 
-  private async resolveLink(link: HDF5HardLink | HDF5RootLink): Promise<void> {
+  private async resolveLink(
+    link: HDF5HardLink | HDF5RootLink,
+    depth = Infinity
+  ): Promise<void> {
     const { collection, id } = link;
 
     if (collection === HDF5Collection.Groups) {
-      return this.processGroup(id);
+      return this.processGroup(id, depth);
     }
     if (collection === HDF5Collection.Datasets) {
       return this.processDataset(id);

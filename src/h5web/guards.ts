@@ -145,6 +145,14 @@ export function assertGroup(
   }
 }
 
+export function assertReachable(
+  link: HDF5Link
+): asserts link is HDF5HardLink | HDF5RootLink {
+  if (!isReachable(link)) {
+    throw new Error('Expected link to be reachable');
+  }
+}
+
 export function assertNumericType<S extends HDF5Shape>(
   dataset: Dataset<S>
 ): asserts dataset is Dataset<S, HDF5NumericType> {
