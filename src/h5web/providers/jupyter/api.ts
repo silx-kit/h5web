@@ -3,7 +3,6 @@ import { Group, Dataset, Metadata, EntityKind, Link } from '../models';
 import type { ProviderAPI } from '../context';
 import {
   assertGroupContent,
-  assertGroupResponse,
   isDatasetResponse,
   isGroupResponse,
 } from './utils';
@@ -42,27 +41,9 @@ export class JupyterApi implements ProviderAPI {
   }
 
   public async getGroup(path: string): Promise<Group> {
-    const [metadata, children] = await Promise.all([
-      this.fetchMetadata(path),
-      this.fetchContents(path),
-    ]);
-
-    assertGroupResponse(metadata);
-    assertGroupContent(children);
-
-    return {
-      uid: nanoid(),
-      name: metadata.name,
-      id: path,
-      kind: EntityKind.Group,
-      attributes: [],
-      children: children.map((c) => ({
-        uid: nanoid(),
-        name: c.name,
-        kind: c.type,
-        attributes: [],
-      })),
-    };
+    const group = await this.processEntity(path, 1);
+    assertGroup(group);
+    return group;
   }
 
   public async getValue(path: string): Promise<HDF5Value> {
@@ -95,7 +76,8 @@ export class JupyterApi implements ProviderAPI {
 
   /** The main tree-building method */
   private async processEntity(
-    path: string
+    path: string,
+    depth = Infinity
   ): Promise<Group | Dataset | Link<HDF5SoftLink>> {
     const response = await this.fetchMetadata(path);
     const { attributeCount } = response;
@@ -112,11 +94,14 @@ export class JupyterApi implements ProviderAPI {
       const contents = childrenCount > 0 ? await this.fetchContents(path) : [];
       assertGroupContent(contents);
 
-      const children = await Promise.all(
-        contents.map((content) => {
-          return this.processEntity(content.uri);
-        })
-      );
+      const children =
+        depth > 0
+          ? await Promise.all(
+              contents.map((content) => {
+                return this.processEntity(content.uri, depth - 1);
+              })
+            )
+          : [];
 
       const group: Group = {
         uid: nanoid(),

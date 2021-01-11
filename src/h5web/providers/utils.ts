@@ -40,7 +40,7 @@ function buildDatatype(datatype: HDF5Datatype, link: HDF5HardLink): Datatype {
   };
 }
 
-function buildGroup(
+export function buildGroup(
   metadata: Required<HDF5Metadata>,
   link: HDF5HardLink | HDF5RootLink
 ): Group {
