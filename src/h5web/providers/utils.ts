@@ -47,26 +47,17 @@ export function buildGroup(
   const rawGroup = metadata.groups[link.id];
 
   const children = (rawGroup.links || []).map((link) => {
-    if (!isReachable(link)) {
-      return {
-        uid: nanoid(),
-        name: link.title,
-        kind: EntityKind.Link,
-        attributes: [],
-        rawLink: link,
-      };
+    if (isReachable(link)) {
+      return buildEntity(metadata, link);
     }
 
-    switch (link.collection) {
-      case HDF5Collection.Groups:
-        return buildGroup(metadata, link);
-      case HDF5Collection.Datasets:
-        return buildDataset(metadata.datasets[link.id], link);
-      case HDF5Collection.Datatypes:
-        return buildDatatype(metadata.datatypes[link.id], link);
-      default:
-        throw new Error('Expected link with known HDF5 collection');
-    }
+    return {
+      uid: nanoid(),
+      name: link.title,
+      kind: EntityKind.Link,
+      attributes: [],
+      rawLink: link,
+    };
   });
 
   const group: Group = {
@@ -84,6 +75,22 @@ export function buildGroup(
   });
 
   return group;
+}
+
+export function buildEntity(
+  metadata: Required<HDF5Metadata>,
+  link: HDF5HardLink | HDF5RootLink
+): Group | Dataset | Datatype {
+  switch (link.collection) {
+    case HDF5Collection.Groups:
+      return buildGroup(metadata, link);
+    case HDF5Collection.Datasets:
+      return buildDataset(metadata.datasets[link.id], link);
+    case HDF5Collection.Datatypes:
+      return buildDatatype(metadata.datatypes[link.id], link);
+    default:
+      throw new Error('Expected link with known HDF5 collection');
+  }
 }
 
 export function buildTree(rawMetadata: HDF5Metadata, domain: string): Metadata {

@@ -10,7 +10,7 @@ import type {
   HsdsAttributeWithValueResponse,
   HsdsLink,
 } from './models';
-import type { Group, Metadata } from '../models';
+import type { Entity, Metadata } from '../models';
 import {
   HDF5Collection,
   HDF5Dataset,
@@ -27,7 +27,7 @@ import {
 } from '../hdf5-models';
 import { assertDefined, assertReachable, isReachable } from '../../guards';
 import type { ProviderAPI } from '../context';
-import { buildGroup, buildTree } from '../utils';
+import { buildEntity, buildTree } from '../utils';
 import { isHsdsExternalLink } from './utils';
 
 export class HsdsApi implements ProviderAPI {
@@ -35,7 +35,7 @@ export class HsdsApi implements ProviderAPI {
   private readonly client: AxiosInstance;
 
   private rootId?: string;
-  private readonly groupsByPath: Map<string, Group> = new Map();
+  private readonly entitiesByPath = new Map<string, Entity>();
 
   private groups: Record<HDF5Id, HDF5Group> = {};
   private datasets: Record<HDF5Id, HDF5Dataset> = {};
@@ -61,17 +61,17 @@ export class HsdsApi implements ProviderAPI {
     return buildTree(await this.getHdf5Metadata(), this.domain);
   }
 
-  public async getGroup(path: string): Promise<Group> {
-    if (this.groupsByPath.has(path)) {
-      return this.groupsByPath.get(path) as Group;
+  public async getEntity(path: string): Promise<Entity> {
+    if (this.entitiesByPath.has(path)) {
+      return this.entitiesByPath.get(path) as Entity;
     }
 
-    const groupLink = await this.getLinkTo(path);
-    await this.processGroup(groupLink.id, 1);
+    const entityLink = await this.getLinkTo(path);
+    await this.resolveLink(entityLink, 1);
 
-    const group = buildGroup(await this.getHdf5Metadata(), groupLink);
-    this.groupsByPath.set(path, group);
-    return group;
+    const entity = buildEntity(await this.getHdf5Metadata(), entityLink);
+    this.entitiesByPath.set(path, entity);
+    return entity;
   }
 
   public async getValue(id: HDF5Id): Promise<HDF5Value> {

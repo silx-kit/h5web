@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
-import { assertDefined, assertGroup } from '../../guards';
+import { assertDefined } from '../../guards';
 import { getEntityAtPath } from '../../utils';
 import Provider from '../Provider';
 import { mockMetadata, mockValues, mockDomain } from './data';
@@ -19,18 +19,17 @@ function MockProvider(props: Props): ReactElement {
       api={{
         domain,
         getMetadata: async () => mockMetadata,
-        getGroup: async (path: string) => {
+        getEntity: async (path: string) => {
           if (path === slowOnPath) {
             await new Promise((resolve) => {
               setTimeout(resolve, 3000);
             });
           }
 
-          const group = getEntityAtPath(mockMetadata, path, true);
-          assertDefined(group);
-          assertGroup(group);
+          const entity = getEntityAtPath(mockMetadata, path, true);
+          assertDefined(entity);
 
-          return group;
+          return entity;
         },
         getValue: async (id: keyof typeof mockValues) => {
           if (id === errorOnId) {
