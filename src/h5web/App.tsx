@@ -1,7 +1,6 @@
 import { useState, ReactElement, useContext } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
-import type { Entity } from './providers/models';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import BreadcrumbsBar from './BreadcrumbsBar';
@@ -9,12 +8,15 @@ import Visualizer from './visualizer/Visualizer';
 import { getEntityAtPath } from './utils';
 import { ProviderContext } from './providers/context';
 
-function App(): ReactElement {
-  const { metadata } = useContext(ProviderContext);
+const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 
-  const [selectedEntity, setSelectedEntity] = useState<Entity>();
+function App(): ReactElement {
+  const [selectedPath, setSelectedPath] = useState<string>(DEFAULT_PATH);
   const [isExplorerOpen, setExplorerOpen] = useState(true);
   const [isInspecting, setInspecting] = useState(false);
+
+  const { metadata } = useContext(ProviderContext);
+  const selectedEntity = getEntityAtPath(metadata, selectedPath);
 
   return (
     <ReflexContainer orientation="vertical">
@@ -24,11 +26,7 @@ function App(): ReactElement {
         flex={25}
         minSize={250}
       >
-        <Explorer
-          onSelect={(path: string) => {
-            setSelectedEntity(getEntityAtPath(metadata, path));
-          }}
-        />
+        <Explorer selectedPath={selectedPath} onSelect={setSelectedPath} />
       </ReflexElement>
 
       <ReflexSplitter
@@ -37,11 +35,11 @@ function App(): ReactElement {
 
       <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
         <BreadcrumbsBar
+          entityPath={selectedPath}
           isExplorerOpen={isExplorerOpen}
-          onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
           isInspecting={isInspecting}
+          onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
           onChangeInspecting={setInspecting}
-          selectedEntity={selectedEntity}
         />
         {isInspecting ? (
           <MetadataViewer entity={selectedEntity} />

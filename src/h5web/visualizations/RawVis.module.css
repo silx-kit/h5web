@@ -4,5 +4,5 @@
 }
 
 .fallback {
-  composes: fallback from '../visualizer/Visualizer.module.css';
+  composes: fallback from '../App.module.css';
 }
