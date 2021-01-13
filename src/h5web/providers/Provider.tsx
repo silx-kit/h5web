@@ -4,6 +4,8 @@ import { createFetchStore } from 'react-suspense-fetch';
 import { ProviderAPI, ProviderContext } from './context';
 import ErrorMessage from '../visualizer/ErrorMessage';
 import styles from '../visualizer/Visualizer.module.css';
+import type { Entity } from './models';
+import { isGroup } from '../guards';
 
 interface Props {
   api: ProviderAPI;
@@ -18,8 +20,28 @@ function Provider(props: Props): ReactElement {
     return api.getMetadata();
   }, [api]);
 
-  const groupsStore = useMemo(() => {
-    const store = createFetchStore(api.getGroup.bind(api));
+  const entitiesStore = useMemo(() => {
+    const childCache = new Map<string, Entity>();
+
+    const store = createFetchStore(async (path: string) => {
+      if (childCache.has(path)) {
+        return childCache.get(path) as Entity;
+      }
+
+      const entity = await api.getEntity(path);
+
+      if (isGroup(entity)) {
+        // Cache non-group children (datasets, datatypes and links)
+        entity.children.forEach((child) => {
+          if (!isGroup(child)) {
+            childCache.set(path, entity);
+          }
+        });
+      }
+
+      return entity;
+    });
+
     store.prefetch('/'); // pre-fetch root group
     return store;
   }, [api]);
@@ -41,7 +63,7 @@ function Provider(props: Props): ReactElement {
       value={{
         domain: api.domain,
         metadata,
-        groupsStore,
+        entitiesStore,
         valuesStore,
       }}
     >

@@ -7,9 +7,9 @@ import type {
   HDF5Metadata,
   HDF5Values,
 } from '../hdf5-models';
-import type { Group, Metadata } from '../models';
+import type { Entity, Metadata } from '../models';
 import { getEntityAtPath } from '../../utils';
-import { assertDefined, assertGroup } from '../../guards';
+import { assertDefined } from '../../guards';
 
 export class SilxApi implements ProviderAPI {
   public readonly domain: string;
@@ -33,14 +33,13 @@ export class SilxApi implements ProviderAPI {
     return this.metadata;
   }
 
-  public async getGroup(path: string): Promise<Group> {
+  public async getEntity(path: string): Promise<Entity> {
     const metadata = this.metadata || (await this.getMetadata());
 
-    const group = getEntityAtPath(metadata, path);
-    assertDefined(group);
-    assertGroup(group);
+    const entity = getEntityAtPath(metadata, path);
+    assertDefined(entity);
 
-    return group;
+    return entity;
   }
 
   public async getValue(id: HDF5Id): Promise<HDF5Value> {

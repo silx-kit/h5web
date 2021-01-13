@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { Group, Dataset, Metadata, EntityKind, Link } from '../models';
+import { Group, Dataset, Metadata, EntityKind, Link, Entity } from '../models';
 import type { ProviderAPI } from '../context';
 import {
   assertGroupContent,
@@ -34,16 +34,13 @@ export class JupyterApi implements ProviderAPI {
   }
 
   public async getMetadata(): Promise<Metadata> {
-    const rootId = '/';
-    const rootGrp = await this.processEntity(rootId);
+    const rootGrp = await this.processEntity('/');
     assertGroup(rootGrp);
     return rootGrp;
   }
 
-  public async getGroup(path: string): Promise<Group> {
-    const group = await this.processEntity(path, 1);
-    assertGroup(group);
-    return group;
+  public async getEntity(path: string): Promise<Entity> {
+    return this.processEntity(path, 1);
   }
 
   public async getValue(path: string): Promise<HDF5Value> {
