@@ -23,6 +23,7 @@ export interface HDF5Metadata {
 /* ----- ENTITIES ----- */
 
 export interface HDF5Group {
+  alias: [string];
   attributes?: HDF5Attribute[];
   links?: HDF5Link[];
 }
@@ -31,12 +32,14 @@ export interface HDF5Dataset<
   S extends HDF5Shape = HDF5Shape,
   T extends HDF5Type = HDF5Type
 > {
+  alias: [string];
   attributes?: HDF5Attribute[];
   shape: S;
   type: T;
 }
 
 export interface HDF5Datatype<T = HDF5Type> {
+  alias: [string];
   type: T;
 }
 

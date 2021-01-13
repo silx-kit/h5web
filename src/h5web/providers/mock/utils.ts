@@ -31,6 +31,7 @@ import type {
   NxInterpretation,
   SilxStyle,
 } from '../../visualizations/nexus/models';
+import { isGroup } from '../../guards';
 
 /* -------------------------- */
 /* ----- TYPES & SHAPES ----- */
@@ -100,19 +101,31 @@ type EntityOpts = Partial<
   Pick<ResolvedEntity, 'id' | 'attributes' | 'rawLink'>
 >;
 
-type GroupOpts = EntityOpts & { children?: Entity[] };
+type GroupOpts = EntityOpts & { isRoot?: boolean; children?: Entity[] };
+
+function prefixChildrenPaths(group: Group, prefix: string): void {
+  group.children.forEach((c) => {
+    c.path = `${prefix}${c.path}`;
+
+    if (isGroup(c)) {
+      prefixChildrenPaths(c, prefix);
+    }
+  });
+}
 
 export function makeGroup(
   name: string,
   children: Entity[] = [],
   opts: Omit<GroupOpts, 'children'> = {}
 ): Group {
-  const { id = name, attributes = [], rawLink } = opts;
+  const { id = name, attributes = [], rawLink, isRoot = false } = opts;
+  const path = isRoot ? '/' : `/${name}`;
 
   const group: Group = {
     uid: nanoid(),
     id,
     name,
+    path,
     kind: EntityKind.Group,
     children,
     attributes,
@@ -123,6 +136,7 @@ export function makeGroup(
     child.parent = group;
   });
 
+  prefixChildrenPaths(group, isRoot ? '' : path);
   return group;
 }
 
@@ -138,6 +152,7 @@ export function makeDataset<S extends HDF5Shape, T extends HDF5Type>(
     uid: nanoid(),
     id,
     name,
+    path: `/${name}`,
     kind: EntityKind.Dataset,
     attributes,
     shape,
@@ -166,6 +181,7 @@ export function makeDatatype<T extends HDF5Type>(
     uid: nanoid(),
     id,
     name,
+    path: `/${name}`,
     kind: EntityKind.Datatype,
     attributes,
     type,
@@ -177,6 +193,7 @@ function makeLink<T extends HDF5Link>(rawLink: T): Link<T> {
   return {
     uid: nanoid(),
     name: rawLink.title,
+    path: `/${rawLink.title}`,
     kind: EntityKind.Link,
     attributes: [],
     rawLink,

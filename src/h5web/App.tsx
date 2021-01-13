@@ -35,7 +35,7 @@ function App(): ReactElement {
 
       <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
         <BreadcrumbsBar
-          entityPath={selectedPath}
+          path={selectedPath}
           isExplorerOpen={isExplorerOpen}
           isInspecting={isInspecting}
           onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}

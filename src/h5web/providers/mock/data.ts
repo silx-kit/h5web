@@ -32,6 +32,7 @@ import {
 export const mockDomain = 'source.h5';
 
 export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
+  isRoot: true,
   defaultPath: 'nexus_entry',
   children: [
     makeGroup('entities', [
