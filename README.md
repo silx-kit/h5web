@@ -2,8 +2,9 @@
 
 [![Demo](https://img.shields.io/website?down_message=offline&label=demo&up_message=online&url=https%3A%2F%2Fh5web.panosc.eu%2F)](https://h5web.panosc.eu/)
 
-H5Web is a web-based viewer to explore HDF5 files. It is built with React and
-uses [react-three-fiber](https://github.com/react-spring/react-three-fiber) for
+H5Web is a stand-alone, web-based viewer to explore HDF5 files. It is built with
+React and uses
+[react-three-fiber](https://github.com/react-spring/react-three-fiber) for
 visualizations.
 
 ![H5Web GIF demo](https://user-images.githubusercontent.com/2936402/102904182-ab3fa400-4471-11eb-9c7a-606deffebc43.gif)
@@ -33,23 +34,18 @@ providers out of the box, which are both under active development:
 
 ## Demos
 
-The demo at https://h5web.panosc.eu/ shows the content of an HDF5 file converted
-to JSON with [hdf5-json](https://github.com/HDFGroup/hdf5-json) and hosted on a
-remote static server.
-
-At https://h5web.panosc.eu/mock, you can view a set of mock data generated
-entirely on the front-end. This demo and its provider, `MockProvider` are used
-for end-to-end testing purposes.
+The stand-alone demo app demonstrates the use of the built-in data providers and
+visualizations. Three demos are available, one per data provider:
 
 ### [Jupyter Lab HDF5 extension](https://github.com/jupyterlab/jupyterlab-hdf5)
 
-This demo is available at https://h5web.panosc.eu/jupyter.
+This demo is available at https://h5web.panosc.eu.
 
 The following HDF5 files can be reached with a URL of the form
 `https://h5web.panosc.eu/jupyter?domain=<name>`:
 
-- `water_224.h5` (**default**): A file with data similar to the main demo
-  https://h5web.panosc.eu/.
+- `water_224.h5` (**default**): A typical NeXUS file with various real-world
+  datasets to demonstrate the visualizations.
 - `compressed.h5`: A file with datasets compressed with various filters to test
   decompression.
 - `links.h5`: A file with external links, soft links and a virtual dataset to
@@ -67,3 +63,9 @@ The following HDF5 files can be reached with a URL of the form
 - `/home/reader/links`: The file `links.h5`.
 - `/home/reader/compressed`: The file `compressed.h5`.
 - `/home/reader/tall`: The demo file of HSDS.
+
+### Mock data
+
+At https://h5web.panosc.eu/mock, you can view a set of mock data generated
+entirely on the front-end. This demo and its provider, `MockProvider` are used
+for end-to-end testing purposes.

@@ -9,26 +9,24 @@ import type {
   HsdsValueResponse,
   HsdsAttributeWithValueResponse,
   HsdsLink,
+  HsdsMetadata,
+  HsdsDataset,
+  HsdsDatatype,
+  HsdsGroup,
 } from './models';
 import type { Entity, Metadata } from '../models';
 import {
   HDF5Collection,
-  HDF5Dataset,
-  HDF5Datatype,
-  HDF5Group,
   HDF5HardLink,
   HDF5Id,
-  HDF5RootLink,
   HDF5Value,
   HDF5Attribute,
   HDF5Link,
   HDF5LinkClass,
-  HDF5Metadata,
 } from '../hdf5-models';
-import { assertDefined, assertReachable, isReachable } from '../../guards';
+import { assertDefined, assertHardLink, isHardLink } from '../../guards';
 import type { ProviderAPI } from '../context';
-import { buildEntity, buildTree } from '../utils';
-import { isHsdsExternalLink } from './utils';
+import { isHsdsExternalLink, buildEntity, buildTree } from './utils';
 
 export class HsdsApi implements ProviderAPI {
   public readonly domain: string;
@@ -37,9 +35,9 @@ export class HsdsApi implements ProviderAPI {
   private rootId?: string;
   private readonly entitiesByPath = new Map<string, Entity>();
 
-  private groups: Record<HDF5Id, HDF5Group> = {};
-  private datasets: Record<HDF5Id, HDF5Dataset> = {};
-  private datatypes: Record<HDF5Id, HDF5Datatype> = {};
+  private groups: Record<HDF5Id, HsdsGroup> = {};
+  private datasets: Record<HDF5Id, HsdsDataset> = {};
+  private datatypes: Record<HDF5Id, HsdsDatatype> = {};
 
   public constructor(
     url: string,
@@ -89,12 +87,12 @@ export class HsdsApi implements ProviderAPI {
     return this.rootId;
   }
 
-  private async getLinkTo(path: string): Promise<HDF5HardLink | HDF5RootLink> {
+  private async getLinkTo(path: string): Promise<HDF5HardLink> {
     if (path === '/') {
       const rootId = await this.getRootId();
       return {
-        class: HDF5LinkClass.Root as const,
-        collection: HDF5Collection.Groups as const,
+        class: HDF5LinkClass.Hard,
+        collection: HDF5Collection.Groups,
         title: this.domain,
         id: rootId,
       };
@@ -109,12 +107,12 @@ export class HsdsApi implements ProviderAPI {
       ({ title }) => title === childName
     );
     assertDefined(childLink);
-    assertReachable(childLink);
+    assertHardLink(childLink);
 
     return childLink;
   }
 
-  private async getHdf5Group(id: HDF5Id, path: string): Promise<HDF5Group> {
+  private async getHdf5Group(id: HDF5Id, path: string): Promise<HsdsGroup> {
     if (!this.groups[id]) {
       await this.processGroup(id, path, 1);
     }
@@ -122,7 +120,7 @@ export class HsdsApi implements ProviderAPI {
     return this.groups[id];
   }
 
-  private async getHdf5Metadata(): Promise<Required<HDF5Metadata>> {
+  private async getHdf5Metadata(): Promise<Required<HsdsMetadata>> {
     return {
       root: await this.getRootId(),
       groups: this.groups,
@@ -204,7 +202,7 @@ export class HsdsApi implements ProviderAPI {
       );
 
     this.groups[id] = {
-      alias: [path || '/'], // path
+      path: path || '/',
       ...(attributes ? { attributes } : {}),
       ...(links ? { links } : {}),
     };
@@ -212,7 +210,7 @@ export class HsdsApi implements ProviderAPI {
     if (links) {
       await Promise.all(
         links
-          .filter(isReachable)
+          .filter(isHardLink)
           .map((link) =>
             this.resolveLink(link, `${path}/${link.title}`, depth - 1)
           )
@@ -229,7 +227,7 @@ export class HsdsApi implements ProviderAPI {
         : undefined;
 
     this.datasets[id] = {
-      alias: [path],
+      path,
       ...dataset,
       ...(attributes ? { attributes } : {}),
     };
@@ -237,11 +235,11 @@ export class HsdsApi implements ProviderAPI {
 
   private async processDatatype(id: HDF5Id, path: string): Promise<void> {
     const datatype = await this.fetchDatatype(id);
-    this.datatypes[id] = { alias: [path], ...datatype };
+    this.datatypes[id] = { path, ...datatype };
   }
 
   private async resolveLink(
-    link: HDF5HardLink | HDF5RootLink,
+    link: HDF5HardLink,
     path: string,
     depth = Infinity
   ): Promise<void> {

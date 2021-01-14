@@ -1,7 +1,5 @@
 import type { Group, Entity, Dataset } from '../../providers/models';
 import type {
-  HDF5Group,
-  HDF5Dataset,
   HDF5Value,
   HDF5NumericType,
   HDF5SimpleShape,
@@ -20,7 +18,7 @@ import { isScaleType } from '../shared/utils';
 import { getChildEntity, getEntityAtPath } from '../../utils';
 
 export function getAttributeValue(
-  entity: HDF5Dataset | HDF5Group | Entity,
+  entity: Entity,
   attributeName: NxAttribute
 ): HDF5Value {
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;

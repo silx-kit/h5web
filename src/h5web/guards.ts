@@ -17,7 +17,6 @@ import {
   HDF5BaseType,
   HDF5Type,
   HDF5TypeClass,
-  HDF5RootLink,
   HDF5ScalarShape,
   HDF5NumericType,
 } from './providers/hdf5-models';
@@ -88,11 +87,8 @@ export function isLink(entity: Entity): entity is Link {
   return entity.kind === EntityKind.Link;
 }
 
-export function isReachable(
-  link: HDF5Link
-): link is HDF5HardLink | HDF5RootLink {
-  // Only hard and root links are considered as reachable for now
-  return link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root;
+export function isHardLink(link: HDF5Link): link is HDF5HardLink {
+  return link.class === HDF5LinkClass.Hard;
 }
 
 export function hasSimpleShape<T extends HDF5Type>(
@@ -145,11 +141,9 @@ export function assertGroup(
   }
 }
 
-export function assertReachable(
-  link: HDF5Link
-): asserts link is HDF5HardLink | HDF5RootLink {
-  if (!isReachable(link)) {
-    throw new Error('Expected link to be reachable');
+export function assertHardLink(link: HDF5Link): asserts link is HDF5HardLink {
+  if (!isHardLink(link)) {
+    throw new Error('Expected link to be hard link');
   }
 }
 
