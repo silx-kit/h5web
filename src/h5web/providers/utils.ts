@@ -12,12 +12,13 @@ import { isReachable } from '../guards';
 import { nanoid } from 'nanoid';
 
 function buildDataset(dataset: HDF5Dataset, link: HDF5HardLink): Dataset {
-  const { shape, type, attributes = [] } = dataset;
+  const { alias, shape, type, attributes = [] } = dataset;
 
   return {
     uid: nanoid(),
     id: link.id,
     name: link.title,
+    path: alias[0],
     kind: EntityKind.Dataset,
     attributes,
     shape,
@@ -27,12 +28,13 @@ function buildDataset(dataset: HDF5Dataset, link: HDF5HardLink): Dataset {
 }
 
 function buildDatatype(datatype: HDF5Datatype, link: HDF5HardLink): Datatype {
-  const { type } = datatype;
+  const { alias, type } = datatype;
 
   return {
     uid: nanoid(),
     id: link.id,
     name: link.title,
+    path: alias[0],
     kind: EntityKind.Datatype,
     attributes: [],
     type,
@@ -45,8 +47,11 @@ export function buildGroup(
   link: HDF5HardLink | HDF5RootLink
 ): Group {
   const rawGroup = metadata.groups[link.id];
+  const { alias, attributes, links } = rawGroup;
 
-  const children = (rawGroup.links || []).map((link) => {
+  const children = (links || []).map((link) => {
+    const childPath = `${alias[0] === '/' ? '' : alias[0]}/${link.title}`;
+
     if (isReachable(link)) {
       return buildEntity(metadata, link);
     }
@@ -54,6 +59,7 @@ export function buildGroup(
     return {
       uid: nanoid(),
       name: link.title,
+      path: childPath,
       kind: EntityKind.Link,
       attributes: [],
       rawLink: link,
@@ -64,8 +70,9 @@ export function buildGroup(
     uid: nanoid(),
     id: link.id,
     name: link.title,
+    path: alias[0],
     kind: EntityKind.Group,
-    attributes: rawGroup.attributes || [],
+    attributes: attributes || [],
     children,
     rawLink: link,
   };

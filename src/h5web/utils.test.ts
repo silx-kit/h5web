@@ -4,7 +4,7 @@ import {
   makeDataset,
   makeGroup,
 } from './providers/mock/utils';
-import { getChildEntity, getEntityAtPath, getParents } from './utils';
+import { getChildEntity, getEntityAtPath } from './utils';
 
 describe('Global utilities', () => {
   describe('getChildEntity', () => {
@@ -59,18 +59,6 @@ describe('Global utilities', () => {
       expect(getEntityAtPath(rootGroup, '/', false)).toBeUndefined();
       expect(getEntityAtPath(childGroup1, '', false)).toBeUndefined();
       expect(getEntityAtPath(childGroup1, '/', false)).toBe(rootGroup);
-    });
-  });
-
-  describe('getParents', () => {
-    const dataset = makeDataset('dataset', scalarShape, intType);
-    const childGroup = makeGroup('group', [dataset]);
-    const rootGroup = makeGroup('root', [childGroup]);
-
-    it('should return array of parent groups', () => {
-      expect(getParents(dataset)).toEqual([rootGroup, childGroup]);
-      expect(getParents(childGroup)).toEqual([rootGroup]);
-      expect(getParents(rootGroup)).toEqual([]);
     });
   });
 });

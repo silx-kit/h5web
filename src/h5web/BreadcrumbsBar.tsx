@@ -6,7 +6,7 @@ import ToggleBtn from './toolbar/controls/ToggleBtn';
 import { ProviderContext } from './providers/context';
 
 interface Props {
-  entityPath: string;
+  path: string;
   isExplorerOpen: boolean;
   isInspecting: boolean;
   onToggleExplorer: () => void;
@@ -15,19 +15,19 @@ interface Props {
 
 function BreadcrumbsBar(props: Props): ReactElement {
   const {
-    entityPath,
+    path,
     isExplorerOpen,
     isInspecting,
     onToggleExplorer,
     onChangeInspecting,
   } = props;
 
-  if (!entityPath.startsWith('/')) {
+  if (!path.startsWith('/')) {
     throw new Error("Expected path to start with '/'");
   }
 
   const { domain } = useContext(ProviderContext);
-  const crumbs = `${domain}${entityPath === '/' ? '' : entityPath}`.split('/');
+  const crumbs = [domain, ...`${path === '/' ? '' : path}`.split('/').slice(1)];
   const firstCrumbIndex = isExplorerOpen ? 1 : 0; // skip domain crumb if explorer is open
 
   return (

@@ -35,8 +35,3 @@ export function getEntityAtPath(
     startingGroup
   );
 }
-
-export function getParents(entity: Entity, prevParents: Group[] = []): Group[] {
-  const { parent } = entity;
-  return parent ? getParents(parent, [parent, ...prevParents]) : prevParents;
-}

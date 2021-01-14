@@ -102,12 +102,14 @@ export class JupyterApi implements ProviderAPI {
 
       const group: Group = {
         uid: nanoid(),
-        name,
         id: path,
+        name,
+        path,
         kind: type,
         children,
         attributes,
       };
+
       group.children.forEach((child) => {
         child.parent = group;
       });
@@ -119,8 +121,9 @@ export class JupyterApi implements ProviderAPI {
       const { name, type, shape: dims } = response;
       return {
         uid: nanoid(),
-        name,
         id: path,
+        name,
+        path,
         kind: type,
         attributes,
         // TODO: Find the type from the dtype OR change the backend to return the true HDF5Type
@@ -136,8 +139,9 @@ export class JupyterApi implements ProviderAPI {
     // Consider other as unresolved soft links
     return {
       uid: nanoid(),
-      kind: EntityKind.Link,
       name: path,
+      path,
+      kind: EntityKind.Link,
       attributes,
       rawLink: {
         class: HDF5LinkClass.Soft,

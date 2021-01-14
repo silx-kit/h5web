@@ -1,6 +1,12 @@
 import { buildTree } from './utils';
 import { EntityKind, Dataset, Group, Metadata } from './models';
-import { HDF5Collection, HDF5RootLink, HDF5LinkClass } from './hdf5-models';
+import {
+  HDF5Collection,
+  HDF5RootLink,
+  HDF5LinkClass,
+  HDF5Metadata,
+  HDF5HardLink,
+} from './hdf5-models';
 import { intType, scalarShape, makeStrAttr } from './mock/utils';
 
 const domain = 'domain';
@@ -14,14 +20,15 @@ const rootLink: HDF5RootLink = {
 describe('Provider utilities', () => {
   describe('buildTree', () => {
     it('should process empty metadata', () => {
-      const emptyMetadata = {
+      const emptyMetadata: HDF5Metadata = {
         root: '913d8791',
-        groups: { '913d8791': {} },
+        groups: { '913d8791': { alias: ['/'] } },
       };
 
       const expectedTree: Metadata = {
         uid: expect.any(String),
         id: '913d8791',
+        path: '/',
         name: domain,
         kind: EntityKind.Group,
         children: [],
@@ -33,21 +40,25 @@ describe('Provider utilities', () => {
     });
 
     it('should process metadata with single dataset in root group', () => {
-      const link = {
-        class: HDF5LinkClass.Hard as const,
+      const link: HDF5HardLink = {
+        class: HDF5LinkClass.Hard,
         collection: HDF5Collection.Datasets,
         title: 'foo',
         id: '1203fee7',
       };
-      const simpleMetadata = {
+
+      const simpleMetadata: HDF5Metadata = {
         root: '913d8791',
-        groups: { '913d8791': { links: [link] } },
-        datasets: { '1203fee7': { type: intType, shape: scalarShape } },
+        groups: { '913d8791': { alias: ['/'], links: [link] } },
+        datasets: {
+          '1203fee7': { alias: ['/foo'], type: intType, shape: scalarShape },
+        },
       };
 
       const expectedTree: Metadata = {
         uid: expect.any(String),
         id: '913d8791',
+        path: '/',
         name: domain,
         kind: EntityKind.Group,
         children: [],
@@ -57,8 +68,9 @@ describe('Provider utilities', () => {
 
       const expectedChild: Dataset = {
         uid: expect.any(String),
+        path: '/foo',
         id: '1203fee7',
-        name: link.title,
+        name: 'foo',
         kind: EntityKind.Dataset,
         parent: expectedTree,
         attributes: [],
@@ -72,33 +84,44 @@ describe('Provider utilities', () => {
     });
 
     it('should process metadata with nested groups', () => {
-      const datasetLink = {
-        class: HDF5LinkClass.Hard as const,
+      const datasetLink: HDF5HardLink = {
+        class: HDF5LinkClass.Hard,
         collection: HDF5Collection.Datasets,
         title: 'foo',
         id: '1203fee7',
       };
 
       const groupAttr = makeStrAttr('attr', 'foo');
-      const groupLink = {
-        class: HDF5LinkClass.Hard as const,
+      const groupLink: HDF5HardLink = {
+        class: HDF5LinkClass.Hard,
         collection: HDF5Collection.Groups,
         title: 'group',
         id: '0a68caca',
       };
 
-      const nestedMetadata = {
+      const nestedMetadata: HDF5Metadata = {
         root: '913d8791',
         groups: {
-          '913d8791': { links: [groupLink] },
-          '0a68caca': { attributes: [groupAttr], links: [datasetLink] },
+          '913d8791': { alias: ['/'], links: [groupLink] },
+          '0a68caca': {
+            alias: ['/group'],
+            attributes: [groupAttr],
+            links: [datasetLink],
+          },
         },
-        datasets: { '1203fee7': { type: intType, shape: scalarShape } },
+        datasets: {
+          '1203fee7': {
+            alias: ['/group/foo'],
+            type: intType,
+            shape: scalarShape,
+          },
+        },
       };
 
       const expectedTree: Metadata = {
         uid: expect.any(String),
         id: '913d8791',
+        path: '/',
         name: domain,
         kind: EntityKind.Group,
         children: [],
@@ -109,6 +132,7 @@ describe('Provider utilities', () => {
       const expectedChildGroup: Group = {
         uid: expect.any(String),
         id: '0a68caca',
+        path: '/group',
         name: 'group',
         kind: EntityKind.Group,
         parent: expectedTree,
@@ -120,6 +144,7 @@ describe('Provider utilities', () => {
       const expectedChildDataset: Dataset = {
         uid: expect.any(String),
         id: '1203fee7',
+        path: '/group/foo',
         name: 'foo',
         kind: EntityKind.Dataset,
         parent: expectedChildGroup,

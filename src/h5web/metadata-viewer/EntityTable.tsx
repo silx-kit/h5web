@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 import type { Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import {
@@ -12,7 +12,7 @@ import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 import LinkInfo from './LinkInfo';
 import { capitalize } from 'lodash-es';
-import { getParents } from '../utils';
+import { ProviderContext } from '../providers/context';
 
 interface Props {
   entity: Entity;
@@ -20,7 +20,8 @@ interface Props {
 
 function EntityTable(props: Props): ReactElement {
   const { entity } = props;
-  const { name, kind } = entity;
+  const { name, path, kind } = entity;
+  const { domain } = useContext(ProviderContext);
 
   return (
     <table className={styles.table}>
@@ -37,18 +38,12 @@ function EntityTable(props: Props): ReactElement {
           </tr>
         )}
         <tr>
-          <th scope="row">Name</th>
-          <td>{name}</td>
+          <th scope="row">Path</th>
+          <td>{path}</td>
         </tr>
         <tr>
-          <th scope="row">Path</th>
-          <td>
-            /
-            {[...getParents(entity), entity]
-              .slice(1)
-              .map(({ name }) => name)
-              .join('/')}
-          </td>
+          <th scope="row">Name</th>
+          <td>{path === '/' ? domain : name}</td>
         </tr>
         {(isDataset(entity) || isDatatype(entity)) && (
           <tr>
