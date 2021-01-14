@@ -141,12 +141,6 @@ export function assertGroup(
   }
 }
 
-export function assertHardLink(link: HDF5Link): asserts link is HDF5HardLink {
-  if (!isHardLink(link)) {
-    throw new Error('Expected link to be hard link');
-  }
-}
-
 export function assertNumericType<S extends HDF5Shape>(
   dataset: Dataset<S>
 ): asserts dataset is Dataset<S, HDF5NumericType> {
