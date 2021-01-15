@@ -35,3 +35,11 @@ export function getEntityAtPath(
     startingGroup
   );
 }
+
+export function buildEntityPath(
+  parentPath: string,
+  entityNameOrRelativePath: string
+): string {
+  const prefix = parentPath === '/' ? '' : parentPath;
+  return `${prefix}/${entityNameOrRelativePath}`;
+}

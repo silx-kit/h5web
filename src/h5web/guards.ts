@@ -123,6 +123,10 @@ export function hasNumericType<S extends HDF5Shape>(
   );
 }
 
+export function isAbsolutePath(path: string) {
+  return path.startsWith('/');
+}
+
 export function assertDataset(
   entity: Entity,
   message = 'Expected dataset'
@@ -158,5 +162,11 @@ export function assertSimpleShape<T extends HDF5Type>(
 
   if (dataset.shape.dims.length === 0) {
     throw new Error('Expected dataset with simple shape to have dimensions');
+  }
+}
+
+export function assertAbsolutePath(path: string) {
+  if (!isAbsolutePath(path)) {
+    throw new Error("Expected path to start with '/'");
   }
 }

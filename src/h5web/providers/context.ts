@@ -13,6 +13,6 @@ export abstract class ProviderAPI {
 export const ProviderContext = createContext<{
   domain: string;
   metadata: Metadata;
-  entitiesStore: FetchStore<Entity, HDF5Id>;
+  entitiesStore: FetchStore<Entity, string>;
   valuesStore: FetchStore<HDF5Value, HDF5Id>;
 }>({} as any); // eslint-disable-line @typescript-eslint/no-explicit-any

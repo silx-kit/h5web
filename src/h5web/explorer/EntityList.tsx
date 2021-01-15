@@ -3,6 +3,7 @@ import styles from './Explorer.module.css';
 import { ProviderContext } from '../providers/context';
 import EntityItem from './EntityItem';
 import { assertGroup } from '../guards';
+import { buildEntityPath } from '../utils';
 
 interface Props {
   level: number;
@@ -26,12 +27,11 @@ function EntityList(props: Props): ReactElement {
     <ul className={styles.group} role="group">
       {group.children.map((entity) => {
         const { uid, name } = entity;
-        const path = `${parentPath === '/' ? '' : parentPath}/${name}`;
 
         return (
           <EntityItem
             key={uid}
-            path={path}
+            path={buildEntityPath(parentPath, name)}
             entity={entity}
             level={level}
             selectedPath={selectedPath}
