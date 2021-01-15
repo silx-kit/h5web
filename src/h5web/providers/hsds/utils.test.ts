@@ -1,17 +1,12 @@
 import { buildTree } from './utils';
-import { EntityKind, Dataset, Group, Metadata } from './models';
-import {
-  HDF5Collection,
-  HDF5RootLink,
-  HDF5LinkClass,
-  HDF5Metadata,
-  HDF5HardLink,
-} from './hdf5-models';
-import { intType, scalarShape, makeStrAttr } from './mock/utils';
+import { EntityKind, Dataset, Group, Metadata } from '../models';
+import type { HsdsMetadata } from './models';
+import { HDF5Collection, HDF5LinkClass, HDF5HardLink } from '../hdf5-models';
+import { intType, scalarShape, makeStrAttr } from '../mock/utils';
 
 const domain = 'domain';
-const rootLink: HDF5RootLink = {
-  class: HDF5LinkClass.Root,
+const rootLink: HDF5HardLink = {
+  class: HDF5LinkClass.Hard,
   collection: HDF5Collection.Groups,
   title: domain,
   id: '913d8791',
@@ -20,9 +15,9 @@ const rootLink: HDF5RootLink = {
 describe('Provider utilities', () => {
   describe('buildTree', () => {
     it('should process empty metadata', () => {
-      const emptyMetadata: HDF5Metadata = {
+      const emptyMetadata: HsdsMetadata = {
         root: '913d8791',
-        groups: { '913d8791': { alias: ['/'] } },
+        groups: { '913d8791': { path: '/' } },
       };
 
       const expectedTree: Metadata = {
@@ -47,11 +42,11 @@ describe('Provider utilities', () => {
         id: '1203fee7',
       };
 
-      const simpleMetadata: HDF5Metadata = {
+      const simpleMetadata: HsdsMetadata = {
         root: '913d8791',
-        groups: { '913d8791': { alias: ['/'], links: [link] } },
+        groups: { '913d8791': { path: '/', links: [link] } },
         datasets: {
-          '1203fee7': { alias: ['/foo'], type: intType, shape: scalarShape },
+          '1203fee7': { path: '/foo', type: intType, shape: scalarShape },
         },
       };
 
@@ -99,19 +94,19 @@ describe('Provider utilities', () => {
         id: '0a68caca',
       };
 
-      const nestedMetadata: HDF5Metadata = {
+      const nestedMetadata: HsdsMetadata = {
         root: '913d8791',
         groups: {
-          '913d8791': { alias: ['/'], links: [groupLink] },
+          '913d8791': { path: '/', links: [groupLink] },
           '0a68caca': {
-            alias: ['/group'],
+            path: '/group',
             attributes: [groupAttr],
             links: [datasetLink],
           },
         },
         datasets: {
           '1203fee7': {
-            alias: ['/group/foo'],
+            path: '/group/foo',
             type: intType,
             shape: scalarShape,
           },
