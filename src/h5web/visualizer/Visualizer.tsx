@@ -1,4 +1,4 @@
-import { ReactElement, Suspense, useState } from 'react';
+import { ReactElement, Suspense, useContext, useState } from 'react';
 import type { Entity } from '../providers/models';
 import styles from './Visualizer.module.css';
 import { getSupportedVis } from './utils';
@@ -8,6 +8,7 @@ import Loader from './Loader';
 import Profiler from '../Profiler';
 import ErrorMessage from './ErrorMessage';
 import { ErrorBoundary } from 'react-error-boundary';
+import { ProviderContext } from '../providers/context';
 
 interface Props {
   entity?: Entity;
@@ -16,7 +17,8 @@ interface Props {
 function Visualizer(props: Props): ReactElement {
   const { entity } = props;
 
-  const { supportedVis, error } = getSupportedVis(entity);
+  const { metadata } = useContext(ProviderContext);
+  const { supportedVis, error } = getSupportedVis(entity, metadata);
   const [activeVis, setActiveVis] = useState<Vis>();
 
   // Update `activeVis` state as needed

@@ -1,4 +1,4 @@
-import type { Group, Entity, Dataset } from '../../providers/models';
+import type { Group, Entity, Dataset, Metadata } from '../../providers/models';
 import type {
   HDF5Value,
   HDF5NumericType,
@@ -12,10 +12,11 @@ import {
   assertDataset,
   assertNumericType,
   assertSimpleShape,
+  isAbsolutePath,
 } from '../../guards';
 import { NxAttribute, NxInterpretation, SilxStyle } from './models';
 import { isScaleType } from '../shared/utils';
-import { getChildEntity, getEntityAtPath } from '../../utils';
+import { buildEntityPath, getChildEntity, getEntityAtPath } from '../../utils';
 
 export function getAttributeValue(
   entity: Entity,
@@ -24,7 +25,10 @@ export function getAttributeValue(
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }
 
-export function findNxDataGroup(group: Group): Group | undefined {
+export function findNxDataGroup(
+  group: Group,
+  metadata: Metadata
+): Group | undefined {
   if (getAttributeValue(group, 'NX_class') === 'NXdata') {
     return group; // `NXdata` group found
   }
@@ -36,11 +40,15 @@ export function findNxDataGroup(group: Group): Group | undefined {
 
   assertStr(defaultPath, `Expected 'default' attribute to be a string`);
 
-  const defaultEntity = getEntityAtPath(group, defaultPath, false);
+  const path = isAbsolutePath(defaultPath)
+    ? defaultPath
+    : buildEntityPath(group.path, defaultPath);
+
+  const defaultEntity = getEntityAtPath(metadata, path, false);
   assertDefined(defaultEntity, `Expected entity at path "${defaultPath}"`);
   assertGroup(defaultEntity, `Expected group at path "${defaultPath}"`);
 
-  const nxDataGroup = findNxDataGroup(defaultEntity);
+  const nxDataGroup = findNxDataGroup(defaultEntity, metadata);
   assertDefined(
     nxDataGroup,
     `Expected NXdata group, or group with 'default' attribute`

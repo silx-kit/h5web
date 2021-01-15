@@ -1,16 +1,18 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useContext, useEffect } from 'react';
 import { assertDefined, assertGroup } from '../../guards';
 import { findNxDataGroup } from '../nexus/utils';
 import type { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { useNxData } from '../nexus/hooks';
 import { useHeatmapConfig } from '../heatmap/config';
+import { ProviderContext } from '../../providers/context';
 
 function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertGroup(entity);
 
-  const nxDataGroup = findNxDataGroup(entity);
+  const { metadata } = useContext(ProviderContext);
+  const nxDataGroup = findNxDataGroup(entity, metadata);
   assertDefined(nxDataGroup, 'Expected to find NXdata group');
 
   const nxData = useNxData(nxDataGroup);

@@ -171,7 +171,7 @@ export class HsdsApi implements ProviderAPI {
         )
     );
 
-    const group: Group = {
+    return {
       uid: nanoid(),
       id,
       path,
@@ -180,12 +180,6 @@ export class HsdsApi implements ProviderAPI {
       attributes,
       children,
     };
-
-    children.forEach((c) => {
-      c.parent = group;
-    });
-
-    return group;
   }
 
   private async processDataset(

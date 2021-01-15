@@ -1,10 +1,5 @@
-import type { Entity, Group } from './providers/models';
-import { isGroup } from './guards';
-
-function findRoot(entity: Entity): Entity {
-  const { parent } = entity;
-  return parent ? findRoot(parent) : entity;
-}
+import type { Entity, Group, Metadata } from './providers/models';
+import { assertAbsolutePath, isGroup } from './guards';
 
 export function getChildEntity(
   group: Group,
@@ -14,25 +9,23 @@ export function getChildEntity(
 }
 
 export function getEntityAtPath(
-  baseGroup: Group,
+  root: Metadata,
   path: string,
   allowSelf = true
 ): Entity | undefined {
-  const isAbsolutePath = path.startsWith('/');
-  const startingGroup = isAbsolutePath ? findRoot(baseGroup) : baseGroup;
+  assertAbsolutePath(path);
 
-  if (path === '/' || path === '') {
-    return allowSelf || startingGroup !== baseGroup ? startingGroup : undefined;
+  if (path === '/') {
+    return allowSelf ? root : undefined;
   }
 
-  const pathSegments = path.slice(isAbsolutePath ? 1 : 0).split('/');
+  const pathSegments = path.slice(1).split('/');
   return pathSegments.reduce<Entity | undefined>(
-    (parentEntity, currSegment) => {
-      return parentEntity && isGroup(parentEntity)
+    (parentEntity, currSegment) =>
+      parentEntity && isGroup(parentEntity)
         ? getChildEntity(parentEntity, currSegment)
-        : undefined;
-    },
-    startingGroup
+        : undefined,
+    root
   );
 }
 

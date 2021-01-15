@@ -1,16 +1,18 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useContext, useEffect } from 'react';
 import { assertDefined, assertGroup } from '../../guards';
 import MappedLineVis from '../line/MappedLineVis';
 import { findNxDataGroup } from '../nexus/utils';
 import type { VisContainerProps } from './models';
 import { useNxData } from '../nexus/hooks';
 import { useNxSpectrumConfig } from '../nexus/config';
+import { ProviderContext } from '../../providers/context';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertGroup(entity);
 
-  const nxDataGroup = findNxDataGroup(entity);
+  const { metadata } = useContext(ProviderContext);
+  const nxDataGroup = findNxDataGroup(entity, metadata);
   assertDefined(nxDataGroup, 'Expected to find NXdata group');
 
   const nxData = useNxData(nxDataGroup);

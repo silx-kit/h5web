@@ -133,10 +133,6 @@ export function makeGroup(
     rawLink,
   };
 
-  group.children.forEach((child) => {
-    child.parent = group;
-  });
-
   prefixChildrenPaths(group, path);
   return group;
 }

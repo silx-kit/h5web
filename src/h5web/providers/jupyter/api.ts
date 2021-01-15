@@ -100,7 +100,7 @@ export class JupyterApi implements ProviderAPI {
             )
           : [];
 
-      const group: Group = {
+      return {
         uid: nanoid(),
         id: path,
         name,
@@ -109,12 +109,6 @@ export class JupyterApi implements ProviderAPI {
         children,
         attributes,
       };
-
-      group.children.forEach((child) => {
-        child.parent = group;
-      });
-
-      return group;
     }
 
     if (isDatasetResponse(response)) {
@@ -132,7 +126,6 @@ export class JupyterApi implements ProviderAPI {
           dims.length > 0
             ? { class: HDF5ShapeClass.Simple, dims }
             : { class: HDF5ShapeClass.Scalar },
-        // `parent` is set by the containing group
       };
     }
 

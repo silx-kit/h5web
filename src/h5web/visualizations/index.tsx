@@ -3,7 +3,7 @@ import { FiCode, FiGrid, FiActivity, FiMap, FiCpu } from 'react-icons/fi';
 import type { IconType } from 'react-icons';
 import LineToolbar from '../toolbar/LineToolbar';
 import HeatmapToolbar from '../toolbar/HeatmapToolbar';
-import type { Entity } from '../providers/models';
+import type { Entity, Metadata } from '../providers/models';
 import {
   hasScalarShape,
   hasBaseType,
@@ -46,7 +46,7 @@ interface VisDef {
   Icon: IconType;
   Toolbar?: ElementType<ToolbarProps>;
   Container: ElementType<VisContainerProps>;
-  supportsEntity: (entity: Entity) => boolean;
+  supportsEntity: (entity: Entity, metadata: Metadata) => boolean;
 }
 
 export const VIS_DEFS: Record<Vis, VisDef> = {
@@ -109,12 +109,12 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Icon: FiActivity,
     Toolbar: NxSpectrumToolbar,
     Container: NxSpectrumContainer,
-    supportsEntity: (entity) => {
+    supportsEntity: (entity, metadata) => {
       if (!isGroup(entity)) {
         return false;
       }
 
-      const group = findNxDataGroup(entity);
+      const group = findNxDataGroup(entity, metadata);
       if (!group) {
         return false; // group is not NXdata and doesn't have `default` attribute
       }
@@ -133,12 +133,12 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Icon: FiMap,
     Toolbar: HeatmapToolbar,
     Container: NxImageContainer,
-    supportsEntity: (entity) => {
+    supportsEntity: (entity, metadata) => {
       if (!isGroup(entity)) {
         return false;
       }
 
-      const group = findNxDataGroup(entity);
+      const group = findNxDataGroup(entity, metadata);
       if (!group) {
         return false; // group is not NXdata and doesn't have `default` attribute
       }
