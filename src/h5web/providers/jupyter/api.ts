@@ -34,7 +34,7 @@ export class JupyterApi implements ProviderAPI {
   }
 
   public async getMetadata(): Promise<Metadata> {
-    const rootGrp = await this.processEntity('/');
+    const rootGrp = await this.processEntity('/', Infinity);
     assertGroup(rootGrp);
     return rootGrp;
   }
@@ -74,7 +74,7 @@ export class JupyterApi implements ProviderAPI {
   /** The main tree-building method */
   private async processEntity(
     path: string,
-    depth = Infinity
+    depth: number
   ): Promise<Group | Dataset | Link<HDF5SoftLink>> {
     const response = await this.fetchMetadata(path);
     const { attributeCount } = response;
