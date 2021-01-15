@@ -1,6 +1,7 @@
 import { range } from 'lodash-es';
 import ndarray from 'ndarray';
 import {
+  assertAbsolutePath,
   assertArray,
   assertDataset,
   assertDefined,
@@ -162,6 +163,8 @@ export const mockValues = {
 };
 
 export function getMockDataArray(path: string): ndarray {
+  assertAbsolutePath(path);
+
   const dataset = getEntityAtPath(mockMetadata, path);
   assertDefined(dataset, `Expected entity at path "${path}"`);
   assertDataset(dataset, `Expected group at path "${path}"`);

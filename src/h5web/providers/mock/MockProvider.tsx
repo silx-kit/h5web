@@ -26,7 +26,7 @@ function MockProvider(props: Props): ReactElement {
             });
           }
 
-          const entity = getEntityAtPath(mockMetadata, path, true);
+          const entity = getEntityAtPath(mockMetadata, path);
           assertDefined(entity);
 
           return entity;

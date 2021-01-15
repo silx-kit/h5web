@@ -29,6 +29,7 @@ import { assertDefined, assertGroup, isGroup, isHardLink } from '../../guards';
 import type { ProviderAPI } from '../context';
 import { isHsdsExternalLink } from './utils';
 import { nanoid } from 'nanoid';
+import { buildEntityPath, getChildEntity } from '../../utils';
 
 export class HsdsApi implements ProviderAPI {
   public readonly domain: string;
@@ -76,7 +77,7 @@ export class HsdsApi implements ProviderAPI {
     assertGroup(parentGroup);
 
     const childName = path.slice(path.lastIndexOf('/') + 1);
-    const child = parentGroup.children.find(({ name }) => name === childName);
+    const child = getChildEntity(parentGroup, childName);
     assertDefined(child);
 
     const entity = isGroup(child)
@@ -160,14 +161,13 @@ export class HsdsApi implements ProviderAPI {
       linkCount > 0 && depth > 0 ? this.fetchLinks(id) : Promise.resolve([]),
     ]);
 
-    const childPathPrefix = path === '/' ? '' : path;
     const children = await Promise.all(
       links
         .map<HDF5Link>((link: HsdsLink) =>
           isHsdsExternalLink(link) ? { ...link, file: link.h5domain } : link
         )
         .map((link) =>
-          this.resolveLink(link, `${childPathPrefix}/${link.title}`, depth - 1)
+          this.resolveLink(link, buildEntityPath(path, link.title), depth - 1)
         )
     );
 

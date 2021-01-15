@@ -4,6 +4,7 @@ import styles from './BreadcrumbsBar.module.css';
 import ToggleGroup from './toolbar/controls/ToggleGroup';
 import ToggleBtn from './toolbar/controls/ToggleBtn';
 import { ProviderContext } from './providers/context';
+import { assertAbsolutePath } from './guards';
 
 interface Props {
   path: string;
@@ -22,9 +23,7 @@ function BreadcrumbsBar(props: Props): ReactElement {
     onChangeInspecting,
   } = props;
 
-  if (!path.startsWith('/')) {
-    throw new Error("Expected path to start with '/'");
-  }
+  assertAbsolutePath(path);
 
   const { domain } = useContext(ProviderContext);
   const crumbs = [domain, ...`${path === '/' ? '' : path}`.split('/').slice(1)];

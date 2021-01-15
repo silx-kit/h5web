@@ -32,6 +32,7 @@ import type {
   SilxStyle,
 } from '../../visualizations/nexus/models';
 import { isGroup } from '../../guards';
+import { buildEntityPath } from '../../utils';
 
 /* -------------------------- */
 /* ----- TYPES & SHAPES ----- */
@@ -103,12 +104,12 @@ type EntityOpts = Partial<
 
 type GroupOpts = EntityOpts & { isRoot?: boolean; children?: Entity[] };
 
-function prefixChildrenPaths(group: Group, prefix: string): void {
+function prefixChildrenPaths(group: Group, parentPath: string): void {
   group.children.forEach((c) => {
-    c.path = `${prefix}${c.path}`;
+    c.path = buildEntityPath(parentPath, c.path.slice(1));
 
     if (isGroup(c)) {
-      prefixChildrenPaths(c, prefix);
+      prefixChildrenPaths(c, parentPath);
     }
   });
 }
@@ -136,7 +137,7 @@ export function makeGroup(
     child.parent = group;
   });
 
-  prefixChildrenPaths(group, isRoot ? '' : path);
+  prefixChildrenPaths(group, path);
   return group;
 }
 

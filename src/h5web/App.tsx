@@ -7,8 +7,10 @@ import BreadcrumbsBar from './BreadcrumbsBar';
 import Visualizer from './visualizer/Visualizer';
 import { getEntityAtPath } from './utils';
 import { ProviderContext } from './providers/context';
+import { assertAbsolutePath } from './guards';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
+assertAbsolutePath(DEFAULT_PATH);
 
 function App(): ReactElement {
   const [selectedPath, setSelectedPath] = useState<string>(DEFAULT_PATH);
