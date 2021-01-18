@@ -17,14 +17,16 @@ function AttributesTable(props: Props): ReactElement {
     <table className={styles.table}>
       <thead>
         <tr>
-          <th colSpan={2}>Attributes</th>
+          <th scope="col" colSpan={2}>
+            Attributes
+          </th>
         </tr>
       </thead>
       <tbody>
         {attributes.map(
           ({ name, value }: HDF5Attribute): ReactElement => (
             <tr key={name}>
-              <th>{name}</th>
+              <th scope="row">{name}</th>
               <td>{JSON.stringify(value)}</td>
             </tr>
           )

@@ -31,7 +31,7 @@ describe('MetadataViewer', () => {
     fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
     await selectExplorerNode('entities');
 
-    const column = screen.getByRole('columnheader', { name: /Group/u });
+    const column = await screen.findByRole('columnheader', { name: /Group/u });
     const idRow = screen.getByRole('row', { name: /ID/u });
     const nameRow = screen.getByRole('row', { name: /Name/u });
     const pathRow = screen.getByRole('row', { name: /Path/u });
@@ -47,7 +47,9 @@ describe('MetadataViewer', () => {
     fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
     await selectExplorerNode('entities/scalar_int');
 
-    const column = screen.getByRole('columnheader', { name: /Dataset/u });
+    const column = await screen.findByRole('columnheader', {
+      name: /Dataset/u,
+    });
     const idRow = screen.getByRole('row', { name: /ID/u });
     const nameRow = screen.getByRole('row', { name: /Name/u });
     const pathRow = screen.getByRole('row', { name: /Path/u });
@@ -67,7 +69,7 @@ describe('MetadataViewer', () => {
     fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
     await selectExplorerNode('nD_datasets/threeD');
 
-    const shapeRow = screen.getByRole('row', { name: /Shape/u });
+    const shapeRow = await screen.findByRole('row', { name: /Shape/u });
     expect(shapeRow).toHaveTextContent(/9 x 20 x 41 = 7380/u);
   });
 
@@ -76,7 +78,9 @@ describe('MetadataViewer', () => {
     fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
     await selectExplorerNode('entities/datatype');
 
-    const column = screen.getByRole('columnheader', { name: /Datatype/u });
+    const column = await screen.findByRole('columnheader', {
+      name: /Datatype/u,
+    });
     const idRow = screen.getByRole('row', { name: /ID/u });
     const nameRow = screen.getByRole('row', { name: /Name/u });
     const pathRow = screen.getByRole('row', { name: /Path/u });
@@ -94,7 +98,7 @@ describe('MetadataViewer', () => {
     fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
     await selectExplorerNode('entities/external_link');
 
-    const column = screen.getByRole('columnheader', { name: /Link/u });
+    const column = await screen.findByRole('columnheader', { name: /Link/u });
     const nameRow = screen.getByRole('row', { name: /Name/u });
     const pathRow = screen.getByRole('row', { name: /^Path/u });
     const fileRow = screen.getByRole('row', { name: /File/u });

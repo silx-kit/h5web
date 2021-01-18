@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { Group, Dataset, Metadata, EntityKind, Link, Entity } from '../models';
+import { Group, Dataset, EntityKind, Link, Entity } from '../models';
 import type { ProviderAPI } from '../context';
 import {
   assertGroupContent,
@@ -13,14 +13,13 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { nanoid } from 'nanoid';
-import { makeStrAttr, floatType } from '../mock/utils';
+import { makeStrAttr, floatType } from '../mock/data-utils';
 import {
   HDF5LinkClass,
   HDF5ShapeClass,
   HDF5Value,
   HDF5SoftLink,
 } from '../hdf5-models';
-import { assertGroup } from '../../guards';
 
 export class JupyterApi implements ProviderAPI {
   public readonly domain: string;
@@ -31,12 +30,6 @@ export class JupyterApi implements ProviderAPI {
     this.client = axios.create({
       baseURL: `${url}/hdf`,
     });
-  }
-
-  public async getMetadata(): Promise<Metadata> {
-    const rootGrp = await this.processEntity('/', Infinity);
-    assertGroup(rootGrp);
-    return rootGrp;
   }
 
   public async getEntity(path: string): Promise<Entity> {
@@ -100,7 +93,7 @@ export class JupyterApi implements ProviderAPI {
             )
           : [];
 
-      const group: Group = {
+      return {
         uid: nanoid(),
         id: path,
         name,
@@ -109,12 +102,6 @@ export class JupyterApi implements ProviderAPI {
         children,
         attributes,
       };
-
-      group.children.forEach((child) => {
-        child.parent = group;
-      });
-
-      return group;
     }
 
     if (isDatasetResponse(response)) {
@@ -132,7 +119,6 @@ export class JupyterApi implements ProviderAPI {
           dims.length > 0
             ? { class: HDF5ShapeClass.Simple, dims }
             : { class: HDF5ShapeClass.Scalar },
-        // `parent` is set by the containing group
       };
     }
 

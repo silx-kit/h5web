@@ -27,7 +27,9 @@ function EntityTable(props: Props): ReactElement {
     <table className={styles.table}>
       <thead>
         <tr>
-          <th colSpan={2}>{capitalize(kind)}</th>
+          <th scope="col" colSpan={2}>
+            {capitalize(kind)}
+          </th>
         </tr>
       </thead>
       <tbody>

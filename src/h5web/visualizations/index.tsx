@@ -16,8 +16,8 @@ import type { VisContainerProps } from './containers/models';
 import {
   getAttributeValue,
   isNxInterpretation,
-  findNxDataGroup,
   findSignalDataset,
+  isNxDataGroup,
 } from './nexus/utils';
 import { NxInterpretation } from './nexus/models';
 import {
@@ -110,16 +110,11 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Toolbar: NxSpectrumToolbar,
     Container: NxSpectrumContainer,
     supportsEntity: (entity) => {
-      if (!isGroup(entity)) {
+      if (!isGroup(entity) || !isNxDataGroup(entity)) {
         return false;
       }
 
-      const group = findNxDataGroup(entity);
-      if (!group) {
-        return false; // group is not NXdata and doesn't have `default` attribute
-      }
-
-      const dataset = findSignalDataset(group);
+      const dataset = findSignalDataset(entity);
       const interpretation = getAttributeValue(dataset, 'interpretation');
 
       return (
@@ -134,16 +129,11 @@ export const VIS_DEFS: Record<Vis, VisDef> = {
     Toolbar: HeatmapToolbar,
     Container: NxImageContainer,
     supportsEntity: (entity) => {
-      if (!isGroup(entity)) {
+      if (!isGroup(entity) || !isNxDataGroup(entity)) {
         return false;
       }
 
-      const group = findNxDataGroup(entity);
-      if (!group) {
-        return false; // group is not NXdata and doesn't have `default` attribute
-      }
-
-      const dataset = findSignalDataset(group);
+      const dataset = findSignalDataset(entity);
       if (dataset.shape.dims.length < 2) {
         return false;
       }

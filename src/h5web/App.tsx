@@ -1,13 +1,13 @@
-import { useState, ReactElement, useContext } from 'react';
+import { useState, ReactElement, Suspense } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import BreadcrumbsBar from './BreadcrumbsBar';
 import Visualizer from './visualizer/Visualizer';
-import { getEntityAtPath } from './utils';
-import { ProviderContext } from './providers/context';
 import { assertAbsolutePath } from './guards';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorMessage from './visualizer/ErrorMessage';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
@@ -16,9 +16,6 @@ function App(): ReactElement {
   const [selectedPath, setSelectedPath] = useState<string>(DEFAULT_PATH);
   const [isExplorerOpen, setExplorerOpen] = useState(true);
   const [isInspecting, setInspecting] = useState(false);
-
-  const { metadata } = useContext(ProviderContext);
-  const selectedEntity = getEntityAtPath(metadata, selectedPath);
 
   return (
     <ReflexContainer orientation="vertical">
@@ -43,11 +40,18 @@ function App(): ReactElement {
           onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
           onChangeInspecting={setInspecting}
         />
-        {isInspecting ? (
-          <MetadataViewer entity={selectedEntity} />
-        ) : (
-          <Visualizer entity={selectedEntity} />
-        )}
+        <ErrorBoundary
+          resetKeys={[selectedPath]}
+          FallbackComponent={ErrorMessage}
+        >
+          <Suspense fallback={<p className={styles.fallback}>Loading...</p>}>
+            {isInspecting ? (
+              <MetadataViewer path={selectedPath} />
+            ) : (
+              <Visualizer path={selectedPath} />
+            )}
+          </Suspense>
+        </ErrorBoundary>
       </ReflexElement>
     </ReflexContainer>
   );

@@ -18,7 +18,6 @@ export interface Entity {
   name: string;
   path: string;
   kind: EntityKind;
-  parent?: Group;
   attributes: HDF5Attribute[];
   rawLink?: HDF5Link;
 }

@@ -1,6 +1,5 @@
 import { ReactElement, useEffect } from 'react';
-import { assertDefined, assertGroup } from '../../guards';
-import { findNxDataGroup } from '../nexus/utils';
+import { assertGroup } from '../../guards';
 import type { VisContainerProps } from './models';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import { useNxData } from '../nexus/hooks';
@@ -10,17 +9,14 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertGroup(entity);
 
-  const nxDataGroup = findNxDataGroup(entity);
-  assertDefined(nxDataGroup, 'Expected to find NXdata group');
+  const nxData = useNxData(entity);
+  const { signal, title, axisMapping } = nxData;
 
-  const nxData = useNxData(nxDataGroup);
-
-  const { dims } = nxData.signal;
+  const { dims } = signal;
   if (dims.length < 2) {
     throw new Error('Expected signal dataset with at least two dimensions');
   }
 
-  const { signal, title, axisMapping } = nxData;
   const { setScaleType } = useHeatmapConfig();
 
   useEffect(() => {

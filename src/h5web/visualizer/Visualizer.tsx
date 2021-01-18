@@ -1,22 +1,28 @@
-import { ReactElement, Suspense, useState } from 'react';
-import type { Entity } from '../providers/models';
+import { ReactElement, Suspense, useContext, useState } from 'react';
 import styles from './Visualizer.module.css';
-import { getSupportedVis } from './utils';
+import { getDefaultEntity, getSupportedVis } from './utils';
 import { VIS_DEFS, Vis } from '../visualizations';
 import VisSelector from './VisSelector';
 import Loader from './Loader';
 import Profiler from '../Profiler';
 import ErrorMessage from './ErrorMessage';
 import { ErrorBoundary } from 'react-error-boundary';
+import { ProviderContext } from '../providers/context';
 
 interface Props {
-  entity?: Entity;
+  path: string;
 }
 
 function Visualizer(props: Props): ReactElement {
-  const { entity } = props;
+  const { path } = props;
 
-  const { supportedVis, error } = getSupportedVis(entity);
+  const { entitiesStore } = useContext(ProviderContext);
+  const entity = entitiesStore.get(path);
+
+  // Resolve any `default` attribute(s) to find entity to visualize
+  const defaultEntity = getDefaultEntity(entity, entitiesStore);
+
+  const supportedVis = getSupportedVis(defaultEntity);
   const [activeVis, setActiveVis] = useState<Vis>();
 
   // Update `activeVis` state as needed
@@ -29,11 +35,7 @@ function Visualizer(props: Props): ReactElement {
     setActiveVis(supportedVis[supportedVis.length - 1]);
   }
 
-  if (error) {
-    return <ErrorMessage error={error} />;
-  }
-
-  if (!entity || !activeVis) {
+  if (!activeVis) {
     return <p className={styles.fallback}>Nothing to visualize</p>;
   }
 
@@ -50,10 +52,10 @@ function Visualizer(props: Props): ReactElement {
         {Toolbar && <Toolbar />}
       </div>
       <div className={styles.displayArea}>
-        <ErrorBoundary key={entity.uid} FallbackComponent={ErrorMessage}>
+        <ErrorBoundary key={defaultEntity.uid} FallbackComponent={ErrorMessage}>
           <Suspense fallback={<Loader />}>
             <Profiler id={activeVis}>
-              <Container entity={entity} />
+              <Container entity={defaultEntity} />
             </Profiler>
           </Suspense>
         </ErrorBoundary>

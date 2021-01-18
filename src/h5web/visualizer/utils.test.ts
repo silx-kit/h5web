@@ -10,7 +10,7 @@ import {
   makeNxDataGroup,
   makeSimpleDataset,
   makeIntAttr,
-} from '../providers/mock/utils';
+} from '../providers/mock/data-utils';
 
 describe('Visualizer utilities', () => {
   describe('getSupportedVis', () => {
@@ -18,14 +18,14 @@ describe('Visualizer utilities', () => {
       const datasetRaw = makeDataset('raw', scalarShape, compoundType);
       const supportedVis = getSupportedVis(datasetRaw);
 
-      expect(supportedVis).toEqual({ supportedVis: [Vis.Raw] });
+      expect(supportedVis).toEqual([Vis.Raw]);
     });
 
     it('should not include Raw vis if any other visualization is supported', () => {
       const datasetInt1D = makeSimpleDataset('dataset', intType, [5]);
       const supportedVis = getSupportedVis(datasetInt1D);
 
-      expect(supportedVis).toEqual({ supportedVis: [Vis.Matrix, Vis.Line] });
+      expect(supportedVis).toEqual([Vis.Matrix, Vis.Line]);
     });
 
     it('should not include NxSpectrum vis if any other visualization is supported', () => {
@@ -33,14 +33,14 @@ describe('Visualizer utilities', () => {
       const nxDataSignal2D = makeNxDataGroup('foo', { signal: datasetInt2D });
       const supportedVis = getSupportedVis(nxDataSignal2D);
 
-      expect(supportedVis).toEqual({ supportedVis: [Vis.NxImage] });
+      expect(supportedVis).toEqual([Vis.NxImage]);
     });
 
     it('should return empty array if no visualization is supported', () => {
       const groupEmpty = makeGroup('group_empty');
       const supportedVis = getSupportedVis(groupEmpty);
 
-      expect(supportedVis).toEqual({ supportedVis: [] });
+      expect(supportedVis).toEqual([]);
     });
 
     it('should return error if entity has malformed NeXus metadata', () => {
@@ -51,12 +51,7 @@ describe('Visualizer utilities', () => {
         ],
       });
 
-      const supportedVis = getSupportedVis(nxDataMalformed);
-
-      expect(supportedVis).toEqual({
-        supportedVis: [],
-        error: expect.any(TypeError),
-      });
+      expect(() => getSupportedVis(nxDataMalformed)).toThrow(/to be a string/u);
     });
   });
 });

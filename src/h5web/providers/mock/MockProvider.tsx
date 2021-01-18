@@ -1,8 +1,7 @@
 import type { ReactElement, ReactNode } from 'react';
-import { assertDefined } from '../../guards';
-import { getEntityAtPath } from '../../utils';
 import Provider from '../Provider';
 import { mockMetadata, mockValues, mockDomain } from './data';
+import { findMockEntity } from './utils';
 
 interface Props {
   domain?: string;
@@ -18,7 +17,6 @@ function MockProvider(props: Props): ReactElement {
     <Provider
       api={{
         domain,
-        getMetadata: async () => mockMetadata,
         getEntity: async (path: string) => {
           if (path === slowOnPath) {
             await new Promise((resolve) => {
@@ -26,10 +24,7 @@ function MockProvider(props: Props): ReactElement {
             });
           }
 
-          const entity = getEntityAtPath(mockMetadata, path);
-          assertDefined(entity);
-
-          return entity;
+          return findMockEntity(mockMetadata, path);
         },
         getValue: async (id: keyof typeof mockValues) => {
           if (id === errorOnId) {
