@@ -8,6 +8,7 @@ import Visualizer from './visualizer/Visualizer';
 import { assertAbsolutePath } from './guards';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorMessage from './visualizer/ErrorMessage';
+import LoadingFallback from './LoadingFallback';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
@@ -44,7 +45,7 @@ function App(): ReactElement {
           resetKeys={[selectedPath]}
           FallbackComponent={ErrorMessage}
         >
-          <Suspense fallback={<p className={styles.fallback}>Loading...</p>}>
+          <Suspense fallback={<LoadingFallback isInspecting={isInspecting} />}>
             {isInspecting ? (
               <MetadataViewer path={selectedPath} />
             ) : (

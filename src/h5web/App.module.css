@@ -13,3 +13,13 @@
   padding: 1em;
   color: var(--secondary-dark);
 }
+
+.fallbackBar[data-mode='inspect'] {
+  height: 2.875rem;
+  background-color: var(--primary-bg);
+}
+
+.fallbackBar[data-mode='display'] {
+  height: 2.5rem;
+  background-color: var(--secondary-light-bg);
+}
