@@ -10,6 +10,7 @@ import {
 } from '../../guards';
 import type { NxData } from './models';
 import {
+  assertNxDataGroup,
   findSignalDataset,
   getDatasetLabel,
   getNxAxes,
@@ -18,6 +19,8 @@ import {
 import { getChildEntity } from '../../utils';
 
 export function useNxData(group: Group): NxData {
+  assertNxDataGroup(group);
+
   const values = useDatasetValues(group.children.filter(isDataset));
 
   const signalDataset = findSignalDataset(group);

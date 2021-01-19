@@ -1,23 +1,18 @@
-import { memo, ReactElement } from 'react';
-import type { Entity } from '../providers/models';
+import { memo, ReactElement, useContext } from 'react';
+import { ProviderContext } from '../providers/context';
 import AttributesTable from './AttributesTable';
 import EntityTable from './EntityTable';
 import styles from './MetadataViewer.module.css';
 
 interface Props {
-  entity?: Entity;
+  path: string;
 }
 
 function MetadataViewer(props: Props): ReactElement {
-  const { entity } = props;
+  const { path } = props;
 
-  if (!entity) {
-    return (
-      <div className={styles.empty}>
-        <p>No entity selected.</p>
-      </div>
-    );
-  }
+  const { entitiesStore } = useContext(ProviderContext);
+  const entity = entitiesStore.get(path);
 
   return (
     <div className={styles.metadataViewer}>

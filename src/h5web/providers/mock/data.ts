@@ -1,14 +1,4 @@
 import { range } from 'lodash-es';
-import ndarray from 'ndarray';
-import {
-  assertAbsolutePath,
-  assertArray,
-  assertDataset,
-  assertDefined,
-  assertNumericType,
-  assertSimpleShape,
-} from '../../guards';
-import { getEntityAtPath } from '../../utils';
 import { ScaleType } from '../../visualizations/shared/models';
 import {
   compoundType,
@@ -25,7 +15,8 @@ import {
   makeNxDataset,
   makeNxGroup,
   makeSimpleDataset,
-} from './utils';
+  makeAttr,
+} from './data-utils';
 
 /* -------------------- */
 /* ----- METADATA ----- */
@@ -63,6 +54,9 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
               title: makeDataset('title', scalarShape, stringType, {
                 id: 'title_twoD',
               }),
+            }),
+            makeNxGroup('absolute_default_path', 'NXentry', {
+              defaultPath: '/nexus_entry/nx_process/nx_data',
             }),
           ],
         }),
@@ -105,6 +99,9 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
       ],
     }),
     makeGroup('nexus_malformed', [
+      makeGroup('default_not_string', [], {
+        attributes: [makeAttr('default', scalarShape, intType, 42)],
+      }),
       makeGroup('default_not_found', [], {
         attributes: [makeStrAttr('default', '/test')],
       }),
@@ -161,18 +158,3 @@ export const mockValues = {
   fourD_image: fourD,
   oneD_errors: oneD.map((x) => Math.abs(x) / 10),
 };
-
-export function getMockDataArray(path: string): ndarray {
-  assertAbsolutePath(path);
-
-  const dataset = getEntityAtPath(mockMetadata, path);
-  assertDefined(dataset, `Expected entity at path "${path}"`);
-  assertDataset(dataset, `Expected group at path "${path}"`);
-  assertNumericType(dataset);
-  assertSimpleShape(dataset);
-
-  const value = mockValues[dataset.id as keyof typeof mockValues];
-  assertArray<number>(value);
-
-  return ndarray(value.flat(Infinity), dataset.shape.dims);
-}

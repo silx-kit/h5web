@@ -13,11 +13,10 @@ import {
   makeDatatype,
   makeGroup,
   makeNxDataGroup,
-  makeNxGroup,
   makeSimpleDataset,
   withAttributes,
   withNxInterpretation,
-} from '../providers/mock/utils';
+} from '../providers/mock/data-utils';
 
 const datasetIntScalar = makeDataset('dataset_int', scalarShape, intType);
 const datasetFltScalar = makeDataset('dataset_flt', scalarShape, floatType);
@@ -198,48 +197,7 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(group)).toBe(false);
     });
 
-    it('should support group with relative `default` path to supported NXdata group', () => {
-      const group = makeNxGroup('foo', 'NXentry', {
-        defaultPath: 'bar',
-        children: [makeNxDataGroup('bar', { signal: spectrumDatasetInt1D })],
-      });
-
-      expect(supportsEntity(group)).toBe(true);
-    });
-
-    it('should support group with absolute `default` path to supported NXdata group', () => {
-      const rootGroup = makeNxGroup('root', 'NXroot', {
-        children: [
-          makeNxGroup('foo', 'NXentry', {
-            defaultPath: '/foo/bar',
-            children: [
-              makeNxDataGroup('bar', { signal: spectrumDatasetInt1D }),
-            ],
-          }),
-        ],
-      });
-
-      const [groupWithDefault] = rootGroup.children;
-      expect(supportsEntity(groupWithDefault)).toBe(true);
-    });
-
-    it('should support group with multi-step `default` path to supported NXdata group', () => {
-      const group = makeNxGroup('root', 'NXroot', {
-        defaultPath: 'foo',
-        children: [
-          makeNxGroup('foo', 'NXentry', {
-            defaultPath: 'bar',
-            children: [
-              makeNxDataGroup('bar', { signal: spectrumDatasetInt1D }),
-            ],
-          }),
-        ],
-      });
-
-      expect(supportsEntity(group)).toBe(true);
-    });
-
-    it('should not support group with no `NXdata` class and no `default` attribute', () => {
+    it('should not support group with no `NXdata` class', () => {
       const groupWithSignal = makeGroup('foo', [datasetInt1D], {
         attributes: [makeStrAttr('signal', datasetInt1D.name)],
       });
@@ -286,44 +244,7 @@ describe('Visualization definitions', () => {
       expect(supportsEntity(group)).toBe(false);
     });
 
-    it('should support group with relative `default` path to supported NXdata group', () => {
-      const group = makeNxGroup('foo', 'NXentry', {
-        defaultPath: 'bar',
-        children: [makeNxDataGroup('bar', { signal: imageDatasetInt2D })],
-      });
-
-      expect(supportsEntity(group)).toBe(true);
-    });
-
-    it('should support group with absolute `default` path to supported NXdata group', () => {
-      const rootGroup = makeNxGroup('root', 'NXroot', {
-        children: [
-          makeNxGroup('foo', 'NXentry', {
-            defaultPath: '/foo/bar',
-            children: [makeNxDataGroup('bar', { signal: imageDatasetInt2D })],
-          }),
-        ],
-      });
-
-      const [groupWithDefault] = rootGroup.children;
-      expect(supportsEntity(groupWithDefault)).toBe(true);
-    });
-
-    it('should support group with multi-step `default` path to supported NXdata group', () => {
-      const group = makeNxGroup('root', 'NXroot', {
-        defaultPath: 'foo',
-        children: [
-          makeNxGroup('foo', 'NXentry', {
-            defaultPath: 'bar',
-            children: [makeNxDataGroup('bar', { signal: imageDatasetInt2D })],
-          }),
-        ],
-      });
-
-      expect(supportsEntity(group)).toBe(true);
-    });
-
-    it('should not support group with no `NXdata` class and no `default` attribute', () => {
+    it('should not support group with no `NXdata` class', () => {
       const groupWithSignal = makeGroup('foo', [datasetInt2D], {
         attributes: [makeStrAttr('signal', datasetInt2D.name)],
       });

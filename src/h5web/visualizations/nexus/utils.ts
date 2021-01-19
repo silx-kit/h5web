@@ -8,14 +8,13 @@ import {
   assertArray,
   assertDefined,
   assertStr,
-  assertGroup,
   assertDataset,
   assertNumericType,
   assertSimpleShape,
 } from '../../guards';
 import { NxAttribute, NxInterpretation, SilxStyle } from './models';
 import { isScaleType } from '../shared/utils';
-import { getChildEntity, getEntityAtPath } from '../../utils';
+import { getChildEntity } from '../../utils';
 
 export function getAttributeValue(
   entity: Entity,
@@ -24,29 +23,14 @@ export function getAttributeValue(
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }
 
-export function findNxDataGroup(group: Group): Group | undefined {
-  if (getAttributeValue(group, 'NX_class') === 'NXdata') {
-    return group; // `NXdata` group found
+export function isNxDataGroup(group: Group) {
+  return getAttributeValue(group, 'NX_class') === 'NXdata';
+}
+
+export function assertNxDataGroup(group: Group) {
+  if (!isNxDataGroup(group)) {
+    throw new Error('Expected NXdata group');
   }
-
-  const defaultPath = getAttributeValue(group, 'default');
-  if (defaultPath === undefined) {
-    return undefined; // group has no `default` attribute
-  }
-
-  assertStr(defaultPath, `Expected 'default' attribute to be a string`);
-
-  const defaultEntity = getEntityAtPath(group, defaultPath, false);
-  assertDefined(defaultEntity, `Expected entity at path "${defaultPath}"`);
-  assertGroup(defaultEntity, `Expected group at path "${defaultPath}"`);
-
-  const nxDataGroup = findNxDataGroup(defaultEntity);
-  assertDefined(
-    nxDataGroup,
-    `Expected NXdata group, or group with 'default' attribute`
-  );
-
-  return nxDataGroup;
 }
 
 export function findSignalDataset(

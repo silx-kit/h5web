@@ -85,12 +85,13 @@ The components are organised in two categories:
 
 ## Mock data
 
-The library exposes a utility function to retrieve a mock ndarray for testing purposes.
+The library exposes a utility function to retrieve a mock entity's metadata and a mock dataset's value as ndarray for testing purposes.
 You can browse through the available mock data at https://h5web.panosc.eu/mock.
 
 ```ts
-import { getMockDataArray } from '@h5web/lib';
+import { findMockEntity, getMockDataArray } from '@h5web/lib';
 
+const entity = findMockEntity('/nD_datasets/twoD');
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 ```
 

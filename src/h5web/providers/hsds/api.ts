@@ -10,14 +10,7 @@ import type {
   HsdsAttributeWithValueResponse,
   HsdsLink,
 } from './models';
-import {
-  Dataset,
-  Datatype,
-  Entity,
-  EntityKind,
-  Group,
-  Metadata,
-} from '../models';
+import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
 import {
   HDF5Collection,
   HDF5Id,
@@ -49,11 +42,6 @@ export class HsdsApi implements ProviderAPI {
       params: { domain },
       auth: { username, password },
     });
-  }
-
-  public async getMetadata(): Promise<Metadata> {
-    const rootId = await this.fetchRootId();
-    return this.processGroup(rootId, '/', this.domain, Infinity);
   }
 
   public async getEntity(path: string): Promise<Entity> {
@@ -171,7 +159,7 @@ export class HsdsApi implements ProviderAPI {
         )
     );
 
-    const group: Group = {
+    return {
       uid: nanoid(),
       id,
       path,
@@ -180,12 +168,6 @@ export class HsdsApi implements ProviderAPI {
       attributes,
       children,
     };
-
-    children.forEach((c) => {
-      c.parent = group;
-    });
-
-    return group;
   }
 
   private async processDataset(
