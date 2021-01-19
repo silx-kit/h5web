@@ -3,7 +3,7 @@ import styles from './Visualizer.module.css';
 import { getDefaultEntity, getSupportedVis } from './utils';
 import { VIS_DEFS, Vis } from '../visualizations';
 import VisSelector from './VisSelector';
-import Loader from './Loader';
+import ValueLoader from './ValueLoader';
 import Profiler from '../Profiler';
 import ErrorMessage from './ErrorMessage';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -53,7 +53,7 @@ function Visualizer(props: Props): ReactElement {
       </div>
       <div className={styles.displayArea}>
         <ErrorBoundary key={defaultEntity.uid} FallbackComponent={ErrorMessage}>
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<ValueLoader />}>
             <Profiler id={activeVis}>
               <Container entity={defaultEntity} />
             </Profiler>
