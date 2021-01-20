@@ -17,13 +17,13 @@ describe('MetadataViewer', () => {
     fireEvent.click(inspectBtn);
 
     expect(queryVisSelector()).not.toBeInTheDocument();
-    expect(screen.getByRole('row', { name: /ID/u })).toBeVisible();
+    expect(screen.getByRole('row', { name: /^ID/u })).toBeVisible();
 
     // Switch back to "display" mode
     fireEvent.click(displayBtn);
 
     expect(await findVisSelector()).toBeVisible();
-    expect(screen.queryByRole('row', { name: /ID/u })).not.toBeInTheDocument();
+    expect(screen.queryByRole('row', { name: /^ID/u })).not.toBeInTheDocument();
   });
 
   test('inspect group', async () => {
@@ -31,10 +31,10 @@ describe('MetadataViewer', () => {
     fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
     await selectExplorerNode('entities');
 
-    const column = await screen.findByRole('columnheader', { name: /Group/u });
-    const idRow = screen.getByRole('row', { name: /ID/u });
-    const nameRow = screen.getByRole('row', { name: /Name/u });
-    const pathRow = screen.getByRole('row', { name: /Path/u });
+    const column = await screen.findByRole('columnheader', { name: /^Group/u });
+    const idRow = screen.getByRole('row', { name: /^ID/u });
+    const nameRow = screen.getByRole('row', { name: /^Name/u });
+    const pathRow = screen.getByRole('row', { name: /^Path/u });
 
     expect(column).toBeVisible();
     expect(idRow).toHaveTextContent(/entities/u);
@@ -50,11 +50,11 @@ describe('MetadataViewer', () => {
     const column = await screen.findByRole('columnheader', {
       name: /Dataset/u,
     });
-    const idRow = screen.getByRole('row', { name: /ID/u });
-    const nameRow = screen.getByRole('row', { name: /Name/u });
-    const pathRow = screen.getByRole('row', { name: /Path/u });
-    const shapeRow = screen.getByRole('row', { name: /Shape/u });
-    const typeRow = screen.getByRole('row', { name: /Type/u });
+    const idRow = screen.getByRole('row', { name: /^ID/u });
+    const nameRow = screen.getByRole('row', { name: /^Name/u });
+    const pathRow = screen.getByRole('row', { name: /^Path/u });
+    const shapeRow = screen.getByRole('row', { name: /^Shape/u });
+    const typeRow = screen.getByRole('row', { name: /^Type/u });
 
     expect(column).toBeVisible();
     expect(idRow).toHaveTextContent(/scalar_int/u);
@@ -69,7 +69,7 @@ describe('MetadataViewer', () => {
     fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
     await selectExplorerNode('nD_datasets/threeD');
 
-    const shapeRow = await screen.findByRole('row', { name: /Shape/u });
+    const shapeRow = await screen.findByRole('row', { name: /^Shape/u });
     expect(shapeRow).toHaveTextContent(/9 x 20 x 41 = 7380/u);
   });
 
@@ -81,10 +81,10 @@ describe('MetadataViewer', () => {
     const column = await screen.findByRole('columnheader', {
       name: /Datatype/u,
     });
-    const idRow = screen.getByRole('row', { name: /ID/u });
-    const nameRow = screen.getByRole('row', { name: /Name/u });
-    const pathRow = screen.getByRole('row', { name: /Path/u });
-    const typeRow = screen.getByRole('row', { name: /Type/u });
+    const idRow = screen.getByRole('row', { name: /^ID/u });
+    const nameRow = screen.getByRole('row', { name: /^Name/u });
+    const pathRow = screen.getByRole('row', { name: /^Path/u });
+    const typeRow = screen.getByRole('row', { name: /^Type/u });
 
     expect(column).toBeVisible();
     expect(idRow).toHaveTextContent(/datatype/u);
@@ -99,10 +99,10 @@ describe('MetadataViewer', () => {
     await selectExplorerNode('entities/external_link');
 
     const column = await screen.findByRole('columnheader', { name: /Link/u });
-    const nameRow = screen.getByRole('row', { name: /Name/u });
+    const nameRow = screen.getByRole('row', { name: /^Name/u });
     const pathRow = screen.getByRole('row', { name: /^Path/u });
-    const fileRow = screen.getByRole('row', { name: /File/u });
-    const h5pathRow = screen.getByRole('row', { name: /H5Path/u });
+    const fileRow = screen.getByRole('row', { name: /^File/u });
+    const h5pathRow = screen.getByRole('row', { name: /^H5Path/u });
 
     expect(column).toBeVisible();
     expect(nameRow).toHaveTextContent(/external_link/u);
