@@ -1,16 +1,16 @@
 import { createContext } from 'react';
-import type { Dataset, Metadata } from './models';
+import type { Entity } from './models';
 import type { HDF5Id, HDF5Value } from './hdf5-models';
+import type { FetchStore } from 'react-suspense-fetch';
 
 export abstract class ProviderAPI {
   abstract domain: string;
-  abstract getMetadata(): Promise<Metadata>;
+  abstract getEntity(path: string): Promise<Entity>;
   abstract getValue(id: HDF5Id): Promise<HDF5Value>;
 }
 
 export const ProviderContext = createContext<{
   domain: string;
-  metadata: Metadata;
-  getValue: ProviderAPI['getValue'];
-  getValues: (datasets: Dataset[]) => Promise<Record<string, HDF5Value>>;
+  entitiesStore: FetchStore<Entity, string>;
+  valuesStore: FetchStore<HDF5Value, HDF5Id>;
 }>({} as any); // eslint-disable-line @typescript-eslint/no-explicit-any

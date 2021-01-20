@@ -1,7 +1,6 @@
 import { lazy, ReactElement, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from '../h5web/App';
-import SilxProvider from '../h5web/providers/silx/SilxProvider';
 import HsdsApp from './HsdsApp';
 import JupyterApp from './JupyterApp';
 
@@ -27,13 +26,8 @@ function DemoApp(): ReactElement {
         <Route path="/hsds">
           <HsdsApp />
         </Route>
-        <Route path="/jupyter">
-          <JupyterApp />
-        </Route>
         <Route exact path="/">
-          <SilxProvider domain="bsa_002_000-integrate-sub">
-            <App />
-          </SilxProvider>
+          <JupyterApp />
         </Route>
       </Switch>
     </Router>

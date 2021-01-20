@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { Group, Dataset, Metadata, EntityKind, Link } from '../models';
+import { Group, Dataset, EntityKind, Link, Entity } from '../models';
 import type { ProviderAPI } from '../context';
 import {
   assertGroupContent,
@@ -13,21 +13,17 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { nanoid } from 'nanoid';
-import { makeStrAttr, floatType } from '../mock/utils';
+import { makeStrAttr, floatType } from '../mock/data-utils';
 import {
-  HDF5Id,
   HDF5LinkClass,
   HDF5ShapeClass,
   HDF5Value,
   HDF5SoftLink,
 } from '../hdf5-models';
-import { assertGroup } from '../../guards';
 
 export class JupyterApi implements ProviderAPI {
   public readonly domain: string;
   private readonly client: AxiosInstance;
-
-  private values: Record<HDF5Id, HDF5Value> = {};
 
   public constructor(url: string, domain: string) {
     this.domain = domain;
@@ -36,21 +32,15 @@ export class JupyterApi implements ProviderAPI {
     });
   }
 
-  public async getMetadata(): Promise<Metadata> {
-    const rootId = '/';
-    const rootGrp = await this.processEntity(rootId);
-    assertGroup(rootGrp);
-    return rootGrp;
+  public async getEntity(path: string): Promise<Entity> {
+    return this.processEntity(path, 1);
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value | undefined> {
-    if (id in this.values) {
-      return this.values[id];
-    }
-
-    const value = await this.fetchValue(id);
-    this.values[id] = value;
-    return this.values[id];
+  public async getValue(path: string): Promise<HDF5Value> {
+    const { data } = await this.client.get<JupyterDataResponse>(
+      `/data/${this.domain}?uri=${path}`
+    );
+    return data;
   }
 
   private async fetchAttributes(path: string): Promise<JupyterAttrsResponse> {
@@ -74,16 +64,10 @@ export class JupyterApi implements ProviderAPI {
     return data;
   }
 
-  private async fetchValue(path: string): Promise<HDF5Value> {
-    const { data } = await this.client.get<JupyterDataResponse>(
-      `/data/${this.domain}?uri=${path}`
-    );
-    return data;
-  }
-
   /** The main tree-building method */
   private async processEntity(
-    path: string
+    path: string,
+    depth: number
   ): Promise<Group | Dataset | Link<HDF5SoftLink>> {
     const response = await this.fetchMetadata(path);
     const { attributeCount } = response;
@@ -95,56 +79,55 @@ export class JupyterApi implements ProviderAPI {
       makeStrAttr(name, value)
     );
 
+    const baseEntity = {
+      uid: nanoid(),
+      id: path,
+      name: response.name,
+      path,
+      attributes,
+    };
+
     if (isGroupResponse(response)) {
-      const { name, type, childrenCount } = response;
-      const contents = childrenCount > 0 ? await this.fetchContents(path) : [];
+      const { type, childrenCount } = response;
+
+      if (depth === 0 || childrenCount === 0) {
+        return {
+          ...baseEntity,
+          kind: type,
+          children: [],
+        };
+      }
+
+      const contents = await this.fetchContents(path);
       assertGroupContent(contents);
 
-      const children = await Promise.all(
-        contents.map((content) => {
-          return this.processEntity(content.uri);
-        })
-      );
-
-      const group: Group = {
-        uid: nanoid(),
-        name,
-        id: path,
+      return {
+        ...baseEntity,
         kind: type,
-        children,
-        attributes,
+        children: await Promise.all(
+          contents.map((content) => this.processEntity(content.uri, depth - 1))
+        ),
       };
-      group.children.forEach((child) => {
-        child.parent = group;
-      });
-
-      return group;
     }
 
     if (isDatasetResponse(response)) {
-      const { name, type, shape: dims } = response;
+      const { type, shape: dims } = response;
       return {
-        uid: nanoid(),
-        name,
-        id: path,
+        ...baseEntity,
         kind: type,
-        attributes,
         // TODO: Find the type from the dtype OR change the backend to return the true HDF5Type
         type: floatType,
         shape:
           dims.length > 0
             ? { class: HDF5ShapeClass.Simple, dims }
             : { class: HDF5ShapeClass.Scalar },
-        // `parent` is set by the containing group
       };
     }
 
     // Consider other as unresolved soft links
     return {
-      uid: nanoid(),
+      ...baseEntity,
       kind: EntityKind.Link,
-      name: path,
-      attributes,
       rawLink: {
         class: HDF5LinkClass.Soft,
         title: path,

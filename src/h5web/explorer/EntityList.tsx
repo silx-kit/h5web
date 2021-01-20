@@ -1,60 +1,42 @@
-import type { CSSProperties, ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 import styles from './Explorer.module.css';
-import type { Entity } from '../providers/models';
-import Icon from './Icon';
-import { isGroup } from '../guards';
+import { ProviderContext } from '../providers/context';
+import EntityItem from './EntityItem';
+import { assertGroup } from '../guards';
+import { buildEntityPath } from '../utils';
 
 interface Props {
   level: number;
-  entities: Entity[];
-  selectedEntity?: Entity;
-  expandedGroups: Set<string>;
-  onSelect: (entity: Entity) => void;
+  parentPath: string;
+  selectedPath: string;
+  onSelect: (path: string) => void;
 }
 
 function EntityList(props: Props): ReactElement {
-  const { level, entities, selectedEntity, expandedGroups, onSelect } = props;
+  const { level, parentPath, selectedPath, onSelect } = props;
 
-  if (entities.length === 0) {
+  const { entitiesStore } = useContext(ProviderContext);
+  const group = entitiesStore.get(parentPath);
+  assertGroup(group);
+
+  if (group.children.length === 0) {
     return <></>;
   }
 
   return (
     <ul className={styles.group} role="group">
-      {entities.map((entity) => {
+      {group.children.map((entity) => {
         const { uid, name } = entity;
-        const isExpanded = expandedGroups.has(entity.uid);
 
         return (
-          <li
+          <EntityItem
             key={uid}
-            style={{ '--level': level } as CSSProperties}
-            role="none"
-          >
-            <button
-              className={styles.btn}
-              type="button"
-              role="treeitem"
-              aria-expanded={isGroup(entity) ? isExpanded : undefined}
-              aria-selected={entity === selectedEntity}
-              onClick={() => {
-                onSelect(entity);
-              }}
-            >
-              <Icon entity={entity} isExpanded={isExpanded} />
-              {name}
-            </button>
-
-            {isGroup(entity) && isExpanded && (
-              <EntityList
-                level={level + 1}
-                entities={entity.children}
-                selectedEntity={selectedEntity}
-                expandedGroups={expandedGroups}
-                onSelect={onSelect}
-              />
-            )}
-          </li>
+            path={buildEntityPath(parentPath, name)}
+            entity={entity}
+            level={level}
+            selectedPath={selectedPath}
+            onSelect={onSelect}
+          />
         );
       })}
     </ul>

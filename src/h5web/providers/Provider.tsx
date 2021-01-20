@@ -1,7 +1,8 @@
-import type { ReactElement, ReactNode } from 'react';
-import { useAsync } from 'react-use';
+import { ReactElement, ReactNode, useMemo } from 'react';
+import { createFetchStore } from 'react-suspense-fetch';
 import { ProviderAPI, ProviderContext } from './context';
-import styles from '../visualizer/Visualizer.module.css';
+import type { Entity } from './models';
+import { isGroup } from '../guards';
 
 interface Props {
   api: ProviderAPI;
@@ -11,33 +12,42 @@ interface Props {
 function Provider(props: Props): ReactElement {
   const { api, children } = props;
 
-  // Wait until metadata is fetched before rendering app
-  const { value: metadata, error } = useAsync(async () => api.getMetadata(), [
-    api,
-  ]);
+  const entitiesStore = useMemo(() => {
+    const childCache = new Map<string, Entity>();
 
-  if (error) {
-    return <p className={styles.error}>Error: {error.message}</p>;
-  }
+    const store = createFetchStore(async (path: string) => {
+      if (childCache.has(path)) {
+        return childCache.get(path) as Entity;
+      }
 
-  if (!metadata) {
-    return <p className={styles.fallback}>Loading...</p>;
-  }
+      const entity = await api.getEntity(path);
 
-  const getValue = api.getValue.bind(api);
+      if (isGroup(entity)) {
+        // Cache non-group children (datasets, datatypes and links)
+        entity.children.forEach((child) => {
+          if (!isGroup(child)) {
+            childCache.set(child.path, child);
+          }
+        });
+      }
+
+      return entity;
+    });
+
+    store.prefetch('/'); // pre-fetch root group
+    return store;
+  }, [api]);
+
+  const valuesStore = useMemo(() => {
+    return createFetchStore(api.getValue.bind(api));
+  }, [api]);
 
   return (
     <ProviderContext.Provider
       value={{
         domain: api.domain,
-        metadata,
-        getValue,
-        getValues: async (datasets) =>
-          Object.fromEntries(
-            await Promise.all(
-              datasets.map(async ({ id, name }) => [name, await getValue(id)])
-            )
-          ),
+        entitiesStore,
+        valuesStore,
       }}
     >
       {children}

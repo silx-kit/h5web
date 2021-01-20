@@ -10,12 +10,10 @@ import {
   makeNxAxesAttr,
   makeIntAttr,
   makeSilxStyleAttr,
-  makeDatatype,
-} from '../../providers/mock/utils';
+} from '../../providers/mock/data-utils';
 import { mockConsoleMethod } from '../../test-utils';
 import { ScaleType } from '../shared/models';
 import {
-  findNxDataGroup,
   findSignalDataset,
   getAttributeValue,
   getDatasetLabel,
@@ -40,85 +38,6 @@ describe('NeXus utilities', () => {
 
     it("should return `undefined` if attribute doesn't exist", () => {
       expect(getAttributeValue(group, 'NX_class')).toBeUndefined();
-    });
-  });
-
-  describe('findNxDataGroup', () => {
-    it('should return group itself if `NXdata`', () => {
-      const group = makeGroup('foo', [], {
-        attributes: [makeStrAttr('NX_class', 'NXdata')],
-      });
-
-      expect(findNxDataGroup(group)).toBe(group);
-    });
-
-    it('should return `undefined` if group is not `NXdata` and has no `default` attribute', () => {
-      const group = makeGroup('foo');
-      expect(findNxDataGroup(group)).toBeUndefined();
-    });
-
-    it('should return default NXdata group', () => {
-      const nxDataGroup = makeGroup('bar', [], {
-        attributes: [makeStrAttr('NX_class', 'NXdata')],
-      });
-
-      const group = makeGroup('foo', [nxDataGroup], {
-        attributes: [makeStrAttr('default', 'bar')],
-      });
-
-      expect(findNxDataGroup(group)).toBe(nxDataGroup);
-    });
-
-    it('should return nested default NXdata group', () => {
-      const nxDataGroup = makeGroup('baz', [], {
-        attributes: [makeStrAttr('NX_class', 'NXdata')],
-      });
-
-      const group = makeGroup('foo', [makeGroup('bar', [nxDataGroup])], {
-        attributes: [makeStrAttr('default', 'bar/baz')],
-      });
-
-      expect(findNxDataGroup(group)).toBe(nxDataGroup);
-    });
-
-    it('should throw if `default` attribute is not string', () => {
-      const group = makeGroup('foo', [], {
-        attributes: [makeIntAttr('default', 42)],
-      });
-
-      expect(() => findNxDataGroup(group)).toThrow(/to be a string/u);
-    });
-
-    it('should throw if default entity is empty', () => {
-      const group = makeGroup('foo', [], {
-        attributes: [makeStrAttr('default', '')],
-      });
-
-      expect(() => findNxDataGroup(group)).toThrow(/entity at path/u);
-    });
-
-    it('should throw if default entity is not found', () => {
-      const group = makeGroup('foo', [], {
-        attributes: [makeStrAttr('default', 'bar')],
-      });
-
-      expect(() => findNxDataGroup(group)).toThrow(/entity at path/u);
-    });
-
-    it('should throw if default entity is not a group', () => {
-      const group = makeGroup('foo', [makeDatatype('bar', intType)], {
-        attributes: [makeStrAttr('default', 'bar')],
-      });
-
-      expect(() => findNxDataGroup(group)).toThrow(/group at path/u);
-    });
-
-    it('should throw if default group is not `NXdata` and has no `default` attribute', () => {
-      const group = makeGroup('foo', [makeGroup('bar')], {
-        attributes: [makeStrAttr('default', 'bar')],
-      });
-
-      expect(() => findNxDataGroup(group)).toThrow(/NXdata group/u);
     });
   });
 

@@ -10,32 +10,25 @@ import type {
   HsdsAttributeWithValueResponse,
   HsdsLink,
 } from './models';
-import type { Metadata } from '../models';
+import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
 import {
   HDF5Collection,
-  HDF5Dataset,
-  HDF5Datatype,
-  HDF5Group,
-  HDF5HardLink,
   HDF5Id,
-  HDF5RootLink,
   HDF5Value,
   HDF5Attribute,
   HDF5Link,
 } from '../hdf5-models';
-import { isReachable } from '../../guards';
+import { assertDefined, assertGroup, isGroup, isHardLink } from '../../guards';
 import type { ProviderAPI } from '../context';
-import { buildTree } from '../utils';
 import { isHsdsExternalLink } from './utils';
+import { nanoid } from 'nanoid';
+import { buildEntityPath, getChildEntity } from '../../utils';
 
 export class HsdsApi implements ProviderAPI {
   public readonly domain: string;
   private readonly client: AxiosInstance;
 
-  private groups: Record<HDF5Id, HDF5Group> = {};
-  private datasets: Record<HDF5Id, HDF5Dataset> = {};
-  private datatypes: Record<HDF5Id, HDF5Datatype> = {};
-  private values: Record<HDF5Id, HDF5Value> = {};
+  private readonly entities = new Map<string, Entity>();
 
   public constructor(
     url: string,
@@ -51,33 +44,46 @@ export class HsdsApi implements ProviderAPI {
     });
   }
 
-  public async getMetadata(): Promise<Metadata> {
-    const rootId = await this.fetchRoot();
-    await this.processGroup(rootId);
+  public async getEntity(path: string): Promise<Entity> {
+    if (this.entities.has(path)) {
+      return this.entities.get(path) as Entity;
+    }
 
-    return buildTree(
-      {
-        root: rootId,
-        groups: this.groups,
-        datasets: this.datasets,
-        datatypes: this.datatypes,
-      },
-      this.domain
-    );
+    if (path === '/') {
+      const rootId = await this.fetchRootId();
+      const root = await this.processGroup(rootId, '/', this.domain, 1);
+      this.entities.set(path, root);
+      return root;
+    }
+
+    /* HSDS doesn't allow fetching entities by path.
+       We need to fetch every ascendant group right up to the root group
+       in order to find the ID of the entity at the requested path.
+       Entities are cached along the way for efficiency. */
+    const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
+    const parentGroup = await this.getEntity(parentPath);
+    assertGroup(parentGroup);
+
+    const childName = path.slice(path.lastIndexOf('/') + 1);
+    const child = getChildEntity(parentGroup, childName);
+    assertDefined(child);
+
+    const entity = isGroup(child)
+      ? await this.processGroup(child.id, path, child.name, 1)
+      : child;
+
+    this.entities.set(path, entity);
+    return entity;
   }
 
   public async getValue(id: HDF5Id): Promise<HDF5Value> {
-    if (id in this.values) {
-      return this.values[id];
-    }
-
-    const value = await this.fetchValue(id);
-
-    this.values[id] = value;
-    return this.values[id];
+    const { data } = await this.client.get<HsdsValueResponse>(
+      `/datasets/${id}/value`
+    );
+    return data.value;
   }
 
-  private async fetchRoot(): Promise<HDF5Id> {
+  private async fetchRootId(): Promise<HDF5Id> {
     const { data } = await this.client.get<HsdsRootResponse>('/');
     return data.root;
   }
@@ -126,76 +132,114 @@ export class HsdsApi implements ProviderAPI {
     return Promise.all(attrsPromises);
   }
 
-  private async fetchValue(id: HDF5Id): Promise<HDF5Value> {
-    const { data } = await this.client.get<HsdsValueResponse>(
-      `/datasets/${id}/value`
-    );
-    return data.value;
-  }
+  private async processGroup(
+    id: HDF5Id,
+    path: string,
+    name: string,
+    depth: number
+  ): Promise<Group> {
+    const { attributeCount, linkCount } = await this.fetchGroup(id);
 
-  /* Processing methods to fetch links and attributes in addition to the entity. Also updates API members. */
-
-  private async processGroup(id: HDF5Id): Promise<void> {
-    const { attributeCount, linkCount, ...group } = await this.fetchGroup(id);
-
-    const [attributes, hsdsLinks] = await Promise.all([
+    // Fetch attributes and links in parallel
+    // If recursion depth has been reached, don't fetch links at all
+    const [attributes, links] = await Promise.all([
       attributeCount > 0
         ? this.fetchAttributes(HDF5Collection.Groups, id)
-        : Promise.resolve(undefined),
-      linkCount > 0 ? this.fetchLinks(id) : Promise.resolve(undefined),
+        : Promise.resolve([]),
+      linkCount > 0 && depth > 0 ? this.fetchLinks(id) : Promise.resolve([]),
     ]);
 
-    const links =
-      hsdsLinks &&
-      hsdsLinks.map<HDF5Link>((link: HsdsLink) =>
-        isHsdsExternalLink(link) ? { ...link, file: link.h5domain } : link
-      );
+    const children = await Promise.all(
+      links
+        .map<HDF5Link>((link: HsdsLink) =>
+          isHsdsExternalLink(link) ? { ...link, file: link.h5domain } : link
+        )
+        .map((link) =>
+          this.resolveLink(link, buildEntityPath(path, link.title), depth - 1)
+        )
+    );
 
-    this.groups[id] = {
-      ...group,
-      ...(attributes ? { attributes } : {}),
-      ...(links ? { links } : {}),
+    return {
+      uid: nanoid(),
+      id,
+      path,
+      name,
+      kind: EntityKind.Group,
+      attributes,
+      children,
     };
-
-    if (links) {
-      await Promise.all(
-        links.filter(isReachable).map(this.resolveLink.bind(this))
-      );
-    }
   }
 
-  private async processDataset(id: HDF5Id): Promise<void> {
-    const { attributeCount, ...dataset } = await this.fetchDataset(id);
+  private async processDataset(
+    id: HDF5Id,
+    path: string,
+    name: string
+  ): Promise<Dataset> {
+    const dataset = await this.fetchDataset(id);
+    const { shape, type, attributeCount } = dataset;
 
     const attributes =
       attributeCount > 0
         ? await this.fetchAttributes(HDF5Collection.Datasets, id)
-        : undefined;
+        : [];
 
-    this.datasets[id] = {
-      ...dataset,
-      ...(attributes ? { attributes } : {}),
+    return {
+      uid: nanoid(),
+      id,
+      path,
+      name,
+      kind: EntityKind.Dataset,
+      attributes,
+      shape,
+      type,
     };
   }
 
-  private async processDatatype(id: HDF5Id): Promise<void> {
-    const datatype = await this.fetchDatatype(id);
-    this.datatypes[id] = datatype;
+  private async processDatatype(
+    id: HDF5Id,
+    path: string,
+    name: string
+  ): Promise<Datatype> {
+    const { type } = await this.fetchDatatype(id);
+
+    return {
+      uid: nanoid(),
+      id,
+      path,
+      name,
+      kind: EntityKind.Datatype,
+      attributes: [],
+      type,
+    };
   }
 
-  private async resolveLink(link: HDF5HardLink | HDF5RootLink): Promise<void> {
-    const { collection, id } = link;
+  private async resolveLink(
+    link: HDF5Link,
+    path: string,
+    depth: number
+  ): Promise<Entity> {
+    if (!isHardLink(link)) {
+      return {
+        uid: nanoid(),
+        name: link.title,
+        path,
+        kind: EntityKind.Link,
+        attributes: [],
+        rawLink: link,
+      };
+    }
 
-    if (collection === HDF5Collection.Groups) {
-      return this.processGroup(id);
-    }
-    if (collection === HDF5Collection.Datasets) {
-      return this.processDataset(id);
-    }
-    if (collection === HDF5Collection.Datatypes) {
-      return this.processDatatype(id);
-    }
+    const { id, title, collection } = link;
 
-    throw new Error('Unknown collection !');
+    switch (collection) {
+      case HDF5Collection.Groups:
+        return this.processGroup(id, path, title, depth);
+      case HDF5Collection.Datasets:
+        return this.processDataset(id, path, title);
+      case HDF5Collection.Datatypes:
+        return this.processDatatype(id, path, title);
+      default:
+        throw new Error('Unknown collection !');
+    }
   }
 }

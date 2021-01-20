@@ -3,8 +3,8 @@ import {
   scalarShape,
   makeDataset,
   makeGroup,
-} from './providers/mock/utils';
-import { getChildEntity, getEntityAtPath, getParents } from './utils';
+} from './providers/mock/data-utils';
+import { buildEntityPath, getChildEntity } from './utils';
 
 describe('Global utilities', () => {
   describe('getChildEntity', () => {
@@ -22,55 +22,18 @@ describe('Global utilities', () => {
     });
   });
 
-  describe('getEntityAtPath', () => {
-    const dataset = makeDataset('dataset', scalarShape, intType);
-    const childGroup1 = makeGroup('child1');
-    const childGroup2 = makeGroup('child2', [dataset]);
-    const rootGroup = makeGroup('root', [childGroup1, childGroup2]);
-
-    it('should process relative path', () => {
-      expect(getEntityAtPath(rootGroup, '')).toBe(rootGroup);
-      expect(getEntityAtPath(childGroup1, '')).toBe(childGroup1);
-      expect(getEntityAtPath(rootGroup, 'child2/dataset')).toBe(dataset);
-      expect(getEntityAtPath(childGroup2, 'dataset')).toBe(dataset);
+  describe('buildEntityPath', () => {
+    it('should build absolute path with entity name', () => {
+      expect(buildEntityPath('/', 'group')).toBe('/group');
+      expect(buildEntityPath('/foo', 'group')).toBe('/foo/group');
+      expect(buildEntityPath('/foo/bar', 'group')).toBe('/foo/bar/group');
     });
 
-    it('should process absolute path when passed root group', () => {
-      expect(getEntityAtPath(rootGroup, '/')).toBe(rootGroup);
-      expect(getEntityAtPath(rootGroup, '/child1')).toBe(childGroup1);
-      expect(getEntityAtPath(rootGroup, '/child2/dataset')).toBe(dataset);
-    });
-
-    it('should process absolute path when passed any child group', () => {
-      expect(getEntityAtPath(childGroup1, '/')).toBe(rootGroup);
-      expect(getEntityAtPath(childGroup1, '/child1')).toBe(childGroup1);
-      expect(getEntityAtPath(childGroup1, '/child2/dataset')).toBe(dataset);
-    });
-
-    it('should return `undefined` for invalid paths', () => {
-      expect(getEntityAtPath(rootGroup, 'child1/foo')).toBeUndefined();
-      expect(getEntityAtPath(rootGroup, '/child1/foo')).toBeUndefined();
-      expect(getEntityAtPath(childGroup1, 'foo')).toBeUndefined();
-      expect(getEntityAtPath(childGroup1, '/child2/foo')).toBeUndefined();
-    });
-
-    it('should support forbidding to retrieve same entity', () => {
-      expect(getEntityAtPath(rootGroup, '', false)).toBeUndefined();
-      expect(getEntityAtPath(rootGroup, '/', false)).toBeUndefined();
-      expect(getEntityAtPath(childGroup1, '', false)).toBeUndefined();
-      expect(getEntityAtPath(childGroup1, '/', false)).toBe(rootGroup);
-    });
-  });
-
-  describe('getParents', () => {
-    const dataset = makeDataset('dataset', scalarShape, intType);
-    const childGroup = makeGroup('group', [dataset]);
-    const rootGroup = makeGroup('root', [childGroup]);
-
-    it('should return array of parent groups', () => {
-      expect(getParents(dataset)).toEqual([rootGroup, childGroup]);
-      expect(getParents(childGroup)).toEqual([rootGroup]);
-      expect(getParents(rootGroup)).toEqual([]);
+    it('should build absolute path with relative path', () => {
+      expect(buildEntityPath('/', 'group/dataset')).toBe('/group/dataset');
+      expect(buildEntityPath('/foo', 'group/dataset')).toBe(
+        '/foo/group/dataset'
+      );
     });
   });
 });

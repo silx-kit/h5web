@@ -17,7 +17,6 @@ import {
   HDF5BaseType,
   HDF5Type,
   HDF5TypeClass,
-  HDF5RootLink,
   HDF5ScalarShape,
   HDF5NumericType,
 } from './providers/hdf5-models';
@@ -88,11 +87,8 @@ export function isLink(entity: Entity): entity is Link {
   return entity.kind === EntityKind.Link;
 }
 
-export function isReachable(
-  link: HDF5Link
-): link is HDF5HardLink | HDF5RootLink {
-  // Only hard and root links are considered as reachable for now
-  return link.class === HDF5LinkClass.Hard || link.class === HDF5LinkClass.Root;
+export function isHardLink(link: HDF5Link): link is HDF5HardLink {
+  return link.class === HDF5LinkClass.Hard;
 }
 
 export function hasSimpleShape<T extends HDF5Type>(
@@ -125,6 +121,10 @@ export function hasNumericType<S extends HDF5Shape>(
     typeof dataset.type !== 'string' &&
     [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(dataset.type.class)
   );
+}
+
+export function isAbsolutePath(path: string) {
+  return path.startsWith('/');
 }
 
 export function assertDataset(
@@ -162,5 +162,11 @@ export function assertSimpleShape<T extends HDF5Type>(
 
   if (dataset.shape.dims.length === 0) {
     throw new Error('Expected dataset with simple shape to have dimensions');
+  }
+}
+
+export function assertAbsolutePath(path: string) {
+  if (!isAbsolutePath(path)) {
+    throw new Error("Expected path to start with '/'");
   }
 }

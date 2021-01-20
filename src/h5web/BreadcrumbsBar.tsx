@@ -1,30 +1,33 @@
-import { Fragment, ReactElement } from 'react';
-import { FiSidebar, FiChevronRight } from 'react-icons/fi';
+import { Fragment, ReactElement, useContext } from 'react';
+import { FiChevronRight, FiSidebar } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
-import type { Entity } from './providers/models';
 import ToggleGroup from './toolbar/controls/ToggleGroup';
 import ToggleBtn from './toolbar/controls/ToggleBtn';
-import { getParents } from './utils';
+import { ProviderContext } from './providers/context';
+import { assertAbsolutePath } from './guards';
 
 interface Props {
+  path: string;
   isExplorerOpen: boolean;
-  onToggleExplorer: () => void;
   isInspecting: boolean;
+  onToggleExplorer: () => void;
   onChangeInspecting: (b: boolean) => void;
-  selectedEntity?: Entity;
 }
 
 function BreadcrumbsBar(props: Props): ReactElement {
   const {
+    path,
     isExplorerOpen,
-    onToggleExplorer,
     isInspecting,
+    onToggleExplorer,
     onChangeInspecting,
-    selectedEntity,
   } = props;
 
-  // Excludes the first parent (the domain) if the explorer is opened
-  const firstParentIndex = isExplorerOpen ? 1 : 0;
+  assertAbsolutePath(path);
+
+  const { domain } = useContext(ProviderContext);
+  const crumbs = [domain, ...`${path === '/' ? '' : path}`.split('/').slice(1)];
+  const firstCrumbIndex = isExplorerOpen ? 1 : 0; // skip domain crumb if explorer is open
 
   return (
     <div className={styles.bar}>
@@ -35,21 +38,20 @@ function BreadcrumbsBar(props: Props): ReactElement {
         value={isExplorerOpen}
         onChange={onToggleExplorer}
       />
-      {selectedEntity && (
-        <h1 className={styles.breadCrumbs}>
-          {getParents(selectedEntity)
-            .slice(firstParentIndex)
-            .map((parent) => (
-              <Fragment key={parent.id}>
-                <span className={styles.crumb}>{parent.name}</span>
-                <FiChevronRight className={styles.separator} title="/" />
-              </Fragment>
-            ))}
-          <span className={styles.crumb} data-current>
-            {selectedEntity.name}
-          </span>
-        </h1>
-      )}
+
+      <h1 className={styles.breadCrumbs}>
+        {crumbs.slice(firstCrumbIndex, -1).map((crumb, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Fragment key={i}>
+            <span className={styles.crumb}>{crumb}</span>
+            <FiChevronRight className={styles.separator} title="/" />
+          </Fragment>
+        ))}
+        <span className={styles.crumb} data-current>
+          {crumbs[crumbs.length - 1]}
+        </span>
+      </h1>
+
       <ToggleGroup
         role="tablist"
         ariaLabel="Viewer mode"

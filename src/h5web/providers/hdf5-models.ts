@@ -12,34 +12,6 @@ export enum HDF5Collection {
   Datatypes = 'datatypes',
 }
 
-export interface HDF5Metadata {
-  root: HDF5Id;
-  [HDF5Collection.Groups]: Record<HDF5Id, HDF5Group>;
-  [HDF5Collection.Datasets]?: Record<HDF5Id, HDF5Dataset>;
-  [HDF5Collection.Datatypes]?: Record<HDF5Id, HDF5Datatype>;
-}
-
-/* -------------------- */
-/* ----- ENTITIES ----- */
-
-export interface HDF5Group {
-  attributes?: HDF5Attribute[];
-  links?: HDF5Link[];
-}
-
-export interface HDF5Dataset<
-  S extends HDF5Shape = HDF5Shape,
-  T extends HDF5Type = HDF5Type
-> {
-  attributes?: HDF5Attribute[];
-  shape: S;
-  type: T;
-}
-
-export interface HDF5Datatype<T = HDF5Type> {
-  type: T;
-}
-
 /* ---------------------- */
 /* ----- ATTRIBUTES ----- */
 
@@ -53,24 +25,12 @@ export interface HDF5Attribute {
 /* ----------------- */
 /* ----- LINKS ----- */
 
-export type HDF5Link =
-  | HDF5HardLink
-  | HDF5RootLink
-  | HDF5SoftLink
-  | HDF5ExternalLink;
+export type HDF5Link = HDF5HardLink | HDF5SoftLink | HDF5ExternalLink;
 
 export enum HDF5LinkClass {
-  Root = 'ROOT',
   Hard = 'H5L_TYPE_HARD',
   Soft = 'H5L_TYPE_SOFT',
   External = 'H5L_TYPE_EXTERNAL',
-}
-
-export interface HDF5RootLink {
-  class: HDF5LinkClass.Root;
-  title: string;
-  collection: HDF5Collection.Groups;
-  id: HDF5Id;
 }
 
 export interface HDF5HardLink {

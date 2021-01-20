@@ -8,7 +8,6 @@ interface Props {
   children: ReactNode;
 }
 
-/* Provider of metadata and values by JupyterLab backend */
 function JupyterProvider(props: Props): ReactElement {
   const { url, domain, children } = props;
   const api = useMemo(() => new JupyterApi(url, domain), [domain, url]);
