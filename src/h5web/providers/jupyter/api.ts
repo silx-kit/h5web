@@ -79,40 +79,42 @@ export class JupyterApi implements ProviderAPI {
       makeStrAttr(name, value)
     );
 
+    const baseEntity = {
+      uid: nanoid(),
+      id: path,
+      name: response.name,
+      path,
+      attributes,
+    };
+
     if (isGroupResponse(response)) {
-      const { name, type, childrenCount } = response;
-      const contents = childrenCount > 0 ? await this.fetchContents(path) : [];
+      const { type, childrenCount } = response;
+
+      if (depth === 0 || childrenCount === 0) {
+        return {
+          ...baseEntity,
+          kind: type,
+          children: [],
+        };
+      }
+
+      const contents = await this.fetchContents(path);
       assertGroupContent(contents);
 
-      const children =
-        depth > 0
-          ? await Promise.all(
-              contents.map((content) => {
-                return this.processEntity(content.uri, depth - 1);
-              })
-            )
-          : [];
-
       return {
-        uid: nanoid(),
-        id: path,
-        name,
-        path,
+        ...baseEntity,
         kind: type,
-        children,
-        attributes,
+        children: await Promise.all(
+          contents.map((content) => this.processEntity(content.uri, depth - 1))
+        ),
       };
     }
 
     if (isDatasetResponse(response)) {
-      const { name, type, shape: dims } = response;
+      const { type, shape: dims } = response;
       return {
-        uid: nanoid(),
-        id: path,
-        name,
-        path,
+        ...baseEntity,
         kind: type,
-        attributes,
         // TODO: Find the type from the dtype OR change the backend to return the true HDF5Type
         type: floatType,
         shape:
@@ -124,11 +126,8 @@ export class JupyterApi implements ProviderAPI {
 
     // Consider other as unresolved soft links
     return {
-      uid: nanoid(),
-      name: path,
-      path,
+      ...baseEntity,
       kind: EntityKind.Link,
-      attributes,
       rawLink: {
         class: HDF5LinkClass.Soft,
         title: path,
