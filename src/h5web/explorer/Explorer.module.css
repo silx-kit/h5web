@@ -1,6 +1,7 @@
 .explorer {
   position: relative;
   flex: 1 1 0%;
+  min-width: 0;
 }
 
 .group {
@@ -18,6 +19,9 @@
   display: block;
   width: 100%;
   padding: 0.25rem 1rem 0.25rem calc(0.25rem + (var(--level) + 1) * 0.75rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .btn:hover,
