@@ -20,6 +20,11 @@ blocks (`VisCanvas`, `ColorBar`, etc.)
 The library is documented in a Storybook site accessible at
 https://h5web-docs.panosc.eu.
 
+Some examples of usage of `@h5web/lib`:
+
+- [LineVis with multiple curves](https://codesandbox.io/s/h5weblib-demo-multiple-curves-kwkli)
+- [HeatmapVis with horizontal color bar and tooltip](https://codesandbox.io/s/h5weblib-demo-heatmap-with-tooltip-ti5cy)
+
 ### [@h5web/app](https://www.npmjs.com/package/@h5web/app)
 
 H5Web's top-level `App` component and built-in data providers.
@@ -42,7 +47,7 @@ visualizations. Three demos are available, one per data provider:
 This demo is available at https://h5web.panosc.eu.
 
 The following HDF5 files can be reached with a URL of the form
-`https://h5web.panosc.eu/jupyter?domain=<name>`:
+`https://h5web.panosc.eu/?domain=<name>`:
 
 - `water_224.h5` (**default**): A typical NeXUS file with various real-world
   datasets to demonstrate the visualizations.
