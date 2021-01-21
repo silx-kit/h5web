@@ -1,0 +1,8 @@
+.raw {
+  padding: 1rem;
+  margin: 0;
+}
+
+.fallback {
+  composes: fallback from '../../../App.module.css';
+}

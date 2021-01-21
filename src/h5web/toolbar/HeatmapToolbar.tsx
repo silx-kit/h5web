@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { MdAspectRatio, MdDomain, MdGridOn } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
-import { useHeatmapConfig } from '../visualizations/heatmap/config';
+import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
 import DomainSlider from './controls/DomainSlider';
 import SnapshotButton from './controls/SnapshotButton';
 import Separator from './Separator';

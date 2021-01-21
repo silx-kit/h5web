@@ -1,15 +1,15 @@
-import { Profiler as ReactProfiler, ReactElement } from 'react';
+import { Profiler as ReactProfiler, ReactElement, ReactNode } from 'react';
 
 interface Props {
   id: string;
-  children: ReactElement;
+  children: ReactNode;
 }
 
 function Profiler(props: Props): ReactElement {
   const { id, children } = props;
 
   if (process.env.REACT_APP_PROFILING_ENABLED !== 'true') {
-    return children;
+    return <>{children}</>;
   }
 
   return (

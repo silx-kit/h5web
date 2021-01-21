@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
-import { useLineConfig } from '../visualizations/line/config';
-import { CurveType } from '../visualizations/line/models';
+import { useLineConfig } from '../vis-packs/core/line/config';
+import { CurveType } from '../vis-packs/core/line/models';
 import ToggleGroup from './controls/ToggleGroup';
 import Toolbar, { ToolbarProps } from './Toolbar';
 import Separator from './Separator';

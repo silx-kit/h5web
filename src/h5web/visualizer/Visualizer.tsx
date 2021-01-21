@@ -1,45 +1,28 @@
-import { ReactElement, Suspense, useContext, useState } from 'react';
-import styles from './Visualizer.module.css';
-import { getDefaultEntity, getSupportedVis } from './utils';
-import { VIS_DEFS, Vis } from '../visualizations';
-import VisSelector from './VisSelector';
-import ValueLoader from './ValueLoader';
-import Profiler from '../Profiler';
-import ErrorMessage from './ErrorMessage';
+import { ReactElement, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { ProviderContext } from '../providers/context';
+import Profiler from '../Profiler';
+import type { Entity } from '../providers/models';
+import ErrorMessage from './ErrorMessage';
+import type { VisDef } from '../vis-packs/models';
+import ValueLoader from './ValueLoader';
+import VisSelector from './VisSelector';
+import styles from './Visualizer.module.css';
 
-interface Props {
-  path: string;
+interface Props<T extends VisDef> {
+  entity: Entity;
+  activeVis: T | undefined;
+  supportedVis: T[];
+  onActiveVisChange: (vis: T) => void;
 }
 
-function Visualizer(props: Props): ReactElement {
-  const { path } = props;
-
-  const { entitiesStore } = useContext(ProviderContext);
-  const entity = entitiesStore.get(path);
-
-  // Resolve any `default` attribute(s) to find entity to visualize
-  const defaultEntity = getDefaultEntity(entity, entitiesStore);
-
-  const supportedVis = getSupportedVis(defaultEntity);
-  const [activeVis, setActiveVis] = useState<Vis>();
-
-  // Update `activeVis` state as needed
-  if (activeVis && supportedVis.length === 0) {
-    setActiveVis(undefined);
-  } else if (
-    (!activeVis && supportedVis.length > 0) ||
-    (activeVis && !supportedVis.includes(activeVis))
-  ) {
-    setActiveVis(supportedVis[supportedVis.length - 1]);
-  }
+function Visualizer<T extends VisDef>(props: Props<T>): ReactElement {
+  const { entity, activeVis, supportedVis, onActiveVisChange } = props;
 
   if (!activeVis) {
     return <p className={styles.fallback}>Nothing to visualize</p>;
   }
 
-  const { Container, Toolbar } = activeVis && VIS_DEFS[activeVis];
+  const { Container, Toolbar } = activeVis;
 
   return (
     <div className={styles.visualizer}>
@@ -47,15 +30,19 @@ function Visualizer(props: Props): ReactElement {
         <VisSelector
           activeVis={activeVis}
           choices={supportedVis}
-          onChange={setActiveVis}
+          onChange={onActiveVisChange}
         />
         {Toolbar && <Toolbar />}
       </div>
+
       <div className={styles.displayArea}>
-        <ErrorBoundary key={defaultEntity.uid} FallbackComponent={ErrorMessage}>
+        <ErrorBoundary
+          resetKeys={[entity.uid]}
+          FallbackComponent={ErrorMessage}
+        >
           <Suspense fallback={<ValueLoader />}>
-            <Profiler id={activeVis}>
-              <Container entity={defaultEntity} />
+            <Profiler id={activeVis.name}>
+              <Container key={entity.uid} entity={entity} />
             </Profiler>
           </Suspense>
         </ErrorBoundary>

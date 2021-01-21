@@ -1,5 +1,5 @@
 import { range } from 'lodash-es';
-import { ScaleType } from '../../visualizations/shared/models';
+import { ScaleType } from '../../vis-packs/core/models';
 import {
   compoundType,
   floatType,

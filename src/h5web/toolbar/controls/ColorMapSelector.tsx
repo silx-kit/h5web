@@ -6,9 +6,9 @@ import {
   MOST_USED,
   MULTI_HUE,
   SINGLE_HUE,
-} from '../../visualizations/heatmap/interpolators';
-import type { ColorMap } from '../../visualizations/heatmap/models';
-import { generateCSSLinearGradient } from '../../visualizations/heatmap/utils';
+} from '../../vis-packs/core/heatmap/interpolators';
+import type { ColorMap } from '../../vis-packs/core/heatmap/models';
+import { generateCSSLinearGradient } from '../../vis-packs/core/heatmap/utils';
 import Selector from './Selector/Selector';
 import styles from './ColorMapSelector.module.css';
 
