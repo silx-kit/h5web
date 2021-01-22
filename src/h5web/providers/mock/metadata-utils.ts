@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { Datatype, Entity, EntityKind, Group, Link } from '../models';
 import {
   HDF5Attribute,
@@ -112,7 +111,6 @@ export function makeGroup(
   const path = isRoot ? '/' : `/${name}`;
 
   const group: Group = {
-    uid: nanoid(),
     name,
     path,
     kind: EntityKind.Group,
@@ -134,7 +132,6 @@ export function makeDataset<S extends HDF5Shape, T extends HDF5Type>(
   const { attributes = [], valueId = name, rawLink } = opts;
 
   return {
-    uid: nanoid(),
     name,
     path: `/${name}`,
     kind: EntityKind.Dataset,
@@ -163,7 +160,6 @@ export function makeDatatype<T extends HDF5Type>(
   const { attributes = [], rawLink } = opts;
 
   return {
-    uid: nanoid(),
     name,
     path: `/${name}`,
     kind: EntityKind.Datatype,
@@ -175,7 +171,6 @@ export function makeDatatype<T extends HDF5Type>(
 
 function makeLink<T extends HDF5Link>(rawLink: T): Link<T> {
   return {
-    uid: nanoid(),
     name: rawLink.title,
     path: `/${rawLink.title}`,
     kind: EntityKind.Link,

@@ -37,12 +37,12 @@ function Visualizer<T extends VisDef>(props: Props<T>): ReactElement {
 
       <div className={styles.displayArea}>
         <ErrorBoundary
-          resetKeys={[entity.uid]}
+          resetKeys={[entity.path]}
           FallbackComponent={ErrorMessage}
         >
           <Suspense fallback={<ValueLoader />}>
             <Profiler id={activeVis.name}>
-              <Container key={entity.uid} entity={entity} />
+              <Container key={entity.path} entity={entity} />
             </Profiler>
           </Suspense>
         </ErrorBoundary>

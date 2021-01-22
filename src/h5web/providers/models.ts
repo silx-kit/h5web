@@ -13,7 +13,6 @@ export enum EntityKind {
 }
 
 export interface Entity {
-  uid: string;
   name: string;
   path: string;
   kind: EntityKind;
