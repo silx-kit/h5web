@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
-import type { Vis } from './visualizations';
+import type { Vis } from './vis-packs/core/visualizations';
 
 export function renderApp(): RenderResult {
   return render(
@@ -35,8 +35,8 @@ export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
   return within(await findVisSelector()).getAllByRole('tab');
 }
 
-export async function selectVisTab(vis: Vis): Promise<void> {
-  fireEvent.click(await screen.findByRole('tab', { name: vis }));
+export async function selectVisTab(name: Vis): Promise<void> {
+  fireEvent.click(await screen.findByRole('tab', { name }));
 }
 
 /**

@@ -27,10 +27,7 @@ import {
   HDF5TypeClass,
   HDF5Value,
 } from '../hdf5-models';
-import type {
-  NxInterpretation,
-  SilxStyle,
-} from '../../visualizations/nexus/models';
+import type { NxInterpretation, SilxStyle } from '../../vis-packs/nexus/models';
 import { isGroup } from '../../guards';
 import { buildEntityPath } from '../../utils';
 

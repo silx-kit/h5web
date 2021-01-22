@@ -4,7 +4,7 @@ import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
 import BreadcrumbsBar from './BreadcrumbsBar';
-import Visualizer from './visualizer/Visualizer';
+import VisPackChooser from './vis-packs/VisPackChooser';
 import { assertAbsolutePath } from './guards';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorMessage from './visualizer/ErrorMessage';
@@ -49,7 +49,7 @@ function App(): ReactElement {
             {isInspecting ? (
               <MetadataViewer path={selectedPath} />
             ) : (
-              <Visualizer path={selectedPath} />
+              <VisPackChooser path={selectedPath} />
             )}
           </Suspense>
         </ErrorBoundary>

@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { MdSort, MdFilterList, MdGraphicEq } from 'react-icons/md';
-import { ScaleType } from '../../visualizations/shared/models';
+import { ScaleType } from '../../vis-packs/core/models';
 import styles from './ScaleSelector.module.css';
 
 const ICONS: Record<ScaleType, IconType> = {

@@ -1,6 +1,6 @@
 import { fireEvent, screen, within } from '@testing-library/react';
 import { renderApp, selectExplorerNode, selectVisTab } from '../test-utils';
-import { Vis } from '../visualizations';
+import { Vis } from '../vis-packs/core/visualizations';
 
 describe('DimensionMapper', () => {
   test('display mapping for X axis when visualizing 2D dataset as Line', async () => {

@@ -1,32 +1,32 @@
 import type { ReactElement } from 'react';
 import styles from './VisSelector.module.css';
-import { VIS_DEFS, Vis } from '../visualizations';
+import type { VisDef } from '../vis-packs/models';
 
-interface Props {
-  activeVis: Vis;
-  choices: Vis[];
-  onChange?: (vis: Vis) => void;
+interface Props<T extends VisDef> {
+  activeVis: T;
+  choices: T[];
+  onChange: (vis: T) => void;
 }
 
-function VisSelector(props: Props): ReactElement {
+function VisSelector<T extends VisDef>(props: Props<T>): ReactElement {
   const { activeVis, choices, onChange } = props;
 
   return (
     <div className={styles.selector} role="tablist" aria-label="Visualization">
       {choices.map((vis) => {
-        const { Icon } = VIS_DEFS[vis];
-        const onClick = onChange ? () => onChange(vis) : undefined;
+        const { name, Icon } = vis;
+
         return (
           <button
-            key={vis}
+            key={name}
             className={styles.btn}
             type="button"
             role="tab"
             aria-selected={vis === activeVis}
-            onClick={onClick}
+            onClick={() => onChange(vis)}
           >
             <Icon className={styles.icon} />
-            {vis}
+            {name}
           </button>
         );
       })}

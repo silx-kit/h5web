@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import { FiItalic } from 'react-icons/fi';
-import { useNxSpectrumConfig } from '../visualizations/nexus/config';
+import { useNxSpectrumConfig } from '../vis-packs/nexus/spectrum/config';
 import ToggleBtn from './controls/ToggleBtn';
 import LineToolbar from './LineToolbar';
 
