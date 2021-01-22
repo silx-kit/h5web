@@ -5,7 +5,6 @@ import {
   Datatype,
   Dataset,
   Link,
-  ResolvedEntity,
 } from './providers/models';
 import {
   HDF5HardLink,
@@ -65,10 +64,6 @@ export function assertOptionalArray<T>(
   if (val !== undefined) {
     assertArray<T>(val);
   }
-}
-
-export function isResolved(entity: Entity): entity is ResolvedEntity {
-  return 'id' in entity;
 }
 
 export function isGroup(entity: Entity): entity is Group {

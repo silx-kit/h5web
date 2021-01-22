@@ -13,7 +13,7 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { nanoid } from 'nanoid';
-import { makeStrAttr, floatType } from '../mock/data-utils';
+import { makeStrAttr, floatType } from '../mock/metadata-utils';
 import {
   HDF5LinkClass,
   HDF5ShapeClass,
@@ -81,7 +81,6 @@ export class JupyterApi implements ProviderAPI {
 
     const baseEntity = {
       uid: nanoid(),
-      id: path,
       name: response.name,
       path,
       attributes,

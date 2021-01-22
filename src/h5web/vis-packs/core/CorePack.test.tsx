@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { mockValues } from '../../../packages/lib';
+import { mockValues } from '../../providers/mock/values';
 import {
   findVisSelectorTabs,
   mockConsoleMethod,

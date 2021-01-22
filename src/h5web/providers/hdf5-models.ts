@@ -3,7 +3,6 @@
 
 export type HDF5Id = string;
 export type HDF5Value = unknown;
-export type HDF5Values = Record<HDF5Id, HDF5Value>;
 export type HDF5Dims = number[];
 
 export enum HDF5Collection {

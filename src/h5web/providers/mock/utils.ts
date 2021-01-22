@@ -10,7 +10,12 @@ import {
 } from '../../guards';
 import { getChildEntity } from '../../utils';
 import type { Entity, Metadata } from '../models';
-import { mockMetadata, mockValues } from './data';
+import { mockMetadata } from './metadata';
+import type { MockDataset } from './models';
+
+function assertMockDataset(entity: Entity): asserts entity is MockDataset {
+  assertDataset(entity);
+}
 
 export function findMockEntity(root: Metadata, path: string): Entity {
   assertAbsolutePath(path);
@@ -33,15 +38,18 @@ export function findMockEntity(root: Metadata, path: string): Entity {
   return entity;
 }
 
-export function getMockDataArray(path: string): ndarray {
-  assertAbsolutePath(path);
-
+export function findMockDataset(path: string): MockDataset {
   const dataset = findMockEntity(mockMetadata, path);
-  assertDataset(dataset);
+  assertMockDataset(dataset);
+  return dataset;
+}
+
+export function getMockDataArray(path: string): ndarray {
+  const dataset = findMockDataset(path);
   assertNumericType(dataset);
   assertSimpleShape(dataset);
 
-  const value = mockValues[dataset.id as keyof typeof mockValues];
+  const { value } = dataset as MockDataset;
   assertArray<number>(value);
 
   return ndarray(value.flat(Infinity), dataset.shape.dims);

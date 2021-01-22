@@ -1,6 +1,5 @@
 import type {
   HDF5Attribute,
-  HDF5Id,
   HDF5Link,
   HDF5Shape,
   HDF5Type,
@@ -22,11 +21,7 @@ export interface Entity {
   rawLink?: HDF5Link;
 }
 
-export interface ResolvedEntity extends Entity {
-  id: HDF5Id;
-}
-
-export interface Group extends ResolvedEntity {
+export interface Group extends Entity {
   kind: EntityKind.Group;
   children: Entity[];
 }
@@ -34,13 +29,13 @@ export interface Group extends ResolvedEntity {
 export interface Dataset<
   S extends HDF5Shape = HDF5Shape,
   T extends HDF5Type = HDF5Type
-> extends ResolvedEntity {
+> extends Entity {
   kind: EntityKind.Dataset;
   shape: S;
   type: T;
 }
 
-export interface Datatype<T = HDF5Type> extends ResolvedEntity {
+export interface Datatype<T = HDF5Type> extends Entity {
   kind: EntityKind.Datatype;
   type: T;
 }

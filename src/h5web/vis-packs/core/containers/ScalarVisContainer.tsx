@@ -8,7 +8,7 @@ function ScalarVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertDataset(entity);
 
-  const value = useDatasetValue(entity.id);
+  const value = useDatasetValue(entity.path);
   return <ScalarVis value={value} />;
 }
 

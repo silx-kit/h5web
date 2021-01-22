@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { mockDomain } from '../providers/mock/data';
+import { mockDomain } from '../providers/mock/metadata';
 import { renderApp } from '../test-utils';
 
 describe('Explorer', () => {

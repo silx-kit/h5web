@@ -1,17 +1,17 @@
 import type { ReactElement, ReactNode } from 'react';
 import Provider from '../Provider';
-import { mockMetadata, mockValues, mockDomain } from './data';
-import { findMockEntity } from './utils';
+import { mockMetadata, mockDomain } from './metadata';
+import { findMockEntity, findMockDataset } from './utils';
 
 interface Props {
   domain?: string;
   slowOnPath?: string;
-  errorOnId?: string;
+  errorOnPath?: string;
   children: ReactNode;
 }
 
 function MockProvider(props: Props): ReactElement {
-  const { domain = mockDomain, errorOnId, slowOnPath, children } = props;
+  const { domain = mockDomain, errorOnPath, slowOnPath, children } = props;
 
   return (
     <Provider
@@ -26,13 +26,14 @@ function MockProvider(props: Props): ReactElement {
 
           return findMockEntity(mockMetadata, path);
         },
-        getValue: async (id: keyof typeof mockValues) => {
-          if (id === errorOnId) {
+        getValue: async (path: string) => {
+          if (path === errorOnPath) {
             // Throw error when fetching value with specific ID
             throw new Error('error');
           }
 
-          return mockValues[id];
+          const { value } = findMockDataset(path);
+          return value;
         },
       }}
     >

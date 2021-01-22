@@ -89,9 +89,10 @@ The library exposes a utility function to retrieve a mock entity's metadata and 
 You can browse through the available mock data at https://h5web.panosc.eu/mock.
 
 ```ts
-import { findMockEntity, getMockDataArray } from '@h5web/lib';
+import { findMockEntity, findMockDataset, getMockDataArray } from '@h5web/lib';
 
 const entity = findMockEntity('/nD_datasets/twoD');
+const dataset = findMockDataset('/nD_datasets/twoD');
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 ```
 
