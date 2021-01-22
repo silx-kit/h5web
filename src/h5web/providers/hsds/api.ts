@@ -23,7 +23,6 @@ import {
 import { assertDefined, assertGroup, isHardLink } from '../../guards';
 import type { ProviderAPI } from '../context';
 import { assertHsdsDataset, isHsdsExternalLink, isHsdsGroup } from './utils';
-import { nanoid } from 'nanoid';
 import { buildEntityPath, getChildEntity } from '../../utils';
 
 export class HsdsApi implements ProviderAPI {
@@ -165,7 +164,6 @@ export class HsdsApi implements ProviderAPI {
     );
 
     return {
-      uid: nanoid(),
       id,
       path,
       name,
@@ -189,7 +187,6 @@ export class HsdsApi implements ProviderAPI {
         : [];
 
     return {
-      uid: nanoid(),
       id,
       path,
       name,
@@ -208,7 +205,6 @@ export class HsdsApi implements ProviderAPI {
     const { type } = await this.fetchDatatype(id);
 
     return {
-      uid: nanoid(),
       path,
       name,
       kind: EntityKind.Datatype,
@@ -224,7 +220,6 @@ export class HsdsApi implements ProviderAPI {
   ): Promise<Entity> {
     if (!isHardLink(link)) {
       return {
-        uid: nanoid(),
         name: link.title,
         path,
         kind: EntityKind.Link,
