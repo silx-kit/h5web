@@ -1,46 +1,56 @@
-import { combine } from 'zustand/middleware';
-import { StorageConfig, createPersistableState } from '../../../storage-utils';
+import create, { State } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { CurveType } from './models';
 import { ScaleType } from '../models';
 
-interface LineConfig {
+interface LineConfig extends State {
   curveType: CurveType;
+  setCurveType: (type: CurveType) => void;
+
   showGrid: boolean;
+  toggleGrid: () => void;
+
   xScaleType: ScaleType;
   yScaleType: ScaleType;
+  setXScaleType: (type: ScaleType) => void;
+  setYScaleType: (type: ScaleType) => void;
+
   autoScale: boolean;
   isAutoScaleDisabled: boolean;
+  toggleAutoScale: () => void;
+  disableAutoScale: (isAutoScaleDisabled: boolean) => void;
 }
 
-const STORAGE_CONFIG: StorageConfig = {
-  storageId: 'h5web:line',
-  itemsToPersist: [
-    'curveType',
-    'showGrid',
-    'xScaleType',
-    'yScaleType',
-    'autoScale',
-  ],
-};
+export const useLineConfig = create<LineConfig>(
+  persist(
+    (set) => ({
+      curveType: CurveType.LineOnly,
+      setCurveType: (type: CurveType) => set({ curveType: type }),
 
-const INITIAL_STATE: LineConfig = {
-  curveType: CurveType.LineOnly,
-  showGrid: true,
-  xScaleType: ScaleType.Linear,
-  yScaleType: ScaleType.Linear,
-  autoScale: false,
-  isAutoScaleDisabled: false,
-};
+      showGrid: true,
+      toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
-export const useLineConfig = createPersistableState(
-  STORAGE_CONFIG,
-  combine({ ...INITIAL_STATE }, (set) => ({
-    setCurveType: (type: CurveType) => set({ curveType: type }),
-    toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
-    setXScaleType: (type: ScaleType) => set({ xScaleType: type }),
-    setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
-    toggleAutoScale: () => set((state) => ({ autoScale: !state.autoScale })),
-    disableAutoScale: (isAutoScaleDisabled: boolean) =>
-      set({ isAutoScaleDisabled }),
-  }))
+      xScaleType: ScaleType.Linear,
+      yScaleType: ScaleType.Linear,
+      setXScaleType: (type: ScaleType) => set({ xScaleType: type }),
+      setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
+
+      autoScale: false,
+      isAutoScaleDisabled: false,
+      toggleAutoScale: () => set((state) => ({ autoScale: !state.autoScale })),
+      disableAutoScale: (isAutoScaleDisabled: boolean) =>
+        set({ isAutoScaleDisabled }),
+    }),
+    {
+      name: 'h5web:line',
+      whitelist: [
+        'curveType',
+        'showGrid',
+        'xScaleType',
+        'yScaleType',
+        'autoScale',
+      ],
+      version: 1,
+    }
+  )
 );

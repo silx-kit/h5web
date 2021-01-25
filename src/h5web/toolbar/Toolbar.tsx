@@ -50,7 +50,10 @@ function Toolbar(props: ToolbarProps): ReactElement {
 
   return (
     <div className={styles.toolbar}>
-      <div ref={containerRef} className={styles.controls}>
+      <div
+        ref={containerRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
+        className={styles.controls}
+      >
         {isSeparatorLast ? visibleChildren.slice(0, -1) : visibleChildren}
       </div>
 

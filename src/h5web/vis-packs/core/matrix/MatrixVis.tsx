@@ -34,7 +34,10 @@ function MatrixVis(props: Props): ReactElement {
           : (row, col) => dataArray.get(row, col)
       }
     >
-      <div ref={divRef} className={styles.wrapper}>
+      <div
+        ref={divRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
+        className={styles.wrapper}
+      >
         {isVisible && (
           <IndexedGrid
             className={styles.grid}

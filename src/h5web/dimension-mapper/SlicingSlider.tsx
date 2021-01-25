@@ -19,7 +19,11 @@ function SlicingSlider(props: Props): ReactElement {
   const [containerRef, { height }] = useMeasure();
 
   return (
-    <div key={dimension} ref={containerRef} className={styles.container}>
+    <div
+      key={dimension}
+      ref={containerRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
+      className={styles.container}
+    >
       <span className={styles.label}>D{dimension}</span>
       <ReactSlider
         // Force refresh when slider height changes - i.e. when Y-axis mapper appears/disappears

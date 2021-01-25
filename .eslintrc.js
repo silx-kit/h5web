@@ -18,6 +18,12 @@ module.exports = createConfig({
     // Prefer explicit, consistent return - e.g. `return undefined;`
     'unicorn/no-useless-undefined': 'off',
     'consistent-return': 'error',
+
+    // zustand has `whitelist` option
+    'inclusive-language/use-inclusive-words': [
+      'error',
+      { allowedTerms: ['whitelist'] },
+    ],
   },
   overrides: [
     {

@@ -49,7 +49,6 @@
 }
 
 .mark {
-  position: absolute;
   background-color: var(--primary-bg);
   border: 2px solid var(--secondary-dark);
   border-radius: 50%;
