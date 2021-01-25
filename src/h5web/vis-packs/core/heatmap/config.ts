@@ -1,62 +1,71 @@
-import { combine } from 'zustand/middleware';
+import create, { State } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { ColorMap } from './models';
 import { Domain, ScaleType } from '../models';
-import { StorageConfig, createPersistableState } from '../../../storage-utils';
 
-interface HeatmapConfig {
+interface HeatmapConfig extends State {
   dataDomain: Domain | undefined;
   customDomain: Domain | undefined;
+  resetDomains: (dataDomain: Domain | undefined) => void;
+  setCustomDomain: (customDomain: Domain | undefined) => void;
+
   colorMap: ColorMap;
+  setColorMap: (colorMap: ColorMap) => void;
+
   scaleType: ScaleType;
+  setScaleType: (scaleType: ScaleType) => void;
+
   keepAspectRatio: boolean;
+  toggleAspectRatio: () => void;
+
   showGrid: boolean;
+  toggleGrid: () => void;
+
   autoScale: boolean;
   isAutoScaleDisabled: boolean;
+  toggleAutoScale: () => void;
+  disableAutoScale: (isAutoScaleDisabled: boolean) => void;
 }
 
-const STORAGE_CONFIG: StorageConfig = {
-  storageId: 'h5web:heatmap',
-  itemsToPersist: [
-    'colorMap',
-    'scaleType',
-    'keepAspectRatio',
-    'showGrid',
-    'autoScale',
-  ],
-};
+export const useHeatmapConfig = create<HeatmapConfig>(
+  persist(
+    (set) => ({
+      dataDomain: undefined,
+      customDomain: undefined,
+      resetDomains: (dataDomain: Domain | undefined) =>
+        set({ dataDomain, customDomain: undefined }),
+      setCustomDomain: (customDomain: Domain | undefined) =>
+        set({ customDomain }),
 
-const INITIAL_STATE: HeatmapConfig = {
-  dataDomain: undefined,
-  customDomain: undefined,
-  colorMap: 'Viridis',
-  scaleType: ScaleType.Linear,
-  keepAspectRatio: true,
-  showGrid: false,
-  autoScale: false,
-  isAutoScaleDisabled: false,
-};
+      colorMap: 'Viridis',
+      setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
-export const useHeatmapConfig = createPersistableState(
-  STORAGE_CONFIG,
-  combine({ ...INITIAL_STATE }, (set) => ({
-    resetDomains: (dataDomain: Domain | undefined) =>
-      set({ dataDomain, customDomain: undefined }),
+      scaleType: ScaleType.Linear,
+      setScaleType: (scaleType: ScaleType) => set({ scaleType }),
 
-    setCustomDomain: (customDomain: Domain | undefined) =>
-      set({ customDomain }),
+      keepAspectRatio: true,
+      toggleAspectRatio: () =>
+        set((state) => ({ keepAspectRatio: !state.keepAspectRatio })),
 
-    setColorMap: (colorMap: ColorMap) => set({ colorMap }),
+      showGrid: false,
+      toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
-    setScaleType: (scaleType: ScaleType) => set({ scaleType }),
-
-    toggleAspectRatio: () =>
-      set((state) => ({ keepAspectRatio: !state.keepAspectRatio })),
-
-    toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
-
-    toggleAutoScale: () => set((state) => ({ autoScale: !state.autoScale })),
-
-    disableAutoScale: (isAutoScaleDisabled: boolean) =>
-      set({ isAutoScaleDisabled }),
-  }))
+      autoScale: false,
+      isAutoScaleDisabled: false,
+      toggleAutoScale: () => set((state) => ({ autoScale: !state.autoScale })),
+      disableAutoScale: (isAutoScaleDisabled: boolean) =>
+        set({ isAutoScaleDisabled }),
+    }),
+    {
+      name: 'h5web:heatmap',
+      whitelist: [
+        'colorMap',
+        'scaleType',
+        'keepAspectRatio',
+        'showGrid',
+        'autoScale',
+      ],
+      version: 1,
+    }
+  )
 );

@@ -1,25 +1,25 @@
-import { combine } from 'zustand/middleware';
-import { createPersistableState, StorageConfig } from '../../../storage-utils';
+import create, { State } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-interface NxSpectrumConfig {
+interface NxSpectrumConfig extends State {
   showErrors: boolean;
   areErrorsDisabled: boolean;
+  toggleErrors: () => void;
+  disableErrors: (areErrorsDisabled: boolean) => void;
 }
 
-const STORAGE_CONFIG: StorageConfig = {
-  storageId: 'h5web:nxSpectrum',
-  itemsToPersist: ['showErrors'],
-};
-
-const INITIAL_STATE: NxSpectrumConfig = {
-  showErrors: true,
-  areErrorsDisabled: false,
-};
-
-export const useNxSpectrumConfig = createPersistableState(
-  STORAGE_CONFIG,
-  combine({ ...INITIAL_STATE }, (set) => ({
-    toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
-    disableErrors: (areErrorsDisabled: boolean) => set({ areErrorsDisabled }),
-  }))
+export const useNxSpectrumConfig = create<NxSpectrumConfig>(
+  persist(
+    (set) => ({
+      showErrors: true,
+      areErrorsDisabled: false,
+      toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
+      disableErrors: (areErrorsDisabled: boolean) => set({ areErrorsDisabled }),
+    }),
+    {
+      name: 'h5web:nxSpectrum',
+      whitelist: ['showErrors'],
+      version: 1,
+    }
+  )
 );
