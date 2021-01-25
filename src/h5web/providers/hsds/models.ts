@@ -8,6 +8,7 @@ import type {
   HDF5HardLink,
   HDF5SoftLink,
 } from '../hdf5-models';
+import type { Dataset, Group } from '../models';
 
 export interface HsdsRootResponse {
   root: HDF5Id;
@@ -45,6 +46,14 @@ export type HsdsLink = HDF5HardLink | HDF5SoftLink | HsdsExternalLink;
 
 export interface HsdsExternalLink extends Omit<HDF5ExternalLink, 'file'> {
   h5domain: string;
+}
+
+export interface HsdsGroup extends Group {
+  id: HDF5Id;
+}
+
+export interface HsdsDataset extends Dataset {
+  id: HDF5Id;
 }
 
 export interface HsdsValueResponse {

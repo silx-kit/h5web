@@ -14,13 +14,15 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   assertSimpleShape(entity);
   assertNumericType(entity);
 
-  const { dims } = entity.shape;
+  const { name, path, shape } = entity;
+  const { dims } = shape;
+
   if (dims.length < 2) {
     throw new Error('Expected dataset with at least two dimensions');
   }
 
-  const value = useDatasetValue(entity.id);
-  return <MappedHeatmapVis value={value} dims={dims} title={entity.name} />;
+  const value = useDatasetValue(path);
+  return <MappedHeatmapVis value={value} dims={dims} title={name} />;
 }
 
 export default HeatmapVisContainer;

@@ -1,4 +1,4 @@
-import { intType, makeDataset, makeGroup, scalarShape } from './data-utils';
+import { intType, makeDataset, makeGroup, scalarShape } from './metadata-utils';
 import { findMockEntity } from './utils';
 
 describe('MockProvider utilities', () => {

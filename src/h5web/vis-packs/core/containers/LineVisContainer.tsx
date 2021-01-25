@@ -14,11 +14,10 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
   assertSimpleShape(entity);
   assertNumericType(entity);
 
-  const value = useDatasetValue(entity.id);
+  const { name, path, shape } = entity;
+  const value = useDatasetValue(path);
 
-  return (
-    <MappedLineVis value={value} dims={entity.shape.dims} title={entity.name} />
-  );
+  return <MappedLineVis value={value} dims={shape.dims} title={name} />;
 }
 
 export default LineVisContainer;

@@ -2,15 +2,28 @@ import ndarray from 'ndarray';
 import {
   assertAbsolutePath,
   assertArray,
-  assertDataset,
   assertDefined,
   assertNumericType,
   assertSimpleShape,
+  isDataset,
   isGroup,
 } from '../../guards';
 import { getChildEntity } from '../../utils';
 import type { Entity, Metadata } from '../models';
-import { mockMetadata, mockValues } from './data';
+import { mockMetadata } from './metadata';
+import type { MockDataset } from './models';
+
+function isMockDataset(entity: Entity): entity is MockDataset {
+  return isDataset(entity) && 'value' in entity;
+}
+
+export function assertMockDataset(
+  entity: Entity
+): asserts entity is MockDataset {
+  if (!isMockDataset(entity)) {
+    throw new Error('Expected mock dataset');
+  }
+}
 
 export function findMockEntity(root: Metadata, path: string): Entity {
   assertAbsolutePath(path);
@@ -34,15 +47,14 @@ export function findMockEntity(root: Metadata, path: string): Entity {
 }
 
 export function getMockDataArray(path: string): ndarray {
-  assertAbsolutePath(path);
-
   const dataset = findMockEntity(mockMetadata, path);
-  assertDataset(dataset);
+  assertMockDataset(dataset);
+
+  const { value } = dataset;
+  assertArray<number>(value);
+
   assertNumericType(dataset);
   assertSimpleShape(dataset);
-
-  const value = mockValues[dataset.id as keyof typeof mockValues];
-  assertArray<number>(value);
 
   return ndarray(value.flat(Infinity), dataset.shape.dims);
 }

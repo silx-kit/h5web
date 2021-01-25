@@ -8,7 +8,7 @@ import {
   makeSimpleShape,
   makeDataset,
   makeSimpleDataset,
-} from '../../providers/mock/data-utils';
+} from '../../providers/mock/metadata-utils';
 
 const datasetIntScalar = makeDataset('dataset_int', scalarShape, intType);
 const datasetFltScalar = makeDataset('dataset_flt', scalarShape, floatType);

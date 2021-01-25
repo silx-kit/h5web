@@ -1,6 +1,7 @@
 import { getSupportedVis } from './pack-utils';
 import {
   intType,
+  floatType,
   makeStrAttr,
   makeGroup,
   makeNxDataGroup,
@@ -8,13 +9,13 @@ import {
   withNxInterpretation,
   makeNxGroup,
   withAttributes,
-} from '../../providers/mock/data-utils';
+} from '../../providers/mock/metadata-utils';
 import { NEXUS_VIS } from './visualizations';
 import { NxInterpretation } from './models';
 
 const datasetInt1D = makeSimpleDataset('dataset_int_1d', intType, [5]);
 const datasetInt2D = makeSimpleDataset('dataset_int_2d', intType, [5, 3]);
-const datasetFlt3D = makeSimpleDataset('dataset_flt_3d', intType, [5, 3, 1]);
+const datasetFlt3D = makeSimpleDataset('dataset_flt_3d', floatType, [5, 3, 1]);
 
 describe('Nexus pack utilities', () => {
   describe('getSupportedVis', () => {

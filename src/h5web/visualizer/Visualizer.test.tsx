@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import App from '../App';
 import MockProvider from '../providers/mock/MockProvider';
-import { mockValues } from '../providers/mock/data';
+import { mockValues } from '../providers/mock/values';
 import {
   mockConsoleMethod,
   queryVisSelector,
@@ -38,7 +38,7 @@ describe('Visualizer', () => {
 
   test("show error when dataset value can't be fetched and reset when selecting another dataset", async () => {
     render(
-      <MockProvider errorOnId="raw">
+      <MockProvider errorOnPath="/entities/raw">
         <App />
       </MockProvider>
     );

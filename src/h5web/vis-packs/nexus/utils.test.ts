@@ -10,7 +10,7 @@ import {
   makeNxAxesAttr,
   makeIntAttr,
   makeSilxStyleAttr,
-} from '../../providers/mock/data-utils';
+} from '../../providers/mock/metadata-utils';
 import { mockConsoleMethod } from '../../test-utils';
 import { ScaleType } from '../core/models';
 import {

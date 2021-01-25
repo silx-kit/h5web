@@ -9,8 +9,10 @@ import type {
   HsdsValueResponse,
   HsdsAttributeWithValueResponse,
   HsdsLink,
+  HsdsGroup,
+  HsdsDataset,
 } from './models';
-import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
+import { Datatype, Entity, EntityKind } from '../models';
 import {
   HDF5Collection,
   HDF5Id,
@@ -18,9 +20,9 @@ import {
   HDF5Attribute,
   HDF5Link,
 } from '../hdf5-models';
-import { assertDefined, assertGroup, isGroup, isHardLink } from '../../guards';
+import { assertDefined, assertGroup, isHardLink } from '../../guards';
 import type { ProviderAPI } from '../context';
-import { isHsdsExternalLink } from './utils';
+import { assertHsdsDataset, isHsdsExternalLink, isHsdsGroup } from './utils';
 import { nanoid } from 'nanoid';
 import { buildEntityPath, getChildEntity } from '../../utils';
 
@@ -68,7 +70,7 @@ export class HsdsApi implements ProviderAPI {
     const child = getChildEntity(parentGroup, childName);
     assertDefined(child);
 
-    const entity = isGroup(child)
+    const entity = isHsdsGroup(child)
       ? await this.processGroup(child.id, path, child.name, 1)
       : child;
 
@@ -76,9 +78,12 @@ export class HsdsApi implements ProviderAPI {
     return entity;
   }
 
-  public async getValue(id: HDF5Id): Promise<HDF5Value> {
+  public async getValue(path: string): Promise<HDF5Value> {
+    const entity = await this.getEntity(path);
+    assertHsdsDataset(entity);
+
     const { data } = await this.client.get<HsdsValueResponse>(
-      `/datasets/${id}/value`
+      `/datasets/${entity.id}/value`
     );
     return data.value;
   }
@@ -137,7 +142,7 @@ export class HsdsApi implements ProviderAPI {
     path: string,
     name: string,
     depth: number
-  ): Promise<Group> {
+  ): Promise<HsdsGroup> {
     const { attributeCount, linkCount } = await this.fetchGroup(id);
 
     // Fetch attributes and links in parallel
@@ -174,7 +179,7 @@ export class HsdsApi implements ProviderAPI {
     id: HDF5Id,
     path: string,
     name: string
-  ): Promise<Dataset> {
+  ): Promise<HsdsDataset> {
     const dataset = await this.fetchDataset(id);
     const { shape, type, attributeCount } = dataset;
 
@@ -204,7 +209,6 @@ export class HsdsApi implements ProviderAPI {
 
     return {
       uid: nanoid(),
-      id,
       path,
       name,
       kind: EntityKind.Datatype,

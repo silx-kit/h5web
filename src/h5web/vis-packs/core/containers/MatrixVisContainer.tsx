@@ -9,8 +9,10 @@ function MatrixVisContainer(props: VisContainerProps): ReactElement {
   assertDataset(entity);
   assertSimpleShape(entity);
 
-  const value = useDatasetValue(entity.id);
-  return <MappedMatrixVis value={value} dims={entity.shape.dims} />;
+  const { path, shape } = entity;
+  const value = useDatasetValue(path);
+
+  return <MappedMatrixVis value={value} dims={shape.dims} />;
 }
 
 export default MatrixVisContainer;
