@@ -26,11 +26,11 @@ function EntityList(props: Props): ReactElement {
   return (
     <ul className={styles.group} role="group">
       {group.children.map((entity) => {
-        const { uid, name } = entity;
+        const { name } = entity;
 
         return (
           <EntityItem
-            key={uid}
+            key={name}
             path={buildEntityPath(parentPath, name)}
             entity={entity}
             level={level}

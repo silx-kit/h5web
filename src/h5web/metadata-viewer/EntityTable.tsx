@@ -1,13 +1,7 @@
 import { ReactElement, useContext } from 'react';
 import type { Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
-import {
-  hasSimpleShape,
-  isDataset,
-  isDatatype,
-  isLink,
-  isResolved,
-} from '../guards';
+import { hasSimpleShape, isDataset, isDatatype, isLink } from '../guards';
 import { renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 import LinkInfo from './LinkInfo';
@@ -33,12 +27,6 @@ function EntityTable(props: Props): ReactElement {
         </tr>
       </thead>
       <tbody>
-        {isResolved(entity) && (
-          <tr>
-            <th scope="row">ID</th>
-            <td>{entity.id}</td>
-          </tr>
-        )}
         <tr>
           <th scope="row">Path</th>
           <td>{path}</td>

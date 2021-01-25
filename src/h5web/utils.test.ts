@@ -3,7 +3,7 @@ import {
   scalarShape,
   makeDataset,
   makeGroup,
-} from './providers/mock/data-utils';
+} from './providers/mock/metadata-utils';
 import { buildEntityPath, getChildEntity } from './utils';
 
 describe('Global utilities', () => {

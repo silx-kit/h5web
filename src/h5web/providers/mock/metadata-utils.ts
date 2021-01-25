@@ -1,13 +1,4 @@
-import { nanoid } from 'nanoid';
-import {
-  Dataset,
-  Datatype,
-  Entity,
-  EntityKind,
-  Group,
-  Link,
-  ResolvedEntity,
-} from '../models';
+import { Datatype, Entity, EntityKind, Group, Link } from '../models';
 import {
   HDF5Attribute,
   HDF5CompoundType,
@@ -30,6 +21,8 @@ import {
 import type { NxInterpretation, SilxStyle } from '../../vis-packs/nexus/models';
 import { isGroup } from '../../guards';
 import { buildEntityPath } from '../../utils';
+import type { MockDataset, MockValueId } from './models';
+import { mockValues } from './values';
 
 /* -------------------------- */
 /* ----- TYPES & SHAPES ----- */
@@ -95,11 +88,9 @@ export function withAttributes<T extends Entity>(
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
-type EntityOpts = Partial<
-  Pick<ResolvedEntity, 'id' | 'attributes' | 'rawLink'>
->;
-
+type EntityOpts = Partial<Pick<Entity, 'attributes' | 'rawLink'>>;
 type GroupOpts = EntityOpts & { isRoot?: boolean; children?: Entity[] };
+type DatasetOpts = EntityOpts & { valueId?: MockValueId };
 
 function prefixChildrenPaths(group: Group, parentPath: string): void {
   group.children.forEach((c) => {
@@ -116,12 +107,10 @@ export function makeGroup(
   children: Entity[] = [],
   opts: Omit<GroupOpts, 'children'> = {}
 ): Group {
-  const { id = name, attributes = [], rawLink, isRoot = false } = opts;
+  const { attributes = [], rawLink, isRoot = false } = opts;
   const path = isRoot ? '/' : `/${name}`;
 
   const group: Group = {
-    uid: nanoid(),
-    id,
     name,
     path,
     kind: EntityKind.Group,
@@ -138,19 +127,18 @@ export function makeDataset<S extends HDF5Shape, T extends HDF5Type>(
   name: string,
   shape: S,
   type: T,
-  opts: EntityOpts = {}
-): Dataset<S, T> {
-  const { id = name, attributes = [], rawLink } = opts;
+  opts: DatasetOpts = {}
+): MockDataset<S, T> {
+  const { attributes = [], valueId = name, rawLink } = opts;
 
   return {
-    uid: nanoid(),
-    id,
     name,
     path: `/${name}`,
     kind: EntityKind.Dataset,
     attributes,
     shape,
     type,
+    value: mockValues[valueId as MockValueId],
     rawLink,
   };
 }
@@ -159,8 +147,8 @@ export function makeSimpleDataset<T extends HDF5Type>(
   name: string,
   type: T,
   dims: HDF5Dims,
-  opts: EntityOpts = {}
-): Dataset<HDF5SimpleShape, T> {
+  opts: DatasetOpts = {}
+): MockDataset<HDF5SimpleShape, T> {
   return makeDataset(name, makeSimpleShape(dims), type, opts);
 }
 
@@ -169,11 +157,9 @@ export function makeDatatype<T extends HDF5Type>(
   type: T,
   opts: EntityOpts = {}
 ): Datatype<T> {
-  const { id = name, attributes = [], rawLink } = opts;
+  const { attributes = [], rawLink } = opts;
 
   return {
-    uid: nanoid(),
-    id,
     name,
     path: `/${name}`,
     kind: EntityKind.Datatype,
@@ -185,7 +171,6 @@ export function makeDatatype<T extends HDF5Type>(
 
 function makeLink<T extends HDF5Link>(rawLink: T): Link<T> {
   return {
-    uid: nanoid(),
     name: rawLink.title,
     path: `/${rawLink.title}`,
     kind: EntityKind.Link,
@@ -244,13 +229,13 @@ export function makeNxGroup(
 }
 
 export function makeNxDataGroup<
-  T extends Record<string, Dataset<HDF5SimpleShape, HDF5NumericType>>
+  T extends Record<string, MockDataset<HDF5SimpleShape, HDF5NumericType>>
 >(
   name: string,
   opts: {
-    signal: Dataset<HDF5SimpleShape, HDF5NumericType>;
-    errors?: Dataset<HDF5SimpleShape, HDF5NumericType>;
-    title?: Dataset<HDF5ScalarShape, HDF5StringType>;
+    signal: MockDataset<HDF5SimpleShape, HDF5NumericType>;
+    errors?: MockDataset<HDF5SimpleShape, HDF5NumericType>;
+    title?: MockDataset<HDF5ScalarShape, HDF5StringType>;
     silxStyle?: SilxStyle;
   } & (
     | { axes: T; axesAttr: (Extract<keyof T, string> | '.')[] }
@@ -280,7 +265,7 @@ export function makeNxDataGroup<
       signal,
       ...(title ? [title] : []),
       ...(errors ? [errors] : []),
-      ...Object.values<Dataset>(axes),
+      ...Object.values<MockDataset>(axes),
     ],
   });
 }
@@ -293,14 +278,14 @@ export function makeNxDataset(
     interpretation?: string;
     longName?: string;
     units?: string;
-  } & EntityOpts = {}
-): Dataset<HDF5SimpleShape, HDF5NumericType> {
-  const { interpretation, longName, units } = opts;
+  } & DatasetOpts = {}
+): MockDataset<HDF5SimpleShape, HDF5NumericType> {
+  const { interpretation, longName, units, ...datasetOpts } = opts;
 
   return makeSimpleDataset(name, type, dims, {
-    ...opts,
+    ...datasetOpts,
     attributes: [
-      ...(opts.attributes || []),
+      ...(datasetOpts.attributes || []),
       ...(interpretation
         ? [makeStrAttr('interpretation', interpretation)]
         : []),
@@ -311,7 +296,7 @@ export function makeNxDataset(
 }
 
 export function withNxInterpretation<
-  T extends Dataset<HDF5SimpleShape, HDF5NumericType>
+  T extends MockDataset<HDF5SimpleShape, HDF5NumericType>
 >(dataset: T, interpretation: NxInterpretation): T {
   return withAttributes(dataset, [
     makeStrAttr('interpretation', interpretation),

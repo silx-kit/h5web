@@ -43,7 +43,8 @@ export type {
 } from '../h5web/vis-packs/core/heatmap/models';
 
 // Mock data
-export { mockMetadata, mockValues } from '../h5web/providers/mock/data';
+export { mockMetadata } from '../h5web/providers/mock/metadata';
+export { mockValues } from '../h5web/providers/mock/values';
 
 export {
   findMockEntity,

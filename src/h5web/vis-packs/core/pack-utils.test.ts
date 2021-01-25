@@ -6,7 +6,7 @@ import {
   makeDataset,
   makeGroup,
   makeSimpleDataset,
-} from '../../providers/mock/data-utils';
+} from '../../providers/mock/metadata-utils';
 import { CORE_VIS } from './visualizations';
 
 describe('Core pack utilities', () => {

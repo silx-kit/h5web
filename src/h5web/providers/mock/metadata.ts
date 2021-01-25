@@ -1,4 +1,3 @@
-import { range } from 'lodash-es';
 import { ScaleType } from '../../vis-packs/core/models';
 import {
   compoundType,
@@ -16,10 +15,7 @@ import {
   makeNxGroup,
   makeSimpleDataset,
   makeAttr,
-} from './data-utils';
-
-/* -------------------- */
-/* ----- METADATA ----- */
+} from './metadata-utils';
 
 export const mockDomain = 'source.h5';
 
@@ -52,7 +48,7 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
               signal: makeNxDataset('twoD', intType, [20, 41]),
               silxStyle: { signalScaleType: ScaleType.SymLog },
               title: makeDataset('title', scalarShape, stringType, {
-                id: 'title_twoD',
+                valueId: 'title_twoD',
               }),
             }),
             makeNxGroup('absolute_default_path', 'NXentry', {
@@ -66,7 +62,7 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
             units: 'arb. units',
           }),
           errors: makeNxDataset('errors', floatType, [20, 41], {
-            id: 'errors_twoD',
+            valueId: 'errors_twoD',
           }),
           axes: { X: makeNxDataset('X', intType, [41], { units: 'nm' }) },
           axesAttr: ['.', 'X'],
@@ -117,44 +113,3 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
     ]),
   ],
 });
-
-/* ------------------ */
-/* ----- VALUES ----- */
-
-const arr1 = range(-20, 21);
-const arr2 = range(0, 100, 5);
-const arr3 = range(-1, 1.25, 0.25);
-const arr4 = range(10, 40, 10);
-
-const oneD = arr1.map((val) => val ** 2);
-const twoD = arr2.map((offset) => oneD.map((val) => val - offset));
-const threeD = arr3.map((multiplier) =>
-  twoD.map((arrOneD) => arrOneD.map((val) => val * multiplier))
-);
-const fourD = arr4.map((divider) =>
-  threeD.map((arrTwoD) =>
-    arrTwoD.map((arrOneD) => arrOneD.map((val) => Math.sin(val / divider)))
-  )
-);
-
-export const mockValues = {
-  null: null,
-  raw: { int: 42 },
-  raw_large: { str: '.'.repeat(1000) },
-  scalar_int: 0,
-  scalar_str: 'foo',
-  oneD_linear: arr1,
-  oneD,
-  twoD,
-  twoD_spectrum: twoD,
-  threeD,
-  fourD,
-  X: arr1,
-  Y: arr2,
-  X_log: arr1.map((_, i) => (i + 1) * 0.1),
-  title_twoD: 'NeXus 2D',
-  oneD_str: ['foo', 'bar'],
-  errors_twoD: arr2.map((offset) => arr1.map((val) => Math.abs(val - offset))),
-  fourD_image: fourD,
-  oneD_errors: oneD.map((x) => Math.abs(x) / 10),
-};
