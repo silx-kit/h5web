@@ -35,7 +35,7 @@ function ColorBar(props: Props): ReactElement {
   return (
     <div className={styles.colorBar} data-horizontal={horizontal || undefined}>
       <div
-        ref={gradientRef}
+        ref={gradientRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
         className={styles.gradient}
         style={{
           backgroundImage: generateCSSLinearGradient(

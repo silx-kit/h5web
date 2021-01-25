@@ -45,7 +45,10 @@ function VisCanvas(props: Props): ReactElement {
   const visSize = computeVisSize(availableSize, aspectRatio);
 
   return (
-    <div ref={visAreaRef} className={styles.visArea}>
+    <div
+      ref={visAreaRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
+      className={styles.visArea}
+    >
       {visSize && (
         <div
           className={styles.vis}
