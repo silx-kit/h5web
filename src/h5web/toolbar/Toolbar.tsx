@@ -6,14 +6,14 @@ import Separator from './Separator';
 import OverflowMenu from './OverflowMenu';
 
 // Controls must have a `disabled` prop to accessibly disable the interactive elements they contain
-type ToolbarControl = ReactElement<{ disabled: boolean }>;
+export type ToolbarControl = ReactElement<{ disabled: boolean }>;
 
-export interface ToolbarProps {
+interface Props {
   // Toolbar controls must be direct children of `Toolbar` (no fragment)
   children?: (ToolbarControl | undefined)[] | ToolbarControl;
 }
 
-function Toolbar(props: ToolbarProps): ReactElement {
+function Toolbar(props: Props): ReactElement {
   const { children } = props;
   const allChildren = Children.toArray(children) as ReactElement[];
 
