@@ -4,12 +4,16 @@ import ToggleBtn from './controls/ToggleBtn';
 import { useLineConfig } from '../vis-packs/core/line/config';
 import { CurveType } from '../vis-packs/core/line/models';
 import ToggleGroup from './controls/ToggleGroup';
-import Toolbar, { ToolbarProps } from './Toolbar';
+import Toolbar, { ToolbarControl } from './Toolbar';
 import Separator from './Separator';
 import ScaleSelector from './controls/ScaleSelector';
 
-function LineToolbar(props: ToolbarProps): ReactElement {
-  const { children } = props;
+interface Props {
+  errorControl?: ToolbarControl;
+}
+
+function LineToolbar(props: Props): ReactElement {
+  const { errorControl } = props;
   const {
     curveType,
     setCurveType,
@@ -26,27 +30,11 @@ function LineToolbar(props: ToolbarProps): ReactElement {
 
   return (
     <Toolbar>
-      <ToggleGroup
-        role="radiogroup"
-        ariaLabel="Curve type"
-        value={curveType}
-        onChange={(val) => {
-          setCurveType(val as CurveType);
-        }}
-      >
-        <ToggleGroup.Btn label="Line" value={CurveType.LineOnly} />
-        <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />
-        <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
-      </ToggleGroup>
-
-      <Separator />
-
       <ScaleSelector
         label="X"
         value={xScaleType}
         onScaleChange={setXScaleType}
       />
-
       <ScaleSelector
         label="Y"
         value={yScaleType}
@@ -62,6 +50,9 @@ function LineToolbar(props: ToolbarProps): ReactElement {
         onChange={toggleAutoScale}
         disabled={isAutoScaleDisabled}
       />
+
+      {errorControl}
+
       <ToggleBtn
         label="Grid"
         icon={MdGridOn}
@@ -69,9 +60,20 @@ function LineToolbar(props: ToolbarProps): ReactElement {
         onChange={toggleGrid}
       />
 
-      {
-        children as any // eslint-disable-line @typescript-eslint/no-explicit-any
-      }
+      <Separator />
+
+      <ToggleGroup
+        role="radiogroup"
+        ariaLabel="Curve type"
+        value={curveType}
+        onChange={(val) => {
+          setCurveType(val as CurveType);
+        }}
+      >
+        <ToggleGroup.Btn label="Line" value={CurveType.LineOnly} />
+        <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />
+        <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
+      </ToggleGroup>
     </Toolbar>
   );
 }
