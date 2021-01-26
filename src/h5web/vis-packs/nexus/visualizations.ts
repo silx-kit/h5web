@@ -2,7 +2,7 @@ import { FiActivity, FiMap } from 'react-icons/fi';
 import HeatmapToolbar from '../../toolbar/HeatmapToolbar';
 import { NxInterpretation } from './models';
 import { NxSpectrumContainer, NxImageContainer } from './containers';
-import NxSpectrumToolbar from '../../toolbar/NxSpectrumToolbar';
+import NxSpectrumToolbar from './spectrum/NxSpectrumToolbar';
 import type { VisDef } from '../models';
 
 export enum NexusVis {
