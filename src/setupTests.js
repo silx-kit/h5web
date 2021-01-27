@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import '@testing-library/jest-dom'; // https://github.com/testing-library/jest-dom
 
 // Fake properties to avoid Re-flex warnings
@@ -11,22 +12,26 @@ import '@testing-library/jest-dom'; // https://github.com/testing-library/jest-d
 });
 
 // Fail if error or warning has been logged to the console (notably by React or React Testing Library)
-// Inpsired by https://github.com/facebook/jest/issues/6121#issuecomment-493529970
-let consoleHasErrorOrWarning = false;
-const { error, warn } = console;
-
-global.console.error = (...args) => {
-  consoleHasErrorOrWarning = true;
-  error(...args);
-};
-global.console.warn = (...args) => {
-  consoleHasErrorOrWarning = true;
-  warn(...args);
-};
+// https://github.com/facebook/jest/issues/6121#issuecomment-768052681
+let usedConsole = false;
+['log', 'error', 'warn'].forEach((key) => {
+  const originalFn = console[key];
+  console[key] = (...args) => {
+    usedConsole = true;
+    originalFn(...args);
+  };
+});
 
 afterEach(() => {
-  if (consoleHasErrorOrWarning) {
-    consoleHasErrorOrWarning = false;
-    throw new Error('Console has error or warning');
+  if (usedConsole) {
+    usedConsole = false;
+    throw `To keep the test output readable you should remove all usages of \`console\`.
+They mostly refer to fixable errors, warnings and deprecations or forgotten debugging statements.
+
+If your test relies on \`console\` you should mock it:
+
+const errorSpy = mockConsoleMethod('error');
+errorSpy.mockRestore();
+`;
   }
 });

@@ -41,20 +41,10 @@ export async function selectVisTab(name: Vis): Promise<void> {
 
 /**
  * Mock console method in test.
- * To restore original method, call `resetConsole`.
+ * To restore original method, call `spy.mockRestore()`.
  */
-/* eslint-disable no-console */
-export function mockConsoleMethod(method: keyof typeof console) {
-  const original = console[method];
-
-  const mock = jest.fn();
-  console[method] = mock;
-
-  return {
-    consoleMock: mock,
-    resetConsole: () => {
-      console[method] = original;
-    },
-  };
+export function mockConsoleMethod(method: 'log' | 'warn' | 'error') {
+  const spy = jest.spyOn(console, method);
+  spy.mockImplementation(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
+  return spy;
 }
-/* eslint-enable no-console */

@@ -22,15 +22,15 @@ describe('CorePack', () => {
   });
 
   test('log raw dataset to console if too large', async () => {
-    const { consoleMock, resetConsole } = mockConsoleMethod('log');
+    const logSpy = mockConsoleMethod('log');
 
     renderApp();
     await selectExplorerNode('entities/raw_large');
 
     expect(await screen.findByText(/dataset is too big/u)).toBeVisible();
-    expect(consoleMock).toHaveBeenCalledWith(mockValues.raw_large);
+    expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
 
-    resetConsole();
+    logSpy.mockRestore();
   });
 
   test('visualise scalar dataset', async () => {
