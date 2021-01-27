@@ -31,6 +31,7 @@ They mostly refer to fixable errors, warnings and deprecations or forgotten debu
 If your test relies on \`console\` you should mock it:
 
 const errorSpy = mockConsoleMethod('error');
+// Your test goes here
 errorSpy.mockRestore();
 `;
   }
