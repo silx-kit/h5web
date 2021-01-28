@@ -2,10 +2,11 @@ import type { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
 import { format } from 'd3-format';
 import { round } from 'lodash-es';
-import { FiRotateCcw } from 'react-icons/fi';
 import styles from './DomainSlider.module.css';
 import type { Domain } from '../../vis-packs/core/models';
 import { extendDomain } from '../../vis-packs/core/utils';
+import ToggleBtn from './ToggleBtn';
+import { FiZap } from 'react-icons/fi';
 
 const EXTEND_FACTOR = 0.2;
 const NB_DECIMALS = 1;
@@ -25,16 +26,6 @@ function DomainSlider(props: Props): ReactElement {
 
   return (
     <div className={styles.sliderWrapper}>
-      <button
-        className={styles.resetBtn}
-        type="button"
-        onClick={() => onChange(undefined)}
-        disabled={disabled || !value}
-      >
-        <span className={styles.resetBtnLike}>
-          <FiRotateCcw className={styles.resetIcon} />
-        </span>
-      </button>
       <ReactSlider
         className={styles.slider}
         disabled={disabled}
@@ -59,6 +50,17 @@ function DomainSlider(props: Props): ReactElement {
         max={extendedMax}
         step={step}
         pearling
+      />
+
+      <ToggleBtn
+        small
+        label="Auto"
+        icon={FiZap}
+        value={value === undefined}
+        onChange={() => {
+          onChange(value === undefined ? dataDomain : undefined);
+        }}
+        disabled={disabled}
       />
     </div>
   );

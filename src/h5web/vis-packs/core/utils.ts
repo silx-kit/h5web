@@ -19,6 +19,8 @@ import {
 
 const TICK_FORMAT = format('0');
 
+export const DEFAULT_DOMAIN: Domain = [0.1, 1];
+
 export const adaptedNumTicks = scaleLinear({
   domain: [300, 900],
   range: [3, 10],

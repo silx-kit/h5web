@@ -1,13 +1,13 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { usePrevious } from 'react-use';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 import type { HDF5Value } from '../../../providers/hdf5-models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import HeatmapVis from './HeatmapVis';
 import { assertArray } from '../../../guards';
-import { useDomain, useBaseArray, useMappedArray } from '../hooks';
+import { useBaseArray, useMappedArray } from '../hooks';
 import { useHeatmapConfig } from './config';
 import type { AxisMapping } from '../models';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { getDomain } from '../utils';
 
 interface Props {
   value: HDF5Value;
@@ -26,9 +26,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
     scaleType,
     keepAspectRatio,
     showGrid,
-    resetDomains,
-    autoScale,
-    disableAutoScale,
+    setDataDomain,
   } = useHeatmapConfig();
 
   const [dimensionMapping, setDimensionMapping] = useState<DimensionMapping>([
@@ -40,24 +38,16 @@ function MappedHeatmapVis(props: Props): ReactElement {
   const baseArray = useBaseArray(value, dims);
   const dataArray = useMappedArray(baseArray, dimensionMapping);
 
-  const dataDomain = useDomain(
-    (autoScale ? dataArray.data : baseArray.data) as number[],
-    scaleType
-  );
-  const prevDataDomain = usePrevious(dataDomain);
-
-  // Disable `autoScale` for 2D datasets (baseArray and dataArray span the same values)
-  useEffect(() => {
-    disableAutoScale(baseArray.shape.length <= 2);
-  }, [baseArray.shape, disableAutoScale]);
-
-  // Use `customDomain` if any, unless `dataDomain` just changed (in which case it is stale and needs to be reset - cf. `useEffect` below)
-  const domain =
-    customDomain && dataDomain === prevDataDomain ? customDomain : dataDomain;
+  const domain = useMemo(() => {
+    return customDomain || getDomain(dataArray.data as number[], scaleType);
+  }, [customDomain, dataArray, scaleType]);
 
   useEffect(() => {
-    resetDomains(dataDomain); // in config, update `dataDomain` and reset `customDomain`
-  }, [dataDomain, resetDomains]);
+    if (!customDomain) {
+      // If auto-scale is on, update `dataDomain`
+      setDataDomain(domain);
+    }
+  }, [customDomain, domain, setDataDomain]);
 
   return (
     <>

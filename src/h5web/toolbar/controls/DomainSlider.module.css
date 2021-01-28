@@ -1,12 +1,12 @@
 .sliderWrapper {
   display: flex;
-  padding: 0 0.5rem 0 0.375rem;
+  padding: 0 0 0 0.5rem;
 }
 
 .slider {
   display: flex;
   width: 8rem;
-  margin-left: 0.125rem;
+  margin-right: 0.25rem;
   font-size: 0.75rem;
   cursor: pointer;
 }
@@ -42,19 +42,9 @@
   box-shadow: var(--btn-shadow-idle) var(--secondary-dark);
 }
 
-.resetBtn {
-  composes: btn from '../Toolbar.module.css';
-  padding: 0 0.125rem;
-}
-
-.resetBtnLike {
+.autoBtnLike {
   composes: btnLike from '../Toolbar.module.css';
-}
-
-.resetIcon {
-  padding-top: 1px;
-}
-
-.resetBtn:hover > .resetBtnLike {
-  background-color: var(--secondary-light);
+  font-size: 0.875em;
+  border-radius: 0.875rem;
+  color: #222;
 }

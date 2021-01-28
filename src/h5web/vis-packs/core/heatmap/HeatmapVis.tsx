@@ -10,7 +10,7 @@ import VisCanvas from '../shared/VisCanvas';
 import { getDims, getPixelEdges } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
 import type { ColorMap } from './models';
-import { getDomain, getValueToIndexScale } from '../utils';
+import { DEFAULT_DOMAIN, getDomain, getValueToIndexScale } from '../utils';
 import { assertDefined } from '../../../guards';
 
 interface Props {
@@ -29,7 +29,7 @@ interface Props {
 function HeatmapVis(props: Props): ReactElement {
   const {
     dataArray,
-    domain,
+    domain = DEFAULT_DOMAIN,
     colorMap = 'Viridis',
     scaleType = ScaleType.Linear,
     keepAspectRatio = true,
@@ -85,21 +85,17 @@ function HeatmapVis(props: Props): ReactElement {
           guides="both"
         />
         <PanZoomMesh />
-        {domain && (
-          <Mesh
-            rows={rows}
-            cols={cols}
-            values={dataArray.data as number[]}
-            domain={domain}
-            scaleType={scaleType}
-            colorMap={colorMap}
-            showLoader={showLoader}
-          />
-        )}
+        <Mesh
+          rows={rows}
+          cols={cols}
+          values={dataArray.data as number[]}
+          domain={domain}
+          scaleType={scaleType}
+          colorMap={colorMap}
+          showLoader={showLoader}
+        />
       </VisCanvas>
-      {domain && (
-        <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
-      )}
+      <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
     </figure>
   );
 }
