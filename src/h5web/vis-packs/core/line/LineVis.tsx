@@ -9,14 +9,17 @@ import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../models';
 import { CurveType } from './models';
-import { getValueToIndexScale, getDomain, extendDomain } from '../utils';
+import {
+  getValueToIndexScale,
+  getDomain,
+  extendDomain,
+  DEFAULT_DOMAIN,
+} from '../utils';
 import { assertDefined } from '../../../guards';
-
-const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
 interface Props {
   dataArray: ndarray;
-  domain?: Domain;
+  domain: Domain | undefined;
   scaleType?: ScaleType;
   curveType?: CurveType;
   showGrid?: boolean;
