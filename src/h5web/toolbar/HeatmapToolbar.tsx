@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { MdAspectRatio, MdDomain, MdGridOn } from 'react-icons/md';
+import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
 import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
 import DomainSlider from './controls/DomainSlider';
@@ -22,9 +22,6 @@ function HeatmapToolbar(): ReactElement {
     toggleAspectRatio,
     showGrid,
     toggleGrid,
-    autoScale,
-    toggleAutoScale,
-    isAutoScaleDisabled,
   } = useHeatmapConfig();
 
   return (
@@ -47,13 +44,6 @@ function HeatmapToolbar(): ReactElement {
 
       <Separator />
 
-      <ToggleBtn
-        label="Auto-scale"
-        icon={MdDomain}
-        value={autoScale}
-        onChange={toggleAutoScale}
-        disabled={isAutoScaleDisabled}
-      />
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
