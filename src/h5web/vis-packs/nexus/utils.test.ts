@@ -210,18 +210,16 @@ describe('NeXus utilities', () => {
   });
 
   it('should return empty object and warn to console if `SILX_style` attribute value is not valid, stringified JSON', () => {
-    const { consoleMock, resetConsole } = mockConsoleMethod('warn');
+    const warnSpy = mockConsoleMethod('warn');
 
     const group = makeGroup('foo', [], {
       attributes: [makeStrAttr('SILX_style', '{')],
     });
 
     expect(getSilxStyle(group)).toEqual({});
-    expect(consoleMock).toHaveBeenCalledWith(
-      expect.stringMatching(/Malformed/u)
-    );
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringMatching(/Malformed/u));
 
-    resetConsole();
+    warnSpy.mockRestore();
   });
 
   it("should return empty object if `SILX_style` attribute doesn't exist, is empty or is not string", () => {

@@ -64,7 +64,7 @@ describe('NexusPack', () => {
   test('show error when encountering malformed NeXus metadata', async () => {
     renderApp();
 
-    const { consoleMock, resetConsole } = mockConsoleMethod('error');
+    const errorSpy = mockConsoleMethod('error');
     await selectExplorerNode('nexus_malformed');
 
     await selectExplorerNode('default_not_string');
@@ -79,7 +79,7 @@ describe('NexusPack', () => {
     await selectExplorerNode('signal_not_found');
     expect(await screen.findByText(/to exist/u)).toBeVisible();
 
-    expect(consoleMock).toHaveBeenCalledTimes(8); // React logs two stack traces per error
-    resetConsole();
+    expect(errorSpy).toHaveBeenCalledTimes(8); // React logs two stack traces per error
+    errorSpy.mockRestore();
   });
 });

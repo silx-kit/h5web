@@ -6,5 +6,5 @@
   "screenshotsFolder": "cypress/debug",
   "fixturesFolder": false,
   "video": false,
-  "retries": 4
+  "retries": 3
 }

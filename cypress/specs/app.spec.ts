@@ -129,6 +129,10 @@ describe('App', () => {
     });
 
     it('visualize dataset with image interpretation as NxImage', () => {
+      // Wait for default NXimage to finish rendering
+      cy.get('[data-visible]').should('exist');
+      cy.get('[data-visible]').should('not.exist');
+
       cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
       cy.findByRole('treeitem', { name: 'image' }).click();
 
