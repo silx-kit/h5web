@@ -3,18 +3,18 @@ import type { IconType } from 'react-icons';
 import styles from '../Toolbar.module.css';
 
 interface Props {
-  className?: string;
   label: string;
   icon?: IconType;
   iconOnly?: boolean;
+  small?: boolean;
   value: boolean;
   onChange: () => void;
   disabled?: boolean;
 }
 
 function ToggleBtn(props: Props): ReactElement {
-  const { className, label, iconOnly, value, onChange, disabled } = props;
-  const { icon: Icon } = props;
+  const { label, small, value, onChange, disabled } = props;
+  const { icon: Icon, iconOnly } = props;
 
   return (
     <button
@@ -24,8 +24,9 @@ function ToggleBtn(props: Props): ReactElement {
       aria-pressed={value}
       onClick={onChange}
       disabled={disabled}
+      data-small={small || undefined}
     >
-      <span className={className || styles.btnLike}>
+      <span className={styles.btnLike}>
         {Icon && <Icon className={styles.icon} />}
         {!iconOnly && <span className={styles.label}>{label}</span>}
       </span>

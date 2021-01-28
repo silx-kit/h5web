@@ -6,7 +6,7 @@
 .slider {
   display: flex;
   width: 8rem;
-  margin-right: 0.125rem;
+  margin-right: 0.25rem;
   font-size: 0.75rem;
   cursor: pointer;
 }
@@ -45,6 +45,6 @@
 .autoBtnLike {
   composes: btnLike from '../Toolbar.module.css';
   font-size: 0.875em;
-  border-radius: 0.75rem;
+  border-radius: 0.875rem;
   color: #222;
 }

@@ -2,11 +2,11 @@ import type { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
 import { format } from 'd3-format';
 import { round } from 'lodash-es';
-import { FiZap } from 'react-icons/fi';
 import styles from './DomainSlider.module.css';
 import type { Domain } from '../../vis-packs/core/models';
 import { extendDomain } from '../../vis-packs/core/utils';
 import ToggleBtn from './ToggleBtn';
+import { FiZap } from 'react-icons/fi';
 
 const EXTEND_FACTOR = 0.2;
 const NB_DECIMALS = 1;
@@ -53,10 +53,9 @@ function DomainSlider(props: Props): ReactElement {
       />
 
       <ToggleBtn
-        className={styles.autoBtnLike}
-        label="auto-scale"
+        small
+        label="Auto"
         icon={FiZap}
-        iconOnly
         value={value === undefined}
         onChange={() => {
           onChange(value === undefined ? dataDomain : undefined);
