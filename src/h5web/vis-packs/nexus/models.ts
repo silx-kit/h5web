@@ -1,4 +1,11 @@
-import type { AxisMapping, ScaleType, AxisParams } from '../core/models';
+import type {
+  HDF5NumericType,
+  HDF5ScalarShape,
+  HDF5SimpleShape,
+  HDF5StringType,
+} from '../../providers/hdf5-models';
+import type { Dataset } from '../../providers/models';
+import type { ScaleType } from '../core/models';
 
 export type NxAttribute =
   | 'NX_class'
@@ -15,17 +22,18 @@ export enum NxInterpretation {
   Image = 'image',
 }
 
-interface SignalParams extends AxisParams {
-  dims: number[];
-  value: number[];
+export interface NxData {
+  signalDataset: Dataset<HDF5SimpleShape, HDF5NumericType>;
+  errorsDataset?: Dataset<HDF5SimpleShape, HDF5NumericType>;
+  titleDataset?: Dataset<HDF5ScalarShape, HDF5StringType>;
+  axisDatasetMapping: AxisDatasetMapping;
+  silxStyle: SilxStyle;
 }
 
-export interface NxData {
-  signal: SignalParams;
-  errors?: number[];
-  title?: string;
-  axisMapping: AxisMapping;
-}
+export type AxisDatasetMapping = (
+  | Dataset<HDF5SimpleShape, HDF5NumericType>
+  | undefined
+)[];
 
 export interface SilxStyle {
   signalScaleType?: ScaleType;

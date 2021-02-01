@@ -18,13 +18,18 @@ import {
   HDF5TypeClass,
   HDF5ScalarShape,
   HDF5NumericType,
+  HDF5StringType,
 } from './providers/hdf5-models';
+
+export function isDefined<T>(val: T): val is NonNullable<T> {
+  return val !== undefined;
+}
 
 export function assertDefined<T>(
   val: T,
   message = 'Expected some value'
 ): asserts val is NonNullable<T> {
-  if (val === undefined) {
+  if (!isDefined(val)) {
     throw new TypeError(message);
   }
 }
@@ -109,6 +114,15 @@ export function hasBaseType<S extends HDF5Shape>(
   );
 }
 
+export function hasStringType<S extends HDF5Shape>(
+  dataset: Dataset<S>
+): dataset is Dataset<S, HDF5StringType> {
+  return (
+    typeof dataset.type !== 'string' &&
+    dataset.type.class === HDF5TypeClass.String
+  );
+}
+
 export function hasNumericType<S extends HDF5Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5NumericType> {
@@ -140,11 +154,11 @@ export function assertGroup(
   }
 }
 
-export function assertNumericType<S extends HDF5Shape>(
-  dataset: Dataset<S>
-): asserts dataset is Dataset<S, HDF5NumericType> {
-  if (!hasNumericType(dataset)) {
-    throw new Error('Expected dataset to have numeric type');
+export function assertScalarShape<T extends HDF5Type>(
+  dataset: Dataset<HDF5Shape, T>
+): asserts dataset is Dataset<HDF5ScalarShape, T> {
+  if (!hasScalarShape(dataset)) {
+    throw new Error('Expected dataset to have scalar shape');
   }
 }
 
@@ -157,6 +171,22 @@ export function assertSimpleShape<T extends HDF5Type>(
 
   if (dataset.shape.dims.length === 0) {
     throw new Error('Expected dataset with simple shape to have dimensions');
+  }
+}
+
+export function assertStringType<S extends HDF5Shape>(
+  dataset: Dataset<S>
+): asserts dataset is Dataset<S, HDF5StringType> {
+  if (!hasStringType(dataset)) {
+    throw new Error('Expected dataset to have string type');
+  }
+}
+
+export function assertNumericType<S extends HDF5Shape>(
+  dataset: Dataset<S>
+): asserts dataset is Dataset<S, HDF5NumericType> {
+  if (!hasNumericType(dataset)) {
+    throw new Error('Expected dataset to have numeric type');
   }
 }
 

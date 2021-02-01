@@ -7,7 +7,6 @@ import {
   makeStrAttr,
   scalarShape,
   stringType,
-  makeNxAxesAttr,
   makeIntAttr,
   makeSilxStyleAttr,
 } from '../../providers/mock/metadata-utils';
@@ -17,7 +16,6 @@ import {
   findSignalDataset,
   getAttributeValue,
   getDatasetLabel,
-  getNxAxes,
   getSilxStyle,
 } from './utils';
 
@@ -104,34 +102,6 @@ describe('NeXus utilities', () => {
       });
 
       expect(() => findSignalDataset(group)).toThrow(/to have numeric type/u);
-    });
-  });
-
-  describe('getNxAxes', () => {
-    it('should return array of axes', () => {
-      const axesAttr = makeNxAxesAttr(['X', 'Y']);
-      const group = makeGroup('foo', [], { attributes: [axesAttr] });
-
-      expect(getNxAxes(group)).toEqual(['X', 'Y']);
-    });
-
-    it('should wrap single axis string in array', () => {
-      const axesAttr = makeStrAttr('axes', 'X');
-      const group = makeGroup('foo', [], { attributes: [axesAttr] });
-
-      expect(getNxAxes(group)).toEqual(['X']);
-    });
-
-    it('should return empty array if group has no `axes` attribute', () => {
-      const group = makeGroup('foo');
-      expect(getNxAxes(group)).toEqual([]);
-    });
-
-    it('should throw if `axes` value is neither string nor array', () => {
-      const axesAttr = makeIntAttr('axes', 42);
-      const group = makeGroup('foo', [], { attributes: [axesAttr] });
-
-      expect(() => getNxAxes(group)).toThrow(/array/u);
     });
   });
 
