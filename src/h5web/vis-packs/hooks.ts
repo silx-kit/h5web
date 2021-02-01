@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { DimensionMapping } from '../dimension-mapper/models';
 import type { VisDef } from './models';
 
 export function useActiveVis<T extends VisDef>(supportedVis: T[]) {
@@ -17,4 +18,11 @@ export function useActiveVis<T extends VisDef>(supportedVis: T[]) {
   }
 
   return state;
+}
+
+export function useDimMappingState(dims: number[], axesCount: number) {
+  return useState<DimensionMapping>([
+    ...new Array(dims.length - axesCount).fill(0),
+    ...['y', 'x'].slice(-axesCount),
+  ]);
 }
