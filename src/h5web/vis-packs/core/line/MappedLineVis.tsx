@@ -1,12 +1,12 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect } from 'react';
 import type { HDF5Value } from '../../../providers/hdf5-models';
-import type { DimensionMapping } from '../../../dimension-mapper/models';
 import LineVis from './LineVis';
 import { assertArray } from '../../../guards';
 import { useMappedArray, useDomain, useBaseArray } from '../hooks';
 import { useLineConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../hooks';
 
 interface Props {
   value: HDF5Value;
@@ -43,16 +43,13 @@ function MappedLineVis(props: Props): ReactElement {
     disableAutoScale,
   } = useLineConfig();
 
-  const [dimensionMapping, setDimensionMapping] = useState<DimensionMapping>([
-    ...new Array(dims.length - 1).fill(0),
-    'x',
-  ]);
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   const baseDataArray = useBaseArray(value, dims);
-  const dataArray = useMappedArray(baseDataArray, dimensionMapping);
+  const dataArray = useMappedArray(baseDataArray, dimMapping);
 
   const baseErrorsArray = useBaseArray(errors, dims);
-  const errorArray = useMappedArray(baseErrorsArray, dimensionMapping);
+  const errorArray = useMappedArray(baseErrorsArray, dimMapping);
 
   useEffect(() => {
     // Disable `autoScale` for 1D datasets without errors
@@ -70,7 +67,7 @@ function MappedLineVis(props: Props): ReactElement {
     showErrors || !autoScale ? errorValues : undefined
   );
 
-  const mappedAbscissaParams = axisMapping[dimensionMapping.indexOf('x')];
+  const mappedAbscissaParams = axisMapping[dimMapping.indexOf('x')];
   useEffect(() => {
     if (mappedAbscissaParams?.scaleType) {
       setXScaleType(mappedAbscissaParams?.scaleType);
@@ -87,8 +84,8 @@ function MappedLineVis(props: Props): ReactElement {
     <>
       <DimensionMapper
         rawDims={dims}
-        mapperState={dimensionMapping}
-        onChange={setDimensionMapping}
+        mapperState={dimMapping}
+        onChange={setDimMapping}
       />
       <LineVis
         dataArray={dataArray}
