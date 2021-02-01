@@ -12,9 +12,11 @@ import type { HDF5Value } from '../../providers/hdf5-models';
 import { ProviderContext } from '../../providers/context';
 import type { Dataset } from '../../providers/models';
 
-export function useDatasetValue(path: string): HDF5Value {
+export function useDatasetValue(
+  path: string | undefined
+): HDF5Value | undefined {
   const { valuesStore } = useContext(ProviderContext);
-  return valuesStore.get(path);
+  return path !== undefined ? valuesStore.get(path) : undefined;
 }
 
 export function useDatasetValues(
@@ -22,10 +24,6 @@ export function useDatasetValues(
 ): Record<string, HDF5Value> {
   const { valuesStore } = useContext(ProviderContext);
 
-  // Start fetching values (but only those that are not already fetched or being fetched)
-  datasets.forEach(({ path }) => valuesStore.prefetch(path));
-
-  // Read values from store (but suspend if at least one of the values is still being fetched)
   return Object.fromEntries(
     datasets.map(({ name, path }) => [name, valuesStore.get(path)])
   );

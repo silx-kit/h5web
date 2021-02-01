@@ -1,34 +1,44 @@
 import { ReactElement, useEffect } from 'react';
-import { assertGroup } from '../../../guards';
+import { assertArray, assertGroup, assertOptionalStr } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
-import { useNxData } from '../hooks';
+import { useAxisMapping, useNxData } from '../hooks';
+import { useDatasetValue } from '../../core/hooks';
+import { getDatasetLabel } from '../utils';
 
 function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertGroup(entity);
 
   const nxData = useNxData(entity);
-  const { signal, title, axisMapping } = nxData;
+  const { signalDataset, titleDataset, axisDatasetMapping, silxStyle } = nxData;
+  const { axesScaleType, signalScaleType } = silxStyle;
 
-  const { dims } = signal;
+  const { dims } = signalDataset.shape;
   if (dims.length < 2) {
     throw new Error('Expected signal dataset with at least two dimensions');
   }
 
-  const { setScaleType } = useHeatmapConfig();
+  const value = useDatasetValue(signalDataset.path);
+  assertArray<number>(value);
 
+  const title = useDatasetValue(titleDataset?.path);
+  assertOptionalStr(title);
+
+  const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
+
+  const { setScaleType } = useHeatmapConfig();
   useEffect(() => {
-    if (signal.scaleType) {
-      setScaleType(signal.scaleType);
+    if (signalScaleType) {
+      setScaleType(signalScaleType);
     }
-  }, [setScaleType, signal.scaleType]);
+  }, [setScaleType, signalScaleType]);
 
   return (
     <MappedHeatmapVis
-      value={signal.value}
-      title={title || signal.label}
+      value={value}
+      title={title || getDatasetLabel(signalDataset)}
       dims={dims}
       axisMapping={axisMapping}
     />

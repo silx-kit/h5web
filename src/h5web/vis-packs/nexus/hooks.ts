@@ -1,69 +1,145 @@
-import type { Group } from '../../providers/models';
-import { useDatasetValues } from '../core/hooks';
+import { useContext } from 'react';
+import type { Dataset, Group } from '../../providers/models';
+import { ProviderContext } from '../../providers/context';
+import type {
+  HDF5NumericType,
+  HDF5SimpleShape,
+  HDF5StringType,
+  HDF5ScalarShape,
+} from '../../providers/hdf5-models';
 import {
+  isDefined,
   assertArray,
   assertDefined,
-  assertOptionalArray,
   assertDataset,
-  isDataset,
-  assertOptionalStr,
+  assertNumericType,
+  assertSimpleShape,
+  assertStringType,
+  assertScalarShape,
 } from '../../guards';
-import type { NxData } from './models';
+import { getChildEntity } from '../../utils';
+import type { AxisMapping, ScaleType } from '../core/models';
+import { useDatasetValues } from '../core/hooks';
+import type { AxisDatasetMapping, NxData } from './models';
 import {
   assertNxDataGroup,
   findSignalDataset,
   getDatasetLabel,
-  getNxAxes,
+  getAttributeValue,
   getSilxStyle,
 } from './utils';
-import { getChildEntity } from '../../utils';
+
+function useSignalDataset(
+  group: Group
+): Dataset<HDF5SimpleShape, HDF5NumericType> {
+  const { valuesStore } = useContext(ProviderContext);
+
+  const dataset = findSignalDataset(group);
+  valuesStore.prefetch(dataset.path);
+  return dataset;
+}
+
+function useErrorsDataset(
+  group: Group,
+  signalName: string
+): Dataset<HDF5SimpleShape, HDF5NumericType> | undefined {
+  const { valuesStore } = useContext(ProviderContext);
+
+  const dataset =
+    getChildEntity(group, `${signalName}_errors`) ||
+    getChildEntity(group, 'errors');
+
+  if (!dataset) {
+    return undefined;
+  }
+
+  assertDataset(dataset);
+  assertSimpleShape(dataset);
+  assertNumericType(dataset);
+
+  valuesStore.prefetch(dataset.path);
+  return dataset;
+}
+
+function useTitleDataset(
+  group: Group
+): Dataset<HDF5ScalarShape, HDF5StringType> | undefined {
+  const { valuesStore } = useContext(ProviderContext);
+
+  const dataset = getChildEntity(group, 'title');
+  if (!dataset) {
+    return undefined;
+  }
+
+  assertDataset(dataset);
+  assertScalarShape(dataset);
+  assertStringType(dataset);
+
+  valuesStore.prefetch(dataset.path);
+  return dataset;
+}
+
+function useAxesDatasets(
+  group: Group
+): (Dataset<HDF5SimpleShape, HDF5NumericType> | undefined)[] {
+  const { valuesStore } = useContext(ProviderContext);
+
+  const axisList = getAttributeValue(group, 'axes') || [];
+  const axisNames = typeof axisList === 'string' ? [axisList] : axisList;
+  assertArray<string>(axisNames);
+
+  return axisNames.map((name) => {
+    if (name === '.') {
+      return undefined;
+    }
+
+    const dataset = getChildEntity(group, name);
+    assertDefined(dataset);
+    assertDataset(dataset);
+    assertSimpleShape(dataset);
+    assertNumericType(dataset);
+
+    valuesStore.prefetch(dataset.path);
+    return dataset;
+  });
+}
 
 export function useNxData(group: Group): NxData {
   assertNxDataGroup(group);
 
-  const values = useDatasetValues(group.children.filter(isDataset));
+  const signalDataset = useSignalDataset(group);
+  const errorsDataset = useErrorsDataset(group, signalDataset.name);
+  const titleDataset = useTitleDataset(group);
 
-  const signalDataset = findSignalDataset(group);
-  const signalValue = values[signalDataset.name];
-  assertArray<number>(signalValue);
+  return {
+    signalDataset,
+    errorsDataset,
+    titleDataset,
+    axisDatasetMapping: useAxesDatasets(group),
+    silxStyle: getSilxStyle(group),
+  };
+}
 
-  const silxStyle = getSilxStyle(group);
-  const { axesScaleType, signalScaleType } = silxStyle;
+export function useAxisMapping(
+  mapping: AxisDatasetMapping,
+  axesScaleType: ScaleType[] | undefined
+): AxisMapping {
+  const axisValues = useDatasetValues(mapping.filter(isDefined));
 
-  const axisMapping = getNxAxes(group).map((axisName, i) => {
-    if (axisName === '.') {
+  return mapping.map((dataset, i) => {
+    if (!dataset) {
       return undefined;
     }
 
-    const axisDataset = getChildEntity(group, axisName);
-    assertDefined(axisDataset);
-    assertDataset(axisDataset);
-
-    const axisValue = values[axisName];
+    const axisValue = axisValues[dataset.name];
     assertArray<number>(axisValue);
 
-    return {
-      value: axisValue,
-      label: getDatasetLabel(axisDataset),
-      scaleType: axesScaleType && axesScaleType[i],
-    };
+    return (
+      dataset && {
+        label: getDatasetLabel(dataset),
+        value: axisValue,
+        scaleType: axesScaleType && axesScaleType[i],
+      }
+    );
   });
-
-  const errorsValue = values[`${signalDataset.name}_errors`] || values.errors;
-  assertOptionalArray<number>(errorsValue);
-
-  const titleValue = values.title;
-  assertOptionalStr(titleValue);
-
-  return {
-    signal: {
-      label: getDatasetLabel(signalDataset),
-      value: signalValue,
-      dims: signalDataset.shape.dims,
-      scaleType: signalScaleType,
-    },
-    errors: errorsValue,
-    title: titleValue,
-    axisMapping,
-  };
 }

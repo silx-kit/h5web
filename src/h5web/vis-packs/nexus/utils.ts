@@ -5,7 +5,6 @@ import type {
   HDF5SimpleShape,
 } from '../../providers/hdf5-models';
 import {
-  assertArray,
   assertDefined,
   assertStr,
   assertDataset,
@@ -47,18 +46,6 @@ export function findSignalDataset(
   assertNumericType(dataset);
 
   return dataset;
-}
-
-export function getNxAxes(group: Group): string[] {
-  const axisList = getAttributeValue(group, 'axes');
-  if (!axisList) {
-    return [];
-  }
-
-  const axisNames = typeof axisList === 'string' ? [axisList] : axisList;
-  assertArray<string>(axisNames);
-
-  return axisNames;
 }
 
 export function getDatasetLabel(dataset: Dataset): string {
