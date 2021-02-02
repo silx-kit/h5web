@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from 'react';
 import { isEqual } from 'lodash-es';
-import { assertArray, assertGroup, assertOptionalStr } from '../../../guards';
+import { assertGroup } from '../../../guards';
 import { useDatasetValue } from '../../core/hooks';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
@@ -35,14 +35,9 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
 
-  const value = useDatasetValue(signalDataset.path);
-  assertArray<number>(value);
-
-  const errors = useDatasetValue(errorsDataset?.path);
-  assertArray<number>(errors);
-
-  const title = useDatasetValue(titleDataset?.path);
-  assertOptionalStr(title);
+  const value = useDatasetValue(signalDataset);
+  const errors = useDatasetValue(errorsDataset);
+  const title = useDatasetValue(titleDataset);
 
   const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
 

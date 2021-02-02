@@ -16,12 +16,12 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
   assertSimpleShape(entity);
   assertNumericType(entity);
 
-  const { name, path, shape } = entity;
+  const { name, shape } = entity;
   const { dims } = shape;
 
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
-  const value = useDatasetValue(path);
+  const value = useDatasetValue(entity);
 
   return (
     <>

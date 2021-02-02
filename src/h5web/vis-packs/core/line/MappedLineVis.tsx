@@ -1,14 +1,12 @@
 import { ReactElement, useEffect } from 'react';
-import type { HDF5Value } from '../../../providers/hdf5-models';
 import LineVis from './LineVis';
-import { assertArray } from '../../../guards';
 import { useMappedArray, useDomain, useBaseArray } from '../hooks';
 import { useLineConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 
 interface Props {
-  value: HDF5Value;
+  value: number[];
   valueLabel?: string;
   valueScaleType?: ScaleType;
   dims: number[];
@@ -31,7 +29,6 @@ function MappedLineVis(props: Props): ReactElement {
     errors,
     showErrors,
   } = props;
-  assertArray<number>(value);
 
   const {
     yScaleType,

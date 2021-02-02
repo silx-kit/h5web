@@ -1,7 +1,5 @@
 import { ReactElement, useEffect, useMemo } from 'react';
-import type { HDF5Value } from '../../../providers/hdf5-models';
 import HeatmapVis from './HeatmapVis';
-import { assertArray } from '../../../guards';
 import { useBaseArray, useMappedArray } from '../hooks';
 import { useHeatmapConfig } from './config';
 import type { AxisMapping } from '../models';
@@ -9,7 +7,7 @@ import { getDomain } from '../utils';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 
 interface Props {
-  value: HDF5Value;
+  value: number[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
@@ -18,7 +16,6 @@ interface Props {
 
 function MappedHeatmapVis(props: Props): ReactElement {
   const { value, dims, dimMapping, axisMapping = [], title } = props;
-  assertArray<number>(value);
 
   const {
     customDomain,

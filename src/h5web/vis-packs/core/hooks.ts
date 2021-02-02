@@ -8,24 +8,31 @@ import type { DimensionMapping } from '../../dimension-mapper/models';
 import { getCanvasScale, getDomain } from './utils';
 import AxisSystemContext from './shared/AxisSystemContext';
 import type { AxisScale } from './models';
-import type { HDF5Value } from '../../providers/hdf5-models';
+import type { HDF5Shape, HDF5Type } from '../../providers/hdf5-models';
 import { ProviderContext } from '../../providers/context';
-import type { Dataset } from '../../providers/models';
+import type { Dataset, Value } from '../../providers/models';
 
-export function useDatasetValue(
-  path: string | undefined
-): HDF5Value | undefined {
+export function useDatasetValue<
+  S extends HDF5Shape,
+  T extends HDF5Type,
+  D extends Dataset<S, T> | undefined
+>(dataset: D): D extends Dataset<infer S, infer T> ? Value<S, T> : undefined;
+
+export function useDatasetValue(dataset: Dataset | undefined) {
   const { valuesStore } = useContext(ProviderContext);
-  return path !== undefined ? valuesStore.get(path) : undefined;
+  return dataset && valuesStore.get(dataset.path);
 }
 
-export function useDatasetValues(
-  datasets: Dataset[]
-): Record<string, HDF5Value> {
+export function useDatasetValues<S extends HDF5Shape, T extends HDF5Type>(
+  datasets: Dataset<S, T>[]
+) {
   const { valuesStore } = useContext(ProviderContext);
 
   return Object.fromEntries(
-    datasets.map(({ name, path }) => [name, valuesStore.get(path)])
+    datasets.map(({ name, path }) => [
+      name,
+      valuesStore.get(path) as Value<S, T>,
+    ])
   );
 }
 

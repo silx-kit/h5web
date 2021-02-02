@@ -1,10 +1,9 @@
 import type { ReactElement } from 'react';
 import styles from './ScalarVis.module.css';
-import type { HDF5Value } from '../../../providers/hdf5-models';
 import { assertNumOrStr } from '../../../guards';
 
 interface Props {
-  value: HDF5Value;
+  value: string | number;
 }
 
 function ScalarVis(props: Props): ReactElement {

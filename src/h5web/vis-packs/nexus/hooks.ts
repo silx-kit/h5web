@@ -127,17 +127,10 @@ export function useAxisMapping(
   const axisValues = useDatasetValues(mapping.filter(isDefined));
 
   return mapping.map((dataset, i) => {
-    if (!dataset) {
-      return undefined;
-    }
-
-    const axisValue = axisValues[dataset.name];
-    assertArray<number>(axisValue);
-
     return (
       dataset && {
         label: getDatasetLabel(dataset),
-        value: axisValue,
+        value: axisValues[dataset.name],
         scaleType: axesScaleType && axesScaleType[i],
       }
     );

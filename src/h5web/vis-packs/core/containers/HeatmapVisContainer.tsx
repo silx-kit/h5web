@@ -16,7 +16,7 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   assertSimpleShape(entity);
   assertNumericType(entity);
 
-  const { name, path, shape } = entity;
+  const { name, shape } = entity;
   const { dims } = shape;
 
   if (dims.length < 2) {
@@ -25,7 +25,7 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
 
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
-  const value = useDatasetValue(path);
+  const value = useDatasetValue(entity);
 
   return (
     <>
