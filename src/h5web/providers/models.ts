@@ -43,5 +43,3 @@ export interface Link<T extends HDF5Link = HDF5Link> extends Entity {
   kind: EntityKind.Link;
   rawLink: T;
 }
-
-export type Metadata = Group;

@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import Provider from '../Provider';
-import { mockMetadata, mockDomain } from './metadata';
+import { mockDomain } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
 
 interface Props {
@@ -24,7 +24,7 @@ function MockProvider(props: Props): ReactElement {
             });
           }
 
-          return findMockEntity(mockMetadata, path);
+          return findMockEntity(path);
         },
         getValue: async (path: string) => {
           if (path === errorOnPath) {
@@ -32,7 +32,7 @@ function MockProvider(props: Props): ReactElement {
             throw new Error('error');
           }
 
-          const dataset = findMockEntity(mockMetadata, path);
+          const dataset = findMockEntity(path);
           assertMockDataset(dataset);
 
           return dataset.value;
