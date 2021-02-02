@@ -8,7 +8,7 @@ function RawVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertDataset(entity);
 
-  const value = useDatasetValue(entity.path);
+  const value = useDatasetValue(entity);
   return <RawVis value={value} />;
 }
 

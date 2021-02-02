@@ -174,6 +174,14 @@ export function assertSimpleShape<T extends HDF5Type>(
   }
 }
 
+export function assertBaseType<S extends HDF5Shape>(
+  dataset: Dataset<S>
+): asserts dataset is Dataset<S, HDF5BaseType> {
+  if (!hasStringType(dataset) && !hasNumericType(dataset)) {
+    throw new Error('Expected dataset to have string or numeric type');
+  }
+}
+
 export function assertStringType<S extends HDF5Shape>(
   dataset: Dataset<S>
 ): asserts dataset is Dataset<S, HDF5StringType> {

@@ -24,10 +24,10 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
 
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
-  const value = useDatasetValue(signalDataset.path);
+  const value = useDatasetValue(signalDataset);
   assertArray<number>(value);
 
-  const title = useDatasetValue(titleDataset?.path);
+  const title = useDatasetValue(titleDataset);
   assertOptionalStr(title);
 
   const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);

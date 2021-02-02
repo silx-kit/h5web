@@ -1,6 +1,10 @@
 import type { ReactElement } from 'react';
 import { useDatasetValue } from '../hooks';
-import { assertDataset, assertSimpleShape } from '../../../guards';
+import {
+  assertBaseType,
+  assertDataset,
+  assertSimpleShape,
+} from '../../../guards';
 import MappedMatrixVis from '../matrix/MappedMatrixVis';
 import type { VisContainerProps } from '../../models';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -10,14 +14,13 @@ function MatrixVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertDataset(entity);
   assertSimpleShape(entity);
+  assertBaseType(entity);
 
-  const { path, shape } = entity;
-  const { dims } = shape;
-
+  const { dims } = entity.shape;
   const axesCount = Math.min(dims.length, 2);
   const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
 
-  const value = useDatasetValue(path);
+  const value = useDatasetValue(entity);
 
   return (
     <>

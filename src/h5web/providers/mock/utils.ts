@@ -9,7 +9,7 @@ import {
   isGroup,
 } from '../../guards';
 import { getChildEntity } from '../../utils';
-import type { Entity, Metadata } from '../models';
+import type { Entity } from '../models';
 import { mockMetadata } from './metadata';
 import type { MockDataset } from './models';
 
@@ -25,11 +25,11 @@ export function assertMockDataset(
   }
 }
 
-export function findMockEntity(root: Metadata, path: string): Entity {
+export function findMockEntity(path: string): Entity {
   assertAbsolutePath(path);
 
   if (path === '/') {
-    return root;
+    return mockMetadata;
   }
 
   const pathSegments = path.slice(1).split('/');
@@ -39,7 +39,7 @@ export function findMockEntity(root: Metadata, path: string): Entity {
         ? getChildEntity(parentEntity, currSegment)
         : undefined;
     },
-    root
+    mockMetadata
   );
 
   assertDefined(entity, `Expected entity at path "${path}"`);
@@ -47,7 +47,7 @@ export function findMockEntity(root: Metadata, path: string): Entity {
 }
 
 export function getMockDataArray(path: string): ndarray {
-  const dataset = findMockEntity(mockMetadata, path);
+  const dataset = findMockEntity(path);
   assertMockDataset(dataset);
 
   const { value } = dataset;

@@ -1,7 +1,10 @@
 import type {
   HDF5Attribute,
   HDF5Link,
+  HDF5NumericType,
   HDF5Shape,
+  HDF5SimpleShape,
+  HDF5StringType,
   HDF5Type,
 } from './hdf5-models';
 
@@ -44,4 +47,13 @@ export interface Link<T extends HDF5Link = HDF5Link> extends Entity {
   rawLink: T;
 }
 
-export type Metadata = Group;
+type PrimitiveType<T extends HDF5Type> = T extends HDF5NumericType
+  ? number
+  : T extends HDF5StringType
+  ? string
+  : unknown;
+
+export type Value<
+  S extends HDF5Shape,
+  T extends HDF5Type
+> = S extends HDF5SimpleShape ? PrimitiveType<T>[] : PrimitiveType<T>;

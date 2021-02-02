@@ -1,9 +1,8 @@
 import type { ReactElement } from 'react';
 import styles from './RawVis.module.css';
-import type { HDF5Value } from '../../../providers/hdf5-models';
 
 interface Props {
-  value: HDF5Value;
+  value: unknown;
 }
 
 function RawVis(props: Props): ReactElement {
