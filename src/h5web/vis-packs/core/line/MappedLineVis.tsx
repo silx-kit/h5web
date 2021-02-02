@@ -5,14 +5,14 @@ import { assertArray } from '../../../guards';
 import { useMappedArray, useDomain, useBaseArray } from '../hooks';
 import { useLineConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { useDimMappingState } from '../../hooks';
+import type { DimensionMapping } from '../../../dimension-mapper/models';
 
 interface Props {
   value: HDF5Value;
-  dims: number[];
   valueLabel?: string;
   valueScaleType?: ScaleType;
+  dims: number[];
+  dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title?: string;
   errors?: number[];
@@ -24,8 +24,9 @@ function MappedLineVis(props: Props): ReactElement {
     value,
     valueLabel,
     valueScaleType,
-    axisMapping = [],
     dims,
+    dimMapping,
+    axisMapping = [],
     title,
     errors,
     showErrors,
@@ -42,8 +43,6 @@ function MappedLineVis(props: Props): ReactElement {
     autoScale,
     disableAutoScale,
   } = useLineConfig();
-
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   const baseDataArray = useBaseArray(value, dims);
   const dataArray = useMappedArray(baseDataArray, dimMapping);
@@ -81,29 +80,22 @@ function MappedLineVis(props: Props): ReactElement {
   }, [setYScaleType, valueScaleType]);
 
   return (
-    <>
-      <DimensionMapper
-        rawDims={dims}
-        mapperState={dimMapping}
-        onChange={setDimMapping}
-      />
-      <LineVis
-        dataArray={dataArray}
-        domain={dataDomain}
-        scaleType={yScaleType}
-        curveType={curveType}
-        showGrid={showGrid}
-        abscissaParams={{
-          label: mappedAbscissaParams?.label,
-          value: mappedAbscissaParams?.value,
-          scaleType: xScaleType,
-        }}
-        ordinateLabel={valueLabel}
-        title={title}
-        errorsArray={errorArray}
-        showErrors={showErrors}
-      />
-    </>
+    <LineVis
+      dataArray={dataArray}
+      domain={dataDomain}
+      scaleType={yScaleType}
+      curveType={curveType}
+      showGrid={showGrid}
+      abscissaParams={{
+        label: mappedAbscissaParams?.label,
+        value: mappedAbscissaParams?.value,
+        scaleType: xScaleType,
+      }}
+      ordinateLabel={valueLabel}
+      title={title}
+      errorsArray={errorArray}
+      showErrors={showErrors}
+    />
   );
 }
 

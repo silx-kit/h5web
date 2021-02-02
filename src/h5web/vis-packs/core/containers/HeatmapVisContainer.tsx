@@ -7,6 +7,8 @@ import {
 } from '../../../guards';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from '../../models';
+import { useDimMappingState } from '../../hooks';
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -21,8 +23,25 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
     throw new Error('Expected dataset with at least two dimensions');
   }
 
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+
   const value = useDatasetValue(path);
-  return <MappedHeatmapVis value={value} dims={dims} title={name} />;
+
+  return (
+    <>
+      <DimensionMapper
+        rawDims={dims}
+        mapperState={dimMapping}
+        onChange={setDimMapping}
+      />
+      <MappedHeatmapVis
+        value={value}
+        dims={dims}
+        dimMapping={dimMapping}
+        title={name}
+      />
+    </>
+  );
 }
 
 export default HeatmapVisContainer;

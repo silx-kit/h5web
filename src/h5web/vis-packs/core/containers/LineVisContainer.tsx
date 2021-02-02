@@ -7,6 +7,8 @@ import {
 } from '../../../guards';
 import MappedLineVis from '../line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
+import { useDimMappingState } from '../../hooks';
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function LineVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -15,9 +17,27 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
   assertNumericType(entity);
 
   const { name, path, shape } = entity;
+  const { dims } = shape;
+
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+
   const value = useDatasetValue(path);
 
-  return <MappedLineVis value={value} dims={shape.dims} title={name} />;
+  return (
+    <>
+      <DimensionMapper
+        rawDims={dims}
+        mapperState={dimMapping}
+        onChange={setDimMapping}
+      />
+      <MappedLineVis
+        value={value}
+        dims={dims}
+        dimMapping={dimMapping}
+        title={name}
+      />
+    </>
+  );
 }
 
 export default LineVisContainer;

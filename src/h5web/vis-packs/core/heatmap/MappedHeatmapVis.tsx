@@ -5,19 +5,19 @@ import { assertArray } from '../../../guards';
 import { useBaseArray, useMappedArray } from '../hooks';
 import { useHeatmapConfig } from './config';
 import type { AxisMapping } from '../models';
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { getDomain } from '../utils';
-import { useDimMappingState } from '../../hooks';
+import type { DimensionMapping } from '../../../dimension-mapper/models';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
-  title?: string;
+  dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
+  title?: string;
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {
-  const { value, axisMapping = [], title, dims } = props;
+  const { value, dims, dimMapping, axisMapping = [], title } = props;
   assertArray<number>(value);
 
   const {
@@ -28,8 +28,6 @@ function MappedHeatmapVis(props: Props): ReactElement {
     showGrid,
     setDataDomain,
   } = useHeatmapConfig();
-
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const baseArray = useBaseArray(value, dims);
   const dataArray = useMappedArray(baseArray, dimMapping);
@@ -46,24 +44,17 @@ function MappedHeatmapVis(props: Props): ReactElement {
   }, [customDomain, domain, setDataDomain]);
 
   return (
-    <>
-      <DimensionMapper
-        rawDims={dims}
-        mapperState={dimMapping}
-        onChange={setDimMapping}
-      />
-      <HeatmapVis
-        dataArray={dataArray}
-        title={title}
-        domain={domain}
-        colorMap={colorMap}
-        scaleType={scaleType}
-        keepAspectRatio={keepAspectRatio}
-        showGrid={showGrid}
-        abscissaParams={axisMapping[dimMapping.indexOf('x')]}
-        ordinateParams={axisMapping[dimMapping.indexOf('y')]}
-      />
-    </>
+    <HeatmapVis
+      dataArray={dataArray}
+      title={title}
+      domain={domain}
+      colorMap={colorMap}
+      scaleType={scaleType}
+      keepAspectRatio={keepAspectRatio}
+      showGrid={showGrid}
+      abscissaParams={axisMapping[dimMapping.indexOf('x')]}
+      ordinateParams={axisMapping[dimMapping.indexOf('y')]}
+    />
   );
 }
 
