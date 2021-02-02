@@ -3,34 +3,22 @@ import type { HDF5Value } from '../../../providers/hdf5-models';
 import MatrixVis from './MatrixVis';
 import { assertArray } from '../../../guards';
 import { useBaseArray, useMappedArray } from '../hooks';
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { useDimMappingState } from '../../hooks';
+import type { DimensionMapping } from '../../../dimension-mapper/models';
 
 interface Props {
   value: HDF5Value;
   dims: number[];
+  dimMapping: DimensionMapping;
 }
 
 function MappedMatrixVis(props: Props): ReactElement {
-  const { value, dims } = props;
+  const { value, dims, dimMapping } = props;
   assertArray<number | string>(value);
-
-  const axesCount = Math.min(dims.length, 2);
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
 
   const baseArray = useBaseArray(value, dims);
   const mappedArray = useMappedArray(baseArray, dimMapping);
 
-  return (
-    <>
-      <DimensionMapper
-        rawDims={dims}
-        mapperState={dimMapping}
-        onChange={setDimMapping}
-      />
-      <MatrixVis dataArray={mappedArray} />
-    </>
-  );
+  return <MatrixVis dataArray={mappedArray} />;
 }
 
 export default MappedMatrixVis;

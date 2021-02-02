@@ -6,6 +6,8 @@ import { useHeatmapConfig } from '../../core/heatmap/config';
 import { useAxisMapping, useNxData } from '../hooks';
 import { useDatasetValue } from '../../core/hooks';
 import { getDatasetLabel } from '../utils';
+import { useDimMappingState } from '../../hooks';
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -19,6 +21,8 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   if (dims.length < 2) {
     throw new Error('Expected signal dataset with at least two dimensions');
   }
+
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const value = useDatasetValue(signalDataset.path);
   assertArray<number>(value);
@@ -36,12 +40,20 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   }, [setScaleType, signalScaleType]);
 
   return (
-    <MappedHeatmapVis
-      value={value}
-      title={title || getDatasetLabel(signalDataset)}
-      dims={dims}
-      axisMapping={axisMapping}
-    />
+    <>
+      <DimensionMapper
+        rawDims={dims}
+        mapperState={dimMapping}
+        onChange={setDimMapping}
+      />
+      <MappedHeatmapVis
+        value={value}
+        dims={dims}
+        dimMapping={dimMapping}
+        axisMapping={axisMapping}
+        title={title || getDatasetLabel(signalDataset)}
+      />
+    </>
   );
 }
 

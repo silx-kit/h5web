@@ -3,6 +3,8 @@ import { useDatasetValue } from '../hooks';
 import { assertDataset, assertSimpleShape } from '../../../guards';
 import MappedMatrixVis from '../matrix/MappedMatrixVis';
 import type { VisContainerProps } from '../../models';
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../hooks';
 
 function MatrixVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -10,9 +12,23 @@ function MatrixVisContainer(props: VisContainerProps): ReactElement {
   assertSimpleShape(entity);
 
   const { path, shape } = entity;
+  const { dims } = shape;
+
+  const axesCount = Math.min(dims.length, 2);
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
+
   const value = useDatasetValue(path);
 
-  return <MappedMatrixVis value={value} dims={shape.dims} />;
+  return (
+    <>
+      <DimensionMapper
+        rawDims={dims}
+        mapperState={dimMapping}
+        onChange={setDimMapping}
+      />
+      <MappedMatrixVis value={value} dims={dims} dimMapping={dimMapping} />
+    </>
+  );
 }
 
 export default MatrixVisContainer;

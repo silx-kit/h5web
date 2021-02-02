@@ -7,6 +7,8 @@ import type { VisContainerProps } from '../../models';
 import { useAxisMapping, useNxData } from '../hooks';
 import { useNxSpectrumConfig } from '../spectrum/config';
 import { getDatasetLabel } from '../utils';
+import { useDimMappingState } from '../../hooks';
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -31,6 +33,8 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
     throw new Error(`Signal and errors dimensions don't match: ${dimsStr}`);
   }
 
+  const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+
   const value = useDatasetValue(signalDataset.path);
   assertArray<number>(value);
 
@@ -48,16 +52,24 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   }, [disableErrors, errors]);
 
   return (
-    <MappedLineVis
-      value={value}
-      valueLabel={signalLabel}
-      valueScaleType={signalScaleType}
-      axisMapping={axisMapping}
-      dims={signalDims}
-      title={title || signalLabel}
-      errors={errors}
-      showErrors={showErrors}
-    />
+    <>
+      <DimensionMapper
+        rawDims={signalDims}
+        mapperState={dimMapping}
+        onChange={setDimMapping}
+      />
+      <MappedLineVis
+        value={value}
+        valueLabel={signalLabel}
+        valueScaleType={signalScaleType}
+        dims={signalDims}
+        dimMapping={dimMapping}
+        axisMapping={axisMapping}
+        title={title || signalLabel}
+        errors={errors}
+        showErrors={showErrors}
+      />
+    </>
   );
 }
 
