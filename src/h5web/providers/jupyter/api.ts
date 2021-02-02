@@ -5,6 +5,7 @@ import {
   assertGroupContent,
   isDatasetResponse,
   isGroupResponse,
+  convertDtype,
 } from './utils';
 import type {
   JupyterAttrsResponse,
@@ -12,7 +13,7 @@ import type {
   JupyterDataResponse,
   JupyterMetaResponse,
 } from './models';
-import { makeStrAttr, floatType } from '../mock/metadata-utils';
+import { makeStrAttr } from '../mock/metadata-utils';
 import {
   HDF5LinkClass,
   HDF5ShapeClass,
@@ -108,12 +109,13 @@ export class JupyterApi implements ProviderAPI {
     }
 
     if (isDatasetResponse(response)) {
-      const { type, shape: dims } = response;
+      // `dtype` is the type of the data contained in the dataset
+      const { type: kind, dtype, shape: dims } = response;
+
       return {
         ...baseEntity,
-        kind: type,
-        // TODO: Find the type from the dtype OR change the backend to return the true HDF5Type
-        type: floatType,
+        kind,
+        type: convertDtype(dtype),
         shape:
           dims.length > 0
             ? { class: HDF5ShapeClass.Simple, dims }
