@@ -101,42 +101,19 @@ export enum HDF5TypeClass {
   Compound = 'H5T_COMPOUND',
 }
 
+export type HDF5Endianness = 'BE' | 'LE';
+
 export interface HDF5IntegerType {
   class: HDF5TypeClass.Integer;
-  base:
-    | 'H5T_STD_I8BE'
-    | 'H5T_STD_I8LE'
-    | 'H5T_STD_I16BE'
-    | 'H5T_STD_I16LE'
-    | 'H5T_STD_I32BE'
-    | 'H5T_STD_I32LE'
-    | 'H5T_STD_I64BE'
-    | 'H5T_STD_I64LE'
-    | 'H5T_STD_U8BE'
-    | 'H5T_STD_U8LE'
-    | 'H5T_STD_U16BE'
-    | 'H5T_STD_U16LE'
-    | 'H5T_STD_U32BE'
-    | 'H5T_STD_U32LE'
-    | 'H5T_STD_U64BE'
-    | 'H5T_STD_U64LE'
-    | 'H5T_STD_B8BE'
-    | 'H5T_STD_B8LE'
-    | 'H5T_STD_B16BE'
-    | 'H5T_STD_B16LE'
-    | 'H5T_STD_B32BE'
-    | 'H5T_STD_B32LE'
-    | 'H5T_STD_B64BE'
-    | 'H5T_STD_B64LE';
+  size: number;
+  unsigned?: boolean;
+  endianness: HDF5Endianness;
 }
 
 export interface HDF5FloatType {
   class: HDF5TypeClass.Float;
-  base:
-    | 'H5T_IEEE_F32BE'
-    | 'H5T_IEEE_F32LE'
-    | 'H5T_IEEE_F64BE'
-    | 'H5T_IEEE_F64LE';
+  size: number;
+  endianness: HDF5Endianness;
 }
 
 export interface HDF5StringType {

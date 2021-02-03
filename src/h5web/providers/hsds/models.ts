@@ -1,14 +1,48 @@
 import type {
   HDF5Id,
   HDF5Shape,
-  HDF5Type,
   HDF5Attribute,
   HDF5Value,
   HDF5ExternalLink,
   HDF5HardLink,
   HDF5SoftLink,
+  HDF5TypeClass,
+  HDF5StringType,
+  HDF5Dims,
 } from '../hdf5-models';
 import type { Dataset, Group } from '../models';
+
+export type HsdsBaseType =
+  | { class: HDF5TypeClass.Integer; base: string }
+  | { class: HDF5TypeClass.Float; base: string }
+  | HDF5StringType;
+
+export type HsdsType =
+  | HsdsBaseType
+  | HsdsArrayType
+  | HsdsVLenType
+  | HsdsCompoundType;
+
+interface HsdsArrayType {
+  class: HDF5TypeClass.Array;
+  base: HsdsBaseType;
+  dims: HDF5Dims;
+}
+
+interface HsdsVLenType {
+  class: HDF5TypeClass.VLen;
+  base: HsdsBaseType;
+}
+
+export interface HsdsCompoundType {
+  class: HDF5TypeClass.Compound;
+  fields: HsdsCompoundTypeField[];
+}
+
+interface HsdsCompoundTypeField {
+  name: string;
+  type: HsdsType;
+}
 
 export interface HsdsRootResponse {
   root: HDF5Id;
@@ -23,13 +57,13 @@ export interface HsdsGroupResponse {
 export interface HsdsDatasetResponse {
   id: HDF5Id;
   shape: HDF5Shape;
-  type: HDF5Type;
+  type: HsdsType;
   attributeCount: number;
 }
 
 export interface HsdsDatatypeResponse {
   id: HDF5Id;
-  type: HDF5Type;
+  type: HsdsType;
 }
 
 export interface HsdsAttributesResponse {

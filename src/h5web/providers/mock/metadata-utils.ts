@@ -29,12 +29,14 @@ import { mockValues } from './values';
 
 export const intType: HDF5IntegerType = {
   class: HDF5TypeClass.Integer,
-  base: 'H5T_STD_I32LE',
+  endianness: 'LE',
+  size: 32,
 };
 
 export const floatType: HDF5FloatType = {
   class: HDF5TypeClass.Float,
-  base: 'H5T_IEEE_F64LE',
+  endianness: 'LE',
+  size: 64,
 };
 
 export const stringType: HDF5StringType = {
