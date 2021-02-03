@@ -22,7 +22,12 @@ import {
 } from '../hdf5-models';
 import { assertDefined, assertGroup, isHardLink } from '../../guards';
 import type { ProviderAPI } from '../context';
-import { assertHsdsDataset, isHsdsExternalLink, isHsdsGroup } from './utils';
+import {
+  assertHsdsDataset,
+  isHsdsExternalLink,
+  isHsdsGroup,
+  convertHsdsType,
+} from './utils';
 import { buildEntityPath, getChildEntity } from '../../utils';
 
 export class HsdsApi implements ProviderAPI {
@@ -193,7 +198,7 @@ export class HsdsApi implements ProviderAPI {
       kind: EntityKind.Dataset,
       attributes,
       shape,
-      type,
+      type: convertHsdsType(type),
     };
   }
 
@@ -209,7 +214,7 @@ export class HsdsApi implements ProviderAPI {
       name,
       kind: EntityKind.Datatype,
       attributes: [],
-      type,
+      type: convertHsdsType(type),
     };
   }
 
