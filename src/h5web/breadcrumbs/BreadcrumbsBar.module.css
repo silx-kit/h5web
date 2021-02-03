@@ -21,6 +21,14 @@
   white-space: nowrap;
 }
 
+.crumbButton {
+  composes: btn-clean from global;
+}
+
+.crumbButton:hover {
+  text-decoration: underline;
+}
+
 .crumb {
   margin: 0 0.125rem 0.125rem;
   overflow: hidden;
