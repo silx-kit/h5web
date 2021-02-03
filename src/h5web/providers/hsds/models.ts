@@ -21,15 +21,16 @@ export type HsdsType =
   | HsdsBaseType
   | HsdsArrayType
   | HsdsVLenType
-  | HsdsCompoundType;
+  | HsdsCompoundType
+  | HDF5Id;
 
-interface HsdsArrayType {
+export interface HsdsArrayType {
   class: HDF5TypeClass.Array;
   base: HsdsBaseType;
   dims: HDF5Dims;
 }
 
-interface HsdsVLenType {
+export interface HsdsVLenType {
   class: HDF5TypeClass.VLen;
   base: HsdsBaseType;
 }
