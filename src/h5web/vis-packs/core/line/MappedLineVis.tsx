@@ -14,7 +14,6 @@ interface Props {
   axisMapping?: AxisMapping;
   title?: string;
   errors?: number[];
-  showErrors?: boolean;
 }
 
 function MappedLineVis(props: Props): ReactElement {
@@ -27,7 +26,6 @@ function MappedLineVis(props: Props): ReactElement {
     axisMapping = [],
     title,
     errors,
-    showErrors,
   } = props;
 
   const {
@@ -39,6 +37,8 @@ function MappedLineVis(props: Props): ReactElement {
     showGrid,
     autoScale,
     disableAutoScale,
+    showErrors,
+    disableErrors,
   } = useLineConfig();
 
   const baseDataArray = useBaseArray(value, dims);
@@ -75,6 +75,10 @@ function MappedLineVis(props: Props): ReactElement {
       setYScaleType(valueScaleType);
     }
   }, [setYScaleType, valueScaleType]);
+
+  useEffect(() => {
+    disableErrors(!errors);
+  }, [disableErrors, errors]);
 
   return (
     <LineVis

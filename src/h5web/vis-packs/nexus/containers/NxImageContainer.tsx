@@ -1,8 +1,7 @@
-import { ReactElement, Suspense, useEffect } from 'react';
+import { ReactElement, Suspense } from 'react';
 import { assertGroup, assertMinDims } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
-import { useHeatmapConfig } from '../../core/heatmap/config';
 import { useAxisMapping, useNxData } from '../hooks';
 import { useDatasetValue } from '../../core/hooks';
 import { getDatasetLabel } from '../utils';
@@ -26,13 +25,6 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   const title = useDatasetValue(titleDataset);
   const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
 
-  const { setScaleType } = useHeatmapConfig();
-  useEffect(() => {
-    if (signalScaleType) {
-      setScaleType(signalScaleType);
-    }
-  }, [setScaleType, signalScaleType]);
-
   return (
     <>
       <DimensionMapper
@@ -47,6 +39,7 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
           dimMapping={dimMapping}
           axisMapping={axisMapping}
           title={title || getDatasetLabel(signalDataset)}
+          initialScaleType={signalScaleType}
         />
       </Suspense>
     </>

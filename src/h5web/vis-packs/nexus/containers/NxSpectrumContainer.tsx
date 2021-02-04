@@ -1,11 +1,10 @@
-import { ReactElement, useEffect } from 'react';
+import type { ReactElement } from 'react';
 import { isEqual } from 'lodash-es';
 import { assertGroup } from '../../../guards';
 import { useDatasetValue } from '../../core/hooks';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
 import { useAxisMapping, useNxData } from '../hooks';
-import { useNxSpectrumConfig } from '../spectrum/config';
 import { getDatasetLabel } from '../utils';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -41,11 +40,6 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
 
   const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
 
-  const { showErrors, disableErrors } = useNxSpectrumConfig();
-  useEffect(() => {
-    disableErrors(!errors);
-  }, [disableErrors, errors]);
-
   return (
     <>
       <DimensionMapper
@@ -62,7 +56,6 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
         axisMapping={axisMapping}
         title={title || signalLabel}
         errors={errors}
-        showErrors={showErrors}
       />
     </>
   );
