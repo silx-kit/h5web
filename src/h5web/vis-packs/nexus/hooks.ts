@@ -27,39 +27,8 @@ import {
   getDatasetLabel,
   getAttributeValue,
   getSilxStyle,
+  findErrorsDataset,
 } from './utils';
-
-function useSignalDataset(
-  group: Group
-): Dataset<HDF5SimpleShape, HDF5NumericType> {
-  const { valuesStore } = useContext(ProviderContext);
-
-  const dataset = findSignalDataset(group);
-  valuesStore.prefetch(dataset.path);
-  return dataset;
-}
-
-function useErrorsDataset(
-  group: Group,
-  signalName: string
-): Dataset<HDF5SimpleShape, HDF5NumericType> | undefined {
-  const { valuesStore } = useContext(ProviderContext);
-
-  const dataset =
-    getChildEntity(group, `${signalName}_errors`) ||
-    getChildEntity(group, 'errors');
-
-  if (!dataset) {
-    return undefined;
-  }
-
-  assertDataset(dataset);
-  assertSimpleShape(dataset);
-  assertNumericType(dataset);
-
-  valuesStore.prefetch(dataset.path);
-  return dataset;
-}
 
 function useTitleDataset(
   group: Group
@@ -75,7 +44,7 @@ function useTitleDataset(
   assertScalarShape(dataset);
   assertStringType(dataset);
 
-  valuesStore.prefetch(dataset.path);
+  valuesStore.prefetch({ path: dataset.path });
   return dataset;
 }
 
@@ -99,22 +68,19 @@ function useAxesDatasets(
     assertSimpleShape(dataset);
     assertNumericType(dataset);
 
-    valuesStore.prefetch(dataset.path);
+    valuesStore.prefetch({ path: dataset.path });
     return dataset;
   });
 }
 
 export function useNxData(group: Group): NxData {
   assertNxDataGroup(group);
-
-  const signalDataset = useSignalDataset(group);
-  const errorsDataset = useErrorsDataset(group, signalDataset.name);
-  const titleDataset = useTitleDataset(group);
+  const signalDataset = findSignalDataset(group);
 
   return {
     signalDataset,
-    errorsDataset,
-    titleDataset,
+    errorsDataset: findErrorsDataset(group, signalDataset.name),
+    titleDataset: useTitleDataset(group),
     axisDatasetMapping: useAxesDatasets(group),
     silxStyle: getSilxStyle(group),
   };

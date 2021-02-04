@@ -48,6 +48,24 @@ export function findSignalDataset(
   return dataset;
 }
 
+export function findErrorsDataset(
+  group: Group,
+  signalName: string
+): Dataset<HDF5SimpleShape, HDF5NumericType> | undefined {
+  const dataset =
+    getChildEntity(group, `${signalName}_errors`) ||
+    getChildEntity(group, 'errors');
+
+  if (!dataset) {
+    return undefined;
+  }
+
+  assertDataset(dataset);
+  assertSimpleShape(dataset);
+  assertNumericType(dataset);
+  return dataset;
+}
+
 export function getDatasetLabel(dataset: Dataset): string {
   const longName = getAttributeValue(dataset, 'long_name');
   if (longName && typeof longName === 'string') {

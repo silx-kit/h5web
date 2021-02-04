@@ -10,6 +10,7 @@ import type {
   HDF5NumericType,
   HDF5SimpleShape,
 } from '../../../providers/hdf5-models';
+import { isAxis } from '../../../dimension-mapper/utils';
 import shallow from 'zustand/shallow';
 
 interface Props {
@@ -41,9 +42,18 @@ function MappedHeatmapVis(props: Props): ReactElement {
     setScaleType,
   } = useHeatmapConfig((state) => state, shallow);
 
-  const value = useDatasetValue(dataset);
-  const baseArray = useBaseArray(value, dims);
-  const dataArray = useMappedArray(baseArray, dimMapping);
+  const value = useDatasetValue(dataset, dimMapping);
+
+  const [slicedDims, slicedMapping] = useMemo(
+    () => [
+      dims.filter((_, i) => isAxis(dimMapping[i])),
+      dimMapping.filter((dim) => isAxis(dim)),
+    ],
+    [dims, dimMapping]
+  );
+
+  const baseArray = useBaseArray(value, slicedDims);
+  const dataArray = useMappedArray(baseArray, slicedMapping);
 
   const domain = useMemo(() => {
     return customDomain || getDomain(dataArray.data as number[], scaleType);

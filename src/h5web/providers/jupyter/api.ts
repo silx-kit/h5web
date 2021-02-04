@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { Group, Dataset, EntityKind, Link, Entity } from '../models';
-import type { ProviderAPI } from '../context';
+import type { GetValueParams, ProviderAPI } from '../context';
 import {
   assertGroupContent,
   isDatasetResponse,
@@ -36,9 +36,11 @@ export class JupyterApi implements ProviderAPI {
     return this.processEntity(path, 1);
   }
 
-  public async getValue(path: string): Promise<HDF5Value> {
+  public async getValue(params: GetValueParams): Promise<HDF5Value> {
+    const { path, selection = '' } = params;
+
     const { data } = await this.client.get<JupyterDataResponse>(
-      `/data/${this.domain}?uri=${path}`
+      `/data/${this.domain}?uri=${path}${selection && `&ixstr=${selection}`}`
     );
     return data;
   }

@@ -2,6 +2,10 @@ import type { ReactElement, ReactNode } from 'react';
 import Provider from '../Provider';
 import { mockDomain } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
+import type { GetValueParams } from '../context';
+import ndarray from 'ndarray';
+import { assertNumericType, assertSimpleShape } from '../../guards';
+import unpack from 'ndarray-unpack';
 
 interface Props {
   domain?: string;
@@ -26,7 +30,9 @@ function MockProvider(props: Props): ReactElement {
 
           return findMockEntity(path);
         },
-        getValue: async (path: string) => {
+        getValue: async (params: GetValueParams) => {
+          const { path, selection } = params;
+
           if (path === errorOnPath) {
             // Throw error when fetching value with specific ID
             throw new Error('error');
@@ -35,7 +41,26 @@ function MockProvider(props: Props): ReactElement {
           const dataset = findMockEntity(path);
           assertMockDataset(dataset);
 
-          return dataset.value;
+          const { value } = dataset;
+          if (!selection) {
+            return value;
+          }
+
+          assertSimpleShape(dataset);
+          assertNumericType(dataset);
+
+          const dataArray = ndarray(
+            (dataset.value as number[]).flat(Infinity),
+            dataset.shape.dims
+          );
+
+          const dataView = dataArray.pick(
+            ...selection
+              .split(',')
+              .map((s) => (s === ':' ? null : Number.parseInt(s, 10)))
+          );
+
+          return unpack(dataView);
         },
       }}
     >
