@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { useDatasetValue } from '../hooks';
 import {
   assertDataset,
+  assertMinDims,
   assertNumericType,
   assertSimpleShape,
 } from '../../../guards';
@@ -15,14 +16,10 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   assertDataset(entity);
   assertSimpleShape(entity);
   assertNumericType(entity);
+  assertMinDims(entity, 2);
 
   const { name, shape } = entity;
   const { dims } = shape;
-
-  if (dims.length < 2) {
-    throw new Error('Expected dataset with at least two dimensions');
-  }
-
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const value = useDatasetValue(entity);

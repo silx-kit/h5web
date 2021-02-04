@@ -1,5 +1,5 @@
 import type { FetchStore } from 'react-suspense-fetch';
-import { assertDefined, assertStr, isGroup } from '../../guards';
+import { assertDefined, assertStr, hasMinDims, isGroup } from '../../guards';
 import type { HDF5Value } from '../../providers/hdf5-models';
 import type { Entity } from '../../providers/models';
 import { buildEntityPath } from '../../utils';
@@ -49,5 +49,5 @@ export function getSupportedVis(entity: Entity): VisDef | undefined {
     return NEXUS_VIS[interpretation];
   }
 
-  return dataset.shape.dims.length >= 2 ? NEXUS_VIS.image : NEXUS_VIS.spectrum;
+  return hasMinDims(dataset, 2) ? NEXUS_VIS.image : NEXUS_VIS.spectrum;
 }
