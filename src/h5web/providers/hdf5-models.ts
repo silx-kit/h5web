@@ -101,7 +101,7 @@ export enum HDF5TypeClass {
   Compound = 'H5T_COMPOUND',
 }
 
-export type HDF5Endianness = 'BE' | 'LE';
+export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
 
 export interface HDF5IntegerType {
   class: HDF5TypeClass.Integer;
