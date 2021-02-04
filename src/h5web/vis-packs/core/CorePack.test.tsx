@@ -29,8 +29,6 @@ describe('CorePack', () => {
 
     expect(await screen.findByText(/dataset is too big/u)).toBeVisible();
     expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
-
-    logSpy.mockRestore();
   });
 
   test('visualise scalar dataset', async () => {

@@ -101,11 +101,12 @@
     "prettier": "^2.2.1",
     "react-app-polyfill": "^2.0.0",
     "react-is": "^16.13.1",
-    "react-scripts": "4.0.1",
+    "react-scripts": "4.0.2",
     "typescript": "^4.1.3",
     "worker-loader": "^3.0.7"
   },
   "jest": {
+    "restoreMocks": true,
     "transformIgnorePatterns": [
       "/node_modules/(?!lodash-es|react-use-comlink)/.*"
     ],

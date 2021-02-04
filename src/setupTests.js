@@ -32,7 +32,7 @@ If your test relies on \`console\` you should mock it:
 
 const errorSpy = mockConsoleMethod('error');
 // Your test goes here
-errorSpy.mockRestore();
+errorSpy.mockRestore(); // optional if end of test
 `;
   }
 });
