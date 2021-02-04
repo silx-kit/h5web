@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useMemo } from 'react';
 import HeatmapVis from './HeatmapVis';
 import { useBaseArray, useDatasetValue, useMappedArray } from '../hooks';
 import { useHeatmapConfig } from './config';
-import type { AxisMapping } from '../models';
+import type { AxisMapping, ScaleType } from '../models';
 import { getDomain } from '../utils';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import type { Dataset } from '../../../providers/models';
@@ -17,10 +17,18 @@ interface Props {
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title?: string;
+  initialScaleType?: ScaleType;
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {
-  const { dataset, dims, dimMapping, axisMapping = [], title } = props;
+  const {
+    dataset,
+    dims,
+    dimMapping,
+    axisMapping = [],
+    title,
+    initialScaleType,
+  } = props;
 
   const {
     customDomain,
@@ -29,6 +37,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
     keepAspectRatio,
     showGrid,
     setDataDomain,
+    setScaleType,
   } = useHeatmapConfig();
 
   const value = useDatasetValue(dataset);
@@ -45,6 +54,12 @@ function MappedHeatmapVis(props: Props): ReactElement {
       setDataDomain(domain);
     }
   }, [customDomain, domain, setDataDomain]);
+
+  useEffect(() => {
+    if (initialScaleType) {
+      setScaleType(initialScaleType);
+    }
+  }, [setScaleType, initialScaleType]);
 
   return (
     <HeatmapVis
