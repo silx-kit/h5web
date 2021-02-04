@@ -3,7 +3,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import styles from './App.module.css';
-import BreadcrumbsBar from './BreadcrumbsBar';
+import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import VisPackChooser from './vis-packs/VisPackChooser';
 import { assertAbsolutePath } from './guards';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -36,6 +36,7 @@ function App(): ReactElement {
       <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
         <BreadcrumbsBar
           path={selectedPath}
+          setSelectedPath={setSelectedPath}
           isExplorerOpen={isExplorerOpen}
           isInspecting={isInspecting}
           onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
