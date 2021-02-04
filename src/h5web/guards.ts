@@ -132,6 +132,13 @@ export function hasNumericType<S extends HDF5Shape>(
   );
 }
 
+export function hasMinDims(
+  dataset: Dataset<HDF5SimpleShape>,
+  min: number
+): boolean {
+  return dataset.shape.dims.length >= min;
+}
+
 export function isAbsolutePath(path: string) {
   return path.startsWith('/');
 }
@@ -195,6 +202,14 @@ export function assertNumericType<S extends HDF5Shape>(
 ): asserts dataset is Dataset<S, HDF5NumericType> {
   if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
+  }
+}
+
+export function assertMinDims(dataset: Dataset<HDF5SimpleShape>, min: number) {
+  if (!hasMinDims(dataset, min)) {
+    throw new Error(
+      `Expected dataset with at least ${min} dimension${min > 1 ? 's' : ''}`
+    );
   }
 }
 
