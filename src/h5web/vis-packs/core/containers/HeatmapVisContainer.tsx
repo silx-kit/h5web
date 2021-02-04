@@ -1,5 +1,4 @@
-import type { ReactElement } from 'react';
-import { useDatasetValue } from '../hooks';
+import { ReactElement, Suspense } from 'react';
 import {
   assertDataset,
   assertMinDims,
@@ -10,6 +9,7 @@ import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import ValueLoader from '../../../visualizer/ValueLoader';
 
 function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -22,8 +22,6 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   const { dims } = shape;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
-  const value = useDatasetValue(entity);
-
   return (
     <>
       <DimensionMapper
@@ -31,12 +29,14 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <MappedHeatmapVis
-        value={value}
-        dims={dims}
-        dimMapping={dimMapping}
-        title={name}
-      />
+      <Suspense fallback={<ValueLoader />}>
+        <MappedHeatmapVis
+          dataset={entity}
+          dims={dims}
+          dimMapping={dimMapping}
+          title={name}
+        />
+      </Suspense>
     </>
   );
 }

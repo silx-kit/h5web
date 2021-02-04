@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, Suspense, useEffect } from 'react';
 import { assertGroup, assertMinDims } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
@@ -8,6 +8,7 @@ import { useDatasetValue } from '../../core/hooks';
 import { getDatasetLabel } from '../utils';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import ValueLoader from '../../../visualizer/ValueLoader';
 
 function NxImageContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -22,7 +23,6 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
   const { dims } = signalDataset.shape;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
-  const value = useDatasetValue(signalDataset);
   const title = useDatasetValue(titleDataset);
   const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
 
@@ -40,13 +40,15 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <MappedHeatmapVis
-        value={value}
-        dims={dims}
-        dimMapping={dimMapping}
-        axisMapping={axisMapping}
-        title={title || getDatasetLabel(signalDataset)}
-      />
+      <Suspense fallback={<ValueLoader />}>
+        <MappedHeatmapVis
+          dataset={signalDataset}
+          dims={dims}
+          dimMapping={dimMapping}
+          axisMapping={axisMapping}
+          title={title || getDatasetLabel(signalDataset)}
+        />
+      </Suspense>
     </>
   );
 }
