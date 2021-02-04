@@ -34,10 +34,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
 
-  const value = useDatasetValue(signalDataset);
-  const errors = useDatasetValue(errorsDataset);
   const title = useDatasetValue(titleDataset);
-
   const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
 
   return (
@@ -48,14 +45,14 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
         onChange={setDimMapping}
       />
       <MappedLineVis
-        value={value}
+        valueDataset={signalDataset}
         valueLabel={signalLabel}
         valueScaleType={signalScaleType}
+        errorsDataset={errorsDataset}
         dims={signalDims}
         dimMapping={dimMapping}
         axisMapping={axisMapping}
         title={title || signalLabel}
-        errors={errors}
       />
     </>
   );

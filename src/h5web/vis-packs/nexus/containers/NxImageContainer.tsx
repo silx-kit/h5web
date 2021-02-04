@@ -39,7 +39,7 @@ function NxImageContainer(props: VisContainerProps): ReactElement {
           dimMapping={dimMapping}
           axisMapping={axisMapping}
           title={title || getDatasetLabel(signalDataset)}
-          initialScaleType={signalScaleType}
+          colorScaleType={signalScaleType}
         />
       </Suspense>
     </>

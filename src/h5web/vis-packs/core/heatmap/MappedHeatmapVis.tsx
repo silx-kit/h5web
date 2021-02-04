@@ -17,7 +17,7 @@ interface Props {
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title?: string;
-  initialScaleType?: ScaleType;
+  colorScaleType?: ScaleType;
 }
 
 function MappedHeatmapVis(props: Props): ReactElement {
@@ -27,7 +27,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
     dimMapping,
     axisMapping = [],
     title,
-    initialScaleType,
+    colorScaleType,
   } = props;
 
   const {
@@ -56,10 +56,10 @@ function MappedHeatmapVis(props: Props): ReactElement {
   }, [customDomain, domain, setDataDomain]);
 
   useEffect(() => {
-    if (initialScaleType) {
-      setScaleType(initialScaleType);
+    if (colorScaleType) {
+      setScaleType(colorScaleType);
     }
-  }, [setScaleType, initialScaleType]);
+  }, [setScaleType, colorScaleType]);
 
   return (
     <HeatmapVis
