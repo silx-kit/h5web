@@ -106,6 +106,7 @@
     "worker-loader": "^3.0.7"
   },
   "jest": {
+    "restoreMocks": true,
     "transformIgnorePatterns": [
       "/node_modules/(?!lodash-es|react-use-comlink)/.*"
     ],

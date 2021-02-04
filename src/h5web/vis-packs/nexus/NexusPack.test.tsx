@@ -80,6 +80,5 @@ describe('NexusPack', () => {
     expect(await screen.findByText(/to exist/u)).toBeVisible();
 
     expect(errorSpy).toHaveBeenCalledTimes(8); // React logs two stack traces per error
-    errorSpy.mockRestore();
   });
 });

@@ -188,8 +188,6 @@ describe('NeXus utilities', () => {
 
     expect(getSilxStyle(group)).toEqual({});
     expect(warnSpy).toHaveBeenCalledWith(expect.stringMatching(/Malformed/u));
-
-    warnSpy.mockRestore();
   });
 
   it("should return empty object if `SILX_style` attribute doesn't exist, is empty or is not string", () => {

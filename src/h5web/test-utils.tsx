@@ -41,7 +41,8 @@ export async function selectVisTab(name: Vis): Promise<void> {
 
 /**
  * Mock console method in test.
- * To restore original method, call `spy.mockRestore()`.
+ * Mocks are automatically restored after every test, but to restore
+ * the original console method earlier, call `spy.mockRestore()`.
  */
 export function mockConsoleMethod(method: 'log' | 'warn' | 'error') {
   const spy = jest.spyOn(console, method);
