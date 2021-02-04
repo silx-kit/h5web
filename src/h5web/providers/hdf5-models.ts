@@ -118,8 +118,7 @@ export interface HDF5FloatType {
 
 export interface HDF5StringType {
   class: HDF5TypeClass.String;
-  charSet: 'H5T_CSET_ASCII' | 'H5T_CSET_UTF8';
-  strPad: 'H5T_STR_SPACEPAD' | 'H5T_STR_NULLTERM' | 'H5T_STR_NULLPAD';
+  charSet: 'ASCII' | 'UTF8';
   length: number | 'H5T_VARIABLE';
 }
 

@@ -38,7 +38,11 @@ export function assertHsdsDataset(
 
 export function convertHsdsBaseType(hsdsBaseType: HsdsBaseType): HDF5BaseType {
   if (hsdsBaseType.class === HDF5TypeClass.String) {
-    return hsdsBaseType;
+    return {
+      class: HDF5TypeClass.String,
+      charSet: hsdsBaseType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF8',
+      length: hsdsBaseType.length,
+    };
   }
 
   const { class: hsdsClass, base } = hsdsBaseType;

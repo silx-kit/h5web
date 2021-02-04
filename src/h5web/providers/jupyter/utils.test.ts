@@ -6,8 +6,7 @@ describe('JupyterProvider utilities', () => {
     it('should convert unicode string dtypes', () => {
       expect(convertDtype('|U25')).toEqual({
         class: HDF5TypeClass.String,
-        charSet: 'H5T_CSET_UTF8',
-        strPad: 'H5T_STR_NULLPAD',
+        charSet: 'UTF8',
         length: 25,
       });
     });
@@ -15,8 +14,7 @@ describe('JupyterProvider utilities', () => {
     it('should convert bytes string dtypes', () => {
       expect(convertDtype('|S')).toEqual({
         class: HDF5TypeClass.String,
-        charSet: 'H5T_CSET_ASCII',
-        strPad: 'H5T_STR_NULLPAD',
+        charSet: 'ASCII',
         length: 'H5T_VARIABLE',
       });
     });
@@ -75,15 +73,17 @@ describe('JupyterProvider utilities', () => {
     it('should interpret objects as strings', () => {
       expect(convertDtype('|O')).toEqual({
         class: HDF5TypeClass.String,
-        charSet: 'H5T_CSET_UTF8',
-        strPad: 'H5T_STR_NULLPAD',
+        charSet: 'UTF8',
         length: 'H5T_VARIABLE',
       });
     });
 
+    it('should throw when encountering an unknown endianness symbol', () => {
+      expect(() => convertDtype('^f8')).toThrow(/Unknown endianness symbol/u);
+    });
+
     it('should throw when encountering an unknown type', () => {
-      const unknownDtype = 'notAType';
-      expect(() => convertDtype(unknownDtype)).toThrow(/Unknown/u);
+      expect(() => convertDtype('>notAType')).toThrow(/Unknown dtype/u);
     });
   });
 });

@@ -1,9 +1,4 @@
-import {
-  HDF5BaseType,
-  HDF5Id,
-  HDF5StringType,
-  HDF5TypeClass,
-} from '../hdf5-models';
+import { HDF5BaseType, HDF5Id, HDF5TypeClass } from '../hdf5-models';
 import type {
   HsdsArrayType,
   HsdsBaseType,
@@ -19,6 +14,33 @@ describe('HsdsProvider utilities', () => {
       hsds: HsdsBaseType;
       hdf5: HDF5BaseType;
     }
+
+    const asciiStrType: TestType = {
+      hsds: {
+        class: HDF5TypeClass.String,
+        charSet: 'H5T_CSET_ASCII',
+        strPad: 'H5T_STR_NULLPAD',
+        length: 25,
+      },
+      hdf5: {
+        class: HDF5TypeClass.String,
+        charSet: 'ASCII',
+        length: 25,
+      },
+    };
+    const unicodeStrType: TestType = {
+      hsds: {
+        class: HDF5TypeClass.String,
+        charSet: 'H5T_CSET_UTF8',
+        strPad: 'H5T_STR_NULLTERM',
+        length: 49,
+      },
+      hdf5: {
+        class: HDF5TypeClass.String,
+        charSet: 'UTF8',
+        length: 49,
+      },
+    };
 
     const leIntegerType: TestType = {
       hsds: {
@@ -71,14 +93,9 @@ describe('HsdsProvider utilities', () => {
       expect(convertHsdsType(idType)).toBe(idType);
     });
 
-    it('should left string type unchanged', () => {
-      const stringType: HDF5StringType = {
-        class: HDF5TypeClass.String,
-        charSet: 'H5T_CSET_UTF8',
-        strPad: 'H5T_STR_NULLPAD',
-        length: 25,
-      };
-      expect(convertHsdsType(stringType)).toBe(stringType);
+    it('should convert string types', () => {
+      expect(convertHsdsType(asciiStrType.hsds)).toEqual(asciiStrType.hdf5);
+      expect(convertHsdsType(unicodeStrType.hsds)).toEqual(unicodeStrType.hdf5);
     });
 
     it('should convert integer types', () => {

@@ -41,8 +41,7 @@ export const floatType: HDF5FloatType = {
 
 export const stringType: HDF5StringType = {
   class: HDF5TypeClass.String,
-  charSet: 'H5T_CSET_ASCII',
-  strPad: 'H5T_STR_NULLPAD',
+  charSet: 'ASCII',
   length: 'H5T_VARIABLE',
 };
 

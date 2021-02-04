@@ -112,8 +112,7 @@ export function convertDtype(dtype: string): HDF5Type {
     case 'S':
       return {
         class: HDF5TypeClass.String,
-        charSet: 'H5T_CSET_ASCII',
-        strPad: 'H5T_STR_NULLPAD',
+        charSet: 'ASCII',
         length: length || 'H5T_VARIABLE',
       };
 
@@ -121,8 +120,7 @@ export function convertDtype(dtype: string): HDF5Type {
     case 'O': // TODO: objects are considered as strings for now
       return {
         class: HDF5TypeClass.String,
-        charSet: 'H5T_CSET_UTF8',
-        strPad: 'H5T_STR_NULLPAD',
+        charSet: 'UTF8',
         length: length || 'H5T_VARIABLE',
       };
 
