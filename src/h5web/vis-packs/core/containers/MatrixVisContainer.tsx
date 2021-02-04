@@ -1,5 +1,4 @@
-import type { ReactElement } from 'react';
-import { useDatasetValue } from '../hooks';
+import { ReactElement, Suspense } from 'react';
 import {
   assertBaseType,
   assertDataset,
@@ -9,6 +8,7 @@ import MappedMatrixVis from '../matrix/MappedMatrixVis';
 import type { VisContainerProps } from '../../models';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../hooks';
+import ValueLoader from '../../../visualizer/ValueLoader';
 
 function MatrixVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -20,8 +20,6 @@ function MatrixVisContainer(props: VisContainerProps): ReactElement {
   const axesCount = Math.min(dims.length, 2);
   const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
 
-  const value = useDatasetValue(entity);
-
   return (
     <>
       <DimensionMapper
@@ -29,7 +27,9 @@ function MatrixVisContainer(props: VisContainerProps): ReactElement {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <MappedMatrixVis value={value} dims={dims} dimMapping={dimMapping} />
+      <Suspense fallback={<ValueLoader />}>
+        <MappedMatrixVis dataset={entity} dims={dims} dimMapping={dimMapping} />
+      </Suspense>
     </>
   );
 }
