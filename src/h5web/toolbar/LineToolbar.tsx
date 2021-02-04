@@ -1,19 +1,15 @@
 import type { ReactElement } from 'react';
 import { MdGridOn, MdDomain } from 'react-icons/md';
+import { FiItalic } from 'react-icons/fi';
 import ToggleBtn from './controls/ToggleBtn';
 import { useLineConfig } from '../vis-packs/core/line/config';
 import { CurveType } from '../vis-packs/core/line/models';
 import ToggleGroup from './controls/ToggleGroup';
-import Toolbar, { ToolbarControl } from './Toolbar';
+import Toolbar from './Toolbar';
 import Separator from './Separator';
 import ScaleSelector from './controls/ScaleSelector';
 
-interface Props {
-  errorControl?: ToolbarControl;
-}
-
-function LineToolbar(props: Props): ReactElement {
-  const { errorControl } = props;
+function LineToolbar(): ReactElement {
   const {
     curveType,
     setCurveType,
@@ -24,8 +20,11 @@ function LineToolbar(props: Props): ReactElement {
     yScaleType,
     setYScaleType,
     autoScale,
-    toggleAutoScale,
     isAutoScaleDisabled,
+    toggleAutoScale,
+    showErrors,
+    areErrorsDisabled,
+    toggleErrors,
   } = useLineConfig();
 
   return (
@@ -51,7 +50,19 @@ function LineToolbar(props: Props): ReactElement {
         disabled={isAutoScaleDisabled}
       />
 
-      {errorControl}
+      <ToggleBtn
+        label="Errors"
+        icon={(props) => (
+          <FiItalic
+            transform="skewX(20)"
+            style={{ marginLeft: '-0.25em', marginRight: '0.0625rem' }}
+            {...props}
+          />
+        )}
+        value={!areErrorsDisabled && showErrors}
+        onChange={toggleErrors}
+        disabled={areErrorsDisabled}
+      />
 
       <ToggleBtn
         label="Grid"

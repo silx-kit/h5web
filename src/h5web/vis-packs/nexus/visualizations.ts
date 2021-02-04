@@ -1,8 +1,8 @@
 import { FiActivity, FiMap } from 'react-icons/fi';
 import HeatmapToolbar from '../../toolbar/HeatmapToolbar';
-import { NxInterpretation } from './models';
+import LineToolbar from '../../toolbar/LineToolbar';
 import { NxSpectrumContainer, NxImageContainer } from './containers';
-import NxSpectrumToolbar from './spectrum/NxSpectrumToolbar';
+import { NxInterpretation } from './models';
 import type { VisDef } from '../models';
 
 export enum NexusVis {
@@ -14,7 +14,7 @@ export const NEXUS_VIS: Record<NxInterpretation, VisDef> = {
   [NxInterpretation.Spectrum]: {
     name: NexusVis.NxSpectrum,
     Icon: FiActivity,
-    Toolbar: NxSpectrumToolbar,
+    Toolbar: LineToolbar,
     Container: NxSpectrumContainer,
   },
 

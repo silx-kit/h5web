@@ -7,6 +7,7 @@ import {
   hasBaseType,
   hasSimpleShape,
   hasNumericType,
+  hasMinDims,
 } from '../../guards';
 import {
   RawVisContainer,
@@ -54,7 +55,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
       return (
         hasBaseType(dataset) &&
         hasSimpleShape(dataset) &&
-        dataset.shape.dims.length >= 1
+        hasMinDims(dataset, 1)
       );
     },
   },
@@ -68,7 +69,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
       return (
         hasNumericType(dataset) &&
         hasSimpleShape(dataset) &&
-        dataset.shape.dims.length >= 1
+        hasMinDims(dataset, 1)
       );
     },
   },
@@ -82,7 +83,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
       return (
         hasNumericType(dataset) &&
         hasSimpleShape(dataset) &&
-        dataset.shape.dims.length >= 2
+        hasMinDims(dataset, 2)
       );
     },
   },

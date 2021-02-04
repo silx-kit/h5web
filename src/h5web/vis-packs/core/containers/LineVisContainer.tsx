@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import { useDatasetValue } from '../hooks';
 import {
   assertDataset,
   assertNumericType,
@@ -18,10 +17,7 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
 
   const { name, shape } = entity;
   const { dims } = shape;
-
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
-
-  const value = useDatasetValue(entity);
 
   return (
     <>
@@ -31,7 +27,7 @@ function LineVisContainer(props: VisContainerProps): ReactElement {
         onChange={setDimMapping}
       />
       <MappedLineVis
-        value={value}
+        valueDataset={entity}
         dims={dims}
         dimMapping={dimMapping}
         title={name}

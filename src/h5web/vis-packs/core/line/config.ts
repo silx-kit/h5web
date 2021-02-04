@@ -19,6 +19,11 @@ interface LineConfig extends State {
   isAutoScaleDisabled: boolean;
   toggleAutoScale: () => void;
   disableAutoScale: (isAutoScaleDisabled: boolean) => void;
+
+  showErrors: boolean;
+  areErrorsDisabled: boolean;
+  toggleErrors: () => void;
+  disableErrors: (areErrorsDisabled: boolean) => void;
 }
 
 export const useLineConfig = create<LineConfig>(
@@ -40,6 +45,11 @@ export const useLineConfig = create<LineConfig>(
       toggleAutoScale: () => set((state) => ({ autoScale: !state.autoScale })),
       disableAutoScale: (isAutoScaleDisabled: boolean) =>
         set({ isAutoScaleDisabled }),
+
+      showErrors: true,
+      areErrorsDisabled: false,
+      toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
+      disableErrors: (areErrorsDisabled: boolean) => set({ areErrorsDisabled }),
     }),
     {
       name: 'h5web:line',
@@ -49,8 +59,9 @@ export const useLineConfig = create<LineConfig>(
         'xScaleType',
         'yScaleType',
         'autoScale',
+        'showErrors',
       ],
-      version: 1,
+      version: 2,
     }
   )
 );

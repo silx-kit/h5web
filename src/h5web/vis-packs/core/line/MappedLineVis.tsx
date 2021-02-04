@@ -1,33 +1,41 @@
 import { ReactElement, useEffect } from 'react';
 import LineVis from './LineVis';
-import { useMappedArray, useDomain, useBaseArray } from '../hooks';
+import {
+  useMappedArray,
+  useDomain,
+  useBaseArray,
+  useDatasetValue,
+} from '../hooks';
 import { useLineConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import type { Dataset } from '../../../providers/models';
+import type {
+  HDF5NumericType,
+  HDF5SimpleShape,
+} from '../../../providers/hdf5-models';
 
 interface Props {
-  value: number[];
+  valueDataset: Dataset<HDF5SimpleShape, HDF5NumericType>;
   valueLabel?: string;
   valueScaleType?: ScaleType;
+  errorsDataset?: Dataset<HDF5SimpleShape, HDF5NumericType>;
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title?: string;
-  errors?: number[];
-  showErrors?: boolean;
 }
 
 function MappedLineVis(props: Props): ReactElement {
   const {
-    value,
+    valueDataset,
     valueLabel,
     valueScaleType,
+    errorsDataset,
     dims,
     dimMapping,
     axisMapping = [],
     title,
-    errors,
-    showErrors,
   } = props;
 
   const {
@@ -39,11 +47,15 @@ function MappedLineVis(props: Props): ReactElement {
     showGrid,
     autoScale,
     disableAutoScale,
+    showErrors,
+    disableErrors,
   } = useLineConfig();
 
+  const value = useDatasetValue(valueDataset);
   const baseDataArray = useBaseArray(value, dims);
   const dataArray = useMappedArray(baseDataArray, dimMapping);
 
+  const errors = useDatasetValue(errorsDataset);
   const baseErrorsArray = useBaseArray(errors, dims);
   const errorArray = useMappedArray(baseErrorsArray, dimMapping);
 
@@ -75,6 +87,10 @@ function MappedLineVis(props: Props): ReactElement {
       setYScaleType(valueScaleType);
     }
   }, [setYScaleType, valueScaleType]);
+
+  useEffect(() => {
+    disableErrors(!errors);
+  }, [disableErrors, errors]);
 
   return (
     <LineVis

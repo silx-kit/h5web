@@ -1,7 +1,7 @@
-import type { ReactElement } from 'react';
-import { useDatasetValue } from '../hooks';
+import { ReactElement, Suspense } from 'react';
 import {
   assertDataset,
+  assertMinDims,
   assertNumericType,
   assertSimpleShape,
 } from '../../../guards';
@@ -9,23 +9,18 @@ import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import ValueLoader from '../../../visualizer/ValueLoader';
 
 function HeatmapVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertDataset(entity);
   assertSimpleShape(entity);
   assertNumericType(entity);
+  assertMinDims(entity, 2);
 
   const { name, shape } = entity;
   const { dims } = shape;
-
-  if (dims.length < 2) {
-    throw new Error('Expected dataset with at least two dimensions');
-  }
-
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
-
-  const value = useDatasetValue(entity);
 
   return (
     <>
@@ -34,12 +29,14 @@ function HeatmapVisContainer(props: VisContainerProps): ReactElement {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <MappedHeatmapVis
-        value={value}
-        dims={dims}
-        dimMapping={dimMapping}
-        title={name}
-      />
+      <Suspense fallback={<ValueLoader />}>
+        <MappedHeatmapVis
+          dataset={entity}
+          dims={dims}
+          dimMapping={dimMapping}
+          title={name}
+        />
+      </Suspense>
     </>
   );
 }
