@@ -7,7 +7,6 @@ import type {
   HDF5HardLink,
   HDF5SoftLink,
   HDF5TypeClass,
-  HDF5StringType,
   HDF5Dims,
 } from '../hdf5-models';
 import type { Dataset, Group } from '../models';
@@ -15,7 +14,12 @@ import type { Dataset, Group } from '../models';
 export type HsdsBaseType =
   | { class: HDF5TypeClass.Integer; base: string }
   | { class: HDF5TypeClass.Float; base: string }
-  | HDF5StringType;
+  | {
+      class: HDF5TypeClass.String;
+      charSet: 'H5T_CSET_ASCII' | 'H5T_CSET_UTF8';
+      strPad: 'H5T_STR_SPACEPAD' | 'H5T_STR_NULLTERM' | 'H5T_STR_NULLPAD';
+      length: number | 'H5T_VARIABLE';
+    };
 
 export type HsdsType =
   | HsdsBaseType
