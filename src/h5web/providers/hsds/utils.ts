@@ -56,7 +56,7 @@ export function convertHsdsBaseType(hsdsBaseType: HsdsBaseType): HDF5BaseType {
     class: hsdsClass,
     endianness: endianness as HDF5Endianness,
     size: Number.parseInt(size, 10),
-    unsigned: sign === 'U' || undefined,
+    ...(sign === 'U' ? { unsigned: true } : {}),
   };
 }
 
