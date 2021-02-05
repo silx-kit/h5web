@@ -59,7 +59,7 @@ describe('MetadataViewer', () => {
     expect(nameRow).toHaveTextContent(/scalar_int/u);
     expect(pathRow).toHaveTextContent(/\/entities\/scalar_int/u);
     expect(shapeRow).toHaveTextContent(/H5S_SCALAR/u);
-    expect(typeRow).toHaveTextContent(/H5T_INTEGER/u);
+    expect(typeRow).toHaveTextContent(/integer/u);
   });
 
   test('inspect simple dataset', async () => {
@@ -86,7 +86,7 @@ describe('MetadataViewer', () => {
     expect(column).toBeVisible();
     expect(nameRow).toHaveTextContent(/datatype/u);
     expect(pathRow).toHaveTextContent(/\/entities\/datatype/u);
-    expect(typeRow).toHaveTextContent(/H5T_COMPOUND/u);
+    expect(typeRow).toHaveTextContent(/compound/u);
   });
 
   test('inspect external link', async () => {
