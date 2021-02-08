@@ -2,7 +2,7 @@ import { ReactElement, useContext } from 'react';
 import type { Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import { hasSimpleShape, isDataset, isDatatype, isLink } from '../guards';
-import { renderShapeDims } from './utils';
+import { renderType, renderShapeDims } from './utils';
 import RawInspector from './RawInspector';
 import LinkInfo from './LinkInfo';
 import { capitalize } from 'lodash-es';
@@ -38,11 +38,7 @@ function EntityTable(props: Props): ReactElement {
         {(isDataset(entity) || isDatatype(entity)) && (
           <tr>
             <th scope="row">Type</th>
-            <td>
-              {typeof entity.type === 'string'
-                ? entity.type
-                : entity.type.class}
-            </td>
+            <td>{renderType(entity.type)}</td>
           </tr>
         )}
         {isDataset(entity) && (
