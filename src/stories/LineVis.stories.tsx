@@ -15,7 +15,7 @@ const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray.data as number[]);
 
 const errorsArray = ndarray(
-  new Array(dataArray.size).fill(0).map((_, i) => Math.abs(10 - 0.5 * i)),
+  Array.from({ length: dataArray.size }, (_, i) => Math.abs(10 - 0.5 * i)),
   dataArray.shape
 );
 

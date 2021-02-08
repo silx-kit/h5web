@@ -188,12 +188,7 @@ export function getIntegerTicks(domain: Domain, count: number): number[] {
   const stop = Math.floor(max / step);
   const numTicks = stop - start + 1;
 
-  const ticks = new Array(numTicks);
-  for (let i = 0; i < numTicks; i++) {
-    ticks[i] = (start + i) * step;
-  }
-
-  return ticks;
+  return Array.from({ length: numTicks }, (_, i) => (start + i) * step);
 }
 
 export function getTickFormatter(

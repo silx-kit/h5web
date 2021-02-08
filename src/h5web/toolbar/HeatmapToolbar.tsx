@@ -8,6 +8,7 @@ import Separator from './Separator';
 import Toolbar from './Toolbar';
 import ColorMapSelector from './controls/ColorMapSelector';
 import ScaleSelector from './controls/ScaleSelector';
+import shallow from 'zustand/shallow';
 
 function HeatmapToolbar(): ReactElement {
   const {
@@ -22,7 +23,7 @@ function HeatmapToolbar(): ReactElement {
     toggleAspectRatio,
     showGrid,
     toggleGrid,
-  } = useHeatmapConfig();
+  } = useHeatmapConfig((state) => state, shallow);
 
   return (
     <Toolbar>

@@ -8,6 +8,7 @@ import ToggleGroup from './controls/ToggleGroup';
 import Toolbar from './Toolbar';
 import Separator from './Separator';
 import ScaleSelector from './controls/ScaleSelector';
+import shallow from 'zustand/shallow';
 
 function LineToolbar(): ReactElement {
   const {
@@ -25,7 +26,7 @@ function LineToolbar(): ReactElement {
     showErrors,
     areErrorsDisabled,
     toggleErrors,
-  } = useLineConfig();
+  } = useLineConfig((state) => state, shallow);
 
   return (
     <Toolbar>

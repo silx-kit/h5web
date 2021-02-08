@@ -22,7 +22,7 @@ export function useActiveVis<T extends VisDef>(supportedVis: T[]) {
 
 export function useDimMappingState(dims: number[], axesCount: number) {
   return useState<DimensionMapping>([
-    ...new Array(dims.length - axesCount).fill(0),
-    ...['y', 'x'].slice(-axesCount),
+    ...Array.from({ length: dims.length - axesCount }, () => 0),
+    ...['y' as const, 'x' as const].slice(-axesCount),
   ]);
 }

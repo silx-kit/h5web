@@ -1,4 +1,5 @@
 import { ReactElement, useEffect } from 'react';
+import shallow from 'zustand/shallow';
 import LineVis from './LineVis';
 import {
   useMappedArray,
@@ -49,7 +50,7 @@ function MappedLineVis(props: Props): ReactElement {
     disableAutoScale,
     showErrors,
     disableErrors,
-  } = useLineConfig();
+  } = useLineConfig((state) => state, shallow);
 
   const value = useDatasetValue(valueDataset);
   const baseDataArray = useBaseArray(value, dims);

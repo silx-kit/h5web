@@ -10,6 +10,7 @@ import type {
   HDF5NumericType,
   HDF5SimpleShape,
 } from '../../../providers/hdf5-models';
+import shallow from 'zustand/shallow';
 
 interface Props {
   dataset: Dataset<HDF5SimpleShape, HDF5NumericType>;
@@ -38,7 +39,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
     showGrid,
     setDataDomain,
     setScaleType,
-  } = useHeatmapConfig();
+  } = useHeatmapConfig((state) => state, shallow);
 
   const value = useDatasetValue(dataset);
   const baseArray = useBaseArray(value, dims);
