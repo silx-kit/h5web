@@ -32,10 +32,10 @@ function PanZoomMesh(): ReactElement {
 
   const onPointerDown = useCallback(
     (evt: PointerEvent) => {
-      const { currentTarget, pointerId } = evt;
+      const { currentTarget, pointerId, unprojectedPoint } = evt;
       currentTarget.setPointerCapture(pointerId);
 
-      const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
+      const projectedPoint = camera.worldToLocal(unprojectedPoint.clone());
       startOffsetPosition.current = camera.position.clone().add(projectedPoint);
     },
     [camera]

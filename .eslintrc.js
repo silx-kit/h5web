@@ -19,6 +19,9 @@ module.exports = createConfig({
     'unicorn/no-useless-undefined': 'off',
     'consistent-return': 'error',
 
+    // Properties available after typeguard may be tedious to destructure (e.g. in JSX)
+    'unicorn/consistent-destructuring': 'off',
+
     // zustand has `whitelist` option
     'inclusive-language/use-inclusive-words': [
       'error',
@@ -29,6 +32,8 @@ module.exports = createConfig({
     {
       files: reactFiles,
       rules: {
+        'react/jsx-no-constructed-context-values': 'off', // too strict
+
         // Allow returning empty fragment instead of `null` to simplify functional component return type
         // => `ReactElement` instead of `ReactElement | null`
         'react/jsx-no-useless-fragment': 'off',
@@ -37,8 +42,7 @@ module.exports = createConfig({
     {
       files: tsFiles,
       rules: {
-        '@typescript-eslint/no-confusing-void-expression': 'off', // not yet supported by CRA
-        'testing-library/no-await-sync-events': 'off', // not yet supported by CRA
+        '@typescript-eslint/non-nullable-type-assertion-style': 'off', // conflicts with @typescript-eslint/no-non-null-assertion
 
         '@typescript-eslint/ban-ts-comment': 'off', // too strict
         '@typescript-eslint/no-floating-promises': 'off', // big crash sometimes better than silent fail
@@ -48,8 +52,14 @@ module.exports = createConfig({
         // https://github.com/typescript-eslint/typescript-eslint/issues/2183
         '@typescript-eslint/explicit-module-boundary-types': 'off',
 
-        // Unused vars should be removed (but not prevent compilation)
+        // Unused vars should be removed but not prevent compilation
         '@typescript-eslint/no-unused-vars': 'warn',
+
+        // Allow writing void-returning arrow functions in shorthand to save space
+        '@typescript-eslint/no-confusing-void-expression': [
+          'error',
+          { ignoreArrowShorthand: true },
+        ],
 
         // Prefer `interface` over `type`
         '@typescript-eslint/consistent-type-definitions': [
