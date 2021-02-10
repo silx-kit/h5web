@@ -21,7 +21,7 @@ import {
   HDF5Link,
 } from '../hdf5-models';
 import { assertDefined, assertGroup, isHardLink } from '../../guards';
-import type { ProviderAPI } from '../context';
+import type { GetValueParams, ProviderAPI } from '../context';
 import {
   assertHsdsDataset,
   isHsdsExternalLink,
@@ -82,12 +82,14 @@ export class HsdsApi implements ProviderAPI {
     return entity;
   }
 
-  public async getValue(path: string): Promise<HDF5Value> {
+  public async getValue(params: GetValueParams): Promise<HDF5Value> {
+    const { path, selection = '' } = params;
+
     const entity = await this.getEntity(path);
     assertHsdsDataset(entity);
 
     const { data } = await this.client.get<HsdsValueResponse>(
-      `/datasets/${entity.id}/value`
+      `/datasets/${entity.id}/value${selection && `?select=[${selection}]`}`
     );
     return data.value;
   }

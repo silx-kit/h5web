@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 import { isEqual } from 'lodash-es';
 import { assertGroup } from '../../../guards';
 import { useDatasetValue } from '../../core/hooks';
@@ -8,6 +8,7 @@ import { useAxisMapping, useNxData } from '../hooks';
 import { getDatasetLabel } from '../utils';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { ProviderContext } from '../../../providers/context';
 
 function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
@@ -33,6 +34,12 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
   }
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+
+  const { valuesStore } = useContext(ProviderContext);
+  valuesStore.prefetch({ path: signalDataset.path });
+  if (errorsDataset) {
+    valuesStore.prefetch({ path: errorsDataset.path });
+  }
 
   const title = useDatasetValue(titleDataset);
   const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
