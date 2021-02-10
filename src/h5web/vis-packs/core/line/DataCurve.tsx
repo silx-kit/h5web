@@ -7,8 +7,6 @@ import { BufferGeometry, Vector3 } from 'three';
 import { useCanvasScales } from '../hooks';
 import ErrorBars from './ErrorBars';
 
-const DEFAULT_COLOR = '#1b998b';
-
 interface Props {
   abscissas: number[];
   ordinates: number[];
@@ -24,12 +22,15 @@ function DataCurve(props: Props): ReactElement {
     ordinates,
     errors,
     showErrors,
-    color = DEFAULT_COLOR,
+    color,
     curveType = CurveType.LineOnly,
   } = props;
 
-  const { camera } = useThree();
+  const { camera, gl } = useThree();
   const { abscissaScale, ordinateScale } = useCanvasScales();
+
+  const curveColor =
+    color || window.getComputedStyle(gl.domElement).getPropertyValue('color');
 
   const points = useMemo(() => {
     const dataPoints: Vector3[] = [];
@@ -86,16 +87,16 @@ function DataCurve(props: Props): ReactElement {
   return (
     <Suspense fallback={<></>}>
       <Line visible={showLine} geometry={dataGeometry}>
-        <lineBasicMaterial attach="material" color={color} linewidth={2} />
+        <lineBasicMaterial attach="material" color={curveColor} linewidth={2} />
       </Line>
       <points visible={showGlyphs} geometry={dataGeometry}>
-        <GlyphMaterial color={color} size={6} />
+        <GlyphMaterial color={curveColor} size={6} />
       </points>
       {showErrors && errors && (
         <ErrorBars
           barsSegments={points.bars}
           capsPoints={points.caps}
-          color={color}
+          color={curveColor}
         />
       )}
     </Suspense>
