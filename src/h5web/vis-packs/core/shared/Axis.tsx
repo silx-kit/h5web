@@ -11,7 +11,6 @@ import {
 } from '../utils';
 
 const AXIS_PROPS = {
-  tickStroke: 'grey',
   hideAxisLine: true,
   tickClassName: styles.tick,
   labelClassName: styles.label,
@@ -71,11 +70,9 @@ function Axis(props: Props): ReactElement {
         <svg className={styles.grid}>
           <GridComponent
             scale={scale}
-            {...ticksProp}
             width={width}
             height={height}
-            stroke={AXIS_PROPS.tickStroke}
-            strokeOpacity={0.33}
+            {...ticksProp}
           />
         </svg>
       )}
