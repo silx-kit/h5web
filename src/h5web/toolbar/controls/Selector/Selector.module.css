@@ -17,7 +17,7 @@
   align-self: center;
   margin-top: 1px;
   margin-left: 1px;
-  color: #555;
+  color: var(--dark-gray);
   font-size: 1.25em;
 }
 
@@ -31,7 +31,7 @@
   left: 0;
   min-width: 100%;
   padding-top: 0.25rem;
-  background-color: white;
+  background-color: var(--white);
   overflow: hidden scroll;
   scrollbar-width: thin;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
@@ -52,7 +52,7 @@
   margin-top: 0.75rem;
   margin-bottom: 0.25rem;
   padding-left: 0.75rem;
-  color: #777;
+  color: var(--gray);
   text-transform: uppercase;
   font-size: 0.75em;
   font-weight: 600;

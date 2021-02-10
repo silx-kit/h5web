@@ -22,7 +22,7 @@
 }
 
 .btn[aria-checked='false'] > .btnLike {
-  background-color: rgba(27, 153, 139, 0.15);
+  background-color: var(--secondary-dark-15);
   box-shadow: var(--btn-shadow-idle) var(--secondary);
 }
 

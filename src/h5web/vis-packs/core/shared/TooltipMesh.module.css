@@ -1,6 +1,12 @@
 .tooltip {
   color: inherit !important;
-  background-color: rgba(245, 251, 239, 0.7) !important;
+  background-color: var(--primary-light-bg-70) !important;
+}
+
+.guides {
+  stroke: var(--secondary-axis-color);
+  stroke-width: 1.5;
+  stroke-opacity: 0.5;
 }
 
 .tooltipValue {
