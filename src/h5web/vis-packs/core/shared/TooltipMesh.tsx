@@ -78,6 +78,7 @@ function TooltipMesh(props: Props): ReactElement {
   return (
     <>
       <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
+        <meshBasicMaterial attach="material" color="#000000" opacity={0} />
         <planeBufferGeometry attach="geometry" args={[width, height]} />
       </mesh>
       <Html>
