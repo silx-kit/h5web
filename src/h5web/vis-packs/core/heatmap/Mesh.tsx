@@ -45,7 +45,7 @@ function Mesh(props: Props): ReactElement {
     <>
       {material && (
         <mesh material={material}>
-          <planeBufferGeometry attach="geometry" args={[width, height]} />
+          <planeGeometry attach="geometry" args={[width, height]} />
         </mesh>
       )}
       {showLoader && (

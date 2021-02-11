@@ -73,7 +73,7 @@ function TooltipMesh(props: Props): ReactElement {
     <>
       <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <meshBasicMaterial attach="material" opacity={0} transparent />
-        <planeBufferGeometry attach="geometry" args={[width, height]} />
+        <planeGeometry attach="geometry" args={[width, height]} />
       </mesh>
       <Html>
         {tooltipOpen && tooltipData && value && (

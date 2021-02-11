@@ -94,7 +94,7 @@ function PanZoomMesh(): ReactElement {
   return (
     <mesh {...{ onPointerMove, onPointerUp, onPointerDown, onWheel }}>
       <meshBasicMaterial attach="material" opacity={0} transparent />
-      <planeBufferGeometry attach="geometry" args={[width, height]} />
+      <planeGeometry attach="geometry" args={[width, height]} />
     </mesh>
   );
 }

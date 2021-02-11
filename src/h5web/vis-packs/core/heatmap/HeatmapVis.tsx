@@ -6,6 +6,7 @@ import ColorBar from './ColorBar';
 import Mesh from './Mesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
+import ShadersMesh from './ShadersMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims, getPixelEdges } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
@@ -85,15 +86,24 @@ function HeatmapVis(props: Props): ReactElement {
           guides="both"
         />
         <PanZoomMesh />
-        <Mesh
-          rows={rows}
-          cols={cols}
-          values={dataArray.data as number[]}
-          domain={domain}
-          scaleType={scaleType}
-          colorMap={colorMap}
-          showLoader={showLoader}
-        />
+        {process.env.REACT_APP_DEV_SHADERS === 'true' ? (
+          <ShadersMesh
+            rows={rows}
+            cols={cols}
+            values={dataArray.data as number[]}
+            domain={domain}
+          />
+        ) : (
+          <Mesh
+            rows={rows}
+            cols={cols}
+            values={dataArray.data as number[]}
+            domain={domain}
+            scaleType={scaleType}
+            colorMap={colorMap}
+            showLoader={showLoader}
+          />
+        )}
       </VisCanvas>
       <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
     </figure>
