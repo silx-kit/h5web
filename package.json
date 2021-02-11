@@ -1,7 +1,7 @@
 {
   "name": "h5web",
   "private": true,
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Web-based HDF5 file viewer",
   "author": "European Synchrotron Radiation Facility",
   "license": "MIT",
