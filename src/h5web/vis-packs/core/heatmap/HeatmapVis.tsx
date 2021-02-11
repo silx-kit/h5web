@@ -92,6 +92,7 @@ function HeatmapVis(props: Props): ReactElement {
             cols={cols}
             values={dataArray.data as number[]}
             domain={domain}
+            colorMap={colorMap}
           />
         ) : (
           <Mesh

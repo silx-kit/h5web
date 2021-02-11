@@ -1,29 +1,52 @@
-import { ReactElement, memo } from 'react';
+import { rgb } from 'd3-color';
+import { ReactElement, memo, useMemo } from 'react';
 import { useThree } from 'react-three-fiber';
-import { DataTexture, FloatType, RedFormat } from 'three';
+import {
+  DataTexture,
+  FloatType,
+  RedFormat,
+  RGBFormat,
+  UnsignedByteType,
+} from 'three';
 import type { Domain } from '../models';
+import { INTERPOLATORS } from './interpolators';
+import type { ColorMap } from './models';
 
 interface Props {
   rows: number;
   cols: number;
   values: number[];
   domain: Domain;
+  colorMap: ColorMap;
 }
 
+const CMAP_SIZE = 256;
+
 function ShadersMesh(props: Props): ReactElement {
-  const { rows, cols, values, domain } = props;
+  const { rows, cols, values, domain, colorMap } = props;
+
+  const dataTexture = useMemo(() => {
+    const valuesArr = Float32Array.from(values);
+    return new DataTexture(valuesArr, cols, rows, RedFormat, FloatType);
+  }, [cols, rows, values]);
+
+  const colorMapTexture = useMemo(() => {
+    const interpolator = INTERPOLATORS[colorMap];
+
+    const colors = Uint8Array.from(
+      Array.from({ length: CMAP_SIZE }).flatMap((_, i) => {
+        const { r, g, b } = rgb(interpolator(i / (CMAP_SIZE - 1)));
+        return [r, g, b];
+      })
+    );
+
+    return new DataTexture(colors, CMAP_SIZE, 1, RGBFormat, UnsignedByteType);
+  }, [colorMap]);
 
   const shader = {
     uniforms: {
-      data: {
-        value: new DataTexture(
-          Float32Array.from(values),
-          cols,
-          rows,
-          RedFormat,
-          FloatType
-        ),
-      },
+      data: { value: dataTexture },
+      colorMap: { value: colorMapTexture },
       min: { value: domain[0] },
       oneOverRange: { value: 1 / (domain[1] - domain[0]) },
     },
@@ -37,27 +60,16 @@ function ShadersMesh(props: Props): ReactElement {
     `,
     fragmentShader: `
       uniform sampler2D data;
+      uniform sampler2D colorMap;
       uniform float min;
       uniform float oneOverRange;
 
       varying vec2 coords;
 
-      vec3 inferno(float t) {
-        const vec3 c0 = vec3(0.0002189403691192265, 0.001651004631001012, -0.01948089843709184);
-        const vec3 c1 = vec3(0.1065134194856116, 0.5639564367884091, 3.932712388889277);
-        const vec3 c2 = vec3(11.60249308247187, -3.972853965665698, -15.9423941062914);
-        const vec3 c3 = vec3(-41.70399613139459, 17.43639888205313, 44.35414519872813);
-        const vec3 c4 = vec3(77.162935699427, -33.40235894210092, -81.80730925738993);
-        const vec3 c5 = vec3(-71.31942824499214, 32.62606426397723, 73.20951985803202);
-        const vec3 c6 = vec3(25.13112622477341, -12.24266895238567, -23.07032500287172);
-
-        return c0+t*(c1+t*(c2+t*(c3+t*(c4+t*(c5+t*c6)))));
-      }
-
       void main() {
-        float value = texture2D(data, coords).r;
+        float value = texture(data, coords).r;
         float normalizedValue = clamp(oneOverRange * (value - min), 0., 1.);
-        gl_FragColor = vec4(inferno(normalizedValue), 1.);
+        gl_FragColor = texture(colorMap, vec2(normalizedValue, 0.5));
       }
     `,
   };
