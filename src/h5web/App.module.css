@@ -1,3 +1,7 @@
+.root {
+  background-color: var(--white);
+}
+
 .explorer {
   display: flex;
   scrollbar-width: thin;

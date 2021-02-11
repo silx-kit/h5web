@@ -19,7 +19,7 @@ function App(): ReactElement {
   const [isInspecting, setInspecting] = useState(false);
 
   return (
-    <ReflexContainer orientation="vertical">
+    <ReflexContainer className={styles.root} orientation="vertical">
       <ReflexElement
         className={styles.explorer}
         style={{ display: isExplorerOpen ? undefined : 'none' }}
