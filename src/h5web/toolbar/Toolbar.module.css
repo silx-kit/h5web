@@ -79,7 +79,7 @@
 }
 
 .btn:hover > .btnLike {
-  background-color: white;
+  background-color: var(--white);
   box-shadow: var(--btn-shadow-idle) var(--secondary);
 }
 
@@ -95,7 +95,7 @@
 }
 
 .btn[aria-expanded='true'] > .btnLike {
-  background-color: white;
+  background-color: var(--white);
   box-shadow: var(--btn-shadow-pressed) var(--secondary);
 }
 

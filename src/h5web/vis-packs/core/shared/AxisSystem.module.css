@@ -8,6 +8,8 @@
   /* - Prevent panning/zooming from axis when zoomed in.
    * - Prevent text selection of tick labels when panning with touchpad. */
   pointer-events: none;
+  --primary-axis-color: var(--dark-slate-gray);
+  --secondary-axis-color: var(--gray);
 }
 
 .axisSystem > svg {
@@ -34,8 +36,17 @@
   grid-area: axis-grid;
 }
 
+.grid line {
+  stroke: var(--secondary-axis-color);
+  stroke-opacity: 0.33;
+}
+
+.tick > line {
+  stroke: var(--secondary-axis-color);
+}
+
 .tick > text {
-  fill: darkslategrey;
+  fill: var(--primary-axis-color);
   font-family: inherit;
   font-size: inherit;
   text-anchor: inherit;
@@ -43,7 +54,7 @@
 }
 
 .label {
-  fill: darkslategrey;
+  fill: var(--primary-axis-color);
   font-family: inherit;
   font-size: inherit;
   font-weight: 600;
@@ -56,6 +67,6 @@
   align-items: center;
   grid-area: top-axis;
   margin-bottom: 0;
-  color: darkslategrey;
+  color: var(--primary-axis-color);
   font-size: 1.125em;
 }

@@ -19,7 +19,7 @@
 .track {
   align-self: center;
   height: 0.375rem;
-  background-color: rgba(27, 153, 139, 0.15);
+  background-color: var(--secondary-dark-15);
   box-shadow: var(--btn-shadow-pressed) var(--secondary);
   border-radius: 0.25rem;
 }
@@ -34,7 +34,7 @@
   composes: btnLike from '../Toolbar.module.css';
   min-width: 2rem;
   padding: 0.375rem;
-  background-color: white;
+  background-color: var(--white);
   box-shadow: var(--btn-shadow-idle) var(--secondary);
 }
 
@@ -46,5 +46,5 @@
   composes: btnLike from '../Toolbar.module.css';
   font-size: 0.875em;
   border-radius: 0.875rem;
-  color: #222;
+  color: var(--black);
 }

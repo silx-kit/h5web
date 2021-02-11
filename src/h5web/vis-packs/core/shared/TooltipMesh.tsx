@@ -6,12 +6,6 @@ import Html from './Html';
 import styles from './TooltipMesh.module.css';
 import { useCanvasScales } from '../hooks';
 
-const GUIDE_PROPS = {
-  stroke: 'gray',
-  strokeWidth: 1.5,
-  strokeOpacity: 0.5,
-};
-
 type Coords = [number, number];
 type Guides = 'horizontal' | 'vertical' | 'both';
 
@@ -78,6 +72,7 @@ function TooltipMesh(props: Props): ReactElement {
   return (
     <>
       <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
+        <meshBasicMaterial attach="material" opacity={0} transparent />
         <planeBufferGeometry attach="geometry" args={[width, height]} />
       </mesh>
       <Html>
@@ -93,19 +88,17 @@ function TooltipMesh(props: Props): ReactElement {
               <span className={styles.tooltipValue}>{value}</span>
             </TooltipWithBounds>
             {guides && (
-              <svg width={width} height={height}>
+              <svg className={styles.guides} width={width} height={height}>
                 {guides !== 'horizontal' && (
                   <Line
                     from={{ x: tooltipLeft, y: 0 }}
                     to={{ x: tooltipLeft, y: height }}
-                    {...GUIDE_PROPS}
                   />
                 )}
                 {guides !== 'vertical' && (
                   <Line
                     from={{ x: 0, y: tooltipTop }}
                     to={{ x: width, y: tooltipTop }}
-                    {...GUIDE_PROPS}
                   />
                 )}
               </svg>
