@@ -8,7 +8,7 @@ import {
   RGBFormat,
   UnsignedByteType,
 } from 'three';
-import type { Domain } from '../models';
+import { Domain, ScaleType } from '../models';
 import { INTERPOLATORS } from './interpolators';
 import type { ColorMap } from './models';
 
@@ -18,12 +18,28 @@ interface Props {
   values: number[];
   domain: Domain;
   colorMap: ColorMap;
+  scaleType: ScaleType;
 }
 
+const SCALE_FUNC: Record<ScaleType, (val: number) => number> = {
+  [ScaleType.Linear]: (val) => val,
+  [ScaleType.Log]: Math.log10,
+  [ScaleType.SymLog]: (val) => {
+    return Math.sign(val) * Math.log10(1 + Math.abs(val));
+  },
+};
+
 const CMAP_SIZE = 256;
+const CMAP_NORM: Record<ScaleType, number> = {
+  [ScaleType.Linear]: 0,
+  [ScaleType.Log]: 1,
+  [ScaleType.SymLog]: 2,
+};
 
 function ShadersMesh(props: Props): ReactElement {
-  const { rows, cols, values, domain, colorMap } = props;
+  const { rows, cols, values, domain, colorMap, scaleType } = props;
+
+  const scaledDomain = domain.map(SCALE_FUNC[scaleType]);
 
   const dataTexture = useMemo(() => {
     const valuesArr = Float32Array.from(values);
@@ -47,8 +63,9 @@ function ShadersMesh(props: Props): ReactElement {
     uniforms: {
       data: { value: dataTexture },
       colorMap: { value: colorMapTexture },
-      min: { value: domain[0] },
-      oneOverRange: { value: 1 / (domain[1] - domain[0]) },
+      scaleType: { value: CMAP_NORM[scaleType] },
+      min: { value: scaledDomain[0] },
+      oneOverRange: { value: 1 / (scaledDomain[1] - scaledDomain[0]) },
     },
     vertexShader: `
       varying vec2 coords;
@@ -61,15 +78,39 @@ function ShadersMesh(props: Props): ReactElement {
     fragmentShader: `
       uniform sampler2D data;
       uniform sampler2D colorMap;
+      uniform int scaleType;
       uniform float min;
       uniform float oneOverRange;
 
+      const float oneOverLog10 = 0.43429448190325176;
+      const vec4 nanColor = vec4(255, 255, 255, 1);
+
       varying vec2 coords;
+
+      float symlog(float x) {
+        return sign(x) * log(1. + abs(x)) * oneOverLog10;
+      }
+
+      float scale(float value) {
+        if (scaleType == 1) {
+          return oneOverRange * (log(value) * oneOverLog10 - min); // Log
+        }
+
+        if (scaleType == 2) {
+          return oneOverRange * (symlog(value) - min); // SymLog
+        }
+
+        return oneOverRange * (value - min); // Linear
+      }
 
       void main() {
         float value = texture(data, coords).r;
-        float normalizedValue = clamp(oneOverRange * (value - min), 0., 1.);
-        gl_FragColor = texture(colorMap, vec2(normalizedValue, 0.5));
+
+        if (scaleType == 1 && value <= 0.) {
+          gl_FragColor = nanColor;
+        } else {
+          gl_FragColor = texture(colorMap, vec2(scale(value), 0.5));
+        }
       }
     `,
   };
