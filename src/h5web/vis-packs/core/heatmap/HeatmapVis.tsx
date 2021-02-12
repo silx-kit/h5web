@@ -3,10 +3,9 @@ import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
-import Mesh from './Mesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
-import ShadersMesh from './ShadersMesh';
+import Mesh from './Mesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims, getPixelEdges } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
@@ -21,7 +20,6 @@ interface Props {
   scaleType?: ScaleType;
   keepAspectRatio?: boolean;
   showGrid?: boolean;
-  showLoader?: boolean;
   title?: string;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
@@ -35,7 +33,6 @@ function HeatmapVis(props: Props): ReactElement {
     scaleType = ScaleType.Linear,
     keepAspectRatio = true,
     showGrid = false,
-    showLoader = true,
     title,
     abscissaParams = {},
     ordinateParams = {},
@@ -86,26 +83,14 @@ function HeatmapVis(props: Props): ReactElement {
           guides="both"
         />
         <PanZoomMesh />
-        {process.env.REACT_APP_DEV_SHADERS === 'true' ? (
-          <ShadersMesh
-            rows={rows}
-            cols={cols}
-            values={dataArray.data as number[]}
-            domain={domain}
-            colorMap={colorMap}
-            scaleType={scaleType}
-          />
-        ) : (
-          <Mesh
-            rows={rows}
-            cols={cols}
-            values={dataArray.data as number[]}
-            domain={domain}
-            scaleType={scaleType}
-            colorMap={colorMap}
-            showLoader={showLoader}
-          />
-        )}
+        <Mesh
+          rows={rows}
+          cols={cols}
+          values={dataArray.data as number[]}
+          domain={domain}
+          colorMap={colorMap}
+          scaleType={scaleType}
+        />
       </VisCanvas>
       <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
     </figure>

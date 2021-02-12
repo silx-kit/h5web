@@ -74,9 +74,7 @@ NoGrid.args = {
   showGrid: false,
 };
 
-export const LiveDataWithoutLoader: Story<HeatmapVisProps> = (
-  args
-): ReactElement => {
+export const LiveData: Story<HeatmapVisProps> = (args): ReactElement => {
   const [shuffledArray, setShuffledArray] = useState(args.dataArray);
 
   useInterval(() => {
@@ -90,10 +88,9 @@ export const LiveDataWithoutLoader: Story<HeatmapVisProps> = (
   return <HeatmapVis {...args} dataArray={shuffledArray} />;
 };
 
-LiveDataWithoutLoader.args = {
+LiveData.args = {
   dataArray,
   domain,
-  showLoader: false,
 };
 
 export const CustomEdges = Template.bind({});
