@@ -42,13 +42,11 @@ module.exports = createConfig({
     {
       files: tsFiles,
       rules: {
-        '@typescript-eslint/non-nullable-type-assertion-style': 'off', // conflicts with @typescript-eslint/no-non-null-assertion
-
         '@typescript-eslint/ban-ts-comment': 'off', // too strict
         '@typescript-eslint/no-floating-promises': 'off', // big crash sometimes better than silent fail
         '@typescript-eslint/lines-between-class-members': 'off', // allow grouping single-line members
 
-        // TypeScript requires types where they should not be
+        // TypeScript requires types where they should not be required
         // https://github.com/typescript-eslint/typescript-eslint/issues/2183
         '@typescript-eslint/explicit-module-boundary-types': 'off',
 
@@ -74,11 +72,6 @@ module.exports = createConfig({
         'jest/no-focused-tests': 'warn', // warning instead of error
         'jest/prefer-strict-equal': 'off', // `toEqual` is shorter and sufficient in most cases
         'jest-formatting/padding-around-all': 'off', // allow writing concise two-line tests
-        'testing-library/await-fire-event': 'off', // not supported by React Testing Library
-
-        // Tests in different `describe` blocks may have the same names and identical functions
-        'sonarjs/no-duplicate-string': 'off',
-        'sonarjs/no-identical-functions': 'off',
       },
     },
     {
