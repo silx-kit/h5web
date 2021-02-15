@@ -1,4 +1,4 @@
-const SNAPSHOT_DELAY = 500;
+const SNAPSHOT_DELAY = 200;
 
 describe('App', () => {
   beforeEach(() => {
@@ -35,9 +35,6 @@ describe('App', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'twoD' }).click();
 
-    cy.get('[data-visible]').should('exist');
-    cy.get('[data-visible]').should('not.exist');
-
     cy.findByRole('heading', { name: 'nD_datasets / twoD' }).should('exist');
     cy.findByRole('tab', { name: 'Heatmap' }).should('exist');
     cy.findByRole('figure', { name: 'twoD' }).should('exist');
@@ -51,9 +48,6 @@ describe('App', () => {
   it('map dimensions of 4D dataset when visualized as Heatmap', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'fourD' }).click();
-
-    cy.get('[data-visible]').should('exist');
-    cy.get('[data-visible]').should('not.exist');
 
     cy.findByText('n').parent().should('have.text', 'n 3 9 20 41');
 
@@ -129,15 +123,8 @@ describe('App', () => {
     });
 
     it('visualize dataset with image interpretation as NxImage', () => {
-      // Wait for default NXimage to finish rendering
-      cy.get('[data-visible]').should('exist');
-      cy.get('[data-visible]').should('not.exist');
-
       cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
       cy.findByRole('treeitem', { name: 'image' }).click();
-
-      cy.get('[data-visible]').should('exist');
-      cy.get('[data-visible]').should('not.exist');
 
       cy.findByRole('heading', { name: 'nexus_entry / image' }).should('exist');
       cy.findByRole('tab', { name: 'NX Image' }).should('exist');

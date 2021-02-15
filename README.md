@@ -7,7 +7,7 @@ React and uses
 [react-three-fiber](https://github.com/react-spring/react-three-fiber) for
 visualizations.
 
-![H5Web GIF demo](https://user-images.githubusercontent.com/2936402/102904182-ab3fa400-4471-11eb-9c7a-606deffebc43.gif)
+![H5Web GIF demo](https://user-images.githubusercontent.com/2936402/107791492-4c512980-6d54-11eb-8ba4-4a1433bdfeea.gif)
 
 ## NPM packages 📚
 
