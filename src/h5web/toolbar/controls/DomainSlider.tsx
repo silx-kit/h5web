@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
 import { format } from 'd3-format';
-import { round } from 'lodash-es';
 import styles from './DomainSlider.module.css';
 import type { Domain } from '../../vis-packs/core/models';
 import { extendDomain } from '../../vis-packs/core/utils';
@@ -41,10 +40,7 @@ function DomainSlider(props: Props): ReactElement {
         )}
         value={[...(value || dataDomain)]}
         onAfterChange={(bounds) => {
-          const roundedDomain = (bounds as number[]).map((val) =>
-            round(val, NB_DECIMALS)
-          ) as Domain;
-          onChange(roundedDomain);
+          onChange(bounds as Domain);
         }}
         min={extendedMin}
         max={extendedMax}
