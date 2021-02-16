@@ -30,6 +30,7 @@ function SlicingSlider(props: Props): ReactElement {
         // https://github.com/zillow/react-slider/issues/172
         key={`${mapperState.includes('y')}`}
         className={styles.slider}
+        ariaLabel="Dimension slider"
         trackClassName={styles.track}
         thumbClassName={styles.thumb}
         renderThumb={(thumbProps, state) => (

@@ -2,20 +2,34 @@ import { range } from 'lodash-es';
 import type ndarray from 'ndarray';
 import type { D3Interpolator, Dims } from './models';
 
+const GRADIENT_PRECISION = 1 / 20;
+const GRADIENT_RANGE = range(0, 1 + GRADIENT_PRECISION, GRADIENT_PRECISION);
+
 export function getDims(dataArray: ndarray): Dims {
   const [rows, cols] = dataArray.shape;
   return { rows, cols };
 }
 
-export function generateCSSLinearGradient(
+function getColorStops(
   interpolator: D3Interpolator,
-  direction: 'top' | 'bottom' | 'right' | 'left'
+  minMaxOnly: boolean
 ): string {
-  const gradientColors = range(0, 1.1, 0.1)
-    .map(interpolator)
-    .reduce((acc, val) => `${acc},${val}`);
+  if (minMaxOnly) {
+    const min = interpolator(0);
+    const max = interpolator(1);
+    return `${min}, ${min} 50%, ${max} 50%, ${max}`;
+  }
 
-  return `linear-gradient(to ${direction},${gradientColors})`;
+  return GRADIENT_RANGE.map(interpolator).join(', ');
+}
+
+export function getLinearGradient(
+  interpolator: D3Interpolator,
+  direction: 'top' | 'bottom' | 'right' | 'left',
+  minMaxOnly = false
+): string {
+  const colorStops = getColorStops(interpolator, minMaxOnly);
+  return `linear-gradient(to ${direction}, ${colorStops})`;
 }
 
 export function getPixelEdges(

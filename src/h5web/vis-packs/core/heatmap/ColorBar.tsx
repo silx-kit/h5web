@@ -3,7 +3,7 @@ import { AxisRight, AxisBottom } from '@visx/axis';
 import { useMeasure } from 'react-use';
 import { adaptedNumTicks, createAxisScale } from '../utils';
 import styles from './ColorBar.module.css';
-import { generateCSSLinearGradient } from './utils';
+import { getLinearGradient } from './utils';
 import type { ScaleType, Domain } from '../models';
 import type { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
@@ -38,9 +38,10 @@ function ColorBar(props: Props): ReactElement {
         ref={gradientRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
         className={styles.gradient}
         style={{
-          backgroundImage: generateCSSLinearGradient(
+          backgroundImage: getLinearGradient(
             interpolator,
-            horizontal ? 'right' : 'top'
+            horizontal ? 'right' : 'top',
+            domain[0] === domain[1]
           ),
         }}
       />

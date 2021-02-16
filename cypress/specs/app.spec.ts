@@ -94,6 +94,43 @@ describe('App', () => {
     }
   });
 
+  it('slice through 4D dataset when visualized as Heatmap', () => {
+    cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
+    cy.findByRole('treeitem', { name: 'fourD' }).click();
+
+    cy.findByRole('figure', { name: 'fourD' }).should('exist');
+
+    cy.findAllByRole('slider', { name: 'Dimension slider' })
+      .should('have.length', 2)
+      .last()
+      .should('have.attr', 'aria-valuenow', 0)
+      .and('have.attr', 'aria-valuemin', 0)
+      .and('have.attr', 'aria-valuemax', 8)
+      .as('slider');
+
+    // Move slider up by three marks and check value
+    cy.get('@slider').type('{uparrow}{uparrow}{uparrow}');
+
+    cy.findByRole('figure', { name: 'fourD' }).should('exist');
+    cy.get('@slider').should('have.attr', 'aria-valuenow', 3);
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('heatmap_4d_sliced');
+    }
+
+    // Move slider up by one mark to reach slice filled only with zeros
+    cy.get('@slider').type('{uparrow}');
+
+    cy.findByRole('figure', { name: 'fourD' }).should('exist');
+    cy.get('@slider').should('have.attr', 'aria-valuenow', 4);
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('heatmap_4d_zeros');
+    }
+  });
+
   context('NeXus', () => {
     it('visualize default NXdata group as NxImage', () => {
       cy.findByRole('treeitem', { name: 'source.h5' }).click();

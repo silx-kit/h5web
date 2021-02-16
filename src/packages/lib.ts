@@ -26,7 +26,7 @@ export { useDomain } from '../h5web/vis-packs/core/hooks';
 
 export {
   getDims,
-  generateCSSLinearGradient,
+  getLinearGradient,
 } from '../h5web/vis-packs/core/heatmap/utils';
 
 // Models
