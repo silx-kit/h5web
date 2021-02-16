@@ -75,6 +75,15 @@ HorizontalWithBounds.args = {
   withBounds: true,
 };
 
+export const EmptyDomain = Template.bind({});
+EmptyDomain.storyName = 'Enmpty domain';
+EmptyDomain.args = {
+  ...Default.args,
+  domainMin: 0,
+  domainMax: 0,
+  withBounds: true,
+};
+
 export default {
   title: 'Building Blocks/ColorBar',
   component: ColorBar,
