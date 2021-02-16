@@ -7,24 +7,28 @@ import { getLinearGradient } from './utils';
 import type { ScaleType, Domain } from '../models';
 import type { ColorMap } from './models';
 import { INTERPOLATORS } from './interpolators';
+import { format } from 'd3-format';
+
+const boundFormatter = format('.3~g');
 
 interface Props {
   domain: Domain;
   scaleType: ScaleType;
   colorMap: ColorMap;
   horizontal?: boolean;
+  withBounds?: boolean;
 }
 
 function ColorBar(props: Props): ReactElement {
-  const { domain, scaleType, colorMap, horizontal } = props;
-  const interpolator = INTERPOLATORS[colorMap];
-  const [
-    gradientRef,
-    { height: gradientHeight, width: gradientWidth },
-  ] = useMeasure();
+  const { domain, scaleType, colorMap, horizontal, withBounds } = props;
 
+  const [gradientRef, gradientBox] = useMeasure();
+  const { height: gradientHeight, width: gradientWidth } = gradientBox;
   const gradientLength = horizontal ? gradientWidth : gradientHeight;
+
+  const interpolator = INTERPOLATORS[colorMap];
   const Axis = horizontal ? AxisBottom : AxisRight;
+  const isEmptyDomain = domain[0] === domain[1];
 
   const axisScale = createAxisScale({
     domain,
@@ -34,6 +38,16 @@ function ColorBar(props: Props): ReactElement {
 
   return (
     <div className={styles.colorBar} data-horizontal={horizontal || undefined}>
+      {withBounds && (
+        <>
+          <p className={styles.minBound}>
+            {isEmptyDomain ? '−∞' : boundFormatter(domain[0])}
+          </p>
+          <p className={styles.maxBound}>
+            {isEmptyDomain ? '+∞' : boundFormatter(domain[1])}
+          </p>
+        </>
+      )}
       <div
         ref={gradientRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
         className={styles.gradient}
@@ -47,9 +61,9 @@ function ColorBar(props: Props): ReactElement {
       />
       {gradientLength > 0 && (
         <svg
-          className={styles.colorBarAxis}
-          height={horizontal ? '2em' : gradientHeight}
-          width={horizontal ? gradientWidth : '2em'}
+          className={styles.axis}
+          height={horizontal ? '2.5em' : gradientHeight}
+          width={horizontal ? gradientWidth : '2.5em'}
         >
           <Axis
             scale={axisScale}
@@ -57,7 +71,7 @@ function ColorBar(props: Props): ReactElement {
             numTicks={adaptedNumTicks(gradientLength)}
             tickFormat={axisScale.tickFormat(
               adaptedNumTicks(gradientLength),
-              '.3'
+              '.3~g'
             )}
           />
         </svg>

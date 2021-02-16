@@ -1,26 +1,66 @@
 .colorBar {
-  display: flex;
-  padding: 1em;
+  display: grid;
+  padding: 1rem;
 }
 
 .colorBar:not([data-horizontal]) {
-  width: 6em;
-  min-height: 0;
+  grid-template-columns: 2.25rem 2.5rem;
+  grid-template-areas:
+    'max .'
+    'gradient axis'
+    'min .';
 }
 
 .colorBar[data-horizontal] {
-  flex-direction: column;
-  height: 6em;
-  min-width: 0;
-}
-
-.colorBarAxis {
-  display: block;
-  overflow: visible;
-  align-self: center;
+  height: 7rem;
+  grid-template-rows: 2.25rem 2.5rem;
+  grid-template-areas:
+    'min gradient max'
+    '. axis .';
 }
 
 .gradient {
-  flex: 1 0 auto;
+  grid-area: gradient;
   border: 1px solid black;
+  background-repeat: no-repeat; /* fix subtle bug where gradient is repeated over 1px */
+}
+
+.axis {
+  grid-area: axis;
+  display: block;
+  overflow: visible;
+}
+
+.bound {
+  display: inline-flex;
+  align-self: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 0.875em;
+}
+
+.minBound {
+  composes: bound;
+  grid-area: min;
+  margin: 0.5rem 0 -0.25rem;
+}
+
+.maxBound {
+  composes: bound;
+  grid-area: max;
+  margin: -0.25rem 0 0.5rem;
+}
+
+.colorBar[data-horizontal] .bound {
+  min-width: 3.75em; /* keep bounds equal on both sides in most cases */
+}
+
+.colorBar[data-horizontal] .minBound {
+  justify-content: flex-end;
+  margin: 0 0.5rem 0 -0.25rem;
+}
+
+.colorBar[data-horizontal] .maxBound {
+  justify-content: flex-start;
+  margin: 0 -0.25rem 0 0.5rem;
 }
