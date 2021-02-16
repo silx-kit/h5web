@@ -17,6 +17,10 @@ body {
   }
 }
 
+#root {
+  height: 100vh;
+}
+
 h1,
 h2,
 h3,
@@ -54,8 +58,4 @@ pre {
     transition: none !important;
     animation: none !important;
   }
-}
-
-#root {
-  height: 100vh;
 }
