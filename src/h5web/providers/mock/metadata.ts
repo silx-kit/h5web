@@ -15,6 +15,7 @@ import {
   makeNxGroup,
   makeSimpleDataset,
   makeAttr,
+  booleanType,
 } from './metadata-utils';
 
 export const mockDomain = 'source.h5';
@@ -31,6 +32,7 @@ export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
       makeDataset('raw_large', scalarShape, compoundType),
       makeDataset('scalar_int', scalarShape, intType),
       makeDataset('scalar_str', scalarShape, stringType),
+      makeDataset('scalar_bool', scalarShape, booleanType),
     ]),
     makeGroup('nD_datasets', [
       makeSimpleDataset('oneD_linear', intType, [41]),
