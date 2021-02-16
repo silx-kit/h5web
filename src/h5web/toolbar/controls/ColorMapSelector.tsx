@@ -8,7 +8,7 @@ import {
   SINGLE_HUE,
 } from '../../vis-packs/core/heatmap/interpolators';
 import type { ColorMap } from '../../vis-packs/core/heatmap/models';
-import { generateCSSLinearGradient } from '../../vis-packs/core/heatmap/utils';
+import { getLinearGradient } from '../../vis-packs/core/heatmap/utils';
 import Selector from './Selector/Selector';
 import styles from './ColorMapSelector.module.css';
 
@@ -22,10 +22,8 @@ const COLORMAP_GROUPS = {
 
 function ColorMapOption(props: { option: ColorMap }): ReactElement {
   const { option } = props;
-  const backgroundImage = generateCSSLinearGradient(
-    INTERPOLATORS[option],
-    'right'
-  );
+  const backgroundImage = getLinearGradient(INTERPOLATORS[option], 'right');
+
   return (
     <>
       {option}

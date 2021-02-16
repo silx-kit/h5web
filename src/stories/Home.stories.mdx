@@ -104,4 +104,4 @@ If you use only the top-level visualization components, the only utilities you n
 - **`extendDomain(bareDomain: Domain, extendFactor: number, isLog?: boolean): Domain`** - Extend a domain by a given factor.
 - **`computeVisSize(availableSize: Size, aspectRatio?: number): Size | undefined`** - Compute the optimal size for a visualization to fill the available space given an optional aspect ratio.
 - **`getDims(dataArray: DataArray): Dims`** - Get the dimensions of a `ndarray` as a `{ rows, cols }` object.
-- **`generateCSSLinearGradient(interpolator: D3Interpolator, direction: 'top' | 'bottom' | 'right' | 'left'): string`** - Generate a CSS linear gradient for a given D3 interpolator, to be used as `background-image`.
+- **`getLinearGradient(interpolator: D3Interpolator, direction: 'top' | 'bottom' | 'right' | 'left'): string`** - Generate a CSS linear gradient for a given D3 interpolator, to be used as `background-image`.
