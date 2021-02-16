@@ -85,7 +85,7 @@ when it finds differences and to pass the tests. Once Cypress has updated the
 reference snapshots, the workflow automatically opens a PR to merge the new
 and/or updated snapshots into the working branch. After this PR is merged, the
 visual regression tests in the working branch succeed and the branch can be
-merged into `master`.
+merged into `main`.
 
 Here is the summarised workflow (also described with screenshots in
 [PR #306](https://github.com/silx-kit/h5web/pull/306)):
@@ -107,7 +107,7 @@ Here is the summarised workflow (also described with screenshots in
 
 ## Deployment
 
-- The project's `master` branch is continuously deployed to
+- The project's `main` branch is continuously deployed to
   https://h5web.panosc.eu/ with [Netlify](https://www.netlify.com/).
 - The component library's Storybook documentation site is deployed to GitHub
   Pages on every release: https://h5web-docs.panosc.eu
@@ -122,9 +122,9 @@ NPM: [@h5web/lib](https://www.npmjs.com/package/@h5web/lib) and
 
 To release a new version:
 
-1. Check out `master` and pull the latest changes.
+1. Check out `main` and pull the latest changes.
 1. Make sure your working tree doesn't have uncommitted changes and that the
-   latest commit on `master` has passed the CI.
+   latest commit on `main` has passed the CI.
 1. Run `npm version [ patch | minor | major | <new-version> ]`
 
 This command bumps the version number in `package.json`, commits the change and
