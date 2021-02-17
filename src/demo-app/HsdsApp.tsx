@@ -5,18 +5,18 @@ import { App, HsdsProvider } from '../packages/app';
 const URL = process.env.REACT_APP_HSDS_URL || '';
 const USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';
 const PASSWORD = process.env.REACT_APP_HSDS_PASSWORD || '';
-const DOMAIN = process.env.REACT_APP_HSDS_FALLBACK_DOMAIN || '';
+const FILEPATH = process.env.REACT_APP_HSDS_FALLBACK_FILEPATH || '';
 
 function HsdsApp(): ReactElement {
   const query = new URLSearchParams(useLocation().search);
-  const domain = query.get('domain');
+  const filepath = query.get('file');
 
   return (
     <HsdsProvider
       url={URL}
       username={USERNAME}
       password={PASSWORD}
-      domain={domain || DOMAIN}
+      filepath={filepath || FILEPATH}
     >
       <App />
     </HsdsProvider>

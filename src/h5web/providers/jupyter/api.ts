@@ -22,11 +22,11 @@ import {
 } from '../hdf5-models';
 
 export class JupyterApi implements ProviderAPI {
-  public readonly domain: string;
+  public readonly filepath: string;
   private readonly client: AxiosInstance;
 
-  public constructor(url: string, domain: string) {
-    this.domain = domain;
+  public constructor(url: string, filepath: string) {
+    this.filepath = filepath;
     this.client = axios.create({
       baseURL: `${url}/hdf`,
     });
@@ -40,28 +40,28 @@ export class JupyterApi implements ProviderAPI {
     const { path, selection = '' } = params;
 
     const { data } = await this.client.get<JupyterDataResponse>(
-      `/data/${this.domain}?uri=${path}${selection && `&ixstr=${selection}`}`
+      `/data/${this.filepath}?uri=${path}${selection && `&ixstr=${selection}`}`
     );
     return data;
   }
 
   private async fetchAttributes(path: string): Promise<JupyterAttrsResponse> {
     const { data } = await this.client.get<JupyterAttrsResponse>(
-      `/attrs/${this.domain}?uri=${path}`
+      `/attrs/${this.filepath}?uri=${path}`
     );
     return data;
   }
 
   private async fetchMetadata(path: string): Promise<JupyterMetaResponse> {
     const { data } = await this.client.get<JupyterMetaResponse>(
-      `/meta/${this.domain}?uri=${path}`
+      `/meta/${this.filepath}?uri=${path}`
     );
     return data;
   }
 
   private async fetchContents(path: string): Promise<JupyterContentResponse> {
     const { data } = await this.client.get<JupyterContentResponse>(
-      `/contents/${this.domain}?uri=${path}`
+      `/contents/${this.filepath}?uri=${path}`
     );
     return data;
   }

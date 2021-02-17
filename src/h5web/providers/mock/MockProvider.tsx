@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import Provider from '../Provider';
-import { mockDomain } from './metadata';
+import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
 import type { GetValueParams } from '../context';
 import ndarray from 'ndarray';
@@ -8,19 +8,19 @@ import { assertNumericType, assertSimpleShape } from '../../guards';
 import unpack from 'ndarray-unpack';
 
 interface Props {
-  domain?: string;
+  filepath?: string;
   slowOnPath?: string;
   errorOnPath?: string;
   children: ReactNode;
 }
 
 function MockProvider(props: Props): ReactElement {
-  const { domain = mockDomain, errorOnPath, slowOnPath, children } = props;
+  const { filepath = mockFilepath, errorOnPath, slowOnPath, children } = props;
 
   return (
     <Provider
       api={{
-        domain,
+        filepath,
         getEntity: async (path: string) => {
           if (path === slowOnPath) {
             await new Promise((resolve) => {

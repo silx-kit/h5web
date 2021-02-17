@@ -6,15 +6,15 @@ interface Props {
   url: string;
   username: string;
   password: string;
-  domain: string;
+  filepath: string;
   children: ReactNode;
 }
 
 function HsdsProvider(props: Props): ReactElement {
-  const { url, username, password, domain, children } = props;
+  const { url, username, password, filepath, children } = props;
 
-  const api = useMemo(() => new HsdsApi(url, username, password, domain), [
-    domain,
+  const api = useMemo(() => new HsdsApi(url, username, password, filepath), [
+    filepath,
     password,
     url,
     username,

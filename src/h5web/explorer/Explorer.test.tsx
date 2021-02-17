@@ -1,38 +1,38 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { mockDomain } from '../providers/mock/metadata';
+import { mockFilepath } from '../providers/mock/metadata';
 import { renderApp } from '../test-utils';
 
 describe('Explorer', () => {
   test('select root group by default', async () => {
     renderApp();
 
-    const title = await screen.findByRole('heading', { name: mockDomain });
+    const title = await screen.findByRole('heading', { name: mockFilepath });
     expect(title).toBeVisible();
 
-    const domainBtn = screen.getByRole('treeitem', { name: mockDomain });
-    expect(domainBtn).toBeVisible();
-    expect(domainBtn).toHaveAttribute('aria-selected', 'true');
+    const fileBtn = screen.getByRole('treeitem', { name: mockFilepath });
+    expect(fileBtn).toBeVisible();
+    expect(fileBtn).toHaveAttribute('aria-selected', 'true');
   });
 
   test('toggle explorer sidebar', async () => {
     renderApp();
 
-    const domainBtn = await screen.findByRole('treeitem', {
-      name: mockDomain,
+    const fileBtn = await screen.findByRole('treeitem', {
+      name: mockFilepath,
     });
     const sidebarBtn = screen.getByRole('button', {
       name: 'Toggle explorer sidebar',
     });
 
-    expect(domainBtn).toBeVisible();
+    expect(fileBtn).toBeVisible();
     expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
 
     fireEvent.click(sidebarBtn);
-    expect(domainBtn).not.toBeVisible();
+    expect(fileBtn).not.toBeVisible();
     expect(sidebarBtn).toHaveAttribute('aria-pressed', 'false');
 
     fireEvent.click(sidebarBtn);
-    expect(domainBtn).toBeVisible();
+    expect(fileBtn).toBeVisible();
     expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
   });
 

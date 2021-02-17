@@ -47,7 +47,7 @@ visualizations. Three demos are available, one per data provider:
 This demo is available at https://h5web.panosc.eu.
 
 The following HDF5 files can be reached with a URL of the form
-`https://h5web.panosc.eu/?domain=<name>`:
+`https://h5web.panosc.eu/?file=<name>`:
 
 - `water_224.h5` (**default**): A typical NeXUS file with various real-world
   datasets to demonstrate the visualizations.
@@ -61,7 +61,7 @@ The following HDF5 files can be reached with a URL of the form
 This demo is available at https://h5web.panosc.eu/hsds.
 
 The following HDF5 files can be reached with a URL of the form
-`https://h5web.panosc.eu/hsds?domain=<name>`:
+`https://h5web.panosc.eu/hsds?file=<name>`:
 
 - `/home/reader/water` (**default**): The file `water_224.h5`. Some datasets
   cannot be displayed as bitshuffle compression is not supported by HSDS yet.

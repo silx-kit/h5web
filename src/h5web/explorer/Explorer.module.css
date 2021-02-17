@@ -35,7 +35,7 @@
   font-weight: bold;
 }
 
-.domainBtn {
+.fileBtn {
   composes: btn;
   margin: 0;
   padding: 1rem;
@@ -48,7 +48,7 @@
   padding-bottom: 0.125em;
 }
 
-.domainIcon {
+.fileIcon {
   composes: icon;
   font-size: 1.25em;
   margin-left: -0.375rem;
