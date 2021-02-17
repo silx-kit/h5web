@@ -5,7 +5,7 @@ interface GridSettings {
   cellSize: Size;
   rowCount: number;
   columnCount: number;
-  valueAccessor: (row: number, col: number) => number | string;
+  valueAccessor: (row: number, col: number) => number | string | boolean;
 }
 
 export const GridSettingsContext = createContext<GridSettings>({

@@ -1,8 +1,10 @@
+/* eslint-disable no-case-declarations */
 import { isString } from 'lodash-es';
 import { isDataset, isGroup } from '../../guards';
 import {
-  HDF5BaseType,
   HDF5Endianness,
+  HDF5FloatType,
+  HDF5IntegerType,
   HDF5Type,
   HDF5TypeClass,
 } from '../hdf5-models';
@@ -13,7 +15,8 @@ import type {
   HsdsDataset,
   HsdsGroup,
   HsdsType,
-  HsdsBaseType,
+  HsdsIntegerType,
+  HsdsFloatType,
 } from './models';
 
 export function isHsdsExternalLink(link: HsdsLink): link is HsdsExternalLink {
@@ -36,16 +39,10 @@ export function assertHsdsDataset(
   }
 }
 
-export function convertHsdsBaseType(hsdsBaseType: HsdsBaseType): HDF5BaseType {
-  if (hsdsBaseType.class === HDF5TypeClass.String) {
-    return {
-      class: HDF5TypeClass.String,
-      charSet: hsdsBaseType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF8',
-      length: hsdsBaseType.length,
-    };
-  }
-
-  const { class: hsdsClass, base } = hsdsBaseType;
+export function convertHsdsNumericType(
+  hsdsType: HsdsIntegerType | HsdsFloatType
+): HDF5IntegerType | HDF5FloatType {
+  const { class: hsdsClass, base } = hsdsType;
 
   const regex = /H5T_(?:STD|IEEE)_([A-Z])(\d+)(BE|LE)/u;
   const matches = regex.exec(base);
@@ -71,23 +68,31 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
 
   switch (hsdsType.class) {
     case HDF5TypeClass.Enum:
+      // Booleans are stored as Enum by h5py
+      // https://docs.h5py.org/en/stable/faq.html#what-datatypes-are-supported
+      if (hsdsType.mapping.FALSE === 0) {
+        return {
+          class: HDF5TypeClass.Bool,
+        };
+      }
+
       return {
         class: HDF5TypeClass.Enum,
-        base: convertHsdsBaseType(hsdsType.base),
+        base: convertHsdsType(hsdsType.base),
         mapping: hsdsType.mapping,
       };
 
     case HDF5TypeClass.Array:
       return {
         class: HDF5TypeClass.Array,
-        base: convertHsdsBaseType(hsdsType.base),
+        base: convertHsdsType(hsdsType.base),
         dims: hsdsType.dims,
       };
 
     case HDF5TypeClass.VLen:
       return {
         class: HDF5TypeClass.VLen,
-        base: convertHsdsBaseType(hsdsType.base),
+        base: convertHsdsType(hsdsType.base),
       };
 
     case HDF5TypeClass.Compound:
@@ -99,10 +104,16 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
         })),
       };
 
+    case HDF5TypeClass.String:
+      return {
+        class: HDF5TypeClass.String,
+        charSet: hsdsType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF8',
+        length: hsdsType.length,
+      };
+
     case HDF5TypeClass.Integer:
     case HDF5TypeClass.Float:
-    case HDF5TypeClass.String:
-      return convertHsdsBaseType(hsdsType);
+      return convertHsdsNumericType(hsdsType);
 
     default:
       throw new Error(`Unknown type ${JSON.stringify(hsdsType)}`);

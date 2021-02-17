@@ -19,6 +19,7 @@ import {
   HDF5ScalarShape,
   HDF5NumericType,
   HDF5StringType,
+  HDF5BooleanType,
 } from './providers/hdf5-models';
 
 export function isDefined<T>(val: T): val is NonNullable<T> {
@@ -48,12 +49,6 @@ export function assertOptionalStr(
 ): asserts val is string | undefined {
   if (val !== undefined) {
     assertStr(val);
-  }
-}
-
-export function assertNumOrStr(val: unknown): asserts val is number | string {
-  if (typeof val !== 'number' && typeof val !== 'string') {
-    throw new TypeError('Expected number or string');
   }
 }
 
@@ -108,9 +103,21 @@ export function hasBaseType<S extends HDF5Shape>(
 ): entity is Dataset<S, HDF5BaseType> {
   return (
     typeof entity.type !== 'string' &&
-    [HDF5TypeClass.Integer, HDF5TypeClass.Float, HDF5TypeClass.String].includes(
-      entity.type.class
-    )
+    [
+      HDF5TypeClass.Integer,
+      HDF5TypeClass.Float,
+      HDF5TypeClass.String,
+      HDF5TypeClass.Bool,
+    ].includes(entity.type.class)
+  );
+}
+
+export function hasBoolType<S extends HDF5Shape>(
+  dataset: Dataset<S>
+): dataset is Dataset<S, HDF5BooleanType> {
+  return (
+    typeof dataset.type !== 'string' &&
+    dataset.type.class === HDF5TypeClass.Bool
   );
 }
 
@@ -184,8 +191,14 @@ export function assertSimpleShape<T extends HDF5Type>(
 export function assertBaseType<S extends HDF5Shape>(
   dataset: Dataset<S>
 ): asserts dataset is Dataset<S, HDF5BaseType> {
-  if (!hasStringType(dataset) && !hasNumericType(dataset)) {
-    throw new Error('Expected dataset to have string or numeric type');
+  if (
+    !hasStringType(dataset) &&
+    !hasNumericType(dataset) &&
+    !hasBoolType(dataset)
+  ) {
+    throw new Error(
+      'Expected dataset to have string or numeric or boolean type'
+    );
   }
 }
 
