@@ -37,4 +37,16 @@ export const mockValues = {
   errors_twoD: arr2.map((offset) => arr1.map((val) => Math.abs(val - offset))),
   fourD_image: fourD,
   oneD_errors: oneD.map((x) => Math.abs(x) / 10),
+  threeD_bool: [
+    [
+      [true, false, true, false],
+      [true, true, true, true],
+      [false, false, false, false],
+    ],
+    [
+      [true, false, false, false],
+      [true, true, true, true],
+      [false, false, true, false],
+    ],
+  ],
 };

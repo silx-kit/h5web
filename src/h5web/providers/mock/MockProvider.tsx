@@ -4,7 +4,7 @@ import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
 import type { GetValueParams } from '../context';
 import ndarray from 'ndarray';
-import { assertNumericType, assertSimpleShape } from '../../guards';
+import { assertBaseType, assertSimpleShape } from '../../guards';
 import unpack from 'ndarray-unpack';
 
 interface Props {
@@ -47,10 +47,10 @@ function MockProvider(props: Props): ReactElement {
           }
 
           assertSimpleShape(dataset);
-          assertNumericType(dataset);
+          assertBaseType(dataset);
 
           const dataArray = ndarray(
-            (dataset.value as number[]).flat(Infinity),
+            (dataset.value as (number | string | boolean)[]).flat(Infinity),
             dataset.shape.dims
           );
 

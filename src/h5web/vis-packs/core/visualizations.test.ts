@@ -17,15 +17,10 @@ const datasetStrScalar = makeDataset('dataset_flt', scalarShape, stringType);
 const datasetBoolScalar = makeDataset('dataset_bool', scalarShape, booleanType);
 const datasetInt0D = makeSimpleDataset('dataset_int_0d', intType, []);
 const datasetInt1D = makeSimpleDataset('dataset_int_1d', intType, [5]);
+const datasetBool1D = makeSimpleDataset('dataset_bool_1d', booleanType, [3]);
 const datasetInt2D = makeSimpleDataset('dataset_int_2d', intType, [5, 3]);
 const datasetStr2D = makeSimpleDataset('dataset_str_2d', stringType, [5, 3]);
 const datasetFlt3D = makeSimpleDataset('dataset_flt_3d', intType, [5, 3, 1]);
-const datasetBool4D = makeSimpleDataset('dataset_flt_3d', booleanType, [
-  2,
-  3,
-  3,
-  1,
-]);
 
 describe('Core visualizations', () => {
   describe('Raw', () => {
@@ -64,7 +59,7 @@ describe('Core visualizations', () => {
       expect(supportsDataset(datasetInt1D)).toBe(true);
       expect(supportsDataset(datasetStr2D)).toBe(true);
       expect(supportsDataset(datasetFlt3D)).toBe(true);
-      expect(supportsDataset(datasetBool4D)).toBe(true);
+      expect(supportsDataset(datasetBool1D)).toBe(true);
     });
 
     it('should not support dataset with advanced type', () => {
