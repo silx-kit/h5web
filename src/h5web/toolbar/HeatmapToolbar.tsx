@@ -23,6 +23,8 @@ function HeatmapToolbar(): ReactElement {
     toggleAspectRatio,
     showGrid,
     toggleGrid,
+    invertColorMap,
+    toggleColorMapInversion,
   } = useHeatmapConfig((state) => state, shallow);
 
   return (
@@ -37,7 +39,12 @@ function HeatmapToolbar(): ReactElement {
 
       {dataDomain && <Separator />}
 
-      <ColorMapSelector value={colorMap} onChange={setColorMap} />
+      <ColorMapSelector
+        value={colorMap}
+        onValueChange={setColorMap}
+        invert={invertColorMap}
+        onInversionChange={toggleColorMapInversion}
+      />
 
       <Separator />
 

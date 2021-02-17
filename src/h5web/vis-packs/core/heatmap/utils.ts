@@ -1,6 +1,7 @@
 import { range } from 'lodash-es';
 import type ndarray from 'ndarray';
-import type { D3Interpolator, Dims } from './models';
+import { INTERPOLATORS } from './interpolators';
+import type { ColorMap, D3Interpolator, Dims } from './models';
 
 const GRADIENT_PRECISION = 1 / 20;
 const GRADIENT_RANGE = range(0, 1 + GRADIENT_PRECISION, GRADIENT_PRECISION);
@@ -58,4 +59,9 @@ export function getPixelEdges(
       pixelCoordinates.length
     }) has not the expected length (${nPixels} or ${nPixels + 1})`
   );
+}
+
+export function getInterpolator(colorMap: ColorMap, reverse: boolean) {
+  const interpolator = INTERPOLATORS[colorMap];
+  return reverse ? (t: number) => interpolator(1 - t) : interpolator;
 }

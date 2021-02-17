@@ -1,3 +1,7 @@
+.selectorWrapper {
+  display: flex;
+}
+
 .gradient {
   position: relative;
   top: 1px;

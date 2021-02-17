@@ -11,6 +11,8 @@ import type { ColorMap } from '../../vis-packs/core/heatmap/models';
 import { getLinearGradient } from '../../vis-packs/core/heatmap/utils';
 import Selector from './Selector/Selector';
 import styles from './ColorMapSelector.module.css';
+import ToggleBtn from './ToggleBtn';
+import { FiShuffle } from 'react-icons/fi';
 
 const COLORMAP_GROUPS = {
   Recommended: Object.keys(RECOMMENDED) as ColorMap[],
@@ -35,20 +37,31 @@ function ColorMapOption(props: { option: ColorMap }): ReactElement {
 interface Props {
   value: ColorMap;
   disabled?: boolean;
-  onChange: (colorMap: ColorMap) => void;
+  onValueChange: (colorMap: ColorMap) => void;
+  invert: boolean;
+  onInversionChange: () => void;
 }
 
 function ColorMapSelector(props: Props): ReactElement {
-  const { value, disabled, onChange } = props;
+  const { value, disabled, onValueChange, invert, onInversionChange } = props;
 
   return (
-    <Selector
-      value={value}
-      disabled={disabled}
-      onChange={onChange}
-      options={COLORMAP_GROUPS}
-      optionComponent={ColorMapOption}
-    />
+    <div className={styles.selectorWrapper}>
+      <Selector
+        value={value}
+        disabled={disabled}
+        onChange={onValueChange}
+        options={COLORMAP_GROUPS}
+        optionComponent={ColorMapOption}
+      />
+      <ToggleBtn
+        small
+        label="Invert"
+        icon={FiShuffle}
+        value={invert}
+        onChange={onInversionChange}
+      />
+    </div>
   );
 }
 

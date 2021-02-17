@@ -10,6 +10,7 @@ interface Props {
   colorMap: ColorMap;
   horizontal?: boolean;
   withBounds?: boolean;
+  invertColorMap: boolean;
 }
 
 const Template: Story<Props> = (args): ReactElement => {
@@ -76,12 +77,18 @@ HorizontalWithBounds.args = {
 };
 
 export const EmptyDomain = Template.bind({});
-EmptyDomain.storyName = 'Enmpty domain';
+EmptyDomain.storyName = 'Empty domain';
 EmptyDomain.args = {
   ...Default.args,
   domainMin: 0,
   domainMax: 0,
   withBounds: true,
+};
+
+export const InvertColorMap = Template.bind({});
+InvertColorMap.args = {
+  ...Default.args,
+  invertColorMap: true,
 };
 
 export default {

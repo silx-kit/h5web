@@ -21,6 +21,7 @@ interface Props {
   keepAspectRatio?: boolean;
   showGrid?: boolean;
   title?: string;
+  invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
 }
@@ -33,6 +34,7 @@ function HeatmapVis(props: Props): ReactElement {
     scaleType = ScaleType.Linear,
     keepAspectRatio = true,
     showGrid = false,
+    invertColorMap = false,
     title,
     abscissaParams = {},
     ordinateParams = {},
@@ -89,6 +91,7 @@ function HeatmapVis(props: Props): ReactElement {
           values={dataArray.data as number[]}
           domain={domain}
           colorMap={colorMap}
+          invertColorMap={invertColorMap}
           scaleType={scaleType}
         />
       </VisCanvas>
@@ -96,6 +99,7 @@ function HeatmapVis(props: Props): ReactElement {
         domain={domain}
         scaleType={scaleType}
         colorMap={colorMap}
+        invertColorMap={invertColorMap}
         withBounds
       />
     </figure>

@@ -40,6 +40,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
     showGrid,
     setDataDomain,
     setScaleType,
+    invertColorMap,
   } = useHeatmapConfig((state) => state, shallow);
 
   const value = useDatasetValue(dataset, dimMapping);
@@ -81,6 +82,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
       scaleType={scaleType}
       keepAspectRatio={keepAspectRatio}
       showGrid={showGrid}
+      invertColorMap={invertColorMap}
       abscissaParams={axisMapping[dimMapping.indexOf('x')]}
       ordinateParams={axisMapping[dimMapping.indexOf('y')]}
     />

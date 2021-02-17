@@ -3,10 +3,9 @@ import { AxisRight, AxisBottom } from '@visx/axis';
 import { useMeasure } from 'react-use';
 import { adaptedNumTicks, createAxisScale } from '../utils';
 import styles from './ColorBar.module.css';
-import { getLinearGradient } from './utils';
+import { getInterpolator, getLinearGradient } from './utils';
 import type { ScaleType, Domain } from '../models';
 import type { ColorMap } from './models';
-import { INTERPOLATORS } from './interpolators';
 import { format } from 'd3-format';
 
 const boundFormatter = format('.3~g');
@@ -17,16 +16,23 @@ interface Props {
   colorMap: ColorMap;
   horizontal?: boolean;
   withBounds?: boolean;
+  invertColorMap: boolean;
 }
 
 function ColorBar(props: Props): ReactElement {
-  const { domain, scaleType, colorMap, horizontal, withBounds } = props;
+  const {
+    domain,
+    scaleType,
+    colorMap,
+    horizontal,
+    withBounds,
+    invertColorMap,
+  } = props;
 
   const [gradientRef, gradientBox] = useMeasure();
   const { height: gradientHeight, width: gradientWidth } = gradientBox;
   const gradientLength = horizontal ? gradientWidth : gradientHeight;
 
-  const interpolator = INTERPOLATORS[colorMap];
   const Axis = horizontal ? AxisBottom : AxisRight;
   const isEmptyDomain = domain[0] === domain[1];
 
@@ -53,7 +59,7 @@ function ColorBar(props: Props): ReactElement {
         className={styles.gradient}
         style={{
           backgroundImage: getLinearGradient(
-            interpolator,
+            getInterpolator(colorMap, invertColorMap),
             horizontal ? 'right' : 'top',
             domain[0] === domain[1]
           ),
