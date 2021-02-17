@@ -43,7 +43,7 @@ function interpolateHsl(t: number): string {
   return hsl(t * 360, 1, 0.5).formatRgb();
 }
 
-export const MOST_USED = {
+export const RECOMMENDED = {
   Viridis: interpolateViridis,
   Inferno: interpolateInferno,
   Greys: interpolateGreys,
