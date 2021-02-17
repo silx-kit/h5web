@@ -9,6 +9,7 @@ interface Props {
   scaleType: ScaleType;
   colorMap: ColorMap;
   horizontal?: boolean;
+  withBounds?: boolean;
 }
 
 const Template: Story<Props> = (args): ReactElement => {
@@ -29,15 +30,11 @@ export const ColorMapStory = Template.bind({});
 ColorMapStory.storyName = 'Color Map';
 ColorMapStory.args = { ...Default.args, colorMap: 'Blues' };
 
-export const DomainStory = Template.bind({});
-DomainStory.storyName = 'Domain';
-DomainStory.args = { ...Default.args, domainMin: -10, domainMax: 10 };
-
 export const LogScale = Template.bind({});
 LogScale.args = { ...Default.args, scaleType: ScaleType.Log };
 
 export const NegativeLogScale = Template.bind({});
-NegativeLogScale.storyName = 'Log Scale with negative values';
+NegativeLogScale.storyName = 'Log Scale with negative domain';
 NegativeLogScale.args = {
   ...Default.args,
   scaleType: ScaleType.Log,
@@ -57,6 +54,25 @@ export const Horizontal = Template.bind({});
 Horizontal.args = {
   ...Default.args,
   horizontal: true,
+};
+
+export const WithBounds = Template.bind({});
+WithBounds.storyName = 'With bounds';
+WithBounds.args = {
+  ...Default.args,
+  domainMin: -235.111,
+  domainMax: 98_765,
+  withBounds: true,
+};
+
+export const HorizontalWithBounds = Template.bind({});
+HorizontalWithBounds.storyName = 'Horizontal with bounds';
+HorizontalWithBounds.args = {
+  ...Default.args,
+  domainMin: -235.111,
+  domainMax: 98_765,
+  horizontal: true,
+  withBounds: true,
 };
 
 export default {
