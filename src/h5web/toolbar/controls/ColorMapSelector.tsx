@@ -3,7 +3,7 @@ import {
   CYCLICAL,
   DIVERGING,
   INTERPOLATORS,
-  MOST_USED,
+  RECOMMENDED,
   MULTI_HUE,
   SINGLE_HUE,
 } from '../../vis-packs/core/heatmap/interpolators';
@@ -13,7 +13,7 @@ import Selector from './Selector/Selector';
 import styles from './ColorMapSelector.module.css';
 
 const COLORMAP_GROUPS = {
-  Common: Object.keys(MOST_USED) as ColorMap[],
+  Recommended: Object.keys(RECOMMENDED) as ColorMap[],
   'Single hue': Object.keys(SINGLE_HUE) as ColorMap[],
   'Multi hue': Object.keys(MULTI_HUE) as ColorMap[],
   Cyclical: Object.keys(CYCLICAL) as ColorMap[],
