@@ -31,7 +31,7 @@ import {
 import { buildEntityPath, getChildEntity } from '../../utils';
 
 export class HsdsApi implements ProviderAPI {
-  public readonly domain: string;
+  public readonly filepath: string;
   private readonly client: AxiosInstance;
 
   private readonly entities = new Map<string, Entity>();
@@ -40,12 +40,12 @@ export class HsdsApi implements ProviderAPI {
     url: string,
     username: string,
     password: string,
-    domain: string
+    filepath: string
   ) {
-    this.domain = domain;
+    this.filepath = filepath;
     this.client = axios.create({
       baseURL: url,
-      params: { domain },
+      params: { domain: filepath },
       auth: { username, password },
     });
   }
@@ -57,7 +57,7 @@ export class HsdsApi implements ProviderAPI {
 
     if (path === '/') {
       const rootId = await this.fetchRootId();
-      const root = await this.processGroup(rootId, '/', this.domain, 1);
+      const root = await this.processGroup(rootId, '/', this.filepath, 1);
       this.entities.set(path, root);
       return root;
     }

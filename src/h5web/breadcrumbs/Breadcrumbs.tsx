@@ -7,20 +7,20 @@ import Crumb from './Crumb';
 interface Props {
   path: string;
   onSelect: (path: string) => void;
-  showDomain: boolean;
+  showFilepath: boolean;
 }
 
 function Breadcrumbs(props: Props): ReactElement {
-  const { path, onSelect, showDomain } = props;
+  const { path, onSelect, showFilepath } = props;
 
   assertAbsolutePath(path);
-  const { domain } = useContext(ProviderContext);
+  const { filepath } = useContext(ProviderContext);
 
   if (path === '/') {
     return (
       <h1 className={styles.breadCrumbs}>
         <span className={styles.crumb} data-current>
-          {domain}
+          {filepath}
         </span>
       </h1>
     );
@@ -31,7 +31,7 @@ function Breadcrumbs(props: Props): ReactElement {
 
   return (
     <h1 className={styles.breadCrumbs}>
-      {showDomain && <Crumb name={domain} onClick={() => onSelect('/')} />}
+      {showFilepath && <Crumb name={filepath} onClick={() => onSelect('/')} />}
       {crumbs.slice(0, -1).map((crumb, i) => {
         const crumbPath = `/${crumbs.slice(0, i + 1).join('/')}`;
         return (

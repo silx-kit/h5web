@@ -11,19 +11,19 @@ interface Props {
 
 function Explorer(props: Props): ReactElement {
   const { selectedPath, onSelect } = props;
-  const { domain } = useContext(ProviderContext);
+  const { filepath } = useContext(ProviderContext);
 
   return (
     <div className={styles.explorer} role="tree">
       <button
-        className={styles.domainBtn}
+        className={styles.fileBtn}
         type="button"
         role="treeitem"
         aria-selected={selectedPath === '/'}
         onClick={() => onSelect('/')}
       >
-        <FiFileText className={styles.domainIcon} />
-        {domain}
+        <FiFileText className={styles.fileIcon} />
+        {filepath}
       </button>
 
       <Suspense

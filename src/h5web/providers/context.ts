@@ -10,13 +10,13 @@ export interface GetValueParams {
 }
 
 export abstract class ProviderAPI {
-  abstract domain: string;
+  abstract filepath: string;
   abstract getEntity(path: string): Promise<Entity>;
   abstract getValue(params: GetValueParams): Promise<HDF5Value>;
 }
 
 export const ProviderContext = createContext<{
-  domain: string;
+  filepath: string;
   entitiesStore: FetchStore<Entity, string>;
   valuesStore: ObjectKeyStore<HDF5Value, GetValueParams>;
 }>({} as any); // eslint-disable-line @typescript-eslint/no-explicit-any

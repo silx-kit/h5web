@@ -4,13 +4,13 @@ import Provider from '../Provider';
 
 interface Props {
   url: string;
-  domain: string;
+  filepath: string;
   children: ReactNode;
 }
 
 function JupyterProvider(props: Props): ReactElement {
-  const { url, domain, children } = props;
-  const api = useMemo(() => new JupyterApi(url, domain), [domain, url]);
+  const { url, filepath, children } = props;
+  const api = useMemo(() => new JupyterApi(url, filepath), [filepath, url]);
 
   return <Provider api={api}>{children}</Provider>;
 }

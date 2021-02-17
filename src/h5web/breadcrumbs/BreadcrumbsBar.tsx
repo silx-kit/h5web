@@ -37,7 +37,7 @@ function BreadcrumbsBar(props: Props): ReactElement {
       <Breadcrumbs
         path={path}
         onSelect={setSelectedPath}
-        showDomain={!isExplorerOpen}
+        showFilepath={!isExplorerOpen}
       />
 
       <ToggleGroup

@@ -18,9 +18,9 @@ import {
   booleanType,
 } from './metadata-utils';
 
-export const mockDomain = 'source.h5';
+export const mockFilepath = 'source.h5';
 
-export const mockMetadata = makeNxGroup(mockDomain, 'NXroot', {
+export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
   isRoot: true,
   defaultPath: 'nexus_entry',
   children: [

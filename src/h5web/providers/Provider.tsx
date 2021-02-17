@@ -46,7 +46,7 @@ function Provider(props: Props): ReactElement {
   return (
     <ProviderContext.Provider
       value={{
-        domain: api.domain,
+        filepath: api.filepath,
         entitiesStore,
         valuesStore,
       }}
