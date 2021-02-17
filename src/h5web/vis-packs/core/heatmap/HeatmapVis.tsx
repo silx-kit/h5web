@@ -92,7 +92,12 @@ function HeatmapVis(props: Props): ReactElement {
           scaleType={scaleType}
         />
       </VisCanvas>
-      <ColorBar domain={domain} scaleType={scaleType} colorMap={colorMap} />
+      <ColorBar
+        domain={domain}
+        scaleType={scaleType}
+        colorMap={colorMap}
+        withBounds
+      />
     </figure>
   );
 }

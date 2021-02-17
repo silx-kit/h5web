@@ -43,6 +43,7 @@ ErrorBars.args = {
   dataArray,
   domain: [-31, 31], // Extend domain to fit error bars
   errorsArray,
+  showErrors: true,
 };
 
 const LineVisStoriesConfig = {
