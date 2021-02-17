@@ -26,6 +26,7 @@ export type HsdsType =
   | HsdsArrayType
   | HsdsVLenType
   | HsdsCompoundType
+  | HsdsEnumType
   | HDF5Id;
 
 export interface HsdsArrayType {
@@ -42,6 +43,12 @@ export interface HsdsVLenType {
 export interface HsdsCompoundType {
   class: HDF5TypeClass.Compound;
   fields: HsdsCompoundTypeField[];
+}
+
+export interface HsdsEnumType {
+  class: HDF5TypeClass.Enum;
+  base: HsdsBaseType;
+  mapping: Record<string, number>;
 }
 
 interface HsdsCompoundTypeField {

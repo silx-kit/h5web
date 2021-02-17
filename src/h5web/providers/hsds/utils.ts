@@ -70,6 +70,13 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
   }
 
   switch (hsdsType.class) {
+    case HDF5TypeClass.Enum:
+      return {
+        class: HDF5TypeClass.Enum,
+        base: convertHsdsBaseType(hsdsType.base),
+        mapping: hsdsType.mapping,
+      };
+
     case HDF5TypeClass.Array:
       return {
         class: HDF5TypeClass.Array,

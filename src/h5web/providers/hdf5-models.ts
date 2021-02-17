@@ -90,7 +90,8 @@ type HDF5AdvancedType =
   | HDF5Id
   | HDF5ArrayType
   | HDF5VLenType
-  | HDF5CompoundType;
+  | HDF5CompoundType
+  | HDF5EnumType;
 
 export enum HDF5TypeClass {
   Integer = 'H5T_INTEGER',
@@ -99,9 +100,16 @@ export enum HDF5TypeClass {
   Array = 'H5T_ARRAY',
   VLen = 'H5T_VLEN',
   Compound = 'H5T_COMPOUND',
+  Enum = 'H5T_ENUM',
 }
 
 export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
+
+export interface HDF5EnumType {
+  class: HDF5TypeClass.Enum;
+  base: HDF5BaseType;
+  mapping: Record<string, number>;
+}
 
 export interface HDF5IntegerType {
   class: HDF5TypeClass.Integer;

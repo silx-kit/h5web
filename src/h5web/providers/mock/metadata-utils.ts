@@ -3,6 +3,7 @@ import {
   HDF5Attribute,
   HDF5CompoundType,
   HDF5Dims,
+  HDF5EnumType,
   HDF5ExternalLink,
   HDF5FloatType,
   HDF5IntegerType,
@@ -48,6 +49,19 @@ export const stringType: HDF5StringType = {
 export const compoundType: HDF5CompoundType = {
   class: HDF5TypeClass.Compound,
   fields: [{ name: 'int', type: intType }],
+};
+
+export const booleanType: HDF5EnumType = {
+  class: HDF5TypeClass.Enum,
+  base: {
+    class: HDF5TypeClass.Integer,
+    endianness: 'Not applicable',
+    size: 8,
+  },
+  mapping: {
+    FALSE: 0,
+    TRUE: 1,
+  },
 };
 
 export const scalarShape: HDF5ScalarShape = { class: HDF5ShapeClass.Scalar };

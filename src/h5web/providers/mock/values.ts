@@ -22,6 +22,7 @@ export const mockValues = {
   raw_large: { str: '.'.repeat(1000) },
   scalar_int: 0,
   scalar_str: 'foo',
+  scalar_bool: true,
   oneD_linear: arr1,
   oneD,
   twoD,
