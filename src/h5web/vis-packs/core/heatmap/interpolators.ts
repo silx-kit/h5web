@@ -1,3 +1,4 @@
+import { hsl } from 'd3-color';
 import {
   interpolateCool,
   interpolateMagma,
@@ -38,12 +39,17 @@ import {
   interpolateTurbo,
 } from 'd3-scale-chromatic';
 
+function interpolateHsl(t: number): string {
+  return hsl(t * 360, 1, 0.5).formatRgb();
+}
+
 export const MOST_USED = {
   Viridis: interpolateViridis,
   Inferno: interpolateInferno,
   Greys: interpolateGreys,
   RdBu: interpolateRdBu,
   Rainbow: interpolateRainbow,
+  Sinebow: interpolateSinebow,
 };
 
 export const SINGLE_HUE = {
@@ -81,6 +87,7 @@ export const MULTI_HUE = {
 export const CYCLICAL = {
   Rainbow: interpolateRainbow,
   Sinebow: interpolateSinebow,
+  HSL: interpolateHsl,
 };
 
 export const DIVERGING = {
