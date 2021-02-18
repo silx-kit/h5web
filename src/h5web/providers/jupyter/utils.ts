@@ -54,20 +54,7 @@ export function convertDtype(dtype: string): HDF5Type {
   // Special case: booleans are stored as bytes
   // See https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
   if (dtype === '|b1') {
-    // Booleans are stored as Enum by h5py
-    // https://docs.h5py.org/en/stable/faq.html#what-datatypes-are-supported
-    return {
-      class: HDF5TypeClass.Enum,
-      base: {
-        class: HDF5TypeClass.Integer,
-        endianness: 'Not applicable',
-        size: 8,
-      },
-      mapping: {
-        FALSE: 0,
-        TRUE: 1,
-      },
-    };
+    return { class: HDF5TypeClass.Bool };
   }
 
   const regexp = /([<>=|])?([A-z])(\d*)/u;

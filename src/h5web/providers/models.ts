@@ -1,5 +1,6 @@
 import type {
   HDF5Attribute,
+  HDF5BooleanType,
   HDF5Link,
   HDF5NumericType,
   HDF5Shape,
@@ -51,6 +52,8 @@ type PrimitiveType<T extends HDF5Type> = T extends HDF5NumericType
   ? number
   : T extends HDF5StringType
   ? string
+  : T extends HDF5BooleanType
+  ? boolean
   : unknown;
 
 export type Value<

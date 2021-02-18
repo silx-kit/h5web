@@ -1,8 +1,8 @@
-import { HDF5BaseType, HDF5Id, HDF5TypeClass } from '../hdf5-models';
+import { HDF5Type, HDF5Id, HDF5TypeClass } from '../hdf5-models';
 import type {
   HsdsArrayType,
-  HsdsBaseType,
   HsdsCompoundType,
+  HsdsEnumType,
   HsdsType,
   HsdsVLenType,
 } from './models';
@@ -11,8 +11,8 @@ import { convertHsdsType } from './utils';
 describe('HsdsProvider utilities', () => {
   describe('convertHsdsType', () => {
     interface TestType {
-      hsds: HsdsBaseType;
-      hdf5: HDF5BaseType;
+      hsds: HsdsType;
+      hdf5: HDF5Type;
     }
 
     const asciiStrType: TestType = {
@@ -156,6 +156,23 @@ describe('HsdsProvider utilities', () => {
             },
           },
         ],
+      });
+    });
+
+    it('should convert the enum with the boolean mapping to Boolean type', () => {
+      const boolEnum: HsdsEnumType = {
+        class: HDF5TypeClass.Enum,
+        base: {
+          class: HDF5TypeClass.Integer,
+          base: 'H5T_STD_I8LE',
+        },
+        mapping: {
+          FALSE: 0,
+          TRUE: 1,
+        },
+      };
+      expect(convertHsdsType(boolEnum)).toEqual({
+        class: HDF5TypeClass.Bool,
       });
     });
 

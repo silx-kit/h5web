@@ -11,33 +11,42 @@ import type {
 } from '../hdf5-models';
 import type { Dataset, Group } from '../models';
 
-export type HsdsBaseType =
-  | { class: HDF5TypeClass.Integer; base: string }
-  | { class: HDF5TypeClass.Float; base: string }
-  | {
-      class: HDF5TypeClass.String;
-      charSet: 'H5T_CSET_ASCII' | 'H5T_CSET_UTF8';
-      strPad: 'H5T_STR_SPACEPAD' | 'H5T_STR_NULLTERM' | 'H5T_STR_NULLPAD';
-      length: number | 'H5T_VARIABLE';
-    };
-
 export type HsdsType =
-  | HsdsBaseType
+  | HsdsIntegerType
+  | HsdsFloatType
+  | HsdsStringType
   | HsdsArrayType
   | HsdsVLenType
   | HsdsCompoundType
   | HsdsEnumType
   | HDF5Id;
 
+export interface HsdsIntegerType {
+  class: HDF5TypeClass.Integer;
+  base: string;
+}
+
+export interface HsdsFloatType {
+  class: HDF5TypeClass.Float;
+  base: string;
+}
+
+interface HsdsStringType {
+  class: HDF5TypeClass.String;
+  charSet: 'H5T_CSET_ASCII' | 'H5T_CSET_UTF8';
+  strPad: 'H5T_STR_SPACEPAD' | 'H5T_STR_NULLTERM' | 'H5T_STR_NULLPAD';
+  length: number | 'H5T_VARIABLE';
+}
+
 export interface HsdsArrayType {
   class: HDF5TypeClass.Array;
-  base: HsdsBaseType;
+  base: HsdsType;
   dims: HDF5Dims;
 }
 
 export interface HsdsVLenType {
   class: HDF5TypeClass.VLen;
-  base: HsdsBaseType;
+  base: HsdsType;
 }
 
 export interface HsdsCompoundType {
@@ -47,7 +56,7 @@ export interface HsdsCompoundType {
 
 export interface HsdsEnumType {
   class: HDF5TypeClass.Enum;
-  base: HsdsBaseType;
+  base: HsdsType;
   mapping: Record<string, number>;
 }
 

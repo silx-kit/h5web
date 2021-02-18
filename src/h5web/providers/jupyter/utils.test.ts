@@ -78,6 +78,12 @@ describe('JupyterProvider utilities', () => {
       });
     });
 
+    it('should interpret |b1 as booleans', () => {
+      expect(convertDtype('|b1')).toEqual({
+        class: HDF5TypeClass.Bool,
+      });
+    });
+
     it('should throw when encountering an unknown endianness symbol', () => {
       expect(() => convertDtype('^f8')).toThrow(/Unknown endianness symbol/u);
     });

@@ -83,7 +83,7 @@ interface HDF5NullShape {
 export type HDF5Type = HDF5BaseType | HDF5AdvancedType;
 
 // https://support.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html
-export type HDF5BaseType = HDF5NumericType | HDF5StringType;
+export type HDF5BaseType = HDF5NumericType | HDF5StringType | HDF5BooleanType;
 export type HDF5NumericType = HDF5IntegerType | HDF5FloatType;
 
 type HDF5AdvancedType =
@@ -101,13 +101,18 @@ export enum HDF5TypeClass {
   VLen = 'H5T_VLEN',
   Compound = 'H5T_COMPOUND',
   Enum = 'H5T_ENUM',
+  Bool = 'H5T_BOOL',
 }
 
 export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
 
+export interface HDF5BooleanType {
+  class: HDF5TypeClass.Bool;
+}
+
 export interface HDF5EnumType {
   class: HDF5TypeClass.Enum;
-  base: HDF5BaseType;
+  base: HDF5Type;
   mapping: Record<string, number>;
 }
 
@@ -132,13 +137,13 @@ export interface HDF5StringType {
 
 interface HDF5ArrayType {
   class: HDF5TypeClass.Array;
-  base: HDF5BaseType;
+  base: HDF5Type;
   dims: HDF5Dims;
 }
 
 interface HDF5VLenType {
   class: HDF5TypeClass.VLen;
-  base: HDF5BaseType;
+  base: HDF5Type;
 }
 
 export interface HDF5CompoundType {

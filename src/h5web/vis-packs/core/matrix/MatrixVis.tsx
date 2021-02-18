@@ -10,7 +10,7 @@ import Cell from './Cell';
 const CELL_SIZE = { width: 116, height: 32 };
 
 interface Props {
-  dataArray: ndarray<string | number>;
+  dataArray: ndarray<string | number | boolean>;
 }
 
 function MatrixVis(props: Props): ReactElement {

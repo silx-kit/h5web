@@ -8,13 +8,16 @@ import {
   makeSimpleShape,
   makeDataset,
   makeSimpleDataset,
+  booleanType,
 } from '../../providers/mock/metadata-utils';
 
 const datasetIntScalar = makeDataset('dataset_int', scalarShape, intType);
 const datasetFltScalar = makeDataset('dataset_flt', scalarShape, floatType);
 const datasetStrScalar = makeDataset('dataset_flt', scalarShape, stringType);
+const datasetBoolScalar = makeDataset('dataset_bool', scalarShape, booleanType);
 const datasetInt0D = makeSimpleDataset('dataset_int_0d', intType, []);
 const datasetInt1D = makeSimpleDataset('dataset_int_1d', intType, [5]);
+const datasetBool1D = makeSimpleDataset('dataset_bool_1d', booleanType, [3]);
 const datasetInt2D = makeSimpleDataset('dataset_int_2d', intType, [5, 3]);
 const datasetStr2D = makeSimpleDataset('dataset_str_2d', stringType, [5, 3]);
 const datasetFlt3D = makeSimpleDataset('dataset_flt_3d', intType, [5, 3, 1]);
@@ -36,6 +39,7 @@ describe('Core visualizations', () => {
       expect(supportsDataset(datasetIntScalar)).toBe(true);
       expect(supportsDataset(datasetFltScalar)).toBe(true);
       expect(supportsDataset(datasetStrScalar)).toBe(true);
+      expect(supportsDataset(datasetBoolScalar)).toBe(true);
     });
 
     it('should not support dataset with advanced type', () => {
@@ -55,6 +59,7 @@ describe('Core visualizations', () => {
       expect(supportsDataset(datasetInt1D)).toBe(true);
       expect(supportsDataset(datasetStr2D)).toBe(true);
       expect(supportsDataset(datasetFlt3D)).toBe(true);
+      expect(supportsDataset(datasetBool1D)).toBe(true);
     });
 
     it('should not support dataset with advanced type', () => {
