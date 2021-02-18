@@ -9,8 +9,8 @@ import {
   UnsignedByteType,
 } from 'three';
 import { Domain, ScaleType } from '../models';
-import { INTERPOLATORS } from './interpolators';
 import type { ColorMap } from './models';
+import { getInterpolator } from './utils';
 
 interface Props {
   rows: number;
@@ -19,6 +19,7 @@ interface Props {
   domain: Domain;
   colorMap: ColorMap;
   scaleType: ScaleType;
+  invertColorMap?: boolean;
 }
 
 const SCALE_FUNC: Record<ScaleType, (val: number) => number> = {
@@ -37,7 +38,15 @@ const CMAP_NORM: Record<ScaleType, number> = {
 };
 
 function Mesh(props: Props): ReactElement {
-  const { rows, cols, values, domain, colorMap, scaleType } = props;
+  const {
+    rows,
+    cols,
+    values,
+    domain,
+    colorMap,
+    scaleType,
+    invertColorMap = false,
+  } = props;
 
   const scaledDomain = domain.map(SCALE_FUNC[scaleType]);
 
@@ -47,7 +56,7 @@ function Mesh(props: Props): ReactElement {
   }, [cols, rows, values]);
 
   const colorMapTexture = useMemo(() => {
-    const interpolator = INTERPOLATORS[colorMap];
+    const interpolator = getInterpolator(colorMap, invertColorMap);
 
     const colors = Uint8Array.from(
       Array.from({ length: CMAP_SIZE }).flatMap((_, i) => {
@@ -57,7 +66,7 @@ function Mesh(props: Props): ReactElement {
     );
 
     return new DataTexture(colors, CMAP_SIZE, 1, RGBFormat, UnsignedByteType);
-  }, [colorMap]);
+  }, [colorMap, invertColorMap]);
 
   const shader = {
     uniforms: {

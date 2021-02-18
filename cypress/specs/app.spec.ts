@@ -1,8 +1,12 @@
-const SNAPSHOT_DELAY = 300;
+const SNAPSHOT_DELAY = 500;
 
 describe('App', () => {
   beforeEach(() => {
     cy.visit('/mock');
+  });
+
+  afterEach(() => {
+    window.localStorage.clear();
   });
 
   it('visualize 1D dataset as Line', () => {
@@ -42,6 +46,14 @@ describe('App', () => {
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
       cy.matchImageSnapshot('heatmap_2D');
+    }
+
+    cy.findByRole('button', { name: 'More controls' }).click();
+    cy.findByRole('button', { name: 'Invert' }).click();
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('heatmap_2D_inverted_cmap');
     }
   });
 

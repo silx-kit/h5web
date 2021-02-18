@@ -14,6 +14,9 @@ interface HeatmapConfig extends State {
   colorMap: ColorMap;
   setColorMap: (colorMap: ColorMap) => void;
 
+  invertColorMap: boolean;
+  toggleColorMapInversion: () => void;
+
   scaleType: ScaleType;
   setScaleType: (scaleType: ScaleType) => void;
 
@@ -38,6 +41,10 @@ export const useHeatmapConfig = create<HeatmapConfig>(
       colorMap: 'Viridis',
       setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
+      invertColorMap: false,
+      toggleColorMapInversion: () =>
+        set((state) => ({ invertColorMap: !state.invertColorMap })),
+
       scaleType: ScaleType.Linear,
       setScaleType: (scaleType: ScaleType) => set({ scaleType }),
 
@@ -50,8 +57,14 @@ export const useHeatmapConfig = create<HeatmapConfig>(
     }),
     {
       name: 'h5web:heatmap',
-      whitelist: ['colorMap', 'scaleType', 'keepAspectRatio', 'showGrid'],
-      version: 2,
+      whitelist: [
+        'colorMap',
+        'scaleType',
+        'keepAspectRatio',
+        'showGrid',
+        'invertColorMap',
+      ],
+      version: 4,
     }
   )
 );

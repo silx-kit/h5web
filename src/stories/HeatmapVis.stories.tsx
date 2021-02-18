@@ -142,6 +142,14 @@ WithTitle.args = {
   title: 'Pretty colors',
 };
 
+export const InvertColorMap = Template.bind({});
+
+InvertColorMap.args = {
+  dataArray,
+  domain,
+  invertColorMap: true,
+};
+
 export default {
   title: 'Visualizations/HeatmapVis',
   component: HeatmapVis,
