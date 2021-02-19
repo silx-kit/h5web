@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
 import { format } from 'd3-format';
 import styles from './DomainSlider.module.css';
-import type { Domain } from '../../vis-packs/core/models';
+import type { CustomDomain, Domain } from '../../vis-packs/core/models';
 import { extendDomain } from '../../vis-packs/core/utils';
 import ToggleBtn from './ToggleBtn';
 import { FiZap } from 'react-icons/fi';
@@ -12,9 +12,9 @@ const NB_DECIMALS = 1;
 
 interface Props {
   dataDomain: Domain;
-  value?: Domain;
+  value: CustomDomain;
   disabled?: boolean;
-  onChange: (value: Domain | undefined) => void;
+  onChange: (value: CustomDomain) => void;
 }
 
 function DomainSlider(props: Props): ReactElement {
@@ -22,6 +22,10 @@ function DomainSlider(props: Props): ReactElement {
 
   const [extendedMin, extendedMax] = extendDomain(dataDomain, EXTEND_FACTOR);
   const step = Math.max((extendedMax - extendedMin) / 100, 10 ** -NB_DECIMALS);
+
+  const isAutoMin = value[0] === undefined;
+  const isAutoMax = value[1] === undefined;
+  const isAutoScaling = isAutoMin || isAutoMax;
 
   return (
     <div className={styles.sliderWrapper}>
@@ -38,7 +42,7 @@ function DomainSlider(props: Props): ReactElement {
             </div>
           </div>
         )}
-        value={[...(value || dataDomain)]}
+        value={[value[0] ?? dataDomain[0], value[1] ?? dataDomain[1]]}
         onAfterChange={(bounds) => {
           onChange(bounds as Domain);
         }}
@@ -50,11 +54,17 @@ function DomainSlider(props: Props): ReactElement {
 
       <ToggleBtn
         small
-        label="Auto"
+        label={`Auto${
+          isAutoMin && !isAutoMax
+            ? ' (min)'
+            : isAutoMax && !isAutoMin
+            ? ' (max)'
+            : ''
+        }`}
         icon={FiZap}
-        value={value === undefined}
+        value={isAutoScaling}
         onChange={() => {
-          onChange(value === undefined ? dataDomain : undefined);
+          onChange(isAutoScaling ? dataDomain : [undefined, undefined]);
         }}
         disabled={disabled}
       />
