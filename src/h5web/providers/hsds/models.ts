@@ -114,3 +114,6 @@ export interface HsdsDataset extends Dataset {
 export interface HsdsValueResponse {
   value: HDF5Value;
 }
+
+export type HsdsComplex = HsdsComplex[] | HsdsComplexValue;
+export type HsdsComplexValue = [number, number];

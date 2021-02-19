@@ -41,3 +41,8 @@ export type JupyterContentResponse =
 export type JupyterDataResponse = HDF5Value;
 
 export type JupyterAttrsResponse = Record<string, string>;
+
+export type JupyterComplex = JupyterComplex[] | JupyterComplexValue;
+export type JupyterComplexValue =
+  | `(${'' | '-'}${number}${'+' | '-'}${number}j)`
+  | `${'' | '-'}${number}j`;

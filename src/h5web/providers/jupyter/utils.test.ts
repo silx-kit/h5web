@@ -1,5 +1,7 @@
+import Complex from 'complex.js';
 import { HDF5TypeClass } from '../hdf5-models';
-import { convertDtype } from './utils';
+import type { JupyterComplexValue } from './models';
+import { convertDtype, parseComplex } from './utils';
 
 describe('JupyterProvider utilities', () => {
   describe('convertDtype', () => {
@@ -48,25 +50,17 @@ describe('JupyterProvider utilities', () => {
 
     it('should convert complex dtypes', () => {
       expect(convertDtype('<c8')).toEqual({
-        class: HDF5TypeClass.Compound,
-        fields: [
-          {
-            name: 'real',
-            type: {
-              class: HDF5TypeClass.Float,
-              endianness: 'LE',
-              size: 32,
-            },
-          },
-          {
-            name: 'imag',
-            type: {
-              class: HDF5TypeClass.Float,
-              endianness: 'LE',
-              size: 32,
-            },
-          },
-        ],
+        class: HDF5TypeClass.Complex,
+        realType: {
+          class: HDF5TypeClass.Float,
+          endianness: 'LE',
+          size: 32,
+        },
+        imagType: {
+          class: HDF5TypeClass.Float,
+          endianness: 'LE',
+          size: 32,
+        },
       });
     });
 
@@ -90,6 +84,26 @@ describe('JupyterProvider utilities', () => {
 
     it('should throw when encountering an unknown type', () => {
       expect(() => convertDtype('>notAType')).toThrow(/Unknown dtype/u);
+    });
+  });
+
+  describe('parseComplex', () => {
+    it('should parse scalar complex', () => {
+      expect(
+        (parseComplex('(1+5j)') as Complex).equals(new Complex(1, 5))
+      ).toBe(true);
+    });
+
+    it('should parse complex array', () => {
+      const hsdsComplexArray: JupyterComplexValue[][] = [
+        ['0j', '1j'],
+        ['(1+0j)', '(1-2j)'],
+      ];
+      const convertedArray = parseComplex(hsdsComplexArray) as Complex[][];
+      expect(convertedArray).toEqual([
+        [new Complex(0, 0), new Complex(0, 1)],
+        [new Complex(1, 0), new Complex(1, -2)],
+      ]);
     });
   });
 });

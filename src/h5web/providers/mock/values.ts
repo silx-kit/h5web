@@ -1,3 +1,4 @@
+import Complex from 'complex.js';
 import { range } from 'lodash-es';
 
 const arr1 = range(-20, 21);
@@ -48,5 +49,10 @@ export const mockValues = {
       [true, true, true, true],
       [false, false, true, false],
     ],
+  ],
+  scalar_cplx: new Complex(1, 5),
+  twoD_cplx: [
+    [new Complex(0, -5), new Complex(-2.1, -2)],
+    [new Complex(5, 0), new Complex(-3, 0.1)],
   ],
 };

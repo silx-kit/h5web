@@ -1,3 +1,4 @@
+import type Complex from 'complex.js';
 import { ReactNode, createContext, ReactElement } from 'react';
 import type { Size } from '../models';
 
@@ -5,7 +6,10 @@ interface GridSettings {
   cellSize: Size;
   rowCount: number;
   columnCount: number;
-  valueAccessor: (row: number, col: number) => number | string | boolean;
+  valueAccessor: (
+    row: number,
+    col: number
+  ) => number | string | boolean | Complex;
 }
 
 export const GridSettingsContext = createContext<GridSettings>({

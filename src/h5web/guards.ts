@@ -13,14 +13,15 @@ import {
   HDF5SimpleShape,
   HDF5Shape,
   HDF5ShapeClass,
-  HDF5BaseType,
   HDF5Type,
   HDF5TypeClass,
   HDF5ScalarShape,
   HDF5NumericType,
   HDF5StringType,
   HDF5BooleanType,
+  HDF5ComplexType,
 } from './providers/hdf5-models';
+import type { PrintableType } from './vis-packs/core/models';
 
 export function isDefined<T>(val: T): val is NonNullable<T> {
   return val !== undefined;
@@ -98,9 +99,9 @@ export function hasScalarShape<T extends HDF5Type>(
   return dataset.shape.class === HDF5ShapeClass.Scalar;
 }
 
-export function hasBaseType<S extends HDF5Shape>(
+export function hasPrintableType<S extends HDF5Shape>(
   entity: Dataset<S>
-): entity is Dataset<S, HDF5BaseType> {
+): entity is Dataset<S, PrintableType> {
   return (
     typeof entity.type !== 'string' &&
     [
@@ -108,6 +109,7 @@ export function hasBaseType<S extends HDF5Shape>(
       HDF5TypeClass.Float,
       HDF5TypeClass.String,
       HDF5TypeClass.Bool,
+      HDF5TypeClass.Complex,
     ].includes(entity.type.class)
   );
 }
@@ -118,6 +120,15 @@ export function hasBoolType<S extends HDF5Shape>(
   return (
     typeof dataset.type !== 'string' &&
     dataset.type.class === HDF5TypeClass.Bool
+  );
+}
+
+export function hasComplexType<S extends HDF5Shape>(
+  dataset: Dataset<S>
+): dataset is Dataset<S, HDF5ComplexType> {
+  return (
+    typeof dataset.type !== 'string' &&
+    dataset.type.class === HDF5TypeClass.Complex
   );
 }
 
@@ -188,17 +199,16 @@ export function assertSimpleShape<T extends HDF5Type>(
   }
 }
 
-export function assertBaseType<S extends HDF5Shape>(
+export function assertPrintableType<S extends HDF5Shape>(
   dataset: Dataset<S>
-): asserts dataset is Dataset<S, HDF5BaseType> {
+): asserts dataset is Dataset<S, PrintableType> {
   if (
     !hasStringType(dataset) &&
     !hasNumericType(dataset) &&
-    !hasBoolType(dataset)
+    !hasBoolType(dataset) &&
+    !hasComplexType(dataset)
   ) {
-    throw new Error(
-      'Expected dataset to have string or numeric or boolean type'
-    );
+    throw new Error('Expected dataset to have displayable type');
   }
 }
 

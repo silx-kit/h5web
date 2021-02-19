@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import ScalarVis from '../scalar/ScalarVis';
 import { useDatasetValue } from '../hooks';
 import {
-  assertBaseType,
+  assertPrintableType,
   assertDataset,
   assertScalarShape,
 } from '../../../guards';
@@ -12,7 +12,7 @@ function ScalarVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertDataset(entity);
   assertScalarShape(entity);
-  assertBaseType(entity);
+  assertPrintableType(entity);
 
   const value = useDatasetValue(entity);
   return <ScalarVis value={value} />;

@@ -1,4 +1,5 @@
 /* eslint-disable no-case-declarations */
+import Complex from 'complex.js';
 import { isString } from 'lodash-es';
 import { isDataset, isGroup } from '../../guards';
 import {
@@ -8,7 +9,7 @@ import {
   HDF5Type,
   HDF5TypeClass,
 } from '../hdf5-models';
-import type { Entity } from '../models';
+import type { Entity, ComplexArray } from '../models';
 import type {
   HsdsLink,
   HsdsExternalLink,
@@ -17,6 +18,8 @@ import type {
   HsdsType,
   HsdsIntegerType,
   HsdsFloatType,
+  HsdsComplex,
+  HsdsComplexValue,
 } from './models';
 
 export function isHsdsExternalLink(link: HsdsLink): link is HsdsExternalLink {
@@ -96,6 +99,19 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
       };
 
     case HDF5TypeClass.Compound:
+      const { fields } = hsdsType;
+      if (
+        fields.length === 2 &&
+        fields[0].name === 'r' &&
+        fields[1].name === 'i'
+      ) {
+        return {
+          class: HDF5TypeClass.Complex,
+          realType: convertHsdsType(fields[0].type),
+          imagType: convertHsdsType(fields[1].type),
+        };
+      }
+
       return {
         class: HDF5TypeClass.Compound,
         fields: hsdsType.fields.map((v) => ({
@@ -118,4 +134,16 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
     default:
       throw new Error(`Unknown type ${JSON.stringify(hsdsType)}`);
   }
+}
+
+export function parseComplex(complex: HsdsComplex): ComplexArray | Complex {
+  if (isComplexValue(complex)) {
+    return new Complex(complex);
+  }
+
+  return complex.map((v) => parseComplex(v));
+}
+
+function isComplexValue(complex: HsdsComplex): complex is HsdsComplexValue {
+  return complex.length === 2 && typeof complex[0] === 'number';
 }

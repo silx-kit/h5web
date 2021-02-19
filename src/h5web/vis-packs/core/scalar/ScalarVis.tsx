@@ -1,8 +1,9 @@
+import type Complex from 'complex.js';
 import type { ReactElement } from 'react';
 import styles from './ScalarVis.module.css';
 
 interface Props {
-  value: string | number | boolean;
+  value: string | number | boolean | Complex;
 }
 
 function ScalarVis(props: Props): ReactElement {

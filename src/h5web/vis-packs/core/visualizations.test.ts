@@ -9,16 +9,19 @@ import {
   makeDataset,
   makeSimpleDataset,
   booleanType,
+  complexType,
 } from '../../providers/mock/metadata-utils';
 
 const datasetIntScalar = makeDataset('dataset_int', scalarShape, intType);
 const datasetFltScalar = makeDataset('dataset_flt', scalarShape, floatType);
 const datasetStrScalar = makeDataset('dataset_flt', scalarShape, stringType);
 const datasetBoolScalar = makeDataset('dataset_bool', scalarShape, booleanType);
+const datasetCplxScalar = makeDataset('dataset_cplx', scalarShape, complexType);
 const datasetInt0D = makeSimpleDataset('dataset_int_0d', intType, []);
 const datasetInt1D = makeSimpleDataset('dataset_int_1d', intType, [5]);
 const datasetBool1D = makeSimpleDataset('dataset_bool_1d', booleanType, [3]);
 const datasetInt2D = makeSimpleDataset('dataset_int_2d', intType, [5, 3]);
+const datasetCplx2D = makeSimpleDataset('dataset_cplx_2D', complexType, [2, 2]);
 const datasetStr2D = makeSimpleDataset('dataset_str_2d', stringType, [5, 3]);
 const datasetFlt3D = makeSimpleDataset('dataset_flt_3d', intType, [5, 3, 1]);
 
@@ -35,14 +38,15 @@ describe('Core visualizations', () => {
   describe('Scalar', () => {
     const { supportsDataset } = CORE_VIS.Scalar;
 
-    it('should support dataset with base type and scalar shape', () => {
+    it('should support dataset with displayable type and scalar shape', () => {
       expect(supportsDataset(datasetIntScalar)).toBe(true);
       expect(supportsDataset(datasetFltScalar)).toBe(true);
       expect(supportsDataset(datasetStrScalar)).toBe(true);
       expect(supportsDataset(datasetBoolScalar)).toBe(true);
+      expect(supportsDataset(datasetCplxScalar)).toBe(true);
     });
 
-    it('should not support dataset with advanced type', () => {
+    it('should not support dataset with non-displayable type', () => {
       const dataset = makeDataset('foo', scalarShape, compoundType);
       expect(supportsDataset(dataset)).toBe(false);
     });
@@ -55,14 +59,15 @@ describe('Core visualizations', () => {
   describe('Matrix', () => {
     const { supportsDataset } = CORE_VIS.Matrix;
 
-    it('should support dataset with base type, simple shape and at least one dimension', () => {
+    it('should support dataset with displayable type, simple shape and at least one dimension', () => {
       expect(supportsDataset(datasetInt1D)).toBe(true);
       expect(supportsDataset(datasetStr2D)).toBe(true);
+      expect(supportsDataset(datasetCplx2D)).toBe(true);
       expect(supportsDataset(datasetFlt3D)).toBe(true);
       expect(supportsDataset(datasetBool1D)).toBe(true);
     });
 
-    it('should not support dataset with advanced type', () => {
+    it('should not support dataset with non-displayable type', () => {
       const dataset = makeDataset('foo', makeSimpleShape([1]), compoundType);
       expect(supportsDataset(dataset)).toBe(false);
     });
