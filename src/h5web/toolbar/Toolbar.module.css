@@ -79,26 +79,26 @@
 }
 
 .btn:hover > .btnLike {
-  background-color: var(--white);
-  box-shadow: var(--btn-shadow-idle) var(--secondary);
+  background-color: var(--secondary-lighter);
+  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
 }
 
 .btn[aria-pressed='true'] > .btnLike,
 .btn[aria-checked='true'] > .btnLike {
   background-color: var(--secondary-light);
-  box-shadow: var(--btn-shadow-pressed) var(--secondary-dark);
+  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-dark-color);
 }
 
 .btn[aria-pressed='true']:hover > .btnLike,
 .btn[aria-checked='true']:hover > .btnLike {
-  box-shadow: var(--btn-shadow-pressed) var(--secondary-darker);
+  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-darker-color);
 }
 
 .btn[aria-expanded='true'] > .btnLike {
-  background-color: var(--white);
-  box-shadow: var(--btn-shadow-pressed) var(--secondary);
+  background-color: var(--secondary-lighter);
+  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
 }
 
 .btn[aria-expanded='true']:hover > .btnLike {
-  box-shadow: var(--btn-shadow-pressed) var(--secondary-dark);
+  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-dark-color);
 }

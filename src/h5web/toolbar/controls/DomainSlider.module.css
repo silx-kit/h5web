@@ -20,7 +20,7 @@
   align-self: center;
   height: 0.375rem;
   background-color: var(--secondary-dark-15);
-  box-shadow: var(--btn-shadow-pressed) var(--secondary);
+  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
   border-radius: 0.25rem;
 }
 
@@ -34,12 +34,12 @@
   composes: btnLike from '../Toolbar.module.css';
   min-width: 2rem;
   padding: 0.375rem;
-  background-color: var(--white);
-  box-shadow: var(--btn-shadow-idle) var(--secondary);
+  background-color: var(--secondary-lighter);
+  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
 }
 
 .thumb:hover > .thumbBtnLike {
-  box-shadow: var(--btn-shadow-idle) var(--secondary-dark);
+  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-dark-color);
 }
 
 .autoBtnLike {
