@@ -13,6 +13,7 @@
   --primary-dark-bg: #dde2d7;
   --secondary: #8cdfc7;
   --secondary-light: #b7fcf3;
+  --secondary-lighter: #dbfef9;
   --secondary-dark: #1b998b;
   --secondary-dark-15: #1b998b26;
   --secondary-darker: #0e5846;
@@ -26,4 +27,7 @@
     sans-serif;
   --btn-shadow-idle: -1px -1px 2px 0 inset;
   --btn-shadow-pressed: 1px 1px 2px 0 inset;
+  --btn-shadow-color: var(--gray);
+  --btn-shadow-dark-color: var(--dark-gray);
+  --btn-shadow-darker-color: var(--dark-slate-gray);
 }

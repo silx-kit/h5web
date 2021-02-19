@@ -23,11 +23,11 @@
 
 .btn[aria-checked='false'] > .btnLike {
   background-color: var(--secondary-dark-15);
-  box-shadow: var(--btn-shadow-idle) var(--secondary);
+  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
 }
 
 .btn[aria-checked='false']:hover > .btnLike {
-  box-shadow: var(--btn-shadow-idle) var(--secondary-dark);
+  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-dark-color);
 }
 
 .icon {
