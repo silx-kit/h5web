@@ -23,7 +23,7 @@
 
 .gradient {
   grid-area: gradient;
-  border: 1px solid black;
+  border: 1px solid var(--black);
   background-repeat: no-repeat; /* fix subtle bug where gradient is repeated over 1px */
 }
 
@@ -31,6 +31,18 @@
   grid-area: axis;
   display: block;
   overflow: visible;
+}
+
+.tick line {
+  stroke: var(--gray);
+}
+
+.tick text {
+  fill: var(--dark-slate-gray);
+  font-family: inherit;
+  font-size: inherit;
+  text-anchor: inherit;
+  dominant-baseline: inherit;
 }
 
 .bound {

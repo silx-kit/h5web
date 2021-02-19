@@ -75,6 +75,7 @@ function ColorBar(props: Props): ReactElement {
             scale={axisScale}
             hideAxisLine
             numTicks={adaptedNumTicks(gradientLength)}
+            tickClassName={styles.tick}
             tickFormat={axisScale.tickFormat(
               adaptedNumTicks(gradientLength),
               '.3~g'
