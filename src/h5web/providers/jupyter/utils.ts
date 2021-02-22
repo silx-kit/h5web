@@ -1,7 +1,10 @@
+import Complex from 'complex.js';
 import { assertArray } from '../../guards';
 import { HDF5Endianness, HDF5Type, HDF5TypeClass } from '../hdf5-models';
-import { EntityKind } from '../models';
+import { EntityKind, ComplexArray } from '../models';
 import type {
+  JupyterComplex,
+  JupyterComplexValue,
   JupyterContentGroupResponse,
   JupyterContentResponse,
   JupyterMetaDatasetResponse,
@@ -94,25 +97,17 @@ export function convertDtype(dtype: string): HDF5Type {
 
     case 'c':
       return {
-        class: HDF5TypeClass.Compound,
-        fields: [
-          {
-            name: 'real',
-            type: {
-              class: HDF5TypeClass.Float,
-              size: length * 4, // Bytes are equally distributed between real and imag
-              endianness,
-            },
-          },
-          {
-            name: 'imag',
-            type: {
-              class: HDF5TypeClass.Float,
-              size: length * 4, // Bytes are equally distributed between real and imag
-              endianness,
-            },
-          },
-        ],
+        class: HDF5TypeClass.Complex,
+        realType: {
+          class: HDF5TypeClass.Float,
+          size: length * 4, // Bytes are equally distributed between real and imag
+          endianness,
+        },
+        imagType: {
+          class: HDF5TypeClass.Float,
+          size: length * 4, // Bytes are equally distributed between real and imag
+          endianness,
+        },
       };
 
     case 'S':
@@ -133,4 +128,21 @@ export function convertDtype(dtype: string): HDF5Type {
     default:
       throw new Error(`Unknown dtype ${dtype}`);
   }
+}
+
+export function parseComplex(complex: JupyterComplex): ComplexArray | Complex {
+  if (isComplexValue(complex)) {
+    // Remove eventual parenthesis
+    const complexStr = complex.endsWith(')') ? complex.slice(1, -1) : complex;
+    // Replace the Python `j` by the JS `i`
+    return new Complex(complexStr.replace('j', 'i'));
+  }
+
+  return complex.map((v) => parseComplex(v));
+}
+
+function isComplexValue(
+  complex: JupyterComplex
+): complex is JupyterComplexValue {
+  return typeof complex === 'string';
 }

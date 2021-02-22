@@ -6,16 +6,17 @@ import styles from './MatrixVis.module.css';
 import GridSettingsProvider from './GridSettingsContext';
 import StickyGrid from './StickyGrid';
 import Cell from './Cell';
+import type Complex from 'complex.js';
 
 const CELL_SIZE = { width: 116, height: 32 };
 
 interface Props {
-  dataArray: ndarray<string | number | boolean>;
+  dataArray: ndarray<string | number | boolean | Complex>;
 }
 
 function MatrixVis(props: Props): ReactElement {
   const { dataArray } = props;
-  const dims = dataArray.shape as [number] | [number, number];
+  const dims = dataArray.shape;
 
   const [divRef, { width, height }] = useMeasure();
   const isVisible = width > 0 && height > 0;

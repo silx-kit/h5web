@@ -2,6 +2,7 @@ import { Datatype, Entity, EntityKind, Group, Link } from '../models';
 import {
   HDF5Attribute,
   HDF5BooleanType,
+  HDF5ComplexType,
   HDF5CompoundType,
   HDF5Dims,
   HDF5ExternalLink,
@@ -53,6 +54,12 @@ export const compoundType: HDF5CompoundType = {
 
 export const booleanType: HDF5BooleanType = {
   class: HDF5TypeClass.Bool,
+};
+
+export const complexType: HDF5ComplexType = {
+  class: HDF5TypeClass.Complex,
+  realType: floatType,
+  imagType: floatType,
 };
 
 export const scalarShape: HDF5ScalarShape = { class: HDF5ShapeClass.Scalar };

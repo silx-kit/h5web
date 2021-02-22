@@ -80,18 +80,19 @@ interface HDF5NullShape {
 /* ---------------- */
 /* ----- TYPE ----- */
 
-export type HDF5Type = HDF5BaseType | HDF5AdvancedType;
-
 // https://support.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html
-export type HDF5BaseType = HDF5NumericType | HDF5StringType | HDF5BooleanType;
-export type HDF5NumericType = HDF5IntegerType | HDF5FloatType;
-
-type HDF5AdvancedType =
+export type HDF5Type =
+  | HDF5NumericType
+  | HDF5StringType
+  | HDF5BooleanType
+  | HDF5ComplexType
   | HDF5Id
   | HDF5ArrayType
   | HDF5VLenType
   | HDF5CompoundType
   | HDF5EnumType;
+
+export type HDF5NumericType = HDF5IntegerType | HDF5FloatType;
 
 export enum HDF5TypeClass {
   Integer = 'H5T_INTEGER',
@@ -102,12 +103,19 @@ export enum HDF5TypeClass {
   Compound = 'H5T_COMPOUND',
   Enum = 'H5T_ENUM',
   Bool = 'H5T_BOOL',
+  Complex = 'H5T_COMPLEX',
 }
 
 export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
 
 export interface HDF5BooleanType {
   class: HDF5TypeClass.Bool;
+}
+
+export interface HDF5ComplexType {
+  class: HDF5TypeClass.Complex;
+  realType: HDF5Type;
+  imagType: HDF5Type;
 }
 
 export interface HDF5EnumType {

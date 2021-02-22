@@ -4,7 +4,7 @@ import HeatmapToolbar from '../../toolbar/HeatmapToolbar';
 import type { Dataset } from '../../providers/models';
 import {
   hasScalarShape,
-  hasBaseType,
+  hasPrintableType,
   hasSimpleShape,
   hasNumericType,
   hasMinDims,
@@ -43,7 +43,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Icon: FiCode,
     Container: ScalarVisContainer,
     supportsDataset: (dataset) => {
-      return hasBaseType(dataset) && hasScalarShape(dataset);
+      return hasPrintableType(dataset) && hasScalarShape(dataset);
     },
   },
 
@@ -53,7 +53,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Container: MatrixVisContainer,
     supportsDataset: (dataset) => {
       return (
-        hasBaseType(dataset) &&
+        hasPrintableType(dataset) &&
         hasSimpleShape(dataset) &&
         hasMinDims(dataset, 1)
       );

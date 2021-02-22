@@ -1,12 +1,14 @@
+import Complex from 'complex.js';
 import { HDF5Type, HDF5Id, HDF5TypeClass } from '../hdf5-models';
 import type {
   HsdsArrayType,
+  HsdsComplexValue,
   HsdsCompoundType,
   HsdsEnumType,
   HsdsType,
   HsdsVLenType,
 } from './models';
-import { convertHsdsType } from './utils';
+import { convertHsdsType, parseComplex } from './utils';
 
 describe('HsdsProvider utilities', () => {
   describe('convertHsdsType', () => {
@@ -176,11 +178,52 @@ describe('HsdsProvider utilities', () => {
       });
     });
 
+    it('should convert the complex compound type into Complex type', () => {
+      const complexCompound: HsdsCompoundType = {
+        class: HDF5TypeClass.Compound,
+        fields: [
+          { name: 'r', type: leFloatType.hsds },
+          { name: 'i', type: leFloatType.hsds },
+        ],
+      };
+      expect(convertHsdsType(complexCompound)).toEqual({
+        class: HDF5TypeClass.Complex,
+        realType: leFloatType.hdf5,
+        imagType: leFloatType.hdf5,
+      });
+    });
+
     it('should throw when encountering an unknown type', () => {
       const unknownType = { class: 'NO_CLASS' };
       expect(() => convertHsdsType(unknownType as HsdsType)).toThrow(
         /Unknown type/u
       );
+    });
+  });
+
+  describe('parseComplex', () => {
+    it('should parse scalar complex', () => {
+      expect((parseComplex([1, 5]) as Complex).equals(new Complex(1, 5))).toBe(
+        true
+      );
+    });
+
+    it('should parse complex array', () => {
+      const hsdsComplexArray: HsdsComplexValue[][] = [
+        [
+          [0, 0],
+          [0, 1],
+        ],
+        [
+          [1, 0],
+          [2, 1],
+        ],
+      ];
+      const convertedArray = parseComplex(hsdsComplexArray) as Complex[][];
+      expect(convertedArray).toEqual([
+        [new Complex(0, 0), new Complex(0, 1)],
+        [new Complex(1, 0), new Complex(2, 1)],
+      ]);
     });
   });
 });

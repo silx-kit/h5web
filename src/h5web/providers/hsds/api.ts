@@ -11,6 +11,7 @@ import type {
   HsdsLink,
   HsdsGroup,
   HsdsDataset,
+  HsdsComplex,
 } from './models';
 import { Datatype, Entity, EntityKind } from '../models';
 import {
@@ -20,13 +21,19 @@ import {
   HDF5Attribute,
   HDF5Link,
 } from '../hdf5-models';
-import { assertDefined, assertGroup, isHardLink } from '../../guards';
+import {
+  assertDefined,
+  assertGroup,
+  hasComplexType,
+  isHardLink,
+} from '../../guards';
 import type { GetValueParams, ProviderAPI } from '../context';
 import {
   assertHsdsDataset,
   isHsdsExternalLink,
   isHsdsGroup,
   convertHsdsType,
+  parseComplex,
 } from './utils';
 import { buildEntityPath, getChildEntity } from '../../utils';
 
@@ -91,6 +98,11 @@ export class HsdsApi implements ProviderAPI {
     const { data } = await this.client.get<HsdsValueResponse>(
       `/datasets/${entity.id}/value${selection && `?select=[${selection}]`}`
     );
+
+    if (hasComplexType(entity)) {
+      return parseComplex(data.value as HsdsComplex);
+    }
+
     return data.value;
   }
 

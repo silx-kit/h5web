@@ -6,9 +6,11 @@ import {
   isDatasetResponse,
   isGroupResponse,
   convertDtype,
+  parseComplex,
 } from './utils';
 import type {
   JupyterAttrsResponse,
+  JupyterComplex,
   JupyterContentResponse,
   JupyterDataResponse,
   JupyterMetaResponse,
@@ -20,6 +22,7 @@ import {
   HDF5Value,
   HDF5SoftLink,
 } from '../hdf5-models';
+import { assertDataset, hasComplexType } from '../../guards';
 
 export class JupyterApi implements ProviderAPI {
   public readonly filepath: string;
@@ -39,9 +42,20 @@ export class JupyterApi implements ProviderAPI {
   public async getValue(params: GetValueParams): Promise<HDF5Value> {
     const { path, selection = '' } = params;
 
-    const { data } = await this.client.get<JupyterDataResponse>(
-      `/data/${this.filepath}?uri=${path}${selection && `&ixstr=${selection}`}`
-    );
+    const [{ data }, entity] = await Promise.all([
+      this.client.get<JupyterDataResponse>(
+        `/data/${this.filepath}?uri=${path}${
+          selection && `&ixstr=${selection}`
+        }`
+      ),
+      this.getEntity(path),
+    ]);
+    assertDataset(entity);
+
+    if (hasComplexType(entity)) {
+      return parseComplex(data as JupyterComplex);
+    }
+
     return data;
   }
 

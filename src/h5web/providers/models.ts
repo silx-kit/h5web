@@ -1,6 +1,8 @@
+import type Complex from 'complex.js';
 import type {
   HDF5Attribute,
   HDF5BooleanType,
+  HDF5ComplexType,
   HDF5Link,
   HDF5NumericType,
   HDF5Shape,
@@ -54,9 +56,13 @@ type PrimitiveType<T extends HDF5Type> = T extends HDF5NumericType
   ? string
   : T extends HDF5BooleanType
   ? boolean
+  : T extends HDF5ComplexType
+  ? Complex
   : unknown;
 
 export type Value<
   S extends HDF5Shape,
   T extends HDF5Type
 > = S extends HDF5SimpleShape ? PrimitiveType<T>[] : PrimitiveType<T>;
+
+export type ComplexArray = (ComplexArray | Complex)[];

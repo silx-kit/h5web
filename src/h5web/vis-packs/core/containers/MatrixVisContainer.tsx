@@ -1,6 +1,6 @@
 import { ReactElement, Suspense } from 'react';
 import {
-  assertBaseType,
+  assertPrintableType,
   assertDataset,
   assertSimpleShape,
 } from '../../../guards';
@@ -14,7 +14,7 @@ function MatrixVisContainer(props: VisContainerProps): ReactElement {
   const { entity } = props;
   assertDataset(entity);
   assertSimpleShape(entity);
-  assertBaseType(entity);
+  assertPrintableType(entity);
 
   const { dims } = entity.shape;
   const axesCount = Math.min(dims.length, 2);

@@ -16,6 +16,7 @@ import {
   makeSimpleDataset,
   makeAttr,
   booleanType,
+  complexType,
 } from './metadata-utils';
 
 export const mockFilepath = 'source.h5';
@@ -33,11 +34,13 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       makeDataset('scalar_int', scalarShape, intType),
       makeDataset('scalar_str', scalarShape, stringType),
       makeDataset('scalar_bool', scalarShape, booleanType),
+      makeDataset('scalar_cplx', scalarShape, complexType),
     ]),
     makeGroup('nD_datasets', [
       makeSimpleDataset('oneD_linear', intType, [41]),
       makeSimpleDataset('oneD', intType, [41]),
       makeSimpleDataset('twoD', intType, [20, 41]),
+      makeSimpleDataset('twoD_cplx', complexType, [2, 2]),
       makeSimpleDataset('threeD', intType, [9, 20, 41]),
       makeSimpleDataset('threeD_bool', booleanType, [2, 3, 4]),
       makeSimpleDataset('fourD', intType, [3, 9, 20, 41]),
