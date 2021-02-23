@@ -1,15 +1,14 @@
 import create, { State } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { ColorMap } from './models';
-import { Domain, ScaleType } from '../models';
-import { DEFAULT_DOMAIN } from '../utils';
+import { CustomDomain, Domain, ScaleType } from '../models';
 
 interface HeatmapConfig extends State {
   dataDomain: Domain | undefined;
-  setDataDomain: (dataDomain: Domain | undefined) => void;
+  setDataDomain: (dataDomain: Domain) => void;
 
-  customDomain: Domain | undefined;
-  setCustomDomain: (customDomain: Domain | undefined) => void;
+  customDomain: CustomDomain;
+  setCustomDomain: (customDomain: CustomDomain) => void;
 
   colorMap: ColorMap;
   setColorMap: (colorMap: ColorMap) => void;
@@ -31,12 +30,10 @@ export const useHeatmapConfig = create<HeatmapConfig>(
   persist(
     (set) => ({
       dataDomain: undefined,
-      setDataDomain: (dataDomain: Domain | undefined) =>
-        set({ dataDomain: dataDomain || DEFAULT_DOMAIN }),
+      setDataDomain: (dataDomain: Domain) => set({ dataDomain }),
 
-      customDomain: undefined,
-      setCustomDomain: (customDomain: Domain | undefined) =>
-        set({ customDomain }),
+      customDomain: [undefined, undefined],
+      setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
 
       colorMap: 'Viridis',
       setColorMap: (colorMap: ColorMap) => set({ colorMap }),
@@ -64,7 +61,7 @@ export const useHeatmapConfig = create<HeatmapConfig>(
         'showGrid',
         'invertColorMap',
       ],
-      version: 4,
+      version: 5,
     }
   )
 );

@@ -18,6 +18,7 @@ export interface Size {
 }
 
 export type Domain = [number, number];
+export type CustomDomain = [number | undefined, number | undefined];
 
 export interface AxisConfig {
   isIndexAxis?: boolean;

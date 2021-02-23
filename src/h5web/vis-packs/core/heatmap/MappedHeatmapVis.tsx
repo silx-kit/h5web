@@ -1,9 +1,14 @@
 import { ReactElement, useEffect, useMemo } from 'react';
 import HeatmapVis from './HeatmapVis';
-import { useBaseArray, useDatasetValue, useMappedArray } from '../hooks';
+import {
+  useBaseArray,
+  useDatasetValue,
+  useDomain,
+  useMappedArray,
+} from '../hooks';
 import { useHeatmapConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
-import { getDomain } from '../utils';
+import { DEFAULT_DOMAIN } from '../utils';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import type { Dataset } from '../../../providers/models';
 import type {
@@ -12,6 +17,7 @@ import type {
 } from '../../../providers/hdf5-models';
 import { isAxis } from '../../../dimension-mapper/utils';
 import shallow from 'zustand/shallow';
+import { useVisDomain } from './hooks';
 
 interface Props {
   dataset: Dataset<HDF5SimpleShape, HDF5NumericType>;
@@ -56,16 +62,13 @@ function MappedHeatmapVis(props: Props): ReactElement {
   const baseArray = useBaseArray(value, slicedDims);
   const dataArray = useMappedArray(baseArray, slicedMapping);
 
-  const domain = useMemo(() => {
-    return customDomain || getDomain(dataArray.data as number[], scaleType);
-  }, [customDomain, dataArray, scaleType]);
+  const dataDomain =
+    useDomain(dataArray.data as number[], scaleType) || DEFAULT_DOMAIN;
+  const visDomain = useVisDomain(dataDomain, customDomain);
 
   useEffect(() => {
-    if (!customDomain) {
-      // If auto-scale is on, update `dataDomain`
-      setDataDomain(domain);
-    }
-  }, [customDomain, domain, setDataDomain]);
+    setDataDomain(dataDomain);
+  }, [dataDomain, setDataDomain]);
 
   useEffect(() => {
     if (colorScaleType) {
@@ -77,7 +80,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
     <HeatmapVis
       dataArray={dataArray}
       title={title}
-      domain={domain}
+      domain={visDomain}
       colorMap={colorMap}
       scaleType={scaleType}
       keepAspectRatio={keepAspectRatio}
