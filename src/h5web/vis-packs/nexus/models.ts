@@ -15,7 +15,8 @@ export type NxAttribute =
   | 'default'
   | 'long_name'
   | 'units'
-  | 'SILX_style';
+  | 'SILX_style'
+  | 'auxiliary_signals';
 
 export enum NxInterpretation {
   Spectrum = 'spectrum',
@@ -28,6 +29,7 @@ export interface NxData {
   titleDataset?: Dataset<HDF5ScalarShape, HDF5StringType>;
   axisDatasetMapping: AxisDatasetMapping;
   silxStyle: SilxStyle;
+  auxiliaryDatasets: Dataset<HDF5SimpleShape, HDF5NumericType>[];
 }
 
 export type AxisDatasetMapping = (

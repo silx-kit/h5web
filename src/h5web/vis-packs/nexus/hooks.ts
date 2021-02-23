@@ -48,16 +48,17 @@ function useTitleDataset(
   return dataset;
 }
 
-function useAxesDatasets(
-  group: Group
+function useAssociatedDatasets(
+  group: Group,
+  type: 'axes' | 'auxiliary_signals'
 ): (Dataset<HDF5SimpleShape, HDF5NumericType> | undefined)[] {
   const { valuesStore } = useContext(ProviderContext);
 
-  const axisList = getAttributeValue(group, 'axes') || [];
-  const axisNames = typeof axisList === 'string' ? [axisList] : axisList;
-  assertArray<string>(axisNames);
+  const dsetList = getAttributeValue(group, type) || [];
+  const dsetNames = typeof dsetList === 'string' ? [dsetList] : dsetList;
+  assertArray<string>(dsetNames);
 
-  return axisNames.map((name) => {
+  return dsetNames.map((name) => {
     if (name === '.') {
       return undefined;
     }
@@ -81,8 +82,11 @@ export function useNxData(group: Group): NxData {
     signalDataset,
     errorsDataset: findErrorsDataset(group, signalDataset.name),
     titleDataset: useTitleDataset(group),
-    axisDatasetMapping: useAxesDatasets(group),
+    axisDatasetMapping: useAssociatedDatasets(group, 'axes'),
     silxStyle: getSilxStyle(group),
+    auxiliaryDatasets: useAssociatedDatasets(group, 'auxiliary_signals').filter(
+      isDefined
+    ),
   };
 }
 
