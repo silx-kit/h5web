@@ -121,6 +121,8 @@
   "browserslist": {
     "production": [
       ">1%",
+      "Firefox 60",
+      "Firefox ESR",
       "not ie 11",
       "not op_mini all",
       "not dead"
