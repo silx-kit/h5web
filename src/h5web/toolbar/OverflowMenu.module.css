@@ -16,15 +16,16 @@
 }
 
 .menu {
-  position: absolute;
-  bottom: 0;
+  composes: popup from './Toolbar.module.css';
   right: 0.25rem;
-  transform: translateY(100%);
+}
+
+.menuList {
+  composes: popupInner from './Toolbar.module.css';
+  display: grid;
+  grid-gap: 0.25rem;
   margin: 0;
   padding: 0.375rem 0.25rem;
-  background-color: var(--secondary-light-bg);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
-    rgba(0, 0, 0, 0.1) 0px 4px 11px;
   list-style-type: none;
 }
 

@@ -46,18 +46,20 @@ function OverflowMenu(props: Props): ReactElement {
         </span>
       </button>
 
-      <ul
+      <div
         id="more-menu"
         className={styles.menu}
         ref={overflowMenuRef}
         role="menu"
         hidden={!isOverflowMenuOpen}
       >
-        {Children.map(children, (child) => (
-          // Render cloned child (React elements don't like to be moved around)
-          <li role="menuitem">{cloneElement(child)}</li>
-        ))}
-      </ul>
+        <ul className={styles.menuList}>
+          {Children.map(children, (child) => (
+            // Render cloned child (React elements don't like to be moved around)
+            <li role="menuitem">{cloneElement(child)}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 :root {
   --black: #020402;
+  --near-black: #333;
   --dark-slate-gray: #2f4f4f;
   --dark-gray: #696969;
   --gray: #808080;
-  --white: #ffffff;
+  --white: #fff;
   --primary: #c0da74;
   --primary-light: #d4e09b;
   --primary-dark: #9aae5d;
@@ -19,6 +20,7 @@
   --secondary-darker: #0e5846;
   --secondary-bg: #d9f4ec;
   --secondary-light-bg: #ecfaf6;
+  --secondary-light-bg-90: #ebfaf5e6;
   --danger: #99231b;
   --monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;

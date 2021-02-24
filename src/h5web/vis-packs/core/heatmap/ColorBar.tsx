@@ -8,7 +8,7 @@ import type { ScaleType, Domain } from '../models';
 import type { ColorMap } from './models';
 import { format } from 'd3-format';
 
-const boundFormatter = format('.3~g');
+const boundFormatter = format('.3~e');
 
 interface Props {
   domain: Domain;
