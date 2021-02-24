@@ -43,6 +43,12 @@ pre {
   font-family: var(--monospace);
 }
 
+abbr[title] {
+  cursor: help;
+  border-bottom: 1px dotted;
+  text-decoration: none;
+}
+
 [hidden] {
   display: none !important;
 }

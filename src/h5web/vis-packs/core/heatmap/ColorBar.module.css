@@ -51,6 +51,7 @@
   justify-content: center;
   line-height: 1;
   font-size: 0.875em;
+  white-space: nowrap;
 }
 
 .minBound {

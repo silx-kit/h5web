@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
 import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
-import DomainSlider from './controls/DomainSlider';
+import DomainSlider from './controls/DomainSlider/DomainSlider';
 import SnapshotButton from './controls/SnapshotButton';
 import Separator from './Separator';
 import Toolbar from './Toolbar';
@@ -32,8 +32,8 @@ function HeatmapToolbar(): ReactElement {
       {dataDomain && (
         <DomainSlider
           dataDomain={dataDomain}
-          value={customDomain}
-          onChange={setCustomDomain}
+          customDomain={customDomain}
+          onCustomDomainChange={setCustomDomain}
         />
       )}
 

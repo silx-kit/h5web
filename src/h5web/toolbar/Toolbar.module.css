@@ -56,6 +56,11 @@
   font-size: 0.875em;
 }
 
+.btn[data-raised] > .btnLike {
+  background-color: var(--btn-bg-raised);
+  box-shadow: 0 0 1px var(--btn-shadow-color);
+}
+
 .icon {
   font-size: 1.5em;
   padding-top: 1px;
@@ -101,4 +106,17 @@
 
 .btn[aria-expanded='true']:hover > .btnLike {
   box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-dark-color);
+}
+
+.popup {
+  position: absolute;
+  bottom: 1px; /* guarantees overlap with toolbar for hover-only popup */
+  padding-top: calc(0.375rem + 1px);
+  transform: translateY(100%);
+}
+
+.popupInner {
+  background-color: var(--secondary-light-bg-90);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 4px 11px;
 }
