@@ -58,7 +58,7 @@
 
 .btn[data-raised] > .btnLike {
   background-color: var(--btn-bg-raised);
-  box-shadow: 0 0 1px var(--btn-shadow-color);
+  box-shadow: var(--btn-shadow-raised) var(--btn-shadow-color);
 }
 
 .icon {
@@ -86,6 +86,11 @@
 .btn:hover > .btnLike {
   background-color: var(--secondary-lighter);
   box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
+}
+
+.btn[data-raised]:hover > .btnLike {
+  box-shadow: var(--btn-shadow-raised) var(--btn-shadow-color),
+    var(--btn-shadow-idle) var(--btn-shadow-color);
 }
 
 .btn[aria-pressed='true'] > .btnLike,

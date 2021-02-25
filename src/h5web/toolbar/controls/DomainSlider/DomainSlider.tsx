@@ -1,19 +1,17 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, Ref } from 'react';
 import ReactSlider from 'react-slider';
 import styles from './DomainSlider.module.css';
 import type { CustomDomain, Domain } from '../../../vis-packs/core/models';
 import { extendDomain } from '../../../vis-packs/core/utils';
 import ToggleBtn from '../ToggleBtn';
-import { FiZap } from 'react-icons/fi';
+import { FiSkipBack, FiSkipForward, FiZap } from 'react-icons/fi';
 import { useKey, useToggle } from 'react-use';
 import DomainTooltip from './DomainTooltip';
-import { format } from 'd3-format';
+import Thumb from './Thumb';
 
 const EXTEND_FACTOR = 0.2;
 const NB_DECIMALS = 1;
 const TOOLTIP_ID = 'domain-tooltip';
-
-const formatThumb = format(`.1f`);
 
 function getAutoscaleLabel(isAutoMin: boolean, isAutoMax: boolean): string {
   if (isAutoMin && !isAutoMax) {
@@ -72,10 +70,14 @@ function DomainSlider(props: Props): ReactElement {
         step={step}
         disabled={disabled}
         onAfterChange={(bounds) => onCustomDomainChange(bounds as Domain)}
-        renderThumb={(thumbProps, { valueNow }) => (
-          <div {...thumbProps} tabIndex={disabled ? -1 : 0}>
-            <div className={styles.thumbBtnLike}>{formatThumb(valueNow)}</div>
-          </div>
+        renderThumb={({ ref, ...thumbProps }, { index }) => (
+          <Thumb
+            ref={ref as Ref<HTMLDivElement>}
+            isAuto={index === 0 ? isAutoMin : isAutoMax}
+            AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
+            disabled={disabled}
+            {...thumbProps}
+          />
         )}
       />
 
