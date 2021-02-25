@@ -6,9 +6,7 @@ import styles from './ColorBar.module.css';
 import { getInterpolator, getLinearGradient } from './utils';
 import type { ScaleType, Domain } from '../models';
 import type { ColorMap } from './models';
-import { format } from 'd3-format';
-
-const boundFormatter = format('.3~e');
+import { formatValue } from '../../../utils';
 
 interface Props {
   domain: Domain;
@@ -47,10 +45,10 @@ function ColorBar(props: Props): ReactElement {
       {withBounds && (
         <>
           <p className={styles.minBound}>
-            {isEmptyDomain ? '−∞' : boundFormatter(domain[0])}
+            {isEmptyDomain ? '−∞' : formatValue(domain[0])}
           </p>
           <p className={styles.maxBound}>
-            {isEmptyDomain ? '+∞' : boundFormatter(domain[1])}
+            {isEmptyDomain ? '+∞' : formatValue(domain[1])}
           </p>
         </>
       )}
