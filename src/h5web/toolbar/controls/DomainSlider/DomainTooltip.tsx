@@ -1,10 +1,8 @@
-import { format } from 'd3-format';
 import type { ReactElement } from 'react';
 import type { Domain } from '../../../../packages/lib';
+import { formatValue } from '../../../utils';
 import ToggleBtn from '../ToggleBtn';
 import styles from './DomainSlider.module.css';
-
-const formatter = format('.3~e');
 
 interface Props {
   id: string;
@@ -27,11 +25,11 @@ function DomainTooltip(props: Props): ReactElement {
         <div className={styles.minMax}>
           <h3>Min</h3>
           <p>
-            <abbr title={domain[0].toString()}>{formatter(domain[0])}</abbr>
+            <abbr title={domain[0].toString()}>{formatValue(domain[0])}</abbr>
           </p>
           <h3>Max</h3>
           <p>
-            <abbr title={domain[1].toString()}>{formatter(domain[1])}</abbr>
+            <abbr title={domain[1].toString()}>{formatValue(domain[1])}</abbr>
           </p>
         </div>
 
@@ -40,11 +38,11 @@ function DomainTooltip(props: Props): ReactElement {
           <span>
             [{' '}
             <abbr title={dataDomain[0].toString()}>
-              {formatter(dataDomain[0])}
+              {formatValue(dataDomain[0])}
             </abbr>{' '}
             ,{' '}
             <abbr title={dataDomain[1].toString()}>
-              {formatter(dataDomain[1])}
+              {formatValue(dataDomain[1])}
             </abbr>{' '}
             ]
           </span>
