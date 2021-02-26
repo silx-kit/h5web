@@ -8,6 +8,7 @@ import { FiSkipBack, FiSkipForward, FiZap } from 'react-icons/fi';
 import { useKey, useToggle } from 'react-use';
 import DomainTooltip from './DomainTooltip';
 import Thumb from './Thumb';
+import { useAppliedDomain } from './hooks';
 
 const EXTEND_FACTOR = 0.2;
 const NB_DECIMALS = 1;
@@ -35,6 +36,11 @@ interface Props {
 function DomainSlider(props: Props): ReactElement {
   const { dataDomain, customDomain, disabled, onCustomDomainChange } = props;
 
+  const [appliedDomain, setAppliedDomain] = useAppliedDomain(
+    dataDomain,
+    customDomain
+  );
+
   const [tooltipOpen, toggleTooltip] = useToggle(false);
   useKey('Escape', () => toggleTooltip(false));
 
@@ -44,11 +50,6 @@ function DomainSlider(props: Props): ReactElement {
   const isAutoMin = customDomain[0] === undefined;
   const isAutoMax = customDomain[1] === undefined;
   const isAutoscaling = isAutoMin || isAutoMax;
-
-  const appliedDomain: Domain = [
-    customDomain[0] ?? dataDomain[0],
-    customDomain[1] ?? dataDomain[1],
-  ];
 
   return (
     <div
@@ -69,6 +70,7 @@ function DomainSlider(props: Props): ReactElement {
         max={extendedMax}
         step={step}
         disabled={disabled}
+        onChange={(bounds) => setAppliedDomain(bounds as Domain)}
         onAfterChange={(bounds) => onCustomDomainChange(bounds as Domain)}
         renderThumb={({ ref, ...thumbProps }, { index }) => (
           <Thumb
