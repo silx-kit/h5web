@@ -1,6 +1,6 @@
 import type { CustomDomain, Domain } from '../../../vis-packs/core/models';
 
-export function getSliderDomain(
+export function getVisDomain(
   dataDomain: Domain,
   customDomain: CustomDomain
 ): Domain {
