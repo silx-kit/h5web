@@ -55,7 +55,7 @@ function DomainSlider(props: Props): ReactElement {
       onPointerLeave={() => toggleTooltip(false)}
     >
       <ScaledSlider
-        rawDomain={sliderDomain}
+        value={sliderDomain}
         dataDomain={dataDomain}
         isAutoMin={isAutoMin}
         isAutoMax={isAutoMax}

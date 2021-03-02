@@ -7,9 +7,10 @@ import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 
 const SLIDER_RANGE: Domain = [1, 100];
+const EXTEND_FACTOR = 0.2;
 
 interface Props {
-  rawDomain: Domain;
+  value: Domain;
   dataDomain: Domain;
   disabled?: boolean;
   isAutoMin: boolean;
@@ -18,10 +19,8 @@ interface Props {
   onAfterChange: (domain: Domain) => void;
 }
 
-const EXTEND_FACTOR = 0.2;
-
 function ScaledSlider(props: Props): ReactElement {
-  const { rawDomain, dataDomain, disabled, isAutoMin, isAutoMax } = props;
+  const { value, dataDomain, disabled, isAutoMin, isAutoMax } = props;
   const { onChange, onAfterChange } = props;
 
   const sliderExtent = extendDomain(dataDomain, EXTEND_FACTOR);
@@ -42,7 +41,7 @@ function ScaledSlider(props: Props): ReactElement {
       pearling
       min={SLIDER_RANGE[0]}
       max={SLIDER_RANGE[1]}
-      value={rawDomain.map(scale) as Domain}
+      value={value.map(scale) as Domain}
       disabled={disabled}
       onChange={(bounds) => {
         onChange((bounds as Domain).map((val) => scale.invert(val)) as Domain);
