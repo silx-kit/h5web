@@ -3,7 +3,7 @@ import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
 import { useBoolean } from 'react-use';
 import { createAxisScale, extendDomain } from '../../../vis-packs/core/utils';
-import { Domain, ScaleType } from '../../../vis-packs/core/models';
+import type { Domain, ScaleType } from '../../../vis-packs/core/models';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
@@ -39,17 +39,13 @@ function ScaledSlider(props: Props): ReactElement {
   } = props;
   const { onChange, onAfterChange: onDone } = props;
 
-  const sliderExtent = extendDomain(
-    visDomain,
-    EXTEND_FACTOR,
-    scaleType === ScaleType.Log
-  );
+  const sliderExtent = extendDomain(visDomain, EXTEND_FACTOR, scaleType);
 
   const [hasMinChanged, setMinChanged] = useBoolean(false);
   const [hasMaxChanged, setMaxChanged] = useBoolean(false);
 
   const scale = createAxisScale({
-    type: ScaleType.Linear,
+    type: scaleType,
     domain: sliderExtent,
     range: SLIDER_RANGE,
     round: true,
