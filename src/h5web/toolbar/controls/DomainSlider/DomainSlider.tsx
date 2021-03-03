@@ -61,7 +61,12 @@ function DomainSlider(props: Props): ReactElement {
         isAutoMax={isAutoMax}
         disabled={disabled}
         onChange={setSliderDomain}
-        onAfterChange={onCustomDomainChange}
+        onAfterChange={(hasMinChanged, hasMaxChanged) => {
+          onCustomDomainChange([
+            hasMinChanged ? sliderDomain[0] : customDomain[0],
+            hasMaxChanged ? sliderDomain[1] : customDomain[1],
+          ]);
+        }}
       />
 
       <ToggleBtn
