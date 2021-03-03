@@ -1,6 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react';
 import styles from './DomainSlider.module.css';
-import type { CustomDomain, Domain } from '../../../vis-packs/core/models';
+import type {
+  CustomDomain,
+  Domain,
+  ScaleType,
+} from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import { FiZap } from 'react-icons/fi';
 import { useKey, useToggle } from 'react-use';
@@ -25,12 +29,14 @@ function getAutoscaleLabel(isAutoMin: boolean, isAutoMax: boolean): string {
 interface Props {
   dataDomain: Domain;
   customDomain: CustomDomain;
+  scaleType: ScaleType;
   disabled?: boolean;
   onCustomDomainChange: (domain: CustomDomain) => void;
 }
 
 function DomainSlider(props: Props): ReactElement {
-  const { dataDomain, customDomain, disabled, onCustomDomainChange } = props;
+  const { dataDomain, customDomain, scaleType, disabled } = props;
+  const { onCustomDomainChange } = props;
 
   const visDomain = useVisDomain(dataDomain, customDomain);
   const [sliderDomain, setSliderDomain] = useState(visDomain);
@@ -57,9 +63,11 @@ function DomainSlider(props: Props): ReactElement {
       <ScaledSlider
         value={sliderDomain}
         dataDomain={dataDomain}
+        visDomain={visDomain}
+        scaleType={scaleType}
+        disabled={disabled}
         isAutoMin={isAutoMin}
         isAutoMax={isAutoMax}
-        disabled={disabled}
         onChange={setSliderDomain}
         onAfterChange={(hasMinChanged, hasMaxChanged) => {
           onCustomDomainChange([
