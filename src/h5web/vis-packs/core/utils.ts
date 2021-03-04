@@ -120,16 +120,25 @@ export function getDomain(
 export function extendDomain(
   bareDomain: Domain,
   extendFactor: number,
-  isLog?: boolean
+  scaleType: ScaleType = ScaleType.Linear
 ): Domain {
-  const [min, max] = bareDomain;
-
-  if (isLog) {
-    return [min / (1 + extendFactor), max * (1 + extendFactor)];
+  if (extendFactor <= 0) {
+    return bareDomain;
   }
 
-  const extension = (max - min) * extendFactor;
-  return [min - extension, max + extension];
+  const [min, max] = bareDomain;
+  const domain =
+    min === max
+      ? [min * (1 - extendFactor), min * (1 + extendFactor)]
+      : bareDomain;
+
+  const scale = createAxisScale({
+    type: scaleType,
+    domain,
+    range: [0, 1],
+  });
+
+  return [scale.invert(-extendFactor), scale.invert(1 + extendFactor)];
 }
 
 export function getValueToIndexScale(

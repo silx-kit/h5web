@@ -97,9 +97,36 @@ describe('Shared visualization utilities', () => {
       expect(extendedDomain).toEqual([-50, 150]);
     });
 
-    it('should extend domain by factor for use with log scale', () => {
-      const extendedDomain = extendDomain([1, 100], 0.25, true);
-      expect(extendedDomain).toEqual([0.8, 125]);
+    it('should return a non-empty domain when given an empty domain', () => {
+      const extendedDomain = extendDomain([1, 1], 0.5);
+      expect(extendedDomain).toEqual([0, 2]);
+    });
+
+    it('should extend domain by factor 1 with log scale', () => {
+      // Extension factor of 1 for log scale means one decade
+      const [extMin, extMax] = extendDomain([10, 100], 1, ScaleType.Log);
+      expect(extMin).toBeCloseTo(1);
+      expect(extMax).toBeCloseTo(1000);
+    });
+
+    it('should extend domain by factor with log scale', () => {
+      const [min, max] = [1, 10];
+      const [extMin, extMax] = extendDomain([min, max], 0.1, ScaleType.Log);
+      expect(extMin).toBeLessThan(min);
+      expect(extMax).toBeGreaterThan(max);
+    });
+
+    it('should extend domain for use with symlog scale', () => {
+      const [min, max] = [-10, 0];
+      const [extMin, extMax] = extendDomain([min, max], 0.1, ScaleType.SymLog);
+      expect(extMin).toBeLessThan(min);
+      expect(extMax).toBeGreaterThan(max);
+    });
+
+    it('should not extend domain when the factor is 0', () => {
+      const [extMin, extMax] = extendDomain([10, 100], 0, ScaleType.Log);
+      expect(extMin).toBe(10);
+      expect(extMax).toBe(100);
     });
   });
 

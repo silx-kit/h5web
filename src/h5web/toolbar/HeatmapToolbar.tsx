@@ -33,6 +33,7 @@ function HeatmapToolbar(): ReactElement {
         <DomainSlider
           dataDomain={dataDomain}
           customDomain={customDomain}
+          scaleType={scaleType}
           onCustomDomainChange={setCustomDomain}
         />
       )}

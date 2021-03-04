@@ -66,18 +66,13 @@ function LineVis(props: Props): ReactElement {
 
   const abscissaDomain = useMemo(() => {
     const rawDomain = getDomain(abscissas, abscissaScaleType);
-    return (
-      rawDomain &&
-      extendDomain(rawDomain, 0.01, abscissaScaleType === ScaleType.Log)
-    );
+    return rawDomain && extendDomain(rawDomain, 0.01, abscissaScaleType);
   }, [abscissas, abscissaScaleType]);
 
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
   const dataDomain = useMemo(() => {
-    return domain
-      ? extendDomain(domain, 0.05, scaleType === ScaleType.Log)
-      : DEFAULT_DOMAIN;
+    return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
 
   return (
