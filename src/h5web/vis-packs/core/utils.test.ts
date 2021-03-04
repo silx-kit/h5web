@@ -6,7 +6,7 @@ import {
   getValueToIndexScale,
   getIntegerTicks,
 } from './utils';
-import { ScaleType } from './models';
+import { Domain, ScaleType } from './models';
 
 describe('Shared visualization utilities', () => {
   describe('computeVisSize', () => {
@@ -127,6 +127,18 @@ describe('Shared visualization utilities', () => {
       const [extMin, extMax] = extendDomain([10, 100], 0, ScaleType.Log);
       expect(extMin).toBe(10);
       expect(extMax).toBe(100);
+    });
+
+    it('should not extend domain outside of JS supported values', () => {
+      const domain: Domain = [-1 / Number.EPSILON, 1 / Number.EPSILON];
+      const extendedDomain = extendDomain(domain, 0.5);
+      expect(domain).toEqual(extendedDomain);
+    });
+
+    it('should not extend domain outside of JS supported values with log scale', () => {
+      const domain: Domain = [-Number.EPSILON, 1 / Number.EPSILON];
+      const extendedDomain = extendDomain(domain, 0.75, ScaleType.Log);
+      expect(domain).toEqual(extendedDomain);
     });
   });
 
