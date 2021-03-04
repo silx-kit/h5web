@@ -85,12 +85,17 @@
   box-shadow: var(--btn-shadow-idle-hover) var(--btn-shadow-dark-color);
 }
 
+.thumb[data-error] {
+  color: var(--danger-bright);
+  font-size: 1.125em;
+}
+
 .thumbBtnLike > svg {
   position: absolute;
   top: 50%;
   left: 50%;
   /* Tweak centering of autoscale icons to compensate for inset shadows */
-  transform: translate(-52%, -50%);
+  transform: translate(-52%, -52%);
 }
 
 .autoBtnLike {
@@ -103,13 +108,21 @@
 .tooltip {
   composes: popup from '../../Toolbar.module.css';
   left: 50%;
-  min-width: 16em;
+  min-width: 17em;
   transform: translate(-50%, 100%);
 }
 
 .tooltipInner {
   composes: popupInner from '../../Toolbar.module.css';
   padding: 1rem 0.75rem;
+}
+
+.tooltipInner > p {
+  margin-bottom: 0.75rem;
+}
+
+.tooltipInner > p:last-child {
+  margin-bottom: 0;
 }
 
 .minMax {
@@ -132,24 +145,28 @@
   font-size: inherit;
 }
 
-.minMax > p {
+.value {
   grid-column: value;
   display: flex;
   align-items: center;
   text-align: right;
 }
 
-.minMax > p::before {
+.value::before {
   flex: 1 1 0%;
   content: '';
   min-width: 1em;
   margin-right: 0.5rem;
   margin-top: 0.5rem;
   border-bottom: 2px dotted currentColor;
+  color: var(--black);
+}
+
+.value[data-error] {
+  color: var(--danger);
 }
 
 .dataRange {
-  margin-bottom: 0.75rem;
   white-space: nowrap;
 }
 
@@ -160,9 +177,21 @@
 .autoscale {
   display: flex;
   align-items: center;
-  margin-bottom: 0;
 }
 
 .autoscale > button:first-of-type {
   margin-left: 0.5rem;
+}
+
+.error {
+  font-size: 0.9375em;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.error > svg {
+  vertical-align: -0.125em;
+}
+.error > strong {
+  font-weight: bold;
 }

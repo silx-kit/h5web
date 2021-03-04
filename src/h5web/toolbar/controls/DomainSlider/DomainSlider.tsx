@@ -10,7 +10,7 @@ import { FiZap } from 'react-icons/fi';
 import { useKey, useToggle } from 'react-use';
 import DomainTooltip from './DomainTooltip';
 import ScaledSlider from './ScaledSlider';
-import { useVisDomain } from './hooks';
+import { useVisDomain } from '../../../vis-packs/core/heatmap/hooks';
 
 const TOOLTIP_ID = 'domain-tooltip';
 
@@ -38,7 +38,7 @@ function DomainSlider(props: Props): ReactElement {
   const { dataDomain, customDomain, scaleType, disabled } = props;
   const { onCustomDomainChange } = props;
 
-  const visDomain = useVisDomain(dataDomain, customDomain);
+  const [visDomain, errors] = useVisDomain(dataDomain, customDomain, scaleType);
   const [sliderDomain, setSliderDomain] = useState(visDomain);
 
   useEffect(() => {
@@ -65,6 +65,7 @@ function DomainSlider(props: Props): ReactElement {
         dataDomain={dataDomain}
         visDomain={visDomain}
         scaleType={scaleType}
+        errors={errors}
         disabled={disabled}
         isAutoMin={isAutoMin}
         isAutoMax={isAutoMax}
@@ -95,6 +96,7 @@ function DomainSlider(props: Props): ReactElement {
         open={tooltipOpen}
         domain={sliderDomain}
         dataDomain={dataDomain}
+        errors={errors}
         isAutoMin={isAutoMin}
         isAutoMax={isAutoMax}
         onAutoMinToggle={() => {

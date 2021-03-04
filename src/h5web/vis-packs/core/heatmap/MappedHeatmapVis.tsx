@@ -64,7 +64,8 @@ function MappedHeatmapVis(props: Props): ReactElement {
 
   const dataDomain =
     useDomain(dataArray.data as number[], scaleType) || DEFAULT_DOMAIN;
-  const visDomain = useVisDomain(dataDomain, customDomain);
+
+  const [visDomain] = useVisDomain(dataDomain, customDomain, scaleType);
 
   useEffect(() => {
     setDataDomain(dataDomain);

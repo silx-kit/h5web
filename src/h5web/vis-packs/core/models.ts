@@ -17,8 +17,18 @@ export interface Size {
   height: number;
 }
 
+export type Bound = 'min' | 'max';
 export type Domain = [number, number];
 export type CustomDomain = [number | undefined, number | undefined];
+
+export interface DomainErrors {
+  minError?: BoundError;
+  maxError?: BoundError;
+}
+
+export enum BoundError {
+  InvalidWithLog = 'invalid-with-log',
+}
 
 export interface AxisConfig {
   isIndexAxis?: boolean;

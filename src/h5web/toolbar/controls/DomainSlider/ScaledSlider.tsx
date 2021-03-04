@@ -3,7 +3,11 @@ import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
 import { useBoolean } from 'react-use';
 import { createAxisScale, extendDomain } from '../../../vis-packs/core/utils';
-import type { Domain, ScaleType } from '../../../vis-packs/core/models';
+import type {
+  Domain,
+  DomainErrors,
+  ScaleType,
+} from '../../../vis-packs/core/models';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
@@ -16,6 +20,7 @@ interface Props {
   dataDomain: Domain;
   visDomain: Domain;
   scaleType: ScaleType;
+  errors: DomainErrors;
   disabled?: boolean;
   isAutoMin: boolean;
   isAutoMax: boolean;
@@ -33,11 +38,13 @@ function ScaledSlider(props: Props): ReactElement {
     dataDomain,
     visDomain,
     scaleType,
+    errors,
     disabled,
     isAutoMin,
     isAutoMax,
   } = props;
   const { onChange, onAfterChange: onDone } = props;
+  const { minError, maxError } = errors;
 
   const sliderExtent = extendDomain(visDomain, EXTEND_FACTOR, scaleType);
 
@@ -89,6 +96,7 @@ function ScaledSlider(props: Props): ReactElement {
         <Thumb
           ref={ref as Ref<HTMLDivElement>}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
+          hasError={index === 0 ? !!minError : !!maxError}
           AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
           disabled={disabled}
           {...thumbProps}
