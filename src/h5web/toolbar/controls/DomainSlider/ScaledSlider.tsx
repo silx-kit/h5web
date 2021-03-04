@@ -78,8 +78,6 @@ function ScaledSlider(props: Props): ReactElement {
   return (
     <ReactSlider
       className={styles.slider}
-      thumbClassName={styles.thumb}
-      thumbActiveClassName={styles.thumbActive}
       pearling
       min={SLIDER_RANGE[0]}
       max={SLIDER_RANGE[1]}

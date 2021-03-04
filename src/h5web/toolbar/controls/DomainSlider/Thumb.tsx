@@ -15,6 +15,7 @@ const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
     <div
       ref={ref}
       {...thumbProps}
+      className={styles.thumb}
       tabIndex={disabled ? -1 : 0}
       data-auto={isAuto}
     >
