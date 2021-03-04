@@ -23,11 +23,22 @@
 }
 
 .track {
+  position: relative;
+  flex: 1 1 0%;
   align-self: center;
   height: 0.5rem;
   background-color: var(--secondary-dark-15);
   box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
   border-radius: 0.25rem;
+}
+
+.dataTrack {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: var(--secondary-dark);
+  box-shadow: 0 -2px 3px inset var(--secondary-darker);
+  border-radius: 2px;
 }
 
 .thumb {
@@ -67,6 +78,10 @@
 
 .thumb:hover > .thumbBtnLike {
   box-shadow: var(--btn-shadow-idle-hover) var(--btn-shadow-dark-color);
+}
+
+.thumb[data-auto='false']:hover > .thumbBtnLike {
+  opacity: 0.8;
 }
 
 .thumb[data-auto='true']:hover > .thumbBtnLike {
