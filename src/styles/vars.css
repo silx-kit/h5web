@@ -22,6 +22,7 @@
   --secondary-light-bg: #ecfaf6;
   --secondary-light-bg-90: #ebfaf5e6;
   --danger: #99231b;
+  --warn: #7e4c00;
   --monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
   --sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',

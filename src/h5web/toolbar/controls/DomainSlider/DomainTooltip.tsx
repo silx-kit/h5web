@@ -1,7 +1,9 @@
 import type { ReactElement } from 'react';
 import type { Domain } from '../../../../packages/lib';
 import { formatValue } from '../../../utils';
+import type { DomainErrors } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
+import BoundErrorMessage from './BoundErrorMessage';
 import styles from './DomainSlider.module.css';
 
 interface Props {
@@ -9,6 +11,7 @@ interface Props {
   open: boolean;
   domain: Domain;
   dataDomain: Domain;
+  errors: DomainErrors;
   isAutoMin: boolean;
   isAutoMax: boolean;
   onAutoMinToggle: () => void;
@@ -16,19 +19,20 @@ interface Props {
 }
 
 function DomainTooltip(props: Props): ReactElement {
-  const { id, open, domain, dataDomain, isAutoMin, isAutoMax } = props;
+  const { id, open, domain, dataDomain, errors, isAutoMin, isAutoMax } = props;
   const { onAutoMinToggle, onAutoMaxToggle } = props;
+  const { minError, maxError } = errors;
 
   return (
     <div id={id} className={styles.tooltip} role="tooltip" hidden={!open}>
       <div className={styles.tooltipInner}>
         <div className={styles.minMax}>
           <h3>Min</h3>
-          <p>
+          <p className={styles.value} data-error={minError || undefined}>
             <abbr title={domain[0].toString()}>{formatValue(domain[0])}</abbr>
           </p>
           <h3>Max</h3>
-          <p>
+          <p className={styles.value} data-error={maxError || undefined}>
             <abbr title={domain[1].toString()}>{formatValue(domain[1])}</abbr>
           </p>
         </div>
@@ -63,6 +67,9 @@ function DomainTooltip(props: Props): ReactElement {
             onChange={onAutoMaxToggle}
           />
         </p>
+
+        {minError && <BoundErrorMessage bound="min" error={minError} />}
+        {maxError && <BoundErrorMessage bound="max" error={maxError} />}
       </div>
     </div>
   );
