@@ -129,7 +129,7 @@ export function extendDomain(
   const [min, max] = bareDomain;
   const domain =
     min === max
-      ? [min * (1 - extendFactor), min * (1 + extendFactor)]
+      ? [min - Math.abs(min) * extendFactor, min + Math.abs(min) * extendFactor]
       : bareDomain;
 
   const scale = createAxisScale({
