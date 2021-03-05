@@ -97,9 +97,14 @@ describe('Shared visualization utilities', () => {
       expect(extendedDomain).toEqual([-50, 150]);
     });
 
-    it('should return a non-empty domain when given an empty domain', () => {
+    it('should return a non-empty domain when given a single positive value domain', () => {
       const extendedDomain = extendDomain([1, 1], 0.5);
       expect(extendedDomain).toEqual([0, 2]);
+    });
+
+    it('should return a non-empty domain when given a single negative value domain', () => {
+      const extendedDomain = extendDomain([-1, -1], 0.5);
+      expect(extendedDomain).toEqual([-2, 0]);
     });
 
     it('should extend domain by factor 1 with log scale', () => {
