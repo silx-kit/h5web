@@ -138,7 +138,13 @@ export function extendDomain(
     range: [0, 1],
   });
 
-  return [scale.invert(-extendFactor), scale.invert(1 + extendFactor)];
+  const extMin = scale.invert(-extendFactor);
+  const extMax = scale.invert(1 + extendFactor);
+
+  return [
+    isSupported(extMin) ? extMin : min,
+    isSupported(extMax) ? extMax : max,
+  ];
 }
 
 export function getValueToIndexScale(
@@ -227,4 +233,10 @@ export function isScaleType(val: unknown): val is ScaleType {
   return (
     typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
   );
+}
+
+function isSupported(val: number) {
+  const absVal = Math.abs(val);
+
+  return val === 0 || (absVal > Number.EPSILON && absVal < 1 / Number.EPSILON);
 }
