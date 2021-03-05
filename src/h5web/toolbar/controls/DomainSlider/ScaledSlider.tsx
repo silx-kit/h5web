@@ -55,11 +55,10 @@ function ScaledSlider(props: Props): ReactElement {
     type: scaleType,
     domain: sliderExtent,
     range: SLIDER_RANGE,
-    round: true,
     clamp: true,
   });
 
-  const scaledValue = value.map(scale) as Domain;
+  const scaledValue = value.map(scale).map(Math.round) as Domain;
 
   function handleChange(newScaledValue: Domain) {
     const [newScaledMin, newScaledMax] = newScaledValue;
