@@ -86,7 +86,7 @@
 }
 
 .thumb[data-error] {
-  color: var(--danger-bright);
+  color: var(--warn);
   font-size: 1.125em;
 }
 
@@ -163,7 +163,7 @@
 }
 
 .value[data-error] {
-  color: var(--danger);
+  color: var(--warn);
 }
 
 .dataRange {
@@ -186,7 +186,7 @@
 .error {
   font-size: 0.9375em;
   font-weight: 600;
-  color: var(--danger);
+  color: var(--warn);
 }
 
 .error > svg {

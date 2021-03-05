@@ -1,5 +1,5 @@
 import { forwardRef, HTMLProps } from 'react';
-import { FiSlash } from 'react-icons/fi';
+import { FiAlertCircle } from 'react-icons/fi';
 import type { IconType } from 'react-icons/lib';
 import styles from './DomainSlider.module.css';
 
@@ -24,7 +24,7 @@ const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
     >
       <div className={styles.thumbBtnLike}>
         {isAuto && <AutoIcon />}
-        {hasError && <FiSlash />}
+        {hasError && <FiAlertCircle strokeWidth="3" />}
       </div>
     </div>
   );
