@@ -3,7 +3,7 @@
 }
 
 .icon {
-  composes: icon from '../Toolbar.module.css';
+  composes: icon from '../../Toolbar.module.css';
 }
 
 .label {

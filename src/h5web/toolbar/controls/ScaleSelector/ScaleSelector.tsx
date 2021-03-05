@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
-import { ScaleType } from '../../vis-packs/core/models';
-import Selector from './Selector/Selector';
+import { ScaleType } from '../../../vis-packs/core/models';
+import Selector from '../Selector/Selector';
 import styles from './ScaleSelector.module.css';
 import ScaleOption from './ScaleOption';
 

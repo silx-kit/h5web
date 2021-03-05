@@ -7,7 +7,7 @@ import { CurveType } from '../vis-packs/core/line/models';
 import ToggleGroup from './controls/ToggleGroup';
 import Toolbar from './Toolbar';
 import Separator from './Separator';
-import ScaleSelector from './controls/ScaleSelector';
+import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
 
 function LineToolbar(): ReactElement {
