@@ -1,15 +1,14 @@
 import type { ReactElement } from 'react';
 import type { IconType } from 'react-icons/lib';
-import { MdSort, MdFilterList, MdGraphicEq } from 'react-icons/md';
-import { ScaleType } from '../../vis-packs/core/models';
+import { MdSort, MdFilterList } from 'react-icons/md';
+import { ScaleType } from '../../../vis-packs/core/models';
+import MdGraphicEqRotated from './MdGraphicEqRotated';
 import styles from './ScaleSelector.module.css';
 
 const ICONS: Record<ScaleType, IconType> = {
   [ScaleType.Linear]: MdSort,
   [ScaleType.Log]: MdFilterList,
-  [ScaleType.SymLog]: (iconProps) => (
-    <MdGraphicEq transform="rotate(90)" {...iconProps} />
-  ),
+  [ScaleType.SymLog]: MdGraphicEqRotated,
 };
 
 const LABELS: Record<ScaleType, string> = {

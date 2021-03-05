@@ -7,7 +7,7 @@ import SnapshotButton from './controls/SnapshotButton';
 import Separator from './Separator';
 import Toolbar from './Toolbar';
 import ColorMapSelector from './controls/ColorMapSelector';
-import ScaleSelector from './controls/ScaleSelector';
+import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
 
 function HeatmapToolbar(): ReactElement {
