@@ -117,33 +117,44 @@ export function getDomain(
   return positiveMin !== Infinity ? [positiveMin, max] : undefined;
 }
 
+function clampBound(val: number): number {
+  const absVal = Math.abs(val);
+
+  if (absVal < Number.EPSILON) {
+    return val === 0 ? val : Math.sign(val) * Number.EPSILON;
+  }
+
+  if (absVal > 1 / Number.EPSILON) {
+    return Math.sign(val) / Number.EPSILON;
+  }
+
+  return val;
+}
+
 export function extendDomain(
   bareDomain: Domain,
   extendFactor: number,
-  scaleType: ScaleType = ScaleType.Linear
+  scaleType = ScaleType.Linear
 ): Domain {
   if (extendFactor <= 0) {
     return bareDomain;
   }
 
   const [min, max] = bareDomain;
+  if (min === max && min === 0) {
+    return [-1, 1];
+  }
+
   const domain =
     min === max
       ? [min - Math.abs(min) * extendFactor, min + Math.abs(min) * extendFactor]
       : bareDomain;
 
-  const scale = createAxisScale({
-    type: scaleType,
-    domain,
-    range: [0, 1],
-  });
-
-  const extMin = scale.invert(-extendFactor);
-  const extMax = scale.invert(1 + extendFactor);
+  const scale = createAxisScale({ type: scaleType, domain, range: [0, 1] });
 
   return [
-    isSupported(extMin) ? extMin : min,
-    isSupported(extMax) ? extMax : max,
+    clampBound(scale.invert(-extendFactor)),
+    clampBound(scale.invert(1 + extendFactor)),
   ];
 }
 
@@ -233,10 +244,4 @@ export function isScaleType(val: unknown): val is ScaleType {
   return (
     typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
   );
-}
-
-function isSupported(val: number) {
-  const absVal = Math.abs(val);
-
-  return val === 0 || (absVal > Number.EPSILON && absVal < 1 / Number.EPSILON);
 }

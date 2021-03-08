@@ -92,58 +92,60 @@ describe('Shared visualization utilities', () => {
   });
 
   describe('extendDomain', () => {
-    it('should extend domain by factor', () => {
+    it('should extend domain with linear scale', () => {
       const extendedDomain = extendDomain([0, 100], 0.5);
       expect(extendedDomain).toEqual([-50, 150]);
     });
 
-    it('should return a non-empty domain when given a single positive value domain', () => {
-      const extendedDomain = extendDomain([1, 1], 0.5);
-      expect(extendedDomain).toEqual([0, 2]);
-    });
-
-    it('should return a non-empty domain when given a single negative value domain', () => {
-      const extendedDomain = extendDomain([-1, -1], 0.5);
-      expect(extendedDomain).toEqual([-2, 0]);
-    });
-
-    it('should extend domain by factor 1 with log scale', () => {
-      // Extension factor of 1 for log scale means one decade
-      const [extMin, extMax] = extendDomain([10, 100], 1, ScaleType.Log);
-      expect(extMin).toBeCloseTo(1);
-      expect(extMax).toBeCloseTo(1000);
-    });
-
-    it('should extend domain by factor with log scale', () => {
-      const [min, max] = [1, 10];
-      const [extMin, extMax] = extendDomain([min, max], 0.1, ScaleType.Log);
-      expect(extMin).toBeLessThan(min);
-      expect(extMax).toBeGreaterThan(max);
-    });
-
-    it('should extend domain for use with symlog scale', () => {
+    it('should extend domain with symlog scale', () => {
       const [min, max] = [-10, 0];
       const [extMin, extMax] = extendDomain([min, max], 0.1, ScaleType.SymLog);
       expect(extMin).toBeLessThan(min);
       expect(extMax).toBeGreaterThan(max);
     });
 
-    it('should not extend domain when the factor is 0', () => {
-      const [extMin, extMax] = extendDomain([10, 100], 0, ScaleType.Log);
-      expect(extMin).toBe(10);
-      expect(extMax).toBe(100);
+    it('should extend domain with log scale', () => {
+      const [min, max] = [1, 10];
+      const [extMin1, extMax1] = extendDomain([min, max], 0.1, ScaleType.Log);
+      expect(extMin1).toBeLessThan(min);
+      expect(extMax1).toBeGreaterThan(max);
+
+      // Extension factor of 1 for log scale means one decade
+      const [extMin2, extMax2] = extendDomain([10, 100], 1, ScaleType.Log);
+      expect(extMin2).toBeCloseTo(1);
+      expect(extMax2).toBeCloseTo(1000);
     });
 
-    it('should not extend domain outside of JS supported values', () => {
-      const domain: Domain = [-1 / Number.EPSILON, 1 / Number.EPSILON];
+    it('should extend positive single-value domain', () => {
+      const extendedDomain = extendDomain([1, 1], 0.5);
+      expect(extendedDomain).toEqual([0, 2]);
+    });
+
+    it('should extend negative single-value domain', () => {
+      const extendedDomain = extendDomain([-1, -1], 0.5);
+      expect(extendedDomain).toEqual([-2, 0]);
+    });
+
+    it('should return [-1, 1] regardless of factor when trying to extend [0, 0]', () => {
+      expect(extendDomain([0, 0], 0.5)).toEqual([-1, 1]);
+      expect(extendDomain([0, 0], 1)).toEqual([-1, 1]);
+    });
+
+    it('should not extend domain when factor is 0', () => {
+      const extendedDomain = extendDomain([10, 100], 0, ScaleType.Log);
+      expect(extendedDomain).toEqual([10, 100]);
+    });
+
+    it('should not extend domain outside of supported values', () => {
+      const domain: Domain = [-1 / Number.EPSILON + 1, 1 / Number.EPSILON - 1];
       const extendedDomain = extendDomain(domain, 0.5);
-      expect(domain).toEqual(extendedDomain);
+      expect(extendedDomain).toEqual([-1 / Number.EPSILON, 1 / Number.EPSILON]);
     });
 
-    it('should not extend domain outside of JS supported values with log scale', () => {
-      const domain: Domain = [-Number.EPSILON, 1 / Number.EPSILON];
+    it('should not extend domain outside of supported values with log scale', () => {
+      const domain: Domain = [Number.EPSILON * 2, 1 / (Number.EPSILON * 2)];
       const extendedDomain = extendDomain(domain, 0.75, ScaleType.Log);
-      expect(domain).toEqual(extendedDomain);
+      expect(extendedDomain).toEqual([Number.EPSILON, 1 / Number.EPSILON]);
     });
   });
 
