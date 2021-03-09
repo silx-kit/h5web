@@ -61,7 +61,10 @@ describe('App', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'fourD' }).click();
 
-    cy.findByText('n').parent().should('have.text', 'n 3 9 20 41');
+    cy.findByTitle('Number of elements in each dimension')
+      .parent()
+      .parent()
+      .should('have.text', 'n 3 9 20 41');
 
     cy.findByRole('radiogroup', { name: /x axis/ }).as('xRadioGroup');
     cy.findByRole('radiogroup', { name: /y axis/ }).as('yRadioGroup');

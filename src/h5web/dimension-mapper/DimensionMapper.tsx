@@ -18,7 +18,9 @@ function DimensionMapper(props: Props): ReactElement {
     <div className={styles.mapper}>
       <div className={styles.axisMapperWrapper}>
         <div className={styles.dims}>
-          <span className={styles.dimsLabel}>n</span>
+          <span className={styles.dimsLabel}>
+            <abbr title="Number of elements in each dimension">n</abbr>
+          </span>
           {rawDims.map((d, i) => (
             // eslint-disable-next-line react/no-array-index-key
             <span key={`${i}${d}`} className={styles.dimSize}>
