@@ -59,7 +59,7 @@
     "react-three-fiber": "^4.2.21",
     "react-use": "^17.1.0",
     "react-window": "^1.8.6",
-    "three": "^0.125.2",
+    "three": "~0.117.1",
     "zustand": "^3.3.1"
   },
   "devDependencies": {
