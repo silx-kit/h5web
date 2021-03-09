@@ -113,12 +113,12 @@ function Mesh(props: Props): ReactElement {
       }
 
       void main() {
-        float value = texture(data, coords).r;
+        float value = texture2D(data, coords).r;
 
         if (scaleType == 1 && value <= 0.) {
           gl_FragColor = nanColor;
         } else {
-          gl_FragColor = texture(colorMap, vec2(scale(value), 0.5));
+          gl_FragColor = texture2D(colorMap, vec2(scale(value), 0.5));
         }
       }
     `,
