@@ -43,7 +43,13 @@ export const useHeatmapConfig = create<HeatmapConfig>(
         set((state) => ({ invertColorMap: !state.invertColorMap })),
 
       scaleType: ScaleType.Linear,
-      setScaleType: (scaleType: ScaleType) => set({ scaleType }),
+      setScaleType: (scaleType: ScaleType) => {
+        set((state) =>
+          state.scaleType !== scaleType
+            ? { scaleType, dataDomain: undefined } // clear `dataDomain` to avoid stale state
+            : state
+        );
+      },
 
       keepAspectRatio: true,
       toggleAspectRatio: () =>

@@ -117,33 +117,61 @@ export function getDomain(
   return positiveMin !== Infinity ? [positiveMin, max] : undefined;
 }
 
-export function extendDomain(
-  bareDomain: Domain,
+function extendEmptyDomain(
+  value: number,
   extendFactor: number,
-  scaleType: ScaleType = ScaleType.Linear
+  scaleType: ScaleType
 ): Domain {
-  if (extendFactor <= 0) {
-    return bareDomain;
+  if (scaleType === ScaleType.Log) {
+    return [value * 10 ** -extendFactor, value * 10 ** extendFactor];
   }
 
-  const [min, max] = bareDomain;
-  const domain =
-    min === max
-      ? [min - Math.abs(min) * extendFactor, min + Math.abs(min) * extendFactor]
-      : bareDomain;
+  if (value === 0) {
+    return [-1, 1];
+  }
 
-  const scale = createAxisScale({
-    type: scaleType,
-    domain,
-    range: [0, 1],
-  });
+  const extension = Math.abs(value) * extendFactor;
+  return [value - extension, value + extension];
+}
 
-  const extMin = scale.invert(-extendFactor);
-  const extMax = scale.invert(1 + extendFactor);
+function clampBound(val: number): number {
+  const absVal = Math.abs(val);
+
+  if (absVal < Number.EPSILON) {
+    return val === 0 ? val : Math.sign(val) * Number.EPSILON;
+  }
+
+  if (absVal > 1 / Number.EPSILON) {
+    return Math.sign(val) / Number.EPSILON;
+  }
+
+  return val;
+}
+
+export function extendDomain(
+  domain: Domain,
+  extendFactor: number,
+  scaleType = ScaleType.Linear
+): Domain {
+  if (extendFactor <= 0) {
+    return domain;
+  }
+
+  const [min, max] = domain;
+
+  if (min <= 0 && scaleType === ScaleType.Log) {
+    throw new Error('Expected domain compatible with log scale');
+  }
+
+  if (min === max) {
+    return extendEmptyDomain(min, extendFactor, scaleType);
+  }
+
+  const scale = createAxisScale({ type: scaleType, domain, range: [0, 1] });
 
   return [
-    isSupported(extMin) ? extMin : min,
-    isSupported(extMax) ? extMax : max,
+    clampBound(scale.invert(-extendFactor)),
+    clampBound(scale.invert(1 + extendFactor)),
   ];
 }
 
@@ -233,10 +261,4 @@ export function isScaleType(val: unknown): val is ScaleType {
   return (
     typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
   );
-}
-
-function isSupported(val: number) {
-  const absVal = Math.abs(val);
-
-  return val === 0 || (absVal > Number.EPSILON && absVal < 1 / Number.EPSILON);
 }
