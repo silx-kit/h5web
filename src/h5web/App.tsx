@@ -43,7 +43,7 @@ function App(): ReactElement {
           onChangeInspecting={setInspecting}
         />
         <ErrorBoundary
-          resetKeys={[selectedPath]}
+          resetKeys={[selectedPath, isInspecting]}
           FallbackComponent={ErrorMessage}
         >
           <Suspense fallback={<LoadingFallback isInspecting={isInspecting} />}>
