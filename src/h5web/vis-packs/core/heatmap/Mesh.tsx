@@ -2,9 +2,9 @@ import { rgb } from 'd3-color';
 import { ReactElement, memo, useMemo } from 'react';
 import { useThree } from 'react-three-fiber';
 import {
+  AlphaFormat,
   DataTexture,
   FloatType,
-  RedFormat,
   RGBFormat,
   UnsignedByteType,
 } from 'three';
@@ -52,7 +52,7 @@ function Mesh(props: Props): ReactElement {
 
   const dataTexture = useMemo(() => {
     const valuesArr = Float32Array.from(values);
-    return new DataTexture(valuesArr, cols, rows, RedFormat, FloatType);
+    return new DataTexture(valuesArr, cols, rows, AlphaFormat, FloatType);
   }, [cols, rows, values]);
 
   const colorMapTexture = useMemo(() => {
@@ -113,7 +113,7 @@ function Mesh(props: Props): ReactElement {
       }
 
       void main() {
-        float value = texture2D(data, coords).r;
+        float value = texture2D(data, coords).a;
 
         if (scaleType == 1 && value <= 0.) {
           gl_FragColor = nanColor;

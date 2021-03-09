@@ -1,5 +1,9 @@
 /* eslint-disable no-console */
 import '@testing-library/jest-dom'; // https://github.com/testing-library/jest-dom
+import { ResizeObserver } from '@juggle/resize-observer';
+
+// Fake `ResizeObserver` support
+window.ResizeObserver = ResizeObserver;
 
 // Fake properties to avoid Re-flex warnings
 // https://github.com/leefsmp/Re-Flex/issues/27

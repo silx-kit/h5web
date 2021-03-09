@@ -11,6 +11,10 @@ interface Props {
 function VisPackChooser(props: Props): ReactElement {
   const { path } = props;
 
+  if (!('ResizeObserver' in window)) {
+    throw new Error('Your browser is not supported');
+  }
+
   const { entitiesStore } = useContext(ProviderContext);
   const entity = entitiesStore.get(path);
 
