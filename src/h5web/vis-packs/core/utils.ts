@@ -117,6 +117,23 @@ export function getDomain(
   return positiveMin !== Infinity ? [positiveMin, max] : undefined;
 }
 
+function extendEmptyDomain(
+  value: number,
+  extendFactor: number,
+  scaleType: ScaleType
+): Domain {
+  if (scaleType === ScaleType.Log) {
+    return [value * 10 ** -extendFactor, value * 10 ** extendFactor];
+  }
+
+  if (value === 0) {
+    return [-1, 1];
+  }
+
+  const extension = Math.abs(value) * extendFactor;
+  return [value - extension, value + extension];
+}
+
 function clampBound(val: number): number {
   const absVal = Math.abs(val);
 
@@ -132,23 +149,23 @@ function clampBound(val: number): number {
 }
 
 export function extendDomain(
-  bareDomain: Domain,
+  domain: Domain,
   extendFactor: number,
   scaleType = ScaleType.Linear
 ): Domain {
   if (extendFactor <= 0) {
-    return bareDomain;
+    return domain;
   }
 
-  const [min, max] = bareDomain;
-  if (min === max && min === 0) {
-    return [-1, 1];
+  const [min, max] = domain;
+
+  if (min <= 0 && scaleType === ScaleType.Log) {
+    throw new Error('Expected domain compatible with log scale');
   }
 
-  const domain =
-    min === max
-      ? [min - Math.abs(min) * extendFactor, min + Math.abs(min) * extendFactor]
-      : bareDomain;
+  if (min === max) {
+    return extendEmptyDomain(min, extendFactor, scaleType);
+  }
 
   const scale = createAxisScale({ type: scaleType, domain, range: [0, 1] });
 

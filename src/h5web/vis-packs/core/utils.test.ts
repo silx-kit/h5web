@@ -117,18 +117,19 @@ describe('Shared visualization utilities', () => {
     });
 
     it('should extend positive single-value domain', () => {
-      const extendedDomain = extendDomain([1, 1], 0.5);
-      expect(extendedDomain).toEqual([0, 2]);
+      expect(extendDomain([2, 2], 0.5)).toEqual([1, 3]);
+      expect(extendDomain([1, 1], 1)).toEqual([0, 2]);
+      expect(extendDomain([1, 1], 1, ScaleType.Log)).toEqual([0.1, 10]);
     });
 
     it('should extend negative single-value domain', () => {
-      const extendedDomain = extendDomain([-1, -1], 0.5);
-      expect(extendedDomain).toEqual([-2, 0]);
+      expect(extendDomain([-1, -1], 0.5)).toEqual([-1.5, -0.5]);
+      expect(extendDomain([-2, -2], 1, ScaleType.SymLog)).toEqual([-4, 0]);
     });
 
     it('should return [-1, 1] regardless of factor when trying to extend [0, 0]', () => {
       expect(extendDomain([0, 0], 0.5)).toEqual([-1, 1]);
-      expect(extendDomain([0, 0], 1)).toEqual([-1, 1]);
+      expect(extendDomain([0, 0], 1, ScaleType.SymLog)).toEqual([-1, 1]);
     });
 
     it('should not extend domain when factor is 0', () => {
@@ -146,6 +147,12 @@ describe('Shared visualization utilities', () => {
       const domain: Domain = [Number.EPSILON * 2, 1 / (Number.EPSILON * 2)];
       const extendedDomain = extendDomain(domain, 0.75, ScaleType.Log);
       expect(extendedDomain).toEqual([Number.EPSILON, 1 / Number.EPSILON]);
+    });
+
+    it('should throw if domain is not compatible with log scale', () => {
+      const errRegex = /compatible with log scale/u;
+      expect(() => extendDomain([-1, 1], 0.5, ScaleType.Log)).toThrow(errRegex);
+      expect(() => extendDomain([0, 1], 0.5, ScaleType.Log)).toThrow(errRegex);
     });
   });
 
