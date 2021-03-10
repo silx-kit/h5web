@@ -1,7 +1,7 @@
 import { forwardRef, HTMLProps } from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
 import type { IconType } from 'react-icons/lib';
-import styles from './DomainSlider.module.css';
+import styles from './Thumb.module.css';
 
 type Props = HTMLProps<HTMLDivElement> & {
   isAuto: boolean;
@@ -23,8 +23,8 @@ const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
       data-error={hasError || undefined}
     >
       <div className={styles.thumbBtnLike}>
-        {isAuto && <AutoIcon />}
-        {hasError && <FiAlertCircle strokeWidth="3" />}
+        {isAuto && <AutoIcon className={styles.icon} />}
+        {hasError && <FiAlertCircle className={styles.icon} strokeWidth="3" />}
       </div>
     </div>
   );
