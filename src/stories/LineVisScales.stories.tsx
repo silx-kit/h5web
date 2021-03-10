@@ -28,14 +28,6 @@ LogForY.args = {
   scaleType: ScaleType.Log,
 };
 
-export const LogForNegativeY = Template.bind({});
-LogForNegativeY.storyName = 'Log for negative Y';
-LogForNegativeY.args = {
-  dataArray,
-  domain: [-20, -1],
-  scaleType: ScaleType.Log,
-};
-
 export const SymLogForY = Template.bind({});
 SymLogForY.storyName = 'Sym Log for Y';
 SymLogForY.args = {
@@ -45,7 +37,7 @@ SymLogForY.args = {
 };
 
 export const LogForX = Template.bind({});
-LogForY.storyName = 'Log for X';
+LogForX.storyName = 'Log for X';
 LogForX.args = {
   dataArray: dataArrayForXLog,
   domain: domainForXLog,
@@ -53,7 +45,7 @@ LogForX.args = {
 };
 
 export const SymLogForX = Template.bind({});
-LogForY.storyName = 'Sym Log for X';
+SymLogForX.storyName = 'Sym Log for X';
 SymLogForX.args = {
   dataArray: dataArrayForXLog,
   domain: domainForXLog,

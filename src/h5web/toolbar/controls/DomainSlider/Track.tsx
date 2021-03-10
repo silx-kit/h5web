@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { AxisScale, Domain } from '../../../vis-packs/core/models';
-import styles from './DomainSlider.module.css';
+import styles from './Track.module.css';
 
 interface Props {
   scale: AxisScale;

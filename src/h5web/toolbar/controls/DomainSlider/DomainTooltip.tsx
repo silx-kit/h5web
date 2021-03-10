@@ -4,7 +4,7 @@ import { formatValue } from '../../../utils';
 import type { DomainErrors } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import BoundErrorMessage from './BoundErrorMessage';
-import styles from './DomainSlider.module.css';
+import styles from './DomainTooltip.module.css';
 
 interface Props {
   id: string;

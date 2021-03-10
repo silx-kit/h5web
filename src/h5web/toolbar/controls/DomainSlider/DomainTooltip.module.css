@@ -1,0 +1,90 @@
+.tooltip {
+  composes: popup from '../../Toolbar.module.css';
+  left: 50%;
+  min-width: 17em;
+  transform: translate(-50%, 100%);
+}
+
+.tooltipInner {
+  composes: popupInner from '../../Toolbar.module.css';
+  padding: 1rem 0.75rem;
+}
+
+.tooltipInner > p {
+  margin-bottom: 0.75rem;
+}
+
+.tooltipInner > p:last-child {
+  margin-bottom: 0;
+}
+
+.minMax {
+  display: grid;
+  grid-template-columns: [label] auto [value] 1fr [actions] 2.5em;
+  grid-gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: var(--near-black);
+}
+
+.minMax > h3,
+.minMax > p {
+  margin-bottom: 0;
+}
+
+.minMax > h3 {
+  grid-column: label;
+  text-transform: uppercase;
+  font-size: inherit;
+}
+
+.value {
+  grid-column: value;
+  display: flex;
+  align-items: center;
+  text-align: right;
+}
+
+.value::before {
+  flex: 1 1 0%;
+  content: '';
+  min-width: 1em;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+  border-bottom: 2px dotted currentColor;
+  color: var(--black);
+}
+
+.value[data-error] {
+  color: var(--warn);
+}
+
+.dataRange {
+  white-space: nowrap;
+}
+
+.dataRange > span {
+  margin-left: 0.5rem;
+}
+
+.autoscale {
+  display: flex;
+  align-items: center;
+}
+
+.autoscale > button:first-of-type {
+  margin-left: 0.5rem;
+}
+
+.error {
+  font-size: 0.9375em;
+  font-weight: 600;
+  color: var(--warn);
+}
+
+.error > svg {
+  vertical-align: -0.125em;
+}
+.error > strong {
+  font-weight: bold;
+}

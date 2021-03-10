@@ -1,0 +1,51 @@
+.thumb {
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--thumb-size); /*  fixed size regardless of autoscale */
+  cursor: ew-resize;
+}
+
+.thumbBtnLike {
+  position: relative;
+  padding: 0;
+  border-radius: 50%;
+  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-dark-color);
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+}
+
+.thumb[data-auto='false'] > .thumbBtnLike {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  background-color: var(--secondary);
+}
+
+.thumb[data-auto='true'] > .thumbBtnLike {
+  width: var(--thumb-size-auto);
+  height: var(--thumb-size-auto);
+  background-color: var(--secondary-light);
+}
+
+.thumb[data-auto='false']:hover > .thumbBtnLike {
+  opacity: 0.8;
+  box-shadow: var(--btn-shadow-idle-hover) var(--btn-shadow-dark-color);
+}
+
+.thumb[data-auto='true']:hover > .thumbBtnLike {
+  box-shadow: var(--btn-shadow-idle-hover) var(--btn-shadow-dark-color);
+}
+
+.thumb[data-error] {
+  color: var(--warn);
+  font-size: 1.125em;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Tweak centering of autoscale icons to compensate for inset shadows */
+  transform: translate(-52%, -52%);
+}
