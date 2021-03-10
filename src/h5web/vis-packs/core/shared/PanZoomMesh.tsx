@@ -2,6 +2,8 @@ import { useRef, useCallback, useEffect, ReactElement } from 'react';
 import type { Vector3 } from 'three';
 import { PointerEvent, WheelEvent, useThree } from 'react-three-fiber';
 import { clamp } from 'lodash-es';
+import Html from './Html';
+import { useWheelCapture } from '../hooks';
 
 const ZOOM_FACTOR = 0.95;
 
@@ -91,11 +93,16 @@ function PanZoomMesh(): ReactElement {
     moveCameraTo(camera.position.x, camera.position.y);
   }, [camera, moveCameraTo]);
 
+  const wheelCaptureRef = useWheelCapture();
+
   return (
-    <mesh {...{ onPointerMove, onPointerUp, onPointerDown, onWheel }}>
-      <meshBasicMaterial attach="material" opacity={0} transparent />
-      <planeGeometry attach="geometry" args={[width, height]} />
-    </mesh>
+    <>
+      <mesh {...{ onPointerMove, onPointerUp, onPointerDown, onWheel }}>
+        <meshBasicMaterial attach="material" opacity={0} transparent />
+        <planeGeometry attach="geometry" args={[width, height]} />
+      </mesh>
+      <Html ref={wheelCaptureRef} />
+    </>
   );
 }
 

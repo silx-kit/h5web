@@ -1,5 +1,5 @@
 import ndarray from 'ndarray';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { isNumber } from 'lodash-es';
 import { assign } from 'ndarray-ops';
 import { createMemo } from 'react-use';
@@ -123,4 +123,23 @@ export function useCanvasScales(): {
     abscissaScale: getCanvasScale(abscissaConfig, width),
     ordinateScale: getCanvasScale(ordinateConfig, height),
   };
+}
+
+export function useWheelCapture() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const elem = ref.current;
+
+    function onWheel(evt: WheelEvent) {
+      evt.preventDefault();
+    }
+
+    // Handler must be registed as non-passive for `preventDefault` to have an effect
+    // (React's `onWheel` prop registers handlers as passive)
+    elem?.addEventListener('wheel', onWheel, { passive: false });
+    return () => elem?.removeEventListener('wheel', onWheel);
+  });
+
+  return ref;
 }
