@@ -43,7 +43,11 @@ function BoundEditor(props: Props): ReactElement {
       data-editing={isEditing}
       onSubmit={(evt) => {
         evt.preventDefault();
-        onChange(Number.parseFloat(inputValue));
+
+        // In case user replaced minus with hyphen without actually changing the value
+        setInputValue(inputValue.replace('-', '−'));
+
+        onChange(Number.parseFloat(inputValue.replace('−', '-'))); // `parseFloat` dislikes U+2212 minus
         onEditToggle(false);
       }}
     >
