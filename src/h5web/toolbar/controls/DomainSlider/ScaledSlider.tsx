@@ -11,6 +11,7 @@ import type {
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
+import { getSafeDomain } from '../../../vis-packs/core/heatmap/utils';
 
 const SLIDER_RANGE: Domain = [1, 100];
 const EXTEND_FACTOR = 0.3;
@@ -18,7 +19,7 @@ const EXTEND_FACTOR = 0.3;
 interface Props {
   value: Domain;
   dataDomain: Domain;
-  visDomain: Domain;
+  safeVisDomain: Domain;
   scaleType: ScaleType;
   errors: DomainErrors;
   disabled?: boolean;
@@ -36,7 +37,7 @@ function ScaledSlider(props: Props): ReactElement {
   const {
     value,
     dataDomain,
-    visDomain,
+    safeVisDomain,
     scaleType,
     errors,
     disabled,
@@ -46,7 +47,7 @@ function ScaledSlider(props: Props): ReactElement {
   const { onChange, onAfterChange: onDone } = props;
   const { minError, maxError } = errors;
 
-  const sliderExtent = extendDomain(visDomain, EXTEND_FACTOR, scaleType);
+  const sliderExtent = extendDomain(safeVisDomain, EXTEND_FACTOR, scaleType);
 
   const [hasMinChanged, setMinChanged] = useBoolean(false);
   const [hasMaxChanged, setMaxChanged] = useBoolean(false);
@@ -58,7 +59,8 @@ function ScaledSlider(props: Props): ReactElement {
     clamp: true,
   });
 
-  const scaledValue = value.map(scale).map(Math.round) as Domain;
+  const [safeValue] = getSafeDomain(value, dataDomain, scaleType);
+  const scaledValue = safeValue.map(scale).map(Math.round) as Domain;
 
   function handleChange(newScaledValue: Domain) {
     const [newScaledMin, newScaledMax] = newScaledValue;
@@ -66,8 +68,8 @@ function ScaledSlider(props: Props): ReactElement {
     const hasMaxChanged = newScaledMax !== scaledValue[1];
 
     const newValue: Domain = [
-      hasMinChanged ? scale.invert(newScaledMin) : value[0],
-      hasMaxChanged ? scale.invert(newScaledMax) : value[1],
+      hasMinChanged ? scale.invert(newScaledMin) : safeValue[0],
+      hasMaxChanged ? scale.invert(newScaledMax) : safeValue[1],
     ];
 
     onChange(newValue, hasMinChanged, hasMaxChanged);

@@ -14,29 +14,31 @@ const GRADIENT_PRECISION = 1 / 20;
 const GRADIENT_RANGE = range(0, 1 + GRADIENT_PRECISION, GRADIENT_PRECISION);
 
 export function getVisDomain(
-  dataDomain: Domain,
   customDomain: CustomDomain,
+  dataDomain: Domain
+): Domain {
+  return [customDomain[0] ?? dataDomain[0], customDomain[1] ?? dataDomain[1]];
+}
+
+export function getSafeDomain(
+  domain: Domain,
+  fallbackDomain: Domain,
   scaleType: ScaleType
 ): [Domain, DomainErrors] {
-  const visDomain: Domain = [
-    customDomain[0] ?? dataDomain[0],
-    customDomain[1] ?? dataDomain[1],
-  ];
-
   if (scaleType === ScaleType.Log) {
     return [
       [
-        visDomain[0] <= 0 ? dataDomain[0] : visDomain[0],
-        visDomain[1] <= 0 ? dataDomain[1] : visDomain[1],
+        domain[0] <= 0 ? fallbackDomain[0] : domain[0],
+        domain[1] <= 0 ? fallbackDomain[1] : domain[1],
       ],
       {
-        minError: visDomain[0] <= 0 ? BoundError.InvalidWithLog : undefined,
-        maxError: visDomain[1] <= 0 ? BoundError.InvalidWithLog : undefined,
+        minError: domain[0] <= 0 ? BoundError.InvalidWithLog : undefined,
+        maxError: domain[1] <= 0 ? BoundError.InvalidWithLog : undefined,
       },
     ];
   }
 
-  return [visDomain, {}];
+  return [domain, {}];
 }
 
 export function getDims(dataArray: ndarray): Dims {

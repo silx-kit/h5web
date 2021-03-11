@@ -17,7 +17,7 @@ import type {
 } from '../../../providers/hdf5-models';
 import { isAxis } from '../../../dimension-mapper/utils';
 import shallow from 'zustand/shallow';
-import { useVisDomain } from './hooks';
+import { useSafeDomain, useVisDomain } from './hooks';
 
 interface Props {
   dataset: Dataset<HDF5SimpleShape, HDF5NumericType>;
@@ -65,7 +65,8 @@ function MappedHeatmapVis(props: Props): ReactElement {
   const dataDomain =
     useDomain(dataArray.data as number[], scaleType) || DEFAULT_DOMAIN;
 
-  const [visDomain] = useVisDomain(dataDomain, customDomain, scaleType);
+  const visDomain = useVisDomain(customDomain, dataDomain);
+  const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 
   useEffect(() => {
     setDataDomain(dataDomain);
@@ -81,7 +82,7 @@ function MappedHeatmapVis(props: Props): ReactElement {
     <HeatmapVis
       dataArray={dataArray}
       title={title}
-      domain={visDomain}
+      domain={safeDomain}
       colorMap={colorMap}
       scaleType={scaleType}
       keepAspectRatio={keepAspectRatio}

@@ -29,12 +29,6 @@
   padding: 0 0.25rem;
 }
 
-.btn:disabled,
-.btn[aria-disabled='true'] {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
 .btn[data-small] {
   padding: 0 0.125rem;
 }
@@ -86,6 +80,10 @@
 .btn:hover > .btnLike {
   background-color: var(--secondary-lighter);
   box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
+}
+
+.btn:active > .btnLike {
+  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
 }
 
 .btn[data-raised]:hover > .btnLike {
