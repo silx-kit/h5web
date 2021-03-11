@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { FiCornerDownRight } from 'react-icons/fi';
 import { Bound, BoundError } from '../../../vis-packs/core/models';
-import styles from './DomainSlider.module.css';
+import styles from './DomainTooltip.module.css';
 
 interface Props {
   bound: Bound;

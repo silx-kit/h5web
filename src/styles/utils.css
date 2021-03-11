@@ -10,3 +10,9 @@
   white-space: normal;
   cursor: pointer;
 }
+
+.btn-clean:disabled,
+.btn-clean[aria-disabled='true'] {
+  opacity: 0.5;
+  pointer-events: none;
+}
