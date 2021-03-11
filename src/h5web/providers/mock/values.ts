@@ -28,6 +28,8 @@ export const mockValues = {
   oneD,
   twoD,
   twoD_spectrum: twoD,
+  secondary: twoD.map((inner) => inner.map((v) => v * 2)),
+  tertiary: twoD.map((inner) => inner.map((v) => v / 2)),
   threeD,
   fourD,
   X: arr1,

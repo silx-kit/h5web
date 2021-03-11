@@ -2,25 +2,27 @@ import { ReactElement, useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import LineVis from './LineVis';
 import {
+  useDatasetValue,
+  useDatasetValues,
+  useCombinedDomain,
+  useMappedArrays,
   useMappedArray,
   useDomain,
-  useBaseArray,
-  useDatasetValue,
 } from '../hooks';
 import { useLineConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { Dataset } from '../../../providers/models';
-import type {
-  HDF5NumericType,
-  HDF5SimpleShape,
-} from '../../../providers/hdf5-models';
+import type { NumArrayDataset } from '../../../providers/models';
+import { getDomain } from '../utils';
+
+type HookArgs = [number[], DimensionMapping, boolean];
 
 interface Props {
-  valueDataset: Dataset<HDF5SimpleShape, HDF5NumericType>;
+  valueDataset: NumArrayDataset;
   valueLabel?: string;
   valueScaleType?: ScaleType;
-  errorsDataset?: Dataset<HDF5SimpleShape, HDF5NumericType>;
+  errorsDataset?: NumArrayDataset;
+  auxDatasets?: NumArrayDataset[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
@@ -33,6 +35,7 @@ function MappedLineVis(props: Props): ReactElement {
     valueLabel,
     valueScaleType,
     errorsDataset,
+    auxDatasets = [],
     dims,
     dimMapping,
     axisMapping = [],
@@ -52,28 +55,24 @@ function MappedLineVis(props: Props): ReactElement {
     disableErrors,
   } = useLineConfig((state) => state, shallow);
 
+  const hookArgs: HookArgs = [dims, dimMapping, autoScale];
+
   const value = useDatasetValue(valueDataset);
-  const baseDataArray = useBaseArray(value, dims);
-  const dataArray = useMappedArray(baseDataArray, dimMapping);
+  const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
 
   const errors = useDatasetValue(errorsDataset);
-  const baseErrorsArray = useBaseArray(errors, dims);
-  const errorArray = useMappedArray(baseErrorsArray, dimMapping);
+  const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
 
-  // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
-  useEffect(() => {
-    disableAutoScale(baseDataArray.shape.length <= 1);
-  }, [baseDataArray.shape, disableAutoScale]);
+  const auxiliaries = Object.values(useDatasetValues(auxDatasets));
+  const [auxArrays, auxForDomain] = useMappedArrays(auxiliaries, ...hookArgs);
 
-  const dataValues = (autoScale ? dataArray : baseDataArray).data as number[];
-  const errorValues = autoScale
-    ? errorArray && (errorArray.data as number[])
-    : baseErrorsArray && (baseErrorsArray.data as number[]);
   const dataDomain = useDomain(
-    dataValues,
+    dataForDomain,
     yScaleType,
-    showErrors ? errorValues : undefined
+    showErrors ? errorsForDomain : undefined
   );
+  const auxDomains = auxForDomain.map((arr) => getDomain(arr, yScaleType));
+  const combinedDomain = useCombinedDomain(dataDomain, auxDomains);
 
   const mappedAbscissaParams = axisMapping[dimMapping.indexOf('x')];
   useEffect(() => {
@@ -92,10 +91,15 @@ function MappedLineVis(props: Props): ReactElement {
     disableErrors(!errors);
   }, [disableErrors, errors]);
 
+  useEffect(() => {
+    // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
+    disableAutoScale(dims.length <= 1);
+  }, [dims, disableAutoScale]);
+
   return (
     <LineVis
       dataArray={dataArray}
-      domain={dataDomain}
+      domain={combinedDomain}
       scaleType={yScaleType}
       curveType={curveType}
       showGrid={showGrid}
@@ -108,6 +112,7 @@ function MappedLineVis(props: Props): ReactElement {
       title={title}
       errorsArray={errorArray}
       showErrors={showErrors}
+      auxArrays={auxArrays}
     />
   );
 }

@@ -1,26 +1,17 @@
 import { ReactElement, useEffect, useMemo } from 'react';
 import HeatmapVis from './HeatmapVis';
-import {
-  useBaseArray,
-  useDatasetValue,
-  useDomain,
-  useMappedArray,
-} from '../hooks';
+import { useDomain, useDatasetValue, useMappedArray } from '../hooks';
 import { useHeatmapConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { Dataset } from '../../../providers/models';
-import type {
-  HDF5NumericType,
-  HDF5SimpleShape,
-} from '../../../providers/hdf5-models';
 import { isAxis } from '../../../dimension-mapper/utils';
 import shallow from 'zustand/shallow';
 import { useSafeDomain, useVisDomain } from './hooks';
+import type { NumArrayDataset } from '../../../providers/models';
 
 interface Props {
-  dataset: Dataset<HDF5SimpleShape, HDF5NumericType>;
+  dataset: NumArrayDataset;
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
@@ -59,11 +50,9 @@ function MappedHeatmapVis(props: Props): ReactElement {
     [dims, dimMapping]
   );
 
-  const baseArray = useBaseArray(value, slicedDims);
-  const dataArray = useMappedArray(baseArray, slicedMapping);
+  const [dataArray] = useMappedArray(value, slicedDims, slicedMapping);
 
-  const dataDomain =
-    useDomain(dataArray.data as number[], scaleType) || DEFAULT_DOMAIN;
+  const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
 
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);

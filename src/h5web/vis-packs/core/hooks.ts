@@ -1,11 +1,16 @@
-import ndarray from 'ndarray';
+import type ndarray from 'ndarray';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { isNumber } from 'lodash-es';
-import { assign } from 'ndarray-ops';
 import { createMemo } from 'react-use';
 import { useFrame, useThree } from 'react-three-fiber';
 import type { DimensionMapping } from '../../dimension-mapper/models';
-import { getCanvasScale, getDomain } from './utils';
+import {
+  applyMapping,
+  getBaseArray,
+  getCanvasScale,
+  getCombinedDomain,
+  getDomain,
+} from './utils';
 import AxisSystemContext from './shared/AxisSystemContext';
 import type { AxisScale } from './models';
 import type { HDF5Shape, HDF5Type } from '../../providers/hdf5-models';
@@ -58,49 +63,6 @@ export function useDatasetValues<S extends HDF5Shape, T extends HDF5Type>(
   );
 }
 
-export function useBaseArray<T extends unknown[] | undefined>(
-  value: T,
-  rawDims: number[]
-): T extends (infer U)[] ? ndarray<U> : undefined;
-
-export function useBaseArray<T>(
-  value: T[] | undefined,
-  rawDims: number[]
-): ndarray<T> | undefined {
-  return useMemo(() => {
-    return value && ndarray<T>(value.flat(Infinity) as T[], rawDims);
-  }, [rawDims, value]);
-}
-
-export function useMappedArray<T extends ndarray<unknown> | undefined>(
-  baseArray: T,
-  mapping: DimensionMapping
-): T extends ndarray<infer U> ? ndarray<U> : undefined;
-
-export function useMappedArray<T>(
-  baseArray: ndarray<T> | undefined,
-  mapping: DimensionMapping
-): ndarray<T> | undefined {
-  return useMemo(() => {
-    if (!baseArray) {
-      return undefined;
-    }
-
-    const isXBeforeY =
-      mapping.includes('y') && mapping.indexOf('x') < mapping.indexOf('y');
-
-    const slicingState = mapping.map((val) => (isNumber(val) ? val : null));
-    const slicedView = baseArray.pick(...slicingState);
-    const mappedView = isXBeforeY ? slicedView.transpose(1, 0) : slicedView;
-
-    // Create ndarray from mapped view so `dataArray.data` only contains values relevant to vis
-    const mappedArray = ndarray<T>([], mappedView.shape);
-    assign(mappedArray, mappedView);
-
-    return mappedArray;
-  }, [mapping, baseArray]);
-}
-
 export const useDomain = createMemo(getDomain);
 
 export function useFrameRendering(): void {
@@ -142,4 +104,46 @@ export function useWheelCapture() {
   });
 
   return ref;
+}
+
+export const useCombinedDomain = createMemo(getCombinedDomain);
+
+export function useMappedArray<T extends unknown[] | undefined>(
+  value: T,
+  dims: number[],
+  mapping: DimensionMapping,
+  autoScale?: boolean
+): T extends (infer U)[] ? [ndarray<U>, ndarray<U>] : [undefined, undefined];
+
+export function useMappedArray<T>(
+  value: T[] | undefined,
+  dims: number[],
+  mapping: DimensionMapping,
+  autoScale?: boolean
+) {
+  const baseArray = useMemo(() => getBaseArray(value, dims), [value, dims]);
+  const mappedArray = useMemo(() => applyMapping(baseArray, mapping), [
+    baseArray,
+    mapping,
+  ]);
+
+  return [mappedArray, autoScale ? mappedArray : baseArray];
+}
+
+export function useMappedArrays(
+  values: number[][],
+  dims: number[],
+  mapping: DimensionMapping,
+  autoScale?: boolean
+) {
+  const baseArrays = useMemo(() => values.map((v) => getBaseArray(v, dims)), [
+    dims,
+    values,
+  ]);
+  const mappedArrays = useMemo(
+    () => baseArrays.map((v) => applyMapping(v, mapping)),
+    [baseArrays, mapping]
+  );
+
+  return [mappedArrays, autoScale ? mappedArrays : baseArrays];
 }
