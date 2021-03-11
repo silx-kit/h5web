@@ -2,6 +2,7 @@ import { format } from 'd3-format';
 import type { Entity, Group } from './providers/models';
 
 export const formatValue = format('.3~e');
+export const formatPreciseValue = format('.5~e');
 
 export function getChildEntity(
   group: Group,

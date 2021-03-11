@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
-import { formatValue } from '../../../utils';
+import { formatPreciseValue } from '../../../utils';
 import styles from './BoundEditor.module.css';
 
 interface Props {
@@ -18,11 +18,11 @@ function BoundEditor(props: Props): ReactElement {
   const id = `${label}-bound`;
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [inputValue, setInputValue] = useState(formatValue(value));
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    setInputValue(isEditing ? value.toString() : formatValue(value));
-  }, [isEditing, value, setInputValue]);
+    setInputValue(formatPreciseValue(value));
+  }, [value, setInputValue]);
 
   useEffect(() => {
     if (!isEditing) {
