@@ -1,6 +1,6 @@
 import { ReactElement, useMemo } from 'react';
 import MatrixVis from './MatrixVis';
-import { useBaseArray, useDatasetValue, useMappedArray } from '../hooks';
+import { useDatasetValue, useMappedArray } from '../hooks';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import type { HDF5SimpleShape } from '../../../providers/hdf5-models';
 import type { Dataset } from '../../../providers/models';
@@ -26,8 +26,7 @@ function MappedMatrixVis(props: Props): ReactElement {
     [dimMapping, dims]
   );
 
-  const baseArray = useBaseArray(value, slicedDims);
-  const mappedArray = useMappedArray(baseArray, slicedMapping);
+  const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
 
   return <MatrixVis dataArray={mappedArray} />;
 }

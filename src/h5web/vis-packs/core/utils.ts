@@ -8,6 +8,10 @@ import {
 } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import { format } from 'd3-format';
+import ndarray from 'ndarray';
+import { assign } from 'ndarray-ops';
+import { isNumber } from 'lodash-es';
+import type { DimensionMapping } from '../../dimension-mapper/models';
 import {
   Size,
   Domain,
@@ -83,10 +87,17 @@ function getNewBounds(oldBounds: Bounds, value: number): Bounds {
 }
 
 export function getDomain(
-  values: number[],
+  valuesArray: ndarray | number[],
   scaleType: ScaleType = ScaleType.Linear,
-  errors?: number[]
+  errorArray?: ndarray | number[]
 ): Domain | undefined {
+  const values = Array.isArray(valuesArray)
+    ? valuesArray
+    : (valuesArray.data as number[]);
+  const errors =
+    errorArray &&
+    (Array.isArray(errorArray) ? errorArray : (errorArray.data as number[]));
+
   if (values.length === 0) {
     return undefined;
   }
@@ -261,4 +272,66 @@ export function isScaleType(val: unknown): val is ScaleType {
   return (
     typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
   );
+}
+
+export function getCombinedDomain(
+  domain: Domain | undefined,
+  domainsToCombine: (Domain | undefined)[]
+): Domain | undefined {
+  if (domainsToCombine.length === 0) {
+    return domain;
+  }
+
+  const [domainToCombine, ...remainingDomains] = domainsToCombine;
+
+  if (domain === undefined || domainToCombine === undefined) {
+    return domain || domainToCombine;
+  }
+
+  return getCombinedDomain(
+    [
+      Math.min(domain[0], domainToCombine[0]),
+      Math.max(domain[1], domainToCombine[1]),
+    ],
+    remainingDomains
+  );
+}
+
+export function getBaseArray<T extends unknown[] | undefined>(
+  value: T,
+  rawDims: number[]
+): T extends (infer U)[] ? ndarray<U> : undefined;
+
+export function getBaseArray<T>(
+  value: T[] | undefined,
+  rawDims: number[]
+): ndarray<T> | undefined {
+  return value && ndarray<T>(value.flat(Infinity) as T[], rawDims);
+}
+
+export function applyMapping<T extends ndarray<unknown> | undefined>(
+  baseArray: T,
+  mapping: DimensionMapping
+): T extends ndarray<infer U> ? ndarray<U> : undefined;
+
+export function applyMapping<T>(
+  baseArray: ndarray<T> | undefined,
+  mapping: DimensionMapping
+): ndarray<T> | undefined {
+  if (!baseArray) {
+    return undefined;
+  }
+
+  const isXBeforeY =
+    mapping.includes('y') && mapping.indexOf('x') < mapping.indexOf('y');
+
+  const slicingState = mapping.map((val) => (isNumber(val) ? val : null));
+  const slicedView = baseArray.pick(...slicingState);
+  const mappedView = isXBeforeY ? slicedView.transpose(1, 0) : slicedView;
+
+  // Create ndarray from mapped view so `dataArray.data` only contains values relevant to vis
+  const mappedArray = ndarray<T>([], mappedView.shape);
+  assign(mappedArray, mappedView);
+
+  return mappedArray;
 }

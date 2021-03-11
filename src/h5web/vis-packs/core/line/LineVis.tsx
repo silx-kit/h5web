@@ -28,6 +28,7 @@ interface Props {
   title?: string;
   errorsArray?: ndarray;
   showErrors?: boolean;
+  auxArrays?: ndarray[];
 }
 
 function LineVis(props: Props): ReactElement {
@@ -42,6 +43,7 @@ function LineVis(props: Props): ReactElement {
     title,
     errorsArray,
     showErrors,
+    auxArrays = [],
   } = props;
 
   const {
@@ -59,6 +61,12 @@ function LineVis(props: Props): ReactElement {
   if (errorsArray && errorsArray.size !== dataArray.size) {
     throw new Error(
       `Error size (${errorsArray.size}) does not match data length (${dataArray.size})`
+    );
+  }
+
+  if (auxArrays.some((auxArray) => auxArray.size !== dataArray.size)) {
+    throw new Error(
+      `Auxiliary arrays size does not match data length (${dataArray.size})`
     );
   }
 
@@ -122,6 +130,15 @@ function LineVis(props: Props): ReactElement {
           errors={errorsArray && (errorsArray.data as number[])}
           showErrors={showErrors}
         />
+        {auxArrays.map((array, i) => (
+          <DataCurve
+            key={i} // eslint-disable-line react/no-array-index-key
+            color="--secondary"
+            curveType={curveType}
+            abscissas={abscissas}
+            ordinates={array.data as number[]}
+          />
+        ))}
       </VisCanvas>
     </figure>
   );

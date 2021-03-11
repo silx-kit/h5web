@@ -208,8 +208,19 @@ export function makeExternalLink(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
+function makeNxStrArrayAttr(
+  array: string[],
+  attrName: 'axes' | 'auxiliary_signals'
+): HDF5Attribute {
+  return makeAttr(attrName, makeSimpleShape([array.length]), stringType, array);
+}
+
 export function makeNxAxesAttr(axes: string[]): HDF5Attribute {
-  return makeAttr('axes', makeSimpleShape([axes.length]), stringType, axes);
+  return makeNxStrArrayAttr(axes, 'axes');
+}
+
+export function makeNxAuxAttr(aux: string[]): HDF5Attribute {
+  return makeNxStrArrayAttr(aux, 'auxiliary_signals');
 }
 
 export function makeSilxStyleAttr(style: SilxStyle): HDF5Attribute {
@@ -254,6 +265,10 @@ export function makeNxDataGroup<
     | { axes: T; axesAttr: (Extract<keyof T, string> | '.')[] }
     | { axes?: never; axesAttr?: never }
   ) &
+    (
+      | { auxiliary: T; auxAttr: Extract<keyof T, string>[] }
+      | { auxiliary?: never; auxAttr?: never }
+    ) &
     GroupOpts
 ): Group {
   const {
@@ -263,6 +278,8 @@ export function makeNxDataGroup<
     silxStyle,
     axes = {},
     axesAttr,
+    auxiliary = {},
+    auxAttr,
     ...groupOpts
   } = opts;
 
@@ -273,12 +290,14 @@ export function makeNxDataGroup<
       makeStrAttr('signal', signal.name),
       ...(axesAttr ? [makeNxAxesAttr(axesAttr)] : []),
       ...(silxStyle ? [makeSilxStyleAttr(silxStyle)] : []),
+      ...(auxAttr ? [makeNxAuxAttr(auxAttr)] : []),
     ],
     children: [
       signal,
       ...(title ? [title] : []),
       ...(errors ? [errors] : []),
       ...Object.values<MockDataset>(axes),
+      ...Object.values<MockDataset>(auxiliary),
     ],
   });
 }

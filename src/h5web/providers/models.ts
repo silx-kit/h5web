@@ -66,3 +66,5 @@ export type Value<
 > = S extends HDF5SimpleShape ? PrimitiveType<T>[] : PrimitiveType<T>;
 
 export type ComplexArray = (ComplexArray | Complex)[];
+
+export type NumArrayDataset = Dataset<HDF5SimpleShape, HDF5NumericType>;

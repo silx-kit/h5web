@@ -46,7 +46,7 @@ The components are organised in two categories:
 
       ```tsx
       import ndarray from 'ndarray';
-      import { HeatmapVis, findDomain } from '@h5web/lib';
+      import { HeatmapVis, getDomain } from '@h5web/lib';
 
       // Source 2D array
       const values = [
@@ -57,9 +57,9 @@ The components are organised in two categories:
       // Flatten array
       const flatValues: number[] = values.flat(Infinity);
 
-      // Convert to ndarray and find domain
+      // Convert to ndarray and get domain
       const dataArray = ndarray<number>(flatValues, [2, 3]);
-      const domain = findDomain(flatValues);
+      const domain = getDomain(dataArray);
 
       // ...
 
@@ -69,7 +69,7 @@ The components are organised in two categories:
 1. Configure the visualization:
 
    ```tsx
-   import { HeatmapVis, findDomain, ScaleType } from '@h5web/lib';
+   import { HeatmapVis, getDomain, ScaleType } from '@h5web/lib';
 
    // ...
 
@@ -99,7 +99,7 @@ const dataArray = getMockDataArray('/nD_datasets/twoD');
 The library exposes a number of utility functions, which are documented below, as well as all the enums and types used by these utility functions.
 If you use only the top-level visualization components, the only utilities you need are `getDomain` and/or `useDomain`.
 
-- **`getDomain(values: number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined`** - Find the min and max values contained in a flat array of numbers. If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
+- **`getDomain(values: ndarray | number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined`** - Find the min and max values contained in a array (or ndarray) of numbers. If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
 - **`useDomain(...args): Domain | undefined`** - Memoised React hook wrapper of `getDomain`.
 - **`extendDomain(bareDomain: Domain, extendFactor: number, isLog?: boolean): Domain`** - Extend a domain by a given factor.
 - **`computeVisSize(availableSize: Size, aspectRatio?: number): Size | undefined`** - Compute the optimal size for a visualization to fill the available space given an optional aspect ratio.
