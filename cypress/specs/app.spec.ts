@@ -217,5 +217,19 @@ describe('App', () => {
         cy.matchImageSnapshot('logspectrum');
       }
     });
+
+    it('visualize signal and auxiliary signals datasets as NxSpectrum', () => {
+      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
+      cy.findByRole('treeitem', { name: 'spectrum_with_aux' }).click();
+
+      cy.findByRole('heading', {
+        name: 'nexus_entry / spectrum_with_aux',
+      }).should('exist');
+
+      if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.wait(SNAPSHOT_DELAY);
+        cy.matchImageSnapshot('auxspectrum');
+      }
+    });
   });
 });

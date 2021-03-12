@@ -5,6 +5,7 @@ import {
   extendDomain,
   getValueToIndexScale,
   getIntegerTicks,
+  getCombinedDomain,
 } from './utils';
 import { Domain, ScaleType } from './models';
 
@@ -218,6 +219,43 @@ describe('Shared visualization utilities', () => {
       // So we specifically work around it by forcing the step to be greater than or equal to 1
       const prop2 = getIntegerTicks([0, 2], 3);
       expect(prop2).toEqual([0, 1, 2]);
+    });
+  });
+
+  describe('getCombinedDomain', () => {
+    it('should return the minimum of minima and the maximum of maxima', () => {
+      const combinedDomain = getCombinedDomain(
+        [0, 1],
+        [
+          [-1, 0.5],
+          [-0.2, 10],
+        ]
+      );
+      expect(combinedDomain).toEqual([-1, 10]);
+    });
+
+    it('should return the domain when there is no domain to combine', () => {
+      const combinedDomain = getCombinedDomain([0, 1], []);
+      expect(combinedDomain).toEqual([0, 1]);
+    });
+
+    it('should return the defined domain when all other domains are undefined', () => {
+      const combinedDomain = getCombinedDomain(undefined, [[0, 1], undefined]);
+      expect(combinedDomain).toEqual([0, 1]);
+
+      const combinedDomain2 = getCombinedDomain(
+        [-5, 8],
+        [undefined, undefined]
+      );
+      expect(combinedDomain2).toEqual([-5, 8]);
+    });
+
+    it('should return undefined when all domains are undefined', () => {
+      const combinedDomain = getCombinedDomain(undefined, [
+        undefined,
+        undefined,
+      ]);
+      expect(combinedDomain).toBeUndefined();
     });
   });
 });
