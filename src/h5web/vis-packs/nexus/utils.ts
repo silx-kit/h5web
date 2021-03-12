@@ -1,9 +1,10 @@
-import type { Group, Entity, Dataset } from '../../providers/models';
 import type {
-  HDF5Value,
-  HDF5NumericType,
-  HDF5SimpleShape,
-} from '../../providers/hdf5-models';
+  Group,
+  Entity,
+  Dataset,
+  NumArrayDataset,
+} from '../../providers/models';
+import type { HDF5Value } from '../../providers/hdf5-models';
 import {
   assertDefined,
   assertStr,
@@ -32,9 +33,7 @@ export function assertNxDataGroup(group: Group) {
   }
 }
 
-export function findSignalDataset(
-  group: Group
-): Dataset<HDF5SimpleShape, HDF5NumericType> {
+export function findSignalDataset(group: Group): NumArrayDataset {
   const signal = getAttributeValue(group, 'signal');
   assertDefined(signal, "Expected 'signal' attribute");
   assertStr(signal, "Expected 'signal' attribute to be a string");
@@ -51,7 +50,7 @@ export function findSignalDataset(
 export function findErrorsDataset(
   group: Group,
   signalName: string
-): Dataset<HDF5SimpleShape, HDF5NumericType> | undefined {
+): NumArrayDataset | undefined {
   const dataset =
     getChildEntity(group, `${signalName}_errors`) ||
     getChildEntity(group, 'errors');

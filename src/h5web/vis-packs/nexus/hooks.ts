@@ -1,9 +1,7 @@
 import { useContext } from 'react';
-import type { Dataset, Group } from '../../providers/models';
+import type { Dataset, Group, NumArrayDataset } from '../../providers/models';
 import { ProviderContext } from '../../providers/context';
 import type {
-  HDF5NumericType,
-  HDF5SimpleShape,
   HDF5StringType,
   HDF5ScalarShape,
 } from '../../providers/hdf5-models';
@@ -51,7 +49,7 @@ function useTitleDataset(
 function useAssociatedDatasets(
   group: Group,
   type: 'axes' | 'auxiliary_signals'
-): (Dataset<HDF5SimpleShape, HDF5NumericType> | undefined)[] {
+): (NumArrayDataset | undefined)[] {
   const { valuesStore } = useContext(ProviderContext);
 
   const dsetList = getAttributeValue(group, type) || [];
@@ -84,7 +82,7 @@ export function useNxData(group: Group): NxData {
     titleDataset: useTitleDataset(group),
     axisDatasetMapping: useAssociatedDatasets(group, 'axes'),
     silxStyle: getSilxStyle(group),
-    auxiliaryDatasets: useAssociatedDatasets(group, 'auxiliary_signals').filter(
+    auxDatasets: useAssociatedDatasets(group, 'auxiliary_signals').filter(
       isDefined
     ),
   };

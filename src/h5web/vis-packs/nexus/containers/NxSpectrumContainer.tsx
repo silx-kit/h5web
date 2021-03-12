@@ -16,6 +16,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
 
   const nxData = useNxData(entity);
   const {
+    auxDatasets,
     signalDataset,
     titleDataset,
     errorsDataset,
@@ -56,6 +57,7 @@ function NxSpectrumContainer(props: VisContainerProps): ReactElement {
         valueLabel={signalLabel}
         valueScaleType={signalScaleType}
         errorsDataset={errorsDataset}
+        auxDatasets={auxDatasets}
         dims={signalDims}
         dimMapping={dimMapping}
         axisMapping={axisMapping}

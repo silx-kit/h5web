@@ -98,6 +98,22 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             axesScaleType: [ScaleType.Log],
           },
         }),
+        makeNxDataGroup('spectrum_with_aux', {
+          signal: makeNxDataset('twoD_spectrum', intType, [20, 41], {
+            interpretation: 'spectrum',
+            units: 'arb. units',
+          }),
+          errors: makeNxDataset('errors', floatType, [20, 41], {
+            valueId: 'errors_twoD',
+          }),
+          axes: { X: makeNxDataset('X', intType, [41], { units: 'nm' }) },
+          axesAttr: ['.', 'X'],
+          auxiliary: {
+            secondary: makeNxDataset('secondary', intType, [20, 41]),
+            tertiary: makeNxDataset('tertiary', intType, [20, 41]),
+          },
+          auxAttr: ['secondary', 'tertiary'],
+        }),
       ],
     }),
     makeGroup('nexus_malformed', [
