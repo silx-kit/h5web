@@ -15,8 +15,7 @@
 
 .value {
   flex: 1 1 0%;
-  width: 0; /* ensures this input shrinks before filling the available space */
-  height: 1.875rem; /* maintain height regardless of font size */
+  width: 0; /* ensures input shrinks before filling the available space */
   margin-right: 0.375rem;
   padding: 0.25rem 0.375rem;
   background-color: rgba(255, 255, 255, 0.5);
@@ -49,9 +48,6 @@
   background-color: var(--white);
   border-color: var(--secondary-dark);
   outline: none;
-  font-weight: 600;
-  font-size: 0.9375em;
-  line-height: calc(1.2 / 0.9375);
 }
 
 .boundEditor[data-editing='true'] .value:hover {
