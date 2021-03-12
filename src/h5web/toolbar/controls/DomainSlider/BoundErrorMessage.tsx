@@ -1,15 +1,33 @@
-import type { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { FiCornerDownRight } from 'react-icons/fi';
+import { useToggle } from 'react-use';
 import { Bound, BoundError } from '../../../vis-packs/core/models';
 import styles from './DomainTooltip.module.css';
 
 interface Props {
   bound: Bound;
-  error: BoundError;
+  error?: BoundError;
 }
 
 function BoundErrorMessage(props: Props): ReactElement {
   const { bound, error } = props;
+  const [isSticky, toggleSticky] = useToggle(false);
+
+  useEffect(() => {
+    if (error) {
+      toggleSticky(true);
+    }
+  }, [error, toggleSticky]);
+
+  if (!error && isSticky) {
+    // Maintain space occupied by error when it becomes `undefined`
+    // (so the tooltip doesn't shrink and closes)
+    return <p className={styles.error} />;
+  }
+
+  if (!error) {
+    return <></>;
+  }
 
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (error) {

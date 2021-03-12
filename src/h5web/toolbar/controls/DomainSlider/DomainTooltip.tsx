@@ -43,21 +43,24 @@ function DomainTooltip(props: Props): ReactElement {
     <div id={id} className={styles.tooltip} role="tooltip" hidden={!open}>
       <div className={styles.tooltipInner}>
         <BoundEditor
-          label="Min"
+          bound="min"
           value={sliderDomain[0]}
           isEditing={isEditingMin}
           hasError={!!minError}
           onEditToggle={onEditMin}
           onChange={onChangeMin}
         />
+        {open && <BoundErrorMessage bound="min" error={minError} />}
+
         <BoundEditor
-          label="Max"
+          bound="max"
           value={sliderDomain[1]}
           isEditing={isEditingMax}
           hasError={!!maxError}
           onEditToggle={onEditMax}
           onChange={onChangeMax}
         />
+        {open && <BoundErrorMessage bound="max" error={maxError} />}
 
         <p className={styles.dataRange}>
           Data range{' '}
@@ -89,9 +92,6 @@ function DomainTooltip(props: Props): ReactElement {
             onChange={onAutoMaxToggle}
           />
         </p>
-
-        {minError && <BoundErrorMessage bound="min" error={minError} />}
-        {maxError && <BoundErrorMessage bound="max" error={maxError} />}
       </div>
     </div>
   );

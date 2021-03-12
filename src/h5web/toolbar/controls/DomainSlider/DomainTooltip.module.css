@@ -39,6 +39,8 @@
 }
 
 .error {
+  min-height: 2rem;
+  margin-top: -0.25rem;
   font-size: 0.9375em;
   font-weight: 600;
   color: var(--warn);
