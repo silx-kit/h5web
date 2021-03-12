@@ -1,10 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { formatPreciseValue } from '../../../utils';
+import type { Bound } from '../../../vis-packs/core/models';
 import styles from './BoundEditor.module.css';
 
 interface Props {
-  label: string;
+  bound: Bound;
   value: number;
   isEditing: boolean;
   hasError: boolean;
@@ -13,9 +14,9 @@ interface Props {
 }
 
 function BoundEditor(props: Props): ReactElement {
-  const { label, value, isEditing, hasError, onEditToggle, onChange } = props;
+  const { bound, value, isEditing, hasError, onEditToggle, onChange } = props;
 
-  const id = `${label}-bound`;
+  const id = `${bound}-bound`;
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [inputValue, setInputValue] = useState('');
@@ -30,11 +31,11 @@ function BoundEditor(props: Props): ReactElement {
       inputRef.current?.blur();
     }
 
-    if (isEditing && label === 'Min') {
+    if (isEditing && bound === 'min') {
       // Give focus to min field when opening tooltip in edit mode
       inputRef.current?.focus();
     }
-  }, [isEditing, label]);
+  }, [isEditing, bound]);
 
   return (
     <form
@@ -52,7 +53,7 @@ function BoundEditor(props: Props): ReactElement {
       }}
     >
       <label id={`${id}-label`} className={styles.label} htmlFor={id}>
-        {label}
+        {bound}
       </label>
 
       <input
