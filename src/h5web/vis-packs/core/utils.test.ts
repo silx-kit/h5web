@@ -6,8 +6,12 @@ import {
   getValueToIndexScale,
   getIntegerTicks,
   getCombinedDomain,
+  clampBound,
 } from './utils';
 import { Domain, ScaleType } from './models';
+
+const MAX = Number.MAX_VALUE / 2;
+const POS_MIN = Number.MIN_VALUE;
 
 describe('Shared visualization utilities', () => {
   describe('computeVisSize', () => {
@@ -92,6 +96,25 @@ describe('Shared visualization utilities', () => {
     });
   });
 
+  describe('clampBound', () => {
+    it('should clamp to `Number.MAX_VALUE / 2` and keep sign', () => {
+      expect(clampBound(Infinity)).toEqual(MAX);
+      expect(clampBound(-Infinity)).toEqual(-MAX);
+      expect(clampBound(MAX)).toEqual(MAX);
+      expect(clampBound(-MAX)).toEqual(-MAX);
+      expect(clampBound(MAX - 1)).toEqual(MAX - 1);
+      expect(clampBound(-MAX + 1)).toEqual(-MAX + 1);
+    });
+
+    it('should clamp to `Number.MIN_VALUE` when requested', () => {
+      expect(clampBound(0)).toEqual(0);
+
+      expect(clampBound(0, true)).toEqual(POS_MIN);
+      expect(clampBound(POS_MIN, true)).toEqual(POS_MIN);
+      expect(clampBound(POS_MIN * 2, true)).toEqual(POS_MIN * 2);
+    });
+  });
+
   describe('extendDomain', () => {
     it('should extend domain with linear scale', () => {
       const extendedDomain = extendDomain([0, 100], 0.5);
@@ -139,15 +162,15 @@ describe('Shared visualization utilities', () => {
     });
 
     it('should not extend domain outside of supported values', () => {
-      const domain: Domain = [-1 / Number.EPSILON + 1, 1 / Number.EPSILON - 1];
+      const domain: Domain = [-MAX + 1, MAX - 1];
       const extendedDomain = extendDomain(domain, 0.5);
-      expect(extendedDomain).toEqual([-1 / Number.EPSILON, 1 / Number.EPSILON]);
+      expect(extendedDomain).toEqual([-MAX, MAX]);
     });
 
     it('should not extend domain outside of supported values with log scale', () => {
-      const domain: Domain = [Number.EPSILON * 2, 1 / (Number.EPSILON * 2)];
+      const domain: Domain = [POS_MIN * 2, MAX];
       const extendedDomain = extendDomain(domain, 0.75, ScaleType.Log);
-      expect(extendedDomain).toEqual([Number.EPSILON, 1 / Number.EPSILON]);
+      expect(extendedDomain).toEqual([POS_MIN, MAX]);
     });
 
     it('should throw if domain is not compatible with log scale', () => {

@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useRef, useState } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { formatPreciseValue } from '../../../utils';
 import type { Bound } from '../../../vis-packs/core/models';
+import { clampBound } from '../../../vis-packs/core/utils';
 import styles from './BoundEditor.module.css';
 
 interface Props {
@@ -45,10 +46,15 @@ function BoundEditor(props: Props): ReactElement {
       onSubmit={(evt) => {
         evt.preventDefault();
 
-        // In case user replaced minus with hyphen without actually changing the value
-        setInputValue(inputValue.replace('-', '−'));
+        const parsedValue = Number.parseFloat(inputValue.replace('−', '-')); // U+2212 minus gives `NaN`
+        const newValue = Number.isNaN(parsedValue)
+          ? value
+          : clampBound(parsedValue);
 
-        onChange(Number.parseFloat(inputValue.replace('−', '-'))); // `parseFloat` dislikes U+2212 minus
+        // Clean up input in case value hasn't changed (since `useEffect` won't be triggered)
+        setInputValue(formatPreciseValue(newValue));
+
+        onChange(newValue);
         onEditToggle(false);
       }}
     >
