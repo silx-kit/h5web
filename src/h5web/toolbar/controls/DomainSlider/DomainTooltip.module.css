@@ -1,7 +1,6 @@
 .tooltip {
   composes: popup from '../../Toolbar.module.css';
   left: 50%;
-  min-width: 17em;
   transform: translate(-50%, 100%);
 }
 

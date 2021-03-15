@@ -25,15 +25,14 @@ export function getSafeDomain(
   fallbackDomain: Domain,
   scaleType: ScaleType
 ): [Domain, DomainErrors] {
+  const [min, max] = domain;
+
   if (scaleType === ScaleType.Log) {
     return [
-      [
-        domain[0] <= 0 ? fallbackDomain[0] : domain[0],
-        domain[1] <= 0 ? fallbackDomain[1] : domain[1],
-      ],
+      [min <= 0 ? fallbackDomain[0] : min, max <= 0 ? fallbackDomain[1] : max],
       {
-        minError: domain[0] <= 0 ? BoundError.InvalidWithLog : undefined,
-        maxError: domain[1] <= 0 ? BoundError.InvalidWithLog : undefined,
+        minError: min <= 0 ? BoundError.InvalidWithLog : undefined,
+        maxError: max <= 0 ? BoundError.InvalidWithLog : undefined,
       },
     ];
   }

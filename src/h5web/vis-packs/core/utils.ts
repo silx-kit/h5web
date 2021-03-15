@@ -145,15 +145,15 @@ function extendEmptyDomain(
   return [value - extension, value + extension];
 }
 
-function clampBound(val: number): number {
+export function clampBound(val: number, withPositiveMin = false): number {
   const absVal = Math.abs(val);
 
-  if (absVal < Number.EPSILON) {
-    return val === 0 ? val : Math.sign(val) * Number.EPSILON;
+  if (withPositiveMin && absVal <= 0) {
+    return Number.MIN_VALUE;
   }
 
-  if (absVal > 1 / Number.EPSILON) {
-    return Math.sign(val) / Number.EPSILON;
+  if (absVal > Number.MAX_VALUE / 2) {
+    return (Math.sign(val) * Number.MAX_VALUE) / 2; // max domain length is `Number.MAX_VALUE`
   }
 
   return val;
@@ -169,8 +169,9 @@ export function extendDomain(
   }
 
   const [min, max] = domain;
+  const isLog = scaleType === ScaleType.Log;
 
-  if (min <= 0 && scaleType === ScaleType.Log) {
+  if (min <= 0 && isLog) {
     throw new Error('Expected domain compatible with log scale');
   }
 
@@ -181,8 +182,8 @@ export function extendDomain(
   const scale = createAxisScale({ type: scaleType, domain, range: [0, 1] });
 
   return [
-    clampBound(scale.invert(-extendFactor)),
-    clampBound(scale.invert(1 + extendFactor)),
+    clampBound(scale.invert(-extendFactor), isLog),
+    clampBound(scale.invert(1 + extendFactor), isLog),
   ];
 }
 
