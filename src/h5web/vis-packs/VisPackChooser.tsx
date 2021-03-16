@@ -12,7 +12,9 @@ function VisPackChooser(props: Props): ReactElement {
   const { path } = props;
 
   if (!('ResizeObserver' in window)) {
-    throw new Error('Your browser is not supported');
+    throw new Error(
+      "Your browser's version is not supported. Please upgrade to the latest version."
+    );
   }
 
   const { entitiesStore } = useContext(ProviderContext);
