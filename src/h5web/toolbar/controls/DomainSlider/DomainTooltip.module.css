@@ -37,6 +37,25 @@
   margin-left: 0.5rem;
 }
 
+.actionBtn {
+  composes: btn-clean from global;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  font-size: 1.125em;
+  border-radius: 0.5rem;
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+}
+
+.actionBtn:hover {
+  background-color: var(--secondary-light);
+  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
+}
+
+.actionBtn:active {
+  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
+}
+
 .error {
   min-height: 2rem;
   margin-top: -0.25rem;
@@ -48,6 +67,21 @@
 .error > svg {
   vertical-align: -0.125em;
 }
+
 .error > strong {
   font-weight: bold;
+}
+
+.minMaxError {
+  composes: error;
+  display: flex;
+  align-items: center;
+}
+
+.minMaxError > span {
+  flex: 1 1 0%;
+}
+
+.minMaxError > .actionBtn {
+  font-size: 1.75em;
 }

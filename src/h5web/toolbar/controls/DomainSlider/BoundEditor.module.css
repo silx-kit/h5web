@@ -54,21 +54,6 @@
   box-shadow: 1px 1px 2px 1px var(--secondary-dark);
 }
 
-.action {
-  composes: btn-clean from global;
-  display: flex;
-  align-items: center;
-  padding: 0.25rem;
-  font-size: 1.125em;
-  border-radius: 0.5rem;
-  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
-}
-
-.action:hover {
-  background-color: var(--secondary-light);
-  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
-}
-
-.action:active {
-  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
+.actionBtn {
+  composes: actionBtn from './DomainTooltip.module.css';
 }
