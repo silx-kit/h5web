@@ -108,7 +108,6 @@ function DomainSlider(props: Props): ReactElement {
         onAutoMinToggle={() => {
           const newMin = isAutoMin ? dataDomain[0] : undefined;
           onCustomDomainChange([newMin, customDomain[1]]);
-
           if (!isAutoMin) {
             toggleEditingMin(false);
           }
@@ -116,7 +115,6 @@ function DomainSlider(props: Props): ReactElement {
         onAutoMaxToggle={() => {
           const newMax = isAutoMax ? dataDomain[1] : undefined;
           onCustomDomainChange([customDomain[0], newMax]);
-
           if (!isAutoMax) {
             toggleEditingMax(false);
           }
@@ -127,6 +125,7 @@ function DomainSlider(props: Props): ReactElement {
         onEditMax={toggleEditingMax}
         onChangeMin={(val) => onCustomDomainChange([val, customDomain[1]])}
         onChangeMax={(val) => onCustomDomainChange([customDomain[0], val])}
+        onSwap={() => onCustomDomainChange([customDomain[1], customDomain[0]])}
       />
     </div>
   );

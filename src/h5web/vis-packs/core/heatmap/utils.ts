@@ -1,7 +1,7 @@
 import { range } from 'lodash-es';
 import type ndarray from 'ndarray';
 import {
-  BoundError,
+  DomainError,
   CustomDomain,
   Domain,
   DomainErrors,
@@ -42,11 +42,11 @@ export function getSafeDomain(
     [logSafeMinGreater ? logSafeMax : logSafeMin, logSafeMax],
     {
       minError: logSafeMinGreater
-        ? BoundError.CustomMaxFallback
+        ? DomainError.CustomMaxFallback
         : min <= 0
-        ? BoundError.InvalidWithLog
+        ? DomainError.InvalidMinWithLog
         : undefined,
-      maxError: max <= 0 ? BoundError.InvalidWithLog : undefined,
+      maxError: max <= 0 ? DomainError.InvalidMaxWithLog : undefined,
     },
   ];
 }

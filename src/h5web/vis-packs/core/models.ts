@@ -23,12 +23,14 @@ export type CustomDomain = [number | undefined, number | undefined];
 
 export interface DomainErrors {
   minGreater?: boolean;
-  minError?: BoundError;
-  maxError?: BoundError;
+  minError?: DomainError.InvalidMinWithLog | DomainError.CustomMaxFallback;
+  maxError?: DomainError.InvalidMaxWithLog;
 }
 
-export enum BoundError {
-  InvalidWithLog = 'invalid-with-log',
+export enum DomainError {
+  MinGreater = 'min-greater',
+  InvalidMinWithLog = 'invalid-min-with-log',
+  InvalidMaxWithLog = 'invalid-max-with-log',
   CustomMaxFallback = 'custom-max-fallback',
 }
 

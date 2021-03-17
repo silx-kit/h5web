@@ -1,12 +1,11 @@
 import type { ReactElement } from 'react';
-import { FiCornerDownRight } from 'react-icons/fi';
 import type { Domain } from '../../../../packages/lib';
 import { formatValue } from '../../../utils';
-import type { DomainErrors } from '../../../vis-packs/core/models';
+import { DomainError, DomainErrors } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import BoundEditor from './BoundEditor';
-import BoundErrorMessage from './BoundErrorMessage';
 import styles from './DomainTooltip.module.css';
+import ErrorMessage from './ErrorMessage';
 
 interface Props {
   id: string;
@@ -24,6 +23,7 @@ interface Props {
   onEditMax: (force: boolean) => void;
   onChangeMin: (val: number) => void;
   onChangeMax: (val: number) => void;
+  onSwap: () => void;
 }
 
 function DomainTooltip(props: Props): ReactElement {
@@ -36,40 +36,41 @@ function DomainTooltip(props: Props): ReactElement {
     onEditMax,
     onChangeMin,
     onChangeMax,
+    onSwap,
   } = props;
 
-  const { minGreater: minMaxSwapped, minError, maxError } = errors;
+  const { minGreater, minError, maxError } = errors;
 
   return (
     <div id={id} className={styles.tooltip} role="tooltip" hidden={!open}>
       <div className={styles.tooltipInner}>
-        {minMaxSwapped && (
-          <p className={styles.error}>
-            Min greater than max
-            <br />
-            <FiCornerDownRight /> falling back to <strong>data range</strong>
-          </p>
+        {minGreater && (
+          <ErrorMessage
+            error={DomainError.MinGreater}
+            showSwapBtn={!isAutoMin && !isAutoMax}
+            onSwap={onSwap}
+          />
         )}
 
         <BoundEditor
           bound="min"
           value={sliderDomain[0]}
           isEditing={isEditingMin}
-          hasError={minMaxSwapped || !!minError}
+          hasError={minGreater || !!minError}
           onEditToggle={onEditMin}
           onChange={onChangeMin}
         />
-        {open && <BoundErrorMessage bound="min" error={minError} />}
+        {minError && <ErrorMessage error={minError} />}
 
         <BoundEditor
           bound="max"
           value={sliderDomain[1]}
           isEditing={isEditingMax}
-          hasError={minMaxSwapped || !!maxError}
+          hasError={minGreater || !!maxError}
           onEditToggle={onEditMax}
           onChange={onChangeMax}
         />
-        {open && <BoundErrorMessage bound="max" error={maxError} />}
+        {maxError && <ErrorMessage error={maxError} />}
 
         <p className={styles.dataRange}>
           Data range{' '}

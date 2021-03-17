@@ -2,6 +2,11 @@
   composes: popup from '../../Toolbar.module.css';
   left: 50%;
   transform: translate(-50%, 100%);
+  /* Add invisible padding around tooltip to extend hover area */
+  /* (especially for when enabling auto-scaling hides an error message). */
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
 }
 
 .tooltipInner {
@@ -37,17 +42,48 @@
   margin-left: 0.5rem;
 }
 
+.actionBtn {
+  composes: btn-clean from global;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  font-size: 1.125em;
+  border-radius: 0.5rem;
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+}
+
+.actionBtn:hover {
+  background-color: var(--secondary-light);
+  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
+}
+
+.actionBtn:active {
+  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
+}
+
 .error {
+  display: flex;
+  align-items: flex-start;
   min-height: 2rem;
   margin-top: -0.25rem;
-  font-size: 0.9375em;
-  font-weight: 600;
   color: var(--warn);
 }
 
-.error > svg {
+.errorMessage {
+  flex: 1 1 0%;
+  font-size: 0.9375em;
+  font-weight: 600;
+}
+
+.errorMessage > svg {
   vertical-align: -0.125em;
 }
-.error > strong {
+
+.errorMessage > strong {
   font-weight: bold;
+}
+
+.swapBtn {
+  composes: actionBtn;
+  font-size: 1.5em;
 }
