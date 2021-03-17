@@ -22,13 +22,14 @@ export type Domain = [number, number];
 export type CustomDomain = [number | undefined, number | undefined];
 
 export interface DomainErrors {
-  minGreater: boolean;
+  minGreater?: boolean;
   minError?: BoundError;
   maxError?: BoundError;
 }
 
 export enum BoundError {
   InvalidWithLog = 'invalid-with-log',
+  CustomMaxFallback = 'custom-max-fallback',
 }
 
 export interface AxisConfig {
