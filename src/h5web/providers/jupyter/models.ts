@@ -2,7 +2,6 @@ import type { HDF5Value } from '../hdf5-models';
 import type { EntityKind } from '../models';
 
 export interface JupyterMetaResponse {
-  attributeCount: number;
   id: string;
   name: string;
   type: EntityKind.Group | EntityKind.Dataset;
@@ -17,7 +16,6 @@ export interface JupyterMetaDatasetResponse extends JupyterMetaResponse {
 }
 
 export interface JupyterMetaGroupResponse extends JupyterMetaResponse {
-  childrenCount: number;
   type: EntityKind.Group;
 }
 
