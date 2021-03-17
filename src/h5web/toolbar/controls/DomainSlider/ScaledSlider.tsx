@@ -1,7 +1,6 @@
-import { Fragment, ReactElement, Ref } from 'react';
+import { Fragment, ReactElement, Ref, useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
-import { useBoolean } from 'react-use';
 import { createAxisScale, extendDomain } from '../../../vis-packs/core/utils';
 import type {
   Domain,
@@ -25,11 +24,7 @@ interface Props {
   disabled?: boolean;
   isAutoMin: boolean;
   isAutoMax: boolean;
-  onChange: (
-    newValue: Domain,
-    hasMinChanged: boolean,
-    hasMaxChanged: boolean
-  ) => void;
+  onChange: (newValue: Domain) => void;
   onAfterChange: (hasMinChanged: boolean, hasMaxChanged: boolean) => void;
 }
 
@@ -45,13 +40,9 @@ function ScaledSlider(props: Props): ReactElement {
     isAutoMax,
   } = props;
   const { onChange, onAfterChange: onDone } = props;
-  const { minError, maxError } = errors;
+  const { minGreater, minError, maxError } = errors;
 
   const sliderExtent = extendDomain(safeVisDomain, EXTEND_FACTOR, scaleType);
-
-  const [hasMinChanged, setMinChanged] = useBoolean(false);
-  const [hasMaxChanged, setMaxChanged] = useBoolean(false);
-
   const scale = createAxisScale({
     type: scaleType,
     domain: sliderExtent,
@@ -62,25 +53,23 @@ function ScaledSlider(props: Props): ReactElement {
   const [safeValue] = getSafeDomain(value, dataDomain, scaleType);
   const scaledValue = safeValue.map(scale).map(Math.round) as Domain;
 
-  function handleChange(newScaledValue: Domain) {
+  const [beforeChangeValue, setBeforeChangeValue] = useState(scaledValue);
+
+  function handleChange(newScaledValue: Domain, done = false) {
     const [newScaledMin, newScaledMax] = newScaledValue;
-    const hasMinChanged = newScaledMin !== scaledValue[0];
-    const hasMaxChanged = newScaledMax !== scaledValue[1];
+    const hasMinChanged = newScaledMin !== beforeChangeValue[0];
+    const hasMaxChanged = newScaledMax !== beforeChangeValue[1];
 
     const newValue: Domain = [
-      hasMinChanged ? scale.invert(newScaledMin) : safeValue[0],
-      hasMaxChanged ? scale.invert(newScaledMax) : safeValue[1],
+      hasMinChanged ? scale.invert(newScaledMin) : value[0],
+      hasMaxChanged ? scale.invert(newScaledMax) : value[1],
     ];
 
-    onChange(newValue, hasMinChanged, hasMaxChanged);
-    setMinChanged(hasMinChanged);
-    setMaxChanged(hasMaxChanged);
-  }
-
-  function handleAfterChange() {
-    onDone(hasMinChanged, hasMaxChanged);
-    setMinChanged(false);
-    setMaxChanged(false);
+    if (done) {
+      onDone(hasMinChanged, hasMaxChanged);
+    } else {
+      onChange(newValue);
+    }
   }
 
   return (
@@ -91,13 +80,14 @@ function ScaledSlider(props: Props): ReactElement {
       max={SLIDER_RANGE[1]}
       value={scaledValue}
       disabled={disabled}
+      onBeforeChange={(bounds) => setBeforeChangeValue(bounds as Domain)}
       onChange={(bounds) => handleChange(bounds as Domain)}
-      onAfterChange={handleAfterChange}
+      onAfterChange={(bounds) => handleChange(bounds as Domain, true)}
       renderThumb={({ ref, ...thumbProps }, { index }) => (
         <Thumb
           ref={ref as Ref<HTMLDivElement>}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
-          hasError={index === 0 ? !!minError : !!maxError}
+          hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
           AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
           disabled={disabled}
           {...thumbProps}
