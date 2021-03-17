@@ -23,9 +23,10 @@ function ErrorMessage(props: Props) {
         <button
           className={styles.swapBtn}
           type="button"
+          aria-label="Swap min and max"
           onClick={() => onSwap()}
         >
-          <MdSwapVert>Swap</MdSwapVert>
+          <MdSwapVert />
         </button>
       )}
     </p>

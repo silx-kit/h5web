@@ -79,16 +79,22 @@ function BoundEditor(props: Props): ReactElement {
         }}
       />
 
-      <button className={styles.actionBtn} type="submit" disabled={!isEditing}>
-        <FiCheck>Apply</FiCheck>
+      <button
+        className={styles.actionBtn}
+        type="submit"
+        disabled={!isEditing}
+        aria-label="Apply"
+      >
+        <FiCheck />
       </button>
       <button
         className={styles.actionBtn}
         type="button"
         disabled={!isEditing}
+        aria-label="Cancel"
         onClick={() => onEditToggle(false)}
       >
-        <FiSlash>Cancel</FiSlash>
+        <FiSlash />
       </button>
     </form>
   );
