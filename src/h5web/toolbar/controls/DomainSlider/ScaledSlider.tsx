@@ -24,11 +24,7 @@ interface Props {
   disabled?: boolean;
   isAutoMin: boolean;
   isAutoMax: boolean;
-  onChange: (
-    newValue: Domain,
-    hasMinChanged: boolean,
-    hasMaxChanged: boolean
-  ) => void;
+  onChange: (newValue: Domain) => void;
   onAfterChange: (hasMinChanged: boolean, hasMaxChanged: boolean) => void;
 }
 
@@ -44,7 +40,7 @@ function ScaledSlider(props: Props): ReactElement {
     isAutoMax,
   } = props;
   const { onChange, onAfterChange: onDone } = props;
-  const { minError, maxError } = errors;
+  const { minGreater, minError, maxError } = errors;
 
   const sliderExtent = extendDomain(safeVisDomain, EXTEND_FACTOR, scaleType);
   const scale = createAxisScale({
@@ -65,14 +61,14 @@ function ScaledSlider(props: Props): ReactElement {
     const hasMaxChanged = newScaledMax !== beforeChangeValue[1];
 
     const newValue: Domain = [
-      hasMinChanged ? scale.invert(newScaledMin) : safeValue[0],
-      hasMaxChanged ? scale.invert(newScaledMax) : safeValue[1],
+      hasMinChanged ? scale.invert(newScaledMin) : value[0],
+      hasMaxChanged ? scale.invert(newScaledMax) : value[1],
     ];
 
     if (done) {
       onDone(hasMinChanged, hasMaxChanged);
     } else {
-      onChange(newValue, hasMinChanged, hasMaxChanged);
+      onChange(newValue);
     }
   }
 
@@ -91,7 +87,7 @@ function ScaledSlider(props: Props): ReactElement {
         <Thumb
           ref={ref as Ref<HTMLDivElement>}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
-          hasError={index === 0 ? !!minError : !!maxError}
+          hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
           AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
           disabled={disabled}
           {...thumbProps}

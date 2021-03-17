@@ -22,6 +22,7 @@ export type Domain = [number, number];
 export type CustomDomain = [number | undefined, number | undefined];
 
 export interface DomainErrors {
+  minGreater: boolean;
   minError?: BoundError;
   maxError?: BoundError;
 }

@@ -24,7 +24,9 @@ const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
     >
       <div className={styles.thumbBtnLike}>
         {isAuto && <AutoIcon className={styles.icon} />}
-        {hasError && <FiAlertCircle className={styles.icon} strokeWidth="3" />}
+        {!isAuto && hasError && (
+          <FiAlertCircle className={styles.icon} strokeWidth="3" />
+        )}
       </div>
     </div>
   );

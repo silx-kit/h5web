@@ -25,19 +25,21 @@ export function getSafeDomain(
   fallbackDomain: Domain,
   scaleType: ScaleType
 ): [Domain, DomainErrors] {
-  const [min, max] = domain;
+  const minGreater = domain[0] > domain[1];
+  const [min, max] = minGreater ? fallbackDomain : domain;
 
   if (scaleType === ScaleType.Log) {
     return [
       [min <= 0 ? fallbackDomain[0] : min, max <= 0 ? fallbackDomain[1] : max],
       {
+        minGreater,
         minError: min <= 0 ? BoundError.InvalidWithLog : undefined,
         maxError: max <= 0 ? BoundError.InvalidWithLog : undefined,
       },
     ];
   }
 
-  return [domain, {}];
+  return [[min, max], { minGreater }];
 }
 
 export function getDims(dataArray: ndarray): Dims {

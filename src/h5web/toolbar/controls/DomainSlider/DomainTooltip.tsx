@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { FiCornerDownRight } from 'react-icons/fi';
 import type { Domain } from '../../../../packages/lib';
 import { formatValue } from '../../../utils';
 import type { DomainErrors } from '../../../vis-packs/core/models';
@@ -37,16 +38,24 @@ function DomainTooltip(props: Props): ReactElement {
     onChangeMax,
   } = props;
 
-  const { minError, maxError } = errors;
+  const { minGreater: minMaxSwapped, minError, maxError } = errors;
 
   return (
     <div id={id} className={styles.tooltip} role="tooltip" hidden={!open}>
       <div className={styles.tooltipInner}>
+        {minMaxSwapped && (
+          <p className={styles.error}>
+            Min greater than max
+            <br />
+            <FiCornerDownRight /> falling back to <strong>data range</strong>
+          </p>
+        )}
+
         <BoundEditor
           bound="min"
           value={sliderDomain[0]}
           isEditing={isEditingMin}
-          hasError={!!minError}
+          hasError={minMaxSwapped || !!minError}
           onEditToggle={onEditMin}
           onChange={onChangeMin}
         />
@@ -56,7 +65,7 @@ function DomainTooltip(props: Props): ReactElement {
           bound="max"
           value={sliderDomain[1]}
           isEditing={isEditingMax}
-          hasError={!!maxError}
+          hasError={minMaxSwapped || !!maxError}
           onEditToggle={onEditMax}
           onChange={onChangeMax}
         />
