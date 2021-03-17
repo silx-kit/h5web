@@ -29,11 +29,19 @@ export function getSafeDomain(
   const [min, max] = minGreater ? fallbackDomain : domain;
 
   if (scaleType === ScaleType.Log) {
+    const logSafeMin = min <= 0 ? fallbackDomain[0] : min;
+    const logSafeMax = max <= 0 ? fallbackDomain[1] : max;
+    const logSafeMinGreater = logSafeMin > logSafeMax;
+
     return [
-      [min <= 0 ? fallbackDomain[0] : min, max <= 0 ? fallbackDomain[1] : max],
+      [logSafeMinGreater ? logSafeMax : logSafeMin, logSafeMax],
       {
         minGreater,
-        minError: min <= 0 ? BoundError.InvalidWithLog : undefined,
+        minError: logSafeMinGreater
+          ? BoundError.CustomMaxFallback
+          : min <= 0
+          ? BoundError.InvalidWithLog
+          : undefined,
         maxError: max <= 0 ? BoundError.InvalidWithLog : undefined,
       },
     ];

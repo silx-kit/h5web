@@ -29,6 +29,7 @@ export interface DomainErrors {
 
 export enum BoundError {
   InvalidWithLog = 'invalid-with-log',
+  CustomMaxFallback = 'custom-max-fallback',
 }
 
 export interface AxisConfig {

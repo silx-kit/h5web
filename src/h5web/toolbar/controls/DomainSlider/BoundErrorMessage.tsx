@@ -29,7 +29,6 @@ function BoundErrorMessage(props: Props): ReactElement {
     return <></>;
   }
 
-  // eslint-disable-next-line sonarjs/no-small-switch
   switch (error) {
     case BoundError.InvalidWithLog:
       return (
@@ -37,6 +36,14 @@ function BoundErrorMessage(props: Props): ReactElement {
           Custom {bound} invalid with log scale
           <br />
           <FiCornerDownRight /> falling back to <strong>data {bound}</strong>
+        </p>
+      );
+    case BoundError.CustomMaxFallback:
+      return (
+        <p className={styles.error}>
+          Custom min invalid with log scale
+          <br />
+          <FiCornerDownRight /> falling back to <strong>custom max</strong>
         </p>
       );
     default:
