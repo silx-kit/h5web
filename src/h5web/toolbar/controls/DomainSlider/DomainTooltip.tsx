@@ -1,12 +1,11 @@
 import type { ReactElement } from 'react';
 import type { Domain } from '../../../../packages/lib';
 import { formatValue } from '../../../utils';
-import type { DomainErrors } from '../../../vis-packs/core/models';
+import { DomainError, DomainErrors } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import BoundEditor from './BoundEditor';
 import styles from './DomainTooltip.module.css';
 import ErrorMessage from './ErrorMessage';
-import { getBoundErrorProps } from './utils';
 
 interface Props {
   id: string;
@@ -47,8 +46,7 @@ function DomainTooltip(props: Props): ReactElement {
       <div className={styles.tooltipInner}>
         {minGreater && (
           <ErrorMessage
-            message="Min greater than max"
-            fallback="data range"
+            error={DomainError.MinGreater}
             showSwapBtn={!isAutoMin && !isAutoMax}
             onSwap={onSwap}
           />
@@ -62,7 +60,7 @@ function DomainTooltip(props: Props): ReactElement {
           onEditToggle={onEditMin}
           onChange={onChangeMin}
         />
-        {minError && <ErrorMessage {...getBoundErrorProps(minError, 'min')} />}
+        {minError && <ErrorMessage error={minError} />}
 
         <BoundEditor
           bound="max"
@@ -72,7 +70,7 @@ function DomainTooltip(props: Props): ReactElement {
           onEditToggle={onEditMax}
           onChange={onChangeMax}
         />
-        {maxError && <ErrorMessage {...getBoundErrorProps(maxError, 'max')} />}
+        {maxError && <ErrorMessage error={maxError} />}
 
         <p className={styles.dataRange}>
           Data range{' '}

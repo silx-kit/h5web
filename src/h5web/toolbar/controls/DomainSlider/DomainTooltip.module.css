@@ -61,7 +61,7 @@
   box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
 }
 
-.stickyError {
+.error {
   display: flex;
   align-items: flex-start;
   min-height: 2rem;
