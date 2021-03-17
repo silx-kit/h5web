@@ -86,10 +86,9 @@ export class JupyterApi implements ProviderAPI {
     depth: number
   ): Promise<Group | Dataset | Link<HDF5SoftLink>> {
     const response = await this.fetchMetadata(path);
-    const { attributeCount } = response;
 
-    const attrReponse =
-      attributeCount > 0 ? await this.fetchAttributes(path) : {};
+    // TODO: To fix once we have `attributeCount`
+    const attrReponse = await this.fetchAttributes(path);
     const attributes = Object.entries(attrReponse).map(([name, value]) =>
       // TODO: fix this once I can infer the type of attributes
       makeStrAttr(name, value)
@@ -102,9 +101,10 @@ export class JupyterApi implements ProviderAPI {
     };
 
     if (isGroupResponse(response)) {
-      const { type, childrenCount } = response;
+      const { type } = response;
 
-      if (depth === 0 || childrenCount === 0) {
+      // TODO: To fix once we have `childrenCount`
+      if (depth === 0) {
         return {
           ...baseEntity,
           kind: type,
