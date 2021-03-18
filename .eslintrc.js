@@ -72,6 +72,7 @@ module.exports = createConfig({
         'jest/no-focused-tests': 'warn', // warning instead of error
         'jest/prefer-strict-equal': 'off', // `toEqual` is shorter and sufficient in most cases
         'jest-formatting/padding-around-all': 'off', // allow writing concise two-line tests
+        'jest/require-top-level-describe': 'off', // filename should already be meaningful, extra nesting is unnecessary
       },
     },
     {
