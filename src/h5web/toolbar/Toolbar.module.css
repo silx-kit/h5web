@@ -13,12 +13,20 @@
   min-width: 0;
 }
 
-.measuringContainer {
+.controlsInner {
+  display: flex;
+}
+
+.control {
+  display: flex;
+}
+
+.controlsInner[data-all-measured='false'] {
   position: relative;
   overflow: hidden;
 }
 
-.measuredControl {
+.controlsInner[data-all-measured='false'] > .control {
   position: absolute;
 }
 

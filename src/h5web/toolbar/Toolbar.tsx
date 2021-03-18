@@ -1,16 +1,13 @@
-import { ReactElement, Children, cloneElement, Fragment } from 'react';
-import Measure from 'react-measure';
+import { ReactElement, Children, Fragment } from 'react';
 import { useMeasure, useMap } from 'react-use';
 import styles from './Toolbar.module.css';
 import Separator from './Separator';
 import OverflowMenu from './OverflowMenu';
-
-// Controls must have a `disabled` prop to accessibly disable the interactive elements they contain
-type ToolbarControl = ReactElement<{ disabled: boolean }>;
+import MeasuredControl from './MeasuredControl';
 
 interface Props {
   // Toolbar controls must be direct children of `Toolbar` (no fragment)
-  children?: (ToolbarControl | undefined)[] | ToolbarControl;
+  children?: (ReactElement | undefined)[] | ReactElement;
 }
 
 function Toolbar(props: Props): ReactElement {
@@ -45,8 +42,15 @@ function Toolbar(props: Props): ReactElement {
   const visibleChildren = measuredChildren.slice(0, firstOverflowIndex);
   const hiddenChildren = measuredChildren.slice(firstOverflowIndex);
 
+  const allMeasured = measuredChildren.length === allChildren.length;
   const isSeparatorLast =
     visibleChildren[visibleChildren.length - 1]?.type === Separator;
+
+  const allOrVisibleChildren = allMeasured
+    ? isSeparatorLast
+      ? visibleChildren.slice(0, -1)
+      : visibleChildren
+    : allChildren;
 
   return (
     <div className={styles.toolbar}>
@@ -54,33 +58,21 @@ function Toolbar(props: Props): ReactElement {
         ref={containerRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
         className={styles.controls}
       >
-        {isSeparatorLast ? visibleChildren.slice(0, -1) : visibleChildren}
+        <div className={styles.controlsInner} data-all-measured={allMeasured}>
+          {allOrVisibleChildren.map((child) => (
+            <MeasuredControl
+              key={`measure-${child.key || ''}`}
+              onMeasure={(width) => setChildWidth(child.key as string, width)}
+            >
+              {child}
+            </MeasuredControl>
+          ))}
+        </div>
       </div>
 
       <OverflowMenu>
         {hiddenChildren.filter((child) => child.type !== Separator)}
       </OverflowMenu>
-
-      {/* Render all children invisibly to measure them */}
-      <div className={styles.measuringContainer} aria-hidden="true">
-        {allChildren.map((child) => (
-          <Measure
-            key={`measure-${child.key || ''}`}
-            onResize={({ entry }) => {
-              if (entry) {
-                setChildWidth(child.key as string, entry.width);
-              }
-            }}
-          >
-            {({ measureRef }) => (
-              <div ref={measureRef} className={styles.measuredControl}>
-                {/* Children should ensure they cannot receive focus when disabled */}
-                {cloneElement(child, { disabled: true })}
-              </div>
-            )}
-          </Measure>
-        ))}
-      </div>
     </div>
   );
 }
