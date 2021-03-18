@@ -23,7 +23,7 @@
 
 .controlsInner[data-all-measured='false'] {
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* hide controls while they are being measured */
 }
 
 .controlsInner[data-all-measured='false'] > .control {

@@ -2,21 +2,13 @@ import type { ReactElement } from 'react';
 import { MdCameraAlt } from 'react-icons/md';
 import styles from './SnapshotButton.module.css';
 
-interface Props {
-  disabled?: boolean;
-}
-
-function SnapshotButton(props: Props): ReactElement {
-  const { disabled } = props;
-
+function SnapshotButton(): ReactElement {
   return (
     <a
       className={styles.link}
       href="/"
       target="_blank"
       aria-label="Snapshot"
-      aria-disabled={disabled ? 'true' : undefined}
-      tabIndex={disabled ? -1 : undefined}
       onClick={(evt) => {
         const canvas = document.querySelector('canvas');
 

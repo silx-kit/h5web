@@ -21,7 +21,6 @@ interface Props {
   safeVisDomain: Domain;
   scaleType: ScaleType;
   errors: DomainErrors;
-  disabled?: boolean;
   isAutoMin: boolean;
   isAutoMax: boolean;
   onChange: (newValue: Domain) => void;
@@ -35,7 +34,6 @@ function ScaledSlider(props: Props): ReactElement {
     safeVisDomain,
     scaleType,
     errors,
-    disabled,
     isAutoMin,
     isAutoMax,
   } = props;
@@ -79,7 +77,6 @@ function ScaledSlider(props: Props): ReactElement {
       min={SLIDER_RANGE[0]}
       max={SLIDER_RANGE[1]}
       value={scaledValue}
-      disabled={disabled}
       onBeforeChange={(bounds) => setBeforeChangeValue(bounds as Domain)}
       onChange={(bounds) => handleChange(bounds as Domain)}
       onAfterChange={(bounds) => handleChange(bounds as Domain, true)}
@@ -89,7 +86,6 @@ function ScaledSlider(props: Props): ReactElement {
           isAuto={index === 0 ? isAutoMin : isAutoMax}
           hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
           AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
-          disabled={disabled}
           {...thumbProps}
         />
       )}

@@ -36,20 +36,18 @@ function ColorMapOption(props: { option: ColorMap }): ReactElement {
 
 interface Props {
   value: ColorMap;
-  disabled?: boolean;
   onValueChange: (colorMap: ColorMap) => void;
   invert: boolean;
   onInversionChange: () => void;
 }
 
 function ColorMapSelector(props: Props): ReactElement {
-  const { value, disabled, onValueChange, invert, onInversionChange } = props;
+  const { value, onValueChange, invert, onInversionChange } = props;
 
   return (
     <div className={styles.selectorWrapper}>
       <Selector
         value={value}
-        disabled={disabled}
         onChange={onValueChange}
         options={COLORMAP_GROUPS}
         optionComponent={ColorMapOption}

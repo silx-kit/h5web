@@ -15,8 +15,3 @@
   font-size: 0.75rem;
   cursor: pointer;
 }
-
-.slider:global(.disabled) {
-  opacity: 0.5;
-  pointer-events: none;
-}

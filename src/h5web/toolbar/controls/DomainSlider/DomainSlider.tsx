@@ -21,12 +21,11 @@ interface Props {
   dataDomain: Domain;
   customDomain: CustomDomain;
   scaleType: ScaleType;
-  disabled?: boolean;
   onCustomDomainChange: (domain: CustomDomain) => void;
 }
 
 function DomainSlider(props: Props): ReactElement {
-  const { dataDomain, customDomain, scaleType, disabled } = props;
+  const { dataDomain, customDomain, scaleType } = props;
   const { onCustomDomainChange } = props;
 
   const visDomain = useVisDomain(customDomain, dataDomain);
@@ -72,7 +71,6 @@ function DomainSlider(props: Props): ReactElement {
         dataDomain={dataDomain}
         scaleType={scaleType}
         errors={errors}
-        disabled={disabled}
         isAutoMin={isAutoMin}
         isAutoMax={isAutoMax}
         onChange={(newValue) => {
@@ -93,7 +91,6 @@ function DomainSlider(props: Props): ReactElement {
         label="Edit domain"
         icon={FiEdit3}
         value={isEditing}
-        disabled={disabled}
         onChange={() => toggleEditing(!isEditing)}
       />
 
