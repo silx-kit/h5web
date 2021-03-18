@@ -8,64 +8,62 @@ import {
 } from '../../test-utils';
 import { Vis } from './visualizations';
 
-describe('CorePack', () => {
-  test('visualise raw dataset', async () => {
-    renderApp();
-    await selectExplorerNode('entities/raw');
+test('visualise raw dataset', async () => {
+  renderApp();
+  await selectExplorerNode('entities/raw');
 
-    const tabs = await findVisSelectorTabs();
-    expect(tabs).toHaveLength(1);
-    expect(tabs[0]).toHaveTextContent(Vis.Raw);
-    expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(Vis.Raw);
+  expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
 
-    expect(await screen.findByText(/"int": 42/u)).toBeVisible();
-  });
+  expect(await screen.findByText(/"int": 42/u)).toBeVisible();
+});
 
-  test('log raw dataset to console if too large', async () => {
-    const logSpy = mockConsoleMethod('log');
+test('log raw dataset to console if too large', async () => {
+  const logSpy = mockConsoleMethod('log');
 
-    renderApp();
-    await selectExplorerNode('entities/raw_large');
+  renderApp();
+  await selectExplorerNode('entities/raw_large');
 
-    expect(await screen.findByText(/dataset is too big/u)).toBeVisible();
-    expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
-  });
+  expect(await screen.findByText(/dataset is too big/u)).toBeVisible();
+  expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
+});
 
-  test('visualise scalar dataset', async () => {
-    renderApp();
+test('visualise scalar dataset', async () => {
+  renderApp();
 
-    await selectExplorerNode('entities/scalar_int');
-    expect(await screen.findByText('0')).toBeVisible();
+  await selectExplorerNode('entities/scalar_int');
+  expect(await screen.findByText('0')).toBeVisible();
 
-    const tabs = await findVisSelectorTabs();
-    expect(tabs).toHaveLength(1);
-    expect(tabs[0]).toHaveTextContent(Vis.Scalar);
-    expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(Vis.Scalar);
+  expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
 
-    await selectExplorerNode('scalar_str');
-    expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
-  });
+  await selectExplorerNode('scalar_str');
+  expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
+});
 
-  test('visualize 1D dataset', async () => {
-    renderApp();
-    await selectExplorerNode('nD_datasets/oneD');
+test('visualize 1D dataset', async () => {
+  renderApp();
+  await selectExplorerNode('nD_datasets/oneD');
 
-    const tabs = await findVisSelectorTabs();
-    expect(tabs).toHaveLength(2);
-    expect(tabs[0]).toHaveTextContent(Vis.Matrix);
-    expect(tabs[1]).toHaveTextContent(Vis.Line);
-    expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
-  });
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(2);
+  expect(tabs[0]).toHaveTextContent(Vis.Matrix);
+  expect(tabs[1]).toHaveTextContent(Vis.Line);
+  expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+});
 
-  test('visualize 2D datasets', async () => {
-    renderApp();
-    await selectExplorerNode('nD_datasets/twoD');
+test('visualize 2D datasets', async () => {
+  renderApp();
+  await selectExplorerNode('nD_datasets/twoD');
 
-    const tabs = await findVisSelectorTabs();
-    expect(tabs).toHaveLength(3);
-    expect(tabs[0]).toHaveTextContent(Vis.Matrix);
-    expect(tabs[1]).toHaveTextContent(Vis.Line);
-    expect(tabs[2]).toHaveTextContent(Vis.Heatmap);
-    expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
-  });
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(3);
+  expect(tabs[0]).toHaveTextContent(Vis.Matrix);
+  expect(tabs[1]).toHaveTextContent(Vis.Line);
+  expect(tabs[2]).toHaveTextContent(Vis.Heatmap);
+  expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
 });

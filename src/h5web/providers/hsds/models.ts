@@ -31,7 +31,7 @@ export interface HsdsFloatType {
   base: string;
 }
 
-interface HsdsStringType {
+export interface HsdsStringType {
   class: HDF5TypeClass.String;
   charSet: 'H5T_CSET_ASCII' | 'H5T_CSET_UTF8';
   strPad: 'H5T_STR_SPACEPAD' | 'H5T_STR_NULLTERM' | 'H5T_STR_NULLPAD';
