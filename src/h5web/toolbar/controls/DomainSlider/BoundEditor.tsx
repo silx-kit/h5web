@@ -83,7 +83,7 @@ function BoundEditor(props: Props): ReactElement {
         className={styles.actionBtn}
         type="submit"
         disabled={!isEditing}
-        aria-label="Apply"
+        aria-label={`Apply ${bound}`}
       >
         <FiCheck />
       </button>
@@ -91,7 +91,7 @@ function BoundEditor(props: Props): ReactElement {
         className={styles.actionBtn}
         type="button"
         disabled={!isEditing}
-        aria-label="Cancel"
+        aria-label={`Cancel ${bound}`}
         onClick={() => onEditToggle(false)}
       >
         <FiSlash />

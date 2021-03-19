@@ -42,7 +42,13 @@ function DomainTooltip(props: Props): ReactElement {
   const { minGreater, minError, maxError } = errors;
 
   return (
-    <div id={id} className={styles.tooltip} role="tooltip" hidden={!open}>
+    <div
+      id={id}
+      className={styles.tooltip}
+      role="dialog"
+      aria-label="Edit domain"
+      hidden={!open}
+    >
       <div className={styles.tooltipInner}>
         {minGreater && (
           <ErrorMessage
