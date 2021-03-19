@@ -7,12 +7,11 @@ import ScaleOption from './ScaleOption';
 interface Props {
   value: ScaleType;
   label?: string;
-  disabled?: boolean;
   onScaleChange: (scale: ScaleType) => void;
 }
 
 function ScaleSelector(props: Props): ReactElement {
-  const { value, label, disabled, onScaleChange } = props;
+  const { value, label, onScaleChange } = props;
 
   return (
     <div className={styles.root}>
@@ -20,7 +19,6 @@ function ScaleSelector(props: Props): ReactElement {
       <Selector
         value={value}
         onChange={onScaleChange}
-        disabled={disabled}
         options={Object.values(ScaleType)}
         optionComponent={ScaleOption}
       />

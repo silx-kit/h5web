@@ -7,18 +7,16 @@ type Props = HTMLProps<HTMLDivElement> & {
   isAuto: boolean;
   hasError: boolean;
   AutoIcon: IconType;
-  disabled?: boolean;
 };
 
 const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { isAuto, hasError, disabled, AutoIcon, ...thumbProps } = props;
+  const { isAuto, hasError, AutoIcon, ...thumbProps } = props;
 
   return (
     <div
       ref={ref}
       {...thumbProps}
       className={styles.thumb}
-      tabIndex={disabled ? -1 : 0}
       data-auto={isAuto}
       data-error={hasError || undefined}
     >
