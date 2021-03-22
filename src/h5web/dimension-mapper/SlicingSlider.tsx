@@ -38,7 +38,7 @@ function SlicingSlider(props: Props): ReactElement {
         )}
         value={slicingIndex}
         onChange={(value) => {
-          const newMapperState = mapperState.slice();
+          const newMapperState = [...mapperState];
           newMapperState[dimension] = value as number;
           onChange(newMapperState);
         }}

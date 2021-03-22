@@ -72,7 +72,6 @@ function PanZoomMesh(): ReactElement {
     (evt: WheelEvent) => {
       const factor = evt.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
 
-      // eslint-disable-next-line no-param-reassign
       camera.zoom = Math.max(1, camera.zoom * factor);
       camera.updateProjectionMatrix();
 

@@ -75,12 +75,5 @@ module.exports = createConfig({
         'jest/require-top-level-describe': 'off', // filename should already be meaningful, extra nesting is unnecessary
       },
     },
-    {
-      files: ['*.stories.tsx'],
-      rules: {
-        'react/function-component-definition': 'off', // allow typing template components with Storybook's `Story` type
-        'import/no-anonymous-default-export': 'off', // allow exporting anonymous config object
-      },
-    },
   ],
 });

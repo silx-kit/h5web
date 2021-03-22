@@ -29,7 +29,7 @@ function AxisMapper(props: Props): ReactElement {
         onChange={(val) => {
           const newDim = Number(val);
           if (selectedDim !== newDim) {
-            const newMapperState = mapperState.slice();
+            const newMapperState = [...mapperState];
 
             // Invert mappings or reset slicing index of previously selected dimension
             newMapperState[selectedDim] = isNumber(mapperState[newDim])
