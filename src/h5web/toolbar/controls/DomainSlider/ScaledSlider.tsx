@@ -83,6 +83,7 @@ function ScaledSlider(props: Props): ReactElement {
       renderThumb={({ ref, ...thumbProps }, { index }) => (
         <Thumb
           ref={ref as Ref<HTMLDivElement>}
+          bound={index === 0 ? 'min' : 'max'}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
           hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
           AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}

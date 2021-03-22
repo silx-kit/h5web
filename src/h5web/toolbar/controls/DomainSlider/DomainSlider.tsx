@@ -60,8 +60,6 @@ function DomainSlider(props: Props): ReactElement {
     <div
       ref={rootRef}
       className={styles.root}
-      aria-expanded={hovered}
-      aria-describedby={TOOLTIP_ID}
       onPointerEnter={() => toggleHovered(true)}
       onPointerLeave={() => toggleHovered(false)}
     >
@@ -89,6 +87,8 @@ function DomainSlider(props: Props): ReactElement {
         iconOnly
         small
         label="Edit domain"
+        aria-expanded={hovered || isEditing}
+        aria-controls={TOOLTIP_ID}
         icon={FiEdit3}
         value={isEditing}
         onChange={() => toggleEditing(!isEditing)}
