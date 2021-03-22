@@ -1,4 +1,4 @@
-import { useContext, ReactElement, Suspense } from 'react';
+import { useContext, Suspense } from 'react';
 import { FiFileText, FiRefreshCw } from 'react-icons/fi';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
@@ -9,7 +9,7 @@ interface Props {
   onSelect: (path: string) => void;
 }
 
-function Explorer(props: Props): ReactElement {
+function Explorer(props: Props) {
   const { selectedPath, onSelect } = props;
   const { filepath } = useContext(ProviderContext);
 

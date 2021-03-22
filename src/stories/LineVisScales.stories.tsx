@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import LineVisStoriesConfig from './LineVis.stories';
 import {
@@ -16,9 +15,7 @@ const logSafeDomain = getDomain(dataArray.data as number[], ScaleType.Log);
 const dataArrayForXLog = getMockDataArray('/nexus_entry/log_spectrum/X_log');
 const domainForXLog = getDomain(dataArrayForXLog.data as number[]);
 
-const Template: Story<LineVisProps> = (args): ReactElement => (
-  <LineVis {...args} />
-);
+const Template: Story<LineVisProps> = (args) => <LineVis {...args} />;
 
 export const LogForY = Template.bind({});
 LogForY.storyName = 'Log for Y';

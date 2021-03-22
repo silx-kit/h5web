@@ -33,10 +33,6 @@ module.exports = createConfig({
       files: reactFiles,
       rules: {
         'react/jsx-no-constructed-context-values': 'off', // too strict
-
-        // Allow returning empty fragment instead of `null` to simplify functional component return type
-        // => `ReactElement` instead of `ReactElement | null`
-        'react/jsx-no-useless-fragment': 'off',
       },
     },
     {

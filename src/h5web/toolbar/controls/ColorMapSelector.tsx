@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import {
   CYCLICAL,
   DIVERGING,
@@ -22,7 +21,7 @@ const COLORMAP_GROUPS = {
   Diverging: Object.keys(DIVERGING) as ColorMap[],
 };
 
-function ColorMapOption(props: { option: ColorMap }): ReactElement {
+function ColorMapOption(props: { option: ColorMap }) {
   const { option } = props;
   const backgroundImage = getLinearGradient(INTERPOLATORS[option], 'right');
 
@@ -41,7 +40,7 @@ interface Props {
   onInversionChange: () => void;
 }
 
-function ColorMapSelector(props: Props): ReactElement {
+function ColorMapSelector(props: Props) {
   const { value, onValueChange, invert, onInversionChange } = props;
 
   return (

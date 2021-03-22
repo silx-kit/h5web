@@ -1,11 +1,10 @@
-import type { ReactElement } from 'react';
 import styles from './RawVis.module.css';
 
 interface Props {
   value: unknown;
 }
 
-function RawVis(props: Props): ReactElement {
+function RawVis(props: Props) {
   const { value } = props;
   const valueAsStr = JSON.stringify(value, null, 2);
 

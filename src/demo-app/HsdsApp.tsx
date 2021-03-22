@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { useLocation } from 'react-router-dom';
 import { App, HsdsProvider } from '../packages/app';
 
@@ -7,7 +6,7 @@ const USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';
 const PASSWORD = process.env.REACT_APP_HSDS_PASSWORD || '';
 const FILEPATH = process.env.REACT_APP_HSDS_FALLBACK_FILEPATH || '';
 
-function HsdsApp(): ReactElement {
+function HsdsApp() {
   const query = new URLSearchParams(useLocation().search);
   const filepath = query.get('file');
 

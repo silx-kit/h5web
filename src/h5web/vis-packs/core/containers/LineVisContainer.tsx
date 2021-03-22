@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import {
   assertDataset,
   assertNumericType,
@@ -9,7 +8,7 @@ import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
-function LineVisContainer(props: VisContainerProps): ReactElement {
+function LineVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertSimpleShape(entity);

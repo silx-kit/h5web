@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import FillHeight from './decorators/FillHeight';
@@ -19,9 +18,7 @@ const errorsArray = ndarray(
   dataArray.shape
 );
 
-const Template: Story<LineVisProps> = (args): ReactElement => (
-  <LineVis {...args} />
-);
+const Template: Story<LineVisProps> = (args) => <LineVis {...args} />;
 
 export const Default = Template.bind({});
 

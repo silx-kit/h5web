@@ -1,4 +1,4 @@
-import { forwardRef, ReactElement } from 'react';
+import { forwardRef } from 'react';
 import { FixedSizeGrid as IndexedGrid } from 'react-window';
 import { useMeasure } from 'react-use';
 import type ndarray from 'ndarray';
@@ -14,7 +14,7 @@ interface Props {
   dataArray: ndarray<string | number | boolean | Complex>;
 }
 
-function MatrixVis(props: Props): ReactElement {
+function MatrixVis(props: Props) {
   const { dataArray } = props;
   const dims = dataArray.shape;
 

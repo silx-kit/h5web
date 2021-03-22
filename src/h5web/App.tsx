@@ -1,4 +1,4 @@
-import { useState, ReactElement, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
@@ -13,7 +13,7 @@ import LoadingFallback from './LoadingFallback';
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
 
-function App(): ReactElement {
+function App() {
   const [selectedPath, setSelectedPath] = useState<string>(DEFAULT_PATH);
   const [isExplorerOpen, setExplorerOpen] = useState(true);
   const [isInspecting, setInspecting] = useState(false);

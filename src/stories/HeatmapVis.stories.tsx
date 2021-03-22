@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import { useInterval } from 'react-use';
@@ -16,9 +16,7 @@ const dataArray = getMockDataArray('/nD_datasets/twoD');
 const domain = getDomain(dataArray.data as number[]);
 const logSafeDomain = getDomain(dataArray.data as number[], ScaleType.Log);
 
-const Template: Story<HeatmapVisProps> = (args): ReactElement => (
-  <HeatmapVis {...args} />
-);
+const Template: Story<HeatmapVisProps> = (args) => <HeatmapVis {...args} />;
 
 export const Default = Template.bind({});
 
@@ -74,7 +72,7 @@ NoGrid.args = {
   showGrid: false,
 };
 
-export const LiveData: Story<HeatmapVisProps> = (args): ReactElement => {
+export const LiveData: Story<HeatmapVisProps> = (args) => {
   const [shuffledArray, setShuffledArray] = useState(args.dataArray);
 
   useInterval(() => {

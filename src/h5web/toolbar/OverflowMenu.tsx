@@ -8,7 +8,7 @@ interface Props {
   children: ReactElement[];
 }
 
-function OverflowMenu(props: Props): ReactElement {
+function OverflowMenu(props: Props) {
   const { children } = props;
 
   const overflowMenuRef = useRef(null);
@@ -25,7 +25,7 @@ function OverflowMenu(props: Props): ReactElement {
   );
 
   if (children.length === 0) {
-    return <></>;
+    return null;
   }
 
   return (

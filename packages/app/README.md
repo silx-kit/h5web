@@ -18,10 +18,10 @@ npm install @h5web/app
 ```
 
 ```tsx
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { App, MockProvider } from '@h5web/app';
 
-function MyApp(): ReactElement {
+function MyApp() {
   return (
     <MockProvider>
       <App />

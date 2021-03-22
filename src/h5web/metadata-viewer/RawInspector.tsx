@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { Entity } from '../providers/models';
 
 import styles from './RawInspector.module.css';
@@ -7,7 +6,7 @@ interface Props {
   entity: Entity;
 }
 
-function RawInspector(props: Props): ReactElement {
+function RawInspector(props: Props) {
   const { entity } = props;
 
   return (

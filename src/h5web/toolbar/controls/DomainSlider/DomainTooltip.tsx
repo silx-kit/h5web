@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { Domain } from '../../../../packages/lib';
 import { formatValue } from '../../../utils';
 import { DomainError, DomainErrors } from '../../../vis-packs/core/models';
@@ -26,7 +25,7 @@ interface Props {
   onSwap: () => void;
 }
 
-function DomainTooltip(props: Props): ReactElement {
+function DomainTooltip(props: Props) {
   const { id, open, sliderDomain, dataDomain, errors } = props;
   const { isAutoMin, isAutoMax, isEditingMin, isEditingMax } = props;
   const {

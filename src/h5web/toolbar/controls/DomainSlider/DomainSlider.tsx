@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './DomainSlider.module.css';
 import type {
   CustomDomain,
@@ -24,7 +24,7 @@ interface Props {
   onCustomDomainChange: (domain: CustomDomain) => void;
 }
 
-function DomainSlider(props: Props): ReactElement {
+function DomainSlider(props: Props) {
   const { dataDomain, customDomain, scaleType } = props;
   const { onCustomDomainChange } = props;
 

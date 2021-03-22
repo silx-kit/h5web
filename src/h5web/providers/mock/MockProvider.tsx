@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import Provider from '../Provider';
 import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
@@ -14,7 +14,7 @@ interface Props {
   children: ReactNode;
 }
 
-function MockProvider(props: Props): ReactElement {
+function MockProvider(props: Props) {
   const { filepath = mockFilepath, errorOnPath, slowOnPath, children } = props;
 
   return (

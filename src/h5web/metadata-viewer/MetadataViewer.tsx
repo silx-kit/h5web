@@ -1,4 +1,4 @@
-import { memo, ReactElement, useContext } from 'react';
+import { memo, useContext } from 'react';
 import { ProviderContext } from '../providers/context';
 import AttributesTable from './AttributesTable';
 import EntityTable from './EntityTable';
@@ -8,7 +8,7 @@ interface Props {
   path: string;
 }
 
-function MetadataViewer(props: Props): ReactElement {
+function MetadataViewer(props: Props) {
   const { path } = props;
 
   const { entitiesStore } = useContext(ProviderContext);

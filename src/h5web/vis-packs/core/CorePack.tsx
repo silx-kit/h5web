@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { Entity } from '../../providers/models';
 import { useActiveVis } from '../hooks';
 import { getSupportedVis } from './pack-utils';
@@ -8,7 +7,7 @@ interface Props {
   entity: Entity;
 }
 
-function CorePack(props: Props): ReactElement {
+function CorePack(props: Props) {
   const { entity } = props;
 
   const supportedVis = getSupportedVis(entity);

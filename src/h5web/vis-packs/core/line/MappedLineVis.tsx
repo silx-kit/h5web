@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react';
+import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import LineVis from './LineVis';
 import {
@@ -29,7 +29,7 @@ interface Props {
   title?: string;
 }
 
-function MappedLineVis(props: Props): ReactElement {
+function MappedLineVis(props: Props) {
   const {
     valueDataset,
     valueLabel,

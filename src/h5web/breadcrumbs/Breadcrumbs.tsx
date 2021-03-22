@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import styles from './BreadcrumbsBar.module.css';
 import { assertAbsolutePath } from '../guards';
 import { ProviderContext } from '../providers/context';
@@ -10,7 +10,7 @@ interface Props {
   showFilepath: boolean;
 }
 
-function Breadcrumbs(props: Props): ReactElement {
+function Breadcrumbs(props: Props) {
   const { path, onSelect, showFilepath } = props;
 
   assertAbsolutePath(path);

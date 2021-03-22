@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { formatPreciseValue } from '../../../utils';
 import type { Bound } from '../../../vis-packs/core/models';
@@ -14,7 +14,7 @@ interface Props {
   onChange: (val: number) => void;
 }
 
-function BoundEditor(props: Props): ReactElement {
+function BoundEditor(props: Props) {
   const { bound, value, isEditing, hasError, onEditToggle, onChange } = props;
 
   const id = `${bound}-bound`;

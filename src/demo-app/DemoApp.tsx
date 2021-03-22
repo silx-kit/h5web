@@ -1,4 +1,4 @@
-import { lazy, ReactElement, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from '../h5web/App';
 import HsdsApp from './HsdsApp';
@@ -12,12 +12,12 @@ const MockProvider = lazy(
     )
 );
 
-function DemoApp(): ReactElement {
+function DemoApp() {
   return (
     <Router>
       <Switch>
         <Route path="/mock">
-          <Suspense fallback={<></>}>
+          <Suspense fallback={null}>
             <MockProvider>
               <App />
             </MockProvider>

@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import { ProviderContext } from '../../providers/context';
 import type { Entity } from '../../providers/models';
 import { getDefaultEntity, getSupportedVis } from './pack-utils';
@@ -9,7 +9,7 @@ interface Props {
   entity: Entity;
 }
 
-function NexusPack(props: Props): ReactElement {
+function NexusPack(props: Props) {
   const { entity } = props;
   const { entitiesStore } = useContext(ProviderContext);
 

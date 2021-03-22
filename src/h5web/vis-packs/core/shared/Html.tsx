@@ -52,7 +52,7 @@ const Html = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
       );
     }, [children, className, el, height, width, style, divProps, ref]);
 
-    return <></>;
+    return null;
   }
 );
 

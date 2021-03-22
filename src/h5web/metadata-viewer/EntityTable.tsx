@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import type { Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 import { hasSimpleShape, isDataset, isDatatype, isLink } from '../guards';
@@ -12,7 +12,7 @@ interface Props {
   entity: Entity;
 }
 
-function EntityTable(props: Props): ReactElement {
+function EntityTable(props: Props) {
   const { entity } = props;
   const { name, path, kind } = entity;
   const { filepath } = useContext(ProviderContext);

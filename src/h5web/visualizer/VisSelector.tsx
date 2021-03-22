@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import styles from './VisSelector.module.css';
 import type { VisDef } from '../vis-packs/models';
 
@@ -8,7 +7,7 @@ interface Props<T extends VisDef> {
   onChange: (vis: T) => void;
 }
 
-function VisSelector<T extends VisDef>(props: Props<T>): ReactElement {
+function VisSelector<T extends VisDef>(props: Props<T>) {
   const { activeVis, choices, onChange } = props;
 
   return (

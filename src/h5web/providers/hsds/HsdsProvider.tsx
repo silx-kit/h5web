@@ -1,4 +1,4 @@
-import { ReactNode, ReactElement, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { HsdsApi } from './api';
 import Provider from '../Provider';
 
@@ -10,7 +10,7 @@ interface Props {
   children: ReactNode;
 }
 
-function HsdsProvider(props: Props): ReactElement {
+function HsdsProvider(props: Props) {
   const { url, username, password, filepath, children } = props;
 
   const api = useMemo(() => new HsdsApi(url, username, password, filepath), [

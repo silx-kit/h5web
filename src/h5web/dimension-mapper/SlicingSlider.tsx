@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import ReactSlider from 'react-slider';
 import { useMeasure } from 'react-use';
 import styles from './SlicingSlider.module.css';
@@ -14,7 +13,7 @@ interface Props {
   onChange: (mapperState: DimensionMapping) => void;
 }
 
-function SlicingSlider(props: Props): ReactElement {
+function SlicingSlider(props: Props) {
   const { dimension, slicingIndex, rawDims, mapperState, onChange } = props;
   const [containerRef, { height }] = useMeasure();
 

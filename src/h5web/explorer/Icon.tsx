@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import {
   FiHash,
   FiFolder,
@@ -24,7 +23,7 @@ interface Props {
   isExpanded: boolean;
 }
 
-function Icon(props: Props): ReactElement {
+function Icon(props: Props) {
   const { entity, isExpanded } = props;
 
   if (isGroup(entity)) {

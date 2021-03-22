@@ -1,16 +1,16 @@
-import { ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import type { GridChildComponentProps } from 'react-window';
 import { format } from 'd3-format';
 import styles from './MatrixVis.module.css';
 import { GridSettingsContext } from './GridSettingsContext';
 
-function Cell(props: GridChildComponentProps): ReactElement {
+function Cell(props: GridChildComponentProps) {
   const { rowIndex, columnIndex, style } = props;
   const { valueAccessor } = useContext(GridSettingsContext);
 
   // Disable index columns (rendering done by the innerElementType)
   if (rowIndex * columnIndex === 0) {
-    return <></>;
+    return null;
   }
 
   // -1 to account for the index row and column

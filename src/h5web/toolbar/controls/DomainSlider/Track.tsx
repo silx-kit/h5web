@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { AxisScale, Domain } from '../../../vis-packs/core/models';
 import styles from './Track.module.css';
 
@@ -7,7 +6,7 @@ interface Props {
   dataDomain: Domain;
 }
 
-function Track(props: Props): ReactElement {
+function Track(props: Props) {
   const { scale, dataDomain } = props;
 
   const [min, max] = dataDomain;

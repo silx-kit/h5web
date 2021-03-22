@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { Wrapper, Button, Menu } from 'react-aria-menubutton';
 
 import { MdArrowDropDown } from 'react-icons/md';
@@ -19,7 +18,7 @@ interface Props<T> {
   optionComponent: OptionComponent<T>;
 }
 
-function Selector<T extends string>(props: Props<T>): ReactElement {
+function Selector<T extends string>(props: Props<T>) {
   const { value, disabled, onChange, options, optionComponent: Option } = props;
 
   const { height: winHeight } = useWindowSize();

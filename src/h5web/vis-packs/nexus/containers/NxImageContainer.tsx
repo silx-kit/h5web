@@ -1,4 +1,4 @@
-import { ReactElement, Suspense } from 'react';
+import { Suspense } from 'react';
 import { assertGroup, assertMinDims } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
@@ -9,7 +9,7 @@ import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import ValueLoader from '../../../visualizer/ValueLoader';
 
-function NxImageContainer(props: VisContainerProps): ReactElement {
+function NxImageContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroup(entity);
 

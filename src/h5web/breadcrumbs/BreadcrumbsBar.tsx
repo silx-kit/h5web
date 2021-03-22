@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { FiSidebar } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
 import ToggleGroup from '../toolbar/controls/ToggleGroup';
@@ -14,7 +13,7 @@ interface Props {
   setSelectedPath: (path: string) => void;
 }
 
-function BreadcrumbsBar(props: Props): ReactElement {
+function BreadcrumbsBar(props: Props) {
   const {
     path,
     isExplorerOpen,

@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import LineVisStoriesConfig from './LineVis.stories';
 import {
@@ -12,9 +11,7 @@ import {
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray.data as number[]);
 
-const Template: Story<LineVisProps> = (args): ReactElement => (
-  <LineVis {...args} />
-);
+const Template: Story<LineVisProps> = (args) => <LineVis {...args} />;
 
 export const LineAndGlyphs = Template.bind({});
 

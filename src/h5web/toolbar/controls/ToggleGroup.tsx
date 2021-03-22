@@ -1,4 +1,4 @@
-import { useContext, createContext, ReactNode, ReactElement } from 'react';
+import { useContext, createContext, ReactElement } from 'react';
 import type { IconType } from 'react-icons';
 import styles from './ToggleGroup.module.css';
 
@@ -30,7 +30,7 @@ interface BtnProps {
   disabled?: boolean;
 }
 
-function Btn(props: BtnProps): ReactElement {
+function Btn(props: BtnProps) {
   const { label, value, icon: Icon, disabled = false } = props;
   const {
     role,
@@ -60,10 +60,10 @@ function Btn(props: BtnProps): ReactElement {
 
 type Props = ToggleGroupProps & {
   ariaLabel?: string;
-  children: ReactNode;
+  children: ReactElement<BtnProps>[];
 };
 
-function ToggleGroup(props: Props): ReactElement {
+function ToggleGroup(props: Props) {
   const { role, ariaLabel, value, disabled, onChange, children } = props;
 
   return (
