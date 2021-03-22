@@ -92,7 +92,10 @@ function BoundEditor(props: Props): ReactElement {
         type="button"
         disabled={!isEditing}
         aria-label={`Cancel ${bound}`}
-        onClick={() => onEditToggle(false)}
+        onClick={() => {
+          onEditToggle(false);
+          setInputValue(formatPreciseValue(value));
+        }}
       >
         <FiSlash />
       </button>
