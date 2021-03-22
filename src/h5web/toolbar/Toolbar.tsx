@@ -1,4 +1,4 @@
-import { ReactElement, Children, ReactNode } from 'react';
+import { ReactElement, Children } from 'react';
 import { useMeasure, useList } from 'react-use';
 import styles from './Toolbar.module.css';
 import Separator from './Separator';
@@ -6,18 +6,22 @@ import OverflowMenu from './OverflowMenu';
 import MeasuredControl from './MeasuredControl';
 
 interface Props {
-  children?: ReactNode[];
+  children?: (ReactElement | undefined)[];
 }
 
-function Toolbar(props: Props): ReactElement {
+function Toolbar(props: Props) {
   const { children } = props;
+
+  // Convert `children` to array, as it cannot be used directly (and remove `undefined` children)
   const allChildren = Children.toArray(children) as ReactElement[];
 
   const [containerRef, { width: availableWidth }] = useMeasure();
   const [childrenWidths, { updateAt: setChildWidth }] = useList<number>();
 
   // Group visible and hidden children based on their accumulated width
-  const [visibleChildren, hiddenChildren, allMeasured] = allChildren.reduce(
+  const [visibleChildren, hiddenChildren, allMeasured] = allChildren.reduce<
+    [ReactElement[], ReactElement[], boolean, number]
+  >(
     ([accVisible, accHidden, accAllMeasured, accWidth], child, index) => {
       const width = childrenWidths[index] ?? 0;
       const isMeasured = width > 0;
@@ -30,7 +34,7 @@ function Toolbar(props: Props): ReactElement {
         accWidth + width,
       ];
     },
-    [[] as ReactElement[], [] as ReactElement[], true, 0]
+    [[], [], true, 0]
   );
 
   const isSeparatorLast =

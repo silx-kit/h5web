@@ -1,4 +1,4 @@
-import { Fragment, ReactElement, Ref, useState } from 'react';
+import { Fragment, Ref, useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
 import { createAxisScale, extendDomain } from '../../../vis-packs/core/utils';
@@ -27,7 +27,7 @@ interface Props {
   onAfterChange: (hasMinChanged: boolean, hasMaxChanged: boolean) => void;
 }
 
-function ScaledSlider(props: Props): ReactElement {
+function ScaledSlider(props: Props) {
   const {
     value,
     dataDomain,

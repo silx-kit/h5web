@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import { FiItalic } from 'react-icons/fi';
 import ToggleBtn from './controls/ToggleBtn';
@@ -10,7 +9,7 @@ import Separator from './Separator';
 import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
 
-function LineToolbar(): ReactElement {
+function LineToolbar() {
   const {
     curveType,
     setCurveType,

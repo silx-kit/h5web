@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { MenuItem } from 'react-aria-menubutton';
 import type { OptionComponent } from './models';
 import styles from './Selector.module.css';
@@ -9,7 +8,7 @@ interface Props<T> {
   value: T;
 }
 
-function OptionList<T extends string>(props: Props<T>): ReactElement {
+function OptionList<T extends string>(props: Props<T>) {
   const { optionList, optionComponent: Option, value } = props;
   return (
     <ul className={styles.list}>

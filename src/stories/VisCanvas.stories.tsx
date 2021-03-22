@@ -1,11 +1,8 @@
-import type { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import FillHeight from './decorators/FillHeight';
 import { VisCanvas, VisCanvasProps, ScaleType } from '../packages/lib';
 
-const Template: Story<VisCanvasProps> = (args): ReactElement => (
-  <VisCanvas {...args} />
-);
+const Template: Story<VisCanvasProps> = (args) => <VisCanvas {...args} />;
 
 export const IndexDomains = Template.bind({});
 

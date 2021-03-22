@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { isNumber } from 'lodash-es';
 import ToggleGroup from '../toolbar/controls/ToggleGroup';
 import styles from './DimensionMapper.module.css';
@@ -11,12 +10,12 @@ interface Props {
   onChange: (mapperState: DimensionMapping) => void;
 }
 
-function AxisMapper(props: Props): ReactElement {
+function AxisMapper(props: Props) {
   const { axis, rawDims, mapperState, onChange } = props;
   const selectedDim = mapperState.indexOf(axis);
 
   if (selectedDim === -1) {
-    return <></>;
+    return null;
   }
 
   return (
@@ -29,7 +28,7 @@ function AxisMapper(props: Props): ReactElement {
         onChange={(val) => {
           const newDim = Number(val);
           if (selectedDim !== newDim) {
-            const newMapperState = mapperState.slice();
+            const newMapperState = [...mapperState];
 
             // Invert mappings or reset slicing index of previously selected dimension
             newMapperState[selectedDim] = isNumber(mapperState[newDim])

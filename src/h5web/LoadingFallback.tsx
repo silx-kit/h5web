@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { useTimeout } from 'react-use';
 import styles from './App.module.css';
 
@@ -7,7 +6,7 @@ interface Props {
   message?: string;
 }
 
-function LoadingFallback(props: Props): ReactElement {
+function LoadingFallback(props: Props) {
   const { isInspecting, message = 'Loading' } = props;
 
   // Wait a bit before showing loader to avoid flash

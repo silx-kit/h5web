@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import styles from './BreadcrumbsBar.module.css';
 
@@ -7,7 +6,7 @@ interface Props {
   onClick: () => void;
 }
 
-function Crumb(props: Props): ReactElement {
+function Crumb(props: Props) {
   const { name, onClick } = props;
 
   return (

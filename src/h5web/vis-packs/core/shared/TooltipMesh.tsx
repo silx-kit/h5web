@@ -1,4 +1,4 @@
-import { ReactElement, useCallback } from 'react';
+import { useCallback } from 'react';
 import { PointerEvent, useThree } from 'react-three-fiber';
 import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
 import { Line } from '@visx/shape';
@@ -15,7 +15,7 @@ interface Props {
   guides?: Guides;
 }
 
-function TooltipMesh(props: Props): ReactElement {
+function TooltipMesh(props: Props) {
   const { formatIndex, formatValue, guides } = props;
 
   const { camera, size } = useThree();

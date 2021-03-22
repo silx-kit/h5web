@@ -1,4 +1,4 @@
-import { ReactElement, Suspense } from 'react';
+import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import Profiler from '../Profiler';
 import type { Entity } from '../providers/models';
@@ -15,7 +15,7 @@ interface Props<T extends VisDef> {
   onActiveVisChange: (vis: T) => void;
 }
 
-function Visualizer<T extends VisDef>(props: Props<T>): ReactElement {
+function Visualizer<T extends VisDef>(props: Props<T>) {
   const { entity, activeVis, supportedVis, onActiveVisChange } = props;
 
   if (!activeVis) {

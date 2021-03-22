@@ -33,10 +33,6 @@ module.exports = createConfig({
       files: reactFiles,
       rules: {
         'react/jsx-no-constructed-context-values': 'off', // too strict
-
-        // Allow returning empty fragment instead of `null` to simplify functional component return type
-        // => `ReactElement` instead of `ReactElement | null`
-        'react/jsx-no-useless-fragment': 'off',
       },
     },
     {
@@ -73,13 +69,6 @@ module.exports = createConfig({
         'jest/prefer-strict-equal': 'off', // `toEqual` is shorter and sufficient in most cases
         'jest-formatting/padding-around-all': 'off', // allow writing concise two-line tests
         'jest/require-top-level-describe': 'off', // filename should already be meaningful, extra nesting is unnecessary
-      },
-    },
-    {
-      files: ['*.stories.tsx'],
-      rules: {
-        'react/function-component-definition': 'off', // allow typing template components with Storybook's `Story` type
-        'import/no-anonymous-default-export': 'off', // allow exporting anonymous config object
       },
     },
   ],

@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import { isEqual } from 'lodash-es';
 import { assertGroup } from '../../../guards';
 import { useDatasetValue } from '../../core/hooks';
@@ -10,7 +10,7 @@ import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { ProviderContext } from '../../../providers/context';
 
-function NxSpectrumContainer(props: VisContainerProps): ReactElement {
+function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroup(entity);
 

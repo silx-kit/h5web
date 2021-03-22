@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { ScaleType } from '../../../vis-packs/core/models';
 import Selector from '../Selector/Selector';
 import styles from './ScaleSelector.module.css';
@@ -10,7 +9,7 @@ interface Props {
   onScaleChange: (scale: ScaleType) => void;
 }
 
-function ScaleSelector(props: Props): ReactElement {
+function ScaleSelector(props: Props) {
   const { value, label, onScaleChange } = props;
 
   return (

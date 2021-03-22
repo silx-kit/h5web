@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { isNumber } from 'lodash-es';
 import type { DimensionMapping } from './models';
 import styles from './DimensionMapper.module.css';
@@ -11,7 +10,7 @@ interface Props {
   onChange: (d: DimensionMapping) => void;
 }
 
-function DimensionMapper(props: Props): ReactElement {
+function DimensionMapper(props: Props) {
   const { rawDims, mapperState, onChange } = props;
 
   return (

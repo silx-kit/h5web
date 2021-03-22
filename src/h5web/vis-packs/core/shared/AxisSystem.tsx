@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import { useThree } from 'react-three-fiber';
 import Html from './Html';
 import styles from './AxisSystem.module.css';
@@ -12,7 +12,7 @@ interface Props {
   title?: string;
 }
 
-function AxisSystem(props: Props): ReactElement {
+function AxisSystem(props: Props) {
   const { axisOffsets, title } = props;
 
   const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);

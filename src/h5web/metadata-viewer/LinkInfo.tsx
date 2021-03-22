@@ -1,11 +1,10 @@
-import type { ReactElement } from 'react';
 import type { HDF5Link } from '../providers/hdf5-models';
 
 interface Props {
   link: HDF5Link;
 }
 
-function LinkInfo(props: Props): ReactElement {
+function LinkInfo(props: Props) {
   const { link } = props;
 
   return (

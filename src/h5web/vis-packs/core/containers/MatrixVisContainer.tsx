@@ -1,4 +1,4 @@
-import { ReactElement, Suspense } from 'react';
+import { Suspense } from 'react';
 import {
   assertPrintableType,
   assertDataset,
@@ -10,7 +10,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../hooks';
 import ValueLoader from '../../../visualizer/ValueLoader';
 
-function MatrixVisContainer(props: VisContainerProps): ReactElement {
+function MatrixVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertSimpleShape(entity);

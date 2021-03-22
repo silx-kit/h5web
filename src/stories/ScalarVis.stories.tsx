@@ -1,14 +1,10 @@
-import type { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import { ScalarVis, ScalarVisProps } from '../packages/lib';
 
 const numberData = 1024;
 const stringData = 'This is a scalar';
 
-const Template: Story<ScalarVisProps> = (args): ReactElement => {
-  const { value } = args;
-  return <ScalarVis value={value} />;
-};
+const Template: Story<ScalarVisProps> = (args) => <ScalarVis {...args} />;
 
 export const DisplayNumber = Template.bind({});
 

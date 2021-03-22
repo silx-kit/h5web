@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import HeatmapVis from './HeatmapVis';
 import { useDomain, useDatasetValue, useMappedArray } from '../hooks';
 import { useHeatmapConfig } from './config';
@@ -19,7 +19,7 @@ interface Props {
   colorScaleType?: ScaleType;
 }
 
-function MappedHeatmapVis(props: Props): ReactElement {
+function MappedHeatmapVis(props: Props) {
   const {
     dataset,
     dims,

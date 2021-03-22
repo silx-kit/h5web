@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { pickBy } from 'lodash-es';
 import { createFetchStore } from 'react-suspense-fetch';
 

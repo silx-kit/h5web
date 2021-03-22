@@ -1,4 +1,4 @@
-import { CSSProperties, ReactElement, Suspense } from 'react';
+import { CSSProperties, Suspense } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
@@ -15,7 +15,7 @@ interface Props {
   onSelect: (path: string) => void;
 }
 
-function EntityItem(props: Props): ReactElement {
+function EntityItem(props: Props) {
   const { path, entity, level, selectedPath, onSelect } = props;
   const isSelected = path === selectedPath;
 

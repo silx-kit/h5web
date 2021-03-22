@@ -1,7 +1,6 @@
-import type { ReactElement } from 'react';
 import styles from './Toolbar.module.css';
 
-function Separator(): ReactElement {
+function Separator() {
   return <span className={styles.sep} />;
 }
 

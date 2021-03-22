@@ -1,11 +1,10 @@
-import type { ReactElement } from 'react';
 import styles from './Visualizer.module.css';
 
 interface Props {
   error: Error;
 }
 
-function ErrorMessage(props: Props): ReactElement {
+function ErrorMessage(props: Props) {
   const { error } = props;
   return <p className={styles.error}>{error.message}</p>;
 }

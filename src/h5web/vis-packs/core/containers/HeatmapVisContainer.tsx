@@ -1,4 +1,4 @@
-import { ReactElement, Suspense } from 'react';
+import { Suspense } from 'react';
 import {
   assertDataset,
   assertMinDims,
@@ -11,7 +11,7 @@ import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import ValueLoader from '../../../visualizer/ValueLoader';
 
-function HeatmapVisContainer(props: VisContainerProps): ReactElement {
+function HeatmapVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertSimpleShape(entity);

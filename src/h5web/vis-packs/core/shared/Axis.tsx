@@ -1,4 +1,4 @@
-import type { ElementType, ReactElement } from 'react';
+import type { ElementType } from 'react';
 import { AxisLeft, AxisBottom, TickRendererProps } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
 import styles from './AxisSystem.module.css';
@@ -33,7 +33,7 @@ interface Props {
   flipAxis?: boolean;
 }
 
-function Axis(props: Props): ReactElement {
+function Axis(props: Props) {
   const { type, config, domain, canvasSize, flipAxis } = props;
 
   const { width, height } = canvasSize;

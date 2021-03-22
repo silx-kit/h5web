@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { MdSort, MdFilterList } from 'react-icons/md';
 import { ScaleType } from '../../../vis-packs/core/models';
@@ -17,7 +16,7 @@ const LABELS: Record<ScaleType, string> = {
   [ScaleType.SymLog]: 'SymLog',
 };
 
-function ScaleOption(props: { option: ScaleType }): ReactElement {
+function ScaleOption(props: { option: ScaleType }) {
   const { option } = props;
   const Icon = ICONS[option];
   return (

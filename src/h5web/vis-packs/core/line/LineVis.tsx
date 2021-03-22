@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { useMemo } from 'react';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import { range } from 'd3-array';
@@ -31,7 +31,7 @@ interface Props {
   auxArrays?: ndarray[];
 }
 
-function LineVis(props: Props): ReactElement {
+function LineVis(props: Props) {
   const {
     dataArray,
     domain,

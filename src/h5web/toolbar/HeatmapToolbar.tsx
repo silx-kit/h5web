@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
 import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
@@ -10,7 +9,7 @@ import ColorMapSelector from './controls/ColorMapSelector';
 import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
 
-function HeatmapToolbar(): ReactElement {
+function HeatmapToolbar() {
   const {
     dataDomain,
     customDomain,

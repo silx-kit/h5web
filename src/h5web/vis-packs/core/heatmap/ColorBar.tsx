@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { AxisRight, AxisBottom } from '@visx/axis';
 import { useMeasure } from 'react-use';
 import { adaptedNumTicks, createAxisScale } from '../utils';
@@ -17,7 +16,7 @@ interface Props {
   invertColorMap: boolean;
 }
 
-function ColorBar(props: Props): ReactElement {
+function ColorBar(props: Props) {
   const {
     domain,
     scaleType,

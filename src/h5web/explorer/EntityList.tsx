@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import styles from './Explorer.module.css';
 import { ProviderContext } from '../providers/context';
 import EntityItem from './EntityItem';
@@ -12,7 +12,7 @@ interface Props {
   onSelect: (path: string) => void;
 }
 
-function EntityList(props: Props): ReactElement {
+function EntityList(props: Props) {
   const { level, parentPath, selectedPath, onSelect } = props;
 
   const { entitiesStore } = useContext(ProviderContext);
@@ -20,7 +20,7 @@ function EntityList(props: Props): ReactElement {
   assertGroup(group);
 
   if (group.children.length === 0) {
-    return <></>;
+    return null;
   }
 
   return (

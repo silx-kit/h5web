@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { useTimeout } from 'react-use';
 import styles from './ValueLoader.module.css';
 
@@ -6,14 +5,14 @@ interface Props {
   message?: string;
 }
 
-function ValueLoader(props: Props): ReactElement {
+function ValueLoader(props: Props) {
   const { message = 'Loading' } = props;
 
   // Wait a bit before showing loader to avoid flash
   const [isReady] = useTimeout(100);
 
   if (!isReady()) {
-    return <></>;
+    return null;
   }
 
   return (

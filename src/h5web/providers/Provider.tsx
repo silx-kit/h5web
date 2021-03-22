@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
 import { ProviderAPI, ProviderContext } from './context';
 import type { Entity } from './models';
@@ -10,7 +10,7 @@ interface Props {
   children: ReactNode;
 }
 
-function Provider(props: Props): ReactElement {
+function Provider(props: Props) {
   const { api, children } = props;
 
   const entitiesStore = useMemo(() => {

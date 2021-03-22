@@ -1,5 +1,5 @@
 import type Complex from 'complex.js';
-import { ReactNode, createContext, ReactElement } from 'react';
+import { ReactNode, createContext } from 'react';
 import type { Size } from '../models';
 
 interface GridSettings {
@@ -21,7 +21,7 @@ export const GridSettingsContext = createContext<GridSettings>({
 
 type Props = GridSettings & { children: ReactNode };
 
-function GridSettingsProvider(props: Props): ReactElement {
+function GridSettingsProvider(props: Props) {
   const { children, ...settings } = props;
 
   return (

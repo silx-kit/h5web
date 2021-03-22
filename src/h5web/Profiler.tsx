@@ -1,15 +1,15 @@
-import { Profiler as ReactProfiler, ReactElement, ReactNode } from 'react';
+import { Profiler as ReactProfiler, ReactNode } from 'react';
 
 interface Props {
   id: string;
   children: ReactNode;
 }
 
-function Profiler(props: Props): ReactElement {
+function Profiler(props: Props) {
   const { id, children } = props;
 
   if (process.env.REACT_APP_PROFILING_ENABLED !== 'true') {
-    return <>{children}</>;
+    return <>{children}</>; // eslint-disable-line react/jsx-no-useless-fragment
   }
 
   return (

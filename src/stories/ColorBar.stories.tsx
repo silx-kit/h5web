@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
 import FillHeight from './decorators/FillHeight';
 import { ColorBar, ScaleType, ColorMap } from '../packages/lib';
@@ -13,7 +12,7 @@ interface Props {
   invertColorMap: boolean;
 }
 
-const Template: Story<Props> = (args): ReactElement => {
+const Template: Story<Props> = (args) => {
   const { domainMin: min, domainMax: max, ...colorBarArgs } = args;
   return <ColorBar domain={[min, max]} {...colorBarArgs} />;
 };

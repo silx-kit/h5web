@@ -1,5 +1,5 @@
 import { rgb } from 'd3-color';
-import { ReactElement, memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useThree } from 'react-three-fiber';
 import {
   AlphaFormat,
@@ -37,7 +37,7 @@ const CMAP_NORM: Record<ScaleType, number> = {
   [ScaleType.SymLog]: 2,
 };
 
-function Mesh(props: Props): ReactElement {
+function Mesh(props: Props) {
   const {
     rows,
     cols,

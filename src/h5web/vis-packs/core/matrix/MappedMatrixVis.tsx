@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { useMemo } from 'react';
 import MatrixVis from './MatrixVis';
 import { useDatasetValue, useMappedArray } from '../hooks';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
@@ -13,7 +13,7 @@ interface Props {
   dimMapping: DimensionMapping;
 }
 
-function MappedMatrixVis(props: Props): ReactElement {
+function MappedMatrixVis(props: Props) {
   const { dataset, dims, dimMapping } = props;
 
   const value = useDatasetValue(dataset, dimMapping);

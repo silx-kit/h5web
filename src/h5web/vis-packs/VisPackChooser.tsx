@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import { ProviderContext } from '../providers/context';
 import CorePack from './core/CorePack';
 import NexusPack from './nexus/NexusPack';
@@ -8,7 +8,7 @@ interface Props {
   path: string;
 }
 
-function VisPackChooser(props: Props): ReactElement {
+function VisPackChooser(props: Props) {
   const { path } = props;
 
   if (!('ResizeObserver' in window)) {

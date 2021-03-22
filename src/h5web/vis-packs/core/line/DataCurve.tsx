@@ -1,4 +1,4 @@
-import { Suspense, ReactElement, useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import { Line } from 'react-three-fiber/components';
 import { CurveType } from './models';
 import GlyphMaterial from './GlyphMaterial';
@@ -16,7 +16,7 @@ interface Props {
   curveType?: CurveType;
 }
 
-function DataCurve(props: Props): ReactElement {
+function DataCurve(props: Props) {
   const {
     abscissas,
     ordinates,
@@ -43,7 +43,7 @@ function DataCurve(props: Props): ReactElement {
   const showGlyphs = curveType !== CurveType.LineOnly;
 
   return (
-    <Suspense fallback={<></>}>
+    <Suspense fallback={null}>
       <Line visible={showLine} geometry={dataGeometry}>
         <lineBasicMaterial attach="material" color={curveColor} linewidth={2} />
       </Line>
