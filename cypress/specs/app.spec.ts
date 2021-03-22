@@ -146,6 +146,30 @@ describe('App', () => {
     }
   });
 
+  it('edit heatmap color map limits', () => {
+    cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
+    cy.findByRole('treeitem', { name: 'twoD' }).click();
+
+    cy.findByRole('button', { name: 'Edit domain' })
+      .click()
+      .should('have.attr', 'aria-pressed', 'true');
+
+    cy.findByLabelText('min')
+      .clear()
+      .type('50{enter}')
+      .should('have.value', '5e+1');
+
+    cy.findByRole('figure', { name: 'twoD' }).within(() => {
+      cy.findByText('5e+1').should('exist');
+      cy.findByText('4e+2').should('exist');
+    });
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('edit_domain');
+    }
+  });
+
   context('NeXus', () => {
     it('visualize default NXdata group as NxImage', () => {
       cy.findByRole('treeitem', { name: 'source.h5' }).click();

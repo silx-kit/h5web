@@ -39,6 +39,16 @@ export async function selectVisTab(name: Vis): Promise<void> {
   fireEvent.click(await screen.findByRole('tab', { name }));
 }
 
+export function pressKey(key: string, downCount = 1) {
+  const elem = document.activeElement || document.body; // https://testing-library.com/docs/guide-events#keydown
+
+  for (let i = 0; i < downCount; i++) {
+    fireEvent.keyDown(elem, { key });
+  }
+
+  fireEvent.keyUp(elem, { key });
+}
+
 /**
  * Mock console method in test.
  * Mocks are automatically restored after every test, but to restore
