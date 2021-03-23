@@ -1,4 +1,5 @@
-import { fireEvent, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderApp, selectExplorerNode, selectVisTab } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
@@ -22,7 +23,7 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
   expect(D0Slider).toHaveAttribute('aria-valueNow', '0');
 
   // Ensure that the swap from [0, 'x'] to ['x', 0] works
-  fireEvent.click(xDimsButtons[0]);
+  userEvent.click(xDimsButtons[0]);
 
   expect(xDimsButtons[0]).toBeChecked();
   expect(xDimsButtons[1]).not.toBeChecked();
@@ -49,7 +50,7 @@ test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap',
 
   // Ensure that the swap from ['y', 'x'] to ['x', 'y'] works
   const xD0Button = within(xRadioGroup).getByRole('radio', { name: 'D0' });
-  fireEvent.click(xD0Button);
+  userEvent.click(xD0Button);
   expect(xD0Button).toBeChecked();
   expect(xD1Button).not.toBeChecked();
 

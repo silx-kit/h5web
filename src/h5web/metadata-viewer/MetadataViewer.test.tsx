@@ -1,4 +1,5 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   findVisSelector,
   queryVisSelector,
@@ -13,13 +14,13 @@ test('switch between "display" and "inspect" modes', async () => {
   const displayBtn = screen.getByRole('tab', { name: 'Display' });
 
   // Switch to "inspect" mode
-  fireEvent.click(inspectBtn);
+  userEvent.click(inspectBtn);
 
   expect(queryVisSelector()).not.toBeInTheDocument();
   expect(screen.getByRole('row', { name: /^Path/u })).toBeVisible();
 
   // Switch back to "display" mode
-  fireEvent.click(displayBtn);
+  userEvent.click(displayBtn);
 
   expect(await findVisSelector()).toBeVisible();
   expect(screen.queryByRole('row', { name: /^Path/u })).not.toBeInTheDocument();
@@ -27,7 +28,7 @@ test('switch between "display" and "inspect" modes', async () => {
 
 test('inspect group', async () => {
   renderApp();
-  fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities');
 
   const column = await screen.findByRole('columnheader', { name: /^Group/u });
@@ -41,7 +42,7 @@ test('inspect group', async () => {
 
 test('inspect scalar dataset', async () => {
   renderApp();
-  fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities/scalar_int');
 
   const column = await screen.findByRole('columnheader', {
@@ -61,7 +62,7 @@ test('inspect scalar dataset', async () => {
 
 test('inspect simple dataset', async () => {
   renderApp();
-  fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('nD_datasets/threeD');
 
   const shapeRow = await screen.findByRole('row', { name: /^Shape/u });
@@ -70,7 +71,7 @@ test('inspect simple dataset', async () => {
 
 test('inspect datatype', async () => {
   renderApp();
-  fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities/datatype');
 
   const column = await screen.findByRole('columnheader', {
@@ -88,7 +89,7 @@ test('inspect datatype', async () => {
 
 test('inspect external link', async () => {
   renderApp();
-  fireEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities/external_link');
 
   const column = await screen.findByRole('columnheader', { name: /Link/u });

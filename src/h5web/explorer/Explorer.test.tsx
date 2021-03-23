@@ -1,4 +1,5 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockFilepath } from '../providers/mock/metadata';
 import { renderApp } from '../test-utils';
 
@@ -26,11 +27,11 @@ test('toggle explorer sidebar', async () => {
   expect(fileBtn).toBeVisible();
   expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
 
-  fireEvent.click(sidebarBtn);
+  userEvent.click(sidebarBtn);
   expect(fileBtn).not.toBeVisible();
   expect(sidebarBtn).toHaveAttribute('aria-pressed', 'false');
 
-  fireEvent.click(sidebarBtn);
+  userEvent.click(sidebarBtn);
   expect(fileBtn).toBeVisible();
   expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
 });
@@ -43,7 +44,7 @@ test('navigate groups in explorer', async () => {
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Expand `entities` group
-  fireEvent.click(groupBtn);
+  userEvent.click(groupBtn);
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
@@ -55,7 +56,7 @@ test('navigate groups in explorer', async () => {
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Expand `empty_group` child group
-  fireEvent.click(childGroupBtn);
+  userEvent.click(childGroupBtn);
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
@@ -63,20 +64,20 @@ test('navigate groups in explorer', async () => {
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'true');
 
   // Collapse `empty_group` child group
-  fireEvent.click(childGroupBtn);
+  userEvent.click(childGroupBtn);
 
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Select `entities` group
-  fireEvent.click(groupBtn);
+  userEvent.click(groupBtn);
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true'); // remains expanded as it wasn't previously selected
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
 
   // Collapse `entities` group
-  fireEvent.click(groupBtn);
+  userEvent.click(groupBtn);
 
   expect(
     screen.queryByRole('treeitem', { name: 'empty_group' })
