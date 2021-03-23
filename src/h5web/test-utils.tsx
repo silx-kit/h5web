@@ -5,6 +5,7 @@ import {
   screen,
   within,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
 import type { Vis } from './vis-packs/core/visualizations';
@@ -18,8 +19,11 @@ export function renderApp(): RenderResult {
 }
 
 export async function selectExplorerNode(path: string): Promise<void> {
-  for await (const name of path.split('/')) {
-    fireEvent.click(await screen.findByRole('treeitem', { name }));
+  const [name, ...remainingSegments] = path.split('/');
+  fireEvent.click(await screen.findByRole('treeitem', { name }));
+
+  if (remainingSegments.length > 0) {
+    await selectExplorerNode(remainingSegments.join('/'));
   }
 }
 
@@ -36,7 +40,7 @@ export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
 }
 
 export async function selectVisTab(name: Vis): Promise<void> {
-  fireEvent.click(await screen.findByRole('tab', { name }));
+  userEvent.click(await screen.findByRole('tab', { name }));
 }
 
 export function pressKey(key: string, downCount = 1) {
