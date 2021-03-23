@@ -19,7 +19,7 @@ export interface Size {
 
 export type Bound = 'min' | 'max';
 export type Domain = [number, number];
-export type CustomDomain = [number | undefined, number | undefined];
+export type CustomDomain = [number | null, number | null]; // `null` for persistability
 
 export interface DomainErrors {
   minGreater?: boolean;

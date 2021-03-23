@@ -4,6 +4,8 @@ import LineToolbar from '../../toolbar/LineToolbar';
 import { NxSpectrumContainer, NxImageContainer } from './containers';
 import { NxInterpretation } from './models';
 import type { VisDef } from '../models';
+import { LineConfigProvider } from '../core/line/config';
+import { HeatmapConfigProvider } from '../core/heatmap/config';
 
 export enum NexusVis {
   NxSpectrum = 'NX Spectrum',
@@ -16,6 +18,7 @@ export const NEXUS_VIS: Record<NxInterpretation, VisDef> = {
     Icon: FiActivity,
     Toolbar: LineToolbar,
     Container: NxSpectrumContainer,
+    ConfigProvider: LineConfigProvider,
   },
 
   [NxInterpretation.Image]: {
@@ -23,5 +26,6 @@ export const NEXUS_VIS: Record<NxInterpretation, VisDef> = {
     Icon: FiMap,
     Toolbar: HeatmapToolbar,
     Container: NxImageContainer,
+    ConfigProvider: HeatmapConfigProvider,
   },
 };

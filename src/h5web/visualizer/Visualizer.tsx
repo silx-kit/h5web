@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Fragment, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import Profiler from '../Profiler';
 import type { Entity } from '../providers/models';
@@ -22,31 +22,33 @@ function Visualizer<T extends VisDef>(props: Props<T>) {
     return <p className={styles.fallback}>Nothing to visualize</p>;
   }
 
-  const { Container, Toolbar } = activeVis;
+  const { Container, Toolbar, ConfigProvider = Fragment } = activeVis;
 
   return (
     <div className={styles.visualizer}>
-      <div className={styles.visBar}>
-        <VisSelector
-          activeVis={activeVis}
-          choices={supportedVis}
-          onChange={onActiveVisChange}
-        />
-        {Toolbar && <Toolbar />}
-      </div>
+      <ConfigProvider>
+        <div className={styles.visBar}>
+          <VisSelector
+            activeVis={activeVis}
+            choices={supportedVis}
+            onChange={onActiveVisChange}
+          />
+          {Toolbar && <Toolbar />}
+        </div>
 
-      <div className={styles.displayArea}>
-        <ErrorBoundary
-          resetKeys={[entity.path]}
-          FallbackComponent={ErrorMessage}
-        >
-          <Suspense fallback={<ValueLoader />}>
-            <Profiler id={activeVis.name}>
-              <Container key={entity.path} entity={entity} />
-            </Profiler>
-          </Suspense>
-        </ErrorBoundary>
-      </div>
+        <div className={styles.displayArea}>
+          <ErrorBoundary
+            resetKeys={[entity.path]}
+            FallbackComponent={ErrorMessage}
+          >
+            <Suspense fallback={<ValueLoader />}>
+              <Profiler id={activeVis.name}>
+                <Container key={entity.path} entity={entity} />
+              </Profiler>
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+      </ConfigProvider>
     </div>
   );
 }

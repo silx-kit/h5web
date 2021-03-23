@@ -17,6 +17,8 @@ import {
   HeatmapVisContainer,
 } from './containers';
 import type { VisDef } from '../models';
+import { LineConfigProvider } from './line/config';
+import { HeatmapConfigProvider } from './heatmap/config';
 
 export enum Vis {
   Raw = 'Raw',
@@ -65,6 +67,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Icon: FiActivity,
     Toolbar: LineToolbar,
     Container: LineVisContainer,
+    ConfigProvider: LineConfigProvider,
     supportsDataset: (dataset) => {
       return (
         hasNumericType(dataset) &&
@@ -79,6 +82,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Icon: FiMap,
     Toolbar: HeatmapToolbar,
     Container: HeatmapVisContainer,
+    ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (
         hasNumericType(dataset) &&

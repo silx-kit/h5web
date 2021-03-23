@@ -36,8 +36,8 @@ function DomainSlider(props: Props) {
     setSliderDomain(visDomain);
   }, [visDomain, setSliderDomain]);
 
-  const isAutoMin = customDomain[0] === undefined;
-  const isAutoMax = customDomain[1] === undefined;
+  const isAutoMin = customDomain[0] === null;
+  const isAutoMax = customDomain[1] === null;
 
   const [hovered, toggleHovered] = useToggle(false);
   const [isEditingMin, toggleEditingMin] = useToggle(false);
@@ -103,14 +103,14 @@ function DomainSlider(props: Props) {
         isAutoMin={isAutoMin}
         isAutoMax={isAutoMax}
         onAutoMinToggle={() => {
-          const newMin = isAutoMin ? dataDomain[0] : undefined;
+          const newMin = isAutoMin ? dataDomain[0] : null;
           onCustomDomainChange([newMin, customDomain[1]]);
           if (!isAutoMin) {
             toggleEditingMin(false);
           }
         }}
         onAutoMaxToggle={() => {
-          const newMax = isAutoMax ? dataDomain[1] : undefined;
+          const newMax = isAutoMax ? dataDomain[1] : null;
           onCustomDomainChange([customDomain[0], newMax]);
           if (!isAutoMax) {
             toggleEditingMax(false);
