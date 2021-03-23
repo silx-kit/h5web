@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 import MockProvider from '../providers/mock/MockProvider';
 import { mockValues } from '../providers/mock/values';
@@ -22,9 +23,16 @@ test('switch between visualisations', async () => {
   expect(matrixTab).toHaveAttribute('aria-selected', 'false');
 
   // Switch to Matrix visualisation
-  fireEvent.click(matrixTab);
-  expect(matrixTab).toHaveAttribute('aria-selected', 'true');
-  expect(lineTab).toHaveAttribute('aria-selected', 'false');
+  userEvent.click(matrixTab);
+
+  expect(screen.getByRole('tab', { name: 'Matrix' })).toHaveAttribute(
+    'aria-selected',
+    'true'
+  );
+  expect(screen.getByRole('tab', { name: 'Line' })).toHaveAttribute(
+    'aria-selected',
+    'false'
+  );
 });
 
 test('show fallback message when no visualization is supported', async () => {

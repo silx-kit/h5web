@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import '@testing-library/jest-dom'; // https://github.com/testing-library/jest-dom
 import { ResizeObserver } from '@juggle/resize-observer';
-import { useHeatmapConfig } from './h5web/vis-packs/core/heatmap/config';
-import { useLineConfig } from './h5web/vis-packs/core/line/config';
 
 // Fake `ResizeObserver` support
 window.ResizeObserver = ResizeObserver;
@@ -17,14 +15,9 @@ window.ResizeObserver = ResizeObserver;
   });
 });
 
-// Reset zustand stores before each test
-// https://github.com/pmndrs/zustand/issues/242#issuecomment-729004730
-const initialLineConfig = useLineConfig.getState();
-const initialHeatmapConfig = useHeatmapConfig.getState();
-
-beforeEach(() => {
-  useLineConfig.setState(initialLineConfig, true);
-  useHeatmapConfig.setState(initialHeatmapConfig, true);
+// Clear localStorage after each test
+afterEach(() => {
+  window.localStorage.clear();
 });
 
 // Fail if error or warning has been logged to the console (notably by React or React Testing Library)
