@@ -80,6 +80,6 @@ describe('getSupportedVis', () => {
       attributes: [makeStrAttr('signal', 'bar')],
     });
 
-    expect(() => getSupportedVis(noSignal)).toThrow(/signal entity to exist/u);
+    expect(() => getSupportedVis(noSignal)).toThrow(/signal entity to exist/);
   });
 });

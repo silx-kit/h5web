@@ -3,7 +3,7 @@ import { getLinearGradient } from './utils';
 
 const white = 'rgb(255, 255, 255)';
 const black = 'rgb(0, 0, 0)';
-const gradientRegex = /^linear-gradient\(to top, (.+)\)$/u;
+const gradientRegex = /^linear-gradient\(to top, (.+)\)$/;
 
 describe('getLinearGradient', () => {
   it('should generate linear gradient from first to last color', () => {

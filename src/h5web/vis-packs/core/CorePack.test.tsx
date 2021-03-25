@@ -17,7 +17,7 @@ test('visualise raw dataset', async () => {
   expect(tabs[0]).toHaveTextContent(Vis.Raw);
   expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
 
-  expect(await screen.findByText(/"int": 42/u)).toBeVisible();
+  expect(await screen.findByText(/"int": 42/)).toBeVisible();
 });
 
 test('log raw dataset to console if too large', async () => {
@@ -26,7 +26,7 @@ test('log raw dataset to console if too large', async () => {
   renderApp();
   await selectExplorerNode('entities/raw_large');
 
-  expect(await screen.findByText(/dataset is too big/u)).toBeVisible();
+  expect(await screen.findByText(/dataset is too big/)).toBeVisible();
   expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
 });
 

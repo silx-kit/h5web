@@ -67,16 +67,16 @@ test('show error when encountering malformed NeXus metadata', async () => {
   await selectExplorerNode('nexus_malformed');
 
   await selectExplorerNode('default_not_string');
-  expect(await screen.findByText(/to be a string/u)).toBeVisible();
+  expect(await screen.findByText(/to be a string/)).toBeVisible();
 
   await selectExplorerNode('default_not_found');
-  expect(await screen.findByText(/entity at path/u)).toBeVisible();
+  expect(await screen.findByText(/entity at path/)).toBeVisible();
 
   await selectExplorerNode('no_signal');
-  expect(await screen.findByText(/'signal' attribute/u)).toBeVisible();
+  expect(await screen.findByText(/'signal' attribute/)).toBeVisible();
 
   await selectExplorerNode('signal_not_found');
-  expect(await screen.findByText(/to exist/u)).toBeVisible();
+  expect(await screen.findByText(/to exist/)).toBeVisible();
 
   expect(errorSpy).toHaveBeenCalledTimes(8); // React logs two stack traces per error
 });

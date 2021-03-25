@@ -163,7 +163,7 @@ describe('convertHsdsType', () => {
   it('should throw when encountering an unknown type', () => {
     const unknownType = { class: 'NO_CLASS' };
     expect(() => convertHsdsType(unknownType as HsdsType)).toThrow(
-      /Unknown type/u
+      /Unknown type/
     );
   });
 });

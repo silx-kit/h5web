@@ -13,11 +13,11 @@ describe('findMockEntity', () => {
 
   it('should throw if path is relative', () => {
     expect(() => findMockEntity('nD_datasets')).toThrow(
-      /path to start with '\/'/u
+      /path to start with '\/'/
     );
   });
 
   it('should throw if no entity is found at given path', () => {
-    expect(() => findMockEntity('/nD_datasets/foo')).toThrow(/entity at path/u);
+    expect(() => findMockEntity('/nD_datasets/foo')).toThrow(/entity at path/);
   });
 });
