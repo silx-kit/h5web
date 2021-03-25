@@ -5,7 +5,7 @@ import DomainSlider from './controls/DomainSlider/DomainSlider';
 import SnapshotButton from './controls/SnapshotButton';
 import Separator from './Separator';
 import Toolbar from './Toolbar';
-import ColorMapSelector from './controls/ColorMapSelector';
+import ColorMapSelector from './controls/ColorMapSelector/ColorMapSelector';
 import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
 

@@ -43,25 +43,16 @@ function interpolateHsl(t: number): string {
   return hsl(t * 360, 1, 0.5).formatRgb();
 }
 
-export const RECOMMENDED = {
-  Viridis: interpolateViridis,
-  Inferno: interpolateInferno,
-  Greys: interpolateGreys,
-  RdBu: interpolateRdBu,
-  Rainbow: interpolateRainbow,
-  Sinebow: interpolateSinebow,
-};
-
-export const SINGLE_HUE = {
+export const INTERPOLATORS = {
+  // Single-hue
   Blues: interpolateBlues,
   Greens: interpolateGreens,
   Greys: interpolateGreys,
   Oranges: interpolateOranges,
   Purples: interpolatePurples,
   Reds: interpolateReds,
-};
 
-export const MULTI_HUE = {
+  // Multi-hue
   Turbo: interpolateTurbo,
   Viridis: interpolateViridis,
   Inferno: interpolateInferno,
@@ -82,15 +73,13 @@ export const MULTI_HUE = {
   YlGn: interpolateYlGn,
   YlOrBr: interpolateYlOrBr,
   YlOrRd: interpolateYlOrRd,
-};
 
-export const CYCLICAL = {
+  // Cyclical
   Rainbow: interpolateRainbow,
   Sinebow: interpolateSinebow,
   HSL: interpolateHsl,
-};
 
-export const DIVERGING = {
+  // Diverging
   BrBG: interpolateBrBG,
   PRGn: interpolatePRGn,
   PiYG: interpolatePiYG,
@@ -100,11 +89,4 @@ export const DIVERGING = {
   RdYlBu: interpolateRdYlBu,
   RdYlGn: interpolateRdYlGn,
   Spectral: interpolateSpectral,
-};
-
-export const INTERPOLATORS = {
-  ...SINGLE_HUE,
-  ...MULTI_HUE,
-  ...CYCLICAL,
-  ...DIVERGING,
 };
