@@ -173,7 +173,7 @@ describe('extendDomain', () => {
   });
 
   it('should throw if domain is not compatible with log scale', () => {
-    const errRegex = /compatible with log scale/u;
+    const errRegex = /compatible with log scale/;
     expect(() => extendDomain([-1, 1], 0.5, ScaleType.Log)).toThrow(errRegex);
     expect(() => extendDomain([0, 1], 0.5, ScaleType.Log)).toThrow(errRegex);
   });

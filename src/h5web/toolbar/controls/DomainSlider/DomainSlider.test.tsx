@@ -46,7 +46,7 @@ test('show min/max and data range in tooltip', async () => {
   expect(minInput).toHaveAttribute('title', '-95');
   expect(maxInput).toHaveAttribute('title', '400');
 
-  const range = screen.getByText(/Data range/u);
+  const range = screen.getByText(/Data range/);
   expect(range).toBeVisible();
   expect(within(range).getByTitle('-95')).toHaveTextContent('−9.5e+1');
   expect(within(range).getByTitle('400')).toHaveTextContent('4e+2');
@@ -56,7 +56,7 @@ test('update domain when moving thumbs (with keyboard)', async () => {
   renderApp();
 
   // Give focus to min thumb (and hover to reveal tooltip)
-  const minThumb = await screen.findByRole('slider', { name: /min/u });
+  const minThumb = await screen.findByRole('slider', { name: /min/ });
   userEvent.hover(minThumb);
   minThumb.focus();
 
@@ -78,7 +78,7 @@ test('update domain when moving thumbs (with keyboard)', async () => {
   expect(maxInput).toHaveValue('4e+2'); // unaffected
 
   // Give focus to max thumb
-  const maxThumb = await screen.findByRole('slider', { name: /max/u });
+  const maxThumb = await screen.findByRole('slider', { name: /max/ });
   maxThumb.focus();
 
   // Jump ten steps to the left
@@ -150,8 +150,8 @@ test('clamp domain in symlog scale', async () => {
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.click(editBtn);
 
-  const minThumb = screen.getByRole('slider', { name: /min/u });
-  const maxThumb = screen.getByRole('slider', { name: /max/u });
+  const minThumb = screen.getByRole('slider', { name: /min/ });
+  const maxThumb = screen.getByRole('slider', { name: /max/ });
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
 
@@ -191,7 +191,7 @@ test('show min/max autoscale toggles in tooltip (pressed by default)', async () 
 test('control min/max autoscale behaviour', async () => {
   renderApp();
 
-  const minThumb = await screen.findByRole('slider', { name: /min/u });
+  const minThumb = await screen.findByRole('slider', { name: /min/ });
   userEvent.hover(minThumb);
 
   const minBtn = screen.getByRole('button', { name: 'Min' });
@@ -225,8 +225,8 @@ test('handle empty domain', async () => {
 
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
-  const minThumb = screen.getByRole('slider', { name: /min/u });
-  const maxThumb = screen.getByRole('slider', { name: /max/u });
+  const minThumb = screen.getByRole('slider', { name: /min/ });
+  const maxThumb = screen.getByRole('slider', { name: /max/ });
 
   // Give min the same value as max
   userEvent.clear(minInput);
@@ -268,8 +268,8 @@ test('handle min > max', async () => {
   userEvent.type(minInput, '500{enter}');
   expect(minInput).toHaveValue('5e+2');
   expect(maxInput).toHaveValue('4e+2');
-  expect(screen.getByText(/Min greater than max/u)).toHaveTextContent(
-    /falling back to data range/u
+  expect(screen.getByText(/Min greater than max/)).toHaveTextContent(
+    /falling back to data range/
   );
 
   expect(within(visArea).getByText('−9.5e+1')).toBeInTheDocument();
@@ -278,7 +278,7 @@ test('handle min > max', async () => {
   // Autoscaling min hides the error
   const minBtn = screen.getByRole('button', { name: 'Min' });
   userEvent.click(minBtn);
-  expect(screen.queryByText(/Min greater than max/u)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Min greater than max/)).not.toBeInTheDocument();
 });
 
 test('handle min or max <= 0 in log scale', async () => {
@@ -296,8 +296,8 @@ test('handle min or max <= 0 in log scale', async () => {
   userEvent.clear(minInput);
   userEvent.type(minInput, '-5{enter}');
   expect(minInput).toHaveValue('−5e+0');
-  expect(screen.getByText(/Custom min invalid/u)).toHaveTextContent(
-    /falling back to data min/u
+  expect(screen.getByText(/Custom min invalid/)).toHaveTextContent(
+    /falling back to data min/
   );
 
   expect(within(visArea).getByText('9.996e-1')).toBeInTheDocument(); // data max
@@ -305,10 +305,10 @@ test('handle min or max <= 0 in log scale', async () => {
   // If min and max are negative and min > max, min > max error and fallback take over
   userEvent.clear(maxInput);
   userEvent.type(maxInput, '-10{enter}');
-  expect(screen.queryByText(/Custom min invalid/u)).not.toBeInTheDocument();
-  expect(screen.queryByText(/Custom max invalid/u)).not.toBeInTheDocument();
-  expect(screen.getByText(/Min greater than max/u)).toHaveTextContent(
-    /falling back to data range/u
+  expect(screen.queryByText(/Custom min invalid/)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Custom max invalid/)).not.toBeInTheDocument();
+  expect(screen.getByText(/Min greater than max/)).toHaveTextContent(
+    /falling back to data range/
   );
 });
 
@@ -330,8 +330,8 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
   userEvent.clear(maxInput);
   userEvent.type(maxInput, '1e-4{enter}'); // lower than data min
 
-  expect(screen.getByText(/Custom min invalid/u)).toHaveTextContent(
-    /falling back to custom max/u
+  expect(screen.getByText(/Custom min invalid/)).toHaveTextContent(
+    /falling back to custom max/
   );
 
   // Min fallback = custom max, so domain is empty

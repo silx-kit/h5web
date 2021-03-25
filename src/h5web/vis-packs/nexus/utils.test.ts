@@ -49,7 +49,7 @@ describe('findSignalDataset', () => {
 
   it("should throw if group doesn't have 'signal' attribute", () => {
     const group = makeGroup('group');
-    expect(() => findSignalDataset(group)).toThrow(/'signal' attribute$/u);
+    expect(() => findSignalDataset(group)).toThrow(/'signal' attribute$/);
   });
 
   it("should throw if group has 'signal' attribute with wrong type", () => {
@@ -57,7 +57,7 @@ describe('findSignalDataset', () => {
       attributes: [makeIntAttr('signal', 42)],
     });
 
-    expect(() => findSignalDataset(group)).toThrow(/to be a string/u);
+    expect(() => findSignalDataset(group)).toThrow(/to be a string/);
   });
 
   it("should throw if signal entity doesn't exist", () => {
@@ -65,7 +65,7 @@ describe('findSignalDataset', () => {
       attributes: [makeStrAttr('signal', 'foo')],
     });
 
-    expect(() => findSignalDataset(group)).toThrow(/to exist/u);
+    expect(() => findSignalDataset(group)).toThrow(/to exist/);
   });
 
   it('should throw if signal entity is not a dataset', () => {
@@ -73,7 +73,7 @@ describe('findSignalDataset', () => {
       attributes: [makeStrAttr('signal', 'foo')],
     });
 
-    expect(() => findSignalDataset(group)).toThrow(/to be a dataset/u);
+    expect(() => findSignalDataset(group)).toThrow(/to be a dataset/);
   });
 
   it('should throw if signal dataset has non-simple shape', () => {
@@ -82,7 +82,7 @@ describe('findSignalDataset', () => {
       attributes: [makeStrAttr('signal', 'dataset')],
     });
 
-    expect(() => findSignalDataset(group)).toThrow(/to have simple shape/u);
+    expect(() => findSignalDataset(group)).toThrow(/to have simple shape/);
   });
 
   it('should throw if signal dataset has no dimensions', () => {
@@ -91,7 +91,7 @@ describe('findSignalDataset', () => {
       attributes: [makeStrAttr('signal', 'dataset')],
     });
 
-    expect(() => findSignalDataset(group)).toThrow(/to have dimensions/u);
+    expect(() => findSignalDataset(group)).toThrow(/to have dimensions/);
   });
 
   it('should throw if signal dataset has non-numeric type', () => {
@@ -100,7 +100,7 @@ describe('findSignalDataset', () => {
       attributes: [makeStrAttr('signal', 'dataset')],
     });
 
-    expect(() => findSignalDataset(group)).toThrow(/to have numeric type/u);
+    expect(() => findSignalDataset(group)).toThrow(/to have numeric type/);
   });
 });
 
@@ -186,7 +186,7 @@ it('should return empty object and warn to console if `SILX_style` attribute val
   });
 
   expect(getSilxStyle(group)).toEqual({});
-  expect(warnSpy).toHaveBeenCalledWith(expect.stringMatching(/Malformed/u));
+  expect(warnSpy).toHaveBeenCalledWith(expect.stringMatching(/Malformed/));
 });
 
 it("should return empty object if `SILX_style` attribute doesn't exist, is empty or is not string", () => {

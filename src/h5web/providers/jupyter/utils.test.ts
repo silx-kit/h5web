@@ -78,11 +78,11 @@ describe('convertDtype', () => {
   });
 
   it('should throw when encountering an unknown endianness symbol', () => {
-    expect(() => convertDtype('^f8')).toThrow(/Unknown endianness symbol/u);
+    expect(() => convertDtype('^f8')).toThrow(/Unknown endianness symbol/);
   });
 
   it('should throw when encountering an unknown type', () => {
-    expect(() => convertDtype('>notAType')).toThrow(/Unknown dtype/u);
+    expect(() => convertDtype('>notAType')).toThrow(/Unknown dtype/);
   });
 });
 
