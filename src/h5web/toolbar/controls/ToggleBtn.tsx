@@ -2,7 +2,7 @@ import type { AriaAttributes } from 'react';
 import type { IconType } from 'react-icons';
 import styles from '../Toolbar.module.css';
 
-type Props = AriaAttributes & {
+interface Props extends AriaAttributes {
   label: string;
   icon?: IconType;
   iconOnly?: boolean;
@@ -11,7 +11,7 @@ type Props = AriaAttributes & {
   value: boolean;
   onChange: () => void;
   disabled?: boolean;
-};
+}
 
 function ToggleBtn(props: Props) {
   const {

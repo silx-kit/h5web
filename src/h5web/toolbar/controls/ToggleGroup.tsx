@@ -58,10 +58,10 @@ function Btn(props: BtnProps) {
   );
 }
 
-type Props = ToggleGroupProps & {
+interface Props extends ToggleGroupProps {
   ariaLabel?: string;
   children: ReactElement<BtnProps>[];
-};
+}
 
 function ToggleGroup(props: Props) {
   const { role, ariaLabel, value, disabled, onChange, children } = props;

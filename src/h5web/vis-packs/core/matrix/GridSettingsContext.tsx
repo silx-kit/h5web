@@ -19,7 +19,9 @@ export const GridSettingsContext = createContext<GridSettings>({
   valueAccessor: () => 0,
 });
 
-type Props = GridSettings & { children: ReactNode };
+interface Props extends GridSettings {
+  children: ReactNode;
+}
 
 function GridSettingsProvider(props: Props) {
   const { children, ...settings } = props;
