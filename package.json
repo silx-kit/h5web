@@ -59,7 +59,7 @@
     "react-three-fiber": "^4.2.21",
     "react-use": "^17.2.1",
     "react-window": "^1.8.6",
-    "three": "~0.117.1",
+    "three": "^0.126.1",
     "zustand": "^3.3.3"
   },
   "devDependencies": {
@@ -93,6 +93,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/react-slider": "^1.1.1",
     "@types/react-window": "^1.8.2",
+    "@types/three": "^0.126.2",
     "@typescript-eslint/eslint-plugin": "4.19.0",
     "@typescript-eslint/parser": "4.19.0",
     "babel-loader": "8.1.0",
