@@ -4,12 +4,12 @@ import type { IconType } from 'react-icons/lib';
 import type { Bound } from '../../../vis-packs/core/models';
 import styles from './Thumb.module.css';
 
-type Props = HTMLProps<HTMLDivElement> & {
+interface Props extends HTMLProps<HTMLDivElement> {
   bound: Bound;
   isAuto: boolean;
   hasError: boolean;
   AutoIcon: IconType;
-};
+}
 
 const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const { bound, isAuto, hasError, AutoIcon, ...thumbProps } = props;
