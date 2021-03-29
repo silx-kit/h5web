@@ -65,8 +65,9 @@ function VisCanvas(props: Props) {
             className={styles.canvasWrapper}
             orthographic
             invalidateFrameloop // disable game loop
-            gl={{ preserveDrawingBuffer: true }} // for screenshot feature
             pixelRatio={window.devicePixelRatio}
+            gl={{ preserveDrawingBuffer: true }} // for screenshot feature
+            gl2
           >
             <ambientLight />
             <AxisSystemContext.Provider
