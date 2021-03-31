@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import type { Entity } from '../providers/models';
 import styles from './MetadataViewer.module.css';
-import { hasSimpleShape, isDataset, isDatatype, isLink } from '../guards';
-import { renderType, renderShapeDims } from './utils';
+import { isDataset, isDatatype, isLink } from '../guards';
+import { renderType, renderShape } from './utils';
 import RawInspector from './RawInspector';
 import LinkInfo from './LinkInfo';
 import { capitalize } from 'lodash-es';
@@ -44,11 +44,7 @@ function EntityTable(props: Props) {
         {isDataset(entity) && (
           <tr>
             <th scope="row">Shape</th>
-            <td>
-              {hasSimpleShape(entity)
-                ? renderShapeDims(entity.shape.dims)
-                : entity.shape.class}
-            </td>
+            <td>{renderShape(entity.shape)}</td>
           </tr>
         )}
         {isLink(entity) && entity.rawLink && <LinkInfo link={entity.rawLink} />}

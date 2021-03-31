@@ -5,9 +5,10 @@ import type { Dataset } from '../../providers/models';
 import {
   hasScalarShape,
   hasPrintableType,
-  hasSimpleShape,
+  hasArrayShape,
   hasNumericType,
   hasMinDims,
+  hasNonNullShape,
 } from '../../guards';
 import {
   RawVisContainer,
@@ -37,7 +38,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     name: Vis.Raw,
     Icon: FiCpu,
     Container: RawVisContainer,
-    supportsDataset: () => true,
+    supportsDataset: hasNonNullShape,
   },
 
   [Vis.Scalar]: {
@@ -54,11 +55,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Icon: FiGrid,
     Container: MatrixVisContainer,
     supportsDataset: (dataset) => {
-      return (
-        hasPrintableType(dataset) &&
-        hasSimpleShape(dataset) &&
-        hasMinDims(dataset, 1)
-      );
+      return hasPrintableType(dataset) && hasArrayShape(dataset);
     },
   },
 
@@ -69,11 +66,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Container: LineVisContainer,
     ConfigProvider: LineConfigProvider,
     supportsDataset: (dataset) => {
-      return (
-        hasNumericType(dataset) &&
-        hasSimpleShape(dataset) &&
-        hasMinDims(dataset, 1)
-      );
+      return hasNumericType(dataset) && hasArrayShape(dataset);
     },
   },
 
@@ -86,7 +79,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     supportsDataset: (dataset) => {
       return (
         hasNumericType(dataset) &&
-        hasSimpleShape(dataset) &&
+        hasArrayShape(dataset) &&
         hasMinDims(dataset, 2)
       );
     },

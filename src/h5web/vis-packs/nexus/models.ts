@@ -1,8 +1,9 @@
+import type { HDF5StringType } from '../../providers/hdf5-models';
 import type {
-  HDF5ScalarShape,
-  HDF5StringType,
-} from '../../providers/hdf5-models';
-import type { Dataset, NumArrayDataset } from '../../providers/models';
+  Dataset,
+  NumArrayDataset,
+  ScalarShape,
+} from '../../providers/models';
 import type { ScaleType } from '../core/models';
 
 export type NxAttribute =
@@ -24,7 +25,7 @@ export enum NxInterpretation {
 export interface NxData {
   signalDataset: NumArrayDataset;
   errorsDataset?: NumArrayDataset;
-  titleDataset?: Dataset<HDF5ScalarShape, HDF5StringType>;
+  titleDataset?: Dataset<ScalarShape, HDF5StringType>;
   axisDatasetMapping: AxisDatasetMapping;
   silxStyle: SilxStyle;
   auxDatasets: NumArrayDataset[];

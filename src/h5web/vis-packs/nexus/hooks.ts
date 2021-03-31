@@ -1,17 +1,19 @@
 import { useContext } from 'react';
-import type { Dataset, Group, NumArrayDataset } from '../../providers/models';
-import { ProviderContext } from '../../providers/context';
 import type {
-  HDF5StringType,
-  HDF5ScalarShape,
-} from '../../providers/hdf5-models';
+  Dataset,
+  Group,
+  NumArrayDataset,
+  ScalarShape,
+} from '../../providers/models';
+import { ProviderContext } from '../../providers/context';
+import type { HDF5StringType } from '../../providers/hdf5-models';
 import {
   isDefined,
   assertArray,
   assertDefined,
   assertDataset,
   assertNumericType,
-  assertSimpleShape,
+  assertArrayShape,
   assertStringType,
   assertScalarShape,
 } from '../../guards';
@@ -30,7 +32,7 @@ import {
 
 function useTitleDataset(
   group: Group
-): Dataset<HDF5ScalarShape, HDF5StringType> | undefined {
+): Dataset<ScalarShape, HDF5StringType> | undefined {
   const { valuesStore } = useContext(ProviderContext);
 
   const dataset = getChildEntity(group, 'title');
@@ -64,7 +66,7 @@ function useAssociatedDatasets(
     const dataset = getChildEntity(group, name);
     assertDefined(dataset);
     assertDataset(dataset);
-    assertSimpleShape(dataset);
+    assertArrayShape(dataset);
     assertNumericType(dataset);
 
     valuesStore.prefetch({ path: dataset.path });

@@ -19,7 +19,7 @@ function NxImageContainer(props: VisContainerProps) {
   const { axesScaleType, signalScaleType } = silxStyle;
   assertMinDims(signalDataset, 2);
 
-  const { dims } = signalDataset.shape;
+  const { shape: dims } = signalDataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const title = useDatasetValue(titleDataset);

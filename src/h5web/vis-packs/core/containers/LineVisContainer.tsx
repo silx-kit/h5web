@@ -1,7 +1,7 @@
 import {
   assertDataset,
   assertNumericType,
-  assertSimpleShape,
+  assertArrayShape,
 } from '../../../guards';
 import MappedLineVis from '../line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
@@ -11,11 +11,10 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 function LineVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
-  assertSimpleShape(entity);
+  assertArrayShape(entity);
   assertNumericType(entity);
 
-  const { name, shape } = entity;
-  const { dims } = shape;
+  const { name, shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   return (

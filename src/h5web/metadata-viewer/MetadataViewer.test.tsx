@@ -56,17 +56,29 @@ test('inspect scalar dataset', async () => {
   expect(column).toBeVisible();
   expect(nameRow).toHaveTextContent(/scalar_int/);
   expect(pathRow).toHaveTextContent(/\/entities\/scalar_int/);
-  expect(shapeRow).toHaveTextContent(/H5S_SCALAR/);
+  expect(shapeRow).toHaveTextContent(/Scalar/);
   expect(typeRow).toHaveTextContent(/integer/);
 });
 
-test('inspect simple dataset', async () => {
+test('inspect array dataset', async () => {
   renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('nD_datasets/threeD');
 
   const shapeRow = await screen.findByRole('row', { name: /^Shape/ });
   expect(shapeRow).toHaveTextContent(/9 x 20 x 41 = 7380/);
+});
+
+test('inspect empty dataset', async () => {
+  renderApp();
+  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  await selectExplorerNode('entities/empty_dataset');
+
+  const shapeRow = await screen.findByRole('row', { name: /^Shape/ });
+  const typeRow = screen.getByRole('row', { name: /^Type/ });
+
+  expect(shapeRow).toHaveTextContent(/None/);
+  expect(typeRow).toHaveTextContent(/integer/);
 });
 
 test('inspect datatype', async () => {

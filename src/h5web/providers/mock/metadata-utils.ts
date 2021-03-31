@@ -1,4 +1,13 @@
-import { Datatype, Entity, EntityKind, Group, Link } from '../models';
+import {
+  Datatype,
+  Entity,
+  EntityKind,
+  Group,
+  Link,
+  ScalarShape,
+  Shape,
+  ArrayShape,
+} from '../models';
 import {
   HDF5Attribute,
   HDF5BooleanType,
@@ -136,10 +145,10 @@ export function makeGroup(
   return group;
 }
 
-export function makeDataset<S extends HDF5Shape, T extends HDF5Type>(
+export function makeDataset<S extends Shape, T extends HDF5Type>(
   name: string,
-  shape: S,
   type: T,
+  shape: S,
   opts: DatasetOpts = {}
 ): MockDataset<S, T> {
   const { attributes = [], valueId = name, rawLink } = opts;
@@ -156,13 +165,12 @@ export function makeDataset<S extends HDF5Shape, T extends HDF5Type>(
   };
 }
 
-export function makeSimpleDataset<T extends HDF5Type>(
+export function makeScalarDataset<T extends HDF5Type>(
   name: string,
   type: T,
-  dims: HDF5Dims,
   opts: DatasetOpts = {}
-): MockDataset<HDF5SimpleShape, T> {
-  return makeDataset(name, makeSimpleShape(dims), type, opts);
+): MockDataset<ScalarShape, T> {
+  return makeDataset(name, type, [], opts);
 }
 
 export function makeDatatype<T extends HDF5Type>(
@@ -253,13 +261,13 @@ export function makeNxGroup(
 }
 
 export function makeNxDataGroup<
-  T extends Record<string, MockDataset<HDF5SimpleShape, HDF5NumericType>>
+  T extends Record<string, MockDataset<ArrayShape, HDF5NumericType>>
 >(
   name: string,
   opts: {
-    signal: MockDataset<HDF5SimpleShape, HDF5NumericType>;
-    errors?: MockDataset<HDF5SimpleShape, HDF5NumericType>;
-    title?: MockDataset<HDF5ScalarShape, HDF5StringType>;
+    signal: MockDataset<ArrayShape, HDF5NumericType>;
+    errors?: MockDataset<ArrayShape, HDF5NumericType>;
+    title?: MockDataset<ScalarShape, HDF5StringType>;
     silxStyle?: SilxStyle;
   } & (
     | { axes: T; axesAttr: (Extract<keyof T, string> | '.')[] }
@@ -311,10 +319,10 @@ export function makeNxDataset(
     longName?: string;
     units?: string;
   } & DatasetOpts = {}
-): MockDataset<HDF5SimpleShape, HDF5NumericType> {
+): MockDataset<ArrayShape, HDF5NumericType> {
   const { interpretation, longName, units, ...datasetOpts } = opts;
 
-  return makeSimpleDataset(name, type, dims, {
+  return makeDataset(name, type, dims, {
     ...datasetOpts,
     attributes: [
       ...(datasetOpts.attributes || []),
@@ -328,7 +336,7 @@ export function makeNxDataset(
 }
 
 export function withNxInterpretation<
-  T extends MockDataset<HDF5SimpleShape, HDF5NumericType>
+  T extends MockDataset<ArrayShape, HDF5NumericType>
 >(dataset: T, interpretation: NxInterpretation): T {
   return withAttributes(dataset, [
     makeStrAttr('interpretation', interpretation),

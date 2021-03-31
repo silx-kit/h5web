@@ -2,28 +2,25 @@ import { CORE_VIS } from './visualizations';
 import {
   intType,
   compoundType,
-  scalarShape,
   stringType,
   floatType,
-  makeSimpleShape,
   makeDataset,
-  makeSimpleDataset,
   booleanType,
   complexType,
+  makeScalarDataset,
 } from '../../providers/mock/metadata-utils';
 
-const datasetIntScalar = makeDataset('dataset_int', scalarShape, intType);
-const datasetFltScalar = makeDataset('dataset_flt', scalarShape, floatType);
-const datasetStrScalar = makeDataset('dataset_flt', scalarShape, stringType);
-const datasetBoolScalar = makeDataset('dataset_bool', scalarShape, booleanType);
-const datasetCplxScalar = makeDataset('dataset_cplx', scalarShape, complexType);
-const datasetInt0D = makeSimpleDataset('dataset_int_0d', intType, []);
-const datasetInt1D = makeSimpleDataset('dataset_int_1d', intType, [5]);
-const datasetBool1D = makeSimpleDataset('dataset_bool_1d', booleanType, [3]);
-const datasetInt2D = makeSimpleDataset('dataset_int_2d', intType, [5, 3]);
-const datasetCplx2D = makeSimpleDataset('dataset_cplx_2D', complexType, [2, 2]);
-const datasetStr2D = makeSimpleDataset('dataset_str_2d', stringType, [5, 3]);
-const datasetFlt3D = makeSimpleDataset('dataset_flt_3d', intType, [5, 3, 1]);
+const datasetIntScalar = makeScalarDataset('dataset_int', intType);
+const datasetFltScalar = makeScalarDataset('dataset_flt', floatType);
+const datasetStrScalar = makeScalarDataset('dataset_flt', stringType);
+const datasetBoolScalar = makeScalarDataset('dataset_bool', booleanType);
+const datasetCplxScalar = makeScalarDataset('dataset_cplx', complexType);
+const datasetInt1D = makeDataset('dataset_int_1d', intType, [5]);
+const datasetBool1D = makeDataset('dataset_bool_1d', booleanType, [3]);
+const datasetInt2D = makeDataset('dataset_int_2d', intType, [5, 3]);
+const datasetCplx2D = makeDataset('dataset_cplx_2D', complexType, [2, 2]);
+const datasetStr2D = makeDataset('dataset_str_2d', stringType, [5, 3]);
+const datasetFlt3D = makeDataset('dataset_flt_3d', intType, [5, 3, 1]);
 
 describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
@@ -46,7 +43,7 @@ describe('Scalar', () => {
   });
 
   it('should not support dataset with non-displayable type', () => {
-    const dataset = makeDataset('foo', scalarShape, compoundType);
+    const dataset = makeScalarDataset('foo', compoundType);
     expect(supportsDataset(dataset)).toBe(false);
   });
 
@@ -58,7 +55,7 @@ describe('Scalar', () => {
 describe('Matrix', () => {
   const { supportsDataset } = CORE_VIS.Matrix;
 
-  it('should support dataset with displayable type, simple shape and at least one dimension', () => {
+  it('should support array dataset with displayable type and at least one dimension', () => {
     expect(supportsDataset(datasetInt1D)).toBe(true);
     expect(supportsDataset(datasetStr2D)).toBe(true);
     expect(supportsDataset(datasetCplx2D)).toBe(true);
@@ -67,23 +64,19 @@ describe('Matrix', () => {
   });
 
   it('should not support dataset with non-displayable type', () => {
-    const dataset = makeDataset('foo', makeSimpleShape([1]), compoundType);
+    const dataset = makeDataset('foo', compoundType, [1]);
     expect(supportsDataset(dataset)).toBe(false);
   });
 
-  it('should not support dataset with non-simple shape', () => {
+  it('should not support dataset with non-array shape', () => {
     expect(supportsDataset(datasetIntScalar)).toBe(false);
-  });
-
-  it('should not support dataset with no dimension', () => {
-    expect(supportsDataset(datasetInt0D)).toBe(false);
   });
 });
 
 describe('Line', () => {
   const { supportsDataset } = CORE_VIS.Line;
 
-  it('should support dataset with numeric type, simple shape and at least one dimension', () => {
+  it('should support array dataset with numeric type shape and at least one dimension', () => {
     expect(supportsDataset(datasetInt1D)).toBe(true);
     expect(supportsDataset(datasetFlt3D)).toBe(true);
   });
@@ -92,19 +85,15 @@ describe('Line', () => {
     expect(supportsDataset(datasetStr2D)).toBe(false);
   });
 
-  it('should not support dataset with non-simple shape', () => {
+  it('should not support dataset with non-array shape', () => {
     expect(supportsDataset(datasetIntScalar)).toBe(false);
-  });
-
-  it('should not support dataset with no dimension', () => {
-    expect(supportsDataset(datasetInt0D)).toBe(false);
   });
 });
 
 describe('Heatmap', () => {
   const { supportsDataset } = CORE_VIS.Heatmap;
 
-  it('should support dataset with numeric type, simple shape and at least two dimensions', () => {
+  it('should support array dataset with numeric type and at least two dimensions', () => {
     expect(supportsDataset(datasetInt2D)).toBe(true);
     expect(supportsDataset(datasetFlt3D)).toBe(true);
   });
@@ -113,7 +102,7 @@ describe('Heatmap', () => {
     expect(supportsDataset(datasetStr2D)).toBe(false);
   });
 
-  it('should not support dataset with non-simple shape', () => {
+  it('should not support dataset with non-array shape', () => {
     expect(supportsDataset(datasetIntScalar)).toBe(false);
   });
 

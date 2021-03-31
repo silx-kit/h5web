@@ -5,11 +5,9 @@ import type {
   HDF5ComplexType,
   HDF5Link,
   HDF5NumericType,
-  HDF5Shape,
-  HDF5ScalarShape,
-  HDF5SimpleShape,
   HDF5StringType,
   HDF5Type,
+  HDF5Dims,
 } from './hdf5-models';
 
 export enum EntityKind {
@@ -32,14 +30,17 @@ export interface Group extends Entity {
   children: Entity[];
 }
 
-export interface Dataset<
-  S extends HDF5Shape = HDF5Shape,
-  T extends HDF5Type = HDF5Type
-> extends Entity {
+export interface Dataset<S extends Shape = Shape, T extends HDF5Type = HDF5Type>
+  extends Entity {
   kind: EntityKind.Dataset;
   shape: S;
   type: T;
 }
+
+export type Shape = ArrayShape | ScalarShape | NullShape;
+export type ArrayShape = HDF5Dims;
+export type ScalarShape = never[];
+export type NullShape = null;
 
 export interface Datatype<T = HDF5Type> extends Entity {
   kind: EntityKind.Datatype;
@@ -61,12 +62,12 @@ type PrimitiveType<T extends HDF5Type> = T extends HDF5NumericType
   ? Complex
   : unknown;
 
-export type Value<D extends Dataset> = D['shape'] extends HDF5SimpleShape
-  ? PrimitiveType<D['type']>[]
-  : D['shape'] extends HDF5ScalarShape
+export type Value<D extends Dataset> = D['shape'] extends ScalarShape
   ? PrimitiveType<D['type']>
+  : D['shape'] extends ArrayShape
+  ? PrimitiveType<D['type']>[]
   : never;
 
 export type ComplexArray = (ComplexArray | Complex)[];
 
-export type NumArrayDataset = Dataset<HDF5SimpleShape, HDF5NumericType>;
+export type NumArrayDataset = Dataset<ArrayShape, HDF5NumericType>;
