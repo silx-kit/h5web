@@ -6,6 +6,7 @@ import type {
   HDF5Link,
   HDF5NumericType,
   HDF5Shape,
+  HDF5ScalarShape,
   HDF5SimpleShape,
   HDF5StringType,
   HDF5Type,
@@ -60,10 +61,11 @@ type PrimitiveType<T extends HDF5Type> = T extends HDF5NumericType
   ? Complex
   : unknown;
 
-export type Value<
-  S extends HDF5Shape,
-  T extends HDF5Type
-> = S extends HDF5SimpleShape ? PrimitiveType<T>[] : PrimitiveType<T>;
+export type Value<D extends Dataset> = D['shape'] extends HDF5SimpleShape
+  ? PrimitiveType<D['type']>[]
+  : D['shape'] extends HDF5ScalarShape
+  ? PrimitiveType<D['type']>
+  : never;
 
 export type ComplexArray = (ComplexArray | Complex)[];
 
