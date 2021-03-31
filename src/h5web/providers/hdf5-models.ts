@@ -73,7 +73,7 @@ export interface HDF5ScalarShape {
   class: HDF5ShapeClass.Scalar;
 }
 
-interface HDF5NullShape {
+export interface HDF5NullShape {
   class: HDF5ShapeClass.Null;
 }
 
