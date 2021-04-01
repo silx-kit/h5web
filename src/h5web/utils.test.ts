@@ -1,13 +1,12 @@
 import {
   intType,
-  scalarShape,
-  makeDataset,
   makeGroup,
+  makeScalarDataset,
 } from './providers/mock/metadata-utils';
 import { buildEntityPath, getChildEntity } from './utils';
 
 describe('getChildEntity', () => {
-  const dataset = makeDataset('dataset', scalarShape, intType);
+  const dataset = makeScalarDataset('dataset', intType);
   const childGroup = makeGroup('group');
   const rootGroup = makeGroup('root', [childGroup, dataset]);
 

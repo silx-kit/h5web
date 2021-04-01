@@ -6,10 +6,12 @@ import {
   HDF5Endianness,
   HDF5FloatType,
   HDF5IntegerType,
+  HDF5Shape,
+  HDF5ShapeClass,
   HDF5Type,
   HDF5TypeClass,
 } from '../hdf5-models';
-import type { Entity, ComplexArray } from '../models';
+import type { Entity, ComplexArray, Shape } from '../models';
 import type {
   HsdsLink,
   HsdsExternalLink,
@@ -39,6 +41,17 @@ export function assertHsdsDataset(
 ): asserts entity is HsdsDataset {
   if (!isHsdsDataset(entity)) {
     throw new Error('Expected entity to be HSDS dataset');
+  }
+}
+
+export function convertHsdsShape(shape: HDF5Shape): Shape {
+  switch (shape.class) {
+    case HDF5ShapeClass.Simple:
+      return shape.dims;
+    case HDF5ShapeClass.Scalar:
+      return [];
+    default:
+      return null;
   }
 }
 

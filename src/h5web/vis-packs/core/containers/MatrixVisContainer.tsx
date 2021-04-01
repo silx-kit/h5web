@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import {
   assertPrintableType,
   assertDataset,
-  assertSimpleShape,
+  assertArrayShape,
 } from '../../../guards';
 import MappedMatrixVis from '../matrix/MappedMatrixVis';
 import type { VisContainerProps } from '../../models';
@@ -13,10 +13,10 @@ import ValueLoader from '../../../visualizer/ValueLoader';
 function MatrixVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
-  assertSimpleShape(entity);
+  assertArrayShape(entity);
   assertPrintableType(entity);
 
-  const { dims } = entity.shape;
+  const { shape: dims } = entity;
   const axesCount = Math.min(dims.length, 2);
   const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
 

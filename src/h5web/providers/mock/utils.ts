@@ -4,7 +4,7 @@ import {
   assertArray,
   assertDefined,
   assertNumericType,
-  assertSimpleShape,
+  assertArrayShape,
   isDataset,
   isGroup,
 } from '../../guards';
@@ -54,7 +54,7 @@ export function getMockDataArray(path: string): ndarray {
   assertArray<number>(value);
 
   assertNumericType(dataset);
-  assertSimpleShape(dataset);
+  assertArrayShape(dataset);
 
-  return ndarray(value.flat(Infinity), dataset.shape.dims);
+  return ndarray(value.flat(Infinity), dataset.shape);
 }

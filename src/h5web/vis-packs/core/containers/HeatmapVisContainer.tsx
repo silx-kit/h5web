@@ -3,7 +3,7 @@ import {
   assertDataset,
   assertMinDims,
   assertNumericType,
-  assertSimpleShape,
+  assertArrayShape,
 } from '../../../guards';
 import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from '../../models';
@@ -14,12 +14,11 @@ import ValueLoader from '../../../visualizer/ValueLoader';
 function HeatmapVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
-  assertSimpleShape(entity);
-  assertNumericType(entity);
+  assertArrayShape(entity);
   assertMinDims(entity, 2);
+  assertNumericType(entity);
 
-  const { name, shape } = entity;
-  const { dims } = shape;
+  const { name, shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   return (

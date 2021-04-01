@@ -4,7 +4,7 @@ import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
 import type { GetValueParams } from '../context';
 import ndarray from 'ndarray';
-import { assertPrintableType, assertSimpleShape } from '../../guards';
+import { assertPrintableType, assertArrayShape } from '../../guards';
 import unpack from 'ndarray-unpack';
 
 interface Props {
@@ -46,12 +46,12 @@ function MockProvider(props: Props) {
             return value;
           }
 
-          assertSimpleShape(dataset);
+          assertArrayShape(dataset);
           assertPrintableType(dataset);
 
           const dataArray = ndarray(
             (dataset.value as (number | string | boolean)[]).flat(Infinity),
-            dataset.shape.dims
+            dataset.shape
           );
 
           const dataView = dataArray.pick(

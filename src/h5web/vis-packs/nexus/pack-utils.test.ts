@@ -5,21 +5,21 @@ import {
   makeStrAttr,
   makeGroup,
   makeNxDataGroup,
-  makeSimpleDataset,
   withNxInterpretation,
   makeNxGroup,
   withAttributes,
+  makeDataset,
 } from '../../providers/mock/metadata-utils';
 import { NEXUS_VIS } from './visualizations';
 import { NxInterpretation } from './models';
 
-const datasetInt1D = makeSimpleDataset('dataset_int_1d', intType, [5]);
-const datasetInt2D = makeSimpleDataset('dataset_int_2d', intType, [5, 3]);
-const datasetFlt3D = makeSimpleDataset('dataset_flt_3d', floatType, [5, 3, 1]);
+const datasetInt1D = makeDataset('dataset_int_1d', intType, [5]);
+const datasetInt2D = makeDataset('dataset_int_2d', intType, [5, 3]);
+const datasetFlt3D = makeDataset('dataset_flt_3d', floatType, [5, 3, 1]);
 
 describe('getSupportedVis', () => {
   it('should not include NxSpectrum vis if any other visualization is supported', () => {
-    const datasetInt2D = makeSimpleDataset('dataset', intType, [5, 3]);
+    const datasetInt2D = makeDataset('dataset', intType, [5, 3]);
     const nxDataSignal2D = makeNxDataGroup('foo', { signal: datasetInt2D });
     const supportedVis = getSupportedVis(nxDataSignal2D);
 

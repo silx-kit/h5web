@@ -7,7 +7,7 @@ describe('findMockEntity', () => {
     expect(findMockEntity('/')).toBe(mockMetadata);
     expect(findMockEntity('/nD_datasets')).toBe(mockMetadata.children[1]);
     expect(findMockEntity('/entities/raw')).toBe(
-      (mockMetadata.children[0] as Group).children[3]
+      (mockMetadata.children[0] as Group).children[4]
     );
   });
 

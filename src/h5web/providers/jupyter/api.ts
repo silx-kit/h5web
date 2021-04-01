@@ -16,12 +16,7 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { makeStrAttr } from '../mock/metadata-utils';
-import {
-  HDF5LinkClass,
-  HDF5ShapeClass,
-  HDF5Value,
-  HDF5SoftLink,
-} from '../hdf5-models';
+import { HDF5LinkClass, HDF5Value, HDF5SoftLink } from '../hdf5-models';
 import { assertDataset, hasComplexType } from '../../guards';
 
 export class JupyterApi implements ProviderAPI {
@@ -126,16 +121,13 @@ export class JupyterApi implements ProviderAPI {
 
     if (isDatasetResponse(response)) {
       // `dtype` is the type of the data contained in the dataset
-      const { type: kind, dtype, shape: dims } = response;
+      const { type: kind, dtype, shape } = response;
 
       return {
         ...baseEntity,
         kind,
         type: convertDtype(dtype),
-        shape:
-          dims.length > 0
-            ? { class: HDF5ShapeClass.Simple, dims }
-            : { class: HDF5ShapeClass.Scalar },
+        shape,
       };
     }
 

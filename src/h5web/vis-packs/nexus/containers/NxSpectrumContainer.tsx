@@ -26,8 +26,8 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const signalLabel = getDatasetLabel(signalDataset);
   const { axesScaleType, signalScaleType } = silxStyle;
-  const signalDims = signalDataset.shape.dims;
-  const errorsDims = errorsDataset?.shape.dims;
+  const signalDims = signalDataset.shape;
+  const errorsDims = errorsDataset?.shape;
 
   if (errorsDims && !isEqual(signalDims, errorsDims)) {
     const dimsStr = JSON.stringify({ signalDims, errorsDims });

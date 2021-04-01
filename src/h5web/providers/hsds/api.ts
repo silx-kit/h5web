@@ -32,6 +32,7 @@ import {
   assertHsdsDataset,
   isHsdsExternalLink,
   isHsdsGroup,
+  convertHsdsShape,
   convertHsdsType,
   parseComplex,
 } from './utils';
@@ -211,7 +212,7 @@ export class HsdsApi implements ProviderAPI {
       name,
       kind: EntityKind.Dataset,
       attributes,
-      shape,
+      shape: convertHsdsShape(shape),
       type: convertHsdsType(type),
     };
   }

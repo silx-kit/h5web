@@ -2,13 +2,12 @@ import { useMemo } from 'react';
 import MatrixVis from './MatrixVis';
 import { useDatasetValue, useMappedArray } from '../hooks';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { HDF5SimpleShape } from '../../../providers/hdf5-models';
-import type { Dataset } from '../../../providers/models';
+import type { Dataset, ArrayShape } from '../../../providers/models';
 import { isAxis } from '../../../dimension-mapper/utils';
 import type { PrintableType } from '../models';
 
 interface Props {
-  dataset: Dataset<HDF5SimpleShape, PrintableType>;
+  dataset: Dataset<ArrayShape, PrintableType>;
   dims: number[];
   dimMapping: DimensionMapping;
 }

@@ -5,17 +5,16 @@ import {
   Datatype,
   Dataset,
   Link,
+  Shape,
+  ArrayShape,
+  ScalarShape,
 } from './providers/models';
 import {
   HDF5HardLink,
   HDF5Link,
   HDF5LinkClass,
-  HDF5SimpleShape,
-  HDF5Shape,
-  HDF5ShapeClass,
   HDF5Type,
   HDF5TypeClass,
-  HDF5ScalarShape,
   HDF5NumericType,
   HDF5StringType,
   HDF5BooleanType,
@@ -87,19 +86,33 @@ export function isHardLink(link: HDF5Link): link is HDF5HardLink {
   return link.class === HDF5LinkClass.Hard;
 }
 
-export function hasSimpleShape<T extends HDF5Type>(
-  dataset: Dataset<HDF5Shape, T>
-): dataset is Dataset<HDF5SimpleShape, T> {
-  return dataset.shape.class === HDF5ShapeClass.Simple;
+export function isScalarShape(shape: Shape): shape is ScalarShape {
+  return shape !== null && shape.length === 0;
 }
 
 export function hasScalarShape<T extends HDF5Type>(
-  dataset: Dataset<HDF5Shape, T>
-): dataset is Dataset<HDF5ScalarShape, T> {
-  return dataset.shape.class === HDF5ShapeClass.Scalar;
+  dataset: Dataset<Shape, T>
+): dataset is Dataset<ScalarShape, T> {
+  return isScalarShape(dataset.shape);
 }
 
-export function hasPrintableType<S extends HDF5Shape>(
+export function hasArrayShape<T extends HDF5Type>(
+  dataset: Dataset<Shape, T>
+): dataset is Dataset<ArrayShape, T> {
+  return dataset.shape !== null && dataset.shape.length > 0;
+}
+
+export function hasNonNullShape<T extends HDF5Type>(
+  dataset: Dataset<Shape, T>
+): dataset is Dataset<ScalarShape | ArrayShape, T> {
+  return dataset.shape !== null;
+}
+
+export function hasMinDims(dataset: Dataset<ArrayShape>, min: number): boolean {
+  return dataset.shape.length >= min;
+}
+
+export function hasPrintableType<S extends Shape>(
   entity: Dataset<S>
 ): entity is Dataset<S, PrintableType> {
   return (
@@ -114,7 +127,7 @@ export function hasPrintableType<S extends HDF5Shape>(
   );
 }
 
-export function hasBoolType<S extends HDF5Shape>(
+export function hasBoolType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5BooleanType> {
   return (
@@ -123,7 +136,7 @@ export function hasBoolType<S extends HDF5Shape>(
   );
 }
 
-export function hasComplexType<S extends HDF5Shape>(
+export function hasComplexType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5ComplexType> {
   return (
@@ -132,7 +145,7 @@ export function hasComplexType<S extends HDF5Shape>(
   );
 }
 
-export function hasStringType<S extends HDF5Shape>(
+export function hasStringType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5StringType> {
   return (
@@ -141,20 +154,13 @@ export function hasStringType<S extends HDF5Shape>(
   );
 }
 
-export function hasNumericType<S extends HDF5Shape>(
+export function hasNumericType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5NumericType> {
   return (
     typeof dataset.type !== 'string' &&
     [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(dataset.type.class)
   );
-}
-
-export function hasMinDims(
-  dataset: Dataset<HDF5SimpleShape>,
-  min: number
-): boolean {
-  return dataset.shape.dims.length >= min;
 }
 
 export function isAbsolutePath(path: string) {
@@ -180,26 +186,36 @@ export function assertGroup(
 }
 
 export function assertScalarShape<T extends HDF5Type>(
-  dataset: Dataset<HDF5Shape, T>
-): asserts dataset is Dataset<HDF5ScalarShape, T> {
+  dataset: Dataset<Shape, T>
+): asserts dataset is Dataset<ScalarShape, T> {
   if (!hasScalarShape(dataset)) {
     throw new Error('Expected dataset to have scalar shape');
   }
 }
 
-export function assertSimpleShape<T extends HDF5Type>(
-  dataset: Dataset<HDF5Shape, T>
-): asserts dataset is Dataset<HDF5SimpleShape, T> {
-  if (!hasSimpleShape(dataset)) {
-    throw new Error('Expected dataset to have simple shape');
-  }
-
-  if (dataset.shape.dims.length === 0) {
-    throw new Error('Expected dataset with simple shape to have dimensions');
+export function assertArrayShape<T extends HDF5Type>(
+  dataset: Dataset<Shape, T>
+): asserts dataset is Dataset<ArrayShape, T> {
+  if (!hasArrayShape(dataset)) {
+    throw new Error('Expected dataset to have array shape');
   }
 }
 
-export function assertPrintableType<S extends HDF5Shape>(
+export function assertNonNullShape<T extends HDF5Type>(
+  dataset: Dataset<Shape, T>
+): asserts dataset is Dataset<ScalarShape | ArrayShape, T> {
+  if (!hasNonNullShape(dataset)) {
+    throw new Error('Expected dataset to have non-null shape');
+  }
+}
+
+export function assertMinDims(dataset: Dataset<ArrayShape>, min: number) {
+  if (!hasMinDims(dataset, min)) {
+    throw new Error(`Expected dataset with at least ${min} dimensions`);
+  }
+}
+
+export function assertPrintableType<S extends Shape>(
   dataset: Dataset<S>
 ): asserts dataset is Dataset<S, PrintableType> {
   if (
@@ -212,7 +228,7 @@ export function assertPrintableType<S extends HDF5Shape>(
   }
 }
 
-export function assertStringType<S extends HDF5Shape>(
+export function assertStringType<S extends Shape>(
   dataset: Dataset<S>
 ): asserts dataset is Dataset<S, HDF5StringType> {
   if (!hasStringType(dataset)) {
@@ -220,19 +236,11 @@ export function assertStringType<S extends HDF5Shape>(
   }
 }
 
-export function assertNumericType<S extends HDF5Shape>(
+export function assertNumericType<S extends Shape>(
   dataset: Dataset<S>
 ): asserts dataset is Dataset<S, HDF5NumericType> {
   if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
-  }
-}
-
-export function assertMinDims(dataset: Dataset<HDF5SimpleShape>, min: number) {
-  if (!hasMinDims(dataset, min)) {
-    throw new Error(
-      `Expected dataset with at least ${min} dimension${min > 1 ? 's' : ''}`
-    );
   }
 }
 

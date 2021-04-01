@@ -10,7 +10,7 @@ import {
   assertStr,
   assertDataset,
   assertNumericType,
-  assertSimpleShape,
+  assertArrayShape,
 } from '../../guards';
 import type { NxAttribute, SilxStyle } from './models';
 import { isScaleType } from '../core/utils';
@@ -41,7 +41,7 @@ export function findSignalDataset(group: Group): NumArrayDataset {
   const dataset = getChildEntity(group, signal);
   assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
   assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
-  assertSimpleShape(dataset);
+  assertArrayShape(dataset);
   assertNumericType(dataset);
 
   return dataset;
@@ -60,7 +60,7 @@ export function findErrorsDataset(
   }
 
   assertDataset(dataset);
-  assertSimpleShape(dataset);
+  assertArrayShape(dataset);
   assertNumericType(dataset);
   return dataset;
 }

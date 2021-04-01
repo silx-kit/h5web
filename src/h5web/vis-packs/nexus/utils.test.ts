@@ -5,10 +5,10 @@ import {
   makeGroup,
   makeSimpleShape,
   makeStrAttr,
-  scalarShape,
   stringType,
   makeIntAttr,
   makeSilxStyleAttr,
+  makeScalarDataset,
 } from '../../providers/mock/metadata-utils';
 import { mockConsoleMethod } from '../../test-utils';
 import { ScaleType } from '../core/models';
@@ -39,7 +39,7 @@ describe('getAttributeValue', () => {
 
 describe('findSignalDataset', () => {
   it("should return dataset named 'signal'", () => {
-    const dataset = makeDataset('dataset', makeSimpleShape([1]), intType);
+    const dataset = makeDataset('dataset', intType, [1]);
     const group = makeGroup('group', [dataset], {
       attributes: [makeStrAttr('signal', 'dataset')],
     });
@@ -76,26 +76,17 @@ describe('findSignalDataset', () => {
     expect(() => findSignalDataset(group)).toThrow(/to be a dataset/);
   });
 
-  it('should throw if signal dataset has non-simple shape', () => {
-    const dataset = makeDataset('dataset', scalarShape, intType);
+  it('should throw if signal dataset has non-array shape', () => {
+    const dataset = makeScalarDataset('dataset', intType);
     const group = makeGroup('group', [dataset], {
       attributes: [makeStrAttr('signal', 'dataset')],
     });
 
-    expect(() => findSignalDataset(group)).toThrow(/to have simple shape/);
-  });
-
-  it('should throw if signal dataset has no dimensions', () => {
-    const dataset = makeDataset('dataset', makeSimpleShape([]), stringType);
-    const group = makeGroup('group', [dataset], {
-      attributes: [makeStrAttr('signal', 'dataset')],
-    });
-
-    expect(() => findSignalDataset(group)).toThrow(/to have dimensions/);
+    expect(() => findSignalDataset(group)).toThrow(/to have array shape/);
   });
 
   it('should throw if signal dataset has non-numeric type', () => {
-    const dataset = makeDataset('dataset', makeSimpleShape([1]), stringType);
+    const dataset = makeDataset('dataset', stringType, [1]);
     const group = makeGroup('group', [dataset], {
       attributes: [makeStrAttr('signal', 'dataset')],
     });
@@ -106,7 +97,7 @@ describe('findSignalDataset', () => {
 
 describe('getDatasetLabel', () => {
   it('should return value of `long_name` attribute in priority if available', () => {
-    const dataset = makeDataset('foo', scalarShape, intType, {
+    const dataset = makeScalarDataset('foo', intType, {
       attributes: [
         makeStrAttr('long_name', 'Foobar'),
         makeStrAttr('units', 'nm'),
@@ -117,7 +108,7 @@ describe('getDatasetLabel', () => {
   });
 
   it('should combine dataset name and value of `units` attribute if available', () => {
-    const dataset = makeDataset('foo', scalarShape, intType, {
+    const dataset = makeScalarDataset('foo', intType, {
       attributes: [makeStrAttr('units', 'nm')],
     });
 
@@ -125,8 +116,8 @@ describe('getDatasetLabel', () => {
   });
 
   it('should fall back to dataset name when other attributes are absent or not string', () => {
-    const dataset1 = makeDataset('foo', scalarShape, intType);
-    const dataset2 = makeDataset('foo', scalarShape, intType, {
+    const dataset1 = makeScalarDataset('foo', intType);
+    const dataset2 = makeScalarDataset('foo', intType, {
       attributes: [makeIntAttr('long_name', 42), makeIntAttr('units', 42)],
     });
 
