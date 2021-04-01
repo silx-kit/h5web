@@ -1,14 +1,13 @@
 import {
   intType,
-  makeAttr,
   makeDataset,
   makeGroup,
-  makeSimpleShape,
   makeStrAttr,
   stringType,
   makeIntAttr,
   makeSilxStyleAttr,
   makeScalarDataset,
+  makeNxAxesAttr,
 } from '../../providers/mock/metadata-utils';
 import { mockConsoleMethod } from '../../test-utils';
 import { ScaleType } from '../core/models';
@@ -21,10 +20,7 @@ import {
 
 describe('getAttributeValue', () => {
   const group = makeGroup('group', [], {
-    attributes: [
-      makeStrAttr('signal', 'my_signal'),
-      makeAttr('axes', makeSimpleShape([1]), stringType, ['X']),
-    ],
+    attributes: [makeStrAttr('signal', 'my_signal'), makeNxAxesAttr(['X'])],
   });
 
   it("should return an attribute's value", () => {

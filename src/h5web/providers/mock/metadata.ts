@@ -3,7 +3,6 @@ import {
   compoundType,
   floatType,
   intType,
-  scalarShape,
   stringType,
   makeStrAttr,
   makeDatatype,
@@ -12,11 +11,11 @@ import {
   makeNxDataGroup,
   makeNxDataset,
   makeNxGroup,
-  makeAttr,
   booleanType,
   complexType,
   makeScalarDataset,
   makeDataset,
+  makeScalarAttr,
 } from './metadata-utils';
 
 export const mockFilepath = 'source.h5';
@@ -119,7 +118,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
     }),
     makeGroup('nexus_malformed', [
       makeGroup('default_not_string', [], {
-        attributes: [makeAttr('default', scalarShape, intType, 42)],
+        attributes: [makeScalarAttr('default', intType, 42)],
       }),
       makeGroup('default_not_found', [], {
         attributes: [makeStrAttr('default', '/test')],

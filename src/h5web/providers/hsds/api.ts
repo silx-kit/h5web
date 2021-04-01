@@ -35,6 +35,7 @@ import {
   convertHsdsShape,
   convertHsdsType,
   parseComplex,
+  convertHsdsAttributes,
 } from './utils';
 import { buildEntityPath, getChildEntity } from '../../utils';
 
@@ -188,7 +189,7 @@ export class HsdsApi implements ProviderAPI {
       path,
       name,
       kind: EntityKind.Group,
-      attributes,
+      attributes: convertHsdsAttributes(attributes),
       children,
     };
   }
@@ -211,7 +212,7 @@ export class HsdsApi implements ProviderAPI {
       path,
       name,
       kind: EntityKind.Dataset,
-      attributes,
+      attributes: convertHsdsAttributes(attributes),
       shape: convertHsdsShape(shape),
       type: convertHsdsType(type),
     };

@@ -3,6 +3,7 @@ import Complex from 'complex.js';
 import { isString } from 'lodash-es';
 import { isDataset, isGroup } from '../../guards';
 import {
+  HDF5Attribute,
   HDF5Endianness,
   HDF5FloatType,
   HDF5IntegerType,
@@ -11,7 +12,7 @@ import {
   HDF5Type,
   HDF5TypeClass,
 } from '../hdf5-models';
-import type { Entity, ComplexArray, Shape } from '../models';
+import type { Entity, ComplexArray, Shape, Attribute } from '../models';
 import type {
   HsdsLink,
   HsdsExternalLink,
@@ -147,6 +148,13 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
     default:
       throw new Error(`Unknown type ${JSON.stringify(hsdsType)}`);
   }
+}
+
+export function convertHsdsAttributes(attrs: HDF5Attribute[]): Attribute[] {
+  return attrs.map((attr) => ({
+    ...attr,
+    shape: convertHsdsShape(attr.shape),
+  }));
 }
 
 export function parseComplex(complex: HsdsComplex): ComplexArray | Complex {

@@ -1,6 +1,5 @@
 import type Complex from 'complex.js';
 import type {
-  HDF5Attribute,
   HDF5BooleanType,
   HDF5ComplexType,
   HDF5Link,
@@ -8,6 +7,7 @@ import type {
   HDF5StringType,
   HDF5Type,
   HDF5Dims,
+  HDF5Value,
 } from './hdf5-models';
 
 export enum EntityKind {
@@ -21,7 +21,7 @@ export interface Entity {
   name: string;
   path: string;
   kind: EntityKind;
-  attributes: HDF5Attribute[];
+  attributes: Attribute[];
   rawLink?: HDF5Link;
 }
 
@@ -37,10 +37,7 @@ export interface Dataset<S extends Shape = Shape, T extends HDF5Type = HDF5Type>
   type: T;
 }
 
-export type Shape = ArrayShape | ScalarShape | NullShape;
-export type ArrayShape = HDF5Dims;
-export type ScalarShape = never[];
-export type NullShape = null;
+export type NumArrayDataset = Dataset<ArrayShape, HDF5NumericType>;
 
 export interface Datatype<T = HDF5Type> extends Entity {
   kind: EntityKind.Datatype;
@@ -51,6 +48,18 @@ export interface Link<T extends HDF5Link = HDF5Link> extends Entity {
   kind: EntityKind.Link;
   rawLink: T;
 }
+
+export interface Attribute {
+  name: string;
+  shape: Shape;
+  type: HDF5Type;
+  value: HDF5Value;
+}
+
+export type Shape = ArrayShape | ScalarShape | NullShape;
+export type ArrayShape = HDF5Dims;
+export type ScalarShape = never[];
+export type NullShape = null;
 
 type PrimitiveType<T extends HDF5Type> = T extends HDF5NumericType
   ? number
@@ -69,5 +78,3 @@ export type Value<D extends Dataset> = D['shape'] extends ScalarShape
   : never;
 
 export type ComplexArray = (ComplexArray | Complex)[];
-
-export type NumArrayDataset = Dataset<ArrayShape, HDF5NumericType>;
