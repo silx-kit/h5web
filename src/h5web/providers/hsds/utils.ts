@@ -5,8 +5,6 @@ import {
   HDF5Endianness,
   HDF5FloatType,
   HDF5IntegerType,
-  HDF5Shape,
-  HDF5ShapeClass,
   HDF5Type,
   HDF5TypeClass,
 } from '../hdf5-models';
@@ -28,6 +26,7 @@ import type {
   HsdsComplexValue,
   HsdsEntity,
   HsdsAttributeWithValueResponse,
+  HsdsShape,
 } from './models';
 
 export function isHsdsExternalLink(link: HsdsLink): link is HsdsExternalLink {
@@ -56,15 +55,9 @@ export function assertHsdsDataset(
   }
 }
 
-export function convertHsdsShape(shape: HDF5Shape): Shape {
-  switch (shape.class) {
-    case HDF5ShapeClass.Simple:
-      return shape.dims;
-    case HDF5ShapeClass.Scalar:
-      return [];
-    default:
-      return null;
-  }
+export function convertHsdsShape(shape: HsdsShape): Shape {
+  const { class: shapeClass, dims } = shape;
+  return dims || (shapeClass === 'H5S_SCALAR' ? [] : null);
 }
 
 export function convertHsdsNumericType(
