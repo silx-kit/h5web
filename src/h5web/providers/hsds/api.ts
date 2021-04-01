@@ -9,18 +9,11 @@ import type {
   HsdsValueResponse,
   HsdsAttributeWithValueResponse,
   HsdsLink,
-  HsdsGroup,
-  HsdsDataset,
   HsdsComplex,
+  HsdsEntity,
 } from './models';
-import { Datatype, Entity, EntityKind } from '../models';
-import {
-  HDF5Collection,
-  HDF5Id,
-  HDF5Value,
-  HDF5Attribute,
-  HDF5Link,
-} from '../hdf5-models';
+import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
+import { HDF5Collection, HDF5Id, HDF5Value, HDF5Link } from '../hdf5-models';
 import {
   assertDefined,
   assertGroup,
@@ -36,6 +29,7 @@ import {
   convertHsdsType,
   parseComplex,
   convertHsdsAttributes,
+  assertHsdsEntity,
 } from './utils';
 import { buildEntityPath, getChildEntity } from '../../utils';
 
@@ -43,7 +37,7 @@ export class HsdsApi implements ProviderAPI {
   public readonly filepath: string;
   private readonly client: AxiosInstance;
 
-  private readonly entities = new Map<string, Entity>();
+  private readonly entities = new Map<string, HsdsEntity>();
 
   public constructor(
     url: string,
@@ -59,9 +53,9 @@ export class HsdsApi implements ProviderAPI {
     });
   }
 
-  public async getEntity(path: string): Promise<Entity> {
+  public async getEntity(path: string): Promise<HsdsEntity> {
     if (this.entities.has(path)) {
-      return this.entities.get(path) as Entity;
+      return this.entities.get(path) as HsdsEntity;
     }
 
     if (path === '/') {
@@ -82,6 +76,7 @@ export class HsdsApi implements ProviderAPI {
     const childName = path.slice(path.lastIndexOf('/') + 1);
     const child = getChildEntity(parentGroup, childName);
     assertDefined(child);
+    assertHsdsEntity(child);
 
     const entity = isHsdsGroup(child)
       ? await this.processGroup(child.id, path, child.name, 1)
@@ -142,7 +137,7 @@ export class HsdsApi implements ProviderAPI {
   private async fetchAttributes(
     entityCollection: HDF5Collection,
     entityId: HDF5Id
-  ): Promise<HDF5Attribute[]> {
+  ): Promise<HsdsAttributeWithValueResponse[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
       `/${entityCollection}/${entityId}/attributes`
     );
@@ -162,7 +157,7 @@ export class HsdsApi implements ProviderAPI {
     path: string,
     name: string,
     depth: number
-  ): Promise<HsdsGroup> {
+  ): Promise<HsdsEntity<Group>> {
     const { attributeCount, linkCount } = await this.fetchGroup(id);
 
     // Fetch attributes and links in parallel
@@ -198,7 +193,7 @@ export class HsdsApi implements ProviderAPI {
     id: HDF5Id,
     path: string,
     name: string
-  ): Promise<HsdsDataset> {
+  ): Promise<HsdsEntity<Dataset>> {
     const dataset = await this.fetchDataset(id);
     const { shape, type, attributeCount } = dataset;
 
