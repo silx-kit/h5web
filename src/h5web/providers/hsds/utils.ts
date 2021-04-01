@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import Complex from 'complex.js';
 import { isString } from 'lodash-es';
 import { isDataset, isGroup } from '../../guards';
@@ -12,34 +11,46 @@ import {
   HDF5Type,
   HDF5TypeClass,
 } from '../hdf5-models';
-import type { Entity, ComplexArray, Shape, Attribute } from '../models';
+import type {
+  Entity,
+  ComplexArray,
+  Shape,
+  Attribute,
+  Group,
+  Dataset,
+} from '../models';
 import type {
   HsdsLink,
   HsdsExternalLink,
-  HsdsDataset,
-  HsdsGroup,
   HsdsType,
   HsdsIntegerType,
   HsdsFloatType,
   HsdsComplex,
   HsdsComplexValue,
+  HsdsEntity,
 } from './models';
 
 export function isHsdsExternalLink(link: HsdsLink): link is HsdsExternalLink {
   return 'h5domain' in link;
 }
 
-export function isHsdsGroup(entity: Entity): entity is HsdsGroup {
-  return isGroup(entity) && 'id' in entity;
+export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
+  return isGroup(entity);
 }
 
-export function isHsdsDataset(entity: Entity): entity is HsdsDataset {
-  return isDataset(entity) && 'id' in entity;
+function isHsdsDataset(entity: HsdsEntity): entity is HsdsEntity<Dataset> {
+  return isDataset(entity);
+}
+
+export function assertHsdsEntity(entity: Entity): asserts entity is HsdsEntity {
+  if (!('id' in entity)) {
+    throw new Error('Expected entity to be HSDS entity');
+  }
 }
 
 export function assertHsdsDataset(
-  entity: Entity
-): asserts entity is HsdsDataset {
+  entity: HsdsEntity
+): asserts entity is HsdsEntity<Dataset> {
   if (!isHsdsDataset(entity)) {
     throw new Error('Expected entity to be HSDS dataset');
   }
@@ -113,7 +124,7 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
       };
 
     case HDF5TypeClass.Compound:
-      const { fields } = hsdsType;
+      const { fields } = hsdsType; // eslint-disable-line no-case-declarations
       if (
         fields.length === 2 &&
         fields[0].name === 'r' &&

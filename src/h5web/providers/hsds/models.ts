@@ -9,7 +9,7 @@ import type {
   HDF5TypeClass,
   HDF5Dims,
 } from '../hdf5-models';
-import type { Dataset, Group } from '../models';
+import type { Entity } from '../models';
 
 export type HsdsType =
   | HsdsIntegerType
@@ -103,13 +103,7 @@ export interface HsdsExternalLink extends Omit<HDF5ExternalLink, 'file'> {
   h5domain: string;
 }
 
-export interface HsdsGroup extends Group {
-  id: HDF5Id;
-}
-
-export interface HsdsDataset extends Dataset {
-  id: HDF5Id;
-}
+export type HsdsEntity<T extends Entity = Entity> = T & { id: HDF5Id };
 
 export interface HsdsValueResponse {
   value: HDF5Value;
