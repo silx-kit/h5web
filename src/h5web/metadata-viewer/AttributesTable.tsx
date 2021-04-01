@@ -1,8 +1,8 @@
-import type { HDF5Attribute } from '../providers/hdf5-models';
+import type { Attribute } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 
 interface Props {
-  attributes: HDF5Attribute[];
+  attributes: Attribute[];
 }
 
 function AttributesTable(props: Props) {
@@ -22,7 +22,7 @@ function AttributesTable(props: Props) {
         </tr>
       </thead>
       <tbody>
-        {attributes.map(({ name, value }: HDF5Attribute) => (
+        {attributes.map(({ name, value }) => (
           <tr key={name}>
             <th scope="row">{name}</th>
             <td>{JSON.stringify(value)}</td>

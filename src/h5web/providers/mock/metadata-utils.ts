@@ -1,4 +1,5 @@
 import {
+  Attribute,
   Datatype,
   Entity,
   EntityKind,
@@ -9,7 +10,6 @@ import {
   ArrayShape,
 } from '../models';
 import {
-  HDF5Attribute,
   HDF5BooleanType,
   HDF5ComplexType,
   HDF5CompoundType,
@@ -20,10 +20,6 @@ import {
   HDF5Link,
   HDF5LinkClass,
   HDF5NumericType,
-  HDF5ScalarShape,
-  HDF5Shape,
-  HDF5ShapeClass,
-  HDF5SimpleShape,
   HDF5StringType,
   HDF5Type,
   HDF5TypeClass,
@@ -71,35 +67,37 @@ export const complexType: HDF5ComplexType = {
   imagType: floatType,
 };
 
-export const scalarShape: HDF5ScalarShape = { class: HDF5ShapeClass.Scalar };
-
-export function makeSimpleShape(dims: HDF5Dims): HDF5SimpleShape {
-  return { class: HDF5ShapeClass.Simple, dims };
-}
-
 /* ---------------------- */
 /* ----- ATTRIBUTES ----- */
 
 export function makeAttr(
   name: string,
-  shape: HDF5Shape,
   type: HDF5Type,
+  shape: Shape,
   value: HDF5Value
-): HDF5Attribute {
+): Attribute {
   return { name, type, shape, value };
 }
 
-export function makeStrAttr(name: string, value: string): HDF5Attribute {
-  return makeAttr(name, { class: HDF5ShapeClass.Scalar }, stringType, value);
+export function makeScalarAttr(
+  name: string,
+  type: HDF5Type,
+  value: HDF5Value
+): Attribute {
+  return makeAttr(name, type, [], value);
 }
 
-export function makeIntAttr(name: string, value: number): HDF5Attribute {
-  return makeAttr(name, { class: HDF5ShapeClass.Scalar }, intType, value);
+export function makeStrAttr(name: string, value: string): Attribute {
+  return makeScalarAttr(name, stringType, value);
+}
+
+export function makeIntAttr(name: string, value: number): Attribute {
+  return makeScalarAttr(name, intType, value);
 }
 
 export function withAttributes<T extends Entity>(
   entity: T,
-  attributes: HDF5Attribute[]
+  attributes: Attribute[]
 ): T {
   return {
     ...entity,
@@ -216,22 +214,15 @@ export function makeExternalLink(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-function makeNxStrArrayAttr(
-  array: string[],
-  attrName: 'axes' | 'auxiliary_signals'
-): HDF5Attribute {
-  return makeAttr(attrName, makeSimpleShape([array.length]), stringType, array);
+export function makeNxAxesAttr(axes: string[]): Attribute {
+  return makeAttr('axes', stringType, [axes.length], axes);
 }
 
-export function makeNxAxesAttr(axes: string[]): HDF5Attribute {
-  return makeNxStrArrayAttr(axes, 'axes');
+export function makeNxAuxAttr(aux: string[]): Attribute {
+  return makeAttr('auxiliary_signals', stringType, [aux.length], aux);
 }
 
-export function makeNxAuxAttr(aux: string[]): HDF5Attribute {
-  return makeNxStrArrayAttr(aux, 'auxiliary_signals');
-}
-
-export function makeSilxStyleAttr(style: SilxStyle): HDF5Attribute {
+export function makeSilxStyleAttr(style: SilxStyle): Attribute {
   const { signalScaleType, axesScaleType } = style;
 
   return makeStrAttr(
