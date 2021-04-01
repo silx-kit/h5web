@@ -13,13 +13,7 @@ import type {
   HsdsEntity,
 } from './models';
 import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
-import {
-  HDF5Collection,
-  HDF5Id,
-  HDF5Value,
-  HDF5Attribute,
-  HDF5Link,
-} from '../hdf5-models';
+import { HDF5Collection, HDF5Id, HDF5Value, HDF5Link } from '../hdf5-models';
 import {
   assertDefined,
   assertGroup,
@@ -143,7 +137,7 @@ export class HsdsApi implements ProviderAPI {
   private async fetchAttributes(
     entityCollection: HDF5Collection,
     entityId: HDF5Id
-  ): Promise<HDF5Attribute[]> {
+  ): Promise<HsdsAttributeWithValueResponse[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
       `/${entityCollection}/${entityId}/attributes`
     );

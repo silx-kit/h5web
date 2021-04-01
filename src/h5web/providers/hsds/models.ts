@@ -91,7 +91,12 @@ export interface HsdsAttributesResponse {
   attributes: Omit<HDF5Attribute, 'value'>[];
 }
 
-export type HsdsAttributeWithValueResponse = HDF5Attribute;
+export interface HsdsAttributeWithValueResponse {
+  name: string;
+  shape: HDF5Shape;
+  type: HsdsType;
+  value: HDF5Value;
+}
 
 export interface HsdsLinksResponse {
   links: HsdsLink[];
