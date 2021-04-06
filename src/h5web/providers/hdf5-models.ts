@@ -11,16 +11,6 @@ export enum HDF5Collection {
   Datatypes = 'datatypes',
 }
 
-/* ---------------------- */
-/* ----- ATTRIBUTES ----- */
-
-export interface HDF5Attribute {
-  name: string;
-  shape: HDF5Shape;
-  type: HDF5Type;
-  value: HDF5Value;
-}
-
 /* ----------------- */
 /* ----- LINKS ----- */
 
@@ -50,31 +40,6 @@ export interface HDF5ExternalLink {
   title: string;
   file: string;
   h5path: string;
-}
-
-/* ----------------- */
-/* ----- SHAPE ----- */
-
-export type HDF5Shape = HDF5SimpleShape | HDF5ScalarShape | HDF5NullShape;
-
-export enum HDF5ShapeClass {
-  Simple = 'H5S_SIMPLE',
-  Scalar = 'H5S_SCALAR',
-  Null = 'H5S_NUL',
-}
-
-export interface HDF5SimpleShape {
-  class: HDF5ShapeClass.Simple;
-  dims: HDF5Dims;
-  maxdims?: HDF5Dims;
-}
-
-export interface HDF5ScalarShape {
-  class: HDF5ShapeClass.Scalar;
-}
-
-export interface HDF5NullShape {
-  class: HDF5ShapeClass.Null;
 }
 
 /* ---------------- */

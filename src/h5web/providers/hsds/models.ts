@@ -1,7 +1,5 @@
 import type {
   HDF5Id,
-  HDF5Shape,
-  HDF5Attribute,
   HDF5Value,
   HDF5ExternalLink,
   HDF5HardLink,
@@ -10,6 +8,72 @@ import type {
   HDF5Dims,
 } from '../hdf5-models';
 import type { Entity } from '../models';
+
+/* --------------------- */
+/* ----- RESPONSES ----- */
+
+export interface HsdsRootResponse {
+  root: HDF5Id;
+}
+
+export interface HsdsGroupResponse {
+  id: HDF5Id;
+  linkCount: number;
+  attributeCount: number;
+}
+
+export interface HsdsDatasetResponse {
+  id: HDF5Id;
+  shape: HsdsShape;
+  type: HsdsType;
+  attributeCount: number;
+}
+
+export interface HsdsDatatypeResponse {
+  id: HDF5Id;
+  type: HsdsType;
+}
+
+export interface HsdsAttributesResponse {
+  attributes: Omit<HsdsAttributeResponse, 'value'>[];
+}
+
+export interface HsdsAttributeResponse {
+  name: string;
+  shape: HsdsShape;
+  type: HsdsType;
+  value: HDF5Value;
+}
+
+export interface HsdsLinksResponse {
+  links: HsdsLink[];
+}
+
+export interface HsdsValueResponse {
+  value: HDF5Value;
+}
+
+/* ---------------------------- */
+/* ----- ENTITIES & VALUES----- */
+
+export type HsdsEntity<T extends Entity = Entity> = T & { id: HDF5Id };
+
+export type HsdsLink = HDF5HardLink | HDF5SoftLink | HsdsExternalLink;
+
+export interface HsdsExternalLink extends Omit<HDF5ExternalLink, 'file'> {
+  h5domain: string;
+}
+
+export type HsdsComplex = HsdsComplex[] | HsdsComplexValue;
+export type HsdsComplexValue = [number, number];
+
+/* ------------------------ */
+/* ----- SHAPE & TYPE ----- */
+
+export interface HsdsShape {
+  class: 'H5S_SIMPLE' | 'H5S_SCALAR' | 'H5S_NUL';
+  dims?: HDF5Dims;
+}
 
 export type HsdsType =
   | HsdsIntegerType
@@ -64,55 +128,3 @@ interface HsdsCompoundTypeField {
   name: string;
   type: HsdsType;
 }
-
-export interface HsdsRootResponse {
-  root: HDF5Id;
-}
-
-export interface HsdsGroupResponse {
-  id: HDF5Id;
-  linkCount: number;
-  attributeCount: number;
-}
-
-export interface HsdsDatasetResponse {
-  id: HDF5Id;
-  shape: HDF5Shape;
-  type: HsdsType;
-  attributeCount: number;
-}
-
-export interface HsdsDatatypeResponse {
-  id: HDF5Id;
-  type: HsdsType;
-}
-
-export interface HsdsAttributesResponse {
-  attributes: Omit<HDF5Attribute, 'value'>[];
-}
-
-export interface HsdsAttributeWithValueResponse {
-  name: string;
-  shape: HDF5Shape;
-  type: HsdsType;
-  value: HDF5Value;
-}
-
-export interface HsdsLinksResponse {
-  links: HsdsLink[];
-}
-
-export type HsdsLink = HDF5HardLink | HDF5SoftLink | HsdsExternalLink;
-
-export interface HsdsExternalLink extends Omit<HDF5ExternalLink, 'file'> {
-  h5domain: string;
-}
-
-export type HsdsEntity<T extends Entity = Entity> = T & { id: HDF5Id };
-
-export interface HsdsValueResponse {
-  value: HDF5Value;
-}
-
-export type HsdsComplex = HsdsComplex[] | HsdsComplexValue;
-export type HsdsComplexValue = [number, number];
