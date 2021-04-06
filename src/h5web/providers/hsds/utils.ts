@@ -25,7 +25,7 @@ import type {
   HsdsComplex,
   HsdsComplexValue,
   HsdsEntity,
-  HsdsAttributeWithValueResponse,
+  HsdsAttributeResponse,
   HsdsShape,
 } from './models';
 
@@ -155,7 +155,7 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
 }
 
 export function convertHsdsAttributes(
-  attrs: HsdsAttributeWithValueResponse[]
+  attrs: HsdsAttributeResponse[]
 ): Attribute[] {
   return attrs.map((attr) => ({
     ...attr,

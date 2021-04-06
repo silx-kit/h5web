@@ -7,7 +7,7 @@ import type {
   HsdsLinksResponse,
   HsdsRootResponse,
   HsdsValueResponse,
-  HsdsAttributeWithValueResponse,
+  HsdsAttributeResponse,
   HsdsLink,
   HsdsComplex,
   HsdsEntity,
@@ -137,13 +137,13 @@ export class HsdsApi implements ProviderAPI {
   private async fetchAttributes(
     entityCollection: HDF5Collection,
     entityId: HDF5Id
-  ): Promise<HsdsAttributeWithValueResponse[]> {
+  ): Promise<HsdsAttributeResponse[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
       `/${entityCollection}/${entityId}/attributes`
     );
 
     const attrsPromises = data.attributes.map(async (attr) => {
-      const { data } = await this.client.get<HsdsAttributeWithValueResponse>(
+      const { data } = await this.client.get<HsdsAttributeResponse>(
         `/${entityCollection}/${entityId}/attributes/${attr.name}`
       );
       return data;
