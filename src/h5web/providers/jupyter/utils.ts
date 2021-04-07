@@ -12,6 +12,12 @@ import type {
   JupyterMetaResponse,
 } from './models';
 
+// https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
+const ENDIANNESS_MAPPING: Record<string, HDF5Endianness> = {
+  '<': HDF5Endianness.LE,
+  '>': HDF5Endianness.BE,
+};
+
 export function isGroupResponse(
   response: JupyterMetaResponse
 ): response is JupyterMetaGroupResponse {
@@ -37,22 +43,6 @@ export function assertGroupContent(
   assertArray(contents);
 }
 
-export function convertEndianness(endianness: string): HDF5Endianness {
-  // https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
-  switch (endianness) {
-    case '<':
-      return 'LE';
-    case '>':
-      return 'BE';
-    case '=':
-      return 'Native';
-    case '|':
-      return 'Not applicable';
-    default:
-      throw new Error(`Unknown endianness symbol ${endianness}`);
-  }
-}
-
 export function convertDtype(dtype: string): HDF5Type {
   // Special case: booleans are stored as bytes
   // See https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
@@ -70,7 +60,7 @@ export function convertDtype(dtype: string): HDF5Type {
   const [, endianMatch, dataType, lengthMatch] = matches;
 
   const length = lengthMatch ? Number.parseInt(lengthMatch, 10) : 0;
-  const endianness = convertEndianness(endianMatch);
+  const endianness = ENDIANNESS_MAPPING[endianMatch] || undefined;
 
   switch (dataType) {
     case 'f':

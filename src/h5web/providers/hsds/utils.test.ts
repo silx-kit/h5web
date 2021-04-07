@@ -1,5 +1,5 @@
 import Complex from 'complex.js';
-import { HDF5Type, HDF5TypeClass } from '../hdf5-models';
+import { HDF5Endianness, HDF5Type, HDF5TypeClass } from '../hdf5-models';
 import type {
   HsdsStringType,
   HsdsArrayType,
@@ -17,7 +17,11 @@ interface TestType {
 
 const leIntegerType: TestType = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
-  hdf5: { class: HDF5TypeClass.Integer, size: 8, endianness: 'LE' },
+  hdf5: {
+    class: HDF5TypeClass.Integer,
+    size: 8,
+    endianness: HDF5Endianness.LE,
+  },
 };
 
 const beIntegerType: TestType = {
@@ -25,18 +29,18 @@ const beIntegerType: TestType = {
   hdf5: {
     class: HDF5TypeClass.Unsigned,
     size: 64,
-    endianness: 'BE',
+    endianness: HDF5Endianness.BE,
   },
 };
 
 const leFloatType: TestType = {
   hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F32LE' },
-  hdf5: { class: HDF5TypeClass.Float, size: 32, endianness: 'LE' },
+  hdf5: { class: HDF5TypeClass.Float, size: 32, endianness: HDF5Endianness.LE },
 };
 
 const beFloatType: TestType = {
   hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F64BE' },
-  hdf5: { class: HDF5TypeClass.Float, size: 64, endianness: 'BE' },
+  hdf5: { class: HDF5TypeClass.Float, size: 64, endianness: HDF5Endianness.BE },
 };
 
 describe('convertHsdsType', () => {

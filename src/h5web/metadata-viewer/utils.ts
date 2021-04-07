@@ -2,13 +2,6 @@ import { isNumericType, isScalarShape } from '../guards';
 import { HDF5Type, HDF5TypeClass } from '../providers/hdf5-models';
 import type { Shape } from '../providers/models';
 
-const ENDIANNESS_LABELS = {
-  LE: 'little-endian',
-  BE: 'big-endian',
-  Native: 'native',
-  'Not applicable': '',
-};
-
 export function renderShape(shape: Shape): string {
   if (shape === null) {
     return 'None';
@@ -26,11 +19,7 @@ export function renderShape(shape: Shape): string {
 export function renderType(type: HDF5Type): string {
   if (isNumericType(type)) {
     const { endianness, size } = type;
-    const endiannessLabel = ENDIANNESS_LABELS[endianness];
-
-    return `${type.class}, ${size}-bit${
-      endiannessLabel ? `, ${endiannessLabel}` : ''
-    }`;
+    return `${type.class}, ${size}-bit${endianness ? `, ${endianness}` : ''}`;
   }
 
   if (type.class === HDF5TypeClass.String) {

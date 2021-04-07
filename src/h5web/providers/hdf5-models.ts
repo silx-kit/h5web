@@ -69,6 +69,11 @@ export enum HDF5TypeClass {
   Unknown = 'unknown',
 }
 
+export enum HDF5Endianness {
+  LE = 'little-endian',
+  BE = 'big-endian',
+}
+
 export interface HDF5BooleanType {
   class: HDF5TypeClass.Bool;
 }
@@ -76,10 +81,14 @@ export interface HDF5BooleanType {
 export interface HDF5NumericType {
   class: HDF5TypeClass.Integer | HDF5TypeClass.Float | HDF5TypeClass.Unsigned;
   size: number;
-  endianness: HDF5Endianness;
+  endianness?: HDF5Endianness;
 }
 
-export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
+export enum HDF5Endianness {
+  LE = 'little-endian',
+  BE = 'big-endian',
+  Native = 'native',
+}
 
 export interface HDF5ComplexType {
   class: HDF5TypeClass.Complex;
@@ -103,13 +112,13 @@ interface HDF5CompoundTypeField {
   type: HDF5Type;
 }
 
-export interface HDF5ArrayType {
+interface HDF5ArrayType {
   class: HDF5TypeClass.Array | HDF5TypeClass.VLen;
   base: HDF5Type;
   dims?: HDF5Dims;
 }
 
-export interface HDF5EnumType {
+interface HDF5EnumType {
   class: HDF5TypeClass.Enum;
   base: HDF5Type;
   mapping: Record<string, number>;

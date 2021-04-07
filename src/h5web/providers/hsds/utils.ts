@@ -79,7 +79,7 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): HDF5NumericType {
         : sign === 'U'
         ? HDF5TypeClass.Unsigned
         : HDF5TypeClass.Integer,
-    endianness: endianness as HDF5Endianness,
+    endianness: HDF5Endianness[endianness as 'BE' | 'LE'],
     size: Number.parseInt(size, 10),
   };
 }
