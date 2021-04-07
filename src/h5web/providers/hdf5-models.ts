@@ -51,7 +51,6 @@ export type HDF5Type =
   | HDF5StringType
   | HDF5BooleanType
   | HDF5ComplexType
-  | HDF5Id
   | HDF5ArrayType
   | HDF5VLenType
   | HDF5CompoundType

@@ -115,51 +115,38 @@ export function hasMinDims(dataset: Dataset<ArrayShape>, min: number): boolean {
 export function hasPrintableType<S extends Shape>(
   entity: Dataset<S>
 ): entity is Dataset<S, PrintableType> {
-  return (
-    typeof entity.type !== 'string' &&
-    [
-      HDF5TypeClass.Integer,
-      HDF5TypeClass.Float,
-      HDF5TypeClass.String,
-      HDF5TypeClass.Bool,
-      HDF5TypeClass.Complex,
-    ].includes(entity.type.class)
-  );
+  return [
+    HDF5TypeClass.Integer,
+    HDF5TypeClass.Float,
+    HDF5TypeClass.String,
+    HDF5TypeClass.Bool,
+    HDF5TypeClass.Complex,
+  ].includes(entity.type.class);
 }
 
 export function hasBoolType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5BooleanType> {
-  return (
-    typeof dataset.type !== 'string' &&
-    dataset.type.class === HDF5TypeClass.Bool
-  );
+  return dataset.type.class === HDF5TypeClass.Bool;
 }
 
 export function hasComplexType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5ComplexType> {
-  return (
-    typeof dataset.type !== 'string' &&
-    dataset.type.class === HDF5TypeClass.Complex
-  );
+  return dataset.type.class === HDF5TypeClass.Complex;
 }
 
 export function hasStringType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5StringType> {
-  return (
-    typeof dataset.type !== 'string' &&
-    dataset.type.class === HDF5TypeClass.String
-  );
+  return dataset.type.class === HDF5TypeClass.String;
 }
 
 export function hasNumericType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5NumericType> {
-  return (
-    typeof dataset.type !== 'string' &&
-    [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(dataset.type.class)
+  return [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(
+    dataset.type.class
   );
 }
 

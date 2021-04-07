@@ -24,10 +24,6 @@ export function renderShape(shape: Shape): string {
 }
 
 export function renderType(type: HDF5Type): string {
-  if (typeof type === 'string') {
-    return type;
-  }
-
   // Remove leading `H5T_`
   const classLabel = type.class.slice(4).toLowerCase();
 

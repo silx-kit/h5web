@@ -1,5 +1,5 @@
 import Complex from 'complex.js';
-import { HDF5Type, HDF5Id, HDF5TypeClass } from '../hdf5-models';
+import { HDF5Type, HDF5TypeClass } from '../hdf5-models';
 import type {
   HsdsStringType,
   HsdsArrayType,
@@ -42,11 +42,6 @@ const beFloatType: TestType = {
 };
 
 describe('convertHsdsType', () => {
-  it('should left HDF5Id type unchanged', () => {
-    const idType: HDF5Id = 'aHdfId';
-    expect(convertHsdsType(idType)).toBe(idType);
-  });
-
   it('should convert ASCII string type', () => {
     const asciiStrType: HsdsStringType = {
       class: HDF5TypeClass.String,

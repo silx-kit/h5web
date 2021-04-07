@@ -1,5 +1,4 @@
 import Complex from 'complex.js';
-import { isString } from 'lodash-es';
 import { isDataset, isGroup } from '../../guards';
 import {
   HDF5Endianness,
@@ -83,10 +82,6 @@ export function convertHsdsNumericType(
 }
 
 export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
-  if (isString(hsdsType)) {
-    return hsdsType;
-  }
-
   switch (hsdsType.class) {
     case HDF5TypeClass.Enum:
       // Booleans are stored as Enum by h5py

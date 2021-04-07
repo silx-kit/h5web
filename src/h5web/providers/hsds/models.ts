@@ -82,8 +82,7 @@ export type HsdsType =
   | HsdsArrayType
   | HsdsVLenType
   | HsdsCompoundType
-  | HsdsEnumType
-  | HDF5Id;
+  | HsdsEnumType;
 
 export interface HsdsIntegerType {
   class: HDF5TypeClass.Integer;
