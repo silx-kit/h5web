@@ -103,7 +103,7 @@ export function convertDtype(dtype: string): HDF5Type {
       return {
         class: HDF5TypeClass.String,
         charSet: 'ASCII',
-        length: length || 'H5T_VARIABLE',
+        length: length || undefined,
       };
 
     case 'U':
@@ -111,7 +111,7 @@ export function convertDtype(dtype: string): HDF5Type {
       return {
         class: HDF5TypeClass.String,
         charSet: 'UTF8',
-        length: length || 'H5T_VARIABLE',
+        length: length || undefined,
       };
 
     default:

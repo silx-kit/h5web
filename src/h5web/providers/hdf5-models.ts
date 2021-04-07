@@ -98,8 +98,8 @@ export interface HDF5ComplexType {
 
 export interface HDF5StringType {
   class: HDF5TypeClass.String;
-  charSet: 'ASCII' | 'UTF8';
-  length: number | 'H5T_VARIABLE';
+  charSet: string;
+  length?: number;
 }
 
 export interface HDF5CompoundType {

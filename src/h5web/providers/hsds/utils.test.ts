@@ -48,7 +48,6 @@ describe('convertHsdsType', () => {
     const asciiStrType: HsdsStringType = {
       class: 'H5T_STRING',
       charSet: 'H5T_CSET_ASCII',
-      strPad: 'H5T_STR_NULLPAD',
       length: 25,
     };
     expect(convertHsdsType(asciiStrType)).toEqual({
@@ -62,7 +61,6 @@ describe('convertHsdsType', () => {
     const unicodeStrType: HsdsStringType = {
       class: 'H5T_STRING',
       charSet: 'H5T_CSET_UTF8',
-      strPad: 'H5T_STR_NULLTERM',
       length: 49,
     };
 

@@ -118,8 +118,9 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
     case 'H5T_STRING':
       return {
         class: HDF5TypeClass.String,
-        charSet: hsdsType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF8',
-        length: hsdsType.length,
+        charSet: hsdsType.charSet.slice(hsdsType.charSet.lastIndexOf('_') + 1),
+        length:
+          hsdsType.length === 'H5T_VARIABLE' ? undefined : hsdsType.length,
       };
 
     case 'H5T_ARRAY':
