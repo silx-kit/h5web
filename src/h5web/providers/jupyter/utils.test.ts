@@ -27,10 +27,9 @@ describe('convertDtype', () => {
       endianness: 'LE',
     });
     expect(convertDtype('>u8')).toEqual({
-      class: HDF5TypeClass.Integer,
+      class: HDF5TypeClass.Unsigned,
       size: 64,
       endianness: 'BE',
-      unsigned: true,
     });
   });
 

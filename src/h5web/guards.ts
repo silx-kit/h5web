@@ -142,12 +142,18 @@ export function hasStringType<S extends Shape>(
   return dataset.type.class === HDF5TypeClass.String;
 }
 
+export function isNumericType(type: HDF5Type): type is HDF5NumericType {
+  return [
+    HDF5TypeClass.Integer,
+    HDF5TypeClass.Unsigned,
+    HDF5TypeClass.Float,
+  ].includes(type.class);
+}
+
 export function hasNumericType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, HDF5NumericType> {
-  return [HDF5TypeClass.Integer, HDF5TypeClass.Float].includes(
-    dataset.type.class
-  );
+  return isNumericType(dataset.type);
 }
 
 export function isAbsolutePath(path: string) {

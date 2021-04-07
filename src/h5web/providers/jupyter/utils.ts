@@ -89,10 +89,9 @@ export function convertDtype(dtype: string): HDF5Type {
 
     case 'u':
       return {
-        class: HDF5TypeClass.Integer,
+        class: HDF5TypeClass.Unsigned,
         size: length * 8,
         endianness,
-        unsigned: true,
       };
 
     case 'c':
