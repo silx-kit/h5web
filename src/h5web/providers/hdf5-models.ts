@@ -54,20 +54,22 @@ export type HDF5Type =
   | HDF5ArrayType
   | HDF5VLenType
   | HDF5CompoundType
-  | HDF5EnumType;
+  | HDF5EnumType
+  | HDF5UnknownType;
 
 export type HDF5NumericType = HDF5IntegerType | HDF5FloatType;
 
 export enum HDF5TypeClass {
+  Bool = 'H5T_BOOL',
   Integer = 'H5T_INTEGER',
   Float = 'H5T_FLOAT',
+  Complex = 'H5T_COMPLEX',
   String = 'H5T_STRING',
+  Compound = 'H5T_COMPOUND',
   Array = 'H5T_ARRAY',
   VLen = 'H5T_VLEN',
-  Compound = 'H5T_COMPOUND',
   Enum = 'H5T_ENUM',
-  Bool = 'H5T_BOOL',
-  Complex = 'H5T_COMPLEX',
+  Unknown = 'H5T_UNKNOWN',
 }
 
 export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
@@ -126,4 +128,8 @@ export interface HDF5CompoundType {
 interface HDF5CompoundTypeField {
   name: string;
   type: HDF5Type;
+}
+
+interface HDF5UnknownType {
+  class: HDF5TypeClass.Unknown;
 }

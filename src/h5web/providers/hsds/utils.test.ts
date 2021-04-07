@@ -155,11 +155,11 @@ describe('convertHsdsType', () => {
     });
   });
 
-  it('should throw when encountering an unknown type', () => {
+  it('should handle unknown type', () => {
     const unknownType = { class: 'NO_CLASS' };
-    expect(() => convertHsdsType(unknownType as HsdsType)).toThrow(
-      /Unknown type/
-    );
+    expect(convertHsdsType(unknownType as HsdsType)).toEqual({
+      class: HDF5TypeClass.Unknown,
+    });
   });
 });
 

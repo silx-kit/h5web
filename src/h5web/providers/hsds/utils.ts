@@ -145,7 +145,7 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
       return convertHsdsNumericType(hsdsType);
 
     default:
-      throw new Error(`Unknown type ${JSON.stringify(hsdsType)}`);
+      return { class: HDF5TypeClass.Unknown };
   }
 }
 

@@ -35,6 +35,7 @@ export interface Dataset<S extends Shape = Shape, T extends HDF5Type = HDF5Type>
   kind: EntityKind.Dataset;
   shape: S;
   type: T;
+  rawType?: unknown;
 }
 
 export type NumArrayDataset = Dataset<ArrayShape, HDF5NumericType>;
@@ -42,6 +43,7 @@ export type NumArrayDataset = Dataset<ArrayShape, HDF5NumericType>;
 export interface Datatype<T = HDF5Type> extends Entity {
   kind: EntityKind.Datatype;
   type: T;
+  rawType?: unknown;
 }
 
 export interface Link<T extends HDF5Link = HDF5Link> extends Entity {
@@ -56,10 +58,9 @@ export interface Attribute {
   value: HDF5Value;
 }
 
-export type Shape = ArrayShape | ScalarShape | NullShape;
+export type Shape = ArrayShape | ScalarShape | null;
 export type ArrayShape = HDF5Dims;
 export type ScalarShape = never[];
-export type NullShape = null;
 
 type PrimitiveType<T extends HDF5Type> = T extends HDF5NumericType
   ? number

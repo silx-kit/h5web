@@ -126,8 +126,9 @@ export class JupyterApi implements ProviderAPI {
       return {
         ...baseEntity,
         kind,
-        type: convertDtype(dtype),
         shape,
+        type: convertDtype(dtype),
+        rawType: dtype,
       };
     }
 

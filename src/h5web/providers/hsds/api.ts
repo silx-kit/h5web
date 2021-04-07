@@ -210,6 +210,7 @@ export class HsdsApi implements ProviderAPI {
       attributes: convertHsdsAttributes(attributes),
       shape: convertHsdsShape(shape),
       type: convertHsdsType(type),
+      rawType: type,
     };
   }
 
@@ -226,6 +227,7 @@ export class HsdsApi implements ProviderAPI {
       kind: EntityKind.Datatype,
       attributes: [],
       type: convertHsdsType(type),
+      rawType: type,
     };
   }
 
