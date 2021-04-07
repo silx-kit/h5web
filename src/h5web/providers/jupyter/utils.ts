@@ -126,7 +126,7 @@ export function convertDtype(dtype: string): HDF5Type {
       };
 
     default:
-      throw new Error(`Unknown dtype ${dtype}`);
+      return { class: HDF5TypeClass.Unknown };
   }
 }
 

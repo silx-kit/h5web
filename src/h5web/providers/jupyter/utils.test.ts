@@ -81,8 +81,8 @@ describe('convertDtype', () => {
     expect(() => convertDtype('^f8')).toThrow(/Unknown endianness symbol/);
   });
 
-  it('should throw when encountering an unknown type', () => {
-    expect(() => convertDtype('>notAType')).toThrow(/Unknown dtype/);
+  it('should handle unknown type', () => {
+    expect(convertDtype('>notAType')).toEqual({ class: HDF5TypeClass.Unknown });
   });
 });
 
