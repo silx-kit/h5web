@@ -100,19 +100,9 @@ export function convertDtype(dtype: string): HDF5Type {
       };
 
     case 'S':
-      return {
-        class: HDF5TypeClass.String,
-        charSet: 'ASCII',
-        length: length || undefined,
-      };
-
     case 'U':
     case 'O': // TODO: objects are considered as strings for now
-      return {
-        class: HDF5TypeClass.String,
-        charSet: 'UTF8',
-        length: length || undefined,
-      };
+      return { class: HDF5TypeClass.String };
 
     default:
       return { class: HDF5TypeClass.Unknown };
