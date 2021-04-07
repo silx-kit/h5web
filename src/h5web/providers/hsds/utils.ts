@@ -99,10 +99,9 @@ function convertHsdsCompoundType(
 
   return {
     class: HDF5TypeClass.Compound,
-    fields: hsdsType.fields.map((v) => ({
-      name: v.name,
-      type: convertHsdsType(v.type),
-    })),
+    fields: Object.fromEntries(
+      hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)])
+    ),
   };
 }
 

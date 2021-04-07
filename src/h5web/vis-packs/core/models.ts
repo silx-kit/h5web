@@ -66,7 +66,7 @@ export type AxisMapping = (AxisParams | undefined)[];
 export type Bounds = [number, number, number];
 
 export type PrintableType =
-  | HDF5NumericType
-  | HDF5StringType
   | HDF5BooleanType
-  | HDF5ComplexType;
+  | HDF5NumericType
+  | HDF5ComplexType
+  | HDF5StringType;

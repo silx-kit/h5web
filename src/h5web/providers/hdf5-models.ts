@@ -84,12 +84,6 @@ export interface HDF5NumericType {
   endianness?: HDF5Endianness;
 }
 
-export enum HDF5Endianness {
-  LE = 'little-endian',
-  BE = 'big-endian',
-  Native = 'native',
-}
-
 export interface HDF5ComplexType {
   class: HDF5TypeClass.Complex;
   realType: HDF5Type;
@@ -104,12 +98,7 @@ export interface HDF5StringType {
 
 export interface HDF5CompoundType {
   class: HDF5TypeClass.Compound;
-  fields: HDF5CompoundTypeField[];
-}
-
-interface HDF5CompoundTypeField {
-  name: string;
-  type: HDF5Type;
+  fields: Record<string, HDF5Type>;
 }
 
 interface HDF5ArrayType {

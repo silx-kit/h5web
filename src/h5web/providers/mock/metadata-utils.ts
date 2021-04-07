@@ -52,7 +52,7 @@ export const stringType: HDF5StringType = {
 
 export const compoundType: HDF5CompoundType = {
   class: HDF5TypeClass.Compound,
-  fields: [{ name: 'int', type: intType }],
+  fields: { int: intType },
 };
 
 export const booleanType: HDF5BooleanType = {
