@@ -92,7 +92,7 @@ export interface HDF5ComplexType {
 
 export interface HDF5StringType {
   class: HDF5TypeClass.String;
-  charSet?: string;
+  charSet: 'UTF-8' | 'ASCII';
   length?: number;
 }
 

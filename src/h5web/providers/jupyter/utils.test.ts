@@ -47,15 +47,30 @@ describe('convertDtype', () => {
   });
 
   it('should convert bytes string dtypes', () => {
-    expect(convertDtype('|S')).toEqual({ class: HDF5TypeClass.String });
+    expect(convertDtype('|S6')).toEqual({
+      class: HDF5TypeClass.String,
+      charSet: 'ASCII',
+      length: 6,
+    });
   });
 
   it('should interpret objects as strings', () => {
-    expect(convertDtype('|O')).toEqual({ class: HDF5TypeClass.String });
+    expect(convertDtype('|O')).toEqual({
+      class: HDF5TypeClass.String,
+      charSet: 'UTF-8',
+    });
   });
 
   it('should interpret |b1 as booleans', () => {
     expect(convertDtype('|b1')).toEqual({ class: HDF5TypeClass.Bool });
+  });
+
+  it('should handle "not applicable" endianness symbol', () => {
+    expect(convertDtype('|f8')).toEqual({
+      class: HDF5TypeClass.Float,
+      size: 64,
+      endianness: undefined,
+    });
   });
 
   it('should handle unknown type', () => {

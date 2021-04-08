@@ -57,17 +57,16 @@ describe('convertHsdsType', () => {
     });
   });
 
-  it('should convert Unicode string type', () => {
+  it('should convert variable-length UTF-8 string type', () => {
     const unicodeStrType: HsdsStringType = {
       class: 'H5T_STRING',
       charSet: 'H5T_CSET_UTF8',
-      length: 49,
+      length: 'H5T_VARIABLE',
     };
 
     expect(convertHsdsType(unicodeStrType)).toEqual({
       class: HDF5TypeClass.String,
-      charSet: 'UTF8',
-      length: 49,
+      charSet: 'UTF-8',
     });
   });
 
