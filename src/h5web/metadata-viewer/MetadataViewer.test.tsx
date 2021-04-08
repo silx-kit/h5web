@@ -57,7 +57,7 @@ test('inspect scalar dataset', async () => {
   expect(nameRow).toHaveTextContent(/scalar_int/);
   expect(pathRow).toHaveTextContent(/\/entities\/scalar_int/);
   expect(shapeRow).toHaveTextContent(/Scalar/);
-  expect(typeRow).toHaveTextContent(/integer/);
+  expect(typeRow).toHaveTextContent(/Integer, 32-bit, little-endian/);
 });
 
 test('inspect array dataset', async () => {
@@ -78,7 +78,7 @@ test('inspect empty dataset', async () => {
   const typeRow = screen.getByRole('row', { name: /^Type/ });
 
   expect(shapeRow).toHaveTextContent(/None/);
-  expect(typeRow).toHaveTextContent(/integer/);
+  expect(typeRow).toHaveTextContent(/Integer, 32-bit, little-endian/);
 });
 
 test('inspect datatype', async () => {
@@ -96,7 +96,7 @@ test('inspect datatype', async () => {
   expect(column).toBeVisible();
   expect(nameRow).toHaveTextContent(/datatype/);
   expect(pathRow).toHaveTextContent(/\/entities\/datatype/);
-  expect(typeRow).toHaveTextContent(/compound/);
+  expect(typeRow).toHaveTextContent(/Compound/);
 });
 
 test('inspect external link', async () => {

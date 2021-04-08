@@ -79,7 +79,7 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): HDF5NumericType {
         : sign === 'U'
         ? HDF5TypeClass.Unsigned
         : HDF5TypeClass.Integer,
-    endianness: endianness as HDF5Endianness,
+    endianness: HDF5Endianness[endianness as 'BE' | 'LE'],
     size: Number.parseInt(size, 10),
   };
 }
@@ -99,10 +99,9 @@ function convertHsdsCompoundType(
 
   return {
     class: HDF5TypeClass.Compound,
-    fields: hsdsType.fields.map((v) => ({
-      name: v.name,
-      type: convertHsdsType(v.type),
-    })),
+    fields: Object.fromEntries(
+      hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)])
+    ),
   };
 }
 
@@ -118,8 +117,9 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
     case 'H5T_STRING':
       return {
         class: HDF5TypeClass.String,
-        charSet: hsdsType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF8',
-        length: hsdsType.length,
+        charSet: hsdsType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF-8',
+        length:
+          hsdsType.length === 'H5T_VARIABLE' ? undefined : hsdsType.length,
       };
 
     case 'H5T_ARRAY':

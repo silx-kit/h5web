@@ -88,8 +88,7 @@ export interface HsdsNumericType {
 
 export interface HsdsStringType {
   class: 'H5T_STRING';
-  charSet: 'H5T_CSET_ASCII' | 'H5T_CSET_UTF8';
-  strPad: 'H5T_STR_SPACEPAD' | 'H5T_STR_NULLTERM' | 'H5T_STR_NULLPAD';
+  charSet: `H5T_CSET_${'ASCII' | 'UTF8'}`;
   length: number | 'H5T_VARIABLE';
 }
 

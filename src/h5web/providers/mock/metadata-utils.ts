@@ -14,6 +14,7 @@ import {
   HDF5ComplexType,
   HDF5CompoundType,
   HDF5Dims,
+  HDF5Endianness,
   HDF5ExternalLink,
   HDF5Link,
   HDF5LinkClass,
@@ -34,25 +35,24 @@ import { mockValues } from './values';
 
 export const intType: HDF5NumericType = {
   class: HDF5TypeClass.Integer,
-  endianness: 'LE',
+  endianness: HDF5Endianness.LE,
   size: 32,
 };
 
 export const floatType: HDF5NumericType = {
   class: HDF5TypeClass.Float,
-  endianness: 'LE',
+  endianness: HDF5Endianness.LE,
   size: 64,
 };
 
 export const stringType: HDF5StringType = {
   class: HDF5TypeClass.String,
   charSet: 'ASCII',
-  length: 'H5T_VARIABLE',
 };
 
 export const compoundType: HDF5CompoundType = {
   class: HDF5TypeClass.Compound,
-  fields: [{ name: 'int', type: intType }],
+  fields: { int: intType },
 };
 
 export const booleanType: HDF5BooleanType = {

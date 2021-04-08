@@ -1,5 +1,5 @@
 import Complex from 'complex.js';
-import { HDF5Type, HDF5TypeClass } from '../hdf5-models';
+import { HDF5Endianness, HDF5Type, HDF5TypeClass } from '../hdf5-models';
 import type {
   HsdsStringType,
   HsdsArrayType,
@@ -17,7 +17,11 @@ interface TestType {
 
 const leIntegerType: TestType = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
-  hdf5: { class: HDF5TypeClass.Integer, size: 8, endianness: 'LE' },
+  hdf5: {
+    class: HDF5TypeClass.Integer,
+    size: 8,
+    endianness: HDF5Endianness.LE,
+  },
 };
 
 const beIntegerType: TestType = {
@@ -25,18 +29,18 @@ const beIntegerType: TestType = {
   hdf5: {
     class: HDF5TypeClass.Unsigned,
     size: 64,
-    endianness: 'BE',
+    endianness: HDF5Endianness.BE,
   },
 };
 
 const leFloatType: TestType = {
   hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F32LE' },
-  hdf5: { class: HDF5TypeClass.Float, size: 32, endianness: 'LE' },
+  hdf5: { class: HDF5TypeClass.Float, size: 32, endianness: HDF5Endianness.LE },
 };
 
 const beFloatType: TestType = {
   hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F64BE' },
-  hdf5: { class: HDF5TypeClass.Float, size: 64, endianness: 'BE' },
+  hdf5: { class: HDF5TypeClass.Float, size: 64, endianness: HDF5Endianness.BE },
 };
 
 describe('convertHsdsType', () => {
@@ -44,7 +48,6 @@ describe('convertHsdsType', () => {
     const asciiStrType: HsdsStringType = {
       class: 'H5T_STRING',
       charSet: 'H5T_CSET_ASCII',
-      strPad: 'H5T_STR_NULLPAD',
       length: 25,
     };
     expect(convertHsdsType(asciiStrType)).toEqual({
@@ -54,18 +57,16 @@ describe('convertHsdsType', () => {
     });
   });
 
-  it('should convert Unicode string type', () => {
+  it('should convert variable-length UTF-8 string type', () => {
     const unicodeStrType: HsdsStringType = {
       class: 'H5T_STRING',
       charSet: 'H5T_CSET_UTF8',
-      strPad: 'H5T_STR_NULLTERM',
-      length: 49,
+      length: 'H5T_VARIABLE',
     };
 
     expect(convertHsdsType(unicodeStrType)).toEqual({
       class: HDF5TypeClass.String,
-      charSet: 'UTF8',
-      length: 49,
+      charSet: 'UTF-8',
     });
   });
 
@@ -117,13 +118,10 @@ describe('convertHsdsType', () => {
     };
     expect(convertHsdsType(compoundType)).toEqual({
       class: HDF5TypeClass.Compound,
-      fields: [
-        { name: 'f1', type: beFloatType.hdf5 },
-        {
-          name: 'f2',
-          type: { class: HDF5TypeClass.VLen, base: leIntegerType.hdf5 },
-        },
-      ],
+      fields: {
+        f1: beFloatType.hdf5,
+        f2: { class: HDF5TypeClass.VLen, base: leIntegerType.hdf5 },
+      },
     });
   });
 

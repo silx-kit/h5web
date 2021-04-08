@@ -56,17 +56,22 @@ export type HDF5Type =
   | HDF5UnknownType;
 
 export enum HDF5TypeClass {
-  Bool = 'boolean',
-  Integer = 'integer',
-  Unsigned = 'unsigned integer',
-  Float = 'float',
-  Complex = 'complex',
-  String = 'string',
-  Compound = 'compound',
-  Array = 'array',
-  VLen = 'vlen',
-  Enum = 'enum',
-  Unknown = 'unknown',
+  Bool = 'Boolean',
+  Integer = 'Integer',
+  Unsigned = 'Integer (unsigned)',
+  Float = 'Float',
+  Complex = 'Complex',
+  String = 'String',
+  Compound = 'Compound',
+  Array = 'Array',
+  VLen = 'Array (variable length)',
+  Enum = 'Enumeration',
+  Unknown = 'Unknown',
+}
+
+export enum HDF5Endianness {
+  LE = 'little-endian',
+  BE = 'big-endian',
 }
 
 export interface HDF5BooleanType {
@@ -76,10 +81,8 @@ export interface HDF5BooleanType {
 export interface HDF5NumericType {
   class: HDF5TypeClass.Integer | HDF5TypeClass.Float | HDF5TypeClass.Unsigned;
   size: number;
-  endianness: HDF5Endianness;
+  endianness?: HDF5Endianness;
 }
-
-export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
 
 export interface HDF5ComplexType {
   class: HDF5TypeClass.Complex;
@@ -89,27 +92,22 @@ export interface HDF5ComplexType {
 
 export interface HDF5StringType {
   class: HDF5TypeClass.String;
-  charSet: 'ASCII' | 'UTF8';
-  length: number | 'H5T_VARIABLE';
+  charSet: 'UTF-8' | 'ASCII';
+  length?: number;
 }
 
 export interface HDF5CompoundType {
   class: HDF5TypeClass.Compound;
-  fields: HDF5CompoundTypeField[];
+  fields: Record<string, HDF5Type>;
 }
 
-interface HDF5CompoundTypeField {
-  name: string;
-  type: HDF5Type;
-}
-
-export interface HDF5ArrayType {
+interface HDF5ArrayType {
   class: HDF5TypeClass.Array | HDF5TypeClass.VLen;
   base: HDF5Type;
   dims?: HDF5Dims;
 }
 
-export interface HDF5EnumType {
+interface HDF5EnumType {
   class: HDF5TypeClass.Enum;
   base: HDF5Type;
   mapping: Record<string, number>;

@@ -12,6 +12,12 @@ import type {
   JupyterMetaResponse,
 } from './models';
 
+// https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
+const ENDIANNESS_MAPPING: Record<string, HDF5Endianness> = {
+  '<': HDF5Endianness.LE,
+  '>': HDF5Endianness.BE,
+};
+
 export function isGroupResponse(
   response: JupyterMetaResponse
 ): response is JupyterMetaGroupResponse {
@@ -37,29 +43,7 @@ export function assertGroupContent(
   assertArray(contents);
 }
 
-export function convertEndianness(endianness: string): HDF5Endianness {
-  // https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
-  switch (endianness) {
-    case '<':
-      return 'LE';
-    case '>':
-      return 'BE';
-    case '=':
-      return 'Native';
-    case '|':
-      return 'Not applicable';
-    default:
-      throw new Error(`Unknown endianness symbol ${endianness}`);
-  }
-}
-
 export function convertDtype(dtype: string): HDF5Type {
-  // Special case: booleans are stored as bytes
-  // See https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
-  if (dtype === '|b1') {
-    return { class: HDF5TypeClass.Bool };
-  }
-
   const regexp = /([<>=|])?([A-z])(\d*)/u;
   const matches = regexp.exec(dtype);
 
@@ -70,9 +54,15 @@ export function convertDtype(dtype: string): HDF5Type {
   const [, endianMatch, dataType, lengthMatch] = matches;
 
   const length = lengthMatch ? Number.parseInt(lengthMatch, 10) : 0;
-  const endianness = convertEndianness(endianMatch);
+  const endianness = ENDIANNESS_MAPPING[endianMatch] || undefined;
 
   switch (dataType) {
+    case 'b':
+      // Booleans are stored as bytes but numpy represents them distinctly from "normal" bytes:
+      // `|b1` for booleans vs. `|i1` for normal bytes
+      // https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
+      return { class: HDF5TypeClass.Bool };
+
     case 'f':
       return {
         class: HDF5TypeClass.Float,
@@ -113,16 +103,11 @@ export function convertDtype(dtype: string): HDF5Type {
       return {
         class: HDF5TypeClass.String,
         charSet: 'ASCII',
-        length: length || 'H5T_VARIABLE',
+        length,
       };
 
-    case 'U':
-    case 'O': // TODO: objects are considered as strings for now
-      return {
-        class: HDF5TypeClass.String,
-        charSet: 'UTF8',
-        length: length || 'H5T_VARIABLE',
-      };
+    case 'O':
+      return { class: HDF5TypeClass.String, charSet: 'UTF-8' };
 
     default:
       return { class: HDF5TypeClass.Unknown };
