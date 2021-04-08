@@ -100,7 +100,6 @@ export function convertDtype(dtype: string): HDF5Type {
       };
 
     case 'S':
-    case 'U':
     case 'O': // TODO: objects are considered as strings for now
       return { class: HDF5TypeClass.String };
 

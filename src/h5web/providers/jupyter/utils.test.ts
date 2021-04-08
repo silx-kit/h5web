@@ -4,20 +4,8 @@ import type { JupyterComplexValue } from './models';
 import { convertDtype, parseComplex } from './utils';
 
 describe('convertDtype', () => {
-  it('should convert unicode string dtypes', () => {
-    expect(convertDtype('|U25')).toEqual({
-      class: HDF5TypeClass.String,
-      charSet: 'UTF8',
-      length: 25,
-    });
-  });
-
   it('should convert bytes string dtypes', () => {
-    expect(convertDtype('|S')).toEqual({
-      class: HDF5TypeClass.String,
-      charSet: 'ASCII',
-      length: 'H5T_VARIABLE',
-    });
+    expect(convertDtype('|S')).toEqual({ class: HDF5TypeClass.String });
   });
 
   it('should convert integer dtypes', () => {
