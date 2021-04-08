@@ -45,38 +45,41 @@ export interface HDF5ExternalLink {
 /* ---------------- */
 /* ----- TYPE ----- */
 
-// https://support.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html
 export type HDF5Type =
   | HDF5NumericType
   | HDF5StringType
   | HDF5BooleanType
   | HDF5ComplexType
   | HDF5ArrayType
-  | HDF5VLenType
   | HDF5CompoundType
   | HDF5EnumType
   | HDF5UnknownType;
 
-export type HDF5NumericType = HDF5IntegerType | HDF5FloatType;
-
 export enum HDF5TypeClass {
-  Bool = 'H5T_BOOL',
-  Integer = 'H5T_INTEGER',
-  Float = 'H5T_FLOAT',
-  Complex = 'H5T_COMPLEX',
-  String = 'H5T_STRING',
-  Compound = 'H5T_COMPOUND',
-  Array = 'H5T_ARRAY',
-  VLen = 'H5T_VLEN',
-  Enum = 'H5T_ENUM',
-  Unknown = 'H5T_UNKNOWN',
+  Bool = 'boolean',
+  Integer = 'integer',
+  Unsigned = 'unsigned integer',
+  Float = 'float',
+  Complex = 'complex',
+  String = 'string',
+  Compound = 'compound',
+  Array = 'array',
+  VLen = 'vlen',
+  Enum = 'enum',
+  Unknown = 'unknown',
 }
-
-export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
 
 export interface HDF5BooleanType {
   class: HDF5TypeClass.Bool;
 }
+
+export interface HDF5NumericType {
+  class: HDF5TypeClass.Integer | HDF5TypeClass.Float | HDF5TypeClass.Unsigned;
+  size: number;
+  endianness: HDF5Endianness;
+}
+
+export type HDF5Endianness = 'BE' | 'LE' | 'Native' | 'Not applicable';
 
 export interface HDF5ComplexType {
   class: HDF5TypeClass.Complex;
@@ -84,40 +87,10 @@ export interface HDF5ComplexType {
   imagType: HDF5Type;
 }
 
-export interface HDF5EnumType {
-  class: HDF5TypeClass.Enum;
-  base: HDF5Type;
-  mapping: Record<string, number>;
-}
-
-export interface HDF5IntegerType {
-  class: HDF5TypeClass.Integer;
-  size: number;
-  unsigned?: boolean;
-  endianness: HDF5Endianness;
-}
-
-export interface HDF5FloatType {
-  class: HDF5TypeClass.Float;
-  size: number;
-  endianness: HDF5Endianness;
-}
-
 export interface HDF5StringType {
   class: HDF5TypeClass.String;
   charSet: 'ASCII' | 'UTF8';
   length: number | 'H5T_VARIABLE';
-}
-
-interface HDF5ArrayType {
-  class: HDF5TypeClass.Array;
-  base: HDF5Type;
-  dims: HDF5Dims;
-}
-
-interface HDF5VLenType {
-  class: HDF5TypeClass.VLen;
-  base: HDF5Type;
 }
 
 export interface HDF5CompoundType {
@@ -128,6 +101,18 @@ export interface HDF5CompoundType {
 interface HDF5CompoundTypeField {
   name: string;
   type: HDF5Type;
+}
+
+export interface HDF5ArrayType {
+  class: HDF5TypeClass.Array | HDF5TypeClass.VLen;
+  base: HDF5Type;
+  dims?: HDF5Dims;
+}
+
+export interface HDF5EnumType {
+  class: HDF5TypeClass.Enum;
+  base: HDF5Type;
+  mapping: Record<string, number>;
 }
 
 interface HDF5UnknownType {

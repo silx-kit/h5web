@@ -4,7 +4,6 @@ import type {
   HDF5ExternalLink,
   HDF5HardLink,
   HDF5SoftLink,
-  HDF5TypeClass,
   HDF5Dims,
 } from '../hdf5-models';
 import type { Entity } from '../models';
@@ -76,54 +75,37 @@ export interface HsdsShape {
 }
 
 export type HsdsType =
-  | HsdsIntegerType
-  | HsdsFloatType
+  | HsdsNumericType
   | HsdsStringType
   | HsdsArrayType
-  | HsdsVLenType
   | HsdsCompoundType
   | HsdsEnumType;
 
-export interface HsdsIntegerType {
-  class: HDF5TypeClass.Integer;
-  base: string;
-}
-
-export interface HsdsFloatType {
-  class: HDF5TypeClass.Float;
+export interface HsdsNumericType {
+  class: 'H5T_INTEGER' | 'H5T_FLOAT';
   base: string;
 }
 
 export interface HsdsStringType {
-  class: HDF5TypeClass.String;
+  class: 'H5T_STRING';
   charSet: 'H5T_CSET_ASCII' | 'H5T_CSET_UTF8';
   strPad: 'H5T_STR_SPACEPAD' | 'H5T_STR_NULLTERM' | 'H5T_STR_NULLPAD';
   length: number | 'H5T_VARIABLE';
 }
 
 export interface HsdsArrayType {
-  class: HDF5TypeClass.Array;
+  class: 'H5T_ARRAY' | 'H5T_VLEN';
   base: HsdsType;
-  dims: HDF5Dims;
-}
-
-export interface HsdsVLenType {
-  class: HDF5TypeClass.VLen;
-  base: HsdsType;
+  dims?: HDF5Dims;
 }
 
 export interface HsdsCompoundType {
-  class: HDF5TypeClass.Compound;
-  fields: HsdsCompoundTypeField[];
+  class: 'H5T_COMPOUND';
+  fields: { name: string; type: HsdsType }[];
 }
 
 export interface HsdsEnumType {
-  class: HDF5TypeClass.Enum;
+  class: 'H5T_ENUM';
   base: HsdsType;
   mapping: Record<string, number>;
-}
-
-interface HsdsCompoundTypeField {
-  name: string;
-  type: HsdsType;
 }

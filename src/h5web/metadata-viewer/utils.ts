@@ -1,4 +1,4 @@
-import { isScalarShape } from '../guards';
+import { isNumericType, isScalarShape } from '../guards';
 import { HDF5Type, HDF5TypeClass } from '../providers/hdf5-models';
 import type { Shape } from '../providers/models';
 
@@ -24,32 +24,22 @@ export function renderShape(shape: Shape): string {
 }
 
 export function renderType(type: HDF5Type): string {
-  // Remove leading `H5T_`
-  const classLabel = type.class.slice(4).toLowerCase();
-
-  if (
-    type.class === HDF5TypeClass.Integer ||
-    type.class === HDF5TypeClass.Float
-  ) {
+  if (isNumericType(type)) {
     const { endianness, size } = type;
-    const typeInfos = `${classLabel}, ${
-      type.class === HDF5TypeClass.Integer && type.unsigned ? 'unsigned' : ''
-    } ${size}-bit`;
+    const endiannessLabel = ENDIANNESS_LABELS[endianness];
 
-    if (endianness === 'Not applicable') {
-      return typeInfos;
-    }
-
-    return `${typeInfos}, ${ENDIANNESS_LABELS[endianness]}`;
+    return `${type.class}, ${size}-bit${
+      endiannessLabel ? `, ${endiannessLabel}` : ''
+    }`;
   }
 
   if (type.class === HDF5TypeClass.String) {
     const { length, charSet } = type;
 
-    return `${classLabel},
-    ${charSet},
-    ${Number.isInteger(length) ? `${length} characters` : 'variable length'}`;
+    return `${type.class}, ${charSet}, ${
+      Number.isInteger(length) ? `${length} characters` : 'variable length'
+    }`;
   }
 
-  return classLabel;
+  return type.class;
 }

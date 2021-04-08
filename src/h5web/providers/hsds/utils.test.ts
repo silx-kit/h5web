@@ -7,7 +7,6 @@ import type {
   HsdsCompoundType,
   HsdsEnumType,
   HsdsType,
-  HsdsVLenType,
 } from './models';
 import { convertHsdsType, parseComplex } from './utils';
 
@@ -17,34 +16,33 @@ interface TestType {
 }
 
 const leIntegerType: TestType = {
-  hsds: { class: HDF5TypeClass.Integer, base: 'H5T_STD_I8LE' },
+  hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
   hdf5: { class: HDF5TypeClass.Integer, size: 8, endianness: 'LE' },
 };
 
 const beIntegerType: TestType = {
-  hsds: { class: HDF5TypeClass.Integer, base: 'H5T_STD_U64BE' },
+  hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_U64BE' },
   hdf5: {
-    class: HDF5TypeClass.Integer,
+    class: HDF5TypeClass.Unsigned,
     size: 64,
     endianness: 'BE',
-    unsigned: true,
   },
 };
 
 const leFloatType: TestType = {
-  hsds: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F32LE' },
+  hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F32LE' },
   hdf5: { class: HDF5TypeClass.Float, size: 32, endianness: 'LE' },
 };
 
 const beFloatType: TestType = {
-  hsds: { class: HDF5TypeClass.Float, base: 'H5T_IEEE_F64BE' },
+  hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F64BE' },
   hdf5: { class: HDF5TypeClass.Float, size: 64, endianness: 'BE' },
 };
 
 describe('convertHsdsType', () => {
   it('should convert ASCII string type', () => {
     const asciiStrType: HsdsStringType = {
-      class: HDF5TypeClass.String,
+      class: 'H5T_STRING',
       charSet: 'H5T_CSET_ASCII',
       strPad: 'H5T_STR_NULLPAD',
       length: 25,
@@ -58,7 +56,7 @@ describe('convertHsdsType', () => {
 
   it('should convert Unicode string type', () => {
     const unicodeStrType: HsdsStringType = {
-      class: HDF5TypeClass.String,
+      class: 'H5T_STRING',
       charSet: 'H5T_CSET_UTF8',
       strPad: 'H5T_STR_NULLTERM',
       length: 49,
@@ -83,7 +81,7 @@ describe('convertHsdsType', () => {
 
   it('should convert the base of Array type', () => {
     const arrayType: HsdsArrayType = {
-      class: HDF5TypeClass.Array,
+      class: 'H5T_ARRAY',
       base: leIntegerType.hsds,
       dims: [4, 5],
     };
@@ -95,8 +93,8 @@ describe('convertHsdsType', () => {
   });
 
   it('should convert the base of VLen type', () => {
-    const vlenType: HsdsVLenType = {
-      class: HDF5TypeClass.VLen,
+    const vlenType: HsdsArrayType = {
+      class: 'H5T_VLEN',
       base: leIntegerType.hsds,
     };
     expect(convertHsdsType(vlenType)).toEqual({
@@ -106,12 +104,12 @@ describe('convertHsdsType', () => {
   });
 
   it('should convert the field types of Compound type', () => {
-    const vlenType: HsdsVLenType = {
-      class: HDF5TypeClass.VLen,
+    const vlenType: HsdsArrayType = {
+      class: 'H5T_VLEN',
       base: leIntegerType.hsds,
     };
     const compoundType: HsdsCompoundType = {
-      class: HDF5TypeClass.Compound,
+      class: 'H5T_COMPOUND',
       fields: [
         { name: 'f1', type: beFloatType.hsds },
         { name: 'f2', type: vlenType },
@@ -131,8 +129,8 @@ describe('convertHsdsType', () => {
 
   it('should convert the enum with the boolean mapping to Boolean type', () => {
     const boolEnum: HsdsEnumType = {
-      class: HDF5TypeClass.Enum,
-      base: { class: HDF5TypeClass.Integer, base: 'H5T_STD_I8LE' },
+      class: 'H5T_ENUM',
+      base: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
       mapping: { FALSE: 0, TRUE: 1 },
     };
     expect(convertHsdsType(boolEnum)).toEqual({
@@ -142,7 +140,7 @@ describe('convertHsdsType', () => {
 
   it('should convert the complex compound type into Complex type', () => {
     const complexCompound: HsdsCompoundType = {
-      class: HDF5TypeClass.Compound,
+      class: 'H5T_COMPOUND',
       fields: [
         { name: 'r', type: leFloatType.hsds },
         { name: 'i', type: leFloatType.hsds },

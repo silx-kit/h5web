@@ -15,8 +15,6 @@ import {
   HDF5CompoundType,
   HDF5Dims,
   HDF5ExternalLink,
-  HDF5FloatType,
-  HDF5IntegerType,
   HDF5Link,
   HDF5LinkClass,
   HDF5NumericType,
@@ -34,13 +32,13 @@ import { mockValues } from './values';
 /* -------------------------- */
 /* ----- TYPES & SHAPES ----- */
 
-export const intType: HDF5IntegerType = {
+export const intType: HDF5NumericType = {
   class: HDF5TypeClass.Integer,
   endianness: 'LE',
   size: 32,
 };
 
-export const floatType: HDF5FloatType = {
+export const floatType: HDF5NumericType = {
   class: HDF5TypeClass.Float,
   endianness: 'LE',
   size: 64,
