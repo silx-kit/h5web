@@ -44,12 +44,6 @@ export function assertGroupContent(
 }
 
 export function convertDtype(dtype: string): HDF5Type {
-  // Special case: booleans are stored as bytes
-  // See https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
-  if (dtype === '|b1') {
-    return { class: HDF5TypeClass.Bool };
-  }
-
   const regexp = /([<>=|])?([A-z])(\d*)/u;
   const matches = regexp.exec(dtype);
 
@@ -63,6 +57,12 @@ export function convertDtype(dtype: string): HDF5Type {
   const endianness = ENDIANNESS_MAPPING[endianMatch] || undefined;
 
   switch (dataType) {
+    case 'b':
+      // Booleans are stored as bytes but numpy represents them distinctly from "normal" bytes:
+      // `|b1` for booleans vs. `|i1` for normal bytes
+      // https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
+      return { class: HDF5TypeClass.Bool };
+
     case 'f':
       return {
         class: HDF5TypeClass.Float,
