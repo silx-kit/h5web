@@ -18,7 +18,6 @@ import {
   CompoundType,
 } from '../models';
 import {
-  HDF5Dims,
   HDF5ExternalLink,
   HDF5Link,
   HDF5LinkClass,
@@ -302,7 +301,7 @@ export function makeNxDataGroup<
 export function makeNxDataset(
   name: string,
   type: NumericType,
-  dims: HDF5Dims,
+  dims: number[],
   opts: {
     interpretation?: string;
     longName?: string;

@@ -4,7 +4,6 @@ import type {
   HDF5ExternalLink,
   HDF5HardLink,
   HDF5SoftLink,
-  HDF5Dims,
 } from '../hdf5-models';
 import type { Entity } from '../models';
 
@@ -71,7 +70,7 @@ export type HsdsComplexValue = [number, number];
 
 export interface HsdsShape {
   class: 'H5S_SIMPLE' | 'H5S_SCALAR' | 'H5S_NUL';
-  dims?: HDF5Dims;
+  dims?: number[];
 }
 
 export type HsdsType =
@@ -95,7 +94,7 @@ export interface HsdsStringType {
 export interface HsdsArrayType {
   class: 'H5T_ARRAY' | 'H5T_VLEN';
   base: HsdsType;
-  dims?: HDF5Dims;
+  dims?: number[];
 }
 
 export interface HsdsCompoundType {
