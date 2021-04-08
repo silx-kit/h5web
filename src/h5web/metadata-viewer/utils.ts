@@ -1,6 +1,5 @@
 import { isNumericType, isScalarShape } from '../guards';
-import { HDF5Type, HDF5TypeClass } from '../providers/hdf5-models';
-import type { Shape } from '../providers/models';
+import { DType, DTypeClass, Shape } from '../providers/models';
 
 export function renderShape(shape: Shape): string {
   if (shape === null) {
@@ -16,13 +15,13 @@ export function renderShape(shape: Shape): string {
     : `${shape.join(' x ')} = ${shape.reduce((acc, value) => acc * value)}`;
 }
 
-export function renderType(type: HDF5Type): string {
+export function renderType(type: DType): string {
   if (isNumericType(type)) {
     const { endianness, size } = type;
     return `${type.class}, ${size}-bit${endianness ? `, ${endianness}` : ''}`;
   }
 
-  if (type.class === HDF5TypeClass.String) {
+  if (type.class === DTypeClass.String) {
     const { length, charSet } = type;
     return `${charSet ? `${charSet} string` : 'String'}${
       length !== undefined ? `, ${length} characters` : ''

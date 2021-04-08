@@ -8,20 +8,20 @@ import {
   ScalarShape,
   Shape,
   ArrayShape,
+  NumericType,
+  StringType,
+  DType,
+  DTypeClass,
+  Endianness,
+  BooleanType,
+  ComplexType,
+  CompoundType,
 } from '../models';
 import {
-  HDF5BooleanType,
-  HDF5ComplexType,
-  HDF5CompoundType,
   HDF5Dims,
-  HDF5Endianness,
   HDF5ExternalLink,
   HDF5Link,
   HDF5LinkClass,
-  HDF5NumericType,
-  HDF5StringType,
-  HDF5Type,
-  HDF5TypeClass,
   HDF5Value,
 } from '../hdf5-models';
 import type { NxInterpretation, SilxStyle } from '../../vis-packs/nexus/models';
@@ -33,34 +33,34 @@ import { mockValues } from './values';
 /* -------------------------- */
 /* ----- TYPES & SHAPES ----- */
 
-export const intType: HDF5NumericType = {
-  class: HDF5TypeClass.Integer,
-  endianness: HDF5Endianness.LE,
+export const intType: NumericType = {
+  class: DTypeClass.Integer,
+  endianness: Endianness.LE,
   size: 32,
 };
 
-export const floatType: HDF5NumericType = {
-  class: HDF5TypeClass.Float,
-  endianness: HDF5Endianness.LE,
+export const floatType: NumericType = {
+  class: DTypeClass.Float,
+  endianness: Endianness.LE,
   size: 64,
 };
 
-export const stringType: HDF5StringType = {
-  class: HDF5TypeClass.String,
+export const stringType: StringType = {
+  class: DTypeClass.String,
   charSet: 'ASCII',
 };
 
-export const compoundType: HDF5CompoundType = {
-  class: HDF5TypeClass.Compound,
+export const compoundType: CompoundType = {
+  class: DTypeClass.Compound,
   fields: { int: intType },
 };
 
-export const booleanType: HDF5BooleanType = {
-  class: HDF5TypeClass.Bool,
+export const booleanType: BooleanType = {
+  class: DTypeClass.Bool,
 };
 
-export const complexType: HDF5ComplexType = {
-  class: HDF5TypeClass.Complex,
+export const complexType: ComplexType = {
+  class: DTypeClass.Complex,
   realType: floatType,
   imagType: floatType,
 };
@@ -70,7 +70,7 @@ export const complexType: HDF5ComplexType = {
 
 export function makeAttr(
   name: string,
-  type: HDF5Type,
+  type: DType,
   shape: Shape,
   value: HDF5Value
 ): Attribute {
@@ -79,7 +79,7 @@ export function makeAttr(
 
 export function makeScalarAttr(
   name: string,
-  type: HDF5Type,
+  type: DType,
   value: HDF5Value
 ): Attribute {
   return makeAttr(name, type, [], value);
@@ -141,7 +141,7 @@ export function makeGroup(
   return group;
 }
 
-export function makeDataset<S extends Shape, T extends HDF5Type>(
+export function makeDataset<S extends Shape, T extends DType>(
   name: string,
   type: T,
   shape: S,
@@ -161,7 +161,7 @@ export function makeDataset<S extends Shape, T extends HDF5Type>(
   };
 }
 
-export function makeScalarDataset<T extends HDF5Type>(
+export function makeScalarDataset<T extends DType>(
   name: string,
   type: T,
   opts: DatasetOpts = {}
@@ -169,7 +169,7 @@ export function makeScalarDataset<T extends HDF5Type>(
   return makeDataset(name, type, [], opts);
 }
 
-export function makeDatatype<T extends HDF5Type>(
+export function makeDatatype<T extends DType>(
   name: string,
   type: T,
   opts: EntityOpts = {}
@@ -250,13 +250,13 @@ export function makeNxGroup(
 }
 
 export function makeNxDataGroup<
-  T extends Record<string, MockDataset<ArrayShape, HDF5NumericType>>
+  T extends Record<string, MockDataset<ArrayShape, NumericType>>
 >(
   name: string,
   opts: {
-    signal: MockDataset<ArrayShape, HDF5NumericType>;
-    errors?: MockDataset<ArrayShape, HDF5NumericType>;
-    title?: MockDataset<ScalarShape, HDF5StringType>;
+    signal: MockDataset<ArrayShape, NumericType>;
+    errors?: MockDataset<ArrayShape, NumericType>;
+    title?: MockDataset<ScalarShape, StringType>;
     silxStyle?: SilxStyle;
   } & (
     | { axes: T; axesAttr: (Extract<keyof T, string> | '.')[] }
@@ -301,14 +301,14 @@ export function makeNxDataGroup<
 
 export function makeNxDataset(
   name: string,
-  type: HDF5NumericType,
+  type: NumericType,
   dims: HDF5Dims,
   opts: {
     interpretation?: string;
     longName?: string;
     units?: string;
   } & DatasetOpts = {}
-): MockDataset<ArrayShape, HDF5NumericType> {
+): MockDataset<ArrayShape, NumericType> {
   const { interpretation, longName, units, ...datasetOpts } = opts;
 
   return makeDataset(name, type, dims, {
@@ -325,7 +325,7 @@ export function makeNxDataset(
 }
 
 export function withNxInterpretation<
-  T extends MockDataset<ArrayShape, HDF5NumericType>
+  T extends MockDataset<ArrayShape, NumericType>
 >(dataset: T, interpretation: NxInterpretation): T {
   return withAttributes(dataset, [
     makeStrAttr('interpretation', interpretation),

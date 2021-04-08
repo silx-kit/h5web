@@ -1,14 +1,8 @@
 import type Complex from 'complex.js';
-import type {
-  HDF5BooleanType,
-  HDF5ComplexType,
-  HDF5Link,
-  HDF5NumericType,
-  HDF5StringType,
-  HDF5Type,
-  HDF5Dims,
-  HDF5Value,
-} from './hdf5-models';
+import type { HDF5Link, HDF5Dims, HDF5Value } from './hdf5-models';
+
+/* -------------------- */
+/* ----- ENTITIES ----- */
 
 export enum EntityKind {
   Group = 'group',
@@ -30,7 +24,7 @@ export interface Group extends Entity {
   children: Entity[];
 }
 
-export interface Dataset<S extends Shape = Shape, T extends HDF5Type = HDF5Type>
+export interface Dataset<S extends Shape = Shape, T extends DType = DType>
   extends Entity {
   kind: EntityKind.Dataset;
   shape: S;
@@ -38,9 +32,9 @@ export interface Dataset<S extends Shape = Shape, T extends HDF5Type = HDF5Type>
   rawType?: unknown;
 }
 
-export type NumArrayDataset = Dataset<ArrayShape, HDF5NumericType>;
+export type NumArrayDataset = Dataset<ArrayShape, NumericType>;
 
-export interface Datatype<T = HDF5Type> extends Entity {
+export interface Datatype<T = DType> extends Entity {
   kind: EntityKind.Datatype;
   type: T;
   rawType?: unknown;
@@ -54,21 +48,102 @@ export interface Link<T extends HDF5Link = HDF5Link> extends Entity {
 export interface Attribute {
   name: string;
   shape: Shape;
-  type: HDF5Type;
+  type: DType;
   value: HDF5Value;
 }
+
+/* ----------------- */
+/* ----- SHAPE ----- */
 
 export type Shape = ArrayShape | ScalarShape | null;
 export type ArrayShape = HDF5Dims;
 export type ScalarShape = never[];
 
-type PrimitiveType<T extends HDF5Type> = T extends HDF5NumericType
+/* ---------------- */
+/* ----- TYPE ----- */
+
+export enum DTypeClass {
+  Bool = 'Boolean',
+  Integer = 'Integer',
+  Unsigned = 'Integer (unsigned)',
+  Float = 'Float',
+  Complex = 'Complex',
+  String = 'String',
+  Compound = 'Compound',
+  Array = 'Array',
+  VLen = 'Array (variable length)',
+  Enum = 'Enumeration',
+  Unknown = 'Unknown',
+}
+
+export type DType =
+  | NumericType
+  | StringType
+  | BooleanType
+  | ComplexType
+  | ArrayType
+  | CompoundType
+  | EnumType
+  | UnknownType;
+
+export enum Endianness {
+  LE = 'little-endian',
+  BE = 'big-endian',
+}
+
+export interface BooleanType {
+  class: DTypeClass.Bool;
+}
+
+export interface NumericType {
+  class: DTypeClass.Integer | DTypeClass.Float | DTypeClass.Unsigned;
+  size: number;
+  endianness?: Endianness;
+}
+
+export interface ComplexType {
+  class: DTypeClass.Complex;
+  realType: DType;
+  imagType: DType;
+}
+
+export interface StringType {
+  class: DTypeClass.String;
+  charSet: 'UTF-8' | 'ASCII';
+  length?: number;
+}
+
+export interface CompoundType {
+  class: DTypeClass.Compound;
+  fields: Record<string, DType>;
+}
+
+interface ArrayType {
+  class: DTypeClass.Array | DTypeClass.VLen;
+  base: DType;
+  dims?: HDF5Dims;
+}
+
+interface EnumType {
+  class: DTypeClass.Enum;
+  base: DType;
+  mapping: Record<string, number>;
+}
+
+interface UnknownType {
+  class: DTypeClass.Unknown;
+}
+
+/* ----------------- */
+/* ----- VALUE ----- */
+
+type PrimitiveType<T extends DType> = T extends NumericType
   ? number
-  : T extends HDF5StringType
+  : T extends StringType
   ? string
-  : T extends HDF5BooleanType
+  : T extends BooleanType
   ? boolean
-  : T extends HDF5ComplexType
+  : T extends ComplexType
   ? Complex
   : unknown;
 

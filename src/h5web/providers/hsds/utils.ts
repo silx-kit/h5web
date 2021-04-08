@@ -1,14 +1,12 @@
 import Complex from 'complex.js';
 import { isDataset, isGroup } from '../../guards';
 import {
-  HDF5ComplexType,
-  HDF5CompoundType,
-  HDF5Endianness,
-  HDF5Type,
-  HDF5TypeClass,
-  HDF5NumericType,
-} from '../hdf5-models';
-import type {
+  ComplexType,
+  CompoundType,
+  Endianness,
+  DType,
+  DTypeClass,
+  NumericType,
   Entity,
   ComplexArray,
   Shape,
@@ -60,7 +58,7 @@ export function convertHsdsShape(shape: HsdsShape): Shape {
   return dims || (shapeClass === 'H5S_SCALAR' ? [] : null);
 }
 
-function convertHsdsNumericType(hsdsType: HsdsNumericType): HDF5NumericType {
+function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
   const { class: hsdsClass, base } = hsdsType;
 
   const regex = /H5T_(?:STD|IEEE)_([A-Z])(\d+)(BE|LE)/u;
@@ -75,37 +73,37 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): HDF5NumericType {
   return {
     class:
       hsdsClass === 'H5T_FLOAT'
-        ? HDF5TypeClass.Float
+        ? DTypeClass.Float
         : sign === 'U'
-        ? HDF5TypeClass.Unsigned
-        : HDF5TypeClass.Integer,
-    endianness: HDF5Endianness[endianness as 'BE' | 'LE'],
+        ? DTypeClass.Unsigned
+        : DTypeClass.Integer,
+    endianness: Endianness[endianness as 'BE' | 'LE'],
     size: Number.parseInt(size, 10),
   };
 }
 
 function convertHsdsCompoundType(
   hsdsType: HsdsCompoundType
-): HDF5CompoundType | HDF5ComplexType {
+): CompoundType | ComplexType {
   const { fields } = hsdsType;
 
   if (fields.length === 2 && fields[0].name === 'r' && fields[1].name === 'i') {
     return {
-      class: HDF5TypeClass.Complex,
+      class: DTypeClass.Complex,
       realType: convertHsdsType(fields[0].type),
       imagType: convertHsdsType(fields[1].type),
     };
   }
 
   return {
-    class: HDF5TypeClass.Compound,
+    class: DTypeClass.Compound,
     fields: Object.fromEntries(
       hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)])
     ),
   };
 }
 
-export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
+export function convertHsdsType(hsdsType: HsdsType): DType {
   switch (hsdsType.class) {
     case 'H5T_INTEGER':
     case 'H5T_FLOAT':
@@ -116,7 +114,7 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
 
     case 'H5T_STRING':
       return {
-        class: HDF5TypeClass.String,
+        class: DTypeClass.String,
         charSet: hsdsType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF-8',
         length:
           hsdsType.length === 'H5T_VARIABLE' ? undefined : hsdsType.length,
@@ -126,9 +124,7 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
     case 'H5T_VLEN':
       return {
         class:
-          hsdsType.class === 'H5T_ARRAY'
-            ? HDF5TypeClass.Array
-            : HDF5TypeClass.VLen,
+          hsdsType.class === 'H5T_ARRAY' ? DTypeClass.Array : DTypeClass.VLen,
         base: convertHsdsType(hsdsType.base),
         dims: hsdsType.dims,
       };
@@ -137,17 +133,17 @@ export function convertHsdsType(hsdsType: HsdsType): HDF5Type {
       // Booleans are stored as Enum by h5py
       // https://docs.h5py.org/en/stable/faq.html#what-datatypes-are-supported
       if (hsdsType.mapping.FALSE === 0) {
-        return { class: HDF5TypeClass.Bool };
+        return { class: DTypeClass.Bool };
       }
 
       return {
-        class: HDF5TypeClass.Enum,
+        class: DTypeClass.Enum,
         base: convertHsdsType(hsdsType.base),
         mapping: hsdsType.mapping,
       };
 
     default:
-      return { class: HDF5TypeClass.Unknown };
+      return { class: DTypeClass.Unknown };
   }
 }
 
