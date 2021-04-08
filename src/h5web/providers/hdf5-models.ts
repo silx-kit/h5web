@@ -56,17 +56,17 @@ export type HDF5Type =
   | HDF5UnknownType;
 
 export enum HDF5TypeClass {
-  Bool = 'boolean',
-  Integer = 'integer',
-  Unsigned = 'unsigned integer',
-  Float = 'float',
-  Complex = 'complex',
-  String = 'string',
-  Compound = 'compound',
-  Array = 'array',
-  VLen = 'vlen',
-  Enum = 'enum',
-  Unknown = 'unknown',
+  Bool = 'Boolean',
+  Integer = 'Integer',
+  Unsigned = 'Integer (unsigned)',
+  Float = 'Float',
+  Complex = 'Complex',
+  String = 'String',
+  Compound = 'Compound',
+  Array = 'Array',
+  VLen = 'Array (variable length)',
+  Enum = 'Enumeration',
+  Unknown = 'Unknown',
 }
 
 export enum HDF5Endianness {

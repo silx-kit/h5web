@@ -24,7 +24,7 @@ export function renderType(type: HDF5Type): string {
 
   if (type.class === HDF5TypeClass.String) {
     const { length, charSet } = type;
-    return `${charSet ? `${charSet} ` : ''}${type.class}${
+    return `${charSet ? `${charSet} string` : 'String'}${
       length !== undefined ? `, ${length} characters` : ''
     }`;
   }
