@@ -1,5 +1,5 @@
 import Complex from 'complex.js';
-import { HDF5Endianness, HDF5Type, HDF5TypeClass } from '../hdf5-models';
+import { Endianness, DType, DTypeClass } from '../models';
 import type {
   HsdsStringType,
   HsdsArrayType,
@@ -12,35 +12,35 @@ import { convertHsdsType, parseComplex } from './utils';
 
 interface TestType {
   hsds: HsdsType;
-  hdf5: HDF5Type;
+  hdf5: DType;
 }
 
 const leIntegerType: TestType = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
   hdf5: {
-    class: HDF5TypeClass.Integer,
+    class: DTypeClass.Integer,
     size: 8,
-    endianness: HDF5Endianness.LE,
+    endianness: Endianness.LE,
   },
 };
 
 const beIntegerType: TestType = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_U64BE' },
   hdf5: {
-    class: HDF5TypeClass.Unsigned,
+    class: DTypeClass.Unsigned,
     size: 64,
-    endianness: HDF5Endianness.BE,
+    endianness: Endianness.BE,
   },
 };
 
 const leFloatType: TestType = {
   hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F32LE' },
-  hdf5: { class: HDF5TypeClass.Float, size: 32, endianness: HDF5Endianness.LE },
+  hdf5: { class: DTypeClass.Float, size: 32, endianness: Endianness.LE },
 };
 
 const beFloatType: TestType = {
   hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F64BE' },
-  hdf5: { class: HDF5TypeClass.Float, size: 64, endianness: HDF5Endianness.BE },
+  hdf5: { class: DTypeClass.Float, size: 64, endianness: Endianness.BE },
 };
 
 describe('convertHsdsType', () => {
@@ -51,7 +51,7 @@ describe('convertHsdsType', () => {
       length: 25,
     };
     expect(convertHsdsType(asciiStrType)).toEqual({
-      class: HDF5TypeClass.String,
+      class: DTypeClass.String,
       charSet: 'ASCII',
       length: 25,
     });
@@ -65,7 +65,7 @@ describe('convertHsdsType', () => {
     };
 
     expect(convertHsdsType(unicodeStrType)).toEqual({
-      class: HDF5TypeClass.String,
+      class: DTypeClass.String,
       charSet: 'UTF-8',
     });
   });
@@ -87,7 +87,7 @@ describe('convertHsdsType', () => {
       dims: [4, 5],
     };
     expect(convertHsdsType(arrayType)).toEqual({
-      class: HDF5TypeClass.Array,
+      class: DTypeClass.Array,
       base: leIntegerType.hdf5,
       dims: [4, 5],
     });
@@ -99,7 +99,7 @@ describe('convertHsdsType', () => {
       base: leIntegerType.hsds,
     };
     expect(convertHsdsType(vlenType)).toEqual({
-      class: HDF5TypeClass.VLen,
+      class: DTypeClass.VLen,
       base: leIntegerType.hdf5,
     });
   });
@@ -117,10 +117,10 @@ describe('convertHsdsType', () => {
       ],
     };
     expect(convertHsdsType(compoundType)).toEqual({
-      class: HDF5TypeClass.Compound,
+      class: DTypeClass.Compound,
       fields: {
         f1: beFloatType.hdf5,
-        f2: { class: HDF5TypeClass.VLen, base: leIntegerType.hdf5 },
+        f2: { class: DTypeClass.VLen, base: leIntegerType.hdf5 },
       },
     });
   });
@@ -132,7 +132,7 @@ describe('convertHsdsType', () => {
       mapping: { FALSE: 0, TRUE: 1 },
     };
     expect(convertHsdsType(boolEnum)).toEqual({
-      class: HDF5TypeClass.Bool,
+      class: DTypeClass.Bool,
     });
   });
 
@@ -145,7 +145,7 @@ describe('convertHsdsType', () => {
       ],
     };
     expect(convertHsdsType(complexCompound)).toEqual({
-      class: HDF5TypeClass.Complex,
+      class: DTypeClass.Complex,
       realType: leFloatType.hdf5,
       imagType: leFloatType.hdf5,
     });
@@ -154,7 +154,7 @@ describe('convertHsdsType', () => {
   it('should handle unknown type', () => {
     const unknownType = { class: 'NO_CLASS' };
     expect(convertHsdsType(unknownType as HsdsType)).toEqual({
-      class: HDF5TypeClass.Unknown,
+      class: DTypeClass.Unknown,
     });
   });
 });

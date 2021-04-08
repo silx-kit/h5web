@@ -8,18 +8,14 @@ import {
   Shape,
   ArrayShape,
   ScalarShape,
+  DType,
+  DTypeClass,
+  NumericType,
+  StringType,
+  BooleanType,
+  ComplexType,
 } from './providers/models';
-import {
-  HDF5HardLink,
-  HDF5Link,
-  HDF5LinkClass,
-  HDF5Type,
-  HDF5TypeClass,
-  HDF5NumericType,
-  HDF5StringType,
-  HDF5BooleanType,
-  HDF5ComplexType,
-} from './providers/hdf5-models';
+import { HDF5HardLink, HDF5Link, HDF5LinkClass } from './providers/hdf5-models';
 import type { PrintableType } from './vis-packs/core/models';
 
 export function isDefined<T>(val: T): val is NonNullable<T> {
@@ -90,19 +86,19 @@ export function isScalarShape(shape: Shape): shape is ScalarShape {
   return shape !== null && shape.length === 0;
 }
 
-export function hasScalarShape<T extends HDF5Type>(
+export function hasScalarShape<T extends DType>(
   dataset: Dataset<Shape, T>
 ): dataset is Dataset<ScalarShape, T> {
   return isScalarShape(dataset.shape);
 }
 
-export function hasArrayShape<T extends HDF5Type>(
+export function hasArrayShape<T extends DType>(
   dataset: Dataset<Shape, T>
 ): dataset is Dataset<ArrayShape, T> {
   return dataset.shape !== null && dataset.shape.length > 0;
 }
 
-export function hasNonNullShape<T extends HDF5Type>(
+export function hasNonNullShape<T extends DType>(
   dataset: Dataset<Shape, T>
 ): dataset is Dataset<ScalarShape | ArrayShape, T> {
   return dataset.shape !== null;
@@ -116,43 +112,41 @@ export function hasPrintableType<S extends Shape>(
   entity: Dataset<S>
 ): entity is Dataset<S, PrintableType> {
   return [
-    HDF5TypeClass.Integer,
-    HDF5TypeClass.Float,
-    HDF5TypeClass.String,
-    HDF5TypeClass.Bool,
-    HDF5TypeClass.Complex,
+    DTypeClass.Integer,
+    DTypeClass.Float,
+    DTypeClass.String,
+    DTypeClass.Bool,
+    DTypeClass.Complex,
   ].includes(entity.type.class);
 }
 
 export function hasBoolType<S extends Shape>(
   dataset: Dataset<S>
-): dataset is Dataset<S, HDF5BooleanType> {
-  return dataset.type.class === HDF5TypeClass.Bool;
+): dataset is Dataset<S, BooleanType> {
+  return dataset.type.class === DTypeClass.Bool;
 }
 
 export function hasComplexType<S extends Shape>(
   dataset: Dataset<S>
-): dataset is Dataset<S, HDF5ComplexType> {
-  return dataset.type.class === HDF5TypeClass.Complex;
+): dataset is Dataset<S, ComplexType> {
+  return dataset.type.class === DTypeClass.Complex;
 }
 
 export function hasStringType<S extends Shape>(
   dataset: Dataset<S>
-): dataset is Dataset<S, HDF5StringType> {
-  return dataset.type.class === HDF5TypeClass.String;
+): dataset is Dataset<S, StringType> {
+  return dataset.type.class === DTypeClass.String;
 }
 
-export function isNumericType(type: HDF5Type): type is HDF5NumericType {
-  return [
-    HDF5TypeClass.Integer,
-    HDF5TypeClass.Unsigned,
-    HDF5TypeClass.Float,
-  ].includes(type.class);
+export function isNumericType(type: DType): type is NumericType {
+  return [DTypeClass.Integer, DTypeClass.Unsigned, DTypeClass.Float].includes(
+    type.class
+  );
 }
 
 export function hasNumericType<S extends Shape>(
   dataset: Dataset<S>
-): dataset is Dataset<S, HDF5NumericType> {
+): dataset is Dataset<S, NumericType> {
   return isNumericType(dataset.type);
 }
 
@@ -178,7 +172,7 @@ export function assertGroup(
   }
 }
 
-export function assertScalarShape<T extends HDF5Type>(
+export function assertScalarShape<T extends DType>(
   dataset: Dataset<Shape, T>
 ): asserts dataset is Dataset<ScalarShape, T> {
   if (!hasScalarShape(dataset)) {
@@ -186,7 +180,7 @@ export function assertScalarShape<T extends HDF5Type>(
   }
 }
 
-export function assertArrayShape<T extends HDF5Type>(
+export function assertArrayShape<T extends DType>(
   dataset: Dataset<Shape, T>
 ): asserts dataset is Dataset<ArrayShape, T> {
   if (!hasArrayShape(dataset)) {
@@ -194,7 +188,7 @@ export function assertArrayShape<T extends HDF5Type>(
   }
 }
 
-export function assertNonNullShape<T extends HDF5Type>(
+export function assertNonNullShape<T extends DType>(
   dataset: Dataset<Shape, T>
 ): asserts dataset is Dataset<ScalarShape | ArrayShape, T> {
   if (!hasNonNullShape(dataset)) {
@@ -223,7 +217,7 @@ export function assertPrintableType<S extends Shape>(
 
 export function assertStringType<S extends Shape>(
   dataset: Dataset<S>
-): asserts dataset is Dataset<S, HDF5StringType> {
+): asserts dataset is Dataset<S, StringType> {
   if (!hasStringType(dataset)) {
     throw new Error('Expected dataset to have string type');
   }
@@ -231,7 +225,7 @@ export function assertStringType<S extends Shape>(
 
 export function assertNumericType<S extends Shape>(
   dataset: Dataset<S>
-): asserts dataset is Dataset<S, HDF5NumericType> {
+): asserts dataset is Dataset<S, NumericType> {
   if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
   }

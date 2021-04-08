@@ -4,9 +4,9 @@ import type {
   Group,
   NumArrayDataset,
   ScalarShape,
+  StringType,
 } from '../../providers/models';
 import { ProviderContext } from '../../providers/context';
-import type { HDF5StringType } from '../../providers/hdf5-models';
 import {
   isDefined,
   assertArray,
@@ -32,7 +32,7 @@ import {
 
 function useTitleDataset(
   group: Group
-): Dataset<ScalarShape, HDF5StringType> | undefined {
+): Dataset<ScalarShape, StringType> | undefined {
   const { valuesStore } = useContext(ProviderContext);
 
   const dataset = getChildEntity(group, 'title');

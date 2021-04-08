@@ -1,10 +1,10 @@
 import type { PickD3Scale } from '@visx/scale';
 import type {
-  HDF5NumericType,
-  HDF5StringType,
-  HDF5BooleanType,
-  HDF5ComplexType,
-} from '../../providers/hdf5-models';
+  NumericType,
+  StringType,
+  BooleanType,
+  ComplexType,
+} from '../../providers/models';
 
 export enum ScaleType {
   Linear = 'linear',
@@ -66,7 +66,7 @@ export type AxisMapping = (AxisParams | undefined)[];
 export type Bounds = [number, number, number];
 
 export type PrintableType =
-  | HDF5BooleanType
-  | HDF5NumericType
-  | HDF5ComplexType
-  | HDF5StringType;
+  | BooleanType
+  | NumericType
+  | ComplexType
+  | StringType;

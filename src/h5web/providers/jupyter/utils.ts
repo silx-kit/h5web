@@ -1,7 +1,12 @@
 import Complex from 'complex.js';
 import { assertArray } from '../../guards';
-import { HDF5Endianness, HDF5Type, HDF5TypeClass } from '../hdf5-models';
-import { EntityKind, ComplexArray } from '../models';
+import {
+  EntityKind,
+  ComplexArray,
+  Endianness,
+  DType,
+  DTypeClass,
+} from '../models';
 import type {
   JupyterComplex,
   JupyterComplexValue,
@@ -13,9 +18,9 @@ import type {
 } from './models';
 
 // https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
-const ENDIANNESS_MAPPING: Record<string, HDF5Endianness> = {
-  '<': HDF5Endianness.LE,
-  '>': HDF5Endianness.BE,
+const ENDIANNESS_MAPPING: Record<string, Endianness> = {
+  '<': Endianness.LE,
+  '>': Endianness.BE,
 };
 
 export function isGroupResponse(
@@ -43,7 +48,7 @@ export function assertGroupContent(
   assertArray(contents);
 }
 
-export function convertDtype(dtype: string): HDF5Type {
+export function convertDtype(dtype: string): DType {
   const regexp = /([<>=|])?([A-z])(\d*)/u;
   const matches = regexp.exec(dtype);
 
@@ -61,39 +66,39 @@ export function convertDtype(dtype: string): HDF5Type {
       // Booleans are stored as bytes but numpy represents them distinctly from "normal" bytes:
       // `|b1` for booleans vs. `|i1` for normal bytes
       // https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
-      return { class: HDF5TypeClass.Bool };
+      return { class: DTypeClass.Bool };
 
     case 'f':
       return {
-        class: HDF5TypeClass.Float,
+        class: DTypeClass.Float,
         size: length * 8,
         endianness,
       };
 
     case 'i':
       return {
-        class: HDF5TypeClass.Integer,
+        class: DTypeClass.Integer,
         size: length * 8,
         endianness,
       };
 
     case 'u':
       return {
-        class: HDF5TypeClass.Unsigned,
+        class: DTypeClass.Unsigned,
         size: length * 8,
         endianness,
       };
 
     case 'c':
       return {
-        class: HDF5TypeClass.Complex,
+        class: DTypeClass.Complex,
         realType: {
-          class: HDF5TypeClass.Float,
+          class: DTypeClass.Float,
           size: length * 4, // Bytes are equally distributed between real and imag
           endianness,
         },
         imagType: {
-          class: HDF5TypeClass.Float,
+          class: DTypeClass.Float,
           size: length * 4, // Bytes are equally distributed between real and imag
           endianness,
         },
@@ -101,16 +106,16 @@ export function convertDtype(dtype: string): HDF5Type {
 
     case 'S':
       return {
-        class: HDF5TypeClass.String,
+        class: DTypeClass.String,
         charSet: 'ASCII',
         length,
       };
 
     case 'O':
-      return { class: HDF5TypeClass.String, charSet: 'UTF-8' };
+      return { class: DTypeClass.String, charSet: 'UTF-8' };
 
     default:
-      return { class: HDF5TypeClass.Unknown };
+      return { class: DTypeClass.Unknown };
   }
 }
 
