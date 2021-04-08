@@ -119,13 +119,10 @@ describe('convertHsdsType', () => {
     };
     expect(convertHsdsType(compoundType)).toEqual({
       class: HDF5TypeClass.Compound,
-      fields: [
-        { name: 'f1', type: beFloatType.hdf5 },
-        {
-          name: 'f2',
-          type: { class: HDF5TypeClass.VLen, base: leIntegerType.hdf5 },
-        },
-      ],
+      fields: {
+        f1: beFloatType.hdf5,
+        f2: { class: HDF5TypeClass.VLen, base: leIntegerType.hdf5 },
+      },
     });
   });
 
