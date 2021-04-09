@@ -1,10 +1,4 @@
-import type {
-  HDF5Id,
-  HDF5Value,
-  HDF5ExternalLink,
-  HDF5HardLink,
-  HDF5SoftLink,
-} from '../hdf5-models';
+import type { HDF5Id, HDF5Value } from '../hdf5-models';
 import type { Entity } from '../models';
 
 /* --------------------- */
@@ -51,16 +45,30 @@ export interface HsdsValueResponse {
   value: HDF5Value;
 }
 
+/* ----------------- */
+/* ----- LINKS ----- */
+
+export type HsdsLink = HsdsHardLink | HsdsSymbolicLink;
+export type HsdsCollection = 'groups' | 'datasets' | 'datatypes';
+
+interface HsdsHardLink {
+  class: 'H5L_TYPE_HARD';
+  title: string;
+  collection: HsdsCollection;
+  id: HDF5Id;
+}
+
+interface HsdsSymbolicLink {
+  class: 'H5L_TYPE_SOFT' | 'H5L_TYPE_EXTERNAL';
+  title: string;
+  file?: string;
+  h5path: string;
+}
+
 /* ---------------------------- */
 /* ----- ENTITIES & VALUES----- */
 
 export type HsdsEntity<T extends Entity = Entity> = T & { id: HDF5Id };
-
-export type HsdsLink = HDF5HardLink | HDF5SoftLink | HsdsExternalLink;
-
-export interface HsdsExternalLink extends Omit<HDF5ExternalLink, 'file'> {
-  h5domain: string;
-}
 
 export type HsdsComplex = HsdsComplex[] | HsdsComplexValue;
 export type HsdsComplexValue = [number, number];

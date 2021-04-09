@@ -4,7 +4,6 @@ import {
   Entity,
   EntityKind,
   Group,
-  Link,
   ScalarShape,
   Shape,
   ArrayShape,
@@ -16,13 +15,9 @@ import {
   BooleanType,
   ComplexType,
   CompoundType,
+  LinkClass,
 } from '../models';
-import {
-  HDF5ExternalLink,
-  HDF5Link,
-  HDF5LinkClass,
-  HDF5Value,
-} from '../hdf5-models';
+import type { HDF5Value } from '../hdf5-models';
 import type { NxInterpretation, SilxStyle } from '../../vis-packs/nexus/models';
 import { isGroup } from '../../guards';
 import { buildEntityPath } from '../../utils';
@@ -105,7 +100,7 @@ export function withAttributes<T extends Entity>(
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
-type EntityOpts = Partial<Pick<Entity, 'attributes' | 'rawLink'>>;
+type EntityOpts = Partial<Pick<Entity, 'attributes' | 'link'>>;
 type GroupOpts = EntityOpts & { isRoot?: boolean; children?: Entity[] };
 type DatasetOpts = EntityOpts & { valueId?: MockValueId };
 
@@ -124,7 +119,7 @@ export function makeGroup(
   children: Entity[] = [],
   opts: Omit<GroupOpts, 'children'> = {}
 ): Group {
-  const { attributes = [], rawLink, isRoot = false } = opts;
+  const { attributes = [], link, isRoot = false } = opts;
   const path = isRoot ? '/' : `/${name}`;
 
   const group: Group = {
@@ -133,7 +128,7 @@ export function makeGroup(
     kind: EntityKind.Group,
     children,
     attributes,
-    rawLink,
+    link,
   };
 
   prefixChildrenPaths(group, path);
@@ -146,7 +141,7 @@ export function makeDataset<S extends Shape, T extends DType>(
   shape: S,
   opts: DatasetOpts = {}
 ): MockDataset<S, T> {
-  const { attributes = [], valueId = name, rawLink } = opts;
+  const { attributes = [], valueId = name, link } = opts;
 
   return {
     name,
@@ -156,7 +151,7 @@ export function makeDataset<S extends Shape, T extends DType>(
     shape,
     type,
     value: mockValues[valueId as MockValueId],
-    rawLink,
+    link,
   };
 }
 
@@ -173,7 +168,7 @@ export function makeDatatype<T extends DType>(
   type: T,
   opts: EntityOpts = {}
 ): Datatype<T> {
-  const { attributes = [], rawLink } = opts;
+  const { attributes = [], link } = opts;
 
   return {
     name,
@@ -181,31 +176,23 @@ export function makeDatatype<T extends DType>(
     kind: EntityKind.Datatype,
     attributes,
     type,
-    rawLink,
+    link,
   };
 }
 
-function makeLink<T extends HDF5Link>(rawLink: T): Link<T> {
-  return {
-    name: rawLink.title,
-    path: `/${rawLink.title}`,
-    kind: EntityKind.Link,
-    attributes: [],
-    rawLink,
-  };
-}
-
-export function makeExternalLink(
+export function makeUnresolvedEntity(
   name: string,
-  file: string,
-  h5path: string
-): Link<HDF5ExternalLink> {
-  return makeLink({
-    class: HDF5LinkClass.External,
-    title: name,
-    file,
-    h5path,
-  });
+  linkClass: LinkClass,
+  pathToEntity?: string,
+  file?: string
+): Entity {
+  return {
+    name,
+    path: `/${name}`,
+    kind: EntityKind.Unresolved,
+    attributes: [],
+    link: { class: linkClass, file, path: pathToEntity },
+  };
 }
 
 /* ----------------- */

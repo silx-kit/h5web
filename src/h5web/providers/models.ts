@@ -1,5 +1,5 @@
 import type Complex from 'complex.js';
-import type { HDF5Link, HDF5Value } from './hdf5-models';
+import type { HDF5Value } from './hdf5-models';
 
 /* -------------------- */
 /* ----- ENTITIES ----- */
@@ -8,7 +8,7 @@ export enum EntityKind {
   Group = 'group',
   Dataset = 'dataset',
   Datatype = 'datatype',
-  Link = 'link',
+  Unresolved = 'unresolved',
 }
 
 export interface Entity {
@@ -16,7 +16,7 @@ export interface Entity {
   path: string;
   kind: EntityKind;
   attributes: Attribute[];
-  rawLink?: HDF5Link;
+  link?: Link;
 }
 
 export interface Group extends Entity {
@@ -32,17 +32,21 @@ export interface Dataset<S extends Shape = Shape, T extends DType = DType>
   rawType?: unknown;
 }
 
-export type NumArrayDataset = Dataset<ArrayShape, NumericType>;
-
 export interface Datatype<T = DType> extends Entity {
   kind: EntityKind.Datatype;
   type: T;
   rawType?: unknown;
 }
 
-export interface Link<T extends HDF5Link = HDF5Link> extends Entity {
-  kind: EntityKind.Link;
-  rawLink: T;
+export interface UnresolvedEntity extends Entity {
+  kind: EntityKind.Unresolved;
+}
+
+export type LinkClass = 'Hard' | 'Soft' | 'External';
+export interface Link {
+  class: LinkClass;
+  path?: string;
+  file?: string;
 }
 
 export interface Attribute {
@@ -51,6 +55,8 @@ export interface Attribute {
   type: DType;
   value: HDF5Value;
 }
+
+export type NumArrayDataset = Dataset<ArrayShape, NumericType>;
 
 /* ----------------- */
 /* ----- SHAPE ----- */

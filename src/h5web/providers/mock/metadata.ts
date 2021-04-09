@@ -6,7 +6,7 @@ import {
   stringType,
   makeStrAttr,
   makeDatatype,
-  makeExternalLink,
+  makeUnresolvedEntity,
   makeGroup,
   makeNxDataGroup,
   makeNxDataset,
@@ -26,7 +26,6 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
   children: [
     makeGroup('entities', [
       makeGroup('empty_group'),
-      makeExternalLink('external_link', 'my_file', 'entry_000/dataset'),
       makeDataset('empty_dataset', intType, null),
       makeDatatype('datatype', compoundType),
       makeScalarDataset('raw', compoundType),
@@ -35,6 +34,14 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       makeScalarDataset('scalar_str', stringType),
       makeScalarDataset('scalar_bool', booleanType),
       makeScalarDataset('scalar_cplx', complexType),
+      makeUnresolvedEntity('unresolved_hard_link', 'Hard'),
+      makeUnresolvedEntity('unresolved_soft_link', 'Soft', '/foo'),
+      makeUnresolvedEntity(
+        'unresolved_external_link',
+        'External',
+        'entry_000/dataset',
+        'my_file.h5'
+      ),
     ]),
     makeGroup('nD_datasets', [
       makeDataset('oneD_linear', intType, [41]),

@@ -4,7 +4,6 @@ import {
   Group,
   Datatype,
   Dataset,
-  Link,
   Shape,
   ArrayShape,
   ScalarShape,
@@ -14,8 +13,8 @@ import {
   StringType,
   BooleanType,
   ComplexType,
+  UnresolvedEntity,
 } from './providers/models';
-import { HDF5HardLink, HDF5Link, HDF5LinkClass } from './providers/hdf5-models';
 import type { PrintableType } from './vis-packs/core/models';
 
 export function isDefined<T>(val: T): val is NonNullable<T> {
@@ -74,12 +73,8 @@ export function isDatatype(entity: Entity): entity is Datatype {
   return entity.kind === EntityKind.Datatype;
 }
 
-export function isLink(entity: Entity): entity is Link {
-  return entity.kind === EntityKind.Link;
-}
-
-export function isHardLink(link: HDF5Link): link is HDF5HardLink {
-  return link.class === HDF5LinkClass.Hard;
+export function isUnresolvedEntity(entity: Entity): entity is UnresolvedEntity {
+  return entity.kind === EntityKind.Unresolved;
 }
 
 export function isScalarShape(shape: Shape): shape is ScalarShape {

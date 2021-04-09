@@ -1,10 +1,9 @@
 import { useContext } from 'react';
-import type { Entity } from '../providers/models';
+import { Entity, EntityKind } from '../providers/models';
 import styles from './MetadataViewer.module.css';
-import { isDataset, isDatatype, isLink } from '../guards';
+import { isDataset, isDatatype } from '../guards';
 import { renderType, renderShape } from './utils';
 import RawInspector from './RawInspector';
-import LinkInfo from './LinkInfo';
 import { capitalize } from 'lodash-es';
 import { ProviderContext } from '../providers/context';
 
@@ -22,7 +21,7 @@ function EntityTable(props: Props) {
       <thead>
         <tr>
           <th scope="col" colSpan={2}>
-            {capitalize(kind)}
+            {kind === EntityKind.Unresolved ? 'Entity' : capitalize(kind)}
           </th>
         </tr>
       </thead>
@@ -47,7 +46,15 @@ function EntityTable(props: Props) {
             <td>{renderShape(entity.shape)}</td>
           </tr>
         )}
-        {isLink(entity) && entity.rawLink && <LinkInfo link={entity.rawLink} />}
+        {entity.link && entity.link.path && (
+          <tr>
+            <th scope="row">{entity.link.class} link</th>
+            <td>
+              {entity.link.file && `${entity.link.file}:`}
+              {entity.link.path}
+            </td>
+          </tr>
+        )}
         <tr>
           <th scope="row">Raw</th>
           <td className={styles.raw}>

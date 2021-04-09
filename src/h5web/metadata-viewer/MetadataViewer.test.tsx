@@ -99,20 +99,30 @@ test('inspect datatype', async () => {
   expect(typeRow).toHaveTextContent(/Compound/);
 });
 
-test('inspect external link', async () => {
+test('inspect unresolved soft link', async () => {
   renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  await selectExplorerNode('entities/external_link');
+  await selectExplorerNode('entities/unresolved_soft_link');
 
-  const column = await screen.findByRole('columnheader', { name: /Link/ });
+  const column = await screen.findByRole('columnheader', { name: /Entity/ });
   const nameRow = screen.getByRole('row', { name: /^Name/ });
   const pathRow = screen.getByRole('row', { name: /^Path/ });
-  const fileRow = screen.getByRole('row', { name: /^File/ });
-  const h5pathRow = screen.getByRole('row', { name: /^H5Path/ });
+  const linkRow = screen.getByRole('row', { name: /^Soft link/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/external_link/);
-  expect(pathRow).toHaveTextContent(/\/entities\/external_link/);
-  expect(fileRow).toHaveTextContent(/my_file/);
-  expect(h5pathRow).toHaveTextContent(/entry_000\/dataset/);
+  expect(nameRow).toHaveTextContent(/unresolved_soft_link/);
+  expect(pathRow).toHaveTextContent(/\/entities\/unresolved_soft_link/);
+  expect(linkRow).toHaveTextContent(/\/foo/);
+});
+
+test('inspect unresolved external link', async () => {
+  renderApp();
+  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  await selectExplorerNode('entities/unresolved_external_link');
+
+  const column = await screen.findByRole('columnheader', { name: /Entity/ });
+  const linkRow = screen.getByRole('row', { name: /^External link/ });
+
+  expect(column).toBeVisible();
+  expect(linkRow).toHaveTextContent(/my_file.h5:entry_000\/dataset/);
 });
