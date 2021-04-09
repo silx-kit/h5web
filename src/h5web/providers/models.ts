@@ -1,5 +1,5 @@
 import type Complex from 'complex.js';
-import type { HDF5Link, HDF5Dims, HDF5Value } from './hdf5-models';
+import type { HDF5Link, HDF5Value } from './hdf5-models';
 
 /* -------------------- */
 /* ----- ENTITIES ----- */
@@ -56,7 +56,7 @@ export interface Attribute {
 /* ----- SHAPE ----- */
 
 export type Shape = ArrayShape | ScalarShape | null;
-export type ArrayShape = HDF5Dims;
+export type ArrayShape = number[];
 export type ScalarShape = never[];
 
 /* ---------------- */
@@ -76,20 +76,20 @@ export enum DTypeClass {
   Unknown = 'Unknown',
 }
 
-export type DType =
-  | NumericType
-  | StringType
-  | BooleanType
-  | ComplexType
-  | ArrayType
-  | CompoundType
-  | EnumType
-  | UnknownType;
-
 export enum Endianness {
   LE = 'little-endian',
   BE = 'big-endian',
 }
+
+export type DType =
+  | BooleanType
+  | NumericType
+  | ComplexType
+  | StringType
+  | CompoundType
+  | ArrayType
+  | EnumType
+  | UnknownType;
 
 export interface BooleanType {
   class: DTypeClass.Bool;
@@ -121,7 +121,7 @@ export interface CompoundType {
 interface ArrayType {
   class: DTypeClass.Array | DTypeClass.VLen;
   base: DType;
-  dims?: HDF5Dims;
+  dims?: number[];
 }
 
 interface EnumType {
