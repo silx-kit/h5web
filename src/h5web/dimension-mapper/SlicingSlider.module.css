@@ -4,7 +4,7 @@
   flex-direction: column;
   padding: 0 0.5rem;
   --thumb-height: 1.5rem;
-  --mark-height: 0.4375rem;
+  --mark-height: 0.5rem;
 }
 
 .label {
@@ -22,8 +22,11 @@
 }
 
 .track {
+  flex: 1 0 auto;
+  margin: calc(var(--thumb-height) / 2) 0;
   width: 2px;
   background-color: var(--secondary-dark);
+  border-radius: 1px;
 }
 
 .thumb {
@@ -49,10 +52,10 @@
 }
 
 .mark {
+  width: var(--mark-height);
+  height: var(--mark-height);
   background-color: var(--primary-bg);
   border: 2px solid var(--secondary-dark);
   border-radius: 50%;
-  margin: calc(var(--thumb-height) / 2 - var(--mark-height) / 2) 1px;
-  height: var(--mark-height);
-  width: var(--mark-height);
+  transform: translateY(-100%);
 }

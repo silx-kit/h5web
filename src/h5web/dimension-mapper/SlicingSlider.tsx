@@ -2,6 +2,7 @@ import ReactSlider from 'react-slider';
 import { useMeasure } from 'react-use';
 import styles from './SlicingSlider.module.css';
 import type { DimensionMapping } from './models';
+import { Component, Fragment, useEffect, useRef } from 'react';
 
 const MIN_HEIGHT_PER_MARK = 25;
 
@@ -15,7 +16,14 @@ interface Props {
 
 function SlicingSlider(props: Props) {
   const { dimension, slicingIndex, rawDims, mapperState, onChange } = props;
+
   const [containerRef, { height }] = useMeasure();
+  const sliderRef = useRef<Component<ReactSlider.ReactSliderProps>>(null);
+
+  useEffect(() => {
+    // @ts-ignore
+    sliderRef.current?.resize();
+  }, [height]);
 
   return (
     <div
@@ -25,29 +33,34 @@ function SlicingSlider(props: Props) {
     >
       <span className={styles.label}>D{dimension}</span>
       <ReactSlider
-        // Force refresh when slider height changes - i.e. when Y-axis mapper appears/disappears
-        // https://github.com/zillow/react-slider/issues/172
-        key={`${mapperState.includes('y')}`}
+        ref={sliderRef}
         className={styles.slider}
         ariaLabel="Dimension slider"
-        trackClassName={styles.track}
-        thumbClassName={styles.thumb}
-        renderThumb={(thumbProps, state) => (
-          <div {...thumbProps}>{state.valueNow}</div>
-        )}
+        min={0}
+        max={rawDims[dimension] - 1}
+        step={1}
+        marks={height / rawDims[dimension] >= MIN_HEIGHT_PER_MARK}
+        markClassName={styles.mark}
+        orientation="vertical"
+        invert
         value={slicingIndex}
         onChange={(value) => {
           const newMapperState = [...mapperState];
           newMapperState[dimension] = value as number;
           onChange(newMapperState);
         }}
-        min={0}
-        max={rawDims[dimension] - 1}
-        marks={height / rawDims[dimension] >= MIN_HEIGHT_PER_MARK}
-        markClassName={styles.mark}
-        step={1}
-        orientation="vertical"
-        invert
+        renderThumb={(thumbProps, state) => (
+          <div {...thumbProps} className={styles.thumb}>
+            {state.valueNow}
+          </div>
+        )}
+        renderTrack={({ key }, { index }) =>
+          index === 0 ? (
+            <div key={key} className={styles.track} />
+          ) : (
+            <Fragment key={key} />
+          )
+        }
       />
     </div>
   );
