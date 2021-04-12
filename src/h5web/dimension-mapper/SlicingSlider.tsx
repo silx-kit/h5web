@@ -2,7 +2,7 @@ import ReactSlider from 'react-slider';
 import { useMeasure } from 'react-use';
 import styles from './SlicingSlider.module.css';
 import type { DimensionMapping } from './models';
-import { Component, useEffect, useRef } from 'react';
+import { Component, Fragment, useEffect, useRef } from 'react';
 
 const MIN_HEIGHT_PER_MARK = 25;
 
@@ -36,24 +36,31 @@ function SlicingSlider(props: Props) {
         ref={sliderRef}
         className={styles.slider}
         ariaLabel="Dimension slider"
-        trackClassName={styles.track}
-        thumbClassName={styles.thumb}
-        renderThumb={(thumbProps, state) => (
-          <div {...thumbProps}>{state.valueNow}</div>
-        )}
+        min={0}
+        max={rawDims[dimension] - 1}
+        step={1}
+        marks={height / rawDims[dimension] >= MIN_HEIGHT_PER_MARK}
+        markClassName={styles.mark}
+        orientation="vertical"
+        invert
         value={slicingIndex}
         onChange={(value) => {
           const newMapperState = [...mapperState];
           newMapperState[dimension] = value as number;
           onChange(newMapperState);
         }}
-        min={0}
-        max={rawDims[dimension] - 1}
-        marks={height / rawDims[dimension] >= MIN_HEIGHT_PER_MARK}
-        markClassName={styles.mark}
-        step={1}
-        orientation="vertical"
-        invert
+        renderThumb={(thumbProps, state) => (
+          <div {...thumbProps} className={styles.thumb}>
+            {state.valueNow}
+          </div>
+        )}
+        renderTrack={({ key }, { index }) =>
+          index === 0 ? (
+            <div key={key} className={styles.track} />
+          ) : (
+            <Fragment key={key} />
+          )
+        }
       />
     </div>
   );
