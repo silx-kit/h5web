@@ -1,4 +1,3 @@
-import type { HDF5Value } from '../hdf5-models';
 import type { EntityKind } from '../models';
 
 export interface JupyterMetaResponse {
@@ -36,7 +35,7 @@ export type JupyterContentResponse =
   | JupyterContentDatasetResponse
   | JupyterContentGroupResponse;
 
-export type JupyterDataResponse = HDF5Value;
+export type JupyterDataResponse = unknown;
 
 export type JupyterAttrsResponse = Record<string, string>;
 

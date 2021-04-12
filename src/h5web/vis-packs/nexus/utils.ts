@@ -4,7 +4,6 @@ import type {
   Dataset,
   NumArrayDataset,
 } from '../../providers/models';
-import type { HDF5Value } from '../../providers/hdf5-models';
 import {
   assertDefined,
   assertStr,
@@ -19,7 +18,7 @@ import { getChildEntity } from '../../utils';
 export function getAttributeValue(
   entity: Entity,
   attributeName: NxAttribute
-): HDF5Value {
+): unknown {
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }
 

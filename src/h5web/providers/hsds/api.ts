@@ -15,7 +15,6 @@ import type {
   HsdsId,
 } from './models';
 import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
-import type { HDF5Value } from '../hdf5-models';
 import { assertDefined, assertGroup, hasComplexType } from '../../guards';
 import type { GetValueParams, ProviderAPI } from '../context';
 import {
@@ -82,7 +81,7 @@ export class HsdsApi implements ProviderAPI {
     return entity;
   }
 
-  public async getValue(params: GetValueParams): Promise<HDF5Value> {
+  public async getValue(params: GetValueParams): Promise<unknown> {
     const { path, selection = '' } = params;
 
     const entity = await this.getEntity(path);
