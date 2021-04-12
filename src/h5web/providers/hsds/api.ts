@@ -12,9 +12,10 @@ import type {
   HsdsComplex,
   HsdsEntity,
   HsdsCollection,
+  HsdsId,
 } from './models';
 import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
-import type { HDF5Id, HDF5Value } from '../hdf5-models';
+import type { HDF5Value } from '../hdf5-models';
 import { assertDefined, assertGroup, hasComplexType } from '../../guards';
 import type { GetValueParams, ProviderAPI } from '../context';
 import {
@@ -98,31 +99,31 @@ export class HsdsApi implements ProviderAPI {
     return data.value;
   }
 
-  private async fetchRootId(): Promise<HDF5Id> {
+  private async fetchRootId(): Promise<HsdsId> {
     const { data } = await this.client.get<HsdsRootResponse>('/');
     return data.root;
   }
 
-  private async fetchDataset(id: HDF5Id): Promise<HsdsDatasetResponse> {
+  private async fetchDataset(id: HsdsId): Promise<HsdsDatasetResponse> {
     const { data } = await this.client.get<HsdsDatasetResponse>(
       `/datasets/${id}`
     );
     return data;
   }
 
-  private async fetchDatatype(id: HDF5Id): Promise<HsdsDatatypeResponse> {
+  private async fetchDatatype(id: HsdsId): Promise<HsdsDatatypeResponse> {
     const { data } = await this.client.get<HsdsDatatypeResponse>(
       `/datatypes/${id}`
     );
     return data;
   }
 
-  private async fetchGroup(id: HDF5Id): Promise<HsdsGroupResponse> {
+  private async fetchGroup(id: HsdsId): Promise<HsdsGroupResponse> {
     const { data } = await this.client.get<HsdsGroupResponse>(`/groups/${id}`);
     return data;
   }
 
-  private async fetchLinks(id: HDF5Id): Promise<HsdsLink[]> {
+  private async fetchLinks(id: HsdsId): Promise<HsdsLink[]> {
     const { data } = await this.client.get<HsdsLinksResponse>(
       `/groups/${id}/links`
     );
@@ -131,7 +132,7 @@ export class HsdsApi implements ProviderAPI {
 
   private async fetchAttributes(
     entityCollection: HsdsCollection,
-    entityId: HDF5Id
+    entityId: HsdsId
   ): Promise<HsdsAttributeResponse[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
       `/${entityCollection}/${entityId}/attributes`
@@ -148,7 +149,7 @@ export class HsdsApi implements ProviderAPI {
   }
 
   private async processGroup(
-    id: HDF5Id,
+    id: HsdsId,
     path: string,
     name: string,
     depth: number
@@ -181,7 +182,7 @@ export class HsdsApi implements ProviderAPI {
   }
 
   private async processDataset(
-    id: HDF5Id,
+    id: HsdsId,
     path: string,
     name: string
   ): Promise<HsdsEntity<Dataset>> {
@@ -204,7 +205,7 @@ export class HsdsApi implements ProviderAPI {
   }
 
   private async processDatatype(
-    id: HDF5Id,
+    id: HsdsId,
     path: string,
     name: string
   ): Promise<Datatype> {

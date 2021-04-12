@@ -1,28 +1,30 @@
-import type { HDF5Id, HDF5Value } from '../hdf5-models';
+import type { HDF5Value } from '../hdf5-models';
 import type { Entity } from '../models';
 
 /* --------------------- */
 /* ----- RESPONSES ----- */
 
+export type HsdsId = string;
+
 export interface HsdsRootResponse {
-  root: HDF5Id;
+  root: HsdsId;
 }
 
 export interface HsdsGroupResponse {
-  id: HDF5Id;
+  id: HsdsId;
   linkCount: number;
   attributeCount: number;
 }
 
 export interface HsdsDatasetResponse {
-  id: HDF5Id;
+  id: HsdsId;
   shape: HsdsShape;
   type: HsdsType;
   attributeCount: number;
 }
 
 export interface HsdsDatatypeResponse {
-  id: HDF5Id;
+  id: HsdsId;
   type: HsdsType;
 }
 
@@ -55,7 +57,7 @@ interface HsdsHardLink {
   class: 'H5L_TYPE_HARD';
   title: string;
   collection: HsdsCollection;
-  id: HDF5Id;
+  id: HsdsId;
 }
 
 interface HsdsSymbolicLink {
@@ -68,7 +70,7 @@ interface HsdsSymbolicLink {
 /* ---------------------------- */
 /* ----- ENTITIES & VALUES----- */
 
-export type HsdsEntity<T extends Entity = Entity> = T & { id: HDF5Id };
+export type HsdsEntity<T extends Entity = Entity> = T & { id: HsdsId };
 
 export type HsdsComplex = HsdsComplex[] | HsdsComplexValue;
 export type HsdsComplexValue = [number, number];
