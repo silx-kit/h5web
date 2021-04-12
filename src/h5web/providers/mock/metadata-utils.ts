@@ -17,7 +17,6 @@ import {
   CompoundType,
   LinkClass,
 } from '../models';
-import type { HDF5Value } from '../hdf5-models';
 import type { NxInterpretation, SilxStyle } from '../../vis-packs/nexus/models';
 import { isGroup } from '../../guards';
 import { buildEntityPath } from '../../utils';
@@ -66,7 +65,7 @@ export function makeAttr(
   name: string,
   type: DType,
   shape: Shape,
-  value: HDF5Value
+  value: unknown
 ): Attribute {
   return { name, type, shape, value };
 }
@@ -74,7 +73,7 @@ export function makeAttr(
 export function makeScalarAttr(
   name: string,
   type: DType,
-  value: HDF5Value
+  value: unknown
 ): Attribute {
   return makeAttr(name, type, [], value);
 }

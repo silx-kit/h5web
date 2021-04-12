@@ -1,4 +1,3 @@
-import type { HDF5Value } from '../hdf5-models';
 import type { Entity } from '../models';
 
 /* --------------------- */
@@ -36,7 +35,7 @@ export interface HsdsAttributeResponse {
   name: string;
   shape: HsdsShape;
   type: HsdsType;
-  value: HDF5Value;
+  value: unknown;
 }
 
 export interface HsdsLinksResponse {
@@ -44,7 +43,7 @@ export interface HsdsLinksResponse {
 }
 
 export interface HsdsValueResponse {
-  value: HDF5Value;
+  value: unknown;
 }
 
 /* ----------------- */

@@ -1,6 +1,5 @@
 import type { FetchStore } from 'react-suspense-fetch';
 import { assertDefined, assertStr, hasMinDims, isGroup } from '../../guards';
-import type { HDF5Value } from '../../providers/hdf5-models';
 import type { Entity } from '../../providers/models';
 import { buildEntityPath } from '../../utils';
 import type { VisDef } from '../models';
@@ -28,9 +27,7 @@ export function getDefaultEntity(
   return getDefaultEntity(defaultEntity, entitiesStore);
 }
 
-function isNxInterpretation(
-  attrValue: HDF5Value
-): attrValue is NxInterpretation {
+function isNxInterpretation(attrValue: unknown): attrValue is NxInterpretation {
   return (
     typeof attrValue === 'string' &&
     Object.values<string>(NxInterpretation).includes(attrValue)

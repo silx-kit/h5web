@@ -1,5 +1,4 @@
 import type Complex from 'complex.js';
-import type { HDF5Value } from './hdf5-models';
 
 /* -------------------- */
 /* ----- ENTITIES ----- */
@@ -53,7 +52,7 @@ export interface Attribute {
   name: string;
   shape: Shape;
   type: DType;
-  value: HDF5Value;
+  value: unknown;
 }
 
 export type NumArrayDataset = Dataset<ArrayShape, NumericType>;

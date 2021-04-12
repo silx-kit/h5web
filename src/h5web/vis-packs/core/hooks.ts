@@ -16,7 +16,6 @@ import type { AxisScale } from './models';
 import { ProviderContext } from '../../providers/context';
 import type { Dataset, Value } from '../../providers/models';
 import { isAxis } from '../../dimension-mapper/utils';
-import type { HDF5Value } from '../../providers/hdf5-models';
 
 export function useDatasetValue<D extends Dataset | undefined>(
   dataset: D,
@@ -26,7 +25,7 @@ export function useDatasetValue<D extends Dataset | undefined>(
 export function useDatasetValue(
   dataset: Dataset | undefined,
   dimMapping?: DimensionMapping
-): HDF5Value {
+): unknown {
   const { valuesStore } = useContext(ProviderContext);
 
   if (!dataset) {
@@ -50,9 +49,7 @@ export function useDatasetValues<D extends Dataset>(
   datasets: D[]
 ): Record<string, Value<D>>;
 
-export function useDatasetValues(
-  datasets: Dataset[]
-): Record<string, HDF5Value> {
+export function useDatasetValues(datasets: Dataset[]): Record<string, unknown> {
   const { valuesStore } = useContext(ProviderContext);
 
   return Object.fromEntries(

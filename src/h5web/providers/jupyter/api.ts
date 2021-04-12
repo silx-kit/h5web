@@ -16,7 +16,6 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { makeStrAttr } from '../mock/metadata-utils';
-import type { HDF5Value } from '../hdf5-models';
 import { assertDataset, hasComplexType } from '../../guards';
 
 export class JupyterApi implements ProviderAPI {
@@ -34,7 +33,7 @@ export class JupyterApi implements ProviderAPI {
     return this.processEntity(path, 1);
   }
 
-  public async getValue(params: GetValueParams): Promise<HDF5Value> {
+  public async getValue(params: GetValueParams): Promise<unknown> {
     const { path, selection = '' } = params;
 
     const [{ data }, entity] = await Promise.all([
