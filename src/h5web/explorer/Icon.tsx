@@ -15,7 +15,7 @@ const LEAF_ICONS: Record<EntityKind, IconType> = {
   [EntityKind.Group]: FiFolder,
   [EntityKind.Dataset]: FiLayers,
   [EntityKind.Datatype]: FiHash,
-  [EntityKind.Link]: FiLink,
+  [EntityKind.Unresolved]: FiLink,
 };
 
 interface Props {

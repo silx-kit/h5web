@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { Group, Dataset, EntityKind, Link, Entity } from '../models';
+import { Group, Dataset, Entity, EntityKind } from '../models';
 import type { GetValueParams, ProviderAPI } from '../context';
 import {
   assertGroupContent,
@@ -16,7 +16,7 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { makeStrAttr } from '../mock/metadata-utils';
-import { HDF5LinkClass, HDF5Value, HDF5SoftLink } from '../hdf5-models';
+import type { HDF5Value } from '../hdf5-models';
 import { assertDataset, hasComplexType } from '../../guards';
 
 export class JupyterApi implements ProviderAPI {
@@ -79,7 +79,7 @@ export class JupyterApi implements ProviderAPI {
   private async processEntity(
     path: string,
     depth: number
-  ): Promise<Group | Dataset | Link<HDF5SoftLink>> {
+  ): Promise<Group | Dataset | Entity> {
     const response = await this.fetchMetadata(path);
 
     // TODO: To fix once we have `attributeCount`
@@ -132,15 +132,10 @@ export class JupyterApi implements ProviderAPI {
       };
     }
 
-    // Consider other as unresolved soft links
+    // Treat 'other' entities as unresolved
     return {
       ...baseEntity,
-      kind: EntityKind.Link,
-      rawLink: {
-        class: HDF5LinkClass.Soft,
-        title: path,
-        h5path: path,
-      },
+      kind: EntityKind.Unresolved,
     };
   }
 }

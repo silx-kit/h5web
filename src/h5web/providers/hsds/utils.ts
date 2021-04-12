@@ -15,8 +15,6 @@ import {
   Dataset,
 } from '../models';
 import type {
-  HsdsLink,
-  HsdsExternalLink,
   HsdsType,
   HsdsComplex,
   HsdsComplexValue,
@@ -26,10 +24,6 @@ import type {
   HsdsNumericType,
   HsdsCompoundType,
 } from './models';
-
-export function isHsdsExternalLink(link: HsdsLink): link is HsdsExternalLink {
-  return 'h5domain' in link;
-}
 
 export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
   return isGroup(entity);

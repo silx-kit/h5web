@@ -11,19 +11,14 @@ import type {
   HsdsLink,
   HsdsComplex,
   HsdsEntity,
+  HsdsCollection,
 } from './models';
 import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
-import { HDF5Collection, HDF5Id, HDF5Value, HDF5Link } from '../hdf5-models';
-import {
-  assertDefined,
-  assertGroup,
-  hasComplexType,
-  isHardLink,
-} from '../../guards';
+import type { HDF5Id, HDF5Value } from '../hdf5-models';
+import { assertDefined, assertGroup, hasComplexType } from '../../guards';
 import type { GetValueParams, ProviderAPI } from '../context';
 import {
   assertHsdsDataset,
-  isHsdsExternalLink,
   isHsdsGroup,
   convertHsdsShape,
   convertHsdsType,
@@ -135,7 +130,7 @@ export class HsdsApi implements ProviderAPI {
   }
 
   private async fetchAttributes(
-    entityCollection: HDF5Collection,
+    entityCollection: HsdsCollection,
     entityId: HDF5Id
   ): Promise<HsdsAttributeResponse[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
@@ -164,19 +159,15 @@ export class HsdsApi implements ProviderAPI {
     // If recursion depth has been reached, don't fetch links at all
     const [attributes, links] = await Promise.all([
       attributeCount > 0
-        ? this.fetchAttributes(HDF5Collection.Groups, id)
+        ? this.fetchAttributes('groups', id)
         : Promise.resolve([]),
       linkCount > 0 && depth > 0 ? this.fetchLinks(id) : Promise.resolve([]),
     ]);
 
     const children = await Promise.all(
-      links
-        .map<HDF5Link>((link: HsdsLink) =>
-          isHsdsExternalLink(link) ? { ...link, file: link.h5domain } : link
-        )
-        .map((link) =>
-          this.resolveLink(link, buildEntityPath(path, link.title), depth - 1)
-        )
+      links.map((link) =>
+        this.resolveLink(link, buildEntityPath(path, link.title), depth - 1)
+      )
     );
 
     return {
@@ -198,9 +189,7 @@ export class HsdsApi implements ProviderAPI {
     const { shape, type, attributeCount } = dataset;
 
     const attributes =
-      attributeCount > 0
-        ? await this.fetchAttributes(HDF5Collection.Datasets, id)
-        : [];
+      attributeCount > 0 ? await this.fetchAttributes('datasets', id) : [];
 
     return {
       id,
@@ -232,28 +221,32 @@ export class HsdsApi implements ProviderAPI {
   }
 
   private async resolveLink(
-    link: HDF5Link,
+    link: HsdsLink,
     path: string,
     depth: number
   ): Promise<Entity> {
-    if (!isHardLink(link)) {
+    if (link.class !== 'H5L_TYPE_HARD') {
       return {
         name: link.title,
         path,
-        kind: EntityKind.Link,
+        kind: EntityKind.Unresolved,
         attributes: [],
-        rawLink: link,
+        link: {
+          class: link.class === 'H5L_TYPE_SOFT' ? 'Soft' : 'External',
+          path: link.h5path,
+          file: link.file,
+        },
       };
     }
 
     const { id, title, collection } = link;
 
     switch (collection) {
-      case HDF5Collection.Groups:
+      case 'groups':
         return this.processGroup(id, path, title, depth);
-      case HDF5Collection.Datasets:
+      case 'datasets':
         return this.processDataset(id, path, title);
-      case HDF5Collection.Datatypes:
+      case 'datatypes':
         return this.processDatatype(id, path, title);
       default:
         throw new Error('Unknown collection !');
