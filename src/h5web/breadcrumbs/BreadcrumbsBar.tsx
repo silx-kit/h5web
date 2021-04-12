@@ -10,7 +10,7 @@ interface Props {
   isInspecting: boolean;
   onToggleExplorer: () => void;
   onChangeInspecting: (b: boolean) => void;
-  setSelectedPath: (path: string) => void;
+  onSelectPath: (path: string) => void;
 }
 
 function BreadcrumbsBar(props: Props) {
@@ -20,7 +20,7 @@ function BreadcrumbsBar(props: Props) {
     isInspecting,
     onToggleExplorer,
     onChangeInspecting,
-    setSelectedPath,
+    onSelectPath,
   } = props;
 
   return (
@@ -35,7 +35,7 @@ function BreadcrumbsBar(props: Props) {
 
       <Breadcrumbs
         path={path}
-        onSelect={setSelectedPath}
+        onSelect={onSelectPath}
         showFilepath={!isExplorerOpen}
       />
 

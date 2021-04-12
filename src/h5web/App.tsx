@@ -36,11 +36,11 @@ function App() {
       <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
         <BreadcrumbsBar
           path={selectedPath}
-          setSelectedPath={setSelectedPath}
           isExplorerOpen={isExplorerOpen}
           isInspecting={isInspecting}
           onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
           onChangeInspecting={setInspecting}
+          onSelectPath={setSelectedPath}
         />
         <ErrorBoundary
           resetKeys={[selectedPath, isInspecting]}
@@ -48,7 +48,10 @@ function App() {
         >
           <Suspense fallback={<LoadingFallback isInspecting={isInspecting} />}>
             {isInspecting ? (
-              <MetadataViewer path={selectedPath} />
+              <MetadataViewer
+                path={selectedPath}
+                onSelectPath={setSelectedPath}
+              />
             ) : (
               <VisPackChooser path={selectedPath} />
             )}

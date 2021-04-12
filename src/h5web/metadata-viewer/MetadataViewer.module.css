@@ -50,3 +50,25 @@
 .empty {
   padding: 1rem;
 }
+
+.attrValue {
+  display: flex;
+  align-items: center;
+}
+
+.attrValueBtn {
+  composes: btn-clean from global;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: var(--secondary-darker);
+}
+
+.attrValueBtn:hover {
+  text-decoration: underline;
+}
+
+.attrValueBtn > svg {
+  margin-left: 0.25rem;
+  transform: translateY(1px);
+}

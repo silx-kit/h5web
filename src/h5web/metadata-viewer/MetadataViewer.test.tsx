@@ -126,3 +126,28 @@ test('inspect unresolved external link', async () => {
   expect(column).toBeVisible();
   expect(linkRow).toHaveTextContent(/my_file.h5:entry_000\/dataset/);
 });
+
+test('follow path attributes', async () => {
+  renderApp();
+  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
+
+  userEvent.click(
+    await screen.findByRole('button', { name: 'Inspect nexus_entry' })
+  );
+
+  const nxEntry = await screen.findByRole('treeitem', { name: 'nexus_entry' });
+  expect(nxEntry).toHaveAttribute('aria-selected', 'true');
+  expect(nxEntry).toHaveAttribute('aria-expanded', 'true');
+
+  await selectExplorerNode('nx_process/absolute_default_path');
+
+  userEvent.click(
+    await screen.findByRole('button', {
+      name: 'Inspect /nexus_entry/nx_process/nx_data',
+    })
+  );
+
+  const nxData = await screen.findByRole('treeitem', { name: 'nx_data' });
+  expect(nxData).toHaveAttribute('aria-selected', 'true');
+  expect(nxData).toHaveAttribute('aria-expanded', 'true');
+});

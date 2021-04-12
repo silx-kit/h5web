@@ -1,12 +1,21 @@
+import { FiChevronsRight } from 'react-icons/fi';
 import type { Attribute } from '../providers/models';
 import styles from './MetadataViewer.module.css';
 
+const FOLLOWABLE_ATTRS = new Set([
+  'default',
+  'signal',
+  'axes',
+  'auxiliary_signals',
+]);
+
 interface Props {
   attributes: Attribute[];
+  onFollowPath: (path: string) => void;
 }
 
 function AttributesTable(props: Props) {
-  const { attributes } = props;
+  const { attributes, onFollowPath } = props;
 
   if (attributes.length === 0) {
     return null;
@@ -25,7 +34,21 @@ function AttributesTable(props: Props) {
         {attributes.map(({ name, value }) => (
           <tr key={name}>
             <th scope="row">{name}</th>
-            <td>{JSON.stringify(value)}</td>
+            <td>
+              {FOLLOWABLE_ATTRS.has(name) && typeof value === 'string' ? (
+                <button
+                  className={styles.attrValueBtn}
+                  type="button"
+                  aria-label={`Inspect ${value}`}
+                  onClick={() => onFollowPath(value)}
+                >
+                  {value}
+                  <FiChevronsRight />
+                </button>
+              ) : (
+                JSON.stringify(value)
+              )}
+            </td>
           </tr>
         ))}
       </tbody>
