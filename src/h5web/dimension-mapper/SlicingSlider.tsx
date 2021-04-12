@@ -2,6 +2,7 @@ import ReactSlider from 'react-slider';
 import { useMeasure } from 'react-use';
 import styles from './SlicingSlider.module.css';
 import type { DimensionMapping } from './models';
+import { Component, useEffect, useRef } from 'react';
 
 const MIN_HEIGHT_PER_MARK = 25;
 
@@ -15,7 +16,14 @@ interface Props {
 
 function SlicingSlider(props: Props) {
   const { dimension, slicingIndex, rawDims, mapperState, onChange } = props;
+
   const [containerRef, { height }] = useMeasure();
+  const sliderRef = useRef<Component<ReactSlider.ReactSliderProps>>(null);
+
+  useEffect(() => {
+    // @ts-ignore
+    sliderRef.current?.resize();
+  }, [height]);
 
   return (
     <div
@@ -25,9 +33,7 @@ function SlicingSlider(props: Props) {
     >
       <span className={styles.label}>D{dimension}</span>
       <ReactSlider
-        // Force refresh when slider height changes - i.e. when Y-axis mapper appears/disappears
-        // https://github.com/zillow/react-slider/issues/172
-        key={`${mapperState.includes('y')}`}
+        ref={sliderRef}
         className={styles.slider}
         ariaLabel="Dimension slider"
         trackClassName={styles.track}
