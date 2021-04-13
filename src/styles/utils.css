@@ -16,3 +16,13 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+.reflex-splitter {
+  width: 5px !important;
+  border-color: var(--light-gray) !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+.reflex-splitter:hover {
+  background-color: var(--light-gray) !important;
+}
