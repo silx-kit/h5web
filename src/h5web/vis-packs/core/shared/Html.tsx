@@ -1,10 +1,16 @@
-import { useState, useEffect, forwardRef } from 'react';
+import {
+  useState,
+  useEffect,
+  forwardRef,
+  HTMLAttributes,
+  useLayoutEffect,
+} from 'react';
 import ReactDOM from 'react-dom';
 import { useThree } from 'react-three-fiber';
 
 // Simplified version of `drei`'s `<Html>` component
 // https://github.com/pmndrs/drei/blob/v2.2.3/src/Html.tsx
-const Html = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+const Html = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   (props, ref) => {
     const { className, style, children, ...divProps } = props;
 
@@ -31,7 +37,7 @@ const Html = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
       };
     }, [el, parentElement]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       ReactDOM.render(
         <div
           ref={ref}
