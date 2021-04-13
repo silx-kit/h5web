@@ -1,4 +1,4 @@
-import { CSSProperties, Suspense } from 'react';
+import { CSSProperties, Suspense, useEffect } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
@@ -19,9 +19,17 @@ function EntityItem(props: Props) {
   const { path, entity, level, selectedPath, onSelect } = props;
   const isSelected = path === selectedPath;
 
-  const [isExpanded, toggleExpanded] = useToggle(
-    isGroup(entity) && selectedPath.startsWith(path)
-  );
+  const [isExpanded, toggleExpanded] = useToggle(false);
+
+  useEffect(() => {
+    if (
+      isGroup(entity) &&
+      (selectedPath === path || selectedPath.startsWith(`${path}/`))
+    ) {
+      // If group is selected or is parent of selected entity, expand it
+      toggleExpanded(true);
+    }
+  }, [entity, path, selectedPath, toggleExpanded]);
 
   return (
     <li
