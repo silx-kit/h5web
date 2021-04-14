@@ -48,10 +48,9 @@ function Breadcrumbs(props: Props) {
         type="button"
         title="Copy path to clipboard"
         onClick={() => navigator.clipboard.writeText(path)}
+        data-current
       >
-        <span className={styles.crumb} data-current>
-          {crumbs[crumbs.length - 1]}
-        </span>
+        <span className={styles.crumb}>{crumbs[crumbs.length - 1]}</span>
         <FiClipboard className={styles.copyIcon} />
       </button>
     </h1>
