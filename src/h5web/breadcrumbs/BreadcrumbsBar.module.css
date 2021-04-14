@@ -24,6 +24,8 @@
 .crumbButton {
   composes: btn-clean from global;
   display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .crumbButton:hover {
@@ -39,6 +41,7 @@
 .crumb[data-current] {
   flex: none; /* never shrink current breadcrumb */
   font-weight: 600;
+  margin-right: 1rem;
 }
 
 .separator {
@@ -79,4 +82,15 @@
   composes: btn;
   margin-right: 1rem;
   border-radius: 0.5rem;
+}
+
+.copyIcon {
+  position: absolute;
+  display: none;
+  font-size: 1rem;
+  padding-bottom: 0.125rem;
+}
+
+.crumbButton:hover > .copyIcon {
+  display: flex;
 }

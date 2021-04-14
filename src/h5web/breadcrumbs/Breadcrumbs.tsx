@@ -3,6 +3,7 @@ import styles from './BreadcrumbsBar.module.css';
 import { assertAbsolutePath } from '../guards';
 import { ProviderContext } from '../providers/context';
 import Crumb from './Crumb';
+import { FiClipboard } from 'react-icons/fi';
 
 interface Props {
   path: string;
@@ -42,9 +43,17 @@ function Breadcrumbs(props: Props) {
           />
         );
       })}
-      <span className={styles.crumb} data-current>
-        {crumbs[crumbs.length - 1]}
-      </span>
+      <button
+        className={styles.crumbButton}
+        type="button"
+        title="Copy path to clipboard"
+        onClick={() => navigator.clipboard.writeText(path)}
+      >
+        <span className={styles.crumb} data-current>
+          {crumbs[crumbs.length - 1]}
+        </span>
+        <FiClipboard className={styles.copyIcon} />
+      </button>
     </h1>
   );
 }
