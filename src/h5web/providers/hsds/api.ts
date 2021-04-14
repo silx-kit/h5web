@@ -29,6 +29,7 @@ import {
 import { buildEntityPath, getChildEntity } from '../../utils';
 
 export class HsdsApi implements ProviderAPI {
+  /* API compatible with HSDS@6717a7bb8c2245492090be34ec3ccd63ecb20b70 */
   public readonly filepath: string;
   private readonly client: AxiosInstance;
 
