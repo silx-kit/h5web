@@ -19,6 +19,7 @@ import { makeStrAttr } from '../mock/metadata-utils';
 import { assertDataset, hasComplexType } from '../../guards';
 
 export class JupyterApi implements ProviderAPI {
+  /* API compatible with jupyterlab_hdf v0.5.1 */
   public readonly filepath: string;
   private readonly client: AxiosInstance;
 
