@@ -1,9 +1,9 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styles from './BreadcrumbsBar.module.css';
 import { assertAbsolutePath } from '../guards';
 import { ProviderContext } from '../providers/context';
 import Crumb from './Crumb';
-import { FiClipboard } from 'react-icons/fi';
+import { FiCheck, FiClipboard } from 'react-icons/fi';
 
 interface Props {
   path: string;
@@ -13,6 +13,7 @@ interface Props {
 
 function Breadcrumbs(props: Props) {
   const { path, onSelect, showFilepath } = props;
+  const [isPathCopied, setPathCopied] = useState(false);
 
   assertAbsolutePath(path);
   const { filepath } = useContext(ProviderContext);
@@ -47,11 +48,19 @@ function Breadcrumbs(props: Props) {
         className={styles.crumbButton}
         type="button"
         title="Copy path to clipboard"
-        onClick={() => navigator.clipboard.writeText(path)}
+        onClick={() => {
+          navigator.clipboard.writeText(path);
+          setPathCopied(true);
+        }}
+        onMouseLeave={() => setPathCopied(false)}
         data-current
       >
         <span className={styles.crumb}>{crumbs[crumbs.length - 1]}</span>
-        <FiClipboard className={styles.copyIcon} />
+        {isPathCopied ? (
+          <FiCheck className={styles.copyIcon} />
+        ) : (
+          <FiClipboard className={styles.copyIcon} />
+        )}
       </button>
     </h1>
   );
