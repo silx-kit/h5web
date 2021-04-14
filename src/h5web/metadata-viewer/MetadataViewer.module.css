@@ -72,3 +72,12 @@
   margin-left: 0.25rem;
   transform: translateY(1px);
 }
+
+.attrValueWrapper {
+  display: flex;
+  margin: 0 -0.25rem;
+}
+
+.attrValueWrapper > span {
+  margin: 0 0.25rem;
+}

@@ -1,5 +1,5 @@
-import { FiChevronsRight } from 'react-icons/fi';
 import type { Attribute } from '../providers/models';
+import AttributeValueLink from './AttributeValueLink';
 import styles from './MetadataViewer.module.css';
 
 const FOLLOWABLE_ATTRS = new Set([
@@ -35,16 +35,8 @@ function AttributesTable(props: Props) {
           <tr key={name}>
             <th scope="row">{name}</th>
             <td>
-              {FOLLOWABLE_ATTRS.has(name) && typeof value === 'string' ? (
-                <button
-                  className={styles.attrValueBtn}
-                  type="button"
-                  aria-label={`Inspect ${value}`}
-                  onClick={() => onFollowPath(value)}
-                >
-                  {value}
-                  <FiChevronsRight />
-                </button>
+              {FOLLOWABLE_ATTRS.has(name) ? (
+                <AttributeValueLink onFollowPath={onFollowPath} value={value} />
               ) : (
                 JSON.stringify(value)
               )}
