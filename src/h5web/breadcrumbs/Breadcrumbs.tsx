@@ -3,6 +3,7 @@ import styles from './BreadcrumbsBar.module.css';
 import { assertAbsolutePath } from '../guards';
 import { ProviderContext } from '../providers/context';
 import Crumb from './Crumb';
+import CopyableCrumb from './CopyableCrumb';
 
 interface Props {
   path: string;
@@ -42,9 +43,7 @@ function Breadcrumbs(props: Props) {
           />
         );
       })}
-      <span className={styles.crumb} data-current>
-        {crumbs[crumbs.length - 1]}
-      </span>
+      <CopyableCrumb name={crumbs[crumbs.length - 1]} path={path} />
     </h1>
   );
 }
