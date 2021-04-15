@@ -24,7 +24,7 @@ function App() {
         className={styles.explorer}
         style={{ display: isExplorerOpen ? undefined : 'none' }}
         flex={25}
-        minSize={250}
+        minSize={150}
       >
         <Explorer selectedPath={selectedPath} onSelect={setSelectedPath} />
       </ReflexElement>
