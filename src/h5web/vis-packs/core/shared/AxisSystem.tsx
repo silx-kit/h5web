@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useThree } from 'react-three-fiber';
+import { useThree } from '@react-three/fiber';
 import Html from './Html';
 import styles from './AxisSystem.module.css';
 import type { AxisOffsets, Domain } from '../models';
@@ -17,8 +17,8 @@ function AxisSystem(props: Props) {
 
   const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
 
-  const { camera, size } = useThree();
-  const { position, zoom } = camera;
+  const { position, zoom } = useThree((state) => state.camera);
+  const size = useThree((state) => state.size);
   const { width, height } = size;
 
   const { abscissaScale, ordinateScale } = useCanvasScales();

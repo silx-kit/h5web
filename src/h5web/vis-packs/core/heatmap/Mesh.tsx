@@ -1,6 +1,6 @@
 import { rgb } from 'd3-color';
 import { memo, useMemo } from 'react';
-import { useThree } from 'react-three-fiber';
+import { useThree } from '@react-three/fiber';
 import {
   RedFormat,
   DataTexture,
@@ -124,13 +124,12 @@ function Mesh(props: Props) {
     `,
   };
 
-  const { size } = useThree();
-  const { width, height } = size;
+  const { width, height } = useThree((state) => state.size);
 
   return (
     <mesh>
-      <planeGeometry attach="geometry" args={[width, height]} />
-      <shaderMaterial attach="material" args={[shader]} />
+      <planeGeometry args={[width, height]} />
+      <shaderMaterial args={[shader]} />
     </mesh>
   );
 }

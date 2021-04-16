@@ -1,15 +1,17 @@
 import { useRef, useCallback, useEffect } from 'react';
 import type { Vector3 } from 'three';
-import { PointerEvent, WheelEvent, useThree } from 'react-three-fiber';
+import { useThree } from '@react-three/fiber';
 import { clamp } from 'lodash-es';
 import Html from './Html';
 import { useWheelCapture } from '../hooks';
+import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
 
 const ZOOM_FACTOR = 0.95;
 
 function PanZoomMesh() {
-  const { camera, invalidate, size } = useThree();
-  const { width, height } = size;
+  const camera = useThree((state) => state.camera);
+  const { width, height } = useThree((state) => state.size);
+  const invalidate = useThree((state) => state.invalidate);
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
 
@@ -33,9 +35,9 @@ function PanZoomMesh() {
   );
 
   const onPointerDown = useCallback(
-    (evt: PointerEvent) => {
-      const { currentTarget, pointerId, unprojectedPoint } = evt;
-      currentTarget.setPointerCapture(pointerId);
+    (evt: ThreeEvent<PointerEvent>) => {
+      const { target, pointerId, unprojectedPoint } = evt;
+      (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
 
       const projectedPoint = camera.worldToLocal(unprojectedPoint.clone());
       startOffsetPosition.current = camera.position.clone().add(projectedPoint);
@@ -43,15 +45,15 @@ function PanZoomMesh() {
     [camera]
   );
 
-  const onPointerUp = useCallback((evt: PointerEvent) => {
-    const { currentTarget, pointerId } = evt;
-    currentTarget.releasePointerCapture(pointerId);
+  const onPointerUp = useCallback((evt: ThreeEvent<PointerEvent>) => {
+    const { target, pointerId } = evt;
+    (target as Element).releasePointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
 
     startOffsetPosition.current = undefined;
   }, []);
 
   const onPointerMove = useCallback(
-    (evt: PointerEvent) => {
+    (evt: ThreeEvent<PointerEvent>) => {
       if (!startOffsetPosition.current) {
         return;
       }
@@ -69,7 +71,7 @@ function PanZoomMesh() {
   );
 
   const onWheel = useCallback(
-    (evt: WheelEvent) => {
+    (evt: ThreeEvent<WheelEvent>) => {
       const factor = evt.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
 
       camera.zoom = Math.max(1, camera.zoom * factor);
@@ -97,8 +99,8 @@ function PanZoomMesh() {
   return (
     <>
       <mesh {...{ onPointerMove, onPointerUp, onPointerDown, onWheel }}>
-        <meshBasicMaterial attach="material" opacity={0} transparent />
-        <planeGeometry attach="geometry" args={[width, height]} />
+        <meshBasicMaterial opacity={0} transparent />
+        <planeGeometry args={[width, height]} />
       </mesh>
       <Html ref={wheelCaptureRef} />
     </>

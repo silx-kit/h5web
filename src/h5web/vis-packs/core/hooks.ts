@@ -2,7 +2,7 @@ import type ndarray from 'ndarray';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { isNumber } from 'lodash-es';
 import { createMemo } from 'react-use';
-import { useFrame, useThree } from 'react-three-fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import {
   applyMapping,
@@ -72,8 +72,7 @@ export function useCanvasScales(): {
   ordinateScale: AxisScale;
 } {
   const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
-  const { size } = useThree();
-  const { width, height } = size;
+  const { width, height } = useThree((state) => state.size);
 
   return {
     abscissaScale: getCanvasScale(abscissaConfig, width),

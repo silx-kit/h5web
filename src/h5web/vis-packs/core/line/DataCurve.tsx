@@ -1,11 +1,23 @@
 import { Suspense, useMemo } from 'react';
-import { Line } from 'react-three-fiber/components';
 import { CurveType } from './models';
 import GlyphMaterial from './GlyphMaterial';
-import { useThree } from 'react-three-fiber';
-import { BufferGeometry } from 'three';
+import { extend, useThree } from '@react-three/fiber';
+import { BufferGeometry, Line } from 'three';
 import ErrorBars from './ErrorBars';
 import { useCanvasPoints } from './hooks';
+import type { Object3DNode } from '@react-three/fiber';
+
+extend({ Line_: Line });
+
+// https://github.com/pmndrs/react-three-fiber/issues/1152
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      line_: Object3DNode<Line, typeof Line>;
+    }
+  }
+}
 
 interface Props {
   abscissas: number[];
@@ -26,9 +38,9 @@ function DataCurve(props: Props) {
     curveType = CurveType.LineOnly,
   } = props;
 
-  const { gl } = useThree();
+  const { domElement } = useThree((state) => state.gl);
   const curveColor = color.startsWith('--')
-    ? window.getComputedStyle(gl.domElement).getPropertyValue(color).trim()
+    ? window.getComputedStyle(domElement).getPropertyValue(color).trim()
     : color;
 
   const points = useCanvasPoints(abscissas, ordinates, errors);
@@ -44,9 +56,9 @@ function DataCurve(props: Props) {
 
   return (
     <Suspense fallback={null}>
-      <Line visible={showLine} geometry={dataGeometry}>
-        <lineBasicMaterial attach="material" color={curveColor} linewidth={2} />
-      </Line>
+      <line_ visible={showLine} geometry={dataGeometry}>
+        <lineBasicMaterial color={curveColor} linewidth={2} />
+      </line_>
       <points visible={showGlyphs} geometry={dataGeometry}>
         <GlyphMaterial color={curveColor} size={6} />
       </points>
