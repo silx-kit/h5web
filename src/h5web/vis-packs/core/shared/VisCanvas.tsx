@@ -66,7 +66,7 @@ function VisCanvas(props: Props) {
             orthographic
             linear // disable automatic color encoding and gamma correction
             frameloop="demand" // disable game loop
-            dpr={window.devicePixelRatio}
+            dpr={Math.min(window.devicePixelRatio, 3)} // https://discoverthreejs.com/tips-and-tricks/#performance
             gl={{ preserveDrawingBuffer: true }} // for screenshot feature
           >
             <ambientLight />
