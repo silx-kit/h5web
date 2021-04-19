@@ -78,31 +78,28 @@ export function getLinearGradient(
   return `linear-gradient(to ${direction}, ${colorStops})`;
 }
 
-export function getPixelEdges(
-  pixelCoordinates: number[] | undefined,
-  nPixels: number
+export function getAxisValues(
+  rawValues: number[] | undefined,
+  pixelCount: number
 ): number[] {
-  if (!pixelCoordinates) {
-    return range(nPixels + 1);
+  if (!rawValues) {
+    return range(pixelCount + 1);
   }
 
-  if (pixelCoordinates.length === nPixels + 1) {
-    return pixelCoordinates;
+  if (rawValues.length === pixelCount + 1) {
+    return rawValues;
   }
 
-  if (pixelCoordinates.length === nPixels) {
-    // Add the last edge assuming the pixelCoordinates are regularly spaced
-    const deltaCoord = pixelCoordinates[1] - pixelCoordinates[0];
-    return [
-      ...pixelCoordinates,
-      pixelCoordinates[pixelCoordinates.length - 1] + deltaCoord,
-    ];
+  if (rawValues.length === pixelCount) {
+    // Add value at right-hand side of last pixel, assuming raw values are regularly spaced
+    const deltaCoord = rawValues[1] - rawValues[0];
+    return [...rawValues, rawValues[rawValues.length - 1] + deltaCoord];
   }
 
   throw new Error(
-    `Supplied pixel coordinate array (${
-      pixelCoordinates.length
-    }) has not the expected length (${nPixels} or ${nPixels + 1})`
+    `Expected array to have length ${pixelCount} or ${pixelCount + 1}, not ${
+      rawValues.length
+    }`
   );
 }
 

@@ -6,14 +6,16 @@ import Html from './Html';
 import styles from './TooltipMesh.module.css';
 import { useCanvasScales } from '../hooks';
 import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
-
-type Coords = [number, number];
-type Guides = 'horizontal' | 'vertical' | 'both';
+import type {
+  Coords,
+  TooltipIndexFormatter,
+  TooltipValueFormatter,
+} from '../models';
 
 interface Props {
-  formatIndex: (t: Coords) => string;
-  formatValue: (t: Coords) => string | undefined;
-  guides?: Guides;
+  formatIndex: TooltipIndexFormatter;
+  formatValue: TooltipValueFormatter;
+  guides?: 'horizontal' | 'vertical' | 'both';
 }
 
 function TooltipMesh(props: Props) {

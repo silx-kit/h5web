@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
@@ -7,11 +5,13 @@ import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import Mesh from './Mesh';
 import VisCanvas from '../shared/VisCanvas';
-import { getDims, getPixelEdges } from './utils';
+import { getDims } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
 import type { ColorMap } from './models';
-import { DEFAULT_DOMAIN, getDomain, getValueToIndexScale } from '../utils';
+import { DEFAULT_DOMAIN } from '../utils';
 import { assertDefined } from '../../../guards';
+import { useAxisValues, useTooltipFormatters } from './hooks';
+import { useDomain } from '../hooks';
 
 interface Props {
   dataArray: ndarray;
@@ -40,18 +40,27 @@ function HeatmapVis(props: Props) {
     ordinateParams = {},
   } = props;
 
+  const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
+  const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
+
   const { rows, cols } = getDims(dataArray);
   const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
 
-  const abscissas = getPixelEdges(abscissaParams.value, cols);
-  const abscissaToIndex = getValueToIndexScale(abscissas);
-  const abscissaDomain = useMemo(() => getDomain(abscissas), [abscissas]);
+  const abscissas = useAxisValues(abscissaValue, cols);
+  const abscissaDomain = useDomain(abscissas);
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
-  const ordinates = getPixelEdges(ordinateParams.value, rows);
-  const ordinateToIndex = getValueToIndexScale(ordinates);
-  const ordinateDomain = useMemo(() => getDomain(ordinates), [ordinates]);
+  const ordinates = useAxisValues(ordinateValue, rows);
+  const ordinateDomain = useDomain(ordinates);
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
+
+  const tooltipFormatters = useTooltipFormatters(
+    abscissas,
+    ordinates,
+    abscissaLabel,
+    ordinateLabel,
+    dataArray
+  );
 
   return (
     <figure className={styles.root} aria-labelledby="vis-title">
@@ -59,31 +68,19 @@ function HeatmapVis(props: Props) {
         abscissaConfig={{
           domain: abscissaDomain,
           showGrid,
-          isIndexAxis: !abscissaParams.value,
-          label: abscissaParams.label,
+          isIndexAxis: !abscissaValue,
+          label: abscissaLabel,
         }}
         ordinateConfig={{
           domain: ordinateDomain,
           showGrid,
-          isIndexAxis: !ordinateParams.value,
-          label: ordinateParams.label,
+          isIndexAxis: !ordinateValue,
+          label: ordinateLabel,
         }}
         aspectRatio={aspectRatio}
         canvasTitle={title}
       >
-        <TooltipMesh
-          formatIndex={([x, y]) => {
-            return `${abscissaParams.label || 'x'}=${
-              abscissas[abscissaToIndex(x)]
-            }, ${ordinateParams.label || 'y'}=${ordinates[ordinateToIndex(y)]}`;
-          }}
-          formatValue={([x, y]) => {
-            return format('.3')(
-              dataArray.get(ordinateToIndex(y), abscissaToIndex(x))
-            );
-          }}
-          guides="both"
-        />
+        <TooltipMesh {...tooltipFormatters} guides="both" />
         <PanZoomMesh />
         <Mesh
           rows={rows}
