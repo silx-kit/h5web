@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
-import { useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
 import { useCanvasScales } from '../hooks';
+
+const CAMERA_FAR = 1000; // R3F's default
 
 export function useCanvasPoints(
   abscissas: number[],
   ordinates: number[],
   errors?: number[]
 ) {
-  const camera = useThree((state) => state.camera);
   const { abscissaScale, ordinateScale } = useCanvasScales();
 
   return useMemo(() => {
@@ -20,18 +20,18 @@ export function useCanvasPoints(
       const x = abscissaScale(abscissas[index]);
       const y = ordinateScale(val);
 
-      const finiteData = Number.isFinite(x) && Number.isFinite(y);
-      const dataVector = finiteData
-        ? // Set x,y to 0 to avoid a three.js warning when one is Infinity
-          new Vector3(x, y, 0)
-        : // Move NaN/Infinity out of the camera FOV (negative val for logScale).
-          // This allows to have only curve segments for the positive values
-          new Vector3(0, 0, camera.far);
+      const hasFiniteCoords = Number.isFinite(x) && Number.isFinite(y);
+      const dataVector = hasFiniteCoords
+        ? new Vector3(x, y, 0)
+        : /* Render points with NaN/Infinity coordinates (i.e. values <= 0 in log)
+           * at origin to avoid Three warning, and outside of camera's field of view
+           * to hide them and any segments connecting them. */
+          new Vector3(0, 0, CAMERA_FAR);
 
       dataPoints.push(dataVector);
 
       const error = errors && errors[index];
-      if (!error || !finiteData) {
+      if (!error || !hasFiniteCoords) {
         return;
       }
 
@@ -52,5 +52,5 @@ export function useCanvasPoints(
     });
 
     return { data: dataPoints, bars: errorBarSegments, caps: errorCapPoints };
-  }, [abscissaScale, abscissas, camera.far, errors, ordinateScale, ordinates]);
+  }, [abscissaScale, abscissas, errors, ordinateScale, ordinates]);
 }

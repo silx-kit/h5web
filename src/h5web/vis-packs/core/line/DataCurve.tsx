@@ -1,4 +1,4 @@
-import { Suspense, useMemo } from 'react';
+import { Suspense, useLayoutEffect, useState } from 'react';
 import { CurveType } from './models';
 import GlyphMaterial from './GlyphMaterial';
 import { extend, useThree } from '@react-three/fiber';
@@ -38,21 +38,20 @@ function DataCurve(props: Props) {
     curveType = CurveType.LineOnly,
   } = props;
 
+  const [dataGeometry] = useState(() => new BufferGeometry());
+  const points = useCanvasPoints(abscissas, ordinates, errors);
+
+  useLayoutEffect(() => {
+    dataGeometry.setFromPoints(points.data);
+  }, [dataGeometry, points.data]);
+
+  const showLine = curveType !== CurveType.GlyphsOnly;
+  const showGlyphs = curveType !== CurveType.LineOnly;
+
   const { domElement } = useThree((state) => state.gl);
   const curveColor = color.startsWith('--')
     ? window.getComputedStyle(domElement).getPropertyValue(color).trim()
     : color;
-
-  const points = useCanvasPoints(abscissas, ordinates, errors);
-
-  const dataGeometry = useMemo(() => {
-    const geometry = new BufferGeometry();
-    geometry.setFromPoints(points.data);
-    return geometry;
-  }, [points.data]);
-
-  const showLine = curveType !== CurveType.GlyphsOnly;
-  const showGlyphs = curveType !== CurveType.LineOnly;
 
   return (
     <Suspense fallback={null}>
