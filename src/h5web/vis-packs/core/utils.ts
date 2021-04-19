@@ -20,6 +20,7 @@ import {
   AxisConfig,
   Bounds,
 } from './models';
+import { assertDataLength } from '../../guards';
 
 const TICK_FORMAT = format('0');
 
@@ -86,26 +87,22 @@ function getNewBounds(oldBounds: Bounds, value: number): Bounds {
   ];
 }
 
+export function toArray(arr: ndarray | number[]): number[] {
+  return 'data' in arr ? (arr.data as number[]) : arr;
+}
+
 export function getDomain(
   valuesArray: ndarray | number[],
   scaleType: ScaleType = ScaleType.Linear,
   errorArray?: ndarray | number[]
 ): Domain | undefined {
-  const values = Array.isArray(valuesArray)
-    ? valuesArray
-    : (valuesArray.data as number[]);
-  const errors =
-    errorArray &&
-    (Array.isArray(errorArray) ? errorArray : (errorArray.data as number[]));
+  assertDataLength(errorArray, valuesArray, 'error');
+
+  const values = toArray(valuesArray);
+  const errors = errorArray && toArray(errorArray);
 
   if (values.length === 0) {
     return undefined;
-  }
-
-  if (errors && errors.length !== values.length) {
-    throw new Error(
-      `Errors length (${errors.length}) does not match data length (${values.length})`
-    );
   }
 
   const [min, max, positiveMin] = values.reduce<Bounds>(

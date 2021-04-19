@@ -9,7 +9,7 @@ import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../models';
 import { CurveType } from './models';
 import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
-import { assertDefined } from '../../../guards';
+import { assertDataLength, assertDefined } from '../../../guards';
 import { useTooltipFormatters } from './hooks';
 
 interface Props {
@@ -47,23 +47,9 @@ function LineVis(props: Props) {
     scaleType: abscissaScaleType,
   } = abscissaParams;
 
-  if (abscissaValue && abscissaValue.length !== dataArray.size) {
-    throw new Error(
-      `Abscissas size (${abscissaValue.length}) does not match data length (${dataArray.size})`
-    );
-  }
-
-  if (errorsArray && errorsArray.size !== dataArray.size) {
-    throw new Error(
-      `Error size (${errorsArray.size}) does not match data length (${dataArray.size})`
-    );
-  }
-
-  if (auxArrays.some((auxArray) => auxArray.size !== dataArray.size)) {
-    throw new Error(
-      `Auxiliary arrays size does not match data length (${dataArray.size})`
-    );
-  }
+  assertDataLength(abscissaValue, dataArray, 'abscissa');
+  assertDataLength(errorsArray, dataArray, 'error');
+  auxArrays.forEach((arr) => assertDataLength(arr, dataArray, 'auxiliary'));
 
   const abscissas = useMemo(() => {
     return abscissaValue || range(dataArray.size);
