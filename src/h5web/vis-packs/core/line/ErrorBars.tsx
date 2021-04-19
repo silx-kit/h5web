@@ -1,3 +1,4 @@
+import { useThree } from '@react-three/fiber';
 import { useLayoutEffect, useRef } from 'react';
 import type { BufferGeometry, Vector3 } from 'three';
 import GlyphMaterial from './GlyphMaterial';
@@ -12,16 +13,19 @@ interface Props {
 
 function ErrorBars(props: Props) {
   const { barsSegments, capsPoints, color, visible } = props;
+  const invalidate = useThree((state) => state.invalidate);
 
   const barsGeometry = useRef<BufferGeometry>(null);
   useLayoutEffect(() => {
     barsGeometry.current?.setFromPoints(barsSegments);
-  }, [barsGeometry, barsSegments]);
+    invalidate();
+  }, [barsGeometry, barsSegments, invalidate]);
 
   const capsGeometry = useRef<BufferGeometry>(null);
   useLayoutEffect(() => {
     capsGeometry.current?.setFromPoints(capsPoints);
-  }, [capsGeometry, capsPoints]);
+    invalidate();
+  }, [capsGeometry, capsPoints, invalidate]);
 
   return (
     <>

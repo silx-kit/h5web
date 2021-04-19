@@ -40,10 +40,12 @@ function DataCurve(props: Props) {
 
   const [dataGeometry] = useState(() => new BufferGeometry());
   const points = useCanvasPoints(abscissas, ordinates, errors);
+  const invalidate = useThree((state) => state.invalidate);
 
   useLayoutEffect(() => {
     dataGeometry.setFromPoints(points.data);
-  }, [dataGeometry, points.data]);
+    invalidate();
+  }, [dataGeometry, invalidate, points.data]);
 
   const showLine = curveType !== CurveType.GlyphsOnly;
   const showGlyphs = curveType !== CurveType.LineOnly;
