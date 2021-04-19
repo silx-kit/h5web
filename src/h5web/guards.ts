@@ -107,6 +107,7 @@ export function hasPrintableType<S extends Shape>(
   entity: Dataset<S>
 ): entity is Dataset<S, PrintableType> {
   return [
+    DTypeClass.Unsigned,
     DTypeClass.Integer,
     DTypeClass.Float,
     DTypeClass.String,
