@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { useMemo } from 'react';
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
