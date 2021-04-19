@@ -32,6 +32,12 @@ export const intType: NumericType = {
   size: 32,
 };
 
+export const unsignedType: NumericType = {
+  class: DTypeClass.Unsigned,
+  endianness: Endianness.LE,
+  size: 16,
+};
+
 export const floatType: NumericType = {
   class: DTypeClass.Float,
   endianness: Endianness.LE,
