@@ -1,11 +1,11 @@
 import { useLayoutEffect, useRef } from 'react';
-import type { BufferGeometry, Vector2, Vector3 } from 'three';
+import type { BufferGeometry, Vector3 } from 'three';
 import GlyphMaterial from './GlyphMaterial';
 import { GLYPH_URLS } from './models';
 
 interface Props {
-  capsPoints: Vector3[] | Vector2[];
-  barsSegments: Vector3[] | Vector2[];
+  capsPoints: Vector3[];
+  barsSegments: Vector3[];
   color: string;
   visible?: boolean;
 }
