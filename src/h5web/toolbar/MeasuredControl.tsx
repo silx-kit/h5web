@@ -12,7 +12,7 @@ function MeasuredControl(props: Props) {
 
   return (
     <Measure
-      onResize={({ entry }) => {
+      onResize={({ entry }: { entry?: DOMRect }) => {
         if (entry) {
           onMeasure(entry.width);
         }

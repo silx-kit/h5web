@@ -1,4 +1,4 @@
-import { useLoader } from 'react-three-fiber';
+import { useLoader } from '@react-three/fiber';
 import { NearestFilter, TextureLoader } from 'three';
 import { GLYPH_URLS } from './models';
 
@@ -13,15 +13,7 @@ function GlyphMaterial(props: Props) {
   const sprite = useLoader(TextureLoader, glyphURL || GLYPH_URLS.Cross);
   sprite.magFilter = NearestFilter;
 
-  return (
-    <pointsMaterial
-      attach="material"
-      map={sprite}
-      color={color}
-      size={size}
-      transparent
-    />
-  );
+  return <pointsMaterial map={sprite} color={color} size={size} transparent />;
 }
 
 export default GlyphMaterial;

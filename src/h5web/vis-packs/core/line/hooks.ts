@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useThree } from 'react-three-fiber';
+import { useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
 import { useCanvasScales } from '../hooks';
 
@@ -8,7 +8,7 @@ export function useCanvasPoints(
   ordinates: number[],
   errors?: number[]
 ) {
-  const { camera } = useThree();
+  const camera = useThree((state) => state.camera);
   const { abscissaScale, ordinateScale } = useCanvasScales();
 
   return useMemo(() => {

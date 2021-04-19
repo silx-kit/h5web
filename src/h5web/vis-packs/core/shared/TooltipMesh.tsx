@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
-import { PointerEvent, useThree } from 'react-three-fiber';
+import { useThree } from '@react-three/fiber';
 import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
 import { Line } from '@visx/shape';
 import Html from './Html';
 import styles from './TooltipMesh.module.css';
 import { useCanvasScales } from '../hooks';
+import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
 
 type Coords = [number, number];
 type Guides = 'horizontal' | 'vertical' | 'both';
@@ -18,8 +19,8 @@ interface Props {
 function TooltipMesh(props: Props) {
   const { formatIndex, formatValue, guides } = props;
 
-  const { camera, size } = useThree();
-  const { width, height } = size;
+  const camera = useThree((state) => state.camera);
+  const { width, height } = useThree((state) => state.size);
 
   // Scales to compute data coordinates from unprojected mesh coordinates
   const { abscissaScale, ordinateScale } = useCanvasScales();
@@ -36,7 +37,7 @@ function TooltipMesh(props: Props) {
   // Update tooltip when pointer moves
   // When panning, events are handled and stopped by texture mesh and do not reach this mesh (which is behind)
   const onPointerMove = useCallback(
-    (evt: PointerEvent) => {
+    (evt: ThreeEvent<PointerEvent>) => {
       const { zoom } = camera;
       const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
 
@@ -58,8 +59,8 @@ function TooltipMesh(props: Props) {
 
   // Show tooltip after dragging unless pointer has left canvas
   const onPointerUp = useCallback(
-    (evt: PointerEvent) => {
-      const { offsetX: x, offsetY: y } = evt.nativeEvent;
+    (evt: ThreeEvent<PointerEvent>) => {
+      const { offsetX: x, offsetY: y } = evt;
       if (x >= 0 && x <= width && y >= 0 && y <= height) {
         onPointerMove(evt);
       }
@@ -72,8 +73,8 @@ function TooltipMesh(props: Props) {
   return (
     <>
       <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
-        <meshBasicMaterial attach="material" opacity={0} transparent />
-        <planeGeometry attach="geometry" args={[width, height]} />
+        <meshBasicMaterial opacity={0} transparent />
+        <planeGeometry args={[width, height]} />
       </mesh>
       <Html>
         {tooltipOpen && tooltipData && value && (

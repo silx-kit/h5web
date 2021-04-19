@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Canvas } from 'react-three-fiber';
+import { Canvas } from '@react-three/fiber';
 import { useMeasure } from 'react-use';
 import styles from './VisCanvas.module.css';
 import type { AxisConfig } from '../models';
@@ -64,10 +64,10 @@ function VisCanvas(props: Props) {
           <Canvas
             className={styles.canvasWrapper}
             orthographic
-            invalidateFrameloop // disable game loop
-            pixelRatio={window.devicePixelRatio}
+            linear // disable automatic color encoding and gamma correction
+            frameloop="demand" // disable game loop
+            dpr={window.devicePixelRatio}
             gl={{ preserveDrawingBuffer: true }} // for screenshot feature
-            gl2
           >
             <ambientLight />
             <AxisSystemContext.Provider

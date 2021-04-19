@@ -6,7 +6,7 @@ import {
   useLayoutEffect,
 } from 'react';
 import ReactDOM from 'react-dom';
-import { useThree } from 'react-three-fiber';
+import { useThree } from '@react-three/fiber';
 
 // Simplified version of `drei`'s `<Html>` component
 // https://github.com/pmndrs/drei/blob/v2.2.3/src/Html.tsx
@@ -14,15 +14,15 @@ const Html = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   (props, ref) => {
     const { className, style, children, ...divProps } = props;
 
-    const { gl, size } = useThree();
-    const { width, height } = size;
+    const { width, height } = useThree((state) => state.size);
+    const gl = useThree((state) => state.gl);
     const { parentElement } = gl.domElement;
 
     // Container `div` for ReactDOM to render into, appended next to R3F's `canvas`
     const [el] = useState(() => document.createElement('div'));
 
     useEffect(() => {
-      el.style.cssText = `position: absolute; top: 0; left: 0; z-index: 0;`;
+      el.style.cssText = `position: absolute; top: 0; left: 0;`;
 
       if (parentElement) {
         parentElement.append(el);
@@ -48,6 +48,7 @@ const Html = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
             left: 0,
             width,
             height,
+            pointerEvents: 'none', // let pointer events pass through to canvas
             ...style,
           }}
           {...divProps}
