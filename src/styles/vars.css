@@ -37,4 +37,6 @@
   --btn-shadow-color: var(--gray);
   --btn-shadow-dark-color: var(--dark-gray);
   --btn-shadow-darker-color: var(--dark-slate-gray);
+  --axis-primary-color: var(--dark-slate-gray);
+  --axis-secondary-color: var(--gray);
 }

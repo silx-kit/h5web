@@ -4,7 +4,7 @@
 }
 
 .guides {
-  stroke: var(--secondary-axis-color);
+  stroke: var(--axis-secondary-color);
   stroke-width: 1.5;
   stroke-opacity: 0.5;
 }
