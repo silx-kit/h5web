@@ -1,3 +1,4 @@
+import type ndarray from 'ndarray';
 import {
   Entity,
   EntityKind,
@@ -16,6 +17,7 @@ import {
   UnresolvedEntity,
 } from './providers/models';
 import type { PrintableType } from './vis-packs/core/models';
+import { toArray } from './vis-packs/core/utils';
 
 export function isDefined<T>(val: T): val is NonNullable<T> {
   return val !== undefined;
@@ -230,5 +232,24 @@ export function assertNumericType<S extends Shape>(
 export function assertAbsolutePath(path: string) {
   if (!isAbsolutePath(path)) {
     throw new Error("Expected path to start with '/'");
+  }
+}
+
+export function assertDataLength(
+  arr: ndarray | number[] | undefined,
+  dataArray: ndarray | number[],
+  arrName: string
+) {
+  if (!arr) {
+    return;
+  }
+
+  const { length: arrLength } = toArray(arr);
+  const { length: dataLength } = toArray(dataArray);
+
+  if (arrLength !== dataLength) {
+    throw new Error(
+      `Expected ${arrName} array (${arrLength}) to have same length as data array (${dataLength})`
+    );
   }
 }
