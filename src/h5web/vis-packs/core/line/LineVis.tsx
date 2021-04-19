@@ -1,6 +1,4 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import { useMemo } from 'react';
-import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import { range } from 'd3-array';
 import styles from './LineVis.module.css';
@@ -10,13 +8,9 @@ import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../models';
 import { CurveType } from './models';
-import {
-  getValueToIndexScale,
-  getDomain,
-  extendDomain,
-  DEFAULT_DOMAIN,
-} from '../utils';
+import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
 import { assertDefined } from '../../../guards';
+import { useTooltipFormatters } from './hooks';
 
 interface Props {
   dataArray: ndarray;
@@ -71,9 +65,8 @@ function LineVis(props: Props) {
     );
   }
 
-  const [abscissas, abscissaToIndex] = useMemo(() => {
-    const abscissas = abscissaValue || range(dataArray.size);
-    return [abscissas, getValueToIndexScale(abscissas, true)];
+  const abscissas = useMemo(() => {
+    return abscissaValue || range(dataArray.size);
   }, [abscissaValue, dataArray.size]);
 
   const abscissaDomain = useMemo(() => {
@@ -87,14 +80,22 @@ function LineVis(props: Props) {
     return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
 
+  const tooltipFormatters = useTooltipFormatters(
+    abscissas,
+    abscissaLabel,
+    dataArray,
+    errorsArray
+  );
+
   return (
     <figure className={styles.root} aria-labelledby="vis-title">
       <VisCanvas
+        canvasTitle={title}
         abscissaConfig={{
           domain: abscissaDomain,
           showGrid,
           scaleType: abscissaScaleType,
-          isIndexAxis: !abscissaParams.value,
+          isIndexAxis: !abscissaValue,
           label: abscissaLabel,
         }}
         ordinateConfig={{
@@ -103,29 +104,8 @@ function LineVis(props: Props) {
           scaleType,
           label: ordinateLabel,
         }}
-        canvasTitle={title}
       >
-        <TooltipMesh
-          formatIndex={([x]) =>
-            `${abscissaLabel || 'x'}=${format('0')(
-              abscissas[abscissaToIndex(x)]
-            )}`
-          }
-          formatValue={([x]) => {
-            const index = abscissaToIndex(x);
-            const value = dataArray.get(index);
-
-            if (value === undefined) {
-              return undefined;
-            }
-
-            const error = errorsArray && errorsArray.get(index);
-            return error
-              ? `${format('.3f')(value)} ±${format('.3f')(error)}`
-              : `${format('.3f')(value)}`;
-          }}
-          guides="vertical"
-        />
+        <TooltipMesh {...tooltipFormatters} guides="vertical" />
         <PanZoomMesh />
         <DataCurve
           curveType={curveType}

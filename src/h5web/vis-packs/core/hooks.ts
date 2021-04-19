@@ -10,6 +10,7 @@ import {
   getCanvasScale,
   getCombinedDomain,
   getDomain,
+  getValueToIndexScale,
 } from './utils';
 import AxisSystemContext from './shared/AxisSystemContext';
 import type { AxisScale } from './models';
@@ -140,3 +141,5 @@ export function useMappedArrays(
 
   return [mappedArrays, autoScale ? mappedArrays : baseArrays];
 }
+
+export const useValueToIndexScale = createMemo(getValueToIndexScale);
