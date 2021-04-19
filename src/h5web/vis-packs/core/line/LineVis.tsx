@@ -48,13 +48,13 @@ function LineVis(props: Props) {
 
   const {
     label: abscissaLabel,
-    value: abscissas = range(dataArray.size),
+    value: abscissaValue,
     scaleType: abscissaScaleType,
   } = abscissaParams;
 
-  if (abscissas.length !== dataArray.size) {
+  if (abscissaValue && abscissaValue.length !== dataArray.size) {
     throw new Error(
-      `Abscissas size (${abscissas.length}) does not match data length (${dataArray.size})`
+      `Abscissas size (${abscissaValue.length}) does not match data length (${dataArray.size})`
     );
   }
 
@@ -70,7 +70,10 @@ function LineVis(props: Props) {
     );
   }
 
-  const abscissaToIndex = getValueToIndexScale(abscissas, true);
+  const [abscissas, abscissaToIndex] = useMemo(() => {
+    const abscissas = abscissaValue || range(dataArray.size);
+    return [abscissas, getValueToIndexScale(abscissas, true)];
+  }, [abscissaValue, dataArray.size]);
 
   const abscissaDomain = useMemo(() => {
     const rawDomain = getDomain(abscissas, abscissaScaleType);
