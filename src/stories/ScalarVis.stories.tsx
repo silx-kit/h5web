@@ -1,5 +1,4 @@
 import type { Story } from '@storybook/react/types-6-0';
-import Complex from 'complex.js';
 import { ScalarVis, ScalarVisProps } from '../packages/lib';
 
 const Template: Story<ScalarVisProps> = (args) => <ScalarVis {...args} />;
@@ -25,7 +24,7 @@ DisplayBoolean.args = {
 export const DisplayComplex = Template.bind({});
 
 DisplayComplex.args = {
-  value: new Complex(1.2, 3),
+  value: [1.2, 3],
 };
 
 export default {

@@ -1,4 +1,3 @@
-import Complex from 'complex.js';
 import { Endianness, DTypeClass } from '../models';
 import type { JupyterComplexValue } from './models';
 import { convertDtype, parseComplex } from './utils';
@@ -80,20 +79,23 @@ describe('convertDtype', () => {
 
 describe('parseComplex', () => {
   it('should parse scalar complex', () => {
-    expect((parseComplex('(1+5j)') as Complex).equals(new Complex(1, 5))).toBe(
-      true
-    );
+    expect(parseComplex('(1+5j)')).toEqual([1, 5]);
   });
 
   it('should parse complex array', () => {
-    const hsdsComplexArray: JupyterComplexValue[][] = [
+    const jupyterComplexArray: JupyterComplexValue[][] = [
       ['0j', '1j'],
       ['(1+0j)', '(1-2j)'],
     ];
-    const convertedArray = parseComplex(hsdsComplexArray) as Complex[][];
-    expect(convertedArray).toEqual([
-      [new Complex(0, 0), new Complex(0, 1)],
-      [new Complex(1, 0), new Complex(1, -2)],
+    expect(parseComplex(jupyterComplexArray)).toEqual([
+      [
+        [0, 0],
+        [0, 1],
+      ],
+      [
+        [1, 0],
+        [1, -2],
+      ],
     ]);
   });
 });

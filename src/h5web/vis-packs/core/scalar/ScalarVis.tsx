@@ -1,8 +1,9 @@
-import type Complex from 'complex.js';
+import type { Primitive } from '../../../providers/models';
+import type { PrintableType } from '../models';
 import styles from './ScalarVis.module.css';
 
 interface Props {
-  value: string | number | boolean | Complex;
+  value: Primitive<PrintableType>;
 }
 
 function ScalarVis(props: Props) {

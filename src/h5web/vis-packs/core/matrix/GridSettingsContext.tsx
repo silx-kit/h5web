@@ -1,15 +1,12 @@
-import type Complex from 'complex.js';
 import { ReactNode, createContext } from 'react';
-import type { Size } from '../models';
+import type { Primitive } from '../../../providers/models';
+import type { PrintableType, Size } from '../models';
 
 interface GridSettings {
   cellSize: Size;
   rowCount: number;
   columnCount: number;
-  valueAccessor: (
-    row: number,
-    col: number
-  ) => number | string | boolean | Complex;
+  valueAccessor: (row: number, col: number) => Primitive<PrintableType>;
 }
 
 export const GridSettingsContext = createContext<GridSettings>({

@@ -1,5 +1,3 @@
-import type Complex from 'complex.js';
-
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
@@ -142,20 +140,21 @@ interface UnknownType {
 /* ----------------- */
 /* ----- VALUE ----- */
 
-type PrimitiveType<T extends DType> = T extends NumericType
+export type Primitive<T extends DType> = T extends NumericType
   ? number
   : T extends StringType
   ? string
   : T extends BooleanType
   ? boolean
   : T extends ComplexType
-  ? Complex
+  ? H5WebComplex
   : unknown;
 
 export type Value<D extends Dataset> = D['shape'] extends ScalarShape
-  ? PrimitiveType<D['type']>
+  ? Primitive<D['type']>
   : D['shape'] extends ArrayShape
-  ? PrimitiveType<D['type']>[]
+  ? Primitive<D['type']>[]
   : never;
 
-export type ComplexArray = (ComplexArray | Complex)[];
+export type H5WebComplex = [number, number];
+export type ComplexArray = (ComplexArray | H5WebComplex)[];

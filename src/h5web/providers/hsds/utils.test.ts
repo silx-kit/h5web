@@ -1,14 +1,12 @@
-import Complex from 'complex.js';
 import { Endianness, DType, DTypeClass } from '../models';
 import type {
   HsdsStringType,
   HsdsArrayType,
-  HsdsComplexValue,
   HsdsCompoundType,
   HsdsEnumType,
   HsdsType,
 } from './models';
-import { convertHsdsType, parseComplex } from './utils';
+import { convertHsdsType } from './utils';
 
 interface TestType {
   hsds: HsdsType;
@@ -156,31 +154,5 @@ describe('convertHsdsType', () => {
     expect(convertHsdsType(unknownType as HsdsType)).toEqual({
       class: DTypeClass.Unknown,
     });
-  });
-});
-
-describe('parseComplex', () => {
-  it('should parse scalar complex', () => {
-    expect((parseComplex([1, 5]) as Complex).equals(new Complex(1, 5))).toBe(
-      true
-    );
-  });
-
-  it('should parse complex array', () => {
-    const hsdsComplexArray: HsdsComplexValue[][] = [
-      [
-        [0, 0],
-        [0, 1],
-      ],
-      [
-        [1, 0],
-        [2, 1],
-      ],
-    ];
-    const convertedArray = parseComplex(hsdsComplexArray) as Complex[][];
-    expect(convertedArray).toEqual([
-      [new Complex(0, 0), new Complex(0, 1)],
-      [new Complex(1, 0), new Complex(2, 1)],
-    ]);
   });
 });

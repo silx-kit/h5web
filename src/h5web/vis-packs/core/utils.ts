@@ -302,7 +302,7 @@ export function getBaseArray<T>(
   value: T[] | undefined,
   rawDims: number[]
 ): ndarray<T> | undefined {
-  return value && ndarray<T>(value.flat(Infinity) as T[], rawDims);
+  return value && ndarray<T>(value.flat(rawDims.length - 1) as T[], rawDims);
 }
 
 export function applyMapping<T extends ndarray<unknown> | undefined>(
