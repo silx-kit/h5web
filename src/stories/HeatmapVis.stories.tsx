@@ -76,9 +76,9 @@ export const LiveData: Story<HeatmapVisProps> = (args) => {
   const [shuffledArray, setShuffledArray] = useState(args.dataArray);
 
   useInterval(() => {
-    const shuffledValues = shuffledArray.data
-      .slice(0)
-      .sort(() => 0.5 - Math.random());
+    const shuffledValues = [...shuffledArray.data].sort(
+      () => 0.5 - Math.random()
+    );
 
     setShuffledArray(ndarray(shuffledValues, dataArray.shape));
   }, 5000);

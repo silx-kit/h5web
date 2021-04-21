@@ -2,7 +2,7 @@ import ReactSlider from 'react-slider';
 import { useMeasure } from 'react-use';
 import styles from './SlicingSlider.module.css';
 import type { DimensionMapping } from './models';
-import { Component, Fragment, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const MIN_HEIGHT_PER_MARK = 25;
 
@@ -18,10 +18,9 @@ function SlicingSlider(props: Props) {
   const { dimension, slicingIndex, rawDims, mapperState, onChange } = props;
 
   const [containerRef, { height }] = useMeasure();
-  const sliderRef = useRef<Component<ReactSlider.ReactSliderProps>>(null);
+  const sliderRef = useRef<ReactSlider>(null);
 
   useEffect(() => {
-    // @ts-ignore
     sliderRef.current?.resize();
   }, [height]);
 
@@ -46,7 +45,7 @@ function SlicingSlider(props: Props) {
         value={slicingIndex}
         onChange={(value) => {
           const newMapperState = [...mapperState];
-          newMapperState[dimension] = value as number;
+          newMapperState[dimension] = value;
           onChange(newMapperState);
         }}
         renderThumb={(thumbProps, state) => (
@@ -55,11 +54,7 @@ function SlicingSlider(props: Props) {
           </div>
         )}
         renderTrack={({ key }, { index }) =>
-          index === 0 ? (
-            <div key={key} className={styles.track} />
-          ) : (
-            <Fragment key={key} />
-          )
+          index === 0 ? <div key={key} className={styles.track} /> : null
         }
       />
     </div>

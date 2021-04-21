@@ -1,4 +1,4 @@
-import { Fragment, Ref, useState } from 'react';
+import { useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
 import { createAxisScale, extendDomain } from '../../../vis-packs/core/utils';
@@ -77,12 +77,11 @@ function ScaledSlider(props: Props) {
       min={SLIDER_RANGE[0]}
       max={SLIDER_RANGE[1]}
       value={scaledValue}
-      onBeforeChange={(bounds) => setBeforeChangeValue(bounds as Domain)}
-      onChange={(bounds) => handleChange(bounds as Domain)}
-      onAfterChange={(bounds) => handleChange(bounds as Domain, true)}
-      renderThumb={({ ref, ...thumbProps }, { index }) => (
+      onBeforeChange={setBeforeChangeValue}
+      onChange={handleChange}
+      onAfterChange={(bounds) => handleChange(bounds, true)}
+      renderThumb={(thumbProps, { index }) => (
         <Thumb
-          ref={ref as Ref<HTMLDivElement>}
           bound={index === 0 ? 'min' : 'max'}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
           hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
@@ -93,9 +92,7 @@ function ScaledSlider(props: Props) {
       renderTrack={({ key }, { index }) =>
         index === 0 ? (
           <Track key={key} scale={scale} dataDomain={dataDomain} />
-        ) : (
-          <Fragment key={key} />
-        )
+        ) : null
       }
     />
   );
