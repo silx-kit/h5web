@@ -1,7 +1,6 @@
-import type { EntityKind } from '../models';
+import type { Attribute, EntityKind } from '../models';
 
 export interface JupyterMetaResponse {
-  id: string;
   name: string;
   type: EntityKind.Group | EntityKind.Dataset;
 }
@@ -43,3 +42,9 @@ export type JupyterComplex = JupyterComplex[] | JupyterComplexValue;
 export type JupyterComplexValue =
   | `(${'' | '-'}${number}${'+' | '-'}${number}j)`
   | `${'' | '-'}${number}j`;
+
+export interface JupyterBaseEntity {
+  name: string;
+  path: string;
+  attributes: Attribute[];
+}
