@@ -8,12 +8,12 @@ import {
   useMappedArrays,
   useMappedArray,
   useDomain,
+  useDomains,
 } from '../hooks';
 import { useLineConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import type { NumArrayDataset } from '../../../providers/models';
-import { getDomain } from '../utils';
 
 type HookArgs = [number[], DimensionMapping, boolean];
 
@@ -71,8 +71,8 @@ function MappedLineVis(props: Props) {
     yScaleType,
     showErrors ? errorsForDomain : undefined
   );
-  const auxDomains = auxForDomain.map((arr) => getDomain(arr, yScaleType));
-  const combinedDomain = useCombinedDomain(dataDomain, auxDomains);
+  const auxDomains = useDomains(auxForDomain, yScaleType);
+  const combinedDomain = useCombinedDomain([dataDomain, ...auxDomains]);
 
   const mappedAbscissaParams = axisMapping[dimMapping.indexOf('x')];
   useEffect(() => {

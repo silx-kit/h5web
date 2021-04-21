@@ -8,10 +8,22 @@ import {
   CurveType,
   getDomain,
   getMockDataArray,
+  mockValues,
+  getCombinedDomain,
 } from '../packages/lib';
+import { getDomains } from '../h5web/vis-packs/core/utils';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
-const domain = getDomain(dataArray.data as number[]);
+const domain = getDomain(dataArray);
+
+const secondaryValues = mockValues.secondary.flat(Infinity) as number[];
+const tertiaryValues = mockValues.tertiary.flat(Infinity) as number[];
+const secondaryArray = ndarray(secondaryValues, [20, 41]);
+const tertiaryArray = ndarray(tertiaryValues, [20, 41]);
+const combinedDomain = getCombinedDomain([
+  domain,
+  ...getDomains([secondaryArray, tertiaryArray]),
+]);
 
 const errorsArray = ndarray(
   Array.from({ length: dataArray.size }, (_, i) => Math.abs(10 - 0.5 * i)),
@@ -41,6 +53,14 @@ ErrorBars.args = {
   domain: [-31, 31], // Extend domain to fit error bars
   errorsArray,
   showErrors: true,
+};
+
+export const AuxiliaryArrays = Template.bind({});
+
+AuxiliaryArrays.args = {
+  dataArray,
+  auxArrays: [secondaryArray, tertiaryArray],
+  domain: combinedDomain,
 };
 
 const LineVisStoriesConfig = {

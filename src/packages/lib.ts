@@ -19,15 +19,18 @@ export type { VisCanvasProps } from '../h5web/vis-packs/core/shared/VisCanvas';
 export {
   computeVisSize,
   getDomain,
+  getDomains,
+  getCombinedDomain,
   extendDomain,
 } from '../h5web/vis-packs/core/utils';
 
-export { useDomain } from '../h5web/vis-packs/core/hooks';
-
 export {
-  getDims,
-  getLinearGradient,
-} from '../h5web/vis-packs/core/heatmap/utils';
+  useDomain,
+  useDomains,
+  useCombinedDomain,
+} from '../h5web/vis-packs/core/hooks';
+
+export { getLinearGradient } from '../h5web/vis-packs/core/heatmap/utils';
 
 // Models
 export { INTERPOLATORS } from '../h5web/vis-packs/core/heatmap/interpolators';

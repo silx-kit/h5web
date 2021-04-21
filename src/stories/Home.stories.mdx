@@ -99,9 +99,74 @@ const dataArray = getMockDataArray('/nD_datasets/twoD');
 The library exposes a number of utility functions, which are documented below, as well as all the enums and types used by these utility functions.
 If you use only the top-level visualization components, the only utilities you need are `getDomain` and/or `useDomain`.
 
-- **`getDomain(values: ndarray | number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined`** - Find the min and max values contained in a array (or ndarray) of numbers. If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
-- **`useDomain(...args): Domain | undefined`** - Memoised React hook wrapper of `getDomain`.
-- **`extendDomain(bareDomain: Domain, extendFactor: number, isLog?: boolean): Domain`** - Extend a domain by a given factor.
-- **`computeVisSize(availableSize: Size, aspectRatio?: number): Size | undefined`** - Compute the optimal size for a visualization to fill the available space given an optional aspect ratio.
-- **`getDims(dataArray: DataArray): Dims`** - Get the dimensions of a `ndarray` as a `{ rows, cols }` object.
-- **`getLinearGradient(interpolator: D3Interpolator, direction: 'top' | 'bottom' | 'right' | 'left'): string`** - Generate a CSS linear gradient for a given D3 interpolator, to be used as `background-image`.
+#### getDomain
+
+Find the min and max values contained in a array (or ndarray) of numbers. If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
+
+```ts
+getDomain(values: ndarray | number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined
+
+const linearDomain = getDomain([10, 5, -1]); // [-1, 10]
+const logDomain = getDomain([-1, 2, 10], ScaleType.Log); // [2, 10]
+
+const myArray = ndarray([0, 1, 2, 3], [2, 2]);
+const myDomain = getDomain(myArray); // [0, 3]
+```
+
+#### getDomains
+
+Find the domains of multiple arrays (or ndarrays) of numbers. Useful when dealing with auxiliary curves.
+
+```ts
+getDomains(arrays: (ndarray | number[])[], scaleType: ScaleType = ScaleType.Linear): (Domain | undefined)[]
+
+const linearDomains = getDomains([[-1, 5, 10], myArray]); // [[-1, 10], [0, 3]]
+const logDomains = getDomains([[-1, 5, 10], myArray], ScaleType.Log); // [[2, 10], [0, 3]]
+```
+
+#### getCombinedDomain
+
+Combine multiple domains into one. Useful to find the overall domain of a line visualization with auxiliary curves.
+
+```ts
+getCombinedDomain(domains: (Domain | undefined)[]): Domain | undefined
+
+const combinedDomain = getCombinedDomain([[-1, 10], [0, 30]]]); // [-1, 30]
+```
+
+#### extendDomain
+
+Extend a domain by a factor in a given scale.
+
+```ts
+extendDomain(domain: Domain, extendFactor: number, scaleType: ScaleType = ScaleType.Linear): Domain
+
+const extendedDomain1 = extendDomain([0, 100], 0.5]); // [-50, 150]
+const extendedDomain2 = extendDomain([10, 100], 1, ScaleType.Log); // approx. [1, 1000]
+const extendedDomain3 = extendDomain([2, 2], 0.5); // [1, 3]
+const extendedDomain4 = extendDomain([1, 1], 1, ScaleType.Log); // [0.1, 10]
+```
+
+#### computeVisSize
+
+Compute the optimal size for a visualization based on the available size and an aspect ratio. If `aspecRatio` is not provided, `availableSize` is returned unchanged.
+
+```ts
+computeVisSize(availableSize: Size, aspectRatio?: number): Size | undefined
+
+const size = computeVisSize({ width: 20, height: 10 }, 1.5); // { width: 15, height: 10 }
+```
+
+#### getLinearGradient
+
+Generate a CSS linear gradient for a given D3 interpolator, to be used as `background-image`. If `minMaxOnly` is `true`, the gradient will include only two colours stops.
+
+```ts
+getLinearGradient(interpolator: D3Interpolator, direction: 'top' | 'bottom' | 'right' | 'left', minMaxOnly = false): string
+```
+
+### Hooks
+
+- **`useDomain(...args): Domain | undefined`** - Memoised version of `getDomain`.
+- **`useDomains(...args): (Domain | undefined)[]`** - Memoised version of `getDomains`.
+- **`useCombinedDomain(...args): Domain | undefined`** - Memoised version of `getCombinedDomain`.

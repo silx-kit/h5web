@@ -20,7 +20,7 @@ import {
   AxisConfig,
   Bounds,
 } from './models';
-import { assertDataLength } from '../../guards';
+import { assertDataLength, isDefined } from '../../guards';
 
 const TICK_FORMAT = format('0');
 
@@ -123,6 +123,13 @@ export function getDomain(
   // Clamp domain minimum to first positive value,
   // or return `undefined` if domain is not unsupported: `[-x, 0]`
   return positiveMin !== Infinity ? [positiveMin, max] : undefined;
+}
+
+export function getDomains(
+  arrays: (ndarray | number[])[],
+  scaleType: ScaleType = ScaleType.Linear
+): (Domain | undefined)[] {
+  return arrays.map((arr) => getDomain(arr, scaleType));
 }
 
 function extendEmptyDomain(
@@ -273,26 +280,17 @@ export function isScaleType(val: unknown): val is ScaleType {
 }
 
 export function getCombinedDomain(
-  domain: Domain | undefined,
-  domainsToCombine: (Domain | undefined)[]
+  domains: (Domain | undefined)[]
 ): Domain | undefined {
+  const domainsToCombine = domains.filter(isDefined);
   if (domainsToCombine.length === 0) {
-    return domain;
+    return undefined;
   }
 
-  const [domainToCombine, ...remainingDomains] = domainsToCombine;
-
-  if (domain === undefined || domainToCombine === undefined) {
-    return domain || domainToCombine;
-  }
-
-  return getCombinedDomain(
-    [
-      Math.min(domain[0], domainToCombine[0]),
-      Math.max(domain[1], domainToCombine[1]),
-    ],
-    remainingDomains
-  );
+  return domainsToCombine.reduce((accDomain, nextDomain) => [
+    Math.min(accDomain[0], nextDomain[0]),
+    Math.max(accDomain[1], nextDomain[1]),
+  ]);
 }
 
 export function getBaseArray<T extends unknown[] | undefined>(
