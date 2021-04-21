@@ -10,6 +10,7 @@ import {
   getCanvasScale,
   getCombinedDomain,
   getDomain,
+  getDomains,
   getValueToIndexScale,
 } from './utils';
 import AxisSystemContext from './shared/AxisSystemContext';
@@ -59,6 +60,7 @@ export function useDatasetValues(datasets: Dataset[]): Record<string, unknown> {
 }
 
 export const useDomain = createMemo(getDomain);
+export const useDomains = createMemo(getDomains);
 
 export function useFrameRendering(): void {
   const [, setNum] = useState(0);

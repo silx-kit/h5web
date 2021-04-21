@@ -125,6 +125,13 @@ export function getDomain(
   return positiveMin !== Infinity ? [positiveMin, max] : undefined;
 }
 
+export function getDomains(
+  arrays: (ndarray | number[])[],
+  scaleType: ScaleType = ScaleType.Linear
+): (Domain | undefined)[] {
+  return arrays.map((arr) => getDomain(arr, scaleType));
+}
+
 function extendEmptyDomain(
   value: number,
   extendFactor: number,

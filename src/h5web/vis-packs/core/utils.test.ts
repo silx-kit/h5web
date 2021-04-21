@@ -2,6 +2,7 @@ import { tickStep } from 'd3-array';
 import {
   computeVisSize,
   getDomain,
+  getDomains,
   extendDomain,
   getValueToIndexScale,
   getIntegerTicks,
@@ -92,6 +93,26 @@ describe('getDomain', () => {
       const domain = getDomain([-2, 0, -10, -5, -2, -1], ScaleType.Log);
       expect(domain).toBeUndefined();
     });
+  });
+});
+
+describe('getDomains', () => {
+  it('should return domains of multiple arrays', () => {
+    const arr1 = [2, 0, 10, 5, 2, -1];
+    const arr2: number[] = [];
+    const arr3 = [100, Number.NaN];
+
+    const domain = getDomains([arr1, arr2, arr3]);
+    expect(domain).toEqual([[-1, 10], undefined, undefined]);
+  });
+
+  it('should return domains of multiple arrays in log scale', () => {
+    const arr1 = [-2, -10, -5, -2, -1];
+    const arr2 = [2, 0, 10, 5, 2, -1];
+    const arr3 = [-2, 0, -10, -5, -2, -1];
+
+    const domain = getDomains([arr1, arr2, arr3], ScaleType.Log);
+    expect(domain).toEqual([[-10, -1], [2, 10], undefined]);
   });
 });
 
