@@ -72,7 +72,7 @@ function MappedLineVis(props: Props) {
     showErrors ? errorsForDomain : undefined
   );
   const auxDomains = auxForDomain.map((arr) => getDomain(arr, yScaleType));
-  const combinedDomain = useCombinedDomain(dataDomain, auxDomains);
+  const combinedDomain = useCombinedDomain([dataDomain, ...auxDomains]);
 
   const mappedAbscissaParams = axisMapping[dimMapping.indexOf('x')];
   useEffect(() => {
