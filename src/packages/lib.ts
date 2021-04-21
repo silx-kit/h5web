@@ -30,10 +30,7 @@ export {
   useCombinedDomain,
 } from '../h5web/vis-packs/core/hooks';
 
-export {
-  getDims,
-  getLinearGradient,
-} from '../h5web/vis-packs/core/heatmap/utils';
+export { getLinearGradient } from '../h5web/vis-packs/core/heatmap/utils';
 
 // Models
 export { INTERPOLATORS } from '../h5web/vis-packs/core/heatmap/interpolators';
