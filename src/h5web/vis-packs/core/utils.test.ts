@@ -100,10 +100,10 @@ describe('getDomains', () => {
   it('should return domains of multiple arrays', () => {
     const arr1 = [2, 0, 10, 5, 2, -1];
     const arr2: number[] = [];
-    const arr3 = [100, Number.NaN];
+    const arr3 = [100];
 
     const domain = getDomains([arr1, arr2, arr3]);
-    expect(domain).toEqual([[-1, 10], undefined, undefined]);
+    expect(domain).toEqual([[-1, 10], undefined, [100, 100]]);
   });
 
   it('should return domains of multiple arrays in log scale', () => {
