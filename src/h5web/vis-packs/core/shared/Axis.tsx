@@ -61,7 +61,7 @@ function Axis(props: Props) {
           scale={scale}
           tickFormat={getTickFormatter(domain, axisLength, scaleType)}
           label={label}
-          labelOffset={type === 'abscissa' ? 22 : 42}
+          labelOffset={type === 'abscissa' ? 28 : 42}
           {...ticksProp}
           {...AXIS_PROPS}
         />

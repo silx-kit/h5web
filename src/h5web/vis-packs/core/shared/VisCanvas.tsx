@@ -7,7 +7,7 @@ import { computeVisSize } from '../utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemContext from './AxisSystemContext';
 
-const AXIS_OFFSETS = { vertical: 72, horizontal: 36, fallback: 16 };
+const AXIS_OFFSETS = { vertical: 72, horizontal: 40, fallback: 16 };
 
 interface Props {
   abscissaConfig: AxisConfig;
