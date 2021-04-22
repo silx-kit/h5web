@@ -1,7 +1,4 @@
-import { useState } from 'react';
 import type { Story } from '@storybook/react/types-6-0';
-import ndarray from 'ndarray';
-import { useInterval } from 'react-use';
 import FillHeight from './decorators/FillHeight';
 import {
   HeatmapVis,
@@ -70,25 +67,6 @@ NoGrid.args = {
   dataArray,
   domain,
   showGrid: false,
-};
-
-export const LiveData: Story<HeatmapVisProps> = (args) => {
-  const [shuffledArray, setShuffledArray] = useState(args.dataArray);
-
-  useInterval(() => {
-    const shuffledValues = [...shuffledArray.data].sort(
-      () => 0.5 - Math.random()
-    );
-
-    setShuffledArray(ndarray(shuffledValues, dataArray.shape));
-  }, 5000);
-
-  return <HeatmapVis {...args} dataArray={shuffledArray} />;
-};
-
-LiveData.args = {
-  dataArray,
-  domain,
 };
 
 export const CustomEdges = Template.bind({});

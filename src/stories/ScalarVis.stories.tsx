@@ -1,21 +1,31 @@
 import type { Story } from '@storybook/react/types-6-0';
+import Complex from 'complex.js';
 import { ScalarVis, ScalarVisProps } from '../packages/lib';
-
-const numberData = 1024;
-const stringData = 'This is a scalar';
 
 const Template: Story<ScalarVisProps> = (args) => <ScalarVis {...args} />;
 
 export const DisplayNumber = Template.bind({});
 
 DisplayNumber.args = {
-  value: numberData,
+  value: 1024,
 };
 
 export const DisplayString = Template.bind({});
 
 DisplayString.args = {
-  value: stringData,
+  value: 'This is a scalar',
+};
+
+export const DisplayBoolean = Template.bind({});
+
+DisplayBoolean.args = {
+  value: false,
+};
+
+export const DisplayComplex = Template.bind({});
+
+DisplayComplex.args = {
+  value: new Complex(1.2, 3),
 };
 
 export default {

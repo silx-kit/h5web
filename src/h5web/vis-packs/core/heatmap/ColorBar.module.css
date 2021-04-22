@@ -1,11 +1,13 @@
 .colorBar {
   display: grid;
   padding: 1rem;
+  color: var(--axis-primary-color);
+  font-size: 0.875em;
 }
 
 .colorBar:not([data-horizontal]) {
   grid-template-rows: min-content 1fr min-content;
-  grid-template-columns: 2.25rem 2.5rem;
+  grid-template-columns: 2.25rem 2.75rem;
   grid-template-areas:
     'max .'
     'gradient axis'
@@ -31,6 +33,7 @@
   grid-area: axis;
   display: block;
   overflow: visible;
+  font-size: 0.875em;
 }
 
 .tick line {
@@ -41,8 +44,6 @@
   fill: var(--dark-slate-gray);
   font-family: inherit;
   font-size: inherit;
-  text-anchor: inherit;
-  dominant-baseline: inherit;
 }
 
 .bound {
@@ -50,7 +51,6 @@
   align-self: center;
   justify-content: center;
   line-height: 1;
-  font-size: 0.875em;
   white-space: nowrap;
 }
 
