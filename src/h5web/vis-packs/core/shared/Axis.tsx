@@ -1,23 +1,22 @@
 import type { ElementType } from 'react';
-import { AxisLeft, AxisBottom, TickRendererProps } from '@visx/axis';
+import { AxisLeft, AxisBottom, SharedAxisProps } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
 import styles from './AxisSystem.module.css';
-import { Domain, Size, ScaleType, AxisConfig } from '../models';
+import { Domain, Size, ScaleType, AxisConfig, AxisScale } from '../models';
 import {
   adaptedNumTicks,
   getIntegerTicks,
   getTickFormatter,
   createAxisScale,
 } from '../utils';
+import Tick from './Tick';
 
-const AXIS_PROPS = {
+const AXIS_PROPS: Partial<SharedAxisProps<AxisScale>> = {
   hideAxisLine: true,
-  tickClassName: styles.tick,
   labelClassName: styles.label,
-  labelProps: {}, // To avoid any styling props on the parent svg
-  tickComponent: ({ formattedValue, ...tickProps }: TickRendererProps) => (
-    <text {...tickProps}>{formattedValue}</text>
-  ),
+  labelProps: {}, // remove any styling props from parent `svg` element
+  tickClassName: styles.tick,
+  tickComponent: Tick,
 };
 
 const COMPONENTS: Record<string, [ElementType, ElementType]> = {

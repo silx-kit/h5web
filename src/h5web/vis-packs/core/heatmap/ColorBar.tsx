@@ -6,6 +6,7 @@ import { getInterpolator, getLinearGradient } from './utils';
 import type { ScaleType, Domain } from '../models';
 import type { ColorMap } from './models';
 import { formatValue } from '../../../utils';
+import Tick from '../shared/Tick';
 
 interface Props {
   domain: Domain;
@@ -73,6 +74,7 @@ function ColorBar(props: Props) {
             hideAxisLine
             numTicks={adaptedNumTicks(gradientLength)}
             tickClassName={styles.tick}
+            tickComponent={Tick}
             tickFormat={axisScale.tickFormat(
               adaptedNumTicks(gradientLength),
               '.3~g'

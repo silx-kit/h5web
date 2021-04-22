@@ -4,6 +4,7 @@
     '. top-axis .'
     '. axis-grid right-axis'
     '. bottom-axis .';
+  color: var(--axis-primary-color);
 
   /* - Prevent panning/zooming from axis when zoomed in.
    * - Prevent text selection of tick labels when panning with touchpad. */
@@ -22,21 +23,10 @@
 
 .axis[data-type='abscissa'] {
   grid-area: bottom-axis;
-  text-anchor: middle;
 }
 
 .axis[data-type='ordinate'] {
-  grid-area: axis-grid; /* `AxisLeft` aligns ticks to the outer left of its own bounding box  */
-  text-anchor: end;
-}
-
-.grid {
   grid-area: axis-grid;
-}
-
-.grid line {
-  stroke: var(--axis-secondary-color);
-  stroke-opacity: 0.33;
 }
 
 .tick > line {
@@ -44,15 +34,13 @@
 }
 
 .tick > text {
-  fill: var(--axis-primary-color);
+  fill: currentColor;
   font-family: inherit;
   font-size: inherit;
-  text-anchor: inherit;
-  dominant-baseline: inherit;
 }
 
 .label {
-  fill: var(--axis-primary-color);
+  fill: currentColor;
   font-family: inherit;
   font-size: inherit;
   font-weight: 600;
@@ -65,6 +53,14 @@
   align-items: center;
   grid-area: top-axis;
   margin-bottom: 0;
-  color: var(--axis-primary-color);
   font-size: 1.125em;
+}
+
+.grid {
+  grid-area: axis-grid;
+}
+
+.grid line {
+  stroke: var(--axis-secondary-color);
+  stroke-opacity: 0.33;
 }
