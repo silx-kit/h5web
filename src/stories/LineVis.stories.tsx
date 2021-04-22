@@ -16,10 +16,10 @@ import { getDomains } from '../h5web/vis-packs/core/utils';
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray);
 
-const secondaryValues = mockValues.secondary.flat(Infinity) as number[];
-const tertiaryValues = mockValues.tertiary.flat(Infinity) as number[];
-const secondaryArray = ndarray(secondaryValues, [20, 41]);
-const tertiaryArray = ndarray(tertiaryValues, [20, 41]);
+const secondaryValues = mockValues.secondary[0].flat(Infinity);
+const tertiaryValues = mockValues.tertiary[0].flat(Infinity);
+const secondaryArray = ndarray(secondaryValues);
+const tertiaryArray = ndarray(tertiaryValues);
 const combinedDomain = getCombinedDomain([
   domain,
   ...getDomains([secondaryArray, tertiaryArray]),
