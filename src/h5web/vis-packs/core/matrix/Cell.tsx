@@ -3,6 +3,21 @@ import type { GridChildComponentProps } from 'react-window';
 import { format } from 'd3-format';
 import styles from './MatrixVis.module.css';
 import { GridSettingsContext } from './GridSettingsContext';
+import type { Primitive } from '../../../providers/models';
+import type { PrintableType } from '../models';
+import { formatComplexValue } from '../../../utils';
+
+function formatPrintableValue(value: Primitive<PrintableType>) {
+  if (Array.isArray(value)) {
+    return formatComplexValue(value, '.1g');
+  }
+
+  if (typeof value === 'number') {
+    return format('.3e')(value);
+  }
+
+  return value.toString();
+}
 
 function Cell(props: GridChildComponentProps) {
   const { rowIndex, columnIndex, style } = props;
@@ -25,9 +40,7 @@ function Cell(props: GridChildComponentProps) {
       aria-colindex={columnIndex}
       data-bg={(rowIndex + columnIndex) % 2 === 1 ? '' : undefined}
     >
-      {typeof dataValue === 'number'
-        ? format('.3e')(dataValue)
-        : dataValue.toString()}
+      {formatPrintableValue(dataValue)}
     </div>
   );
 }

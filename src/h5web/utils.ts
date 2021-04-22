@@ -1,8 +1,17 @@
 import { format } from 'd3-format';
-import type { Entity, Group } from './providers/models';
+import type { Entity, Group, H5WebComplex } from './providers/models';
 
 export const formatValue = format('.3~e');
 export const formatPreciseValue = format('.5~e');
+export function formatComplexValue(value: H5WebComplex, specifier = '') {
+  const [real, imag] = value;
+  if (real === 0) {
+    return `${format(specifier)(imag)}i`;
+  }
+
+  const formatFn = format(specifier);
+  return `${formatFn(real)}${imag >= 0 ? '+' : ''}${formatFn(imag)}i`;
+}
 
 export function getChildEntity(
   group: Group,
