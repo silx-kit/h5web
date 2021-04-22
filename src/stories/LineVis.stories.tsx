@@ -16,14 +16,12 @@ import { getDomains } from '../h5web/vis-packs/core/utils';
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray);
 
-const secondaryValues = mockValues.secondary[0].flat(Infinity);
-const tertiaryValues = mockValues.tertiary[0].flat(Infinity);
-const secondaryArray = ndarray(secondaryValues);
-const tertiaryArray = ndarray(tertiaryValues);
-const combinedDomain = getCombinedDomain([
-  domain,
-  ...getDomains([secondaryArray, tertiaryArray]),
-]);
+const primaryArray = ndarray(mockValues.twoD[0]);
+const secondaryArray = ndarray(mockValues.secondary[0]);
+const tertiaryArray = ndarray(mockValues.tertiary[0]);
+const combinedDomain = getCombinedDomain(
+  getDomains([primaryArray, secondaryArray, tertiaryArray])
+);
 
 const errorsArray = ndarray(
   Array.from({ length: dataArray.size }, (_, i) => Math.abs(10 - 0.5 * i)),
@@ -58,7 +56,7 @@ ErrorBars.args = {
 export const AuxiliaryArrays = Template.bind({});
 
 AuxiliaryArrays.args = {
-  dataArray,
+  dataArray: primaryArray,
   auxArrays: [secondaryArray, tertiaryArray],
   domain: combinedDomain,
 };
@@ -69,7 +67,7 @@ const LineVisStoriesConfig = {
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
   argTypes: {
-    dataArray: {}, // To keep mandatory args above optional ones.
+    dataArray: {}, // to keep mandatory args above optional ones in controls add-on
     domain: {},
     curveType: {
       defaultValue: CurveType.LineOnly,
