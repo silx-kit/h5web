@@ -9,20 +9,18 @@ import type {
   HsdsValueResponse,
   HsdsAttributeResponse,
   HsdsLink,
-  HsdsComplex,
   HsdsEntity,
   HsdsCollection,
   HsdsId,
 } from './models';
 import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
-import { assertDefined, assertGroup, hasComplexType } from '../../guards';
+import { assertDefined, assertGroup } from '../../guards';
 import type { GetValueParams, ProviderAPI } from '../context';
 import {
   assertHsdsDataset,
   isHsdsGroup,
   convertHsdsShape,
   convertHsdsType,
-  parseComplex,
   convertHsdsAttributes,
   assertHsdsEntity,
 } from './utils';
@@ -91,10 +89,6 @@ export class HsdsApi implements ProviderAPI {
     const { data } = await this.client.get<HsdsValueResponse>(
       `/datasets/${entity.id}/value${selection && `?select=[${selection}]`}`
     );
-
-    if (hasComplexType(entity)) {
-      return parseComplex(data.value as HsdsComplex);
-    }
 
     return data.value;
   }

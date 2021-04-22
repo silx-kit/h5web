@@ -6,12 +6,13 @@ import styles from './MatrixVis.module.css';
 import GridSettingsProvider from './GridSettingsContext';
 import StickyGrid from './StickyGrid';
 import Cell from './Cell';
-import type Complex from 'complex.js';
+import type { Primitive } from '../../../providers/models';
+import type { PrintableType } from '../models';
 
 const CELL_SIZE = { width: 116, height: 32 };
 
 interface Props {
-  dataArray: ndarray<string | number | boolean | Complex>;
+  dataArray: ndarray<Primitive<PrintableType>>;
 }
 
 function MatrixVis(props: Props) {

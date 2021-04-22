@@ -119,12 +119,15 @@ export function convertDtype(dtype: string): DType {
   }
 }
 
-export function parseComplex(complex: JupyterComplex): ComplexArray | Complex {
+export function parseComplex(
+  complex: JupyterComplex
+): ComplexArray | [number, number] {
   if (isComplexValue(complex)) {
     // Remove eventual parenthesis
     const complexStr = complex.endsWith(')') ? complex.slice(1, -1) : complex;
     // Replace the Python `j` by the JS `i`
-    return new Complex(complexStr.replace('j', 'i'));
+    const complexVal = new Complex(complexStr.replace('j', 'i'));
+    return [complexVal.re, complexVal.im];
   }
 
   return complex.map((v) => parseComplex(v));

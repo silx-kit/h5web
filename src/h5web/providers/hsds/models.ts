@@ -71,9 +71,6 @@ interface HsdsSymbolicLink {
 
 export type HsdsEntity<T extends Entity = Entity> = T & { id: HsdsId };
 
-export type HsdsComplex = HsdsComplex[] | HsdsComplexValue;
-export type HsdsComplexValue = [number, number];
-
 /* ------------------------ */
 /* ----- SHAPE & TYPE ----- */
 

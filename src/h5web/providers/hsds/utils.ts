@@ -1,4 +1,3 @@
-import Complex from 'complex.js';
 import { isDataset, isGroup } from '../../guards';
 import {
   ComplexType,
@@ -8,7 +7,6 @@ import {
   DTypeClass,
   NumericType,
   Entity,
-  ComplexArray,
   Shape,
   Attribute,
   Group,
@@ -16,8 +14,6 @@ import {
 } from '../models';
 import type {
   HsdsType,
-  HsdsComplex,
-  HsdsComplexValue,
   HsdsEntity,
   HsdsAttributeResponse,
   HsdsShape,
@@ -149,16 +145,4 @@ export function convertHsdsAttributes(
     shape: convertHsdsShape(attr.shape),
     type: convertHsdsType(attr.type),
   }));
-}
-
-export function parseComplex(complex: HsdsComplex): ComplexArray | Complex {
-  if (isComplexValue(complex)) {
-    return new Complex(complex);
-  }
-
-  return complex.map((v) => parseComplex(v));
-}
-
-function isComplexValue(complex: HsdsComplex): complex is HsdsComplexValue {
-  return complex.length === 2 && typeof complex[0] === 'number';
 }
