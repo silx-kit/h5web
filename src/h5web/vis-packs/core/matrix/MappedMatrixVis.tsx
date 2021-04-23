@@ -5,6 +5,9 @@ import type { DimensionMapping } from '../../../dimension-mapper/models';
 import type { Dataset, ArrayShape } from '../../../providers/models';
 import { isAxis } from '../../../dimension-mapper/utils';
 import type { PrintableType } from '../models';
+import { format } from 'd3-format';
+import { isComplexArray } from '../../../guards';
+import { renderComplex } from '../../../metadata-viewer/utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
@@ -27,7 +30,27 @@ function MappedMatrixVis(props: Props) {
 
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
 
-  return <MatrixVis dataArray={mappedArray} />;
+  if (isComplexArray(dataset.type, mappedArray)) {
+    return (
+      <MatrixVis
+        dataArray={mappedArray}
+        formatter={(dataValue) => renderComplex(dataValue, '.2e')}
+        cellWidth={216} // To accommodate the longer complex numbers
+      />
+    );
+  }
+
+  return (
+    <MatrixVis
+      dataArray={mappedArray}
+      formatter={(dataValue) => {
+        return typeof dataValue === 'number'
+          ? format('.3e')(dataValue)
+          : dataValue.toString();
+      }}
+      cellWidth={116}
+    />
+  );
 }
 
 export default MappedMatrixVis;

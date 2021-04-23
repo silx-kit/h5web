@@ -4,8 +4,10 @@ import {
   assertPrintableType,
   assertDataset,
   assertScalarShape,
+  isComplexValue,
 } from '../../../guards';
 import type { VisContainerProps } from '../../models';
+import { formatComplex } from '../../../utils';
 
 function ScalarVisContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -14,7 +16,12 @@ function ScalarVisContainer(props: VisContainerProps) {
   assertPrintableType(entity);
 
   const value = useDatasetValue(entity);
-  return <ScalarVis value={value} />;
+
+  if (isComplexValue(entity.type, value)) {
+    return <ScalarVis value={value} formatter={formatComplex} />;
+  }
+
+  return <ScalarVis value={value} formatter={() => value.toString()} />;
 }
 
 export default ScalarVisContainer;

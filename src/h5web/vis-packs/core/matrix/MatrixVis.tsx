@@ -9,14 +9,16 @@ import Cell from './Cell';
 import type { Primitive } from '../../../providers/models';
 import type { PrintableType } from '../models';
 
-const CELL_SIZE = { width: 116, height: 32 };
+const CELL_HEIGHT = 32;
 
-interface Props {
-  dataArray: ndarray<Primitive<PrintableType>>;
+interface Props<T> {
+  dataArray: ndarray<T>;
+  formatter: (value: T) => string;
+  cellWidth: number;
 }
 
-function MatrixVis(props: Props) {
-  const { dataArray } = props;
+function MatrixVis<T extends Primitive<PrintableType>>(props: Props<T>) {
+  const { dataArray, formatter, cellWidth } = props;
   const dims = dataArray.shape;
 
   const [divRef, { width, height }] = useMeasure();
@@ -27,13 +29,13 @@ function MatrixVis(props: Props) {
 
   return (
     <GridSettingsProvider
-      cellSize={CELL_SIZE}
+      cellSize={{ width: cellWidth, height: CELL_HEIGHT }}
       rowCount={rowCount}
       columnCount={columnCount}
-      valueAccessor={
+      cellFormatter={
         dims.length === 1
-          ? (row) => dataArray.get(row)
-          : (row, col) => dataArray.get(row, col)
+          ? (row: number) => formatter(dataArray.get(row))
+          : (row: number, col: number) => formatter(dataArray.get(row, col))
       }
     >
       <div
@@ -44,8 +46,8 @@ function MatrixVis(props: Props) {
           <IndexedGrid
             className={styles.grid}
             innerElementType={forwardRef(StickyGrid)}
-            columnWidth={CELL_SIZE.width}
-            rowHeight={CELL_SIZE.height}
+            columnWidth={cellWidth}
+            rowHeight={CELL_HEIGHT}
             columnCount={columnCount}
             rowCount={rowCount}
             width={width}

@@ -1,19 +1,18 @@
 import { ReactNode, createContext } from 'react';
-import type { Primitive } from '../../../providers/models';
-import type { PrintableType, Size } from '../models';
+import type { Size } from '../models';
 
 interface GridSettings {
   cellSize: Size;
   rowCount: number;
   columnCount: number;
-  valueAccessor: (row: number, col: number) => Primitive<PrintableType>;
+  cellFormatter: (row: number, col: number) => string;
 }
 
 export const GridSettingsContext = createContext<GridSettings>({
   cellSize: { width: 0, height: 0 },
   rowCount: 0,
   columnCount: 0,
-  valueAccessor: () => 0,
+  cellFormatter: () => '0',
 });
 
 interface Props extends GridSettings {
