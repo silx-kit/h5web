@@ -1,5 +1,7 @@
 import { useContext } from 'react';
 import { ProviderContext } from '../providers/context';
+import { ProviderError } from '../providers/models';
+import { handleError } from '../utils';
 import CorePack from './core/CorePack';
 import NexusPack from './nexus/NexusPack';
 import { getAttributeValue } from './nexus/utils';
@@ -18,7 +20,12 @@ function VisPackChooser(props: Props) {
   }
 
   const { entitiesStore } = useContext(ProviderContext);
-  const entity = entitiesStore.get(path);
+
+  const entity = handleError(
+    () => entitiesStore.get(path),
+    ProviderError.NotFound,
+    `No entity found at ${path}`
+  );
 
   if (
     getAttributeValue(entity, 'default') ||

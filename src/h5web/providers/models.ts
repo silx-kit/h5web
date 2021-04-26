@@ -158,3 +158,7 @@ export type Value<D extends Dataset> = D['shape'] extends ScalarShape
 
 export type H5WebComplex = [number, number];
 export type ComplexArray = (ComplexArray | H5WebComplex)[];
+
+export enum ProviderError {
+  NotFound = 'NotFound',
+}

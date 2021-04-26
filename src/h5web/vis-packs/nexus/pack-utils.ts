@@ -1,7 +1,7 @@
 import type { FetchStore } from 'react-suspense-fetch';
-import { assertDefined, assertStr, hasMinDims, isGroup } from '../../guards';
-import type { Entity } from '../../providers/models';
-import { buildEntityPath } from '../../utils';
+import { assertStr, hasMinDims, isGroup } from '../../guards';
+import { Entity, ProviderError } from '../../providers/models';
+import { buildEntityPath, handleError } from '../../utils';
 import type { VisDef } from '../models';
 import { NxInterpretation } from './models';
 import { findSignalDataset, getAttributeValue, isNxDataGroup } from './utils';
@@ -21,8 +21,11 @@ export function getDefaultEntity(
     ? defaultPath
     : buildEntityPath(entity.path, defaultPath);
 
-  const defaultEntity = entitiesStore.get(path);
-  assertDefined(defaultEntity, `Expected entity at path "${path}"`);
+  const defaultEntity = handleError(
+    () => entitiesStore.get(path),
+    ProviderError.NotFound,
+    `No entity found at NeXus default path "${path}"`
+  );
 
   return getDefaultEntity(defaultEntity, entitiesStore);
 }

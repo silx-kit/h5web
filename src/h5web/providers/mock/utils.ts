@@ -9,7 +9,7 @@ import {
   isGroup,
 } from '../../guards';
 import { getChildEntity } from '../../utils';
-import type { Entity } from '../models';
+import { Entity, ProviderError } from '../models';
 import { mockMetadata } from './metadata';
 import type { MockDataset } from './models';
 
@@ -42,7 +42,7 @@ export function findMockEntity(path: string): Entity {
     mockMetadata
   );
 
-  assertDefined(entity, `Expected entity at path "${path}"`);
+  assertDefined(entity, ProviderError.NotFound);
   return entity;
 }
 

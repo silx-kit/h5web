@@ -13,7 +13,14 @@ import type {
   HsdsCollection,
   HsdsId,
 } from './models';
-import { Dataset, Datatype, Entity, EntityKind, Group } from '../models';
+import {
+  Dataset,
+  Datatype,
+  Entity,
+  EntityKind,
+  Group,
+  ProviderError,
+} from '../models';
 import { assertDefined, assertGroup } from '../../guards';
 import type { GetValueParams, ProviderAPI } from '../context';
 import {
@@ -69,7 +76,7 @@ export class HsdsApi implements ProviderAPI {
 
     const childName = path.slice(path.lastIndexOf('/') + 1);
     const child = getChildEntity(parentGroup, childName);
-    assertDefined(child);
+    assertDefined(child, ProviderError.NotFound);
     assertHsdsEntity(child);
 
     const entity = isHsdsGroup(child)
