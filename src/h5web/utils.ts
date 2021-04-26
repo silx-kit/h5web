@@ -18,3 +18,19 @@ export function buildEntityPath(
   const prefix = parentPath === '/' ? '' : parentPath;
   return `${prefix}/${entityNameOrRelativePath}`;
 }
+
+export function handleError<T>(
+  func: () => T,
+  errToCatch: string,
+  errToThrow: string
+): T {
+  try {
+    return func();
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === errToCatch) {
+      throw new Error(errToThrow);
+    }
+
+    throw error;
+  }
+}

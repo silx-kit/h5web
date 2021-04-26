@@ -1,7 +1,8 @@
 import { memo, useContext } from 'react';
 import { isAbsolutePath } from '../guards';
 import { ProviderContext } from '../providers/context';
-import { buildEntityPath } from '../utils';
+import { ProviderError } from '../providers/models';
+import { buildEntityPath, handleError } from '../utils';
 import AttributesTable from './AttributesTable';
 import EntityTable from './EntityTable';
 import styles from './MetadataViewer.module.css';
@@ -13,9 +14,13 @@ interface Props {
 
 function MetadataViewer(props: Props) {
   const { path, onSelectPath } = props;
-
   const { entitiesStore } = useContext(ProviderContext);
-  const entity = entitiesStore.get(path);
+
+  const entity = handleError(
+    () => entitiesStore.get(path),
+    ProviderError.NotFound,
+    `No entity found at ${path}`
+  );
 
   return (
     <div className={styles.metadataViewer}>

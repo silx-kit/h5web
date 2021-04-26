@@ -70,7 +70,9 @@ test('show error when encountering malformed NeXus metadata', async () => {
   expect(await screen.findByText(/to be a string/)).toBeVisible();
 
   await selectExplorerNode('default_not_found');
-  expect(await screen.findByText(/entity at path/)).toBeVisible();
+  expect(
+    await screen.findByText(/No entity found at NeXus default path/)
+  ).toBeVisible();
 
   await selectExplorerNode('no_signal');
   expect(await screen.findByText(/'signal' attribute/)).toBeVisible();

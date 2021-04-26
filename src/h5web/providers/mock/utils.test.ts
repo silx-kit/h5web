@@ -1,3 +1,4 @@
+import { ProviderError } from '../models';
 import { mockMetadata } from './metadata';
 import { findMockEntity } from './utils';
 
@@ -15,6 +16,8 @@ describe('findMockEntity', () => {
   });
 
   it('should throw if no entity is found at given path', () => {
-    expect(() => findMockEntity('/nD_datasets/foo')).toThrow(/entity at path/);
+    expect(() => findMockEntity('/nD_datasets/foo')).toThrow(
+      ProviderError.NotFound
+    );
   });
 });
