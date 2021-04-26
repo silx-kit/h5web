@@ -67,28 +67,34 @@ export const complexType: ComplexType = {
 /* ---------------------- */
 /* ----- ATTRIBUTES ----- */
 
-export function makeAttr(
+export function makeAttr<S extends Shape, T extends DType>(
   name: string,
-  type: DType,
-  shape: Shape,
+  type: T,
+  shape: S,
   value: unknown
-): Attribute {
+): Attribute<S, T> {
   return { name, type, shape, value };
 }
 
-export function makeScalarAttr(
+export function makeScalarAttr<T extends DType>(
   name: string,
-  type: DType,
+  type: T,
   value: unknown
-): Attribute {
+): Attribute<ScalarShape, T> {
   return makeAttr(name, type, [], value);
 }
 
-export function makeStrAttr(name: string, value: string): Attribute {
+export function makeStrAttr(
+  name: string,
+  value: string
+): Attribute<ScalarShape, StringType> {
   return makeScalarAttr(name, stringType, value);
 }
 
-export function makeIntAttr(name: string, value: number): Attribute {
+export function makeIntAttr(
+  name: string,
+  value: number
+): Attribute<ScalarShape, NumericType> {
   return makeScalarAttr(name, intType, value);
 }
 
@@ -203,15 +209,21 @@ export function makeUnresolvedEntity(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-export function makeNxAxesAttr(axes: string[]): Attribute {
+export function makeNxAxesAttr(
+  axes: string[]
+): Attribute<ArrayShape, StringType> {
   return makeAttr('axes', stringType, [axes.length], axes);
 }
 
-export function makeNxAuxAttr(aux: string[]): Attribute {
+export function makeNxAuxAttr(
+  aux: string[]
+): Attribute<ArrayShape, StringType> {
   return makeAttr('auxiliary_signals', stringType, [aux.length], aux);
 }
 
-export function makeSilxStyleAttr(style: SilxStyle): Attribute {
+export function makeSilxStyleAttr(
+  style: SilxStyle
+): Attribute<ScalarShape, StringType> {
   const { signalScaleType, axesScaleType } = style;
 
   return makeStrAttr(

@@ -1,6 +1,8 @@
+import { isComplexValue } from '../guards';
 import type { Attribute } from '../providers/models';
 import AttributeValueLink from './AttributeValueLink';
 import styles from './MetadataViewer.module.css';
+import { renderComplex } from './utils';
 
 const FOLLOWABLE_ATTRS = new Set([
   'default',
@@ -31,12 +33,14 @@ function AttributesTable(props: Props) {
         </tr>
       </thead>
       <tbody>
-        {attributes.map(({ name, value }) => (
+        {attributes.map(({ name, type, value }) => (
           <tr key={name}>
             <th scope="row">{name}</th>
             <td>
               {FOLLOWABLE_ATTRS.has(name) ? (
                 <AttributeValueLink onFollowPath={onFollowPath} value={value} />
+              ) : isComplexValue(type, value) ? (
+                renderComplex(value)
               ) : (
                 JSON.stringify(value)
               )}

@@ -46,10 +46,10 @@ export interface Link {
   file?: string;
 }
 
-export interface Attribute {
+export interface Attribute<S extends Shape = Shape, T extends DType = DType> {
   name: string;
-  shape: Shape;
-  type: DType;
+  shape: S;
+  type: T;
   value: unknown;
 }
 

@@ -141,8 +141,9 @@ export function convertHsdsAttributes(
   attrs: HsdsAttributeResponse[]
 ): Attribute[] {
   return attrs.map((attr) => ({
-    ...attr,
+    name: attr.name,
     shape: convertHsdsShape(attr.shape),
     type: convertHsdsType(attr.type),
+    value: attr.value,
   }));
 }

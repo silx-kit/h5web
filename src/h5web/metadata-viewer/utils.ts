@@ -1,5 +1,12 @@
-import { isNumericType, isScalarShape } from '../guards';
-import { DType, DTypeClass, Shape } from '../providers/models';
+import { isNumericType, isScalarShape, isH5WebComplex } from '../guards';
+import {
+  ComplexArray,
+  DType,
+  DTypeClass,
+  H5WebComplex,
+  Shape,
+} from '../providers/models';
+import { formatComplex } from '../utils';
 
 export function renderShape(shape: Shape): string {
   if (shape === null) {
@@ -29,4 +36,15 @@ export function renderType(type: DType): string {
   }
 
   return type.class;
+}
+
+export function renderComplex(
+  complex: H5WebComplex | ComplexArray,
+  specifier?: string
+): string {
+  if (isH5WebComplex(complex)) {
+    return formatComplex(complex, specifier);
+  }
+
+  return `[ ${complex.map((c) => renderComplex(c)).join(', ')} ]`;
 }

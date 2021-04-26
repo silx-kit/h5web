@@ -15,6 +15,8 @@ import {
   BooleanType,
   ComplexType,
   UnresolvedEntity,
+  ComplexArray,
+  H5WebComplex,
 } from './providers/models';
 import type { PrintableType } from './vis-packs/core/models';
 import { toArray } from './vis-packs/core/utils';
@@ -252,4 +254,24 @@ export function assertDataLength(
       `Expected ${arrName} array (${arrLength}) to have same length as data array (${dataLength})`
     );
   }
+}
+
+export function isComplexValue(
+  type: DType,
+  value: unknown
+): value is H5WebComplex | ComplexArray {
+  return type.class === DTypeClass.Complex;
+}
+
+export function isH5WebComplex(
+  complex: H5WebComplex | ComplexArray
+): complex is H5WebComplex {
+  return typeof complex[0] === 'number';
+}
+
+export function isComplexArray(
+  type: DType,
+  arr: ndarray<unknown>
+): arr is ndarray<H5WebComplex> {
+  return type.class === DTypeClass.Complex;
 }
