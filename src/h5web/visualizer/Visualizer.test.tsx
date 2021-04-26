@@ -39,7 +39,9 @@ test('show fallback message when no visualization is supported', async () => {
   renderApp();
   await selectExplorerNode('entities'); // simple group
 
-  expect(await screen.findByText('Nothing to visualize')).toBeInTheDocument();
+  expect(
+    await screen.findByText('No visualization available for this entity.')
+  ).toBeInTheDocument();
   expect(queryVisSelector()).not.toBeInTheDocument();
 });
 

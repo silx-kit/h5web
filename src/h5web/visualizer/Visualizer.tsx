@@ -19,7 +19,11 @@ function Visualizer<T extends VisDef>(props: Props<T>) {
   const { entity, activeVis, supportedVis, onActiveVisChange } = props;
 
   if (!activeVis) {
-    return <p className={styles.fallback}>Nothing to visualize</p>;
+    return (
+      <p className={styles.fallback}>
+        No visualization available for this entity.
+      </p>
+    );
   }
 
   const { Container, Toolbar, ConfigProvider = Fragment } = activeVis;
