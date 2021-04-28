@@ -20,6 +20,8 @@ interface Props {
   colorMap: ColorMap;
   scaleType: ScaleType;
   invertColorMap?: boolean;
+  alphaValues?: number[];
+  alphaDomain?: Domain;
 }
 
 const SCALE_FUNC: Record<ScaleType, (val: number) => number> = {
@@ -46,6 +48,8 @@ function Mesh(props: Props) {
     colorMap,
     scaleType,
     invertColorMap = false,
+    alphaValues,
+    alphaDomain,
   } = props;
 
   const scaledDomain = domain.map(SCALE_FUNC[scaleType]);
@@ -54,6 +58,14 @@ function Mesh(props: Props) {
     const valuesArr = Float32Array.from(values);
     return new DataTexture(valuesArr, cols, rows, RedFormat, FloatType);
   }, [cols, rows, values]);
+
+  const alphaTexture = useMemo(() => {
+    if (!alphaValues) {
+      return undefined;
+    }
+    const valuesArr = Float32Array.from(alphaValues);
+    return new DataTexture(valuesArr, cols, rows, RedFormat, FloatType);
+  }, [cols, rows, alphaValues]);
 
   const colorMapTexture = useMemo(() => {
     const interpolator = getInterpolator(colorMap, invertColorMap);
@@ -71,10 +83,16 @@ function Mesh(props: Props) {
   const shader = {
     uniforms: {
       data: { value: dataTexture },
+      withAlpha: { value: alphaValues ? 1 : 0 },
+      alpha: { value: alphaTexture },
       colorMap: { value: colorMapTexture },
       scaleType: { value: CMAP_NORM[scaleType] },
       min: { value: scaledDomain[0] },
+      alphaMin: { value: alphaDomain && alphaDomain[0] },
       oneOverRange: { value: 1 / (scaledDomain[1] - scaledDomain[0]) },
+      oneOverAlphaRange: {
+        value: alphaDomain && 1 / (alphaDomain[1] - alphaDomain[0]),
+      },
     },
     vertexShader: `
       varying vec2 coords;
@@ -89,7 +107,11 @@ function Mesh(props: Props) {
       uniform sampler2D colorMap;
       uniform int scaleType;
       uniform float min;
+      uniform float alphaMin;
       uniform float oneOverRange;
+      uniform sampler2D alpha;
+      uniform float oneOverAlphaRange;
+      uniform int withAlpha;
 
       const float oneOverLog10 = 0.43429448190325176;
       const vec4 nanColor = vec4(255, 255, 255, 1);
@@ -119,6 +141,10 @@ function Mesh(props: Props) {
           gl_FragColor = nanColor;
         } else {
           gl_FragColor = texture2D(colorMap, vec2(scale(value), 0.5));
+
+          if (withAlpha == 1) {
+            gl_FragColor.a = oneOverAlphaRange * (texture2D(alpha, coords).r - alphaMin);
+          }
         }
       }
     `,

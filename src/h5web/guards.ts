@@ -275,3 +275,11 @@ export function isComplexArray(
 ): arr is ndarray<H5WebComplex> {
   return type.class === DTypeClass.Complex;
 }
+
+export function assertComplexType<S extends Shape>(
+  dataset: Dataset<S>
+): asserts dataset is Dataset<S, ComplexType> {
+  if (!hasComplexType(dataset)) {
+    throw new Error('Expected dataset to have complex type');
+  }
+}

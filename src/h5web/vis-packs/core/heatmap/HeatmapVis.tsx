@@ -24,6 +24,8 @@ interface Props {
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
+  alphaArray?: ndarray;
+  alphaDomain?: Domain;
 }
 
 function HeatmapVis(props: Props) {
@@ -38,6 +40,8 @@ function HeatmapVis(props: Props) {
     title,
     abscissaParams = {},
     ordinateParams = {},
+    alphaArray,
+    alphaDomain,
   } = props;
 
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
@@ -90,6 +94,8 @@ function HeatmapVis(props: Props) {
           colorMap={colorMap}
           invertColorMap={invertColorMap}
           scaleType={scaleType}
+          alphaValues={alphaArray && (alphaArray.data as number[])}
+          alphaDomain={alphaDomain}
         />
       </VisCanvas>
       <ColorBar

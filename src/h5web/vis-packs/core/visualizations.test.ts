@@ -20,11 +20,13 @@ const datasetCplxScalar = makeScalarDataset('dataset_cplx', complexType);
 const datasetInt1D = makeDataset('dataset_int_1d', intType, [5]);
 const datasetUnsigned1D = makeDataset('dataset_int_1d', unsignedType, [5]);
 const datasetBool1D = makeDataset('dataset_bool_1d', booleanType, [3]);
+const datasetCplx1D = makeDataset('dataset_cplx_1d', complexType, [10]);
 const datasetInt2D = makeDataset('dataset_int_2d', intType, [5, 3]);
 const datasetUnsigned2D = makeDataset('dataset_int_2d', unsignedType, [5, 3]);
-const datasetCplx2D = makeDataset('dataset_cplx_2D', complexType, [2, 2]);
+const datasetCplx2D = makeDataset('dataset_cplx_2d', complexType, [2, 2]);
 const datasetStr2D = makeDataset('dataset_str_2d', stringType, [5, 3]);
 const datasetFlt3D = makeDataset('dataset_flt_3d', intType, [5, 3, 1]);
+const datasetCplx3D = makeDataset('dataset_cplx_3d', complexType, [5, 2, 2]);
 
 describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
@@ -116,5 +118,29 @@ describe('Heatmap', () => {
 
   it('should not support dataset with less than two dimensions', () => {
     expect(supportsDataset(datasetInt1D)).toBe(false);
+  });
+});
+
+describe('Phase map', () => {
+  const { supportsDataset } = CORE_VIS['Phase map'];
+
+  it('should support array dataset with complex type and at least two dimensions', () => {
+    expect(supportsDataset(datasetCplx2D)).toBe(true);
+    expect(supportsDataset(datasetCplx3D)).toBe(true);
+  });
+
+  it('should not support dataset with non-complex type', () => {
+    expect(supportsDataset(datasetUnsigned2D)).toBe(false);
+    expect(supportsDataset(datasetInt2D)).toBe(false);
+    expect(supportsDataset(datasetFlt3D)).toBe(false);
+    expect(supportsDataset(datasetStr2D)).toBe(false);
+  });
+
+  it('should not support dataset with non-array shape', () => {
+    expect(supportsDataset(datasetCplxScalar)).toBe(false);
+  });
+
+  it('should not support dataset with less than two dimensions', () => {
+    expect(supportsDataset(datasetCplx1D)).toBe(false);
   });
 });
