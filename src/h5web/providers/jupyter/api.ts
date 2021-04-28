@@ -1,6 +1,5 @@
-import axios, { AxiosInstance } from 'axios';
 import { Group, Dataset, Entity, EntityKind } from '../models';
-import type { GetValueParams, ProviderAPI } from '../context';
+import { GetValueParams, ProviderApi } from '../context';
 import {
   assertGroupContent,
   isDatasetResponse,
@@ -21,16 +20,10 @@ import type {
 import { makeStrAttr } from '../mock/metadata-utils';
 import { assertDataset, hasComplexType } from '../../guards';
 
-export class JupyterStableApi implements ProviderAPI {
+export class JupyterStableApi extends ProviderApi {
   /* API compatible with jupyterlab_hdf v0.5.1 */
-  public readonly filepath: string;
-  protected readonly client: AxiosInstance;
-
   public constructor(url: string, filepath: string) {
-    this.filepath = filepath;
-    this.client = axios.create({
-      baseURL: `${url}/hdf`,
-    });
+    super(filepath, { baseURL: `${url}/hdf` });
   }
 
   public async getEntity(path: string): Promise<Entity> {
@@ -40,21 +33,17 @@ export class JupyterStableApi implements ProviderAPI {
   public async getValue(params: GetValueParams): Promise<unknown> {
     const { path, selection = '' } = params;
 
-    const [{ data }, entity] = await Promise.all([
-      this.client.get<JupyterDataResponse>(
-        `/data/${this.filepath}?uri=${path}${
-          selection && `&ixstr=${selection}`
-        }`
-      ),
+    const [value, entity] = await Promise.all([
+      this.fetchData(path, selection),
       this.getEntity(path),
     ]);
     assertDataset(entity);
 
     if (hasComplexType(entity)) {
-      return parseComplex(data as JupyterComplex);
+      return parseComplex(value as JupyterComplex);
     }
 
-    return data;
+    return value;
   }
 
   protected async fetchAttributes(path: string): Promise<JupyterAttrsResponse> {
@@ -74,6 +63,16 @@ export class JupyterStableApi implements ProviderAPI {
   protected async fetchContents(path: string): Promise<JupyterContentResponse> {
     const { data } = await this.client.get<JupyterContentResponse>(
       `/contents/${this.filepath}?uri=${path}`
+    );
+    return data;
+  }
+
+  protected async fetchData(
+    path: string,
+    selection: string
+  ): Promise<JupyterDataResponse> {
+    const { data } = await this.cancellableGet<JupyterDataResponse>(
+      `/data/${this.filepath}?uri=${path}${selection && `&ixstr=${selection}`}`
     );
     return data;
   }

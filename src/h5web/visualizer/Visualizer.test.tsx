@@ -1,7 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from '../App';
-import MockProvider from '../providers/mock/MockProvider';
 import { mockValues } from '../providers/mock/values';
 import {
   mockConsoleMethod,
@@ -45,20 +43,43 @@ test('show fallback message when no visualization is supported', async () => {
   expect(queryVisSelector()).not.toBeInTheDocument();
 });
 
+test('show loader while fetching dataset value', async () => {
+  renderApp();
+
+  jest.useFakeTimers();
+  await selectExplorerNode('resilience/slow_value');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  jest.runAllTimers(); // resolve slow fetch right away
+  expect(await screen.findByText(/42/)).toBeVisible();
+
+  jest.useRealTimers();
+});
+
 test("show error when dataset value can't be fetched and reset when selecting another dataset", async () => {
-  render(
-    <MockProvider errorOnPath="/entities/raw">
-      <App />
-    </MockProvider>
-  );
+  renderApp();
 
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('entities/raw');
+  await selectExplorerNode('resilience/error_value');
 
   expect(await screen.findByText('error')).toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
-  await selectExplorerNode('scalar_str');
+  await selectExplorerNode('entities/scalar_str');
   expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
+});
+
+test('cancel slow fetch of dataset value', async () => {
+  renderApp();
+
+  const errorSpy = mockConsoleMethod('error');
+  await selectExplorerNode('resilience/slow_value');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+
+  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+  errorSpy.mockRestore();
 });

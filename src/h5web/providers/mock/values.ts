@@ -104,4 +104,5 @@ export const mockValues = {
       ],
     ],
   ],
+  slow_value: 42,
 };

@@ -59,7 +59,10 @@ function EntityItem(props: Props) {
       {isGroup(entity) && isExpanded && (
         <Suspense
           fallback={
-            <FiRefreshCw className={styles.spinner}>Loading...</FiRefreshCw>
+            <FiRefreshCw
+              className={styles.spinner}
+              aria-label="Loading group metadata..."
+            />
           }
         >
           <EntityList
