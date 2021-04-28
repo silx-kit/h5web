@@ -50,6 +50,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       makeDataset('twoD_cplx', complexType, [2, 2]),
       makeDataset('threeD', intType, [9, 20, 41]),
       makeDataset('threeD_bool', booleanType, [2, 3, 4]),
+      makeDataset('threeD_cplx', complexType, [2, 3, 4]),
       makeDataset('fourD', intType, [3, 9, 20, 41]),
     ]),
     makeNxGroup('nexus_entry', 'NXentry', {
