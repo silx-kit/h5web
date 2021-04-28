@@ -8,10 +8,15 @@ import {
   getMockDataArray,
   INTERPOLATORS,
 } from '../packages/lib';
+import ndarray from 'ndarray';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
-const domain = getDomain(dataArray.data as number[]);
-const logSafeDomain = getDomain(dataArray.data as number[], ScaleType.Log);
+const dataValues = dataArray.data as number[];
+const domain = getDomain(dataValues);
+const logSafeDomain = getDomain(dataValues, ScaleType.Log);
+
+const alphaArray = ndarray(dataValues.map((x) => Math.abs(x)));
+const alphaDomain = getDomain(alphaArray);
 
 const Template: Story<HeatmapVisProps> = (args) => <HeatmapVis {...args} />;
 
@@ -139,6 +144,15 @@ ScrollCaptured.decorators = [
     </>
   ),
 ];
+
+export const WithAlphaArray = Template.bind({});
+
+WithAlphaArray.args = {
+  dataArray,
+  domain,
+  alphaArray,
+  alphaDomain,
+};
 
 export default {
   title: 'Visualizations/HeatmapVis',

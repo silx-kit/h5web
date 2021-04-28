@@ -78,13 +78,13 @@ export function computeVisSize(
     : { width, height: width / aspectRatio };
 }
 
-function getNewBounds(oldBounds: Bounds, value: number): Bounds {
-  const [minBound, maxBound, minPositiveBound] = oldBounds;
-  return [
-    Math.min(value, minBound),
-    Math.max(value, maxBound),
-    value > 0 ? Math.min(value, minPositiveBound) : minPositiveBound,
-  ];
+export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
+  const { min: oldMin, max: oldMax, positiveMin: oldPositiveMin } = oldBounds;
+  return {
+    min: Math.min(value, oldMin),
+    max: Math.max(value, oldMax),
+    positiveMin: value > 0 ? Math.min(value, oldPositiveMin) : oldPositiveMin,
+  };
 }
 
 export function toArray(arr: ndarray | number[]): number[] {
@@ -105,7 +105,7 @@ export function getDomain(
     return undefined;
   }
 
-  const [min, max, positiveMin] = values.reduce<Bounds>(
+  const bounds = values.reduce<Bounds>(
     (acc, val, i) => {
       const newBounds = getNewBounds(acc, val);
       const err = errors && errors[i];
@@ -113,16 +113,10 @@ export function getDomain(
         ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
         : newBounds;
     },
-    [values[0], values[0], Infinity]
+    { min: values[0], max: values[0], positiveMin: Infinity }
   );
 
-  if (scaleType !== ScaleType.Log || min * max > 0) {
-    return [min, max];
-  }
-
-  // Clamp domain minimum to first positive value,
-  // or return `undefined` if domain is not unsupported: `[-x, 0]`
-  return positiveMin !== Infinity ? [positiveMin, max] : undefined;
+  return getValidDomainForScale(bounds, scaleType);
 }
 
 export function getDomains(
@@ -330,4 +324,18 @@ export function applyMapping<T>(
   assign(mappedArray, mappedView);
 
   return mappedArray;
+}
+
+export function getValidDomainForScale(
+  bounds: Bounds,
+  scaleType: ScaleType
+): Domain | undefined {
+  const { min, max, positiveMin } = bounds;
+  if (scaleType !== ScaleType.Log || min * max > 0) {
+    return [min, max];
+  }
+
+  // Clamp domain minimum to first positive value,
+  // or return `undefined` if domain is not unsupported: `[-x, 0]`
+  return positiveMin !== Infinity ? [positiveMin, max] : undefined;
 }

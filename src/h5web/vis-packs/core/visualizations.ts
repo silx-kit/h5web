@@ -9,6 +9,7 @@ import {
   hasNumericType,
   hasMinDims,
   hasNonNullShape,
+  hasComplexType,
 } from '../../guards';
 import {
   RawVisContainer,
@@ -16,6 +17,7 @@ import {
   MatrixVisContainer,
   LineVisContainer,
   HeatmapVisContainer,
+  PhaseMapVisContainer,
 } from './containers';
 import type { VisDef } from '../models';
 import { LineConfigProvider } from './line/config';
@@ -27,6 +29,7 @@ export enum Vis {
   Matrix = 'Matrix',
   Line = 'Line',
   Heatmap = 'Heatmap',
+  PhaseMap = 'Phase map',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -79,6 +82,21 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     supportsDataset: (dataset) => {
       return (
         hasNumericType(dataset) &&
+        hasArrayShape(dataset) &&
+        hasMinDims(dataset, 2)
+      );
+    },
+  },
+
+  [Vis.PhaseMap]: {
+    name: Vis.PhaseMap,
+    Icon: FiMap,
+    Toolbar: HeatmapToolbar,
+    Container: PhaseMapVisContainer,
+    ConfigProvider: HeatmapConfigProvider,
+    supportsDataset: (dataset) => {
+      return (
+        hasComplexType(dataset) &&
         hasArrayShape(dataset) &&
         hasMinDims(dataset, 2)
       );

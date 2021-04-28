@@ -63,7 +63,11 @@ export interface AxisParams {
 
 export type AxisMapping = (AxisParams | undefined)[];
 
-export type Bounds = [number, number, number];
+export interface Bounds {
+  min: number;
+  max: number;
+  positiveMin: number;
+}
 
 export type Coords = [number, number];
 export type TooltipIndexFormatter = (t: Coords) => string;
