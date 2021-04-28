@@ -6,6 +6,8 @@ import type { GetValueParams } from '../context';
 import ndarray from 'ndarray';
 import { assertPrintableType, assertArrayShape } from '../../guards';
 import unpack from 'ndarray-unpack';
+import type { Primitive } from '../models';
+import type { PrintableType } from '../../vis-packs/core/models';
 
 interface Props {
   filepath?: string;
@@ -50,7 +52,9 @@ function MockProvider(props: Props) {
           assertPrintableType(dataset);
 
           const dataArray = ndarray(
-            (dataset.value as (number | string | boolean)[]).flat(Infinity),
+            (dataset.value as Primitive<PrintableType>[]).flat(
+              dataset.shape.length - 1
+            ),
             dataset.shape
           );
 
