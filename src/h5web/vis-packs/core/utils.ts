@@ -92,11 +92,10 @@ export function toArray(arr: ndarray | number[]): number[] {
   return 'data' in arr ? (arr.data as number[]) : arr;
 }
 
-export function getDomain(
+export function getBounds(
   valuesArray: ndarray | number[],
-  scaleType: ScaleType = ScaleType.Linear,
   errorArray?: ndarray | number[]
-): Domain | undefined {
+): Bounds | undefined {
   assertDataLength(errorArray, valuesArray, 'error');
 
   const values = toArray(valuesArray);
@@ -106,7 +105,7 @@ export function getDomain(
     return undefined;
   }
 
-  const bounds = values.reduce<Bounds>(
+  return values.reduce<Bounds>(
     (acc, val, i) => {
       const newBounds = getNewBounds(acc, val);
       const err = errors && errors[i];
@@ -116,6 +115,14 @@ export function getDomain(
     },
     { min: values[0], max: values[0], positiveMin: Infinity }
   );
+}
+
+export function getDomain(
+  valuesArray: ndarray | number[],
+  scaleType: ScaleType = ScaleType.Linear,
+  errorArray?: ndarray | number[]
+): Domain | undefined {
+  const bounds = getBounds(valuesArray, errorArray);
 
   return getValidDomainForScale(bounds, scaleType);
 }
@@ -328,9 +335,13 @@ export function applyMapping<T>(
 }
 
 export function getValidDomainForScale(
-  bounds: Bounds,
+  bounds: Bounds | undefined,
   scaleType: ScaleType
 ): Domain | undefined {
+  if (bounds === undefined) {
+    return undefined;
+  }
+
   const { min, max, positiveMin } = bounds;
   if (scaleType !== ScaleType.Log || min * max > 0) {
     return [min, max];

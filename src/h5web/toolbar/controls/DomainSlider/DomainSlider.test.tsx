@@ -4,6 +4,7 @@ import { pressKey, renderApp, selectExplorerNode } from '../../../test-utils';
 
 test('show slider with two thumbs', async () => {
   renderApp(); // default NeXus group renders heatmap and therefore domain slider
+  expect(await screen.findByRole('figure')).toBeVisible();
 
   const thumbs = await screen.findAllByRole('slider');
   expect(thumbs).toHaveLength(2);
@@ -13,6 +14,7 @@ test('show slider with two thumbs', async () => {
 
 test('show tooltip on hover', async () => {
   renderApp();
+  expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   const tooltip = screen.getByRole('dialog', { hidden: true });
@@ -35,6 +37,7 @@ test('show tooltip on hover', async () => {
 
 test('show min/max and data range in tooltip', async () => {
   renderApp();
+  expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.hover(editBtn);
@@ -54,6 +57,7 @@ test('show min/max and data range in tooltip', async () => {
 
 test('update domain when moving thumbs (with keyboard)', async () => {
   renderApp();
+  expect(await screen.findByRole('figure')).toBeVisible();
 
   // Give focus to min thumb (and hover to reveal tooltip)
   const minThumb = await screen.findByRole('slider', { name: /min/ });
@@ -146,6 +150,7 @@ test('allow editing bounds manually', async () => {
 
 test('clamp domain in symlog scale', async () => {
   renderApp();
+  expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.click(editBtn);
@@ -176,6 +181,7 @@ test('clamp domain in symlog scale', async () => {
 
 test('show min/max autoscale toggles in tooltip (pressed by default)', async () => {
   renderApp();
+  expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.hover(editBtn);
@@ -190,6 +196,7 @@ test('show min/max autoscale toggles in tooltip (pressed by default)', async () 
 
 test('control min/max autoscale behaviour', async () => {
   renderApp();
+  expect(await screen.findByRole('figure')).toBeVisible();
 
   const minThumb = await screen.findByRole('slider', { name: /min/ });
   userEvent.hover(minThumb);
