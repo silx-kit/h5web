@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import { useTimeout } from 'react-use';
+import { ProviderContext } from '../providers/context';
 import styles from './ValueLoader.module.css';
 
 interface Props {
@@ -6,7 +8,8 @@ interface Props {
 }
 
 function ValueLoader(props: Props) {
-  const { message = 'Loading' } = props;
+  const { message = 'Loading data' } = props;
+  const { cancel } = useContext(ProviderContext);
 
   // Wait a bit before showing loader to avoid flash
   const [isReady] = useTimeout(100);
@@ -29,6 +32,15 @@ function ValueLoader(props: Props) {
         <div />
       </div>
       <p>{message}...</p>
+      <p>
+        <button
+          className={styles.cancelBtn}
+          type="button"
+          onClick={() => cancel()}
+        >
+          Cancel?
+        </button>
+      </p>
     </div>
   );
 }

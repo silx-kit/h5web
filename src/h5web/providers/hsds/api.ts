@@ -1,4 +1,3 @@
-import axios, { AxiosInstance } from 'axios';
 import type {
   HsdsDatasetResponse,
   HsdsDatatypeResponse,
@@ -22,7 +21,7 @@ import {
   ProviderError,
 } from '../models';
 import { assertDefined, assertGroup } from '../../guards';
-import type { GetValueParams, ProviderAPI } from '../context';
+import { GetValueParams, ProviderApi } from '../context';
 import {
   assertHsdsDataset,
   isHsdsGroup,
@@ -33,21 +32,17 @@ import {
 } from './utils';
 import { buildEntityPath, getChildEntity } from '../../utils';
 
-export class HsdsApi implements ProviderAPI {
-  /* API compatible with HSDS@6717a7bb8c2245492090be34ec3ccd63ecb20b70 */
-  public readonly filepath: string;
-  private readonly client: AxiosInstance;
-
+export class HsdsApi extends ProviderApi {
   private readonly entities = new Map<string, HsdsEntity>();
 
+  /* API compatible with HSDS@6717a7bb8c2245492090be34ec3ccd63ecb20b70 */
   public constructor(
     url: string,
     username: string,
     password: string,
     filepath: string
   ) {
-    this.filepath = filepath;
-    this.client = axios.create({
+    super(filepath, {
       baseURL: url,
       params: { domain: filepath },
       auth: { username, password },
@@ -93,11 +88,7 @@ export class HsdsApi implements ProviderAPI {
     const entity = await this.getEntity(path);
     assertHsdsDataset(entity);
 
-    const { data } = await this.client.get<HsdsValueResponse>(
-      `/datasets/${entity.id}/value${selection && `?select=[${selection}]`}`
-    );
-
-    return data.value;
+    return this.fetchValue(entity.id, selection);
   }
 
   private async fetchRootId(): Promise<HsdsId> {
@@ -147,6 +138,16 @@ export class HsdsApi implements ProviderAPI {
     });
 
     return Promise.all(attrsPromises);
+  }
+
+  private async fetchValue(
+    entityId: HsdsId,
+    selection: string
+  ): Promise<HsdsValueResponse> {
+    const { data } = await this.cancellableGet<HsdsValueResponse>(
+      `/datasets/${entityId}/value${selection && `?select=[${selection}]`}`
+    );
+    return data;
   }
 
   private async processGroup(

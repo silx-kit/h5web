@@ -3,12 +3,10 @@ import type { Attribute } from '../models';
 import type {
   JupyterBaseEntity,
   JupyterContentGroupResponse,
-  JupyterDataResponse,
   JupyterMetaGroupResponse,
   JupyterMetaResponse,
 } from './models';
 import { assertGroupContent, convertDtype } from './utils';
-import { assertDataset } from '../../guards';
 import type { GetValueParams } from '../context';
 
 interface DevJupyterAttrMeta {
@@ -36,18 +34,7 @@ export class JupyterDevApi extends JupyterStableApi {
 
   public async getValue(params: GetValueParams): Promise<unknown> {
     const { path, selection = '' } = params;
-
-    const [{ data }, entity] = await Promise.all([
-      this.client.get<JupyterDataResponse>(
-        `/data/${this.filepath}?uri=${path}${
-          selection && `&ixstr=${selection}`
-        }`
-      ),
-      this.getEntity(path),
-    ]);
-    assertDataset(entity);
-
-    return data;
+    return this.fetchData(path, selection);
   }
 
   protected async fetchMetadata(path: string): Promise<DevJupyterMetaResponse> {

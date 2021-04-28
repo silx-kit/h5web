@@ -160,5 +160,6 @@ export type H5WebComplex = [number, number];
 export type ComplexArray = (ComplexArray | H5WebComplex)[];
 
 export enum ProviderError {
-  NotFound = 'NotFound',
+  NotFound = 'Entity not found',
+  Cancelled = 'Request cancelled',
 }

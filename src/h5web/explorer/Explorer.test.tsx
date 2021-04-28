@@ -1,7 +1,7 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockFilepath } from '../providers/mock/metadata';
-import { renderApp } from '../test-utils';
+import { renderApp, selectExplorerNode } from '../test-utils';
 
 test('select root group by default', async () => {
   renderApp();
@@ -84,4 +84,22 @@ test('navigate groups in explorer', async () => {
   ).not.toBeInTheDocument();
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('show spinner when group metadata is slow to fetch', async () => {
+  renderApp();
+
+  jest.useFakeTimers();
+  await selectExplorerNode('resilience/slow_metadata');
+  expect(await screen.findByText(/Loading/)).toBeVisible();
+  expect(screen.getByLabelText(/Loading group metadata/)).toBeVisible();
+
+  jest.runAllTimers(); // resolve slow fetch right away
+  await waitFor(() => {
+    expect(
+      screen.queryByLabelText(/Loading group metadata/)
+    ).not.toBeInTheDocument();
+  });
+
+  jest.useRealTimers();
 });

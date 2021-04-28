@@ -28,7 +28,10 @@ function Explorer(props: Props) {
 
       <Suspense
         fallback={
-          <FiRefreshCw className={styles.spinner}>Loading...</FiRefreshCw>
+          <FiRefreshCw
+            className={styles.spinner}
+            aria-label="Loading root metadata..."
+          />
         }
       >
         <EntityList

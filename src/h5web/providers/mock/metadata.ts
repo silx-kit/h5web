@@ -141,5 +141,10 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         ],
       }),
     ]),
+    makeGroup('resilience', [
+      makeGroup('slow_metadata'),
+      makeScalarDataset('slow_value', intType),
+      makeScalarDataset('error_value', intType),
+    ]),
   ],
 });
