@@ -143,11 +143,11 @@ export class HsdsApi extends ProviderApi {
   private async fetchValue(
     entityId: HsdsId,
     selection: string
-  ): Promise<HsdsValueResponse> {
+  ): Promise<unknown> {
     const { data } = await this.cancellableGet<HsdsValueResponse>(
       `/datasets/${entityId}/value${selection && `?select=[${selection}]`}`
     );
-    return data;
+    return data.value;
   }
 
   private async processGroup(
