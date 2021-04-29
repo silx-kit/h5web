@@ -126,7 +126,7 @@ describe('getSilxStyle', () => {
   it('should parse `SILX_style` attribute', () => {
     const silxStyle = {
       signalScaleType: ScaleType.SymLog,
-      axesScaleType: [ScaleType.Log],
+      axisScaleTypes: [ScaleType.Log],
     };
 
     const group = makeGroup('foo', [], {
@@ -143,7 +143,7 @@ describe('getSilxStyle', () => {
     });
 
     expect(getSilxStyle(group)).toEqual({
-      axesScaleType: [ScaleType.Log],
+      axisScaleTypes: [ScaleType.Log],
     });
   });
 
@@ -160,7 +160,7 @@ describe('getSilxStyle', () => {
 
     expect(getSilxStyle(group)).toEqual({
       signalScaleType: undefined,
-      axesScaleType: undefined,
+      axisScaleTypes: undefined,
     });
   });
 });

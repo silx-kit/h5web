@@ -19,11 +19,8 @@ export function renderApp(): RenderResult {
 }
 
 export async function selectExplorerNode(path: string): Promise<void> {
-  const [name, ...remainingSegments] = path.split('/');
-  fireEvent.click(await screen.findByRole('treeitem', { name }));
-
-  if (remainingSegments.length > 0) {
-    await selectExplorerNode(remainingSegments.join('/'));
+  for await (const segment of path.split('/')) {
+    userEvent.click(await screen.findByRole('treeitem', { name: segment }));
   }
 }
 

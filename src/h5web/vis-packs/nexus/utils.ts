@@ -89,16 +89,16 @@ export function getSilxStyle(group: Group): SilxStyle {
     const rawSilxStyle = JSON.parse(silxStyle);
     const { axes_scale_type, signal_scale_type } = rawSilxStyle;
 
-    const axesScaleType =
+    const axisScaleTypes =
       typeof axes_scale_type === 'string' ? [axes_scale_type] : axes_scale_type;
 
     return {
       signalScaleType: isScaleType(signal_scale_type)
         ? signal_scale_type
         : undefined,
-      axesScaleType:
-        Array.isArray(axesScaleType) && axesScaleType.every(isScaleType)
-          ? axesScaleType
+      axisScaleTypes:
+        Array.isArray(axisScaleTypes) && axisScaleTypes.every(isScaleType)
+          ? axisScaleTypes
           : undefined,
     };
   } catch {

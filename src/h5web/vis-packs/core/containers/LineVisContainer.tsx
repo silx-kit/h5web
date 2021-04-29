@@ -7,6 +7,8 @@ import MappedLineVis from '../line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import ValueLoader from '../../../visualizer/ValueLoader';
+import { Suspense } from 'react';
 
 function LineVisContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -14,7 +16,7 @@ function LineVisContainer(props: VisContainerProps) {
   assertArrayShape(entity);
   assertNumericType(entity);
 
-  const { name, shape: dims } = entity;
+  const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   return (
@@ -24,12 +26,13 @@ function LineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <MappedLineVis
-        valueDataset={entity}
-        dims={dims}
-        dimMapping={dimMapping}
-        title={name}
-      />
+      <Suspense fallback={<ValueLoader message="Loading entire dataset" />}>
+        <MappedLineVis
+          valueDataset={entity}
+          dims={dims}
+          dimMapping={dimMapping}
+        />
+      </Suspense>
     </>
   );
 }

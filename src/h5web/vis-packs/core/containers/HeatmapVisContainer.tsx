@@ -22,7 +22,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
   assertMinDims(entity, 2);
   assertNumericType(entity);
 
-  const { name, shape: dims } = entity;
+  const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const { valuesStore } = useContext(ProviderContext);
@@ -44,12 +44,11 @@ function HeatmapVisContainer(props: VisContainerProps) {
           });
         }}
       >
-        <Suspense fallback={<ValueLoader />}>
+        <Suspense fallback={<ValueLoader message="Loading current slice" />}>
           <MappedHeatmapVis
             dataset={entity}
             dims={dims}
             dimMapping={dimMapping}
-            title={name}
           />
         </Suspense>
       </ErrorBoundary>
