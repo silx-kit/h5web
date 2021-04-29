@@ -34,7 +34,9 @@ function MappedMatrixVis(props: Props) {
     return (
       <MatrixVis
         dataArray={mappedArray}
-        formatter={(dataValue) => renderComplex(dataValue, '.2e')}
+        formatter={(dataValue) =>
+          dataValue !== null ? renderComplex(dataValue, '.2e') : 'NaN'
+        }
         cellWidth={216} // To accommodate the longer complex numbers
       />
     );
@@ -44,6 +46,9 @@ function MappedMatrixVis(props: Props) {
     <MatrixVis
       dataArray={mappedArray}
       formatter={(dataValue) => {
+        if (dataValue === null) {
+          return 'NaN';
+        }
         return typeof dataValue === 'number'
           ? format('.3e')(dataValue)
           : dataValue.toString();

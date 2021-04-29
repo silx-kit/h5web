@@ -1,5 +1,7 @@
 import { range } from 'lodash-es';
 import type ndarray from 'ndarray';
+import { assertNumericArray } from '../../../guards';
+import type { NumberOrNaN } from '../../../providers/models';
 import {
   DomainError,
   CustomDomain,
@@ -51,7 +53,7 @@ export function getSafeDomain(
   ];
 }
 
-export function getDims(dataArray: ndarray): Dims {
+export function getDims(dataArray: ndarray<NumberOrNaN>): Dims {
   const [rows, cols] = dataArray.shape;
   return { rows, cols };
 }
@@ -79,12 +81,13 @@ export function getLinearGradient(
 }
 
 export function getAxisValues(
-  rawValues: number[] | undefined,
+  rawValues: NumberOrNaN[] | undefined,
   pixelCount: number
-): number[] {
+): NumberOrNaN[] {
   if (!rawValues) {
     return range(pixelCount + 1);
   }
+  assertNumericArray(rawValues);
 
   if (rawValues.length === pixelCount + 1) {
     return rawValues;

@@ -22,6 +22,7 @@ import {
 } from './models';
 import { assertDataLength, isDefined } from '../../guards';
 import { isAxis } from '../../dimension-mapper/utils';
+import type { NumberOrNaN } from '../../providers/models';
 
 const TICK_FORMAT = format('0');
 
@@ -88,13 +89,15 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
   };
 }
 
-export function toArray(arr: ndarray | number[]): number[] {
-  return 'data' in arr ? (arr.data as number[]) : arr;
+export function toArray(
+  arr: ndarray<NumberOrNaN> | NumberOrNaN[]
+): NumberOrNaN[] {
+  return 'data' in arr ? (arr.data as NumberOrNaN[]) : arr;
 }
 
 export function getBounds(
-  valuesArray: ndarray | number[],
-  errorArray?: ndarray | number[]
+  valuesArray: ndarray<NumberOrNaN> | NumberOrNaN[],
+  errorArray?: ndarray<NumberOrNaN> | NumberOrNaN[]
 ): Bounds | undefined {
   assertDataLength(errorArray, valuesArray, 'error');
 
@@ -107,20 +110,23 @@ export function getBounds(
 
   return values.reduce<Bounds>(
     (acc, val, i) => {
+      if (val === null) {
+        return acc;
+      }
       const newBounds = getNewBounds(acc, val);
       const err = errors && errors[i];
       return err
         ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
         : newBounds;
     },
-    { min: values[0], max: values[0], positiveMin: Infinity }
+    { min: Infinity, max: -Infinity, positiveMin: Infinity }
   );
 }
 
 export function getDomain(
-  valuesArray: ndarray | number[],
+  valuesArray: ndarray<NumberOrNaN> | NumberOrNaN[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: ndarray | number[]
+  errorArray?: ndarray<NumberOrNaN> | NumberOrNaN[]
 ): Domain | undefined {
   const bounds = getBounds(valuesArray, errorArray);
 
@@ -128,7 +134,7 @@ export function getDomain(
 }
 
 export function getDomains(
-  arrays: (ndarray | number[])[],
+  arrays: (ndarray<NumberOrNaN> | NumberOrNaN[])[],
   scaleType: ScaleType = ScaleType.Linear
 ): (Domain | undefined)[] {
   return arrays.map((arr) => getDomain(arr, scaleType));

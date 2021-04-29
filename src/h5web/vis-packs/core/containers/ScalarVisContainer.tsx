@@ -21,7 +21,12 @@ function ScalarVisContainer(props: VisContainerProps) {
     return <ScalarVis value={value} formatter={formatComplex} />;
   }
 
-  return <ScalarVis value={value} formatter={() => value.toString()} />;
+  return (
+    <ScalarVis
+      value={value}
+      formatter={() => (value !== null ? value.toString() : 'NaN')}
+    />
+  );
 }
 
 export default ScalarVisContainer;

@@ -141,7 +141,7 @@ interface UnknownType {
 /* ----- VALUE ----- */
 
 export type Primitive<T extends DType> = T extends NumericType
-  ? number
+  ? NumberOrNaN
   : T extends StringType
   ? string
   : T extends BooleanType
@@ -163,3 +163,5 @@ export enum ProviderError {
   NotFound = 'Entity not found',
   Cancelled = 'Request cancelled',
 }
+
+export type NumberOrNaN = number | null;

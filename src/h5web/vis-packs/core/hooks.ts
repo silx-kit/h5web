@@ -17,7 +17,7 @@ import {
 import AxisSystemContext from './shared/AxisSystemContext';
 import { AxisScale, ScaleType } from './models';
 import { ProviderContext } from '../../providers/context';
-import type { Dataset, Value } from '../../providers/models';
+import type { Dataset, NumberOrNaN, Value } from '../../providers/models';
 
 export function useDatasetValue<D extends Dataset | undefined>(
   dataset: D,
@@ -61,16 +61,16 @@ const useBounds = createMemo(getBounds);
 const useValidDomainForScale = createMemo(getValidDomainForScale);
 
 export function useDomain(
-  valuesArray: ndarray | number[],
+  valuesArray: ndarray<NumberOrNaN> | NumberOrNaN[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: ndarray | number[]
+  errorArray?: ndarray<NumberOrNaN> | NumberOrNaN[]
 ) {
   const bounds = useBounds(valuesArray, errorArray);
   return useValidDomainForScale(bounds, scaleType);
 }
 
 export function useDomains(
-  valuesArrays: (ndarray | number[])[],
+  valuesArrays: (ndarray<NumberOrNaN> | NumberOrNaN[])[],
   scaleType: ScaleType = ScaleType.Linear
 ) {
   const allBounds = useMemo(() => {
@@ -144,7 +144,7 @@ export function useMappedArray<T>(
 }
 
 export function useMappedArrays(
-  values: number[][],
+  values: NumberOrNaN[][],
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean

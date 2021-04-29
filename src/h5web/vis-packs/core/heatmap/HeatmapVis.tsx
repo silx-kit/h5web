@@ -9,12 +9,13 @@ import { getDims } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
 import type { ColorMap } from './models';
 import { DEFAULT_DOMAIN } from '../utils';
-import { assertDefined } from '../../../guards';
+import { assertDefined, assertNumericArray } from '../../../guards';
 import { useAxisValues, useTooltipFormatters } from './hooks';
 import { useDomain } from '../hooks';
+import type { NumberOrNaN } from '../../../providers/models';
 
 interface Props {
-  dataArray: ndarray;
+  dataArray: ndarray<NumberOrNaN>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: ScaleType;
@@ -51,10 +52,12 @@ function HeatmapVis(props: Props) {
   const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
 
   const abscissas = useAxisValues(abscissaValue, cols);
+  assertNumericArray(abscissas);
   const abscissaDomain = useDomain(abscissas);
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
   const ordinates = useAxisValues(ordinateValue, rows);
+  assertNumericArray(ordinates);
   const ordinateDomain = useDomain(ordinates);
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 

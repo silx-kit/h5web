@@ -9,11 +9,16 @@ import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../models';
 import { CurveType } from './models';
 import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
-import { assertDataLength, assertDefined } from '../../../guards';
+import {
+  assertDataLength,
+  assertDefined,
+  assertNumericArray,
+} from '../../../guards';
 import { useTooltipFormatters } from './hooks';
+import type { NumberOrNaN } from '../../../providers/models';
 
 interface Props {
-  dataArray: ndarray;
+  dataArray: ndarray<NumberOrNaN>;
   domain: Domain | undefined;
   scaleType?: ScaleType;
   curveType?: CurveType;
@@ -21,9 +26,9 @@ interface Props {
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
   title?: string;
-  errorsArray?: ndarray;
+  errorsArray?: ndarray<NumberOrNaN>;
   showErrors?: boolean;
-  auxArrays?: ndarray[];
+  auxArrays?: ndarray<NumberOrNaN>[];
 }
 
 function LineVis(props: Props) {
@@ -54,6 +59,7 @@ function LineVis(props: Props) {
   const abscissas = useMemo(() => {
     return abscissaValue || range(dataArray.size);
   }, [abscissaValue, dataArray.size]);
+  assertNumericArray(abscissas);
 
   const abscissaDomain = useMemo(() => {
     const rawDomain = getDomain(abscissas, abscissaScaleType);

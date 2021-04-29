@@ -2,6 +2,7 @@ import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import { useMemo } from 'react';
 import { Vector3 } from 'three';
+import type { NumberOrNaN } from '../../../providers/models';
 import { useCanvasScales, useValueToIndexScale } from '../hooks';
 import type { TooltipIndexFormatter, TooltipValueFormatter } from '../models';
 
@@ -61,8 +62,8 @@ export function useCanvasPoints(
 export function useTooltipFormatters(
   abscissas: number[],
   abscissaLabel: string | undefined,
-  dataArray: ndarray,
-  errorsArray: ndarray | undefined
+  dataArray: ndarray<NumberOrNaN>,
+  errorsArray: ndarray<NumberOrNaN> | undefined
 ): {
   formatIndex: TooltipIndexFormatter;
   formatValue: TooltipValueFormatter;
@@ -80,11 +81,10 @@ export function useTooltipFormatters(
       if (value === undefined) {
         return undefined;
       }
+      const valAsStr = value !== null ? format('.3f')(value) : 'NaN';
 
       const error = errorsArray && errorsArray.get(index);
-      return error
-        ? `${format('.3f')(value)} ±${format('.3f')(error)}`
-        : `${format('.3f')(value)}`;
+      return error ? `${valAsStr} ±${format('.3f')(error)}` : `${valAsStr}`;
     },
   };
 }

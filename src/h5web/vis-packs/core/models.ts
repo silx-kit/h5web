@@ -4,6 +4,7 @@ import type {
   StringType,
   BooleanType,
   ComplexType,
+  NumberOrNaN,
 } from '../../providers/models';
 
 export enum ScaleType {
@@ -57,7 +58,7 @@ export interface AxisOffsets {
 
 export interface AxisParams {
   label?: string;
-  value?: number[];
+  value?: NumberOrNaN[];
   scaleType?: ScaleType;
 }
 

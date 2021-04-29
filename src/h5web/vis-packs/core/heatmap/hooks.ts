@@ -1,6 +1,7 @@
 import { format } from 'd3-format';
 import type ndarray from 'ndarray';
 import { createMemo } from 'react-use';
+import type { NumberOrNaN } from '../../../providers/models';
 import { useValueToIndexScale } from '../hooks';
 import type { TooltipIndexFormatter, TooltipValueFormatter } from '../models';
 import { getVisDomain, getSafeDomain, getAxisValues } from './utils';
@@ -14,7 +15,7 @@ export function useTooltipFormatters(
   ordinates: number[],
   abscissaLabel: string | undefined,
   ordinateLabel: string | undefined,
-  dataArray: ndarray
+  dataArray: ndarray<NumberOrNaN>
 ): {
   formatIndex: TooltipIndexFormatter;
   formatValue: TooltipValueFormatter;
@@ -27,7 +28,9 @@ export function useTooltipFormatters(
       `${abscissaLabel || 'x'}=${abscissas[abscissaToIndex(x)]}, ` +
       `${ordinateLabel || 'y'}=${ordinates[ordinateToIndex(y)]}`,
 
-    formatValue: ([x, y]) =>
-      format('.3')(dataArray.get(ordinateToIndex(y), abscissaToIndex(x))),
+    formatValue: ([x, y]) => {
+      const data = dataArray.get(ordinateToIndex(y), abscissaToIndex(x));
+      return data !== null ? format('.3')(data) : 'NaN';
+    },
   };
 }

@@ -17,6 +17,7 @@ import {
   UnresolvedEntity,
   ComplexArray,
   H5WebComplex,
+  NumberOrNaN,
 } from './providers/models';
 import type { PrintableType } from './vis-packs/core/models';
 import { toArray } from './vis-packs/core/utils';
@@ -238,8 +239,8 @@ export function assertAbsolutePath(path: string) {
 }
 
 export function assertDataLength(
-  arr: ndarray | number[] | undefined,
-  dataArray: ndarray | number[],
+  arr: ndarray<NumberOrNaN> | NumberOrNaN[] | undefined,
+  dataArray: ndarray<NumberOrNaN> | NumberOrNaN[],
   arrName: string
 ) {
   if (!arr) {
@@ -281,5 +282,13 @@ export function assertComplexType<S extends Shape>(
 ): asserts dataset is Dataset<S, ComplexType> {
   if (!hasComplexType(dataset)) {
     throw new Error('Expected dataset to have complex type');
+  }
+}
+
+export function assertNumericArray(
+  arr: NumberOrNaN[]
+): asserts arr is number[] {
+  if (arr.some((x) => x === null)) {
+    throw new Error('Expected array with only numbers');
   }
 }
