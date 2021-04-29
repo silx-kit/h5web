@@ -29,3 +29,11 @@
   padding: 1em;
   color: var(--danger);
 }
+
+.error > span {
+  margin-left: 0.5rem;
+}
+
+.retryBtn {
+  composes: btn-clean btn-link from global;
+}

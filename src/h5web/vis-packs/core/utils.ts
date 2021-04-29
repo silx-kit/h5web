@@ -21,6 +21,7 @@ import {
   Bounds,
 } from './models';
 import { assertDataLength, isDefined } from '../../guards';
+import { isAxis } from '../../dimension-mapper/utils';
 
 const TICK_FORMAT = format('0');
 
@@ -338,4 +339,9 @@ export function getValidDomainForScale(
   // Clamp domain minimum to first positive value,
   // or return `undefined` if domain is not unsupported: `[-x, 0]`
   return positiveMin !== Infinity ? [positiveMin, max] : undefined;
+}
+
+export function getSliceSelection(dimMapping: DimensionMapping): string {
+  // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
+  return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
 }

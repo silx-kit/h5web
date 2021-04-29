@@ -7,7 +7,7 @@ import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import VisPackChooser from './vis-packs/VisPackChooser';
 import { assertAbsolutePath } from './guards';
 import { ErrorBoundary } from 'react-error-boundary';
-import ErrorMessage from './visualizer/ErrorMessage';
+import ErrorFallback from './visualizer/ErrorFallback';
 import LoadingFallback from './LoadingFallback';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
@@ -44,7 +44,7 @@ function App() {
         />
         <ErrorBoundary
           resetKeys={[selectedPath, isInspecting]}
-          FallbackComponent={ErrorMessage}
+          FallbackComponent={ErrorFallback}
         >
           <Suspense fallback={<LoadingFallback isInspecting={isInspecting} />}>
             {isInspecting ? (
