@@ -56,7 +56,7 @@ export class HsdsApi extends ProviderApi {
         } catch {
           // https://github.com/HDFGroup/hsds/issues/87
           try {
-            return JSON.parse(data.replace('NaN', '"NaN"'));
+            return JSON.parse(data.replaceAll('NaN', '"NaN"'));
           } catch {
             return data;
           }
