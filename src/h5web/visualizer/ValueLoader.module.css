@@ -7,13 +7,7 @@
 }
 
 .cancelBtn {
-  composes: btn-clean from global;
-  padding: 0.25rem 0.5rem;
-  font-weight: 600;
-}
-
-.cancelBtn:hover {
-  text-decoration: underline;
+  composes: btn-clean btn-link from global;
 }
 
 .grid {

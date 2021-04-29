@@ -17,6 +17,16 @@
   pointer-events: none;
 }
 
+.btn-link {
+  composes: btn-clean from global;
+  padding: 0.25rem 0.5rem;
+  font-weight: 600;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
 .reflex-splitter {
   width: 5px !important;
   border-color: var(--light-gray) !important;

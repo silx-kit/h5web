@@ -10,6 +10,7 @@ import { assertMockDataset, findMockEntity } from './utils';
 const SLOW_TIMEOUT = 3000;
 const SLOW_METADATA_PATH = '/resilience/slow_metadata';
 const SLOW_VALUE_PATH = '/resilience/slow_value';
+const SLOW_SLICING_PATH = '/resilience/slow_slicing';
 const ERROR_PATH = '/resilience/error_value';
 
 export class MockApi extends ProviderApi {
@@ -38,7 +39,7 @@ export class MockApi extends ProviderApi {
     const dataset = findMockEntity(path);
     assertMockDataset(dataset);
 
-    if (path === SLOW_VALUE_PATH) {
+    if (path === SLOW_VALUE_PATH || path === SLOW_SLICING_PATH) {
       await this.cancellableDelay();
     }
 

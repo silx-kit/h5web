@@ -11,13 +11,13 @@ import {
   getCombinedDomain,
   getDomain,
   getDomains,
+  getSliceSelection,
   getValueToIndexScale,
 } from './utils';
 import AxisSystemContext from './shared/AxisSystemContext';
 import type { AxisScale } from './models';
 import { ProviderContext } from '../../providers/context';
 import type { Dataset, Value } from '../../providers/models';
-import { isAxis } from '../../dimension-mapper/utils';
 
 export function useDatasetValue<D extends Dataset | undefined>(
   dataset: D,
@@ -39,12 +39,10 @@ export function useDatasetValue(
     return valuesStore.get({ path: dataset.path });
   }
 
-  // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
-  const selection = dimMapping
-    .map((dim) => (isAxis(dim) ? ':' : dim))
-    .join(',');
-
-  return valuesStore.get({ path: dataset.path, selection });
+  return valuesStore.get({
+    path: dataset.path,
+    selection: getSliceSelection(dimMapping),
+  });
 }
 
 export function useDatasetValues<D extends Dataset>(

@@ -105,4 +105,5 @@ export const mockValues = {
     ],
   ],
   slow_value: 42,
+  slow_slicing: threeD,
 };

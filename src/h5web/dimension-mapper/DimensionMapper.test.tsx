@@ -19,16 +19,16 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
   // Ensure that the default mapping is [0, 'x']
   expect(xDimsButtons[0]).not.toBeChecked();
   expect(xDimsButtons[1]).toBeChecked();
-  const D0Slider = screen.getByRole('slider');
-  expect(D0Slider).toHaveAttribute('aria-valueNow', '0');
+  const d0Slider = screen.getByRole('slider');
+  expect(d0Slider).toHaveAttribute('aria-valueNow', '0');
 
   // Ensure that the swap from [0, 'x'] to ['x', 0] works
   userEvent.click(xDimsButtons[0]);
 
   expect(xDimsButtons[0]).toBeChecked();
   expect(xDimsButtons[1]).not.toBeChecked();
-  const D1Slider = screen.getByRole('slider');
-  expect(D1Slider).toHaveAttribute('aria-valueNow', '0');
+  const d1Slider = screen.getByRole('slider');
+  expect(d1Slider).toHaveAttribute('aria-valueNow', '0');
 });
 
 test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
@@ -78,6 +78,6 @@ test('display one dimension slider and mappings for X and Y axes when visualizin
   // Ensure that the default mapping is [0, 'y', 'x']
   expect(xDimsButtons[2]).toBeChecked();
   expect(yDimsButtons[1]).toBeChecked();
-  const D0Slider = screen.getByRole('slider');
-  expect(D0Slider).toHaveAttribute('aria-valueNow', '0');
+  const d0Slider = screen.getByRole('slider');
+  expect(d0Slider).toHaveAttribute('aria-valueNow', '0');
 });
