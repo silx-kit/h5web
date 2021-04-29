@@ -46,6 +46,22 @@ export class HsdsApi extends ProviderApi {
       baseURL: url,
       params: { domain: filepath },
       auth: { username, password },
+      transformResponse: (data: unknown) => {
+        if (typeof data !== 'string') {
+          return data;
+        }
+
+        try {
+          return JSON.parse(data);
+        } catch {
+          // https://github.com/HDFGroup/hsds/issues/87
+          try {
+            return JSON.parse(data.replace('NaN', '"NaN"'));
+          } catch {
+            return data;
+          }
+        }
+      },
     });
   }
 
