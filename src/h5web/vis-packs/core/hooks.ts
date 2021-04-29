@@ -7,15 +7,15 @@ import type { DimensionMapping } from '../../dimension-mapper/models';
 import {
   applyMapping,
   getBaseArray,
+  getBounds,
   getCanvasScale,
   getCombinedDomain,
-  getDomain,
-  getDomains,
   getSliceSelection,
+  getValidDomainForScale,
   getValueToIndexScale,
 } from './utils';
 import AxisSystemContext from './shared/AxisSystemContext';
-import type { AxisScale } from './models';
+import { AxisScale, ScaleType } from './models';
 import { ProviderContext } from '../../providers/context';
 import type { Dataset, Value } from '../../providers/models';
 
@@ -57,8 +57,31 @@ export function useDatasetValues(datasets: Dataset[]): Record<string, unknown> {
   );
 }
 
-export const useDomain = createMemo(getDomain);
-export const useDomains = createMemo(getDomains);
+const useBounds = createMemo(getBounds);
+const useValidDomainForScale = createMemo(getValidDomainForScale);
+
+export function useDomain(
+  valuesArray: ndarray | number[],
+  scaleType: ScaleType = ScaleType.Linear,
+  errorArray?: ndarray | number[]
+) {
+  const bounds = useBounds(valuesArray, errorArray);
+  return useValidDomainForScale(bounds, scaleType);
+}
+
+export function useDomains(
+  valuesArrays: (ndarray | number[])[],
+  scaleType: ScaleType = ScaleType.Linear
+) {
+  const allBounds = useMemo(() => {
+    return valuesArrays.map((arr) => getBounds(arr));
+  }, [valuesArrays]);
+
+  return useMemo(
+    () => allBounds.map((bounds) => getValidDomainForScale(bounds, scaleType)),
+    [allBounds, scaleType]
+  );
+}
 
 export function useFrameRendering(): void {
   const [, setNum] = useState(0);
