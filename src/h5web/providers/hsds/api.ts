@@ -56,7 +56,7 @@ export class HsdsApi extends ProviderApi {
         } catch {
           // https://github.com/HDFGroup/hsds/issues/87
           try {
-            return JSON.parse(data.replaceAll('NaN', '"NaN"'));
+            return JSON.parse(data.replaceAll(/(NaN|-?Infinity)/gu, '"$&"'));
           } catch {
             return data;
           }
@@ -104,7 +104,18 @@ export class HsdsApi extends ProviderApi {
     const entity = await this.getEntity(path);
     assertHsdsDataset(entity);
 
-    return this.fetchValue(entity.id, selection);
+    const value = await this.fetchValue(entity.id, selection);
+
+    // https://github.com/HDFGroup/hsds/issues/88
+    // HSDS does not reduce the number of dimensions when selecting indices
+    // This is an issue when trying to slice nD arrays
+    // Therefore the dimension reduction is done "manually" here with a flat
+    const numberIndices = selection.match(/\d+/gu)?.length;
+    if (!numberIndices) {
+      return value;
+    }
+
+    return (value as unknown[]).flat(numberIndices);
   }
 
   private async fetchRootId(): Promise<HsdsId> {
