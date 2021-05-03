@@ -34,7 +34,7 @@ interface LineConfig extends State {
   disableErrors: (areErrorsDisabled: boolean) => void;
 }
 
-function initialiseStore() {
+function initialiseStore(onRehydrated: () => void) {
   return create<LineConfig>(
     persist(
       (set) => ({
@@ -73,6 +73,7 @@ function initialiseStore() {
           'showErrors',
         ],
         version: 2,
+        onRehydrateStorage: () => onRehydrated,
       }
     )
   );
@@ -94,7 +95,14 @@ export function useLineConfig<U>(
 // https://github.com/pmndrs/zustand/issues/128#issuecomment-673398578
 export function LineConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-  const [useStore] = useState(initialiseStore); // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
 
-  return <Provider value={useStore}>{children}</Provider>;
+  // https://github.com/pmndrs/zustand/issues/346
+  const [reydrated, setRehydrated] = useState(false);
+
+  // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
+  const [useStore] = useState(() => {
+    return initialiseStore(() => setRehydrated(true));
+  });
+
+  return reydrated ? <Provider value={useStore}>{children}</Provider> : null;
 }
