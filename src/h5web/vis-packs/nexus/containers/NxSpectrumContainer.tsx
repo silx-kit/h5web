@@ -1,14 +1,14 @@
-import { useContext } from 'react';
+import { Suspense, useContext } from 'react';
 import { isEqual } from 'lodash-es';
 import { assertGroup } from '../../../guards';
-import { useDatasetValue } from '../../core/hooks';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
-import { useAxisMapping, useNxData } from '../hooks';
-import { getDatasetLabel } from '../utils';
+import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { ProviderContext } from '../../../providers/context';
+import ValueLoader from '../../../visualizer/ValueLoader';
+import { getDatasetLabel } from '../utils';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -20,12 +20,11 @@ function NxSpectrumContainer(props: VisContainerProps) {
     signalDataset,
     titleDataset,
     errorsDataset,
-    axisDatasetMapping,
+    axisDatasets,
     silxStyle,
   } = nxData;
 
-  const signalLabel = getDatasetLabel(signalDataset);
-  const { axesScaleType, signalScaleType } = silxStyle;
+  const { axisScaleTypes, signalScaleType } = silxStyle;
   const signalDims = signalDataset.shape;
   const errorsDims = errorsDataset?.shape;
 
@@ -42,9 +41,6 @@ function NxSpectrumContainer(props: VisContainerProps) {
     valuesStore.prefetch({ path: errorsDataset.path });
   }
 
-  const title = useDatasetValue(titleDataset);
-  const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
-
   return (
     <>
       <DimensionMapper
@@ -52,17 +48,20 @@ function NxSpectrumContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <MappedLineVis
-        valueDataset={signalDataset}
-        valueLabel={signalLabel}
-        valueScaleType={signalScaleType}
-        errorsDataset={errorsDataset}
-        auxDatasets={auxDatasets}
-        dims={signalDims}
-        dimMapping={dimMapping}
-        axisMapping={axisMapping}
-        title={title || signalLabel}
-      />
+      <Suspense fallback={<ValueLoader />}>
+        <MappedLineVis
+          valueDataset={signalDataset}
+          valueLabel={getDatasetLabel(signalDataset)}
+          valueScaleType={signalScaleType}
+          errorsDataset={errorsDataset}
+          auxDatasets={auxDatasets}
+          dims={signalDims}
+          dimMapping={dimMapping}
+          titleDataset={titleDataset}
+          axisDatasets={axisDatasets}
+          axisScaleTypes={axisScaleTypes}
+        />
+      </Suspense>
     </>
   );
 }

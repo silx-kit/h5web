@@ -26,7 +26,7 @@ export interface NxData {
   signalDataset: NumArrayDataset;
   errorsDataset?: NumArrayDataset;
   titleDataset?: Dataset<ScalarShape, StringType>;
-  axisDatasetMapping: AxisDatasetMapping;
+  axisDatasets: AxisDatasetMapping;
   silxStyle: SilxStyle;
   auxDatasets: NumArrayDataset[];
 }
@@ -35,5 +35,5 @@ export type AxisDatasetMapping = (NumArrayDataset | undefined)[];
 
 export interface SilxStyle {
   signalScaleType?: ScaleType;
-  axesScaleType?: ScaleType[];
+  axisScaleTypes?: ScaleType[];
 }

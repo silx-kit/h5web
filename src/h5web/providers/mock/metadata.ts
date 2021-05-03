@@ -57,6 +57,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       defaultPath: 'nx_process/nx_data',
       children: [
         makeNxGroup('nx_process', 'NXprocess', {
+          defaultPath: 'nx_data',
           children: [
             makeNxDataGroup('nx_data', {
               signal: makeNxDataset('twoD', intType, [20, 41]),
@@ -72,17 +73,19 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         }),
         makeNxDataGroup('spectrum', {
           signal: makeNxDataset('twoD_spectrum', intType, [20, 41], {
+            valueId: 'twoD',
             interpretation: 'spectrum',
             units: 'arb. units',
           }),
           errors: makeNxDataset('errors', floatType, [20, 41], {
-            valueId: 'errors_twoD',
+            valueId: 'twoD_errors',
           }),
           axes: { X: makeNxDataset('X', intType, [41], { units: 'nm' }) },
           axesAttr: ['.', 'X'],
         }),
         makeNxDataGroup('image', {
           signal: makeNxDataset('fourD_image', intType, [3, 9, 20, 41], {
+            valueId: 'fourD',
             longName: 'Interference fringes',
             interpretation: 'image',
           }),
@@ -103,16 +106,17 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
           axesAttr: ['X_log'],
           silxStyle: {
             signalScaleType: ScaleType.Log,
-            axesScaleType: [ScaleType.Log],
+            axisScaleTypes: [ScaleType.Log],
           },
         }),
         makeNxDataGroup('spectrum_with_aux', {
           signal: makeNxDataset('twoD_spectrum', intType, [20, 41], {
+            valueId: 'twoD',
             interpretation: 'spectrum',
             units: 'arb. units',
           }),
           errors: makeNxDataset('errors', floatType, [20, 41], {
-            valueId: 'errors_twoD',
+            valueId: 'twoD_errors',
           }),
           axes: { X: makeNxDataset('X', intType, [41], { units: 'nm' }) },
           axesAttr: ['.', 'X'],
@@ -142,10 +146,45 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       }),
     ]),
     makeGroup('resilience', [
-      makeGroup('slow_metadata'),
-      makeScalarDataset('slow_value', intType),
-      makeDataset('slow_slicing', intType, [9, 20, 41]),
       makeScalarDataset('error_value', intType),
+      makeScalarDataset('slow_value', intType, { valueId: 'scalar_int_42' }),
+      makeDataset('slow_slicing', intType, [9, 20, 41], { valueId: 'threeD' }),
+      makeGroup('slow_metadata'),
+      makeNxDataGroup('slow_nx_spectrum', {
+        signal: makeNxDataset('slow_twoD', intType, [20, 41], {
+          valueId: 'twoD',
+          interpretation: 'spectrum',
+        }),
+        errors: makeNxDataset('slow_twoD_errors', intType, [20, 41], {
+          valueId: 'twoD_errors',
+        }),
+        axes: {
+          slow_X: makeNxDataset('slow_X', intType, [41], { valueId: 'X' }),
+        },
+        axesAttr: ['.', 'slow_X'],
+        auxiliary: {
+          secondary: makeNxDataset('slow_secondary', intType, [20, 41], {
+            valueId: 'secondary',
+          }),
+        },
+        auxAttr: ['slow_secondary'],
+        title: makeScalarDataset('title', stringType, {
+          valueId: 'title_twoD',
+        }),
+      }),
+      makeNxDataGroup('slow_nx_image', {
+        signal: makeNxDataset('slow_threeD', intType, [9, 20, 41], {
+          valueId: 'threeD',
+        }),
+        axes: {
+          slow_X: makeNxDataset('slow_X', intType, [41], { valueId: 'X' }),
+          slow_Y: makeNxDataset('slow_Y', intType, [20], { valueId: 'Y' }),
+        },
+        axesAttr: ['.', 'slow_Y', 'slow_X'],
+        title: makeScalarDataset('title', stringType, {
+          valueId: 'title_twoD',
+        }),
+      }),
     ]),
   ],
 });

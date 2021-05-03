@@ -11,9 +11,16 @@ import {
   useDomains,
 } from '../hooks';
 import { useLineConfig } from './config';
-import type { AxisMapping, ScaleType } from '../models';
+import type { ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { NumArrayDataset } from '../../../providers/models';
+import type {
+  Dataset,
+  NumArrayDataset,
+  ScalarShape,
+  StringType,
+} from '../../../providers/models';
+import { useAxisMapping } from '../../nexus/hooks';
+import type { AxisDatasetMapping } from '../../nexus/models';
 
 type HookArgs = [number[], DimensionMapping, boolean];
 
@@ -25,8 +32,9 @@ interface Props {
   auxDatasets?: NumArrayDataset[];
   dims: number[];
   dimMapping: DimensionMapping;
-  axisMapping?: AxisMapping;
-  title?: string;
+  titleDataset?: Dataset<ScalarShape, StringType>;
+  axisDatasets?: AxisDatasetMapping;
+  axisScaleTypes?: ScaleType[];
 }
 
 function MappedLineVis(props: Props) {
@@ -38,8 +46,9 @@ function MappedLineVis(props: Props) {
     auxDatasets = [],
     dims,
     dimMapping,
-    axisMapping = [],
-    title,
+    titleDataset,
+    axisDatasets = [],
+    axisScaleTypes,
   } = props;
 
   const {
@@ -65,6 +74,10 @@ function MappedLineVis(props: Props) {
 
   const auxiliaries = Object.values(useDatasetValues(auxDatasets));
   const [auxArrays, auxForDomain] = useMappedArrays(auxiliaries, ...hookArgs);
+
+  const title =
+    useDatasetValue(titleDataset) || valueLabel || valueDataset.name;
+  const axisMapping = useAxisMapping(axisDatasets, axisScaleTypes);
 
   const dataDomain = useDomain(
     dataForDomain,

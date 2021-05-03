@@ -224,13 +224,13 @@ export function makeNxAuxAttr(
 export function makeSilxStyleAttr(
   style: SilxStyle
 ): Attribute<ScalarShape, StringType> {
-  const { signalScaleType, axesScaleType } = style;
+  const { signalScaleType, axisScaleTypes } = style;
 
   return makeStrAttr(
     'SILX_style',
     JSON.stringify({
       signal_scale_type: signalScaleType,
-      axes_scale_type: axesScaleType,
+      axes_scale_type: axisScaleTypes,
     })
   );
 }

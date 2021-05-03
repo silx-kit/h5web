@@ -8,10 +8,6 @@ import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
 
 const SLOW_TIMEOUT = 3000;
-const SLOW_METADATA_PATH = '/resilience/slow_metadata';
-const SLOW_VALUE_PATH = '/resilience/slow_value';
-const SLOW_SLICING_PATH = '/resilience/slow_slicing';
-const ERROR_PATH = '/resilience/error_value';
 
 export class MockApi extends ProviderApi {
   public constructor() {
@@ -19,7 +15,7 @@ export class MockApi extends ProviderApi {
   }
 
   public async getEntity(path: string): Promise<Entity> {
-    if (path === SLOW_METADATA_PATH) {
+    if (path.includes('slow_metadata')) {
       await new Promise<void>((resolve) => {
         setTimeout(() => resolve(), SLOW_TIMEOUT);
       });
@@ -31,7 +27,7 @@ export class MockApi extends ProviderApi {
   public async getValue(params: GetValueParams): Promise<unknown> {
     const { path, selection } = params;
 
-    if (path === ERROR_PATH) {
+    if (path.includes('error_value')) {
       // Throw error when fetching value with specific path
       throw new Error('error');
     }
@@ -39,7 +35,7 @@ export class MockApi extends ProviderApi {
     const dataset = findMockEntity(path);
     assertMockDataset(dataset);
 
-    if (path === SLOW_VALUE_PATH || path === SLOW_SLICING_PATH) {
+    if (path.includes('slow')) {
       await this.cancellableDelay();
     }
 

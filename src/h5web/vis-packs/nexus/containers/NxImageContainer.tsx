@@ -2,9 +2,7 @@ import { Suspense, useContext } from 'react';
 import { assertGroup, assertMinDims } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
-import { useAxisMapping, useNxData } from '../hooks';
-import { useDatasetValue } from '../../core/hooks';
-import { getDatasetLabel } from '../utils';
+import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import ValueLoader from '../../../visualizer/ValueLoader';
@@ -19,15 +17,12 @@ function NxImageContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
 
-  const { signalDataset, titleDataset, axisDatasetMapping, silxStyle } = nxData;
-  const { axesScaleType, signalScaleType } = silxStyle;
+  const { signalDataset, titleDataset, axisDatasets, silxStyle } = nxData;
+  const { axisScaleTypes, signalScaleType } = silxStyle;
   assertMinDims(signalDataset, 2);
 
   const { shape: dims } = signalDataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
-
-  const title = useDatasetValue(titleDataset);
-  const axisMapping = useAxisMapping(axisDatasetMapping, axesScaleType);
 
   const { valuesStore } = useContext(ProviderContext);
 
@@ -53,9 +48,10 @@ function NxImageContainer(props: VisContainerProps) {
             dataset={signalDataset}
             dims={dims}
             dimMapping={dimMapping}
-            axisMapping={axisMapping}
-            title={title || getDatasetLabel(signalDataset)}
+            axisDatasets={axisDatasets}
+            titleDataset={titleDataset}
             colorScaleType={signalScaleType}
+            axisScaleTypes={axisScaleTypes}
           />
         </Suspense>
       </ErrorBoundary>

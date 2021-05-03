@@ -82,7 +82,7 @@ export function useNxData(group: Group): NxData {
     signalDataset,
     errorsDataset: findErrorsDataset(group, signalDataset.name),
     titleDataset: useTitleDataset(group),
-    axisDatasetMapping: useAssociatedDatasets(group, 'axes'),
+    axisDatasets: useAssociatedDatasets(group, 'axes'),
     silxStyle: getSilxStyle(group),
     auxDatasets: useAssociatedDatasets(group, 'auxiliary_signals').filter(
       isDefined
@@ -92,7 +92,7 @@ export function useNxData(group: Group): NxData {
 
 export function useAxisMapping(
   mapping: AxisDatasetMapping,
-  axesScaleType: ScaleType[] | undefined
+  axisScaleTypes: ScaleType[] | undefined
 ): AxisMapping {
   const axisValues = useDatasetValues(mapping.filter(isDefined));
 
@@ -101,7 +101,7 @@ export function useAxisMapping(
       dataset && {
         label: getDatasetLabel(dataset),
         value: axisValues[dataset.name],
-        scaleType: axesScaleType && axesScaleType[i],
+        scaleType: axisScaleTypes && axisScaleTypes[i],
       }
     );
   });

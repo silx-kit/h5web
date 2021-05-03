@@ -100,7 +100,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   const errorSpy = mockConsoleMethod('error');
 
   await selectExplorerNode('resilience/slow_slicing');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
 
   // Cancel fetch of first slice
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
@@ -111,7 +111,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   const d0Slider = screen.getByRole('slider');
   d0Slider.focus();
   userEvent.keyboard('{ArrowUp}');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
 
   // Let fetch of second slice succeed
   jest.runAllTimers();
@@ -120,7 +120,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   // Move back to first slice and retry fetch
   userEvent.keyboard('{ArrowDown}');
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
 
   // Let fetch of first slice succeed
   jest.runAllTimers();
