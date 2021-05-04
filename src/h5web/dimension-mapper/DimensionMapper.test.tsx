@@ -4,7 +4,7 @@ import { renderApp, selectExplorerNode, selectVisTab } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('display mapping for X axis when visualizing 2D dataset as Line', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nD_datasets/twoD');
   await selectVisTab(Vis.Line);
 
@@ -32,7 +32,7 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
 });
 
 test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nD_datasets/twoD');
   await selectVisTab(Vis.Heatmap);
 
@@ -60,7 +60,7 @@ test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap',
 });
 
 test('display one dimension slider and mappings for X and Y axes when visualizing 3D dataset as Matrix', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nD_datasets/threeD');
   await selectVisTab(Vis.Matrix);
 

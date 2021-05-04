@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { pressKey, renderApp, selectExplorerNode } from '../../../test-utils';
 
 test('show slider with two thumbs', async () => {
-  renderApp(); // default NeXus group renders heatmap and therefore domain slider
+  await renderApp(); // default NeXus group renders heatmap and therefore domain slider
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const thumbs = await screen.findAllByRole('slider');
@@ -13,7 +13,7 @@ test('show slider with two thumbs', async () => {
 });
 
 test('show tooltip on hover', async () => {
-  renderApp();
+  await renderApp();
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -36,7 +36,7 @@ test('show tooltip on hover', async () => {
 });
 
 test('show min/max and data range in tooltip', async () => {
-  renderApp();
+  await renderApp();
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -56,7 +56,7 @@ test('show min/max and data range in tooltip', async () => {
 });
 
 test('update domain when moving thumbs (with keyboard)', async () => {
-  renderApp();
+  await renderApp();
   expect(await screen.findByRole('figure')).toBeVisible();
 
   // Give focus to min thumb (and hover to reveal tooltip)
@@ -103,7 +103,7 @@ test('update domain when moving thumbs (with keyboard)', async () => {
 });
 
 test('allow editing bounds manually', async () => {
-  renderApp();
+  await renderApp();
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
@@ -149,7 +149,7 @@ test('allow editing bounds manually', async () => {
 });
 
 test('clamp domain in symlog scale', async () => {
-  renderApp();
+  await renderApp();
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -180,7 +180,7 @@ test('clamp domain in symlog scale', async () => {
 });
 
 test('show min/max autoscale toggles in tooltip (pressed by default)', async () => {
-  renderApp();
+  await renderApp();
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -195,7 +195,7 @@ test('show min/max autoscale toggles in tooltip (pressed by default)', async () 
 });
 
 test('control min/max autoscale behaviour', async () => {
-  renderApp();
+  await renderApp();
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const minThumb = await screen.findByRole('slider', { name: /min/ });
@@ -224,7 +224,7 @@ test('control min/max autoscale behaviour', async () => {
 });
 
 test('handle empty domain', async () => {
-  renderApp();
+  await renderApp();
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
@@ -262,7 +262,7 @@ test('handle empty domain', async () => {
 });
 
 test('handle min > max', async () => {
-  renderApp();
+  await renderApp();
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
@@ -289,7 +289,7 @@ test('handle min > max', async () => {
 });
 
 test('handle min or max <= 0 in log scale', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nexus_entry/image');
   await screen.findByRole('button', { name: 'Log' }); // wait for switch to log scale
 
@@ -320,7 +320,7 @@ test('handle min or max <= 0 in log scale', async () => {
 });
 
 test('handle min <= 0 with custom max fallback in log scale', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nexus_entry/image');
   await screen.findByRole('button', { name: 'Log' }); // wait for switch to log scale
 

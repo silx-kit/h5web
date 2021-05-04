@@ -57,7 +57,6 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       defaultPath: 'nx_process/nx_data',
       children: [
         makeNxGroup('nx_process', 'NXprocess', {
-          defaultPath: 'nx_data',
           children: [
             makeNxDataGroup('nx_data', {
               signal: makeNxDataset('twoD', intType, [20, 41]),

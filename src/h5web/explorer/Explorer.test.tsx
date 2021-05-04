@@ -4,7 +4,7 @@ import { mockFilepath } from '../providers/mock/metadata';
 import { renderApp, selectExplorerNode } from '../test-utils';
 
 test('select root group by default', async () => {
-  renderApp();
+  await renderApp();
 
   const title = await screen.findByRole('heading', { name: mockFilepath });
   expect(title).toBeVisible();
@@ -15,7 +15,7 @@ test('select root group by default', async () => {
 });
 
 test('toggle explorer sidebar', async () => {
-  renderApp();
+  await renderApp();
 
   const fileBtn = await screen.findByRole('treeitem', {
     name: mockFilepath,
@@ -37,7 +37,7 @@ test('toggle explorer sidebar', async () => {
 });
 
 test('navigate groups in explorer', async () => {
-  renderApp();
+  await renderApp();
 
   const groupBtn = await screen.findByRole('treeitem', { name: 'entities' });
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
@@ -87,9 +87,9 @@ test('navigate groups in explorer', async () => {
 });
 
 test('show spinner when group metadata is slow to fetch', async () => {
-  renderApp();
-
   jest.useFakeTimers();
+  await renderApp();
+
   await selectExplorerNode('resilience/slow_metadata');
   expect(await screen.findByText(/Loading/)).toBeVisible();
   expect(screen.getByLabelText(/Loading group metadata/)).toBeVisible();
@@ -101,5 +101,6 @@ test('show spinner when group metadata is slow to fetch', async () => {
     ).not.toBeInTheDocument();
   });
 
+  jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });
