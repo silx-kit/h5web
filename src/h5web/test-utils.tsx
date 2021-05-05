@@ -1,21 +1,17 @@
-import {
-  fireEvent,
-  render,
-  RenderResult,
-  screen,
-  within,
-} from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
 import type { Vis } from './vis-packs/core/visualizations';
 
-export function renderApp(): RenderResult {
-  return render(
-    <MockProvider>
-      <App />
-    </MockProvider>
-  );
+export async function renderApp(): Promise<void> {
+  return act(async () => {
+    render(
+      <MockProvider>
+        <App />
+      </MockProvider>
+    );
+  });
 }
 
 export async function selectExplorerNode(path: string): Promise<void> {

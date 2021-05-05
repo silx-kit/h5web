@@ -9,6 +9,7 @@ import { assertAbsolutePath } from './guards';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './visualizer/ErrorFallback';
 import LoadingFallback from './LoadingFallback';
+import VisConfigProvider from './VisConfigProvider';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
@@ -42,21 +43,25 @@ function App() {
           onChangeInspecting={setInspecting}
           onSelectPath={setSelectedPath}
         />
-        <ErrorBoundary
-          resetKeys={[selectedPath, isInspecting]}
-          FallbackComponent={ErrorFallback}
-        >
-          <Suspense fallback={<LoadingFallback isInspecting={isInspecting} />}>
-            {isInspecting ? (
-              <MetadataViewer
-                path={selectedPath}
-                onSelectPath={setSelectedPath}
-              />
-            ) : (
-              <VisPackChooser path={selectedPath} />
-            )}
-          </Suspense>
-        </ErrorBoundary>
+        <VisConfigProvider>
+          <ErrorBoundary
+            resetKeys={[selectedPath, isInspecting]}
+            FallbackComponent={ErrorFallback}
+          >
+            <Suspense
+              fallback={<LoadingFallback isInspecting={isInspecting} />}
+            >
+              {isInspecting ? (
+                <MetadataViewer
+                  path={selectedPath}
+                  onSelectPath={setSelectedPath}
+                />
+              ) : (
+                <VisPackChooser path={selectedPath} />
+              )}
+            </Suspense>
+          </ErrorBoundary>
+        </VisConfigProvider>
       </ReflexElement>
     </ReflexContainer>
   );

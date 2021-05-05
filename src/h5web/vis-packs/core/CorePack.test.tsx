@@ -9,7 +9,7 @@ import {
 import { Vis } from './visualizations';
 
 test('visualise raw dataset', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('entities/raw');
 
   const tabs = await findVisSelectorTabs();
@@ -23,7 +23,7 @@ test('visualise raw dataset', async () => {
 test('log raw dataset to console if too large', async () => {
   const logSpy = mockConsoleMethod('log');
 
-  renderApp();
+  await renderApp();
   await selectExplorerNode('entities/raw_large');
 
   expect(await screen.findByText(/dataset is too big/)).toBeVisible();
@@ -31,7 +31,7 @@ test('log raw dataset to console if too large', async () => {
 });
 
 test('visualise scalar dataset', async () => {
-  renderApp();
+  await renderApp();
 
   await selectExplorerNode('entities/scalar_int');
   expect(await screen.findByText('0')).toBeVisible();
@@ -46,7 +46,7 @@ test('visualise scalar dataset', async () => {
 });
 
 test('visualize 1D dataset', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nD_datasets/oneD');
 
   const tabs = await findVisSelectorTabs();
@@ -57,7 +57,7 @@ test('visualize 1D dataset', async () => {
 });
 
 test('visualize 2D datasets', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nD_datasets/twoD');
 
   const tabs = await findVisSelectorTabs();

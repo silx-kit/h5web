@@ -1,4 +1,4 @@
-import { Fragment, Suspense, useContext } from 'react';
+import { Suspense, useContext } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import Profiler from '../Profiler';
 import type { Entity } from '../providers/models';
@@ -28,36 +28,34 @@ function Visualizer<T extends VisDef>(props: Props<T>) {
     );
   }
 
-  const { Container, Toolbar, ConfigProvider = Fragment } = activeVis;
+  const { Container, Toolbar } = activeVis;
 
   return (
     <div className={styles.visualizer}>
-      <ConfigProvider>
-        <div className={styles.visBar}>
-          <VisSelector
-            activeVis={activeVis}
-            choices={supportedVis}
-            onChange={onActiveVisChange}
-          />
-          {Toolbar && <Toolbar />}
-        </div>
+      <div className={styles.visBar}>
+        <VisSelector
+          activeVis={activeVis}
+          choices={supportedVis}
+          onChange={onActiveVisChange}
+        />
+        {Toolbar && <Toolbar />}
+      </div>
 
-        <div className={styles.displayArea}>
-          <ErrorBoundary
-            resetKeys={[entity.path]}
-            FallbackComponent={ErrorFallback}
-            onReset={() => {
-              valuesStore.evict({ path: entity.path });
-            }}
-          >
-            <Suspense fallback={<ValueLoader />}>
-              <Profiler id={activeVis.name}>
-                <Container key={entity.path} entity={entity} />
-              </Profiler>
-            </Suspense>
-          </ErrorBoundary>
-        </div>
-      </ConfigProvider>
+      <div className={styles.displayArea}>
+        <ErrorBoundary
+          resetKeys={[entity.path]}
+          FallbackComponent={ErrorFallback}
+          onReset={() => {
+            valuesStore.evict({ path: entity.path });
+          }}
+        >
+          <Suspense fallback={<ValueLoader />}>
+            <Profiler id={activeVis.name}>
+              <Container key={entity.path} entity={entity} />
+            </Profiler>
+          </Suspense>
+        </ErrorBoundary>
+      </div>
     </div>
   );
 }

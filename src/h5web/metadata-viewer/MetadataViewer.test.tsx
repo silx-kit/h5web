@@ -8,7 +8,7 @@ import {
 } from '../test-utils';
 
 test('switch between "display" and "inspect" modes', async () => {
-  renderApp();
+  await renderApp();
 
   const inspectBtn = await screen.findByRole('tab', { name: 'Inspect' });
   const displayBtn = screen.getByRole('tab', { name: 'Display' });
@@ -27,7 +27,7 @@ test('switch between "display" and "inspect" modes', async () => {
 });
 
 test('inspect group', async () => {
-  renderApp();
+  await renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities');
 
@@ -41,7 +41,7 @@ test('inspect group', async () => {
 });
 
 test('inspect scalar dataset', async () => {
-  renderApp();
+  await renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities/scalar_int');
 
@@ -61,7 +61,7 @@ test('inspect scalar dataset', async () => {
 });
 
 test('inspect array dataset', async () => {
-  renderApp();
+  await renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('nD_datasets/threeD');
 
@@ -70,7 +70,7 @@ test('inspect array dataset', async () => {
 });
 
 test('inspect empty dataset', async () => {
-  renderApp();
+  await renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities/empty_dataset');
 
@@ -82,7 +82,7 @@ test('inspect empty dataset', async () => {
 });
 
 test('inspect datatype', async () => {
-  renderApp();
+  await renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities/datatype');
 
@@ -100,7 +100,7 @@ test('inspect datatype', async () => {
 });
 
 test('inspect unresolved soft link', async () => {
-  renderApp();
+  await renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities/unresolved_soft_link');
 
@@ -116,7 +116,7 @@ test('inspect unresolved soft link', async () => {
 });
 
 test('inspect unresolved external link', async () => {
-  renderApp();
+  await renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
   await selectExplorerNode('entities/unresolved_external_link');
 
@@ -128,7 +128,7 @@ test('inspect unresolved external link', async () => {
 });
 
 test('follow path attributes', async () => {
-  renderApp();
+  await renderApp();
   userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
 
   userEvent.click(

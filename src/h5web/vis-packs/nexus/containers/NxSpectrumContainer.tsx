@@ -1,4 +1,4 @@
-import { Suspense, useContext } from 'react';
+import { Suspense } from 'react';
 import { isEqual } from 'lodash-es';
 import { assertGroup } from '../../../guards';
 import MappedLineVis from '../../core/line/MappedLineVis';
@@ -6,7 +6,6 @@ import type { VisContainerProps } from '../../models';
 import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { ProviderContext } from '../../../providers/context';
 import ValueLoader from '../../../visualizer/ValueLoader';
 import { getDatasetLabel } from '../utils';
 
@@ -34,12 +33,6 @@ function NxSpectrumContainer(props: VisContainerProps) {
   }
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
-
-  const { valuesStore } = useContext(ProviderContext);
-  valuesStore.prefetch({ path: signalDataset.path });
-  if (errorsDataset) {
-    valuesStore.prefetch({ path: errorsDataset.path });
-  }
 
   return (
     <>

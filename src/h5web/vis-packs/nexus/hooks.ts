@@ -77,10 +77,17 @@ function useAssociatedDatasets(
 export function useNxData(group: Group): NxData {
   assertNxDataGroup(group);
   const signalDataset = findSignalDataset(group);
+  const errorsDataset = findErrorsDataset(group, signalDataset.name);
+
+  const { valuesStore } = useContext(ProviderContext);
+  valuesStore.prefetch({ path: signalDataset.path });
+  if (errorsDataset) {
+    valuesStore.prefetch({ path: errorsDataset.path });
+  }
 
   return {
     signalDataset,
-    errorsDataset: findErrorsDataset(group, signalDataset.name),
+    errorsDataset,
     titleDataset: useTitleDataset(group),
     axisDatasets: useAssociatedDatasets(group, 'axes'),
     silxStyle: getSilxStyle(group),

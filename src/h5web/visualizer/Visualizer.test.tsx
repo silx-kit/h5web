@@ -9,7 +9,7 @@ import {
 } from '../test-utils';
 
 test('switch between visualisations', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nD_datasets/oneD');
 
   const lineTab = await screen.findByRole('tab', { name: 'Line' });
@@ -34,7 +34,7 @@ test('switch between visualisations', async () => {
 });
 
 test('show fallback message when no visualization is supported', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('entities'); // simple group
 
   expect(
@@ -44,20 +44,21 @@ test('show fallback message when no visualization is supported', async () => {
 });
 
 test('show loader while fetching dataset value', async () => {
-  renderApp();
-
   jest.useFakeTimers();
+  await renderApp();
+
   await selectExplorerNode('resilience/slow_value');
   expect(await screen.findByText(/Loading data/)).toBeVisible();
 
   jest.runAllTimers(); // resolve slow fetch right away
   expect(await screen.findByText(/42/)).toBeVisible();
 
+  jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });
 
 test("show error when dataset value can't be fetched and reset when selecting another dataset", async () => {
-  renderApp();
+  await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('resilience/error_value');
@@ -71,7 +72,8 @@ test("show error when dataset value can't be fetched and reset when selecting an
 });
 
 test('cancel and retry slow fetch of dataset value', async () => {
-  renderApp();
+  jest.useFakeTimers();
+  await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('resilience/slow_value');
@@ -83,20 +85,20 @@ test('cancel and retry slow fetch of dataset value', async () => {
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
-  jest.useFakeTimers();
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
   expect(await screen.findByText(/Loading data/)).toBeVisible();
 
   jest.runAllTimers(); // resolve slow fetch right away
   expect(await screen.findByText(/42/)).toBeVisible();
 
+  jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });
 
 test('cancel and retry slow fetch of dataset slice', async () => {
-  renderApp();
-
   jest.useFakeTimers();
+  await renderApp();
+
   const errorSpy = mockConsoleMethod('error');
 
   await selectExplorerNode('resilience/slow_slicing');
@@ -108,7 +110,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
 
   // Move to second slice
-  const d0Slider = screen.getByRole('slider');
+  const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
   d0Slider.focus();
   userEvent.keyboard('{ArrowUp}');
   expect(await screen.findByText(/Loading current slice/)).toBeVisible();
@@ -119,6 +121,8 @@ test('cancel and retry slow fetch of dataset slice', async () => {
 
   // Move back to first slice and retry fetch
   userEvent.keyboard('{ArrowDown}');
+  expect(errorSpy).toHaveBeenCalledTimes(4); // React re-logs errors
+
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
   expect(await screen.findByText(/Loading current slice/)).toBeVisible();
 
@@ -127,5 +131,6 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   expect(await screen.findByRole('figure')).toBeVisible();
 
   errorSpy.mockRestore();
+  jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });

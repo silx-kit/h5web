@@ -8,7 +8,7 @@ import {
 import { NexusVis } from './visualizations';
 
 test('visualize NXdata group with "spectrum" interpretation', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nexus_entry/spectrum');
 
   const tabs = await findVisSelectorTabs();
@@ -17,7 +17,7 @@ test('visualize NXdata group with "spectrum" interpretation', async () => {
 });
 
 test('visualize NXdata group with "image" interpretation', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nexus_entry/image');
 
   const tabs = await findVisSelectorTabs();
@@ -26,8 +26,9 @@ test('visualize NXdata group with "image" interpretation', async () => {
 });
 
 test('visualize NXdata group with 2D signal', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  // expect(await screen.findByRole('figure')).toBeVisible();
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -35,7 +36,7 @@ test('visualize NXdata group with 2D signal', async () => {
 });
 
 test('visualize NXentry group with relative path to 2D default signal', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nexus_entry');
 
   const tabs = await findVisSelectorTabs();
@@ -44,7 +45,7 @@ test('visualize NXentry group with relative path to 2D default signal', async ()
 });
 
 test('visualize NXentry group with absolute path to 2D default signal', async () => {
-  renderApp();
+  await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/absolute_default_path');
 
   const tabs = await findVisSelectorTabs();
@@ -53,7 +54,7 @@ test('visualize NXentry group with absolute path to 2D default signal', async ()
 });
 
 test('visualize NXroot group with 2D default signal', async () => {
-  renderApp();
+  await renderApp();
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -61,7 +62,7 @@ test('visualize NXroot group with 2D default signal', async () => {
 });
 
 test('show error when encountering malformed NeXus metadata', async () => {
-  renderApp();
+  await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed');
