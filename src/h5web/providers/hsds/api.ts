@@ -21,7 +21,7 @@ import {
   ProviderError,
 } from '../models';
 import { assertDefined, assertGroup } from '../../guards';
-import { GetValueParams, ProviderApi } from '../context';
+import { ValueRequestParams, ProviderApi } from '../context';
 import {
   assertHsdsDataset,
   isHsdsGroup,
@@ -98,13 +98,13 @@ export class HsdsApi extends ProviderApi {
     return entity;
   }
 
-  public async getValue(params: GetValueParams): Promise<unknown> {
+  public async getValue(params: ValueRequestParams): Promise<unknown> {
     const { path, selection = '' } = params;
 
     const entity = await this.getEntity(path);
     assertHsdsDataset(entity);
 
-    const value = await this.fetchValue(entity.id, selection);
+    const value = await this.fetchValue(entity.id, params);
 
     // https://github.com/HDFGroup/hsds/issues/88
     // HSDS does not reduce the number of dimensions when selecting indices
@@ -169,10 +169,12 @@ export class HsdsApi extends ProviderApi {
 
   private async fetchValue(
     entityId: HsdsId,
-    selection: string
+    params: ValueRequestParams
   ): Promise<unknown> {
-    const { data } = await this.cancellableGet<HsdsValueResponse>(
-      `/datasets/${entityId}/value${selection && `?select=[${selection}]`}`
+    const { selection = '' } = params;
+    const { data } = await this.cancellableFetchValue<HsdsValueResponse>(
+      `/datasets/${entityId}/value${selection && `?select=[${selection}]`}`,
+      params
     );
     return data.value;
   }

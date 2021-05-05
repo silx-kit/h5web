@@ -13,7 +13,6 @@ import ValueLoader from '../../../visualizer/ValueLoader';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../visualizer/ErrorFallback';
 import { ProviderContext } from '../../../providers/context';
-import { getSliceSelection } from '../utils';
 
 function HeatmapVisContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -37,12 +36,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
       <ErrorBoundary
         resetKeys={[dimMapping]}
         FallbackComponent={ErrorFallback}
-        onReset={() => {
-          valuesStore.evict({
-            path: entity.path,
-            selection: getSliceSelection(dimMapping),
-          });
-        }}
+        onError={() => valuesStore.evictCancelled()}
       >
         <Suspense fallback={<ValueLoader message="Loading current slice" />}>
           <MappedHeatmapVis

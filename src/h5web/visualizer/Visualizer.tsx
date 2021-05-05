@@ -45,9 +45,7 @@ function Visualizer<T extends VisDef>(props: Props<T>) {
         <ErrorBoundary
           resetKeys={[entity.path]}
           FallbackComponent={ErrorFallback}
-          onReset={() => {
-            valuesStore.evict({ path: entity.path });
-          }}
+          onError={() => valuesStore.evictCancelled()}
         >
           <Suspense fallback={<ValueLoader />}>
             <Profiler id={activeVis.name}>

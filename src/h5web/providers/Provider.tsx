@@ -39,9 +39,19 @@ function Provider(props: Props) {
   }, [api]);
 
   const valuesStore = useMemo(() => {
-    return createFetchStore(api.getValue.bind(api), {
+    const store = createFetchStore(api.getValue.bind(api), {
       type: 'Map',
       areEqual: (a, b) => a.path === b.path && a.selection === b.selection,
+    });
+
+    return Object.assign(store, {
+      cancelOngoing: () => api.cancelValueRequests(),
+      evictCancelled: () => {
+        api.cancelledValueRequests.forEach(({ params }) => {
+          valuesStore.evict(params);
+        });
+        api.cancelledValueRequests.clear();
+      },
     });
   }, [api]);
 
@@ -51,7 +61,6 @@ function Provider(props: Props) {
         filepath: api.filepath,
         entitiesStore,
         valuesStore,
-        cancel: () => api.cancel(),
       }}
     >
       {children}

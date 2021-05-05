@@ -9,7 +9,6 @@ import ValueLoader from '../../../visualizer/ValueLoader';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../visualizer/ErrorFallback';
 import { ProviderContext } from '../../../providers/context';
-import { getSliceSelection } from '../../core/utils';
 
 function NxImageContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -37,12 +36,7 @@ function NxImageContainer(props: VisContainerProps) {
       <ErrorBoundary
         resetKeys={[dimMapping]}
         FallbackComponent={ErrorFallback}
-        onReset={() => {
-          valuesStore.evict({
-            path: signalDataset.path,
-            selection: getSliceSelection(dimMapping),
-          });
-        }}
+        onError={() => valuesStore.evictCancelled()}
       >
         <Suspense fallback={<ValueLoader />}>
           <MappedHeatmapVis

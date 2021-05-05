@@ -1,5 +1,5 @@
 import { Group, Dataset, Entity, EntityKind } from '../models';
-import { GetValueParams, ProviderApi } from '../context';
+import { ValueRequestParams, ProviderApi } from '../context';
 import {
   assertGroupContent,
   isDatasetResponse,
@@ -30,13 +30,12 @@ export class JupyterStableApi extends ProviderApi {
     return this.processEntity(path, 1);
   }
 
-  public async getValue(params: GetValueParams): Promise<unknown> {
-    const { path, selection = '' } = params;
-
+  public async getValue(params: ValueRequestParams): Promise<unknown> {
     const [value, entity] = await Promise.all([
-      this.fetchData(path, selection),
-      this.getEntity(path),
+      this.fetchData(params),
+      this.getEntity(params.path),
     ]);
+
     assertDataset(entity);
 
     if (hasComplexType(entity)) {
@@ -68,11 +67,12 @@ export class JupyterStableApi extends ProviderApi {
   }
 
   protected async fetchData(
-    path: string,
-    selection: string
+    params: ValueRequestParams
   ): Promise<JupyterDataResponse> {
-    const { data } = await this.cancellableGet<JupyterDataResponse>(
-      `/data/${this.filepath}?uri=${path}${selection && `&ixstr=${selection}`}`
+    const { path, selection = '' } = params;
+    const { data } = await this.cancellableFetchValue<JupyterDataResponse>(
+      `/data/${this.filepath}?uri=${path}${selection && `&ixstr=${selection}`}`,
+      params
     );
     return data;
   }

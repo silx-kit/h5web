@@ -9,7 +9,7 @@ interface Props {
 
 function ValueLoader(props: Props) {
   const { message = 'Loading data' } = props;
-  const { cancel } = useContext(ProviderContext);
+  const { valuesStore } = useContext(ProviderContext);
 
   // Wait a bit before showing loader to avoid flash
   const [isReady] = useTimeout(100);
@@ -36,7 +36,7 @@ function ValueLoader(props: Props) {
         <button
           className={styles.cancelBtn}
           type="button"
-          onClick={() => cancel()}
+          onClick={() => valuesStore.cancelOngoing()}
         >
           Cancel?
         </button>
