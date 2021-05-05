@@ -1,4 +1,3 @@
-import { pickBy } from 'lodash-es';
 import { createFetchStore } from 'react-suspense-fetch';
 
 export interface ObjectKeyStore<
@@ -27,14 +26,7 @@ export function createObjectKeyStore<
   });
 
   function wrapMethod<T>(method: (key: string) => T) {
-    return (params: I) => {
-      /* Remove optional params that are explicitely set to `undefined`.
-       * This is to guarantee that, for instance, `{ foo: undefined; }` and `{}`
-       * are both stringified to (and cached with) "{}" */
-      const pickedParams = pickBy(params, (v) => v !== undefined);
-
-      return method(JSON.stringify(pickedParams));
-    };
+    return (params: I) => method(JSON.stringify(params));
   }
 
   const { get, prefetch, evict } = store;
