@@ -1,6 +1,5 @@
 import type ndarray from 'ndarray';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { isNumber } from 'lodash-es';
 import { createMemo } from 'react-use';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { DimensionMapping } from '../../dimension-mapper/models';
@@ -34,11 +33,7 @@ export function useDatasetValue(
     return undefined;
   }
 
-  // If no dim mapping is provided or dim mapping has no slicing dimension, fetch entire dataset
-  if (!dimMapping || !dimMapping.some(isNumber)) {
-    return valuesStore.get({ path: dataset.path });
-  }
-
+  // If `dimMapping` is not provided or has no slicing dimension, the entire dataset will be fetched
   return valuesStore.get({
     path: dataset.path,
     selection: getSliceSelection(dimMapping),

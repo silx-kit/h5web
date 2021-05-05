@@ -352,7 +352,13 @@ export function getValidDomainForScale(
   return positiveMin !== Infinity ? [positiveMin, max] : undefined;
 }
 
-export function getSliceSelection(dimMapping: DimensionMapping): string {
+export function getSliceSelection(
+  dimMapping?: DimensionMapping
+): string | undefined {
+  if (!dimMapping || !dimMapping.some(isNumber)) {
+    return undefined;
+  }
+
   // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
 }
