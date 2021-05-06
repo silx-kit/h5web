@@ -1,17 +1,12 @@
-import create, {
-  EqualityChecker,
-  State,
-  StateSelector,
-  UseStore,
-} from 'zustand';
+import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { ColorMap } from './models';
 import { CustomDomain, Domain, ScaleType } from '../models';
-import { createContext, useContext, useState } from 'react';
-import { assertDefined } from '../../../guards';
+import { useState } from 'react';
 import type { ConfigProviderProps } from '../../models';
+import createContext from 'zustand/context';
 
-interface HeatmapConfig extends State {
+interface HeatmapConfig {
   dataDomain: Domain | undefined;
   setDataDomain: (dataDomain: Domain) => void;
 
@@ -37,7 +32,7 @@ interface HeatmapConfig extends State {
 function initialiseStore(onRehydrated: () => void) {
   return create<HeatmapConfig>(
     persist(
-      (set) => ({
+      (set, get) => ({
         dataDomain: undefined,
         setDataDomain: (dataDomain: Domain) => set({ dataDomain }),
 
@@ -48,21 +43,21 @@ function initialiseStore(onRehydrated: () => void) {
         setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
         invertColorMap: false,
-        toggleColorMapInversion: () =>
-          set((state) => ({ invertColorMap: !state.invertColorMap })),
+        toggleColorMapInversion: () => {
+          set((state) => ({ invertColorMap: !state.invertColorMap }));
+        },
 
         scaleType: ScaleType.Linear,
         setScaleType: (scaleType: ScaleType) => {
-          set((state) =>
-            state.scaleType !== scaleType
-              ? { scaleType, dataDomain: undefined } // clear `dataDomain` to avoid stale state
-              : state
-          );
+          if (scaleType !== get().scaleType) {
+            set(() => ({ scaleType, dataDomain: undefined })); // clear `dataDomain` to avoid stale state
+          }
         },
 
         keepAspectRatio: true,
-        toggleAspectRatio: () =>
-          set((state) => ({ keepAspectRatio: !state.keepAspectRatio })),
+        toggleAspectRatio: () => {
+          set((state) => ({ keepAspectRatio: !state.keepAspectRatio }));
+        },
 
         showGrid: false,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
@@ -84,18 +79,8 @@ function initialiseStore(onRehydrated: () => void) {
   );
 }
 
-const context = createContext<UseStore<HeatmapConfig> | undefined>(undefined);
-const { Provider } = context;
-
-export function useHeatmapConfig<U>(
-  selector: StateSelector<HeatmapConfig, U>,
-  equalityFn?: EqualityChecker<U>
-): U {
-  const useStore = useContext(context);
-  assertDefined(useStore);
-
-  return useStore(selector, equalityFn);
-}
+const { Provider, useStore } = createContext<HeatmapConfig>();
+export const useHeatmapConfig = useStore;
 
 // https://github.com/pmndrs/zustand/issues/128#issuecomment-673398578
 export function HeatmapConfigProvider(props: ConfigProviderProps) {
@@ -105,9 +90,11 @@ export function HeatmapConfigProvider(props: ConfigProviderProps) {
   const [reydrated, setRehydrated] = useState(false);
 
   // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
-  const [useStore] = useState(() => {
+  const [store] = useState(() => {
     return initialiseStore(() => setRehydrated(true));
   });
 
-  return reydrated ? <Provider value={useStore}>{children}</Provider> : null;
+  return reydrated ? (
+    <Provider initialStore={store}>{children}</Provider>
+  ) : null;
 }

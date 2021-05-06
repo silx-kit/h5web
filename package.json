@@ -60,7 +60,7 @@
     "react-use": "^17.2.3",
     "react-window": "^1.8.6",
     "three": "^0.127.0",
-    "zustand": "^3.4.1"
+    "zustand": "^3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",

@@ -1,17 +1,12 @@
-import create, {
-  EqualityChecker,
-  State,
-  StateSelector,
-  UseStore,
-} from 'zustand';
+import create from 'zustand';
+import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
 import { CurveType } from './models';
 import { ScaleType } from '../models';
-import { createContext, useContext, useState } from 'react';
-import { assertDefined } from '../../../guards';
+import { useState } from 'react';
 import type { ConfigProviderProps } from '../../models';
 
-interface LineConfig extends State {
+interface LineConfig {
   curveType: CurveType;
   setCurveType: (type: CurveType) => void;
 
@@ -51,16 +46,19 @@ function initialiseStore(onRehydrated: () => void) {
 
         autoScale: false,
         isAutoScaleDisabled: false,
-        toggleAutoScale: () =>
-          set((state) => ({ autoScale: !state.autoScale })),
-        disableAutoScale: (isAutoScaleDisabled: boolean) =>
-          set({ isAutoScaleDisabled }),
+        toggleAutoScale: () => {
+          set((state) => ({ autoScale: !state.autoScale }));
+        },
+        disableAutoScale: (isAutoScaleDisabled: boolean) => {
+          set({ isAutoScaleDisabled });
+        },
 
         showErrors: true,
         areErrorsDisabled: false,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
-        disableErrors: (areErrorsDisabled: boolean) =>
-          set({ areErrorsDisabled }),
+        disableErrors: (areErrorsDisabled: boolean) => {
+          set({ areErrorsDisabled });
+        },
       }),
       {
         name: 'h5web:line',
@@ -79,18 +77,8 @@ function initialiseStore(onRehydrated: () => void) {
   );
 }
 
-const context = createContext<UseStore<LineConfig> | undefined>(undefined);
-const { Provider } = context;
-
-export function useLineConfig<U>(
-  selector: StateSelector<LineConfig, U>,
-  equalityFn?: EqualityChecker<U>
-): U {
-  const useStore = useContext(context);
-  assertDefined(useStore);
-
-  return useStore(selector, equalityFn);
-}
+const { Provider, useStore } = createContext<LineConfig>();
+export const useLineConfig = useStore;
 
 // https://github.com/pmndrs/zustand/issues/128#issuecomment-673398578
 export function LineConfigProvider(props: ConfigProviderProps) {
@@ -100,9 +88,11 @@ export function LineConfigProvider(props: ConfigProviderProps) {
   const [reydrated, setRehydrated] = useState(false);
 
   // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
-  const [useStore] = useState(() => {
+  const [store] = useState(() => {
     return initialiseStore(() => setRehydrated(true));
   });
 
-  return reydrated ? <Provider value={useStore}>{children}</Provider> : null;
+  return reydrated ? (
+    <Provider initialStore={store}>{children}</Provider>
+  ) : null;
 }
