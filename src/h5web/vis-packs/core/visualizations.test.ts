@@ -121,8 +121,8 @@ describe('Heatmap', () => {
   });
 });
 
-describe('Phase map', () => {
-  const { supportsDataset } = CORE_VIS['Phase map'];
+describe('Complex', () => {
+  const { supportsDataset } = CORE_VIS.Complex;
 
   it('should support array dataset with complex type and at least two dimensions', () => {
     expect(supportsDataset(datasetCplx2D)).toBe(true);

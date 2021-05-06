@@ -24,7 +24,7 @@ interface Props {
   colorScaleType?: ScaleType;
 }
 
-function MappedPhaseMapVis(props: Props) {
+function MappedComplexVis(props: Props) {
   const {
     dataset,
     dims,
@@ -99,4 +99,4 @@ function MappedPhaseMapVis(props: Props) {
   );
 }
 
-export default MappedPhaseMapVis;
+export default MappedComplexVis;

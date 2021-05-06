@@ -17,7 +17,7 @@ import {
   MatrixVisContainer,
   LineVisContainer,
   HeatmapVisContainer,
-  PhaseMapVisContainer,
+  ComplexVisContainer,
 } from './containers';
 import type { VisDef } from '../models';
 import { LineConfigProvider } from './line/config';
@@ -29,7 +29,7 @@ export enum Vis {
   Matrix = 'Matrix',
   Line = 'Line',
   Heatmap = 'Heatmap',
-  PhaseMap = 'Phase map',
+  Complex = 'Complex',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -88,11 +88,11 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     },
   },
 
-  [Vis.PhaseMap]: {
-    name: Vis.PhaseMap,
+  [Vis.Complex]: {
+    name: Vis.Complex,
     Icon: FiMap,
     Toolbar: HeatmapToolbar,
-    Container: PhaseMapVisContainer,
+    Container: ComplexVisContainer,
     ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (
