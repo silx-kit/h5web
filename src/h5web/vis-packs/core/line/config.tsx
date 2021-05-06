@@ -1,9 +1,4 @@
-import create, {
-  EqualityChecker,
-  State,
-  StateSelector,
-  UseStore,
-} from 'zustand';
+import create, { EqualityChecker, StateSelector, UseStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { CurveType } from './models';
 import { ScaleType } from '../models';
@@ -11,7 +6,7 @@ import { createContext, useContext, useState } from 'react';
 import { assertDefined } from '../../../guards';
 import type { ConfigProviderProps } from '../../models';
 
-interface LineConfig extends State {
+interface LineConfig {
   curveType: CurveType;
   setCurveType: (type: CurveType) => void;
 
@@ -51,16 +46,19 @@ function initialiseStore(onRehydrated: () => void) {
 
         autoScale: false,
         isAutoScaleDisabled: false,
-        toggleAutoScale: () =>
-          set((state) => ({ autoScale: !state.autoScale })),
-        disableAutoScale: (isAutoScaleDisabled: boolean) =>
-          set({ isAutoScaleDisabled }),
+        toggleAutoScale: () => {
+          set((state) => ({ autoScale: !state.autoScale }));
+        },
+        disableAutoScale: (isAutoScaleDisabled: boolean) => {
+          set({ isAutoScaleDisabled });
+        },
 
         showErrors: true,
         areErrorsDisabled: false,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
-        disableErrors: (areErrorsDisabled: boolean) =>
-          set({ areErrorsDisabled }),
+        disableErrors: (areErrorsDisabled: boolean) => {
+          set({ areErrorsDisabled });
+        },
       }),
       {
         name: 'h5web:line',

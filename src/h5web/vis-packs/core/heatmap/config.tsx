@@ -1,9 +1,4 @@
-import create, {
-  EqualityChecker,
-  State,
-  StateSelector,
-  UseStore,
-} from 'zustand';
+import create, { EqualityChecker, StateSelector, UseStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { ColorMap } from './models';
 import { CustomDomain, Domain, ScaleType } from '../models';
@@ -11,7 +6,7 @@ import { createContext, useContext, useState } from 'react';
 import { assertDefined } from '../../../guards';
 import type { ConfigProviderProps } from '../../models';
 
-interface HeatmapConfig extends State {
+interface HeatmapConfig {
   dataDomain: Domain | undefined;
   setDataDomain: (dataDomain: Domain) => void;
 
@@ -37,7 +32,7 @@ interface HeatmapConfig extends State {
 function initialiseStore(onRehydrated: () => void) {
   return create<HeatmapConfig>(
     persist(
-      (set) => ({
+      (set, get) => ({
         dataDomain: undefined,
         setDataDomain: (dataDomain: Domain) => set({ dataDomain }),
 
@@ -48,21 +43,21 @@ function initialiseStore(onRehydrated: () => void) {
         setColorMap: (colorMap: ColorMap) => set({ colorMap }),
 
         invertColorMap: false,
-        toggleColorMapInversion: () =>
-          set((state) => ({ invertColorMap: !state.invertColorMap })),
+        toggleColorMapInversion: () => {
+          set((state) => ({ invertColorMap: !state.invertColorMap }));
+        },
 
         scaleType: ScaleType.Linear,
         setScaleType: (scaleType: ScaleType) => {
-          set((state) =>
-            state.scaleType !== scaleType
-              ? { scaleType, dataDomain: undefined } // clear `dataDomain` to avoid stale state
-              : state
-          );
+          if (scaleType !== get().scaleType) {
+            set(() => ({ scaleType, dataDomain: undefined })); // clear `dataDomain` to avoid stale state
+          }
         },
 
         keepAspectRatio: true,
-        toggleAspectRatio: () =>
-          set((state) => ({ keepAspectRatio: !state.keepAspectRatio })),
+        toggleAspectRatio: () => {
+          set((state) => ({ keepAspectRatio: !state.keepAspectRatio }));
+        },
 
         showGrid: false,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
