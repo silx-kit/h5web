@@ -3,7 +3,6 @@ import { createFetchStore } from 'react-suspense-fetch';
 import { ProviderApi, ProviderContext } from './context';
 import type { Entity } from './models';
 import { isGroup } from '../guards';
-import { createObjectKeyStore } from './utils';
 
 interface Props {
   api: ProviderApi;
@@ -40,7 +39,10 @@ function Provider(props: Props) {
   }, [api]);
 
   const valuesStore = useMemo(() => {
-    return createObjectKeyStore(api.getValue.bind(api));
+    return createFetchStore(api.getValue.bind(api), {
+      type: 'Map',
+      areEqual: (a, b) => a.path === b.path && a.selection === b.selection,
+    });
   }, [api]);
 
   return (

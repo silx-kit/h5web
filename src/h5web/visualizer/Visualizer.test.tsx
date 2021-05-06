@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockValues } from '../providers/mock/values';
 import {
   mockConsoleMethod,
   queryVisSelector,
@@ -67,8 +66,8 @@ test("show error when dataset value can't be fetched and reset when selecting an
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
-  await selectExplorerNode('entities/scalar_str');
-  expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
+  await selectExplorerNode('entities');
+  expect(await screen.findByText(/No visualization/)).toBeVisible();
 });
 
 test('cancel and retry slow fetch of dataset value', async () => {
