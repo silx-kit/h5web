@@ -1,10 +1,10 @@
-import create, { EqualityChecker, StateSelector, UseStore } from 'zustand';
+import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { ColorMap } from './models';
 import { CustomDomain, Domain, ScaleType } from '../models';
-import { createContext, useContext, useState } from 'react';
-import { assertDefined } from '../../../guards';
+import { useState } from 'react';
 import type { ConfigProviderProps } from '../../models';
+import createContext from 'zustand/context';
 
 interface HeatmapConfig {
   dataDomain: Domain | undefined;
@@ -79,18 +79,8 @@ function initialiseStore(onRehydrated: () => void) {
   );
 }
 
-const context = createContext<UseStore<HeatmapConfig> | undefined>(undefined);
-const { Provider } = context;
-
-export function useHeatmapConfig<U>(
-  selector: StateSelector<HeatmapConfig, U>,
-  equalityFn?: EqualityChecker<U>
-): U {
-  const useStore = useContext(context);
-  assertDefined(useStore);
-
-  return useStore(selector, equalityFn);
-}
+const { Provider, useStore } = createContext<HeatmapConfig>();
+export const useHeatmapConfig = useStore;
 
 // https://github.com/pmndrs/zustand/issues/128#issuecomment-673398578
 export function HeatmapConfigProvider(props: ConfigProviderProps) {
@@ -100,9 +90,11 @@ export function HeatmapConfigProvider(props: ConfigProviderProps) {
   const [reydrated, setRehydrated] = useState(false);
 
   // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
-  const [useStore] = useState(() => {
+  const [store] = useState(() => {
     return initialiseStore(() => setRehydrated(true));
   });
 
-  return reydrated ? <Provider value={useStore}>{children}</Provider> : null;
+  return reydrated ? (
+    <Provider initialStore={store}>{children}</Provider>
+  ) : null;
 }
