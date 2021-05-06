@@ -12,12 +12,12 @@ export function formatComplex(value: H5WebComplex, specifier = '') {
   }
 
   if (real === 0) {
-    return `${formatFunction(imag)}i`;
+    return `${formatFunction(imag)}ⅈ`;
   }
 
   return `${formatFunction(real)}${
     Math.sign(imag) === 1 ? ' + ' : ' − '
-  }${formatFunction(Math.abs(imag))}i`;
+  }${formatFunction(Math.abs(imag))}ⅈ`;
 }
 
 export function getChildEntity(

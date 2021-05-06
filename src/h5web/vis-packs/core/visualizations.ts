@@ -22,6 +22,8 @@ import {
 import type { VisDef } from '../models';
 import { LineConfigProvider } from './line/config';
 import { HeatmapConfigProvider } from './heatmap/config';
+import ComplexToolbar from '../../toolbar/ComplexToolbar';
+import { ComplexConfigProvider } from './complex/config';
 
 export enum Vis {
   Raw = 'Raw',
@@ -91,9 +93,9 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
   [Vis.Complex]: {
     name: Vis.Complex,
     Icon: FiMap,
-    Toolbar: HeatmapToolbar,
+    Toolbar: ComplexToolbar,
     Container: ComplexVisContainer,
-    ConfigProvider: HeatmapConfigProvider,
+    ConfigProvider: ComplexConfigProvider,
     supportsDataset: (dataset) => {
       return (
         hasComplexType(dataset) &&

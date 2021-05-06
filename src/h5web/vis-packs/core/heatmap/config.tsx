@@ -87,14 +87,14 @@ export function HeatmapConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
 
   // https://github.com/pmndrs/zustand/issues/346
-  const [reydrated, setRehydrated] = useState(false);
+  const [rehydrated, setRehydrated] = useState(false);
 
   // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
   const [store] = useState(() => {
     return initialiseStore(() => setRehydrated(true));
   });
 
-  return reydrated ? (
+  return rehydrated ? (
     <Provider initialStore={store}>{children}</Provider>
   ) : null;
 }
