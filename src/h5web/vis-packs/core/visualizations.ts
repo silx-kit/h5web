@@ -17,11 +17,13 @@ import {
   MatrixVisContainer,
   LineVisContainer,
   HeatmapVisContainer,
-  PhaseMapVisContainer,
+  ComplexVisContainer,
 } from './containers';
 import type { VisDef } from '../models';
 import { LineConfigProvider } from './line/config';
 import { HeatmapConfigProvider } from './heatmap/config';
+import ComplexToolbar from '../../toolbar/ComplexToolbar';
+import { ComplexConfigProvider } from './complex/config';
 
 export enum Vis {
   Raw = 'Raw',
@@ -29,7 +31,7 @@ export enum Vis {
   Matrix = 'Matrix',
   Line = 'Line',
   Heatmap = 'Heatmap',
-  PhaseMap = 'Phase map',
+  Complex = 'Complex',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -88,12 +90,12 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     },
   },
 
-  [Vis.PhaseMap]: {
-    name: Vis.PhaseMap,
+  [Vis.Complex]: {
+    name: Vis.Complex,
     Icon: FiMap,
-    Toolbar: HeatmapToolbar,
-    Container: PhaseMapVisContainer,
-    ConfigProvider: HeatmapConfigProvider,
+    Toolbar: ComplexToolbar,
+    Container: ComplexVisContainer,
+    ConfigProvider: ComplexConfigProvider,
     supportsDataset: (dataset) => {
       return (
         hasComplexType(dataset) &&

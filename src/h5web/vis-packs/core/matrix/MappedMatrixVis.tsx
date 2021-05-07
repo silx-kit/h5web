@@ -35,7 +35,7 @@ function MappedMatrixVis(props: Props) {
       <MatrixVis
         dataArray={mappedArray}
         formatter={(dataValue) => renderComplex(dataValue, '.2e')}
-        cellWidth={216} // To accommodate the longer complex numbers
+        cellWidth={232} // To accommodate the longer complex numbers
       />
     );
   }

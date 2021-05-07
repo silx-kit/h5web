@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react';
 import { useDatasetValue, useMappedArray } from '../hooks';
-import { useHeatmapConfig } from '../heatmap/config';
 import type { AxisMapping, ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { isAxis } from '../../../dimension-mapper/utils';
@@ -14,6 +13,9 @@ import type {
 import { usePhaseAmplitude } from './hooks';
 import HeatmapVis from '../heatmap/HeatmapVis';
 import { DEFAULT_DOMAIN } from '../utils';
+import { ComplexVisType } from './models';
+import { useComplexConfig } from './config';
+import { useHeatmapConfig } from '../heatmap/config';
 
 interface Props {
   dataset: Dataset<ArrayShape, ComplexType>;
@@ -24,7 +26,7 @@ interface Props {
   colorScaleType?: ScaleType;
 }
 
-function MappedPhaseMapVis(props: Props) {
+function MappedComplexVis(props: Props) {
   const {
     dataset,
     dims,
@@ -45,6 +47,8 @@ function MappedPhaseMapVis(props: Props) {
     invertColorMap,
   } = useHeatmapConfig((state) => state, shallow);
 
+  const { visType } = useComplexConfig((state) => state, shallow);
+
   const value = useDatasetValue(dataset, dimMapping);
 
   const [slicedDims, slicedMapping] = useMemo(
@@ -62,18 +66,18 @@ function MappedPhaseMapVis(props: Props) {
     phaseDomain = DEFAULT_DOMAIN,
     amplitudeArray,
     amplitudeDomain = DEFAULT_DOMAIN,
-  } = usePhaseAmplitude(mappedArray, colorScaleType);
+  } = usePhaseAmplitude(mappedArray, scaleType);
 
-  const visPhaseDomain = useVisDomain(customDomain, phaseDomain);
-  const [safePhaseDomain] = useSafeDomain(
-    visPhaseDomain,
-    phaseDomain,
-    scaleType
-  );
+  const dataArray =
+    visType !== ComplexVisType.Amplitude ? phaseArray : amplitudeArray;
+  const dataDomain =
+    visType !== ComplexVisType.Amplitude ? phaseDomain : amplitudeDomain;
 
+  const visDomain = useVisDomain(customDomain, dataDomain);
+  const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
   useEffect(() => {
-    setDataDomain(phaseDomain);
-  }, [phaseDomain, setDataDomain]);
+    setDataDomain(dataDomain);
+  }, [dataDomain, setDataDomain]);
 
   useEffect(() => {
     if (colorScaleType) {
@@ -83,11 +87,15 @@ function MappedPhaseMapVis(props: Props) {
 
   return (
     <HeatmapVis
-      dataArray={phaseArray}
-      domain={safePhaseDomain}
-      alphaArray={amplitudeArray}
-      alphaDomain={amplitudeDomain}
-      title={title}
+      dataArray={dataArray}
+      domain={safeDomain}
+      alphaArray={
+        visType === ComplexVisType.PhaseAmplitude ? amplitudeArray : undefined
+      }
+      alphaDomain={
+        visType === ComplexVisType.PhaseAmplitude ? amplitudeDomain : undefined
+      }
+      title={title ? `${title} (${visType.toLowerCase()})` : visType}
       colorMap={colorMap}
       scaleType={scaleType}
       keepAspectRatio={keepAspectRatio}
@@ -99,4 +107,4 @@ function MappedPhaseMapVis(props: Props) {
   );
 }
 
-export default MappedPhaseMapVis;
+export default MappedComplexVis;

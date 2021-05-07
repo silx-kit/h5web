@@ -9,13 +9,13 @@ import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import ValueLoader from '../../../visualizer/ValueLoader';
-import MappedPhaseMapVis from '../complex/MappedPhaseMapVis';
+import MappedComplexVis from '../complex/MappedComplexVis';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../visualizer/ErrorFallback';
 import { getSliceSelection } from '../utils';
 import { ProviderContext } from '../../../providers/context';
 
-function PhaseMapVisContainer(props: VisContainerProps) {
+function ComplexVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertArrayShape(entity);
@@ -45,7 +45,7 @@ function PhaseMapVisContainer(props: VisContainerProps) {
         }}
       >
         <Suspense fallback={<ValueLoader message="Loading current slice" />}>
-          <MappedPhaseMapVis
+          <MappedComplexVis
             dataset={entity}
             dims={dims}
             dimMapping={dimMapping}
@@ -57,4 +57,4 @@ function PhaseMapVisContainer(props: VisContainerProps) {
   );
 }
 
-export default PhaseMapVisContainer;
+export default ComplexVisContainer;
