@@ -37,8 +37,9 @@ export function getSupportedVis(entity: Entity): VisDef | undefined {
 
   const dataset = findSignalDataset(entity);
 
-  if (hasComplexType(dataset) && hasMinDims(dataset, 2)) {
-    return NEXUS_VIS[NexusVis.NxComplex];
+  if (hasComplexType(dataset)) {
+    // 1D Nexus complex signal is not supported
+    return hasMinDims(dataset, 2) ? NEXUS_VIS[NexusVis.NxComplex] : undefined;
   }
 
   const interpretation = getAttributeValue(dataset, 'interpretation');

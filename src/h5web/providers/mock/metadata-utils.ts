@@ -302,16 +302,16 @@ export function makeNxDataGroup<
   });
 }
 
-export function makeNxDataset(
+export function makeNxDataset<T extends NumericType | ComplexType>(
   name: string,
-  type: NumericType,
+  type: T,
   dims: number[],
   opts: {
     interpretation?: string;
     longName?: string;
     units?: string;
   } & DatasetOpts = {}
-): MockDataset<ArrayShape, NumericType> {
+): MockDataset<ArrayShape, T> {
   const { interpretation, longName, units, ...datasetOpts } = opts;
 
   return makeDataset(name, type, dims, {
