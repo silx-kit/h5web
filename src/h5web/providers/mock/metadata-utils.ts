@@ -257,7 +257,7 @@ export function makeNxDataGroup<
 >(
   name: string,
   opts: {
-    signal: MockDataset<ArrayShape, NumericType>;
+    signal: MockDataset<ArrayShape, NumericType | ComplexType>;
     errors?: MockDataset<ArrayShape, NumericType>;
     title?: MockDataset<ScalarShape, StringType>;
     silxStyle?: SilxStyle;
@@ -302,16 +302,16 @@ export function makeNxDataGroup<
   });
 }
 
-export function makeNxDataset(
+export function makeNxDataset<T extends NumericType | ComplexType>(
   name: string,
-  type: NumericType,
+  type: T,
   dims: number[],
   opts: {
     interpretation?: string;
     longName?: string;
     units?: string;
   } & DatasetOpts = {}
-): MockDataset<ArrayShape, NumericType> {
+): MockDataset<ArrayShape, T> {
   const { interpretation, longName, units, ...datasetOpts } = opts;
 
   return makeDataset(name, type, dims, {
@@ -328,7 +328,7 @@ export function makeNxDataset(
 }
 
 export function withNxInterpretation<
-  T extends MockDataset<ArrayShape, NumericType>
+  T extends MockDataset<ArrayShape, NumericType | ComplexType>
 >(dataset: T, interpretation: NxInterpretation): T {
   return withAttributes(dataset, [
     makeStrAttr('interpretation', interpretation),

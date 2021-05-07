@@ -125,6 +125,11 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
           },
           auxAttr: ['secondary', 'tertiary'],
         }),
+        makeNxDataGroup('complex_image', {
+          signal: makeNxDataset('twoD_complex', complexType, [2, 2], {
+            valueId: 'twoD_cplx',
+          }),
+        }),
       ],
     }),
     makeGroup('nexus_malformed', [

@@ -1,7 +1,6 @@
 import { Suspense, useContext } from 'react';
-import { assertGroup, assertMinDims, assertNumericType } from '../../../guards';
+import { assertComplexType, assertGroup, assertMinDims } from '../../../guards';
 import type { VisContainerProps } from '../../models';
-import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -10,8 +9,9 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../visualizer/ErrorFallback';
 import { ProviderContext } from '../../../providers/context';
 import { getSliceSelection } from '../../core/utils';
+import MappedComplexVis from '../../core/complex/MappedComplexVis';
 
-function NxImageContainer(props: VisContainerProps) {
+function NxComplexContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroup(entity);
 
@@ -19,7 +19,7 @@ function NxImageContainer(props: VisContainerProps) {
 
   const { signalDataset, titleDataset, axisDatasets, silxStyle } = nxData;
   const { axisScaleTypes, signalScaleType } = silxStyle;
-  assertNumericType(signalDataset);
+  assertComplexType(signalDataset);
   assertMinDims(signalDataset, 2);
 
   const { shape: dims } = signalDataset;
@@ -45,7 +45,7 @@ function NxImageContainer(props: VisContainerProps) {
         }}
       >
         <Suspense fallback={<ValueLoader />}>
-          <MappedHeatmapVis
+          <MappedComplexVis
             dataset={signalDataset}
             dims={dims}
             dimMapping={dimMapping}
@@ -60,4 +60,4 @@ function NxImageContainer(props: VisContainerProps) {
   );
 }
 
-export default NxImageContainer;
+export default NxComplexContainer;
