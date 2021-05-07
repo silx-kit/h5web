@@ -1,6 +1,9 @@
 import type {
+  ArrayShape,
+  ComplexType,
   Dataset,
   NumArrayDataset,
+  NumericType,
   ScalarShape,
   StringType,
 } from '../../providers/models';
@@ -23,7 +26,7 @@ export enum NxInterpretation {
 }
 
 export interface NxData {
-  signalDataset: NumArrayDataset;
+  signalDataset: Dataset<ArrayShape, NumericType | ComplexType>;
   errorsDataset?: NumArrayDataset;
   titleDataset?: Dataset<ScalarShape, StringType>;
   axisDatasets: AxisDatasetMapping;

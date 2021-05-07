@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { isEqual } from 'lodash-es';
-import { assertGroup } from '../../../guards';
+import { assertGroup, assertNumericType } from '../../../guards';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
 import { useNxData } from '../hooks';
@@ -22,6 +22,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
     axisDatasets,
     silxStyle,
   } = nxData;
+  assertNumericType(signalDataset);
 
   const { axisScaleTypes, signalScaleType } = silxStyle;
   const signalDims = signalDataset.shape;

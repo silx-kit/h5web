@@ -231,6 +231,14 @@ export function assertNumericType<S extends Shape>(
   }
 }
 
+export function assertNumericOrComplexType<S extends Shape>(
+  dataset: Dataset<S>
+): asserts dataset is Dataset<S, NumericType | ComplexType> {
+  if (!hasNumericType(dataset) && !hasComplexType(dataset)) {
+    throw new Error('Expected dataset to have numeric or complex type');
+  }
+}
+
 export function assertAbsolutePath(path: string) {
   if (!isAbsolutePath(path)) {
     throw new Error("Expected path to start with '/'");

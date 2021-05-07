@@ -22,7 +22,7 @@ function ComplexVisContainer(props: VisContainerProps) {
   assertMinDims(entity, 2);
   assertComplexType(entity);
 
-  const { name, shape: dims } = entity;
+  const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const { valuesStore } = useContext(ProviderContext);
@@ -49,7 +49,6 @@ function ComplexVisContainer(props: VisContainerProps) {
             dataset={entity}
             dims={dims}
             dimMapping={dimMapping}
-            title={name}
           />
         </Suspense>
       </ErrorBoundary>

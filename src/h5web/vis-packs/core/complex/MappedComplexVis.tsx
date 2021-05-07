@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useDatasetValue, useMappedArray } from '../hooks';
-import type { AxisMapping, ScaleType } from '../models';
+import type { ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { isAxis } from '../../../dimension-mapper/utils';
 import shallow from 'zustand/shallow';
@@ -9,6 +9,8 @@ import type {
   ArrayShape,
   ComplexType,
   Dataset,
+  ScalarShape,
+  StringType,
 } from '../../../providers/models';
 import { usePhaseAmplitude } from './hooks';
 import HeatmapVis from '../heatmap/HeatmapVis';
@@ -16,14 +18,18 @@ import { DEFAULT_DOMAIN } from '../utils';
 import { ComplexVisType } from './models';
 import { useComplexConfig } from './config';
 import { useHeatmapConfig } from '../heatmap/config';
+import { useAxisMapping } from '../../nexus/hooks';
+import type { AxisDatasetMapping } from '../../nexus/models';
+import { getDatasetLabel } from '../../nexus/utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, ComplexType>;
   dims: number[];
   dimMapping: DimensionMapping;
-  axisMapping?: AxisMapping;
-  title?: string;
+  titleDataset?: Dataset<ScalarShape, StringType>;
+  axisDatasets?: AxisDatasetMapping;
   colorScaleType?: ScaleType;
+  axisScaleTypes?: ScaleType[];
 }
 
 function MappedComplexVis(props: Props) {
@@ -31,8 +37,9 @@ function MappedComplexVis(props: Props) {
     dataset,
     dims,
     dimMapping,
-    axisMapping = [],
-    title,
+    axisDatasets = [],
+    titleDataset,
+    axisScaleTypes,
     colorScaleType,
   } = props;
 
@@ -50,6 +57,9 @@ function MappedComplexVis(props: Props) {
   const { visType } = useComplexConfig((state) => state, shallow);
 
   const value = useDatasetValue(dataset, dimMapping);
+
+  const title = useDatasetValue(titleDataset) || getDatasetLabel(dataset);
+  const axisMapping = useAxisMapping(axisDatasets, axisScaleTypes);
 
   const [slicedDims, slicedMapping] = useMemo(
     () => [
