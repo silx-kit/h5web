@@ -1,7 +1,6 @@
 import { createContext } from 'react';
 import { Entity, ProviderError } from './models';
 import type { FetchStore } from 'react-suspense-fetch';
-import type { ObjectKeyStore } from './utils';
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
@@ -52,7 +51,7 @@ export abstract class ProviderApi {
 interface Context {
   filepath: string;
   entitiesStore: FetchStore<Entity, string>;
-  valuesStore: ObjectKeyStore<GetValueParams>;
+  valuesStore: FetchStore<unknown, GetValueParams>;
   cancel: () => void;
 }
 

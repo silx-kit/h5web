@@ -56,7 +56,7 @@
     "react-reflex": "^4.0.0",
     "react-router-dom": "^5.2.0",
     "react-slider": "^1.1.4",
-    "react-suspense-fetch": "^0.3.0",
+    "react-suspense-fetch": "^0.4.0",
     "react-use": "^17.2.3",
     "react-window": "^1.8.6",
     "three": "^0.127.0",
