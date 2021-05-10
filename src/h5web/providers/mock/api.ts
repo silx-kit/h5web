@@ -2,7 +2,7 @@ import axios from 'axios';
 import ndarray from 'ndarray';
 import unpack from 'ndarray-unpack';
 import { assertArrayShape, assertPrintableType } from '../../guards';
-import { GetValueParams, ProviderApi } from '../context';
+import { ValueRequestParams, ProviderApi } from '../context';
 import type { Entity } from '../models';
 import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
@@ -24,7 +24,7 @@ export class MockApi extends ProviderApi {
     return findMockEntity(path);
   }
 
-  public async getValue(params: GetValueParams): Promise<unknown> {
+  public async getValue(params: ValueRequestParams): Promise<unknown> {
     const { path, selection } = params;
 
     if (path.includes('error_value')) {
@@ -36,7 +36,7 @@ export class MockApi extends ProviderApi {
     assertMockDataset(dataset);
 
     if (path.includes('slow')) {
-      await this.cancellableDelay();
+      await this.cancellableDelay(params);
     }
 
     const { value } = dataset;
@@ -63,9 +63,10 @@ export class MockApi extends ProviderApi {
     return unpack(dataView);
   }
 
-  private async cancellableDelay() {
+  private async cancellableDelay(params: ValueRequestParams) {
     const cancelSource = axios.CancelToken.source();
-    this.cancelSources.add(cancelSource);
+    const request = { params, cancelSource };
+    this.valueRequests.add(request);
 
     try {
       await new Promise<void>((resolve, reject) => {
@@ -77,7 +78,7 @@ export class MockApi extends ProviderApi {
         });
       });
     } finally {
-      this.cancelSources.delete(cancelSource);
+      this.valueRequests.delete(request);
     }
   }
 }

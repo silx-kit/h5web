@@ -7,7 +7,7 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { assertGroupContent, convertDtype } from './utils';
-import type { GetValueParams } from '../context';
+import type { ValueRequestParams } from '../context';
 
 interface DevJupyterAttrMeta {
   name: string;
@@ -32,9 +32,8 @@ export class JupyterDevApi extends JupyterStableApi {
     console.warn('Using Jupyter dev API');
   }
 
-  public async getValue(params: GetValueParams): Promise<unknown> {
-    const { path, selection = '' } = params;
-    return this.fetchData(path, selection);
+  public async getValue(params: ValueRequestParams): Promise<unknown> {
+    return this.fetchData(params);
   }
 
   protected async fetchMetadata(path: string): Promise<DevJupyterMetaResponse> {

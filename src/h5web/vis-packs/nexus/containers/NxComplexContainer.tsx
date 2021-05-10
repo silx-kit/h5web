@@ -8,7 +8,6 @@ import ValueLoader from '../../../visualizer/ValueLoader';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../visualizer/ErrorFallback';
 import { ProviderContext } from '../../../providers/context';
-import { getSliceSelection } from '../../core/utils';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
 
 function NxComplexContainer(props: VisContainerProps) {
@@ -37,12 +36,7 @@ function NxComplexContainer(props: VisContainerProps) {
       <ErrorBoundary
         resetKeys={[dimMapping]}
         FallbackComponent={ErrorFallback}
-        onReset={() => {
-          valuesStore.evict({
-            path: signalDataset.path,
-            selection: getSliceSelection(dimMapping),
-          });
-        }}
+        onError={() => valuesStore.evictCancelled()}
       >
         <Suspense fallback={<ValueLoader />}>
           <MappedComplexVis

@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 import { isEqual } from 'lodash-es';
 import { assertGroup, assertNumericType } from '../../../guards';
 import MappedLineVis from '../../core/line/MappedLineVis';
@@ -8,6 +8,9 @@ import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import ValueLoader from '../../../visualizer/ValueLoader';
 import { getDatasetLabel } from '../utils';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from '../../../visualizer/ErrorFallback';
+import { ProviderContext } from '../../../providers/context';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -35,6 +38,8 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
 
+  const { valuesStore } = useContext(ProviderContext);
+
   return (
     <>
       <DimensionMapper
@@ -42,20 +47,26 @@ function NxSpectrumContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <Suspense fallback={<ValueLoader />}>
-        <MappedLineVis
-          valueDataset={signalDataset}
-          valueLabel={getDatasetLabel(signalDataset)}
-          valueScaleType={signalScaleType}
-          errorsDataset={errorsDataset}
-          auxDatasets={auxDatasets}
-          dims={signalDims}
-          dimMapping={dimMapping}
-          titleDataset={titleDataset}
-          axisDatasets={axisDatasets}
-          axisScaleTypes={axisScaleTypes}
-        />
-      </Suspense>
+      <ErrorBoundary
+        resetKeys={[dimMapping]}
+        FallbackComponent={ErrorFallback}
+        onError={() => valuesStore.evictCancelled()}
+      >
+        <Suspense fallback={<ValueLoader />}>
+          <MappedLineVis
+            valueDataset={signalDataset}
+            valueLabel={getDatasetLabel(signalDataset)}
+            valueScaleType={signalScaleType}
+            errorsDataset={errorsDataset}
+            auxDatasets={auxDatasets}
+            dims={signalDims}
+            dimMapping={dimMapping}
+            titleDataset={titleDataset}
+            axisDatasets={axisDatasets}
+            axisScaleTypes={axisScaleTypes}
+          />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

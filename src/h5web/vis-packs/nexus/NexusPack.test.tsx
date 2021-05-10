@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   findVisSelectorTabs,
   mockConsoleMethod,
@@ -28,7 +29,6 @@ test('visualize NXdata group with "image" interpretation', async () => {
 test('visualize NXdata group with 2D signal', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
-  // expect(await screen.findByRole('figure')).toBeVisible();
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -82,4 +82,208 @@ test('show error when encountering malformed NeXus metadata', async () => {
   expect(await screen.findByText(/to exist/)).toBeVisible();
 
   expect(errorSpy).toHaveBeenCalledTimes(8); // React logs two stack traces per error
+});
+
+test('cancel and retry slow fetch of NxSpectrum', async () => {
+  jest.useFakeTimers();
+  await renderApp();
+
+  // Select NXdata group with spectrum interpretation and start fetching dataset values
+  await selectExplorerNode('resilience/slow_nx_spectrum');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Cancel all fetches at once
+  const errorSpy = mockConsoleMethod('error');
+  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+  errorSpy.mockRestore();
+
+  // Retry all fetches at once
+  userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let fetches succeed (waterfall until prefetching is moved lower down in tree)
+  jest.runAllTimers();
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  jest.runAllTimers();
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  jest.runAllTimers();
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  jest.runAllTimers();
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  jest.runAllTimers();
+
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+
+test('cancel and retry slow fetch of NxImage', async () => {
+  jest.useFakeTimers();
+  await renderApp();
+
+  // Select NXdata group with image interpretation and start fetching dataset values
+  await selectExplorerNode('resilience/slow_nx_image');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Cancel all fetches at once
+  const errorSpy = mockConsoleMethod('error');
+  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+  errorSpy.mockRestore();
+
+  // Retry all fetches at once
+  userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let fetches succeed (waterfall until prefetching is moved lower down in tree)
+  jest.runAllTimers();
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  jest.runAllTimers();
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  jest.runAllTimers();
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  jest.runAllTimers();
+
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+
+test('retry fetching automatically when re-selecting NxSpectrum', async () => {
+  jest.useFakeTimers();
+  await renderApp();
+
+  // Select NXdata group with spectrum interpretation and start fetching dataset values
+  await selectExplorerNode('resilience/slow_nx_spectrum');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Cancel all fetches at once
+  const errorSpy = mockConsoleMethod('error');
+  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+  errorSpy.mockRestore();
+
+  // Switch to other entity
+  await selectExplorerNode('resilience');
+  expect(await screen.findByText(/No visualization/)).toBeVisible();
+
+  // Select dataset again
+  await selectExplorerNode('slow_nx_spectrum');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let fetches succeed (no waterfall because container re-renders)
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+
+test('retry fetching automatically when re-selecting NxImage', async () => {
+  jest.useFakeTimers();
+  await renderApp();
+
+  // Select NXdata group with image interpretation and start fetching dataset values
+  await selectExplorerNode('resilience/slow_nx_image');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Cancel all fetches at once
+  const errorSpy = mockConsoleMethod('error');
+  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+  errorSpy.mockRestore();
+
+  // Switch to other entity
+  await selectExplorerNode('resilience');
+  expect(await screen.findByText(/No visualization/)).toBeVisible();
+
+  // Select dataset again
+  await selectExplorerNode('slow_nx_image');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let fetches succeed (no waterfall because container re-renders)
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+
+test('retry fetching automatically when selecting other NxSpectrum slice', async () => {
+  jest.useFakeTimers();
+  await renderApp();
+
+  // Select NXdata group with spectrum interpretation and start fetching dataset values
+  await selectExplorerNode('resilience/slow_nx_spectrum');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Cancel all fetches at once
+  const errorSpy = mockConsoleMethod('error');
+  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+  errorSpy.mockRestore();
+
+  // Move to other slice to retry fetching automatically
+  const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
+  d0Slider.focus();
+  userEvent.keyboard('{PageUp}');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let fetches succeed (no waterfall because container re-renders)
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  // Check that entire spectrum signal is fetched
+  userEvent.keyboard('{PageDown}');
+  expect(await screen.findByRole('figure')).toBeVisible();
+  d0Slider.blur(); // remove focus to avoid state update after unmount
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+
+test('retry fetching supporting datasets automatically when selecting other NxImage slice', async () => {
+  jest.useFakeTimers();
+  await renderApp();
+
+  // Select NXdata group with image interpretation and start fetching dataset values
+  await selectExplorerNode('resilience/slow_nx_image');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Cancel all fetches at once
+  const errorSpy = mockConsoleMethod('error');
+  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+  errorSpy.mockRestore();
+
+  // Move to other slice to fetch new slice and retry fetching supporting datasets automatically
+  const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
+  d0Slider.focus();
+  userEvent.keyboard('{PageUp}');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let fetches succeed (no waterfall because container re-renders)
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  // Move back to first slice to retry fetching it automatically
+  userEvent.keyboard('{PageDown}');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let fetch of first slice succeed
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+  d0Slider.blur(); // remove focus to avoid state update after unmount
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
 });

@@ -8,7 +8,10 @@ import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import ValueLoader from '../../../visualizer/ValueLoader';
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
+import ErrorFallback from '../../../visualizer/ErrorFallback';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ProviderContext } from '../../../providers/context';
 
 function LineVisContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -19,6 +22,8 @@ function LineVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
+  const { valuesStore } = useContext(ProviderContext);
+
   return (
     <>
       <DimensionMapper
@@ -26,13 +31,19 @@ function LineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <Suspense fallback={<ValueLoader message="Loading entire dataset" />}>
-        <MappedLineVis
-          valueDataset={entity}
-          dims={dims}
-          dimMapping={dimMapping}
-        />
-      </Suspense>
+      <ErrorBoundary
+        resetKeys={[dimMapping]}
+        FallbackComponent={ErrorFallback}
+        onError={() => valuesStore.evictCancelled()}
+      >
+        <Suspense fallback={<ValueLoader message="Loading entire dataset" />}>
+          <MappedLineVis
+            valueDataset={entity}
+            dims={dims}
+            dimMapping={dimMapping}
+          />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }
