@@ -13,12 +13,10 @@ interface Props {
 function HsdsProvider(props: Props) {
   const { url, username, password, filepath, children } = props;
 
-  const api = useMemo(() => new HsdsApi(url, username, password, filepath), [
-    filepath,
-    password,
-    url,
-    username,
-  ]);
+  const api = useMemo(
+    () => new HsdsApi(url, username, password, filepath),
+    [filepath, password, url, username]
+  );
 
   return <Provider api={api}>{children}</Provider>;
 }

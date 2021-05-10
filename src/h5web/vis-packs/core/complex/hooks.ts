@@ -19,36 +19,32 @@ export function usePhaseAmplitude(
   amplitudeArray: NdArray;
   amplitudeDomain: Domain;
 } {
-  const [
-    phaseArray,
-    phaseBounds,
-    amplitudeArray,
-    amplitudeBounds,
-  ] = useMemo(() => {
-    const phaseValues: number[] = [];
-    const amplitudeValues: number[] = [];
+  const [phaseArray, phaseBounds, amplitudeArray, amplitudeBounds] =
+    useMemo(() => {
+      const phaseValues: number[] = [];
+      const amplitudeValues: number[] = [];
 
-    const mappedValues = mappedArray.data as H5WebComplex[];
-    const [phaseBounds, amplitudeBounds] = mappedValues.reduce(
-      (acc, [real, imag]) => {
-        const phase = Math.atan2(imag, real);
-        phaseValues.push(phase);
+      const mappedValues = mappedArray.data as H5WebComplex[];
+      const [phaseBounds, amplitudeBounds] = mappedValues.reduce(
+        (acc, [real, imag]) => {
+          const phase = Math.atan2(imag, real);
+          phaseValues.push(phase);
 
-        const amplitude = Math.sqrt(real ** 2 + imag ** 2);
-        amplitudeValues.push(amplitude);
+          const amplitude = Math.sqrt(real ** 2 + imag ** 2);
+          amplitudeValues.push(amplitude);
 
-        return [getNewBounds(acc[0], phase), getNewBounds(acc[1], amplitude)];
-      },
-      [INITIAL_BOUNDS, INITIAL_BOUNDS]
-    );
+          return [getNewBounds(acc[0], phase), getNewBounds(acc[1], amplitude)];
+        },
+        [INITIAL_BOUNDS, INITIAL_BOUNDS]
+      );
 
-    return [
-      ndarray(phaseValues, mappedArray.shape),
-      phaseBounds,
-      ndarray(amplitudeValues, mappedArray.shape),
-      amplitudeBounds,
-    ];
-  }, [mappedArray]);
+      return [
+        ndarray(phaseValues, mappedArray.shape),
+        phaseBounds,
+        ndarray(amplitudeValues, mappedArray.shape),
+        amplitudeBounds,
+      ];
+    }, [mappedArray]);
 
   const [phaseDomain, amplitudeDomain] = useMemo(
     () => [
