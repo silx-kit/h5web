@@ -1,4 +1,4 @@
-import type ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { createMemo } from 'react-use';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -56,16 +56,16 @@ const useBounds = createMemo(getBounds);
 const useValidDomainForScale = createMemo(getValidDomainForScale);
 
 export function useDomain(
-  valuesArray: ndarray | number[],
+  valuesArray: NdArray | number[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: ndarray | number[]
+  errorArray?: NdArray | number[]
 ) {
   const bounds = useBounds(valuesArray, errorArray);
   return useValidDomainForScale(bounds, scaleType);
 }
 
 export function useDomains(
-  valuesArrays: (ndarray | number[])[],
+  valuesArrays: (NdArray | number[])[],
   scaleType: ScaleType = ScaleType.Linear
 ) {
   const allBounds = useMemo(() => {
@@ -124,7 +124,7 @@ export function useMappedArray<T extends unknown[] | undefined>(
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
-): T extends (infer U)[] ? [ndarray<U>, ndarray<U>] : [undefined, undefined];
+): T extends (infer U)[] ? [NdArray<U>, NdArray<U>] : [undefined, undefined];
 
 export function useMappedArray<T>(
   value: T[] | undefined,

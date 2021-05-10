@@ -8,7 +8,7 @@ import {
 } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import { format } from 'd3-format';
-import ndarray from 'ndarray';
+import ndarray, { NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 import { isNumber } from 'lodash-es';
 import type { DimensionMapping } from '../../dimension-mapper/models';
@@ -88,13 +88,13 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
   };
 }
 
-export function toArray(arr: ndarray | number[]): number[] {
+export function toArray(arr: NdArray | number[]): number[] {
   return 'data' in arr ? (arr.data as number[]) : arr;
 }
 
 export function getBounds(
-  valuesArray: ndarray | number[],
-  errorArray?: ndarray | number[]
+  valuesArray: NdArray | number[],
+  errorArray?: NdArray | number[]
 ): Bounds | undefined {
   assertDataLength(errorArray, valuesArray, 'error');
 
@@ -118,9 +118,9 @@ export function getBounds(
 }
 
 export function getDomain(
-  valuesArray: ndarray | number[],
+  valuesArray: NdArray | number[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: ndarray | number[]
+  errorArray?: NdArray | number[]
 ): Domain | undefined {
   const bounds = getBounds(valuesArray, errorArray);
 
@@ -128,7 +128,7 @@ export function getDomain(
 }
 
 export function getDomains(
-  arrays: (ndarray | number[])[],
+  arrays: (NdArray | number[])[],
   scaleType: ScaleType = ScaleType.Linear
 ): (Domain | undefined)[] {
   return arrays.map((arr) => getDomain(arr, scaleType));
@@ -298,24 +298,24 @@ export function getCombinedDomain(
 export function getBaseArray<T extends unknown[] | undefined>(
   value: T,
   rawDims: number[]
-): T extends (infer U)[] ? ndarray<U> : undefined;
+): T extends (infer U)[] ? NdArray<U> : undefined;
 
 export function getBaseArray<T>(
   value: T[] | undefined,
   rawDims: number[]
-): ndarray<T> | undefined {
+): NdArray<T> | undefined {
   return value && ndarray<T>(value.flat(rawDims.length - 1) as T[], rawDims);
 }
 
-export function applyMapping<T extends ndarray<unknown> | undefined>(
+export function applyMapping<T extends NdArray<unknown> | undefined>(
   baseArray: T,
   mapping: DimensionMapping
-): T extends ndarray<infer U> ? ndarray<U> : undefined;
+): T extends NdArray<infer U> ? NdArray<U> : undefined;
 
 export function applyMapping<T>(
-  baseArray: ndarray<T> | undefined,
+  baseArray: NdArray<T> | undefined,
   mapping: DimensionMapping
-): ndarray<T> | undefined {
+): NdArray<T> | undefined {
   if (!baseArray) {
     return undefined;
   }

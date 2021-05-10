@@ -104,7 +104,7 @@ If you use only the top-level visualization components, the only utilities you n
 Find the min and max values contained in a array (or ndarray) of numbers. If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
 
 ```ts
-getDomain(values: ndarray | number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined
+getDomain(values: NdArray | number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined
 
 const linearDomain = getDomain([10, 5, -1]); // [-1, 10]
 const logDomain = getDomain([-1, 2, 10], ScaleType.Log); // [2, 10]
@@ -118,7 +118,7 @@ const myDomain = getDomain(myArray); // [0, 3]
 Find the domains of multiple arrays (or ndarrays) of numbers. Useful when dealing with auxiliary curves.
 
 ```ts
-getDomains(arrays: (ndarray | number[])[], scaleType: ScaleType = ScaleType.Linear): (Domain | undefined)[]
+getDomains(arrays: (NdArray | number[])[], scaleType: ScaleType = ScaleType.Linear): (Domain | undefined)[]
 
 const linearDomains = getDomains([[-1, 5, 10], myArray]); // [[-1, 10], [0, 3]]
 const logDomains = getDomains([[-1, 5, 10], myArray], ScaleType.Log); // [[2, 10], [0, 3]]

@@ -1,4 +1,4 @@
-import ndarray from 'ndarray';
+import ndarray, { NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import type { H5WebComplex } from '../../../providers/models';
 import { Bounds, Domain, ScaleType } from '../models';
@@ -11,12 +11,12 @@ const INITIAL_BOUNDS: Bounds = {
 };
 
 export function usePhaseAmplitude(
-  mappedArray: ndarray<H5WebComplex>,
+  mappedArray: NdArray<H5WebComplex>,
   scaleType: ScaleType = ScaleType.Linear
 ): {
-  phaseArray: ndarray;
+  phaseArray: NdArray;
   phaseDomain: Domain;
-  amplitudeArray: ndarray;
+  amplitudeArray: NdArray;
   amplitudeDomain: Domain;
 } {
   const [

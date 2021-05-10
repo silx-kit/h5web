@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import { range } from 'd3-array';
 import styles from './LineVis.module.css';
 import DataCurve from './DataCurve';
@@ -13,7 +13,7 @@ import { assertDataLength, assertDefined } from '../../../guards';
 import { useTooltipFormatters } from './hooks';
 
 interface Props {
-  dataArray: ndarray;
+  dataArray: NdArray;
   domain: Domain | undefined;
   scaleType?: ScaleType;
   curveType?: CurveType;
@@ -21,9 +21,9 @@ interface Props {
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
   title?: string;
-  errorsArray?: ndarray;
+  errorsArray?: NdArray;
   showErrors?: boolean;
-  auxArrays?: ndarray[];
+  auxArrays?: NdArray[];
 }
 
 function LineVis(props: Props) {

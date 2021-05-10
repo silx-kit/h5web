@@ -1,5 +1,5 @@
 import { format } from 'd3-format';
-import type ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import { Vector3 } from 'three';
 import { useCanvasScales, useValueToIndexScale } from '../hooks';
@@ -61,8 +61,8 @@ export function useCanvasPoints(
 export function useTooltipFormatters(
   abscissas: number[],
   abscissaLabel: string | undefined,
-  dataArray: ndarray,
-  errorsArray: ndarray | undefined
+  dataArray: NdArray,
+  errorsArray: NdArray | undefined
 ): {
   formatIndex: TooltipIndexFormatter;
   formatValue: TooltipValueFormatter;

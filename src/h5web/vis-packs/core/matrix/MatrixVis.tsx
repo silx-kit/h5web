@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { FixedSizeGrid as IndexedGrid } from 'react-window';
 import { useMeasure } from 'react-use';
-import type ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import styles from './MatrixVis.module.css';
 import GridSettingsProvider from './GridSettingsContext';
 import StickyGrid from './StickyGrid';
@@ -12,7 +12,7 @@ import type { PrintableType } from '../models';
 const CELL_HEIGHT = 32;
 
 interface Props<T> {
-  dataArray: ndarray<T>;
+  dataArray: NdArray<T>;
   formatter: (value: T) => string;
   cellWidth: number;
 }

@@ -1,4 +1,4 @@
-import ndarray from 'ndarray';
+import ndarray, { NdArray } from 'ndarray';
 import {
   assertAbsolutePath,
   assertArray,
@@ -46,7 +46,7 @@ export function findMockEntity(path: string): Entity {
   return entity;
 }
 
-export function getMockDataArray(path: string): ndarray {
+export function getMockDataArray(path: string): NdArray {
   const dataset = findMockEntity(path);
   assertMockDataset(dataset);
 
