@@ -1,4 +1,4 @@
-import type ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import TooltipMesh from '../shared/TooltipMesh';
@@ -14,7 +14,7 @@ import { useAxisValues, useTooltipFormatters } from './hooks';
 import { useDomain } from '../hooks';
 
 interface Props {
-  dataArray: ndarray;
+  dataArray: NdArray;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: ScaleType;
@@ -24,7 +24,7 @@ interface Props {
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
-  alphaArray?: ndarray;
+  alphaArray?: NdArray;
   alphaDomain?: Domain;
 }
 

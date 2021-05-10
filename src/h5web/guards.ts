@@ -1,4 +1,4 @@
-import type ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import {
   Entity,
   EntityKind,
@@ -246,8 +246,8 @@ export function assertAbsolutePath(path: string) {
 }
 
 export function assertDataLength(
-  arr: ndarray | number[] | undefined,
-  dataArray: ndarray | number[],
+  arr: NdArray | number[] | undefined,
+  dataArray: NdArray | number[],
   arrName: string
 ) {
   if (!arr) {
@@ -279,8 +279,8 @@ export function isH5WebComplex(
 
 export function isComplexArray(
   type: DType,
-  arr: ndarray<unknown>
-): arr is ndarray<H5WebComplex> {
+  arr: NdArray<unknown>
+): arr is NdArray<H5WebComplex> {
   return type.class === DTypeClass.Complex;
 }
 

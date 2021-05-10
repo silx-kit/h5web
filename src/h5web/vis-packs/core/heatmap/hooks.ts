@@ -1,5 +1,5 @@
 import { format } from 'd3-format';
-import type ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import { createMemo } from 'react-use';
 import { useValueToIndexScale } from '../hooks';
 import type { TooltipIndexFormatter, TooltipValueFormatter } from '../models';
@@ -14,7 +14,7 @@ export function useTooltipFormatters(
   ordinates: number[],
   abscissaLabel: string | undefined,
   ordinateLabel: string | undefined,
-  dataArray: ndarray
+  dataArray: NdArray
 ): {
   formatIndex: TooltipIndexFormatter;
   formatValue: TooltipValueFormatter;

@@ -1,5 +1,5 @@
 import { range } from 'lodash-es';
-import type ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import {
   DomainError,
   CustomDomain,
@@ -51,7 +51,7 @@ export function getSafeDomain(
   ];
 }
 
-export function getDims(dataArray: ndarray): Dims {
+export function getDims(dataArray: NdArray): Dims {
   const [rows, cols] = dataArray.shape;
   return { rows, cols };
 }
