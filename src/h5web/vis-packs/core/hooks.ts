@@ -144,10 +144,10 @@ export function useMappedArrays(
   mapping: DimensionMapping,
   autoScale?: boolean
 ) {
-  const baseArrays = useMemo(() => values.map((v) => getBaseArray(v, dims)), [
-    dims,
-    values,
-  ]);
+  const baseArrays = useMemo(
+    () => values.map((v) => getBaseArray(v, dims)),
+    [dims, values]
+  );
   const mappedArrays = useMemo(
     () => baseArrays.map((v) => applyMapping(v, mapping)),
     [baseArrays, mapping]

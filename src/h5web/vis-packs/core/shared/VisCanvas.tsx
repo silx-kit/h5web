@@ -18,13 +18,8 @@ interface Props {
 }
 
 function VisCanvas(props: Props) {
-  const {
-    abscissaConfig,
-    ordinateConfig,
-    aspectRatio,
-    canvasTitle,
-    children,
-  } = props;
+  const { abscissaConfig, ordinateConfig, aspectRatio, canvasTitle, children } =
+    props;
 
   const [visAreaRef, visAreaSize] = useMeasure();
 
