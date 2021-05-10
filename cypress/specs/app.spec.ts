@@ -57,6 +57,17 @@ describe('App', () => {
     }
   });
 
+  it('visualize 2D complex dataset as Complex map', () => {
+    cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
+    cy.findByRole('treeitem', { name: 'twoD_cplx' }).click();
+
+    cy.findByRole('heading', { name: 'nD_datasets / twoD_cplx' }).should(
+      'exist'
+    );
+    cy.findByRole('tab', { name: 'Complex' }).should('exist');
+    cy.findByRole('figure', { name: /twoD_cplx/ }).should('exist');
+  });
+
   it('map dimensions of 4D dataset when visualized as Heatmap', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'fourD' }).click();

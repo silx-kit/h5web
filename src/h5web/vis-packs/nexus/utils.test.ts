@@ -87,7 +87,9 @@ describe('findSignalDataset', () => {
       attributes: [makeStrAttr('signal', 'dataset')],
     });
 
-    expect(() => findSignalDataset(group)).toThrow(/to have numeric type/);
+    expect(() => findSignalDataset(group)).toThrow(
+      /to have numeric or complex type/
+    );
   });
 });
 

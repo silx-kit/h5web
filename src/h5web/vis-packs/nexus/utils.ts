@@ -3,6 +3,9 @@ import type {
   Entity,
   Dataset,
   NumArrayDataset,
+  NumericType,
+  ArrayShape,
+  ComplexType,
 } from '../../providers/models';
 import {
   assertDefined,
@@ -10,6 +13,7 @@ import {
   assertDataset,
   assertNumericType,
   assertArrayShape,
+  assertNumericOrComplexType,
 } from '../../guards';
 import type { NxAttribute, SilxStyle } from './models';
 import { isScaleType } from '../core/utils';
@@ -32,7 +36,9 @@ export function assertNxDataGroup(group: Group) {
   }
 }
 
-export function findSignalDataset(group: Group): NumArrayDataset {
+export function findSignalDataset(
+  group: Group
+): Dataset<ArrayShape, NumericType | ComplexType> {
   const signal = getAttributeValue(group, 'signal');
   assertDefined(signal, "Expected 'signal' attribute");
   assertStr(signal, "Expected 'signal' attribute to be a string");
@@ -41,7 +47,7 @@ export function findSignalDataset(group: Group): NumArrayDataset {
   assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
   assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
   assertArrayShape(dataset);
-  assertNumericType(dataset);
+  assertNumericOrComplexType(dataset);
 
   return dataset;
 }
