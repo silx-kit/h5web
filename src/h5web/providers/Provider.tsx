@@ -1,6 +1,7 @@
 import { ReactNode, useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
-import { ProviderApi, ProviderContext } from './context';
+import { ProviderContext } from './context';
+import type { ProviderApi } from './api';
 import type { Entity } from './models';
 import { isGroup } from '../guards';
 

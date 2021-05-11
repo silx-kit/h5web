@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from 'react';
 import Provider from '../Provider';
-import { MockApi } from './api';
+import { MockApi } from './mock-api';
 
 interface Props {
   children: ReactNode;

@@ -1,5 +1,5 @@
-import { JupyterStableApi } from './api';
-import type { Attribute } from '../models';
+import { JupyterStableApi } from './jupyter-api';
+import type { ValueRequestParams, Attribute } from '../models';
 import type {
   JupyterBaseEntity,
   JupyterContentGroupResponse,
@@ -7,7 +7,6 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { assertGroupContent, convertDtype } from './utils';
-import type { ValueRequestParams } from '../context';
 
 interface DevJupyterAttrMeta {
   name: string;

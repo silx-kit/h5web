@@ -1,5 +1,11 @@
-import { Group, Dataset, Entity, EntityKind } from '../models';
-import { ValueRequestParams, ProviderApi } from '../context';
+import {
+  ValueRequestParams,
+  Group,
+  Dataset,
+  Entity,
+  EntityKind,
+} from '../models';
+import { ProviderApi } from '../api';
 import {
   assertGroupContent,
   isDatasetResponse,

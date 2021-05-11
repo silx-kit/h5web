@@ -13,6 +13,7 @@ import type {
   HsdsId,
 } from './models';
 import {
+  ValueRequestParams,
   Dataset,
   Datatype,
   Entity,
@@ -21,7 +22,7 @@ import {
   ProviderError,
 } from '../models';
 import { assertDefined, assertGroup } from '../../guards';
-import { ValueRequestParams, ProviderApi } from '../context';
+import { ProviderApi } from '../api';
 import {
   assertHsdsDataset,
   isHsdsGroup,
