@@ -1,5 +1,5 @@
 import { ReactNode, useMemo } from 'react';
-import { HsdsApi } from './api';
+import { HsdsApi } from './hsds-api';
 import Provider from '../Provider';
 
 interface Props {

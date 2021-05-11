@@ -2,8 +2,8 @@ import axios from 'axios';
 import ndarray from 'ndarray';
 import unpack from 'ndarray-unpack';
 import { assertArrayShape, assertPrintableType } from '../../guards';
-import { ValueRequestParams, ProviderApi } from '../context';
-import type { Entity } from '../models';
+import { ProviderApi } from '../api';
+import type { ValueRequestParams, Entity } from '../models';
 import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
 

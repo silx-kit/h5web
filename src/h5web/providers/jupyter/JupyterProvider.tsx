@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from 'react';
-import { JupyterStableApi } from './api';
-import { JupyterDevApi } from './devApi';
+import { JupyterStableApi } from './jupyter-api';
+import { JupyterDevApi } from './jupyter-dev-api';
 import Provider from '../Provider';
 
 interface Props {
