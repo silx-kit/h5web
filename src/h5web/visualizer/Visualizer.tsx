@@ -1,13 +1,8 @@
-import { Suspense, useContext } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import Profiler from '../Profiler';
 import type { Entity } from '../providers/models';
-import ErrorFallback from './ErrorFallback';
 import type { VisDef } from '../vis-packs/models';
-import ValueLoader from './ValueLoader';
 import VisSelector from './VisSelector';
 import styles from './Visualizer.module.css';
-import { ProviderContext } from '../providers/context';
 
 interface Props<T extends VisDef> {
   entity: Entity;
@@ -18,7 +13,6 @@ interface Props<T extends VisDef> {
 
 function Visualizer<T extends VisDef>(props: Props<T>) {
   const { entity, activeVis, supportedVis, onActiveVisChange } = props;
-  const { valuesStore } = useContext(ProviderContext);
 
   if (!activeVis) {
     return (
@@ -42,17 +36,9 @@ function Visualizer<T extends VisDef>(props: Props<T>) {
       </div>
 
       <div className={styles.displayArea}>
-        <ErrorBoundary
-          resetKeys={[entity.path]}
-          FallbackComponent={ErrorFallback}
-          onError={() => valuesStore.evictCancelled()}
-        >
-          <Suspense fallback={<ValueLoader />}>
-            <Profiler id={activeVis.name}>
-              <Container key={entity.path} entity={entity} />
-            </Profiler>
-          </Suspense>
-        </ErrorBoundary>
+        <Profiler id={activeVis.name}>
+          <Container key={entity.path} entity={entity} />
+        </Profiler>
       </div>
     </div>
   );

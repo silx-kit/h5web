@@ -2,12 +2,13 @@ import type {
   ArrayShape,
   ComplexType,
   Dataset,
+  H5WebComplex,
   NumArrayDataset,
   NumericType,
   ScalarShape,
   StringType,
 } from '../../providers/models';
-import type { ScaleType } from '../core/models';
+import type { AxisMapping, ScaleType } from '../core/models';
 
 export type NxAttribute =
   | 'NX_class'
@@ -28,10 +29,18 @@ export enum NxInterpretation {
 export interface NxData {
   signalDataset: Dataset<ArrayShape, NumericType | ComplexType>;
   errorsDataset?: NumArrayDataset;
-  titleDataset?: Dataset<ScalarShape, StringType>;
   axisDatasets: AxisDatasetMapping;
-  silxStyle: SilxStyle;
   auxDatasets: NumArrayDataset[];
+  titleDataset?: Dataset<ScalarShape, StringType>;
+  silxStyle: SilxStyle;
+}
+
+export interface NxValues {
+  signal: (number | H5WebComplex)[];
+  errors?: number[];
+  axisMapping: AxisMapping;
+  auxiliaries?: number[][];
+  title?: string;
 }
 
 export type AxisDatasetMapping = (NumArrayDataset | undefined)[];

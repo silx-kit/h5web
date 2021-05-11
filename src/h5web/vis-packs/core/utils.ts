@@ -23,7 +23,8 @@ import {
 import { assertDataLength, isDefined } from '../../guards';
 import { isAxis } from '../../dimension-mapper/utils';
 
-const TICK_FORMAT = format('0');
+const formatTick = format('0');
+export const formatNumber = format('.3e');
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -258,20 +259,20 @@ export function getTickFormatter(
   scaleType: ScaleType
 ): (val: number | { valueOf(): number }) => string {
   if (scaleType !== ScaleType.Log) {
-    return TICK_FORMAT;
+    return formatTick;
   }
 
   // If available size allows for all log ticks to be rendered without overlap, use default formatter
   const [min, max] = domain[0] > 0 ? domain : [-domain[1], -[domain[0]]];
   const threshold = adaptedLogTicksThreshold(availableSize);
   if (max / min < 10 ** threshold) {
-    return TICK_FORMAT;
+    return formatTick;
   }
 
   // Otherwise, use formatter that hides non-exact powers of 10
   return (val) => {
     const loggedVal = Math.log10(Math.abs(val.valueOf()));
-    return loggedVal === Math.floor(loggedVal) ? TICK_FORMAT(val) : ''; // eslint-disable-line new-cap
+    return loggedVal === Math.floor(loggedVal) ? formatTick(val) : '';
   };
 }
 

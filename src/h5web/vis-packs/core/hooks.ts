@@ -18,10 +18,15 @@ import { AxisScale, ScaleType } from './models';
 import { ProviderContext } from '../../providers/context';
 import type { Dataset, Value } from '../../providers/models';
 
-export function useDatasetValue<D extends Dataset | undefined>(
+export function useDatasetValue<D extends Dataset>(
   dataset: D,
   dimMapping?: DimensionMapping
-): D extends Dataset ? Value<D> : undefined;
+): Value<D>;
+
+export function useDatasetValue<D extends Dataset>(
+  dataset: D | undefined,
+  dimMapping?: DimensionMapping
+): Value<D> | undefined;
 
 export function useDatasetValue(
   dataset: Dataset | undefined,

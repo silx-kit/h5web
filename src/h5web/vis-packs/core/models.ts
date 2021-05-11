@@ -4,6 +4,8 @@ import type {
   StringType,
   BooleanType,
   ComplexType,
+  DType,
+  Primitive,
 } from '../../providers/models';
 
 export enum ScaleType {
@@ -78,3 +80,5 @@ export type PrintableType =
   | NumericType
   | ComplexType
   | StringType;
+
+export type ValueFormatter<T extends DType> = (val: Primitive<T>) => string;
