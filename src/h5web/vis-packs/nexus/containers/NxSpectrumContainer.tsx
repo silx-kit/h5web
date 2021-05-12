@@ -2,9 +2,8 @@ import { isEqual } from 'lodash-es';
 import { assertGroup, assertNumericType } from '../../../guards';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
-import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
-import { getDatasetLabel } from '../utils';
+import { getNxData, getDatasetLabel } from '../utils';
 import VisBoundary from '../../core/VisBoundary';
 import NxValuesFetcher from '../NxValuesFetcher';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -13,8 +12,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroup(entity);
 
-  const nxData = useNxData(entity);
-
+  const nxData = getNxData(entity);
   const { signalDataset, errorsDataset, silxStyle } = nxData;
   assertNumericType(signalDataset);
 

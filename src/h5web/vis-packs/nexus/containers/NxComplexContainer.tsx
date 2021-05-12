@@ -1,20 +1,18 @@
 import { assertComplexType, assertGroup, assertMinDims } from '../../../guards';
 import type { VisContainerProps } from '../../models';
-import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import VisBoundary from '../../core/VisBoundary';
 import NxValuesFetcher from '../NxValuesFetcher';
 import type { H5WebComplex } from '../../../providers/models';
-import { getDatasetLabel } from '../utils';
+import { getNxData, getDatasetLabel } from '../utils';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function NxComplexContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroup(entity);
 
-  const nxData = useNxData(entity);
-
+  const nxData = getNxData(entity);
   const { signalDataset, silxStyle } = nxData;
   assertComplexType(signalDataset);
   assertMinDims(signalDataset, 2);

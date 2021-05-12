@@ -17,6 +17,17 @@ import AxisSystemContext from './shared/AxisSystemContext';
 import { AxisScale, ScaleType } from './models';
 import { ProviderContext } from '../../providers/context';
 import type { Dataset, Value } from '../../providers/models';
+import { isDefined } from '../../guards';
+
+export function usePrefetchValues(
+  datasets: (Dataset | undefined)[],
+  dimMapping?: DimensionMapping
+): void {
+  const { valuesStore } = useContext(ProviderContext);
+  datasets.filter(isDefined).forEach(({ path }) => {
+    valuesStore.prefetch({ path, selection: getSliceSelection(dimMapping) });
+  });
+}
 
 export function useDatasetValue<D extends Dataset>(
   dataset: D,
