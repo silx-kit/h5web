@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react';
 import type { DimensionMapping } from '../../dimension-mapper/models';
-import { useDatasetValue, useDatasetValues } from '../core/hooks';
+import {
+  useDatasetValue,
+  useDatasetValues,
+  usePrefetchValues,
+} from '../core/hooks';
 import { useAxisMapping } from './hooks';
 import type { NxData, NxValues } from './models';
 
@@ -20,6 +24,9 @@ function NxValuesFetcher(props: Props) {
     titleDataset,
     silxStyle,
   } = nxData;
+
+  usePrefetchValues([signalDataset, errorsDataset, ...auxDatasets], dimMapping);
+  usePrefetchValues([...axisDatasets, titleDataset]);
 
   const signal = useDatasetValue(signalDataset, dimMapping);
   const errors = useDatasetValue(errorsDataset);

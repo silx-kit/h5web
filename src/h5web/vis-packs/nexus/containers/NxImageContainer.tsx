@@ -1,19 +1,17 @@
 import { assertGroup, assertMinDims, assertNumericType } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
-import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
 import VisBoundary from '../../core/VisBoundary';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { getDatasetLabel } from '../utils';
+import { getNxData, getDatasetLabel } from '../utils';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function NxImageContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroup(entity);
 
-  const nxData = useNxData(entity);
-
+  const nxData = getNxData(entity);
   const { signalDataset, silxStyle } = nxData;
   assertNumericType(signalDataset);
   assertMinDims(signalDataset, 2);

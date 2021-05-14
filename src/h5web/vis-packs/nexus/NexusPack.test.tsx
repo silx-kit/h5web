@@ -103,15 +103,7 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
   expect(await screen.findByText(/Loading data/)).toBeVisible();
 
-  // Let fetches succeed (waterfall until prefetching is moved lower down in tree)
-  jest.runAllTimers();
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
-  jest.runAllTimers();
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
-  jest.runAllTimers();
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
-  jest.runAllTimers();
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  // Let fetches succeed
   jest.runAllTimers();
 
   expect(await screen.findByRole('figure')).toBeVisible();
@@ -139,15 +131,8 @@ test('cancel and retry slow fetch of NxImage', async () => {
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
   expect(await screen.findByText(/Loading data/)).toBeVisible();
 
-  // Let fetches succeed (waterfall until prefetching is moved lower down in tree)
+  // Let fetches succeed
   jest.runAllTimers();
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
-  jest.runAllTimers();
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
-  jest.runAllTimers();
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
-  jest.runAllTimers();
-
   expect(await screen.findByRole('figure')).toBeVisible();
 
   jest.runOnlyPendingTimers();
@@ -177,7 +162,7 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
   await selectExplorerNode('slow_nx_spectrum');
   expect(await screen.findByText(/Loading data/)).toBeVisible();
 
-  // Let fetches succeed (no waterfall because container re-renders)
+  // Let fetches succeed
   jest.runAllTimers();
   expect(await screen.findByRole('figure')).toBeVisible();
 
@@ -208,7 +193,7 @@ test('retry fetching automatically when re-selecting NxImage', async () => {
   await selectExplorerNode('slow_nx_image');
   expect(await screen.findByText(/Loading data/)).toBeVisible();
 
-  // Let fetches succeed (no waterfall because container re-renders)
+  // Let fetches succeed
   jest.runAllTimers();
   expect(await screen.findByRole('figure')).toBeVisible();
 
@@ -237,7 +222,7 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
   userEvent.keyboard('{PageUp}');
   expect(await screen.findByText(/Loading data/)).toBeVisible();
 
-  // Let fetches succeed (no waterfall because container re-renders)
+  // Let fetches succeed
   jest.runAllTimers();
   expect(await screen.findByRole('figure')).toBeVisible();
 
@@ -271,7 +256,7 @@ test('retry fetching supporting datasets automatically when selecting other NxIm
   userEvent.keyboard('{PageUp}');
   expect(await screen.findByText(/Loading data/)).toBeVisible();
 
-  // Let fetches succeed (no waterfall because container re-renders)
+  // Let fetches succeed
   jest.runAllTimers();
   expect(await screen.findByRole('figure')).toBeVisible();
 
