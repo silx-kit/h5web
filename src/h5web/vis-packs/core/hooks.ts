@@ -1,5 +1,12 @@
 import type { NdArray } from 'ndarray';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import {
+  RefCallback,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { createMemo } from 'react-use';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { DimensionMapping } from '../../dimension-mapper/models';
@@ -173,3 +180,23 @@ export function useMappedArrays(
 }
 
 export const useValueToIndexScale = createMemo(getValueToIndexScale);
+
+export function useCSSCustomProperties(...names: string[]): {
+  colors: string[];
+  refCallback: RefCallback<HTMLElement>;
+} {
+  const [styles, setStyles] = useState<CSSStyleDeclaration>();
+
+  // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
+  const refCallback: RefCallback<HTMLElement> = useCallback(
+    (elem) => setStyles(elem ? window.getComputedStyle(elem) : undefined),
+    [setStyles]
+  );
+
+  return {
+    colors: names.map((name) => {
+      return styles ? styles.getPropertyValue(name).trim() : 'transparent';
+    }),
+    refCallback,
+  };
+}

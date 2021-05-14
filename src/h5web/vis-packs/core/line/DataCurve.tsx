@@ -24,7 +24,7 @@ interface Props {
   ordinates: number[];
   errors?: number[];
   showErrors?: boolean;
-  color?: string;
+  color: string;
   curveType?: CurveType;
 }
 
@@ -34,7 +34,7 @@ function DataCurve(props: Props) {
     ordinates,
     errors,
     showErrors,
-    color = '--secondary-dark',
+    color,
     curveType = CurveType.LineOnly,
   } = props;
 
@@ -50,24 +50,19 @@ function DataCurve(props: Props) {
   const showLine = curveType !== CurveType.GlyphsOnly;
   const showGlyphs = curveType !== CurveType.LineOnly;
 
-  const { domElement } = useThree((state) => state.gl);
-  const curveColor = color.startsWith('--')
-    ? window.getComputedStyle(domElement).getPropertyValue(color).trim()
-    : color;
-
   return (
     <Suspense fallback={null}>
       <line_ visible={showLine} geometry={dataGeometry}>
-        <lineBasicMaterial color={curveColor} linewidth={2} />
+        <lineBasicMaterial color={color} linewidth={2} />
       </line_>
       <points visible={showGlyphs} geometry={dataGeometry}>
-        <GlyphMaterial color={curveColor} size={6} />
+        <GlyphMaterial color={color} size={6} />
       </points>
       {showErrors && errors && (
         <ErrorBars
           barsSegments={points.bars}
           capsPoints={points.caps}
-          color={curveColor}
+          color={color}
         />
       )}
     </Suspense>
