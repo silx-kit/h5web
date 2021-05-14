@@ -16,6 +16,7 @@ import {
   ComplexType,
   CompoundType,
   LinkClass,
+  UnresolvedEntity,
 } from '../models';
 import type { NxInterpretation, SilxStyle } from '../../vis-packs/nexus/models';
 import { isGroup } from '../../guards';
@@ -196,7 +197,7 @@ export function makeUnresolvedEntity(
   linkClass: LinkClass,
   pathToEntity?: string,
   file?: string
-): Entity {
+): UnresolvedEntity {
   return {
     name,
     path: `/${name}`,

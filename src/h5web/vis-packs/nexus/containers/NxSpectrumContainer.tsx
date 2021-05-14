@@ -1,33 +1,23 @@
-import { Suspense, useContext } from 'react';
 import { isEqual } from 'lodash-es';
 import { assertGroup, assertNumericType } from '../../../guards';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
 import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import ValueLoader from '../../../visualizer/ValueLoader';
 import { getDatasetLabel } from '../utils';
-import { ErrorBoundary } from 'react-error-boundary';
-import ErrorFallback from '../../../visualizer/ErrorFallback';
-import { ProviderContext } from '../../../providers/context';
+import VisBoundary from '../../core/VisBoundary';
+import NxValuesFetcher from '../NxValuesFetcher';
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroup(entity);
 
   const nxData = useNxData(entity);
-  const {
-    auxDatasets,
-    signalDataset,
-    titleDataset,
-    errorsDataset,
-    axisDatasets,
-    silxStyle,
-  } = nxData;
+
+  const { signalDataset, errorsDataset, silxStyle } = nxData;
   assertNumericType(signalDataset);
 
-  const { axisScaleTypes, signalScaleType } = silxStyle;
   const signalDims = signalDataset.shape;
   const errorsDims = errorsDataset?.shape;
 
@@ -38,8 +28,6 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
 
-  const { valuesStore } = useContext(ProviderContext);
-
   return (
     <>
       <DimensionMapper
@@ -47,26 +35,30 @@ function NxSpectrumContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <ErrorBoundary
-        resetKeys={[dimMapping]}
-        FallbackComponent={ErrorFallback}
-        onError={() => valuesStore.evictCancelled()}
-      >
-        <Suspense fallback={<ValueLoader />}>
-          <MappedLineVis
-            valueDataset={signalDataset}
-            valueLabel={getDatasetLabel(signalDataset)}
-            valueScaleType={signalScaleType}
-            errorsDataset={errorsDataset}
-            auxDatasets={auxDatasets}
-            dims={signalDims}
-            dimMapping={dimMapping}
-            titleDataset={titleDataset}
-            axisDatasets={axisDatasets}
-            axisScaleTypes={axisScaleTypes}
-          />
-        </Suspense>
-      </ErrorBoundary>
+      <VisBoundary resetKey={dimMapping}>
+        <NxValuesFetcher
+          nxData={nxData}
+          render={(nxValues) => {
+            const signalLabel = getDatasetLabel(signalDataset);
+            const { signal, errors, axisMapping, auxiliaries, title } =
+              nxValues;
+
+            return (
+              <MappedLineVis
+                value={signal as number[]}
+                valueLabel={signalLabel}
+                valueScaleType={silxStyle.signalScaleType}
+                errors={errors}
+                auxiliaries={auxiliaries}
+                dims={signalDims}
+                dimMapping={dimMapping}
+                axisMapping={axisMapping}
+                title={title || signalLabel}
+              />
+            );
+          }}
+        />
+      </VisBoundary>
     </>
   );
 }

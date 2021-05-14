@@ -1,24 +1,21 @@
 import { useMemo } from 'react';
 import MatrixVis from './MatrixVis';
-import { useDatasetValue, useMappedArray } from '../hooks';
+import { useMappedArray } from '../hooks';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { Dataset, ArrayShape } from '../../../providers/models';
+import type { Primitive } from '../../../providers/models';
 import { isAxis } from '../../../dimension-mapper/utils';
 import type { PrintableType } from '../models';
-import { format } from 'd3-format';
-import { isComplexArray } from '../../../guards';
-import { renderComplex } from '../../../metadata-viewer/utils';
 
 interface Props {
-  dataset: Dataset<ArrayShape, PrintableType>;
+  value: Primitive<PrintableType>[];
   dims: number[];
   dimMapping: DimensionMapping;
+  formatter: (value: Primitive<PrintableType>) => string;
+  cellWidth: number;
 }
 
 function MappedMatrixVis(props: Props) {
-  const { dataset, dims, dimMapping } = props;
-
-  const value = useDatasetValue(dataset, dimMapping);
+  const { value, dims, dimMapping, formatter, cellWidth } = props;
 
   const [slicedDims, slicedMapping] = useMemo(
     () => [
@@ -30,25 +27,11 @@ function MappedMatrixVis(props: Props) {
 
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
 
-  if (isComplexArray(dataset.type, mappedArray)) {
-    return (
-      <MatrixVis
-        dataArray={mappedArray}
-        formatter={(dataValue) => renderComplex(dataValue, '.2e')}
-        cellWidth={232} // To accommodate the longer complex numbers
-      />
-    );
-  }
-
   return (
     <MatrixVis
       dataArray={mappedArray}
-      formatter={(dataValue) => {
-        return typeof dataValue === 'number'
-          ? format('.3e')(dataValue)
-          : dataValue.toString();
-      }}
-      cellWidth={116}
+      formatter={formatter}
+      cellWidth={cellWidth}
     />
   );
 }

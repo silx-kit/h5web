@@ -34,14 +34,6 @@ export function isDatasetResponse(
   return response.type === EntityKind.Dataset;
 }
 
-export function assertGroupResponse(
-  response: JupyterMetaResponse
-): asserts response is JupyterMetaGroupResponse {
-  if (!isGroupResponse(response)) {
-    throw new Error('Expected group response');
-  }
-}
-
 export function assertGroupContent(
   contents: JupyterContentResponse
 ): asserts contents is JupyterContentGroupResponse {

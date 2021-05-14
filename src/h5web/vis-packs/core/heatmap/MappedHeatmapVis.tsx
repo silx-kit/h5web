@@ -1,41 +1,30 @@
 import { useEffect, useMemo } from 'react';
 import HeatmapVis from './HeatmapVis';
-import { useDomain, useDatasetValue, useMappedArray } from '../hooks';
+import { useDomain, useMappedArray } from '../hooks';
 import { useHeatmapConfig } from './config';
-import type { ScaleType } from '../models';
+import type { AxisMapping, ScaleType } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { isAxis } from '../../../dimension-mapper/utils';
 import shallow from 'zustand/shallow';
 import { useSafeDomain, useVisDomain } from './hooks';
-import type {
-  Dataset,
-  NumArrayDataset,
-  ScalarShape,
-  StringType,
-} from '../../../providers/models';
-import { useAxisMapping } from '../../nexus/hooks';
-import { getDatasetLabel } from '../../nexus/utils';
-import type { AxisDatasetMapping } from '../../nexus/models';
 
 interface Props {
-  dataset: NumArrayDataset;
+  value: number[];
   dims: number[];
   dimMapping: DimensionMapping;
-  titleDataset?: Dataset<ScalarShape, StringType>;
-  axisDatasets?: AxisDatasetMapping;
+  axisMapping?: AxisMapping;
+  title: string;
   colorScaleType?: ScaleType;
-  axisScaleTypes?: ScaleType[];
 }
 
 function MappedHeatmapVis(props: Props) {
   const {
-    dataset,
+    value,
     dims,
     dimMapping,
-    axisDatasets = [],
-    titleDataset,
-    axisScaleTypes,
+    axisMapping = [],
+    title,
     colorScaleType,
   } = props;
 
@@ -49,11 +38,6 @@ function MappedHeatmapVis(props: Props) {
     setScaleType,
     invertColorMap,
   } = useHeatmapConfig((state) => state, shallow);
-
-  const value = useDatasetValue(dataset, dimMapping);
-
-  const title = useDatasetValue(titleDataset) || getDatasetLabel(dataset);
-  const axisMapping = useAxisMapping(axisDatasets, axisScaleTypes);
 
   const [slicedDims, slicedMapping] = useMemo(
     () => [

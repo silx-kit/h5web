@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import LineVis from './LineVis';
 import {
-  useDatasetValue,
-  useDatasetValues,
   useCombinedDomain,
   useMappedArrays,
   useMappedArray,
@@ -11,44 +9,34 @@ import {
   useDomains,
 } from '../hooks';
 import { useLineConfig } from './config';
-import type { ScaleType } from '../models';
+import type { AxisMapping, ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type {
-  Dataset,
-  NumArrayDataset,
-  ScalarShape,
-  StringType,
-} from '../../../providers/models';
-import { useAxisMapping } from '../../nexus/hooks';
-import type { AxisDatasetMapping } from '../../nexus/models';
 
 type HookArgs = [number[], DimensionMapping, boolean];
 
 interface Props {
-  valueDataset: NumArrayDataset;
+  value: number[];
   valueLabel?: string;
   valueScaleType?: ScaleType;
-  errorsDataset?: NumArrayDataset;
-  auxDatasets?: NumArrayDataset[];
+  errors?: number[];
+  auxiliaries?: number[][];
   dims: number[];
   dimMapping: DimensionMapping;
-  titleDataset?: Dataset<ScalarShape, StringType>;
-  axisDatasets?: AxisDatasetMapping;
-  axisScaleTypes?: ScaleType[];
+  axisMapping?: AxisMapping;
+  title: string;
 }
 
 function MappedLineVis(props: Props) {
   const {
-    valueDataset,
+    value,
     valueLabel,
     valueScaleType,
-    errorsDataset,
-    auxDatasets = [],
+    errors,
+    auxiliaries = [],
     dims,
     dimMapping,
-    titleDataset,
-    axisDatasets = [],
-    axisScaleTypes,
+    axisMapping = [],
+    title,
   } = props;
 
   const {
@@ -65,19 +53,9 @@ function MappedLineVis(props: Props) {
   } = useLineConfig((state) => state, shallow);
 
   const hookArgs: HookArgs = [dims, dimMapping, autoScale];
-
-  const value = useDatasetValue(valueDataset);
   const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
-
-  const errors = useDatasetValue(errorsDataset);
   const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
-
-  const auxiliaries = Object.values(useDatasetValues(auxDatasets));
   const [auxArrays, auxForDomain] = useMappedArrays(auxiliaries, ...hookArgs);
-
-  const title =
-    useDatasetValue(titleDataset) || valueLabel || valueDataset.name;
-  const axisMapping = useAxisMapping(axisDatasets, axisScaleTypes);
 
   const dataDomain = useDomain(
     dataForDomain,

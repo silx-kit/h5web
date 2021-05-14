@@ -11,13 +11,13 @@ import type { PrintableType } from '../models';
 
 const CELL_HEIGHT = 32;
 
-interface Props<T> {
-  dataArray: NdArray<T>;
-  formatter: (value: T) => string;
+interface Props {
+  dataArray: NdArray<Primitive<PrintableType>>;
+  formatter: (value: Primitive<PrintableType>) => string;
   cellWidth: number;
 }
 
-function MatrixVis<T extends Primitive<PrintableType>>(props: Props<T>) {
+function MatrixVis(props: Props) {
   const { dataArray, formatter, cellWidth } = props;
   const dims = dataArray.shape;
 

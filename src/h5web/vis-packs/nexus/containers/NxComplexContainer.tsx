@@ -1,14 +1,13 @@
-import { Suspense, useContext } from 'react';
 import { assertComplexType, assertGroup, assertMinDims } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import { useNxData } from '../hooks';
 import { useDimMappingState } from '../../hooks';
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import ValueLoader from '../../../visualizer/ValueLoader';
-import { ErrorBoundary } from 'react-error-boundary';
-import ErrorFallback from '../../../visualizer/ErrorFallback';
-import { ProviderContext } from '../../../providers/context';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
+import VisBoundary from '../../core/VisBoundary';
+import NxValuesFetcher from '../NxValuesFetcher';
+import type { H5WebComplex } from '../../../providers/models';
+import { getDatasetLabel } from '../utils';
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function NxComplexContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -16,15 +15,12 @@ function NxComplexContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
 
-  const { signalDataset, titleDataset, axisDatasets, silxStyle } = nxData;
-  const { axisScaleTypes, signalScaleType } = silxStyle;
+  const { signalDataset, silxStyle } = nxData;
   assertComplexType(signalDataset);
   assertMinDims(signalDataset, 2);
 
   const { shape: dims } = signalDataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
-
-  const { valuesStore } = useContext(ProviderContext);
 
   return (
     <>
@@ -33,23 +29,25 @@ function NxComplexContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <ErrorBoundary
-        resetKeys={[dimMapping]}
-        FallbackComponent={ErrorFallback}
-        onError={() => valuesStore.evictCancelled()}
-      >
-        <Suspense fallback={<ValueLoader />}>
-          <MappedComplexVis
-            dataset={signalDataset}
-            dims={dims}
-            dimMapping={dimMapping}
-            axisDatasets={axisDatasets}
-            titleDataset={titleDataset}
-            colorScaleType={signalScaleType}
-            axisScaleTypes={axisScaleTypes}
-          />
-        </Suspense>
-      </ErrorBoundary>
+      <VisBoundary resetKey={dimMapping}>
+        <NxValuesFetcher
+          nxData={nxData}
+          dimMapping={dimMapping}
+          render={(nxValues) => {
+            const { signal, axisMapping, title } = nxValues;
+            return (
+              <MappedComplexVis
+                value={signal as H5WebComplex[]}
+                dims={dims}
+                dimMapping={dimMapping}
+                axisMapping={axisMapping}
+                title={title || getDatasetLabel(signalDataset)}
+                colorScaleType={silxStyle.signalScaleType}
+              />
+            );
+          }}
+        />
+      </VisBoundary>
     </>
   );
 }

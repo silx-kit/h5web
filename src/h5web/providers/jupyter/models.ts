@@ -17,13 +17,13 @@ export interface JupyterMetaGroupResponse extends JupyterMetaResponse {
   type: EntityKind.Group;
 }
 
-export interface JupyterContent {
+interface JupyterContent {
   type: EntityKind;
   name: string;
   uri: string;
 }
 
-export interface JupyterContentDatasetResponse extends JupyterContent {
+interface JupyterContentDatasetResponse extends JupyterContent {
   content: JupyterMetaDatasetResponse;
   type: EntityKind.Dataset;
 }

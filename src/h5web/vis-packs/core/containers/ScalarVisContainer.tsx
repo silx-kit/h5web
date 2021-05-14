@@ -1,13 +1,13 @@
 import ScalarVis from '../scalar/ScalarVis';
-import { useDatasetValue } from '../hooks';
 import {
   assertPrintableType,
   assertDataset,
   assertScalarShape,
-  isComplexValue,
 } from '../../../guards';
 import type { VisContainerProps } from '../../models';
-import { formatComplex } from '../../../utils';
+import { getFormatter } from '../scalar/utils';
+import ValueFetcher from '../ValueFetcher';
+import VisBoundary from '../VisBoundary';
 
 function ScalarVisContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -15,13 +15,16 @@ function ScalarVisContainer(props: VisContainerProps) {
   assertScalarShape(entity);
   assertPrintableType(entity);
 
-  const value = useDatasetValue(entity);
+  const formatter = getFormatter(entity);
 
-  if (isComplexValue(entity.type, value)) {
-    return <ScalarVis value={value} formatter={formatComplex} />;
-  }
-
-  return <ScalarVis value={value} formatter={() => value.toString()} />;
+  return (
+    <VisBoundary resetKey={entity}>
+      <ValueFetcher
+        dataset={entity}
+        render={(value) => <ScalarVis value={value} formatter={formatter} />}
+      />
+    </VisBoundary>
+  );
 }
 
 export default ScalarVisContainer;

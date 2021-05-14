@@ -14,7 +14,6 @@ import {
   StringType,
   BooleanType,
   ComplexType,
-  UnresolvedEntity,
   ComplexArray,
   H5WebComplex,
 } from './providers/models';
@@ -43,25 +42,9 @@ export function assertStr(
   }
 }
 
-export function assertOptionalStr(
-  val: unknown
-): asserts val is string | undefined {
-  if (val !== undefined) {
-    assertStr(val);
-  }
-}
-
 export function assertArray<T>(val: unknown): asserts val is T[] {
   if (!Array.isArray(val)) {
     throw new TypeError('Expected array');
-  }
-}
-
-export function assertOptionalArray<T>(
-  val: unknown
-): asserts val is T[] | undefined {
-  if (val !== undefined) {
-    assertArray<T>(val);
   }
 }
 
@@ -75,10 +58,6 @@ export function isDataset(entity: Entity): entity is Dataset {
 
 export function isDatatype(entity: Entity): entity is Datatype {
   return entity.kind === EntityKind.Datatype;
-}
-
-export function isUnresolvedEntity(entity: Entity): entity is UnresolvedEntity {
-  return entity.kind === EntityKind.Unresolved;
 }
 
 export function isScalarShape(shape: Shape): shape is ScalarShape {
@@ -120,7 +99,7 @@ export function hasPrintableType<S extends Shape>(
   ].includes(entity.type.class);
 }
 
-export function hasBoolType<S extends Shape>(
+function hasBoolType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, BooleanType> {
   return dataset.type.class === DTypeClass.Bool;
@@ -132,7 +111,7 @@ export function hasComplexType<S extends Shape>(
   return dataset.type.class === DTypeClass.Complex;
 }
 
-export function hasStringType<S extends Shape>(
+function hasStringType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, StringType> {
   return dataset.type.class === DTypeClass.String;
@@ -275,13 +254,6 @@ export function isH5WebComplex(
   complex: H5WebComplex | ComplexArray
 ): complex is H5WebComplex {
   return typeof complex[0] === 'number';
-}
-
-export function isComplexArray(
-  type: DType,
-  arr: NdArray<unknown>
-): arr is NdArray<H5WebComplex> {
-  return type.class === DTypeClass.Complex;
 }
 
 export function assertComplexType<S extends Shape>(
