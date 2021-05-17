@@ -11,6 +11,7 @@ import { CurveType } from './models';
 import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
 import { assertDataLength, assertDefined } from '../../../guards';
 import { useTooltipFormatters } from './hooks';
+import { useCSSCustomProperties } from '../hooks';
 
 interface Props {
   dataArray: NdArray;
@@ -73,8 +74,13 @@ function LineVis(props: Props) {
     errorsArray
   );
 
+  const {
+    colors: [curveColor, auxColor],
+    refCallback: rootRef,
+  } = useCSSCustomProperties('--secondary-dark', '--secondary');
+
   return (
-    <figure className={styles.root} aria-labelledby="vis-title">
+    <figure ref={rootRef} className={styles.root} aria-labelledby="vis-title">
       <VisCanvas
         canvasTitle={title}
         abscissaConfig={{
@@ -94,19 +100,20 @@ function LineVis(props: Props) {
         <TooltipMesh {...tooltipFormatters} guides="vertical" />
         <PanZoomMesh />
         <DataCurve
-          curveType={curveType}
           abscissas={abscissas}
           ordinates={dataArray.data as number[]}
           errors={errorsArray && (errorsArray.data as number[])}
           showErrors={showErrors}
+          color={curveColor}
+          curveType={curveType}
         />
         {auxArrays.map((array, i) => (
           <DataCurve
             key={i} // eslint-disable-line react/no-array-index-key
-            color="--secondary"
-            curveType={curveType}
             abscissas={abscissas}
             ordinates={array.data as number[]}
+            color={auxColor}
+            curveType={curveType}
           />
         ))}
       </VisCanvas>

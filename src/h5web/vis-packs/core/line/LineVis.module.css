@@ -5,8 +5,3 @@
   min-height: 0;
   margin: 1rem;
 }
-
-.root canvas {
-  /* This sets the default color of the line */
-  color: var(--secondary-dark);
-}
