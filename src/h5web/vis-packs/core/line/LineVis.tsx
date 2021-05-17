@@ -38,7 +38,7 @@ function LineVis(props: Props) {
     ordinateLabel,
     title,
     errorsArray,
-    showErrors,
+    showErrors = false,
     auxArrays = [],
   } = props;
 
