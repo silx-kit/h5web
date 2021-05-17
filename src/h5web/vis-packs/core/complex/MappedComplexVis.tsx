@@ -1,8 +1,7 @@
-import { useEffect, useMemo } from 'react';
-import { useMappedArray } from '../hooks';
+import { useEffect } from 'react';
+import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { AxisMapping, ScaleType } from '../models';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import { isAxis } from '../../../dimension-mapper/utils';
 import shallow from 'zustand/shallow';
 import { useSafeDomain, useVisDomain } from '../heatmap/hooks';
 import type { H5WebComplex } from '../../../providers/models';
@@ -45,13 +44,7 @@ function MappedComplexVis(props: Props) {
 
   const { visType } = useComplexConfig((state) => state, shallow);
 
-  const [slicedDims, slicedMapping] = useMemo(
-    () => [
-      dims.filter((_, i) => isAxis(dimMapping[i])),
-      dimMapping.filter((dim) => isAxis(dim)),
-    ],
-    [dims, dimMapping]
-  );
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
 

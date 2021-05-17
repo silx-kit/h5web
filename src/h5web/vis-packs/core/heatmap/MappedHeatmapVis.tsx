@@ -1,11 +1,10 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import HeatmapVis from './HeatmapVis';
-import { useDomain, useMappedArray } from '../hooks';
+import { useDomain, useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { useHeatmapConfig } from './config';
 import type { AxisMapping, ScaleType } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import { isAxis } from '../../../dimension-mapper/utils';
 import shallow from 'zustand/shallow';
 import { useSafeDomain, useVisDomain } from './hooks';
 
@@ -39,13 +38,7 @@ function MappedHeatmapVis(props: Props) {
     invertColorMap,
   } = useHeatmapConfig((state) => state, shallow);
 
-  const [slicedDims, slicedMapping] = useMemo(
-    () => [
-      dims.filter((_, i) => isAxis(dimMapping[i])),
-      dimMapping.filter((dim) => isAxis(dim)),
-    ],
-    [dims, dimMapping]
-  );
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
   const [dataArray] = useMappedArray(value, slicedDims, slicedMapping);
 

@@ -11,7 +11,7 @@ import { format } from 'd3-format';
 import ndarray, { NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 import { isNumber } from 'lodash-es';
-import type { DimensionMapping } from '../../dimension-mapper/models';
+import type { Axis, DimensionMapping } from '../../dimension-mapper/models';
 import {
   Size,
   Domain,
@@ -305,24 +305,26 @@ export function getBaseArray<T>(
   value: T[] | undefined,
   rawDims: number[]
 ): NdArray<T> | undefined {
-  return value && ndarray<T>(value.flat(rawDims.length - 1) as T[], rawDims);
+  return value && ndarray<T>(value, rawDims);
 }
 
 export function applyMapping<T extends NdArray<unknown> | undefined>(
   baseArray: T,
-  mapping: DimensionMapping
+  mapping: (number | Axis | ':')[]
 ): T extends NdArray<infer U> ? NdArray<U> : undefined;
 
 export function applyMapping<T>(
   baseArray: NdArray<T> | undefined,
-  mapping: DimensionMapping
+  mapping: (number | Axis | ':')[]
 ): NdArray<T> | undefined {
   if (!baseArray) {
     return undefined;
   }
 
   const isXBeforeY =
-    mapping.includes('y') && mapping.indexOf('x') < mapping.indexOf('y');
+    mapping.includes('y') &&
+    mapping.includes('x') &&
+    mapping.indexOf('x') < mapping.indexOf('y');
 
   const slicingState = mapping.map((val) => (isNumber(val) ? val : null));
   const slicedView = baseArray.pick(...slicingState);

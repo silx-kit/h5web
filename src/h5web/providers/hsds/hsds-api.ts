@@ -21,7 +21,7 @@ import {
   Group,
   ProviderError,
 } from '../models';
-import { assertDefined, assertGroup } from '../../guards';
+import { assertDefined, assertGroup, hasArrayShape } from '../../guards';
 import { ProviderApi } from '../api';
 import {
   assertHsdsDataset,
@@ -100,7 +100,7 @@ export class HsdsApi extends ProviderApi {
   }
 
   public async getValue(params: ValueRequestParams): Promise<unknown> {
-    const { path, selection = '' } = params;
+    const { path } = params;
 
     const entity = await this.getEntity(path);
     assertHsdsDataset(entity);
@@ -109,14 +109,12 @@ export class HsdsApi extends ProviderApi {
 
     // https://github.com/HDFGroup/hsds/issues/88
     // HSDS does not reduce the number of dimensions when selecting indices
-    // This is an issue when trying to slice nD arrays
-    // Therefore the dimension reduction is done "manually" here with a flat
-    const numberIndices = selection.match(/\d+/gu)?.length;
-    if (!numberIndices) {
-      return value;
+    // Therefore the flattening must be done on all dimensions regardless of the selection
+    if (hasArrayShape(entity)) {
+      return (value as unknown[]).flat(entity.shape.length - 1);
     }
 
-    return (value as unknown[]).flat(numberIndices);
+    return value;
   }
 
   private async fetchRootId(): Promise<HsdsId> {

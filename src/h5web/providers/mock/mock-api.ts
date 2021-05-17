@@ -1,9 +1,13 @@
 import axios from 'axios';
 import ndarray from 'ndarray';
-import unpack from 'ndarray-unpack';
-import { assertArrayShape, assertPrintableType } from '../../guards';
+import {
+  assertArrayShape,
+  assertPrintableType,
+  hasArrayShape,
+} from '../../guards';
+import { applyMapping } from '../../vis-packs/core/utils';
 import { ProviderApi } from '../api';
-import type { ValueRequestParams, Entity } from '../models';
+import type { ValueRequestParams, Entity, Primitive } from '../models';
 import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
 
@@ -39,7 +43,10 @@ export class MockApi extends ProviderApi {
       await this.cancellableDelay(params);
     }
 
-    const { value } = dataset;
+    const { value: rawValue } = dataset;
+    const value = hasArrayShape(dataset)
+      ? (rawValue as unknown[]).flat(dataset.shape.length - 1)
+      : rawValue;
     if (!selection) {
       return value;
     }
@@ -47,20 +54,14 @@ export class MockApi extends ProviderApi {
     assertArrayShape(dataset);
     assertPrintableType(dataset);
 
-    const dataArray = ndarray(
-      (dataset.value as (number | string | boolean)[]).flat(
-        dataset.shape.length - 1
-      ),
-      dataset.shape
+    const { shape, type } = dataset;
+    const dataArray = ndarray(value as Primitive<typeof type>[], shape);
+    const mappedArray = applyMapping(
+      dataArray,
+      selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s, 10)))
     );
 
-    const dataView = dataArray.pick(
-      ...selection
-        .split(',')
-        .map((s) => (s === ':' ? null : Number.parseInt(s, 10)))
-    );
-
-    return unpack(dataView);
+    return mappedArray.data;
   }
 
   private async cancellableDelay(params: ValueRequestParams) {

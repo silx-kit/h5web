@@ -1,9 +1,7 @@
-import { useMemo } from 'react';
 import MatrixVis from './MatrixVis';
-import { useMappedArray } from '../hooks';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import type { Primitive } from '../../../providers/models';
-import { isAxis } from '../../../dimension-mapper/utils';
+import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { PrintableType } from '../models';
 
 interface Props {
@@ -17,13 +15,7 @@ interface Props {
 function MappedMatrixVis(props: Props) {
   const { value, dims, dimMapping, formatter, cellWidth } = props;
 
-  const [slicedDims, slicedMapping] = useMemo(
-    () => [
-      dims.filter((_, i) => isAxis(dimMapping[i])),
-      dimMapping.filter((dim) => isAxis(dim)),
-    ],
-    [dimMapping, dims]
-  );
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
 
