@@ -77,7 +77,7 @@ function LineVis(props: Props) {
   const {
     colors: [curveColor, auxColor],
     refCallback: rootRef,
-  } = useCSSCustomProperties('--secondary-dark', '--secondary');
+  } = useCSSCustomProperties('--h5w-line--curveColor', '--h5w-line--auxColor');
 
   return (
     <figure ref={rootRef} className={styles.root} aria-labelledby="vis-title">
@@ -104,7 +104,7 @@ function LineVis(props: Props) {
           ordinates={dataArray.data as number[]}
           errors={errorsArray && (errorsArray.data as number[])}
           showErrors={showErrors}
-          color={curveColor}
+          color={curveColor || 'midnightblue'}
           curveType={curveType}
         />
         {auxArrays.map((array, i) => (
@@ -112,7 +112,7 @@ function LineVis(props: Props) {
             key={i} // eslint-disable-line react/no-array-index-key
             abscissas={abscissas}
             ordinates={array.data as number[]}
-            color={auxColor}
+            color={auxColor || 'cornflowerblue'}
             curveType={curveType}
           />
         ))}

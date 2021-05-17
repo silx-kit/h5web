@@ -40,3 +40,8 @@
   --axis-primary-color: var(--dark-slate-gray);
   --axis-secondary-color: var(--gray);
 }
+
+:root {
+  --h5w-line--curveColor: var(--secondary-dark);
+  --h5w-line--auxColor: var(--secondary);
+}
