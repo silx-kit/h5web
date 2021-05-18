@@ -1,8 +1,6 @@
 .colorBar {
   display: grid;
   padding: 1rem;
-  color: var(--axis-primary-color);
-  font-size: 0.875em;
 }
 
 .colorBar:not([data-horizontal]) {
@@ -33,23 +31,31 @@
   grid-area: axis;
   display: block;
   overflow: visible;
-  font-size: 0.875em;
 }
 
 .tick line {
-  stroke: var(--gray);
+  stroke: var(--h5w-colorBar-ticks--color, var(--h5w-ticks--color, gray));
 }
 
 .tick text {
-  fill: var(--dark-slate-gray);
-  font-family: inherit;
-  font-size: inherit;
+  fill: currentColor;
+  color: var(
+    --h5w-colorBar-tickLabels--color,
+    var(--h5w-tickLabels--color, #333)
+  );
+  font-family: var(
+    --h5w-colorBar-tickLabels--fontFamily,
+    var(--h5w-tickLabels--fontFamily, inherit)
+  );
+  font-size: var(--h5w-colorBar-tickLabels--fontSize, 0.75em);
 }
 
 .bound {
   display: inline-flex;
   align-self: center;
   justify-content: center;
+  color: var(--h5w-colorBar-bounds--color, #333);
+  font-size: var(--h5w-colorBar-bounds--fontSize, 0.875em);
   line-height: 1;
   white-space: nowrap;
 }

@@ -39,18 +39,89 @@ as you see fit. For instance, if you'd like to change the color of the curve of 
 
 ```css
 .my-container {
-  --h5w-line--curveColor: teal;
+  --h5w-line--color: teal;
 }
 
 /* If you want every `LineVis` in your app to have the same curve color, you could even use `:root` */
 :root {
-  --h5w-line--curveColor: teal;
+  --h5w-line--color: teal;
 }
 ```
 
-#### LineVis
+#### Common
 
-| Name                   | Default          | Description                                 |
-| ---------------------- | ---------------- | ------------------------------------------- |
-| --h5w-line--curveColor | 'midnightblue'   | Color of the main curve and error bars/caps |
-| --h5w-line--auxColor   | 'cornflowerblue' | Color of the auxiliary curves               |
+| Name                           | Default       | Description                 |
+| ------------------------------ | ------------- | --------------------------- |
+| `--h5w-canvas--bgColor`        | `transparent` | Background color of canvas  |
+| `--h5w-plotTitle--color`       | `inherit`     | Text color of plot title    |
+| `--h5w-plotTitle--fontFamily`  | `inherit`     | Font family of plot title   |
+| `--h5w-plotTitle--fontSize`    | `1.125em`     | Font size of plot title     |
+| `--h5w-plotTitle--fontWeight`  | `inherit`     | Font weight of plot title   |
+| `--h5w-ticks--color`           | `gray`        | Color of ticks              |
+| `--h5w-tickLabels--color`      | `#333`        | Text color of tick labels   |
+| `--h5w-tickLabels--fontFamily` | `inherit`     | Font family of tick labels  |
+| `--h5w-tickLabels--fontSize`   | `inherit`     | Font size of tick labels    |
+| `--h5w-axisLabels--color`      | `#333`        | Text color of axis labels   |
+| `--h5w-axisLabels--fontFamily` | `inherit`     | Font family of axis labels  |
+| `--h5w-axisLabels--fontSize`   | `inherit`     | Font size of axis labels    |
+| `--h5w-axisLabels--fontWeight` | `600`         | Font weight of axis labels  |
+| `--h5w-grid--color`            | `gray`        | Color of grid lines         |
+| `--h5w-grid--opacity`          | `0.33`        | Opacity of grid lines       |
+| `--h5w-tooltip--color`         | `inherit`     | Text color of tooltip       |
+| `--h5w-tooltip--bgColor`       | `whitesmoke`  | Background color of tooltip |
+| `--h5w-tooltip--fontFamily`    | `inherit`     | Font family of tooltip      |
+| `--h5w-tooltip--fontSize`      | `0.75em`      | Font size of tooltip        |
+| `--h5w-tooltip-guide--color`   | `gray`        | Color of tooltip guide      |
+| `--h5w-tooltip-guide--width`   | `1.5`         | Width of tooltip guide      |
+| `--h5w-tooltip-guide--opacity` | `0.5`         | Opacity of tooltip guide    |
+
+#### Line
+
+| Name                   | Default          | Description                             |
+| ---------------------- | ---------------- | --------------------------------------- |
+| `--h5w-line--color`    | `midnightblue`   | Color of main curve and error bars/caps |
+| `--h5w-line--colorAux` | `cornflowerblue` | Color of auxiliary curves               |
+
+#### Heatmap
+
+| Name                                    | Default                                      | Description                               |
+| --------------------------------------- | -------------------------------------------- | ----------------------------------------- |
+| `--h5w-colorBar-ticks--color`           | `var(--h5w-ticks--color, gray)`              | Color of color bar ticks                  |
+| `--h5w-colorBar-tickLabels--color`      | `var(--h5w-tickLabels--color, #333)`         | Text color of color bar tick labels       |
+| `--h5w-colorBar-tickLabels--fontFamily` | `var(--h5w-tickLabels--fontFamily, inherit)` | Font family of color bar tick labels      |
+| `--h5w-colorBar-tickLabels--fontSize`   | `0.75em`                                     | Font size of color bar tick labels        |
+| `--h5w-colorBar-bounds--color`          | `#333`                                       | Font size of color bar min and max bounds |
+| `--h5w-colorBar-bounds--fontSize`       | `0.875em`                                    | Font size of color bar min and max bounds |
+
+#### Matrix
+
+| Name                                 | Default                                    | Description                           |
+| ------------------------------------ | ------------------------------------------ | ------------------------------------- |
+| `--h5w-matrix--color`                | `inherit`                                  | Text color of matrix vis              |
+| `--h5w-matrix--fontFamily`           | `monospace`                                | Font family of matrix vis             |
+| `--h5w-matrix--fontSize`             | `inherit`                                  | Font size of matrix vis               |
+| `--h5w-matrix-cell--bgColor`         | `transparent`                              | Background colour of even cells       |
+| `--h5w-matrix-cell--bgColorAlt`      | `#eee`                                     | Background colour of odd cells        |
+| `--h5w-matrix-indexCell--bgColor`    | `#eee`                                     | Background colour of even index cells |
+| `--h5w-matrix-indexCell--bgColorAlt` | `lightgray`                                | Background colour of odd index cells  |
+| `--h5w-matrix-indexCell--color`      | `var(--h5w-matrix--color, inherit)`        | Text color of index cells             |
+| `--h5w-matrix-indexCell--fontFamily` | `var(--h5w-matrix--fontFamily, monospace)` | Font family of index cells            |
+| `--h5w-matrix-indexCell--fontSize`   | `var(--h5w-matrix--fontSize, inherit)`     | Font size of index cells              |
+| `--h5w-matrix-indexCell--fontWeight` | `600`                                      | Font weight of index cells            |
+| `--h5w-matrix-anchorCell--bgColor`   | `silver`                                   | Background colour of anchor cell      |
+
+#### Scalar
+
+| Name                       | Default     | Description               |
+| -------------------------- | ----------- | ------------------------- |
+| `--h5w-scalar--color`      | `inherit`   | Text color of scalar vis  |
+| `--h5w-scalar--fontFamily` | `monospace` | Font family of scalar vis |
+| `--h5w-scalar--fontSize`   | `inherit`   | Font size of scalar vis   |
+
+#### Raw
+
+| Name                    | Default     | Description            |
+| ----------------------- | ----------- | ---------------------- |
+| `--h5w-raw--color`      | `inherit`   | Text color of raw vis  |
+| `--h5w-raw--fontFamily` | `monospace` | Font family of raw vis |
+| `--h5w-raw--fontSize`   | `inherit`   | Font size of raw vis   |

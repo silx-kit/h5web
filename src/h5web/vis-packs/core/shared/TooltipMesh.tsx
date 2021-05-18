@@ -86,6 +86,8 @@ function TooltipMesh(props: Props) {
               className={styles.tooltip}
               top={tooltipTop}
               left={tooltipLeft}
+              unstyled
+              applyPositionStyle
             >
               {formatIndex(tooltipData)}
               <span className={styles.tooltipValue}>{value}</span>

@@ -4,7 +4,6 @@
     '. top-axis .'
     '. axis-grid right-axis'
     '. bottom-axis .';
-  color: var(--axis-primary-color);
 
   /* - Prevent panning/zooming from axis when zoomed in.
    * - Prevent text selection of tick labels when panning with touchpad. */
@@ -30,20 +29,22 @@
 }
 
 .tick > line {
-  stroke: var(--axis-secondary-color);
+  stroke: var(--h5w-ticks--color, gray);
 }
 
 .tick > text {
   fill: currentColor;
-  font-family: inherit;
-  font-size: inherit;
+  color: var(--h5w-tickLabels--color, #333);
+  font-family: var(--h5w-tickLabels--fontFamily, inherit);
+  font-size: var(--h5w-tickLabels--fontSize, inherit);
 }
 
 .label {
   fill: currentColor;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: 600;
+  color: var(--h5w-axisLabels--color, #333);
+  font-family: var(--h5w-axisLabels--fontFamily, inherit);
+  font-size: var(--h5w-axisLabels--fontSize, inherit);
+  font-weight: var(--h5w-axisLabels--fontWeight, 600);
   text-anchor: middle;
 }
 
@@ -53,7 +54,10 @@
   align-items: center;
   grid-area: top-axis;
   margin-bottom: 0;
-  font-size: 1.125em;
+  color: var(--h5w-plotTitle--color, inherit);
+  font-family: var(--h5w-plotTitle--fontFamily, inherit);
+  font-size: var(--h5w-plotTitle--fontSize, 1.125em);
+  font-weight: var(--h5w-plotTitle--fontWeight, inherit);
 }
 
 .grid {
@@ -61,6 +65,6 @@
 }
 
 .grid line {
-  stroke: var(--axis-secondary-color);
-  stroke-opacity: 0.33;
+  stroke: var(--h5w-grid--color, gray);
+  stroke-opacity: var(--h5w-grid--opacity, 0.33);
 }
