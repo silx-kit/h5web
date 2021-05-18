@@ -1,0 +1,104 @@
+<Meta title="Getting started" />
+
+# H5Web Component Library
+
+[H5Web](https://github.com/silx-kit/h5web) is a web-based viewer to explore HDF5 files. It is built with React and uses
+[react-three-fiber](https://github.com/react-spring/react-three-fiber) for visualizations.
+
+The **H5Web Component Library** provides data visualization components and utilities from H5Web for use in other front-end web applications.
+
+The components are organised in two categories:
+
+- 🎨 **Visualizations**: the top-level visualization components — i.e. the components you will most likely need.
+- 🧱 **Building Blocks**: the low-level components used by the visualization components — for advanced uses only.
+
+## Getting started
+
+1. Make you sure you have `react` and `react-dom` v16 or greater installed.
+1. Install the library:
+
+   ```bash
+   npm install @h5web/lib
+   ```
+
+1. Import and use a visualization component:
+
+   ```tsx
+   import { ScalarVis } from '@h5web/lib';
+
+   // ...
+
+   <ScalarVis value={1024} />;
+   ```
+
+1. Other visualization components expect to receive an `ndarray` and a domain as props.
+
+   1. Install `ndarray` and its corresponding types package (if you use TypeScript):
+
+      ```bash
+      npm install ndarray
+      npm install --save-dev @types/ndarray
+      ```
+
+   1. Pass an `ndarray` and domain to the visualization:
+
+      ```tsx
+      import ndarray from 'ndarray';
+      import { HeatmapVis, getDomain } from '@h5web/lib';
+
+      // Source 2D array
+      const values = [
+        [0, 1, 2],
+        [3, 4, 5],
+      ];
+
+      // Flatten array
+      const flatValues: number[] = values.flat(Infinity);
+
+      // Convert to ndarray and get domain
+      const dataArray = ndarray<number>(flatValues, [2, 3]);
+      const domain = getDomain(dataArray);
+
+      // ...
+
+      <HeatmapVis dataArray={dataArray} domain={domain} />;
+      ```
+
+1. Make sure the visualization is sized properly by rendering it inside an element with `display: flex` and a height, for example:
+
+   ```tsx
+   <div className="my-container">
+     <HeatmapVis /* ... */ />
+   </div>
+   ```
+
+   ```css
+   .my-container {
+     display: flex;
+     height: 30rem;
+   }
+   ```
+
+1. Configure the visualization:
+
+   ```tsx
+   import { HeatmapVis, getDomain, ScaleType } from '@h5web/lib';
+
+   // ...
+
+   <HeatmapVis
+     dataArray={dataArray}
+     domain={domain}
+     colorMap="Inferno"
+     scaleType={ScaleType.Log}
+     ...
+   />;
+   ```
+
+### Using the low-level building blocks
+
+H5Web's low-level building blocks can be used to create custom visualizations.
+
+Here is a list of **CodeSandbox examples** to get you started:
+
+- [Multiple curves](https://codesandbox.io/s/h5webmultiple-curves-kwkli?file=/src/App.tsx)
