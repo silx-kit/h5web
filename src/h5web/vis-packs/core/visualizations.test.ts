@@ -144,3 +144,21 @@ describe('Complex', () => {
     expect(supportsDataset(datasetCplx1D)).toBe(false);
   });
 });
+
+describe('Complex Line', () => {
+  const { supportsDataset } = CORE_VIS.ComplexLine;
+
+  it('should support array dataset with complex type shape and at least one dimension', () => {
+    expect(supportsDataset(datasetCplx1D)).toBe(true);
+  });
+
+  it('should not support dataset with non-complex type', () => {
+    expect(supportsDataset(datasetInt2D)).toBe(false);
+    expect(supportsDataset(datasetUnsigned1D)).toBe(false);
+    expect(supportsDataset(datasetStr2D)).toBe(false);
+  });
+
+  it('should not support dataset with non-array shape', () => {
+    expect(supportsDataset(datasetCplxScalar)).toBe(false);
+  });
+});

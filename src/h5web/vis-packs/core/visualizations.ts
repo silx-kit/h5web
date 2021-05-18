@@ -24,6 +24,9 @@ import { LineConfigProvider } from './line/config';
 import { HeatmapConfigProvider } from './heatmap/config';
 import ComplexToolbar from '../../toolbar/ComplexToolbar';
 import { ComplexConfigProvider } from './complex/config';
+import ComplexLineVisContainer from './containers/ComplexLineVisContainer';
+import ComplexLineToolbar from '../../toolbar/ComplexLineToolbar';
+import { ComplexLineConfigProvider } from './complex/lineConfig';
 
 export enum Vis {
   Raw = 'Raw',
@@ -32,6 +35,7 @@ export enum Vis {
   Line = 'Line',
   Heatmap = 'Heatmap',
   Complex = 'Complex',
+  ComplexLine = 'ComplexLine',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -90,8 +94,19 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     },
   },
 
+  [Vis.ComplexLine]: {
+    name: Vis.Line,
+    Icon: FiActivity,
+    Toolbar: ComplexLineToolbar,
+    Container: ComplexLineVisContainer,
+    ConfigProvider: ComplexLineConfigProvider,
+    supportsDataset: (dataset) => {
+      return hasComplexType(dataset) && hasArrayShape(dataset);
+    },
+  },
+
   [Vis.Complex]: {
-    name: Vis.Complex,
+    name: Vis.Heatmap,
     Icon: FiMap,
     Toolbar: ComplexToolbar,
     Container: ComplexVisContainer,
