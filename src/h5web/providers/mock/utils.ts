@@ -56,5 +56,5 @@ export function getMockDataArray(path: string): NdArray {
   assertNumericType(dataset);
   assertArrayShape(dataset);
 
-  return ndarray(value.flat(Infinity), dataset.shape);
+  return ndarray(value.flat(dataset.shape.length - 1), dataset.shape);
 }

@@ -24,7 +24,7 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { makeStrAttr } from '../mock/metadata-utils';
-import { assertDataset, hasComplexType } from '../../guards';
+import { assertDataset, hasArrayShape, hasComplexType } from '../../guards';
 
 export class JupyterStableApi extends ProviderApi {
   /* API compatible with jupyterlab_hdf v0.5.1 */
@@ -37,18 +37,20 @@ export class JupyterStableApi extends ProviderApi {
   }
 
   public async getValue(params: ValueRequestParams): Promise<unknown> {
+    const { path, selection } = params;
     const [value, entity] = await Promise.all([
       this.fetchData(params),
-      this.getEntity(params.path),
+      this.getEntity(path),
     ]);
 
     assertDataset(entity);
+    const flatValue = this.flattenValue(value, entity, selection);
 
     if (hasComplexType(entity)) {
-      return parseComplex(value as JupyterComplex);
+      return parseComplex(flatValue as JupyterComplex);
     }
 
-    return value;
+    return flatValue;
   }
 
   protected async fetchAttributes(path: string): Promise<JupyterAttrsResponse> {
@@ -160,5 +162,15 @@ export class JupyterStableApi extends ProviderApi {
     assertGroupContent(contents);
 
     return contents;
+  }
+
+  protected flattenValue(value: unknown, entity: Dataset, selection?: string) {
+    if (!hasArrayShape(entity)) {
+      return value;
+    }
+
+    const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
+    const dims = slicedDims || entity.shape;
+    return (value as unknown[]).flat(dims.length - 1);
   }
 }

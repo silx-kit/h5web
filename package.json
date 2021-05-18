@@ -45,7 +45,6 @@
     "lodash-es": "^4.17.21",
     "ndarray": "^1.0.19",
     "ndarray-ops": "^1.2.2",
-    "ndarray-unpack": "^1.0.0",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-aria-menubutton": "^7.0.1",

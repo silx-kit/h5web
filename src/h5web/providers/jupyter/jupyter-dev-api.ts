@@ -7,6 +7,7 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { assertGroupContent, convertDtype } from './utils';
+import { assertDataset } from '../../guards';
 
 interface DevJupyterAttrMeta {
   name: string;
@@ -32,7 +33,15 @@ export class JupyterDevApi extends JupyterStableApi {
   }
 
   public async getValue(params: ValueRequestParams): Promise<unknown> {
-    return this.fetchData(params);
+    const { path, selection } = params;
+    const [value, entity] = await Promise.all([
+      this.fetchData(params),
+      this.getEntity(path),
+    ]);
+
+    assertDataset(entity);
+
+    return this.flattenValue(value, entity, selection);
   }
 
   protected async fetchMetadata(path: string): Promise<DevJupyterMetaResponse> {

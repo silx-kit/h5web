@@ -23,8 +23,9 @@ import {
 import AxisSystemContext from './shared/AxisSystemContext';
 import { AxisScale, ScaleType } from './models';
 import { ProviderContext } from '../../providers/context';
-import type { Dataset, Value } from '../../providers/models';
 import { isDefined } from '../../guards';
+import type { Dataset, Value } from '../../providers/models';
+import { isAxis } from '../../dimension-mapper/utils';
 
 export function usePrefetchValues(
   datasets: (Dataset | undefined)[],
@@ -199,4 +200,17 @@ export function useCSSCustomProperties(...names: string[]): {
     }),
     refCallback,
   };
+}
+
+export function useSlicedDimsAndMapping(
+  dims: number[],
+  dimMapping: DimensionMapping
+): [number[], DimensionMapping] {
+  return useMemo(
+    () => [
+      dims.filter((_, i) => isAxis(dimMapping[i])),
+      dimMapping.filter(isAxis),
+    ],
+    [dimMapping, dims]
+  );
 }
