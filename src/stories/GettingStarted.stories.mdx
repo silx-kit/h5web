@@ -64,6 +64,21 @@ The components are organised in two categories:
       <HeatmapVis dataArray={dataArray} domain={domain} />;
       ```
 
+1. Make sure the visualization is sized properly by rendering it inside an element with `display: flex` and a height, for example:
+
+   ```tsx
+   <div className="my-container">
+     <HeatmapVis /* ... */ />
+   </div>
+   ```
+
+   ```css
+   .my-container {
+     display: flex;
+     height: 30rem;
+   }
+   ```
+
 1. Configure the visualization:
 
    ```tsx
