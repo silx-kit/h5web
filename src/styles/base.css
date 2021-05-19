@@ -62,7 +62,27 @@ abbr[title] {
   *,
   *::before,
   *::after {
-    transition: none !important;
-    animation: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    filter: invert();
+
+    /* Set shadows to lighter colors so they remain dark once inverted */
+    --btn-shadow-color: #f5f5f5;
+    --btn-shadow-dark-color: #fafafa;
+    --btn-shadow-darker-color: #fff;
+  }
+
+  .no-invert {
+    filter: invert(); /* invert back to normal colors */
+  }
+
+  .no-invert-canvas > canvas {
+    filter: invert(); /* invert back to normal colors */
   }
 }

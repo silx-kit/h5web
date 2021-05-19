@@ -13,6 +13,7 @@
 
 /* R3F's root element */
 .canvasWrapper {
+  composes: no-invert-canvas from global;
   overflow: visible !important; /* show child axis grid, which is bigger than canvas */
   background-color: var(--h5w-canvas--bgColor, transparent);
 }
