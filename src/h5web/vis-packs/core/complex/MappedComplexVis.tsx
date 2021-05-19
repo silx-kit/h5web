@@ -5,7 +5,7 @@ import type { DimensionMapping } from '../../../dimension-mapper/models';
 import shallow from 'zustand/shallow';
 import { useSafeDomain, useVisDomain } from '../heatmap/hooks';
 import type { H5WebComplex } from '../../../providers/models';
-import { usePhaseAmplitude } from './hooks';
+import { usePhaseAmplitudeArrays } from './hooks';
 import HeatmapVis from '../heatmap/HeatmapVis';
 import { DEFAULT_DOMAIN } from '../utils';
 import { ComplexVisType } from './models';
@@ -53,7 +53,7 @@ function MappedComplexVis(props: Props) {
     phaseDomain = DEFAULT_DOMAIN,
     amplitudeArray,
     amplitudeDomain = DEFAULT_DOMAIN,
-  } = usePhaseAmplitude(mappedArray, scaleType);
+  } = usePhaseAmplitudeArrays(mappedArray, scaleType);
 
   const dataArray =
     visType !== ComplexVisType.Amplitude ? phaseArray : amplitudeArray;

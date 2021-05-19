@@ -4,6 +4,10 @@ export enum ComplexVisType {
   PhaseAmplitude = 'Phase and amplitude',
 }
 
+export type ComplexLineVisType =
+  | ComplexVisType.Phase
+  | ComplexVisType.Amplitude;
+
 export const VIS_TYPE_SYMBOLS = {
   [ComplexVisType.Phase]: 'φ',
   [ComplexVisType.Amplitude]: '𝓐',
