@@ -54,15 +54,19 @@ function ColorBar(props: Props) {
       )}
       <div
         ref={gradientRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
-        className={styles.gradient}
-        style={{
-          backgroundImage: getLinearGradient(
-            getInterpolator(colorMap, invertColorMap),
-            horizontal ? 'right' : 'top',
-            domain[0] === domain[1]
-          ),
-        }}
-      />
+        className={styles.gradientBar}
+      >
+        <div
+          className={styles.gradient}
+          style={{
+            backgroundImage: getLinearGradient(
+              getInterpolator(colorMap, invertColorMap),
+              horizontal ? 'right' : 'top',
+              domain[0] === domain[1]
+            ),
+          }}
+        />
+      </div>
       {gradientLength > 0 && (
         <svg
           className={styles.axis}

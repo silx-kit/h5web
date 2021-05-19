@@ -3,6 +3,7 @@
 }
 
 .gradient {
+  composes: no-invert from global;
   position: relative;
   top: 1px;
   width: 2rem;
