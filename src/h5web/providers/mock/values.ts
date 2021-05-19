@@ -26,6 +26,10 @@ export const mockValues = {
   scalar_bool: true,
   scalar_cplx: [1, 5],
   oneD,
+  oneD_cplx: range(1, 11).map((val) => [
+    val * Math.cos((val * 3.14) / 10),
+    val * Math.sin((val * 3.14) / 10),
+  ]),
   oneD_linear: arr1,
   oneD_errors: oneD.map((x) => Math.abs(x) / 10),
   oneD_str: ['foo', 'bar'],
@@ -103,4 +107,5 @@ export const mockValues = {
   title_twoD: 'NeXus 2D',
   secondary: twoD.map((inner) => inner.map((v) => v * 2)),
   tertiary: twoD.map((inner) => inner.map((v) => v / 2)),
+  position: [-1, 0, 1],
 };

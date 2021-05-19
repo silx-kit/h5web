@@ -61,6 +61,24 @@ test('visualize NXroot group with 2D default signal', async () => {
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
 });
 
+test('visualize NXdata group with 2D complex signal', async () => {
+  await renderApp();
+  await selectExplorerNode('nexus_entry/complex_image');
+
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
+});
+
+test('visualize NXdata group with 1D complex signal', async () => {
+  await renderApp();
+  await selectExplorerNode('nexus_entry/complex_spectrum');
+
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+});
+
 test('show error when encountering malformed NeXus metadata', async () => {
   await renderApp();
 

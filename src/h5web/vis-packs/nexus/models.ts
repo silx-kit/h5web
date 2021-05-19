@@ -2,9 +2,9 @@ import type {
   ArrayShape,
   ComplexType,
   Dataset,
-  H5WebComplex,
   NumArrayDataset,
   NumericType,
+  Primitive,
   ScalarShape,
   StringType,
 } from '../../providers/models';
@@ -26,8 +26,10 @@ export enum NxInterpretation {
   Image = 'image',
 }
 
-export interface NxData {
-  signalDataset: Dataset<ArrayShape, NumericType | ComplexType>;
+export interface NxData<
+  T extends NumericType | ComplexType = NumericType | ComplexType
+> {
+  signalDataset: Dataset<ArrayShape, T>;
   errorsDataset?: NumArrayDataset;
   axisDatasets: AxisDatasetMapping;
   auxDatasets: NumArrayDataset[];
@@ -35,8 +37,8 @@ export interface NxData {
   silxStyle: SilxStyle;
 }
 
-export interface NxValues {
-  signal: (number | H5WebComplex)[];
+export interface NxValues<T extends NumericType | ComplexType> {
+  signal: Primitive<T>[];
   errors?: number[];
   axisMapping: AxisMapping;
   auxiliaries?: number[][];

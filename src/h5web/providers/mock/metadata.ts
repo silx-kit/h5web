@@ -46,6 +46,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
     makeGroup('nD_datasets', [
       makeDataset('oneD_linear', intType, [41]),
       makeDataset('oneD', intType, [41]),
+      makeDataset('oneD_cplx', complexType, [10]),
       makeDataset('twoD', intType, [20, 41]),
       makeDataset('twoD_cplx', complexType, [2, 2]),
       makeDataset('threeD', intType, [9, 20, 41]),
@@ -128,6 +129,14 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         makeNxDataGroup('complex_image', {
           signal: makeNxDataset('twoD_complex', complexType, [2, 2], {
             valueId: 'twoD_cplx',
+          }),
+          axes: { position: makeNxDataset('position', intType, [3]) },
+          axesAttr: ['.', 'position'],
+        }),
+        makeNxDataGroup('complex_spectrum', {
+          signal: makeNxDataset('twoD_complex', complexType, [2, 2], {
+            valueId: 'twoD_cplx',
+            interpretation: 'spectrum',
           }),
         }),
       ],

@@ -1,46 +1,48 @@
-import { assertComplexType, assertGroup, assertMinDims } from '../../../guards';
+import { assertGroup } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
-import MappedComplexVis from '../../core/complex/MappedComplexVis';
+import { getNxData, getDatasetLabel } from '../utils';
 import VisBoundary from '../../core/VisBoundary';
 import NxValuesFetcher from '../NxValuesFetcher';
-import type { H5WebComplex } from '../../../providers/models';
-import { getNxData, getDatasetLabel } from '../utils';
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
+import { assertComplexNxData } from '../guards';
 
-function NxComplexContainer(props: VisContainerProps) {
+function NxComplexSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroup(entity);
 
   const nxData = getNxData(entity);
+  assertComplexNxData(nxData);
   const { signalDataset, silxStyle } = nxData;
-  assertComplexType(signalDataset);
-  assertMinDims(signalDataset, 2);
 
-  const { shape: dims } = signalDataset;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const signalDims = signalDataset.shape;
+
+  const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
 
   return (
     <>
       <DimensionMapper
-        rawDims={dims}
+        rawDims={signalDims}
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxData}
-          dimMapping={dimMapping}
           render={(nxValues) => {
+            const signalLabel = getDatasetLabel(signalDataset);
             const { signal, axisMapping, title } = nxValues;
+
             return (
-              <MappedComplexVis
-                value={signal as H5WebComplex[]}
-                dims={dims}
+              <MappedComplexLineVis
+                value={signal}
+                valueLabel={signalLabel}
+                valueScaleType={silxStyle.signalScaleType}
+                dims={signalDims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}
-                title={title || getDatasetLabel(signalDataset)}
-                colorScaleType={silxStyle.signalScaleType}
+                title={title || signalLabel}
               />
             );
           }}
@@ -50,4 +52,4 @@ function NxComplexContainer(props: VisContainerProps) {
   );
 }
 
-export default NxComplexContainer;
+export default NxComplexSpectrumContainer;

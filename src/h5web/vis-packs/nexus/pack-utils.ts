@@ -37,21 +37,19 @@ export function getSupportedVis(entity: Entity): VisDef | undefined {
 
   const dataset = findSignalDataset(entity);
 
-  if (hasComplexType(dataset)) {
-    // 1D Nexus complex signal is not supported
-    return hasMinDims(dataset, 2) ? NEXUS_VIS[NexusVis.NxComplex] : undefined;
-  }
+  const isCplx = hasComplexType(dataset);
+  const imageVis = isCplx ? NexusVis.NxComplexImage : NexusVis.NxImage;
+  const spectrumVis = isCplx ? NexusVis.NxComplexSpectrum : NexusVis.NxSpectrum;
 
   const interpretation = getAttributeValue(dataset, 'interpretation');
+
   if (interpretation === NxInterpretation.Image) {
-    return NEXUS_VIS[NexusVis.NxImage];
+    return NEXUS_VIS[imageVis];
   }
 
   if (interpretation === NxInterpretation.Spectrum) {
-    return NEXUS_VIS[NexusVis.NxSpectrum];
+    return NEXUS_VIS[spectrumVis];
   }
 
-  return hasMinDims(dataset, 2)
-    ? NEXUS_VIS[NexusVis.NxImage]
-    : NEXUS_VIS[NexusVis.NxSpectrum];
+  return NEXUS_VIS[hasMinDims(dataset, 2) ? imageVis : spectrumVis];
 }
