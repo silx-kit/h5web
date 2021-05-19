@@ -57,14 +57,14 @@ describe('App', () => {
     }
   });
 
-  it('visualize 2D complex dataset as Complex map', () => {
+  it('visualize 2D complex dataset as Heatmap', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'twoD_cplx' }).click();
 
     cy.findByRole('heading', { name: 'nD_datasets / twoD_cplx' }).should(
       'exist'
     );
-    cy.findByRole('tab', { name: 'Complex' }).should('exist');
+    cy.findByRole('tab', { name: 'Heatmap' }).should('exist');
     cy.findByRole('figure', { name: /twoD_cplx/ }).should('exist');
   });
 
