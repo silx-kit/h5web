@@ -39,6 +39,7 @@ dl {
   margin-bottom: 1rem;
 }
 
+code,
 pre {
   font-family: var(--monospace);
 }

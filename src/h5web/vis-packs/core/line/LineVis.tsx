@@ -77,7 +77,7 @@ function LineVis(props: Props) {
   const {
     colors: [curveColor, auxColor],
     refCallback: rootRef,
-  } = useCSSCustomProperties('--h5w-line--curveColor', '--h5w-line--auxColor');
+  } = useCSSCustomProperties('--h5w-line--color', '--h5w-line--colorAux');
 
   return (
     <figure ref={rootRef} className={styles.root} aria-labelledby="vis-title">

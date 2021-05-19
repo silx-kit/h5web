@@ -1,12 +1,17 @@
 .tooltip {
-  color: inherit !important;
-  background-color: var(--primary-light-bg-70) !important;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--h5w-tooltip--bgColor, whitesmoke);
+  border-radius: 0.25rem;
+  box-shadow: rgba(33, 33, 33, 0.2) 0px 1px 2px;
+  color: var(--h5w-tooltip--color, inherit);
+  font-family: var(--h5w-tooltip--fontFamily, inherit);
+  font-size: var(--h5w-tooltip--fontSize, 0.75em);
 }
 
 .guides {
-  stroke: var(--axis-secondary-color);
-  stroke-width: 1.5;
-  stroke-opacity: 0.5;
+  stroke: var(--h5w-tooltip-guide--color, gray);
+  stroke-width: var(--h5w-tooltip-guide--width, 1.5);
+  stroke-opacity: var(--h5w-tooltip-guide--opacity, 0.5);
 }
 
 .tooltipValue {

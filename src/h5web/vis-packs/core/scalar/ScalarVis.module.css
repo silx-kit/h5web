@@ -1,4 +1,6 @@
 .scalar {
   padding: 1rem 1.5rem;
-  font-family: var(--monospace);
+  color: var(--h5w-scalar--color, inherit);
+  font-family: var(--h5w-scalar--fontFamily, monospace);
+  font-size: var(--h5w-scalar--fontSize, inherit);
 }
