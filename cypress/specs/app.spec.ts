@@ -23,6 +23,22 @@ describe('App', () => {
     }
   });
 
+  it('visualize 1D complex dataset as Line', () => {
+    cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
+    cy.findByRole('treeitem', { name: 'oneD_cplx' }).click();
+
+    cy.findByRole('heading', { name: 'nD_datasets / oneD_cplx' }).should(
+      'exist'
+    );
+    cy.findByRole('tab', { name: 'Line' }).should('exist');
+    cy.findByRole('figure', { name: 'oneD_cplx' }).should('exist');
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('line_complex_1D');
+    }
+  });
+
   it('visualize 1D dataset as Matrix', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'oneD' }).click();
@@ -66,6 +82,11 @@ describe('App', () => {
     );
     cy.findByRole('tab', { name: 'Heatmap' }).should('exist');
     cy.findByRole('figure', { name: /twoD_cplx/ }).should('exist');
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('heatmap_2D_complex');
+    }
   });
 
   it('map dimensions of 4D dataset when visualized as Heatmap', () => {

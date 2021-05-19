@@ -17,8 +17,9 @@ import { NxInterpretation } from './models';
 const datasetInt1D = makeDataset('dataset_int_1d', intType, [5]);
 const datasetInt2D = makeDataset('dataset_int_2d', intType, [5, 3]);
 const datasetFlt3D = makeDataset('dataset_flt_3d', floatType, [5, 3, 1]);
-const datasetCplx2D = makeDataset('dataset_cplx_2d', complexType, [5, 3]);
 const datasetCplx1D = makeDataset('dataset_cplx_1d', complexType, [5]);
+const datasetCplx2D = makeDataset('dataset_cplx_2d', complexType, [5, 3]);
+const datasetCplx3D = makeDataset('dataset_cplx_3d', complexType, [5, 3, 1]);
 
 describe('getSupportedVis', () => {
   it('should not include NxSpectrum vis if any other visualization is supported', () => {
@@ -57,16 +58,39 @@ describe('getSupportedVis', () => {
     expect(getSupportedVis(signal3D)).toBe(NEXUS_VIS[NexusVis.NxImage]);
   });
 
-  it('should return NxComplex for complex 2D datasets whatever the interpretation', () => {
-    const signalComplex = makeNxDataGroup('foo', { signal: datasetCplx2D });
-    expect(getSupportedVis(signalComplex)).toBe(NEXUS_VIS[NexusVis.NxComplex]);
+  it('should get supported complex visualization based on `interpretation` attribute', () => {
+    const spectrum1D = makeNxDataGroup('foo', {
+      signal: withNxInterpretation(datasetCplx1D, NxInterpretation.Spectrum),
+    });
 
-    const signalComplexSpectrum = makeNxDataGroup('foo', {
+    const spectrum2D = makeNxDataGroup('foo', {
       signal: withNxInterpretation(datasetCplx2D, NxInterpretation.Spectrum),
     });
-    expect(getSupportedVis(signalComplexSpectrum)).toBe(
-      NEXUS_VIS[NexusVis.NxComplex]
+
+    const image2D = makeNxDataGroup('foo', {
+      signal: withNxInterpretation(datasetCplx2D, NxInterpretation.Image),
+    });
+
+    expect(getSupportedVis(spectrum1D)).toBe(
+      NEXUS_VIS[NexusVis.NxComplexSpectrum]
     );
+    expect(getSupportedVis(spectrum2D)).toBe(
+      NEXUS_VIS[NexusVis.NxComplexSpectrum]
+    );
+    expect(getSupportedVis(image2D)).toBe(NEXUS_VIS[NexusVis.NxComplexImage]);
+  });
+
+  it('should get supported complex visualization based on dataset shape', () => {
+    const signal1D = makeNxDataGroup('foo', { signal: datasetCplx1D });
+    expect(getSupportedVis(signal1D)).toBe(
+      NEXUS_VIS[NexusVis.NxComplexSpectrum]
+    );
+
+    const signal2D = makeNxDataGroup('foo', { signal: datasetCplx2D });
+    expect(getSupportedVis(signal2D)).toBe(NEXUS_VIS[NexusVis.NxComplexImage]);
+
+    const signal3D = makeNxDataGroup('foo', { signal: datasetCplx3D });
+    expect(getSupportedVis(signal3D)).toBe(NEXUS_VIS[NexusVis.NxComplexImage]);
   });
 
   it('should fallback to dataset shape when interpretation is unknown', () => {
@@ -87,9 +111,6 @@ describe('getSupportedVis', () => {
 
     const nxEntryGroup = makeNxGroup('nxentry', 'NXentry');
     expect(getSupportedVis(nxEntryGroup)).toBeUndefined();
-
-    const signal1DComplex = makeNxDataGroup('foo', { signal: datasetCplx1D });
-    expect(getSupportedVis(signal1DComplex)).toBeUndefined();
   });
 
   it('should throw if entity has malformed NeXus metadata', () => {

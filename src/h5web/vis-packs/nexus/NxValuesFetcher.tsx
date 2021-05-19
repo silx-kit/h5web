@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { DimensionMapping } from '../../dimension-mapper/models';
+import type { ComplexType, NumericType } from '../../providers/models';
 import {
   useDatasetValue,
   useDatasetValues,
@@ -8,13 +9,13 @@ import {
 import { useAxisMapping } from './hooks';
 import type { NxData, NxValues } from './models';
 
-interface Props {
-  nxData: NxData;
+interface Props<T extends NumericType | ComplexType> {
+  nxData: NxData<T>;
   dimMapping?: DimensionMapping; // for slice-by-slice fetching
-  render: (val: NxValues) => ReactNode;
+  render: (val: NxValues<T>) => ReactNode;
 }
 
-function NxValuesFetcher(props: Props) {
+function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
   const { nxData, dimMapping, render } = props;
   const {
     signalDataset,
