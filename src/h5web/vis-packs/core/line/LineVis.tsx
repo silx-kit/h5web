@@ -13,6 +13,10 @@ import { assertDataLength, assertDefined } from '../../../guards';
 import { useTooltipFormatters } from './hooks';
 import { useCSSCustomProperties } from '../hooks';
 
+const DEFAULT_CURVE_COLOR = 'midnightblue';
+const DEFAULT_AUX_COLORS =
+  'orangered, forestgreen, crimson, mediumslateblue, sienna';
+
 interface Props {
   dataArray: NdArray;
   domain: Domain | undefined;
@@ -75,9 +79,14 @@ function LineVis(props: Props) {
   );
 
   const {
-    colors: [curveColor, auxColor],
+    colors: [curveColor, rawAuxColor],
     refCallback: rootRef,
   } = useCSSCustomProperties('--h5w-line--color', '--h5w-line--colorAux');
+
+  // Support comma-separated list of auxiliary colors
+  const auxColors = (rawAuxColor || DEFAULT_AUX_COLORS)
+    .split(',')
+    .map((col) => col.trim());
 
   return (
     <figure ref={rootRef} className={styles.root} aria-labelledby="vis-title">
@@ -104,7 +113,7 @@ function LineVis(props: Props) {
           ordinates={dataArray.data as number[]}
           errors={errorsArray && (errorsArray.data as number[])}
           showErrors={showErrors}
-          color={curveColor || 'midnightblue'}
+          color={curveColor || DEFAULT_CURVE_COLOR}
           curveType={curveType}
         />
         {auxArrays.map((array, i) => (
@@ -112,7 +121,7 @@ function LineVis(props: Props) {
             key={i} // eslint-disable-line react/no-array-index-key
             abscissas={abscissas}
             ordinates={array.data as number[]}
-            color={auxColor || 'cornflowerblue'}
+            color={auxColors[i < auxColors.length ? i : auxColors.length - 1]}
             curveType={curveType}
           />
         ))}
