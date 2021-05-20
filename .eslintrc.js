@@ -60,6 +60,10 @@ module.exports = createConfig({
           'error',
           'interface',
         ],
+
+        // Disallows calling function with value of type `any` (disabled due to false positives)
+        // Re-enabling because has helped fix a good number of true positives
+        '@typescript-eslint/no-unsafe-argument': 'warn',
       },
     },
     {

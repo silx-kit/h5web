@@ -1,6 +1,7 @@
 import { ReactElement, useRef, Children, cloneElement } from 'react';
 import { FiMenu } from 'react-icons/fi';
-import { useToggle, useClickAway } from 'react-use';
+import { useToggle } from '@react-hookz/web';
+import { useClickAway } from 'react-use';
 import Separator from './Separator';
 import styles from './OverflowMenu.module.css';
 
@@ -39,7 +40,7 @@ function OverflowMenu(props: Props) {
         aria-haspopup="menu"
         aria-controls="more-menu"
         aria-expanded={isOverflowMenuOpen}
-        onClick={toggleOverflowMenu}
+        onClick={() => toggleOverflowMenu()}
       >
         <span className={styles.btnLike}>
           <FiMenu className={styles.icon} />

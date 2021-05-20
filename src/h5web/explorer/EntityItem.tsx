@@ -5,7 +5,7 @@ import Icon from './Icon';
 import { isGroup } from '../guards';
 import type { Entity } from '../providers/models';
 import EntityList from './EntityList';
-import { useToggle } from 'react-use';
+import { useToggle } from '@react-hookz/web';
 
 interface Props {
   path: string;
