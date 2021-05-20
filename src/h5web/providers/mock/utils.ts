@@ -3,7 +3,6 @@ import {
   assertAbsolutePath,
   assertArray,
   assertDefined,
-  assertNumericType,
   assertArrayShape,
   isDataset,
   isGroup,
@@ -46,15 +45,13 @@ export function findMockEntity(path: string): Entity {
   return entity;
 }
 
-export function getMockDataArray(path: string): NdArray {
+export function getMockDataArray<T = number>(path: string): NdArray<T> {
   const dataset = findMockEntity(path);
   assertMockDataset(dataset);
 
   const { value } = dataset;
-  assertArray<number>(value);
-
-  assertNumericType(dataset);
+  assertArray<T>(value);
   assertArrayShape(dataset);
 
-  return ndarray(value.flat(dataset.shape.length - 1), dataset.shape);
+  return ndarray(value.flat(dataset.shape.length - 1) as T[], dataset.shape);
 }

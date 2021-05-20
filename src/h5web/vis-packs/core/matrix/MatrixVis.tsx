@@ -61,4 +61,5 @@ function MatrixVis(props: Props) {
   );
 }
 
+export type { Props as MatrixVisProps };
 export default MatrixVis;
