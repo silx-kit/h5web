@@ -15,61 +15,47 @@ The components are organised in two categories:
 ## Getting started
 
 1. Make you sure you have `react` and `react-dom` v16 or greater installed.
-1. Install the library:
+1. Install the library, along with `ndarray`. If you use TypeScript, install `ndarray`'s types package as well:
 
    ```bash
-   npm install @h5web/lib
+   npm install @h5web/lib ndarray
+   npm install --save-dev @types/ndarray
    ```
 
-1. Import and use a visualization component:
+1. Convert your source array to `ndarray` and find its domain:
 
    ```tsx
-   import { ScalarVis } from '@h5web/lib';
+   import ndarray from 'ndarray';
+   import { getDomain } from '@h5web/lib';
+
+   // Initialise source 2D array
+   const values = [
+     [0, 1, 2],
+     [3, 4, 5],
+   ];
+
+   // Flatten source array
+   const flatValues: number[] = values.flat(Infinity);
+
+   // Convert to ndarray and get domain
+   const dataArray = ndarray<number>(flatValues, [2, 3]);
+   const domain = getDomain(dataArray);
+   ```
+
+1. Import the visualization component and render it inside an element styled with `display: flex` and a height, for example:
+
+   ```tsx
+   import { HeatmapVis, getDomain } from '@h5web/lib';
 
    // ...
 
-   <ScalarVis value={1024} />;
-   ```
-
-1. Other visualization components expect to receive an `ndarray` and a domain as props.
-
-   1. Install `ndarray` and its corresponding types package (if you use TypeScript):
-
-      ```bash
-      npm install ndarray
-      npm install --save-dev @types/ndarray
-      ```
-
-   1. Pass an `ndarray` and domain to the visualization:
-
-      ```tsx
-      import ndarray from 'ndarray';
-      import { HeatmapVis, getDomain } from '@h5web/lib';
-
-      // Source 2D array
-      const values = [
-        [0, 1, 2],
-        [3, 4, 5],
-      ];
-
-      // Flatten array
-      const flatValues: number[] = values.flat(Infinity);
-
-      // Convert to ndarray and get domain
-      const dataArray = ndarray<number>(flatValues, [2, 3]);
-      const domain = getDomain(dataArray);
-
-      // ...
-
-      <HeatmapVis dataArray={dataArray} domain={domain} />;
-      ```
-
-1. Make sure the visualization is sized properly by rendering it inside an element with `display: flex` and a height, for example:
-
-   ```tsx
-   <div className="my-container">
-     <HeatmapVis /* ... */ />
-   </div>
+   function MyApp() {
+     return (
+       <div className="my-container">
+         <HeatmapVis dataArray={dataArray} domain={domain} />
+       </div>
+     );
+   }
    ```
 
    ```css
@@ -79,20 +65,26 @@ The components are organised in two categories:
    }
    ```
 
-1. Configure the visualization:
+1. Configure the visualization as needed:
 
    ```tsx
    import { HeatmapVis, getDomain, ScaleType } from '@h5web/lib';
 
    // ...
 
-   <HeatmapVis
-     dataArray={dataArray}
-     domain={domain}
-     colorMap="Inferno"
-     scaleType={ScaleType.Log}
-     ...
-   />;
+   function MyApp() {
+     return (
+       <div className="my-container">
+         <HeatmapVis
+           dataArray={dataArray}
+           domain={domain}
+           colorMap="Inferno"
+           scaleType={ScaleType.Log}
+           // ...
+         />
+       </div>
+     );
+   }
    ```
 
 ### Using the low-level building blocks

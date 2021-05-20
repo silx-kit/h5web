@@ -1,9 +1,9 @@
 .raw {
   padding: 1rem;
   margin: 0;
-  color: var(--h5w-raw--color, inherit);
-  font-family: var(--h5w-raw--fontFamily, monospace);
-  font-size: var(--h5w-raw--fontSize, inherit);
+  color: inherit;
+  font-family: var(--monospace);
+  font-size: inherit;
 }
 
 .fallback {

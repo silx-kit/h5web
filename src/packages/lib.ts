@@ -1,8 +1,8 @@
 // Visualizations
-export { default as ScalarVis } from '../h5web/vis-packs/core/scalar/ScalarVis';
+export { default as MatrixVis } from '../h5web/vis-packs/core/matrix/MatrixVis';
 export { default as LineVis } from '../h5web/vis-packs/core/line/LineVis';
 export { default as HeatmapVis } from '../h5web/vis-packs/core/heatmap/HeatmapVis';
-export type { ScalarVisProps } from '../h5web/vis-packs/core/scalar/ScalarVis';
+export type { MatrixVisProps } from '../h5web/vis-packs/core/matrix/MatrixVis';
 export type { LineVisProps } from '../h5web/vis-packs/core/line/LineVis';
 export type { HeatmapVisProps } from '../h5web/vis-packs/core/heatmap/HeatmapVis';
 

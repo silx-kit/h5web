@@ -47,6 +47,4 @@
   --h5w-matrix-indexCell--bgColor: var(--primary-bg);
   --h5w-matrix-indexCell--bgColorAlt: var(--primary-light-bg);
   --h5w-matrix-anchorCell--bgColor: var(--primary-dark-bg);
-  --h5w-scalar-fontFamily: var(--monospace);
-  --h5w-raw-fontFamily: var(--monospace);
 }
