@@ -83,6 +83,17 @@ function getConfig(pkg) {
         ],
       }),
     ],
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[/\\]node_modules[/\\](three)[/\\]/u,
+            name: 'three',
+            chunks: 'all',
+          },
+        },
+      },
+    },
   };
 }
 
