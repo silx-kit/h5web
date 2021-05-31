@@ -1,7 +1,7 @@
 import { useRef, useCallback, useEffect } from 'react';
 import type { Vector3 } from 'three';
 import { useThree } from '@react-three/fiber';
-import { clamp } from 'lodash-es';
+import { clamp } from 'lodash';
 import { useWheelCapture } from '../hooks';
 import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
 

@@ -10,7 +10,8 @@ node_modules/
 /storybook-static/
 /packages/**/dist/
 
-/.env.*
+/.env.local
+/.env.*.local
 
 npm-debug.log*
 *.log

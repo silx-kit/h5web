@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash-es';
+import { isEqual } from 'lodash';
 import { assertGroup } from '../../../guards';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';

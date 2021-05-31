@@ -47,7 +47,10 @@ module.exports = createConfig({
         '@typescript-eslint/explicit-module-boundary-types': 'off',
 
         // Unused vars should be removed but not prevent compilation
-        '@typescript-eslint/no-unused-vars': 'warn',
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          { ignoreRestSiblings: true },
+        ],
 
         // Allow writing void-returning arrow functions in shorthand to save space
         '@typescript-eslint/no-confusing-void-expression': [

@@ -10,7 +10,7 @@ import { tickStep, range } from 'd3-array';
 import { format } from 'd3-format';
 import ndarray, { NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
-import { isNumber } from 'lodash-es';
+import { isNumber } from 'lodash';
 import type { Axis, DimensionMapping } from '../../dimension-mapper/models';
 import {
   Size,

@@ -1,5 +1,5 @@
 import { ReactNode, useContext } from 'react';
-import { range } from 'lodash-es';
+import { range } from 'lodash';
 import { GridSettingsContext } from './GridSettingsContext';
 import styles from './MatrixVis.module.css';
 
