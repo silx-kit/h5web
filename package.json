@@ -115,7 +115,10 @@
     "typescript": "^4.2.4"
   },
   "jest": {
-    "restoreMocks": true
+    "restoreMocks": true,
+    "transformIgnorePatterns": [
+      "node_modules/(?!(d3-format)/)"
+    ]
   },
   "browserslist": {
     "production": [
