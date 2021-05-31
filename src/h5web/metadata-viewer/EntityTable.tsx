@@ -4,7 +4,7 @@ import styles from './MetadataViewer.module.css';
 import { isDataset, isDatatype } from '../guards';
 import { renderType, renderShape } from './utils';
 import RawInspector from './RawInspector';
-import { capitalize } from 'lodash-es';
+import { capitalize } from 'lodash';
 import { ProviderContext } from '../providers/context';
 
 interface Props {

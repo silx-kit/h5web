@@ -1,4 +1,4 @@
-import { isNumber } from 'lodash-es';
+import { isNumber } from 'lodash';
 import type { DimensionMapping } from './models';
 import styles from './DimensionMapper.module.css';
 import SlicingSlider from './SlicingSlider';

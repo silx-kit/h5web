@@ -1,4 +1,4 @@
-import { range } from 'lodash-es';
+import { range } from 'lodash';
 
 const arr1 = range(-20, 21);
 const arr2 = range(0, 100, 5);
