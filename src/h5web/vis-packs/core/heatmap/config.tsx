@@ -1,6 +1,6 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { ColorMap } from './models';
+import type { ColorMap, Layout } from './models';
 import { CustomDomain, Domain, ScaleType } from '../models';
 import { useState } from 'react';
 import type { ConfigProviderProps } from '../../models';
@@ -22,11 +22,11 @@ interface HeatmapConfig {
   scaleType: ScaleType;
   setScaleType: (scaleType: ScaleType) => void;
 
-  keepAspectRatio: boolean;
-  toggleAspectRatio: () => void;
-
   showGrid: boolean;
   toggleGrid: () => void;
+
+  layout: Layout;
+  setLayout: (layout: Layout) => void;
 }
 
 function initialiseStore(onRehydrated: () => void) {
@@ -54,13 +54,11 @@ function initialiseStore(onRehydrated: () => void) {
           }
         },
 
-        keepAspectRatio: true,
-        toggleAspectRatio: () => {
-          set((state) => ({ keepAspectRatio: !state.keepAspectRatio }));
-        },
-
         showGrid: false,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
+
+        layout: 'contain',
+        setLayout: (layout: Layout) => set({ layout }),
       }),
       {
         name: 'h5web:heatmap',
@@ -68,11 +66,11 @@ function initialiseStore(onRehydrated: () => void) {
           'customDomain',
           'colorMap',
           'scaleType',
-          'keepAspectRatio',
           'showGrid',
           'invertColorMap',
+          'layout',
         ],
-        version: 6,
+        version: 7,
         onRehydrateStorage: () => onRehydrated,
       }
     )

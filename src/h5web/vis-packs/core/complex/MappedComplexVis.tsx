@@ -35,7 +35,7 @@ function MappedComplexVis(props: Props) {
     customDomain,
     colorMap,
     scaleType,
-    keepAspectRatio,
+    layout,
     showGrid,
     setDataDomain,
     setScaleType,
@@ -85,7 +85,7 @@ function MappedComplexVis(props: Props) {
       title={title ? `${title} (${visType.toLowerCase()})` : visType}
       colorMap={colorMap}
       scaleType={scaleType}
-      keepAspectRatio={keepAspectRatio}
+      layout={layout}
       showGrid={showGrid}
       invertColorMap={invertColorMap}
       abscissaParams={axisMapping[dimMapping.indexOf('x')]}

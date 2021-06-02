@@ -7,7 +7,7 @@ import Mesh from './Mesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
-import type { ColorMap } from './models';
+import type { ColorMap, Layout } from './models';
 import { DEFAULT_DOMAIN } from '../utils';
 import { assertDefined } from '../../../guards';
 import { useAxisValues, useTooltipFormatters } from './hooks';
@@ -18,7 +18,7 @@ interface Props {
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: ScaleType;
-  keepAspectRatio?: boolean;
+  layout?: Layout;
   showGrid?: boolean;
   title?: string;
   invertColorMap?: boolean;
@@ -34,7 +34,7 @@ function HeatmapVis(props: Props) {
     domain = DEFAULT_DOMAIN,
     colorMap = 'Viridis',
     scaleType = ScaleType.Linear,
-    keepAspectRatio = true,
+    layout = 'contain',
     showGrid = false,
     invertColorMap = false,
     title,
@@ -48,7 +48,7 @@ function HeatmapVis(props: Props) {
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
 
   const { rows, cols } = getDims(dataArray);
-  const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
+  const aspectRatio = layout === 'contain' ? cols / rows : undefined; // width / height <=> cols / rows
 
   const abscissas = useAxisValues(abscissaValue, cols);
   const abscissaDomain = useDomain(abscissas);

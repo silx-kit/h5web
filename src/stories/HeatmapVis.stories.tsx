@@ -63,7 +63,7 @@ export const IgnoreAspectRatio = Template.bind({});
 IgnoreAspectRatio.args = {
   dataArray,
   domain,
-  keepAspectRatio: false,
+  layout: 'fill',
 };
 
 export const NoGrid = Template.bind({});
@@ -176,8 +176,12 @@ export default {
         options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
       },
     },
-    keepAspectRatio: {
-      defaultValue: true,
+    layout: {
+      defaultValue: 'contain',
+      control: {
+        type: 'inline-radio',
+        options: ['contain', 'cover', 'fill'],
+      },
     },
     showGrid: {
       defaultValue: true,

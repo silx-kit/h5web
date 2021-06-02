@@ -19,8 +19,8 @@ function HeatmapToolbar() {
     setColorMap,
     scaleType,
     setScaleType,
-    keepAspectRatio,
-    toggleAspectRatio,
+    layout,
+    setLayout,
     showGrid,
     toggleGrid,
     invertColorMap,
@@ -56,9 +56,10 @@ function HeatmapToolbar() {
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
-        value={keepAspectRatio}
-        onToggle={toggleAspectRatio}
+        value={layout === 'contain'}
+        onToggle={() => setLayout(layout === 'contain' ? 'fill' : 'contain')}
       />
+
       <GridToggler value={showGrid} onToggle={toggleGrid} />
 
       <Separator />
