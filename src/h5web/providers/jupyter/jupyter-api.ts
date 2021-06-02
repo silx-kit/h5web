@@ -10,7 +10,6 @@ import {
   assertGroupContent,
   isDatasetResponse,
   isGroupResponse,
-  convertDtype,
   parseComplex,
 } from './utils';
 import type {
@@ -24,7 +23,8 @@ import type {
   JupyterMetaResponse,
 } from './models';
 import { makeStrAttr } from '../mock/metadata-utils';
-import { assertDataset, hasArrayShape, hasComplexType } from '../../guards';
+import { assertDataset, hasComplexType } from '../../guards';
+import { convertDtype, flattenValue } from '../utils';
 
 export class JupyterStableApi extends ProviderApi {
   /* API compatible with jupyterlab_hdf v0.5.1 */
@@ -44,7 +44,7 @@ export class JupyterStableApi extends ProviderApi {
     ]);
 
     assertDataset(entity);
-    const flatValue = this.flattenValue(value, entity, selection);
+    const flatValue = flattenValue(value, entity, selection);
 
     if (hasComplexType(entity)) {
       return parseComplex(flatValue as JupyterComplex);
@@ -162,15 +162,5 @@ export class JupyterStableApi extends ProviderApi {
     assertGroupContent(contents);
 
     return contents;
-  }
-
-  protected flattenValue(value: unknown, entity: Dataset, selection?: string) {
-    if (!hasArrayShape(entity)) {
-      return value;
-    }
-
-    const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
-    const dims = slicedDims || entity.shape;
-    return (value as unknown[]).flat(dims.length - 1);
   }
 }
