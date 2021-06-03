@@ -121,19 +121,24 @@ describe('App', () => {
 
     // Check axes ticks
     cy.get('@xAxis').should('have.text', [0, 10, 20, 30, 40].join(''));
-    cy.get('@yAxis').should('have.text', [0, 5, 10, 15, 20].join(''));
+    cy.get('@yAxis').should('have.text', ['−20', 0, 20, 40].join('')); // Tick text uses minus sign − (U+2212) rather than hyphen minus - (U+002D)
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
       cy.matchImageSnapshot('heatmap_4d_default');
     }
 
-    // Change ordinate mapping and check that axis ticks have changed
+    // Change ordinate mapping
     cy.get('@yRadioGroup').within(() => {
       cy.findByRole('radio', { name: 'D1' }).click();
     });
-
-    cy.get('@yAxis').should('have.text', [0, 2, 4, 6, 8].join(''));
+    cy.get('@yRadioGroup').within(() => {
+      cy.findByRole('radio', { name: 'D1' }).should(
+        'have.attr',
+        'aria-checked',
+        'true'
+      );
+    });
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);

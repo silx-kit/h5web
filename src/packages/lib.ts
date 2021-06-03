@@ -24,7 +24,7 @@ export { default as ColorBar } from '../h5web/vis-packs/core/heatmap/ColorBar';
 export { default as HeatmapMesh } from '../h5web/vis-packs/core/heatmap/Mesh';
 export { default as HeatmapMeshMaterial } from '../h5web/vis-packs/core/heatmap/MeshMaterial';
 export { default as DataCurve } from '../h5web/vis-packs/core/line/DataCurve';
-export type { VisCanvasProps } from '../h5web/vis-packs/core/shared/VisCanvas';
+export type { AxisSystemProps } from '../h5web/vis-packs/core/shared/AxisSystem';
 
 // Utilities
 export {

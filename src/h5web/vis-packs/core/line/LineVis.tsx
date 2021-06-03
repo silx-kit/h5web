@@ -8,10 +8,16 @@ import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../models';
 import { CurveType } from './models';
-import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
+import {
+  getDomain,
+  extendDomain,
+  DEFAULT_DOMAIN,
+  getAxisOffsets,
+} from '../utils';
 import { assertDataLength, assertDefined } from '../../../guards';
 import { useTooltipFormatters } from './hooks';
 import { useCSSCustomProperties } from '../hooks';
+import AxisSystem from '../shared/AxisSystem';
 
 const DEFAULT_CURVE_COLOR = 'midnightblue';
 const DEFAULT_AUX_COLORS =
@@ -88,43 +94,52 @@ function LineVis(props: Props) {
     .split(',')
     .map((col) => col.trim());
 
+  const axisOffsets = getAxisOffsets({
+    left: !!ordinateLabel,
+    bottom: !!abscissaLabel,
+    top: !!title,
+  });
+
   return (
     <figure ref={rootRef} className={styles.root} aria-labelledby="vis-title">
-      <VisCanvas
-        canvasTitle={title}
-        abscissaConfig={{
-          domain: abscissaDomain,
-          showGrid,
-          scaleType: abscissaScaleType,
-          isIndexAxis: !abscissaValue,
-          label: abscissaLabel,
-        }}
-        ordinateConfig={{
-          domain: dataDomain,
-          showGrid,
-          scaleType,
-          label: ordinateLabel,
-        }}
-      >
-        <TooltipMesh {...tooltipFormatters} guides="vertical" />
-        <PanZoomMesh />
-        <DataCurve
-          abscissas={abscissas}
-          ordinates={dataArray.data as number[]}
-          errors={errorsArray && (errorsArray.data as number[])}
-          showErrors={showErrors}
-          color={curveColor || DEFAULT_CURVE_COLOR}
-          curveType={curveType}
-        />
-        {auxArrays.map((array, i) => (
+      <VisCanvas axisOffsets={axisOffsets}>
+        <AxisSystem
+          axisOffsets={axisOffsets}
+          title={title}
+          abscissaConfig={{
+            domain: abscissaDomain,
+            showGrid,
+            scaleType: abscissaScaleType,
+            isIndexAxis: !abscissaValue,
+            label: abscissaLabel,
+          }}
+          ordinateConfig={{
+            domain: dataDomain,
+            showGrid,
+            scaleType,
+            label: ordinateLabel,
+          }}
+        >
+          <TooltipMesh {...tooltipFormatters} guides="vertical" />
+          <PanZoomMesh />
           <DataCurve
-            key={i} // eslint-disable-line react/no-array-index-key
             abscissas={abscissas}
-            ordinates={array.data as number[]}
-            color={auxColors[i < auxColors.length ? i : auxColors.length - 1]}
+            ordinates={dataArray.data as number[]}
+            errors={errorsArray && (errorsArray.data as number[])}
+            showErrors={showErrors}
+            color={curveColor || DEFAULT_CURVE_COLOR}
             curveType={curveType}
           />
-        ))}
+          {auxArrays.map((array, i) => (
+            <DataCurve
+              key={i} // eslint-disable-line react/no-array-index-key
+              abscissas={abscissas}
+              ordinates={array.data as number[]}
+              color={auxColors[i < auxColors.length ? i : auxColors.length - 1]}
+              curveType={curveType}
+            />
+          ))}
+        </AxisSystem>
       </VisCanvas>
     </figure>
   );

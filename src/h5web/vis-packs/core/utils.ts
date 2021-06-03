@@ -19,6 +19,7 @@ import {
   ScaleType,
   AxisConfig,
   Bounds,
+  AxisOffsets,
 } from './models';
 import { assertDataLength, isDefined } from '../../guards';
 import { isAxis } from '../../dimension-mapper/utils';
@@ -27,6 +28,8 @@ const formatTick = format('0');
 export const formatNumber = format('.3e');
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
+
+const AXIS_OFFSETS = { vertical: 72, horizontal: 40, fallback: 16 };
 
 export const adaptedNumTicks = scaleLinear({
   domain: [300, 900],
@@ -364,4 +367,34 @@ export function getSliceSelection(
 
   // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
+}
+
+export function computeSameRatioDomains(
+  canvasRatio: number,
+  imageRatio: number,
+  abscissaDomain: Domain,
+  ordinateDomain: Domain
+): [Domain, Domain] {
+  const mismatch = canvasRatio / imageRatio; // ratio = width / height
+  if (mismatch > 1) {
+    // `canvasWidth` is relatively bigger than `imageWidth` => extend the abscissa domain by `mismatch` to make them match
+    // `extendDomain` relative extension is of `(1 + 2 * extendFactor)` so in this case, `extendFactor = (mismatch - 1) / 2`
+    return [extendDomain(abscissaDomain, (mismatch - 1) / 2), ordinateDomain];
+  }
+
+  // `canvasHeight` is relatively bigger than `imageHeight` => extend the ordinate domain by `1 / mismatch` to make them match
+  return [abscissaDomain, extendDomain(ordinateDomain, (1 / mismatch - 1) / 2)];
+}
+
+export function getAxisOffsets(
+  hasLabel: Partial<Record<keyof AxisOffsets, boolean>> = {}
+) {
+  const { horizontal, vertical, fallback } = AXIS_OFFSETS;
+
+  return {
+    left: (hasLabel.left ? fallback : 0) + vertical,
+    bottom: (hasLabel.bottom ? fallback : 0) + horizontal,
+    right: hasLabel.right ? vertical : fallback,
+    top: hasLabel.top ? horizontal : fallback,
+  };
 }

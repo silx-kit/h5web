@@ -74,8 +74,8 @@ function ComplexToolbar() {
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
-        value={layout === 'contain'}
-        onToggle={() => setLayout(layout === 'contain' ? 'fill' : 'contain')}
+        value={layout === 'cover'}
+        onToggle={() => setLayout(layout === 'cover' ? 'fill' : 'cover')}
       />
       <ToggleBtn
         label="Grid"

@@ -57,7 +57,7 @@ function initialiseStore(onRehydrated: () => void) {
         showGrid: false,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
-        layout: 'contain',
+        layout: 'cover',
         setLayout: (layout: Layout) => set({ layout }),
       }),
       {
