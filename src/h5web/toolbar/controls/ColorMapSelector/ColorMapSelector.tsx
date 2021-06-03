@@ -14,7 +14,11 @@ function ColorMapOption(props: { option: ColorMap }) {
   return (
     <>
       {option}
-      <div className={styles.gradient} style={{ backgroundImage }} />
+      <div
+        className={styles.gradient}
+        style={{ backgroundImage }}
+        data-keep-colors
+      />
     </>
   );
 }

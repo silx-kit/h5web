@@ -57,34 +57,6 @@ abbr[title] {
 [tabindex='-1']:focus:not(:focus-visible) {
   outline: 0 !important;
 }
-.btn-clean {
-  margin: 0;
-  padding: 0;
-  background: none;
-  border: none;
-  font: inherit;
-  color: inherit;
-  line-height: inherit;
-  text-align: left;
-  white-space: normal;
-  cursor: pointer;
-}
-
-.btn-clean:disabled,
-.btn-clean[aria-disabled='true'] {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.btn-link {
-  composes: btn-clean from global;
-  padding: 0.25rem 0.5rem;
-  font-weight: 600;
-}
-
-.btn-link:hover {
-  text-decoration: underline;
-}
 
 .reflex-splitter {
   width: 5px !important;
@@ -116,11 +88,8 @@ abbr[title] {
     --btn-shadow-darker-color: #fff;
   }
 
-  .no-invert {
-    filter: invert(); /* invert back to normal colors */
-  }
-
-  .no-invert-canvas > canvas {
+  [data-keep-colors],
+  [data-keep-canvas-colors] canvas {
     filter: invert(); /* invert back to normal colors */
   }
 }

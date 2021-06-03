@@ -10,7 +10,7 @@
 - [Continuous deployment](#continuous-deployment)
 - [NPM packages](#npm-packages-)
   - [Release process](#release-process)
-  - [Local testing](#local-testing)
+  - [Build and test locally](#build-and-test-locally)
 - [Icon set](#icon-set)
 
 ## Quick start 🚀

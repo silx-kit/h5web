@@ -1,0 +1,28 @@
+.btnClean {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  text-align: left;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.btnClean:disabled,
+.btnClean[aria-disabled='true'] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.btnLink {
+  composes: btnClean;
+  padding: 0.25rem 0.5rem;
+  font-weight: 600;
+}
+
+.btnLink:hover {
+  text-decoration: underline;
+}

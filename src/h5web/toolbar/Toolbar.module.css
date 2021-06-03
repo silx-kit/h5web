@@ -36,7 +36,7 @@
 }
 
 .btn {
-  composes: btn-clean from global;
+  composes: btnClean from '../utils.module.css';
   display: flex;
   align-items: center;
   padding: 0 0.25rem;

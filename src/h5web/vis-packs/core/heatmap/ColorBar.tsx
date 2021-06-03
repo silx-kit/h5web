@@ -58,6 +58,7 @@ function ColorBar(props: Props) {
       >
         <div
           className={styles.gradient}
+          data-keep-colors
           style={{
             backgroundImage: getLinearGradient(
               getInterpolator(colorMap, invertColorMap),
