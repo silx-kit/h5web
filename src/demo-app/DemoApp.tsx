@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from '../h5web/App';
+import H5CoreApp from './H5CoreApp';
 import HsdsApp from './HsdsApp';
 import JupyterApp from './JupyterApp';
 
@@ -25,6 +26,9 @@ function DemoApp() {
         </Route>
         <Route path="/hsds">
           <HsdsApp />
+        </Route>
+        <Route path="/h5core">
+          <H5CoreApp />
         </Route>
         <Route exact path="/">
           <JupyterApp />

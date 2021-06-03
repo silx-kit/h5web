@@ -6,8 +6,9 @@ import type {
   JupyterMetaGroupResponse,
   JupyterMetaResponse,
 } from './models';
-import { assertGroupContent, convertDtype } from './utils';
+import { assertGroupContent } from './utils';
 import { assertDataset } from '../../guards';
+import { convertDtype, flattenValue } from '../utils';
 
 interface DevJupyterAttrMeta {
   name: string;
@@ -41,7 +42,7 @@ export class JupyterDevApi extends JupyterStableApi {
 
     assertDataset(entity);
 
-    return this.flattenValue(value, entity, selection);
+    return flattenValue(value, entity, selection);
   }
 
   protected async fetchMetadata(path: string): Promise<DevJupyterMetaResponse> {
