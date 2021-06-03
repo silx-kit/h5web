@@ -67,7 +67,11 @@ function HeatmapVis(props: Props) {
   );
 
   return (
-    <figure className={styles.root} aria-labelledby="vis-title">
+    <figure
+      className={styles.root}
+      aria-labelledby="vis-title"
+      data-keep-canvas-colors
+    >
       <VisCanvas
         abscissaConfig={{
           domain: abscissaDomain,

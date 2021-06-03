@@ -83,6 +83,12 @@ function getConfig(pkg) {
         ],
       }),
     ],
+    stats: {
+      excludeAssets: /\.d\.ts$/u, // hide emitted type definitions
+      modules: false, // don't log individual modules
+      children: false, // hide `MiniCssExtractPlugin` logs
+    },
+    performance: { hints: false }, // hide max asset size warnings
   };
 }
 
