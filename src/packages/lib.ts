@@ -6,6 +6,16 @@ export type { MatrixVisProps } from '../h5web/vis-packs/core/matrix/MatrixVis';
 export type { LineVisProps } from '../h5web/vis-packs/core/line/LineVis';
 export type { HeatmapVisProps } from '../h5web/vis-packs/core/heatmap/HeatmapVis';
 
+// Toolbar and controls
+export { default as Toolbar } from '../h5web/toolbar/Toolbar';
+export { default as Separator } from '../h5web/toolbar/Separator';
+export { default as ToggleBtn } from '../h5web/toolbar/controls/ToggleBtn';
+export { default as ToggleGroup } from '../h5web/toolbar/controls/ToggleGroup';
+export { default as DomainSlider } from '../h5web/toolbar/controls/DomainSlider/DomainSlider';
+export { default as ColorMapSelector } from '../h5web/toolbar/controls/ColorMapSelector/ColorMapSelector';
+export { default as ScaleSelector } from '../h5web/toolbar/controls/ScaleSelector/ScaleSelector';
+export { default as GridToggler } from '../h5web/toolbar/controls/GridToggler';
+
 // Building blocks
 export { default as VisCanvas } from '../h5web/vis-packs/core/shared/VisCanvas';
 export { default as PanZoomMesh } from '../h5web/vis-packs/core/shared/PanZoomMesh';
@@ -32,12 +42,22 @@ export {
 
 export { getLinearGradient } from '../h5web/vis-packs/core/heatmap/utils';
 
+export {
+  useVisDomain,
+  useSafeDomain,
+} from '../h5web/vis-packs/core/heatmap/hooks';
+
 // Models
 export { INTERPOLATORS } from '../h5web/vis-packs/core/heatmap/interpolators';
 export { ScaleType } from '../h5web/vis-packs/core/models';
 export { CurveType } from '../h5web/vis-packs/core/line/models';
 
-export type { Domain, Size, AxisConfig } from '../h5web/vis-packs/core/models';
+export type {
+  Domain,
+  CustomDomain,
+  Size,
+  AxisConfig,
+} from '../h5web/vis-packs/core/models';
 
 export type {
   Dims,

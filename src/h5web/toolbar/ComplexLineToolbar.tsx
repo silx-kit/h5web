@@ -57,7 +57,7 @@ function ComplexLineToolbar() {
         label="Auto-scale"
         icon={MdDomain}
         value={autoScale}
-        onChange={toggleAutoScale}
+        onToggle={toggleAutoScale}
         disabled={isAutoScaleDisabled}
       />
 
@@ -71,7 +71,7 @@ function ComplexLineToolbar() {
           />
         )}
         value={!areErrorsDisabled && showErrors}
-        onChange={toggleErrors}
+        onToggle={toggleErrors}
         disabled={areErrorsDisabled}
       />
 
@@ -79,7 +79,7 @@ function ComplexLineToolbar() {
         label="Grid"
         icon={MdGridOn}
         value={showGrid}
-        onChange={toggleGrid}
+        onToggle={toggleGrid}
       />
 
       <Separator />

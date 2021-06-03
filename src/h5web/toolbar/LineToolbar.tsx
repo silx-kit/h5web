@@ -46,7 +46,7 @@ function LineToolbar() {
         label="Auto-scale"
         icon={MdDomain}
         value={autoScale}
-        onChange={toggleAutoScale}
+        onToggle={toggleAutoScale}
         disabled={isAutoScaleDisabled}
       />
 
@@ -60,7 +60,7 @@ function LineToolbar() {
           />
         )}
         value={!areErrorsDisabled && showErrors}
-        onChange={toggleErrors}
+        onToggle={toggleErrors}
         disabled={areErrorsDisabled}
       />
 
@@ -68,7 +68,7 @@ function LineToolbar() {
         label="Grid"
         icon={MdGridOn}
         value={showGrid}
-        onChange={toggleGrid}
+        onToggle={toggleGrid}
       />
 
       <Separator />

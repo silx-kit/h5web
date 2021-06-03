@@ -1,4 +1,4 @@
-import { MdAspectRatio, MdGridOn } from 'react-icons/md';
+import { MdAspectRatio } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
 import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
 import DomainSlider from './controls/DomainSlider/DomainSlider';
@@ -8,6 +8,7 @@ import Toolbar from './Toolbar';
 import ColorMapSelector from './controls/ColorMapSelector/ColorMapSelector';
 import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
+import GridToggler from './controls/GridToggler';
 
 function HeatmapToolbar() {
   const {
@@ -56,14 +57,9 @@ function HeatmapToolbar() {
         label="Keep ratio"
         icon={MdAspectRatio}
         value={keepAspectRatio}
-        onChange={toggleAspectRatio}
+        onToggle={toggleAspectRatio}
       />
-      <ToggleBtn
-        label="Grid"
-        icon={MdGridOn}
-        value={showGrid}
-        onChange={toggleGrid}
-      />
+      <GridToggler value={showGrid} onToggle={toggleGrid} />
 
       <Separator />
 

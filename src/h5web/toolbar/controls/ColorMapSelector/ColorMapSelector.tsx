@@ -46,7 +46,7 @@ function ColorMapSelector(props: Props) {
         label="Invert"
         icon={FiShuffle}
         value={invert}
-        onChange={onInversionChange}
+        onToggle={onInversionChange}
       />
     </div>
   );

@@ -99,7 +99,7 @@ function DomainSlider(props: Props) {
         aria-controls={TOOLTIP_ID}
         icon={FiEdit3}
         value={isEditing}
-        onChange={() => toggleEditing(!isEditing)}
+        onToggle={() => toggleEditing(!isEditing)}
       />
 
       <DomainTooltip
