@@ -3,7 +3,6 @@ import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
-import Mesh from './Mesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
@@ -12,6 +11,8 @@ import { DEFAULT_DOMAIN } from '../utils';
 import { assertDefined } from '../../../guards';
 import { useAxisValues, useTooltipFormatters } from './hooks';
 import { useDomain } from '../hooks';
+import Mesh from './Mesh';
+import MeshMaterial from './MeshMaterial';
 
 interface Props {
   dataArray: NdArray;
@@ -90,17 +91,19 @@ function HeatmapVis(props: Props) {
       >
         <TooltipMesh {...tooltipFormatters} guides="both" />
         <PanZoomMesh />
-        <Mesh
-          rows={rows}
-          cols={cols}
-          values={dataArray.data as number[]}
-          domain={domain}
-          colorMap={colorMap}
-          invertColorMap={invertColorMap}
-          scaleType={scaleType}
-          alphaValues={alphaArray && (alphaArray.data as number[])}
-          alphaDomain={alphaDomain}
-        />
+        <Mesh abscissaDomain={abscissaDomain} ordinateDomain={ordinateDomain}>
+          <MeshMaterial
+            rows={rows}
+            cols={cols}
+            values={dataArray.data as number[]}
+            domain={domain}
+            colorMap={colorMap}
+            invertColorMap={invertColorMap}
+            scaleType={scaleType}
+            alphaValues={alphaArray && (alphaArray.data as number[])}
+            alphaDomain={alphaDomain}
+          />
+        </Mesh>
       </VisCanvas>
       <ColorBar
         domain={domain}
