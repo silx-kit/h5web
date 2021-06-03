@@ -30,7 +30,7 @@ function BreadcrumbsBar(props: Props) {
         icon={FiSidebar}
         iconOnly
         value={isExplorerOpen}
-        onChange={onToggleExplorer}
+        onToggle={onToggleExplorer}
       />
 
       <Breadcrumbs

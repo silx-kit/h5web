@@ -116,13 +116,13 @@ const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
             label="Min"
             raised
             value={isAutoMin}
-            onChange={onAutoMinToggle}
+            onToggle={onAutoMinToggle}
           />
           <ToggleBtn
             label="Max"
             raised
             value={isAutoMax}
-            onChange={onAutoMaxToggle}
+            onToggle={onAutoMaxToggle}
           />
         </p>
       </div>

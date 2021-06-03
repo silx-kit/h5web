@@ -9,7 +9,7 @@ interface Props extends AriaAttributes {
   small?: boolean;
   raised?: boolean;
   value: boolean;
-  onChange: () => void;
+  onToggle: () => void;
   disabled?: boolean;
 }
 
@@ -21,7 +21,7 @@ function ToggleBtn(props: Props) {
     small,
     raised,
     value,
-    onChange,
+    onToggle,
     disabled,
     ...ariaAttrs
   } = props;
@@ -30,7 +30,7 @@ function ToggleBtn(props: Props) {
     <button
       className={styles.btn}
       type="button"
-      onClick={onChange}
+      onClick={() => onToggle()}
       disabled={disabled}
       data-small={small || undefined}
       data-raised={raised || undefined}
