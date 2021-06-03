@@ -9,7 +9,7 @@ import ToggleBtn from '../ToggleBtn';
 import { FiEdit3 } from 'react-icons/fi';
 import { useClickAway, useKey } from 'react-use';
 import { useToggle } from '@react-hookz/web';
-import DomainTooltip from './DomainTooltip';
+import DomainTooltip, { DomainTooltipHandle } from './DomainTooltip';
 import ScaledSlider from './ScaledSlider';
 import {
   useSafeDomain,
@@ -51,10 +51,17 @@ function DomainSlider(props: Props) {
   }
 
   const rootRef = useRef(null);
-  useClickAway(rootRef, () => toggleEditing(false));
-  useKey('Escape', () => {
+  const tooltipRef = useRef<DomainTooltipHandle>(null);
+
+  useClickAway(rootRef, () => {
     toggleEditing(false);
+    tooltipRef.current?.cancelEditing();
+  });
+
+  useKey('Escape', () => {
     toggleHovered(false);
+    toggleEditing(false);
+    tooltipRef.current?.cancelEditing();
   });
 
   return (
@@ -96,6 +103,7 @@ function DomainSlider(props: Props) {
       />
 
       <DomainTooltip
+        ref={tooltipRef}
         id={TOOLTIP_ID}
         open={hovered || isEditing}
         sliderDomain={sliderDomain}

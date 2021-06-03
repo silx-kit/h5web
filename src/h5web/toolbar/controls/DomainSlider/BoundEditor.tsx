@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 import { formatPreciseValue } from '../../../utils';
 import type { Bound } from '../../../vis-packs/core/models';
@@ -14,13 +20,26 @@ interface Props {
   onChange: (val: number) => void;
 }
 
-function BoundEditor(props: Props) {
+interface Handle {
+  cancel: () => void;
+}
+
+const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
   const { bound, value, isEditing, hasError, onEditToggle, onChange } = props;
 
   const id = `${bound}-bound`;
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [inputValue, setInputValue] = useState('');
+
+  function cancel() {
+    onEditToggle(false);
+    setInputValue(formatPreciseValue(value));
+  }
+
+  /* Expose `cancel` function to parent component through ref handle so that
+    `inputValue` can be reset when the user closes the domain tooltip. */
+  useImperativeHandle(ref, () => ({ cancel }));
 
   useEffect(() => {
     setInputValue(formatPreciseValue(value));
@@ -92,15 +111,13 @@ function BoundEditor(props: Props) {
         type="button"
         disabled={!isEditing}
         aria-label={`Cancel ${bound}`}
-        onClick={() => {
-          onEditToggle(false);
-          setInputValue(formatPreciseValue(value));
-        }}
+        onClick={() => cancel()}
       >
         <FiSlash />
       </button>
     </form>
   );
-}
+});
 
+export type { Handle as BoundEditorHandle };
 export default BoundEditor;
