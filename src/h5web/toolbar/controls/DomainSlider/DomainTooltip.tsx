@@ -1,8 +1,9 @@
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import type { Domain } from '../../../../packages/lib';
 import { formatValue } from '../../../utils';
 import { DomainError, DomainErrors } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
-import BoundEditor from './BoundEditor';
+import BoundEditor, { BoundEditorHandle } from './BoundEditor';
 import styles from './DomainTooltip.module.css';
 import ErrorMessage from './ErrorMessage';
 
@@ -25,7 +26,11 @@ interface Props {
   onSwap: () => void;
 }
 
-function DomainTooltip(props: Props) {
+interface Handle {
+  cancelEditing: () => void;
+}
+
+const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
   const { id, open, sliderDomain, dataDomain, errors } = props;
   const { isAutoMin, isAutoMax, isEditingMin, isEditingMax } = props;
   const {
@@ -39,6 +44,17 @@ function DomainTooltip(props: Props) {
   } = props;
 
   const { minGreater, minError, maxError } = errors;
+  const minEditorRef = useRef<BoundEditorHandle>(null);
+  const maxEditorRef = useRef<BoundEditorHandle>(null);
+
+  /* Expose `cancelEditing` function to parent component through ref handle so that
+     editing can be cancelled when the user closes the domain tooltip. */
+  useImperativeHandle(ref, () => ({
+    cancelEditing: () => {
+      minEditorRef.current?.cancel();
+      maxEditorRef.current?.cancel();
+    },
+  }));
 
   return (
     <div
@@ -58,6 +74,7 @@ function DomainTooltip(props: Props) {
         )}
 
         <BoundEditor
+          ref={minEditorRef}
           bound="min"
           value={sliderDomain[0]}
           isEditing={isEditingMin}
@@ -68,6 +85,7 @@ function DomainTooltip(props: Props) {
         {minError && <ErrorMessage error={minError} />}
 
         <BoundEditor
+          ref={maxEditorRef}
           bound="max"
           value={sliderDomain[1]}
           isEditing={isEditingMax}
@@ -110,6 +128,7 @@ function DomainTooltip(props: Props) {
       </div>
     </div>
   );
-}
+});
 
+export type { Handle as DomainTooltipHandle };
 export default DomainTooltip;
