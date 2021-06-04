@@ -11,6 +11,7 @@ const MENU_TOP = 87; // HACK: height of breadcrumbs bar + height of toolbar
 const MENU_BOTTOM = 16; // offset from bottom of viewport
 
 interface Props<T> {
+  label?: string;
   value: T;
   disabled?: boolean;
   onChange: (value: T) => void;
@@ -19,50 +20,61 @@ interface Props<T> {
 }
 
 function Selector<T extends string>(props: Props<T>) {
-  const { value, disabled, onChange, options, optionComponent: Option } = props;
+  const {
+    label,
+    value,
+    disabled,
+    onChange,
+    options,
+    optionComponent: Option,
+  } = props;
 
   const { height: winHeight } = useWindowSize();
   const menuMaxHeight = winHeight - MENU_TOP - MENU_BOTTOM;
 
   return (
-    <Wrapper className={styles.wrapper} onSelection={onChange}>
-      <Button className={styles.btn} tag="button" disabled={disabled}>
-        <div className={styles.btnLike}>
-          <span className={styles.selectedOption}>
-            <Option option={value} />
-          </span>
-          <MdArrowDropDown className={styles.icon} />
-        </div>
-      </Button>
+    <div className={styles.root}>
+      {label && <span className={styles.label}>{label}</span>}
 
-      <Menu
-        className={styles.menu}
-        style={{ maxHeight: Math.min(MENU_IDEAL_HEIGHT, menuMaxHeight) }}
-      >
-        {Array.isArray(options) ? (
-          <OptionList
-            optionList={options}
-            optionComponent={Option}
-            value={value}
-          />
-        ) : (
-          <ul className={styles.list}>
-            {Object.entries(options).map(([groupLabel, groupOptions]) => (
-              <li key={groupLabel}>
-                <span className={styles.groupLabel}>{groupLabel}</span>
-                <ul className={styles.list}>
-                  <OptionList
-                    optionList={groupOptions}
-                    optionComponent={Option}
-                    value={value}
-                  />
-                </ul>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Menu>
-    </Wrapper>
+      <Wrapper className={styles.wrapper} onSelection={onChange}>
+        <Button className={styles.btn} tag="button" disabled={disabled}>
+          <div className={styles.btnLike}>
+            <span className={styles.selectedOption}>
+              <Option option={value} />
+            </span>
+            <MdArrowDropDown className={styles.arrowIcon} />
+          </div>
+        </Button>
+
+        <Menu
+          className={styles.menu}
+          style={{ maxHeight: Math.min(MENU_IDEAL_HEIGHT, menuMaxHeight) }}
+        >
+          {Array.isArray(options) ? (
+            <OptionList
+              optionList={options}
+              optionComponent={Option}
+              value={value}
+            />
+          ) : (
+            <ul className={styles.list}>
+              {Object.entries(options).map(([groupLabel, groupOptions]) => (
+                <li key={groupLabel}>
+                  <span className={styles.groupLabel}>{groupLabel}</span>
+                  <ul className={styles.list}>
+                    <OptionList
+                      optionList={groupOptions}
+                      optionComponent={Option}
+                      value={value}
+                    />
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Menu>
+      </Wrapper>
+    </div>
   );
 }
 

@@ -10,7 +10,7 @@
   margin: 0 1rem 0 0;
   text-transform: uppercase;
   font-size: inherit;
-  color: var(--near-black);
+  color: var(--h5w-domainSlider-tooltip--colorAlt, #333);
 }
 
 .value {
@@ -21,9 +21,9 @@
   background-color: rgba(255, 255, 255, 0.5);
   border: 1px solid transparent;
   border-radius: 0.125rem;
-  box-shadow: 0 0 2px var(--dark-slate-gray);
+  box-shadow: 0 0 2px var(--h5w-domainSlider-boundInput--shadowColor, dimgray);
   text-align: right;
-  color: var(--near-black);
+  color: var(--h5w-domainSlider-tooltip--colorAlt, #333);
   font-weight: inherit;
   line-height: inherit;
   transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
@@ -31,27 +31,29 @@
 }
 
 .value:hover {
-  box-shadow: 1px 1px 2px 1px var(--dark-gray);
+  box-shadow: 1px 1px 2px 1px
+    var(--h5w-domainSlider-boundInput--shadowColor, dimgray);
 }
 
-.value:focus {
-  box-shadow: 1px 1px 2px 1px var(--secondary-dark);
+.value:focus,
+.boundEditor[data-editing='true'] .value:hover {
+  box-shadow: 1px 1px 2px 1px
+    var(--h5w-domainSlider-boundInput-focus--shadowColor, royalblue);
   outline: none;
 }
 
 .boundEditor[data-error] .label,
 .boundEditor[data-error] .value {
-  color: var(--warn);
+  color: var(--h5w-error--color, brown);
 }
 
 .boundEditor[data-editing='true'] .value {
-  background-color: var(--white);
-  border-color: var(--secondary-dark);
+  background-color: var(--h5w-domainSlider-boundInput-editing--bgColor, white);
+  border-color: var(
+    --h5w-domainSlider-boundInput-editing--borderColor,
+    royalblue
+  );
   outline: none;
-}
-
-.boundEditor[data-editing='true'] .value:hover {
-  box-shadow: 1px 1px 2px 1px var(--secondary-dark);
 }
 
 .actionBtn {

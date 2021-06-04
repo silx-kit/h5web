@@ -55,6 +55,18 @@ function ComplexToolbar() {
 
       <Separator />
 
+      <Selector
+        value={visType}
+        onChange={(value: ComplexVisType) => setVisType(value)}
+        options={Object.values(ComplexVisType)}
+        optionComponent={({ option }) => (
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
+        )}
+      />
+
+      <Separator />
+
       <ScaleSelector value={scaleType} onScaleChange={setScaleType} />
 
       <Separator />
@@ -70,18 +82,6 @@ function ComplexToolbar() {
         icon={MdGridOn}
         value={showGrid}
         onToggle={toggleGrid}
-      />
-
-      <Separator />
-
-      <Selector
-        value={visType}
-        onChange={(value: ComplexVisType) => setVisType(value)}
-        options={Object.values(ComplexVisType)}
-        optionComponent={({ option }) => (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
-        )}
       />
 
       <Separator />

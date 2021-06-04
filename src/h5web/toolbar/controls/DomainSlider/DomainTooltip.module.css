@@ -30,7 +30,7 @@
 .dataRange > span {
   margin-left: 0.5rem;
   font-weight: 700;
-  color: var(--near-black);
+  color: var(--h5w-domainSlider-tooltip--colorAlt, #333);
 }
 
 .autoscale {
@@ -53,12 +53,12 @@
 }
 
 .actionBtn:hover {
-  background-color: var(--secondary-light);
-  box-shadow: var(--btn-shadow-idle) var(--btn-shadow-color);
+  background-color: var(--h5w-btn-hover--bgColor, whitesmoke);
+  box-shadow: -1px -1px 2px inset var(--h5w-btnRaised--shadowColor, gray);
 }
 
 .actionBtn:active {
-  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
+  box-shadow: 1px 1px 2px inset var(--h5w-btnRaised--shadowColor, gray);
 }
 
 .error {
@@ -66,7 +66,7 @@
   align-items: flex-start;
   min-height: 2rem;
   margin-top: -0.25rem;
-  color: var(--warn);
+  color: var(--h5w-error--color, brown);
 }
 
 .errorMessage {

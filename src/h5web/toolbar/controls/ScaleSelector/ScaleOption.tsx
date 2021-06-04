@@ -2,7 +2,7 @@ import type { IconType } from 'react-icons/lib';
 import { MdSort, MdFilterList } from 'react-icons/md';
 import { ScaleType } from '../../../vis-packs/core/models';
 import MdGraphicEqRotated from './MdGraphicEqRotated';
-import styles from './ScaleSelector.module.css';
+import styles from '../../Toolbar.module.css';
 
 const ICONS: Record<ScaleType, IconType> = {
   [ScaleType.Linear]: MdSort,
