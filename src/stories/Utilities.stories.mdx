@@ -71,11 +71,39 @@ Generate a CSS linear gradient for a given D3 interpolator, to be used as `backg
 getLinearGradient(interpolator: D3Interpolator, direction: 'top' | 'bottom' | 'right' | 'left', minMaxOnly = false): string
 ```
 
+#### getVisDomain
+
+Determine the domain to be used for the visualization based on a user-selected custom domain. If a bound of the custom domain is `null`, it falls back to the corresponding bound of the data domain.
+
+```ts
+getVisDomain(customDomain: CustomDomain, dataDomain: Domain): Domain
+
+const visDomain1 = getVisDomain([null, null], [0, 100]); // [0, 100]
+const visDomain2 = getVisDomain([null, 20], [0, 100]); // [0, 20]
+```
+
+#### getSafeDomain
+
+Determine a domain that is safe for the visualization. This is typically called with a user-defined `customDomain`, or with a `visDomain` as returned by `getVisDomain()`.
+If the domain is determined to be unsafe, a safe domain based on `fallbackDomain` is returned along with an error object. Note that `fallbackDomain` is assumed to be safe.
+The domain is considered unsafe if it's inverted (`min > max`), or if the scale is log and at least one of the bounds is negative.
+
+```ts
+getSafeDomain(domain: Domain, fallbackDomain: Domain, scaleType: ScaleType): [Domain, DomainErrors]
+
+const safeDomain1 = getSafeDomain([-10, 50], [1, 100], ScaleType.Linear]); // [0, 50]
+const safeDomain2 = getSafeDomain([-10, 50], [1, 100], ScaleType.Log]); // [1, 50]
+const safeDomain3 = getSafeDomain([-50, -10], [1, 100], ScaleType.Log]); // [1, 100]
+const safeDomain4 = getSafeDomain([-10, 50], [80, 100], ScaleType.Log]); // [50, 50] => log-safe min (80) is greater than max (50)
+```
+
 ### Hooks
 
 - **`useDomain(...args): Domain | undefined`** - Memoised version of `getDomain`.
 - **`useDomains(...args): (Domain | undefined)[]`** - Memoised version of `getDomains`.
 - **`useCombinedDomain(...args): Domain | undefined`** - Memoised version of `getCombinedDomain`.
+- **`useVisDomain(...args): Domain`** - Memoised version of `getVisDomain`.
+- **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
 
 ### Mock data
 
