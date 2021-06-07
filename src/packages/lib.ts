@@ -40,7 +40,11 @@ export {
   useCombinedDomain,
 } from '../h5web/vis-packs/core/hooks';
 
-export { getLinearGradient } from '../h5web/vis-packs/core/heatmap/utils';
+export {
+  getLinearGradient,
+  getVisDomain,
+  getSafeDomain,
+} from '../h5web/vis-packs/core/heatmap/utils';
 
 export {
   useVisDomain,
@@ -54,6 +58,7 @@ export { CurveType } from '../h5web/vis-packs/core/line/models';
 
 export type {
   Domain,
+  DomainErrors,
   CustomDomain,
   Size,
   AxisConfig,
