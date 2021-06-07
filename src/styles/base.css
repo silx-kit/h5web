@@ -8,7 +8,7 @@ body {
   margin: 0;
   font-family: var(--sans-serif);
   line-height: 1.2;
-  color: var(--black);
+  color: #020402;
 }
 
 @media (min-width: 50em) {
@@ -60,12 +60,12 @@ abbr[title] {
 
 .reflex-splitter {
   width: 5px !important;
-  border-color: var(--light-gray) !important;
+  border-color: lightgray !important;
   transition: background-color 0.2s ease-in-out !important;
 }
 
 .reflex-splitter:hover {
-  background-color: var(--light-gray) !important;
+  background-color: lightgray !important;
 }
 
 @media (prefers-reduced-motion) {
@@ -83,9 +83,10 @@ abbr[title] {
     filter: invert();
 
     /* Set shadows to lighter colors so they remain dark once inverted */
-    --btn-shadow-color: #f5f5f5;
-    --btn-shadow-dark-color: #fafafa;
-    --btn-shadow-darker-color: #fff;
+    --h5w-btnRaised--shadowColor: #f5f5f5;
+    --h5w-btnRaised-hover--shadowColor: #fff;
+    --h5w-domainSlider-track--shadowColor: #f5f5f5;
+    --h5w-domainSlider-dataTrack--shadowColor: #fff;
   }
 
   [data-keep-colors],

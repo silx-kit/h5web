@@ -1,17 +1,9 @@
 :root {
-  --black: #020402;
-  --near-black: #333;
-  --dark-slate-gray: #2f4f4f;
-  --dark-gray: #696969;
-  --gray: #808080;
-  --light-gray: #d6d6d6;
-  --white: #fff;
   --primary: #c0da74;
   --primary-light: #d4e09b;
   --primary-dark: #9aae5d;
   --primary-bg: #f5fbef;
   --primary-light-bg: #fafdf7;
-  --primary-light-bg-70: #fafdf7b3;
   --primary-dark-bg: #dde2d7;
   --secondary: #8cdfc7;
   --secondary-light: #b7fcf3;
@@ -21,22 +13,11 @@
   --secondary-darker: #0e5846;
   --secondary-bg: #d9f4ec;
   --secondary-light-bg: #ecfaf6;
-  --secondary-light-bg-90: #ebfaf5e6;
-  --danger: #99231b;
-  --warn: #973c00;
   --monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
   --sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
     'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  --btn-bg-raised: var(--white);
-  --btn-shadow-raised: 0 0 1px;
-  --btn-shadow-idle: -1px -1px 2px 0 inset;
-  --btn-shadow-idle-hover: -2px -2px 2px 0 inset;
-  --btn-shadow-pressed: 1px 1px 2px 0 inset;
-  --btn-shadow-color: var(--gray);
-  --btn-shadow-dark-color: var(--dark-gray);
-  --btn-shadow-darker-color: var(--dark-slate-gray);
 }
 
 :root {
@@ -47,4 +28,17 @@
   --h5w-matrix-indexCell--bgColor: var(--primary-bg);
   --h5w-matrix-indexCell--bgColorAlt: var(--primary-light-bg);
   --h5w-matrix-anchorCell--bgColor: var(--primary-dark-bg);
+  --h5w-btn-hover--bgColor: var(--secondary-lighter);
+  --h5w-btnPressed--bgColor: var(--secondary-light);
+  --h5w-toolbar--bgColor: var(--secondary-light-bg);
+  --h5w-domainSlider-track--bgColor: var(--secondary-dark-15);
+  --h5w-domainSlider-dataTrack--bgColor: var(--secondary-dark);
+  --h5w-domainSlider-dataTrack--shadowColor: var(--secondary-darker);
+  --h5w-domainSlider-thumb--bgColor: var(--secondary);
+  --h5w-domainSlider-thumb-auto--bgColor: var(--secondary-light);
+  --h5w-domainSlider-boundInput-focus--shadowColor: var(--secondary-dark);
+  --h5w-domainSlider-boundInput-editing--borderColor: var(--secondary-dark);
+  --h5w-selector-label--color: var(--secondary-dark);
+  --h5w-selector-option-hover--bgColor: var(--secondary-light-bg);
+  --h5w-selector-option-selected--bgColor: var(--secondary-light);
 }

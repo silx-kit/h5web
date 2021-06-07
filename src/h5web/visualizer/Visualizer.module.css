@@ -17,8 +17,8 @@
   z-index: 1;
   display: flex;
   justify-content: space-between;
+  height: 2.5rem;
   background-color: var(--secondary-light-bg);
-  min-height: 2.5rem;
 }
 
 .fallback {
@@ -27,7 +27,7 @@
 
 .error {
   padding: 1em;
-  color: var(--danger);
+  color: brown;
 }
 
 .error > span {

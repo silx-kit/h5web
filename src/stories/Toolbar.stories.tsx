@@ -39,15 +39,7 @@ const Template: Story<{ narrow?: boolean }> = ({ narrow }) => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          maxWidth: narrow ? '30rem' : undefined,
-          height: '2.5rem',
-          marginLeft: 'auto',
-          backgroundColor: 'var(--primary-bg)',
-        }}
-      >
+      <div style={narrow ? { maxWidth: '30rem', marginLeft: 'auto' } : {}}>
         <Toolbar>
           <DomainSlider
             dataDomain={[1, 100]}

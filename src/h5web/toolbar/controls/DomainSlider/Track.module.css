@@ -4,8 +4,8 @@
   align-self: center;
   height: 0.5rem;
   margin: 0 calc(var(--thumb-size) / 2); /* make track end in middle of thumbs */
-  background-color: var(--secondary-dark-15);
-  box-shadow: var(--btn-shadow-pressed) var(--btn-shadow-color);
+  background-color: var(--h5w-domainSlider-track--bgColor, lightgray);
+  box-shadow: 1px 1px 2px inset var(--h5w-domainSlider-track--shadowColor, gray);
   border-radius: 0.25rem;
   overflow: hidden; /* crop data track to root track's border radius */
 }
@@ -14,7 +14,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  background-color: var(--secondary-dark);
-  box-shadow: 0 -2px 3px inset var(--secondary-darker);
+  background-color: var(--h5w-domainSlider-dataTrack--bgColor, royalblue);
+  box-shadow: 0 -2px 3px inset var(--h5w-domainSlider-dataTrack--shadowColor, midnightblue);
   border-radius: 2px;
 }
