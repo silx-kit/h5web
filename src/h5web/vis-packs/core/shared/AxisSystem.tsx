@@ -25,7 +25,7 @@ function AxisSystem(props: Props) {
   const { width, height } = size;
 
   const abscissaScale = getCanvasScale(abscissaConfig, width);
-  const ordinateScale = getCanvasScale(ordinateConfig, width);
+  const ordinateScale = getCanvasScale(ordinateConfig, height);
 
   // Find visible domains from camera's zoom and position
   const xVisibleDomain: Domain = [
