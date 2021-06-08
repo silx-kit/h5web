@@ -3,22 +3,24 @@ import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
 import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
-import Mesh from './Mesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
-import type { ColorMap } from './models';
-import { DEFAULT_DOMAIN } from '../utils';
+import type { ColorMap, Layout } from './models';
+import { DEFAULT_DOMAIN, getAxisOffsets } from '../utils';
 import { assertDefined } from '../../../guards';
 import { useAxisValues, useTooltipFormatters } from './hooks';
 import { useDomain } from '../hooks';
+import Mesh from './Mesh';
+import MeshMaterial from './MeshMaterial';
+import HeatmapAxisSystem from './HeatmapAxisSystem';
 
 interface Props {
   dataArray: NdArray;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: ScaleType;
-  keepAspectRatio?: boolean;
+  layout?: Layout;
   showGrid?: boolean;
   title?: string;
   invertColorMap?: boolean;
@@ -34,7 +36,7 @@ function HeatmapVis(props: Props) {
     domain = DEFAULT_DOMAIN,
     colorMap = 'Viridis',
     scaleType = ScaleType.Linear,
-    keepAspectRatio = true,
+    layout = 'cover',
     showGrid = false,
     invertColorMap = false,
     title,
@@ -48,7 +50,6 @@ function HeatmapVis(props: Props) {
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
 
   const { rows, cols } = getDims(dataArray);
-  const aspectRatio = keepAspectRatio ? cols / rows : undefined; // width / height <=> cols / rows
 
   const abscissas = useAxisValues(abscissaValue, cols);
   const abscissaDomain = useDomain(abscissas);
@@ -66,6 +67,12 @@ function HeatmapVis(props: Props) {
     dataArray
   );
 
+  const axisOffsets = getAxisOffsets({
+    left: !!ordinateLabel,
+    bottom: !!abscissaLabel,
+    top: !!title,
+  });
+
   return (
     <figure
       className={styles.root}
@@ -73,34 +80,42 @@ function HeatmapVis(props: Props) {
       data-keep-canvas-colors
     >
       <VisCanvas
-        abscissaConfig={{
-          domain: abscissaDomain,
-          showGrid,
-          isIndexAxis: !abscissaValue,
-          label: abscissaLabel,
-        }}
-        ordinateConfig={{
-          domain: ordinateDomain,
-          showGrid,
-          isIndexAxis: !ordinateValue,
-          label: ordinateLabel,
-        }}
-        aspectRatio={aspectRatio}
-        canvasTitle={title}
+        axisOffsets={axisOffsets}
+        aspectRatio={layout === 'contain' ? cols / rows : undefined}
       >
-        <TooltipMesh {...tooltipFormatters} guides="both" />
-        <PanZoomMesh />
-        <Mesh
-          rows={rows}
-          cols={cols}
-          values={dataArray.data as number[]}
-          domain={domain}
-          colorMap={colorMap}
-          invertColorMap={invertColorMap}
-          scaleType={scaleType}
-          alphaValues={alphaArray && (alphaArray.data as number[])}
-          alphaDomain={alphaDomain}
-        />
+        <HeatmapAxisSystem
+          axisOffsets={axisOffsets}
+          title={title}
+          abscissaConfig={{
+            domain: abscissaDomain,
+            showGrid,
+            isIndexAxis: !abscissaValue,
+            label: abscissaLabel,
+          }}
+          ordinateConfig={{
+            domain: ordinateDomain,
+            showGrid,
+            isIndexAxis: !ordinateValue,
+            label: ordinateLabel,
+          }}
+          imageRatio={layout === 'cover' ? cols / rows : undefined}
+        >
+          <TooltipMesh {...tooltipFormatters} guides="both" />
+          <PanZoomMesh />
+          <Mesh abscissaDomain={abscissaDomain} ordinateDomain={ordinateDomain}>
+            <MeshMaterial
+              rows={rows}
+              cols={cols}
+              values={dataArray.data as number[]}
+              domain={domain}
+              colorMap={colorMap}
+              invertColorMap={invertColorMap}
+              scaleType={scaleType}
+              alphaValues={alphaArray && (alphaArray.data as number[])}
+              alphaDomain={alphaDomain}
+            />
+          </Mesh>
+        </HeatmapAxisSystem>
       </VisCanvas>
       <ColorBar
         domain={domain}

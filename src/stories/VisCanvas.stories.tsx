@@ -1,8 +1,21 @@
 import type { Story } from '@storybook/react/types-6-0';
 import FillHeight from './decorators/FillHeight';
-import { VisCanvas, VisCanvasProps, ScaleType } from '../packages/lib';
+import { VisCanvas, AxisSystemProps, ScaleType } from '../packages/lib';
+import AxisSystem from '../h5web/vis-packs/core/shared/AxisSystem';
+import { getAxisOffsets } from '../h5web/vis-packs/core/utils';
 
-const Template: Story<VisCanvasProps> = (args) => <VisCanvas {...args} />;
+const Template: Story<{ aspectRatio?: number } & AxisSystemProps> = ({
+  aspectRatio,
+  ...args
+}) => {
+  const axisOffsets = getAxisOffsets();
+
+  return (
+    <VisCanvas axisOffsets={axisOffsets} aspectRatio={aspectRatio}>
+      <AxisSystem {...args} axisOffsets={axisOffsets} />
+    </VisCanvas>
+  );
+};
 
 export const IndexDomains = Template.bind({});
 
@@ -60,7 +73,7 @@ export const GraphTitle = Template.bind({});
 GraphTitle.args = {
   abscissaConfig: { domain: [0, 3], showGrid: true, isIndexAxis: true },
   ordinateConfig: { domain: [50, 100], showGrid: true, isIndexAxis: true },
-  canvasTitle: 'This is a graph',
+  title: 'This is a graph',
 };
 
 export const InheritedStyles = Template.bind({});
@@ -78,7 +91,7 @@ InheritedStyles.args = {
     isIndexAxis: true,
     label: 'Y values',
   },
-  canvasTitle: 'The title',
+  title: 'The title',
 };
 
 InheritedStyles.decorators = [

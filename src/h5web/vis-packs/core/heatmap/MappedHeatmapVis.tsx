@@ -31,7 +31,7 @@ function MappedHeatmapVis(props: Props) {
     customDomain,
     colorMap,
     scaleType,
-    keepAspectRatio,
+    layout,
     showGrid,
     setDataDomain,
     setScaleType,
@@ -64,7 +64,7 @@ function MappedHeatmapVis(props: Props) {
       domain={safeDomain}
       colorMap={colorMap}
       scaleType={scaleType}
-      keepAspectRatio={keepAspectRatio}
+      layout={layout}
       showGrid={showGrid}
       invertColorMap={invertColorMap}
       abscissaParams={axisMapping[dimMapping.indexOf('x')]}

@@ -58,12 +58,20 @@ SymLogScale.args = {
   scaleType: ScaleType.SymLog,
 };
 
-export const IgnoreAspectRatio = Template.bind({});
+export const FillLayout = Template.bind({});
 
-IgnoreAspectRatio.args = {
+FillLayout.args = {
   dataArray,
   domain,
-  keepAspectRatio: false,
+  layout: 'fill',
+};
+
+export const ContainLayout = Template.bind({});
+
+ContainLayout.args = {
+  dataArray,
+  domain,
+  layout: 'contain',
 };
 
 export const NoGrid = Template.bind({});
@@ -176,8 +184,12 @@ export default {
         options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
       },
     },
-    keepAspectRatio: {
-      defaultValue: true,
+    layout: {
+      defaultValue: 'cover',
+      control: {
+        type: 'inline-radio',
+        options: ['contain', 'cover', 'fill'],
+      },
     },
     showGrid: {
       defaultValue: true,

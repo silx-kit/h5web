@@ -24,8 +24,8 @@ function ComplexToolbar() {
     setColorMap,
     scaleType,
     setScaleType,
-    keepAspectRatio,
-    toggleAspectRatio,
+    layout,
+    setLayout,
     showGrid,
     toggleGrid,
     invertColorMap,
@@ -74,8 +74,8 @@ function ComplexToolbar() {
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
-        value={keepAspectRatio}
-        onToggle={toggleAspectRatio}
+        value={layout === 'cover'}
+        onToggle={() => setLayout(layout === 'cover' ? 'fill' : 'cover')}
       />
       <ToggleBtn
         label="Grid"
