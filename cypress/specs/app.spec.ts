@@ -121,7 +121,7 @@ describe('App', () => {
 
     // Check axes ticks
     cy.get('@xAxis').should('have.text', [0, 10, 20, 30, 40].join(''));
-    cy.get('@yAxis').should('have.text', ['−20', 0, 20, 40].join('')); // Tick text uses minus sign − (U+2212) rather than hyphen minus - (U+002D)
+    cy.get('@yAxis').should('have.text', ['−10', 0, 10, 20, 30].join('')); // Tick text uses minus sign − (U+2212) rather than hyphen minus - (U+002D)
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
