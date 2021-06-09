@@ -22,6 +22,9 @@ module.exports = createConfig({
     // Properties available after typeguard may be tedious to destructure (e.g. in JSX)
     'unicorn/consistent-destructuring': 'off',
 
+    // Not really more readable and makes Jest crash
+    'unicorn/prefer-prototype-methods': 'off',
+
     // zustand has `whitelist` option
     'inclusive-language/use-inclusive-words': [
       'error',

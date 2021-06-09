@@ -78,7 +78,7 @@ function ScaledSlider(props: Props) {
       max={SLIDER_RANGE[1]}
       value={scaledValue}
       onBeforeChange={setBeforeChangeValue}
-      onChange={handleChange}
+      onChange={(bounds) => handleChange(bounds)}
       onAfterChange={(bounds) => handleChange(bounds, true)}
       renderThumb={(thumbProps, { index }) => (
         <Thumb

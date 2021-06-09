@@ -1,5 +1,6 @@
 import { ReactElement, Children } from 'react';
-import { useMeasure, useList } from 'react-use';
+import { useMeasure } from '@react-hookz/web';
+import { useList } from 'react-use';
 import styles from './Toolbar.module.css';
 import Separator from './Separator';
 import OverflowMenu from './OverflowMenu';
@@ -15,7 +16,9 @@ function Toolbar(props: Props) {
   // Convert `children` to array, as it cannot be used directly (and remove `undefined` children)
   const allChildren = Children.toArray(children) as ReactElement[];
 
-  const [containerRef, { width: availableWidth }] = useMeasure();
+  const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
+  const availableWidth = containerSize ? containerSize.width : 0;
+
   const [childrenWidths, { updateAt: setChildWidth }] = useList<number>();
 
   // Group visible and hidden children based on their accumulated width
@@ -48,10 +51,7 @@ function Toolbar(props: Props) {
 
   return (
     <div className={styles.toolbar}>
-      <div
-        ref={containerRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
-        className={styles.controls}
-      >
+      <div ref={containerRef} className={styles.controls}>
         <div className={styles.controlsInner} data-all-measured={allMeasured}>
           {allOrVisibleChildren.map((child) => (
             <MeasuredControl
