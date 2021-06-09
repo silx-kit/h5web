@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { NdArray } from 'ndarray';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
@@ -28,6 +29,7 @@ interface Props {
   ordinateParams?: AxisParams;
   alphaArray?: NdArray;
   alphaDomain?: Domain;
+  children?: ReactNode;
 }
 
 function HeatmapVis(props: Props) {
@@ -44,6 +46,7 @@ function HeatmapVis(props: Props) {
     ordinateParams = {},
     alphaArray,
     alphaDomain,
+    children,
   } = props;
 
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
@@ -115,6 +118,7 @@ function HeatmapVis(props: Props) {
               alphaDomain={alphaDomain}
             />
           </Mesh>
+          {children}
         </HeatmapAxisSystem>
       </VisCanvas>
       <ColorBar
