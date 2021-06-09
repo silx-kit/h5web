@@ -1,5 +1,5 @@
 import { AxisRight, AxisBottom } from '@visx/axis';
-import { useMeasure } from 'react-use';
+import { useMeasure } from '@react-hookz/web';
 import { adaptedNumTicks, createAxisScale } from '../utils';
 import styles from './ColorBar.module.css';
 import { getInterpolator, getLinearGradient } from './utils';
@@ -27,16 +27,19 @@ function ColorBar(props: Props) {
     invertColorMap,
   } = props;
 
-  const [gradientRef, gradientBox] = useMeasure();
-  const { height: gradientHeight, width: gradientWidth } = gradientBox;
-  const gradientLength = horizontal ? gradientWidth : gradientHeight;
+  const [barSize, barRef] = useMeasure<HTMLDivElement>();
+  const gradientLength = barSize
+    ? horizontal
+      ? barSize.width
+      : barSize.height
+    : 0;
 
   const Axis = horizontal ? AxisBottom : AxisRight;
   const isEmptyDomain = domain[0] === domain[1];
 
   const axisScale = createAxisScale({
     domain,
-    range: horizontal ? [0, gradientWidth] : [gradientHeight, 0],
+    range: horizontal ? [0, gradientLength] : [gradientLength, 0],
     type: scaleType,
   });
 
@@ -52,10 +55,7 @@ function ColorBar(props: Props) {
           </p>
         </>
       )}
-      <div
-        ref={gradientRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
-        className={styles.gradientBar}
-      >
+      <div ref={barRef} className={styles.gradientBar}>
         <div
           className={styles.gradient}
           data-keep-colors

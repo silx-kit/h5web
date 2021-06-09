@@ -9,8 +9,9 @@ interface ToggleGroupProps {
   onChange: (val: string) => void;
 }
 
-const ToggleGroupContext =
-  createContext<ToggleGroupProps | undefined>(undefined);
+const ToggleGroupContext = createContext<ToggleGroupProps | undefined>(
+  undefined
+);
 
 function useToggleGroupProps(): ToggleGroupProps {
   const context = useContext(ToggleGroupContext);

@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { FixedSizeGrid as IndexedGrid } from 'react-window';
-import { useMeasure } from 'react-use';
+import { useMeasure } from '@react-hookz/web';
 import type { NdArray } from 'ndarray';
 import styles from './MatrixVis.module.css';
 import GridSettingsProvider from './GridSettingsContext';
@@ -21,8 +21,7 @@ function MatrixVis(props: Props) {
   const { dataArray, formatter, cellWidth } = props;
   const dims = dataArray.shape;
 
-  const [divRef, { width, height }] = useMeasure();
-  const isVisible = width > 0 && height > 0;
+  const [wrapperSize, wrapperRef] = useMeasure<HTMLDivElement>();
 
   const rowCount = dims[0] + 1; // includes IndexRow
   const columnCount = (dims.length === 2 ? dims[1] : 1) + 1; // includes IndexColumn
@@ -34,15 +33,12 @@ function MatrixVis(props: Props) {
       columnCount={columnCount}
       cellFormatter={
         dims.length === 1
-          ? (row: number) => formatter(dataArray.get(row))
-          : (row: number, col: number) => formatter(dataArray.get(row, col))
+          ? (row) => formatter(dataArray.get(row))
+          : (row, col) => formatter(dataArray.get(row, col))
       }
     >
-      <div
-        ref={divRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
-        className={styles.wrapper}
-      >
-        {isVisible && (
+      <div ref={wrapperRef} className={styles.wrapper}>
+        {wrapperSize && (
           <IndexedGrid
             className={styles.grid}
             innerElementType={forwardRef(StickyGrid)}
@@ -50,8 +46,8 @@ function MatrixVis(props: Props) {
             rowHeight={CELL_HEIGHT}
             columnCount={columnCount}
             rowCount={rowCount}
-            width={width}
-            height={height}
+            width={wrapperSize.width}
+            height={wrapperSize.height}
           >
             {Cell}
           </IndexedGrid>

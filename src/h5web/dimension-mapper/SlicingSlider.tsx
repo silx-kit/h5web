@@ -1,5 +1,5 @@
 import ReactSlider from 'react-slider';
-import { useMeasure } from 'react-use';
+import { useMeasure } from '@react-hookz/web';
 import styles from './SlicingSlider.module.css';
 import type { DimensionMapping } from './models';
 import { useEffect, useRef } from 'react';
@@ -17,19 +17,15 @@ interface Props {
 function SlicingSlider(props: Props) {
   const { dimension, slicingIndex, rawDims, mapperState, onChange } = props;
 
-  const [containerRef, { height }] = useMeasure();
+  const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
   const sliderRef = useRef<ReactSlider>(null);
 
   useEffect(() => {
     sliderRef.current?.resize();
-  }, [height]);
+  }, [containerSize]);
 
   return (
-    <div
-      key={dimension}
-      ref={containerRef as (element: HTMLElement | null) => void} // https://github.com/streamich/react-use/issues/1264
-      className={styles.container}
-    >
+    <div key={dimension} ref={containerRef} className={styles.container}>
       <span className={styles.label}>D{dimension}</span>
       <ReactSlider
         ref={sliderRef}
@@ -38,7 +34,10 @@ function SlicingSlider(props: Props) {
         min={0}
         max={rawDims[dimension] - 1}
         step={1}
-        marks={height / rawDims[dimension] >= MIN_HEIGHT_PER_MARK}
+        marks={
+          containerSize &&
+          containerSize.height / rawDims[dimension] >= MIN_HEIGHT_PER_MARK
+        }
         markClassName={styles.mark}
         orientation="vertical"
         invert
