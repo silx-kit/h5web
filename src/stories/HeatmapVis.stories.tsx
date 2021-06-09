@@ -7,6 +7,7 @@ import {
   getDomain,
   getMockDataArray,
   INTERPOLATORS,
+  Html,
 } from '../packages/lib';
 import ndarray from 'ndarray';
 
@@ -160,6 +161,19 @@ WithAlphaArray.args = {
   domain,
   alphaArray,
   alphaDomain,
+};
+
+export const WithOverlay: Story<HeatmapVisProps> = (args) => (
+  <HeatmapVis {...args}>
+    <Html>
+      <p style={{ marginTop: '2%', marginLeft: '2%' }}>Keep this in view !</p>
+    </Html>
+  </HeatmapVis>
+);
+
+WithOverlay.args = {
+  dataArray,
+  domain,
 };
 
 export default {
