@@ -10,8 +10,8 @@
     "url": "https://github.com/silx-kit/h5web"
   },
   "engines": {
-    "node": "12.x",
-    "npm": "6.x"
+    "node": "16.x",
+    "npm": "7.x"
   },
   "scripts": {
     "prebuild": "rm -Rf */dist",

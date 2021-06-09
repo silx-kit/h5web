@@ -18,10 +18,10 @@ jobs:
         env:
           TAG_PREFIX: refs/tags/v
 
-      - name: Use Node 12 🕹️
+      - name: Use Node 16 🕹️
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install ⚙️
         uses: bahmutov/npm-install@v1
