@@ -12,10 +12,10 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v2
 
-      - name: Use Node 12 🕹️
-        uses: actions/setup-node@v1
+      - name: Use Node 16 🕹️
+        uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install ⚙️
         uses: bahmutov/npm-install@v1
@@ -29,10 +29,10 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v2
 
-      - name: Use Node 12 🕹️
-        uses: actions/setup-node@v1
+      - name: Use Node 16 🕹️
+        uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install ⚙️
         uses: bahmutov/npm-install@v1
@@ -48,10 +48,16 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v2
 
-      - name: Use Node 12 🕹️
-        uses: actions/setup-node@v1
+      - name: Use Node 16 🕹️
+        uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '16'
+
+      - name: Cache Cypress binary 💾
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install ⚙️
         uses: bahmutov/npm-install@v1
