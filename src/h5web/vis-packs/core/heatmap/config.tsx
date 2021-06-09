@@ -54,7 +54,7 @@ function initialiseStore() {
           }
         },
 
-        showGrid: false,
+        showGrid: true,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
         layout: 'cover',
