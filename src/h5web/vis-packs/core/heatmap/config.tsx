@@ -29,7 +29,7 @@ interface HeatmapConfig {
   setLayout: (layout: Layout) => void;
 }
 
-function initialiseStore(onRehydrated: () => void) {
+function initialiseStore() {
   return create<HeatmapConfig>(
     persist(
       (set, get) => ({
@@ -71,7 +71,6 @@ function initialiseStore(onRehydrated: () => void) {
           'layout',
         ],
         version: 7,
-        onRehydrateStorage: () => onRehydrated,
       }
     )
   );
@@ -84,15 +83,8 @@ export const useHeatmapConfig = useStore;
 export function HeatmapConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
 
-  // https://github.com/pmndrs/zustand/issues/346
-  const [rehydrated, setRehydrated] = useState(false);
-
   // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
-  const [store] = useState(() => {
-    return initialiseStore(() => setRehydrated(true));
-  });
+  const [store] = useState(() => initialiseStore());
 
-  return rehydrated ? (
-    <Provider initialStore={store}>{children}</Provider>
-  ) : null;
+  return <Provider initialStore={store}>{children}</Provider>;
 }
