@@ -12,11 +12,11 @@ interface Props {
 function OverflowMenu(props: Props) {
   const { children } = props;
 
-  const overflowMenuRef = useRef(null);
+  const rootRef = useRef(null);
   const [isOverflowMenuOpen, toggleOverflowMenu] = useToggle(false);
 
   useClickAway(
-    overflowMenuRef,
+    rootRef,
     () => {
       if (isOverflowMenuOpen) {
         toggleOverflowMenu(false); // force close in case menu button was clicked
@@ -30,38 +30,38 @@ function OverflowMenu(props: Props) {
   }
 
   return (
-    <div className={styles.root}>
+    <>
       <Separator />
+      <div ref={rootRef} className={styles.root}>
+        <button
+          className={styles.btn}
+          type="button"
+          aria-label="More controls"
+          aria-haspopup="menu"
+          aria-controls="more-menu"
+          aria-expanded={isOverflowMenuOpen}
+          onClick={() => toggleOverflowMenu()}
+        >
+          <span className={styles.btnLike}>
+            <FiMenu className={styles.icon} />
+          </span>
+        </button>
 
-      <button
-        className={styles.btn}
-        type="button"
-        aria-label="More controls"
-        aria-haspopup="menu"
-        aria-controls="more-menu"
-        aria-expanded={isOverflowMenuOpen}
-        onClick={() => toggleOverflowMenu()}
-      >
-        <span className={styles.btnLike}>
-          <FiMenu className={styles.icon} />
-        </span>
-      </button>
-
-      <div
-        id="more-menu"
-        className={styles.menu}
-        ref={overflowMenuRef}
-        role="menu"
-        hidden={!isOverflowMenuOpen}
-      >
-        <ul className={styles.menuList}>
-          {Children.map(children, (child) => (
-            // Render cloned child (React elements don't like to be moved around)
-            <li role="menuitem">{cloneElement(child)}</li>
-          ))}
-        </ul>
+        <div
+          id="more-menu"
+          className={styles.menu}
+          role="menu"
+          hidden={!isOverflowMenuOpen}
+        >
+          <ul className={styles.menuList}>
+            {Children.map(children, (child) => (
+              // Render cloned child (React elements don't like to be moved around)
+              <li role="menuitem">{cloneElement(child)}</li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
