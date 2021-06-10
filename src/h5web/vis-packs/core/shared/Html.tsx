@@ -1,66 +1,103 @@
 import {
   useState,
-  useEffect,
   forwardRef,
   HTMLAttributes,
   useLayoutEffect,
+  useRef,
 } from 'react';
 import ReactDOM from 'react-dom';
-import { useThree } from '@react-three/fiber';
+import { GroupProps, useFrame, useThree } from '@react-three/fiber';
+import { Group, Vector3 } from 'three';
 
 // Simplified version of `drei`'s `<Html>` component
-// https://github.com/pmndrs/drei/blob/v2.2.3/src/Html.tsx
-const Html = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  (props, ref) => {
-    const { className, style, children, ...divProps } = props;
+// https://github.com/pmndrs/drei/blob/v6.0.3/src/web/Html.tsx
 
-    const { width, height } = useThree((state) => state.size);
-    const gl = useThree((state) => state.gl);
-    const { parentElement } = gl.domElement;
+const v1 = new Vector3();
 
-    // Container `div` for ReactDOM to render into, appended next to R3F's `canvas`
-    const [el] = useState(() => document.createElement('div'));
+export interface HtmlProps extends HTMLAttributes<HTMLDivElement> {
+  groupProps?: GroupProps;
+  followCamera?: boolean;
+}
 
-    useEffect(() => {
-      el.style.cssText = `position: absolute; top: 0; left: 0;`;
+const Html = forwardRef<HTMLDivElement, HtmlProps>((props, ref) => {
+  const {
+    className,
+    style,
+    children,
+    followCamera,
+    groupProps = {},
+    ...divProps
+  } = props;
 
-      if (parentElement) {
-        parentElement.append(el);
-      }
+  const { width, height } = useThree((state) => state.size);
+  const gl = useThree((state) => state.gl);
+  const { parentElement } = gl.domElement;
+  const camera = useThree((state) => state.camera);
 
-      return () => {
-        if (parentElement) {
-          el.remove();
-        }
+  // Container `div` for ReactDOM to render into, appended next to R3F's `canvas`
+  const [el] = useState(() => document.createElement('div'));
+  // Placeholder R3F group, the position of which is tracked and forwarded to `el` when `followCamera` is enabled
+  const group = useRef<Group>(null!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
-        ReactDOM.unmountComponentAtNode(el);
-      };
-    }, [el, parentElement]);
+  function updateHtmlPosition() {
+    const objectPos = v1.setFromMatrixPosition(group.current.matrixWorld);
+    objectPos.project(camera);
+    const widthHalf = width / 2;
+    const heightHalf = height / 2;
+    const pos = [
+      objectPos.x * widthHalf + widthHalf,
+      -(objectPos.y * heightHalf) + heightHalf,
+    ];
 
-    useLayoutEffect(() => {
-      ReactDOM.render(
-        <div
-          ref={ref}
-          className={className}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width,
-            height,
-            pointerEvents: 'none', // let pointer events pass through to canvas
-            ...style,
-          }}
-          {...divProps}
-        >
-          {children}
-        </div>,
-        el
-      );
-    }, [children, className, el, height, width, style, divProps, ref]);
-
-    return null;
+    el.style.transform = `translate3d(${pos[0]}px,${pos[1]}px,0)`;
   }
-);
+
+  useLayoutEffect(() => {
+    group.current.updateMatrixWorld(); // To place correctly `el` on first render
+    el.style.cssText = `position:absolute; top:0; left:0; transform-origin:0 0;`;
+    if (followCamera) {
+      updateHtmlPosition();
+    }
+
+    if (parentElement) {
+      parentElement.append(el);
+    }
+
+    return () => {
+      if (parentElement) {
+        el.remove();
+      }
+      ReactDOM.unmountComponentAtNode(el);
+    };
+  }, [el, parentElement]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useLayoutEffect(() => {
+    ReactDOM.render(
+      <div
+        ref={ref}
+        className={className}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          pointerEvents: 'none', // let pointer events pass through to canvas
+          ...style,
+        }}
+        {...divProps}
+      >
+        {children}
+      </div>,
+      el
+    );
+  }, [children, className, el, style, ref, divProps]);
+
+  useFrame(() => {
+    if (followCamera) {
+      updateHtmlPosition();
+    }
+  });
+
+  return <group ref={group} {...groupProps} />;
+});
 
 export default Html;
