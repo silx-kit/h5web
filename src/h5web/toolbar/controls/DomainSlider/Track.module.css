@@ -1,12 +1,13 @@
 .track {
   position: relative;
-  flex: 1 1 0%;
+  flex: none;
   align-self: center;
-  height: 0.5rem;
+  width: var(--track-width);
+  height: var(--track-height);
   margin: 0 calc(var(--thumb-size) / 2); /* make track end in middle of thumbs */
   background-color: var(--h5w-domainSlider-track--bgColor, lightgray);
   box-shadow: 1px 1px 2px inset var(--h5w-domainSlider-track--shadowColor, gray);
-  border-radius: 0.25rem;
+  border-radius: calc(var(--track-height) / 2);
   overflow: hidden; /* crop data track to root track's border radius */
 }
 
