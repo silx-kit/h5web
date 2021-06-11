@@ -121,7 +121,10 @@ function LineVis(props: Props) {
           }}
         >
           <TooltipMesh {...tooltipFormatters} guides="vertical" />
-          <PanZoomMesh />
+          <PanZoomMesh
+            abscissaDomain={abscissaDomain}
+            ordinateDomain={dataDomain}
+          />
           <DataCurve
             abscissas={abscissas}
             ordinates={dataArray.data as number[]}

@@ -104,7 +104,10 @@ function HeatmapVis(props: Props) {
           imageRatio={layout === 'cover' ? cols / rows : undefined}
         >
           <TooltipMesh {...tooltipFormatters} guides="both" />
-          <PanZoomMesh />
+          <PanZoomMesh
+            abscissaDomain={abscissaDomain}
+            ordinateDomain={ordinateDomain}
+          />
           <Mesh abscissaDomain={abscissaDomain} ordinateDomain={ordinateDomain}>
             <MeshMaterial
               rows={rows}

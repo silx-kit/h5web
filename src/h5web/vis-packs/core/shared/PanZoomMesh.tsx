@@ -2,25 +2,38 @@ import { useRef, useCallback, useEffect } from 'react';
 import type { Vector3 } from 'three';
 import { useThree } from '@react-three/fiber';
 import { clamp } from 'lodash';
-import { useWheelCapture } from '../hooks';
+import { useCanvasScales, useWheelCapture } from '../hooks';
 import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
+import type { Domain } from '../models';
 
 const ZOOM_FACTOR = 0.95;
 
-function PanZoomMesh() {
+interface Props {
+  abscissaDomain: Domain;
+  ordinateDomain: Domain;
+}
+
+function PanZoomMesh(props: Props) {
+  const { abscissaDomain, ordinateDomain } = props;
+
   const camera = useThree((state) => state.camera);
   const { width, height } = useThree((state) => state.size);
   const invalidate = useThree((state) => state.invalidate);
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
 
+  const { abscissaScale, ordinateScale } = useCanvasScales();
+  const [minAbscissa, maxAbscissa] = abscissaDomain;
+  const [minOrdinate, maxOrdinate] = ordinateDomain;
+  const meshWidth = abscissaScale(maxAbscissa) - abscissaScale(minAbscissa);
+  const meshHeight = ordinateScale(maxOrdinate) - ordinateScale(minOrdinate);
+
   const moveCameraTo = useCallback(
     (x: number, y: number) => {
       const { position, zoom } = camera;
 
-      const factor = (1 - 1 / zoom) / 2;
-      const xBound = width * factor;
-      const yBound = height * factor;
+      const xBound = Math.max(meshWidth - width / zoom, 0) / 2;
+      const yBound = Math.max(meshHeight - height / zoom, 0) / 2;
 
       position.set(
         clamp(x, -xBound, xBound),
@@ -31,7 +44,7 @@ function PanZoomMesh() {
       camera.updateMatrixWorld();
       invalidate();
     },
-    [camera, height, invalidate, width]
+    [camera, meshWidth, width, meshHeight, height, invalidate]
   );
 
   const onPointerDown = useCallback(
