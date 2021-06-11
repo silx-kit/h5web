@@ -168,6 +168,7 @@ export const WithOverlay: Story<HeatmapVisProps> = (args) => (
     <Html
       groupProps={{ position: [100, 200, 0] }}
       followCamera
+      scaleOnZoom
       style={{ width: '200px' }}
     >
       <p style={{ color: 'white' }}>An annotation</p>

@@ -17,6 +17,7 @@ const v1 = new Vector3();
 export interface HtmlProps extends HTMLAttributes<HTMLDivElement> {
   groupProps?: GroupProps;
   followCamera?: boolean;
+  scaleOnZoom?: boolean;
 }
 
 const Html = forwardRef<HTMLDivElement, HtmlProps>((props, ref) => {
@@ -25,6 +26,7 @@ const Html = forwardRef<HTMLDivElement, HtmlProps>((props, ref) => {
     style,
     children,
     followCamera,
+    scaleOnZoom,
     groupProps = {},
     ...divProps
   } = props;
@@ -49,7 +51,8 @@ const Html = forwardRef<HTMLDivElement, HtmlProps>((props, ref) => {
       -(objectPos.y * heightHalf) + heightHalf,
     ];
 
-    el.style.transform = `translate3d(${pos[0]}px,${pos[1]}px,0)`;
+    el.style.transform = `translate3d(${pos[0]}px,${pos[1]}px,0)
+    scale(${scaleOnZoom ? camera.zoom : 1})`;
   }
 
   useLayoutEffect(() => {
