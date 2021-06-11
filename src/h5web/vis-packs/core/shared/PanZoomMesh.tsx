@@ -28,6 +28,7 @@ function PanZoomMesh() {
         position.z
       );
 
+      camera.updateMatrixWorld();
       invalidate();
     },
     [camera, height, invalidate, width]

@@ -165,8 +165,12 @@ WithAlphaArray.args = {
 
 export const WithOverlay: Story<HeatmapVisProps> = (args) => (
   <HeatmapVis {...args}>
-    <Html>
-      <p style={{ marginTop: '2%', marginLeft: '2%' }}>Keep this in view !</p>
+    <Html
+      groupProps={{ position: [100, 200, 0] }}
+      followCamera
+      style={{ width: '200px' }}
+    >
+      <p style={{ color: 'white' }}>An annotation</p>
     </Html>
   </HeatmapVis>
 );
