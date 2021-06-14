@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
-import { useThree } from '@react-three/fiber';
 import AxisSystem from '../shared/AxisSystem';
 import type { AxisOffsets, AxisConfig } from '../models';
-import { computeSameRatioDomains } from '../utils';
+import { useImageSize, useCanvasDomains } from './hooks';
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -16,21 +15,10 @@ interface Props {
 function HeatmapAxisSystem(props: Props) {
   const { abscissaConfig, ordinateConfig, imageRatio, ...forwardProps } = props;
 
-  const { width, height } = useThree((state) => state.size);
+  const imageSize = useImageSize(imageRatio);
 
-  if (!imageRatio) {
-    return (
-      <AxisSystem
-        abscissaConfig={abscissaConfig}
-        ordinateConfig={ordinateConfig}
-        {...forwardProps}
-      />
-    );
-  }
-
-  const [xAxisDomain, yAxisDomain] = computeSameRatioDomains(
-    width / height,
-    imageRatio,
+  const [xAxisDomain, yAxisDomain] = useCanvasDomains(
+    imageSize,
     abscissaConfig.domain,
     ordinateConfig.domain
   );

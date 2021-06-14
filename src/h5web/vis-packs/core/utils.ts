@@ -369,23 +369,6 @@ export function getSliceSelection(
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
 }
 
-export function computeSameRatioDomains(
-  canvasRatio: number,
-  imageRatio: number,
-  abscissaDomain: Domain,
-  ordinateDomain: Domain
-): [Domain, Domain] {
-  const mismatch = canvasRatio / imageRatio; // ratio = width / height
-  if (mismatch > 1) {
-    // `canvasWidth` is relatively bigger than `imageWidth` => extend the abscissa domain by `mismatch` to make them match
-    // `extendDomain` relative extension is of `(1 + 2 * extendFactor)` so in this case, `extendFactor = (mismatch - 1) / 2`
-    return [extendDomain(abscissaDomain, (mismatch - 1) / 2), ordinateDomain];
-  }
-
-  // `canvasHeight` is relatively bigger than `imageHeight` => extend the ordinate domain by `1 / mismatch` to make them match
-  return [abscissaDomain, extendDomain(ordinateDomain, (1 / mismatch - 1) / 2)];
-}
-
 export function getAxisOffsets(
   hasLabel: Partial<Record<keyof AxisOffsets, boolean>> = {}
 ) {
