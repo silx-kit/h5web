@@ -14,7 +14,7 @@ import { Group, Vector3 } from 'three';
 
 const v1 = new Vector3();
 
-export interface HtmlProps extends HTMLAttributes<HTMLDivElement> {
+interface HtmlProps extends HTMLAttributes<HTMLDivElement> {
   groupProps?: GroupProps;
   followCamera?: boolean;
   scaleOnZoom?: boolean;

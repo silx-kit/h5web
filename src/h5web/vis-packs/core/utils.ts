@@ -60,7 +60,7 @@ export function createAxisScale(
   }
 }
 
-export function computeVisSize(
+export function computeCanvasSize(
   availableSize: Size,
   aspectRatio?: number
 ): Size | undefined {
@@ -218,10 +218,10 @@ export function getCanvasScale(
   config: AxisConfig,
   canvasSize: number
 ): AxisScale {
-  const { scaleType, domain } = config;
+  const { scaleType, visDomain } = config;
 
   return createAxisScale({
-    domain,
+    domain: visDomain,
     range: [-canvasSize / 2, canvasSize / 2],
     type: scaleType || ScaleType.Linear,
   });

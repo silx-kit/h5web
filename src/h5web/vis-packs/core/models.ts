@@ -38,7 +38,7 @@ export enum DomainError {
 
 export interface AxisConfig {
   isIndexAxis?: boolean;
-  domain: Domain;
+  visDomain: Domain;
   showGrid?: boolean;
   scaleType?: ScaleType;
   label?: string;

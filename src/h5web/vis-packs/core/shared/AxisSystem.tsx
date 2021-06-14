@@ -83,7 +83,13 @@ function AxisSystem(props: Props) {
         />
       </Html>
       <AxisSystemContext.Provider
-        value={{ visSize, abscissaConfig, ordinateConfig }}
+        value={{
+          abscissaConfig,
+          ordinateConfig,
+          abscissaScale,
+          ordinateScale,
+          visSize,
+        }}
       >
         {children}
       </AxisSystemContext.Provider>

@@ -91,13 +91,13 @@ function HeatmapVis(props: Props) {
           visRatio={layout === 'cover' ? cols / rows : undefined}
           title={title}
           abscissaConfig={{
-            domain: abscissaDomain,
+            visDomain: abscissaDomain,
             showGrid,
             isIndexAxis: !abscissaValue,
             label: abscissaLabel,
           }}
           ordinateConfig={{
-            domain: ordinateDomain,
+            visDomain: ordinateDomain,
             showGrid,
             isIndexAxis: !ordinateValue,
             label: ordinateLabel,

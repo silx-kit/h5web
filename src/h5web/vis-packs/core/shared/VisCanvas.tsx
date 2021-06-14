@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { useMeasure } from '@react-hookz/web';
 import styles from './VisCanvas.module.css';
 import type { AxisOffsets } from '../models';
-import { computeVisSize } from '../utils';
+import { computeCanvasSize } from '../utils';
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -25,7 +25,7 @@ function VisCanvas(props: Props) {
     height: visAreaSize.height - axisOffsets.bottom - axisOffsets.top,
   };
 
-  const visSize = computeVisSize(availableSize, aspectRatio);
+  const visSize = computeCanvasSize(availableSize, aspectRatio);
 
   return (
     <div ref={visAreaRef} className={styles.visArea}>

@@ -1,6 +1,6 @@
 import { tickStep } from 'd3-array';
 import {
-  computeVisSize,
+  computeCanvasSize,
   getDomain,
   getDomains,
   extendDomain,
@@ -14,11 +14,11 @@ import { Domain, ScaleType } from './models';
 const MAX = Number.MAX_VALUE / 2;
 const POS_MIN = Number.MIN_VALUE;
 
-describe('computeVisSize', () => {
+describe('computeCanvasSize', () => {
   describe('with aspect ratio > 1', () => {
     it('should return available size with width reduced', () => {
       const availableSize = { width: 20, height: 10 };
-      const size = computeVisSize(availableSize, 1.5);
+      const size = computeCanvasSize(availableSize, 1.5);
 
       expect(size?.width).toBeLessThanOrEqual(availableSize.width);
       expect(size?.height).toBeLessThanOrEqual(availableSize.height);
@@ -27,7 +27,7 @@ describe('computeVisSize', () => {
 
     it('should return available size with height reduced', () => {
       const availableSize = { width: 12, height: 50 };
-      const size = computeVisSize(availableSize, 3);
+      const size = computeCanvasSize(availableSize, 3);
 
       expect(size?.width).toBeLessThanOrEqual(availableSize.width);
       expect(size?.height).toBeLessThanOrEqual(availableSize.height);
@@ -38,7 +38,7 @@ describe('computeVisSize', () => {
   describe('with aspect ratio < 1', () => {
     it('should return available size with width reduced', () => {
       const availableSize = { width: 20, height: 10 };
-      const size = computeVisSize(availableSize, 0.5);
+      const size = computeCanvasSize(availableSize, 0.5);
 
       expect(size?.width).toBeLessThanOrEqual(availableSize.width);
       expect(size?.height).toBeLessThanOrEqual(availableSize.height);
@@ -47,7 +47,7 @@ describe('computeVisSize', () => {
 
     it('should return available size with height reduced', () => {
       const availableSize = { width: 12, height: 50 };
-      const size = computeVisSize(availableSize, 0.75);
+      const size = computeCanvasSize(availableSize, 0.75);
 
       expect(size?.width).toBeLessThanOrEqual(availableSize.width);
       expect(size?.height).toBeLessThanOrEqual(availableSize.height);
@@ -56,12 +56,12 @@ describe('computeVisSize', () => {
   });
 
   it('should return available size when no aspect ratio is provided', () => {
-    const size = computeVisSize({ width: 20, height: 10 }, undefined);
+    const size = computeCanvasSize({ width: 20, height: 10 }, undefined);
     expect(size).toEqual({ width: 20, height: 10 });
   });
 
   it('should return `undefined` when no space is available for visualization', () => {
-    const size = computeVisSize({ width: 0, height: 0 }, 1);
+    const size = computeCanvasSize({ width: 0, height: 0 }, 1);
     expect(size).toBeUndefined();
   });
 });

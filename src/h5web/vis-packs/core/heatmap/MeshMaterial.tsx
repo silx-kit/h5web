@@ -11,7 +11,7 @@ import { Domain, ScaleType } from '../models';
 import type { ColorMap } from './models';
 import { getInterpolator } from './utils';
 
-export interface MeshProps {
+interface MeshProps {
   rows: number;
   cols: number;
   values: number[];

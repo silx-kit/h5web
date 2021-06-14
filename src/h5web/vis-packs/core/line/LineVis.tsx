@@ -107,14 +107,14 @@ function LineVis(props: Props) {
           axisOffsets={axisOffsets}
           title={title}
           abscissaConfig={{
-            domain: abscissaDomain,
+            visDomain: abscissaDomain,
             showGrid,
             scaleType: abscissaScaleType,
             isIndexAxis: !abscissaValue,
             label: abscissaLabel,
           }}
           ordinateConfig={{
-            domain: dataDomain,
+            visDomain: dataDomain,
             showGrid,
             scaleType,
             label: ordinateLabel,

@@ -1,5 +1,4 @@
 import { ReactNode, useContext } from 'react';
-import { useCanvasScales } from '../hooks';
 import AxisSystemContext from '../shared/AxisSystemContext';
 
 interface Props {
@@ -8,13 +7,18 @@ interface Props {
 
 function Mesh(props: Props) {
   const { children } = props;
-  const { visSize, abscissaConfig, ordinateConfig } =
-    useContext(AxisSystemContext);
 
-  const [minAbscissa, maxAbscissa] = abscissaConfig.domain;
-  const [minOrdinate, maxOrdinate] = ordinateConfig.domain;
+  const {
+    abscissaConfig,
+    ordinateConfig,
+    abscissaScale,
+    ordinateScale,
+    visSize,
+  } = useContext(AxisSystemContext);
 
-  const { abscissaScale, ordinateScale } = useCanvasScales();
+  const [minAbscissa, maxAbscissa] = abscissaConfig.visDomain;
+  const [minOrdinate, maxOrdinate] = ordinateConfig.visDomain;
+
   const x = abscissaScale(minAbscissa + (maxAbscissa - minAbscissa) / 2);
   const y = ordinateScale(minOrdinate + (maxOrdinate - minOrdinate) / 2);
 
