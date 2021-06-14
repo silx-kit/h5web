@@ -14,7 +14,7 @@ import { useAxisValues, useTooltipFormatters } from './hooks';
 import { useDomain } from '../hooks';
 import Mesh from './Mesh';
 import MeshMaterial from './MeshMaterial';
-import HeatmapAxisSystem from './HeatmapAxisSystem';
+import AxisSystem from '../shared/AxisSystem';
 
 interface Props {
   dataArray: NdArray;
@@ -86,8 +86,9 @@ function HeatmapVis(props: Props) {
         axisOffsets={axisOffsets}
         aspectRatio={layout === 'contain' ? cols / rows : undefined}
       >
-        <HeatmapAxisSystem
+        <AxisSystem
           axisOffsets={axisOffsets}
+          visRatio={layout === 'cover' ? cols / rows : undefined}
           title={title}
           abscissaConfig={{
             domain: abscissaDomain,
@@ -101,11 +102,10 @@ function HeatmapVis(props: Props) {
             isIndexAxis: !ordinateValue,
             label: ordinateLabel,
           }}
-          imageRatio={layout === 'cover' ? cols / rows : undefined}
         >
           <TooltipMesh {...tooltipFormatters} guides="both" />
           <PanZoomMesh />
-          <Mesh abscissaDomain={abscissaDomain} ordinateDomain={ordinateDomain}>
+          <Mesh>
             <MeshMaterial
               rows={rows}
               cols={cols}
@@ -119,7 +119,7 @@ function HeatmapVis(props: Props) {
             />
           </Mesh>
           {children}
-        </HeatmapAxisSystem>
+        </AxisSystem>
       </VisCanvas>
       <ColorBar
         domain={domain}

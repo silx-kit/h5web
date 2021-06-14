@@ -1,7 +1,8 @@
 import { createContext } from 'react';
-import type { AxisConfig } from '../models';
+import type { AxisConfig, Size } from '../models';
 
 interface AxisConfigs {
+  visSize: Size;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
 }

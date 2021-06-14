@@ -21,7 +21,7 @@ import {
   getValueToIndexScale,
 } from './utils';
 import AxisSystemContext from './shared/AxisSystemContext';
-import { AxisScale, ScaleType } from './models';
+import { AxisScale, ScaleType, Size } from './models';
 import { ProviderContext } from '../../providers/context';
 import { isDefined } from '../../guards';
 import type { Dataset, Value } from '../../providers/models';
@@ -110,16 +110,32 @@ export function useFrameRendering(): void {
   });
 }
 
+export function useVisSize(ratio: number | undefined): Size {
+  const { width, height } = useThree((state) => state.size);
+
+  if (!ratio) {
+    return { width, height };
+  }
+
+  const canvasRatio = width / height;
+  const mismatch = canvasRatio / ratio;
+
+  return {
+    width: mismatch > 1 ? height * ratio : width,
+    height: mismatch > 1 ? height : width / ratio,
+  };
+}
+
 export function useCanvasScales(): {
   abscissaScale: AxisScale;
   ordinateScale: AxisScale;
 } {
-  const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
-  const { width, height } = useThree((state) => state.size);
+  const { visSize, abscissaConfig, ordinateConfig } =
+    useContext(AxisSystemContext);
 
   return {
-    abscissaScale: getCanvasScale(abscissaConfig, width),
-    ordinateScale: getCanvasScale(ordinateConfig, height),
+    abscissaScale: getCanvasScale(abscissaConfig, visSize.width),
+    ordinateScale: getCanvasScale(ordinateConfig, visSize.height),
   };
 }
 
