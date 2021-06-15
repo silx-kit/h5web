@@ -12,7 +12,6 @@ import {
 import Tick from './Tick';
 
 const AXIS_PROPS: Partial<SharedAxisProps<AxisScale>> = {
-  hideAxisLine: true,
   labelClassName: styles.label,
   labelProps: {}, // remove any styling props from parent `svg` element
   tickClassName: styles.tick,
@@ -61,6 +60,7 @@ function Axis(props: Props) {
           tickFormat={getTickFormatter(domain, axisLength, scaleType)}
           label={label}
           labelOffset={type === 'abscissa' ? 28 : 42}
+          hideAxisLine={showGrid}
           {...ticksProp}
           {...AXIS_PROPS}
         />
