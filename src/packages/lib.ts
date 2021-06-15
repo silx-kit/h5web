@@ -26,6 +26,7 @@ export { default as HeatmapMeshMaterial } from '../h5web/vis-packs/core/heatmap/
 export { default as DataCurve } from '../h5web/vis-packs/core/line/DataCurve';
 export type { AxisSystemProps } from '../h5web/vis-packs/core/shared/AxisSystem';
 export { default as Html } from '../h5web/vis-packs/core/shared/Html';
+export { default as Annotation } from '../h5web/vis-packs/core/shared/Annotation';
 
 // Utilities
 export {

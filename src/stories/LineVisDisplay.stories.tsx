@@ -6,6 +6,7 @@ import {
   CurveType,
   getDomain,
   getMockDataArray,
+  Annotation,
 } from '../packages/lib';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
@@ -62,6 +63,19 @@ WithTitle.args = {
   dataArray,
   domain,
   title: 'A simple curve',
+};
+
+export const WithAnnotation: Story<LineVisProps> = (args) => (
+  <LineVis {...args}>
+    <Annotation x={30} y={10} style={{ width: '200px' }}>
+      <p>A simple line</p>
+    </Annotation>
+  </LineVis>
+);
+
+WithAnnotation.args = {
+  dataArray,
+  domain,
 };
 
 export default {
