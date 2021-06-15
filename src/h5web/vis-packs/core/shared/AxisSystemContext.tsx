@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import type { AxisConfig, AxisScale, Size } from '../models';
 
-interface AxisSystemParams {
+export interface AxisSystemParams {
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   abscissaScale: AxisScale;

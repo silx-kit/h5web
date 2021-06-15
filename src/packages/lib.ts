@@ -27,6 +27,10 @@ export { default as DataCurve } from '../h5web/vis-packs/core/line/DataCurve';
 export { default as Html } from '../h5web/vis-packs/core/shared/Html';
 export { default as Annotation } from '../h5web/vis-packs/core/shared/Annotation';
 
+// Context hook
+export { useAxisSystemContext } from '../h5web/vis-packs/core/shared/AxisSystemContext';
+export type { AxisSystemParams } from '../h5web/vis-packs/core/shared/AxisSystemContext';
+
 // Utilities
 export {
   computeCanvasSize,
