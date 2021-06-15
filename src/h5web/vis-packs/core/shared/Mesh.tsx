@@ -1,12 +1,13 @@
 import { ReactNode, useContext } from 'react';
-import AxisSystemContext from '../shared/AxisSystemContext';
+import type { MeshProps } from '@react-three/fiber';
+import AxisSystemContext from './AxisSystemContext';
 
-interface Props {
+interface Props extends MeshProps {
   children: ReactNode;
 }
 
 function Mesh(props: Props) {
-  const { children } = props;
+  const { children, ...meshProps } = props;
 
   const {
     abscissaConfig,
@@ -23,7 +24,7 @@ function Mesh(props: Props) {
   const y = ordinateScale(minOrdinate + (maxOrdinate - minOrdinate) / 2);
 
   return (
-    <mesh position={[x, y, 0]}>
+    <mesh position={[x, y, 0]} {...meshProps}>
       <planeGeometry args={[visSize.width, visSize.height]} />
       {children}
     </mesh>

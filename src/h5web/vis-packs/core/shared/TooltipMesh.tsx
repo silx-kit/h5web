@@ -11,6 +11,7 @@ import type {
   TooltipValueFormatter,
 } from '../models';
 import AxisSystemContext from './AxisSystemContext';
+import Mesh from './Mesh';
 
 interface Props {
   formatIndex: TooltipIndexFormatter;
@@ -74,10 +75,9 @@ function TooltipMesh(props: Props) {
 
   return (
     <>
-      <mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
+      <Mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <meshBasicMaterial opacity={0} transparent />
-        <planeGeometry args={[width, height]} />
-      </mesh>
+      </Mesh>
       <Html>
         {tooltipOpen && tooltipData && value && (
           <>
