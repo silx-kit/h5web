@@ -12,7 +12,7 @@ import { DEFAULT_DOMAIN, getAxisOffsets } from '../utils';
 import { assertDefined } from '../../../guards';
 import { useAxisValues, useTooltipFormatters } from './hooks';
 import { useDomain } from '../hooks';
-import Mesh from './Mesh';
+import Mesh from '../shared/Mesh';
 import MeshMaterial from './MeshMaterial';
 import AxisSystem from '../shared/AxisSystem';
 
