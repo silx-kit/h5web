@@ -7,7 +7,7 @@ import {
   getDomain,
   getMockDataArray,
   INTERPOLATORS,
-  Html,
+  Annotation,
 } from '../packages/lib';
 import ndarray from 'ndarray';
 
@@ -163,20 +163,15 @@ WithAlphaArray.args = {
   alphaDomain,
 };
 
-export const WithOverlay: Story<HeatmapVisProps> = (args) => (
+export const WithAnnotation: Story<HeatmapVisProps> = (args) => (
   <HeatmapVis {...args}>
-    <Html
-      groupProps={{ position: [100, 200, 0] }}
-      followCamera
-      scaleOnZoom
-      style={{ width: '200px' }}
-    >
+    <Annotation x={30} y={18} style={{ width: '200px' }}>
       <p style={{ color: 'white' }}>An annotation</p>
-    </Html>
+    </Annotation>
   </HeatmapVis>
 );
 
-WithOverlay.args = {
+WithAnnotation.args = {
   dataArray,
   domain,
 };

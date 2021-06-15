@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import type { NdArray } from 'ndarray';
 import { range } from 'd3-array';
 import styles from './LineVis.module.css';
@@ -35,6 +35,7 @@ interface Props {
   errorsArray?: NdArray;
   showErrors?: boolean;
   auxArrays?: NdArray[];
+  children?: ReactNode;
 }
 
 function LineVis(props: Props) {
@@ -50,6 +51,7 @@ function LineVis(props: Props) {
     errorsArray,
     showErrors = false,
     auxArrays = [],
+    children,
   } = props;
 
   const {
@@ -139,6 +141,7 @@ function LineVis(props: Props) {
               curveType={curveType}
             />
           ))}
+          {children}
         </AxisSystem>
       </VisCanvas>
     </figure>
