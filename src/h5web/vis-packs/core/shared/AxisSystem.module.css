@@ -28,6 +28,11 @@
   grid-area: axis-grid;
 }
 
+.axis > g > line {
+  stroke: var(--h5w-grid--color, gray);
+  stroke-opacity: var(--h5w-grid--opacity, 0.33);
+}
+
 .tick > line {
   stroke: var(--h5w-ticks--color, gray);
 }
