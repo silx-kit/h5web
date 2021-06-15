@@ -105,6 +105,22 @@ const safeDomain4 = getSafeDomain([-10, 50], [80, 100], ScaleType.Log]); // [50,
 - **`useVisDomain(...args): Domain`** - Memoised version of `getVisDomain`.
 - **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
 
+### Context hooks
+
+#### useAxisSystemContext
+
+```ts
+useAxisSystemContext(): AxisSystemParams
+
+const {
+  abscissaConfig,
+  ordinateConfig,
+  abscissaScale,
+  ordinateScale,
+  visSize
+} = useAxisSystemContext();
+```
+
 ### Mock data
 
 The library exposes a utility function to retrieve a mock entity's metadata and a mock dataset's value as ndarray for testing purposes.

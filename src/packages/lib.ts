@@ -20,13 +20,16 @@ export { default as GridToggler } from '../h5web/toolbar/controls/GridToggler';
 export { default as VisCanvas } from '../h5web/vis-packs/core/shared/VisCanvas';
 export { default as PanZoomMesh } from '../h5web/vis-packs/core/shared/PanZoomMesh';
 export { default as TooltipMesh } from '../h5web/vis-packs/core/shared/TooltipMesh';
-export { default as VisMesh } from '../h5web/vis-packs/core/shared/Mesh';
+export { default as VisMesh } from '../h5web/vis-packs/core/shared/VisMesh';
 export { default as ColorBar } from '../h5web/vis-packs/core/heatmap/ColorBar';
-export { default as HeatmapMeshMaterial } from '../h5web/vis-packs/core/heatmap/MeshMaterial';
+export { default as HeatmapMesh } from '../h5web/vis-packs/core/heatmap/HeatmapMesh';
 export { default as DataCurve } from '../h5web/vis-packs/core/line/DataCurve';
-export type { AxisSystemProps } from '../h5web/vis-packs/core/shared/AxisSystem';
 export { default as Html } from '../h5web/vis-packs/core/shared/Html';
 export { default as Annotation } from '../h5web/vis-packs/core/shared/Annotation';
+
+// Context hook
+export { useAxisSystemContext } from '../h5web/vis-packs/core/shared/AxisSystemContext';
+export type { AxisSystemParams } from '../h5web/vis-packs/core/shared/AxisSystemContext';
 
 // Utilities
 export {

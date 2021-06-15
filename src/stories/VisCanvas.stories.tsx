@@ -1,20 +1,10 @@
 import type { Story } from '@storybook/react/types-6-0';
 import FillHeight from './decorators/FillHeight';
-import { VisCanvas, AxisSystemProps, ScaleType } from '../packages/lib';
-import AxisSystem from '../h5web/vis-packs/core/shared/AxisSystem';
-import { getAxisOffsets } from '../h5web/vis-packs/core/utils';
+import { VisCanvas, ScaleType } from '../packages/lib';
+import type { VisCanvasProps } from '../h5web/vis-packs/core/shared/VisCanvas';
 
-const Template: Story<{ aspectRatio?: number } & AxisSystemProps> = ({
-  aspectRatio,
-  ...args
-}) => {
-  const axisOffsets = getAxisOffsets();
-
-  return (
-    <VisCanvas axisOffsets={axisOffsets} aspectRatio={aspectRatio}>
-      <AxisSystem {...args} axisOffsets={axisOffsets} />
-    </VisCanvas>
-  );
+const Template: Story<VisCanvasProps> = (args) => {
+  return <VisCanvas {...args} />;
 };
 
 export const IndexDomains = Template.bind({});
@@ -49,9 +39,9 @@ LogScales.args = {
 export const AspectRatio = Template.bind({});
 
 AspectRatio.args = {
-  abscissaConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
-  ordinateConfig: { visDomain: [0, 2], showGrid: true, isIndexAxis: true },
-  aspectRatio: 10 / 2,
+  abscissaConfig: { visDomain: [0, 16], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
+  aspectRatio: 16 / 10,
 };
 
 export const NoGrid = Template.bind({});
