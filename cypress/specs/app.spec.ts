@@ -150,7 +150,7 @@ describe('App', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'fourD' }).click();
 
-    cy.findByRole('figure', { name: 'fourD' }).should('exist');
+    cy.findByRole('figure', { name: 'fourD' }).as('vis').should('exist');
 
     cy.findAllByRole('slider', { name: 'Dimension slider' })
       .should('have.length', 2)
@@ -163,8 +163,10 @@ describe('App', () => {
     // Move slider up by three marks and check value
     cy.get('@slider').type('{uparrow}{uparrow}{uparrow}');
 
-    cy.findByRole('figure', { name: 'fourD' }).should('exist');
     cy.get('@slider').should('have.attr', 'aria-valuenow', 3);
+    cy.get('@vis')
+      .should('contain.text', '9.996e-1')
+      .and('contain.text', '−1e+0');
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
