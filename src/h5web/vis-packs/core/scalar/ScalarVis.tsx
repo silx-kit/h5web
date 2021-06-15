@@ -12,5 +12,4 @@ function ScalarVis(props: Props) {
   return <div className={styles.scalar}>{formatter(value)}</div>;
 }
 
-export type { Props as ScalarVisProps };
 export default ScalarVis;

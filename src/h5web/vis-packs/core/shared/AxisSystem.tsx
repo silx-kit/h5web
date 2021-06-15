@@ -3,29 +3,37 @@ import { useThree } from '@react-three/fiber';
 import Html from './Html';
 import styles from './AxisSystem.module.css';
 import type { AxisConfig, AxisOffsets, Domain } from '../models';
-import { useFrameRendering } from '../hooks';
+import { useFrameRendering, useVisSize } from '../hooks';
 import Axis from './Axis';
 import AxisSystemContext from './AxisSystemContext';
 import { getCanvasScale } from '../utils';
 
 interface Props {
   axisOffsets: AxisOffsets;
+  visRatio?: number;
+  title?: string;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   children: ReactNode;
-  title?: string;
 }
 
 function AxisSystem(props: Props) {
-  const { axisOffsets, abscissaConfig, ordinateConfig, title, children } =
-    props;
+  const {
+    axisOffsets,
+    visRatio,
+    title,
+    abscissaConfig,
+    ordinateConfig,
+    children,
+  } = props;
 
   const { position, zoom } = useThree((state) => state.camera);
-  const size = useThree((state) => state.size);
-  const { width, height } = size;
+  const canvasSize = useThree((state) => state.size);
+  const { width, height } = canvasSize;
 
-  const abscissaScale = getCanvasScale(abscissaConfig, width);
-  const ordinateScale = getCanvasScale(ordinateConfig, height);
+  const visSize = useVisSize(visRatio);
+  const abscissaScale = getCanvasScale(abscissaConfig, visSize.width);
+  const ordinateScale = getCanvasScale(ordinateConfig, visSize.height);
 
   // Find visible domains from camera's zoom and position
   const xVisibleDomain: Domain = [
@@ -64,17 +72,25 @@ function AxisSystem(props: Props) {
           type="abscissa"
           config={abscissaConfig}
           domain={xVisibleDomain}
-          canvasSize={size}
+          canvasSize={canvasSize}
         />
         <Axis
           type="ordinate"
           config={ordinateConfig}
           domain={yVisibleDomain}
-          canvasSize={size}
+          canvasSize={canvasSize}
           flipAxis
         />
       </Html>
-      <AxisSystemContext.Provider value={{ abscissaConfig, ordinateConfig }}>
+      <AxisSystemContext.Provider
+        value={{
+          abscissaConfig,
+          ordinateConfig,
+          abscissaScale,
+          ordinateScale,
+          visSize,
+        }}
+      >
         {children}
       </AxisSystemContext.Provider>
     </>

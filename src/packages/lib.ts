@@ -29,7 +29,7 @@ export { default as Html } from '../h5web/vis-packs/core/shared/Html';
 
 // Utilities
 export {
-  computeVisSize,
+  computeCanvasSize,
   getDomain,
   getDomains,
   getCombinedDomain,

@@ -14,14 +14,12 @@ import {
   applyMapping,
   getBaseArray,
   getBounds,
-  getCanvasScale,
   getCombinedDomain,
   getSliceSelection,
   getValidDomainForScale,
   getValueToIndexScale,
 } from './utils';
-import AxisSystemContext from './shared/AxisSystemContext';
-import { AxisScale, ScaleType } from './models';
+import { ScaleType, Size } from './models';
 import { ProviderContext } from '../../providers/context';
 import { isDefined } from '../../guards';
 import type { Dataset, Value } from '../../providers/models';
@@ -110,16 +108,18 @@ export function useFrameRendering(): void {
   });
 }
 
-export function useCanvasScales(): {
-  abscissaScale: AxisScale;
-  ordinateScale: AxisScale;
-} {
-  const { abscissaConfig, ordinateConfig } = useContext(AxisSystemContext);
+export function useVisSize(ratioToRespect: number | undefined): Size {
   const { width, height } = useThree((state) => state.size);
 
+  if (!ratioToRespect) {
+    return { width, height };
+  }
+
+  const canvasRatio = width / height;
+
   return {
-    abscissaScale: getCanvasScale(abscissaConfig, width),
-    ordinateScale: getCanvasScale(ordinateConfig, height),
+    width: canvasRatio > ratioToRespect ? height * ratioToRespect : width,
+    height: canvasRatio < ratioToRespect ? width / ratioToRespect : height,
   };
 }
 

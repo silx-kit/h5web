@@ -1,29 +1,30 @@
-import type { ReactNode } from 'react';
-import { useCanvasScales } from '../hooks';
-import type { Domain } from '../models';
+import { ReactNode, useContext } from 'react';
+import AxisSystemContext from '../shared/AxisSystemContext';
 
 interface Props {
-  abscissaDomain: Domain;
-  ordinateDomain: Domain;
   children: ReactNode;
 }
 
 function Mesh(props: Props) {
-  const { abscissaDomain, ordinateDomain, children } = props;
-  const [minAbscissa, maxAbscissa] = abscissaDomain;
-  const [minOrdinate, maxOrdinate] = ordinateDomain;
+  const { children } = props;
 
-  const { abscissaScale, ordinateScale } = useCanvasScales();
+  const {
+    abscissaConfig,
+    ordinateConfig,
+    abscissaScale,
+    ordinateScale,
+    visSize,
+  } = useContext(AxisSystemContext);
 
-  const width = abscissaScale(maxAbscissa) - abscissaScale(minAbscissa);
-  const height = ordinateScale(maxOrdinate) - ordinateScale(minOrdinate);
+  const [minAbscissa, maxAbscissa] = abscissaConfig.visDomain;
+  const [minOrdinate, maxOrdinate] = ordinateConfig.visDomain;
 
   const x = abscissaScale(minAbscissa + (maxAbscissa - minAbscissa) / 2);
   const y = ordinateScale(minOrdinate + (maxOrdinate - minOrdinate) / 2);
 
   return (
     <mesh position={[x, y, 0]}>
-      <planeGeometry args={[width, height]} />
+      <planeGeometry args={[visSize.width, visSize.height]} />
       {children}
     </mesh>
   );

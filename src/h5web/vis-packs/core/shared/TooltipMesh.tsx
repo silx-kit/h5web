@@ -1,16 +1,16 @@
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { useThree } from '@react-three/fiber';
 import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
 import { Line } from '@visx/shape';
 import Html from './Html';
 import styles from './TooltipMesh.module.css';
-import { useCanvasScales } from '../hooks';
 import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
 import type {
   Coords,
   TooltipIndexFormatter,
   TooltipValueFormatter,
 } from '../models';
+import AxisSystemContext from './AxisSystemContext';
 
 interface Props {
   formatIndex: TooltipIndexFormatter;
@@ -25,7 +25,7 @@ function TooltipMesh(props: Props) {
   const { width, height } = useThree((state) => state.size);
 
   // Scales to compute data coordinates from unprojected mesh coordinates
-  const { abscissaScale, ordinateScale } = useCanvasScales();
+  const { abscissaScale, ordinateScale } = useContext(AxisSystemContext);
 
   const {
     tooltipOpen,

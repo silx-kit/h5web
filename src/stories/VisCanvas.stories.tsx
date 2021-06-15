@@ -20,27 +20,27 @@ const Template: Story<{ aspectRatio?: number } & AxisSystemProps> = ({
 export const IndexDomains = Template.bind({});
 
 IndexDomains.args = {
-  abscissaConfig: { domain: [0, 3], showGrid: true, isIndexAxis: true },
-  ordinateConfig: { domain: [50, 100], showGrid: true, isIndexAxis: true },
+  abscissaConfig: { visDomain: [0, 3], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { visDomain: [50, 100], showGrid: true, isIndexAxis: true },
 };
 
 export const ArbitraryDomains = Template.bind({});
 
 ArbitraryDomains.args = {
-  abscissaConfig: { domain: [0, 3], showGrid: true },
-  ordinateConfig: { domain: [50, 100], showGrid: true },
+  abscissaConfig: { visDomain: [0, 3], showGrid: true },
+  ordinateConfig: { visDomain: [50, 100], showGrid: true },
 };
 
 export const LogScales = Template.bind({});
 
 LogScales.args = {
   abscissaConfig: {
-    domain: [1, 10],
+    visDomain: [1, 10],
     showGrid: true,
     scaleType: ScaleType.Log,
   },
   ordinateConfig: {
-    domain: [-10, 10],
+    visDomain: [-10, 10],
     showGrid: true,
     scaleType: ScaleType.SymLog,
   },
@@ -49,30 +49,30 @@ LogScales.args = {
 export const AspectRatio = Template.bind({});
 
 AspectRatio.args = {
-  abscissaConfig: { domain: [0, 10], showGrid: true, isIndexAxis: true },
-  ordinateConfig: { domain: [0, 2], showGrid: true, isIndexAxis: true },
+  abscissaConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { visDomain: [0, 2], showGrid: true, isIndexAxis: true },
   aspectRatio: 10 / 2,
 };
 
 export const NoGrid = Template.bind({});
 
 NoGrid.args = {
-  abscissaConfig: { domain: [-5, 20], showGrid: false, isIndexAxis: true },
-  ordinateConfig: { domain: [0, 2], showGrid: false },
+  abscissaConfig: { visDomain: [-5, 20], showGrid: false, isIndexAxis: true },
+  ordinateConfig: { visDomain: [0, 2], showGrid: false },
 };
 
 export const AxesLabels = Template.bind({});
 
 AxesLabels.args = {
-  abscissaConfig: { domain: [0, 3], showGrid: true, label: 'Abscissas' },
-  ordinateConfig: { domain: [50, 100], showGrid: true, label: 'Ordinates' },
+  abscissaConfig: { visDomain: [0, 3], showGrid: true, label: 'Abscissas' },
+  ordinateConfig: { visDomain: [50, 100], showGrid: true, label: 'Ordinates' },
 };
 
 export const GraphTitle = Template.bind({});
 
 GraphTitle.args = {
-  abscissaConfig: { domain: [0, 3], showGrid: true, isIndexAxis: true },
-  ordinateConfig: { domain: [50, 100], showGrid: true, isIndexAxis: true },
+  abscissaConfig: { visDomain: [0, 3], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { visDomain: [50, 100], showGrid: true, isIndexAxis: true },
   title: 'This is a graph',
 };
 
@@ -80,13 +80,13 @@ export const InheritedStyles = Template.bind({});
 
 InheritedStyles.args = {
   abscissaConfig: {
-    domain: [0, 50],
+    visDomain: [0, 50],
     showGrid: true,
     isIndexAxis: true,
     label: 'X values',
   },
   ordinateConfig: {
-    domain: [0, 3],
+    visDomain: [0, 3],
     showGrid: true,
     isIndexAxis: true,
     label: 'Y values',

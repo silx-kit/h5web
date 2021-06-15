@@ -60,7 +60,7 @@ export function createAxisScale(
   }
 }
 
-export function computeVisSize(
+export function computeCanvasSize(
   availableSize: Size,
   aspectRatio?: number
 ): Size | undefined {
@@ -218,10 +218,10 @@ export function getCanvasScale(
   config: AxisConfig,
   canvasSize: number
 ): AxisScale {
-  const { scaleType, domain } = config;
+  const { scaleType, visDomain } = config;
 
   return createAxisScale({
-    domain,
+    domain: visDomain,
     range: [-canvasSize / 2, canvasSize / 2],
     type: scaleType || ScaleType.Linear,
   });
@@ -367,23 +367,6 @@ export function getSliceSelection(
 
   // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
-}
-
-export function computeSameRatioDomains(
-  canvasRatio: number,
-  imageRatio: number,
-  abscissaDomain: Domain,
-  ordinateDomain: Domain
-): [Domain, Domain] {
-  const mismatch = canvasRatio / imageRatio; // ratio = width / height
-  if (mismatch > 1) {
-    // `canvasWidth` is relatively bigger than `imageWidth` => extend the abscissa domain by `mismatch` to make them match
-    // `extendDomain` relative extension is of `(1 + 2 * extendFactor)` so in this case, `extendFactor = (mismatch - 1) / 2`
-    return [extendDomain(abscissaDomain, (mismatch - 1) / 2), ordinateDomain];
-  }
-
-  // `canvasHeight` is relatively bigger than `imageHeight` => extend the ordinate domain by `1 / mismatch` to make them match
-  return [abscissaDomain, extendDomain(ordinateDomain, (1 / mismatch - 1) / 2)];
 }
 
 export function getAxisOffsets(
