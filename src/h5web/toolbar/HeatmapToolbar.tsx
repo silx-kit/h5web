@@ -29,16 +29,18 @@ function HeatmapToolbar() {
 
   return (
     <Toolbar>
-      {dataDomain && (
+      {dataDomain ? (
         <DomainSlider
           dataDomain={dataDomain}
           customDomain={customDomain}
           scaleType={scaleType}
           onCustomDomainChange={setCustomDomain}
         />
+      ) : (
+        <div />
       )}
 
-      {dataDomain && <Separator />}
+      {dataDomain ? <Separator /> : <div />}
 
       <ColorMapSelector
         value={colorMap}
