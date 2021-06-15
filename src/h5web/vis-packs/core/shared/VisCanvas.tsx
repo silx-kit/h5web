@@ -1,24 +1,30 @@
-import type { ReactNode } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useMeasure } from '@react-hookz/web';
 import styles from './VisCanvas.module.css';
-import type { AxisOffsets } from '../models';
-import { computeCanvasSize } from '../utils';
+import { computeCanvasSize, getAxisOffsets } from '../utils';
+import type { AxisSystemProviderProps } from './AxisSystemProvider';
+import AxisSystemProvider from './AxisSystemProvider';
+import AxisSystem from './AxisSystem';
 
-interface Props {
-  axisOffsets: AxisOffsets;
+interface Props extends AxisSystemProviderProps {
   aspectRatio?: number;
-  children: ReactNode;
+  title?: string;
 }
 
 function VisCanvas(props: Props) {
-  const { axisOffsets, children, aspectRatio } = props;
+  const { aspectRatio, title, children, ...providerProps } = props;
+  const { abscissaConfig, ordinateConfig } = providerProps;
 
   const [visAreaSize, visAreaRef] = useMeasure<HTMLDivElement>();
-
   if (!visAreaSize) {
     return <div ref={visAreaRef} className={styles.visArea} />;
   }
+
+  const axisOffsets = getAxisOffsets({
+    left: !!ordinateConfig.label,
+    bottom: !!abscissaConfig.label,
+    top: !!title,
+  });
 
   const availableSize = {
     width: visAreaSize.width - axisOffsets.left - axisOffsets.right,
@@ -49,11 +55,15 @@ function VisCanvas(props: Props) {
           gl={{ preserveDrawingBuffer: true }} // for screenshot feature
         >
           <ambientLight />
-          {children}
+          <AxisSystemProvider {...providerProps}>
+            <AxisSystem axisOffsets={axisOffsets} title={title} />
+            {children}
+          </AxisSystemProvider>
         </Canvas>
       </div>
     </div>
   );
 }
 
+export type { Props as VisCanvasProps };
 export default VisCanvas;

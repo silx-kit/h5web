@@ -1,12 +1,12 @@
-import { ReactNode, useContext } from 'react';
+import type { ReactNode } from 'react';
 import type { MeshProps } from '@react-three/fiber';
-import AxisSystemContext from './AxisSystemContext';
+import { useAxisSystemContext } from './AxisSystemContext';
 
 interface Props extends MeshProps {
   children: ReactNode;
 }
 
-function Mesh(props: Props) {
+function VisMesh(props: Props) {
   const { children, ...meshProps } = props;
 
   const {
@@ -15,7 +15,7 @@ function Mesh(props: Props) {
     abscissaScale,
     ordinateScale,
     visSize,
-  } = useContext(AxisSystemContext);
+  } = useAxisSystemContext();
 
   const [minAbscissa, maxAbscissa] = abscissaConfig.visDomain;
   const [minOrdinate, maxOrdinate] = ordinateConfig.visDomain;
@@ -31,4 +31,4 @@ function Mesh(props: Props) {
   );
 }
 
-export default Mesh;
+export default VisMesh;

@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { useThree } from '@react-three/fiber';
 import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
 import { Line } from '@visx/shape';
@@ -10,8 +10,8 @@ import type {
   TooltipIndexFormatter,
   TooltipValueFormatter,
 } from '../models';
-import AxisSystemContext from './AxisSystemContext';
-import Mesh from './Mesh';
+import { useAxisSystemContext } from './AxisSystemContext';
+import VisMesh from './VisMesh';
 
 interface Props {
   formatIndex: TooltipIndexFormatter;
@@ -26,7 +26,7 @@ function TooltipMesh(props: Props) {
   const { width, height } = useThree((state) => state.size);
 
   // Scales to compute data coordinates from unprojected mesh coordinates
-  const { abscissaScale, ordinateScale } = useContext(AxisSystemContext);
+  const { abscissaScale, ordinateScale } = useAxisSystemContext();
 
   const {
     tooltipOpen,
@@ -75,9 +75,9 @@ function TooltipMesh(props: Props) {
 
   return (
     <>
-      <Mesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
+      <VisMesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <meshBasicMaterial opacity={0} transparent />
-      </Mesh>
+      </VisMesh>
       <Html>
         {tooltipOpen && tooltipData && value && (
           <>

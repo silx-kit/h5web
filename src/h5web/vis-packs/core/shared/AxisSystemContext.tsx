@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import type { AxisConfig, AxisScale, Size } from '../models';
 
 interface AxisSystemParams {
@@ -9,4 +9,10 @@ interface AxisSystemParams {
   visSize: Size;
 }
 
-export default createContext<AxisSystemParams>({} as AxisSystemParams);
+export const AxisSystemContext = createContext<AxisSystemParams>(
+  {} as AxisSystemParams
+);
+
+export function useAxisSystemContext() {
+  return useContext(AxisSystemContext);
+}

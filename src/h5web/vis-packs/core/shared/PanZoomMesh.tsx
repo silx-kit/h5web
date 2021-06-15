@@ -1,15 +1,15 @@
-import { useRef, useCallback, useEffect, useContext } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import type { Vector3 } from 'three';
 import { useThree } from '@react-three/fiber';
 import { clamp } from 'lodash';
 import { useWheelCapture } from '../hooks';
 import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
-import AxisSystemContext from './AxisSystemContext';
+import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;
 
 function PanZoomMesh() {
-  const { visSize } = useContext(AxisSystemContext);
+  const { visSize } = useAxisSystemContext();
 
   const camera = useThree((state) => state.camera);
   const { width, height } = useThree((state) => state.size);

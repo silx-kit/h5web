@@ -1,5 +1,5 @@
-import { HTMLAttributes, useContext } from 'react';
-import AxisSystemContext from './AxisSystemContext';
+import type { HTMLAttributes } from 'react';
+import { useAxisSystemContext } from './AxisSystemContext';
 import Html from './Html';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -11,8 +11,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 function Annotation(props: Props) {
   const { x, y, z = 1, scaleOnZoom, children, ...divProps } = props;
-
-  const { abscissaScale, ordinateScale } = useContext(AxisSystemContext);
+  const { abscissaScale, ordinateScale } = useAxisSystemContext();
 
   return (
     <Html

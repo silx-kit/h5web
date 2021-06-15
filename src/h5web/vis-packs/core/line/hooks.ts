@@ -1,10 +1,10 @@
 import { format } from 'd3-format';
 import type { NdArray } from 'ndarray';
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Vector3 } from 'three';
 import { useValueToIndexScale } from '../hooks';
 import type { TooltipIndexFormatter, TooltipValueFormatter } from '../models';
-import AxisSystemContext from '../shared/AxisSystemContext';
+import { useAxisSystemContext } from '../shared/AxisSystemContext';
 
 const CAMERA_FAR = 1000; // R3F's default
 
@@ -13,7 +13,7 @@ export function useCanvasPoints(
   ordinates: number[],
   errors?: number[]
 ) {
-  const { abscissaScale, ordinateScale } = useContext(AxisSystemContext);
+  const { abscissaScale, ordinateScale } = useAxisSystemContext();
 
   return useMemo(() => {
     const dataPoints: Vector3[] = [];
