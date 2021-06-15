@@ -8,10 +8,11 @@ import {
   UnsignedByteType,
 } from 'three';
 import { Domain, ScaleType } from '../models';
+import VisMesh from '../shared/VisMesh';
 import type { ColorMap } from './models';
 import { getInterpolator } from './utils';
 
-interface MeshProps {
+interface Props {
   rows: number;
   cols: number;
   values: number[];
@@ -38,7 +39,7 @@ const CMAP_NORM: Record<ScaleType, number> = {
   [ScaleType.SymLog]: 2,
 };
 
-function MeshMaterial(props: MeshProps) {
+function HeatmapMesh(props: Props) {
   const {
     rows,
     cols,
@@ -149,7 +150,11 @@ function MeshMaterial(props: MeshProps) {
     `,
   };
 
-  return <shaderMaterial args={[shader]} />;
+  return (
+    <VisMesh>
+      <shaderMaterial args={[shader]} />
+    </VisMesh>
+  );
 }
 
-export default memo(MeshMaterial);
+export default memo(HeatmapMesh);

@@ -22,7 +22,7 @@ export { default as PanZoomMesh } from '../h5web/vis-packs/core/shared/PanZoomMe
 export { default as TooltipMesh } from '../h5web/vis-packs/core/shared/TooltipMesh';
 export { default as VisMesh } from '../h5web/vis-packs/core/shared/VisMesh';
 export { default as ColorBar } from '../h5web/vis-packs/core/heatmap/ColorBar';
-export { default as HeatmapMeshMaterial } from '../h5web/vis-packs/core/heatmap/MeshMaterial';
+export { default as HeatmapMesh } from '../h5web/vis-packs/core/heatmap/HeatmapMesh';
 export { default as DataCurve } from '../h5web/vis-packs/core/line/DataCurve';
 export { default as Html } from '../h5web/vis-packs/core/shared/Html';
 export { default as Annotation } from '../h5web/vis-packs/core/shared/Annotation';

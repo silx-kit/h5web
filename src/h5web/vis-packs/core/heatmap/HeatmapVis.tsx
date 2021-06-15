@@ -12,8 +12,7 @@ import { DEFAULT_DOMAIN } from '../utils';
 import { assertDefined } from '../../../guards';
 import { useAxisValues, useTooltipFormatters } from './hooks';
 import { useDomain } from '../hooks';
-import VisMesh from '../shared/VisMesh';
-import MeshMaterial from './MeshMaterial';
+import HeatmapMesh from './HeatmapMesh';
 
 interface Props {
   dataArray: NdArray;
@@ -94,19 +93,17 @@ function HeatmapVis(props: Props) {
       >
         <TooltipMesh {...tooltipFormatters} guides="both" />
         <PanZoomMesh />
-        <VisMesh>
-          <MeshMaterial
-            rows={rows}
-            cols={cols}
-            values={dataArray.data as number[]}
-            domain={domain}
-            colorMap={colorMap}
-            invertColorMap={invertColorMap}
-            scaleType={scaleType}
-            alphaValues={alphaArray && (alphaArray.data as number[])}
-            alphaDomain={alphaDomain}
-          />
-        </VisMesh>
+        <HeatmapMesh
+          rows={rows}
+          cols={cols}
+          values={dataArray.data as number[]}
+          domain={domain}
+          colorMap={colorMap}
+          invertColorMap={invertColorMap}
+          scaleType={scaleType}
+          alphaValues={alphaArray && (alphaArray.data as number[])}
+          alphaDomain={alphaDomain}
+        />
         {children}
       </VisCanvas>
       <ColorBar
