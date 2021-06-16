@@ -291,10 +291,11 @@ test('handle min > max', async () => {
 test('handle min or max <= 0 in log scale', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/image');
-  await screen.findByRole('button', { name: 'Log' }); // wait for switch to log scale
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
+  await screen.findByRole('button', { name: 'Log' }); // wait for switch to log scale
+
   userEvent.click(editBtn);
 
   const minInput = screen.getByLabelText('min');
@@ -322,10 +323,11 @@ test('handle min or max <= 0 in log scale', async () => {
 test('handle min <= 0 with custom max fallback in log scale', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/image');
-  await screen.findByRole('button', { name: 'Log' }); // wait for switch to log scale
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
+  await screen.findByRole('button', { name: 'Log' }); // wait for switch to log scale
+
   userEvent.click(editBtn);
 
   const minInput = screen.getByLabelText('min');
