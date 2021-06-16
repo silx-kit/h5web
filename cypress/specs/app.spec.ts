@@ -161,9 +161,14 @@ describe('App', () => {
       .as('slider');
 
     // Move slider up by three marks and check value
-    cy.get('@slider').type('{uparrow}{uparrow}{uparrow}', { delay: 50 });
-
+    cy.get('@slider').type('{uparrow}');
+    cy.get('@slider').should('have.attr', 'aria-valuenow', 1);
+    cy.get('@slider').type('{uparrow}');
+    cy.get('@slider').should('have.attr', 'aria-valuenow', 2);
+    cy.get('@slider').type('{uparrow}');
     cy.get('@slider').should('have.attr', 'aria-valuenow', 3);
+
+    cy.findByRole('figure', { name: 'fourD' }).should('exist');
     cy.get('@vis')
       .should('contain.text', '9.996e-1')
       .and('contain.text', '−1e+0');
