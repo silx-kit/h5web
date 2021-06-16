@@ -161,7 +161,7 @@ describe('App', () => {
       .as('slider');
 
     // Move slider up by three marks and check value
-    cy.get('@slider').type('{uparrow}{uparrow}{uparrow}');
+    cy.get('@slider').type('{uparrow}{uparrow}{uparrow}', { delay: 50 });
 
     cy.get('@slider').should('have.attr', 'aria-valuenow', 3);
     cy.get('@vis')
@@ -170,7 +170,6 @@ describe('App', () => {
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
-      cy.wait(SNAPSHOT_DELAY); // ensure the slice has been painted
       cy.matchImageSnapshot('heatmap_4d_sliced');
     }
 
