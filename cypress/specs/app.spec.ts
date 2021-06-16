@@ -170,6 +170,7 @@ describe('App', () => {
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
+      cy.wait(SNAPSHOT_DELAY); // ensure the slice has been painted
       cy.matchImageSnapshot('heatmap_4d_sliced');
     }
 
