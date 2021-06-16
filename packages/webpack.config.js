@@ -1,7 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const rootPkg = require('../package.json');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const JsonPostProcessPlugin = require('json-post-process-webpack-plugin');
+const { omit } = require('lodash');
 
 const packagesPath = path.resolve(__dirname, '../src/packages');
 const packages = fs.readdirSync(packagesPath);
@@ -20,10 +23,9 @@ function getConfig(pkg) {
       filename: '[name].js',
       libraryTarget: 'commonjs2',
     },
-    externals: {
-      react: 'react',
-      'react-dom': 'react-dom',
-    },
+    externals: Object.fromEntries(
+      Object.keys(rootPkg.dependencies).map((dep) => [dep, `commonjs2 ${dep}`])
+    ),
     resolve: {
       extensions: ['.ts', '.tsx', '.wasm', '.mjs', '.js', '.json'],
     },
@@ -79,6 +81,18 @@ function getConfig(pkg) {
           {
             from: `${name}/*`,
             to: `${outDir}/[name].[ext]`,
+          },
+        ],
+      }),
+      new JsonPostProcessPlugin({
+        matchers: [
+          {
+            // Add H5Web's dependencies to the package's output `package.json`
+            matcher: /^package\.json$/u,
+            action: (json) => ({
+              ...json,
+              dependencies: omit(rootPkg.dependencies, ['react', 'react-dom']),
+            }),
           },
         ],
       }),
