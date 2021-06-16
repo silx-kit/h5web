@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const rootPkg = require('../package.json');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const JsonPostProcessPlugin = require('json-post-process-webpack-plugin');
 
 const packagesPath = path.resolve(__dirname, '../src/packages');
 const packages = fs.readdirSync(packagesPath);
@@ -20,10 +22,12 @@ function getConfig(pkg) {
       filename: '[name].js',
       libraryTarget: 'commonjs2',
     },
-    externals: {
-      react: 'react',
-      'react-dom': 'react-dom',
-    },
+    externals: Object.fromEntries(
+      ['react', 'react-dom', '@react-three/fiber'].map((dep) => [
+        dep,
+        `commonjs2 ${dep}`,
+      ])
+    ),
     resolve: {
       extensions: ['.ts', '.tsx', '.wasm', '.mjs', '.js', '.json'],
     },
@@ -81,6 +85,24 @@ function getConfig(pkg) {
             to: `${outDir}/[name].[ext]`,
           },
         ],
+      }),
+      new JsonPostProcessPlugin({
+        // Add H5Web's R3F dependency to @h5web/lib's `package.json`
+        matchers:
+          pkg === 'lib'
+            ? [
+                {
+                  matcher: /^package\.json$/u,
+                  action: (json) => ({
+                    ...json,
+                    dependencies: {
+                      '@react-three/fiber':
+                        rootPkg.dependencies['@react-three/fiber'],
+                    },
+                  }),
+                },
+              ]
+            : [],
       }),
     ],
     stats: {
