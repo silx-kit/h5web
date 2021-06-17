@@ -8,6 +8,7 @@ import {
   UnsignedByteType,
 } from 'three';
 import { Domain, ScaleType } from '../models';
+import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import VisMesh from '../shared/VisMesh';
 import type { ColorMap } from './models';
 import { getInterpolator } from './utils';
@@ -80,9 +81,11 @@ function HeatmapMesh(props: Props) {
     return new DataTexture(colors, CMAP_SIZE, 1, RGBFormat, UnsignedByteType);
   }, [colorMap, invertColorMap]);
 
+  const { ordinateConfig } = useAxisSystemContext();
   const shader = {
     uniforms: {
       data: { value: dataTexture },
+      originY: { value: ordinateConfig.flip ? 1 : 0 },
       withAlpha: { value: alphaValues ? 1 : 0 },
       alpha: { value: alphaTexture },
       colorMap: { value: colorMapTexture },
@@ -96,9 +99,10 @@ function HeatmapMesh(props: Props) {
     },
     vertexShader: `
       varying vec2 coords;
+      uniform float originY;
 
       void main() {
-        coords = uv;
+        coords = vec2(uv[0], abs(uv[1] - originY));
         gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
       }
     `,

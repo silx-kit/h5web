@@ -42,6 +42,7 @@ export interface AxisConfig {
   showGrid?: boolean;
   scaleType?: ScaleType;
   label?: string;
+  flip?: boolean;
 }
 
 export type AxisScale = PickD3Scale<
