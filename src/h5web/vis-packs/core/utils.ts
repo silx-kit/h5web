@@ -218,11 +218,12 @@ export function getCanvasScale(
   config: AxisConfig,
   canvasSize: number
 ): AxisScale {
-  const { scaleType, visDomain } = config;
+  const { scaleType, visDomain, flip } = config;
+  const range = [-canvasSize / 2, canvasSize / 2];
 
   return createAxisScale({
     domain: visDomain,
-    range: [-canvasSize / 2, canvasSize / 2],
+    range: flip ? range.reverse() : range,
     type: scaleType || ScaleType.Linear,
   });
 }
@@ -235,7 +236,8 @@ export function getCanvasScale(
  * So we implement our own, simplified version of `d3.ticks` that always outputs integer values.
  */
 export function getIntegerTicks(domain: Domain, count: number): number[] {
-  const [min, max] = domain;
+  const min = Math.min(...domain);
+  const max = Math.max(...domain);
   const intMin = Math.ceil(min);
   const intMax = Math.floor(max);
 

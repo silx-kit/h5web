@@ -176,6 +176,14 @@ WithAnnotation.args = {
   domain,
 };
 
+export const FlipYAxis = Template.bind({});
+
+FlipYAxis.args = {
+  dataArray,
+  domain,
+  flipYAxis: true,
+};
+
 export default {
   title: 'Visualizations/HeatmapVis',
   component: HeatmapVis,

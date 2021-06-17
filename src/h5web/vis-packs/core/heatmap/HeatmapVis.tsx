@@ -27,6 +27,7 @@ interface Props {
   ordinateParams?: AxisParams;
   alphaArray?: NdArray;
   alphaDomain?: Domain;
+  flipYAxis?: boolean;
   children?: ReactNode;
 }
 
@@ -44,6 +45,7 @@ function HeatmapVis(props: Props) {
     ordinateParams = {},
     alphaArray,
     alphaDomain,
+    flipYAxis,
     children,
   } = props;
 
@@ -89,6 +91,7 @@ function HeatmapVis(props: Props) {
           showGrid,
           isIndexAxis: !ordinateValue,
           label: ordinateLabel,
+          flip: flipYAxis,
         }}
       >
         <TooltipMesh {...tooltipFormatters} guides="both" />
