@@ -23,7 +23,7 @@ function getConfig(pkg) {
       libraryTarget: 'commonjs2',
     },
     externals: Object.fromEntries(
-      ['react', 'react-dom', '@react-three/fiber'].map((dep) => [
+      ['react', 'react-dom', '@react-three/fiber', 'three'].map((dep) => [
         dep,
         `commonjs2 ${dep}`,
       ])
@@ -88,21 +88,19 @@ function getConfig(pkg) {
       }),
       new JsonPostProcessPlugin({
         // Add H5Web's R3F dependency to @h5web/lib's `package.json`
-        matchers:
-          pkg === 'lib'
-            ? [
-                {
-                  matcher: /^package\.json$/u,
-                  action: (json) => ({
-                    ...json,
-                    dependencies: {
-                      '@react-three/fiber':
-                        rootPkg.dependencies['@react-three/fiber'],
-                    },
-                  }),
-                },
-              ]
-            : [],
+        matchers: [
+          {
+            matcher: /^package\.json$/u,
+            action: (json) => ({
+              ...json,
+              dependencies: {
+                '@react-three/fiber':
+                  rootPkg.dependencies['@react-three/fiber'],
+                three: rootPkg.dependencies['three'],
+              },
+            }),
+          },
+        ],
       }),
     ],
     stats: {
