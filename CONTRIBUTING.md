@@ -134,7 +134,7 @@ triggers the _Release_ workflow on the CI, which builds and publishes the
 packages to NPM and deploys the Storybook site. The workflow is detailed in
 [issue #358](https://github.com/silx-kit/h5web/issues/358).
 
-Once the _Release_ worklow has completed:
+Once the _Release_ workflow has completed:
 
 - Make sure the new package versions are available on NPM and that the live
   Storybook site still works as expected.
