@@ -8,20 +8,20 @@ import CopyableCrumb from './CopyableCrumb';
 interface Props {
   path: string;
   onSelect: (path: string) => void;
-  showFilepath: boolean;
+  showFilename: boolean;
 }
 
 function Breadcrumbs(props: Props) {
-  const { path, onSelect, showFilepath } = props;
+  const { path, onSelect, showFilename } = props;
 
   assertAbsolutePath(path);
-  const { filepath } = useContext(ProviderContext);
+  const { filename } = useContext(ProviderContext);
 
   if (path === '/') {
     return (
       <h1 className={styles.breadCrumbs}>
         <span className={styles.crumb} data-current>
-          {filepath}
+          {filename}
         </span>
       </h1>
     );
@@ -32,7 +32,7 @@ function Breadcrumbs(props: Props) {
 
   return (
     <h1 className={styles.breadCrumbs}>
-      {showFilepath && <Crumb name={filepath} onClick={() => onSelect('/')} />}
+      {showFilename && <Crumb name={filename} onClick={() => onSelect('/')} />}
       {crumbs.slice(0, -1).map((crumb, i) => {
         const crumbPath = `/${crumbs.slice(0, i + 1).join('/')}`;
         return (

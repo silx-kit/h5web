@@ -36,7 +36,7 @@ function BreadcrumbsBar(props: Props) {
       <Breadcrumbs
         path={path}
         onSelect={onSelectPath}
-        showFilepath={!isExplorerOpen}
+        showFilename={!isExplorerOpen}
       />
 
       <ToggleGroup

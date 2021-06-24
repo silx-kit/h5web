@@ -11,7 +11,7 @@ interface Props {
 
 function Explorer(props: Props) {
   const { selectedPath, onSelect } = props;
-  const { filepath } = useContext(ProviderContext);
+  const { filename } = useContext(ProviderContext);
 
   return (
     <div className={styles.explorer} role="tree">
@@ -23,7 +23,7 @@ function Explorer(props: Props) {
         onClick={() => onSelect('/')}
       >
         <FiFileText className={styles.fileIcon} />
-        {filepath}
+        {filename}
       </button>
 
       <Suspense
