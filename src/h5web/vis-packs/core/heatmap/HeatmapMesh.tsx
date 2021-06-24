@@ -85,7 +85,6 @@ function HeatmapMesh(props: Props) {
   const shader = {
     uniforms: {
       data: { value: dataTexture },
-      originY: { value: ordinateConfig.flip ? 1 : 0 },
       withAlpha: { value: alphaValues ? 1 : 0 },
       alpha: { value: alphaTexture },
       colorMap: { value: colorMapTexture },
@@ -99,10 +98,9 @@ function HeatmapMesh(props: Props) {
     },
     vertexShader: `
       varying vec2 coords;
-      uniform float originY;
 
       void main() {
-        coords = vec2(uv[0], abs(uv[1] - originY));
+        coords = uv;
         gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
       }
     `,
@@ -155,7 +153,7 @@ function HeatmapMesh(props: Props) {
   };
 
   return (
-    <VisMesh>
+    <VisMesh scale={[1, ordinateConfig.flip ? -1 : 1, 1]}>
       <shaderMaterial args={[shader]} />
     </VisMesh>
   );

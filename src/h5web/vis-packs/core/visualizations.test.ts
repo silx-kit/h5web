@@ -9,6 +9,7 @@ import {
   complexType,
   makeScalarDataset,
   unsignedType,
+  makeStrAttr,
 } from '../../providers/mock/metadata-utils';
 
 const datasetIntScalar = makeScalarDataset('dataset_int', intType);
@@ -27,6 +28,20 @@ const datasetCplx2D = makeDataset('dataset_cplx_2d', complexType, [2, 2]);
 const datasetStr2D = makeDataset('dataset_str_2d', stringType, [5, 3]);
 const datasetFlt3D = makeDataset('dataset_flt_3d', intType, [5, 3, 1]);
 const datasetCplx3D = makeDataset('dataset_cplx_3d', complexType, [5, 2, 2]);
+const imageDataset = makeDataset('image_dataset', intType, [256, 256, 3], {
+  attributes: [makeStrAttr('CLASS', 'IMAGE')],
+});
+const scalarImageDataset = makeScalarDataset('image_dataset', intType, {
+  attributes: [makeStrAttr('CLASS', 'IMAGE')],
+});
+const floatImageDataset = makeDataset(
+  'image_dataset',
+  floatType,
+  [256, 256, 3],
+  {
+    attributes: [makeStrAttr('CLASS', 'IMAGE')],
+  }
+);
 
 describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
@@ -160,5 +175,21 @@ describe('Complex Line', () => {
 
   it('should not support dataset with non-array shape', () => {
     expect(supportsDataset(datasetCplxScalar)).toBe(false);
+  });
+});
+
+describe('RGB', () => {
+  const { supportsDataset } = CORE_VIS.RGB;
+
+  it('should support array dataset with IMAGE attribute and integer type', () => {
+    expect(supportsDataset(imageDataset)).toBe(true);
+  });
+
+  it('should not support dataset with non-integer type', () => {
+    expect(supportsDataset(floatImageDataset)).toBe(false);
+  });
+
+  it('should not support dataset with non-array shape', () => {
+    expect(supportsDataset(scalarImageDataset)).toBe(false);
   });
 });

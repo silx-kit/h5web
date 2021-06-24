@@ -5,7 +5,7 @@ import ErrorFallback from '../../visualizer/ErrorFallback';
 import ValueLoader from '../../visualizer/ValueLoader';
 
 interface Props {
-  resetKey: unknown;
+  resetKey?: unknown;
   loadingMessage?: string;
   children: ReactNode;
 }

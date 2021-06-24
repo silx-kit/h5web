@@ -1,10 +1,9 @@
 import { useContext } from 'react';
 import { ProviderContext } from '../providers/context';
 import { ProviderError } from '../providers/models';
-import { handleError } from '../utils';
+import { getAttributeValue, handleError } from '../utils';
 import CorePack from './core/CorePack';
 import NexusPack from './nexus/NexusPack';
-import { getAttributeValue } from './nexus/utils';
 
 interface Props {
   path: string;

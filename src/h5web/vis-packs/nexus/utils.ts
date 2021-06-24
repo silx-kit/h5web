@@ -1,6 +1,5 @@
 import type {
   Group,
-  Entity,
   Dataset,
   NumArrayDataset,
   NumericType,
@@ -21,16 +20,9 @@ import {
   assertArray,
   isDefined,
 } from '../../guards';
-import type { NxAttribute, NxData, SilxStyle } from './models';
+import type { NxData, SilxStyle } from './models';
 import { isScaleType } from '../core/utils';
-import { getChildEntity } from '../../utils';
-
-export function getAttributeValue(
-  entity: Entity,
-  attributeName: NxAttribute
-): unknown {
-  return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
-}
+import { getAttributeValue, getChildEntity } from '../../utils';
 
 export function getDatasetLabel(dataset: Dataset): string {
   const longName = getAttributeValue(dataset, 'long_name');
