@@ -56,10 +56,12 @@ function Provider(props: Props) {
     });
   }, [api]);
 
+  const filepathMembers = api.filepath.split('/');
+
   return (
     <ProviderContext.Provider
       value={{
-        filepath: api.filepath,
+        filename: filepathMembers[filepathMembers.length - 1],
         entitiesStore,
         valuesStore,
       }}

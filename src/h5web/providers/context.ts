@@ -8,7 +8,7 @@ interface ValuesStore extends FetchStore<unknown, ValueRequestParams> {
 }
 
 interface Context {
-  filepath: string;
+  filename: string;
   entitiesStore: FetchStore<Entity, string>;
   valuesStore: ValuesStore;
 }

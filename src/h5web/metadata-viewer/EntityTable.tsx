@@ -14,7 +14,7 @@ interface Props {
 function EntityTable(props: Props) {
   const { entity } = props;
   const { name, path, kind } = entity;
-  const { filepath } = useContext(ProviderContext);
+  const { filename } = useContext(ProviderContext);
 
   return (
     <table className={styles.table}>
@@ -32,7 +32,7 @@ function EntityTable(props: Props) {
         </tr>
         <tr>
           <th scope="row">Name</th>
-          <td>{path === '/' ? filepath : name}</td>
+          <td>{path === '/' ? filename : name}</td>
         </tr>
         {(isDataset(entity) || isDatatype(entity)) && (
           <tr>
