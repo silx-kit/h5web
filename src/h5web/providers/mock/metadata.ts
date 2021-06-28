@@ -16,6 +16,7 @@ import {
   makeScalarDataset,
   makeDataset,
   makeScalarAttr,
+  makeImageDataset,
 } from './metadata-utils';
 
 export const mockFilepath = 'source.h5';
@@ -199,5 +200,6 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         }),
       }),
     ]),
+    makeGroup('images', [makeImageDataset('rgb_cmy_kgw', intType, [3, 3, 3])]),
   ],
 });

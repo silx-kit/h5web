@@ -335,3 +335,19 @@ export function withNxInterpretation<
     makeStrAttr('interpretation', interpretation),
   ]);
 }
+
+export function makeImageDataset(
+  name: string,
+  type: NumericType,
+  dims: number[],
+  opts?: DatasetOpts
+): MockDataset<ArrayShape, NumericType> {
+  return makeDataset(name, type, dims, {
+    ...opts,
+    attributes: [
+      ...(opts?.attributes || []),
+      makeStrAttr('CLASS', 'IMAGE'),
+      makeStrAttr('IMAGE_VERSION', '1.2'),
+    ],
+  });
+}

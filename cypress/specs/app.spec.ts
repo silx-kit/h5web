@@ -214,6 +214,27 @@ describe('App', () => {
     }
   });
 
+  it('visualize image dataset as RGB', () => {
+    cy.findByRole('treeitem', { name: 'images' }).click();
+    cy.findByRole('treeitem', { name: 'rgb_cmy_kgw' }).click();
+
+    cy.findByRole('heading', { name: 'images / rgb_cmy_kgw' }).should('exist');
+    cy.findByRole('tab', { name: 'RGB' }).should('exist');
+    cy.findByRole('figure', { name: 'rgb_cmy_kgw' }).should('exist');
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('rgb_image');
+    }
+
+    cy.findByRole('radio', { name: 'BGR' }).click();
+
+    if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('bgr_image');
+    }
+  });
+
   context('NeXus', () => {
     it('visualize default NXdata group as NxImage', () => {
       cy.findByRole('treeitem', { name: 'source.h5' }).click();
