@@ -4,6 +4,7 @@ import type { Layout } from '../heatmap/models';
 import { useState } from 'react';
 import type { ConfigProviderProps } from '../../models';
 import createContext from 'zustand/context';
+import { ImageType } from './models';
 
 interface RgbVisConfig {
   showGrid: boolean;
@@ -11,6 +12,9 @@ interface RgbVisConfig {
 
   layout: Layout;
   setLayout: (layout: Layout) => void;
+
+  imageType: ImageType;
+  setImageType: (channels: ImageType) => void;
 }
 
 function initialiseStore() {
@@ -22,10 +26,13 @@ function initialiseStore() {
 
         layout: 'cover',
         setLayout: (layout: Layout) => set({ layout }),
+
+        imageType: ImageType.RGB,
+        setImageType: (imageType: ImageType) => set({ imageType }),
       }),
       {
-        name: 'h5web:image',
-        whitelist: ['showGrid', 'layout'],
+        name: 'h5web:rgb',
+        whitelist: ['showGrid', 'layout', 'imageType'],
         version: 1,
       }
     )

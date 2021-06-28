@@ -4,15 +4,27 @@ import Toolbar from './Toolbar';
 import shallow from 'zustand/shallow';
 import GridToggler from './controls/GridToggler';
 import { useRgbVisConfig } from '../vis-packs/core/rgb/config';
+import { ImageType } from '../vis-packs/core/rgb/models';
+import ToggleGroup from './controls/ToggleGroup';
 
 function RgbVisToolbar() {
-  const { layout, setLayout, showGrid, toggleGrid } = useRgbVisConfig(
-    (state) => state,
-    shallow
-  );
+  const { layout, setLayout, showGrid, toggleGrid, imageType, setImageType } =
+    useRgbVisConfig((state) => state, shallow);
 
   return (
     <Toolbar>
+      <ToggleGroup
+        role="radiogroup"
+        ariaLabel="Image type"
+        value={imageType}
+        onChange={(val) => {
+          setImageType(val as ImageType);
+        }}
+      >
+        <ToggleGroup.Btn label="RGB" value={ImageType.RGB} />
+        <ToggleGroup.Btn label="BGR" value={ImageType.BGR} />
+      </ToggleGroup>
+
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}

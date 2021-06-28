@@ -20,7 +20,10 @@ function RgbVisContainer(props: VisContainerProps) {
 
   const { shape: dims } = entity;
 
-  const { showGrid, layout } = useRgbVisConfig((state) => state, shallow);
+  const { showGrid, layout, imageType } = useRgbVisConfig(
+    (state) => state,
+    shallow
+  );
 
   return (
     <VisBoundary loadingMessage="Loading image">
@@ -34,6 +37,7 @@ function RgbVisContainer(props: VisContainerProps) {
               title={entity.name}
               showGrid={showGrid}
               layout={layout}
+              imageType={imageType}
             />
           );
         }}

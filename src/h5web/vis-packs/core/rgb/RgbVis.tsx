@@ -5,6 +5,8 @@ import VisCanvas from '../shared/VisCanvas';
 import type { Layout } from '../heatmap/models';
 import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
 import VisMesh from '../shared/VisMesh';
+import { flipLastDimension } from './utils';
+import { ImageType } from './models';
 
 interface Props {
   value: number[];
@@ -12,6 +14,7 @@ interface Props {
   layout?: Layout;
   showGrid?: boolean;
   title?: string;
+  imageType?: ImageType;
   children?: ReactNode;
 }
 
@@ -22,20 +25,27 @@ function RgbVis(props: Props) {
     layout = 'cover',
     showGrid = false,
     title,
+    imageType = ImageType.RGB,
     children,
   } = props;
+
+  const rgbValue = useMemo(
+    () =>
+      imageType === ImageType.BGR ? flipLastDimension(value, dims) : value,
+    [value, dims, imageType]
+  );
 
   const [rows, cols] = dims;
 
   const texture = useMemo(() => {
     return new DataTexture(
-      Uint8Array.from(value),
+      Uint8Array.from(rgbValue),
       cols,
       rows,
       RGBFormat,
       UnsignedByteType
     );
-  }, [cols, rows, value]);
+  }, [cols, rows, rgbValue]);
 
   return (
     <figure
