@@ -1,4 +1,11 @@
-import { FiCode, FiGrid, FiActivity, FiMap, FiCpu } from 'react-icons/fi';
+import {
+  FiCode,
+  FiGrid,
+  FiActivity,
+  FiMap,
+  FiCpu,
+  FiImage,
+} from 'react-icons/fi';
 import LineToolbar from '../../toolbar/LineToolbar';
 import HeatmapToolbar from '../../toolbar/HeatmapToolbar';
 import type { Dataset } from '../../providers/models';
@@ -10,6 +17,7 @@ import {
   hasMinDims,
   hasNonNullShape,
   hasComplexType,
+  hasIntegerType,
 } from '../../guards';
 import {
   RawVisContainer,
@@ -27,6 +35,10 @@ import { ComplexConfigProvider } from './complex/config';
 import ComplexLineVisContainer from './containers/ComplexLineVisContainer';
 import ComplexLineToolbar from '../../toolbar/ComplexLineToolbar';
 import { ComplexLineConfigProvider } from './complex/lineConfig';
+import RgbVisContainer from './containers/RgbVisContainer';
+import { RgbVisConfigProvider } from './rgb/config';
+import RgbVisToolbar from '../../toolbar/RgbVisToolbar';
+import { getAttributeValue } from '../../utils';
 
 export enum Vis {
   Raw = 'Raw',
@@ -36,6 +48,7 @@ export enum Vis {
   Heatmap = 'Heatmap',
   Complex = 'Complex',
   ComplexLine = 'ComplexLine',
+  RGB = 'RGB',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -116,6 +129,24 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
         hasComplexType(dataset) &&
         hasArrayShape(dataset) &&
         hasMinDims(dataset, 2)
+      );
+    },
+  },
+
+  [Vis.RGB]: {
+    name: Vis.RGB,
+    Icon: FiImage,
+    Toolbar: RgbVisToolbar,
+    Container: RgbVisContainer,
+    ConfigProvider: RgbVisConfigProvider,
+    supportsDataset: (dataset) => {
+      const classAttr = getAttributeValue(dataset, 'CLASS');
+      return (
+        typeof classAttr === 'string' &&
+        classAttr === 'IMAGE' &&
+        hasArrayShape(dataset) &&
+        dataset.shape.length === 3 &&
+        hasIntegerType(dataset)
       );
     },
   },

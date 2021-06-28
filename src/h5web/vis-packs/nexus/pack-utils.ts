@@ -1,10 +1,10 @@
 import type { FetchStore } from 'react-suspense-fetch';
 import { assertStr, hasComplexType, hasMinDims, isGroup } from '../../guards';
 import { Entity, ProviderError } from '../../providers/models';
-import { buildEntityPath, handleError } from '../../utils';
+import { buildEntityPath, getAttributeValue, handleError } from '../../utils';
 import type { VisDef } from '../models';
 import { NxInterpretation } from './models';
-import { findSignalDataset, getAttributeValue, isNxDataGroup } from './utils';
+import { findSignalDataset, isNxDataGroup } from './utils';
 import { NexusVis, NEXUS_VIS } from './visualizations';
 
 export function getDefaultEntity(

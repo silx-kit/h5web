@@ -16,6 +16,7 @@ import {
   ComplexType,
   ComplexArray,
   H5WebComplex,
+  IntegerType,
 } from './providers/models';
 import type { PrintableType } from './vis-packs/core/models';
 import { toArray } from './vis-packs/core/utils';
@@ -129,6 +130,16 @@ export function hasNumericType<S extends Shape>(
   return isNumericType(dataset.type);
 }
 
+function isIntegerType(type: DType): type is IntegerType {
+  return [DTypeClass.Integer, DTypeClass.Unsigned].includes(type.class);
+}
+
+export function hasIntegerType<S extends Shape>(
+  dataset: Dataset<S>
+): dataset is Dataset<S, IntegerType> {
+  return isIntegerType(dataset.type);
+}
+
 export function isAbsolutePath(path: string) {
   return path.startsWith('/');
 }
@@ -181,6 +192,15 @@ export function assertMinDims(dataset: Dataset<ArrayShape>, min: number) {
   }
 }
 
+export function assertNumDims(
+  dataset: Dataset<ArrayShape>,
+  expectedNum: number
+) {
+  if (dataset.shape.length !== expectedNum) {
+    throw new Error(`Expected dataset with ${expectedNum} dimensions`);
+  }
+}
+
 export function assertPrintableType<S extends Shape>(
   dataset: Dataset<S>
 ): asserts dataset is Dataset<S, PrintableType> {
@@ -207,6 +227,14 @@ export function assertNumericType<S extends Shape>(
 ): asserts dataset is Dataset<S, NumericType> {
   if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
+  }
+}
+
+export function assertIntegerType<S extends Shape>(
+  dataset: Dataset<S>
+): asserts dataset is Dataset<S, IntegerType> {
+  if (!hasIntegerType(dataset)) {
+    throw new Error('Expected dataset to have integer type');
   }
 }
 

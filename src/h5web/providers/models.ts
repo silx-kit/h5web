@@ -109,9 +109,13 @@ export interface BooleanType {
 }
 
 export interface NumericType {
-  class: DTypeClass.Integer | DTypeClass.Float | DTypeClass.Unsigned;
+  class: DTypeClass.Integer | DTypeClass.Unsigned | DTypeClass.Float;
   size: number;
   endianness?: Endianness;
+}
+
+export interface IntegerType extends NumericType {
+  class: DTypeClass.Integer | DTypeClass.Unsigned;
 }
 
 export interface ComplexType {

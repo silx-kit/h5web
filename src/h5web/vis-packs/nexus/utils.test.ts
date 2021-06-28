@@ -7,31 +7,10 @@ import {
   makeIntAttr,
   makeSilxStyleAttr,
   makeScalarDataset,
-  makeNxAxesAttr,
 } from '../../providers/mock/metadata-utils';
 import { mockConsoleMethod } from '../../test-utils';
 import { ScaleType } from '../core/models';
-import {
-  findSignalDataset,
-  getAttributeValue,
-  getDatasetLabel,
-  getSilxStyle,
-} from './utils';
-
-describe('getAttributeValue', () => {
-  const group = makeGroup('group', [], {
-    attributes: [makeStrAttr('signal', 'my_signal'), makeNxAxesAttr(['X'])],
-  });
-
-  it("should return an attribute's value", () => {
-    expect(getAttributeValue(group, 'signal')).toBe('my_signal');
-    expect(getAttributeValue(group, 'axes')).toEqual(['X']);
-  });
-
-  it("should return `undefined` if attribute doesn't exist", () => {
-    expect(getAttributeValue(group, 'NX_class')).toBeUndefined();
-  });
-});
+import { findSignalDataset, getDatasetLabel, getSilxStyle } from './utils';
 
 describe('findSignalDataset', () => {
   it("should return dataset named 'signal'", () => {
