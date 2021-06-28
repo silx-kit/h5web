@@ -1,5 +1,5 @@
 import { ReactNode, useMemo } from 'react';
-import { H5CoreApi } from './h5core-api';
+import { H5GroveApi } from './h5grove-api';
 import Provider from '../Provider';
 
 interface Props {
@@ -8,11 +8,11 @@ interface Props {
   children: ReactNode;
 }
 
-function H5CoreProvider(props: Props) {
+function H5GroveProvider(props: Props) {
   const { url, filepath, children } = props;
-  const api = useMemo(() => new H5CoreApi(url, filepath), [filepath, url]);
+  const api = useMemo(() => new H5GroveApi(url, filepath), [filepath, url]);
 
   return <Provider api={api}>{children}</Provider>;
 }
 
-export default H5CoreProvider;
+export default H5GroveProvider;

@@ -10,16 +10,16 @@ import { isDatasetResponse, isGroupResponse } from './utils';
 import { assertDataset } from '../../guards';
 import { ProviderApi } from '../api';
 import type {
-  H5CoreDataResponse,
-  H5CoreAttrResponse,
-  H5CoreMetaResponse,
-  H5CoreDatasetMetaReponse,
-  H5CoreGroupMetaResponse,
+  H5GroveDataResponse,
+  H5GroveAttrResponse,
+  H5GroveMetaResponse,
+  H5GroveDatasetMetaReponse,
+  H5GroveGroupMetaResponse,
 } from './models';
 import { convertDtype, flattenValue } from '../utils';
 
-export class H5CoreApi extends ProviderApi {
-  /* API compatible with h5core@bccdb1f77f568d6f7d3519a07c9b3bef7e9ecc20 */
+export class H5GroveApi extends ProviderApi {
+  /* API compatible with h5grove@0.0.1 */
   public constructor(url: string, filepath: string) {
     super(filepath, { baseURL: url });
   }
@@ -40,8 +40,8 @@ export class H5CoreApi extends ProviderApi {
     return flattenValue(value, entity, selection);
   }
 
-  private async fetchAttributes(path: string): Promise<H5CoreAttrResponse> {
-    const { data } = await this.client.get<H5CoreAttrResponse>(
+  private async fetchAttributes(path: string): Promise<H5GroveAttrResponse> {
+    const { data } = await this.client.get<H5GroveAttrResponse>(
       `/attr/${this.filepath}?path=${path}`
     );
     return data;
@@ -49,9 +49,9 @@ export class H5CoreApi extends ProviderApi {
 
   private async fetchData(
     params: ValueRequestParams
-  ): Promise<H5CoreDataResponse> {
+  ): Promise<H5GroveDataResponse> {
     const { path, selection = '' } = params;
-    const { data } = await this.cancellableFetchValue<H5CoreDataResponse>(
+    const { data } = await this.cancellableFetchValue<H5GroveDataResponse>(
       `/data/${this.filepath}?path=${path}${
         selection && `&selection=${selection}`
       }`,
@@ -60,8 +60,8 @@ export class H5CoreApi extends ProviderApi {
     return data;
   }
 
-  private async fetchMetadata(path: string): Promise<H5CoreMetaResponse> {
-    const { data } = await this.client.get<H5CoreMetaResponse>(
+  private async fetchMetadata(path: string): Promise<H5GroveMetaResponse> {
+    const { data } = await this.client.get<H5GroveMetaResponse>(
       `/meta/${this.filepath}?path=${path}`
     );
     return data;
@@ -128,7 +128,7 @@ export class H5CoreApi extends ProviderApi {
 
   private async processAttributes(
     path: string,
-    response: H5CoreDatasetMetaReponse | H5CoreGroupMetaResponse
+    response: H5GroveDatasetMetaReponse | H5GroveGroupMetaResponse
   ): Promise<Attribute[]> {
     const { attributes: attrsMetadata } = response;
 

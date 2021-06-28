@@ -1,17 +1,17 @@
 import { EntityKind } from '../models';
 import type {
-  H5CoreMetaResponse,
-  H5CoreDatasetMetaReponse,
-  H5CoreGroupMetaResponse,
+  H5GroveMetaResponse,
+  H5GroveDatasetMetaReponse,
+  H5GroveGroupMetaResponse,
 } from './models';
 
 export function isGroupResponse(
-  response: H5CoreMetaResponse
-): response is H5CoreGroupMetaResponse {
+  response: H5GroveMetaResponse
+): response is H5GroveGroupMetaResponse {
   return response.type === EntityKind.Group;
 }
 export function isDatasetResponse(
-  response: H5CoreMetaResponse
-): response is H5CoreDatasetMetaReponse {
+  response: H5GroveMetaResponse
+): response is H5GroveDatasetMetaReponse {
   return response.type === EntityKind.Dataset;
 }
