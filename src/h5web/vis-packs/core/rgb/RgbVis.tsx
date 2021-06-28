@@ -3,7 +3,7 @@ import styles from '../heatmap/HeatmapVis.module.css';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 import type { Layout } from '../heatmap/models';
-import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
+import { DataTexture, FloatType, RGBFormat, UnsignedByteType } from 'three';
 import VisMesh from '../shared/VisMesh';
 import { flipLastDimension } from './utils';
 import { ImageType } from './models';
@@ -11,6 +11,7 @@ import { ImageType } from './models';
 interface Props {
   value: number[];
   dims: number[];
+  floatFormat?: boolean;
   layout?: Layout;
   showGrid?: boolean;
   title?: string;
@@ -22,6 +23,7 @@ function RgbVis(props: Props) {
   const {
     value,
     dims,
+    floatFormat,
     layout = 'cover',
     showGrid = false,
     title,
@@ -38,14 +40,22 @@ function RgbVis(props: Props) {
   const [rows, cols] = dims;
 
   const texture = useMemo(() => {
-    return new DataTexture(
-      Uint8Array.from(rgbValue),
-      cols,
-      rows,
-      RGBFormat,
-      UnsignedByteType
-    );
-  }, [cols, rows, rgbValue]);
+    return floatFormat
+      ? new DataTexture(
+          Float32Array.from(rgbValue),
+          cols,
+          rows,
+          RGBFormat,
+          FloatType
+        )
+      : new DataTexture(
+          Uint8Array.from(rgbValue),
+          cols,
+          rows,
+          RGBFormat,
+          UnsignedByteType
+        );
+  }, [floatFormat, rgbValue, cols, rows]);
 
   return (
     <figure

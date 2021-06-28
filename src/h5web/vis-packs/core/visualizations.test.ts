@@ -42,6 +42,14 @@ const floatImageDataset = makeDataset(
     attributes: [makeStrAttr('CLASS', 'IMAGE')],
   }
 );
+const strImageDataset = makeDataset(
+  'image_dataset',
+  stringType,
+  [256, 256, 3],
+  {
+    attributes: [makeStrAttr('CLASS', 'IMAGE')],
+  }
+);
 
 describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
@@ -181,12 +189,13 @@ describe('Complex Line', () => {
 describe('RGB', () => {
   const { supportsDataset } = CORE_VIS.RGB;
 
-  it('should support array dataset with IMAGE attribute and integer type', () => {
+  it('should support array dataset with IMAGE attribute and numeric type', () => {
     expect(supportsDataset(imageDataset)).toBe(true);
+    expect(supportsDataset(floatImageDataset)).toBe(true);
   });
 
-  it('should not support dataset with non-integer type', () => {
-    expect(supportsDataset(floatImageDataset)).toBe(false);
+  it('should not support dataset with non-numeric type', () => {
+    expect(supportsDataset(strImageDataset)).toBe(false);
   });
 
   it('should not support dataset with non-array shape', () => {

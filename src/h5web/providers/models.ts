@@ -114,10 +114,6 @@ export interface NumericType {
   endianness?: Endianness;
 }
 
-export interface IntegerType extends NumericType {
-  class: DTypeClass.Integer | DTypeClass.Unsigned;
-}
-
 export interface ComplexType {
   class: DTypeClass.Complex;
   realType: DType;

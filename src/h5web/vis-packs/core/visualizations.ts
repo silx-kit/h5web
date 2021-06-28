@@ -17,7 +17,6 @@ import {
   hasMinDims,
   hasNonNullShape,
   hasComplexType,
-  hasIntegerType,
 } from '../../guards';
 import {
   RawVisContainer,
@@ -146,7 +145,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
         classAttr === 'IMAGE' &&
         hasArrayShape(dataset) &&
         dataset.shape.length === 3 &&
-        hasIntegerType(dataset)
+        hasNumericType(dataset)
       );
     },
   },
