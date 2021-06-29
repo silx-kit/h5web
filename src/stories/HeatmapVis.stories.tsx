@@ -165,8 +165,8 @@ WithAlphaArray.args = {
 
 export const WithAnnotation: Story<HeatmapVisProps> = (args) => (
   <HeatmapVis {...args}>
-    <Annotation x={30} y={18} style={{ width: '200px' }}>
-      <p style={{ color: 'white' }}>An annotation</p>
+    <Annotation x={30} y={18} style={{ width: '200px', color: 'white' }}>
+      An annotation
     </Annotation>
   </HeatmapVis>
 );
