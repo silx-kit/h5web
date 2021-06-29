@@ -19,7 +19,7 @@ import type {
 import { convertDtype, flattenValue } from '../utils';
 
 export class H5GroveApi extends ProviderApi {
-  /* API compatible with h5grove@0.0.1 */
+  /* API compatible with jupyterlab_h5web@e878351f5226fabc9cd14e8f0b774185ff8def45 */
   public constructor(url: string, filepath: string) {
     super(filepath, { baseURL: url });
   }
@@ -42,7 +42,7 @@ export class H5GroveApi extends ProviderApi {
 
   private async fetchAttributes(path: string): Promise<H5GroveAttrResponse> {
     const { data } = await this.client.get<H5GroveAttrResponse>(
-      `/attr/${this.filepath}?path=${path}`
+      `/attr/?file=${this.filepath}&path=${path}`
     );
     return data;
   }
@@ -52,7 +52,7 @@ export class H5GroveApi extends ProviderApi {
   ): Promise<H5GroveDataResponse> {
     const { path, selection = '' } = params;
     const { data } = await this.cancellableFetchValue<H5GroveDataResponse>(
-      `/data/${this.filepath}?path=${path}${
+      `/data/?file=${this.filepath}&path=${path}${
         selection && `&selection=${selection}`
       }`,
       params
@@ -62,7 +62,7 @@ export class H5GroveApi extends ProviderApi {
 
   private async fetchMetadata(path: string): Promise<H5GroveMetaResponse> {
     const { data } = await this.client.get<H5GroveMetaResponse>(
-      `/meta/${this.filepath}?path=${path}`
+      `/meta/?file=${this.filepath}&path=${path}`
     );
     return data;
   }
