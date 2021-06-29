@@ -11,6 +11,7 @@ export const parameters = {
         'Customization',
         'Visualizations',
         'Building Blocks',
+        ['VisCanvas'],
       ],
     },
   },
