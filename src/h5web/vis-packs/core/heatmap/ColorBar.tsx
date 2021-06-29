@@ -91,4 +91,5 @@ function ColorBar(props: Props) {
   );
 }
 
+export type { Props as ColorBarProps };
 export default ColorBar;
