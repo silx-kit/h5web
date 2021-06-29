@@ -108,8 +108,8 @@ function LineVis(props: Props) {
           label: ordinateLabel,
         }}
       >
-        <TooltipMesh {...tooltipFormatters} guides="vertical" />
         <PanZoomMesh />
+        <TooltipMesh {...tooltipFormatters} guides="vertical" />
         <DataCurve
           abscissas={abscissas}
           ordinates={dataArray.data as number[]}

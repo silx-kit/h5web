@@ -94,8 +94,8 @@ function HeatmapVis(props: Props) {
           flip: flipYAxis,
         }}
       >
-        <TooltipMesh {...tooltipFormatters} guides="both" />
         <PanZoomMesh />
+        <TooltipMesh {...tooltipFormatters} guides="both" />
         <HeatmapMesh
           rows={rows}
           cols={cols}
