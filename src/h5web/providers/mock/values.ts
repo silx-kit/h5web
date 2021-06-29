@@ -108,4 +108,21 @@ export const mockValues = {
   secondary: twoD.map((inner) => inner.map((v) => v * 2)),
   tertiary: twoD.map((inner) => inner.map((v) => v / 2)),
   position: [-1, 0, 1],
+  rgb_cmy_kgw: [
+    [
+      [255, 0, 0],
+      [0, 255, 0],
+      [0, 0, 255],
+    ],
+    [
+      [0, 255, 255],
+      [255, 0, 255],
+      [255, 255, 0],
+    ],
+    [
+      [0, 0, 0],
+      [128, 128, 128],
+      [255, 255, 255],
+    ],
+  ],
 };

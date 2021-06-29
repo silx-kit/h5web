@@ -335,11 +335,8 @@ export function applyMapping<T>(
   const slicedView = baseArray.pick(...slicingState);
   const mappedView = isXBeforeY ? slicedView.transpose(1, 0) : slicedView;
 
-  // Create ndarray from mapped view so `dataArray.data` only contains values relevant to vis
-  const mappedArray = ndarray<T>([], mappedView.shape);
-  assign(mappedArray, mappedView);
-
-  return mappedArray;
+  // Create ndarray from mapped view so `mappedArray.data` only contains values relevant to vis
+  return createArrayFromView(mappedView);
 }
 
 export function getValidDomainForScale(
@@ -382,4 +379,11 @@ export function getAxisOffsets(
     right: hasLabel.right ? vertical : fallback,
     top: hasLabel.top ? horizontal : fallback,
   };
+}
+
+export function createArrayFromView<T>(view: NdArray<T>): NdArray<T> {
+  const array = ndarray<T>([], view.shape);
+  assign(array, view);
+
+  return array;
 }
