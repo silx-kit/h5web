@@ -1,4 +1,4 @@
-import type { Story } from '@storybook/react/types-6-0';
+import type { Meta, Story } from '@storybook/react/types-6-0';
 import type { H5WebComplex } from '../h5web/providers/models';
 import { formatNumber } from '../h5web/vis-packs/core/utils';
 import { getMockDataArray, MatrixVis, MatrixVisProps } from '../packages/lib';
@@ -27,4 +27,4 @@ export default {
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
   component: MatrixVis,
-};
+} as Meta;

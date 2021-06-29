@@ -1,4 +1,4 @@
-import type { Story } from '@storybook/react/types-6-0';
+import type { Meta, Story } from '@storybook/react/types-6-0';
 import FillHeight from './decorators/FillHeight';
 import {
   HeatmapVis,
@@ -217,4 +217,4 @@ export default {
       defaultValue: true,
     },
   },
-};
+} as Meta;

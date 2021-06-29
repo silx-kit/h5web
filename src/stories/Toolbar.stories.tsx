@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Title, Primary } from '@storybook/addon-docs/blocks';
-import type { Story } from '@storybook/react';
+import type { Meta, Story } from '@storybook/react';
 import { useState } from 'react';
 import { useToggle } from '@react-hookz/web';
 import { FiTarget } from 'react-icons/fi';
@@ -121,4 +121,4 @@ export default {
       ),
     },
   },
-};
+} as Meta;
