@@ -36,6 +36,7 @@ function MappedHeatmapVis(props: Props) {
     setDataDomain,
     setScaleType,
     invertColorMap,
+    flipYAxis,
   } = useHeatmapConfig((state) => state, shallow);
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
@@ -69,6 +70,7 @@ function MappedHeatmapVis(props: Props) {
       invertColorMap={invertColorMap}
       abscissaParams={axisMapping[dimMapping.indexOf('x')]}
       ordinateParams={axisMapping[dimMapping.indexOf('y')]}
+      flipYAxis={flipYAxis}
     />
   );
 }

@@ -27,6 +27,9 @@ interface HeatmapConfig {
 
   layout: Layout;
   setLayout: (layout: Layout) => void;
+
+  flipYAxis: boolean;
+  toggleYAxisFlip: () => void;
 }
 
 function initialiseStore() {
@@ -59,6 +62,10 @@ function initialiseStore() {
 
         layout: 'cover',
         setLayout: (layout: Layout) => set({ layout }),
+
+        flipYAxis: true,
+        toggleYAxisFlip: () =>
+          set((state) => ({ flipYAxis: !state.flipYAxis })),
       }),
       {
         name: 'h5web:heatmap',
@@ -69,8 +76,9 @@ function initialiseStore() {
           'showGrid',
           'invertColorMap',
           'layout',
+          'flipYAxis',
         ],
-        version: 7,
+        version: 8,
       }
     )
   );

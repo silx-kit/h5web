@@ -1,4 +1,4 @@
-import { MdAspectRatio } from 'react-icons/md';
+import { MdAspectRatio, MdSwapVert } from 'react-icons/md';
 import ToggleBtn from './controls/ToggleBtn';
 import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
 import DomainSlider from './controls/DomainSlider/DomainSlider';
@@ -25,6 +25,8 @@ function HeatmapToolbar() {
     toggleGrid,
     invertColorMap,
     toggleColorMapInversion,
+    flipYAxis,
+    toggleYAxisFlip,
   } = useHeatmapConfig((state) => state, shallow);
 
   return (
@@ -52,6 +54,13 @@ function HeatmapToolbar() {
       <ScaleSelector value={scaleType} onScaleChange={setScaleType} />
 
       <Separator />
+
+      <ToggleBtn
+        label="Flip Y"
+        icon={MdSwapVert}
+        value={flipYAxis}
+        onToggle={toggleYAxisFlip}
+      />
 
       <ToggleBtn
         label="Keep ratio"
