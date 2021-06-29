@@ -78,7 +78,7 @@ function TooltipMesh(props: Props) {
       <VisMesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <meshBasicMaterial opacity={0} transparent />
       </VisMesh>
-      <Html>
+      <Html style={{ width, height }}>
         {tooltipOpen && tooltipData && value && (
           <>
             <TooltipWithBounds
@@ -93,7 +93,7 @@ function TooltipMesh(props: Props) {
               <span className={styles.tooltipValue}>{value}</span>
             </TooltipWithBounds>
             {guides && (
-              <svg className={styles.guides} width={width} height={height}>
+              <svg className={styles.guides}>
                 {guides !== 'horizontal' && (
                   <Line
                     from={{ x: tooltipLeft, y: 0 }}
@@ -115,4 +115,5 @@ function TooltipMesh(props: Props) {
   );
 }
 
+export type { Props as TooltipMeshProps };
 export default TooltipMesh;

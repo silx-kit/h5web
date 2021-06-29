@@ -1,4 +1,4 @@
-import type { Story } from '@storybook/react/types-6-0';
+import type { Meta, Story } from '@storybook/react/types-6-0';
 import LineVisStoriesConfig from './LineVis.stories';
 import {
   LineVis,
@@ -61,4 +61,4 @@ LogLog.args = {
 export default {
   ...LineVisStoriesConfig,
   title: 'Visualizations/LineVis/Scales',
-};
+} as Meta;

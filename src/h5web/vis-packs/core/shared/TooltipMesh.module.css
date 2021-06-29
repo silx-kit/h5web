@@ -9,6 +9,8 @@
 }
 
 .guides {
+  width: 100%;
+  height: 100%;
   stroke: var(--h5w-tooltip-guide--color, gray);
   stroke-width: var(--h5w-tooltip-guide--width, 1.5);
   stroke-opacity: var(--h5w-tooltip-guide--opacity, 0.5);

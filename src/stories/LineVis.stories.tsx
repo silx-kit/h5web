@@ -1,4 +1,4 @@
-import type { Story } from '@storybook/react/types-6-0';
+import type { Meta, Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import FillHeight from './decorators/FillHeight';
 import {
@@ -61,7 +61,7 @@ AuxiliaryArrays.args = {
   domain: combinedDomain,
 };
 
-const LineVisStoriesConfig = {
+export default {
   title: 'Visualizations/LineVis',
   component: LineVis,
   parameters: { layout: 'fullscreen' },
@@ -91,6 +91,4 @@ const LineVisStoriesConfig = {
       defaultValue: true,
     },
   },
-};
-
-export default LineVisStoriesConfig;
+} as Meta;

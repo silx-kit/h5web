@@ -1,20 +1,16 @@
-import type { Story } from '@storybook/react/types-6-0';
+import type { Meta, Story } from '@storybook/react/types-6-0';
 import FillHeight from './decorators/FillHeight';
-import { ColorBar, ScaleType, ColorMap } from '../packages/lib';
+import { ColorBar, ScaleType } from '../packages/lib';
+import type { ColorBarProps } from '../h5web/vis-packs/core/heatmap/ColorBar';
 
-interface Props {
+export interface TemplateProps extends Omit<ColorBarProps, 'domain'> {
   domainMin: number;
   domainMax: number;
-  scaleType: ScaleType;
-  colorMap: ColorMap;
-  horizontal?: boolean;
-  withBounds?: boolean;
-  invertColorMap: boolean;
 }
 
-const Template: Story<Props> = (args) => {
+const Template: Story<TemplateProps> = (args) => {
   const { domainMin: min, domainMax: max, ...colorBarArgs } = args;
-  return <ColorBar domain={[min, max]} {...colorBarArgs} />;
+  return <ColorBar {...colorBarArgs} domain={[min, max]} />;
 };
 
 export const Default = Template.bind({});
@@ -50,28 +46,12 @@ SymLogScale.args = {
   domainMax: 6,
 };
 
-export const Horizontal = Template.bind({});
-Horizontal.args = {
-  ...Default.args,
-  horizontal: true,
-};
-
 export const WithBounds = Template.bind({});
 WithBounds.storyName = 'With bounds';
 WithBounds.args = {
   ...Default.args,
   domainMin: -235.111,
   domainMax: 98_765,
-  withBounds: true,
-};
-
-export const HorizontalWithBounds = Template.bind({});
-HorizontalWithBounds.storyName = 'Horizontal with bounds';
-HorizontalWithBounds.args = {
-  ...Default.args,
-  domainMin: -235.111,
-  domainMax: 98_765,
-  horizontal: true,
   withBounds: true,
 };
 
@@ -93,8 +73,11 @@ InvertColorMap.args = {
 export default {
   title: 'Building Blocks/ColorBar',
   component: ColorBar,
-  parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
+  parameters: {
+    layout: 'fullscreen',
+    controls: { exclude: ['domain'] },
+  },
   argTypes: {
     domainMin: {
       control: { type: 'range', min: -10, max: 10, step: 0.1 },
@@ -102,7 +85,6 @@ export default {
     domainMax: {
       control: { type: 'range', min: -10, max: 10, step: 0.1 },
     },
-    domain: { control: { disable: true } },
     scaleType: {
       control: {
         type: 'inline-radio',
@@ -110,4 +92,4 @@ export default {
       },
     },
   },
-};
+} as Meta;
