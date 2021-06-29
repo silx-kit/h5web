@@ -83,3 +83,5 @@ export type PrintableType =
   | StringType;
 
 export type ValueFormatter<T extends DType> = (val: Primitive<T>) => string;
+
+export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';

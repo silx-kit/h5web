@@ -23,6 +23,8 @@ import {
 } from './models';
 import { assertDataLength, isDefined } from '../../guards';
 import { isAxis } from '../../dimension-mapper/utils';
+import { getAttributeValue } from '../../utils';
+import type { Dataset } from '../../providers/models';
 
 const formatTick = format('0');
 export const formatNumber = format('.3e');
@@ -386,4 +388,10 @@ export function createArrayFromView<T>(view: NdArray<T>): NdArray<T> {
   assign(array, view);
 
   return array;
+}
+
+export function hasImageAttribute(dataset: Dataset): boolean {
+  const classAttr = getAttributeValue(dataset, 'CLASS');
+
+  return typeof classAttr === 'string' && classAttr === 'IMAGE';
 }

@@ -37,7 +37,7 @@ import { ComplexLineConfigProvider } from './complex/lineConfig';
 import RgbVisContainer from './containers/RgbVisContainer';
 import { RgbVisConfigProvider } from './rgb/config';
 import RgbVisToolbar from '../../toolbar/RgbVisToolbar';
-import { getAttributeValue } from '../../utils';
+import { hasImageAttribute } from './utils';
 
 export enum Vis {
   Raw = 'Raw',
@@ -139,10 +139,8 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Container: RgbVisContainer,
     ConfigProvider: RgbVisConfigProvider,
     supportsDataset: (dataset) => {
-      const classAttr = getAttributeValue(dataset, 'CLASS');
       return (
-        typeof classAttr === 'string' &&
-        classAttr === 'IMAGE' &&
+        hasImageAttribute(dataset) &&
         hasArrayShape(dataset) &&
         dataset.shape.length === 3 &&
         hasNumericType(dataset)
