@@ -67,8 +67,8 @@ WithTitle.args = {
 
 export const WithAnnotation: Story<LineVisProps> = (args) => (
   <LineVis {...args}>
-    <Annotation x={30} y={10} style={{ width: '200px' }}>
-      <p>A simple line</p>
+    <Annotation x={30} y={10} style={{ width: '100px' }}>
+      a very simple line
     </Annotation>
   </LineVis>
 );

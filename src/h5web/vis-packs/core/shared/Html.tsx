@@ -1,26 +1,27 @@
 import {
   useState,
-  forwardRef,
   HTMLAttributes,
   useLayoutEffect,
   useRef,
+  useCallback,
+  useEffect,
 } from 'react';
 import ReactDOM from 'react-dom';
 import { GroupProps, useFrame, useThree } from '@react-three/fiber';
 import { Group, Vector3 } from 'three';
-
-// Simplified version of `drei`'s `<Html>` component
-// https://github.com/pmndrs/drei/blob/v6.0.3/src/web/Html.tsx
+import { isDefined } from '../../../guards';
 
 const v1 = new Vector3();
 
-interface HtmlProps extends HTMLAttributes<HTMLDivElement> {
+interface Props extends HTMLAttributes<HTMLDivElement> {
   groupProps?: GroupProps;
   followCamera?: boolean;
   scaleOnZoom?: boolean;
 }
 
-const Html = forwardRef<HTMLDivElement, HtmlProps>((props, ref) => {
+// Customised version of drei's `<Html>` component
+// https://github.com/pmndrs/drei/blob/v6.0.3/src/web/Html.tsx
+function Html(props: Props) {
   const {
     className,
     style,
@@ -32,36 +33,50 @@ const Html = forwardRef<HTMLDivElement, HtmlProps>((props, ref) => {
   } = props;
 
   const { width, height } = useThree((state) => state.size);
+  const camera = useThree((state) => state.camera);
   const gl = useThree((state) => state.gl);
   const { parentElement } = gl.domElement;
-  const camera = useThree((state) => state.camera);
 
   // Container `div` for ReactDOM to render into, appended next to R3F's `canvas`
-  const [el] = useState(() => document.createElement('div'));
-  // Placeholder R3F group, the position of which is tracked and forwarded to `el` when `followCamera` is enabled
+  const [el] = useState(() => {
+    const elem = document.createElement('div');
+
+    // Take out of flow and let pointer events pass through to canvas
+    elem.style.cssText = `position: absolute; top: 0; left: 0; pointer-events: none;`;
+
+    return elem;
+  });
+
+  // Inner `div` that is transformed and scaled if `followCamera` and `scaleOnZoom` are enabled
+  const innerRef = useRef<HTMLDivElement>(null);
+
+  /* Placeholder R3F group, the position of which is tracked and forwarded to
+   * the inner `div` if `followCamera` and `scaleOnZoom` are enabled. */
   const group = useRef<Group>(null!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
-  function updateHtmlPosition() {
-    const objectPos = v1.setFromMatrixPosition(group.current.matrixWorld);
-    objectPos.project(camera);
-    const widthHalf = width / 2;
-    const heightHalf = height / 2;
-    const pos = [
-      objectPos.x * widthHalf + widthHalf,
-      -(objectPos.y * heightHalf) + heightHalf,
+  const getGroupPosition = useCallback(() => {
+    const groupPos = v1.setFromMatrixPosition(group.current.matrixWorld);
+    groupPos.project(camera);
+
+    return [
+      groupPos.x * (width / 2) + width / 2,
+      -(groupPos.y * (height / 2)) + height / 2,
     ];
+  }, [camera, height, width]);
 
-    el.style.transform = `translate3d(${pos[0]}px,${pos[1]}px,0)
-    scale(${scaleOnZoom ? camera.zoom : 1})`;
-  }
+  const getInnerDivTransform = useCallback(() => {
+    const position = followCamera ? getGroupPosition() : undefined;
 
+    return [
+      position && `translate3d(${position[0]}px, ${position[1]}px, 0)`,
+      scaleOnZoom ? `scale(${camera.zoom})` : undefined,
+    ]
+      .filter(isDefined)
+      .join(' ');
+  }, [camera, followCamera, getGroupPosition, scaleOnZoom]);
+
+  // Append/remove container `div` next to R3F's `canvas`
   useLayoutEffect(() => {
-    group.current.updateMatrixWorld(); // To place correctly `el` on first render
-    el.style.cssText = `position:absolute; top:0; left:0; transform-origin:0 0;`;
-    if (followCamera) {
-      updateHtmlPosition();
-    }
-
     if (parentElement) {
       parentElement.append(el);
     }
@@ -70,20 +85,32 @@ const Html = forwardRef<HTMLDivElement, HtmlProps>((props, ref) => {
       if (parentElement) {
         el.remove();
       }
+
       ReactDOM.unmountComponentAtNode(el);
     };
-  }, [el, parentElement]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [el, parentElement]);
 
+  // Update size and overflow of container `div`
   useLayoutEffect(() => {
+    el.style.width = `${width}px`;
+    el.style.height = `${height}px`;
+    el.style.overflow = followCamera ? 'hidden' : 'visible';
+  }, [el, width, height, followCamera]);
+
+  // Render inner `div`
+  useEffect(() => {
+    group.current.updateMatrixWorld(); // make sure we get the group's most up to date position
+
     ReactDOM.render(
       <div
-        ref={ref}
+        ref={innerRef}
         className={className}
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
-          pointerEvents: 'none', // let pointer events pass through to canvas
+          transformOrigin: 'left top',
+          transform: getInnerDivTransform(),
           ...style,
         }}
         {...divProps}
@@ -92,15 +119,16 @@ const Html = forwardRef<HTMLDivElement, HtmlProps>((props, ref) => {
       </div>,
       el
     );
-  }, [children, className, el, style, ref, divProps]);
+  }, [children, className, divProps, el, getInnerDivTransform, style]);
 
+  // Update inner `div` position on every frame
   useFrame(() => {
-    if (followCamera) {
-      updateHtmlPosition();
+    if (innerRef.current) {
+      innerRef.current.style.transform = getInnerDivTransform();
     }
   });
 
   return <group ref={group} {...groupProps} />;
-});
+}
 
 export default Html;
