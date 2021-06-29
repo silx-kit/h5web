@@ -1,5 +1,6 @@
 import { format } from 'd3-format';
 import type { Entity, Group, H5WebComplex } from './providers/models';
+import type { ImageAttribute } from './vis-packs/core/models';
 import type { NxAttribute } from './vis-packs/nexus/models';
 
 export const formatValue = format('.3~e');
@@ -54,7 +55,7 @@ export function handleError<T>(
 
 export function getAttributeValue(
   entity: Entity,
-  attributeName: NxAttribute | 'CLASS'
+  attributeName: NxAttribute | ImageAttribute
 ): unknown {
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }

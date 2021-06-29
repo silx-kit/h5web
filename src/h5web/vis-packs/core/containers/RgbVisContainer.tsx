@@ -11,6 +11,7 @@ import RgbVis from '../rgb/RgbVis';
 import { useRgbVisConfig } from '../rgb/config';
 import shallow from 'zustand/shallow';
 import { DTypeClass } from '../../../providers/models';
+import { getAttributeValue } from '../../../utils';
 
 function RgbVisContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -18,6 +19,11 @@ function RgbVisContainer(props: VisContainerProps) {
   assertArrayShape(entity);
   assertNumDims(entity, 3);
   assertNumericType(entity);
+
+  const subclassAttr = getAttributeValue(entity, 'IMAGE_SUBCLASS');
+  if (typeof subclassAttr === 'string' && subclassAttr !== 'IMAGE_TRUECOLOR') {
+    throw new Error('RGB Vis only supports IMAGE_TRUECOLOR.');
+  }
 
   const { shape: dims } = entity;
 
