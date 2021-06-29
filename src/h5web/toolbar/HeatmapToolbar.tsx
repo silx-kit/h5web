@@ -9,6 +9,7 @@ import ColorMapSelector from './controls/ColorMapSelector/ColorMapSelector';
 import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
 import GridToggler from './controls/GridToggler';
+import FlipYAxisToggler from './controls/FlipYAxisToggler';
 
 function HeatmapToolbar() {
   const {
@@ -25,6 +26,8 @@ function HeatmapToolbar() {
     toggleGrid,
     invertColorMap,
     toggleColorMapInversion,
+    flipYAxis,
+    toggleYAxisFlip,
   } = useHeatmapConfig((state) => state, shallow);
 
   return (
@@ -52,6 +55,8 @@ function HeatmapToolbar() {
       <ScaleSelector value={scaleType} onScaleChange={setScaleType} />
 
       <Separator />
+
+      <FlipYAxisToggler value={flipYAxis} onToggle={toggleYAxisFlip} />
 
       <ToggleBtn
         label="Keep ratio"
