@@ -83,7 +83,7 @@ InheritedStyles.args = {
 };
 
 InheritedStyles.decorators = [
-  (VisCanvasStory: Story) => (
+  (story) => (
     <div
       style={{
         flex: '1 1 0%',
@@ -93,7 +93,7 @@ InheritedStyles.decorators = [
         fontSize: '1.125rem',
       }}
     >
-      <VisCanvasStory />
+      {story()}
     </div>
   ),
 ];

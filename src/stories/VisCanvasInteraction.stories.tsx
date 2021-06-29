@@ -65,7 +65,6 @@ TooltipWithPanZoom.args = {
 export default {
   ...VisCanvasStoriesConfig,
   title: 'Building Blocks/VisCanvas/Interaction',
-  subcomponents: { PanZoomMesh, TooltipMesh },
   parameters: {
     ...VisCanvasStoriesConfig.parameters,
     controls: { include: ['panZoom', 'tooltipValue', 'guides'] },
