@@ -115,4 +115,5 @@ function TooltipMesh(props: Props) {
   );
 }
 
+export type { Props as TooltipMeshProps };
 export default TooltipMesh;

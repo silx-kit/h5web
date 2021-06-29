@@ -1,11 +1,9 @@
-import type { Story } from '@storybook/react/types-6-0';
+import type { Meta, Story } from '@storybook/react/types-6-0';
+import type { VisCanvasProps } from '../h5web/vis-packs/core/shared/VisCanvas';
 import FillHeight from './decorators/FillHeight';
 import { VisCanvas, ScaleType } from '../packages/lib';
-import type { VisCanvasProps } from '../h5web/vis-packs/core/shared/VisCanvas';
 
-const Template: Story<VisCanvasProps> = (args) => {
-  return <VisCanvas {...args} />;
-};
+const Template: Story<VisCanvasProps> = (args) => <VisCanvas {...args} />;
 
 export const IndexDomains = Template.bind({});
 
@@ -51,19 +49,19 @@ NoGrid.args = {
   ordinateConfig: { visDomain: [0, 2], showGrid: false },
 };
 
+export const Title = Template.bind({});
+
+Title.args = {
+  abscissaConfig: { visDomain: [0, 3], showGrid: true, isIndexAxis: true },
+  ordinateConfig: { visDomain: [50, 100], showGrid: true, isIndexAxis: true },
+  title: 'This is a graph',
+};
+
 export const AxesLabels = Template.bind({});
 
 AxesLabels.args = {
   abscissaConfig: { visDomain: [0, 3], showGrid: true, label: 'Abscissas' },
   ordinateConfig: { visDomain: [50, 100], showGrid: true, label: 'Ordinates' },
-};
-
-export const GraphTitle = Template.bind({});
-
-GraphTitle.args = {
-  abscissaConfig: { visDomain: [0, 3], showGrid: true, isIndexAxis: true },
-  ordinateConfig: { visDomain: [50, 100], showGrid: true, isIndexAxis: true },
-  title: 'This is a graph',
 };
 
 export const InheritedStyles = Template.bind({});
@@ -105,4 +103,4 @@ export default {
   component: VisCanvas,
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
-};
+} as Meta;
