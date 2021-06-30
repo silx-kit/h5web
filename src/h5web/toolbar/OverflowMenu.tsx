@@ -1,7 +1,6 @@
 import { ReactElement, useRef, Children, cloneElement } from 'react';
 import { FiMenu } from 'react-icons/fi';
-import { useToggle } from '@react-hookz/web';
-import { useClickAway } from 'react-use';
+import { useClickOutside, useToggle } from '@react-hookz/web';
 import Separator from './Separator';
 import styles from './OverflowMenu.module.css';
 
@@ -15,15 +14,11 @@ function OverflowMenu(props: Props) {
   const rootRef = useRef(null);
   const [isOverflowMenuOpen, toggleOverflowMenu] = useToggle(false);
 
-  useClickAway(
-    rootRef,
-    () => {
-      if (isOverflowMenuOpen) {
-        toggleOverflowMenu(false); // force close in case menu button was clicked
-      }
-    },
-    ['click']
-  );
+  useClickOutside(rootRef, () => {
+    if (isOverflowMenuOpen) {
+      toggleOverflowMenu(false);
+    }
+  });
 
   if (children.length === 0) {
     return null;

@@ -181,12 +181,16 @@ Beware that some dependencies cannot be upgraded because of issues or
 incompatibilities, while others must be upgraded by following a specific
 process. This section documents such cases:
 
-- The major version number of `@types/node` must match the version of Node
-  specified in the `engine` field of `package.json`.
 - `d3-array` (and therefore `@types/d3-array`) cannot be upgraded to v3.x due to
   a [bug in Babel](https://github.com/babel/babel/issues/11038).
+- Updating `@testing-library/react` to v12 breaks a lot of tests, probably
+  because `@testing-library/dom`
+  [v8](https://github.com/testing-library/dom-testing-library/releases/tag/v8.0.0)
+  and Jest's fake timers.
+- The major version number of `@types/node` must match the version of Node
+  specified in the `engine` field of `package.json`.
 - Dev dependencies related to ESLint must be upgraded together with
-  `eslint-config-galex`. Their vesion numbers must match the ones in
+  `eslint-config-galex`. Their version numbers must match the ones in
   [the shared config's `package.json`](https://github.com/ljosberinn/eslint-config-galex/blob/master/package.json#L66).
   The reason for this is that `react-scripts` installs older versions of these
   dependencies, which might be used when running `npm run lint:eslint` instead
@@ -202,9 +206,10 @@ process. This section documents such cases:
   - `eslint-plugin-testing-library`
   - `eslint` (must satisfy version range of peer dependency required by
     `eslint-config-galex`)
-- Some dependencies, like Storybook, still have a peer dependency on React <
-  v17. When upgrading them, NPM 7 complains that the peer dependency's version
-  is not satisfied. In most cases, ignoring the warning by forcing the
-  installation/upgrade of the package with `--force` is fine. Alternatively, if
-  this leads to a regression, you can tell NPM to install another version of the
-  package that satisfies the peer dependency range with `--legacy-peer-deps`.
+- Some dependencies, like `@storybook/*` and `@visx/*`, still have a peer
+  dependency on React < v17. When upgrading them, NPM 7 complains that the peer
+  dependency's version is not satisfied. In most cases, ignoring the warning by
+  forcing the installation/upgrade of the package with `--force` is fine.
+  Alternatively, if this leads to a regression, you can tell NPM to install
+  another version of the package that satisfies the peer dependency range with
+  `--legacy-peer-deps`.

@@ -1,7 +1,6 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Layout } from '../heatmap/models';
-import { useState } from 'react';
 import type { ConfigProviderProps } from '../../models';
 import createContext from 'zustand/context';
 import { ImageType } from './models';
@@ -17,7 +16,7 @@ interface RgbVisConfig {
   setImageType: (channels: ImageType) => void;
 }
 
-function initialiseStore() {
+function createStore() {
   return create<RgbVisConfig>(
     persist(
       (set) => ({
@@ -42,12 +41,7 @@ function initialiseStore() {
 const { Provider, useStore } = createContext<RgbVisConfig>();
 export const useRgbVisConfig = useStore;
 
-// https://github.com/pmndrs/zustand/issues/128#issuecomment-673398578
 export function RgbVisConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-
-  // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
-  const [store] = useState(() => initialiseStore());
-
-  return <Provider initialStore={store}>{children}</Provider>;
+  return <Provider createStore={createStore}>{children}</Provider>;
 }

@@ -2,7 +2,6 @@ import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { ColorMap, Layout } from './models';
 import { CustomDomain, Domain, ScaleType } from '../models';
-import { useState } from 'react';
 import type { ConfigProviderProps } from '../../models';
 import createContext from 'zustand/context';
 
@@ -32,7 +31,7 @@ interface HeatmapConfig {
   toggleYAxisFlip: () => void;
 }
 
-function initialiseStore() {
+function createStore() {
   return create<HeatmapConfig>(
     persist(
       (set, get) => ({
@@ -87,12 +86,7 @@ function initialiseStore() {
 const { Provider, useStore } = createContext<HeatmapConfig>();
 export const useHeatmapConfig = useStore;
 
-// https://github.com/pmndrs/zustand/issues/128#issuecomment-673398578
 export function HeatmapConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-
-  // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
-  const [store] = useState(() => initialiseStore());
-
-  return <Provider initialStore={store}>{children}</Provider>;
+  return <Provider createStore={createStore}>{children}</Provider>;
 }
