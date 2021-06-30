@@ -38,7 +38,7 @@
     "@visx/tooltip": "^1.7.2",
     "axios": "^0.21.1",
     "complex.js": "^2.0.13",
-    "d3-array": "^3.0.1",
+    "d3-array": "^2.12.1",
     "d3-color": "^3.0.1",
     "d3-format": "^3.0.1",
     "d3-scale": "^4.0.0",
@@ -63,7 +63,6 @@
     "zustand": "^3.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
     "@juggle/resize-observer": "^3.3.1",
     "@storybook/addon-actions": "^6.3.1",
     "@storybook/addon-docs": "^6.3.1",
@@ -118,7 +117,7 @@
   "jest": {
     "restoreMocks": true,
     "transformIgnorePatterns": [
-      "node_modules/(?!(d3-array|d3-color|d3-format|d3-scale-chromatic)/)"
+      "node_modules/(?!(d3-color|d3-format|d3-scale-chromatic)/)"
     ]
   },
   "browserslist": {
