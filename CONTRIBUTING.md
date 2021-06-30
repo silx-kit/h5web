@@ -193,8 +193,8 @@ process. This section documents such cases:
   `eslint-config-galex`. Their version numbers must match the ones in
   [the shared config's `package.json`](https://github.com/ljosberinn/eslint-config-galex/blob/master/package.json#L66).
   The reason for this is that `react-scripts` installs older versions of these
-  dependencies, which might be used when running `npm run lint:eslint` instead
-  of the more recent versions, leading to errors such as unknown linting
+  dependencies, which might be used instead of the more recent versions when
+  running `npm run lint:eslint`, leading to errors such as unknown linting
   rules/options. This concerns the following dev dependencies:
   - `@typescript-eslint/eslint-plugin`
   - `@typescript-eslint/parser`
