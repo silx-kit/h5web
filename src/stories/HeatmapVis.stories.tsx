@@ -144,9 +144,11 @@ export const ScrollCaptured = Template.bind({});
 ScrollCaptured.args = { dataArray, domain };
 
 ScrollCaptured.decorators = [
-  (story) => (
+  (VisCanvasStory: Story) => (
     <>
-      <div style={{ display: 'flex', height: '100vh' }}>{story()}</div>
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <VisCanvasStory />
+      </div>
       <div style={{ height: 500 }} />
     </>
   ),

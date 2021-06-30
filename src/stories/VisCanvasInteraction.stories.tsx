@@ -37,9 +37,8 @@ const Template: Story<TemplateProps> = (args) => {
 
 export const PanZoom = Template.bind({});
 
-PanZoom.args = {
-  panZoom: true,
-};
+PanZoom.args = { panZoom: true };
+PanZoom.argTypes = { guides: { table: { disable: true } } };
 
 export const Tooltip = Template.bind({});
 

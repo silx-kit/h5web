@@ -12,6 +12,7 @@
   - [Release process](#release-process)
   - [Build and test locally](#build-and-test-locally)
 - [Icon set](#icon-set)
+- [Dependencies](#dependencies)
 
 ## Quick start 🚀
 
@@ -169,3 +170,41 @@ npm link @h5web/lib
 
 H5Web uses the [Feather icon set](https://react-icons.netlify.com/#/icons/fi).
 Icons can be imported as React components from `react-icons/fi`.
+
+## Dependencies
+
+When upgrading dependencies, take care of reading their changelogs and release
+notes. Look for potential breaking changes and for bug fixes and new features
+that may help improve the codebase.
+
+Beware that some dependencies cannot be upgraded because of issues or
+incompatibilities, while others must be upgraded by following a specific
+process. This section documents such cases:
+
+- The major version number of `@types/node` must match the version of Node
+  specified in the `engine` field of `package.json`.
+- `d3-array` (and therefore `@types/d3-array`) cannot be upgraded to v3.x due to
+  a [bug in Babel](https://github.com/babel/babel/issues/11038).
+- Dev dependencies related to ESLint must be upgraded together with
+  `eslint-config-galex`. Their vesion numbers must match the ones in
+  [the shared config's `package.json`](https://github.com/ljosberinn/eslint-config-galex/blob/master/package.json#L66).
+  The reason for this is that `react-scripts` installs older versions of these
+  dependencies, which might be used when running `npm run lint:eslint` instead
+  of the more recent versions, leading to errors such as unknown linting
+  rules/options. This concerns the following dev dependencies:
+  - `@typescript-eslint/eslint-plugin`
+  - `@typescript-eslint/parser`
+  - `eslint-plugin-import`
+  - `eslint-plugin-jest`
+  - `eslint-plugin-jsx-a11y`
+  - `eslint-plugin-react`
+  - `eslint-plugin-react-hooks`
+  - `eslint-plugin-testing-library`
+  - `eslint` (must satisfy version range of peer dependency required by
+    `eslint-config-galex`)
+- Some dependencies, like Storybook, still have a peer dependency on React <
+  v17. When upgrading them, NPM 7 complains that the peer dependency's version
+  is not satisfied. In most cases, ignoring the warning by forcing the
+  installation/upgrade of the package with `--force` is fine. Alternatively, if
+  this leads to a regression, you can tell NPM to install another version of the
+  package that satisfies the peer dependency range with `--legacy-peer-deps`.
