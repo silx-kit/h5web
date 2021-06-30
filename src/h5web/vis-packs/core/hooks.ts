@@ -1,12 +1,6 @@
 import type { NdArray } from 'ndarray';
-import {
-  RefCallback,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { RefCallback, useCallback, useContext, useMemo, useState } from 'react';
+import { useEventListener } from '@react-hookz/web';
 import { createMemo } from 'react-use';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { DimensionMapping } from '../../dimension-mapper/models';
@@ -123,19 +117,16 @@ export function useVisSize(ratioToRespect: number | undefined): Size {
   };
 }
 
+function onWheel(evt: WheelEvent) {
+  evt.preventDefault();
+}
+
 export function useWheelCapture() {
   const { domElement } = useThree((state) => state.gl);
 
-  useEffect(() => {
-    function onWheel(evt: WheelEvent) {
-      evt.preventDefault();
-    }
-
-    // Handler must be registed as non-passive for `preventDefault` to have an effect
-    // (React's `onWheel` prop registers handlers as passive)
-    domElement.addEventListener('wheel', onWheel, { passive: false });
-    return () => domElement.removeEventListener('wheel', onWheel);
-  });
+  // Handler must be registed as non-passive for `preventDefault` to have an effect
+  // (React's `onWheel` prop registers handlers as passive)
+  useEventListener(domElement, 'wheel', onWheel, { passive: false });
 }
 
 export const useCombinedDomain = createMemo(getCombinedDomain);

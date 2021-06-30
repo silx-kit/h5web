@@ -3,7 +3,6 @@ import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
 import { CurveType } from './models';
 import { ScaleType } from '../models';
-import { useState } from 'react';
 import type { ConfigProviderProps } from '../../models';
 
 interface LineConfig {
@@ -29,7 +28,7 @@ interface LineConfig {
   disableErrors: (areErrorsDisabled: boolean) => void;
 }
 
-function initialiseStore() {
+function createStore() {
   return create<LineConfig>(
     persist(
       (set) => ({
@@ -79,12 +78,7 @@ function initialiseStore() {
 const { Provider, useStore } = createContext<LineConfig>();
 export const useLineConfig = useStore;
 
-// https://github.com/pmndrs/zustand/issues/128#issuecomment-673398578
 export function LineConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-
-  // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
-  const [store] = useState(() => initialiseStore());
-
-  return <Provider initialStore={store}>{children}</Provider>;
+  return <Provider createStore={createStore}>{children}</Provider>;
 }
