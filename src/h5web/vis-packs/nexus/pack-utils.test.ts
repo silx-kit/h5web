@@ -42,9 +42,14 @@ describe('getSupportedVis', () => {
       signal: withNxInterpretation(datasetInt2D, NxInterpretation.Image),
     });
 
+    const rgb3D = makeNxDataGroup('foo', {
+      signal: withNxInterpretation(datasetFlt3D, NxInterpretation.RGB),
+    });
+
     expect(getSupportedVis(spectrum1D)).toBe(NEXUS_VIS[NexusVis.NxSpectrum]);
     expect(getSupportedVis(spectrum2D)).toBe(NEXUS_VIS[NexusVis.NxSpectrum]);
     expect(getSupportedVis(image2D)).toBe(NEXUS_VIS[NexusVis.NxImage]);
+    expect(getSupportedVis(rgb3D)).toBe(NEXUS_VIS[NexusVis.NxRGB]);
   });
 
   it('should get supported visualization based on dataset shape', () => {
@@ -93,7 +98,7 @@ describe('getSupportedVis', () => {
     expect(getSupportedVis(signal3D)).toBe(NEXUS_VIS[NexusVis.NxComplexImage]);
   });
 
-  it('should fallback to dataset shape when interpretation is unknown', () => {
+  it('should fall back to dataset shape when interpretation is unknown', () => {
     const unknown = makeNxDataGroup('foo', {
       signal: withAttributes(datasetInt2D, [
         makeStrAttr('interpretation', 'unknown'),
@@ -101,6 +106,19 @@ describe('getSupportedVis', () => {
     });
 
     expect(getSupportedVis(unknown)).toBe(NEXUS_VIS[NexusVis.NxImage]);
+  });
+
+  it('should fall back to dataset shape when dataset is incompatible with interpretation', () => {
+    const rgbInt1D = makeNxDataGroup('foo', {
+      signal: withNxInterpretation(datasetInt1D, NxInterpretation.RGB),
+    });
+
+    const rgbCplx3D = makeNxDataGroup('foo', {
+      signal: withNxInterpretation(datasetCplx3D, NxInterpretation.RGB),
+    });
+
+    expect(getSupportedVis(rgbInt1D)).toBe(NEXUS_VIS[NexusVis.NxSpectrum]);
+    expect(getSupportedVis(rgbCplx3D)).toBe(NEXUS_VIS[NexusVis.NxComplexImage]);
   });
 
   it('should return undefined if no visualization is supported', () => {

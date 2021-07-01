@@ -109,6 +109,13 @@ export function withAttributes<T extends Entity>(
   };
 }
 
+export function withImageAttributes<T extends Entity>(entity: T): T {
+  return withAttributes(entity, [
+    makeStrAttr('CLASS', 'IMAGE'),
+    makeStrAttr('IMAGE_VERSION', '1.2'),
+  ]);
+}
+
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
@@ -334,20 +341,4 @@ export function withNxInterpretation<
   return withAttributes(dataset, [
     makeStrAttr('interpretation', interpretation),
   ]);
-}
-
-export function makeImageDataset(
-  name: string,
-  type: NumericType,
-  dims: number[],
-  opts?: DatasetOpts
-): MockDataset<ArrayShape, NumericType> {
-  return makeDataset(name, type, dims, {
-    ...opts,
-    attributes: [
-      ...(opts?.attributes || []),
-      makeStrAttr('CLASS', 'IMAGE'),
-      makeStrAttr('IMAGE_VERSION', '1.2'),
-    ],
-  });
 }

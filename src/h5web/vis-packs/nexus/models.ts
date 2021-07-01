@@ -24,6 +24,7 @@ export type NxAttribute =
 export enum NxInterpretation {
   Spectrum = 'spectrum',
   Image = 'image',
+  RGB = 'rgb-image',
 }
 
 export interface NxData<

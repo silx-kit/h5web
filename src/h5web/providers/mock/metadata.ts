@@ -16,7 +16,7 @@ import {
   makeScalarDataset,
   makeDataset,
   makeScalarAttr,
-  makeImageDataset,
+  withImageAttributes,
 } from './metadata-utils';
 
 export const mockFilepath = 'source.h5';
@@ -53,6 +53,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       makeDataset('threeD', intType, [9, 20, 41]),
       makeDataset('threeD_bool', booleanType, [2, 3, 4]),
       makeDataset('threeD_cplx', complexType, [2, 3, 4]),
+      withImageAttributes(makeDataset('threeD_rgb', intType, [3, 3, 3])),
       makeDataset('fourD', intType, [3, 9, 20, 41]),
     ]),
     makeNxGroup('nexus_entry', 'NXentry', {
@@ -140,6 +141,14 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             interpretation: 'spectrum',
           }),
         }),
+        makeNxDataGroup('rgb-image', {
+          signal: withImageAttributes(
+            makeNxDataset('threeD_rgb', intType, [3, 3, 3], {
+              longName: 'RGB CMY DGW',
+              interpretation: 'rgb-image',
+            })
+          ),
+        }),
       ],
     }),
     makeGroup('nexus_malformed', [
@@ -200,6 +209,5 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         }),
       }),
     ]),
-    makeGroup('images', [makeImageDataset('rgb_cmy_kgw', intType, [3, 3, 3])]),
   ],
 });

@@ -215,12 +215,14 @@ describe('App', () => {
   });
 
   it('visualize image dataset as RGB', () => {
-    cy.findByRole('treeitem', { name: 'images' }).click();
-    cy.findByRole('treeitem', { name: 'rgb_cmy_kgw' }).click();
+    cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
+    cy.findByRole('treeitem', { name: 'threeD_rgb' }).click();
 
-    cy.findByRole('heading', { name: 'images / rgb_cmy_kgw' }).should('exist');
+    cy.findByRole('heading', { name: 'nD_datasets / threeD_rgb' }).should(
+      'exist'
+    );
     cy.findByRole('tab', { name: 'RGB' }).should('exist');
-    cy.findByRole('figure', { name: 'rgb_cmy_kgw' }).should('exist');
+    cy.findByRole('figure', { name: 'threeD_rgb' }).should('exist');
 
     if (!!Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
@@ -244,7 +246,7 @@ describe('App', () => {
       cy.findByRole('figure', { name: 'NeXus 2D' }).should('exist');
     });
 
-    it('visualize dataset with spectrum interpretation as NxSpectrum', () => {
+    it('visualize dataset with "spectrum" interpretation as NxSpectrum', () => {
       cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
       cy.findByRole('treeitem', { name: 'spectrum' }).click();
 
@@ -263,7 +265,7 @@ describe('App', () => {
       }
     });
 
-    it('visualize dataset with image interpretation as NxImage', () => {
+    it('visualize dataset with "image" interpretation as NxImage', () => {
       cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
       cy.findByRole('treeitem', { name: 'image' }).click();
 
@@ -318,6 +320,22 @@ describe('App', () => {
       if (!!Cypress.env('TAKE_SNAPSHOTS')) {
         cy.wait(SNAPSHOT_DELAY);
         cy.matchImageSnapshot('auxspectrum');
+      }
+    });
+
+    it('visualize dataset with "rgb-image" interpretation as NxRGB', () => {
+      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
+      cy.findByRole('treeitem', { name: 'rgb-image' }).click();
+
+      cy.findByRole('heading', { name: 'nexus_entry / rgb-image' }).should(
+        'exist'
+      );
+      cy.findByRole('tab', { name: 'NX RGB' }).should('exist');
+      cy.findByRole('figure', { name: 'RGB CMY DGW' }).should('exist');
+
+      if (!!Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.wait(SNAPSHOT_DELAY);
+        cy.matchImageSnapshot('nxrgb');
       }
     });
   });

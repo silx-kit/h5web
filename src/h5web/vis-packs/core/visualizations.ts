@@ -6,9 +6,9 @@ import {
   FiCpu,
   FiImage,
 } from 'react-icons/fi';
-import LineToolbar from '../../toolbar/LineToolbar';
-import HeatmapToolbar from '../../toolbar/HeatmapToolbar';
 import type { Dataset } from '../../providers/models';
+import type { VisDef } from '../models';
+import { hasImageAttribute } from './utils';
 import {
   hasScalarShape,
   hasPrintableType,
@@ -25,19 +25,23 @@ import {
   LineVisContainer,
   HeatmapVisContainer,
   ComplexVisContainer,
+  ComplexLineVisContainer,
+  RgbVisContainer,
 } from './containers';
-import type { VisDef } from '../models';
-import { LineConfigProvider } from './line/config';
-import { HeatmapConfigProvider } from './heatmap/config';
-import ComplexToolbar from '../../toolbar/ComplexToolbar';
-import { ComplexConfigProvider } from './complex/config';
-import ComplexLineVisContainer from './containers/ComplexLineVisContainer';
-import ComplexLineToolbar from '../../toolbar/ComplexLineToolbar';
-import { ComplexLineConfigProvider } from './complex/lineConfig';
-import RgbVisContainer from './containers/RgbVisContainer';
-import { RgbVisConfigProvider } from './rgb/config';
-import RgbVisToolbar from '../../toolbar/RgbVisToolbar';
-import { hasImageAttribute } from './utils';
+import {
+  LineToolbar,
+  HeatmapToolbar,
+  ComplexToolbar,
+  ComplexLineToolbar,
+  RgbToolbar,
+} from '../../toolbar/toolbars';
+import {
+  LineConfigProvider,
+  HeatmapConfigProvider,
+  ComplexConfigProvider,
+  ComplexLineConfigProvider,
+  RgbConfigProvider,
+} from './configs';
 
 export enum Vis {
   Raw = 'Raw',
@@ -135,9 +139,9 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
   [Vis.RGB]: {
     name: Vis.RGB,
     Icon: FiImage,
-    Toolbar: RgbVisToolbar,
+    Toolbar: RgbToolbar,
     Container: RgbVisContainer,
-    ConfigProvider: RgbVisConfigProvider,
+    ConfigProvider: RgbConfigProvider,
     supportsDataset: (dataset) => {
       return (
         hasImageAttribute(dataset) &&
