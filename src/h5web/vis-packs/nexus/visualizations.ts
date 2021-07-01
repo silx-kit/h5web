@@ -1,25 +1,33 @@
-import { FiActivity, FiMap } from 'react-icons/fi';
-import HeatmapToolbar from '../../toolbar/HeatmapToolbar';
-import LineToolbar from '../../toolbar/LineToolbar';
+import { FiActivity, FiImage, FiMap } from 'react-icons/fi';
+import type { VisDef } from '../models';
 import {
   NxSpectrumContainer,
   NxImageContainer,
   NxComplexImageContainer,
   NxComplexSpectrumContainer,
+  NxRgbContainer,
 } from './containers';
-import type { VisDef } from '../models';
-import { LineConfigProvider } from '../core/line/config';
-import { HeatmapConfigProvider } from '../core/heatmap/config';
-import ComplexToolbar from '../../toolbar/ComplexToolbar';
-import { ComplexConfigProvider } from '../core/complex/config';
-import ComplexLineToolbar from '../../toolbar/ComplexLineToolbar';
-import { ComplexLineConfigProvider } from '../core/complex/lineConfig';
+import {
+  LineToolbar,
+  HeatmapToolbar,
+  ComplexToolbar,
+  ComplexLineToolbar,
+  RgbToolbar,
+} from '../../toolbar/toolbars';
+import {
+  LineConfigProvider,
+  HeatmapConfigProvider,
+  ComplexConfigProvider,
+  ComplexLineConfigProvider,
+  RgbConfigProvider,
+} from '../core/configs';
 
 export enum NexusVis {
   NxSpectrum = 'NX Spectrum',
+  NxComplexSpectrum = 'NX Complex Spectrum',
   NxImage = 'NX Image',
   NxComplexImage = 'NX Complex Image',
-  NxComplexSpectrum = 'NX Complex Spectrum',
+  NxRGB = 'NX RGB',
 }
 
 export const NEXUS_VIS: Record<NexusVis, VisDef> = {
@@ -53,5 +61,13 @@ export const NEXUS_VIS: Record<NexusVis, VisDef> = {
     Toolbar: ComplexToolbar,
     Container: NxComplexImageContainer,
     ConfigProvider: ComplexConfigProvider,
+  },
+
+  [NexusVis.NxRGB]: {
+    name: NexusVis.NxRGB,
+    Icon: FiImage,
+    Toolbar: RgbToolbar,
+    Container: NxRgbContainer,
+    ConfigProvider: RgbConfigProvider,
   },
 };

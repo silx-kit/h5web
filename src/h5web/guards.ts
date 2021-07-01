@@ -86,6 +86,10 @@ export function hasMinDims(dataset: Dataset<ArrayShape>, min: number): boolean {
   return dataset.shape.length >= min;
 }
 
+export function hasNumDims(dataset: Dataset<ArrayShape>, num: number): boolean {
+  return dataset.shape.length === num;
+}
+
 export function hasPrintableType<S extends Shape>(
   entity: Dataset<S>
 ): entity is Dataset<S, PrintableType> {
@@ -181,12 +185,9 @@ export function assertMinDims(dataset: Dataset<ArrayShape>, min: number) {
   }
 }
 
-export function assertNumDims(
-  dataset: Dataset<ArrayShape>,
-  expectedNum: number
-) {
-  if (dataset.shape.length !== expectedNum) {
-    throw new Error(`Expected dataset with ${expectedNum} dimensions`);
+export function assertNumDims(dataset: Dataset<ArrayShape>, num: number) {
+  if (!hasNumDims(dataset, num)) {
+    throw new Error(`Expected dataset with ${num} dimensions`);
   }
 }
 

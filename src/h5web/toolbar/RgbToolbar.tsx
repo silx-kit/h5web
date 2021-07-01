@@ -7,7 +7,7 @@ import { useRgbVisConfig } from '../vis-packs/core/rgb/config';
 import { ImageType } from '../vis-packs/core/rgb/models';
 import ToggleGroup from './controls/ToggleGroup';
 
-function RgbVisToolbar() {
+function RgbToolbar() {
   const { layout, setLayout, showGrid, toggleGrid, imageType, setImageType } =
     useRgbVisConfig((state) => state, shallow);
 
@@ -37,4 +37,4 @@ function RgbVisToolbar() {
   );
 }
 
-export default RgbVisToolbar;
+export default RgbToolbar;

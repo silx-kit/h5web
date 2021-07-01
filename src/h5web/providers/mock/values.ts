@@ -100,15 +100,7 @@ export const mockValues = {
       ],
     ],
   ],
-  fourD,
-  X: arr1,
-  X_log: arr1.map((_, i) => (i + 1) * 0.1),
-  Y: arr2,
-  title_twoD: 'NeXus 2D',
-  secondary: twoD.map((inner) => inner.map((v) => v * 2)),
-  tertiary: twoD.map((inner) => inner.map((v) => v / 2)),
-  position: [-1, 0, 1],
-  rgb_cmy_kgw: [
+  threeD_rgb: [
     [
       [255, 0, 0],
       [0, 255, 0],
@@ -125,4 +117,12 @@ export const mockValues = {
       [255, 255, 255],
     ],
   ],
+  fourD,
+  X: arr1,
+  X_log: arr1.map((_, i) => (i + 1) * 0.1),
+  Y: arr2,
+  title_twoD: 'NeXus 2D',
+  secondary: twoD.map((inner) => inner.map((v) => v * 2)),
+  tertiary: twoD.map((inner) => inner.map((v) => v / 2)),
+  position: [-1, 0, 1],
 };

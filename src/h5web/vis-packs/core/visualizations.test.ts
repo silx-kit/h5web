@@ -9,8 +9,7 @@ import {
   complexType,
   makeScalarDataset,
   unsignedType,
-  makeStrAttr,
-  makeImageDataset,
+  withImageAttributes,
 } from '../../providers/mock/metadata-utils';
 
 const datasetIntScalar = makeScalarDataset('dataset_int', intType);
@@ -29,18 +28,18 @@ const datasetCplx2D = makeDataset('dataset_cplx_2d', complexType, [2, 2]);
 const datasetStr2D = makeDataset('dataset_str_2d', stringType, [5, 3]);
 const datasetFlt3D = makeDataset('dataset_flt_3d', intType, [5, 3, 1]);
 const datasetCplx3D = makeDataset('dataset_cplx_3d', complexType, [5, 2, 2]);
-const imageDataset = makeImageDataset('image_dataset', intType, [256, 256, 3]);
-const fltImageDataset = makeImageDataset('img_dset', floatType, [256, 256, 3]);
-const scalarImageDataset = makeScalarDataset('image_dataset', intType, {
-  attributes: [makeStrAttr('CLASS', 'IMAGE')],
-});
-const strImageDataset = makeDataset(
-  'image_dataset',
-  stringType,
-  [256, 256, 3],
-  {
-    attributes: [makeStrAttr('CLASS', 'IMAGE')],
-  }
+
+const imageDataset = withImageAttributes(
+  makeDataset('image_dataset', intType, [256, 256, 3])
+);
+const fltImageDataset = withImageAttributes(
+  makeDataset('img_dset', floatType, [256, 256, 3])
+);
+const scalarImageDataset = withImageAttributes(
+  makeScalarDataset('image_dataset', intType)
+);
+const strImageDataset = withImageAttributes(
+  makeDataset('image_dataset', stringType, [256, 256, 3])
 );
 
 describe('Raw', () => {

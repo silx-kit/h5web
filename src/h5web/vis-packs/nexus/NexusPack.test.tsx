@@ -79,6 +79,15 @@ test('visualize NXdata group with 1D complex signal', async () => {
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
 });
 
+test('visualize NXdata group with "rgb-image" interpretation', async () => {
+  await renderApp();
+  await selectExplorerNode('nexus_entry/rgb-image');
+
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxRGB);
+});
+
 test('show error when encountering malformed NeXus metadata', async () => {
   await renderApp();
 

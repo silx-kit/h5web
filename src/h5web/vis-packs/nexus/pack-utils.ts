@@ -1,5 +1,11 @@
 import type { FetchStore } from 'react-suspense-fetch';
-import { assertStr, hasComplexType, hasMinDims, isGroup } from '../../guards';
+import {
+  assertStr,
+  hasComplexType,
+  hasMinDims,
+  hasNumDims,
+  isGroup,
+} from '../../guards';
 import { Entity, ProviderError } from '../../providers/models';
 import { buildEntityPath, getAttributeValue, handleError } from '../../utils';
 import type { VisDef } from '../models';
@@ -36,12 +42,19 @@ export function getSupportedVis(entity: Entity): VisDef | undefined {
   }
 
   const dataset = findSignalDataset(entity);
-
   const isCplx = hasComplexType(dataset);
+  const interpretation = getAttributeValue(dataset, 'interpretation');
+
+  if (
+    interpretation === NxInterpretation.RGB &&
+    hasNumDims(dataset, 3) &&
+    !isCplx
+  ) {
+    return NEXUS_VIS[NexusVis.NxRGB];
+  }
+
   const imageVis = isCplx ? NexusVis.NxComplexImage : NexusVis.NxImage;
   const spectrumVis = isCplx ? NexusVis.NxComplexSpectrum : NexusVis.NxSpectrum;
-
-  const interpretation = getAttributeValue(dataset, 'interpretation');
 
   if (interpretation === NxInterpretation.Image) {
     return NEXUS_VIS[imageVis];
