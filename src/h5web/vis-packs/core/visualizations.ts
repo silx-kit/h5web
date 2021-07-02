@@ -29,6 +29,7 @@ import {
   RgbVisContainer,
 } from './containers';
 import {
+  MatrixToolbar,
   LineToolbar,
   HeatmapToolbar,
   ComplexToolbar,
@@ -36,6 +37,7 @@ import {
   RgbToolbar,
 } from '../../toolbar/toolbars';
 import {
+  MatrixConfigProvider,
   LineConfigProvider,
   HeatmapConfigProvider,
   ComplexConfigProvider,
@@ -78,7 +80,9 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
   [Vis.Matrix]: {
     name: Vis.Matrix,
     Icon: FiGrid,
+    Toolbar: MatrixToolbar,
     Container: MatrixVisContainer,
+    ConfigProvider: MatrixConfigProvider,
     supportsDataset: (dataset) => {
       return hasPrintableType(dataset) && hasArrayShape(dataset);
     },

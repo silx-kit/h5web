@@ -38,7 +38,6 @@ function DownloadBtn(props: Props) {
           return;
         }
 
-        // Let link open download URL in new tab/window
         evt.currentTarget.setAttribute('href', url);
       }}
     >
