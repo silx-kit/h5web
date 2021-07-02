@@ -9,6 +9,7 @@ export type { HeatmapVisProps } from '../h5web/vis-packs/core/heatmap/HeatmapVis
 // Toolbar and controls
 export { default as Toolbar } from '../h5web/toolbar/Toolbar';
 export { default as Separator } from '../h5web/toolbar/Separator';
+export { default as Btn } from '../h5web/toolbar/controls/Btn';
 export { default as ToggleBtn } from '../h5web/toolbar/controls/ToggleBtn';
 export { default as ToggleGroup } from '../h5web/toolbar/controls/ToggleGroup';
 export { default as DomainSlider } from '../h5web/toolbar/controls/DomainSlider/DomainSlider';
