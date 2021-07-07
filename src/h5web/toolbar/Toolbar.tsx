@@ -7,7 +7,7 @@ import OverflowMenu from './OverflowMenu';
 import MeasuredControl from './MeasuredControl';
 
 interface Props {
-  children?: (ReactElement | undefined)[];
+  children?: ReactElement | (ReactElement | undefined)[];
 }
 
 function Toolbar(props: Props) {
