@@ -12,6 +12,7 @@ export enum ScaleType {
   Linear = 'linear',
   Log = 'log',
   SymLog = 'symlog',
+  Sqrt = 'sqrt',
 }
 
 export interface Size {
@@ -25,14 +26,14 @@ export type CustomDomain = [number | null, number | null]; // `null` for persist
 
 export interface DomainErrors {
   minGreater?: boolean;
-  minError?: DomainError.InvalidMinWithLog | DomainError.CustomMaxFallback;
-  maxError?: DomainError.InvalidMaxWithLog;
+  minError?: DomainError.InvalidMinWithScale | DomainError.CustomMaxFallback;
+  maxError?: DomainError.InvalidMaxWithScale;
 }
 
 export enum DomainError {
   MinGreater = 'min-greater',
-  InvalidMinWithLog = 'invalid-min-with-log',
-  InvalidMaxWithLog = 'invalid-max-with-log',
+  InvalidMinWithScale = 'invalid-min-with-scale',
+  InvalidMaxWithScale = 'invalid-max-with-scale',
   CustomMaxFallback = 'custom-max-fallback',
 }
 
@@ -46,7 +47,7 @@ export interface AxisConfig {
 }
 
 export type AxisScale = PickD3Scale<
-  ScaleType.Linear | ScaleType.Log | ScaleType.SymLog,
+  ScaleType.Linear | ScaleType.Log | ScaleType.SymLog | ScaleType.Sqrt,
   number,
   number
 >;

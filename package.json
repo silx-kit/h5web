@@ -115,7 +115,7 @@
   "jest": {
     "restoreMocks": true,
     "transformIgnorePatterns": [
-      "node_modules/(?!(d3-color|d3-format|d3-scale-chromatic)/)"
+      "node_modules/(?!(d3-color|d3-format|d3-scale-chromatic|three)/)"
     ]
   },
   "browserslist": {

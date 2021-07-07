@@ -7,7 +7,8 @@ import {
   RGBFormat,
   UnsignedByteType,
 } from 'three';
-import { Domain, ScaleType } from '../models';
+import type { Domain } from '../models';
+import { ScaleType } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import VisMesh from '../shared/VisMesh';
 import type { ColorMap } from './models';
@@ -25,19 +26,54 @@ interface Props {
   alphaDomain?: Domain;
 }
 
+const CMAP_SIZE = 256;
+
 const SCALE_FUNC: Record<ScaleType, (val: number) => number> = {
   [ScaleType.Linear]: (val) => val,
   [ScaleType.Log]: Math.log10,
-  [ScaleType.SymLog]: (val) => {
-    return Math.sign(val) * Math.log10(1 + Math.abs(val));
-  },
+  [ScaleType.SymLog]: (val) => Math.sign(val) * Math.log10(1 + Math.abs(val)),
+  [ScaleType.Sqrt]: Math.sqrt,
 };
 
-const CMAP_SIZE = 256;
-const CMAP_NORM: Record<ScaleType, number> = {
-  [ScaleType.Linear]: 0,
-  [ScaleType.Log]: 1,
-  [ScaleType.SymLog]: 2,
+const SCALE_SHADER: Record<ScaleType, string> = {
+  [ScaleType.Linear]: `
+    float scale(float value) {
+      return oneOverRange * (value - min); // Linear
+    }
+
+    bool isSupported(float value) {
+      return true;
+    }`,
+  [ScaleType.Log]: `
+    const float oneOverLog10 = 0.43429448190325176;
+    float scale(float value) {
+      return oneOverRange * (log(value) * oneOverLog10 - min); // Log
+    }
+
+    bool isSupported(float value) {
+      return value > 0.;
+    }`,
+  [ScaleType.SymLog]: `
+    const float oneOverLog10 = 0.43429448190325176;
+    float symlog(float x) {
+      return sign(x) * log(1. + abs(x)) * oneOverLog10;
+    }
+
+    float scale(float value) {
+      return oneOverRange * (symlog(value) - min);
+    }
+
+    bool isSupported(float value) {
+      return true;
+    }`,
+  [ScaleType.Sqrt]: `
+    float scale(float value) {
+      return oneOverRange * (sqrt(value) - min);
+    }
+
+    bool isSupported(float value) {
+      return value >= 0.;
+    }`,
 };
 
 function HeatmapMesh(props: Props) {
@@ -88,7 +124,6 @@ function HeatmapMesh(props: Props) {
       withAlpha: { value: alphaValues ? 1 : 0 },
       alpha: { value: alphaTexture },
       colorMap: { value: colorMapTexture },
-      scaleType: { value: CMAP_NORM[scaleType] },
       min: { value: scaledDomain[0] },
       alphaMin: { value: alphaDomain && alphaDomain[0] },
       oneOverRange: { value: 1 / (scaledDomain[1] - scaledDomain[0]) },
@@ -115,31 +150,16 @@ function HeatmapMesh(props: Props) {
       uniform float oneOverAlphaRange;
       uniform int withAlpha;
 
-      const float oneOverLog10 = 0.43429448190325176;
       const vec4 nanColor = vec4(255, 255, 255, 1);
 
       varying vec2 coords;
 
-      float symlog(float x) {
-        return sign(x) * log(1. + abs(x)) * oneOverLog10;
-      }
-
-      float scale(float value) {
-        if (scaleType == 1) {
-          return oneOverRange * (log(value) * oneOverLog10 - min); // Log
-        }
-
-        if (scaleType == 2) {
-          return oneOverRange * (symlog(value) - min); // SymLog
-        }
-
-        return oneOverRange * (value - min); // Linear
-      }
+      ${SCALE_SHADER[scaleType]}
 
       void main() {
         float value = texture2D(data, coords).r;
 
-        if (scaleType == 1 && value <= 0.) {
+        if (!isSupported(value)) {
           gl_FragColor = nanColor;
         } else {
           gl_FragColor = texture2D(colorMap, vec2(scale(value), 0.5));
