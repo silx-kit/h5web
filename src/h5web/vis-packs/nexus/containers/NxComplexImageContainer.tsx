@@ -1,4 +1,8 @@
-import { assertComplexType, assertGroup, assertMinDims } from '../../../guards';
+import {
+  assertComplexType,
+  assertGroupWithChildren,
+  assertMinDims,
+} from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
@@ -10,7 +14,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function NxComplexImageContainer(props: VisContainerProps) {
   const { entity } = props;
-  assertGroup(entity);
+  assertGroupWithChildren(entity);
 
   const nxData = getNxData(entity);
   const { signalDataset, silxStyle } = nxData;

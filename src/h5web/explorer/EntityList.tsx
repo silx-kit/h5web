@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styles from './Explorer.module.css';
 import { ProviderContext } from '../providers/context';
 import EntityItem from './EntityItem';
-import { assertGroup } from '../guards';
+import { assertGroupWithChildren } from '../guards';
 import { buildEntityPath } from '../utils';
 
 interface Props {
@@ -17,7 +17,7 @@ function EntityList(props: Props) {
 
   const { entitiesStore } = useContext(ProviderContext);
   const group = entitiesStore.get(parentPath);
-  assertGroup(group);
+  assertGroupWithChildren(group);
 
   if (group.children.length === 0) {
     return null;

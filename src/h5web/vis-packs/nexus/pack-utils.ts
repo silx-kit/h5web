@@ -1,5 +1,6 @@
 import type { FetchStore } from 'react-suspense-fetch';
 import {
+  assertGroupWithChildren,
   assertStr,
   hasComplexType,
   hasMinDims,
@@ -41,6 +42,7 @@ export function getSupportedVis(entity: Entity): VisDef | undefined {
     return undefined;
   }
 
+  assertGroupWithChildren(entity);
   const dataset = findSignalDataset(entity);
   const isCplx = hasComplexType(dataset);
   const interpretation = getAttributeValue(dataset, 'interpretation');

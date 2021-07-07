@@ -6,6 +6,7 @@ import {
   assertArrayShape,
   isDataset,
   isGroup,
+  hasChildren,
 } from '../../guards';
 import { getChildEntity } from '../../utils';
 import { Entity, ProviderError } from '../models';
@@ -34,7 +35,7 @@ export function findMockEntity(path: string): Entity {
   const pathSegments = path.slice(1).split('/');
   const entity = pathSegments.reduce<Entity | undefined>(
     (parentEntity, currSegment) => {
-      return parentEntity && isGroup(parentEntity)
+      return parentEntity && isGroup(parentEntity) && hasChildren(parentEntity)
         ? getChildEntity(parentEntity, currSegment)
         : undefined;
     },

@@ -3,7 +3,7 @@ import { createFetchStore } from 'react-suspense-fetch';
 import { ProviderContext } from './context';
 import type { ProviderApi } from './api';
 import type { Entity } from './models';
-import { isGroup } from '../guards';
+import { assertGroupWithChildren, isGroup } from '../guards';
 
 interface Props {
   api: ProviderApi;
@@ -24,12 +24,15 @@ function Provider(props: Props) {
       const entity = await api.getEntity(path);
 
       if (isGroup(entity)) {
+        // Make sure `getEntity` doesn't return groups without `children` proprety
+        assertGroupWithChildren(entity);
+
         // Cache non-group children (datasets, datatypes and links)
-        entity.children.forEach((child) => {
-          if (!isGroup(child)) {
+        entity.children
+          .filter((child) => !isGroup(child))
+          .forEach((child) => {
             childCache.set(child.path, child);
-          }
-        });
+          });
       }
 
       return entity;

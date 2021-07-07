@@ -20,8 +20,13 @@ import {
   EntityKind,
   Group,
   ProviderError,
+  GroupWithChildren,
 } from '../models';
-import { assertDefined, assertGroup, hasArrayShape } from '../../guards';
+import {
+  assertDefined,
+  assertGroupWithChildren,
+  hasArrayShape,
+} from '../../guards';
 import { ProviderApi } from '../api';
 import {
   assertHsdsDataset,
@@ -73,7 +78,7 @@ export class HsdsApi extends ProviderApi {
 
     if (path === '/') {
       const rootId = await this.fetchRootId();
-      const root = await this.processGroup(rootId, '/', this.filepath, 1);
+      const root = await this.processGroup(rootId, '/', this.filepath);
       this.entities.set(path, root);
       return root;
     }
@@ -84,7 +89,7 @@ export class HsdsApi extends ProviderApi {
        Entities are cached along the way for efficiency. */
     const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
     const parentGroup = await this.getEntity(parentPath);
-    assertGroup(parentGroup);
+    assertGroupWithChildren(parentGroup);
 
     const childName = path.slice(path.lastIndexOf('/') + 1);
     const child = getChildEntity(parentGroup, childName);
@@ -92,7 +97,7 @@ export class HsdsApi extends ProviderApi {
     assertHsdsEntity(child);
 
     const entity = isHsdsGroup(child)
-      ? await this.processGroup(child.id, path, child.name, 1)
+      ? await this.processGroup(child.id, path, child.name)
       : child;
 
     this.entities.set(path, entity);
@@ -182,33 +187,38 @@ export class HsdsApi extends ProviderApi {
     id: HsdsId,
     path: string,
     name: string,
-    depth: number
+    isChild = false
   ): Promise<HsdsEntity<Group>> {
     const { attributeCount, linkCount } = await this.fetchGroup(id);
 
     // Fetch attributes and links in parallel
-    // If recursion depth has been reached, don't fetch links at all
     const [attributes, links] = await Promise.all([
       attributeCount > 0
         ? this.fetchAttributes('groups', id)
         : Promise.resolve([]),
-      linkCount > 0 && depth > 0 ? this.fetchLinks(id) : Promise.resolve([]),
+      linkCount > 0 && !isChild ? this.fetchLinks(id) : Promise.resolve([]),
     ]);
 
-    const children = await Promise.all(
-      links.map((link) =>
-        this.resolveLink(link, buildEntityPath(path, link.title), depth - 1)
-      )
-    );
-
-    return {
+    const group: HsdsEntity<Group> = {
       id,
       path,
       name,
       kind: EntityKind.Group,
       attributes: convertHsdsAttributes(attributes),
-      children,
     };
+
+    if (isChild) {
+      return group; // don't fetch nested group's children
+    }
+
+    return {
+      ...group,
+      children: await Promise.all(
+        links.map((link) =>
+          this.resolveLink(link, buildEntityPath(path, link.title))
+        )
+      ),
+    } as HsdsEntity<GroupWithChildren>;
   }
 
   private async processDataset(
@@ -251,11 +261,7 @@ export class HsdsApi extends ProviderApi {
     };
   }
 
-  private async resolveLink(
-    link: HsdsLink,
-    path: string,
-    depth: number
-  ): Promise<Entity> {
+  private async resolveLink(link: HsdsLink, path: string): Promise<Entity> {
     if (link.class !== 'H5L_TYPE_HARD') {
       return {
         name: link.title,
@@ -274,7 +280,7 @@ export class HsdsApi extends ProviderApi {
 
     switch (collection) {
       case 'groups':
-        return this.processGroup(id, path, title, depth);
+        return this.processGroup(id, path, title, true);
       case 'datasets':
         return this.processDataset(id, path, title);
       case 'datatypes':

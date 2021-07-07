@@ -1,9 +1,9 @@
 import {
   ValueRequestParams,
-  Group,
   Dataset,
   Entity,
   EntityKind,
+  GroupWithChildren,
 } from '../models';
 import { ProviderApi } from '../api';
 import {
@@ -33,7 +33,7 @@ export class JupyterStableApi extends ProviderApi {
   }
 
   public async getEntity(path: string): Promise<Entity> {
-    return this.processEntity(path, 1);
+    return this.processEntity(path);
   }
 
   public async getValue(params: ValueRequestParams): Promise<unknown> {
@@ -88,31 +88,26 @@ export class JupyterStableApi extends ProviderApi {
   /** The main tree-building method */
   protected async processEntity(
     path: string,
-    depth: number
-  ): Promise<Group | Dataset | Entity> {
+    isChild = false
+  ): Promise<Entity> {
     const response = await this.fetchMetadata(path);
     const baseEntity = await this.processBaseEntity(path, response);
 
     if (isGroupResponse(response)) {
-      const { type } = response;
+      const { type: kind } = response;
 
-      if (depth === 0) {
-        return {
-          ...baseEntity,
-          kind: type,
-          children: [],
-        };
+      if (isChild) {
+        return { ...baseEntity, kind }; // don't fetch nested groups' children
       }
 
       const contents = await this.processContents(path, response);
-
       return {
         ...baseEntity,
-        kind: type,
+        kind,
         children: await Promise.all(
-          contents.map((content) => this.processEntity(content.uri, depth - 1))
+          contents.map((content) => this.processEntity(content.uri, true))
         ),
-      };
+      } as GroupWithChildren;
     }
 
     if (isDatasetResponse(response)) {
@@ -125,7 +120,7 @@ export class JupyterStableApi extends ProviderApi {
         shape,
         type: convertDtype(dtype),
         rawType: dtype,
-      };
+      } as Dataset;
     }
 
     // Treat 'other' entities as unresolved

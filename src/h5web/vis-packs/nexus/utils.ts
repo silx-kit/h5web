@@ -7,6 +7,7 @@ import type {
   ComplexType,
   ScalarShape,
   StringType,
+  GroupWithChildren,
 } from '../../providers/models';
 import {
   assertDefined,
@@ -49,7 +50,7 @@ export function assertNxDataGroup(group: Group) {
 }
 
 export function findSignalDataset(
-  group: Group
+  group: GroupWithChildren
 ): Dataset<ArrayShape, NumericType | ComplexType> {
   const signal = getAttributeValue(group, 'signal');
   assertDefined(signal, "Expected 'signal' attribute");
@@ -65,7 +66,7 @@ export function findSignalDataset(
 }
 
 function findErrorsDataset(
-  group: Group,
+  group: GroupWithChildren,
   signalName: string
 ): NumArrayDataset | undefined {
   const dataset =
@@ -83,7 +84,7 @@ function findErrorsDataset(
 }
 
 function findAssociatedDatasets(
-  group: Group,
+  group: GroupWithChildren,
   type: 'axes' | 'auxiliary_signals'
 ): (NumArrayDataset | undefined)[] {
   const dsetList = getAttributeValue(group, type) || [];
@@ -106,7 +107,7 @@ function findAssociatedDatasets(
 }
 
 function findTitleDataset(
-  group: Group
+  group: GroupWithChildren
 ): Dataset<ScalarShape, StringType> | undefined {
   const dataset = getChildEntity(group, 'title');
   if (!dataset) {
@@ -149,7 +150,7 @@ export function getSilxStyle(group: Group): SilxStyle {
   }
 }
 
-export function getNxData(group: Group): NxData {
+export function getNxData(group: GroupWithChildren): NxData {
   assertNxDataGroup(group);
   const signalDataset = findSignalDataset(group);
   const errorsDataset = findErrorsDataset(group, signalDataset.name);

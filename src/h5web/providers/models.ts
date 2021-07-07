@@ -28,6 +28,9 @@ export interface Entity {
 
 export interface Group extends Entity {
   kind: EntityKind.Group;
+}
+
+export interface GroupWithChildren extends Group {
   children: Entity[];
 }
 

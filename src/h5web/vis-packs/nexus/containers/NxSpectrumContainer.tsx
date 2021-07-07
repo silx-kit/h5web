@@ -1,5 +1,5 @@
 import { isEqual } from 'lodash';
-import { assertGroup } from '../../../guards';
+import { assertGroupWithChildren } from '../../../guards';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
@@ -11,7 +11,7 @@ import { assertNumericNxData } from '../guards';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
-  assertGroup(entity);
+  assertGroupWithChildren(entity);
 
   const nxData = getNxData(entity);
   assertNumericNxData(nxData);
