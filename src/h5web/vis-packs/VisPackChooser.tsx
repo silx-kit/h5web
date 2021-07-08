@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { ProviderContext } from '../providers/context';
 import { ProviderError } from '../providers/models';
-import { getAttributeValue, handleError } from '../utils';
+import { handleError } from '../utils';
 import CorePack from './core/CorePack';
 import NexusPack from './nexus/NexusPack';
+import { isNxGroup } from './nexus/utils';
 
 interface Props {
   path: string;
@@ -26,10 +27,7 @@ function VisPackChooser(props: Props) {
     `No entity found at ${path}`
   );
 
-  if (
-    getAttributeValue(entity, 'default') ||
-    getAttributeValue(entity, 'NX_class') === 'NXdata'
-  ) {
+  if (isNxGroup(entity)) {
     return <NexusPack entity={entity} />;
   }
 

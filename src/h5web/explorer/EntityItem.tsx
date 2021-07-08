@@ -6,6 +6,7 @@ import { isGroup } from '../guards';
 import type { Entity } from '../providers/models';
 import EntityList from './EntityList';
 import { useToggle } from '@react-hookz/web';
+import { isNxGroup } from '../vis-packs/nexus/utils';
 
 interface Props {
   path: string;
@@ -54,6 +55,11 @@ function EntityItem(props: Props) {
       >
         <Icon entity={entity} isExpanded={isExpanded} />
         {entity.name}
+        {isNxGroup(entity) && (
+          <span className={styles.nx} aria-label=" (NeXus group)">
+            NX
+          </span>
+        )}
       </button>
 
       {isGroup(entity) && isExpanded && (
