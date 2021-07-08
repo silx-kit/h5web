@@ -8,6 +8,7 @@ import type {
   ScalarShape,
   StringType,
   GroupWithChildren,
+  Entity,
 } from '../../providers/models';
 import {
   assertDefined,
@@ -20,33 +21,27 @@ import {
   assertStringType,
   assertArray,
   isDefined,
+  isGroup,
 } from '../../guards';
 import type { NxData, SilxStyle } from './models';
 import { isScaleType } from '../core/utils';
 import { getAttributeValue, getChildEntity } from '../../utils';
 
-export function getDatasetLabel(dataset: Dataset): string {
-  const longName = getAttributeValue(dataset, 'long_name');
-  if (longName && typeof longName === 'string') {
-    return longName;
-  }
-
-  const units = getAttributeValue(dataset, 'units');
-  if (units && typeof units === 'string') {
-    return `${dataset.name} (${units})`;
-  }
-
-  return dataset.name;
-}
-
-export function isNxDataGroup(group: Group) {
+export function isNxDataGroup(group: Group): boolean {
   return getAttributeValue(group, 'NX_class') === 'NXdata';
 }
 
-export function assertNxDataGroup(group: Group) {
+export function assertNxDataGroup(group: Group): void {
   if (!isNxDataGroup(group)) {
     throw new Error('Expected NXdata group');
   }
+}
+
+export function isNxGroup(entity: Entity): boolean {
+  return (
+    isGroup(entity) &&
+    (isNxDataGroup(entity) || !!getAttributeValue(entity, 'default'))
+  );
 }
 
 export function findSignalDataset(
@@ -164,4 +159,18 @@ export function getNxData(group: GroupWithChildren): NxData {
     silxStyle: getSilxStyle(group),
     auxDatasets: auxDatasets.filter(isDefined),
   };
+}
+
+export function getDatasetLabel(dataset: Dataset): string {
+  const longName = getAttributeValue(dataset, 'long_name');
+  if (longName && typeof longName === 'string') {
+    return longName;
+  }
+
+  const units = getAttributeValue(dataset, 'units');
+  if (units && typeof units === 'string') {
+    return `${dataset.name} (${units})`;
+  }
+
+  return dataset.name;
 }

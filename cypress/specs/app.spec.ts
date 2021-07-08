@@ -247,8 +247,8 @@ describe('App', () => {
     });
 
     it('visualize dataset with "spectrum" interpretation as NxSpectrum', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'spectrum' }).click();
+      cy.findByRole('treeitem', { name: /nexus_entry/ }).click();
+      cy.findByRole('treeitem', { name: 'spectrum (NeXus group)' }).click();
 
       cy.findByRole('heading', { name: 'nexus_entry / spectrum' }).should(
         'exist'
@@ -266,8 +266,8 @@ describe('App', () => {
     });
 
     it('visualize dataset with "image" interpretation as NxImage', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'image' }).click();
+      cy.findByRole('treeitem', { name: /nexus_entry/ }).click();
+      cy.findByRole('treeitem', { name: 'image (NeXus group)' }).click();
 
       cy.findByRole('heading', { name: 'nexus_entry / image' }).should('exist');
       cy.findByRole('tab', { name: 'NX Image' }).should('exist');
@@ -284,8 +284,8 @@ describe('App', () => {
     });
 
     it('use axis values to compute axis ticks', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'image' }).click();
+      cy.findByRole('treeitem', { name: /nexus_entry/ }).click();
+      cy.findByRole('treeitem', { name: 'image (NeXus group)' }).click();
 
       cy.get('svg[data-type="abscissa"] .visx-axis-tick').should(
         'have.text',
@@ -294,8 +294,8 @@ describe('App', () => {
     });
 
     it('visualize dataset with log scales on both axes on NxSpectrum with SILX_style', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'log_spectrum' }).click();
+      cy.findByRole('treeitem', { name: /nexus_entry/ }).click();
+      cy.findByRole('treeitem', { name: /log_spectrum/ }).click();
 
       cy.findByRole('heading', { name: 'nexus_entry / log_spectrum' }).should(
         'exist'
@@ -310,8 +310,8 @@ describe('App', () => {
     });
 
     it('visualize signal and auxiliary signals datasets as NxSpectrum', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'spectrum_with_aux' }).click();
+      cy.findByRole('treeitem', { name: /nexus_entry/ }).click();
+      cy.findByRole('treeitem', { name: /spectrum_with_aux/ }).click();
 
       cy.findByRole('heading', {
         name: 'nexus_entry / spectrum_with_aux',
@@ -324,8 +324,8 @@ describe('App', () => {
     });
 
     it('visualize dataset with "rgb-image" interpretation as NxRGB', () => {
-      cy.findByRole('treeitem', { name: 'nexus_entry' }).click();
-      cy.findByRole('treeitem', { name: 'rgb-image' }).click();
+      cy.findByRole('treeitem', { name: /nexus_entry/ }).click();
+      cy.findByRole('treeitem', { name: /rgb-image/ }).click();
 
       cy.findByRole('heading', { name: 'nexus_entry / rgb-image' }).should(
         'exist'

@@ -16,7 +16,11 @@ export async function renderApp(): Promise<void> {
 
 export async function selectExplorerNode(path: string): Promise<void> {
   for await (const segment of path.split('/')) {
-    userEvent.click(await screen.findByRole('treeitem', { name: segment }));
+    userEvent.click(
+      await screen.findByRole('treeitem', {
+        name: new RegExp(`^${segment}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
+      })
+    );
   }
 }
 

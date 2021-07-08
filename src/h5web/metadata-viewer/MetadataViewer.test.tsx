@@ -135,7 +135,7 @@ test('follow path attributes', async () => {
     await screen.findByRole('button', { name: 'Inspect nexus_entry' })
   );
 
-  const nxEntry = await screen.findByRole('treeitem', { name: 'nexus_entry' });
+  const nxEntry = await screen.findByRole('treeitem', { name: /nexus_entry/ });
   expect(nxEntry).toHaveAttribute('aria-selected', 'true');
   expect(nxEntry).toHaveAttribute('aria-expanded', 'true');
 
@@ -147,7 +147,7 @@ test('follow path attributes', async () => {
     })
   );
 
-  const nxData = await screen.findByRole('treeitem', { name: 'nx_data' });
+  const nxData = await screen.findByRole('treeitem', { name: /nx_data/ });
   expect(nxData).toHaveAttribute('aria-selected', 'true');
   expect(nxData).toHaveAttribute('aria-expanded', 'true');
 });
