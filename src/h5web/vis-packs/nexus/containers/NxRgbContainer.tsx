@@ -1,4 +1,8 @@
-import { assertGroup, assertNumDims, assertNumericType } from '../../../guards';
+import {
+  assertGroupWithChildren,
+  assertNumDims,
+  assertNumericType,
+} from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../core/VisBoundary';
 import NxValuesFetcher from '../NxValuesFetcher';
@@ -10,7 +14,7 @@ import shallow from 'zustand/shallow';
 
 function NxRgbContainer(props: VisContainerProps) {
   const { entity } = props;
-  assertGroup(entity);
+  assertGroupWithChildren(entity);
 
   const nxData = getNxData(entity);
   const { signalDataset } = nxData;

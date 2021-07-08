@@ -17,9 +17,10 @@ import {
   CompoundType,
   LinkClass,
   UnresolvedEntity,
+  GroupWithChildren,
 } from '../models';
 import type { NxInterpretation, SilxStyle } from '../../vis-packs/nexus/models';
-import { isGroup } from '../../guards';
+import { isGroup, hasChildren } from '../../guards';
 import { buildEntityPath } from '../../utils';
 import type { MockDataset, MockValueId } from './models';
 import { mockValues } from './values';
@@ -123,11 +124,14 @@ type EntityOpts = Partial<Pick<Entity, 'attributes' | 'link'>>;
 type GroupOpts = EntityOpts & { isRoot?: boolean; children?: Entity[] };
 type DatasetOpts = EntityOpts & { valueId?: MockValueId };
 
-function prefixChildrenPaths(group: Group, parentPath: string): void {
+function prefixChildrenPaths(
+  group: GroupWithChildren,
+  parentPath: string
+): void {
   group.children.forEach((c) => {
     c.path = buildEntityPath(parentPath, c.path.slice(1));
 
-    if (isGroup(c)) {
+    if (isGroup(c) && hasChildren(c)) {
       prefixChildrenPaths(c, parentPath);
     }
   });
@@ -137,11 +141,11 @@ export function makeGroup(
   name: string,
   children: Entity[] = [],
   opts: Omit<GroupOpts, 'children'> = {}
-): Group {
+): GroupWithChildren {
   const { attributes = [], link, isRoot = false } = opts;
   const path = isRoot ? '/' : `/${name}`;
 
-  const group: Group = {
+  const group: GroupWithChildren = {
     name,
     path,
     kind: EntityKind.Group,

@@ -16,6 +16,7 @@ import {
   ComplexType,
   ComplexArray,
   H5WebComplex,
+  GroupWithChildren,
 } from './providers/models';
 import type { PrintableType } from './vis-packs/core/models';
 import { toArray } from './vis-packs/core/utils';
@@ -50,6 +51,10 @@ export function assertArray<T>(val: unknown): asserts val is T[] {
 
 export function isGroup(entity: Entity): entity is Group {
   return entity.kind === EntityKind.Group;
+}
+
+export function hasChildren(group: Group): group is GroupWithChildren {
+  return 'children' in group;
 }
 
 export function isDataset(entity: Entity): entity is Dataset {
@@ -146,12 +151,11 @@ export function assertDataset(
   }
 }
 
-export function assertGroup(
-  entity: Entity,
-  message = 'Expected group'
-): asserts entity is Group {
-  if (!isGroup(entity)) {
-    throw new Error(message);
+export function assertGroupWithChildren(
+  entity: Entity
+): asserts entity is GroupWithChildren {
+  if (!isGroup(entity) || !hasChildren(entity)) {
+    throw new Error('Expected group with children');
   }
 }
 

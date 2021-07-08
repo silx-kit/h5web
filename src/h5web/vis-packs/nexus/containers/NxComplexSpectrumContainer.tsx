@@ -1,4 +1,4 @@
-import { assertGroup } from '../../../guards';
+import { assertGroupWithChildren } from '../../../guards';
 import type { VisContainerProps } from '../../models';
 import { useDimMappingState } from '../../hooks';
 import { getNxData, getDatasetLabel } from '../utils';
@@ -10,7 +10,7 @@ import { assertComplexNxData } from '../guards';
 
 function NxComplexSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
-  assertGroup(entity);
+  assertGroupWithChildren(entity);
 
   const nxData = getNxData(entity);
   assertComplexNxData(nxData);

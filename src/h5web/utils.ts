@@ -1,5 +1,9 @@
 import { format } from 'd3-format';
-import type { Entity, Group, H5WebComplex } from './providers/models';
+import type {
+  Entity,
+  GroupWithChildren,
+  H5WebComplex,
+} from './providers/models';
 import type { ImageAttribute } from './vis-packs/core/models';
 import type { NxAttribute } from './vis-packs/nexus/models';
 
@@ -23,7 +27,7 @@ export function formatComplex(value: H5WebComplex, specifier = '') {
 }
 
 export function getChildEntity(
-  group: Group,
+  group: GroupWithChildren,
   entityName: string
 ): Entity | undefined {
   return group.children.find((child) => child.name === entityName);

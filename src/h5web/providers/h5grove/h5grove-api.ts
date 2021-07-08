@@ -5,6 +5,7 @@ import {
   Dataset,
   EntityKind,
   Group,
+  GroupWithChildren,
 } from '../models';
 import { isDatasetResponse, isGroupResponse } from './utils';
 import { assertDataset } from '../../guards';
@@ -25,7 +26,7 @@ export class H5GroveApi extends ProviderApi {
   }
 
   public async getEntity(path: string): Promise<Entity> {
-    return this.processEntity(path, 1);
+    return this.processEntity(path);
   }
 
   public async getValue(params: ValueRequestParams): Promise<unknown> {
@@ -67,39 +68,30 @@ export class H5GroveApi extends ProviderApi {
     return data;
   }
 
-  private async processEntity(
-    path: string,
-    depth: number
-  ): Promise<Group | Dataset | Entity> {
+  private async processEntity(path: string, isChild = false): Promise<Entity> {
     const response = await this.fetchMetadata(path);
 
     if (isGroupResponse(response)) {
       const { name, type, children } = response;
-
-      if (depth === 0) {
-        return {
-          attributes: await this.processAttributes(path, response),
-          path,
-          name,
-          kind: type,
-          children: [],
-        };
-      }
-
-      return {
+      const group: Group = {
         attributes: await this.processAttributes(path, response),
         path,
         name,
         kind: type,
+      };
+
+      if (isChild) {
+        return group; // don't fetch nested groups' children
+      }
+
+      return {
+        ...group,
         children: await Promise.all(
-          children.map((content) =>
-            this.processEntity(
-              `${path !== '/' ? path : ''}/${content.name}`,
-              depth - 1
-            )
+          children.map(({ name }) =>
+            this.processEntity(`${path !== '/' ? path : ''}/${name}`, true)
           )
         ),
-      };
+      } as GroupWithChildren;
     }
 
     if (isDatasetResponse(response)) {
@@ -114,7 +106,7 @@ export class H5GroveApi extends ProviderApi {
         shape,
         type: convertDtype(dtype),
         rawType: dtype,
-      };
+      } as Dataset;
     }
 
     // Treat 'other' entities as unresolved
