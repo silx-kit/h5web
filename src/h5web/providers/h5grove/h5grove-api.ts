@@ -1,32 +1,36 @@
 import {
   ValueRequestParams,
-  Attribute,
-  Entity,
   Dataset,
+  Entity,
   EntityKind,
-  Group,
   GroupWithChildren,
+  Attribute,
+  Group,
+  UnresolvedEntity,
 } from '../models';
-import { isDatasetResponse, isGroupResponse } from './utils';
-import { assertDataset } from '../../guards';
 import { ProviderApi } from '../api';
+import { isDatasetResponse, isGroupResponse } from './utils';
 import type {
+  H5GroveAttrValuesResponse,
   H5GroveDataResponse,
-  H5GroveAttrResponse,
-  H5GroveMetaResponse,
-  H5GroveDatasetMetaReponse,
-  H5GroveGroupMetaResponse,
+  H5GroveEntityResponse,
+  H5GroveAttribute,
 } from './models';
+import { assertDataset } from '../../guards';
 import { convertDtype, flattenValue } from '../utils';
+import { buildEntityPath } from '../../utils';
 
 export class H5GroveApi extends ProviderApi {
+  protected attrValuesCache = new Map<string, H5GroveAttrValuesResponse>();
+
   /* API compatible with jupyterlab_h5web@e878351f5226fabc9cd14e8f0b774185ff8def45 */
   public constructor(url: string, filepath: string) {
     super(filepath, { baseURL: url });
   }
 
   public async getEntity(path: string): Promise<Entity> {
-    return this.processEntity(path);
+    const response = await this.fetchEntity(path);
+    return this.processEntityResponse(path, response);
   }
 
   public async getValue(params: ValueRequestParams): Promise<unknown> {
@@ -41,10 +45,28 @@ export class H5GroveApi extends ProviderApi {
     return flattenValue(value, entity, selection);
   }
 
-  private async fetchAttributes(path: string): Promise<H5GroveAttrResponse> {
-    const { data } = await this.client.get<H5GroveAttrResponse>(
+  private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
+    const { data } = await this.client.get<H5GroveEntityResponse>(
+      `/meta/?file=${this.filepath}&path=${path}`
+    );
+    return data;
+  }
+
+  private async fetchAttrValues(
+    path: string
+  ): Promise<H5GroveAttrValuesResponse> {
+    /* Prevent attribute values from being fetched twice for the same entity,
+     * when processing the entity's parent group and then the entity itself. */
+    const cachedValues = this.attrValuesCache.get(path);
+    if (cachedValues) {
+      return cachedValues;
+    }
+
+    const { data } = await this.client.get<H5GroveAttrValuesResponse>(
       `/attr/?file=${this.filepath}&path=${path}`
     );
+
+    this.attrValuesCache.set(path, data);
     return data;
   }
 
@@ -61,48 +83,40 @@ export class H5GroveApi extends ProviderApi {
     return data;
   }
 
-  private async fetchMetadata(path: string): Promise<H5GroveMetaResponse> {
-    const { data } = await this.client.get<H5GroveMetaResponse>(
-      `/meta/?file=${this.filepath}&path=${path}`
-    );
-    return data;
-  }
+  private async processEntityResponse(
+    path: string,
+    response: H5GroveEntityResponse
+  ): Promise<Entity> {
+    const { name, type: kind, attributes: attrsMetadata } = response;
 
-  private async processEntity(path: string, isChild = false): Promise<Entity> {
-    const response = await this.fetchMetadata(path);
+    const attributes = await this.processAttrsMetadata(path, attrsMetadata);
+    const baseEntity = { name, path, kind, attributes };
 
     if (isGroupResponse(response)) {
-      const { name, type, children } = response;
-      const group: Group = {
-        attributes: await this.processAttributes(path, response),
-        path,
-        name,
-        kind: type,
-      };
+      const { children } = response;
 
-      if (isChild) {
-        return group; // don't fetch nested groups' children
+      if (!children) {
+        /* `/meta` stops at one nesting level
+         * (i.e. children of child groups are not returned) */
+        return baseEntity as Group;
       }
 
       return {
-        ...group,
+        ...baseEntity,
+        // Fetch attribute values of any child groups in parallel
         children: await Promise.all(
-          children.map(({ name }) =>
-            this.processEntity(`${path !== '/' ? path : ''}/${name}`, true)
+          children.map((child) =>
+            this.processEntityResponse(buildEntityPath(path, child.name), child)
           )
         ),
       } as GroupWithChildren;
     }
 
     if (isDatasetResponse(response)) {
-      // `dtype` is the type of the data contained in the dataset
-      const { name, type: kind, dtype, shape } = response;
+      const { dtype, shape } = response;
 
       return {
-        attributes: await this.processAttributes(path, response),
-        path,
-        name,
-        kind,
+        ...baseEntity,
         shape,
         type: convertDtype(dtype),
         rawType: dtype,
@@ -111,32 +125,26 @@ export class H5GroveApi extends ProviderApi {
 
     // Treat 'other' entities as unresolved
     return {
-      attributes: [],
-      name: response.name,
-      path,
+      ...baseEntity,
       kind: EntityKind.Unresolved,
-    };
+    } as UnresolvedEntity;
   }
 
-  private async processAttributes(
+  private async processAttrsMetadata(
     path: string,
-    response: H5GroveDatasetMetaReponse | H5GroveGroupMetaResponse
+    attrsMetadata: H5GroveAttribute[]
   ): Promise<Attribute[]> {
-    const { attributes: attrsMetadata } = response;
-
     if (attrsMetadata.length === 0) {
       return [];
     }
 
-    const attrValues = await this.fetchAttributes(path);
-    return attrsMetadata.map<Attribute>((attrMetadata) => {
-      const { name, dtype, shape } = attrMetadata;
-      return {
-        name,
-        shape,
-        type: convertDtype(dtype),
-        value: attrValues[name],
-      };
-    });
+    const attrValues = await this.fetchAttrValues(path);
+
+    return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
+      name,
+      shape,
+      type: convertDtype(dtype),
+      value: attrValues[name],
+    }));
   }
 }
