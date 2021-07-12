@@ -7,18 +7,18 @@ import { DEFAULT_DOMAIN, getValidDomainForScale } from '../utils';
 import { getPhaseAmplitudeValues } from './utils';
 
 export function usePhaseAmplitudeArrays(
-  mappedArray: NdArray<H5WebComplex>,
+  mappedArray: NdArray<H5WebComplex[]>,
   scaleType: ScaleType = ScaleType.Linear
 ): {
-  phaseArray: NdArray;
+  phaseArray: NdArray<number[]>;
   phaseDomain: Domain;
-  amplitudeArray: NdArray;
+  amplitudeArray: NdArray<number[]>;
   amplitudeDomain: Domain;
 } {
   const [phaseArray, phaseBounds, amplitudeArray, amplitudeBounds] =
     useMemo(() => {
       const { phaseValues, phaseBounds, amplitudeValues, amplitudeBounds } =
-        getPhaseAmplitudeValues(mappedArray.data as H5WebComplex[]);
+        getPhaseAmplitudeValues(mappedArray.data);
 
       return [
         ndarray(phaseValues, mappedArray.shape),

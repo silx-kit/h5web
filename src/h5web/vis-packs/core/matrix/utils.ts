@@ -24,7 +24,7 @@ export function getFormatter(
   return (val) => (val as string).toString();
 }
 
-export function sliceToCsv(slice: NdArray<Primitive<PrintableType>>): string {
+export function sliceToCsv(slice: NdArray<Primitive<PrintableType>[]>): string {
   let csv = '';
 
   if (slice.shape.length === 1) {

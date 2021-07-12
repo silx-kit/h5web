@@ -12,7 +12,7 @@ import type { PrintableType } from '../models';
 const CELL_HEIGHT = 32;
 
 interface Props {
-  dataArray: NdArray<Primitive<PrintableType>>;
+  dataArray: NdArray<Primitive<PrintableType>[]>;
   formatter: (value: Primitive<PrintableType>) => string;
   cellWidth: number;
 }

@@ -94,13 +94,13 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
   };
 }
 
-export function toArray(arr: NdArray | number[]): number[] {
-  return 'data' in arr ? (arr.data as number[]) : arr;
+export function toArray(arr: NdArray<number[]> | number[]): number[] {
+  return 'data' in arr ? arr.data : arr;
 }
 
 export function getBounds(
-  valuesArray: NdArray | number[],
-  errorArray?: NdArray | number[]
+  valuesArray: NdArray<number[]> | number[],
+  errorArray?: NdArray<number[]> | number[]
 ): Bounds | undefined {
   assertDataLength(errorArray, valuesArray, 'error');
 
@@ -124,9 +124,9 @@ export function getBounds(
 }
 
 export function getDomain(
-  valuesArray: NdArray | number[],
+  valuesArray: NdArray<number[]> | number[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: NdArray | number[]
+  errorArray?: NdArray<number[]> | number[]
 ): Domain | undefined {
   const bounds = getBounds(valuesArray, errorArray);
 
@@ -134,7 +134,7 @@ export function getDomain(
 }
 
 export function getDomains(
-  arrays: (NdArray | number[])[],
+  arrays: (NdArray<number[]> | number[])[],
   scaleType: ScaleType = ScaleType.Linear
 ): (Domain | undefined)[] {
   return arrays.map((arr) => getDomain(arr, scaleType));
@@ -306,24 +306,24 @@ export function getCombinedDomain(
 export function getBaseArray<T extends unknown[] | undefined>(
   value: T,
   rawDims: number[]
-): T extends (infer U)[] ? NdArray<U> : undefined;
+): T extends (infer U)[] ? NdArray<U[]> : undefined;
 
 export function getBaseArray<T>(
   value: T[] | undefined,
   rawDims: number[]
-): NdArray<T> | undefined {
-  return value && ndarray<T>(value, rawDims);
+): NdArray<T[]> | undefined {
+  return value && ndarray(value, rawDims);
 }
 
-export function applyMapping<T extends NdArray<unknown> | undefined>(
+export function applyMapping<T extends NdArray<unknown[]> | undefined>(
   baseArray: T,
   mapping: (number | Axis | ':')[]
 ): T extends NdArray<infer U> ? NdArray<U> : undefined;
 
 export function applyMapping<T>(
-  baseArray: NdArray<T> | undefined,
+  baseArray: NdArray<T[]> | undefined,
   mapping: (number | Axis | ':')[]
-): NdArray<T> | undefined {
+): NdArray<T[]> | undefined {
   if (!baseArray) {
     return undefined;
   }
@@ -383,8 +383,8 @@ export function getAxisOffsets(
   };
 }
 
-export function createArrayFromView<T>(view: NdArray<T>): NdArray<T> {
-  const array = ndarray<T>([], view.shape);
+export function createArrayFromView<T>(view: NdArray<T[]>): NdArray<T[]> {
+  const array = ndarray<T[]>([], view.shape);
   assign(array, view);
 
   return array;

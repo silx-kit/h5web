@@ -12,7 +12,7 @@ import {
 import ndarray from 'ndarray';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
-const dataValues = dataArray.data as number[];
+const { data: dataValues } = dataArray;
 const domain = getDomain(dataValues);
 const logSafeDomain = getDomain(dataValues, ScaleType.Log);
 

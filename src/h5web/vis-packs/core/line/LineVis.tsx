@@ -18,7 +18,7 @@ const DEFAULT_AUX_COLORS =
   'orangered, forestgreen, crimson, mediumslateblue, sienna';
 
 interface Props {
-  dataArray: NdArray;
+  dataArray: NdArray<number[]>;
   domain: Domain | undefined;
   scaleType?: ScaleType;
   curveType?: CurveType;
@@ -26,9 +26,9 @@ interface Props {
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
   title?: string;
-  errorsArray?: NdArray;
+  errorsArray?: NdArray<number[]>;
   showErrors?: boolean;
-  auxArrays?: NdArray[];
+  auxArrays?: NdArray<number[]>[];
   children?: ReactNode;
 }
 
@@ -112,8 +112,8 @@ function LineVis(props: Props) {
         <TooltipMesh {...tooltipFormatters} guides="vertical" />
         <DataCurve
           abscissas={abscissas}
-          ordinates={dataArray.data as number[]}
-          errors={errorsArray && (errorsArray.data as number[])}
+          ordinates={dataArray.data}
+          errors={errorsArray && errorsArray.data}
           showErrors={showErrors}
           color={curveColor || DEFAULT_CURVE_COLOR}
           curveType={curveType}
@@ -122,7 +122,7 @@ function LineVis(props: Props) {
           <DataCurve
             key={i} // eslint-disable-line react/no-array-index-key
             abscissas={abscissas}
-            ordinates={array.data as number[]}
+            ordinates={array.data}
             color={auxColors[i < auxColors.length ? i : auxColors.length - 1]}
             curveType={curveType}
           />

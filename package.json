@@ -82,7 +82,7 @@
     "@types/d3-scale-chromatic": "^3.0.0",
     "@types/jest": "^26.0.23",
     "@types/lodash": "^4.14.170",
-    "@types/ndarray": "^1.0.9",
+    "@types/ndarray": "^1.0.10",
     "@types/node": "^15.12.5",
     "@types/react": "^17.0.11",
     "@types/react-aria-menubutton": "^6.2.7",
