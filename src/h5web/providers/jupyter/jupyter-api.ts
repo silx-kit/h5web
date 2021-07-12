@@ -4,36 +4,33 @@ import {
   Entity,
   EntityKind,
   GroupWithChildren,
+  Attribute,
+  Group,
+  UnresolvedEntity,
 } from '../models';
 import { ProviderApi } from '../api';
-import {
-  assertGroupContent,
-  isDatasetResponse,
-  isGroupResponse,
-  parseComplex,
-} from './utils';
+import { isDatasetResponse, isGroupResponse } from './utils';
 import type {
-  JupyterAttrsResponse,
-  JupyterBaseEntity,
-  JupyterComplex,
-  JupyterContentGroupResponse,
-  JupyterContentResponse,
+  JupyterAttrValuesResponse,
   JupyterDataResponse,
-  JupyterMetaGroupResponse,
-  JupyterMetaResponse,
+  JupyterEntityResponse,
+  JupyterAttribute,
 } from './models';
-import { makeStrAttr } from '../mock/metadata-utils';
-import { assertDataset, hasComplexType } from '../../guards';
+import { assertDataset } from '../../guards';
 import { convertDtype, flattenValue } from '../utils';
+import { buildEntityPath } from '../../utils';
 
 export class JupyterStableApi extends ProviderApi {
-  /* API compatible with jupyterlab_hdf v0.5.1 */
+  protected attrValuesCache = new Map<string, JupyterAttrValuesResponse>();
+
+  /* API compatible with jupyterlab_hdf v0.7.0 */
   public constructor(url: string, filepath: string) {
     super(filepath, { baseURL: `${url}/hdf` });
   }
 
   public async getEntity(path: string): Promise<Entity> {
-    return this.processEntity(path);
+    const response = await this.fetchEntity(path);
+    return this.processEntityResponse(path, response);
   }
 
   public async getValue(params: ValueRequestParams): Promise<unknown> {
@@ -44,33 +41,32 @@ export class JupyterStableApi extends ProviderApi {
     ]);
 
     assertDataset(entity);
-    const flatValue = flattenValue(value, entity, selection);
 
-    if (hasComplexType(entity)) {
-      return parseComplex(flatValue as JupyterComplex);
-    }
-
-    return flatValue;
+    return flattenValue(value, entity, selection);
   }
 
-  protected async fetchAttributes(path: string): Promise<JupyterAttrsResponse> {
-    const { data } = await this.client.get<JupyterAttrsResponse>(
-      `/attrs/${this.filepath}?uri=${path}`
-    );
-    return data;
-  }
-
-  protected async fetchMetadata(path: string): Promise<JupyterMetaResponse> {
-    const { data } = await this.client.get<JupyterMetaResponse>(
+  protected async fetchEntity(path: string): Promise<JupyterEntityResponse> {
+    const { data } = await this.client.get<JupyterEntityResponse>(
       `/meta/${this.filepath}?uri=${path}`
     );
     return data;
   }
 
-  protected async fetchContents(path: string): Promise<JupyterContentResponse> {
-    const { data } = await this.client.get<JupyterContentResponse>(
-      `/contents/${this.filepath}?uri=${path}`
+  protected async fetchAttrValues(
+    path: string
+  ): Promise<JupyterAttrValuesResponse> {
+    /* Prevent attribute values from being fetched twice for the same entity,
+     * when processing the entity's parent group and then the entity itself. */
+    const cachedValues = this.attrValuesCache.get(path);
+    if (cachedValues) {
+      return cachedValues;
+    }
+
+    const { data } = await this.client.get<JupyterAttrValuesResponse>(
+      `/attrs/${this.filepath}?uri=${path}`
     );
+
+    this.attrValuesCache.set(path, data);
     return data;
   }
 
@@ -85,38 +81,40 @@ export class JupyterStableApi extends ProviderApi {
     return data;
   }
 
-  /** The main tree-building method */
-  protected async processEntity(
+  protected async processEntityResponse(
     path: string,
-    isChild = false
+    response: JupyterEntityResponse
   ): Promise<Entity> {
-    const response = await this.fetchMetadata(path);
-    const baseEntity = await this.processBaseEntity(path, response);
+    const { name, type: kind, attributes: attrsMetadata } = response;
+
+    const attributes = await this.processAttrsMetadata(path, attrsMetadata);
+    const baseEntity = { name, path, kind, attributes };
 
     if (isGroupResponse(response)) {
-      const { type: kind } = response;
+      const { children } = response;
 
-      if (isChild) {
-        return { ...baseEntity, kind }; // don't fetch nested groups' children
+      if (!children) {
+        /* `/hdf/meta` stops at one nesting level
+         * (i.e. children of child groups are not returned) */
+        return baseEntity as Group;
       }
 
-      const contents = await this.processContents(path, response);
       return {
         ...baseEntity,
-        kind,
+        // Fetch attribute values of any child groups in parallel
         children: await Promise.all(
-          contents.map((content) => this.processEntity(content.uri, true))
+          children.map((child) =>
+            this.processEntityResponse(buildEntityPath(path, child.name), child)
+          )
         ),
       } as GroupWithChildren;
     }
 
     if (isDatasetResponse(response)) {
-      // `dtype` is the type of the data contained in the dataset
-      const { type: kind, dtype, shape } = response;
+      const { dtype, shape } = response;
 
       return {
         ...baseEntity,
-        kind,
         shape,
         type: convertDtype(dtype),
         rawType: dtype,
@@ -127,35 +125,24 @@ export class JupyterStableApi extends ProviderApi {
     return {
       ...baseEntity,
       kind: EntityKind.Unresolved,
-    };
+    } as UnresolvedEntity;
   }
 
-  protected async processBaseEntity(
+  protected async processAttrsMetadata(
     path: string,
-    response: JupyterMetaResponse
-  ): Promise<JupyterBaseEntity> {
-    // TODO: To fix once we have `attributeCount`
-    const attrReponse = await this.fetchAttributes(path);
-    const attributes = Object.entries(attrReponse).map(([name, value]) =>
-      // TODO: fix this once I can infer the type of attributes
-      makeStrAttr(name, value)
-    );
+    attrsMetadata: JupyterAttribute[]
+  ): Promise<Attribute[]> {
+    if (attrsMetadata.length === 0) {
+      return [];
+    }
 
-    return {
-      name: response.name,
-      path,
-      attributes,
-    };
-  }
+    const attrValues = await this.fetchAttrValues(path);
 
-  protected async processContents(
-    path: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    response: JupyterMetaGroupResponse
-  ): Promise<JupyterContentGroupResponse> {
-    const contents = await this.fetchContents(path);
-    assertGroupContent(contents);
-
-    return contents;
+    return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
+      name,
+      shape,
+      type: convertDtype(dtype),
+      value: attrValues[name],
+    }));
   }
 }
