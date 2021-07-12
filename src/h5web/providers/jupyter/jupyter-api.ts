@@ -23,7 +23,7 @@ import { buildEntityPath } from '../../utils';
 export class JupyterStableApi extends ProviderApi {
   protected attrValuesCache = new Map<string, JupyterAttrValuesResponse>();
 
-  /* API compatible with jupyterlab_hdf v0.7.0 */
+  /* API compatible with jupyterlab_hdf v0.6.0 */
   public constructor(url: string, filepath: string) {
     super(filepath, { baseURL: `${url}/hdf` });
   }

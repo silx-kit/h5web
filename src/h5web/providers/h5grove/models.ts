@@ -1,10 +1,6 @@
 import type { EntityKind } from '../models';
 
-export type H5GroveAttrResponse = Record<string, unknown>;
-
-export type H5GroveDataResponse = unknown;
-
-export interface H5GroveMetaResponse {
+export interface H5GroveEntityResponse {
   name: string;
   type:
     | EntityKind.Dataset
@@ -12,34 +8,36 @@ export interface H5GroveMetaResponse {
     | 'externalLink'
     | 'softLink'
     | 'other';
+  attributes: H5GroveAttribute[];
 }
 
-export interface H5GroveSoftLinkMetaResponse extends H5GroveMetaResponse {
+export interface H5GroveSoftLinkResponse extends H5GroveEntityResponse {
   target_path: string;
   type: 'softLink';
 }
 
-export interface H5GroveExternalLinkMetaResponse extends H5GroveMetaResponse {
+export interface H5GroveExternalLinkResponse extends H5GroveEntityResponse {
   target_file: string;
   target_path: string;
   type: 'externalLink';
 }
 
-interface H5GroveAttrMetadata {
+export interface H5GroveDatasetReponse extends H5GroveEntityResponse {
+  type: EntityKind.Dataset;
+  dtype: string;
+  shape: number[];
+}
+
+export interface H5GroveGroupResponse extends H5GroveEntityResponse {
+  type: EntityKind.Group;
+  children?: H5GroveEntityResponse[];
+}
+
+export interface H5GroveAttribute {
   dtype: string;
   name: string;
   shape: number[];
 }
 
-export interface H5GroveDatasetMetaReponse extends H5GroveMetaResponse {
-  attributes: H5GroveAttrMetadata[];
-  dtype: string;
-  shape: number[];
-  type: EntityKind.Dataset;
-}
-
-export interface H5GroveGroupMetaResponse extends H5GroveMetaResponse {
-  attributes: H5GroveAttrMetadata[];
-  children: H5GroveMetaResponse[];
-  type: EntityKind.Group;
-}
+export type H5GroveAttrValuesResponse = Record<string, unknown>;
+export type H5GroveDataResponse = unknown;
