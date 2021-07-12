@@ -46,7 +46,7 @@ export function findMockEntity(path: string): Entity {
   return entity;
 }
 
-export function getMockDataArray<T = number>(path: string): NdArray<T> {
+export function getMockDataArray<T = number>(path: string): NdArray<T[]> {
   const dataset = findMockEntity(path);
   assertMockDataset(dataset);
 

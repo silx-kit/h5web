@@ -15,7 +15,7 @@ import { useDomain } from '../hooks';
 import HeatmapMesh from './HeatmapMesh';
 
 interface Props {
-  dataArray: NdArray;
+  dataArray: NdArray<number[]>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: ScaleType;
@@ -25,7 +25,7 @@ interface Props {
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
-  alphaArray?: NdArray;
+  alphaArray?: NdArray<number[]>;
   alphaDomain?: Domain;
   flipYAxis?: boolean;
   children?: ReactNode;
@@ -99,12 +99,12 @@ function HeatmapVis(props: Props) {
         <HeatmapMesh
           rows={rows}
           cols={cols}
-          values={dataArray.data as number[]}
+          values={dataArray.data}
           domain={domain}
           colorMap={colorMap}
           invertColorMap={invertColorMap}
           scaleType={scaleType}
-          alphaValues={alphaArray && (alphaArray.data as number[])}
+          alphaValues={alphaArray && alphaArray.data}
           alphaDomain={alphaDomain}
         />
         {children}

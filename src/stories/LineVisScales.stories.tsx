@@ -9,11 +9,11 @@ import {
 } from '../packages/lib';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
-const domain = getDomain(dataArray.data as number[]);
-const logSafeDomain = getDomain(dataArray.data as number[], ScaleType.Log);
+const domain = getDomain(dataArray.data);
+const logSafeDomain = getDomain(dataArray.data, ScaleType.Log);
 
 const dataArrayForXLog = getMockDataArray('/nexus_entry/log_spectrum/X_log');
-const domainForXLog = getDomain(dataArrayForXLog.data as number[]);
+const domainForXLog = getDomain(dataArrayForXLog.data);
 
 const Template: Story<LineVisProps> = (args) => <LineVis {...args} />;
 

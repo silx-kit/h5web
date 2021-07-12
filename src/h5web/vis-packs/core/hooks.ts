@@ -72,16 +72,16 @@ const useBounds = createMemo(getBounds);
 const useValidDomainForScale = createMemo(getValidDomainForScale);
 
 export function useDomain(
-  valuesArray: NdArray | number[],
+  valuesArray: NdArray<number[]> | number[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: NdArray | number[]
+  errorArray?: NdArray<number[]> | number[]
 ) {
   const bounds = useBounds(valuesArray, errorArray);
   return useValidDomainForScale(bounds, scaleType);
 }
 
 export function useDomains(
-  valuesArrays: (NdArray | number[])[],
+  valuesArrays: (NdArray<number[]> | number[])[],
   scaleType: ScaleType = ScaleType.Linear
 ) {
   const allBounds = useMemo(() => {
@@ -139,7 +139,9 @@ export function useMappedArray<T extends unknown[] | undefined>(
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
-): T extends (infer U)[] ? [NdArray<U>, NdArray<U>] : [undefined, undefined];
+): T extends (infer U)[]
+  ? [NdArray<U[]>, NdArray<U[]>]
+  : [undefined, undefined];
 
 export function useMappedArray<T>(
   value: T[] | undefined,

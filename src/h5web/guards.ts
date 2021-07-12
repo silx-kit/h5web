@@ -239,8 +239,8 @@ export function assertAbsolutePath(path: string) {
 }
 
 export function assertDataLength(
-  arr: NdArray | number[] | undefined,
-  dataArray: NdArray | number[],
+  arr: NdArray<number[]> | number[] | undefined,
+  dataArray: NdArray<number[]> | number[],
   arrName: string
 ) {
   if (!arr) {

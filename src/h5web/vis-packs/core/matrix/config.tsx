@@ -6,8 +6,8 @@ import type { ConfigProviderProps } from '../../models';
 import type { PrintableType } from '../models';
 
 interface MatrixConfig {
-  currentSlice: NdArray<Primitive<PrintableType>> | undefined;
-  setCurrentSlice: (slice: NdArray<Primitive<PrintableType>>) => void;
+  currentSlice: NdArray<Primitive<PrintableType>[]> | undefined;
+  setCurrentSlice: (slice: NdArray<Primitive<PrintableType>[]>) => void;
 }
 
 function createStore() {

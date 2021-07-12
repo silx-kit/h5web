@@ -10,7 +10,7 @@ import {
 } from '../packages/lib';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
-const domain = getDomain(dataArray.data as number[]);
+const domain = getDomain(dataArray.data);
 
 const Template: Story<LineVisProps> = (args) => <LineVis {...args} />;
 
