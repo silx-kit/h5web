@@ -1,28 +1,14 @@
-import type { IconType } from 'react-icons/lib';
-import { MdSort, MdFilterList } from 'react-icons/md';
-import { ScaleType } from '../../../vis-packs/core/models';
-import MdGraphicEqRotated from './MdGraphicEqRotated';
+import type { ScaleType } from '../../../vis-packs/core/models';
 import styles from '../../Toolbar.module.css';
-
-const ICONS: Record<ScaleType, IconType> = {
-  [ScaleType.Linear]: MdSort,
-  [ScaleType.Log]: MdFilterList,
-  [ScaleType.SymLog]: MdGraphicEqRotated,
-};
-
-const LABELS: Record<ScaleType, string> = {
-  [ScaleType.Linear]: 'Linear',
-  [ScaleType.Log]: 'Log',
-  [ScaleType.SymLog]: 'SymLog',
-};
+import { H5WEB_SCALES } from '../../../vis-packs/core/scales';
 
 function ScaleOption(props: { option: ScaleType }) {
   const { option } = props;
-  const Icon = ICONS[option];
+  const { Icon, label } = H5WEB_SCALES[option];
   return (
     <>
       <Icon className={styles.icon} />
-      {LABELS[option]}
+      {label}
     </>
   );
 }

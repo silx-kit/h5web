@@ -125,14 +125,6 @@ describe('clampBound', () => {
     expect(clampBound(MAX - 1)).toEqual(MAX - 1);
     expect(clampBound(-MAX + 1)).toEqual(-MAX + 1);
   });
-
-  it('should clamp to `Number.MIN_VALUE` when requested', () => {
-    expect(clampBound(0)).toEqual(0);
-
-    expect(clampBound(0, true)).toEqual(POS_MIN);
-    expect(clampBound(POS_MIN, true)).toEqual(POS_MIN);
-    expect(clampBound(POS_MIN * 2, true)).toEqual(POS_MIN * 2);
-  });
 });
 
 describe('extendDomain', () => {
@@ -160,6 +152,13 @@ describe('extendDomain', () => {
     expect(extMax2).toBeCloseTo(1000);
   });
 
+  it('should extend domain with sqrt scale', () => {
+    const [min, max] = [1, 10];
+    const [extMin1, extMax1] = extendDomain([min, max], 0.1, ScaleType.Sqrt);
+    expect(extMin1).toBeLessThan(min);
+    expect(extMax1).toBeGreaterThan(max);
+  });
+
   it('should extend positive single-value domain', () => {
     expect(extendDomain([2, 2], 0.5)).toEqual([1, 3]);
     expect(extendDomain([1, 1], 1)).toEqual([0, 2]);
@@ -176,27 +175,40 @@ describe('extendDomain', () => {
     expect(extendDomain([0, 0], 1, ScaleType.SymLog)).toEqual([-1, 1]);
   });
 
+  it('should return [0, 1] when trying to extend [0, 0] for sqrt scale', () => {
+    expect(extendDomain([0, 0], 1, ScaleType.Sqrt)).toEqual([0, 1]);
+  });
+
   it('should not extend domain when factor is 0', () => {
     const extendedDomain = extendDomain([10, 100], 0, ScaleType.Log);
     expect(extendedDomain).toEqual([10, 100]);
   });
 
-  it('should not extend domain outside of supported values', () => {
-    const domain: Domain = [-MAX + 1, MAX - 1];
-    const extendedDomain = extendDomain(domain, 0.5);
-    expect(extendedDomain).toEqual([-MAX, MAX]);
-  });
-
   it('should not extend domain outside of supported values with log scale', () => {
-    const domain: Domain = [POS_MIN * 2, MAX];
-    const extendedDomain = extendDomain(domain, 0.75, ScaleType.Log);
-    expect(extendedDomain).toEqual([POS_MIN, MAX]);
+    const domain: Domain = [POS_MIN * 2, 100];
+    const [extMin1, extMax1] = extendDomain(domain, 0.75, ScaleType.Log);
+    expect(extMin1).toEqual(POS_MIN);
+    expect(extMax1).toBeGreaterThan(100);
   });
 
   it('should throw if domain is not compatible with log scale', () => {
     const errRegex = /compatible with log scale/;
     expect(() => extendDomain([-1, 1], 0.5, ScaleType.Log)).toThrow(errRegex);
     expect(() => extendDomain([0, 1], 0.5, ScaleType.Log)).toThrow(errRegex);
+    expect(() => extendDomain([0, 0], 0.5, ScaleType.Log)).toThrow(errRegex);
+  });
+
+  it('should not extend domain outside of supported values with sqrt scale', () => {
+    const domain: Domain = [POS_MIN, 100];
+    const [extMin1, extMax1] = extendDomain(domain, 0.75, ScaleType.Sqrt);
+    expect(extMin1).toEqual(0);
+    expect(extMax1).toBeGreaterThan(100);
+  });
+
+  it('should throw if domain is not compatible with sqrt scale', () => {
+    expect(() => extendDomain([-1, 1], 0.5, ScaleType.Sqrt)).toThrow(
+      /compatible with sqrt scale/
+    );
   });
 });
 

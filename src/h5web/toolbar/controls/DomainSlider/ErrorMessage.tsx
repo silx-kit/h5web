@@ -8,16 +8,16 @@ const ERRORS = {
     message: 'Min greater than max',
     fallback: 'data range',
   },
-  [DomainError.InvalidMinWithLog]: {
-    message: 'Custom min invalid with log scale',
+  [DomainError.InvalidMinWithScale]: {
+    message: 'Custom min invalid with this scale',
     fallback: 'data min',
   },
-  [DomainError.InvalidMaxWithLog]: {
-    message: 'Custom max invalid with log scale',
+  [DomainError.InvalidMaxWithScale]: {
+    message: 'Custom max invalid with this scale',
     fallback: 'data max',
   },
   [DomainError.CustomMaxFallback]: {
-    message: 'Custom min invalid with log scale',
+    message: 'Custom min invalid with this scale',
     fallback: 'custom max',
   },
 };

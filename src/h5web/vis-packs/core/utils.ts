@@ -1,7 +1,5 @@
 import {
   scaleLinear,
-  scaleLog,
-  scaleSymlog,
   scaleThreshold,
   PickScaleConfig,
   PickD3Scale,
@@ -25,6 +23,8 @@ import { assertDataLength, isDefined } from '../../guards';
 import { isAxis } from '../../dimension-mapper/utils';
 import { getAttributeValue } from '../../utils';
 import type { Dataset } from '../../providers/models';
+import { H5WEB_SCALES } from './scales';
+import { clamp } from 'three/src/math/MathUtils';
 
 const formatTick = format('0');
 export const formatNumber = format('.3e');
@@ -50,16 +50,7 @@ export function createAxisScale(
 ): AxisScale {
   const { type } = config;
 
-  switch (type) {
-    case ScaleType.Linear:
-      return scaleLinear<number>(config);
-    case ScaleType.Log:
-      return scaleLog<number>(config);
-    case ScaleType.SymLog:
-      return scaleSymlog<number>(config);
-    default:
-      throw new Error('Unknown type');
-  }
+  return H5WEB_SCALES[type].createScale(config);
 }
 
 export function computeCanvasSize(
@@ -157,18 +148,13 @@ function extendEmptyDomain(
   return [value - extension, value + extension];
 }
 
-export function clampBound(val: number, withPositiveMin = false): number {
-  const absVal = Math.abs(val);
+export function clampBound(
+  val: number,
+  supportedDomain: Domain = [-Number.MAX_VALUE / 2, Number.MAX_VALUE / 2]
+): number {
+  const [supportedMin, supportedMax] = supportedDomain;
 
-  if (withPositiveMin && absVal <= 0) {
-    return Number.MIN_VALUE;
-  }
-
-  if (absVal > Number.MAX_VALUE / 2) {
-    return (Math.sign(val) * Number.MAX_VALUE) / 2; // max domain length is `Number.MAX_VALUE`
-  }
-
-  return val;
+  return clamp(val, supportedMin, supportedMax);
 }
 
 export function extendDomain(
@@ -180,23 +166,30 @@ export function extendDomain(
     return domain;
   }
 
-  const [min, max] = domain;
-  const isLog = scaleType === ScaleType.Log;
+  const { validMin } = H5WEB_SCALES[scaleType];
 
-  if (min <= 0 && isLog) {
-    throw new Error('Expected domain compatible with log scale');
+  const [min] = domain;
+  if (min < validMin) {
+    throw new Error(`Expected domain compatible with ${scaleType} scale`);
   }
 
+  const extendedDomain = unsafeExtendDomain(domain, extendFactor, scaleType);
+
+  return [Math.max(validMin, extendedDomain[0]), extendedDomain[1]];
+}
+
+function unsafeExtendDomain(
+  domain: Domain,
+  extendFactor: number,
+  scaleType: ScaleType
+): Domain {
+  const [min, max] = domain;
   if (min === max) {
     return extendEmptyDomain(min, extendFactor, scaleType);
   }
 
   const scale = createAxisScale({ type: scaleType, domain, range: [0, 1] });
-
-  return [
-    clampBound(scale.invert(-extendFactor), isLog),
-    clampBound(scale.invert(1 + extendFactor), isLog),
-  ];
+  return [scale.invert(-extendFactor), scale.invert(1 + extendFactor)];
 }
 
 export function getValueToIndexScale(
@@ -350,13 +343,17 @@ export function getValidDomainForScale(
   }
 
   const { min, max, positiveMin } = bounds;
-  if (scaleType !== ScaleType.Log || min * max > 0) {
-    return [min, max];
+  if (scaleType === ScaleType.Log && min * max <= 0) {
+    // Clamp domain minimum to first positive value,
+    // or return `undefined` if domain is not unsupported: `[-x, 0]`
+    return Number.isFinite(positiveMin) ? [positiveMin, max] : undefined;
   }
 
-  // Clamp domain minimum to first positive value,
-  // or return `undefined` if domain is not unsupported: `[-x, 0]`
-  return positiveMin !== Infinity ? [positiveMin, max] : undefined;
+  if (scaleType === ScaleType.Sqrt && min * max < 0) {
+    return [0, max];
+  }
+
+  return [min, max];
 }
 
 export function getSliceSelection(

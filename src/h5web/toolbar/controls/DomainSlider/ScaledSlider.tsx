@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
-import { createAxisScale, extendDomain } from '../../../vis-packs/core/utils';
+import {
+  clampBound,
+  createAxisScale,
+  extendDomain,
+} from '../../../vis-packs/core/utils';
 import type {
   Domain,
   DomainErrors,
@@ -43,7 +47,7 @@ function ScaledSlider(props: Props) {
   const sliderExtent = extendDomain(safeVisDomain, EXTEND_FACTOR, scaleType);
   const scale = createAxisScale({
     type: scaleType,
-    domain: sliderExtent,
+    domain: sliderExtent.map((val) => clampBound(val)),
     range: SLIDER_RANGE,
     clamp: true,
   });

@@ -7,6 +7,7 @@ import {
   DomainErrors,
   ScaleType,
 } from '../models';
+import { H5WEB_SCALES } from '../scales';
 import { INTERPOLATORS } from './interpolators';
 import type { ColorMap, D3Interpolator, Dims } from './models';
 
@@ -28,25 +29,27 @@ export function getSafeDomain(
   if (domain[0] > domain[1]) {
     return [fallbackDomain, { minGreater: true }];
   }
-
-  if (scaleType !== ScaleType.Log) {
-    return [domain, {}];
-  }
+  const h5webScale = H5WEB_SCALES[scaleType];
 
   const [min, max] = domain;
-  const logSafeMin = min <= 0 ? fallbackDomain[0] : min;
-  const logSafeMax = max <= 0 ? fallbackDomain[1] : max;
-  const logSafeMinGreater = logSafeMin > logSafeMax;
+  const { validMin } = h5webScale;
+
+  const isMinSupported = min >= validMin;
+  const isMaxSupported = max >= validMin;
+
+  const safeMin = isMinSupported ? min : fallbackDomain[0];
+  const safeMax = isMaxSupported ? max : fallbackDomain[1];
+  const safeMinGreater = safeMin > safeMax;
 
   return [
-    [logSafeMinGreater ? logSafeMax : logSafeMin, logSafeMax],
+    [safeMinGreater ? safeMax : safeMin, safeMax],
     {
-      minError: logSafeMinGreater
+      minError: safeMinGreater
         ? DomainError.CustomMaxFallback
-        : min <= 0
-        ? DomainError.InvalidMinWithLog
+        : !isMinSupported
+        ? DomainError.InvalidMinWithScale
         : undefined,
-      maxError: max <= 0 ? DomainError.InvalidMaxWithLog : undefined,
+      maxError: !isMaxSupported ? DomainError.InvalidMaxWithScale : undefined,
     },
   ];
 }
