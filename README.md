@@ -40,7 +40,7 @@ providers out of the box, which are both under active development:
 ## Demos
 
 The stand-alone demo app demonstrates the use of the built-in data providers and
-visualizations. Three demos are available, one per data provider:
+visualizations. Several demos are available, one per data provider:
 
 ### [Jupyter Lab HDF5 extension](https://github.com/jupyterlab/jupyterlab-hdf5)
 
@@ -49,12 +49,19 @@ This demo is available at https://h5web.panosc.eu.
 The following HDF5 files can be reached with a URL of the form
 `https://h5web.panosc.eu/?file=<name>`:
 
-- `water_224.h5` (**default**): A typical NeXUS file with various real-world
+- `water_224.h5` (**default**): A typical NeXus file with various real-world
   datasets to demonstrate the visualizations.
 - `compressed.h5`: A file with datasets compressed with various filters to test
   decompression.
 - `links.h5`: A file with external links, soft links and a virtual dataset to
   test link resolution.
+
+### [H5Grove](https://github.com/silx-kit/h5grove)
+
+This demo is available at https://h5web.panosc.eu/h5grove.
+
+The same HDF5 files can be reached with URLs of the form
+`https://h5web.panosc.eu/h5grove?file=<name>`.
 
 ### [HSDS](https://github.com/HDFGroup/hsds)
 
