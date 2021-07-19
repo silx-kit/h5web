@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { pressKey, renderApp, selectExplorerNode } from '../../../test-utils';
 
@@ -31,7 +31,7 @@ test('show tooltip on hover', async () => {
   expect(tooltip).not.toBeVisible();
 
   userEvent.hover(editBtn);
-  userEvent.keyboard('{Escape}');
+  pressKey('Escape');
   expect(tooltip).not.toBeVisible();
 });
 
@@ -57,19 +57,17 @@ test('show min/max and data range in tooltip', async () => {
 
 test('update domain when moving thumbs (with keyboard)', async () => {
   await renderApp();
-  expect(await screen.findByRole('figure')).toBeVisible();
-
-  // Give focus to min thumb (and hover to reveal tooltip)
+  const visArea = await screen.findByRole('figure');
   const minThumb = await screen.findByRole('slider', { name: /min/ });
-  userEvent.hover(minThumb);
-  minThumb.focus();
 
-  const visArea = screen.getByRole('figure');
+  // Hover min thumb to reveal tooltip
+  userEvent.hover(minThumb);
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
 
-  // Move thumb one step to the left
-  userEvent.keyboard('{ArrowLeft}');
+  // Move min thumb one step to the left with keyboard
+  minThumb.focus();
+  pressKey('ArrowLeft'); // `userEvent.keyboard('{ArrowLeft}');` causes `act` warnings
   expect(minInput).toHaveValue('−1.04671e+2');
   expect(within(visArea).getByText('−1.047e+2')).toBeInTheDocument();
 
@@ -86,12 +84,12 @@ test('update domain when moving thumbs (with keyboard)', async () => {
   maxThumb.focus();
 
   // Jump ten steps to the left
-  userEvent.keyboard('{PageDown}');
+  pressKey('PageDown');
   expect(maxInput).toHaveValue('5.72182e+1');
   expect(within(visArea).getByText('5.722e+1')).toBeInTheDocument();
 
   // Jump ten steps to the right
-  userEvent.keyboard('{PageUp}');
+  pressKey('PageUp');
   expect(maxInput).toHaveValue('2.52142e+2'); // not back to 4e+2 because of domain extension behaviour
   expect(within(visArea).getByText('2.521e+2')).toBeInTheDocument();
 
@@ -118,9 +116,9 @@ test('allow editing bounds manually', async () => {
   const maxInput = screen.getByLabelText('max');
   const applyBtn = screen.getByRole('button', { name: 'Apply min' });
   const cancelBtn = screen.getByRole('button', { name: 'Cancel min' });
-  expect(minInput).toHaveFocus();
   expect(applyBtn).toBeEnabled();
   expect(cancelBtn).toBeEnabled();
+  await waitFor(() => expect(minInput).toHaveFocus()); // input needs time to receive focus
 
   // Type '1' in min input field (at the end, after the current value)
   userEvent.type(minInput, '1');
@@ -171,7 +169,7 @@ test('clamp domain in symlog scale', async () => {
   expect(maxThumb).toHaveAttribute('aria-valuenow', '100');
 
   maxThumb.focus();
-  userEvent.keyboard('{ArrowLeft}');
+  pressKey('ArrowLeft');
   expect(maxInput).toHaveValue('5.40006e+301');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '99'); // does not jump back to 81
 
@@ -207,7 +205,7 @@ test('control min/max autoscale behaviour', async () => {
 
   // Moving min thumb disables min autoscale
   minThumb.focus();
-  userEvent.keyboard('{ArrowRight}');
+  pressKey('ArrowRight');
   expect(minBtn).toHaveAttribute('aria-pressed', 'false');
   expect(maxBtn).toHaveAttribute('aria-pressed', 'true'); // unaffected
 
@@ -218,9 +216,9 @@ test('control min/max autoscale behaviour', async () => {
 
   // Re-enable max autoscale
   userEvent.click(maxBtn);
-  expect(maxInput).toHaveValue('4e+2');
   expect(maxBtn).toHaveAttribute('aria-pressed', 'true');
   expect(minBtn).toHaveAttribute('aria-pressed', 'false'); // unaffected
+  await waitFor(() => expect(maxInput).toHaveValue('4e+2')); // input needs time to be reset
 });
 
 test('handle empty domain', async () => {
@@ -245,14 +243,14 @@ test('handle empty domain', async () => {
 
   // Check that pearling works (i.e. that one thumb can push the other)
   maxThumb.focus();
-  userEvent.keyboard('{ArrowLeft}');
+  pressKey('ArrowLeft');
   expect(minInput).toHaveValue('3.97453e+2');
   expect(maxInput).toHaveValue('3.97453e+2');
   expect(minThumb).toHaveAttribute('aria-valuenow', '58'); // thumbs stay in the middle
   expect(maxThumb).toHaveAttribute('aria-valuenow', '58');
 
   // Ensure thumbs can be separated again
-  userEvent.keyboard('{ArrowRight}');
+  pressKey('ArrowRight');
   expect(maxInput).toHaveValue('3.99891e+2');
   expect(minThumb).toHaveAttribute('aria-valuenow', '20');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '81');

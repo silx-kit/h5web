@@ -50,20 +50,20 @@ function DomainSlider(props: Props) {
     toggleEditingMax(force);
   }
 
-  const rootRef = useRef(null);
-  const tooltipRef = useRef<DomainTooltipHandle>(null);
-
-  useClickOutside(rootRef, () => {
+  function cancelEditing() {
     if (isEditing) {
       toggleEditing(false);
       tooltipRef.current?.cancelEditing();
     }
-  });
+  }
 
+  const rootRef = useRef(null);
+  const tooltipRef = useRef<DomainTooltipHandle>(null);
+
+  useClickOutside(rootRef, cancelEditing);
   useKey('Escape', () => {
     toggleHovered(false);
-    toggleEditing(false);
-    tooltipRef.current?.cancelEditing();
+    cancelEditing();
   });
 
   return (
