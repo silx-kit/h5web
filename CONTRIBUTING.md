@@ -183,10 +183,6 @@ process. This section documents such cases:
 
 - `d3-array` (and therefore `@types/d3-array`) cannot be upgraded to v3.x due to
   a [bug in Babel](https://github.com/babel/babel/issues/11038).
-- Updating `@testing-library/react` to v12 breaks a lot of tests, probably
-  because `@testing-library/dom`
-  [v8](https://github.com/testing-library/dom-testing-library/releases/tag/v8.0.0)
-  and Jest's fake timers.
 - The major version number of `@types/node` must match the version of Node
   specified in the `engine` field of `package.json`.
 - Dev dependencies related to ESLint must be upgraded together with
