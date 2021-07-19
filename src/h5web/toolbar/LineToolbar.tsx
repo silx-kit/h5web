@@ -8,6 +8,9 @@ import Toolbar from './Toolbar';
 import Separator from './Separator';
 import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
+import { ScaleType } from '../vis-packs/core/models';
+
+const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 
 function LineToolbar() {
   const {
@@ -33,11 +36,13 @@ function LineToolbar() {
         label="X"
         value={xScaleType}
         onScaleChange={setXScaleType}
+        options={SCALETYPE_OPTIONS}
       />
       <ScaleSelector
         label="Y"
         value={yScaleType}
         onScaleChange={setYScaleType}
+        options={SCALETYPE_OPTIONS}
       />
 
       <Separator />
