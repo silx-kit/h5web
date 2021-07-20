@@ -1,4 +1,10 @@
-import type { PickD3Scale } from '@visx/scale';
+import type { PickScaleConfig } from '@visx/scale';
+import type {
+  ScaleLinear,
+  ScaleLogarithmic,
+  ScalePower,
+  ScaleSymLog,
+} from 'd3-scale';
 import type {
   NumericType,
   StringType,
@@ -13,6 +19,7 @@ export enum ScaleType {
   Log = 'log',
   SymLog = 'symlog',
   Sqrt = 'sqrt',
+  Gamma = 'gamma',
 }
 
 export interface Size {
@@ -46,11 +53,17 @@ export interface AxisConfig {
   flip?: boolean;
 }
 
-export type AxisScale = PickD3Scale<
-  ScaleType.Linear | ScaleType.Log | ScaleType.SymLog | ScaleType.Sqrt,
-  number,
-  number
+export type VisxScaleConfig = Omit<
+  PickScaleConfig<'linear' | 'log' | 'symlog', number>,
+  'type'
 >;
+export type GammaScaleConfig = Omit<PickScaleConfig<'pow', number>, 'type'>;
+
+export type AxisScale =
+  | ScaleLinear<number, number>
+  | ScaleLogarithmic<number, number>
+  | ScaleSymLog<number, number>
+  | ScalePower<number, number>;
 
 export interface AxisOffsets {
   left: number;

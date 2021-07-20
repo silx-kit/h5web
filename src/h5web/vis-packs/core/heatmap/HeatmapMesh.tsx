@@ -1,4 +1,5 @@
 import { rgb } from 'd3-color';
+import { isArray } from 'lodash';
 import { memo, useMemo } from 'react';
 import {
   RedFormat,
@@ -11,7 +12,8 @@ import type { Domain } from '../models';
 import { ScaleType } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import VisMesh from '../shared/VisMesh';
-import type { ColorMap } from './models';
+import { isScaleType } from '../utils';
+import type { ColorMap, ScaleParams } from './models';
 import { getInterpolator } from './utils';
 
 interface Props {
@@ -20,7 +22,7 @@ interface Props {
   values: number[];
   domain: Domain;
   colorMap: ColorMap;
-  scaleType: ScaleType;
+  scaleType: ScaleParams;
   invertColorMap?: boolean;
   alphaValues?: number[];
   alphaDomain?: Domain;
@@ -33,6 +35,7 @@ const SCALE_FUNC: Record<ScaleType, (val: number) => number> = {
   [ScaleType.Log]: Math.log10,
   [ScaleType.SymLog]: (val) => Math.sign(val) * Math.log10(1 + Math.abs(val)),
   [ScaleType.Sqrt]: Math.sqrt,
+  [ScaleType.Gamma]: (val) => val,
 };
 
 const SCALE_SHADER: Record<ScaleType, string> = {
@@ -74,6 +77,16 @@ const SCALE_SHADER: Record<ScaleType, string> = {
     bool isSupported(float value) {
       return value >= 0.;
     }`,
+  [ScaleType.Gamma]: `
+    uniform float gammaExponent;
+
+    float scale(float value) {
+      return pow(oneOverRange * (value - min), gammaExponent);
+    }
+
+    bool isSupported(float value) {
+      return true;
+    }`,
 };
 
 function HeatmapMesh(props: Props) {
@@ -89,7 +102,9 @@ function HeatmapMesh(props: Props) {
     alphaDomain,
   } = props;
 
-  const scaledDomain = domain.map(SCALE_FUNC[scaleType]);
+  const scaledDomain = isScaleType(scaleType)
+    ? domain.map(SCALE_FUNC[scaleType])
+    : domain;
 
   const dataTexture = useMemo(() => {
     const valuesArr = Float32Array.from(values);
@@ -130,6 +145,9 @@ function HeatmapMesh(props: Props) {
       oneOverAlphaRange: {
         value: alphaDomain && 1 / (alphaDomain[1] - alphaDomain[0]),
       },
+      gammaExponent: {
+        value: isArray(scaleType) ? scaleType[1] : undefined,
+      },
     },
     vertexShader: `
       varying vec2 coords;
@@ -154,7 +172,7 @@ function HeatmapMesh(props: Props) {
 
       varying vec2 coords;
 
-      ${SCALE_SHADER[scaleType]}
+      ${SCALE_SHADER[isScaleType(scaleType) ? scaleType : ScaleType.Gamma]}
 
       void main() {
         float value = texture2D(data, coords).r;
