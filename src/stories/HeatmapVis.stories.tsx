@@ -90,7 +90,12 @@ export default {
       defaultValue: ScaleType.Linear,
       control: {
         type: 'inline-radio',
-        options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
+        options: [
+          ScaleType.Linear,
+          ScaleType.Log,
+          ScaleType.SymLog,
+          ScaleType.Sqrt,
+        ],
       },
     },
     layout: {

@@ -1,9 +1,5 @@
-import {
-  scaleLinear,
-  scaleThreshold,
-  PickScaleConfig,
-  PickD3Scale,
-} from '@visx/scale';
+import { scaleLinear, scaleThreshold } from '@visx/scale';
+import type { ScaleThreshold } from 'd3-scale';
 import { tickStep, range } from 'd3-array';
 import ndarray, { NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
@@ -17,6 +13,8 @@ import {
   AxisConfig,
   Bounds,
   AxisOffsets,
+  GammaScaleConfig,
+  VisxScaleConfig,
 } from './models';
 import { assertDataLength, isDefined } from '../../guards';
 import { isAxis } from '../../dimension-mapper/utils';
@@ -24,6 +22,7 @@ import { formatTick, getAttributeValue } from '../../utils';
 import type { Dataset } from '../../providers/models';
 import { H5WEB_SCALES } from './scales';
 import { clamp } from 'three/src/math/MathUtils';
+import type { VisScaleType } from './heatmap/models';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -42,11 +41,15 @@ const adaptedLogTicksThreshold = scaleLinear({
 });
 
 export function createAxisScale(
-  config: PickScaleConfig<ScaleType, number>
+  scaleType: VisScaleType,
+  config: VisxScaleConfig | GammaScaleConfig
 ): AxisScale {
-  const { type } = config;
+  if (isScaleType(scaleType)) {
+    return H5WEB_SCALES[scaleType].createScale(config);
+  }
 
-  return H5WEB_SCALES[type].createScale(config);
+  const [, exponent] = scaleType;
+  return H5WEB_SCALES[ScaleType.Gamma].createScale({ ...config, exponent });
 }
 
 export function computeCanvasSize(
@@ -187,14 +190,14 @@ function unsafeExtendDomain(
     return extendEmptyDomain(min, extendFactor, scaleType);
   }
 
-  const scale = createAxisScale({ type: scaleType, domain, range: [0, 1] });
+  const scale = createAxisScale(scaleType, { domain, range: [0, 1] });
   return [scale.invert(-extendFactor), scale.invert(1 + extendFactor)];
 }
 
 export function getValueToIndexScale(
   values: number[],
   switchAtMidpoints?: boolean
-): PickD3Scale<'threshold', number, number, number> {
+): ScaleThreshold<number, number> {
   const indices = range(values.length);
 
   const thresholds = switchAtMidpoints
@@ -215,10 +218,9 @@ export function getCanvasScale(
   const { scaleType, visDomain, flip } = config;
   const range = [-canvasSize / 2, canvasSize / 2];
 
-  return createAxisScale({
+  return createAxisScale(scaleType || ScaleType.Linear, {
     domain: visDomain,
     range: flip ? range.reverse() : range,
-    type: scaleType || ScaleType.Linear,
   });
 }
 

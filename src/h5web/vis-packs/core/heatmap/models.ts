@@ -1,4 +1,4 @@
-import type { Domain } from '../models';
+import type { Domain, ScaleType } from '../models';
 import type { INTERPOLATORS } from './interpolators';
 
 export interface Dims {
@@ -22,6 +22,11 @@ export interface TooltipData {
 }
 
 export interface ScaleShader {
-  uniforms: (domain: Domain) => Record<string, { value: number }>;
+  uniforms: (
+    domain: Domain,
+    exponent?: number
+  ) => Record<string, { value: number }>;
   fragment: string;
 }
+
+export type VisScaleType = Omit<ScaleType, 'gamma'> | [ScaleType.Gamma, number];

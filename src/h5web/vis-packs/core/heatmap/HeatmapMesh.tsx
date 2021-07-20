@@ -11,8 +11,10 @@ import type { Domain } from '../models';
 import { ScaleType } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import VisMesh from '../shared/VisMesh';
-import type { ColorMap, ScaleShader } from './models';
+import type { ColorMap, VisScaleType, ScaleShader } from './models';
+import { isScaleType } from '../utils';
 import { getInterpolator } from './utils';
+import { assertDefined } from '../../../guards';
 
 interface Props {
   rows: number;
@@ -20,7 +22,7 @@ interface Props {
   values: number[];
   domain: Domain;
   colorMap: ColorMap;
-  scaleType: ScaleType;
+  scaleType: VisScaleType;
   invertColorMap?: boolean;
   alphaValues?: number[];
   alphaDomain?: Domain;
@@ -35,16 +37,16 @@ const SCALE_SHADER: Record<ScaleType, ScaleShader> = {
       oneOverRange: { value: 1 / (domain[1] - domain[0]) },
     }),
     fragment: `
-    uniform float min;
-    uniform float oneOverRange;
+      uniform float min;
+      uniform float oneOverRange;
 
-    float scale(float value) {
-      return oneOverRange * (value - min);
-    }
+      float scale(float value) {
+        return oneOverRange * (value - min);
+      }
 
-    bool isSupported(float value) {
-      return true;
-    }`,
+      bool isSupported(float value) {
+        return true;
+      }`,
   },
   [ScaleType.Log]: {
     uniforms: (domain: Domain) => {
@@ -55,17 +57,17 @@ const SCALE_SHADER: Record<ScaleType, ScaleShader> = {
       };
     },
     fragment: `
-    uniform float min;
-    uniform float oneOverRange;
+      uniform float min;
+      uniform float oneOverRange;
 
-    const float oneOverLog10 = 0.43429448190325176;
-    float scale(float value) {
-      return oneOverRange * (log(value) * oneOverLog10 - min);
-    }
+      const float oneOverLog10 = 0.43429448190325176;
+      float scale(float value) {
+        return oneOverRange * (log(value) * oneOverLog10 - min);
+      }
 
-    bool isSupported(float value) {
-      return value > 0.;
-    }`,
+      bool isSupported(float value) {
+        return value > 0.;
+      }`,
   },
   [ScaleType.SymLog]: {
     uniforms: (domain: Domain) => {
@@ -78,21 +80,21 @@ const SCALE_SHADER: Record<ScaleType, ScaleShader> = {
       };
     },
     fragment: `
-    uniform float min;
-    uniform float oneOverRange;
+      uniform float min;
+      uniform float oneOverRange;
 
-    const float oneOverLog10 = 0.43429448190325176;
-    float symlog(float x) {
-      return sign(x) * log(1. + abs(x)) * oneOverLog10;
-    }
+      const float oneOverLog10 = 0.43429448190325176;
+      float symlog(float x) {
+        return sign(x) * log(1. + abs(x)) * oneOverLog10;
+      }
 
-    float scale(float value) {
-      return oneOverRange * (symlog(value) - min);
-    }
+      float scale(float value) {
+        return oneOverRange * (symlog(value) - min);
+      }
 
-    bool isSupported(float value) {
-      return true;
-    }`,
+      bool isSupported(float value) {
+        return true;
+      }`,
   },
   [ScaleType.Sqrt]: {
     uniforms: (domain: Domain) => {
@@ -103,16 +105,38 @@ const SCALE_SHADER: Record<ScaleType, ScaleShader> = {
       };
     },
     fragment: `
-    uniform float min;
-    uniform float oneOverRange;
+      uniform float min;
+      uniform float oneOverRange;
 
-    float scale(float value) {
-      return oneOverRange * (sqrt(value) - min);
-    }
+      float scale(float value) {
+        return oneOverRange * (sqrt(value) - min);
+      }
 
-    bool isSupported(float value) {
-      return value >= 0.;
-    }`,
+      bool isSupported(float value) {
+        return value >= 0.;
+      }`,
+  },
+  [ScaleType.Gamma]: {
+    uniforms: (domain: Domain, exponent?: number) => {
+      assertDefined(exponent);
+      return {
+        min: { value: domain[0] },
+        oneOverRange: { value: 1 / (domain[1] - domain[0]) },
+        gammaExponent: { value: exponent },
+      };
+    },
+    fragment: `
+      uniform float min;
+      uniform float oneOverRange;
+      uniform float gammaExponent;
+
+      float scale(float value) {
+        return pow(oneOverRange * (value - min), gammaExponent);
+      }
+
+      bool isSupported(float value) {
+        return true;
+      }`,
   },
 };
 
@@ -155,6 +179,10 @@ function HeatmapMesh(props: Props) {
     return new DataTexture(colors, CMAP_SIZE, 1, RGBFormat, UnsignedByteType);
   }, [colorMap, invertColorMap]);
 
+  const scaleUniforms = isScaleType(scaleType)
+    ? SCALE_SHADER[scaleType].uniforms(domain)
+    : SCALE_SHADER[ScaleType.Gamma].uniforms(domain, scaleType[1] as number);
+
   const { ordinateConfig } = useAxisSystemContext();
   const shader = {
     uniforms: {
@@ -166,7 +194,7 @@ function HeatmapMesh(props: Props) {
       oneOverAlphaRange: {
         value: alphaDomain && 1 / (alphaDomain[1] - alphaDomain[0]),
       },
-      ...SCALE_SHADER[scaleType].uniforms(domain),
+      ...scaleUniforms,
     },
     vertexShader: `
       varying vec2 coords;
@@ -189,7 +217,10 @@ function HeatmapMesh(props: Props) {
 
       varying vec2 coords;
 
-      ${SCALE_SHADER[scaleType].fragment}
+      ${
+        SCALE_SHADER[isScaleType(scaleType) ? scaleType : ScaleType.Gamma]
+          .fragment
+      }
 
       void main() {
         float value = texture2D(data, coords).r;

@@ -7,7 +7,7 @@ import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
-import type { ColorMap, Layout, TooltipData } from './models';
+import type { ColorMap, Layout, TooltipData, VisScaleType } from './models';
 import { DEFAULT_DOMAIN } from '../utils';
 import { assertDefined } from '../../../guards';
 import { useAxisValues } from './hooks';
@@ -19,7 +19,7 @@ interface Props {
   dataArray: NdArray<number[]>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
-  scaleType?: ScaleType;
+  scaleType?: VisScaleType;
   layout?: Layout;
   showGrid?: boolean;
   title?: string;
