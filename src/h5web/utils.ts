@@ -7,13 +7,16 @@ import type {
 import type { ImageAttribute } from './vis-packs/core/models';
 import type { NxAttribute } from './vis-packs/nexus/models';
 
-export const formatValue = format('.3~e');
-export const formatPreciseValue = format('.5~e');
+export const formatTick = format('.5~g');
+export const formatBound = format('.3~e');
+export const formatBoundInput = format('.5~e');
+export const formatTooltipVal = format('.5~g');
+export const formatTooltipErr = format('.3~g');
 export const formatMatrixValue = format('.3e');
 export const formatMatrixComplex = createComplexFormatter('.2e', true);
 export const formatScalarComplex = createComplexFormatter('.12~g');
 
-export function createComplexFormatter(specifier: string, full = false) {
+function createComplexFormatter(specifier: string, full = false) {
   const formatVal = format(specifier);
 
   return (value: H5WebComplex) => {

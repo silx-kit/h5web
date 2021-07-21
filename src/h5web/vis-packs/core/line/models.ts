@@ -15,3 +15,9 @@ export const GLYPH_URLS = {
   Square: squareURL,
   Cap: capURL,
 };
+
+export interface TooltipData {
+  abscissa: number;
+  xi: number;
+  x: number;
+}

@@ -74,8 +74,6 @@ export interface Bounds {
 }
 
 export type Coords = [number, number];
-export type TooltipIndexFormatter = (t: Coords) => string;
-export type TooltipValueFormatter = (t: Coords) => string | undefined;
 
 export type PrintableType =
   | BooleanType

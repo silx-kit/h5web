@@ -15,10 +15,3 @@
   stroke-width: var(--h5w-tooltip-guide--width, 1.5);
   stroke-opacity: var(--h5w-tooltip-guide--opacity, 0.5);
 }
-
-.tooltipValue {
-  display: block;
-  font-weight: 600;
-  margin-top: 0.25rem;
-  font-size: 1.125em;
-}

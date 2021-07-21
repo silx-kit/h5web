@@ -1,9 +1,5 @@
-import { format } from 'd3-format';
-import type { NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import { Vector3 } from 'three';
-import { useValueToIndexScale } from '../hooks';
-import type { TooltipIndexFormatter, TooltipValueFormatter } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
 
 const CAMERA_FAR = 1000; // R3F's default
@@ -57,35 +53,4 @@ export function useCanvasPoints(
 
     return { data: dataPoints, bars: errorBarSegments, caps: errorCapPoints };
   }, [abscissaScale, abscissas, errors, ordinateScale, ordinates]);
-}
-
-export function useTooltipFormatters(
-  abscissas: number[],
-  abscissaLabel: string | undefined,
-  dataArray: NdArray,
-  errorsArray: NdArray | undefined
-): {
-  formatIndex: TooltipIndexFormatter;
-  formatValue: TooltipValueFormatter;
-} {
-  const abscissaToIndex = useValueToIndexScale(abscissas, true);
-
-  return {
-    formatIndex: ([x]) =>
-      `${abscissaLabel || 'x'}=${format('0')(abscissas[abscissaToIndex(x)])}`,
-
-    formatValue: ([x]) => {
-      const index = abscissaToIndex(x);
-      const value = dataArray.get(index);
-
-      if (value === undefined) {
-        return undefined;
-      }
-
-      const error = errorsArray && errorsArray.get(index);
-      return error
-        ? `${format('.3f')(value)} ±${format('.3f')(error)}`
-        : `${format('.3f')(value)}`;
-    },
-  };
 }

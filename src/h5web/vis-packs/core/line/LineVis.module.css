@@ -5,3 +5,12 @@
   min-height: 0;
   margin: 1rem;
 }
+
+.tooltipValue {
+  margin-top: 0.25rem;
+}
+
+.tooltipValue > strong {
+  font-weight: 600;
+  font-size: 1.125em;
+}

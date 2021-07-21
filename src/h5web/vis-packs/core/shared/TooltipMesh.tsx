@@ -1,26 +1,21 @@
-import { useCallback } from 'react';
+import { ReactElement, useCallback } from 'react';
 import { useThree } from '@react-three/fiber';
 import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
 import { Line } from '@visx/shape';
 import Html from './Html';
 import styles from './TooltipMesh.module.css';
 import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
-import type {
-  Coords,
-  TooltipIndexFormatter,
-  TooltipValueFormatter,
-} from '../models';
+import type { Coords } from '../models';
 import { useAxisSystemContext } from './AxisSystemContext';
 import VisMesh from './VisMesh';
 
 interface Props {
-  formatIndex: TooltipIndexFormatter;
-  formatValue: TooltipValueFormatter;
   guides?: 'horizontal' | 'vertical' | 'both';
+  renderTooltip: (x: number, y: number) => ReactElement | undefined;
 }
 
 function TooltipMesh(props: Props) {
-  const { formatIndex, formatValue, guides } = props;
+  const { guides, renderTooltip } = props;
 
   const camera = useThree((state) => state.camera);
   const { width, height } = useThree((state) => state.size);
@@ -71,7 +66,7 @@ function TooltipMesh(props: Props) {
     [height, onPointerMove, width]
   );
 
-  const value = tooltipData && formatValue(tooltipData);
+  const content = tooltipData && renderTooltip(...tooltipData);
 
   return (
     <>
@@ -79,7 +74,7 @@ function TooltipMesh(props: Props) {
         <meshBasicMaterial opacity={0} transparent />
       </VisMesh>
       <Html style={{ width, height }}>
-        {tooltipOpen && tooltipData && value && (
+        {tooltipOpen && content && (
           <>
             <TooltipWithBounds
               key={Math.random()}
@@ -89,8 +84,7 @@ function TooltipMesh(props: Props) {
               unstyled
               applyPositionStyle
             >
-              {formatIndex(tooltipData)}
-              <span className={styles.tooltipValue}>{value}</span>
+              {content}
             </TooltipWithBounds>
             {guides && (
               <svg className={styles.guides}>

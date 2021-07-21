@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
-import { formatPreciseValue } from '../../../utils';
+import { formatBoundInput } from '../../../utils';
 import type { Bound } from '../../../vis-packs/core/models';
 import { clampBound } from '../../../vis-packs/core/utils';
 import styles from './BoundEditor.module.css';
@@ -34,7 +34,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
 
   function cancel() {
     onEditToggle(false);
-    setInputValue(formatPreciseValue(value));
+    setInputValue(formatBoundInput(value));
   }
 
   /* Expose `cancel` function to parent component through ref handle so that
@@ -42,7 +42,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
   useImperativeHandle(ref, () => ({ cancel }));
 
   useEffect(() => {
-    setInputValue(formatPreciseValue(value));
+    setInputValue(formatBoundInput(value));
   }, [value, setInputValue]);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
           : clampBound(parsedValue);
 
         // Clean up input in case value hasn't changed (since `useEffect` won't be triggered)
-        setInputValue(formatPreciseValue(newValue));
+        setInputValue(formatBoundInput(newValue));
 
         onChange(newValue);
         onEditToggle(false);
