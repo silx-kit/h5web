@@ -30,13 +30,29 @@ interface Props {
 
 const CMAP_SIZE = 256;
 
-const SCALE_FUNC: Record<ScaleType, (val: number) => number> = {
-  [ScaleType.Linear]: (val) => val,
-  [ScaleType.Log]: Math.log10,
-  [ScaleType.SymLog]: (val) => Math.sign(val) * Math.log10(1 + Math.abs(val)),
-  [ScaleType.Sqrt]: Math.sqrt,
-  [ScaleType.Gamma]: (val) => val,
-};
+function computeScaledDomain(
+  scaleType: Omit<ScaleType, 'gamma'> | ScaleType.Gamma,
+  domain: Domain
+): Domain {
+  switch (scaleType) {
+    case ScaleType.Linear:
+    case ScaleType.Gamma:
+      return domain;
+
+    case ScaleType.Log:
+      return domain.map(Math.log10) as Domain;
+
+    case ScaleType.Sqrt:
+      return domain.map(Math.sqrt) as Domain;
+
+    case ScaleType.SymLog:
+      return domain.map(
+        (val) => Math.sign(val) * Math.log10(1 + Math.abs(val))
+      ) as Domain;
+    default:
+      throw new Error('Unknown scaleType');
+  }
+}
 
 const SCALE_SHADER: Record<ScaleType, string> = {
   [ScaleType.Linear]: `
@@ -49,6 +65,7 @@ const SCALE_SHADER: Record<ScaleType, string> = {
     }`,
   [ScaleType.Log]: `
     const float oneOverLog10 = 0.43429448190325176;
+
     float scale(float value) {
       return oneOverRange * (log(value) * oneOverLog10 - min); // Log
     }
@@ -58,6 +75,7 @@ const SCALE_SHADER: Record<ScaleType, string> = {
     }`,
   [ScaleType.SymLog]: `
     const float oneOverLog10 = 0.43429448190325176;
+
     float symlog(float x) {
       return sign(x) * log(1. + abs(x)) * oneOverLog10;
     }
@@ -101,10 +119,10 @@ function HeatmapMesh(props: Props) {
     alphaValues,
     alphaDomain,
   } = props;
-
-  const scaledDomain = isScaleType(scaleType)
-    ? domain.map(SCALE_FUNC[scaleType])
-    : domain;
+  const scaledDomain = computeScaledDomain(
+    isArray(scaleType) ? scaleType[0] : scaleType,
+    domain
+  );
 
   const dataTexture = useMemo(() => {
     const valuesArr = Float32Array.from(values);
