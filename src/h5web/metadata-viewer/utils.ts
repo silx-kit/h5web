@@ -6,7 +6,7 @@ import {
   H5WebComplex,
   Shape,
 } from '../providers/models';
-import { formatComplex } from '../utils';
+import { formatScalarComplex } from '../utils';
 
 export function renderShape(shape: Shape): string {
   if (shape === null) {
@@ -38,12 +38,9 @@ export function renderType(type: DType): string {
   return type.class;
 }
 
-export function renderComplex(
-  complex: H5WebComplex | ComplexArray,
-  specifier?: string
-): string {
+export function renderComplex(complex: H5WebComplex | ComplexArray): string {
   if (isH5WebComplex(complex)) {
-    return formatComplex(complex, specifier);
+    return formatScalarComplex(complex);
   }
 
   return `[ ${complex.map((c) => renderComplex(c)).join(', ')} ]`;

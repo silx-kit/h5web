@@ -9,21 +9,27 @@ import type { NxAttribute } from './vis-packs/nexus/models';
 
 export const formatValue = format('.3~e');
 export const formatPreciseValue = format('.5~e');
-export function formatComplex(value: H5WebComplex, specifier = '') {
-  const [real, imag] = value;
-  const formatFunction = format(specifier);
+export const formatMatrixValue = format('.3e');
+export const formatMatrixComplex = createComplexFormatter('.2e', true);
+export const formatScalarComplex = createComplexFormatter('.12~g');
 
-  if (imag === 0) {
-    return `${formatFunction(real)}`;
-  }
+export function createComplexFormatter(specifier: string, full = false) {
+  const formatVal = format(specifier);
 
-  if (real === 0) {
-    return `${formatFunction(imag)}ⅈ`;
-  }
+  return (value: H5WebComplex) => {
+    const [real, imag] = value;
 
-  return `${formatFunction(real)}${
-    Math.sign(imag) === 1 ? ' + ' : ' − '
-  }${formatFunction(Math.abs(imag))}ⅈ`;
+    if (imag === 0 && !full) {
+      return `${formatVal(real)}`;
+    }
+
+    if (real === 0 && !full) {
+      return `${formatVal(imag)} i`;
+    }
+
+    const sign = Math.sign(imag) >= 0 ? ' + ' : ' − ';
+    return `${formatVal(real)}${sign}${formatVal(Math.abs(imag))} i`;
+  };
 }
 
 export function getChildEntity(

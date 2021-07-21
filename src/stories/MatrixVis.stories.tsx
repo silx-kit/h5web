@@ -1,6 +1,6 @@
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import type { H5WebComplex } from '../h5web/providers/models';
-import { formatNumber } from '../h5web/vis-packs/core/utils';
+import { formatMatrixComplex, formatMatrixValue } from '../h5web/utils';
 import { getMockDataArray, MatrixVis, MatrixVisProps } from '../packages/lib';
 import FillHeight from './decorators/FillHeight';
 
@@ -10,16 +10,16 @@ export const Default = Template.bind({});
 
 Default.args = {
   dataArray: getMockDataArray('/nD_datasets/twoD'),
-  formatter: (val) => formatNumber(val as number),
-  cellWidth: 100,
+  formatter: (val) => formatMatrixValue(val as number),
+  cellWidth: 116,
 };
 
 export const Complex = Template.bind({});
 
 Complex.args = {
   dataArray: getMockDataArray<H5WebComplex>('/nD_datasets/twoD_cplx'),
-  formatter: (val) => `real = ${formatNumber((val as H5WebComplex)[0])}`,
-  cellWidth: 180,
+  formatter: (val) => formatMatrixComplex(val as H5WebComplex),
+  cellWidth: 232,
 };
 
 export default {

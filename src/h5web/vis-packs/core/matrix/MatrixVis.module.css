@@ -14,8 +14,7 @@
 .cell {
   display: flex;
   align-items: center;
-  justify-content: right;
-  padding-right: 0.25rem;
+  justify-content: center;
   background-color: var(--h5w-matrix-cell--bgColor, transparent);
 }
 

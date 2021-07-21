@@ -4,14 +4,14 @@ import type {
   Dataset,
   H5WebComplex,
 } from '../../../providers/models';
-import { formatComplex } from '../../../utils';
+import { formatScalarComplex } from '../../../utils';
 import type { PrintableType, ValueFormatter } from '../models';
 
 export function getFormatter(
   dataset: Dataset<ArrayShape, PrintableType>
 ): ValueFormatter<PrintableType> {
   if (hasComplexType(dataset)) {
-    return (val) => formatComplex(val as H5WebComplex);
+    return (val) => formatScalarComplex(val as H5WebComplex);
   }
 
   return (val) => (val as number | string | boolean).toString();
