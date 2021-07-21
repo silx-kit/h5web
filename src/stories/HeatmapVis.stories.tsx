@@ -19,7 +19,23 @@ const logSafeDomain = getDomain(dataValues, ScaleType.Log);
 const alphaArray = ndarray(dataValues.map((x) => Math.abs(x)));
 const alphaDomain = getDomain(alphaArray);
 
-const Template: Story<HeatmapVisProps> = (args) => <HeatmapVis {...args} />;
+const Template: Story<
+  Omit<HeatmapVisProps, 'scaleType'> & {
+    scaleType: ScaleType;
+    gammaExponent: number;
+  }
+> = (args) => {
+  const { scaleType, gammaExponent, ...otherArgs } = args;
+  const props = {
+    scaleType:
+      scaleType === ScaleType.Gamma
+        ? ([ScaleType.Gamma, gammaExponent] as [ScaleType.Gamma, number])
+        : scaleType,
+    ...otherArgs,
+  };
+
+  return <HeatmapVis {...props} />;
+};
 
 export const Default = Template.bind({});
 
@@ -203,7 +219,16 @@ export default {
       defaultValue: ScaleType.Linear,
       control: {
         type: 'inline-radio',
-        options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
+        options: Object.values(ScaleType),
+      },
+    },
+    gammaExponent: {
+      defaultValue: 2,
+      control: {
+        type: 'range',
+        min: 0,
+        max: 10,
+        step: 0.1,
       },
     },
     layout: {

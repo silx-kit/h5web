@@ -3,14 +3,14 @@ import { useMeasure } from '@react-hookz/web';
 import { adaptedNumTicks, createAxisScale } from '../utils';
 import styles from './ColorBar.module.css';
 import { getInterpolator, getLinearGradient } from './utils';
-import type { ScaleType, Domain } from '../models';
-import type { ColorMap } from './models';
+import type { Domain } from '../models';
+import type { ColorMap, ScaleParams } from './models';
 import { formatValue } from '../../../utils';
 import Tick from '../shared/Tick';
 
 interface Props {
   domain: Domain;
-  scaleType: ScaleType;
+  scaleType: ScaleParams;
   colorMap: ColorMap;
   horizontal?: boolean;
   withBounds?: boolean;
@@ -37,10 +37,9 @@ function ColorBar(props: Props) {
   const Axis = horizontal ? AxisBottom : AxisRight;
   const isEmptyDomain = domain[0] === domain[1];
 
-  const axisScale = createAxisScale({
+  const axisScale = createAxisScale(scaleType, {
     domain,
     range: horizontal ? [0, gradientLength] : [gradientLength, 0],
-    type: scaleType,
   });
 
   return (

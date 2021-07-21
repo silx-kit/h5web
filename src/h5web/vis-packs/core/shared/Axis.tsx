@@ -39,10 +39,9 @@ function Axis(props: Props) {
 
   const { scaleType = ScaleType.Linear, isIndexAxis, showGrid, label } = config;
   // Restrain ticks scales to visible domains
-  const scale = createAxisScale({
+  const scale = createAxisScale(scaleType, {
     domain,
     range: flipAxis ? [axisLength, 0] : [0, axisLength],
-    type: scaleType,
   });
 
   const [AxisComponent, GridComponent] = COMPONENTS[type];

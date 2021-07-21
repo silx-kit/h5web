@@ -10,6 +10,7 @@ import ScaleSelector from './controls/ScaleSelector/ScaleSelector';
 import shallow from 'zustand/shallow';
 import GridToggler from './controls/GridToggler';
 import FlipYAxisToggler from './controls/FlipYAxisToggler';
+import { ScaleType } from '../vis-packs/core/models';
 
 function HeatmapToolbar() {
   const {
@@ -52,7 +53,16 @@ function HeatmapToolbar() {
 
       <Separator />
 
-      <ScaleSelector value={scaleType} onScaleChange={setScaleType} />
+      <ScaleSelector
+        value={scaleType}
+        onScaleChange={setScaleType}
+        options={[
+          ScaleType.Linear,
+          ScaleType.Log,
+          ScaleType.SymLog,
+          ScaleType.Sqrt,
+        ]}
+      />
 
       <Separator />
 

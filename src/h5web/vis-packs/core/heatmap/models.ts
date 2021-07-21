@@ -1,3 +1,4 @@
+import type { ScaleType } from '../models';
 import type { INTERPOLATORS } from './interpolators';
 
 export interface Dims {
@@ -10,3 +11,5 @@ export type D3Interpolator = (t: number) => string;
 export type ColorMap = keyof typeof INTERPOLATORS;
 
 export type Layout = 'contain' | 'cover' | 'fill';
+
+export type ScaleParams = Omit<ScaleType, 'gamma'> | [ScaleType.Gamma, number];
