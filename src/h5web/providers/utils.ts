@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { hasArrayShape } from '../guards';
 import { Dataset, DType, DTypeClass, Endianness } from './models';
 
@@ -90,4 +91,20 @@ export function flattenValue(
   const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
   const dims = slicedDims || entity.shape;
   return (value as unknown[]).flat(dims.length - 1);
+}
+
+export async function handleAxiosError<T>(
+  func: () => Promise<T>,
+  status: number,
+  errToThrow: string
+): Promise<T> {
+  try {
+    return await func();
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.status === status) {
+      throw new Error(errToThrow);
+    }
+
+    throw error;
+  }
 }
