@@ -25,6 +25,10 @@ module.exports = createConfig({
     // Not really more readable and makes Jest crash
     'unicorn/prefer-prototype-methods': 'off',
 
+    /* Forcing use of `else` for consistency with mandatory `default` clause in `switch` statements is unreasonable.
+     * `if`/`else if` serves a different purpose than `switch`. */
+    'sonarjs/elseif-without-else': 'off',
+
     // zustand has `whitelist` option
     'inclusive-language/use-inclusive-words': [
       'error',
