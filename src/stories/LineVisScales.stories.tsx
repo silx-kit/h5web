@@ -17,6 +17,14 @@ const domainForXLog = getDomain(dataArrayForXLog.data);
 
 const Template: Story<LineVisProps> = (args) => <LineVis {...args} />;
 
+export const SymLogForY = Template.bind({});
+SymLogForY.storyName = 'Symlog for Y';
+SymLogForY.args = {
+  dataArray,
+  domain,
+  scaleType: ScaleType.SymLog,
+};
+
 export const LogForY = Template.bind({});
 LogForY.storyName = 'Log for Y';
 LogForY.args = {
@@ -25,11 +33,11 @@ LogForY.args = {
   scaleType: ScaleType.Log,
 };
 
-export const SymLogForY = Template.bind({});
-SymLogForY.storyName = 'Sym Log for Y';
-SymLogForY.args = {
-  dataArray,
-  domain,
+export const SymLogForX = Template.bind({});
+SymLogForX.storyName = 'Symlog for X';
+SymLogForX.args = {
+  dataArray: dataArrayForXLog,
+  domain: domainForXLog,
   scaleType: ScaleType.SymLog,
 };
 
@@ -39,14 +47,6 @@ LogForX.args = {
   dataArray: dataArrayForXLog,
   domain: domainForXLog,
   abscissaParams: { scaleType: ScaleType.Log },
-};
-
-export const SymLogForX = Template.bind({});
-SymLogForX.storyName = 'Sym Log for X';
-SymLogForX.args = {
-  dataArray: dataArrayForXLog,
-  domain: domainForXLog,
-  scaleType: ScaleType.SymLog,
 };
 
 export const LogLog = Template.bind({});

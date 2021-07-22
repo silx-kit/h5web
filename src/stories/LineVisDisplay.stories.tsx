@@ -14,55 +14,41 @@ const domain = getDomain(dataArray.data);
 
 const Template: Story<LineVisProps> = (args) => <LineVis {...args} />;
 
-export const LineAndGlyphs = Template.bind({});
+export const Glyphs = Template.bind({});
+Glyphs.args = {
+  dataArray,
+  domain,
+  curveType: CurveType.GlyphsOnly,
+};
 
+export const LineAndGlyphs = Template.bind({});
+LineAndGlyphs.storyName = 'Line & Glyphs';
 LineAndGlyphs.args = {
   dataArray,
   domain,
   curveType: CurveType.LineAndGlyphs,
 };
 
-export const GlyphsOnly = Template.bind({});
-
-GlyphsOnly.args = {
-  dataArray,
-  domain,
-  curveType: CurveType.GlyphsOnly,
-};
-
 export const NoGrid = Template.bind({});
-
 NoGrid.args = {
   dataArray,
   domain,
   showGrid: false,
 };
 
-export const CustomAbscissas = Template.bind({});
-
-CustomAbscissas.args = {
-  dataArray,
-  domain,
-  abscissaParams: {
-    value: Array.from({ length: dataArray.size }, (_, i) => -10 + 0.5 * i),
-  },
-};
-
-export const WithAxesLabels = Template.bind({});
-
-WithAxesLabels.args = {
-  dataArray,
-  domain,
-  abscissaParams: { label: 'Time' },
-  ordinateLabel: 'Position',
-};
-
 export const WithTitle = Template.bind({});
-
 WithTitle.args = {
   dataArray,
   domain,
   title: 'A simple curve',
+};
+
+export const WithAxisLabels = Template.bind({});
+WithAxisLabels.args = {
+  dataArray,
+  domain,
+  abscissaParams: { label: 'Time' },
+  ordinateLabel: 'Position',
 };
 
 export const WithAnnotation: Story<LineVisProps> = (args) => (

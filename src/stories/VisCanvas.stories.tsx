@@ -6,21 +6,18 @@ import { VisCanvas, ScaleType } from '../packages/lib';
 const Template: Story<VisCanvasProps> = (args) => <VisCanvas {...args} />;
 
 export const IndexDomains = Template.bind({});
-
 IndexDomains.args = {
   abscissaConfig: { visDomain: [0, 3], showGrid: true, isIndexAxis: true },
   ordinateConfig: { visDomain: [50, 100], showGrid: true, isIndexAxis: true },
 };
 
 export const ArbitraryDomains = Template.bind({});
-
 ArbitraryDomains.args = {
   abscissaConfig: { visDomain: [0, 3], showGrid: true },
   ordinateConfig: { visDomain: [50, 100], showGrid: true },
 };
 
 export const LogScales = Template.bind({});
-
 LogScales.args = {
   abscissaConfig: {
     visDomain: [1, 10],
@@ -35,7 +32,6 @@ LogScales.args = {
 };
 
 export const AspectRatio = Template.bind({});
-
 AspectRatio.args = {
   abscissaConfig: { visDomain: [0, 16], showGrid: true, isIndexAxis: true },
   ordinateConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
@@ -43,23 +39,20 @@ AspectRatio.args = {
 };
 
 export const NoGrid = Template.bind({});
-
 NoGrid.args = {
   abscissaConfig: { visDomain: [-5, 20], showGrid: false, isIndexAxis: true },
   ordinateConfig: { visDomain: [0, 2], showGrid: false },
 };
 
 export const Title = Template.bind({});
-
 Title.args = {
   abscissaConfig: { visDomain: [0, 3], showGrid: true, isIndexAxis: true },
   ordinateConfig: { visDomain: [50, 100], showGrid: true, isIndexAxis: true },
   title: 'This is a graph',
 };
 
-export const AxesLabels = Template.bind({});
-
-AxesLabels.args = {
+export const AxisLabels = Template.bind({});
+AxisLabels.args = {
   abscissaConfig: { visDomain: [0, 3], showGrid: true, label: 'Abscissas' },
   ordinateConfig: { visDomain: [50, 100], showGrid: true, label: 'Ordinates' },
 };
