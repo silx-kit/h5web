@@ -292,7 +292,7 @@ test('handle min or max <= 0 in log scale', async () => {
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
-  await screen.findByRole('button', { name: 'Log' }); // wait for switch to log scale
+  expect(await screen.findByRole('button', { name: 'Log' })).toBeVisible(); // wait for switch to log scale
 
   userEvent.click(editBtn);
 
@@ -324,7 +324,7 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
-  await screen.findByRole('button', { name: 'Log' }); // wait for switch to log scale
+  expect(await screen.findByRole('button', { name: 'Log' })).toBeVisible(); // wait for switch to log scale
 
   userEvent.click(editBtn);
 
