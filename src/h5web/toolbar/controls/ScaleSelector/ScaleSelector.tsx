@@ -6,17 +6,23 @@ interface Props {
   label?: string;
   value: ScaleType;
   onScaleChange: (scale: ScaleType) => void;
+  options?: ScaleType[];
 }
 
 function ScaleSelector(props: Props) {
-  const { label, value, onScaleChange } = props;
+  const {
+    label,
+    value,
+    onScaleChange,
+    options = Object.values(ScaleType),
+  } = props;
 
   return (
     <Selector
       label={label}
       value={value}
       onChange={onScaleChange}
-      options={Object.values(ScaleType)}
+      options={options}
       optionComponent={ScaleOption}
     />
   );
