@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import type { Domain } from '../../../../packages/lib';
-import { formatValue } from '../../../utils';
+import { formatBound } from '../../../utils';
 import { DomainError, DomainErrors } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import BoundEditor, { BoundEditorHandle } from './BoundEditor';
@@ -100,11 +100,11 @@ const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
           <span>
             [{' '}
             <abbr title={dataDomain[0].toString()}>
-              {formatValue(dataDomain[0])}
+              {formatBound(dataDomain[0])}
             </abbr>{' '}
             ,{' '}
             <abbr title={dataDomain[1].toString()}>
-              {formatValue(dataDomain[1])}
+              {formatBound(dataDomain[1])}
             </abbr>{' '}
             ]
           </span>

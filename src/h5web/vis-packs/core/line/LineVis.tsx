@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import type { NdArray } from 'ndarray';
 import { range } from 'd3-array';
 import styles from './LineVis.module.css';
@@ -7,11 +7,11 @@ import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import { ScaleType, Domain, AxisParams } from '../models';
-import { CurveType } from './models';
+import { CurveType, TooltipData } from './models';
 import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
 import { assertDataLength, assertDefined } from '../../../guards';
-import { useTooltipFormatters } from './hooks';
-import { useCSSCustomProperties } from '../hooks';
+import { useCSSCustomProperties, useValueToIndexScale } from '../hooks';
+import { formatTooltipVal, formatTooltipErr } from '../../../utils';
 
 const DEFAULT_CURVE_COLOR = 'midnightblue';
 const DEFAULT_AUX_COLORS =
@@ -29,6 +29,7 @@ interface Props {
   errorsArray?: NdArray<number[]>;
   showErrors?: boolean;
   auxArrays?: NdArray<number[]>[];
+  renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
 }
 
@@ -45,6 +46,7 @@ function LineVis(props: Props) {
     errorsArray,
     showErrors = false,
     auxArrays = [],
+    renderTooltip,
     children,
   } = props;
 
@@ -62,6 +64,8 @@ function LineVis(props: Props) {
     return abscissaValue || range(dataArray.size);
   }, [abscissaValue, dataArray.size]);
 
+  const abscissaToIndex = useValueToIndexScale(abscissas, true);
+
   const abscissaDomain = useMemo(() => {
     const rawDomain = getDomain(abscissas, abscissaScaleType);
     return rawDomain && extendDomain(rawDomain, 0.01, abscissaScaleType);
@@ -72,13 +76,6 @@ function LineVis(props: Props) {
   const dataDomain = useMemo(() => {
     return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
-
-  const tooltipFormatters = useTooltipFormatters(
-    abscissas,
-    abscissaLabel,
-    dataArray,
-    errorsArray
-  );
 
   const {
     colors: [curveColor, rawAuxColor],
@@ -109,7 +106,29 @@ function LineVis(props: Props) {
         }}
       >
         <PanZoomMesh />
-        <TooltipMesh {...tooltipFormatters} guides="vertical" />
+        <TooltipMesh
+          guides="vertical"
+          renderTooltip={(x) => {
+            const xi = abscissaToIndex(x);
+            const abscissa = abscissas[xi];
+
+            if (renderTooltip) {
+              return renderTooltip({ abscissa, xi, x });
+            }
+
+            const value = dataArray.get(xi);
+            const error = errorsArray && errorsArray.get(xi);
+            return (
+              <>
+                {`${abscissaLabel || 'x'}=${formatTooltipVal(abscissa)}`}
+                <div className={styles.tooltipValue}>
+                  <strong>{formatTooltipVal(value)}</strong>
+                  {error && ` ±${formatTooltipErr(error)}`}
+                </div>
+              </>
+            );
+          }}
+        />
         <DataCurve
           abscissas={abscissas}
           ordinates={dataArray.data}

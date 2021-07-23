@@ -5,7 +5,6 @@ import {
   PickD3Scale,
 } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
-import { format } from 'd3-format';
 import ndarray, { NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 import { isNumber } from 'lodash';
@@ -21,13 +20,10 @@ import {
 } from './models';
 import { assertDataLength, isDefined } from '../../guards';
 import { isAxis } from '../../dimension-mapper/utils';
-import { getAttributeValue } from '../../utils';
+import { formatTick, getAttributeValue } from '../../utils';
 import type { Dataset } from '../../providers/models';
 import { H5WEB_SCALES } from './scales';
 import { clamp } from 'three/src/math/MathUtils';
-
-const formatTick = format('0');
-export const formatNumber = format('.3e');
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 

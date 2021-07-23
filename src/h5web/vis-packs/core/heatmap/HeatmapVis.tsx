@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import type { NdArray } from 'ndarray';
 import styles from './HeatmapVis.module.css';
 import ColorBar from './ColorBar';
@@ -7,12 +7,13 @@ import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
 import { Domain, ScaleType, AxisParams } from '../models';
-import type { ColorMap, Layout } from './models';
+import type { ColorMap, Layout, TooltipData } from './models';
 import { DEFAULT_DOMAIN } from '../utils';
 import { assertDefined } from '../../../guards';
-import { useAxisValues, useTooltipFormatters } from './hooks';
-import { useDomain } from '../hooks';
+import { useAxisValues } from './hooks';
+import { useDomain, useValueToIndexScale } from '../hooks';
 import HeatmapMesh from './HeatmapMesh';
+import { formatTooltipVal } from '../../../utils';
 
 interface Props {
   dataArray: NdArray<number[]>;
@@ -28,6 +29,7 @@ interface Props {
   alphaArray?: NdArray<number[]>;
   alphaDomain?: Domain;
   flipYAxis?: boolean;
+  renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
 }
 
@@ -46,6 +48,7 @@ function HeatmapVis(props: Props) {
     alphaArray,
     alphaDomain,
     flipYAxis,
+    renderTooltip,
     children,
   } = props;
 
@@ -62,13 +65,8 @@ function HeatmapVis(props: Props) {
   const ordinateDomain = useDomain(ordinates);
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 
-  const tooltipFormatters = useTooltipFormatters(
-    abscissas,
-    ordinates,
-    abscissaLabel,
-    ordinateLabel,
-    dataArray
-  );
+  const abscissaToIndex = useValueToIndexScale(abscissas);
+  const ordinateToIndex = useValueToIndexScale(ordinates);
 
   return (
     <figure
@@ -95,7 +93,29 @@ function HeatmapVis(props: Props) {
         }}
       >
         <PanZoomMesh />
-        <TooltipMesh {...tooltipFormatters} guides="both" />
+        <TooltipMesh
+          guides="both"
+          renderTooltip={(x, y) => {
+            const xi = abscissaToIndex(x);
+            const yi = ordinateToIndex(y);
+            const abscissa = abscissas[xi];
+            const ordinate = ordinates[yi];
+
+            if (renderTooltip) {
+              return renderTooltip({ abscissa, ordinate, xi, yi, x, y });
+            }
+
+            return (
+              <>
+                {`${abscissaLabel || 'x'}=${formatTooltipVal(abscissa)}, `}
+                {`${ordinateLabel || 'y'}=${formatTooltipVal(ordinate)}`}
+                <div className={styles.tooltipValue}>
+                  {formatTooltipVal(dataArray.get(yi, xi))}
+                </div>
+              </>
+            );
+          }}
+        />
         <HeatmapMesh
           rows={rows}
           cols={cols}

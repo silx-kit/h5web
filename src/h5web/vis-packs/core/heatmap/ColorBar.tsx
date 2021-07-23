@@ -5,7 +5,7 @@ import styles from './ColorBar.module.css';
 import { getInterpolator, getLinearGradient } from './utils';
 import type { ScaleType, Domain } from '../models';
 import type { ColorMap } from './models';
-import { formatValue } from '../../../utils';
+import { formatBound } from '../../../utils';
 import Tick from '../shared/Tick';
 
 interface Props {
@@ -48,10 +48,10 @@ function ColorBar(props: Props) {
       {withBounds && (
         <>
           <p className={styles.minBound}>
-            {isEmptyDomain ? '−∞' : formatValue(domain[0])}
+            {isEmptyDomain ? '−∞' : formatBound(domain[0])}
           </p>
           <p className={styles.maxBound}>
-            {isEmptyDomain ? '+∞' : formatValue(domain[1])}
+            {isEmptyDomain ? '+∞' : formatBound(domain[1])}
           </p>
         </>
       )}

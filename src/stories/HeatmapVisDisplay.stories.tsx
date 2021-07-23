@@ -7,6 +7,7 @@ import {
   getMockDataArray,
   Annotation,
 } from '../packages/lib';
+import { formatTooltipVal } from '../h5web/utils';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 const domain = getDomain(dataArray.data);
@@ -39,6 +40,31 @@ NoGrid.args = {
   dataArray,
   domain,
   showGrid: false,
+};
+
+export const CustomTooltip = Template.bind({});
+CustomTooltip.args = {
+  dataArray,
+  domain,
+  abscissaParams: {
+    value: Array.from({ length: dataArray.shape[1] }, (_, i) => 100 + 10 * i),
+  },
+  ordinateParams: {
+    value: Array.from({ length: dataArray.shape[0] }, (_, i) => -5 + 0.5 * i),
+  },
+  renderTooltip: (data) => {
+    const { abscissa, ordinate, xi, yi, x, y } = data;
+    return (
+      <>
+        <div>
+          <strong>{`value = ${dataArray.get(yi, xi)}`}</strong>
+        </div>
+        <div>{`abscissa = ${abscissa}, ordinate = ${ordinate}`}</div>
+        <div>{`xi = ${xi}, yi = ${yi}`}</div>
+        <div>{`x = ${formatTooltipVal(x)}, y=${formatTooltipVal(y)}`}</div>
+      </>
+    );
+  },
 };
 
 export const WheelCapture = Template.bind({});

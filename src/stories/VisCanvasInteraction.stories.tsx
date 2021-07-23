@@ -1,13 +1,8 @@
 import type { Meta, Story } from '@storybook/react';
 import VisCanvasStoriesConfig from './VisCanvas.stories';
 import { PanZoomMesh, TooltipMesh, VisCanvas } from '../packages/lib';
-import { format } from 'd3-format';
-import type { Coords } from '../h5web/vis-packs/core/models';
 import type { TooltipMeshProps } from '../h5web/vis-packs/core/shared/TooltipMesh';
-
-const formatCoord = format('.3');
-const formatIndex = ([x, y]: Coords) =>
-  `x=${formatCoord(x)} y=${formatCoord(y)}`;
+import { formatTooltipVal } from '../h5web/utils';
 
 interface TemplateProps {
   panZoom?: boolean;
@@ -26,9 +21,15 @@ const Template: Story<TemplateProps> = (args) => {
       {panZoom && <PanZoomMesh />}
       {tooltipValue && (
         <TooltipMesh
-          formatIndex={formatIndex}
-          formatValue={() => tooltipValue}
           guides={guides}
+          renderTooltip={(x, y) => (
+            <>
+              {`x=${formatTooltipVal(x)}, y=${formatTooltipVal(y)}`}
+              <div>
+                <strong>{tooltipValue}</strong>
+              </div>
+            </>
+          )}
         />
       )}
     </VisCanvas>
