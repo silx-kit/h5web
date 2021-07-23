@@ -24,7 +24,7 @@ import { buildEntityPath } from '../../utils';
 export class H5GroveApi extends ProviderApi {
   protected attrValuesCache = new Map<string, H5GroveAttrValuesResponse>();
 
-  /* API compatible with jupyterlab_h5web@e878351f5226fabc9cd14e8f0b774185ff8def45 */
+  /* API compatible with h5grove@0.0.4 */
   public constructor(url: string, filepath: string) {
     super(filepath, { baseURL: url });
   }
