@@ -7,6 +7,7 @@ import {
   Attribute,
   Group,
   UnresolvedEntity,
+  ProviderError,
 } from '../models';
 import { ProviderApi } from '../api';
 import { isDatasetResponse, isGroupResponse } from './utils';
@@ -17,7 +18,7 @@ import type {
   H5GroveAttribute,
 } from './models';
 import { assertDataset } from '../../guards';
-import { convertDtype, flattenValue } from '../utils';
+import { convertDtype, flattenValue, handleAxiosError } from '../utils';
 import { buildEntityPath } from '../../utils';
 
 export class H5GroveApi extends ProviderApi {
@@ -46,8 +47,13 @@ export class H5GroveApi extends ProviderApi {
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
-    const { data } = await this.client.get<H5GroveEntityResponse>(
-      `/meta/?file=${this.filepath}&path=${path}`
+    const { data } = await handleAxiosError(
+      () =>
+        this.client.get<H5GroveEntityResponse>(
+          `/meta/?file=${this.filepath}&path=${path}`
+        ),
+      404,
+      ProviderError.NotFound
     );
     return data;
   }
