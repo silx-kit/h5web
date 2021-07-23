@@ -1,3 +1,4 @@
+import type { Domain } from '../models';
 import type { INTERPOLATORS } from './interpolators';
 
 export interface Dims {
@@ -18,4 +19,9 @@ export interface TooltipData {
   yi: number;
   x: number;
   y: number;
+}
+
+export interface ScaleShader {
+  uniforms: (domain: Domain) => Record<string, { value: number }>;
+  fragment: string;
 }

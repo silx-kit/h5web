@@ -11,7 +11,7 @@ import type { Domain } from '../models';
 import { ScaleType } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import VisMesh from '../shared/VisMesh';
-import type { ColorMap } from './models';
+import type { ColorMap, ScaleShader } from './models';
 import { getInterpolator } from './utils';
 
 interface Props {
@@ -28,32 +28,59 @@ interface Props {
 
 const CMAP_SIZE = 256;
 
-const SCALE_FUNC: Record<ScaleType, (val: number) => number> = {
-  [ScaleType.Linear]: (val) => val,
-  [ScaleType.Log]: Math.log10,
-  [ScaleType.SymLog]: (val) => Math.sign(val) * Math.log10(1 + Math.abs(val)),
-  [ScaleType.Sqrt]: Math.sqrt,
-};
+const SCALE_SHADER: Record<ScaleType, ScaleShader> = {
+  [ScaleType.Linear]: {
+    uniforms: (domain: Domain) => ({
+      min: { value: domain[0] },
+      oneOverRange: { value: 1 / (domain[1] - domain[0]) },
+    }),
+    fragment: `
+    uniform float min;
+    uniform float oneOverRange;
 
-const SCALE_SHADER: Record<ScaleType, string> = {
-  [ScaleType.Linear]: `
     float scale(float value) {
-      return oneOverRange * (value - min); // Linear
+      return oneOverRange * (value - min);
     }
 
     bool isSupported(float value) {
       return true;
     }`,
-  [ScaleType.Log]: `
+  },
+  [ScaleType.Log]: {
+    uniforms: (domain: Domain) => {
+      const logDomain = domain.map(Math.log10);
+      return {
+        min: { value: logDomain[0] },
+        oneOverRange: { value: 1 / (logDomain[1] - logDomain[0]) },
+      };
+    },
+    fragment: `
+    uniform float min;
+    uniform float oneOverRange;
+
     const float oneOverLog10 = 0.43429448190325176;
     float scale(float value) {
-      return oneOverRange * (log(value) * oneOverLog10 - min); // Log
+      return oneOverRange * (log(value) * oneOverLog10 - min);
     }
 
     bool isSupported(float value) {
       return value > 0.;
     }`,
-  [ScaleType.SymLog]: `
+  },
+  [ScaleType.SymLog]: {
+    uniforms: (domain: Domain) => {
+      const symlogDomain = domain.map(
+        (val) => Math.sign(val) * Math.log10(1 + Math.abs(val))
+      );
+      return {
+        min: { value: symlogDomain[0] },
+        oneOverRange: { value: 1 / (symlogDomain[1] - symlogDomain[0]) },
+      };
+    },
+    fragment: `
+    uniform float min;
+    uniform float oneOverRange;
+
     const float oneOverLog10 = 0.43429448190325176;
     float symlog(float x) {
       return sign(x) * log(1. + abs(x)) * oneOverLog10;
@@ -66,7 +93,19 @@ const SCALE_SHADER: Record<ScaleType, string> = {
     bool isSupported(float value) {
       return true;
     }`,
-  [ScaleType.Sqrt]: `
+  },
+  [ScaleType.Sqrt]: {
+    uniforms: (domain: Domain) => {
+      const sqrtDomain = domain.map(Math.sqrt);
+      return {
+        min: { value: sqrtDomain[0] },
+        oneOverRange: { value: 1 / (sqrtDomain[1] - sqrtDomain[0]) },
+      };
+    },
+    fragment: `
+    uniform float min;
+    uniform float oneOverRange;
+
     float scale(float value) {
       return oneOverRange * (sqrt(value) - min);
     }
@@ -74,6 +113,7 @@ const SCALE_SHADER: Record<ScaleType, string> = {
     bool isSupported(float value) {
       return value >= 0.;
     }`,
+  },
 };
 
 function HeatmapMesh(props: Props) {
@@ -88,8 +128,6 @@ function HeatmapMesh(props: Props) {
     alphaValues,
     alphaDomain,
   } = props;
-
-  const scaledDomain = domain.map(SCALE_FUNC[scaleType]);
 
   const dataTexture = useMemo(() => {
     const valuesArr = Float32Array.from(values);
@@ -124,12 +162,11 @@ function HeatmapMesh(props: Props) {
       withAlpha: { value: alphaValues ? 1 : 0 },
       alpha: { value: alphaTexture },
       colorMap: { value: colorMapTexture },
-      min: { value: scaledDomain[0] },
       alphaMin: { value: alphaDomain && alphaDomain[0] },
-      oneOverRange: { value: 1 / (scaledDomain[1] - scaledDomain[0]) },
       oneOverAlphaRange: {
         value: alphaDomain && 1 / (alphaDomain[1] - alphaDomain[0]),
       },
+      ...SCALE_SHADER[scaleType].uniforms(domain),
     },
     vertexShader: `
       varying vec2 coords;
@@ -143,9 +180,7 @@ function HeatmapMesh(props: Props) {
       uniform sampler2D data;
       uniform sampler2D colorMap;
       uniform int scaleType;
-      uniform float min;
       uniform float alphaMin;
-      uniform float oneOverRange;
       uniform sampler2D alpha;
       uniform float oneOverAlphaRange;
       uniform int withAlpha;
@@ -154,7 +189,7 @@ function HeatmapMesh(props: Props) {
 
       varying vec2 coords;
 
-      ${SCALE_SHADER[scaleType]}
+      ${SCALE_SHADER[scaleType].fragment}
 
       void main() {
         float value = texture2D(data, coords).r;
