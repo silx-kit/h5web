@@ -44,6 +44,16 @@ Domain.args = {
   domain: [-100, 100],
 };
 
+export const Abscissas = Template.bind({});
+
+Abscissas.args = {
+  dataArray,
+  domain,
+  abscissaParams: {
+    value: Array.from({ length: dataArray.size }, (_, i) => -10 + 0.5 * i),
+  },
+};
+
 export const ErrorBars = Template.bind({});
 
 ErrorBars.args = {

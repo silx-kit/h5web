@@ -36,25 +36,21 @@ const Template: Story<TemplateProps> = (args) => {
 };
 
 export const PanZoom = Template.bind({});
-
 PanZoom.args = { panZoom: true };
 PanZoom.argTypes = { guides: { table: { disable: true } } };
 
 export const Tooltip = Template.bind({});
-
 Tooltip.args = {
   tooltipValue: 'no value to display',
 };
 
 export const TooltipWithGuides = Template.bind({});
-
 TooltipWithGuides.args = {
   tooltipValue: 'guides="both"',
   guides: 'both',
 };
 
 export const TooltipWithPanZoom = Template.bind({});
-
 TooltipWithPanZoom.args = {
   panZoom: true,
   tooltipValue: '<PanZoomMesh /> must come first',
