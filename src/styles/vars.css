@@ -41,4 +41,5 @@
   --h5w-selector-label--color: var(--secondary-dark);
   --h5w-selector-option-hover--bgColor: var(--secondary-light-bg);
   --h5w-selector-option-selected--bgColor: var(--secondary-light);
+  --h5w-domainSlider-histogram-bar--color: var(--secondary-dark);
 }

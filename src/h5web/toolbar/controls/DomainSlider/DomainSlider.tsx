@@ -3,6 +3,7 @@ import styles from './DomainSlider.module.css';
 import type {
   CustomDomain,
   Domain,
+  HistogramData,
   ScaleType,
 } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
@@ -23,11 +24,12 @@ interface Props {
   customDomain: CustomDomain;
   scaleType: ScaleType;
   onCustomDomainChange: (domain: CustomDomain) => void;
+  histogram?: HistogramData;
 }
 
 function DomainSlider(props: Props) {
   const { dataDomain, customDomain, scaleType } = props;
-  const { onCustomDomainChange } = props;
+  const { onCustomDomainChange, histogram } = props;
 
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain, errors] = useSafeDomain(visDomain, dataDomain, scaleType);
@@ -134,9 +136,11 @@ function DomainSlider(props: Props) {
         onChangeMin={(val) => onCustomDomainChange([val, customDomain[1]])}
         onChangeMax={(val) => onCustomDomainChange([customDomain[0], val])}
         onSwap={() => onCustomDomainChange([customDomain[1], customDomain[0]])}
+        histogram={histogram}
       />
     </div>
   );
 }
 
+export type { Props as DomainSliderProps };
 export default DomainSlider;

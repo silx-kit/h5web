@@ -1,9 +1,15 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useMeasure } from 'react-use';
 import type { Domain } from '../../../../packages/lib';
 import { formatBound } from '../../../utils';
-import { DomainError, DomainErrors } from '../../../vis-packs/core/models';
+import {
+  DomainError,
+  DomainErrors,
+  HistogramData,
+} from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import BoundEditor, { BoundEditorHandle } from './BoundEditor';
+import DataHistogram from './DataHistogram';
 import styles from './DomainTooltip.module.css';
 import ErrorMessage from './ErrorMessage';
 
@@ -24,6 +30,7 @@ interface Props {
   onChangeMin: (val: number) => void;
   onChangeMax: (val: number) => void;
   onSwap: () => void;
+  histogram?: HistogramData;
 }
 
 interface Handle {
@@ -31,7 +38,7 @@ interface Handle {
 }
 
 const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
-  const { id, open, sliderDomain, dataDomain, errors } = props;
+  const { id, open, sliderDomain, dataDomain, errors, histogram } = props;
   const { isAutoMin, isAutoMax, isEditingMin, isEditingMax } = props;
   const {
     onAutoMinToggle,
@@ -46,6 +53,8 @@ const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
   const { minGreater, minError, maxError } = errors;
   const minEditorRef = useRef<BoundEditorHandle>(null);
   const maxEditorRef = useRef<BoundEditorHandle>(null);
+
+  const [controlsRef, controlsSize] = useMeasure<HTMLDivElement>();
 
   /* Expose `cancelEditing` function to parent component through ref handle so that
      editing can be cancelled when the user closes the domain tooltip. */
@@ -65,66 +74,74 @@ const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
       hidden={!open}
     >
       <div className={styles.tooltipInner}>
-        {minGreater && (
-          <ErrorMessage
-            error={DomainError.MinGreater}
-            showSwapBtn={!isAutoMin && !isAutoMax}
-            onSwap={onSwap}
+        {histogram && (
+          <DataHistogram
+            bins={histogram.bins}
+            data={histogram.data}
+            size={controlsSize}
           />
         )}
-
-        <BoundEditor
-          ref={minEditorRef}
-          bound="min"
-          value={sliderDomain[0]}
-          isEditing={isEditingMin}
-          hasError={minGreater || !!minError}
-          onEditToggle={onEditMin}
-          onChange={onChangeMin}
-        />
-        {minError && <ErrorMessage error={minError} />}
-
-        <BoundEditor
-          ref={maxEditorRef}
-          bound="max"
-          value={sliderDomain[1]}
-          isEditing={isEditingMax}
-          hasError={minGreater || !!maxError}
-          onEditToggle={onEditMax}
-          onChange={onChangeMax}
-        />
-        {maxError && <ErrorMessage error={maxError} />}
-
-        <p className={styles.dataRange}>
-          Data range{' '}
-          <span>
-            [{' '}
-            <abbr title={dataDomain[0].toString()}>
-              {formatBound(dataDomain[0])}
-            </abbr>{' '}
-            ,{' '}
-            <abbr title={dataDomain[1].toString()}>
-              {formatBound(dataDomain[1])}
-            </abbr>{' '}
-            ]
-          </span>
-        </p>
-
-        <p className={styles.autoscale}>
-          Autoscale{' '}
-          <ToggleBtn
-            label="Min"
-            raised
-            value={isAutoMin}
-            onToggle={onAutoMinToggle}
+        <div ref={controlsRef} className={styles.tooltipControls}>
+          {minGreater && (
+            <ErrorMessage
+              error={DomainError.MinGreater}
+              showSwapBtn={!isAutoMin && !isAutoMax}
+              onSwap={onSwap}
+            />
+          )}
+          <BoundEditor
+            ref={minEditorRef}
+            bound="min"
+            value={sliderDomain[0]}
+            isEditing={isEditingMin}
+            hasError={minGreater || !!minError}
+            onEditToggle={onEditMin}
+            onChange={onChangeMin}
           />
-          <ToggleBtn
-            label="Max"
-            raised
-            value={isAutoMax}
-            onToggle={onAutoMaxToggle}
+          {minError && <ErrorMessage error={minError} />}
+
+          <BoundEditor
+            ref={maxEditorRef}
+            bound="max"
+            value={sliderDomain[1]}
+            isEditing={isEditingMax}
+            hasError={minGreater || !!maxError}
+            onEditToggle={onEditMax}
+            onChange={onChangeMax}
           />
-        </p>
+          {maxError && <ErrorMessage error={maxError} />}
+
+          <p className={styles.dataRange}>
+            Data range{' '}
+            <span>
+              [{' '}
+              <abbr title={dataDomain[0].toString()}>
+                {formatBound(dataDomain[0])}
+              </abbr>{' '}
+              ,{' '}
+              <abbr title={dataDomain[1].toString()}>
+                {formatBound(dataDomain[1])}
+              </abbr>{' '}
+              ]
+            </span>
+          </p>
+
+          <p className={styles.autoscale}>
+            Autoscale{' '}
+            <ToggleBtn
+              label="Min"
+              raised
+              value={isAutoMin}
+              onToggle={onAutoMinToggle}
+            />
+            <ToggleBtn
+              label="Max"
+              raised
+              value={isAutoMax}
+              onToggle={onAutoMaxToggle}
+            />
+          </p>
+        </div>
       </div>
     </div>
   );
