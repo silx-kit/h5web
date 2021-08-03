@@ -3,6 +3,8 @@ import { scaleLinear } from '@visx/scale';
 import { useDomain } from '../../../vis-packs/core/hooks';
 import type { ScaleType, Size, Domain } from '../../../vis-packs/core/models';
 import { H5WEB_SCALES } from '../../../vis-packs/core/scales';
+import Tick from '../../../vis-packs/core/shared/Tick';
+import { adaptedNumTicks } from '../../../vis-packs/core/utils';
 import styles from './DataHistogram.module.css';
 
 interface Props {
@@ -50,8 +52,21 @@ function DataHistogram(props: Props) {
           ))}
         </svg>
 
-        <AxisBottom top={height} scale={xScale} />
-        <AxisLeft scale={yScale.range([height, 0])} />
+        <AxisBottom
+          top={height}
+          scale={xScale}
+          numTicks={adaptedNumTicks(width)}
+          tickClassName={styles.tick}
+          tickComponent={Tick}
+          tickFormat={xScale.tickFormat(adaptedNumTicks(width), '.3~g')}
+        />
+        <AxisLeft
+          scale={yScale.range([height, 0])}
+          numTicks={adaptedNumTicks(height)}
+          tickClassName={styles.tick}
+          tickComponent={Tick}
+          tickFormat={yScale.tickFormat(adaptedNumTicks(height), '.3~g')}
+        />
       </svg>
     </div>
   );
