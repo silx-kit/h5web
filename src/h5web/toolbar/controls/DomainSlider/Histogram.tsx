@@ -4,7 +4,7 @@ import { scaleLinear } from '@visx/scale';
 import { useDomain } from '../../../vis-packs/core/hooks';
 import type { HistogramData } from '../../../vis-packs/core/models';
 import Tick from '../../../vis-packs/core/shared/Tick';
-import { DEFAULT_DOMAIN } from '../../../vis-packs/core/utils';
+import { adaptedNumTicks, DEFAULT_DOMAIN } from '../../../vis-packs/core/utils';
 import styles from './Histogram.module.css';
 
 function Histogram(props: HistogramData) {
@@ -43,8 +43,21 @@ function Histogram(props: HistogramData) {
           />
         ))}
 
-        <AxisBottom top={height} scale={xScale} tickComponent={Tick} />
-        <AxisLeft scale={yScale.range([height, 0])} tickComponent={Tick} />
+        <AxisBottom
+          top={height}
+          scale={xScale}
+          numTicks={adaptedNumTicks(width)}
+          tickClassName={styles.tick}
+          tickComponent={Tick}
+          tickFormat={xScale.tickFormat(adaptedNumTicks(width), '.3~g')}
+        />
+        <AxisLeft
+          scale={yScale.range([height, 0])}
+          numTicks={adaptedNumTicks(height)}
+          tickClassName={styles.tick}
+          tickComponent={Tick}
+          tickFormat={yScale.tickFormat(adaptedNumTicks(height), '.3~g')}
+        />
       </svg>
     </div>
   );
