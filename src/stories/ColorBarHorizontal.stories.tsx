@@ -1,20 +1,16 @@
-import type { Meta, Story } from '@storybook/react';
-import ColorBarStoriesConfig, { Default } from './ColorBar.stories';
-import { ColorBar } from '../packages/lib';
-import type { TemplateProps } from './ColorBar.stories';
+import type { Meta } from '@storybook/react';
+import ColorBarStoriesConfig, {
+  ColorMapTemplate,
+  Default,
+} from './ColorBar.stories';
 
-const Template: Story<TemplateProps> = (args) => {
-  const { domainMin: min, domainMax: max, ...colorBarArgs } = args;
-  return <ColorBar {...colorBarArgs} domain={[min, max]} />;
-};
-
-export const Horizontal = Template.bind({});
+export const Horizontal = ColorMapTemplate.bind({});
 Horizontal.args = {
   ...Default.args,
   horizontal: true,
 };
 
-export const WithBounds = Template.bind({});
+export const WithBounds = ColorMapTemplate.bind({});
 WithBounds.args = {
   ...Default.args,
   domainMin: -235.111,

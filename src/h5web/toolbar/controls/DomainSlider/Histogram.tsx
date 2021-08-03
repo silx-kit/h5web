@@ -4,16 +4,17 @@ import { scaleLinear } from '@visx/scale';
 import { useCombinedDomain, useDomain } from '../../../vis-packs/core/hooks';
 import type {
   Domain,
-  HistogramData,
+  HistogramParams,
   ScaleType,
 } from '../../../vis-packs/core/models';
 import { H5WEB_SCALES } from '../../../vis-packs/core/scales';
 import Tick from '../../../vis-packs/core/shared/Tick';
 import { adaptedNumTicks, DEFAULT_DOMAIN } from '../../../vis-packs/core/utils';
-import styles from './Histogram.module.css';
+import HistogramColorBar from './HistogramColorBar';
 import HistogramIndicators from './HistogramIndicators';
+import styles from './Histogram.module.css';
 
-interface Props extends HistogramData {
+interface Props extends HistogramParams {
   scaleType: ScaleType;
   dataDomain: Domain;
   sliderDomain: Domain;
@@ -21,9 +22,12 @@ interface Props extends HistogramData {
 
 function Histogram(props: Props) {
   const { values, bins, scaleType, sliderDomain, dataDomain } = props;
+  const { colorMap, invertColorMap } = props;
 
   const binDomain = useCombinedDomain([sliderDomain, dataDomain]);
   const barDomain = useDomain(values);
+  const yMax = barDomain ? barDomain[1] : DEFAULT_DOMAIN[1];
+  const yMin = colorMap ? -yMax / 10 : 0;
 
   const [size, ref] = useMeasure<HTMLDivElement>();
 
@@ -38,9 +42,11 @@ function Histogram(props: Props) {
     range: [0, width],
   });
   const yScale = scaleLinear({
-    domain: barDomain ? [0, barDomain[1]] : DEFAULT_DOMAIN,
+    domain: [yMin, yMax],
     range: [0, height],
   });
+
+  const indicatorPositions = sliderDomain.map(xScale) as Domain;
 
   return (
     <div ref={ref} className={styles.container}>
@@ -52,13 +58,20 @@ function Histogram(props: Props) {
             x={xScale(bins[i])}
             y={height - yScale(d)}
             width={xScale(bins[i + 1]) - xScale(bins[i]) + 0.5} // +0.5 removes the small gap between bars
-            height={yScale(d)}
+            height={yScale(d) - yScale(0)}
           />
         ))}
-        <HistogramIndicators
-          positions={sliderDomain.map(xScale) as Domain}
-          height={height}
-        />
+        {colorMap && (
+          <HistogramColorBar
+            x={indicatorPositions[0]}
+            y={height - yScale(0)}
+            width={indicatorPositions[1] - indicatorPositions[0]}
+            height={yScale(0) - yScale(yMin)}
+            colorMap={colorMap}
+            invertColorMap={invertColorMap}
+          />
+        )}
+        <HistogramIndicators positions={indicatorPositions} height={height} />
 
         <AxisBottom
           top={height}

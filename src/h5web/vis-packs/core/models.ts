@@ -7,6 +7,7 @@ import type {
   DType,
   Primitive,
 } from '../../providers/models';
+import type { ColorMap } from './heatmap/models';
 
 export enum ScaleType {
   Linear = 'linear',
@@ -85,7 +86,9 @@ export type ValueFormatter<T extends DType> = (val: Primitive<T>) => string;
 
 export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';
 
-export interface HistogramData {
+export interface HistogramParams {
   values: number[];
   bins: number[];
+  colorMap?: ColorMap;
+  invertColorMap?: boolean;
 }

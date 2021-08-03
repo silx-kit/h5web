@@ -3,7 +3,7 @@ import FillHeight from './decorators/FillHeight';
 import { ColorBar, ScaleType } from '../packages/lib';
 import type { ColorBarProps } from '../h5web/vis-packs/core/heatmap/ColorBar';
 
-export interface TemplateProps extends Omit<ColorBarProps, 'domain'> {
+interface TemplateProps extends Omit<ColorBarProps, 'domain'> {
   domainMin: number;
   domainMax: number;
 }
@@ -70,6 +70,7 @@ InvertColorMap.args = {
   invertColorMap: true,
 };
 
+export { Template as ColorMapTemplate };
 export default {
   title: 'Building Blocks/ColorBar',
   component: ColorBar,
@@ -92,4 +93,5 @@ export default {
       },
     },
   },
+  excludeStories: ['ColorMapTemplate'],
 } as Meta;
