@@ -1,5 +1,5 @@
 import { Endianness, DTypeClass } from './models';
-import { convertDtype } from './utils';
+import { convertDtype, encodeQueryParams } from './utils';
 
 describe('convertDtype', () => {
   it('should convert integer dtypes', () => {
@@ -73,5 +73,19 @@ describe('convertDtype', () => {
 
   it('should handle unknown type', () => {
     expect(convertDtype('>notAType')).toEqual({ class: DTypeClass.Unknown });
+  });
+});
+
+describe('encodeQueryParams', () => {
+  it('should convert a record into a query string', () => {
+    expect(encodeQueryParams({ file: 'a_file.h5', format: 'json' })).toEqual(
+      'file=a_file.h5&format=json'
+    );
+  });
+
+  it('should encode special characters', () => {
+    expect(encodeQueryParams({ file: 'a+file.h5', path: '/' })).toEqual(
+      'file=a%2Bfile.h5&path=%2F'
+    );
   });
 });
