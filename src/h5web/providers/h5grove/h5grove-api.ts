@@ -23,6 +23,7 @@ import {
   flattenValue,
   handleAxiosError,
   encodeQueryParams,
+  transformNullInNaN,
 } from '../utils';
 import { buildEntityPath } from '../../utils';
 
@@ -31,7 +32,10 @@ export class H5GroveApi extends ProviderApi {
 
   /* API compatible with h5grove@0.0.4 */
   public constructor(url: string, filepath: string) {
-    super(filepath, { baseURL: url });
+    super(filepath, {
+      baseURL: url,
+      transformResponse: transformNullInNaN,
+    });
   }
 
   public async getEntity(path: string): Promise<Entity> {

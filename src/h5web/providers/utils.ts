@@ -112,3 +112,13 @@ export async function handleAxiosError<T>(
 export function encodeQueryParams(params: Record<string, string>) {
   return new URLSearchParams(params).toString();
 }
+
+export function transformNullInNaN(data: unknown) {
+  if (typeof data !== 'string') {
+    return data;
+  }
+
+  return JSON.parse(data, (key, value) =>
+    value !== null ? value : Number.NaN
+  );
+}

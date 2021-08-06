@@ -17,7 +17,7 @@ import type {
   JupyterAttribute,
 } from './models';
 import { assertDataset } from '../../guards';
-import { convertDtype, flattenValue } from '../utils';
+import { convertDtype, flattenValue, transformNullInNaN } from '../utils';
 import { buildEntityPath } from '../../utils';
 
 export class JupyterStableApi extends ProviderApi {
@@ -25,7 +25,10 @@ export class JupyterStableApi extends ProviderApi {
 
   /* API compatible with jupyterlab_hdf v0.6.0 */
   public constructor(url: string, filepath: string) {
-    super(filepath, { baseURL: `${url}/hdf` });
+    super(filepath, {
+      baseURL: `${url}/hdf`,
+      transformResponse: transformNullInNaN,
+    });
   }
 
   public async getEntity(path: string): Promise<Entity> {
