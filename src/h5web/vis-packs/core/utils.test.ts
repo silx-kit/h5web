@@ -13,6 +13,7 @@ import { Domain, ScaleType } from './models';
 
 const MAX = Number.MAX_VALUE / 2;
 const POS_MIN = Number.MIN_VALUE;
+const { NaN: NAN, POSITIVE_INFINITY: INFINITY } = Number;
 
 describe('computeCanvasSize', () => {
   describe('with aspect ratio > 1', () => {
@@ -75,6 +76,16 @@ describe('getDomain', () => {
 
   it('should return `undefined` if data is empty', () => {
     const domain = getDomain([]);
+    expect(domain).toBeUndefined();
+  });
+
+  it('should ignore NaN and Infinity', () => {
+    const domain = getDomain([2, NAN, 10, INFINITY, 2, -1]);
+    expect(domain).toEqual([-1, 10]);
+  });
+
+  it('should return `undefined` if data contains only NaN and Infinity', () => {
+    const domain = getDomain([NAN, NAN, -INFINITY, INFINITY]);
     expect(domain).toBeUndefined();
   });
 

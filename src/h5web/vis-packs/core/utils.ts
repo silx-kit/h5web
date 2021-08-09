@@ -94,20 +94,23 @@ export function getBounds(
   const values = toArray(valuesArray);
   const errors = errorArray && toArray(errorArray);
 
-  if (values.length === 0) {
-    return undefined;
-  }
-
-  return values.reduce<Bounds>(
+  const bounds = values.reduce<Bounds>(
     (acc, val, i) => {
+      // Ignore NaN and Infinity from the bounds computation
+      if (!Number.isFinite(val)) {
+        return acc;
+      }
       const newBounds = getNewBounds(acc, val);
       const err = errors && errors[i];
       return err
         ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
         : newBounds;
     },
-    { min: values[0], max: values[0], positiveMin: Infinity }
+    { min: Infinity, max: -Infinity, positiveMin: Infinity }
   );
+
+  // Return undefined if min is Infinity (values is empty or contains only NaN/Infinity)
+  return Number.isFinite(bounds.min) ? bounds : undefined;
 }
 
 export function getDomain(
