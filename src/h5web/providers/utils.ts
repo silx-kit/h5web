@@ -108,3 +108,7 @@ export async function handleAxiosError<T>(
     throw error;
   }
 }
+
+export function encodeQueryParams(params: Record<string, string>) {
+  return new URLSearchParams(params).toString();
+}

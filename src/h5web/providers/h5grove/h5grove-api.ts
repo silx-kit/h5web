@@ -18,7 +18,12 @@ import type {
   H5GroveAttribute,
 } from './models';
 import { assertDataset } from '../../guards';
-import { convertDtype, flattenValue, handleAxiosError } from '../utils';
+import {
+  convertDtype,
+  flattenValue,
+  handleAxiosError,
+  encodeQueryParams,
+} from '../utils';
 import { buildEntityPath } from '../../utils';
 
 export class H5GroveApi extends ProviderApi {
@@ -50,7 +55,7 @@ export class H5GroveApi extends ProviderApi {
     const { data } = await handleAxiosError(
       () =>
         this.client.get<H5GroveEntityResponse>(
-          `/meta/?file=${this.filepath}&path=${path}`
+          `/meta/?${encodeQueryParams({ file: this.filepath, path })}`
         ),
       404,
       ProviderError.NotFound
@@ -69,7 +74,7 @@ export class H5GroveApi extends ProviderApi {
     }
 
     const { data } = await this.client.get<H5GroveAttrValuesResponse>(
-      `/attr/?file=${this.filepath}&path=${path}`
+      `/attr/?${encodeQueryParams({ file: this.filepath, path })}`
     );
 
     this.attrValuesCache.set(path, data);
@@ -79,11 +84,8 @@ export class H5GroveApi extends ProviderApi {
   private async fetchData(
     params: ValueRequestParams
   ): Promise<H5GroveDataResponse> {
-    const { path, selection = '' } = params;
     const { data } = await this.cancellableFetchValue<H5GroveDataResponse>(
-      `/data/?file=${this.filepath}&path=${path}${
-        selection && `&selection=${selection}`
-      }`,
+      `/data/?${encodeQueryParams({ file: this.filepath, ...params })}`,
       params
     );
     return data;
