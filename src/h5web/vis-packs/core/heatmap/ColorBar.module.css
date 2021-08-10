@@ -1,4 +1,6 @@
 .colorBar {
+  position: relative;
+  z-index: 0; /* stacking context */
   display: grid;
   padding: 1rem;
 }
@@ -25,6 +27,7 @@
   grid-area: gradient;
   display: flex;
   border: 1px solid currentColor;
+  z-index: 1; /* above axis ticks */
 }
 
 .gradient {
@@ -36,6 +39,7 @@
   grid-area: axis;
   display: block;
   overflow: visible;
+  transform: translateY(0.5px); /* fix sub-pixel misalignment */
 }
 
 .tick line {

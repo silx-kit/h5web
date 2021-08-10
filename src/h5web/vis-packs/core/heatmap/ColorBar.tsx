@@ -39,7 +39,9 @@ function ColorBar(props: Props) {
 
   const axisScale = createAxisScale({
     domain,
-    range: horizontal ? [0, gradientLength] : [gradientLength, 0],
+    range: horizontal
+      ? [0, Math.round(gradientLength + 0.5)] // fix sub-pixel misalignment
+      : [Math.round(gradientLength + 0.5), 0],
     type: scaleType,
   });
 
