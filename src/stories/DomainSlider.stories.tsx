@@ -39,7 +39,7 @@ export const Histogram = Template.bind({});
 Histogram.args = {
   ...Default.args,
   histogram: {
-    data: [100, 166, 130, 92, 76, 68, 60, 52, 50, 26],
+    values: [100, 166, 130, 92, 76, 68, 60, 52, 50, 26],
     bins: [-95, -45.5, 4, 53.5, 103, 152.5, 202, 251.5, 301, 350.5, 400],
   },
 };

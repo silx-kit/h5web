@@ -5,6 +5,7 @@ import {
   DomainError,
   DomainErrors,
   HistogramData,
+  ScaleType,
 } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import BoundEditor, { BoundEditorHandle } from './BoundEditor';
@@ -29,6 +30,7 @@ interface Props {
   onChangeMin: (val: number) => void;
   onChangeMax: (val: number) => void;
   onSwap: () => void;
+  scaleType: ScaleType;
   histogram?: HistogramData;
 }
 
@@ -37,7 +39,8 @@ interface Handle {
 }
 
 const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
-  const { id, open, sliderDomain, dataDomain, errors, histogram } = props;
+  const { id, open, sliderDomain, dataDomain, errors, scaleType, histogram } =
+    props;
   const { isAutoMin, isAutoMax, isEditingMin, isEditingMax } = props;
   const {
     onAutoMinToggle,
@@ -71,7 +74,14 @@ const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
       hidden={!open}
     >
       <div className={styles.tooltipInner}>
-        {histogram && <Histogram {...histogram} />}
+        {histogram && (
+          <Histogram
+            dataDomain={dataDomain}
+            sliderDomain={sliderDomain}
+            scaleType={scaleType}
+            {...histogram}
+          />
+        )}
         <div className={styles.tooltipControls}>
           {minGreater && (
             <ErrorMessage
