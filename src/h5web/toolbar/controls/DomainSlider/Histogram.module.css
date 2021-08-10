@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+  height: 10rem;
+  padding-left: 2rem;
+  padding-bottom: 1rem;
+  padding-right: 1rem;
+}
+
+.histogram {
+  overflow: visible;
+  background-color: var(--h5w-domainSlider-histogram--bgColor, white);
+}
+
+.bar {
+  fill: var(--h5w-domainSlider-histogram--color, royalblue);
+}
