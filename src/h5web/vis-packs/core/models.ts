@@ -86,6 +86,6 @@ export type ValueFormatter<T extends DType> = (val: Primitive<T>) => string;
 export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';
 
 export interface HistogramData {
-  data: number[];
+  values: number[];
   bins: number[];
 }

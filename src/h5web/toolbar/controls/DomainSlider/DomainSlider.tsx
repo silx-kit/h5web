@@ -136,6 +136,7 @@ function DomainSlider(props: Props) {
         onChangeMin={(val) => onCustomDomainChange([val, customDomain[1]])}
         onChangeMax={(val) => onCustomDomainChange([customDomain[0], val])}
         onSwap={() => onCustomDomainChange([customDomain[1], customDomain[0]])}
+        scaleType={scaleType}
         histogram={histogram}
       />
     </div>
