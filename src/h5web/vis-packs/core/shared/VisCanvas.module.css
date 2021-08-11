@@ -1,14 +1,11 @@
 .visArea {
+  position: relative;
   flex: 1 1 0%;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden; /* prevent overflow when keeping aspect ratio` */
+  overflow: hidden; /* prevent overflow when resizing */
 }
 
 .vis {
-  flex: none;
+  position: absolute; /* prevent feedback loop with `useMeasure` on wrapper */
 }
 
 /* R3F's root element */
