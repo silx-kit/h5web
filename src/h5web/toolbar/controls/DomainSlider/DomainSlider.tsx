@@ -3,7 +3,7 @@ import styles from './DomainSlider.module.css';
 import type {
   CustomDomain,
   Domain,
-  HistogramData,
+  HistogramParams,
   ScaleType,
 } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
@@ -24,7 +24,7 @@ interface Props {
   customDomain: CustomDomain;
   scaleType: ScaleType;
   onCustomDomainChange: (domain: CustomDomain) => void;
-  histogram?: HistogramData;
+  histogram?: HistogramParams;
 }
 
 function DomainSlider(props: Props) {

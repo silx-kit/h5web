@@ -1,10 +1,10 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
-import type { Domain } from '../../../../packages/lib';
 import { formatBound } from '../../../utils';
 import {
+  Domain,
   DomainError,
   DomainErrors,
-  HistogramData,
+  HistogramParams,
   ScaleType,
 } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
@@ -31,7 +31,7 @@ interface Props {
   onChangeMax: (val: number) => void;
   onSwap: () => void;
   scaleType: ScaleType;
-  histogram?: HistogramData;
+  histogram?: HistogramParams;
 }
 
 interface Handle {
@@ -39,8 +39,8 @@ interface Handle {
 }
 
 const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
-  const { id, open, sliderDomain, dataDomain, errors, scaleType, histogram } =
-    props;
+  const { id, open, sliderDomain, dataDomain, errors } = props;
+  const { histogram, scaleType } = props;
   const { isAutoMin, isAutoMax, isEditingMin, isEditingMax } = props;
   const {
     onAutoMinToggle,

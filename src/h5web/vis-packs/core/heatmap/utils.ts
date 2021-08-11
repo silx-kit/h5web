@@ -12,7 +12,11 @@ import { INTERPOLATORS } from './interpolators';
 import type { ColorMap, D3Interpolator, Dims } from './models';
 
 const GRADIENT_PRECISION = 1 / 20;
-const GRADIENT_RANGE = range(0, 1 + GRADIENT_PRECISION, GRADIENT_PRECISION);
+export const GRADIENT_RANGE = range(
+  0,
+  1 + GRADIENT_PRECISION,
+  GRADIENT_PRECISION
+);
 
 export function getVisDomain(
   customDomain: CustomDomain,
