@@ -16,3 +16,9 @@
 .bar {
   fill: var(--h5w-domainSlider-histogram--color, royalblue);
 }
+
+.indicators {
+  color: var(--h5w-domainSlider-histogram-indicator--color, midnightblue);
+  stroke: currentColor;
+  fill: currentColor;
+}

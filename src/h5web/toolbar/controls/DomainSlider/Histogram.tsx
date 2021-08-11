@@ -11,6 +11,7 @@ import { H5WEB_SCALES } from '../../../vis-packs/core/scales';
 import Tick from '../../../vis-packs/core/shared/Tick';
 import { adaptedNumTicks, DEFAULT_DOMAIN } from '../../../vis-packs/core/utils';
 import styles from './Histogram.module.css';
+import HistogramIndicators from './HistogramIndicators';
 
 interface Props extends HistogramData {
   scaleType: ScaleType;
@@ -54,6 +55,10 @@ function Histogram(props: Props) {
             height={yScale(d)}
           />
         ))}
+        <HistogramIndicators
+          positions={sliderDomain.map(xScale) as Domain}
+          height={height}
+        />
 
         <AxisBottom
           top={height}
