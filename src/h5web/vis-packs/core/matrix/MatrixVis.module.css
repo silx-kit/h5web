@@ -1,10 +1,10 @@
 .wrapper {
+  position: relative;
   flex: 1 1 0%;
-  min-width: 0;
-  min-height: 0;
 }
 
 .grid {
+  position: absolute !important; /* prevent feedback loop with `useMeasure` on wrapper */
   color: var(--h5w-matrix--color, inherit);
   font-family: var(--h5w-matrix--fontFamily, monospace);
   font-size: var(--h5w-matrix--fontSize, inherit);
