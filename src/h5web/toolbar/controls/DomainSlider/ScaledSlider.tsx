@@ -45,8 +45,7 @@ function ScaledSlider(props: Props) {
   const { minGreater, minError, maxError } = errors;
 
   const sliderExtent = extendDomain(safeVisDomain, EXTEND_FACTOR, scaleType);
-  const scale = createAxisScale({
-    type: scaleType,
+  const scale = createAxisScale(scaleType, {
     domain: sliderExtent.map((val) => clampBound(val)),
     range: SLIDER_RANGE,
     clamp: true,

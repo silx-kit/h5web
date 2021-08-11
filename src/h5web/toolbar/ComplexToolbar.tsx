@@ -14,6 +14,7 @@ import {
 } from '../vis-packs/core/complex/models';
 import Selector from './controls/Selector/Selector';
 import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
+import { ScaleType } from '../vis-packs/core/models';
 
 function ComplexToolbar() {
   const {
@@ -67,7 +68,16 @@ function ComplexToolbar() {
 
       <Separator />
 
-      <ScaleSelector value={scaleType} onScaleChange={setScaleType} />
+      <ScaleSelector
+        value={scaleType}
+        onScaleChange={setScaleType}
+        options={[
+          ScaleType.Linear,
+          ScaleType.Log,
+          ScaleType.SymLog,
+          ScaleType.Sqrt,
+        ]}
+      />
 
       <Separator />
 

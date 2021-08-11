@@ -38,6 +38,27 @@ SqrtScale.args = {
   scaleType: ScaleType.Sqrt,
 };
 
+export const GammaScale: Story<
+  HeatmapVisProps & {
+    gammaExponent: number;
+  }
+> = (args) => {
+  const { gammaExponent, scaleType, ...otherArgs } = args;
+
+  return (
+    <HeatmapVis scaleType={[ScaleType.Gamma, gammaExponent]} {...otherArgs} />
+  );
+};
+GammaScale.args = {
+  dataArray,
+  domain,
+  gammaExponent: 0.4,
+};
+GammaScale.argTypes = {
+  scaleType: { control: false },
+  gammaExponent: { control: { type: 'range', min: 0, max: 10, step: 0.1 } },
+};
+
 export default {
   ...HeatmapVisStoriesConfig,
   title: 'Visualizations/HeatmapVis/Scales',

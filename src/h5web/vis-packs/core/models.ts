@@ -1,4 +1,4 @@
-import type { PickD3Scale } from '@visx/scale';
+import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
 import type {
   NumericType,
   StringType,
@@ -8,12 +8,14 @@ import type {
   Primitive,
 } from '../../providers/models';
 import type { ColorMap } from './heatmap/models';
+import type { GammaScale } from './gammaScale';
 
 export enum ScaleType {
   Linear = 'linear',
   Log = 'log',
   SymLog = 'symlog',
   Sqrt = 'sqrt',
+  Gamma = 'gamma',
 }
 
 export interface Size {
@@ -47,11 +49,25 @@ export interface AxisConfig {
   flip?: boolean;
 }
 
-export type AxisScale = PickD3Scale<
+export type VisxScaleConfig = PickScaleConfigWithoutType<
   ScaleType.Linear | ScaleType.Log | ScaleType.SymLog | ScaleType.Sqrt,
-  number,
   number
 >;
+
+export interface GammaScaleConfig {
+  domain?: Domain;
+  range?: Domain;
+  exponent?: number;
+  clamp?: boolean;
+}
+
+export type AxisScale =
+  | PickD3Scale<
+      ScaleType.Linear | ScaleType.Log | ScaleType.SymLog | ScaleType.Sqrt,
+      number,
+      number
+    >
+  | GammaScale;
 
 export interface AxisOffsets {
   left: number;
