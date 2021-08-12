@@ -24,6 +24,7 @@ Some examples of usage of `@h5web/lib`:
 
 - [LineVis with multiple curves](https://codesandbox.io/s/h5weblib-demo-multiple-curves-kwkli)
 - [HeatmapVis with horizontal color bar and tooltip](https://codesandbox.io/s/h5weblib-demo-heatmap-with-tooltip-ti5cy)
+- [Comparison between gamma and power scale](https://codesandbox.io/s/gamma-vs-power-scale-lzmvr)
 
 ### [@h5web/app](https://www.npmjs.com/package/@h5web/app)
 
