@@ -97,6 +97,20 @@ const safeDomain3 = getSafeDomain([-50, -10], [1, 100], ScaleType.Log]); // [1, 
 const safeDomain4 = getSafeDomain([-10, 50], [80, 100], ScaleType.Log]); // [50, 50] => log-safe min (80) is greater than max (50)
 ```
 
+#### scaleGamma
+
+A [@visx/scale](https://airbnb.io/visx/docs/scale)-like power scale that implements gamma correction. With `scaleGamma`, the normalization happens **before** raising to the exponent, contrary to [`scalePower`](https://github.com/d3/d3-scale/blob/main/README.md#scalePow) where it happens **after**.
+Implements `domain`, `range`, `rangeRound`, `exponent`, `interpolate`, `clamp`, `nice`, `ticks`, `tickFormat` and `copy`.
+
+```ts
+const scale = scaleGamma({
+    domain: Domain = [0, 1]
+    range: Domain = [0, 1],
+    exponent: number = 1,
+    clamp: boolean = false,
+});
+```
+
 ### Hooks
 
 - **`useDomain(...args): Domain | undefined`** - Memoised version of `getDomain`.

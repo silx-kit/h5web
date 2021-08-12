@@ -1,8 +1,8 @@
-import { gammaScale } from './gammaScale';
+import { scaleGamma } from './scaleGamma';
 
-describe('gammaScale', () => {
+describe('scaleGamma', () => {
   it('should initialize gamma scale', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [-10, 10],
       range: [0, 5],
       exponent: 2,
@@ -14,7 +14,7 @@ describe('gammaScale', () => {
   });
 
   it('should initialize gamma scale with default properties', () => {
-    const scale = gammaScale();
+    const scale = scaleGamma();
 
     expect(scale.domain()).toEqual([0, 1]);
     expect(scale.range()).toEqual([0, 1]);
@@ -22,7 +22,7 @@ describe('gammaScale', () => {
   });
 
   it('should scale accordingly', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [40, 50],
       range: [0, 10],
       exponent: 2,
@@ -33,7 +33,7 @@ describe('gammaScale', () => {
   });
 
   it('should support changing the domain', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [0, 1],
       range: [0, 10],
       exponent: 2,
@@ -47,7 +47,7 @@ describe('gammaScale', () => {
   });
 
   it('should support changing the range', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [10, 20],
       range: [0, 10],
       exponent: 2,
@@ -61,7 +61,7 @@ describe('gammaScale', () => {
   });
 
   it('should support changing the exponent', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [10, 20],
       range: [-5, 5],
       exponent: 2,
@@ -75,7 +75,7 @@ describe('gammaScale', () => {
   });
 
   it('should support changing to a rounding range', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [10, 20],
       range: [0, 1],
       exponent: 4,
@@ -89,7 +89,7 @@ describe('gammaScale', () => {
   });
 
   it('should invert accordingly', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [40, 50],
       range: [0, 10],
       exponent: 2,
@@ -100,7 +100,7 @@ describe('gammaScale', () => {
   });
 
   it('should clamp', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [0, 1],
       range: [0, 10],
       exponent: 2,
@@ -110,7 +110,7 @@ describe('gammaScale', () => {
   });
 
   it('should extend to a nice domain', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [0.58, 5.98],
       range: [0, 10],
       exponent: 2,
@@ -121,7 +121,7 @@ describe('gammaScale', () => {
   });
 
   it('should return nice ticks values', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       range: [0, 10],
       exponent: 2,
     });
@@ -131,7 +131,7 @@ describe('gammaScale', () => {
   });
 
   it('should return tick format', () => {
-    const scale = gammaScale({
+    const scale = scaleGamma({
       domain: [0, 1],
       range: [0, 10],
       exponent: 2,

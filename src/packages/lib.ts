@@ -60,6 +60,8 @@ export {
   useSafeDomain,
 } from '../h5web/vis-packs/core/heatmap/hooks';
 
+export { scaleGamma } from '../h5web/vis-packs/core/scaleGamma';
+
 // Models
 export { INTERPOLATORS } from '../h5web/vis-packs/core/heatmap/interpolators';
 export { ScaleType } from '../h5web/vis-packs/core/models';
