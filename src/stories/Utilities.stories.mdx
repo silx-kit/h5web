@@ -99,7 +99,7 @@ const safeDomain4 = getSafeDomain([-10, 50], [80, 100], ScaleType.Log]); // [50,
 
 #### scaleGamma
 
-A [@visx/scale](https://airbnb.io/visx/docs/scale)-like power scale that implements gamma correction. In the scaleGamma, the normalization happens **before** raising to the exponent contrary to the [scalePower](https://github.com/d3/d3-scale/blob/main/README.md#scalePow) where it happens **after**.
+A [@visx/scale](https://airbnb.io/visx/docs/scale)-like power scale that implements gamma correction. With `scaleGamma`, the normalization happens **before** raising to the exponent, contrary to [`scalePower`](https://github.com/d3/d3-scale/blob/main/README.md#scalePow) where it happens **after**.
 Implements `domain`, `range`, `rangeRound`, `exponent`, `interpolate`, `clamp`, `nice`, `ticks`, `tickFormat` and `copy`.
 
 ```ts
