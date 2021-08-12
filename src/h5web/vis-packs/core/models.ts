@@ -8,7 +8,7 @@ import type {
   Primitive,
 } from '../../providers/models';
 import type { ColorMap } from './heatmap/models';
-import type { GammaScale } from './gammaScale';
+import type { ScaleGamma } from './scaleGamma';
 
 export enum ScaleType {
   Linear = 'linear',
@@ -54,7 +54,7 @@ export type VisxScaleConfig = PickScaleConfigWithoutType<
   number
 >;
 
-export interface GammaScaleConfig {
+export interface ScaleGammaConfig {
   domain?: Domain;
   range?: Domain;
   exponent?: number;
@@ -67,7 +67,7 @@ export type AxisScale =
       number,
       number
     >
-  | GammaScale;
+  | ScaleGamma;
 
 export interface AxisOffsets {
   left: number;

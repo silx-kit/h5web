@@ -1,5 +1,5 @@
 import { scalePower } from '@visx/scale';
-import type { Domain, GammaScaleConfig } from './models';
+import type { Domain, ScaleGammaConfig } from './models';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import type {
   InterpolatorFactory,
@@ -17,9 +17,9 @@ function normalize(a: number, b: number) {
 type Range = number;
 type Output = Range;
 type Unknown = never;
-export type GammaScale = ScalePower<Range, Output, Unknown>;
+export type ScaleGamma = ScalePower<Range, Output, Unknown>;
 
-export function gammaScale(config?: GammaScaleConfig): GammaScale {
+export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
   let _domain: Domain = config?.domain || [0, 1];
   let _range: Domain = config?.range || [0, 1];
   let _exponent = config?.exponent ?? 1;
@@ -148,7 +148,7 @@ export function gammaScale(config?: GammaScaleConfig): GammaScale {
   }
 
   function copy() {
-    return gammaScale()
+    return scaleGamma()
       .domain(_domain)
       .range(_range)
       .exponent(_exponent)

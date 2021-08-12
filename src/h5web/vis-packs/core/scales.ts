@@ -11,7 +11,7 @@ import { ScaleType } from './models';
 import { MdSort, MdFilterList, MdFlare } from 'react-icons/md';
 import SqrtIcon from '../../toolbar/controls/ScaleSelector/SqrtIcon';
 import MdGraphicEqRotated from '../../toolbar/controls/ScaleSelector/MdGraphicEqRotated';
-import { gammaScale } from './gammaScale';
+import { scaleGamma } from './scaleGamma';
 
 interface H5WebScale {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,7 +53,7 @@ export const H5WEB_SCALES: Record<ScaleType, H5WebScale> = {
     validMin: 0,
   },
   [ScaleType.Gamma]: {
-    createScale: gammaScale,
+    createScale: scaleGamma,
     Icon: MdFlare,
     label: 'Gamma',
     validMin: -Infinity,

@@ -13,7 +13,7 @@ import {
   AxisConfig,
   Bounds,
   AxisOffsets,
-  GammaScaleConfig,
+  ScaleGammaConfig,
   VisxScaleConfig,
 } from './models';
 import { assertDataLength, isDefined } from '../../guards';
@@ -42,7 +42,7 @@ const adaptedLogTicksThreshold = scaleLinear({
 
 export function createAxisScale(
   scaleType: VisScaleType,
-  config: VisxScaleConfig | GammaScaleConfig
+  config: VisxScaleConfig | ScaleGammaConfig
 ): AxisScale {
   if (isScaleType(scaleType)) {
     return H5WEB_SCALES[scaleType].createScale(config);
