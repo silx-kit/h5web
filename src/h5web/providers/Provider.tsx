@@ -51,8 +51,8 @@ function Provider(props: Props) {
     return Object.assign(store, {
       cancelOngoing: () => api.cancelValueRequests(),
       evictCancelled: () => {
-        api.cancelledValueRequests.forEach(({ params }) => {
-          valuesStore.evict(params);
+        api.cancelledValueRequests.forEach(({ storeParams }) => {
+          valuesStore.evict(storeParams);
         });
         api.cancelledValueRequests.clear();
       },

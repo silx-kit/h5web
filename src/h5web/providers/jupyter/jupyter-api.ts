@@ -1,5 +1,5 @@
 import {
-  ValueRequestParams,
+  ValuesStoreParams,
   Dataset,
   Entity,
   EntityKind,
@@ -33,7 +33,7 @@ export class JupyterStableApi extends ProviderApi {
     return this.processEntityResponse(path, response);
   }
 
-  public async getValue(params: ValueRequestParams): Promise<unknown> {
+  public async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { path, selection } = params;
     const [value, entity] = await Promise.all([
       this.fetchData(params),
@@ -47,7 +47,8 @@ export class JupyterStableApi extends ProviderApi {
 
   protected async fetchEntity(path: string): Promise<JupyterEntityResponse> {
     const { data } = await this.client.get<JupyterEntityResponse>(
-      `/meta/${this.filepath}?uri=${path}`
+      `/meta/${this.filepath}`,
+      { params: { uri: path } }
     );
     return data;
   }
@@ -63,7 +64,8 @@ export class JupyterStableApi extends ProviderApi {
     }
 
     const { data } = await this.client.get<JupyterAttrValuesResponse>(
-      `/attrs/${this.filepath}?uri=${path}`
+      `/attrs/${this.filepath}`,
+      { params: { uri: path } }
     );
 
     this.attrValuesCache.set(path, data);
@@ -71,12 +73,13 @@ export class JupyterStableApi extends ProviderApi {
   }
 
   protected async fetchData(
-    params: ValueRequestParams
+    params: ValuesStoreParams
   ): Promise<JupyterDataResponse> {
-    const { path, selection = '' } = params;
+    const { path, selection } = params;
     const { data } = await this.cancellableFetchValue<JupyterDataResponse>(
-      `/data/${this.filepath}?uri=${path}${selection && `&ixstr=${selection}`}`,
-      params
+      `/data/${this.filepath}`,
+      params,
+      { uri: path, ixstr: selection }
     );
     return data;
   }

@@ -1,5 +1,5 @@
 import {
-  ValueRequestParams,
+  ValuesStoreParams,
   Dataset,
   Entity,
   EntityKind,
@@ -18,12 +18,7 @@ import type {
   H5GroveAttribute,
 } from './models';
 import { assertDataset } from '../../guards';
-import {
-  convertDtype,
-  flattenValue,
-  handleAxiosError,
-  encodeQueryParams,
-} from '../utils';
+import { convertDtype, flattenValue, handleAxiosError } from '../utils';
 import { buildEntityPath } from '../../utils';
 
 export class H5GroveApi extends ProviderApi {
@@ -31,7 +26,7 @@ export class H5GroveApi extends ProviderApi {
 
   /* API compatible with h5grove@0.0.4 */
   public constructor(url: string, filepath: string) {
-    super(filepath, { baseURL: url });
+    super(filepath, { baseURL: url, params: { file: filepath } });
   }
 
   public async getEntity(path: string): Promise<Entity> {
@@ -39,7 +34,7 @@ export class H5GroveApi extends ProviderApi {
     return this.processEntityResponse(path, response);
   }
 
-  public async getValue(params: ValueRequestParams): Promise<unknown> {
+  public async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { path, selection } = params;
     const [value, entity] = await Promise.all([
       this.fetchData(params),
@@ -54,9 +49,7 @@ export class H5GroveApi extends ProviderApi {
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
     const { data } = await handleAxiosError(
       () =>
-        this.client.get<H5GroveEntityResponse>(
-          `/meta/?${encodeQueryParams({ file: this.filepath, path })}`
-        ),
+        this.client.get<H5GroveEntityResponse>(`/meta/`, { params: { path } }),
       404,
       ProviderError.NotFound
     );
@@ -74,7 +67,8 @@ export class H5GroveApi extends ProviderApi {
     }
 
     const { data } = await this.client.get<H5GroveAttrValuesResponse>(
-      `/attr/?${encodeQueryParams({ file: this.filepath, path })}`
+      `/attr/`,
+      { params: { path } }
     );
 
     this.attrValuesCache.set(path, data);
@@ -82,10 +76,10 @@ export class H5GroveApi extends ProviderApi {
   }
 
   private async fetchData(
-    params: ValueRequestParams
+    params: ValuesStoreParams
   ): Promise<H5GroveDataResponse> {
     const { data } = await this.cancellableFetchValue<H5GroveDataResponse>(
-      `/data/?${encodeQueryParams({ file: this.filepath, ...params })}`,
+      `/data/`,
       params
     );
     return data;

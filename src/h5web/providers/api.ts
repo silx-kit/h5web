@@ -4,10 +4,10 @@ import axios, {
   AxiosResponse,
   CancelTokenSource,
 } from 'axios';
-import { Entity, ProviderError, ValueRequestParams } from './models';
+import { Entity, ProviderError, ValuesStoreParams } from './models';
 
 interface ValueRequest {
-  params: ValueRequestParams;
+  storeParams: ValuesStoreParams;
   cancelSource: CancelTokenSource;
 }
 
@@ -37,15 +37,19 @@ export abstract class ProviderApi {
 
   protected async cancellableFetchValue<T>(
     endpoint: string,
-    params: ValueRequestParams
+    storeParams: ValuesStoreParams,
+    queryParams?: Record<string, string | undefined>
   ): Promise<AxiosResponse<T>> {
     const cancelSource = axios.CancelToken.source();
-    const request = { params, cancelSource };
+    const request = { storeParams, cancelSource };
     this.valueRequests.add(request);
 
     try {
       const { token: cancelToken } = cancelSource;
-      return await this.client.get<T>(endpoint, { cancelToken });
+      return await this.client.get<T>(endpoint, {
+        cancelToken,
+        params: queryParams || storeParams,
+      });
     } finally {
       // Remove cancellation source when request fulfills
       this.valueRequests.delete(request);
@@ -53,5 +57,5 @@ export abstract class ProviderApi {
   }
 
   public abstract getEntity(path: string): Promise<Entity>;
-  public abstract getValue(params: ValueRequestParams): Promise<unknown>;
+  public abstract getValue(params: ValuesStoreParams): Promise<unknown>;
 }

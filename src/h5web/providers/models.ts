@@ -1,6 +1,6 @@
-export interface ValueRequestParams {
+export interface ValuesStoreParams {
   path: string;
-  selection?: string;
+  selection?: string | undefined;
 }
 
 export enum ProviderError {

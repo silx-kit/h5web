@@ -13,7 +13,7 @@ import type {
   HsdsId,
 } from './models';
 import {
-  ValueRequestParams,
+  ValuesStoreParams,
   Dataset,
   Datatype,
   Entity,
@@ -104,7 +104,7 @@ export class HsdsApi extends ProviderApi {
     return entity;
   }
 
-  public async getValue(params: ValueRequestParams): Promise<unknown> {
+  public async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { path } = params;
 
     const entity = await this.getEntity(path);
@@ -173,12 +173,13 @@ export class HsdsApi extends ProviderApi {
 
   private async fetchValue(
     entityId: HsdsId,
-    params: ValueRequestParams
+    params: ValuesStoreParams
   ): Promise<unknown> {
-    const { selection = '' } = params;
+    const { selection } = params;
     const { data } = await this.cancellableFetchValue<HsdsValueResponse>(
-      `/datasets/${entityId}/value${selection && `?select=[${selection}]`}`,
-      params
+      `/datasets/${entityId}/value`,
+      params,
+      { select: selection && `[${selection}]` }
     );
     return data.value;
   }

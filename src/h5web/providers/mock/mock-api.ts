@@ -7,7 +7,7 @@ import {
 } from '../../guards';
 import { applyMapping } from '../../vis-packs/core/utils';
 import { ProviderApi } from '../api';
-import type { ValueRequestParams, Entity, Primitive } from '../models';
+import type { ValuesStoreParams, Entity, Primitive } from '../models';
 import { mockFilepath } from './metadata';
 import { assertMockDataset, findMockEntity } from './utils';
 
@@ -28,7 +28,7 @@ export class MockApi extends ProviderApi {
     return findMockEntity(path);
   }
 
-  public async getValue(params: ValueRequestParams): Promise<unknown> {
+  public async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { path, selection } = params;
 
     if (path.includes('error_value')) {
@@ -64,9 +64,9 @@ export class MockApi extends ProviderApi {
     return mappedArray.data;
   }
 
-  private async cancellableDelay(params: ValueRequestParams) {
+  private async cancellableDelay(storeParams: ValuesStoreParams) {
     const cancelSource = axios.CancelToken.source();
-    const request = { params, cancelSource };
+    const request = { storeParams, cancelSource };
     this.valueRequests.add(request);
 
     try {
