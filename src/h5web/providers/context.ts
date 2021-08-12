@@ -1,8 +1,8 @@
 import { createContext } from 'react';
-import type { Entity, ValueRequestParams } from './models';
+import type { Entity, ValuesStoreParams } from './models';
 import type { FetchStore } from 'react-suspense-fetch';
 
-interface ValuesStore extends FetchStore<unknown, ValueRequestParams> {
+interface ValuesStore extends FetchStore<unknown, ValuesStoreParams> {
   cancelOngoing: () => void;
   evictCancelled: () => void;
 }
