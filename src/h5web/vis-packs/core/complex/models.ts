@@ -1,7 +1,7 @@
 export enum ComplexVisType {
   Phase = 'Phase',
   Amplitude = 'Amplitude',
-  PhaseAmplitude = 'Phase and amplitude',
+  PhaseAmplitude = 'Phase & Amp.',
 }
 
 export type ComplexLineVisType =
