@@ -14,7 +14,7 @@ function MeasuredControl(props: Props) {
   return (
     <Measure
       onResize={({ entry }: { entry?: DOMRect }) => {
-        if (entry && entry.width !== knownWidth) {
+        if (entry && entry.width > (knownWidth || 0)) {
           onMeasure(entry.width);
         }
       }}
