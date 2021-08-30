@@ -1,0 +1,8 @@
+.option {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  composes: icon from '../../Toolbar.module.css';
+}

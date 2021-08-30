@@ -1,4 +1,5 @@
 import type { NdArray } from 'ndarray';
+import type { ReactChild, ReactElement } from 'react';
 import {
   Entity,
   EntityKind,
@@ -23,6 +24,10 @@ import { toArray } from './vis-packs/core/utils';
 
 export function isDefined<T>(val: T): val is T extends undefined ? never : T {
   return val !== undefined;
+}
+
+export function isReactElement(child: ReactChild): child is ReactElement {
+  return typeof child !== 'string' && typeof child !== 'number';
 }
 
 export function assertDefined<T>(

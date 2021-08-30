@@ -1,32 +1,34 @@
-import { ReactElement, Children } from 'react';
-import { useMeasure } from '@react-hookz/web';
-import { useList } from 'react-use';
+import type { ReactElement, ReactNode } from 'react';
+import { useMap, useMeasure } from '@react-hookz/web';
 import styles from './Toolbar.module.css';
 import Separator from './Separator';
 import OverflowMenu from './OverflowMenu';
 import MeasuredControl from './MeasuredControl';
+import flattenChildren from 'react-keyed-flatten-children';
+import { isReactElement } from '../guards';
 
 interface Props {
-  children?: ReactElement | (ReactElement | undefined)[];
+  children: ReactNode;
 }
 
 function Toolbar(props: Props) {
   const { children } = props;
 
-  // Convert `children` to array, as it cannot be used directly (and remove `undefined` children)
-  const allChildren = Children.toArray(children) as ReactElement[];
+  /* Convert `children` to flat array by traversing nested arrays and fragments.
+   * (Note that `flattenChildren` guarantees stable string keys regardless of JSX logic.) */
+  const allChildren = flattenChildren(children).filter(isReactElement);
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
   const availableWidth = containerSize ? containerSize.width : 0;
 
-  const [childrenWidths, { updateAt: setChildWidth }] = useList<number>();
+  const childrenWidths = useMap<string, number>();
 
   // Group visible and hidden children based on their accumulated width
   const [visibleChildren, hiddenChildren, allMeasured] = allChildren.reduce<
     [ReactElement[], ReactElement[], boolean, number]
   >(
-    ([accVisible, accHidden, accAllMeasured, accWidth], child, index) => {
-      const width = childrenWidths[index] ?? 0;
+    ([accVisible, accHidden, accAllMeasured, accWidth], child) => {
+      const width = childrenWidths.get(child.key as string) ?? 0;
       const isMeasured = width > 0;
       const isOverflowing = accWidth + width > availableWidth;
 
@@ -57,7 +59,7 @@ function Toolbar(props: Props) {
             <MeasuredControl
               key={`measure-${child.key || ''}`}
               onMeasure={(width) => {
-                setChildWidth(allChildren.indexOf(child), width);
+                childrenWidths.set(child.key as string, width);
               }}
             >
               {child}

@@ -10,7 +10,6 @@
 
 .wrapper {
   position: relative;
-  z-index: 1;
   display: flex;
 }
 
@@ -37,8 +36,10 @@
 
 .menu {
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: calc(100% + 0.75rem);
+  left: 50%;
+  transform: translateX(-50%); /* center menu with button */
+  z-index: 1; /* above other selectors */
   min-width: 100%;
   padding-top: 0.25rem;
   background-color: var(--h5w-selector-menu--bgColor, white);
@@ -68,21 +69,15 @@
   font-weight: 600;
 }
 
-.colorMap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .selectedOption {
-  composes: colorMap;
   flex: 1 1 0%;
 }
 
 .option {
-  composes: colorMap;
+  flex: 1 1 0%;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .option:hover {
