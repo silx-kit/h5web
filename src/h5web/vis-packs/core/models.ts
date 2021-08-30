@@ -88,6 +88,7 @@ export interface Bounds {
   min: number;
   max: number;
   positiveMin: number;
+  strictPositiveMin: number;
 }
 
 export type Coords = [number, number];
