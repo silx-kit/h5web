@@ -57,7 +57,7 @@ export function handleError<T>(
 ): T {
   try {
     return func();
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof Error && error.message === errToCatch) {
       throw new Error(errToThrow);
     }

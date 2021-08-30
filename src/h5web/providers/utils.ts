@@ -100,7 +100,7 @@ export async function handleAxiosError<T>(
 ): Promise<T> {
   try {
     return await func();
-  } catch (error: unknown) {
+  } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === status) {
       throw new Error(errToThrow);
     }

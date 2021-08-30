@@ -31,7 +31,7 @@ jobs:
           working-directory: packages
 
       - name: Build 🛠️
-        run: cd packages && npm run build
+        run: cd packages && yarn build
 
       - name: Set @h5web/app version 📌
         uses: reedyuk/npm-version@1.0.1
@@ -60,7 +60,7 @@ jobs:
           access: public
 
       - name: Build Storybook 🛠️
-        run: npm run storybook:build
+        run: yarn storybook:build
         env:
           INPUT_TOKEN: '' # workaround for https://github.com/JS-DevTools/npm-publish/issues/15
 

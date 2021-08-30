@@ -17,30 +17,29 @@
 ## Quick start 🚀
 
 ```bash
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 ## Build
 
-- `npm run build` - build H5Web for production
-- `npm run storybook:build` - build the component library's Storybook
-  documentation site
+- `yarn build` - build H5Web for production
+- `yarn storybook:build` - build the component library's Storybook documentation
+  site
 
 ## Code quality
 
-- `npm run lint` - run all linting and code formatting commands
-- `npm run lint:eslint` - lint all TS and JS files with ESLint
-- `npm run lint:tsc` - type-check the whole project, test files included
-- `npm run lint:prettier` - check that all files have been formatted with
-  Prettier
-- `npm run analyze` - inspect the size and content of the JS bundles (after
-  `npm run build`)
+- `yarn lint` - run all linting and code formatting commands
+- `yarn lint:eslint` - lint all TS and JS files with ESLint
+- `yarn lint:tsc` - type-check the whole project, test files included
+- `yarn lint:prettier` - check that all files have been formatted with Prettier
+- `yarn analyze` - inspect the size and content of the JS bundles (after
+  `yarn build`)
 
 ### Automatic fixing and formatting
 
-- `npm run lint:eslint -- --fix` - auto-fix linting issues
-- `npm run lint:prettier -- --write` - format all files with Prettier
+- `yarn lint:eslint --fix` - auto-fix linting issues
+- `yarn lint:prettier --write` - format all files with Prettier
 
 ### Editor integration
 
@@ -50,13 +49,13 @@ install the recommended extensions.
 
 ## Testing
 
-- `npm test` - run unit and feature tests with Jest
-- `npm run cypress` - open the
+- `yarn test` - run unit and feature tests with Jest
+- `yarn cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end
   test runner (local dev server must be running in separate terminal)
-- `npm run cypress:run` - run end-to-end tests once (local dev server must be
+- `yarn cypress:run` - run end-to-end tests once (local dev server must be
   running in separate terminal)
-- `npm run storybook` - manually test components in isolation in
+- `yarn storybook` - manually test components in isolation in
   [Storybook](https://storybook.js.org/docs/react/get-started/introduction), at
   http://localhost:6006
 
@@ -126,7 +125,7 @@ To release a new version:
 1. Check out `main` and pull the latest changes.
 1. Make sure your working tree doesn't have uncommitted changes and that the
    latest commit on `main` has passed the CI.
-1. Run `npm version [ patch | minor | major | <new-version> ]`
+1. Run `yarn version [ patch | minor | major | <new-version> ]`
 
 This command bumps the version number in `package.json`, commits the change and
 then tags the commit with the same version number. The `postversion` script then
@@ -149,17 +148,17 @@ To build the packages, run the following commands:
 
 ```bash
 cd packages
-npm install
-npm run build
+yarn install
+yarn build
 ```
 
 To test a package locally, build the packages then run the following commands:
 
 ```bash
 cd lib/dist
-npm link
+yarn link
 cd /your/test/app
-npm link @h5web/lib
+yarn link @h5web/lib
 ```
 
 > If you see an "invalid hook call" error, you may need to
@@ -173,39 +172,32 @@ Icons can be imported as React components from `react-icons/fi`.
 
 ## Dependencies
 
+To upgrade dependencies, run one of the following commands:
+
+- `yarn upgrade [package] --latest`
+- `yarn upgrade-interactive --latest`, then select the dependency to update.
+
+Alternatively, change the versions of the dependencies you want to upgrade in
+`package.json` and run `yarn install`.
+
 When upgrading dependencies, take care of reading their changelogs and release
 notes. Look for potential breaking changes and for bug fixes and new features
 that may help improve the codebase.
 
-Beware that some dependencies cannot be upgraded because of issues or
-incompatibilities, while others must be upgraded by following a specific
-process. This section documents such cases:
+Beware also of the following versioning requirements:
 
-- `d3-array` (and therefore `@types/d3-array`) cannot be upgraded to v3.x due to
-  a [bug in Babel](https://github.com/babel/babel/issues/11038).
 - The major version number of `@types/node` must match the version of Node
   specified in the `engine` field of `package.json`.
-- Dev dependencies related to ESLint must be upgraded together with
-  `eslint-config-galex`. Their version numbers must match the ones in
-  [the shared config's `package.json`](https://github.com/ljosberinn/eslint-config-galex/blob/master/package.json#L66).
-  The reason for this is that `react-scripts` installs older versions of these
-  dependencies, which might be used instead of the more recent versions when
-  running `npm run lint:eslint`, leading to errors such as unknown linting
-  rules/options. This concerns the following dev dependencies:
-  - `@typescript-eslint/eslint-plugin`
-  - `@typescript-eslint/parser`
-  - `eslint-plugin-import`
-  - `eslint-plugin-jest`
-  - `eslint-plugin-jsx-a11y`
-  - `eslint-plugin-react`
-  - `eslint-plugin-react-hooks`
-  - `eslint-plugin-testing-library`
-  - `eslint` (must satisfy version range of peer dependency required by
-    `eslint-config-galex`)
-- Some dependencies, like `@storybook/*` and `@visx/*`, still have a peer
-  dependency on React < v17. When upgrading them, NPM 7 complains that the peer
-  dependency's version is not satisfied. In most cases, ignoring the warning by
-  forcing the installation/upgrade of the package with `--force` is fine.
-  Alternatively, if this leads to a regression, you can tell NPM to install
-  another version of the package that satisfies the peer dependency range with
-  `--legacy-peer-deps`.
+- The major version number of `@types/jest` must match the version of Jest
+  installed by `react-scripts` - i.e. jest@26.
+
+If you run into trouble because two dependencies require two different versions
+of the same package, try using yarn's
+[`resolutions` field](https://classic.yarnpkg.com/en/docs/selective-version-resolutions)
+in `package.json` to force the installation of a common version. This feature is
+currently used to resolve the following version conflicts:
+
+- `react-scripts` requires `babel-loader@8.1.0` but `@storybook/**` installs a
+  more recent version.
+- `eslint-config-galex` requires more recent versions of ESLint plugins than the
+  ones installed by `react-scripts`.

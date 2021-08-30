@@ -21,7 +21,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Lint 🤓
-        run: npm run lint
+        run: yarn lint
 
   test:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Test 👓
-        run: npm test
+        run: yarn test
         env:
           CI: true
 
@@ -63,13 +63,13 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Build 🛠️
-        run: npm run build
+        run: yarn build
 
       - name: Serve ⚡️
         run: npx serve -s build -l 3000 & npx wait-on http://localhost:3000
 
       - name: Run Cypress 🌳
-        run: npm run cypress:run
+        run: yarn cypress:run
         env:
           CYPRESS_TAKE_SNAPSHOTS: true
 
