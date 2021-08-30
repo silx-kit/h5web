@@ -19,6 +19,7 @@ interface HeatmapConfig {
   toggleColorMapInversion: () => void;
 
   scaleType: ScaleType;
+  staleDomainScaleType: ScaleType | undefined; // for domain slider, when `dataDomain` is being recomputed with new scale type
   setScaleType: (scaleType: ScaleType) => void;
 
   showGrid: boolean;
@@ -36,7 +37,9 @@ function createStore() {
     persist(
       (set, get) => ({
         dataDomain: undefined,
-        setDataDomain: (dataDomain: Domain) => set({ dataDomain }),
+        setDataDomain: (dataDomain: Domain) => {
+          set({ dataDomain, staleDomainScaleType: undefined });
+        },
 
         customDomain: [null, null],
         setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
@@ -50,9 +53,11 @@ function createStore() {
         },
 
         scaleType: ScaleType.Linear,
+        staleDomainScaleType: undefined,
         setScaleType: (scaleType: ScaleType) => {
-          if (scaleType !== get().scaleType) {
-            set(() => ({ scaleType, dataDomain: undefined })); // clear `dataDomain` to avoid stale state
+          const prevScaleType = get().scaleType;
+          if (scaleType !== prevScaleType) {
+            set(() => ({ scaleType, staleDomainScaleType: prevScaleType }));
           }
         },
 

@@ -20,6 +20,7 @@ function HeatmapToolbar() {
     colorMap,
     setColorMap,
     scaleType,
+    staleDomainScaleType,
     setScaleType,
     layout,
     setLayout,
@@ -38,7 +39,7 @@ function HeatmapToolbar() {
           <DomainSlider
             dataDomain={dataDomain}
             customDomain={customDomain}
-            scaleType={scaleType}
+            scaleType={staleDomainScaleType || scaleType}
             onCustomDomainChange={setCustomDomain}
           />
           <Separator />
