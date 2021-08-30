@@ -22,6 +22,15 @@ import {
 import type { PrintableType } from './vis-packs/core/models';
 import { toArray } from './vis-packs/core/utils';
 
+const PRINTABLE_DTYPES = new Set([
+  DTypeClass.Unsigned,
+  DTypeClass.Integer,
+  DTypeClass.Float,
+  DTypeClass.String,
+  DTypeClass.Bool,
+  DTypeClass.Complex,
+]);
+
 export function isDefined<T>(val: T): val is T extends undefined ? never : T {
   return val !== undefined;
 }
@@ -103,14 +112,7 @@ export function hasNumDims(dataset: Dataset<ArrayShape>, num: number): boolean {
 export function hasPrintableType<S extends Shape>(
   entity: Dataset<S>
 ): entity is Dataset<S, PrintableType> {
-  return [
-    DTypeClass.Unsigned,
-    DTypeClass.Integer,
-    DTypeClass.Float,
-    DTypeClass.String,
-    DTypeClass.Bool,
-    DTypeClass.Complex,
-  ].includes(entity.type.class);
+  return PRINTABLE_DTYPES.has(entity.type.class);
 }
 
 function hasBoolType<S extends Shape>(

@@ -10,6 +10,8 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true, // https://github.com/facebook/create-react-app/issues/9429#issuecomment-674994709
+    "useUnknownInCatchVariables": true,
+    // "exactOptionalPropertyTypes": true, // needs better support in external libraries
     "importsNotUsedAsValues": "error",
     "module": "esnext",
     "moduleResolution": "node",
