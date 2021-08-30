@@ -19,7 +19,7 @@ function createStore() {
       {
         name: 'h5web:complex',
         whitelist: ['visType'],
-        version: 1,
+        version: 2,
       }
     )
   );

@@ -24,6 +24,7 @@ function ComplexToolbar() {
     colorMap,
     setColorMap,
     scaleType,
+    staleDomainScaleType,
     setScaleType,
     layout,
     setLayout,
@@ -41,7 +42,7 @@ function ComplexToolbar() {
           <DomainSlider
             dataDomain={dataDomain}
             customDomain={customDomain}
-            scaleType={scaleType}
+            scaleType={staleDomainScaleType || scaleType}
             onCustomDomainChange={setCustomDomain}
           />
           <Separator />
