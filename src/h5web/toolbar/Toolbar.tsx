@@ -23,53 +23,43 @@ function Toolbar(props: Props) {
 
   const childrenWidths = useMap<string, number>();
 
-  // Group visible and hidden children based on their accumulated width
-  const [visibleChildren, hiddenChildren, allMeasured] = allChildren.reduce<
-    [ReactElement[], ReactElement[], boolean, number]
+  // Group children based on their accumulated width
+  const [inView, outOfView] = allChildren.reduce<
+    [ReactElement[], ReactElement[], number]
   >(
-    ([accVisible, accHidden, accAllMeasured, accWidth], child) => {
+    ([accVisible, accHidden, accWidth], child) => {
       const width = childrenWidths.get(child.key as string) ?? 0;
-      const isMeasured = width > 0;
       const isOverflowing = accWidth + width > availableWidth;
 
       return [
-        isMeasured && !isOverflowing ? [...accVisible, child] : accVisible,
-        isMeasured && isOverflowing ? [...accHidden, child] : accHidden,
-        accAllMeasured && isMeasured,
+        !isOverflowing ? [...accVisible, child] : accVisible,
+        isOverflowing ? [...accHidden, child] : accHidden,
         accWidth + width,
       ];
     },
-    [[], [], true, 0]
+    [[], [], 0]
   );
 
-  const isSeparatorLast =
-    visibleChildren[visibleChildren.length - 1]?.type === Separator;
-
-  const allOrVisibleChildren = allMeasured
-    ? isSeparatorLast
-      ? visibleChildren.slice(0, -1)
-      : visibleChildren
-    : allChildren;
+  const isSeparatorLast = inView[inView.length - 1]?.type === Separator;
 
   return (
     <div className={styles.toolbar}>
       <div ref={containerRef} className={styles.controls}>
-        <div className={styles.controlsInner} data-all-measured={allMeasured}>
-          {allOrVisibleChildren.map((child) => (
-            <MeasuredControl
-              key={`measure-${child.key || ''}`}
-              onMeasure={(width) => {
-                childrenWidths.set(child.key as string, width);
-              }}
-            >
-              {child}
-            </MeasuredControl>
-          ))}
-        </div>
+        {(isSeparatorLast ? inView.slice(0, -1) : inView).map((child) => (
+          <MeasuredControl
+            key={child.key}
+            knownWidth={childrenWidths.get(child.key as string)}
+            onMeasure={(width) => {
+              childrenWidths.set(child.key as string, width);
+            }}
+          >
+            {child}
+          </MeasuredControl>
+        ))}
       </div>
 
       <OverflowMenu>
-        {hiddenChildren.filter((child) => child.type !== Separator)}
+        {outOfView.filter((child) => child.type !== Separator)}
       </OverflowMenu>
     </div>
   );

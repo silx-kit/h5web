@@ -15,21 +15,18 @@
   min-width: 0;
 }
 
-.controlsInner {
-  display: flex;
-}
-
-.control {
-  display: flex;
-}
-
-.controlsInner[data-all-measured='false'] {
+.controlWrapper[data-measured='false'] {
   position: relative;
   overflow: hidden; /* hide controls while they are being measured */
 }
 
-.controlsInner[data-all-measured='false'] > .control {
+.controlWrapper[data-measured='false'] > .control {
   position: absolute;
+}
+
+.controlWrapper,
+.control {
+  display: flex;
 }
 
 .sep {
