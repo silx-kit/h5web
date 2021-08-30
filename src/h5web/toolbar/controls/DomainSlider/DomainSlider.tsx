@@ -8,8 +8,7 @@ import type {
 } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import { FiEdit3 } from 'react-icons/fi';
-import { useKey } from 'react-use';
-import { useClickOutside, useToggle } from '@react-hookz/web';
+import { useClickOutside, useKeyboardEvent, useToggle } from '@react-hookz/web';
 import DomainTooltip, { DomainTooltipHandle } from './DomainTooltip';
 import ScaledSlider from './ScaledSlider';
 import {
@@ -63,7 +62,7 @@ function DomainSlider(props: Props) {
   const tooltipRef = useRef<DomainTooltipHandle>(null);
 
   useClickOutside(rootRef, cancelEditing);
-  useKey('Escape', () => {
+  useKeyboardEvent('Escape', () => {
     toggleHovered(false);
     cancelEditing();
   });
