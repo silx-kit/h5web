@@ -95,7 +95,7 @@ describe('getDomain', () => {
       expect(domain).toEqual([-10, -1]);
     });
 
-    it('should clamp domain min to first positive value when domain crosses zero', () => {
+    it('should clamp domain min to first strict positive value when domain crosses zero', () => {
       const domain = getDomain([2, 0, 10, 5, 2, -1], ScaleType.Log);
       expect(domain).toEqual([2, 10]);
     });
@@ -103,6 +103,26 @@ describe('getDomain', () => {
     it('should return `undefined` if domain is not supported', () => {
       const domain = getDomain([-2, 0, -10, -5, -2, -1], ScaleType.Log);
       expect(domain).toBeUndefined();
+    });
+  });
+
+  describe('with sqrt scale', () => {
+    it('should support negative domain', () => {
+      const domain = getDomain([-2, -10, -5, -2, -1], ScaleType.Sqrt);
+      expect(domain).toEqual([-10, -1]);
+    });
+
+    it('should support negative domain including 0', () => {
+      const domain = getDomain([-2, 0, -10, -5, -2, -1], ScaleType.Sqrt);
+      expect(domain).toEqual([-10, 0]);
+    });
+
+    it('should clamp domain min to first positive value when domain crosses zero', () => {
+      const domain = getDomain([2, 0, 10, 5, 2, -1], ScaleType.Sqrt);
+      expect(domain).toEqual([0, 10]);
+
+      const domain2 = getDomain([2, 10, 5, 2, -1], ScaleType.Sqrt);
+      expect(domain2).toEqual([2, 10]);
     });
   });
 });

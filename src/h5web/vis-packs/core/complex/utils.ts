@@ -6,6 +6,7 @@ const INITIAL_BOUNDS: Bounds = {
   min: Infinity,
   max: -Infinity,
   positiveMin: Infinity,
+  strictPositiveMin: Infinity,
 };
 
 export function getPhaseAmplitudeValues(mappedValues: H5WebComplex[]): {

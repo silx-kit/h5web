@@ -76,11 +76,18 @@ export function computeCanvasSize(
 }
 
 export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
-  const { min: oldMin, max: oldMax, positiveMin: oldPositiveMin } = oldBounds;
+  const {
+    min: oldMin,
+    max: oldMax,
+    positiveMin: oldPositiveMin,
+    strictPositiveMin: oldStrictPositiveMin,
+  } = oldBounds;
   return {
     min: Math.min(value, oldMin),
     max: Math.max(value, oldMax),
-    positiveMin: value > 0 ? Math.min(value, oldPositiveMin) : oldPositiveMin,
+    positiveMin: value >= 0 ? Math.min(value, oldPositiveMin) : oldPositiveMin,
+    strictPositiveMin:
+      value > 0 ? Math.min(value, oldStrictPositiveMin) : oldStrictPositiveMin,
   };
 }
 
@@ -109,7 +116,12 @@ export function getBounds(
         ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
         : newBounds;
     },
-    { min: Infinity, max: -Infinity, positiveMin: Infinity }
+    {
+      min: Infinity,
+      max: -Infinity,
+      positiveMin: Infinity,
+      strictPositiveMin: Infinity,
+    }
   );
 
   // Return undefined if min is Infinity (values is empty or contains only NaN/Infinity)
@@ -343,15 +355,17 @@ export function getValidDomainForScale(
     return undefined;
   }
 
-  const { min, max, positiveMin } = bounds;
+  const { min, max, positiveMin, strictPositiveMin } = bounds;
   if (scaleType === ScaleType.Log && min * max <= 0) {
     // Clamp domain minimum to first positive value,
     // or return `undefined` if domain is not unsupported: `[-x, 0]`
-    return Number.isFinite(positiveMin) ? [positiveMin, max] : undefined;
+    return Number.isFinite(strictPositiveMin)
+      ? [strictPositiveMin, max]
+      : undefined;
   }
 
   if (scaleType === ScaleType.Sqrt && min * max < 0) {
-    return [0, max];
+    return [positiveMin, max];
   }
 
   return [min, max];
