@@ -24,7 +24,8 @@ function Histogram(props: Props) {
   const { values, bins, scaleType, sliderDomain, dataDomain } = props;
   const { colorMap, invertColorMap } = props;
 
-  const binDomain = useCombinedDomain([sliderDomain, dataDomain]);
+  const binDomain = useDomain(bins);
+  const xDomain = useCombinedDomain([binDomain, sliderDomain, dataDomain]);
   const barDomain = useDomain(values);
   const yMax = barDomain ? barDomain[1] : DEFAULT_DOMAIN[1];
   const yMin = colorMap ? -yMax / 10 : 0;
@@ -38,7 +39,7 @@ function Histogram(props: Props) {
   const { width, height } = size;
 
   const xScale = H5WEB_SCALES[scaleType].createScale({
-    domain: binDomain,
+    domain: xDomain,
     range: [0, width],
   });
   const yScale = scaleLinear({
