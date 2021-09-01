@@ -68,7 +68,7 @@ HistogramWithColorMap.args = {
 };
 
 export default {
-  title: 'Building Blocks/DomainSlider',
+  title: 'Toolbar/DomainSlider',
   component: DomainSlider,
   decorators: [Center],
   parameters: {
