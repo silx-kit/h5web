@@ -47,6 +47,7 @@ function Btn(props: BtnProps) {
       type="button"
       role={role === 'tablist' ? 'tab' : 'radio'}
       data-raised
+      aria-label={iconOnly ? label : undefined}
       aria-checked={value === selectedValue}
       onClick={() => {
         onChange(value);

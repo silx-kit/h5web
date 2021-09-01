@@ -18,6 +18,7 @@ export { default as ColorMapSelector } from '../h5web/toolbar/controls/ColorMapS
 export { default as ScaleSelector } from '../h5web/toolbar/controls/ScaleSelector/ScaleSelector';
 export { default as GridToggler } from '../h5web/toolbar/controls/GridToggler';
 export { default as FlipYAxisToggler } from '../h5web/toolbar/controls/FlipYAxisToggler';
+export { default as Selector } from '../h5web/toolbar/controls/Selector/Selector';
 
 // Building blocks
 export { default as VisCanvas } from '../h5web/vis-packs/core/shared/VisCanvas';
