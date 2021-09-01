@@ -27,7 +27,7 @@
     "mini-css-extract-plugin": "^0.11.1",
     "style-loader": "^1.2.1",
     "ts-loader": "^8.0.7",
-    "typescript": "^4.3.5",
+    "typescript": "^4.4.2",
     "url-loader": "^4.1.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
