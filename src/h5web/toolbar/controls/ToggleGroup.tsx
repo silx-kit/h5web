@@ -27,11 +27,12 @@ interface BtnProps {
   label: string;
   value: string;
   icon?: IconType;
+  iconOnly?: boolean;
   disabled?: boolean;
 }
 
 function Btn(props: BtnProps) {
-  const { label, value, icon: Icon, disabled = false } = props;
+  const { label, value, icon: Icon, iconOnly, disabled = false } = props;
   const {
     role,
     value: selectedValue,
@@ -53,7 +54,7 @@ function Btn(props: BtnProps) {
     >
       <span className={styles.btnLike}>
         {Icon && <Icon className={styles.icon} />}
-        <span className={styles.label}>{label}</span>
+        {!iconOnly && <span className={styles.label}>{label}</span>}
       </span>
     </button>
   );
