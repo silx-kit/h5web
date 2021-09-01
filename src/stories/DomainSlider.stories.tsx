@@ -44,6 +44,17 @@ Histogram.args = {
   },
 };
 
+export const HistogramBiggerThanDataDomain = Template.bind({});
+
+HistogramBiggerThanDataDomain.args = {
+  ...Default.args,
+  dataDomain: [100, 300],
+  histogram: {
+    values: [130, 92, 76, 68, 60, 52, 50, 26],
+    bins: [4, 53.5, 103, 152.5, 202, 251.5, 301, 350.5, 400],
+  },
+};
+
 export const HistogramWithColorMap = Template.bind({});
 
 HistogramWithColorMap.args = {
