@@ -22,52 +22,50 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Cache pnpm modules 📌
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
       - name: Install ⚙️
-        uses: bahmutov/npm-install@v1
-      - name: Install ⚙️
-        uses: bahmutov/npm-install@v1
+        uses: pnpm/action-setup@v2.0.1
         with:
-          working-directory: packages
+          version: 6.x
+          run_install: |
+            - args: [--frozen-lockfile]
 
       - name: Build 🛠️
-        run: cd packages && yarn build
+        run: pnpm packages && pnpm packages:tsc
 
       - name: Set @h5web/app version 📌
         uses: reedyuk/npm-version@1.0.1
         with:
           version: ${{ steps.packageVersion.outputs.PACKAGE_VERSION }}
-          package: 'packages/app/dist'
+          package: 'packages/app'
 
       - name: Set @h5web/lib version 📌
         uses: reedyuk/npm-version@1.0.1
         with:
           version: ${{ steps.packageVersion.outputs.PACKAGE_VERSION }}
-          package: 'packages/lib/dist'
+          package: 'packages/lib'
 
-      - name: Publish @h5web/app 🥳
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          package: 'packages/app/dist/package.json'
-          token: ${{ secrets.NPM_TOKEN }}
-          access: public
-
-      - name: Publish @h5web/lib 🤩
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          package: 'packages/lib/dist/package.json'
-          token: ${{ secrets.NPM_TOKEN }}
-          access: public
+      - name: Publish 🥳
+        run: pnpm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build Storybook 🛠️
-        run: yarn storybook:build
-        env:
-          INPUT_TOKEN: '' # workaround for https://github.com/JS-DevTools/npm-publish/issues/15
+        run: pnpm build:storybook
 
       - name: Deploy Storybook 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: storybook-static
+          FOLDER: apps/storybook/build
           CLEAN: true

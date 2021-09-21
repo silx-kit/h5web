@@ -1,0 +1,44 @@
+{
+  "name": "demo-cra-lib",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Create React App demo for @h5web/lib",
+  "author": "European Synchrotron Radiation Facility",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silx-kit/h5web"
+  },
+  "engines": {
+    "node": "16.x",
+    "pnpm": "*"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build"
+  },
+  "dependencies": {
+    "@h5web/lib": "workspace:*",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "three": "0.132.2"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.19",
+    "@types/react-dom": "17.0.9",
+    "react-app-rewired": "2.1.8",
+    "react-scripts": "4.0.3",
+    "typescript": "4.4.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version"
+    ]
+  }
+}

@@ -1,12 +1,12 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es5", "dom"],
+    "isolatedModules": false,
     "types": [
       "cypress",
       "@testing-library/cypress",
       "@types/cypress-image-snapshot"
     ]
   },
-  "include": ["**/*.ts"]
+  "include": ["specs", "*.ts"]
 }

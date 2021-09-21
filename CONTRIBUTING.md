@@ -1,45 +1,147 @@
 # Contributing
 
 - [Quick start](#quick-start-)
+- [Development](#development)
+  - [`pnpm` cheat sheet](#pnpm-cheat-sheet)
+  - [Dependency management](#dependency-management)
+  - [Workspace dependencies](#workspace-dependencies)
+  - [Icon set](#icon-set)
 - [Build](#build)
+  - [Test packages locally](#test-packages-locally)
 - [Code quality](#code-quality)
-  - [Automatic fixing and formatting](#automatic-fixing-and-formatting)
+  - [Fixing and formatting](#fixing-and-formatting)
   - [Editor integration](#editor-integration)
 - [Testing](#testing)
   - [Visual regression](#visual-regression)
-- [Continuous deployment](#continuous-deployment)
-- [NPM packages](#npm-packages-)
-  - [Release process](#release-process)
-  - [Build and test locally](#build-and-test-locally)
-- [Icon set](#icon-set)
-- [Dependencies](#dependencies)
+- [Deployment](#deployment)
+- [Release process](#release-process)
 
 ## Quick start 🚀
 
 ```bash
-yarn install
-yarn start
+pnpm install
+pnpm start
 ```
+
+## Development
+
+- `pnpm start` - start the H5Web stand-alone demo
+- `pnpm start:storybook` - start the component library's
+  [Storybook](https://storybook.js.org/docs/react/get-started/introduction)
+  documentation site at http://localhost:6006
+
+### `pnpm` cheat sheet
+
+- `pnpm install` - install the dependencies of every project in the workspace
+  and of the workspace itself
+- `pnpm add [-D] <pkg-name> --filter <project-name>` -
+  [add a dependency](https://pnpm.io/cli/add) to a project in the workspace
+- `pnpm [script] [-- --<arg>]` - run a workspace script
+- `pnpm [script] [--parallel] --filter {packages} [-- --<arg>]` -
+  [run a script](https://pnpm.io/cli/run) in every project in the `packages`
+  folder
+- `pnpm dlx <pkg-name>` - fetch a package from the registry and run its default
+  command binary (equivalent to `npx <pkg-name>`)
+- `pnpm exec <binary>` - run a binary located in `node_modules/.bin` (equivalent
+  to `npx <pkg-name>` for a package installed in the workspace)
+- `pnpm outdated -r` - list outdated dependencies in the workspace
+- `pnpm why -r <pkg-name>` - show all project and packages that depend on the
+  specified package
+
+### Dependency management
+
+1. Run `pnpm outdated -r` to list dependencies that can be upgraded.
+1. Read the changelogs and release notes of the dependencies you'd like to
+   upgrade. Look for potential breaking changes, and for bug fixes and new
+   features that may help improve the codebase.
+1. Run `pnpm add <pkg-name>@latest --filter <project-name>` to upgrade a
+   dependency to the latest version in a given project. Alternatively, you can
+   also edit the relevant `package.json` file(s) manually and run
+   `pnpm install`, but make sure to specify an exact dependency version rather
+   than a range (i.e. don't prefix the version with a caret or a tilde).
+
+Beware of the following versioning requirements:
+
+- The major version number of `@types/node` must match the version of Node
+  specified in the `engine` field of `package.json`.
+- The major version numbers of [DefinitelyTyped]() packages must match the major
+  version numbers of their corresponding dependencies (e.g. `@types/jest@27` for
+  `jest@27`).
+
+Note that `pnpm` offers multiple solutions for dealing with peer dependency
+version conflicts and other package resolution issues:
+[`pnpm.overrides`](https://pnpm.io/package_json#pnpmoverrides),
+[`pnpm.packageExtensions`](https://pnpm.io/package_json#pnpmpackageextensions)
+[`peerDependenciesMeta`](https://pnpm.io/package_json#peerdependenciesmeta),
+[`.pnpmfile.cjs`](https://pnpm.io/pnpmfile).
+
+### Workspace dependencies
+
+To reference a workspace dependency, use pnpm's
+[workspace protocol](https://pnpm.io/workspaces#workspace-protocol-workspace)
+with the `*` alias - e.g. `"@h5web/lib": "workspace:*"`. This tells pnpm to link
+the dependency to its corresponding workspace folder, and saves you from having
+to keep the version of the dependency up to date. During publishing, pnpm
+automatically replaces `workspace:*` with the correct version.
+
+A workspace dependency's `package.json` must include a `main` field pointing to
+the dependency's source entry file - e.g. `src/index.ts`. This is the key to
+this monorepo set-up, as it avoids having to run watch tasks in separate
+terminals to automatically rebuild dependencies during development.
+
+Obviously, a package's `main` field cannot point to its source TypeScript entry
+file once published, as consumers may not understand TypeScript. Additionally,
+`package.json` needs to point to more entry files (type declarations, ESM build,
+etc.) and do so in a way that is compatible with various toolchains (webpack 4,
+webpack 5, Parcel, Rollup, Vite, CRA, etc.) pnpm provides a nice solution to
+this problem in the form of the
+[`publishConfig` field](https://pnpm.io/package_json#publishconfig).
+
+### Icon set
+
+H5Web uses the [Feather icon set](https://react-icons.netlify.com/#/icons/fi).
+Icons can be imported as React components from `react-icons/fi`.
 
 ## Build
 
-- `yarn build` - build H5Web for production
-- `yarn storybook:build` - build the component library's Storybook documentation
+- `pnpm build` - build the H5Web stand-alone demo
+- `pnpm build:storybook` - build the component library's Storybook documentation
   site
+- `pnpm packages` - build packages `@h5web/app` and `@h5web/lib`
+- `pnpm packages:tsc` - generate type declarations for projects in the
+  `packages` folder
+
+### Test packages locally
+
+To test a package locally, for instance `@h5web/lib`, run the following
+commands:
+
+```bash
+pnpm packages
+pnpm packages:tsc
+cd packages/lib
+pnpm link
+cd /your/test/app
+pnpm link @h5web/lib
+```
+
+> If you see an "invalid hook call" error, you may need to
+> [alias the `react` and `react-dom` imports](https://github.com/facebook/react/issues/13991#issuecomment-435587809)
+> to point to your test app's `node_modules` folder.
 
 ## Code quality
 
-- `yarn lint` - run all linting and code formatting commands
-- `yarn lint:eslint` - lint all TS and JS files with ESLint
-- `yarn lint:tsc` - type-check the whole project, test files included
-- `yarn lint:prettier` - check that all files have been formatted with Prettier
-- `yarn analyze` - inspect the size and content of the JS bundles (after
-  `yarn build`)
+- `pnpm lint` - lint every project in the workspace with ESLint
+- `pnpm lint --filter <project-name|{folder}>` - lint specific projects in the
+  workspace
+- `pnpm prettier` - check that all files in the workspace have been formatted
+  with Prettier
 
-### Automatic fixing and formatting
+### Fixing and formatting
 
-- `yarn lint:eslint --fix` - auto-fix linting issues
-- `yarn lint:prettier --write` - format all files with Prettier
+- `pnpm lint [--filter <project-name|{folder}>] -- --fix` - auto-fix linting
+  issues in the entire workspace or in specific projects
+- `pnpm prettier -- --write` - format all files with Prettier
 
 ### Editor integration
 
@@ -49,15 +151,21 @@ install the recommended extensions.
 
 ## Testing
 
-- `yarn test` - run unit and feature tests with Jest
-- `yarn cypress` - open the
+- `pnpm test` - run unit and feature tests with Jest
+- `pnpm test --filter <project-name>` - run Jest in a specific project
+- `pnpm cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end
   test runner (local dev server must be running in separate terminal)
-- `yarn cypress:run` - run end-to-end tests once (local dev server must be
+- `pnpm cypress:run` - run end-to-end tests once (local dev server must be
   running in separate terminal)
-- `yarn storybook` - manually test components in isolation in
-  [Storybook](https://storybook.js.org/docs/react/get-started/introduction), at
-  http://localhost:6006
+
+> Note that, unlike `pnpm lint`, `pnpm test` (without `--filter`) doesn't
+> recursively run the `test` script in every project in the workspace (i.e. it
+> is not equivalent to `pnpm test --filter {apps} --filter {packages}`).
+> Instead, it runs Jest globally using a
+> [`projects` configuration](https://jestjs.io/docs/configuration#projects-arraystring--projectconfig)
+> located in `jest.config.json`. This results in a nicer terminal output when
+> running tests on the entire workspace.
 
 ### Visual regression
 
@@ -112,27 +220,21 @@ Here is the summarised workflow (also described with screenshots in
 - The component library's Storybook documentation site is deployed to GitHub
   Pages on every release: https://h5web-docs.panosc.eu
 
-## NPM packages 📚
+## Release process
 
-The `src/packages` folder contains entry points for the packages published to
-NPM: [@h5web/lib](https://www.npmjs.com/package/@h5web/lib) and
-[@h5web/app](https://www.npmjs.com/package/@h5web/app).
-
-### Release process
-
-To release a new version:
+To release a new version and publish the packages to NPM:
 
 1. Check out `main` and pull the latest changes.
 1. Make sure your working tree doesn't have uncommitted changes and that the
    latest commit on `main` has passed the CI.
-1. Run `yarn version [ patch | minor | major | <new-version> ]`
+1. Run `pnpm version [ patch | minor | major | <new-version> ]`
 
-This command bumps the version number in `package.json`, commits the change and
-then tags the commit with the same version number. The `postversion` script then
-runs automatically and pushes the new commit and the new tag. This, in turn,
-triggers the _Release_ workflow on the CI, which builds and publishes the
-packages to NPM and deploys the Storybook site. The workflow is detailed in
-[issue #358](https://github.com/silx-kit/h5web/issues/358).
+This command bumps the version number in the workspace's `package.json`, commits
+the change and then tags the commit with the same version number. The
+`postversion` script then runs automatically and pushes the new commit and the
+new tag to the remote repository. This, in turn, triggers the _Release_ workflow
+on the CI, which builds and publishes the packages to NPM (with `pnpm publish`)
+and deploys the Storybook site.
 
 Once the _Release_ workflow has completed:
 
@@ -141,63 +243,3 @@ Once the _Release_ workflow has completed:
 - Upgrade and test the packages in apps and code sandboxes, as required.
 - Write and publish [release notes](https://github.com/silx-kit/h5web/releases)
   on GitHub.
-
-### Build and test locally
-
-To build the packages, run the following commands:
-
-```bash
-cd packages
-yarn install
-yarn build
-```
-
-To test a package locally, build the packages then run the following commands:
-
-```bash
-cd lib/dist
-yarn link
-cd /your/test/app
-yarn link @h5web/lib
-```
-
-> If you see an "invalid hook call" error, you may need to
-> [alias the `react` and `react-dom` imports](https://github.com/facebook/react/issues/13991#issuecomment-435587809)
-> to point to your test app's `node_modules` folder.
-
-## Icon set
-
-H5Web uses the [Feather icon set](https://react-icons.netlify.com/#/icons/fi).
-Icons can be imported as React components from `react-icons/fi`.
-
-## Dependencies
-
-To upgrade dependencies, run one of the following commands:
-
-- `yarn upgrade [package] --latest`
-- `yarn upgrade-interactive --latest`, then select the dependency to update.
-
-Alternatively, change the versions of the dependencies you want to upgrade in
-`package.json` and run `yarn install`.
-
-When upgrading dependencies, take care of reading their changelogs and release
-notes. Look for potential breaking changes and for bug fixes and new features
-that may help improve the codebase.
-
-Beware also of the following versioning requirements:
-
-- The major version number of `@types/node` must match the version of Node
-  specified in the `engine` field of `package.json`.
-- The major version number of `@types/jest` must match the version of Jest
-  installed by `react-scripts` - i.e. jest@26.
-
-If you run into trouble because two dependencies require two different versions
-of the same package, try using yarn's
-[`resolutions` field](https://classic.yarnpkg.com/en/docs/selective-version-resolutions)
-in `package.json` to force the installation of a common version. This feature is
-currently used to resolve the following version conflicts:
-
-- `react-scripts` requires `babel-loader@8.1.0` but `@storybook/**` installs a
-  more recent version.
-- `eslint-config-galex` requires more recent versions of ESLint plugins than the
-  ones installed by `react-scripts`.

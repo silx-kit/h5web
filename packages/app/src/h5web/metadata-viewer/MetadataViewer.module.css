@@ -1,0 +1,83 @@
+.table {
+  width: 100%;
+  margin-bottom: 0.25rem;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.table:not(:first-child) {
+  margin-top: 1rem;
+}
+
+.table th {
+  font-weight: 500;
+}
+
+.table thead th {
+  padding: 0.675rem 1rem;
+  background-color: var(--primary-bg);
+  font-size: 1.25rem;
+}
+
+.table tbody th,
+.table tbody td {
+  padding: 0.5rem 1rem;
+  vertical-align: top;
+}
+
+.table tbody th {
+  width: 15%; /* acts as min-width */
+}
+
+.table tbody td.raw {
+  padding: 0;
+}
+
+.table tbody tr:first-child > th,
+.table tbody tr:first-child > td {
+  padding-top: 1rem;
+}
+
+.table tbody tr:first-child > td.raw {
+  padding-top: 0.5rem;
+}
+
+.metadataViewer {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+.empty {
+  padding: 1rem;
+}
+
+.attrValue {
+  display: flex;
+  align-items: center;
+}
+
+.attrValueBtn {
+  composes: btnClean from global;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: var(--secondary-darker);
+}
+
+.attrValueBtn:hover {
+  text-decoration: underline;
+}
+
+.attrValueBtn > svg {
+  margin-left: 0.25rem;
+  transform: translateY(1px);
+}
+
+.attrValueWrapper {
+  display: flex;
+  margin: 0 -0.25rem;
+}
+
+.attrValueWrapper > span {
+  margin: 0 0.25rem;
+}

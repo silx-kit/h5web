@@ -1,0 +1,32 @@
+.group {
+  display: flex;
+  padding: 0 0.25rem;
+}
+
+.btn {
+  composes: btn from '../Toolbar.module.css';
+  padding: 0 !important; /* FIX style ordering issue with Vite */
+}
+
+.btnLike {
+  composes: btnLike from '../Toolbar.module.css';
+}
+
+.btn:not(:first-child) > .btnLike {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.btn:not(:last-child) > .btnLike {
+  margin-right: -1px; /* attenuate shadow between buttons */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.icon {
+  composes: icon from '../Toolbar.module.css';
+}
+
+.label {
+  composes: label from '../Toolbar.module.css';
+}

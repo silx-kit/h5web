@@ -1,0 +1,54 @@
+{
+  "name": "storybook",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Storybook for @h5web/lib",
+  "author": "European Synchrotron Radiation Facility",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silx-kit/h5web"
+  },
+  "engines": {
+    "node": "16.x",
+    "pnpm": "*"
+  },
+  "scripts": {
+    "start": "start-storybook -p 6006",
+    "build": "build-storybook -o build",
+    "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0"
+  },
+  "dependencies": {
+    "@h5web/lib": "workspace:*",
+    "@h5web/shared": "workspace:*",
+    "@react-hookz/web": "9.0.0",
+    "normalize.css": "8.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-icons": "4.2.0",
+    "three": "0.132.2"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "6.3.7",
+    "@storybook/addon-essentials": "6.3.7",
+    "@storybook/addon-links": "6.3.7",
+    "@storybook/preset-create-react-app": "3.2.0",
+    "@storybook/react": "6.3.7",
+    "@types/react": "17.0.19",
+    "@types/react-dom": "17.0.9",
+    "eslint": "7.32.0",
+    "eslint-config-galex": "2.16.12",
+    "typescript": "4.4.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version"
+    ]
+  }
+}

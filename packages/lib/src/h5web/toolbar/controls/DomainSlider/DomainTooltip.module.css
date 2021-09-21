@@ -1,0 +1,91 @@
+.tooltip {
+  composes: popup from '../../Toolbar.module.css';
+  left: 50%;
+  transform: translate(-50%, 100%);
+  /* Add invisible padding around tooltip to extend hover area */
+  /* (especially for when enabling auto-scaling hides an error message). */
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+}
+
+.tooltipInner {
+  composes: popupInner from '../../Toolbar.module.css';
+  padding: 1rem 0.375rem 1rem 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.tooltipControls > p {
+  margin-bottom: 0.75rem;
+}
+
+.tooltipControls > p:last-child {
+  margin-bottom: 0;
+}
+
+.dataRange {
+  margin-top: 1rem;
+  white-space: nowrap;
+}
+
+.dataRange > span {
+  margin-left: 0.5rem;
+  font-weight: 700;
+  color: var(--h5w-domainSlider-tooltip--colorAlt, #333);
+}
+
+.autoscale {
+  display: flex;
+  align-items: center;
+}
+
+.autoscale > button:first-of-type {
+  margin-left: 0.5rem;
+}
+
+.actionBtn {
+  composes: btnClean from global;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  font-size: 1.125em;
+  border-radius: 0.5rem;
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+}
+
+.actionBtn:hover {
+  background-color: var(--h5w-btn-hover--bgColor, whitesmoke);
+  box-shadow: -1px -1px 2px inset var(--h5w-btnRaised--shadowColor, gray);
+}
+
+.actionBtn:active {
+  box-shadow: 1px 1px 2px inset var(--h5w-btnRaised--shadowColor, gray);
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  min-height: 2rem;
+  margin-top: -0.25rem;
+  color: var(--h5w-error--color, brown);
+}
+
+.errorMessage {
+  flex: 1 1 0%;
+  font-size: 0.9375em;
+  font-weight: 600;
+}
+
+.errorMessage > svg {
+  vertical-align: -0.125em;
+}
+
+.errorMessage > strong {
+  font-weight: bold;
+}
+
+.swapBtn {
+  composes: actionBtn;
+  font-size: 1.5em;
+}
