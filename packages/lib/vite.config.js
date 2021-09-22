@@ -1,17 +1,30 @@
 import fs from 'fs';
 import path from 'path';
+import { URL } from 'url';
 import { defineConfig } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 
-const pkg = JSON.parse(
-  fs.readFileSync('./package.json', { encoding: 'utf-8' })
+const __dirname = new URL('.', import.meta.url).pathname;
+
+const [pkg, sharedPkg] = ['.', '../shared'].map((prefix) =>
+  JSON.parse(
+    fs.readFileSync(path.resolve(__dirname, `${prefix}/package.json`), {
+      encoding: 'utf-8',
+    })
+  )
 );
+
+export const externals = new Set([
+  ...Object.keys(sharedPkg.peerDependencies),
+  ...Object.keys(pkg.dependencies),
+  ...Object.keys(pkg.peerDependencies),
+]);
 
 export default defineConfig({
   css: {
     modules: {
       // @ts-ignore
-      root: '.', // https://github.com/vitejs/vite/issues/3092#issuecomment-915952727
+      // root: '.', // https://github.com/vitejs/vite/issues/3092#issuecomment-915952727
     },
   },
   esbuild: {
@@ -24,10 +37,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      external: [
-        ...Object.keys(pkg.dependencies),
-        ...Object.keys(pkg.peerDependencies),
-      ].map((dep) => new RegExp(`^${dep}($|\\/)`, 'u')), // e.g. externalize `react-icons/fi`
+      external: [...externals].map((dep) => new RegExp(`^${dep}($|\\/)`, 'u')), // e.g. externalize `react-icons/fi`
     },
     sourcemap: true,
   },
