@@ -7,7 +7,8 @@
   - [Workspace dependencies](#workspace-dependencies)
   - [Icon set](#icon-set)
 - [Build](#build)
-  - [Test packages locally](#test-packages-locally)
+  - [Use built packages in demos](#use-built-packages-in-demos)
+  - [Use built packages in other local apps](#use-built-packages-in-other-local-apps)
 - [Code quality](#code-quality)
   - [Fixing and formatting](#fixing-and-formatting)
   - [Editor integration](#editor-integration)
@@ -104,30 +105,47 @@ Icons can be imported as React components from `react-icons/fi`.
 
 ## Build
 
-- `pnpm build` - build the H5Web stand-alone demo
-- `pnpm build:storybook` - build the component library's Storybook documentation
-  site
 - `pnpm packages` - build packages `@h5web/app` and `@h5web/lib`
 - `pnpm packages:tsc` - generate type declarations for projects in the
   `packages` folder
+- `pnpm build` - build the H5Web stand-alone demo (run only after building
+  `@h5web/app`)
+- `pnpm build:storybook` - build the component library's Storybook documentation
+  site
 
-### Test packages locally
+### Use built packages in demos
 
-To test a package locally, for instance `@h5web/lib`, run the following
-commands:
+When you run `pnpm packages`, the packages are built into their respective
+`dist` folders. To tell the Create React App demos to load the packages' entry
+points from `dist/index.js` instead of `src/index.ts` in development, set
+`REACT_APP_DIST=true` in the demos' `.env.local` files. This is done
+automatically when building the demos for production with `pnpm build`.
+
+### Use built packages in other local apps
+
+To test a built package, for instance `@h5web/lib`, in another app, start by
+running the following commands:
 
 ```bash
 pnpm packages
 pnpm packages:tsc
-cd packages/lib
-pnpm link
-cd /your/test/app
-pnpm link @h5web/lib
 ```
 
-> If you see an "invalid hook call" error, you may need to
-> [alias the `react` and `react-dom` imports](https://github.com/facebook/react/issues/13991#issuecomment-435587809)
-> to point to your test app's `node_modules` folder.
+Then, edit the lib package's `package.json` file as follows:
+
+- remove the root `main` field;
+- unwrap the `publishConfig` field so that the fields it contains move to the
+  root of the JSON object.
+
+Finally, run:
+
+```bash
+cd ~/path-to-your-app
+pnpm link ../<path-to-h5web>/packages/lib
+```
+
+Don't forget to revert the changes to the lib's `package.json` file when you're
+done.
 
 ## Code quality
 

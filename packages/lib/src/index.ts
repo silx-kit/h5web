@@ -1,3 +1,5 @@
+import './styles.css';
+
 // Visualizations
 export { default as MatrixVis } from './h5web/vis-packs/core/matrix/MatrixVis';
 export { default as LineVis } from './h5web/vis-packs/core/line/LineVis';

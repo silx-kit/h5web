@@ -12,6 +12,39 @@ This library provides data visualization components and utilities from H5Web for
 use in other front-end web applications. For more information, visit the
 [Storybook documentation site](https://h5web-docs.panosc.eu/).
 
+## Getting started 🚀
+
 ```bash
 npm install @h5web/lib
+```
+
+```tsx
+import '@h5web/lib/dist/style.css';
+
+import React from 'react';
+import ndarray from 'ndarray';
+import { HeatmapVis, getDomain } from '@h5web/lib';
+
+// Initialise source 2D array
+const values = [
+  [0, 1, 2],
+  [3, 4, 5],
+];
+
+// Flatten source array
+const flatValues: number[] = values.flat(Infinity);
+
+// Convert to ndarray and get domain
+const dataArray = ndarray(flatValues, [2, 3]);
+const domain = getDomain(dataArray);
+
+function MyApp() {
+  return (
+    <div className="my-container">
+      <HeatmapVis dataArray={dataArray} domain={domain} />
+    </div>
+  );
+}
+
+export default MyApp;
 ```

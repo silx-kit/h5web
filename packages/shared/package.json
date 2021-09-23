@@ -10,6 +10,7 @@
     "url": "https://github.com/silx-kit/h5web"
   },
   "type": "module",
+  "sideEffects": false,
   "main": "src/index.ts",
   "scripts": {
     "build:tsc": "tsc --build tsconfig.build.json",

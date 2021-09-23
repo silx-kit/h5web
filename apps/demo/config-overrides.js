@@ -8,25 +8,26 @@
  */
 
 const path = require('path');
-
-// A list of paths to transpile
-const nodeModulesToTranspileAbs = [
-  '../../packages/app/src',
-  '../../packages/lib/src',
-  '../../packages/shared/src',
-].map((name) => path.resolve(__dirname, name));
+const {
+  aliasDangerous,
+  expandRulesInclude,
+} = require('react-app-rewire-alias/lib/aliasDangerous');
 
 module.exports = (config) => {
-  // Find the babel-loader rule
-  const babelLoaderRule = config.module.rules[1].oneOf.find((rule) =>
-    rule.loader.includes('babel-loader')
+  // Make sure Babel transpiles raw package files
+  expandRulesInclude(
+    config.module.rules,
+    [
+      '../../packages/app/src',
+      '../../packages/lib/src',
+      '../../packages/shared/src',
+    ].map((name) => path.resolve(__dirname, name))
   );
 
-  // Add the paths we want to transpile
-  babelLoaderRule.include = [
-    babelLoaderRule.include,
-    ...nodeModulesToTranspileAbs,
-  ];
+  if (process.env.REACT_APP_DIST === 'true') {
+    // Import built package files instead of source files
+    return aliasDangerous({ '@h5web/app$': '../../packages/app/dist' })(config);
+  }
 
   return config;
 };

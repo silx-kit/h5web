@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import { URL } from 'url';
+import { URL, fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import { externals as libExternals } from '@h5web/lib/vite.config.js';
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 const pkg = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, 'package.json'), {
