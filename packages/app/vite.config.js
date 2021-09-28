@@ -2,19 +2,21 @@ import fs from 'fs';
 import path from 'path';
 import { URL, fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
-import { externals as libExternals } from '@h5web/lib/vite.config.js';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
-const pkg = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, 'package.json'), {
-    encoding: 'utf-8',
-  })
+const [pkg, libPkg, sharedPkg] = ['.', '../lib', '../shared'].map((prefix) =>
+  JSON.parse(
+    fs.readFileSync(path.resolve(__dirname, `${prefix}/package.json`), {
+      encoding: 'utf-8',
+    })
+  )
 );
 
-const externals = new Set([
-  ...libExternals,
+export const externals = new Set([
+  ...Object.keys(sharedPkg.peerDependencies),
+  ...Object.keys(libPkg.dependencies),
+  ...Object.keys(libPkg.peerDependencies),
   ...Object.keys(pkg.dependencies),
   ...Object.keys(pkg.peerDependencies),
 ]);
@@ -40,5 +42,4 @@ export default defineConfig({
     },
     sourcemap: true,
   },
-  plugins: [reactRefresh()],
 });

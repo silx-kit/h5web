@@ -106,8 +106,9 @@ Icons can be imported as React components from `react-icons/fi`.
 ## Build
 
 - `pnpm packages` - build packages `@h5web/app` and `@h5web/lib`
-- `pnpm packages:tsc` - generate type declarations for projects in the
-  `packages` folder
+- `pnpm packages:dts` - generate type declarations for projects in the
+  `packages` folder, and, for `@h5web/app` and `@h5web/lib`, bundle the type
+  declarations into a single file: `dist/index.d.ts`.
 - `pnpm build` - build the H5Web stand-alone demo (run only after building
   `@h5web/app`)
 - `pnpm build:storybook` - build the component library's Storybook documentation
@@ -120,32 +121,6 @@ When you run `pnpm packages`, the packages are built into their respective
 points from `dist/index.js` instead of `src/index.ts` in development, set
 `REACT_APP_DIST=true` in the demos' `.env.local` files. This is done
 automatically when building the demos for production with `pnpm build`.
-
-### Use built packages in other local apps
-
-To test a built package, for instance `@h5web/lib`, in another app, start by
-running the following commands:
-
-```bash
-pnpm packages
-pnpm packages:tsc
-```
-
-Then, edit the lib package's `package.json` file as follows:
-
-- remove the root `main` field;
-- unwrap the `publishConfig` field so that the fields it contains move to the
-  root of the JSON object.
-
-Finally, run:
-
-```bash
-cd ~/path-to-your-app
-pnpm link ../<path-to-h5web>/packages/lib
-```
-
-Don't forget to revert the changes to the lib's `package.json` file when you're
-done.
 
 ## Code quality
 

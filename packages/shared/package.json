@@ -13,7 +13,7 @@
   "sideEffects": false,
   "main": "src/index.ts",
   "scripts": {
-    "build:tsc": "tsc --build tsconfig.build.json",
+    "build:dts": "tsc --build tsconfig.build.json",
     "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0"
   },
   "peerDependencies": {

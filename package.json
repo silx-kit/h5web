@@ -19,7 +19,7 @@
     "build": "pnpm build --filter demo",
     "build:storybook": "pnpm build --filter storybook",
     "packages": "pnpm build --filter {packages}",
-    "packages:tsc": "pnpm build:tsc --filter {packages}",
+    "packages:dts": "pnpm build:dts --filter {packages}",
     "lint": "pnpm lint --parallel --filter {apps} --filter {packages}",
     "prettier": "prettier . --check",
     "test": "jest",

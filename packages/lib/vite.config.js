@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { URL, fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -41,5 +40,4 @@ export default defineConfig({
     },
     sourcemap: true,
   },
-  plugins: [reactRefresh()],
 });
