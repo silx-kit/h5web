@@ -20,6 +20,7 @@ const config = {
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   testEnvironment: 'jsdom',
   testRegex: '\\.test\\.tsx?$',
+  testTimeout: 10_000,
   transform: {
     '\\.png$': 'jest-transform-stub',
   },

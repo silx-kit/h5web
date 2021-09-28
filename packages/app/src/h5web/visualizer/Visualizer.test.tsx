@@ -72,7 +72,6 @@ test("show error when dataset value can't be fetched", async () => {
 });
 
 test('cancel and retry slow fetch of dataset value', async () => {
-  jest.setTimeout(10_000);
   jest.useFakeTimers('modern');
   await renderApp();
 
@@ -101,7 +100,6 @@ test('cancel and retry slow fetch of dataset value', async () => {
 });
 
 test('cancel and retry slow fetch of dataset slice', async () => {
-  jest.setTimeout(10_000);
   jest.useFakeTimers('modern');
   await renderApp();
 
@@ -130,7 +128,6 @@ test('cancel and retry slow fetch of dataset slice', async () => {
 });
 
 test('retry fetching automatically when re-selecting dataset', async () => {
-  jest.setTimeout(10_000);
   jest.useFakeTimers('modern');
   await renderApp();
 
@@ -161,7 +158,6 @@ test('retry fetching automatically when re-selecting dataset', async () => {
 });
 
 test('retry fetching dataset slice automatically when re-selecting slice', async () => {
-  jest.setTimeout(10_000);
   jest.useFakeTimers('modern');
   await renderApp();
 
