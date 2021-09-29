@@ -46,7 +46,7 @@ jobs:
         run: pnpm build
 
       - name: Serve ⚡️
-        run: npx serve -s apps/demo/build -l 3000 & npx wait-on http://localhost:3000
+        run: pnpm dlx serve -s apps/demo/build -l 3000 & pnpm dlx wait-on http://localhost:3000
 
       - name: Run Cypress 🌳
         run: pnpm cypress:run --env updateSnapshots=true
