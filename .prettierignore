@@ -1,4 +1,4 @@
-/build/
-/storybook-static/
-/packages/**/dist/
-**/package-lock.json
+pnpm-lock.yaml
+
+/apps/**/build/
+/packages/**/dist*/

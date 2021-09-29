@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: File a bug report to help us improve.
 ---
 
 ### Describe the bug
@@ -18,8 +18,7 @@ about: Create a report to help us improve
 
 ### Expected behaviour
 
-<!-- A clear and concise description of what you expected to
-happen. -->
+<!-- A clear and concise description of what you expected to happen. -->
 
 ### Screenshots
 
@@ -28,7 +27,7 @@ happen. -->
 ### Context
 
 - OS: [e.g. iOS]
-- Browser: [e.g. chrome, safari]
+- Browser: [e.g. Chrome, Safari]
 - Version: [e.g. 22]
-- h5web context: [choose one or several] demo, jupyterlab_h5web, @h5web/lib,
+- H5Web context: [choose one or several] demo, jupyterlab_h5web, @h5web/lib,
   @h5web/app

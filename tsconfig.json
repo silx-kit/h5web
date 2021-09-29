@@ -1,24 +1,27 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es2015",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react-jsx",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true, // https://github.com/facebook/create-react-app/issues/9429#issuecomment-674994709
-    "useUnknownInCatchVariables": true,
-    // "exactOptionalPropertyTypes": true, // needs better support in external libraries
-    "importsNotUsedAsValues": "error",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "noEmit": true,
-    "jsx": "react-jsx"
-  },
-  "include": ["src"]
+    "incremental": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "removeComments": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "importsNotUsedAsValues": "error",
+    "useUnknownInCatchVariables": true
+  }
 }

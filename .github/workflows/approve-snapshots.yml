@@ -27,17 +27,29 @@ jobs:
         with:
           node-version: '16'
 
+      - name: Cache pnpm modules 📌
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
       - name: Install ⚙️
-        uses: bahmutov/npm-install@v1
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.x
+          run_install: |
+            - args: [--frozen-lockfile]
 
       - name: Build 🛠️
-        run: yarn build
+        run: pnpm build
 
       - name: Serve ⚡️
-        run: npx serve -s build -l 3000 & npx wait-on http://localhost:3000
+        run: pnpm dlx serve -s apps/demo/build -l 3000 & pnpm dlx wait-on http://localhost:3000
 
       - name: Run Cypress 🌳
-        run: yarn cypress:run --env updateSnapshots=true
+        run: pnpm cypress:run --env updateSnapshots=true
         env:
           CYPRESS_TAKE_SNAPSHOTS: true
 
