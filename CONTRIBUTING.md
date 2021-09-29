@@ -123,6 +123,9 @@ points from `dist/index.js` instead of `src/index.ts` in development, set
 `REACT_APP_DIST=true` in the demos' `.env.local` files. This is done
 automatically when building the demos for production with `pnpm build`.
 
+The same applies to the Storybook site but the environment variable is named
+`STORYBOOK_DIST`.
+
 ## Code quality
 
 - `pnpm lint` - lint every project in the workspace with ESLint

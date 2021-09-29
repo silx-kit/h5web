@@ -1,7 +1,10 @@
 import 'normalize.css';
-import '@h5web/lib/src/styles.css';
-// import '@h5web/lib/dist/style.css';
-import '../src/styles/index.css';
+
+if (process.env.STORYBOOK_DIST === 'true') {
+  require('@h5web/lib/dist/style.css');
+}
+
+require('../src/styles/index.css'); // `require` syntax to maintain correct order
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
