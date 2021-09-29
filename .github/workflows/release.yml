@@ -40,13 +40,7 @@ jobs:
             - args: [--frozen-lockfile]
 
       - name: Build 🛠️
-        run: pnpm packages && pnpm packages:tsc
-
-      - name: Set @h5web/app version 📌
-        uses: reedyuk/npm-version@1.0.1
-        with:
-          version: ${{ steps.packageVersion.outputs.PACKAGE_VERSION }}
-          package: 'packages/app'
+        run: pnpm packages && pnpm packages:dts
 
       - name: Set @h5web/lib version 📌
         uses: reedyuk/npm-version@1.0.1
@@ -54,8 +48,19 @@ jobs:
           version: ${{ steps.packageVersion.outputs.PACKAGE_VERSION }}
           package: 'packages/lib'
 
-      - name: Publish 🥳
-        run: pnpm publish --access public
+      - name: Set @h5web/app version 📌
+        uses: reedyuk/npm-version@1.0.1
+        with:
+          version: ${{ steps.packageVersion.outputs.PACKAGE_VERSION }}
+          package: 'packages/app'
+
+      - name: Publish @h5web/lib 🥳
+        run: cd packages/lib && pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @h5web/app 🥳
+        run: cd ../app && pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
