@@ -1,7 +1,7 @@
 {
   "name": "@h5web/lib",
   "version": "0.0.1",
-  "description": "HDF5 visualization toolkit",
+  "description": "Data visualization toolkit",
   "author": "European Synchrotron Radiation Facility",
   "license": "MIT",
   "repository": {

@@ -65,9 +65,10 @@ Beware of the following versioning requirements:
 
 - The major version number of `@types/node` must match the version of Node
   specified in the `engine` field of `package.json`.
-- The major version numbers of [DefinitelyTyped]() packages must match the major
-  version numbers of their corresponding dependencies (e.g. `@types/jest@27` for
-  `jest@27`).
+- The major version numbers of
+  [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) packages
+  must match the major version numbers of their corresponding dependencies (e.g.
+  `@types/jest@27` for `jest@27`).
 
 Note that `pnpm` offers multiple solutions for dealing with peer dependency
 version conflicts and other package resolution issues:
