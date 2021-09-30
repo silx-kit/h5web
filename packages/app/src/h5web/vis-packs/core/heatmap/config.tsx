@@ -3,7 +3,8 @@ import { persist } from 'zustand/middleware';
 import type { ColorMap, Layout } from './models';
 import type { ConfigProviderProps } from '../../models';
 import createContext from 'zustand/context';
-import type { CustomDomain, Domain } from '@h5web/lib';
+import type { CustomDomain } from '@h5web/lib';
+import type { Domain } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
 
 interface HeatmapConfig {
