@@ -39,7 +39,7 @@ jobs:
           run_install: |
             - args: [--frozen-lockfile]
 
-      - name: Build 🛠️
+      - name: Build packages 📦
         run: pnpm packages && pnpm packages:dts
 
       - name: Set @h5web/lib version 📌
