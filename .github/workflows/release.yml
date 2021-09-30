@@ -58,13 +58,13 @@ jobs:
         run: cd packages/lib && pnpm publish --access public --no-git-checks --tag $NPM_TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TAG: "${{ contains('beta', steps.packageVersion.outputs.PACKAGE_VERSION) && 'next' || 'latest' }}"
+          NPM_TAG: "${{ contains(steps.packageVersion.outputs.PACKAGE_VERSION, 'beta') && 'next' || 'latest' }}"
 
       - name: Publish @h5web/app 🥳
         run: cd packages/app && pnpm publish --access public --no-git-checks --tag $NPM_TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TAG: "${{ contains('beta', steps.packageVersion.outputs.PACKAGE_VERSION) && 'next' || 'latest' }}"
+          NPM_TAG: "${{ contains(steps.packageVersion.outputs.PACKAGE_VERSION, 'beta') && 'next' || 'latest' }}"
 
       - name: Build Storybook 🛠️
         run: pnpm build:storybook
