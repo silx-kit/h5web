@@ -1,5 +1,6 @@
-import type { AxisScale, Domain } from '../../../vis-packs/core/models';
+import type { AxisScale } from '../../../vis-packs/core/models';
 import styles from './Track.module.css';
+import type { Domain } from '@h5web/shared';
 
 interface Props {
   scale: AxisScale;

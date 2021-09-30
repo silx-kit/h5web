@@ -1,12 +1,11 @@
 import ndarray from 'ndarray';
 import type { NdArray } from 'ndarray';
 import { isNumber } from 'lodash';
-import type { Dataset } from '@h5web/shared';
+import type { Domain, Dataset } from '@h5web/shared';
 import { createArrayFromView } from '@h5web/shared';
 import { getAttributeValue } from '../../utils';
 import type { Axis, DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
-import type { Domain } from '@h5web/lib';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 

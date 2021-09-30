@@ -1,5 +1,6 @@
 import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
 import type {
+  Domain,
   NumericType,
   StringType,
   BooleanType,
@@ -15,7 +16,6 @@ export interface Size {
 }
 
 export type Bound = 'min' | 'max';
-export type Domain = [number, number];
 export type CustomDomain = [number | null, number | null]; // `null` for persistability
 
 export interface DomainErrors {
@@ -73,13 +73,6 @@ export interface AxisParams {
   label?: string;
   value?: number[];
   scaleType?: ScaleType;
-}
-
-export interface Bounds {
-  min: number;
-  max: number;
-  positiveMin: number;
-  strictPositiveMin: number;
 }
 
 export type Coords = [number, number];

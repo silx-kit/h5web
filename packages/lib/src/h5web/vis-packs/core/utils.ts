@@ -4,10 +4,8 @@ import { tickStep, range } from 'd3-array';
 import type { NdArray } from 'ndarray';
 import type {
   Size,
-  Domain,
   AxisScale,
   AxisConfig,
-  Bounds,
   AxisOffsets,
   ScaleGammaConfig,
   VisxScaleConfig,
@@ -15,12 +13,14 @@ import type {
 } from './models';
 import { H5WEB_SCALES } from './scales';
 import { clamp } from 'three/src/math/MathUtils';
+import type { Domain } from '@h5web/shared';
 import {
+  getValidDomainForScale,
   ScaleType,
-  assertDataLength,
   isDefined,
   formatTick,
-  toArray,
+  isScaleType,
+  getBounds,
 } from '@h5web/shared';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
@@ -72,55 +72,6 @@ export function computeCanvasSize(
   return shouldReduceWidth
     ? { width: height * aspectRatio, height }
     : { width, height: width / aspectRatio };
-}
-
-export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
-  const {
-    min: oldMin,
-    max: oldMax,
-    positiveMin: oldPositiveMin,
-    strictPositiveMin: oldStrictPositiveMin,
-  } = oldBounds;
-  return {
-    min: Math.min(value, oldMin),
-    max: Math.max(value, oldMax),
-    positiveMin: value >= 0 ? Math.min(value, oldPositiveMin) : oldPositiveMin,
-    strictPositiveMin:
-      value > 0 ? Math.min(value, oldStrictPositiveMin) : oldStrictPositiveMin,
-  };
-}
-
-export function getBounds(
-  valuesArray: NdArray<number[]> | number[],
-  errorArray?: NdArray<number[]> | number[]
-): Bounds | undefined {
-  assertDataLength(errorArray, valuesArray, 'error');
-
-  const values = toArray(valuesArray);
-  const errors = errorArray && toArray(errorArray);
-
-  const bounds = values.reduce<Bounds>(
-    (acc, val, i) => {
-      // Ignore NaN and Infinity from the bounds computation
-      if (!Number.isFinite(val)) {
-        return acc;
-      }
-      const newBounds = getNewBounds(acc, val);
-      const err = errors?.[i];
-      return err
-        ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
-        : newBounds;
-    },
-    {
-      min: Infinity,
-      max: -Infinity,
-      positiveMin: Infinity,
-      strictPositiveMin: Infinity,
-    }
-  );
-
-  // Return undefined if min is Infinity (values is empty or contains only NaN/Infinity)
-  return Number.isFinite(bounds.min) ? bounds : undefined;
 }
 
 export function getDomain(
@@ -284,12 +235,6 @@ export function getTickFormatter(
   };
 }
 
-export function isScaleType(val: unknown): val is ScaleType {
-  return (
-    typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
-  );
-}
-
 export function getCombinedDomain(
   domains: (Domain | undefined)[]
 ): Domain | undefined {
@@ -302,30 +247,6 @@ export function getCombinedDomain(
     Math.min(accDomain[0], nextDomain[0]),
     Math.max(accDomain[1], nextDomain[1]),
   ]);
-}
-
-export function getValidDomainForScale(
-  bounds: Bounds | undefined,
-  scaleType: ScaleType
-): Domain | undefined {
-  if (bounds === undefined) {
-    return undefined;
-  }
-
-  const { min, max, positiveMin, strictPositiveMin } = bounds;
-  if (scaleType === ScaleType.Log && min * max <= 0) {
-    // Clamp domain minimum to first positive value,
-    // or return `undefined` if domain is not unsupported: `[-x, 0]`
-    return Number.isFinite(strictPositiveMin)
-      ? [strictPositiveMin, max]
-      : undefined;
-  }
-
-  if (scaleType === ScaleType.Sqrt && min * max < 0) {
-    return [positiveMin, max];
-  }
-
-  return [min, max];
 }
 
 export function getAxisOffsets(

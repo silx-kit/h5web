@@ -1,6 +1,7 @@
 import type { ReactChild, ReactElement } from 'react';
 import type { NdArray } from 'ndarray';
 import { toArray } from './utils';
+import { ScaleType } from './models-vis';
 import { EntityKind, DTypeClass } from './models-hdf5';
 import type {
   Entity,
@@ -282,4 +283,10 @@ export function assertDataLength(
       `Expected ${arrName} array (${arrLength}) to have same length as data array (${dataLength})`
     );
   }
+}
+
+export function isScaleType(val: unknown): val is ScaleType {
+  return (
+    typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
+  );
 }

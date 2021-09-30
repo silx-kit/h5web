@@ -10,8 +10,8 @@ import {
   getMockDataArray,
   mockValues,
   getCombinedDomain,
+  getDomains,
 } from '@h5web/lib';
-import { getDomains } from '@h5web/lib/src/h5web/vis-packs/core/utils';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray);

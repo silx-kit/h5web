@@ -3,8 +3,9 @@ import { useMeasure } from '@react-hookz/web';
 import { adaptedNumTicks, createAxisScale } from '../utils';
 import styles from './ColorBar.module.css';
 import { getInterpolator, getLinearGradient } from './utils';
+import type { Domain } from '@h5web/shared';
 import { formatBound } from '@h5web/shared';
-import type { Domain, VisScaleType } from '../models';
+import type { VisScaleType } from '../models';
 import type { ColorMap } from './models';
 import Tick from '../shared/Tick';
 

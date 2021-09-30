@@ -1,7 +1,5 @@
-import type { Domain } from '@h5web/lib';
-import { getValidDomainForScale } from '@h5web/lib/src/h5web/vis-packs/core/utils';
-import type { H5WebComplex } from '@h5web/shared';
-import { ScaleType } from '@h5web/shared';
+import { ScaleType, getValidDomainForScale } from '@h5web/shared';
+import type { Domain, H5WebComplex } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 import { useMemo } from 'react';

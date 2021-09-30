@@ -11,6 +11,7 @@ import {
   getChildEntity,
   isDefined,
   isGroup,
+  isScaleType,
 } from '@h5web/shared';
 import type {
   Entity,
@@ -25,7 +26,6 @@ import type {
   NumArrayDataset,
 } from '@h5web/shared';
 import { getAttributeValue } from '../../utils';
-import { isScaleType } from '@h5web/lib/src/h5web/vis-packs/core/utils';
 import type { NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(group: Group): boolean {

@@ -7,10 +7,11 @@ import DataCurve from './DataCurve';
 import VisCanvas from '../shared/VisCanvas';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
-import type { Domain, AxisParams } from '../models';
+import type { AxisParams } from '../models';
 import type { TooltipData } from './models';
 import { CurveType } from './models';
 import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
+import type { Domain } from '@h5web/shared';
 import {
   assertDataLength,
   assertDefined,

@@ -1,4 +1,4 @@
-import type { Domain } from '../../../vis-packs/core/models';
+import type { Domain } from '@h5web/shared';
 import styles from './Histogram.module.css';
 
 const ARROW_SIZE = 10;

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './DomainSlider.module.css';
 import type {
   CustomDomain,
-  Domain,
   HistogramParams,
 } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
@@ -15,7 +14,7 @@ import {
   useSafeDomain,
   useVisDomain,
 } from '../../../vis-packs/core/heatmap/hooks';
-import type { ScaleType } from '@h5web/shared';
+import type { ScaleType, Domain } from '@h5web/shared';
 
 const TOOLTIP_ID = 'domain-tooltip';
 

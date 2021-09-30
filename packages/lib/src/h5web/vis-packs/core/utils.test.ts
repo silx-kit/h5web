@@ -9,7 +9,7 @@ import {
   getCombinedDomain,
   clampBound,
 } from './utils';
-import type { Domain } from './models';
+import type { Domain } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
 
 const MAX = Number.MAX_VALUE / 2;
