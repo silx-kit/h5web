@@ -35,6 +35,7 @@ importers:
   apps/demo:
     specifiers:
       '@h5web/app': workspace:*
+      '@h5web/lib': workspace:*
       '@types/react': 17.0.19
       '@types/react-dom': 17.0.9
       '@types/react-router-dom': 5.1.8
@@ -50,6 +51,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@h5web/app': link:../../packages/app
+      '@h5web/lib': link:../../packages/lib
       normalize.css: 8.0.1
       react: 17.0.2
       react-app-polyfill: 2.0.0
@@ -169,7 +171,6 @@ importers:
       vite: 2.5.3
       zustand: 3.5.10
     dependencies:
-      '@h5web/lib': link:../lib
       '@react-hookz/web': 9.0.0_react@17.0.2
       axios: 0.21.1
       d3-format: 3.0.1
@@ -184,6 +185,7 @@ importers:
       react-use: 17.2.4_react@17.0.2
       zustand: 3.5.10_react@17.0.2
     devDependencies:
+      '@h5web/lib': link:../lib
       '@h5web/shared': link:../shared
       '@juggle/resize-observer': 3.3.1
       '@testing-library/jest-dom': 5.14.1

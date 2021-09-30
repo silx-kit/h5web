@@ -26,7 +26,10 @@ module.exports = (config) => {
 
   if (process.env.REACT_APP_DIST === 'true') {
     // Import built package files instead of source files
-    return aliasDangerous({ '@h5web/app$': '../../packages/app/dist' })(config);
+    return aliasDangerous({
+      '@h5web/app$': '../../packages/app/dist',
+      '@h5web/lib$': '../../packages/lib/dist',
+    })(config);
   }
 
   return config;
