@@ -240,3 +240,32 @@ Once the _Release_ workflow has completed:
 - Upgrade and test the packages in apps and code sandboxes, as required.
 - Write and publish [release notes](https://github.com/silx-kit/h5web/releases)
   on GitHub.
+
+### Beta testing
+
+The beta release process described below allows publishing packages to NPM with
+the `next` tag (instead of the default `latest` tag) so they can be beta-tested
+before the official release.
+
+1. Follow steps 1 and 2 of the normal release process.
+1. At step 3, run `pnpm version <x.y.z-beta.0>` (incrementing the beta version
+   number as needed).
+
+The CI will then build and deploy the packages with `pnpm publish --tag next`.
+Once the _Release_ workflow has completed, check that the beta packages have
+been published with the correct tag by running `npm dist-tag ls @h5web/lib`.
+This command should print something like:
+
+```
+latest: <a.b.c>
+next: <x.y.z>-beta.0
+```
+
+You can then install the beta packages with `npm install @h5web/lib@next` or the
+like and make sure that they work as expected. Once you're done testing, follow
+the normal release process, making sure to run `pnpm version <x.y.z>` at step 3
+(without the `beta` suffix).
+
+Once the release process has completed, you can remove the `next` tag from the
+obsolete beta packages by running
+`npm dist-tag rm @h5web/lib@<x.y.z>-beta.0 next`
