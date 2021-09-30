@@ -2,7 +2,10 @@ import { format } from 'd3-format';
 import ndarray from 'ndarray';
 import { assign } from 'ndarray-ops';
 import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
+import { ScaleType } from './models-vis';
+import type { Bounds, Domain } from './models-vis';
 import type { NdArray } from 'ndarray';
+import { assertDataLength } from './guards';
 
 export const formatTick = format('.5~g');
 export const formatBound = format('.3~e');
@@ -72,4 +75,77 @@ export function createArrayFromView<T>(view: NdArray<T[]>): NdArray<T[]> {
   assign(array, view);
 
   return array;
+}
+
+export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
+  const {
+    min: oldMin,
+    max: oldMax,
+    positiveMin: oldPositiveMin,
+    strictPositiveMin: oldStrictPositiveMin,
+  } = oldBounds;
+  return {
+    min: Math.min(value, oldMin),
+    max: Math.max(value, oldMax),
+    positiveMin: value >= 0 ? Math.min(value, oldPositiveMin) : oldPositiveMin,
+    strictPositiveMin:
+      value > 0 ? Math.min(value, oldStrictPositiveMin) : oldStrictPositiveMin,
+  };
+}
+
+export function getBounds(
+  valuesArray: NdArray<number[]> | number[],
+  errorArray?: NdArray<number[]> | number[]
+): Bounds | undefined {
+  assertDataLength(errorArray, valuesArray, 'error');
+
+  const values = toArray(valuesArray);
+  const errors = errorArray && toArray(errorArray);
+
+  const bounds = values.reduce<Bounds>(
+    (acc, val, i) => {
+      // Ignore NaN and Infinity from the bounds computation
+      if (!Number.isFinite(val)) {
+        return acc;
+      }
+      const newBounds = getNewBounds(acc, val);
+      const err = errors?.[i];
+      return err
+        ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
+        : newBounds;
+    },
+    {
+      min: Infinity,
+      max: -Infinity,
+      positiveMin: Infinity,
+      strictPositiveMin: Infinity,
+    }
+  );
+
+  // Return undefined if min is Infinity (values is empty or contains only NaN/Infinity)
+  return Number.isFinite(bounds.min) ? bounds : undefined;
+}
+
+export function getValidDomainForScale(
+  bounds: Bounds | undefined,
+  scaleType: ScaleType
+): Domain | undefined {
+  if (bounds === undefined) {
+    return undefined;
+  }
+
+  const { min, max, positiveMin, strictPositiveMin } = bounds;
+  if (scaleType === ScaleType.Log && min * max <= 0) {
+    // Clamp domain minimum to first positive value,
+    // or return `undefined` if domain is not unsupported: `[-x, 0]`
+    return Number.isFinite(strictPositiveMin)
+      ? [strictPositiveMin, max]
+      : undefined;
+  }
+
+  if (scaleType === ScaleType.Sqrt && min * max < 0) {
+    return [positiveMin, max];
+  }
+
+  return [min, max];
 }

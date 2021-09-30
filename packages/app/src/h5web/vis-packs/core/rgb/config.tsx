@@ -1,7 +1,7 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
-import { ImageType } from '@h5web/lib/src/h5web/vis-packs/core/rgb/models';
+import { ImageType } from '@h5web/lib';
 import type { Layout } from '../heatmap/models';
 import type { ConfigProviderProps } from '../../models';
 

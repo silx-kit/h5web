@@ -1,7 +1,7 @@
-import type { ScaleType } from '@h5web/shared';
+import type { Domain, ScaleType } from '@h5web/shared';
 import { range } from 'lodash';
 import type { NdArray } from 'ndarray';
-import type { CustomDomain, Domain, DomainErrors } from '../models';
+import type { CustomDomain, DomainErrors } from '../models';
 import { DomainError } from '../models';
 import { H5WEB_SCALES } from '../scales';
 import { INTERPOLATORS } from './interpolators';

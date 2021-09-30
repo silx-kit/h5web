@@ -1,6 +1,5 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import type {
-  Domain,
   DomainErrors,
   HistogramParams,
 } from '../../../vis-packs/core/models';
@@ -12,7 +11,7 @@ import Histogram from './Histogram';
 import styles from './DomainTooltip.module.css';
 import ErrorMessage from './ErrorMessage';
 import { formatBound } from '@h5web/shared';
-import type { ScaleType } from '@h5web/shared';
+import type { Domain, ScaleType } from '@h5web/shared';
 
 interface Props {
   id: string;

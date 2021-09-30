@@ -7,13 +7,13 @@ import {
   RGBFormat,
   UnsignedByteType,
 } from 'three';
-import type { Domain, VisScaleType } from '../models';
+import type { VisScaleType } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import VisMesh from '../shared/VisMesh';
 import type { ColorMap, ScaleShader } from './models';
-import { isScaleType } from '../utils';
 import { getInterpolator } from './utils';
-import { ScaleType, assertDefined } from '@h5web/shared';
+import type { Domain } from '@h5web/shared';
+import { ScaleType, assertDefined, isScaleType } from '@h5web/shared';
 
 interface Props {
   rows: number;

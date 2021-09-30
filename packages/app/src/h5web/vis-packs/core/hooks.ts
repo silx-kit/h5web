@@ -1,17 +1,18 @@
 import type { NdArray } from 'ndarray';
 import { ProviderContext } from '../../providers/context';
 import type { Dataset, Value } from '@h5web/shared';
-import { isDefined, ScaleType } from '@h5web/shared';
+import {
+  isDefined,
+  ScaleType,
+  getBounds,
+  getValidDomainForScale,
+} from '@h5web/shared';
 import { useContext, useMemo } from 'react';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import { applyMapping, getBaseArray, getSliceSelection } from './utils';
 import { createMemo } from 'react-use';
 import { isAxis } from '../../dimension-mapper/utils';
 import { getCombinedDomain } from '@h5web/lib';
-import {
-  getBounds,
-  getValidDomainForScale,
-} from '@h5web/lib/src/h5web/vis-packs/core/utils';
 
 export function usePrefetchValues(
   datasets: (Dataset | undefined)[],

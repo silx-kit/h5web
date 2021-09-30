@@ -1,5 +1,6 @@
 import { scalePower } from '@visx/scale';
-import type { Domain, ScaleGammaConfig } from './models';
+import type { Domain } from '@h5web/shared';
+import type { ScaleGammaConfig } from './models';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import type {
   InterpolatorFactory,

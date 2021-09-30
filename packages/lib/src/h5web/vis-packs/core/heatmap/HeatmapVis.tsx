@@ -6,12 +6,13 @@ import TooltipMesh from '../shared/TooltipMesh';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { getDims } from './utils';
-import type { Domain, VisScaleType, AxisParams } from '../models';
+import type { VisScaleType, AxisParams } from '../models';
 import type { ColorMap, Layout, TooltipData } from './models';
 import { DEFAULT_DOMAIN } from '../utils';
 import { useAxisValues } from './hooks';
 import { useDomain, useValueToIndexScale } from '../hooks';
 import HeatmapMesh from './HeatmapMesh';
+import type { Domain } from '@h5web/shared';
 import { assertDefined, formatTooltipVal, ScaleType } from '@h5web/shared';
 
 interface Props {

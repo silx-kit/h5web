@@ -16,6 +16,7 @@ export { default as DownloadBtn } from './h5web/toolbar/controls/DownloadBtn';
 export { default as ToggleBtn } from './h5web/toolbar/controls/ToggleBtn';
 export { default as ToggleGroup } from './h5web/toolbar/controls/ToggleGroup';
 export { default as DomainSlider } from './h5web/toolbar/controls/DomainSlider/DomainSlider';
+export type { DomainSliderProps } from './h5web/toolbar/controls/DomainSlider/DomainSlider';
 export { default as ColorMapSelector } from './h5web/toolbar/controls/ColorMapSelector/ColorMapSelector';
 export { default as ScaleSelector } from './h5web/toolbar/controls/ScaleSelector/ScaleSelector';
 export { default as GridToggler } from './h5web/toolbar/controls/GridToggler';
@@ -24,10 +25,13 @@ export { default as Selector } from './h5web/toolbar/controls/Selector/Selector'
 
 // Building blocks
 export { default as VisCanvas } from './h5web/vis-packs/core/shared/VisCanvas';
+export type { VisCanvasProps } from './h5web/vis-packs/core/shared/VisCanvas';
 export { default as PanZoomMesh } from './h5web/vis-packs/core/shared/PanZoomMesh';
 export { default as TooltipMesh } from './h5web/vis-packs/core/shared/TooltipMesh';
+export type { TooltipMeshProps } from './h5web/vis-packs/core/shared/TooltipMesh';
 export { default as VisMesh } from './h5web/vis-packs/core/shared/VisMesh';
 export { default as ColorBar } from './h5web/vis-packs/core/heatmap/ColorBar';
+export type { ColorBarProps } from './h5web/vis-packs/core/heatmap/ColorBar';
 export { default as HeatmapMesh } from './h5web/vis-packs/core/heatmap/HeatmapMesh';
 export { default as DataCurve } from './h5web/vis-packs/core/line/DataCurve';
 export { default as Html } from './h5web/vis-packs/core/shared/Html';
@@ -70,12 +74,14 @@ export { INTERPOLATORS } from './h5web/vis-packs/core/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
 export { CurveType } from './h5web/vis-packs/core/line/models';
 
+export type { Domain } from '@h5web/shared';
+
 export type {
-  Domain,
   DomainErrors,
   CustomDomain,
   Size,
   AxisConfig,
+  AxisParams,
 } from './h5web/vis-packs/core/models';
 
 export type {
@@ -91,3 +97,9 @@ export {
   findMockEntity,
   getMockDataArray,
 } from '@h5web/shared';
+
+// Undocumented (for @h5web/app)
+export { default as RawVis } from './h5web/vis-packs/core/raw/RawVis';
+export { default as ScalarVis } from './h5web/vis-packs/core/scalar/ScalarVis';
+export { default as RgbVis } from './h5web/vis-packs/core/rgb/RgbVis';
+export { ImageType } from './h5web/vis-packs/core/rgb/models';

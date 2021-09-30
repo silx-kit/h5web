@@ -5,7 +5,7 @@ import {
   assertNumDims,
   DTypeClass,
 } from '@h5web/shared';
-import RgbVis from '@h5web/lib/src/h5web/vis-packs/core/rgb/RgbVis';
+import { RgbVis } from '@h5web/lib';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../core/VisBoundary';
 import NxValuesFetcher from '../NxValuesFetcher';
