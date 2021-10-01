@@ -114,8 +114,8 @@ Icons can be imported as React components from `react-icons/fi`.
   `@h5web/app`)
 - `pnpm build:storybook` - build the component library's Storybook documentation
   site
-- `pnpm serve` - serve the built demo at http://localhost:8080
-- `pnpm serve:storybook` - serve the built Storybook at http://localhost:8080
+- `pnpm serve` - serve the built demo at http://localhost:3000
+- `pnpm serve:storybook` - serve the built Storybook at http://localhost:6006
 
 ### Use built packages in demos
 
