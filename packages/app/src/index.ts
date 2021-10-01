@@ -1,5 +1,3 @@
-import './styles.css';
-
 export { default as App } from './h5web/App';
 
 export { default as MockProvider } from './h5web/providers/mock/MockProvider';
