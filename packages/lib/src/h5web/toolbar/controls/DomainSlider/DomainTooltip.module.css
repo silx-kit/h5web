@@ -1,7 +1,8 @@
 .tooltip {
   composes: popup from '../../Toolbar.module.css';
   left: 50%;
-  transform: translate(-50%, 100%);
+  /* FIX style ordering issue with Vite */
+  transform: translate(-50%, 100%) !important;
   /* Add invisible padding around tooltip to extend hover area */
   /* (especially for when enabling auto-scaling hides an error message). */
   padding-left: 2rem;
