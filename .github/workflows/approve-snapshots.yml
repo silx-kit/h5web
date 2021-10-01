@@ -42,8 +42,8 @@ jobs:
           run_install: |
             - args: [--frozen-lockfile]
 
-      - name: Build app package 📦
-        run: pnpm build --filter @h5web/app
+      - name: Build packages 📦
+        run: pnpm packages && pnpm packages:dts
 
       - name: Build demo 🛠️
         run: pnpm build
