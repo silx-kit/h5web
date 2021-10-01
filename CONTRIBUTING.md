@@ -114,6 +114,8 @@ Icons can be imported as React components from `react-icons/fi`.
   `@h5web/app`)
 - `pnpm build:storybook` - build the component library's Storybook documentation
   site
+- `pnpm serve` - serve the built demo at http://localhost:8080
+- `pnpm serve:storybook` - serve the built Storybook at http://localhost:8080
 
 ### Use built packages in demos
 
@@ -133,6 +135,8 @@ The same applies to the Storybook site but the environment variable is named
   workspace
 - `pnpm prettier` - check that all files in the workspace have been formatted
   with Prettier
+- `pnpm analyze --filter @h5web/<lib|app>` - analyze a package's bundle (run
+  only after building the package)
 
 ### Fixing and formatting
 

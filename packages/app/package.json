@@ -29,7 +29,8 @@
     "build": "vite build",
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
-    "test": "jest"
+    "test": "jest",
+    "analyze": "pnpm dlx source-map-explorer dist/index.js"
   },
   "peerDependencies": {
     "@h5web/lib": "workspace:*",
