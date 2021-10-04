@@ -39,7 +39,7 @@ function Selector<T extends string>(props: Props<T>) {
         <Button className={styles.btn} tag="button" disabled={disabled}>
           <div className={styles.btnLike}>
             <span className={styles.selectedOption}>
-              <Option option={value} />
+              <Option option={value} isSelected />
             </span>
             <MdArrowDropDown className={styles.arrowIcon} />
           </div>

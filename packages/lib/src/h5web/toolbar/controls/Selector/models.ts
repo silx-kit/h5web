@@ -1,3 +1,6 @@
 import type { ReactElement } from 'react';
 
-export type OptionComponent<T> = (props: { option: T }) => ReactElement;
+export type OptionComponent<T> = (props: {
+  option: T;
+  isSelected?: boolean;
+}) => ReactElement;
