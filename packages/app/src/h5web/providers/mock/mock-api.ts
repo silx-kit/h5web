@@ -1,5 +1,3 @@
-import axios from 'axios';
-import ndarray from 'ndarray';
 import type { Entity, Primitive } from '@h5web/shared';
 import {
   mockFilepath,
@@ -10,6 +8,9 @@ import {
   assertPrintableType,
   assertMockDataset,
 } from '@h5web/shared';
+import axios from 'axios';
+import ndarray from 'ndarray';
+
 import { applyMapping } from '../../vis-packs/core/utils';
 import { ProviderApi } from '../api';
 import { ProviderError } from '../models';

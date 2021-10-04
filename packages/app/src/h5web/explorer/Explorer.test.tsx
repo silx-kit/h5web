@@ -1,6 +1,7 @@
+import { mockFilepath } from '@h5web/shared';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockFilepath } from '@h5web/shared';
+
 import { renderApp, selectExplorerNode } from '../test-utils';
 
 test('select root group by default', async () => {

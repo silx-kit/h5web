@@ -1,3 +1,4 @@
+import { ScaleType } from '@h5web/shared';
 import {
   intType,
   makeDataset,
@@ -8,8 +9,8 @@ import {
   makeSilxStyleAttr,
   makeScalarDataset,
 } from '@h5web/shared/src/mock/metadata-utils';
+
 import { mockConsoleMethod } from '../../test-utils';
-import { ScaleType } from '@h5web/shared';
 import { findSignalDataset, getDatasetLabel, getSilxStyle } from './utils';
 
 describe('findSignalDataset', () => {

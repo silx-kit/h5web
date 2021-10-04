@@ -1,3 +1,4 @@
+import { formatBoundInput } from '@h5web/shared';
 import {
   forwardRef,
   useEffect,
@@ -6,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
-import { formatBoundInput } from '@h5web/shared';
+
 import type { Bound } from '../../../vis-packs/core/models';
 import { clampBound } from '../../../vis-packs/core/utils';
 import styles from './BoundEditor.module.css';

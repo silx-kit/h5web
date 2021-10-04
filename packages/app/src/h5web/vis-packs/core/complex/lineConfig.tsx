@@ -1,7 +1,8 @@
 import create from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { ConfigProviderProps } from '../../models';
 import createContext from 'zustand/context';
+import { persist } from 'zustand/middleware';
+
+import type { ConfigProviderProps } from '../../models';
 import type { ComplexLineVisType } from './models';
 import { ComplexVisType } from './models';
 

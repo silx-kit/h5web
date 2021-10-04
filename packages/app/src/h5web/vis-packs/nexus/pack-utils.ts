@@ -1,4 +1,3 @@
-import { ProviderError } from '../../providers/models';
 import {
   assertGroupWithChildren,
   assertStr,
@@ -11,11 +10,13 @@ import {
 } from '@h5web/shared';
 import type { Entity } from '@h5web/shared';
 import type { FetchStore } from 'react-suspense-fetch';
+
+import { ProviderError } from '../../providers/models';
 import { getAttributeValue } from '../../utils';
 import type { VisDef } from '../models';
+import { NxInterpretation } from './models';
 import { findSignalDataset, isNxDataGroup } from './utils';
 import { NexusVis, NEXUS_VIS } from './visualizations';
-import { NxInterpretation } from './models';
 
 export function getDefaultEntity(
   entity: Entity,

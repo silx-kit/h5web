@@ -1,4 +1,3 @@
-import { CORE_VIS } from './visualizations';
 import {
   intType,
   compoundType,
@@ -11,6 +10,8 @@ import {
   unsignedType,
   withImageAttributes,
 } from '@h5web/shared/src/mock/metadata-utils';
+
+import { CORE_VIS } from './visualizations';
 
 const datasetIntScalar = makeScalarDataset('dataset_int', intType);
 const datasetUnsignedScalar = makeScalarDataset('dataset_int', unsignedType);

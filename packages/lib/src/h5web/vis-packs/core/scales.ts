@@ -1,12 +1,13 @@
+import { ScaleType } from '@h5web/shared';
 import { scaleLinear, scaleLog, scaleSymlog, scaleSqrt } from '@visx/scale';
 import type { PickScaleConfigWithoutType } from '@visx/scale';
 import type { IconType } from 'react-icons/lib';
-import type { AxisScale } from './models';
 import { MdSort, MdFilterList, MdFlare } from 'react-icons/md';
-import SqrtIcon from '../../toolbar/controls/ScaleSelector/SqrtIcon';
+
 import MdGraphicEqRotated from '../../toolbar/controls/ScaleSelector/MdGraphicEqRotated';
+import SqrtIcon from '../../toolbar/controls/ScaleSelector/SqrtIcon';
+import type { AxisScale } from './models';
 import { scaleGamma } from './scaleGamma';
-import { ScaleType } from '@h5web/shared';
 
 interface H5WebScale {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

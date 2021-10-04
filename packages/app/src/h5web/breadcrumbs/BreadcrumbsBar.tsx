@@ -1,7 +1,8 @@
-import { FiSidebar } from 'react-icons/fi';
-import styles from './BreadcrumbsBar.module.css';
 import { ToggleGroup, ToggleBtn } from '@h5web/lib';
+import { FiSidebar } from 'react-icons/fi';
+
 import Breadcrumbs from './Breadcrumbs';
+import styles from './BreadcrumbsBar.module.css';
 
 interface Props {
   path: string;

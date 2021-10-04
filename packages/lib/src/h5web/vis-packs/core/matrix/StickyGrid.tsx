@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react';
 import type { ReactNode, Ref } from 'react';
-import IndexTrack from './IndexTrack';
-import { GridSettingsContext } from './GridSettingsContext';
+
 import AnchorCell from './AnchorCell';
+import { GridSettingsContext } from './GridSettingsContext';
+import IndexTrack from './IndexTrack';
 import styles from './MatrixVis.module.css';
 
 interface Props {

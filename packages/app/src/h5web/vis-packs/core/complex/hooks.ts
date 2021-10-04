@@ -4,6 +4,7 @@ import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 import { useMemo } from 'react';
 import { createMemo } from 'react-use';
+
 import { DEFAULT_DOMAIN } from '../utils';
 import { getPhaseAmplitudeValues } from './utils';
 

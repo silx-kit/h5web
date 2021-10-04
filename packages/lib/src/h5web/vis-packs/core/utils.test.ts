@@ -1,4 +1,7 @@
+import type { Domain } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared';
 import { tickStep } from 'd3-array';
+
 import {
   computeCanvasSize,
   getDomain,
@@ -9,8 +12,6 @@ import {
   getCombinedDomain,
   clampBound,
 } from './utils';
-import type { Domain } from '@h5web/shared';
-import { ScaleType } from '@h5web/shared';
 
 const MAX = Number.MAX_VALUE / 2;
 const POS_MIN = Number.MIN_VALUE;

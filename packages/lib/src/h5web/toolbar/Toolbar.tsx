@@ -1,11 +1,12 @@
-import type { ReactElement, ReactNode } from 'react';
-import { useMap, useMeasure } from '@react-hookz/web';
-import styles from './Toolbar.module.css';
-import Separator from './Separator';
-import OverflowMenu from './OverflowMenu';
-import MeasuredControl from './MeasuredControl';
-import flattenChildren from 'react-keyed-flatten-children';
 import { isReactElement } from '@h5web/shared';
+import { useMap, useMeasure } from '@react-hookz/web';
+import type { ReactElement, ReactNode } from 'react';
+import flattenChildren from 'react-keyed-flatten-children';
+
+import MeasuredControl from './MeasuredControl';
+import OverflowMenu from './OverflowMenu';
+import Separator from './Separator';
+import styles from './Toolbar.module.css';
 
 interface Props {
   children: ReactNode;

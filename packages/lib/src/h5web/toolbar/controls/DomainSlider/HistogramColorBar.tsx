@@ -1,4 +1,5 @@
 import type { SVGProps } from 'react';
+
 import type { ColorMap } from '../../../vis-packs/core/heatmap/models';
 import {
   getInterpolator,

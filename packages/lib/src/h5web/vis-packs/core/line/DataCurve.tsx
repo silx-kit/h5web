@@ -1,11 +1,12 @@
-import { Suspense, useLayoutEffect, useState } from 'react';
-import { CurveType } from './models';
-import GlyphMaterial from './GlyphMaterial';
 import { extend, useThree } from '@react-three/fiber';
-import { BufferGeometry, Line } from 'three';
-import ErrorBars from './ErrorBars';
-import { useCanvasPoints } from './hooks';
 import type { Object3DNode } from '@react-three/fiber';
+import { Suspense, useLayoutEffect, useState } from 'react';
+import { BufferGeometry, Line } from 'three';
+
+import ErrorBars from './ErrorBars';
+import GlyphMaterial from './GlyphMaterial';
+import { useCanvasPoints } from './hooks';
+import { CurveType } from './models';
 
 extend({ Line_: Line });
 

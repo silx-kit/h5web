@@ -1,5 +1,3 @@
-import type { Meta, Story } from '@storybook/react/types-6-0';
-import FillHeight from './decorators/FillHeight';
 import type { HeatmapVisProps } from '@h5web/lib';
 import {
   HeatmapVis,
@@ -8,7 +6,10 @@ import {
   getMockDataArray,
   INTERPOLATORS,
 } from '@h5web/lib';
+import type { Meta, Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
+
+import FillHeight from './decorators/FillHeight';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 const domain = getDomain(dataArray.data);

@@ -1,11 +1,12 @@
+import type { Domain } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
+
 import { useFrameRendering } from '../hooks';
 import type { AxisOffsets } from '../models';
+import Axis from './Axis';
+import styles from './AxisSystem.module.css';
 import { useAxisSystemContext } from './AxisSystemContext';
 import Html from './Html';
-import styles from './AxisSystem.module.css';
-import Axis from './Axis';
-import type { Domain } from '@h5web/shared';
 
 interface Props {
   axisOffsets: AxisOffsets;

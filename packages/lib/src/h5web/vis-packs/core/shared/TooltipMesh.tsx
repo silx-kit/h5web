@@ -1,13 +1,14 @@
+import { useThree } from '@react-three/fiber';
+import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
+import { Line } from '@visx/shape';
+import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
 import { useCallback } from 'react';
 import type { ReactElement } from 'react';
-import { useThree } from '@react-three/fiber';
-import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
-import { Line } from '@visx/shape';
-import Html from './Html';
-import styles from './TooltipMesh.module.css';
-import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
+
 import type { Coords } from '../models';
 import { useAxisSystemContext } from './AxisSystemContext';
+import Html from './Html';
+import styles from './TooltipMesh.module.css';
 import VisMesh from './VisMesh';
 
 interface Props {

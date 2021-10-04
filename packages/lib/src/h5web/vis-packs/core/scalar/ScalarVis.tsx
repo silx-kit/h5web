@@ -1,4 +1,5 @@
 import type { Primitive, PrintableType } from '@h5web/shared';
+
 import styles from './ScalarVis.module.css';
 
 interface Props {

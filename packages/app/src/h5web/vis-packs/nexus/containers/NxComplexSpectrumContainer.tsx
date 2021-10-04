@@ -1,12 +1,13 @@
 import { assertGroupWithChildren } from '@h5web/shared';
-import type { VisContainerProps } from '../../models';
-import { useDimMappingState } from '../../hooks';
-import { getNxData, getDatasetLabel } from '../utils';
-import VisBoundary from '../../core/VisBoundary';
-import NxValuesFetcher from '../NxValuesFetcher';
+
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import VisBoundary from '../../core/VisBoundary';
 import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
+import { useDimMappingState } from '../../hooks';
+import type { VisContainerProps } from '../../models';
+import NxValuesFetcher from '../NxValuesFetcher';
 import { assertComplexNxData } from '../guards';
+import { getNxData, getDatasetLabel } from '../utils';
 
 function NxComplexSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;

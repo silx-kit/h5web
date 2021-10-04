@@ -1,4 +1,3 @@
-import { getSupportedVis } from './pack-utils';
 import {
   compoundType,
   intType,
@@ -6,6 +5,8 @@ import {
   makeGroup,
   makeScalarDataset,
 } from '@h5web/shared/src/mock/metadata-utils';
+
+import { getSupportedVis } from './pack-utils';
 import { CORE_VIS } from './visualizations';
 
 describe('getSupportedVis', () => {

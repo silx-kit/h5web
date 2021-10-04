@@ -1,29 +1,4 @@
 import type {
-  HsdsDatasetResponse,
-  HsdsDatatypeResponse,
-  HsdsGroupResponse,
-  HsdsAttributesResponse,
-  HsdsLinksResponse,
-  HsdsRootResponse,
-  HsdsValueResponse,
-  HsdsAttributeResponse,
-  HsdsLink,
-  HsdsEntity,
-  HsdsCollection,
-  HsdsId,
-} from './models';
-import type { ValuesStoreParams } from '../models';
-import { ProviderError } from '../models';
-import { ProviderApi } from '../api';
-import {
-  assertHsdsDataset,
-  isHsdsGroup,
-  convertHsdsShape,
-  convertHsdsType,
-  convertHsdsAttributes,
-  assertHsdsEntity,
-} from './utils';
-import type {
   Group,
   GroupWithChildren,
   Dataset,
@@ -38,6 +13,32 @@ import {
   EntityKind,
   buildEntityPath,
 } from '@h5web/shared';
+
+import { ProviderApi } from '../api';
+import type { ValuesStoreParams } from '../models';
+import { ProviderError } from '../models';
+import type {
+  HsdsDatasetResponse,
+  HsdsDatatypeResponse,
+  HsdsGroupResponse,
+  HsdsAttributesResponse,
+  HsdsLinksResponse,
+  HsdsRootResponse,
+  HsdsValueResponse,
+  HsdsAttributeResponse,
+  HsdsLink,
+  HsdsEntity,
+  HsdsCollection,
+  HsdsId,
+} from './models';
+import {
+  assertHsdsDataset,
+  isHsdsGroup,
+  convertHsdsShape,
+  convertHsdsType,
+  convertHsdsAttributes,
+  assertHsdsEntity,
+} from './utils';
 
 export class HsdsApi extends ProviderApi {
   private readonly entities = new Map<string, HsdsEntity>();

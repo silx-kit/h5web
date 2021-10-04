@@ -1,5 +1,6 @@
 import type { AriaAttributes } from 'react';
 import type { IconType } from 'react-icons';
+
 import styles from '../Toolbar.module.css';
 
 interface Props extends AriaAttributes {

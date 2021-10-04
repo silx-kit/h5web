@@ -1,16 +1,17 @@
-import shallow from 'zustand/shallow';
+import { RgbVis } from '@h5web/lib';
 import {
   assertGroupWithChildren,
   assertNumericType,
   assertNumDims,
   DTypeClass,
 } from '@h5web/shared';
-import { RgbVis } from '@h5web/lib';
-import type { VisContainerProps } from '../../models';
+import shallow from 'zustand/shallow';
+
 import VisBoundary from '../../core/VisBoundary';
+import { useRgbVisConfig } from '../../core/rgb/config';
+import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { getNxData, getDatasetLabel } from '../utils';
-import { useRgbVisConfig } from '../../core/rgb/config';
 
 function NxRgbContainer(props: VisContainerProps) {
   const { entity } = props;

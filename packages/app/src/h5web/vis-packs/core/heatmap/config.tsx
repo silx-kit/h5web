@@ -1,11 +1,12 @@
-import create from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { ColorMap, Layout } from './models';
-import type { ConfigProviderProps } from '../../models';
-import createContext from 'zustand/context';
 import type { CustomDomain } from '@h5web/lib';
 import type { Domain } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
+import create from 'zustand';
+import createContext from 'zustand/context';
+import { persist } from 'zustand/middleware';
+
+import type { ConfigProviderProps } from '../../models';
+import type { ColorMap, Layout } from './models';
 
 interface HeatmapConfig {
   dataDomain: Domain | undefined;

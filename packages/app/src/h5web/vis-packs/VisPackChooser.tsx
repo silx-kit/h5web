@@ -1,7 +1,8 @@
+import { handleError } from '@h5web/shared';
 import { useContext } from 'react';
+
 import { ProviderContext } from '../providers/context';
 import { ProviderError } from '../providers/models';
-import { handleError } from '@h5web/shared';
 import CorePack from './core/CorePack';
 import NexusPack from './nexus/NexusPack';
 import { isNxGroup } from './nexus/utils';

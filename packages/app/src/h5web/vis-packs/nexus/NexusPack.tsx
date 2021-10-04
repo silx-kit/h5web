@@ -1,9 +1,10 @@
-import { useContext } from 'react';
 import type { Entity } from '@h5web/shared';
-import { getDefaultEntity, getSupportedVis } from './pack-utils';
-import { useActiveVis } from '../hooks';
-import Visualizer from '../../visualizer/Visualizer';
+import { useContext } from 'react';
+
 import { ProviderContext } from '../../providers/context';
+import Visualizer from '../../visualizer/Visualizer';
+import { useActiveVis } from '../hooks';
+import { getDefaultEntity, getSupportedVis } from './pack-utils';
 
 interface Props {
   entity: Entity;

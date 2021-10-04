@@ -10,6 +10,7 @@ import type {
   Attribute,
 } from '@h5web/shared';
 import { isGroup, isDataset, DTypeClass, Endianness } from '@h5web/shared';
+
 import type {
   HsdsType,
   HsdsEntity,

@@ -1,16 +1,17 @@
-import { useEffect } from 'react';
 import { HeatmapVis } from '@h5web/lib';
 import type { H5WebComplex, ScaleType } from '@h5web/shared';
+import { useEffect } from 'react';
+import shallow from 'zustand/shallow';
+
+import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { useHeatmapConfig } from '../heatmap/config';
+import { useSafeDomain, useVisDomain } from '../heatmap/hooks';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { AxisMapping } from '../models';
-import type { DimensionMapping } from '../../../dimension-mapper/models';
-import shallow from 'zustand/shallow';
-import { useSafeDomain, useVisDomain } from '../heatmap/hooks';
-import { usePhaseAmplitudeArrays } from './hooks';
 import { DEFAULT_DOMAIN } from '../utils';
-import { ComplexVisType } from './models';
 import { useComplexConfig } from './config';
-import { useHeatmapConfig } from '../heatmap/config';
+import { usePhaseAmplitudeArrays } from './hooks';
+import { ComplexVisType } from './models';
 
 interface Props {
   value: H5WebComplex[];

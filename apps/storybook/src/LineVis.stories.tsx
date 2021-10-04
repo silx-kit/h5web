@@ -1,6 +1,3 @@
-import type { Meta, Story } from '@storybook/react/types-6-0';
-import ndarray from 'ndarray';
-import FillHeight from './decorators/FillHeight';
 import type { LineVisProps } from '@h5web/lib';
 import {
   LineVis,
@@ -12,6 +9,10 @@ import {
   getCombinedDomain,
   getDomains,
 } from '@h5web/lib';
+import type { Meta, Story } from '@storybook/react/types-6-0';
+import ndarray from 'ndarray';
+
+import FillHeight from './decorators/FillHeight';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray);

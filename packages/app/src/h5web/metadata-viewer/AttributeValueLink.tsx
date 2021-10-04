@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { FiChevronsRight } from 'react-icons/fi';
+
 import styles from './MetadataViewer.module.css';
 
 interface Props {

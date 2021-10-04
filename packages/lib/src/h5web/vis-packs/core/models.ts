@@ -1,4 +1,3 @@
-import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
 import type {
   Domain,
   NumericType,
@@ -7,6 +6,8 @@ import type {
   ComplexType,
   ScaleType,
 } from '@h5web/shared';
+import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
+
 import type { ColorMap } from './heatmap/models';
 import type { ScaleGamma } from './scaleGamma';
 

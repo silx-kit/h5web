@@ -1,12 +1,13 @@
+import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
+import { useEventListener } from '@react-hookz/web';
+import { useFrame, useThree } from '@react-three/fiber';
 import type { NdArray } from 'ndarray';
 import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
-import { useEventListener } from '@react-hookz/web';
 import { createMemo } from 'react-use';
-import { useFrame, useThree } from '@react-three/fiber';
-import { getCombinedDomain, getValueToIndexScale } from './utils';
+
 import type { Size } from './models';
-import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
+import { getCombinedDomain, getValueToIndexScale } from './utils';
 
 const useBounds = createMemo(getBounds);
 const useValidDomainForScale = createMemo(getValidDomainForScale);

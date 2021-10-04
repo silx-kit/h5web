@@ -1,9 +1,10 @@
+import { useThree } from '@react-three/fiber';
+import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
+import { clamp } from 'lodash';
 import { useRef, useCallback, useEffect } from 'react';
 import type { Vector3 } from 'three';
-import { useThree } from '@react-three/fiber';
-import { clamp } from 'lodash';
+
 import { useWheelCapture } from '../hooks';
-import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
 import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;

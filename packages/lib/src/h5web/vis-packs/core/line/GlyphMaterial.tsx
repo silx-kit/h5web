@@ -1,5 +1,6 @@
 import { useLoader } from '@react-three/fiber';
 import { NearestFilter, TextureLoader } from 'three';
+
 import { GLYPH_URLS } from './models';
 
 interface Props {

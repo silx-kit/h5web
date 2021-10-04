@@ -1,4 +1,5 @@
 import { ScaleType } from '@h5web/shared';
+
 import Selector from '../Selector/Selector';
 import ScaleOption from './ScaleOption';
 

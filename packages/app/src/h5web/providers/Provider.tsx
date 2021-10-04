@@ -1,10 +1,11 @@
+import type { Entity } from '@h5web/shared';
+import { assertGroupWithChildren, isGroup } from '@h5web/shared';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
-import { ProviderContext } from './context';
+
 import type { ProviderApi } from './api';
-import type { Entity } from '@h5web/shared';
-import { assertGroupWithChildren, isGroup } from '@h5web/shared';
+import { ProviderContext } from './context';
 
 interface Props {
   api: ProviderApi;

@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
+
+import Provider from '../Provider';
 import { JupyterStableApi } from './jupyter-api';
 import { JupyterDevApi } from './jupyter-dev-api';
-import Provider from '../Provider';
 
 interface Props {
   url: string;

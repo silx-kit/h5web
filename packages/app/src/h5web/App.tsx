@@ -1,15 +1,16 @@
-import { useState, Suspense } from 'react';
-import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import { assertAbsolutePath } from '@h5web/shared';
-import Explorer from './explorer/Explorer';
-import MetadataViewer from './metadata-viewer/MetadataViewer';
-import styles from './App.module.css';
-import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
-import VisPackChooser from './vis-packs/VisPackChooser';
+import { useState, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import ErrorFallback from './visualizer/ErrorFallback';
+import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
+
+import styles from './App.module.css';
 import LoadingFallback from './LoadingFallback';
 import VisConfigProvider from './VisConfigProvider';
+import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
+import Explorer from './explorer/Explorer';
+import MetadataViewer from './metadata-viewer/MetadataViewer';
+import VisPackChooser from './vis-packs/VisPackChooser';
+import ErrorFallback from './visualizer/ErrorFallback';
 
 import 'react-reflex/styles.css';
 

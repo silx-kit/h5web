@@ -1,3 +1,5 @@
+import type { Domain } from '@h5web/shared';
+import { ScaleType, assertDefined, isScaleType } from '@h5web/shared';
 import { rgb } from 'd3-color';
 import { memo, useMemo } from 'react';
 import {
@@ -7,13 +9,12 @@ import {
   RGBFormat,
   UnsignedByteType,
 } from 'three';
+
 import type { VisScaleType } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import VisMesh from '../shared/VisMesh';
 import type { ColorMap, ScaleShader } from './models';
 import { getInterpolator } from './utils';
-import type { Domain } from '@h5web/shared';
-import { ScaleType, assertDefined, isScaleType } from '@h5web/shared';
 
 interface Props {
   rows: number;

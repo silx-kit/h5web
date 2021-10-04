@@ -1,6 +1,7 @@
-import { ProviderContext } from '../providers/context';
 import { useContext, Suspense } from 'react';
 import { FiFileText, FiRefreshCw } from 'react-icons/fi';
+
+import { ProviderContext } from '../providers/context';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 

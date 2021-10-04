@@ -1,4 +1,5 @@
 import { DTypeClass, Endianness } from '@h5web/shared';
+
 import { convertDtype } from './utils';
 
 describe('convertDtype', () => {

@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
 import type { Vis } from './vis-packs/core/visualizations';

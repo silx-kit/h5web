@@ -1,8 +1,9 @@
-import type { Meta, Story } from '@storybook/react';
-import VisCanvasStoriesConfig from './VisCanvas.stories';
 import { PanZoomMesh, TooltipMesh, VisCanvas } from '@h5web/lib';
 import type { TooltipMeshProps } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
+import type { Meta, Story } from '@storybook/react';
+
+import VisCanvasStoriesConfig from './VisCanvas.stories';
 
 interface TemplateProps {
   panZoom?: boolean;

@@ -1,6 +1,3 @@
-import { MdGridOn, MdDomain } from 'react-icons/md';
-import { FiItalic } from 'react-icons/fi';
-import shallow from 'zustand/shallow';
 import {
   Toolbar,
   Separator,
@@ -10,13 +7,17 @@ import {
   Selector,
   CurveType,
 } from '@h5web/lib';
-import { useLineConfig } from '../vis-packs/core/line/config';
+import { FiItalic } from 'react-icons/fi';
+import { MdGridOn, MdDomain } from 'react-icons/md';
+import shallow from 'zustand/shallow';
+
 import { useComplexLineConfig } from '../vis-packs/core/complex/lineConfig';
 import type { ComplexLineVisType } from '../vis-packs/core/complex/models';
 import {
   ComplexVisType,
   VIS_TYPE_SYMBOLS,
 } from '../vis-packs/core/complex/models';
+import { useLineConfig } from '../vis-packs/core/line/config';
 
 function ComplexLineToolbar() {
   const {

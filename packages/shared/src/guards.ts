@@ -1,7 +1,6 @@
-import type { ReactChild, ReactElement } from 'react';
 import type { NdArray } from 'ndarray';
-import { toArray } from './utils';
-import { ScaleType } from './models-vis';
+import type { ReactChild, ReactElement } from 'react';
+
 import { EntityKind, DTypeClass } from './models-hdf5';
 import type {
   Entity,
@@ -21,6 +20,8 @@ import type {
   PrintableType,
   StringType,
 } from './models-hdf5';
+import { ScaleType } from './models-vis';
+import { toArray } from './utils';
 
 const PRINTABLE_DTYPES = new Set([
   DTypeClass.Unsigned,

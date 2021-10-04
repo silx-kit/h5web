@@ -1,11 +1,12 @@
-import { useContext } from 'react';
-import styles from './MetadataViewer.module.css';
-import { renderType, renderShape } from './utils';
-import RawInspector from './RawInspector';
-import { capitalize } from 'lodash';
 import { EntityKind, isDataset, isDatatype } from '@h5web/shared';
 import type { Entity } from '@h5web/shared';
+import { capitalize } from 'lodash';
+import { useContext } from 'react';
+
 import { ProviderContext } from '../providers/context';
+import styles from './MetadataViewer.module.css';
+import RawInspector from './RawInspector';
+import { renderType, renderShape } from './utils';
 
 interface Props {
   entity: Entity;

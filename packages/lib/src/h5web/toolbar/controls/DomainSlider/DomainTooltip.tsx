@@ -1,4 +1,7 @@
+import { formatBound } from '@h5web/shared';
+import type { Domain, ScaleType } from '@h5web/shared';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
+
 import type {
   DomainErrors,
   HistogramParams,
@@ -7,11 +10,9 @@ import { DomainError } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import BoundEditor from './BoundEditor';
 import type { BoundEditorHandle } from './BoundEditor';
-import Histogram from './Histogram';
 import styles from './DomainTooltip.module.css';
 import ErrorMessage from './ErrorMessage';
-import { formatBound } from '@h5web/shared';
-import type { Domain, ScaleType } from '@h5web/shared';
+import Histogram from './Histogram';
 
 interface Props {
   id: string;

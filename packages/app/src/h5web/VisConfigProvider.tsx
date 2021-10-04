@@ -1,5 +1,6 @@
 import { isDefined } from '@h5web/shared';
 import type { ReactNode } from 'react';
+
 import { CORE_VIS } from './vis-packs/core/visualizations';
 import { NEXUS_VIS } from './vis-packs/nexus/visualizations';
 

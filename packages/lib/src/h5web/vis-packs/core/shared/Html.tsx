@@ -1,3 +1,6 @@
+import { isDefined } from '@h5web/shared';
+import type { GroupProps } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import {
   useState,
   useLayoutEffect,
@@ -7,11 +10,8 @@ import {
 } from 'react';
 import type { HTMLAttributes } from 'react';
 import ReactDOM from 'react-dom';
-import type { GroupProps } from '@react-three/fiber';
-import { useFrame, useThree } from '@react-three/fiber';
 import type { Group } from 'three';
 import { Vector3 } from 'three';
-import { isDefined } from '@h5web/shared';
 
 const v1 = new Vector3();
 

@@ -1,7 +1,3 @@
-import { MdGridOn, MdDomain } from 'react-icons/md';
-import { FiItalic } from 'react-icons/fi';
-import shallow from 'zustand/shallow';
-import { ScaleType } from '@h5web/shared';
 import {
   CurveType,
   ScaleSelector,
@@ -10,6 +6,11 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
+import { ScaleType } from '@h5web/shared';
+import { FiItalic } from 'react-icons/fi';
+import { MdGridOn, MdDomain } from 'react-icons/md';
+import shallow from 'zustand/shallow';
+
 import { useLineConfig } from '../vis-packs/core/line/config';
 
 const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];

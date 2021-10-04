@@ -1,8 +1,3 @@
-import { Title, Primary } from '@storybook/addon-docs';
-import type { Meta, Story } from '@storybook/react';
-import { useState } from 'react';
-import { useToggle } from '@react-hookz/web';
-import { FiTarget } from 'react-icons/fi';
 import type { ColorMap, CustomDomain } from '@h5web/lib';
 import {
   ScaleType,
@@ -15,6 +10,11 @@ import {
   ToggleGroup,
   ToggleBtn,
 } from '@h5web/lib';
+import { useToggle } from '@react-hookz/web';
+import { Title, Primary } from '@storybook/addon-docs';
+import type { Meta, Story } from '@storybook/react';
+import { useState } from 'react';
+import { FiTarget } from 'react-icons/fi';
 
 const Template: Story<{ narrow?: boolean }> = ({ narrow }) => {
   const [customDomain, setCustomDomain] = useState<CustomDomain>([null, null]);

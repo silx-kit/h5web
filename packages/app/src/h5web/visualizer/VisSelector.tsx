@@ -1,5 +1,5 @@
-import styles from './VisSelector.module.css';
 import type { VisDef } from '../vis-packs/models';
+import styles from './VisSelector.module.css';
 
 interface Props<T extends VisDef> {
   activeVis: T;

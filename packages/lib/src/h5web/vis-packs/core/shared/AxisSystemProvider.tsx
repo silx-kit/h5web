@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
-import type { AxisConfig } from '../models';
+
 import { useVisSize } from '../hooks';
-import { AxisSystemContext } from './AxisSystemContext';
+import type { AxisConfig } from '../models';
 import { getCanvasScale } from '../utils';
+import { AxisSystemContext } from './AxisSystemContext';
 
 interface Props {
   visRatio?: number;

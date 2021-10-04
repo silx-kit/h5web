@@ -1,16 +1,3 @@
-import { useMemo } from 'react';
-import type { ReactElement, ReactNode } from 'react';
-import type { NdArray } from 'ndarray';
-import { range } from 'd3-array';
-import styles from './LineVis.module.css';
-import DataCurve from './DataCurve';
-import VisCanvas from '../shared/VisCanvas';
-import PanZoomMesh from '../shared/PanZoomMesh';
-import TooltipMesh from '../shared/TooltipMesh';
-import type { AxisParams } from '../models';
-import type { TooltipData } from './models';
-import { CurveType } from './models';
-import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
 import type { Domain } from '@h5web/shared';
 import {
   assertDataLength,
@@ -19,7 +6,21 @@ import {
   formatTooltipErr,
   ScaleType,
 } from '@h5web/shared';
+import { range } from 'd3-array';
+import type { NdArray } from 'ndarray';
+import { useMemo } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+
 import { useCSSCustomProperties, useValueToIndexScale } from '../hooks';
+import type { AxisParams } from '../models';
+import PanZoomMesh from '../shared/PanZoomMesh';
+import TooltipMesh from '../shared/TooltipMesh';
+import VisCanvas from '../shared/VisCanvas';
+import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
+import DataCurve from './DataCurve';
+import styles from './LineVis.module.css';
+import type { TooltipData } from './models';
+import { CurveType } from './models';
 
 const DEFAULT_CURVE_COLOR = 'midnightblue';
 const DEFAULT_AUX_COLORS =

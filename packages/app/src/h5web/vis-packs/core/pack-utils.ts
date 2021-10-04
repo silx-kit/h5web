@@ -1,5 +1,6 @@
 import type { Entity } from '@h5web/shared';
 import { isDataset } from '@h5web/shared';
+
 import type { CoreVisDef } from './visualizations';
 import { CORE_VIS, Vis } from './visualizations';
 

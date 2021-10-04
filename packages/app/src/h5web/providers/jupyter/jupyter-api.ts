@@ -7,16 +7,17 @@ import type {
   Attribute,
 } from '@h5web/shared';
 import { assertDataset, buildEntityPath, EntityKind } from '@h5web/shared';
-import type { ValuesStoreParams } from '../models';
+
 import { ProviderApi } from '../api';
-import { isDatasetResponse, isGroupResponse } from './utils';
+import type { ValuesStoreParams } from '../models';
+import { convertDtype, flattenValue } from '../utils';
 import type {
   JupyterAttrValuesResponse,
   JupyterDataResponse,
   JupyterEntityResponse,
   JupyterAttribute,
 } from './models';
-import { convertDtype, flattenValue } from '../utils';
+import { isDatasetResponse, isGroupResponse } from './utils';
 
 export class JupyterStableApi extends ProviderApi {
   protected attrValuesCache = new Map<string, JupyterAttrValuesResponse>();

@@ -1,5 +1,6 @@
 import type { ScaleType } from '@h5web/shared';
 import { isDefined } from '@h5web/shared';
+
 import { useDatasetValues } from '../core/hooks';
 import type { AxisMapping } from '../core/models';
 import type { AxisDatasetMapping } from './models';

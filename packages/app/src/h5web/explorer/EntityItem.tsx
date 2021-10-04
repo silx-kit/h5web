@@ -1,13 +1,14 @@
+import { isGroup } from '@h5web/shared';
+import type { Entity } from '@h5web/shared';
+import { useToggle } from '@react-hookz/web';
 import type { CSSProperties } from 'react';
 import { Suspense, useEffect } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
+
+import { isNxGroup } from '../vis-packs/nexus/utils';
+import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
-import { isGroup } from '@h5web/shared';
-import type { Entity } from '@h5web/shared';
-import EntityList from './EntityList';
-import { useToggle } from '@react-hookz/web';
-import { isNxGroup } from '../vis-packs/nexus/utils';
 
 interface Props {
   path: string;

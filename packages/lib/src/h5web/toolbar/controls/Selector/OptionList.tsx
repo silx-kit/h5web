@@ -1,6 +1,7 @@
 import { MenuItem } from 'react-aria-menubutton';
-import type { OptionComponent } from './models';
+
 import styles from './Selector.module.css';
+import type { OptionComponent } from './models';
 
 interface Props<T> {
   optionList: T[];
