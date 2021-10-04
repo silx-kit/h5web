@@ -45,9 +45,11 @@ pnpm start
   command binary (equivalent to `npx <pkg-name>`)
 - `pnpm exec <binary>` - run a binary located in `node_modules/.bin` (equivalent
   to `npx <pkg-name>` for a package installed in the workspace)
-- `pnpm outdated -r` - list outdated dependencies in the workspace
 - `pnpm why -r <pkg-name>` - show all project and packages that depend on the
   specified package
+- `pnpm outdated -r` - list outdated dependencies in the workspace
+- `pnpm up -rL <pkg-name>` Update a package to the latest version in every
+  project
 
 ### Dependency management
 
