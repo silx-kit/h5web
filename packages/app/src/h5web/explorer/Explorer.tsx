@@ -23,7 +23,7 @@ function Explorer(props: Props) {
         onClick={() => onSelect('/')}
       >
         <FiFileText className={styles.fileIcon} />
-        {filename}
+        <span className={styles.name}>{filename}</span>
       </button>
 
       <Suspense

@@ -55,7 +55,7 @@ function EntityItem(props: Props) {
         }}
       >
         <Icon entity={entity} isExpanded={isExpanded} />
-        {entity.name}
+        <span className={styles.name}>{entity.name}</span>
         {isNxGroup(entity) && (
           <span className={styles.nx} aria-label=" (NeXus group)">
             NX
