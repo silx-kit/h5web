@@ -21,26 +21,26 @@
   "dependencies": {
     "@h5web/lib": "workspace:*",
     "@h5web/shared": "workspace:*",
-    "@react-hookz/web": "9.0.0",
+    "@react-hookz/web": "12.0.0",
     "ndarray": "1.0.19",
     "normalize.css": "8.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-icons": "4.2.0",
+    "react-icons": "4.3.1",
     "three": "0.132.2"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "6.3.7",
-    "@storybook/addon-essentials": "6.3.7",
-    "@storybook/addon-links": "6.3.7",
+    "@storybook/addon-docs": "6.3.9",
+    "@storybook/addon-essentials": "6.3.9",
+    "@storybook/addon-links": "6.3.9",
     "@storybook/preset-create-react-app": "3.2.0",
-    "@storybook/react": "6.3.7",
+    "@storybook/react": "6.3.9",
     "@types/ndarray": "1.0.10",
     "@types/react": "17.0.19",
     "@types/react-dom": "17.0.9",
     "eslint": "7.32.0",
     "eslint-config-galex": "2.16.12",
-    "typescript": "4.4.2"
+    "typescript": "4.4.3"
   },
   "browserslist": {
     "production": [

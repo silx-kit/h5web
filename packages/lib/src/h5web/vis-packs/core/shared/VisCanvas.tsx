@@ -50,6 +50,7 @@ function VisCanvas(props: Props) {
           className={styles.canvasWrapper}
           orthographic
           linear // disable automatic color encoding and gamma correction
+          flat // disable tone mapping
           frameloop="demand" // disable game loop
           dpr={[1, 3]} // https://discoverthreejs.com/tips-and-tricks/#performance
           gl={{ preserveDrawingBuffer: true }} // for screenshot feature
