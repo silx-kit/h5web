@@ -1,13 +1,14 @@
-import { forwardRef } from 'react';
-import { FixedSizeGrid as IndexedGrid } from 'react-window';
+import type { Primitive } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
 import type { NdArray } from 'ndarray';
-import styles from './MatrixVis.module.css';
-import GridSettingsProvider from './GridSettingsContext';
-import StickyGrid from './StickyGrid';
-import Cell from './Cell';
-import type { Primitive } from '@h5web/shared';
+import { forwardRef } from 'react';
+import { FixedSizeGrid as IndexedGrid } from 'react-window';
+
 import type { PrintableType } from '../models';
+import Cell from './Cell';
+import GridSettingsProvider from './GridSettingsContext';
+import styles from './MatrixVis.module.css';
+import StickyGrid from './StickyGrid';
 
 const CELL_HEIGHT = 32;
 

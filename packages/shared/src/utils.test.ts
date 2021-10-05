@@ -1,5 +1,5 @@
-import { getChildEntity, buildEntityPath } from './utils';
 import { intType, makeGroup, makeScalarDataset } from './mock/metadata-utils';
+import { getChildEntity, buildEntityPath } from './utils';
 
 describe('getChildEntity', () => {
   const dataset = makeScalarDataset('dataset', intType);

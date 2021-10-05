@@ -1,4 +1,5 @@
 import { createMemo } from 'react-use';
+
 import { getVisDomain, getSafeDomain, getAxisValues } from './utils';
 
 export const useVisDomain = createMemo(getVisDomain);

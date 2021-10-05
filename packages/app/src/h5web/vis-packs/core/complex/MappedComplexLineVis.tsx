@@ -1,11 +1,12 @@
-import shallow from 'zustand/shallow';
 import type { H5WebComplex, ScaleType } from '@h5web/shared';
+import shallow from 'zustand/shallow';
+
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import { usePhaseAmplitudeValues } from './hooks';
 import MappedLineVis from '../line/MappedLineVis';
-import { ComplexVisType } from './models';
-import { useComplexLineConfig } from './lineConfig';
 import type { AxisMapping } from '../models';
+import { usePhaseAmplitudeValues } from './hooks';
+import { useComplexLineConfig } from './lineConfig';
+import { ComplexVisType } from './models';
 
 interface Props {
   value: H5WebComplex[];

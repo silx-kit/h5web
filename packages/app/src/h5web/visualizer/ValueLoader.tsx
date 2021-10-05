@@ -1,6 +1,7 @@
-import { ProviderContext } from '../providers/context';
 import { useContext } from 'react';
 import { useTimeout } from 'react-use';
+
+import { ProviderContext } from '../providers/context';
 import styles from './ValueLoader.module.css';
 
 interface Props {

@@ -3,6 +3,7 @@ import { ScaleType } from '@h5web/shared';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
+
 import type { ConfigProviderProps } from '../../models';
 
 interface LineConfig {

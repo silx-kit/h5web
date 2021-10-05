@@ -1,5 +1,3 @@
-import { MdAspectRatio } from 'react-icons/md';
-import shallow from 'zustand/shallow';
 import {
   ColorMapSelector,
   DomainSlider,
@@ -11,6 +9,9 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
+import { MdAspectRatio } from 'react-icons/md';
+import shallow from 'zustand/shallow';
+
 import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
 import SnapshotButton from './controls/SnapshotButton';
 

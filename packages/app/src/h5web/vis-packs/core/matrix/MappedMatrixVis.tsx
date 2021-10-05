@@ -1,9 +1,10 @@
 import { MatrixVis } from '@h5web/lib';
 import type { Primitive, PrintableType } from '@h5web/shared';
+import { useEffect } from 'react';
+
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { useMatrixConfig } from './config';
-import { useEffect } from 'react';
 
 interface Props {
   value: Primitive<PrintableType>[];

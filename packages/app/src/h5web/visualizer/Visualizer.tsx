@@ -1,4 +1,5 @@
 import type { Entity } from '@h5web/shared';
+
 import Profiler from '../Profiler';
 import type { VisDef } from '../vis-packs/models';
 import VisSelector from './VisSelector';

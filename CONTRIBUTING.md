@@ -142,8 +142,9 @@ The same applies to the Storybook site but the environment variable is named
 
 ### Fixing and formatting
 
-- `pnpm lint [--filter <project-name|{folder}>] -- --fix` - auto-fix linting
-  issues in the entire workspace or in specific projects
+- `pnpm lint -- -- --fix` - auto-fix linting issues in the entire workspace
+- `pnpm lint --filter <project-name|{folder}> -- --fix` - auto-fix linting
+  issues in specific projects
 - `pnpm prettier -- --write` - format all files with Prettier
 
 ### Editor integration

@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
+import { DataTexture, FloatType, RGBFormat, UnsignedByteType } from 'three';
+
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
-import { DataTexture, FloatType, RGBFormat, UnsignedByteType } from 'three';
-import { flipLastDimension } from './utils';
-import { ImageType } from './models';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import VisCanvas from '../shared/VisCanvas';
 import VisMesh from '../shared/VisMesh';
+import { ImageType } from './models';
+import { flipLastDimension } from './utils';
 
 interface Props {
   value: number[];

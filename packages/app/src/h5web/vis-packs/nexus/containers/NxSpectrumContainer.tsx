@@ -1,13 +1,14 @@
-import { isEqual } from 'lodash';
 import { assertGroupWithChildren } from '@h5web/shared';
-import MappedLineVis from '../../core/line/MappedLineVis';
-import type { VisContainerProps } from '../../models';
-import { useDimMappingState } from '../../hooks';
-import { getNxData, getDatasetLabel } from '../utils';
-import VisBoundary from '../../core/VisBoundary';
-import NxValuesFetcher from '../NxValuesFetcher';
+import { isEqual } from 'lodash';
+
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import VisBoundary from '../../core/VisBoundary';
+import MappedLineVis from '../../core/line/MappedLineVis';
+import { useDimMappingState } from '../../hooks';
+import type { VisContainerProps } from '../../models';
+import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericNxData } from '../guards';
+import { getNxData, getDatasetLabel } from '../utils';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;

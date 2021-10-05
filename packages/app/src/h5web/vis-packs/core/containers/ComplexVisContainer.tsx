@@ -4,12 +4,13 @@ import {
   assertComplexType,
   assertMinDims,
 } from '@h5web/shared';
-import type { VisContainerProps } from '../../models';
-import { useDimMappingState } from '../../hooks';
-import MappedComplexVis from '../complex/MappedComplexVis';
-import VisBoundary from '../VisBoundary';
-import ValueFetcher from '../ValueFetcher';
+
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../hooks';
+import type { VisContainerProps } from '../../models';
+import ValueFetcher from '../ValueFetcher';
+import VisBoundary from '../VisBoundary';
+import MappedComplexVis from '../complex/MappedComplexVis';
 
 function ComplexVisContainer(props: VisContainerProps) {
   const { entity } = props;

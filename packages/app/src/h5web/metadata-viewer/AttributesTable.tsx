@@ -1,5 +1,6 @@
 import type { Attribute } from '@h5web/shared';
 import { isComplexValue } from '@h5web/shared';
+
 import AttributeValueLink from './AttributeValueLink';
 import styles from './MetadataViewer.module.css';
 import { renderComplex } from './utils';

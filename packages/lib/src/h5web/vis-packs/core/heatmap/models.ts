@@ -1,5 +1,6 @@
-import type { INTERPOLATORS } from './interpolators';
 import type { Domain } from '@h5web/shared';
+
+import type { INTERPOLATORS } from './interpolators';
 
 export interface Dims {
   rows: number;

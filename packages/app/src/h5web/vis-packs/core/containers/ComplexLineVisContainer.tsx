@@ -3,11 +3,12 @@ import {
   assertArrayShape,
   assertComplexType,
 } from '@h5web/shared';
-import type { VisContainerProps } from '../../models';
-import { useDimMappingState } from '../../hooks';
-import VisBoundary from '../VisBoundary';
-import ValueFetcher from '../ValueFetcher';
+
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../hooks';
+import type { VisContainerProps } from '../../models';
+import ValueFetcher from '../ValueFetcher';
+import VisBoundary from '../VisBoundary';
 import MappedComplexLineVis from '../complex/MappedComplexLineVis';
 
 function ComplexLineVisContainer(props: VisContainerProps) {

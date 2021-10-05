@@ -1,15 +1,16 @@
+import type { Domain, ScaleType } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
+
 import { useCombinedDomain, useDomain } from '../../../vis-packs/core/hooks';
 import type { HistogramParams } from '../../../vis-packs/core/models';
 import { H5WEB_SCALES } from '../../../vis-packs/core/scales';
 import Tick from '../../../vis-packs/core/shared/Tick';
 import { adaptedNumTicks, DEFAULT_DOMAIN } from '../../../vis-packs/core/utils';
+import styles from './Histogram.module.css';
 import HistogramColorBar from './HistogramColorBar';
 import HistogramIndicators from './HistogramIndicators';
-import styles from './Histogram.module.css';
-import type { Domain, ScaleType } from '@h5web/shared';
 
 interface Props extends HistogramParams {
   scaleType: ScaleType;

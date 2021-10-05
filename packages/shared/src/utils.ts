@@ -1,11 +1,12 @@
 import { format } from 'd3-format';
 import ndarray from 'ndarray';
+import type { NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
+
+import { assertDataLength } from './guards';
 import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
 import { ScaleType } from './models-vis';
 import type { Bounds, Domain } from './models-vis';
-import type { NdArray } from 'ndarray';
-import { assertDataLength } from './guards';
 
 export const formatTick = format('.5~g');
 export const formatBound = format('.3~e');

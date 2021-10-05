@@ -1,4 +1,3 @@
-import { getSupportedVis } from './pack-utils';
 import {
   intType,
   floatType,
@@ -11,8 +10,10 @@ import {
   makeDataset,
   complexType,
 } from '@h5web/shared/src/mock/metadata-utils';
-import { NexusVis, NEXUS_VIS } from './visualizations';
+
 import { NxInterpretation } from './models';
+import { getSupportedVis } from './pack-utils';
+import { NexusVis, NEXUS_VIS } from './visualizations';
 
 const datasetInt1D = makeDataset('dataset_int_1d', intType, [5]);
 const datasetInt2D = makeDataset('dataset_int_2d', intType, [5, 3]);

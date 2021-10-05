@@ -1,3 +1,6 @@
+import { isGroup, EntityKind } from '@h5web/shared';
+import type { Entity } from '@h5web/shared';
+import type { IconType } from 'react-icons';
 import {
   FiHash,
   FiFolder,
@@ -6,10 +9,8 @@ import {
   FiLayers,
   FiLink,
 } from 'react-icons/fi';
-import type { IconType } from 'react-icons';
+
 import styles from './Explorer.module.css';
-import { isGroup, EntityKind } from '@h5web/shared';
-import type { Entity } from '@h5web/shared';
 
 const LEAF_ICONS: Record<EntityKind, IconType> = {
   [EntityKind.Group]: FiFolder,

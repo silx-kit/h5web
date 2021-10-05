@@ -1,6 +1,3 @@
-import { MdAspectRatio, MdGridOn } from 'react-icons/md';
-import shallow from 'zustand/shallow';
-import { ScaleType } from '@h5web/shared';
 import {
   Toolbar,
   Separator,
@@ -10,12 +7,16 @@ import {
   DomainSlider,
   ScaleSelector,
 } from '@h5web/lib';
+import { ScaleType } from '@h5web/shared';
+import { MdAspectRatio, MdGridOn } from 'react-icons/md';
+import shallow from 'zustand/shallow';
+
 import { useComplexConfig } from '../vis-packs/core/complex/config';
-import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
 import {
   ComplexVisType,
   VIS_TYPE_SYMBOLS,
 } from '../vis-packs/core/complex/models';
+import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
 import SnapshotButton from './controls/SnapshotButton';
 
 function ComplexToolbar() {

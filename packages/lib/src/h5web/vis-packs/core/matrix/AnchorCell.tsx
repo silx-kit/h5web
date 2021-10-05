@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { FiAnchor } from 'react-icons/fi';
-import styles from './MatrixVis.module.css';
+
 import { GridSettingsContext } from './GridSettingsContext';
+import styles from './MatrixVis.module.css';
 
 interface Props {
   onToggle: () => void;

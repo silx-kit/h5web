@@ -7,17 +7,18 @@ import type {
   Attribute,
 } from '@h5web/shared';
 import { assertDataset, buildEntityPath, EntityKind } from '@h5web/shared';
+
+import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 import { ProviderError } from '../models';
-import { ProviderApi } from '../api';
-import { isDatasetResponse, isGroupResponse } from './utils';
+import { convertDtype, flattenValue, handleAxiosError } from '../utils';
 import type {
   H5GroveAttrValuesResponse,
   H5GroveDataResponse,
   H5GroveEntityResponse,
   H5GroveAttribute,
 } from './models';
-import { convertDtype, flattenValue, handleAxiosError } from '../utils';
+import { isDatasetResponse, isGroupResponse } from './utils';
 
 export class H5GroveApi extends ProviderApi {
   protected attrValuesCache = new Map<string, H5GroveAttrValuesResponse>();

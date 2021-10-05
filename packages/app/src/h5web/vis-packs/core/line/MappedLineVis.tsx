@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
-import shallow from 'zustand/shallow';
 import { LineVis } from '@h5web/lib';
 import type { ScaleType } from '@h5web/shared';
+import { useEffect } from 'react';
+import shallow from 'zustand/shallow';
+
+import type { DimensionMapping } from '../../../dimension-mapper/models';
 import {
   useCombinedDomain,
   useMappedArrays,
@@ -9,9 +11,8 @@ import {
   useDomain,
   useDomains,
 } from '../hooks';
-import { useLineConfig } from './config';
-import type { DimensionMapping } from '../../../dimension-mapper/models';
 import type { AxisMapping } from '../models';
+import { useLineConfig } from './config';
 
 type HookArgs = [number[], DimensionMapping, boolean];
 

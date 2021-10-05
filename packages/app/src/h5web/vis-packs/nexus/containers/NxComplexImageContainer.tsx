@@ -1,16 +1,17 @@
-import type { VisContainerProps } from '../../models';
-import { useDimMappingState } from '../../hooks';
-import MappedComplexVis from '../../core/complex/MappedComplexVis';
-import VisBoundary from '../../core/VisBoundary';
-import NxValuesFetcher from '../NxValuesFetcher';
-import { getNxData, getDatasetLabel } from '../utils';
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import type { H5WebComplex } from '@h5web/shared';
 import {
   assertComplexType,
   assertGroupWithChildren,
   assertMinDims,
 } from '@h5web/shared';
+
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import VisBoundary from '../../core/VisBoundary';
+import MappedComplexVis from '../../core/complex/MappedComplexVis';
+import { useDimMappingState } from '../../hooks';
+import type { VisContainerProps } from '../../models';
+import NxValuesFetcher from '../NxValuesFetcher';
+import { getNxData, getDatasetLabel } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {
   const { entity } = props;

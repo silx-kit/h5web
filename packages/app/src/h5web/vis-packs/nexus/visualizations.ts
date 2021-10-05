@@ -1,12 +1,5 @@
 import { FiActivity, FiImage, FiMap } from 'react-icons/fi';
-import type { VisDef } from '../models';
-import {
-  NxSpectrumContainer,
-  NxImageContainer,
-  NxComplexImageContainer,
-  NxComplexSpectrumContainer,
-  NxRgbContainer,
-} from './containers';
+
 import {
   LineToolbar,
   HeatmapToolbar,
@@ -21,6 +14,14 @@ import {
   ComplexLineConfigProvider,
   RgbConfigProvider,
 } from '../core/configs';
+import type { VisDef } from '../models';
+import {
+  NxSpectrumContainer,
+  NxImageContainer,
+  NxComplexImageContainer,
+  NxComplexSpectrumContainer,
+  NxRgbContainer,
+} from './containers';
 
 export enum NexusVis {
   NxSpectrum = 'NX Spectrum',

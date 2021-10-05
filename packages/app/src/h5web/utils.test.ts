@@ -3,6 +3,7 @@ import {
   makeNxAxesAttr,
   makeStrAttr,
 } from '@h5web/shared/src/mock/metadata-utils';
+
 import { getAttributeValue } from './utils';
 
 describe('getAttributeValue', () => {

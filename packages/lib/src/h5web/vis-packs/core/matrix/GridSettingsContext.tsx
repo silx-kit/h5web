@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import type { ReactNode } from 'react';
+
 import type { Size } from '../models';
 
 interface GridSettings {

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FiCheck, FiClipboard } from 'react-icons/fi';
+
 import styles from './BreadcrumbsBar.module.css';
 
 interface Props {

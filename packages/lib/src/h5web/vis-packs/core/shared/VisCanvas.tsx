@@ -1,10 +1,11 @@
-import { Canvas } from '@react-three/fiber';
 import { useMeasure } from '@react-hookz/web';
-import styles from './VisCanvas.module.css';
+import { Canvas } from '@react-three/fiber';
+
 import { computeCanvasSize, getAxisOffsets } from '../utils';
-import type { AxisSystemProviderProps } from './AxisSystemProvider';
-import AxisSystemProvider from './AxisSystemProvider';
 import AxisSystem from './AxisSystem';
+import AxisSystemProvider from './AxisSystemProvider';
+import type { AxisSystemProviderProps } from './AxisSystemProvider';
+import styles from './VisCanvas.module.css';
 
 interface Props extends AxisSystemProviderProps {
   aspectRatio?: number;

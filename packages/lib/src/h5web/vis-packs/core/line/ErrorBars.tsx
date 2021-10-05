@@ -1,6 +1,7 @@
 import { useThree } from '@react-three/fiber';
 import { useLayoutEffect, useRef } from 'react';
 import type { BufferGeometry, Vector3 } from 'three';
+
 import GlyphMaterial from './GlyphMaterial';
 import { GLYPH_URLS } from './models';
 

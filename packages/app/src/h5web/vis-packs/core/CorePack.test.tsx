@@ -1,5 +1,6 @@
-import { screen } from '@testing-library/react';
 import { mockValues } from '@h5web/shared';
+import { screen } from '@testing-library/react';
+
 import {
   findVisSelectorTabs,
   mockConsoleMethod,

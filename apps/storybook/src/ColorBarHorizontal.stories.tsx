@@ -1,4 +1,5 @@
 import type { Meta, Story } from '@storybook/react';
+
 import type { TemplateProps } from './ColorBar.stories';
 import ColorBarStoriesConfig, {
   ColorMapTemplate,

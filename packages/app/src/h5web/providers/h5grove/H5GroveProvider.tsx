@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
-import { H5GroveApi } from './h5grove-api';
+
 import Provider from '../Provider';
+import { H5GroveApi } from './h5grove-api';
 
 interface Props {
   url: string;

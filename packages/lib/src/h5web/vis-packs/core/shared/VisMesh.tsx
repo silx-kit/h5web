@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
 import type { MeshProps } from '@react-three/fiber';
+import type { ReactNode } from 'react';
+
 import { useAxisSystemContext } from './AxisSystemContext';
 
 interface Props extends MeshProps {

@@ -1,19 +1,20 @@
-import type { ReactElement, ReactNode } from 'react';
-import type { NdArray } from 'ndarray';
-import styles from './HeatmapVis.module.css';
-import ColorBar from './ColorBar';
-import TooltipMesh from '../shared/TooltipMesh';
-import PanZoomMesh from '../shared/PanZoomMesh';
-import VisCanvas from '../shared/VisCanvas';
-import { getDims } from './utils';
-import type { VisScaleType, AxisParams } from '../models';
-import type { ColorMap, Layout, TooltipData } from './models';
-import { DEFAULT_DOMAIN } from '../utils';
-import { useAxisValues } from './hooks';
-import { useDomain, useValueToIndexScale } from '../hooks';
-import HeatmapMesh from './HeatmapMesh';
 import type { Domain } from '@h5web/shared';
 import { assertDefined, formatTooltipVal, ScaleType } from '@h5web/shared';
+import type { NdArray } from 'ndarray';
+import type { ReactElement, ReactNode } from 'react';
+
+import { useDomain, useValueToIndexScale } from '../hooks';
+import type { VisScaleType, AxisParams } from '../models';
+import PanZoomMesh from '../shared/PanZoomMesh';
+import TooltipMesh from '../shared/TooltipMesh';
+import VisCanvas from '../shared/VisCanvas';
+import { DEFAULT_DOMAIN } from '../utils';
+import ColorBar from './ColorBar';
+import HeatmapMesh from './HeatmapMesh';
+import styles from './HeatmapVis.module.css';
+import { useAxisValues } from './hooks';
+import type { ColorMap, Layout, TooltipData } from './models';
+import { getDims } from './utils';
 
 interface Props {
   dataArray: NdArray<number[]>;

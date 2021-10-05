@@ -3,12 +3,13 @@ import {
   assertArrayShape,
   assertNumericType,
 } from '@h5web/shared';
-import type { VisContainerProps } from '../../models';
+
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../hooks';
+import type { VisContainerProps } from '../../models';
+import ValueFetcher from '../ValueFetcher';
 import VisBoundary from '../VisBoundary';
 import MappedLineVis from '../line/MappedLineVis';
-import ValueFetcher from '../ValueFetcher';
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function LineVisContainer(props: VisContainerProps) {
   const { entity } = props;

@@ -1,4 +1,5 @@
 import { interpolateGreys } from 'd3-scale-chromatic';
+
 import { getLinearGradient } from './utils';
 
 const white = 'rgb(255, 255, 255)';

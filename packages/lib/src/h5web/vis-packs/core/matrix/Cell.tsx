@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import type { GridChildComponentProps } from 'react-window';
-import styles from './MatrixVis.module.css';
+
 import { GridSettingsContext } from './GridSettingsContext';
+import styles from './MatrixVis.module.css';
 
 function Cell(props: GridChildComponentProps) {
   const { rowIndex, columnIndex, style } = props;

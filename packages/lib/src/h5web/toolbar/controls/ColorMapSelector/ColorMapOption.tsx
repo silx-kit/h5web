@@ -1,5 +1,5 @@
-import type { ColorMap } from '../../../vis-packs/core/heatmap/models';
 import { INTERPOLATORS } from '../../../vis-packs/core/heatmap/interpolators';
+import type { ColorMap } from '../../../vis-packs/core/heatmap/models';
 import { getLinearGradient } from '../../../vis-packs/core/heatmap/utils';
 import styles from './ColorMapSelector.module.css';
 

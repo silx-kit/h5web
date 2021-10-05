@@ -5,6 +5,7 @@ import type {
   H5WebComplex,
 } from '@h5web/shared';
 import { hasComplexType, formatScalarComplex } from '@h5web/shared';
+
 import type { ValueFormatter } from '../../models';
 
 export function getFormatter(

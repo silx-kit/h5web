@@ -1,13 +1,14 @@
+import { HeatmapVis } from '@h5web/lib';
+import type { ScaleType } from '@h5web/shared';
 import { useEffect } from 'react';
+import shallow from 'zustand/shallow';
+
+import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDomain, useMappedArray, useSlicedDimsAndMapping } from '../hooks';
-import { useHeatmapConfig } from './config';
 import type { AxisMapping } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';
-import type { DimensionMapping } from '../../../dimension-mapper/models';
-import shallow from 'zustand/shallow';
+import { useHeatmapConfig } from './config';
 import { useSafeDomain, useVisDomain } from './hooks';
-import type { ScaleType } from '@h5web/shared';
-import { HeatmapVis } from '@h5web/lib';
 
 interface Props {
   value: number[];

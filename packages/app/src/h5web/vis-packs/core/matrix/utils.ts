@@ -1,4 +1,3 @@
-import type { NdArray } from 'ndarray';
 import type {
   Dataset,
   ArrayShape,
@@ -12,6 +11,8 @@ import {
   formatMatrixComplex,
   formatMatrixValue,
 } from '@h5web/shared';
+import type { NdArray } from 'ndarray';
+
 import type { ValueFormatter } from '../../models';
 
 export function getFormatter(

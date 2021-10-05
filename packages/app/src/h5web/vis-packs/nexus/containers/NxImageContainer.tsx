@@ -3,13 +3,14 @@ import {
   assertNumericType,
   assertMinDims,
 } from '@h5web/shared';
-import type { VisContainerProps } from '../../models';
+
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import VisBoundary from '../../core/VisBoundary';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { useDimMappingState } from '../../hooks';
-import VisBoundary from '../../core/VisBoundary';
+import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { getNxData, getDatasetLabel } from '../utils';
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 
 function NxImageContainer(props: VisContainerProps) {
   const { entity } = props;

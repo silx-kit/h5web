@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+
 import type { AxisConfig, AxisScale, Size } from '../models';
 
 export interface AxisSystemParams {

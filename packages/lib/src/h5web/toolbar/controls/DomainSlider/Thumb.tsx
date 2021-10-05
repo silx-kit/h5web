@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import type { HTMLProps } from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
 import type { IconType } from 'react-icons/lib';
+
 import type { Bound } from '../../../vis-packs/core/models';
 import styles from './Thumb.module.css';
 

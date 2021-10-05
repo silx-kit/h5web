@@ -1,8 +1,9 @@
-import type { Meta, Story } from '@storybook/react/types-6-0';
-import type { H5WebComplex } from '@h5web/shared';
-import { formatMatrixComplex, formatMatrixValue } from '@h5web/shared';
 import type { MatrixVisProps } from '@h5web/lib';
 import { getMockDataArray, MatrixVis } from '@h5web/lib';
+import type { H5WebComplex } from '@h5web/shared';
+import { formatMatrixComplex, formatMatrixValue } from '@h5web/shared';
+import type { Meta, Story } from '@storybook/react/types-6-0';
+
 import FillHeight from './decorators/FillHeight';
 
 const Template: Story<MatrixVisProps> = (args) => <MatrixVis {...args} />;

@@ -1,3 +1,4 @@
+import { isGroup, hasChildren } from '../guards';
 import type {
   Attribute,
   Datatype,
@@ -17,7 +18,6 @@ import type {
   GroupWithChildren,
 } from '../models-hdf5';
 import { EntityKind, DTypeClass, Endianness } from '../models-hdf5';
-import { isGroup, hasChildren } from '../guards';
 import type { NxInterpretation, SilxStyle } from '../models-nexus';
 import { buildEntityPath } from '../utils';
 import type { MockDataset, MockValueId } from './models';

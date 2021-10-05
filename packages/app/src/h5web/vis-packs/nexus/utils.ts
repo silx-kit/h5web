@@ -25,6 +25,7 @@ import type {
   StringType,
   NumArrayDataset,
 } from '@h5web/shared';
+
 import { getAttributeValue } from '../../utils';
 import type { NxData, SilxStyle } from './models';
 

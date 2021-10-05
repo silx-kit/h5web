@@ -1,7 +1,8 @@
-import type { Meta, Story } from '@storybook/react/types-6-0';
-import LineVisStoriesConfig from './LineVis.stories';
 import type { LineVisProps } from '@h5web/lib';
 import { LineVis, ScaleType, getDomain, getMockDataArray } from '@h5web/lib';
+import type { Meta, Story } from '@storybook/react/types-6-0';
+
+import LineVisStoriesConfig from './LineVis.stories';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray.data);

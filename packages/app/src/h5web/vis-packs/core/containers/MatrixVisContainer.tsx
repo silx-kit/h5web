@@ -4,13 +4,14 @@ import {
   assertPrintableType,
   hasComplexType,
 } from '@h5web/shared';
-import MappedMatrixVis from '../matrix/MappedMatrixVis';
-import type { VisContainerProps } from '../../models';
-import { useDimMappingState } from '../../hooks';
-import VisBoundary from '../VisBoundary';
-import ValueFetcher from '../ValueFetcher';
-import { getFormatter } from '../matrix/utils';
+
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../hooks';
+import type { VisContainerProps } from '../../models';
+import ValueFetcher from '../ValueFetcher';
+import VisBoundary from '../VisBoundary';
+import MappedMatrixVis from '../matrix/MappedMatrixVis';
+import { getFormatter } from '../matrix/utils';
 
 function MatrixVisContainer(props: VisContainerProps) {
   const { entity } = props;

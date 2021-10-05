@@ -1,10 +1,11 @@
+import { FiShuffle } from 'react-icons/fi';
+
 import type { ColorMap } from '../../../vis-packs/core/heatmap/models';
 import Selector from '../Selector/Selector';
-import styles from './ColorMapSelector.module.css';
 import ToggleBtn from '../ToggleBtn';
-import { FiShuffle } from 'react-icons/fi';
-import { COLORMAP_GROUPS } from './groups';
 import ColorMapOption from './ColorMapOption';
+import styles from './ColorMapSelector.module.css';
+import { COLORMAP_GROUPS } from './groups';
 
 interface Props {
   value: ColorMap;

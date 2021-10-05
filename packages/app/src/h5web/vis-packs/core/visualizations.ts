@@ -1,11 +1,3 @@
-import {
-  FiCode,
-  FiGrid,
-  FiActivity,
-  FiMap,
-  FiCpu,
-  FiImage,
-} from 'react-icons/fi';
 import type { Dataset } from '@h5web/shared';
 import {
   hasScalarShape,
@@ -16,8 +8,32 @@ import {
   hasNumericType,
   hasComplexType,
 } from '@h5web/shared';
+import {
+  FiCode,
+  FiGrid,
+  FiActivity,
+  FiMap,
+  FiCpu,
+  FiImage,
+} from 'react-icons/fi';
+
+import {
+  MatrixToolbar,
+  LineToolbar,
+  HeatmapToolbar,
+  ComplexToolbar,
+  ComplexLineToolbar,
+  RgbToolbar,
+} from '../../toolbar/toolbars';
 import type { VisDef } from '../models';
-import { hasImageAttribute } from './utils';
+import {
+  MatrixConfigProvider,
+  LineConfigProvider,
+  HeatmapConfigProvider,
+  ComplexConfigProvider,
+  ComplexLineConfigProvider,
+  RgbConfigProvider,
+} from './configs';
 import {
   RawVisContainer,
   ScalarVisContainer,
@@ -28,22 +44,7 @@ import {
   ComplexLineVisContainer,
   RgbVisContainer,
 } from './containers';
-import {
-  MatrixToolbar,
-  LineToolbar,
-  HeatmapToolbar,
-  ComplexToolbar,
-  ComplexLineToolbar,
-  RgbToolbar,
-} from '../../toolbar/toolbars';
-import {
-  MatrixConfigProvider,
-  LineConfigProvider,
-  HeatmapConfigProvider,
-  ComplexConfigProvider,
-  ComplexLineConfigProvider,
-  RgbConfigProvider,
-} from './configs';
+import { hasImageAttribute } from './utils';
 
 export enum Vis {
   Raw = 'Raw',

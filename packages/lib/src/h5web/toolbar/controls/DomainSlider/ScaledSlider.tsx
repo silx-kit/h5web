@@ -1,17 +1,18 @@
+import type { Domain, ScaleType } from '@h5web/shared';
 import { useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
+
+import { getSafeDomain } from '../../../vis-packs/core/heatmap/utils';
+import type { DomainErrors } from '../../../vis-packs/core/models';
 import {
   clampBound,
   createAxisScale,
   extendDomain,
 } from '../../../vis-packs/core/utils';
-import type { DomainErrors } from '../../../vis-packs/core/models';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
-import { getSafeDomain } from '../../../vis-packs/core/heatmap/utils';
-import type { Domain, ScaleType } from '@h5web/shared';
 
 const SLIDER_RANGE: Domain = [1, 100];
 const EXTEND_FACTOR = 0.3;

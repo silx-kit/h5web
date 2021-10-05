@@ -1,7 +1,8 @@
-import type { Meta, Story } from '@storybook/react/types-6-0';
-import HeatmapVisStoriesConfig from './HeatmapVis.stories';
 import type { HeatmapVisProps } from '@h5web/lib';
 import { HeatmapVis, ScaleType, getDomain, getMockDataArray } from '@h5web/lib';
+import type { Meta, Story } from '@storybook/react/types-6-0';
+
+import HeatmapVisStoriesConfig from './HeatmapVis.stories';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 const domain = getDomain(dataArray.data);

@@ -1,7 +1,8 @@
-import { ProviderContext } from '../providers/context';
-import { ProviderError } from '../providers/models';
 import { buildEntityPath, handleError, isAbsolutePath } from '@h5web/shared';
 import { memo, useContext } from 'react';
+
+import { ProviderContext } from '../providers/context';
+import { ProviderError } from '../providers/models';
 import AttributesTable from './AttributesTable';
 import EntityTable from './EntityTable';
 import styles from './MetadataViewer.module.css';

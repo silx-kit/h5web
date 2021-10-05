@@ -1,9 +1,10 @@
-import { useContext } from 'react';
-import styles from './BreadcrumbsBar.module.css';
-import Crumb from './Crumb';
-import CopyableCrumb from './CopyableCrumb';
 import { assertAbsolutePath } from '@h5web/shared';
+import { useContext } from 'react';
+
 import { ProviderContext } from '../providers/context';
+import styles from './BreadcrumbsBar.module.css';
+import CopyableCrumb from './CopyableCrumb';
+import Crumb from './Crumb';
 
 interface Props {
   path: string;

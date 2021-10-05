@@ -1,5 +1,5 @@
-import { findMockEntity } from './utils';
 import { mockMetadata } from './metadata';
+import { findMockEntity } from './utils';
 
 describe('findMockEntity', () => {
   it('should return entity at given path', () => {

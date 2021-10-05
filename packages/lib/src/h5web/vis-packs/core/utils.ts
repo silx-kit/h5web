@@ -1,7 +1,18 @@
+import type { Domain } from '@h5web/shared';
+import {
+  getValidDomainForScale,
+  ScaleType,
+  isDefined,
+  formatTick,
+  isScaleType,
+  getBounds,
+} from '@h5web/shared';
 import { scaleLinear, scaleThreshold } from '@visx/scale';
-import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import { tickStep, range } from 'd3-array';
+import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import type { NdArray } from 'ndarray';
+import { clamp } from 'three/src/math/MathUtils';
+
 import type {
   Size,
   AxisScale,
@@ -12,16 +23,6 @@ import type {
   VisScaleType,
 } from './models';
 import { H5WEB_SCALES } from './scales';
-import { clamp } from 'three/src/math/MathUtils';
-import type { Domain } from '@h5web/shared';
-import {
-  getValidDomainForScale,
-  ScaleType,
-  isDefined,
-  formatTick,
-  isScaleType,
-  getBounds,
-} from '@h5web/shared';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 

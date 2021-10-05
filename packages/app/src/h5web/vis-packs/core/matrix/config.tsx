@@ -2,6 +2,7 @@ import type { Primitive, PrintableType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import create from 'zustand';
 import createContext from 'zustand/context';
+
 import type { ConfigProviderProps } from '../../models';
 
 interface MatrixConfig {

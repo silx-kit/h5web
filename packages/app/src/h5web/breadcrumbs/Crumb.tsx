@@ -1,4 +1,5 @@
 import { FiChevronRight } from 'react-icons/fi';
+
 import styles from './BreadcrumbsBar.module.css';
 
 interface Props {

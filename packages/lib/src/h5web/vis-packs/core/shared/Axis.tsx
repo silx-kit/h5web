@@ -1,8 +1,10 @@
-import type { ElementType } from 'react';
+import type { Domain } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared';
 import type { SharedAxisProps } from '@visx/axis';
 import { AxisLeft, AxisBottom } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
-import styles from './AxisSystem.module.css';
+import type { ElementType } from 'react';
+
 import type { Size, AxisConfig, AxisScale } from '../models';
 import {
   adaptedNumTicks,
@@ -10,9 +12,8 @@ import {
   getTickFormatter,
   createAxisScale,
 } from '../utils';
+import styles from './AxisSystem.module.css';
 import Tick from './Tick';
-import type { Domain } from '@h5web/shared';
-import { ScaleType } from '@h5web/shared';
 
 const AXIS_PROPS: Partial<SharedAxisProps<AxisScale>> = {
   labelClassName: styles.label,

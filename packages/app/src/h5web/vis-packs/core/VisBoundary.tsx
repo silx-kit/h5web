@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Suspense, useContext } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+
 import { ProviderContext } from '../../providers/context';
 import ErrorFallback from '../../visualizer/ErrorFallback';
 import ValueLoader from '../../visualizer/ValueLoader';

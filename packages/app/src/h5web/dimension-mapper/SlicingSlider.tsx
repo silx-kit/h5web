@@ -1,8 +1,9 @@
-import ReactSlider from 'react-slider';
 import { useMeasure } from '@react-hookz/web';
+import { useEffect, useRef } from 'react';
+import ReactSlider from 'react-slider';
+
 import styles from './SlicingSlider.module.css';
 import type { DimensionMapping } from './models';
-import { useEffect, useRef } from 'react';
 
 const MIN_HEIGHT_PER_MARK = 25;
 

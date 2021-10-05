@@ -1,5 +1,6 @@
-import { ProviderError } from '../providers/models';
 import type { FallbackProps } from 'react-error-boundary';
+
+import { ProviderError } from '../providers/models';
 import styles from './Visualizer.module.css';
 
 function ErrorFallback(props: FallbackProps) {

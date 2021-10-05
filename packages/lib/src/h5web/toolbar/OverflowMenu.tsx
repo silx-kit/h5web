@@ -1,9 +1,10 @@
+import { useClickOutside, useToggle } from '@react-hookz/web';
 import { useRef, Children, cloneElement } from 'react';
 import type { ReactElement } from 'react';
 import { FiMenu } from 'react-icons/fi';
-import { useClickOutside, useToggle } from '@react-hookz/web';
-import Separator from './Separator';
+
 import styles from './OverflowMenu.module.css';
+import Separator from './Separator';
 
 interface Props {
   children: ReactElement[];

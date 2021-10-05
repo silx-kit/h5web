@@ -1,13 +1,14 @@
-import { AxisRight, AxisBottom } from '@visx/axis';
-import { useMeasure } from '@react-hookz/web';
-import { adaptedNumTicks, createAxisScale } from '../utils';
-import styles from './ColorBar.module.css';
-import { getInterpolator, getLinearGradient } from './utils';
 import type { Domain } from '@h5web/shared';
 import { formatBound } from '@h5web/shared';
+import { useMeasure } from '@react-hookz/web';
+import { AxisRight, AxisBottom } from '@visx/axis';
+
 import type { VisScaleType } from '../models';
-import type { ColorMap } from './models';
 import Tick from '../shared/Tick';
+import { adaptedNumTicks, createAxisScale } from '../utils';
+import styles from './ColorBar.module.css';
+import type { ColorMap } from './models';
+import { getInterpolator, getLinearGradient } from './utils';
 
 interface Props {
   domain: Domain;

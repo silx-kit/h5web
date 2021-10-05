@@ -1,8 +1,9 @@
+import { assertGroupWithChildren, buildEntityPath } from '@h5web/shared';
 import { useContext } from 'react';
-import styles from './Explorer.module.css';
+
 import { ProviderContext } from '../providers/context';
 import EntityItem from './EntityItem';
-import { assertGroupWithChildren, buildEntityPath } from '@h5web/shared';
+import styles from './Explorer.module.css';
 
 interface Props {
   level: number;

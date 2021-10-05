@@ -1,7 +1,8 @@
+import type { Entity } from '@h5web/shared';
+
+import Visualizer from '../../visualizer/Visualizer';
 import { useActiveVis } from '../hooks';
 import { getSupportedVis } from './pack-utils';
-import Visualizer from '../../visualizer/Visualizer';
-import type { Entity } from '@h5web/shared';
 
 interface Props {
   entity: Entity;

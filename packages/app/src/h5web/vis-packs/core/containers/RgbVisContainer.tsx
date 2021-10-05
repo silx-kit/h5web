@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { RgbVis } from '@h5web/lib';
 import {
   assertDataset,
   assertArrayShape,
@@ -6,12 +6,13 @@ import {
   assertNumDims,
   DTypeClass,
 } from '@h5web/shared';
-import { RgbVis } from '@h5web/lib';
-import type { VisContainerProps } from '../../models';
-import VisBoundary from '../VisBoundary';
-import ValueFetcher from '../ValueFetcher';
-import { useRgbVisConfig } from '../rgb/config';
+import shallow from 'zustand/shallow';
+
 import { getAttributeValue } from '../../../utils';
+import type { VisContainerProps } from '../../models';
+import ValueFetcher from '../ValueFetcher';
+import VisBoundary from '../VisBoundary';
+import { useRgbVisConfig } from '../rgb/config';
 
 function RgbVisContainer(props: VisContainerProps) {
   const { entity } = props;

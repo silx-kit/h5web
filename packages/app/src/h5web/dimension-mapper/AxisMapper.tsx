@@ -1,5 +1,6 @@
 import { ToggleGroup } from '@h5web/lib';
 import { isNumber } from 'lodash';
+
 import styles from './DimensionMapper.module.css';
 import type { Axis, DimensionMapping } from './models';
 

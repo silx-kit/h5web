@@ -1,5 +1,3 @@
-import { MdAspectRatio } from 'react-icons/md';
-import shallow from 'zustand/shallow';
 import {
   ImageType,
   GridToggler,
@@ -7,6 +5,9 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
+import { MdAspectRatio } from 'react-icons/md';
+import shallow from 'zustand/shallow';
+
 import { useRgbVisConfig } from '../vis-packs/core/rgb/config';
 
 function RgbToolbar() {

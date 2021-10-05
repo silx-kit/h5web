@@ -9,6 +9,7 @@ import type {
   ScaleType,
   StringType,
 } from '@h5web/shared';
+
 import type { AxisMapping } from '../core/models';
 
 export type NxAttribute =

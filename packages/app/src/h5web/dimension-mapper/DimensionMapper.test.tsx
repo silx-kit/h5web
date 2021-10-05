@@ -1,5 +1,6 @@
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { renderApp, selectExplorerNode, selectVisTab } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
