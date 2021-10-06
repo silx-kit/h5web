@@ -6,8 +6,8 @@ import {
   mockConsoleMethod,
   renderApp,
   selectExplorerNode,
-} from '../../test-utils';
-import { Vis } from './visualizations';
+} from '../test-utils';
+import { Vis } from '../vis-packs/core/visualizations';
 
 test('visualise raw dataset', async () => {
   await renderApp();

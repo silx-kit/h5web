@@ -1,7 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { pressKey, renderApp, selectExplorerNode } from '../../test-utils';
+import { pressKey, renderApp, selectExplorerNode } from '../test-utils';
 
 test('show slider with two thumbs', async () => {
   await renderApp(); // default NeXus group renders heatmap and therefore domain slider
