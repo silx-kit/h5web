@@ -34,6 +34,7 @@ function App() {
       </ReflexElement>
 
       <ReflexSplitter
+        className={styles.splitter}
         style={{ display: isExplorerOpen ? undefined : 'none' }}
       />
 

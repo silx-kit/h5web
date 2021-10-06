@@ -28,6 +28,7 @@
 }
 
 .fallback {
+  margin: 0;
   padding: 1em;
   color: var(--secondary-dark);
 }

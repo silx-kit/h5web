@@ -1,4 +1,17 @@
-:root {
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: var(--sans-serif);
+  line-height: 1.2;
+  color: #020402;
+}
+
+body {
   --primary: #c0da74;
   --primary-light: #d4e09b;
   --primary-dark: #9aae5d;
@@ -20,7 +33,7 @@
     sans-serif;
 }
 
-:root {
+body {
   --h5w-line--color: var(--secondary-dark);
   --h5w-line--colorAux: var(--secondary);
   --h5w-matrix--fontFamily: var(--monospace);

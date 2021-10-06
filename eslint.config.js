@@ -46,12 +46,10 @@ module.exports = {
         '@typescript-eslint/no-floating-promises': 'off', // big crash sometimes better than silent fail
         '@typescript-eslint/lines-between-class-members': 'off', // allow grouping single-line members
         '@typescript-eslint/prefer-nullish-coalescing': 'off', // `||` is often conveninent and safe to use with TS
+        '@typescript-eslint/explicit-module-boundary-types': 'off', // worsens readability sometimes (e.g. for React components)
 
-        // TypeScript requires types where they should not be required
-        // https://github.com/typescript-eslint/typescript-eslint/issues/2183
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-
-        // Unused vars should be removed but not prevent compilation
+        // Galex expects TypeScript options `noUnusedLocals` and `noUnusedParameters` to be enabled,
+        // but those prevent compilation, which is bad for developer experience
         '@typescript-eslint/no-unused-vars': [
           'warn',
           { ignoreRestSiblings: true },
