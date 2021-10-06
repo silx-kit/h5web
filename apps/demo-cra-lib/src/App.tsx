@@ -1,12 +1,22 @@
-import { HeatmapVis, getMockDataArray, getDomain } from '@h5web/lib';
+import { HeatmapVis, LineVis, getMockDataArray, getDomain } from '@h5web/lib';
 
-const dataArray = getMockDataArray('/nD_datasets/twoD');
-const domain = getDomain(dataArray);
+const lineArray = getMockDataArray('/nD_datasets/oneD');
+const lineDomain = getDomain(lineArray);
+
+const heatmapArray = getMockDataArray('/nD_datasets/twoD');
+const heatmapDomain = getDomain(heatmapArray);
 
 function App() {
   return (
     <>
-      <HeatmapVis dataArray={dataArray} domain={domain} />
+      <h2>LineVis</h2>
+      <LineVis dataArray={lineArray} domain={lineDomain} showGrid />
+      <h2>HeatmapVis</h2>
+      <HeatmapVis
+        dataArray={heatmapArray}
+        domain={heatmapDomain}
+        layout="fill"
+      />
     </>
   );
 }
