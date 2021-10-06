@@ -58,7 +58,7 @@
   justify-content: center;
   align-items: center;
   grid-area: top-axis;
-  margin-bottom: 0;
+  margin: 0;
   color: var(--h5w-plotTitle--color, inherit);
   font-family: var(--h5w-plotTitle--fontFamily, inherit);
   font-size: var(--h5w-plotTitle--fontSize, 1.125em);

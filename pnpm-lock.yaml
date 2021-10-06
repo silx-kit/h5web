@@ -74,6 +74,7 @@ importers:
       '@h5web/lib': workspace:*
       '@types/react': 17.0.19
       '@types/react-dom': 17.0.9
+      normalize.css: 8.0.1
       react: 17.0.2
       react-app-rewire-alias: 1.0.3
       react-app-rewired: 2.1.8
@@ -83,6 +84,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@h5web/lib': link:../../packages/lib
+      normalize.css: 8.0.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       three: 0.132.2

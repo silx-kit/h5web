@@ -6,6 +6,10 @@
   flex-direction: column;
 }
 
+.loader > p {
+  margin: 0 0 1rem;
+}
+
 .cancelBtn {
   composes: btnClean btnLink from global;
 }

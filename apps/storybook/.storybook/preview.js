@@ -1,5 +1,5 @@
 import 'normalize.css';
-import '../src/styles/index.css';
+import '../src/styles.css';
 import '@h5web/shared/src/utils.css'; // fix missing shared styles in development
 
 if (process.env.STORYBOOK_DIST === 'true') {
