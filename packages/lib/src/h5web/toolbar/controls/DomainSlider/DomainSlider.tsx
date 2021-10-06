@@ -1,4 +1,4 @@
-import type { ScaleType, Domain } from '@h5web/shared';
+import type { Domain, ScaleType } from '@h5web/shared';
 import { useClickOutside, useKeyboardEvent, useToggle } from '@react-hookz/web';
 import { useEffect, useRef, useState } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
@@ -13,8 +13,9 @@ import type {
 } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
 import styles from './DomainSlider.module.css';
-import DomainTooltip from './DomainTooltip';
 import type { DomainTooltipHandle } from './DomainTooltip';
+import DomainTooltip from './DomainTooltip';
+import Histogram from './Histogram';
 import ScaledSlider from './ScaledSlider';
 
 const TOOLTIP_ID = 'domain-tooltip';
@@ -136,9 +137,16 @@ function DomainSlider(props: Props) {
         onChangeMin={(val) => onCustomDomainChange([val, customDomain[1]])}
         onChangeMax={(val) => onCustomDomainChange([customDomain[0], val])}
         onSwap={() => onCustomDomainChange([customDomain[1], customDomain[0]])}
-        scaleType={scaleType}
-        histogram={histogram}
-      />
+      >
+        {histogram && (
+          <Histogram
+            dataDomain={dataDomain}
+            sliderDomain={sliderDomain}
+            scaleType={scaleType}
+            {...histogram}
+          />
+        )}
+      </DomainTooltip>
     </div>
   );
 }

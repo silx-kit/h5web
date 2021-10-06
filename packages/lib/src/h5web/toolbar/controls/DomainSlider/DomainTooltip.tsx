@@ -1,18 +1,15 @@
+import type { Domain } from '@h5web/shared';
 import { formatBound } from '@h5web/shared';
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { ReactNode } from 'react';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import type {
-  DomainErrors,
-  HistogramParams,
-} from '../../../vis-packs/core/models';
+import type { DomainErrors } from '../../../vis-packs/core/models';
 import { DomainError } from '../../../vis-packs/core/models';
 import ToggleBtn from '../ToggleBtn';
-import BoundEditor from './BoundEditor';
 import type { BoundEditorHandle } from './BoundEditor';
+import BoundEditor from './BoundEditor';
 import styles from './DomainTooltip.module.css';
 import ErrorMessage from './ErrorMessage';
-import Histogram from './Histogram';
 
 interface Props {
   id: string;
@@ -31,8 +28,7 @@ interface Props {
   onChangeMin: (val: number) => void;
   onChangeMax: (val: number) => void;
   onSwap: () => void;
-  scaleType: ScaleType;
-  histogram?: HistogramParams;
+  children?: ReactNode;
 }
 
 interface Handle {
@@ -40,8 +36,7 @@ interface Handle {
 }
 
 const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
-  const { id, open, sliderDomain, dataDomain, errors } = props;
-  const { histogram, scaleType } = props;
+  const { id, open, sliderDomain, dataDomain, errors, children } = props;
   const { isAutoMin, isAutoMax, isEditingMin, isEditingMax } = props;
   const {
     onAutoMinToggle,
@@ -75,14 +70,7 @@ const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
       hidden={!open}
     >
       <div className={styles.tooltipInner}>
-        {histogram && (
-          <Histogram
-            dataDomain={dataDomain}
-            sliderDomain={sliderDomain}
-            scaleType={scaleType}
-            {...histogram}
-          />
-        )}
+        {children}
         <div className={styles.tooltipControls}>
           {minGreater && (
             <ErrorMessage

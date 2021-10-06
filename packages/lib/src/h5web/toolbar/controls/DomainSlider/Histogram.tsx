@@ -3,6 +3,7 @@ import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
 
+import { useSafeDomain } from '../../../vis-packs/core/heatmap/hooks';
 import { useCombinedDomain, useDomain } from '../../../vis-packs/core/hooks';
 import type { HistogramParams } from '../../../vis-packs/core/models';
 import { H5WEB_SCALES } from '../../../vis-packs/core/scales';
@@ -22,8 +23,10 @@ function Histogram(props: Props) {
   const { values, bins, scaleType, sliderDomain, dataDomain } = props;
   const { colorMap, invertColorMap } = props;
 
-  const binDomain = useDomain(bins);
-  const xDomain = useCombinedDomain([binDomain, sliderDomain, dataDomain]);
+  const binDomain = useDomain(bins, scaleType) || DEFAULT_DOMAIN;
+  const [safeSliderDomain] = useSafeDomain(sliderDomain, dataDomain, scaleType);
+  const xDomain = useCombinedDomain([binDomain, safeSliderDomain, dataDomain]);
+
   const barDomain = useDomain(values);
   const yMax = barDomain ? barDomain[1] : DEFAULT_DOMAIN[1];
   const yMin = colorMap ? -yMax / 10 : 0;
@@ -45,7 +48,7 @@ function Histogram(props: Props) {
     range: [0, height],
   });
 
-  const indicatorPositions = sliderDomain.map(xScale) as Domain;
+  const indicatorPositions = safeSliderDomain.map(xScale) as Domain;
 
   return (
     <div ref={ref} className={styles.container}>
