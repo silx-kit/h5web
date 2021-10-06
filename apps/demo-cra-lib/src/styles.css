@@ -6,6 +6,8 @@ body {
 
 #root {
   display: flex;
+  flex-direction: column;
+  text-align: center;
   min-width: 0;
   height: 100vh;
 }
