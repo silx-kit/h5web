@@ -1,8 +1,8 @@
 import {
   assertDataset,
   assertArrayShape,
-  assertComplexType,
   assertMinDims,
+  assertNumericType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -10,14 +10,14 @@ import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import VisBoundary from '../VisBoundary';
-import MappedComplexVis from '../complex/MappedComplexVis';
+import MappedHeatmapVis from './MappedHeatmapVis';
 
-function ComplexVisContainer(props: VisContainerProps) {
+function HeatmapVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertArrayShape(entity);
   assertMinDims(entity, 2);
-  assertComplexType(entity);
+  assertNumericType(entity);
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
@@ -34,7 +34,7 @@ function ComplexVisContainer(props: VisContainerProps) {
           dataset={entity}
           dimMapping={dimMapping}
           render={(value) => (
-            <MappedComplexVis
+            <MappedHeatmapVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
@@ -47,4 +47,4 @@ function ComplexVisContainer(props: VisContainerProps) {
   );
 }
 
-export default ComplexVisContainer;
+export default HeatmapVisContainer;

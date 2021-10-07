@@ -2,6 +2,7 @@ import {
   assertDataset,
   assertArrayShape,
   assertComplexType,
+  assertMinDims,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -9,16 +10,17 @@ import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import VisBoundary from '../VisBoundary';
-import MappedComplexLineVis from '../complex/MappedComplexLineVis';
+import MappedComplexVis from './MappedComplexVis';
 
-function ComplexLineVisContainer(props: VisContainerProps) {
+function ComplexVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertArrayShape(entity);
+  assertMinDims(entity, 2);
   assertComplexType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   return (
     <>
@@ -27,14 +29,12 @@ function ComplexLineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary
-        resetKey={dimMapping}
-        loadingMessage="Loading entire dataset"
-      >
+      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
+          dimMapping={dimMapping}
           render={(value) => (
-            <MappedComplexLineVis
+            <MappedComplexVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
@@ -47,4 +47,4 @@ function ComplexLineVisContainer(props: VisContainerProps) {
   );
 }
 
-export default ComplexLineVisContainer;
+export default ComplexVisContainer;

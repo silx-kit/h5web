@@ -1,7 +1,6 @@
 import {
   assertDataset,
   assertArrayShape,
-  assertMinDims,
   assertNumericType,
 } from '@h5web/shared';
 
@@ -10,17 +9,16 @@ import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import VisBoundary from '../VisBoundary';
-import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
+import MappedLineVis from './MappedLineVis';
 
-function HeatmapVisContainer(props: VisContainerProps) {
+function LineVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertArrayShape(entity);
-  assertMinDims(entity, 2);
   assertNumericType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   return (
     <>
@@ -29,12 +27,14 @@ function HeatmapVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
+      <VisBoundary
+        resetKey={dimMapping}
+        loadingMessage="Loading entire dataset"
+      >
         <ValueFetcher
           dataset={entity}
-          dimMapping={dimMapping}
           render={(value) => (
-            <MappedHeatmapVis
+            <MappedLineVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
@@ -47,4 +47,4 @@ function HeatmapVisContainer(props: VisContainerProps) {
   );
 }
 
-export default HeatmapVisContainer;
+export default LineVisContainer;

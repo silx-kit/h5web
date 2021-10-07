@@ -1,7 +1,8 @@
 import {
   assertDataset,
   assertArrayShape,
-  assertNumericType,
+  assertPrintableType,
+  hasComplexType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -9,16 +10,21 @@ import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import VisBoundary from '../VisBoundary';
-import MappedLineVis from '../line/MappedLineVis';
+import MappedMatrixVis from './MappedMatrixVis';
+import { getFormatter } from './utils';
 
-function LineVisContainer(props: VisContainerProps) {
+function MatrixVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertArrayShape(entity);
-  assertNumericType(entity);
+  assertPrintableType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+  const axesCount = Math.min(dims.length, 2);
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
+
+  const formatter = getFormatter(entity);
+  const cellWidth = hasComplexType(entity) ? 232 : 116;
 
   return (
     <>
@@ -27,18 +33,17 @@ function LineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary
-        resetKey={dimMapping}
-        loadingMessage="Loading entire dataset"
-      >
+      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
+          dimMapping={dimMapping}
           render={(value) => (
-            <MappedLineVis
+            <MappedMatrixVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
-              title={entity.name}
+              formatter={formatter}
+              cellWidth={cellWidth}
             />
           )}
         />
@@ -47,4 +52,4 @@ function LineVisContainer(props: VisContainerProps) {
   );
 }
 
-export default LineVisContainer;
+export default MatrixVisContainer;
