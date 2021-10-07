@@ -41,6 +41,8 @@ importers:
       '@types/react': 17.0.19
       '@types/react-dom': 17.0.9
       '@types/react-router-dom': 5.3.0
+      eslint: 7.32.0
+      eslint-config-galex: 2.16.12
       normalize.css: 8.0.1
       react: 17.0.2
       react-app-polyfill: 2.0.0
@@ -64,6 +66,8 @@ importers:
       '@types/react': 17.0.19
       '@types/react-dom': 17.0.9
       '@types/react-router-dom': 5.3.0
+      eslint: 7.32.0
+      eslint-config-galex: 2.16.12_eslint@7.32.0
       react-app-rewire-alias: 1.0.3_react-app-rewired@2.1.8
       react-app-rewired: 2.1.8_react-scripts@4.0.3
       react-scripts: 4.0.3_react@17.0.2+typescript@4.4.3
@@ -74,8 +78,11 @@ importers:
       '@h5web/lib': workspace:*
       '@types/react': 17.0.19
       '@types/react-dom': 17.0.9
+      eslint: 7.32.0
+      eslint-config-galex: 2.16.12
       normalize.css: 8.0.1
       react: 17.0.2
+      react-app-polyfill: 2.0.0
       react-app-rewire-alias: 1.0.3
       react-app-rewired: 2.1.8
       react-dom: 17.0.2
@@ -86,11 +93,14 @@ importers:
       '@h5web/lib': link:../../packages/lib
       normalize.css: 8.0.1
       react: 17.0.2
+      react-app-polyfill: 2.0.0
       react-dom: 17.0.2_react@17.0.2
       three: 0.132.2
     devDependencies:
       '@types/react': 17.0.19
       '@types/react-dom': 17.0.9
+      eslint: 7.32.0
+      eslint-config-galex: 2.16.12_eslint@7.32.0
       react-app-rewire-alias: 1.0.3_react-app-rewired@2.1.8
       react-app-rewired: 2.1.8_react-scripts@4.0.3
       react-scripts: 4.0.3_react@17.0.2+typescript@4.4.3
@@ -4584,7 +4594,7 @@ packages:
     resolution: {integrity: sha512-lWcAqKeB624/twtTc3w6w/2o9RqJPaNBhPGK6DKLSiwuVWC7WFkypWyNg+CpZoyJH0jVzv1uMtXZ/5/lQOLtCg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      core-js-pure: 3.17.2
+      core-js-pure: 3.18.1
       regenerator-runtime: 0.13.9
     dev: true
 
@@ -7757,7 +7767,7 @@ packages:
       '@typescript-eslint/visitor-keys': 4.31.0
       debug: 4.3.2
       globby: 11.0.4
-      is-glob: 4.0.1
+      is-glob: 4.0.3
       semver: 7.3.5
       tsutils: 3.21.0_typescript@4.4.3
       typescript: 4.4.3
@@ -8394,15 +8404,6 @@ packages:
   /array-unique/0.3.2:
     resolution: {integrity: sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /array.prototype.flat/1.2.4:
-    resolution: {integrity: sha512-4470Xi3GAPAjZqFcljX2xzckv1qeKPizoNkiS0+O4IoPR2ZNpcjE0pkhdihlDouK+x6QOast26B4Q/O9DJnwSg==}
-    engines: {node: '>= 0.4'}
-    dependencies:
-      call-bind: 1.0.2
-      define-properties: 1.1.3
-      es-abstract: 1.18.6
     dev: true
 
   /array.prototype.flat/1.2.5:
@@ -10079,11 +10080,6 @@ packages:
       semver: 7.0.0
     dev: true
 
-  /core-js-pure/3.17.2:
-    resolution: {integrity: sha512-2VV7DlIbooyTI7Bh+yzOOWL9tGwLnQKHno7qATE+fqZzDKYr6llVjVQOzpD/QLZFgXDPb8T71pJokHEZHEYJhQ==}
-    requiresBuild: true
-    dev: true
-
   /core-js-pure/3.18.1:
     resolution: {integrity: sha512-kmW/k8MaSuqpvA1xm2l3TVlBuvW+XBkcaOroFUpO3D4lsTGQWBTb/tBDCf/PNkkPLrwgrkQRIYNPB0CeqGJWGQ==}
     requiresBuild: true
@@ -10095,14 +10091,9 @@ packages:
     requiresBuild: true
     dev: true
 
-  /core-js/3.17.3:
-    resolution: {integrity: sha512-lyvajs+wd8N1hXfzob1LdOCCHFU4bGMbqqmLn1Q4QlCpDqWPpGf+p0nj+LNrvDDG33j0hZXw2nsvvVpHysxyNw==}
-    requiresBuild: true
-
   /core-js/3.18.1:
     resolution: {integrity: sha512-vJlUi/7YdlCZeL6fXvWNaLUPh/id12WXj3MbkMw5uOyF0PfWPBNOCNbs53YqgrvtujLNlt9JQpruyIKkUZ+PKA==}
     requiresBuild: true
-    dev: true
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=}
@@ -11696,7 +11687,7 @@ packages:
       eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0
     dependencies:
       array-includes: 3.1.3
-      array.prototype.flat: 1.2.4
+      array.prototype.flat: 1.2.5
       debug: 2.6.9
       doctrine: 2.1.0
       eslint: 7.32.0
@@ -11704,9 +11695,9 @@ packages:
       eslint-module-utils: 2.6.2
       find-up: 2.1.0
       has: 1.0.3
-      is-core-module: 2.6.0
+      is-core-module: 2.7.0
       minimatch: 3.0.4
-      object.values: 1.1.4
+      object.values: 1.1.5
       pkg-up: 2.0.0
       read-pkg-up: 3.0.0
       resolve: 1.20.0
@@ -11843,16 +11834,16 @@ packages:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7
     dependencies:
       array-includes: 3.1.3
-      array.prototype.flatmap: 1.2.4
+      array.prototype.flatmap: 1.2.5
       doctrine: 2.1.0
       eslint: 7.32.0
       estraverse: 5.2.0
       has: 1.0.3
       jsx-ast-utils: 3.2.0
       minimatch: 3.0.4
-      object.entries: 1.1.4
-      object.fromentries: 2.0.4
-      object.values: 1.1.4
+      object.entries: 1.1.5
+      object.fromentries: 2.0.5
+      object.values: 1.1.5
       prop-types: 15.7.2
       resolve: 2.0.0-next.3
       string.prototype.matchall: 4.0.5
@@ -11899,7 +11890,7 @@ packages:
     peerDependencies:
       eslint: '>=7.32.0'
     dependencies:
-      '@babel/helper-validator-identifier': 7.14.9
+      '@babel/helper-validator-identifier': 7.15.7
       ci-info: 3.2.0
       clean-regexp: 1.0.0
       eslint: 7.32.0
@@ -12020,7 +12011,7 @@ packages:
       ignore: 4.0.6
       import-fresh: 3.3.0
       imurmurhash: 0.1.4
-      is-glob: 4.0.1
+      is-glob: 4.0.3
       js-yaml: 3.14.1
       json-stable-stringify-without-jsonify: 1.0.1
       levn: 0.4.1
@@ -12031,7 +12022,7 @@ packages:
       progress: 2.0.3
       regexpp: 3.2.0
       semver: 7.3.5
-      strip-ansi: 6.0.0
+      strip-ansi: 6.0.1
       strip-json-comments: 3.1.1
       table: 6.7.1
       text-table: 0.2.0
@@ -18195,7 +18186,7 @@ packages:
     resolution: {integrity: sha512-0sF4ny9v/B7s6aoehwze9vJNWcmCemAUYBVasscVr92+UYiEqDXOxfKjXN685mDaMRNF3WdhHQs76oTODMocFA==}
     engines: {node: '>=10'}
     dependencies:
-      core-js: 3.17.3
+      core-js: 3.18.1
       object-assign: 4.1.1
       promise: 8.1.0
       raf: 3.4.1
@@ -19131,7 +19122,7 @@ packages:
   /resolve/2.0.0-next.3:
     resolution: {integrity: sha512-W8LucSynKUIDu9ylraa7ueVZ7hc0uAgJBxVsQSKOXOyle8a93qXhcz+XAXZ8bIq2d6i4Ehddn6Evt+0/UwKk6Q==}
     dependencies:
-      is-core-module: 2.6.0
+      is-core-module: 2.7.0
       path-parse: 1.0.7
     dev: true
 
@@ -20298,8 +20289,8 @@ packages:
       lodash.clonedeep: 4.5.0
       lodash.truncate: 4.4.2
       slice-ansi: 4.0.0
-      string-width: 4.2.2
-      strip-ansi: 6.0.0
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
     dev: true
 
   /tapable/1.1.3:

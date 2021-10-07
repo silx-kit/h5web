@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { App, MockProvider } from '@h5web/app';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 import H5GroveApp from './H5GroveApp';
 import HsdsApp from './HsdsApp';
 import JupyterApp from './JupyterApp';
