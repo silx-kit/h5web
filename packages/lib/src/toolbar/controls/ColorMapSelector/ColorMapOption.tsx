@@ -1,6 +1,6 @@
-import { INTERPOLATORS } from '../../../vis-packs/core/heatmap/interpolators';
-import type { ColorMap } from '../../../vis-packs/core/heatmap/models';
-import { getLinearGradient } from '../../../vis-packs/core/heatmap/utils';
+import { INTERPOLATORS } from '../../../vis/heatmap/interpolators';
+import type { ColorMap } from '../../../vis/heatmap/models';
+import { getLinearGradient } from '../../../vis/heatmap/utils';
 import styles from './ColorMapSelector.module.css';
 
 interface Props {

@@ -8,8 +8,8 @@ import {
 } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 
-import type { Bound } from '../../../vis-packs/core/models';
-import { clampBound } from '../../../vis-packs/core/utils';
+import type { Bound } from '../../../vis/models';
+import { clampBound } from '../../../vis/utils';
 import styles from './BoundEditor.module.css';
 
 interface Props {

@@ -1,6 +1,6 @@
 import { FiShuffle } from 'react-icons/fi';
 
-import type { ColorMap } from '../../../vis-packs/core/heatmap/models';
+import type { ColorMap } from '../../../vis/heatmap/models';
 import Selector from '../Selector/Selector';
 import ToggleBtn from '../ToggleBtn';
 import ColorMapOption from './ColorMapOption';

@@ -4,8 +4,8 @@ import type { PickScaleConfigWithoutType } from '@visx/scale';
 import type { IconType } from 'react-icons/lib';
 import { MdSort, MdFilterList, MdFlare } from 'react-icons/md';
 
-import MdGraphicEqRotated from '../../toolbar/controls/ScaleSelector/MdGraphicEqRotated';
-import SqrtIcon from '../../toolbar/controls/ScaleSelector/SqrtIcon';
+import MdGraphicEqRotated from '../toolbar/controls/ScaleSelector/MdGraphicEqRotated';
+import SqrtIcon from '../toolbar/controls/ScaleSelector/SqrtIcon';
 import type { AxisScale } from './models';
 import { scaleGamma } from './scaleGamma';
 

@@ -1,6 +1,6 @@
 import type { ScaleType } from '@h5web/shared';
 
-import { H5WEB_SCALES } from '../../../vis-packs/core/scales';
+import { H5WEB_SCALES } from '../../../vis/scales';
 import styles from './ScaleSelector.module.css';
 
 function ScaleOption(props: { option: ScaleType }) {

@@ -1,12 +1,12 @@
 import './styles.css';
 
 // Visualizations
-export { default as MatrixVis } from './vis-packs/core/matrix/MatrixVis';
-export { default as LineVis } from './vis-packs/core/line/LineVis';
-export { default as HeatmapVis } from './vis-packs/core/heatmap/HeatmapVis';
-export type { MatrixVisProps } from './vis-packs/core/matrix/MatrixVis';
-export type { LineVisProps } from './vis-packs/core/line/LineVis';
-export type { HeatmapVisProps } from './vis-packs/core/heatmap/HeatmapVis';
+export { default as MatrixVis } from './vis/matrix/MatrixVis';
+export { default as LineVis } from './vis/line/LineVis';
+export { default as HeatmapVis } from './vis/heatmap/HeatmapVis';
+export type { MatrixVisProps } from './vis/matrix/MatrixVis';
+export type { LineVisProps } from './vis/line/LineVis';
+export type { HeatmapVisProps } from './vis/heatmap/HeatmapVis';
 
 // Toolbar and controls
 export { default as Toolbar } from './toolbar/Toolbar';
@@ -24,22 +24,22 @@ export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler
 export { default as Selector } from './toolbar/controls/Selector/Selector';
 
 // Building blocks
-export { default as VisCanvas } from './vis-packs/core/shared/VisCanvas';
-export type { VisCanvasProps } from './vis-packs/core/shared/VisCanvas';
-export { default as PanZoomMesh } from './vis-packs/core/shared/PanZoomMesh';
-export { default as TooltipMesh } from './vis-packs/core/shared/TooltipMesh';
-export type { TooltipMeshProps } from './vis-packs/core/shared/TooltipMesh';
-export { default as VisMesh } from './vis-packs/core/shared/VisMesh';
-export { default as ColorBar } from './vis-packs/core/heatmap/ColorBar';
-export type { ColorBarProps } from './vis-packs/core/heatmap/ColorBar';
-export { default as HeatmapMesh } from './vis-packs/core/heatmap/HeatmapMesh';
-export { default as DataCurve } from './vis-packs/core/line/DataCurve';
-export { default as Html } from './vis-packs/core/shared/Html';
-export { default as Annotation } from './vis-packs/core/shared/Annotation';
+export { default as VisCanvas } from './vis/shared/VisCanvas';
+export type { VisCanvasProps } from './vis/shared/VisCanvas';
+export { default as PanZoomMesh } from './vis/shared/PanZoomMesh';
+export { default as TooltipMesh } from './vis/shared/TooltipMesh';
+export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
+export { default as VisMesh } from './vis/shared/VisMesh';
+export { default as ColorBar } from './vis/heatmap/ColorBar';
+export type { ColorBarProps } from './vis/heatmap/ColorBar';
+export { default as HeatmapMesh } from './vis/heatmap/HeatmapMesh';
+export { default as DataCurve } from './vis/line/DataCurve';
+export { default as Html } from './vis/shared/Html';
+export { default as Annotation } from './vis/shared/Annotation';
 
 // Context hook
-export { useAxisSystemContext } from './vis-packs/core/shared/AxisSystemContext';
-export type { AxisSystemParams } from './vis-packs/core/shared/AxisSystemContext';
+export { useAxisSystemContext } from './vis/shared/AxisSystemContext';
+export type { AxisSystemParams } from './vis/shared/AxisSystemContext';
 
 // Utilities
 export {
@@ -48,28 +48,24 @@ export {
   getDomains,
   getCombinedDomain,
   extendDomain,
-} from './vis-packs/core/utils';
+} from './vis/utils';
 
-export {
-  useDomain,
-  useDomains,
-  useCombinedDomain,
-} from './vis-packs/core/hooks';
+export { useDomain, useDomains, useCombinedDomain } from './vis/hooks';
 
 export {
   getLinearGradient,
   getVisDomain,
   getSafeDomain,
-} from './vis-packs/core/heatmap/utils';
+} from './vis/heatmap/utils';
 
-export { useVisDomain, useSafeDomain } from './vis-packs/core/heatmap/hooks';
+export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
 
-export { scaleGamma } from './vis-packs/core/scaleGamma';
+export { scaleGamma } from './vis/scaleGamma';
 
 // Models
-export { INTERPOLATORS } from './vis-packs/core/heatmap/interpolators';
+export { INTERPOLATORS } from './vis/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
-export { CurveType } from './vis-packs/core/line/models';
+export { CurveType } from './vis/line/models';
 
 export type { Domain } from '@h5web/shared';
 
@@ -79,13 +75,9 @@ export type {
   Size,
   AxisConfig,
   AxisParams,
-} from './vis-packs/core/models';
+} from './vis/models';
 
-export type {
-  Dims,
-  D3Interpolator,
-  ColorMap,
-} from './vis-packs/core/heatmap/models';
+export type { Dims, D3Interpolator, ColorMap } from './vis/heatmap/models';
 
 // Mock data and utilities
 export {
@@ -97,7 +89,7 @@ export {
 
 // Undocumented (for @h5web/app)
 export { default as SnapshotButton } from './toolbar/controls/SnapshotButton';
-export { default as RawVis } from './vis-packs/core/raw/RawVis';
-export { default as ScalarVis } from './vis-packs/core/scalar/ScalarVis';
-export { default as RgbVis } from './vis-packs/core/rgb/RgbVis';
-export { ImageType } from './vis-packs/core/rgb/models';
+export { default as RawVis } from './vis/raw/RawVis';
+export { default as ScalarVis } from './vis/scalar/ScalarVis';
+export { default as RgbVis } from './vis/rgb/RgbVis';
+export { ImageType } from './vis/rgb/models';
