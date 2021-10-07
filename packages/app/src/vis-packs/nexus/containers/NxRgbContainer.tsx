@@ -7,7 +7,7 @@ import {
 } from '@h5web/shared';
 import shallow from 'zustand/shallow';
 
-import VisBoundary from '../../core/VisBoundary';
+import VisBoundary from '../../VisBoundary';
 import { useRgbVisConfig } from '../../core/rgb/config';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
