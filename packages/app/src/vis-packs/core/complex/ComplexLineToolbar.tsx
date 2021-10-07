@@ -1,21 +1,22 @@
 import {
-  CurveType,
-  ScaleSelector,
+  Toolbar,
   Separator,
   ToggleBtn,
   ToggleGroup,
-  Toolbar,
+  ScaleSelector,
+  Selector,
+  CurveType,
 } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
-import { useLineConfig } from '../vis-packs/core/line/config';
+import { useLineConfig } from '../line/config';
+import { useComplexLineConfig } from './lineConfig';
+import type { ComplexLineVisType } from './models';
+import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
-const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
-
-function LineToolbar() {
+function ComplexLineToolbar() {
   const {
     curveType,
     setCurveType,
@@ -32,6 +33,10 @@ function LineToolbar() {
     areErrorsDisabled,
     toggleErrors,
   } = useLineConfig((state) => state, shallow);
+  const { visType, setVisType } = useComplexLineConfig(
+    (state) => state,
+    shallow
+  );
 
   return (
     <Toolbar>
@@ -39,13 +44,11 @@ function LineToolbar() {
         label="X"
         value={xScaleType}
         onScaleChange={setXScaleType}
-        options={SCALETYPE_OPTIONS}
       />
       <ScaleSelector
         label="Y"
         value={yScaleType}
         onScaleChange={setYScaleType}
-        options={SCALETYPE_OPTIONS}
       />
 
       <Separator />
@@ -93,8 +96,18 @@ function LineToolbar() {
         <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />
         <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
       </ToggleGroup>
+
+      <Selector
+        value={visType}
+        onChange={(value: ComplexLineVisType) => setVisType(value)}
+        options={[ComplexVisType.Amplitude, ComplexVisType.Phase]}
+        optionComponent={({ option }) => (
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
+        )}
+      />
     </Toolbar>
   );
 }
 
-export default LineToolbar;
+export default ComplexLineToolbar;

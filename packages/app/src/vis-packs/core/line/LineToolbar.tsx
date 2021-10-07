@@ -1,25 +1,21 @@
 import {
-  Toolbar,
+  CurveType,
+  ScaleSelector,
   Separator,
   ToggleBtn,
   ToggleGroup,
-  ScaleSelector,
-  Selector,
-  CurveType,
+  Toolbar,
 } from '@h5web/lib';
+import { ScaleType } from '@h5web/shared';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
-import { useComplexLineConfig } from '../vis-packs/core/complex/lineConfig';
-import type { ComplexLineVisType } from '../vis-packs/core/complex/models';
-import {
-  ComplexVisType,
-  VIS_TYPE_SYMBOLS,
-} from '../vis-packs/core/complex/models';
-import { useLineConfig } from '../vis-packs/core/line/config';
+import { useLineConfig } from './config';
 
-function ComplexLineToolbar() {
+const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
+
+function LineToolbar() {
   const {
     curveType,
     setCurveType,
@@ -36,10 +32,6 @@ function ComplexLineToolbar() {
     areErrorsDisabled,
     toggleErrors,
   } = useLineConfig((state) => state, shallow);
-  const { visType, setVisType } = useComplexLineConfig(
-    (state) => state,
-    shallow
-  );
 
   return (
     <Toolbar>
@@ -47,11 +39,13 @@ function ComplexLineToolbar() {
         label="X"
         value={xScaleType}
         onScaleChange={setXScaleType}
+        options={SCALETYPE_OPTIONS}
       />
       <ScaleSelector
         label="Y"
         value={yScaleType}
         onScaleChange={setYScaleType}
+        options={SCALETYPE_OPTIONS}
       />
 
       <Separator />
@@ -99,18 +93,8 @@ function ComplexLineToolbar() {
         <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />
         <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
       </ToggleGroup>
-
-      <Selector
-        value={visType}
-        onChange={(value: ComplexLineVisType) => setVisType(value)}
-        options={[ComplexVisType.Amplitude, ComplexVisType.Phase]}
-        optionComponent={({ option }) => (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
-        )}
-      />
     </Toolbar>
   );
 }
 
-export default ComplexLineToolbar;
+export default LineToolbar;

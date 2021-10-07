@@ -1,25 +1,21 @@
 import {
   ColorMapSelector,
   DomainSlider,
+  FlipYAxisToggler,
+  GridToggler,
   ScaleSelector,
-  Selector,
+  ScaleType,
   Separator,
   SnapshotButton,
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
-import { MdAspectRatio, MdGridOn } from 'react-icons/md';
+import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
-import { useComplexConfig } from '../vis-packs/core/complex/config';
-import {
-  ComplexVisType,
-  VIS_TYPE_SYMBOLS,
-} from '../vis-packs/core/complex/models';
-import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
+import { useHeatmapConfig } from './config';
 
-function ComplexToolbar() {
+function HeatmapToolbar() {
   const {
     dataDomain,
     customDomain,
@@ -35,8 +31,9 @@ function ComplexToolbar() {
     toggleGrid,
     invertColorMap,
     toggleColorMapInversion,
+    flipYAxis,
+    toggleYAxisFlip,
   } = useHeatmapConfig((state) => state, shallow);
-  const { visType, setVisType } = useComplexConfig((state) => state, shallow);
 
   return (
     <Toolbar>
@@ -61,18 +58,6 @@ function ComplexToolbar() {
 
       <Separator />
 
-      <Selector
-        value={visType}
-        onChange={(value: ComplexVisType) => setVisType(value)}
-        options={Object.values(ComplexVisType)}
-        optionComponent={({ option }) => (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
-        )}
-      />
-
-      <Separator />
-
       <ScaleSelector
         value={scaleType}
         onScaleChange={setScaleType}
@@ -86,18 +71,16 @@ function ComplexToolbar() {
 
       <Separator />
 
+      <FlipYAxisToggler value={flipYAxis} onToggle={toggleYAxisFlip} />
+
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
         value={layout === 'cover'}
         onToggle={() => setLayout(layout === 'cover' ? 'fill' : 'cover')}
       />
-      <ToggleBtn
-        label="Grid"
-        icon={MdGridOn}
-        value={showGrid}
-        onToggle={toggleGrid}
-      />
+
+      <GridToggler value={showGrid} onToggle={toggleGrid} />
 
       <Separator />
 
@@ -106,4 +89,4 @@ function ComplexToolbar() {
   );
 }
 
-export default ComplexToolbar;
+export default HeatmapToolbar;
