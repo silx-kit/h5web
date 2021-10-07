@@ -96,6 +96,7 @@ export {
 } from '@h5web/shared';
 
 // Undocumented (for @h5web/app)
+export { default as SnapshotButton } from './toolbar/controls/SnapshotButton';
 export { default as RawVis } from './vis-packs/core/raw/RawVis';
 export { default as ScalarVis } from './vis-packs/core/scalar/ScalarVis';
 export { default as RgbVis } from './vis-packs/core/rgb/RgbVis';

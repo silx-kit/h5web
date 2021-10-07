@@ -1,11 +1,12 @@
 import {
-  Toolbar,
-  Separator,
-  Selector,
-  ToggleBtn,
   ColorMapSelector,
   DomainSlider,
   ScaleSelector,
+  Selector,
+  Separator,
+  SnapshotButton,
+  ToggleBtn,
+  Toolbar,
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
@@ -17,7 +18,6 @@ import {
   VIS_TYPE_SYMBOLS,
 } from '../vis-packs/core/complex/models';
 import { useHeatmapConfig } from '../vis-packs/core/heatmap/config';
-import SnapshotButton from './controls/SnapshotButton';
 
 function ComplexToolbar() {
   const {
