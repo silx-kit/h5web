@@ -17,14 +17,6 @@ import {
   FiImage,
 } from 'react-icons/fi';
 
-import {
-  MatrixToolbar,
-  LineToolbar,
-  HeatmapToolbar,
-  ComplexToolbar,
-  ComplexLineToolbar,
-  RgbToolbar,
-} from '../../toolbar/toolbars';
 import type { VisDef } from '../models';
 import {
   MatrixConfigProvider,
@@ -44,6 +36,14 @@ import {
   ComplexLineVisContainer,
   RgbVisContainer,
 } from './containers';
+import {
+  MatrixToolbar,
+  LineToolbar,
+  HeatmapToolbar,
+  ComplexToolbar,
+  ComplexLineToolbar,
+  RgbToolbar,
+} from './toolbars';
 import { hasImageAttribute } from './utils';
 
 export enum Vis {

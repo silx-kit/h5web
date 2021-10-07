@@ -6,11 +6,11 @@ import {
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import VisBoundary from '../../VisBoundary';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
-import VisBoundary from '../VisBoundary';
-import MappedHeatmapVis from '../heatmap/MappedHeatmapVis';
+import MappedHeatmapVis from './MappedHeatmapVis';
 
 function HeatmapVisContainer(props: VisContainerProps) {
   const { entity } = props;

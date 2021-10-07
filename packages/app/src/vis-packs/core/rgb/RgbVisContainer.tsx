@@ -9,10 +9,10 @@ import {
 import shallow from 'zustand/shallow';
 
 import { getAttributeValue } from '../../../utils';
+import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
-import VisBoundary from '../VisBoundary';
-import { useRgbVisConfig } from '../rgb/config';
+import { useRgbVisConfig } from './config';
 
 function RgbVisContainer(props: VisContainerProps) {
   const { entity } = props;

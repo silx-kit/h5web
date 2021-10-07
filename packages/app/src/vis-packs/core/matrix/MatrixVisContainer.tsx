@@ -1,24 +1,30 @@
 import {
   assertDataset,
   assertArrayShape,
-  assertComplexType,
+  assertPrintableType,
+  hasComplexType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import VisBoundary from '../../VisBoundary';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
-import VisBoundary from '../VisBoundary';
-import MappedComplexLineVis from '../complex/MappedComplexLineVis';
+import MappedMatrixVis from './MappedMatrixVis';
+import { getFormatter } from './utils';
 
-function ComplexLineVisContainer(props: VisContainerProps) {
+function MatrixVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertArrayShape(entity);
-  assertComplexType(entity);
+  assertPrintableType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+  const axesCount = Math.min(dims.length, 2);
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
+
+  const formatter = getFormatter(entity);
+  const cellWidth = hasComplexType(entity) ? 232 : 116;
 
   return (
     <>
@@ -27,18 +33,17 @@ function ComplexLineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary
-        resetKey={dimMapping}
-        loadingMessage="Loading entire dataset"
-      >
+      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
+          dimMapping={dimMapping}
           render={(value) => (
-            <MappedComplexLineVis
+            <MappedMatrixVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
-              title={entity.name}
+              formatter={formatter}
+              cellWidth={cellWidth}
             />
           )}
         />
@@ -47,4 +52,4 @@ function ComplexLineVisContainer(props: VisContainerProps) {
   );
 }
 
-export default ComplexLineVisContainer;
+export default MatrixVisContainer;

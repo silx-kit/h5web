@@ -1,21 +1,21 @@
 import {
   assertDataset,
   assertArrayShape,
-  assertNumericType,
+  assertComplexType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import VisBoundary from '../../VisBoundary';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
-import VisBoundary from '../VisBoundary';
-import MappedLineVis from '../line/MappedLineVis';
+import MappedComplexLineVis from './MappedComplexLineVis';
 
-function LineVisContainer(props: VisContainerProps) {
+function ComplexLineVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertArrayShape(entity);
-  assertNumericType(entity);
+  assertComplexType(entity);
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
@@ -34,7 +34,7 @@ function LineVisContainer(props: VisContainerProps) {
         <ValueFetcher
           dataset={entity}
           render={(value) => (
-            <MappedLineVis
+            <MappedComplexLineVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
@@ -47,4 +47,4 @@ function LineVisContainer(props: VisContainerProps) {
   );
 }
 
-export default LineVisContainer;
+export default ComplexLineVisContainer;

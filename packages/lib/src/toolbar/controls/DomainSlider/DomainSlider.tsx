@@ -3,14 +3,8 @@ import { useClickOutside, useKeyboardEvent, useToggle } from '@react-hookz/web';
 import { useEffect, useRef, useState } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
 
-import {
-  useSafeDomain,
-  useVisDomain,
-} from '../../../vis-packs/core/heatmap/hooks';
-import type {
-  CustomDomain,
-  HistogramParams,
-} from '../../../vis-packs/core/models';
+import { useSafeDomain, useVisDomain } from '../../../vis/heatmap/hooks';
+import type { CustomDomain, HistogramParams } from '../../../vis/models';
 import ToggleBtn from '../ToggleBtn';
 import styles from './DomainSlider.module.css';
 import type { DomainTooltipHandle } from './DomainTooltip';

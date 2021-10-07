@@ -1,19 +1,19 @@
 import { FiActivity, FiImage, FiMap } from 'react-icons/fi';
 
 import {
-  LineToolbar,
-  HeatmapToolbar,
-  ComplexToolbar,
-  ComplexLineToolbar,
-  RgbToolbar,
-} from '../../toolbar/toolbars';
-import {
   LineConfigProvider,
   HeatmapConfigProvider,
   ComplexConfigProvider,
   ComplexLineConfigProvider,
   RgbConfigProvider,
 } from '../core/configs';
+import {
+  LineToolbar,
+  HeatmapToolbar,
+  ComplexToolbar,
+  ComplexLineToolbar,
+  RgbToolbar,
+} from '../core/toolbars';
 import type { VisDef } from '../models';
 import {
   NxSpectrumContainer,

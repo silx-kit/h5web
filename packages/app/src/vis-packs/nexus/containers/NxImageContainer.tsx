@@ -5,7 +5,7 @@ import {
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import VisBoundary from '../../core/VisBoundary';
+import VisBoundary from '../../VisBoundary';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';

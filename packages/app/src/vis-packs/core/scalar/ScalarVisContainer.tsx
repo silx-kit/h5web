@@ -5,10 +5,10 @@ import {
   assertScalarShape,
 } from '@h5web/shared';
 
+import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
-import VisBoundary from '../VisBoundary';
-import { getFormatter } from '../scalar/utils';
+import { getFormatter } from './utils';
 
 function ScalarVisContainer(props: VisContainerProps) {
   const { entity } = props;

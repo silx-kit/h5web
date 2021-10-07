@@ -5,10 +5,10 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
 import styles from './App.module.css';
 import LoadingFallback from './LoadingFallback';
-import VisConfigProvider from './VisConfigProvider';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
+import VisConfigProvider from './vis-packs/VisConfigProvider';
 import VisPackChooser from './vis-packs/VisPackChooser';
 import ErrorFallback from './visualizer/ErrorFallback';
 

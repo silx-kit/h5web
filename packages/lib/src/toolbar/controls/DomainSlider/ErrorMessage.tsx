@@ -1,7 +1,7 @@
 import { FiCornerDownRight } from 'react-icons/fi';
 import { MdSwapVert } from 'react-icons/md';
 
-import { DomainError } from '../../../vis-packs/core/models';
+import { DomainError } from '../../../vis/models';
 import styles from './DomainTooltip.module.css';
 
 const ERRORS = {

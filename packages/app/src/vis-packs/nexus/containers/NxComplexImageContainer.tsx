@@ -6,7 +6,7 @@ import {
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import VisBoundary from '../../core/VisBoundary';
+import VisBoundary from '../../VisBoundary';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';

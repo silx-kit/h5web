@@ -3,8 +3,8 @@ import { formatBound } from '@h5web/shared';
 import type { ReactNode } from 'react';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import type { DomainErrors } from '../../../vis-packs/core/models';
-import { DomainError } from '../../../vis-packs/core/models';
+import type { DomainErrors } from '../../../vis/models';
+import { DomainError } from '../../../vis/models';
 import ToggleBtn from '../ToggleBtn';
 import type { BoundEditorHandle } from './BoundEditor';
 import BoundEditor from './BoundEditor';

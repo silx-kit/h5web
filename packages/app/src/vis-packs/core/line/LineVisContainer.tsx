@@ -1,30 +1,24 @@
 import {
   assertDataset,
   assertArrayShape,
-  assertPrintableType,
-  hasComplexType,
+  assertNumericType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import VisBoundary from '../../VisBoundary';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
-import VisBoundary from '../VisBoundary';
-import MappedMatrixVis from '../matrix/MappedMatrixVis';
-import { getFormatter } from '../matrix/utils';
+import MappedLineVis from './MappedLineVis';
 
-function MatrixVisContainer(props: VisContainerProps) {
+function LineVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertArrayShape(entity);
-  assertPrintableType(entity);
+  assertNumericType(entity);
 
   const { shape: dims } = entity;
-  const axesCount = Math.min(dims.length, 2);
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
-
-  const formatter = getFormatter(entity);
-  const cellWidth = hasComplexType(entity) ? 232 : 116;
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   return (
     <>
@@ -33,17 +27,18 @@ function MatrixVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
+      <VisBoundary
+        resetKey={dimMapping}
+        loadingMessage="Loading entire dataset"
+      >
         <ValueFetcher
           dataset={entity}
-          dimMapping={dimMapping}
           render={(value) => (
-            <MappedMatrixVis
+            <MappedLineVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
-              formatter={formatter}
-              cellWidth={cellWidth}
+              title={entity.name}
             />
           )}
         />
@@ -52,4 +47,4 @@ function MatrixVisContainer(props: VisContainerProps) {
   );
 }
 
-export default MatrixVisContainer;
+export default LineVisContainer;

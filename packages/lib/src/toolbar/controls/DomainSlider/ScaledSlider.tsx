@@ -3,13 +3,9 @@ import { useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
 
-import { getSafeDomain } from '../../../vis-packs/core/heatmap/utils';
-import type { DomainErrors } from '../../../vis-packs/core/models';
-import {
-  clampBound,
-  createAxisScale,
-  extendDomain,
-} from '../../../vis-packs/core/utils';
+import { getSafeDomain } from '../../../vis/heatmap/utils';
+import type { DomainErrors } from '../../../vis/models';
+import { clampBound, createAxisScale, extendDomain } from '../../../vis/utils';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';

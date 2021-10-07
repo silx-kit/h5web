@@ -8,7 +8,7 @@ import {
 import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
-import { useRgbVisConfig } from '../vis-packs/core/rgb/config';
+import { useRgbVisConfig } from './config';
 
 function RgbToolbar() {
   const { layout, setLayout, showGrid, toggleGrid, imageType, setImageType } =

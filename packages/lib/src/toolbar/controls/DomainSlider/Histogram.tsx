@@ -3,12 +3,12 @@ import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
 
-import { useSafeDomain } from '../../../vis-packs/core/heatmap/hooks';
-import { useCombinedDomain, useDomain } from '../../../vis-packs/core/hooks';
-import type { HistogramParams } from '../../../vis-packs/core/models';
-import { H5WEB_SCALES } from '../../../vis-packs/core/scales';
-import Tick from '../../../vis-packs/core/shared/Tick';
-import { adaptedNumTicks, DEFAULT_DOMAIN } from '../../../vis-packs/core/utils';
+import { useSafeDomain } from '../../../vis/heatmap/hooks';
+import { useCombinedDomain, useDomain } from '../../../vis/hooks';
+import type { HistogramParams } from '../../../vis/models';
+import { H5WEB_SCALES } from '../../../vis/scales';
+import Tick from '../../../vis/shared/Tick';
+import { adaptedNumTicks, DEFAULT_DOMAIN } from '../../../vis/utils';
 import styles from './Histogram.module.css';
 import HistogramColorBar from './HistogramColorBar';
 import HistogramIndicators from './HistogramIndicators';

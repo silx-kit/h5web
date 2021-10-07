@@ -1,4 +1,4 @@
-import type { ColorMap } from '../../../vis-packs/core/heatmap/models';
+import type { ColorMap } from '../../../vis/heatmap/models';
 
 export const COLORMAP_GROUPS: Record<string, ColorMap[]> = {
   Recommended: ['Viridis', 'Inferno', 'Greys', 'RdBu', 'Rainbow', 'Sinebow'],

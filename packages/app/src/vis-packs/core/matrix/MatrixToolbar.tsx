@@ -1,8 +1,8 @@
 import { DownloadBtn, Toolbar } from '@h5web/lib';
 import { FiDownload } from 'react-icons/fi';
 
-import { useMatrixConfig } from '../vis-packs/core/matrix/config';
-import { sliceToCsv } from '../vis-packs/core/matrix/utils';
+import { useMatrixConfig } from './config';
+import { sliceToCsv } from './utils';
 
 function MatrixToolbar() {
   const currentSlice = useMatrixConfig((state) => state.currentSlice);

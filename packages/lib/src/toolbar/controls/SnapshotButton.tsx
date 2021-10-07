@@ -1,5 +1,6 @@
-import { DownloadBtn } from '@h5web/lib';
 import { MdCameraAlt } from 'react-icons/md';
+
+import DownloadBtn from './DownloadBtn';
 
 function SnapshotButton() {
   return (
