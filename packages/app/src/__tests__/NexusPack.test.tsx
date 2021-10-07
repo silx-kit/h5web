@@ -6,8 +6,8 @@ import {
   mockConsoleMethod,
   renderApp,
   selectExplorerNode,
-} from '../../test-utils';
-import { NexusVis } from './visualizations';
+} from '../test-utils';
+import { NexusVis } from '../vis-packs/nexus/visualizations';
 
 test('visualize NXdata group with "spectrum" interpretation', async () => {
   await renderApp();
