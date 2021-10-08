@@ -59,7 +59,15 @@ function VisCanvas(props: Props) {
           <ambientLight />
           <AxisSystemProvider {...providerProps}>
             <AxisSystem axisOffsets={axisOffsets} title={title} />
-            {children}
+            <group
+              scale={[
+                abscissaConfig.flip ? -1 : 1,
+                ordinateConfig.flip ? -1 : 1,
+                1,
+              ]}
+            >
+              {children}
+            </group>
           </AxisSystemProvider>
         </Canvas>
       </div>
