@@ -7,4 +7,4 @@
 [build.environment]
   NPM_FLAGS = "--version"
 [build]
-  command = "npx pnpm install --store=node_modules/.pnpm-store && npx pnpm build --filter @h5web/app && npx pnpm build"
+  command = "npx pnpm install --store=node_modules/.pnpm-store && npx pnpm packages && npx pnpm build"
