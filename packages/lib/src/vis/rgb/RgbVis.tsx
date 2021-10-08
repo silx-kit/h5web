@@ -82,7 +82,7 @@ function RgbVis(props: Props) {
         }}
       >
         <PanZoomMesh />
-        <VisMesh scale={[1, -1, 1]}>
+        <VisMesh>
           <meshBasicMaterial map={texture} />
         </VisMesh>
         {children}

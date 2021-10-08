@@ -58,6 +58,12 @@ AxisLabels.args = {
   ordinateConfig: { visDomain: [50, 100], showGrid: true, label: 'Ordinates' },
 };
 
+export const FlippedAxes = Template.bind({});
+FlippedAxes.args = {
+  abscissaConfig: { visDomain: [0, 3], showGrid: true, flip: true },
+  ordinateConfig: { visDomain: [50, 100], showGrid: true, flip: true },
+};
+
 export const InheritedStyles = Template.bind({});
 
 InheritedStyles.args = {

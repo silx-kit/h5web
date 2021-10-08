@@ -11,7 +11,6 @@ import {
 } from 'three';
 
 import type { VisScaleType } from '../models';
-import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import VisMesh from '../shared/VisMesh';
 import type { ColorMap, ScaleShader } from './models';
 import { getInterpolator } from './utils';
@@ -183,7 +182,6 @@ function HeatmapMesh(props: Props) {
     ? SCALE_SHADER[scaleType].uniforms(domain)
     : SCALE_SHADER[ScaleType.Gamma].uniforms(domain, scaleType[1] as number);
 
-  const { ordinateConfig } = useAxisSystemContext();
   const shader = {
     uniforms: {
       data: { value: dataTexture },
@@ -240,7 +238,7 @@ function HeatmapMesh(props: Props) {
   };
 
   return (
-    <VisMesh scale={[1, ordinateConfig.flip ? -1 : 1, 1]}>
+    <VisMesh>
       <shaderMaterial args={[shader]} />
     </VisMesh>
   );
