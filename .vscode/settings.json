@@ -2,6 +2,8 @@
   "javascript.format.enable": false,
   "typescript.format.enable": false,
   "json.format.enable": false,
+
+  "js/ts.implicitProjectConfig.checkJs": false,
   "css.validate": false,
 
   "editor.defaultFormatter": "esbenp.prettier-vscode",

@@ -1,5 +1,5 @@
-import { useLocation } from 'react-router-dom';
 import { App, HsdsProvider } from '@h5web/app';
+import { useLocation } from 'react-router-dom';
 
 const URL = process.env.REACT_APP_HSDS_URL || '';
 const USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';

@@ -1,5 +1,5 @@
-import { useLocation } from 'react-router-dom';
 import { App, H5GroveProvider } from '@h5web/app';
+import { useLocation } from 'react-router-dom';
 
 const URL = process.env.REACT_APP_H5GROVE_URL || '';
 const FILEPATH = process.env.REACT_APP_H5GROVE_FALLBACK_FILEPATH || '';

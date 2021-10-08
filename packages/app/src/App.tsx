@@ -12,8 +12,6 @@ import VisConfigProvider from './vis-packs/VisConfigProvider';
 import VisPackChooser from './vis-packs/VisPackChooser';
 import ErrorFallback from './visualizer/ErrorFallback';
 
-import 'react-reflex/styles.css';
-
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
 

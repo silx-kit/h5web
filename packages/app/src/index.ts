@@ -1,3 +1,5 @@
+import 'react-reflex/styles.css';
+
 export { default as App } from './App';
 
 export { default as MockProvider } from './providers/mock/MockProvider';
