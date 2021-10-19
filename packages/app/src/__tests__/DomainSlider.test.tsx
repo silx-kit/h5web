@@ -1,7 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { pressKey, renderApp, selectExplorerNode } from '../test-utils';
+import { renderApp, selectExplorerNode } from '../test-utils';
 
 test('show slider with two thumbs', async () => {
   await renderApp(); // default NeXus group renders heatmap and therefore domain slider
@@ -32,7 +32,7 @@ test('show tooltip on hover', async () => {
   expect(tooltip).not.toBeVisible();
 
   userEvent.hover(editBtn);
-  pressKey('Escape');
+  userEvent.keyboard('{Escape}');
   expect(tooltip).not.toBeVisible();
 });
 
@@ -68,12 +68,12 @@ test('update domain when moving thumbs (with keyboard)', async () => {
 
   // Move min thumb one step to the left with keyboard
   minThumb.focus();
-  pressKey('ArrowLeft'); // `userEvent.keyboard('{ArrowLeft}');` causes `act` warnings
+  userEvent.keyboard('{ArrowLeft}');
   expect(minInput).toHaveValue('−1.04671e+2');
   expect(within(visArea).getByText('−1.047e+2')).toBeInTheDocument();
 
   // Move thumb five steps to the left (in a single press)
-  pressKey('ArrowLeft', 5); // https://github.com/testing-library/user-event/issues/618
+  userEvent.keyboard('{ArrowLeft>5/}'); // press key and hold for 5 keydown events, then release
   expect(minInput).toHaveValue('−2.30818e+2');
   expect(within(visArea).getByText('−2.308e+2')).toBeInTheDocument();
 
@@ -85,12 +85,12 @@ test('update domain when moving thumbs (with keyboard)', async () => {
   maxThumb.focus();
 
   // Jump ten steps to the left
-  pressKey('PageDown');
+  userEvent.keyboard('{PageDown}');
   expect(maxInput).toHaveValue('5.72182e+1');
   expect(within(visArea).getByText('5.722e+1')).toBeInTheDocument();
 
   // Jump ten steps to the right
-  pressKey('PageUp');
+  userEvent.keyboard('{PageUp}');
   expect(maxInput).toHaveValue('2.52142e+2'); // not back to 4e+2 because of domain extension behaviour
   expect(within(visArea).getByText('2.521e+2')).toBeInTheDocument();
 
@@ -170,7 +170,7 @@ test('clamp domain in symlog scale', async () => {
   expect(maxThumb).toHaveAttribute('aria-valuenow', '100');
 
   maxThumb.focus();
-  pressKey('ArrowLeft');
+  userEvent.keyboard('{ArrowLeft}');
   expect(maxInput).toHaveValue('5.40006e+301');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '99'); // does not jump back to 81
 
@@ -206,7 +206,7 @@ test('control min/max autoscale behaviour', async () => {
 
   // Moving min thumb disables min autoscale
   minThumb.focus();
-  pressKey('ArrowRight');
+  userEvent.keyboard('{ArrowRight}');
   expect(minBtn).toHaveAttribute('aria-pressed', 'false');
   expect(maxBtn).toHaveAttribute('aria-pressed', 'true'); // unaffected
 
@@ -244,14 +244,14 @@ test('handle empty domain', async () => {
 
   // Check that pearling works (i.e. that one thumb can push the other)
   maxThumb.focus();
-  pressKey('ArrowLeft');
+  userEvent.keyboard('{ArrowLeft}');
   expect(minInput).toHaveValue('3.97453e+2');
   expect(maxInput).toHaveValue('3.97453e+2');
   expect(minThumb).toHaveAttribute('aria-valuenow', '58'); // thumbs stay in the middle
   expect(maxThumb).toHaveAttribute('aria-valuenow', '58');
 
   // Ensure thumbs can be separated again
-  pressKey('ArrowRight');
+  userEvent.keyboard('{ArrowRight}');
   expect(maxInput).toHaveValue('3.99891e+2');
   expect(minThumb).toHaveAttribute('aria-valuenow', '20');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '81');
