@@ -1,29 +1,33 @@
 import type {
+  Attribute,
+  Dataset,
   Entity,
   Group,
   GroupWithChildren,
-  Dataset,
   UnresolvedEntity,
-  Attribute,
 } from '@h5web/shared';
 import { assertDataset, buildEntityPath, EntityKind } from '@h5web/shared';
 
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 import { ProviderError } from '../models';
-import { convertDtype, flattenValue, handleAxiosError } from '../utils';
+import { convertDtype, handleAxiosError } from '../utils';
 import type {
+  H5GroveAttribute,
   H5GroveAttrValuesResponse,
   H5GroveDataResponse,
   H5GroveEntityResponse,
-  H5GroveAttribute,
 } from './models';
-import { isDatasetResponse, isGroupResponse } from './utils';
+import {
+  isDatasetResponse,
+  isGroupResponse,
+  typedArrayFromDType,
+} from './utils';
 
 export class H5GroveApi extends ProviderApi {
   protected attrValuesCache = new Map<string, H5GroveAttrValuesResponse>();
 
-  /* API compatible with h5grove@0.0.4 */
+  /* API compatible with h5grove@0.0.9 */
   public constructor(url: string, filepath: string) {
     super(filepath, { baseURL: url, params: { file: filepath } });
   }
@@ -33,16 +37,20 @@ export class H5GroveApi extends ProviderApi {
     return this.processEntityResponse(path, response);
   }
 
-  public async getValue(params: ValuesStoreParams): Promise<unknown> {
-    const { path, selection } = params;
-    const [value, entity] = await Promise.all([
-      this.fetchData(params),
-      this.getEntity(path),
-    ]);
-
+  public async getValue(
+    params: ValuesStoreParams
+  ): Promise<H5GroveDataResponse> {
+    const { path } = params;
+    const entity = await this.getEntity(path);
     assertDataset(entity);
 
-    return flattenValue(value, entity, selection);
+    const DTypedArray = typedArrayFromDType(entity.type);
+    if (!DTypedArray) {
+      return this.fetchData(params);
+    }
+
+    const buffer = await this.fetchBinaryData(params);
+    return new DTypedArray(buffer);
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
@@ -52,6 +60,19 @@ export class H5GroveApi extends ProviderApi {
       404,
       ProviderError.NotFound
     );
+    return data;
+  }
+
+  private async fetchBinaryData(
+    params: ValuesStoreParams
+  ): Promise<ArrayBuffer> {
+    const { data } = await this.cancellableFetchValue<ArrayBuffer>(
+      `/data/`,
+      params,
+      { ...params, format: 'bin' },
+      'arraybuffer'
+    );
+
     return data;
   }
 

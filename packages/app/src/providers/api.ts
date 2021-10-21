@@ -4,6 +4,7 @@ import type {
   AxiosRequestConfig,
   AxiosResponse,
   CancelTokenSource,
+  ResponseType,
 } from 'axios';
 import axios from 'axios';
 
@@ -42,7 +43,8 @@ export abstract class ProviderApi {
   protected async cancellableFetchValue<T>(
     endpoint: string,
     storeParams: ValuesStoreParams,
-    queryParams?: Record<string, string | undefined>
+    queryParams?: Record<string, string | undefined>,
+    responseType?: ResponseType
   ): Promise<AxiosResponse<T>> {
     const cancelSource = axios.CancelToken.source();
     const request = { storeParams, cancelSource };
@@ -53,6 +55,7 @@ export abstract class ProviderApi {
       return await this.client.get<T>(endpoint, {
         cancelToken,
         params: queryParams || storeParams,
+        responseType,
       });
     } finally {
       // Remove cancellation source when request fulfills
