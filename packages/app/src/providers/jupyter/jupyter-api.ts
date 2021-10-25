@@ -19,7 +19,7 @@ import type {
 } from './models';
 import { isDatasetResponse, isGroupResponse } from './utils';
 
-export class JupyterStableApi extends ProviderApi {
+export class JupyterApi extends ProviderApi {
   protected attrValuesCache = new Map<string, JupyterAttrValuesResponse>();
 
   /* API compatible with jupyterlab_hdf v0.6.0 */
