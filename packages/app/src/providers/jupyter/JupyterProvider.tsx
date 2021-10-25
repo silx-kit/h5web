@@ -2,19 +2,13 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 
 import Provider from '../Provider';
-import { JupyterStableApi } from './jupyter-api';
-import { JupyterDevApi } from './jupyter-dev-api';
+import { JupyterApi } from './jupyter-api';
 
 interface Props {
   url: string;
   filepath: string;
   children: ReactNode;
 }
-
-const JupyterApi =
-  process.env.REACT_APP_JLAB_DEV_ENABLED === 'true'
-    ? JupyterDevApi
-    : JupyterStableApi;
 
 function JupyterProvider(props: Props) {
   const { url, filepath, children } = props;
