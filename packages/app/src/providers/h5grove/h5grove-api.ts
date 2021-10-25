@@ -63,19 +63,6 @@ export class H5GroveApi extends ProviderApi {
     return data;
   }
 
-  private async fetchBinaryData(
-    params: ValuesStoreParams
-  ): Promise<ArrayBuffer> {
-    const { data } = await this.cancellableFetchValue<ArrayBuffer>(
-      `/data/`,
-      params,
-      { ...params, format: 'bin' },
-      'arraybuffer'
-    );
-
-    return data;
-  }
-
   private async fetchAttrValues(
     path: string
   ): Promise<H5GroveAttrValuesResponse> {
@@ -102,6 +89,19 @@ export class H5GroveApi extends ProviderApi {
       `/data/`,
       params
     );
+    return data;
+  }
+
+  private async fetchBinaryData(
+    params: ValuesStoreParams
+  ): Promise<ArrayBuffer> {
+    const { data } = await this.cancellableFetchValue<ArrayBuffer>(
+      `/data/`,
+      params,
+      { ...params, format: 'bin' },
+      'arraybuffer'
+    );
+
     return data;
   }
 

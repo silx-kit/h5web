@@ -48,7 +48,7 @@ pnpm start
 - `pnpm why -r <pkg-name>` - show all project and packages that depend on the
   specified package
 - `pnpm outdated -r` - list outdated dependencies in the workspace
-- `pnpm up -rL <pkg-name>` Update a package to the latest version in every
+- `pnpm up -rL <pkg-name>` - update a package to the latest version in every
   project
 
 ### Dependency management
@@ -57,11 +57,11 @@ pnpm start
 1. Read the changelogs and release notes of the dependencies you'd like to
    upgrade. Look for potential breaking changes, and for bug fixes and new
    features that may help improve the codebase.
-1. Run `pnpm add <pkg-name>@latest --filter <project-name>` to upgrade a
-   dependency to the latest version in a given project. Alternatively, you can
-   also edit the relevant `package.json` file(s) manually and run
-   `pnpm install`, but make sure to specify an exact dependency version rather
-   than a range (i.e. don't prefix the version with a caret or a tilde).
+1. Run `pnpm up -L <pkg-name> --filter <project-name>` to upgrade a dependency
+   to the latest version in a given project. Alternatively, you can also edit
+   the relevant `package.json` file(s) manually and run `pnpm install`, but make
+   sure to specify an exact dependency version rather than a range (i.e. don't
+   prefix the version with a caret or a tilde).
 
 Beware of the following versioning requirements:
 
