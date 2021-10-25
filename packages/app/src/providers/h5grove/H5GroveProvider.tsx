@@ -7,12 +7,17 @@ import { H5GroveApi } from './h5grove-api';
 interface Props {
   url: string;
   filepath: string;
+  axiosParams?: Record<string, string>;
   children: ReactNode;
 }
 
 function H5GroveProvider(props: Props) {
-  const { url, filepath, children } = props;
-  const api = useMemo(() => new H5GroveApi(url, filepath), [filepath, url]);
+  const { url, filepath, axiosParams, children } = props;
+
+  const api = useMemo(
+    () => new H5GroveApi(url, filepath, axiosParams),
+    [filepath, url, axiosParams]
+  );
 
   return <Provider api={api}>{children}</Provider>;
 }

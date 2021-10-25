@@ -35,8 +35,15 @@ export class H5GroveApi extends ProviderApi {
   protected attrValuesCache = new Map<string, H5GroveAttrValuesResponse>();
 
   /* API compatible with h5grove@0.0.9 */
-  public constructor(url: string, filepath: string) {
-    super(filepath, { baseURL: url, params: { file: filepath } });
+  public constructor(
+    url: string,
+    filepath: string,
+    axiosParams?: Record<string, string>
+  ) {
+    super(filepath, {
+      baseURL: url,
+      params: axiosParams || { file: filepath },
+    });
   }
 
   public async getEntity(path: string): Promise<Entity> {
