@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 
 import 'normalize.css';
 import './styles.css';
-import '@h5web/lib'; // move lib styles (inc. global utilities) before app styles in dev
 
 import DemoApp from './DemoApp';
 
