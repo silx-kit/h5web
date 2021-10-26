@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import H5GroveApp from './H5GroveApp';
 import HsdsApp from './HsdsApp';
-import JupyterApp from './JupyterApp';
 
 function DemoApp() {
   return (
@@ -17,11 +16,8 @@ function DemoApp() {
         <Route path="/hsds">
           <HsdsApp />
         </Route>
-        <Route path="/h5grove">
+        <Route path="/">
           <H5GroveApp />
-        </Route>
-        <Route exact path="/">
-          <JupyterApp />
         </Route>
       </Switch>
     </Router>

@@ -91,5 +91,4 @@ function RgbVis(props: Props) {
   );
 }
 
-export type { Props as RgbVisProps };
 export default RgbVis;
