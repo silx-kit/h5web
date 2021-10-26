@@ -27,6 +27,7 @@
   },
   "scripts": {
     "build": "vite build",
+    "postbuild": "cp ../lib/dist/style.css dist/style-lib.css",
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "test": "jest",
