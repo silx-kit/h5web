@@ -30,16 +30,16 @@
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "test": "jest",
-    "analyze": "pnpm dlx source-map-explorer dist/index.js"
+    "analyze": "pnpm dlx source-map-explorer dist/index.js --no-border-checks"
   },
   "peerDependencies": {
     "react": ">=16",
     "react-dom": ">=16",
-    "three": ">=0.120"
+    "three": ">=0.120",
+    "@react-three/fiber": ">=6.0.14"
   },
   "dependencies": {
     "@react-hookz/web": "12.0.0",
-    "@react-three/fiber": "7.0.9",
     "@visx/axis": "2.1.1",
     "@visx/grid": "2.1.1",
     "@visx/scale": "2.1.0",
@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "@h5web/shared": "workspace:*",
+    "@react-three/fiber": "7.0.9",
     "@types/d3-array": "3.0.1",
     "@types/d3-color": "3.0.2",
     "@types/d3-format": "3.0.1",
