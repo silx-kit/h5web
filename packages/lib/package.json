@@ -30,7 +30,7 @@
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "test": "jest",
-    "analyze": "pnpm dlx source-map-explorer dist/index.js"
+    "analyze": "pnpm dlx source-map-explorer dist/index.js --no-border-checks"
   },
   "peerDependencies": {
     "react": ">=16",
