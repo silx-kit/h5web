@@ -1,5 +1,5 @@
-import type { DType, Dataset } from '@h5web/shared';
-import { Endianness, DTypeClass, hasArrayShape } from '@h5web/shared';
+import type { DType } from '@h5web/shared';
+import { Endianness, DTypeClass } from '@h5web/shared';
 import axios from 'axios';
 
 // https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
@@ -77,20 +77,6 @@ export function convertDtype(dtype: string): DType {
     default:
       return { class: DTypeClass.Unknown };
   }
-}
-
-export function flattenValue(
-  value: unknown,
-  entity: Dataset,
-  selection?: string
-) {
-  if (!hasArrayShape(entity)) {
-    return value;
-  }
-
-  const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
-  const dims = slicedDims || entity.shape;
-  return (value as unknown[]).flat(dims.length - 1);
 }
 
 export async function handleAxiosError<T>(

@@ -34,7 +34,8 @@ Data providers are components that fetch data from HDF5 back-end solutions and
 provide this data to the app through React Context. H5Web currently includes two
 providers out of the box, which are both under active development:
 
-- `JupyterProvider` for the
+- `H5GroveProvider` for [h5grove](https://github.com/silx-kit/h5grove), which is
+  used notably in the
   [Jupyter Lab HDF5 extension](https://github.com/jupyterlab/jupyterlab-hdf5)
 - `HsdsProvider` for [HSDS](https://github.com/HDFGroup/hsds)
 
@@ -43,7 +44,7 @@ providers out of the box, which are both under active development:
 The stand-alone demo app demonstrates the use of the built-in data providers and
 visualizations. Several demos are available, one per data provider:
 
-### [Jupyter Lab HDF5 extension](https://github.com/jupyterlab/jupyterlab-hdf5)
+### [H5Grove](https://github.com/silx-kit/h5grove)
 
 This demo is available at https://h5web.panosc.eu.
 
@@ -56,13 +57,6 @@ The following HDF5 files can be reached with a URL of the form
   decompression.
 - `links.h5`: A file with external links, soft links and a virtual dataset to
   test link resolution.
-
-### [H5Grove](https://github.com/silx-kit/h5grove)
-
-This demo is available at https://h5web.panosc.eu/h5grove.
-
-The same HDF5 files can be reached with URLs of the form
-`https://h5web.panosc.eu/h5grove?file=<name>`.
 
 ### [HSDS](https://github.com/HDFGroup/hsds)
 

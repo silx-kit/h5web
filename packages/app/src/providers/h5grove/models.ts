@@ -11,17 +11,6 @@ export interface H5GroveEntityResponse {
   attributes: H5GroveAttribute[];
 }
 
-export interface H5GroveSoftLinkResponse extends H5GroveEntityResponse {
-  target_path: string;
-  type: 'softLink';
-}
-
-export interface H5GroveExternalLinkResponse extends H5GroveEntityResponse {
-  target_file: string;
-  target_path: string;
-  type: 'externalLink';
-}
-
 export interface H5GroveDatasetReponse extends H5GroveEntityResponse {
   type: EntityKind.Dataset;
   dtype: string;

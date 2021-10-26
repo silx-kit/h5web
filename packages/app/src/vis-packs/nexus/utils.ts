@@ -33,7 +33,7 @@ export function isNxDataGroup(group: Group): boolean {
   return getAttributeValue(group, 'NX_class') === 'NXdata';
 }
 
-export function assertNxDataGroup(group: Group): void {
+function assertNxDataGroup(group: Group): void {
   if (!isNxDataGroup(group)) {
     throw new Error('Expected NXdata group');
   }
