@@ -34,12 +34,12 @@
     "analyze": "pnpm dlx source-map-explorer dist/index.js"
   },
   "peerDependencies": {
-    "@h5web/lib": "workspace:*",
     "react": ">=16",
     "react-dom": ">=16",
     "three": ">=0.120"
   },
   "dependencies": {
+    "@h5web/lib": "workspace:*",
     "@react-hookz/web": "12.0.0",
     "axios": "0.22.0",
     "d3-format": "3.0.1",
@@ -55,7 +55,6 @@
     "zustand": "3.5.12"
   },
   "devDependencies": {
-    "@h5web/lib": "workspace:*",
     "@h5web/shared": "workspace:*",
     "@juggle/resize-observer": "3.3.1",
     "@testing-library/dom": "8.7.1",
