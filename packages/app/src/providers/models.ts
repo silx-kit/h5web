@@ -4,6 +4,7 @@ export interface ValuesStoreParams {
 }
 
 export enum ProviderError {
-  NotFound = 'Entity not found',
+  FileNotFound = 'File not found',
+  EntityNotFound = 'Entity not found',
   Cancelled = 'Request cancelled',
 }

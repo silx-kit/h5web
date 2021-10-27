@@ -18,7 +18,7 @@ function MetadataViewer(props: Props) {
 
   const entity = handleError(
     () => entitiesStore.get(path),
-    ProviderError.NotFound,
+    ProviderError.EntityNotFound,
     `No entity found at ${path}`
   );
 

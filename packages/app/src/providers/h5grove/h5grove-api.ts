@@ -7,6 +7,7 @@ import type {
   UnresolvedEntity,
 } from '@h5web/shared';
 import { assertDataset, buildEntityPath, EntityKind } from '@h5web/shared';
+import { isString } from 'lodash';
 
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
@@ -57,8 +58,25 @@ export class H5GroveApi extends ProviderApi {
     const { data } = await handleAxiosError(
       () =>
         this.client.get<H5GroveEntityResponse>(`/meta/`, { params: { path } }),
-      404,
-      ProviderError.NotFound
+      (status, errorData) => {
+        if (
+          status === 404 &&
+          isString(errorData) &&
+          errorData.includes('File not found')
+        ) {
+          return ProviderError.FileNotFound;
+        }
+
+        if (
+          status === 404 &&
+          isString(errorData) &&
+          errorData.includes('not a valid path')
+        ) {
+          return ProviderError.EntityNotFound;
+        }
+
+        return undefined;
+      }
     );
     return data;
   }

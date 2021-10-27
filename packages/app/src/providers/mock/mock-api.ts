@@ -31,7 +31,7 @@ export class MockApi extends ProviderApi {
     }
 
     const entity = findMockEntity(path);
-    assertDefined(entity, ProviderError.NotFound);
+    assertDefined(entity, ProviderError.EntityNotFound);
     return entity;
   }
 
@@ -44,7 +44,7 @@ export class MockApi extends ProviderApi {
     }
 
     const dataset = findMockEntity(path);
-    assertDefined(dataset, ProviderError.NotFound);
+    assertDefined(dataset, ProviderError.EntityNotFound);
     assertMockDataset(dataset);
 
     if (path.includes('slow')) {

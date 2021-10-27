@@ -34,7 +34,7 @@ export function getDefaultEntity(
 
   const defaultEntity = handleError(
     () => entitiesStore.get(path),
-    ProviderError.NotFound,
+    ProviderError.EntityNotFound,
     `No entity found at NeXus default path "${path}"`
   );
 
