@@ -15,7 +15,7 @@ use in other front-end web applications. For more information, visit the
 ## Getting started 🚀
 
 ```bash
-npm install @h5web/lib
+npm install @h5web/lib three @react-three/fiber ndarray
 ```
 
 ```tsx
@@ -40,7 +40,7 @@ const domain = getDomain(dataArray);
 
 function MyApp() {
   return (
-    <div className="my-container">
+    <div style={{ display: 'flex', height: '30rem' }}>
       <HeatmapVis dataArray={dataArray} domain={domain} />
     </div>
   );
