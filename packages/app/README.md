@@ -8,8 +8,14 @@ files. It is built with React and uses
 [react-three-fiber](https://github.com/react-spring/react-three-fiber) for
 visualizations.
 
-This library exposes the root `App` component of H5Web, as well as a number of
-built-in data providers.
+This library exposes the root `App` component of H5Web, as well as the built-in
+data providers:
+
+- `H5GroveProvider` for use with [H5Grove](https://github.com/silx-kit/h5grove)
+  server implementations, like
+  [jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web);
+- `HsdsProvider` for use with [HSDS](https://github.com/HDFGroup/hsds);
+- `MockProvider` for testing purposes.
 
 ## Getting started 🚀
 
@@ -18,9 +24,11 @@ npm install @h5web/app
 ```
 
 ```tsx
+import '@h5web/app/dist/style-lib.css';
+import '@h5web/app/dist/style.css';
+
 import React from 'react';
 import { App, MockProvider } from '@h5web/app';
-import '@h5web/app/dist/style.css';
 
 function MyApp() {
   return (
