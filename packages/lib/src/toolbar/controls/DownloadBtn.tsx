@@ -1,11 +1,10 @@
-import type { AriaAttributes } from 'react';
-import type { IconType } from 'react-icons/lib';
+import type { AriaAttributes, ComponentType, SVGAttributes } from 'react';
 
 import styles from '../Toolbar.module.css';
 
 interface Props extends AriaAttributes {
   label: string;
-  icon?: IconType;
+  icon?: ComponentType<SVGAttributes<SVGElement>>;
   iconOnly?: boolean;
   // If specified, browser will prompt user to download the file instead of opening a new tab
   filename?: string;

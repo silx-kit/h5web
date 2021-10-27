@@ -1,11 +1,10 @@
-import type { AriaAttributes } from 'react';
-import type { IconType } from 'react-icons';
+import type { AriaAttributes, ComponentType, SVGAttributes } from 'react';
 
 import styles from '../Toolbar.module.css';
 
 interface Props extends AriaAttributes {
   label: string;
-  icon?: IconType;
+  icon?: ComponentType<SVGAttributes<SVGElement>>;
   iconOnly?: boolean;
   small?: boolean;
   raised?: boolean;

@@ -1,6 +1,5 @@
 import { useContext, createContext } from 'react';
-import type { ReactElement } from 'react';
-import type { IconType } from 'react-icons';
+import type { ReactElement, ComponentType, SVGAttributes } from 'react';
 
 import styles from './ToggleGroup.module.css';
 
@@ -28,7 +27,7 @@ function useToggleGroupProps(): ToggleGroupProps {
 interface BtnProps {
   label: string;
   value: string;
-  icon?: IconType;
+  icon?: ComponentType<SVGAttributes<SVGElement>>;
   iconOnly?: boolean;
   disabled?: boolean;
 }
