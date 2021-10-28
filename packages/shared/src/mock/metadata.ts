@@ -209,5 +209,15 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         }),
       }),
     ]),
+    makeNxGroup('no_default_nexus_entry', 'NXentry', {
+      defaultPath: undefined,
+      children: [
+        makeNxDataGroup('spectrum', {
+          signal: makeNxDataset('oneD', intType, [41]),
+          axes: { X: makeNxDataset('X', floatType, [41]) },
+          axesAttr: ['X'],
+        }),
+      ],
+    }),
   ],
 });

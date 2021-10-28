@@ -3,6 +3,7 @@ import {
   assertStr,
   buildEntityPath,
   handleError,
+  hasChildren,
   hasComplexType,
   hasMinDims,
   hasNumDims,
@@ -15,19 +16,32 @@ import { ProviderError } from '../../providers/models';
 import { getAttributeValue } from '../../utils';
 import type { VisDef } from '../models';
 import { NxInterpretation } from './models';
-import { findSignalDataset, isNxDataGroup } from './utils';
+import { findSignalDataset, isNxDataGroup, isNxGroup } from './utils';
 import { NexusVis, NEXUS_VIS } from './visualizations';
+
+function getDefaultEntityPath(entity: Entity): string | undefined {
+  const defaultPath = getAttributeValue(entity, 'default');
+  if (defaultPath) {
+    assertStr(defaultPath, `Expected 'default' attribute to be a string`);
+    return defaultPath;
+  }
+
+  if (!isGroup(entity) || !hasChildren(entity)) {
+    return undefined;
+  }
+
+  const nxChild = entity.children.find((c) => isNxGroup(c));
+  return nxChild?.path;
+}
 
 export function getDefaultEntity(
   entity: Entity,
   entitiesStore: FetchStore<Entity, string>
 ): Entity {
-  const defaultPath = getAttributeValue(entity, 'default');
+  const defaultPath = getDefaultEntityPath(entity);
   if (defaultPath === undefined) {
     return entity;
   }
-
-  assertStr(defaultPath, `Expected 'default' attribute to be a string`);
   const path = defaultPath.startsWith('/')
     ? defaultPath
     : buildEntityPath(entity.path, defaultPath);
