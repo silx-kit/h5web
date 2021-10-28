@@ -1,3 +1,4 @@
+import type { AnyArray } from '@h5web/shared';
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { DataTexture, FloatType, RGBFormat, UnsignedByteType } from 'three';
@@ -11,7 +12,7 @@ import { ImageType } from './models';
 import { flipLastDimension } from './utils';
 
 interface Props {
-  value: number[];
+  value: AnyArray<number>;
   dims: number[];
   floatFormat?: boolean;
   layout?: Layout;

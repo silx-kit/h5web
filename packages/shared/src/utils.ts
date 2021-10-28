@@ -4,7 +4,12 @@ import type { NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertDataLength } from './guards';
-import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
+import type {
+  Entity,
+  GroupWithChildren,
+  H5WebComplex,
+  AnyArray,
+} from './models-hdf5';
 import { ScaleType } from './models-vis';
 import type { Bounds, Domain } from './models-vis';
 
@@ -36,7 +41,9 @@ function createComplexFormatter(specifier: string, full = false) {
   };
 }
 
-export function toArray(arr: NdArray<number[]> | number[]): number[] {
+export function toArray(
+  arr: NdArray<AnyArray<number>> | number[]
+): AnyArray<number> {
   return 'data' in arr ? arr.data : arr;
 }
 
@@ -71,8 +78,10 @@ export function handleError<T>(
   }
 }
 
-export function createArrayFromView<T>(view: NdArray<T[]>): NdArray<T[]> {
-  const array = ndarray<T[]>([], view.shape);
+export function createArrayFromView<T>(
+  view: NdArray<AnyArray<T>>
+): NdArray<AnyArray<T>> {
+  const array = ndarray<AnyArray<T>>([], view.shape);
   assign(array, view);
 
   return array;
@@ -95,15 +104,15 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
 }
 
 export function getBounds(
-  valuesArray: NdArray<number[]> | number[],
-  errorArray?: NdArray<number[]> | number[]
+  valuesArray: NdArray<AnyArray<number>> | number[],
+  errorArray?: NdArray<AnyArray<number>> | number[]
 ): Bounds | undefined {
   assertDataLength(errorArray, valuesArray, 'error');
 
   const values = toArray(valuesArray);
   const errors = errorArray && toArray(errorArray);
 
-  const bounds = values.reduce<Bounds>(
+  const bounds = (values as number[]).reduce<Bounds>( // cast works around https://github.com/microsoft/TypeScript/issues/44593
     (acc, val, i) => {
       // Ignore NaN and Infinity from the bounds computation
       if (!Number.isFinite(val)) {

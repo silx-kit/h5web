@@ -1,4 +1,5 @@
 import { RgbVis } from '@h5web/lib';
+import type { NumericType } from '@h5web/shared';
 import {
   assertGroupWithChildren,
   assertNumericType,
@@ -11,6 +12,7 @@ import VisBoundary from '../../VisBoundary';
 import { useRgbVisConfig } from '../../core/rgb/config';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
+import type { NxData } from '../models';
 import { getNxData, getDatasetLabel } from '../utils';
 
 function NxRgbContainer(props: VisContainerProps) {
@@ -32,12 +34,12 @@ function NxRgbContainer(props: VisContainerProps) {
   return (
     <VisBoundary loadingMessage="Loading image">
       <NxValuesFetcher
-        nxData={nxData}
+        nxData={nxData as NxData<NumericType>}
         render={(nxValues) => {
           const { signal, title } = nxValues;
           return (
             <RgbVis
-              value={signal as number[]}
+              value={signal}
               dims={dims}
               floatFormat={signalDataset.type.class === DTypeClass.Float}
               title={title || getDatasetLabel(signalDataset)}

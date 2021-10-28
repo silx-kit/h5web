@@ -1,4 +1,5 @@
 import type {
+  AnyArray,
   ArrayShape,
   ComplexType,
   Dataset,
@@ -41,10 +42,10 @@ export interface NxData<
 }
 
 export interface NxValues<T extends NumericType | ComplexType> {
-  signal: Primitive<T>[];
-  errors?: number[];
+  signal: AnyArray<Primitive<T>>;
+  errors?: AnyArray<number>;
   axisMapping: AxisMapping;
-  auxiliaries?: number[][];
+  auxiliaries?: AnyArray<number>[];
   title?: string;
 }
 

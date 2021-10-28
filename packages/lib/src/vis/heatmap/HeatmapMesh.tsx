@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared';
+import type { AnyArray, Domain } from '@h5web/shared';
 import { ScaleType, assertDefined, isScaleType } from '@h5web/shared';
 import { rgb } from 'd3-color';
 import { memo, useMemo } from 'react';
@@ -18,12 +18,12 @@ import { getInterpolator } from './utils';
 interface Props {
   rows: number;
   cols: number;
-  values: number[];
+  values: AnyArray<number>;
   domain: Domain;
   colorMap: ColorMap;
   scaleType: VisScaleType;
   invertColorMap?: boolean;
-  alphaValues?: number[];
+  alphaValues?: AnyArray<number>;
   alphaDomain?: Domain;
 }
 

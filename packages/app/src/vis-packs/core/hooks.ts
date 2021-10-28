@@ -1,5 +1,5 @@
 import { getCombinedDomain } from '@h5web/lib';
-import type { Dataset, Value } from '@h5web/shared';
+import type { AnyArray, Dataset, Value } from '@h5web/shared';
 import {
   isDefined,
   ScaleType,
@@ -68,16 +68,16 @@ const useBounds = createMemo(getBounds);
 const useValidDomainForScale = createMemo(getValidDomainForScale);
 
 export function useDomain(
-  valuesArray: NdArray<number[]> | number[],
+  valuesArray: NdArray<AnyArray<number>> | number[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: NdArray<number[]> | number[]
+  errorArray?: NdArray<AnyArray<number>> | number[]
 ) {
   const bounds = useBounds(valuesArray, errorArray);
   return useValidDomainForScale(bounds, scaleType);
 }
 
 export function useDomains(
-  valuesArrays: (NdArray<number[]> | number[])[],
+  valuesArrays: (NdArray<AnyArray<number>> | number[])[],
   scaleType: ScaleType = ScaleType.Linear
 ) {
   const allBounds = useMemo(() => {
@@ -95,17 +95,15 @@ export const useCombinedDomain = createMemo(getCombinedDomain);
 const useBaseArray = createMemo(getBaseArray);
 const useApplyMapping = createMemo(applyMapping);
 
-export function useMappedArray<T extends unknown[] | undefined>(
+export function useMappedArray<T extends AnyArray | undefined>(
   value: T,
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
-): T extends (infer U)[]
-  ? [NdArray<U[]>, NdArray<U[]>]
-  : [undefined, undefined];
+): T extends AnyArray ? [NdArray<T>, NdArray<T>] : [undefined, undefined];
 
-export function useMappedArray<T>(
-  value: T[] | undefined,
+export function useMappedArray(
+  value: AnyArray | undefined,
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
@@ -117,7 +115,7 @@ export function useMappedArray<T>(
 }
 
 export function useMappedArrays(
-  values: number[][],
+  values: AnyArray<number>[],
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean

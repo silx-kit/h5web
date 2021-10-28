@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared';
+import type { AnyArray, Domain } from '@h5web/shared';
 import { assertDefined, formatTooltipVal, ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
@@ -17,7 +17,7 @@ import type { ColorMap, Layout, TooltipData } from './models';
 import { getDims } from './utils';
 
 interface Props {
-  dataArray: NdArray<number[]>;
+  dataArray: NdArray<AnyArray<number>>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: VisScaleType;
@@ -27,7 +27,7 @@ interface Props {
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
-  alphaArray?: NdArray<number[]>;
+  alphaArray?: NdArray<AnyArray<number>>;
   alphaDomain?: Domain;
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;

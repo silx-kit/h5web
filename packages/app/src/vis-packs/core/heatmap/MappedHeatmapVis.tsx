@@ -1,5 +1,5 @@
 import { HeatmapVis } from '@h5web/lib';
-import type { ScaleType } from '@h5web/shared';
+import type { AnyArray, ScaleType } from '@h5web/shared';
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 
@@ -11,7 +11,7 @@ import { useHeatmapConfig } from './config';
 import { useSafeDomain, useVisDomain } from './hooks';
 
 interface Props {
-  value: number[];
+  value: AnyArray<number>;
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;

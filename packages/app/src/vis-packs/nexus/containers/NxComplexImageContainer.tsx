@@ -1,4 +1,4 @@
-import type { H5WebComplex } from '@h5web/shared';
+import type { ComplexType } from '@h5web/shared';
 import {
   assertComplexType,
   assertGroupWithChildren,
@@ -11,6 +11,7 @@ import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
+import type { NxData } from '../models';
 import { getNxData, getDatasetLabel } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {
@@ -34,13 +35,13 @@ function NxComplexImageContainer(props: VisContainerProps) {
       />
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
-          nxData={nxData}
+          nxData={nxData as NxData<ComplexType>}
           dimMapping={dimMapping}
           render={(nxValues) => {
             const { signal, axisMapping, title } = nxValues;
             return (
               <MappedComplexVis
-                value={signal as H5WebComplex[]}
+                value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}

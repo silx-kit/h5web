@@ -1,4 +1,4 @@
-import type { Domain, Dataset } from '@h5web/shared';
+import type { Domain, Dataset, AnyArray } from '@h5web/shared';
 import { createArrayFromView } from '@h5web/shared';
 import { isNumber } from 'lodash';
 import type { NdArray } from 'ndarray';
@@ -10,27 +10,27 @@ import { getAttributeValue } from '../../utils';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
-export function getBaseArray<T extends unknown[] | undefined>(
+export function getBaseArray<T extends AnyArray | undefined>(
   value: T,
   rawDims: number[]
-): T extends (infer U)[] ? NdArray<U[]> : undefined;
+): T extends AnyArray ? NdArray<T> : undefined;
 
-export function getBaseArray<T>(
-  value: T[] | undefined,
+export function getBaseArray(
+  value: AnyArray | undefined,
   rawDims: number[]
-): NdArray<T[]> | undefined {
+): NdArray<AnyArray> | undefined {
   return value && ndarray(value, rawDims);
 }
 
-export function applyMapping<T extends NdArray<unknown[]> | undefined>(
+export function applyMapping<T extends NdArray<AnyArray> | undefined>(
   baseArray: T,
   mapping: (number | Axis | ':')[]
-): T extends NdArray<infer U> ? NdArray<U> : undefined;
+): T extends NdArray<AnyArray> ? T : undefined;
 
-export function applyMapping<T>(
-  baseArray: NdArray<T[]> | undefined,
+export function applyMapping(
+  baseArray: NdArray<AnyArray> | undefined,
   mapping: (number | Axis | ':')[]
-): NdArray<T[]> | undefined {
+): NdArray<AnyArray> | undefined {
   if (!baseArray) {
     return undefined;
   }

@@ -268,8 +268,8 @@ export function isComplexValue(
 }
 
 export function assertDataLength(
-  arr: NdArray<number[]> | number[] | undefined,
-  dataArray: NdArray<number[]> | number[],
+  arr: NdArray<AnyArray<number>> | number[] | undefined,
+  dataArray: NdArray<AnyArray<number>> | number[],
   arrName: string
 ) {
   if (!arr) {

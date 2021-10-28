@@ -1,3 +1,4 @@
+import type { NumericType } from '@h5web/shared';
 import {
   assertGroupWithChildren,
   assertNumericType,
@@ -10,6 +11,7 @@ import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
+import type { NxData } from '../models';
 import { getNxData, getDatasetLabel } from '../utils';
 
 function NxImageContainer(props: VisContainerProps) {
@@ -33,13 +35,13 @@ function NxImageContainer(props: VisContainerProps) {
       />
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
-          nxData={nxData}
+          nxData={nxData as NxData<NumericType>}
           dimMapping={dimMapping}
           render={(nxValues) => {
             const { signal, axisMapping, title } = nxValues;
             return (
               <MappedHeatmapVis
-                value={signal as number[]}
+                value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}

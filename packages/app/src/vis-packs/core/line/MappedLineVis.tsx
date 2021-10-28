@@ -1,5 +1,5 @@
 import { LineVis } from '@h5web/lib';
-import type { ScaleType } from '@h5web/shared';
+import type { AnyArray, ScaleType } from '@h5web/shared';
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 
@@ -17,11 +17,11 @@ import { useLineConfig } from './config';
 type HookArgs = [number[], DimensionMapping, boolean];
 
 interface Props {
-  value: number[];
+  value: AnyArray<number>;
   valueLabel?: string;
   valueScaleType?: ScaleType;
-  errors?: number[];
-  auxiliaries?: number[][];
+  errors?: AnyArray<number>;
+  auxiliaries?: AnyArray<number>[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
