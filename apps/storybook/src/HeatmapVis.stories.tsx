@@ -64,6 +64,24 @@ AxisValues.args = {
   },
 };
 
+export const DescendingAxisValues = Template.bind({});
+DescendingAxisValues.args = {
+  dataArray,
+  domain,
+  abscissaParams: {
+    value: Array.from(
+      { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
+      (_, i) => -100 - 10 * i
+    ),
+  },
+  ordinateParams: {
+    value: Array.from(
+      { length: dataArray.shape[0] + 1 },
+      (_, i) => (5 - 0.5 * i) / 100
+    ),
+  },
+};
+
 export const Alpha = Template.bind({});
 Alpha.args = {
   dataArray,

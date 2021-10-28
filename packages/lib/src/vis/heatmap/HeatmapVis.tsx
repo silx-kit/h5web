@@ -3,7 +3,7 @@ import { assertDefined, formatTooltipVal, ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
-import { useDomain, useValueToIndexScale } from '../hooks';
+import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { VisScaleType, AxisParams } from '../models';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
@@ -59,11 +59,11 @@ function HeatmapVis(props: Props) {
   const { rows, cols } = getDims(dataArray);
 
   const abscissas = useAxisValues(abscissaValue, cols);
-  const abscissaDomain = useDomain(abscissas);
+  const abscissaDomain = useAxisDomain(abscissas);
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
   const ordinates = useAxisValues(ordinateValue, rows);
-  const ordinateDomain = useDomain(ordinates);
+  const ordinateDomain = useAxisDomain(ordinates);
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 
   const abscissaToIndex = useValueToIndexScale(abscissas);

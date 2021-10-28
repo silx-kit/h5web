@@ -157,17 +157,23 @@ export function getValueToIndexScale(
   values: number[],
   switchAtMidpoints?: boolean
 ): ScaleThreshold<number, number> {
-  const indices = range(values.length);
-
-  const thresholds = switchAtMidpoints
+  const rawThresholds = switchAtMidpoints
     ? values.map((_, i) => values[i - 1] + (values[i] - values[i - 1]) / 2) // Shift the thresholds for the switch from i-1 to i to happen between values[i-1] and values[i]
     : values; // Else, the switch from i-1 to i will happen at values[i]
 
   // First threshold (going from 0 to 1) should be for the second value. Scaling the first value should return at 0.
-  return scaleThreshold<number, number>({
-    domain: thresholds.slice(1),
-    range: indices,
-  });
+  const thresholds = rawThresholds.slice(1);
+  const indices = range(values.length);
+
+  // ScaleThreshold only works with ascending values so the scale is reversed for descending values
+  return scaleThreshold<number, number>(
+    isDescending(thresholds)
+      ? {
+          domain: [...thresholds].reverse(),
+          range: [...indices].reverse(),
+        }
+      : { domain: thresholds, range: indices }
+  );
 }
 
 export function getCanvasScale(
@@ -261,4 +267,23 @@ export function getAxisOffsets(
     right: hasLabel.right ? vertical : fallback,
     top: hasLabel.top ? horizontal : fallback,
   };
+}
+
+export function isDescending(array: number[]): boolean {
+  return array[array.length - 1] - array[0] < 0;
+}
+
+export function getAxisDomain(
+  axisValues: number[],
+  scaleType: ScaleType = ScaleType.Linear,
+  extensionFactor = 0
+): Domain | undefined {
+  const rawDomain = getDomain(axisValues, scaleType);
+  if (!rawDomain) {
+    return undefined;
+  }
+  const extendedDomain = extendDomain(rawDomain, extensionFactor, scaleType);
+  return isDescending(axisValues)
+    ? [extendedDomain[1], extendedDomain[0]]
+    : extendedDomain;
 }

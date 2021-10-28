@@ -24,6 +24,10 @@ const combinedDomain = getCombinedDomain(
   getDomains([primaryArray, secondaryArray, tertiaryArray])
 );
 
+const abscissas = Array.from(
+  { length: dataArray.size },
+  (_, i) => -10 + 0.5 * i
+);
 const errorsArray = ndarray(
   Array.from({ length: dataArray.size }, (_, i) => Math.abs(10 - 0.5 * i)),
   dataArray.shape
@@ -51,7 +55,17 @@ Abscissas.args = {
   dataArray,
   domain,
   abscissaParams: {
-    value: Array.from({ length: dataArray.size }, (_, i) => -10 + 0.5 * i),
+    value: abscissas,
+  },
+};
+
+export const DescendingAbscissas = Template.bind({});
+
+DescendingAbscissas.args = {
+  dataArray,
+  domain,
+  abscissaParams: {
+    value: [...abscissas].reverse(),
   },
 };
 
