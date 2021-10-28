@@ -6,7 +6,12 @@ import type {
   GroupWithChildren,
   UnresolvedEntity,
 } from '@h5web/shared';
-import { assertDataset, buildEntityPath, EntityKind } from '@h5web/shared';
+import {
+  hasScalarShape,
+  assertDataset,
+  buildEntityPath,
+  EntityKind,
+} from '@h5web/shared';
 import { isString } from 'lodash';
 
 import { ProviderApi } from '../api';
@@ -51,7 +56,8 @@ export class H5GroveApi extends ProviderApi {
     }
 
     const buffer = await this.fetchBinaryData(params);
-    return new DTypedArray(buffer);
+    const array = new DTypedArray(buffer);
+    return hasScalarShape(entity) ? array[0] : array;
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
