@@ -17,6 +17,7 @@ import {
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 import { ProviderError } from '../models';
+import { handleAxiosError } from '../utils';
 import type {
   HsdsDatasetResponse,
   HsdsDatatypeResponse,
@@ -95,7 +96,7 @@ export class HsdsApi extends ProviderApi {
 
     const childName = path.slice(path.lastIndexOf('/') + 1);
     const child = getChildEntity(parentGroup, childName);
-    assertDefined(child, ProviderError.NotFound);
+    assertDefined(child, ProviderError.EntityNotFound);
     assertHsdsEntity(child);
 
     const entity = isHsdsGroup(child)
@@ -125,7 +126,10 @@ export class HsdsApi extends ProviderApi {
   }
 
   private async fetchRootId(): Promise<HsdsId> {
-    const { data } = await this.client.get<HsdsRootResponse>('/');
+    const { data } = await handleAxiosError(
+      () => this.client.get<HsdsRootResponse>('/'),
+      (status) => (status === 400 ? ProviderError.FileNotFound : undefined)
+    );
     return data.root;
   }
 

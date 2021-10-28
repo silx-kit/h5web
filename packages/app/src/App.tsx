@@ -22,49 +22,51 @@ function App() {
 
   return (
     <ReflexContainer className={styles.root} orientation="vertical">
-      <ReflexElement
-        className={styles.explorer}
-        style={{ display: isExplorerOpen ? undefined : 'none' }}
-        flex={25}
-        minSize={150}
-      >
-        <Explorer selectedPath={selectedPath} onSelect={setSelectedPath} />
-      </ReflexElement>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <ReflexElement
+          className={styles.explorer}
+          style={{ display: isExplorerOpen ? undefined : 'none' }}
+          flex={25}
+          minSize={150}
+        >
+          <Explorer selectedPath={selectedPath} onSelect={setSelectedPath} />
+        </ReflexElement>
 
-      <ReflexSplitter
-        className={styles.splitter}
-        style={{ display: isExplorerOpen ? undefined : 'none' }}
-      />
-
-      <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
-        <BreadcrumbsBar
-          path={selectedPath}
-          isExplorerOpen={isExplorerOpen}
-          isInspecting={isInspecting}
-          onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
-          onChangeInspecting={setInspecting}
-          onSelectPath={setSelectedPath}
+        <ReflexSplitter
+          className={styles.splitter}
+          style={{ display: isExplorerOpen ? undefined : 'none' }}
         />
-        <VisConfigProvider>
-          <ErrorBoundary
-            resetKeys={[selectedPath, isInspecting]}
-            FallbackComponent={ErrorFallback}
-          >
-            <Suspense
-              fallback={<LoadingFallback isInspecting={isInspecting} />}
+
+        <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
+          <BreadcrumbsBar
+            path={selectedPath}
+            isExplorerOpen={isExplorerOpen}
+            isInspecting={isInspecting}
+            onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
+            onChangeInspecting={setInspecting}
+            onSelectPath={setSelectedPath}
+          />
+          <VisConfigProvider>
+            <ErrorBoundary
+              resetKeys={[selectedPath, isInspecting]}
+              FallbackComponent={ErrorFallback}
             >
-              {isInspecting ? (
-                <MetadataViewer
-                  path={selectedPath}
-                  onSelectPath={setSelectedPath}
-                />
-              ) : (
-                <VisPackChooser path={selectedPath} />
-              )}
-            </Suspense>
-          </ErrorBoundary>
-        </VisConfigProvider>
-      </ReflexElement>
+              <Suspense
+                fallback={<LoadingFallback isInspecting={isInspecting} />}
+              >
+                {isInspecting ? (
+                  <MetadataViewer
+                    path={selectedPath}
+                    onSelectPath={setSelectedPath}
+                  />
+                ) : (
+                  <VisPackChooser path={selectedPath} />
+                )}
+              </Suspense>
+            </ErrorBoundary>
+          </VisConfigProvider>
+        </ReflexElement>
+      </ErrorBoundary>
     </ReflexContainer>
   );
 }

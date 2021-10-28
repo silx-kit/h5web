@@ -2,6 +2,8 @@ import type { DType } from '@h5web/shared';
 import { Endianness, DTypeClass } from '@h5web/shared';
 import axios from 'axios';
 
+import type { ProviderError } from './models';
+
 // https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
 const ENDIANNESS_MAPPING: Record<string, Endianness> = {
   '<': Endianness.LE,
@@ -81,14 +83,21 @@ export function convertDtype(dtype: string): DType {
 
 export async function handleAxiosError<T>(
   func: () => Promise<T>,
-  status: number,
-  errToThrow: string
+  getErrorToThrow: (
+    status: number,
+    errorData: unknown
+  ) => ProviderError | undefined
 ): Promise<T> {
   try {
     return await func();
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === status) {
-      throw new Error(errToThrow);
+    if (axios.isAxiosError(error) && error.response) {
+      const { status, data } = error.response;
+      const errorToThrow = getErrorToThrow(status, data);
+
+      if (errorToThrow) {
+        throw new Error(errorToThrow);
+      }
     }
 
     throw error;
