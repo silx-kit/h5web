@@ -266,6 +266,30 @@ describe('getValueToIndexScale', () => {
     expect(scale(25)).toEqual(2);
     expect(scale(100)).toEqual(2);
   });
+
+  it('should create threshold scale from descending values to indices', () => {
+    const scale = getValueToIndexScale([30, 20, 10]);
+
+    expect(scale(100)).toEqual(0);
+    expect(scale(20)).toEqual(0);
+    expect(scale(19.9)).toEqual(1);
+    expect(scale(10)).toEqual(1);
+    expect(scale(9.9)).toEqual(2);
+    expect(scale(0)).toEqual(2);
+  });
+
+  it('should allow scale with descending values to switch at midpoints', () => {
+    const scale = getValueToIndexScale([30, 20, 10], true);
+
+    expect(scale(100)).toEqual(0);
+    expect(scale(30)).toEqual(0);
+    expect(scale(25)).toEqual(0);
+    expect(scale(24.9)).toEqual(1);
+    expect(scale(20)).toEqual(1);
+    expect(scale(15)).toEqual(1);
+    expect(scale(14.9)).toEqual(2);
+    expect(scale(0)).toEqual(2);
+  });
 });
 
 describe('getIntegerTicks', () => {

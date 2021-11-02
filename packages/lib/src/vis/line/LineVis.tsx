@@ -11,12 +11,16 @@ import type { NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 
-import { useCSSCustomProperties, useValueToIndexScale } from '../hooks';
+import {
+  useAxisDomain,
+  useCSSCustomProperties,
+  useValueToIndexScale,
+} from '../hooks';
 import type { AxisParams } from '../models';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { getDomain, extendDomain, DEFAULT_DOMAIN } from '../utils';
+import { extendDomain, DEFAULT_DOMAIN } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
 import type { TooltipData } from './models';
@@ -75,10 +79,7 @@ function LineVis(props: Props) {
 
   const abscissaToIndex = useValueToIndexScale(abscissas, true);
 
-  const abscissaDomain = useMemo(() => {
-    const rawDomain = getDomain(abscissas, abscissaScaleType);
-    return rawDomain && extendDomain(rawDomain, 0.01, abscissaScaleType);
-  }, [abscissas, abscissaScaleType]);
+  const abscissaDomain = useAxisDomain(abscissas, abscissaScaleType, 0.01);
 
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 

@@ -7,10 +7,15 @@ import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
 
 import type { Size } from './models';
-import { getCombinedDomain, getValueToIndexScale } from './utils';
+import {
+  getAxisDomain,
+  getCombinedDomain,
+  getValueToIndexScale,
+} from './utils';
 
 const useBounds = createMemo(getBounds);
 const useValidDomainForScale = createMemo(getValidDomainForScale);
+export const useAxisDomain = createMemo(getAxisDomain);
 
 export function useDomain(
   valuesArray: NdArray<number[]> | number[],
