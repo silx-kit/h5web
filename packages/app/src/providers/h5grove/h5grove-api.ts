@@ -8,6 +8,7 @@ import type {
 } from '@h5web/shared';
 import {
   hasScalarShape,
+  hasArrayShape,
   assertDataset,
   buildEntityPath,
   EntityKind,
@@ -51,13 +52,16 @@ export class H5GroveApi extends ProviderApi {
     assertDataset(entity);
 
     const DTypedArray = typedArrayFromDType(entity.type);
-    if (!DTypedArray) {
-      return this.fetchData(params);
+    if (DTypedArray) {
+      const buffer = await this.fetchBinaryData(params);
+      const array = new DTypedArray(buffer);
+      return hasScalarShape(entity) ? array[0] : array;
     }
 
-    const buffer = await this.fetchBinaryData(params);
-    const array = new DTypedArray(buffer);
-    return hasScalarShape(entity) ? array[0] : array;
+    const value = await this.fetchData(params);
+    return hasArrayShape(entity)
+      ? (value as unknown[]).flat(entity.shape.length - 1)
+      : value;
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
@@ -120,7 +124,7 @@ export class H5GroveApi extends ProviderApi {
     params: ValuesStoreParams
   ): Promise<ArrayBuffer> {
     const { data } = await this.cancellableFetchValue<ArrayBuffer>(
-      `/data/`,
+      '/data/',
       params,
       { ...params, format: 'bin' },
       'arraybuffer'
