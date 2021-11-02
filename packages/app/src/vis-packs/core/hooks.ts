@@ -5,6 +5,7 @@ import {
   ScaleType,
   getBounds,
   getValidDomainForScale,
+  assertDatasetValue,
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import { useContext, useMemo } from 'react';
@@ -46,10 +47,13 @@ export function useDatasetValue(
   }
 
   // If `dimMapping` is not provided or has no slicing dimension, the entire dataset will be fetched
-  return valuesStore.get({
+  const value = valuesStore.get({
     path: dataset.path,
     selection: getSliceSelection(dimMapping),
   });
+
+  assertDatasetValue(value, dataset);
+  return value;
 }
 
 export function useDatasetValues<D extends Dataset>(
@@ -60,7 +64,14 @@ export function useDatasetValues(datasets: Dataset[]): Record<string, unknown> {
   const { valuesStore } = useContext(ProviderContext);
 
   return Object.fromEntries(
-    datasets.map(({ name, path }) => [name, valuesStore.get({ path })])
+    datasets.map((dataset) => {
+      const { name, path } = dataset;
+
+      const value = valuesStore.get({ path });
+      assertDatasetValue(value, dataset);
+
+      return [name, value];
+    })
   );
 }
 
