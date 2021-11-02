@@ -27,7 +27,7 @@ import type {
 } from '@h5web/shared';
 
 import { getAttributeValue } from '../../utils';
-import type { NxData, SilxStyle } from './models';
+import type { NxAttribute, NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(group: Group): boolean {
   return getAttributeValue(group, 'NX_class') === 'NXdata';
@@ -39,10 +39,16 @@ function assertNxDataGroup(group: Group): void {
   }
 }
 
+function hasAttribute(entity: Entity, attrName: NxAttribute): boolean {
+  return !!getAttributeValue(entity, attrName);
+}
+
 export function isNxGroup(entity: Entity): boolean {
   return (
     isGroup(entity) &&
-    (isNxDataGroup(entity) || !!getAttributeValue(entity, 'default'))
+    (isNxDataGroup(entity) ||
+      hasAttribute(entity, 'default') ||
+      hasAttribute(entity, 'NX_class'))
   );
 }
 
