@@ -89,6 +89,15 @@ test('visualize NXdata group with "rgb-image" interpretation', async () => {
   expect(tabs[0]).toHaveTextContent(NexusVis.NxRGB);
 });
 
+test('visualize NXentry group with implicit default child NXdata group', async () => {
+  await renderApp();
+  await selectExplorerNode('nexus_entry_no_default');
+
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+});
+
 test('show error when encountering malformed NeXus metadata', async () => {
   await renderApp();
 
