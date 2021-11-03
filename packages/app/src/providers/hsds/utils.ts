@@ -8,8 +8,16 @@ import type {
   ComplexType,
   DType,
   Attribute,
+  ScalarShape,
+  ArrayShape,
 } from '@h5web/shared';
-import { isGroup, isDataset, DTypeClass, Endianness } from '@h5web/shared';
+import {
+  isGroup,
+  isDataset,
+  DTypeClass,
+  Endianness,
+  hasNonNullShape,
+} from '@h5web/shared';
 
 import type {
   HsdsType,
@@ -34,11 +42,11 @@ export function assertHsdsEntity(entity: Entity): asserts entity is HsdsEntity {
   }
 }
 
-export function assertHsdsDataset(
+export function assertNonNullHsdsDataset(
   entity: HsdsEntity
-): asserts entity is HsdsEntity<Dataset> {
-  if (!isHsdsDataset(entity)) {
-    throw new Error('Expected entity to be HSDS dataset');
+): asserts entity is HsdsEntity<Dataset<ScalarShape | ArrayShape>> {
+  if (!isHsdsDataset(entity) || !hasNonNullShape(entity)) {
+    throw new Error('Expected entity to be HSDS dataset with non-null shape');
   }
 }
 

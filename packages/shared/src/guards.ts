@@ -311,18 +311,17 @@ function assertPrimitiveValue<T extends DType, D extends Dataset<Shape, T>>(
   }
 }
 
-export function assertDatasetValue<D extends Dataset>(
+export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   value: unknown,
   dataset: D
 ): asserts value is Value<D> {
-  // Array shape
   if (hasArrayShape(dataset)) {
     assertArray(value);
 
     if (value.length > 0) {
       assertPrimitiveValue(dataset, value[0]);
     }
-  } else if (!hasNonNullShape(dataset)) {
+  } else {
     // Scalar shape
     assertPrimitiveValue(dataset, value);
   }

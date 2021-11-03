@@ -12,6 +12,7 @@ import {
   assertDataset,
   buildEntityPath,
   EntityKind,
+  assertNonNullShape,
 } from '@h5web/shared';
 import { isString } from 'lodash';
 
@@ -50,6 +51,7 @@ export class H5GroveApi extends ProviderApi {
     const { path } = params;
     const entity = await this.getEntity(path);
     assertDataset(entity);
+    assertNonNullShape(entity);
 
     const DTypedArray = typedArrayFromDType(entity.type);
     if (DTypedArray) {

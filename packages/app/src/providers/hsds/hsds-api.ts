@@ -33,7 +33,7 @@ import type {
   HsdsId,
 } from './models';
 import {
-  assertHsdsDataset,
+  assertNonNullHsdsDataset,
   isHsdsGroup,
   convertHsdsShape,
   convertHsdsType,
@@ -111,7 +111,7 @@ export class HsdsApi extends ProviderApi {
     const { path } = params;
 
     const entity = await this.getEntity(path);
-    assertHsdsDataset(entity);
+    assertNonNullHsdsDataset(entity);
 
     const value = await this.fetchValue(entity.id, params);
 

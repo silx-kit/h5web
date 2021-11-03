@@ -6,6 +6,7 @@ import {
   getBounds,
   getValidDomainForScale,
   assertDatasetValue,
+  assertNonNullShape,
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import { useContext, useMemo } from 'react';
@@ -46,6 +47,9 @@ export function useDatasetValue(
     return undefined;
   }
 
+  // Dataset with null shape has no value to fetch
+  assertNonNullShape(dataset);
+
   // If `dimMapping` is not provided or has no slicing dimension, the entire dataset will be fetched
   const value = valuesStore.get({
     path: dataset.path,
@@ -65,8 +69,9 @@ export function useDatasetValues(datasets: Dataset[]): Record<string, unknown> {
 
   return Object.fromEntries(
     datasets.map((dataset) => {
-      const { name, path } = dataset;
+      assertNonNullShape(dataset);
 
+      const { name, path } = dataset;
       const value = valuesStore.get({ path });
       assertDatasetValue(value, dataset);
 
