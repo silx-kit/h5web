@@ -10,10 +10,10 @@ import { getAttributeValue } from '../../utils';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
-export function getBaseArray<T extends unknown[] | undefined>(
-  value: T,
+export function getBaseArray<T, U extends T[] | undefined>(
+  value: U,
   rawDims: number[]
-): T extends (infer U)[] ? NdArray<U[]> : undefined;
+): U extends T[] ? NdArray<U> : undefined;
 
 export function getBaseArray<T>(
   value: T[] | undefined,
@@ -22,10 +22,10 @@ export function getBaseArray<T>(
   return value && ndarray(value, rawDims);
 }
 
-export function applyMapping<T extends NdArray<unknown[]> | undefined>(
-  baseArray: T,
+export function applyMapping<T, U extends NdArray<T[]> | undefined>(
+  baseArray: U,
   mapping: (number | Axis | ':')[]
-): T extends NdArray<infer U> ? NdArray<U> : undefined;
+): U extends NdArray<T[]> ? U : undefined;
 
 export function applyMapping<T>(
   baseArray: NdArray<T[]> | undefined,

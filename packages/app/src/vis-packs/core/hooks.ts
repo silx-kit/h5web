@@ -95,14 +95,12 @@ export const useCombinedDomain = createMemo(getCombinedDomain);
 const useBaseArray = createMemo(getBaseArray);
 const useApplyMapping = createMemo(applyMapping);
 
-export function useMappedArray<T extends unknown[] | undefined>(
-  value: T,
+export function useMappedArray<T, U extends T[] | undefined>(
+  value: U,
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
-): T extends (infer U)[]
-  ? [NdArray<U[]>, NdArray<U[]>]
-  : [undefined, undefined];
+): U extends T[] ? [NdArray<U>, NdArray<U>] : [undefined, undefined];
 
 export function useMappedArray<T>(
   value: T[] | undefined,

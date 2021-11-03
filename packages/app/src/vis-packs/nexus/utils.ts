@@ -1,6 +1,7 @@
 import {
   assertArray,
   assertArrayShape,
+  assertComplexType,
   assertDataset,
   assertDefined,
   assertNumericOrComplexType,
@@ -181,4 +182,16 @@ export function getDatasetLabel(dataset: Dataset): string {
   }
 
   return dataset.name;
+}
+
+export function assertNumericSignal(
+  nxData: NxData
+): asserts nxData is NxData<NumericType> {
+  assertNumericType(nxData.signalDataset);
+}
+
+export function assertComplexSignal(
+  nxData: NxData
+): asserts nxData is NxData<ComplexType> {
+  assertComplexType(nxData.signalDataset);
 }
