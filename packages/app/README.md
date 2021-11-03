@@ -40,3 +40,11 @@ function MyApp() {
 
 export default MyApp;
 ```
+
+> If your bundler supports it (e.g. webpack 5), you may be able to shorten the
+> stylesheet import paths as follows:
+>
+> ```ts
+> import '@h5web/app/style-lib.css';
+> import '@h5web/app/style.css';
+> ```
