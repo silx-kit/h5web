@@ -55,7 +55,7 @@ export class H5GroveApi extends ProviderApi {
     if (DTypedArray) {
       const buffer = await this.fetchBinaryData(params);
       const array = new DTypedArray(buffer);
-      return hasScalarShape(entity) ? array[0] : array;
+      return hasScalarShape(entity) ? array[0] : [...array];
     }
 
     const value = await this.fetchData(params);
