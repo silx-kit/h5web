@@ -32,5 +32,10 @@ module.exports = (config) => {
     })(config);
   }
 
+  // Detect and report ESLint offences in entire workspace
+  config.plugins.find(
+    (p) => p.constructor.name === 'ESLintWebpackPlugin'
+  ).options.context = path.resolve(__dirname, '../..');
+
   return config;
 };
