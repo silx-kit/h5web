@@ -49,7 +49,8 @@ export function isNxGroup(entity: Entity): boolean {
     isGroup(entity) &&
     (isNxDataGroup(entity) ||
       hasAttribute(entity, 'default') ||
-      hasAttribute(entity, 'NX_class'))
+      getAttributeValue(entity, 'NX_class') === 'NXentry' ||
+      getAttributeValue(entity, 'NX_class') === 'NXroot')
   );
 }
 
