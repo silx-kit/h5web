@@ -8,7 +8,6 @@
   - [Icon set](#icon-set)
 - [Build](#build)
   - [Use built packages in demos](#use-built-packages-in-demos)
-  - [Use built packages in other local apps](#use-built-packages-in-other-local-apps)
 - [Code quality](#code-quality)
   - [Fixing and formatting](#fixing-and-formatting)
   - [Editor integration](#editor-integration)

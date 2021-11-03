@@ -19,6 +19,10 @@
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "exports": {
+      "./dist/style-lib.css": "./dist/style-lib.css",
+      "./style-lib.css": "./dist/style-lib.css",
+      "./dist/style.css": "./dist/style.css",
+      "./style.css": "./dist/style.css",
       ".": {
         "require": "./dist/index.cjs",
         "import": "./dist/index.js"
