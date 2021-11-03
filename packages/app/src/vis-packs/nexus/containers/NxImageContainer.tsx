@@ -1,8 +1,4 @@
-import {
-  assertGroupWithChildren,
-  assertNumericType,
-  assertMinDims,
-} from '@h5web/shared';
+import { assertGroupWithChildren, assertMinDims } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import VisBoundary from '../../VisBoundary';
@@ -10,15 +6,16 @@ import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { getNxData, getDatasetLabel } from '../utils';
+import { getNxData, getDatasetLabel, assertNumericSignal } from '../utils';
 
 function NxImageContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroupWithChildren(entity);
 
   const nxData = getNxData(entity);
+  assertNumericSignal(nxData);
+
   const { signalDataset, silxStyle } = nxData;
-  assertNumericType(signalDataset);
   assertMinDims(signalDataset, 2);
 
   const { shape: dims } = signalDataset;
@@ -39,7 +36,7 @@ function NxImageContainer(props: VisContainerProps) {
             const { signal, axisMapping, title } = nxValues;
             return (
               <MappedHeatmapVis
-                value={signal as number[]}
+                value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}

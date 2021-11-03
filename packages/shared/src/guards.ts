@@ -19,6 +19,8 @@ import type {
   ComplexType,
   PrintableType,
   StringType,
+  Primitive,
+  Value,
 } from './models-hdf5';
 import { ScaleType } from './models-vis';
 import { toArray } from './utils';
@@ -59,12 +61,35 @@ export function assertDefined<T>(
   }
 }
 
+function assertNum(val: unknown): asserts val is number {
+  if (typeof val !== 'number') {
+    throw new TypeError('Expected number');
+  }
+}
+
+function assertBool(val: unknown): asserts val is boolean {
+  if (typeof val !== 'boolean') {
+    throw new TypeError('Expected boolean');
+  }
+}
+
 export function assertStr(
   val: unknown,
   message = 'Expected string'
 ): asserts val is string {
   if (typeof val !== 'string') {
     throw new TypeError(message);
+  }
+}
+
+function assertComplex(val: unknown): asserts val is H5WebComplex {
+  if (
+    !Array.isArray(val) ||
+    val.length !== 2 ||
+    typeof val[0] !== 'number' ||
+    typeof val[1] !== 'number'
+  ) {
+    throw new TypeError('Expected complex');
   }
 }
 
@@ -219,6 +244,10 @@ export function assertNumericType<S extends Shape>(
   }
 }
 
+export function isStringType(type: DType): type is StringType {
+  return type.class === DTypeClass.String;
+}
+
 export function hasComplexType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, ComplexType> {
@@ -265,6 +294,37 @@ export function isComplexValue(
   value: unknown
 ): value is H5WebComplex | ComplexArray {
   return type.class === DTypeClass.Complex;
+}
+
+function assertPrimitiveValue<T extends DType, D extends Dataset<Shape, T>>(
+  dataset: D,
+  value: unknown
+): asserts value is Primitive<T> {
+  if (hasNumericType(dataset)) {
+    assertNum(value);
+  } else if (hasStringType(dataset)) {
+    assertStr(value);
+  } else if (hasBoolType(dataset)) {
+    assertBool(value);
+  } else if (hasComplexType(dataset)) {
+    assertComplex(value);
+  }
+}
+
+export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
+  value: unknown,
+  dataset: D
+): asserts value is Value<D> {
+  if (hasArrayShape(dataset)) {
+    assertArray(value);
+
+    if (value.length > 0) {
+      assertPrimitiveValue(dataset, value[0]);
+    }
+  } else {
+    // Scalar shape
+    assertPrimitiveValue(dataset, value);
+  }
 }
 
 export function assertDataLength(

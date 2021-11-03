@@ -1,7 +1,6 @@
 import { RgbVis } from '@h5web/lib';
 import {
   assertGroupWithChildren,
-  assertNumericType,
   assertNumDims,
   DTypeClass,
 } from '@h5web/shared';
@@ -11,15 +10,16 @@ import VisBoundary from '../../VisBoundary';
 import { useRgbVisConfig } from '../../core/rgb/config';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { getNxData, getDatasetLabel } from '../utils';
+import { getNxData, getDatasetLabel, assertNumericSignal } from '../utils';
 
 function NxRgbContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroupWithChildren(entity);
 
   const nxData = getNxData(entity);
+  assertNumericSignal(nxData);
+
   const { signalDataset } = nxData;
-  assertNumericType(signalDataset);
   assertNumDims(signalDataset, 3);
 
   const { shape: dims } = signalDataset;
@@ -37,7 +37,7 @@ function NxRgbContainer(props: VisContainerProps) {
           const { signal, title } = nxValues;
           return (
             <RgbVis
-              value={signal as number[]}
+              value={signal}
               dims={dims}
               floatFormat={signalDataset.type.class === DTypeClass.Float}
               title={title || getDatasetLabel(signalDataset)}

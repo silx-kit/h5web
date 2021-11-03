@@ -6,13 +6,20 @@ import type {
   GroupWithChildren,
   UnresolvedEntity,
 } from '@h5web/shared';
-import { assertDataset, buildEntityPath, EntityKind } from '@h5web/shared';
+import {
+  hasScalarShape,
+  hasArrayShape,
+  assertDataset,
+  buildEntityPath,
+  EntityKind,
+  assertNonNullShape,
+} from '@h5web/shared';
 import { isString } from 'lodash';
 
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 import { ProviderError } from '../models';
-import { convertDtype, handleAxiosError } from '../utils';
+import { convertDtype, flattenValue, handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
   H5GroveAttrValuesResponse,
@@ -41,17 +48,22 @@ export class H5GroveApi extends ProviderApi {
   public async getValue(
     params: ValuesStoreParams
   ): Promise<H5GroveDataResponse> {
-    const { path } = params;
+    const { path, selection } = params;
     const entity = await this.getEntity(path);
     assertDataset(entity);
+    assertNonNullShape(entity);
 
     const DTypedArray = typedArrayFromDType(entity.type);
-    if (!DTypedArray) {
-      return this.fetchData(params);
+    if (DTypedArray) {
+      const buffer = await this.fetchBinaryData(params);
+      const array = new DTypedArray(buffer);
+      return hasScalarShape(entity) ? array[0] : [...array];
     }
 
-    const buffer = await this.fetchBinaryData(params);
-    return new DTypedArray(buffer);
+    const value = await this.fetchData(params);
+    return hasArrayShape(entity)
+      ? flattenValue(value, entity, selection)
+      : value;
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
@@ -114,7 +126,7 @@ export class H5GroveApi extends ProviderApi {
     params: ValuesStoreParams
   ): Promise<ArrayBuffer> {
     const { data } = await this.cancellableFetchValue<ArrayBuffer>(
-      `/data/`,
+      '/data/',
       params,
       { ...params, format: 'bin' },
       'arraybuffer'

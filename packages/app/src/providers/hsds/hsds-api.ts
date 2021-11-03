@@ -17,7 +17,7 @@ import {
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 import { ProviderError } from '../models';
-import { handleAxiosError } from '../utils';
+import { flattenValue, handleAxiosError } from '../utils';
 import type {
   HsdsDatasetResponse,
   HsdsDatatypeResponse,
@@ -33,7 +33,7 @@ import type {
   HsdsId,
 } from './models';
 import {
-  assertHsdsDataset,
+  assertNonNullHsdsDataset,
   isHsdsGroup,
   convertHsdsShape,
   convertHsdsType,
@@ -111,18 +111,14 @@ export class HsdsApi extends ProviderApi {
     const { path } = params;
 
     const entity = await this.getEntity(path);
-    assertHsdsDataset(entity);
+    assertNonNullHsdsDataset(entity);
 
     const value = await this.fetchValue(entity.id, params);
 
     // https://github.com/HDFGroup/hsds/issues/88
     // HSDS does not reduce the number of dimensions when selecting indices
     // Therefore the flattening must be done on all dimensions regardless of the selection
-    if (hasArrayShape(entity)) {
-      return (value as unknown[]).flat(entity.shape.length - 1);
-    }
-
-    return value;
+    return hasArrayShape(entity) ? flattenValue(value, entity) : value;
   }
 
   private async fetchRootId(): Promise<HsdsId> {

@@ -1,9 +1,4 @@
-import type { H5WebComplex } from '@h5web/shared';
-import {
-  assertComplexType,
-  assertGroupWithChildren,
-  assertMinDims,
-} from '@h5web/shared';
+import { assertGroupWithChildren, assertMinDims } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import VisBoundary from '../../VisBoundary';
@@ -11,15 +6,16 @@ import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { getNxData, getDatasetLabel } from '../utils';
+import { getNxData, getDatasetLabel, assertComplexSignal } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroupWithChildren(entity);
 
   const nxData = getNxData(entity);
+  assertComplexSignal(nxData);
+
   const { signalDataset, silxStyle } = nxData;
-  assertComplexType(signalDataset);
   assertMinDims(signalDataset, 2);
 
   const { shape: dims } = signalDataset;
@@ -40,7 +36,7 @@ function NxComplexImageContainer(props: VisContainerProps) {
             const { signal, axisMapping, title } = nxValues;
             return (
               <MappedComplexVis
-                value={signal as H5WebComplex[]}
+                value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}

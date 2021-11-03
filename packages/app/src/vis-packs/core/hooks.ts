@@ -5,6 +5,8 @@ import {
   ScaleType,
   getBounds,
   getValidDomainForScale,
+  assertDatasetValue,
+  assertNonNullShape,
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import { useContext, useMemo } from 'react';
@@ -45,11 +47,17 @@ export function useDatasetValue(
     return undefined;
   }
 
+  // Dataset with null shape has no value to fetch
+  assertNonNullShape(dataset);
+
   // If `dimMapping` is not provided or has no slicing dimension, the entire dataset will be fetched
-  return valuesStore.get({
+  const value = valuesStore.get({
     path: dataset.path,
     selection: getSliceSelection(dimMapping),
   });
+
+  assertDatasetValue(value, dataset);
+  return value;
 }
 
 export function useDatasetValues<D extends Dataset>(
@@ -60,7 +68,15 @@ export function useDatasetValues(datasets: Dataset[]): Record<string, unknown> {
   const { valuesStore } = useContext(ProviderContext);
 
   return Object.fromEntries(
-    datasets.map(({ name, path }) => [name, valuesStore.get({ path })])
+    datasets.map((dataset) => {
+      assertNonNullShape(dataset);
+
+      const { name, path } = dataset;
+      const value = valuesStore.get({ path });
+      assertDatasetValue(value, dataset);
+
+      return [name, value];
+    })
   );
 }
 
@@ -95,14 +111,12 @@ export const useCombinedDomain = createMemo(getCombinedDomain);
 const useBaseArray = createMemo(getBaseArray);
 const useApplyMapping = createMemo(applyMapping);
 
-export function useMappedArray<T extends unknown[] | undefined>(
-  value: T,
+export function useMappedArray<T, U extends T[] | undefined>(
+  value: U,
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
-): T extends (infer U)[]
-  ? [NdArray<U[]>, NdArray<U[]>]
-  : [undefined, undefined];
+): U extends T[] ? [NdArray<U>, NdArray<U>] : [undefined, undefined];
 
 export function useMappedArray<T>(
   value: T[] | undefined,
