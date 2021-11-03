@@ -19,7 +19,7 @@ import { isString } from 'lodash';
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 import { ProviderError } from '../models';
-import { convertDtype, handleAxiosError } from '../utils';
+import { convertDtype, flattenValue, handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
   H5GroveAttrValuesResponse,
@@ -48,7 +48,7 @@ export class H5GroveApi extends ProviderApi {
   public async getValue(
     params: ValuesStoreParams
   ): Promise<H5GroveDataResponse> {
-    const { path } = params;
+    const { path, selection } = params;
     const entity = await this.getEntity(path);
     assertDataset(entity);
     assertNonNullShape(entity);
@@ -62,7 +62,7 @@ export class H5GroveApi extends ProviderApi {
 
     const value = await this.fetchData(params);
     return hasArrayShape(entity)
-      ? (value as unknown[]).flat(entity.shape.length - 1)
+      ? flattenValue(value, entity, selection)
       : value;
   }
 

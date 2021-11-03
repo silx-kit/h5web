@@ -1,5 +1,5 @@
-import type { DType } from '@h5web/shared';
-import { Endianness, DTypeClass } from '@h5web/shared';
+import type { ArrayShape, Dataset, DType } from '@h5web/shared';
+import { Endianness, DTypeClass, assertArray } from '@h5web/shared';
 import axios from 'axios';
 
 import type { ProviderError } from './models';
@@ -79,6 +79,17 @@ export function convertDtype(dtype: string): DType {
     default:
       return { class: DTypeClass.Unknown };
   }
+}
+
+export function flattenValue(
+  value: unknown,
+  dataset: Dataset<ArrayShape>,
+  selection?: string
+): unknown[] {
+  assertArray(value);
+  const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
+  const dims = slicedDims || dataset.shape;
+  return value.flat(dims.length - 1);
 }
 
 export async function handleAxiosError<T>(
