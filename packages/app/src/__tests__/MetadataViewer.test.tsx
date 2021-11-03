@@ -137,7 +137,7 @@ test('follow path attributes', async () => {
   );
 
   const nxEntry = await screen.findByRole('treeitem', {
-    name: /^nexus_entry/,
+    name: /^nexus_entry /,
   });
   expect(nxEntry).toHaveAttribute('aria-selected', 'true');
   expect(nxEntry).toHaveAttribute('aria-expanded', 'true');

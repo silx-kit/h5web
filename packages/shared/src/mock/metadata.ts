@@ -151,6 +151,15 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         }),
       ],
     }),
+    makeNxGroup('nexus_entry_no_default', 'NXentry', {
+      defaultPath: undefined,
+      children: [
+        makeNxGroup('ignore_me', 'NXprocess'),
+        makeNxDataGroup('spectrum', {
+          signal: makeNxDataset('oneD', intType, [41]),
+        }),
+      ],
+    }),
     makeGroup('nexus_malformed', [
       makeGroup('default_not_string', [], {
         attributes: [makeScalarAttr('default', intType, 42)],
@@ -209,15 +218,5 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         }),
       }),
     ]),
-    makeNxGroup('no_default_nexus_entry', 'NXentry', {
-      defaultPath: undefined,
-      children: [
-        makeNxDataGroup('spectrum', {
-          signal: makeNxDataset('oneD', intType, [41]),
-          axes: { X: makeNxDataset('X', floatType, [41]) },
-          axesAttr: ['X'],
-        }),
-      ],
-    }),
   ],
 });
