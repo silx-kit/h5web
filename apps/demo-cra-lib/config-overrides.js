@@ -13,12 +13,6 @@ const {
   expandRulesInclude,
 } = require('react-app-rewire-alias/lib/aliasDangerous');
 
-// A list of paths to transpile
-const nodeModulesToTranspileAbs = [
-  '../../packages/lib/src',
-  '../../packages/shared/src',
-].map((name) => path.resolve(__dirname, name));
-
 module.exports = (config) => {
   // Make sure Babel transpiles raw package files
   expandRulesInclude(
@@ -32,6 +26,11 @@ module.exports = (config) => {
     // Import built package files instead of source files
     return aliasDangerous({ '@h5web/lib$': '../../packages/lib/dist' })(config);
   }
+
+  // Detect and report ESLint offences in entire workspace
+  config.plugins.find(
+    (p) => p.constructor.name === 'ESLintWebpackPlugin'
+  ).options.context = path.resolve(__dirname, '../..');
 
   return config;
 };
