@@ -1,4 +1,4 @@
-import type { Dataset, Value } from '@h5web/shared';
+import type { ArrayShape, Dataset, ScalarShape, Value } from '@h5web/shared';
 import type { ReactNode } from 'react';
 
 import type { DimensionMapping } from '../../dimension-mapper/models';
@@ -10,7 +10,9 @@ interface Props<D extends Dataset> {
   render: (val: Value<D>) => ReactNode;
 }
 
-function ValueFetcher<D extends Dataset>(props: Props<D>) {
+function ValueFetcher<D extends Dataset<ArrayShape | ScalarShape>>(
+  props: Props<D>
+) {
   const { dataset, dimMapping, render } = props;
 
   const value = useDatasetValue(dataset, dimMapping);

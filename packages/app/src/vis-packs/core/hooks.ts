@@ -6,7 +6,6 @@ import {
   getBounds,
   getValidDomainForScale,
   assertDatasetValue,
-  assertNonNullShape,
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import { useContext, useMemo } from 'react';
@@ -27,28 +26,25 @@ export function usePrefetchValues(
   });
 }
 
-export function useDatasetValue<D extends Dataset>(
+export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D,
   dimMapping?: DimensionMapping
 ): Value<D>;
 
-export function useDatasetValue<D extends Dataset>(
+export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
   dimMapping?: DimensionMapping
 ): Value<D> | undefined;
 
-export function useDatasetValue(
-  dataset: Dataset | undefined,
+export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
+  dataset: D | undefined,
   dimMapping?: DimensionMapping
-): unknown {
+): Value<D> | undefined {
   const { valuesStore } = useContext(ProviderContext);
 
   if (!dataset) {
     return undefined;
   }
-
-  // Dataset with null shape has no value to fetch
-  assertNonNullShape(dataset);
 
   // If `dimMapping` is not provided or has no slicing dimension, the entire dataset will be fetched
   const value = valuesStore.get({
@@ -60,17 +56,13 @@ export function useDatasetValue(
   return value;
 }
 
-export function useDatasetValues<D extends Dataset>(
+export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: D[]
-): Record<string, Value<D>>;
-
-export function useDatasetValues(datasets: Dataset[]): Record<string, unknown> {
+): Record<string, Value<D>> {
   const { valuesStore } = useContext(ProviderContext);
 
   return Object.fromEntries(
     datasets.map((dataset) => {
-      assertNonNullShape(dataset);
-
       const value = valuesStore.get({ dataset });
       assertDatasetValue(value, dataset);
 
