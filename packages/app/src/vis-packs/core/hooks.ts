@@ -1,5 +1,5 @@
 import { getCombinedDomain } from '@h5web/lib';
-import type { Dataset, Value } from '@h5web/shared';
+import type { ArrayShape, Dataset, ScalarShape, Value } from '@h5web/shared';
 import {
   isDefined,
   ScaleType,
@@ -18,12 +18,12 @@ import { ProviderContext } from '../../providers/context';
 import { applyMapping, getBaseArray, getSliceSelection } from './utils';
 
 export function usePrefetchValues(
-  datasets: (Dataset | undefined)[],
+  datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[],
   dimMapping?: DimensionMapping
 ): void {
   const { valuesStore } = useContext(ProviderContext);
-  datasets.filter(isDefined).forEach(({ path }) => {
-    valuesStore.prefetch({ path, selection: getSliceSelection(dimMapping) });
+  datasets.filter(isDefined).forEach((dataset) => {
+    valuesStore.prefetch({ dataset, selection: getSliceSelection(dimMapping) });
   });
 }
 
@@ -52,7 +52,7 @@ export function useDatasetValue(
 
   // If `dimMapping` is not provided or has no slicing dimension, the entire dataset will be fetched
   const value = valuesStore.get({
-    path: dataset.path,
+    dataset,
     selection: getSliceSelection(dimMapping),
   });
 
@@ -71,11 +71,10 @@ export function useDatasetValues(datasets: Dataset[]): Record<string, unknown> {
     datasets.map((dataset) => {
       assertNonNullShape(dataset);
 
-      const { name, path } = dataset;
-      const value = valuesStore.get({ path });
+      const value = valuesStore.get({ dataset });
       assertDatasetValue(value, dataset);
 
-      return [name, value];
+      return [dataset.name, value];
     })
   );
 }

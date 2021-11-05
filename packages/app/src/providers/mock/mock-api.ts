@@ -36,21 +36,17 @@ export class MockApi extends ProviderApi {
   }
 
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
-    const { path, selection } = params;
+    const { dataset, selection } = params;
 
-    if (path.includes('error_value')) {
-      // Throw error when fetching value with specific path
+    if (dataset.name === 'error_value') {
       throw new Error('error');
     }
 
-    const dataset = findMockEntity(path);
-    assertDefined(dataset, ProviderError.EntityNotFound);
-    assertMockDataset(dataset);
-
-    if (path.includes('slow')) {
+    if (dataset.name.startsWith('slow')) {
       await this.cancellableDelay(params);
     }
 
+    assertMockDataset(dataset);
     const { value: rawValue } = dataset;
     const value = hasArrayShape(dataset)
       ? (rawValue as unknown[]).flat(dataset.shape.length - 1)

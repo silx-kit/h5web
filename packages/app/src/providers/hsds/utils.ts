@@ -11,13 +11,7 @@ import type {
   ScalarShape,
   ArrayShape,
 } from '@h5web/shared';
-import {
-  isGroup,
-  isDataset,
-  DTypeClass,
-  Endianness,
-  hasNonNullShape,
-} from '@h5web/shared';
+import { isGroup, DTypeClass, Endianness } from '@h5web/shared';
 
 import type {
   HsdsType,
@@ -32,21 +26,17 @@ export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
   return isGroup(entity);
 }
 
-function isHsdsDataset(entity: HsdsEntity): entity is HsdsEntity<Dataset> {
-  return isDataset(entity);
-}
-
 export function assertHsdsEntity(entity: Entity): asserts entity is HsdsEntity {
   if (!('id' in entity)) {
     throw new Error('Expected entity to be HSDS entity');
   }
 }
 
-export function assertNonNullHsdsDataset(
-  entity: HsdsEntity
-): asserts entity is HsdsEntity<Dataset<ScalarShape | ArrayShape>> {
-  if (!isHsdsDataset(entity) || !hasNonNullShape(entity)) {
-    throw new Error('Expected entity to be HSDS dataset with non-null shape');
+export function assertHsdsDataset(
+  dataset: Dataset<ScalarShape | ArrayShape>
+): asserts dataset is HsdsEntity<Dataset<ScalarShape | ArrayShape>> {
+  if (!('id' in dataset)) {
+    throw new Error('Expected entity to be HSDS dataset');
   }
 }
 
