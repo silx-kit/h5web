@@ -1,5 +1,7 @@
+import type { ArrayShape, Dataset, ScalarShape } from '@h5web/shared';
+
 export interface ValuesStoreParams {
-  path: string;
+  dataset: Dataset<ScalarShape | ArrayShape>;
   selection?: string | undefined;
 }
 

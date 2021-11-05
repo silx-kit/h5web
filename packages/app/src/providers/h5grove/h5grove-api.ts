@@ -9,10 +9,8 @@ import type {
 import {
   hasScalarShape,
   hasArrayShape,
-  assertDataset,
   buildEntityPath,
   EntityKind,
-  assertNonNullShape,
 } from '@h5web/shared';
 import { isString } from 'lodash';
 
@@ -48,21 +46,18 @@ export class H5GroveApi extends ProviderApi {
   public async getValue(
     params: ValuesStoreParams
   ): Promise<H5GroveDataResponse> {
-    const { path, selection } = params;
-    const entity = await this.getEntity(path);
-    assertDataset(entity);
-    assertNonNullShape(entity);
+    const { dataset, selection } = params;
 
-    const DTypedArray = typedArrayFromDType(entity.type);
+    const DTypedArray = typedArrayFromDType(dataset.type);
     if (DTypedArray) {
       const buffer = await this.fetchBinaryData(params);
       const array = new DTypedArray(buffer);
-      return hasScalarShape(entity) ? array[0] : [...array];
+      return hasScalarShape(dataset) ? array[0] : [...array];
     }
 
     const value = await this.fetchData(params);
-    return hasArrayShape(entity)
-      ? flattenValue(value, entity, selection)
+    return hasArrayShape(dataset)
+      ? flattenValue(value, dataset, selection)
       : value;
   }
 
@@ -128,7 +123,7 @@ export class H5GroveApi extends ProviderApi {
     const { data } = await this.cancellableFetchValue<ArrayBuffer>(
       '/data/',
       params,
-      { ...params, format: 'bin' },
+      { path: params.dataset.path, selection: params.selection, format: 'bin' },
       'arraybuffer'
     );
 

@@ -47,7 +47,8 @@ function Provider(props: Props) {
   const valuesStore = useMemo(() => {
     const store = createFetchStore(api.getValue.bind(api), {
       type: 'Map',
-      areEqual: (a, b) => a.path === b.path && a.selection === b.selection,
+      areEqual: (a, b) =>
+        a.dataset.path === b.dataset.path && a.selection === b.selection,
     });
 
     return Object.assign(store, {
