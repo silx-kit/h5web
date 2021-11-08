@@ -32,11 +32,6 @@ export interface Dataset<S extends Shape = Shape, T extends DType = DType>
   rawType?: unknown;
 }
 
-export interface MockDataset<S extends Shape = Shape, T extends DType = DType>
-  extends Dataset<S, T> {
-  value: unknown;
-}
-
 export interface Datatype<T = DType> extends Entity {
   kind: EntityKind.Datatype;
   type: T;
@@ -166,6 +161,8 @@ export type Value<D extends Dataset> = D['shape'] extends ScalarShape
   : D['shape'] extends ArrayShape
   ? Primitive<D['type']>[]
   : never;
+
+export type AttributeValues = Record<string, unknown>;
 
 export type H5WebComplex = [number, number];
 export type ComplexArray = (ComplexArray | H5WebComplex)[];

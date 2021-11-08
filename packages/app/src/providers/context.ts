@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared';
+import type { AttributeValues, Entity } from '@h5web/shared';
 import { createContext } from 'react';
 import type { FetchStore } from 'react-suspense-fetch';
 
@@ -14,6 +14,7 @@ interface Context {
   filename: string;
   entitiesStore: FetchStore<Entity, string>;
   valuesStore: ValuesStore;
+  attrValuesStore: FetchStore<AttributeValues, Entity>;
 }
 
 export const ProviderContext = createContext({} as Context);

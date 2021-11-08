@@ -81,3 +81,11 @@
 .attrValueWrapper > span {
   margin: 0 0.25rem;
 }
+
+.error {
+  composes: error from global;
+}
+
+.fallback {
+  composes: fallback from global;
+}

@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared';
+import type { AttributeValues, Entity } from '@h5web/shared';
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -65,4 +65,5 @@ export abstract class ProviderApi {
 
   public abstract getEntity(path: string): Promise<Entity>;
   public abstract getValue(params: ValuesStoreParams): Promise<unknown>;
+  public abstract getAttrValues(entity: Entity): Promise<AttributeValues>;
 }

@@ -1,4 +1,4 @@
-import type { Entity, Primitive } from '@h5web/shared';
+import type { AttributeValues, Entity, Primitive } from '@h5web/shared';
 import {
   mockFilepath,
   findMockEntity,
@@ -33,6 +33,12 @@ export class MockApi extends ProviderApi {
     const entity = findMockEntity(path);
     assertDefined(entity, ProviderError.EntityNotFound);
     return entity;
+  }
+
+  public async getAttrValues(entity: Entity): Promise<AttributeValues> {
+    return Object.fromEntries(
+      entity.attributes.map((attr) => [attr.name, attr.value])
+    );
   }
 
   public async getValue(params: ValuesStoreParams): Promise<unknown> {

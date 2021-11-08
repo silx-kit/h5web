@@ -32,3 +32,9 @@
   padding: 1em;
   color: var(--secondary-dark);
 }
+
+.error {
+  margin: 0;
+  padding: 1em;
+  color: brown;
+}

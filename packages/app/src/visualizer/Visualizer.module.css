@@ -26,9 +26,7 @@
 }
 
 .error {
-  margin: 0;
-  padding: 1em;
-  color: brown;
+  composes: error from global;
 }
 
 .error > span {

@@ -69,7 +69,10 @@ interface HsdsSymbolicLink {
 /* ---------------------------- */
 /* ----- ENTITIES & VALUES----- */
 
-export type HsdsEntity<T extends Entity = Entity> = T & { id: HsdsId };
+export type HsdsEntity<T extends Entity = Entity> = T & {
+  id: HsdsId;
+  collection: HsdsCollection;
+};
 
 /* ------------------------ */
 /* ----- SHAPE & TYPE ----- */
