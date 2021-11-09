@@ -8,14 +8,14 @@ const FILEPATH = process.env.REACT_APP_HSDS_FALLBACK_FILEPATH || '';
 
 function HsdsApp() {
   const query = new URLSearchParams(useLocation().search);
-  const filepath = query.get('file');
+  const filepath = query.get('file') || FILEPATH;
 
   return (
     <HsdsProvider
       url={URL}
       username={USERNAME}
       password={PASSWORD}
-      filepath={filepath || FILEPATH}
+      filepath={filepath}
     >
       <App />
     </HsdsProvider>

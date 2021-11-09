@@ -42,7 +42,7 @@ export class H5GroveApi extends ProviderApi {
   ) {
     super(filepath, {
       baseURL: url,
-      params: axiosParams || { file: filepath },
+      params: axiosParams,
     });
   }
 
