@@ -6,10 +6,14 @@ const FILEPATH = process.env.REACT_APP_H5GROVE_FALLBACK_FILEPATH || '';
 
 function H5GroveApp() {
   const query = new URLSearchParams(useLocation().search);
-  const filepath = query.get('file');
+  const filepath = query.get('file') || FILEPATH;
 
   return (
-    <H5GroveProvider url={URL} filepath={filepath || FILEPATH}>
+    <H5GroveProvider
+      url={URL}
+      filepath={filepath}
+      axiosParams={{ file: filepath }}
+    >
       <App />
     </H5GroveProvider>
   );
