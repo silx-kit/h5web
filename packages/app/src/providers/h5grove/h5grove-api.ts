@@ -1,5 +1,6 @@
 import type {
   Attribute,
+  AttributeValues,
   Dataset,
   Entity,
   Group,
@@ -59,6 +60,11 @@ export class H5GroveApi extends ProviderApi {
     return hasArrayShape(dataset)
       ? flattenValue(value, dataset, selection)
       : value;
+  }
+
+  public async getAttrValues(entity: Entity): Promise<AttributeValues> {
+    const { path, attributes } = entity;
+    return attributes.length > 0 ? this.fetchAttrValues(path) : {};
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {

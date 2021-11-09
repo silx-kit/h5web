@@ -64,6 +64,8 @@ function Provider(props: Props) {
 
   const filepathMembers = api.filepath.split('/');
 
+  const attrValuesStore = createFetchStore(api.getAttrValues.bind(api));
+
   return (
     <ProviderContext.Provider
       value={{
@@ -71,6 +73,7 @@ function Provider(props: Props) {
         filename: filepathMembers[filepathMembers.length - 1],
         entitiesStore,
         valuesStore,
+        attrValuesStore,
       }}
     >
       {children}

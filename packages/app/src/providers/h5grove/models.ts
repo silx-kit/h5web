@@ -1,4 +1,4 @@
-import type { EntityKind } from '@h5web/shared';
+import type { AttributeValues, EntityKind } from '@h5web/shared';
 
 export interface H5GroveEntityResponse {
   name: string;
@@ -28,5 +28,5 @@ export interface H5GroveAttribute {
   shape: number[];
 }
 
-export type H5GroveAttrValuesResponse = Record<string, unknown>;
+export type H5GroveAttrValuesResponse = AttributeValues;
 export type H5GroveDataResponse = unknown;

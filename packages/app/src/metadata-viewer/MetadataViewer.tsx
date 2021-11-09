@@ -1,10 +1,20 @@
-import { buildEntityPath, handleError, isAbsolutePath } from '@h5web/shared';
-import { memo, useContext } from 'react';
+import {
+  buildEntityPath,
+  EntityKind,
+  handleError,
+  isAbsolutePath,
+} from '@h5web/shared';
+import { capitalize } from 'lodash';
+import { Suspense, memo, useContext } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { ProviderContext } from '../providers/context';
 import { ProviderError } from '../providers/models';
-import AttributesTable from './AttributesTable';
-import EntityTable from './EntityTable';
+import AttrErrorFallback from './AttrErrorFallback';
+import AttrValueLoader from './AttrValueLoader';
+import AttributesInfo from './AttributesInfo';
+import EntityInfo from './EntityInfo';
+import MetadataTable from './MetadataTable';
 import styles from './MetadataViewer.module.css';
 
 interface Props {
@@ -22,19 +32,36 @@ function MetadataViewer(props: Props) {
     `No entity found at ${path}`
   );
 
+  const { kind, attributes } = entity;
+  const title = kind === EntityKind.Unresolved ? 'Entity' : capitalize(kind);
+
   return (
     <div className={styles.metadataViewer}>
-      <EntityTable entity={entity} />
-      <AttributesTable
-        attributes={entity.attributes}
-        onFollowPath={(pathToFollow) => {
-          const absolutePath = isAbsolutePath(pathToFollow)
-            ? pathToFollow
-            : buildEntityPath(path, pathToFollow);
+      <MetadataTable title={title}>
+        <EntityInfo entity={entity} />
+      </MetadataTable>
 
-          onSelectPath(absolutePath);
-        }}
-      />
+      {attributes.length > 0 && (
+        <MetadataTable title="Attributes">
+          <ErrorBoundary
+            resetKeys={[path]}
+            FallbackComponent={AttrErrorFallback}
+          >
+            <Suspense fallback={<AttrValueLoader />}>
+              <AttributesInfo
+                entity={entity}
+                onFollowPath={(pathToFollow) => {
+                  const absolutePath = isAbsolutePath(pathToFollow)
+                    ? pathToFollow
+                    : buildEntityPath(path, pathToFollow);
+
+                  onSelectPath(absolutePath);
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
+        </MetadataTable>
+      )}
     </div>
   );
 }

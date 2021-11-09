@@ -4,6 +4,7 @@ import type {
   Dataset,
   Datatype,
   Entity,
+  AttributeValues,
 } from '@h5web/shared';
 import {
   assertGroupWithChildren,
@@ -81,7 +82,13 @@ export class HsdsApi extends ProviderApi {
 
     if (path === '/') {
       const rootId = await this.fetchRootId();
-      const root = await this.processGroup(rootId, '/', this.filepath);
+      const root = await this.processGroup(
+        rootId,
+        'groups',
+        '/',
+        this.filepath
+      );
+
       this.entities.set(path, root);
       return root;
     }
@@ -100,7 +107,7 @@ export class HsdsApi extends ProviderApi {
     assertHsdsEntity(child);
 
     const entity = isHsdsGroup(child)
-      ? await this.processGroup(child.id, path, child.name)
+      ? await this.processGroup(child.id, child.collection, path, child.name)
       : child;
 
     this.entities.set(path, entity);
@@ -117,6 +124,23 @@ export class HsdsApi extends ProviderApi {
     // HSDS does not reduce the number of dimensions when selecting indices
     // Therefore the flattening must be done on all dimensions regardless of the selection
     return hasArrayShape(dataset) ? flattenValue(value, dataset) : value;
+  }
+
+  public async getAttrValues(entity: Entity): Promise<AttributeValues> {
+    assertHsdsEntity(entity);
+
+    const { id, collection, attributes } = entity;
+    if (attributes.length === 0) {
+      return {};
+    }
+
+    const attrsPromises = attributes.map(async (attr) =>
+      this.fetchAttributeWithValue(collection, id, attr.name)
+    );
+
+    return Object.fromEntries(
+      (await Promise.all(attrsPromises)).map((attr) => [attr.name, attr.value])
+    );
   }
 
   private async fetchRootId(): Promise<HsdsId> {
@@ -161,12 +185,9 @@ export class HsdsApi extends ProviderApi {
       `/${entityCollection}/${entityId}/attributes`
     );
 
-    const attrsPromises = data.attributes.map(async (attr) => {
-      const { data } = await this.client.get<HsdsAttributeResponse>(
-        `/${entityCollection}/${entityId}/attributes/${attr.name}`
-      );
-      return data;
-    });
+    const attrsPromises = data.attributes.map(async (attr) =>
+      this.fetchAttributeWithValue(entityCollection, entityId, attr.name)
+    );
 
     return Promise.all(attrsPromises);
   }
@@ -184,8 +205,20 @@ export class HsdsApi extends ProviderApi {
     return data.value;
   }
 
+  private async fetchAttributeWithValue(
+    entityCollection: HsdsCollection,
+    entityId: HsdsId,
+    attributeName: string
+  ): Promise<HsdsAttributeResponse> {
+    const { data } = await this.client.get<HsdsAttributeResponse>(
+      `/${entityCollection}/${entityId}/attributes/${attributeName}`
+    );
+    return data;
+  }
+
   private async processGroup(
     id: HsdsId,
+    collection: HsdsCollection,
     path: string,
     name: string,
     isChild = false
@@ -202,6 +235,7 @@ export class HsdsApi extends ProviderApi {
 
     const group: HsdsEntity<Group> = {
       id,
+      collection,
       path,
       name,
       kind: EntityKind.Group,
@@ -224,6 +258,7 @@ export class HsdsApi extends ProviderApi {
 
   private async processDataset(
     id: HsdsId,
+    collection: HsdsCollection,
     path: string,
     name: string
   ): Promise<HsdsEntity<Dataset>> {
@@ -235,6 +270,7 @@ export class HsdsApi extends ProviderApi {
 
     return {
       id,
+      collection,
       path,
       name,
       kind: EntityKind.Dataset,
@@ -247,12 +283,15 @@ export class HsdsApi extends ProviderApi {
 
   private async processDatatype(
     id: HsdsId,
+    collection: HsdsCollection,
     path: string,
     name: string
-  ): Promise<Datatype> {
+  ): Promise<HsdsEntity<Datatype>> {
     const { type } = await this.fetchDatatype(id);
 
     return {
+      id,
+      collection,
       path,
       name,
       kind: EntityKind.Datatype,
@@ -281,11 +320,11 @@ export class HsdsApi extends ProviderApi {
 
     switch (collection) {
       case 'groups':
-        return this.processGroup(id, path, title, true);
+        return this.processGroup(id, collection, path, title, true);
       case 'datasets':
-        return this.processDataset(id, path, title);
+        return this.processDataset(id, collection, path, title);
       case 'datatypes':
-        return this.processDatatype(id, path, title);
+        return this.processDatatype(id, collection, path, title);
       default:
         throw new Error('Unknown collection !');
     }

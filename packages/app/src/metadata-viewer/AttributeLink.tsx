@@ -8,7 +8,7 @@ interface Props {
   value: unknown;
 }
 
-function AttributeValueLink(props: Props) {
+function AttributeLink(props: Props) {
   const { onFollowPath, value } = props;
 
   if (Array.isArray(value)) {
@@ -18,7 +18,7 @@ function AttributeValueLink(props: Props) {
         {value.map((val, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <Fragment key={i}>
-            <AttributeValueLink onFollowPath={onFollowPath} value={val} />
+            <AttributeLink onFollowPath={onFollowPath} value={val} />
             {i < value.length - 1 && <span>,</span>}
           </Fragment>
         ))}
@@ -44,4 +44,4 @@ function AttributeValueLink(props: Props) {
   return <>{JSON.stringify(value)}</>;
 }
 
-export default AttributeValueLink;
+export default AttributeLink;

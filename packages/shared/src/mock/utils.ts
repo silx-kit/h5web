@@ -7,22 +7,18 @@ import {
   hasChildren,
   assertArray,
   assertArrayShape,
-  isDataset,
   assertDefined,
+  assertDataset,
 } from '../guards';
-import type { Entity } from '../models-hdf5';
+import type { Entity, Dataset, DType, Shape } from '../models-hdf5';
 import { getChildEntity } from '../utils';
 import { mockMetadata } from './metadata';
 import type { MockDataset } from './models';
 
-function isMockDataset(entity: Entity): entity is MockDataset {
-  return isDataset(entity) && 'value' in entity;
-}
-
-export function assertMockDataset(
-  entity: Entity
-): asserts entity is MockDataset {
-  if (!isMockDataset(entity)) {
+export function assertMockDataset<S extends Shape, T extends DType>(
+  dataset: Dataset<S, T>
+): asserts dataset is MockDataset<S, T> {
+  if (!('value' in dataset)) {
     throw new Error('Expected mock dataset');
   }
 }
@@ -46,13 +42,14 @@ export function findMockEntity(path: string): Entity | undefined {
 }
 
 export function getMockDataArray<T = number>(path: string): NdArray<T[]> {
-  const dataset = findMockEntity(path);
-  assertDefined(dataset);
-  assertMockDataset(dataset);
+  const entity = findMockEntity(path);
+  assertDefined(entity);
+  assertDataset(entity);
+  assertMockDataset(entity);
 
-  const { value } = dataset;
+  const { value } = entity;
   assertArray<T>(value);
-  assertArrayShape(dataset);
+  assertArrayShape(entity);
 
-  return ndarray(value.flat(dataset.shape.length - 1) as T[], dataset.shape);
+  return ndarray(value.flat(entity.shape.length - 1) as T[], entity.shape);
 }
