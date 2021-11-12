@@ -1,11 +1,8 @@
 import type { Entity } from '@h5web/shared';
 
-import { getSupportedVis as getSupportedCoreVis } from './core/pack-utils';
+import { getSupportedCoreVis } from './core/pack-utils';
 import type { VisDef } from './models';
-import {
-  getNxDefaultPath,
-  getSupportedVis as getSupportedNxVis,
-} from './nexus/pack-utils';
+import { getNxDefaultPath, getSupportedNxVis } from './nexus/pack-utils';
 
 function findSupportedVis(entity: Entity): VisDef[] {
   const nxVis = getSupportedNxVis(entity);

@@ -12,8 +12,27 @@ import type { Entity } from '@h5web/shared';
 import { getAttributeValue } from '../../utils';
 import type { VisDef } from '../models';
 import { NxInterpretation } from './models';
-import { findSignalDataset, isNxDataGroup, isNxGroup } from './utils';
+import { findSignalDataset, hasNxClass, isNxDataGroup } from './utils';
 import { NexusVis, NEXUS_VIS } from './visualizations';
+
+function getImplicitDefaultChild(children: Entity[]): Entity | undefined {
+  const groups = children.filter(isGroup);
+
+  // Look for an `NXdata` child group first
+  const nxDataChild = groups.find((g) => hasNxClass(g, 'NXdata'));
+  if (nxDataChild) {
+    return nxDataChild;
+  }
+
+  // Then for an `NXentry` child group
+  const nxEntryChild = groups.find((g) => hasNxClass(g, 'NXentry'));
+  if (nxEntryChild) {
+    return nxEntryChild;
+  }
+
+  // Then for an `NXprocess` child group
+  return groups.find((g) => hasNxClass(g, 'NXprocess'));
+}
 
 export function getNxDefaultPath(entity: Entity): string | undefined {
   if (!isGroup(entity)) {
@@ -31,10 +50,10 @@ export function getNxDefaultPath(entity: Entity): string | undefined {
   }
 
   assertGroupWithChildren(entity);
-  return entity.children.find((c) => isNxGroup(c))?.path;
+  return getImplicitDefaultChild(entity.children)?.path;
 }
 
-export function getSupportedVis(entity: Entity): VisDef | undefined {
+export function getSupportedNxVis(entity: Entity): VisDef | undefined {
   if (!isGroup(entity) || !isNxDataGroup(entity)) {
     return undefined;
   }

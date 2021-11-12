@@ -11,11 +11,9 @@ import {
   assertStringType,
   getChildEntity,
   isDefined,
-  isGroup,
   isScaleType,
 } from '@h5web/shared';
 import type {
-  Entity,
   Group,
   ArrayShape,
   ComplexType,
@@ -27,8 +25,8 @@ import type {
   NumArrayDataset,
 } from '@h5web/shared';
 
-import { getAttributeValue } from '../../utils';
-import type { NxAttribute, NxData, SilxStyle } from './models';
+import { getAttributeValue, hasAttribute } from '../../utils';
+import type { NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(group: Group): boolean {
   return getAttributeValue(group, 'NX_class') === 'NXdata';
@@ -40,17 +38,15 @@ function assertNxDataGroup(group: Group): void {
   }
 }
 
-function hasAttribute(entity: Entity, attrName: NxAttribute): boolean {
-  return !!getAttributeValue(entity, attrName);
-}
+export function hasNxClass(group: Group, expectedNxClass: string): boolean {
+  if (!hasAttribute(group, 'NX_class')) {
+    return false;
+  }
 
-export function isNxGroup(entity: Entity): boolean {
-  return (
-    isGroup(entity) &&
-    (isNxDataGroup(entity) ||
-      hasAttribute(entity, 'default') ||
-      getAttributeValue(entity, 'NX_class') === 'NXentry')
-  );
+  const nxClass = getAttributeValue(group, 'NX_class');
+  assertStr(nxClass);
+
+  return nxClass === expectedNxClass;
 }
 
 export function findSignalDataset(

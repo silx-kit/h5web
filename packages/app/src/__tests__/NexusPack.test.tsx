@@ -91,7 +91,7 @@ test('visualize NXdata group with "rgb-image" interpretation', async () => {
 
 test('visualize NXentry group with implicit default child NXdata group', async () => {
   await renderApp();
-  await selectExplorerNode('nexus_entry_no_default');
+  await selectExplorerNode('nexus_no_default');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -103,22 +103,25 @@ test('show error when encountering malformed NeXus metadata', async () => {
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed');
+  expect(await screen.findByText("Expected 'signal' attribute")).toBeVisible(); // `nexus_malformed` resolves to implicit default child `no_signal`
 
   await selectExplorerNode('default_not_string');
-  expect(await screen.findByText(/to be a string/)).toBeVisible();
-
-  await selectExplorerNode('default_not_found');
   expect(
-    await screen.findByText(/No entity found at NeXus default path/)
+    await screen.findByText("Expected 'default' attribute to be a string")
   ).toBeVisible();
 
+  await selectExplorerNode('default_not_found');
+  expect(await screen.findByText('No entity found at /test')).toBeVisible();
+
   await selectExplorerNode('no_signal');
-  expect(await screen.findByText(/'signal' attribute/)).toBeVisible();
+  expect(await screen.findByText("Expected 'signal' attribute")).toBeVisible();
 
   await selectExplorerNode('signal_not_found');
-  expect(await screen.findByText(/to exist/)).toBeVisible();
+  expect(
+    await screen.findByText('Expected "unknown" signal entity to exist')
+  ).toBeVisible();
 
-  expect(errorSpy).toHaveBeenCalledTimes(8); // React logs two stack traces per error
+  expect(errorSpy).toHaveBeenCalledTimes(10); // React logs two stack traces per error
 });
 
 test('cancel and retry slow fetch of NxSpectrum', async () => {
@@ -191,8 +194,8 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
-  // Switch to other entity
-  await selectExplorerNode('resilience');
+  // Switch to other entity with no visualization
+  await selectExplorerNode('entities');
   expect(await screen.findByText(/No visualization/)).toBeVisible();
 
   // Select dataset again
@@ -222,8 +225,8 @@ test('retry fetching automatically when re-selecting NxImage', async () => {
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
-  // Switch to other entity
-  await selectExplorerNode('resilience');
+  // Switch to other entity with no visualization
+  await selectExplorerNode('entities');
   expect(await screen.findByText(/No visualization/)).toBeVisible();
 
   // Select dataset again

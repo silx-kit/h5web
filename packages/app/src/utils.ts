@@ -9,3 +9,10 @@ export function getAttributeValue(
 ): unknown {
   return entity.attributes?.find((attr) => attr.name === attributeName)?.value;
 }
+
+export function hasAttribute(
+  entity: Entity,
+  attributeName: NxAttribute | ImageAttribute
+) {
+  return entity.attributes.some((attr) => attr.name === attributeName);
+}
