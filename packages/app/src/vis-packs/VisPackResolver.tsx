@@ -6,8 +6,7 @@ import { ProviderContext } from '../providers/context';
 import { ProviderError } from '../providers/models';
 import Visualizer from '../visualizer/Visualizer';
 import styles from '../visualizer/Visualizer.module.css';
-import { getNxDefaultPath } from './nexus/pack-utils';
-import { findSupportedVis } from './utils';
+import { resolvePath } from './utils';
 
 interface Props {
   path: string;
@@ -26,23 +25,18 @@ function VisPackResolver(props: Props) {
     );
   }
 
-  const entity = getEntity(path);
+  const resolution = resolvePath(path, getEntity);
 
-  const supportedVis = findSupportedVis(entity);
-  if (supportedVis.length > 0) {
-    return <Visualizer entity={entity} supportedVis={supportedVis} />;
+  if (!resolution) {
+    return (
+      <p className={styles.fallback}>
+        No visualization available for this entity.
+      </p>
+    );
   }
 
-  const nxDefaultPath = getNxDefaultPath(entity);
-  if (nxDefaultPath) {
-    return <VisPackResolver path={nxDefaultPath} />;
-  }
-
-  return (
-    <p className={styles.fallback}>
-      No visualization available for this entity.
-    </p>
-  );
+  const { entity, supportedVis } = resolution;
+  return <Visualizer entity={entity} supportedVis={supportedVis} />;
 }
 
 export default VisPackResolver;
