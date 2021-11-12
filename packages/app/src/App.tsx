@@ -9,7 +9,7 @@ import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import VisConfigProvider from './vis-packs/VisConfigProvider';
-import VisPackChooser from './vis-packs/VisPackChooser';
+import VisPackResolver from './vis-packs/VisPackResolver';
 import ErrorFallback from './visualizer/ErrorFallback';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
@@ -60,7 +60,7 @@ function App() {
                     onSelectPath={setSelectedPath}
                   />
                 ) : (
-                  <VisPackChooser path={selectedPath} />
+                  <VisPackResolver path={selectedPath} />
                 )}
               </Suspense>
             </ErrorBoundary>

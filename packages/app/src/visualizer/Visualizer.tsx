@@ -1,29 +1,29 @@
 import type { Entity } from '@h5web/shared';
+import { assertDefined } from '@h5web/shared';
 
 import Profiler from '../Profiler';
+import { useActiveVis } from '../vis-packs/hooks';
 import type { VisDef } from '../vis-packs/models';
 import VisSelector from './VisSelector';
 import styles from './Visualizer.module.css';
 
-interface Props<T extends VisDef> {
+interface Props {
   entity: Entity;
-  activeVis: T | undefined;
-  supportedVis: T[];
-  onActiveVisChange: (vis: T) => void;
+  supportedVis: VisDef[];
 }
 
-function Visualizer<T extends VisDef>(props: Props<T>) {
-  const { entity, activeVis, supportedVis, onActiveVisChange } = props;
+function Visualizer(props: Props) {
+  const { entity, supportedVis } = props;
+  assertDefined(supportedVis[0], 'Expected supported visualization');
 
-  if (!activeVis) {
-    return (
-      <p className={styles.fallback}>
-        No visualization available for this entity.
-      </p>
+  const [activeVis, setActiveVis] = useActiveVis(supportedVis);
+  const { Container, Toolbar } = activeVis;
+
+  if (!('ResizeObserver' in window)) {
+    throw new Error(
+      "Your browser's version is not supported. Please upgrade to the latest version."
     );
   }
-
-  const { Container, Toolbar } = activeVis;
 
   return (
     <div className={styles.visualizer}>
@@ -31,7 +31,7 @@ function Visualizer<T extends VisDef>(props: Props<T>) {
         <VisSelector
           activeVis={activeVis}
           choices={supportedVis}
-          onChange={onActiveVisChange}
+          onChange={setActiveVis}
         />
         {Toolbar && <Toolbar />}
       </div>
