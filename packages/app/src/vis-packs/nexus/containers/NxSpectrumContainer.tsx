@@ -2,9 +2,9 @@ import { assertGroupWithChildren } from '@h5web/shared';
 import { isEqual } from 'lodash';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedLineVis from '../../core/line/MappedLineVis';
-import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericNxData } from '../guards';

@@ -6,7 +6,7 @@ import type {
 } from '@h5web/shared';
 import { hasComplexType, formatScalarComplex } from '@h5web/shared';
 
-import type { ValueFormatter } from '../../models';
+import type { ValueFormatter } from '../models';
 
 export function getFormatter(
   dataset: Dataset<ArrayShape, PrintableType>

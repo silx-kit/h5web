@@ -13,7 +13,7 @@ import {
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 
-import type { ValueFormatter } from '../../models';
+import type { ValueFormatter } from '../models';
 
 export function getFormatter(
   dataset: Dataset<ArrayShape, PrintableType>

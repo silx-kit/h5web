@@ -1,8 +1,8 @@
 import { isDefined } from '@h5web/shared';
 import type { ReactNode } from 'react';
 
-import { CORE_VIS } from './core/visualizations';
-import { NEXUS_VIS } from './nexus/visualizations';
+import { CORE_VIS } from './vis-packs/core/visualizations';
+import { NEXUS_VIS } from './vis-packs/nexus/visualizations';
 
 const coreProviders = Object.values(CORE_VIS)
   .map((vis) => vis.ConfigProvider)
