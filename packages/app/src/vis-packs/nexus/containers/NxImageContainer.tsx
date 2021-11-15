@@ -1,9 +1,9 @@
 import { assertGroupWithChildren, assertMinDims } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
-import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { getNxData, getDatasetLabel, assertNumericSignal } from '../utils';

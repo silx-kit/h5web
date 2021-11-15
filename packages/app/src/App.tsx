@@ -4,13 +4,13 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 
 import styles from './App.module.css';
+import ErrorFallback from './ErrorFallback';
 import LoadingFallback from './LoadingFallback';
+import VisConfigProvider from './VisConfigProvider';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
-import VisConfigProvider from './vis-packs/VisConfigProvider';
-import VisPackResolver from './vis-packs/VisPackResolver';
-import ErrorFallback from './visualizer/ErrorFallback';
+import Visualizer from './visualizer/Visualizer';
 
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
@@ -60,7 +60,7 @@ function App() {
                     onSelectPath={setSelectedPath}
                   />
                 ) : (
-                  <VisPackResolver path={selectedPath} />
+                  <Visualizer path={selectedPath} />
                 )}
               </Suspense>
             </ErrorBoundary>

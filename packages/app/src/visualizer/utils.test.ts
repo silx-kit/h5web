@@ -1,19 +1,22 @@
 import {
-  intType,
+  complexType,
+  compoundType,
   floatType,
-  makeStrAttr,
+  intType,
+  makeDataset,
   makeGroup,
   makeNxDataGroup,
-  withNxInterpretation,
   makeNxGroup,
+  makeScalarDataset,
+  makeStrAttr,
   withAttributes,
-  makeDataset,
-  complexType,
+  withNxInterpretation,
 } from '@h5web/shared/src/mock/metadata-utils';
+import { NxInterpretation } from '@h5web/shared/src/models-nexus';
 
-import { NxInterpretation } from './models';
-import { getSupportedNxVis } from './pack-utils';
-import { NexusVis, NEXUS_VIS } from './visualizations';
+import { CORE_VIS } from '../vis-packs/core/visualizations';
+import { NexusVis, NEXUS_VIS } from '../vis-packs/nexus/visualizations';
+import { getSupportedCoreVis, getSupportedNxVis } from './utils';
 
 const datasetInt1D = makeDataset('dataset_int_1d', intType, [5]);
 const datasetInt2D = makeDataset('dataset_int_2d', intType, [5, 3]);
@@ -21,6 +24,29 @@ const datasetFlt3D = makeDataset('dataset_flt_3d', floatType, [5, 3, 1]);
 const datasetCplx1D = makeDataset('dataset_cplx_1d', complexType, [5]);
 const datasetCplx2D = makeDataset('dataset_cplx_2d', complexType, [5, 3]);
 const datasetCplx3D = makeDataset('dataset_cplx_3d', complexType, [5, 3, 1]);
+
+describe('getSupportedCoreVis', () => {
+  it('should return supported visualizations', () => {
+    const datasetRaw = makeScalarDataset('raw', compoundType);
+    const supportedVis = getSupportedCoreVis(datasetRaw);
+
+    expect(supportedVis).toEqual([CORE_VIS.Raw]);
+  });
+
+  it('should not include Raw vis if any other visualization is supported', () => {
+    const datasetInt1D = makeDataset('dataset', intType, [5]);
+    const supportedVis = getSupportedCoreVis(datasetInt1D);
+
+    expect(supportedVis).toEqual([CORE_VIS.Matrix, CORE_VIS.Line]);
+  });
+
+  it('should return empty array if no visualization is supported', () => {
+    const groupEmpty = makeGroup('group_empty');
+    const supportedVis = getSupportedCoreVis(groupEmpty);
+
+    expect(supportedVis).toEqual([]);
+  });
+});
 
 describe('getSupportedNxVis', () => {
   it('should not include NxSpectrum vis if any other visualization is supported', () => {

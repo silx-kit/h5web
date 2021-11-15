@@ -1,9 +1,9 @@
 import { assertGroupWithChildren } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
-import { useDimMappingState } from '../../hooks';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertComplexNxData } from '../guards';

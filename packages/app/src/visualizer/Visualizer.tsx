@@ -1,48 +1,42 @@
 import type { Entity } from '@h5web/shared';
-import { assertDefined } from '@h5web/shared';
+import { handleError } from '@h5web/shared';
+import { useContext } from 'react';
 
-import Profiler from '../Profiler';
-import { useActiveVis } from '../vis-packs/hooks';
-import type { VisDef } from '../vis-packs/models';
-import VisSelector from './VisSelector';
+import { ProviderContext } from '../providers/context';
+import { ProviderError } from '../providers/models';
+import VisManager from './VisManager';
 import styles from './Visualizer.module.css';
+import { resolvePath } from './utils';
 
 interface Props {
-  entity: Entity;
-  supportedVis: VisDef[];
+  path: string;
 }
 
 function Visualizer(props: Props) {
-  const { entity, supportedVis } = props;
-  assertDefined(supportedVis[0], 'Expected supported visualization');
+  const { path } = props;
 
-  const [activeVis, setActiveVis] = useActiveVis(supportedVis);
-  const { Container, Toolbar } = activeVis;
+  const { entitiesStore } = useContext(ProviderContext);
 
-  if (!('ResizeObserver' in window)) {
-    throw new Error(
-      "Your browser's version is not supported. Please upgrade to the latest version."
+  function getEntity(entityPath: string): Entity {
+    return handleError(
+      () => entitiesStore.get(entityPath),
+      ProviderError.EntityNotFound,
+      `No entity found at ${entityPath}`
     );
   }
 
-  return (
-    <div className={styles.visualizer}>
-      <div className={styles.visBar}>
-        <VisSelector
-          activeVis={activeVis}
-          choices={supportedVis}
-          onChange={setActiveVis}
-        />
-        {Toolbar && <Toolbar />}
-      </div>
+  const resolution = resolvePath(path, getEntity);
 
-      <div className={styles.displayArea}>
-        <Profiler id={activeVis.name}>
-          <Container key={entity.path} entity={entity} />
-        </Profiler>
-      </div>
-    </div>
-  );
+  if (!resolution) {
+    return (
+      <p className={styles.fallback}>
+        No visualization available for this entity.
+      </p>
+    );
+  }
+
+  const { entity, supportedVis } = resolution;
+  return <VisManager entity={entity} supportedVis={supportedVis} />;
 }
 
 export default Visualizer;

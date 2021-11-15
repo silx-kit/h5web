@@ -1,4 +1,4 @@
-import type { DType, Entity, Primitive } from '@h5web/shared';
+import type { Entity } from '@h5web/shared';
 import type { ElementType, ReactNode } from 'react';
 import type { IconType } from 'react-icons';
 
@@ -17,5 +17,3 @@ export interface VisDef {
   Container: ElementType<VisContainerProps>;
   ConfigProvider?: ElementType<ConfigProviderProps>;
 }
-
-export type ValueFormatter<T extends DType> = (val: Primitive<T>) => string;

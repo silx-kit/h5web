@@ -132,3 +132,15 @@
   height: 2.5rem;
   background-color: var(--secondary-light-bg);
 }
+
+.error {
+  composes: error from global;
+}
+
+.error > span {
+  margin-left: 0.5rem;
+}
+
+.retryBtn {
+  composes: btnClean btnLink from global;
+}

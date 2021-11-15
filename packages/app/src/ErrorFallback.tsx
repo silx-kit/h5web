@@ -1,7 +1,7 @@
 import type { FallbackProps } from 'react-error-boundary';
 
-import { ProviderError } from '../providers/models';
-import styles from './Visualizer.module.css';
+import styles from './App.module.css';
+import { ProviderError } from './providers/models';
 
 function ErrorFallback(props: FallbackProps) {
   const { error, resetErrorBoundary } = props;
