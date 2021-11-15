@@ -151,10 +151,10 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         }),
       ],
     }),
-    makeNxGroup('nexus_entry_no_default', 'NXentry', {
+    makeNxGroup('nexus_no_default', 'NXprocess', {
       defaultPath: undefined,
       children: [
-        makeNxGroup('ignore_me', 'NXprocess'),
+        makeNxGroup('ignore_me', 'NXentry'),
         makeNxDataGroup('spectrum', {
           signal: makeNxDataset('oneD', intType, [41]),
         }),

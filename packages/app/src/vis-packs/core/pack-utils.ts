@@ -4,7 +4,7 @@ import { isDataset } from '@h5web/shared';
 import type { CoreVisDef } from './visualizations';
 import { CORE_VIS, Vis } from './visualizations';
 
-export function getSupportedVis(entity: Entity): CoreVisDef[] {
+export function getSupportedCoreVis(entity: Entity): CoreVisDef[] {
   const supportedVis = Object.values(CORE_VIS).filter(
     (vis) => isDataset(entity) && vis.supportsDataset(entity)
   );

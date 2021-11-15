@@ -2,60 +2,58 @@ import {
   assertGroupWithChildren,
   assertStr,
   buildEntityPath,
-  handleError,
-  hasChildren,
   hasComplexType,
   hasMinDims,
   hasNumDims,
   isGroup,
 } from '@h5web/shared';
 import type { Entity } from '@h5web/shared';
-import type { FetchStore } from 'react-suspense-fetch';
 
-import { ProviderError } from '../../providers/models';
 import { getAttributeValue } from '../../utils';
 import type { VisDef } from '../models';
 import { NxInterpretation } from './models';
-import { findSignalDataset, isNxDataGroup, isNxGroup } from './utils';
+import { findSignalDataset, hasNxClass, isNxDataGroup } from './utils';
 import { NexusVis, NEXUS_VIS } from './visualizations';
 
-function getDefaultEntityPath(entity: Entity): string | undefined {
-  const defaultPath = getAttributeValue(entity, 'default');
-  if (defaultPath) {
-    assertStr(defaultPath, `Expected 'default' attribute to be a string`);
-    return defaultPath;
+function getImplicitDefaultChild(children: Entity[]): Entity | undefined {
+  const groups = children.filter(isGroup);
+
+  // Look for an `NXdata` child group first
+  const nxDataChild = groups.find((g) => hasNxClass(g, 'NXdata'));
+  if (nxDataChild) {
+    return nxDataChild;
   }
 
-  if (!isGroup(entity) || !hasChildren(entity)) {
+  // Then for an `NXentry` child group
+  const nxEntryChild = groups.find((g) => hasNxClass(g, 'NXentry'));
+  if (nxEntryChild) {
+    return nxEntryChild;
+  }
+
+  // Then for an `NXprocess` child group
+  return groups.find((g) => hasNxClass(g, 'NXprocess'));
+}
+
+export function getNxDefaultPath(entity: Entity): string | undefined {
+  if (!isGroup(entity)) {
     return undefined;
   }
 
-  const nxChild = entity.children.find((c) => isNxGroup(c));
-  return nxChild?.path;
-}
+  const defaultPath = getAttributeValue(entity, 'default');
 
-export function getDefaultEntity(
-  entity: Entity,
-  entitiesStore: FetchStore<Entity, string>
-): Entity {
-  const defaultPath = getDefaultEntityPath(entity);
-  if (defaultPath === undefined) {
-    return entity;
+  if (defaultPath) {
+    assertStr(defaultPath, `Expected 'default' attribute to be a string`);
+
+    return defaultPath.startsWith('/')
+      ? defaultPath
+      : buildEntityPath(entity.path, defaultPath);
   }
-  const path = defaultPath.startsWith('/')
-    ? defaultPath
-    : buildEntityPath(entity.path, defaultPath);
 
-  const defaultEntity = handleError(
-    () => entitiesStore.get(path),
-    ProviderError.EntityNotFound,
-    `No entity found at NeXus default path "${path}"`
-  );
-
-  return getDefaultEntity(defaultEntity, entitiesStore);
+  assertGroupWithChildren(entity);
+  return getImplicitDefaultChild(entity.children)?.path;
 }
 
-export function getSupportedVis(entity: Entity): VisDef | undefined {
+export function getSupportedNxVis(entity: Entity): VisDef | undefined {
   if (!isGroup(entity) || !isNxDataGroup(entity)) {
     return undefined;
   }

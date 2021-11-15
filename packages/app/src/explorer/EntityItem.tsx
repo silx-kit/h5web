@@ -5,10 +5,10 @@ import type { CSSProperties } from 'react';
 import { Suspense, useEffect } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 
-import { isNxGroup } from '../vis-packs/nexus/utils';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
+import { isNxGroup } from './utils';
 
 interface Props {
   path: string;

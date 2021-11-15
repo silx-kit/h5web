@@ -142,8 +142,8 @@ test('retry fetching automatically when re-selecting dataset', async () => {
   expect(await screen.findByText('Request cancelled')).toBeVisible();
   errorSpy.mockRestore();
 
-  // Switch to other entity
-  await selectExplorerNode('resilience');
+  // Switch to other entity with no visualization
+  await selectExplorerNode('entities');
   expect(await screen.findByText(/No visualization/)).toBeVisible();
 
   // Select dataset again
