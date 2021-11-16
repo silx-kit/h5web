@@ -3,12 +3,13 @@ import type { Entity } from '@h5web/shared';
 import { useToggle } from '@react-hookz/web';
 import type { CSSProperties } from 'react';
 import { Suspense, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { FiRefreshCw } from 'react-icons/fi';
 
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
-import { isNxGroup } from './utils';
+import NxBadge from './NxBadge';
 
 interface Props {
   path: string;
@@ -57,11 +58,12 @@ function EntityItem(props: Props) {
       >
         <Icon entity={entity} isExpanded={isExpanded} />
         <span className={styles.name}>{entity.name}</span>
-        {isNxGroup(entity) && (
-          <span className={styles.nx} aria-label=" (NeXus group)">
-            NX
-          </span>
-        )}
+
+        <ErrorBoundary fallback={<> </>}>
+          <Suspense fallback={null}>
+            <NxBadge entity={entity} />
+          </Suspense>
+        </ErrorBoundary>
       </button>
 
       {isGroup(entity) && isExpanded && (
