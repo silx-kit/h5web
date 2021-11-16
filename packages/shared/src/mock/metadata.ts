@@ -15,7 +15,6 @@ import {
   complexType,
   makeScalarDataset,
   makeDataset,
-  makeScalarAttr,
   withImageAttributes,
 } from './metadata-utils';
 
@@ -171,9 +170,6 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       ],
     }),
     makeGroup('nexus_malformed', [
-      makeGroup('default_not_string', [], {
-        attributes: [makeScalarAttr('default', intType, 42)],
-      }),
       makeGroup('default_not_found', [], {
         attributes: [makeStrAttr('default', '/test')],
       }),

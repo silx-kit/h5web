@@ -7,13 +7,14 @@ import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertComplexNxData } from '../guards';
-import { getNxData, getDatasetLabel } from '../utils';
+import { useNxData } from '../hooks';
+import { getDatasetLabel } from '../utils';
 
 function NxComplexSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroupWithChildren(entity);
 
-  const nxData = getNxData(entity);
+  const nxData = useNxData(entity);
   assertComplexNxData(nxData);
   const { signalDataset, silxStyle } = nxData;
 

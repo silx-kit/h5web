@@ -10,13 +10,14 @@ import VisBoundary from '../../VisBoundary';
 import { useRgbVisConfig } from '../../core/rgb/config';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { getNxData, getDatasetLabel, assertNumericSignal } from '../utils';
+import { useNxData } from '../hooks';
+import { getDatasetLabel, assertNumericSignal } from '../utils';
 
 function NxRgbContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroupWithChildren(entity);
 
-  const nxData = getNxData(entity);
+  const nxData = useNxData(entity);
   assertNumericSignal(nxData);
 
   const { signalDataset } = nxData;

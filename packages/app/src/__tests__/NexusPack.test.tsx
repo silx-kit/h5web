@@ -116,30 +116,35 @@ test('visualize NXentry group with implicit default child NXdata group', async (
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
 });
 
-test('show error when encountering malformed NeXus metadata', async () => {
+test('show error when `default` entity is not found', async () => {
   await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('nexus_malformed');
-  expect(await screen.findByText("Expected 'signal' attribute")).toBeVisible(); // `nexus_malformed` resolves to implicit default child `no_signal`
-
-  await selectExplorerNode('default_not_string');
-  expect(
-    await screen.findByText("Expected 'default' attribute to be a string")
-  ).toBeVisible();
-
-  await selectExplorerNode('default_not_found');
+  await selectExplorerNode('nexus_malformed/default_not_found');
   expect(await screen.findByText('No entity found at /test')).toBeVisible();
 
-  await selectExplorerNode('no_signal');
-  expect(await screen.findByText("Expected 'signal' attribute")).toBeVisible();
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+});
 
-  await selectExplorerNode('signal_not_found');
+test('show error when `signal` entity is not found', async () => {
+  await renderApp();
+
+  const errorSpy = mockConsoleMethod('error');
+  await selectExplorerNode('nexus_malformed/signal_not_found');
   expect(
     await screen.findByText('Expected "unknown" signal entity to exist')
   ).toBeVisible();
 
-  expect(errorSpy).toHaveBeenCalledTimes(10); // React logs two stack traces per error
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+});
+
+test('show fallback message when NXdata group has no `signal` attribute', async () => {
+  await renderApp();
+  await selectExplorerNode('nexus_malformed/no_signal');
+
+  expect(
+    await screen.findByText('No visualization available for this entity.')
+  ).toBeInTheDocument();
 });
 
 test('cancel and retry slow fetch of NxSpectrum', async () => {

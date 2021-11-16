@@ -1,4 +1,4 @@
-import type { AttributeValues, Entity } from '@h5web/shared';
+import type { Entity } from '@h5web/shared';
 import {
   assertGroupWithChildren,
   hasComplexType,
@@ -10,8 +10,8 @@ import {
   buildEntityPath,
   NxInterpretation,
 } from '@h5web/shared';
-import type { FetchStore } from 'react-suspense-fetch';
 
+import type { AttrValuesStore } from '../providers/context';
 import type { CoreVisDef } from '../vis-packs/core/visualizations';
 import { Vis, CORE_VIS } from '../vis-packs/core/visualizations';
 import type { VisDef } from '../vis-packs/models';
@@ -25,7 +25,7 @@ import { NexusVis, NEXUS_VIS } from '../vis-packs/nexus/visualizations';
 export function resolvePath(
   path: string,
   getEntity: (path: string) => Entity,
-  attrValueStore: FetchStore<AttributeValues, Entity>
+  attrValueStore: AttrValuesStore
 ): { entity: Entity; supportedVis: VisDef[] } | undefined {
   const entity = getEntity(path);
 
@@ -44,7 +44,7 @@ export function resolvePath(
 
 function findSupportedVis(
   entity: Entity,
-  attrValueStore: FetchStore<AttributeValues, Entity>
+  attrValueStore: AttrValuesStore
 ): VisDef[] {
   const nxVis = getSupportedNxVis(entity, attrValueStore);
   if (nxVis) {
@@ -56,7 +56,7 @@ function findSupportedVis(
 
 function getNxDefaultPath(
   entity: Entity,
-  attrValueStore: FetchStore<AttributeValues, Entity>
+  attrValueStore: AttrValuesStore
 ): string | undefined {
   if (!isGroup(entity)) {
     return undefined;
@@ -88,9 +88,9 @@ function getSupportedCoreVis(entity: Entity): CoreVisDef[] {
 
 function getSupportedNxVis(
   entity: Entity,
-  attrValueStore: FetchStore<AttributeValues, Entity>
+  attrValueStore: AttrValuesStore
 ): VisDef | undefined {
-  if (!isGroup(entity) || !isNxDataGroup(entity)) {
+  if (!isGroup(entity) || !isNxDataGroup(entity, attrValueStore)) {
     return undefined;
   }
 

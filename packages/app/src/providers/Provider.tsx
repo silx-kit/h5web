@@ -4,6 +4,9 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
 
+import { hasAttribute } from '../utils';
+import type { ImageAttribute } from '../vis-packs/core/models';
+import type { NxAttribute } from '../vis-packs/nexus/models';
 import type { ProviderApi } from './api';
 import { ProviderContext } from './context';
 
@@ -64,7 +67,17 @@ function Provider(props: Props) {
 
   const filepathMembers = api.filepath.split('/');
 
-  const attrValuesStore = createFetchStore(api.getAttrValues.bind(api));
+  const attrValuesStore = useMemo(() => {
+    const store = createFetchStore(api.getAttrValues.bind(api));
+
+    return Object.assign(store, {
+      getSingle: (entity: Entity, attrName: NxAttribute | ImageAttribute) => {
+        return hasAttribute(entity, attrName)
+          ? attrValuesStore.get(entity)[attrName]
+          : undefined;
+      },
+    });
+  }, [api]);
 
   return (
     <ProviderContext.Provider

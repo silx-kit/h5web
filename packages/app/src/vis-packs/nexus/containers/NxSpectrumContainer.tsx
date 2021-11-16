@@ -8,13 +8,14 @@ import MappedLineVis from '../../core/line/MappedLineVis';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericNxData } from '../guards';
-import { getNxData, getDatasetLabel } from '../utils';
+import { useNxData } from '../hooks';
+import { getDatasetLabel } from '../utils';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroupWithChildren(entity);
 
-  const nxData = getNxData(entity);
+  const nxData = useNxData(entity);
   assertNumericNxData(nxData);
   const { signalDataset, errorsDataset, silxStyle } = nxData;
 
