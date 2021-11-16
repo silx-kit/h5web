@@ -6,13 +6,14 @@ import VisBoundary from '../../VisBoundary';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { getNxData, getDatasetLabel, assertNumericSignal } from '../utils';
+import { useNxData } from '../hooks';
+import { getDatasetLabel, assertNumericSignal } from '../utils';
 
 function NxImageContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroupWithChildren(entity);
 
-  const nxData = getNxData(entity);
+  const nxData = useNxData(entity);
   assertNumericSignal(nxData);
 
   const { signalDataset, silxStyle } = nxData;

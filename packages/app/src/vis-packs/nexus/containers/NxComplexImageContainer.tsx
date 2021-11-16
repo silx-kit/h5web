@@ -6,13 +6,14 @@ import VisBoundary from '../../VisBoundary';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { getNxData, getDatasetLabel, assertComplexSignal } from '../utils';
+import { useNxData } from '../hooks';
+import { getDatasetLabel, assertComplexSignal } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {
   const { entity } = props;
   assertGroupWithChildren(entity);
 
-  const nxData = getNxData(entity);
+  const nxData = useNxData(entity);
   assertComplexSignal(nxData);
 
   const { signalDataset, silxStyle } = nxData;

@@ -18,8 +18,8 @@ export function needsNxBadge(
     return true;
   }
 
-  if (hasAttribute(entity, 'NX_class')) {
-    const nxClass = attrValuesStore.getSingle(entity, 'NX_class');
+  const nxClass = attrValuesStore.getSingle(entity, 'NX_class');
+  if (nxClass) {
     assertStr(nxClass);
     return SUPPORTED_NX_CLASSES.has(nxClass);
   }

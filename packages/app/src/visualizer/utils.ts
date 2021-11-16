@@ -90,7 +90,7 @@ function getSupportedNxVis(
   entity: Entity,
   attrValueStore: AttrValuesStore
 ): VisDef | undefined {
-  if (!isGroup(entity) || !isNxDataGroup(entity)) {
+  if (!isGroup(entity) || !isNxDataGroup(entity, attrValueStore)) {
     return undefined;
   }
 

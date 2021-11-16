@@ -10,7 +10,6 @@ import {
   assertStr,
   assertStringType,
   getChildEntity,
-  isDefined,
   isScaleType,
 } from '@h5web/shared';
 import type {
@@ -25,15 +24,25 @@ import type {
   NumArrayDataset,
 } from '@h5web/shared';
 
+import type { AttrValuesStore } from '../../providers/context';
 import { getAttributeValue, hasAttribute } from '../../utils';
 import type { NxData, SilxStyle } from './models';
 
-export function isNxDataGroup(group: Group): boolean {
-  return getAttributeValue(group, 'NX_class') === 'NXdata';
+export function isNxDataGroup(
+  group: Group,
+  attrValuesStore: AttrValuesStore
+): boolean {
+  return (
+    hasAttribute(group, 'signal') &&
+    attrValuesStore.getSingle(group, 'NX_class') === 'NXdata'
+  );
 }
 
-function assertNxDataGroup(group: Group): void {
-  if (!isNxDataGroup(group)) {
+export function assertNxDataGroup(
+  group: Group,
+  attrValuesStore: AttrValuesStore
+): void {
+  if (!isNxDataGroup(group, attrValuesStore)) {
     throw new Error('Expected NXdata group');
   }
 }
@@ -65,7 +74,7 @@ export function findSignalDataset(
   return dataset;
 }
 
-function findErrorsDataset(
+export function findErrorsDataset(
   group: GroupWithChildren,
   signalName: string
 ): NumArrayDataset | undefined {
@@ -83,7 +92,7 @@ function findErrorsDataset(
   return dataset;
 }
 
-function findAssociatedDatasets(
+export function findAssociatedDatasets(
   group: GroupWithChildren,
   type: 'axes' | 'auxiliary_signals'
 ): (NumArrayDataset | undefined)[] {
@@ -106,7 +115,7 @@ function findAssociatedDatasets(
   });
 }
 
-function findTitleDataset(
+export function findTitleDataset(
   group: GroupWithChildren
 ): Dataset<ScalarShape, StringType> | undefined {
   const dataset = getChildEntity(group, 'title');
@@ -148,22 +157,6 @@ export function getSilxStyle(group: Group): SilxStyle {
     console.warn(`Malformed 'SILX_style' attribute: ${silxStyle}`); // eslint-disable-line no-console
     return {};
   }
-}
-
-export function getNxData(group: GroupWithChildren): NxData {
-  assertNxDataGroup(group);
-  const signalDataset = findSignalDataset(group);
-  const errorsDataset = findErrorsDataset(group, signalDataset.name);
-  const auxDatasets = findAssociatedDatasets(group, 'auxiliary_signals');
-
-  return {
-    signalDataset,
-    errorsDataset,
-    axisDatasets: findAssociatedDatasets(group, 'axes'),
-    titleDataset: findTitleDataset(group),
-    silxStyle: getSilxStyle(group),
-    auxDatasets: auxDatasets.filter(isDefined),
-  };
 }
 
 export function getDatasetLabel(dataset: Dataset): string {
