@@ -89,6 +89,24 @@ test('visualize NXdata group with "rgb-image" interpretation', async () => {
   expect(tabs[0]).toHaveTextContent(NexusVis.NxRGB);
 });
 
+test('visualize NXdata group with unknown interpretation', async () => {
+  await renderApp();
+  await selectExplorerNode('nexus_entry/unknown');
+
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxImage); // support check falls back on signal dataset dimensions
+});
+
+test('visualize NXdata group with "rgb-image" interpretation but incompatible signal', async () => {
+  await renderApp();
+  await selectExplorerNode('nexus_entry/rgb_incompatible');
+
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum); // support check falls back on signal dataset dimensions
+});
+
 test('visualize NXentry group with implicit default child NXdata group', async () => {
   await renderApp();
   await selectExplorerNode('nexus_no_default');

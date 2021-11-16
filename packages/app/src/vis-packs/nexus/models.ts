@@ -23,12 +23,6 @@ export type NxAttribute =
   | 'SILX_style'
   | 'auxiliary_signals';
 
-export enum NxInterpretation {
-  Spectrum = 'spectrum',
-  Image = 'image',
-  RGB = 'rgb-image',
-}
-
 export interface NxData<
   T extends NumericType | ComplexType = NumericType | ComplexType
 > {

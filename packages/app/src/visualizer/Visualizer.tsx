@@ -15,7 +15,7 @@ interface Props {
 function Visualizer(props: Props) {
   const { path } = props;
 
-  const { entitiesStore } = useContext(ProviderContext);
+  const { entitiesStore, attrValuesStore } = useContext(ProviderContext);
 
   function getEntity(entityPath: string): Entity {
     return handleError(
@@ -25,7 +25,7 @@ function Visualizer(props: Props) {
     );
   }
 
-  const resolution = resolvePath(path, getEntity);
+  const resolution = resolvePath(path, getEntity, attrValuesStore);
 
   if (!resolution) {
     return (
