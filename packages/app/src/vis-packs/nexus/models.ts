@@ -36,10 +36,11 @@ export interface NxData<
 
 export interface NxValues<T extends NumericType | ComplexType> {
   signal: Primitive<T>[];
+  signalLabel: string;
   errors?: number[];
   axisMapping: AxisMapping;
   auxiliaries?: number[][];
-  title?: string;
+  title: string;
 }
 
 export type AxisDatasetMapping = (NumArrayDataset | undefined)[];

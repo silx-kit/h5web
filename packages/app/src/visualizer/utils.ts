@@ -95,7 +95,7 @@ function getSupportedNxVis(
   }
 
   assertGroupWithChildren(entity);
-  const dataset = findSignalDataset(entity);
+  const dataset = findSignalDataset(entity, attrValueStore);
   const isCplx = hasComplexType(dataset);
   const { interpretation } = attrValueStore.get(dataset);
 

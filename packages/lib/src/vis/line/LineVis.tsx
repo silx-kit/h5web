@@ -98,7 +98,7 @@ function LineVis(props: Props) {
     .map((col) => col.trim());
 
   return (
-    <figure ref={rootRef} className={styles.root} aria-labelledby="vis-title">
+    <figure ref={rootRef} className={styles.root} aria-label={title}>
       <VisCanvas
         title={title}
         abscissaConfig={{

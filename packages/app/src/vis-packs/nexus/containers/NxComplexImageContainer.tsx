@@ -7,7 +7,7 @@ import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { useNxData } from '../hooks';
-import { getDatasetLabel, assertComplexSignal } from '../utils';
+import { assertComplexSignal } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -35,13 +35,14 @@ function NxComplexImageContainer(props: VisContainerProps) {
           dimMapping={dimMapping}
           render={(nxValues) => {
             const { signal, axisMapping, title } = nxValues;
+
             return (
               <MappedComplexVis
                 value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}
-                title={title || getDatasetLabel(signalDataset)}
+                title={title}
                 colorScaleType={silxStyle.signalScaleType}
               />
             );

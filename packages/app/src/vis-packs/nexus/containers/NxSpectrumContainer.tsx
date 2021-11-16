@@ -9,7 +9,6 @@ import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
-import { getDatasetLabel } from '../utils';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -40,9 +39,14 @@ function NxSpectrumContainer(props: VisContainerProps) {
         <NxValuesFetcher
           nxData={nxData}
           render={(nxValues) => {
-            const signalLabel = getDatasetLabel(signalDataset);
-            const { signal, errors, axisMapping, auxiliaries, title } =
-              nxValues;
+            const {
+              signal,
+              signalLabel,
+              errors,
+              axisMapping,
+              auxiliaries,
+              title,
+            } = nxValues;
 
             return (
               <MappedLineVis
@@ -54,7 +58,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
                 dims={signalDims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}
-                title={title || signalLabel}
+                title={title}
               />
             );
           }}
