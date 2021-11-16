@@ -1,25 +1,25 @@
 import type {
-  Group,
-  Dataset,
-  Entity,
-  Shape,
-  NumericType,
-  CompoundType,
-  ComplexType,
-  DType,
-  Attribute,
-  ScalarShape,
   ArrayShape,
+  Attribute,
+  ComplexType,
+  CompoundType,
+  Dataset,
+  DType,
+  Entity,
+  Group,
+  NumericType,
+  ScalarShape,
+  Shape,
 } from '@h5web/shared';
-import { isGroup, DTypeClass, Endianness } from '@h5web/shared';
+import { DTypeClass, Endianness, isGroup } from '@h5web/shared';
 
 import type {
-  HsdsType,
-  HsdsEntity,
   HsdsAttribute,
-  HsdsShape,
-  HsdsNumericType,
   HsdsCompoundType,
+  HsdsEntity,
+  HsdsNumericType,
+  HsdsShape,
+  HsdsType,
 } from './models';
 
 export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
@@ -37,6 +37,14 @@ export function assertHsdsDataset(
 ): asserts dataset is HsdsEntity<Dataset<ScalarShape | ArrayShape>> {
   if (!('id' in dataset)) {
     throw new Error('Expected entity to be HSDS dataset');
+  }
+}
+
+function assertHsdsNumericType(
+  type: HsdsType
+): asserts type is HsdsNumericType {
+  if (type.class !== 'H5T_INTEGER' && type.class !== 'H5T_FLOAT') {
+    throw new Error('Expected HSDS numeric type');
   }
 }
 
@@ -75,10 +83,14 @@ function convertHsdsCompoundType(
   const { fields } = hsdsType;
 
   if (fields.length === 2 && fields[0].name === 'r' && fields[1].name === 'i') {
+    const [{ type: realType }, { type: imagType }] = fields;
+    assertHsdsNumericType(realType);
+    assertHsdsNumericType(imagType);
+
     return {
       class: DTypeClass.Complex,
-      realType: convertHsdsType(fields[0].type),
-      imagType: convertHsdsType(fields[1].type),
+      realType: convertHsdsNumericType(realType),
+      imagType: convertHsdsNumericType(imagType),
     };
   }
 

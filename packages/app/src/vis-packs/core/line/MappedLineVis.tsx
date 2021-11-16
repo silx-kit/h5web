@@ -10,6 +10,7 @@ import {
   useMappedArray,
   useDomain,
   useDomains,
+  useSlicedDimsAndMapping,
 } from '../hooks';
 import type { AxisMapping } from '../models';
 import { useLineConfig } from './config';
@@ -26,6 +27,7 @@ interface Props {
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title: string;
+  isValueSlice?: boolean;
 }
 
 function MappedLineVis(props: Props) {
@@ -39,6 +41,7 @@ function MappedLineVis(props: Props) {
     dimMapping,
     axisMapping = [],
     title,
+    isValueSlice,
   } = props;
 
   const {
@@ -54,7 +57,12 @@ function MappedLineVis(props: Props) {
     disableErrors,
   } = useLineConfig((state) => state, shallow);
 
-  const hookArgs: HookArgs = [dims, dimMapping, autoScale];
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
+
+  const hookArgs: HookArgs = isValueSlice
+    ? [slicedDims, slicedMapping, autoScale]
+    : [dims, dimMapping, autoScale];
+
   const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
   const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
   const [auxArrays, auxForDomain] = useMappedArrays(auxiliaries, ...hookArgs);
@@ -85,9 +93,9 @@ function MappedLineVis(props: Props) {
   }, [disableErrors, errors]);
 
   useEffect(() => {
-    // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
-    disableAutoScale(dims.length <= 1);
-  }, [dims, disableAutoScale]);
+    // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same) or if the value is a slice
+    disableAutoScale(isValueSlice || dims.length <= 1);
+  }, [dims, disableAutoScale, isValueSlice]);
 
   return (
     <LineVis

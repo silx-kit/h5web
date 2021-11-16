@@ -1,5 +1,11 @@
-import type { Domain } from '@h5web/shared';
-import { createArrayFromView } from '@h5web/shared';
+import type {
+  ArrayShape,
+  ComplexType,
+  Dataset,
+  Domain,
+  NumericType,
+} from '@h5web/shared';
+import { createArrayFromView, hasComplexType } from '@h5web/shared';
 import { isNumber } from 'lodash';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
@@ -56,4 +62,19 @@ export function getSliceSelection(
 
   // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
+}
+
+export function getValueSize(
+  dataset: Dataset<ArrayShape, NumericType> | Dataset<ArrayShape, ComplexType>
+) {
+  if (hasComplexType(dataset)) {
+    const { type, shape } = dataset;
+    return (
+      shape.reduce((val, acc) => val * acc) *
+      (type.realType.size + type.imagType.size)
+    );
+  }
+
+  const { type, shape } = dataset;
+  return shape.reduce((val, acc) => val * acc) * type.size;
 }

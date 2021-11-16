@@ -16,6 +16,7 @@ interface Props {
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title: string;
+  isValueSlice?: boolean;
 }
 
 function MappedComplexLineVis(props: Props) {

@@ -8,7 +8,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
-import ValueFetcher from '../ValueFetcher';
+import LimitedValueFetcher from '../LimitedValueFetcher';
 import MappedComplexLineVis from './MappedComplexLineVis';
 
 function ComplexLineVisContainer(props: VisContainerProps) {
@@ -27,18 +27,17 @@ function ComplexLineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary
-        resetKey={dimMapping}
-        loadingMessage="Loading entire dataset"
-      >
-        <ValueFetcher
+      <VisBoundary resetKey={dimMapping} loadingMessage="Loading dataset">
+        <LimitedValueFetcher
           dataset={entity}
-          render={(value) => (
+          dimMapping={dimMapping}
+          render={(value, isSlice) => (
             <MappedComplexLineVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
               title={entity.name}
+              isValueSlice={isSlice}
             />
           )}
         />
