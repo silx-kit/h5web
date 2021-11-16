@@ -149,6 +149,16 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             })
           ),
         }),
+        makeNxDataGroup('unknown', {
+          signal: makeNxDataset('fourD', intType, [3, 9, 20, 41], {
+            interpretation: 'unknown',
+          }),
+        }),
+        makeNxDataGroup('rgb_incompatible', {
+          signal: makeNxDataset('oneD', intType, [41], {
+            interpretation: 'rgb-image',
+          }),
+        }),
       ],
     }),
     makeNxGroup('nexus_no_default', 'NXprocess', {

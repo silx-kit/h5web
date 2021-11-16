@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared';
+import type { AttributeValues, Entity } from '@h5web/shared';
 import {
   assertGroupWithChildren,
   hasComplexType,
@@ -8,10 +8,10 @@ import {
   isDataset,
   assertStr,
   buildEntityPath,
+  NxInterpretation,
 } from '@h5web/shared';
-import { NxInterpretation } from '@h5web/shared/src/models-nexus';
+import type { FetchStore } from 'react-suspense-fetch';
 
-import { getAttributeValue } from '../utils';
 import type { CoreVisDef } from '../vis-packs/core/visualizations';
 import { Vis, CORE_VIS } from '../vis-packs/core/visualizations';
 import type { VisDef } from '../vis-packs/models';
@@ -24,25 +24,29 @@ import { NexusVis, NEXUS_VIS } from '../vis-packs/nexus/visualizations';
 
 export function resolvePath(
   path: string,
-  getEntity: (path: string) => Entity
+  getEntity: (path: string) => Entity,
+  attrValueStore: FetchStore<AttributeValues, Entity>
 ): { entity: Entity; supportedVis: VisDef[] } | undefined {
   const entity = getEntity(path);
 
-  const supportedVis = findSupportedVis(entity);
+  const supportedVis = findSupportedVis(entity, attrValueStore);
   if (supportedVis.length > 0) {
     return { entity, supportedVis };
   }
 
-  const nxDefaultPath = getNxDefaultPath(entity);
+  const nxDefaultPath = getNxDefaultPath(entity, attrValueStore);
   if (nxDefaultPath) {
-    return resolvePath(nxDefaultPath, getEntity);
+    return resolvePath(nxDefaultPath, getEntity, attrValueStore);
   }
 
   return undefined;
 }
 
-function findSupportedVis(entity: Entity): VisDef[] {
-  const nxVis = getSupportedNxVis(entity);
+function findSupportedVis(
+  entity: Entity,
+  attrValueStore: FetchStore<AttributeValues, Entity>
+): VisDef[] {
+  const nxVis = getSupportedNxVis(entity, attrValueStore);
   if (nxVis) {
     return [nxVis];
   }
@@ -50,12 +54,15 @@ function findSupportedVis(entity: Entity): VisDef[] {
   return getSupportedCoreVis(entity);
 }
 
-function getNxDefaultPath(entity: Entity): string | undefined {
+function getNxDefaultPath(
+  entity: Entity,
+  attrValueStore: FetchStore<AttributeValues, Entity>
+): string | undefined {
   if (!isGroup(entity)) {
     return undefined;
   }
 
-  const defaultPath = getAttributeValue(entity, 'default');
+  const { default: defaultPath } = attrValueStore.get(entity);
 
   if (defaultPath) {
     assertStr(defaultPath, `Expected 'default' attribute to be a string`);
@@ -69,7 +76,7 @@ function getNxDefaultPath(entity: Entity): string | undefined {
   return getImplicitDefaultChild(entity.children)?.path;
 }
 
-export function getSupportedCoreVis(entity: Entity): CoreVisDef[] {
+function getSupportedCoreVis(entity: Entity): CoreVisDef[] {
   const supportedVis = Object.values(CORE_VIS).filter(
     (vis) => isDataset(entity) && vis.supportsDataset(entity)
   );
@@ -79,7 +86,10 @@ export function getSupportedCoreVis(entity: Entity): CoreVisDef[] {
     : supportedVis;
 }
 
-export function getSupportedNxVis(entity: Entity): VisDef | undefined {
+function getSupportedNxVis(
+  entity: Entity,
+  attrValueStore: FetchStore<AttributeValues, Entity>
+): VisDef | undefined {
   if (!isGroup(entity) || !isNxDataGroup(entity)) {
     return undefined;
   }
@@ -87,7 +97,7 @@ export function getSupportedNxVis(entity: Entity): VisDef | undefined {
   assertGroupWithChildren(entity);
   const dataset = findSignalDataset(entity);
   const isCplx = hasComplexType(dataset);
-  const interpretation = getAttributeValue(dataset, 'interpretation');
+  const { interpretation } = attrValueStore.get(dataset);
 
   if (
     interpretation === NxInterpretation.RGB &&
