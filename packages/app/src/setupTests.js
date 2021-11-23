@@ -1,6 +1,11 @@
 /* eslint-disable no-console */
 import '@testing-library/jest-dom'; // https://github.com/testing-library/jest-dom
-import { ResizeObserver } from '@juggle/resize-observer';
+
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
 
 // Fake `ResizeObserver` support
 window.ResizeObserver = ResizeObserver;
