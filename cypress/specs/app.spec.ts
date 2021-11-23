@@ -31,7 +31,7 @@ describe('App', () => {
       'exist'
     );
     cy.findByRole('tab', { name: 'Line' }).should('exist');
-    cy.findByRole('figure', { name: 'oneD_cplx' }).should('exist');
+    cy.findByRole('figure', { name: 'oneD_cplx (amplitude)' }).should('exist');
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);

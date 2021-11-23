@@ -83,7 +83,7 @@ function MappedComplexVis(props: Props) {
       alphaDomain={
         visType === ComplexVisType.PhaseAmplitude ? amplitudeDomain : undefined
       }
-      title={title ? `${title} (${visType.toLowerCase()})` : visType}
+      title={`${title} (${visType.toLowerCase()})`}
       colorMap={colorMap}
       scaleType={scaleType}
       layout={layout}

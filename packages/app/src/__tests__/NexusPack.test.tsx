@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import {
@@ -87,7 +87,7 @@ test('visualize NXdata group with 2D complex signal', async () => {
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
 
   expect(
-    await screen.findByRole('figure', { name: 'twoD_complex (amplitude)' }) // signal name + `units` attribute
+    await screen.findByRole('figure', { name: 'twoD_complex (amplitude)' }) // signal name + complex visualization type
   ).toBeVisible();
 });
 
@@ -100,7 +100,7 @@ test('visualize NXdata group with 1D complex signal', async () => {
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
 
   expect(
-    await screen.findByRole('figure', { name: 'twoD_complex' }) // signal name
+    await screen.findByRole('figure', { name: 'twoD_complex (amplitude)' }) // signal name + complex visualization type
   ).toBeVisible();
 });
 
@@ -236,12 +236,17 @@ test('ignore unknown SILX styles options and invalid values', async () => {
   await selectExplorerNode('nexus_malformed/silx_style_unknown');
 
   const errorSpy = mockConsoleMethod('error');
-  const linearSelectors = await screen.findAllByRole('button', {
-    name: 'Linear',
-  });
-  expect(linearSelectors).toHaveLength(2);
 
-  expect(errorSpy).toHaveBeenCalledTimes(0); // no error
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+
+  const scaleSelectors = await screen.findAllByRole('button', {
+    name: 'Linear', // the scales of both axes remain unchanged
+  });
+  expect(scaleSelectors).toHaveLength(2);
+
+  expect(errorSpy).not.toHaveBeenCalled(); // no error
   errorSpy.mockRestore();
 });
 

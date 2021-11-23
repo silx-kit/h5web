@@ -19,7 +19,7 @@ interface Props {
 }
 
 function MappedComplexLineVis(props: Props) {
-  const { value, valueLabel, ...lineProps } = props;
+  const { value, valueLabel, title, ...lineProps } = props;
 
   const { visType } = useComplexLineConfig((state) => state, shallow);
 
@@ -33,6 +33,7 @@ function MappedComplexLineVis(props: Props) {
       valueLabel={
         valueLabel ? `${valueLabel} (${visType.toLowerCase()})` : visType
       }
+      title={`${title} (${visType.toLowerCase()})`}
       {...lineProps}
     />
   );
