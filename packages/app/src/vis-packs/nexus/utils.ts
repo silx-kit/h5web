@@ -25,7 +25,7 @@ import type {
 } from '@h5web/shared';
 
 import type { AttrValuesStore } from '../../providers/context';
-import { getAttributeValue, hasAttribute } from '../../utils';
+import { hasAttribute } from '../../utils';
 import type { NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(
@@ -45,17 +45,6 @@ export function assertNxDataGroup(
   if (!isNxDataGroup(group, attrValuesStore)) {
     throw new Error('Expected NXdata group');
   }
-}
-
-export function hasNxClass(group: Group, expectedNxClass: string): boolean {
-  if (!hasAttribute(group, 'NX_class')) {
-    return false;
-  }
-
-  const nxClass = getAttributeValue(group, 'NX_class');
-  assertStr(nxClass);
-
-  return nxClass === expectedNxClass;
 }
 
 export function findSignalDataset(
