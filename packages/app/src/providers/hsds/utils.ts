@@ -16,7 +16,7 @@ import { isGroup, DTypeClass, Endianness } from '@h5web/shared';
 import type {
   HsdsType,
   HsdsEntity,
-  HsdsAttributeResponse,
+  HsdsAttribute,
   HsdsShape,
   HsdsNumericType,
   HsdsCompoundType,
@@ -134,13 +134,10 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
   }
 }
 
-export function convertHsdsAttributes(
-  attrs: HsdsAttributeResponse[]
-): Attribute[] {
+export function convertHsdsAttributes(attrs: HsdsAttribute[]): Attribute[] {
   return attrs.map((attr) => ({
     name: attr.name,
     shape: convertHsdsShape(attr.shape),
     type: convertHsdsType(attr.type),
-    value: attr.value,
   }));
 }

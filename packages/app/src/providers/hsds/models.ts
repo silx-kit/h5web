@@ -28,14 +28,7 @@ export interface HsdsDatatypeResponse {
 }
 
 export interface HsdsAttributesResponse {
-  attributes: Omit<HsdsAttributeResponse, 'value'>[];
-}
-
-export interface HsdsAttributeResponse {
-  name: string;
-  shape: HsdsShape;
-  type: HsdsType;
-  value: unknown;
+  attributes: HsdsAttribute[];
 }
 
 export interface HsdsLinksResponse {
@@ -43,6 +36,10 @@ export interface HsdsLinksResponse {
 }
 
 export interface HsdsValueResponse {
+  value: unknown;
+}
+
+export interface HsdsAttributeWithValueResponse extends HsdsAttribute {
   value: unknown;
 }
 
@@ -66,13 +63,19 @@ interface HsdsSymbolicLink {
   h5path: string;
 }
 
-/* ---------------------------- */
-/* ----- ENTITIES & VALUES----- */
+/* ------------------- */
+/* ----- ENTITIES----- */
 
 export type HsdsEntity<T extends Entity = Entity> = T & {
   id: HsdsId;
   collection: HsdsCollection;
 };
+
+export interface HsdsAttribute {
+  name: string;
+  shape: HsdsShape;
+  type: HsdsType;
+}
 
 /* ------------------------ */
 /* ----- SHAPE & TYPE ----- */

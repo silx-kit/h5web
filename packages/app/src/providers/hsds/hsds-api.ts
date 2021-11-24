@@ -27,11 +27,12 @@ import type {
   HsdsLinksResponse,
   HsdsRootResponse,
   HsdsValueResponse,
-  HsdsAttributeResponse,
+  HsdsAttribute,
   HsdsLink,
   HsdsEntity,
   HsdsCollection,
   HsdsId,
+  HsdsAttributeWithValueResponse,
 } from './models';
 import {
   assertHsdsDataset,
@@ -180,16 +181,11 @@ export class HsdsApi extends ProviderApi {
   private async fetchAttributes(
     entityCollection: HsdsCollection,
     entityId: HsdsId
-  ): Promise<HsdsAttributeResponse[]> {
+  ): Promise<HsdsAttribute[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
       `/${entityCollection}/${entityId}/attributes`
     );
-
-    const attrsPromises = data.attributes.map(async (attr) =>
-      this.fetchAttributeWithValue(entityCollection, entityId, attr.name)
-    );
-
-    return Promise.all(attrsPromises);
+    return data.attributes;
   }
 
   private async fetchValue(
@@ -209,8 +205,8 @@ export class HsdsApi extends ProviderApi {
     entityCollection: HsdsCollection,
     entityId: HsdsId,
     attributeName: string
-  ): Promise<HsdsAttributeResponse> {
-    const { data } = await this.client.get<HsdsAttributeResponse>(
+  ): Promise<HsdsAttributeWithValueResponse> {
+    const { data } = await this.client.get<HsdsAttributeWithValueResponse>(
       `/${entityCollection}/${entityId}/attributes/${attributeName}`
     );
     return data;

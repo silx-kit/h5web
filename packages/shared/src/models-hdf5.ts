@@ -53,7 +53,6 @@ export interface Attribute<S extends Shape = Shape, T extends DType = DType> {
   name: string;
   shape: S;
   type: T;
-  value: unknown;
 }
 
 export type NumArrayDataset = Dataset<ArrayShape, NumericType>;
