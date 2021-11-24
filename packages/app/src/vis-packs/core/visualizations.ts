@@ -17,6 +17,7 @@ import {
   FiImage,
 } from 'react-icons/fi';
 
+import type { AttrValuesStore } from '../../providers/context';
 import type { VisDef } from '../models';
 import {
   MatrixConfigProvider,
@@ -44,7 +45,6 @@ import {
   ComplexLineToolbar,
   RgbToolbar,
 } from './toolbars';
-import { hasImageAttribute } from './utils';
 
 export enum Vis {
   Raw = 'Raw',
@@ -58,7 +58,10 @@ export enum Vis {
 }
 
 export interface CoreVisDef extends VisDef {
-  supportsDataset: (dataset: Dataset) => boolean;
+  supportsDataset: (
+    dataset: Dataset,
+    attrValuesStore: AttrValuesStore
+  ) => boolean;
 }
 
 export const CORE_VIS: Record<Vis, CoreVisDef> = {
@@ -147,9 +150,9 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Toolbar: RgbToolbar,
     Container: RgbVisContainer,
     ConfigProvider: RgbConfigProvider,
-    supportsDataset: (dataset) => {
+    supportsDataset: (dataset, attrValuesStore) => {
       return (
-        hasImageAttribute(dataset) &&
+        attrValuesStore.getSingle(dataset, 'CLASS') === 'IMAGE' &&
         hasArrayShape(dataset) &&
         dataset.shape.length === 3 &&
         hasNumericType(dataset)

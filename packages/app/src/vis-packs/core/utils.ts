@@ -1,4 +1,4 @@
-import type { Domain, Dataset } from '@h5web/shared';
+import type { Domain } from '@h5web/shared';
 import { createArrayFromView } from '@h5web/shared';
 import { isNumber } from 'lodash';
 import type { NdArray } from 'ndarray';
@@ -6,7 +6,6 @@ import ndarray from 'ndarray';
 
 import type { Axis, DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
-import { getAttributeValue } from '../../utils';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -57,10 +56,4 @@ export function getSliceSelection(
 
   // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
-}
-
-export function hasImageAttribute(dataset: Dataset): boolean {
-  const classAttr = getAttributeValue(dataset, 'CLASS');
-
-  return typeof classAttr === 'string' && classAttr === 'IMAGE';
 }

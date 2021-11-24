@@ -48,7 +48,7 @@ function findSupportedVis(
     return [nxVis];
   }
 
-  return getSupportedCoreVis(entity);
+  return getSupportedCoreVis(entity, attrValueStore);
 }
 
 function getNxDefaultPath(
@@ -73,9 +73,12 @@ function getNxDefaultPath(
   return getImplicitDefaultChild(entity.children, attrValueStore)?.path;
 }
 
-function getSupportedCoreVis(entity: Entity): CoreVisDef[] {
+function getSupportedCoreVis(
+  entity: Entity,
+  attrValueStore: AttrValuesStore
+): CoreVisDef[] {
   const supportedVis = Object.values(CORE_VIS).filter(
-    (vis) => isDataset(entity) && vis.supportsDataset(entity)
+    (vis) => isDataset(entity) && vis.supportsDataset(entity, attrValueStore)
   );
 
   return supportedVis.length > 1 && supportedVis[0].name === Vis.Raw
