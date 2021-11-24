@@ -55,6 +55,8 @@ test('visualize 1D dataset', async () => {
   expect(tabs[0]).toHaveTextContent(Vis.Matrix);
   expect(tabs[1]).toHaveTextContent(Vis.Line);
   expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+
+  expect(await screen.findByRole('figure', { name: 'oneD' })).toBeVisible();
 });
 
 test('visualize 2D datasets', async () => {
@@ -67,4 +69,6 @@ test('visualize 2D datasets', async () => {
   expect(tabs[1]).toHaveTextContent(Vis.Line);
   expect(tabs[2]).toHaveTextContent(Vis.Heatmap);
   expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
+
+  expect(await screen.findByRole('figure', { name: 'twoD' })).toBeVisible();
 });

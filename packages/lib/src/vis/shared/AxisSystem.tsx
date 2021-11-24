@@ -50,11 +50,7 @@ function AxisSystem(props: Props) {
         gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
       }}
     >
-      {title && (
-        <p id="vis-title" className={styles.title}>
-          {title}
-        </p>
-      )}
+      {title && <p className={styles.title}>{title}</p>}
       <Axis
         type="abscissa"
         config={abscissaConfig}

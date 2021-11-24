@@ -11,7 +11,7 @@ import { useRgbVisConfig } from '../../core/rgb/config';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { useNxData } from '../hooks';
-import { getDatasetLabel, assertNumericSignal } from '../utils';
+import { assertNumericSignal } from '../utils';
 
 function NxRgbContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -36,12 +36,13 @@ function NxRgbContainer(props: VisContainerProps) {
         nxData={nxData}
         render={(nxValues) => {
           const { signal, title } = nxValues;
+
           return (
             <RgbVis
               value={signal}
               dims={dims}
               floatFormat={signalDataset.type.class === DTypeClass.Float}
-              title={title || getDatasetLabel(signalDataset)}
+              title={title}
               showGrid={showGrid}
               layout={layout}
               imageType={imageType}

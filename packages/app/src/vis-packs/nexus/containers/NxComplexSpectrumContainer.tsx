@@ -8,7 +8,6 @@ import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertComplexNxData } from '../guards';
 import { useNxData } from '../hooks';
-import { getDatasetLabel } from '../utils';
 
 function NxComplexSpectrumContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -33,8 +32,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
         <NxValuesFetcher
           nxData={nxData}
           render={(nxValues) => {
-            const signalLabel = getDatasetLabel(signalDataset);
-            const { signal, axisMapping, title } = nxValues;
+            const { signal, signalLabel, axisMapping, title } = nxValues;
 
             return (
               <MappedComplexLineVis
@@ -44,7 +42,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
                 dims={signalDims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}
-                title={title || signalLabel}
+                title={title}
               />
             );
           }}

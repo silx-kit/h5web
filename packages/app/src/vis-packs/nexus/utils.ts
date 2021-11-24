@@ -59,9 +59,10 @@ export function hasNxClass(group: Group, expectedNxClass: string): boolean {
 }
 
 export function findSignalDataset(
-  group: GroupWithChildren
+  group: GroupWithChildren,
+  attrValuesStore: AttrValuesStore
 ): Dataset<ArrayShape, NumericType | ComplexType> {
-  const signal = getAttributeValue(group, 'signal');
+  const signal = attrValuesStore.getSingle(group, 'signal');
   assertDefined(signal, "Expected 'signal' attribute");
   assertStr(signal, "Expected 'signal' attribute to be a string");
 
@@ -94,9 +95,10 @@ export function findErrorsDataset(
 
 export function findAssociatedDatasets(
   group: GroupWithChildren,
-  type: 'axes' | 'auxiliary_signals'
+  type: 'axes' | 'auxiliary_signals',
+  attrValuesStore: AttrValuesStore
 ): (NumArrayDataset | undefined)[] {
-  const dsetList = getAttributeValue(group, type) || [];
+  const dsetList = attrValuesStore.getSingle(group, type) || [];
   const dsetNames = typeof dsetList === 'string' ? [dsetList] : dsetList;
   assertArray<string>(dsetNames);
 
@@ -130,8 +132,11 @@ export function findTitleDataset(
   return dataset;
 }
 
-export function getSilxStyle(group: Group): SilxStyle {
-  const silxStyle = getAttributeValue(group, 'SILX_style');
+export function getSilxStyle(
+  group: Group,
+  attrValuesStore: AttrValuesStore
+): SilxStyle {
+  const silxStyle = attrValuesStore.getSingle(group, 'SILX_style');
 
   if (!silxStyle || typeof silxStyle !== 'string') {
     return {};
@@ -159,13 +164,16 @@ export function getSilxStyle(group: Group): SilxStyle {
   }
 }
 
-export function getDatasetLabel(dataset: Dataset): string {
-  const longName = getAttributeValue(dataset, 'long_name');
+export function getDatasetLabel(
+  dataset: Dataset,
+  attrValuesStore: AttrValuesStore
+): string {
+  const longName = attrValuesStore.getSingle(dataset, 'long_name');
   if (longName && typeof longName === 'string') {
     return longName;
   }
 
-  const units = getAttributeValue(dataset, 'units');
+  const units = attrValuesStore.getSingle(dataset, 'units');
   if (units && typeof units === 'string') {
     return `${dataset.name} (${units})`;
   }

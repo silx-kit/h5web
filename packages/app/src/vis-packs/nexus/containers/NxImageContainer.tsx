@@ -7,7 +7,7 @@ import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { useNxData } from '../hooks';
-import { getDatasetLabel, assertNumericSignal } from '../utils';
+import { assertNumericSignal } from '../utils';
 
 function NxImageContainer(props: VisContainerProps) {
   const { entity } = props;
@@ -35,13 +35,14 @@ function NxImageContainer(props: VisContainerProps) {
           dimMapping={dimMapping}
           render={(nxValues) => {
             const { signal, axisMapping, title } = nxValues;
+
             return (
               <MappedHeatmapVis
                 value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}
-                title={title || getDatasetLabel(signalDataset)}
+                title={title}
                 colorScaleType={silxStyle.signalScaleType}
               />
             );

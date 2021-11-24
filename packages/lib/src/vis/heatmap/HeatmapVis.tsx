@@ -70,11 +70,7 @@ function HeatmapVis(props: Props) {
   const ordinateToIndex = useValueToIndexScale(ordinates);
 
   return (
-    <figure
-      className={styles.root}
-      aria-labelledby="vis-title"
-      data-keep-canvas-colors
-    >
+    <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
         title={title}
         aspectRatio={layout === 'contain' ? cols / rows : undefined}
