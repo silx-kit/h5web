@@ -12,14 +12,11 @@ import {
 } from '@h5web/shared';
 
 import type { AttrValuesStore } from '../providers/context';
+import { hasAttribute } from '../utils';
 import type { CoreVisDef } from '../vis-packs/core/visualizations';
 import { Vis, CORE_VIS } from '../vis-packs/core/visualizations';
 import type { VisDef } from '../vis-packs/models';
-import {
-  findSignalDataset,
-  hasNxClass,
-  isNxDataGroup,
-} from '../vis-packs/nexus/utils';
+import { findSignalDataset, isNxDataGroup } from '../vis-packs/nexus/utils';
 import { NexusVis, NEXUS_VIS } from '../vis-packs/nexus/visualizations';
 
 export function resolvePath(
@@ -73,7 +70,7 @@ function getNxDefaultPath(
   }
 
   assertGroupWithChildren(entity);
-  return getImplicitDefaultChild(entity.children)?.path;
+  return getImplicitDefaultChild(entity.children, attrValueStore)?.path;
 }
 
 function getSupportedCoreVis(entity: Entity): CoreVisDef[] {
@@ -121,21 +118,34 @@ function getSupportedNxVis(
   return NEXUS_VIS[hasMinDims(dataset, 2) ? imageVis : spectrumVis];
 }
 
-function getImplicitDefaultChild(children: Entity[]): Entity | undefined {
-  const groups = children.filter(isGroup);
+function getImplicitDefaultChild(
+  children: Entity[],
+  attrValueStore: AttrValuesStore
+): Entity | undefined {
+  const nxGroups = children
+    .filter(isGroup)
+    .filter((g) => hasAttribute(g, 'NX_class'));
 
   // Look for an `NXdata` child group first
-  const nxDataChild = groups.find((g) => hasNxClass(g, 'NXdata'));
+  const nxDataChild = nxGroups.find(
+    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXdata'
+  );
+
   if (nxDataChild) {
     return nxDataChild;
   }
 
   // Then for an `NXentry` child group
-  const nxEntryChild = groups.find((g) => hasNxClass(g, 'NXentry'));
+  const nxEntryChild = nxGroups.find(
+    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXentry'
+  );
+
   if (nxEntryChild) {
     return nxEntryChild;
   }
 
   // Then for an `NXprocess` child group
-  return groups.find((g) => hasNxClass(g, 'NXprocess'));
+  return nxGroups.find(
+    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXprocess'
+  );
 }
