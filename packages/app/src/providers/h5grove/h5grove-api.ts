@@ -17,7 +17,6 @@ import { isString } from 'lodash';
 
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
-import { ProviderError } from '../models';
 import { convertDtype, flattenValue, handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
@@ -26,6 +25,7 @@ import type {
   H5GroveEntityResponse,
 } from './models';
 import {
+  getMatchingProviderError,
   isDatasetResponse,
   isGroupResponse,
   typedArrayFromDType,
@@ -77,23 +77,11 @@ export class H5GroveApi extends ProviderApi {
       () =>
         this.client.get<H5GroveEntityResponse>(`/meta/`, { params: { path } }),
       (status, errorData) => {
-        if (
-          status === 404 &&
-          isString(errorData) &&
-          errorData.includes('File not found')
-        ) {
-          return ProviderError.FileNotFound;
+        if (status !== 404 || !isString(errorData)) {
+          return undefined;
         }
 
-        if (
-          status === 404 &&
-          isString(errorData) &&
-          errorData.includes('not a valid path')
-        ) {
-          return ProviderError.EntityNotFound;
-        }
-
-        return undefined;
+        return getMatchingProviderError(errorData);
       }
     );
     return data;
