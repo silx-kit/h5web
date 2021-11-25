@@ -1,3 +1,5 @@
+import type { Entity } from '@h5web/shared';
+import { assertMockAttribute } from '@h5web/shared';
 import {
   intType,
   compoundType,
@@ -12,10 +14,19 @@ import {
 } from '@h5web/shared/src/mock/metadata-utils';
 
 import type { AttrValuesStore } from '../../providers/context';
-import { getAttributeValue } from '../../utils';
 import { CORE_VIS } from './visualizations';
 
-const mockStore = { getSingle: getAttributeValue } as AttrValuesStore;
+const mockStore = {
+  getSingle: (entity: Entity, attributeName: string): unknown => {
+    const attr = entity.attributes?.find((attr) => attr.name === attributeName);
+    if (!attr) {
+      return undefined;
+    }
+
+    assertMockAttribute(attr);
+    return attr.value;
+  },
+} as AttrValuesStore;
 
 const datasetIntScalar = makeScalarDataset('dataset_int', intType);
 const datasetUnsignedScalar = makeScalarDataset('dataset_int', unsignedType);

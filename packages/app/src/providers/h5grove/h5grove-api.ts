@@ -32,8 +32,6 @@ import {
 } from './utils';
 
 export class H5GroveApi extends ProviderApi {
-  protected attrValuesCache = new Map<string, H5GroveAttrValuesResponse>();
-
   /* API compatible with h5grove@0.0.9 */
   public constructor(
     url: string,
@@ -104,19 +102,10 @@ export class H5GroveApi extends ProviderApi {
   private async fetchAttrValues(
     path: string
   ): Promise<H5GroveAttrValuesResponse> {
-    /* Prevent attribute values from being fetched twice for the same entity,
-     * when processing the entity's parent group and then the entity itself. */
-    const cachedValues = this.attrValuesCache.get(path);
-    if (cachedValues) {
-      return cachedValues;
-    }
-
     const { data } = await this.client.get<H5GroveAttrValuesResponse>(
       `/attr/`,
       { params: { path } }
     );
-
-    this.attrValuesCache.set(path, data);
     return data;
   }
 
@@ -195,17 +184,10 @@ export class H5GroveApi extends ProviderApi {
     path: string,
     attrsMetadata: H5GroveAttribute[]
   ): Promise<Attribute[]> {
-    if (attrsMetadata.length === 0) {
-      return [];
-    }
-
-    const attrValues = await this.fetchAttrValues(path);
-
     return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
       name,
       shape,
       type: convertDtype(dtype),
-      value: attrValues[name],
     }));
   }
 }

@@ -20,7 +20,7 @@ import type {
 import { EntityKind, DTypeClass, Endianness } from '../models-hdf5';
 import type { NxInterpretation, SilxStyle } from '../models-nexus';
 import { buildEntityPath } from '../utils';
-import type { MockDataset, MockValueId } from './models';
+import type { MockAttribute, MockDataset, MockValueId } from './models';
 import { mockValues } from './values';
 
 /* -------------------------- */
@@ -72,7 +72,7 @@ export function makeAttr<S extends Shape, T extends DType>(
   type: T,
   shape: S,
   value: unknown
-): Attribute<S, T> {
+): MockAttribute<S, T> {
   return { name, type, shape, value };
 }
 

@@ -7,6 +7,7 @@ import {
   assertArrayShape,
   assertPrintableType,
   assertMockDataset,
+  assertMockAttribute,
 } from '@h5web/shared';
 import axios from 'axios';
 import ndarray from 'ndarray';
@@ -37,7 +38,10 @@ export class MockApi extends ProviderApi {
 
   public async getAttrValues(entity: Entity): Promise<AttributeValues> {
     return Object.fromEntries(
-      entity.attributes.map((attr) => [attr.name, attr.value])
+      entity.attributes.map((attr) => {
+        assertMockAttribute(attr);
+        return [attr.name, attr.value];
+      })
     );
   }
 

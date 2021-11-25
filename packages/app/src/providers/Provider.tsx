@@ -68,7 +68,10 @@ function Provider(props: Props) {
   const filepathMembers = api.filepath.split('/');
 
   const attrValuesStore = useMemo(() => {
-    const store = createFetchStore(api.getAttrValues.bind(api));
+    const store = createFetchStore(api.getAttrValues.bind(api), {
+      type: 'Map',
+      areEqual: (a, b) => a.path === b.path,
+    });
 
     return Object.assign(store, {
       getSingle: (entity: Entity, attrName: NxAttribute | ImageAttribute) => {
