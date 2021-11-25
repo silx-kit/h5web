@@ -15,9 +15,14 @@ import Visualizer from './visualizer/Visualizer';
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
 
-function App() {
+interface Props {
+  startFullscreen?: boolean;
+}
+
+function App(props: Props) {
+  const { startFullscreen } = props;
   const [selectedPath, setSelectedPath] = useState<string>(DEFAULT_PATH);
-  const [isExplorerOpen, setExplorerOpen] = useState(true);
+  const [isExplorerOpen, setExplorerOpen] = useState(!startFullscreen);
   const [isInspecting, setInspecting] = useState(false);
 
   return (

@@ -23,6 +23,18 @@ describe('App', () => {
     }
   });
 
+  it('keep the explorer closed when starting in fullscreen mode', () => {
+    cy.findByRole('tree').should('exist');
+
+    cy.visit('/mock?fullscreen');
+    cy.findByRole('tree').should('not.exist');
+
+    if (Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.wait(SNAPSHOT_DELAY);
+      cy.matchImageSnapshot('fullscreen');
+    }
+  });
+
   it('visualize 1D complex dataset as Line', () => {
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'oneD_cplx' }).click();
