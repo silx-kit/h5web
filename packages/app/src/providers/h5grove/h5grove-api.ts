@@ -126,7 +126,7 @@ export class H5GroveApi extends ProviderApi {
     const { data } = await this.cancellableFetchValue<H5GroveDataResponse>(
       `/data/`,
       params,
-      { path: params.dataset.path }
+      { path: params.dataset.path, selection: params.selection }
     );
     return data;
   }
