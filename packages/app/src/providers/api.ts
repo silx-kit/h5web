@@ -9,7 +9,7 @@ import type {
 import axios from 'axios';
 
 import type { ValuesStoreParams } from './models';
-import { ProviderError } from './models';
+import { CANCELLED_ERROR_MSG } from './utils';
 
 interface ValueRequest {
   storeParams: ValuesStoreParams;
@@ -31,7 +31,7 @@ export abstract class ProviderApi {
   public cancelValueRequests(): void {
     // Cancel every active value request
     this.valueRequests.forEach((request) => {
-      request.cancelSource.cancel(ProviderError.Cancelled);
+      request.cancelSource.cancel(CANCELLED_ERROR_MSG);
 
       // Save request so params can later be evicted from the values store (cf. `Provider.tsx`)
       this.cancelledValueRequests.add(request);

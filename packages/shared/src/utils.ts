@@ -55,22 +55,6 @@ export function buildEntityPath(
   return `${prefix}/${entityNameOrRelativePath}`;
 }
 
-export function handleError<T>(
-  func: () => T,
-  errToCatch: string,
-  errToThrow: string
-): T {
-  try {
-    return func();
-  } catch (error) {
-    if (error instanceof Error && error.message === errToCatch) {
-      throw new Error(errToThrow);
-    }
-
-    throw error;
-  }
-}
-
 export function createArrayFromView<T>(view: NdArray<T[]>): NdArray<T[]> {
   const array = ndarray<T[]>([], view.shape);
   assign(array, view);

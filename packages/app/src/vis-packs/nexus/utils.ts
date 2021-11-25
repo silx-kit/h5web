@@ -24,7 +24,7 @@ import type {
   NumArrayDataset,
 } from '@h5web/shared';
 
-import type { AttrValuesStore } from '../../providers/context';
+import type { AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
 import type { NxData, SilxStyle } from './models';
 

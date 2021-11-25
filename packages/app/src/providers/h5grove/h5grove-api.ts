@@ -25,7 +25,6 @@ import type {
   H5GroveEntityResponse,
 } from './models';
 import {
-  getMatchingProviderError,
   isDatasetResponse,
   isGroupResponse,
   typedArrayFromDType,
@@ -81,7 +80,17 @@ export class H5GroveApi extends ProviderApi {
           return undefined;
         }
 
-        return getMatchingProviderError(errorData);
+        if (errorData.includes('File not found')) {
+          return `File not found: '${this.filepath}'`;
+        }
+        if (errorData.includes('not a valid path')) {
+          return `No entity found at ${path}`;
+        }
+        if (errorData.includes('Cannot resolve')) {
+          return `Could not resolve soft link at ${path}`;
+        }
+
+        return undefined;
       }
     );
     return data;

@@ -2,7 +2,7 @@ import type { ArrayShape, Dataset, DType } from '@h5web/shared';
 import { Endianness, DTypeClass, assertArray } from '@h5web/shared';
 import axios from 'axios';
 
-import type { ProviderError } from './models';
+export const CANCELLED_ERROR_MSG = 'Request cancelled';
 
 // https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
 const ENDIANNESS_MAPPING: Record<string, Endianness> = {
@@ -94,10 +94,7 @@ export function flattenValue(
 
 export async function handleAxiosError<T>(
   func: () => Promise<T>,
-  getErrorToThrow: (
-    status: number,
-    errorData: unknown
-  ) => ProviderError | undefined
+  getErrorToThrow: (status: number, errorData: unknown) => string | undefined
 ): Promise<T> {
   try {
     return await func();

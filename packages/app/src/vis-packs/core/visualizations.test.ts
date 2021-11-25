@@ -13,7 +13,7 @@ import {
   withImageAttributes,
 } from '@h5web/shared/src/mock/metadata-utils';
 
-import type { AttrValuesStore } from '../../providers/context';
+import type { AttrValuesStore } from '../../providers/models';
 import { CORE_VIS } from './visualizations';
 
 const mockStore = {

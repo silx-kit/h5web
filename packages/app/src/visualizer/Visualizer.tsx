@@ -1,9 +1,6 @@
-import type { Entity } from '@h5web/shared';
-import { handleError } from '@h5web/shared';
 import { useContext } from 'react';
 
 import { ProviderContext } from '../providers/context';
-import { ProviderError } from '../providers/models';
 import VisManager from './VisManager';
 import styles from './Visualizer.module.css';
 import { resolvePath } from './utils';
@@ -16,16 +13,7 @@ function Visualizer(props: Props) {
   const { path } = props;
 
   const { entitiesStore, attrValuesStore } = useContext(ProviderContext);
-
-  function getEntity(entityPath: string): Entity {
-    return handleError(
-      () => entitiesStore.get(entityPath),
-      ProviderError.EntityNotFound,
-      `No entity found at ${entityPath}`
-    );
-  }
-
-  const resolution = resolvePath(path, getEntity, attrValuesStore);
+  const resolution = resolvePath(path, entitiesStore, attrValuesStore);
 
   if (!resolution) {
     return (
