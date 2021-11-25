@@ -1,4 +1,4 @@
-import { PanZoomMesh, TooltipMesh, VisCanvas } from '@h5web/lib';
+import { PanZoomMesh, TooltipMesh, SelectionMesh, VisCanvas } from '@h5web/lib';
 import type { TooltipMeshProps } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
@@ -9,10 +9,11 @@ interface TemplateProps {
   panZoom?: boolean;
   tooltipValue?: string;
   guides?: TooltipMeshProps['guides'];
+  drawSelection?: boolean;
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { panZoom = false, tooltipValue, guides } = args;
+  const { panZoom = false, tooltipValue, guides, drawSelection = false } = args;
 
   return (
     <VisCanvas
@@ -33,6 +34,7 @@ const Template: Story<TemplateProps> = (args) => {
           )}
         />
       )}
+      {drawSelection && <SelectionMesh />}
     </VisCanvas>
   );
 };
@@ -59,12 +61,20 @@ TooltipWithPanZoom.args = {
   guides: 'vertical',
 };
 
+export const SelectingRegions = Template.bind({});
+SelectingRegions.args = {
+  panZoom: false,
+  drawSelection: true,
+};
+
 export default {
   ...VisCanvasStoriesConfig,
   title: 'Building Blocks/VisCanvas/Interaction',
   parameters: {
     ...VisCanvasStoriesConfig.parameters,
-    controls: { include: ['panZoom', 'tooltipValue', 'guides'] },
+    controls: {
+      include: ['panZoom', 'tooltipValue', 'guides', 'drawSelection'],
+    },
   },
   argTypes: {
     guides: {
