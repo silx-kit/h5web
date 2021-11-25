@@ -4,7 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { renderApp, selectExplorerNode } from '../test-utils';
 
 test('show slider with two thumbs', async () => {
-  await renderApp(); // default NeXus group renders heatmap and therefore domain slider
+  await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const thumbs = await screen.findAllByRole('slider');
@@ -15,6 +16,7 @@ test('show slider with two thumbs', async () => {
 
 test('show tooltip on hover', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -38,6 +40,7 @@ test('show tooltip on hover', async () => {
 
 test('show min/max and data range in tooltip', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -58,6 +61,8 @@ test('show min/max and data range in tooltip', async () => {
 
 test('update domain when moving thumbs (with keyboard)', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+
   const visArea = await screen.findByRole('figure');
   const minThumb = await screen.findByRole('slider', { name: /min/ });
 
@@ -103,6 +108,7 @@ test('update domain when moving thumbs (with keyboard)', async () => {
 
 test('allow editing bounds manually', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
@@ -149,6 +155,7 @@ test('allow editing bounds manually', async () => {
 
 test('clamp domain in symlog scale', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -180,6 +187,7 @@ test('clamp domain in symlog scale', async () => {
 
 test('show min/max autoscale toggles in tooltip (pressed by default)', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -195,6 +203,7 @@ test('show min/max autoscale toggles in tooltip (pressed by default)', async () 
 
 test('control min/max autoscale behaviour', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
   expect(await screen.findByRole('figure')).toBeVisible();
 
   const minThumb = await screen.findByRole('slider', { name: /min/ });
@@ -224,6 +233,7 @@ test('control min/max autoscale behaviour', async () => {
 
 test('handle empty domain', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
@@ -262,6 +272,7 @@ test('handle empty domain', async () => {
 
 test('handle min > max', async () => {
   await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const visArea = await screen.findByRole('figure');
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
