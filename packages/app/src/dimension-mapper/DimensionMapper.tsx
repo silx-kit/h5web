@@ -49,7 +49,7 @@ function DimensionMapper(props: Props) {
               key={`${index}`} // eslint-disable-line react/no-array-index-key
               dimension={index}
               slicingIndex={val}
-              rawDims={rawDims}
+              maxIndex={rawDims[index] - 1}
               mapperState={mapperState}
               onChange={onChange}
             />

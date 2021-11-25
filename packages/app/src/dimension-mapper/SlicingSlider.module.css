@@ -8,8 +8,14 @@
 }
 
 .label {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   text-align: center;
+}
+
+.sublabel {
+  composes: label;
+  font-size: 0.825rem;
+  color: var(--secondary-darker);
 }
 
 .slider {
