@@ -1,17 +1,15 @@
-import { App, MockProvider } from '@h5web/app';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import H5GroveApp from './H5GroveApp';
 import HsdsApp from './HsdsApp';
+import MockApp from './MockApp';
 
 function DemoApp() {
   return (
     <Router>
       <Switch>
         <Route path="/mock">
-          <MockProvider>
-            <App />
-          </MockProvider>
+          <MockApp />
         </Route>
         <Route path="/hsds">
           <HsdsApp />

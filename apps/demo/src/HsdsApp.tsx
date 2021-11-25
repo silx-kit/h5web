@@ -17,7 +17,7 @@ function HsdsApp() {
       password={PASSWORD}
       filepath={filepath}
     >
-      <App />
+      <App startFullscreen={query.has('fullscreen')} />
     </HsdsProvider>
   );
 }
