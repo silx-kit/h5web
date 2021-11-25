@@ -52,12 +52,16 @@ describe('App', () => {
   });
 
   it('visualize 2D dataset as Heatmap', () => {
+    // Wait for scale to update according to SILX_style on default root visualization
+    cy.findByRole('button', { name: 'SymLog' }).should('exist');
+
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'twoD' }).click();
 
     cy.findByRole('heading', { name: 'nD_datasets / twoD' }).should('exist');
     cy.findByRole('tab', { name: 'Heatmap' }).should('exist');
     cy.findByRole('figure', { name: 'twoD' }).should('exist');
+    cy.findByRole('button', { name: 'Edit domain' }).should('be.visible'); // wait for domain slider to appear
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
@@ -74,6 +78,9 @@ describe('App', () => {
   });
 
   it('visualize 2D complex dataset as Heatmap', () => {
+    // Wait for scale to update according to SILX_style on default root visualization
+    cy.findByRole('button', { name: 'SymLog' }).should('exist');
+
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'twoD_cplx' }).click();
 
@@ -90,6 +97,9 @@ describe('App', () => {
   });
 
   it('map dimensions of 4D dataset when visualized as Heatmap', () => {
+    // Wait for scale to update according to SILX_style on default root visualization
+    cy.findByRole('button', { name: 'SymLog' }).should('exist');
+
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'fourD' }).click();
 
@@ -147,6 +157,9 @@ describe('App', () => {
   });
 
   it('slice through 4D dataset when visualized as Heatmap', () => {
+    // Wait for scale to update according to SILX_style on default root visualization
+    cy.findByRole('button', { name: 'SymLog' }).should('exist');
+
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'fourD' }).click();
 
@@ -191,6 +204,9 @@ describe('App', () => {
   });
 
   it('edit heatmap color map limits', () => {
+    // Wait for scale to update according to SILX_style on default root visualization
+    cy.findByRole('button', { name: 'SymLog' }).should('exist');
+
     cy.findByRole('treeitem', { name: 'nD_datasets' }).click();
     cy.findByRole('treeitem', { name: 'twoD' }).click();
 
@@ -266,6 +282,9 @@ describe('App', () => {
     });
 
     it('visualize dataset with "image" interpretation as NxImage', () => {
+      // Wait for scale to update according to SILX_style on default root visualization
+      cy.findByRole('button', { name: 'SymLog' }).should('exist');
+
       cy.findByRole('treeitem', { name: /^nexus_entry / }).click();
       cy.findByRole('treeitem', { name: 'image (NeXus group)' }).click();
 
