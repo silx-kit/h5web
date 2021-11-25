@@ -8,5 +8,6 @@ export interface ValuesStoreParams {
 export enum ProviderError {
   FileNotFound = 'File not found',
   EntityNotFound = 'Entity not found',
+  UnresolvableLink = 'Cannot resolve soft link',
   Cancelled = 'Request cancelled',
 }
