@@ -1,15 +1,9 @@
-import {
-  buildEntityPath,
-  EntityKind,
-  handleError,
-  isAbsolutePath,
-} from '@h5web/shared';
+import { buildEntityPath, EntityKind, isAbsolutePath } from '@h5web/shared';
 import { capitalize } from 'lodash';
 import { Suspense, memo, useContext } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { ProviderContext } from '../providers/context';
-import { ProviderError } from '../providers/models';
 import AttrErrorFallback from './AttrErrorFallback';
 import AttrValueLoader from './AttrValueLoader';
 import AttributesInfo from './AttributesInfo';
@@ -24,13 +18,9 @@ interface Props {
 
 function MetadataViewer(props: Props) {
   const { path, onSelectPath } = props;
-  const { entitiesStore } = useContext(ProviderContext);
 
-  const entity = handleError(
-    () => entitiesStore.get(path),
-    ProviderError.EntityNotFound,
-    `No entity found at ${path}`
-  );
+  const { entitiesStore } = useContext(ProviderContext);
+  const entity = entitiesStore.get(path);
 
   const { kind, attributes } = entity;
   const title = kind === EntityKind.Unresolved ? 'Entity' : capitalize(kind);

@@ -14,7 +14,6 @@ import ndarray from 'ndarray';
 
 import { applyMapping } from '../../vis-packs/core/utils';
 import { ProviderApi } from '../api';
-import { ProviderError } from '../models';
 import type { ValuesStoreParams } from '../models';
 
 const SLOW_TIMEOUT = 3000;
@@ -32,7 +31,7 @@ export class MockApi extends ProviderApi {
     }
 
     const entity = findMockEntity(path);
-    assertDefined(entity, ProviderError.EntityNotFound);
+    assertDefined(entity, `No entity found at ${path}`);
     return entity;
   }
 

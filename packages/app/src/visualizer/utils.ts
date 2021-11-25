@@ -11,7 +11,7 @@ import {
   NxInterpretation,
 } from '@h5web/shared';
 
-import type { AttrValuesStore } from '../providers/context';
+import type { AttrValuesStore, EntitiesStore } from '../providers/models';
 import { hasAttribute } from '../utils';
 import type { CoreVisDef } from '../vis-packs/core/visualizations';
 import { Vis, CORE_VIS } from '../vis-packs/core/visualizations';
@@ -21,10 +21,10 @@ import { NexusVis, NEXUS_VIS } from '../vis-packs/nexus/visualizations';
 
 export function resolvePath(
   path: string,
-  getEntity: (path: string) => Entity,
+  entitiesStore: EntitiesStore,
   attrValueStore: AttrValuesStore
 ): { entity: Entity; supportedVis: VisDef[] } | undefined {
-  const entity = getEntity(path);
+  const entity = entitiesStore.get(path);
 
   const supportedVis = findSupportedVis(entity, attrValueStore);
   if (supportedVis.length > 0) {
@@ -33,7 +33,7 @@ export function resolvePath(
 
   const nxDefaultPath = getNxDefaultPath(entity, attrValueStore);
   if (nxDefaultPath) {
-    return resolvePath(nxDefaultPath, getEntity, attrValueStore);
+    return resolvePath(nxDefaultPath, entitiesStore, attrValueStore);
   }
 
   return undefined;

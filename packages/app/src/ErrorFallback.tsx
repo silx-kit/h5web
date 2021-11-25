@@ -1,7 +1,7 @@
 import type { FallbackProps } from 'react-error-boundary';
 
 import styles from './App.module.css';
-import { ProviderError } from './providers/models';
+import { CANCELLED_ERROR_MSG } from './providers/utils';
 
 function ErrorFallback(props: FallbackProps) {
   const { error, resetErrorBoundary } = props;
@@ -9,7 +9,7 @@ function ErrorFallback(props: FallbackProps) {
   return (
     <p className={styles.error}>
       {error.message}
-      {error.message === ProviderError.Cancelled && (
+      {error.message === CANCELLED_ERROR_MSG && (
         <>
           <span>–</span>
           <button

@@ -1,7 +1,6 @@
 import type { DType } from '@h5web/shared';
 import { DTypeClass, EntityKind, isNumericType } from '@h5web/shared';
 
-import { ProviderError } from '../models';
 import type {
   H5GroveDatasetReponse,
   H5GroveEntityResponse,
@@ -63,22 +62,6 @@ export function typedArrayFromDType(dtype: DType) {
       case 64:
         return Float64Array;
     }
-  }
-
-  return undefined;
-}
-
-export function getMatchingProviderError(
-  errorData: string
-): ProviderError | undefined {
-  if (errorData.includes('File not found')) {
-    return ProviderError.FileNotFound;
-  }
-  if (errorData.includes('not a valid path')) {
-    return ProviderError.EntityNotFound;
-  }
-  if (errorData.includes('Cannot resolve')) {
-    return ProviderError.UnresolvableLink;
   }
 
   return undefined;

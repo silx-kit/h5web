@@ -17,7 +17,7 @@ import {
   FiImage,
 } from 'react-icons/fi';
 
-import type { AttrValuesStore } from '../../providers/context';
+import type { AttrValuesStore } from '../../providers/models';
 import type { VisDef } from '../models';
 import {
   MatrixConfigProvider,
