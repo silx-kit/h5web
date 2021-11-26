@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared';
+import type { Domain, NumericType } from '@h5web/shared';
 import {
   getValidDomainForScale,
   ScaleType,
@@ -6,6 +6,7 @@ import {
   formatTick,
   isScaleType,
   getBounds,
+  DTypeClass,
 } from '@h5web/shared';
 import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
@@ -286,4 +287,14 @@ export function getAxisDomain(
   return isDescending(axisValues)
     ? [extendedDomain[1], extendedDomain[0]]
     : extendedDomain;
+}
+
+const TYPE_STRINGS: Record<NumericType['class'], string> = {
+  [DTypeClass.Integer]: 'int',
+  [DTypeClass.Unsigned]: 'uint',
+  [DTypeClass.Float]: 'float',
+};
+
+export function formatNumType(numType: NumericType): string {
+  return `${TYPE_STRINGS[numType.class]}${numType.size}`;
 }

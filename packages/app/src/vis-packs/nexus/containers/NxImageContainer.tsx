@@ -44,6 +44,7 @@ function NxImageContainer(props: VisContainerProps) {
                 axisMapping={axisMapping}
                 title={title}
                 colorScaleType={silxStyle.signalScaleType}
+                dtype={signalDataset.type}
               />
             );
           }}

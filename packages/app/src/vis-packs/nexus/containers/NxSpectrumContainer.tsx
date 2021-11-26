@@ -59,6 +59,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}
                 title={title}
+                dtype={signalDataset.type}
               />
             );
           }}

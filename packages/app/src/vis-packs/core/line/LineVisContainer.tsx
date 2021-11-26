@@ -39,6 +39,7 @@ function LineVisContainer(props: VisContainerProps) {
               dims={dims}
               dimMapping={dimMapping}
               title={entity.name}
+              dtype={entity.type}
             />
           )}
         />

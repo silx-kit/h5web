@@ -1,5 +1,5 @@
 import { LineVis } from '@h5web/lib';
-import type { ScaleType } from '@h5web/shared';
+import type { NumericType, ScaleType } from '@h5web/shared';
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 
@@ -26,6 +26,7 @@ interface Props {
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title: string;
+  dtype?: NumericType;
 }
 
 function MappedLineVis(props: Props) {
@@ -39,6 +40,7 @@ function MappedLineVis(props: Props) {
     dimMapping,
     axisMapping = [],
     title,
+    dtype,
   } = props;
 
   const {
@@ -103,6 +105,7 @@ function MappedLineVis(props: Props) {
       }}
       ordinateLabel={valueLabel}
       title={title}
+      dtype={dtype}
       errorsArray={errorArray}
       showErrors={showErrors}
       auxArrays={auxArrays}

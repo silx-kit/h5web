@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared';
+import type { Domain, NumericType } from '@h5web/shared';
 import { assertDefined, formatTooltipVal, ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
@@ -8,7 +8,7 @@ import type { VisScaleType, AxisParams } from '../models';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { DEFAULT_DOMAIN } from '../utils';
+import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
@@ -24,6 +24,7 @@ interface Props {
   layout?: Layout;
   showGrid?: boolean;
   title?: string;
+  dtype?: NumericType;
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
@@ -44,6 +45,7 @@ function HeatmapVis(props: Props) {
     showGrid = false,
     invertColorMap = false,
     title,
+    dtype,
     abscissaParams = {},
     ordinateParams = {},
     alphaArray,
@@ -107,7 +109,8 @@ function HeatmapVis(props: Props) {
                 {`${abscissaLabel ?? 'x'}=${formatTooltipVal(abscissa)}, `}
                 {`${ordinateLabel ?? 'y'}=${formatTooltipVal(ordinate)}`}
                 <div className={styles.tooltipValue}>
-                  {formatTooltipVal(dataArray.get(yi, xi))}
+                  <strong>{formatTooltipVal(dataArray.get(yi, xi))}</strong>
+                  {dtype && <em>{` (${formatNumType(dtype)})`}</em>}
                 </div>
               </>
             );
