@@ -111,8 +111,8 @@ export interface NumericType {
 
 export interface ComplexType {
   class: DTypeClass.Complex;
-  realType: DType;
-  imagType: DType;
+  realType: NumericType;
+  imagType: NumericType;
 }
 
 export interface StringType {
