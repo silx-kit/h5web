@@ -10,6 +10,7 @@ import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import MappedLineVis from './MappedLineVis';
+import { useLineConfig } from './config';
 
 function LineVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -20,6 +21,8 @@ function LineVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
+  const autoScale = useLineConfig((state) => state.autoScale);
+
   return (
     <>
       <DimensionMapper
@@ -27,10 +30,15 @@ function LineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
+      <VisBoundary
+        resetKey={dimMapping}
+        loadingMessage={`Loading ${
+          autoScale ? 'current slice' : 'entire dataset'
+        }`}
+      >
         <ValueFetcher
           dataset={entity}
-          dimMapping={dimMapping}
+          dimMapping={autoScale ? dimMapping : undefined}
           render={(value) => (
             <MappedLineVis
               value={value}

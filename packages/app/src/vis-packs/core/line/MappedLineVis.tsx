@@ -52,7 +52,9 @@ function MappedLineVis(props: Props) {
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
-  const hookArgs: HookArgs = [slicedDims, slicedMapping, autoScale];
+  const hookArgs: HookArgs = autoScale
+    ? [slicedDims, slicedMapping, autoScale]
+    : [dims, dimMapping, autoScale];
 
   const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
   const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
