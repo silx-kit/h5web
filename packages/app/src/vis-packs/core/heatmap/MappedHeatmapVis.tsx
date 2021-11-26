@@ -1,5 +1,5 @@
 import { HeatmapVis } from '@h5web/lib';
-import type { ScaleType } from '@h5web/shared';
+import type { NumericType, ScaleType } from '@h5web/shared';
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 
@@ -17,6 +17,7 @@ interface Props {
   axisMapping?: AxisMapping;
   title: string;
   colorScaleType?: ScaleType;
+  dtype?: NumericType;
 }
 
 function MappedHeatmapVis(props: Props) {
@@ -26,6 +27,7 @@ function MappedHeatmapVis(props: Props) {
     dimMapping,
     axisMapping = [],
     title,
+    dtype,
     colorScaleType,
   } = props;
 
@@ -64,6 +66,7 @@ function MappedHeatmapVis(props: Props) {
     <HeatmapVis
       dataArray={dataArray}
       title={title}
+      dtype={dtype}
       domain={safeDomain}
       colorMap={colorMap}
       scaleType={scaleType}

@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared';
+import type { Domain, NumericType } from '@h5web/shared';
 import {
   assertDataLength,
   assertDefined,
@@ -20,7 +20,7 @@ import type { AxisParams } from '../models';
 import PanZoomMesh from '../shared/PanZoomMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { extendDomain, DEFAULT_DOMAIN } from '../utils';
+import { extendDomain, DEFAULT_DOMAIN, formatNumType } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
 import type { TooltipData } from './models';
@@ -39,6 +39,7 @@ interface Props {
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
   title?: string;
+  dtype?: NumericType;
   errorsArray?: NdArray<number[]>;
   showErrors?: boolean;
   auxArrays?: NdArray<number[]>[];
@@ -56,6 +57,7 @@ function LineVis(props: Props) {
     abscissaParams = {},
     ordinateLabel,
     title,
+    dtype,
     errorsArray,
     showErrors = false,
     auxArrays = [],
@@ -134,6 +136,7 @@ function LineVis(props: Props) {
                 <div className={styles.tooltipValue}>
                   <strong>{formatTooltipVal(value)}</strong>
                   {error && ` ±${formatTooltipErr(error)}`}
+                  {dtype && <em>{` (${formatNumType(dtype)})`}</em>}
                 </div>
               </>
             );
