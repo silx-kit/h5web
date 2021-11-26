@@ -31,6 +31,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxData}
+          dimMapping={dimMapping}
           render={(nxValues) => {
             const { signal, signalLabel, axisMapping, title } = nxValues;
 

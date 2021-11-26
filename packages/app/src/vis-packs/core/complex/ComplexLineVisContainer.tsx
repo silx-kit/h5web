@@ -27,12 +27,10 @@ function ComplexLineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary
-        resetKey={dimMapping}
-        loadingMessage="Loading entire dataset"
-      >
+      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
+          dimMapping={dimMapping}
           render={(value) => (
             <MappedComplexLineVis
               value={value}

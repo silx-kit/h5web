@@ -57,13 +57,18 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
 }
 
 export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
-  datasets: D[]
+  datasets: D[],
+  dimMapping?: DimensionMapping
 ): Record<string, Value<D>> {
   const { valuesStore } = useContext(ProviderContext);
+  const selection = getSliceSelection(dimMapping);
 
   return Object.fromEntries(
     datasets.map((dataset) => {
-      const value = valuesStore.get({ dataset });
+      const value = valuesStore.get({
+        dataset,
+        selection,
+      });
       assertDatasetValue(value, dataset);
 
       return [dataset.name, value];

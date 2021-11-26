@@ -36,9 +36,9 @@ function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
   const { attrValuesStore } = useContext(ProviderContext);
   const signal = useDatasetValue(signalDataset, dimMapping);
   const signalLabel = getDatasetLabel(signalDataset, attrValuesStore);
-  const errors = useDatasetValue(errorsDataset);
+  const errors = useDatasetValue(errorsDataset, dimMapping);
   const axisMapping = useAxisMapping(axisDatasets, silxStyle.axisScaleTypes);
-  const auxiliaries = Object.values(useDatasetValues(auxDatasets));
+  const auxiliaries = Object.values(useDatasetValues(auxDatasets, dimMapping));
   const title = useDatasetValue(titleDataset) || signalLabel;
 
   return (

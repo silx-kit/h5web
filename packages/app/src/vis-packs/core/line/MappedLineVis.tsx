@@ -10,6 +10,7 @@ import {
   useMappedArray,
   useDomain,
   useDomains,
+  useSlicedDimsAndMapping,
 } from '../hooks';
 import type { AxisMapping } from '../models';
 import LineToolbar from './LineToolbar';
@@ -49,7 +50,10 @@ function MappedLineVis(props: Props) {
   const { yScaleType, xScaleType, curveType, showGrid, autoScale, showErrors } =
     useLineConfig((state) => state, shallow);
 
-  const hookArgs: HookArgs = [dims, dimMapping, autoScale];
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
+
+  const hookArgs: HookArgs = [slicedDims, slicedMapping, autoScale];
+
   const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
   const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
   const [auxArrays, auxForDomain] = useMappedArrays(auxiliaries, ...hookArgs);
