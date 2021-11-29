@@ -76,7 +76,6 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     name: Vis.Matrix,
     Icon: FiGrid,
     Container: MatrixVisContainer,
-    ConfigProvider: MatrixConfigProvider,
     supportsDataset: (dataset) => {
       return hasPrintableType(dataset) && hasArrayShape(dataset);
     },

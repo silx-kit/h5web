@@ -1,11 +1,17 @@
 import { DownloadBtn, Toolbar } from '@h5web/lib';
+import type { Primitive, PrintableType } from '@h5web/shared';
+import type { NdArray } from 'ndarray';
 import { FiDownload } from 'react-icons/fi';
 
-import { useMatrixConfig } from './config';
 import { sliceToCsv } from './utils';
 
-function MatrixToolbar() {
-  const currentSlice = useMatrixConfig((state) => state.currentSlice);
+interface Props {
+  currentSlice: NdArray<Primitive<PrintableType>[]> | undefined;
+}
+
+function MatrixToolbar(props: Props) {
+  const { currentSlice } = props;
+
   if (currentSlice && currentSlice.shape.length > 2) {
     throw new Error('Expected current slice to have at most two dimensions');
   }
