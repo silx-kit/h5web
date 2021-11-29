@@ -4,6 +4,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
+import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { useNxData } from '../hooks';
@@ -32,7 +33,7 @@ function NxImageContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxData}
-          dimMapping={dimMapping}
+          selection={getSliceSelection(dimMapping)}
           render={(nxValues) => {
             const { signal, axisMapping, title } = nxValues;
 

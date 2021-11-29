@@ -2,7 +2,6 @@ import type { NumericType, ComplexType } from '@h5web/shared';
 import type { ReactNode } from 'react';
 import { useContext } from 'react';
 
-import type { DimensionMapping } from '../../dimension-mapper/models';
 import { ProviderContext } from '../../providers/context';
 import {
   useDatasetValue,
@@ -15,12 +14,12 @@ import { getDatasetLabel } from './utils';
 
 interface Props<T extends NumericType | ComplexType> {
   nxData: NxData<T>;
-  dimMapping?: DimensionMapping; // for slice-by-slice fetching
+  selection?: string; // for slice-by-slice fetching
   render: (val: NxValues<T>) => ReactNode;
 }
 
 function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
-  const { nxData, dimMapping, render } = props;
+  const { nxData, selection, render } = props;
   const {
     signalDataset,
     errorsDataset,
@@ -30,15 +29,15 @@ function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
     silxStyle,
   } = nxData;
 
-  usePrefetchValues([signalDataset, errorsDataset, ...auxDatasets], dimMapping);
+  usePrefetchValues([signalDataset, errorsDataset, ...auxDatasets], selection);
   usePrefetchValues([...axisDatasets, titleDataset]);
 
   const { attrValuesStore } = useContext(ProviderContext);
-  const signal = useDatasetValue(signalDataset, dimMapping);
+  const signal = useDatasetValue(signalDataset, selection);
   const signalLabel = getDatasetLabel(signalDataset, attrValuesStore);
-  const errors = useDatasetValue(errorsDataset, dimMapping);
+  const errors = useDatasetValue(errorsDataset, selection);
   const axisMapping = useAxisMapping(axisDatasets, silxStyle.axisScaleTypes);
-  const auxiliaries = Object.values(useDatasetValues(auxDatasets, dimMapping));
+  const auxiliaries = Object.values(useDatasetValues(auxDatasets, selection));
   const title = useDatasetValue(titleDataset) || signalLabel;
 
   return (

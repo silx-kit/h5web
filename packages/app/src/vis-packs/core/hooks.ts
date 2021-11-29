@@ -14,31 +14,31 @@ import { createMemo } from 'react-use';
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 import { ProviderContext } from '../../providers/context';
-import { applyMapping, getBaseArray, getSliceSelection } from './utils';
+import { applyMapping, getBaseArray } from './utils';
 
 export function usePrefetchValues(
   datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[],
-  dimMapping?: DimensionMapping
+  selection?: string
 ): void {
   const { valuesStore } = useContext(ProviderContext);
   datasets.filter(isDefined).forEach((dataset) => {
-    valuesStore.prefetch({ dataset, selection: getSliceSelection(dimMapping) });
+    valuesStore.prefetch({ dataset, selection });
   });
 }
 
 export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D,
-  dimMapping?: DimensionMapping
+  selection?: string
 ): Value<D>;
 
 export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
-  dimMapping?: DimensionMapping
+  selection?: string
 ): Value<D> | undefined;
 
 export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
-  dimMapping?: DimensionMapping
+  selection?: string
 ): Value<D> | undefined {
   const { valuesStore } = useContext(ProviderContext);
 
@@ -46,11 +46,8 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
     return undefined;
   }
 
-  // If `dimMapping` is not provided or has no slicing dimension, the entire dataset will be fetched
-  const value = valuesStore.get({
-    dataset,
-    selection: getSliceSelection(dimMapping),
-  });
+  // If `selection` is undefined, the entire dataset will be fetched
+  const value = valuesStore.get({ dataset, selection });
 
   assertDatasetValue(value, dataset);
   return value;
@@ -58,17 +55,13 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
 
 export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: D[],
-  dimMapping?: DimensionMapping
+  selection?: string
 ): Record<string, Value<D>> {
   const { valuesStore } = useContext(ProviderContext);
-  const selection = getSliceSelection(dimMapping);
 
   return Object.fromEntries(
     datasets.map((dataset) => {
-      const value = valuesStore.get({
-        dataset,
-        selection,
-      });
+      const value = valuesStore.get({ dataset, selection });
       assertDatasetValue(value, dataset);
 
       return [dataset.name, value];

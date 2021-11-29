@@ -1,5 +1,6 @@
 import { mockValues } from '@h5web/shared';
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import {
   findVisSelectorTabs,
@@ -71,4 +72,62 @@ test('visualize 2D datasets', async () => {
   expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
 
   expect(await screen.findByRole('figure', { name: 'twoD' })).toBeVisible();
+});
+
+test('visualize 1D slice of a 3D dataset with and without autoscale', async () => {
+  jest.useFakeTimers('modern');
+  await renderApp();
+  await selectExplorerNode('resilience/slow_slicing');
+
+  // Heatmap is selected by default and fetches a 2D slice.
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+
+  // Let the 2D slice fetch succeed
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  // Select the LineVis. The autoscale is on by default: it should fetch a 1D slice.
+  userEvent.click(await screen.findByRole('tab', { name: Vis.Line }));
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+
+  // Let the 1D slice fetch succeed
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  // Check that autoscale is truly on
+  const autoScaleBtn = await screen.findByRole('button', {
+    name: 'Auto-scale',
+  });
+  expect(autoScaleBtn).toHaveAttribute('aria-pressed', 'true');
+
+  // Move to other slice to fetch new slice
+  // eslint-disable-next-line prefer-destructuring
+  const d0Slider = screen.getAllByRole('slider', {
+    name: 'Dimension slider',
+  })[0];
+  d0Slider.focus();
+  userEvent.keyboard('{ArrowUp}');
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+
+  // Let the new slice fetch succeed
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+  d0Slider.blur(); // remove focus to avoid state update after unmount
+
+  // Activate autoscale. It should trigger the fetch of the entire dataset.
+  userEvent.click(autoScaleBtn);
+  expect(await screen.findByText(/Loading entire dataset/)).toBeVisible();
+
+  // Let the dataset fetch succeed
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  // Check that entire dataset is fetched
+  d0Slider.focus();
+  userEvent.keyboard('{ArrowUp}');
+  expect(await screen.findByRole('figure')).toBeVisible();
+  d0Slider.blur(); // remove focus to avoid state update after unmount
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
 });
