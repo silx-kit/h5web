@@ -10,6 +10,7 @@ import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import { useLineConfig } from '../line/config';
+import { getSliceSelection } from '../utils';
 import MappedComplexLineVis from './MappedComplexLineVis';
 
 function ComplexLineVisContainer(props: VisContainerProps) {
@@ -38,7 +39,7 @@ function ComplexLineVisContainer(props: VisContainerProps) {
       >
         <ValueFetcher
           dataset={entity}
-          dimMapping={autoScale ? dimMapping : undefined}
+          selection={autoScale ? getSliceSelection(dimMapping) : undefined}
           render={(value) => (
             <MappedComplexLineVis
               value={value}

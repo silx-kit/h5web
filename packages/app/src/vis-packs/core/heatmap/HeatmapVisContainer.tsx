@@ -10,6 +10,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import { getSliceSelection } from '../utils';
 import MappedHeatmapVis from './MappedHeatmapVis';
 
 function HeatmapVisContainer(props: VisContainerProps) {
@@ -32,7 +33,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
-          dimMapping={dimMapping}
+          selection={getSliceSelection(dimMapping)}
           render={(value) => (
             <MappedHeatmapVis
               value={value}

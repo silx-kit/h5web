@@ -10,6 +10,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import { getSliceSelection } from '../utils';
 import MappedMatrixVis from './MappedMatrixVis';
 import { getFormatter } from './utils';
 
@@ -36,7 +37,7 @@ function MatrixVisContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
-          dimMapping={dimMapping}
+          selection={getSliceSelection(dimMapping)}
           render={(value) => (
             <MappedMatrixVis
               value={value}

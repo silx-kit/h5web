@@ -9,6 +9,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import { getSliceSelection } from '../utils';
 import MappedLineVis from './MappedLineVis';
 import { useLineConfig } from './config';
 
@@ -38,7 +39,7 @@ function LineVisContainer(props: VisContainerProps) {
       >
         <ValueFetcher
           dataset={entity}
-          dimMapping={autoScale ? dimMapping : undefined}
+          selection={autoScale ? getSliceSelection(dimMapping) : undefined}
           render={(value) => (
             <MappedLineVis
               value={value}

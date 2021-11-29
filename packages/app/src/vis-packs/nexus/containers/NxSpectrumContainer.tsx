@@ -6,6 +6,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import { useLineConfig } from '../../core/line/config';
+import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericNxData } from '../guards';
@@ -41,7 +42,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxData}
-          dimMapping={autoScale ? dimMapping : undefined}
+          selection={autoScale ? getSliceSelection(dimMapping) : undefined}
           render={(nxValues) => {
             const {
               signal,
