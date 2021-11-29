@@ -4,9 +4,11 @@ import {
   assertNumDims,
   DTypeClass,
 } from '@h5web/shared';
+import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
 import VisBoundary from '../../VisBoundary';
+import RgbToolbar from '../../core/rgb/RgbToolbar';
 import { useRgbVisConfig } from '../../core/rgb/config';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
@@ -14,7 +16,7 @@ import { useNxData } from '../hooks';
 import { assertNumericSignal } from '../utils';
 
 function NxRgbContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertGroupWithChildren(entity);
 
   const nxData = useNxData(entity);
@@ -34,21 +36,20 @@ function NxRgbContainer(props: VisContainerProps) {
     <VisBoundary loadingMessage="Loading image">
       <NxValuesFetcher
         nxData={nxData}
-        render={(nxValues) => {
-          const { signal, title } = nxValues;
-
-          return (
+        render={(nxValues) => (
+          <>
+            {toolbarContainer && createPortal(<RgbToolbar />, toolbarContainer)}
             <RgbVis
-              value={signal}
+              value={nxValues.signal}
               dims={dims}
               floatFormat={signalDataset.type.class === DTypeClass.Float}
-              title={title}
+              title={nxValues.title}
               showGrid={showGrid}
               layout={layout}
               imageType={imageType}
             />
-          );
-        }}
+          </>
+        )}
       />
     </VisBoundary>
   );

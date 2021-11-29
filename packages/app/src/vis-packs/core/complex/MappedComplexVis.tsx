@@ -1,6 +1,7 @@
 import { HeatmapVis } from '@h5web/lib';
 import type { H5WebComplex, ScaleType } from '@h5web/shared';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
@@ -9,6 +10,7 @@ import { useSafeDomain, useVisDomain } from '../heatmap/hooks';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { AxisMapping } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';
+import ComplexToolbar from './ComplexToolbar';
 import { useComplexConfig } from './config';
 import { usePhaseAmplitudeArrays } from './hooks';
 import { ComplexVisType } from './models';
@@ -20,6 +22,7 @@ interface Props {
   axisMapping?: AxisMapping;
   title: string;
   colorScaleType?: ScaleType;
+  toolbarContainer: HTMLDivElement | undefined;
 }
 
 function MappedComplexVis(props: Props) {
@@ -30,6 +33,7 @@ function MappedComplexVis(props: Props) {
     axisMapping = [],
     title,
     colorScaleType,
+    toolbarContainer,
   } = props;
 
   const {
@@ -74,24 +78,29 @@ function MappedComplexVis(props: Props) {
   }, [setScaleType, colorScaleType]);
 
   return (
-    <HeatmapVis
-      dataArray={dataArray}
-      domain={safeDomain}
-      alphaArray={
-        visType === ComplexVisType.PhaseAmplitude ? amplitudeArray : undefined
-      }
-      alphaDomain={
-        visType === ComplexVisType.PhaseAmplitude ? amplitudeDomain : undefined
-      }
-      title={`${title} (${visType.toLowerCase()})`}
-      colorMap={colorMap}
-      scaleType={scaleType}
-      layout={layout}
-      showGrid={showGrid}
-      invertColorMap={invertColorMap}
-      abscissaParams={axisMapping[dimMapping.indexOf('x')]}
-      ordinateParams={axisMapping[dimMapping.indexOf('y')]}
-    />
+    <>
+      {toolbarContainer && createPortal(<ComplexToolbar />, toolbarContainer)}
+      <HeatmapVis
+        dataArray={dataArray}
+        domain={safeDomain}
+        alphaArray={
+          visType === ComplexVisType.PhaseAmplitude ? amplitudeArray : undefined
+        }
+        alphaDomain={
+          visType === ComplexVisType.PhaseAmplitude
+            ? amplitudeDomain
+            : undefined
+        }
+        title={`${title} (${visType.toLowerCase()})`}
+        colorMap={colorMap}
+        scaleType={scaleType}
+        layout={layout}
+        showGrid={showGrid}
+        invertColorMap={invertColorMap}
+        abscissaParams={axisMapping[dimMapping.indexOf('x')]}
+        ordinateParams={axisMapping[dimMapping.indexOf('y')]}
+      />
+    </>
   );
 }
 

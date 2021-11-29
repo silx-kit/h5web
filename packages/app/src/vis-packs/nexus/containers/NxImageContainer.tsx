@@ -10,7 +10,7 @@ import { useNxData } from '../hooks';
 import { assertNumericSignal } from '../utils';
 
 function NxImageContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertGroupWithChildren(entity);
 
   const nxData = useNxData(entity);
@@ -45,6 +45,7 @@ function NxImageContainer(props: VisContainerProps) {
                 title={title}
                 colorScaleType={silxStyle.signalScaleType}
                 dtype={signalDataset.type}
+                toolbarContainer={toolbarContainer}
               />
             );
           }}

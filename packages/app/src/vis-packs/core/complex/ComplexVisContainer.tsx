@@ -13,7 +13,7 @@ import ValueFetcher from '../ValueFetcher';
 import MappedComplexVis from './MappedComplexVis';
 
 function ComplexVisContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
   assertMinDims(entity, 2);
@@ -39,6 +39,7 @@ function ComplexVisContainer(props: VisContainerProps) {
               dims={dims}
               dimMapping={dimMapping}
               title={entity.name}
+              toolbarContainer={toolbarContainer}
             />
           )}
         />

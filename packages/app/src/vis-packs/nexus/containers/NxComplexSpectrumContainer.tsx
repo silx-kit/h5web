@@ -10,7 +10,7 @@ import { assertComplexNxData } from '../guards';
 import { useNxData } from '../hooks';
 
 function NxComplexSpectrumContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertGroupWithChildren(entity);
 
   const nxData = useNxData(entity);
@@ -43,6 +43,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}
                 title={title}
+                toolbarContainer={toolbarContainer}
               />
             );
           }}

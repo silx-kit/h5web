@@ -11,7 +11,7 @@ import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
 
 function NxSpectrumContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertGroupWithChildren(entity);
 
   const nxData = useNxData(entity);
@@ -60,6 +60,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
                 axisMapping={axisMapping}
                 title={title}
                 dtype={signalDataset.type}
+                toolbarContainer={toolbarContainer}
               />
             );
           }}

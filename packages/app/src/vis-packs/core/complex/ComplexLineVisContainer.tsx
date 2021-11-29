@@ -12,7 +12,7 @@ import ValueFetcher from '../ValueFetcher';
 import MappedComplexLineVis from './MappedComplexLineVis';
 
 function ComplexLineVisContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
   assertComplexType(entity);
@@ -39,6 +39,7 @@ function ComplexLineVisContainer(props: VisContainerProps) {
               dims={dims}
               dimMapping={dimMapping}
               title={entity.name}
+              toolbarContainer={toolbarContainer}
             />
           )}
         />

@@ -1,6 +1,7 @@
 import { LineVis } from '@h5web/lib';
 import type { NumericType, ScaleType } from '@h5web/shared';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
@@ -12,6 +13,7 @@ import {
   useDomains,
 } from '../hooks';
 import type { AxisMapping } from '../models';
+import LineToolbar from './LineToolbar';
 import { useLineConfig } from './config';
 
 type HookArgs = [number[], DimensionMapping, boolean];
@@ -27,6 +29,7 @@ interface Props {
   axisMapping?: AxisMapping;
   title: string;
   dtype?: NumericType;
+  toolbarContainer?: HTMLDivElement | undefined;
 }
 
 function MappedLineVis(props: Props) {
@@ -41,6 +44,7 @@ function MappedLineVis(props: Props) {
     axisMapping = [],
     title,
     dtype,
+    toolbarContainer,
   } = props;
 
   const {
@@ -92,24 +96,27 @@ function MappedLineVis(props: Props) {
   }, [dims, disableAutoScale]);
 
   return (
-    <LineVis
-      dataArray={dataArray}
-      domain={combinedDomain}
-      scaleType={yScaleType}
-      curveType={curveType}
-      showGrid={showGrid}
-      abscissaParams={{
-        label: mappedAbscissaParams?.label,
-        value: mappedAbscissaParams?.value,
-        scaleType: xScaleType,
-      }}
-      ordinateLabel={valueLabel}
-      title={title}
-      dtype={dtype}
-      errorsArray={errorArray}
-      showErrors={showErrors}
-      auxArrays={auxArrays}
-    />
+    <>
+      {toolbarContainer && createPortal(<LineToolbar />, toolbarContainer)}
+      <LineVis
+        dataArray={dataArray}
+        domain={combinedDomain}
+        scaleType={yScaleType}
+        curveType={curveType}
+        showGrid={showGrid}
+        abscissaParams={{
+          label: mappedAbscissaParams?.label,
+          value: mappedAbscissaParams?.value,
+          scaleType: xScaleType,
+        }}
+        ordinateLabel={valueLabel}
+        title={title}
+        dtype={dtype}
+        errorsArray={errorArray}
+        showErrors={showErrors}
+        auxArrays={auxArrays}
+      />
+    </>
   );
 }
 
