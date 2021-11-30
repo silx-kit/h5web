@@ -1,4 +1,10 @@
-import type { AttributeValues, Entity } from '@h5web/shared';
+import type {
+  ArrayShape,
+  AttributeValues,
+  Dataset,
+  Entity,
+  NumericType,
+} from '@h5web/shared';
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -27,6 +33,11 @@ export abstract class ProviderApi {
     this.filepath = filepath;
     this.client = axios.create(config);
   }
+
+  public getTiffUrl?(
+    dataset: Dataset<ArrayShape, NumericType>,
+    selection?: string | undefined
+  ): string | undefined;
 
   public cancelValueRequests(): void {
     // Cancel every active value request

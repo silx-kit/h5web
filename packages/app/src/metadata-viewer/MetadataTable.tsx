@@ -1,5 +1,6 @@
+import type { PropsWithChildren } from 'react';
+
 import styles from './MetadataViewer.module.css';
-import type { PropsWithChildren } from '.pnpm/@types+react@17.0.27/node_modules/@types/react';
 
 interface Props {
   title: string;

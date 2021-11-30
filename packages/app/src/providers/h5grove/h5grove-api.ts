@@ -1,10 +1,12 @@
 import type {
+  ArrayShape,
   Attribute,
   AttributeValues,
   Dataset,
   Entity,
   Group,
   GroupWithChildren,
+  NumericType,
   UnresolvedEntity,
 } from '@h5web/shared';
 import {
@@ -69,6 +71,23 @@ export class H5GroveApi extends ProviderApi {
   public async getAttrValues(entity: Entity): Promise<AttributeValues> {
     const { path, attributes } = entity;
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
+  }
+
+  public getTiffUrl(
+    dataset: Dataset<ArrayShape, NumericType>,
+    selection: string | undefined
+  ): string | undefined {
+    const { baseURL, params } = this.client.defaults;
+
+    const searchParams = new URLSearchParams(params as Record<string, string>);
+    searchParams.set('path', dataset.path);
+    searchParams.set('format', 'tiff');
+
+    if (selection) {
+      searchParams.set('selection', selection);
+    }
+
+    return `${baseURL as string}/data/?${searchParams.toString()}`;
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {

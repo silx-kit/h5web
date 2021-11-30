@@ -22,6 +22,7 @@ function NxImageContainer(props: VisContainerProps) {
 
   const { shape: dims } = signalDataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -33,19 +34,20 @@ function NxImageContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxData}
-          selection={getSliceSelection(dimMapping)}
+          selection={selection}
           render={(nxValues) => {
             const { signal, axisMapping, title } = nxValues;
 
             return (
               <MappedHeatmapVis
+                dataset={signalDataset}
+                selection={selection}
                 value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
                 axisMapping={axisMapping}
                 title={title}
                 colorScaleType={silxStyle.signalScaleType}
-                dtype={signalDataset.type}
                 toolbarContainer={toolbarContainer}
               />
             );

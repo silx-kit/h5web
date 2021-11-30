@@ -90,6 +90,7 @@ function Provider(props: Props) {
         entitiesStore,
         valuesStore,
         attrValuesStore,
+        getTiffUrl: api.getTiffUrl?.bind(api),
       }}
     >
       {children}

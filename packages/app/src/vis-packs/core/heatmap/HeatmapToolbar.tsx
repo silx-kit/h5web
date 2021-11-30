@@ -1,5 +1,6 @@
 import type { Domain } from '@h5web/lib';
 import {
+  DownloadBtn,
   ColorMapSelector,
   DomainSlider,
   FlipYAxisToggler,
@@ -11,19 +12,26 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import { useEffect } from 'react';
+import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
+import { useEffect, useContext } from 'react';
+import { FiDownload } from 'react-icons/fi';
 import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
+import { ProviderContext } from '../../../providers/context';
 import { useHeatmapConfig } from './config';
 
 interface Props {
+  dataset: Dataset<ArrayShape, NumericType>;
   dataDomain: Domain;
+  selection: string | undefined;
   initialScaleType: ScaleType | undefined;
 }
 
 function HeatmapToolbar(props: Props) {
-  const { dataDomain, initialScaleType } = props;
+  const { dataset, dataDomain, selection, initialScaleType } = props;
+
+  const { getTiffUrl } = useContext(ProviderContext);
 
   const {
     customDomain,
@@ -93,6 +101,14 @@ function HeatmapToolbar(props: Props) {
 
       <Separator />
 
+      {getTiffUrl && (
+        <DownloadBtn
+          label="Export to TIFF"
+          icon={FiDownload}
+          filename="data.tiff"
+          getDownloadUrl={() => getTiffUrl(dataset, selection)}
+        />
+      )}
       <SnapshotButton />
     </Toolbar>
   );

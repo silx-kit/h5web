@@ -1,5 +1,10 @@
 import { HeatmapVis } from '@h5web/lib';
-import type { NumericType, ScaleType } from '@h5web/shared';
+import type {
+  ArrayShape,
+  Dataset,
+  NumericType,
+  ScaleType,
+} from '@h5web/shared';
 import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
@@ -12,24 +17,26 @@ import { useHeatmapConfig } from './config';
 import { useSafeDomain, useVisDomain } from './hooks';
 
 interface Props {
+  dataset: Dataset<ArrayShape, NumericType>;
+  selection: string | undefined;
   value: number[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title: string;
   colorScaleType?: ScaleType;
-  dtype?: NumericType;
   toolbarContainer: HTMLDivElement | undefined;
 }
 
 function MappedHeatmapVis(props: Props) {
   const {
+    dataset,
+    selection,
     value,
     dims,
     dimMapping,
     axisMapping = [],
     title,
-    dtype,
     colorScaleType,
     toolbarContainer,
   } = props;
@@ -58,7 +65,9 @@ function MappedHeatmapVis(props: Props) {
       {toolbarContainer &&
         createPortal(
           <HeatmapToolbar
+            dataset={dataset}
             dataDomain={dataDomain}
+            selection={selection}
             initialScaleType={colorScaleType}
           />,
           toolbarContainer
@@ -67,7 +76,7 @@ function MappedHeatmapVis(props: Props) {
       <HeatmapVis
         dataArray={dataArray}
         title={title}
-        dtype={dtype}
+        dtype={dataset.type}
         domain={safeDomain}
         colorMap={colorMap}
         scaleType={scaleType}
