@@ -40,7 +40,7 @@ function createStore() {
         setXScaleType: (type: ScaleType) => set({ xScaleType: type }),
         setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
 
-        autoScale: false,
+        autoScale: true,
         toggleAutoScale: () => {
           set((state) => ({ autoScale: !state.autoScale }));
         },
@@ -50,7 +50,14 @@ function createStore() {
       }),
       {
         name: 'h5web:line',
-        version: 3,
+        whitelist: [
+          'curveType',
+          'showGrid',
+          'xScaleType',
+          'yScaleType',
+          'showErrors',
+        ],
+        version: 4,
       }
     )
   );
