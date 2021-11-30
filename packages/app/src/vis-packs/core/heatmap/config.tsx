@@ -1,5 +1,4 @@
 import type { CustomDomain } from '@h5web/lib';
-import type { Domain } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
 import create from 'zustand';
 import createContext from 'zustand/context';
@@ -9,9 +8,6 @@ import type { ConfigProviderProps } from '../../models';
 import type { ColorMap, Layout } from './models';
 
 interface HeatmapConfig {
-  dataDomain: Domain | undefined;
-  setDataDomain: (dataDomain: Domain) => void;
-
   customDomain: CustomDomain;
   setCustomDomain: (customDomain: CustomDomain) => void;
 
@@ -22,7 +18,6 @@ interface HeatmapConfig {
   toggleColorMapInversion: () => void;
 
   scaleType: ScaleType;
-  staleDomainScaleType: ScaleType | undefined; // for domain slider, when `dataDomain` is being recomputed with new scale type
   setScaleType: (scaleType: ScaleType) => void;
 
   showGrid: boolean;
@@ -38,12 +33,7 @@ interface HeatmapConfig {
 function createStore() {
   return create<HeatmapConfig>(
     persist(
-      (set, get) => ({
-        dataDomain: undefined,
-        setDataDomain: (dataDomain: Domain) => {
-          set({ dataDomain, staleDomainScaleType: undefined });
-        },
-
+      (set) => ({
         customDomain: [null, null],
         setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
 
@@ -56,12 +46,8 @@ function createStore() {
         },
 
         scaleType: ScaleType.Linear,
-        staleDomainScaleType: undefined,
         setScaleType: (scaleType: ScaleType) => {
-          const prevScaleType = get().scaleType;
-          if (scaleType !== prevScaleType) {
-            set(() => ({ scaleType, staleDomainScaleType: prevScaleType }));
-          }
+          set(() => ({ scaleType }));
         },
 
         showGrid: true,
@@ -76,16 +62,7 @@ function createStore() {
       }),
       {
         name: 'h5web:heatmap',
-        whitelist: [
-          'customDomain',
-          'colorMap',
-          'scaleType',
-          'showGrid',
-          'invertColorMap',
-          'layout',
-          'flipYAxis',
-        ],
-        version: 8,
+        version: 9,
       }
     )
   );

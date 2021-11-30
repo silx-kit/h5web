@@ -32,7 +32,6 @@ function createStore() {
       }),
       {
         name: 'h5web:rgb',
-        whitelist: ['showGrid', 'layout', 'imageType'],
         version: 1,
       }
     )

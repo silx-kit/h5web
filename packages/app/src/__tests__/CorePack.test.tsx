@@ -22,9 +22,9 @@ test('visualise raw dataset', async () => {
 });
 
 test('log raw dataset to console if too large', async () => {
-  const logSpy = mockConsoleMethod('log');
-
   await renderApp();
+
+  const logSpy = mockConsoleMethod('log');
   await selectExplorerNode('entities/raw_large');
 
   expect(await screen.findByText(/dataset is too big/)).toBeVisible();

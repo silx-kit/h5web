@@ -19,14 +19,10 @@ interface LineConfig {
   setYScaleType: (type: ScaleType) => void;
 
   autoScale: boolean;
-  isAutoScaleDisabled: boolean;
   toggleAutoScale: () => void;
-  disableAutoScale: (isAutoScaleDisabled: boolean) => void;
 
   showErrors: boolean;
-  areErrorsDisabled: boolean;
   toggleErrors: () => void;
-  disableErrors: (areErrorsDisabled: boolean) => void;
 }
 
 function createStore() {
@@ -45,32 +41,16 @@ function createStore() {
         setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
 
         autoScale: false,
-        isAutoScaleDisabled: false,
         toggleAutoScale: () => {
           set((state) => ({ autoScale: !state.autoScale }));
         },
-        disableAutoScale: (isAutoScaleDisabled: boolean) => {
-          set({ isAutoScaleDisabled });
-        },
 
         showErrors: true,
-        areErrorsDisabled: false,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
-        disableErrors: (areErrorsDisabled: boolean) => {
-          set({ areErrorsDisabled });
-        },
       }),
       {
         name: 'h5web:line',
-        whitelist: [
-          'curveType',
-          'showGrid',
-          'xScaleType',
-          'yScaleType',
-          'autoScale',
-          'showErrors',
-        ],
-        version: 2,
+        version: 3,
       }
     )
   );

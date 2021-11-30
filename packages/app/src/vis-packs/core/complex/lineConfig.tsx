@@ -20,7 +20,6 @@ function createStore() {
       }),
       {
         name: 'h5web:complexLine',
-        whitelist: ['visType'],
         version: 1,
       }
     )

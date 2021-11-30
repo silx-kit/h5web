@@ -1,6 +1,5 @@
 import { LineVis } from '@h5web/lib';
 import type { NumericType, ScaleType } from '@h5web/shared';
-import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
@@ -47,18 +46,8 @@ function MappedLineVis(props: Props) {
     toolbarContainer,
   } = props;
 
-  const {
-    yScaleType,
-    setYScaleType,
-    xScaleType,
-    setXScaleType,
-    curveType,
-    showGrid,
-    autoScale,
-    disableAutoScale,
-    showErrors,
-    disableErrors,
-  } = useLineConfig((state) => state, shallow);
+  const { yScaleType, xScaleType, curveType, showGrid, autoScale, showErrors } =
+    useLineConfig((state) => state, shallow);
 
   const hookArgs: HookArgs = [dims, dimMapping, autoScale];
   const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
@@ -74,30 +63,20 @@ function MappedLineVis(props: Props) {
   const combinedDomain = useCombinedDomain([dataDomain, ...auxDomains]);
 
   const mappedAbscissaParams = axisMapping[dimMapping.indexOf('x')];
-  useEffect(() => {
-    if (mappedAbscissaParams?.scaleType) {
-      setXScaleType(mappedAbscissaParams?.scaleType);
-    }
-  }, [mappedAbscissaParams?.scaleType, setXScaleType]);
-
-  useEffect(() => {
-    if (valueScaleType) {
-      setYScaleType(valueScaleType);
-    }
-  }, [setYScaleType, valueScaleType]);
-
-  useEffect(() => {
-    disableErrors(!errors);
-  }, [disableErrors, errors]);
-
-  useEffect(() => {
-    // Disable `autoScale` for 1D datasets (baseArray and dataArray are the same)
-    disableAutoScale(dims.length <= 1);
-  }, [dims, disableAutoScale]);
 
   return (
     <>
-      {toolbarContainer && createPortal(<LineToolbar />, toolbarContainer)}
+      {toolbarContainer &&
+        createPortal(
+          <LineToolbar
+            initialXScaleType={mappedAbscissaParams?.scaleType}
+            initialYScaleType={valueScaleType}
+            disableAutoScale={dims.length <= 1} // with 1D datasets, `baseArray` and `dataArray` are the same so auto-scaling is implied
+            disableErrors={!errors}
+          />,
+          toolbarContainer
+        )}
+
       <LineVis
         dataArray={dataArray}
         domain={combinedDomain}

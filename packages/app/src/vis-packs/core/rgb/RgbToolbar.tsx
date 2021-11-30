@@ -4,6 +4,7 @@ import {
   ToggleBtn,
   ToggleGroup,
   Toolbar,
+  Separator,
 } from '@h5web/lib';
 import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
@@ -27,6 +28,8 @@ function RgbToolbar() {
         <ToggleGroup.Btn label="RGB" value={ImageType.RGB} />
         <ToggleGroup.Btn label="BGR" value={ImageType.BGR} />
       </ToggleGroup>
+
+      <Separator />
 
       <ToggleBtn
         label="Keep ratio"

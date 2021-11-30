@@ -1,6 +1,5 @@
 import { HeatmapVis } from '@h5web/lib';
 import type { NumericType, ScaleType } from '@h5web/shared';
-import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
@@ -41,8 +40,6 @@ function MappedHeatmapVis(props: Props) {
     scaleType,
     layout,
     showGrid,
-    setDataDomain,
-    setScaleType,
     invertColorMap,
     flipYAxis,
   } = useHeatmapConfig((state) => state, shallow);
@@ -56,19 +53,17 @@ function MappedHeatmapVis(props: Props) {
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 
-  useEffect(() => {
-    setDataDomain(dataDomain);
-  }, [dataDomain, setDataDomain]);
-
-  useEffect(() => {
-    if (colorScaleType) {
-      setScaleType(colorScaleType);
-    }
-  }, [setScaleType, colorScaleType]);
-
   return (
     <>
-      {toolbarContainer && createPortal(<HeatmapToolbar />, toolbarContainer)}
+      {toolbarContainer &&
+        createPortal(
+          <HeatmapToolbar
+            dataDomain={dataDomain}
+            initialScaleType={colorScaleType}
+          />,
+          toolbarContainer
+        )}
+
       <HeatmapVis
         dataArray={dataArray}
         title={title}

@@ -6,7 +6,6 @@ import { renderApp, selectExplorerNode } from '../test-utils';
 test('show slider with two thumbs', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
-  expect(await screen.findByRole('figure')).toBeVisible();
 
   const thumbs = await screen.findAllByRole('slider');
   expect(thumbs).toHaveLength(2);
@@ -17,7 +16,6 @@ test('show slider with two thumbs', async () => {
 test('show tooltip on hover', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
-  expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   const tooltip = screen.getByRole('dialog', { hidden: true });
@@ -41,7 +39,6 @@ test('show tooltip on hover', async () => {
 test('show min/max and data range in tooltip', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
-  expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.hover(editBtn);
@@ -63,11 +60,11 @@ test('update domain when moving thumbs (with keyboard)', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
-  const visArea = await screen.findByRole('figure');
-  const minThumb = await screen.findByRole('slider', { name: /min/ });
-
   // Hover min thumb to reveal tooltip
+  const minThumb = await screen.findByRole('slider', { name: /min/ });
   userEvent.hover(minThumb);
+
+  const visArea = await screen.findByRole('figure');
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
 
@@ -110,8 +107,7 @@ test('allow editing bounds manually', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
-  const visArea = await screen.findByRole('figure');
-  const editBtn = screen.getByRole('button', { name: 'Edit domain' });
+  const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   expect(editBtn).toHaveAttribute('aria-pressed', 'false');
 
   // Open tooltip with both min and max in edit mode
@@ -130,6 +126,8 @@ test('allow editing bounds manually', async () => {
   // Type '1' in min input field (at the end, after the current value)
   userEvent.type(minInput, '1');
   expect(minInput).toHaveValue('−9.5e+11');
+
+  const visArea = await screen.findByRole('figure');
   expect(within(visArea).getByText('−9.5e+1')).toBeInTheDocument(); // not applied yet
 
   // Cancel min edit
@@ -156,7 +154,6 @@ test('allow editing bounds manually', async () => {
 test('clamp domain in symlog scale', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
-  expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.click(editBtn);
@@ -188,7 +185,6 @@ test('clamp domain in symlog scale', async () => {
 test('show min/max autoscale toggles in tooltip (pressed by default)', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
-  expect(await screen.findByRole('figure')).toBeVisible();
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.hover(editBtn);
@@ -204,7 +200,6 @@ test('show min/max autoscale toggles in tooltip (pressed by default)', async () 
 test('control min/max autoscale behaviour', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
-  expect(await screen.findByRole('figure')).toBeVisible();
 
   const minThumb = await screen.findByRole('slider', { name: /min/ });
   userEvent.hover(minThumb);
@@ -235,8 +230,7 @@ test('handle empty domain', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
-  const visArea = await screen.findByRole('figure');
-  const editBtn = screen.getByRole('button', { name: 'Edit domain' });
+  const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.click(editBtn);
 
   const minInput = screen.getByLabelText('min');
@@ -249,6 +243,8 @@ test('handle empty domain', async () => {
   userEvent.type(minInput, '400{enter}');
   expect(minThumb).toHaveAttribute('aria-valuenow', '58'); // not quite in the middle because of symlog
   expect(maxThumb).toHaveAttribute('aria-valuenow', '58');
+
+  const visArea = await screen.findByRole('figure');
   expect(within(visArea).getByText('−∞')).toBeInTheDocument();
   expect(within(visArea).getByText('+∞')).toBeInTheDocument();
 
@@ -274,8 +270,7 @@ test('handle min > max', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
-  const visArea = await screen.findByRole('figure');
-  const editBtn = screen.getByRole('button', { name: 'Edit domain' });
+  const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   userEvent.click(editBtn);
 
   const minInput = screen.getByLabelText('min');
@@ -289,6 +284,7 @@ test('handle min > max', async () => {
     /falling back to data range/
   );
 
+  const visArea = await screen.findByRole('figure');
   expect(within(visArea).getByText('−9.5e+1')).toBeInTheDocument();
   expect(within(visArea).getByText('4e+2')).toBeInTheDocument();
 
@@ -302,8 +298,7 @@ test('handle min or max <= 0 in log scale', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/image');
 
-  const visArea = await screen.findByRole('figure');
-  const editBtn = screen.getByRole('button', { name: 'Edit domain' });
+  const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   expect(await screen.findByRole('button', { name: 'Log' })).toBeVisible(); // wait for switch to log scale
 
   userEvent.click(editBtn);
@@ -318,6 +313,7 @@ test('handle min or max <= 0 in log scale', async () => {
     /falling back to data min/
   );
 
+  const visArea = await screen.findByRole('figure');
   expect(within(visArea).getByText('9.996e-1')).toBeInTheDocument(); // data max
 
   // If min and max are negative and min > max, min > max error and fallback take over
@@ -334,8 +330,7 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
   await renderApp();
   await selectExplorerNode('nexus_entry/image');
 
-  const visArea = await screen.findByRole('figure');
-  const editBtn = screen.getByRole('button', { name: 'Edit domain' });
+  const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   expect(await screen.findByRole('button', { name: 'Log' })).toBeVisible(); // wait for switch to log scale
 
   userEvent.click(editBtn);
@@ -354,6 +349,7 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
   );
 
   // Min fallback = custom max, so domain is empty
+  const visArea = await screen.findByRole('figure');
   expect(within(visArea).getByText('−∞')).toBeInTheDocument();
   expect(within(visArea).getByText('+∞')).toBeInTheDocument();
 });
