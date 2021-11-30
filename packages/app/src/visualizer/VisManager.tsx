@@ -1,8 +1,9 @@
 import type { Entity } from '@h5web/shared';
 import { assertDefined } from '@h5web/shared';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Profiler from '../Profiler';
+import { ProviderContext } from '../providers/context';
 import type { VisDef } from '../vis-packs/models';
 import VisSelector from './VisSelector';
 import styles from './Visualizer.module.css';
@@ -28,6 +29,13 @@ function VisManager(props: Props) {
 
   const [visBarElem, setVisBarElem] = useState<HTMLDivElement>();
 
+  const { valuesStore } = useContext(ProviderContext);
+  function onVisChange(vis: VisDef) {
+    setActiveVis(vis);
+    valuesStore.cancelOngoing();
+    valuesStore.evictCancelled();
+  }
+
   return (
     <div className={styles.visManager}>
       <div
@@ -37,7 +45,7 @@ function VisManager(props: Props) {
         <VisSelector
           activeVis={activeVis}
           choices={supportedVis}
-          onChange={setActiveVis}
+          onChange={onVisChange}
         />
       </div>
 
