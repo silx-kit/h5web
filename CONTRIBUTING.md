@@ -155,7 +155,8 @@ install the recommended extensions.
 ## Testing
 
 - `pnpm test` - run unit and feature tests with Jest
-- `pnpm test -- --watch` - run Jest in watch mode
+- `pnpm test -- --watch` - run tests related to changed files in watch mode
+- `pnpm test -- --watchAll` - run all tests in watch mode
 - `pnpm test --filter <project-name>` - run Jest in a specific project
 - `pnpm cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end

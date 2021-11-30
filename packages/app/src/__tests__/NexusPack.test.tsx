@@ -231,7 +231,7 @@ test('visualize NXdata group with "rgb-image" interpretation but incompatible si
   ).toBeVisible();
 });
 
-test('ignore unknown SILX styles options and invalid values', async () => {
+test('ignore unknown `SILX_style` options and invalid values', async () => {
   await renderApp();
   await selectExplorerNode('nexus_malformed/silx_style_unknown');
 

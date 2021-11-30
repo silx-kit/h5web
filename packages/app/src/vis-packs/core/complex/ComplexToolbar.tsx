@@ -1,3 +1,4 @@
+import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
   DomainSlider,
@@ -9,6 +10,7 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
+import { useEffect } from 'react';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
@@ -16,15 +18,20 @@ import { useHeatmapConfig } from '../heatmap/config';
 import { useComplexConfig } from './config';
 import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
-function ComplexToolbar() {
+interface Props {
+  dataDomain: Domain;
+  initialScaleType: ScaleType | undefined;
+}
+
+function ComplexToolbar(props: Props) {
+  const { dataDomain, initialScaleType } = props;
+
   const {
-    dataDomain,
     customDomain,
     setCustomDomain,
     colorMap,
     setColorMap,
     scaleType,
-    staleDomainScaleType,
     setScaleType,
     layout,
     setLayout,
@@ -33,39 +40,30 @@ function ComplexToolbar() {
     invertColorMap,
     toggleColorMapInversion,
   } = useHeatmapConfig((state) => state, shallow);
+
   const { visType, setVisType } = useComplexConfig((state) => state, shallow);
+
+  useEffect(() => {
+    if (initialScaleType) {
+      setScaleType(initialScaleType);
+    }
+  }, [initialScaleType, setScaleType]);
 
   return (
     <Toolbar>
-      {dataDomain && (
-        <>
-          <DomainSlider
-            dataDomain={dataDomain}
-            customDomain={customDomain}
-            scaleType={staleDomainScaleType || scaleType}
-            onCustomDomainChange={setCustomDomain}
-          />
-          <Separator />
-        </>
-      )}
+      <DomainSlider
+        dataDomain={dataDomain}
+        customDomain={customDomain}
+        scaleType={scaleType}
+        onCustomDomainChange={setCustomDomain}
+      />
+      <Separator />
 
       <ColorMapSelector
         value={colorMap}
         onValueChange={setColorMap}
         invert={invertColorMap}
         onInversionChange={toggleColorMapInversion}
-      />
-
-      <Separator />
-
-      <Selector
-        value={visType}
-        onChange={(value: ComplexVisType) => setVisType(value)}
-        options={Object.values(ComplexVisType)}
-        optionComponent={({ option }) => (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
-        )}
       />
 
       <Separator />
@@ -79,6 +77,18 @@ function ComplexToolbar() {
           ScaleType.SymLog,
           ScaleType.Sqrt,
         ]}
+      />
+
+      <Separator />
+
+      <Selector
+        value={visType}
+        onChange={(value: ComplexVisType) => setVisType(value)}
+        options={Object.values(ComplexVisType)}
+        optionComponent={({ option }) => (
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
+        )}
       />
 
       <Separator />

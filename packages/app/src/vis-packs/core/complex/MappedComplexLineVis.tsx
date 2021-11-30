@@ -23,6 +23,7 @@ interface Props {
 
 function MappedComplexLineVis(props: Props) {
   const { value, valueLabel, toolbarContainer, ...lineProps } = props;
+  const { valueScaleType, dims, dimMapping, axisMapping = [] } = lineProps;
 
   const { visType } = useComplexLineConfig((state) => state, shallow);
 
@@ -31,7 +32,14 @@ function MappedComplexLineVis(props: Props) {
   return (
     <>
       {toolbarContainer &&
-        createPortal(<ComplexLineToolbar />, toolbarContainer)}
+        createPortal(
+          <ComplexLineToolbar
+            initialXScaleType={axisMapping[dimMapping.indexOf('x')]?.scaleType}
+            initialYScaleType={valueScaleType}
+            disableAutoScale={dims.length <= 1} // with 1D datasets, `baseArray` and `dataArray` are the same so auto-scaling is implied
+          />,
+          toolbarContainer
+        )}
 
       <MappedLineVis
         value={

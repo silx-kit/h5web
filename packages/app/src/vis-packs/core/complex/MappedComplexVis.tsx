@@ -1,6 +1,5 @@
 import { HeatmapVis } from '@h5web/lib';
 import type { H5WebComplex, ScaleType } from '@h5web/shared';
-import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
@@ -42,8 +41,6 @@ function MappedComplexVis(props: Props) {
     scaleType,
     layout,
     showGrid,
-    setDataDomain,
-    setScaleType,
     invertColorMap,
   } = useHeatmapConfig((state) => state, shallow);
 
@@ -67,19 +64,18 @@ function MappedComplexVis(props: Props) {
 
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
-  useEffect(() => {
-    setDataDomain(dataDomain);
-  }, [dataDomain, setDataDomain]);
-
-  useEffect(() => {
-    if (colorScaleType) {
-      setScaleType(colorScaleType);
-    }
-  }, [setScaleType, colorScaleType]);
 
   return (
     <>
-      {toolbarContainer && createPortal(<ComplexToolbar />, toolbarContainer)}
+      {toolbarContainer &&
+        createPortal(
+          <ComplexToolbar
+            dataDomain={dataDomain}
+            initialScaleType={colorScaleType}
+          />,
+          toolbarContainer
+        )}
+
       <HeatmapVis
         dataArray={dataArray}
         domain={safeDomain}

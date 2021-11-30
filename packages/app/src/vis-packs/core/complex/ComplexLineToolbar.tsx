@@ -1,3 +1,4 @@
+import type { ScaleType } from '@h5web/lib';
 import {
   Toolbar,
   Separator,
@@ -7,7 +8,7 @@ import {
   Selector,
   CurveType,
 } from '@h5web/lib';
-import { FiItalic } from 'react-icons/fi';
+import { useEffect } from 'react';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
@@ -16,7 +17,15 @@ import { useComplexLineConfig } from './lineConfig';
 import type { ComplexLineVisType } from './models';
 import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
-function ComplexLineToolbar() {
+interface Props {
+  initialXScaleType: ScaleType | undefined;
+  initialYScaleType: ScaleType | undefined;
+  disableAutoScale: boolean;
+}
+
+function ComplexLineToolbar(props: Props) {
+  const { initialXScaleType, initialYScaleType, disableAutoScale } = props;
+
   const {
     curveType,
     setCurveType,
@@ -27,16 +36,25 @@ function ComplexLineToolbar() {
     yScaleType,
     setYScaleType,
     autoScale,
-    isAutoScaleDisabled,
     toggleAutoScale,
-    showErrors,
-    areErrorsDisabled,
-    toggleErrors,
   } = useLineConfig((state) => state, shallow);
+
   const { visType, setVisType } = useComplexLineConfig(
     (state) => state,
     shallow
   );
+
+  useEffect(() => {
+    if (initialXScaleType) {
+      setXScaleType(initialXScaleType);
+    }
+  }, [initialXScaleType, setXScaleType]);
+
+  useEffect(() => {
+    if (initialYScaleType) {
+      setYScaleType(initialYScaleType);
+    }
+  }, [initialYScaleType, setYScaleType]);
 
   return (
     <Toolbar>
@@ -53,26 +71,24 @@ function ComplexLineToolbar() {
 
       <Separator />
 
+      <Selector
+        value={visType}
+        onChange={(value: ComplexLineVisType) => setVisType(value)}
+        options={[ComplexVisType.Amplitude, ComplexVisType.Phase]}
+        optionComponent={({ option }) => (
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
+        )}
+      />
+
+      <Separator />
+
       <ToggleBtn
         label="Auto-scale"
         icon={MdDomain}
-        value={autoScale}
+        value={!disableAutoScale && autoScale}
         onToggle={toggleAutoScale}
-        disabled={isAutoScaleDisabled}
-      />
-
-      <ToggleBtn
-        label="Errors"
-        icon={(props) => (
-          <FiItalic
-            transform="skewX(20)"
-            style={{ marginLeft: '-0.25em', marginRight: '0.0625rem' }}
-            {...props}
-          />
-        )}
-        value={!areErrorsDisabled && showErrors}
-        onToggle={toggleErrors}
-        disabled={areErrorsDisabled}
+        disabled={disableAutoScale}
       />
 
       <ToggleBtn
@@ -96,16 +112,6 @@ function ComplexLineToolbar() {
         <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />
         <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
       </ToggleGroup>
-
-      <Selector
-        value={visType}
-        onChange={(value: ComplexLineVisType) => setVisType(value)}
-        options={[ComplexVisType.Amplitude, ComplexVisType.Phase]}
-        optionComponent={({ option }) => (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
-        )}
-      />
     </Toolbar>
   );
 }

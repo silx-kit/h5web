@@ -1,3 +1,4 @@
+import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
   DomainSlider,
@@ -10,20 +11,26 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
+import { useEffect } from 'react';
 import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
 import { useHeatmapConfig } from './config';
 
-function HeatmapToolbar() {
+interface Props {
+  dataDomain: Domain;
+  initialScaleType: ScaleType | undefined;
+}
+
+function HeatmapToolbar(props: Props) {
+  const { dataDomain, initialScaleType } = props;
+
   const {
-    dataDomain,
     customDomain,
     setCustomDomain,
     colorMap,
     setColorMap,
     scaleType,
-    staleDomainScaleType,
     setScaleType,
     layout,
     setLayout,
@@ -35,19 +42,21 @@ function HeatmapToolbar() {
     toggleYAxisFlip,
   } = useHeatmapConfig((state) => state, shallow);
 
+  useEffect(() => {
+    if (initialScaleType) {
+      setScaleType(initialScaleType);
+    }
+  }, [initialScaleType, setScaleType]);
+
   return (
     <Toolbar>
-      {dataDomain && (
-        <>
-          <DomainSlider
-            dataDomain={dataDomain}
-            customDomain={customDomain}
-            scaleType={staleDomainScaleType || scaleType}
-            onCustomDomainChange={setCustomDomain}
-          />
-          <Separator />
-        </>
-      )}
+      <DomainSlider
+        dataDomain={dataDomain}
+        customDomain={customDomain}
+        scaleType={scaleType}
+        onCustomDomainChange={setCustomDomain}
+      />
+      <Separator />
 
       <ColorMapSelector
         value={colorMap}

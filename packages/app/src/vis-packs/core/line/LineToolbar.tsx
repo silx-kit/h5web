@@ -7,6 +7,7 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
+import { useEffect } from 'react';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import shallow from 'zustand/shallow';
@@ -15,7 +16,21 @@ import { useLineConfig } from './config';
 
 const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 
-function LineToolbar() {
+interface Props {
+  initialXScaleType: ScaleType | undefined;
+  initialYScaleType: ScaleType | undefined;
+  disableAutoScale: boolean;
+  disableErrors: boolean;
+}
+
+function LineToolbar(props: Props) {
+  const {
+    initialXScaleType,
+    initialYScaleType,
+    disableAutoScale,
+    disableErrors,
+  } = props;
+
   const {
     curveType,
     setCurveType,
@@ -26,12 +41,22 @@ function LineToolbar() {
     yScaleType,
     setYScaleType,
     autoScale,
-    isAutoScaleDisabled,
     toggleAutoScale,
     showErrors,
-    areErrorsDisabled,
     toggleErrors,
   } = useLineConfig((state) => state, shallow);
+
+  useEffect(() => {
+    if (initialXScaleType) {
+      setXScaleType(initialXScaleType);
+    }
+  }, [initialXScaleType, setXScaleType]);
+
+  useEffect(() => {
+    if (initialYScaleType) {
+      setYScaleType(initialYScaleType);
+    }
+  }, [initialYScaleType, setYScaleType]);
 
   return (
     <Toolbar>
@@ -53,9 +78,9 @@ function LineToolbar() {
       <ToggleBtn
         label="Auto-scale"
         icon={MdDomain}
-        value={autoScale}
+        value={!disableAutoScale && autoScale}
         onToggle={toggleAutoScale}
-        disabled={isAutoScaleDisabled}
+        disabled={disableAutoScale}
       />
 
       <ToggleBtn
@@ -67,9 +92,9 @@ function LineToolbar() {
             {...props}
           />
         )}
-        value={!areErrorsDisabled && showErrors}
+        value={!disableErrors && showErrors}
         onToggle={toggleErrors}
-        disabled={areErrorsDisabled}
+        disabled={disableErrors}
       />
 
       <ToggleBtn
