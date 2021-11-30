@@ -408,8 +408,12 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
   jest.runAllTimers();
   expect(await screen.findByRole('figure')).toBeVisible();
 
-  // Check that entire spectrum signal is fetched
+  // Move back to first slice to retry fetching it automatically
   userEvent.keyboard('{PageDown}');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let fetch of first slice succeed
+  jest.runAllTimers();
   expect(await screen.findByRole('figure')).toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
 

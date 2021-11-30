@@ -4,6 +4,8 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
+import { useLineConfig } from '../../core/line/config';
+import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertComplexNxData } from '../guards';
@@ -21,6 +23,8 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
 
+  const autoScale = useLineConfig((state) => state.autoScale);
+
   return (
     <>
       <DimensionMapper
@@ -31,6 +35,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxData}
+          selection={autoScale ? getSliceSelection(dimMapping) : undefined}
           render={(nxValues) => {
             const { signal, signalLabel, axisMapping, title } = nxValues;
 

@@ -9,6 +9,8 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import { useLineConfig } from '../line/config';
+import { getSliceSelection } from '../utils';
 import MappedComplexLineVis from './MappedComplexLineVis';
 
 function ComplexLineVisContainer(props: VisContainerProps) {
@@ -20,6 +22,8 @@ function ComplexLineVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
+  const autoScale = useLineConfig((state) => state.autoScale);
+
   return (
     <>
       <DimensionMapper
@@ -29,10 +33,13 @@ function ComplexLineVisContainer(props: VisContainerProps) {
       />
       <VisBoundary
         resetKey={dimMapping}
-        loadingMessage="Loading entire dataset"
+        loadingMessage={`Loading ${
+          autoScale ? 'current slice' : 'entire dataset'
+        }`}
       >
         <ValueFetcher
           dataset={entity}
+          selection={autoScale ? getSliceSelection(dimMapping) : undefined}
           render={(value) => (
             <MappedComplexLineVis
               value={value}

@@ -10,6 +10,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import { getSliceSelection } from '../utils';
 import MappedComplexVis from './MappedComplexVis';
 
 function ComplexVisContainer(props: VisContainerProps) {
@@ -32,7 +33,7 @@ function ComplexVisContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
-          dimMapping={dimMapping}
+          selection={getSliceSelection(dimMapping)}
           render={(value) => (
             <MappedComplexVis
               value={value}
