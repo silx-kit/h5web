@@ -1,12 +1,14 @@
 import { HeatmapVis } from '@h5web/lib';
 import type { NumericType, ScaleType } from '@h5web/shared';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDomain, useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { AxisMapping } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';
+import HeatmapToolbar from './HeatmapToolbar';
 import { useHeatmapConfig } from './config';
 import { useSafeDomain, useVisDomain } from './hooks';
 
@@ -18,6 +20,7 @@ interface Props {
   title: string;
   colorScaleType?: ScaleType;
   dtype?: NumericType;
+  toolbarContainer: HTMLDivElement | undefined;
 }
 
 function MappedHeatmapVis(props: Props) {
@@ -29,6 +32,7 @@ function MappedHeatmapVis(props: Props) {
     title,
     dtype,
     colorScaleType,
+    toolbarContainer,
   } = props;
 
   const {
@@ -63,20 +67,23 @@ function MappedHeatmapVis(props: Props) {
   }, [setScaleType, colorScaleType]);
 
   return (
-    <HeatmapVis
-      dataArray={dataArray}
-      title={title}
-      dtype={dtype}
-      domain={safeDomain}
-      colorMap={colorMap}
-      scaleType={scaleType}
-      layout={layout}
-      showGrid={showGrid}
-      invertColorMap={invertColorMap}
-      abscissaParams={axisMapping[dimMapping.indexOf('x')]}
-      ordinateParams={axisMapping[dimMapping.indexOf('y')]}
-      flipYAxis={flipYAxis}
-    />
+    <>
+      {toolbarContainer && createPortal(<HeatmapToolbar />, toolbarContainer)}
+      <HeatmapVis
+        dataArray={dataArray}
+        title={title}
+        dtype={dtype}
+        domain={safeDomain}
+        colorMap={colorMap}
+        scaleType={scaleType}
+        layout={layout}
+        showGrid={showGrid}
+        invertColorMap={invertColorMap}
+        abscissaParams={axisMapping[dimMapping.indexOf('x')]}
+        ordinateParams={axisMapping[dimMapping.indexOf('y')]}
+        flipYAxis={flipYAxis}
+      />
+    </>
   );
 }
 

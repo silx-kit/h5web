@@ -13,7 +13,7 @@ import ValueFetcher from '../ValueFetcher';
 import MappedHeatmapVis from './MappedHeatmapVis';
 
 function HeatmapVisContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
   assertMinDims(entity, 2);
@@ -40,6 +40,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
               dimMapping={dimMapping}
               title={entity.name}
               dtype={entity.type}
+              toolbarContainer={toolbarContainer}
             />
           )}
         />

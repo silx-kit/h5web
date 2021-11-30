@@ -7,13 +7,6 @@ import {
   ComplexLineConfigProvider,
   RgbConfigProvider,
 } from '../core/configs';
-import {
-  LineToolbar,
-  HeatmapToolbar,
-  ComplexToolbar,
-  ComplexLineToolbar,
-  RgbToolbar,
-} from '../core/toolbars';
 import type { VisDef } from '../models';
 import {
   NxSpectrumContainer,
@@ -35,7 +28,6 @@ export const NEXUS_VIS: Record<NexusVis, VisDef> = {
   [NexusVis.NxSpectrum]: {
     name: NexusVis.NxSpectrum,
     Icon: FiActivity,
-    Toolbar: LineToolbar,
     Container: NxSpectrumContainer,
     ConfigProvider: LineConfigProvider,
   },
@@ -43,7 +35,6 @@ export const NEXUS_VIS: Record<NexusVis, VisDef> = {
   [NexusVis.NxComplexSpectrum]: {
     name: NexusVis.NxSpectrum,
     Icon: FiActivity,
-    Toolbar: ComplexLineToolbar,
     Container: NxComplexSpectrumContainer,
     ConfigProvider: ComplexLineConfigProvider,
   },
@@ -51,7 +42,6 @@ export const NEXUS_VIS: Record<NexusVis, VisDef> = {
   [NexusVis.NxImage]: {
     name: NexusVis.NxImage,
     Icon: FiMap,
-    Toolbar: HeatmapToolbar,
     Container: NxImageContainer,
     ConfigProvider: HeatmapConfigProvider,
   },
@@ -59,7 +49,6 @@ export const NEXUS_VIS: Record<NexusVis, VisDef> = {
   [NexusVis.NxComplexImage]: {
     name: NexusVis.NxImage,
     Icon: FiMap,
-    Toolbar: ComplexToolbar,
     Container: NxComplexImageContainer,
     ConfigProvider: ComplexConfigProvider,
   },
@@ -67,7 +56,6 @@ export const NEXUS_VIS: Record<NexusVis, VisDef> = {
   [NexusVis.NxRGB]: {
     name: NexusVis.NxRGB,
     Icon: FiImage,
-    Toolbar: RgbToolbar,
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
   },

@@ -260,7 +260,6 @@ test('warn in console when `SILX_style` attribute is not valid JSON', async () =
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
 
-  expect(warningSpy).toHaveBeenCalledTimes(1);
   expect(warningSpy).toHaveBeenCalledWith(
     "Malformed 'SILX_style' attribute: {"
   );

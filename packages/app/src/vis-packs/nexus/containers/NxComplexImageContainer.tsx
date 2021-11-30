@@ -10,7 +10,7 @@ import { useNxData } from '../hooks';
 import { assertComplexSignal } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertGroupWithChildren(entity);
 
   const nxData = useNxData(entity);
@@ -44,6 +44,7 @@ function NxComplexImageContainer(props: VisContainerProps) {
                 axisMapping={axisMapping}
                 title={title}
                 colorScaleType={silxStyle.signalScaleType}
+                toolbarContainer={toolbarContainer}
               />
             );
           }}

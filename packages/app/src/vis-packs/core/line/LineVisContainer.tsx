@@ -12,7 +12,7 @@ import ValueFetcher from '../ValueFetcher';
 import MappedLineVis from './MappedLineVis';
 
 function LineVisContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
   assertNumericType(entity);
@@ -40,6 +40,7 @@ function LineVisContainer(props: VisContainerProps) {
               dimMapping={dimMapping}
               title={entity.name}
               dtype={entity.type}
+              toolbarContainer={toolbarContainer}
             />
           )}
         />

@@ -14,7 +14,7 @@ import MappedMatrixVis from './MappedMatrixVis';
 import { getFormatter } from './utils';
 
 function MatrixVisContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
   assertPrintableType(entity);
@@ -44,6 +44,7 @@ function MatrixVisContainer(props: VisContainerProps) {
               dimMapping={dimMapping}
               formatter={formatter}
               cellWidth={cellWidth}
+              toolbarContainer={toolbarContainer}
             />
           )}
         />

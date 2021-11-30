@@ -7,16 +7,18 @@ import {
   DTypeClass,
 } from '@h5web/shared';
 import { useContext } from 'react';
+import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
 import { ProviderContext } from '../../../providers/context';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import RgbToolbar from './RgbToolbar';
 import { useRgbVisConfig } from './config';
 
 function RgbVisContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
   assertNumDims(entity, 3);
@@ -39,8 +41,9 @@ function RgbVisContainer(props: VisContainerProps) {
     <VisBoundary loadingMessage="Loading image">
       <ValueFetcher
         dataset={entity}
-        render={(value) => {
-          return (
+        render={(value) => (
+          <>
+            {toolbarContainer && createPortal(<RgbToolbar />, toolbarContainer)}
             <RgbVis
               value={value}
               dims={dims}
@@ -50,8 +53,8 @@ function RgbVisContainer(props: VisContainerProps) {
               layout={layout}
               imageType={imageType}
             />
-          );
-        }}
+          </>
+        )}
       />
     </VisBoundary>
   );
