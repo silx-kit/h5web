@@ -1,14 +1,9 @@
 import type { Primitive } from '@h5web/shared';
-import { useMeasure } from '@react-hookz/web';
 import type { NdArray } from 'ndarray';
-import { forwardRef } from 'react';
-import { FixedSizeGrid as IndexedGrid } from 'react-window';
 
 import type { PrintableType } from '../models';
-import Cell from './Cell';
-import GridSettingsProvider from './GridSettingsContext';
-import styles from './MatrixVis.module.css';
-import StickyGrid from './StickyGrid';
+import Grid from './Grid';
+import GridProvider from './context';
 
 const CELL_HEIGHT = 32;
 
@@ -16,45 +11,31 @@ interface Props {
   dataArray: NdArray<Primitive<PrintableType>[]>;
   formatter: (value: Primitive<PrintableType>) => string;
   cellWidth: number;
+  sticky: boolean;
 }
 
 function MatrixVis(props: Props) {
-  const { dataArray, formatter, cellWidth } = props;
+  const { dataArray, formatter, cellWidth, sticky } = props;
   const dims = dataArray.shape;
-
-  const [wrapperSize, wrapperRef] = useMeasure<HTMLDivElement>();
 
   const rowCount = dims[0] + 1; // includes IndexRow
   const columnCount = (dims.length === 2 ? dims[1] : 1) + 1; // includes IndexColumn
 
+  const cellFormatter =
+    dims.length === 1
+      ? (row: number) => formatter(dataArray.get(row))
+      : (row: number, col: number) => formatter(dataArray.get(row, col));
+
   return (
-    <GridSettingsProvider
-      cellSize={{ width: cellWidth, height: CELL_HEIGHT }}
+    <GridProvider
       rowCount={rowCount}
       columnCount={columnCount}
-      cellFormatter={
-        dims.length === 1
-          ? (row) => formatter(dataArray.get(row))
-          : (row, col) => formatter(dataArray.get(row, col))
-      }
+      cellSize={{ width: cellWidth, height: CELL_HEIGHT }}
+      cellFormatter={cellFormatter}
+      sticky={sticky}
     >
-      <div ref={wrapperRef} className={styles.wrapper}>
-        {wrapperSize && (
-          <IndexedGrid
-            className={styles.grid}
-            innerElementType={forwardRef(StickyGrid)}
-            columnWidth={cellWidth}
-            rowHeight={CELL_HEIGHT}
-            columnCount={columnCount}
-            rowCount={rowCount}
-            width={wrapperSize.width}
-            height={wrapperSize.height}
-          >
-            {Cell}
-          </IndexedGrid>
-        )}
-      </div>
-    </GridSettingsProvider>
+      <Grid />
+    </GridProvider>
   );
 }
 

@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import MatrixToolbar from './MatrixToolbar';
+import { useMatrixVisConfig } from './config';
 
 interface Props {
   value: Primitive<PrintableType>[];
@@ -18,6 +19,8 @@ interface Props {
 function MappedMatrixVis(props: Props) {
   const { value, dims, dimMapping, formatter, cellWidth, toolbarContainer } =
     props;
+
+  const sticky = useMatrixVisConfig((state) => state.sticky);
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
@@ -34,6 +37,7 @@ function MappedMatrixVis(props: Props) {
         dataArray={mappedArray}
         formatter={formatter}
         cellWidth={cellWidth}
+        sticky={sticky}
       />
     </>
   );
