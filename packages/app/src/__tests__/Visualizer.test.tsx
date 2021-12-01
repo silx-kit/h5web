@@ -195,3 +195,60 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });
+
+test('cancel fetching dataset slice when changing entity', async () => {
+  jest.useFakeTimers('modern');
+  await renderApp();
+
+  // Select dataset and start fetching first slice
+  await selectExplorerNode('resilience/slow_slicing');
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+
+  // Switch to another entity to cancel the fetch
+  await selectExplorerNode('resilience/slow_value');
+  expect(await screen.findByText(/Loading data/)).toBeVisible();
+
+  // Let pending requests succeed
+  jest.runAllTimers();
+
+  // Reselect dataset and check that it refetches the first slice
+  await selectExplorerNode('resilience/slow_slicing');
+  // The slice request was cancelled so it should be pending once again
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+
+  // Let fetch of first slice succeed
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+
+test('cancel fetching dataset slice when changing vis', async () => {
+  jest.useFakeTimers('modern');
+  await renderApp();
+
+  // Select dataset and start fetching the slice
+  await selectExplorerNode('resilience/slow_slicing');
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+
+  // Switch to the Line vis to cancel the fetch
+  userEvent.click(screen.getByRole('tab', { name: 'Line' }));
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+
+  // Let pending requests succeed
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  // Switch back to Heatmap and check that it refetches the slice
+  userEvent.click(screen.getByRole('tab', { name: 'Heatmap' }));
+  // The slice request was cancelled so it should be pending once again
+  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+
+  // Let fetch of the slice succeed
+  jest.runAllTimers();
+  expect(await screen.findByRole('figure')).toBeVisible();
+
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
