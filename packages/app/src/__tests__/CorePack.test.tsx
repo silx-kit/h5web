@@ -1,5 +1,5 @@
 import { mockValues } from '@h5web/shared';
-import { screen } from '@testing-library/react';
+import { screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import {
@@ -123,7 +123,10 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
 
   // Check that entire dataset is fetched
   d0Slider.focus();
-  userEvent.keyboard('{ArrowUp}');
+  act(() => {
+    userEvent.keyboard('{ArrowUp}');
+    jest.advanceTimersByTime(100); // account for debouncing of `dimMapping` state
+  });
   expect(await screen.findByRole('figure')).toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
 
