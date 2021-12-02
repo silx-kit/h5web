@@ -5,21 +5,24 @@
 
 .grid {
   position: absolute !important; /* prevent feedback loop with `useMeasure` on wrapper */
+  z-index: 0; /* stacking context */
   color: var(--h5w-matrix--color, inherit);
   font-family: var(--h5w-matrix--fontFamily, monospace);
   font-size: var(--h5w-matrix--fontSize, inherit);
   scrollbar-width: thin;
 }
 
-.cell {
+.innerContainer {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--h5w-matrix-cell--bgColor, transparent);
 }
 
-.cell[data-bg] {
-  background-color: var(--h5w-matrix-cell--bgColorAlt, #eee);
+.colHeaders {
+  display: flex;
+}
+
+.rowHeaders {
+  display: flex;
+  flex-direction: column;
 }
 
 .indexCell {
@@ -43,44 +46,36 @@
   background-color: var(--h5w-matrix-indexCell--bgColorAlt, lightgray);
 }
 
-.stickyGrid[data-sticky] .stickyElement {
-  position: sticky !important;
-  top: 0 !important;
-  left: 0 !important;
+.topLeftCell {
+  composes: indexCell;
 }
 
-.indexRow {
-  composes: stickyElement;
-  display: flex;
-  z-index: 2;
+.stickyGrid[data-sticky] .colHeaders {
+  position: sticky;
+  top: 0;
+  z-index: 2; /* above row header cells and content cells */
 }
 
-.indexColumn {
-  composes: stickyElement;
-  display: flex;
-  flex-direction: column;
-  z-index: 1;
+.stickyGrid[data-sticky] .rowHeaders {
+  position: sticky;
+  left: 0;
+  z-index: 1; /* above content cells */
 }
 
-.anchorCell {
-  composes: indexCell stickyElement;
-  align-items: stretch;
-  z-index: 3;
+.stickyGrid[data-sticky] .topLeftCell {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 1; /* above column header cells */
 }
 
-.innerContainer {
-  display: flex;
-}
-
-.anchorBtn {
-  composes: btnClean from global;
-  flex: 1 1 0%;
+.cell {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--h5w-matrix-cell--bgColor, transparent);
 }
 
-.anchorBtn:hover,
-.anchorBtn[aria-pressed='true'] {
-  background-color: var(--h5w-matrix-anchorCell--bgColor, silver);
+.cell[data-bg] {
+  background-color: var(--h5w-matrix-cell--bgColorAlt, #eee);
 }

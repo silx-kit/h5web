@@ -1,12 +1,12 @@
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import type { GridChildComponentProps } from 'react-window';
 
-import { GridSettingsContext } from './GridSettingsContext';
 import styles from './MatrixVis.module.css';
+import { SettingsContext } from './context';
 
 function Cell(props: GridChildComponentProps) {
   const { rowIndex, columnIndex, style } = props;
-  const { cellFormatter } = useContext(GridSettingsContext);
+  const { cellFormatter } = useContext(SettingsContext);
 
   // Disable index columns (rendering done by the innerElementType)
   if (rowIndex * columnIndex === 0) {
@@ -20,7 +20,7 @@ function Cell(props: GridChildComponentProps) {
       role="cell"
       aria-rowindex={rowIndex}
       aria-colindex={columnIndex}
-      data-bg={(rowIndex + columnIndex) % 2 === 1 ? '' : undefined}
+      data-bg={(rowIndex + columnIndex) % 2 === 1 || undefined}
     >
       {
         // -1 to account for the index row and column
@@ -30,4 +30,4 @@ function Cell(props: GridChildComponentProps) {
   );
 }
 
-export default Cell;
+export default memo(Cell);

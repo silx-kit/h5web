@@ -1,8 +1,9 @@
-import { DownloadBtn, Toolbar } from '@h5web/lib';
+import { DownloadBtn, Separator, ToggleBtn, Toolbar } from '@h5web/lib';
 import type { Primitive, PrintableType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
-import { FiDownload } from 'react-icons/fi';
+import { FiAnchor, FiDownload } from 'react-icons/fi';
 
+import { useMatrixVisConfig } from './config';
 import { sliceToCsv } from './utils';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 
 function MatrixToolbar(props: Props) {
   const { currentSlice } = props;
+  const { sticky, toggleSticky } = useMatrixVisConfig();
 
   if (currentSlice && currentSlice.shape.length > 2) {
     throw new Error('Expected current slice to have at most two dimensions');
@@ -18,6 +20,15 @@ function MatrixToolbar(props: Props) {
 
   return (
     <Toolbar>
+      <ToggleBtn
+        label="Freeze indices"
+        icon={FiAnchor}
+        value={sticky}
+        onToggle={toggleSticky}
+      />
+
+      <Separator />
+
       {currentSlice && (
         <DownloadBtn
           icon={FiDownload}

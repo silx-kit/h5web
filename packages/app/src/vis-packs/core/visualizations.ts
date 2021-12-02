@@ -25,6 +25,7 @@ import {
   ComplexConfigProvider,
   ComplexLineConfigProvider,
   RgbConfigProvider,
+  MatrixConfigProvider,
 } from './configs';
 import {
   RawVisContainer,
@@ -76,6 +77,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     name: Vis.Matrix,
     Icon: FiGrid,
     Container: MatrixVisContainer,
+    ConfigProvider: MatrixConfigProvider,
     supportsDataset: (dataset) => {
       return hasPrintableType(dataset) && hasArrayShape(dataset);
     },
