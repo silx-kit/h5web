@@ -3,7 +3,7 @@
   align-items: center;
 }
 
-.label {
+.selectorLabel {
   color: var(--h5w-selector-label--color, royalblue);
   margin-left: 0.25rem;
 }
@@ -20,6 +20,14 @@
 .btnLike {
   composes: btnLike from '../../Toolbar.module.css';
   padding: 0 0.375rem 0 0.5625rem !important; /* FIX style ordering issue with Vite */
+}
+
+.icon {
+  composes: icon from '../../Toolbar.module.css';
+}
+
+.label {
+  composes: label from '../../Toolbar.module.css';
 }
 
 .arrowIcon {
@@ -79,18 +87,15 @@
   white-space: nowrap;
 }
 
+.linkOption {
+  composes: btn from '../../Toolbar.module.css';
+  composes: option;
+}
+
 .option:hover {
   background-color: var(--h5w-selector-option-hover--bgColor, whitesmoke);
 }
 
 .option[data-selected] {
   background-color: var(--h5w-selector-option-selected--bgColor, #eee);
-}
-
-.gradient {
-  position: relative;
-  top: 1px;
-  width: 2rem;
-  height: 1.25em;
-  margin-left: 0.625rem;
 }

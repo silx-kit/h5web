@@ -18,7 +18,7 @@ import {
 import { isString } from 'lodash';
 
 import { ProviderApi } from '../api';
-import type { ValuesStoreParams } from '../models';
+import type { ExportFormat, ValuesStoreParams } from '../models';
 import { convertDtype, flattenValue, handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
@@ -73,15 +73,16 @@ export class H5GroveApi extends ProviderApi {
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
   }
 
-  public getTiffUrl(
+  public getExportURL(
     dataset: Dataset<ArrayShape, NumericType>,
-    selection: string | undefined
+    selection: string | undefined,
+    format: ExportFormat
   ): string | undefined {
     const { baseURL, params } = this.client.defaults;
 
     const searchParams = new URLSearchParams(params as Record<string, string>);
     searchParams.set('path', dataset.path);
-    searchParams.set('format', 'tiff');
+    searchParams.set('format', format);
 
     if (selection) {
       searchParams.set('selection', selection);
