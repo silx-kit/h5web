@@ -1,22 +1,25 @@
-import { DownloadBtn, Separator, ToggleBtn, Toolbar } from '@h5web/lib';
-import type { Primitive, PrintableType } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
-import { FiAnchor, FiDownload } from 'react-icons/fi';
+import { Separator, ToggleBtn, Toolbar, ExportMenu } from '@h5web/lib';
+import type { ArrayShape, Dataset, PrintableType } from '@h5web/shared';
+import { hasNumericType } from '@h5web/shared';
+import { useContext } from 'react';
+import { FiAnchor } from 'react-icons/fi';
 
+import { ProviderContext } from '../../../providers/context';
+import type { ExportFormat } from '../../../providers/models';
 import { useMatrixVisConfig } from './config';
-import { sliceToCsv } from './utils';
+
+const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
-  currentSlice: NdArray<Primitive<PrintableType>[]> | undefined;
+  dataset: Dataset<ArrayShape, PrintableType>;
+  selection: string | undefined;
 }
 
 function MatrixToolbar(props: Props) {
-  const { currentSlice } = props;
-  const { sticky, toggleSticky } = useMatrixVisConfig();
+  const { dataset, selection } = props;
+  const { getExportURL } = useContext(ProviderContext);
 
-  if (currentSlice && currentSlice.shape.length > 2) {
-    throw new Error('Expected current slice to have at most two dimensions');
-  }
+  const { sticky, toggleSticky } = useMatrixVisConfig();
 
   return (
     <Toolbar>
@@ -27,20 +30,17 @@ function MatrixToolbar(props: Props) {
         onToggle={toggleSticky}
       />
 
-      <Separator />
-
-      {currentSlice && (
-        <DownloadBtn
-          icon={FiDownload}
-          label="CSV"
-          filename="export.csv"
-          getDownloadUrl={() => {
-            const data = sliceToCsv(currentSlice);
-            return URL.createObjectURL(
-              new Blob([data], { type: 'text/csv;charset=utf-8' })
-            );
-          }}
-        />
+      {hasNumericType(dataset) && (
+        <>
+          <Separator />
+          <ExportMenu
+            formats={EXPORT_FORMATS}
+            isSlice={selection !== undefined}
+            getFormatURL={(format: ExportFormat) =>
+              getExportURL?.(dataset, selection, format)
+            }
+          />
+        </>
       )}
     </Toolbar>
   );

@@ -1,22 +1,29 @@
 import {
   CurveType,
+  ExportMenu,
   ScaleSelector,
   Separator,
   ToggleBtn,
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
+import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
+import { ProviderContext } from '../../../providers/context';
+import type { ExportFormat } from '../../../providers/models';
 import { useLineConfig } from './config';
 
 const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
+const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
+  dataset?: Dataset<ArrayShape, NumericType>;
+  selection?: string | undefined;
   initialXScaleType: ScaleType | undefined;
   initialYScaleType: ScaleType | undefined;
   disableAutoScale: boolean;
@@ -25,11 +32,15 @@ interface Props {
 
 function LineToolbar(props: Props) {
   const {
+    dataset,
+    selection,
     initialXScaleType,
     initialYScaleType,
     disableAutoScale,
     disableErrors,
   } = props;
+
+  const { getExportURL } = useContext(ProviderContext);
 
   const {
     curveType,
@@ -118,6 +129,18 @@ function LineToolbar(props: Props) {
         <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />
         <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
       </ToggleGroup>
+
+      <Separator />
+
+      {dataset && (
+        <ExportMenu
+          formats={EXPORT_FORMATS}
+          isSlice={selection !== undefined}
+          getFormatURL={(format: ExportFormat) =>
+            getExportURL?.(dataset, selection, format)
+          }
+        />
+      )}
     </Toolbar>
   );
 }

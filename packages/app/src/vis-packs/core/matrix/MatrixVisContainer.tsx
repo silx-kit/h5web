@@ -23,6 +23,7 @@ function MatrixVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const axesCount = Math.min(dims.length, 2);
   const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
+  const selection = getSliceSelection(dimMapping);
 
   const formatter = getFormatter(entity);
   const cellWidth = hasComplexType(entity) ? 232 : 116;
@@ -37,9 +38,11 @@ function MatrixVisContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
-          selection={getSliceSelection(dimMapping)}
+          selection={selection}
           render={(value) => (
             <MappedMatrixVis
+              dataset={entity}
+              selection={selection}
               value={value}
               dims={dims}
               dimMapping={dimMapping}
