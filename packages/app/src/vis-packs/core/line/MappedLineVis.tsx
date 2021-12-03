@@ -1,5 +1,10 @@
 import { LineVis } from '@h5web/lib';
-import type { NumericType, ScaleType } from '@h5web/shared';
+import type {
+  ArrayShape,
+  Dataset,
+  NumericType,
+  ScaleType,
+} from '@h5web/shared';
 import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
@@ -19,6 +24,8 @@ import { useLineConfig } from './config';
 type HookArgs = [number[], DimensionMapping, boolean];
 
 interface Props {
+  dataset?: Dataset<ArrayShape, NumericType>;
+  selection?: string | undefined;
   value: number[];
   valueLabel?: string;
   valueScaleType?: ScaleType;
@@ -28,12 +35,13 @@ interface Props {
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title: string;
-  dtype?: NumericType;
   toolbarContainer?: HTMLDivElement | undefined;
 }
 
 function MappedLineVis(props: Props) {
   const {
+    dataset,
+    selection,
     value,
     valueLabel,
     valueScaleType,
@@ -43,7 +51,6 @@ function MappedLineVis(props: Props) {
     dimMapping,
     axisMapping = [],
     title,
-    dtype,
     toolbarContainer,
   } = props;
 
@@ -75,6 +82,8 @@ function MappedLineVis(props: Props) {
       {toolbarContainer &&
         createPortal(
           <LineToolbar
+            dataset={dataset}
+            selection={selection}
             initialXScaleType={mappedAbscissaParams?.scaleType}
             initialYScaleType={valueScaleType}
             disableAutoScale={dims.length <= 1} // with 1D datasets, `baseArray` and `dataArray` are the same so auto-scaling is implied
@@ -96,7 +105,7 @@ function MappedLineVis(props: Props) {
         }}
         ordinateLabel={valueLabel}
         title={title}
-        dtype={dtype}
+        dtype={dataset?.type}
         errorsArray={errorArray}
         showErrors={showErrors}
         auxArrays={auxArrays}

@@ -23,6 +23,7 @@ function LineVisContainer(props: VisContainerProps) {
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   const autoScale = useLineConfig((state) => state.autoScale);
+  const selection = autoScale ? getSliceSelection(dimMapping) : undefined;
 
   return (
     <>
@@ -39,14 +40,15 @@ function LineVisContainer(props: VisContainerProps) {
       >
         <ValueFetcher
           dataset={entity}
-          selection={autoScale ? getSliceSelection(dimMapping) : undefined}
+          selection={selection}
           render={(value) => (
             <MappedLineVis
+              dataset={entity}
+              selection={selection}
               value={value}
               dims={dims}
               dimMapping={dimMapping}
               title={entity.name}
-              dtype={entity.type}
               toolbarContainer={toolbarContainer}
             />
           )}

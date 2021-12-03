@@ -1,6 +1,6 @@
 import type { Domain } from '@h5web/lib';
 import {
-  DownloadBtn,
+  ExportMenu,
   ColorMapSelector,
   DomainSlider,
   FlipYAxisToggler,
@@ -14,12 +14,14 @@ import {
 } from '@h5web/lib';
 import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
 import { useEffect, useContext } from 'react';
-import { FiDownload } from 'react-icons/fi';
 import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
 import { ProviderContext } from '../../../providers/context';
+import type { ExportFormat } from '../../../providers/models';
 import { useHeatmapConfig } from './config';
+
+const EXPORT_FORMATS: ExportFormat[] = ['tiff', 'npy'];
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericType>;
@@ -31,7 +33,7 @@ interface Props {
 function HeatmapToolbar(props: Props) {
   const { dataset, dataDomain, selection, initialScaleType } = props;
 
-  const { getTiffUrl } = useContext(ProviderContext);
+  const { getExportURL } = useContext(ProviderContext);
 
   const {
     customDomain,
@@ -101,14 +103,16 @@ function HeatmapToolbar(props: Props) {
 
       <Separator />
 
-      {getTiffUrl && (
-        <DownloadBtn
-          label="Export to TIFF"
-          icon={FiDownload}
-          filename="data.tiff"
-          getDownloadUrl={() => getTiffUrl(dataset, selection)}
+      {getExportURL && (
+        <ExportMenu
+          formats={EXPORT_FORMATS}
+          isSlice={selection !== undefined}
+          getFormatURL={(format: ExportFormat) =>
+            getExportURL(dataset, selection, format)
+          }
         />
       )}
+
       <SnapshotButton />
     </Toolbar>
   );

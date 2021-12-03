@@ -1,6 +1,6 @@
-import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
 import { createContext } from 'react';
 
+import type { ProviderApi } from './api';
 import type { AttrValuesStore, EntitiesStore, ValuesStore } from './models';
 
 interface Context {
@@ -9,10 +9,7 @@ interface Context {
   entitiesStore: EntitiesStore;
   valuesStore: ValuesStore;
   attrValuesStore: AttrValuesStore;
-  getTiffUrl?: (
-    dataset: Dataset<ArrayShape, NumericType>,
-    selection: string | undefined
-  ) => string | undefined;
+  getExportURL?: ProviderApi['getExportURL'];
 }
 
 export const ProviderContext = createContext({} as Context);

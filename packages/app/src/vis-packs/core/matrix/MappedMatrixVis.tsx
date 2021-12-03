@@ -1,5 +1,10 @@
 import { MatrixVis } from '@h5web/lib';
-import type { Primitive, PrintableType } from '@h5web/shared';
+import type {
+  ArrayShape,
+  Dataset,
+  Primitive,
+  PrintableType,
+} from '@h5web/shared';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
@@ -8,6 +13,8 @@ import MatrixToolbar from './MatrixToolbar';
 import { useMatrixVisConfig } from './config';
 
 interface Props {
+  dataset: Dataset<ArrayShape, PrintableType>;
+  selection: string | undefined;
   value: Primitive<PrintableType>[];
   dims: number[];
   dimMapping: DimensionMapping;
@@ -17,8 +24,16 @@ interface Props {
 }
 
 function MappedMatrixVis(props: Props) {
-  const { value, dims, dimMapping, formatter, cellWidth, toolbarContainer } =
-    props;
+  const {
+    dataset,
+    selection,
+    value,
+    dims,
+    dimMapping,
+    formatter,
+    cellWidth,
+    toolbarContainer,
+  } = props;
 
   const sticky = useMatrixVisConfig((state) => state.sticky);
 
@@ -29,7 +44,7 @@ function MappedMatrixVis(props: Props) {
     <>
       {toolbarContainer &&
         createPortal(
-          <MatrixToolbar currentSlice={mappedArray} />,
+          <MatrixToolbar dataset={dataset} selection={selection} />,
           toolbarContainer
         )}
 
