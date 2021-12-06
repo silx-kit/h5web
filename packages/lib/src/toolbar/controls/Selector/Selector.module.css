@@ -90,6 +90,7 @@
 .linkOption {
   composes: btn from '../../Toolbar.module.css';
   composes: option;
+  padding: 0.5rem 0.75rem !important; /* FIX style ordering issue with Vite */
 }
 
 .option:hover {
