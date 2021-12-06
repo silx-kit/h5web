@@ -34,8 +34,8 @@ function App(props: Props) {
   }
 
   return (
-    <ReflexContainer className={styles.root} orientation="vertical">
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ReflexContainer className={styles.root} orientation="vertical">
         <ReflexElement
           className={styles.explorer}
           style={{ display: isExplorerOpen ? undefined : 'none' }}
@@ -79,8 +79,8 @@ function App(props: Props) {
             </ErrorBoundary>
           </VisConfigProvider>
         </ReflexElement>
-      </ErrorBoundary>
-    </ReflexContainer>
+      </ReflexContainer>
+    </ErrorBoundary>
   );
 }
 
