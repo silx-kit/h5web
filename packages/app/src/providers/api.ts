@@ -1,3 +1,4 @@
+/* eslint-disable promise/prefer-await-to-callbacks */
 import type {
   ArrayShape,
   AttributeValues,
@@ -14,7 +15,11 @@ import type {
 } from 'axios';
 import axios from 'axios';
 
-import type { ExportFormat, ValuesStoreParams } from './models';
+import type {
+  ExportFormat,
+  ProgressCallback,
+  ValuesStoreParams,
+} from './models';
 import { CANCELLED_ERROR_MSG } from './utils';
 
 interface ValueRequest {
@@ -28,6 +33,9 @@ export abstract class ProviderApi {
 
   protected readonly client: AxiosInstance;
   protected readonly valueRequests = new Set<ValueRequest>();
+  protected progress = new Map<ValuesStoreParams, number>();
+
+  private readonly progressListeners = new Set<ProgressCallback>();
 
   public constructor(filepath: string, config?: AxiosRequestConfig) {
     this.filepath = filepath;
@@ -39,6 +47,15 @@ export abstract class ProviderApi {
     selection: string | undefined,
     format: ExportFormat
   ): string | undefined; // `undefined` if format is not supported
+
+  public addProgressListener(cb: ProgressCallback): void {
+    this.progressListeners.add(cb);
+    cb([...this.progress.values()]); // notify once
+  }
+
+  public removeProgressListener(cb: ProgressCallback): void {
+    this.progressListeners.delete(cb);
+  }
 
   public cancelValueRequests(): void {
     // Cancel every active value request
@@ -55,24 +72,39 @@ export abstract class ProviderApi {
   protected async cancellableFetchValue<T>(
     endpoint: string,
     storeParams: ValuesStoreParams,
-    queryParams?: Record<string, string | boolean | undefined>,
+    queryParams: Record<string, string | boolean | undefined>,
     responseType?: ResponseType
   ): Promise<AxiosResponse<T>> {
     const cancelSource = axios.CancelToken.source();
     const request = { storeParams, cancelSource };
     this.valueRequests.add(request);
 
+    this.progress.set(storeParams, 0);
+    this.notifyProgressChange();
+
     try {
       const { token: cancelToken } = cancelSource;
       return await this.client.get<T>(endpoint, {
         cancelToken,
-        params: queryParams || storeParams,
+        params: queryParams,
         responseType,
+        onDownloadProgress: (evt: ProgressEvent) => {
+          if (evt.lengthComputable) {
+            this.progress.set(storeParams, evt.loaded / evt.total);
+            this.notifyProgressChange();
+          }
+        },
       });
     } finally {
-      // Remove cancellation source when request fulfills
+      // Remove cancellation source and progress when request fulfills
       this.valueRequests.delete(request);
+      this.progress.delete(storeParams);
+      this.notifyProgressChange();
     }
+  }
+
+  private notifyProgressChange() {
+    this.progressListeners.forEach((cb) => cb([...this.progress.values()]));
   }
 
   public abstract getEntity(path: string): Promise<Entity>;
