@@ -33,7 +33,7 @@ import {
 } from './utils';
 
 export class H5GroveApi extends ProviderApi {
-  /* API compatible with h5grove@0.0.9 */
+  /* API compatible with h5grove@0.0.13 */
   public constructor(
     url: string,
     filepath: string,
