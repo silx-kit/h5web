@@ -8,15 +8,17 @@ import { hasAttribute } from '../utils';
 import type { ImageAttribute } from '../vis-packs/core/models';
 import type { NxAttribute } from '../vis-packs/nexus/models';
 import type { ProviderApi } from './api';
-import { ProviderContext } from './context';
+import { ProgressContext, ProviderContext } from './context';
 
 interface Props {
   api: ProviderApi;
+  progress: number;
+  resetProgress: () => void;
   children: ReactNode;
 }
 
 function Provider(props: Props) {
-  const { api, children } = props;
+  const { api, progress, resetProgress, children } = props;
 
   const entitiesStore = useMemo(() => {
     const childCache = new Map<string, Entity>();
@@ -91,9 +93,12 @@ function Provider(props: Props) {
         valuesStore,
         attrValuesStore,
         getExportURL: api.getExportURL?.bind(api),
+        resetProgress,
       }}
     >
-      {children}
+      <ProgressContext.Provider value={progress}>
+        {children}
+      </ProgressContext.Provider>
     </ProviderContext.Provider>
   );
 }

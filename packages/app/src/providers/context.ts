@@ -10,6 +10,9 @@ interface Context {
   valuesStore: ValuesStore;
   attrValuesStore: AttrValuesStore;
   getExportURL?: ProviderApi['getExportURL'];
+  resetProgress: () => void;
 }
 
 export const ProviderContext = createContext({} as Context);
+
+export const ProgressContext = createContext(0);

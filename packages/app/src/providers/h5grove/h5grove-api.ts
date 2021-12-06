@@ -37,12 +37,10 @@ export class H5GroveApi extends ProviderApi {
   public constructor(
     url: string,
     filepath: string,
-    axiosParams?: Record<string, string>
+    axiosParams?: Record<string, string>,
+    onValueProgress?: (val: number) => void
   ) {
-    super(filepath, {
-      baseURL: url,
-      params: axiosParams,
-    });
+    super(filepath, { baseURL: url, params: axiosParams }, onValueProgress);
   }
 
   public async getEntity(path: string): Promise<Entity> {

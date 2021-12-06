@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useTimeout } from 'react-use';
 
-import { ProviderContext } from '../providers/context';
+import { ProgressContext, ProviderContext } from '../providers/context';
 import styles from './ValueLoader.module.css';
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 function ValueLoader(props: Props) {
   const { message = 'Loading data' } = props;
   const { valuesStore } = useContext(ProviderContext);
+  const progress = useContext(ProgressContext);
 
   // Wait a bit before showing loader to avoid flash
   const [isReady] = useTimeout(100);
@@ -32,7 +33,9 @@ function ValueLoader(props: Props) {
         <div />
         <div />
       </div>
-      <p>{message}...</p>
+      <p>
+        {message}... ({progress} %)
+      </p>
       <p>
         <button
           className={styles.cancelBtn}

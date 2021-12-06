@@ -28,9 +28,15 @@ export abstract class ProviderApi {
 
   protected readonly client: AxiosInstance;
   protected readonly valueRequests = new Set<ValueRequest>();
+  protected readonly onValueProgress;
 
-  public constructor(filepath: string, config?: AxiosRequestConfig) {
+  public constructor(
+    filepath: string,
+    config?: AxiosRequestConfig,
+    onValueProgress?: (val: number) => void
+  ) {
     this.filepath = filepath;
+    this.onValueProgress = onValueProgress;
     this.client = axios.create(config);
   }
 
@@ -68,6 +74,11 @@ export abstract class ProviderApi {
         cancelToken,
         params: queryParams || storeParams,
         responseType,
+        onDownloadProgress: (evt: ProgressEvent) => {
+          if (this.onValueProgress && evt.total > 0) {
+            this.onValueProgress((evt.loaded / evt.total) * 100);
+          }
+        },
       });
     } finally {
       // Remove cancellation source when request fulfills
