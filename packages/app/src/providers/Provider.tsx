@@ -90,6 +90,7 @@ function Provider(props: Props) {
         entitiesStore,
         valuesStore,
         attrValuesStore,
+        getExportURL: api.getExportURL?.bind(api),
       }}
     >
       {children}

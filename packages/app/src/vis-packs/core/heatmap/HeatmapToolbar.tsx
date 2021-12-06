@@ -1,5 +1,6 @@
 import type { Domain } from '@h5web/lib';
 import {
+  ExportMenu,
   ColorMapSelector,
   DomainSlider,
   FlipYAxisToggler,
@@ -11,19 +12,28 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import { useEffect } from 'react';
+import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
+import { useEffect, useContext } from 'react';
 import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
+import { ProviderContext } from '../../../providers/context';
+import type { ExportFormat } from '../../../providers/models';
 import { useHeatmapConfig } from './config';
 
+const EXPORT_FORMATS: ExportFormat[] = ['tiff', 'npy'];
+
 interface Props {
+  dataset: Dataset<ArrayShape, NumericType>;
   dataDomain: Domain;
+  selection: string | undefined;
   initialScaleType: ScaleType | undefined;
 }
 
 function HeatmapToolbar(props: Props) {
-  const { dataDomain, initialScaleType } = props;
+  const { dataset, dataDomain, selection, initialScaleType } = props;
+
+  const { getExportURL } = useContext(ProviderContext);
 
   const {
     customDomain,
@@ -92,6 +102,16 @@ function HeatmapToolbar(props: Props) {
       <GridToggler value={showGrid} onToggle={toggleGrid} />
 
       <Separator />
+
+      {getExportURL && (
+        <ExportMenu
+          formats={EXPORT_FORMATS}
+          isSlice={selection !== undefined}
+          getFormatURL={(format: ExportFormat) =>
+            getExportURL(dataset, selection, format)
+          }
+        />
+      )}
 
       <SnapshotButton />
     </Toolbar>

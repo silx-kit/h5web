@@ -8,8 +8,8 @@ interface Props extends AriaAttributes {
   iconOnly?: boolean;
   // If specified, browser will prompt user to download the file instead of opening a new tab
   filename?: string;
-  // Invoked on click; must return URL to set as `href`, or `false` to do nothing
-  getDownloadUrl: () => string | false;
+  // Invoked on click; must return URL to set as `href`, or `undefined` to do nothing
+  getDownloadUrl: () => string | undefined;
 }
 
 function DownloadBtn(props: Props) {
@@ -33,7 +33,7 @@ function DownloadBtn(props: Props) {
       onClick={(evt) => {
         const url = getDownloadUrl();
 
-        if (url === false) {
+        if (url === undefined) {
           evt.preventDefault();
           return;
         }

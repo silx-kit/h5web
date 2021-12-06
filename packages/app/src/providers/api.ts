@@ -1,4 +1,10 @@
-import type { AttributeValues, Entity } from '@h5web/shared';
+import type {
+  ArrayShape,
+  AttributeValues,
+  Dataset,
+  Entity,
+  NumericType,
+} from '@h5web/shared';
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -8,7 +14,7 @@ import type {
 } from 'axios';
 import axios from 'axios';
 
-import type { ValuesStoreParams } from './models';
+import type { ExportFormat, ValuesStoreParams } from './models';
 import { CANCELLED_ERROR_MSG } from './utils';
 
 interface ValueRequest {
@@ -27,6 +33,12 @@ export abstract class ProviderApi {
     this.filepath = filepath;
     this.client = axios.create(config);
   }
+
+  public getExportURL?(
+    dataset: Dataset<ArrayShape, NumericType>,
+    selection: string | undefined,
+    format: ExportFormat
+  ): string | undefined; // `undefined` if format is not supported
 
   public cancelValueRequests(): void {
     // Cancel every active value request

@@ -22,6 +22,7 @@ export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/Scale
 export { default as GridToggler } from './toolbar/controls/GridToggler';
 export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler';
 export { default as Selector } from './toolbar/controls/Selector/Selector';
+export { default as ExportMenu } from './toolbar/controls/ExportMenu';
 
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';

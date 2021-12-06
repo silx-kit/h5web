@@ -1,10 +1,12 @@
 import type {
+  ArrayShape,
   Attribute,
   AttributeValues,
   Dataset,
   Entity,
   Group,
   GroupWithChildren,
+  NumericType,
   UnresolvedEntity,
 } from '@h5web/shared';
 import {
@@ -16,7 +18,7 @@ import {
 import { isString } from 'lodash';
 
 import { ProviderApi } from '../api';
-import type { ValuesStoreParams } from '../models';
+import type { ExportFormat, ValuesStoreParams } from '../models';
 import { convertDtype, flattenValue, handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
@@ -31,7 +33,7 @@ import {
 } from './utils';
 
 export class H5GroveApi extends ProviderApi {
-  /* API compatible with h5grove@0.0.9 */
+  /* API compatible with h5grove@0.0.13 */
   public constructor(
     url: string,
     filepath: string,
@@ -69,6 +71,24 @@ export class H5GroveApi extends ProviderApi {
   public async getAttrValues(entity: Entity): Promise<AttributeValues> {
     const { path, attributes } = entity;
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
+  }
+
+  public getExportURL(
+    dataset: Dataset<ArrayShape, NumericType>,
+    selection: string | undefined,
+    format: ExportFormat
+  ): string | undefined {
+    const { baseURL, params } = this.client.defaults;
+
+    const searchParams = new URLSearchParams(params as Record<string, string>);
+    searchParams.set('path', dataset.path);
+    searchParams.set('format', format);
+
+    if (selection) {
+      searchParams.set('selection', selection);
+    }
+
+    return `${baseURL as string}/data/?${searchParams.toString()}`;
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {

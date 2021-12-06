@@ -34,7 +34,7 @@ function Selector<T extends string>(props: Props<T>) {
 
   return (
     <div className={styles.root}>
-      {label && <span className={styles.label}>{label}</span>}
+      {label && <span className={styles.selectorLabel}>{label}</span>}
 
       <Wrapper className={styles.wrapper} onSelection={onChange}>
         <Button className={styles.btn} tag="button" disabled={disabled}>

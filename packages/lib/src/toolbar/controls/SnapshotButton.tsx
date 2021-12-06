@@ -11,7 +11,7 @@ function SnapshotButton() {
       getDownloadUrl={() => {
         // Create data URL from canvas (if rendered)
         const canvas = document.querySelector('canvas');
-        return canvas?.toDataURL() || false;
+        return canvas?.toDataURL();
       }}
     />
   );
