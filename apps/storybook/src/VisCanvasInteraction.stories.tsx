@@ -78,10 +78,8 @@ export default {
   },
   argTypes: {
     guides: {
-      control: {
-        type: 'inline-radio',
-        options: ['horizontal', 'vertical', 'both'],
-      },
+      control: { type: 'inline-radio' },
+      options: ['horizontal', 'vertical', 'both'],
     },
   },
 } as Meta;

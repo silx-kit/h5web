@@ -33,7 +33,9 @@ interface HeatmapConfig {
 function createStore() {
   return create<HeatmapConfig>(
     persist(
-      (set) => ({
+      // https://github.com/pmndrs/zustand/issues/701
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (set, get) => ({
         customDomain: [null, null],
         setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
 

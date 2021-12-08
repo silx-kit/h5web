@@ -17,9 +17,9 @@ test('visualize NXdata group with "spectrum" interpretation', async () => {
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
 
-  expect(
-    await screen.findByRole('figure', { name: 'twoD_spectrum (arb. units)' }) // signal name + `units` attribute
-  ).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'twoD_spectrum (arb. units)' }) // signal name + `units` attribute
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXdata group with "image" interpretation', async () => {
@@ -30,9 +30,9 @@ test('visualize NXdata group with "image" interpretation', async () => {
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
 
-  expect(
-    await screen.findByRole('figure', { name: 'Interference fringes' }) // `long_name` attribute
-  ).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'Interference fringes' }) // `long_name` attribute
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXdata group with 2D signal', async () => {
@@ -43,7 +43,9 @@ test('visualize NXdata group with 2D signal', async () => {
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
 
-  expect(await screen.findByRole('figure', { name: 'NeXus 2D' })).toBeVisible(); // `title` dataset
+  await expect(
+    screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXentry group with relative path to 2D default signal', async () => {
@@ -54,7 +56,9 @@ test('visualize NXentry group with relative path to 2D default signal', async ()
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
 
-  expect(await screen.findByRole('figure', { name: 'NeXus 2D' })).toBeVisible(); // `title` dataset
+  await expect(
+    screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXentry group with absolute path to 2D default signal', async () => {
@@ -65,7 +69,9 @@ test('visualize NXentry group with absolute path to 2D default signal', async ()
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
 
-  expect(await screen.findByRole('figure', { name: 'NeXus 2D' })).toBeVisible(); // `title` dataset
+  await expect(
+    screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXroot group with 2D default signal', async () => {
@@ -75,7 +81,9 @@ test('visualize NXroot group with 2D default signal', async () => {
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
 
-  expect(await screen.findByRole('figure', { name: 'NeXus 2D' })).toBeVisible(); // `title` dataset
+  await expect(
+    screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXdata group with 2D complex signal', async () => {
@@ -86,9 +94,9 @@ test('visualize NXdata group with 2D complex signal', async () => {
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
 
-  expect(
-    await screen.findByRole('figure', { name: 'twoD_complex (amplitude)' }) // signal name + complex visualization type
-  ).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'twoD_complex (amplitude)' }) // signal name + complex visualization type
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXdata group with 1D complex signal', async () => {
@@ -99,9 +107,9 @@ test('visualize NXdata group with 1D complex signal', async () => {
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
 
-  expect(
-    await screen.findByRole('figure', { name: 'twoD_complex' }) // signal name (complex vis type is displayed as ordinate label)
-  ).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'twoD_complex' }) // signal name (complex vis type is displayed as ordinate label)
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXdata group with "rgb-image" interpretation', async () => {
@@ -112,9 +120,9 @@ test('visualize NXdata group with "rgb-image" interpretation', async () => {
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxRGB);
 
-  expect(
-    await screen.findByRole('figure', { name: 'RGB CMY DGW' }) // `long_name` attribute
-  ).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'RGB CMY DGW' }) // `long_name` attribute
+  ).resolves.toBeVisible();
 });
 
 test('follow SILX styles when visualizing NXdata group', async () => {
@@ -133,9 +141,9 @@ test('visualize NXentry group with implicit default child NXdata group', async (
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
 
-  expect(
-    await screen.findByRole('figure', { name: 'oneD' }) // signal name of NXdata group "spectrum"
-  ).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'oneD' }) // signal name of NXdata group "spectrum"
+  ).resolves.toBeVisible();
 });
 
 test('show error when `default` entity is not found', async () => {
@@ -143,7 +151,9 @@ test('show error when `default` entity is not found', async () => {
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/default_not_found');
-  expect(await screen.findByText('No entity found at /test')).toBeVisible();
+  await expect(
+    screen.findByText('No entity found at /test')
+  ).resolves.toBeVisible();
 
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
 });
@@ -153,9 +163,9 @@ test('show error when `signal` entity is not found', async () => {
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/signal_not_found');
-  expect(
-    await screen.findByText('Expected "unknown" signal entity to exist')
-  ).toBeVisible();
+  await expect(
+    screen.findByText('Expected "unknown" signal entity to exist')
+  ).resolves.toBeVisible();
 
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
 });
@@ -165,9 +175,9 @@ test('show error when `signal` entity is not a dataset', async () => {
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/signal_not_dataset');
-  expect(
-    await screen.findByText('Expected "some_group" signal to be a dataset')
-  ).toBeVisible();
+  await expect(
+    screen.findByText('Expected "some_group" signal to be a dataset')
+  ).resolves.toBeVisible();
 
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
 });
@@ -177,9 +187,9 @@ test('show error when `signal` dataset is not array', async () => {
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/signal_not_array');
-  expect(
-    await screen.findByText('Expected dataset to have array shape')
-  ).toBeVisible();
+  await expect(
+    screen.findByText('Expected dataset to have array shape')
+  ).resolves.toBeVisible();
 
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
 });
@@ -189,9 +199,9 @@ test('show error when `signal` dataset is not numeric', async () => {
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/signal_not_numeric');
-  expect(
-    await screen.findByText('Expected dataset to have numeric or complex type')
-  ).toBeVisible();
+  await expect(
+    screen.findByText('Expected dataset to have numeric or complex type')
+  ).resolves.toBeVisible();
 
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
 });
@@ -200,9 +210,9 @@ test('show fallback message when NXdata group has no `signal` attribute', async 
   await renderApp();
   await selectExplorerNode('nexus_malformed/no_signal');
 
-  expect(
-    await screen.findByText('No visualization available for this entity.')
-  ).toBeInTheDocument();
+  await expect(
+    screen.findByText('No visualization available for this entity.')
+  ).resolves.toBeInTheDocument();
 });
 
 test('visualize NXdata group with unknown interpretation', async () => {
@@ -213,9 +223,9 @@ test('visualize NXdata group with unknown interpretation', async () => {
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxImage); // support check falls back to signal dataset dimensions
 
-  expect(
-    await screen.findByRole('figure', { name: 'fourD' }) // signal name
-  ).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'fourD' }) // signal name
+  ).resolves.toBeVisible();
 });
 
 test('visualize NXdata group with "rgb-image" interpretation but incompatible signal', async () => {
@@ -226,9 +236,9 @@ test('visualize NXdata group with "rgb-image" interpretation but incompatible si
   expect(tabs).toHaveLength(1);
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum); // support check falls back to signal dataset dimensions
 
-  expect(
-    await screen.findByRole('figure', { name: 'oneD' }) // signal name
-  ).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'oneD' }) // signal name
+  ).resolves.toBeVisible();
 });
 
 test('ignore unknown `SILX_style` options and invalid values', async () => {
@@ -272,23 +282,23 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_spectrum');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Retry all fetches at once
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
   jest.runAllTimers();
 
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -300,22 +310,22 @@ test('cancel and retry slow fetch of NxImage', async () => {
 
   // Select NXdata group with image interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_image');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Retry all fetches at once
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -327,26 +337,26 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_spectrum');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Switch to other entity with no visualization
   await selectExplorerNode('entities');
-  expect(await screen.findByText(/No visualization/)).toBeVisible();
+  await expect(screen.findByText(/No visualization/)).resolves.toBeVisible();
 
   // Select dataset again
   await selectExplorerNode('slow_nx_spectrum');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -358,26 +368,26 @@ test('retry fetching automatically when re-selecting NxImage', async () => {
 
   // Select NXdata group with image interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_image');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Switch to other entity with no visualization
   await selectExplorerNode('entities');
-  expect(await screen.findByText(/No visualization/)).toBeVisible();
+  await expect(screen.findByText(/No visualization/)).resolves.toBeVisible();
 
   // Select dataset again
   await selectExplorerNode('slow_nx_image');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -389,12 +399,12 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_spectrum');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
@@ -402,19 +412,19 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
   const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
   d0Slider.focus();
   userEvent.keyboard('{PageUp}');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Move back to first slice to retry fetching it automatically
   userEvent.keyboard('{PageDown}');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetch of first slice succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
 
   jest.runOnlyPendingTimers();
@@ -427,12 +437,12 @@ test('retry fetching supporting datasets automatically when selecting other NxIm
 
   // Select NXdata group with image interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_image');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
@@ -440,19 +450,19 @@ test('retry fetching supporting datasets automatically when selecting other NxIm
   const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
   d0Slider.focus();
   userEvent.keyboard('{PageUp}');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Move back to first slice to retry fetching it automatically
   userEvent.keyboard('{PageDown}');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetch of first slice succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
 
   jest.runOnlyPendingTimers();

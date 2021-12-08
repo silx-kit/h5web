@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 
 import H5GroveApp from './H5GroveApp';
 import HsdsApp from './HsdsApp';
@@ -7,17 +12,12 @@ import MockApp from './MockApp';
 function DemoApp() {
   return (
     <Router>
-      <Switch>
-        <Route path="/mock">
-          <MockApp />
-        </Route>
-        <Route path="/hsds">
-          <HsdsApp />
-        </Route>
-        <Route path="/">
-          <H5GroveApp />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/" element={<H5GroveApp />} />
+        <Route path="mock" element={<MockApp />} />
+        <Route path="hsds" element={<HsdsApp />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </Router>
   );
 }

@@ -138,8 +138,9 @@ export class HsdsApi extends ProviderApi {
       this.fetchAttributeWithValue(collection, id, attr.name)
     );
 
+    const attrsWithValues = await Promise.all(attrsPromises);
     return Object.fromEntries(
-      (await Promise.all(attrsPromises)).map((attr) => [attr.name, attr.value])
+      attrsWithValues.map((attr) => [attr.name, attr.value])
     );
   }
 

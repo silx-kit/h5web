@@ -23,7 +23,7 @@ test('switch between "display" and "inspect" modes', async () => {
   // Switch back to "display" mode
   userEvent.click(displayBtn);
 
-  expect(await findVisSelector()).toBeVisible();
+  await expect(findVisSelector()).resolves.toBeVisible();
   expect(screen.queryByRole('row', { name: /^Path/ })).not.toBeInTheDocument();
 });
 

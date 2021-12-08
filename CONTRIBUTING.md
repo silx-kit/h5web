@@ -56,11 +56,12 @@ pnpm start
 1. Read the changelogs and release notes of the dependencies you'd like to
    upgrade. Look for potential breaking changes, and for bug fixes and new
    features that may help improve the codebase.
-1. Run `pnpm up -L <pkg-name> --filter <project-name>` to upgrade a dependency
-   to the latest version in a given project. Alternatively, you can also edit
-   the relevant `package.json` file(s) manually and run `pnpm install`, but make
-   sure to specify an exact dependency version rather than a range (i.e. don't
-   prefix the version with a caret or a tilde).
+1. Run `pnpm up -r -L <pkg-name>` to update a dependency to the latest version
+   in all projects. Alternatively, you can either replace `-r` with `--filter`
+   to target specific projects, or edit the relevant `package.json` file(s)
+   manually and run `pnpm install` (but make sure to specify an exact dependency
+   version rather than a range - i.e. don't prefix the version with a caret or a
+   tilde).
 
 Beware of the following versioning requirements:
 
@@ -77,6 +78,12 @@ version conflicts and other package resolution issues:
 [`pnpm.packageExtensions`](https://pnpm.io/package_json#pnpmpackageextensions)
 [`peerDependenciesMeta`](https://pnpm.io/package_json#peerdependenciesmeta),
 [`.pnpmfile.cjs`](https://pnpm.io/pnpmfile).
+
+If you update `eslint-config-galex` and encounter warnings in the
+Create-React-App `demo` app, try uninstalling and reinstalling `react-scripts`
+with `pnpm uninstall react-scripts && pnpm install -D react-scripts`. If you
+still get warnings, try to override the versions of CRA's culprit ESLint plugins
+with `pnpm.overrides` in the root `package.json` of the monorepo.
 
 ### Workspace dependencies
 

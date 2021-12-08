@@ -20,7 +20,9 @@ interface RgbVisConfig {
 function createStore() {
   return create<RgbVisConfig>(
     persist(
-      (set) => ({
+      // https://github.com/pmndrs/zustand/issues/701
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (set, get) => ({
         showGrid: false,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 

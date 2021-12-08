@@ -37,9 +37,9 @@ test('show fallback message when no visualization is supported', async () => {
   await renderApp();
   await selectExplorerNode('entities'); // simple group
 
-  expect(
-    await screen.findByText('No visualization available for this entity.')
-  ).toBeInTheDocument();
+  await expect(
+    screen.findByText('No visualization available for this entity.')
+  ).resolves.toBeInTheDocument();
   expect(queryVisSelector()).not.toBeInTheDocument();
 });
 
@@ -48,10 +48,10 @@ test('show loader while fetching dataset value', async () => {
   await renderApp();
 
   await selectExplorerNode('resilience/slow_value');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   jest.runAllTimers(); // resolve slow fetch right away
-  expect(await screen.findByText(/42/)).toBeVisible();
+  await expect(screen.findByText(/42/)).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -63,13 +63,13 @@ test("show error when dataset value can't be fetched", async () => {
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('resilience/error_value');
 
-  expect(await screen.findByText('error')).toBeVisible();
+  await expect(screen.findByText('error')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Make sure error boundary resets when selecting another entity
   await selectExplorerNode('entities');
-  expect(await screen.findByText(/No visualization/)).toBeVisible();
+  await expect(screen.findByText(/No visualization/)).resolves.toBeVisible();
 });
 
 test('cancel and retry slow fetch of dataset value', async () => {
@@ -78,23 +78,23 @@ test('cancel and retry slow fetch of dataset value', async () => {
 
   // Select dataset and start fetching value
   await selectExplorerNode('resilience/slow_value');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel fetch
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
 
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Retry fetch
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetch succeed
   jest.runAllTimers();
-  expect(await screen.findByText(/42/)).toBeVisible();
+  await expect(screen.findByText(/42/)).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -106,23 +106,27 @@ test('cancel and retry slow fetch of dataset slice', async () => {
 
   // Select dataset and start fetching first slice
   await selectExplorerNode('resilience/slow_slicing');
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Cancel fetch of first slice
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
 
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Retry fetch of first slice
   userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Let fetch of first slice succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -134,25 +138,25 @@ test('retry fetching automatically when re-selecting dataset', async () => {
 
   // Select dataset and start fetching
   await selectExplorerNode('resilience/slow_value');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel fetch
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   errorSpy.mockRestore();
 
   // Switch to other entity with no visualization
   await selectExplorerNode('entities');
-  expect(await screen.findByText(/No visualization/)).toBeVisible();
+  await expect(screen.findByText(/No visualization/)).resolves.toBeVisible();
 
   // Select dataset again
   await selectExplorerNode('slow_value');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetch succeed
   jest.runAllTimers();
-  expect(await screen.findByText(/42/)).toBeVisible();
+  await expect(screen.findByText(/42/)).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -164,12 +168,14 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
 
   // Select dataset and start fetching first slice
   await selectExplorerNode('resilience/slow_slicing');
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Cancel fetch of first slice
   const errorSpy = mockConsoleMethod('error');
   userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
-  expect(await screen.findByText('Request cancelled')).toBeVisible();
+  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
@@ -177,20 +183,24 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
   d0Slider.focus();
   userEvent.keyboard('{ArrowUp}');
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Let fetch of other slice succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Move back to first slice to retry fetching it automatically
   userEvent.keyboard('{ArrowDown}');
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
 
   // Let fetch of first slice succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -202,11 +212,13 @@ test('cancel fetching dataset slice when changing entity', async () => {
 
   // Select dataset and start fetching first slice
   await selectExplorerNode('resilience/slow_slicing');
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Switch to another entity to cancel the fetch
   await selectExplorerNode('resilience/slow_value');
-  expect(await screen.findByText(/Loading data/)).toBeVisible();
+  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let pending requests succeed
   jest.runAllTimers();
@@ -214,11 +226,13 @@ test('cancel fetching dataset slice when changing entity', async () => {
   // Reselect dataset and check that it refetches the first slice
   await selectExplorerNode('resilience/slow_slicing');
   // The slice request was cancelled so it should be pending once again
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Let fetch of first slice succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
@@ -230,24 +244,30 @@ test('cancel fetching dataset slice when changing vis', async () => {
 
   // Select dataset and start fetching the slice
   await selectExplorerNode('resilience/slow_slicing');
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Switch to the Line vis to cancel the fetch
   userEvent.click(screen.getByRole('tab', { name: 'Line' }));
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Let pending requests succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Switch back to Heatmap and check that it refetches the slice
   userEvent.click(screen.getByRole('tab', { name: 'Heatmap' }));
   // The slice request was cancelled so it should be pending once again
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Let fetch of the slice succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   jest.runOnlyPendingTimers();
   jest.useRealTimers();

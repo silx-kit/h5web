@@ -93,39 +93,31 @@ Alpha.args = {
 export default {
   title: 'Visualizations/HeatmapVis',
   component: HeatmapVis,
-  parameters: { layout: 'fullscreen' },
+  parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },
   decorators: [FillHeight],
+  args: {
+    colorMap: 'Viridis',
+    scaleType: ScaleType.Linear,
+    layout: 'cover',
+    showGrid: true,
+  },
   argTypes: {
-    dataArray: {}, // To keep mandatory args above optional ones.
-    domain: {},
     colorMap: {
-      defaultValue: 'Viridis',
-      control: {
-        type: 'select',
-        options: Object.keys(INTERPOLATORS),
-      },
+      control: { type: 'select' },
+      options: Object.keys(INTERPOLATORS),
     },
     scaleType: {
-      defaultValue: ScaleType.Linear,
-      control: {
-        type: 'inline-radio',
-        options: [
-          ScaleType.Linear,
-          ScaleType.Log,
-          ScaleType.SymLog,
-          ScaleType.Sqrt,
-        ],
-      },
+      control: { type: 'inline-radio' },
+      options: [
+        ScaleType.Linear,
+        ScaleType.Log,
+        ScaleType.SymLog,
+        ScaleType.Sqrt,
+      ],
     },
     layout: {
-      defaultValue: 'cover',
-      control: {
-        type: 'inline-radio',
-        options: ['contain', 'cover', 'fill'],
-      },
-    },
-    showGrid: {
-      defaultValue: true,
+      control: { type: 'inline-radio' },
+      options: ['contain', 'cover', 'fill'],
     },
   },
 } as Meta;

@@ -3,11 +3,11 @@ import path from 'path';
 import { URL, fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const dirname = fileURLToPath(new URL('.', import.meta.url));
 
 const [pkg, sharedPkg] = ['.', '../shared'].map((prefix) =>
   JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, `${prefix}/package.json`), {
+    fs.readFileSync(path.resolve(dirname, `${prefix}/package.json`), {
       encoding: 'utf-8',
     })
   )
