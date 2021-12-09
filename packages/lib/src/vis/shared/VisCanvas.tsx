@@ -55,6 +55,7 @@ function VisCanvas(props: Props) {
           frameloop="demand" // disable game loop
           dpr={[1, 3]} // https://discoverthreejs.com/tips-and-tricks/#performance
           gl={{ preserveDrawingBuffer: true }} // for screenshot feature
+          resize={{ debounce: { scroll: 20, resize: 200 }, scroll: false }} // https://github.com/pmndrs/react-three-fiber/discussions/1906
         >
           <ambientLight />
           <AxisSystemProvider {...providerProps}>
