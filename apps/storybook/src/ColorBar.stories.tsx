@@ -88,10 +88,8 @@ export default {
       control: { type: 'range', min: -10, max: 10, step: 0.1 },
     },
     scaleType: {
-      control: {
-        type: 'inline-radio',
-        options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
-      },
+      control: { type: 'inline-radio' },
+      options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
     },
   },
   excludeStories: ['ColorMapTemplate'],

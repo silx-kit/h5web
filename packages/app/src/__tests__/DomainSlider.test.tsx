@@ -299,7 +299,9 @@ test('handle min or max <= 0 in log scale', async () => {
   await selectExplorerNode('nexus_entry/image');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
-  expect(await screen.findByRole('button', { name: 'Log' })).toBeVisible(); // wait for switch to log scale
+  await expect(
+    screen.findByRole('button', { name: 'Log' }) // wait for switch to log scale
+  ).resolves.toBeVisible();
 
   userEvent.click(editBtn);
 
@@ -331,7 +333,9 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
   await selectExplorerNode('nexus_entry/image');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
-  expect(await screen.findByRole('button', { name: 'Log' })).toBeVisible(); // wait for switch to log scale
+  await expect(
+    screen.findByRole('button', { name: 'Log' }) // wait for switch to log scale
+  ).resolves.toBeVisible();
 
   userEvent.click(editBtn);
 

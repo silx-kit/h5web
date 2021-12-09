@@ -24,12 +24,6 @@ const rules = {
   /* Forcing use of `else` for consistency with mandatory `default` clause in `switch` statements is unreasonable.
    * `if`/`else if` serves a different purpose than `switch`. */
   'sonarjs/elseif-without-else': 'off',
-
-  // zustand has `whitelist` option
-  'inclusive-language/use-inclusive-words': [
-    'error',
-    { allowedTerms: ['whitelist'] },
-  ],
 };
 
 const overrides = [
@@ -48,8 +42,7 @@ const overrides = [
       '@typescript-eslint/prefer-nullish-coalescing': 'off', // `||` is often conveninent and safe to use with TS
       '@typescript-eslint/explicit-module-boundary-types': 'off', // worsens readability sometimes (e.g. for React components)
 
-      // Galex expects TypeScript options `noUnusedLocals` and `noUnusedParameters` to be enabled,
-      // but those prevent compilation, which is bad for developer experience
+      // Allow removing properties with destructuring
       '@typescript-eslint/no-unused-vars': [
         'warn',
         { ignoreRestSiblings: true },
@@ -84,6 +77,7 @@ const overrides = [
       'jest/prefer-strict-equal': 'off', // `toEqual` is shorter and sufficient in most cases
       'jest-formatting/padding-around-all': 'off', // allow writing concise two-line tests
       'jest/require-top-level-describe': 'off', // filename should already be meaningful, extra nesting is unnecessary
+      'testing-library/no-unnecessary-act': 'off', // `act` is sometimes required when advancing timers manually
     },
   },
 ];

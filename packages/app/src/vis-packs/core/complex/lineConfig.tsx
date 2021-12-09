@@ -14,7 +14,9 @@ interface ComplexLineConfig {
 function createStore() {
   return create<ComplexLineConfig>(
     persist(
-      (set) => ({
+      // https://github.com/pmndrs/zustand/issues/701
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (set, get) => ({
         visType: ComplexVisType.Amplitude,
         setVisType: (visType: ComplexLineVisType) => set(() => ({ visType })),
       }),

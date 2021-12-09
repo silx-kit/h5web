@@ -13,7 +13,9 @@ interface ComplexConfig {
 function createStore() {
   return create<ComplexConfig>(
     persist(
-      (set) => ({
+      // https://github.com/pmndrs/zustand/issues/701
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (set, get) => ({
         visType: ComplexVisType.Amplitude,
         setVisType: (visType: ComplexVisType) => set(() => ({ visType })),
       }),

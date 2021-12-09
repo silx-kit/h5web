@@ -1,5 +1,6 @@
 import { CurveType } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
+import { omit } from 'lodash';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
@@ -28,7 +29,9 @@ interface LineConfig {
 function createStore() {
   return create<LineConfig>(
     persist(
-      (set) => ({
+      // https://github.com/pmndrs/zustand/issues/701
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (set, get) => ({
         curveType: CurveType.LineOnly,
         setCurveType: (type: CurveType) => set({ curveType: type }),
 
@@ -50,13 +53,7 @@ function createStore() {
       }),
       {
         name: 'h5web:line',
-        whitelist: [
-          'curveType',
-          'showGrid',
-          'xScaleType',
-          'yScaleType',
-          'showErrors',
-        ],
+        partialize: (state) => omit(state, ['autoScale']),
         version: 4,
       }
     )

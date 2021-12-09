@@ -89,31 +89,25 @@ AuxiliaryArrays.args = {
 export default {
   title: 'Visualizations/LineVis',
   component: LineVis,
-  parameters: { layout: 'fullscreen' },
+  parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },
   decorators: [FillHeight],
+  args: {
+    curveType: CurveType.LineOnly,
+    scaleType: ScaleType.Linear,
+    showGrid: true,
+  },
   argTypes: {
-    dataArray: {}, // to keep mandatory args above optional ones in controls add-on
-    domain: {},
     curveType: {
-      defaultValue: CurveType.LineOnly,
-      control: {
-        type: 'inline-radio',
-        options: [
-          CurveType.LineOnly,
-          CurveType.GlyphsOnly,
-          CurveType.LineAndGlyphs,
-        ],
-      },
+      control: { type: 'inline-radio' },
+      options: [
+        CurveType.LineOnly,
+        CurveType.GlyphsOnly,
+        CurveType.LineAndGlyphs,
+      ],
     },
     scaleType: {
-      defaultValue: ScaleType.Linear,
-      control: {
-        type: 'inline-radio',
-        options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
-      },
-    },
-    showGrid: {
-      defaultValue: true,
+      control: { type: 'inline-radio' },
+      options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
     },
   },
 } as Meta;

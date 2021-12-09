@@ -234,7 +234,7 @@ describe('extendDomain', () => {
   it('should not extend domain outside of supported values with sqrt scale', () => {
     const domain: Domain = [POS_MIN, 100];
     const [extMin1, extMax1] = extendDomain(domain, 0.75, ScaleType.Sqrt);
-    expect(extMin1).toEqual(0);
+    expect(extMin1).toBe(0);
     expect(extMax1).toBeGreaterThan(100);
   });
 
@@ -249,46 +249,46 @@ describe('getValueToIndexScale', () => {
   it('should create threshold scale from values to indices', () => {
     const scale = getValueToIndexScale([10, 20, 30]);
 
-    expect(scale(0)).toEqual(0);
-    expect(scale(10)).toEqual(0);
-    expect(scale(19.9)).toEqual(0);
-    expect(scale(20)).toEqual(1);
-    expect(scale(100)).toEqual(2);
+    expect(scale(0)).toBe(0);
+    expect(scale(10)).toBe(0);
+    expect(scale(19.9)).toBe(0);
+    expect(scale(20)).toBe(1);
+    expect(scale(100)).toBe(2);
   });
 
   it('should allow scale to switch at midpoints', () => {
     const scale = getValueToIndexScale([10, 20, 30], true);
 
-    expect(scale(0)).toEqual(0);
-    expect(scale(14.9)).toEqual(0);
-    expect(scale(15)).toEqual(1);
-    expect(scale(24.9)).toEqual(1);
-    expect(scale(25)).toEqual(2);
-    expect(scale(100)).toEqual(2);
+    expect(scale(0)).toBe(0);
+    expect(scale(14.9)).toBe(0);
+    expect(scale(15)).toBe(1);
+    expect(scale(24.9)).toBe(1);
+    expect(scale(25)).toBe(2);
+    expect(scale(100)).toBe(2);
   });
 
   it('should create threshold scale from descending values to indices', () => {
     const scale = getValueToIndexScale([30, 20, 10]);
 
-    expect(scale(100)).toEqual(0);
-    expect(scale(20)).toEqual(0);
-    expect(scale(19.9)).toEqual(1);
-    expect(scale(10)).toEqual(1);
-    expect(scale(9.9)).toEqual(2);
-    expect(scale(0)).toEqual(2);
+    expect(scale(100)).toBe(0);
+    expect(scale(20)).toBe(0);
+    expect(scale(19.9)).toBe(1);
+    expect(scale(10)).toBe(1);
+    expect(scale(9.9)).toBe(2);
+    expect(scale(0)).toBe(2);
   });
 
   it('should allow scale with descending values to switch at midpoints', () => {
     const scale = getValueToIndexScale([30, 20, 10], true);
 
-    expect(scale(100)).toEqual(0);
-    expect(scale(30)).toEqual(0);
-    expect(scale(25)).toEqual(0);
-    expect(scale(24.9)).toEqual(1);
-    expect(scale(20)).toEqual(1);
-    expect(scale(15)).toEqual(1);
-    expect(scale(14.9)).toEqual(2);
-    expect(scale(0)).toEqual(2);
+    expect(scale(100)).toBe(0);
+    expect(scale(30)).toBe(0);
+    expect(scale(25)).toBe(0);
+    expect(scale(24.9)).toBe(1);
+    expect(scale(20)).toBe(1);
+    expect(scale(15)).toBe(1);
+    expect(scale(14.9)).toBe(2);
+    expect(scale(0)).toBe(2);
   });
 });
 

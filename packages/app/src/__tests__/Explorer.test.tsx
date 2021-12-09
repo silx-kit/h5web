@@ -92,7 +92,7 @@ test('show spinner when group metadata is slow to fetch', async () => {
   await renderApp();
 
   await selectExplorerNode('resilience/slow_metadata');
-  expect(await screen.findByText(/Loading/)).toBeVisible();
+  await expect(screen.findByText(/Loading/)).resolves.toBeVisible();
   expect(screen.getByLabelText(/Loading group metadata/)).toBeVisible();
 
   jest.runAllTimers(); // resolve slow fetch right away

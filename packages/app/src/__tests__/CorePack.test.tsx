@@ -19,7 +19,7 @@ test('visualise raw dataset', async () => {
   expect(tabs[0]).toHaveTextContent(Vis.Raw);
   expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
 
-  expect(await screen.findByText(/"int": 42/)).toBeVisible();
+  await expect(screen.findByText(/"int": 42/)).resolves.toBeVisible();
 });
 
 test('log raw dataset to console if too large', async () => {
@@ -28,7 +28,7 @@ test('log raw dataset to console if too large', async () => {
   const logSpy = mockConsoleMethod('log');
   await selectExplorerNode('entities/raw_large');
 
-  expect(await screen.findByText(/dataset is too big/)).toBeVisible();
+  await expect(screen.findByText(/dataset is too big/)).resolves.toBeVisible();
   expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
 });
 
@@ -36,7 +36,7 @@ test('visualise scalar dataset', async () => {
   await renderApp();
 
   await selectExplorerNode('entities/scalar_int');
-  expect(await screen.findByText('0')).toBeVisible();
+  await expect(screen.findByText('0')).resolves.toBeVisible();
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -44,7 +44,7 @@ test('visualise scalar dataset', async () => {
   expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
 
   await selectExplorerNode('scalar_str');
-  expect(await screen.findByText(mockValues.scalar_str)).toBeVisible();
+  await expect(screen.findByText(mockValues.scalar_str)).resolves.toBeVisible();
 });
 
 test('visualize 1D dataset', async () => {
@@ -57,7 +57,9 @@ test('visualize 1D dataset', async () => {
   expect(tabs[1]).toHaveTextContent(Vis.Line);
   expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
 
-  expect(await screen.findByRole('figure', { name: 'oneD' })).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'oneD' })
+  ).resolves.toBeVisible();
 });
 
 test('visualize 2D datasets', async () => {
@@ -71,7 +73,9 @@ test('visualize 2D datasets', async () => {
   expect(tabs[2]).toHaveTextContent(Vis.Heatmap);
   expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
 
-  expect(await screen.findByRole('figure', { name: 'twoD' })).toBeVisible();
+  await expect(
+    screen.findByRole('figure', { name: 'twoD' })
+  ).resolves.toBeVisible();
 });
 
 test('visualize 1D slice of a 3D dataset with and without autoscale', async () => {
@@ -80,19 +84,23 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
   await selectExplorerNode('resilience/slow_slicing');
 
   // Heatmap is selected by default and fetches a 2D slice.
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Let the 2D slice fetch succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Select the LineVis. The autoscale is on by default: it should fetch a 1D slice.
   userEvent.click(await screen.findByRole('tab', { name: Vis.Line }));
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Let the 1D slice fetch succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Check that autoscale is truly on
   const autoScaleBtn = await screen.findByRole('button', {
@@ -107,27 +115,33 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
   })[0];
   d0Slider.focus();
   userEvent.keyboard('{ArrowUp}');
-  expect(await screen.findByText(/Loading current slice/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
 
   // Let the new slice fetch succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Activate autoscale. It should trigger the fetch of the entire dataset.
   userEvent.click(autoScaleBtn);
-  expect(await screen.findByText(/Loading entire dataset/)).toBeVisible();
+  await expect(
+    screen.findByText(/Loading entire dataset/)
+  ).resolves.toBeVisible();
 
   // Let the dataset fetch succeed
   jest.runAllTimers();
-  expect(await screen.findByRole('figure')).toBeVisible();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Check that entire dataset is fetched
   d0Slider.focus();
+
   act(() => {
     userEvent.keyboard('{ArrowUp}');
     jest.advanceTimersByTime(100); // account for debouncing of `dimMapping` state
   });
-  expect(await screen.findByRole('figure')).toBeVisible();
+
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
 
   jest.runOnlyPendingTimers();

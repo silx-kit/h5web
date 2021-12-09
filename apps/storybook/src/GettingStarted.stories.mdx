@@ -1,3 +1,5 @@
+import { Meta } from '@storybook/react';
+
 <Meta title="Getting started" />
 
 # H5Web Component Library
@@ -42,7 +44,7 @@ The components are organised in three categories:
    ];
 
    // Flatten source array
-   const flatValues: number[] = values.flat(Infinity);
+   const flatValues = values.flat(Infinity) as number[];
 
    // Convert to ndarray and get domain
    const dataArray = ndarray(flatValues, [2, 3]);

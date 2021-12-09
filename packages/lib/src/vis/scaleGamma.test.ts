@@ -10,7 +10,7 @@ describe('scaleGamma', () => {
 
     expect(scale.domain()).toEqual([-10, 10]);
     expect(scale.range()).toEqual([0, 5]);
-    expect(scale.exponent()).toEqual(2);
+    expect(scale.exponent()).toBe(2);
   });
 
   it('should initialize gamma scale with default properties', () => {
@@ -18,7 +18,7 @@ describe('scaleGamma', () => {
 
     expect(scale.domain()).toEqual([0, 1]);
     expect(scale.range()).toEqual([0, 1]);
-    expect(scale.exponent()).toEqual(1);
+    expect(scale.exponent()).toBe(1);
   });
 
   it('should scale accordingly', () => {
@@ -27,8 +27,8 @@ describe('scaleGamma', () => {
       range: [0, 10],
       exponent: 2,
     });
-    expect(scale(40)).toEqual(0);
-    expect(scale(50)).toEqual(10);
+    expect(scale(40)).toBe(0);
+    expect(scale(50)).toBe(10);
     expect(scale(42)).toBeCloseTo(0.4);
   });
 
@@ -41,8 +41,8 @@ describe('scaleGamma', () => {
 
     scale.domain([40, 50]);
     expect(scale.domain()).toEqual([40, 50]);
-    expect(scale(40)).toEqual(0);
-    expect(scale(50)).toEqual(10);
+    expect(scale(40)).toBe(0);
+    expect(scale(50)).toBe(10);
     expect(scale(42)).toBeCloseTo(0.4);
   });
 
@@ -55,8 +55,8 @@ describe('scaleGamma', () => {
 
     scale.range([-5, 5]);
     expect(scale.range()).toEqual([-5, 5]);
-    expect(scale(10)).toEqual(-5);
-    expect(scale(20)).toEqual(5);
+    expect(scale(10)).toBe(-5);
+    expect(scale(20)).toBe(5);
     expect(scale(16)).toBeCloseTo(-1.4);
   });
 
@@ -68,9 +68,9 @@ describe('scaleGamma', () => {
     });
 
     scale.exponent(4);
-    expect(scale.exponent()).toEqual(4);
-    expect(scale(10)).toEqual(-5);
-    expect(scale(20)).toEqual(5);
+    expect(scale.exponent()).toBe(4);
+    expect(scale(10)).toBe(-5);
+    expect(scale(20)).toBe(5);
     expect(scale(18)).toBeCloseTo(-0.904);
   });
 
@@ -83,9 +83,9 @@ describe('scaleGamma', () => {
 
     scale.rangeRound([-5, 5]);
     expect(scale.range()).toEqual([-5, 5]);
-    expect(scale(10)).toEqual(-5);
-    expect(scale(20)).toEqual(5);
-    expect(scale(18)).toEqual(-1);
+    expect(scale(10)).toBe(-5);
+    expect(scale(20)).toBe(5);
+    expect(scale(18)).toBe(-1);
   });
 
   it('should invert accordingly', () => {
@@ -94,9 +94,9 @@ describe('scaleGamma', () => {
       range: [0, 10],
       exponent: 2,
     });
-    expect(scale.invert(0)).toEqual(40);
-    expect(scale.invert(10)).toEqual(50);
-    expect(scale.invert(0.4)).toEqual(42);
+    expect(scale.invert(0)).toBe(40);
+    expect(scale.invert(10)).toBe(50);
+    expect(scale.invert(0.4)).toBe(42);
   });
 
   it('should clamp', () => {
@@ -106,7 +106,7 @@ describe('scaleGamma', () => {
       exponent: 2,
       clamp: true,
     });
-    expect(scale(5)).toEqual(10);
+    expect(scale(5)).toBe(10);
   });
 
   it('should extend to a nice domain', () => {
@@ -138,13 +138,13 @@ describe('scaleGamma', () => {
     });
     let formatter = scale.tickFormat(5);
     // Ticks are rounded to the first decimal
-    expect(formatter(-3.4)).toEqual('−3.4');
-    expect(formatter(2.856)).toEqual('2.9');
+    expect(formatter(-3.4)).toBe('−3.4');
+    expect(formatter(2.856)).toBe('2.9');
 
     scale.domain([-5.5, 5]);
     formatter = scale.tickFormat(5);
     // Ticks are rounded to the nearest integer
-    expect(formatter(-3.4)).toEqual('−3');
-    expect(formatter(2.856)).toEqual('3');
+    expect(formatter(-3.4)).toBe('−3');
+    expect(formatter(2.856)).toBe('3');
   });
 });

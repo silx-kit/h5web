@@ -12,7 +12,9 @@ interface MatrixVisConfig {
 function createStore() {
   return create<MatrixVisConfig>(
     persist(
-      (set) => ({
+      // https://github.com/pmndrs/zustand/issues/701
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (set, get) => ({
         sticky: false,
         toggleSticky: () => set((state) => ({ sticky: !state.sticky })),
       }),

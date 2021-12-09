@@ -77,15 +77,13 @@ export default {
   },
   argTypes: {
     scaleType: {
-      control: {
-        type: 'inline-radio',
-        options: [
-          ScaleType.Linear,
-          ScaleType.SymLog,
-          ScaleType.Log,
-          ScaleType.Sqrt,
-        ],
-      },
+      control: { type: 'inline-radio' },
+      options: [
+        ScaleType.Linear,
+        ScaleType.SymLog,
+        ScaleType.Log,
+        ScaleType.Sqrt,
+      ],
     },
   },
 } as Meta;

@@ -22,26 +22,26 @@
     "@h5web/lib": "workspace:*",
     "@h5web/shared": "workspace:*",
     "@react-hookz/web": "12.0.0",
-    "@react-three/fiber": "7.0.9",
+    "@react-three/fiber": "7.0.21",
     "ndarray": "1.0.19",
     "normalize.css": "8.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "4.3.1",
-    "three": "0.132.2"
+    "three": "0.135.0"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "6.3.9",
-    "@storybook/addon-essentials": "6.3.9",
-    "@storybook/addon-links": "6.3.9",
+    "@storybook/addon-docs": "6.4.8",
+    "@storybook/addon-essentials": "6.4.8",
+    "@storybook/addon-links": "6.4.8",
     "@storybook/preset-create-react-app": "3.2.0",
-    "@storybook/react": "6.3.9",
-    "@types/ndarray": "1.0.10",
-    "@types/react": "17.0.19",
-    "@types/react-dom": "17.0.9",
-    "eslint": "7.32.0",
-    "eslint-config-galex": "2.16.12",
-    "typescript": "4.4.3"
+    "@storybook/react": "6.4.8",
+    "@types/ndarray": "1.0.11",
+    "@types/react": "17.0.37",
+    "@types/react-dom": "17.0.11",
+    "eslint": "8.4.1",
+    "eslint-config-galex": "3.3.5",
+    "typescript": "4.5.2"
   },
   "browserslist": {
     "production": [
