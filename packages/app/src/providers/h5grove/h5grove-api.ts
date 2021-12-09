@@ -9,17 +9,12 @@ import type {
   NumericType,
   UnresolvedEntity,
 } from '@h5web/shared';
-import {
-  hasScalarShape,
-  hasArrayShape,
-  buildEntityPath,
-  EntityKind,
-} from '@h5web/shared';
+import { hasScalarShape, buildEntityPath, EntityKind } from '@h5web/shared';
 import { isString } from 'lodash';
 
 import { ProviderApi } from '../api';
 import type { ExportFormat, ValuesStoreParams } from '../models';
-import { convertDtype, flattenValue, handleAxiosError } from '../utils';
+import { convertDtype, handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
   H5GroveAttrValuesResponse,
@@ -53,7 +48,7 @@ export class H5GroveApi extends ProviderApi {
   public async getValue(
     params: ValuesStoreParams
   ): Promise<H5GroveDataResponse> {
-    const { dataset, selection } = params;
+    const { dataset } = params;
 
     const DTypedArray = typedArrayFromDType(dataset.type);
     if (DTypedArray) {
@@ -62,10 +57,7 @@ export class H5GroveApi extends ProviderApi {
       return hasScalarShape(dataset) ? array[0] : [...array];
     }
 
-    const value = await this.fetchData(params);
-    return hasArrayShape(dataset)
-      ? flattenValue(value, dataset, selection)
-      : value;
+    return this.fetchData(params);
   }
 
   public async getAttrValues(entity: Entity): Promise<AttributeValues> {
@@ -132,7 +124,7 @@ export class H5GroveApi extends ProviderApi {
     const { data } = await this.cancellableFetchValue<H5GroveDataResponse>(
       `/data/`,
       params,
-      { path: params.dataset.path, selection: params.selection }
+      { path: params.dataset.path, selection: params.selection, flatten: true }
     );
     return data;
   }

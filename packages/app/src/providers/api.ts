@@ -55,7 +55,7 @@ export abstract class ProviderApi {
   protected async cancellableFetchValue<T>(
     endpoint: string,
     storeParams: ValuesStoreParams,
-    queryParams?: Record<string, string | undefined>,
+    queryParams?: Record<string, string | boolean | undefined>,
     responseType?: ResponseType
   ): Promise<AxiosResponse<T>> {
     const cancelSource = axios.CancelToken.source();
