@@ -3,6 +3,7 @@ import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/e
 import { clamp } from 'lodash';
 import { useRef, useCallback, useEffect } from 'react';
 import type { Vector3 } from 'three';
+import { Vector2 } from 'three';
 
 import { useWheelCapture } from '../hooks';
 import { useAxisSystemContext } from './AxisSystemContext';
@@ -10,20 +11,28 @@ import { useAxisSystemContext } from './AxisSystemContext';
 const ZOOM_FACTOR = 0.95;
 
 function PanZoomMesh() {
-  const { visSize } = useAxisSystemContext();
+  const { abscissaScale, ordinateScale, visSize } = useAxisSystemContext();
+  const { width: visWidth, height: visHeight } = visSize;
 
   const camera = useThree((state) => state.camera);
   const { width, height } = useThree((state) => state.size);
   const invalidate = useThree((state) => state.invalidate);
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
+  const viewportCenter = useRef<Vector2>();
 
   const moveCameraTo = useCallback(
     (x: number, y: number) => {
-      const { position, zoom } = camera;
+      /* Save mesh coordinates at requested camera position so we can keep this point
+           in the centre of the viewport on resize. */
+      viewportCenter.current = new Vector2(
+        abscissaScale.invert(x),
+        ordinateScale.invert(y)
+      );
 
-      const xBound = Math.max(visSize.width - width / zoom, 0) / 2;
-      const yBound = Math.max(visSize.height - height / zoom, 0) / 2;
+      const { position, zoom } = camera;
+      const xBound = Math.max(visWidth - width / zoom, 0) / 2;
+      const yBound = Math.max(visHeight - height / zoom, 0) / 2;
 
       position.set(
         clamp(x, -xBound, xBound),
@@ -34,7 +43,16 @@ function PanZoomMesh() {
       camera.updateMatrixWorld();
       invalidate();
     },
-    [camera, height, invalidate, visSize, width]
+    [
+      abscissaScale,
+      camera,
+      height,
+      invalidate,
+      ordinateScale,
+      visWidth,
+      visHeight,
+      width,
+    ]
   );
 
   const onPointerDown = useCallback(
@@ -68,7 +86,10 @@ function PanZoomMesh() {
       const { x: pointerX, y: pointerY } = projectedPoint;
       const { x: startX, y: startY } = startOffsetPosition.current;
 
-      moveCameraTo(startX - pointerX, startY - pointerY);
+      const targetX = startX - pointerX;
+      const targetY = startY - pointerY;
+
+      moveCameraTo(targetX, targetY);
     },
     [camera, moveCameraTo]
   );
@@ -93,9 +114,12 @@ function PanZoomMesh() {
   );
 
   useEffect(() => {
-    // Move camera on resize to stay within mesh bounds
-    moveCameraTo(camera.position.x, camera.position.y);
-  }, [camera, moveCameraTo]);
+    if (viewportCenter.current) {
+      // On resize, move camera to the latest saved viewport center coordinates
+      const { x, y } = viewportCenter.current;
+      moveCameraTo(abscissaScale(x), ordinateScale(y));
+    }
+  }, [abscissaScale, viewportCenter, moveCameraTo, ordinateScale]);
 
   useWheelCapture();
 
