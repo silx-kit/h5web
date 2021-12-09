@@ -28,8 +28,7 @@ interface Props {
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
-  alphaArray?: NdArray<number[]>;
-  alphaDomain?: Domain;
+  alpha?: { array: NdArray<number[]>; domain: Domain };
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
@@ -48,8 +47,7 @@ function HeatmapVis(props: Props) {
     dtype,
     abscissaParams = {},
     ordinateParams = {},
-    alphaArray,
-    alphaDomain,
+    alpha,
     flipYAxis,
     renderTooltip,
     children,
@@ -111,6 +109,7 @@ function HeatmapVis(props: Props) {
                 <div className={styles.tooltipValue}>
                   <strong>{formatTooltipVal(dataArray.get(yi, xi))}</strong>
                   {dtype && <em>{` (${formatNumType(dtype)})`}</em>}
+                  {alpha && ` (${formatTooltipVal(alpha.array.get(yi, xi))})`}
                 </div>
               </>
             );
@@ -124,8 +123,8 @@ function HeatmapVis(props: Props) {
           colorMap={colorMap}
           invertColorMap={invertColorMap}
           scaleType={scaleType}
-          alphaValues={alphaArray?.data}
-          alphaDomain={alphaDomain}
+          alphaValues={alpha?.array.data}
+          alphaDomain={alpha?.domain}
         />
         {children}
       </VisCanvas>

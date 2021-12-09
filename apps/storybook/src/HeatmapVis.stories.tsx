@@ -6,6 +6,7 @@ import {
   getMockDataArray,
   INTERPOLATORS,
 } from '@h5web/lib';
+import { assertDefined } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 
@@ -14,8 +15,12 @@ import FillHeight from './decorators/FillHeight';
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 const domain = getDomain(dataArray.data);
 
-const alphaArray = ndarray(dataArray.data.map((x) => Math.abs(x)));
+const alphaArray = ndarray(
+  dataArray.data.map((x) => Math.abs(x)),
+  dataArray.shape
+);
 const alphaDomain = getDomain(alphaArray);
+assertDefined(alphaDomain);
 
 const Template: Story<HeatmapVisProps> = (args) => <HeatmapVis {...args} />;
 
@@ -86,8 +91,7 @@ export const Alpha = Template.bind({});
 Alpha.args = {
   dataArray,
   domain,
-  alphaArray,
-  alphaDomain,
+  alpha: { array: alphaArray, domain: alphaDomain },
 };
 
 export default {
