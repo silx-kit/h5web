@@ -79,14 +79,6 @@ function MappedComplexVis(props: Props) {
       <HeatmapVis
         dataArray={dataArray}
         domain={safeDomain}
-        alphaArray={
-          visType === ComplexVisType.PhaseAmplitude ? amplitudeArray : undefined
-        }
-        alphaDomain={
-          visType === ComplexVisType.PhaseAmplitude
-            ? amplitudeDomain
-            : undefined
-        }
         title={`${title} (${visType.toLowerCase()})`}
         colorMap={colorMap}
         scaleType={scaleType}
@@ -95,6 +87,14 @@ function MappedComplexVis(props: Props) {
         invertColorMap={invertColorMap}
         abscissaParams={axisMapping[dimMapping.indexOf('x')]}
         ordinateParams={axisMapping[dimMapping.indexOf('y')]}
+        alpha={
+          visType === ComplexVisType.PhaseAmplitude
+            ? {
+                array: amplitudeArray,
+                domain: amplitudeDomain,
+              }
+            : undefined
+        }
       />
     </>
   );
