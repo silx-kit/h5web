@@ -30,7 +30,7 @@
     "@types/react": "17.0.37",
     "d3-format": "3.1.0",
     "eslint": "8.4.1",
-    "eslint-config-galex": "3.3.5",
+    "eslint-config-galex": "3.3.6",
     "jest": "27.4.3",
     "lodash": "4.17.21",
     "ndarray": "1.0.19",

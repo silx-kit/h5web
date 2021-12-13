@@ -37,7 +37,6 @@ const overrides = [
     files: tsFiles,
     rules: {
       '@typescript-eslint/ban-ts-comment': 'off', // too strict
-      '@typescript-eslint/no-floating-promises': 'off', // big crash sometimes better than silent fail
       '@typescript-eslint/lines-between-class-members': 'off', // allow grouping single-line members
       '@typescript-eslint/prefer-nullish-coalescing': 'off', // `||` is often conveninent and safe to use with TS
       '@typescript-eslint/explicit-module-boundary-types': 'off', // worsens readability sometimes (e.g. for React components)

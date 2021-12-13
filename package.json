@@ -38,7 +38,7 @@
     "cypress": "9.1.1",
     "cypress-image-snapshot": "4.0.1",
     "eslint": "8.4.1",
-    "eslint-config-galex": "3.3.5",
+    "eslint-config-galex": "3.3.6",
     "identity-obj-proxy": "3.0.0",
     "jest": "27.4.3",
     "jest-transform-stub": "2.0.0",

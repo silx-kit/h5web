@@ -20,7 +20,7 @@ function CopyableCrumb(props: Props) {
       type="button"
       title="Copy path to clipboard"
       onClick={() => {
-        navigator.clipboard.writeText(path);
+        void navigator.clipboard.writeText(path);
         setPathCopied(true);
       }}
       onPointerOut={() => setPathCopied(false)}
