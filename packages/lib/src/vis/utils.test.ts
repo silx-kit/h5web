@@ -3,7 +3,7 @@ import { ScaleType } from '@h5web/shared';
 import { tickStep } from 'd3-array';
 
 import {
-  computeCanvasSize,
+  getSizeToFit,
   getDomain,
   getDomains,
   extendDomain,
@@ -17,55 +17,21 @@ const MAX = Number.MAX_VALUE / 2;
 const POS_MIN = Number.MIN_VALUE;
 const { NaN: NAN, POSITIVE_INFINITY: INFINITY } = Number;
 
-describe('computeCanvasSize', () => {
-  describe('with aspect ratio > 1', () => {
-    it('should return available size with width reduced', () => {
-      const availableSize = { width: 20, height: 10 };
-      const size = computeCanvasSize(availableSize, 1.5);
-
-      expect(size?.width).toBeLessThanOrEqual(availableSize.width);
-      expect(size?.height).toBeLessThanOrEqual(availableSize.height);
-      expect(size).toEqual({ width: 10 * 1.5, height: 10 });
-    });
-
-    it('should return available size with height reduced', () => {
-      const availableSize = { width: 12, height: 50 };
-      const size = computeCanvasSize(availableSize, 3);
-
-      expect(size?.width).toBeLessThanOrEqual(availableSize.width);
-      expect(size?.height).toBeLessThanOrEqual(availableSize.height);
-      expect(size).toEqual({ width: 12, height: 12 / 3 });
-    });
+describe('getSizeToFit', () => {
+  it('should adjust width when requested ratio is greater than available ratio', () => {
+    const size = getSizeToFit({ width: 20, height: 10 }, 1.5);
+    expect(size).toEqual({ width: 10 * 1.5, height: 10 });
   });
 
-  describe('with aspect ratio < 1', () => {
-    it('should return available size with width reduced', () => {
-      const availableSize = { width: 20, height: 10 };
-      const size = computeCanvasSize(availableSize, 0.5);
-
-      expect(size?.width).toBeLessThanOrEqual(availableSize.width);
-      expect(size?.height).toBeLessThanOrEqual(availableSize.height);
-      expect(size).toEqual({ width: 10 * 0.5, height: 10 });
-    });
-
-    it('should return available size with height reduced', () => {
-      const availableSize = { width: 12, height: 50 };
-      const size = computeCanvasSize(availableSize, 0.75);
-
-      expect(size?.width).toBeLessThanOrEqual(availableSize.width);
-      expect(size?.height).toBeLessThanOrEqual(availableSize.height);
-      expect(size).toEqual({ width: 12, height: 12 / 0.75 });
-    });
+  it('should adjust height when request ratio is lower than available ratio', () => {
+    const availableSize = { width: 12, height: 50 };
+    const size = getSizeToFit(availableSize, 3);
+    expect(size).toEqual({ width: 12, height: 12 / 3 });
   });
 
   it('should return available size when no aspect ratio is provided', () => {
-    const size = computeCanvasSize({ width: 20, height: 10 }, undefined);
+    const size = getSizeToFit({ width: 20, height: 10 }, undefined);
     expect(size).toEqual({ width: 20, height: 10 });
-  });
-
-  it('should return `undefined` when no space is available for visualization', () => {
-    const size = computeCanvasSize({ width: 0, height: 0 }, 1);
-    expect(size).toBeUndefined();
   });
 });
 

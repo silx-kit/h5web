@@ -63,8 +63,8 @@ function RgbVis(props: Props) {
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
         title={title}
-        aspectRatio={layout === 'contain' ? cols / rows : undefined}
-        visRatio={layout === 'cover' ? cols / rows : undefined}
+        canvasRatio={layout === 'contain' ? cols / rows : undefined}
+        visRatio={layout !== 'fill' ? cols / rows : undefined}
         abscissaConfig={{
           visDomain: [0, cols],
           showGrid,

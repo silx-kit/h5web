@@ -1,15 +1,16 @@
-.visArea {
+.canvasArea {
   position: relative;
   flex: 1 1 0%;
   overflow: hidden; /* prevent overflow when resizing */
 }
 
-.vis {
-  position: absolute; /* prevent feedback loop with `useMeasure` on wrapper */
+.canvasWrapper {
+  width: 100%; /* fill container by default (unless size is passed in JSX) */
+  height: 100%;
+  margin: 0 auto;
 }
 
-/* R3F's root element */
-.canvasWrapper {
+.r3fRoot {
   overflow: visible !important; /* show child axis grid, which is bigger than canvas */
   background-color: var(--h5w-canvas--bgColor, transparent);
 }

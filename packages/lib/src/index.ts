@@ -45,7 +45,6 @@ export type { AxisSystemParams } from './vis/shared/AxisSystemContext';
 
 // Utilities
 export {
-  computeCanvasSize,
   getDomain,
   getDomains,
   getCombinedDomain,

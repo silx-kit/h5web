@@ -1,21 +1,22 @@
-import type { ReactNode } from 'react';
+import { useThree } from '@react-three/fiber';
+import type { PropsWithChildren } from 'react';
 
-import { useVisSize } from '../hooks';
 import type { AxisConfig } from '../models';
-import { getCanvasScale } from '../utils';
+import { getSizeToFit, getCanvasScale } from '../utils';
 import { AxisSystemContext } from './AxisSystemContext';
 
 interface Props {
-  visRatio?: number;
+  visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
-  children: ReactNode;
 }
 
-function AxisSystemProvider(props: Props) {
+function AxisSystemProvider(props: PropsWithChildren<Props>) {
   const { visRatio, abscissaConfig, ordinateConfig, children } = props;
 
-  const visSize = useVisSize(visRatio);
+  const availableSize = useThree((state) => state.size);
+  const visSize = getSizeToFit(availableSize, visRatio);
+
   const abscissaScale = getCanvasScale(abscissaConfig, visSize.width);
   const ordinateScale = getCanvasScale(ordinateConfig, visSize.height);
 
@@ -34,5 +35,4 @@ function AxisSystemProvider(props: Props) {
   );
 }
 
-export type { Props as AxisSystemProviderProps };
 export default AxisSystemProvider;
