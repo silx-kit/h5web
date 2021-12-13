@@ -49,7 +49,7 @@ function VisManager(props: Props) {
         />
       </div>
 
-      <div className={styles.displayArea}>
+      <div className={styles.visArea}>
         <Profiler id={activeVis.name}>
           <Container
             key={entity.path}

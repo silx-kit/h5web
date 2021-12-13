@@ -53,27 +53,22 @@ export function createAxisScale(
   return H5WEB_SCALES[ScaleType.Gamma].createScale({ ...config, exponent });
 }
 
-export function computeCanvasSize(
+export function getSizeToFit(
   availableSize: Size,
-  aspectRatio?: number
-): Size | undefined {
+  ratioToRespect: number | undefined
+): Size {
   const { width, height } = availableSize;
 
-  if (width <= 0 && height <= 0) {
-    return undefined;
+  if (!ratioToRespect) {
+    return { width, height };
   }
 
-  if (!aspectRatio) {
-    return availableSize;
-  }
+  const availableRatio = width / height;
 
-  // Determine how to compute canvas size to fit available space while maintaining aspect ratio
-  const idealHeight = width / aspectRatio;
-  const shouldReduceWidth = idealHeight > height;
-
-  return shouldReduceWidth
-    ? { width: height * aspectRatio, height }
-    : { width, height: width / aspectRatio };
+  return {
+    width: availableRatio > ratioToRespect ? height * ratioToRespect : width,
+    height: availableRatio < ratioToRespect ? width / ratioToRespect : height,
+  };
 }
 
 export function getDomain(

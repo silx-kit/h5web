@@ -6,7 +6,6 @@ import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
 
-import type { Size } from './models';
 import {
   getAxisDomain,
   getCombinedDomain,
@@ -46,21 +45,6 @@ export function useDomains(
     () => allBounds.map((bounds) => getValidDomainForScale(bounds, scaleType)),
     [allBounds, scaleType]
   );
-}
-
-export function useVisSize(ratioToRespect: number | undefined): Size {
-  const { width, height } = useThree((state) => state.size);
-
-  if (!ratioToRespect) {
-    return { width, height };
-  }
-
-  const canvasRatio = width / height;
-
-  return {
-    width: canvasRatio > ratioToRespect ? height * ratioToRespect : width,
-    height: canvasRatio < ratioToRespect ? width / ratioToRespect : height,
-  };
 }
 
 function onWheel(evt: WheelEvent) {
