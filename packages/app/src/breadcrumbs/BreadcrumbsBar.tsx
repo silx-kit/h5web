@@ -1,8 +1,11 @@
-import { ToggleGroup, ToggleBtn } from '@h5web/lib';
-import { FiSidebar } from 'react-icons/fi';
+import { ToggleGroup, ToggleBtn, LinkBtn, Separator } from '@h5web/lib';
+import { useContext } from 'react';
+import { FiMessageCircle, FiSidebar } from 'react-icons/fi';
 
+import { ProviderContext } from '../providers/context';
 import Breadcrumbs from './Breadcrumbs';
 import styles from './BreadcrumbsBar.module.css';
+import { prepareFeedback } from './utils';
 
 interface Props {
   path: string;
@@ -23,6 +26,8 @@ function BreadcrumbsBar(props: Props) {
     onSelectPath,
   } = props;
 
+  const { filepath } = useContext(ProviderContext);
+
   return (
     <div className={styles.bar}>
       <ToggleBtn
@@ -33,11 +38,7 @@ function BreadcrumbsBar(props: Props) {
         onToggle={onToggleExplorer}
       />
 
-      <Breadcrumbs
-        path={path}
-        onSelect={onSelectPath}
-        showFilename={!isExplorerOpen}
-      />
+      <Separator />
 
       <ToggleGroup
         role="tablist"
@@ -50,6 +51,20 @@ function BreadcrumbsBar(props: Props) {
         <ToggleGroup.Btn label="Display" value="false" />
         <ToggleGroup.Btn label="Inspect" value="true" />
       </ToggleGroup>
+
+      <Breadcrumbs
+        path={path}
+        onSelect={onSelectPath}
+        showFilename={!isExplorerOpen}
+      />
+
+      <LinkBtn
+        label="Give feedback"
+        icon={FiMessageCircle}
+        href={`mailto:h5web@esrf.fr?subject=Feedback&body=${encodeURIComponent(
+          prepareFeedback(filepath, path)
+        )}`}
+      />
     </div>
   );
 }

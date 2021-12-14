@@ -5,7 +5,7 @@ import {
   ScaleSelector,
   Selector,
   Separator,
-  SnapshotButton,
+  SnapshotBtn,
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
@@ -108,7 +108,7 @@ function ComplexToolbar(props: Props) {
 
       <Separator />
 
-      <SnapshotButton />
+      <SnapshotBtn />
     </Toolbar>
   );
 }

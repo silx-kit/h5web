@@ -1,48 +1,34 @@
-import type { AriaAttributes, ComponentType, SVGAttributes } from 'react';
+import type { AnchorHTMLAttributes, ComponentType, SVGAttributes } from 'react';
 
 import styles from '../Toolbar.module.css';
 
-interface Props extends AriaAttributes {
+interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   label: string;
   icon?: ComponentType<SVGAttributes<SVGElement>>;
   iconOnly?: boolean;
   small?: boolean;
   raised?: boolean;
-  onClick: () => void;
-  disabled?: boolean;
 }
 
-function Btn(props: Props) {
-  const {
-    label,
-    icon: Icon,
-    iconOnly,
-    small,
-    raised,
-    disabled,
-    onClick,
-    ...ariaAttrs
-  } = props;
+function LinkBtn(props: Props) {
+  const { label, icon: Icon, iconOnly, small, raised, ...attrs } = props;
 
   return (
-    <button
+    <a
       className={styles.btn}
-      type="button"
       title={iconOnly ? label : undefined}
-      aria-label={iconOnly ? label : undefined}
-      disabled={disabled}
       data-small={small || undefined}
       data-raised={raised || undefined}
-      onClick={() => onClick()}
-      {...ariaAttrs}
+      aria-label={iconOnly ? label : undefined}
+      {...attrs}
     >
       <span className={styles.btnLike}>
         {Icon && <Icon className={styles.icon} />}
         {!iconOnly && <span className={styles.label}>{label}</span>}
       </span>
-    </button>
+    </a>
   );
 }
 
 export type { Props as BtnProps };
-export default Btn;
+export default LinkBtn;
