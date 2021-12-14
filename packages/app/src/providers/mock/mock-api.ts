@@ -86,7 +86,7 @@ export class MockApi extends ProviderApi {
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => resolve(), SLOW_TIMEOUT);
 
-        cancelSource.token.promise.then((error) => {
+        void cancelSource.token.promise.then((error) => {
           clearTimeout(timeout);
           reject(error);
         });
