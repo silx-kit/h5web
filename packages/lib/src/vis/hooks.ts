@@ -5,6 +5,7 @@ import type { NdArray } from 'ndarray';
 import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
+import { OrthographicCamera } from 'three';
 
 import {
   getAxisDomain,
@@ -81,4 +82,13 @@ export function useCSSCustomProperties(...names: string[]): {
     }),
     refCallback,
   };
+}
+
+export function useCamera(): OrthographicCamera {
+  const camera = useThree((state) => state.camera);
+  if (!(camera instanceof OrthographicCamera)) {
+    throw new TypeError('Camera is not orthographic');
+  }
+
+  return camera;
 }

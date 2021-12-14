@@ -4,7 +4,7 @@ import { clamp } from 'lodash';
 import { useRef, useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
-import { useWheelCapture } from '../hooks';
+import { useCamera, useWheelCapture } from '../hooks';
 import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;
@@ -15,7 +15,7 @@ function PanZoomMesh() {
   const { abscissaScale, ordinateScale, visSize } = useAxisSystemContext();
   const { width: visWidth, height: visHeight } = visSize;
 
-  const camera = useThree((state) => state.camera);
+  const camera = useCamera();
   const { width, height } = useThree((state) => state.size);
   const invalidate = useThree((state) => state.invalidate);
 
@@ -98,7 +98,11 @@ function PanZoomMesh() {
       const { sourceEvent } = evt;
       const factor = sourceEvent.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
 
-      camera.zoom = Math.max(1, camera.zoom * factor);
+      camera.left = Math.max(-width / 2, camera.left / factor);
+      camera.right = Math.min(width / 2, camera.right / factor);
+      camera.bottom = Math.max(-height / 2, camera.bottom / factor);
+      camera.top = Math.min(height / 2, camera.top / factor);
+
       camera.updateProjectionMatrix();
 
       const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
@@ -110,7 +114,7 @@ function PanZoomMesh() {
         camY + pointerY * (1 - 1 / factor)
       );
     },
-    [camera, moveCameraTo]
+    [camera, height, moveCameraTo, width]
   );
 
   useEffect(() => {
