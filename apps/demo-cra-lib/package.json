@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@h5web/lib": "workspace:*",
-    "@react-three/fiber": "7.0.21",
+    "@react-three/fiber": "7.0.24",
     "normalize.css": "8.0.1",
     "react": "17.0.2",
     "react-app-polyfill": "2.0.0",

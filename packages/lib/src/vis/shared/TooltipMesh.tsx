@@ -60,7 +60,8 @@ function TooltipMesh(props: Props) {
   // Show tooltip after dragging unless pointer has left canvas
   const onPointerUp = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
-      const { offsetX: x, offsetY: y } = evt;
+      const { sourceEvent } = evt;
+      const { offsetX: x, offsetY: y } = sourceEvent;
       if (x >= 0 && x <= width && y >= 0 && y <= height) {
         onPointerMove(evt);
       }

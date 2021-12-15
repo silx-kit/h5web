@@ -57,7 +57,8 @@ function PanZoomMesh() {
 
   const onPointerDown = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
-      const { target, pointerId, unprojectedPoint } = evt;
+      const { sourceEvent, unprojectedPoint } = evt;
+      const { target, pointerId } = sourceEvent;
       (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
 
       const projectedPoint = camera.worldToLocal(unprojectedPoint.clone());
@@ -67,7 +68,8 @@ function PanZoomMesh() {
   );
 
   const onPointerUp = useCallback((evt: ThreeEvent<PointerEvent>) => {
-    const { target, pointerId } = evt;
+    const { sourceEvent } = evt;
+    const { target, pointerId } = sourceEvent;
     (target as Element).releasePointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
 
     startOffsetPosition.current = undefined;
@@ -96,7 +98,8 @@ function PanZoomMesh() {
 
   const onWheel = useCallback(
     (evt: ThreeEvent<WheelEvent>) => {
-      const factor = evt.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
+      const { sourceEvent } = evt;
+      const factor = sourceEvent.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
 
       camera.zoom = Math.max(1, camera.zoom * factor);
       camera.updateProjectionMatrix();

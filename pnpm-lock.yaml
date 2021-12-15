@@ -77,7 +77,7 @@ importers:
   apps/demo-cra-lib:
     specifiers:
       '@h5web/lib': workspace:*
-      '@react-three/fiber': 7.0.21
+      '@react-three/fiber': 7.0.24
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
       eslint: 8.4.1
@@ -93,7 +93,7 @@ importers:
       typescript: 4.5.2
     dependencies:
       '@h5web/lib': link:../../packages/lib
-      '@react-three/fiber': 7.0.21_03d4586416b86b800151bd7390b3d95a
+      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       normalize.css: 8.0.1
       react: 17.0.2
       react-app-polyfill: 2.0.0
@@ -103,7 +103,7 @@ importers:
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
       eslint: 8.4.1
-      eslint-config-galex: 3.3.6_eslint@8.4.1+jest@27.4.3
+      eslint-config-galex: 3.3.6_eslint@8.4.1
       react-app-rewire-alias: 1.0.3_react-app-rewired@2.1.8
       react-app-rewired: 2.1.8_react-scripts@4.0.3
       react-scripts: 4.0.3_react@17.0.2+typescript@4.5.2
@@ -114,7 +114,7 @@ importers:
       '@h5web/lib': workspace:*
       '@h5web/shared': workspace:*
       '@react-hookz/web': 12.0.0
-      '@react-three/fiber': 7.0.21
+      '@react-three/fiber': 7.0.24
       '@storybook/addon-docs': 6.4.8
       '@storybook/addon-essentials': 6.4.8
       '@storybook/addon-links': 6.4.8
@@ -136,7 +136,7 @@ importers:
       '@h5web/lib': link:../../packages/lib
       '@h5web/shared': link:../../packages/shared
       '@react-hookz/web': 12.0.0_react-dom@17.0.2+react@17.0.2
-      '@react-three/fiber': 7.0.21_03d4586416b86b800151bd7390b3d95a
+      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       ndarray: 1.0.19
       normalize.css: 8.0.1
       react: 17.0.2
@@ -153,7 +153,7 @@ importers:
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
       eslint: 8.4.1
-      eslint-config-galex: 3.3.6_eslint@8.4.1+jest@27.4.3
+      eslint-config-galex: 3.3.6_eslint@8.4.1
       typescript: 4.5.2
 
   packages/app:
@@ -161,7 +161,7 @@ importers:
       '@h5web/lib': workspace:*
       '@h5web/shared': workspace:*
       '@react-hookz/web': 12.0.0
-      '@react-three/fiber': 7.0.21
+      '@react-three/fiber': 7.0.24
       '@testing-library/dom': 8.11.1
       '@testing-library/jest-dom': 5.16.1
       '@testing-library/react': 12.1.2
@@ -195,7 +195,7 @@ importers:
     dependencies:
       '@h5web/lib': link:../lib
       '@react-hookz/web': 12.0.0_react-dom@17.0.2+react@17.0.2
-      '@react-three/fiber': 7.0.21_03d4586416b86b800151bd7390b3d95a
+      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       axios: 0.24.0
       d3-format: 3.1.0
       lodash: 4.17.21
@@ -233,7 +233,7 @@ importers:
     specifiers:
       '@h5web/shared': workspace:*
       '@react-hookz/web': 12.0.0
-      '@react-three/fiber': 7.0.21
+      '@react-three/fiber': 7.0.24
       '@types/d3-array': 3.0.2
       '@types/d3-color': 3.0.2
       '@types/d3-format': 3.0.1
@@ -305,7 +305,7 @@ importers:
       react-window: 1.8.6_react-dom@17.0.2+react@17.0.2
     devDependencies:
       '@h5web/shared': link:../shared
-      '@react-three/fiber': 7.0.21_03d4586416b86b800151bd7390b3d95a
+      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       '@types/d3-array': 3.0.2
       '@types/d3-color': 3.0.2
       '@types/d3-format': 3.0.1
@@ -2888,6 +2888,12 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.9
 
+  /@babel/runtime/7.16.5:
+    resolution: {integrity: sha512-TXWihFIS3Pyv5hzR7j6ihmeLkZfrXGxAr5UfSl8CHf+6q/wpiYDkUau0czckpYG8QmnCIuPpdLtuA9VmuGGyMA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
+
   /@babel/template/7.16.0:
     resolution: {integrity: sha512-MnZdpFD/ZdYhXwiunMqqgyZyucaYsbL0IrjoGjaVhGilz+x8YB++kRfygSOIj1yOtWKPlx7NBp+9I1RQSgsd5A==}
     engines: {node: '>=6.9.0'}
@@ -3809,8 +3815,8 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /@react-three/fiber/7.0.21_03d4586416b86b800151bd7390b3d95a:
-    resolution: {integrity: sha512-hs+5y6Z8ZQcWGzZN8kMRmSRbztozuQj8tvU22IHshFSq2p23JIFwiSy/z+WYSVWrAvOCRo1NxVvOFC6XI4X3hQ==}
+  /@react-three/fiber/7.0.24_03d4586416b86b800151bd7390b3d95a:
+    resolution: {integrity: sha512-CJi1Mex7jqByTEVZoUzg0xZEw63CUjm4bUDx0XIhuAmNUsmFmht7cRt87zUQSSDQvmaDqvoDWW7dD+uFJW/kUQ==}
     peerDependencies:
       react: '>=17.0'
       react-dom: '>=17.0'
@@ -3819,7 +3825,7 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      '@babel/runtime': 7.16.3
+      '@babel/runtime': 7.16.5
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-merge-refs: 1.1.0
@@ -9932,6 +9938,38 @@ packages:
       source-map: 0.6.1
     dev: true
 
+  /eslint-config-galex/3.3.6_eslint@8.4.1:
+    resolution: {integrity: sha512-sT/Fzi7t8IOyBQb/ietQ8Nd9AUgf8CKSbidu4B6YRlRYL2yo0swLDYwD89L3mCULmYXKxrx8QNi7n7RnBEW/8A==}
+    engines: {node: '>=14.17'}
+    peerDependencies:
+      eslint: '>=8.1.0'
+    dependencies:
+      '@babel/core': 7.16.0
+      '@babel/eslint-parser': 7.16.3_@babel+core@7.16.0+eslint@8.4.1
+      '@next/eslint-plugin-next': 12.0.7
+      '@typescript-eslint/eslint-plugin': 5.6.0_0d0cecf582ba45923647a091322795b0
+      '@typescript-eslint/parser': 5.6.0_eslint@8.4.1+typescript@4.5.3
+      confusing-browser-globals: 1.0.10
+      eslint: 8.4.1
+      eslint-config-prettier: 8.3.0_eslint@8.4.1
+      eslint-plugin-import: 2.25.3_eslint@8.4.1
+      eslint-plugin-jest: 25.3.0_603aea866ce9c22a0f7a76ceb881d477
+      eslint-plugin-jest-dom: 3.9.2_eslint@8.4.1
+      eslint-plugin-jest-formatting: 3.1.0_eslint@8.4.1
+      eslint-plugin-jsx-a11y: 6.5.1_eslint@8.4.1
+      eslint-plugin-promise: 5.2.0_eslint@8.4.1
+      eslint-plugin-react: 7.27.1_eslint@8.4.1
+      eslint-plugin-react-hooks: 4.3.0_eslint@8.4.1
+      eslint-plugin-sonarjs: 0.11.0_eslint@8.4.1
+      eslint-plugin-testing-library: 5.0.1_eslint@8.4.1+typescript@4.5.3
+      eslint-plugin-unicorn: 39.0.0_eslint@8.4.1
+      read-pkg-up: 7.0.1
+      typescript: 4.5.3
+    transitivePeerDependencies:
+      - jest
+      - supports-color
+    dev: true
+
   /eslint-config-galex/3.3.6_eslint@8.4.1+jest@27.4.3:
     resolution: {integrity: sha512-sT/Fzi7t8IOyBQb/ietQ8Nd9AUgf8CKSbidu4B6YRlRYL2yo0swLDYwD89L3mCULmYXKxrx8QNi7n7RnBEW/8A==}
     engines: {node: '>=14.17'}
@@ -10135,6 +10173,27 @@ packages:
       '@typescript-eslint/experimental-utils': 5.6.0_eslint@8.4.1+typescript@4.5.3
       eslint: 8.4.1
       jest: 27.4.3
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: true
+
+  /eslint-plugin-jest/25.3.0_603aea866ce9c22a0f7a76ceb881d477:
+    resolution: {integrity: sha512-79WQtuBsTN1S8Y9+7euBYwxIOia/k7ykkl9OCBHL3xuww5ecursHy/D8GCIlvzHVWv85gOkS5Kv6Sh7RxOgK1Q==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+    peerDependencies:
+      '@typescript-eslint/eslint-plugin': ^4.0.0 || ^5.0.0
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+      jest: '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/eslint-plugin':
+        optional: true
+      jest:
+        optional: true
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 5.6.0_0d0cecf582ba45923647a091322795b0
+      '@typescript-eslint/experimental-utils': 5.6.0_eslint@8.4.1+typescript@4.5.3
+      eslint: 8.4.1
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -11570,7 +11629,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.14.4
+      uglify-js: 3.14.5
     dev: true
 
   /harmony-reflect/1.6.2:
@@ -19075,8 +19134,8 @@ packages:
     hasBin: true
     dev: true
 
-  /uglify-js/3.14.4:
-    resolution: {integrity: sha512-AbiSR44J0GoCeV81+oxcy/jDOElO2Bx3d0MfQCUShq7JRXaM4KtQopZsq2vFv8bCq2yMaGrw1FgygUd03RyRDA==}
+  /uglify-js/3.14.5:
+    resolution: {integrity: sha512-qZukoSxOG0urUTvjc2ERMTcAy+BiFh3weWAkeurLwjrCba73poHmG3E36XEjd/JGukMzwTL7uCxZiAexj8ppvQ==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true

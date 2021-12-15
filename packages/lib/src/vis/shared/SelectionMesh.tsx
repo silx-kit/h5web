@@ -11,7 +11,8 @@ function SelectionMesh() {
   const [isDragging, setDrag] = useState(false);
 
   const onPointerDown = useCallback((evt: ThreeEvent<PointerEvent>) => {
-    const { target, pointerId, unprojectedPoint } = evt;
+    const { sourceEvent, unprojectedPoint } = evt;
+    const { target, pointerId } = sourceEvent;
     (target as Element).setPointerCapture(pointerId);
     setStartPoint(new Vector2(unprojectedPoint.x, unprojectedPoint.y));
     setEndPoint(new Vector2(unprojectedPoint.x, unprojectedPoint.y));
@@ -29,7 +30,8 @@ function SelectionMesh() {
   );
 
   const onPointerUp = useCallback((evt: ThreeEvent<PointerEvent>) => {
-    const { target, pointerId, unprojectedPoint } = evt;
+    const { sourceEvent, unprojectedPoint } = evt;
+    const { target, pointerId } = sourceEvent;
 
     (target as Element).releasePointerCapture(pointerId);
     setEndPoint(new Vector2(unprojectedPoint.x, unprojectedPoint.y));
