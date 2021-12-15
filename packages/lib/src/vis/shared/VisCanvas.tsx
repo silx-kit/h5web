@@ -54,6 +54,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
         >
           <Canvas
             className={styles.r3fRoot}
+            camera={{ manual: true }}
             orthographic
             linear // disable automatic color encoding and gamma correction
             flat // disable tone mapping

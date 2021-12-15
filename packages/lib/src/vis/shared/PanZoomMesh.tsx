@@ -21,6 +21,7 @@ function PanZoomMesh() {
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
   const viewportCenter = useRef<Vector2>();
+  const cameraZoom = useRef<{ x: number; y: number }>();
 
   const moveCameraTo = useCallback(
     (x: number, y: number) => {
@@ -102,7 +103,10 @@ function PanZoomMesh() {
       camera.right = Math.min(width / 2, camera.right / factor);
       camera.bottom = Math.max(-height / 2, camera.bottom / factor);
       camera.top = Math.min(height / 2, camera.top / factor);
-
+      cameraZoom.current = {
+        x: width / (camera.right - camera.left),
+        y: height / (camera.top - camera.bottom),
+      };
       camera.updateProjectionMatrix();
 
       const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
@@ -123,7 +127,25 @@ function PanZoomMesh() {
       const { x, y } = viewportCenter.current;
       moveCameraTo(abscissaScale(x), ordinateScale(y));
     }
-  }, [abscissaScale, viewportCenter, moveCameraTo, ordinateScale]);
+    // On resize, change the camera FOV to keep the same zoom
+    const { x: zoomX, y: zoomY } = cameraZoom.current || { x: 1, y: 1 };
+    camera.left = -width / (2 * zoomX);
+    camera.right = width / (2 * zoomX);
+    camera.bottom = -height / (2 * zoomY);
+    camera.top = height / (2 * zoomY);
+
+    camera.updateProjectionMatrix();
+    invalidate();
+  }, [
+    abscissaScale,
+    viewportCenter,
+    moveCameraTo,
+    ordinateScale,
+    camera,
+    invalidate,
+    width,
+    height,
+  ]);
 
   useWheelCapture();
 
