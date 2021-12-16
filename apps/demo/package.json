@@ -16,7 +16,8 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0"
+    "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
+    "lint:tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@h5web/app": "workspace:*",

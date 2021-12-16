@@ -14,7 +14,8 @@
   "main": "src/index.ts",
   "scripts": {
     "build:dts": "tsc --build tsconfig.build.json",
-    "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0"
+    "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
+    "lint:tsc": "tsc --noEmit"
   },
   "peerDependencies": {
     "d3-format": "3.0.1",
@@ -27,6 +28,7 @@
     "@types/d3-format": "3.0.1",
     "@types/lodash": "4.14.177",
     "@types/ndarray": "1.0.11",
+    "@types/ndarray-ops": "1.2.2",
     "@types/react": "17.0.37",
     "d3-format": "3.1.0",
     "eslint": "8.4.1",

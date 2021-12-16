@@ -16,7 +16,8 @@
   "scripts": {
     "start": "start-storybook -p 6006",
     "build": "build-storybook -o build",
-    "lint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0"
+    "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
+    "lint:tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@h5web/lib": "workspace:*",
