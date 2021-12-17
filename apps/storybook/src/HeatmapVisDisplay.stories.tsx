@@ -109,6 +109,28 @@ WithAnnotation.args = {
   domain,
 };
 
+export const WithAnnotationZoom: Story<HeatmapVisProps> = (args) => (
+  <HeatmapVis {...args}>
+    <Annotation
+      x={30}
+      y={18}
+      style={{
+        width: '100px',
+        color: 'white',
+        textAlign: 'center',
+        fontSize: '0.75rem',
+      }}
+      scaleOnZoom
+    >
+      An annotation scaling with zoom
+    </Annotation>
+  </HeatmapVis>
+);
+WithAnnotationZoom.args = {
+  dataArray,
+  domain,
+};
+
 export default {
   ...HeatmapVisStoriesConfig,
   title: 'Visualizations/HeatmapVis/Display',

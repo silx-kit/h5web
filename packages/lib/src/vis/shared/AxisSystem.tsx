@@ -1,5 +1,6 @@
 import type { Domain } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
+import { Vector3 } from 'three';
 
 import { useFrameRendering } from '../hooks';
 import type { AxisOffsets } from '../models';
@@ -13,25 +14,30 @@ interface Props {
   title?: string;
 }
 
+const CAMERA_BOTTOM_LEFT = new Vector3(-1, -1, 0);
+const CAMERA_TOP_RIGHT = new Vector3(1, 1, 0);
+
 function AxisSystem(props: Props) {
   const { axisOffsets, title } = props;
 
   const { abscissaConfig, ordinateConfig, abscissaScale, ordinateScale } =
     useAxisSystemContext();
 
-  const { position, zoom } = useThree((state) => state.camera);
+  const camera = useThree((state) => state.camera);
   const canvasSize = useThree((state) => state.size);
   const { width, height } = canvasSize;
 
-  // Find visible domains from camera's zoom and position
+  const worldBottomLeft = CAMERA_BOTTOM_LEFT.clone().unproject(camera);
+  const worldTopRight = CAMERA_TOP_RIGHT.clone().unproject(camera);
+
   const xVisibleDomain: Domain = [
-    abscissaScale.invert(-width / (2 * zoom) + position.x),
-    abscissaScale.invert(width / (2 * zoom) + position.x),
+    abscissaScale.invert(worldBottomLeft.x), // left
+    abscissaScale.invert(worldTopRight.x), // right
   ];
 
   const yVisibleDomain: Domain = [
-    ordinateScale.invert(-height / (2 * zoom) + position.y),
-    ordinateScale.invert(height / (2 * zoom) + position.y),
+    ordinateScale.invert(worldBottomLeft.y), // bottom
+    ordinateScale.invert(worldTopRight.y), // top
   ];
 
   // Re-render on every R3F frame (i.e. on every change of camera zoom/position)

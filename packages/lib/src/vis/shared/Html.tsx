@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom';
 import type { Group } from 'three';
 import { Vector3 } from 'three';
 
-const v1 = new Vector3();
+import { projectCameraToHtml } from '../utils';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   groupProps?: GroupProps;
@@ -57,25 +57,29 @@ function Html(props: Props) {
   const group = useRef<Group>(null!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
   const getGroupPosition = useCallback(() => {
-    const groupPos = v1.setFromMatrixPosition(group.current.matrixWorld);
-    groupPos.project(camera);
+    const worldPos = new Vector3().setFromMatrixPosition(
+      group.current.matrixWorld
+    );
+    const cameraPos = worldPos.clone().project(camera);
+    const htmlPos = projectCameraToHtml(cameraPos, width, height);
 
-    return [
-      groupPos.x * (width / 2) + width / 2,
-      -(groupPos.y * (height / 2)) + height / 2,
-    ];
+    return [htmlPos.x, htmlPos.y];
   }, [camera, height, width]);
 
   const getInnerDivTransform = useCallback(() => {
     const position = followCamera ? getGroupPosition() : undefined;
+    // Scale from canvas to camera space and from camera space to world space
+    const scale = new Vector3()
+      .setFromMatrixScale(camera.projectionMatrix)
+      .multiply(new Vector3().set(width / 2, height / 2, 0));
 
     return [
       position && `translate3d(${position[0]}px, ${position[1]}px, 0)`,
-      scaleOnZoom ? `scale(${camera.zoom})` : undefined,
+      scaleOnZoom ? `scale(${scale.x}, ${scale.y})` : undefined,
     ]
       .filter(isDefined)
       .join(' ');
-  }, [camera, followCamera, getGroupPosition, scaleOnZoom]);
+  }, [camera, followCamera, getGroupPosition, scaleOnZoom, width, height]);
 
   // Append/remove container `div` next to R3F's `canvas`
   useLayoutEffect(() => {

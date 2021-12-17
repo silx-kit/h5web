@@ -6,6 +6,7 @@ import { useCallback } from 'react';
 import type { ReactElement } from 'react';
 
 import type { Coords } from '../models';
+import { projectCameraToHtml } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import Html from './Html';
 import styles from './TooltipMesh.module.css';
@@ -38,19 +39,19 @@ function TooltipMesh(props: Props) {
   // When panning, events are handled and stopped by texture mesh and do not reach this mesh (which is behind)
   const onPointerMove = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
-      const { zoom } = camera;
-      const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
-
       const abscissaCoord = abscissaScale.invert(evt.unprojectedPoint.x);
       const ordinateCoord = ordinateScale.invert(evt.unprojectedPoint.y);
 
+      const cameraPoint = evt.unprojectedPoint.clone().project(camera);
+      const htmlPoint = projectCameraToHtml(cameraPoint, width, height);
+
       showTooltip({
-        tooltipLeft: projectedPoint.x * zoom + width / 2,
-        tooltipTop: -projectedPoint.y * zoom + height / 2,
+        tooltipLeft: htmlPoint.x,
+        tooltipTop: htmlPoint.y,
         tooltipData: [abscissaCoord, ordinateCoord],
       });
     },
-    [camera, abscissaScale, ordinateScale, showTooltip, width, height]
+    [camera, abscissaScale, ordinateScale, width, height, showTooltip]
   );
 
   // Hide tooltip when pointer leaves mesh or user starts panning
