@@ -4,9 +4,11 @@ import './styles.css';
 export { default as MatrixVis } from './vis/matrix/MatrixVis';
 export { default as LineVis } from './vis/line/LineVis';
 export { default as HeatmapVis } from './vis/heatmap/HeatmapVis';
+export { default as ScatterVis } from './vis/scatter/ScatterVis';
 export type { MatrixVisProps } from './vis/matrix/MatrixVis';
 export type { LineVisProps } from './vis/line/LineVis';
 export type { HeatmapVisProps } from './vis/heatmap/HeatmapVis';
+export type { ScatterVisProps } from './vis/scatter/ScatterVis';
 
 // Toolbar and controls
 export { default as Toolbar } from './toolbar/Toolbar';
