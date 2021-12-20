@@ -1,12 +1,12 @@
 import { extend, useThree } from '@react-three/fiber';
 import type { Object3DNode } from '@react-three/fiber';
-import { Suspense, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { BufferGeometry, Line } from 'three';
 
 import ErrorBars from './ErrorBars';
 import GlyphMaterial from './GlyphMaterial';
 import { useCanvasPoints } from './hooks';
-import { CurveType } from './models';
+import { CurveType, GlyphType } from './models';
 
 extend({ Line_: Line });
 
@@ -52,12 +52,12 @@ function DataCurve(props: Props) {
   const showGlyphs = curveType !== CurveType.LineOnly;
 
   return (
-    <Suspense fallback={null}>
+    <>
       <line_ visible={showLine} geometry={dataGeometry}>
         <lineBasicMaterial color={color} linewidth={2} />
       </line_>
       <points visible={showGlyphs} geometry={dataGeometry}>
-        <GlyphMaterial color={color} size={6} />
+        <GlyphMaterial glyphType={GlyphType.Cross} color={color} size={6} />
       </points>
       {showErrors && errors && (
         <ErrorBars
@@ -66,7 +66,7 @@ function DataCurve(props: Props) {
           color={color}
         />
       )}
-    </Suspense>
+    </>
   );
 }
 

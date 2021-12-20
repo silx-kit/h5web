@@ -7,7 +7,7 @@ import { BufferAttribute, BufferGeometry } from 'three';
 import type { ColorMap } from '../heatmap/models';
 import { getInterpolator } from '../heatmap/utils';
 import GlyphMaterial from '../line/GlyphMaterial';
-import { GLYPH_URLS } from '../line/models';
+import { GlyphType } from '../line/models';
 import { createAxisScale } from '../utils';
 import { useBufferAttributes } from './hooks';
 
@@ -62,7 +62,7 @@ function ScatterPoints(props: Props) {
 
   return (
     <points geometry={dataGeometry}>
-      <GlyphMaterial size={10} glyphURL={GLYPH_URLS.Circle} vertexColors />
+      <GlyphMaterial size={10} glyphType={GlyphType.Circle} />
     </points>
   );
 }

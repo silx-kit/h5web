@@ -1,20 +1,15 @@
-import capURL from './sprites/cap.png';
-import circleURL from './sprites/circle.png';
-import crossURL from './sprites/cross.png';
-import squareURL from './sprites/square.png';
-
 export enum CurveType {
   LineOnly = 'OnlyLine',
   GlyphsOnly = 'OnlyGlyphs',
   LineAndGlyphs = 'LineAndGlyphs',
 }
 
-export const GLYPH_URLS = {
-  Circle: circleURL,
-  Cross: crossURL,
-  Square: squareURL,
-  Cap: capURL,
-};
+export enum GlyphType {
+  Circle = 'Circle',
+  Cross = 'Cross',
+  Square = 'Square',
+  Cap = 'Cap',
+}
 
 export interface TooltipData {
   abscissa: number;

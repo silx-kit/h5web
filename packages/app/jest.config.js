@@ -21,9 +21,6 @@ const config = {
   testEnvironment: 'jsdom',
   testRegex: '\\.test\\.tsx?$',
   testTimeout: 10_000,
-  transform: {
-    '\\.png$': 'jest-transform-stub',
-  },
   transformIgnorePatterns: [
     `node_modules/\\.pnpm/(?!(${DEPS_TO_TRANSFORM.join('|')})@)`,
   ],
