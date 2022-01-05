@@ -37,7 +37,8 @@ export { default as HeatmapMesh } from './vis/heatmap/HeatmapMesh';
 export { default as DataCurve } from './vis/line/DataCurve';
 export { default as Html } from './vis/shared/Html';
 export { default as Annotation } from './vis/shared/Annotation';
-export { default as SelectionMesh } from './vis/shared/SelectionMesh';
+export { default as LineSelectionMesh } from './vis/shared/LineSelectionMesh';
+export { default as RectSelectionMesh } from './vis/shared/RectSelectionMesh';
 
 // Context hook
 export { useAxisSystemContext } from './vis/shared/AxisSystemContext';

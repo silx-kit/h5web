@@ -6,8 +6,8 @@ interface Props {
   color?: string;
 }
 
-function Selection(props: Props) {
-  const { startPoint, endPoint, color = '#ff0000' } = props;
+function SelectionRect(props: Props) {
+  const { startPoint, endPoint, color = 'red' } = props;
   const width = endPoint.x - startPoint.x;
   const height = endPoint.y - startPoint.y;
 
@@ -19,4 +19,4 @@ function Selection(props: Props) {
   );
 }
 
-export default Selection;
+export default SelectionRect;
