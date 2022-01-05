@@ -23,7 +23,9 @@ import type {
 } from './models';
 import {
   isDatasetResponse,
+  isExternalLinkResponse,
   isGroupResponse,
+  isSoftLinkResponse,
   typedArrayFromDType,
 } from './utils';
 
@@ -146,13 +148,13 @@ export class H5GroveApi extends ProviderApi {
     path: string,
     response: H5GroveEntityResponse
   ): Promise<Entity> {
-    const { name, type: kind, attributes: attrsMetadata = [] } = response;
+    const { name, type: kind } = response;
 
-    const attributes = await this.processAttrsMetadata(path, attrsMetadata);
-    const baseEntity = { name, path, kind, attributes };
+    const baseEntity = { name, path, kind };
 
     if (isGroupResponse(response)) {
-      const { children } = response;
+      const { children, attributes: attrsMetadata } = response;
+      const attributes = await this.processAttrsMetadata(path, attrsMetadata);
 
       if (!children) {
         /* `/meta` stops at one nesting level
@@ -162,6 +164,7 @@ export class H5GroveApi extends ProviderApi {
 
       return {
         ...baseEntity,
+        attributes,
         // Fetch attribute values of any child groups in parallel
         children: await Promise.all(
           children.map((child) =>
@@ -172,14 +175,42 @@ export class H5GroveApi extends ProviderApi {
     }
 
     if (isDatasetResponse(response)) {
-      const { dtype, shape } = response;
+      const { attributes: attrsMetadata, dtype, shape } = response;
+      const attributes = await this.processAttrsMetadata(path, attrsMetadata);
 
       return {
         ...baseEntity,
+        attributes,
         shape,
         type: convertDtype(dtype),
         rawType: dtype,
       } as Dataset;
+    }
+
+    if (isSoftLinkResponse(response)) {
+      const { target_path } = response;
+
+      return {
+        ...baseEntity,
+        attributes: [],
+        kind: EntityKind.Unresolved,
+        link: { class: 'Soft', path: target_path },
+      };
+    }
+
+    if (isExternalLinkResponse(response)) {
+      const { target_file, target_path } = response;
+
+      return {
+        ...baseEntity,
+        kind: EntityKind.Unresolved,
+        attributes: [],
+        link: {
+          class: 'External',
+          file: target_file,
+          path: target_path,
+        },
+      };
     }
 
     // Treat 'other' entities as unresolved
