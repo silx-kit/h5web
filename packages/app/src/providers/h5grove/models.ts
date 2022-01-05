@@ -8,7 +8,7 @@ export interface H5GroveEntityResponse {
     | 'externalLink'
     | 'softLink'
     | 'other';
-  attributes: H5GroveAttribute[];
+  attributes?: H5GroveAttribute[];
 }
 
 export interface H5GroveDatasetReponse extends H5GroveEntityResponse {

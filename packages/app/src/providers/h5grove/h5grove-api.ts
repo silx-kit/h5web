@@ -146,7 +146,7 @@ export class H5GroveApi extends ProviderApi {
     path: string,
     response: H5GroveEntityResponse
   ): Promise<Entity> {
-    const { name, type: kind, attributes: attrsMetadata } = response;
+    const { name, type: kind, attributes: attrsMetadata = [] } = response;
 
     const attributes = await this.processAttrsMetadata(path, attrsMetadata);
     const baseEntity = { name, path, kind, attributes };
