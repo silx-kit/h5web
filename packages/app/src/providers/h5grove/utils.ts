@@ -4,7 +4,9 @@ import { DTypeClass, EntityKind, isNumericType } from '@h5web/shared';
 import type {
   H5GroveDatasetReponse,
   H5GroveEntityResponse,
+  H5GroveExternalLinkResponse,
   H5GroveGroupResponse,
+  H5GroveSoftLinkResponse,
 } from './models';
 
 export function isGroupResponse(
@@ -17,6 +19,18 @@ export function isDatasetResponse(
   response: H5GroveEntityResponse
 ): response is H5GroveDatasetReponse {
   return response.type === EntityKind.Dataset;
+}
+
+export function isSoftLinkResponse(
+  response: H5GroveEntityResponse
+): response is H5GroveSoftLinkResponse {
+  return response.type === 'soft_link';
+}
+
+export function isExternalLinkResponse(
+  response: H5GroveEntityResponse
+): response is H5GroveExternalLinkResponse {
+  return response.type === 'external_link';
 }
 
 export function typedArrayFromDType(dtype: DType) {

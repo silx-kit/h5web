@@ -5,21 +5,33 @@ export interface H5GroveEntityResponse {
   type:
     | EntityKind.Dataset
     | EntityKind.Group
-    | 'externalLink'
-    | 'softLink'
+    | 'external_link'
+    | 'soft_link'
     | 'other';
-  attributes?: H5GroveAttribute[];
 }
 
 export interface H5GroveDatasetReponse extends H5GroveEntityResponse {
   type: EntityKind.Dataset;
   dtype: string;
   shape: number[];
+  attributes: H5GroveAttribute[];
 }
 
 export interface H5GroveGroupResponse extends H5GroveEntityResponse {
   type: EntityKind.Group;
   children?: H5GroveEntityResponse[];
+  attributes: H5GroveAttribute[];
+}
+
+export interface H5GroveSoftLinkResponse extends H5GroveEntityResponse {
+  type: 'soft_link';
+  target_path: string;
+}
+
+export interface H5GroveExternalLinkResponse extends H5GroveEntityResponse {
+  type: 'external_link';
+  target_file: string;
+  target_path: string;
 }
 
 export interface H5GroveAttribute {
