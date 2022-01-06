@@ -159,7 +159,7 @@ export class H5GroveApi extends ProviderApi {
       if (!children) {
         /* `/meta` stops at one nesting level
          * (i.e. children of child groups are not returned) */
-        return baseEntity as Group;
+        return { ...baseEntity, attributes } as Group;
       }
 
       return {
