@@ -138,23 +138,25 @@ The same applies to the Storybook site but the environment variable is named
 
 ## Code quality
 
-- `pnpm lint:eslint [--filter <project-name|{folder}>]` - lint specific projects
-  in the workspace with ESLint
-- `pnpm lint:tsc [--filter <project-name|{folder}>]` - run TypeScript checks for
-  specific projects in the workspace
-- `pnpm lint` - Run both `lint:eslint` and `lint:tsc` for every project in the
-  workspace
 - `pnpm prettier` - check that all files in the workspace have been formatted
   with Prettier
+- `pnpm lint` - lint and type-check every project in the workspace with ESLint
+  and TypeScript
+- `pnpm lint:all:eslint` - lint every project with ESLint
+- `pnpm lint:all:tsc` - type-check every project with TypeScript
+- `pnpm lint:eslint [--filter <project-name|{folder}>]` - lint specific projects
+- `pnpm lint:tsc [--filter <project-name|{folder}>]` - type-check specific
+  projects
 - `pnpm analyze --filter @h5web/<lib|app>` - analyze a package's bundle (run
   only after building the package)
 
 ### Fixing and formatting
 
+- `pnpm prettier -- --write` - format all files with Prettier
+- `pnpm lint:all:eslint -- -- --fix` - auto-fix linting issues in the entire
+  workspace
 - `pnpm lint:eslint [--filter <project-name|{folder}>] -- --fix` - auto-fix
   linting issues in specific projects
-- `pnpm lint:eslint -- --fix` - auto-fix linting issues in the entire workspace
-- `pnpm prettier -- --write` - format all files with Prettier
 
 ### Editor integration
 
