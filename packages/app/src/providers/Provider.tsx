@@ -91,6 +91,8 @@ function Provider(props: Props) {
         valuesStore,
         attrValuesStore,
         getExportURL: api.getExportURL?.bind(api),
+        addProgressListener: api.addProgressListener.bind(api),
+        removeProgressListener: api.removeProgressListener.bind(api),
       }}
     >
       {children}

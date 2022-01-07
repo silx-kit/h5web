@@ -6,8 +6,36 @@
   flex-direction: column;
 }
 
+.progressBars {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 20rem;
+  min-height: 4.5rem; /* 3 bars, to avoid layout shift when bars disappear */
+  margin-bottom: 0.75rem;
+}
+
+.progress {
+  width: 100%;
+  height: 1rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--primary-dark-bg);
+  border: none;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.progress::-webkit-progress-value {
+  background-color: var(--primary);
+}
+
+.progress::-moz-progress-bar {
+  background-color: var(--primary);
+}
+
 .loader > p {
-  margin: 0 0 1rem;
+  margin: 0 0 0.25rem;
 }
 
 .cancelBtn {
