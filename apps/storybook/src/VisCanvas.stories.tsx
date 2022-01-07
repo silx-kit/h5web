@@ -36,7 +36,7 @@ export const AspectRatio = Template.bind({});
 AspectRatio.args = {
   abscissaConfig: { visDomain: [0, 16], showGrid: true, isIndexAxis: true },
   ordinateConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
-  aspectRatio: 16 / 10,
+  canvasRatio: 16 / 10,
 };
 
 export const NoGrid = Template.bind({});

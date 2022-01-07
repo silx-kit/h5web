@@ -33,7 +33,7 @@ jobs:
             - args: [--frozen-lockfile]
 
       - name: Lint 🤓
-        run: pnpm prettier && pnpm lint:all
+        run: pnpm prettier && pnpm lint
 
   test:
     runs-on: ubuntu-latest

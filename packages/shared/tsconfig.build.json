@@ -5,7 +5,6 @@
     "rootDir": "src",
     "outDir": "dist-ts",
     "noEmit": false,
-    "emitDeclarationOnly": true,
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "emitDeclarationOnly": true
   }
 }
