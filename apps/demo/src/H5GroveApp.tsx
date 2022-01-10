@@ -1,6 +1,8 @@
 import { App, H5GroveProvider } from '@h5web/app';
 import { useLocation } from 'react-router-dom';
 
+import { getFeedbackURL } from './utils';
+
 const URL = process.env.REACT_APP_H5GROVE_URL || '';
 const FILEPATH = process.env.REACT_APP_H5GROVE_FALLBACK_FILEPATH || '';
 
@@ -14,7 +16,10 @@ function H5GroveApp() {
       filepath={filepath}
       axiosParams={{ file: filepath }}
     >
-      <App startFullscreen={query.has('fullscreen')} />
+      <App
+        startFullscreen={query.has('fullscreen')}
+        getFeedbackURL={getFeedbackURL}
+      />
     </H5GroveProvider>
   );
 }

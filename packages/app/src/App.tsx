@@ -13,15 +13,21 @@ import MetadataViewer from './metadata-viewer/MetadataViewer';
 import { ProviderContext } from './providers/context';
 import Visualizer from './visualizer/Visualizer';
 
+import type { FeedbackContext } from '.';
+
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
 
 interface Props {
+  // Whether to collapse the explorer on initial render
   startFullscreen?: boolean;
+  // If provided, may return `mailto:` URL if spam is not a concern, or a contact form URL otherwise
+  getFeedbackURL?: (context: FeedbackContext) => string;
 }
 
 function App(props: Props) {
-  const { startFullscreen } = props;
+  const { startFullscreen, getFeedbackURL } = props;
+
   const [selectedPath, setSelectedPath] = useState<string>(DEFAULT_PATH);
   const [isExplorerOpen, setExplorerOpen] = useState(!startFullscreen);
   const [isInspecting, setInspecting] = useState(false);
@@ -58,6 +64,7 @@ function App(props: Props) {
             onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
             onChangeInspecting={setInspecting}
             onSelectPath={onSelectPath}
+            getFeedbackURL={getFeedbackURL}
           />
           <VisConfigProvider>
             <ErrorBoundary
