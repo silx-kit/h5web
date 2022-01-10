@@ -12,7 +12,7 @@ export type { HeatmapVisProps } from './vis/heatmap/HeatmapVis';
 export { default as Toolbar } from './toolbar/Toolbar';
 export { default as Separator } from './toolbar/Separator';
 export { default as Btn } from './toolbar/controls/Btn';
-export { default as DownloadBtn } from './toolbar/controls/DownloadBtn';
+export { default as LinkBtn } from './toolbar/controls/LinkBtn';
 export { default as ToggleBtn } from './toolbar/controls/ToggleBtn';
 export { default as ToggleGroup } from './toolbar/controls/ToggleGroup';
 export { default as DomainSlider } from './toolbar/controls/DomainSlider/DomainSlider';
@@ -89,7 +89,7 @@ export {
 } from '@h5web/shared';
 
 // Undocumented (for @h5web/app)
-export { default as SnapshotButton } from './toolbar/controls/SnapshotButton';
+export { default as SnapshotBtn } from './toolbar/controls/SnapshotBtn';
 export { default as RawVis } from './vis/raw/RawVis';
 export { default as ScalarVis } from './vis/scalar/ScalarVis';
 export { default as RgbVis } from './vis/rgb/RgbVis';

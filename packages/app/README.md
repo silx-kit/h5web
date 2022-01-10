@@ -48,3 +48,61 @@ export default MyApp;
 > import '@h5web/app/style-lib.css';
 > import '@h5web/app/style.css';
 > ```
+
+## API reference
+
+### `startFullscreen?: boolean` (optional)
+
+By default, the app renders with the explorer panel open. Pass `startFullscreen`
+to collapse the panel on initial render instead. This gives more space to the
+visualization, which is useful when H5Web is embeded inside another app.
+
+```tsx
+<App startFullscreen />
+```
+
+### `getFeedbackURL?: (context: FeedbackContext) => string` (optional)
+
+If provided, a "Give feedback" button appears in the breadcrumbs bar, which
+invokes the function when clicked. The function should return a valid URL, for
+instance a `mailto:` URL with a pre-filled subject and body:
+`mailto:some@email.com?subject=Feedback&body=<url-encoded-text>`. If the app is
+publicly available, we recommend returning the URL of a secure online contact
+form instead.
+
+```tsx
+<App getFeedbackURL={() => 'https://my-feedback-form.com'} />
+```
+
+```tsx
+<App
+  getFeedbackURL={(context) => {
+    const {
+      version, // version of `@h5web/app`
+      filePath, // path of current file
+      entityPath, // path of currently selected entity
+    } = context;
+
+    return `mailto:some@email.com?subject=Feedback&body=${encodeURIComponent(...)}`;
+  }}
+/>
+```
+
+## Utilities
+
+### `getFeedbackMailto`
+
+Generate a feedback `mailto:` URL using H5Web's built-in feedback email
+template.
+
+```tsx
+(context: FeedbackContext, email: string, subject = 'Feedback') => string;
+```
+
+```tsx
+import { getFeedbackMailto } from '@h5web/app';
+...
+<App getFeedbackURL={(context) => {
+  return getFeedbackMailto(context, 'some@email.com');
+}} />
+```

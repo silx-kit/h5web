@@ -8,6 +8,7 @@ import ErrorFallback from './ErrorFallback';
 import LoadingFallback from './LoadingFallback';
 import VisConfigProvider from './VisConfigProvider';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
+import type { FeedbackContext } from './breadcrumbs/models';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import { ProviderContext } from './providers/context';
@@ -18,10 +19,12 @@ assertAbsolutePath(DEFAULT_PATH);
 
 interface Props {
   startFullscreen?: boolean;
+  getFeedbackURL?: (context: FeedbackContext) => string;
 }
 
 function App(props: Props) {
-  const { startFullscreen } = props;
+  const { startFullscreen, getFeedbackURL } = props;
+
   const [selectedPath, setSelectedPath] = useState<string>(DEFAULT_PATH);
   const [isExplorerOpen, setExplorerOpen] = useState(!startFullscreen);
   const [isInspecting, setInspecting] = useState(false);
@@ -58,6 +61,7 @@ function App(props: Props) {
             onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
             onChangeInspecting={setInspecting}
             onSelectPath={onSelectPath}
+            getFeedbackURL={getFeedbackURL}
           />
           <VisConfigProvider>
             <ErrorBoundary

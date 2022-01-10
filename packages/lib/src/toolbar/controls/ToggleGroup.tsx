@@ -46,6 +46,7 @@ function Btn(props: BtnProps) {
       disabled={disabled || isGroupDisabled}
       className={styles.btn}
       type="button"
+      title={iconOnly ? label : undefined}
       role={role === 'tablist' ? 'tab' : 'radio'}
       data-raised
       aria-label={iconOnly ? label : undefined}

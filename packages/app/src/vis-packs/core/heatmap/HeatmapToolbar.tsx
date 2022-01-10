@@ -8,7 +8,7 @@ import {
   ScaleSelector,
   ScaleType,
   Separator,
-  SnapshotButton,
+  SnapshotBtn,
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
@@ -113,7 +113,7 @@ function HeatmapToolbar(props: Props) {
         />
       )}
 
-      <SnapshotButton />
+      <SnapshotBtn />
     </Toolbar>
   );
 }

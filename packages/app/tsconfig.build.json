@@ -5,6 +5,10 @@
     "rootDir": "src",
     "outDir": "dist-ts",
     "noEmit": false,
-    "emitDeclarationOnly": true
-  }
+    "emitDeclarationOnly": true,
+    "tsBuildInfoFile": "tsconfig.build.tsbuildinfo"
+  },
+  "references": [
+    { "path": "./tsconfig.pkg.json" } // for `package.json` import
+  ]
 }

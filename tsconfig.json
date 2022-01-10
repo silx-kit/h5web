@@ -13,7 +13,6 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "incremental": true,
-    "tsBuildInfoFile": "./.tsbuildinfo",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,

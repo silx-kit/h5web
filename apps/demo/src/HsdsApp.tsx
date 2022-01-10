@@ -1,6 +1,8 @@
 import { App, HsdsProvider } from '@h5web/app';
 import { useLocation } from 'react-router-dom';
 
+import { getFeedbackURL } from './utils';
+
 const URL = process.env.REACT_APP_HSDS_URL || '';
 const USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';
 const PASSWORD = process.env.REACT_APP_HSDS_PASSWORD || '';
@@ -17,7 +19,10 @@ function HsdsApp() {
       password={PASSWORD}
       filepath={filepath}
     >
-      <App startFullscreen={query.has('fullscreen')} />
+      <App
+        startFullscreen={query.has('fullscreen')}
+        getFeedbackURL={getFeedbackURL}
+      />
     </HsdsProvider>
   );
 }

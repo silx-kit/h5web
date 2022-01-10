@@ -1,8 +1,12 @@
-import { ToggleGroup, ToggleBtn } from '@h5web/lib';
-import { FiSidebar } from 'react-icons/fi';
+import { ToggleGroup, ToggleBtn, LinkBtn, Separator } from '@h5web/lib';
+import { useContext } from 'react';
+import { FiMessageCircle, FiSidebar } from 'react-icons/fi';
 
+import { version } from '../../package.json';
+import { ProviderContext } from '../providers/context';
 import Breadcrumbs from './Breadcrumbs';
 import styles from './BreadcrumbsBar.module.css';
+import type { FeedbackContext } from './models';
 
 interface Props {
   path: string;
@@ -11,6 +15,7 @@ interface Props {
   onToggleExplorer: () => void;
   onChangeInspecting: (b: boolean) => void;
   onSelectPath: (path: string) => void;
+  getFeedbackURL?: (context: FeedbackContext) => string;
 }
 
 function BreadcrumbsBar(props: Props) {
@@ -21,7 +26,10 @@ function BreadcrumbsBar(props: Props) {
     onToggleExplorer,
     onChangeInspecting,
     onSelectPath,
+    getFeedbackURL,
   } = props;
+
+  const { filepath } = useContext(ProviderContext);
 
   return (
     <div className={styles.bar}>
@@ -32,6 +40,8 @@ function BreadcrumbsBar(props: Props) {
         value={isExplorerOpen}
         onToggle={onToggleExplorer}
       />
+
+      <Separator />
 
       <Breadcrumbs
         path={path}
@@ -50,6 +60,24 @@ function BreadcrumbsBar(props: Props) {
         <ToggleGroup.Btn label="Display" value="false" />
         <ToggleGroup.Btn label="Inspect" value="true" />
       </ToggleGroup>
+
+      {getFeedbackURL && (
+        <LinkBtn
+          label="Feedback"
+          icon={FiMessageCircle}
+          href="/" // replaced dynamically
+          target="_blank"
+          onClick={(evt) => {
+            const feedbackUrl = getFeedbackURL({
+              version,
+              filePath: filepath,
+              entityPath: path,
+            });
+
+            evt.currentTarget.setAttribute('href', feedbackUrl);
+          }}
+        />
+      )}
     </div>
   );
 }
