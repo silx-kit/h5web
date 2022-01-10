@@ -43,6 +43,12 @@ function BreadcrumbsBar(props: Props) {
 
       <Separator />
 
+      <Breadcrumbs
+        path={path}
+        onSelect={onSelectPath}
+        showFilename={!isExplorerOpen}
+      />
+
       <ToggleGroup
         role="tablist"
         ariaLabel="Viewer mode"
@@ -55,15 +61,9 @@ function BreadcrumbsBar(props: Props) {
         <ToggleGroup.Btn label="Inspect" value="true" />
       </ToggleGroup>
 
-      <Breadcrumbs
-        path={path}
-        onSelect={onSelectPath}
-        showFilename={!isExplorerOpen}
-      />
-
       {getFeedbackURL && (
         <LinkBtn
-          label="Give feedback"
+          label="Feedback"
           icon={FiMessageCircle}
           href="/" // replaced dynamically
           target="_blank"

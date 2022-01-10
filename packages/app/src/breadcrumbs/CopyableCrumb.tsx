@@ -23,7 +23,7 @@ function CopyableCrumb(props: Props) {
         void navigator.clipboard.writeText(path);
         setPathCopied(true);
       }}
-      onPointerOut={() => setPathCopied(false)}
+      onPointerLeave={() => setPathCopied(false)}
       data-current
     >
       <span className={styles.crumb}>{name}</span>

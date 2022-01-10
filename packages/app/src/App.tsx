@@ -8,20 +8,17 @@ import ErrorFallback from './ErrorFallback';
 import LoadingFallback from './LoadingFallback';
 import VisConfigProvider from './VisConfigProvider';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
+import type { FeedbackContext } from './breadcrumbs/models';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import { ProviderContext } from './providers/context';
 import Visualizer from './visualizer/Visualizer';
 
-import type { FeedbackContext } from '.';
-
 const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
 assertAbsolutePath(DEFAULT_PATH);
 
 interface Props {
-  // Whether to collapse the explorer on initial render
   startFullscreen?: boolean;
-  // If provided, may return `mailto:` URL if spam is not a concern, or a contact form URL otherwise
   getFeedbackURL?: (context: FeedbackContext) => string;
 }
 
