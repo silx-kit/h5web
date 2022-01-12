@@ -115,7 +115,7 @@ importers:
     specifiers:
       '@h5web/lib': workspace:*
       '@h5web/shared': workspace:*
-      '@react-hookz/web': 12.0.0
+      '@react-hookz/web': 12.1.1
       '@react-three/fiber': 7.0.24
       '@storybook/addon-docs': 6.4.8
       '@storybook/addon-essentials': 6.4.8
@@ -138,7 +138,7 @@ importers:
     dependencies:
       '@h5web/lib': link:../../packages/lib
       '@h5web/shared': link:../../packages/shared
-      '@react-hookz/web': 12.0.0_react-dom@17.0.2+react@17.0.2
+      '@react-hookz/web': 12.1.1_react-dom@17.0.2+react@17.0.2
       '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       ndarray: 1.0.19
       normalize.css: 8.0.1
@@ -156,7 +156,7 @@ importers:
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
       eslint: 8.4.1
-      eslint-config-galex: 3.3.6_eslint@8.4.1+jest@27.4.3
+      eslint-config-galex: 3.3.6_eslint@8.4.1
       react-scripts: 4.0.3_react@17.0.2+typescript@4.5.2
       typescript: 4.5.2
 
@@ -164,7 +164,7 @@ importers:
     specifiers:
       '@h5web/lib': workspace:*
       '@h5web/shared': workspace:*
-      '@react-hookz/web': 12.0.0
+      '@react-hookz/web': 12.1.1
       '@react-three/fiber': 7.0.24
       '@testing-library/dom': 8.11.1
       '@testing-library/jest-dom': 5.16.1
@@ -198,7 +198,7 @@ importers:
       zustand: 3.6.7
     dependencies:
       '@h5web/lib': link:../lib
-      '@react-hookz/web': 12.0.0_react-dom@17.0.2+react@17.0.2
+      '@react-hookz/web': 12.1.1_react-dom@17.0.2+react@17.0.2
       '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       axios: 0.24.0
       d3-format: 3.1.0
@@ -236,7 +236,7 @@ importers:
   packages/lib:
     specifiers:
       '@h5web/shared': workspace:*
-      '@react-hookz/web': 12.0.0
+      '@react-hookz/web': 12.1.1
       '@react-three/fiber': 7.0.24
       '@types/d3-array': 3.0.2
       '@types/d3-color': 3.0.2
@@ -285,7 +285,7 @@ importers:
       typescript: 4.5.2
       vite: 2.7.1
     dependencies:
-      '@react-hookz/web': 12.0.0_react-dom@17.0.2+react@17.0.2
+      '@react-hookz/web': 12.1.1_react-dom@17.0.2+react@17.0.2
       '@visx/axis': 2.4.0_react@17.0.2
       '@visx/grid': 2.4.0_react@17.0.2
       '@visx/scale': 2.2.2
@@ -388,6 +388,14 @@ packages:
     dependencies:
       '@babel/highlight': 7.16.0
     dev: true
+
+  /@babel/code-frame/7.16.7:
+    resolution: {integrity: sha512-iAXqUn8IIeBTNd72xsFlgaXHkMBMt6y4HJp1tIaK465CWLT/fG1aqB7ykr95gHHmlBdGbFeWWfyB4NJJ0nmeIg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/highlight': 7.16.7
+    dev: true
+    optional: true
 
   /@babel/compat-data/7.16.4:
     resolution: {integrity: sha512-1o/jo7D+kC9ZjHX5v+EHrdjl3PhxMrLSOTGsOdHJ+KL8HCaEK6ehrVL2RS6oHDZp+L7xLirLrPmQtEng769J/Q==}
@@ -746,6 +754,12 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
+  /@babel/helper-validator-identifier/7.16.7:
+    resolution: {integrity: sha512-hsEnFemeiW4D08A5gUAZxLBTXpZ39P+a+DGDsHw1yxqyQ/jzFEnxf5uTEGp+3bzAbNOxU1paTgYS4ECU/IgfDw==}
+    engines: {node: '>=6.9.0'}
+    dev: true
+    optional: true
+
   /@babel/helper-validator-option/7.14.5:
     resolution: {integrity: sha512-OX8D5eeX4XwcroVW45NMvoYaIuFI+GQpA2a8Gi+X/U/cDUIRsV37qQfF905F0htTRCREQIB4KqPeaveRJUl3Ow==}
     engines: {node: '>=6.9.0'}
@@ -782,6 +796,16 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
     dev: true
+
+  /@babel/highlight/7.16.7:
+    resolution: {integrity: sha512-aKpPMfLvGO3Q97V0qhw/V2SWNWlwfJknuwAunU7wZLSfrM4xTBvg7E5opUVi1kJTBKihE38CPg4nBiqX83PWYw==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/helper-validator-identifier': 7.16.7
+      chalk: 2.4.2
+      js-tokens: 4.0.0
+    dev: true
+    optional: true
 
   /@babel/parser/7.16.4:
     resolution: {integrity: sha512-6V0qdPUaiVHH3RtZeLIsc+6pDhbYzHR8ogA8w+f+Wc77DuXto19g2QUwveINoS34Uw+W8/hQDGJCx+i4n7xcng==}
@@ -3806,8 +3830,8 @@ packages:
     resolution: {integrity: sha512-zrsUxjLOKAzdewIDRWy9nsV1GQsKBCWaGwsZQlCgr6/q+vjyZhFgqedLfFBuI9anTPEUT4APq9Mu0SZBTzIcGQ==}
     dev: true
 
-  /@react-hookz/web/12.0.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-DG6BxsYF+noqQnnRMClEKE+Xz3kp2TtG+C6H3vCEyj4k48+TErlUII6EUvzJ6MTVrPWLc00KCe4ppcLD+gEG0A==}
+  /@react-hookz/web/12.1.1_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-PiyDjwr7HOSZgLoH7pwiffou1sxqB8oT57+mF1WAcpvEpO9jIP7ZJ+jZEL6jquHPsf1tETUQnbY6AQUyhw90yg==}
     peerDependencies:
       js-cookie: ^3.0.1
       react: ^16.8 || ^17 || ^18
@@ -3816,7 +3840,6 @@ packages:
       js-cookie:
         optional: true
     dependencies:
-      '@types/js-cookie': 2.2.7
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
@@ -9886,6 +9909,38 @@ packages:
       source-map: 0.6.1
     dev: true
 
+  /eslint-config-galex/3.3.6_eslint@8.4.1:
+    resolution: {integrity: sha512-sT/Fzi7t8IOyBQb/ietQ8Nd9AUgf8CKSbidu4B6YRlRYL2yo0swLDYwD89L3mCULmYXKxrx8QNi7n7RnBEW/8A==}
+    engines: {node: '>=14.17'}
+    peerDependencies:
+      eslint: '>=8.1.0'
+    dependencies:
+      '@babel/core': 7.16.0
+      '@babel/eslint-parser': 7.16.3_@babel+core@7.16.0+eslint@8.4.1
+      '@next/eslint-plugin-next': 12.0.7
+      '@typescript-eslint/eslint-plugin': 5.6.0_0d0cecf582ba45923647a091322795b0
+      '@typescript-eslint/parser': 5.6.0_eslint@8.4.1+typescript@4.5.3
+      confusing-browser-globals: 1.0.10
+      eslint: 8.4.1
+      eslint-config-prettier: 8.3.0_eslint@8.4.1
+      eslint-plugin-import: 2.25.3_eslint@8.4.1
+      eslint-plugin-jest: 25.3.0_603aea866ce9c22a0f7a76ceb881d477
+      eslint-plugin-jest-dom: 3.9.2_eslint@8.4.1
+      eslint-plugin-jest-formatting: 3.1.0_eslint@8.4.1
+      eslint-plugin-jsx-a11y: 6.5.1_eslint@8.4.1
+      eslint-plugin-promise: 5.2.0_eslint@8.4.1
+      eslint-plugin-react: 7.27.1_eslint@8.4.1
+      eslint-plugin-react-hooks: 4.3.0_eslint@8.4.1
+      eslint-plugin-sonarjs: 0.11.0_eslint@8.4.1
+      eslint-plugin-testing-library: 5.0.1_eslint@8.4.1+typescript@4.5.3
+      eslint-plugin-unicorn: 39.0.0_eslint@8.4.1
+      read-pkg-up: 7.0.1
+      typescript: 4.5.3
+    transitivePeerDependencies:
+      - jest
+      - supports-color
+    dev: true
+
   /eslint-config-galex/3.3.6_eslint@8.4.1+jest@27.4.3:
     resolution: {integrity: sha512-sT/Fzi7t8IOyBQb/ietQ8Nd9AUgf8CKSbidu4B6YRlRYL2yo0swLDYwD89L3mCULmYXKxrx8QNi7n7RnBEW/8A==}
     engines: {node: '>=14.17'}
@@ -10089,6 +10144,27 @@ packages:
       '@typescript-eslint/experimental-utils': 5.6.0_eslint@8.4.1+typescript@4.5.3
       eslint: 8.4.1
       jest: 27.4.3
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: true
+
+  /eslint-plugin-jest/25.3.0_603aea866ce9c22a0f7a76ceb881d477:
+    resolution: {integrity: sha512-79WQtuBsTN1S8Y9+7euBYwxIOia/k7ykkl9OCBHL3xuww5ecursHy/D8GCIlvzHVWv85gOkS5Kv6Sh7RxOgK1Q==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+    peerDependencies:
+      '@typescript-eslint/eslint-plugin': ^4.0.0 || ^5.0.0
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+      jest: '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/eslint-plugin':
+        optional: true
+      jest:
+        optional: true
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 5.6.0_0d0cecf582ba45923647a091322795b0
+      '@typescript-eslint/experimental-utils': 5.6.0_eslint@8.4.1+typescript@4.5.3
+      eslint: 8.4.1
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -11012,19 +11088,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
-
-  /follow-redirects/1.14.5_debug@4.3.3:
-    resolution: {integrity: sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3_supports-color@6.1.0
-    dev: true
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -11923,7 +11986,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.5_debug@4.3.3
+      follow-redirects: 1.14.5
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -17526,7 +17589,7 @@ packages:
       rollup: 2.60.2
       typescript: 4.5.2
     optionalDependencies:
-      '@babel/code-frame': 7.16.0
+      '@babel/code-frame': 7.16.7
     dev: true
 
   /rollup-plugin-terser/5.3.1_rollup@1.32.1:

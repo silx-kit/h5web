@@ -40,7 +40,7 @@
     "three": ">=0.120"
   },
   "dependencies": {
-    "@react-hookz/web": "12.0.0",
+    "@react-hookz/web": "12.1.1",
     "@visx/axis": "2.4.0",
     "@visx/grid": "2.4.0",
     "@visx/scale": "2.2.2",

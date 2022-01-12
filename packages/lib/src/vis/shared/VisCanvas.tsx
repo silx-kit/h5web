@@ -27,7 +27,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
   } = props;
 
   const shouldMeasure = !!canvasRatio;
-  const [areaSize, areaRef] = useMeasure<HTMLDivElement>();
+  const [areaSize, areaRef] = useMeasure<HTMLDivElement>(shouldMeasure);
   const canvasSize = areaSize && getSizeToFit(areaSize, canvasRatio);
 
   const axisOffsets = getAxisOffsets({
@@ -38,7 +38,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
 
   return (
     <div
-      ref={shouldMeasure ? areaRef : undefined} // unfortunately, this isn't enough to start/stop measuring dynamically https://github.com/react-hookz/web/issues/523
+      ref={areaRef}
       className={styles.canvasArea}
       style={{
         paddingBottom: axisOffsets.bottom,
@@ -48,7 +48,10 @@ function VisCanvas(props: PropsWithChildren<Props>) {
       }}
     >
       {(!shouldMeasure || canvasSize) && (
-        <div className={styles.canvasWrapper} style={canvasSize}>
+        <div
+          className={styles.canvasWrapper}
+          style={shouldMeasure ? canvasSize : undefined}
+        >
           <Canvas
             className={styles.r3fRoot}
             orthographic
