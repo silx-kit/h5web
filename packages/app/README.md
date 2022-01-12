@@ -78,7 +78,6 @@ form instead.
 <App
   getFeedbackURL={(context) => {
     const {
-      version, // version of `@h5web/app`
       filePath, // path of current file
       entityPath, // path of currently selected entity
     } = context;

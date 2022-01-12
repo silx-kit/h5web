@@ -2,7 +2,6 @@ import { ToggleGroup, ToggleBtn, LinkBtn, Separator } from '@h5web/lib';
 import { useContext } from 'react';
 import { FiMessageCircle, FiSidebar } from 'react-icons/fi';
 
-import { version } from '../../package.json';
 import { ProviderContext } from '../providers/context';
 import Breadcrumbs from './Breadcrumbs';
 import styles from './BreadcrumbsBar.module.css';
@@ -69,7 +68,6 @@ function BreadcrumbsBar(props: Props) {
           target="_blank"
           onClick={(evt) => {
             const feedbackUrl = getFeedbackURL({
-              version,
               filePath: filepath,
               entityPath: path,
             });

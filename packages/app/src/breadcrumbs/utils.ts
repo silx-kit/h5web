@@ -5,7 +5,7 @@ export function getFeedbackMailto(
   email: string,
   subject = 'Feedback'
 ): string {
-  const { version, filePath, entityPath } = context;
+  const { filePath, entityPath } = context;
   const body = `Hi,
 
 << Please provide your feedback here. >>
@@ -18,7 +18,6 @@ Here is some additional context:
 - Location: ${window.location.href}
 - File path: ${filePath}
 - Entity path: ${entityPath}
-- @h5web/app version: ${version}
 - << Any other info (JupyterLab, etc.) >>
 
 Thanks,
