@@ -1,11 +1,20 @@
 import type { ThreeEvent } from '@react-three/fiber';
+import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import { Vector2 } from 'three';
 
-import Selection from './Selection';
 import VisMesh from './VisMesh';
 
-function SelectionMesh() {
+interface Props {
+  selectionComponent: (props: {
+    startPoint: Vector2;
+    endPoint: Vector2;
+  }) => ReactElement;
+}
+
+function SelectionMesh(props: Props) {
+  const { selectionComponent: Selection } = props;
+
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useState<Vector2>();
   const [isDragging, setDrag] = useState(false);
