@@ -1,0 +1,7 @@
+.root {
+  flex: 1 1 0%;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  margin: 1rem;
+}
