@@ -68,22 +68,10 @@ The following HDF5 files can be reached with a URL of the form
 
 This demo is available at https://h5web.panosc.eu/hsds.
 
-The following HDF5 files can be reached with a URL of the form
-`https://h5web.panosc.eu/hsds?file=<name>`:
-
-- [`/home/reader/water`](https://h5web.panosc.eu/hsds) (**default**): The file
-  `water_224.h5`. Some datasets cannot be displayed as bitshuffle compression is
-  not supported by HSDS yet.
-- [`/home/reader/compressed`](https://h5web.panosc.eu/hsds?file=/home/reader/compressed):
-  The file `compressed.h5`.
-- [`/home/reader/epics`](https://h5web.panosc.eu/hsds?file=/home/reader/epics):
-  The file `epics.h5`.
-- [`/home/reader/grove`](https://h5web.panosc.eu/hsds?file=/home/reader/grove):
-  The file `grove.h5`.
-- [`/home/reader/links`](https://h5web.panosc.eu/hsds?file=/home/reader/links):
-  The file `links.h5`.
-- [`/home/reader/tall`](https://h5web.panosc.eu/hsds?file=/home/reader/tall):
-  The file `tall.h5`.
+All the HDF5 files mentionned above can be reached with a URL of the form
+`https://h5web.panosc.eu/hsds?file=<name>`. https://h5web.panosc.eu/hsds will
+default to `water_224.h5` but some datasets cannot be displayed as bitshuffle
+compression is not supported by HSDS yet.
 
 ### Mock data
 
