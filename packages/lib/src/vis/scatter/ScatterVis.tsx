@@ -1,6 +1,5 @@
 import type { Domain } from '@h5web/shared';
 import { assertDataLength, ScaleType } from '@h5web/shared';
-import { Suspense } from 'react';
 
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
@@ -55,17 +54,15 @@ function ScatterVis(props: Props) {
         }}
       >
         <PanZoomMesh />
-        <Suspense fallback={null}>
-          <ScatterPoints
-            abscissas={abscissas}
-            ordinates={ordinates}
-            data={data}
-            domain={domain}
-            scaleType={scaleType}
-            colorMap={colorMap}
-            invertColorMap={invertColorMap}
-          />
-        </Suspense>
+        <ScatterPoints
+          abscissas={abscissas}
+          ordinates={ordinates}
+          data={data}
+          domain={domain}
+          scaleType={scaleType}
+          colorMap={colorMap}
+          invertColorMap={invertColorMap}
+        />
       </VisCanvas>
       <ColorBar
         domain={domain}

@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef } from 'react';
 import type { BufferGeometry, Vector3 } from 'three';
 
 import GlyphMaterial from './GlyphMaterial';
-import { GLYPH_URLS } from './models';
+import { GlyphType } from './models';
 
 interface Props {
   capsPoints: Vector3[];
@@ -35,7 +35,7 @@ function ErrorBars(props: Props) {
         <bufferGeometry ref={barsGeometry} />
       </lineSegments>
       <points visible={visible}>
-        <GlyphMaterial glyphURL={GLYPH_URLS.Cap} color={color} size={9} />
+        <GlyphMaterial glyphType={GlyphType.Cap} color={color} size={9} />
         <bufferGeometry ref={capsGeometry} />
       </points>
     </>
