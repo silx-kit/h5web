@@ -32,9 +32,11 @@ import { App, MockProvider } from '@h5web/app';
 
 function MyApp() {
   return (
-    <MockProvider>
-      <App />
-    </MockProvider>
+    <div style={{ height: '100vh' }}>
+      <MockProvider>
+        <App />
+      </MockProvider>
+    </div>
   );
 }
 
