@@ -2,13 +2,14 @@ import { useThree } from '@react-three/fiber';
 import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
 import { clamp } from 'lodash';
 import { useRef, useCallback, useEffect } from 'react';
-import type { Vector3 } from 'three';
-import { Vector2 } from 'three';
+import { Vector2, Vector3 } from 'three';
 
 import { useWheelCapture } from '../hooks';
 import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;
+
+const CAMERA_TOP_RIGHT = new Vector3(1, 1, 0);
 
 function PanZoomMesh() {
   const { abscissaScale, ordinateScale, visSize } = useAxisSystemContext();
@@ -29,10 +30,15 @@ function PanZoomMesh() {
         abscissaScale.invert(x),
         ordinateScale.invert(y)
       );
+      const { position, projectionMatrixInverse } = camera;
 
-      const { position, zoom } = camera;
-      const xBound = Math.max(visWidth - width / zoom, 0) / 2;
-      const yBound = Math.max(visHeight - height / zoom, 0) / 2;
+      // Project from normalized camera space (-1, -1) to (1, 1) to local camera space (-Xbound, -Ybound) to (Xbound, Ybound)
+      const cameraLocalBounds = CAMERA_TOP_RIGHT.clone().applyMatrix4(
+        projectionMatrixInverse
+      );
+
+      const xBound = Math.max(visWidth / 2 - cameraLocalBounds.x, 0);
+      const yBound = Math.max(visHeight / 2 - cameraLocalBounds.y, 0);
 
       position.set(
         clamp(x, -xBound, xBound),
@@ -43,16 +49,7 @@ function PanZoomMesh() {
       camera.updateMatrixWorld();
       invalidate();
     },
-    [
-      abscissaScale,
-      camera,
-      height,
-      invalidate,
-      ordinateScale,
-      visWidth,
-      visHeight,
-      width,
-    ]
+    [abscissaScale, ordinateScale, camera, visWidth, visHeight, invalidate]
   );
 
   const onPointerDown = useCallback(
