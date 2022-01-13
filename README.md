@@ -51,25 +51,27 @@ This demo is available at https://h5web.panosc.eu.
 The following HDF5 files can be reached with a URL of the form
 `https://h5web.panosc.eu/?file=<name>`:
 
-- `water_224.h5` (**default**): A typical NeXus file with various real-world
-  datasets to demonstrate the visualizations.
-- `compressed.h5`: A file with datasets compressed with various filters to test
-  decompression.
-- `links.h5`: A file with external links, soft links and a virtual dataset to
-  test link resolution.
+- [`water_224.h5`](https://h5web.panosc.eu/) (**default**): A typical NeXus file
+  with various real-world datasets to demonstrate the visualizations.
+- [`compressed.h5`](https://h5web.panosc.eu/?file=compressed.h5): A file with
+  datasets compressed with various filters to test decompression.
+- [`epics.h5`](https://h5web.panosc.eu/?file=epics.h5): A test file from
+  [EPICS](https://epics.anl.gov/) group (Argonne national lab).
+- [`grove.h5`](https://h5web.panosc.eu/?file=grove.h5): A file used to test the
+  provider. It contains datasets with NaN/Infinity values, booleans, complexes
+  and other types of datasets such as RGB images and 4D stacks.
+- [`links.h5`](https://h5web.panosc.eu/?file=links.h5): A file with external
+  links, soft links and a virtual dataset to test link resolution.
+- [`tall.h5`](https://h5web.panosc.eu/?file=tall.h5): The demo file of HSDS.
 
 ### [HSDS](https://github.com/HDFGroup/hsds)
 
 This demo is available at https://h5web.panosc.eu/hsds.
 
-The following HDF5 files can be reached with a URL of the form
-`https://h5web.panosc.eu/hsds?file=<name>`:
-
-- `/home/reader/water` (**default**): The file `water_224.h5`. Some datasets
-  cannot be displayed as bitshuffle compression is not supported by HSDS yet.
-- `/home/reader/links`: The file `links.h5`.
-- `/home/reader/compressed`: The file `compressed.h5`.
-- `/home/reader/tall`: The demo file of HSDS.
+All the HDF5 files mentionned above can be reached with a URL of the form
+`https://h5web.panosc.eu/hsds?file=<name>`. https://h5web.panosc.eu/hsds will
+default to `water_224.h5` but some datasets cannot be displayed as bitshuffle
+compression is not supported by HSDS yet.
 
 ### Mock data
 

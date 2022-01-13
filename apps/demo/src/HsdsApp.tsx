@@ -6,11 +6,12 @@ import { getFeedbackURL } from './utils';
 const URL = process.env.REACT_APP_HSDS_URL || '';
 const USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';
 const PASSWORD = process.env.REACT_APP_HSDS_PASSWORD || '';
+const SUBDOMAIN = process.env.REACT_APP_HSDS_SUBDOMAIN || '';
 const FILEPATH = process.env.REACT_APP_HSDS_FALLBACK_FILEPATH || '';
 
 function HsdsApp() {
   const query = new URLSearchParams(useLocation().search);
-  const filepath = query.get('file') || FILEPATH;
+  const filepath = `${SUBDOMAIN}${query.get('file') || FILEPATH}`;
 
   return (
     <HsdsProvider
