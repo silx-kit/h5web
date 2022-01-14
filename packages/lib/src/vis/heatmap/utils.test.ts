@@ -22,8 +22,6 @@ describe('getLinearGradient', () => {
 
     const [match, colorStops] = gradientRegex.exec(gradient) || [];
     expect(match).toBeDefined();
-    expect(colorStops).toEqual(
-      `${white}, ${white} 50%, ${black} 50%, ${black}`
-    );
+    expect(colorStops).toBe(`${white}, ${white} 50%, ${black} 50%, ${black}`);
   });
 });

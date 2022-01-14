@@ -15,7 +15,6 @@ const Template: Story<TemplateProps> = (args) => {
 };
 
 export const Default = Template.bind({});
-
 Default.args = {
   domainMin: 0.1,
   domainMax: 1,
@@ -71,7 +70,7 @@ InvertColorMap.args = {
   invertColorMap: true,
 };
 
-export { Template as ColorMapTemplate };
+export { Template as ColorBarTemplate };
 export default {
   title: 'Building Blocks/ColorBar',
   component: ColorBar,

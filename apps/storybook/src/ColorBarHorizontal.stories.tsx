@@ -2,17 +2,17 @@ import type { Meta, Story } from '@storybook/react';
 
 import type { TemplateProps } from './ColorBar.stories';
 import ColorBarStoriesConfig, {
-  ColorMapTemplate,
+  ColorBarTemplate,
   Default,
 } from './ColorBar.stories';
 
-export const Horizontal: Story<TemplateProps> = ColorMapTemplate.bind({});
+export const Horizontal: Story<TemplateProps> = ColorBarTemplate.bind({});
 Horizontal.args = {
   ...Default.args,
   horizontal: true,
 };
 
-export const WithBounds: Story<TemplateProps> = ColorMapTemplate.bind({});
+export const WithBounds: Story<TemplateProps> = ColorBarTemplate.bind({});
 WithBounds.args = {
   ...Default.args,
   domainMin: -235.111,
