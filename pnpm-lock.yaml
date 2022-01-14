@@ -92,16 +92,16 @@ importers:
       react-app-rewired: 2.1.8
       react-dom: 17.0.2
       react-scripts: 4.0.3
-      three: 0.136.0
+      three: 0.135.0
       typescript: 4.5.4
     dependencies:
       '@h5web/lib': link:../../packages/lib
-      '@react-three/fiber': 7.0.24_219cd54b391a5f28fe99f6b525368df2
+      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       normalize.css: 8.0.1
       react: 17.0.2
       react-app-polyfill: 2.0.0
       react-dom: 17.0.2_react@17.0.2
-      three: 0.136.0
+      three: 0.135.0
     devDependencies:
       '@types/react': 17.0.38
       '@types/react-dom': 17.0.11
@@ -133,19 +133,19 @@ importers:
       react: 17.0.2
       react-dom: 17.0.2
       react-icons: 4.3.1
-      three: 0.136.0
+      three: 0.135.0
       typescript: 4.5.4
     dependencies:
       '@h5web/lib': link:../../packages/lib
       '@h5web/shared': link:../../packages/shared
       '@react-hookz/web': 12.1.2_react-dom@17.0.2+react@17.0.2
-      '@react-three/fiber': 7.0.24_219cd54b391a5f28fe99f6b525368df2
+      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       ndarray: 1.0.19
       normalize.css: 8.0.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-icons: 4.3.1_react@17.0.2
-      three: 0.136.0
+      three: 0.135.0
     devDependencies:
       '@storybook/addon-docs': 6.4.12_d2cf1ae34ea974f55e2c5fc72e45f1cc
       '@storybook/addon-essentials': 6.4.12_d2cf1ae34ea974f55e2c5fc72e45f1cc
@@ -191,14 +191,14 @@ importers:
       react-use: 17.3.2
       rollup: 2.63.0
       rollup-plugin-dts: 4.1.0
-      three: 0.136.0
+      three: 0.135.0
       typescript: 4.5.4
       vite: 2.7.11
       zustand: 3.6.9
     dependencies:
       '@h5web/lib': link:../lib
       '@react-hookz/web': 12.1.2_react-dom@17.0.2+react@17.0.2
-      '@react-three/fiber': 7.0.24_219cd54b391a5f28fe99f6b525368df2
+      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       axios: 0.24.0
       d3-format: 3.1.0
       lodash: 4.17.21
@@ -210,7 +210,7 @@ importers:
       react-slider: 1.3.1_react@17.0.2
       react-suspense-fetch: 0.4.0
       react-use: 17.3.2_react-dom@17.0.2+react@17.0.2
-      three: 0.136.0
+      three: 0.135.0
       zustand: 3.6.9_react@17.0.2
     devDependencies:
       '@h5web/shared': link:../shared
@@ -251,7 +251,7 @@ importers:
       '@types/react-measure': 2.0.8
       '@types/react-slider': 1.3.1
       '@types/react-window': 1.8.5
-      '@types/three': 0.136.1
+      '@types/three': 0.135.0
       '@visx/axis': 2.4.0
       '@visx/grid': 2.4.0
       '@visx/scale': 2.2.2
@@ -280,7 +280,7 @@ importers:
       react-window: 1.8.6
       rollup: 2.63.0
       rollup-plugin-dts: 4.1.0
-      three: 0.136.0
+      three: 0.135.0
       typescript: 4.5.4
       vite: 2.7.11
     dependencies:
@@ -308,7 +308,7 @@ importers:
       react-window: 1.8.6_react-dom@17.0.2+react@17.0.2
     devDependencies:
       '@h5web/shared': link:../shared
-      '@react-three/fiber': 7.0.24_219cd54b391a5f28fe99f6b525368df2
+      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
       '@types/d3-array': 3.0.2
       '@types/d3-color': 3.0.2
       '@types/d3-format': 3.0.1
@@ -323,7 +323,7 @@ importers:
       '@types/react-measure': 2.0.8
       '@types/react-slider': 1.3.1
       '@types/react-window': 1.8.5
-      '@types/three': 0.136.1
+      '@types/three': 0.135.0
       eslint: 8.6.0
       eslint-config-galex: 3.5.5_eslint@8.6.0+jest@27.4.7
       jest: 27.4.7
@@ -331,7 +331,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       rollup: 2.63.0
       rollup-plugin-dts: 4.1.0_rollup@2.63.0+typescript@4.5.4
-      three: 0.136.0
+      three: 0.135.0
       typescript: 4.5.4
       vite: 2.7.11
 
@@ -5070,7 +5070,7 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /@react-three/fiber/7.0.24_219cd54b391a5f28fe99f6b525368df2:
+  /@react-three/fiber/7.0.24_03d4586416b86b800151bd7390b3d95a:
     resolution: {integrity: sha512-CJi1Mex7jqByTEVZoUzg0xZEw63CUjm4bUDx0XIhuAmNUsmFmht7cRt87zUQSSDQvmaDqvoDWW7dD+uFJW/kUQ==}
     peerDependencies:
       react: '>=17.0'
@@ -5089,7 +5089,7 @@ packages:
       react-use-measure: 2.1.1_react-dom@17.0.2+react@17.0.2
       resize-observer-polyfill: 1.5.1
       scheduler: 0.20.2
-      three: 0.136.0
+      three: 0.135.0
       use-asset: 1.0.4_react@17.0.2
       utility-types: 3.10.0
       zustand: 3.6.9_react@17.0.2
@@ -7060,8 +7060,8 @@ packages:
       '@types/jest': 27.0.3
     dev: true
 
-  /@types/three/0.136.1:
-    resolution: {integrity: sha512-gzTw6RR4dU8sGf+RpLBWWKHRVIJ4gwKVQPk+IFCgha04Efg/itXYUalX6iBcYeSmaDu0qE5M7uTq0XLQpU4FAg==}
+  /@types/three/0.135.0:
+    resolution: {integrity: sha512-l7WLhIHjhHMtlpyTSltPPAKLpiMwgMD1hXHj59AVUpYRoZP7Fd9NNOSRSvZBCPLpTHPYojgQvSJCoza9zoL7bg==}
     dev: true
 
   /@types/uglify-js/3.13.1:
@@ -20132,8 +20132,8 @@ packages:
     resolution: {integrity: sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=}
     dev: true
 
-  /three/0.136.0:
-    resolution: {integrity: sha512-+fEMX7nYLz2ZesVP/dyifli5Jf8gR3XPAnFJveQ80aMhibFduzrADnjMbARXh8+W9qLK7rshJCjAIL/6cDxC+A==}
+  /three/0.135.0:
+    resolution: {integrity: sha512-kuEpuuxRzLv0MDsXai9huCxOSQPZ4vje6y0gn80SRmQvgz6/+rI0NAvCRAw56zYaWKMGMfqKWsxF9Qa2Z9xymQ==}
 
   /throat/5.0.0:
     resolution: {integrity: sha512-fcwX4mndzpLQKBS1DVYhGAcYaYt7vsHNIvQV+WXMvnow5cgjPphq5CaayLaGsjRdSCKZFNGt7/GYAuXaNOiYCA==}
