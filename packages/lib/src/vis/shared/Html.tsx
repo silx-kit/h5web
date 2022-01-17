@@ -66,20 +66,25 @@ function Html(props: Props) {
     return [htmlPos.x, htmlPos.y];
   }, [camera, height, width]);
 
+  const getGroupScale = useCallback(() => {
+    const groupScale = new Vector3().setFromMatrixScale(
+      camera.matrixWorldInverse
+    ); // Scale inverse to the camera scale
+
+    return [groupScale.x, groupScale.y];
+  }, [camera]);
+
   const getInnerDivTransform = useCallback(() => {
     const position = followCamera ? getGroupPosition() : undefined;
-    // Scale from canvas to camera space and from camera space to world space
-    const scale = new Vector3()
-      .setFromMatrixScale(camera.projectionMatrix)
-      .multiply(new Vector3().set(width / 2, height / 2, 0));
+    const scale = scaleOnZoom ? getGroupScale() : undefined;
 
     return [
       position && `translate3d(${position[0]}px, ${position[1]}px, 0)`,
-      scaleOnZoom ? `scale(${scale.x}, ${scale.y})` : undefined,
+      scale && `scale(${scale[0]}, ${scale[1]})`,
     ]
       .filter(isDefined)
       .join(' ');
-  }, [camera, followCamera, getGroupPosition, scaleOnZoom, width, height]);
+  }, [followCamera, getGroupPosition, getGroupScale, scaleOnZoom]);
 
   // Append/remove container `div` next to R3F's `canvas`
   useLayoutEffect(() => {
