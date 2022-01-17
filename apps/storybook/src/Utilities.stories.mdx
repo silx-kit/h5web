@@ -111,6 +111,14 @@ const scale = scaleGamma({
 - **`useVisDomain(...args): Domain`** - Memoised version of `getVisDomain`.
 - **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
 
+#### useFrameRendering
+
+Trigger a re-render on every React Three Fiber frame when panning/zooming. Avoid calling this hook in a component that is slow to render to ensure pan/zoom interactions remain responsive.
+
+```ts
+useFrameRendering();
+```
+
 ### Context hooks
 
 #### useAxisSystemContext
