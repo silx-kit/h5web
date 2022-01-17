@@ -54,7 +54,12 @@ export {
   extendDomain,
 } from './vis/utils';
 
-export { useDomain, useDomains, useCombinedDomain } from './vis/hooks';
+export {
+  useDomain,
+  useDomains,
+  useCombinedDomain,
+  useFrameRendering,
+} from './vis/hooks';
 
 export {
   getLinearGradient,
