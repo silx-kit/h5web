@@ -10,6 +10,7 @@ import { useAxisSystemContext } from './AxisSystemContext';
 const ZOOM_FACTOR = 0.95;
 
 const CAMERA_TOP_RIGHT = new Vector3(1, 1, 0);
+const ONE_VECTOR = new Vector3(1, 1, 1);
 
 function PanZoomMesh() {
   const { abscissaScale, ordinateScale, visSize } = useAxisSystemContext();
@@ -30,12 +31,12 @@ function PanZoomMesh() {
         abscissaScale.invert(x),
         ordinateScale.invert(y)
       );
-      const { position, projectionMatrixInverse } = camera;
+      const { position } = camera;
 
-      // Project from normalized camera space (-1, -1) to (1, 1) to local camera space (-Xbound, -Ybound) to (Xbound, Ybound)
-      const cameraLocalBounds = CAMERA_TOP_RIGHT.clone().applyMatrix4(
-        projectionMatrixInverse
-      );
+      // Unproject from normalized camera space (-1, -1) to (1, 1) to world space and subtract camera position to get bounds
+      const cameraLocalBounds = CAMERA_TOP_RIGHT.clone()
+        .unproject(camera)
+        .sub(position);
 
       const xBound = Math.max(visWidth / 2 - cameraLocalBounds.x, 0);
       const yBound = Math.max(visHeight / 2 - cameraLocalBounds.y, 0);
@@ -52,17 +53,13 @@ function PanZoomMesh() {
     [abscissaScale, ordinateScale, camera, visWidth, visHeight, invalidate]
   );
 
-  const onPointerDown = useCallback(
-    (evt: ThreeEvent<PointerEvent>) => {
-      const { sourceEvent, unprojectedPoint } = evt;
-      const { target, pointerId } = sourceEvent;
-      (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
+  const onPointerDown = useCallback((evt: ThreeEvent<PointerEvent>) => {
+    const { sourceEvent, unprojectedPoint } = evt;
+    const { target, pointerId } = sourceEvent;
+    (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
 
-      const projectedPoint = camera.worldToLocal(unprojectedPoint.clone());
-      startOffsetPosition.current = camera.position.clone().add(projectedPoint);
-    },
-    [camera]
-  );
+    startOffsetPosition.current = unprojectedPoint.clone();
+  }, []);
 
   const onPointerUp = useCallback((evt: ThreeEvent<PointerEvent>) => {
     const { sourceEvent } = evt;
@@ -81,34 +78,35 @@ function PanZoomMesh() {
       // Prevent events from reaching tooltip mesh when panning
       evt.stopPropagation();
 
-      const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
-      const { x: pointerX, y: pointerY } = projectedPoint;
-      const { x: startX, y: startY } = startOffsetPosition.current;
+      const delta = startOffsetPosition.current
+        .clone()
+        .sub(evt.unprojectedPoint);
+      const target = camera.position.clone().add(delta);
 
-      const targetX = startX - pointerX;
-      const targetY = startY - pointerY;
-
-      moveCameraTo(targetX, targetY);
+      moveCameraTo(target.x, target.y);
     },
     [camera, moveCameraTo]
   );
 
   const onWheel = useCallback(
     (evt: ThreeEvent<WheelEvent>) => {
-      const { sourceEvent } = evt;
+      const { sourceEvent, unprojectedPoint } = evt;
       const factor = sourceEvent.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
 
-      camera.zoom = Math.max(1, camera.zoom * factor);
+      const zoomVector = new Vector3(1 / factor, 1 / factor, 1);
+      camera.scale.multiply(zoomVector).min(ONE_VECTOR);
+
       camera.updateProjectionMatrix();
+      camera.updateMatrixWorld();
 
-      const projectedPoint = camera.worldToLocal(evt.unprojectedPoint.clone());
-      const { x: pointerX, y: pointerY } = projectedPoint;
-      const { x: camX, y: camY } = camera.position;
-
-      moveCameraTo(
-        camX + pointerX * (1 - 1 / factor),
-        camY + pointerY * (1 - 1 / factor)
-      );
+      const oldPosition = unprojectedPoint.clone();
+      // Scale the change in position according to the zoom
+      const delta = camera.position
+        .clone()
+        .sub(oldPosition)
+        .multiply(zoomVector);
+      const scaledPosition = oldPosition.add(delta);
+      moveCameraTo(scaledPosition.x, scaledPosition.y);
     },
     [camera, moveCameraTo]
   );
