@@ -12,8 +12,7 @@ import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import type { NdArray } from 'ndarray';
-import type { Vector3 } from 'three';
-import { Matrix4 } from 'three';
+import { Vector3, Matrix4 } from 'three';
 import { clamp } from 'three/src/math/MathUtils';
 
 import type {
@@ -28,6 +27,9 @@ import type {
 import { H5WEB_SCALES } from './scales';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
+
+export const CAMERA_BOTTOM_LEFT = new Vector3(-1, -1, 0);
+export const CAMERA_TOP_RIGHT = new Vector3(1, 1, 0);
 
 const AXIS_OFFSETS = { vertical: 72, horizontal: 40, fallback: 16 };
 

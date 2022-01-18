@@ -58,6 +58,7 @@ export {
   useDomain,
   useDomains,
   useCombinedDomain,
+  useVisibleDomains,
   useFrameRendering,
 } from './vis/hooks';
 

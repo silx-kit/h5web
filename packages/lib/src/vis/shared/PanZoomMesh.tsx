@@ -5,11 +5,10 @@ import { useRef, useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
 import { useWheelCapture } from '../hooks';
+import { CAMERA_TOP_RIGHT } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;
-
-const CAMERA_TOP_RIGHT = new Vector3(1, 1, 0);
 const ONE_VECTOR = new Vector3(1, 1, 1);
 
 function PanZoomMesh() {
