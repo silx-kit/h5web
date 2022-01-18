@@ -4,8 +4,7 @@ import { Meta } from '@storybook/addon-docs';
 
 ## Utilities
 
-The library exposes a number of utility functions, which are documented below, as well as all the enums and types used by these utility functions.
-In most cases, you'll only need `getDomain` and/or `useDomain`.
+The library exposes a number of utility functions and custom React hooks, which are documented below.
 
 #### getDomain
 
@@ -95,6 +94,8 @@ A [@visx/scale](https://airbnb.io/visx/docs/scale)-like power scale that impleme
 Implements `domain`, `range`, `rangeRound`, `exponent`, `interpolate`, `clamp`, `nice`, `ticks`, `tickFormat` and `copy`.
 
 ```ts
+scaleGamma(config?: ScaleGammaConfig): ScaleGamma
+
 const scale = scaleGamma({
     domain: Domain = [0, 1]
     range: Domain = [0, 1],
@@ -111,27 +112,39 @@ const scale = scaleGamma({
 - **`useVisDomain(...args): Domain`** - Memoised version of `getVisDomain`.
 - **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
 
+#### useVisibleDomains
+
+Compute the x and y-axis domains at the current camera position and zoom level.
+
+```ts
+useVisibleDomains(): { xVisibleDomain: Domain; yVisibleDomain: Domain; }
+
+const { xVisibleDomain, yVisibleDomain } = useVisibleDomains();
+```
+
 #### useFrameRendering
 
 Trigger a re-render on every React Three Fiber frame when panning/zooming. Avoid calling this hook in a component that is slow to render to ensure pan/zoom interactions remain responsive.
 
 ```ts
-useFrameRendering();
+useFrameRendering(): void
 ```
 
-### Context hooks
+### AxisSystemContext
 
-#### useAxisSystemContext
+Children of `VisCanvas` have access to the `AxisSystemContext`, which exposes the visualization's size, the axes' configurations and scales, as well as two utilities to transform a vector from world to data space and from data to world space:
 
 ```ts
 useAxisSystemContext(): AxisSystemParams
 
 const {
+  visSize,
   abscissaConfig,
   ordinateConfig,
   abscissaScale,
   ordinateScale,
-  visSize
+  dataToWorld,
+  worldToData,
 } = useAxisSystemContext();
 ```
 
