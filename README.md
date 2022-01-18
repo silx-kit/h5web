@@ -1,11 +1,17 @@
-# H5Web, a web-based HDF5 file viewer
+# H5Web: React components for data visualization and exploration
 
 [![Demo](https://img.shields.io/website?down_message=offline&label=demo&up_message=online&url=https%3A%2F%2Fh5web.panosc.eu%2F)](https://h5web.panosc.eu/)
 
-H5Web is a stand-alone, web-based viewer to explore HDF5 files. It is built with
-React and uses
-[react-three-fiber](https://github.com/react-spring/react-three-fiber) for
-visualizations.
+H5Web is a collection of React components to visualize and explore data. It
+consists of two packages:
+
+- `@h5web/lib`: visualisation components built with
+  [react-three-fiber](https://github.com/react-spring/react-three-fiber).
+- `@h5web/app`: a stand-alone, web-based viewer to explore HDF5 files.
+
+While used in `@h5web/app` for HDF5 files, **`@h5web/lib` visualisation
+components are not tied to HDF5 and can be used to visualize data from any
+source.**
 
 ![H5Web GIF demo](https://user-images.githubusercontent.com/2936402/107791492-4c512980-6d54-11eb-8ba4-4a1433bdfeea.gif)
 
@@ -28,7 +34,7 @@ Some examples of usage of `@h5web/lib`:
 
 ### [@h5web/app](https://www.npmjs.com/package/@h5web/app)
 
-H5Web's top-level `App` component and built-in data providers.
+HDF5 viewer component (`App`) and built-in data providers.
 
 Data providers are components that fetch data from HDF5 back-end solutions and
 provide this data to the app through React Context. H5Web currently includes two
