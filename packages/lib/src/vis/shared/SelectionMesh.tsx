@@ -1,8 +1,7 @@
 import type { ThreeEvent } from '@react-three/fiber';
 import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
-import type { Vector3 } from 'three';
-import { Vector2 } from 'three';
+import type { Vector2 } from 'three';
 
 import { useAxisSystemContext } from './AxisSystemContext';
 import VisMesh from './VisMesh';
@@ -16,18 +15,7 @@ interface Props {
 
 function SelectionMesh(props: Props) {
   const { selectionComponent: Selection } = props;
-  const { abscissaScale, ordinateScale } = useAxisSystemContext();
-
-  const worldToData = useCallback(
-    (vec: Vector3) =>
-      new Vector2(abscissaScale.invert(vec.x), ordinateScale.invert(vec.y)),
-    [abscissaScale, ordinateScale]
-  );
-
-  const dataToWorld = useCallback(
-    (vec: Vector2) => new Vector2(abscissaScale(vec.x), ordinateScale(vec.y)),
-    [abscissaScale, ordinateScale]
-  );
+  const { worldToData, dataToWorld } = useAxisSystemContext();
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useState<Vector2>();
