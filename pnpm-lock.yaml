@@ -77,41 +77,6 @@ importers:
       react-scripts: 4.0.3_react@17.0.2+typescript@4.5.4
       typescript: 4.5.4
 
-  apps/demo-cra-lib:
-    specifiers:
-      '@h5web/lib': workspace:*
-      '@react-three/fiber': 7.0.24
-      '@types/react': 17.0.38
-      '@types/react-dom': 17.0.11
-      eslint: '>=8'
-      eslint-config-galex: 3.5.5
-      normalize.css: 8.0.1
-      react: 17.0.2
-      react-app-polyfill: 2.0.0
-      react-app-rewire-alias: 1.0.3
-      react-app-rewired: 2.1.8
-      react-dom: 17.0.2
-      react-scripts: 4.0.3
-      three: 0.135.0
-      typescript: 4.5.4
-    dependencies:
-      '@h5web/lib': link:../../packages/lib
-      '@react-three/fiber': 7.0.24_03d4586416b86b800151bd7390b3d95a
-      normalize.css: 8.0.1
-      react: 17.0.2
-      react-app-polyfill: 2.0.0
-      react-dom: 17.0.2_react@17.0.2
-      three: 0.135.0
-    devDependencies:
-      '@types/react': 17.0.38
-      '@types/react-dom': 17.0.11
-      eslint: 8.6.0
-      eslint-config-galex: 3.5.5_eslint@8.6.0+jest@27.4.7
-      react-app-rewire-alias: 1.0.3_react-app-rewired@2.1.8
-      react-app-rewired: 2.1.8_react-scripts@4.0.3
-      react-scripts: 4.0.3_react@17.0.2+typescript@4.5.4
-      typescript: 4.5.4
-
   apps/storybook:
     specifiers:
       '@h5web/lib': workspace:*
@@ -8247,7 +8212,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.5
+      follow-redirects: 1.14.5_debug@4.3.3
     transitivePeerDependencies:
       - debug
     dev: false
@@ -12293,7 +12258,7 @@ packages:
     resolution: {integrity: sha1-4PMu2GsNq91v/OvfiY7LMuR/7c4=}
     dev: false
 
-  /follow-redirects/1.14.5:
+  /follow-redirects/1.14.5_debug@4.3.3:
     resolution: {integrity: sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -12301,6 +12266,8 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dependencies:
+      debug: 4.3.3_supports-color@6.1.0
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -13226,7 +13193,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.5
+      follow-redirects: 1.14.5_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug

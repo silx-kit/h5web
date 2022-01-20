@@ -18,7 +18,7 @@ describe('App', () => {
     cy.findByRole('figure', { name: 'oneD' }).should('exist');
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
-      cy.wait(SNAPSHOT_DELAY);
+      cy.wait(SNAPSHOT_DELAY * 2); /* first spec seems to fail more often */
       cy.matchImageSnapshot('line_1D');
     }
   });

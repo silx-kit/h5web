@@ -7,7 +7,7 @@
   - [Workspace dependencies](#workspace-dependencies)
   - [Icon set](#icon-set)
 - [Build](#build)
-  - [Use built packages in demos](#use-built-packages-in-demos)
+  - [Use built packages in demo and Storybook](#use-built-packages-in-demo-and-storybook)
 - [Code quality](#code-quality)
   - [Fixing and formatting](#fixing-and-formatting)
   - [Editor integration](#editor-integration)
@@ -125,13 +125,13 @@ Icons can be imported as React components from `react-icons/fi`.
 - `pnpm serve` - serve the built demo at http://localhost:3000
 - `pnpm serve:storybook` - serve the built Storybook at http://localhost:6006
 
-### Use built packages in demos
+### Use built packages in demo and Storybook
 
 When you run `pnpm packages`, the packages are built into their respective
-`dist` folders. To tell the Create React App demos to load the packages' entry
+`dist` folders. To tell the Create React App `demo` to load the packages' entry
 points from `dist/index.js` instead of `src/index.ts` in development, set
-`REACT_APP_DIST=true` in the demos' `.env.local` files. This is done
-automatically when building the demos for production with `pnpm build`.
+`REACT_APP_DIST=true` in the demo's `.env.local` files. This is done
+automatically when building the demo for production with `pnpm build`.
 
 The same applies to the Storybook site but the environment variable is named
 `STORYBOOK_DIST`.
