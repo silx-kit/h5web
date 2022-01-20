@@ -1,4 +1,3 @@
-import { assertAbsolutePath } from '@h5web/shared';
 import { Suspense, useContext, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
@@ -14,18 +13,16 @@ import MetadataViewer from './metadata-viewer/MetadataViewer';
 import { ProviderContext } from './providers/context';
 import Visualizer from './visualizer/Visualizer';
 
-const DEFAULT_PATH = process.env.REACT_APP_DEFAULT_PATH || '/';
-assertAbsolutePath(DEFAULT_PATH);
-
 interface Props {
   startFullscreen?: boolean;
+  initialPath?: string;
   getFeedbackURL?: (context: FeedbackContext) => string;
 }
 
 function App(props: Props) {
-  const { startFullscreen, getFeedbackURL } = props;
+  const { startFullscreen, initialPath = '/', getFeedbackURL } = props;
 
-  const [selectedPath, setSelectedPath] = useState<string>(DEFAULT_PATH);
+  const [selectedPath, setSelectedPath] = useState<string>(initialPath);
   const [isExplorerOpen, setExplorerOpen] = useState(!startFullscreen);
   const [isInspecting, setInspecting] = useState(false);
 
