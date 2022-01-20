@@ -2,7 +2,6 @@ import type { Entity } from '@h5web/shared';
 import { assertDefined } from '@h5web/shared';
 import { useContext, useState } from 'react';
 
-import Profiler from '../Profiler';
 import { ProviderContext } from '../providers/context';
 import type { VisDef } from '../vis-packs/models';
 import VisSelector from './VisSelector';
@@ -50,13 +49,11 @@ function VisManager(props: Props) {
       </div>
 
       <div className={styles.visArea}>
-        <Profiler id={activeVis.name}>
-          <Container
-            key={entity.path}
-            entity={entity}
-            toolbarContainer={visBarElem}
-          />
-        </Profiler>
+        <Container
+          key={entity.path}
+          entity={entity}
+          toolbarContainer={visBarElem}
+        />
       </div>
     </div>
   );
