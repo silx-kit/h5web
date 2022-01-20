@@ -54,6 +54,14 @@ export default MyApp;
 > import '@h5web/app/style.css';
 > ```
 
+### Examples
+
+The following code sandboxes demonstrate how to set up and use `@h5web/app` with
+various front-end development stacks:
+
+- [Vite](https://codesandbox.io/s/h5webapp-vite-5c204)
+- [Create React App v4](https://codesandbox.io/s/h5webapp-cra-v4-0y1lj)
+
 ## API reference
 
 ### `startFullscreen?: boolean` (optional)
