@@ -66,6 +66,17 @@ visualization, which is useful when H5Web is embeded inside another app.
 <App startFullscreen />
 ```
 
+### `initialPath?: string` (optional)
+
+The path to select within the file when the app is first rendered. Defaults to
+`'/'`.
+
+```tsx
+<MockProvider>
+  <App initialPath="/nD_datasets/threeD" />
+</MockProvider>
+```
+
 ### `getFeedbackURL?: (context: FeedbackContext) => string` (optional)
 
 If provided, a "Give feedback" button appears in the breadcrumbs bar, which
