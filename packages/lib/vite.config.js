@@ -11,7 +11,9 @@ const [pkg, sharedPkg] = ['.', '../shared'].map((prefix) =>
 
 export const externals = new Set([
   ...Object.keys(sharedPkg.peerDependencies),
-  ...Object.keys(pkg.dependencies),
+  ...Object.keys(pkg.dependencies).filter(
+    (dep) => dep !== 'react-keyed-flatten-children' // Fix https://github.com/silx-kit/h5web/issues/914
+  ),
   ...Object.keys(pkg.peerDependencies),
 ]);
 
