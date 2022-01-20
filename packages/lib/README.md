@@ -54,3 +54,11 @@ function MyApp() {
 
 export default MyApp;
 ```
+
+### Examples
+
+The following code sandboxes demonstrate how to set up and use `@h5web/lib` with
+various front-end development stacks:
+
+- [Vite](https://codesandbox.io/s/h5weblib-vite-xru04)
+- [Create React App v4](https://codesandbox.io/s/h5weblib-cra-v4-2te48)
