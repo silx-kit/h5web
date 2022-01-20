@@ -1,7 +1,7 @@
 import { isReactElement } from '@h5web/shared';
 import { useMap, useMeasure } from '@react-hookz/web';
 import type { ReactElement, ReactNode } from 'react';
-import { default as flattenChildren } from 'react-keyed-flatten-children'; // eslint-disable-line import/no-named-default
+import flattenChildren from 'react-keyed-flatten-children';
 
 import MeasuredControl from './MeasuredControl';
 import OverflowMenu from './OverflowMenu';
