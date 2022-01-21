@@ -11,10 +11,11 @@ interface Props {
     startPoint: Vector2;
     endPoint: Vector2;
   }) => ReactElement;
+  onSelection?: (startPoint: Vector2, endPoint: Vector2) => void;
 }
 
 function SelectionMesh(props: Props) {
-  const { selectionComponent: Selection } = props;
+  const { selectionComponent: Selection, onSelection } = props;
   const { worldToData, dataToWorld } = useAxisSystemContext();
 
   const [startPoint, setStartPoint] = useState<Vector2>();
@@ -57,8 +58,11 @@ function SelectionMesh(props: Props) {
       (target as Element).releasePointerCapture(pointerId);
       setEndPoint(point);
       setDrag(false);
+      if (onSelection && startPoint) {
+        onSelection(startPoint, point);
+      }
     },
-    [worldToData]
+    [onSelection, startPoint, worldToData]
   );
 
   return (
