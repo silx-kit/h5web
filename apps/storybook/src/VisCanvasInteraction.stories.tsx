@@ -1,16 +1,7 @@
-import {
-  PanZoomMesh,
-  TooltipMesh,
-  LineSelectionMesh,
-  RectSelectionMesh,
-  VisCanvas,
-} from '@h5web/lib';
+import { PanZoomMesh, TooltipMesh, VisCanvas } from '@h5web/lib';
 import type { TooltipMeshProps } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
-import { format } from 'd3-format';
-import { useState } from 'react';
-import type { Vector2 } from 'three';
 
 import VisCanvasStoriesConfig from './VisCanvas.stories';
 
@@ -18,59 +9,31 @@ interface TemplateProps {
   panZoom?: boolean;
   tooltipValue?: string;
   guides?: TooltipMeshProps['guides'];
-  selection?: 'line' | 'rectangle';
-}
-
-function vectorToStr(vec: Vector2) {
-  return `(${format('.2f')(vec.x)}, ${format('.2f')(vec.y)})`;
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { panZoom = false, tooltipValue, guides, selection } = args;
-
-  const [selectedVectors, setSelectedVectors] = useState<[Vector2, Vector2]>();
+  const { panZoom = false, tooltipValue, guides } = args;
 
   return (
-    <>
-      {selection && (
-        <p style={{ textAlign: 'center' }}>
-          {selectedVectors
-            ? `Selection from ${vectorToStr(
-                selectedVectors[0]
-              )} to ${vectorToStr(selectedVectors[1])}`
-            : 'No selection'}
-        </p>
+    <VisCanvas
+      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      {panZoom && <PanZoomMesh />}
+      {tooltipValue && (
+        <TooltipMesh
+          guides={guides}
+          renderTooltip={(x, y) => (
+            <>
+              {`x=${formatTooltipVal(x)}, y=${formatTooltipVal(y)}`}
+              <div>
+                <strong>{tooltipValue}</strong>
+              </div>
+            </>
+          )}
+        />
       )}
-      <VisCanvas
-        abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-        ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
-      >
-        {panZoom && <PanZoomMesh />}
-        {tooltipValue && (
-          <TooltipMesh
-            guides={guides}
-            renderTooltip={(x, y) => (
-              <>
-                {`x=${formatTooltipVal(x)}, y=${formatTooltipVal(y)}`}
-                <div>
-                  <strong>{tooltipValue}</strong>
-                </div>
-              </>
-            )}
-          />
-        )}
-        {selection === 'line' && (
-          <LineSelectionMesh
-            onSelection={(start, end) => setSelectedVectors([start, end])}
-          />
-        )}
-        {selection === 'rectangle' && (
-          <RectSelectionMesh
-            onSelection={(start, end) => setSelectedVectors([start, end])}
-          />
-        )}
-      </VisCanvas>
-    </>
+    </VisCanvas>
   );
 };
 
@@ -94,18 +57,6 @@ TooltipWithPanZoom.args = {
   panZoom: true,
   tooltipValue: '<PanZoomMesh /> must come first',
   guides: 'vertical',
-};
-
-export const SelectingRegions = Template.bind({});
-SelectingRegions.args = {
-  panZoom: false,
-  selection: 'rectangle',
-};
-
-export const SelectingLines = Template.bind({});
-SelectingLines.args = {
-  panZoom: false,
-  selection: 'line',
 };
 
 export default {
