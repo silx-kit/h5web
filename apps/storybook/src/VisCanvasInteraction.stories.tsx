@@ -1,10 +1,4 @@
-import {
-  PanZoomMesh,
-  TooltipMesh,
-  LineSelectionMesh,
-  RectSelectionMesh,
-  VisCanvas,
-} from '@h5web/lib';
+import { PanZoomMesh, TooltipMesh, VisCanvas } from '@h5web/lib';
 import type { TooltipMeshProps } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
@@ -15,11 +9,10 @@ interface TemplateProps {
   panZoom?: boolean;
   tooltipValue?: string;
   guides?: TooltipMeshProps['guides'];
-  selection?: 'line' | 'rectangle';
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { panZoom = false, tooltipValue, guides, selection } = args;
+  const { panZoom = false, tooltipValue, guides } = args;
 
   return (
     <VisCanvas
@@ -40,8 +33,6 @@ const Template: Story<TemplateProps> = (args) => {
           )}
         />
       )}
-      {selection === 'line' && <LineSelectionMesh />}
-      {selection === 'rectangle' && <RectSelectionMesh />}
     </VisCanvas>
   );
 };
@@ -66,18 +57,6 @@ TooltipWithPanZoom.args = {
   panZoom: true,
   tooltipValue: '<PanZoomMesh /> must come first',
   guides: 'vertical',
-};
-
-export const SelectingRegions = Template.bind({});
-SelectingRegions.args = {
-  panZoom: false,
-  selection: 'rectangle',
-};
-
-export const SelectingLines = Template.bind({});
-SelectingLines.args = {
-  panZoom: false,
-  selection: 'line',
 };
 
 export default {
