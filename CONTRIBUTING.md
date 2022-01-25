@@ -79,11 +79,9 @@ version conflicts and other package resolution issues:
 [`peerDependenciesMeta`](https://pnpm.io/package_json#peerdependenciesmeta),
 [`.pnpmfile.cjs`](https://pnpm.io/pnpmfile).
 
-If you update `eslint-config-galex` and encounter warnings in the
-Create-React-App `demo` app, try uninstalling and reinstalling `react-scripts`
-with `pnpm uninstall react-scripts && pnpm install -D react-scripts`. If you
-still get warnings, try to override the versions of CRA's culprit ESLint plugins
-with `pnpm.overrides` in the root `package.json` of the monorepo.
+`pnpm.overrides` is currently used to force the version of ESLint to the one
+required by `eslint-config-galex`. This is needed because, in the `demo`
+project, `vite-plugin-eslint` depends on an older version of ESLint.
 
 ### Workspace dependencies
 
@@ -128,10 +126,10 @@ Icons can be imported as React components from `react-icons/fi`.
 ### Use built packages in demo and Storybook
 
 When you run `pnpm packages`, the packages are built into their respective
-`dist` folders. To tell the Create React App `demo` to load the packages' entry
-points from `dist/index.js` instead of `src/index.ts` in development, set
-`REACT_APP_DIST=true` in the demo's `.env.local` files. This is done
-automatically when building the demo for production with `pnpm build`.
+`dist` folders. To tell the `demo` to load the packages' entry points from
+`dist/index.js` instead of `src/index.ts` in development, set `VITE_DIST=true`
+in the demo's `.env.local` files. This is done automatically when building the
+demo for production with `pnpm build`.
 
 The same applies to the Storybook site but the environment variable is named
 `STORYBOOK_DIST`.

@@ -18,12 +18,7 @@ export const externals = new Set([
 ]);
 
 export default defineConfig({
-  css: {
-    modules: {
-      // @ts-ignore
-      // root: '.', // https://github.com/vitejs/vite/issues/3092#issuecomment-915952727
-    },
-  },
+  // css: { modules: { root: '.' } }, // https://github.com/vitejs/vite/issues/3092#issuecomment-915952727
   esbuild: {
     jsxInject: `import React from 'react'`, // auto-import React in every file
   },
