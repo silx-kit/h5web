@@ -28,9 +28,9 @@ https://h5web-docs.panosc.eu.
 
 Some examples of usage of `@h5web/lib`:
 
-- [LineVis with multiple curves](https://codesandbox.io/s/h5weblib-demo-multiple-curves-kwkli)
-- [HeatmapVis with horizontal color bar and tooltip](https://codesandbox.io/s/h5weblib-demo-heatmap-with-tooltip-ti5cy)
-- [Comparison between gamma and power scale](https://codesandbox.io/s/gamma-vs-power-scale-lzmvr)
+| LineVis with multiple curves                                                                                                                     | HeatmapVis with horizontal color bar and tooltip                                                                                                                          | Comparison between gamma and power scale                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [![LineVis with multiple curves](https://screenshots.codesandbox.io/kwkli/99.png)](https://codesandbox.io/s/h5weblib-demo-multiple-curves-kwkli) | [![HeatmapVis with horizontal color bar and tooltip](https://screenshots.codesandbox.io/ti5cy/75.png)](https://codesandbox.io/s/h5weblib-demo-heatmap-with-tooltip-ti5cy) | [![Comparison between gamma and power scale](https://screenshots.codesandbox.io/lzmvr/85.png)](https://codesandbox.io/s/gamma-vs-power-scale-lzmvr) |
 
 ### [@h5web/app](https://www.npmjs.com/package/@h5web/app)
 
