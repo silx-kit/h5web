@@ -24,21 +24,6 @@ Python package.
 
 ![H5Web GIF demo](https://user-images.githubusercontent.com/2936402/107791492-4c512980-6d54-11eb-8ba4-4a1433bdfeea.gif)
 
-## Using H5Web
-
-- **To browse local HDF5 files:** the JupyterLab extension
-  [jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web) can be used
-  to open HDF5 files in JupyterLab with the `@h5web/app` viewer.
-- **To plot data in React:** the package [`@h5web/lib`](#h5weblib) exports the
-  visualization components used in the viewer. You provide several examples of
-  usage below.
-- **To provide HDF5 viewing in a React app:** the package
-  [`@h5web/app`](#h5webapp) contain the full viewer component. Data fetching can
-  be done though one of the existing providers or one of your own design. For
-  example, you can use `H5GroveProvider` and use our Python package
-  [h5grove](https://github.com/silx-kit/h5grove) to serve the HDF5 files as in
-  the [demo](#h5grove).
-
 ## NPM packages 📚
 
 ### [@h5web/lib](https://www.npmjs.com/package/@h5web/lib)
