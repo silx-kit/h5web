@@ -19,7 +19,7 @@
     "build": "pnpm build --filter demo",
     "build:storybook": "pnpm build --filter storybook",
     "serve": "pnpm serve --filter demo",
-    "serve:storybook": "pnpm dlx http-server -p 6006 apps/storybook/build",
+    "serve:storybook": "pnpm serve --filter storybook",
     "packages": "pnpm build --filter {packages}",
     "packages:dts": "pnpm build:dts --filter {packages}",
     "lint": "run-p lint:all:*",
@@ -52,7 +52,10 @@
   },
   "pnpm": {
     "overrides": {
-      "eslint": ">=8"
+      "eslint": ">=8",
+      "react-scripts>eslint-plugin-testing-library": ">=5",
+      "react-scripts>@typescript-eslint/parser": ">=5",
+      "react-scripts>@typescript-eslint/eslint-plugin": ">=5"
     }
   }
 }

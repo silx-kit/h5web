@@ -16,6 +16,7 @@
   "scripts": {
     "start": "start-storybook -p 6006",
     "build": "build-storybook -o build",
+    "serve": "pnpm dlx http-server -p 6006 apps/storybook/build",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc --noEmit"
   },
@@ -32,17 +33,22 @@
     "three": "0.135.0"
   },
   "devDependencies": {
+    "@babel/core": "7.16.12",
     "@storybook/addon-docs": "6.4.12",
     "@storybook/addon-essentials": "6.4.12",
     "@storybook/addon-links": "6.4.12",
+    "@storybook/node-logger": "6.4.12",
     "@storybook/preset-create-react-app": "3.2.0",
     "@storybook/react": "6.4.12",
     "@types/ndarray": "1.0.11",
     "@types/react": "17.0.38",
     "@types/react-dom": "17.0.11",
+    "babel-loader": "8.2.3",
     "eslint": "8.6.0",
     "eslint-config-galex": "3.5.5",
-    "typescript": "4.5.4"
+    "react-scripts": "4.0.3",
+    "typescript": "4.5.4",
+    "webpack": "4.46.0"
   },
   "browserslist": {
     "production": [
