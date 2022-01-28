@@ -1,3 +1,5 @@
+import '@h5web/lib'; // make sure lib styles come first in CSS bundle
+
 import { Suspense, useContext, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';

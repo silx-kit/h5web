@@ -19,7 +19,6 @@
 
 ```bash
 pnpm install
-pnpm packages
 pnpm start
 ```
 
@@ -116,8 +115,7 @@ Icons can be imported as React components from `react-icons/fi`.
 - `pnpm packages:dts` - generate type declarations for projects in the
   `packages` folder, and, for `@h5web/app` and `@h5web/lib`, bundle the type
   declarations into a single file: `dist/index.d.ts`.
-- `pnpm build` - build the H5Web stand-alone demo (requires running
-  `pnpm packages` first)
+- `pnpm build` - build the H5Web stand-alone demo
 - `pnpm build:storybook` - build the component library's Storybook documentation
   site
 - `pnpm serve` - serve the built demo at http://localhost:3000
