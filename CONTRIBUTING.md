@@ -7,6 +7,7 @@
   - [Workspace dependencies](#workspace-dependencies)
   - [Icon set](#icon-set)
 - [Build](#build)
+  - [Package builds](#package-builds)
 - [Code quality](#code-quality)
   - [Fixing and formatting](#fixing-and-formatting)
   - [Editor integration](#editor-integration)
@@ -111,15 +112,40 @@ Icons can be imported as React components from `react-icons/fi`.
 
 ## Build
 
-- `pnpm packages` - build packages `@h5web/app` and `@h5web/lib`
-- `pnpm packages:dts` - generate type declarations for projects in the
-  `packages` folder, and, for `@h5web/app` and `@h5web/lib`, bundle the type
-  declarations into a single file: `dist/index.d.ts`.
 - `pnpm build` - build the H5Web stand-alone demo
 - `pnpm build:storybook` - build the component library's Storybook documentation
   site
 - `pnpm serve` - serve the built demo at http://localhost:3000
 - `pnpm serve:storybook` - serve the built Storybook at http://localhost:6006
+- `pnpm packages` - build packages `@h5web/app` and `@h5web/lib` (cf. details
+  below)
+
+### Package builds
+
+The build process of the packages works as follows:
+
+1. First, Vite builds the JS bundles in library mode starting from the package's
+   entrypoint: `src/index.ts`. The output bundles (ESM and CommonJS) are placed
+   in the output directory `dist` and referenced from `package.json`.
+
+   The JS build also generates a file called `style.css` in the `dist` folder
+   that contains the compiled CSS modules that Vite comes across while building
+   the React components. These styles are called "local" styles.
+
+2. Second, we run two scripts in parallel: `build:css` and `build:ts`.
+   - The job of `build:css` is to build the package's global styles and
+     concatenate them with the local styles compiled at the first step. To do
+     so, we run Vite again but with a different config: `vite.styles.config.js`,
+     and a different entrypoint: `src/styles.ts`. The ouptut files are placed in
+     a temporary folder: `dist/temp`. We then concatenate `dist/temp/style.css`
+     (the global styles) and `dist/style.css` (the local styles) and output the
+     result to `dist/styles.css`, which is the stylesheet referenced from
+     `package.json` that consumers need to import.
+   - The job of `build:ts` is to generate type declarations for package
+     consumers who use TypeScript. This is a two step process: first we generate
+     type declarations for all TS files in the `dist-ts` folder with `tsc`, then
+     we use Rollup to merge all the declarations into a single file:
+     `dist/index.d.ts`, which is referenced from `package.json`.
 
 ## Code quality
 

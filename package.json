@@ -21,7 +21,6 @@
     "serve": "pnpm serve --filter demo",
     "serve:storybook": "pnpm serve --filter storybook",
     "packages": "pnpm build --filter {packages}",
-    "packages:dts": "pnpm build:dts --filter {packages}",
     "lint": "run-p lint:all:*",
     "lint:all:eslint": "pnpm lint:eslint -r --parallel",
     "lint:all:tsc": "pnpm lint:tsc -r --parallel",

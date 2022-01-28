@@ -43,7 +43,7 @@ jobs:
             - args: [--frozen-lockfile]
 
       - name: Build packages 📦
-        run: pnpm packages && pnpm packages:dts
+        run: pnpm packages
 
       - name: Build demo 🛠️
         run: pnpm build
