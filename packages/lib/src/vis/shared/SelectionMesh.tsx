@@ -1,4 +1,4 @@
-import type { ThreeEvent } from '@react-three/fiber';
+import type { MeshProps, ThreeEvent } from '@react-three/fiber';
 import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
@@ -6,7 +6,7 @@ import type { Vector2 } from 'three';
 import { useAxisSystemContext } from './AxisSystemContext';
 import VisMesh from './VisMesh';
 
-interface Props {
+interface Props extends MeshProps {
   selectionComponent: (props: {
     startPoint: Vector2;
     endPoint: Vector2;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 function SelectionMesh(props: Props) {
-  const { selectionComponent: Selection, onSelection } = props;
+  const { selectionComponent: Selection, onSelection, ...meshProps } = props;
   const { worldToData, dataToWorld } = useAxisSystemContext();
 
   const [startPoint, setStartPoint] = useState<Vector2>();
@@ -66,7 +66,7 @@ function SelectionMesh(props: Props) {
   );
 
   return (
-    <VisMesh {...{ onPointerMove, onPointerUp, onPointerDown }}>
+    <VisMesh {...{ onPointerMove, onPointerUp, onPointerDown, ...meshProps }}>
       <meshBasicMaterial opacity={0} transparent />
       {startPoint && endPoint && (
         <Selection
