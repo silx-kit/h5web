@@ -8,6 +8,7 @@ import VisCanvasStoriesConfig from './VisCanvas.stories';
 
 interface TemplateProps {
   selection?: 'line' | 'rectangle';
+  yFlip?: boolean;
 }
 
 function vectorToStr(vec: Vector2) {
@@ -15,7 +16,7 @@ function vectorToStr(vec: Vector2) {
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { selection } = args;
+  const { selection, yFlip } = args;
 
   const [selectedVectors, setSelectedVectors] = useState<[Vector2, Vector2]>();
 
@@ -32,7 +33,7 @@ const Template: Story<TemplateProps> = (args) => {
       )}
       <VisCanvas
         abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-        ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+        ordinateConfig={{ visDomain: [50, 100], showGrid: true, flip: yFlip }}
       >
         {selection === 'line' && (
           <LineSelectionMesh
@@ -62,16 +63,13 @@ SelectingLines.args = {
 export default {
   ...VisCanvasStoriesConfig,
   title: 'Building Blocks/VisCanvas/Selection',
+  args: {
+    yFlip: false,
+  },
   parameters: {
     ...VisCanvasStoriesConfig.parameters,
     controls: {
-      include: ['panZoom', 'tooltipValue', 'guides'],
-    },
-  },
-  argTypes: {
-    guides: {
-      control: { type: 'inline-radio' },
-      options: ['horizontal', 'vertical', 'both'],
+      include: ['yFlip'],
     },
   },
 } as Meta;
