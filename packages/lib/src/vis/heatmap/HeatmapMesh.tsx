@@ -1,30 +1,25 @@
 import type { Domain } from '@h5web/shared';
 import { ScaleType, assertDefined, isScaleType } from '@h5web/shared';
 import { rgb } from 'd3-color';
+import type { NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
-import {
-  RedFormat,
-  DataTexture,
-  FloatType,
-  RGBFormat,
-  UnsignedByteType,
-} from 'three';
+import type { TextureDataType } from 'three';
+import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
 
 import { useAxisSystemContext } from '../..';
 import type { VisScaleType } from '../models';
 import VisMesh from '../shared/VisMesh';
-import type { ColorMap, ScaleShader } from './models';
-import { getInterpolator } from './utils';
+import type { ColorMap, CompatibleTypedArray, ScaleShader } from './models';
+import { getDataTexture, getInterpolator } from './utils';
 
 interface Props {
-  rows: number;
-  cols: number;
-  values: number[];
+  values: NdArray<CompatibleTypedArray>;
   domain: Domain;
-  colorMap: ColorMap;
   scaleType: VisScaleType;
+  colorMap: ColorMap;
   invertColorMap?: boolean;
-  alphaValues?: number[];
+  textureType?: TextureDataType; // override default texture type (determined from `values.dtype`)
+  alphaValues?: NdArray<CompatibleTypedArray>;
   alphaDomain?: Domain;
 }
 
@@ -142,31 +137,27 @@ const SCALE_SHADER: Record<ScaleType, ScaleShader> = {
 
 function HeatmapMesh(props: Props) {
   const {
-    rows,
-    cols,
     values,
     domain,
-    colorMap,
     scaleType,
+    colorMap,
     invertColorMap = false,
+    textureType,
     alphaValues,
     alphaDomain,
   } = props;
 
   const { ordinateConfig } = useAxisSystemContext();
 
-  const dataTexture = useMemo(() => {
-    const valuesArr = Float32Array.from(values);
-    return new DataTexture(valuesArr, cols, rows, RedFormat, FloatType);
-  }, [cols, rows, values]);
+  const dataTexture = useMemo(
+    () => getDataTexture(values, textureType),
+    [textureType, values]
+  );
 
-  const alphaTexture = useMemo(() => {
-    if (!alphaValues) {
-      return undefined;
-    }
-    const valuesArr = Float32Array.from(alphaValues);
-    return new DataTexture(valuesArr, cols, rows, RedFormat, FloatType);
-  }, [cols, rows, alphaValues]);
+  const alphaTexture = useMemo(
+    () => alphaValues && getDataTexture(alphaValues),
+    [alphaValues]
+  );
 
   const colorMapTexture = useMemo(() => {
     const interpolator = getInterpolator(colorMap, invertColorMap);
@@ -202,7 +193,7 @@ function HeatmapMesh(props: Props) {
 
       void main() {
         coords = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,
     fragmentShader: `

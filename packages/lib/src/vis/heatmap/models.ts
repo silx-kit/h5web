@@ -1,4 +1,5 @@
 import type { Domain } from '@h5web/shared';
+import type { TypedArray } from 'ndarray';
 
 import type { INTERPOLATORS } from './interpolators';
 
@@ -29,3 +30,8 @@ export interface ScaleShader {
   ) => Record<string, { value: number }>;
   fragment: string;
 }
+
+export type CompatibleTypedArray = Exclude<
+  TypedArray,
+  Uint8ClampedArray | Float64Array
+>;

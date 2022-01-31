@@ -1,9 +1,9 @@
 import { format } from 'd3-format';
 import ndarray from 'ndarray';
-import type { NdArray } from 'ndarray';
+import type { NdArray, TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
-import { assertDataLength } from './guards';
+import { assertDataLength, isTypedNdArray } from './guards';
 import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
 import { ScaleType } from './models-vis';
 import type { Bounds, Domain } from './models-vis';
@@ -38,6 +38,16 @@ function createComplexFormatter(specifier: string, full = false) {
 
 export function toArray(arr: NdArray<number[]> | number[]): number[] {
   return 'data' in arr ? arr.data : arr;
+}
+
+export function toTypedNdArray<T extends number[] | TypedArray>(
+  arr: NdArray<T>
+): NdArray<Exclude<T, number[]> | Float32Array> {
+  if (isTypedNdArray(arr)) {
+    return arr;
+  }
+
+  return ndarray(Float32Array.from(arr.data), arr.shape);
 }
 
 export function getChildEntity(
