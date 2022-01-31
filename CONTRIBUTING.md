@@ -122,11 +122,11 @@ Icons can be imported as React components from `react-icons/fi`.
 
 ### Package builds
 
-The build process of the packages works as follows:
+The build process of `@h5web/lib` works as follows:
 
-1. First, Vite builds the JS bundles in library mode starting from the package's
-   entrypoint: `src/index.ts`. The output bundles (ESM and CommonJS) are placed
-   in the output directory `dist` and referenced from `package.json`.
+1. First, Vite builds the JS bundles (ESM and CommonJS) in library mode starting
+   from the package's entrypoint: `src/index.ts`. The bundles are placed in the
+   output `dist` directory and referenced from `package.json`.
 
    The JS build also generates a file called `style.css` in the `dist` folder
    that contains the compiled CSS modules that Vite comes across while building
@@ -146,6 +146,13 @@ The build process of the packages works as follows:
      type declarations for all TS files in the `dist-ts` folder with `tsc`, then
      we use Rollup to merge all the declarations into a single file:
      `dist/index.d.ts`, which is referenced from `package.json`.
+
+The build process of `@h5web/app` is the same with one exception: in addition to
+importing the package's global styles, `src/styles.ts` also imports the `lib`
+package's distributed styles - i.e. the output of the lib's `build:css` script.
+The lib's distributed styles include both its global _and_ local styles. This
+allows us to provide a single CSS bundle for consumers of `@h5web/app` to
+import.
 
 ## Code quality
 
