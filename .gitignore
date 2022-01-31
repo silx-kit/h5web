@@ -1,7 +1,7 @@
 node_modules/
 
-/apps/**/build/
-/packages/**/dist*/
+build/
+dist*/
 
 /cypress/debug/
 /cypress/snapshots/**/__diff_output__

@@ -7,7 +7,7 @@
   - [Workspace dependencies](#workspace-dependencies)
   - [Icon set](#icon-set)
 - [Build](#build)
-  - [Use built packages in demo and Storybook](#use-built-packages-in-demo-and-storybook)
+  - [Package builds](#package-builds)
 - [Code quality](#code-quality)
   - [Fixing and formatting](#fixing-and-formatting)
   - [Editor integration](#editor-integration)
@@ -79,11 +79,9 @@ version conflicts and other package resolution issues:
 [`peerDependenciesMeta`](https://pnpm.io/package_json#peerdependenciesmeta),
 [`.pnpmfile.cjs`](https://pnpm.io/pnpmfile).
 
-If you update `eslint-config-galex` and encounter warnings in the
-Create-React-App `demo` app, try uninstalling and reinstalling `react-scripts`
-with `pnpm uninstall react-scripts && pnpm install -D react-scripts`. If you
-still get warnings, try to override the versions of CRA's culprit ESLint plugins
-with `pnpm.overrides` in the root `package.json` of the monorepo.
+`pnpm.overrides` is currently used to force the version of ESLint to the one
+required by `eslint-config-galex`. This is needed because, in the `demo`
+project, `vite-plugin-eslint` depends on an older version of ESLint.
 
 ### Workspace dependencies
 
@@ -114,27 +112,47 @@ Icons can be imported as React components from `react-icons/fi`.
 
 ## Build
 
-- `pnpm packages` - build packages `@h5web/app` and `@h5web/lib`
-- `pnpm packages:dts` - generate type declarations for projects in the
-  `packages` folder, and, for `@h5web/app` and `@h5web/lib`, bundle the type
-  declarations into a single file: `dist/index.d.ts`.
-- `pnpm build` - build the H5Web stand-alone demo (run only after building
-  `@h5web/app`)
+- `pnpm build` - build the H5Web stand-alone demo
 - `pnpm build:storybook` - build the component library's Storybook documentation
   site
 - `pnpm serve` - serve the built demo at http://localhost:3000
 - `pnpm serve:storybook` - serve the built Storybook at http://localhost:6006
+- `pnpm packages` - build packages `@h5web/app` and `@h5web/lib` (cf. details
+  below)
 
-### Use built packages in demo and Storybook
+### Package builds
 
-When you run `pnpm packages`, the packages are built into their respective
-`dist` folders. To tell the Create React App `demo` to load the packages' entry
-points from `dist/index.js` instead of `src/index.ts` in development, set
-`REACT_APP_DIST=true` in the demo's `.env.local` files. This is done
-automatically when building the demo for production with `pnpm build`.
+The build process of `@h5web/lib` works as follows:
 
-The same applies to the Storybook site but the environment variable is named
-`STORYBOOK_DIST`.
+1. First, Vite builds the JS bundles (ESM and CommonJS) in library mode starting
+   from the package's entrypoint: `src/index.ts`. The bundles are placed in the
+   output `dist` directory and referenced from `package.json`.
+
+   The JS build also generates a file called `style.css` in the `dist` folder
+   that contains the compiled CSS modules that Vite comes across while building
+   the React components. These styles are called "local" styles.
+
+2. Second, we run two scripts in parallel: `build:css` and `build:ts`.
+   - The job of `build:css` is to build the package's global styles and
+     concatenate them with the local styles compiled at the first step. To do
+     so, we run Vite again but with a different config: `vite.styles.config.js`,
+     and a different entrypoint: `src/styles.ts`. The output files are placed in
+     a temporary folder: `dist/temp`. We then concatenate `dist/temp/style.css`
+     (the global styles) and `dist/style.css` (the local styles) and output the
+     result to `dist/styles.css`, which is the stylesheet referenced from
+     `package.json` that consumers need to import.
+   - The job of `build:ts` is to generate type declarations for package
+     consumers who use TypeScript. This is a two step process: first we generate
+     type declarations for all TS files in the `dist-ts` folder with `tsc`, then
+     we use Rollup to merge all the declarations into a single file:
+     `dist/index.d.ts`, which is referenced from `package.json`.
+
+The build process of `@h5web/app` is the same with one exception: in addition to
+importing the package's global styles, `src/styles.ts` also imports the `lib`
+package's distributed styles - i.e. the output of the lib's `build:css` script.
+The lib's distributed styles include both its global _and_ local styles. This
+allows us to provide a single CSS bundle for consumers of `@h5web/app` to
+import.
 
 ## Code quality
 

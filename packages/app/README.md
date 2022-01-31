@@ -27,8 +27,7 @@ npm install @h5web/app
 ```
 
 ```tsx
-import '@h5web/app/dist/style-lib.css';
-import '@h5web/app/dist/style.css';
+import '@h5web/app/dist/styles.css';
 
 import React from 'react';
 import { App, MockProvider } from '@h5web/app';
@@ -47,11 +46,10 @@ export default MyApp;
 ```
 
 > If your bundler supports it (e.g. webpack 5), you may be able to shorten the
-> stylesheet import paths as follows:
+> stylesheet import path as follows:
 >
 > ```ts
-> import '@h5web/app/style-lib.css';
-> import '@h5web/app/style.css';
+> import '@h5web/app/styles.css';
 > ```
 
 ### Examples

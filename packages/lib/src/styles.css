@@ -1,1 +1,2 @@
-@import '@h5web/shared/src/utils.css';
+/* Global lib styles for demo/Storybook */
+@import '@h5web/shared/src/styles.css'; /* global shared styles */

@@ -1,5 +1,3 @@
-import './styles.css';
-
 // Visualizations
 export { default as MatrixVis } from './vis/matrix/MatrixVis';
 export { default as LineVis } from './vis/line/LineVis';

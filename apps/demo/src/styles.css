@@ -1,3 +1,6 @@
+@import 'normalize.css';
+@import '@h5web/app/src/styles.css'; /* global app styles */
+
 #root {
   height: 100vh;
 }

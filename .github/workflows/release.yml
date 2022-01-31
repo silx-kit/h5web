@@ -40,7 +40,7 @@ jobs:
             - args: [--frozen-lockfile]
 
       - name: Build packages 📦
-        run: pnpm packages && pnpm packages:dts
+        run: pnpm packages
 
       - name: Set @h5web/lib version 📌
         uses: reedyuk/npm-version@1.0.1

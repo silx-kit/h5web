@@ -3,11 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 import { getFeedbackURL } from './utils';
 
-const URL = process.env.REACT_APP_HSDS_URL || '';
-const USERNAME = process.env.REACT_APP_HSDS_USERNAME || '';
-const PASSWORD = process.env.REACT_APP_HSDS_PASSWORD || '';
-const SUBDOMAIN = process.env.REACT_APP_HSDS_SUBDOMAIN || '';
-const FILEPATH = process.env.REACT_APP_HSDS_FALLBACK_FILEPATH || '';
+const URL = import.meta.env.VITE_HSDS_URL as string;
+const USERNAME = import.meta.env.VITE_HSDS_USERNAME as string;
+const PASSWORD = import.meta.env.VITE_HSDS_PASSWORD as string;
+const SUBDOMAIN = import.meta.env.VITE_HSDS_SUBDOMAIN as string;
+const FILEPATH = import.meta.env.VITE_HSDS_FALLBACK_FILEPATH as string;
 
 function HsdsApp() {
   const query = new URLSearchParams(useLocation().search);

@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import { getFeedbackURL } from './utils';
 
-const URL = process.env.REACT_APP_H5GROVE_URL || '';
-const FILEPATH = process.env.REACT_APP_H5GROVE_FALLBACK_FILEPATH || '';
+const URL = import.meta.env.VITE_H5GROVE_URL as string;
+const FILEPATH = import.meta.env.VITE_H5GROVE_FALLBACK_FILEPATH as string;
 
 function H5GroveApp() {
   const query = new URLSearchParams(useLocation().search);
