@@ -6,7 +6,11 @@ module.exports = {
   },
   stories: ['../src/**/*.stories.@(tsx|mdx)'],
   addons: [
-    '@storybook/preset-create-react-app',
+    {
+      name: '@storybook/preset-create-react-app',
+      // Override react-scripts package path as it resolves to the wrong path on Linux
+      options: { scriptsPackageName: '../node_modules/react-scripts' },
+    },
     '@storybook/addon-links',
     '@storybook/addon-essentials',
   ],

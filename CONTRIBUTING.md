@@ -136,7 +136,7 @@ The build process of `@h5web/lib` works as follows:
    - The job of `build:css` is to build the package's global styles and
      concatenate them with the local styles compiled at the first step. To do
      so, we run Vite again but with a different config: `vite.styles.config.js`,
-     and a different entrypoint: `src/styles.ts`. The ouptut files are placed in
+     and a different entrypoint: `src/styles.ts`. The output files are placed in
      a temporary folder: `dist/temp`. We then concatenate `dist/temp/style.css`
      (the global styles) and `dist/style.css` (the local styles) and output the
      result to `dist/styles.css`, which is the stylesheet referenced from
