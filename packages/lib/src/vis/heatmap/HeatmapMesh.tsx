@@ -10,6 +10,7 @@ import {
   UnsignedByteType,
 } from 'three';
 
+import { useAxisSystemContext } from '../..';
 import type { VisScaleType } from '../models';
 import VisMesh from '../shared/VisMesh';
 import type { ColorMap, ScaleShader } from './models';
@@ -152,6 +153,8 @@ function HeatmapMesh(props: Props) {
     alphaDomain,
   } = props;
 
+  const { ordinateConfig } = useAxisSystemContext();
+
   const dataTexture = useMemo(() => {
     const valuesArr = Float32Array.from(values);
     return new DataTexture(valuesArr, cols, rows, RedFormat, FloatType);
@@ -238,7 +241,7 @@ function HeatmapMesh(props: Props) {
   };
 
   return (
-    <VisMesh>
+    <VisMesh scale={[1, ordinateConfig.flip ? -1 : 1, 1]}>
       <shaderMaterial args={[shader]} />
     </VisMesh>
   );
