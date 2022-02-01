@@ -1,4 +1,5 @@
-import type { NdArray } from 'ndarray';
+import { isTypedArray } from 'lodash';
+import type { NdArray, TypedArray } from 'ndarray';
 import type { ReactChild, ReactElement } from 'react';
 
 import { EntityKind, DTypeClass } from './models-hdf5';
@@ -350,4 +351,10 @@ export function isScaleType(val: unknown): val is ScaleType {
   return (
     typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
   );
+}
+
+export function isTypedNdArray<T extends number[] | TypedArray>(
+  arr: NdArray<T>
+): arr is NdArray<Exclude<T, number[]>> {
+  return isTypedArray(arr.data);
 }

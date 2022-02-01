@@ -1,12 +1,34 @@
 import type { Domain, ScaleType } from '@h5web/shared';
 import { range } from 'lodash';
-import type { NdArray } from 'ndarray';
+import type { DataType, NdArray } from 'ndarray';
+import type { PixelFormat, TextureDataType } from 'three';
+import {
+  ByteType,
+  IntType,
+  ShortType,
+  UnsignedByteType,
+  UnsignedIntType,
+  UnsignedShortType,
+  FloatType,
+  HalfFloatType,
+  RedFormat,
+  RedIntegerFormat,
+  UnsignedInt248Type,
+  UnsignedShort4444Type,
+  UnsignedShort5551Type,
+  DataTexture,
+} from 'three';
 
 import type { CustomDomain, DomainErrors } from '../models';
 import { DomainError } from '../models';
 import { H5WEB_SCALES } from '../scales';
 import { INTERPOLATORS } from './interpolators';
-import type { ColorMap, D3Interpolator, Dims } from './models';
+import type {
+  ColorMap,
+  CompatibleTypedArray,
+  D3Interpolator,
+  Dims,
+} from './models';
 
 const GRADIENT_PRECISION = 1 / 20;
 export const GRADIENT_RANGE = range(
@@ -14,6 +36,25 @@ export const GRADIENT_RANGE = range(
   1 + GRADIENT_PRECISION,
   GRADIENT_PRECISION
 );
+
+export const TEXTURE_TYPE_BY_DTYPE: Record<
+  DataType<CompatibleTypedArray>,
+  TextureDataType
+> = {
+  int8: ByteType,
+  int16: ShortType,
+  int32: IntType,
+  uint8: UnsignedByteType,
+  uint16: UnsignedShortType,
+  uint32: UnsignedIntType,
+  float32: FloatType,
+};
+
+const UNSUPPORTED_TEXTURE_TYPES = new Set([
+  UnsignedShort4444Type,
+  UnsignedShort5551Type,
+  UnsignedInt248Type,
+]);
 
 export function getVisDomain(
   customDomain: CustomDomain,
@@ -110,4 +151,25 @@ export function getAxisValues(
 export function getInterpolator(colorMap: ColorMap, reverse: boolean) {
   const interpolator = INTERPOLATORS[colorMap];
   return reverse ? (t: number) => interpolator(1 - t) : interpolator;
+}
+
+function getTextureFormatFromType(type: TextureDataType): PixelFormat {
+  if (type === FloatType || type === HalfFloatType) {
+    return RedFormat;
+  }
+
+  if (UNSUPPORTED_TEXTURE_TYPES.has(type)) {
+    throw new Error('Texture type not supported');
+  }
+
+  return RedIntegerFormat;
+}
+
+export function getDataTexture(
+  values: NdArray<CompatibleTypedArray>,
+  textureType = TEXTURE_TYPE_BY_DTYPE[values.dtype]
+): DataTexture {
+  const { data, shape } = values;
+  const format = getTextureFormatFromType(textureType);
+  return new DataTexture(data, shape[1], shape[0], format, textureType);
 }

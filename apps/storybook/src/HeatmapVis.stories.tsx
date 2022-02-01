@@ -6,7 +6,7 @@ import {
   getMockDataArray,
   INTERPOLATORS,
 } from '@h5web/lib';
-import { assertDefined } from '@h5web/shared';
+import { assertDefined, toTypedNdArray } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 
@@ -92,6 +92,13 @@ Alpha.args = {
   dataArray,
   domain,
   alpha: { array: alphaArray, domain: alphaDomain },
+};
+
+export const TypedArray = Template.bind({});
+TypedArray.args = {
+  dataArray: toTypedNdArray(dataArray),
+  domain,
+  alpha: { array: toTypedNdArray(alphaArray), domain: alphaDomain },
 };
 
 export default {

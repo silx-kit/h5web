@@ -1,5 +1,10 @@
 import type { Domain, NumericType } from '@h5web/shared';
-import { assertDefined, formatTooltipVal, ScaleType } from '@h5web/shared';
+import {
+  assertDefined,
+  formatTooltipVal,
+  toTypedNdArray,
+  ScaleType,
+} from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
@@ -13,11 +18,16 @@ import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
 import { useAxisValues } from './hooks';
-import type { ColorMap, Layout, TooltipData } from './models';
+import type {
+  ColorMap,
+  CompatibleTypedArray,
+  Layout,
+  TooltipData,
+} from './models';
 import { getDims } from './utils';
 
 interface Props {
-  dataArray: NdArray<number[]>;
+  dataArray: NdArray<number[] | CompatibleTypedArray>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: VisScaleType;
@@ -28,7 +38,7 @@ interface Props {
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
-  alpha?: { array: NdArray<number[]>; domain: Domain };
+  alpha?: { array: NdArray<number[] | CompatibleTypedArray>; domain: Domain };
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
@@ -52,7 +62,6 @@ function HeatmapVis(props: Props) {
     renderTooltip,
     children,
   } = props;
-
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
 
@@ -116,14 +125,12 @@ function HeatmapVis(props: Props) {
           }}
         />
         <HeatmapMesh
-          rows={rows}
-          cols={cols}
-          values={dataArray.data}
+          values={toTypedNdArray(dataArray)}
           domain={domain}
           colorMap={colorMap}
           invertColorMap={invertColorMap}
           scaleType={scaleType}
-          alphaValues={alpha?.array.data}
+          alphaValues={alpha && toTypedNdArray(alpha.array)}
           alphaDomain={alpha?.domain}
         />
         {children}
