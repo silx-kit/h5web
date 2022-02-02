@@ -3,19 +3,30 @@ import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
+import type { ModifierKey } from '../models';
+import { isEventValid } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import VisMesh from './VisMesh';
 
-interface Props extends MeshProps {
+export interface SelectionMeshProps extends MeshProps {
+  onSelection?: (startPoint: Vector2, endPoint: Vector2) => void;
+  modifierKey?: ModifierKey;
+}
+
+interface Props extends SelectionMeshProps {
   selectionComponent: (props: {
     startPoint: Vector2;
     endPoint: Vector2;
   }) => ReactElement;
-  onSelection?: (startPoint: Vector2, endPoint: Vector2) => void;
 }
 
 function SelectionMesh(props: Props) {
-  const { selectionComponent: Selection, onSelection, ...meshProps } = props;
+  const {
+    selectionComponent: Selection,
+    onSelection,
+    modifierKey,
+    ...meshProps
+  } = props;
   const { worldToData, dataToWorld } = useAxisSystemContext();
 
   const [startPoint, setStartPoint] = useState<Vector2>();
@@ -26,15 +37,18 @@ function SelectionMesh(props: Props) {
     (evt: ThreeEvent<PointerEvent>) => {
       const { sourceEvent, unprojectedPoint } = evt;
       const { target, pointerId } = sourceEvent;
-      (target as Element).setPointerCapture(pointerId);
+      if (!isEventValid(sourceEvent, modifierKey)) {
+        return;
+      }
 
+      (target as Element).setPointerCapture(pointerId);
       const point = worldToData(unprojectedPoint);
 
       setStartPoint(point);
       setEndPoint(point);
       setDrag(true);
     },
-    [worldToData]
+    [worldToData, modifierKey]
   );
 
   const onPointerMove = useCallback(
@@ -51,6 +65,9 @@ function SelectionMesh(props: Props) {
 
   const onPointerUp = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
+      if (!isDragging) {
+        return;
+      }
       const { sourceEvent, unprojectedPoint } = evt;
       const { target, pointerId } = sourceEvent;
       const point = worldToData(unprojectedPoint);
@@ -62,7 +79,7 @@ function SelectionMesh(props: Props) {
         onSelection(startPoint, point);
       }
     },
-    [onSelection, startPoint, worldToData]
+    [onSelection, startPoint, worldToData, isDragging]
   );
 
   return (

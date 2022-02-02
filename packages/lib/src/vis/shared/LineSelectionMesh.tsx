@@ -1,14 +1,8 @@
-import type { MeshProps } from '@react-three/fiber';
-import type { Vector2 } from 'three';
-
 import SelectionLine from './SelectionLine';
+import type { SelectionMeshProps } from './SelectionMesh';
 import SelectionMesh from './SelectionMesh';
 
-interface Props extends MeshProps {
-  onSelection?: (startPoint: Vector2, endPoint: Vector2) => void;
-}
-
-function LineSelectionMesh(props: Props) {
+function LineSelectionMesh(props: SelectionMeshProps) {
   return <SelectionMesh selectionComponent={SelectionLine} {...props} />;
 }
 

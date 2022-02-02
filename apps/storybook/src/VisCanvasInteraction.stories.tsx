@@ -7,19 +7,20 @@ import VisCanvasStoriesConfig from './VisCanvas.stories';
 
 interface TemplateProps {
   panZoom?: boolean;
+  panKey?: 'Alt' | 'Control' | 'Shift';
   tooltipValue?: string;
   guides?: TooltipMeshProps['guides'];
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { panZoom = false, tooltipValue, guides } = args;
+  const { panZoom = false, tooltipValue, guides, panKey } = args;
 
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      {panZoom && <PanZoomMesh />}
+      {panZoom && <PanZoomMesh panKey={panKey} />}
       {tooltipValue && (
         <TooltipMesh
           guides={guides}
@@ -39,6 +40,13 @@ const Template: Story<TemplateProps> = (args) => {
 
 export const PanZoom = Template.bind({});
 PanZoom.args = { panZoom: true };
+PanZoom.argTypes = { guides: { table: { disable: true } } };
+
+export const PanZoomModifiers = Template.bind({});
+PanZoomModifiers.args = {
+  panZoom: true,
+  panKey: 'Alt',
+};
 PanZoom.argTypes = { guides: { table: { disable: true } } };
 
 export const Tooltip = Template.bind({});
@@ -65,13 +73,17 @@ export default {
   parameters: {
     ...VisCanvasStoriesConfig.parameters,
     controls: {
-      include: ['panZoom', 'tooltipValue', 'guides'],
+      include: ['panZoom', 'tooltipValue', 'guides', 'panKey'],
     },
   },
   argTypes: {
     guides: {
       control: { type: 'inline-radio' },
       options: ['horizontal', 'vertical', 'both'],
+    },
+    panKey: {
+      control: { type: 'inline-radio' },
+      options: ['Alt', 'Control', 'Shift'],
     },
   },
 } as Meta;

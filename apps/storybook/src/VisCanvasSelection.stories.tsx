@@ -1,4 +1,9 @@
-import { LineSelectionMesh, RectSelectionMesh, VisCanvas } from '@h5web/lib';
+import {
+  LineSelectionMesh,
+  PanZoomMesh,
+  RectSelectionMesh,
+  VisCanvas,
+} from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react';
 import { format } from 'd3-format';
 import { useState } from 'react';
@@ -9,6 +14,8 @@ import VisCanvasStoriesConfig from './VisCanvas.stories';
 interface TemplateProps {
   selection?: 'line' | 'rectangle';
   yFlip?: boolean;
+  panZoom?: boolean;
+  modifierKey?: 'Alt' | 'Control' | 'Shift';
 }
 
 function vectorToStr(vec: Vector2) {
@@ -16,7 +23,7 @@ function vectorToStr(vec: Vector2) {
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { selection, yFlip } = args;
+  const { selection, yFlip = false, panZoom = false, modifierKey } = args;
 
   const [selectedVectors, setSelectedVectors] = useState<[Vector2, Vector2]>();
 
@@ -35,14 +42,17 @@ const Template: Story<TemplateProps> = (args) => {
         abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
         ordinateConfig={{ visDomain: [50, 100], showGrid: true, flip: yFlip }}
       >
+        {panZoom && <PanZoomMesh />}
         {selection === 'line' && (
           <LineSelectionMesh
             onSelection={(start, end) => setSelectedVectors([start, end])}
+            modifierKey={modifierKey}
           />
         )}
         {selection === 'rectangle' && (
           <RectSelectionMesh
             onSelection={(start, end) => setSelectedVectors([start, end])}
+            modifierKey={modifierKey}
           />
         )}
       </VisCanvas>
@@ -60,16 +70,26 @@ SelectingLines.args = {
   selection: 'line',
 };
 
+export const SelectingWithModifierAndZoom = Template.bind({});
+SelectingWithModifierAndZoom.args = {
+  selection: 'line',
+  panZoom: true,
+  modifierKey: 'Shift',
+};
+
 export default {
   ...VisCanvasStoriesConfig,
   title: 'Building Blocks/VisCanvas/Selection',
-  args: {
-    yFlip: false,
-  },
   parameters: {
     ...VisCanvasStoriesConfig.parameters,
     controls: {
-      include: ['yFlip'],
+      include: ['yFlip', 'panZoom', 'modifierKey'],
+    },
+  },
+  argTypes: {
+    modifierKey: {
+      control: { type: 'inline-radio' },
+      options: ['Alt', 'Control', 'Shift'],
     },
   },
 } as Meta;

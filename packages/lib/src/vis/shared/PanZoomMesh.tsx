@@ -5,13 +5,19 @@ import { useRef, useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
 import { useWheelCapture } from '../hooks';
-import { CAMERA_TOP_RIGHT } from '../utils';
+import type { ModifierKey } from '../models';
+import { CAMERA_TOP_RIGHT, isEventValid } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;
 const ONE_VECTOR = new Vector3(1, 1, 1);
 
-function PanZoomMesh() {
+interface Props {
+  panKey?: ModifierKey;
+}
+
+function PanZoomMesh(props: Props) {
+  const { panKey } = props;
   const { abscissaScale, ordinateScale, visSize } = useAxisSystemContext();
   const { width: visWidth, height: visHeight } = visSize;
 
@@ -52,13 +58,19 @@ function PanZoomMesh() {
     [abscissaScale, ordinateScale, camera, visWidth, visHeight, invalidate]
   );
 
-  const onPointerDown = useCallback((evt: ThreeEvent<PointerEvent>) => {
-    const { sourceEvent, unprojectedPoint } = evt;
-    const { target, pointerId } = sourceEvent;
-    (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
+  const onPointerDown = useCallback(
+    (evt: ThreeEvent<PointerEvent>) => {
+      const { sourceEvent, unprojectedPoint } = evt;
+      const { target, pointerId } = sourceEvent;
+      if (!isEventValid(sourceEvent, panKey)) {
+        return;
+      }
 
-    startOffsetPosition.current = unprojectedPoint.clone();
-  }, []);
+      (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
+      startOffsetPosition.current = unprojectedPoint.clone();
+    },
+    [panKey]
+  );
 
   const onPointerUp = useCallback((evt: ThreeEvent<PointerEvent>) => {
     const { sourceEvent } = evt;
@@ -90,8 +102,8 @@ function PanZoomMesh() {
   const onWheel = useCallback(
     (evt: ThreeEvent<WheelEvent>) => {
       const { sourceEvent, unprojectedPoint } = evt;
-      const factor = sourceEvent.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
 
+      const factor = sourceEvent.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
       const zoomVector = new Vector3(1 / factor, 1 / factor, 1);
       camera.scale.multiply(zoomVector).min(ONE_VECTOR);
 

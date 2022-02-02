@@ -90,3 +90,5 @@ export interface HistogramParams {
   colorMap?: ColorMap;
   invertColorMap?: boolean;
 }
+
+export type ModifierKey = 'Alt' | 'Control' | 'Shift';
