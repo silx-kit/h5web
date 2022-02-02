@@ -240,4 +240,5 @@ function HeatmapMesh(props: Props) {
   );
 }
 
+export type { Props as HeatmapMeshProps };
 export default memo(HeatmapMesh);
