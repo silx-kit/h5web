@@ -22,7 +22,6 @@ import type {
   ScaleGammaConfig,
   VisxScaleConfig,
   VisScaleType,
-  ModifierKey,
 } from './models';
 import { H5WEB_SCALES } from './scales';
 
@@ -310,14 +309,6 @@ export function projectCameraToHtml(
   return cameraVector.clone().applyMatrix4(cameraToHtmlMatrix);
 }
 
-export function isEventValid(
-  event: MouseEvent,
-  modifierKey: ModifierKey | undefined
-) {
-  if (!modifierKey) {
-    // If no modifier key is given, the event is deemed valid only if no modifier key is pressed
-    return !event.altKey && !event.ctrlKey && !event.shiftKey;
-  }
-
-  return event.getModifierState(modifierKey);
+export function noModifierKeyPressed(event: MouseEvent) {
+  return !event.altKey && !event.ctrlKey && !event.shiftKey;
 }

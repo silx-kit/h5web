@@ -1,23 +1,37 @@
 import { useThree } from '@react-three/fiber';
-import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
+import type { ThreeEvent } from '@react-three/fiber';
 import { clamp } from 'lodash';
 import { useRef, useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
 import { useWheelCapture } from '../hooks';
 import type { ModifierKey } from '../models';
-import { CAMERA_TOP_RIGHT, isEventValid } from '../utils';
+import { CAMERA_TOP_RIGHT, noModifierKeyPressed } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;
 const ONE_VECTOR = new Vector3(1, 1, 1);
 
 interface Props {
+  pan?: boolean;
+  zoom?: boolean;
+  xZoom?: boolean;
+  yZoom?: boolean;
   panKey?: ModifierKey;
+  xZoomKey?: ModifierKey;
+  yZoomKey?: ModifierKey;
 }
 
 function PanZoomMesh(props: Props) {
-  const { panKey } = props;
+  const {
+    pan = true,
+    zoom = true,
+    xZoom = false,
+    yZoom = false,
+    panKey,
+    xZoomKey = 'Alt',
+    yZoomKey = 'Shift',
+  } = props;
   const { abscissaScale, ordinateScale, visSize } = useAxisSystemContext();
   const { width: visWidth, height: visHeight } = visSize;
 
@@ -62,14 +76,20 @@ function PanZoomMesh(props: Props) {
     (evt: ThreeEvent<PointerEvent>) => {
       const { sourceEvent, unprojectedPoint } = evt;
       const { target, pointerId } = sourceEvent;
-      if (!isEventValid(sourceEvent, panKey)) {
+
+      if (!pan) {
         return;
       }
 
-      (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
-      startOffsetPosition.current = unprojectedPoint.clone();
+      const isPanAllowed = panKey
+        ? sourceEvent.getModifierState(panKey)
+        : noModifierKeyPressed(sourceEvent);
+      if (isPanAllowed) {
+        (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
+        startOffsetPosition.current = unprojectedPoint.clone();
+      }
     },
-    [panKey]
+    [pan, panKey]
   );
 
   const onPointerUp = useCallback((evt: ThreeEvent<PointerEvent>) => {
@@ -103,8 +123,22 @@ function PanZoomMesh(props: Props) {
     (evt: ThreeEvent<WheelEvent>) => {
       const { sourceEvent, unprojectedPoint } = evt;
 
+      if (!zoom) {
+        return;
+      }
+
       const factor = sourceEvent.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
-      const zoomVector = new Vector3(1 / factor, 1 / factor, 1);
+
+      const noKeyPressed = noModifierKeyPressed(sourceEvent);
+      const zoomVector = new Vector3(
+        noKeyPressed || (xZoom && sourceEvent.getModifierState(xZoomKey))
+          ? 1 / factor
+          : 1,
+        noKeyPressed || (yZoom && sourceEvent.getModifierState(yZoomKey))
+          ? 1 / factor
+          : 1,
+        1
+      );
       camera.scale.multiply(zoomVector).min(ONE_VECTOR);
 
       camera.updateProjectionMatrix();
@@ -119,7 +153,7 @@ function PanZoomMesh(props: Props) {
       const scaledPosition = oldPosition.add(delta);
       moveCameraTo(scaledPosition.x, scaledPosition.y);
     },
-    [camera, moveCameraTo]
+    [zoom, xZoom, xZoomKey, yZoom, yZoomKey, camera, moveCameraTo]
   );
 
   useEffect(() => {
@@ -140,4 +174,5 @@ function PanZoomMesh(props: Props) {
   );
 }
 
+export type { Props as PanZoomProps };
 export default PanZoomMesh;

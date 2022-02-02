@@ -1,26 +1,24 @@
+import type { PanZoomProps, TooltipMeshProps } from '@h5web/lib';
 import { PanZoomMesh, TooltipMesh, VisCanvas } from '@h5web/lib';
-import type { TooltipMeshProps } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
 
 import VisCanvasStoriesConfig from './VisCanvas.stories';
 
-interface TemplateProps {
-  panZoom?: boolean;
-  panKey?: 'Alt' | 'Control' | 'Shift';
+interface TemplateProps extends PanZoomProps {
   tooltipValue?: string;
   guides?: TooltipMeshProps['guides'];
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { panZoom = false, tooltipValue, guides, panKey } = args;
+  const { tooltipValue, guides, ...panZoomProps } = args;
 
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      {panZoom && <PanZoomMesh panKey={panKey} />}
+      <PanZoomMesh {...panZoomProps} />
       {tooltipValue && (
         <TooltipMesh
           guides={guides}
@@ -39,32 +37,64 @@ const Template: Story<TemplateProps> = (args) => {
 };
 
 export const PanZoom = Template.bind({});
-PanZoom.args = { panZoom: true };
-PanZoom.argTypes = { guides: { table: { disable: true } } };
-
-export const PanZoomModifiers = Template.bind({});
-PanZoomModifiers.args = {
-  panZoom: true,
-  panKey: 'Alt',
+PanZoom.args = {
+  pan: true,
+  zoom: true,
 };
 PanZoom.argTypes = { guides: { table: { disable: true } } };
 
+export const PanModifier = Template.bind({});
+PanModifier.args = {
+  pan: true,
+  zoom: true,
+  panKey: 'Alt',
+};
+PanModifier.argTypes = { guides: { table: { disable: true } } };
+
+export const PanZoomInXAndY = Template.bind({});
+PanZoomInXAndY.args = {
+  pan: true,
+  zoom: true,
+  xZoom: true,
+  yZoom: true,
+};
+PanZoomInXAndY.argTypes = { guides: { table: { disable: true } } };
+
+export const ZoomModifierInX = Template.bind({});
+ZoomModifierInX.args = {
+  pan: true,
+  zoom: true,
+  xZoom: true,
+  xZoomKey: 'Control',
+};
+ZoomModifierInX.argTypes = { guides: { table: { disable: true } } };
+
 export const Tooltip = Template.bind({});
 Tooltip.args = {
+  pan: false,
+  zoom: false,
   tooltipValue: 'no value to display',
 };
 
 export const TooltipWithGuides = Template.bind({});
 TooltipWithGuides.args = {
+  pan: false,
+  zoom: false,
   tooltipValue: 'guides="both"',
   guides: 'both',
 };
 
 export const TooltipWithPanZoom = Template.bind({});
 TooltipWithPanZoom.args = {
-  panZoom: true,
+  pan: true,
+  zoom: true,
   tooltipValue: '<PanZoomMesh /> must come first',
   guides: 'vertical',
+};
+
+const keyArgType = {
+  control: { type: 'inline-radio' },
+  options: ['Alt', 'Control', 'Shift'],
 };
 
 export default {
@@ -73,7 +103,15 @@ export default {
   parameters: {
     ...VisCanvasStoriesConfig.parameters,
     controls: {
-      include: ['panZoom', 'tooltipValue', 'guides', 'panKey'],
+      include: [
+        'pan',
+        'panKey',
+        'zoom',
+        'xZoomKey',
+        'yZoomKey',
+        'tooltipValue',
+        'guides',
+      ],
     },
   },
   argTypes: {
@@ -81,9 +119,8 @@ export default {
       control: { type: 'inline-radio' },
       options: ['horizontal', 'vertical', 'both'],
     },
-    panKey: {
-      control: { type: 'inline-radio' },
-      options: ['Alt', 'Control', 'Shift'],
-    },
+    panKey: keyArgType,
+    xZoomKey: keyArgType,
+    yZoomKey: keyArgType,
   },
 } as Meta;
