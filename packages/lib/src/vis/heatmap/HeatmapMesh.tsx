@@ -3,7 +3,7 @@ import { ScaleType, assertDefined, isScaleType } from '@h5web/shared';
 import { rgb } from 'd3-color';
 import type { NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
-import type { TextureDataType } from 'three';
+import type { TextureDataType, TextureFilter } from 'three';
 import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
 
 import { useAxisSystemContext } from '../..';
@@ -19,6 +19,7 @@ interface Props {
   colorMap: ColorMap;
   invertColorMap?: boolean;
   textureType?: TextureDataType; // override default texture type (determined from `values.dtype`)
+  magFilter?: TextureFilter;
   alphaValues?: NdArray<CompatibleTypedArray>;
   alphaDomain?: Domain;
 }
@@ -143,6 +144,7 @@ function HeatmapMesh(props: Props) {
     colorMap,
     invertColorMap = false,
     textureType,
+    magFilter,
     alphaValues,
     alphaDomain,
   } = props;
@@ -150,8 +152,8 @@ function HeatmapMesh(props: Props) {
   const { ordinateConfig } = useAxisSystemContext();
 
   const dataTexture = useMemo(
-    () => getDataTexture(values, textureType),
-    [textureType, values]
+    () => getDataTexture(values, textureType, magFilter),
+    [magFilter, textureType, values]
   );
 
   const alphaTexture = useMemo(
@@ -238,4 +240,5 @@ function HeatmapMesh(props: Props) {
   );
 }
 
+export type { Props as HeatmapMeshProps };
 export default memo(HeatmapMesh);

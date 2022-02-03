@@ -4,19 +4,22 @@ import type { DataType, NdArray } from 'ndarray';
 import type { PixelFormat, TextureDataType } from 'three';
 import {
   ByteType,
-  IntType,
-  ShortType,
-  UnsignedByteType,
-  UnsignedIntType,
-  UnsignedShortType,
+  ClampToEdgeWrapping,
+  DataTexture,
   FloatType,
   HalfFloatType,
+  IntType,
   RedFormat,
   RedIntegerFormat,
+  ShortType,
+  UnsignedByteType,
   UnsignedInt248Type,
+  UnsignedIntType,
   UnsignedShort4444Type,
   UnsignedShort5551Type,
-  DataTexture,
+  UnsignedShortType,
+  UVMapping,
+  NearestFilter,
 } from 'three';
 
 import type { CustomDomain, DomainErrors } from '../models';
@@ -167,9 +170,22 @@ function getTextureFormatFromType(type: TextureDataType): PixelFormat {
 
 export function getDataTexture(
   values: NdArray<CompatibleTypedArray>,
-  textureType = TEXTURE_TYPE_BY_DTYPE[values.dtype]
+  textureType = TEXTURE_TYPE_BY_DTYPE[values.dtype],
+  magFilter = NearestFilter
 ): DataTexture {
   const { data, shape } = values;
+  const [rows, cols] = shape;
   const format = getTextureFormatFromType(textureType);
-  return new DataTexture(data, shape[1], shape[0], format, textureType);
+
+  return new DataTexture(
+    data,
+    cols,
+    rows,
+    format,
+    textureType,
+    UVMapping,
+    ClampToEdgeWrapping,
+    ClampToEdgeWrapping,
+    magFilter
+  );
 }
