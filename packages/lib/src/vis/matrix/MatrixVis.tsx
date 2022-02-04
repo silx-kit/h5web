@@ -1,4 +1,4 @@
-import type { Primitive } from '@h5web/shared';
+import type { ArrayValue, Primitive } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 
 import type { PrintableType } from '../models';
@@ -8,14 +8,14 @@ import GridProvider from './context';
 const CELL_HEIGHT = 32;
 
 interface Props {
-  dataArray: NdArray<Primitive<PrintableType>[]>;
+  dataArray: NdArray<ArrayValue<PrintableType>>;
   formatter: (value: Primitive<PrintableType>) => string;
   cellWidth: number;
-  sticky: boolean;
+  sticky?: boolean;
 }
 
 function MatrixVis(props: Props) {
-  const { dataArray, formatter, cellWidth, sticky } = props;
+  const { dataArray, formatter, cellWidth, sticky = true } = props;
   const dims = dataArray.shape;
 
   const rowCount = dims[0] + 1; // includes IndexRow
