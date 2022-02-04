@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
 import type { ModifierKey } from '../models';
-import { isEventValid } from '../utils';
+import { noModifierKeyPressed } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import VisMesh from './VisMesh';
 
@@ -37,7 +37,11 @@ function SelectionMesh(props: Props) {
     (evt: ThreeEvent<PointerEvent>) => {
       const { sourceEvent, unprojectedPoint } = evt;
       const { target, pointerId } = sourceEvent;
-      if (!isEventValid(sourceEvent, modifierKey)) {
+
+      const isSelectionAllowed = modifierKey
+        ? sourceEvent.getModifierState(modifierKey)
+        : noModifierKeyPressed(sourceEvent);
+      if (!isSelectionAllowed) {
         return;
       }
 

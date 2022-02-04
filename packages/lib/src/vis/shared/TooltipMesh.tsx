@@ -1,5 +1,5 @@
 import { useThree } from '@react-three/fiber';
-import type { ThreeEvent } from '@react-three/fiber/dist/declarations/src/core/events';
+import type { ThreeEvent } from '@react-three/fiber';
 import { Line } from '@visx/shape';
 import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
 import { useCallback } from 'react';

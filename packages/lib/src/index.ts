@@ -28,6 +28,7 @@ export { default as ExportMenu } from './toolbar/controls/ExportMenu';
 export { default as VisCanvas } from './vis/shared/VisCanvas';
 export type { VisCanvasProps } from './vis/shared/VisCanvas';
 export { default as PanZoomMesh } from './vis/shared/PanZoomMesh';
+export type { PanZoomProps } from './vis/shared/PanZoomMesh';
 export { default as TooltipMesh } from './vis/shared/TooltipMesh';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
 export { default as VisMesh } from './vis/shared/VisMesh';
