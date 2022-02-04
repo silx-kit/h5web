@@ -4,6 +4,7 @@ import type {
   ArrayShape,
   Dataset,
   Domain,
+  NumArray,
   ScalarShape,
   Value,
 } from '@h5web/shared';
@@ -130,17 +131,17 @@ export function useMappedArray<T>(
 }
 
 export function useMappedArrays(
-  values: number[][],
+  values: NumArray[],
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
-) {
+): [NdArray<NumArray>[], NdArray<NumArray>[]] {
   const baseArrays = useMemo(
-    () => values.map((v) => getBaseArray(v, dims)),
+    () => values.map((arr) => getBaseArray(arr, dims)),
     [dims, values]
   );
   const mappedArrays = useMemo(
-    () => baseArrays.map((v) => applyMapping(v, mapping)),
+    () => baseArrays.map((ndArr) => applyMapping(ndArr, mapping)),
     [baseArrays, mapping]
   );
 

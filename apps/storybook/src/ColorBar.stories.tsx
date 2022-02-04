@@ -91,5 +91,5 @@ export default {
       options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
     },
   },
-  excludeStories: ['ColorMapTemplate'],
+  excludeStories: ['ColorBarTemplate'],
 } as Meta;
