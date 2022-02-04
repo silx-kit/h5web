@@ -1,5 +1,12 @@
 import { getCombinedDomain } from '@h5web/lib';
-import type { ArrayShape, Dataset, ScalarShape, Value } from '@h5web/shared';
+import type {
+  AnyNumArray,
+  ArrayShape,
+  Dataset,
+  Domain,
+  ScalarShape,
+  Value,
+} from '@h5web/shared';
 import {
   isDefined,
   ScaleType,
@@ -7,7 +14,7 @@ import {
   getValidDomainForScale,
   assertDatasetValue,
 } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
+import type { NdArray, TypedArray } from 'ndarray';
 import { useContext, useMemo } from 'react';
 import { createMemo } from 'react-use';
 
@@ -73,18 +80,19 @@ const useBounds = createMemo(getBounds);
 const useValidDomainForScale = createMemo(getValidDomainForScale);
 
 export function useDomain(
-  valuesArray: NdArray<number[]> | number[],
+  valuesArray: AnyNumArray,
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: NdArray<number[]> | number[]
-) {
+  errorArray?: AnyNumArray
+): Domain | undefined {
+  // Distinct memoized calls allows for bounds to not be recomputed when scale type changes
   const bounds = useBounds(valuesArray, errorArray);
   return useValidDomainForScale(bounds, scaleType);
 }
 
 export function useDomains(
-  valuesArrays: (NdArray<number[]> | number[])[],
+  valuesArrays: AnyNumArray[],
   scaleType: ScaleType = ScaleType.Linear
-) {
+): (Domain | undefined)[] {
   const allBounds = useMemo(() => {
     return valuesArrays.map((arr) => getBounds(arr));
   }, [valuesArrays]);
@@ -100,15 +108,17 @@ export const useCombinedDomain = createMemo(getCombinedDomain);
 const useBaseArray = createMemo(getBaseArray);
 const useApplyMapping = createMemo(applyMapping);
 
-export function useMappedArray<T, U extends T[] | undefined>(
+export function useMappedArray<T, U extends T[] | TypedArray | undefined>(
   value: U,
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
-): U extends T[] ? [NdArray<U>, NdArray<U>] : [undefined, undefined];
+): U extends T[] | TypedArray
+  ? [NdArray<U>, NdArray<U>]
+  : [undefined, undefined];
 
 export function useMappedArray<T>(
-  value: T[] | undefined,
+  value: T[] | TypedArray | undefined,
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean

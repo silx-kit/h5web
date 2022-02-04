@@ -28,7 +28,7 @@ import { H5WEB_SCALES } from '../scales';
 import { INTERPOLATORS } from './interpolators';
 import type {
   ColorMap,
-  CompatibleTypedArray,
+  TextureTypedArray,
   D3Interpolator,
   Dims,
 } from './models';
@@ -41,7 +41,7 @@ export const GRADIENT_RANGE = range(
 );
 
 export const TEXTURE_TYPE_BY_DTYPE: Record<
-  DataType<CompatibleTypedArray>,
+  DataType<TextureTypedArray>,
   TextureDataType
 > = {
   int8: ByteType,
@@ -169,7 +169,7 @@ function getTextureFormatFromType(type: TextureDataType): PixelFormat {
 }
 
 export function getDataTexture(
-  values: NdArray<CompatibleTypedArray>,
+  values: NdArray<TextureTypedArray>,
   textureType = TEXTURE_TYPE_BY_DTYPE[values.dtype],
   magFilter = NearestFilter
 ): DataTexture {

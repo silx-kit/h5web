@@ -8,10 +8,18 @@ The library exposes a number of utility functions and custom React hooks, which 
 
 #### getDomain
 
-Find the min and max values contained in a array (or ndarray) of numbers. If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
+Find the min and max values contained in a numeric array. The function supports plain arrays, typed arrays and ndarrays: `number[]`, `TypedArray`, `NdArray<number[]>`, `NdArray<TypedArray>`
+
+- If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first strictly positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
+- If `scaleType` is `ScaleType.Sqrt` and the domain crosses zero, clamp the min to the first positive value (including 0).
+- If `errorArray` is provided, the returned domain will be computed for `values + errors` and `values - errors`.
 
 ```ts
-getDomain(values: NdArray | number[], scaleType: ScaleType = ScaleType.Linear): Domain | undefined
+getDomain(
+  valuesArray: AnyNumArray, // NdArray<TypedArray | number[]> | TypedArray | number[]
+  scaleType: ScaleType = ScaleType.Linear,
+  errorArray?: AnyNumArray
+): Domain | undefined
 
 const linearDomain = getDomain([10, 5, -1]); // [-1, 10]
 const logDomain = getDomain([-1, 2, 10], ScaleType.Log); // [2, 10]
@@ -22,13 +30,16 @@ const myDomain = getDomain(myArray); // [0, 3]
 
 #### getDomains
 
-Find the domains of multiple arrays (or ndarrays) of numbers. Useful when dealing with auxiliary curves.
+Find the domains of multiple numeric arrays. Useful when dealing with auxiliary curves.
 
 ```ts
-getDomains(arrays: (NdArray | number[])[], scaleType: ScaleType = ScaleType.Linear): (Domain | undefined)[]
+getDomains(
+  valuesArrays: AnyNumArray[],
+  scaleType: ScaleType = ScaleType.Linear
+): (Domain | undefined)[]
 
-const linearDomains = getDomains([[-1, 5, 10], myArray]); // [[-1, 10], [0, 3]]
-const logDomains = getDomains([[-1, 5, 10], myArray], ScaleType.Log); // [[2, 10], [0, 3]]
+const linearDomains = getDomains([[-1, 5, 10], ndarray([0, 1, 2, 3], [2, 2])]); // [[-1, 10], [0, 3]]
+const logDomains = getDomains([[-1, 5, 10], [0, 1, 2, 3]], ScaleType.Log); // [[5, 10], [1, 3]]
 ```
 
 #### getCombinedDomain

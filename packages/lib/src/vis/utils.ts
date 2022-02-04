@@ -1,4 +1,4 @@
-import type { Domain, NumericType } from '@h5web/shared';
+import type { AnyNumArray, Domain, NumericType } from '@h5web/shared';
 import {
   getValidDomainForScale,
   ScaleType,
@@ -11,7 +11,6 @@ import {
 import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
-import type { NdArray } from 'ndarray';
 import { Vector3, Matrix4 } from 'three';
 import { clamp } from 'three/src/math/MathUtils';
 
@@ -77,9 +76,9 @@ export function getSizeToFit(
 }
 
 export function getDomain(
-  valuesArray: NdArray<number[]> | number[],
+  valuesArray: AnyNumArray,
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: NdArray<number[]> | number[]
+  errorArray?: AnyNumArray
 ): Domain | undefined {
   const bounds = getBounds(valuesArray, errorArray);
 
@@ -87,10 +86,10 @@ export function getDomain(
 }
 
 export function getDomains(
-  arrays: (NdArray<number[]> | number[])[],
+  valuesArrays: AnyNumArray[],
   scaleType: ScaleType = ScaleType.Linear
 ): (Domain | undefined)[] {
-  return arrays.map((arr) => getDomain(arr, scaleType));
+  return valuesArrays.map((arr) => getDomain(arr, scaleType));
 }
 
 function extendEmptyDomain(

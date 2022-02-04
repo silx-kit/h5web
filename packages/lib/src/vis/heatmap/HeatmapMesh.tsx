@@ -9,18 +9,18 @@ import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
 import { useAxisSystemContext } from '../..';
 import type { VisScaleType } from '../models';
 import VisMesh from '../shared/VisMesh';
-import type { ColorMap, CompatibleTypedArray, ScaleShader } from './models';
+import type { ColorMap, TextureTypedArray, ScaleShader } from './models';
 import { getDataTexture, getInterpolator } from './utils';
 
 interface Props {
-  values: NdArray<CompatibleTypedArray>;
+  values: NdArray<TextureTypedArray>;
   domain: Domain;
   scaleType: VisScaleType;
   colorMap: ColorMap;
   invertColorMap?: boolean;
   textureType?: TextureDataType; // override default texture type (determined from `values.dtype`)
   magFilter?: TextureFilter;
-  alphaValues?: NdArray<CompatibleTypedArray>;
+  alphaValues?: NdArray<TextureTypedArray>;
   alphaDomain?: Domain;
 }
 

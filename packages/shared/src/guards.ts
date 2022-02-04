@@ -1,5 +1,5 @@
 import { isTypedArray } from 'lodash';
-import type { NdArray, TypedArray } from 'ndarray';
+import type { Data, NdArray } from 'ndarray';
 import type { ReactChild, ReactElement } from 'react';
 
 import { EntityKind, DTypeClass } from './models-hdf5';
@@ -23,8 +23,9 @@ import type {
   Primitive,
   Value,
 } from './models-hdf5';
+import type { AnyNumArray, NumArray } from './models-vis';
 import { ScaleType } from './models-vis';
-import { toArray } from './utils';
+import { getValues } from './utils';
 
 const PRINTABLE_DTYPES = new Set([
   DTypeClass.Unsigned,
@@ -329,16 +330,16 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
 }
 
 export function assertDataLength(
-  arr: NdArray<number[]> | number[] | undefined,
-  dataArray: NdArray<number[]> | number[],
+  arr: AnyNumArray | undefined,
+  dataArray: AnyNumArray,
   arrName: string
 ) {
   if (!arr) {
     return;
   }
 
-  const { length: arrLength } = toArray(arr);
-  const { length: dataLength } = toArray(dataArray);
+  const { length: arrLength } = getValues(arr);
+  const { length: dataLength } = getValues(dataArray);
 
   if (arrLength !== dataLength) {
     throw new Error(
@@ -353,7 +354,13 @@ export function isScaleType(val: unknown): val is ScaleType {
   );
 }
 
-export function isTypedNdArray<T extends number[] | TypedArray>(
+export function isNdArray<T extends Data>(
+  arr: NdArray<T> | T
+): arr is NdArray<T> {
+  return 'data' in arr;
+}
+
+export function isTypedNdArray<T extends NumArray>(
   arr: NdArray<T>
 ): arr is NdArray<Exclude<T, number[]>> {
   return isTypedArray(arr.data);
