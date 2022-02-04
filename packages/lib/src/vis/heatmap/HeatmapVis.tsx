@@ -20,14 +20,14 @@ import styles from './HeatmapVis.module.css';
 import { useAxisValues } from './hooks';
 import type {
   ColorMap,
-  CompatibleTypedArray,
+  TextureTypedArray,
   Layout,
   TooltipData,
 } from './models';
 import { getDims } from './utils';
 
 interface Props {
-  dataArray: NdArray<number[] | CompatibleTypedArray>;
+  dataArray: NdArray<number[] | TextureTypedArray>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: VisScaleType;
@@ -38,7 +38,7 @@ interface Props {
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
-  alpha?: { array: NdArray<number[] | CompatibleTypedArray>; domain: Domain };
+  alpha?: { array: NdArray<number[] | TextureTypedArray>; domain: Domain };
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;

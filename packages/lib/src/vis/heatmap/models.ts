@@ -31,7 +31,7 @@ export interface ScaleShader {
   fragment: string;
 }
 
-export type CompatibleTypedArray = Exclude<
+export type TextureTypedArray = Exclude<
   TypedArray,
   Uint8ClampedArray | Float64Array
 >;

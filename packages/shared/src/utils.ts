@@ -1,12 +1,12 @@
 import { format } from 'd3-format';
 import ndarray from 'ndarray';
-import type { NdArray, TypedArray } from 'ndarray';
+import type { NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
-import { assertDataLength, isTypedNdArray } from './guards';
+import { assertDataLength, isNdArray, isTypedNdArray } from './guards';
 import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
 import { ScaleType } from './models-vis';
-import type { Bounds, Domain } from './models-vis';
+import type { Bounds, Domain, AnyNumArray, NumArray } from './models-vis';
 
 export const formatTick = format('.5~g');
 export const formatBound = format('.3~e');
@@ -36,11 +36,11 @@ function createComplexFormatter(specifier: string, full = false) {
   };
 }
 
-export function toArray(arr: NdArray<number[]> | number[]): number[] {
-  return 'data' in arr ? arr.data : arr;
+export function getValues(arr: AnyNumArray): NumArray {
+  return isNdArray(arr) ? arr.data : arr;
 }
 
-export function toTypedNdArray<T extends number[] | TypedArray>(
+export function toTypedNdArray<T extends NumArray>(
   arr: NdArray<T>
 ): NdArray<Exclude<T, number[]> | Float32Array> {
   if (isTypedNdArray(arr)) {
@@ -89,16 +89,18 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
 }
 
 export function getBounds(
-  valuesArray: NdArray<number[]> | number[],
-  errorArray?: NdArray<number[]> | number[]
+  valuesArray: AnyNumArray,
+  errorArray?: AnyNumArray
 ): Bounds | undefined {
   assertDataLength(errorArray, valuesArray, 'error');
 
-  const values = toArray(valuesArray);
-  const errors = errorArray && toArray(errorArray);
+  const values = getValues(valuesArray);
+  const errors = errorArray && getValues(errorArray);
 
-  const bounds = values.reduce<Bounds>(
-    (acc, val, i) => {
+  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+  // @ts-ignore (https://github.com/microsoft/TypeScript/issues/44593)
+  const bounds = values.reduce(
+    (acc: Bounds, val: number, i: number) => {
       // Ignore NaN and Infinity from the bounds computation
       if (!Number.isFinite(val)) {
         return acc;

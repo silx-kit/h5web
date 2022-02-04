@@ -1,4 +1,5 @@
 import { HeatmapVis } from '@h5web/lib';
+import type { TextureTypedArray } from '@h5web/lib/src/vis/heatmap/models';
 import type {
   ArrayShape,
   Dataset,
@@ -19,7 +20,7 @@ import { useSafeDomain, useVisDomain } from './hooks';
 interface Props {
   dataset: Dataset<ArrayShape, NumericType>;
   selection: string | undefined;
-  value: number[];
+  value: number[] | TextureTypedArray;
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
