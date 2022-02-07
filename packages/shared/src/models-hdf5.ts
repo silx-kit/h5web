@@ -1,6 +1,8 @@
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
+import type { TypedArray } from 'ndarray';
+
 export enum EntityKind {
   Group = 'group',
   Dataset = 'dataset',
@@ -154,6 +156,10 @@ export type Primitive<T extends DType> = T extends NumericType
   : T extends ComplexType
   ? H5WebComplex
   : unknown;
+
+export type ArrayValue<T extends DType> =
+  | Primitive<T>[]
+  | (T extends NumericType ? TypedArray : never);
 
 export type Value<D extends Dataset> = D['shape'] extends ScalarShape
   ? Primitive<D['type']>

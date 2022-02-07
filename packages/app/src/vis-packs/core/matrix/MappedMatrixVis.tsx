@@ -1,6 +1,7 @@
 import { MatrixVis } from '@h5web/lib';
 import type {
   ArrayShape,
+  ArrayValue,
   Dataset,
   Primitive,
   PrintableType,
@@ -15,7 +16,7 @@ import { useMatrixVisConfig } from './config';
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
   selection: string | undefined;
-  value: Primitive<PrintableType>[];
+  value: ArrayValue<PrintableType>;
   dims: number[];
   dimMapping: DimensionMapping;
   formatter: (value: Primitive<PrintableType>) => string;
