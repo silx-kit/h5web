@@ -8,6 +8,8 @@ import { useWheelCapture } from '../hooks';
 import { CAMERA_TOP_RIGHT } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 
+const ZOOM_FACTOR = 0.95;
+
 const ONE_VECTOR = new Vector3(1, 1, 1);
 
 export function useMoveCameraTo() {
@@ -43,7 +45,7 @@ export function useMoveCameraTo() {
 }
 
 export function useZoomOnWheel(
-  zoomVectorFromEvent: (sourceEvent: WheelEvent) => Vector3,
+  isZoomAllowed: (sourceEvent: WheelEvent) => { x: boolean; y: boolean },
   disabled?: boolean
 ) {
   const camera = useThree((state) => state.camera);
@@ -57,7 +59,10 @@ export function useZoomOnWheel(
         return;
       }
 
-      const zoomVector = zoomVectorFromEvent(sourceEvent);
+      // sourceEvent.deltaY < 0 => Wheel down => decrease scale to reduce FOV
+      const factor = sourceEvent.deltaY < 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
+      const { x: zoomX, y: zoomY } = isZoomAllowed(sourceEvent);
+      const zoomVector = new Vector3(zoomX ? factor : 1, zoomY ? factor : 1, 1);
       camera.scale.multiply(zoomVector).min(ONE_VECTOR);
 
       camera.updateProjectionMatrix();
@@ -72,7 +77,7 @@ export function useZoomOnWheel(
       const scaledPosition = oldPosition.add(delta);
       moveCameraTo(scaledPosition.x, scaledPosition.y);
     },
-    [disabled, camera, zoomVectorFromEvent, moveCameraTo]
+    [disabled, camera, isZoomAllowed, moveCameraTo]
   );
 
   useWheelCapture();

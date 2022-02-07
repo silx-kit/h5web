@@ -1,54 +1,27 @@
-import { useThree } from '@react-three/fiber';
-import { Vector3 } from 'three';
-
 import type { ModifierKey } from '../models';
 import { noModifierKeyPressed } from '../utils';
+import InteractionMesh from './InteractionMesh';
 import { useZoomOnWheel } from './hooks';
-
-const ZOOM_FACTOR = 0.95;
 
 interface Props {
   disabled?: boolean;
-  xZoom?: boolean;
-  yZoom?: boolean;
-  xZoomKey?: ModifierKey;
-  yZoomKey?: ModifierKey;
+  modifierKey?: ModifierKey;
 }
 
 function ZoomMesh(props: Props) {
-  const {
-    disabled,
-    xZoom = false,
-    yZoom = false,
-    xZoomKey = 'Alt',
-    yZoomKey = 'Shift',
-  } = props;
+  const { disabled, modifierKey } = props;
 
-  const { width, height } = useThree((state) => state.size);
+  const isZoomAllowed = (sourceEvent: WheelEvent) => {
+    const shouldZoom = modifierKey
+      ? sourceEvent.getModifierState(modifierKey)
+      : noModifierKeyPressed(sourceEvent);
 
-  const zoomVector = (sourceEvent: WheelEvent) => {
-    const factor = sourceEvent.deltaY > 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
-
-    const noKeyPressed = noModifierKeyPressed(sourceEvent);
-    return new Vector3(
-      noKeyPressed || (xZoom && sourceEvent.getModifierState(xZoomKey))
-        ? 1 / factor
-        : 1,
-      noKeyPressed || (yZoom && sourceEvent.getModifierState(yZoomKey))
-        ? 1 / factor
-        : 1,
-      1
-    );
+    return { x: shouldZoom, y: shouldZoom };
   };
 
-  const onWheel = useZoomOnWheel(zoomVector, disabled);
+  const onWheel = useZoomOnWheel(isZoomAllowed, disabled);
 
-  return (
-    <mesh onWheel={onWheel}>
-      <meshBasicMaterial opacity={0} transparent />
-      <planeGeometry args={[width, height]} />
-    </mesh>
-  );
+  return <InteractionMesh onWheel={onWheel} />;
 }
 
 export default ZoomMesh;
