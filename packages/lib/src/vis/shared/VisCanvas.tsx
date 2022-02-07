@@ -6,6 +6,7 @@ import type { AxisConfig } from '../models';
 import { getSizeToFit, getAxisOffsets } from '../utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
+import ViewportCenterer from './ViewportCenterer';
 import styles from './VisCanvas.module.css';
 
 interface Props {
@@ -70,6 +71,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
             >
               <AxisSystem axisOffsets={axisOffsets} title={title} />
               {children}
+              <ViewportCenterer />
             </AxisSystemProvider>
           </Canvas>
         </div>
