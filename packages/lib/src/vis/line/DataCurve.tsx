@@ -1,3 +1,4 @@
+import type { NumArray } from '@h5web/shared';
 import { extend, useThree } from '@react-three/fiber';
 import type { Object3DNode } from '@react-three/fiber';
 import { useLayoutEffect, useState } from 'react';
@@ -22,8 +23,8 @@ declare global {
 
 interface Props {
   abscissas: number[];
-  ordinates: number[];
-  errors?: number[];
+  ordinates: NumArray;
+  errors?: NumArray;
   showErrors?: boolean;
   color: string;
   curveType?: CurveType;

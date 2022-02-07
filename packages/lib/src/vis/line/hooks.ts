@@ -1,3 +1,4 @@
+import type { NumArray } from '@h5web/shared';
 import { useMemo } from 'react';
 import { Vector3 } from 'three';
 
@@ -7,8 +8,8 @@ const CAMERA_FAR = 1000; // R3F's default
 
 export function useCanvasPoints(
   abscissas: number[],
-  ordinates: number[],
-  errors?: number[]
+  ordinates: NumArray,
+  errors?: NumArray
 ) {
   const { abscissaScale, ordinateScale } = useAxisSystemContext();
 

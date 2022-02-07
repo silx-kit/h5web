@@ -2,6 +2,7 @@ import { LineVis } from '@h5web/lib';
 import type {
   ArrayShape,
   Dataset,
+  NumArray,
   NumericType,
   ScaleType,
 } from '@h5web/shared';
@@ -26,11 +27,11 @@ type HookArgs = [number[], DimensionMapping, boolean];
 interface Props {
   dataset?: Dataset<ArrayShape, NumericType>;
   selection?: string | undefined;
-  value: number[];
+  value: NumArray;
   valueLabel?: string;
   valueScaleType?: ScaleType;
-  errors?: number[];
-  auxiliaries?: number[][];
+  errors?: NumArray;
+  auxiliaries?: NumArray[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;

@@ -1,4 +1,4 @@
-import type { Domain, NumericType } from '@h5web/shared';
+import type { Domain, NumArray, NumericType } from '@h5web/shared';
 import {
   assertDataLength,
   assertDefined,
@@ -31,7 +31,7 @@ const DEFAULT_AUX_COLORS =
   'orangered, forestgreen, crimson, mediumslateblue, sienna';
 
 interface Props {
-  dataArray: NdArray<number[]>;
+  dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
   scaleType?: ScaleType;
   curveType?: CurveType;
@@ -40,9 +40,9 @@ interface Props {
   ordinateLabel?: string;
   title?: string;
   dtype?: NumericType;
-  errorsArray?: NdArray<number[]>;
+  errorsArray?: NdArray<NumArray>;
   showErrors?: boolean;
-  auxArrays?: NdArray<number[]>[];
+  auxArrays?: NdArray<NumArray>[];
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
 }

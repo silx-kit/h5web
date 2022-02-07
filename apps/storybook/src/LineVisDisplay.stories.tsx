@@ -9,21 +9,19 @@ import {
 import { formatTooltipVal } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 
-import LineVisStoriesConfig from './LineVis.stories';
+import LineVisStoriesConfig, { LineVisTemplate } from './LineVis.stories';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const domain = getDomain(dataArray.data);
 
-const Template: Story<LineVisProps> = (args) => <LineVis {...args} />;
-
-export const Glyphs = Template.bind({});
+export const Glyphs = LineVisTemplate.bind({});
 Glyphs.args = {
   dataArray,
   domain,
   curveType: CurveType.GlyphsOnly,
 };
 
-export const LineAndGlyphs = Template.bind({});
+export const LineAndGlyphs = LineVisTemplate.bind({});
 LineAndGlyphs.storyName = 'Line & Glyphs';
 LineAndGlyphs.args = {
   dataArray,
@@ -31,14 +29,14 @@ LineAndGlyphs.args = {
   curveType: CurveType.LineAndGlyphs,
 };
 
-export const NoGrid = Template.bind({});
+export const NoGrid = LineVisTemplate.bind({});
 NoGrid.args = {
   dataArray,
   domain,
   showGrid: false,
 };
 
-export const CustomTooltip = Template.bind({});
+export const CustomTooltip = LineVisTemplate.bind({});
 CustomTooltip.args = {
   dataArray,
   domain,
@@ -60,14 +58,14 @@ CustomTooltip.args = {
   },
 };
 
-export const WithTitle = Template.bind({});
+export const WithTitle = LineVisTemplate.bind({});
 WithTitle.args = {
   dataArray,
   domain,
   title: 'A simple curve',
 };
 
-export const WithAxisLabels = Template.bind({});
+export const WithAxisLabels = LineVisTemplate.bind({});
 WithAxisLabels.args = {
   dataArray,
   domain,
