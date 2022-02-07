@@ -1,5 +1,5 @@
-import { isTypedArray } from 'lodash';
-import type { Data, NdArray } from 'ndarray';
+import { isTypedArray as isTypedArrayLodash } from 'lodash';
+import type { Data, NdArray, TypedArray } from 'ndarray';
 import type { ReactChild, ReactElement } from 'react';
 
 import { EntityKind, DTypeClass } from './models-hdf5';
@@ -358,6 +358,10 @@ export function isNdArray<T extends Data>(
   arr: NdArray<T> | T
 ): arr is NdArray<T> {
   return 'data' in arr;
+}
+
+export function isTypedArray<T, U extends TypedArray>(arr: U | T[]): arr is U {
+  return isTypedArrayLodash(arr);
 }
 
 export function isTypedNdArray<T extends NumArray>(

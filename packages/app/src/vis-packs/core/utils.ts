@@ -30,7 +30,7 @@ export function applyMapping<
 ): U extends NdArray<T[] | TypedArray> ? U : undefined;
 
 export function applyMapping<T>(
-  baseArray: NdArray<T[]> | undefined,
+  baseArray: NdArray<T[] | TypedArray> | undefined,
   mapping: (number | Axis | ':')[]
 ) {
   if (!baseArray) {

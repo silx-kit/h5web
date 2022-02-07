@@ -1,12 +1,19 @@
 import { format } from 'd3-format';
 import ndarray from 'ndarray';
-import type { NdArray } from 'ndarray';
+import type { NdArray, TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
-import { assertDataLength, isNdArray, isTypedNdArray } from './guards';
+import {
+  assertDataLength,
+  isNdArray,
+  isTypedArray,
+  isTypedNdArray,
+} from './guards';
 import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
 import { ScaleType } from './models-vis';
 import type { Bounds, Domain, AnyNumArray, NumArray } from './models-vis';
+
+import type { TypedArrayConstructor } from '.';
 
 export const formatTick = format('.5~g');
 export const formatBound = format('.3~e');
@@ -40,14 +47,17 @@ export function getValues(arr: AnyNumArray): NumArray {
   return isNdArray(arr) ? arr.data : arr;
 }
 
-export function toTypedNdArray<T extends NumArray>(
-  arr: NdArray<T>
-): NdArray<Exclude<T, number[]> | Float32Array> {
+export function toTypedNdArray<
+  T extends NumArray,
+  U extends TypedArrayConstructor
+>(arr: NdArray<T>, TypedArrayConstructor: U) {
   if (isTypedNdArray(arr)) {
     return arr;
   }
 
-  return ndarray(Float32Array.from(arr.data), arr.shape);
+  return ndarray(TypedArrayConstructor.from(arr.data), arr.shape) as NdArray<
+    InstanceType<U>
+  >;
 }
 
 export function getChildEntity(
@@ -65,10 +75,19 @@ export function buildEntityPath(
   return `${prefix}/${entityNameOrRelativePath}`;
 }
 
-export function createArrayFromView<T>(view: NdArray<T[]>): NdArray<T[]> {
-  const array = ndarray<T[]>([], view.shape);
-  assign(array, view);
+export function createArrayFromView<T, U extends TypedArray | T[]>(
+  view: NdArray<U>
+): NdArray<U> {
+  const { data } = view;
 
+  const array = ndarray(
+    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+    // @ts-ignore (`data.constructor` resolves to `Function`)
+    (isTypedArray(data) ? new data.constructor(view.size) : []) as U,
+    view.shape
+  );
+
+  assign(array, view);
   return array;
 }
 

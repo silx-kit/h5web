@@ -1,21 +1,16 @@
-import { RgbVis } from '@h5web/lib';
 import {
   assertDataset,
   assertArrayShape,
   assertNumericType,
   assertNumDims,
-  DTypeClass,
 } from '@h5web/shared';
 import { useContext } from 'react';
-import { createPortal } from 'react-dom';
-import shallow from 'zustand/shallow';
 
 import { ProviderContext } from '../../../providers/context';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
-import RgbToolbar from './RgbToolbar';
-import { useRgbVisConfig } from './config';
+import MappedRgbVis from './MappedRgbVis';
 
 function RgbVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -32,28 +27,17 @@ function RgbVisContainer(props: VisContainerProps) {
 
   const { shape: dims } = entity;
 
-  const { showGrid, layout, imageType } = useRgbVisConfig(
-    (state) => state,
-    shallow
-  );
-
   return (
     <VisBoundary loadingMessage="Loading image">
       <ValueFetcher
         dataset={entity}
         render={(value) => (
-          <>
-            {toolbarContainer && createPortal(<RgbToolbar />, toolbarContainer)}
-            <RgbVis
-              value={value}
-              dims={dims}
-              floatFormat={entity.type.class === DTypeClass.Float}
-              title={entity.name}
-              showGrid={showGrid}
-              layout={layout}
-              imageType={imageType}
-            />
-          </>
+          <MappedRgbVis
+            value={value}
+            dims={dims}
+            toolbarContainer={toolbarContainer}
+            title={entity.name}
+          />
         )}
       />
     </VisBoundary>

@@ -106,7 +106,18 @@ export function useDomains(
 
 export const useCombinedDomain = createMemo(getCombinedDomain);
 
-const useBaseArray = createMemo(getBaseArray);
+export function useBaseArray<T, U extends T[] | TypedArray | undefined>(
+  value: U,
+  rawDims: number[]
+): U extends T[] | TypedArray ? NdArray<U> : undefined;
+
+export function useBaseArray<T>(
+  value: T[] | TypedArray | undefined,
+  rawDims: number[]
+) {
+  return useMemo(() => getBaseArray(value, rawDims), [value, rawDims]);
+}
+
 const useApplyMapping = createMemo(applyMapping);
 
 export function useMappedArray<T, U extends T[] | TypedArray | undefined>(

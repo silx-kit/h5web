@@ -127,12 +127,12 @@ function HeatmapVis(props: Props) {
           }}
         />
         <HeatmapMesh
-          values={toTypedNdArray(dataArray)}
+          values={toTypedNdArray(dataArray, Float32Array)}
           domain={domain}
           colorMap={colorMap}
           invertColorMap={invertColorMap}
           scaleType={scaleType}
-          alphaValues={alpha && toTypedNdArray(alpha.array)}
+          alphaValues={alpha && toTypedNdArray(alpha.array, Float32Array)}
           alphaDomain={alpha?.domain}
         />
         {children}
