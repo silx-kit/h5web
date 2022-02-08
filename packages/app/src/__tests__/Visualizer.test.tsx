@@ -8,31 +8,6 @@ import {
   selectExplorerNode,
 } from '../test-utils';
 
-test('switch between visualisations', async () => {
-  await renderApp();
-  await selectExplorerNode('nD_datasets/oneD');
-
-  const lineTab = await screen.findByRole('tab', { name: 'Line' });
-  expect(lineTab).toBeVisible();
-  expect(lineTab).toHaveAttribute('aria-selected', 'true');
-
-  const matrixTab = screen.getByRole('tab', { name: 'Matrix' });
-  expect(matrixTab).toBeVisible();
-  expect(matrixTab).toHaveAttribute('aria-selected', 'false');
-
-  // Switch to Matrix visualisation
-  userEvent.click(matrixTab);
-
-  expect(screen.getByRole('tab', { name: 'Matrix' })).toHaveAttribute(
-    'aria-selected',
-    'true'
-  );
-  expect(screen.getByRole('tab', { name: 'Line' })).toHaveAttribute(
-    'aria-selected',
-    'false'
-  );
-});
-
 test('show fallback message when no visualization is supported', async () => {
   await renderApp();
   await selectExplorerNode('entities'); // simple group

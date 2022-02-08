@@ -6,7 +6,7 @@
 H5Web is a collection of React components to visualize and explore data. It
 consists of two packages:
 
-- `@h5web/lib`: visualisation components built with
+- `@h5web/lib`: visualization components built with
   [react-three-fiber](https://github.com/react-spring/react-three-fiber).
 - `@h5web/app`: a stand-alone, web-based viewer to explore HDF5 files **(this
   library)**.

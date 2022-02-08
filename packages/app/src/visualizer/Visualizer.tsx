@@ -24,7 +24,13 @@ function Visualizer(props: Props) {
   }
 
   const { entity, supportedVis } = resolution;
-  return <VisManager entity={entity} supportedVis={supportedVis} />;
+  return (
+    <VisManager
+      key={entity.path} // reset local states when changing entity (e.g. active vis)
+      entity={entity}
+      supportedVis={supportedVis}
+    />
+  );
 }
 
 export default Visualizer;

@@ -12,7 +12,7 @@ consists of two packages:
   back-end solutions.
 
 > While H5Web was initially built with the HDF5 format in mind, @h5web/lib
-> visualisation components are not tied to HDF5 and can be used to visualize
+> visualization components are not tied to HDF5 and can be used to visualize
 > data from any source. Also, @h5web/app lets you write your own data provider
 > and can therefore work with any other hierarchical data format.
 
