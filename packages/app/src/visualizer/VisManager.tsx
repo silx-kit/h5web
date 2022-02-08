@@ -29,8 +29,8 @@ function VisManager(props: Props) {
   const [visBarElem, setVisBarElem] = useState<HTMLDivElement>();
 
   const { valuesStore } = useContext(ProviderContext);
-  function onVisChange(vis: VisDef) {
-    setActiveVis(vis);
+  function onVisChange(index: number) {
+    setActiveVis(index);
     valuesStore.cancelOngoing();
     valuesStore.evictCancelled();
   }
@@ -49,11 +49,7 @@ function VisManager(props: Props) {
       </div>
 
       <div className={styles.visArea}>
-        <Container
-          key={entity.path}
-          entity={entity}
-          toolbarContainer={visBarElem}
-        />
+        <Container entity={entity} toolbarContainer={visBarElem} />
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import styles from './VisSelector.module.css';
 interface Props<T extends VisDef> {
   activeVis: T;
   choices: T[];
-  onChange: (vis: T) => void;
+  onChange: (index: number) => void;
 }
 
 function VisSelector<T extends VisDef>(props: Props<T>) {
@@ -12,7 +12,7 @@ function VisSelector<T extends VisDef>(props: Props<T>) {
 
   return (
     <div className={styles.selector} role="tablist" aria-label="Visualization">
-      {choices.map((vis) => {
+      {choices.map((vis, index) => {
         const { name, Icon } = vis;
 
         return (
@@ -22,7 +22,7 @@ function VisSelector<T extends VisDef>(props: Props<T>) {
             type="button"
             role="tab"
             aria-selected={vis === activeVis}
-            onClick={() => onChange(vis)}
+            onClick={() => onChange(index)}
           >
             <Icon className={styles.icon} />
             {name}
