@@ -1,12 +1,13 @@
-import { useMemo } from 'react';
 import type { ReactNode } from 'react';
+import { useMemo } from 'react';
 import { DataTexture, FloatType, RGBFormat, UnsignedByteType } from 'three';
 
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
-import PanZoomMesh from '../shared/PanZoomMesh';
+import PanMesh from '../shared/PanMesh';
 import VisCanvas from '../shared/VisCanvas';
 import VisMesh from '../shared/VisMesh';
+import ZoomMesh from '../shared/ZoomMesh';
 import { ImageType } from './models';
 import { flipLastDimension } from './utils';
 
@@ -77,7 +78,8 @@ function RgbVis(props: Props) {
           flip: true,
         }}
       >
-        <PanZoomMesh />
+        <PanMesh />
+        <ZoomMesh />
         <VisMesh scale={[1, -1, 1]}>
           <meshBasicMaterial map={texture} />
         </VisMesh>

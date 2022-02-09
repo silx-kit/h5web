@@ -2,17 +2,18 @@ import type { Domain, NumericType } from '@h5web/shared';
 import {
   assertDefined,
   formatTooltipVal,
-  toTypedNdArray,
   ScaleType,
+  toTypedNdArray,
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
-import type { VisScaleType, AxisParams } from '../models';
-import PanZoomMesh from '../shared/PanZoomMesh';
+import type { AxisParams, VisScaleType } from '../models';
+import PanMesh from '../shared/PanMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
+import ZoomMesh from '../shared/ZoomMesh';
 import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
@@ -20,8 +21,8 @@ import styles from './HeatmapVis.module.css';
 import { useAxisValues } from './hooks';
 import type {
   ColorMap,
-  TextureTypedArray,
   Layout,
+  TextureTypedArray,
   TooltipData,
 } from './models';
 import { getDims } from './utils';
@@ -98,7 +99,8 @@ function HeatmapVis(props: Props) {
           flip: flipYAxis,
         }}
       >
-        <PanZoomMesh />
+        <PanMesh />
+        <ZoomMesh />
         <TooltipMesh
           guides="both"
           renderTooltip={(x, y) => {

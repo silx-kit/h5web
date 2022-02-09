@@ -17,9 +17,12 @@ import {
   useValueToIndexScale,
 } from '../hooks';
 import type { AxisParams } from '../models';
-import PanZoomMesh from '../shared/PanZoomMesh';
+import PanMesh from '../shared/PanMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
+import XAxisZoomMesh from '../shared/XAxisZoomMesh';
+import YAxisZoomMesh from '../shared/YAxisZoomMesh';
+import ZoomMesh from '../shared/ZoomMesh';
 import { extendDomain, DEFAULT_DOMAIN, formatNumType } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
@@ -117,7 +120,10 @@ function LineVis(props: Props) {
           label: ordinateLabel,
         }}
       >
-        <PanZoomMesh />
+        <PanMesh />
+        <ZoomMesh />
+        <XAxisZoomMesh />
+        <YAxisZoomMesh />
         <TooltipMesh
           guides="vertical"
           renderTooltip={(x) => {

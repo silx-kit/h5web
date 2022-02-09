@@ -1,13 +1,8 @@
 import type { MeshProps } from '@react-three/fiber';
-import type { ReactNode } from 'react';
 
 import { useAxisSystemContext } from './AxisSystemContext';
 
-interface Props extends MeshProps {
-  children: ReactNode;
-}
-
-function VisMesh(props: Props) {
+function VisMesh(props: MeshProps) {
   const { children, ...meshProps } = props;
 
   const { visSize } = useAxisSystemContext();

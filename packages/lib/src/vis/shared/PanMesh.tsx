@@ -5,6 +5,7 @@ import type { Vector3 } from 'three';
 
 import type { ModifierKey } from '../models';
 import { noModifierKeyPressed } from '../utils';
+import InteractionMesh from './InteractionMesh';
 import { useMoveCameraTo } from './hooks';
 
 interface Props {
@@ -16,7 +17,6 @@ function PanMesh(props: Props) {
   const { disabled, modifierKey } = props;
 
   const camera = useThree((state) => state.camera);
-  const { width, height } = useThree((state) => state.size);
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
 
@@ -69,12 +69,7 @@ function PanMesh(props: Props) {
     [camera, disabled, moveCameraTo]
   );
 
-  return (
-    <mesh {...{ onPointerMove, onPointerUp, onPointerDown }}>
-      <meshBasicMaterial opacity={0} transparent />
-      <planeGeometry args={[width, height]} />
-    </mesh>
-  );
+  return <InteractionMesh {...{ onPointerMove, onPointerUp, onPointerDown }} />;
 }
 
 export default PanMesh;

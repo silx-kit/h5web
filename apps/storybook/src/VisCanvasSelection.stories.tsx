@@ -1,6 +1,7 @@
 import {
   LineSelectionMesh,
-  PanZoomMesh,
+  PanMesh,
+  ZoomMesh,
   RectSelectionMesh,
   VisCanvas,
 } from '@h5web/lib';
@@ -14,7 +15,8 @@ import VisCanvasStoriesConfig from './VisCanvas.stories';
 interface TemplateProps {
   selection?: 'line' | 'rectangle';
   yFlip?: boolean;
-  panZoom?: boolean;
+  disablePan?: boolean;
+  disableZoom?: boolean;
   modifierKey?: 'Alt' | 'Control' | 'Shift';
 }
 
@@ -23,7 +25,13 @@ function vectorToStr(vec: Vector2) {
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { selection, yFlip = false, panZoom = false, modifierKey } = args;
+  const {
+    selection,
+    yFlip = false,
+    disablePan = true,
+    disableZoom = true,
+    modifierKey,
+  } = args;
 
   const [selectedVectors, setSelectedVectors] = useState<[Vector2, Vector2]>();
 
@@ -42,7 +50,8 @@ const Template: Story<TemplateProps> = (args) => {
         abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
         ordinateConfig={{ visDomain: [50, 100], showGrid: true, flip: yFlip }}
       >
-        {panZoom && <PanZoomMesh />}
+        <PanMesh disabled={disablePan} />
+        <ZoomMesh disabled={disableZoom} />
         {selection === 'line' && (
           <LineSelectionMesh
             onSelection={(start, end) => setSelectedVectors([start, end])}
@@ -73,7 +82,8 @@ SelectingLines.args = {
 export const SelectingWithModifierAndZoom = Template.bind({});
 SelectingWithModifierAndZoom.args = {
   selection: 'line',
-  panZoom: true,
+  disablePan: false,
+  disableZoom: false,
   modifierKey: 'Shift',
 };
 

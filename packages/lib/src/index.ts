@@ -27,8 +27,10 @@ export { default as ExportMenu } from './toolbar/controls/ExportMenu';
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';
 export type { VisCanvasProps } from './vis/shared/VisCanvas';
-export { default as PanZoomMesh } from './vis/shared/PanZoomMesh';
-export type { PanZoomProps } from './vis/shared/PanZoomMesh';
+export { default as PanMesh } from './vis/shared/PanMesh';
+export { default as ZoomMesh } from './vis/shared/ZoomMesh';
+export { default as XAxisZoomMesh } from './vis/shared/XAxisZoomMesh';
+export { default as YAxisZoomMesh } from './vis/shared/YAxisZoomMesh';
 export { default as TooltipMesh } from './vis/shared/TooltipMesh';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
 export { default as VisMesh } from './vis/shared/VisMesh';

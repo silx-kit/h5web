@@ -4,8 +4,9 @@ import { assertDataLength, ScaleType } from '@h5web/shared';
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
-import PanZoomMesh from '../shared/PanZoomMesh';
+import PanMesh from '../shared/PanMesh';
 import VisCanvas from '../shared/VisCanvas';
+import ZoomMesh from '../shared/ZoomMesh';
 import { DEFAULT_DOMAIN } from '../utils';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
@@ -53,7 +54,8 @@ function ScatterVis(props: Props) {
           showGrid,
         }}
       >
-        <PanZoomMesh />
+        <PanMesh />
+        <ZoomMesh />
         <ScatterPoints
           abscissas={abscissas}
           ordinates={ordinates}
