@@ -96,9 +96,9 @@ AuxiliaryArrays.args = {
 
 export const TypedArrays = Template.bind({});
 TypedArrays.args = {
-  dataArray: toTypedNdArray(primaryArray),
-  errorsArray: toTypedNdArray(errorsArray),
-  auxArrays: [toTypedNdArray(secondaryArray)],
+  dataArray: toTypedNdArray(primaryArray, Float32Array),
+  errorsArray: toTypedNdArray(errorsArray, Float32Array),
+  auxArrays: [toTypedNdArray(secondaryArray, Float32Array)],
   showErrors: true,
 };
 

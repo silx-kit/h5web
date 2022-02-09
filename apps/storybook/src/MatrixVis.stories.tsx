@@ -35,7 +35,7 @@ Complex.args = {
 
 export const TypedArray = Template.bind({});
 TypedArray.args = {
-  dataArray: toTypedNdArray(dataArray),
+  dataArray: toTypedNdArray(dataArray, Float32Array),
   formatter: (val) => formatMatrixValue(val as number),
   cellWidth: 116,
 };

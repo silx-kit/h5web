@@ -96,9 +96,12 @@ Alpha.args = {
 
 export const TypedArray = Template.bind({});
 TypedArray.args = {
-  dataArray: toTypedNdArray(dataArray),
+  dataArray: toTypedNdArray(dataArray, Float32Array),
   domain,
-  alpha: { array: toTypedNdArray(alphaArray), domain: alphaDomain },
+  alpha: {
+    array: toTypedNdArray(alphaArray, Float32Array),
+    domain: alphaDomain,
+  },
 };
 
 export default {

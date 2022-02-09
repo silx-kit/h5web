@@ -46,7 +46,7 @@ const Template: Story<HeatmapMeshProps> = (args) => {
 
 export const Default = Template.bind({});
 Default.args = {
-  values: toTypedNdArray(dataArray),
+  values: toTypedNdArray(dataArray, Float32Array),
   domain,
   scaleType: ScaleType.SymLog,
   colorMap: 'Inferno',

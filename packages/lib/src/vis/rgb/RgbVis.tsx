@@ -1,9 +1,12 @@
+import { toTypedNdArray } from '@h5web/shared';
+import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
-import { DataTexture, FloatType, RGBFormat, UnsignedByteType } from 'three';
+import { DataTexture, RGBFormat } from 'three';
 
 import styles from '../heatmap/HeatmapVis.module.css';
-import type { Layout } from '../heatmap/models';
+import type { Layout, TextureTypedArray } from '../heatmap/models';
+import { getDims, TEXTURE_TYPE_BY_DTYPE } from '../heatmap/utils';
 import PanMesh from '../shared/PanMesh';
 import VisCanvas from '../shared/VisCanvas';
 import VisMesh from '../shared/VisMesh';
@@ -12,9 +15,7 @@ import { ImageType } from './models';
 import { flipLastDimension } from './utils';
 
 interface Props {
-  value: number[];
-  dims: number[];
-  floatFormat?: boolean;
+  dataArray: NdArray<number[] | TextureTypedArray>;
   layout?: Layout;
   showGrid?: boolean;
   title?: string;
@@ -24,9 +25,7 @@ interface Props {
 
 function RgbVis(props: Props) {
   const {
-    value,
-    dims,
-    floatFormat,
+    dataArray,
     layout = 'cover',
     showGrid = false,
     title,
@@ -34,31 +33,20 @@ function RgbVis(props: Props) {
     children,
   } = props;
 
-  const rgbValue = useMemo(
-    () =>
-      imageType === ImageType.BGR ? flipLastDimension(value, dims) : value,
-    [value, dims, imageType]
-  );
+  const values = useMemo(() => {
+    const typedDataArray = toTypedNdArray(dataArray, Uint8Array); // if `number[]`, assume uint8: [0, 255]
+    return imageType === ImageType.BGR
+      ? flipLastDimension(typedDataArray)
+      : typedDataArray;
+  }, [dataArray, imageType]);
 
-  const [rows, cols] = dims;
+  const { rows, cols } = getDims(dataArray);
 
   const texture = useMemo(() => {
-    return floatFormat
-      ? new DataTexture(
-          Float32Array.from(rgbValue),
-          cols,
-          rows,
-          RGBFormat,
-          FloatType
-        )
-      : new DataTexture(
-          Uint8Array.from(rgbValue),
-          cols,
-          rows,
-          RGBFormat,
-          UnsignedByteType
-        );
-  }, [floatFormat, rgbValue, cols, rows]);
+    const { data, dtype } = values;
+    const textureType = TEXTURE_TYPE_BY_DTYPE[dtype];
+    return new DataTexture(data, cols, rows, RGBFormat, textureType);
+  }, [cols, rows, values]);
 
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>

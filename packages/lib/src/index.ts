@@ -89,7 +89,12 @@ export type {
   AxisParams,
 } from './vis/models';
 
-export type { Dims, D3Interpolator, ColorMap } from './vis/heatmap/models';
+export type {
+  Dims,
+  D3Interpolator,
+  ColorMap,
+  TextureTypedArray,
+} from './vis/heatmap/models';
 
 // Mock data and utilities
 export {

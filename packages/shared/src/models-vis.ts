@@ -3,6 +3,17 @@ import type { NdArray, TypedArray } from 'ndarray';
 export type NumArray = TypedArray | number[];
 export type AnyNumArray = NdArray<NumArray> | NumArray;
 
+export type TypedArrayConstructor =
+  | Int8ArrayConstructor
+  | Int16ArrayConstructor
+  | Int32ArrayConstructor
+  | Uint8ArrayConstructor
+  | Uint8ClampedArrayConstructor
+  | Uint16ArrayConstructor
+  | Uint32ArrayConstructor
+  | Float32ArrayConstructor
+  | Float64ArrayConstructor;
+
 export type Domain = [number, number];
 
 export enum ScaleType {

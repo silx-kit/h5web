@@ -1,11 +1,11 @@
 import { HeatmapVis } from '@h5web/lib';
-import type { TextureTypedArray } from '@h5web/lib/src/vis/heatmap/models';
 import type {
   ArrayShape,
   Dataset,
   NumericType,
   ScaleType,
 } from '@h5web/shared';
+import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
@@ -16,11 +16,12 @@ import { DEFAULT_DOMAIN } from '../utils';
 import HeatmapToolbar from './HeatmapToolbar';
 import { useHeatmapConfig } from './config';
 import { useSafeDomain, useVisDomain } from './hooks';
+import { assertTextureNumArray } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericType>;
   selection: string | undefined;
-  value: number[] | TextureTypedArray;
+  value: number[] | TypedArray;
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
@@ -54,6 +55,7 @@ function MappedHeatmapVis(props: Props) {
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
+  assertTextureNumArray(value);
   const [dataArray] = useMappedArray(value, slicedDims, slicedMapping);
 
   const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
