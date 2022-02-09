@@ -1,5 +1,5 @@
 import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
-import type { Domain } from '@h5web/shared';
+import type { Domain, AnyNumArray } from '@h5web/shared';
 import { useEventListener } from '@react-hookz/web';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { NdArray } from 'ndarray';
@@ -21,9 +21,9 @@ const useValidDomainForScale = createMemo(getValidDomainForScale);
 export const useAxisDomain = createMemo(getAxisDomain);
 
 export function useDomain(
-  valuesArray: NdArray<number[]> | number[],
+  valuesArray: AnyNumArray,
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: NdArray<number[]> | number[]
+  errorArray?: AnyNumArray
 ) {
   const bounds = useBounds(valuesArray, errorArray);
   return useValidDomainForScale(bounds, scaleType);

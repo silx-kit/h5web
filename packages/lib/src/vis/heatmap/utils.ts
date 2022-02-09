@@ -1,4 +1,5 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { Domain, NumArray, ScaleType } from '@h5web/shared';
+import { isTypedArray } from '@h5web/shared';
 import { range } from 'lodash';
 import type { DataType, NdArray } from 'ndarray';
 import type { PixelFormat, TextureDataType } from 'three';
@@ -127,7 +128,7 @@ export function getLinearGradient(
 }
 
 export function getAxisValues(
-  rawValues: number[] | undefined,
+  rawValues: NumArray | undefined,
   pixelCount: number
 ): number[] {
   if (!rawValues) {
@@ -135,7 +136,7 @@ export function getAxisValues(
   }
 
   if (rawValues.length === pixelCount + 1) {
-    return rawValues;
+    return isTypedArray(rawValues) ? [...rawValues] : rawValues;
   }
 
   if (rawValues.length === pixelCount) {

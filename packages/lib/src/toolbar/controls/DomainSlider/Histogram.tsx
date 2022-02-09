@@ -53,7 +53,7 @@ function Histogram(props: Props) {
   return (
     <div ref={ref} className={styles.container}>
       <svg width="100%" height="100%" className={styles.histogram}>
-        {values.map((d, i) => (
+        {(values as number[]).map((d, i) => (
           <rect
             className={styles.bar}
             key={i} // eslint-disable-line react/no-array-index-key

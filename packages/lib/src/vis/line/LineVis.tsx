@@ -1,5 +1,6 @@
 import type { Domain, NumArray, NumericType } from '@h5web/shared';
 import {
+  isTypedArray,
   assertDataLength,
   assertDefined,
   formatTooltipVal,
@@ -79,7 +80,11 @@ function LineVis(props: Props) {
   auxArrays.forEach((arr) => assertDataLength(arr, dataArray, 'auxiliary'));
 
   const abscissas = useMemo(() => {
-    return abscissaValue ?? range(dataArray.size);
+    if (abscissaValue) {
+      return isTypedArray(abscissaValue) ? [...abscissaValue] : abscissaValue;
+    }
+
+    return range(dataArray.size);
   }, [abscissaValue, dataArray.size]);
 
   const abscissaToIndex = useValueToIndexScale(abscissas, true);
