@@ -6,7 +6,6 @@ import type {
   NumArray,
   NumArrayDataset,
   NumericType,
-  Primitive,
   ScalarShape,
   ScaleType,
   StringType,

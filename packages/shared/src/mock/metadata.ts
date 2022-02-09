@@ -56,6 +56,14 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       withImageAttributes(makeDataset('threeD_rgb', intType, [3, 3, 3])),
       makeDataset('fourD', intType, [3, 9, 20, 41]),
     ]),
+    makeGroup('typed_arrays', [
+      makeDataset('uint8', intType, [2, 2]),
+      makeDataset('int16', intType, [2, 2]),
+      makeDataset('float32', intType, [2, 2]),
+      makeDataset('float64', intType, [2, 2]),
+      withImageAttributes(makeDataset('uint8_rgb', intType, [3, 3, 3])),
+      withImageAttributes(makeDataset('float32_rgb', intType, [3, 3, 3])),
+    ]),
     makeNxGroup('nexus_entry', 'NXentry', {
       defaultPath: 'nx_process/nx_data',
       children: [

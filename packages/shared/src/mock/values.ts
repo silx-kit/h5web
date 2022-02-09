@@ -16,6 +16,27 @@ const fourD = arr4.map((divider) =>
   )
 );
 
+const typed = [0, 1, 2, 3];
+const rgb = [
+  [
+    [255, 0, 0],
+    [0, 255, 0],
+    [0, 0, 255],
+  ],
+  [
+    [0, 255, 255],
+    [255, 0, 255],
+    [255, 255, 0],
+  ],
+  [
+    [0, 0, 0],
+    [128, 128, 128],
+    [255, 255, 255],
+  ],
+];
+
+const rgbFlat = rgb.flat(Infinity) as number[];
+
 export const mockValues = {
   null: null,
   raw: { int: 42 },
@@ -100,24 +121,14 @@ export const mockValues = {
       ],
     ],
   ],
-  threeD_rgb: [
-    [
-      [255, 0, 0],
-      [0, 255, 0],
-      [0, 0, 255],
-    ],
-    [
-      [0, 255, 255],
-      [255, 0, 255],
-      [255, 255, 0],
-    ],
-    [
-      [0, 0, 0],
-      [128, 128, 128],
-      [255, 255, 255],
-    ],
-  ],
+  threeD_rgb: rgb,
   fourD,
+  uint8: Uint8Array.from(typed),
+  int16: Int16Array.from(typed),
+  float32: Float32Array.from(typed),
+  float64: Float64Array.from(typed),
+  uint8_rgb: Uint8Array.from(rgbFlat),
+  float32_rgb: Float32Array.from(rgbFlat),
   X: arr1,
   X_log: arr1.map((_, i) => (i + 1) * 0.1),
   Y: arr2,

@@ -369,11 +369,17 @@ export function isNdArray<T extends Data>(
 }
 
 export function isTypedArray<T, U extends TypedArray>(arr: U | T[]): arr is U {
-  return isTypedArrayLodash(arr);
+  return !Array.isArray(arr);
 }
 
 export function isTypedNdArray<T extends NumArray>(
-  arr: NdArray<T>
-): arr is NdArray<Exclude<T, number[]>> {
-  return isTypedArray(arr.data);
+  ndArr: NdArray<T>
+): ndArr is NdArray<Exclude<T, number[]>> {
+  return isTypedArray(ndArr.data);
+}
+
+export function isFloat32NdArray(
+  ndArr: NdArray<TypedArray>
+): ndArr is NdArray<Float32Array> {
+  return ndArr.dtype === 'float32';
 }

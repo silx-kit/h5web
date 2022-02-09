@@ -80,11 +80,11 @@ function LineVis(props: Props) {
   auxArrays.forEach((arr) => assertDataLength(arr, dataArray, 'auxiliary'));
 
   const abscissas = useMemo(() => {
-    if (abscissaValue) {
-      return isTypedArray(abscissaValue) ? [...abscissaValue] : abscissaValue;
+    if (!abscissaValue) {
+      return range(dataArray.size);
     }
 
-    return range(dataArray.size);
+    return isTypedArray(abscissaValue) ? [...abscissaValue] : abscissaValue;
   }, [abscissaValue, dataArray.size]);
 
   const abscissaToIndex = useValueToIndexScale(abscissas, true);

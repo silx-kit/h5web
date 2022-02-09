@@ -16,7 +16,6 @@ import { DEFAULT_DOMAIN } from '../utils';
 import HeatmapToolbar from './HeatmapToolbar';
 import { useHeatmapConfig } from './config';
 import { useSafeDomain, useVisDomain } from './hooks';
-import { assertTextureNumArray } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericType>;
@@ -54,8 +53,6 @@ function MappedHeatmapVis(props: Props) {
   } = useHeatmapConfig((state) => state, shallow);
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-
-  assertTextureNumArray(value);
   const [dataArray] = useMappedArray(value, slicedDims, slicedMapping);
 
   const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;

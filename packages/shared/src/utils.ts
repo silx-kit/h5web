@@ -8,12 +8,17 @@ import {
   isNdArray,
   isTypedArray,
   isTypedNdArray,
+  isFloat32NdArray,
 } from './guards';
 import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
 import { ScaleType } from './models-vis';
-import type { Bounds, Domain, AnyNumArray, NumArray } from './models-vis';
-
-import type { TypedArrayConstructor } from '.';
+import type {
+  Bounds,
+  Domain,
+  AnyNumArray,
+  NumArray,
+  TypedArrayConstructor,
+} from './models-vis';
 
 export const formatTick = format('.5~g');
 export const formatBound = format('.3~e');
@@ -47,17 +52,21 @@ export function getValues(arr: AnyNumArray): NumArray {
   return isNdArray(arr) ? arr.data : arr;
 }
 
-export function toTypedNdArray<
-  T extends NumArray,
-  U extends TypedArrayConstructor
->(arr: NdArray<T>, TypedArrayConstructor: U) {
-  if (isTypedNdArray(arr)) {
+export function toTypedNdArray<T extends TypedArrayConstructor>(
+  arr: NdArray<NumArray>,
+  Constructor: T
+): NdArray<InstanceType<T>> {
+  return ndarray(Constructor.from(arr.data) as InstanceType<T>, arr.shape);
+}
+
+export function toTextureSafeNdArray(
+  arr: NdArray<number[] | TypedArray>
+): NdArray<Float32Array> {
+  if (isTypedNdArray(arr) && isFloat32NdArray(arr)) {
     return arr;
   }
 
-  return ndarray(TypedArrayConstructor.from(arr.data), arr.shape) as NdArray<
-    InstanceType<U>
-  >;
+  return toTypedNdArray(arr, Float32Array);
 }
 
 export function getChildEntity(
@@ -81,9 +90,9 @@ export function createArrayFromView<T, U extends TypedArray | T[]>(
   const { data } = view;
 
   const array = ndarray(
-    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-    // @ts-ignore (`data.constructor` resolves to `Function`)
-    (isTypedArray(data) ? new data.constructor(view.size) : []) as U,
+    (isTypedArray(data)
+      ? new (data.constructor as TypedArrayConstructor)(view.size)
+      : []) as U,
     view.shape
   );
 

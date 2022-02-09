@@ -1,6 +1,3 @@
-import type { Domain } from '@h5web/shared';
-import type { TypedArray } from 'ndarray';
-
 import type { INTERPOLATORS } from './interpolators';
 
 export interface Dims {
@@ -22,16 +19,3 @@ export interface TooltipData {
   x: number;
   y: number;
 }
-
-export interface ScaleShader {
-  uniforms: (
-    domain: Domain,
-    exponent?: number
-  ) => Record<string, { value: number }>;
-  fragment: string;
-}
-
-export type TextureTypedArray = Exclude<
-  TypedArray,
-  Uint8ClampedArray | Float64Array
->;
