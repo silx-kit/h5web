@@ -1,5 +1,5 @@
 import type { Object3DNode } from '@react-three/fiber';
-import { extend, invalidate } from '@react-three/fiber';
+import { extend, useThree } from '@react-three/fiber';
 import { useLayoutEffect, useState } from 'react';
 import type { Vector2 } from 'three';
 import { BufferGeometry, Line } from 'three';
@@ -25,11 +25,13 @@ interface Props {
 function SelectionLine(props: Props) {
   const { startPoint, endPoint, color = 'black' } = props;
   const [dataGeometry] = useState(() => new BufferGeometry());
+  const invalidate = useThree((state) => state.invalidate);
 
   useLayoutEffect(() => {
     dataGeometry.setFromPoints([startPoint, endPoint]);
+    dataGeometry.computeBoundingSphere();
     invalidate();
-  }, [dataGeometry, endPoint, startPoint]);
+  }, [dataGeometry, endPoint, invalidate, startPoint]);
 
   return (
     <line_ geometry={dataGeometry}>
