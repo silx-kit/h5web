@@ -101,6 +101,14 @@ export function assertArray<T>(val: unknown): asserts val is T[] {
   }
 }
 
+export function assertArrayOrTypedArray<T>(
+  val: unknown
+): asserts val is T[] | TypedArray {
+  if (!Array.isArray(val) && !isTypedArrayLodash(val)) {
+    throw new TypeError('Expected array or typed array');
+  }
+}
+
 export function isGroup(entity: Entity): entity is Group {
   return entity.kind === EntityKind.Group;
 }
@@ -318,7 +326,7 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   dataset: D
 ): asserts value is Value<D> {
   if (hasArrayShape(dataset)) {
-    assertArray(value);
+    assertArrayOrTypedArray(value);
 
     if (value.length > 0) {
       assertPrimitiveValue(dataset, value[0]);

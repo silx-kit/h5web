@@ -218,9 +218,8 @@ function HeatmapMesh(props: Props) {
 
       void main() {
         float value = texture2D(data, coords).r;
-        bool isNotFinite = isnan(value) || isinf(value);
 
-        if (isNotFinite || !isSupported(value)) {
+        if (isnan(value) || isinf(value) || !isSupported(value)) {
           gl_FragColor = nanColor;
         } else {
           gl_FragColor = texture2D(colorMap, vec2(scale(value), 0.5));
