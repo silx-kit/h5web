@@ -100,6 +100,7 @@ importers:
       react-dom: 17.0.2
       react-icons: 4.3.1
       react-scripts: 4.0.3
+      react-suspense-fetch: 0.4.0
       three: 0.135.0
       typescript: 4.5.4
       webpack: 4.46.0
@@ -113,6 +114,7 @@ importers:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-icons: 4.3.1_react@17.0.2
+      react-suspense-fetch: 0.4.0
       three: 0.135.0
     devDependencies:
       '@babel/core': 7.16.12
