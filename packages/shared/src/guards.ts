@@ -377,9 +377,3 @@ export function isTypedNdArray<T extends NumArray>(
 ): ndArr is NdArray<Exclude<T, number[]>> {
   return ndArr.dtype !== 'array';
 }
-
-export function isFloat32NdArray(
-  ndArr: NdArray<TypedArray>
-): ndArr is NdArray<Float32Array> {
-  return ndArr.dtype === 'float32';
-}

@@ -11,6 +11,7 @@ import {
 import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
+import type { IUniform } from 'three';
 import { Vector3, Matrix4 } from 'three';
 import { clamp } from 'three/src/math/MathUtils';
 
@@ -311,4 +312,12 @@ export function projectCameraToHtml(
 
 export function noModifierKeyPressed(event: MouseEvent) {
   return !event.altKey && !event.ctrlKey && !event.shiftKey;
+}
+
+export function getUniforms(
+  uniforms: Record<string, unknown>
+): Record<string, IUniform> {
+  return Object.fromEntries(
+    Object.entries(uniforms).map(([key, value]) => [key, { value }])
+  );
 }

@@ -1,5 +1,5 @@
 import type { Domain } from '@h5web/shared';
-import { ScaleType, isScaleType } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared';
 import { rgb } from 'd3-color';
 import type { NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
@@ -9,68 +9,32 @@ import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
 import { useAxisSystemContext } from '../..';
 import type { VisScaleType } from '../models';
 import VisMesh from '../shared/VisMesh';
-import { DEFAULT_DOMAIN } from '../utils';
-import type { ColorMap } from './models';
+import { DEFAULT_DOMAIN, getUniforms } from '../utils';
+import type { ColorMap, TextureSafeTypedArray } from './models';
 import { getDataTexture, getInterpolator, scaleDomain } from './utils';
 
 interface Props {
-  values: NdArray<Float32Array | Uint16Array>; // if `Uint16Array`, it must contain half floats
+  values: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   domain: Domain;
   scaleType: VisScaleType;
   colorMap: ColorMap;
   invertColorMap?: boolean;
   magFilter?: TextureFilter;
-  alphaValues?: NdArray<Float32Array | Uint16Array>; // if `Uint16Array`, it must contain half floats
+  alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
 }
 
 const CMAP_SIZE = 256;
 
-const SCALE_SHADER: Record<ScaleType, string> = {
-  [ScaleType.Linear]: `
-    float scale(float value) {
-      return oneOverRange * (value - min);
-    }
+const IMPL_SCALE: Partial<Record<ScaleType, string>> = {
+  [ScaleType.Log]: 'log(value) * oneOverLog10',
+  [ScaleType.SymLog]: 'sign(value) * log(1. + abs(value)) * oneOverLog10',
+  [ScaleType.Sqrt]: 'sqrt(value)',
+};
 
-    bool isSupported(float value) {
-      return true;
-    }`,
-  [ScaleType.Log]: `
-    float scale(float value) {
-      return oneOverRange * (log(value) * oneOverLog10 - min);
-    }
-
-    bool isSupported(float value) {
-      return value > 0.;
-    }`,
-  [ScaleType.SymLog]: `
-    float symlog(float x) {
-      return sign(x) * log(1. + abs(x)) * oneOverLog10;
-    }
-
-    float scale(float value) {
-      return oneOverRange * (symlog(value) - min);
-    }
-
-    bool isSupported(float value) {
-      return true;
-    }`,
-  [ScaleType.Sqrt]: `
-    float scale(float value) {
-      return oneOverRange * (sqrt(value) - min);
-    }
-
-    bool isSupported(float value) {
-      return value >= 0.;
-    }`,
-  [ScaleType.Gamma]: `
-    float scale(float value) {
-      return pow(oneOverRange * (value - min), gammaExponent);
-    }
-
-    bool isSupported(float value) {
-      return true;
-    }`,
+const IMPL_IS_SUPPORTED: Partial<Record<ScaleType, string>> = {
+  [ScaleType.Log]: 'value > 0.',
+  [ScaleType.Sqrt]: 'value >= 0.',
 };
 
 function HeatmapMesh(props: Props) {
@@ -110,26 +74,25 @@ function HeatmapMesh(props: Props) {
     return new DataTexture(colors, CMAP_SIZE, 1, RGBFormat, UnsignedByteType);
   }, [colorMap, invertColorMap]);
 
-  const [scaleType, gammaExponent] = isScaleType(visScaleType)
-    ? [visScaleType]
-    : visScaleType;
+  const [scaleType, gammaExponent] = Array.isArray(visScaleType)
+    ? visScaleType
+    : [visScaleType as ScaleType, 1];
 
-  const scaledDomain = scaleDomain(domain, scaleType as ScaleType);
+  const scaledDomain = scaleDomain(domain, scaleType);
 
   const shader = {
-    uniforms: {
-      data: { value: dataTexture },
-      colorMap: { value: colorMapTexture },
-      min: { value: scaledDomain[0] },
-      oneOverRange: { value: 1 / (scaledDomain[1] - scaledDomain[0]) },
-      gammaExponent: { value: gammaExponent },
-      alpha: { value: alphaTexture },
-      withAlpha: { value: alphaValues ? 1 : 0 },
-      alphaMin: { value: alphaDomain[0] },
-      oneOverAlphaRange: {
-        value: 1 / (alphaDomain[1] - alphaDomain[0]),
-      },
-    },
+    uniforms: getUniforms({
+      data: dataTexture,
+      colorMap: colorMapTexture,
+      min: scaledDomain[0],
+      oneOverRange: 1 / (scaledDomain[1] - scaledDomain[0]),
+      gammaExponent,
+      normRevertFactor: values.dtype === 'uint8' ? 255 : 1, // revert WebGL's automatic normalization of UNSIGNED_BYTE with RED format
+      alpha: alphaTexture,
+      withAlpha: alphaValues ? 1 : 0,
+      alphaMin: alphaDomain[0],
+      oneOverAlphaRange: 1 / (alphaDomain[1] - alphaDomain[0]),
+    }),
     vertexShader: `
       varying vec2 coords;
 
@@ -145,6 +108,7 @@ function HeatmapMesh(props: Props) {
       uniform float min;
       uniform float oneOverRange;
       uniform float gammaExponent;
+      uniform float normRevertFactor;
 
       uniform sampler2D alpha;
       uniform float alphaMin;
@@ -156,15 +120,24 @@ function HeatmapMesh(props: Props) {
 
       varying vec2 coords;
 
-      ${SCALE_SHADER[isScaleType(scaleType) ? scaleType : ScaleType.Gamma]}
+      bool isSupported(float value) {
+        return ${IMPL_IS_SUPPORTED[scaleType] || 'true'};
+      }
+
+      float scale(float value) {
+        return ${IMPL_SCALE[scaleType] || 'value'};
+      }
 
       void main() {
-        float value = texture2D(data, coords).r;
+        float value = texture2D(data, coords).r * normRevertFactor;
 
         if (isnan(value) || isinf(value) || !isSupported(value)) {
           gl_FragColor = nanColor;
         } else {
-          gl_FragColor = texture2D(colorMap, vec2(scale(value), 0.5));
+          float scaledValue = scale(value);
+          float normalizedValue = clamp(oneOverRange * (scaledValue - min), 0., 1.);
+
+          gl_FragColor = texture2D(colorMap, vec2(pow(normalizedValue, gammaExponent), 0.5));
 
           if (withAlpha == 1) {
             gl_FragColor.a = oneOverAlphaRange * (texture2D(alpha, coords).r - alphaMin);

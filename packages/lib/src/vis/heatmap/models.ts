@@ -19,3 +19,8 @@ export interface TooltipData {
   x: number;
   y: number;
 }
+
+export type TextureSafeTypedArray =
+  | Float32Array
+  | Uint8Array
+  | Uint8ClampedArray;

@@ -3,13 +3,7 @@ import ndarray from 'ndarray';
 import type { NdArray, TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
-import {
-  assertDataLength,
-  isNdArray,
-  isTypedArray,
-  isTypedNdArray,
-  isFloat32NdArray,
-} from './guards';
+import { assertDataLength, isNdArray, isTypedArray } from './guards';
 import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
 import { ScaleType } from './models-vis';
 import type {
@@ -57,16 +51,6 @@ export function toTypedNdArray<T extends TypedArrayConstructor>(
   Constructor: T
 ): NdArray<InstanceType<T>> {
   return ndarray(Constructor.from(arr.data) as InstanceType<T>, arr.shape);
-}
-
-export function toTextureSafeNdArray(
-  arr: NdArray<NumArray>
-): NdArray<Float32Array> {
-  if (isTypedNdArray(arr) && isFloat32NdArray(arr)) {
-    return arr;
-  }
-
-  return toTypedNdArray(arr, Float32Array);
 }
 
 export function getChildEntity(
