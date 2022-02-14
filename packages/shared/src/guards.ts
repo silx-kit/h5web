@@ -375,7 +375,7 @@ export function isTypedArray<T, U extends TypedArray>(arr: U | T[]): arr is U {
 export function isTypedNdArray<T extends NumArray>(
   ndArr: NdArray<T>
 ): ndArr is NdArray<Exclude<T, number[]>> {
-  return isTypedArray(ndArr.data);
+  return ndArr.dtype !== 'array';
 }
 
 export function isFloat32NdArray(

@@ -1,8 +1,8 @@
-import { toTextureSafeNdArray } from '@h5web/shared';
-import type { NdArray, TypedArray } from 'ndarray';
+import type { NumArray } from '@h5web/shared';
+import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
-import { DataTexture, FloatType, RGBFormat } from 'three';
+import { DataTexture, FloatType, RGBFormat, UnsignedByteType } from 'three';
 
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
@@ -12,10 +12,10 @@ import VisCanvas from '../shared/VisCanvas';
 import VisMesh from '../shared/VisMesh';
 import ZoomMesh from '../shared/ZoomMesh';
 import { ImageType } from './models';
-import { flipLastDimension } from './utils';
+import { flipLastDimension, toRgbSafeNdArray } from './utils';
 
 interface Props {
-  dataArray: NdArray<number[] | TypedArray>;
+  dataArray: NdArray<NumArray>;
   layout?: Layout;
   showGrid?: boolean;
   title?: string;
@@ -33,19 +33,24 @@ function RgbVis(props: Props) {
     children,
   } = props;
 
-  const values = useMemo(() => {
-    const typedDataArray = toTextureSafeNdArray(dataArray);
-    return imageType === ImageType.BGR
-      ? flipLastDimension(typedDataArray)
-      : typedDataArray;
-  }, [dataArray, imageType]);
-
   const { rows, cols } = getDims(dataArray);
 
-  const texture = useMemo(
-    () => new DataTexture(values.data, cols, rows, RGBFormat, FloatType),
-    [cols, rows, values]
-  );
+  const texture = useMemo(() => {
+    const typedDataArray = toRgbSafeNdArray(dataArray);
+
+    const flippedDataArray =
+      imageType === ImageType.BGR
+        ? flipLastDimension(typedDataArray)
+        : typedDataArray;
+
+    return new DataTexture(
+      flippedDataArray.data,
+      cols,
+      rows,
+      RGBFormat,
+      flippedDataArray.dtype === 'float32' ? FloatType : UnsignedByteType
+    );
+  }, [dataArray, imageType, cols, rows]);
 
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>

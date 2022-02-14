@@ -60,7 +60,7 @@ export function toTypedNdArray<T extends TypedArrayConstructor>(
 }
 
 export function toTextureSafeNdArray(
-  arr: NdArray<number[] | TypedArray>
+  arr: NdArray<NumArray>
 ): NdArray<Float32Array> {
   if (isTypedNdArray(arr) && isFloat32NdArray(arr)) {
     return arr;
