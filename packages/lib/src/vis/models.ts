@@ -5,6 +5,7 @@ import type {
   BooleanType,
   ComplexType,
   ScaleType,
+  NumArray,
 } from '@h5web/shared';
 import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
 
@@ -72,7 +73,7 @@ export interface AxisOffsets {
 
 export interface AxisParams {
   label?: string;
-  value?: number[];
+  value?: NumArray;
   scaleType?: ScaleType;
 }
 
@@ -85,8 +86,8 @@ export type PrintableType =
   | StringType;
 
 export interface HistogramParams {
-  values: number[];
-  bins: number[];
+  values: NumArray;
+  bins: NumArray;
   colorMap?: ColorMap;
   invertColorMap?: boolean;
 }

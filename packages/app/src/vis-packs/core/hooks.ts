@@ -118,8 +118,6 @@ export function useBaseArray<T>(
   return useMemo(() => getBaseArray(value, rawDims), [value, rawDims]);
 }
 
-const useApplyMapping = createMemo(applyMapping);
-
 export function useMappedArray<T, U extends T[] | TypedArray | undefined>(
   value: U,
   dims: number[],
@@ -136,7 +134,11 @@ export function useMappedArray<T>(
   autoScale?: boolean
 ) {
   const baseArray = useBaseArray(value, dims);
-  const mappedArray = useApplyMapping(baseArray, mapping);
+
+  const mappedArray = useMemo(
+    () => applyMapping(baseArray, mapping),
+    [baseArray, mapping]
+  );
 
   return [mappedArray, autoScale ? mappedArray : baseArray];
 }
@@ -151,6 +153,7 @@ export function useMappedArrays(
     () => values.map((arr) => getBaseArray(arr, dims)),
     [dims, values]
   );
+
   const mappedArrays = useMemo(
     () => baseArrays.map((ndArr) => applyMapping(ndArr, mapping)),
     [baseArrays, mapping]

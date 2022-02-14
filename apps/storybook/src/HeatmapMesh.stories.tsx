@@ -58,7 +58,6 @@ HalfFloatTexture.args = {
   domain: uint16Domain,
   scaleType: ScaleType.Linear,
   colorMap: 'Blues',
-  textureType: HalfFloatType,
 };
 
 export const LinearMagFilter = Template.bind({});

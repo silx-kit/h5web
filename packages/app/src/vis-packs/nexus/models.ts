@@ -1,10 +1,11 @@
 import type {
   ArrayShape,
+  ArrayValue,
   ComplexType,
   Dataset,
+  NumArray,
   NumArrayDataset,
   NumericType,
-  Primitive,
   ScalarShape,
   ScaleType,
   StringType,
@@ -35,11 +36,11 @@ export interface NxData<
 }
 
 export interface NxValues<T extends NumericType | ComplexType> {
-  signal: Primitive<T>[];
+  signal: ArrayValue<T>;
   signalLabel: string;
-  errors?: number[];
+  errors?: NumArray;
   axisMapping: AxisMapping;
-  auxiliaries?: number[][];
+  auxiliaries?: NumArray[];
   title: string;
 }
 

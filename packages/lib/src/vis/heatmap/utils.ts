@@ -1,37 +1,22 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { Domain, NumArray } from '@h5web/shared';
+import { ScaleType, isTypedArray } from '@h5web/shared';
 import { range } from 'lodash';
-import type { DataType, NdArray } from 'ndarray';
-import type { PixelFormat, TextureDataType } from 'three';
+import type { NdArray } from 'ndarray';
 import {
-  ByteType,
   ClampToEdgeWrapping,
   DataTexture,
   FloatType,
-  HalfFloatType,
-  IntType,
   RedFormat,
-  RedIntegerFormat,
-  ShortType,
-  UnsignedByteType,
-  UnsignedInt248Type,
-  UnsignedIntType,
-  UnsignedShort4444Type,
-  UnsignedShort5551Type,
-  UnsignedShortType,
   UVMapping,
   NearestFilter,
+  HalfFloatType,
 } from 'three';
 
 import type { CustomDomain, DomainErrors } from '../models';
 import { DomainError } from '../models';
 import { H5WEB_SCALES } from '../scales';
 import { INTERPOLATORS } from './interpolators';
-import type {
-  ColorMap,
-  TextureTypedArray,
-  D3Interpolator,
-  Dims,
-} from './models';
+import type { ColorMap, D3Interpolator, Dims } from './models';
 
 const GRADIENT_PRECISION = 1 / 20;
 export const GRADIENT_RANGE = range(
@@ -40,24 +25,13 @@ export const GRADIENT_RANGE = range(
   GRADIENT_PRECISION
 );
 
-export const TEXTURE_TYPE_BY_DTYPE: Record<
-  DataType<TextureTypedArray>,
-  TextureDataType
-> = {
-  int8: ByteType,
-  int16: ShortType,
-  int32: IntType,
-  uint8: UnsignedByteType,
-  uint16: UnsignedShortType,
-  uint32: UnsignedIntType,
-  float32: FloatType,
+const SCALE_FNS: Record<ScaleType, (val: number) => number> = {
+  [ScaleType.Linear]: (val) => val,
+  [ScaleType.Log]: Math.log10,
+  [ScaleType.SymLog]: (val) => Math.sign(val) * Math.log10(1 + Math.abs(val)),
+  [ScaleType.Sqrt]: Math.sqrt,
+  [ScaleType.Gamma]: (val) => val,
 };
-
-const UNSUPPORTED_TEXTURE_TYPES = new Set([
-  UnsignedShort4444Type,
-  UnsignedShort5551Type,
-  UnsignedInt248Type,
-]);
 
 export function getVisDomain(
   customDomain: CustomDomain,
@@ -127,7 +101,7 @@ export function getLinearGradient(
 }
 
 export function getAxisValues(
-  rawValues: number[] | undefined,
+  rawValues: NumArray | undefined,
   pixelCount: number
 ): number[] {
   if (!rawValues) {
@@ -135,7 +109,7 @@ export function getAxisValues(
   }
 
   if (rawValues.length === pixelCount + 1) {
-    return rawValues;
+    return isTypedArray(rawValues) ? [...rawValues] : rawValues;
   }
 
   if (rawValues.length === pixelCount) {
@@ -156,33 +130,41 @@ export function getInterpolator(colorMap: ColorMap, reverse: boolean) {
   return reverse ? (t: number) => interpolator(1 - t) : interpolator;
 }
 
-function getTextureFormatFromType(type: TextureDataType): PixelFormat {
-  if (type === FloatType || type === HalfFloatType) {
-    return RedFormat;
-  }
-
-  if (UNSUPPORTED_TEXTURE_TYPES.has(type)) {
-    throw new Error('Texture type not supported');
-  }
-
-  return RedIntegerFormat;
+export function scaleDomain(
+  domain: Domain,
+  scaleType = ScaleType.Linear
+): Domain {
+  const scaleFn = SCALE_FNS[scaleType];
+  return [scaleFn(domain[0]), scaleFn(domain[1])];
 }
 
+/*
+ * Since the shader of `HeatmapMesh` works with floats and expects a texture with a
+ * single colour channel (red), we are first limited to using the RED texture format.
+ *
+ * In WebGL 2.0 (https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6),
+ * this format is compatible only with texture types UNSIGNED_BYTE, HALF_FLOAT and FLOAT.
+ *
+ * Moreover, the shader uses a `sampler2D` uniform for the texture, which leads to
+ * integer values (in the case of UNSIGNED_BYTE) being normalized to [0, 1].
+ * This requires the color map domain to be normalized as well, which is challenging
+ * in the case of symlog.
+ *
+ * This is why we support only Float32Array (FLOAT) and Uint16Array (HALF_FLOAT).
+ */
 export function getDataTexture(
-  values: NdArray<TextureTypedArray>,
-  textureType = TEXTURE_TYPE_BY_DTYPE[values.dtype],
+  values: NdArray<Float32Array | Uint16Array>,
   magFilter = NearestFilter
 ): DataTexture {
   const { data, shape } = values;
   const [rows, cols] = shape;
-  const format = getTextureFormatFromType(textureType);
 
   return new DataTexture(
     data,
     cols,
     rows,
-    format,
-    textureType,
+    RedFormat,
+    values.dtype === 'uint16' ? HalfFloatType : FloatType,
     UVMapping,
     ClampToEdgeWrapping,
     ClampToEdgeWrapping,

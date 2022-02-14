@@ -1,14 +1,23 @@
-import type { AttributeValues, Entity, Primitive } from '@h5web/shared';
+import type {
+  ArrayShape,
+  AttributeValues,
+  Entity,
+  Primitive,
+  ScalarShape,
+} from '@h5web/shared';
 import {
-  mockFilepath,
+  assertArrayOrTypedArray,
+  assertArrayShape,
+  assertDefined,
+  assertMockAttribute,
+  assertMockDataset,
+  assertPrintableType,
   findMockEntity,
   hasArrayShape,
-  assertDefined,
-  assertArrayShape,
-  assertPrintableType,
-  assertMockDataset,
-  assertMockAttribute,
+  isTypedArray,
+  mockFilepath,
 } from '@h5web/shared';
+import type { MockDataset } from '@h5web/shared/src/mock/models';
 import axios from 'axios';
 import ndarray from 'ndarray';
 
@@ -57,9 +66,8 @@ export class MockApi extends ProviderApi {
 
     assertMockDataset(dataset);
     const { value: rawValue } = dataset;
-    const value = hasArrayShape(dataset)
-      ? (rawValue as unknown[]).flat(dataset.shape.length - 1)
-      : rawValue;
+    const value = this.processRawValue(dataset, rawValue);
+
     if (!selection) {
       return value;
     }
@@ -94,5 +102,21 @@ export class MockApi extends ProviderApi {
     } finally {
       this.valueRequests.delete(request);
     }
+  }
+
+  private processRawValue(
+    dataset: MockDataset<ArrayShape | ScalarShape>,
+    rawValue: unknown
+  ) {
+    assertDefined(rawValue, 'Expected mock dataset to have value');
+
+    if (!hasArrayShape(dataset)) {
+      return rawValue;
+    }
+
+    assertArrayOrTypedArray(rawValue);
+    return isTypedArray(rawValue)
+      ? rawValue
+      : rawValue.flat(dataset.shape.length - 1);
   }
 }

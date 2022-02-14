@@ -1,9 +1,9 @@
-import type { Domain, NumericType } from '@h5web/shared';
+import type { Domain, NumArray, NumericType } from '@h5web/shared';
 import {
   assertDefined,
   formatTooltipVal,
   ScaleType,
-  toTypedNdArray,
+  toTextureSafeNdArray,
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
@@ -19,16 +19,11 @@ import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
 import { useAxisValues } from './hooks';
-import type {
-  ColorMap,
-  Layout,
-  TextureTypedArray,
-  TooltipData,
-} from './models';
+import type { ColorMap, Layout, TooltipData } from './models';
 import { getDims } from './utils';
 
 interface Props {
-  dataArray: NdArray<number[] | TextureTypedArray>;
+  dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: VisScaleType;
@@ -39,7 +34,7 @@ interface Props {
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
-  alpha?: { array: NdArray<number[] | TextureTypedArray>; domain: Domain };
+  alpha?: { array: NdArray<NumArray>; domain: Domain };
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
@@ -127,12 +122,12 @@ function HeatmapVis(props: Props) {
           }}
         />
         <HeatmapMesh
-          values={toTypedNdArray(dataArray, Float32Array)}
+          values={toTextureSafeNdArray(dataArray)}
           domain={domain}
           colorMap={colorMap}
           invertColorMap={invertColorMap}
           scaleType={scaleType}
-          alphaValues={alpha && toTypedNdArray(alpha.array, Float32Array)}
+          alphaValues={alpha && toTextureSafeNdArray(alpha.array)}
           alphaDomain={alpha?.domain}
         />
         {children}

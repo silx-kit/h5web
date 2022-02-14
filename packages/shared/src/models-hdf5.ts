@@ -164,7 +164,7 @@ export type ArrayValue<T extends DType> =
 export type Value<D extends Dataset> = D['shape'] extends ScalarShape
   ? Primitive<D['type']>
   : D['shape'] extends ArrayShape
-  ? Primitive<D['type']>[]
+  ? ArrayValue<D['type']>
   : never;
 
 export type AttributeValues = Record<string, unknown>;

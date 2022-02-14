@@ -1,159 +1,95 @@
 import type { Domain } from '@h5web/shared';
-import { ScaleType, assertDefined, isScaleType } from '@h5web/shared';
+import { ScaleType, isScaleType } from '@h5web/shared';
 import { rgb } from 'd3-color';
 import type { NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
-import type { TextureDataType, TextureFilter } from 'three';
+import type { TextureFilter } from 'three';
 import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
 
 import { useAxisSystemContext } from '../..';
 import type { VisScaleType } from '../models';
 import VisMesh from '../shared/VisMesh';
-import type { ColorMap, TextureTypedArray, ScaleShader } from './models';
-import { getDataTexture, getInterpolator } from './utils';
+import { DEFAULT_DOMAIN } from '../utils';
+import type { ColorMap } from './models';
+import { getDataTexture, getInterpolator, scaleDomain } from './utils';
 
 interface Props {
-  values: NdArray<TextureTypedArray>;
+  values: NdArray<Float32Array | Uint16Array>; // if `Uint16Array`, it must contain half floats
   domain: Domain;
   scaleType: VisScaleType;
   colorMap: ColorMap;
   invertColorMap?: boolean;
-  textureType?: TextureDataType; // override default texture type (determined from `values.dtype`)
   magFilter?: TextureFilter;
-  alphaValues?: NdArray<TextureTypedArray>;
+  alphaValues?: NdArray<Float32Array | Uint16Array>; // if `Uint16Array`, it must contain half floats
   alphaDomain?: Domain;
 }
 
 const CMAP_SIZE = 256;
 
-const SCALE_SHADER: Record<ScaleType, ScaleShader> = {
-  [ScaleType.Linear]: {
-    uniforms: (domain: Domain) => ({
-      min: { value: domain[0] },
-      oneOverRange: { value: 1 / (domain[1] - domain[0]) },
-    }),
-    fragment: `
-      uniform float min;
-      uniform float oneOverRange;
+const SCALE_SHADER: Record<ScaleType, string> = {
+  [ScaleType.Linear]: `
+    float scale(float value) {
+      return oneOverRange * (value - min);
+    }
 
-      float scale(float value) {
-        return oneOverRange * (value - min);
-      }
+    bool isSupported(float value) {
+      return true;
+    }`,
+  [ScaleType.Log]: `
+    float scale(float value) {
+      return oneOverRange * (log(value) * oneOverLog10 - min);
+    }
 
-      bool isSupported(float value) {
-        return true;
-      }`,
-  },
-  [ScaleType.Log]: {
-    uniforms: (domain: Domain) => {
-      const logDomain = domain.map(Math.log10);
-      return {
-        min: { value: logDomain[0] },
-        oneOverRange: { value: 1 / (logDomain[1] - logDomain[0]) },
-      };
-    },
-    fragment: `
-      uniform float min;
-      uniform float oneOverRange;
+    bool isSupported(float value) {
+      return value > 0.;
+    }`,
+  [ScaleType.SymLog]: `
+    float symlog(float x) {
+      return sign(x) * log(1. + abs(x)) * oneOverLog10;
+    }
 
-      const float oneOverLog10 = 0.43429448190325176;
-      float scale(float value) {
-        return oneOverRange * (log(value) * oneOverLog10 - min);
-      }
+    float scale(float value) {
+      return oneOverRange * (symlog(value) - min);
+    }
 
-      bool isSupported(float value) {
-        return value > 0.;
-      }`,
-  },
-  [ScaleType.SymLog]: {
-    uniforms: (domain: Domain) => {
-      const symlogDomain = domain.map(
-        (val) => Math.sign(val) * Math.log10(1 + Math.abs(val))
-      );
-      return {
-        min: { value: symlogDomain[0] },
-        oneOverRange: { value: 1 / (symlogDomain[1] - symlogDomain[0]) },
-      };
-    },
-    fragment: `
-      uniform float min;
-      uniform float oneOverRange;
+    bool isSupported(float value) {
+      return true;
+    }`,
+  [ScaleType.Sqrt]: `
+    float scale(float value) {
+      return oneOverRange * (sqrt(value) - min);
+    }
 
-      const float oneOverLog10 = 0.43429448190325176;
-      float symlog(float x) {
-        return sign(x) * log(1. + abs(x)) * oneOverLog10;
-      }
+    bool isSupported(float value) {
+      return value >= 0.;
+    }`,
+  [ScaleType.Gamma]: `
+    float scale(float value) {
+      return pow(oneOverRange * (value - min), gammaExponent);
+    }
 
-      float scale(float value) {
-        return oneOverRange * (symlog(value) - min);
-      }
-
-      bool isSupported(float value) {
-        return true;
-      }`,
-  },
-  [ScaleType.Sqrt]: {
-    uniforms: (domain: Domain) => {
-      const sqrtDomain = domain.map(Math.sqrt);
-      return {
-        min: { value: sqrtDomain[0] },
-        oneOverRange: { value: 1 / (sqrtDomain[1] - sqrtDomain[0]) },
-      };
-    },
-    fragment: `
-      uniform float min;
-      uniform float oneOverRange;
-
-      float scale(float value) {
-        return oneOverRange * (sqrt(value) - min);
-      }
-
-      bool isSupported(float value) {
-        return value >= 0.;
-      }`,
-  },
-  [ScaleType.Gamma]: {
-    uniforms: (domain: Domain, exponent?: number) => {
-      assertDefined(exponent);
-      return {
-        min: { value: domain[0] },
-        oneOverRange: { value: 1 / (domain[1] - domain[0]) },
-        gammaExponent: { value: exponent },
-      };
-    },
-    fragment: `
-      uniform float min;
-      uniform float oneOverRange;
-      uniform float gammaExponent;
-
-      float scale(float value) {
-        return pow(oneOverRange * (value - min), gammaExponent);
-      }
-
-      bool isSupported(float value) {
-        return true;
-      }`,
-  },
+    bool isSupported(float value) {
+      return true;
+    }`,
 };
 
 function HeatmapMesh(props: Props) {
   const {
     values,
     domain,
-    scaleType,
+    scaleType: visScaleType,
     colorMap,
     invertColorMap = false,
-    textureType,
     magFilter,
     alphaValues,
-    alphaDomain,
+    alphaDomain = DEFAULT_DOMAIN,
   } = props;
 
   const { ordinateConfig } = useAxisSystemContext();
 
   const dataTexture = useMemo(
-    () => getDataTexture(values, textureType, magFilter),
-    [magFilter, textureType, values]
+    () => getDataTexture(values, magFilter),
+    [magFilter, values]
   );
 
   const alphaTexture = useMemo(
@@ -174,21 +110,25 @@ function HeatmapMesh(props: Props) {
     return new DataTexture(colors, CMAP_SIZE, 1, RGBFormat, UnsignedByteType);
   }, [colorMap, invertColorMap]);
 
-  const scaleUniforms = isScaleType(scaleType)
-    ? SCALE_SHADER[scaleType].uniforms(domain)
-    : SCALE_SHADER[ScaleType.Gamma].uniforms(domain, scaleType[1] as number);
+  const [scaleType, gammaExponent] = isScaleType(visScaleType)
+    ? [visScaleType]
+    : visScaleType;
+
+  const scaledDomain = scaleDomain(domain, scaleType as ScaleType);
 
   const shader = {
     uniforms: {
       data: { value: dataTexture },
-      withAlpha: { value: alphaValues ? 1 : 0 },
-      alpha: { value: alphaTexture },
       colorMap: { value: colorMapTexture },
-      alphaMin: { value: alphaDomain?.[0] },
+      min: { value: scaledDomain[0] },
+      oneOverRange: { value: 1 / (scaledDomain[1] - scaledDomain[0]) },
+      gammaExponent: { value: gammaExponent },
+      alpha: { value: alphaTexture },
+      withAlpha: { value: alphaValues ? 1 : 0 },
+      alphaMin: { value: alphaDomain[0] },
       oneOverAlphaRange: {
-        value: alphaDomain && 1 / (alphaDomain[1] - alphaDomain[0]),
+        value: 1 / (alphaDomain[1] - alphaDomain[0]),
       },
-      ...scaleUniforms,
     },
     vertexShader: `
       varying vec2 coords;
@@ -201,26 +141,27 @@ function HeatmapMesh(props: Props) {
     fragmentShader: `
       uniform sampler2D data;
       uniform sampler2D colorMap;
-      uniform int scaleType;
-      uniform float alphaMin;
+
+      uniform float min;
+      uniform float oneOverRange;
+      uniform float gammaExponent;
+
       uniform sampler2D alpha;
+      uniform float alphaMin;
       uniform float oneOverAlphaRange;
       uniform int withAlpha;
 
       const vec4 nanColor = vec4(255, 255, 255, 1);
+      const float oneOverLog10 = 0.43429448190325176;
 
       varying vec2 coords;
 
-      ${
-        SCALE_SHADER[isScaleType(scaleType) ? scaleType : ScaleType.Gamma]
-          .fragment
-      }
+      ${SCALE_SHADER[isScaleType(scaleType) ? scaleType : ScaleType.Gamma]}
 
       void main() {
         float value = texture2D(data, coords).r;
-        bool isNotFinite = isnan(value) || isinf(value);
 
-        if (isNotFinite || !isSupported(value)) {
+        if (isnan(value) || isinf(value) || !isSupported(value)) {
           gl_FragColor = nanColor;
         } else {
           gl_FragColor = texture2D(colorMap, vec2(scale(value), 0.5));
