@@ -115,6 +115,32 @@ const scale = scaleGamma({
 });
 ```
 
+#### getValueToIndexScale
+
+Construct a [threshold scale](https://github.com/d3/d3-scale/blob/main/README.md#scaleThreshold) that returns the index of the closest value that is lower than a given value in the scale's input array.
+
+If the `switchAtMidpoints` parameter is set to `true` when creating the scale, the thresholds become the midpoints between values in the input array (instead of the values themselves).
+
+See [this sandbox](https://codesandbox.io/s/get-value-to-index-scale-2wm3hz) for a graphical illustration of the scale.
+
+```ts
+const values = [0, 2, 4, 6, 8, 10];
+
+const scale = getValueToIndexScale(values);
+
+scale(0.5); // Returns 0
+scale(1.8); // Returns 0
+scale(2.2); // Returns 2
+scale(3); // Returns 2
+
+const scaleWithMid = getValueToIndexScale(values, true);
+
+scaleWithMid(0.5); // Returns 0
+scaleWithMid(1.8); // Returns 1
+scaleWithMid(2.2); // Returns 1
+scaleWithMid(3); // Returns 3
+```
+
 ### Hooks
 
 - **`useDomain(...args): Domain | undefined`** - Memoised version of `getDomain`.
@@ -122,6 +148,7 @@ const scale = scaleGamma({
 - **`useCombinedDomain(...args): Domain | undefined`** - Memoised version of `getCombinedDomain`.
 - **`useVisDomain(...args): Domain`** - Memoised version of `getVisDomain`.
 - **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
+- **`useValueToIndexScale(..args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
 
 #### useVisibleDomains
 

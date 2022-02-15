@@ -55,6 +55,7 @@ export {
   getDomains,
   getCombinedDomain,
   extendDomain,
+  getValueToIndexScale,
 } from './vis/utils';
 
 export {
@@ -63,6 +64,7 @@ export {
   useCombinedDomain,
   useVisibleDomains,
   useFrameRendering,
+  useValueToIndexScale,
 } from './vis/hooks';
 
 export {
