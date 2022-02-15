@@ -28,6 +28,7 @@ interface Props {
   showErrors?: boolean;
   color: string;
   curveType?: CurveType;
+  visible?: boolean;
 }
 
 function DataCurve(props: Props) {
@@ -38,6 +39,7 @@ function DataCurve(props: Props) {
     showErrors,
     color,
     curveType = CurveType.LineOnly,
+    visible = true,
   } = props;
 
   const [dataGeometry] = useState(() => new BufferGeometry());
@@ -49,8 +51,8 @@ function DataCurve(props: Props) {
     invalidate();
   }, [dataGeometry, invalidate, points.data]);
 
-  const showLine = curveType !== CurveType.GlyphsOnly;
-  const showGlyphs = curveType !== CurveType.LineOnly;
+  const showLine = visible && curveType !== CurveType.GlyphsOnly;
+  const showGlyphs = visible && curveType !== CurveType.LineOnly;
 
   return (
     <>
@@ -65,6 +67,7 @@ function DataCurve(props: Props) {
           barsSegments={points.bars}
           capsPoints={points.caps}
           color={color}
+          visible={visible}
         />
       )}
     </>
