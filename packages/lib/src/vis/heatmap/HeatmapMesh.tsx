@@ -9,7 +9,7 @@ import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
 import { useAxisSystemContext } from '../..';
 import type { VisScaleType } from '../models';
 import VisMesh from '../shared/VisMesh';
-import { DEFAULT_DOMAIN, getUniforms } from '../utils';
+import { DEFAULT_DOMAIN, getUniforms, VERTEX_SHADER } from '../utils';
 import type { ColorMap, TextureSafeTypedArray } from './models';
 import { getDataTexture, getInterpolator, scaleDomain } from './utils';
 
@@ -93,14 +93,7 @@ function HeatmapMesh(props: Props) {
       alphaMin: alphaDomain[0],
       oneOverAlphaRange: 1 / (alphaDomain[1] - alphaDomain[0]),
     }),
-    vertexShader: `
-      varying vec2 coords;
-
-      void main() {
-        coords = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
+    vertexShader: VERTEX_SHADER,
     fragmentShader: `
       uniform sampler2D data;
       uniform sampler2D colorMap;

@@ -30,3 +30,8 @@ export interface Bounds {
   positiveMin: number;
   strictPositiveMin: number;
 }
+
+export interface Dims {
+  rows: number;
+  cols: number;
+}

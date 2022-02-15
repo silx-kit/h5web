@@ -1,18 +1,17 @@
 import type { NumArray } from '@h5web/shared';
+import { getDims } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
-import { DataTexture, FloatType, RGBFormat, UnsignedByteType } from 'three';
 
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
-import { getDims } from '../heatmap/utils';
 import PanMesh from '../shared/PanMesh';
 import VisCanvas from '../shared/VisCanvas';
-import VisMesh from '../shared/VisMesh';
 import ZoomMesh from '../shared/ZoomMesh';
+import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
-import { flipLastDimension, toRgbSafeNdArray } from './utils';
+import { toRgbSafeNdArray } from './utils';
 
 interface Props {
   dataArray: NdArray<NumArray>;
@@ -34,23 +33,7 @@ function RgbVis(props: Props) {
   } = props;
 
   const { rows, cols } = getDims(dataArray);
-
-  const texture = useMemo(() => {
-    const typedDataArray = toRgbSafeNdArray(dataArray);
-
-    const flippedDataArray =
-      imageType === ImageType.BGR
-        ? flipLastDimension(typedDataArray)
-        : typedDataArray;
-
-    return new DataTexture(
-      flippedDataArray.data,
-      cols,
-      rows,
-      RGBFormat,
-      flippedDataArray.dtype === 'float32' ? FloatType : UnsignedByteType
-    );
-  }, [dataArray, imageType, cols, rows]);
+  const safeDataArray = useMemo(() => toRgbSafeNdArray(dataArray), [dataArray]);
 
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
@@ -72,9 +55,7 @@ function RgbVis(props: Props) {
       >
         <PanMesh />
         <ZoomMesh />
-        <VisMesh scale={[1, -1, 1]}>
-          <meshBasicMaterial map={texture} />
-        </VisMesh>
+        <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />
         {children}
       </VisCanvas>
     </figure>

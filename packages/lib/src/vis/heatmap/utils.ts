@@ -1,5 +1,10 @@
 import type { Domain, NumArray } from '@h5web/shared';
-import { isTypedArray, ScaleType, toTypedNdArray } from '@h5web/shared';
+import {
+  getDims,
+  isTypedArray,
+  ScaleType,
+  toTypedNdArray,
+} from '@h5web/shared';
 import { range } from 'lodash';
 import type { NdArray } from 'ndarray';
 import {
@@ -17,12 +22,7 @@ import type { CustomDomain, DomainErrors } from '../models';
 import { DomainError } from '../models';
 import { H5WEB_SCALES } from '../scales';
 import { INTERPOLATORS } from './interpolators';
-import type {
-  ColorMap,
-  D3Interpolator,
-  Dims,
-  TextureSafeTypedArray,
-} from './models';
+import type { ColorMap, D3Interpolator, TextureSafeTypedArray } from './models';
 
 const GRADIENT_PRECISION = 1 / 20;
 export const GRADIENT_RANGE = range(
@@ -86,11 +86,6 @@ export function getSafeDomain(
   ];
 }
 
-export function getDims(dataArray: NdArray): Dims {
-  const [rows, cols] = dataArray.shape;
-  return { rows, cols };
-}
-
 function getColorStops(
   interpolator: D3Interpolator,
   minMaxOnly: boolean
@@ -152,13 +147,13 @@ export function scaleDomain(
 }
 
 export function toTextureSafeNdArray(
-  arr: NdArray<NumArray>
+  ndArr: NdArray<NumArray>
 ): NdArray<TextureSafeTypedArray> {
-  if (arr.dtype === 'float32' || arr.dtype.startsWith('uint8')) {
-    return arr as NdArray<TextureSafeTypedArray>;
+  if (ndArr.dtype === 'float32' || ndArr.dtype.startsWith('uint8')) {
+    return ndArr as NdArray<TextureSafeTypedArray>;
   }
 
-  return toTypedNdArray(arr, Float32Array);
+  return toTypedNdArray(ndArr, Float32Array);
 }
 
 /*
@@ -174,11 +169,10 @@ export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array>,
   magFilter = NearestFilter
 ): DataTexture {
-  const { data, shape } = values;
-  const [rows, cols] = shape;
+  const { rows, cols } = getDims(values);
 
   return new DataTexture(
-    data,
+    values.data,
     cols,
     rows,
     RedFormat,

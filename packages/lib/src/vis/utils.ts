@@ -294,6 +294,15 @@ const TYPE_STRINGS: Record<NumericType['class'], string> = {
   [DTypeClass.Float]: 'float',
 };
 
+export const VERTEX_SHADER = `
+  varying vec2 coords;
+
+  void main() {
+    coords = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
 export function formatNumType(numType: NumericType): string {
   return `${TYPE_STRINGS[numType.class]}${numType.size}`;
 }
