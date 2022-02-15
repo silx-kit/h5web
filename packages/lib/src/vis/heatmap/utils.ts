@@ -1,22 +1,28 @@
 import type { Domain, NumArray } from '@h5web/shared';
-import { ScaleType, isTypedArray } from '@h5web/shared';
+import { isTypedArray, ScaleType, toTypedNdArray } from '@h5web/shared';
 import { range } from 'lodash';
 import type { NdArray } from 'ndarray';
 import {
   ClampToEdgeWrapping,
   DataTexture,
   FloatType,
-  RedFormat,
-  UVMapping,
-  NearestFilter,
   HalfFloatType,
+  NearestFilter,
+  RedFormat,
+  UnsignedByteType,
+  UVMapping,
 } from 'three';
 
 import type { CustomDomain, DomainErrors } from '../models';
 import { DomainError } from '../models';
 import { H5WEB_SCALES } from '../scales';
 import { INTERPOLATORS } from './interpolators';
-import type { ColorMap, D3Interpolator, Dims } from './models';
+import type {
+  ColorMap,
+  D3Interpolator,
+  Dims,
+  TextureSafeTypedArray,
+} from './models';
 
 const GRADIENT_PRECISION = 1 / 20;
 export const GRADIENT_RANGE = range(
@@ -31,6 +37,13 @@ const SCALE_FNS: Record<ScaleType, (val: number) => number> = {
   [ScaleType.SymLog]: (val) => Math.sign(val) * Math.log10(1 + Math.abs(val)),
   [ScaleType.Sqrt]: Math.sqrt,
   [ScaleType.Gamma]: (val) => val,
+};
+
+const TEXTURE_TYPES = {
+  float32: FloatType,
+  uint16: HalfFloatType,
+  uint8: UnsignedByteType,
+  uint8_clamped: UnsignedByteType,
 };
 
 export function getVisDomain(
@@ -138,22 +151,27 @@ export function scaleDomain(
   return [scaleFn(domain[0]), scaleFn(domain[1])];
 }
 
+export function toTextureSafeNdArray(
+  arr: NdArray<NumArray>
+): NdArray<TextureSafeTypedArray> {
+  if (arr.dtype === 'float32' || arr.dtype.startsWith('uint8')) {
+    return arr as NdArray<TextureSafeTypedArray>;
+  }
+
+  return toTypedNdArray(arr, Float32Array);
+}
+
 /*
  * Since the shader of `HeatmapMesh` works with floats and expects a texture with a
- * single colour channel (red), we are first limited to using the RED texture format.
+ * single colour channel (red), we are limited to using the RED texture format.
  *
  * In WebGL 2.0 (https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6),
- * this format is compatible only with texture types UNSIGNED_BYTE, HALF_FLOAT and FLOAT.
- *
- * Moreover, the shader uses a `sampler2D` uniform for the texture, which leads to
- * integer values (in the case of UNSIGNED_BYTE) being normalized to [0, 1].
- * This requires the color map domain to be normalized as well, which is challenging
- * in the case of symlog.
- *
- * This is why we support only Float32Array (FLOAT) and Uint16Array (HALF_FLOAT).
+ * this format is compatible only with texture types FLOAT, HALF_FLOAT and UNSIGNED_BYTE,
+ * which is why we support only Float32Array (FLOAT), Uint16Array (HALF_FLOAT) and
+ * Uint8Array/Uint8ClampedArray (UNSIGNED_BYTE_TYPE).
  */
 export function getDataTexture(
-  values: NdArray<Float32Array | Uint16Array>,
+  values: NdArray<TextureSafeTypedArray | Uint16Array>,
   magFilter = NearestFilter
 ): DataTexture {
   const { data, shape } = values;
@@ -164,7 +182,7 @@ export function getDataTexture(
     cols,
     rows,
     RedFormat,
-    values.dtype === 'uint16' ? HalfFloatType : FloatType,
+    TEXTURE_TYPES[values.dtype],
     UVMapping,
     ClampToEdgeWrapping,
     ClampToEdgeWrapping,

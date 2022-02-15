@@ -1,10 +1,5 @@
 import type { Domain, NumArray, NumericType } from '@h5web/shared';
-import {
-  assertDefined,
-  formatTooltipVal,
-  ScaleType,
-  toTextureSafeNdArray,
-} from '@h5web/shared';
+import { assertDefined, formatTooltipVal, ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
@@ -20,7 +15,7 @@ import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
 import { useAxisValues } from './hooks';
 import type { ColorMap, Layout, TooltipData } from './models';
-import { getDims } from './utils';
+import { getDims, toTextureSafeNdArray } from './utils';
 
 interface Props {
   dataArray: NdArray<NumArray>;
