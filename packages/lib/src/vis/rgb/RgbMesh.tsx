@@ -25,11 +25,9 @@ function RgbMesh(props: Props) {
       varying vec2 coords;
 
       void main() {
-        float yFlipped = 1. - coords.y;
-
-        float red = texture(data, vec3(0., coords.x, yFlipped)).r;
-        float green = texture(data, vec3(0.5, coords.x, yFlipped)).r;
-        float blue = texture(data, vec3(1., coords.x, yFlipped)).r;
+        float red = texture(data, vec3(0., coords)).r;
+        float green = texture(data, vec3(0.5, coords)).r;
+        float blue = texture(data, vec3(1., coords)).r;
 
         if (bgr) {
           gl_FragColor = vec4(blue, green, red, 1.);
@@ -41,7 +39,7 @@ function RgbMesh(props: Props) {
   };
 
   return (
-    <VisMesh>
+    <VisMesh scale={[1, -1, 1]}>
       <shaderMaterial args={[shader]} />
     </VisMesh>
   );
