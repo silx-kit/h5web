@@ -40,7 +40,7 @@ function ScatterVis(props: Props) {
   const abscissaDomain =
     useAxisDomain(abscissas, undefined, 0.01) || DEFAULT_DOMAIN;
   const ordinateDomain =
-    useAxisDomain(abscissas, undefined, 0.01) || DEFAULT_DOMAIN;
+    useAxisDomain(ordinates, undefined, 0.01) || DEFAULT_DOMAIN;
 
   return (
     <figure className={styles.root}>
