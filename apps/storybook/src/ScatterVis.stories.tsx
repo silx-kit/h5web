@@ -45,7 +45,7 @@ export const Default = Template.bind({});
 
 Default.args = {
   dataAbscissas: abscissas,
-  dataOrdinates: ordinates,
+  dataOrdinates: ordinates.map((v) => v + 10),
   data,
   domain,
 };
