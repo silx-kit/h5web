@@ -80,7 +80,7 @@ export { INTERPOLATORS } from './vis/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
 export { CurveType } from './vis/line/models';
 
-export type { Domain } from '@h5web/shared';
+export type { Domain, Dims } from '@h5web/shared';
 
 export type {
   DomainErrors,
@@ -90,7 +90,7 @@ export type {
   AxisParams,
 } from './vis/models';
 
-export type { Dims, D3Interpolator, ColorMap } from './vis/heatmap/models';
+export type { D3Interpolator, ColorMap } from './vis/heatmap/models';
 
 // Mock data and utilities
 export {

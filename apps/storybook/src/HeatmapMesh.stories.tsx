@@ -5,7 +5,7 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import type { HeatmapMeshProps, Domain } from '@h5web/lib';
-import { ScaleType, toTypedNdArray } from '@h5web/shared';
+import { getDims, ScaleType, toTypedNdArray } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import {
@@ -31,8 +31,7 @@ const uint16DataArray = ndarray(Uint16Array.from(uint16Values), [2, 2]);
 const uint16Domain: Domain = [10, 40];
 
 const Template: Story<HeatmapMeshProps> = (args) => {
-  const { shape } = args.values;
-  const [rows, cols] = shape;
+  const { rows, cols } = getDims(args.values);
 
   return (
     <VisCanvas

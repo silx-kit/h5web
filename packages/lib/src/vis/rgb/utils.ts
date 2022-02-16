@@ -1,7 +1,8 @@
 import type { NumArray } from '@h5web/shared';
-import { createArrayFromView, toTypedNdArray } from '@h5web/shared';
-import type { NdArray, TypedArray } from 'ndarray';
+import { getDims, toTypedNdArray } from '@h5web/shared';
+import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
+import { DataTexture3D, FloatType, RedFormat, UnsignedByteType } from 'three';
 
 /*
  * - `Float32Array | Float64Array` ndarrays must contain normalized color values in the range [0, 1].
@@ -33,12 +34,14 @@ export function toRgbSafeNdArray(
   return toTypedNdArray(ndArr, Uint8Array);
 }
 
-export function flipLastDimension<T extends TypedArray>(
-  dataArray: NdArray<T>
-): NdArray<T> {
-  const { shape } = dataArray;
-  const steps = shape.map((_, index) => (index === shape.length - 1 ? -1 : 1));
+export function getDataTexture3D(
+  values: NdArray<Uint8Array | Uint8ClampedArray | Float32Array>
+): DataTexture3D {
+  const { rows, cols } = getDims(values);
 
-  const flippedView = dataArray.step(...steps);
-  return createArrayFromView(flippedView);
+  const texture = new DataTexture3D(values.data, 3, cols, rows);
+  texture.format = RedFormat;
+  texture.type = values.dtype === 'float32' ? FloatType : UnsignedByteType;
+
+  return texture;
 }

@@ -1,5 +1,10 @@
 import type { Domain, NumArray, NumericType } from '@h5web/shared';
-import { assertDefined, formatTooltipVal, ScaleType } from '@h5web/shared';
+import {
+  assertDefined,
+  formatTooltipVal,
+  getDims,
+  ScaleType,
+} from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
@@ -13,9 +18,8 @@ import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
-import { useAxisValues } from './hooks';
+import { useAxisValues, useTextureSafeNdArray } from './hooks';
 import type { ColorMap, Layout, TooltipData } from './models';
-import { getDims, toTextureSafeNdArray } from './utils';
 
 interface Props {
   dataArray: NdArray<NumArray>;
@@ -69,6 +73,9 @@ function HeatmapVis(props: Props) {
   const abscissaToIndex = useValueToIndexScale(abscissas);
   const ordinateToIndex = useValueToIndexScale(ordinates);
 
+  const safeDataArray = useTextureSafeNdArray(dataArray);
+  const safeAlphaArray = useTextureSafeNdArray(alpha?.array);
+
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
@@ -117,12 +124,12 @@ function HeatmapVis(props: Props) {
           }}
         />
         <HeatmapMesh
-          values={toTextureSafeNdArray(dataArray)}
+          values={safeDataArray}
           domain={domain}
           colorMap={colorMap}
           invertColorMap={invertColorMap}
           scaleType={scaleType}
-          alphaValues={alpha && toTextureSafeNdArray(alpha.array)}
+          alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
         />
         {children}

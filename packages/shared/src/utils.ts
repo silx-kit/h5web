@@ -9,6 +9,7 @@ import { ScaleType } from './models-vis';
 import type {
   Bounds,
   Domain,
+  Dims,
   AnyNumArray,
   NumArray,
   TypedArrayConstructor,
@@ -157,4 +158,9 @@ export function getValidDomainForScale(
   }
 
   return [min, max];
+}
+
+export function getDims(dataArray: NdArray): Dims {
+  const [rows, cols] = dataArray.shape;
+  return { rows, cols };
 }
