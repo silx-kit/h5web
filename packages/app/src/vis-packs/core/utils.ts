@@ -43,6 +43,11 @@ export function applyMapping<T>(
     mapping.indexOf('x') < mapping.indexOf('y');
 
   const slicingState = mapping.map((val) => (isNumber(val) ? val : null));
+
+  if (!isXBeforeY && slicingState.every((val) => val === null)) {
+    return baseArray; // no mapping/slicing needed
+  }
+
   const slicedView = baseArray.pick(...slicingState);
   const mappedView = isXBeforeY ? slicedView.transpose(1, 0) : slicedView;
 
