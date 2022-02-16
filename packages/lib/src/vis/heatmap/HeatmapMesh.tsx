@@ -4,7 +4,7 @@ import { rgb } from 'd3-color';
 import type { NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
 import type { TextureFilter } from 'three';
-import { DataTexture, RGBFormat, UnsignedByteType } from 'three';
+import { DataTexture, RGBAFormat, UnsignedByteType } from 'three';
 
 import { useAxisSystemContext } from '../..';
 import type { VisScaleType } from '../models';
@@ -67,11 +67,11 @@ function HeatmapMesh(props: Props) {
     const colors = Uint8Array.from(
       Array.from({ length: CMAP_SIZE }).flatMap((_, i) => {
         const { r, g, b } = rgb(interpolator(i / (CMAP_SIZE - 1)));
-        return [r, g, b];
+        return [r, g, b, 255];
       })
     );
 
-    return new DataTexture(colors, CMAP_SIZE, 1, RGBFormat, UnsignedByteType);
+    return new DataTexture(colors, CMAP_SIZE, 1, RGBAFormat, UnsignedByteType);
   }, [colorMap, invertColorMap]);
 
   const [scaleType, gammaExponent] = Array.isArray(visScaleType)
