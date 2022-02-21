@@ -48,10 +48,13 @@ function DimensionMapper(props: Props) {
             <SlicingSlider
               key={`${index}`} // eslint-disable-line react/no-array-index-key
               dimension={index}
-              slicingIndex={val}
               maxIndex={rawDims[index] - 1}
-              mapperState={mapperState}
-              onChange={onChange}
+              initialValue={val}
+              onChange={(newVal: number) => {
+                const newMapperState = [...mapperState];
+                newMapperState[index] = newVal;
+                onChange(newMapperState);
+              }}
             />
           ) : undefined
         )}

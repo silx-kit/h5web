@@ -1,25 +1,27 @@
-import { useMeasure } from '@react-hookz/web';
-import { useEffect, useRef } from 'react';
+import { useDebouncedCallback, useMeasure } from '@react-hookz/web';
+import { useEffect, useRef, useState } from 'react';
 import ReactSlider from 'react-slider';
 
 import styles from './SlicingSlider.module.css';
-import type { DimensionMapping } from './models';
 
 const MIN_HEIGHT_PER_MARK = 25;
 
 interface Props {
   dimension: number;
-  slicingIndex: number;
   maxIndex: number;
-  mapperState: DimensionMapping;
-  onChange: (mapperState: DimensionMapping) => void;
+  initialValue: number;
+  onChange: (value: number) => void;
 }
 
 function SlicingSlider(props: Props) {
-  const { dimension, slicingIndex, maxIndex, mapperState, onChange } = props;
+  const { dimension, maxIndex, initialValue, onChange } = props;
+
+  const [value, setValue] = useState(initialValue);
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
   const sliderRef = useRef<ReactSlider>(null);
+
+  const onDebouncedChange = useDebouncedCallback(onChange, [onChange], 250);
 
   useEffect(() => {
     sliderRef.current?.resize();
@@ -44,11 +46,10 @@ function SlicingSlider(props: Props) {
           markClassName={styles.mark}
           orientation="vertical"
           invert
-          value={slicingIndex}
+          value={value}
           onChange={(value) => {
-            const newMapperState = [...mapperState];
-            newMapperState[dimension] = value;
-            onChange(newMapperState);
+            setValue(value);
+            onDebouncedChange(value);
           }}
           renderThumb={(thumbProps, state) => (
             <div {...thumbProps} className={styles.thumb}>
