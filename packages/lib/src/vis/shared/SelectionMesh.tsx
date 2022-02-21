@@ -8,25 +8,14 @@ import { noModifierKeyPressed } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import VisMesh from './VisMesh';
 
-export interface SelectionMeshProps extends MeshProps {
+interface Props extends MeshProps {
   onSelection?: (startPoint: Vector2, endPoint: Vector2) => void;
   modifierKey?: ModifierKey;
-}
-
-interface Props extends SelectionMeshProps {
-  selectionComponent: (props: {
-    startPoint: Vector2;
-    endPoint: Vector2;
-  }) => ReactElement;
+  children: (startPoint: Vector2, endPoint: Vector2) => ReactElement;
 }
 
 function SelectionMesh(props: Props) {
-  const {
-    selectionComponent: Selection,
-    onSelection,
-    modifierKey,
-    ...meshProps
-  } = props;
+  const { children, onSelection, modifierKey, ...meshProps } = props;
   const { worldToData, dataToWorld } = useAxisSystemContext();
 
   const [startPoint, setStartPoint] = useState<Vector2>();
@@ -89,14 +78,12 @@ function SelectionMesh(props: Props) {
   return (
     <VisMesh {...{ onPointerMove, onPointerUp, onPointerDown, ...meshProps }}>
       <meshBasicMaterial opacity={0} transparent />
-      {startPoint && endPoint && (
-        <Selection
-          startPoint={dataToWorld(startPoint)}
-          endPoint={dataToWorld(endPoint)}
-        />
-      )}
+      {startPoint &&
+        endPoint &&
+        children(dataToWorld(startPoint), dataToWorld(endPoint))}
     </VisMesh>
   );
 }
 
+export type { Props as SelectionMeshProps };
 export default SelectionMesh;

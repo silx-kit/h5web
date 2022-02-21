@@ -10,14 +10,14 @@ import { format } from 'd3-format';
 import { useState } from 'react';
 import type { Vector2 } from 'three';
 
-import VisCanvasStoriesConfig from './VisCanvas.stories';
+import FillHeight from './decorators/FillHeight';
 
 interface TemplateProps {
   selection?: 'line' | 'rectangle';
-  yFlip?: boolean;
   disablePan?: boolean;
   disableZoom?: boolean;
   modifierKey?: 'Alt' | 'Control' | 'Shift';
+  color?: string;
 }
 
 function vectorToStr(vec: Vector2) {
@@ -27,10 +27,10 @@ function vectorToStr(vec: Vector2) {
 const Template: Story<TemplateProps> = (args) => {
   const {
     selection,
-    yFlip = false,
     disablePan = true,
     disableZoom = true,
     modifierKey,
+    color,
   } = args;
 
   const [selectedVectors, setSelectedVectors] = useState<[Vector2, Vector2]>();
@@ -48,7 +48,7 @@ const Template: Story<TemplateProps> = (args) => {
       )}
       <VisCanvas
         abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-        ordinateConfig={{ visDomain: [50, 100], showGrid: true, flip: yFlip }}
+        ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
       >
         <PanMesh disabled={disablePan} />
         <ZoomMesh disabled={disableZoom} />
@@ -56,12 +56,14 @@ const Template: Story<TemplateProps> = (args) => {
           <LineSelectionMesh
             onSelection={(start, end) => setSelectedVectors([start, end])}
             modifierKey={modifierKey}
+            color={color}
           />
         )}
         {selection === 'rectangle' && (
           <RectSelectionMesh
             onSelection={(start, end) => setSelectedVectors([start, end])}
             modifierKey={modifierKey}
+            color={color}
           />
         )}
       </VisCanvas>
@@ -86,20 +88,28 @@ SelectingWithModifierAndZoom.args = {
   disableZoom: false,
   modifierKey: 'Shift',
 };
+SelectingWithModifierAndZoom.argTypes = {
+  modifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift'],
+  },
+};
+
+export const ChangeSelectionColors = Template.bind({});
+ChangeSelectionColors.args = {
+  selection: 'rectangle',
+  color: 'blue',
+};
+ChangeSelectionColors.argTypes = {
+  color: {
+    control: { type: 'color' },
+  },
+};
 
 export default {
-  ...VisCanvasStoriesConfig,
-  title: 'Building Blocks/VisCanvas/Selection',
+  title: 'Building Blocks/Selection',
+  decorators: [FillHeight],
   parameters: {
-    ...VisCanvasStoriesConfig.parameters,
-    controls: {
-      include: ['yFlip', 'panZoom', 'modifierKey'],
-    },
-  },
-  argTypes: {
-    modifierKey: {
-      control: { type: 'inline-radio' },
-      options: ['Alt', 'Control', 'Shift'],
-    },
+    layout: 'fullscreen',
   },
 } as Meta;
