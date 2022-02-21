@@ -2,7 +2,6 @@ import {
   assertDataset,
   assertArrayShape,
   assertPrintableType,
-  hasComplexType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -12,7 +11,6 @@ import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import { getSliceSelection } from '../utils';
 import MappedMatrixVis from './MappedMatrixVis';
-import { getFormatter } from './utils';
 
 function MatrixVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -24,9 +22,6 @@ function MatrixVisContainer(props: VisContainerProps) {
   const axesCount = Math.min(dims.length, 2);
   const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
   const selection = getSliceSelection(dimMapping);
-
-  const formatter = getFormatter(entity);
-  const cellWidth = hasComplexType(entity) ? 232 : 116;
 
   return (
     <>
@@ -46,8 +41,6 @@ function MatrixVisContainer(props: VisContainerProps) {
               value={value}
               dims={dims}
               dimMapping={dimMapping}
-              formatter={formatter}
-              cellWidth={cellWidth}
               toolbarContainer={toolbarContainer}
             />
           )}

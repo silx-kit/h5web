@@ -3,7 +3,6 @@ import type {
   ArrayShape,
   ArrayValue,
   Dataset,
-  Primitive,
   PrintableType,
 } from '@h5web/shared';
 import { createPortal } from 'react-dom';
@@ -12,6 +11,7 @@ import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import MatrixToolbar from './MatrixToolbar';
 import { useMatrixVisConfig } from './config';
+import { getCellWidth, getFormatter } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
@@ -19,27 +19,20 @@ interface Props {
   value: ArrayValue<PrintableType>;
   dims: number[];
   dimMapping: DimensionMapping;
-  formatter: (value: Primitive<PrintableType>) => string;
-  cellWidth: number;
   toolbarContainer: HTMLDivElement | undefined;
 }
 
 function MappedMatrixVis(props: Props) {
-  const {
-    dataset,
-    selection,
-    value,
-    dims,
-    dimMapping,
-    formatter,
-    cellWidth,
-    toolbarContainer,
-  } = props;
+  const { dataset, selection, value, dims, dimMapping, toolbarContainer } =
+    props;
 
   const sticky = useMatrixVisConfig((state) => state.sticky);
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
+
+  const formatter = getFormatter(dataset);
+  const cellWidth = getCellWidth(dataset);
 
   return (
     <>

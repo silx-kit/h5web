@@ -59,8 +59,8 @@ describe('App', () => {
     cy.findByRole('table').should('exist');
     cy.findAllByRole('cell')
       .first()
-      .should('have.attr', 'aria-rowindex', 1)
-      .and('have.attr', 'aria-colindex', 1);
+      .should('have.attr', 'aria-rowindex', 0)
+      .and('have.attr', 'aria-colindex', 0);
   });
 
   it('visualize 2D dataset as Heatmap', () => {

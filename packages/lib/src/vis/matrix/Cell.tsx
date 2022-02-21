@@ -6,26 +6,23 @@ import { SettingsContext } from './context';
 
 function Cell(props: GridChildComponentProps) {
   const { rowIndex, columnIndex, style } = props;
-  const { cellFormatter } = useContext(SettingsContext);
-
-  // Disable index columns (rendering done by the innerElementType)
-  if (rowIndex * columnIndex === 0) {
-    return null;
-  }
+  const { rowHeaderCellsWidth, cellSize, cellFormatter } =
+    useContext(SettingsContext);
 
   return (
     <div
       className={styles.cell}
-      style={style}
+      style={{
+        ...style,
+        left: (style.left as number) + rowHeaderCellsWidth, // account for row header cells
+        top: (style.top as number) + cellSize.height, // account for column header cells
+      }}
       role="cell"
       aria-rowindex={rowIndex}
       aria-colindex={columnIndex}
       data-bg={(rowIndex + columnIndex) % 2 === 1 || undefined}
     >
-      {
-        // -1 to account for the index row and column
-        cellFormatter(rowIndex - 1, columnIndex - 1)
-      }
+      {cellFormatter(rowIndex, columnIndex)}
     </div>
   );
 }

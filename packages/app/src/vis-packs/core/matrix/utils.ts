@@ -1,14 +1,14 @@
 import type {
-  Dataset,
   ArrayShape,
-  PrintableType,
+  Dataset,
   H5WebComplex,
+  PrintableType,
 } from '@h5web/shared';
 import {
-  hasComplexType,
-  hasNumericType,
   formatMatrixComplex,
   formatMatrixValue,
+  hasComplexType,
+  hasNumericType,
 } from '@h5web/shared';
 
 import type { ValueFormatter } from '../models';
@@ -25,4 +25,14 @@ export function getFormatter(
   }
 
   return (val) => (val as string).toString();
+}
+
+export function getCellWidth(
+  dataset: Dataset<ArrayShape, PrintableType>
+): number {
+  if (hasComplexType(dataset)) {
+    return 232;
+  }
+
+  return 116;
 }

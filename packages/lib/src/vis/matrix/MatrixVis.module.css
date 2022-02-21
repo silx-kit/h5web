@@ -74,6 +74,8 @@
   align-items: center;
   justify-content: center;
   background-color: var(--h5w-matrix-cell--bgColor, transparent);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .cell[data-bg] {

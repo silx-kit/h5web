@@ -7,20 +7,25 @@ import { SettingsContext } from './context';
 interface Props {
   indexMin: number;
   indexMax: number;
-  transform: string /* to compensate for header cells not rendered in the range [0 indexMin] */;
+  transform: string; // to compensate for header cells not rendered in the range [0, indexMin]
+  width?: number;
 }
 
 function HeaderCells(props: Props) {
-  const { indexMin, indexMax, transform } = props;
+  const { indexMin, indexMax, width, transform } = props;
   const { cellSize } = useContext(SettingsContext);
 
   return (
     <>
-      {range(indexMin, indexMax).map((index) => (
+      {range(indexMin, indexMax + 1).map((index) => (
         <div
           key={index.toString()}
           className={styles.indexCell}
-          style={{ ...cellSize, transform }}
+          style={{
+            width: width || cellSize.width,
+            height: cellSize.height,
+            transform,
+          }}
           data-bg={index % 2 === 1 ? '' : undefined}
         >
           {index >= 0 && index}

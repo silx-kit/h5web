@@ -5,6 +5,7 @@ import type { PrintableType } from '../models';
 import Grid from './Grid';
 import GridProvider from './context';
 
+const ROW_HEADERS_WIDTH = 80;
 const CELL_HEIGHT = 32;
 
 interface Props {
@@ -18,8 +19,7 @@ function MatrixVis(props: Props) {
   const { dataArray, formatter, cellWidth, sticky = true } = props;
   const dims = dataArray.shape;
 
-  const rowCount = dims[0] + 1; // includes IndexRow
-  const columnCount = (dims.length === 2 ? dims[1] : 1) + 1; // includes IndexColumn
+  const [rowCount, columnCount = 1] = dims;
 
   const cellFormatter =
     dims.length === 1
@@ -33,6 +33,7 @@ function MatrixVis(props: Props) {
       cellSize={{ width: cellWidth, height: CELL_HEIGHT }}
       cellFormatter={cellFormatter}
       sticky={sticky}
+      rowHeaderCellsWidth={ROW_HEADERS_WIDTH}
     >
       <Grid />
     </GridProvider>

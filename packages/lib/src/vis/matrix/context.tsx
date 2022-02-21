@@ -9,6 +9,7 @@ interface GridSettings {
   columnCount: number;
   cellSize: Size;
   sticky: boolean;
+  rowHeaderCellsWidth: number;
   cellFormatter: (row: number, col: number) => string;
   setRenderedItems: (renderedItems: GridOnItemsRenderedProps) => void;
 }
@@ -23,8 +24,15 @@ export const RenderedItemsContext = createContext<
 >(undefined);
 
 function GridProvider(props: Props) {
-  const { rowCount, columnCount, cellSize, sticky, cellFormatter, children } =
-    props;
+  const {
+    rowCount,
+    columnCount,
+    cellSize,
+    sticky,
+    rowHeaderCellsWidth,
+    children,
+    cellFormatter,
+  } = props;
 
   const [renderedItems, setRenderedItems] =
     useState<GridOnItemsRenderedProps>();
@@ -35,10 +43,18 @@ function GridProvider(props: Props) {
       columnCount,
       cellSize,
       sticky,
+      rowHeaderCellsWidth,
       cellFormatter,
       setRenderedItems,
     }),
-    [cellFormatter, cellSize, columnCount, sticky, rowCount]
+    [
+      rowHeaderCellsWidth,
+      cellFormatter,
+      cellSize,
+      columnCount,
+      sticky,
+      rowCount,
+    ]
   );
 
   return (

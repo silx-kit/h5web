@@ -18,15 +18,12 @@ const complexDataArray = getMockDataArray<H5WebComplex>(
 const Template: Story<MatrixVisProps> = (args) => <MatrixVis {...args} />;
 
 export const Default = Template.bind({});
-
 Default.args = {
   dataArray,
   formatter: (val) => formatMatrixValue(val as number),
-  cellWidth: 116,
 };
 
 export const Complex = Template.bind({});
-
 Complex.args = {
   dataArray: complexDataArray,
   formatter: (val) => formatMatrixComplex(val as H5WebComplex),
@@ -37,7 +34,13 @@ export const TypedArray = Template.bind({});
 TypedArray.args = {
   dataArray: toTypedNdArray(dataArray, Float32Array),
   formatter: (val) => formatMatrixValue(val as number),
-  cellWidth: 116,
+};
+
+export const StaticIndexCells = Template.bind({});
+StaticIndexCells.args = {
+  dataArray,
+  sticky: false,
+  formatter: (val) => formatMatrixValue(val as number),
 };
 
 export default {
@@ -45,4 +48,5 @@ export default {
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
   component: MatrixVis,
+  args: { cellWidth: 116 },
 } as Meta;
