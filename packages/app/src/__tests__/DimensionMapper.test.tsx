@@ -1,11 +1,10 @@
-import { act, screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { renderApp, selectExplorerNode, selectVisTab } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('display mapping for X axis when visualizing 2D dataset as Line', async () => {
-  jest.useFakeTimers('modern');
   await renderApp();
   await selectExplorerNode('nD_datasets/twoD');
   await selectVisTab(Vis.Line);
@@ -25,24 +24,17 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
   const d0Slider = screen.getByRole('slider');
   expect(d0Slider).toHaveAttribute('aria-valueNow', '0');
 
-  act(() => {
-    // Ensure that the swap from [0, 'x'] to ['x', 0] works
-    userEvent.click(xDimsButtons[0]);
-    jest.advanceTimersByTime(100); // account for debouncing of `dimMapping` state
-  });
+  // Ensure that the swap from [0, 'x'] to ['x', 0] works
+  userEvent.click(xDimsButtons[0]);
 
-  expect(xDimsButtons[0]).toBeChecked();
+  await waitFor(() => expect(xDimsButtons[0]).toBeChecked());
   expect(xDimsButtons[1]).not.toBeChecked();
 
   const d1Slider = screen.getByRole('slider');
   expect(d1Slider).toHaveAttribute('aria-valueNow', '0');
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
-  jest.useFakeTimers('modern');
   await renderApp();
   await selectExplorerNode('nD_datasets/twoD');
   await selectVisTab(Vis.Heatmap);
@@ -62,19 +54,13 @@ test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap',
   expect(xD1Button).toBeChecked();
   expect(yD0Button).toBeChecked();
 
-  act(() => {
-    // Ensure that the swap from ['y', 'x'] to ['x', 'y'] works
-    userEvent.click(xD0Button);
-    jest.advanceTimersByTime(100); // account for debouncing of `dimMapping` state
-  });
+  // Ensure that the swap from ['y', 'x'] to ['x', 'y'] works
+  userEvent.click(xD0Button);
 
-  expect(xD0Button).toBeChecked();
+  await waitFor(() => expect(xD0Button).toBeChecked());
   expect(xD1Button).not.toBeChecked();
   expect(yD0Button).not.toBeChecked();
   expect(yD1Button).toBeChecked();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('display one dimension slider and mappings for X and Y axes when visualizing 3D dataset as Matrix', async () => {
