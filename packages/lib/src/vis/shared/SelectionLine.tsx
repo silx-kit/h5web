@@ -1,4 +1,4 @@
-import type { Object3DNode } from '@react-three/fiber';
+import type { Color, Object3DNode } from '@react-three/fiber';
 import { extend, useThree } from '@react-three/fiber';
 import { useLayoutEffect, useState } from 'react';
 import type { Vector2 } from 'three';
@@ -19,7 +19,7 @@ declare global {
 interface Props {
   startPoint: Vector2;
   endPoint: Vector2;
-  color?: string;
+  color?: Color;
 }
 
 function SelectionLine(props: Props) {

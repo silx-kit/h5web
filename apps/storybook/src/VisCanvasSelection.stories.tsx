@@ -18,6 +18,7 @@ interface TemplateProps {
   disablePan?: boolean;
   disableZoom?: boolean;
   modifierKey?: 'Alt' | 'Control' | 'Shift';
+  color?: string;
 }
 
 function vectorToStr(vec: Vector2) {
@@ -31,6 +32,7 @@ const Template: Story<TemplateProps> = (args) => {
     disablePan = true,
     disableZoom = true,
     modifierKey,
+    color,
   } = args;
 
   const [selectedVectors, setSelectedVectors] = useState<[Vector2, Vector2]>();
@@ -56,12 +58,14 @@ const Template: Story<TemplateProps> = (args) => {
           <LineSelectionMesh
             onSelection={(start, end) => setSelectedVectors([start, end])}
             modifierKey={modifierKey}
+            color={color}
           />
         )}
         {selection === 'rectangle' && (
           <RectSelectionMesh
             onSelection={(start, end) => setSelectedVectors([start, end])}
             modifierKey={modifierKey}
+            color={color}
           />
         )}
       </VisCanvas>
@@ -85,6 +89,12 @@ SelectingWithModifierAndZoom.args = {
   disablePan: false,
   disableZoom: false,
   modifierKey: 'Shift',
+};
+
+export const ChangeSelectionColors = Template.bind({});
+ChangeSelectionColors.args = {
+  selection: 'rectangle',
+  color: 'blue',
 };
 
 export default {
