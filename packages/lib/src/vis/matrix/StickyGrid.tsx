@@ -12,7 +12,7 @@ interface Props {
 
 const StickyGrid = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const { children, style } = props;
-  const { rowCount, columnCount, cellSize, sticky } =
+  const { rowCount, columnCount, cellSize, sticky, rowHeaderCellsWidth } =
     useContext(SettingsContext);
 
   const renderedItems = useContext(RenderedItemsContext);
@@ -27,14 +27,23 @@ const StickyGrid = forwardRef<HTMLDivElement, Props>((props, ref) => {
     <div
       ref={ref}
       className={styles.stickyGrid}
-      style={style}
+      style={{
+        ...style,
+        width: (style.width as number) + rowHeaderCellsWidth, // account for row header cells
+        height: (style.height as number) + cellSize.height, // account for column header cells
+      }}
       role="table"
       aria-rowcount={rowCount}
       aria-colcount={columnCount}
       data-sticky={sticky || undefined}
     >
       <div className={styles.colHeaders}>
-        <div className={styles.topLeftCell} style={cellSize} data-bg />
+        <div
+          className={styles.topLeftCell}
+          style={{ width: rowHeaderCellsWidth, height: cellSize.height }}
+          data-bg
+          aria-hidden="true"
+        />
         <HeaderCells
           indexMin={colStart}
           indexMax={colStop}
@@ -42,11 +51,12 @@ const StickyGrid = forwardRef<HTMLDivElement, Props>((props, ref) => {
         />
       </div>
       <div className={styles.innerContainer}>
-        <div className={styles.rowHeaders}>
+        <div className={styles.rowHeaders} aria-hidden="true">
           <HeaderCells
             indexMin={rowStart}
             indexMax={rowStop}
             transform={`translateY(${cellSize.height * rowStart}px)`}
+            width={rowHeaderCellsWidth}
           />
         </div>
         {children}
