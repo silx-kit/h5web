@@ -1,11 +1,10 @@
-import { HeatmapVis } from '@h5web/lib';
+import { HeatmapVis, useSafeDomain, useVisDomain } from '@h5web/lib';
 import type { H5WebComplex, ScaleType } from '@h5web/shared';
 import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useHeatmapConfig } from '../heatmap/config';
-import { useSafeDomain, useVisDomain } from '../heatmap/hooks';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { AxisMapping } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';

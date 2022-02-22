@@ -1,4 +1,4 @@
-import { HeatmapVis } from '@h5web/lib';
+import { HeatmapVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
 import type {
   ArrayShape,
   Dataset,
@@ -10,12 +10,11 @@ import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import { useDomain, useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { AxisMapping } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';
 import HeatmapToolbar from './HeatmapToolbar';
 import { useHeatmapConfig } from './config';
-import { useSafeDomain, useVisDomain } from './hooks';
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericType>;

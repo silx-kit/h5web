@@ -86,9 +86,9 @@ const visDomain2 = getVisDomain([null, 20], [0, 100]); // [0, 20]
 
 #### getSafeDomain
 
-Determine a domain that is safe for the visualization. This is typically called with a user-defined `customDomain`, or with a `visDomain` as returned by `getVisDomain()`.
-If the domain is determined to be unsafe, a safe domain based on `fallbackDomain` is returned along with an error object. Note that `fallbackDomain` is assumed to be safe.
-The domain is considered unsafe if it's inverted (`min > max`), or if the scale is log and at least one of the bounds is negative.
+Make a domain safe in a given scale. This is typically called with a user-defined `customDomain`, or with a `visDomain` as returned by `getVisDomain()`.
+If `domain` is determined to be unsafe, a safe domain based on `fallbackDomain` is returned along with an error object. Note that `fallbackDomain` is assumed to be safe in the given scale.
+The domain is considered unsafe if it's inverted (`min > max`), if the scale is log and at least one of the bounds is negative, etc.
 
 ```ts
 getSafeDomain(domain: Domain, fallbackDomain: Domain, scaleType: ScaleType): [Domain, DomainErrors]
