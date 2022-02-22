@@ -32,11 +32,12 @@ interface Props {
   config: AxisConfig;
   domain: Domain;
   canvasSize: Size;
+  svgSize: Size;
   flipAxis?: boolean;
 }
 
 function Axis(props: Props) {
-  const { type, config, domain, canvasSize, flipAxis } = props;
+  const { type, config, domain, canvasSize, svgSize, flipAxis } = props;
 
   const { width, height } = canvasSize;
   const axisLength = type === 'abscissa' ? width : height;
@@ -57,7 +58,7 @@ function Axis(props: Props) {
 
   return (
     <>
-      <svg className={styles.axis} data-type={type}>
+      <svg className={styles.axis} style={svgSize} data-type={type}>
         <AxisComponent
           scale={scale}
           tickFormat={getTickFormatter(domain, axisLength, scaleType)}
@@ -69,7 +70,7 @@ function Axis(props: Props) {
         />
       </svg>
       {showGrid && (
-        <svg className={styles.grid}>
+        <svg className={styles.grid} style={canvasSize}>
           <GridComponent
             scale={scale}
             width={width}

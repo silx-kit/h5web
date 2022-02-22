@@ -2,7 +2,7 @@
   display: grid;
   grid-template-areas:
     '. top-axis .'
-    '. axis-grid right-axis'
+    'left-axis grid right-axis'
     '. bottom-axis .';
 
   /* - Prevent panning/zooming from axis when zoomed in.
@@ -13,11 +13,6 @@
 .axisSystem > svg {
   display: block;
   overflow: visible;
-
-  /* Avoid potential overflow caused by default intrinsic size of `svg` elements. */
-  /* Chrome/Edge require values greater than 0. */
-  width: 1px;
-  height: 1px;
 }
 
 .axis[data-type='abscissa'] {
@@ -25,7 +20,8 @@
 }
 
 .axis[data-type='ordinate'] {
-  grid-area: axis-grid;
+  grid-area: left-axis;
+  transform: translateX(100%);
 }
 
 .axis > g > line {
@@ -66,7 +62,7 @@
 }
 
 .grid {
-  grid-area: axis-grid;
+  grid-area: grid;
 }
 
 .grid line {
