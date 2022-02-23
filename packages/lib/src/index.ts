@@ -23,6 +23,7 @@ export { default as GridToggler } from './toolbar/controls/GridToggler';
 export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler';
 export { default as Selector } from './toolbar/controls/Selector/Selector';
 export { default as ExportMenu } from './toolbar/controls/ExportMenu';
+export { default as CellWidthInput } from './toolbar/controls/CellWidthInput';
 
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';

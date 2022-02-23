@@ -4,7 +4,10 @@
 }
 
 .selectorLabel {
-  color: var(--h5w-selector-label--color, royalblue);
+  color: var(
+    --h5w-selector-label--color,
+    var(--h5w-toolbar-label--color, royalblue)
+  );
   margin-left: 0.25rem;
 }
 

@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow';
 
 import { useBaseArray } from '../hooks';
 import RgbToolbar from './RgbToolbar';
-import { useRgbVisConfig } from './config';
+import { useRgbConfig } from './config';
 
 interface Props {
   value: number[] | TypedArray;
@@ -19,7 +19,7 @@ function MappedRgbVis(props: Props) {
 
   const dataArray = useBaseArray(value, dims);
 
-  const { showGrid, layout, imageType } = useRgbVisConfig(
+  const { showGrid, layout, imageType } = useRgbConfig(
     (state) => state,
     shallow
   );

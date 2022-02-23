@@ -61,7 +61,7 @@ function createStore() {
 }
 
 const { Provider, useStore } = createContext<LineConfig>();
-export const useLineConfig = useStore;
+export { useStore as useLineConfig };
 
 export function LineConfigProvider(props: ConfigProviderProps) {
   const { children } = props;

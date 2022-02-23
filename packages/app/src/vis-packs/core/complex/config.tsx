@@ -28,7 +28,7 @@ function createStore() {
 }
 
 const { Provider, useStore } = createContext<ComplexConfig>();
-export const useComplexConfig = useStore;
+export { useStore as useComplexConfig };
 
 export function ComplexConfigProvider(props: ConfigProviderProps) {
   const { children } = props;

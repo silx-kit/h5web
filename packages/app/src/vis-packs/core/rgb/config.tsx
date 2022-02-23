@@ -41,7 +41,7 @@ function createStore() {
 }
 
 const { Provider, useStore } = createContext<RgbVisConfig>();
-export const useRgbVisConfig = useStore;
+export { useStore as useRgbConfig };
 
 export function RgbConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
