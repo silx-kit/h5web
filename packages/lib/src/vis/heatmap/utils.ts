@@ -61,10 +61,9 @@ export function getSafeDomain(
   if (domain[0] > domain[1]) {
     return [fallbackDomain, { minGreater: true }];
   }
-  const h5webScale = H5WEB_SCALES[scaleType];
 
   const [min, max] = domain;
-  const { validMin } = h5webScale;
+  const { validMin } = H5WEB_SCALES[scaleType];
 
   const isMinSupported = min >= validMin;
   const isMaxSupported = max >= validMin;
