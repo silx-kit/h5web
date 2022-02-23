@@ -8,6 +8,7 @@ import type {
   NumArray,
 } from '@h5web/shared';
 import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
+import type { Vector2 } from 'three';
 
 import type { ColorMap } from './heatmap/models';
 import type { ScaleGamma } from './scaleGamma';
@@ -93,3 +94,8 @@ export interface HistogramParams {
 }
 
 export type ModifierKey = 'Alt' | 'Control' | 'Shift';
+
+export interface Selection {
+  startPoint: Vector2;
+  endPoint: Vector2;
+}

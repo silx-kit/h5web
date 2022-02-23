@@ -1,10 +1,12 @@
 import {
-  LineSelectionMesh,
   PanMesh,
-  ZoomMesh,
-  RectSelectionMesh,
+  SelectionLine,
+  SelectionMesh,
+  SelectionRect,
   VisCanvas,
+  ZoomMesh,
 } from '@h5web/lib';
+import type { ModifierKey, Selection } from '@h5web/lib/src/vis/models';
 import type { Meta, Story } from '@storybook/react';
 import { format } from 'd3-format';
 import { useState } from 'react';
@@ -13,10 +15,10 @@ import type { Vector2 } from 'three';
 import FillHeight from './decorators/FillHeight';
 
 interface TemplateProps {
-  selection?: 'line' | 'rectangle';
+  selectionType: 'line' | 'rectangle';
   disablePan?: boolean;
   disableZoom?: boolean;
-  modifierKey?: 'Alt' | 'Control' | 'Shift';
+  modifierKey?: ModifierKey;
   color?: string;
 }
 
@@ -26,64 +28,56 @@ function vectorToStr(vec: Vector2) {
 
 const Template: Story<TemplateProps> = (args) => {
   const {
-    selection,
+    selectionType,
     disablePan = true,
     disableZoom = true,
     modifierKey,
     color,
   } = args;
 
-  const [selectedVectors, setSelectedVectors] = useState<[Vector2, Vector2]>();
+  const [activeSelection, setActiveSelection] = useState<Selection>();
+
+  const SelectionComponent =
+    selectionType === 'line' ? SelectionLine : SelectionRect;
 
   return (
-    <>
-      {selection && (
-        <p style={{ textAlign: 'center' }}>
-          {selectedVectors
-            ? `Selection from ${vectorToStr(
-                selectedVectors[0]
-              )} to ${vectorToStr(selectedVectors[1])}`
-            : 'No selection'}
-        </p>
-      )}
-      <VisCanvas
-        abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-        ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    <VisCanvas
+      title={
+        activeSelection
+          ? `Selection from ${vectorToStr(
+              activeSelection.startPoint
+            )} to ${vectorToStr(activeSelection.endPoint)}`
+          : 'No selection'
+      }
+      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      <PanMesh disabled={disablePan} />
+      <ZoomMesh disabled={disableZoom} />
+      <SelectionMesh
+        onSelectionChange={setActiveSelection}
+        onSelectionEnd={() => setActiveSelection(undefined)}
+        modifierKey={modifierKey}
       >
-        <PanMesh disabled={disablePan} />
-        <ZoomMesh disabled={disableZoom} />
-        {selection === 'line' && (
-          <LineSelectionMesh
-            onSelection={(start, end) => setSelectedVectors([start, end])}
-            modifierKey={modifierKey}
-            color={color}
-          />
-        )}
-        {selection === 'rectangle' && (
-          <RectSelectionMesh
-            onSelection={(start, end) => setSelectedVectors([start, end])}
-            modifierKey={modifierKey}
-            color={color}
-          />
-        )}
-      </VisCanvas>
-    </>
+        {(selection) => <SelectionComponent color={color} {...selection} />}
+      </SelectionMesh>
+    </VisCanvas>
   );
 };
 
 export const SelectingRegions = Template.bind({});
 SelectingRegions.args = {
-  selection: 'rectangle',
+  selectionType: 'rectangle',
 };
 
 export const SelectingLines = Template.bind({});
 SelectingLines.args = {
-  selection: 'line',
+  selectionType: 'line',
 };
 
 export const SelectingWithModifierAndZoom = Template.bind({});
 SelectingWithModifierAndZoom.args = {
-  selection: 'line',
+  selectionType: 'line',
   disablePan: false,
   disableZoom: false,
   modifierKey: 'Shift',
@@ -97,10 +91,70 @@ SelectingWithModifierAndZoom.argTypes = {
 
 export const ChangeSelectionColors = Template.bind({});
 ChangeSelectionColors.args = {
-  selection: 'rectangle',
+  selectionType: 'rectangle',
   color: 'blue',
 };
 ChangeSelectionColors.argTypes = {
+  color: {
+    control: { type: 'color' },
+  },
+};
+
+export const PersistSelection: Story<TemplateProps> = (args) => {
+  const {
+    selectionType,
+    disablePan = true,
+    disableZoom = true,
+    modifierKey,
+    color,
+  } = args;
+
+  const [persistedSelection, setPersistedSelection] = useState<Selection>();
+
+  const SelectionComponent =
+    selectionType === 'line' ? SelectionLine : SelectionRect;
+
+  return (
+    <VisCanvas
+      title={
+        persistedSelection
+          ? `Selection from ${vectorToStr(
+              persistedSelection.startPoint
+            )} to ${vectorToStr(persistedSelection.endPoint)}`
+          : 'No selection'
+      }
+      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      <PanMesh disabled={disablePan} />
+      <ZoomMesh disabled={disableZoom} />
+      <SelectionMesh
+        onSelectionStart={() => {
+          setPersistedSelection(undefined);
+        }}
+        onSelectionEnd={setPersistedSelection}
+        modifierKey={modifierKey}
+      >
+        {(selection) => <SelectionComponent color={color} {...selection} />}
+      </SelectionMesh>
+      {persistedSelection && (
+        <SelectionComponent
+          color={color}
+          startPoint={persistedSelection.startPoint}
+          endPoint={persistedSelection.endPoint}
+        />
+      )}
+    </VisCanvas>
+  );
+};
+PersistSelection.args = {
+  selectionType: 'rectangle',
+};
+PersistSelection.argTypes = {
+  modifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift'],
+  },
   color: {
     control: { type: 'color' },
   },
@@ -111,5 +165,11 @@ export default {
   decorators: [FillHeight],
   parameters: {
     layout: 'fullscreen',
+  },
+  argTypes: {
+    selectionType: {
+      control: { type: 'inline-radio' },
+      options: ['line', 'rectangle'],
+    },
   },
 } as Meta;

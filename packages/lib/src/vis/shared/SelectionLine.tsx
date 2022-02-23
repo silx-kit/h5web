@@ -4,6 +4,8 @@ import { useLayoutEffect, useState } from 'react';
 import type { Vector2 } from 'three';
 import { BufferGeometry, Line } from 'three';
 
+import { useAxisSystemContext } from './AxisSystemContext';
+
 extend({ Line_: Line });
 
 // https://github.com/pmndrs/react-three-fiber/issues/1152
@@ -23,7 +25,16 @@ interface Props {
 }
 
 function SelectionLine(props: Props) {
-  const { startPoint, endPoint, color = 'black' } = props;
+  const {
+    startPoint: dataStartPoint,
+    endPoint: dataEndPoint,
+    color = 'black',
+  } = props;
+
+  const { dataToWorld } = useAxisSystemContext();
+  const startPoint = dataToWorld(dataStartPoint);
+  const endPoint = dataToWorld(dataEndPoint);
+
   const [dataGeometry] = useState(() => new BufferGeometry());
   const invalidate = useThree((state) => state.invalidate);
 
