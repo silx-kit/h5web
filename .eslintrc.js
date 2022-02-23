@@ -10,10 +10,9 @@ const config = createConfig({
     {
       files: ['**/*.spec.ts'],
       rules: {
-        // Cypress has its own way of dealing with asynchronicity
-        'testing-library/await-async-query': 'off',
-        'testing-library/await-async-utils': 'off',
-        'testing-library/prefer-screen-queries': 'off',
+        'testing-library/await-async-query': 'off', // Cypress has its own way of dealing with asynchronicity
+        'testing-library/await-async-utils': 'off', // Cypress has its own way of dealing with asynchronicity
+        'testing-library/prefer-screen-queries': 'off', // Cypress provides `cy` object instead of `screen`
       },
     },
   ],

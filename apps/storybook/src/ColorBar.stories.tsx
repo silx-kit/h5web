@@ -51,7 +51,7 @@ WithBounds.storyName = 'With bounds';
 WithBounds.args = {
   ...Default.args,
   domainMin: -235.111,
-  domainMax: 98_765,
+  domainMax: 98765,
   withBounds: true,
 };
 
