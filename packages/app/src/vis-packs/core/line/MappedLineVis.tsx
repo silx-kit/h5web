@@ -1,4 +1,4 @@
-import { LineVis } from '@h5web/lib';
+import { LineVis, useCombinedDomain, useDomain, useDomains } from '@h5web/lib';
 import type {
   ArrayShape,
   Dataset,
@@ -11,11 +11,8 @@ import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import {
-  useCombinedDomain,
   useMappedArrays,
   useMappedArray,
-  useDomain,
-  useDomains,
   useSlicedDimsAndMapping,
 } from '../hooks';
 import type { AxisMapping } from '../models';

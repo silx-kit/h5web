@@ -75,7 +75,7 @@ getLinearGradient(interpolator: D3Interpolator, direction: 'top' | 'bottom' | 'r
 
 #### getVisDomain
 
-Determine the domain to be used for the visualization based on a user-selected custom domain. If a bound of the custom domain is `null`, it falls back to the corresponding bound of the data domain.
+Determine the domain to be used for the visualization based on a custom domain selected by the user. If a bound of the custom domain is `null`, it falls back to the corresponding bound of the data domain.
 
 ```ts
 getVisDomain(customDomain: CustomDomain, dataDomain: Domain): Domain
@@ -86,17 +86,18 @@ const visDomain2 = getVisDomain([null, 20], [0, 100]); // [0, 20]
 
 #### getSafeDomain
 
-Determine a domain that is safe for the visualization. This is typically called with a user-defined `customDomain`, or with a `visDomain` as returned by `getVisDomain()`.
-If the domain is determined to be unsafe, a safe domain based on `fallbackDomain` is returned along with an error object. Note that `fallbackDomain` is assumed to be safe.
-The domain is considered unsafe if it's inverted (`min > max`), or if the scale is log and at least one of the bounds is negative.
+Make a domain safe in a given scale. This is typically called with a custom domain selected by the user (either directly or after calling `getVisDomain()`).
+If `domain` is determined to be unsafe, a safe domain based on `fallbackDomain` is returned along with an errors object. Note that `fallbackDomain` is assumed to be safe in the given scale.
+The domain is considered unsafe if it's inverted (`min > max`), or if the min and/or max bound is not suppoted by the scale.
 
 ```ts
 getSafeDomain(domain: Domain, fallbackDomain: Domain, scaleType: ScaleType): [Domain, DomainErrors]
 
-const safeDomain1 = getSafeDomain([-10, 50], [1, 100], ScaleType.Linear]); // [0, 50]
-const safeDomain2 = getSafeDomain([-10, 50], [1, 100], ScaleType.Log]); // [1, 50]
-const safeDomain3 = getSafeDomain([-50, -10], [1, 100], ScaleType.Log]); // [1, 100]
-const safeDomain4 = getSafeDomain([-10, 50], [80, 100], ScaleType.Log]); // [50, 50] => log-safe min (80) is greater than max (50)
+const res1 = getSafeDomain([-10, 5], [1, 2], ScaleType.Linear); // [[-10, 5], {}]
+const res2 = getSafeDomain([5, -10], [1, 2], ScaleType.Linear); // [[1, 2], { minGreater: true }]
+const res3 = getSafeDomain([-1, 5], [1, 2], ScaleType.Sqrt); // [[1, 5], { minError: DomainError.InvalidMinWithScale }]
+const res4 = getSafeDomain([-2, 0], [1, 2], ScaleType.Log); // [[1, 2], { minError: DomainError.InvalidMinWithScale, maxError: DomainError.InvalidMaxWithScale }]
+const res5 = getSafeDomain([-5, 5], [10, 20], ScaleType.Log); // [[5, 5], { minError: DomainError.CustomMaxFallback }]
 ```
 
 #### scaleGamma

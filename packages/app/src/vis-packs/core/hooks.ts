@@ -1,23 +1,13 @@
-import { getCombinedDomain } from '@h5web/lib';
 import type {
-  AnyNumArray,
   ArrayShape,
   Dataset,
-  Domain,
   NumArray,
   ScalarShape,
   Value,
 } from '@h5web/shared';
-import {
-  isDefined,
-  ScaleType,
-  getBounds,
-  getValidDomainForScale,
-  assertDatasetValue,
-} from '@h5web/shared';
+import { isDefined, assertDatasetValue } from '@h5web/shared';
 import type { NdArray, TypedArray } from 'ndarray';
 import { useContext, useMemo } from 'react';
-import { createMemo } from 'react-use';
 
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
@@ -76,35 +66,6 @@ export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
     })
   );
 }
-
-const useBounds = createMemo(getBounds);
-const useValidDomainForScale = createMemo(getValidDomainForScale);
-
-export function useDomain(
-  valuesArray: AnyNumArray,
-  scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray
-): Domain | undefined {
-  // Distinct memoized calls allows for bounds to not be recomputed when scale type changes
-  const bounds = useBounds(valuesArray, errorArray);
-  return useValidDomainForScale(bounds, scaleType);
-}
-
-export function useDomains(
-  valuesArrays: AnyNumArray[],
-  scaleType: ScaleType = ScaleType.Linear
-): (Domain | undefined)[] {
-  const allBounds = useMemo(() => {
-    return valuesArrays.map((arr) => getBounds(arr));
-  }, [valuesArrays]);
-
-  return useMemo(
-    () => allBounds.map((bounds) => getValidDomainForScale(bounds, scaleType)),
-    [allBounds, scaleType]
-  );
-}
-
-export const useCombinedDomain = createMemo(getCombinedDomain);
 
 export function useBaseArray<T, U extends T[] | TypedArray | undefined>(
   value: U,
