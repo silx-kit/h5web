@@ -6,11 +6,12 @@ import type {
   PrintableType,
 } from '@h5web/shared';
 import { createPortal } from 'react-dom';
+import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import MatrixToolbar from './MatrixToolbar';
-import { useMatrixVisConfig } from './config';
+import { useMatrixConfig } from './config';
 import { getCellWidth, getFormatter } from './utils';
 
 interface Props {
@@ -26,7 +27,10 @@ function MappedMatrixVis(props: Props) {
   const { dataset, selection, value, dims, dimMapping, toolbarContainer } =
     props;
 
-  const sticky = useMatrixVisConfig((state) => state.sticky);
+  const { sticky, customCellWidth } = useMatrixConfig(
+    (state) => state,
+    shallow
+  );
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
@@ -38,14 +42,18 @@ function MappedMatrixVis(props: Props) {
     <>
       {toolbarContainer &&
         createPortal(
-          <MatrixToolbar dataset={dataset} selection={selection} />,
+          <MatrixToolbar
+            dataset={dataset}
+            selection={selection}
+            cellWidth={cellWidth}
+          />,
           toolbarContainer
         )}
 
       <MatrixVis
         dataArray={mappedArray}
         formatter={formatter}
-        cellWidth={cellWidth}
+        cellWidth={customCellWidth ?? cellWidth}
         sticky={sticky}
       />
     </>

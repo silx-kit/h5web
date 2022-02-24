@@ -71,7 +71,7 @@ function createStore() {
 }
 
 const { Provider, useStore } = createContext<HeatmapConfig>();
-export const useHeatmapConfig = useStore;
+export { useStore as useHeatmapConfig };
 
 export function HeatmapConfigProvider(props: ConfigProviderProps) {
   const { children } = props;

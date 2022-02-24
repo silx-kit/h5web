@@ -5,6 +5,7 @@ import type {
   PrintableType,
 } from '@h5web/shared';
 import {
+  DTypeClass,
   formatMatrixComplex,
   formatMatrixValue,
   hasComplexType,
@@ -30,9 +31,19 @@ export function getFormatter(
 export function getCellWidth(
   dataset: Dataset<ArrayShape, PrintableType>
 ): number {
-  if (hasComplexType(dataset)) {
-    return 232;
+  const { type } = dataset;
+
+  if (type.class === DTypeClass.String) {
+    return type.length !== undefined ? 12 * type.length : 300;
   }
 
-  return 116;
+  if (type.class === DTypeClass.Bool) {
+    return 90;
+  }
+
+  if (type.class === DTypeClass.Complex) {
+    return 240;
+  }
+
+  return 120;
 }

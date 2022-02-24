@@ -48,5 +48,5 @@ export default {
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
   component: MatrixVis,
-  args: { cellWidth: 116 },
+  args: { cellWidth: 120 },
 } as Meta;

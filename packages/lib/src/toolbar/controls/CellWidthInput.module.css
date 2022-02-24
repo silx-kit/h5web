@@ -1,0 +1,38 @@
+.root {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  color: var(--h5w-toolbar-label--color, royalblue);
+  margin: 0 0.25rem;
+}
+
+.input {
+  width: 4.5rem;
+  margin-right: 0.125rem;
+  padding: 0.25rem 0.375rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-radius: 0.125rem;
+  box-shadow: 0 0 2px var(--h5w-toolbar-input--shadowColor, dimgray);
+  font-weight: inherit;
+  line-height: inherit;
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+}
+
+.input:hover {
+  box-shadow: 1px 1px 2px 1px var(--h5w-toolbar-input-hover--shadowColor, gray);
+}
+
+.input:focus {
+  background-color: white;
+  box-shadow: 1px 1px 2px 1px
+    var(--h5w-toolbar-input-focus--shadowColor, royalblue);
+  outline: none;
+}
+
+.input[data-modified] {
+  background-color: white;
+  font-weight: bold;
+}

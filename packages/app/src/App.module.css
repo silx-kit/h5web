@@ -39,6 +39,8 @@
   --h5w-btn-hover--bgColor: var(--secondary-lighter);
   --h5w-btnPressed--bgColor: var(--secondary-light);
   --h5w-toolbar--bgColor: var(--secondary-light-bg);
+  --h5w-toolbar-label--color: var(--secondary-dark);
+  --h5w-toolbar-input-focus--shadowColor: var(--secondary-dark);
   --h5w-domainSlider-track--bgColor: var(--secondary-dark-15);
   --h5w-domainSlider-dataTrack--bgColor: var(--secondary-dark);
   --h5w-domainSlider-dataTrack--shadowColor: var(--secondary-darker);
@@ -46,7 +48,6 @@
   --h5w-domainSlider-thumb-auto--bgColor: var(--secondary-light);
   --h5w-domainSlider-boundInput-focus--shadowColor: var(--secondary-dark);
   --h5w-domainSlider-boundInput-editing--borderColor: var(--secondary-dark);
-  --h5w-selector-label--color: var(--secondary-dark);
   --h5w-selector-option-hover--bgColor: var(--secondary-light-bg);
   --h5w-selector-option-selected--bgColor: var(--secondary-light);
   --h5w-domainSlider-histogram--color: var(--secondary-dark);

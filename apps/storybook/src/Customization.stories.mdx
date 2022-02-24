@@ -51,30 +51,31 @@ as you see fit. For instance, if you'd like to change the color of the curve of 
 
 #### Visualizations
 
-| Name                           | Default                    | Description                 |
-| ------------------------------ | -------------------------- | --------------------------- |
-| `--h5w-canvas--bgColor`        | `transparent`              | Background color of canvas  |
-| `--h5w-plotTitle--color`       | `inherit`                  | Text color of plot title    |
-| `--h5w-plotTitle--fontFamily`  | `inherit`                  | Font family of plot title   |
-| `--h5w-plotTitle--fontSize`    | `1.125em`                  | Font size of plot title     |
-| `--h5w-plotTitle--fontWeight`  | `inherit`                  | Font weight of plot title   |
-| `--h5w-ticks--color`           | `gray`                     | Color of ticks              |
-| `--h5w-tickLabels--color`      | `#333`                     | Text color of tick labels   |
-| `--h5w-tickLabels--fontFamily` | `inherit`                  | Font family of tick labels  |
-| `--h5w-tickLabels--fontSize`   | `inherit`                  | Font size of tick labels    |
-| `--h5w-axisLabels--color`      | `#333`                     | Text color of axis labels   |
-| `--h5w-axisLabels--fontFamily` | `inherit`                  | Font family of axis labels  |
-| `--h5w-axisLabels--fontSize`   | `inherit`                  | Font size of axis labels    |
-| `--h5w-axisLabels--fontWeight` | `600`                      | Font weight of axis labels  |
-| `--h5w-grid--color`            | `gray`                     | Color of grid lines         |
-| `--h5w-grid--opacity`          | `0.33`                     | Opacity of grid lines       |
-| `--h5w-tooltip--color`         | `inherit`                  | Text color of tooltip       |
-| `--h5w-tooltip--bgColor`       | `rgba(255, 255, 255, 0.9)` | Background color of tooltip |
-| `--h5w-tooltip--fontFamily`    | `inherit`                  | Font family of tooltip      |
-| `--h5w-tooltip--fontSize`      | `0.75em`                   | Font size of tooltip        |
-| `--h5w-tooltip-guide--color`   | `gray`                     | Color of tooltip guide      |
-| `--h5w-tooltip-guide--width`   | `1.5`                      | Width of tooltip guide      |
-| `--h5w-tooltip-guide--opacity` | `0.5`                      | Opacity of tooltip guide    |
+| Name                           | Default                    | Description                                            |
+| ------------------------------ | -------------------------- | ------------------------------------------------------ |
+| `--h5w-canvas--bgColor`        | `transparent`              | Background color of canvas                             |
+| `--h5w-plotTitle--color`       | `inherit`                  | Text color of plot title                               |
+| `--h5w-plotTitle--fontFamily`  | `inherit`                  | Font family of plot title                              |
+| `--h5w-plotTitle--fontSize`    | `1.125em`                  | Font size of plot title                                |
+| `--h5w-plotTitle--fontWeight`  | `inherit`                  | Font weight of plot title                              |
+| `--h5w-ticks--color`           | `gray`                     | Color of ticks                                         |
+| `--h5w-tickLabels--color`      | `#333`                     | Text color of tick labels                              |
+| `--h5w-tickLabels--fontFamily` | `inherit`                  | Font family of tick labels                             |
+| `--h5w-tickLabels--fontSize`   | `inherit`                  | Font size of tick labels                               |
+| `--h5w-axisLabels--color`      | `#333`                     | Text color of axis labels                              |
+| `--h5w-axisLabels--fontFamily` | `inherit`                  | Font family of axis labels                             |
+| `--h5w-axisLabels--fontSize`   | `inherit`                  | Font size of axis labels                               |
+| `--h5w-axisLabels--fontWeight` | `600`                      | Font weight of axis labels                             |
+| `--h5w-grid--color`            | `gray`                     | Color of grid lines                                    |
+| `--h5w-grid--opacity`          | `0.33`                     | Opacity of grid lines                                  |
+| `--h5w-tooltip--color`         | `inherit`                  | Text color of tooltip                                  |
+| `--h5w-tooltip--bgColor`       | `rgba(255, 255, 255, 0.9)` | Background color of tooltip                            |
+| `--h5w-tooltip--fontFamily`    | `inherit`                  | Font family of tooltip                                 |
+| `--h5w-tooltip--fontSize`      | `0.75em`                   | Font size of tooltip                                   |
+| `--h5w-tooltip-guide--color`   | `gray`                     | Color of tooltip guide                                 |
+| `--h5w-tooltip-guide--width`   | `1.5`                      | Width of tooltip guide                                 |
+| `--h5w-tooltip-guide--opacity` | `0.5`                      | Opacity of tooltip guide                               |
+| `--h5w-error--color`           | `brown`                    | Color of error messages and UI elements in error state |
 
 ##### Line
 
@@ -111,18 +112,16 @@ as you see fit. For instance, if you'd like to change the color of the curve of 
 | `--h5w-matrix-indexCell--fontWeight` | `600`                                      | Font weight of index cells            |
 | `--h5w-matrix-anchorCell--bgColor`   | `silver`                                   | Background colour of anchor cell      |
 
-#### UI
+#### Toolbar
 
-| Name                 | Default | Description                                            |
-| -------------------- | ------- | ------------------------------------------------------ |
-| `--h5w-error--color` | `brown` | Color of error messages and UI elements in error state |
-
-##### Toolbar
-
-| Name                             | Default              | Description                 |
-| -------------------------------- | -------------------- | --------------------------- |
-| `--h5w-toolbar--bgColor`         | `aliceblue`          | Background color of toolbar |
-| `--h5w-toolbar-separator--color` | `rgba(0, 0, 0, 0.2)` | Color of toolbar separators |
+| Name                                     | Default              | Description                              |
+| ---------------------------------------- | -------------------- | ---------------------------------------- |
+| `--h5w-toolbar--bgColor`                 | `aliceblue`          | Background color of toolbar              |
+| `--h5w-toolbar-separator--color`         | `rgba(0, 0, 0, 0.2)` | Color of separators                      |
+| `--h5w-toolbar-label--color`             | `royalblue`          | Text color of control labels             |
+| `--h5w-toolbar-input--shadowColor`       | `dimgray`            | Box shadow color of text inputs          |
+| `--h5w-toolbar-input-hover--shadowColor` | `gray`               | Box shadow color of text inputs on hover |
+| `--h5w-toolbar-input-focus--shadowColor` | `royalblue`          | Box shadow color of text inputs on focus |
 
 ##### Buttons
 
@@ -138,14 +137,14 @@ as you see fit. For instance, if you'd like to change the color of the curve of 
 
 ##### Selectors
 
-| Name                                      | Default      | Description                          |
-| ----------------------------------------- | ------------ | ------------------------------------ |
-| `--h5w-selector-label--color`             | `royalblue`  | Text color of label                  |
-| `--h5w-selector-menu--bgColor`            | `white`      | Background color of menu             |
-| `--h5w-selector-arrowIcon--color`         | `dimgray`    | Color of arrow icon                  |
-| `--h5w-selector-option-hover--bgColor`    | `whitesmoke` | Background color of options on hover |
-| `--h5w-selector-option-selected--bgColor` | `#eee`       | Background color of selected option  |
-| `--h5w-selector-groupLabel--color`        | `gray`       | Text color of group labels in menu   |
+| Name                                      | Default                                      | Description                          |
+| ----------------------------------------- | -------------------------------------------- | ------------------------------------ |
+| `--h5w-selector-label--color`             | `var(--h5w-toolbar-label--color, royalblue)` | Text color of label                  |
+| `--h5w-selector-menu--bgColor`            | `white`                                      | Background color of menu             |
+| `--h5w-selector-arrowIcon--color`         | `dimgray`                                    | Color of arrow icon                  |
+| `--h5w-selector-option-hover--bgColor`    | `whitesmoke`                                 | Background color of options on hover |
+| `--h5w-selector-option-selected--bgColor` | `#eee`                                       | Background color of selected option  |
+| `--h5w-selector-groupLabel--color`        | `gray`                                       | Text color of group labels in menu   |
 
 ##### Domain slider
 
