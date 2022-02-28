@@ -2,6 +2,7 @@ import { getDomain, INTERPOLATORS, ScatterVis } from '@h5web/lib';
 import type { ScatterVisProps } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
+import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -40,14 +41,36 @@ const data = [
 ];
 
 const domain = getDomain(data);
+const dataArray = ndarray(data);
 
 export const Default = Template.bind({});
-
 Default.args = {
   dataAbscissas: abscissas,
   dataOrdinates: ordinates.map((v) => v + 10),
-  data,
+  dataArray,
   domain,
+};
+
+export const TypedArray = Template.bind({});
+TypedArray.args = {
+  dataAbscissas: abscissas,
+  dataOrdinates: ordinates.map((v) => v + 10),
+  dataArray: ndarray(Float32Array.from(data)),
+  domain,
+};
+
+export const MarkerSize = Template.bind({});
+MarkerSize.args = {
+  ...Default.args,
+  size: 20,
+};
+
+export const Labels = Template.bind({});
+Labels.args = {
+  ...Default.args,
+  title: 'A Scatter vis',
+  abscissaLabel: 'Latitude',
+  ordinateLabel: 'Longitude',
 };
 
 export default {

@@ -1,4 +1,4 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { Domain, NumArray, ScaleType } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import { rgb } from 'd3-color';
 import { useLayoutEffect, useMemo, useState } from 'react';
@@ -14,11 +14,12 @@ import { useBufferAttributes } from './hooks';
 interface Props {
   abscissas: number[];
   ordinates: number[];
-  data: number[];
+  data: NumArray;
   domain: Domain;
   scaleType: ScaleType;
   colorMap: ColorMap;
   invertColorMap: boolean;
+  size: number;
 }
 
 function ScatterPoints(props: Props) {
@@ -30,6 +31,7 @@ function ScatterPoints(props: Props) {
     scaleType,
     colorMap,
     invertColorMap,
+    size,
   } = props;
 
   const [dataGeometry] = useState(() => new BufferGeometry());
@@ -62,7 +64,7 @@ function ScatterPoints(props: Props) {
 
   return (
     <points geometry={dataGeometry}>
-      <GlyphMaterial size={10} glyphType={GlyphType.Circle} />
+      <GlyphMaterial size={size} glyphType={GlyphType.Circle} />
     </points>
   );
 }

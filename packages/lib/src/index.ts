@@ -44,6 +44,7 @@ export { default as Annotation } from './vis/shared/Annotation';
 export { default as LineSelectionMesh } from './vis/shared/LineSelectionMesh';
 export { default as RectSelectionMesh } from './vis/shared/RectSelectionMesh';
 export { default as SelectionMesh } from './vis/shared/SelectionMesh';
+export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
 
 // Context hook
 export { useAxisSystemContext } from './vis/shared/AxisSystemContext';

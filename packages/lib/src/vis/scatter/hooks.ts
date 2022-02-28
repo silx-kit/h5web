@@ -1,3 +1,4 @@
+import type { NumArray } from '@h5web/shared';
 import { useMemo } from 'react';
 
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
@@ -7,7 +8,7 @@ const CAMERA_FAR = 1000; // R3F's default
 export function useBufferAttributes(
   abscissas: number[],
   ordinates: number[],
-  data: number[],
+  data: NumArray,
   dataToColorScale: (val: number) => [number, number, number]
 ) {
   const { abscissaScale, ordinateScale } = useAxisSystemContext();
