@@ -1,5 +1,7 @@
-import type { Domain } from '@h5web/shared';
-import { assertDataLength, ScaleType } from '@h5web/shared';
+import type { Domain, NumArray } from '@h5web/shared';
+import { assertDataLength, assertDefined, ScaleType } from '@h5web/shared';
+import type { NdArray } from 'ndarray';
+import type { ReactNode } from 'react';
 
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
@@ -7,40 +9,49 @@ import { useAxisDomain } from '../hooks';
 import PanMesh from '../shared/PanMesh';
 import VisCanvas from '../shared/VisCanvas';
 import ZoomMesh from '../shared/ZoomMesh';
-import { DEFAULT_DOMAIN } from '../utils';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
 
 interface Props {
   dataAbscissas: number[];
   dataOrdinates: number[];
-  data: number[];
+  dataArray: NdArray<NumArray>;
   domain: Domain;
   colorMap: ColorMap;
   invertColorMap?: boolean;
+  abscissaLabel?: string;
+  ordinateLabel?: string;
   scaleType?: ScaleType;
   showGrid?: boolean;
+  title?: string;
+  size?: number;
+  children: ReactNode;
 }
 
 function ScatterVis(props: Props) {
   const {
     dataAbscissas: abscissas,
     dataOrdinates: ordinates,
-    data,
+    dataArray,
     domain,
     colorMap,
     invertColorMap = false,
+    abscissaLabel,
+    ordinateLabel,
     scaleType = ScaleType.Linear,
     showGrid = true,
+    title,
+    size = 10,
+    children,
   } = props;
 
-  assertDataLength(abscissas, data, 'abscissa');
-  assertDataLength(ordinates, data, 'ordinates');
+  assertDataLength(abscissas, dataArray, 'abscissa');
+  assertDataLength(ordinates, dataArray, 'ordinates');
 
-  const abscissaDomain =
-    useAxisDomain(abscissas, undefined, 0.01) || DEFAULT_DOMAIN;
-  const ordinateDomain =
-    useAxisDomain(ordinates, undefined, 0.01) || DEFAULT_DOMAIN;
+  const abscissaDomain = useAxisDomain(abscissas, undefined, 0.01);
+  assertDefined(abscissaDomain, 'Abscissas have undefined domain');
+  const ordinateDomain = useAxisDomain(ordinates, undefined, 0.01);
+  assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 
   return (
     <figure className={styles.root}>
@@ -48,23 +59,28 @@ function ScatterVis(props: Props) {
         abscissaConfig={{
           visDomain: abscissaDomain,
           showGrid,
+          label: abscissaLabel,
         }}
         ordinateConfig={{
           visDomain: ordinateDomain,
           showGrid,
+          label: ordinateLabel,
         }}
+        title={title}
       >
         <PanMesh />
         <ZoomMesh />
         <ScatterPoints
           abscissas={abscissas}
           ordinates={ordinates}
-          data={data}
+          data={dataArray.data}
           domain={domain}
           scaleType={scaleType}
           colorMap={colorMap}
           invertColorMap={invertColorMap}
+          size={size}
         />
+        {children}
       </VisCanvas>
       <ColorBar
         domain={domain}
