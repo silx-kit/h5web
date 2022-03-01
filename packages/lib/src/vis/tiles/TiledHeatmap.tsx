@@ -27,10 +27,11 @@ function TiledHeatmap(props: Props) {
 
   const { numLayers } = api;
 
+  const dataPerPixel = Math.max(1, xDataPerPixel, yDataPerPixel);
   const quality = 1 - clamp(qualityFactor, 0, 1);
   const levelOfDetail = Math.min(
-    Math.floor(Math.log2(Math.max(1, xDataPerPixel, yDataPerPixel)) + quality),
-    Math.max(numLayers - 1, 0)
+    Math.floor(Math.log2(dataPerPixel) + quality),
+    numLayers - 1
   );
 
   // displayLowerResolutions selects which levels of detail layers are displayed:

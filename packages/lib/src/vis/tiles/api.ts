@@ -33,6 +33,9 @@ export abstract class TilesApi {
   public readonly layerSizes: Size[];
 
   public constructor(tileSize: Size, layerSizes: Size[]) {
+    if (layerSizes.length === 0) {
+      throw new Error('layerSizes must not be empty');
+    }
     this.tileSize = tileSize;
     this.layerSizes = layerSizes;
   }
