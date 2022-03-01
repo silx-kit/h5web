@@ -7,7 +7,7 @@ import type { TextureFilter } from 'three';
 import { DataTexture, RGBAFormat, UnsignedByteType } from 'three';
 
 import { useAxisSystemContext } from '../..';
-import type { VisScaleType } from '../models';
+import type { Size, VisScaleType } from '../models';
 import VisMesh from '../shared/VisMesh';
 import { DEFAULT_DOMAIN, getUniforms, VERTEX_SHADER } from '../utils';
 import type { ColorMap, TextureSafeTypedArray } from './models';
@@ -22,6 +22,7 @@ interface Props {
   magFilter?: TextureFilter;
   alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
+  size?: Size;
 }
 
 const CMAP_SIZE = 256;
@@ -47,6 +48,7 @@ function HeatmapMesh(props: Props) {
     magFilter,
     alphaValues,
     alphaDomain = DEFAULT_DOMAIN,
+    size,
   } = props;
 
   const { ordinateConfig } = useAxisSystemContext();
@@ -141,7 +143,7 @@ function HeatmapMesh(props: Props) {
   };
 
   return (
-    <VisMesh scale={[1, ordinateConfig.flip ? -1 : 1, 1]}>
+    <VisMesh scale={[1, ordinateConfig.flip ? -1 : 1, 1]} size={size}>
       <shaderMaterial args={[shader]} />
     </VisMesh>
   );
