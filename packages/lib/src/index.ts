@@ -42,10 +42,12 @@ export type { HeatmapMeshProps } from './vis/heatmap/HeatmapMesh';
 export { default as DataCurve } from './vis/line/DataCurve';
 export { default as Html } from './vis/shared/Html';
 export { default as Annotation } from './vis/shared/Annotation';
-export { default as LineSelectionMesh } from './vis/shared/LineSelectionMesh';
-export { default as RectSelectionMesh } from './vis/shared/RectSelectionMesh';
 export { default as SelectionMesh } from './vis/shared/SelectionMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
+export type { SelectionMeshProps } from './vis/shared/SelectionMesh';
+export { default as SelectionLine } from './vis/shared/SelectionLine';
+export { default as SelectionRect } from './vis/shared/SelectionRect';
+export { default as ZoomSelectionMesh } from './vis/shared/ZoomSelectionMesh';
 
 // Context hook
 export { useAxisSystemContext } from './vis/shared/AxisSystemContext';

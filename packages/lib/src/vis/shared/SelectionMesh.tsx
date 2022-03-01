@@ -3,24 +3,33 @@ import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
-import type { ModifierKey } from '../models';
+import type { ModifierKey, Selection } from '../models';
 import { noModifierKeyPressed } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import VisMesh from './VisMesh';
 
 interface Props extends MeshProps {
-  onSelection?: (startPoint: Vector2, endPoint: Vector2) => void;
+  onSelectionStart?: () => void;
+  onSelectionChange?: (points: Selection) => void;
+  onSelectionEnd?: (points: Selection) => void;
   modifierKey?: ModifierKey;
-  children: (startPoint: Vector2, endPoint: Vector2) => ReactElement;
+  children: (points: Selection) => ReactElement;
 }
 
 function SelectionMesh(props: Props) {
-  const { children, onSelection, modifierKey, ...meshProps } = props;
-  const { worldToData, dataToWorld } = useAxisSystemContext();
+  const {
+    children,
+    onSelectionStart,
+    onSelectionChange,
+    onSelectionEnd,
+    modifierKey,
+    ...meshProps
+  } = props;
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useState<Vector2>();
-  const [isDragging, setDrag] = useState(false);
+
+  const { worldToData } = useAxisSystemContext();
 
   const onPointerDown = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
@@ -35,30 +44,37 @@ function SelectionMesh(props: Props) {
       }
 
       (target as Element).setPointerCapture(pointerId);
-      const point = worldToData(unprojectedPoint);
 
-      setStartPoint(point);
-      setEndPoint(point);
-      setDrag(true);
+      setStartPoint(worldToData(unprojectedPoint));
+      setEndPoint(undefined);
+      if (onSelectionStart) {
+        onSelectionStart();
+      }
     },
-    [worldToData, modifierKey]
+    [modifierKey, onSelectionStart, worldToData]
   );
 
   const onPointerMove = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
-      if (!isDragging) {
+      if (!startPoint) {
         return;
       }
       const point = worldToData(evt.unprojectedPoint);
 
       setEndPoint(point);
+      if (onSelectionChange) {
+        onSelectionChange({
+          startPoint,
+          endPoint: point,
+        });
+      }
     },
-    [worldToData, isDragging]
+    [onSelectionChange, startPoint, worldToData]
   );
 
   const onPointerUp = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
-      if (!isDragging) {
+      if (!startPoint) {
         return;
       }
       const { sourceEvent, unprojectedPoint } = evt;
@@ -66,21 +82,22 @@ function SelectionMesh(props: Props) {
       const point = worldToData(unprojectedPoint);
 
       (target as Element).releasePointerCapture(pointerId);
-      setEndPoint(point);
-      setDrag(false);
-      if (onSelection && startPoint) {
-        onSelection(startPoint, point);
+      if (onSelectionEnd) {
+        onSelectionEnd({
+          startPoint,
+          endPoint: point,
+        });
       }
+      setStartPoint(undefined);
+      setEndPoint(undefined);
     },
-    [onSelection, startPoint, worldToData, isDragging]
+    [startPoint, onSelectionEnd, worldToData]
   );
 
   return (
     <VisMesh {...{ onPointerMove, onPointerUp, onPointerDown, ...meshProps }}>
       <meshBasicMaterial opacity={0} transparent />
-      {startPoint &&
-        endPoint &&
-        children(dataToWorld(startPoint), dataToWorld(endPoint))}
+      {startPoint && endPoint ? children({ startPoint, endPoint }) : null}
     </VisMesh>
   );
 }

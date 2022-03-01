@@ -14,6 +14,8 @@ module.exports = createConfig({
         'storybook/hierarchy-separator': 'off', // buggy
         'storybook/meta-inline-properties': 'off', // buggy
         'storybook/no-title-property-in-meta': 'off', // file path does not always make for an appropriate title
+        'sonarjs/no-duplicate-string': 'off', // no problem repeating strings for argTypes
+        'sonarjs/no-identical-functions': 'off', // clarity trumps reusability in docs
       },
     },
   ],
