@@ -16,8 +16,7 @@ interface Props extends ColorMapProps {
 function TiledLayer(props: Props) {
   const { api, lod, ...colorMapProps } = props;
 
-  const nLevels = api.layerSizes.length;
-  const [layer0Size] = api.layerSizes;
+  const { imageSize, numLayers } = api;
   const { width, height } = api.layerSizes[lod];
   const { tileSize } = api;
 
@@ -25,8 +24,8 @@ function TiledLayer(props: Props) {
   const { visSize } = useAxisSystemContext();
 
   // Transform visible domain to current level-of-detail array coordinates
-  const xScale = width / layer0Size.width;
-  const yScale = height / layer0Size.height;
+  const xScale = width / imageSize.width;
+  const yScale = height / imageSize.height;
   const origin = new Vector2(
     Math.max(0, xVisibleDomain[0] * xScale),
     Math.max(0, yVisibleDomain[0] * yScale)
@@ -47,7 +46,7 @@ function TiledLayer(props: Props) {
       position={[
         -visSize.width / 2,
         -visSize.height / 2,
-        (nLevels - lod) / (nLevels + 1),
+        (numLayers - lod) / (numLayers + 1),
       ]}
       scale={[visSize.width / width, visSize.height / height, 1]}
     >

@@ -37,6 +37,14 @@ export abstract class TilesApi {
     this.layerSizes = layerSizes;
   }
 
+  public get imageSize(): Size {
+    return this.layerSizes[0];
+  }
+
+  public get numLayers(): number {
+    return this.layerSizes.length;
+  }
+
   public abstract get(
     lod: number,
     offset: Vector2

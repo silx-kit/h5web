@@ -25,19 +25,19 @@ function TiledHeatmap(props: Props) {
   const { visSize } = useAxisSystemContext();
   const { xDataPerPixel, yDataPerPixel } = useDataPerPixel();
 
-  const nLevels = api.layerSizes.length;
+  const { numLayers } = api;
 
   const quality = 1 - clamp(qualityFactor, 0, 1);
   const levelOfDetail = Math.min(
     Math.floor(Math.log2(Math.max(1, xDataPerPixel, yDataPerPixel)) + quality),
-    Math.max(nLevels - 1, 0)
+    Math.max(numLayers - 1, 0)
   );
 
   // displayLowerResolutions selects which levels of detail layers are displayed:
   // true: lower resolution layers displayed behind the current one
   // false: only current level of detail layer is displayed
   const lods = displayLowerResolutions
-    ? range(levelOfDetail, nLevels).reverse()
+    ? range(levelOfDetail, numLayers).reverse()
     : [levelOfDetail];
 
   const { colorMap, invertColorMap = false } = colorMapProps;

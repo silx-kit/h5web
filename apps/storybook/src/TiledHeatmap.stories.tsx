@@ -118,8 +118,7 @@ class MandelbrotTilesApi extends TilesApi {
 }
 const Template: Story<TiledHeatmapProps> = (args) => {
   const { api, ...tiledHeatmapProps } = args;
-  const [layer0Size] = api.layerSizes;
-  const { width, height } = layer0Size;
+  const { width, height } = api.imageSize;
 
   return (
     <VisCanvas
