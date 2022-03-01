@@ -59,7 +59,7 @@ function mandelbrot(
   return array;
 }
 
-interface TileKey {
+interface TileParams {
   lod: number;
   offset: Vector2;
 }
@@ -80,7 +80,7 @@ class MandelbrotTilesApi extends TilesApi {
     this.yDomain = yDomain;
 
     this.store = createFetchStore(
-      async (tile: TileKey) => {
+      async (tile: TileParams) => {
         const { lod, offset } = tile;
         const layerSize = this.layerSizes[lod];
         // Clip slice to size of the level
@@ -106,7 +106,7 @@ class MandelbrotTilesApi extends TilesApi {
       },
       {
         type: 'Map',
-        areEqual: (a: TileKey, b: TileKey) =>
+        areEqual: (a: TileParams, b: TileParams) =>
           a.lod === b.lod && a.offset.equals(b.offset),
       }
     );
