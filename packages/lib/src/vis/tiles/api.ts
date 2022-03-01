@@ -5,27 +5,30 @@ import type { TextureSafeTypedArray } from '../heatmap/models';
 import type { Size } from '../models';
 
 export function getLayerSizes(
-  imageSize: Size,
+  baseLayerSize: Size,
   tileSize: Size,
   roundToEven = false
 ): Size[] {
   if (
-    imageSize.width <= tileSize.width &&
-    imageSize.height <= tileSize.height
+    baseLayerSize.width <= tileSize.width &&
+    baseLayerSize.height <= tileSize.height
   ) {
-    return [imageSize];
+    return [baseLayerSize];
   }
 
   const nextLayerSize: Size = roundToEven
     ? {
-        width: Math.floor(imageSize.width / 2),
-        height: Math.floor(imageSize.height / 2),
+        width: Math.floor(baseLayerSize.width / 2),
+        height: Math.floor(baseLayerSize.height / 2),
       }
     : {
-        width: 1 + Math.floor((imageSize.width - 1) / 2),
-        height: 1 + Math.floor((imageSize.height - 1) / 2),
+        width: 1 + Math.floor((baseLayerSize.width - 1) / 2),
+        height: 1 + Math.floor((baseLayerSize.height - 1) / 2),
       };
-  return [...getLayerSizes(nextLayerSize, tileSize, roundToEven), imageSize];
+  return [
+    ...getLayerSizes(nextLayerSize, tileSize, roundToEven),
+    baseLayerSize,
+  ];
 }
 
 export abstract class TilesApi {
@@ -40,11 +43,11 @@ export abstract class TilesApi {
     this.layerSizes = layerSizes;
   }
 
-  public get imageSize(): Size {
+  public get baseLayerSize(): Size {
     return this.layerSizes[this.numLayers - 1];
   }
 
-  public get imageLayerIndex(): number {
+  public get baseLayerIndex(): number {
     return this.numLayers - 1;
   }
 
