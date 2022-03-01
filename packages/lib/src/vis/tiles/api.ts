@@ -25,7 +25,7 @@ export function getLayerSizes(
         width: 1 + Math.floor((imageSize.width - 1) / 2),
         height: 1 + Math.floor((imageSize.height - 1) / 2),
       };
-  return [imageSize, ...getLayerSizes(nextLayerSize, tileSize, roundToEven)];
+  return [...getLayerSizes(nextLayerSize, tileSize, roundToEven), imageSize];
 }
 
 export abstract class TilesApi {
@@ -41,7 +41,7 @@ export abstract class TilesApi {
   }
 
   public get imageSize(): Size {
-    return this.layerSizes[0];
+    return this.layerSizes[this.numLayers - 1];
   }
 
   public get numLayers(): number {
@@ -49,7 +49,7 @@ export abstract class TilesApi {
   }
 
   public abstract get(
-    lod: number,
+    layer: number,
     offset: Vector2
   ): NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
 }

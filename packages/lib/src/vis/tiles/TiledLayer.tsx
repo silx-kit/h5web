@@ -10,14 +10,14 @@ import { getTileOffsets, sortTilesByDistanceTo } from './utils';
 
 interface Props extends ColorMapProps {
   api: TilesApi;
-  lod: number;
+  layer: number;
 }
 
 function TiledLayer(props: Props) {
-  const { api, lod, ...colorMapProps } = props;
+  const { api, layer, ...colorMapProps } = props;
 
   const { imageSize, numLayers } = api;
-  const { width, height } = api.layerSizes[lod];
+  const { width, height } = api.layerSizes[layer];
   const { tileSize } = api;
 
   const { xVisibleDomain, yVisibleDomain } = useVisibleDomains();
@@ -43,22 +43,18 @@ function TiledLayer(props: Props) {
   return (
     // Tranforms to use level of details layer array coordinates
     <group
-      position={[
-        -visSize.width / 2,
-        -visSize.height / 2,
-        (numLayers - lod) / (numLayers + 1),
-      ]}
+      position={[-visSize.width / 2, -visSize.height / 2, layer / numLayers]}
       scale={[visSize.width / width, visSize.height / height, 1]}
     >
       {tileOffsets.map((offset) => (
         <Suspense key={`${offset.x},${offset.y}`} fallback={null}>
           <Tile
             api={api}
-            lod={lod}
+            layer={layer}
             x={offset.x}
             y={offset.y}
             {...colorMapProps}
-            magFilter={lod === 0 ? NearestFilter : LinearFilter}
+            magFilter={layer === numLayers - 1 ? NearestFilter : LinearFilter}
           />
         </Suspense>
       ))}

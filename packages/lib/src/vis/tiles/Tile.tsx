@@ -8,16 +8,16 @@ import type { ColorMapProps } from './models';
 
 interface Props extends ColorMapProps {
   api: TilesApi;
-  lod: number;
+  layer: number;
   x: number;
   y: number;
   magFilter: TextureFilter;
 }
 
 function Tile(props: Props) {
-  const { api, lod, x, y, magFilter, ...colorMapProps } = props;
+  const { api, layer, x, y, magFilter, ...colorMapProps } = props;
 
-  const array = api.get(lod, new Vector2(x, y));
+  const array = api.get(layer, new Vector2(x, y));
   const [height, width] = array.shape;
 
   return (

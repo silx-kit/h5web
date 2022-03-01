@@ -60,7 +60,7 @@ function mandelbrot(
 }
 
 interface TileParams {
-  lod: number;
+  layer: number;
   offset: Vector2;
 }
 
@@ -81,8 +81,8 @@ class MandelbrotTilesApi extends TilesApi {
 
     this.store = createFetchStore(
       async (tile: TileParams) => {
-        const { lod, offset } = tile;
-        const layerSize = this.layerSizes[lod];
+        const { layer, offset } = tile;
+        const layerSize = this.layerSizes[layer];
         // Clip slice to size of the level
         const width = clamp(layerSize.width - offset.x, 0, this.tileSize.width);
         const height = clamp(
@@ -107,13 +107,13 @@ class MandelbrotTilesApi extends TilesApi {
       {
         type: 'Map',
         areEqual: (a: TileParams, b: TileParams) =>
-          a.lod === b.lod && a.offset.equals(b.offset),
+          a.layer === b.layer && a.offset.equals(b.offset),
       }
     );
   }
 
-  public get(lod: number, offset: Vector2): NdArray<Float32Array> {
-    return this.store.get({ lod, offset });
+  public get(layer: number, offset: Vector2): NdArray<Float32Array> {
+    return this.store.get({ layer, offset });
   }
 }
 const Template: Story<TiledHeatmapProps> = (args) => {
