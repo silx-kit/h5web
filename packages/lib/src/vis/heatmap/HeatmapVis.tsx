@@ -14,6 +14,7 @@ import PanMesh from '../shared/PanMesh';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import ZoomMesh from '../shared/ZoomMesh';
+import ZoomSelectionMesh from '../shared/ZoomSelectionMesh';
 import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
@@ -98,6 +99,7 @@ function HeatmapVis(props: Props) {
       >
         <PanMesh />
         <ZoomMesh />
+        <ZoomSelectionMesh />
         <TooltipMesh
           guides="both"
           renderTooltip={(x, y) => {

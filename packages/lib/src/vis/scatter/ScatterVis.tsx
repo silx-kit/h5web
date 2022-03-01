@@ -9,6 +9,7 @@ import { useAxisDomain } from '../hooks';
 import PanMesh from '../shared/PanMesh';
 import VisCanvas from '../shared/VisCanvas';
 import ZoomMesh from '../shared/ZoomMesh';
+import ZoomSelectionMesh from '../shared/ZoomSelectionMesh';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
 
@@ -70,6 +71,7 @@ function ScatterVis(props: Props) {
       >
         <PanMesh />
         <ZoomMesh />
+        <ZoomSelectionMesh />
         <ScatterPoints
           abscissas={abscissas}
           ordinates={ordinates}

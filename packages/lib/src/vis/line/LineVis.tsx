@@ -24,6 +24,7 @@ import VisCanvas from '../shared/VisCanvas';
 import XAxisZoomMesh from '../shared/XAxisZoomMesh';
 import YAxisZoomMesh from '../shared/YAxisZoomMesh';
 import ZoomMesh from '../shared/ZoomMesh';
+import ZoomSelectionMesh from '../shared/ZoomSelectionMesh';
 import { extendDomain, DEFAULT_DOMAIN, formatNumType } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
@@ -129,6 +130,7 @@ function LineVis(props: Props) {
         <ZoomMesh />
         <XAxisZoomMesh />
         <YAxisZoomMesh />
+        <ZoomSelectionMesh />
         <TooltipMesh
           guides="vertical"
           renderTooltip={(x) => {
