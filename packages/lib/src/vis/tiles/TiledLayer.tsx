@@ -16,7 +16,7 @@ interface Props extends ColorMapProps {
 function TiledLayer(props: Props) {
   const { api, layer, ...colorMapProps } = props;
 
-  const { imageSize, numLayers } = api;
+  const { imageLayerIndex, imageSize, numLayers } = api;
   const { width, height } = api.layerSizes[layer];
   const { tileSize } = api;
 
@@ -54,7 +54,7 @@ function TiledLayer(props: Props) {
             x={offset.x}
             y={offset.y}
             {...colorMapProps}
-            magFilter={layer === numLayers - 1 ? NearestFilter : LinearFilter}
+            magFilter={layer === imageLayerIndex ? NearestFilter : LinearFilter}
           />
         </Suspense>
       ))}

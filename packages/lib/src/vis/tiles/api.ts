@@ -44,6 +44,10 @@ export abstract class TilesApi {
     return this.layerSizes[this.numLayers - 1];
   }
 
+  public get imageLayerIndex(): number {
+    return this.numLayers - 1;
+  }
+
   public get numLayers(): number {
     return this.layerSizes.length;
   }
