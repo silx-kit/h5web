@@ -47,6 +47,9 @@ export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
 export type { SelectionMeshProps } from './vis/shared/SelectionMesh';
 export { default as SelectionLine } from './vis/shared/SelectionLine';
 export { default as SelectionRect } from './vis/shared/SelectionRect';
+export { default as TiledHeatmap } from './vis/tiles/TiledHeatmap';
+export type { TiledHeatmapProps } from './vis/tiles/TiledHeatmap';
+export { getLayerSizes, TilesApi } from './vis/tiles/api';
 export { default as ZoomSelectionMesh } from './vis/shared/ZoomSelectionMesh';
 
 // Context hook
