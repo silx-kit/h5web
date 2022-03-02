@@ -40,6 +40,7 @@ const overrides = [
       '@typescript-eslint/lines-between-class-members': 'off', // allow grouping single-line members
       '@typescript-eslint/prefer-nullish-coalescing': 'off', // `||` is often conveninent and safe to use with TS
       '@typescript-eslint/explicit-module-boundary-types': 'off', // worsens readability sometimes (e.g. for React components)
+      '@typescript-eslint/no-unnecessary-type-arguments': 'off', // lots of false positives
 
       // Allow removing properties with destructuring
       '@typescript-eslint/no-unused-vars': [
@@ -76,6 +77,7 @@ const overrides = [
       'jest/prefer-strict-equal': 'off', // `toEqual` is shorter and sufficient in most cases
       'jest-formatting/padding-around-all': 'off', // allow writing concise two-line tests
       'jest/require-top-level-describe': 'off', // filename should already be meaningful, extra nesting is unnecessary
+      'jest/no-conditional-in-test': 'off', // false positives in E2E tests (snapshots), and too strict (disallows using `||` for convenience)
       'testing-library/no-unnecessary-act': 'off', // `act` is sometimes required when advancing timers manually
     },
   },

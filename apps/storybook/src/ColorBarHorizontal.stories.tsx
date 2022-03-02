@@ -16,7 +16,7 @@ export const WithBounds: Story<TemplateProps> = ColorBarTemplate.bind({});
 WithBounds.args = {
   ...Default.args,
   domainMin: -235.111,
-  domainMax: 98_765,
+  domainMax: 98765,
   horizontal: true,
   withBounds: true,
 };

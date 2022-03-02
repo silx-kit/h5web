@@ -1,5 +1,5 @@
 import 'normalize.css';
-import '@h5web/lib/src/styles.css';
+import '@h5web/shared/src/styles.css'; // importing via `@h5web/lib/src/styles.css` fails due ot lack of `~` prefix (as it is not supported by Vite)
 import '../src/styles.css';
 
 export const parameters = {

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, CSSProperties } from 'react';
 import { useContext, forwardRef } from 'react';
 
 import HeaderCells from './HeaderCells';
@@ -7,7 +7,7 @@ import { SettingsContext, RenderedItemsContext } from './context';
 
 interface Props {
   children: ReactNode;
-  style: React.CSSProperties;
+  style: CSSProperties;
 }
 
 const StickyGrid = forwardRef<HTMLDivElement, Props>((props, ref) => {
