@@ -26,7 +26,7 @@ function ResetZoomButton() {
   return isZoomedIn ? (
     <Html className={styles.container}>
       <button className={styles.btn} type="button" onClick={() => resetZoom()}>
-        Reset zoom
+        <span className={styles.btnLike}>Reset zoom</span>
       </button>
     </Html>
   ) : null;
