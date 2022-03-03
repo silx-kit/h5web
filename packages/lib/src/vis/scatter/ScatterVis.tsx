@@ -7,6 +7,7 @@ import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
 import PanMesh from '../shared/PanMesh';
+import ResetZoomButton from '../shared/ResetZoomButton';
 import VisCanvas from '../shared/VisCanvas';
 import ZoomMesh from '../shared/ZoomMesh';
 import ZoomSelectionMesh from '../shared/ZoomSelectionMesh';
@@ -72,6 +73,7 @@ function ScatterVis(props: Props) {
         <PanMesh />
         <ZoomMesh />
         <ZoomSelectionMesh />
+        <ResetZoomButton />
         <ScatterPoints
           abscissas={abscissas}
           ordinates={ordinates}
