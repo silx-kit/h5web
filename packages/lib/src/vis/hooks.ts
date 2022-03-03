@@ -8,8 +8,7 @@ import { createMemo } from 'react-use';
 
 import { useAxisSystemContext } from './shared/AxisSystemContext';
 import {
-  CAMERA_BOTTOM_LEFT,
-  CAMERA_TOP_RIGHT,
+  getCameraFOV,
   getAxisDomain,
   getCombinedDomain,
   getValueToIndexScale,
@@ -53,11 +52,10 @@ export function useVisibleDomains(): {
   const { worldToData } = useAxisSystemContext();
   const camera = useThree((state) => state.camera);
 
-  const worldBottomLeft = CAMERA_BOTTOM_LEFT.clone().unproject(camera);
-  const worldTopRight = CAMERA_TOP_RIGHT.clone().unproject(camera);
+  const { topRight, bottomLeft } = getCameraFOV(camera);
 
-  const dataBottomLeft = worldToData(worldBottomLeft);
-  const dataTopRight = worldToData(worldTopRight);
+  const dataBottomLeft = worldToData(bottomLeft);
+  const dataTopRight = worldToData(topRight);
 
   return {
     xVisibleDomain: [dataBottomLeft.x, dataTopRight.x],
