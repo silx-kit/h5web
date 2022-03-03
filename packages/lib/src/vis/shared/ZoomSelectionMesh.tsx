@@ -11,7 +11,7 @@ interface Props {
 }
 
 function ZoomSelectionMesh(props: Props) {
-  const { modifierKey } = props;
+  const { modifierKey = 'Control' } = props;
 
   const { dataToWorld } = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
