@@ -19,6 +19,7 @@ import {
 } from '../hooks';
 import type { AxisParams } from '../models';
 import PanMesh from '../shared/PanMesh';
+import ResetZoomButton from '../shared/ResetZoomButton';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import XAxisZoomMesh from '../shared/XAxisZoomMesh';
@@ -131,6 +132,7 @@ function LineVis(props: Props) {
         <XAxisZoomMesh />
         <YAxisZoomMesh />
         <ZoomSelectionMesh />
+        <ResetZoomButton />
         <TooltipMesh
           guides="vertical"
           renderTooltip={(x) => {

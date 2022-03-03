@@ -11,6 +11,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
 import PanMesh from '../shared/PanMesh';
+import ResetZoomButton from '../shared/ResetZoomButton';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import ZoomMesh from '../shared/ZoomMesh';
@@ -100,6 +101,7 @@ function HeatmapVis(props: Props) {
         <PanMesh />
         <ZoomMesh />
         <ZoomSelectionMesh />
+        <ResetZoomButton />
         <TooltipMesh
           guides="both"
           renderTooltip={(x, y) => {

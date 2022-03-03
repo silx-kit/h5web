@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
 import PanMesh from '../shared/PanMesh';
+import ResetZoomButton from '../shared/ResetZoomButton';
 import VisCanvas from '../shared/VisCanvas';
 import ZoomMesh from '../shared/ZoomMesh';
 import ZoomSelectionMesh from '../shared/ZoomSelectionMesh';
@@ -57,6 +58,7 @@ function RgbVis(props: Props) {
         <PanMesh />
         <ZoomMesh />
         <ZoomSelectionMesh />
+        <ResetZoomButton />
         <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />
         {children}
       </VisCanvas>
