@@ -1,10 +1,10 @@
-import type { ThreeEvent } from '@react-three/fiber';
 import { useThree } from '@react-three/fiber';
 import { clamp } from 'lodash';
 import { useCallback } from 'react';
 import { Vector3 } from 'three';
 
 import { useWheelCapture } from '../hooks';
+import type { CanvasEvent } from '../models';
 import { getCameraFOV } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 
@@ -50,7 +50,7 @@ export function useZoomOnWheel(
   const moveCameraTo = useMoveCameraTo();
 
   const onWheel = useCallback(
-    (evt: ThreeEvent<WheelEvent>) => {
+    (evt: CanvasEvent<WheelEvent>) => {
       const { sourceEvent, unprojectedPoint } = evt;
 
       if (disabled) {
@@ -75,7 +75,7 @@ export function useZoomOnWheel(
       const scaledPosition = oldPosition.add(delta);
       moveCameraTo(scaledPosition.x, scaledPosition.y);
     },
-    [disabled, camera, isZoomAllowed, moveCameraTo]
+    [camera, disabled, isZoomAllowed, moveCameraTo]
   );
 
   useWheelCapture();

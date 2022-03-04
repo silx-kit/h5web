@@ -6,11 +6,11 @@ import type { ReactNode } from 'react';
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
-import PanMesh from '../shared/PanMesh';
+import PanEvents from '../shared/PanEvents';
 import ResetZoomButton from '../shared/ResetZoomButton';
 import VisCanvas from '../shared/VisCanvas';
-import ZoomMesh from '../shared/ZoomMesh';
-import ZoomSelectionMesh from '../shared/ZoomSelectionMesh';
+import ZoomEvents from '../shared/ZoomEvents';
+import ZoomSelectionEvents from '../shared/ZoomSelectionEvents';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
 
@@ -70,9 +70,9 @@ function ScatterVis(props: Props) {
         }}
         title={title}
       >
-        <PanMesh />
-        <ZoomMesh />
-        <ZoomSelectionMesh />
+        <PanEvents />
+        <ZoomEvents />
+        <ZoomSelectionEvents />
         <ResetZoomButton />
         <ScatterPoints
           abscissas={abscissas}
