@@ -1,10 +1,12 @@
 import type { MeshProps, ThreeEvent } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
+import { clamp } from 'lodash';
 import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
-import type { Vector2 } from 'three';
+import { Vector2 } from 'three';
 
 import type { ModifierKey, Selection } from '../models';
-import { noModifierKeyPressed } from '../utils';
+import { getCameraFOV, noModifierKeyPressed } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import VisMesh from './VisMesh';
 
@@ -28,6 +30,7 @@ function SelectionMesh(props: Props) {
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useState<Vector2>();
+  const camera = useThree((state) => state.camera);
 
   const { worldToData } = useAxisSystemContext();
 
@@ -59,7 +62,11 @@ function SelectionMesh(props: Props) {
       if (!startPoint) {
         return;
       }
-      const point = worldToData(evt.unprojectedPoint);
+      const { topRight, bottomLeft } = getCameraFOV(camera);
+      const boundedX = clamp(evt.unprojectedPoint.x, bottomLeft.x, topRight.x);
+      const boundedY = clamp(evt.unprojectedPoint.y, bottomLeft.y, topRight.y);
+
+      const point = worldToData(new Vector2(boundedX, boundedY));
 
       setEndPoint(point);
       if (onSelectionChange) {
@@ -69,7 +76,7 @@ function SelectionMesh(props: Props) {
         });
       }
     },
-    [onSelectionChange, startPoint, worldToData]
+    [camera, onSelectionChange, startPoint, worldToData]
   );
 
   const onPointerUp = useCallback(
@@ -79,8 +86,10 @@ function SelectionMesh(props: Props) {
       }
       const { sourceEvent, unprojectedPoint } = evt;
       const { target, pointerId } = sourceEvent;
-      const point = worldToData(unprojectedPoint);
-
+      const { topRight, bottomLeft } = getCameraFOV(camera);
+      const boundedX = clamp(unprojectedPoint.x, bottomLeft.x, topRight.x);
+      const boundedY = clamp(unprojectedPoint.y, bottomLeft.y, topRight.y);
+      const point = worldToData(new Vector2(boundedX, boundedY));
       (target as Element).releasePointerCapture(pointerId);
       if (onSelectionEnd) {
         onSelectionEnd({
@@ -91,7 +100,7 @@ function SelectionMesh(props: Props) {
       setStartPoint(undefined);
       setEndPoint(undefined);
     },
-    [startPoint, onSelectionEnd, worldToData]
+    [startPoint, camera, worldToData, onSelectionEnd]
   );
 
   return (

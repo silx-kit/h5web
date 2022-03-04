@@ -8,6 +8,7 @@ import {
   getBounds,
   DTypeClass,
 } from '@h5web/shared';
+import type { Camera } from '@react-three/fiber';
 import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
@@ -329,4 +330,15 @@ export function getUniforms(
   return Object.fromEntries(
     Object.entries(uniforms).map(([key, value]) => [key, { value }])
   );
+}
+
+export function getCameraFOV(camera: Camera): {
+  topRight: Vector3;
+  bottomLeft: Vector3;
+} {
+  // Unproject from normalized camera space (-1, -1) to (1, 1) to world space
+  const topRight = CAMERA_TOP_RIGHT.clone().unproject(camera);
+  const bottomLeft = CAMERA_BOTTOM_LEFT.clone().unproject(camera);
+
+  return { topRight, bottomLeft };
 }

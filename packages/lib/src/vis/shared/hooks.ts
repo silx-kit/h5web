@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { Vector3 } from 'three';
 
 import { useWheelCapture } from '../hooks';
-import { CAMERA_TOP_RIGHT } from '../utils';
+import { getCameraFOV } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;
@@ -23,10 +23,8 @@ export function useMoveCameraTo() {
     (x: number, y: number) => {
       const { position } = camera;
 
-      // Unproject from normalized camera space (-1, -1) to (1, 1) to world space and subtract camera position to get bounds
-      const cameraLocalBounds = CAMERA_TOP_RIGHT.clone()
-        .unproject(camera)
-        .sub(position);
+      const { topRight } = getCameraFOV(camera);
+      const cameraLocalBounds = topRight.sub(position);
 
       const xBound = Math.max(visWidth / 2 - cameraLocalBounds.x, 0);
       const yBound = Math.max(visHeight / 2 - cameraLocalBounds.y, 0);
