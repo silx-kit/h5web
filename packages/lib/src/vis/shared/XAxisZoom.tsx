@@ -1,13 +1,12 @@
 import type { ModifierKey } from '../models';
-import EventsHelper from './EventsHelper';
-import { useZoomOnWheel } from './hooks';
+import { useCanvasEvents, useZoomOnWheel } from './hooks';
 
 interface Props {
   disabled?: boolean;
   modifierKey?: ModifierKey;
 }
 
-function XAxisZoomEvents(props: Props) {
+function XAxisZoom(props: Props) {
   const { disabled, modifierKey = 'Alt' } = props;
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => ({
@@ -15,9 +14,9 @@ function XAxisZoomEvents(props: Props) {
     y: false,
   });
 
-  const onWheel = useZoomOnWheel(isZoomAllowed, disabled);
+  useCanvasEvents({ onWheel: useZoomOnWheel(isZoomAllowed, disabled) });
 
-  return <EventsHelper onWheel={onWheel} />;
+  return null;
 }
 
-export default XAxisZoomEvents;
+export default XAxisZoom;

@@ -3,16 +3,15 @@ import { useRef, useCallback } from 'react';
 import type { Vector3 } from 'three';
 
 import type { CanvasEvent, ModifierKey } from '../models';
-import { noModifierKeyPressed } from '../utils';
-import EventsHelper from './EventsHelper';
-import { useMoveCameraTo } from './hooks';
+import { checkModifierKey } from '../utils';
+import { useCanvasEvents, useMoveCameraTo } from './hooks';
 
 interface Props {
   disabled?: boolean;
   modifierKey?: ModifierKey;
 }
 
-function PanEvents(props: Props) {
+function Pan(props: Props) {
   const { disabled, modifierKey } = props;
 
   const camera = useThree((state) => state.camera);
@@ -30,9 +29,7 @@ function PanEvents(props: Props) {
         return;
       }
 
-      const isPanAllowed = modifierKey
-        ? sourceEvent.getModifierState(modifierKey)
-        : noModifierKeyPressed(sourceEvent);
+      const isPanAllowed = checkModifierKey(modifierKey, sourceEvent);
       if (isPanAllowed) {
         (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
         startOffsetPosition.current = unprojectedPoint.clone();
@@ -67,7 +64,9 @@ function PanEvents(props: Props) {
     [camera, disabled, moveCameraTo]
   );
 
-  return <EventsHelper {...{ onPointerMove, onPointerUp, onPointerDown }} />;
+  useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
+
+  return null;
 }
 
-export default PanEvents;
+export default Pan;

@@ -18,14 +18,14 @@ import {
   useValueToIndexScale,
 } from '../hooks';
 import type { AxisParams } from '../models';
-import PanEvents from '../shared/PanEvents';
+import Pan from '../shared/Pan';
 import ResetZoomButton from '../shared/ResetZoomButton';
+import SelectToZoom from '../shared/SelectToZoom';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import XAxisZoomEvents from '../shared/XAxisZoomEvents';
-import YAxisZoomEvents from '../shared/YAxisZoomEvents';
-import ZoomEvents from '../shared/ZoomEvents';
-import ZoomSelectionEvents from '../shared/ZoomSelectionEvents';
+import XAxisZoom from '../shared/XAxisZoom';
+import YAxisZoom from '../shared/YAxisZoom';
+import Zoom from '../shared/Zoom';
 import { extendDomain, DEFAULT_DOMAIN, formatNumType } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
@@ -127,11 +127,11 @@ function LineVis(props: Props) {
           label: ordinateLabel,
         }}
       >
-        <PanEvents />
-        <ZoomEvents />
-        <XAxisZoomEvents />
-        <YAxisZoomEvents />
-        <ZoomSelectionEvents />
+        <Pan />
+        <Zoom />
+        <XAxisZoom />
+        <YAxisZoom />
+        <SelectToZoom />
         <ResetZoomButton />
         <TooltipMesh
           guides="vertical"

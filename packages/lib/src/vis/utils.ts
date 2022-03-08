@@ -13,7 +13,7 @@ import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import type { IUniform } from 'three';
-import { Vector3, Matrix4 } from 'three';
+import { Vector3, Matrix4, Vector2 } from 'three';
 import { clamp } from 'three/src/math/MathUtils';
 
 import type {
@@ -24,6 +24,7 @@ import type {
   ScaleGammaConfig,
   VisxScaleConfig,
   VisScaleType,
+  ModifierKey,
 } from './models';
 import { H5WEB_SCALES } from './scales';
 
@@ -320,10 +321,6 @@ export function projectCameraToHtml(
   return cameraVector.clone().applyMatrix4(cameraToHtmlMatrix);
 }
 
-export function noModifierKeyPressed(event: MouseEvent) {
-  return !event.altKey && !event.ctrlKey && !event.shiftKey;
-}
-
 export function getUniforms(
   uniforms: Record<string, unknown>
 ): Record<string, IUniform> {
@@ -341,4 +338,25 @@ export function getCameraFOV(camera: Camera): {
   const bottomLeft = CAMERA_BOTTOM_LEFT.clone().unproject(camera);
 
   return { topRight, bottomLeft };
+}
+
+export function boundPointToFOV(
+  unboundedPoint: Vector2 | Vector3,
+  camera: Camera
+): Vector2 {
+  const { topRight, bottomLeft } = getCameraFOV(camera);
+  const boundedX = clamp(unboundedPoint.x, bottomLeft.x, topRight.x);
+  const boundedY = clamp(unboundedPoint.y, bottomLeft.y, topRight.y);
+  return new Vector2(boundedX, boundedY);
+}
+
+export function checkModifierKey(
+  modifierKey: ModifierKey | undefined,
+  event: PointerEvent | WheelEvent
+) {
+  if (!modifierKey) {
+    return !event.altKey && !event.ctrlKey && !event.shiftKey;
+  }
+
+  return event.getModifierState(modifierKey);
 }

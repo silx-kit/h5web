@@ -1,5 +1,5 @@
 import type { TooltipMeshProps } from '@h5web/lib';
-import { PanEvents, TooltipMesh, VisCanvas, ZoomEvents } from '@h5web/lib';
+import { Pan, TooltipMesh, VisCanvas, Zoom } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
 
@@ -19,8 +19,8 @@ const Template: Story<TemplateProps> = (args) => {
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      {panZoom && <PanEvents />}
-      {panZoom && <ZoomEvents />}
+      {panZoom && <Pan />}
+      {panZoom && <Zoom />}
       {tooltipValue && (
         <TooltipMesh
           guides={guides}
@@ -53,7 +53,7 @@ Guides.args = {
 
 export const WithPanZoom = Template.bind({});
 WithPanZoom.args = {
-  tooltipValue: '<PanEvents /> and <ZoomEvents /> must come first',
+  tooltipValue: '<Pan /> and <Zoom /> must come first',
   guides: 'vertical',
   panZoom: true,
 };

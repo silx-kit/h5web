@@ -1,13 +1,12 @@
 import { useThree } from '@react-three/fiber';
-import { clamp } from 'lodash';
 import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
-import { Vector2 } from 'three';
+import type { Vector2 } from 'three';
 
 import type { CanvasEvent, ModifierKey, Selection } from '../models';
-import { getCameraFOV, noModifierKeyPressed } from '../utils';
+import { boundPointToFOV, checkModifierKey } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
-import EventsHelper from './EventsHelper';
+import { useCanvasEvents } from './hooks';
 
 interface Props {
   onSelectionStart?: () => void;
@@ -17,7 +16,7 @@ interface Props {
   children: (points: Selection) => ReactElement;
 }
 
-function SelectionEvents(props: Props) {
+function SelectionTool(props: Props) {
   const {
     children,
     onSelectionStart,
@@ -35,9 +34,7 @@ function SelectionEvents(props: Props) {
     (evt: CanvasEvent<PointerEvent>) => {
       const { unprojectedPoint, sourceEvent } = evt;
 
-      const isSelectionAllowed = modifierKey
-        ? sourceEvent.getModifierState(modifierKey)
-        : noModifierKeyPressed(sourceEvent);
+      const isSelectionAllowed = checkModifierKey(modifierKey, sourceEvent);
       if (!isSelectionAllowed) {
         return;
       }
@@ -59,10 +56,7 @@ function SelectionEvents(props: Props) {
       if (!startPoint) {
         return;
       }
-      const { topRight, bottomLeft } = getCameraFOV(camera);
-      const boundedX = clamp(evt.unprojectedPoint.x, bottomLeft.x, topRight.x);
-      const boundedY = clamp(evt.unprojectedPoint.y, bottomLeft.y, topRight.y);
-      const point = worldToData(new Vector2(boundedX, boundedY));
+      const point = worldToData(boundPointToFOV(evt.unprojectedPoint, camera));
 
       setEndPoint(point);
       if (onSelectionChange) {
@@ -84,10 +78,7 @@ function SelectionEvents(props: Props) {
       const { target, pointerId } = sourceEvent;
       (target as Element).releasePointerCapture(pointerId);
 
-      const { topRight, bottomLeft } = getCameraFOV(camera);
-      const boundedX = clamp(unprojectedPoint.x, bottomLeft.x, topRight.x);
-      const boundedY = clamp(unprojectedPoint.y, bottomLeft.y, topRight.y);
-      const point = worldToData(new Vector2(boundedX, boundedY));
+      const point = worldToData(boundPointToFOV(unprojectedPoint, camera));
 
       if (onSelectionEnd) {
         onSelectionEnd({
@@ -101,13 +92,14 @@ function SelectionEvents(props: Props) {
     [startPoint, camera, worldToData, onSelectionEnd]
   );
 
-  return (
-    <>
-      <EventsHelper {...{ onPointerDown, onPointerMove, onPointerUp }} />
-      {startPoint && endPoint ? children({ startPoint, endPoint }) : null}
-    </>
-  );
+  useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
+
+  if (!startPoint || !endPoint) {
+    return null;
+  }
+
+  return children({ startPoint, endPoint });
 }
 
-export type { Props as SelectionEventsProps };
-export default SelectionEvents;
+export type { Props as SelectionProps };
+export { SelectionTool as default };
