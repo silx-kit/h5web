@@ -1,6 +1,6 @@
 import type { ModifierKey } from '../models';
 import { noModifierKeyPressed } from '../utils';
-import InteractionMesh from './InteractionMesh';
+import EventsHelper from './EventsHelper';
 import { useZoomOnWheel } from './hooks';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   modifierKey?: ModifierKey;
 }
 
-function ZoomMesh(props: Props) {
+function ZoomEvents(props: Props) {
   const { disabled, modifierKey } = props;
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => {
@@ -21,7 +21,7 @@ function ZoomMesh(props: Props) {
 
   const onWheel = useZoomOnWheel(isZoomAllowed, disabled);
 
-  return <InteractionMesh onWheel={onWheel} />;
+  return <EventsHelper onWheel={onWheel} />;
 }
 
-export default ZoomMesh;
+export default ZoomEvents;

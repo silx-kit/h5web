@@ -1,8 +1,8 @@
 import {
   getLayerSizes,
-  PanMesh,
+  PanEvents,
   VisCanvas,
-  ZoomMesh,
+  ZoomEvents,
   TiledHeatmap,
   TilesApi,
 } from '@h5web/lib';
@@ -134,8 +134,8 @@ const Template: Story<TiledHeatmapProps> = (args) => {
       }}
       visRatio={width / height}
     >
-      <PanMesh />
-      <ZoomMesh />
+      <PanEvents />
+      <ZoomEvents />
       <TiledHeatmap api={api} {...tiledHeatmapProps} />
     </VisCanvas>
   );

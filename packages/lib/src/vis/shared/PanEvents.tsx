@@ -1,11 +1,10 @@
 import { useThree } from '@react-three/fiber';
-import type { ThreeEvent } from '@react-three/fiber';
 import { useRef, useCallback } from 'react';
 import type { Vector3 } from 'three';
 
-import type { ModifierKey } from '../models';
+import type { CanvasEvent, ModifierKey } from '../models';
 import { noModifierKeyPressed } from '../utils';
-import InteractionMesh from './InteractionMesh';
+import EventsHelper from './EventsHelper';
 import { useMoveCameraTo } from './hooks';
 
 interface Props {
@@ -13,7 +12,7 @@ interface Props {
   modifierKey?: ModifierKey;
 }
 
-function PanMesh(props: Props) {
+function PanEvents(props: Props) {
   const { disabled, modifierKey } = props;
 
   const camera = useThree((state) => state.camera);
@@ -23,8 +22,8 @@ function PanMesh(props: Props) {
   const moveCameraTo = useMoveCameraTo();
 
   const onPointerDown = useCallback(
-    (evt: ThreeEvent<PointerEvent>) => {
-      const { sourceEvent, unprojectedPoint } = evt;
+    (evt: CanvasEvent<PointerEvent>) => {
+      const { unprojectedPoint, sourceEvent } = evt;
       const { target, pointerId } = sourceEvent;
 
       if (disabled) {
@@ -42,7 +41,7 @@ function PanMesh(props: Props) {
     [disabled, modifierKey]
   );
 
-  const onPointerUp = useCallback((evt: ThreeEvent<PointerEvent>) => {
+  const onPointerUp = useCallback((evt: CanvasEvent<PointerEvent>) => {
     const { sourceEvent } = evt;
     const { target, pointerId } = sourceEvent;
     (target as Element).releasePointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
@@ -51,17 +50,16 @@ function PanMesh(props: Props) {
   }, []);
 
   const onPointerMove = useCallback(
-    (evt: ThreeEvent<PointerEvent>) => {
+    (evt: CanvasEvent<PointerEvent>) => {
       if (disabled || !startOffsetPosition.current) {
         return;
       }
+      const { unprojectedPoint, sourceEvent } = evt;
 
       // Prevent events from reaching tooltip mesh when panning
-      evt.stopPropagation();
+      sourceEvent.stopPropagation();
 
-      const delta = startOffsetPosition.current
-        .clone()
-        .sub(evt.unprojectedPoint);
+      const delta = startOffsetPosition.current.clone().sub(unprojectedPoint);
       const target = camera.position.clone().add(delta);
 
       moveCameraTo(target.x, target.y);
@@ -69,7 +67,7 @@ function PanMesh(props: Props) {
     [camera, disabled, moveCameraTo]
   );
 
-  return <InteractionMesh {...{ onPointerMove, onPointerUp, onPointerDown }} />;
+  return <EventsHelper {...{ onPointerMove, onPointerUp, onPointerDown }} />;
 }
 
-export default PanMesh;
+export default PanEvents;

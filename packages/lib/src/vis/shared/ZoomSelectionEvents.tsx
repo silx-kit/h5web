@@ -2,7 +2,7 @@ import { useThree } from '@react-three/fiber';
 
 import type { ModifierKey, Selection } from '../models';
 import { useAxisSystemContext } from './AxisSystemContext';
-import SelectionMesh from './SelectionMesh';
+import SelectionEvents from './SelectionEvents';
 import SelectionRect from './SelectionRect';
 import { useMoveCameraTo } from './hooks';
 
@@ -10,7 +10,7 @@ interface Props {
   modifierKey?: ModifierKey;
 }
 
-function ZoomSelectionMesh(props: Props) {
+function ZoomSelectionEvents(props: Props) {
   const { modifierKey = 'Control' } = props;
 
   const { dataToWorld } = useAxisSystemContext();
@@ -47,7 +47,7 @@ function ZoomSelectionMesh(props: Props) {
   };
 
   return (
-    <SelectionMesh modifierKey={modifierKey} onSelectionEnd={onSelectionEnd}>
+    <SelectionEvents modifierKey={modifierKey} onSelectionEnd={onSelectionEnd}>
       {({ startPoint, endPoint }) => (
         <SelectionRect
           startPoint={startPoint}
@@ -56,8 +56,8 @@ function ZoomSelectionMesh(props: Props) {
           borderColor="black"
         />
       )}
-    </SelectionMesh>
+    </SelectionEvents>
   );
 }
 
-export default ZoomSelectionMesh;
+export default ZoomSelectionEvents;

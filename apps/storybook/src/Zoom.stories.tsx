@@ -1,4 +1,4 @@
-import { PanMesh, VisCanvas, ZoomMesh } from '@h5web/lib';
+import { PanEvents, VisCanvas, ZoomEvents } from '@h5web/lib';
 import type { ModifierKey as ModifierKeyType } from '@h5web/lib/src/vis/models';
 import type { Meta, Story } from '@storybook/react';
 
@@ -17,8 +17,8 @@ const Template: Story<TemplateProps> = (args) => {
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      <PanMesh />
-      <ZoomMesh disabled={disabled} modifierKey={modifierKey} />
+      <PanEvents />
+      <ZoomEvents disabled={disabled} modifierKey={modifierKey} />
     </VisCanvas>
   );
 };

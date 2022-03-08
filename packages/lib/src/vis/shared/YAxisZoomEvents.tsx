@@ -1,5 +1,5 @@
 import type { ModifierKey } from '../models';
-import InteractionMesh from './InteractionMesh';
+import EventsHelper from './EventsHelper';
 import { useZoomOnWheel } from './hooks';
 
 interface Props {
@@ -7,17 +7,17 @@ interface Props {
   modifierKey?: ModifierKey;
 }
 
-function XAxisZoomMesh(props: Props) {
-  const { disabled, modifierKey = 'Alt' } = props;
+function YAxisZoomEvents(props: Props) {
+  const { disabled, modifierKey = 'Shift' } = props;
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => ({
-    x: sourceEvent.getModifierState(modifierKey),
-    y: false,
+    x: false,
+    y: sourceEvent.getModifierState(modifierKey),
   });
 
   const onWheel = useZoomOnWheel(isZoomAllowed, disabled);
 
-  return <InteractionMesh onWheel={onWheel} />;
+  return <EventsHelper onWheel={onWheel} />;
 }
 
-export default XAxisZoomMesh;
+export default YAxisZoomEvents;

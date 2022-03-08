@@ -1,10 +1,10 @@
 import {
-  PanMesh,
+  PanEvents,
   SelectionLine,
-  SelectionMesh,
+  SelectionEvents,
   SelectionRect,
   VisCanvas,
-  ZoomMesh,
+  ZoomEvents,
 } from '@h5web/lib';
 import type { ModifierKey, Selection } from '@h5web/lib/src/vis/models';
 import type { Meta, Story } from '@storybook/react';
@@ -52,15 +52,15 @@ const Template: Story<TemplateProps> = (args) => {
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      <PanMesh disabled={disablePan} />
-      <ZoomMesh disabled={disableZoom} />
-      <SelectionMesh
+      <PanEvents disabled={disablePan} />
+      <ZoomEvents disabled={disableZoom} />
+      <SelectionEvents
         onSelectionChange={setActiveSelection}
         onSelectionEnd={() => setActiveSelection(undefined)}
         modifierKey={modifierKey}
       >
         {(selection) => <SelectionComponent color={color} {...selection} />}
-      </SelectionMesh>
+      </SelectionEvents>
     </VisCanvas>
   );
 };
@@ -126,9 +126,9 @@ export const PersistSelection: Story<TemplateProps> = (args) => {
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      <PanMesh disabled={disablePan} />
-      <ZoomMesh disabled={disableZoom} />
-      <SelectionMesh
+      <PanEvents disabled={disablePan} />
+      <ZoomEvents disabled={disableZoom} />
+      <SelectionEvents
         onSelectionStart={() => {
           setPersistedSelection(undefined);
         }}
@@ -136,7 +136,7 @@ export const PersistSelection: Story<TemplateProps> = (args) => {
         modifierKey={modifierKey}
       >
         {(selection) => <SelectionComponent color={color} {...selection} />}
-      </SelectionMesh>
+      </SelectionEvents>
       {persistedSelection && (
         <SelectionComponent
           color={color}
