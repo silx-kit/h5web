@@ -5,7 +5,7 @@ import { Vector3 } from 'three';
 
 import { useWheelCapture } from '../hooks';
 import type { CanvasEvent, CanvasEventCallbacks } from '../models';
-import { getCameraFOV, projectCameraToHtml } from '../utils';
+import { getCameraFOV } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 
 const ZOOM_FACTOR = 0.95;
@@ -162,17 +162,4 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks) {
       domElement.removeEventListener('wheel', handleWheel);
     };
   });
-}
-
-export function useWorldToHtml(): (point: Vector3) => Vector3 {
-  const camera = useThree((state) => state.camera);
-  const { width, height } = useThree((state) => state.size);
-
-  return useCallback(
-    (point: Vector3) => {
-      const cameraPoint = point.clone().project(camera);
-      return projectCameraToHtml(cameraPoint, width, height);
-    },
-    [camera, height, width]
-  );
 }

@@ -1,35 +1,29 @@
 import { useThree } from '@react-three/fiber';
-import { Vector3 } from 'three';
+import type { SVGProps } from 'react';
+import type { Vector2 } from 'three';
 
-import type { Selection } from '../models';
 import { useAxisSystemContext } from './AxisSystemContext';
 import Html from './Html';
-import { useWorldToHtml } from './hooks';
 
-interface Props extends Selection {
-  color?: string;
+interface Props extends SVGProps<SVGLineElement> {
+  startPoint: Vector2;
+  endPoint: Vector2;
 }
 
 function SelectionLine(props: Props) {
   const {
     startPoint: dataStartPoint,
     endPoint: dataEndPoint,
-    color = 'black',
+    stroke = 'black',
+    ...restSvgProps
   } = props;
 
   const { width, height } = useThree((state) => state.size);
 
-  const { dataToWorld } = useAxisSystemContext();
-  const worldToHtml = useWorldToHtml();
+  const { dataToWorld, worldToHtml } = useAxisSystemContext();
 
-  const worldStartPoint = dataToWorld(dataStartPoint);
-  const htmlStartPt = worldToHtml(
-    new Vector3(worldStartPoint.x, worldStartPoint.y, 0)
-  );
-  const worldEndPoint = dataToWorld(dataEndPoint);
-  const htmlEndPt = worldToHtml(
-    new Vector3(worldEndPoint.x, worldEndPoint.y, 0)
-  );
+  const htmlStartPt = worldToHtml(dataToWorld(dataStartPoint));
+  const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));
 
   return (
     <Html>
@@ -39,7 +33,8 @@ function SelectionLine(props: Props) {
           y1={htmlStartPt.y}
           x2={htmlEndPt.x}
           y2={htmlEndPt.y}
-          stroke={color}
+          stroke={stroke}
+          {...restSvgProps}
         />
       </svg>
     </Html>

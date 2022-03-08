@@ -1,39 +1,30 @@
 import { useThree } from '@react-three/fiber';
-import { Vector3 } from 'three';
+import type { SVGProps } from 'react';
+import type { Vector2 } from 'three';
 
-import type { Selection } from '../models';
 import { useAxisSystemContext } from './AxisSystemContext';
 import Html from './Html';
-import { useWorldToHtml } from './hooks';
 
-interface Props extends Selection {
-  color?: string;
-  opacity?: number;
-  borderColor?: string;
+interface Props extends SVGProps<SVGRectElement> {
+  startPoint: Vector2;
+  endPoint: Vector2;
 }
 
 function SelectionRect(props: Props) {
   const {
     startPoint: dataStartPoint,
     endPoint: dataEndPoint,
-    color = 'red',
-    opacity = 0.5,
-    borderColor,
+    fill = 'red',
+    fillOpacity = 0.5,
+    ...restSvgProps
   } = props;
 
   const { width, height } = useThree((state) => state.size);
 
-  const { dataToWorld } = useAxisSystemContext();
-  const worldToHtml = useWorldToHtml();
+  const { dataToWorld, worldToHtml } = useAxisSystemContext();
 
-  const worldStartPoint = dataToWorld(dataStartPoint);
-  const htmlStartPt = worldToHtml(
-    new Vector3(worldStartPoint.x, worldStartPoint.y, 0)
-  );
-  const worldEndPoint = dataToWorld(dataEndPoint);
-  const htmlEndPt = worldToHtml(
-    new Vector3(worldEndPoint.x, worldEndPoint.y, 0)
-  );
+  const htmlStartPt = worldToHtml(dataToWorld(dataStartPoint));
+  const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));
 
   return (
     <Html>
@@ -43,9 +34,9 @@ function SelectionRect(props: Props) {
           y={Math.min(htmlStartPt.y, htmlEndPt.y)}
           width={Math.abs(htmlEndPt.x - htmlStartPt.x)}
           height={Math.abs(htmlEndPt.y - htmlStartPt.y)}
-          stroke={borderColor}
-          fill={color}
-          fillOpacity={opacity}
+          fill={fill}
+          fillOpacity={fillOpacity}
+          {...restSvgProps}
         />
       </svg>
     </Html>

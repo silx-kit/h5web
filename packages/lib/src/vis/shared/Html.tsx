@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom';
 import type { Group } from 'three';
 import { Vector3 } from 'three';
 
-import { projectCameraToHtml } from '../utils';
+import { useAxisSystemContext } from './AxisSystemContext';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   groupProps?: GroupProps;
@@ -38,6 +38,7 @@ function Html(props: Props) {
   const camera = useThree((state) => state.camera);
   const gl = useThree((state) => state.gl);
   const { parentElement } = gl.domElement;
+  const { worldToHtml } = useAxisSystemContext();
 
   // Container `div` for ReactDOM to render into, appended next to R3F's `canvas`
   const [el] = useState(() => {
@@ -60,11 +61,10 @@ function Html(props: Props) {
     const worldPos = new Vector3().setFromMatrixPosition(
       group.current.matrixWorld
     );
-    const cameraPos = worldPos.clone().project(camera);
-    const htmlPos = projectCameraToHtml(cameraPos, width, height);
+    const htmlPos = worldToHtml(worldPos);
 
     return [htmlPos.x, htmlPos.y];
-  }, [camera, height, width]);
+  }, [worldToHtml]);
 
   const getGroupScale = useCallback(() => {
     const groupScale = new Vector3().setFromMatrixScale(

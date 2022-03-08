@@ -19,7 +19,8 @@ interface TemplateProps {
   disablePan?: boolean;
   disableZoom?: boolean;
   modifierKey?: ModifierKey;
-  color?: string;
+  fill?: string;
+  stroke?: string;
 }
 
 function vectorToStr(vec: Vector2) {
@@ -32,7 +33,7 @@ const Template: Story<TemplateProps> = (args) => {
     disablePan = true,
     disableZoom = true,
     modifierKey,
-    color,
+    ...svgProps
   } = args;
 
   const [activeSelection, setActiveSelection] = useState<Selection>();
@@ -59,7 +60,7 @@ const Template: Story<TemplateProps> = (args) => {
         onSelectionEnd={() => setActiveSelection(undefined)}
         modifierKey={modifierKey}
       >
-        {(selection) => <SelectionComponent color={color} {...selection} />}
+        {(selection) => <SelectionComponent {...selection} {...svgProps} />}
       </SelectionTool>
     </VisCanvas>
   );
@@ -89,13 +90,17 @@ SelectingWithModifierAndZoom.argTypes = {
   },
 };
 
-export const ChangeSelectionColors = Template.bind({});
-ChangeSelectionColors.args = {
+export const ChangeSelectionStyle = Template.bind({});
+ChangeSelectionStyle.args = {
   selectionType: 'rectangle',
-  color: 'blue',
+  fill: 'blue',
+  stroke: 'darkslategray',
 };
-ChangeSelectionColors.argTypes = {
-  color: {
+ChangeSelectionStyle.argTypes = {
+  fill: {
+    control: { type: 'color' },
+  },
+  stroke: {
     control: { type: 'color' },
   },
 };
@@ -106,7 +111,7 @@ export const PersistSelection: Story<TemplateProps> = (args) => {
     disablePan = true,
     disableZoom = true,
     modifierKey,
-    color,
+    ...svgProps
   } = args;
 
   const [persistedSelection, setPersistedSelection] = useState<Selection>();
@@ -135,11 +140,10 @@ export const PersistSelection: Story<TemplateProps> = (args) => {
         onSelectionEnd={setPersistedSelection}
         modifierKey={modifierKey}
       >
-        {(selection) => <SelectionComponent color={color} {...selection} />}
+        {(selection) => <SelectionComponent {...selection} {...svgProps} />}
       </SelectionTool>
       {persistedSelection && (
         <SelectionComponent
-          color={color}
           startPoint={persistedSelection.startPoint}
           endPoint={persistedSelection.endPoint}
         />
@@ -155,7 +159,10 @@ PersistSelection.argTypes = {
     control: { type: 'inline-radio' },
     options: ['Alt', 'Control', 'Shift'],
   },
-  color: {
+  fill: {
+    control: { type: 'color' },
+  },
+  stroke: {
     control: { type: 'color' },
   },
 };
