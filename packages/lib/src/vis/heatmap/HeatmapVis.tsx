@@ -10,12 +10,12 @@ import type { ReactElement, ReactNode } from 'react';
 
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
-import PanEvents from '../shared/PanEvents';
+import Pan from '../shared/Pan';
 import ResetZoomButton from '../shared/ResetZoomButton';
+import SelectToZoom from '../shared/SelectToZoom';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import ZoomEvents from '../shared/ZoomEvents';
-import ZoomSelectionEvents from '../shared/ZoomSelectionEvents';
+import Zoom from '../shared/Zoom';
 import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
@@ -98,9 +98,9 @@ function HeatmapVis(props: Props) {
           flip: flipYAxis,
         }}
       >
-        <PanEvents />
-        <ZoomEvents />
-        <ZoomSelectionEvents />
+        <Pan />
+        <Zoom />
+        <SelectToZoom />
         <ResetZoomButton />
         <TooltipMesh
           guides="both"

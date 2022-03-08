@@ -1,10 +1,4 @@
-import {
-  DataCurve,
-  PanEvents,
-  VisCanvas,
-  ZoomEvents,
-  ZoomSelectionEvents,
-} from '@h5web/lib';
+import { DataCurve, Pan, VisCanvas, Zoom, SelectToZoom } from '@h5web/lib';
 import type { ModifierKey as ModifierKeyType } from '@h5web/lib/src/vis/models';
 import type { Meta, Story } from '@storybook/react';
 import { range } from 'lodash';
@@ -30,9 +24,9 @@ const Template: Story<TemplateProps> = (args) => {
       abscissaConfig={{ visDomain: [-5, 5], showGrid: true }}
       ordinateConfig={{ visDomain: [-0.5, 1.5], showGrid: true }}
     >
-      <PanEvents />
-      <ZoomEvents />
-      <ZoomSelectionEvents modifierKey={modifierKey} />
+      <Pan />
+      <Zoom />
+      <SelectToZoom modifierKey={modifierKey} />
       <GaussianCurve />
     </VisCanvas>
   );
@@ -50,8 +44,8 @@ Default.argTypes = {
 };
 
 export default {
-  title: 'Building Blocks/ZoomSelectionEvents',
-  component: ZoomSelectionEvents,
+  title: 'Building Blocks/ZoomSelection',
+  component: SelectToZoom,
   decorators: [FillHeight],
   parameters: {
     layout: 'fullscreen',
