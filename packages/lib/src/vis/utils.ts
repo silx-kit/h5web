@@ -12,9 +12,9 @@ import type { Camera } from '@react-three/fiber';
 import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
+import { clamp } from 'lodash';
 import type { IUniform } from 'three';
-import { Vector3, Matrix4, Vector2 } from 'three';
-import { clamp } from 'three/src/math/MathUtils';
+import { Vector2, Vector3, Matrix4 } from 'three';
 
 import type {
   Size,
