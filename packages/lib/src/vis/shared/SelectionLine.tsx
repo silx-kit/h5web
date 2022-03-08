@@ -1,27 +1,13 @@
-import type { Color, Object3DNode } from '@react-three/fiber';
-import { extend, useThree } from '@react-three/fiber';
-import { useLayoutEffect, useState } from 'react';
-import type { Vector2 } from 'three';
-import { BufferGeometry, Line } from 'three';
+import { useThree } from '@react-three/fiber';
+import { Vector3 } from 'three';
 
+import type { Selection } from '../models';
 import { useAxisSystemContext } from './AxisSystemContext';
+import Html from './Html';
+import { useWorldToHtml } from './hooks';
 
-extend({ Line_: Line });
-
-// https://github.com/pmndrs/react-three-fiber/issues/1152
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      line_: Object3DNode<Line, typeof Line>;
-    }
-  }
-}
-
-interface Props {
-  startPoint: Vector2;
-  endPoint: Vector2;
-  color?: Color;
+interface Props extends Selection {
+  color?: string;
 }
 
 function SelectionLine(props: Props) {
@@ -31,23 +17,32 @@ function SelectionLine(props: Props) {
     color = 'black',
   } = props;
 
+  const { width, height } = useThree((state) => state.size);
+
   const { dataToWorld } = useAxisSystemContext();
-  const startPoint = dataToWorld(dataStartPoint);
-  const endPoint = dataToWorld(dataEndPoint);
+  const worldToHtml = useWorldToHtml();
 
-  const [dataGeometry] = useState(() => new BufferGeometry());
-  const invalidate = useThree((state) => state.invalidate);
-
-  useLayoutEffect(() => {
-    dataGeometry.setFromPoints([startPoint, endPoint]);
-    dataGeometry.computeBoundingSphere();
-    invalidate();
-  }, [dataGeometry, endPoint, invalidate, startPoint]);
+  const worldStartPoint = dataToWorld(dataStartPoint);
+  const htmlStartPt = worldToHtml(
+    new Vector3(worldStartPoint.x, worldStartPoint.y, 0)
+  );
+  const worldEndPoint = dataToWorld(dataEndPoint);
+  const htmlEndPt = worldToHtml(
+    new Vector3(worldEndPoint.x, worldEndPoint.y, 0)
+  );
 
   return (
-    <line_ geometry={dataGeometry}>
-      <lineBasicMaterial color={color} />
-    </line_>
+    <Html>
+      <svg width={width} height={height}>
+        <line
+          x1={htmlStartPt.x}
+          y1={htmlStartPt.y}
+          x2={htmlEndPt.x}
+          y2={htmlEndPt.y}
+          stroke={color}
+        />
+      </svg>
+    </Html>
   );
 }
 
