@@ -15,15 +15,16 @@
   ],
   "main": "src/index.ts",
   "publishConfig": {
-    "main": "dist/index.cjs",
-    "module": "dist/index.js",
+    "type": "commonjs",
+    "main": "dist/index.js",
+    "module": "dist/index.esm.js",
     "types": "dist/index.d.ts",
     "exports": {
       "./dist/styles.css": "./dist/styles.css",
       "./styles.css": "./dist/styles.css",
       ".": {
-        "require": "./dist/index.cjs",
-        "import": "./dist/index.js"
+        "require": "./dist/index.js",
+        "import": "./dist/index.esm.js"
       }
     }
   },
