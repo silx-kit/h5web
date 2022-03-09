@@ -1,6 +1,7 @@
 import { useThree } from '@react-three/fiber';
 
 import type { ModifierKey, Selection } from '../models';
+import { getRatioEndPoint } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
@@ -8,10 +9,11 @@ import { useMoveCameraTo } from './hooks';
 
 interface Props {
   modifierKey?: ModifierKey;
+  keepRatio?: boolean;
 }
 
 function SelectToZoom(props: Props) {
-  const { modifierKey = 'Control' } = props;
+  const { modifierKey = 'Control', keepRatio } = props;
 
   const { dataToWorld } = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
@@ -24,7 +26,11 @@ function SelectToZoom(props: Props) {
 
     // Work in world coordinates as we need to act on the world camera
     const startPoint = dataToWorld(dataStartPoint);
-    const endPoint = dataToWorld(dataEndPoint);
+    const endPoint = dataToWorld(
+      keepRatio
+        ? getRatioEndPoint(dataStartPoint, dataEndPoint, width / height)
+        : dataEndPoint
+    );
     if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
       return;
     }
@@ -49,13 +55,25 @@ function SelectToZoom(props: Props) {
   return (
     <SelectionTool modifierKey={modifierKey} onSelectionEnd={onSelectionEnd}>
       {({ startPoint, endPoint }) => (
-        <SelectionRect
-          startPoint={startPoint}
-          endPoint={endPoint}
-          fillOpacity={0.25}
-          fill="white"
-          stroke="black"
-        />
+        <>
+          <SelectionRect
+            startPoint={startPoint}
+            endPoint={endPoint}
+            fill="white"
+            stroke="black"
+            fillOpacity={keepRatio ? 0 : 0.25}
+            strokeDasharray={keepRatio ? '4' : undefined}
+          />
+          {keepRatio && (
+            <SelectionRect
+              startPoint={startPoint}
+              endPoint={getRatioEndPoint(startPoint, endPoint, width / height)}
+              fillOpacity={0.25}
+              fill="white"
+              stroke="black"
+            />
+          )}
+        </>
       )}
     </SelectionTool>
   );

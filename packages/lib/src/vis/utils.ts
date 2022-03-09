@@ -71,10 +71,9 @@ export function getSizeToFit(
 
   const availableRatio = width / height;
 
-  return {
-    width: availableRatio > ratioToRespect ? height * ratioToRespect : width,
-    height: availableRatio < ratioToRespect ? width / ratioToRespect : height,
-  };
+  return availableRatio > ratioToRespect
+    ? { width: height * ratioToRespect, height }
+    : { width, height: width / ratioToRespect };
 }
 
 export function getDomain(
@@ -347,4 +346,31 @@ export function checkModifierKey(
   }
 
   return event.getModifierState(modifierKey);
+}
+
+export function getRatioEndPoint(
+  startPoint: Vector2,
+  endPoint: Vector2,
+  ratio: number
+) {
+  const widthSign = Math.sign(endPoint.x - startPoint.x);
+  const width = Math.abs(endPoint.x - startPoint.x);
+
+  const heightSign = Math.sign(endPoint.y - startPoint.y);
+  const height = Math.abs(endPoint.y - startPoint.y);
+
+  const originalRatio =
+    Math.abs(endPoint.x - startPoint.x) / Math.abs(endPoint.y - startPoint.y);
+
+  if (originalRatio < ratio) {
+    return new Vector2(
+      startPoint.x + widthSign * height * ratio,
+      startPoint.y + heightSign * height
+    );
+  }
+
+  return new Vector2(
+    startPoint.x + widthSign * width,
+    startPoint.y + (heightSign * width) / ratio
+  );
 }
