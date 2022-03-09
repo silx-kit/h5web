@@ -8,6 +8,7 @@ import {
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
+import { XAxisZoom, YAxisZoom } from '../..';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
 import Pan from '../shared/Pan';
@@ -78,12 +79,14 @@ function HeatmapVis(props: Props) {
   const safeDataArray = useTextureSafeNdArray(dataArray);
   const safeAlphaArray = useTextureSafeNdArray(alpha?.array);
 
+  const keepRatio = layout !== 'fill';
+
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
         title={title}
         canvasRatio={layout === 'contain' ? cols / rows : undefined}
-        visRatio={layout !== 'fill' ? cols / rows : undefined}
+        visRatio={keepRatio ? cols / rows : undefined}
         abscissaConfig={{
           visDomain: abscissaDomain,
           showGrid,
@@ -100,7 +103,9 @@ function HeatmapVis(props: Props) {
       >
         <Pan />
         <Zoom />
-        <SelectToZoom />
+        <XAxisZoom disabled={keepRatio} />
+        <YAxisZoom disabled={keepRatio} />
+        <SelectToZoom keepRatio={keepRatio} />
         <ResetZoomButton />
         <TooltipMesh
           guides="both"

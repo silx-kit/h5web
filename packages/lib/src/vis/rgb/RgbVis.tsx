@@ -10,6 +10,8 @@ import Pan from '../shared/Pan';
 import ResetZoomButton from '../shared/ResetZoomButton';
 import SelectToZoom from '../shared/SelectToZoom';
 import VisCanvas from '../shared/VisCanvas';
+import XAxisZoom from '../shared/XAxisZoom';
+import YAxisZoom from '../shared/YAxisZoom';
 import Zoom from '../shared/Zoom';
 import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
@@ -37,12 +39,14 @@ function RgbVis(props: Props) {
   const { rows, cols } = getDims(dataArray);
   const safeDataArray = useMemo(() => toRgbSafeNdArray(dataArray), [dataArray]);
 
+  const keepRatio = layout !== 'fill';
+
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
         title={title}
         canvasRatio={layout === 'contain' ? cols / rows : undefined}
-        visRatio={layout !== 'fill' ? cols / rows : undefined}
+        visRatio={keepRatio ? cols / rows : undefined}
         abscissaConfig={{
           visDomain: [0, cols],
           showGrid,
@@ -57,7 +61,9 @@ function RgbVis(props: Props) {
       >
         <Pan />
         <Zoom />
-        <SelectToZoom />
+        <XAxisZoom disabled={keepRatio} />
+        <YAxisZoom disabled={keepRatio} />
+        <SelectToZoom keepRatio={keepRatio} />
         <ResetZoomButton />
         <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />
         {children}
