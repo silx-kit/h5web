@@ -14,7 +14,7 @@ import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import { clamp } from 'lodash';
 import type { IUniform } from 'three';
-import { Vector2, Vector3, Matrix4 } from 'three';
+import { Vector2, Vector3 } from 'three';
 
 import type {
   Size,
@@ -307,18 +307,6 @@ export const VERTEX_SHADER = `
 
 export function formatNumType(numType: NumericType): string {
   return `${TYPE_STRINGS[numType.class]}${numType.size}`;
-}
-
-export function projectCameraToHtml(
-  cameraVector: Vector3,
-  width: number,
-  height: number
-): Vector3 {
-  const cameraToHtmlMatrix = new Matrix4().makeScale(width / 2, -height / 2, 1);
-  // Account for shift of (0,0) position (center for camera, top-left for HTML)
-  cameraToHtmlMatrix.setPosition(width / 2, height / 2);
-
-  return cameraVector.clone().applyMatrix4(cameraToHtmlMatrix);
 }
 
 export function getUniforms(

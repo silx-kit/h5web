@@ -52,8 +52,9 @@ function SelectToZoom(props: Props) {
         <SelectionRect
           startPoint={startPoint}
           endPoint={endPoint}
-          opacity={0}
-          borderColor="black"
+          fillOpacity={0.25}
+          fill="white"
+          stroke="black"
         />
       )}
     </SelectionTool>

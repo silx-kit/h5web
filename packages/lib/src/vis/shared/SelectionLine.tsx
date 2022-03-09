@@ -1,53 +1,43 @@
-import type { Color, Object3DNode } from '@react-three/fiber';
-import { extend, useThree } from '@react-three/fiber';
-import { useLayoutEffect, useState } from 'react';
+import { useThree } from '@react-three/fiber';
+import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
-import { BufferGeometry, Line } from 'three';
 
 import { useAxisSystemContext } from './AxisSystemContext';
+import Html from './Html';
 
-extend({ Line_: Line });
-
-// https://github.com/pmndrs/react-three-fiber/issues/1152
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      line_: Object3DNode<Line, typeof Line>;
-    }
-  }
-}
-
-interface Props {
+interface Props extends SVGProps<SVGLineElement> {
   startPoint: Vector2;
   endPoint: Vector2;
-  color?: Color;
 }
 
 function SelectionLine(props: Props) {
   const {
     startPoint: dataStartPoint,
     endPoint: dataEndPoint,
-    color = 'black',
+    stroke = 'black',
+    ...restSvgProps
   } = props;
 
-  const { dataToWorld } = useAxisSystemContext();
-  const startPoint = dataToWorld(dataStartPoint);
-  const endPoint = dataToWorld(dataEndPoint);
+  const { width, height } = useThree((state) => state.size);
 
-  const [dataGeometry] = useState(() => new BufferGeometry());
-  const invalidate = useThree((state) => state.invalidate);
+  const { dataToWorld, worldToHtml } = useAxisSystemContext();
 
-  useLayoutEffect(() => {
-    dataGeometry.setFromPoints([startPoint, endPoint]);
-    dataGeometry.computeBoundingSphere();
-    invalidate();
-  }, [dataGeometry, endPoint, invalidate, startPoint]);
+  const htmlStartPt = worldToHtml(dataToWorld(dataStartPoint));
+  const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));
 
   return (
-    <line_ geometry={dataGeometry}>
-      <lineBasicMaterial color={color} />
-    </line_>
+    <Html>
+      <svg width={width} height={height}>
+        <line
+          x1={htmlStartPt.x}
+          y1={htmlStartPt.y}
+          x2={htmlEndPt.x}
+          y2={htmlEndPt.y}
+          stroke={stroke}
+          {...restSvgProps}
+        />
+      </svg>
+    </Html>
   );
 }
 

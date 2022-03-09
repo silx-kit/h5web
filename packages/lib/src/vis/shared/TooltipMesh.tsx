@@ -6,7 +6,6 @@ import { useCallback } from 'react';
 import type { ReactElement } from 'react';
 
 import type { Coords } from '../models';
-import { projectCameraToHtml } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import Html from './Html';
 import styles from './TooltipMesh.module.css';
@@ -20,11 +19,10 @@ interface Props {
 function TooltipMesh(props: Props) {
   const { guides, renderTooltip } = props;
 
-  const camera = useThree((state) => state.camera);
   const { width, height } = useThree((state) => state.size);
 
   // Scales to compute data coordinates from unprojected mesh coordinates
-  const { worldToData } = useAxisSystemContext();
+  const { worldToData, worldToHtml } = useAxisSystemContext();
 
   const {
     tooltipOpen,
@@ -41,8 +39,7 @@ function TooltipMesh(props: Props) {
     (evt: ThreeEvent<PointerEvent>) => {
       const dataCoords = worldToData(evt.unprojectedPoint);
 
-      const cameraPoint = evt.unprojectedPoint.clone().project(camera);
-      const htmlPoint = projectCameraToHtml(cameraPoint, width, height);
+      const htmlPoint = worldToHtml(evt.unprojectedPoint);
 
       showTooltip({
         tooltipLeft: htmlPoint.x,
@@ -50,7 +47,7 @@ function TooltipMesh(props: Props) {
         tooltipData: [dataCoords.x, dataCoords.y],
       });
     },
-    [worldToData, camera, width, height, showTooltip]
+    [worldToData, worldToHtml, showTooltip]
   );
 
   // Hide tooltip when pointer leaves mesh or user starts panning

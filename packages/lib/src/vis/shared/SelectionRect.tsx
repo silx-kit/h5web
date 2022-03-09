@@ -1,51 +1,45 @@
-import type { Color } from '@react-three/fiber';
-import { useMemo } from 'react';
+import { useThree } from '@react-three/fiber';
+import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
-import { PlaneGeometry } from 'three';
 
 import { useAxisSystemContext } from './AxisSystemContext';
+import Html from './Html';
 
-interface Props {
+interface Props extends SVGProps<SVGRectElement> {
   startPoint: Vector2;
   endPoint: Vector2;
-  color?: Color;
-  opacity?: number;
-  borderColor?: Color;
 }
 
 function SelectionRect(props: Props) {
   const {
     startPoint: dataStartPoint,
     endPoint: dataEndPoint,
-    color = 'red',
-    opacity = 0.5,
-    borderColor,
+    fill = 'red',
+    fillOpacity = 0.5,
+    ...restSvgProps
   } = props;
 
-  const { dataToWorld } = useAxisSystemContext();
-  const startPoint = dataToWorld(dataStartPoint);
-  const endPoint = dataToWorld(dataEndPoint);
+  const { width, height } = useThree((state) => state.size);
 
-  const width = endPoint.x - startPoint.x;
-  const height = endPoint.y - startPoint.y;
+  const { dataToWorld, worldToHtml } = useAxisSystemContext();
 
-  const rectGeometry = useMemo(
-    () => new PlaneGeometry(Math.abs(width), Math.abs(height)),
-    [height, width]
-  );
+  const htmlStartPt = worldToHtml(dataToWorld(dataStartPoint));
+  const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));
 
   return (
-    <group position={[startPoint.x + width / 2, startPoint.y + height / 2, 0]}>
-      <mesh geometry={rectGeometry}>
-        <meshBasicMaterial opacity={opacity} transparent color={color} />
-      </mesh>
-      {borderColor && (
-        <lineSegments>
-          <lineBasicMaterial color={borderColor} />
-          <edgesGeometry args={[rectGeometry]} />
-        </lineSegments>
-      )}
-    </group>
+    <Html>
+      <svg width={width} height={height}>
+        <rect
+          x={Math.min(htmlStartPt.x, htmlEndPt.x)}
+          y={Math.min(htmlStartPt.y, htmlEndPt.y)}
+          width={Math.abs(htmlEndPt.x - htmlStartPt.x)}
+          height={Math.abs(htmlEndPt.y - htmlStartPt.y)}
+          fill={fill}
+          fillOpacity={fillOpacity}
+          {...restSvgProps}
+        />
+      </svg>
+    </Html>
   );
 }
 
