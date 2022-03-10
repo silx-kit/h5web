@@ -1,4 +1,4 @@
-import { Pan, VisCanvas, XAxisZoom } from '@h5web/lib';
+import { Pan, ResetZoomButton, VisCanvas, XAxisZoom } from '@h5web/lib';
 import type { ModifierKey as ModifierKeyType } from '@h5web/lib/src/vis/models';
 import type { Meta, Story } from '@storybook/react';
 
@@ -19,6 +19,7 @@ const Template: Story<TemplateProps> = (args) => {
     >
       <Pan />
       <XAxisZoom disabled={disabled} modifierKey={modifierKey} />
+      <ResetZoomButton />
     </VisCanvas>
   );
 };

@@ -22,8 +22,6 @@ export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/Scale
 export { default as GridToggler } from './toolbar/controls/GridToggler';
 export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler';
 export { default as Selector } from './toolbar/controls/Selector/Selector';
-export { default as ExportMenu } from './toolbar/controls/ExportMenu';
-export { default as CellWidthInput } from './toolbar/controls/CellWidthInput';
 
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';
@@ -32,6 +30,8 @@ export { default as Pan } from './vis/shared/Pan';
 export { default as Zoom } from './vis/shared/Zoom';
 export { default as XAxisZoom } from './vis/shared/XAxisZoom';
 export { default as YAxisZoom } from './vis/shared/YAxisZoom';
+export { default as SelectToZoom } from './vis/shared/SelectToZoom';
+export { default as ResetZoomButton } from './vis/shared/ResetZoomButton';
 export { default as TooltipMesh } from './vis/shared/TooltipMesh';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
 export { default as VisMesh } from './vis/shared/VisMesh';
@@ -43,14 +43,12 @@ export { default as DataCurve } from './vis/line/DataCurve';
 export { default as Html } from './vis/shared/Html';
 export { default as Annotation } from './vis/shared/Annotation';
 export { default as SelectionTool } from './vis/shared/SelectionTool';
-export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
 export type { SelectionProps } from './vis/shared/SelectionTool';
 export { default as SelectionLine } from './vis/shared/SelectionLine';
 export { default as SelectionRect } from './vis/shared/SelectionRect';
 export { default as TiledHeatmap } from './vis/tiles/TiledHeatmap';
 export type { TiledHeatmapProps } from './vis/tiles/TiledHeatmap';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
-export { default as SelectToZoom } from './vis/shared/SelectToZoom';
 
 // Context hook
 export { useAxisSystemContext } from './vis/shared/AxisSystemContext';
@@ -112,7 +110,10 @@ export {
 
 // Undocumented (for @h5web/app)
 export { default as SnapshotBtn } from './toolbar/controls/SnapshotBtn';
+export { default as ExportMenu } from './toolbar/controls/ExportMenu';
+export { default as CellWidthInput } from './toolbar/controls/CellWidthInput';
 export { default as RawVis } from './vis/raw/RawVis';
 export { default as ScalarVis } from './vis/scalar/ScalarVis';
 export { default as RgbVis } from './vis/rgb/RgbVis';
+export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
 export { ImageType } from './vis/rgb/models';

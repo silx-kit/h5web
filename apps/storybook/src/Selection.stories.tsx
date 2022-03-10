@@ -5,6 +5,7 @@ import {
   SelectionRect,
   VisCanvas,
   Zoom,
+  ResetZoomButton,
 } from '@h5web/lib';
 import type { ModifierKey, Selection } from '@h5web/lib/src/vis/models';
 import type { Meta, Story } from '@storybook/react';
@@ -55,6 +56,7 @@ const Template: Story<TemplateProps> = (args) => {
     >
       <Pan disabled={disablePan} />
       <Zoom disabled={disableZoom} />
+      <ResetZoomButton />
       <SelectionTool
         onSelectionChange={setActiveSelection}
         onSelectionEnd={() => setActiveSelection(undefined)}

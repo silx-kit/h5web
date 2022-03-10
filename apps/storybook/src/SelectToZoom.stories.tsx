@@ -1,4 +1,11 @@
-import { DataCurve, Pan, VisCanvas, Zoom, SelectToZoom } from '@h5web/lib';
+import {
+  DataCurve,
+  Pan,
+  VisCanvas,
+  Zoom,
+  SelectToZoom,
+  ResetZoomButton,
+} from '@h5web/lib';
 import type { ModifierKey as ModifierKeyType } from '@h5web/lib/src/vis/models';
 import type { Meta, Story } from '@storybook/react';
 import { range } from 'lodash';
@@ -27,6 +34,7 @@ const Template: Story<TemplateProps> = (args) => {
       <Pan />
       <Zoom />
       <SelectToZoom modifierKey={modifierKey} />
+      <ResetZoomButton />
       <GaussianCurve />
     </VisCanvas>
   );
