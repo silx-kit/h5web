@@ -44,10 +44,8 @@ Default.argTypes = {
 };
 
 export default {
-  title: 'Building Blocks/ZoomSelection',
+  title: 'Building Blocks/SelectToZoom',
   component: SelectToZoom,
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-  },
+  parameters: { layout: 'fullscreen' },
 } as Meta;
