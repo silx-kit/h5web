@@ -83,6 +83,7 @@ export {
 export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
 
 export { scaleGamma } from './vis/scaleGamma';
+export { useCanvasEvents } from './vis/shared/hooks';
 
 // Models
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
