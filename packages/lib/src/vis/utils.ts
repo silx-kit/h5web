@@ -339,7 +339,7 @@ export function boundPointToFOV(
 
 export function checkModifierKey(
   modifierKey: ModifierKey | undefined,
-  event: PointerEvent | WheelEvent
+  event: MouseEvent | KeyboardEvent
 ) {
   if (!modifierKey) {
     return !event.altKey && !event.ctrlKey && !event.shiftKey;

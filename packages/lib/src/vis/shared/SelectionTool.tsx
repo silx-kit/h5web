@@ -1,10 +1,11 @@
+import { useKeyboardEvent, useToggle } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
 import type { CanvasEvent, ModifierKey, Selection } from '../models';
-import { boundPointToFOV, checkModifierKey } from '../utils';
+import { boundPointToFOV } from '../utils';
 import { useAxisSystemContext } from './AxisSystemContext';
 import { useCanvasEvents } from './hooks';
 
@@ -27,28 +28,25 @@ function SelectionTool(props: Props) {
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useState<Vector2>();
+  const [isAllowed, toggleAllowed] = useToggle(!modifierKey);
   const camera = useThree((state) => state.camera);
 
   const { worldToData } = useAxisSystemContext();
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      const { unprojectedPoint, sourceEvent } = evt;
-
-      const isSelectionAllowed = checkModifierKey(modifierKey, sourceEvent);
-      if (!isSelectionAllowed) {
+      if (!isAllowed) {
         return;
       }
 
+      const { unprojectedPoint, sourceEvent } = evt;
       const { target, pointerId } = sourceEvent;
       (target as Element).setPointerCapture(pointerId);
 
       setStartPoint(worldToData(unprojectedPoint));
       setEndPoint(undefined);
-      if (onSelectionStart) {
-        onSelectionStart();
-      }
+      onSelectionStart?.();
     },
-    [modifierKey, worldToData, onSelectionStart]
+    [isAllowed, worldToData, onSelectionStart]
   );
 
   const onPointerMove = useCallback(
@@ -57,16 +55,16 @@ function SelectionTool(props: Props) {
         return;
       }
       const point = worldToData(boundPointToFOV(evt.unprojectedPoint, camera));
-
       setEndPoint(point);
-      if (onSelectionChange) {
+
+      if (isAllowed && onSelectionChange) {
         onSelectionChange({
           startPoint,
           endPoint: point,
         });
       }
     },
-    [camera, onSelectionChange, startPoint, worldToData]
+    [camera, isAllowed, onSelectionChange, startPoint, worldToData]
   );
 
   const onPointerUp = useCallback(
@@ -77,24 +75,29 @@ function SelectionTool(props: Props) {
       const { sourceEvent, unprojectedPoint } = evt;
       const { target, pointerId } = sourceEvent;
       (target as Element).releasePointerCapture(pointerId);
-
-      const point = worldToData(boundPointToFOV(unprojectedPoint, camera));
-
-      if (onSelectionEnd) {
-        onSelectionEnd({
-          startPoint,
-          endPoint: point,
-        });
-      }
       setStartPoint(undefined);
       setEndPoint(undefined);
+
+      if (isAllowed && onSelectionEnd) {
+        onSelectionEnd({
+          startPoint,
+          endPoint: worldToData(boundPointToFOV(unprojectedPoint, camera)),
+        });
+      }
     },
-    [startPoint, camera, worldToData, onSelectionEnd]
+    [startPoint, isAllowed, worldToData, camera, onSelectionEnd]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
 
-  if (!startPoint || !endPoint) {
+  useKeyboardEvent(modifierKey, () => toggleAllowed(), [modifierKey], {
+    event: 'keydown',
+  });
+  useKeyboardEvent(modifierKey, () => toggleAllowed(), [modifierKey], {
+    event: 'keyup',
+  });
+
+  if (!startPoint || !endPoint || !isAllowed) {
     return null;
   }
 
