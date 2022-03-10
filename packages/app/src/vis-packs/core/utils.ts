@@ -6,8 +6,21 @@ import ndarray from 'ndarray';
 
 import type { Axis, DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
+import type { Layout } from './heatmap/models';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
+
+const BASE_INTERACTIONS = [
+  { shortcut: 'Drag', description: 'Pan' },
+  { shortcut: 'Ctrl+Drag', description: 'Select to zoom' },
+  { shortcut: 'Wheel', description: 'Zoom' },
+];
+
+export const INTERACTIONS_WITH_AXIAL_ZOOM = [
+  ...BASE_INTERACTIONS,
+  { shortcut: 'Alt+Wheel', description: 'Zoom in X' },
+  { shortcut: 'Shift+Wheel', description: 'Zoom in Y' },
+];
 
 export function getBaseArray<T, U extends T[] | TypedArray | undefined>(
   value: U,
@@ -64,4 +77,8 @@ export function getSliceSelection(
 
   // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
+}
+
+export function getImageInteractions(layout: Layout) {
+  return layout === 'fill' ? INTERACTIONS_WITH_AXIAL_ZOOM : BASE_INTERACTIONS;
 }

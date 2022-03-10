@@ -16,6 +16,7 @@ import shallow from 'zustand/shallow';
 
 import { ProviderContext } from '../../../providers/context';
 import type { ExportFormat } from '../../../providers/models';
+import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { useLineConfig } from './config';
 
 const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
@@ -70,7 +71,7 @@ function LineToolbar(props: Props) {
   }, [initialYScaleType, setYScaleType]);
 
   return (
-    <Toolbar>
+    <Toolbar interactions={INTERACTIONS_WITH_AXIAL_ZOOM}>
       <ScaleSelector
         label="X"
         value={xScaleType}

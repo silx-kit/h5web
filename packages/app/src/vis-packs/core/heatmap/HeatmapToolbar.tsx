@@ -1,8 +1,8 @@
 import type { Domain } from '@h5web/lib';
 import {
-  ExportMenu,
   ColorMapSelector,
   DomainSlider,
+  ExportMenu,
   FlipYAxisToggler,
   GridToggler,
   ScaleSelector,
@@ -13,12 +13,13 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
-import { useEffect, useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
 import { ProviderContext } from '../../../providers/context';
 import type { ExportFormat } from '../../../providers/models';
+import { getImageInteractions } from '../utils';
 import { useHeatmapConfig } from './config';
 
 const EXPORT_FORMATS: ExportFormat[] = ['tiff', 'npy'];
@@ -59,7 +60,7 @@ function HeatmapToolbar(props: Props) {
   }, [initialScaleType, setScaleType]);
 
   return (
-    <Toolbar>
+    <Toolbar interactions={getImageInteractions(layout)}>
       <DomainSlider
         dataDomain={dataDomain}
         customDomain={customDomain}

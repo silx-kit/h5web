@@ -3,17 +3,20 @@ import { useMap, useMeasure } from '@react-hookz/web';
 import type { ReactElement, ReactNode } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 
+import type { Interaction } from '../vis/models';
 import MeasuredControl from './MeasuredControl';
 import OverflowMenu from './OverflowMenu';
 import Separator from './Separator';
 import styles from './Toolbar.module.css';
+import InteractionHelp from './controls/InteractionHelp';
 
 interface Props {
   children: ReactNode;
+  interactions?: Interaction[];
 }
 
 function Toolbar(props: Props) {
-  const { children } = props;
+  const { children, interactions } = props;
 
   /* Convert `children` to flat array by traversing nested arrays and fragments.
    * (Note that `flattenChildren` guarantees stable string keys regardless of JSX logic.) */
@@ -62,6 +65,9 @@ function Toolbar(props: Props) {
       <OverflowMenu>
         {outOfView.filter((child) => child.type !== Separator)}
       </OverflowMenu>
+
+      {interactions && <Separator />}
+      {interactions && <InteractionHelp interactions={interactions} />}
     </div>
   );
 }

@@ -22,6 +22,7 @@ export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/Scale
 export { default as GridToggler } from './toolbar/controls/GridToggler';
 export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler';
 export { default as Selector } from './toolbar/controls/Selector/Selector';
+export { default as InteractionHelp } from './toolbar/controls/InteractionHelp';
 
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';
@@ -87,6 +88,7 @@ export { useCanvasEvents } from './vis/shared/hooks';
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
 export { CurveType } from './vis/line/models';
+export type { Interaction } from './vis/models';
 
 export type { Domain, Dims } from '@h5web/shared';
 
