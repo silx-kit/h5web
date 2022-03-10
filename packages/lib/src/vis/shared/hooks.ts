@@ -1,6 +1,7 @@
+import { useEventListener } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import { clamp } from 'lodash';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { Vector3 } from 'three';
 
 import { useWheelCapture } from '../hooks';
@@ -83,7 +84,7 @@ export function useZoomOnWheel(
   return onWheel;
 }
 
-export function useCanvasEvents(callbacks: CanvasEventCallbacks) {
+export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   const { onPointerDown, onPointerMove, onPointerUp, onWheel } = callbacks;
   const { domElement } = useThree((state) => state.gl);
   const camera = useThree((state) => state.camera);
@@ -149,17 +150,8 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks) {
     [getUnprojectedPoint, onWheel]
   );
 
-  useEffect(() => {
-    domElement.addEventListener('pointerdown', handlePointerDown);
-    domElement.addEventListener('pointermove', handlePointerMove);
-    domElement.addEventListener('pointerup', handlePointerUp);
-    domElement.addEventListener('wheel', handleWheel);
-
-    return () => {
-      domElement.removeEventListener('pointerdown', handlePointerDown);
-      domElement.removeEventListener('pointermove', handlePointerMove);
-      domElement.removeEventListener('pointerup', handlePointerUp);
-      domElement.removeEventListener('wheel', handleWheel);
-    };
-  });
+  useEventListener(domElement, 'pointerdown', handlePointerDown);
+  useEventListener(domElement, 'pointermove', handlePointerMove);
+  useEventListener(domElement, 'pointerup', handlePointerUp);
+  useEventListener(domElement, 'wheel', handleWheel);
 }
