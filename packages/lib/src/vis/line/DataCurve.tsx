@@ -48,6 +48,7 @@ function DataCurve(props: Props) {
 
   useLayoutEffect(() => {
     dataGeometry.setFromPoints(points.data);
+    dataGeometry.computeBoundingSphere();
     invalidate();
   }, [dataGeometry, invalidate, points.data]);
 
