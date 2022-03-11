@@ -7,8 +7,14 @@ class ResizeObserver {
   disconnect() {}
 }
 
-// Fake `ResizeObserver` support
 window.ResizeObserver = ResizeObserver;
+
+window.matchMedia = (query) => ({
+  matches: false,
+  media: query,
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn(),
+});
 
 // Fake properties to avoid Re-flex warnings
 // https://github.com/leefsmp/Re-Flex/issues/27

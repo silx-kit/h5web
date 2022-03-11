@@ -116,3 +116,9 @@ export interface Interaction {
   shortcut: string;
   description: string;
 }
+
+export interface CustomColor {
+  property: `--h5w-${string}`;
+  fallback: string;
+  darkFallback?: string;
+}

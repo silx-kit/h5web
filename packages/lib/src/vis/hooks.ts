@@ -1,11 +1,12 @@
 import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
 import type { Domain, AnyNumArray } from '@h5web/shared';
-import { useEventListener } from '@react-hookz/web';
+import { useEventListener, useMediaQuery } from '@react-hookz/web';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
 
+import type { CustomColor } from './models';
 import { useAxisSystemContext } from './shared/AxisSystemContext';
 import {
   getCameraFOV,
@@ -83,10 +84,10 @@ export function useWheelCapture() {
   useEventListener(domElement, 'wheel', onWheel, { passive: false });
 }
 
-export function useCSSCustomProperties(...names: string[]): {
-  colors: string[];
-  refCallback: RefCallback<HTMLElement>;
-} {
+export function useCustomColors(
+  colorDefs: CustomColor[]
+): [string[], RefCallback<HTMLElement>] {
+  const isDark = useMediaQuery('(prefers-color-scheme: dark)');
   const [styles, setStyles] = useState<CSSStyleDeclaration>();
 
   // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
@@ -95,10 +96,17 @@ export function useCSSCustomProperties(...names: string[]): {
     [setStyles]
   );
 
-  return {
-    colors: names.map((name) => {
-      return styles ? styles.getPropertyValue(name).trim() : 'transparent';
-    }),
-    refCallback,
-  };
+  if (!styles) {
+    // Return `transparent` colors on initial render
+    return [colorDefs.map(() => 'transparent'), refCallback];
+  }
+
+  const colors = colorDefs.map(({ property, fallback, darkFallback }) => {
+    return (
+      styles.getPropertyValue(property).trim() ||
+      (isDark && darkFallback ? darkFallback : fallback)
+    );
+  });
+
+  return [colors, refCallback];
 }

@@ -12,12 +12,8 @@ import type { NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 
-import {
-  useAxisDomain,
-  useCSSCustomProperties,
-  useValueToIndexScale,
-} from '../hooks';
-import type { AxisParams } from '../models';
+import { useAxisDomain, useCustomColors, useValueToIndexScale } from '../hooks';
+import type { AxisParams, CustomColor } from '../models';
 import Pan from '../shared/Pan';
 import ResetZoomButton from '../shared/ResetZoomButton';
 import SelectToZoom from '../shared/SelectToZoom';
@@ -32,9 +28,19 @@ import styles from './LineVis.module.css';
 import type { TooltipData } from './models';
 import { CurveType } from './models';
 
-const DEFAULT_CURVE_COLOR = 'midnightblue';
-const DEFAULT_AUX_COLORS =
-  'orangered, forestgreen, crimson, mediumslateblue, sienna';
+// Inspired by Matplotlib palette: https://matplotlib.org/stable/gallery/color/named_colors.html
+const COLORS: CustomColor[] = [
+  {
+    property: '--h5w-line--color',
+    fallback: 'darkblue',
+    darkFallback: 'deepskyblue',
+  },
+  {
+    property: '--h5w-line--colorAux',
+    fallback: 'orangered, forestgreen, red, mediumorchid, olive',
+    darkFallback: 'orange, lightgreen, red, violet, gold',
+  },
+];
 
 interface Props {
   dataArray: NdArray<NumArray>;
@@ -99,18 +105,16 @@ function LineVis(props: Props) {
     return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
 
-  const {
-    colors: [curveColor, rawAuxColor],
-    refCallback: rootRef,
-  } = useCSSCustomProperties('--h5w-line--color', '--h5w-line--colorAux');
-
-  // Support comma-separated list of auxiliary colors
-  const auxColors = (rawAuxColor || DEFAULT_AUX_COLORS)
-    .split(',')
-    .map((col) => col.trim());
+  const [[curveColor, auxColorList], rootRef] = useCustomColors(COLORS);
+  const auxColors = auxColorList.split(',').map((col) => col.trim()); // support comma-separated list of colors
 
   return (
-    <figure ref={rootRef} className={styles.root} aria-label={title}>
+    <figure
+      ref={rootRef}
+      className={styles.root}
+      aria-label={title}
+      data-keep-canvas-colors
+    >
       <VisCanvas
         title={title}
         abscissaConfig={{
@@ -162,7 +166,7 @@ function LineVis(props: Props) {
           ordinates={dataArray.data}
           errors={errorsArray?.data}
           showErrors={showErrors}
-          color={curveColor || DEFAULT_CURVE_COLOR}
+          color={curveColor}
           curveType={curveType}
         />
         {auxArrays.map((array, i) => (
