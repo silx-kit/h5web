@@ -59,6 +59,7 @@ various front-end development stacks:
 
 - [Vite](https://codesandbox.io/s/h5webapp-vite-5c204)
 - [Create React App v4](https://codesandbox.io/s/h5webapp-cra-v4-0y1lj)
+- [Create React App v5](https://codesandbox.io/s/h5webapp-cra-v5-bzmbh1)
 
 ## API reference
 
