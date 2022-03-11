@@ -29,8 +29,6 @@
 }
 
 .root {
-  --h5w-line--color: var(--secondary-dark);
-  --h5w-line--colorAux: var(--secondary);
   --h5w-matrix--fontFamily: var(--monospace);
   --h5w-matrix-cell--bgColorAlt: var(--secondary-light-bg);
   --h5w-matrix-indexCell--bgColor: var(--primary-bg);
