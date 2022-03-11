@@ -1,6 +1,6 @@
 import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
 import type { Domain, AnyNumArray } from '@h5web/shared';
-import { useEventListener } from '@react-hookz/web';
+import { useEventListener, useMediaQuery } from '@react-hookz/web';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
@@ -83,11 +83,11 @@ export function useWheelCapture() {
   useEventListener(domElement, 'wheel', onWheel, { passive: false });
 }
 
-export function useCSSCustomProperties(...names: string[]): {
-  colors: string[];
-  refCallback: RefCallback<HTMLElement>;
-} {
+export function useCustomColors(
+  properties: Record<`--h5w-${string}`, string | string[]>
+): [string[], RefCallback<HTMLElement>] {
   const [styles, setStyles] = useState<CSSStyleDeclaration>();
+  const isDark = useMediaQuery('(prefers-color-scheme: dark)');
 
   // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
   const refCallback: RefCallback<HTMLElement> = useCallback(
@@ -95,10 +95,18 @@ export function useCSSCustomProperties(...names: string[]): {
     [setStyles]
   );
 
-  return {
-    colors: names.map((name) => {
-      return styles ? styles.getPropertyValue(name).trim() : 'transparent';
-    }),
-    refCallback,
-  };
+  if (!styles) {
+    // Return `transparent` colors on initial render
+    return [Object.keys(properties).map(() => 'transparent'), refCallback];
+  }
+
+  const colors = Object.entries(properties).map(([name, defaultColors]) => {
+    const [light, dark] = Array.isArray(defaultColors)
+      ? defaultColors
+      : [defaultColors, defaultColors];
+
+    return styles.getPropertyValue(name).trim() || (isDark ? dark : light);
+  });
+
+  return [colors, refCallback];
 }

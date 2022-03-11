@@ -12,11 +12,7 @@ import type { NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 
-import {
-  useAxisDomain,
-  useCSSCustomProperties,
-  useValueToIndexScale,
-} from '../hooks';
+import { useAxisDomain, useCustomColors, useValueToIndexScale } from '../hooks';
 import type { AxisParams } from '../models';
 import Pan from '../shared/Pan';
 import ResetZoomButton from '../shared/ResetZoomButton';
@@ -32,9 +28,13 @@ import styles from './LineVis.module.css';
 import type { TooltipData } from './models';
 import { CurveType } from './models';
 
-const DEFAULT_CURVE_COLOR = 'midnightblue';
-const DEFAULT_AUX_COLORS =
-  'orangered, forestgreen, crimson, mediumslateblue, sienna';
+// Default line colors in the following format: `[<light-mode>, <dark-mode>]`
+// Inspired by Matplotlib palette: https://matplotlib.org/stable/gallery/color/named_colors.html
+const DEFAULT_CURVE_COLOR = ['darkblue', 'deepskyblue'];
+const DEFAULT_AUX_COLORS = [
+  'orangered, forestgreen, red, mediumorchid, olive',
+  'orange, lightgreen, red, violet, gold',
+];
 
 interface Props {
   dataArray: NdArray<NumArray>;
@@ -99,18 +99,21 @@ function LineVis(props: Props) {
     return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
 
-  const {
-    colors: [curveColor, rawAuxColor],
-    refCallback: rootRef,
-  } = useCSSCustomProperties('--h5w-line--color', '--h5w-line--colorAux');
+  const [[curveColor, auxColorList], rootRef] = useCustomColors({
+    '--h5w-line--color': DEFAULT_CURVE_COLOR,
+    '--h5w-line--colorAux': DEFAULT_AUX_COLORS,
+  });
 
   // Support comma-separated list of auxiliary colors
-  const auxColors = (rawAuxColor || DEFAULT_AUX_COLORS)
-    .split(',')
-    .map((col) => col.trim());
+  const auxColors = auxColorList.split(',').map((col) => col.trim());
 
   return (
-    <figure ref={rootRef} className={styles.root} aria-label={title}>
+    <figure
+      ref={rootRef}
+      className={styles.root}
+      aria-label={title}
+      data-keep-canvas-colors
+    >
       <VisCanvas
         title={title}
         abscissaConfig={{
@@ -162,7 +165,7 @@ function LineVis(props: Props) {
           ordinates={dataArray.data}
           errors={errorsArray?.data}
           showErrors={showErrors}
-          color={curveColor || DEFAULT_CURVE_COLOR}
+          color={curveColor}
           curveType={curveType}
         />
         {auxArrays.map((array, i) => (
