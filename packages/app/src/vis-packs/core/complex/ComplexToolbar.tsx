@@ -15,6 +15,7 @@ import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
 import { useHeatmapConfig } from '../heatmap/config';
+import { getImageInteractions } from '../utils';
 import { useComplexConfig } from './config';
 import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
@@ -50,7 +51,7 @@ function ComplexToolbar(props: Props) {
   }, [initialScaleType, setScaleType]);
 
   return (
-    <Toolbar>
+    <Toolbar interactions={getImageInteractions(layout)}>
       <DomainSlider
         dataDomain={dataDomain}
         customDomain={customDomain}

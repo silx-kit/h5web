@@ -1,14 +1,15 @@
 import {
-  ImageType,
   GridToggler,
+  ImageType,
+  Separator,
   ToggleBtn,
   ToggleGroup,
   Toolbar,
-  Separator,
 } from '@h5web/lib';
 import { MdAspectRatio } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
+import { getImageInteractions } from '../utils';
 import { useRgbConfig } from './config';
 
 function RgbToolbar() {
@@ -16,7 +17,7 @@ function RgbToolbar() {
     useRgbConfig((state) => state, shallow);
 
   return (
-    <Toolbar>
+    <Toolbar interactions={getImageInteractions(layout)}>
       <ToggleGroup
         role="radiogroup"
         ariaLabel="Image type"

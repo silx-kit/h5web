@@ -1,4 +1,4 @@
-import type { ColorMap, CustomDomain } from '@h5web/lib';
+import type { ColorMap, CustomDomain, Interaction } from '@h5web/lib';
 import {
   ScaleType,
   Toolbar,
@@ -16,7 +16,13 @@ import type { Meta, Story } from '@storybook/react';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';
 
-const Template: Story<{ narrow?: boolean }> = ({ narrow }) => {
+interface TemplateProps {
+  narrow?: boolean;
+  interactions?: Interaction[];
+}
+
+const Template: Story<TemplateProps> = (args) => {
+  const { narrow, interactions } = args;
   const [customDomain, setCustomDomain] = useState<CustomDomain>([null, null]);
   const [colorMap, setColorMap] = useState<ColorMap>('Viridis');
   const [invertColorMap, toggleColorMapInversion] = useToggle();
@@ -38,7 +44,7 @@ const Template: Story<{ narrow?: boolean }> = ({ narrow }) => {
   return (
     <>
       <div style={narrow ? { maxWidth: '30rem', marginLeft: 'auto' } : {}}>
-        <Toolbar>
+        <Toolbar interactions={interactions}>
           <DomainSlider
             dataDomain={[1, 100]}
             customDomain={customDomain}
@@ -91,6 +97,16 @@ export const Default = Template.bind({});
 
 export const Responsive = Template.bind({});
 Responsive.args = { narrow: true };
+
+export const DocumentInteractions = Template.bind({});
+DocumentInteractions.args = {
+  narrow: true,
+  interactions: [
+    { shortcut: 'Wheel', description: 'Turn' },
+    { shortcut: 'Space', description: 'Accelerate' },
+    { shortcut: 'Ctrl+Alt', description: 'Do a backflip' },
+  ],
+};
 
 export default {
   title: 'Toolbar/Toolbar',

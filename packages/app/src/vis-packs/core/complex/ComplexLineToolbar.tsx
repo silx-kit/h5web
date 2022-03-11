@@ -1,18 +1,19 @@
 import type { ScaleType } from '@h5web/lib';
 import {
-  Toolbar,
+  CurveType,
+  ScaleSelector,
+  Selector,
   Separator,
   ToggleBtn,
   ToggleGroup,
-  ScaleSelector,
-  Selector,
-  CurveType,
+  Toolbar,
 } from '@h5web/lib';
 import { useEffect } from 'react';
-import { MdGridOn, MdDomain } from 'react-icons/md';
+import { MdDomain, MdGridOn } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
 import { useLineConfig } from '../line/config';
+import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { useComplexLineConfig } from './lineConfig';
 import type { ComplexLineVisType } from './models';
 import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
@@ -57,7 +58,7 @@ function ComplexLineToolbar(props: Props) {
   }, [initialYScaleType, setYScaleType]);
 
   return (
-    <Toolbar>
+    <Toolbar interactions={INTERACTIONS_WITH_AXIAL_ZOOM}>
       <ScaleSelector
         label="X"
         value={xScaleType}

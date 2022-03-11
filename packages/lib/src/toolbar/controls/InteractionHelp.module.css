@@ -1,0 +1,27 @@
+.root {
+  composes: root from '../OverflowMenu.module.css';
+}
+
+.menu {
+  composes: menu from '../OverflowMenu.module.css';
+}
+
+.menuList {
+  composes: menuList from '../OverflowMenu.module.css';
+}
+
+.menuList > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.25rem 0.25rem;
+  white-space: nowrap;
+}
+
+.shortcut {
+  background-color: var(--h5w-interactionHelp-shortcut--bgColor, lightgray);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  flex-grow: 0;
+  margin-left: 1rem;
+}

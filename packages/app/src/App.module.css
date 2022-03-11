@@ -52,6 +52,7 @@
   --h5w-selector-option-selected--bgColor: var(--secondary-light);
   --h5w-domainSlider-histogram--color: var(--secondary-dark);
   --h5w-domainSlider-histogram-indicator--color: var(--secondary-darker);
+  --h5w-interactionHelp-shortcut--bgColor: var(--primary-light);
 }
 
 .root *,

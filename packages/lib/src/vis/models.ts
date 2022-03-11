@@ -111,3 +111,8 @@ export interface CanvasEventCallbacks {
   onPointerUp?: (evt: CanvasEvent<PointerEvent>) => void;
   onWheel?: (evt: CanvasEvent<WheelEvent>) => void;
 }
+
+export interface Interaction {
+  shortcut: string;
+  description: string;
+}
