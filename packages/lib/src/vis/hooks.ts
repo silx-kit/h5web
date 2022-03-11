@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
 
+import type { CustomColor } from './models';
 import { useAxisSystemContext } from './shared/AxisSystemContext';
 import {
   getCameraFOV,
@@ -84,10 +85,10 @@ export function useWheelCapture() {
 }
 
 export function useCustomColors(
-  properties: Record<`--h5w-${string}`, string | string[]>
+  colorDefs: CustomColor[]
 ): [string[], RefCallback<HTMLElement>] {
-  const [styles, setStyles] = useState<CSSStyleDeclaration>();
   const isDark = useMediaQuery('(prefers-color-scheme: dark)');
+  const [styles, setStyles] = useState<CSSStyleDeclaration>();
 
   // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
   const refCallback: RefCallback<HTMLElement> = useCallback(
@@ -97,15 +98,14 @@ export function useCustomColors(
 
   if (!styles) {
     // Return `transparent` colors on initial render
-    return [Object.keys(properties).map(() => 'transparent'), refCallback];
+    return [colorDefs.map(() => 'transparent'), refCallback];
   }
 
-  const colors = Object.entries(properties).map(([name, defaultColors]) => {
-    const [light, dark] = Array.isArray(defaultColors)
-      ? defaultColors
-      : [defaultColors, defaultColors];
-
-    return styles.getPropertyValue(name).trim() || (isDark ? dark : light);
+  const colors = colorDefs.map(({ property, fallback, darkFallback }) => {
+    return (
+      styles.getPropertyValue(property).trim() ||
+      (isDark && darkFallback ? darkFallback : fallback)
+    );
   });
 
   return [colors, refCallback];

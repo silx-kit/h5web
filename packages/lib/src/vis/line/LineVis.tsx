@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 
 import { useAxisDomain, useCustomColors, useValueToIndexScale } from '../hooks';
-import type { AxisParams } from '../models';
+import type { AxisParams, CustomColor } from '../models';
 import Pan from '../shared/Pan';
 import ResetZoomButton from '../shared/ResetZoomButton';
 import SelectToZoom from '../shared/SelectToZoom';
@@ -28,12 +28,18 @@ import styles from './LineVis.module.css';
 import type { TooltipData } from './models';
 import { CurveType } from './models';
 
-// Default line colors in the following format: `[<light-mode>, <dark-mode>]`
 // Inspired by Matplotlib palette: https://matplotlib.org/stable/gallery/color/named_colors.html
-const DEFAULT_CURVE_COLOR = ['darkblue', 'deepskyblue'];
-const DEFAULT_AUX_COLORS = [
-  'orangered, forestgreen, red, mediumorchid, olive',
-  'orange, lightgreen, red, violet, gold',
+const COLORS: CustomColor[] = [
+  {
+    property: '--h5w-line--color',
+    fallback: 'darkblue',
+    darkFallback: 'deepskyblue',
+  },
+  {
+    property: '--h5w-line--colorAux',
+    fallback: 'orangered, forestgreen, red, mediumorchid, olive',
+    darkFallback: 'orange, lightgreen, red, violet, gold',
+  },
 ];
 
 interface Props {
@@ -99,13 +105,8 @@ function LineVis(props: Props) {
     return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
 
-  const [[curveColor, auxColorList], rootRef] = useCustomColors({
-    '--h5w-line--color': DEFAULT_CURVE_COLOR,
-    '--h5w-line--colorAux': DEFAULT_AUX_COLORS,
-  });
-
-  // Support comma-separated list of auxiliary colors
-  const auxColors = auxColorList.split(',').map((col) => col.trim());
+  const [[curveColor, auxColorList], rootRef] = useCustomColors(COLORS);
+  const auxColors = auxColorList.split(',').map((col) => col.trim()); // support comma-separated list of colors
 
   return (
     <figure
