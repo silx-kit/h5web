@@ -44,7 +44,7 @@
     "three": ">=0.120"
   },
   "dependencies": {
-    "@react-hookz/web": "12.3.0",
+    "@react-hookz/web": "13.1.0",
     "@visx/axis": "2.6.0",
     "@visx/grid": "2.6.0",
     "@visx/scale": "2.2.2",
