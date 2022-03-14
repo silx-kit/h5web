@@ -1,7 +1,7 @@
 import type { Domain, NumArray, NumericType } from '@h5web/shared';
 import {
   isTypedArray,
-  assertDataLength,
+  assertLength,
   assertDefined,
   formatTooltipVal,
   formatTooltipErr,
@@ -83,9 +83,9 @@ function LineVis(props: Props) {
     scaleType: abscissaScaleType,
   } = abscissaParams;
 
-  assertDataLength(abscissaValue, dataArray, 'abscissa');
-  assertDataLength(errorsArray, dataArray, 'error');
-  auxArrays.forEach((arr) => assertDataLength(arr, dataArray, 'auxiliary'));
+  assertLength(abscissaValue, dataArray.size, 'abscissa');
+  assertLength(errorsArray, dataArray.size, 'error');
+  auxArrays.forEach((arr) => assertLength(arr, dataArray.size, 'auxiliary'));
 
   const abscissas = useMemo(() => {
     if (!abscissaValue) {

@@ -1,5 +1,5 @@
 import type { Domain, NumArray } from '@h5web/shared';
-import { assertDataLength, assertDefined, ScaleType } from '@h5web/shared';
+import { assertLength, assertDefined, ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
@@ -47,8 +47,8 @@ function ScatterVis(props: Props) {
     children,
   } = props;
 
-  assertDataLength(abscissas, dataArray, 'abscissa');
-  assertDataLength(ordinates, dataArray, 'ordinates');
+  assertLength(abscissas, dataArray.size, 'abscissa');
+  assertLength(ordinates, dataArray.size, 'ordinates');
 
   const abscissaDomain = useAxisDomain(abscissas, undefined, 0.01);
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');

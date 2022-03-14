@@ -337,9 +337,9 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   }
 }
 
-export function assertDataLength(
+export function assertLength(
   arr: AnyNumArray | undefined,
-  dataArray: AnyNumArray,
+  dataLength: number,
   arrName: string
 ) {
   if (!arr) {
@@ -347,11 +347,9 @@ export function assertDataLength(
   }
 
   const { length: arrLength } = getValues(arr);
-  const { length: dataLength } = getValues(dataArray);
-
   if (arrLength !== dataLength) {
     throw new Error(
-      `Expected ${arrName} array (${arrLength}) to have same length as data array (${dataLength})`
+      `Expected ${arrName} array to have length ${dataLength} instead of ${arrLength}`
     );
   }
 }

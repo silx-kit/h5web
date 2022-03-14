@@ -225,7 +225,7 @@ test('visualize NXdata group with unknown interpretation', async () => {
   await selectExplorerNode('nexus_malformed/interpretation_unknown');
 
   const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2); // support check falls back to signal dataset dimensions (4D)
+  expect(tabs).toHaveLength(2); // support check falls back to signal dataset dimensions (4D supports both Image and Spectrum)
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
   expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
 
@@ -239,7 +239,7 @@ test('visualize NXdata group with "rgb-image" interpretation but incompatible si
   await selectExplorerNode('nexus_malformed/rgb-image_incompatible');
 
   const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1); // support check falls back to signal dataset dimensions (1D)
+  expect(tabs).toHaveLength(1); // support check falls back to signal dataset dimensions (1D supports only Spectrum)
   expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
 
   await expect(
