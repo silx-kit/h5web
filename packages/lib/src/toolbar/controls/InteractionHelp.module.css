@@ -20,6 +20,7 @@
 
 .shortcut {
   background-color: var(--h5w-interactionHelp-shortcut--bgColor, lightgray);
+  color: var(--h5w-interactionHelp-shortcut--color, inherit);
   padding: 0.25rem;
   border-radius: 0.25rem;
   flex-grow: 0;
