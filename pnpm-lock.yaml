@@ -80,7 +80,7 @@ importers:
       '@babel/core': 7.17.5
       '@h5web/lib': workspace:*
       '@h5web/shared': workspace:*
-      '@react-hookz/web': 12.3.0
+      '@react-hookz/web': 13.1.0
       '@react-three/fiber': 7.0.26
       '@storybook/addon-docs': 6.4.19
       '@storybook/addon-essentials': 6.4.19
@@ -105,7 +105,7 @@ importers:
     dependencies:
       '@h5web/lib': link:../../packages/lib
       '@h5web/shared': link:../../packages/shared
-      '@react-hookz/web': 12.3.0_react-dom@17.0.2+react@17.0.2
+      '@react-hookz/web': 13.1.0_react-dom@17.0.2+react@17.0.2
       '@react-three/fiber': 7.0.26_03d4586416b86b800151bd7390b3d95a
       ndarray: 1.0.19
       normalize.css: 8.0.1
@@ -125,7 +125,7 @@ importers:
       '@types/react-dom': 17.0.11
       babel-loader: 8.2.3_9351ded4f79a023849d74b5df047d562
       eslint: 8.9.0
-      eslint-config-galex: 3.6.5_eslint@8.9.0+jest@27.5.1
+      eslint-config-galex: 3.6.5_eslint@8.9.0
       storybook-css-modules-preset: 1.1.1
       typescript: 4.5.5
       webpack: 5.69.1
@@ -134,7 +134,7 @@ importers:
     specifiers:
       '@h5web/lib': workspace:*
       '@h5web/shared': workspace:*
-      '@react-hookz/web': 12.3.0
+      '@react-hookz/web': 13.1.0
       '@react-three/fiber': 7.0.26
       '@testing-library/dom': 8.11.3
       '@testing-library/jest-dom': 5.16.2
@@ -170,7 +170,7 @@ importers:
       zustand: 3.7.0
     dependencies:
       '@h5web/lib': link:../lib
-      '@react-hookz/web': 12.3.0_react-dom@17.0.2+react@17.0.2
+      '@react-hookz/web': 13.1.0_react-dom@17.0.2+react@17.0.2
       '@react-three/fiber': 7.0.26_03d4586416b86b800151bd7390b3d95a
       axios: 0.26.0
       d3-format: 3.1.0
@@ -210,7 +210,7 @@ importers:
   packages/lib:
     specifiers:
       '@h5web/shared': workspace:*
-      '@react-hookz/web': 12.3.0
+      '@react-hookz/web': 13.1.0
       '@react-three/fiber': 7.0.26
       '@types/d3-array': 3.0.2
       '@types/d3-color': 3.0.2
@@ -261,7 +261,7 @@ importers:
       typescript: 4.5.5
       vite: 2.8.4
     dependencies:
-      '@react-hookz/web': 12.3.0_react-dom@17.0.2+react@17.0.2
+      '@react-hookz/web': 13.1.0_react-dom@17.0.2+react@17.0.2
       '@visx/axis': 2.6.0_react@17.0.2
       '@visx/grid': 2.6.0_react@17.0.2
       '@visx/scale': 2.2.2
@@ -2542,8 +2542,8 @@ packages:
     resolution: {integrity: sha512-6k/pU2jNlgYvKOy84vpCAZ8MGVwybvAdjzrh4UicCVOCPxz0LSBws1OE6O5TO4sPHaSw+yLfNzNK8RicGFc1Kw==}
     dev: false
 
-  /@react-hookz/web/12.3.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-Uujp2RfX/oDEtAbdkV0W/nhiQ5ZYVH+MEq04T7/8TstyiwoIlvsRbEic6c6gQA6sQ/lw93cZ8NP8R7AYjiqDvg==}
+  /@react-hookz/web/13.1.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-U7/KB0OI6umgABmzAWqWyeQ3v+BPeYGkEbjEyH/4DBdJfCskVfv5y9GZ0aFlo8uFGzeNlGYE1acFzXliVdy/qQ==}
     peerDependencies:
       js-cookie: ^3.0.1
       react: ^16.8 || ^17 || ^18
@@ -7696,6 +7696,41 @@ packages:
       source-map: 0.6.1
     dev: true
 
+  /eslint-config-galex/3.6.5_eslint@8.9.0:
+    resolution: {integrity: sha512-MX+S1/svtXMpfP75DSU7ceHuN4tdSJ5RY7XLY5LgsLdp+ikufAJf/8PjfC+nr6RcdkaYHo1nDQS24HRLI0D9iQ==}
+    engines: {node: '>=14.17'}
+    peerDependencies:
+      eslint: '>=8.7.0'
+    dependencies:
+      '@babel/core': 7.17.4
+      '@babel/eslint-parser': 7.17.0_@babel+core@7.17.4+eslint@8.9.0
+      '@babel/preset-react': 7.16.7_@babel+core@7.17.4
+      '@next/eslint-plugin-next': 12.0.10
+      '@typescript-eslint/eslint-plugin': 5.12.0_c467cf9bb49b295941e83ce479a578b7
+      '@typescript-eslint/parser': 5.12.0_eslint@8.9.0+typescript@4.5.5
+      confusing-browser-globals: 1.0.11
+      eslint: 8.9.0
+      eslint-config-prettier: 8.3.0_eslint@8.9.0
+      eslint-import-resolver-jsconfig: 1.1.0
+      eslint-plugin-import: 2.25.4_eslint@8.9.0
+      eslint-plugin-jest: 26.1.1_d3422a4c349e66034f7fb0df0ef16865
+      eslint-plugin-jest-dom: 4.0.1_eslint@8.9.0
+      eslint-plugin-jest-formatting: 3.1.0_eslint@8.9.0
+      eslint-plugin-jsx-a11y: 6.5.1_eslint@8.9.0
+      eslint-plugin-promise: 6.0.0_eslint@8.9.0
+      eslint-plugin-react: 7.28.0_eslint@8.9.0
+      eslint-plugin-react-hooks: 4.3.0_eslint@8.9.0
+      eslint-plugin-sonarjs: 0.11.0_eslint@8.9.0
+      eslint-plugin-storybook: 0.5.6_eslint@8.9.0+typescript@4.5.5
+      eslint-plugin-testing-library: 5.0.5_eslint@8.9.0+typescript@4.5.5
+      eslint-plugin-unicorn: 40.1.0_eslint@8.9.0
+      read-pkg-up: 7.0.1
+      typescript: 4.5.5
+    transitivePeerDependencies:
+      - jest
+      - supports-color
+    dev: true
+
   /eslint-config-galex/3.6.5_eslint@8.9.0+jest@27.5.1:
     resolution: {integrity: sha512-MX+S1/svtXMpfP75DSU7ceHuN4tdSJ5RY7XLY5LgsLdp+ikufAJf/8PjfC+nr6RcdkaYHo1nDQS24HRLI0D9iQ==}
     engines: {node: '>=14.17'}
@@ -7823,6 +7858,27 @@ packages:
       '@typescript-eslint/utils': 5.12.1_eslint@8.9.0+typescript@4.5.5
       eslint: 8.9.0
       jest: 27.5.1
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: true
+
+  /eslint-plugin-jest/26.1.1_d3422a4c349e66034f7fb0df0ef16865:
+    resolution: {integrity: sha512-HRKOuPi5ADhza4ZBK5ufyNXy28bXXkib87w+pQqdvBhSTsamndh6sIAKPAUl8y0/n9jSWBdTPslrwtKWqkp8dA==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+    peerDependencies:
+      '@typescript-eslint/eslint-plugin': ^5.0.0
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+      jest: '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/eslint-plugin':
+        optional: true
+      jest:
+        optional: true
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 5.12.0_c467cf9bb49b295941e83ce479a578b7
+      '@typescript-eslint/utils': 5.12.1_eslint@8.9.0+typescript@4.5.5
+      eslint: 8.9.0
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -8958,7 +9014,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.15.1
+      uglify-js: 3.15.3
     dev: true
 
   /harmony-reflect/1.6.2:
@@ -14343,8 +14399,8 @@ packages:
     hasBin: true
     dev: true
 
-  /uglify-js/3.15.1:
-    resolution: {integrity: sha512-FAGKF12fWdkpvNJZENacOH0e/83eG6JyVQyanIJaBXCN1J11TUQv1T1/z8S+Z0CG0ZPk1nPcreF/c7lrTd0TEQ==}
+  /uglify-js/3.15.3:
+    resolution: {integrity: sha512-6iCVm2omGJbsu3JWac+p6kUiOpg3wFO2f8lIXjfEb8RrmLjzog1wTPMmwKB7swfzzqxj9YM+sGUM++u1qN4qJg==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true
