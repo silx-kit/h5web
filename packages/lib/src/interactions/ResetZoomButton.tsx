@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber';
 
-import { useFrameRendering } from '../hooks';
-import Html from './Html';
+import { useFrameRendering } from '../vis/hooks';
+import Html from '../vis/shared/Html';
 import styles from './ResetZoomButton.module.css';
 import { useMoveCameraTo } from './hooks';
 

@@ -2,8 +2,8 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import type { Vector2 } from 'three';
 
+import { useMoveCameraTo } from '../../interactions/hooks';
 import { useAxisSystemContext } from './AxisSystemContext';
-import { useMoveCameraTo } from './hooks';
 
 function ViewportCenterer() {
   const { dataToWorld, worldToData } = useAxisSystemContext();

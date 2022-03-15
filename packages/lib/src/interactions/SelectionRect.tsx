@@ -2,19 +2,20 @@ import { useThree } from '@react-three/fiber';
 import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
-import { useAxisSystemContext } from './AxisSystemContext';
-import Html from './Html';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import Html from '../vis/shared/Html';
 
-interface Props extends SVGProps<SVGLineElement> {
+interface Props extends SVGProps<SVGRectElement> {
   startPoint: Vector2;
   endPoint: Vector2;
 }
 
-function SelectionLine(props: Props) {
+function SelectionRect(props: Props) {
   const {
     startPoint: dataStartPoint,
     endPoint: dataEndPoint,
-    stroke = 'black',
+    fill = 'red',
+    fillOpacity = 0.5,
     ...restSvgProps
   } = props;
 
@@ -28,12 +29,13 @@ function SelectionLine(props: Props) {
   return (
     <Html>
       <svg width={width} height={height}>
-        <line
-          x1={htmlStartPt.x}
-          y1={htmlStartPt.y}
-          x2={htmlEndPt.x}
-          y2={htmlEndPt.y}
-          stroke={stroke}
+        <rect
+          x={Math.min(htmlStartPt.x, htmlEndPt.x)}
+          y={Math.min(htmlStartPt.y, htmlEndPt.y)}
+          width={Math.abs(htmlEndPt.x - htmlStartPt.x)}
+          height={Math.abs(htmlEndPt.y - htmlStartPt.y)}
+          fill={fill}
+          fillOpacity={fillOpacity}
           {...restSvgProps}
         />
       </svg>
@@ -41,4 +43,4 @@ function SelectionLine(props: Props) {
   );
 }
 
-export default SelectionLine;
+export default SelectionRect;

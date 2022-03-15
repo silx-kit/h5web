@@ -1,3 +1,4 @@
+import type { Selection, ModifierKey } from '@h5web/lib';
 import {
   Pan,
   SelectionLine,
@@ -7,7 +8,6 @@ import {
   Zoom,
   ResetZoomButton,
 } from '@h5web/lib';
-import type { ModifierKey, Selection } from '@h5web/lib/src/vis/models';
 import type { Meta, Story } from '@storybook/react';
 import { format } from 'd3-format';
 import { useState } from 'react';

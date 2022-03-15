@@ -9,14 +9,14 @@ import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
 import { XAxisZoom, YAxisZoom } from '../..';
+import Pan from '../../interactions/Pan';
+import ResetZoomButton from '../../interactions/ResetZoomButton';
+import SelectToZoom from '../../interactions/SelectToZoom';
+import Zoom from '../../interactions/Zoom';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
-import Pan from '../shared/Pan';
-import ResetZoomButton from '../shared/ResetZoomButton';
-import SelectToZoom from '../shared/SelectToZoom';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import Zoom from '../shared/Zoom';
 import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';

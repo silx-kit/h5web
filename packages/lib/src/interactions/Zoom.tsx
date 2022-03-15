@@ -1,6 +1,6 @@
-import type { ModifierKey } from '../models';
-import { checkModifierKey } from '../utils';
 import { useCanvasEvents, useZoomOnWheel } from './hooks';
+import type { ModifierKey } from './models';
+import { checkModifierKey } from './utils';
 
 interface Props {
   disabled?: boolean;
