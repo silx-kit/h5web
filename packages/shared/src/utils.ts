@@ -3,7 +3,7 @@ import ndarray from 'ndarray';
 import type { NdArray, TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
-import { assertDataLength, isNdArray, isTypedArray } from './guards';
+import { assertLength, isNdArray, isTypedArray } from './guards';
 import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
 import { ScaleType } from './models-vis';
 import type {
@@ -105,10 +105,9 @@ export function getBounds(
   valuesArray: AnyNumArray,
   errorArray?: AnyNumArray
 ): Bounds | undefined {
-  assertDataLength(errorArray, valuesArray, 'error');
-
   const values = getValues(valuesArray);
   const errors = errorArray && getValues(errorArray);
+  assertLength(errorArray, values.length, 'error');
 
   // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
   // @ts-ignore (https://github.com/microsoft/TypeScript/issues/44593)

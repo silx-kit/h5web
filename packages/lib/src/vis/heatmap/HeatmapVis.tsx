@@ -1,6 +1,7 @@
 import type { Domain, NumArray, NumericType } from '@h5web/shared';
 import {
   assertDefined,
+  assertLength,
   formatTooltipVal,
   getDims,
   ScaleType,
@@ -62,8 +63,10 @@ function HeatmapVis(props: Props) {
   } = props;
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
-
   const { rows, cols } = getDims(dataArray);
+
+  assertLength(abscissaValue, cols, 'abscissa');
+  assertLength(ordinateValue, rows, 'ordinate');
 
   const abscissas = useAxisValues(abscissaValue, cols);
   const abscissaDomain = useAxisDomain(abscissas);

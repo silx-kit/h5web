@@ -137,5 +137,5 @@ export const mockValues = {
   title_twoD: 'NeXus 2D',
   secondary: twoD.map((inner) => inner.map((v) => v * 2)),
   tertiary: twoD.map((inner) => inner.map((v) => v / 2)),
-  position: [-1, 0, 1],
+  position: [-1, 1],
 };

@@ -44,8 +44,8 @@ function findSupportedVis(
   attrValueStore: AttrValuesStore
 ): VisDef[] {
   const nxVis = getSupportedNxVis(entity, attrValueStore);
-  if (nxVis) {
-    return [nxVis];
+  if (nxVis.length > 0) {
+    return nxVis;
   }
 
   return getSupportedCoreVis(entity, attrValueStore);
@@ -89,9 +89,9 @@ function getSupportedCoreVis(
 function getSupportedNxVis(
   entity: Entity,
   attrValueStore: AttrValuesStore
-): VisDef | undefined {
+): VisDef[] {
   if (!isGroup(entity) || !isNxDataGroup(entity, attrValueStore)) {
-    return undefined;
+    return [];
   }
 
   assertGroupWithChildren(entity);
@@ -104,21 +104,24 @@ function getSupportedNxVis(
     hasNumDims(dataset, 3) &&
     !isCplx
   ) {
-    return NEXUS_VIS[NexusVis.NxRGB];
+    return [NEXUS_VIS[NexusVis.NxRGB]];
   }
 
   const imageVis = isCplx ? NexusVis.NxComplexImage : NexusVis.NxImage;
   const spectrumVis = isCplx ? NexusVis.NxComplexSpectrum : NexusVis.NxSpectrum;
 
   if (interpretation === NxInterpretation.Image) {
-    return NEXUS_VIS[imageVis];
+    return [NEXUS_VIS[imageVis]];
   }
 
   if (interpretation === NxInterpretation.Spectrum) {
-    return NEXUS_VIS[spectrumVis];
+    return [NEXUS_VIS[spectrumVis]];
   }
 
-  return NEXUS_VIS[hasMinDims(dataset, 2) ? imageVis : spectrumVis];
+  return [
+    NEXUS_VIS[spectrumVis],
+    ...(hasMinDims(dataset, 2) ? [NEXUS_VIS[imageVis]] : []),
+  ];
 }
 
 function getImplicitDefaultChild(
