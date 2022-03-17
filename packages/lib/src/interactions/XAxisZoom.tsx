@@ -1,17 +1,17 @@
-import type { ModifierKey } from '../models';
 import { useCanvasEvents, useZoomOnWheel } from './hooks';
+import type { ModifierKey } from './models';
 
 interface Props {
   disabled?: boolean;
   modifierKey?: ModifierKey;
 }
 
-function YAxisZoom(props: Props) {
-  const { disabled, modifierKey = 'Shift' } = props;
+function XAxisZoom(props: Props) {
+  const { disabled, modifierKey = 'Alt' } = props;
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => ({
-    x: false,
-    y: sourceEvent.getModifierState(modifierKey),
+    x: sourceEvent.getModifierState(modifierKey),
+    y: false,
   });
 
   useCanvasEvents({ onWheel: useZoomOnWheel(isZoomAllowed, disabled) });
@@ -19,4 +19,4 @@ function YAxisZoom(props: Props) {
   return null;
 }
 
-export default YAxisZoom;
+export default XAxisZoom;

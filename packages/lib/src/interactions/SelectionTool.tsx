@@ -4,10 +4,10 @@ import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
-import type { CanvasEvent, ModifierKey, Selection } from '../models';
-import { boundPointToFOV, checkModifierKey } from '../utils';
-import { useAxisSystemContext } from './AxisSystemContext';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { useCanvasEvents } from './hooks';
+import type { CanvasEvent, ModifierKey, Selection } from './models';
+import { boundPointToFOV, checkModifierKey } from './utils';
 
 interface Props {
   onSelectionStart?: () => void;

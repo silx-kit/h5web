@@ -3,14 +3,14 @@ import { assertLength, assertDefined, ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
+import Pan from '../../interactions/Pan';
+import ResetZoomButton from '../../interactions/ResetZoomButton';
+import SelectToZoom from '../../interactions/SelectToZoom';
+import Zoom from '../../interactions/Zoom';
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
-import Pan from '../shared/Pan';
-import ResetZoomButton from '../shared/ResetZoomButton';
-import SelectToZoom from '../shared/SelectToZoom';
 import VisCanvas from '../shared/VisCanvas';
-import Zoom from '../shared/Zoom';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
 

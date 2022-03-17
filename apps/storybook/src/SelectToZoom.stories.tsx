@@ -6,7 +6,7 @@ import {
   SelectToZoom,
   ResetZoomButton,
 } from '@h5web/lib';
-import type { ModifierKey as ModifierKeyType } from '@h5web/lib/src/vis/models';
+import type { ModifierKey as ModifierKeyType } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react';
 import { range } from 'lodash';
 

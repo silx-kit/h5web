@@ -27,12 +27,6 @@ export { default as InteractionHelp } from './toolbar/controls/InteractionHelp';
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';
 export type { VisCanvasProps } from './vis/shared/VisCanvas';
-export { default as Pan } from './vis/shared/Pan';
-export { default as Zoom } from './vis/shared/Zoom';
-export { default as XAxisZoom } from './vis/shared/XAxisZoom';
-export { default as YAxisZoom } from './vis/shared/YAxisZoom';
-export { default as SelectToZoom } from './vis/shared/SelectToZoom';
-export { default as ResetZoomButton } from './vis/shared/ResetZoomButton';
 export { default as TooltipMesh } from './vis/shared/TooltipMesh';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
 export { default as VisMesh } from './vis/shared/VisMesh';
@@ -43,13 +37,21 @@ export type { HeatmapMeshProps } from './vis/heatmap/HeatmapMesh';
 export { default as DataCurve } from './vis/line/DataCurve';
 export { default as Html } from './vis/shared/Html';
 export { default as Annotation } from './vis/shared/Annotation';
-export { default as SelectionTool } from './vis/shared/SelectionTool';
-export type { SelectionProps } from './vis/shared/SelectionTool';
-export { default as SelectionLine } from './vis/shared/SelectionLine';
-export { default as SelectionRect } from './vis/shared/SelectionRect';
 export { default as TiledHeatmap } from './vis/tiles/TiledHeatmap';
 export type { TiledHeatmapProps } from './vis/tiles/TiledHeatmap';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
+
+// Interactions
+export { default as Pan } from './interactions/Pan';
+export { default as Zoom } from './interactions/Zoom';
+export { default as XAxisZoom } from './interactions/XAxisZoom';
+export { default as YAxisZoom } from './interactions/YAxisZoom';
+export { default as SelectToZoom } from './interactions/SelectToZoom';
+export { default as ResetZoomButton } from './interactions/ResetZoomButton';
+export { default as SelectionLine } from './interactions/SelectionLine';
+export { default as SelectionRect } from './interactions/SelectionRect';
+export { default as SelectionTool } from './interactions/SelectionTool';
+export type { SelectionProps } from './interactions/SelectionTool';
 
 // Context hook
 export { useAxisSystemContext } from './vis/shared/AxisSystemContext';
@@ -82,13 +84,17 @@ export {
 export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
 
 export { scaleGamma } from './vis/scaleGamma';
-export { useCanvasEvents } from './vis/shared/hooks';
+export { useCanvasEvents } from './interactions/hooks';
 
 // Models
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
 export { CurveType } from './vis/line/models';
-export type { Interaction } from './vis/models';
+export type {
+  Interaction,
+  ModifierKey,
+  Selection,
+} from './interactions/models';
 
 export type { Domain, Dims } from '@h5web/shared';
 

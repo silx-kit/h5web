@@ -1,6 +1,6 @@
 import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
 import type { Domain, AnyNumArray } from '@h5web/shared';
-import { useEventListener, useMediaQuery } from '@react-hookz/web';
+import { useMediaQuery } from '@react-hookz/web';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
@@ -70,18 +70,6 @@ export function useFrameRendering(): void {
   useFrame(() => {
     setNum(Math.random());
   });
-}
-
-function onWheel(evt: WheelEvent) {
-  evt.preventDefault();
-}
-
-export function useWheelCapture() {
-  const { domElement } = useThree((state) => state.gl);
-
-  // Handler must be registed as non-passive for `preventDefault` to have an effect
-  // (React's `onWheel` prop registers handlers as passive)
-  useEventListener(domElement, 'wheel', onWheel, { passive: false });
 }
 
 export function useCustomColors(

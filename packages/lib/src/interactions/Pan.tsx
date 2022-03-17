@@ -2,9 +2,9 @@ import { useThree } from '@react-three/fiber';
 import { useRef, useCallback } from 'react';
 import type { Vector3 } from 'three';
 
-import type { CanvasEvent, ModifierKey } from '../models';
-import { checkModifierKey } from '../utils';
 import { useCanvasEvents, useMoveCameraTo } from './hooks';
+import type { CanvasEvent, ModifierKey } from './models';
+import { checkModifierKey } from './utils';
 
 interface Props {
   disabled?: boolean;

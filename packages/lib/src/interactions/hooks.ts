@@ -4,10 +4,9 @@ import { clamp } from 'lodash';
 import { useCallback } from 'react';
 import { Vector3 } from 'three';
 
-import { useWheelCapture } from '../hooks';
-import type { CanvasEvent, CanvasEventCallbacks } from '../models';
-import { getCameraFOV } from '../utils';
-import { useAxisSystemContext } from './AxisSystemContext';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import { getCameraFOV } from '../vis/utils';
+import type { CanvasEvent, CanvasEventCallbacks } from './models';
 
 const ZOOM_FACTOR = 0.95;
 
@@ -41,6 +40,18 @@ export function useMoveCameraTo() {
     },
     [camera, visWidth, visHeight, invalidate]
   );
+}
+
+function onWheel(evt: WheelEvent) {
+  evt.preventDefault();
+}
+
+function useWheelCapture() {
+  const { domElement } = useThree((state) => state.gl);
+
+  // Handler must be registed as non-passive for `preventDefault` to have an effect
+  // (React's `onWheel` prop registers handlers as passive)
+  useEventListener(domElement, 'wheel', onWheel, { passive: false });
 }
 
 export function useZoomOnWheel(

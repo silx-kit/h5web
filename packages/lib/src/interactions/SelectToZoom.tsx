@@ -1,11 +1,11 @@
 import { useThree } from '@react-three/fiber';
 
-import type { ModifierKey, Selection } from '../models';
-import { getRatioEndPoint } from '../utils';
-import { useAxisSystemContext } from './AxisSystemContext';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
+import type { ModifierKey, Selection } from './models';
+import { getRatioEndPoint } from './utils';
 
 interface Props {
   modifierKey?: ModifierKey;
