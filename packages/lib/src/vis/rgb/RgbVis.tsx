@@ -13,6 +13,7 @@ import Zoom from '../../interactions/Zoom';
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
 import VisCanvas from '../shared/VisCanvas';
+import { DEFAULT_INTERACTIONS_KEYS } from '../utils';
 import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
 import { toRgbSafeNdArray } from './utils';
@@ -58,6 +59,7 @@ function RgbVis(props: Props) {
           isIndexAxis: true,
           flip: true,
         }}
+        interactionKeys={DEFAULT_INTERACTIONS_KEYS}
       >
         <Pan />
         <Zoom />

@@ -22,7 +22,12 @@ import { useAxisDomain, useCustomColors, useValueToIndexScale } from '../hooks';
 import type { AxisParams, CustomColor } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { extendDomain, DEFAULT_DOMAIN, formatNumType } from '../utils';
+import {
+  extendDomain,
+  DEFAULT_DOMAIN,
+  formatNumType,
+  DEFAULT_INTERACTIONS_KEYS,
+} from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
 import type { TooltipData } from './models';
@@ -130,6 +135,7 @@ function LineVis(props: Props) {
           scaleType,
           label: ordinateLabel,
         }}
+        interactionKeys={DEFAULT_INTERACTIONS_KEYS}
       >
         <Pan />
         <Zoom />

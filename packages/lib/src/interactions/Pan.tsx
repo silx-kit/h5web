@@ -2,17 +2,17 @@ import { useThree } from '@react-three/fiber';
 import { useRef, useCallback } from 'react';
 import type { Vector3 } from 'three';
 
+import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { useCanvasEvents, useMoveCameraTo } from './hooks';
-import type { CanvasEvent, ModifierKey } from './models';
-import { checkModifierKey } from './utils';
+import type { CanvasEvent } from './models';
 
 interface Props {
   disabled?: boolean;
-  modifierKey?: ModifierKey;
 }
 
 function Pan(props: Props) {
-  const { disabled, modifierKey } = props;
+  const { disabled } = props;
+  const { shouldInteract } = useAxisSystemContext();
 
   const camera = useThree((state) => state.camera);
 
@@ -29,13 +29,12 @@ function Pan(props: Props) {
         return;
       }
 
-      const isPanAllowed = checkModifierKey(modifierKey, sourceEvent);
-      if (isPanAllowed) {
+      if (shouldInteract('Pan', sourceEvent)) {
         (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
         startOffsetPosition.current = unprojectedPoint.clone();
       }
     },
-    [disabled, modifierKey]
+    [shouldInteract, disabled]
   );
 
   const onPointerUp = useCallback((evt: CanvasEvent<PointerEvent>) => {

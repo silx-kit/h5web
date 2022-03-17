@@ -9,16 +9,21 @@ import {
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
-import { XAxisZoom, YAxisZoom } from '../..';
 import Pan from '../../interactions/Pan';
 import ResetZoomButton from '../../interactions/ResetZoomButton';
 import SelectToZoom from '../../interactions/SelectToZoom';
+import XAxisZoom from '../../interactions/XAxisZoom';
+import YAxisZoom from '../../interactions/YAxisZoom';
 import Zoom from '../../interactions/Zoom';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { DEFAULT_DOMAIN, formatNumType } from '../utils';
+import {
+  DEFAULT_DOMAIN,
+  DEFAULT_INTERACTIONS_KEYS,
+  formatNumType,
+} from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
@@ -103,6 +108,7 @@ function HeatmapVis(props: Props) {
           label: ordinateLabel,
           flip: flipYAxis,
         }}
+        interactionKeys={DEFAULT_INTERACTIONS_KEYS}
       >
         <Pan />
         <Zoom />

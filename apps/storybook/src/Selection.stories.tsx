@@ -53,6 +53,11 @@ const Template: Story<TemplateProps> = (args) => {
       }
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+      interactionKeys={{
+        Pan: true,
+        Zoom: true,
+        Selection: modifierKey || true,
+      }}
     >
       <Pan disabled={disablePan} />
       <Zoom disabled={disableZoom} />
@@ -60,7 +65,6 @@ const Template: Story<TemplateProps> = (args) => {
       <SelectionTool
         onSelectionChange={setActiveSelection}
         onSelectionEnd={() => setActiveSelection(undefined)}
-        modifierKey={modifierKey}
       >
         {(selection) => <SelectionComponent {...selection} {...svgProps} />}
       </SelectionTool>
@@ -132,6 +136,11 @@ export const PersistSelection: Story<TemplateProps> = (args) => {
       }
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+      interactionKeys={{
+        Pan: true,
+        Zoom: true,
+        Selection: modifierKey || true,
+      }}
     >
       <Pan disabled={disablePan} />
       <Zoom disabled={disableZoom} />
@@ -140,7 +149,6 @@ export const PersistSelection: Story<TemplateProps> = (args) => {
           setPersistedSelection(undefined);
         }}
         onSelectionEnd={setPersistedSelection}
-        modifierKey={modifierKey}
       >
         {(selection) => <SelectionComponent {...selection} {...svgProps} />}
       </SelectionTool>

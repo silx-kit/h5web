@@ -3,6 +3,7 @@ import type { PropsWithChildren } from 'react';
 import { useCallback, useMemo } from 'react';
 import { Matrix4, Vector2, Vector3 } from 'three';
 
+import type { InteractionKeys, ModifierKey } from '../../interactions/models';
 import type { AxisConfig } from '../models';
 import { getCanvasScale, getSizeToFit } from '../utils';
 import { AxisSystemContext } from './AxisSystemContext';
@@ -11,10 +12,17 @@ interface Props {
   visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
+  interactionKeys: InteractionKeys;
 }
 
 function AxisSystemProvider(props: PropsWithChildren<Props>) {
-  const { visRatio, abscissaConfig, ordinateConfig, children } = props;
+  const {
+    visRatio,
+    abscissaConfig,
+    ordinateConfig,
+    children,
+    interactionKeys,
+  } = props;
 
   const availableSize = useThree((state) => state.size);
   const visSize = getSizeToFit(availableSize, visRatio);
@@ -46,6 +54,40 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     [camera, cameraToHtmlMatrix]
   );
 
+  const registeredKeys = Object.values(interactionKeys).filter(
+    (k) => k !== true
+  ) as ModifierKey[];
+  const keySet = new Set(registeredKeys);
+  if (keySet.size !== registeredKeys.length) {
+    throw new Error('Two interactions were registered on the same key !');
+  }
+
+  const getModifierKey = useCallback(
+    (id: string) => {
+      if (!Object.keys(interactionKeys).includes(id)) {
+        throw new Error(`Interaction ${id} was not registered in VisCanvas.`);
+      }
+
+      const interactionKey = interactionKeys[id];
+
+      return interactionKey === true ? undefined : interactionKey;
+    },
+    [interactionKeys]
+  );
+
+  const shouldInteract = useCallback(
+    (id: string, event: MouseEvent) => {
+      const interactionKey = getModifierKey(id);
+      if (interactionKey !== undefined) {
+        return event.getModifierState(interactionKey);
+      }
+
+      // Check that there is no conflicting interaction
+      return registeredKeys.every((key) => !event.getModifierState(key));
+    },
+    [getModifierKey, registeredKeys]
+  );
+
   return (
     <AxisSystemContext.Provider
       value={{
@@ -57,6 +99,8 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
         dataToWorld,
         worldToHtml,
         visSize,
+        shouldInteract,
+        getModifierKey,
       }}
     >
       {children}
