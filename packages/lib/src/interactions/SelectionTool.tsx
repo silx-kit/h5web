@@ -6,14 +6,14 @@ import type { Vector2 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { useCanvasEvents } from './hooks';
-import type { CanvasEvent, ModifierKey, Selection } from './models';
-import { boundPointToFOV, checkModifierKey } from './utils';
+import type { CanvasEvent, Selection } from './models';
+import { boundPointToFOV } from './utils';
 
 interface Props {
   onSelectionStart?: () => void;
   onSelectionChange?: (points: Selection) => void;
   onSelectionEnd?: (points: Selection) => void;
-  modifierKey?: ModifierKey;
+  id?: string;
   children: (points: Selection) => ReactElement;
 }
 
@@ -24,11 +24,12 @@ function SelectionTool(props: Props) {
     onSelectionStart,
     onSelectionChange,
     onSelectionEnd,
-    modifierKey,
+    id = 'Selection',
   } = props;
 
   const camera = useThree((state) => state.camera);
-  const { worldToData } = useAxisSystemContext();
+  const { worldToData, shouldInteract, getModifierKey } =
+    useAxisSystemContext();
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useRafState<Vector2 | undefined>(undefined);
@@ -37,7 +38,7 @@ function SelectionTool(props: Props) {
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
       const { unprojectedPoint, sourceEvent } = evt;
-      if (!checkModifierKey(modifierKey, sourceEvent)) {
+      if (!shouldInteract(id, sourceEvent)) {
         return;
       }
 
@@ -49,7 +50,7 @@ function SelectionTool(props: Props) {
         onSelectionStart();
       }
     },
-    [modifierKey, onSelectionStart, worldToData]
+    [id, onSelectionStart, shouldInteract, worldToData]
   );
 
   const onPointerMove = useCallback(
@@ -62,7 +63,7 @@ function SelectionTool(props: Props) {
       const point = worldToData(boundPointToFOV(unprojectedPoint, camera));
       setEndPoint(point);
 
-      if (onSelectionChange && checkModifierKey(modifierKey, sourceEvent)) {
+      if (onSelectionChange && shouldInteract(id, sourceEvent)) {
         onSelectionChange({
           startPoint,
           endPoint: point,
@@ -70,12 +71,13 @@ function SelectionTool(props: Props) {
       }
     },
     [
-      camera,
-      modifierKey,
       startPoint,
-      onSelectionChange,
-      setEndPoint,
       worldToData,
+      camera,
+      setEndPoint,
+      onSelectionChange,
+      shouldInteract,
+      id,
     ]
   );
 
@@ -92,18 +94,27 @@ function SelectionTool(props: Props) {
       setStartPoint(undefined);
       setEndPoint(undefined);
 
-      if (onSelectionEnd && checkModifierKey(modifierKey, sourceEvent)) {
+      if (onSelectionEnd && shouldInteract(id, sourceEvent)) {
         onSelectionEnd({
           startPoint,
           endPoint: worldToData(boundPointToFOV(unprojectedPoint, camera)),
         });
       }
     },
-    [camera, modifierKey, startPoint, onSelectionEnd, setEndPoint, worldToData]
+    [
+      startPoint,
+      setEndPoint,
+      onSelectionEnd,
+      shouldInteract,
+      id,
+      worldToData,
+      camera,
+    ]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
 
+  const modifierKey = getModifierKey(id);
   useKeyboardEvent(modifierKey, () => toggleVisible(), [], { event: 'keyup' });
   useKeyboardEvent(
     modifierKey,

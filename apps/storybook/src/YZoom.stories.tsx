@@ -16,9 +16,10 @@ const Template: Story<TemplateProps> = (args) => {
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+      interactionKeys={{ Pan: true, YAxisZoom: modifierKey || true }}
     >
       <Pan />
-      <YAxisZoom disabled={disabled} modifierKey={modifierKey} />
+      <YAxisZoom disabled={disabled} />
       <ResetZoomButton />
     </VisCanvas>
   );

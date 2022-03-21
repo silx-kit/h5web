@@ -1,17 +1,16 @@
+import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { useCanvasEvents, useZoomOnWheel } from './hooks';
-import type { ModifierKey } from './models';
-import { checkModifierKey } from './utils';
 
 interface Props {
   disabled?: boolean;
-  modifierKey?: ModifierKey;
 }
 
 function Zoom(props: Props) {
-  const { disabled, modifierKey } = props;
+  const { disabled } = props;
+  const { shouldInteract } = useAxisSystemContext();
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => {
-    const shouldZoom = checkModifierKey(modifierKey, sourceEvent);
+    const shouldZoom = shouldInteract('Zoom', sourceEvent);
 
     return { x: shouldZoom, y: shouldZoom };
   };

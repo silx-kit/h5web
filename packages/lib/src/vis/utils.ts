@@ -16,6 +16,7 @@ import { clamp } from 'lodash';
 import type { IUniform } from 'three';
 import { Vector3 } from 'three';
 
+import type { InteractionKeys } from '../interactions/models';
 import type {
   Size,
   AxisScale,
@@ -33,6 +34,14 @@ export const CAMERA_BOTTOM_LEFT = new Vector3(-1, -1, 0);
 export const CAMERA_TOP_RIGHT = new Vector3(1, 1, 0);
 
 const AXIS_OFFSETS = { vertical: 72, horizontal: 40, fallback: 16 };
+
+export const DEFAULT_INTERACTIONS_KEYS: InteractionKeys = {
+  Pan: true,
+  Zoom: true,
+  XAxisZoom: 'Alt',
+  YAxisZoom: 'Shift',
+  SelectToZoom: 'Control',
+};
 
 export const adaptedNumTicks: ScaleLinear<number, number> = scaleLinear({
   domain: [300, 900],

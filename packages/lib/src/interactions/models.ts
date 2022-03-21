@@ -7,7 +7,7 @@ export interface Selection {
   endPoint: Vector2;
 }
 
-export interface CanvasEvent<T extends PointerEvent | WheelEvent> {
+export interface CanvasEvent<T extends MouseEvent> {
   unprojectedPoint: Vector3;
   sourceEvent: T;
 }
@@ -23,3 +23,5 @@ export interface Interaction {
   shortcut: string;
   description: string;
 }
+
+export type InteractionKeys = Record<string, ModifierKey | true>;
