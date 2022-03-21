@@ -1,12 +1,7 @@
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { useCanvasEvents, useZoomOnWheel } from './hooks';
 
-interface Props {
-  disabled?: boolean;
-}
-
-function Zoom(props: Props) {
-  const { disabled } = props;
+function Zoom() {
   const { shouldInteract } = useAxisSystemContext();
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => {
@@ -15,7 +10,7 @@ function Zoom(props: Props) {
     return { x: shouldZoom, y: shouldZoom };
   };
 
-  useCanvasEvents({ onWheel: useZoomOnWheel(isZoomAllowed, disabled) });
+  useCanvasEvents({ onWheel: useZoomOnWheel(isZoomAllowed) });
 
   return null;
 }

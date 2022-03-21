@@ -55,8 +55,7 @@ function useWheelCapture() {
 }
 
 export function useZoomOnWheel(
-  isZoomAllowed: (sourceEvent: WheelEvent) => { x: boolean; y: boolean },
-  disabled?: boolean
+  isZoomAllowed: (sourceEvent: WheelEvent) => { x: boolean; y: boolean }
 ) {
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
@@ -64,14 +63,14 @@ export function useZoomOnWheel(
   const onWheel = useCallback(
     (evt: CanvasEvent<WheelEvent>) => {
       const { sourceEvent, unprojectedPoint } = evt;
+      const { x: zoomX, y: zoomY } = isZoomAllowed(sourceEvent);
 
-      if (disabled) {
+      if (!zoomX && !zoomY) {
         return;
       }
 
       // sourceEvent.deltaY < 0 => Wheel down => decrease scale to reduce FOV
       const factor = sourceEvent.deltaY < 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
-      const { x: zoomX, y: zoomY } = isZoomAllowed(sourceEvent);
       const zoomVector = new Vector3(zoomX ? factor : 1, zoomY ? factor : 1, 1);
       camera.scale.multiply(zoomVector).min(ONE_VECTOR);
 
@@ -87,7 +86,7 @@ export function useZoomOnWheel(
       const scaledPosition = oldPosition.add(delta);
       moveCameraTo(scaledPosition.x, scaledPosition.y);
     },
-    [camera, disabled, isZoomAllowed, moveCameraTo]
+    [camera, isZoomAllowed, moveCameraTo]
   );
 
   useWheelCapture();

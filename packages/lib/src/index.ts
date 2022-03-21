@@ -91,7 +91,7 @@ export { INTERPOLATORS } from './vis/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
 export { CurveType } from './vis/line/models';
 export type {
-  Interaction,
+  InteractionInfo,
   ModifierKey,
   Selection,
 } from './interactions/models';

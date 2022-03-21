@@ -19,11 +19,7 @@ import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import {
-  DEFAULT_DOMAIN,
-  DEFAULT_INTERACTIONS_KEYS,
-  formatNumType,
-} from '../utils';
+import { DEFAULT_DOMAIN, DEFAULT_INTERACTIONS, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
@@ -108,12 +104,16 @@ function HeatmapVis(props: Props) {
           label: ordinateLabel,
           flip: flipYAxis,
         }}
-        interactionKeys={DEFAULT_INTERACTIONS_KEYS}
+        interactions={{
+          ...DEFAULT_INTERACTIONS,
+          XAxisZoom: { modifierKey: 'Alt', disabled: keepRatio },
+          YAxisZoom: { modifierKey: 'Shift', disabled: keepRatio },
+        }}
       >
         <Pan />
         <Zoom />
-        <XAxisZoom disabled={keepRatio} />
-        <YAxisZoom disabled={keepRatio} />
+        <XAxisZoom />
+        <YAxisZoom />
         <SelectToZoom keepRatio={keepRatio} />
         <ResetZoomButton />
         <TooltipMesh

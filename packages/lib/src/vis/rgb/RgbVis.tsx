@@ -13,7 +13,7 @@ import Zoom from '../../interactions/Zoom';
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
 import VisCanvas from '../shared/VisCanvas';
-import { DEFAULT_INTERACTIONS_KEYS } from '../utils';
+import { DEFAULT_INTERACTIONS } from '../utils';
 import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
 import { toRgbSafeNdArray } from './utils';
@@ -59,12 +59,16 @@ function RgbVis(props: Props) {
           isIndexAxis: true,
           flip: true,
         }}
-        interactionKeys={DEFAULT_INTERACTIONS_KEYS}
+        interactions={{
+          ...DEFAULT_INTERACTIONS,
+          XAxisZoom: { modifierKey: 'Alt', disabled: keepRatio },
+          YAxisZoom: { modifierKey: 'Shift', disabled: keepRatio },
+        }}
       >
         <Pan />
         <Zoom />
-        <XAxisZoom disabled={keepRatio} />
-        <YAxisZoom disabled={keepRatio} />
+        <XAxisZoom />
+        <YAxisZoom />
         <SelectToZoom keepRatio={keepRatio} />
         <ResetZoomButton />
         <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />

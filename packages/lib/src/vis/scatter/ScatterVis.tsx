@@ -69,10 +69,10 @@ function ScatterVis(props: Props) {
           label: ordinateLabel,
         }}
         title={title}
-        interactionKeys={{
+        interactions={{
           Pan: true,
           Zoom: true,
-          SelectToZoom: 'Control',
+          SelectToZoom: { modifierKey: 'Control' },
         }}
       >
         <Pan />

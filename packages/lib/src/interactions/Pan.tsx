@@ -6,12 +6,7 @@ import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { useCanvasEvents, useMoveCameraTo } from './hooks';
 import type { CanvasEvent } from './models';
 
-interface Props {
-  disabled?: boolean;
-}
-
-function Pan(props: Props) {
-  const { disabled } = props;
+function Pan() {
   const { shouldInteract } = useAxisSystemContext();
 
   const camera = useThree((state) => state.camera);
@@ -25,16 +20,12 @@ function Pan(props: Props) {
       const { unprojectedPoint, sourceEvent } = evt;
       const { target, pointerId } = sourceEvent;
 
-      if (disabled) {
-        return;
-      }
-
       if (shouldInteract('Pan', sourceEvent)) {
         (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
         startOffsetPosition.current = unprojectedPoint.clone();
       }
     },
-    [shouldInteract, disabled]
+    [shouldInteract]
   );
 
   const onPointerUp = useCallback((evt: CanvasEvent<PointerEvent>) => {
@@ -47,10 +38,10 @@ function Pan(props: Props) {
 
   const onPointerMove = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      if (disabled || !startOffsetPosition.current) {
+      const { unprojectedPoint, sourceEvent } = evt;
+      if (!startOffsetPosition.current) {
         return;
       }
-      const { unprojectedPoint, sourceEvent } = evt;
 
       // Prevent events from reaching tooltip mesh when panning
       sourceEvent.stopPropagation();
@@ -60,7 +51,7 @@ function Pan(props: Props) {
 
       moveCameraTo(target.x, target.y);
     },
-    [camera, disabled, moveCameraTo]
+    [camera, moveCameraTo]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
