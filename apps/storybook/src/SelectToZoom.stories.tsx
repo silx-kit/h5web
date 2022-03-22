@@ -24,21 +24,14 @@ interface TemplateProps {
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { modifierKey } = args;
-
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [-5, 5], showGrid: true }}
       ordinateConfig={{ visDomain: [-0.5, 1.5], showGrid: true }}
-      interactions={{
-        Pan: true,
-        Zoom: true,
-        SelectToZoom: { modifierKey },
-      }}
     >
       <Pan />
       <Zoom />
-      <SelectToZoom />
+      <SelectToZoom {...args} />
       <ResetZoomButton />
       <GaussianCurve />
     </VisCanvas>

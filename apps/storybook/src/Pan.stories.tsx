@@ -10,15 +10,12 @@ interface TemplateProps {
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { disabled, modifierKey } = args;
-
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
-      interactions={{ Pan: { modifierKey, disabled }, Zoom: true }}
     >
-      <Pan />
+      <Pan {...args} />
       <Zoom />
       <ResetZoomButton />
     </VisCanvas>

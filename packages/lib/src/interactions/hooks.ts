@@ -1,12 +1,12 @@
 import { useEventListener } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import { clamp } from 'lodash';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Vector3 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { getCameraFOV } from '../vis/utils';
-import type { CanvasEvent, CanvasEventCallbacks } from './models';
+import type { CanvasEvent, CanvasEventCallbacks, Interaction } from './models';
 
 const ZOOM_FACTOR = 0.95;
 
@@ -164,4 +164,19 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   useEventListener(domElement, 'pointermove', handlePointerMove);
   useEventListener(domElement, 'pointerup', handlePointerUp);
   useEventListener(domElement, 'wheel', handleWheel);
+}
+
+export function useRegisterInteraction(id: string, value: Interaction) {
+  const { shouldInteract, registerInteraction, unregisterInteraction } =
+    useAxisSystemContext();
+
+  useEffect(() => {
+    registerInteraction(id, value);
+    return () => unregisterInteraction(id);
+  }, [id, registerInteraction, unregisterInteraction, value]);
+
+  return useCallback(
+    (event: MouseEvent) => shouldInteract(id, event),
+    [id, shouldInteract]
+  );
 }

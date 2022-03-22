@@ -5,15 +5,15 @@ import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
-import type { Selection } from './models';
+import type { Interaction, Selection } from './models';
 import { getRatioEndPoint } from './utils';
 
-interface Props {
+interface Props extends Interaction {
   keepRatio?: boolean;
 }
 
 function SelectToZoom(props: Props) {
-  const { keepRatio } = props;
+  const { keepRatio, ...interactionProps } = props;
 
   const { dataToWorld } = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
@@ -59,7 +59,11 @@ function SelectToZoom(props: Props) {
   };
 
   return (
-    <SelectionTool onSelectionEnd={onSelectionEnd} id="SelectToZoom">
+    <SelectionTool
+      onSelectionEnd={onSelectionEnd}
+      id="SelectToZoom"
+      {...interactionProps}
+    >
       {({ startPoint, endPoint }) => (
         <>
           <SelectionRect

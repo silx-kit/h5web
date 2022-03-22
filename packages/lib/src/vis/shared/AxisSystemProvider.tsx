@@ -1,10 +1,10 @@
-import { isDefined } from '@h5web/shared';
+import { assertDefined, isDefined } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Matrix4, Vector2, Vector3 } from 'three';
 
-import type { Interactions } from '../../interactions/models';
+import type { Interaction } from '../../interactions/models';
 import type { AxisConfig } from '../models';
 import { getCanvasScale, getSizeToFit } from '../utils';
 import { AxisSystemContext } from './AxisSystemContext';
@@ -13,17 +13,10 @@ interface Props {
   visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
-  interactionParams: Interactions;
 }
 
 function AxisSystemProvider(props: PropsWithChildren<Props>) {
-  const {
-    visRatio,
-    abscissaConfig,
-    ordinateConfig,
-    children,
-    interactionParams,
-  } = props;
+  const { visRatio, abscissaConfig, ordinateConfig, children } = props;
 
   const availableSize = useThree((state) => state.size);
   const visSize = getSizeToFit(availableSize, visRatio);
@@ -55,44 +48,44 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     [camera, cameraToHtmlMatrix]
   );
 
-  const registeredKeys = Object.values(interactionParams)
-    .map((params) => (params === true ? undefined : params.modifierKey))
-    .filter(isDefined);
-  const keySet = new Set(registeredKeys);
-  if (keySet.size !== registeredKeys.length) {
-    throw new Error('Two interactions were registered on the same key !');
-  }
-
-  const getModifierKey = useCallback(
-    (id: string) => {
-      if (!Object.keys(interactionParams).includes(id)) {
-        throw new Error(`Interaction ${id} was not registered in VisCanvas.`);
-      }
-
-      const params = interactionParams[id];
-
-      return params === true ? undefined : params.modifierKey;
-    },
-    [interactionParams]
-  );
+  const [interactionMap] = useState(new Map<string, Interaction>());
 
   const shouldInteract = useCallback(
     (id: string, event: MouseEvent) => {
-      const params = interactionParams[id];
+      const registeredKeys = [...interactionMap.values()]
+        .map((params: Interaction) => params.modifierKey)
+        .filter(isDefined);
 
-      if (params !== true && params.disabled) {
+      const params = interactionMap.get(id);
+      assertDefined(params, `Interaction ${id} is not registered.`);
+
+      const { disabled, modifierKey } = params;
+      if (disabled) {
         return false;
       }
 
-      const interactionKey = getModifierKey(id);
-      if (interactionKey !== undefined) {
-        return event.getModifierState(interactionKey);
+      if (modifierKey !== undefined) {
+        return event.getModifierState(modifierKey);
       }
 
       // Check that there is no conflicting interaction
       return registeredKeys.every((key) => !event.getModifierState(key));
     },
-    [getModifierKey, interactionParams, registeredKeys]
+    [interactionMap]
+  );
+
+  const registerInteraction = useCallback(
+    (id: string, value: Interaction) => {
+      interactionMap.set(id, value);
+    },
+    [interactionMap]
+  );
+
+  const unregisterInteraction = useCallback(
+    (id: string) => {
+      interactionMap.delete(id);
+    },
+    [interactionMap]
   );
 
   return (
@@ -107,7 +100,8 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
         worldToHtml,
         visSize,
         shouldInteract,
-        getModifierKey,
+        registerInteraction,
+        unregisterInteraction,
       }}
     >
       {children}

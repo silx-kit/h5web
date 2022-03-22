@@ -1,11 +1,15 @@
-import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
-import { useCanvasEvents, useZoomOnWheel } from './hooks';
+import {
+  useCanvasEvents,
+  useRegisterInteraction,
+  useZoomOnWheel,
+} from './hooks';
+import type { Interaction } from './models';
 
-function XAxisZoom() {
-  const { shouldInteract } = useAxisSystemContext();
+function XAxisZoom(props: Interaction) {
+  const shouldInteract = useRegisterInteraction('XAxisZoom', props);
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => ({
-    x: shouldInteract('XAxisZoom', sourceEvent),
+    x: shouldInteract(sourceEvent),
     y: false,
   });
 

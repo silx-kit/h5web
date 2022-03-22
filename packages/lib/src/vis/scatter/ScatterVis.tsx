@@ -3,10 +3,9 @@ import { assertLength, assertDefined, ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
-import Pan from '../../interactions/Pan';
+import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../interactions/ResetZoomButton';
-import SelectToZoom from '../../interactions/SelectToZoom';
-import Zoom from '../../interactions/Zoom';
+import type { Interactions } from '../../interactions/models';
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
@@ -28,6 +27,7 @@ interface Props {
   title?: string;
   size?: number;
   children?: ReactNode;
+  interactions?: Interactions;
 }
 
 function ScatterVis(props: Props) {
@@ -45,6 +45,7 @@ function ScatterVis(props: Props) {
     title,
     size = 10,
     children,
+    interactions,
   } = props;
 
   assertLength(abscissas, dataArray.size, 'abscissa');
@@ -69,15 +70,10 @@ function ScatterVis(props: Props) {
           label: ordinateLabel,
         }}
         title={title}
-        interactions={{
-          Pan: true,
-          Zoom: true,
-          SelectToZoom: { modifierKey: 'Control' },
-        }}
       >
-        <Pan />
-        <Zoom />
-        <SelectToZoom />
+        <DefaultInteractions
+          interactions={{ XAxisZoom: false, YAxisZoom: false, ...interactions }}
+        />
         <ResetZoomButton />
         <ScatterPoints
           abscissas={abscissas}
