@@ -7,8 +7,6 @@
 }
 
 .visBar {
-  position: relative;
-  z-index: 1; /* for toolbar menus (overflow, selectors) */
   display: flex;
   justify-content: space-between;
   height: 2.5rem;
