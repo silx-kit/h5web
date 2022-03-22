@@ -1,5 +1,7 @@
 .toolbar {
   flex: 1 1 0%;
+  position: relative; /* for `z-index` below, in case parent doesn't have `display: flex`*/
+  z-index: 1; /* for toolbar menus to appear above visualizations (overflow, selectors) */
   display: flex;
   min-width: 0;
   height: 2.5rem;
