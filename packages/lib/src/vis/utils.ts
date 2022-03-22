@@ -1,10 +1,11 @@
-import type { AnyNumArray, Domain, NumericType } from '@h5web/shared';
+import type { AnyNumArray, Domain, NumArray, NumericType } from '@h5web/shared';
 import {
   getValidDomainForScale,
   ScaleType,
   isDefined,
   formatTick,
   isScaleType,
+  isTypedArray,
   getBounds,
   DTypeClass,
 } from '@h5web/shared';
@@ -324,4 +325,8 @@ export function getCameraFOV(camera: Camera): {
   const bottomLeft = CAMERA_BOTTOM_LEFT.clone().unproject(camera);
 
   return { topRight, bottomLeft };
+}
+
+export function toArray(arr: NumArray): number[] {
+  return isTypedArray(arr) ? [...arr] : arr;
 }

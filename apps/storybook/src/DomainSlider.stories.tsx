@@ -68,6 +68,16 @@ HistogramWithColorMap.args = {
   },
 };
 
+export const TypedHistogram = Template.bind({});
+
+TypedHistogram.args = {
+  ...Default.args,
+  histogram: {
+    values: new Int32Array([26, 50, 52, 60, 68, 76, 92, 130]),
+    bins: new Float32Array([4, 53.5, 103, 152.5, 202, 251.5, 301, 350.5, 400]),
+  },
+};
+
 export default {
   title: 'Toolbar/DomainSlider',
   component: DomainSlider,

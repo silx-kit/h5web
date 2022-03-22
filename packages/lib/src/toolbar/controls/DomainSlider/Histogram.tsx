@@ -4,7 +4,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
 
 import { useSafeDomain } from '../../../vis/heatmap/hooks';
-import { useCombinedDomain, useDomain } from '../../../vis/hooks';
+import { useToArray, useCombinedDomain, useDomain } from '../../../vis/hooks';
 import type { HistogramParams } from '../../../vis/models';
 import { H5WEB_SCALES } from '../../../vis/scales';
 import Tick from '../../../vis/shared/Tick';
@@ -33,6 +33,8 @@ function Histogram(props: Props) {
 
   const [size, ref] = useMeasure<HTMLDivElement>();
 
+  const valuesArray = useToArray(values);
+
   if (!size) {
     return <div ref={ref} className={styles.container} />;
   }
@@ -53,7 +55,7 @@ function Histogram(props: Props) {
   return (
     <div ref={ref} className={styles.container}>
       <svg width="100%" height="100%" className={styles.histogram}>
-        {(values as number[]).map((d, i) => (
+        {valuesArray.map((d, i) => (
           <rect
             className={styles.bar}
             key={i} // eslint-disable-line react/no-array-index-key

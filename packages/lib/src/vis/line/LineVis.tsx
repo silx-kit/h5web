@@ -1,6 +1,5 @@
 import type { Domain, NumArray, NumericType } from '@h5web/shared';
 import {
-  isTypedArray,
   assertLength,
   assertDefined,
   formatTooltipVal,
@@ -19,7 +18,7 @@ import { useAxisDomain, useCustomColors, useValueToIndexScale } from '../hooks';
 import type { AxisParams, CustomColor } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { extendDomain, DEFAULT_DOMAIN, formatNumType } from '../utils';
+import { extendDomain, DEFAULT_DOMAIN, formatNumType, toArray } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
 import type { TooltipData } from './models';
@@ -91,7 +90,7 @@ function LineVis(props: Props) {
       return range(dataArray.size);
     }
 
-    return isTypedArray(abscissaValue) ? [...abscissaValue] : abscissaValue;
+    return toArray(abscissaValue);
   }, [abscissaValue, dataArray.size]);
 
   const abscissaToIndex = useValueToIndexScale(abscissas, true);
