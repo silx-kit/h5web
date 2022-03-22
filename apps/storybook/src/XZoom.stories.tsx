@@ -16,10 +16,10 @@ const Template: Story<TemplateProps> = (args) => {
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
-      interactionKeys={{ Pan: true, XAxisZoom: modifierKey || true }}
+      interactions={{ Pan: true, XAxisZoom: { modifierKey, disabled } }}
     >
       <Pan />
-      <XAxisZoom disabled={disabled} />
+      <XAxisZoom />
       <ResetZoomButton />
     </VisCanvas>
   );

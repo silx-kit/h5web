@@ -3,7 +3,7 @@ import { useMap, useMeasure } from '@react-hookz/web';
 import type { ReactElement, ReactNode } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 
-import type { Interaction } from '../interactions/models';
+import type { InteractionInfo } from '../interactions/models';
 import MeasuredControl from './MeasuredControl';
 import OverflowMenu from './OverflowMenu';
 import Separator from './Separator';
@@ -12,7 +12,7 @@ import InteractionHelp from './controls/InteractionHelp';
 
 interface Props {
   children: ReactNode;
-  interactions?: Interaction[];
+  interactions?: InteractionInfo[];
 }
 
 function Toolbar(props: Props) {

@@ -1,4 +1,4 @@
-import type { ColorMap, CustomDomain, Interaction } from '@h5web/lib';
+import type { ColorMap, CustomDomain, InteractionInfo } from '@h5web/lib';
 import {
   ScaleType,
   Toolbar,
@@ -18,7 +18,7 @@ import { FiTarget } from 'react-icons/fi';
 
 interface TemplateProps {
   narrow?: boolean;
-  interactions?: Interaction[];
+  interactions?: InteractionInfo[];
 }
 
 const Template: Story<TemplateProps> = (args) => {

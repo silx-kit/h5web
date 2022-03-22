@@ -19,9 +19,12 @@ export interface CanvasEventCallbacks {
   onWheel?: (evt: CanvasEvent<WheelEvent>) => void;
 }
 
-export interface Interaction {
+export interface InteractionInfo {
   shortcut: string;
   description: string;
 }
 
-export type InteractionKeys = Record<string, ModifierKey | true>;
+export type Interactions = Record<
+  string,
+  { modifierKey?: ModifierKey; disabled?: boolean } | true
+>;

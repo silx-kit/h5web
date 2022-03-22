@@ -26,7 +26,7 @@ import {
   extendDomain,
   DEFAULT_DOMAIN,
   formatNumType,
-  DEFAULT_INTERACTIONS_KEYS,
+  DEFAULT_INTERACTIONS,
 } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
@@ -135,7 +135,7 @@ function LineVis(props: Props) {
           scaleType,
           label: ordinateLabel,
         }}
-        interactionKeys={DEFAULT_INTERACTIONS_KEYS}
+        interactions={DEFAULT_INTERACTIONS}
       >
         <Pan />
         <Zoom />
