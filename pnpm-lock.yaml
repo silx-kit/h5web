@@ -149,6 +149,7 @@ importers:
       d3-format: 3.1.0
       eslint: '>=8'
       eslint-config-galex: 3.6.5
+      h5wasm: 0.2.2
       jest: 27.5.1
       lodash: 4.17.21
       ndarray: 1.0.19
@@ -174,6 +175,7 @@ importers:
       '@react-three/fiber': 7.0.26_03d4586416b86b800151bd7390b3d95a
       axios: 0.26.0
       d3-format: 3.1.0
+      h5wasm: 0.2.2
       lodash: 4.17.21
       ndarray: 1.0.19
       ndarray-ops: 1.2.2
@@ -9003,6 +9005,10 @@ packages:
   /graceful-fs/4.2.9:
     resolution: {integrity: sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==}
     dev: true
+
+  /h5wasm/0.2.2:
+    resolution: {integrity: sha512-2C1Yq+6xO/LeJCZS62WFdsVGtMVw0NFTxx2zpet9xkH2+k+9hyRlT0y1LK0cthbdHVt8bXSvsxwgG+spsy7xlg==}
+    dev: false
 
   /handlebars/4.7.7:
     resolution: {integrity: sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==}
