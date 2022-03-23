@@ -159,6 +159,14 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             })
           ),
         }),
+        makeNxDataGroup('descending-axes', {
+          signal: makeDataset('twoD', intType, [20, 41]),
+          axes: {
+            X: makeNxDataset('X', intType, [41], { valueId: 'X_desc' }),
+            Y: makeNxDataset('Y', intType, [20], { valueId: 'Y_desc' }),
+          },
+          axesAttr: ['Y', 'X'],
+        }),
       ],
     }),
     makeNxGroup('nexus_no_default', 'NXprocess', {
