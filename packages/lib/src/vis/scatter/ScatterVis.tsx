@@ -27,7 +27,7 @@ interface Props {
   showGrid?: boolean;
   title?: string;
   size?: number;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 function ScatterVis(props: Props) {
