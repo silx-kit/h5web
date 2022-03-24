@@ -2,7 +2,7 @@ import type { DType } from '@h5web/shared';
 import { DTypeClass, EntityKind, isNumericType } from '@h5web/shared';
 
 import type {
-  H5GroveDatasetReponse,
+  H5GroveDatasetResponse,
   H5GroveEntityResponse,
   H5GroveExternalLinkResponse,
   H5GroveGroupResponse,
@@ -17,7 +17,7 @@ export function isGroupResponse(
 
 export function isDatasetResponse(
   response: H5GroveEntityResponse
-): response is H5GroveDatasetReponse {
+): response is H5GroveDatasetResponse {
   return response.type === EntityKind.Dataset;
 }
 
