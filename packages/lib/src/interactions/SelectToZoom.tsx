@@ -1,5 +1,6 @@
 import { useThree } from '@react-three/fiber';
 
+import { useVisibleDomains } from '../vis/hooks';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
@@ -20,6 +21,12 @@ function SelectToZoom(props: Props) {
   const { width, height } = useThree((state) => state.size);
   const camera = useThree((state) => state.camera);
 
+  const { xVisibleDomain, yVisibleDomain } = useVisibleDomains();
+  const dataRatio = Math.abs(
+    (xVisibleDomain[1] - xVisibleDomain[0]) /
+      (yVisibleDomain[1] - yVisibleDomain[0])
+  );
+
   const onSelectionEnd = (selection: Selection) => {
     const { startPoint: dataStartPoint, endPoint: dataEndPoint } = selection;
 
@@ -27,7 +34,7 @@ function SelectToZoom(props: Props) {
     const startPoint = dataToWorld(dataStartPoint);
     const endPoint = dataToWorld(
       keepRatio
-        ? getRatioEndPoint(dataStartPoint, dataEndPoint, width / height)
+        ? getRatioEndPoint(dataStartPoint, dataEndPoint, dataRatio)
         : dataEndPoint
     );
     if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
@@ -66,7 +73,7 @@ function SelectToZoom(props: Props) {
           {keepRatio && (
             <SelectionRect
               startPoint={startPoint}
-              endPoint={getRatioEndPoint(startPoint, endPoint, width / height)}
+              endPoint={getRatioEndPoint(startPoint, endPoint, dataRatio)}
               fillOpacity={0.25}
               fill="white"
               stroke="black"
