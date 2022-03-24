@@ -23,6 +23,7 @@ function ViewportCenterer() {
       moveCameraTo(x, y);
     }
   }, [viewportCenter, moveCameraTo, dataToWorld, position.x, position.y]);
+
   return null;
 }
 

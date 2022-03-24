@@ -1,11 +1,13 @@
 import { useMeasure } from '@react-hookz/web';
 import { Canvas } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
+import { useState } from 'react';
 
 import type { AxisConfig } from '../models';
 import { getSizeToFit, getAxisOffsets } from '../utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
+import Html from './Html';
 import ViewportCenterer from './ViewportCenterer';
 import styles from './VisCanvas.module.css';
 
@@ -36,6 +38,8 @@ function VisCanvas(props: PropsWithChildren<Props>) {
     bottom: !!abscissaConfig.label,
     top: !!title,
   });
+
+  const [floatingToolbar, setFloatingToolbar] = useState<HTMLDivElement>();
 
   return (
     <div
@@ -68,10 +72,17 @@ function VisCanvas(props: PropsWithChildren<Props>) {
               visRatio={visRatio}
               abscissaConfig={abscissaConfig}
               ordinateConfig={ordinateConfig}
+              floatingToolbar={floatingToolbar}
             >
               <AxisSystem axisOffsets={axisOffsets} title={title} />
               {children}
               <ViewportCenterer />
+              <Html>
+                <div
+                  ref={(elem) => setFloatingToolbar(elem || undefined)}
+                  className={styles.floatingToolbar}
+                />
+              </Html>
             </AxisSystemProvider>
           </Canvas>
         </div>

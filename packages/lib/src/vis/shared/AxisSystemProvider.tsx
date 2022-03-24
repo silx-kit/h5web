@@ -13,10 +13,17 @@ interface Props {
   visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
+  floatingToolbar: HTMLDivElement | undefined;
 }
 
 function AxisSystemProvider(props: PropsWithChildren<Props>) {
-  const { visRatio, abscissaConfig, ordinateConfig, children } = props;
+  const {
+    visRatio,
+    abscissaConfig,
+    ordinateConfig,
+    children,
+    floatingToolbar,
+  } = props;
 
   const availableSize = useThree((state) => state.size);
   const visSize = getSizeToFit(availableSize, visRatio);
@@ -91,6 +98,7 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
   return (
     <AxisSystemContext.Provider
       value={{
+        visSize,
         abscissaConfig,
         ordinateConfig,
         abscissaScale,
@@ -98,7 +106,7 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
         worldToData,
         dataToWorld,
         worldToHtml,
-        visSize,
+        floatingToolbar,
         shouldInteract,
         registerInteraction,
         unregisterInteraction,

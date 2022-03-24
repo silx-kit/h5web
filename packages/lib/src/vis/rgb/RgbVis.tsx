@@ -5,8 +5,8 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 
 import DefaultInteractions from '../../interactions/DefaultInteractions';
-import ResetZoomButton from '../../interactions/ResetZoomButton';
 import type { Interactions } from '../../interactions/models';
+import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
 import VisCanvas from '../shared/VisCanvas';
@@ -63,7 +63,9 @@ function RgbVis(props: Props) {
           keepRatio={keepRatio}
         />
         <ResetZoomButton />
+
         <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />
+
         {children}
       </VisCanvas>
     </figure>

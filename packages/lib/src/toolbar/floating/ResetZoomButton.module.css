@@ -1,0 +1,17 @@
+.btn {
+  composes: btn from '../Toolbar.module.css';
+  padding: 0.5rem !important; /* FIX style ordering issue with Vite */
+  font-size: 0.75em;
+}
+
+.btn[hidden] {
+  display: none;
+}
+
+.btnLike {
+  composes: btnLike from '../Toolbar.module.css';
+  height: 1.625rem !important;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 4px 11px;
+}
