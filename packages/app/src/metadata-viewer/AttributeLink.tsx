@@ -41,7 +41,13 @@ function AttributeLink(props: Props) {
     );
   }
 
-  return <>{JSON.stringify(value)}</>;
+  return (
+    <>
+      {JSON.stringify(value, (key, value) =>
+        typeof value === 'bigint' ? Number(value) : value
+      )}
+    </>
+  );
 }
 
 export default AttributeLink;
