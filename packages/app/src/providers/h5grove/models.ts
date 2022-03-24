@@ -10,7 +10,7 @@ export interface H5GroveEntityResponse {
     | 'other';
 }
 
-export interface H5GroveDatasetReponse extends H5GroveEntityResponse {
+export interface H5GroveDatasetResponse extends H5GroveEntityResponse {
   type: EntityKind.Dataset;
   dtype: string;
   shape: number[];
