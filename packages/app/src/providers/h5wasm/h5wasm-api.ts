@@ -4,21 +4,18 @@ import type {
   AttributeValues,
   Dataset,
   Entity,
-  Group,
   GroupWithChildren,
   NumericType,
-  UnresolvedEntity,
+  Shape,
 } from '@h5web/shared';
-import { Shape, DType, DTypeClass } from '@h5web/shared';
-import { hasScalarShape, buildEntityPath, EntityKind } from '@h5web/shared';
+import { hasScalarShape, EntityKind } from '@h5web/shared';
+import type { Dataset as h5wasm_Dataset } from 'h5wasm';
 import {
   ready as h5wasm_ready,
   File,
   Group as h5wasm_Group,
-  Dataset as h5wasm_Dataset,
   FS as h5wasm_FS,
 } from 'h5wasm';
-import { isString } from 'lodash';
 
 import { ProviderApi } from '../api';
 import type { ExportFormat, ValuesStoreParams } from '../models';
@@ -29,79 +26,50 @@ import type {
   H5WasmDataResponse,
   H5WasmEntityResponse,
 } from './models';
-import {
-  isDatasetResponse,
-  isExternalLinkResponse,
-  isGroupResponse,
-  isSoftLinkResponse,
-  typedArrayFromDType,
-} from './utils';
 
 function convert_attrs(attrs: object): Attribute[] {
   return Object.entries(attrs).map(([name, value]) => ({
     name,
-    shape: [],
-    type: convertDtype('<f4'),
+    shape: value.shape,
+    type: convertDtype((value as h5wasm_attr).dtype),
   }));
+}
+
+interface h5wasm_attr {
+  value: unknown;
+  shape: Shape;
+  dtype: string;
 }
 
 export class H5WasmApi extends ProviderApi {
   /* API compatible with h5wasm@0.2.10 */
-  public file_obj: File | undefined;
+
+  public file_promise: Promise<File>;
 
   public constructor(filepath: string) {
     super(filepath);
+    this.file_promise = this.fetchFile(filepath);
   }
 
   public async getEntity(path: string): Promise<Entity> {
-    if (this.file_obj === null) {
-      await h5wasm_ready;
-      const response = await this.client.get<ArrayBuffer>(this.filepath, {
-        responseType: 'arraybuffer',
-      });
-      const ab = response.data;
-      h5wasm_FS.writeFile('current.h5', new Uint8Array(ab));
-      this.file_obj = new File('current.h5', 'r');
-    }
-
-    const entity_obj = (this.file_obj as File).get(path);
-    if (entity_obj instanceof h5wasm_Group) {
-      return {
-        name: path,
-        path,
-        kind: EntityKind.Group,
-        attributes: convert_attrs(entity_obj.attrs),
-        children: [],
-      } as GroupWithChildren;
-    }
-
-    // } (entity_obj instanceof h5wasm_Dataset) {
-    return {
-      name: path,
-      path,
-      kind: EntityKind.Dataset,
-      attributes: convert_attrs(entity_obj.attrs),
-    } as Dataset;
+    const file = await this.file_promise;
+    const entity_obj = file.get(path);
+    return this.processEntityObject(path, path, entity_obj, true);
   }
 
   public async getValue(
     params: ValuesStoreParams
   ): Promise<H5WasmDataResponse> {
     const { dataset } = params;
-
-    const DTypedArray = typedArrayFromDType(dataset.type);
-    if (DTypedArray) {
-      const buffer = await this.fetchBinaryData(params);
-      const array = new DTypedArray(buffer);
-      return hasScalarShape(dataset) ? array[0] : array;
-    }
-
-    return this.fetchData(params);
+    const file = await this.file_promise;
+    const dataset_obj = file.get(dataset.path) as h5wasm_Dataset;
+    const array = dataset_obj.value;
+    return hasScalarShape(dataset) ? array[0] : array;
   }
 
   public async getAttrValues(entity: Entity): Promise<AttributeValues> {
     const { path, attributes } = entity;
-    return attributes.length > 0 ? this.fetchAttrValues(path) : {};
+    return attributes.length > 0 ? this.convertAttrValues(path) : {};
   }
 
   public getExportURL(
@@ -122,123 +90,64 @@ export class H5WasmApi extends ProviderApi {
     return `${baseURL as string}/data/?${searchParams.toString()}`;
   }
 
-  private async fetchAttrValues(
+  private async convertAttrValues(
     path: string
   ): Promise<H5WasmAttrValuesResponse> {
-    const { data } = await this.client.get<H5WasmAttrValuesResponse>(`/attr/`, {
-      params: { path },
-    });
-    return data;
-  }
-
-  private async fetchData(
-    params: ValuesStoreParams
-  ): Promise<H5WasmDataResponse> {
-    const { data } = await this.cancellableFetchValue<H5WasmDataResponse>(
-      `/data/`,
-      params,
-      { path: params.dataset.path, selection: params.selection, flatten: true }
+    const file = await this.file_promise;
+    const entity_obj = file.get(path);
+    return Object.fromEntries(
+      Object.entries(entity_obj.attrs).map(([name, value]) => [
+        name,
+        (value as h5wasm_attr).value,
+      ])
     );
-    return data;
   }
 
-  private async fetchBinaryData(
-    params: ValuesStoreParams
-  ): Promise<ArrayBuffer> {
-    const { data } = await this.cancellableFetchValue<ArrayBuffer>(
-      '/data/',
-      params,
-      { path: params.dataset.path, selection: params.selection, format: 'bin' },
-      'arraybuffer'
-    );
-
-    return data;
-  }
-
-  private async processEntityResponse(
+  private processEntityObject(
+    name: string,
     path: string,
-    response: H5WasmEntityResponse
-  ): Promise<Entity> {
-    const { name, type: kind } = response;
+    entity_obj: h5wasm_Group | h5wasm_Dataset,
+    recursive = false
+  ): Entity {
+    const kind =
+      entity_obj instanceof h5wasm_Group
+        ? EntityKind.Group
+        : EntityKind.Dataset;
+    const baseEntity = {
+      name,
+      path,
+      kind,
+      attributes: convert_attrs(entity_obj.attrs),
+    };
 
-    const baseEntity = { name, path, kind };
-
-    if (isGroupResponse(response)) {
-      const { children, attributes: attrsMetadata } = response;
-      const attributes = await this.processAttrsMetadata(path, attrsMetadata);
-
-      if (!children) {
-        /* `/meta` stops at one nesting level
-         * (i.e. children of child groups are not returned) */
-        return { ...baseEntity, attributes } as Group;
+    if (entity_obj instanceof h5wasm_Group) {
+      let children: Entity[] = [];
+      if (recursive) {
+        children = entity_obj.keys().map((name) => {
+          const item = entity_obj.get(name);
+          return this.processEntityObject(name, item.path, item, false);
+        });
       }
-
       return {
         ...baseEntity,
-        attributes,
-        // Fetch attribute values of any child groups in parallel
-        children: await Promise.all(
-          children.map((child) =>
-            this.processEntityResponse(buildEntityPath(path, child.name), child)
-          )
-        ),
+        children,
       } as GroupWithChildren;
     }
 
-    if (isDatasetResponse(response)) {
-      const { attributes: attrsMetadata, dtype, shape } = response;
-      const attributes = await this.processAttrsMetadata(path, attrsMetadata);
-
-      return {
-        ...baseEntity,
-        attributes,
-        shape,
-        type: convertDtype(dtype),
-        rawType: dtype,
-      } as Dataset;
-    }
-
-    if (isSoftLinkResponse(response)) {
-      const { target_path } = response;
-
-      return {
-        ...baseEntity,
-        attributes: [],
-        kind: EntityKind.Unresolved,
-        link: { class: 'Soft', path: target_path },
-      };
-    }
-
-    if (isExternalLinkResponse(response)) {
-      const { target_file, target_path } = response;
-
-      return {
-        ...baseEntity,
-        kind: EntityKind.Unresolved,
-        attributes: [],
-        link: {
-          class: 'External',
-          file: target_file,
-          path: target_path,
-        },
-      };
-    }
-
-    // Treat 'other' entities as unresolved
     return {
       ...baseEntity,
-      kind: EntityKind.Unresolved,
-    } as UnresolvedEntity;
+      shape: entity_obj.shape,
+      type: convertDtype(entity_obj.dtype as string),
+    } as Dataset;
   }
 
-  private async processAttrsMetadata(
-    path: string,
-    attrsMetadata: H5WasmAttribute[]
-  ): Promise<Attribute[]> {
-    return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
-      name,
-      shape,
-      type: convertDtype(dtype),
-    }));
+  private async fetchFile(filepath: string): Promise<File> {
+    await h5wasm_ready;
+    const response = await this.client.get<ArrayBuffer>(filepath, {
+      responseType: 'arraybuffer',
+    });
+    const ab = response.data;
+    h5wasm_FS.writeFile('current.h5', new Uint8Array(ab));
+    return new File('current.h5', 'r');
   }
 }

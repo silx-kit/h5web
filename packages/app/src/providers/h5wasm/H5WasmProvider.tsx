@@ -6,8 +6,6 @@ import { H5WasmApi } from './h5wasm-api';
 
 interface Props {
   url: string;
-  filepath: string;
-  axiosParams?: Record<string, string>;
   children: ReactNode;
 }
 
