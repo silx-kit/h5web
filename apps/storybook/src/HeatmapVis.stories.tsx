@@ -104,6 +104,17 @@ TypedArray.args = {
   },
 };
 
+export const ChangeInteractionKeys = Template.bind({});
+ChangeInteractionKeys.args = {
+  dataArray,
+  domain,
+  interactions: {
+    XAxisZoom: false,
+    YAxisZoom: false,
+    SelectToZoom: { modifierKey: 'Shift' },
+  },
+};
+
 export default {
   title: 'Visualizations/HeatmapVis',
   component: HeatmapVis,

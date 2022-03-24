@@ -2,7 +2,6 @@ import { useMeasure } from '@react-hookz/web';
 import { Canvas } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 
-import type { Interactions } from '../../interactions/models';
 import type { AxisConfig } from '../models';
 import { getSizeToFit, getAxisOffsets } from '../utils';
 import AxisSystem from './AxisSystem';
@@ -16,7 +15,6 @@ interface Props {
   visRatio?: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
-  interactions?: Interactions;
 }
 
 function VisCanvas(props: PropsWithChildren<Props>) {
@@ -27,7 +25,6 @@ function VisCanvas(props: PropsWithChildren<Props>) {
     abscissaConfig,
     ordinateConfig,
     children,
-    interactions: interactionKeys = {},
   } = props;
 
   const shouldMeasure = !!canvasRatio;
@@ -71,7 +68,6 @@ function VisCanvas(props: PropsWithChildren<Props>) {
               visRatio={visRatio}
               abscissaConfig={abscissaConfig}
               ordinateConfig={ordinateConfig}
-              interactionParams={interactionKeys}
             >
               <AxisSystem axisOffsets={axisOffsets} title={title} />
               {children}

@@ -2,12 +2,15 @@ import { useThree } from '@react-three/fiber';
 import { useRef, useCallback } from 'react';
 import type { Vector3 } from 'three';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
-import { useCanvasEvents, useMoveCameraTo } from './hooks';
-import type { CanvasEvent } from './models';
+import {
+  useCanvasEvents,
+  useMoveCameraTo,
+  useRegisterInteraction,
+} from './hooks';
+import type { CanvasEvent, Interaction } from './models';
 
-function Pan() {
-  const { shouldInteract } = useAxisSystemContext();
+function Pan(props: Interaction) {
+  const shouldInteract = useRegisterInteraction('Pan', props);
 
   const camera = useThree((state) => state.camera);
 
@@ -20,7 +23,7 @@ function Pan() {
       const { unprojectedPoint, sourceEvent } = evt;
       const { target, pointerId } = sourceEvent;
 
-      if (shouldInteract('Pan', sourceEvent)) {
+      if (shouldInteract(sourceEvent)) {
         (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
         startOffsetPosition.current = unprojectedPoint.clone();
       }

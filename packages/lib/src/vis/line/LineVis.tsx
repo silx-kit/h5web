@@ -12,22 +12,14 @@ import type { NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 
-import Pan from '../../interactions/Pan';
+import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../interactions/ResetZoomButton';
-import SelectToZoom from '../../interactions/SelectToZoom';
-import XAxisZoom from '../../interactions/XAxisZoom';
-import YAxisZoom from '../../interactions/YAxisZoom';
-import Zoom from '../../interactions/Zoom';
+import type { Interactions } from '../../interactions/models';
 import { useAxisDomain, useCustomColors, useValueToIndexScale } from '../hooks';
 import type { AxisParams, CustomColor } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import {
-  extendDomain,
-  DEFAULT_DOMAIN,
-  formatNumType,
-  DEFAULT_INTERACTIONS,
-} from '../utils';
+import { extendDomain, DEFAULT_DOMAIN, formatNumType } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
 import type { TooltipData } from './models';
@@ -62,6 +54,7 @@ interface Props {
   auxArrays?: NdArray<NumArray>[];
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
+  interactions?: Interactions;
 }
 
 function LineVis(props: Props) {
@@ -80,6 +73,7 @@ function LineVis(props: Props) {
     auxArrays = [],
     renderTooltip,
     children,
+    interactions,
   } = props;
 
   const {
@@ -135,13 +129,8 @@ function LineVis(props: Props) {
           scaleType,
           label: ordinateLabel,
         }}
-        interactions={DEFAULT_INTERACTIONS}
       >
-        <Pan />
-        <Zoom />
-        <XAxisZoom />
-        <YAxisZoom />
-        <SelectToZoom />
+        <DefaultInteractions interactions={interactions} />
         <ResetZoomButton />
         <TooltipMesh
           guides="vertical"

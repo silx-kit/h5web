@@ -4,7 +4,7 @@ import type { Vector3 } from 'three';
 import { Vector2 } from 'three';
 
 import { getCameraFOV } from '../vis/utils';
-import type { ModifierKey } from './models';
+import type { Interaction, ModifierKey } from './models';
 
 export function boundPointToFOV(
   unboundedPoint: Vector2 | Vector3,
@@ -52,4 +52,16 @@ export function getRatioEndPoint(
     startPoint.x + widthSign * width,
     startPoint.y + (heightSign * width) / ratio
   );
+}
+
+export function getDefaultInteractions(
+  keepRatio?: boolean
+): Record<string, Interaction> {
+  return {
+    Pan: {},
+    Zoom: {},
+    XAxisZoom: { modifierKey: 'Alt', disabled: keepRatio },
+    YAxisZoom: { modifierKey: 'Shift', disabled: keepRatio },
+    SelectToZoom: { modifierKey: 'Control' },
+  };
 }

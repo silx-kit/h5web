@@ -24,7 +24,9 @@ export interface InteractionInfo {
   description: string;
 }
 
-export type Interactions = Record<
-  string,
-  { modifierKey?: ModifierKey; disabled?: boolean } | true
->;
+export interface Interaction {
+  modifierKey?: ModifierKey;
+  disabled?: boolean;
+}
+
+export type Interactions = Record<string, Interaction | boolean>;

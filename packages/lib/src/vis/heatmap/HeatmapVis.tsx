@@ -9,17 +9,14 @@ import {
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
-import Pan from '../../interactions/Pan';
+import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../interactions/ResetZoomButton';
-import SelectToZoom from '../../interactions/SelectToZoom';
-import XAxisZoom from '../../interactions/XAxisZoom';
-import YAxisZoom from '../../interactions/YAxisZoom';
-import Zoom from '../../interactions/Zoom';
+import type { Interactions } from '../../interactions/models';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { DEFAULT_DOMAIN, DEFAULT_INTERACTIONS, formatNumType } from '../utils';
+import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
@@ -42,6 +39,7 @@ interface Props {
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
+  interactions?: Interactions;
 }
 
 function HeatmapVis(props: Props) {
@@ -61,6 +59,7 @@ function HeatmapVis(props: Props) {
     flipYAxis,
     renderTooltip,
     children,
+    interactions,
   } = props;
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
@@ -104,17 +103,11 @@ function HeatmapVis(props: Props) {
           label: ordinateLabel,
           flip: flipYAxis,
         }}
-        interactions={{
-          ...DEFAULT_INTERACTIONS,
-          XAxisZoom: { modifierKey: 'Alt', disabled: keepRatio },
-          YAxisZoom: { modifierKey: 'Shift', disabled: keepRatio },
-        }}
       >
-        <Pan />
-        <Zoom />
-        <XAxisZoom />
-        <YAxisZoom />
-        <SelectToZoom keepRatio={keepRatio} />
+        <DefaultInteractions
+          interactions={interactions}
+          keepRatio={keepRatio}
+        />
         <ResetZoomButton />
         <TooltipMesh
           guides="both"

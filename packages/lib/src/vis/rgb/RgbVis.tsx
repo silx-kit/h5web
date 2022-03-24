@@ -4,16 +4,12 @@ import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 
-import Pan from '../../interactions/Pan';
+import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../interactions/ResetZoomButton';
-import SelectToZoom from '../../interactions/SelectToZoom';
-import XAxisZoom from '../../interactions/XAxisZoom';
-import YAxisZoom from '../../interactions/YAxisZoom';
-import Zoom from '../../interactions/Zoom';
+import type { Interactions } from '../../interactions/models';
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
 import VisCanvas from '../shared/VisCanvas';
-import { DEFAULT_INTERACTIONS } from '../utils';
 import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
 import { toRgbSafeNdArray } from './utils';
@@ -25,6 +21,7 @@ interface Props {
   title?: string;
   imageType?: ImageType;
   children?: ReactNode;
+  interactions?: Interactions;
 }
 
 function RgbVis(props: Props) {
@@ -35,6 +32,7 @@ function RgbVis(props: Props) {
     title,
     imageType = ImageType.RGB,
     children,
+    interactions,
   } = props;
 
   const { rows, cols } = getDims(dataArray);
@@ -59,17 +57,11 @@ function RgbVis(props: Props) {
           isIndexAxis: true,
           flip: true,
         }}
-        interactions={{
-          ...DEFAULT_INTERACTIONS,
-          XAxisZoom: { modifierKey: 'Alt', disabled: keepRatio },
-          YAxisZoom: { modifierKey: 'Shift', disabled: keepRatio },
-        }}
       >
-        <Pan />
-        <Zoom />
-        <XAxisZoom />
-        <YAxisZoom />
-        <SelectToZoom keepRatio={keepRatio} />
+        <DefaultInteractions
+          interactions={interactions}
+          keepRatio={keepRatio}
+        />
         <ResetZoomButton />
         <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />
         {children}
