@@ -2,15 +2,12 @@ import { useThree } from '@react-three/fiber';
 
 import { useVisibleDomains } from '../vis/hooks';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import RatioSelectionRect from './RatioSelectionRect';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
 import type { Interaction, Selection } from './models';
-import {
-  clampRectangleToVis,
-  getEnclosedRectangle,
-  getRatioEndPoint,
-} from './utils';
+import { getEnclosedRectangle, getRatioEndPoint } from './utils';
 
 interface Props extends Interaction {
   keepRatio?: boolean;
@@ -19,7 +16,7 @@ interface Props extends Interaction {
 function SelectToZoom(props: Props) {
   const { keepRatio, ...interactionProps } = props;
 
-  const { dataToWorld, worldToData, visSize } = useAxisSystemContext();
+  const { dataToWorld } = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
 
   const { width, height } = useThree((state) => state.size);
@@ -68,12 +65,6 @@ function SelectToZoom(props: Props) {
       {...interactionProps}
     >
       {({ startPoint, endPoint }) => {
-        const ratioEndPoint = getRatioEndPoint(startPoint, endPoint, dataRatio);
-        const [newStartPoint, newEndPoint] = clampRectangleToVis(
-          dataToWorld(startPoint),
-          dataToWorld(ratioEndPoint),
-          visSize
-        );
         return (
           <>
             <SelectionRect
@@ -85,9 +76,10 @@ function SelectToZoom(props: Props) {
               strokeDasharray={keepRatio ? '4' : undefined}
             />
             {keepRatio && (
-              <SelectionRect
-                startPoint={worldToData(newStartPoint)}
-                endPoint={worldToData(newEndPoint)}
+              <RatioSelectionRect
+                startPoint={startPoint}
+                endPoint={endPoint}
+                ratio={dataRatio}
                 fillOpacity={0.25}
                 fill="white"
                 stroke="black"
