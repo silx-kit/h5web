@@ -116,23 +116,29 @@ class MandelbrotTilesApi extends TilesApi {
     return this.store.get({ layer, offset });
   }
 }
-const Template: Story<TiledHeatmapProps> = (args) => {
-  const { api, ...tiledHeatmapProps } = args;
-  const { width, height } = api.baseLayerSize;
+
+interface TiledHeatmapStoryProps extends TiledHeatmapProps {
+  abscissaDomain: Domain;
+  ordinateDomain: Domain;
+}
+
+const Template: Story<TiledHeatmapStoryProps> = (args) => {
+  const { abscissaDomain, api, ordinateDomain, ...tiledHeatmapProps } = args;
 
   return (
     <VisCanvas
       abscissaConfig={{
-        visDomain: [0, width],
-        isIndexAxis: true,
+        visDomain: abscissaDomain,
         showGrid: false,
       }}
       ordinateConfig={{
-        visDomain: [0, height],
-        isIndexAxis: true,
+        visDomain: ordinateDomain,
         showGrid: false,
       }}
-      visRatio={width / height}
+      visRatio={Math.abs(
+        (abscissaDomain[1] - abscissaDomain[0]) /
+          (ordinateDomain[1] - ordinateDomain[0])
+      )}
     >
       <Pan />
       <Zoom />
@@ -141,15 +147,32 @@ const Template: Story<TiledHeatmapProps> = (args) => {
   );
 };
 
+const defaultApi = new MandelbrotTilesApi(
+  { width: 1e9, height: 1e9 },
+  { width: 128, height: 128 },
+  [-2, 1],
+  [-1.5, 1.5]
+);
+
 export const Default = Template.bind({});
 Default.args = {
-  api: new MandelbrotTilesApi(
-    { width: 1e9, height: 1e9 },
-    { width: 128, height: 128 },
-    [-2, 1],
-    [-1.5, 1.5]
-  ),
-  domain: [0, 1],
+  api: defaultApi,
+  abscissaDomain: [0, defaultApi.baseLayerSize.width],
+  ordinateDomain: [0, defaultApi.baseLayerSize.height],
+};
+
+const arbitraryDomainApi = new MandelbrotTilesApi(
+  { width: 1e9, height: 5e8 },
+  { width: 256, height: 128 },
+  [-2, 1],
+  [0, 1.5]
+);
+
+export const ArbitraryDomain = Template.bind({});
+ArbitraryDomain.args = {
+  api: arbitraryDomainApi,
+  abscissaDomain: arbitraryDomainApi.xDomain,
+  ordinateDomain: arbitraryDomainApi.yDomain,
 };
 
 export default {
@@ -160,6 +183,7 @@ export default {
   args: {
     invertColorMap: false,
     colorMap: 'Viridis',
+    domain: [0, 1],
     scaleType: ScaleType.Linear,
     displayLowerResolutions: true,
     qualityFactor: 1,
