@@ -1,12 +1,12 @@
 import { useEventListener } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
-import { clamp } from 'lodash';
 import { useCallback, useEffect } from 'react';
-import { Vector3 } from 'three';
+import { Vector2, Vector3 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { getCameraFOV } from '../vis/utils';
 import type { CanvasEvent, CanvasEventCallbacks, Interaction } from './models';
+import { clampPositionToArea } from './utils';
 
 const ZOOM_FACTOR = 0.95;
 
@@ -14,7 +14,6 @@ const ONE_VECTOR = new Vector3(1, 1, 1);
 
 export function useMoveCameraTo() {
   const { visSize } = useAxisSystemContext();
-  const { width: visWidth, height: visHeight } = visSize;
 
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
@@ -23,22 +22,22 @@ export function useMoveCameraTo() {
     (x: number, y: number) => {
       const { position } = camera;
 
-      const { topRight } = getCameraFOV(camera);
-      const cameraLocalBounds = topRight.sub(position);
+      const { topRight, bottomLeft } = getCameraFOV(camera);
+      const width = Math.abs(topRight.x - bottomLeft.x);
+      const height = Math.abs(topRight.y - bottomLeft.y);
 
-      const xBound = Math.max(visWidth / 2 - cameraLocalBounds.x, 0);
-      const yBound = Math.max(visHeight / 2 - cameraLocalBounds.y, 0);
-
-      position.set(
-        clamp(x, -xBound, xBound),
-        clamp(y, -yBound, yBound),
-        position.z
+      const clampedPosition = clampPositionToArea(
+        new Vector2(x, y),
+        { width, height },
+        visSize
       );
+
+      position.set(clampedPosition.x, clampedPosition.y, position.z);
 
       camera.updateMatrixWorld();
       invalidate();
     },
-    [camera, visWidth, visHeight, invalidate]
+    [camera, visSize, invalidate]
   );
 }
 

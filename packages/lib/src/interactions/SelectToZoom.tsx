@@ -2,11 +2,12 @@ import { useThree } from '@react-three/fiber';
 
 import { useVisibleDomains } from '../vis/hooks';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import RatioSelectionRect from './RatioSelectionRect';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
 import type { Interaction, Selection } from './models';
-import { getRatioEndPoint } from './utils';
+import { getEnclosedRectangle, getRatioEndPoint } from './utils';
 
 interface Props extends Interaction {
   keepRatio?: boolean;
@@ -37,23 +38,22 @@ function SelectToZoom(props: Props) {
         ? getRatioEndPoint(dataStartPoint, dataEndPoint, dataRatio)
         : dataEndPoint
     );
+
     if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
       return;
     }
 
-    const selectionWidth = Math.abs(endPoint.x - startPoint.x);
-    const selectionHeight = Math.abs(endPoint.y - startPoint.y);
+    const selectedRect = getEnclosedRectangle(startPoint, endPoint);
+    const { center: selectionCenter } = selectedRect;
 
     // Change scale first so that moveCameraTo computes the updated camera bounds
-    camera.scale.set(selectionWidth / width, selectionHeight / height, 1);
+    camera.scale.set(
+      selectedRect.width / width,
+      selectedRect.height / height,
+      1
+    );
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
-
-    const selectionCenter = endPoint
-      .clone()
-      .sub(startPoint)
-      .divideScalar(2)
-      .add(startPoint);
 
     moveCameraTo(selectionCenter.x, selectionCenter.y);
   };
@@ -64,27 +64,30 @@ function SelectToZoom(props: Props) {
       id="SelectToZoom"
       {...interactionProps}
     >
-      {({ startPoint, endPoint }) => (
-        <>
-          <SelectionRect
-            startPoint={startPoint}
-            endPoint={endPoint}
-            fill="white"
-            stroke="black"
-            fillOpacity={keepRatio ? 0 : 0.25}
-            strokeDasharray={keepRatio ? '4' : undefined}
-          />
-          {keepRatio && (
+      {({ startPoint, endPoint }) => {
+        return (
+          <>
             <SelectionRect
               startPoint={startPoint}
-              endPoint={getRatioEndPoint(startPoint, endPoint, dataRatio)}
-              fillOpacity={0.25}
+              endPoint={endPoint}
               fill="white"
               stroke="black"
+              fillOpacity={keepRatio ? 0 : 0.25}
+              strokeDasharray={keepRatio ? '4' : undefined}
             />
-          )}
-        </>
-      )}
+            {keepRatio && (
+              <RatioSelectionRect
+                startPoint={startPoint}
+                endPoint={endPoint}
+                ratio={dataRatio}
+                fillOpacity={0.25}
+                fill="white"
+                stroke="black"
+              />
+            )}
+          </>
+        );
+      }}
     </SelectionTool>
   );
 }
