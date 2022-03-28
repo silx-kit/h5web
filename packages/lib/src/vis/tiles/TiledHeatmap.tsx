@@ -1,3 +1,4 @@
+import { useThree } from '@react-three/fiber';
 import { clamp, range } from 'lodash';
 
 import { getInterpolator } from '../heatmap/utils';
@@ -5,7 +6,7 @@ import { useFrameRendering } from '../hooks';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
 import TiledLayer from './TiledLayer';
 import type { TilesApi } from './api';
-import { useDataPerPixel } from './hooks';
+import { useScaledVisibleDomains } from './hooks';
 import type { ColorMapProps } from './models';
 
 interface Props extends ColorMapProps {
@@ -21,16 +22,22 @@ function TiledHeatmap(props: Props) {
     qualityFactor = 1, // 0: Lower quality, less fetch; 1: Best quality
     ...colorMapProps
   } = props;
+  const { baseLayerIndex, baseLayerSize } = api;
 
   const { visSize } = useAxisSystemContext();
-  const { xDataPerPixel, yDataPerPixel } = useDataPerPixel();
+  const { xVisibleDomain, yVisibleDomain } =
+    useScaledVisibleDomains(baseLayerSize);
+  const canvasSize = useThree((state) => state.size);
 
-  const { baseLayerIndex } = api;
+  const itemsPerPixel = Math.max(
+    1,
+    (xVisibleDomain[1] - xVisibleDomain[0]) / canvasSize.width,
+    (yVisibleDomain[1] - yVisibleDomain[0]) / canvasSize.height
+  );
 
-  const dataPerPixel = Math.max(1, xDataPerPixel, yDataPerPixel);
   const roundingOffset = 1 - clamp(qualityFactor, 0, 1);
   const subsamplingLevel = Math.min(
-    Math.floor(Math.log2(dataPerPixel) + roundingOffset),
+    Math.floor(Math.log2(itemsPerPixel) + roundingOffset),
     baseLayerIndex
   );
   const currentLayerIndex = baseLayerIndex - subsamplingLevel;
