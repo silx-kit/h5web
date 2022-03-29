@@ -1,3 +1,4 @@
+import { sum } from 'lodash';
 import { Suspense } from 'react';
 import { LinearFilter, NearestFilter, Vector2 } from 'three';
 
@@ -23,12 +24,10 @@ function TiledLayer(props: Props) {
   const { xVisibleDomain, yVisibleDomain } = useScaledVisibleDomains(layerSize);
 
   // Transform visible domain to current level-of-detail array coordinates
-  const origin = new Vector2(xVisibleDomain[0], yVisibleDomain[0]);
-  const end = new Vector2(xVisibleDomain[1], yVisibleDomain[1]);
-  const tileOffsets = getTileOffsets(origin, end, tileSize);
+  const tileOffsets = getTileOffsets(xVisibleDomain, yVisibleDomain, tileSize);
 
   // Sort tiles from closest to vis center to farthest away
-  const center = new Vector2((origin.x + end.x) / 2, (origin.y + end.y) / 2);
+  const center = new Vector2(sum(xVisibleDomain) / 2, sum(yVisibleDomain) / 2);
   sortTilesByDistanceTo(tileOffsets, tileSize, center);
 
   return (

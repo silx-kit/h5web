@@ -1,20 +1,24 @@
+import type { Domain } from '@h5web/shared';
 import { Vector2 } from 'three';
 
 import type { Size } from '../models';
 
 export function getTileOffsets(
-  origin: Vector2,
-  end: Vector2,
+  xDomain: Domain,
+  yDomain: Domain,
   tileSize: Size
 ): Vector2[] {
   const { width, height } = tileSize;
 
-  const nCols = Math.ceil(((origin.x % width) + end.x - origin.x) / width);
-  const nRows = Math.ceil(((origin.y % height) + end.y - origin.y) / height);
+  const [xOrigin, xEnd] = xDomain;
+  const [yOrigin, yEnd] = yDomain;
+
+  const nCols = Math.ceil(((xOrigin % width) + xEnd - xOrigin) / width);
+  const nRows = Math.ceil(((yOrigin % height) + yEnd - yOrigin) / height);
 
   const start = new Vector2(
-    Math.floor(origin.x / width) * width,
-    Math.floor(origin.y / height) * height
+    Math.floor(xOrigin / width) * width,
+    Math.floor(yOrigin / height) * height
   );
 
   const centers: Vector2[] = [];
