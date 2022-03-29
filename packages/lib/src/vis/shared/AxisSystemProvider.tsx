@@ -1,8 +1,9 @@
 import { assertDefined, isDefined } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
-import { useCallback, useMemo, useState } from 'react';
-import { Matrix4, Vector2, Vector3 } from 'three';
+import { useCallback, useState } from 'react';
+import type { Vector3 } from 'three';
+import { Vector2 } from 'three';
 
 import type { Interaction } from '../../interactions/models';
 import type { AxisConfig } from '../models';
@@ -35,25 +36,6 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     new Vector2(abscissaScale.invert(vec.x), ordinateScale.invert(vec.y));
   const dataToWorld = (vec: Vector2 | Vector3) =>
     new Vector2(abscissaScale(vec.x), ordinateScale(vec.y));
-
-  const cameraToHtmlMatrix = useMemo(() => {
-    const { width, height } = availableSize;
-
-    const matrix = new Matrix4().makeScale(width / 2, -height / 2, 1);
-    // Account for shift of (0,0) position (center for camera, top-left for HTML)
-    matrix.setPosition(width / 2, height / 2);
-    return matrix;
-  }, [availableSize]);
-
-  const camera = useThree((state) => state.camera);
-  const worldToHtml = useCallback(
-    (point: Vector2 | Vector3) => {
-      const cameraPoint = new Vector3(point.x, point.y, 0).project(camera);
-      const htmlPoint = cameraPoint.clone().applyMatrix4(cameraToHtmlMatrix);
-      return new Vector2(htmlPoint.x, htmlPoint.y);
-    },
-    [camera, cameraToHtmlMatrix]
-  );
 
   const [interactionMap] = useState(new Map<string, Interaction>());
 
@@ -105,7 +87,6 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
         ordinateScale,
         worldToData,
         dataToWorld,
-        worldToHtml,
         floatingToolbar,
         shouldInteract,
         registerInteraction,
