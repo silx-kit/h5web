@@ -7,7 +7,7 @@ import type { ReactElement } from 'react';
 
 import type { Coords } from '../models';
 import { useAxisSystemContext } from './AxisSystemContext';
-import Html from './Html';
+import Overlay from './Overlay';
 import styles from './TooltipMesh.module.css';
 import VisMesh from './VisMesh';
 
@@ -73,7 +73,7 @@ function TooltipMesh(props: Props) {
       <VisMesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <meshBasicMaterial opacity={0} transparent />
       </VisMesh>
-      <Html style={{ width, height }}>
+      <Overlay style={{ width, height }}>
         {tooltipOpen && content && (
           <>
             <TooltipWithBounds
@@ -104,7 +104,7 @@ function TooltipMesh(props: Props) {
             )}
           </>
         )}
-      </Html>
+      </Overlay>
     </>
   );
 }

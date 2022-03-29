@@ -14,3 +14,12 @@
   overflow: visible !important; /* show child axis grid, which is bigger than canvas */
   background-color: var(--h5w-canvas--bgColor, transparent);
 }
+
+.floatingToolbar {
+  position: absolute;
+  top: auto !important;
+  left: auto !important;
+  right: 0;
+  bottom: 0;
+  display: flex;
+}

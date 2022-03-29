@@ -10,8 +10,8 @@ import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
 import DefaultInteractions from '../../interactions/DefaultInteractions';
-import ResetZoomButton from '../../interactions/ResetZoomButton';
 import type { Interactions } from '../../interactions/models';
+import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
@@ -109,6 +109,7 @@ function HeatmapVis(props: Props) {
           keepRatio={keepRatio}
         />
         <ResetZoomButton />
+
         <TooltipMesh
           guides="both"
           renderTooltip={(x, y) => {
@@ -134,6 +135,7 @@ function HeatmapVis(props: Props) {
             );
           }}
         />
+
         <HeatmapMesh
           values={safeDataArray}
           domain={domain}
@@ -143,8 +145,10 @@ function HeatmapVis(props: Props) {
           alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
         />
+
         {children}
       </VisCanvas>
+
       <ColorBar
         domain={domain}
         scaleType={scaleType}

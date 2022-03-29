@@ -3,7 +3,7 @@ import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
-import Html from '../vis/shared/Html';
+import Overlay from '../vis/shared/Overlay';
 
 interface Props extends SVGProps<SVGRectElement> {
   startPoint: Vector2;
@@ -27,7 +27,7 @@ function SelectionRect(props: Props) {
   const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));
 
   return (
-    <Html>
+    <Overlay>
       <svg width={width} height={height}>
         <rect
           x={Math.min(htmlStartPt.x, htmlEndPt.x)}
@@ -39,7 +39,7 @@ function SelectionRect(props: Props) {
           {...restSvgProps}
         />
       </svg>
-    </Html>
+    </Overlay>
   );
 }
 

@@ -1,7 +1,7 @@
 import type { CSSProperties, HTMLAttributes } from 'react';
 
 import { useAxisSystemContext } from './AxisSystemContext';
-import Html from './Html';
+import Overlay from './Overlay';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   x: number;
@@ -16,14 +16,14 @@ function Annotation(props: Props) {
   const { abscissaScale, ordinateScale } = useAxisSystemContext();
 
   return (
-    <Html
+    <Overlay
       groupProps={{ position: [abscissaScale(x), ordinateScale(y), z] }}
       followCamera
       scaleOnZoom={scaleOnZoom}
       {...divProps}
     >
       <div style={style}>{children}</div>
-    </Html>
+    </Overlay>
   );
 }
 

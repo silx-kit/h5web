@@ -23,6 +23,8 @@ export { default as GridToggler } from './toolbar/controls/GridToggler';
 export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler';
 export { default as Selector } from './toolbar/controls/Selector/Selector';
 export { default as InteractionHelp } from './toolbar/controls/InteractionHelp';
+export { default as FloatingControl } from './toolbar/floating/FloatingControl';
+export { default as ResetZoomButton } from './toolbar/floating/ResetZoomButton';
 
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';
@@ -36,6 +38,7 @@ export { default as HeatmapMesh } from './vis/heatmap/HeatmapMesh';
 export type { HeatmapMeshProps } from './vis/heatmap/HeatmapMesh';
 export { default as DataCurve } from './vis/line/DataCurve';
 export { default as Html } from './vis/shared/Html';
+export { default as Overlay } from './vis/shared/Overlay';
 export { default as Annotation } from './vis/shared/Annotation';
 export { default as TiledHeatmap } from './vis/tiles/TiledHeatmap';
 export type { TiledHeatmapProps } from './vis/tiles/TiledHeatmap';
@@ -47,7 +50,6 @@ export { default as Zoom } from './interactions/Zoom';
 export { default as XAxisZoom } from './interactions/XAxisZoom';
 export { default as YAxisZoom } from './interactions/YAxisZoom';
 export { default as SelectToZoom } from './interactions/SelectToZoom';
-export { default as ResetZoomButton } from './interactions/ResetZoomButton';
 export { default as SelectionLine } from './interactions/SelectionLine';
 export { default as SelectionRect } from './interactions/SelectionRect';
 export { default as SelectionTool } from './interactions/SelectionTool';

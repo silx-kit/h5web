@@ -1,5 +1,5 @@
 import type { VisCanvasProps } from '@h5web/lib';
-import { VisCanvas, ScaleType } from '@h5web/lib';
+import { ScaleType, VisCanvas } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 
 import FillHeight from './decorators/FillHeight';

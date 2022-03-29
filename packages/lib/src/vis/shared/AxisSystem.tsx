@@ -5,7 +5,7 @@ import type { AxisOffsets } from '../models';
 import Axis from './Axis';
 import styles from './AxisSystem.module.css';
 import { useAxisSystemContext } from './AxisSystemContext';
-import Html from './Html';
+import Overlay from './Overlay';
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -25,7 +25,7 @@ function AxisSystem(props: Props) {
   useFrameRendering();
 
   return (
-    <Html
+    <Overlay
       className={styles.axisSystem}
       style={{
         // Take over space reserved for axis by VisCanvas
@@ -53,7 +53,7 @@ function AxisSystem(props: Props) {
         svgSize={{ width: axisOffsets.left, height }}
         flipAxis
       />
-    </Html>
+    </Overlay>
   );
 }
 

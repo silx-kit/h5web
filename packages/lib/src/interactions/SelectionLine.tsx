@@ -3,7 +3,7 @@ import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
-import Html from '../vis/shared/Html';
+import Overlay from '../vis/shared/Overlay';
 
 interface Props extends SVGProps<SVGLineElement> {
   startPoint: Vector2;
@@ -26,7 +26,7 @@ function SelectionLine(props: Props) {
   const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));
 
   return (
-    <Html>
+    <Overlay>
       <svg width={width} height={height}>
         <line
           x1={htmlStartPt.x}
@@ -37,7 +37,7 @@ function SelectionLine(props: Props) {
           {...restSvgProps}
         />
       </svg>
-    </Html>
+    </Overlay>
   );
 }
 

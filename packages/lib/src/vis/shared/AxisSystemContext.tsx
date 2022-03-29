@@ -13,6 +13,7 @@ export interface AxisSystemParams {
   dataToWorld: (vec: Vector2 | Vector3) => Vector2;
   worldToData: (vec: Vector2 | Vector3) => Vector2;
   worldToHtml: (vec: Vector2 | Vector3) => Vector2;
+  floatingToolbar: HTMLDivElement | undefined;
   shouldInteract: (id: string, event: MouseEvent) => boolean;
   registerInteraction: (id: string, value: Interaction) => void;
   unregisterInteraction: (id: string) => void;

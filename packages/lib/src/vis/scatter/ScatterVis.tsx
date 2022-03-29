@@ -4,8 +4,8 @@ import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
 import DefaultInteractions from '../../interactions/DefaultInteractions';
-import ResetZoomButton from '../../interactions/ResetZoomButton';
 import type { Interactions } from '../../interactions/models';
+import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
@@ -75,6 +75,7 @@ function ScatterVis(props: Props) {
           interactions={{ XAxisZoom: false, YAxisZoom: false, ...interactions }}
         />
         <ResetZoomButton />
+
         <ScatterPoints
           abscissas={abscissas}
           ordinates={ordinates}
@@ -85,8 +86,10 @@ function ScatterVis(props: Props) {
           invertColorMap={invertColorMap}
           size={size}
         />
+
         {children}
       </VisCanvas>
+
       <ColorBar
         domain={domain}
         scaleType={scaleType}
