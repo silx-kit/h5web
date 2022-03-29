@@ -1,13 +1,31 @@
-import { useThree } from '@react-three/fiber';
+import type { Domain } from '@h5web/shared';
+import { scaleLinear } from '@visx/scale';
 
 import { useVisibleDomains } from '../hooks';
+import type { Size } from '../models';
+import { useAxisSystemContext } from '../shared/AxisSystemContext';
 
-export function useDataPerPixel() {
+export function useScaledVisibleDomains(size: Size): {
+  xVisibleDomain: Domain;
+  yVisibleDomain: Domain;
+} {
+  const { width, height } = size;
   const { xVisibleDomain, yVisibleDomain } = useVisibleDomains();
-  const { width, height } = useThree((state) => state.size);
+  const { abscissaConfig, ordinateConfig } = useAxisSystemContext();
+
+  const xScale = scaleLinear({
+    domain: abscissaConfig.visDomain,
+    range: [0, width],
+    clamp: true,
+  });
+  const yScale = scaleLinear({
+    domain: ordinateConfig.visDomain,
+    range: [0, height],
+    clamp: true,
+  });
 
   return {
-    xDataPerPixel: (xVisibleDomain[1] - xVisibleDomain[0]) / width,
-    yDataPerPixel: (yVisibleDomain[1] - yVisibleDomain[0]) / height,
+    xVisibleDomain: xVisibleDomain.map(xScale) as Domain,
+    yVisibleDomain: yVisibleDomain.map(yScale) as Domain,
   };
 }
