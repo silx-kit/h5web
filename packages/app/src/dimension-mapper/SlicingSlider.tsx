@@ -1,5 +1,5 @@
 import { useDebouncedCallback, useMeasure } from '@react-hookz/web';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import ReactSlider from 'react-slider';
 
 import styles from './SlicingSlider.module.css';
@@ -17,15 +17,9 @@ function SlicingSlider(props: Props) {
   const { dimension, maxIndex, initialValue, onChange } = props;
 
   const [value, setValue] = useState(initialValue);
-
-  const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
-  const sliderRef = useRef<ReactSlider>(null);
-
   const onDebouncedChange = useDebouncedCallback(onChange, [onChange], 250);
 
-  useEffect(() => {
-    sliderRef.current?.resize();
-  }, [containerSize]);
+  const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
 
   return (
     <div key={dimension} ref={containerRef} className={styles.container}>
@@ -33,7 +27,6 @@ function SlicingSlider(props: Props) {
       <span className={styles.sublabel}>0:{maxIndex}</span>
       {maxIndex > 0 ? (
         <ReactSlider
-          ref={sliderRef}
           className={styles.slider}
           ariaLabel="Dimension slider"
           min={0}
