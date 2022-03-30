@@ -1,11 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
-import { renderApp, selectExplorerNode, selectVisTab } from '../test-utils';
+import { renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('display mapping for X axis when visualizing 2D dataset as Line', async () => {
-  await renderApp();
+  const { user, selectExplorerNode, selectVisTab } = await renderApp();
+
   await selectExplorerNode('nD_datasets/twoD');
   await selectVisTab(Vis.Line);
 
@@ -25,7 +25,7 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
   expect(d0Slider).toHaveAttribute('aria-valueNow', '0');
 
   // Ensure that the swap from [0, 'x'] to ['x', 0] works
-  userEvent.click(xDimsButtons[0]);
+  await user.click(xDimsButtons[0]);
 
   await waitFor(() => expect(xDimsButtons[0]).toBeChecked());
   expect(xDimsButtons[1]).not.toBeChecked();
@@ -35,7 +35,8 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
 });
 
 test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
-  await renderApp();
+  const { user, selectExplorerNode, selectVisTab } = await renderApp();
+
   await selectExplorerNode('nD_datasets/twoD');
   await selectVisTab(Vis.Heatmap);
 
@@ -55,7 +56,7 @@ test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap',
   expect(yD0Button).toBeChecked();
 
   // Ensure that the swap from ['y', 'x'] to ['x', 'y'] works
-  userEvent.click(xD0Button);
+  await user.click(xD0Button);
 
   await waitFor(() => expect(xD0Button).toBeChecked());
   expect(xD1Button).not.toBeChecked();
@@ -64,7 +65,8 @@ test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap',
 });
 
 test('display one dimension slider and mappings for X and Y axes when visualizing 3D dataset as Matrix', async () => {
-  await renderApp();
+  const { selectExplorerNode, selectVisTab } = await renderApp();
+
   await selectExplorerNode('nD_datasets/threeD');
   await selectVisTab(Vis.Matrix);
 
