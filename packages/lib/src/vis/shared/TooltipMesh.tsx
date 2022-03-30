@@ -22,7 +22,7 @@ function TooltipMesh(props: Props) {
   const { width, height } = useThree((state) => state.size);
 
   // Scales to compute data coordinates from unprojected mesh coordinates
-  const { worldToData, worldToHtml } = useAxisSystemContext();
+  const { worldToData } = useAxisSystemContext();
 
   const {
     tooltipOpen,
@@ -37,17 +37,16 @@ function TooltipMesh(props: Props) {
   // When panning, events are handled and stopped by texture mesh and do not reach this mesh (which is behind)
   const onPointerMove = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
-      const dataCoords = worldToData(evt.unprojectedPoint);
-
-      const htmlPoint = worldToHtml(evt.unprojectedPoint);
+      const { unprojectedPoint, sourceEvent } = evt;
+      const dataCoords = worldToData(unprojectedPoint);
 
       showTooltip({
-        tooltipLeft: htmlPoint.x,
-        tooltipTop: htmlPoint.y,
+        tooltipLeft: sourceEvent.offsetX,
+        tooltipTop: sourceEvent.offsetY,
         tooltipData: [dataCoords.x, dataCoords.y],
       });
     },
-    [worldToData, worldToHtml, showTooltip]
+    [worldToData, showTooltip]
   );
 
   // Hide tooltip when pointer leaves mesh or user starts panning
@@ -73,7 +72,7 @@ function TooltipMesh(props: Props) {
       <VisMesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <meshBasicMaterial opacity={0} transparent />
       </VisMesh>
-      <Overlay style={{ width, height }}>
+      <Overlay>
         {tooltipOpen && content && (
           <>
             <TooltipWithBounds
