@@ -159,7 +159,7 @@ importers:
       react-error-boundary: 3.1.4
       react-icons: 4.3.1
       react-reflex: 4.0.6
-      react-slider: 1.3.1
+      react-slider: 2.0.0
       react-suspense-fetch: 0.4.0
       react-use: 17.3.2
       rollup: 2.68.0
@@ -180,7 +180,7 @@ importers:
       react-error-boundary: 3.1.4_react@17.0.2
       react-icons: 4.3.1_react@17.0.2
       react-reflex: 4.0.6_react-dom@17.0.2+react@17.0.2
-      react-slider: 1.3.1_react@17.0.2
+      react-slider: 2.0.0_react@17.0.2
       react-suspense-fetch: 0.4.0
       react-use: 17.3.2_react-dom@17.0.2+react@17.0.2
       three: 0.135.0
@@ -252,7 +252,7 @@ importers:
       react-icons: 4.3.1
       react-keyed-flatten-children: 1.3.0
       react-measure: 2.5.2
-      react-slider: 1.3.1
+      react-slider: 2.0.0
       react-use: 17.3.2
       react-window: 1.8.6
       rollup: 2.68.0
@@ -280,7 +280,7 @@ importers:
       react-icons: 4.3.1_react@17.0.2
       react-keyed-flatten-children: 1.3.0_react@17.0.2
       react-measure: 2.5.2_react-dom@17.0.2+react@17.0.2
-      react-slider: 1.3.1_react@17.0.2
+      react-slider: 2.0.0_react@17.0.2
       react-use: 17.3.2_react-dom@17.0.2+react@17.0.2
       react-window: 1.8.6_react-dom@17.0.2+react@17.0.2
     devDependencies:
@@ -12624,12 +12624,12 @@ packages:
       throttle-debounce: 3.0.1
     dev: true
 
-  /react-slider/1.3.1_react@17.0.2:
-    resolution: {integrity: sha512-bD8hHJJUgAHI8g1F6PY6432l+Dmcs2fqzUwDhd+0HWDdvfjwNoXRNC2cL9OWyGTjYlJM92A8nF/w1X4pyHfytQ==}
+  /react-slider/2.0.0_react@17.0.2:
+    resolution: {integrity: sha512-r2Z4VkGvtQXbmiANEYzYdCnb4SnTRpgog1QZa++Wl1x1n5vRL3QOufyf52VVkcaLQCLk5m0WPMwGNvRqcBDtmw==}
     peerDependencies:
-      prop-types: ^15.6
       react: ^16 || ^17
     dependencies:
+      prop-types: 15.8.1
       react: 17.0.2
     dev: false
 
