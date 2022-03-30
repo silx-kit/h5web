@@ -75,6 +75,7 @@ export {
   useVisibleDomains,
   useFrameRendering,
   useValueToIndexScale,
+  useWorldToHtml,
 } from './vis/hooks';
 
 export {
