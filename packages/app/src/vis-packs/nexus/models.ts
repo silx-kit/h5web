@@ -40,7 +40,7 @@ export interface NxValues<T extends NumericType | ComplexType> {
   signalLabel: string;
   errors?: NumArray;
   axisMapping: AxisMapping;
-  auxiliaries?: NumArray[];
+  auxiliaries?: Auxiliary[];
   title: string;
 }
 
@@ -49,4 +49,9 @@ export type AxisDatasetMapping = (NumArrayDataset | undefined)[];
 export interface SilxStyle {
   signalScaleType?: ScaleType;
   axisScaleTypes?: ScaleType[];
+}
+
+export interface Auxiliary {
+  label: string;
+  value: NumArray;
 }

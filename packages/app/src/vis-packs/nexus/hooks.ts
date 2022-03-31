@@ -1,11 +1,15 @@
-import type { GroupWithChildren, ScaleType } from '@h5web/shared';
+import type {
+  GroupWithChildren,
+  NumArrayDataset,
+  ScaleType,
+} from '@h5web/shared';
 import { isDefined } from '@h5web/shared';
 import { useContext } from 'react';
 
 import { ProviderContext } from '../../providers/context';
 import { useDatasetValues } from '../core/hooks';
 import type { AxisMapping } from '../core/models';
-import type { AxisDatasetMapping, NxData } from './models';
+import type { Auxiliary, AxisDatasetMapping, NxData } from './models';
 import {
   assertNxDataGroup,
   findAssociatedDatasets,
@@ -55,4 +59,18 @@ export function useAxisMapping(
       }
     );
   });
+}
+
+export function useAuxiliaries(
+  auxDatasets: NumArrayDataset[],
+  selection: string | undefined
+): Auxiliary[] {
+  const { attrValuesStore } = useContext(ProviderContext);
+
+  const auxValues = useDatasetValues(auxDatasets, selection);
+
+  return auxDatasets.map((dataset) => ({
+    label: getDatasetLabel(dataset, attrValuesStore),
+    value: auxValues[dataset.name],
+  }));
 }

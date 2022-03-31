@@ -37,15 +37,16 @@ const Template: Story<LineVisProps> = (args) => {
     domain: storyDomain,
     scaleType,
     errorsArray,
-    auxArrays,
+    auxiliaries,
   } = args;
 
   // If story doesn't provide `domain`, compute it automatically
+  const auxArrays = (auxiliaries || []).map(({ array }) => array);
   const domain =
     storyDomain ||
     getCombinedDomain([
       getDomain(dataArray, scaleType, errorsArray),
-      ...(auxArrays ? getDomains(auxArrays, scaleType) : []),
+      ...getDomains(auxArrays, scaleType),
     ]);
 
   return <LineVis {...args} domain={domain} />;
@@ -91,14 +92,19 @@ ErrorBars.args = {
 export const AuxiliaryArrays = Template.bind({});
 AuxiliaryArrays.args = {
   dataArray: primaryArray,
-  auxArrays: [secondaryArray, tertiaryArray],
+  auxiliaries: [
+    { label: 'secondary', array: secondaryArray },
+    { label: 'tertiary', array: tertiaryArray },
+  ],
 };
 
 export const TypedArrays = Template.bind({});
 TypedArrays.args = {
   dataArray: toTypedNdArray(primaryArray, Float32Array),
   errorsArray: toTypedNdArray(errorsArray, Float32Array),
-  auxArrays: [toTypedNdArray(secondaryArray, Float32Array)],
+  auxiliaries: [
+    { label: 'secondary', array: toTypedNdArray(secondaryArray, Float32Array) },
+  ],
   showErrors: true,
 };
 

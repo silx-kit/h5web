@@ -3,12 +3,8 @@ import type { ReactNode } from 'react';
 import { useContext } from 'react';
 
 import { ProviderContext } from '../../providers/context';
-import {
-  useDatasetValue,
-  useDatasetValues,
-  usePrefetchValues,
-} from '../core/hooks';
-import { useAxisMapping } from './hooks';
+import { useDatasetValue, usePrefetchValues } from '../core/hooks';
+import { useAuxiliaries, useAxisMapping } from './hooks';
 import type { NxData, NxValues } from './models';
 import { getDatasetLabel } from './utils';
 
@@ -37,7 +33,7 @@ function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
   const signalLabel = getDatasetLabel(signalDataset, attrValuesStore);
   const errors = useDatasetValue(errorsDataset, selection);
   const axisMapping = useAxisMapping(axisDatasets, silxStyle.axisScaleTypes);
-  const auxiliaries = Object.values(useDatasetValues(auxDatasets, selection));
+  const auxiliaries = useAuxiliaries(auxDatasets, selection);
   const title = useDatasetValue(titleDataset) || signalLabel;
 
   return (
