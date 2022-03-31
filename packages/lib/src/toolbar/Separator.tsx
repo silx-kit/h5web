@@ -1,7 +1,9 @@
+import type { HTMLAttributes } from 'react';
+
 import styles from './Toolbar.module.css';
 
-function Separator() {
-  return <span className={styles.sep} />;
+function Separator(props: HTMLAttributes<HTMLSpanElement>) {
+  return <span className={styles.sep} {...props} />;
 }
 
 export default Separator;
