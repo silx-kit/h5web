@@ -57,7 +57,7 @@ function ScatterVis(props: Props) {
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 
   return (
-    <figure className={styles.root}>
+    <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
         abscissaConfig={{
           visDomain: abscissaDomain,

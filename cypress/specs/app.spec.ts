@@ -369,5 +369,21 @@ describe('App', () => {
         cy.matchImageSnapshot('nxrgb');
       }
     });
+
+    it('visualize dataset with 1D signal and two 1D axes of same length as NxScatter', () => {
+      cy.findByRole('treeitem', { name: /^nexus_entry / }).click();
+      cy.findByRole('treeitem', { name: /scatter/ }).click();
+
+      cy.findByRole('heading', { name: 'nexus_entry / scatter' }).should(
+        'exist'
+      );
+      cy.findByRole('tab', { name: 'NX Scatter' }).should('exist');
+      cy.findByRole('figure', { name: 'scatter_data' }).should('exist');
+
+      if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.wait(SNAPSHOT_DELAY);
+        cy.matchImageSnapshot('nxscatter');
+      }
+    });
   });
 });

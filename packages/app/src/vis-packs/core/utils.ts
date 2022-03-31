@@ -10,7 +10,7 @@ import type { Layout } from './heatmap/models';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
-const BASE_INTERACTIONS = [
+export const BASE_INTERACTIONS = [
   { shortcut: 'Drag', description: 'Pan' },
   { shortcut: 'Ctrl+Drag', description: 'Select to zoom' },
   { shortcut: 'Wheel', description: 'Zoom' },
