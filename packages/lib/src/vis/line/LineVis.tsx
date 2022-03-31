@@ -21,7 +21,7 @@ import VisCanvas from '../shared/VisCanvas';
 import { extendDomain, DEFAULT_DOMAIN, formatNumType, toArray } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
-import type { TooltipData } from './models';
+import type { AuxiliaryParams, TooltipData } from './models';
 import { CurveType } from './models';
 
 // Inspired by Matplotlib palette: https://matplotlib.org/stable/gallery/color/named_colors.html
@@ -50,7 +50,7 @@ interface Props {
   dtype?: NumericType;
   errorsArray?: NdArray<NumArray>;
   showErrors?: boolean;
-  auxArrays?: NdArray<NumArray>[];
+  auxiliaries?: AuxiliaryParams[];
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
   interactions?: Interactions;
@@ -69,7 +69,7 @@ function LineVis(props: Props) {
     dtype,
     errorsArray,
     showErrors = false,
-    auxArrays = [],
+    auxiliaries = [],
     renderTooltip,
     children,
     interactions,
@@ -83,7 +83,9 @@ function LineVis(props: Props) {
 
   assertLength(abscissaValue, dataArray.size, 'abscissa');
   assertLength(errorsArray, dataArray.size, 'error');
-  auxArrays.forEach((arr) => assertLength(arr, dataArray.size, 'auxiliary'));
+  auxiliaries.forEach(({ label, array }) =>
+    assertLength(array, dataArray.size, `'${label}' auxiliary`)
+  );
 
   const abscissas = useMemo(() => {
     if (!abscissaValue) {
@@ -144,14 +146,21 @@ function LineVis(props: Props) {
 
             const value = dataArray.get(xi);
             const error = errorsArray?.get(xi);
+
             return (
               <>
-                {`${abscissaLabel ?? 'x'}=${formatTooltipVal(abscissa)}`}
+                {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(abscissa)}`}
+
                 <div className={styles.tooltipValue}>
                   <strong>{formatTooltipVal(value)}</strong>
                   {error && ` ±${formatTooltipErr(error)}`}
                   {dtype && <em>{` (${formatNumType(dtype)})`}</em>}
                 </div>
+
+                {auxiliaries.map(({ label, array }) => {
+                  const val = formatTooltipVal(array.get(xi));
+                  return <div key={label}>{`${label} = ${val}`}</div>;
+                })}
               </>
             );
           }}
@@ -165,7 +174,7 @@ function LineVis(props: Props) {
           color={curveColor}
           curveType={curveType}
         />
-        {auxArrays.map((array, i) => (
+        {auxiliaries.map(({ array }, i) => (
           <DataCurve
             key={i} // eslint-disable-line react/no-array-index-key
             abscissas={abscissas}

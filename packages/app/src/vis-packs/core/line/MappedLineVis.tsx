@@ -10,6 +10,7 @@ import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import type { Auxiliary } from '../../nexus/models';
 import {
   useMappedArrays,
   useMappedArray,
@@ -28,7 +29,7 @@ interface Props {
   valueLabel?: string;
   valueScaleType?: ScaleType;
   errors?: NumArray;
-  auxiliaries?: NumArray[];
+  auxiliaries?: Auxiliary[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
@@ -63,7 +64,10 @@ function MappedLineVis(props: Props) {
 
   const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
   const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
-  const [auxArrays, auxForDomain] = useMappedArrays(auxiliaries, ...hookArgs);
+  const [auxArrays, auxForDomain] = useMappedArrays(
+    auxiliaries.map((aux) => aux.value),
+    ...hookArgs
+  );
 
   const dataDomain = useDomain(
     dataForDomain,
@@ -106,7 +110,10 @@ function MappedLineVis(props: Props) {
         dtype={dataset?.type}
         errorsArray={errorArray}
         showErrors={showErrors}
-        auxArrays={auxArrays}
+        auxiliaries={auxiliaries.map(({ label }, i) => ({
+          label,
+          array: auxArrays[i],
+        }))}
       />
     </>
   );

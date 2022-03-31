@@ -1,14 +1,13 @@
 import type { RenderResult } from '@testing-library/react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { UserEvent } from '@testing-library/user-event/dist/types/setup';
 
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
 import type { Vis } from './vis-packs/core/visualizations';
 
 interface RenderAppResult extends RenderResult {
-  user: UserEvent;
+  user: ReturnType<typeof userEvent.setup>;
   selectExplorerNode: (path: string) => Promise<void>;
   selectVisTab: (name: Vis) => Promise<void>;
 }

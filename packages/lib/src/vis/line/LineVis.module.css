@@ -10,6 +10,10 @@
   margin-top: 0.25rem;
 }
 
+.tooltipValue:not(:last-child) {
+  margin-bottom: 0.25rem;
+}
+
 .tooltipValue > strong {
   font-weight: 600;
   font-size: 1.125em;
