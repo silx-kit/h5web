@@ -33,13 +33,17 @@ function TooltipMesh(props: Props) {
     hideTooltip,
   } = useTooltip<Coords>();
 
-  // Update tooltip when pointer moves
-  // When panning, events are handled and stopped by texture mesh and do not reach this mesh (which is behind)
+  // Show and/or update tooltip when pointer moves except when dragging
   const onPointerMove = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
       const { unprojectedPoint, sourceEvent } = evt;
-      const dataCoords = worldToData(unprojectedPoint);
 
+      // Keep tooltip hidden when dragging
+      if (sourceEvent.buttons !== 0) {
+        return;
+      }
+
+      const dataCoords = worldToData(unprojectedPoint);
       showTooltip({
         tooltipLeft: sourceEvent.offsetX,
         tooltipTop: sourceEvent.offsetY,
@@ -49,11 +53,19 @@ function TooltipMesh(props: Props) {
     [worldToData, showTooltip]
   );
 
-  // Hide tooltip when pointer leaves mesh or user starts panning
-  const onPointerOut = useCallback(hideTooltip, [hideTooltip]);
-  const onPointerDown = useCallback(hideTooltip, [hideTooltip]);
+  // Hide tooltip when pointer leaves mesh
+  const onPointerOut = useCallback(() => {
+    /* `onPointerOut` is called after `onPointerUp` for some reason,
+     * so we make sure not to hide the tooltip again in this case. */
+    if (tooltipOpen) {
+      hideTooltip();
+    }
+  }, [hideTooltip, tooltipOpen]);
 
-  // Show tooltip after dragging unless pointer has left canvas
+  // Hide tooltip when user starts panning
+  const onPointerDown = useCallback(() => hideTooltip(), [hideTooltip]);
+
+  // Show tooltip after dragging, if pointer is released inside the vis viewport
   const onPointerUp = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
       const { sourceEvent } = evt;

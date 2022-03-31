@@ -4,10 +4,6 @@
     '. top-axis .'
     'left-axis grid right-axis'
     '. bottom-axis .';
-
-  /* - Prevent panning/zooming from axis when zoomed in.
-   * - Prevent text selection of tick labels when panning with touchpad. */
-  pointer-events: none;
 }
 
 .axisSystem > svg {
