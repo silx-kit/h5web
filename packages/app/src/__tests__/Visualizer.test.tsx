@@ -1,15 +1,9 @@
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
-import {
-  mockConsoleMethod,
-  queryVisSelector,
-  renderApp,
-  selectExplorerNode,
-} from '../test-utils';
+import { mockConsoleMethod, queryVisSelector, renderApp } from '../test-utils';
 
 test('show fallback message when no visualization is supported', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('entities'); // simple group
 
   await expect(
@@ -20,7 +14,7 @@ test('show fallback message when no visualization is supported', async () => {
 
 test('show loader while fetching dataset value', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   await selectExplorerNode('resilience/slow_value');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
@@ -33,7 +27,7 @@ test('show loader while fetching dataset value', async () => {
 });
 
 test("show error when dataset value can't be fetched", async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('resilience/error_value');
@@ -49,7 +43,7 @@ test("show error when dataset value can't be fetched", async () => {
 
 test('cancel and retry slow fetch of dataset value', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching value
   await selectExplorerNode('resilience/slow_value');
@@ -57,14 +51,14 @@ test('cancel and retry slow fetch of dataset value', async () => {
 
   // Cancel fetch
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
 
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Retry fetch
-  userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
+  await user.click(await screen.findByRole('button', { name: /Retry/ }));
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetch succeed
@@ -77,7 +71,7 @@ test('cancel and retry slow fetch of dataset value', async () => {
 
 test('cancel and retry slow fetch of dataset slice', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching first slice
   await selectExplorerNode('resilience/slow_slicing');
@@ -87,14 +81,14 @@ test('cancel and retry slow fetch of dataset slice', async () => {
 
   // Cancel fetch of first slice
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
 
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Retry fetch of first slice
-  userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
+  await user.click(await screen.findByRole('button', { name: /Retry/ }));
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -109,7 +103,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
 
 test('retry fetching automatically when re-selecting dataset', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching
   await selectExplorerNode('resilience/slow_value');
@@ -117,7 +111,7 @@ test('retry fetching automatically when re-selecting dataset', async () => {
 
   // Cancel fetch
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   errorSpy.mockRestore();
 
@@ -139,7 +133,7 @@ test('retry fetching automatically when re-selecting dataset', async () => {
 
 test('retry fetching dataset slice automatically when re-selecting slice', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching first slice
   await selectExplorerNode('resilience/slow_slicing');
@@ -149,7 +143,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
 
   // Cancel fetch of first slice
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
@@ -157,7 +151,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   // Move to other slice and start fetching
   const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
   d0Slider.focus();
-  userEvent.keyboard('{ArrowUp}');
+  await user.keyboard('{ArrowUp}');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -167,7 +161,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Move back to first slice to retry fetching it automatically
-  userEvent.keyboard('{ArrowDown}');
+  await user.keyboard('{ArrowDown}');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -183,7 +177,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
 
 test('cancel fetching dataset slice when changing entity', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching first slice
   await selectExplorerNode('resilience/slow_slicing');
@@ -215,7 +209,7 @@ test('cancel fetching dataset slice when changing entity', async () => {
 
 test('cancel fetching dataset slice when changing vis', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching the slice
   await selectExplorerNode('resilience/slow_slicing');
@@ -224,7 +218,7 @@ test('cancel fetching dataset slice when changing vis', async () => {
   ).resolves.toBeVisible();
 
   // Switch to the Line vis to cancel the fetch
-  userEvent.click(screen.getByRole('tab', { name: 'Line' }));
+  await user.click(screen.getByRole('tab', { name: 'Line' }));
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -234,7 +228,7 @@ test('cancel fetching dataset slice when changing vis', async () => {
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Switch back to Heatmap and check that it refetches the slice
-  userEvent.click(screen.getByRole('tab', { name: 'Heatmap' }));
+  await user.click(screen.getByRole('tab', { name: 'Heatmap' }));
   // The slice request was cancelled so it should be pending once again
   await expect(
     screen.findByText(/Loading current slice/)

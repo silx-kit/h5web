@@ -1,16 +1,14 @@
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import {
   findVisSelectorTabs,
   mockConsoleMethod,
   renderApp,
-  selectExplorerNode,
 } from '../test-utils';
 import { NexusVis } from '../vis-packs/nexus/visualizations';
 
 test('visualize NXdata group with "spectrum" interpretation', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/spectrum');
 
   const tabs = await findVisSelectorTabs();
@@ -23,7 +21,7 @@ test('visualize NXdata group with "spectrum" interpretation', async () => {
 });
 
 test('visualize NXdata group with "image" interpretation', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/image');
 
   const tabs = await findVisSelectorTabs();
@@ -36,7 +34,7 @@ test('visualize NXdata group with "image" interpretation', async () => {
 });
 
 test('visualize NXdata group with 2D signal', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const tabs = await findVisSelectorTabs();
@@ -50,7 +48,7 @@ test('visualize NXdata group with 2D signal', async () => {
 });
 
 test('visualize NXentry group with relative path to 2D default signal', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry');
 
   const tabs = await findVisSelectorTabs();
@@ -64,7 +62,7 @@ test('visualize NXentry group with relative path to 2D default signal', async ()
 });
 
 test('visualize NXentry group with absolute path to 2D default signal', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/absolute_default_path');
 
   const tabs = await findVisSelectorTabs();
@@ -91,7 +89,7 @@ test('visualize NXroot group with 2D default signal', async () => {
 });
 
 test('visualize NXdata group with 2D complex signal', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/complex');
 
   const tabs = await findVisSelectorTabs();
@@ -105,7 +103,7 @@ test('visualize NXdata group with 2D complex signal', async () => {
 });
 
 test('visualize NXdata group with 2D complex signal and "spectrum" interpretation', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/complex_spectrum');
 
   const tabs = await findVisSelectorTabs();
@@ -118,7 +116,7 @@ test('visualize NXdata group with 2D complex signal and "spectrum" interpretatio
 });
 
 test('visualize NXdata group with "rgb-image" interpretation', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/rgb-image');
 
   const tabs = await findVisSelectorTabs();
@@ -131,7 +129,7 @@ test('visualize NXdata group with "rgb-image" interpretation', async () => {
 });
 
 test('follow SILX styles when visualizing NXdata group', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/log_spectrum');
 
   const logSelectors = await screen.findAllByRole('button', { name: 'Log' });
@@ -139,7 +137,7 @@ test('follow SILX styles when visualizing NXdata group', async () => {
 });
 
 test('visualize NXentry group with implicit default child NXdata group', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_no_default');
 
   const tabs = await findVisSelectorTabs();
@@ -152,7 +150,7 @@ test('visualize NXentry group with implicit default child NXdata group', async (
 });
 
 test('show error when `default` entity is not found', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/default_not_found');
@@ -164,7 +162,7 @@ test('show error when `default` entity is not found', async () => {
 });
 
 test('show error when `signal` entity is not found', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/signal_not_found');
@@ -176,7 +174,7 @@ test('show error when `signal` entity is not found', async () => {
 });
 
 test('show error when `signal` entity is not a dataset', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/signal_not_dataset');
@@ -188,7 +186,7 @@ test('show error when `signal` entity is not a dataset', async () => {
 });
 
 test('show error when `signal` dataset is not array', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/signal_not_array');
@@ -200,7 +198,7 @@ test('show error when `signal` dataset is not array', async () => {
 });
 
 test('show error when `signal` dataset is not numeric', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const errorSpy = mockConsoleMethod('error');
   await selectExplorerNode('nexus_malformed/signal_not_numeric');
@@ -212,7 +210,7 @@ test('show error when `signal` dataset is not numeric', async () => {
 });
 
 test('show fallback message when NXdata group has no `signal` attribute', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_malformed/no_signal');
 
   await expect(
@@ -221,7 +219,7 @@ test('show fallback message when NXdata group has no `signal` attribute', async 
 });
 
 test('visualize NXdata group with unknown interpretation', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_malformed/interpretation_unknown');
 
   const tabs = await findVisSelectorTabs();
@@ -235,7 +233,7 @@ test('visualize NXdata group with unknown interpretation', async () => {
 });
 
 test('visualize NXdata group with "rgb-image" interpretation but incompatible signal', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_malformed/rgb-image_incompatible');
 
   const tabs = await findVisSelectorTabs();
@@ -248,7 +246,7 @@ test('visualize NXdata group with "rgb-image" interpretation but incompatible si
 });
 
 test('ignore unknown `SILX_style` options and invalid values', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_malformed/silx_style_unknown');
 
   const errorSpy = mockConsoleMethod('error');
@@ -267,7 +265,7 @@ test('ignore unknown `SILX_style` options and invalid values', async () => {
 });
 
 test('warn in console when `SILX_style` attribute is not valid JSON', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const warningSpy = mockConsoleMethod('warn');
   await selectExplorerNode('nexus_malformed/silx_style_malformed');
@@ -284,7 +282,7 @@ test('warn in console when `SILX_style` attribute is not valid JSON', async () =
 
 test('cancel and retry slow fetch of NxSpectrum', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_spectrum');
@@ -292,13 +290,14 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
+
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Retry all fetches at once
-  userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
+  await user.click(await screen.findByRole('button', { name: /Retry/ }));
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
@@ -312,7 +311,7 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
 
 test('cancel and retry slow fetch of NxImage', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with image interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_image');
@@ -320,13 +319,13 @@ test('cancel and retry slow fetch of NxImage', async () => {
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
 
   // Retry all fetches at once
-  userEvent.click(await screen.findByRole('button', { name: /Retry/ }));
+  await user.click(await screen.findByRole('button', { name: /Retry/ }));
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
@@ -339,7 +338,7 @@ test('cancel and retry slow fetch of NxImage', async () => {
 
 test('retry fetching automatically when re-selecting NxSpectrum', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_spectrum');
@@ -347,7 +346,7 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
@@ -370,7 +369,7 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
 
 test('retry fetching automatically when re-selecting NxImage', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with image interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_image');
@@ -378,7 +377,7 @@ test('retry fetching automatically when re-selecting NxImage', async () => {
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
@@ -401,7 +400,7 @@ test('retry fetching automatically when re-selecting NxImage', async () => {
 
 test('retry fetching automatically when selecting other NxSpectrum slice', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_spectrum');
@@ -409,7 +408,7 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
@@ -417,7 +416,7 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
   // Move to other slice to retry fetching automatically
   const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
   d0Slider.focus();
-  userEvent.keyboard('{PageUp}');
+  await user.keyboard('{PageUp}');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
@@ -425,7 +424,7 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Move back to first slice to retry fetching it automatically
-  userEvent.keyboard('{PageDown}');
+  await user.keyboard('{PageDown}');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetch of first slice succeed
@@ -439,7 +438,7 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
 
 test('retry fetching supporting datasets automatically when selecting other NxImage slice', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with image interpretation and start fetching dataset values
   await selectExplorerNode('resilience/slow_nx_image');
@@ -447,7 +446,7 @@ test('retry fetching supporting datasets automatically when selecting other NxIm
 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
-  userEvent.click(await screen.findByRole('button', { name: /Cancel/ }));
+  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
   await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
   errorSpy.mockRestore();
@@ -455,7 +454,7 @@ test('retry fetching supporting datasets automatically when selecting other NxIm
   // Move to other slice to fetch new slice and retry fetching supporting datasets automatically
   const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
   d0Slider.focus();
-  userEvent.keyboard('{PageUp}');
+  await user.keyboard('{PageUp}');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
@@ -463,7 +462,7 @@ test('retry fetching supporting datasets automatically when selecting other NxIm
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Move back to first slice to retry fetching it automatically
-  userEvent.keyboard('{PageDown}');
+  await user.keyboard('{PageDown}');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetch of first slice succeed

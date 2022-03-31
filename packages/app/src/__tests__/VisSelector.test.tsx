@@ -1,10 +1,9 @@
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
-import { renderApp, selectExplorerNode } from '../test-utils';
+import { renderApp } from '../test-utils';
 
 test('switch between visualizations', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nD_datasets/oneD');
 
   const lineTab = await screen.findByRole('tab', { name: 'Line' });
@@ -16,7 +15,7 @@ test('switch between visualizations', async () => {
   expect(matrixTab).toHaveAttribute('aria-selected', 'false');
 
   // Switch to Matrix visualization
-  userEvent.click(matrixTab);
+  await user.click(matrixTab);
 
   expect(screen.getByRole('tab', { name: 'Matrix' })).toHaveAttribute(
     'aria-selected',
@@ -29,15 +28,15 @@ test('switch between visualizations', async () => {
 });
 
 test('restore active visualization when switching to inspect mode and back', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nD_datasets/twoD');
 
   // Switch to Line visualization
-  userEvent.click(await screen.findByRole('tab', { name: 'Line' }));
+  await user.click(await screen.findByRole('tab', { name: 'Line' }));
 
   // Switch to inspect mode and back
-  userEvent.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  userEvent.click(await screen.findByRole('tab', { name: 'Display' }));
+  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  await user.click(await screen.findByRole('tab', { name: 'Display' }));
 
   await expect(
     screen.findByRole('tab', { name: 'Line' })
@@ -45,7 +44,7 @@ test('restore active visualization when switching to inspect mode and back', asy
 });
 
 test('choose most advanced visualization when switching between datasets', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   await selectExplorerNode('nD_datasets/oneD');
   await expect(
@@ -69,12 +68,12 @@ test('choose most advanced visualization when switching between datasets', async
 });
 
 test('remember preferred visualization when switching between datasets', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nD_datasets/twoD');
 
   /* Switch to Matrix vis. Since this is not the most advanced visualization
    * for `twoD`, it becomes the preferred visualization. */
-  userEvent.click(await screen.findByRole('tab', { name: 'Matrix' }));
+  await user.click(await screen.findByRole('tab', { name: 'Matrix' }));
 
   // Select another dataset for which the Matrix vis is not the most advanced visualization
   await selectExplorerNode('oneD');
@@ -86,7 +85,7 @@ test('remember preferred visualization when switching between datasets', async (
 
   /* Switch to Line vis. Since this _is_ the most advanced visualization for
    * `oneD`, the preferred visualization is cleared. */
-  userEvent.click(await screen.findByRole('tab', { name: 'Line' })); // becomes preferred vis
+  await user.click(await screen.findByRole('tab', { name: 'Line' })); // becomes preferred vis
 
   // Select another dataset with a more advanced visualization than Line
   await selectExplorerNode('threeD_rgb');

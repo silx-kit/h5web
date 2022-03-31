@@ -1,17 +1,15 @@
 import { mockValues } from '@h5web/shared';
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import {
   findVisSelectorTabs,
   mockConsoleMethod,
   renderApp,
-  selectExplorerNode,
 } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('visualise raw dataset', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('entities/raw');
 
   const tabs = await findVisSelectorTabs();
@@ -23,7 +21,7 @@ test('visualise raw dataset', async () => {
 });
 
 test('log raw dataset to console if too large', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const logSpy = mockConsoleMethod('log');
   await selectExplorerNode('entities/raw_large');
@@ -33,7 +31,7 @@ test('log raw dataset to console if too large', async () => {
 });
 
 test('visualise scalar dataset', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   await selectExplorerNode('entities/scalar_int');
   await expect(screen.findByText('0')).resolves.toBeVisible();
@@ -48,7 +46,7 @@ test('visualise scalar dataset', async () => {
 });
 
 test('visualize 1D dataset', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nD_datasets/oneD');
 
   const tabs = await findVisSelectorTabs();
@@ -63,7 +61,7 @@ test('visualize 1D dataset', async () => {
 });
 
 test('visualize 2D datasets', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nD_datasets/twoD');
 
   const tabs = await findVisSelectorTabs();
@@ -80,7 +78,7 @@ test('visualize 2D datasets', async () => {
 
 test('visualize 1D slice of a 3D dataset with and without autoscale', async () => {
   jest.useFakeTimers('modern');
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('resilience/slow_slicing');
 
   // Heatmap is selected by default and fetches a 2D slice.
@@ -93,7 +91,7 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Select the LineVis. The autoscale is on by default: it should fetch a 1D slice.
-  userEvent.click(await screen.findByRole('tab', { name: Vis.Line }));
+  await user.click(await screen.findByRole('tab', { name: Vis.Line }));
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -114,7 +112,7 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
     name: 'Dimension slider',
   })[0];
   d0Slider.focus();
-  userEvent.keyboard('{ArrowUp}');
+  await user.keyboard('{ArrowUp}');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -124,7 +122,7 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Activate autoscale. It should trigger the fetch of the entire dataset.
-  userEvent.click(autoScaleBtn);
+  await user.click(autoScaleBtn);
   await expect(
     screen.findByText(/Loading entire dataset/)
   ).resolves.toBeVisible();
@@ -135,7 +133,7 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
 
   // Check that entire dataset is fetched
   d0Slider.focus();
-  userEvent.keyboard('{ArrowUp}');
+  await user.keyboard('{ArrowUp}');
 
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount

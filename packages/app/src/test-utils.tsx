@@ -1,28 +1,47 @@
-import { act, render, screen, within } from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { UserEvent } from '@testing-library/user-event/dist/types/setup';
 
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
 import type { Vis } from './vis-packs/core/visualizations';
 
-export async function renderApp(): Promise<void> {
-  return act(async () => {
-    render(
-      <MockProvider>
-        <App />
-      </MockProvider>
-    );
-  });
+interface RenderAppResult extends RenderResult {
+  user: UserEvent;
+  selectExplorerNode: (path: string) => Promise<void>;
+  selectVisTab: (name: Vis) => Promise<void>;
 }
 
-export async function selectExplorerNode(path: string): Promise<void> {
-  for await (const segment of path.split('/')) {
-    userEvent.click(
-      await screen.findByRole('treeitem', {
-        name: new RegExp(`^${segment}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
-      })
-    );
-  }
+export async function renderApp(): Promise<RenderAppResult> {
+  const user = userEvent.setup({ delay: null }); // https://github.com/testing-library/user-event/issues/833
+  const renderResult = render(
+    <MockProvider>
+      <App />
+    </MockProvider>
+  );
+
+  await screen.findByLabelText('Loading root metadata...');
+  await screen.findByRole('treeitem', { name: 'entities' });
+
+  return {
+    user,
+    ...renderResult,
+
+    selectExplorerNode: async (path) => {
+      for await (const segment of path.split('/')) {
+        await user.click(
+          await screen.findByRole('treeitem', {
+            name: new RegExp(`^${segment}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
+          })
+        );
+      }
+    },
+
+    selectVisTab: async (name) => {
+      await user.click(await screen.findByRole('tab', { name }));
+    },
+  };
 }
 
 export function queryVisSelector(): HTMLElement | null {
@@ -35,10 +54,6 @@ export async function findVisSelector(): Promise<HTMLElement> {
 
 export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
   return within(await findVisSelector()).getAllByRole('tab');
-}
-
-export async function selectVisTab(name: Vis): Promise<void> {
-  userEvent.click(await screen.findByRole('tab', { name }));
 }
 
 /**

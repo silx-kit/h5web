@@ -1,10 +1,9 @@
 import { screen, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
-import { renderApp, selectExplorerNode } from '../test-utils';
+import { renderApp } from '../test-utils';
 
 test('show slider with two thumbs', async () => {
-  await renderApp();
+  const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const thumbs = await screen.findAllByRole('slider');
@@ -14,7 +13,7 @@ test('show slider with two thumbs', async () => {
 });
 
 test('show tooltip on hover', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -23,25 +22,25 @@ test('show tooltip on hover', async () => {
   expect(editBtn).toHaveAttribute('aria-expanded', 'false');
   expect(tooltip).not.toBeVisible();
 
-  userEvent.hover(editBtn);
+  await user.hover(editBtn);
   expect(editBtn).toHaveAttribute('aria-expanded', 'true');
   expect(tooltip).toBeVisible();
 
-  userEvent.unhover(editBtn);
+  await user.unhover(editBtn);
   expect(editBtn).toHaveAttribute('aria-expanded', 'false');
   expect(tooltip).not.toBeVisible();
 
-  userEvent.hover(editBtn);
-  userEvent.keyboard('{Escape}');
+  await user.hover(editBtn);
+  await user.keyboard('{Escape}');
   expect(tooltip).not.toBeVisible();
 });
 
 test('show min/max and data range in tooltip', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
-  userEvent.hover(editBtn);
+  await user.hover(editBtn);
 
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
@@ -57,12 +56,12 @@ test('show min/max and data range in tooltip', async () => {
 });
 
 test('update domain when moving thumbs (with keyboard)', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   // Hover min thumb to reveal tooltip
   const minThumb = await screen.findByRole('slider', { name: /min/ });
-  userEvent.hover(minThumb);
+  await user.hover(minThumb);
 
   const visArea = await screen.findByRole('figure');
   const minInput = screen.getByLabelText('min');
@@ -70,12 +69,12 @@ test('update domain when moving thumbs (with keyboard)', async () => {
 
   // Move min thumb one step to the left with keyboard
   minThumb.focus();
-  userEvent.keyboard('{ArrowLeft}');
+  await user.keyboard('{ArrowLeft}');
   expect(minInput).toHaveValue('−1.04671e+2');
   expect(within(visArea).getByText('−1.047e+2')).toBeInTheDocument();
 
   // Move thumb five steps to the left (in a single press)
-  userEvent.keyboard('{ArrowLeft>5/}'); // press key and hold for 5 keydown events, then release
+  await user.keyboard('{ArrowLeft>5/}'); // press key and hold for 5 keydown events, then release
   expect(minInput).toHaveValue('−2.30818e+2');
   expect(within(visArea).getByText('−2.308e+2')).toBeInTheDocument();
 
@@ -87,12 +86,12 @@ test('update domain when moving thumbs (with keyboard)', async () => {
   maxThumb.focus();
 
   // Jump ten steps to the left
-  userEvent.keyboard('{PageDown}');
+  await user.keyboard('{PageDown}');
   expect(maxInput).toHaveValue('5.72182e+1');
   expect(within(visArea).getByText('5.722e+1')).toBeInTheDocument();
 
   // Jump ten steps to the right
-  userEvent.keyboard('{PageUp}');
+  await user.keyboard('{PageUp}');
   expect(maxInput).toHaveValue('2.52142e+2'); // not back to 4e+2 because of domain extension behaviour
   expect(within(visArea).getByText('2.521e+2')).toBeInTheDocument();
 
@@ -104,14 +103,14 @@ test('update domain when moving thumbs (with keyboard)', async () => {
 });
 
 test('allow editing bounds manually', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   expect(editBtn).toHaveAttribute('aria-pressed', 'false');
 
   // Open tooltip with both min and max in edit mode
-  userEvent.click(editBtn);
+  await user.click(editBtn);
   expect(editBtn).toHaveAttribute('aria-pressed', 'true');
   expect(editBtn).toHaveAttribute('aria-expanded', 'true');
 
@@ -124,27 +123,27 @@ test('allow editing bounds manually', async () => {
   await waitFor(() => expect(minInput).toHaveFocus()); // input needs time to receive focus
 
   // Type '1' in min input field (at the end, after the current value)
-  userEvent.type(minInput, '1');
+  await user.type(minInput, '1');
   expect(minInput).toHaveValue('−9.5e+11');
 
   const visArea = await screen.findByRole('figure');
   expect(within(visArea).getByText('−9.5e+1')).toBeInTheDocument(); // not applied yet
 
   // Cancel min edit
-  userEvent.click(cancelBtn);
+  await user.click(cancelBtn);
   expect(minInput).toHaveValue('−9.5e+1');
   expect(applyBtn).toBeDisabled();
   expect(cancelBtn).toBeDisabled();
 
   // Turn min editing back on, type '1' again and apply new min
-  userEvent.type(minInput, '1');
-  userEvent.click(applyBtn);
+  await user.type(minInput, '1');
+  await user.click(applyBtn);
   expect(within(visArea).getByText('−9.5e+11')).toBeInTheDocument(); // applied
   expect(editBtn).toHaveAttribute('aria-pressed', 'true'); // because max still in edit mode
 
   // Replace value of max input field and apply new max with Enter
-  userEvent.clear(maxInput);
-  userEvent.type(maxInput, '100000{enter}');
+  await user.clear(maxInput);
+  await user.type(maxInput, '100000{enter}');
 
   expect(maxInput).toHaveValue('1e+5'); // auto-format
   expect(within(visArea).getByText('1e+5')).toBeInTheDocument();
@@ -152,29 +151,29 @@ test('allow editing bounds manually', async () => {
 });
 
 test('clamp domain in symlog scale', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
-  userEvent.click(editBtn);
+  await user.click(editBtn);
 
   const minThumb = screen.getByRole('slider', { name: /min/ });
   const maxThumb = screen.getByRole('slider', { name: /max/ });
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
 
-  userEvent.clear(minInput);
-  userEvent.type(minInput, '-1e+1000{enter}');
+  await user.clear(minInput);
+  await user.type(minInput, '-1e+1000{enter}');
   expect(minInput).toHaveValue('−8.98847e+307');
   expect(minThumb).toHaveAttribute('aria-valuenow', '1');
 
-  userEvent.clear(maxInput);
-  userEvent.type(maxInput, '1e+1000{enter}');
+  await user.clear(maxInput);
+  await user.type(maxInput, '1e+1000{enter}');
   expect(maxInput).toHaveValue('8.98847e+307');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '100');
 
   maxThumb.focus();
-  userEvent.keyboard('{ArrowLeft}');
+  await user.keyboard('{ArrowLeft}');
   expect(maxInput).toHaveValue('5.40006e+301');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '99'); // does not jump back to 81
 
@@ -183,11 +182,11 @@ test('clamp domain in symlog scale', async () => {
 });
 
 test('show min/max autoscale toggles in tooltip (pressed by default)', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
-  userEvent.hover(editBtn);
+  await user.hover(editBtn);
 
   expect(screen.getByText('Autoscale')).toBeVisible();
 
@@ -198,11 +197,11 @@ test('show min/max autoscale toggles in tooltip (pressed by default)', async () 
 });
 
 test('control min/max autoscale behaviour', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const minThumb = await screen.findByRole('slider', { name: /min/ });
-  userEvent.hover(minThumb);
+  await user.hover(minThumb);
 
   const minBtn = screen.getByRole('button', { name: 'Min' });
   const maxBtn = screen.getByRole('button', { name: 'Max' });
@@ -210,28 +209,28 @@ test('control min/max autoscale behaviour', async () => {
 
   // Moving min thumb disables min autoscale
   minThumb.focus();
-  userEvent.keyboard('{ArrowRight}');
+  await user.keyboard('{ArrowRight}');
   expect(minBtn).toHaveAttribute('aria-pressed', 'false');
   expect(maxBtn).toHaveAttribute('aria-pressed', 'true'); // unaffected
 
   // Editing max disables max autoscale
-  userEvent.type(maxInput, '0{enter}');
+  await user.type(maxInput, '0{enter}');
   expect(maxInput).toHaveValue('4e+20');
   expect(maxBtn).toHaveAttribute('aria-pressed', 'false');
 
   // Re-enable max autoscale
-  userEvent.click(maxBtn);
+  await user.click(maxBtn);
   expect(maxBtn).toHaveAttribute('aria-pressed', 'true');
   expect(minBtn).toHaveAttribute('aria-pressed', 'false'); // unaffected
   await waitFor(() => expect(maxInput).toHaveValue('4e+2')); // input needs time to be reset
 });
 
 test('handle empty domain', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
-  userEvent.click(editBtn);
+  await user.click(editBtn);
 
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
@@ -239,8 +238,8 @@ test('handle empty domain', async () => {
   const maxThumb = screen.getByRole('slider', { name: /max/ });
 
   // Give min the same value as max
-  userEvent.clear(minInput);
-  userEvent.type(minInput, '400{enter}');
+  await user.clear(minInput);
+  await user.type(minInput, '400{enter}');
   expect(minThumb).toHaveAttribute('aria-valuenow', '58'); // not quite in the middle because of symlog
   expect(maxThumb).toHaveAttribute('aria-valuenow', '58');
 
@@ -250,14 +249,14 @@ test('handle empty domain', async () => {
 
   // Check that pearling works (i.e. that one thumb can push the other)
   maxThumb.focus();
-  userEvent.keyboard('{ArrowLeft}');
+  await user.keyboard('{ArrowLeft}');
   expect(minInput).toHaveValue('3.97453e+2');
   expect(maxInput).toHaveValue('3.97453e+2');
   expect(minThumb).toHaveAttribute('aria-valuenow', '58'); // thumbs stay in the middle
   expect(maxThumb).toHaveAttribute('aria-valuenow', '58');
 
   // Ensure thumbs can be separated again
-  userEvent.keyboard('{ArrowRight}');
+  await user.keyboard('{ArrowRight}');
   expect(maxInput).toHaveValue('3.99891e+2');
   expect(minThumb).toHaveAttribute('aria-valuenow', '20');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '81');
@@ -267,17 +266,17 @@ test('handle empty domain', async () => {
 });
 
 test('handle min > max', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
-  userEvent.click(editBtn);
+  await user.click(editBtn);
 
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
 
-  userEvent.clear(minInput);
-  userEvent.type(minInput, '500{enter}');
+  await user.clear(minInput);
+  await user.type(minInput, '500{enter}');
   expect(minInput).toHaveValue('5e+2');
   expect(maxInput).toHaveValue('4e+2');
   expect(screen.getByText(/Min greater than max/)).toHaveTextContent(
@@ -290,12 +289,12 @@ test('handle min > max', async () => {
 
   // Autoscaling min hides the error
   const minBtn = screen.getByRole('button', { name: 'Min' });
-  userEvent.click(minBtn);
+  await user.click(minBtn);
   expect(screen.queryByText(/Min greater than max/)).not.toBeInTheDocument();
 });
 
 test('handle min or max <= 0 in log scale', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/image');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -303,13 +302,13 @@ test('handle min or max <= 0 in log scale', async () => {
     screen.findByRole('button', { name: 'Log' }) // wait for switch to log scale
   ).resolves.toBeVisible();
 
-  userEvent.click(editBtn);
+  await user.click(editBtn);
 
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
 
-  userEvent.clear(minInput);
-  userEvent.type(minInput, '-5{enter}');
+  await user.clear(minInput);
+  await user.type(minInput, '-5{enter}');
   expect(minInput).toHaveValue('−5e+0');
   expect(screen.getByText(/Custom min invalid/)).toHaveTextContent(
     /falling back to data min/
@@ -319,8 +318,8 @@ test('handle min or max <= 0 in log scale', async () => {
   expect(within(visArea).getByText('9.996e-1')).toBeInTheDocument(); // data max
 
   // If min and max are negative and min > max, min > max error and fallback take over
-  userEvent.clear(maxInput);
-  userEvent.type(maxInput, '-10{enter}');
+  await user.clear(maxInput);
+  await user.type(maxInput, '-10{enter}');
   expect(screen.queryByText(/Custom min invalid/)).not.toBeInTheDocument();
   expect(screen.queryByText(/Custom max invalid/)).not.toBeInTheDocument();
   expect(screen.getByText(/Min greater than max/)).toHaveTextContent(
@@ -329,7 +328,7 @@ test('handle min or max <= 0 in log scale', async () => {
 });
 
 test('handle min <= 0 with custom max fallback in log scale', async () => {
-  await renderApp();
+  const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry/image');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
@@ -337,16 +336,16 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
     screen.findByRole('button', { name: 'Log' }) // wait for switch to log scale
   ).resolves.toBeVisible();
 
-  userEvent.click(editBtn);
+  await user.click(editBtn);
 
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
 
-  userEvent.clear(minInput);
-  userEvent.type(minInput, '-5{enter}');
+  await user.clear(minInput);
+  await user.type(minInput, '-5{enter}');
 
-  userEvent.clear(maxInput);
-  userEvent.type(maxInput, '1e-4{enter}'); // lower than data min
+  await user.clear(maxInput);
+  await user.type(maxInput, '1e-4{enter}'); // lower than data min
 
   expect(screen.getByText(/Custom min invalid/)).toHaveTextContent(
     /falling back to custom max/
