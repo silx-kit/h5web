@@ -3,12 +3,12 @@ import { useLocation } from 'react-router-dom';
 
 import { getFeedbackURL } from './utils';
 
-const FILEPATH = import.meta.env.VITE_H5WASM_FALLBACK_FILEPATH as string;
+const URL = import.meta.env.VITE_H5WASM_FALLBACK_URL as string;
 // type H5WasmSourceType = string | File;
 
 function H5WasmApp() {
   const query = new URLSearchParams(useLocation().search);
-  const source = query.get('url') || FILEPATH;
+  const source = query.get('url') || URL;
 
   return (
     <H5WasmProvider source={source}>
