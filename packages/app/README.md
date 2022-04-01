@@ -63,14 +63,14 @@ various front-end development stacks:
 
 ## API reference
 
-### `startFullscreen?: boolean` (optional)
+### `explorerOpen?: boolean` (optional)
 
-By default, the app renders with the explorer panel open. Pass `startFullscreen`
-to collapse the panel on initial render instead. This gives more space to the
-visualization, which is useful when H5Web is embeded inside another app.
+Whether the app should start with the explorer panel open. Defaults to `true`.
+Pass `false` to hide the explorer on initial render, thus giving more space to
+the visualization. This may be useful when H5Web is embeded inside another app.
 
 ```tsx
-<App startFullscreen />
+<App explorerOpen={false} />
 ```
 
 ### `initialPath?: string` (optional)

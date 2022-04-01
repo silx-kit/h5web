@@ -16,10 +16,7 @@ function H5GroveApp() {
       filepath={filepath}
       axiosParams={{ file: filepath }}
     >
-      <App
-        startFullscreen={query.has('fullscreen')}
-        getFeedbackURL={getFeedbackURL}
-      />
+      <App explorerOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </H5GroveProvider>
   );
 }

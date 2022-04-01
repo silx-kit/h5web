@@ -1,5 +1,6 @@
 import '@h5web/lib'; // make sure lib styles come first in CSS bundle
 
+import { useToggle } from '@react-hookz/web';
 import { Suspense, useContext, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
@@ -16,16 +17,20 @@ import { ProviderContext } from './providers/context';
 import Visualizer from './visualizer/Visualizer';
 
 interface Props {
-  startFullscreen?: boolean;
+  explorerOpen?: boolean;
   initialPath?: string;
   getFeedbackURL?: (context: FeedbackContext) => string;
 }
 
 function App(props: Props) {
-  const { startFullscreen, initialPath = '/', getFeedbackURL } = props;
+  const {
+    explorerOpen: initialExplorerOpen = true,
+    initialPath = '/',
+    getFeedbackURL,
+  } = props;
 
   const [selectedPath, setSelectedPath] = useState<string>(initialPath);
-  const [isExplorerOpen, setExplorerOpen] = useState(!startFullscreen);
+  const [isExplorerOpen, toggleExplorerOpen] = useToggle(initialExplorerOpen);
   const [isInspecting, setInspecting] = useState(false);
 
   const { valuesStore } = useContext(ProviderContext);
@@ -57,7 +62,7 @@ function App(props: Props) {
             path={selectedPath}
             isExplorerOpen={isExplorerOpen}
             isInspecting={isInspecting}
-            onToggleExplorer={() => setExplorerOpen(!isExplorerOpen)}
+            onToggleExplorer={toggleExplorerOpen}
             onChangeInspecting={setInspecting}
             onSelectPath={onSelectPath}
             getFeedbackURL={getFeedbackURL}
