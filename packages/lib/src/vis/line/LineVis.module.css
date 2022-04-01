@@ -6,15 +6,33 @@
   margin: 1rem;
 }
 
-.tooltipValue {
+.tooltipItem {
+  display: flex;
+  align-items: baseline;
+}
+
+.tooltipValue,
+.tooltipAux {
+  composes: tooltipItem;
+}
+
+.tooltipValue,
+.tooltipValue + .tooltipAux {
   margin-top: 0.25rem;
 }
 
-.tooltipValue:not(:last-child) {
-  margin-bottom: 0.25rem;
-}
-
-.tooltipValue > strong {
+.tooltipValue strong {
   font-weight: 600;
   font-size: 1.125em;
+}
+
+.mark {
+  content: '';
+  display: block;
+  width: 0.75em;
+  height: 0.375rem;
+  margin-right: 0.375rem;
+  padding-bottom: 0.125rem;
+  background-color: currentColor;
+  transform: translateY(-1px);
 }
