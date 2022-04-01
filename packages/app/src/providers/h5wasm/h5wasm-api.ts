@@ -8,14 +8,12 @@ import type {
   UnresolvedEntity,
 } from '@h5web/shared';
 import { hasScalarShape, EntityKind, buildEntityPath } from '@h5web/shared';
+import type { File as H5WasmFile } from 'h5wasm';
 import {
-  Dataset as h5wasm_Dataset,
-  ready as h5wasm_ready,
-  File as h5wasm_File,
-  Group as h5wasm_Group,
-  BrokenSoftLink as h5wasm_BrokenSoftLink,
-  ExternalLink as h5wasm_ExternalLink,
-  FS as h5wasm_FS,
+  Dataset as H5WasmDataset,
+  Group as H5WasmGroup,
+  BrokenSoftLink as H5WasmBrokenSoftLink,
+  ExternalLink as H5WasmExternalLink,
 } from 'h5wasm';
 
 import { ProviderApi } from '../api';
@@ -26,11 +24,11 @@ function convert_attrs(attrs: object): Attribute[] {
   return Object.entries(attrs).map(([name, value]) => ({
     name,
     shape: value.shape,
-    type: convertDtype((value as h5wasm_attr).dtype),
+    type: convertDtype((value as H5WasmAttribute).dtype),
   }));
 }
 
-interface h5wasm_attr {
+interface H5WasmAttribute {
   value: unknown;
   shape: Shape;
   dtype: string;
@@ -39,11 +37,11 @@ interface h5wasm_attr {
 export class H5WasmApi extends ProviderApi {
   /* API compatible with h5wasm@0.3.1 */
 
-  public file_promise: Promise<h5wasm_File>;
+  public file_promise: Promise<H5WasmFile>;
 
-  public constructor(filepath: string) {
+  public constructor(file_promise: Promise<H5WasmFile>, filepath: string) {
     super(filepath);
-    this.file_promise = this.fetchFile(filepath);
+    this.file_promise = file_promise;
   }
 
   public async getEntity(path: string): Promise<Entity> {
@@ -55,7 +53,7 @@ export class H5WasmApi extends ProviderApi {
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { dataset } = params;
     const file = await this.file_promise;
-    const dataset_obj = file.get(dataset.path) as h5wasm_Dataset;
+    const dataset_obj = file.get(dataset.path) as H5WasmDataset;
     const array = dataset_obj.value;
     return hasScalarShape(dataset) ? array[0] : array;
   }
@@ -64,11 +62,11 @@ export class H5WasmApi extends ProviderApi {
     const { path, kind } = entity;
     if (kind === EntityKind.Group || kind === EntityKind.Dataset) {
       const file = await this.file_promise;
-      const entity_obj = file.get(path) as h5wasm_Dataset | h5wasm_Group;
+      const entity_obj = file.get(path) as H5WasmDataset | H5WasmGroup;
       return Object.fromEntries(
         Object.entries(entity_obj.attrs).map(([name, value]) => [
           name,
-          (value as h5wasm_attr).value,
+          (value as H5WasmAttribute).value,
         ])
       );
     }
@@ -79,10 +77,10 @@ export class H5WasmApi extends ProviderApi {
     name: string,
     path: string,
     entity_obj:
-      | h5wasm_Group
-      | h5wasm_Dataset
-      | h5wasm_BrokenSoftLink
-      | h5wasm_ExternalLink,
+      | H5WasmGroup
+      | H5WasmDataset
+      | H5WasmBrokenSoftLink
+      | H5WasmExternalLink,
     recursive = false
   ): Entity {
     const baseEntity = {
@@ -90,7 +88,7 @@ export class H5WasmApi extends ProviderApi {
       path,
     };
 
-    if (entity_obj instanceof h5wasm_Group) {
+    if (entity_obj instanceof H5WasmGroup) {
       let children: Entity[] = [];
       if (recursive) {
         children = entity_obj.keys().map((name) => {
@@ -109,7 +107,7 @@ export class H5WasmApi extends ProviderApi {
         attributes: convert_attrs(entity_obj.attrs),
         children,
       } as GroupWithChildren;
-    } else if (entity_obj instanceof h5wasm_Dataset) {
+    } else if (entity_obj instanceof H5WasmDataset) {
       return {
         ...baseEntity,
         kind: EntityKind.Dataset,
@@ -117,7 +115,7 @@ export class H5WasmApi extends ProviderApi {
         shape: entity_obj.shape,
         type: convertDtype(entity_obj.dtype as string),
       } as Dataset;
-    } else if (entity_obj instanceof h5wasm_BrokenSoftLink) {
+    } else if (entity_obj instanceof H5WasmBrokenSoftLink) {
       const { target } = entity_obj;
       return {
         ...baseEntity,
@@ -125,7 +123,7 @@ export class H5WasmApi extends ProviderApi {
         kind: EntityKind.Unresolved,
         link: { class: 'Soft', path: target },
       };
-    } else if (entity_obj instanceof h5wasm_ExternalLink) {
+    } else if (entity_obj instanceof H5WasmExternalLink) {
       const { filename, obj_path } = entity_obj;
       return {
         ...baseEntity,
@@ -139,15 +137,5 @@ export class H5WasmApi extends ProviderApi {
       ...baseEntity,
       kind: EntityKind.Unresolved,
     } as UnresolvedEntity;
-  }
-
-  private async fetchFile(filepath: string): Promise<h5wasm_File> {
-    await h5wasm_ready;
-    const response = await this.client.get<ArrayBuffer>(filepath, {
-      responseType: 'arraybuffer',
-    });
-    const ab = response.data;
-    h5wasm_FS.writeFile('current.h5', new Uint8Array(ab));
-    return new h5wasm_File('current.h5', 'r');
   }
 }
