@@ -1,4 +1,5 @@
 import { FiActivity, FiImage, FiMap } from 'react-icons/fi';
+import { MdGrain } from 'react-icons/md';
 
 import {
   LineConfigProvider,
@@ -7,6 +8,7 @@ import {
   ComplexLineConfigProvider,
   RgbConfigProvider,
 } from '../core/configs';
+import { ScatterConfigProvider } from '../core/scatter/config';
 import type { VisDef } from '../models';
 import {
   NxSpectrumContainer,
@@ -14,6 +16,7 @@ import {
   NxComplexImageContainer,
   NxComplexSpectrumContainer,
   NxRgbContainer,
+  NxScatterContainer,
 } from './containers';
 
 export enum NexusVis {
@@ -22,6 +25,7 @@ export enum NexusVis {
   NxImage = 'NX Image',
   NxComplexImage = 'NX Complex Image',
   NxRGB = 'NX RGB',
+  NxScatter = 'NX Scatter',
 }
 
 export const NEXUS_VIS: Record<NexusVis, VisDef> = {
@@ -58,5 +62,12 @@ export const NEXUS_VIS: Record<NexusVis, VisDef> = {
     Icon: FiImage,
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
+  },
+
+  [NexusVis.NxScatter]: {
+    name: NexusVis.NxScatter,
+    Icon: MdGrain,
+    Container: NxScatterContainer,
+    ConfigProvider: ScatterConfigProvider,
   },
 };

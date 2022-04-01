@@ -1,22 +1,26 @@
 import type { Entity } from '@h5web/shared';
 import {
   assertGroupWithChildren,
+  assertStr,
+  buildEntityPath,
   hasComplexType,
   hasMinDims,
   hasNumDims,
-  isGroup,
   isDataset,
-  assertStr,
-  buildEntityPath,
+  isGroup,
   NxInterpretation,
 } from '@h5web/shared';
 
 import type { AttrValuesStore, EntitiesStore } from '../providers/models';
 import { hasAttribute } from '../utils';
 import type { CoreVisDef } from '../vis-packs/core/visualizations';
-import { Vis, CORE_VIS } from '../vis-packs/core/visualizations';
+import { CORE_VIS, Vis } from '../vis-packs/core/visualizations';
 import type { VisDef } from '../vis-packs/models';
-import { findSignalDataset, isNxDataGroup } from '../vis-packs/nexus/utils';
+import {
+  findAssociatedDatasets,
+  findSignalDataset,
+  isNxDataGroup,
+} from '../vis-packs/nexus/utils';
 import { NexusVis, NEXUS_VIS } from '../vis-packs/nexus/visualizations';
 
 export function resolvePath(
@@ -88,16 +92,16 @@ function getSupportedCoreVis(
 
 function getSupportedNxVis(
   entity: Entity,
-  attrValueStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore
 ): VisDef[] {
-  if (!isGroup(entity) || !isNxDataGroup(entity, attrValueStore)) {
+  if (!isGroup(entity) || !isNxDataGroup(entity, attrValuesStore)) {
     return [];
   }
 
   assertGroupWithChildren(entity);
-  const dataset = findSignalDataset(entity, attrValueStore);
+  const dataset = findSignalDataset(entity, attrValuesStore);
   const isCplx = hasComplexType(dataset);
-  const { interpretation } = attrValueStore.get(dataset);
+  const { interpretation } = attrValuesStore.get(dataset);
 
   if (
     interpretation === NxInterpretation.RGB &&
@@ -118,10 +122,20 @@ function getSupportedNxVis(
     return [NEXUS_VIS[spectrumVis]];
   }
 
-  return [
-    NEXUS_VIS[spectrumVis],
-    ...(hasMinDims(dataset, 2) ? [NEXUS_VIS[imageVis]] : []),
-  ];
+  // Fall back on dimension checks: 2D+ are Spectrum+Image, 1D can be Scatter or Spectrum
+  if (hasMinDims(dataset, 2)) {
+    return [NEXUS_VIS[spectrumVis], NEXUS_VIS[imageVis]];
+  }
+
+  const axisDatasets = findAssociatedDatasets(entity, 'axes', attrValuesStore);
+  if (
+    axisDatasets.length === 2 &&
+    axisDatasets.every((d) => d && hasNumDims(d, 1))
+  ) {
+    return [NEXUS_VIS[NexusVis.NxScatter]];
+  }
+
+  return [NEXUS_VIS[spectrumVis]];
 }
 
 function getImplicitDefaultChild(

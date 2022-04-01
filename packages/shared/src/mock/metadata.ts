@@ -167,6 +167,14 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
           },
           axesAttr: ['Y', 'X'],
         }),
+        makeNxDataGroup('scatter', {
+          signal: makeDataset('scatter_data', intType, [41]),
+          axes: {
+            X: makeNxDataset('X', intType, [41], { valueId: 'X' }),
+            Y: makeNxDataset('Y', intType, [41], { valueId: 'Y_scatter' }),
+          },
+          axesAttr: ['X', 'Y'],
+        }),
       ],
     }),
     makeNxGroup('nexus_no_default', 'NXprocess', {

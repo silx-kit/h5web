@@ -47,6 +47,19 @@ test('visualize NXdata group with 2D signal', async () => {
   ).resolves.toBeVisible();
 });
 
+test('visualize NXdata group with 1D signal and two 1D axes of same length', async () => {
+  const { selectExplorerNode } = await renderApp();
+  await selectExplorerNode('nexus_entry/scatter');
+
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(1);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxScatter);
+
+  await expect(
+    screen.findByRole('figure', { name: 'scatter_data' })
+  ).resolves.toBeVisible();
+});
+
 test('visualize NXentry group with relative path to 2D default signal', async () => {
   const { selectExplorerNode } = await renderApp();
   await selectExplorerNode('nexus_entry');
