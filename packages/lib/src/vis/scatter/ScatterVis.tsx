@@ -1,5 +1,6 @@
 import type { Domain, NumArray } from '@h5web/shared';
 import { assertLength, assertDefined, ScaleType } from '@h5web/shared';
+import { toArray } from 'lodash';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
@@ -12,16 +13,15 @@ import { useAxisDomain } from '../hooks';
 import VisCanvas from '../shared/VisCanvas';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
+import type { ScatterAxisParams } from './models';
 
 interface Props {
-  dataAbscissas: number[];
-  dataOrdinates: number[];
+  abscissaParams: ScatterAxisParams;
+  ordinateParams: ScatterAxisParams;
   dataArray: NdArray<NumArray>;
   domain: Domain;
   colorMap: ColorMap;
   invertColorMap?: boolean;
-  abscissaLabel?: string;
-  ordinateLabel?: string;
   scaleType?: ScaleType;
   showGrid?: boolean;
   title?: string;
@@ -32,14 +32,12 @@ interface Props {
 
 function ScatterVis(props: Props) {
   const {
-    dataAbscissas: abscissas,
-    dataOrdinates: ordinates,
+    abscissaParams,
+    ordinateParams,
     dataArray,
     domain,
     colorMap,
     invertColorMap = false,
-    abscissaLabel,
-    ordinateLabel,
     scaleType = ScaleType.Linear,
     showGrid = true,
     title,
@@ -48,12 +46,26 @@ function ScatterVis(props: Props) {
     interactions,
   } = props;
 
-  assertLength(abscissas, dataArray.size, 'abscissa');
-  assertLength(ordinates, dataArray.size, 'ordinates');
+  const {
+    value: abscissaValue,
+    label: abscissaLabel,
+    scaleType: abscissaScaleType,
+  } = abscissaParams;
+  const {
+    value: ordinateValue,
+    label: ordinateLabel,
+    scaleType: ordinateScaleType,
+  } = ordinateParams;
 
-  const abscissaDomain = useAxisDomain(abscissas, undefined, 0.01);
+  assertLength(abscissaValue, dataArray.size, 'abscissa');
+  assertLength(ordinateValue, dataArray.size, 'ordinates');
+
+  const abscissas = toArray(abscissaValue);
+  const ordinates = toArray(ordinateValue);
+
+  const abscissaDomain = useAxisDomain(abscissas, abscissaScaleType, 0.01);
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
-  const ordinateDomain = useAxisDomain(ordinates, undefined, 0.01);
+  const ordinateDomain = useAxisDomain(ordinates, ordinateScaleType, 0.01);
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 
   return (
@@ -63,11 +75,13 @@ function ScatterVis(props: Props) {
           visDomain: abscissaDomain,
           showGrid,
           label: abscissaLabel,
+          scaleType: abscissaScaleType,
         }}
         ordinateConfig={{
           visDomain: ordinateDomain,
           showGrid,
           label: ordinateLabel,
+          scaleType: ordinateScaleType,
         }}
         title={title}
       >

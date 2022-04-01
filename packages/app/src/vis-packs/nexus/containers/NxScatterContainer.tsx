@@ -11,6 +11,7 @@ import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
+import { assertScatterAxisParams } from '../utils';
 
 function NxScatterContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -41,10 +42,15 @@ function NxScatterContainer(props: VisContainerProps) {
         render={(nxValues) => {
           const { signal, axisMapping, title } = nxValues;
 
+          const [xAxisParams, yAxisParams] = axisMapping;
+          assertScatterAxisParams(xAxisParams);
+          assertScatterAxisParams(yAxisParams);
+
           return (
             <MappedScatterVis
               value={signal}
-              axisMapping={axisMapping}
+              abscissaParams={xAxisParams}
+              ordinateParams={yAxisParams}
               title={title}
               toolbarContainer={toolbarContainer}
               colorScaleType={silxStyle.signalScaleType}

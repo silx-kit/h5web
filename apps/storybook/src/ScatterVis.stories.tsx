@@ -18,14 +18,16 @@ const abscissas = [
   2.04, 3.2, 4.02, 5.1, 6.09, 7.05, 8.15, 9.02,
 ];
 const ordinates = [
-  0.13, 0.04, 0.05, 0.14, 0.17, 0.2, 0.12, 0.06, 0.15, 0.19, 1, 1.08, 1.17,
-  1.09, 1.15, 1.01, 1.04, 1.09, 1.18, 1.15, 2.18, 2.17, 2.08, 2.07, 2.08, 2.06,
-  2.06, 2.04, 2.04, 2.06, 3.1, 3.06, 3.18, 3, 3.01, 3.18, 3.12, 3.06, 3.19,
-  3.15, 4.14, 4.18, 4.11, 4.02, 4.16, 4.05, 4.02, 4.01, 4.18, 4.11, 5.16, 5.05,
-  5.15, 5.16, 5.14, 5.09, 5.09, 5.15, 5.19, 5.11, 6.02, 6.04, 6.04, 6.12, 6.2,
-  6.17, 6.01, 6.05, 6.18, 6.12, 7.18, 7, 7.12, 7.1, 7.18, 7.01, 7.16, 7.17, 7.1,
-  7.02, 8.12, 8.1, 8.13, 8.19, 8.16, 8.03, 8.13, 8.17, 8.15, 8.18, 9.16, 9.12,
-  9.1, 9.17, 9.12, 9.05, 9.08, 9.17, 9.02, 9.13,
+  10.13, 10.04, 10.05, 10.14, 10.17, 10.2, 10.12, 10.06, 10.15, 10.19, 11,
+  11.08, 11.17, 11.09, 11.15, 11.01, 11.04, 11.09, 11.18, 11.15, 12.18, 12.17,
+  12.08, 12.07, 12.08, 12.06, 12.06, 12.04, 12.04, 12.06, 13.1, 13.06, 13.18,
+  13, 13.01, 13.18, 13.12, 13.06, 13.19, 13.15, 14.14, 14.18, 14.11, 14.02,
+  14.16, 14.05, 14.02, 14.01, 14.18, 14.11, 15.16, 15.05, 15.15, 15.16, 15.14,
+  15.09, 15.09, 15.15, 15.19, 15.11, 16.02, 16.04, 16.04, 16.12, 16.2, 16.17,
+  16.01, 16.05, 16.18, 16.12, 17.18, 17, 17.12, 17.1, 17.18, 17.01, 17.16,
+  17.17, 17.1, 17.02, 18.12, 18.1, 18.13, 18.19, 18.16, 18.03, 18.13, 18.17,
+  18.15, 18.18, 19.16, 19.12, 19.1, 19.17, 19.12, 19.05, 19.08, 19.17, 19.02,
+  19.13,
 ];
 const data = [
   0.01, 1.03, 4.78, 9.06, 17.58, 25.97, 36.61, 50.44, 64.79, 83.98, 1.43, 2.46,
@@ -45,16 +47,16 @@ const dataArray = ndarray(data);
 
 export const Default = Template.bind({});
 Default.args = {
-  dataAbscissas: abscissas,
-  dataOrdinates: ordinates.map((v) => v + 10),
+  abscissaParams: { value: abscissas },
+  ordinateParams: { value: ordinates },
   dataArray,
   domain,
 };
 
 export const TypedArray = Template.bind({});
 TypedArray.args = {
-  dataAbscissas: abscissas,
-  dataOrdinates: ordinates.map((v) => v + 10),
+  abscissaParams: { value: abscissas },
+  ordinateParams: { value: ordinates },
   dataArray: ndarray(Float32Array.from(data)),
   domain,
 };
@@ -65,12 +67,27 @@ MarkerSize.args = {
   size: 20,
 };
 
+export const ColorScaleType = Template.bind({});
+ColorScaleType.args = {
+  ...Default.args,
+  scaleType: ScaleType.SymLog,
+};
+
 export const Labels = Template.bind({});
 Labels.args = {
-  ...Default.args,
+  abscissaParams: { value: abscissas, label: 'Latitude' },
+  ordinateParams: { value: ordinates, label: 'Longitude' },
+  dataArray,
+  domain,
   title: 'A Scatter vis',
-  abscissaLabel: 'Latitude',
-  ordinateLabel: 'Longitude',
+};
+
+export const AxisScaleTypes = Template.bind({});
+AxisScaleTypes.args = {
+  abscissaParams: { value: abscissas, scaleType: ScaleType.SymLog },
+  ordinateParams: { value: ordinates, scaleType: ScaleType.Log },
+  dataArray,
+  domain,
 };
 
 export default {
