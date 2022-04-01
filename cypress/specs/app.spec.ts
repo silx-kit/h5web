@@ -23,15 +23,15 @@ describe('App', () => {
     }
   });
 
-  it('keep the explorer closed when starting in fullscreen mode', () => {
+  it('start with the explorer closed', () => {
     cy.findByRole('tree').should('exist');
 
-    cy.visit('/mock?fullscreen');
+    cy.visit('/mock?wide');
     cy.findByRole('tree').should('not.exist');
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
       cy.wait(SNAPSHOT_DELAY);
-      cy.matchImageSnapshot('fullscreen');
+      cy.matchImageSnapshot('wide');
     }
   });
 

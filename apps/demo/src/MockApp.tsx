@@ -8,10 +8,7 @@ function MockApp() {
 
   return (
     <MockProvider>
-      <App
-        startFullscreen={query.has('fullscreen')}
-        getFeedbackURL={getFeedbackURL}
-      />
+      <App explorerOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </MockProvider>
   );
 }

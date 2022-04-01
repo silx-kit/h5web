@@ -6,11 +6,6 @@
   padding: calc(0.5rem - 1px) 0.75rem 0.5rem;
 }
 
-.bar > span {
-  margin-left: 0.375rem;
-  margin-right: 0.875rem;
-}
-
 .breadCrumbs {
   flex: 1 1 0%;
   display: flex;
