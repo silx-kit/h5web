@@ -14,13 +14,18 @@ import shallow from 'zustand/shallow';
 import { BASE_INTERACTIONS } from '../utils';
 import { useScatterConfig } from './config';
 
+const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
+
 interface Props {
   dataDomain: Domain;
   initialScaleType: ScaleType | undefined;
+  initialXScaleType: ScaleType | undefined;
+  initialYScaleType: ScaleType | undefined;
 }
 
 function ScatterToolbar(props: Props) {
-  const { dataDomain, initialScaleType } = props;
+  const { dataDomain, initialScaleType, initialXScaleType, initialYScaleType } =
+    props;
 
   const {
     customDomain,
@@ -33,6 +38,10 @@ function ScatterToolbar(props: Props) {
     toggleGrid,
     invertColorMap,
     toggleColorMapInversion,
+    xScaleType,
+    setXScaleType,
+    yScaleType,
+    setYScaleType,
   } = useScatterConfig((state) => state, shallow);
 
   useEffect(() => {
@@ -41,8 +50,35 @@ function ScatterToolbar(props: Props) {
     }
   }, [initialScaleType, setScaleType]);
 
+  useEffect(() => {
+    if (initialXScaleType) {
+      setXScaleType(initialXScaleType);
+    }
+  }, [initialXScaleType, setXScaleType]);
+
+  useEffect(() => {
+    if (initialYScaleType) {
+      setYScaleType(initialYScaleType);
+    }
+  }, [initialYScaleType, setYScaleType]);
+
   return (
     <Toolbar interactions={BASE_INTERACTIONS}>
+      <ScaleSelector
+        label="X"
+        value={xScaleType}
+        onScaleChange={setXScaleType}
+        options={SCALETYPE_OPTIONS}
+      />
+      <ScaleSelector
+        label="Y"
+        value={yScaleType}
+        onScaleChange={setYScaleType}
+        options={SCALETYPE_OPTIONS}
+      />
+
+      <Separator />
+
       <DomainSlider
         dataDomain={dataDomain}
         customDomain={customDomain}

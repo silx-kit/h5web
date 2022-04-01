@@ -22,6 +22,11 @@ interface ScatterConfig {
 
   showGrid: boolean;
   toggleGrid: () => void;
+
+  xScaleType: ScaleType;
+  yScaleType: ScaleType;
+  setXScaleType: (type: ScaleType) => void;
+  setYScaleType: (type: ScaleType) => void;
 }
 
 function createStore() {
@@ -48,10 +53,15 @@ function createStore() {
 
         showGrid: true,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
+
+        xScaleType: ScaleType.Linear,
+        yScaleType: ScaleType.Linear,
+        setXScaleType: (type: ScaleType) => set({ xScaleType: type }),
+        setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
       }),
       {
         name: 'h5web:scatter',
-        version: 1,
+        version: 2,
       }
     )
   );

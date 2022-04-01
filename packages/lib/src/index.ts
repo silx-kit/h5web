@@ -110,6 +110,7 @@ export type {
 } from './vis/models';
 
 export type { D3Interpolator, ColorMap } from './vis/heatmap/models';
+export type { ScatterAxisParams } from './vis/scatter/models';
 
 // Mock data and utilities
 export {
