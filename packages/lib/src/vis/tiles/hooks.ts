@@ -14,12 +14,17 @@ export function useScaledVisibleDomains(size: Size): {
   const { abscissaConfig, ordinateConfig } = useAxisSystemContext();
 
   const xScale = scaleLinear({
-    domain: abscissaConfig.visDomain,
+    domain: abscissaConfig.flip
+      ? abscissaConfig.visDomain.reverse()
+      : abscissaConfig.visDomain,
     range: [0, width],
     clamp: true,
   });
+
   const yScale = scaleLinear({
-    domain: ordinateConfig.visDomain,
+    domain: ordinateConfig.flip
+      ? ordinateConfig.visDomain.reverse()
+      : ordinateConfig.visDomain,
     range: [0, height],
     clamp: true,
   });
