@@ -1,7 +1,8 @@
 import type { Domain, NumArray, ScaleType } from '@h5web/shared';
+import type { ThreeEvent } from '@react-three/fiber';
 import { useThree } from '@react-three/fiber';
 import { rgb } from 'd3-color';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { BufferAttribute, BufferGeometry } from 'three';
 
 import type { ColorMap } from '../heatmap/models';
@@ -20,6 +21,7 @@ interface Props {
   colorMap: ColorMap;
   invertColorMap: boolean;
   size: number;
+  onClick?: (index: number | undefined, evt: ThreeEvent<MouseEvent>) => void;
 }
 
 function ScatterPoints(props: Props) {
@@ -32,7 +34,31 @@ function ScatterPoints(props: Props) {
     colorMap,
     invertColorMap,
     size,
+    onClick,
   } = props;
+
+  // Increase raycaster threshold to match point size
+  const raycaster = useThree((state) => state.raycaster);
+  useEffect(() => {
+    const oldThreshold = raycaster.params.Points?.threshold || 1;
+    if (raycaster.params.Points) {
+      raycaster.params.Points.threshold = size / 2;
+    }
+
+    return () => {
+      if (raycaster.params.Points) {
+        raycaster.params.Points.threshold = oldThreshold;
+      }
+    };
+  }, [raycaster, size]);
+
+  function handleClick(evt: ThreeEvent<MouseEvent>) {
+    const { index } = evt;
+
+    if (onClick) {
+      onClick(index, evt);
+    }
+  }
 
   const [dataGeometry] = useState(() => new BufferGeometry());
   const invalidate = useThree((state) => state.invalidate);
@@ -63,7 +89,7 @@ function ScatterPoints(props: Props) {
   }, [color, dataGeometry, invalidate, position]);
 
   return (
-    <points geometry={dataGeometry}>
+    <points onClick={handleClick} geometry={dataGeometry}>
       <GlyphMaterial size={size} glyphType={GlyphType.Circle} />
     </points>
   );

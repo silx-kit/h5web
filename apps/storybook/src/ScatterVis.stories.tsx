@@ -3,6 +3,7 @@ import type { ScatterVisProps } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
+import { useState } from 'react';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -88,6 +89,27 @@ AxisScaleTypes.args = {
   ordinateParams: { value: ordinates, scaleType: ScaleType.Log },
   dataArray,
   domain,
+};
+
+export const Click: Story<ScatterVisProps> = (args) => {
+  const [title, setTitle] = useState(`Click on a point !`);
+
+  return (
+    <ScatterVis
+      {...args}
+      title={title}
+      onPointClick={(index) => {
+        setTitle(
+          index !== undefined
+            ? `You clicked on point ${index} (value: ${data[index]})`
+            : `Click on a point !`
+        );
+      }}
+    />
+  );
+};
+Click.args = {
+  ...Default.args,
 };
 
 export default {

@@ -1,5 +1,6 @@
 import type { Domain, NumArray } from '@h5web/shared';
 import { assertLength, assertDefined, ScaleType } from '@h5web/shared';
+import type { ThreeEvent } from '@react-three/fiber';
 import { toArray } from 'lodash';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
@@ -28,6 +29,10 @@ interface Props {
   size?: number;
   children?: ReactNode;
   interactions?: Interactions;
+  onPointClick?: (
+    index: number | undefined,
+    evt: ThreeEvent<MouseEvent>
+  ) => void;
 }
 
 function ScatterVis(props: Props) {
@@ -44,6 +49,7 @@ function ScatterVis(props: Props) {
     size = 10,
     children,
     interactions,
+    onPointClick,
   } = props;
 
   const {
@@ -99,6 +105,7 @@ function ScatterVis(props: Props) {
           colorMap={colorMap}
           invertColorMap={invertColorMap}
           size={size}
+          onClick={onPointClick}
         />
 
         {children}
