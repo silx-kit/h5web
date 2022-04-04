@@ -20,10 +20,9 @@ function TiledLayer(props: Props) {
   const { baseLayerIndex, numLayers, tileSize } = api;
   const layerSize = api.layerSizes[layer];
 
-  const { visSize } = useAxisSystemContext();
+  const { abscissaConfig, ordinateConfig, visSize } = useAxisSystemContext();
   const { xVisibleDomain, yVisibleDomain } = useScaledVisibleDomains(layerSize);
 
-  // Transform visible domain to current level-of-detail array coordinates
   const tileOffsets = getTileOffsets(xVisibleDomain, yVisibleDomain, tileSize);
 
   // Sort tiles from closest to vis center to farthest away
@@ -31,27 +30,33 @@ function TiledLayer(props: Props) {
   sortTilesByDistanceTo(tileOffsets, tileSize, center);
 
   return (
-    // Tranforms to use level of details layer array coordinates
+    // Transforms to handle axes flip and use level of details layer array coordinates
     <group
-      position={[-visSize.width / 2, -visSize.height / 2, layer / numLayers]}
-      scale={[
-        visSize.width / layerSize.width,
-        visSize.height / layerSize.height,
-        1,
-      ]}
+      scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
     >
-      {tileOffsets.map((offset) => (
-        <Suspense key={`${offset.x},${offset.y}`} fallback={null}>
-          <Tile
-            api={api}
-            layer={layer}
-            x={offset.x}
-            y={offset.y}
-            {...colorMapProps}
-            magFilter={layer === baseLayerIndex ? NearestFilter : LinearFilter}
-          />
-        </Suspense>
-      ))}
+      <group
+        position={[-visSize.width / 2, -visSize.height / 2, layer / numLayers]}
+        scale={[
+          visSize.width / layerSize.width,
+          visSize.height / layerSize.height,
+          1,
+        ]}
+      >
+        {tileOffsets.map((offset) => (
+          <Suspense key={`${offset.x},${offset.y}`} fallback={null}>
+            <Tile
+              api={api}
+              layer={layer}
+              x={offset.x}
+              y={offset.y}
+              {...colorMapProps}
+              magFilter={
+                layer === baseLayerIndex ? NearestFilter : LinearFilter
+              }
+            />
+          </Suspense>
+        ))}
+      </group>
     </group>
   );
 }
