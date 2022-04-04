@@ -144,6 +144,7 @@ function HeatmapVis(props: Props) {
           scaleType={scaleType}
           alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
+          scale={[1, flipYAxis ? -1 : 1, 1]}
         />
 
         {children}
