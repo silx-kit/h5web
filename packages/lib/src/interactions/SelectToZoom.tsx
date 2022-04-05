@@ -7,14 +7,15 @@ import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
 import type { Interaction, Selection } from './models';
-import { getEnclosedRectangle, getRatioEndPoint } from './utils';
+import { getEnclosedRectangle, getRatioRespectingRectangle } from './utils';
 
 interface Props extends Interaction {
   keepRatio?: boolean;
+  clampCenter?: boolean;
 }
 
 function SelectToZoom(props: Props) {
-  const { keepRatio, ...interactionProps } = props;
+  const { keepRatio, clampCenter, ...interactionProps } = props;
 
   const { dataToWorld } = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
@@ -32,12 +33,16 @@ function SelectToZoom(props: Props) {
     const { startPoint: dataStartPoint, endPoint: dataEndPoint } = selection;
 
     // Work in world coordinates as we need to act on the world camera
-    const startPoint = dataToWorld(dataStartPoint);
-    const endPoint = dataToWorld(
+    const [startPoint, endPoint] = (
       keepRatio
-        ? getRatioEndPoint(dataStartPoint, dataEndPoint, dataRatio)
-        : dataEndPoint
-    );
+        ? getRatioRespectingRectangle(
+            dataStartPoint,
+            dataEndPoint,
+            dataRatio,
+            clampCenter
+          )
+        : [dataStartPoint, dataEndPoint]
+    ).map(dataToWorld);
 
     if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
       return;
@@ -62,6 +67,7 @@ function SelectToZoom(props: Props) {
     <SelectionTool
       onSelectionEnd={onSelectionEnd}
       id="SelectToZoom"
+      clampCenter={clampCenter}
       {...interactionProps}
     >
       {({ startPoint, endPoint }) => {
@@ -80,6 +86,7 @@ function SelectToZoom(props: Props) {
                 startPoint={startPoint}
                 endPoint={endPoint}
                 ratio={dataRatio}
+                clampCenter={clampCenter}
                 fillOpacity={0.25}
                 fill="white"
                 stroke="black"

@@ -2,7 +2,7 @@ import { useKeyboardEvent, useToggle, useRafState } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
-import type { Vector2 } from 'three';
+import { Vector2 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { useCanvasEvents, useRegisterInteraction } from './hooks';
@@ -15,6 +15,7 @@ interface Props extends Interaction {
   onSelectionEnd?: (points: Selection) => void;
   id?: string;
   children: (points: Selection) => ReactElement;
+  clampCenter?: boolean;
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -27,15 +28,30 @@ function SelectionTool(props: Props) {
     id = 'Selection',
     modifierKey,
     disabled,
+    clampCenter,
   } = props;
 
   const camera = useThree((state) => state.camera);
   const { worldToData } = useAxisSystemContext();
   const shouldInteract = useRegisterInteraction(id, { modifierKey, disabled });
 
-  const [startPoint, setStartPoint] = useState<Vector2>();
-  const [endPoint, setEndPoint] = useRafState<Vector2 | undefined>(undefined);
+  const [originPoint, setOriginPoint] = useState<Vector2>();
+  const [selection, setSelection] = useRafState<Selection | undefined>(
+    undefined
+  );
   const [isVisible, toggleVisible] = useToggle(true);
+
+  const getWorldStartPoint = useCallback(
+    (originPoint: Vector2, endPoint: Vector2) => {
+      if (!clampCenter) {
+        return originPoint.clone();
+      }
+      // Make origin the center of the rectangle
+      const delta = originPoint.clone().sub(endPoint);
+      return originPoint.clone().add(delta);
+    },
+    [clampCenter]
+  );
 
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
@@ -46,37 +62,44 @@ function SelectionTool(props: Props) {
 
       const { target, pointerId } = sourceEvent;
       (target as Element).setPointerCapture(pointerId);
-      setStartPoint(worldToData(unprojectedPoint));
+      setSelection({
+        startPoint: worldToData(unprojectedPoint),
+        endPoint: worldToData(unprojectedPoint),
+      });
+      setOriginPoint(new Vector2(unprojectedPoint.x, unprojectedPoint.y));
 
       if (onSelectionStart) {
         onSelectionStart();
       }
     },
-    [onSelectionStart, shouldInteract, worldToData]
+    [onSelectionStart, setSelection, shouldInteract, worldToData]
   );
 
   const onPointerMove = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      if (!startPoint) {
+      if (!originPoint) {
         return;
       }
 
       const { unprojectedPoint, sourceEvent } = evt;
-      const point = worldToData(boundPointToFOV(unprojectedPoint, camera));
-      setEndPoint(point);
+      const worldEndPoint = new Vector2(unprojectedPoint.x, unprojectedPoint.y);
+      const worldStartPoint = getWorldStartPoint(originPoint, worldEndPoint);
+      const selection = {
+        startPoint: worldToData(boundPointToFOV(worldStartPoint, camera)),
+        endPoint: worldToData(boundPointToFOV(worldEndPoint, camera)),
+      };
+      setSelection(selection);
 
       if (onSelectionChange && shouldInteract(sourceEvent)) {
-        onSelectionChange({
-          startPoint,
-          endPoint: point,
-        });
+        onSelectionChange(selection);
       }
     },
     [
-      startPoint,
+      originPoint,
+      getWorldStartPoint,
       worldToData,
       camera,
-      setEndPoint,
+      setSelection,
       onSelectionChange,
       shouldInteract,
     ]
@@ -84,7 +107,7 @@ function SelectionTool(props: Props) {
 
   const onPointerUp = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      if (!startPoint) {
+      if (!originPoint) {
         return;
       }
 
@@ -92,23 +115,28 @@ function SelectionTool(props: Props) {
       const { target, pointerId } = sourceEvent;
       (target as Element).releasePointerCapture(pointerId);
 
-      setStartPoint(undefined);
-      setEndPoint(undefined);
+      const worldEndPoint = new Vector2(unprojectedPoint.x, unprojectedPoint.y);
+      const worldStartPoint = getWorldStartPoint(originPoint, worldEndPoint);
+      const selection = {
+        startPoint: worldToData(boundPointToFOV(worldStartPoint, camera)),
+        endPoint: worldToData(boundPointToFOV(worldEndPoint, camera)),
+      };
+
+      setSelection(undefined);
+      setOriginPoint(undefined);
 
       if (onSelectionEnd && shouldInteract(sourceEvent)) {
-        onSelectionEnd({
-          startPoint,
-          endPoint: worldToData(boundPointToFOV(unprojectedPoint, camera)),
-        });
+        onSelectionEnd(selection);
       }
     },
     [
-      startPoint,
-      setEndPoint,
-      onSelectionEnd,
-      shouldInteract,
+      originPoint,
+      getWorldStartPoint,
       worldToData,
       camera,
+      setSelection,
+      onSelectionEnd,
+      shouldInteract,
     ]
   );
 
@@ -128,18 +156,18 @@ function SelectionTool(props: Props) {
   useKeyboardEvent(
     'Escape',
     () => {
-      setStartPoint(undefined);
-      setEndPoint(undefined);
+      setSelection(undefined);
+      setOriginPoint(undefined);
     },
     [],
     { event: 'keydown' }
   );
 
-  if (!startPoint || !endPoint || !isVisible) {
+  if (!selection || !isVisible) {
     return null;
   }
 
-  return children({ startPoint, endPoint });
+  return children(selection);
 }
 
 export type { Props as SelectionProps };
