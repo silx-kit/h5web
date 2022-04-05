@@ -125,6 +125,15 @@ function SelectionTool(props: Props) {
     [],
     { event: 'keydown' }
   );
+  useKeyboardEvent(
+    'Escape',
+    () => {
+      setStartPoint(undefined);
+      setEndPoint(undefined);
+    },
+    [],
+    { event: 'keydown' }
+  );
 
   if (!startPoint || !endPoint || !isVisible) {
     return null;
