@@ -3,7 +3,7 @@ import type { Vector2 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import SelectionRect from './SelectionRect';
-import { clampRectangleToVis, getRatioEndPoint } from './utils';
+import { clampRectangleToVis, getRatioRespectingRectangle } from './utils';
 
 interface Props extends SVGProps<SVGRectElement> {
   startPoint: Vector2;
@@ -16,9 +16,13 @@ function RatioSelectionRect(props: Props) {
 
   const { dataToWorld, worldToData, visSize } = useAxisSystemContext();
 
-  const ratioEndPoint = getRatioEndPoint(startPoint, endPoint, ratio);
+  const [ratioStartPoint, ratioEndPoint] = getRatioRespectingRectangle(
+    startPoint,
+    endPoint,
+    ratio
+  );
   const [newStartPoint, newEndPoint] = clampRectangleToVis(
-    dataToWorld(startPoint),
+    dataToWorld(ratioStartPoint),
     dataToWorld(ratioEndPoint),
     visSize
   );

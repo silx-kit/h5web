@@ -1,39 +1,53 @@
 import {
-  DataCurve,
   Pan,
   VisCanvas,
   Zoom,
   SelectToZoom,
   ResetZoomButton,
+  HeatmapMesh,
+  getDomain,
 } from '@h5web/lib';
 import type { ModifierKey as ModifierKeyType } from '@h5web/lib';
+import { mockValues, ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
-import { range } from 'lodash';
+import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
 
-const X = range(-5, 5, 0.01);
-const Y = X.map((x) => Math.exp((-x * x) / 0.2));
+const cols = 41;
+const rows = 20;
+const values = ndarray(Float32Array.from(mockValues.twoD.flat()), [rows, cols]);
+const domain = getDomain(values);
 
-function GaussianCurve() {
-  return <DataCurve abscissas={X} ordinates={Y} color="blue" />;
+function Image() {
+  return (
+    <HeatmapMesh
+      values={values}
+      domain={domain || [0, 1]}
+      colorMap="Viridis"
+      scaleType={ScaleType.Linear}
+    />
+  );
 }
 
 interface TemplateProps {
   modifierKey: ModifierKeyType;
+  keepRatio?: boolean;
 }
 
 const Template: Story<TemplateProps> = (args) => {
+  const { keepRatio } = args;
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [-5, 5], showGrid: true }}
       ordinateConfig={{ visDomain: [-0.5, 1.5], showGrid: true }}
+      visRatio={keepRatio ? cols / rows : undefined}
     >
       <Pan />
       <Zoom />
       <SelectToZoom {...args} />
       <ResetZoomButton />
-      <GaussianCurve />
+      <Image />
     </VisCanvas>
   );
 };
@@ -42,11 +56,11 @@ export const Default = Template.bind({});
 Default.args = {
   modifierKey: 'Control',
 };
-Default.argTypes = {
-  modifierKey: {
-    control: { type: 'inline-radio' },
-    options: ['Alt', 'Control', 'Shift'],
-  },
+
+export const KeepRatio = Template.bind({});
+KeepRatio.args = {
+  modifierKey: 'Control',
+  keepRatio: true,
 };
 
 export default {
@@ -54,4 +68,10 @@ export default {
   component: SelectToZoom,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
+  argTypes: {
+    modifierKey: {
+      control: { type: 'inline-radio' },
+      options: ['Alt', 'Control', 'Shift'],
+    },
+  },
 } as Meta;
