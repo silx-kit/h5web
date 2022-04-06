@@ -152,15 +152,28 @@ function LineVis(props: Props) {
                 {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(abscissa)}`}
 
                 <div className={styles.tooltipValue}>
-                  <strong>{formatTooltipVal(value)}</strong>
-                  {error && ` ±${formatTooltipErr(error)}`}
-                  {dtype && <em>{` (${formatNumType(dtype)})`}</em>}
+                  {auxiliaries.length > 0 && (
+                    <span
+                      className={styles.mark}
+                      style={{ color: curveColor }}
+                    />
+                  )}
+                  <span>
+                    <strong>{formatTooltipVal(value)}</strong>
+                    {error !== undefined && ` ±${formatTooltipErr(error)}`}
+                    {dtype && <em>{` (${formatNumType(dtype)})`}</em>}
+                  </span>
                 </div>
 
-                {auxiliaries.map(({ label, array }) => {
-                  const val = formatTooltipVal(array.get(xi));
-                  return <div key={label}>{`${label} = ${val}`}</div>;
-                })}
+                {auxiliaries.map(({ label, array }, index) => (
+                  <div className={styles.tooltipAux} key={label}>
+                    <span
+                      className={styles.mark}
+                      style={{ color: auxColors[index % auxColors.length] }}
+                    />
+                    {label} = {formatTooltipVal(array.get(xi))}
+                  </div>
+                ))}
               </>
             );
           }}
@@ -179,7 +192,7 @@ function LineVis(props: Props) {
             key={i} // eslint-disable-line react/no-array-index-key
             abscissas={abscissas}
             ordinates={array.data}
-            color={auxColors[i < auxColors.length ? i : auxColors.length - 1]}
+            color={auxColors[i % auxColors.length]}
             curveType={curveType}
           />
         ))}
