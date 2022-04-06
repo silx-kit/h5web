@@ -17,7 +17,7 @@ export function boundPointToFOV(
   return new Vector2(boundedX, boundedY);
 }
 
-export function getRatioEndPoint(
+export function getRatioRespectingRectangle(
   startPoint: Vector2,
   endPoint: Vector2,
   ratio: number
@@ -31,17 +31,19 @@ export function getRatioEndPoint(
   const originalRatio =
     Math.abs(endPoint.x - startPoint.x) / Math.abs(endPoint.y - startPoint.y);
 
-  if (originalRatio < ratio) {
-    return new Vector2(
-      startPoint.x + widthSign * height * ratio,
-      startPoint.y + heightSign * height
-    );
-  }
+  const shiftX = widthSign * (originalRatio < ratio ? height * ratio : width);
+  const shiftY = heightSign * (originalRatio < ratio ? height : width / ratio);
 
-  return new Vector2(
-    startPoint.x + widthSign * width,
-    startPoint.y + (heightSign * width) / ratio
-  );
+  const centerPoint = endPoint
+    .clone()
+    .sub(startPoint)
+    .divideScalar(2)
+    .add(startPoint);
+
+  return [
+    new Vector2(centerPoint.x - shiftX / 2, centerPoint.y - shiftY / 2),
+    new Vector2(centerPoint.x + shiftX / 2, centerPoint.y + shiftY / 2),
+  ];
 }
 
 export function getDefaultInteractions(
