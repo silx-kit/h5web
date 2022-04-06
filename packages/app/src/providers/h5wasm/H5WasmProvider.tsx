@@ -1,6 +1,5 @@
-import type { File as H5WasmFile } from 'h5wasm';
 import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { Component } from 'react';
 
 import Provider from '../Provider';
 import { H5WasmApi } from './h5wasm-api';
@@ -17,26 +16,54 @@ interface Props {
   children: ReactNode;
 }
 
-function H5WasmProvider(props: Props) {
-  const { source, children } = props;
-  const [filePromise, setFilePromise] = useState<Promise<H5WasmFile>>();
+interface State {
+  api?: H5WasmApi;
+  error: unknown;
+  source?: H5WasmSourceType;
+}
 
-  // Need to do cleanup if re-rendering:
-  // - closing the existing H5WasmFile object
-  // - deleting the backing file in the virtual filesystem (done in fetchSource)
-  // but we don't want to update the filePromise on update of filePromise...
-  // which is why we leave it out of the dependencies below and
-  // need to disable the eslint trigger for that line.
-  useEffect(() => {
-    setFilePromise(fetchSource(source, filePromise));
-  }, [source]); // eslint-disable-line react-hooks/exhaustive-deps
+export class H5WasmProvider extends Component<Props, State> {
+  public componentDidMount = this.conditionalFetch.bind(this);
+  public componentDidUpdate = this.componentDidMount.bind(this);
 
-  const api = new H5WasmApi(
-    filePromise as Promise<H5WasmFile>,
-    getFilePath(source)
-  );
+  public constructor(props: Props) {
+    super(props);
+    this.state = { error: null };
+  }
 
-  return <Provider api={api}>{children}</Provider>;
+  public async conditionalFetch() {
+    if (this.state.source !== this.props.source) {
+      await this.loadFilePromise(); // async errors are caught in the method
+    }
+  }
+
+  public render() {
+    if (this.state.error !== null) {
+      throw this.state.error;
+    }
+    if (this.state.api === undefined) {
+      return <div className="error">No file loaded</div>;
+    }
+
+    return <Provider api={this.state.api}>{this.props.children}</Provider>;
+  }
+
+  private async loadFilePromise() {
+    const { source } = this.props;
+    try {
+      // close existing fileObject if it exists...
+      this.state.api?.fileObject?.close();
+      const fileObject = await fetchSource(source);
+      const api = new H5WasmApi(fileObject, getFilePath(source));
+      this.setState({
+        api,
+        error: null,
+        source,
+      });
+    } catch (error) {
+      this.setState({ error, source }); // update source even if it fails to load
+    }
+  }
 }
 
 export default H5WasmProvider;

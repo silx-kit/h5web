@@ -19,6 +19,7 @@ import {
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 import { convertDtype } from '../utils';
+import { convertSlice } from './utils';
 
 function convert_attrs(attrs: object): Attribute[] {
   return Object.entries(attrs).map(([name, value]) => ({
@@ -37,32 +38,37 @@ interface H5WasmAttribute {
 export class H5WasmApi extends ProviderApi {
   /* API compatible with h5wasm@0.3.1 */
 
-  public file_promise: Promise<H5WasmFile>;
+  public fileObject: H5WasmFile;
 
-  public constructor(file_promise: Promise<H5WasmFile>, filepath: string) {
+  public constructor(fileObject: H5WasmFile, filepath: string) {
     super(filepath);
-    this.file_promise = file_promise;
+    this.fileObject = fileObject;
   }
 
   public async getEntity(path: string): Promise<Entity> {
-    const file = await this.file_promise;
-    const entity_obj = file.get(path);
+    const entity_obj = this.fileObject.get(path);
     return this.processEntityObject(path, path, entity_obj, true);
   }
 
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
-    const { dataset } = params;
-    const file = await this.file_promise;
-    const dataset_obj = file.get(dataset.path) as H5WasmDataset;
-    const array = dataset_obj.value;
+    const { dataset, selection } = params;
+    const slice = convertSlice(selection);
+    const dataset_obj = this.fileObject.get(dataset.path) as H5WasmDataset;
+    let array;
+    if (slice !== undefined) {
+      array = dataset_obj.slice(slice);
+    } else {
+      array = dataset_obj.value;
+    }
     return hasScalarShape(dataset) ? array[0] : array;
   }
 
   public async getAttrValues(entity: Entity): Promise<AttributeValues> {
     const { path, kind } = entity;
     if (kind === EntityKind.Group || kind === EntityKind.Dataset) {
-      const file = await this.file_promise;
-      const entity_obj = file.get(path) as H5WasmDataset | H5WasmGroup;
+      const entity_obj = this.fileObject.get(path) as
+        | H5WasmDataset
+        | H5WasmGroup;
       return Object.fromEntries(
         Object.entries(entity_obj.attrs).map(([name, value]) => [
           name,
