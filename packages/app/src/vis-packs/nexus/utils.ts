@@ -11,6 +11,8 @@ import {
   assertStr,
   assertStringType,
   getChildEntity,
+  hasChildren,
+  isDataset,
   isScaleType,
 } from '@h5web/shared';
 import type {
@@ -34,8 +36,12 @@ export function isNxDataGroup(
   attrValuesStore: AttrValuesStore
 ): boolean {
   return (
-    hasAttribute(group, 'signal') &&
-    attrValuesStore.getSingle(group, 'NX_class') === 'NXdata'
+    attrValuesStore.getSingle(group, 'NX_class') === 'NXdata' &&
+    (hasAttribute(group, 'signal') ||
+      (hasChildren(group) &&
+        group.children.some(
+          (entity) => attrValuesStore.getSingle(entity, 'signal') !== undefined
+        )))
   );
 }
 
@@ -52,11 +58,21 @@ export function findSignalDataset(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore
 ): Dataset<ArrayShape, NumericType | ComplexType> {
-  const signal = attrValuesStore.getSingle(group, 'signal');
-  assertDefined(signal, "Expected 'signal' attribute");
-  assertStr(signal, "Expected 'signal' attribute to be a string");
-
-  const dataset = getChildEntity(group, signal);
+  let dataset;
+  let signal = attrValuesStore.getSingle(group, 'signal');
+  if (signal !== undefined) {
+    // assertDefined(signal, "Expected 'signal' attribute");
+    assertStr(signal, "Expected 'signal' attribute to be a string");
+    dataset = getChildEntity(group, signal);
+    assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
+  } else {
+    dataset = group.children.find(
+      (entity) =>
+        isDataset(entity) &&
+        attrValuesStore.getSingle(entity, 'signal') !== undefined
+    );
+    signal = dataset?.name;
+  }
   assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
   assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
   assertArrayShape(dataset);
