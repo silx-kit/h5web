@@ -18,14 +18,13 @@ import {
 
 import { ProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
-import { convertDtype } from '../utils';
-import { convertSlice } from './utils';
+import { convertH5WasmDtype, convertSlice } from './utils';
 
 function convert_attrs(attrs: object): Attribute[] {
   return Object.entries(attrs).map(([name, value]) => ({
     name,
     shape: value.shape,
-    type: convertDtype((value as H5WasmAttribute).dtype),
+    type: convertH5WasmDtype((value as H5WasmAttribute).dtype),
   }));
 }
 
@@ -119,7 +118,7 @@ export class H5WasmApi extends ProviderApi {
         kind: EntityKind.Dataset,
         attributes: convert_attrs(entity_obj.attrs),
         shape: entity_obj.shape,
-        type: convertDtype(entity_obj.dtype as string),
+        type: convertH5WasmDtype(entity_obj.dtype as string),
       } as Dataset;
     } else if (entity_obj instanceof H5WasmBrokenSoftLink) {
       const { target } = entity_obj;

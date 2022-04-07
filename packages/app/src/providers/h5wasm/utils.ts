@@ -1,3 +1,4 @@
+import type { DType } from '@h5web/shared';
 import { assertStr } from '@h5web/shared';
 import {
   ready as H5WasmReady,
@@ -6,6 +7,7 @@ import {
 } from 'h5wasm';
 
 import type { ValuesStoreParams } from '../models';
+import { convertDtype } from '../utils';
 import type { H5WasmSourceType } from './H5WasmProvider';
 
 const BACKING_FILE = 'current.h5';
@@ -91,4 +93,27 @@ export function convertSlice(selection: ValuesStoreParams['selection']) {
     const end = end_str === '' ? null : Number.parseInt(end_str, 10);
     return [start, end];
   });
+}
+
+const dtypeLookups: Record<string, string> = {
+  b: 'i1',
+  h: 'i2',
+  i: 'i4',
+  q: 'i8',
+  B: 'u1',
+  H: 'u2',
+  I: 'u4',
+  Q: 'u8',
+  e: 'f2',
+  f: 'f4',
+  d: 'f8',
+};
+const formatExp = /(?<format>[bhiqBHIQefd])/u;
+
+export function convertH5WasmDtype(H5WasmDtype: string): DType {
+  const format = formatExp.exec(H5WasmDtype)?.groups?.format;
+  const toConvert = format
+    ? H5WasmDtype.replace(format, dtypeLookups[format])
+    : H5WasmDtype;
+  return convertDtype(toConvert);
 }
