@@ -61,10 +61,8 @@ export function findSignalDataset(
   let dataset;
   let signal = attrValuesStore.getSingle(group, 'signal');
   if (signal !== undefined) {
-    // assertDefined(signal, "Expected 'signal' attribute");
     assertStr(signal, "Expected 'signal' attribute to be a string");
     dataset = getChildEntity(group, signal);
-    assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
   } else {
     dataset = group.children.find(
       (entity) =>
