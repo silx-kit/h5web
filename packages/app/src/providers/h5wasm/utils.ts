@@ -1,3 +1,4 @@
+import { assertStr } from '@h5web/shared';
 import {
   ready as H5WasmReady,
   File as H5WasmFile,
@@ -53,8 +54,12 @@ export async function fetchSource(
   return new H5WasmFile(BACKING_FILE, 'r');
 }
 
-const sliceExp = /^(?<start>\d*):(?<end>\d*)$/u;
-const indexExp = /^\d+$/u;
+const sliceExp = /^((?<index_str>\d+)|(?<start_str>\d*):(?<end_str>\d*))$/u;
+interface sliceMatchGroup {
+  index_str?: string;
+  start_str?: string;
+  end_str?: string;
+}
 
 export function convertSlice(selection: ValuesStoreParams['selection']) {
   if (selection === undefined) {
@@ -62,16 +67,28 @@ export function convertSlice(selection: ValuesStoreParams['selection']) {
   }
   const inputSlices = selection.split(',');
   return inputSlices.map((inputSlice) => {
-    let start: number | null;
-    let end: number | null;
-    if (indexExp.test(inputSlice)) {
-      start = Number.parseInt(inputSlice, 10);
-      end = start + 1;
-    } else {
-      const [, start_str, end_str] = sliceExp.exec(inputSlice) ?? [];
-      start = !start_str ? null : Number.parseInt(start_str, 10);
-      end = !end_str ? null : Number.parseInt(end_str, 10);
+    const match = sliceExp.exec(inputSlice);
+    if (match === null) {
+      throw new Error(
+        `unparseable slice: "${inputSlice}" in selection: "${selection}"`
+      );
     }
+    const { index_str, start_str, end_str } = match.groups as sliceMatchGroup;
+
+    if (index_str !== undefined) {
+      const start = Number.parseInt(index_str, 10);
+      return [start, start + 1];
+    }
+    assertStr(
+      start_str,
+      'start_str must exist if expression matches and index_str is undefined'
+    );
+    assertStr(
+      end_str,
+      'end_str must exist if expression matches and index_str is undefined'
+    );
+    const start = start_str === '' ? null : Number.parseInt(start_str, 10);
+    const end = end_str === '' ? null : Number.parseInt(end_str, 10);
     return [start, end];
   });
 }
