@@ -1,9 +1,10 @@
+import { ScaleType } from '@h5web/shared';
 import type { Domain } from '@h5web/shared';
-import { scaleLinear } from '@visx/scale';
 
 import { useVisibleDomains } from '../hooks';
 import type { Size } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemContext';
+import { createAxisScale } from '../utils';
 
 export function useScaledVisibleDomains(size: Size): {
   xVisibleDomain: Domain;
@@ -13,18 +14,14 @@ export function useScaledVisibleDomains(size: Size): {
   const { xVisibleDomain, yVisibleDomain } = useVisibleDomains();
   const { abscissaConfig, ordinateConfig } = useAxisSystemContext();
 
-  const xScale = scaleLinear({
-    domain: abscissaConfig.flip
-      ? abscissaConfig.visDomain.reverse()
-      : abscissaConfig.visDomain,
+  const xScale = createAxisScale(abscissaConfig.scaleType ?? ScaleType.Linear, {
+    domain: abscissaConfig.visDomain,
     range: [0, width],
     clamp: true,
   });
 
-  const yScale = scaleLinear({
-    domain: ordinateConfig.flip
-      ? ordinateConfig.visDomain.reverse()
-      : ordinateConfig.visDomain,
+  const yScale = createAxisScale(ordinateConfig.scaleType ?? ScaleType.Linear, {
+    domain: ordinateConfig.visDomain,
     range: [0, height],
     clamp: true,
   });
