@@ -5,8 +5,10 @@ import {
   Zoom,
   TiledHeatmap,
   TilesApi,
+  ResetZoomButton,
+  SelectToZoom,
 } from '@h5web/lib';
-import type { Domain, Size, TiledHeatmapProps } from '@h5web/lib';
+import type { Domain, Size, TiledHeatmapProps, AxisConfig } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import { clamp } from 'lodash';
@@ -118,30 +120,26 @@ class MandelbrotTilesApi extends TilesApi {
 }
 
 interface TiledHeatmapStoryProps extends TiledHeatmapProps {
-  abscissaDomain: Domain;
-  ordinateDomain: Domain;
+  abscissaConfig: AxisConfig;
+  ordinateConfig: AxisConfig;
 }
 
 const Template: Story<TiledHeatmapStoryProps> = (args) => {
-  const { abscissaDomain, api, ordinateDomain, ...tiledHeatmapProps } = args;
+  const { abscissaConfig, api, ordinateConfig, ...tiledHeatmapProps } = args;
 
   return (
     <VisCanvas
-      abscissaConfig={{
-        visDomain: abscissaDomain,
-        showGrid: false,
-      }}
-      ordinateConfig={{
-        visDomain: ordinateDomain,
-        showGrid: false,
-      }}
+      abscissaConfig={abscissaConfig}
+      ordinateConfig={ordinateConfig}
       visRatio={Math.abs(
-        (abscissaDomain[1] - abscissaDomain[0]) /
-          (ordinateDomain[1] - ordinateDomain[0])
+        (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]) /
+          (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0])
       )}
     >
       <Pan />
       <Zoom />
+      <SelectToZoom keepRatio modifierKey="Control" />
+      <ResetZoomButton />
       <TiledHeatmap api={api} {...tiledHeatmapProps} />
     </VisCanvas>
   );
@@ -157,22 +155,60 @@ const defaultApi = new MandelbrotTilesApi(
 export const Default = Template.bind({});
 Default.args = {
   api: defaultApi,
-  abscissaDomain: [0, defaultApi.baseLayerSize.width],
-  ordinateDomain: [0, defaultApi.baseLayerSize.height],
+  abscissaConfig: {
+    visDomain: [0, defaultApi.baseLayerSize.width],
+    isIndexAxis: true,
+    showGrid: false,
+  },
+  ordinateConfig: {
+    visDomain: [0, defaultApi.baseLayerSize.height],
+    isIndexAxis: true,
+    showGrid: false,
+  },
 };
 
-const arbitraryDomainApi = new MandelbrotTilesApi(
+const halfMandelbrotApi = new MandelbrotTilesApi(
   { width: 1e9, height: 5e8 },
   { width: 256, height: 128 },
   [-2, 1],
   [0, 1.5]
 );
 
-export const ArbitraryDomain = Template.bind({});
-ArbitraryDomain.args = {
-  api: arbitraryDomainApi,
-  abscissaDomain: arbitraryDomainApi.xDomain,
-  ordinateDomain: arbitraryDomainApi.yDomain,
+export const AxisValues = Template.bind({});
+AxisValues.args = {
+  api: halfMandelbrotApi,
+  abscissaConfig: { visDomain: halfMandelbrotApi.xDomain, showGrid: false },
+  ordinateConfig: { visDomain: halfMandelbrotApi.yDomain, showGrid: false },
+};
+
+export const DescendingAxisValues = Template.bind({});
+DescendingAxisValues.args = {
+  api: halfMandelbrotApi,
+  abscissaConfig: {
+    visDomain: [...halfMandelbrotApi.xDomain].reverse() as Domain,
+    showGrid: false,
+  },
+  ordinateConfig: {
+    visDomain: [...halfMandelbrotApi.yDomain].reverse() as Domain,
+    showGrid: false,
+  },
+};
+
+export const FlippedAxes = Template.bind({});
+FlippedAxes.args = {
+  api: halfMandelbrotApi,
+  abscissaConfig: {
+    visDomain: [0, halfMandelbrotApi.baseLayerSize.width],
+    isIndexAxis: true,
+    showGrid: false,
+    flip: true,
+  },
+  ordinateConfig: {
+    visDomain: [0, halfMandelbrotApi.baseLayerSize.height],
+    isIndexAxis: true,
+    showGrid: false,
+    flip: true,
+  },
 };
 
 export default {

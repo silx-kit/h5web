@@ -2,6 +2,7 @@ import type { Domain } from '@h5web/shared';
 import { Vector2 } from 'three';
 
 import type { Size } from '../models';
+import { isDescending } from '../utils';
 
 export function getTileOffsets(
   xDomain: Domain,
@@ -10,15 +11,15 @@ export function getTileOffsets(
 ): Vector2[] {
   const { width, height } = tileSize;
 
-  const [xOrigin, xEnd] = xDomain;
-  const [yOrigin, yEnd] = yDomain;
+  const [xMin, xMax] = isDescending(xDomain) ? [...xDomain].reverse() : xDomain;
+  const [yMin, yMax] = isDescending(yDomain) ? [...yDomain].reverse() : yDomain;
 
-  const nCols = Math.ceil(((xOrigin % width) + xEnd - xOrigin) / width);
-  const nRows = Math.ceil(((yOrigin % height) + yEnd - yOrigin) / height);
+  const nCols = Math.ceil(((xMin % width) + xMax - xMin) / width);
+  const nRows = Math.ceil(((yMin % height) + yMax - yMin) / height);
 
   const start = new Vector2(
-    Math.floor(xOrigin / width) * width,
-    Math.floor(yOrigin / height) * height
+    Math.floor(xMin / width) * width,
+    Math.floor(yMin / height) * height
   );
 
   const centers: Vector2[] = [];

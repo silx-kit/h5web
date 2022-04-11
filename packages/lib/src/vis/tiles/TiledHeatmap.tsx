@@ -31,8 +31,8 @@ function TiledHeatmap(props: Props) {
 
   const itemsPerPixel = Math.max(
     1,
-    (xVisibleDomain[1] - xVisibleDomain[0]) / canvasSize.width,
-    (yVisibleDomain[1] - yVisibleDomain[0]) / canvasSize.height
+    Math.abs(xVisibleDomain[1] - xVisibleDomain[0]) / canvasSize.width,
+    Math.abs(yVisibleDomain[1] - yVisibleDomain[0]) / canvasSize.height
   );
 
   const roundingOffset = 1 - clamp(qualityFactor, 0, 1);
