@@ -174,11 +174,24 @@ const halfMandelbrotApi = new MandelbrotTilesApi(
   [0, 1.5]
 );
 
-export const ArbitraryDomain = Template.bind({});
-ArbitraryDomain.args = {
+export const AxisValues = Template.bind({});
+AxisValues.args = {
   api: halfMandelbrotApi,
   abscissaConfig: { visDomain: halfMandelbrotApi.xDomain, showGrid: false },
   ordinateConfig: { visDomain: halfMandelbrotApi.yDomain, showGrid: false },
+};
+
+export const DescendingAxisValues = Template.bind({});
+DescendingAxisValues.args = {
+  api: halfMandelbrotApi,
+  abscissaConfig: {
+    visDomain: [...halfMandelbrotApi.xDomain].reverse() as Domain,
+    showGrid: false,
+  },
+  ordinateConfig: {
+    visDomain: [...halfMandelbrotApi.yDomain].reverse() as Domain,
+    showGrid: false,
+  },
 };
 
 export const FlippedAxes = Template.bind({});
