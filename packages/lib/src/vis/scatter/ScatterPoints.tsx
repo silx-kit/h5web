@@ -1,6 +1,6 @@
 import type { Domain, NumArray, ScaleType } from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { rgb } from 'd3-color';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { BufferAttribute, BufferGeometry } from 'three';
@@ -52,6 +52,14 @@ function ScatterPoints(props: Props) {
     };
   }, [raycaster, size]);
 
+  useFrame(() => {
+    // Consider that the zoom is the same in X and Y (regular non-axial zoom) as we can't have oval points
+    const zoom = zoomVector.x;
+    if (raycaster.params.Points) {
+      raycaster.params.Points.threshold = (size * zoom) / 2;
+    }
+  });
+
   function handleClick(evt: ThreeEvent<MouseEvent>) {
     const { index } = evt;
 
@@ -87,6 +95,8 @@ function ScatterPoints(props: Props) {
     dataGeometry.setAttribute('color', new BufferAttribute(color, 3, true));
     invalidate();
   }, [color, dataGeometry, invalidate, position]);
+
+  const zoomVector = useThree((state) => state.camera.scale);
 
   return (
     <points onClick={handleClick} geometry={dataGeometry}>
