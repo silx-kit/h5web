@@ -2,7 +2,7 @@ import { useThree } from '@react-three/fiber';
 import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
-import { useWorldToHtml } from '../vis/hooks';
+import { useCameraContext } from '..';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import Overlay from '../vis/shared/Overlay';
 
@@ -23,7 +23,7 @@ function SelectionRect(props: Props) {
   const { width, height } = useThree((state) => state.size);
 
   const { dataToWorld } = useAxisSystemContext();
-  const worldToHtml = useWorldToHtml();
+  const { worldToHtml } = useCameraContext();
 
   const htmlStartPt = worldToHtml(dataToWorld(dataStartPoint));
   const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));

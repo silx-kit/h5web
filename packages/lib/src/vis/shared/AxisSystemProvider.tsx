@@ -3,7 +3,7 @@ import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector3 } from 'three';
-import { Vector2 } from 'three';
+import { Matrix4, Vector2 } from 'three';
 
 import type { Interaction } from '../../interactions/models';
 import type { AxisConfig } from '../models';
@@ -37,7 +37,26 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
   const dataToWorld = (vec: Vector2 | Vector3) =>
     new Vector2(abscissaScale(vec.x), ordinateScale(vec.y));
 
+  const { width, height } = availableSize;
+  const cameraToHtmlMatrix = new Matrix4()
+    .makeScale(width / 2, -height / 2, 1)
+    .setPosition(width / 2, height / 2); // account for shift of (0,0) position (center for camera, top-left for HTML)
+
   const [interactionMap] = useState(new Map<string, Interaction>());
+
+  const registerInteraction = useCallback(
+    (id: string, value: Interaction) => {
+      interactionMap.set(id, value);
+    },
+    [interactionMap]
+  );
+
+  const unregisterInteraction = useCallback(
+    (id: string) => {
+      interactionMap.delete(id);
+    },
+    [interactionMap]
+  );
 
   const shouldInteract = useCallback(
     (id: string, event: MouseEvent) => {
@@ -63,20 +82,6 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     [interactionMap]
   );
 
-  const registerInteraction = useCallback(
-    (id: string, value: Interaction) => {
-      interactionMap.set(id, value);
-    },
-    [interactionMap]
-  );
-
-  const unregisterInteraction = useCallback(
-    (id: string) => {
-      interactionMap.delete(id);
-    },
-    [interactionMap]
-  );
-
   return (
     <AxisSystemContext.Provider
       value={{
@@ -87,10 +92,11 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
         ordinateScale,
         worldToData,
         dataToWorld,
-        floatingToolbar,
-        shouldInteract,
+        cameraToHtmlMatrix,
         registerInteraction,
         unregisterInteraction,
+        shouldInteract,
+        floatingToolbar,
       }}
     >
       {children}

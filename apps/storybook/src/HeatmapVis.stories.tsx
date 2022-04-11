@@ -57,13 +57,13 @@ AxisValues.args = {
   domain,
   abscissaParams: {
     value: Array.from(
-      { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
+      { length: dataArray.shape[1] }, // far edge of last pixel must not be included
       (_, i) => 100 + 10 * i
     ),
   },
   ordinateParams: {
     value: Array.from(
-      { length: dataArray.shape[0] + 1 },
+      { length: dataArray.shape[0] }, // far edge of last pixel must not be included
       (_, i) => (-5 + 0.5 * i) / 100
     ),
   },
@@ -74,14 +74,11 @@ DescendingAxisValues.args = {
   dataArray,
   domain,
   abscissaParams: {
-    value: Array.from(
-      { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
-      (_, i) => -100 - 10 * i
-    ),
+    value: Array.from({ length: dataArray.shape[1] }, (_, i) => -100 - 10 * i),
   },
   ordinateParams: {
     value: Array.from(
-      { length: dataArray.shape[0] + 1 },
+      { length: dataArray.shape[0] },
       (_, i) => (5 - 0.5 * i) / 100
     ),
   },

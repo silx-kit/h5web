@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Contexts" />
+
+## Contexts
+
+Children of `VisCanvas` can access two React contexts: `AxisSystemContext` and `CameraContext`.
+
+### AxisSystemContext
+
+`AxisSystemContext` includes helpful utilities to convert vectors from data space to world space and back.
+It exposes the size of the visualization, as well as the axis configs passed to `VisCanvas` for convenience.
+
+This context re-renders **whenever the size of the canvas changes**.
+
+```ts
+useAxisSystemContext(): AxisSystemParams
+
+const { visSize, dataToWorld, worldToData } = useAxisSystemContext();
+```
+
+| Name             | Description                                                                                                        | Type                                                  |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| `visSize`        | Visualization size (different from canvas size on ratio-constrained visualizations, like `HeatmapVis`)             | <code>Size</code>                                     |
+| `abscissaConfig` | Abscissa configuration object passed to `VisCanvas`                                                                | <code>AxisConfig</code>                               |
+| `ordinateConfig` | Ordinate configuration object passed to `VisCanvas`                                                                | <code>AxisConfig</code>                               |
+| `abscissaScale`  | Computes the X coordinate in world space of a given abscissa value (or the opposite with `abscissaScale.invert()`) | <code>AxisScale</code>                                |
+| `ordinateScale`  | Computes the Y coordinate in world space of a given ordinate value (or the opposite with `ordinateScale.invert()`) | <code>AxisScale</code>                                |
+| `dataToWorld`    | Converts a vector from data space to world space (calls `abscissaScale()` and `ordinateScale`)                     | <code>(vec: Vector2 &#124; Vector3) => Vector2</code> |
+| `worldToData`    | Converts a vector from world space to data space (calls `abscissaScale.invert()` and `ordinateScale.invert`)       | <code>(vec: Vector2 &#124; Vector3) => Vector2</code> |
+
+> This table is not exhaustive. Please consider any undocumented property as experimental or meant for internal use only.
+
+### CameraContext
+
+`CameraContext` provides utilities that make use of the position and scale (i.e. zoom level) of the camera.
+
+This context should be used sparingly and as far down as possible in the rendering tree, as it re-renders **every time the position and/or scale of the camera changes** (i.e. on every React Three Fiber frame).
+
+```ts
+useCameraContext(): CameraContextValue
+
+const { worldToHtml } = useCameraContext();
+```
+
+| Name          | Description                                      | Type                                                  |
+| ------------- | ------------------------------------------------ | ----------------------------------------------------- |
+| `worldToHtml` | Converts a vector from world space to HTML space | <code>(vec: Vector2 &#124; Vector3) => Vector2</code> |

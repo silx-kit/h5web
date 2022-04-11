@@ -17,9 +17,8 @@ import FillHeight from './decorators/FillHeight';
 
 interface TemplateProps {
   selectionType: 'line' | 'rectangle';
-  disablePan?: boolean;
-  disableZoom?: boolean;
-  modifierKey?: ModifierKey;
+  selectionModifierKey?: ModifierKey;
+  panModifierKey?: ModifierKey;
   fill?: string;
   stroke?: string;
 }
@@ -29,18 +28,22 @@ function vectorToStr(vec: Vector2) {
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const {
-    selectionType,
-    disablePan = true,
-    disableZoom = true,
-    modifierKey,
-    ...svgProps
-  } = args;
+  const { selectionType, selectionModifierKey, panModifierKey, ...svgProps } =
+    args;
 
   const [activeSelection, setActiveSelection] = useState<Selection>();
 
   const SelectionComponent =
     selectionType === 'line' ? SelectionLine : SelectionRect;
+
+  if (selectionModifierKey === panModifierKey) {
+    return (
+      <p style={{ margin: '1rem', color: 'darkred' }}>
+        Pan and selection modifier keys cannot both be{' '}
+        <code>{panModifierKey || 'undefined'}</code>
+      </p>
+    );
+  }
 
   return (
     <VisCanvas
@@ -54,13 +57,14 @@ const Template: Story<TemplateProps> = (args) => {
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      <Pan disabled={disablePan} />
-      <Zoom disabled={disableZoom} />
+      <Pan modifierKey={panModifierKey} />
+      <Zoom />
       <ResetZoomButton />
+
       <SelectionTool
         onSelectionChange={setActiveSelection}
         onSelectionEnd={() => setActiveSelection(undefined)}
-        modifierKey={modifierKey}
+        modifierKey={selectionModifierKey}
       >
         {(selection) => <SelectionComponent {...selection} {...svgProps} />}
       </SelectionTool>
@@ -68,58 +72,82 @@ const Template: Story<TemplateProps> = (args) => {
   );
 };
 
-export const SelectingRegions = Template.bind({});
-SelectingRegions.args = {
+export const Rectangle = Template.bind({});
+Rectangle.args = {
   selectionType: 'rectangle',
+  panModifierKey: 'Control',
 };
-
-export const SelectingLines = Template.bind({});
-SelectingLines.args = {
-  selectionType: 'line',
-};
-
-export const SelectingWithModifierAndZoom = Template.bind({});
-SelectingWithModifierAndZoom.args = {
-  selectionType: 'line',
-  disablePan: false,
-  disableZoom: false,
-  modifierKey: 'Shift',
-};
-SelectingWithModifierAndZoom.argTypes = {
-  modifierKey: {
+Rectangle.argTypes = {
+  panModifierKey: {
     control: { type: 'inline-radio' },
     options: ['Alt', 'Control', 'Shift'],
   },
 };
 
-export const ChangeSelectionStyle = Template.bind({});
-ChangeSelectionStyle.args = {
-  selectionType: 'rectangle',
-  fill: 'blue',
-  stroke: 'darkslategray',
+export const Line = Template.bind({});
+Line.args = {
+  selectionType: 'line',
+  panModifierKey: 'Control',
 };
-ChangeSelectionStyle.argTypes = {
-  fill: {
-    control: { type: 'color' },
-  },
-  stroke: {
-    control: { type: 'color' },
+Line.argTypes = {
+  panModifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift'],
   },
 };
 
-export const PersistSelection: Story<TemplateProps> = (args) => {
-  const {
-    selectionType,
-    disablePan = true,
-    disableZoom = true,
-    modifierKey,
-    ...svgProps
-  } = args;
+export const WithModifierKey = Template.bind({});
+WithModifierKey.args = {
+  selectionType: 'rectangle',
+  selectionModifierKey: 'Control',
+  panModifierKey: undefined,
+};
+WithModifierKey.argTypes = {
+  selectionModifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift', undefined],
+  },
+  panModifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift', undefined],
+  },
+};
+
+export const CustomStyles = Template.bind({});
+CustomStyles.args = {
+  selectionType: 'rectangle',
+  fill: 'blue',
+  stroke: 'darkslategray',
+  panModifierKey: 'Control',
+};
+CustomStyles.argTypes = {
+  fill: { control: { type: 'color' } },
+  stroke: { control: { type: 'color' } },
+  panModifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift'],
+  },
+};
+CustomStyles.parameters = {
+  controls: { exclude: ['selectionType'] },
+};
+
+export const Persisted: Story<TemplateProps> = (args) => {
+  const { selectionType, selectionModifierKey, panModifierKey } = args;
 
   const [persistedSelection, setPersistedSelection] = useState<Selection>();
 
   const SelectionComponent =
     selectionType === 'line' ? SelectionLine : SelectionRect;
+
+  if (selectionModifierKey === panModifierKey) {
+    return (
+      <p style={{ margin: '1rem', color: 'darkred' }}>
+        Pan and selection modifier keys cannot both be{' '}
+        <code>{panModifierKey || 'undefined'}</code>
+      </p>
+    );
+  }
 
   return (
     <VisCanvas
@@ -133,16 +161,18 @@ export const PersistSelection: Story<TemplateProps> = (args) => {
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      <Pan disabled={disablePan} />
-      <Zoom disabled={disableZoom} />
+      <Pan modifierKey={panModifierKey} />
+      <Zoom />
+      <ResetZoomButton />
+
       <SelectionTool
         onSelectionStart={() => {
           setPersistedSelection(undefined);
         }}
         onSelectionEnd={setPersistedSelection}
-        modifierKey={modifierKey}
+        modifierKey={selectionModifierKey}
       >
-        {(selection) => <SelectionComponent {...selection} {...svgProps} />}
+        {(selection) => <SelectionComponent {...selection} />}
       </SelectionTool>
       {persistedSelection && (
         <SelectionComponent
@@ -153,28 +183,26 @@ export const PersistSelection: Story<TemplateProps> = (args) => {
     </VisCanvas>
   );
 };
-PersistSelection.args = {
+Persisted.args = {
   selectionType: 'rectangle',
+  selectionModifierKey: 'Control',
+  panModifierKey: undefined,
 };
-PersistSelection.argTypes = {
-  modifierKey: {
+Persisted.argTypes = {
+  selectionModifierKey: {
     control: { type: 'inline-radio' },
-    options: ['Alt', 'Control', 'Shift'],
+    options: ['Alt', 'Control', 'Shift', undefined],
   },
-  fill: {
-    control: { type: 'color' },
-  },
-  stroke: {
-    control: { type: 'color' },
+  panModifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift', undefined],
   },
 };
 
 export default {
   title: 'Building Blocks/Selection',
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-  },
+  parameters: { layout: 'fullscreen' },
   argTypes: {
     selectionType: {
       control: { type: 'inline-radio' },

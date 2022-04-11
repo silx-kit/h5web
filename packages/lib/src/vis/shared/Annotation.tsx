@@ -2,8 +2,8 @@ import { useThree } from '@react-three/fiber';
 import type { HTMLAttributes } from 'react';
 import { Vector2 } from 'three';
 
-import { useWorldToHtml } from '../hooks';
 import { useAxisSystemContext } from './AxisSystemContext';
+import { useCameraContext } from './CameraProvider';
 import Html from './Html';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -18,7 +18,7 @@ function Annotation(props: Props) {
   const camera = useThree((state) => state.camera);
 
   const { dataToWorld } = useAxisSystemContext();
-  const worldToHtml = useWorldToHtml();
+  const { worldToHtml } = useCameraContext();
 
   const htmlPt = worldToHtml(dataToWorld(new Vector2(x, y)));
 

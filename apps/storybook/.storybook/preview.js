@@ -10,10 +10,13 @@ export const parameters = {
       order: [
         'Getting started',
         'Utilities',
+        'Contexts',
         'Customization',
         'Visualizations',
         'Building Blocks',
         ['VisCanvas'],
+        'Toolbar',
+        ['Toolbar'],
       ],
     },
   },

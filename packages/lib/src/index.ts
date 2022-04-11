@@ -55,9 +55,11 @@ export { default as SelectionRect } from './interactions/SelectionRect';
 export { default as SelectionTool } from './interactions/SelectionTool';
 export type { SelectionProps } from './interactions/SelectionTool';
 
-// Context hook
+// Contexts
 export { useAxisSystemContext } from './vis/shared/AxisSystemContext';
+export { useCameraContext } from './vis/shared/CameraProvider';
 export type { AxisSystemParams } from './vis/shared/AxisSystemContext';
+export type { CameraContextValue } from './vis/shared/CameraProvider';
 
 // Utilities
 export {
@@ -75,7 +77,6 @@ export {
   useVisibleDomains,
   useFrameRendering,
   useValueToIndexScale,
-  useWorldToHtml,
 } from './vis/hooks';
 
 export {

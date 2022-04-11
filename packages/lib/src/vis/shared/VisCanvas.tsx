@@ -7,6 +7,7 @@ import type { AxisConfig } from '../models';
 import { getSizeToFit, getAxisOffsets } from '../utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
+import CameraProvider from './CameraProvider';
 import Html from './Html';
 import ViewportCenterer from './ViewportCenterer';
 import styles from './VisCanvas.module.css';
@@ -74,15 +75,17 @@ function VisCanvas(props: PropsWithChildren<Props>) {
               ordinateConfig={ordinateConfig}
               floatingToolbar={floatingToolbar}
             >
-              <AxisSystem axisOffsets={axisOffsets} title={title} />
-              {children}
-              <ViewportCenterer />
-              <Html>
-                <div
-                  ref={(elem) => setFloatingToolbar(elem || undefined)}
-                  className={styles.floatingToolbar}
-                />
-              </Html>
+              <CameraProvider>
+                <AxisSystem axisOffsets={axisOffsets} title={title} />
+                {children}
+                <ViewportCenterer />
+                <Html>
+                  <div
+                    ref={(elem) => setFloatingToolbar(elem || undefined)}
+                    className={styles.floatingToolbar}
+                  />
+                </Html>
+              </CameraProvider>
             </AxisSystemProvider>
           </Canvas>
         </div>

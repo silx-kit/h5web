@@ -2,8 +2,8 @@ import { useThree } from '@react-three/fiber';
 import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
-import { useWorldToHtml } from '../vis/hooks';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import { useCameraContext } from '../vis/shared/CameraProvider';
 import Overlay from '../vis/shared/Overlay';
 
 interface Props extends SVGProps<SVGLineElement> {
@@ -20,9 +20,8 @@ function SelectionLine(props: Props) {
   } = props;
 
   const { width, height } = useThree((state) => state.size);
-
   const { dataToWorld } = useAxisSystemContext();
-  const worldToHtml = useWorldToHtml();
+  const { worldToHtml } = useCameraContext();
 
   const htmlStartPt = worldToHtml(dataToWorld(dataStartPoint));
   const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));

@@ -5,7 +5,6 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
-import { Matrix4, Vector2, Vector3 } from 'three';
 
 import type { CustomColor } from './models';
 import { useAxisSystemContext } from './shared/AxisSystemContext';
@@ -101,21 +100,4 @@ export function useCustomColors(
   });
 
   return [colors, refCallback];
-}
-
-export function useWorldToHtml(): (point: Vector2 | Vector3) => Vector2 {
-  const camera = useThree((state) => state.camera);
-
-  const { width, height } = useThree((state) => state.size);
-  const cameraToHtmlMatrix = new Matrix4().makeScale(width / 2, -height / 2, 1);
-  // Account for shift of (0,0) position (center for camera, top-left for HTML)
-  cameraToHtmlMatrix.setPosition(width / 2, height / 2);
-
-  useFrameRendering();
-
-  return (point: Vector2 | Vector3) => {
-    const cameraPoint = new Vector3(point.x, point.y, 0).project(camera);
-    const htmlPoint = cameraPoint.clone().applyMatrix4(cameraToHtmlMatrix);
-    return new Vector2(htmlPoint.x, htmlPoint.y);
-  };
 }
