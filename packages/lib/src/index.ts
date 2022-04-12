@@ -32,6 +32,7 @@ export type { VisCanvasProps } from './vis/shared/VisCanvas';
 export { default as TooltipMesh } from './vis/shared/TooltipMesh';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
 export { default as Html } from './vis/shared/Html';
+export { default as Overlay } from './vis/shared/Overlay';
 export { default as Annotation } from './vis/shared/Annotation';
 
 export { default as ColorBar } from './vis/heatmap/ColorBar';
@@ -129,4 +130,3 @@ export { default as RgbVis } from './vis/rgb/RgbVis';
 export { default as VisMesh } from './vis/shared/VisMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
 export { default as DataCurve } from './vis/line/DataCurve';
-export { default as Overlay } from './vis/shared/Overlay';
