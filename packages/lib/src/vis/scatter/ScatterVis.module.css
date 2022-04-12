@@ -5,3 +5,7 @@
   min-height: 0;
   margin: 1rem;
 }
+
+.tooltipValue {
+  composes: tooltipValue from '../shared/TooltipMesh.module.css';
+}

@@ -1,6 +1,12 @@
 import type { Domain, NumArray } from '@h5web/shared';
-import { assertLength, assertDefined, ScaleType } from '@h5web/shared';
+import {
+  assertDefined,
+  assertLength,
+  formatTooltipVal,
+  ScaleType,
+} from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
+import { useTooltip } from '@visx/tooltip';
 import { toArray } from 'lodash';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
@@ -11,6 +17,7 @@ import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
+import TooltipOverlay from '../shared/TooltipOverlay';
 import VisCanvas from '../shared/VisCanvas';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
@@ -29,10 +36,7 @@ interface Props {
   size?: number;
   children?: ReactNode;
   interactions?: Interactions;
-  onPointClick?: (
-    index: number | undefined,
-    evt: ThreeEvent<MouseEvent>
-  ) => void;
+  onPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
 }
 
 function ScatterVis(props: Props) {
@@ -74,6 +78,15 @@ function ScatterVis(props: Props) {
   const ordinateDomain = useAxisDomain(ordinates, ordinateScaleType, 0.01);
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 
+  const {
+    tooltipOpen,
+    tooltipTop,
+    tooltipLeft,
+    tooltipData: tooltipIndex,
+    showTooltip,
+    hideTooltip,
+  } = useTooltip<number>();
+
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
@@ -106,7 +119,35 @@ function ScatterVis(props: Props) {
           invertColorMap={invertColorMap}
           size={size}
           onClick={onPointClick}
+          onPointerEnter={(index, evt) =>
+            showTooltip({
+              tooltipData: index,
+              tooltipLeft: evt.sourceEvent.offsetX,
+              tooltipTop: evt.sourceEvent.offsetY,
+            })
+          }
+          onPointerOut={() => hideTooltip()}
         />
+        <TooltipOverlay
+          tooltipOpen={tooltipOpen}
+          tooltipLeft={tooltipLeft}
+          tooltipTop={tooltipTop}
+        >
+          {tooltipIndex && (
+            <>
+              <span>
+                {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(
+                  abscissas[tooltipIndex]
+                )}, ${ordinateLabel ?? 'y'} = ${formatTooltipVal(
+                  ordinates[tooltipIndex]
+                )}`}
+              </span>
+              <div className={styles.tooltipValue}>
+                <strong>{formatTooltipVal(dataArray.get(tooltipIndex))}</strong>
+              </div>
+            </>
+          )}
+        </TooltipOverlay>
 
         {children}
       </VisCanvas>

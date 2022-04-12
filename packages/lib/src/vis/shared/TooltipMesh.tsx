@@ -1,14 +1,12 @@
 import { useThree } from '@react-three/fiber';
 import type { ThreeEvent } from '@react-three/fiber';
-import { Line } from '@visx/shape';
-import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
+import { useTooltip } from '@visx/tooltip';
 import { useCallback } from 'react';
 import type { ReactElement } from 'react';
 
 import type { Coords } from '../models';
 import { useAxisSystemContext } from './AxisSystemContext';
-import Overlay from './Overlay';
-import styles from './TooltipMesh.module.css';
+import TooltipOverlay from './TooltipOverlay';
 import VisMesh from './VisMesh';
 
 interface Props {
@@ -84,38 +82,14 @@ function TooltipMesh(props: Props) {
       <VisMesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
         <meshBasicMaterial opacity={0} transparent />
       </VisMesh>
-      <Overlay>
-        {tooltipOpen && content && (
-          <>
-            <TooltipWithBounds
-              key={Math.random()}
-              className={styles.tooltip}
-              top={tooltipTop}
-              left={tooltipLeft}
-              unstyled
-              applyPositionStyle
-            >
-              {content}
-            </TooltipWithBounds>
-            {guides && (
-              <svg className={styles.guides}>
-                {guides !== 'horizontal' && (
-                  <Line
-                    from={{ x: tooltipLeft, y: 0 }}
-                    to={{ x: tooltipLeft, y: height }}
-                  />
-                )}
-                {guides !== 'vertical' && (
-                  <Line
-                    from={{ x: 0, y: tooltipTop }}
-                    to={{ x: width, y: tooltipTop }}
-                  />
-                )}
-              </svg>
-            )}
-          </>
-        )}
-      </Overlay>
+      <TooltipOverlay
+        tooltipOpen={tooltipOpen}
+        tooltipLeft={tooltipLeft}
+        tooltipTop={tooltipTop}
+        guides={guides}
+      >
+        {content}
+      </TooltipOverlay>
     </>
   );
 }
