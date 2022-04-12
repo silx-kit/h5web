@@ -1,7 +1,6 @@
 import type { Domain, NumArray, NumericType } from '@h5web/shared';
 import {
   assertDefined,
-  assertLength,
   formatTooltipVal,
   getDims,
   ScaleType,
