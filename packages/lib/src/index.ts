@@ -35,6 +35,8 @@ export { default as Html } from './vis/shared/Html';
 export { default as Overlay } from './vis/shared/Overlay';
 export { default as Annotation } from './vis/shared/Annotation';
 
+export { default as DataCurve } from './vis/line/DataCurve';
+export type { DataCurveProps } from './vis/line/DataCurve';
 export { default as ColorBar } from './vis/heatmap/ColorBar';
 export type { ColorBarProps } from './vis/heatmap/ColorBar';
 export { default as HeatmapMesh } from './vis/heatmap/HeatmapMesh';
@@ -129,4 +131,3 @@ export { default as ScalarVis } from './vis/scalar/ScalarVis';
 export { default as RgbVis } from './vis/rgb/RgbVis';
 export { default as VisMesh } from './vis/shared/VisMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
-export { default as DataCurve } from './vis/line/DataCurve';
