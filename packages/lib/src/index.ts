@@ -55,7 +55,7 @@ export { default as SelectionRect } from './interactions/SelectionRect';
 export { default as SelectionTool } from './interactions/SelectionTool';
 export type { SelectionProps } from './interactions/SelectionTool';
 
-// Context hook
+// Context
 export { useAxisSystemContext } from './vis/shared/AxisSystemContext';
 export type { AxisSystemParams } from './vis/shared/AxisSystemContext';
 

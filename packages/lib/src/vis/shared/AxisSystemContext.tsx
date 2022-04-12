@@ -12,15 +12,15 @@ export interface AxisSystemParams {
   ordinateScale: AxisScale;
   dataToWorld: (vec: Vector2 | Vector3) => Vector2;
   worldToData: (vec: Vector2 | Vector3) => Vector2;
+
+  // For internal use only
   floatingToolbar: HTMLDivElement | undefined;
-  shouldInteract: (id: string, event: MouseEvent) => boolean;
   registerInteraction: (id: string, value: Interaction) => void;
   unregisterInteraction: (id: string) => void;
+  shouldInteract: (id: string, event: MouseEvent) => boolean;
 }
 
-export const AxisSystemContext = createContext<AxisSystemParams>(
-  {} as AxisSystemParams
-);
+export const AxisSystemContext = createContext({} as AxisSystemParams);
 
 export function useAxisSystemContext() {
   return useContext(AxisSystemContext);
