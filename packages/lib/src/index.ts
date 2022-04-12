@@ -40,8 +40,8 @@ export { default as DataCurve } from './vis/line/DataCurve';
 export { default as Html } from './vis/shared/Html';
 export { default as Overlay } from './vis/shared/Overlay';
 export { default as Annotation } from './vis/shared/Annotation';
-export { default as TiledHeatmap } from './vis/tiles/TiledHeatmap';
-export type { TiledHeatmapProps } from './vis/tiles/TiledHeatmap';
+export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
+export type { TiledHeatmapMeshProps } from './vis/tiles/TiledHeatmapMesh';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
 
 // Interactions
