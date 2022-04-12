@@ -2,7 +2,13 @@ import type { Domain, NumArray, ScaleType } from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
 import { rgb } from 'd3-color';
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { BufferAttribute, BufferGeometry } from 'three';
 
 import type { ColorMap } from '../heatmap/models';
@@ -21,7 +27,9 @@ interface Props {
   colorMap: ColorMap;
   invertColorMap: boolean;
   size: number;
-  onClick?: (index: number | undefined, evt: ThreeEvent<MouseEvent>) => void;
+  onClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
+  onPointerEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
+  onPointerOut?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
 }
 
 function ScatterPoints(props: Props) {
@@ -35,6 +43,8 @@ function ScatterPoints(props: Props) {
     invertColorMap,
     size,
     onClick,
+    onPointerEnter,
+    onPointerOut,
   } = props;
 
   // Increase raycaster threshold to match point size
@@ -60,13 +70,38 @@ function ScatterPoints(props: Props) {
     }
   });
 
-  function handleClick(evt: ThreeEvent<MouseEvent>) {
-    const { index } = evt;
+  const handleClick = useCallback(
+    (evt: ThreeEvent<MouseEvent>) => {
+      const { index } = evt;
 
-    if (onClick) {
-      onClick(index, evt);
-    }
-  }
+      if (onClick && index) {
+        onClick(index, evt);
+      }
+    },
+    [onClick]
+  );
+
+  const handlePointerEnter = useCallback(
+    (evt: ThreeEvent<PointerEvent>) => {
+      const { index } = evt;
+
+      if (onPointerEnter && index) {
+        onPointerEnter(index, evt);
+      }
+    },
+    [onPointerEnter]
+  );
+
+  const handlePointerOut = useCallback(
+    (evt: ThreeEvent<PointerEvent>) => {
+      const { index } = evt;
+
+      if (onPointerOut && index) {
+        onPointerOut(index, evt);
+      }
+    },
+    [onPointerOut]
+  );
 
   const [dataGeometry] = useState(() => new BufferGeometry());
   const invalidate = useThree((state) => state.invalidate);
@@ -99,7 +134,12 @@ function ScatterPoints(props: Props) {
   const zoomVector = useThree((state) => state.camera.scale);
 
   return (
-    <points onClick={handleClick} geometry={dataGeometry}>
+    <points
+      onClick={handleClick}
+      onPointerEnter={handlePointerEnter}
+      onPointerOut={handlePointerOut}
+      geometry={dataGeometry}
+    >
       <GlyphMaterial size={size} glyphType={GlyphType.Circle} />
     </points>
   );
