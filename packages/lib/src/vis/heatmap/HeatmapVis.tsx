@@ -65,9 +65,6 @@ function HeatmapVis(props: Props) {
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
   const { rows, cols } = getDims(dataArray);
 
-  assertLength(abscissaValue, cols, 'abscissa');
-  assertLength(ordinateValue, rows, 'ordinate');
-
   const abscissas = useAxisValues(abscissaValue, cols);
   const abscissaDomain = useAxisDomain(abscissas);
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
