@@ -39,6 +39,20 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
 
   const [interactionMap] = useState(new Map<string, Interaction>());
 
+  const registerInteraction = useCallback(
+    (id: string, value: Interaction) => {
+      interactionMap.set(id, value);
+    },
+    [interactionMap]
+  );
+
+  const unregisterInteraction = useCallback(
+    (id: string) => {
+      interactionMap.delete(id);
+    },
+    [interactionMap]
+  );
+
   const shouldInteract = useCallback(
     (id: string, event: MouseEvent) => {
       const registeredKeys = [...interactionMap.values()]
@@ -63,20 +77,6 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     [interactionMap]
   );
 
-  const registerInteraction = useCallback(
-    (id: string, value: Interaction) => {
-      interactionMap.set(id, value);
-    },
-    [interactionMap]
-  );
-
-  const unregisterInteraction = useCallback(
-    (id: string) => {
-      interactionMap.delete(id);
-    },
-    [interactionMap]
-  );
-
   return (
     <AxisSystemContext.Provider
       value={{
@@ -88,9 +88,9 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
         worldToData,
         dataToWorld,
         floatingToolbar,
-        shouldInteract,
         registerInteraction,
         unregisterInteraction,
+        shouldInteract,
       }}
     >
       {children}
