@@ -42,19 +42,14 @@ function SelectToZoom(props: Props) {
       return;
     }
 
-    const selectedRect = getEnclosedRectangle(startPoint, endPoint);
-    const { center: selectionCenter } = selectedRect;
+    const zoomRect = getEnclosedRectangle(startPoint, endPoint);
+    const { center: zoomRectCenter } = zoomRect;
 
     // Change scale first so that moveCameraTo computes the updated camera bounds
-    camera.scale.set(
-      selectedRect.width / width,
-      selectedRect.height / height,
-      1
-    );
-    camera.updateProjectionMatrix();
+    camera.scale.set(zoomRect.width / width, zoomRect.height / height, 1);
     camera.updateMatrixWorld();
 
-    moveCameraTo(selectionCenter.x, selectionCenter.y);
+    moveCameraTo(zoomRectCenter.x, zoomRectCenter.y);
   };
 
   return (

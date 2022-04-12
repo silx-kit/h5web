@@ -72,8 +72,6 @@ export function useZoomOnWheel(
       const factor = sourceEvent.deltaY < 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
       const zoomVector = new Vector3(zoomX ? factor : 1, zoomY ? factor : 1, 1);
       camera.scale.multiply(zoomVector).min(ONE_VECTOR);
-
-      camera.updateProjectionMatrix();
       camera.updateMatrixWorld();
 
       const oldPosition = unprojectedPoint.clone();

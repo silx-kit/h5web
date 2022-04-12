@@ -12,6 +12,7 @@ export interface AxisSystemParams {
   ordinateScale: AxisScale;
   dataToWorld: (vec: Vector2 | Vector3) => Vector2;
   worldToData: (vec: Vector2 | Vector3) => Vector2;
+  worldToHtml: (vec: Vector2 | Vector3) => Vector2;
 
   // For internal use only
   floatingToolbar: HTMLDivElement | undefined;

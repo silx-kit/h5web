@@ -21,8 +21,6 @@ function ResetZoomButton() {
   function resetZoom() {
     camera.scale.x = 1;
     camera.scale.y = 1;
-
-    camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
 
     moveCameraTo(0, 0);
