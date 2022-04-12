@@ -2,7 +2,7 @@ import { useThree } from '@react-three/fiber';
 import type { HTMLAttributes } from 'react';
 import { Vector2 } from 'three';
 
-import { useWorldToHtml } from '../hooks';
+import { useFrameRendering } from '../hooks';
 import { useAxisSystemContext } from './AxisSystemContext';
 import Html from './Html';
 
@@ -17,10 +17,10 @@ function Annotation(props: Props) {
 
   const camera = useThree((state) => state.camera);
 
-  const { dataToWorld } = useAxisSystemContext();
-  const worldToHtml = useWorldToHtml();
-
+  const { dataToWorld, worldToHtml } = useAxisSystemContext();
   const htmlPt = worldToHtml(dataToWorld(new Vector2(x, y)));
+
+  useFrameRendering();
 
   return (
     <Html>
