@@ -15,7 +15,7 @@ interface Props extends ColorMapProps {
   qualityFactor?: number;
 }
 
-function TiledHeatmap(props: Props) {
+function TiledHeatmapMesh(props: Props) {
   const {
     api,
     displayLowerResolutions = true,
@@ -68,5 +68,5 @@ function TiledHeatmap(props: Props) {
   );
 }
 
-export type { Props as TiledHeatmapProps };
-export default TiledHeatmap;
+export type { Props as TiledHeatmapMeshProps };
+export default TiledHeatmapMesh;

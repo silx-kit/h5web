@@ -75,4 +75,5 @@ function DataCurve(props: Props) {
   );
 }
 
+export type { Props as DataCurveProps };
 export default DataCurve;

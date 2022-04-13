@@ -3,12 +3,17 @@ import {
   Pan,
   VisCanvas,
   Zoom,
-  TiledHeatmap,
+  TiledHeatmapMesh,
   TilesApi,
   ResetZoomButton,
   SelectToZoom,
 } from '@h5web/lib';
-import type { Domain, Size, TiledHeatmapProps, AxisConfig } from '@h5web/lib';
+import type {
+  Domain,
+  Size,
+  TiledHeatmapMeshProps,
+  AxisConfig,
+} from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import { clamp } from 'lodash';
@@ -119,7 +124,7 @@ class MandelbrotTilesApi extends TilesApi {
   }
 }
 
-interface TiledHeatmapStoryProps extends TiledHeatmapProps {
+interface TiledHeatmapStoryProps extends TiledHeatmapMeshProps {
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
 }
@@ -140,7 +145,7 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
       <Zoom />
       <SelectToZoom keepRatio modifierKey="Control" />
       <ResetZoomButton />
-      <TiledHeatmap api={api} {...tiledHeatmapProps} />
+      <TiledHeatmapMesh api={api} {...tiledHeatmapProps} />
     </VisCanvas>
   );
 };
@@ -212,8 +217,8 @@ FlippedAxes.args = {
 };
 
 export default {
-  title: 'Building Blocks/TiledHeatmap',
-  component: TiledHeatmap,
+  title: 'Building Blocks/TiledHeatmapMesh',
+  component: TiledHeatmapMesh,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },
   args: {
