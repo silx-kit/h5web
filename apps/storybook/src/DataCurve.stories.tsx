@@ -69,4 +69,7 @@ export default {
     curveType: CurveType.LineOnly,
     visible: true,
   },
+  argTypes: {
+    color: { control: { type: 'color' } },
+  },
 } as Meta;
