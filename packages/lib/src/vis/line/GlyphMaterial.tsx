@@ -33,9 +33,12 @@ const GLYPH_SHADERS = {
   `,
   [GlyphType.Circle]: `
     float alphaSymbol(vec2 coord, float size) {
-      float radius = 0.5;
       float r = distance(coord, vec2(0.5, 0.5));
-      return clamp(size * (radius - r), 0.0, 1.0);
+      if( r < 0.5) {
+        return 1.0;
+      } else {
+        return 0.0;
+      }
     }
   `,
   [GlyphType.Square]: `
