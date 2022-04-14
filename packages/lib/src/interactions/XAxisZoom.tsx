@@ -1,12 +1,8 @@
-import {
-  useCanvasEvents,
-  useRegisterInteraction,
-  useZoomOnWheel,
-} from './hooks';
+import { useCanvasEvents, useInteraction, useZoomOnWheel } from './hooks';
 import type { Interaction } from './models';
 
 function XAxisZoom(props: Interaction) {
-  const shouldInteract = useRegisterInteraction('XAxisZoom', props);
+  const shouldInteract = useInteraction('XAxisZoom', props);
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => ({
     x: shouldInteract(sourceEvent),

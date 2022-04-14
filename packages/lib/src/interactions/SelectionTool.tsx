@@ -8,7 +8,7 @@ import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import {
   useCanvasEvents,
   useModifierKeyPressed,
-  useRegisterInteraction,
+  useInteraction,
 } from './hooks';
 import type { CanvasEvent, Interaction, Selection } from './models';
 import { boundPointToFOV } from './utils';
@@ -35,7 +35,7 @@ function SelectionTool(props: Props) {
 
   const camera = useThree((state) => state.camera);
   const { worldToData } = useAxisSystemContext();
-  const shouldInteract = useRegisterInteraction(id, { modifierKey, disabled });
+  const shouldInteract = useInteraction(id, { modifierKey, disabled });
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useRafState<Vector2 | undefined>(undefined);

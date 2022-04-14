@@ -6,7 +6,7 @@ import {
   useCanvasEvents,
   useModifierKeyPressed,
   useMoveCameraTo,
-  useRegisterInteraction,
+  useInteraction,
 } from './hooks';
 import type { CanvasEvent, Interaction } from './models';
 
@@ -14,7 +14,7 @@ function Pan(props: Interaction) {
   const { modifierKey } = props;
 
   const camera = useThree((state) => state.camera);
-  const shouldInteract = useRegisterInteraction('Pan', props);
+  const shouldInteract = useInteraction('Pan', props);
   const moveCameraTo = useMoveCameraTo();
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders

@@ -169,7 +169,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   useEventListener(domElement, 'wheel', handleWheel);
 }
 
-export function useRegisterInteraction(id: string, value: Interaction) {
+export function useInteraction(id: string, value: Interaction) {
   const { shouldInteract, registerInteraction, unregisterInteraction } =
     useInteractionsContext();
 
