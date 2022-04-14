@@ -16,11 +16,16 @@ function Annotation(props: Props) {
   const { x, y, scaleOnZoom, children, style, ...divProps } = props;
 
   const camera = useThree((state) => state.camera);
+  useFrameRendering();
 
   const { dataToWorld, worldToHtml } = useAxisSystemContext();
   const htmlPt = worldToHtml(dataToWorld(new Vector2(x, y)));
 
-  useFrameRendering();
+  if (scaleOnZoom && style?.transform) {
+    throw new Error(
+      'Annotation with `scaleOnZoom` cannot have its own `transform`'
+    );
+  }
 
   return (
     <Html>
@@ -31,8 +36,10 @@ function Annotation(props: Props) {
           left: htmlPt.x,
           pointerEvents: 'none',
           transform: scaleOnZoom
-            ? `scale(${1 / camera.scale.x}, ${1 / camera.scale.y})`
-            : '',
+            ? `translate(-50%, -50%) scale(${1 / camera.scale.x}, ${
+                1 / camera.scale.y
+              })`
+            : undefined,
           ...style,
         }}
         {...divProps}
