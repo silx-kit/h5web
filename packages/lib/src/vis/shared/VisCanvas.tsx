@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { useState } from 'react';
 
+import InteractionsProvider from '../../interactions/InteractionsProvider';
 import type { AxisConfig } from '../models';
 import { getSizeToFit, getAxisOffsets } from '../utils';
 import AxisSystem from './AxisSystem';
@@ -74,15 +75,17 @@ function VisCanvas(props: PropsWithChildren<Props>) {
               ordinateConfig={ordinateConfig}
               floatingToolbar={floatingToolbar}
             >
-              <AxisSystem axisOffsets={axisOffsets} title={title} />
-              {children}
-              <ViewportCenterer />
-              <Html>
-                <div
-                  ref={(elem) => setFloatingToolbar(elem || undefined)}
-                  className={styles.floatingToolbar}
-                />
-              </Html>
+              <InteractionsProvider>
+                <AxisSystem axisOffsets={axisOffsets} title={title} />
+                {children}
+                <ViewportCenterer />
+                <Html>
+                  <div
+                    ref={(elem) => setFloatingToolbar(elem || undefined)}
+                    className={styles.floatingToolbar}
+                  />
+                </Html>
+              </InteractionsProvider>
             </AxisSystemProvider>
           </Canvas>
         </div>

@@ -10,6 +10,7 @@ import { Vector2, Vector3 } from 'three';
 import type { ModifierKey } from '..';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { getCameraFOV } from '../vis/utils';
+import { useInteractionsContext } from './InteractionsProvider';
 import type { CanvasEvent, CanvasEventCallbacks, Interaction } from './models';
 import { clampPositionToArea } from './utils';
 
@@ -170,7 +171,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
 
 export function useRegisterInteraction(id: string, value: Interaction) {
   const { shouldInteract, registerInteraction, unregisterInteraction } =
-    useAxisSystemContext();
+    useInteractionsContext();
 
   useEffect(() => {
     registerInteraction(id, value);
