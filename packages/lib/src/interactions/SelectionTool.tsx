@@ -1,11 +1,15 @@
-import { useKeyboardEvent, useToggle, useRafState } from '@react-hookz/web';
+import { useKeyboardEvent, useRafState } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
-import { useCanvasEvents, useRegisterInteraction } from './hooks';
+import {
+  useCanvasEvents,
+  useModifierKeyPressed,
+  useRegisterInteraction,
+} from './hooks';
 import type { CanvasEvent, Interaction, Selection } from './models';
 import { boundPointToFOV } from './utils';
 
@@ -35,7 +39,7 @@ function SelectionTool(props: Props) {
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useRafState<Vector2 | undefined>(undefined);
-  const [isVisible, toggleVisible] = useToggle(true);
+  const isModifierKeyPressed = useModifierKeyPressed(modifierKey);
 
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
@@ -114,17 +118,6 @@ function SelectionTool(props: Props) {
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
 
-  useKeyboardEvent(modifierKey, () => toggleVisible(), [], { event: 'keyup' });
-  useKeyboardEvent(
-    modifierKey,
-    () => {
-      if (!isVisible) {
-        toggleVisible();
-      }
-    },
-    [],
-    { event: 'keydown' }
-  );
   useKeyboardEvent(
     'Escape',
     () => {
@@ -135,7 +128,7 @@ function SelectionTool(props: Props) {
     { event: 'keydown' }
   );
 
-  if (!startPoint || !endPoint || !isVisible) {
+  if (!startPoint || !endPoint || !isModifierKeyPressed) {
     return null;
   }
 

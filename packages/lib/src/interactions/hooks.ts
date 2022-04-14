@@ -1,8 +1,13 @@
-import { useEventListener } from '@react-hookz/web';
+import {
+  useEventListener,
+  useKeyboardEvent,
+  useToggle,
+} from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import { useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
+import type { ModifierKey } from '..';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
 import { getCameraFOV } from '../vis/utils';
 import type { CanvasEvent, CanvasEventCallbacks, Interaction } from './models';
@@ -176,4 +181,25 @@ export function useRegisterInteraction(id: string, value: Interaction) {
     (event: MouseEvent) => shouldInteract(id, event),
     [id, shouldInteract]
   );
+}
+
+export function useModifierKeyPressed(
+  modifierKey: ModifierKey | undefined
+): boolean {
+  const [isPressed, togglePressed] = useToggle(true);
+
+  useKeyboardEvent(modifierKey, () => togglePressed(), [], { event: 'keyup' });
+  useKeyboardEvent(
+    modifierKey,
+    () => {
+      // `keydown` is fired repeatedly, so make sure we toggle only once
+      if (!isPressed) {
+        togglePressed();
+      }
+    },
+    [],
+    { event: 'keydown' }
+  );
+
+  return isPressed;
 }

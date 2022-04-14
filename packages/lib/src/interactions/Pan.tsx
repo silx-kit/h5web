@@ -4,19 +4,21 @@ import type { Vector3 } from 'three';
 
 import {
   useCanvasEvents,
+  useModifierKeyPressed,
   useMoveCameraTo,
   useRegisterInteraction,
 } from './hooks';
 import type { CanvasEvent, Interaction } from './models';
 
 function Pan(props: Interaction) {
-  const shouldInteract = useRegisterInteraction('Pan', props);
+  const { modifierKey } = props;
 
   const camera = useThree((state) => state.camera);
+  const shouldInteract = useRegisterInteraction('Pan', props);
+  const moveCameraTo = useMoveCameraTo();
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
-
-  const moveCameraTo = useMoveCameraTo();
+  const isModifierKeyPressed = useModifierKeyPressed(modifierKey);
 
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
@@ -41,20 +43,17 @@ function Pan(props: Interaction) {
 
   const onPointerMove = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      const { unprojectedPoint, sourceEvent } = evt;
-      if (!startOffsetPosition.current) {
+      if (!startOffsetPosition.current || !isModifierKeyPressed) {
         return;
       }
 
-      // Prevent events from reaching tooltip mesh when panning
-      sourceEvent.stopPropagation();
-
+      const { unprojectedPoint } = evt;
       const delta = startOffsetPosition.current.clone().sub(unprojectedPoint);
       const target = camera.position.clone().add(delta);
 
       moveCameraTo(target.x, target.y);
     },
-    [camera, moveCameraTo]
+    [camera, isModifierKeyPressed, moveCameraTo]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
