@@ -98,8 +98,20 @@ WithAxisLabels.args = {
 
 export const WithAnnotation: Story<HeatmapVisProps> = (args) => (
   <HeatmapVis {...args}>
-    <Annotation x={30} y={18} style={{ width: '200px', color: 'white' }}>
-      An annotation
+    <Annotation x={10} y={15} style={{ color: 'white' }}>
+      HTML annotation positioned at (10, 15)
+    </Annotation>
+    <Annotation
+      x={25}
+      y={8}
+      style={{
+        width: '200px',
+        transform: 'translate(-50%, -50%)',
+        color: 'white',
+        textAlign: 'center',
+      }}
+    >
+      Another annotation, manually centred on (25, 8)
     </Annotation>
   </HeatmapVis>
 );
