@@ -8,7 +8,7 @@ import { useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
 import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
-import { getCameraFOV } from '../vis/utils';
+import { getWorldFOV } from '../vis/utils';
 import { useInteractionsContext } from './InteractionsProvider';
 import type {
   CanvasEvent,
@@ -32,7 +32,7 @@ export function useMoveCameraTo() {
     (x: number, y: number) => {
       const { position } = camera;
 
-      const { topRight, bottomLeft } = getCameraFOV(camera);
+      const { topRight, bottomLeft } = getWorldFOV(camera);
       const width = Math.abs(topRight.x - bottomLeft.x);
       const height = Math.abs(topRight.y - bottomLeft.y);
 

@@ -1,7 +1,8 @@
 import { useThree } from '@react-three/fiber';
 
-import { useFrameRendering, useVisibleDomains } from '../hooks';
+import { useCameraState } from '../hooks';
 import type { AxisOffsets } from '../models';
+import { getVisibleDomains } from '../utils';
 import Axis from './Axis';
 import styles from './AxisSystem.module.css';
 import { useAxisSystemContext } from './AxisSystemProvider';
@@ -19,10 +20,10 @@ function AxisSystem(props: Props) {
   const { width, height } = canvasSize;
 
   const { abscissaConfig, ordinateConfig } = useAxisSystemContext();
-  const { xVisibleDomain, yVisibleDomain } = useVisibleDomains();
-
-  // Re-render on every R3F frame (i.e. on every change of camera zoom/position)
-  useFrameRendering();
+  const { xVisibleDomain, yVisibleDomain } = useCameraState(
+    getVisibleDomains,
+    []
+  );
 
   return (
     <Overlay

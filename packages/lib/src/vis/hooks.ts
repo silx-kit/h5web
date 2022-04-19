@@ -1,15 +1,16 @@
 import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
 import type { Domain, AnyNumArray } from '@h5web/shared';
 import { useMediaQuery } from '@react-hookz/web';
+import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useCallback, useMemo, useState } from 'react';
+import { useEffect, useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
 
 import type { CustomColor } from './models';
 import { useAxisSystemContext } from './shared/AxisSystemProvider';
+import type { AxisSystemContextValue } from './shared/AxisSystemProvider';
 import {
-  getCameraFOV,
   getAxisDomain,
   getCombinedDomain,
   getValueToIndexScale,
@@ -49,30 +50,30 @@ export function useDomains(
   );
 }
 
-export function useVisibleDomains(): {
-  xVisibleDomain: Domain;
-  yVisibleDomain: Domain;
-} {
-  const { worldToData } = useAxisSystemContext();
+export function useCameraState<T>(
+  factory: (camera: Camera, context: AxisSystemContextValue) => T,
+  deps: unknown[]
+): T {
   const camera = useThree((state) => state.camera);
+  const context = useAxisSystemContext();
 
-  const { topRight, bottomLeft } = getCameraFOV(camera);
+  const [state, setState] = useState(() => factory(camera, context));
 
-  const dataBottomLeft = worldToData(bottomLeft);
-  const dataTopRight = worldToData(topRight);
+  function updateState() {
+    const newState = factory(camera, context);
 
-  return {
-    xVisibleDomain: [dataBottomLeft.x, dataTopRight.x],
-    yVisibleDomain: [dataBottomLeft.y, dataTopRight.y],
-  };
-}
+    if (newState !== state) {
+      setState(newState);
+    }
+  }
 
-export function useFrameRendering(): void {
-  const [, setNum] = useState(0);
+  // Update state when context value or dependencies change
+  useEffect(updateState, [context, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useFrame(() => {
-    setNum(Math.random());
-  });
+  // Update state when canvas is redrawn (i.e. on zoom/pan)
+  useFrame(updateState);
+
+  return state;
 }
 
 export function useCustomColors(

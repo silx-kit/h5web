@@ -2,12 +2,16 @@ import { sum } from 'lodash';
 import { Suspense } from 'react';
 import { LinearFilter, NearestFilter, Vector2 } from 'three';
 
+import { useCameraState } from '../hooks';
 import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import Tile from './Tile';
 import type { TilesApi } from './api';
-import { useScaledVisibleDomains } from './hooks';
 import type { ColorMapProps } from './models';
-import { getTileOffsets, sortTilesByDistanceTo } from './utils';
+import {
+  getTileOffsets,
+  getScaledVisibleDomains,
+  sortTilesByDistanceTo,
+} from './utils';
 
 interface Props extends ColorMapProps {
   api: TilesApi;
@@ -21,7 +25,10 @@ function TiledLayer(props: Props) {
   const layerSize = api.layerSizes[layer];
 
   const { abscissaConfig, ordinateConfig, visSize } = useAxisSystemContext();
-  const { xVisibleDomain, yVisibleDomain } = useScaledVisibleDomains(layerSize);
+  const { xVisibleDomain, yVisibleDomain } = useCameraState(
+    (...args) => getScaledVisibleDomains(...args, layerSize),
+    [layerSize]
+  );
 
   const tileOffsets = getTileOffsets(xVisibleDomain, yVisibleDomain, tileSize);
 

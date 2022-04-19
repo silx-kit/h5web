@@ -67,15 +67,15 @@ export {
   getCombinedDomain,
   extendDomain,
   getValueToIndexScale,
+  getVisibleDomains,
 } from './vis/utils';
 
 export {
   useDomain,
   useDomains,
   useCombinedDomain,
-  useVisibleDomains,
-  useFrameRendering,
   useValueToIndexScale,
+  useCameraState,
 } from './vis/hooks';
 
 export {

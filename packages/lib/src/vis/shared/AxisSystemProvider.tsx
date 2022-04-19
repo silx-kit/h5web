@@ -14,7 +14,7 @@ export interface AxisSystemContextValue {
   ordinateScale: AxisScale;
   dataToWorld: (vec: Vector2 | Vector3) => Vector2;
   worldToData: (vec: Vector2 | Vector3) => Vector2;
-  worldToHtml: (vec: Vector2 | Vector3) => Vector2;
+  cameraToHtml: (vec: Vector2 | Vector3) => Vector2;
 
   // For internal use only
   floatingToolbar: HTMLDivElement | undefined;
@@ -60,14 +60,13 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
       .setPosition(width / 2, height / 2); // account for shift of (0,0) position (center for camera, top-left for HTML)
   }, [availableSize]);
 
-  const camera = useThree((state) => state.camera);
-  const worldToHtml = useCallback(
-    (point: Vector2 | Vector3) => {
-      const cameraPoint = new Vector3(point.x, point.y, 0).project(camera);
-      const htmlPoint = cameraPoint.clone().applyMatrix4(cameraToHtmlMatrix);
+  const cameraToHtml = useCallback(
+    (cameraPoint: Vector2 | Vector3) => {
+      const { x, y } = cameraPoint;
+      const htmlPoint = new Vector3(x, y, 0).applyMatrix4(cameraToHtmlMatrix);
       return new Vector2(htmlPoint.x, htmlPoint.y);
     },
-    [camera, cameraToHtmlMatrix]
+    [cameraToHtmlMatrix]
   );
 
   return (
@@ -80,7 +79,7 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
         ordinateScale,
         worldToData,
         dataToWorld,
-        worldToHtml,
+        cameraToHtml,
         floatingToolbar,
       }}
     >

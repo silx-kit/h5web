@@ -1,8 +1,11 @@
 import type { Domain } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared';
+import type { Camera } from '@react-three/fiber';
 import { Vector2 } from 'three';
 
 import type { Size } from '../models';
-import { isDescending } from '../utils';
+import type { AxisSystemContextValue } from '../shared/AxisSystemProvider';
+import { createAxisScale, getVisibleDomains, isDescending } from '../utils';
 
 export function getTileOffsets(
   xDomain: Domain,
@@ -45,4 +48,34 @@ export function sortTilesByDistanceTo(
     const bCenter = new Vector2(b.x + width / 2, b.y + height / 2);
     return aCenter.distanceToSquared(ref) - bCenter.distanceToSquared(ref);
   });
+}
+
+export function getScaledVisibleDomains(
+  camera: Camera,
+  context: AxisSystemContextValue,
+  size: Size
+): {
+  xVisibleDomain: Domain;
+  yVisibleDomain: Domain;
+} {
+  const { abscissaConfig, ordinateConfig } = context;
+  const { width, height } = size;
+  const { xVisibleDomain, yVisibleDomain } = getVisibleDomains(camera, context);
+
+  const xScale = createAxisScale(abscissaConfig.scaleType ?? ScaleType.Linear, {
+    domain: abscissaConfig.visDomain,
+    range: [0, width],
+    clamp: true,
+  });
+
+  const yScale = createAxisScale(ordinateConfig.scaleType ?? ScaleType.Linear, {
+    domain: ordinateConfig.visDomain,
+    range: [0, height],
+    clamp: true,
+  });
+
+  return {
+    xVisibleDomain: xVisibleDomain.map(xScale) as Domain,
+    yVisibleDomain: yVisibleDomain.map(yScale) as Domain,
+  };
 }
