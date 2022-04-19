@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-import { useAxisSystemContext } from '../../vis/shared/AxisSystemContext';
+import { useAxisSystemContext } from '../../vis/shared/AxisSystemProvider';
 import Html from '../../vis/shared/Html';
 
 interface Props {

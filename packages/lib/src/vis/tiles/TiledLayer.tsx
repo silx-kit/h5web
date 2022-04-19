@@ -2,7 +2,7 @@ import { sum } from 'lodash';
 import { Suspense } from 'react';
 import { LinearFilter, NearestFilter, Vector2 } from 'three';
 
-import { useAxisSystemContext } from '../shared/AxisSystemContext';
+import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import Tile from './Tile';
 import type { TilesApi } from './api';
 import { useScaledVisibleDomains } from './hooks';

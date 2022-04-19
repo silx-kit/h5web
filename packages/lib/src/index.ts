@@ -57,8 +57,8 @@ export { default as SelectionTool } from './interactions/SelectionTool';
 export type { SelectionProps } from './interactions/SelectionTool';
 
 // Context
-export { useAxisSystemContext } from './vis/shared/AxisSystemContext';
-export type { AxisSystemParams } from './vis/shared/AxisSystemContext';
+export { useAxisSystemContext } from './vis/shared/AxisSystemProvider';
+export type { AxisSystemContextValue } from './vis/shared/AxisSystemProvider';
 
 // Utilities
 export {

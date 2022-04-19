@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import type { ReactElement } from 'react';
 
 import type { Coords } from '../models';
-import { useAxisSystemContext } from './AxisSystemContext';
+import { useAxisSystemContext } from './AxisSystemProvider';
 import TooltipOverlay from './TooltipOverlay';
 import VisMesh from './VisMesh';
 

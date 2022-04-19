@@ -1,11 +1,30 @@
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
-import { useCallback, useMemo } from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 import { Matrix4, Vector2, Vector3 } from 'three';
 
-import type { AxisConfig } from '../models';
+import type { AxisConfig, AxisScale, Size } from '../models';
 import { getCanvasScale, getSizeToFit } from '../utils';
-import { AxisSystemContext } from './AxisSystemContext';
+
+export interface AxisSystemContextValue {
+  visSize: Size;
+  abscissaConfig: AxisConfig;
+  ordinateConfig: AxisConfig;
+  abscissaScale: AxisScale;
+  ordinateScale: AxisScale;
+  dataToWorld: (vec: Vector2 | Vector3) => Vector2;
+  worldToData: (vec: Vector2 | Vector3) => Vector2;
+  worldToHtml: (vec: Vector2 | Vector3) => Vector2;
+
+  // For internal use only
+  floatingToolbar: HTMLDivElement | undefined;
+}
+
+const AxisSystemContext = createContext({} as AxisSystemContextValue);
+
+export function useAxisSystemContext() {
+  return useContext(AxisSystemContext);
+}
 
 interface Props {
   visRatio: number | undefined;
@@ -19,8 +38,8 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     visRatio,
     abscissaConfig,
     ordinateConfig,
-    children,
     floatingToolbar,
+    children,
   } = props;
 
   const availableSize = useThree((state) => state.size);

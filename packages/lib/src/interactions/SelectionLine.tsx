@@ -3,7 +3,7 @@ import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
 import { useFrameRendering } from '..';
-import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import Overlay from '../vis/shared/Overlay';
 
 interface Props extends SVGProps<SVGLineElement> {
