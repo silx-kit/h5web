@@ -22,9 +22,11 @@
   },
   "dependencies": {
     "@h5web/app": "workspace:*",
+    "@h5web/h5wasm": "workspace:*",
     "normalize.css": "8.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-dropzone": "12.0.5",
     "react-router-dom": "6.2.1"
   },
   "devDependencies": {
@@ -37,16 +39,5 @@
     "typescript": "4.5.5",
     "vite": "2.8.4",
     "vite-plugin-eslint": "1.3.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version"
-    ]
   }
 }

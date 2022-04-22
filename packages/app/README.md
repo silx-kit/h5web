@@ -1,21 +1,22 @@
 # H5Web App & Providers
 
-[![Demo](https://img.shields.io/website?down_message=offline&label=demo&up_message=online&url=https%3A%2F%2Fh5web-docs.panosc.eu%2F)](https://h5web.panosc.eu/)
+[![Demo](https://img.shields.io/website?down_message=offline&label=demo&up_message=online&url=https%3A%2F%2Fh5web.panosc.eu%2F)](https://h5web.panosc.eu/)
 [![Version](https://img.shields.io/npm/v/@h5web/app)](https://www.npmjs.com/package/@h5web/app)
 
-H5Web is a collection of React components to visualize and explore data. It
-consists of two packages:
+[H5Web](https://github.com/silx-kit/h5web) is a collection of React components
+to visualize and explore data. It consists of two main packages:
 
-- `@h5web/lib`: visualization components built with
+- [`@h5web/lib`](https://www.npmjs.com/package/@h5web/lib): visualization
+  components built with
   [react-three-fiber](https://github.com/react-spring/react-three-fiber).
-- `@h5web/app`: a stand-alone, web-based viewer to explore HDF5 files **(this
-  library)**.
+- **[`@h5web/app`](https://www.npmjs.com/package/@h5web/app): a stand-alone,
+  web-based viewer to explore HDF5 files (this library)**.
 
-`@h5web/app` exposes the HDF5 viewer component `App`, as well as the built-in
-data providers:
+`@h5web/app` exposes the HDF5 viewer component `App`, as well as the following
+built-in data providers:
 
-- `H5GroveProvider` for use with [H5Grove](https://github.com/silx-kit/h5grove)
-  server implementations, like
+- `H5GroveProvider` for use with server implementations based on
+  [H5Grove](https://github.com/silx-kit/h5grove), like
   [jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web);
 - `HsdsProvider` for use with [HSDS](https://github.com/HDFGroup/hsds);
 - `MockProvider` for testing purposes.

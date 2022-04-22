@@ -117,8 +117,7 @@ Icons can be imported as React components from `react-icons/fi`.
   site
 - `pnpm serve` - serve the built demo at http://localhost:3000
 - `pnpm serve:storybook` - serve the built Storybook at http://localhost:6006
-- `pnpm packages` - build packages `@h5web/app` and `@h5web/lib` (cf. details
-  below)
+- `pnpm packages` - build packages (cf. details below)
 
 ### Package builds
 
@@ -132,7 +131,7 @@ The build process of `@h5web/lib` works as follows:
    that contains the compiled CSS modules that Vite comes across while building
    the React components. These styles are called "local" styles.
 
-2. Second, we run two scripts in parallel: `build:css` and `build:ts`.
+2. Second, we run two scripts in parallel: `build:css` and `build:dts`.
    - The job of `build:css` is to build the package's global styles and
      concatenate them with the local styles compiled at the first step. To do
      so, we run Vite again but with a different config: `vite.styles.config.js`,
@@ -141,7 +140,7 @@ The build process of `@h5web/lib` works as follows:
      (the global styles) and `dist/style.css` (the local styles) and output the
      result to `dist/styles.css`, which is the stylesheet referenced from
      `package.json` that consumers need to import.
-   - The job of `build:ts` is to generate type declarations for package
+   - The job of `build:dts` is to generate type declarations for package
      consumers who use TypeScript. This is a two step process: first we generate
      type declarations for all TS files in the `dist-ts` folder with `tsc`, then
      we use Rollup to merge all the declarations into a single file:
@@ -153,6 +152,10 @@ package's distributed styles - i.e. the output of the lib's `build:css` script.
 The lib's distributed styles include both its global _and_ local styles. This
 allows us to provide a single CSS bundle for consumers of `@h5web/app` to
 import.
+
+The build process of`@h5web/h5wasm` is also the same as the lib's, but since the
+package does not include any styles, `vite build` does not generate a
+`style.css` file and there's not `build:css` script.
 
 ## Code quality
 

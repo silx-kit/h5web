@@ -9,6 +9,7 @@ import type { ImageAttribute } from '../vis-packs/core/models';
 import type { NxAttribute } from '../vis-packs/nexus/models';
 import type { ProviderApi } from './api';
 import { ProviderContext } from './context';
+import { getNameFromPath } from './utils';
 
 interface Props {
   api: ProviderApi;
@@ -65,8 +66,6 @@ function Provider(props: Props) {
     });
   }, [api]);
 
-  const filepathMembers = api.filepath.split('/');
-
   const attrValuesStore = useMemo(() => {
     const store = createFetchStore(api.getAttrValues.bind(api), {
       type: 'Map',
@@ -86,7 +85,7 @@ function Provider(props: Props) {
     <ProviderContext.Provider
       value={{
         filepath: api.filepath,
-        filename: filepathMembers[filepathMembers.length - 1],
+        filename: getNameFromPath(api.filepath),
         entitiesStore,
         valuesStore,
         attrValuesStore,
