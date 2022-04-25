@@ -102,45 +102,20 @@ export const WithAnnotation: Story<HeatmapVisProps> = (args) => (
       HTML annotation positioned at (10, 15)
     </Annotation>
     <Annotation
-      x={25}
-      y={8}
-      style={{
-        width: '200px',
-        transform: 'translate(-50%, -50%)',
-        color: 'white',
-        textAlign: 'center',
-      }}
-    >
-      Another annotation, manually centred on (25, 8)
-    </Annotation>
-  </HeatmapVis>
-);
-
-WithAnnotation.args = {
-  dataArray,
-  domain,
-};
-
-export const WithAnnotationZoom: Story<HeatmapVisProps> = (args) => (
-  <HeatmapVis {...args}>
-    <Annotation
       x={10}
-      y={15}
-      scaleOnZoom
+      y={5}
+      center
       style={{
-        width: '230px',
+        width: 180,
         color: 'white',
-        fontSize: '0.875rem',
         textAlign: 'center',
       }}
     >
-      HTML annotation at (10, 15) that scales with zoom. Note that it is now
-      centred automatically.
+      Another annotation, <strong>centred</strong> on (10, 5)
     </Annotation>
     <Annotation
       x={25}
       y={10}
-      scaleOnZoom
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -152,9 +127,16 @@ export const WithAnnotationZoom: Story<HeatmapVisProps> = (args) => (
       }}
     >
       <>
-        <p style={{ flex: '1 1 0%', margin: 0, padding: '0.5rem' }}>
-          Annotations don't have to contain just text. You can draw shapes with
-          SVG or CSS, for instance.
+        <p
+          style={{
+            flex: '1 1 0%',
+            margin: 0,
+            padding: '0.5rem',
+            border: '10px solid pink',
+          }}
+        >
+          Annotations don't have to contain just text. You can also draw shapes
+          with CSS and SVG.
         </p>
         <svg
           style={{
@@ -170,11 +152,43 @@ export const WithAnnotationZoom: Story<HeatmapVisProps> = (args) => (
             width="100%"
             height="100%"
             fill="none"
-            stroke="currentColor"
+            stroke="papayawhip"
             strokeWidth={5}
           />
         </svg>
       </>
+    </Annotation>
+  </HeatmapVis>
+);
+
+WithAnnotation.args = {
+  dataArray,
+  domain,
+};
+
+export const WithAnnotationZoom: Story<HeatmapVisProps> = (args) => (
+  <HeatmapVis {...args}>
+    <Annotation
+      x={10}
+      y={15}
+      scaleOnZoom
+      style={{ width: 230, color: 'white' }}
+    >
+      HTML annotation at (10, 15) that scales with zoom.
+    </Annotation>
+    <Annotation
+      x={25}
+      y={10}
+      scaleOnZoom
+      center
+      style={{
+        width: 320,
+        color: 'white',
+        textAlign: 'center',
+      }}
+    >
+      Another annotation that scales with zoom but this time{' '}
+      <strong>centred</strong> on (25, 10)
     </Annotation>
   </HeatmapVis>
 );

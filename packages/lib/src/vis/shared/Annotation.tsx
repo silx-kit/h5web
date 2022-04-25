@@ -10,10 +10,11 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   x: number;
   y: number;
   scaleOnZoom?: boolean;
+  center?: boolean;
 }
 
 function Annotation(props: Props) {
-  const { x, y, scaleOnZoom, children, style, ...divProps } = props;
+  const { x, y, scaleOnZoom, center, children, style, ...divProps } = props;
 
   const camera = useThree((state) => state.camera);
   useFrameRendering();
@@ -21,11 +22,16 @@ function Annotation(props: Props) {
   const { dataToWorld, worldToHtml } = useAxisSystemContext();
   const htmlPt = worldToHtml(dataToWorld(new Vector2(x, y)));
 
-  if (scaleOnZoom && style?.transform) {
+  if ((center || scaleOnZoom) && style?.transform) {
     throw new Error(
-      'Annotation with `scaleOnZoom` cannot have its own `transform`'
+      'Annotation with `center` and/or `scaleOnZoom` cannot have its own `transform`'
     );
   }
+
+  const transforms = [
+    center ? 'translate(-50%, -50%)' : '',
+    scaleOnZoom ? `scale(${1 / camera.scale.x}, ${1 / camera.scale.y})` : '',
+  ];
 
   return (
     <Html>
@@ -35,11 +41,8 @@ function Annotation(props: Props) {
           top: htmlPt.y,
           left: htmlPt.x,
           pointerEvents: 'none',
-          transform: scaleOnZoom
-            ? `translate(-50%, -50%) scale(${1 / camera.scale.x}, ${
-                1 / camera.scale.y
-              })`
-            : undefined,
+          transformOrigin: scaleOnZoom && !center ? 'top left' : undefined,
+          transform: transforms.join(' ').trim(),
           ...style,
         }}
         {...divProps}
