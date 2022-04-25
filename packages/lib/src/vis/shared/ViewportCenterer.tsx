@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import type { Vector2 } from 'three';
 
 import { useMoveCameraTo } from '../../interactions/hooks';
-import { useAxisSystemContext } from './AxisSystemContext';
+import { useAxisSystemContext } from './AxisSystemProvider';
 
 function ViewportCenterer() {
   const { dataToWorld, worldToData } = useAxisSystemContext();

@@ -1,7 +1,7 @@
 import type { NumArray } from '@h5web/shared';
 import { useMemo } from 'react';
 
-import { useAxisSystemContext } from '../shared/AxisSystemContext';
+import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 
 const CAMERA_FAR = 1000; // R3F's default
 

@@ -1,7 +1,7 @@
 import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import SelectionRect from './SelectionRect';
 import { clampRectangleToVis, getRatioRespectingRectangle } from './utils';
 

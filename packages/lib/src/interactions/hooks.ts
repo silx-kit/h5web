@@ -7,11 +7,15 @@ import { useThree } from '@react-three/fiber';
 import { useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
-import type { ModifierKey } from '..';
-import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import { getCameraFOV } from '../vis/utils';
 import { useInteractionsContext } from './InteractionsProvider';
-import type { CanvasEvent, CanvasEventCallbacks, Interaction } from './models';
+import type {
+  CanvasEvent,
+  CanvasEventCallbacks,
+  Interaction,
+  ModifierKey,
+} from './models';
 import { clampPositionToArea } from './utils';
 
 const ZOOM_FACTOR = 0.95;

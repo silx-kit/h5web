@@ -4,7 +4,7 @@ import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import {
   useCanvasEvents,
   useModifierKeyPressed,

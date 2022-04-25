@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'react';
 import { Vector2 } from 'three';
 
 import { useFrameRendering } from '../hooks';
-import { useAxisSystemContext } from './AxisSystemContext';
+import { useAxisSystemContext } from './AxisSystemProvider';
 import Html from './Html';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {

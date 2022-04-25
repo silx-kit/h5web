@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber';
 
 import { useVisibleDomains } from '../vis/hooks';
-import { useAxisSystemContext } from '../vis/shared/AxisSystemContext';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import RatioSelectionRect from './RatioSelectionRect';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';

@@ -7,7 +7,7 @@ import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
 
 import type { CustomColor } from './models';
-import { useAxisSystemContext } from './shared/AxisSystemContext';
+import { useAxisSystemContext } from './shared/AxisSystemProvider';
 import {
   getCameraFOV,
   getAxisDomain,

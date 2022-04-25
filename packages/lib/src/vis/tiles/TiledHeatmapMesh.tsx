@@ -3,7 +3,7 @@ import { clamp, range } from 'lodash';
 
 import { getInterpolator } from '../heatmap/utils';
 import { useFrameRendering } from '../hooks';
-import { useAxisSystemContext } from '../shared/AxisSystemContext';
+import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import TiledLayer from './TiledLayer';
 import type { TilesApi } from './api';
 import { useScaledVisibleDomains } from './hooks';

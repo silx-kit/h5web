@@ -1,7 +1,7 @@
 import type { MeshProps } from '@react-three/fiber';
 
 import type { Size } from '../models';
-import { useAxisSystemContext } from './AxisSystemContext';
+import { useAxisSystemContext } from './AxisSystemProvider';
 
 interface Props extends MeshProps {
   size?: Size;

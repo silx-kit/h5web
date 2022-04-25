@@ -4,7 +4,7 @@ import { useFrameRendering, useVisibleDomains } from '../hooks';
 import type { AxisOffsets } from '../models';
 import Axis from './Axis';
 import styles from './AxisSystem.module.css';
-import { useAxisSystemContext } from './AxisSystemContext';
+import { useAxisSystemContext } from './AxisSystemProvider';
 import Overlay from './Overlay';
 
 interface Props {

@@ -3,7 +3,7 @@ import type { Domain } from '@h5web/shared';
 
 import { useVisibleDomains } from '../hooks';
 import type { Size } from '../models';
-import { useAxisSystemContext } from '../shared/AxisSystemContext';
+import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import { createAxisScale } from '../utils';
 
 export function useScaledVisibleDomains(size: Size): {

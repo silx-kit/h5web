@@ -10,7 +10,7 @@ It also exposes the size of the visualization and the axis configs passed to `Vi
 Consumers of `AxisSystemContext` re-render **whenever the size of the canvas changes**.
 
 ```ts
-useAxisSystemContext(): AxisSystemParams
+useAxisSystemContext(): AxisSystemContextValue
 
 const { visSize, dataToWorld, worldToData } = useAxisSystemContext();
 ```
