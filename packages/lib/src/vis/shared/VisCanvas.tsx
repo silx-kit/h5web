@@ -9,6 +9,7 @@ import { getSizeToFit, getAxisOffsets } from '../utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
 import Html from './Html';
+import RatioEnforcer from './RatioEnforcer';
 import ViewportCenterer from './ViewportCenterer';
 import styles from './VisCanvas.module.css';
 
@@ -79,6 +80,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
                 <AxisSystem axisOffsets={axisOffsets} title={title} />
                 {children}
                 <ViewportCenterer />
+                <RatioEnforcer visRatio={visRatio} />
                 <Html>
                   <div
                     ref={(elem) => setFloatingToolbar(elem || undefined)}

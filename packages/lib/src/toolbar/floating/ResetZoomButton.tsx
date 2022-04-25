@@ -1,13 +1,12 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useState } from 'react';
 
-import { useMoveCameraTo } from '../../interactions/hooks';
 import FloatingControl from './FloatingControl';
 import styles from './ResetZoomButton.module.css';
 
 function ResetZoomButton() {
   const camera = useThree((state) => state.camera);
-  const moveCameraTo = useMoveCameraTo();
+  const invalidate = useThree((state) => state.invalidate);
 
   const [isVisible, setVisible] = useState(false);
 
@@ -21,9 +20,10 @@ function ResetZoomButton() {
   function resetZoom() {
     camera.scale.x = 1;
     camera.scale.y = 1;
+    camera.position.x = 0;
+    camera.position.y = 0;
     camera.updateMatrixWorld();
-
-    moveCameraTo(0, 0);
+    invalidate();
   }
 
   return (
