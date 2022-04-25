@@ -1,7 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { Vector2, Vector3 } from 'three';
 
-import type { Interaction } from '../../interactions/models';
 import type { AxisConfig, AxisScale, Size } from '../models';
 
 export interface AxisSystemParams {
@@ -16,9 +15,6 @@ export interface AxisSystemParams {
 
   // For internal use only
   floatingToolbar: HTMLDivElement | undefined;
-  registerInteraction: (id: string, value: Interaction) => void;
-  unregisterInteraction: (id: string) => void;
-  shouldInteract: (id: string, event: MouseEvent) => boolean;
 }
 
 export const AxisSystemContext = createContext({} as AxisSystemParams);
