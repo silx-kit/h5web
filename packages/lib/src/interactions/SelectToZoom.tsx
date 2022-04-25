@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber';
 
-import { useVisibleDomains } from '../vis/hooks';
+import { useVisibleDomains, useFrameRendering } from '../vis/hooks';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import RatioSelectionRect from './RatioSelectionRect';
 import SelectionRect from './SelectionRect';
@@ -28,7 +28,9 @@ function SelectToZoom(props: Props) {
       (yVisibleDomain[1] - yVisibleDomain[0])
   );
 
-  const onSelectionEnd = (selection: Selection) => {
+  useFrameRendering();
+
+  function onSelectionEnd(selection: Selection) {
     const { startPoint: dataStartPoint, endPoint: dataEndPoint } = selection;
 
     // Work in world coordinates as we need to act on the world camera
@@ -50,7 +52,7 @@ function SelectToZoom(props: Props) {
     camera.updateMatrixWorld();
 
     moveCameraTo(zoomRectCenter.x, zoomRectCenter.y);
-  };
+  }
 
   return (
     <SelectionTool

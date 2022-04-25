@@ -8,12 +8,12 @@ import { useAxisSystemContext } from './AxisSystemProvider';
 function ViewportCenterer() {
   const { dataToWorld, worldToData } = useAxisSystemContext();
   const viewportCenter = useRef<Vector2>();
-  const { position } = useThree((state) => state.camera);
+  const camera = useThree((state) => state.camera);
 
   const moveCameraTo = useMoveCameraTo();
 
   useFrame(() => {
-    viewportCenter.current = worldToData(position);
+    viewportCenter.current = worldToData(camera.position);
   });
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function ViewportCenterer() {
       const { x, y } = dataToWorld(viewportCenter.current);
       moveCameraTo(x, y);
     }
-  }, [viewportCenter, moveCameraTo, dataToWorld, position.x, position.y]);
+  }, [viewportCenter, moveCameraTo, dataToWorld, camera]);
 
   return null;
 }
