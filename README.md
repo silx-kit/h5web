@@ -1,6 +1,6 @@
 # H5Web: React components for data visualization and exploration
 
-[![Demo](https://img.shields.io/website?down_message=offline&label=demo&up_message=online&url=https%3A%2F%2Fh5web.panosc.eu%2F)](https://h5web.panosc.eu/)
+[![Demos](https://img.shields.io/website?down_message=offline&label=demo&up_message=online&url=https%3A%2F%2Fh5web.panosc.eu%2F)](https://h5web.panosc.eu/)
 
 H5Web is a collection of React components to visualize and explore data. It
 consists of three packages:
@@ -69,23 +69,24 @@ visualizations. Several demos are available, one per data provider:
 
 ### [H5Grove](https://github.com/silx-kit/h5grove)
 
-This demo is available at https://h5web.panosc.eu.
+This demo is available at https://h5web.panosc.eu/h5grove.
 
 The following HDF5 files can be reached with a URL of the form
-`https://h5web.panosc.eu/?file=<name>`:
+`https://h5web.panosc.eu/h5grove?file=<name>`:
 
-- [`water_224.h5`](https://h5web.panosc.eu/) (**default**): A typical NeXus file
-  with various real-world datasets to demonstrate the visualizations.
-- [`compressed.h5`](https://h5web.panosc.eu/?file=compressed.h5): A file with
-  datasets compressed with various filters to test decompression.
-- [`epics.h5`](https://h5web.panosc.eu/?file=epics.h5): A test file from
+- [`water_224.h5`](https://h5web.panosc.eu/h5grove) (**default**): A typical
+  NeXus file with various real-world datasets to demonstrate the visualizations.
+- [`compressed.h5`](https://h5web.panosc.eu/h5grove?file=compressed.h5): A file
+  with datasets compressed with various filters to test decompression.
+- [`epics.h5`](https://h5web.panosc.eu/h5grove?file=epics.h5): A test file from
   [EPICS](https://epics.anl.gov/) group (Argonne national lab).
-- [`grove.h5`](https://h5web.panosc.eu/?file=grove.h5): A file used to test the
-  provider. It contains datasets with NaN/Infinity values, booleans, complexes
-  and other types of datasets such as RGB images and 4D stacks.
-- [`links.h5`](https://h5web.panosc.eu/?file=links.h5): A file with external
-  links, soft links and a virtual dataset to test link resolution.
-- [`tall.h5`](https://h5web.panosc.eu/?file=tall.h5): The demo file of HSDS.
+- [`grove.h5`](https://h5web.panosc.eu/h5grove?file=grove.h5): A file used to
+  test the provider. It contains datasets with NaN/Infinity values, booleans,
+  complexes and other types of datasets such as RGB images and 4D stacks.
+- [`links.h5`](https://h5web.panosc.eu/h5grove?file=links.h5): A file with
+  external links, soft links and a virtual dataset to test link resolution.
+- [`tall.h5`](https://h5web.panosc.eu/h5grove?file=tall.h5): The demo file of
+  HSDS.
 
 ### [HSDS](https://github.com/HDFGroup/hsds)
 
