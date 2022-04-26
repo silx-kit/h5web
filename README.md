@@ -3,17 +3,19 @@
 [![Demo](https://img.shields.io/website?down_message=offline&label=demo&up_message=online&url=https%3A%2F%2Fh5web.panosc.eu%2F)](https://h5web.panosc.eu/)
 
 H5Web is a collection of React components to visualize and explore data. It
-consists of two packages:
+consists of three packages:
 
 - **@h5web/lib**: visualization components built with
   [react-three-fiber](https://github.com/react-spring/react-three-fiber).
 - **@h5web/app**: a component to explore and visualize data stored in HDF5 (or
   HDF5-like) files, and data providers to connect this component to various
   back-end solutions.
+- **@h5web/h5wasm**: an additional data provider that can read HDF5 files
+  straight in the browser.
 
-> While H5Web was initially built with the HDF5 format in mind, @h5web/lib
+> While H5Web was initially built with the HDF5 format in mind, `@h5web/lib`
 > visualization components are not tied to HDF5 and can be used to visualize
-> data from any source. Also, @h5web/app lets you write your own data provider
+> data from any source. Also, `@h5web/app` lets you write your own data provider
 > and can therefore work with any other hierarchical data format.
 
 If you're after a ready-made solution to view local HDF5 files, take a look at
@@ -46,13 +48,19 @@ Some examples of usage of `@h5web/lib`:
 HDF5 viewer component (`App`) and built-in data providers.
 
 Data providers are components that fetch data from HDF5 back-end solutions and
-provide this data to the app through React Context. H5Web currently includes two
-providers out of the box, which are both under active development:
+provide this data to the app through React Context. H5Web currently includes
+three providers, two of which are available in the `@h5web/app` package:
 
-- `H5GroveProvider` for [h5grove](https://github.com/silx-kit/h5grove), which is
-  used notably in
+- `H5GroveProvider` for server implementations based on
+  [H5Grove](https://github.com/silx-kit/h5grove), like
   [jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web)
 - `HsdsProvider` for [HSDS](https://github.com/HDFGroup/hsds)
+
+### [@h5web/h5wasm](https://www.npmjs.com/package/@h5web/h5wasm)
+
+This package includes a third data provider, `H5WasmProvider`, that can read
+HDF5 files straight in the browser thanks to the
+[h5wasm](https://github.com/usnistgov/h5wasm) library.
 
 ## Demos
 
@@ -87,6 +95,11 @@ All the HDF5 files mentionned above can be reached with a URL of the form
 `https://h5web.panosc.eu/hsds?file=<name>`. https://h5web.panosc.eu/hsds will
 default to `water_224.h5` but some datasets cannot be displayed as bitshuffle
 compression is not supported by HSDS yet.
+
+### [H5Wasm](https://github.com/usnistgov/h5wasm)
+
+This demo is available at https://h5web.panosc.eu/h5wasm. Just drop an HDF5 file
+from your local machine to get started.
 
 ### Mock data
 

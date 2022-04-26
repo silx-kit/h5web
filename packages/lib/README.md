@@ -3,17 +3,19 @@
 [![Docs](https://img.shields.io/website?down_message=offline&label=docs&up_message=online&url=https%3A%2F%2Fh5web-docs.panosc.eu%2F)](https://h5web-docs.panosc.eu/)
 [![Version](https://img.shields.io/npm/v/@h5web/lib)](https://www.npmjs.com/package/@h5web/lib)
 
-H5Web is a collection of React components to visualize and explore data. It
-consists of two packages:
+[H5Web](https://github.com/silx-kit/h5web) is a collection of React components
+to visualize and explore data. It consists of two main packages:
 
-- `@h5web/lib`: visualization components built with
-  [react-three-fiber](https://github.com/react-spring/react-three-fiber) **(this
+- **[`@h5web/lib`](https://www.npmjs.com/package/@h5web/lib): visualization
+  components built with
+  [react-three-fiber](https://github.com/react-spring/react-three-fiber) (this
   library)**.
-- `@h5web/app`: a stand-alone, web-based viewer to explore HDF5 files.
+- [`@h5web/app`](https://www.npmjs.com/package/@h5web/app): a stand-alone,
+  web-based viewer to explore HDF5 files.
 
-While used in `@h5web/app` for HDF5 files, **`@h5web/lib` visualization
-components are not tied to HDF5 and can be used to visualize data from any
-source.**
+While used in `@h5web/app` with HDF5 files, `@h5web/lib` visualization
+components are **not tied to HDF5** and can be used to visualize data from any
+source.
 
 For more information, visit the
 [Storybook documentation site](https://h5web-docs.panosc.eu/).
