@@ -1,7 +1,6 @@
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 
-import type { Attribute } from '..';
 import {
   assertAbsolutePath,
   isGroup,
@@ -11,7 +10,7 @@ import {
   assertDefined,
   assertDataset,
 } from '../guards';
-import type { Entity, Dataset, DType, Shape } from '../models-hdf5';
+import type { Attribute, Entity, Dataset, DType, Shape } from '../models-hdf5';
 import { getChildEntity } from '../utils';
 import { mockMetadata } from './metadata';
 import type { MockAttribute, MockDataset } from './models';

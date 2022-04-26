@@ -1,5 +1,5 @@
 import { ScatterVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { ScatterAxisParams } from '@h5web/lib/src/vis/scatter/models';
+import type { ScatterAxisParams } from '@h5web/lib';
 import type { NumArray, ScaleType } from '@h5web/shared';
 import { createPortal } from 'react-dom';
 import shallow from 'zustand/shallow';

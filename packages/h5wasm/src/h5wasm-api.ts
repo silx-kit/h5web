@@ -10,12 +10,12 @@ import type {
   UnresolvedEntity,
 } from '@h5web/shared';
 import {
+  assertNonNull,
   buildEntityPath,
   DTypeClass,
   EntityKind,
-  hasScalarShape,
 } from '@h5web/shared';
-import { File as H5WasmFile, FS, ready } from 'h5wasm';
+import { File as H5WasmFile, FS, ready as h5wasmReady } from 'h5wasm';
 
 import type { H5WasmAttribute, H5WasmEntity } from './models';
 import {
@@ -40,26 +40,21 @@ export class H5WasmApi extends ProviderApi {
   }
 
   public async getEntity(path: string): Promise<Entity> {
-    const file = await this.file;
-    const h5wEntity = file.get(path);
-
+    const h5wEntity = await this.getH5WasmEntity(path);
     return this.processH5WasmEntity(getNameFromPath(path), path, h5wEntity);
   }
 
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { dataset } = params;
 
-    const file = await this.file;
-    const h5wDataset = file.get(dataset.path);
+    const h5wDataset = await this.getH5WasmEntity(dataset.path);
     assertH5WasmDataset(h5wDataset);
 
-    const array = h5wDataset.value;
-    return hasScalarShape(dataset) ? array[0] : array;
+    return h5wDataset.value;
   }
 
   public async getAttrValues(entity: Entity): Promise<AttributeValues> {
-    const file = await this.file;
-    const h5wEntity = file.get(entity.path);
+    const h5wEntity = await this.getH5WasmEntity(entity.path);
     assertH5WasmEntityWithAttrs(h5wEntity);
 
     return Object.fromEntries(
@@ -75,10 +70,26 @@ export class H5WasmApi extends ProviderApi {
   }
 
   private async initFile(buffer: ArrayBuffer): Promise<H5WasmFile> {
-    await ready;
+    await h5wasmReady;
 
+    // `FS` is guaranteed to be defined once H5Wasm is ready
+    // https://github.com/silx-kit/h5web/pull/1082#discussion_r858613242
+    assertNonNull(FS);
+
+    // Write file to Emscripten virtual file system
+    // https://emscripten.org/docs/api_reference/Filesystem-API.html#FS.writeFile
     FS.writeFile(this.filepath, new Uint8Array(buffer), { flags: 'w+' });
+
     return new H5WasmFile(this.filepath, 'r');
+  }
+
+  private async getH5WasmEntity(path: string): Promise<H5WasmEntity> {
+    const file = await this.file;
+
+    const h5wEntity = file.get(path);
+    assertNonNull(h5wEntity, `No entity found at ${path}`);
+
+    return h5wEntity;
   }
 
   private processH5WasmEntity(
@@ -102,6 +113,8 @@ export class H5WasmApi extends ProviderApi {
 
       const children = h5wEntity.keys().map((name) => {
         const h5wChild = h5wEntity.get(name);
+        assertNonNull(h5wChild);
+
         const childPath = buildEntityPath(path, name);
         return this.processH5WasmEntity(name, childPath, h5wChild, true);
       });
