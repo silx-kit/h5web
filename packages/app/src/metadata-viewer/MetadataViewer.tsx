@@ -1,4 +1,9 @@
-import { buildEntityPath, EntityKind, isAbsolutePath } from '@h5web/shared';
+import {
+  buildEntityPath,
+  EntityKind,
+  isAbsolutePath,
+  isDataset,
+} from '@h5web/shared';
 import { capitalize } from 'lodash';
 import { Suspense, memo, useContext } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -8,6 +13,7 @@ import AttrErrorFallback from './AttrErrorFallback';
 import AttrValueLoader from './AttrValueLoader';
 import AttributesInfo from './AttributesInfo';
 import EntityInfo from './EntityInfo';
+import FiltersInfo from './FiltersInfo';
 import MetadataTable from './MetadataTable';
 import styles from './MetadataViewer.module.css';
 
@@ -50,6 +56,12 @@ function MetadataViewer(props: Props) {
               />
             </Suspense>
           </ErrorBoundary>
+        </MetadataTable>
+      )}
+
+      {isDataset(entity) && entity.filters && (
+        <MetadataTable title="Compression filters">
+          <FiltersInfo filters={entity.filters} />
         </MetadataTable>
       )}
     </div>

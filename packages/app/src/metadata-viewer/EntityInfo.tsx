@@ -40,6 +40,12 @@ function EntityInfo(props: Props) {
           <td>{renderShape(entity.shape)}</td>
         </tr>
       )}
+      {isDataset(entity) && entity.chunks && (
+        <tr>
+          <th scope="row">Chunks</th>
+          <td>{renderShape(entity.chunks)}</td>
+        </tr>
+      )}
       {entity.link?.path && (
         <tr>
           <th scope="row">{entity.link.class} link</th>

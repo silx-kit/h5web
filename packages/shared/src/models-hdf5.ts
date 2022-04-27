@@ -32,6 +32,8 @@ export interface Dataset<S extends Shape = Shape, T extends DType = DType>
   shape: S;
   type: T;
   rawType?: unknown;
+  chunks?: number[];
+  filters?: Filter[];
 }
 
 export interface Datatype<T = DType> extends Entity {
@@ -171,3 +173,8 @@ export type AttributeValues = Record<string, unknown>;
 
 export type H5WebComplex = [number, number];
 export type ComplexArray = (ComplexArray | H5WebComplex)[];
+
+export interface Filter {
+  id: number;
+  name: string;
+}
