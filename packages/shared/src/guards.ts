@@ -54,11 +54,24 @@ export function isDefined<T>(val: T): val is T extends undefined ? never : T {
   return val !== undefined;
 }
 
+export function isNonNull<T>(val: T): val is T extends null ? never : T {
+  return val !== null;
+}
+
 export function assertDefined<T>(
   val: T,
   message = 'Expected some value'
 ): asserts val is T extends undefined ? never : T {
   if (!isDefined(val)) {
+    throw new TypeError(message);
+  }
+}
+
+export function assertNonNull<T>(
+  val: T,
+  message = 'Expected value to not be null'
+): asserts val is T extends null ? never : T {
+  if (!isNonNull(val)) {
     throw new TypeError(message);
   }
 }
@@ -149,7 +162,7 @@ export function isH5WebComplex(
 }
 
 export function isScalarShape(shape: Shape): shape is ScalarShape {
-  return shape !== null && shape.length === 0;
+  return isNonNull(shape) && shape.length === 0;
 }
 
 export function hasScalarShape<T extends DType>(
@@ -169,7 +182,7 @@ export function assertScalarShape<T extends DType>(
 export function hasArrayShape<T extends DType>(
   dataset: Dataset<Shape, T>
 ): dataset is Dataset<ArrayShape, T> {
-  return dataset.shape !== null && dataset.shape.length > 0;
+  return isNonNull(dataset.shape) && dataset.shape.length > 0;
 }
 
 export function assertArrayShape<T extends DType>(
@@ -183,7 +196,7 @@ export function assertArrayShape<T extends DType>(
 export function hasNonNullShape<T extends DType>(
   dataset: Dataset<Shape, T>
 ): dataset is Dataset<ScalarShape | ArrayShape, T> {
-  return dataset.shape !== null;
+  return isNonNull(dataset.shape);
 }
 
 export function assertNonNullShape<T extends DType>(

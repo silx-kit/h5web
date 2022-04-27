@@ -3,7 +3,7 @@ import { clamp } from 'lodash';
 import type { Vector3 } from 'three';
 import { Vector2 } from 'three';
 
-import type { Size } from '..';
+import type { Size } from '../vis/models';
 import { getCameraFOV } from '../vis/utils';
 import type { Interaction } from './models';
 

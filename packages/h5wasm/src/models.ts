@@ -1,16 +1,7 @@
 import type { Shape } from '@h5web/shared';
-import type {
-  BrokenSoftLink as H5WasmBrokenSoftLink,
-  Dataset as H5WasmDataset,
-  ExternalLink as H5WasmExternalLink,
-  Group as H5WasmGroup,
-} from 'h5wasm';
+import type { Group as H5WasmGroup } from 'h5wasm';
 
-export type H5WasmEntity =
-  | H5WasmBrokenSoftLink
-  | H5WasmExternalLink
-  | H5WasmGroup
-  | H5WasmDataset;
+export type H5WasmEntity = NonNullable<ReturnType<H5WasmGroup['get']>>;
 
 export interface H5WasmAttribute {
   value: unknown;

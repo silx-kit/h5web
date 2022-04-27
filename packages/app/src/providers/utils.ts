@@ -1,6 +1,6 @@
 import type { ArrayShape, Dataset, DType } from '@h5web/shared';
 import { Endianness, DTypeClass, assertArray } from '@h5web/shared';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 export const CANCELLED_ERROR_MSG = 'Request cancelled';
 
@@ -99,7 +99,7 @@ export async function handleAxiosError<T>(
   try {
     return await func();
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
+    if (error instanceof AxiosError && error.response) {
       const { status, data } = error.response;
       const errorToThrow = getErrorToThrow(status, data);
 
