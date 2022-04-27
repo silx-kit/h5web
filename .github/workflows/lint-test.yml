@@ -1,10 +1,10 @@
 name: Lint & Test
 
 on:
-  pull_request:
   push:
-    branches-ignore:
-      - 'update-snapshots'
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   lint:
