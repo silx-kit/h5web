@@ -30,7 +30,7 @@ import {
 } from './utils';
 
 export class H5GroveApi extends ProviderApi {
-  /* API compatible with h5grove@0.0.13 */
+  /* API compatible with h5grove@0.0.16 */
   public constructor(
     url: string,
     filepath: string,
@@ -172,7 +172,13 @@ export class H5GroveApi extends ProviderApi {
     }
 
     if (isDatasetResponse(response)) {
-      const { attributes: attrsMetadata, dtype, shape } = response;
+      const {
+        attributes: attrsMetadata,
+        dtype,
+        shape,
+        chunks,
+        filters,
+      } = response;
       const attributes = await this.processAttrsMetadata(path, attrsMetadata);
 
       return {
@@ -181,6 +187,8 @@ export class H5GroveApi extends ProviderApi {
         shape,
         type: convertDtype(dtype),
         rawType: dtype,
+        ...(chunks && { chunks }),
+        ...(filters && { filters }),
       } as Dataset;
     }
 

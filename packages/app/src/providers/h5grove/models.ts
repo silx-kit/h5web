@@ -1,4 +1,4 @@
-import type { AttributeValues, EntityKind } from '@h5web/shared';
+import type { AttributeValues, EntityKind, Filter } from '@h5web/shared';
 
 export interface H5GroveEntityResponse {
   name: string;
@@ -15,6 +15,8 @@ export interface H5GroveDatasetResponse extends H5GroveEntityResponse {
   dtype: string;
   shape: number[];
   attributes: H5GroveAttribute[];
+  chunks: number[] | null;
+  filters: Filter[] | null;
 }
 
 export interface H5GroveGroupResponse extends H5GroveEntityResponse {
