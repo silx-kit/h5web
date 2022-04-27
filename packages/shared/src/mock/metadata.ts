@@ -17,6 +17,7 @@ import {
   makeDataset,
   withImageAttributes,
   withAttributes,
+  makeIntAttr,
 } from './metadata-utils';
 
 export const mockFilepath = 'source.h5';
@@ -80,6 +81,13 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             }),
             makeNxGroup('absolute_default_path', 'NXentry', {
               defaultPath: '/nexus_entry/nx_process/nx_data',
+            }),
+            makeNxGroup('old-style_signal', 'NXdata', {
+              children: [
+                makeDataset('twoD', intType, [20, 41], {
+                  attributes: [makeIntAttr('signal', 1)],
+                }),
+              ],
             }),
           ],
         }),
@@ -202,6 +210,13 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       makeNxGroup('signal_not_dataset', 'NXdata', {
         children: [makeGroup('some_group')],
         attributes: [makeStrAttr('signal', 'some_group')],
+      }),
+      makeNxGroup('signal_old-style_not_dataset', 'NXdata', {
+        children: [
+          makeGroup('some_group', [], {
+            attributes: [makeIntAttr('signal', 1)],
+          }),
+        ],
       }),
       makeNxGroup('signal_not_array', 'NXdata', {
         children: [makeScalarDataset('some_scalar', intType)],

@@ -88,6 +88,20 @@ test('visualize NXentry group with absolute path to 2D default signal', async ()
   ).resolves.toBeVisible();
 });
 
+test('visualize NXentry group with old-style signal', async () => {
+  const { selectExplorerNode } = await renderApp();
+  await selectExplorerNode('nexus_entry/nx_process/old-style_signal');
+
+  const tabs = await findVisSelectorTabs();
+  expect(tabs).toHaveLength(2);
+  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+  expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
+
+  await expect(
+    screen.findByRole('figure', { name: 'twoD' }) // name of dataset with `signal` attribute
+  ).resolves.toBeVisible();
+});
+
 test('visualize NXroot group with 2D default signal', async () => {
   await renderApp();
 
@@ -193,6 +207,18 @@ test('show error when `signal` entity is not a dataset', async () => {
   await selectExplorerNode('nexus_malformed/signal_not_dataset');
   await expect(
     screen.findByText('Expected "some_group" signal to be a dataset')
+  ).resolves.toBeVisible();
+
+  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
+});
+
+test('show error when old-style `signal` entity is not a dataset', async () => {
+  const { selectExplorerNode } = await renderApp();
+
+  const errorSpy = mockConsoleMethod('error');
+  await selectExplorerNode('nexus_malformed/signal_old-style_not_dataset');
+  await expect(
+    screen.findByText('Expected old-style "some_group" signal to be a dataset')
   ).resolves.toBeVisible();
 
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces

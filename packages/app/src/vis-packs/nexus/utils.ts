@@ -30,17 +30,18 @@ import { hasAttribute } from '../../utils';
 import type { NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(
-  group: Group,
+  group: GroupWithChildren,
   attrValuesStore: AttrValuesStore
 ): boolean {
   return (
-    hasAttribute(group, 'signal') &&
-    attrValuesStore.getSingle(group, 'NX_class') === 'NXdata'
+    attrValuesStore.getSingle(group, 'NX_class') === 'NXdata' &&
+    (hasAttribute(group, 'signal') ||
+      group.children.some((child) => hasAttribute(child, 'signal')))
   );
 }
 
 export function assertNxDataGroup(
-  group: Group,
+  group: GroupWithChildren,
   attrValuesStore: AttrValuesStore
 ): void {
   if (!isNxDataGroup(group, attrValuesStore)) {
@@ -48,10 +49,28 @@ export function assertNxDataGroup(
   }
 }
 
+function findOldStyleSignalDataset(
+  group: GroupWithChildren
+): Dataset<ArrayShape, NumericType | ComplexType> {
+  const dataset = group.children.find((child) => hasAttribute(child, 'signal'));
+  assertDefined(dataset);
+  assertDataset(
+    dataset,
+    `Expected old-style "${dataset.name}" signal to be a dataset`
+  );
+  assertArrayShape(dataset);
+  assertNumericOrComplexType(dataset);
+  return dataset;
+}
+
 export function findSignalDataset(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore
 ): Dataset<ArrayShape, NumericType | ComplexType> {
+  if (!hasAttribute(group, 'signal')) {
+    return findOldStyleSignalDataset(group);
+  }
+
   const signal = attrValuesStore.getSingle(group, 'signal');
   assertDefined(signal, "Expected 'signal' attribute");
   assertStr(signal, "Expected 'signal' attribute to be a string");
@@ -61,7 +80,6 @@ export function findSignalDataset(
   assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
   assertArrayShape(dataset);
   assertNumericOrComplexType(dataset);
-
   return dataset;
 }
 
@@ -102,7 +120,6 @@ export function findAssociatedDatasets(
     assertDataset(dataset);
     assertArrayShape(dataset);
     assertNumericType(dataset);
-
     return dataset;
   });
 }
@@ -118,7 +135,6 @@ export function findTitleDataset(
   assertDataset(dataset);
   assertScalarShape(dataset);
   assertStringType(dataset);
-
   return dataset;
 }
 

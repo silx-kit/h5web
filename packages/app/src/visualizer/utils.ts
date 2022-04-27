@@ -94,11 +94,15 @@ function getSupportedNxVis(
   entity: Entity,
   attrValuesStore: AttrValuesStore
 ): VisDef[] {
-  if (!isGroup(entity) || !isNxDataGroup(entity, attrValuesStore)) {
+  if (!isGroup(entity)) {
     return [];
   }
 
   assertGroupWithChildren(entity);
+  if (!isNxDataGroup(entity, attrValuesStore)) {
+    return [];
+  }
+
   const dataset = findSignalDataset(entity, attrValuesStore);
   const isCplx = hasComplexType(dataset);
   const { interpretation } = attrValuesStore.get(dataset);
