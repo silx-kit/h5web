@@ -17,7 +17,7 @@ import type { CoreVisDef } from '../vis-packs/core/visualizations';
 import { CORE_VIS, Vis } from '../vis-packs/core/visualizations';
 import type { VisDef } from '../vis-packs/models';
 import {
-  findAssociatedDatasets,
+  findAxesDatasets,
   findSignalDataset,
   isNxDataGroup,
 } from '../vis-packs/nexus/utils';
@@ -131,7 +131,8 @@ function getSupportedNxVis(
     return [NEXUS_VIS[spectrumVis], NEXUS_VIS[imageVis]];
   }
 
-  const axisDatasets = findAssociatedDatasets(entity, 'axes', attrValuesStore);
+  const axisDatasets = findAxesDatasets(entity, dataset, attrValuesStore);
+
   if (
     axisDatasets.length === 2 &&
     axisDatasets.every((d) => d && hasNumDims(d, 1))
