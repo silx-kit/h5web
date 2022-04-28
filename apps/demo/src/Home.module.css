@@ -126,12 +126,7 @@
     padding: 0 3em;
   }
 
-  .title {
-    font-size: 4em;
-  }
-
   .intro {
-    font-size: 1.5em;
     font-weight: 300;
   }
 
@@ -151,5 +146,15 @@
 
   .demos > section:nth-child(even) {
     padding-left: 2.5em;
+  }
+}
+
+@media (min-width: 130em) {
+  .title {
+    font-size: 4em;
+  }
+
+  .intro {
+    font-size: 1.5em;
   }
 }
