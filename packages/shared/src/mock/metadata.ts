@@ -82,13 +82,6 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             makeNxGroup('absolute_default_path', 'NXentry', {
               defaultPath: '/nexus_entry/nx_process/nx_data',
             }),
-            makeNxGroup('old-style_signal', 'NXdata', {
-              children: [
-                makeDataset('twoD', intType, [20, 41], {
-                  attributes: [makeIntAttr('signal', 1)],
-                }),
-              ],
-            }),
           ],
         }),
         makeNxDataGroup('spectrum', {
@@ -182,6 +175,21 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             Y: makeNxDataset('Y', intType, [41], { valueId: 'Y_scatter' }),
           },
           axesAttr: ['X', 'Y'],
+        }),
+        makeNxGroup('old-style', 'NXdata', {
+          children: [
+            makeDataset('twoD', intType, [20, 41], {
+              attributes: [
+                makeIntAttr('signal', 1),
+                makeStrAttr('axes', 'Y:X'),
+              ],
+            }),
+            makeNxDataset('X', intType, [41], { units: 'nm' }),
+            makeNxDataset('Y', intType, [20], {
+              units: 'deg',
+              longName: 'Angle (degrees)',
+            }),
+          ],
         }),
       ],
     }),

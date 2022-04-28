@@ -124,6 +124,52 @@ export function findAssociatedDatasets(
   });
 }
 
+function parseAxesList(dsetList: unknown): string[] {
+  if (typeof dsetList !== 'string') {
+    return [];
+  }
+
+  if (dsetList.includes(':')) {
+    return dsetList.split(':');
+  }
+
+  if (dsetList.includes(',')) {
+    return dsetList.split(',');
+  }
+
+  return [dsetList];
+}
+
+export function findOldStyleAxesDatasets(
+  group: GroupWithChildren,
+  signal: Dataset,
+  attrValuesStore: AttrValuesStore
+): NumArrayDataset[] {
+  const axesList = attrValuesStore.getSingle(signal, 'axes');
+  const axesNames = parseAxesList(axesList);
+
+  return axesNames.map((name) => {
+    const dataset = getChildEntity(group, name);
+    assertDefined(dataset);
+    assertDataset(dataset);
+    assertArrayShape(dataset);
+    assertNumericType(dataset);
+    return dataset;
+  });
+}
+
+export function findAxesDatasets(
+  group: GroupWithChildren,
+  signal: Dataset,
+  attrValuesStore: AttrValuesStore
+) {
+  if (!hasAttribute(group, 'axes')) {
+    return findOldStyleAxesDatasets(group, signal, attrValuesStore);
+  }
+
+  return findAssociatedDatasets(group, 'axes', attrValuesStore);
+}
+
 export function findTitleDataset(
   group: GroupWithChildren
 ): Dataset<ScalarShape, StringType> | undefined {
