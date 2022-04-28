@@ -1,14 +1,16 @@
 name: Lint & Test
 
 on:
+  pull_request: # for PRs from forks
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches-ignore:
+      - 'update-snapshots'
 
 jobs:
   lint:
     runs-on: ubuntu-latest
+    # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout 🏷️
         uses: actions/checkout@v2
@@ -38,6 +40,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout 🏷️
         uses: actions/checkout@v2
@@ -69,6 +73,8 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout 🏷️
         uses: actions/checkout@v2
