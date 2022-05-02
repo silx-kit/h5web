@@ -4,14 +4,14 @@ import type { Vector3 } from 'three';
 import { Vector2 } from 'three';
 
 import type { Size } from '../vis/models';
-import { getCameraFOV } from '../vis/utils';
+import { getWorldFOV } from '../vis/utils';
 import type { Interaction } from './models';
 
 export function boundPointToFOV(
   unboundedPoint: Vector2 | Vector3,
   camera: Camera
 ): Vector2 {
-  const { topRight, bottomLeft } = getCameraFOV(camera);
+  const { topRight, bottomLeft } = getWorldFOV(camera);
   const boundedX = clamp(unboundedPoint.x, bottomLeft.x, topRight.x);
   const boundedY = clamp(unboundedPoint.y, bottomLeft.y, topRight.y);
   return new Vector2(boundedX, boundedY);

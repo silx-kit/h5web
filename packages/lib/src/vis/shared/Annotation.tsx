@@ -1,9 +1,8 @@
-import { useThree } from '@react-three/fiber';
 import type { HTMLAttributes } from 'react';
 import { Vector2 } from 'three';
 
-import { useFrameRendering } from '../hooks';
-import { useAxisSystemContext } from './AxisSystemProvider';
+import { useCameraState } from '../hooks';
+import { dataToHtml } from '../utils';
 import Html from './Html';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -16,21 +15,23 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 function Annotation(props: Props) {
   const { x, y, scaleOnZoom, center, children, style, ...divProps } = props;
 
-  const camera = useThree((state) => state.camera);
-  useFrameRendering();
-
-  const { dataToWorld, worldToHtml } = useAxisSystemContext();
-  const htmlPt = worldToHtml(dataToWorld(new Vector2(x, y)));
-
   if ((center || scaleOnZoom) && style?.transform) {
     throw new Error(
       'Annotation with `center` and/or `scaleOnZoom` cannot have its own `transform`'
     );
   }
 
+  const { htmlPt, cameraScale } = useCameraState(
+    (camera, context) => ({
+      htmlPt: dataToHtml(camera, context, new Vector2(x, y)),
+      cameraScale: camera.scale.clone(),
+    }),
+    [x, y]
+  );
+
   const transforms = [
     center ? 'translate(-50%, -50%)' : '',
-    scaleOnZoom ? `scale(${1 / camera.scale.x}, ${1 / camera.scale.y})` : '',
+    scaleOnZoom ? `scale(${1 / cameraScale.x}, ${1 / cameraScale.y})` : '',
   ];
 
   return (

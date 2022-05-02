@@ -16,7 +16,7 @@
   "scripts": {
     "start": "start-storybook -p 6006",
     "build": "build-storybook -o build",
-    "serve": "pnpm dlx http-server -p 6006 apps/storybook/build",
+    "serve": "pnpm dlx http-server -p 6006 ./build",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc --noEmit"
   },

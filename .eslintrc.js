@@ -6,7 +6,7 @@ const config = createConfig({
   cwd: __dirname,
   rules,
   overrides: [
-    ...overrides,
+    ...overrides.slice(1), // exclude shared React overrides (`react` is not installed at the root of the repo)
     {
       files: ['**/*.spec.ts'],
       rules: {

@@ -14,9 +14,10 @@ import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import { clamp } from 'lodash';
-import type { IUniform } from 'three';
+import type { IUniform, Vector2 } from 'three';
 import { Vector3 } from 'three';
 
+import type { AxisSystemContextValue } from '../vis/shared/AxisSystemProvider';
 import type {
   Size,
   AxisScale,
@@ -316,7 +317,22 @@ export function getUniforms(
   );
 }
 
-export function getCameraFOV(camera: Camera): {
+export function toArray(arr: NumArray): number[] {
+  return isTypedArray(arr) ? [...arr] : arr;
+}
+
+export function dataToHtml(
+  camera: Camera,
+  context: AxisSystemContextValue,
+  dataPt: Vector2 | Vector3
+): Vector2 {
+  const { dataToWorld, cameraToHtml } = context;
+  const worldPt = dataToWorld(dataPt);
+  const cameraPt = new Vector3(worldPt.x, worldPt.y, 0).project(camera);
+  return cameraToHtml(cameraPt);
+}
+
+export function getWorldFOV(camera: Camera): {
   topRight: Vector3;
   bottomLeft: Vector3;
 } {
@@ -327,6 +343,21 @@ export function getCameraFOV(camera: Camera): {
   return { topRight, bottomLeft };
 }
 
-export function toArray(arr: NumArray): number[] {
-  return isTypedArray(arr) ? [...arr] : arr;
+export function getVisibleDomains(
+  camera: Camera,
+  context: AxisSystemContextValue
+): {
+  xVisibleDomain: Domain;
+  yVisibleDomain: Domain;
+} {
+  const { worldToData } = context;
+  const { topRight, bottomLeft } = getWorldFOV(camera);
+
+  const dataBottomLeft = worldToData(bottomLeft);
+  const dataTopRight = worldToData(topRight);
+
+  return {
+    xVisibleDomain: [dataBottomLeft.x, dataTopRight.x],
+    yVisibleDomain: [dataBottomLeft.y, dataTopRight.y],
+  };
 }

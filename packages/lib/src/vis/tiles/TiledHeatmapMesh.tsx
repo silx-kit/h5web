@@ -2,12 +2,12 @@ import { useThree } from '@react-three/fiber';
 import { clamp, range } from 'lodash';
 
 import { getInterpolator } from '../heatmap/utils';
-import { useFrameRendering } from '../hooks';
+import { useCameraState } from '../hooks';
 import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import TiledLayer from './TiledLayer';
 import type { TilesApi } from './api';
-import { useScaledVisibleDomains } from './hooks';
 import type { ColorMapProps } from './models';
+import { getScaledVisibleDomains } from './utils';
 
 interface Props extends ColorMapProps {
   api: TilesApi;
@@ -24,10 +24,13 @@ function TiledHeatmapMesh(props: Props) {
   } = props;
   const { baseLayerIndex, baseLayerSize } = api;
 
-  const { visSize } = useAxisSystemContext();
-  const { xVisibleDomain, yVisibleDomain } =
-    useScaledVisibleDomains(baseLayerSize);
   const canvasSize = useThree((state) => state.size);
+  const { visSize } = useAxisSystemContext();
+
+  const { xVisibleDomain, yVisibleDomain } = useCameraState(
+    (...args) => getScaledVisibleDomains(...args, baseLayerSize),
+    [baseLayerSize]
+  );
 
   const itemsPerPixel = Math.max(
     1,
@@ -50,8 +53,6 @@ function TiledHeatmapMesh(props: Props) {
     : [currentLayerIndex];
 
   const { colorMap, invertColorMap = false } = colorMapProps;
-
-  useFrameRendering();
 
   return (
     <>

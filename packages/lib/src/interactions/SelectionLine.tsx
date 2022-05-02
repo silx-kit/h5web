@@ -2,9 +2,9 @@ import { useThree } from '@react-three/fiber';
 import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
-import { useFrameRendering } from '..';
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
+import { useCameraState } from '../vis/hooks';
 import Overlay from '../vis/shared/Overlay';
+import { dataToHtml } from '../vis/utils';
 
 interface Props extends SVGProps<SVGLineElement> {
   startPoint: Vector2;
@@ -12,29 +12,29 @@ interface Props extends SVGProps<SVGLineElement> {
 }
 
 function SelectionLine(props: Props) {
-  const {
-    startPoint: dataStartPoint,
-    endPoint: dataEndPoint,
-    stroke = 'black',
-    ...restSvgProps
-  } = props;
+  const { startPoint, endPoint, stroke = 'black', ...restSvgProps } = props;
 
   const { width, height } = useThree((state) => state.size);
 
-  const { dataToWorld, worldToHtml } = useAxisSystemContext();
-  const htmlStartPt = worldToHtml(dataToWorld(dataStartPoint));
-  const htmlEndPt = worldToHtml(dataToWorld(dataEndPoint));
+  const htmlSelection = useCameraState(
+    (...args) => ({
+      startPoint: dataToHtml(...args, startPoint),
+      endPoint: dataToHtml(...args, endPoint),
+    }),
+    [startPoint, endPoint]
+  );
 
-  useFrameRendering();
+  const { x: x1, y: y1 } = htmlSelection.startPoint;
+  const { x: x2, y: y2 } = htmlSelection.endPoint;
 
   return (
     <Overlay>
       <svg width={width} height={height}>
         <line
-          x1={htmlStartPt.x}
-          y1={htmlStartPt.y}
-          x2={htmlEndPt.x}
-          y2={htmlEndPt.y}
+          x1={x1}
+          y1={y1}
+          x2={x2}
+          y2={y2}
           stroke={stroke}
           {...restSvgProps}
         />
