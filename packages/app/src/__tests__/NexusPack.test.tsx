@@ -90,7 +90,7 @@ test('visualize NXentry group with absolute path to 2D default signal', async ()
 
 test('visualize NXentry group with old-style signal', async () => {
   const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/old-style_signal');
+  await selectExplorerNode('nexus_entry/old-style');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(2);

@@ -13,6 +13,7 @@ import type { Auxiliary, AxisDatasetMapping, NxData } from './models';
 import {
   assertNxDataGroup,
   findAssociatedDatasets,
+  findAxesDatasets,
   findErrorsDataset,
   findSignalDataset,
   findTitleDataset,
@@ -35,7 +36,7 @@ export function useNxData(group: GroupWithChildren): NxData {
   return {
     signalDataset,
     errorsDataset,
-    axisDatasets: findAssociatedDatasets(group, 'axes', attrValuesStore),
+    axisDatasets: findAxesDatasets(group, signalDataset, attrValuesStore),
     titleDataset: findTitleDataset(group),
     silxStyle: getSilxStyle(group, attrValuesStore),
     auxDatasets: auxDatasets.filter(isDefined),
