@@ -7,18 +7,18 @@ import type {
 } from '@h5web/shared';
 import { isDefined, assertDatasetValue } from '@h5web/shared';
 import type { NdArray, TypedArray } from 'ndarray';
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
-import { ProviderContext } from '../../providers/context';
+import { useDataContext } from '../../providers/DataProvider';
 import { applyMapping, getBaseArray } from './utils';
 
 export function usePrefetchValues(
   datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[],
   selection?: string
 ): void {
-  const { valuesStore } = useContext(ProviderContext);
+  const { valuesStore } = useDataContext();
   datasets.filter(isDefined).forEach((dataset) => {
     valuesStore.prefetch({ dataset, selection });
   });
@@ -38,7 +38,7 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
   selection?: string
 ): Value<D> | undefined {
-  const { valuesStore } = useContext(ProviderContext);
+  const { valuesStore } = useDataContext();
 
   if (!dataset) {
     return undefined;
@@ -55,7 +55,7 @@ export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: D[],
   selection?: string
 ): Record<string, Value<D>> {
-  const { valuesStore } = useContext(ProviderContext);
+  const { valuesStore } = useDataContext();
 
   return Object.fromEntries(
     datasets.map((dataset) => {

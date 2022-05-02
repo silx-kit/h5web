@@ -7,10 +7,9 @@ import {
 } from '@h5web/lib';
 import type { ArrayShape, Dataset, PrintableType } from '@h5web/shared';
 import { hasNumericType } from '@h5web/shared';
-import { useContext } from 'react';
 import { FiAnchor } from 'react-icons/fi';
 
-import { ProviderContext } from '../../../providers/context';
+import { useDataContext } from '../../../providers/DataProvider';
 import type { ExportFormat } from '../../../providers/models';
 import { useMatrixConfig } from './config';
 
@@ -24,7 +23,7 @@ interface Props {
 
 function MatrixToolbar(props: Props) {
   const { dataset, selection, cellWidth } = props;
-  const { getExportURL } = useContext(ProviderContext);
+  const { getExportURL } = useDataContext();
 
   const { sticky, toggleSticky, customCellWidth, setCustomCellWidth } =
     useMatrixConfig();

@@ -4,9 +4,8 @@ import type {
   ScaleType,
 } from '@h5web/shared';
 import { isDefined } from '@h5web/shared';
-import { useContext } from 'react';
 
-import { ProviderContext } from '../../providers/context';
+import { useDataContext } from '../../providers/DataProvider';
 import { useDatasetValues } from '../core/hooks';
 import type { AxisMapping } from '../core/models';
 import type { Auxiliary, AxisDatasetMapping, NxData } from './models';
@@ -22,7 +21,7 @@ import {
 } from './utils';
 
 export function useNxData(group: GroupWithChildren): NxData {
-  const { attrValuesStore } = useContext(ProviderContext);
+  const { attrValuesStore } = useDataContext();
 
   assertNxDataGroup(group, attrValuesStore);
   const signalDataset = findSignalDataset(group, attrValuesStore);
@@ -47,7 +46,7 @@ export function useAxisMapping(
   mapping: AxisDatasetMapping,
   axisScaleTypes: ScaleType[] | undefined
 ): AxisMapping {
-  const { attrValuesStore } = useContext(ProviderContext);
+  const { attrValuesStore } = useDataContext();
 
   const axisValues = useDatasetValues(mapping.filter(isDefined));
 
@@ -66,7 +65,7 @@ export function useAuxiliaries(
   auxDatasets: NumArrayDataset[],
   selection: string | undefined
 ): Auxiliary[] {
-  const { attrValuesStore } = useContext(ProviderContext);
+  const { attrValuesStore } = useDataContext();
 
   const auxValues = useDatasetValues(auxDatasets, selection);
 

@@ -4,9 +4,8 @@ import {
   assertNumericType,
   assertNumDims,
 } from '@h5web/shared';
-import { useContext } from 'react';
 
-import { ProviderContext } from '../../../providers/context';
+import { useDataContext } from '../../../providers/DataProvider';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
@@ -19,7 +18,7 @@ function RgbVisContainer(props: VisContainerProps) {
   assertNumDims(entity, 3);
   assertNumericType(entity);
 
-  const { attrValuesStore } = useContext(ProviderContext);
+  const { attrValuesStore } = useDataContext();
   const subclassAttr = attrValuesStore.getSingle(entity, 'IMAGE_SUBCLASS');
   if (subclassAttr && subclassAttr !== 'IMAGE_TRUECOLOR') {
     throw new Error('RGB Vis only supports IMAGE_TRUECOLOR.');

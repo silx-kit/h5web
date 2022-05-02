@@ -1,8 +1,7 @@
 import { isDataset, isDatatype } from '@h5web/shared';
 import type { Entity } from '@h5web/shared';
-import { useContext } from 'react';
 
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import styles from './MetadataViewer.module.css';
 import RawInspector from './RawInspector';
 import { renderType, renderShape } from './utils';
@@ -14,7 +13,7 @@ interface Props {
 function EntityInfo(props: Props) {
   const { entity } = props;
   const { name, path } = entity;
-  const { filepath } = useContext(ProviderContext);
+  const { filepath } = useDataContext();
 
   const isRoot = path === '/';
 

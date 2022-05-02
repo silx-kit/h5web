@@ -1,4 +1,4 @@
-import { Provider } from '@h5web/app';
+import { DataProvider } from '@h5web/app';
 import type { ReactNode } from 'react';
 import { useEffect, useMemo } from 'react';
 
@@ -22,7 +22,7 @@ function H5WasmProvider(props: Props) {
     return () => void api.cleanUp();
   }, [api]);
 
-  return <Provider api={api}>{children}</Provider>;
+  return <DataProvider api={api}>{children}</DataProvider>;
 }
 
 export default H5WasmProvider;

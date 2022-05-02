@@ -1,7 +1,7 @@
-import { useContext, Suspense } from 'react';
+import { Suspense } from 'react';
 import { FiFileText, FiRefreshCw } from 'react-icons/fi';
 
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 
@@ -12,7 +12,7 @@ interface Props {
 
 function Explorer(props: Props) {
   const { selectedPath, onSelect } = props;
-  const { filename } = useContext(ProviderContext);
+  const { filename } = useDataContext();
 
   return (
     <div className={styles.explorer} role="tree">

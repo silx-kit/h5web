@@ -1,7 +1,7 @@
 import '@h5web/lib'; // make sure lib styles come first in CSS bundle
 
 import { useToggle } from '@react-hookz/web';
-import { Suspense, useContext, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 
@@ -13,7 +13,7 @@ import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import type { FeedbackContext } from './breadcrumbs/models';
 import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
-import { ProviderContext } from './providers/context';
+import { useDataContext } from './providers/DataProvider';
 import Visualizer from './visualizer/Visualizer';
 
 interface Props {
@@ -33,7 +33,7 @@ function App(props: Props) {
   const [isExplorerOpen, toggleExplorerOpen] = useToggle(initialExplorerOpen);
   const [isInspecting, setInspecting] = useState(false);
 
-  const { valuesStore } = useContext(ProviderContext);
+  const { valuesStore } = useDataContext();
   function onSelectPath(path: string) {
     setSelectedPath(path);
     valuesStore.cancelOngoing();

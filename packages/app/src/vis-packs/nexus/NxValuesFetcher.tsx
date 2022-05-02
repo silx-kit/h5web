@@ -1,8 +1,7 @@
 import type { NumericType, ComplexType } from '@h5web/shared';
 import type { ReactNode } from 'react';
-import { useContext } from 'react';
 
-import { ProviderContext } from '../../providers/context';
+import { useDataContext } from '../../providers/DataProvider';
 import { useDatasetValue, usePrefetchValues } from '../core/hooks';
 import { useAuxiliaries, useAxisMapping } from './hooks';
 import type { NxData, NxValues } from './models';
@@ -28,7 +27,7 @@ function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
   usePrefetchValues([signalDataset, errorsDataset, ...auxDatasets], selection);
   usePrefetchValues([...axisDatasets, titleDataset]);
 
-  const { attrValuesStore } = useContext(ProviderContext);
+  const { attrValuesStore } = useDataContext();
   const signal = useDatasetValue(signalDataset, selection);
   const signalLabel = getDatasetLabel(signalDataset, attrValuesStore);
   const errors = useDatasetValue(errorsDataset, selection);

@@ -27,7 +27,7 @@ interface ValueRequest {
   cancelSource: CancelTokenSource;
 }
 
-export abstract class ProviderApi {
+export abstract class DataProviderApi {
   public readonly filepath: string;
   public readonly cancelledValueRequests = new Set<ValueRequest>();
 

@@ -22,12 +22,12 @@ import axios from 'axios';
 import ndarray from 'ndarray';
 
 import { applyMapping } from '../../vis-packs/core/utils';
-import { ProviderApi } from '../api';
+import { DataProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 
 const SLOW_TIMEOUT = 3000;
 
-export class MockApi extends ProviderApi {
+export class MockApi extends DataProviderApi {
   public constructor() {
     super(mockFilepath);
   }

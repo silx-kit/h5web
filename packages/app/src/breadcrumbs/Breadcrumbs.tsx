@@ -1,7 +1,6 @@
 import { assertAbsolutePath } from '@h5web/shared';
-import { useContext } from 'react';
 
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import styles from './BreadcrumbsBar.module.css';
 import CopyableCrumb from './CopyableCrumb';
 import Crumb from './Crumb';
@@ -16,7 +15,7 @@ function Breadcrumbs(props: Props) {
   const { path, onSelect, showFilename } = props;
 
   assertAbsolutePath(path);
-  const { filename } = useContext(ProviderContext);
+  const { filename } = useDataContext();
 
   if (path === '/') {
     return (

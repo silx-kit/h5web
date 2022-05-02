@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTimeout } from 'react-use';
 
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import styles from './ValueLoader.module.css';
 
 const MAX_PROGRESS_BARS = 3;
@@ -13,7 +13,7 @@ interface Props {
 function ValueLoader(props: Props) {
   const { message = 'Loading data' } = props;
   const { valuesStore, addProgressListener, removeProgressListener } =
-    useContext(ProviderContext);
+    useDataContext();
 
   const [progress, setProgress] = useState<number[]>();
 
