@@ -11,12 +11,12 @@
   },
   "engines": {
     "node": "16.x",
-    "pnpm": "*"
+    "pnpm": "7.x"
   },
   "scripts": {
     "start": "start-storybook -p 6006",
     "build": "build-storybook -o build",
-    "serve": "pnpm dlx http-server -p 6006 ./build",
+    "serve": "pnpx http-server -p 6006 ./build",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc --noEmit"
   },
@@ -25,6 +25,8 @@
     "@h5web/shared": "workspace:*",
     "@react-hookz/web": "14.2.2",
     "@react-three/fiber": "7.0.26",
+    "d3-format": "3.1.0",
+    "lodash": "4.17.21",
     "ndarray": "1.0.19",
     "normalize.css": "8.0.1",
     "react": "17.0.2",
@@ -39,9 +41,12 @@
     "@storybook/addon-essentials": "6.4.19",
     "@storybook/addon-links": "6.4.19",
     "@storybook/react": "6.4.19",
+    "@types/d3-format": "3.0.1",
+    "@types/lodash": "4.14.178",
     "@types/ndarray": "1.0.11",
     "@types/react": "17.0.39",
     "@types/react-dom": "17.0.11",
+    "@types/three": "0.135.0",
     "babel-loader": "8.2.3",
     "eslint": "8.9.0",
     "eslint-config-galex": "3.6.5",

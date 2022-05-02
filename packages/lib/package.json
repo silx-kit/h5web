@@ -35,7 +35,7 @@
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc --noEmit",
     "test": "jest",
-    "analyze": "pnpm dlx source-map-explorer dist/index.js --no-border-checks"
+    "analyze": "pnpx source-map-explorer dist/index.js --no-border-checks"
   },
   "peerDependencies": {
     "@react-three/fiber": ">=6.0.14",

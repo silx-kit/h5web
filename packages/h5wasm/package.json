@@ -31,7 +31,7 @@
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc --noEmit",
-    "analyze": "pnpm dlx source-map-explorer dist/index.js --no-border-checks"
+    "analyze": "pnpx source-map-explorer dist/index.js --no-border-checks"
   },
   "peerDependencies": {
     "@h5web/app": "workspace:*",
