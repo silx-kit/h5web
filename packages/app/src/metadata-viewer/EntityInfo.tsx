@@ -41,7 +41,7 @@ function EntityInfo(props: Props) {
       )}
       {isDataset(entity) && entity.chunks && (
         <tr>
-          <th scope="row">Chunks</th>
+          <th scope="row">Chunk shape</th>
           <td>{renderShape(entity.chunks)}</td>
         </tr>
       )}
