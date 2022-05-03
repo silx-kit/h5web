@@ -14,9 +14,9 @@ export interface AxisSystemContextValue {
   ordinateScale: AxisScale;
   dataToWorld: (vec: Vector2 | Vector3) => Vector2;
   worldToData: (vec: Vector2 | Vector3) => Vector2;
-  cameraToHtml: (vec: Vector2 | Vector3) => Vector2;
 
   // For internal use only
+  cameraToHtml: (vec: Vector2 | Vector3) => Vector2;
   floatingToolbar: HTMLDivElement | undefined;
 }
 
