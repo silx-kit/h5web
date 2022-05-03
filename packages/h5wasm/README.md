@@ -25,8 +25,8 @@ This package, `@h5web/h5wasm`, provides one additional data provider,
 `H5WasmProvider`, that can **read HDF5 files straight in the browser** thanks to
 the [h5wasm](https://github.com/usnistgov/h5wasm) library.
 
-<!-- Check out [this code sandbox]() for a demonstration of how to set up
-@h5web/h5wasm and use the `H5WasmProvider`. -->
+Check out [this code sandbox](https://codesandbox.io/s/h5web-h5wasm-77j67x) for
+a demonstration of how to set up `@h5web/h5wasm` and use the `H5WasmProvider`.
 
 ## Getting started 🚀
 
@@ -37,7 +37,8 @@ npm install @h5web/app @h5web/h5wasm
 ```tsx
 import '@h5web/app/dist/styles.css';
 
-import React from 'react';
+import React, { useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { App } from '@h5web/app';
 import { H5WasmProvider } from '@h5web/h5wasm';
 
