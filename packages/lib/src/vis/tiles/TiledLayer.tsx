@@ -1,51 +1,61 @@
-import { sum } from 'lodash';
-import { Suspense } from 'react';
+import { Suspense, useRef } from 'react';
 import { LinearFilter, NearestFilter, Vector2 } from 'three';
+import type { Group } from 'three';
 
 import { useCameraState } from '../hooks';
+import type { Size } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import Tile from './Tile';
 import type { TilesApi } from './api';
 import type { ColorMapProps } from './models';
 import {
   getTileOffsets,
-  getScaledVisibleDomains,
+  getScaledVisibleBox,
   sortTilesByDistanceTo,
 } from './utils';
 
 interface Props extends ColorMapProps {
   api: TilesApi;
   layer: number;
+  size: Size;
 }
 
 function TiledLayer(props: Props) {
-  const { api, layer, ...colorMapProps } = props;
+  const { api, layer, size: meshSize, ...colorMapProps } = props;
 
   const { baseLayerIndex, numLayers, tileSize } = api;
   const layerSize = api.layerSizes[layer];
 
-  const { abscissaConfig, ordinateConfig, visSize } = useAxisSystemContext();
-  const { xVisibleDomain, yVisibleDomain } = useCameraState(
-    (...args) => getScaledVisibleDomains(...args, layerSize),
-    [layerSize]
+  const groupRef = useRef<Group>(null);
+  const { abscissaConfig, ordinateConfig } = useAxisSystemContext();
+  const box = useCameraState(
+    (...args) => getScaledVisibleBox(...args, meshSize, layerSize, groupRef),
+    [meshSize, layerSize, groupRef]
   );
 
-  const tileOffsets = getTileOffsets(xVisibleDomain, yVisibleDomain, tileSize);
+  let tileOffsets: Vector2[] = [];
+  if (box) {
+    tileOffsets = getTileOffsets(box, tileSize);
 
-  // Sort tiles from closest to vis center to farthest away
-  const center = new Vector2(sum(xVisibleDomain) / 2, sum(yVisibleDomain) / 2);
-  sortTilesByDistanceTo(tileOffsets, tileSize, center);
+    // Sort tiles from closest to vis center to farthest away
+    sortTilesByDistanceTo(tileOffsets, tileSize, box.getCenter(new Vector2()));
+  }
 
   return (
     // Transforms to handle axes flip and use level of details layer array coordinates
     <group
+      ref={groupRef}
       scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
     >
       <group
-        position={[-visSize.width / 2, -visSize.height / 2, layer / numLayers]}
+        position={[
+          -meshSize.width / 2,
+          -meshSize.height / 2,
+          layer / numLayers,
+        ]}
         scale={[
-          visSize.width / layerSize.width,
-          visSize.height / layerSize.height,
+          meshSize.width / layerSize.width,
+          meshSize.height / layerSize.height,
           1,
         ]}
       >
