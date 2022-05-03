@@ -78,19 +78,29 @@ export function useZoomOnWheel(
         return;
       }
 
+      const zoomVector = new Vector3(
+        zoomX ? ZOOM_FACTOR : 1,
+        zoomY ? ZOOM_FACTOR : 1,
+        1
+      );
+
       // sourceEvent.deltaY < 0 => Wheel down => decrease scale to reduce FOV
-      const factor = sourceEvent.deltaY < 0 ? ZOOM_FACTOR : 1 / ZOOM_FACTOR;
-      const zoomVector = new Vector3(zoomX ? factor : 1, zoomY ? factor : 1, 1);
-      camera.scale.multiply(zoomVector).min(ONE_VECTOR);
+      if (sourceEvent.deltaY < 0) {
+        camera.scale.multiply(zoomVector).min(ONE_VECTOR);
+      } else {
+        // Use `divide` instead of `multiply` by 1 / zoomVector to avoid rounding issues (https://github.com/silx-kit/h5web/issues/1088)
+        camera.scale.divide(zoomVector).min(ONE_VECTOR);
+      }
       camera.updateMatrixWorld();
 
       const oldPosition = unprojectedPoint.clone();
       // Scale the change in position according to the zoom
-      const delta = camera.position
-        .clone()
-        .sub(oldPosition)
-        .multiply(zoomVector);
-      const scaledPosition = oldPosition.add(delta);
+      const delta = camera.position.clone().sub(oldPosition);
+      const scaledDelta =
+        sourceEvent.deltaY < 0
+          ? delta.multiply(zoomVector)
+          : delta.divide(zoomVector);
+      const scaledPosition = oldPosition.add(scaledDelta);
       moveCameraTo(scaledPosition.x, scaledPosition.y);
     },
     [camera, isZoomAllowed, moveCameraTo]
