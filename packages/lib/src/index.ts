@@ -67,7 +67,6 @@ export {
   getCombinedDomain,
   extendDomain,
   getValueToIndexScale,
-  getVisibleDomains,
 } from './vis/utils';
 
 export {
@@ -75,7 +74,6 @@ export {
   useDomains,
   useCombinedDomain,
   useValueToIndexScale,
-  useCameraState,
 } from './vis/hooks';
 
 export {
@@ -131,3 +129,5 @@ export { default as ScalarVis } from './vis/scalar/ScalarVis';
 export { default as RgbVis } from './vis/rgb/RgbVis';
 export { default as VisMesh } from './vis/shared/VisMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
+export { getVisibleDomains } from './vis/utils';
+export { useCameraState } from './vis/hooks';
