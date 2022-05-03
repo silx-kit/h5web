@@ -7,6 +7,7 @@ import {
   TilesApi,
   ResetZoomButton,
   SelectToZoom,
+  useAxisSystemContext,
 } from '@h5web/lib';
 import type {
   Domain,
@@ -19,6 +20,7 @@ import type { Meta, Story } from '@storybook/react/types-6-0';
 import { clamp } from 'lodash';
 import ndarray from 'ndarray';
 import type { NdArray } from 'ndarray';
+import type { ReactNode } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
 import type { Vector2 } from 'three';
 
@@ -213,6 +215,60 @@ FlippedAxes.args = {
     isIndexAxis: true,
     showGrid: false,
     flip: true,
+  },
+};
+
+function LinearAxesGroup(props: { children: ReactNode }) {
+  const { children } = props;
+  const { visSize, abscissaConfig, ordinateConfig } = useAxisSystemContext();
+  const { width, height } = visSize;
+  const sx =
+    width / (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]);
+  const sy =
+    height / (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0]);
+
+  return <group scale={[sx, sy, 1]}>{children}</group>;
+}
+
+export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
+  const { abscissaConfig, api, ordinateConfig, ...tiledHeatmapProps } = args;
+  const size = { width: 1, height: 1 };
+
+  return (
+    <VisCanvas
+      abscissaConfig={abscissaConfig}
+      ordinateConfig={ordinateConfig}
+      visRatio={Math.abs(
+        (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]) /
+          (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0])
+      )}
+    >
+      <Pan />
+      <Zoom />
+      <SelectToZoom keepRatio modifierKey="Control" />
+      <ResetZoomButton />
+      <LinearAxesGroup>
+        <group rotation={[0, 0, Math.PI / 4]} position={[1, -1, 0]}>
+          <TiledHeatmapMesh api={api} {...tiledHeatmapProps} size={size} />
+        </group>
+        <group position={[-1, 1, 0]} scale={[2, 2, 1]}>
+          <TiledHeatmapMesh api={api} {...tiledHeatmapProps} size={size} />
+        </group>
+      </LinearAxesGroup>
+    </VisCanvas>
+  );
+};
+WithTransforms.args = {
+  api: defaultApi,
+  abscissaConfig: {
+    visDomain: [-2, 2],
+    isIndexAxis: true,
+    showGrid: false,
+  },
+  ordinateConfig: {
+    visDomain: [-2, 2],
+    isIndexAxis: true,
+    showGrid: false,
   },
 };
 
