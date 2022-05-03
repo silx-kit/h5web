@@ -217,7 +217,7 @@ FlippedAxes.args = {
 };
 
 export default {
-  title: 'Building Blocks/TiledHeatmapMesh',
+  title: 'Experimental/TiledHeatmapMesh',
   component: TiledHeatmapMesh,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },

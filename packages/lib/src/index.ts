@@ -41,9 +41,6 @@ export { default as ColorBar } from './vis/heatmap/ColorBar';
 export type { ColorBarProps } from './vis/heatmap/ColorBar';
 export { default as HeatmapMesh } from './vis/heatmap/HeatmapMesh';
 export type { HeatmapMeshProps } from './vis/heatmap/HeatmapMesh';
-export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
-export type { TiledHeatmapMeshProps } from './vis/tiles/TiledHeatmapMesh';
-export { getLayerSizes, TilesApi } from './vis/tiles/api';
 
 // Interactions
 export { default as Pan } from './interactions/Pan';
@@ -120,7 +117,7 @@ export {
   getMockDataArray,
 } from '@h5web/shared';
 
-// Undocumented (for @h5web/app)
+// Undocumented and/or experimental
 export { default as SnapshotBtn } from './toolbar/controls/SnapshotBtn';
 export { default as ExportMenu } from './toolbar/controls/ExportMenu';
 export { default as CellWidthInput } from './toolbar/controls/CellWidthInput';
@@ -129,5 +126,8 @@ export { default as ScalarVis } from './vis/scalar/ScalarVis';
 export { default as RgbVis } from './vis/rgb/RgbVis';
 export { default as VisMesh } from './vis/shared/VisMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
+export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
+export type { TiledHeatmapMeshProps } from './vis/tiles/TiledHeatmapMesh';
+export { getLayerSizes, TilesApi } from './vis/tiles/api';
 export { getVisibleDomains } from './vis/utils';
 export { useCameraState } from './vis/hooks';

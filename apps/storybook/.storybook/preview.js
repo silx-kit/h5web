@@ -17,6 +17,7 @@ export const parameters = {
         ['VisCanvas'],
         'Toolbar',
         ['Toolbar'],
+        'Experimental',
       ],
     },
   },
