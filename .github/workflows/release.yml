@@ -54,6 +54,12 @@ jobs:
           version: ${{ steps.packageVersion.outputs.PACKAGE_VERSION }}
           package: 'packages/app'
 
+      - name: Set @h5web/h5wasm version 📌
+        uses: reedyuk/npm-version@1.0.1
+        with:
+          version: ${{ steps.packageVersion.outputs.PACKAGE_VERSION }}
+          package: 'packages/h5wasm'
+
       - name: Publish @h5web/lib 🥳
         run: cd packages/lib && pnpm publish --access public --no-git-checks --tag $NPM_TAG
         env:
@@ -62,6 +68,12 @@ jobs:
 
       - name: Publish @h5web/app 🥳
         run: cd packages/app && pnpm publish --access public --no-git-checks --tag $NPM_TAG
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TAG: "${{ contains(steps.packageVersion.outputs.PACKAGE_VERSION, 'beta') && 'next' || 'latest' }}"
+
+      - name: Publish @h5web/h5wasm 🥳
+        run: cd packages/h5wasm && pnpm publish --access public --no-git-checks --tag $NPM_TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: "${{ contains(steps.packageVersion.outputs.PACKAGE_VERSION, 'beta') && 'next' || 'latest' }}"
