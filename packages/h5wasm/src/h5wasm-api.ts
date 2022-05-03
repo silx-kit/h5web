@@ -2,11 +2,14 @@ import type { ValuesStoreParams } from '@h5web/app';
 import { convertDtype, ProviderApi } from '@h5web/app';
 import { getNameFromPath } from '@h5web/app/src/providers/utils';
 import type {
+  Attribute,
   AttributeValues,
   Dataset,
+  DType,
   Entity,
   Group,
   GroupWithChildren,
+  Shape,
   UnresolvedEntity,
 } from '@h5web/shared';
 import {
@@ -15,9 +18,13 @@ import {
   DTypeClass,
   EntityKind,
 } from '@h5web/shared';
-import { File as H5WasmFile, FS, ready as h5wasmReady } from 'h5wasm';
+import type {
+  Attribute as H5WasmAttribute,
+  Dtype as H5WasmDtype,
+} from 'h5wasm';
+import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 
-import type { H5WasmAttribute, H5WasmEntity } from './models';
+import type { H5WasmAttributes, H5WasmEntity } from './models';
 import {
   assertH5WasmDataset,
   assertH5WasmEntityWithAttrs,
@@ -59,7 +66,8 @@ export class H5WasmApi extends ProviderApi {
 
     return Object.fromEntries(
       Object.entries(h5wEntity.attrs).map(([name, attr]) => {
-        return [name, (attr as H5WasmAttribute).value];
+        const { value } = attr as unknown as H5WasmAttribute;
+        return [name, value];
       })
     );
   }
@@ -70,7 +78,7 @@ export class H5WasmApi extends ProviderApi {
   }
 
   private async initFile(buffer: ArrayBuffer): Promise<H5WasmFile> {
-    await h5wasmReady;
+    const { FS } = await h5wasmReady;
 
     // `FS` is guaranteed to be defined once H5Wasm is ready
     // https://github.com/silx-kit/h5web/pull/1082#discussion_r858613242
@@ -130,10 +138,7 @@ export class H5WasmApi extends ProviderApi {
         kind: EntityKind.Dataset,
         attributes: this.processH5WasmAttrs(h5wEntity.attrs),
         shape,
-        type:
-          typeof dtype === 'string'
-            ? convertDtype(dtype)
-            : { class: DTypeClass.Compound, fields: dtype.compound },
+        type: this.processH5WasmDtype(dtype),
         rawType: dtype,
       } as Dataset;
     }
@@ -144,10 +149,22 @@ export class H5WasmApi extends ProviderApi {
     } as UnresolvedEntity;
   }
 
-  private processH5WasmAttrs(h5wAttrs: Record<string, unknown>) {
+  private processH5WasmAttrs(h5wAttrs: H5WasmAttributes): Attribute[] {
     return Object.entries(h5wAttrs).map(([name, attr]) => {
-      const { shape, dtype } = attr as H5WasmAttribute;
-      return { name, shape, type: convertDtype(dtype) };
+      const { shape, dtype } = attr as unknown as H5WasmAttribute;
+      return {
+        name,
+        shape: shape as Shape,
+        type: this.processH5WasmDtype(dtype),
+      };
     });
+  }
+
+  private processH5WasmDtype(dtype: H5WasmDtype): DType {
+    if (typeof dtype !== 'string') {
+      return { class: DTypeClass.Compound, fields: { ...dtype.compound } };
+    }
+
+    return convertDtype(dtype);
   }
 }
