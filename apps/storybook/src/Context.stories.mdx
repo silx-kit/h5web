@@ -24,6 +24,5 @@ const { visSize, dataToWorld, worldToData } = useAxisSystemContext();
 | `ordinateScale`  | Computes the Y coordinate in world space of a given ordinate value (or the opposite with `ordinateScale.invert()`) | <code>AxisScale</code>                                |
 | `dataToWorld`    | Converts a vector from data space to world space (calls `abscissaScale()` and `ordinateScale`)                     | <code>(vec: Vector2 &#124; Vector3) => Vector2</code> |
 | `worldToData`    | Converts a vector from world space to data space (calls `abscissaScale.invert()` and `ordinateScale.invert`)       | <code>(vec: Vector2 &#124; Vector3) => Vector2</code> |
-| `worldToHtml`    | Converts a vector from world space to HTML space (combine with `useFrameRendering()` if called during render)      | <code>(vec: Vector2 &#124; Vector3) => Vector2</code> |
 
 > This table is not exhaustive. Please consider any undocumented property as experimental or meant for internal use only.
