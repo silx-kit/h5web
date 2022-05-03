@@ -1,17 +1,16 @@
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import { useMemo } from 'react';
 
-import Provider from '../Provider';
+import DataProvider from '../DataProvider';
 import { H5GroveApi } from './h5grove-api';
 
 interface Props {
   url: string;
   filepath: string;
   axiosParams?: Record<string, string>;
-  children: ReactNode;
 }
 
-function H5GroveProvider(props: Props) {
+function H5GroveProvider(props: PropsWithChildren<Props>) {
   const { url, filepath, axiosParams, children } = props;
 
   const api = useMemo(
@@ -19,7 +18,7 @@ function H5GroveProvider(props: Props) {
     [filepath, url, axiosParams]
   );
 
-  return <Provider api={api}>{children}</Provider>;
+  return <DataProvider api={api}>{children}</DataProvider>;
 }
 
 export default H5GroveProvider;

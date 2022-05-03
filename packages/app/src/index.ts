@@ -7,8 +7,12 @@ export { default as H5GroveProvider } from './providers/h5grove/H5GroveProvider'
 export { getFeedbackMailto } from './breadcrumbs/utils';
 export type { FeedbackContext } from './breadcrumbs/models';
 
+// Context
+export { useDataContext } from './providers/DataProvider';
+export type { DataContextValue } from './providers/DataProvider';
+
 // Undocumented (for @h5web/h5wasm)
-export { default as Provider } from './providers/Provider';
-export { ProviderApi } from './providers/api';
+export { default as DataProvider } from './providers/DataProvider';
+export { DataProviderApi as ProviderApi } from './providers/api';
 export type { ValuesStoreParams } from './providers/models';
 export { convertDtype } from './providers/utils';

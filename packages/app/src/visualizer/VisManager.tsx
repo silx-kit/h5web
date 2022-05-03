@@ -1,8 +1,8 @@
 import type { Entity } from '@h5web/shared';
 import { assertDefined } from '@h5web/shared';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import type { VisDef } from '../vis-packs/models';
 import VisSelector from './VisSelector';
 import styles from './Visualizer.module.css';
@@ -28,7 +28,7 @@ function VisManager(props: Props) {
 
   const [visBarElem, setVisBarElem] = useState<HTMLDivElement>();
 
-  const { valuesStore } = useContext(ProviderContext);
+  const { valuesStore } = useDataContext();
   function onVisChange(index: number) {
     setActiveVis(index);
     valuesStore.cancelOngoing();

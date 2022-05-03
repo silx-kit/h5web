@@ -12,7 +12,7 @@ import type {
 import { hasScalarShape, buildEntityPath, EntityKind } from '@h5web/shared';
 import { isString } from 'lodash';
 
-import { ProviderApi } from '../api';
+import { DataProviderApi } from '../api';
 import type { ExportFormat, ValuesStoreParams } from '../models';
 import { convertDtype, handleAxiosError } from '../utils';
 import type {
@@ -29,7 +29,7 @@ import {
   typedArrayFromDType,
 } from './utils';
 
-export class H5GroveApi extends ProviderApi {
+export class H5GroveApi extends DataProviderApi {
   /* API compatible with h5grove@0.0.16 */
   public constructor(
     url: string,

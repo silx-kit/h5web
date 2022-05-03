@@ -9,12 +9,12 @@ import {
 } from '@h5web/lib';
 import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 import shallow from 'zustand/shallow';
 
-import { ProviderContext } from '../../../providers/context';
+import { useDataContext } from '../../../providers/DataProvider';
 import type { ExportFormat } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { useLineConfig } from './config';
@@ -41,7 +41,7 @@ function LineToolbar(props: Props) {
     disableErrors,
   } = props;
 
-  const { getExportURL } = useContext(ProviderContext);
+  const { getExportURL } = useDataContext();
 
   const {
     curveType,

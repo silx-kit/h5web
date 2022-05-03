@@ -1,7 +1,6 @@
 import { assertGroupWithChildren, buildEntityPath } from '@h5web/shared';
-import { useContext } from 'react';
 
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import EntityItem from './EntityItem';
 import styles from './Explorer.module.css';
 
@@ -15,7 +14,7 @@ interface Props {
 function EntityList(props: Props) {
   const { level, parentPath, selectedPath, onSelect } = props;
 
-  const { entitiesStore } = useContext(ProviderContext);
+  const { entitiesStore } = useDataContext();
   const group = entitiesStore.get(parentPath);
   assertGroupWithChildren(group);
 

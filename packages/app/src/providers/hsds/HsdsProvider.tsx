@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import { useMemo } from 'react';
 
-import Provider from '../Provider';
+import DataProvider from '../DataProvider';
 import { HsdsApi } from './hsds-api';
 
 interface Props {
@@ -9,10 +9,9 @@ interface Props {
   username: string;
   password: string;
   filepath: string;
-  children: ReactNode;
 }
 
-function HsdsProvider(props: Props) {
+function HsdsProvider(props: PropsWithChildren<Props>) {
   const { url, username, password, filepath, children } = props;
 
   const api = useMemo(
@@ -20,7 +19,7 @@ function HsdsProvider(props: Props) {
     [filepath, password, url, username]
   );
 
-  return <Provider api={api}>{children}</Provider>;
+  return <DataProvider api={api}>{children}</DataProvider>;
 }
 
 export default HsdsProvider;

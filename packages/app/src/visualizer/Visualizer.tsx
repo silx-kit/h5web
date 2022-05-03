@@ -1,6 +1,4 @@
-import { useContext } from 'react';
-
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import VisManager from './VisManager';
 import styles from './Visualizer.module.css';
 import { resolvePath } from './utils';
@@ -12,7 +10,7 @@ interface Props {
 function Visualizer(props: Props) {
   const { path } = props;
 
-  const { entitiesStore, attrValuesStore } = useContext(ProviderContext);
+  const { entitiesStore, attrValuesStore } = useDataContext();
   const resolution = resolvePath(path, entitiesStore, attrValuesStore);
 
   if (!resolution) {

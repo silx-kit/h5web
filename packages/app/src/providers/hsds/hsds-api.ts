@@ -15,7 +15,7 @@ import {
   buildEntityPath,
 } from '@h5web/shared';
 
-import { ProviderApi } from '../api';
+import { DataProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
 import { flattenValue, handleAxiosError } from '../utils';
 import type {
@@ -42,7 +42,7 @@ import {
   assertHsdsEntity,
 } from './utils';
 
-export class HsdsApi extends ProviderApi {
+export class HsdsApi extends DataProviderApi {
   private readonly entities = new Map<string, HsdsEntity>();
 
   /* API compatible with HSDS@6717a7bb8c2245492090be34ec3ccd63ecb20b70 */

@@ -5,10 +5,10 @@ import {
   isDataset,
 } from '@h5web/shared';
 import { capitalize } from 'lodash';
-import { Suspense, memo, useContext } from 'react';
+import { Suspense, memo } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import AttrErrorFallback from './AttrErrorFallback';
 import AttrValueLoader from './AttrValueLoader';
 import AttributesInfo from './AttributesInfo';
@@ -25,7 +25,7 @@ interface Props {
 function MetadataViewer(props: Props) {
   const { path, onSelectPath } = props;
 
-  const { entitiesStore } = useContext(ProviderContext);
+  const { entitiesStore } = useDataContext();
   const entity = entitiesStore.get(path);
 
   const { kind, attributes } = entity;

@@ -1,6 +1,5 @@
 import { ToggleGroup, ToggleBtn, LinkBtn, Separator, Btn } from '@h5web/lib';
 import { useEventListener, useToggle } from '@react-hookz/web';
-import { useContext } from 'react';
 import {
   FiMaximize,
   FiMessageCircle,
@@ -8,7 +7,7 @@ import {
   FiSidebar,
 } from 'react-icons/fi';
 
-import { ProviderContext } from '../providers/context';
+import { useDataContext } from '../providers/DataProvider';
 import Breadcrumbs from './Breadcrumbs';
 import styles from './BreadcrumbsBar.module.css';
 import type { FeedbackContext } from './models';
@@ -34,7 +33,7 @@ function BreadcrumbsBar(props: Props) {
     getFeedbackURL,
   } = props;
 
-  const { filepath } = useContext(ProviderContext);
+  const { filepath } = useDataContext();
 
   const [isFullscreen, toggleFullScreen] = useToggle(
     !!document.fullscreenElement

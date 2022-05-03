@@ -1,22 +1,45 @@
 import type { Entity } from '@h5web/shared';
 import { assertGroupWithChildren, isGroup } from '@h5web/shared';
-import type { ReactNode } from 'react';
-import { useMemo } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
 
 import { hasAttribute } from '../utils';
 import type { ImageAttribute } from '../vis-packs/core/models';
 import type { NxAttribute } from '../vis-packs/nexus/models';
-import type { ProviderApi } from './api';
-import { ProviderContext } from './context';
+import type { DataProviderApi } from './api';
+import type {
+  AttrValuesStore,
+  EntitiesStore,
+  ProgressCallback,
+  ValuesStore,
+} from './models';
 import { getNameFromPath } from './utils';
 
-interface Props {
-  api: ProviderApi;
-  children: ReactNode;
+export interface DataContextValue {
+  filepath: string;
+  filename: string;
+  entitiesStore: EntitiesStore;
+  valuesStore: ValuesStore;
+  attrValuesStore: AttrValuesStore;
+
+  // Undocumented
+  getExportURL?: DataProviderApi['getExportURL'];
+  addProgressListener: (cb: ProgressCallback) => void;
+  removeProgressListener: (cb: ProgressCallback) => void;
 }
 
-function Provider(props: Props) {
+const DataContext = createContext({} as DataContextValue);
+
+export function useDataContext() {
+  return useContext(DataContext);
+}
+
+interface Props {
+  api: DataProviderApi;
+}
+
+function DataProvider(props: PropsWithChildren<Props>) {
   const { api, children } = props;
 
   const entitiesStore = useMemo(() => {
@@ -82,7 +105,7 @@ function Provider(props: Props) {
   }, [api]);
 
   return (
-    <ProviderContext.Provider
+    <DataContext.Provider
       value={{
         filepath: api.filepath,
         filename: getNameFromPath(api.filepath),
@@ -95,8 +118,8 @@ function Provider(props: Props) {
       }}
     >
       {children}
-    </ProviderContext.Provider>
+    </DataContext.Provider>
   );
 }
 
-export default Provider;
+export default DataProvider;
