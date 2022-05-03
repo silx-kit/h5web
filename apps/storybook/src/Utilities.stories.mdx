@@ -151,24 +151,6 @@ scaleWithMid(3); // Returns 3
 - **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
 - **`useValueToIndexScale(..args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
 
-#### useVisibleDomains
-
-Compute the x and y-axis domains at the current camera position and zoom level. Must be called from a child component of `VisCanvas`.
-
-```ts
-useVisibleDomains(): { xVisibleDomain: Domain; yVisibleDomain: Domain; }
-
-const { xVisibleDomain, yVisibleDomain } = useVisibleDomains();
-```
-
-#### useFrameRendering
-
-Trigger a re-render on every React Three Fiber frame when panning/zooming. Avoid calling this hook in a component that is slow to render to ensure pan/zoom interactions remain responsive. Must be called from a child component of `VisCanvas`.
-
-```ts
-useFrameRendering(): void
-```
-
 #### useCanvasEvents
 
 Register event listeners on the `canvas` element. Useful to implement custom interactions. Must be called from a child component of `VisCanvas`.
