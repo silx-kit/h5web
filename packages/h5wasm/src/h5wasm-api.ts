@@ -1,6 +1,5 @@
 import type { ValuesStoreParams } from '@h5web/app';
-import { convertDtype, ProviderApi } from '@h5web/app';
-import { getNameFromPath } from '@h5web/app/src/providers/utils';
+import { convertDtype, getNameFromPath, ProviderApi } from '@h5web/app';
 import type {
   Attribute,
   AttributeValues,
