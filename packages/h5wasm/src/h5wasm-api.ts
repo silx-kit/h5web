@@ -1,32 +1,24 @@
 import type { ValuesStoreParams } from '@h5web/app';
-import { convertDtype, getNameFromPath, ProviderApi } from '@h5web/app';
+import { getNameFromPath, ProviderApi } from '@h5web/app';
 import type {
   Attribute,
   AttributeValues,
   Dataset,
-  DType,
   Entity,
   Group,
   GroupWithChildren,
   Shape,
   UnresolvedEntity,
 } from '@h5web/shared';
-import {
-  assertNonNull,
-  buildEntityPath,
-  DTypeClass,
-  EntityKind,
-} from '@h5web/shared';
-import type {
-  Attribute as H5WasmAttribute,
-  Dtype as H5WasmDtype,
-} from 'h5wasm';
+import { assertNonNull, buildEntityPath, EntityKind } from '@h5web/shared';
+import type { Attribute as H5WasmAttribute } from 'h5wasm';
 import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 
 import type { H5WasmAttributes, H5WasmEntity } from './models';
 import {
   assertH5WasmDataset,
   assertH5WasmEntityWithAttrs,
+  convertMetadataToDType,
   isH5WasmDataset,
   isH5WasmGroup,
   isHDF5,
@@ -130,14 +122,14 @@ export class H5WasmApi extends ProviderApi {
     }
 
     if (isH5WasmDataset(h5wEntity)) {
-      const { shape, dtype } = h5wEntity;
+      const { shape, metadata, dtype } = h5wEntity;
 
       return {
         ...baseEntity,
         kind: EntityKind.Dataset,
         attributes: this.processH5WasmAttrs(h5wEntity.attrs),
         shape,
-        type: this.processH5WasmDtype(dtype),
+        type: convertMetadataToDType(metadata),
         rawType: dtype,
       } as Dataset;
     }
@@ -150,20 +142,12 @@ export class H5WasmApi extends ProviderApi {
 
   private processH5WasmAttrs(h5wAttrs: H5WasmAttributes): Attribute[] {
     return Object.entries(h5wAttrs).map(([name, attr]) => {
-      const { shape, dtype } = attr as unknown as H5WasmAttribute;
+      const { shape, metadata } = attr as unknown as H5WasmAttribute;
       return {
         name,
         shape: shape as Shape,
-        type: this.processH5WasmDtype(dtype),
+        type: convertMetadataToDType(metadata),
       };
     });
-  }
-
-  private processH5WasmDtype(dtype: H5WasmDtype): DType {
-    if (typeof dtype !== 'string') {
-      return { class: DTypeClass.Compound, fields: { ...dtype.compound } };
-    }
-
-    return convertDtype(dtype);
   }
 }
