@@ -147,7 +147,11 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
       <Zoom />
       <SelectToZoom keepRatio modifierKey="Control" />
       <ResetZoomButton />
-      <TiledHeatmapMesh api={api} {...tiledHeatmapProps} />
+      <group
+        scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
+      >
+        <TiledHeatmapMesh api={api} {...tiledHeatmapProps} />
+      </group>
     </VisCanvas>
   );
 };
@@ -223,16 +227,25 @@ function LinearAxesGroup(props: { children: ReactNode }) {
   const { visSize, abscissaConfig, ordinateConfig } = useAxisSystemContext();
   const { width, height } = visSize;
   const sx =
-    width / (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]);
+    ((abscissaConfig.flip ? -1 : 1) * width) /
+    (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]);
   const sy =
-    height / (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0]);
+    ((ordinateConfig.flip ? -1 : 1) * height) /
+    (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0]);
+  const x = 0.5 * (abscissaConfig.visDomain[0] + abscissaConfig.visDomain[1]);
+  const y = 0.5 * (ordinateConfig.visDomain[0] + ordinateConfig.visDomain[1]);
 
-  return <group scale={[sx, sy, 1]}>{children}</group>;
+  return (
+    <group scale={[sx, sy, 1]} position={[-x * sx, -y * sy, 0]}>
+      {children}
+    </group>
+  );
 }
 
 export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
   const { abscissaConfig, api, ordinateConfig, ...tiledHeatmapProps } = args;
-  const size = { width: 1, height: 1 };
+  const { baseLayerSize } = api;
+  const size = { width: 1, height: baseLayerSize.height / baseLayerSize.width };
 
   return (
     <VisCanvas
@@ -248,7 +261,7 @@ export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
       <SelectToZoom keepRatio modifierKey="Control" />
       <ResetZoomButton />
       <LinearAxesGroup>
-        <group rotation={[0, 0, Math.PI / 4]} position={[1, -1, 0]}>
+        <group position={[1, 1, 0]} rotation={[0, 0, Math.PI / 4]}>
           <TiledHeatmapMesh api={api} {...tiledHeatmapProps} size={size} />
         </group>
         <group position={[-1, 1, 0]} scale={[2, 2, 1]}>
@@ -259,16 +272,18 @@ export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
   );
 };
 WithTransforms.args = {
-  api: defaultApi,
+  api: halfMandelbrotApi,
   abscissaConfig: {
-    visDomain: [-2, 2],
+    visDomain: [-2, 1.5],
     isIndexAxis: true,
     showGrid: false,
+    flip: false,
   },
   ordinateConfig: {
-    visDomain: [-2, 2],
+    visDomain: [0, 2],
     isIndexAxis: true,
     showGrid: false,
+    flip: true,
   },
 };
 

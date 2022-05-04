@@ -27,7 +27,6 @@ function TiledLayer(props: Props) {
   const layerSize = api.layerSizes[layer];
 
   const groupRef = useRef<Group>(null);
-  const { abscissaConfig, ordinateConfig } = useAxisSystemContext();
   const box = useCameraState(
     (...args) => getScaledVisibleBox(...args, meshSize, layerSize, groupRef),
     [meshSize, layerSize, groupRef]
@@ -42,11 +41,8 @@ function TiledLayer(props: Props) {
   }
 
   return (
-    // Transforms to handle axes flip and use level of details layer array coordinates
-    <group
-      ref={groupRef}
-      scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
-    >
+    // Transforms to use level of details layer array coordinates
+    <group ref={groupRef}>
       <group
         position={[
           -meshSize.width / 2,
