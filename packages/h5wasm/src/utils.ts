@@ -1,4 +1,7 @@
-import { Group as H5WasmGroup, Dataset as H5WasmDataset } from 'h5wasm';
+import type { DType } from '@h5web/shared';
+import { DTypeClass, Endianness } from '@h5web/shared';
+import { Dataset as H5WasmDataset, Group as H5WasmGroup } from 'h5wasm';
+import type { Metadata } from 'h5wasm/src/hdf5_util_helpers';
 
 import type { H5WasmEntity } from './models';
 
@@ -32,5 +35,38 @@ export function assertH5WasmEntityWithAttrs(
 ): asserts entity is H5WasmGroup | H5WasmDataset {
   if (!isH5WasmGroup(entity) && !isH5WasmDataset(entity)) {
     throw new Error('Expected H5Wasm entity with attributes');
+  }
+}
+
+export function convertMetadataToDType(metadata: Metadata): DType {
+  const { signed, type, size: length, littleEndian } = metadata;
+
+  // See H5T_class_t in https://github.com/usnistgov/h5wasm/blob/main/src/hdf5_util_helpers.d.ts
+  switch (type) {
+    case 0:
+      return {
+        class: signed ? DTypeClass.Integer : DTypeClass.Unsigned,
+        size: length * 8,
+        endianness: littleEndian ? Endianness.LE : Endianness.BE,
+      };
+
+    case 1:
+      return {
+        class: DTypeClass.Float,
+        size: length * 8,
+        endianness: littleEndian ? Endianness.LE : Endianness.BE,
+      };
+
+    case 3:
+      return {
+        class: DTypeClass.String,
+        length,
+        charSet: metadata.cset === 1 ? 'UTF-8' : 'ASCII',
+      };
+
+    default:
+      return {
+        class: DTypeClass.Unknown,
+      };
   }
 }
