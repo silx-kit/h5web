@@ -8,7 +8,6 @@ import type {
   Group,
   GroupWithChildren,
   Shape,
-  UnresolvedEntity,
 } from '@h5web/shared';
 import { assertNonNull, buildEntityPath, EntityKind } from '@h5web/shared';
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
@@ -20,7 +19,9 @@ import {
   assertH5WasmEntityWithAttrs,
   convertMetadataToDType,
   isH5WasmDataset,
+  isH5WasmExternalLink,
   isH5WasmGroup,
+  isH5WasmSoftLink,
   isHDF5,
   convertSelectionToRanges,
 } from './utils';
@@ -123,27 +124,55 @@ export class H5WasmApi extends ProviderApi {
         const childPath = buildEntityPath(path, name);
         return this.processH5WasmEntity(name, childPath, h5wChild, true);
       });
+      const groupWithChildren: GroupWithChildren = { ...baseGroup, children };
 
-      return { ...baseGroup, children } as GroupWithChildren;
+      return groupWithChildren;
     }
 
     if (isH5WasmDataset(h5wEntity)) {
       const { shape, metadata, dtype } = h5wEntity;
-
-      return {
+      const dataset: Dataset = {
         ...baseEntity,
         kind: EntityKind.Dataset,
         attributes: this.processH5WasmAttrs(h5wEntity.attrs),
         shape,
         type: convertMetadataToDType(metadata),
         rawType: dtype,
-      } as Dataset;
+      };
+
+      return dataset;
+    }
+
+    if (isH5WasmSoftLink(h5wEntity)) {
+      return {
+        ...baseEntity,
+        attributes: [],
+        kind: EntityKind.Unresolved,
+        link: {
+          class: 'Soft',
+          path: h5wEntity.target,
+        },
+      };
+    }
+
+    if (isH5WasmExternalLink(h5wEntity)) {
+      return {
+        ...baseEntity,
+        attributes: [],
+        kind: EntityKind.Unresolved,
+        link: {
+          class: 'External',
+          path: h5wEntity.obj_path,
+          file: h5wEntity.filename,
+        },
+      };
     }
 
     return {
       ...baseEntity,
+      attributes: [],
       kind: EntityKind.Unresolved,
-    } as UnresolvedEntity;
+    };
   }
 
   private processH5WasmAttrs(h5wAttrs: H5WasmAttributes): Attribute[] {
