@@ -70,3 +70,19 @@ export function convertMetadataToDType(metadata: Metadata): DType {
       };
   }
 }
+
+export function convertSelectionToRanges(
+  dataset: H5WasmDataset,
+  selection: string
+): number[][] {
+  const { shape } = dataset;
+  const selectionMembers = selection.split(',');
+
+  return selectionMembers.map((member, i) => {
+    if (member === ':') {
+      return [0, shape[i]];
+    }
+
+    return [Number(member), Number(member) + 1];
+  });
+}
