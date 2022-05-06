@@ -1,75 +1,57 @@
-import { Suspense, useRef } from 'react';
+import { Suspense } from 'react';
 import { LinearFilter, NearestFilter, Vector2 } from 'three';
-import type { Group } from 'three';
+import type { Box3 } from 'three';
 
-import { useCameraState } from '../hooks';
 import type { Size } from '../models';
-import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import Tile from './Tile';
 import type { TilesApi } from './api';
 import type { ColorMapProps } from './models';
-import {
-  getTileOffsets,
-  getScaledVisibleBox,
-  sortTilesByDistanceTo,
-} from './utils';
+import { getTileOffsets, scaleToLayer, sortTilesByDistanceTo } from './utils';
 
 interface Props extends ColorMapProps {
   api: TilesApi;
   layer: number;
-  size: Size;
+  meshSize: Size;
+  visibleBox: Box3;
 }
 
 function TiledLayer(props: Props) {
-  const { api, layer, size: meshSize, ...colorMapProps } = props;
+  const { api, layer, meshSize, visibleBox, ...colorMapProps } = props;
 
   const { baseLayerIndex, numLayers, tileSize } = api;
   const layerSize = api.layerSizes[layer];
 
-  const groupRef = useRef<Group>(null);
-  const box = useCameraState(
-    (...args) => getScaledVisibleBox(...args, meshSize, layerSize, groupRef),
-    [meshSize, layerSize, groupRef]
-  );
-
-  let tileOffsets: Vector2[] = [];
-  if (box) {
-    tileOffsets = getTileOffsets(box, tileSize);
-
-    // Sort tiles from closest to vis center to farthest away
-    sortTilesByDistanceTo(tileOffsets, tileSize, box.getCenter(new Vector2()));
+  if (visibleBox.isEmpty()) {
+    return null;
   }
+
+  const bounds = scaleToLayer(visibleBox, layerSize, meshSize);
+  const tileOffsets = getTileOffsets(bounds, tileSize);
+  // Sort tiles from closest to vis center to farthest away
+  sortTilesByDistanceTo(tileOffsets, tileSize, bounds.getCenter(new Vector2()));
 
   return (
     // Transforms to use level of details layer array coordinates
-    <group ref={groupRef}>
-      <group
-        position={[
-          -meshSize.width / 2,
-          -meshSize.height / 2,
-          layer / numLayers,
-        ]}
-        scale={[
-          meshSize.width / layerSize.width,
-          meshSize.height / layerSize.height,
-          1,
-        ]}
-      >
-        {tileOffsets.map((offset) => (
-          <Suspense key={`${offset.x},${offset.y}`} fallback={null}>
-            <Tile
-              api={api}
-              layer={layer}
-              x={offset.x}
-              y={offset.y}
-              {...colorMapProps}
-              magFilter={
-                layer === baseLayerIndex ? NearestFilter : LinearFilter
-              }
-            />
-          </Suspense>
-        ))}
-      </group>
+    <group
+      position={[-meshSize.width / 2, -meshSize.height / 2, layer / numLayers]}
+      scale={[
+        meshSize.width / layerSize.width,
+        meshSize.height / layerSize.height,
+        1,
+      ]}
+    >
+      {tileOffsets.map((offset) => (
+        <Suspense key={`${offset.x},${offset.y}`} fallback={null}>
+          <Tile
+            api={api}
+            layer={layer}
+            x={offset.x}
+            y={offset.y}
+            {...colorMapProps}
+            magFilter={layer === baseLayerIndex ? NearestFilter : LinearFilter}
+          />
+        </Suspense>
+      ))}
     </group>
   );
 }

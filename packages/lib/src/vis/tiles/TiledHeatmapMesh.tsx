@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber';
 import { clamp, range } from 'lodash';
 import { useRef } from 'react';
-import type { Group } from 'three';
+import type { Object3D } from 'three';
 
 import { getInterpolator } from '../heatmap/utils';
 import { useCameraState } from '../hooks';
@@ -10,7 +10,12 @@ import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import TiledLayer from './TiledLayer';
 import type { TilesApi } from './api';
 import type { ColorMapProps } from './models';
-import { getScaledVisibleBox } from './utils';
+import {
+  getObject3DVisibleBox,
+  getObject3DPixelSize,
+  getNdcToObject3DMatrix,
+  scaleToLayer,
+} from './utils';
 
 interface Props extends ColorMapProps {
   api: TilesApi;
@@ -33,25 +38,28 @@ function TiledHeatmapMesh(props: Props) {
   const { visSize } = useAxisSystemContext();
   const meshSize = size ?? visSize;
 
-  const groupRef = useRef<Group>(null);
+  const groupRef = useRef<Object3D>(null);
 
-  const box = useCameraState(
-    (...args) =>
-      getScaledVisibleBox(...args, meshSize, baseLayerSize, groupRef),
-    [meshSize, baseLayerSize, groupRef]
+  const ndcToLocalMatrix = useCameraState(
+    (camera) => getNdcToObject3DMatrix(camera, groupRef),
+    []
   );
+  const visibleBox = getObject3DVisibleBox(ndcToLocalMatrix);
+
+  const bounds = scaleToLayer(visibleBox, baseLayerSize, meshSize);
 
   let layers: number[] = [];
-  if (box) {
-    const itemsPerPixel = Math.max(
+  if (!bounds.isEmpty()) {
+    const pixelSize = getObject3DPixelSize(ndcToLocalMatrix, canvasSize);
+    const dataPointsPerPixel = Math.max(
       1,
-      Math.abs(box.max.x - box.min.x) / canvasSize.width,
-      Math.abs(box.max.y - box.min.y) / canvasSize.height
+      (pixelSize.x / meshSize.width) * baseLayerSize.width,
+      (pixelSize.y / meshSize.height) * baseLayerSize.height
     );
 
     const roundingOffset = 1 - clamp(qualityFactor, 0, 1);
     const subsamplingLevel = Math.min(
-      Math.floor(Math.log2(itemsPerPixel) + roundingOffset),
+      Math.floor(Math.log2(dataPointsPerPixel) + roundingOffset),
       baseLayerIndex
     );
     const currentLayerIndex = baseLayerIndex - subsamplingLevel;
@@ -79,7 +87,8 @@ function TiledHeatmapMesh(props: Props) {
           key={layer}
           api={api}
           layer={layer}
-          size={meshSize}
+          meshSize={meshSize}
+          visibleBox={visibleBox}
           {...colorMapProps}
         />
       ))}

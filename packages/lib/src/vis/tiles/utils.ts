@@ -1,11 +1,10 @@
 import { ScaleType } from '@h5web/shared';
 import type { Camera } from '@react-three/fiber';
 import type { RefObject } from 'react';
-import { Box2, Box3, Matrix4, Vector2, Vector3 } from 'three';
-import type { Object3D } from 'three';
+import { Box2, Box3, Vector2, Vector3 } from 'three';
+import type { Object3D, Matrix4 } from 'three';
 
 import type { Size } from '../models';
-import type { AxisSystemContextValue } from '../shared/AxisSystemProvider';
 import { createAxisScale } from '../utils';
 
 export function getTileOffsets(box: Box2, tileSize: Size): Vector2[] {
@@ -47,51 +46,67 @@ export function sortTilesByDistanceTo(
   });
 }
 
-const NDC_BOX = new Box3(new Vector3(-1, -1, -1), new Vector3(1, 1, 1));
-
-function getObject3DVisibleBox(
+export function getNdcToObject3DMatrix(
   camera: Camera,
-  context: AxisSystemContextValue,
-  Object3DRef: RefObject<Object3D>
-): Box3 | undefined {
-  const object3D = Object3DRef.current;
+  object3DRef: RefObject<Object3D>
+): Matrix4 | undefined {
+  const object3D = object3DRef.current;
   if (!object3D) {
     return undefined;
   }
-
-  // Convert view box: Normalized Device Coordinates -> camera -> world -> local
-  const matrix = new Matrix4()
-    .multiplyMatrices(object3D.matrixWorld.invert(), camera.matrixWorld)
+  // Convert Normalized Device Coordinates -> camera -> world -> local
+  return object3D.matrixWorld
+    .clone()
+    .invert()
+    .multiply(camera.matrixWorld)
     .multiply(camera.projectionMatrixInverse);
-  return NDC_BOX.clone().applyMatrix4(matrix);
 }
 
-export function getScaledVisibleBox(
-  camera: Camera,
-  context: AxisSystemContextValue,
-  meshSize: Size,
-  arraySize: Size,
-  ref: RefObject<Object3D>
-): Box2 | undefined {
-  const box3d = getObject3DVisibleBox(camera, context, ref);
-  if (!box3d) {
-    return undefined;
+export function getObject3DPixelSize(
+  ndcToObject3DMatrix: Matrix4 | undefined,
+  canvasSize: Size
+): Vector3 {
+  if (!ndcToObject3DMatrix) {
+    return new Vector3();
+  }
+  const ndcPixelBox = new Box3(
+    new Vector3(0, 0, 0),
+    new Vector3(2 / canvasSize.width, 2 / canvasSize.height, 0)
+  );
+  const box = ndcPixelBox.applyMatrix4(ndcToObject3DMatrix);
+  return box.getSize(new Vector3());
+}
+
+const NDC_BOX = new Box3(new Vector3(-1, -1, -1), new Vector3(1, 1, 1));
+
+export function getObject3DVisibleBox(
+  ndcToObject3DMatrix: Matrix4 | undefined
+): Box3 {
+  if (!ndcToObject3DMatrix) {
+    return new Box3();
+  }
+  return NDC_BOX.clone().applyMatrix4(ndcToObject3DMatrix);
+}
+
+export function scaleToLayer(box: Box3, layerSize: Size, meshSize: Size): Box2 {
+  if (box.isEmpty()) {
+    return new Box2();
   }
 
   const xScale = createAxisScale(ScaleType.Linear, {
     domain: [-meshSize.width / 2, meshSize.width / 2],
-    range: [0, arraySize.width],
+    range: [0, layerSize.width],
     clamp: true,
   });
 
   const yScale = createAxisScale(ScaleType.Linear, {
     domain: [-meshSize.height / 2, meshSize.height / 2],
-    range: [0, arraySize.height],
+    range: [0, layerSize.height],
     clamp: true,
   });
 
-  return new Box2().setFromPoints([
-    new Vector2(xScale(box3d.min.x), yScale(box3d.min.y)),
-    new Vector2(xScale(box3d.max.x), yScale(box3d.max.y)),
-  ]);
+  return new Box2(
+    new Vector2(xScale(box.min.x), yScale(box.min.y)),
+    new Vector2(xScale(box.max.x), yScale(box.max.y))
+  );
 }

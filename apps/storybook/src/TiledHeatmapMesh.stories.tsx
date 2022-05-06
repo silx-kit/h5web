@@ -132,7 +132,7 @@ interface TiledHeatmapStoryProps extends TiledHeatmapMeshProps {
 }
 
 const Template: Story<TiledHeatmapStoryProps> = (args) => {
-  const { abscissaConfig, api, ordinateConfig, ...tiledHeatmapProps } = args;
+  const { abscissaConfig, ordinateConfig, ...tiledHeatmapProps } = args;
 
   return (
     <VisCanvas
@@ -150,7 +150,7 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
       <group
         scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
       >
-        <TiledHeatmapMesh api={api} {...tiledHeatmapProps} />
+        <TiledHeatmapMesh {...tiledHeatmapProps} />
       </group>
     </VisCanvas>
   );
@@ -224,7 +224,7 @@ FlippedAxes.args = {
 
 function LinearAxesGroup(props: { children: ReactNode }) {
   const { children } = props;
-  const { visSize, abscissaConfig, ordinateConfig } = useAxisSystemContext();
+  const { abscissaConfig, ordinateConfig, visSize } = useAxisSystemContext();
   const { width, height } = visSize;
   const sx =
     ((abscissaConfig.flip ? -1 : 1) * width) /
@@ -236,7 +236,7 @@ function LinearAxesGroup(props: { children: ReactNode }) {
   const y = 0.5 * (ordinateConfig.visDomain[0] + ordinateConfig.visDomain[1]);
 
   return (
-    <group scale={[sx, sy, 1]} position={[-x * sx, -y * sy, 0]}>
+    <group position={[-x * sx, -y * sy, 0]} scale={[sx, sy, 1]}>
       {children}
     </group>
   );
@@ -283,7 +283,7 @@ WithTransforms.args = {
     visDomain: [0, 2],
     isIndexAxis: true,
     showGrid: false,
-    flip: true,
+    flip: false,
   },
 };
 
