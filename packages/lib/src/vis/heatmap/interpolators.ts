@@ -39,18 +39,25 @@ import {
   interpolateTurbo,
 } from 'd3-scale-chromatic';
 
+import type { D3Interpolator } from './models';
+
 function interpolateHsl(t: number): string {
   return hsl(t * 360, 1, 0.5).formatRgb();
 }
 
+function reverseInterpolator(interpolator: D3Interpolator) {
+  return (t: number) => interpolator(1 - t);
+}
+
 export const INTERPOLATORS = {
   // Single-hue
-  Blues: interpolateBlues,
-  Greens: interpolateGreens,
-  Greys: interpolateGreys,
-  Oranges: interpolateOranges,
-  Purples: interpolatePurples,
-  Reds: interpolateReds,
+  // Reverted to be consistent with Viridis/Inferno that go from dark to bright
+  Blues: reverseInterpolator(interpolateBlues),
+  Greens: reverseInterpolator(interpolateGreens),
+  Greys: reverseInterpolator(interpolateGreys),
+  Oranges: reverseInterpolator(interpolateOranges),
+  Purples: reverseInterpolator(interpolatePurples),
+  Reds: reverseInterpolator(interpolateReds),
 
   // Multi-hue
   Turbo: interpolateTurbo,
