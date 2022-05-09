@@ -1,6 +1,11 @@
 import type { DType } from '@h5web/shared';
 import { DTypeClass, Endianness } from '@h5web/shared';
-import { Dataset as H5WasmDataset, Group as H5WasmGroup } from 'h5wasm';
+import {
+  BrokenSoftLink as H5WasmSoftLink,
+  Dataset as H5WasmDataset,
+  ExternalLink as H5WasmExternalLink,
+  Group as H5WasmGroup,
+} from 'h5wasm';
 import type { Metadata } from 'h5wasm/src/hdf5_util_helpers';
 
 import type { H5WasmEntity } from './models';
@@ -20,6 +25,18 @@ export function isH5WasmGroup(entity: H5WasmEntity): entity is H5WasmGroup {
 
 export function isH5WasmDataset(entity: H5WasmEntity): entity is H5WasmDataset {
   return entity instanceof H5WasmDataset;
+}
+
+export function isH5WasmSoftLink(
+  entity: H5WasmEntity
+): entity is H5WasmSoftLink {
+  return entity instanceof H5WasmSoftLink;
+}
+
+export function isH5WasmExternalLink(
+  entity: H5WasmEntity
+): entity is H5WasmExternalLink {
+  return entity instanceof H5WasmExternalLink;
 }
 
 export function assertH5WasmDataset(

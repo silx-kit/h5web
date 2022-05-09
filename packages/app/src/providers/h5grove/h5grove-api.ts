@@ -7,7 +7,6 @@ import type {
   Group,
   GroupWithChildren,
   NumericType,
-  UnresolvedEntity,
 } from '@h5web/shared';
 import { hasScalarShape, buildEntityPath, EntityKind } from '@h5web/shared';
 import { isString } from 'lodash';
@@ -145,30 +144,35 @@ export class H5GroveApi extends DataProviderApi {
     path: string,
     response: H5GroveEntityResponse
   ): Promise<Entity> {
-    const { name, type: kind } = response;
+    const { name } = response;
 
-    const baseEntity = { name, path, kind };
+    const baseEntity = { name, path };
 
     if (isGroupResponse(response)) {
       const { children, attributes: attrsMetadata } = response;
       const attributes = await this.processAttrsMetadata(path, attrsMetadata);
+      const baseGroup: Group = {
+        ...baseEntity,
+        kind: EntityKind.Group,
+        attributes,
+      };
 
       if (!children) {
         /* `/meta` stops at one nesting level
          * (i.e. children of child groups are not returned) */
-        return { ...baseEntity, attributes } as Group;
+        return baseGroup;
       }
 
-      return {
-        ...baseEntity,
-        attributes,
+      const groupWithChildren: GroupWithChildren = {
+        ...baseGroup,
         // Fetch attribute values of any child groups in parallel
         children: await Promise.all(
           children.map((child) =>
             this.processEntityResponse(buildEntityPath(path, child.name), child)
           )
         ),
-      } as GroupWithChildren;
+      };
+      return groupWithChildren;
     }
 
     if (isDatasetResponse(response)) {
@@ -180,16 +184,18 @@ export class H5GroveApi extends DataProviderApi {
         filters,
       } = response;
       const attributes = await this.processAttrsMetadata(path, attrsMetadata);
-
-      return {
+      const dataset: Dataset = {
         ...baseEntity,
         attributes,
+        kind: EntityKind.Dataset,
         shape,
         type: convertDtype(dtype),
         rawType: dtype,
         ...(chunks && { chunks }),
         ...(filters && { filters }),
-      } as Dataset;
+      };
+
+      return dataset;
     }
 
     if (isSoftLinkResponse(response)) {
@@ -221,8 +227,9 @@ export class H5GroveApi extends DataProviderApi {
     // Treat 'other' entities as unresolved
     return {
       ...baseEntity,
+      attributes: [],
       kind: EntityKind.Unresolved,
-    } as UnresolvedEntity;
+    };
   }
 
   private async processAttrsMetadata(
