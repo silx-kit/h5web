@@ -33,12 +33,12 @@ const Template: Story<VisGroupStoryProps> = (args) => {
           <planeGeometry args={[20, 20]} />
           <meshBasicMaterial color="rgb(255, 0, 0)" />
         </mesh>
-        {points.map((pt) => (
-          <Annotation key={`${pt.x},${pt.y}`} center x={pt.x} y={pt.y}>
-            ({pt.x}, {pt.y})
-          </Annotation>
-        ))}
       </VisGroup>
+      {points.map((pt) => (
+        <Annotation key={`${pt.x},${pt.y}`} center x={pt.x} y={pt.y}>
+          ({pt.x}, {pt.y})
+        </Annotation>
+      ))}
     </VisCanvas>
   );
 };
@@ -52,7 +52,7 @@ Default.args = {
     flip: false,
   },
   ordinateConfig: {
-    visDomain: [0, 40],
+    visDomain: [40, 0],
     isIndexAxis: true,
     showGrid: false,
     flip: false,
@@ -68,7 +68,7 @@ FlippedAxes.args = {
     flip: true,
   },
   ordinateConfig: {
-    visDomain: [0, 40],
+    visDomain: [40, 0],
     isIndexAxis: true,
     showGrid: false,
     flip: true,
