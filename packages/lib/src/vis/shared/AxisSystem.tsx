@@ -6,7 +6,7 @@ import { getVisibleDomains } from '../utils';
 import Axis from './Axis';
 import styles from './AxisSystem.module.css';
 import { useAxisSystemContext } from './AxisSystemProvider';
-import Overlay from './Overlay';
+import Html from './Html';
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -16,6 +16,7 @@ interface Props {
 function AxisSystem(props: Props) {
   const { axisOffsets, title } = props;
 
+  const gl = useThree((state) => state.gl);
   const canvasSize = useThree((state) => state.size);
   const { width, height } = canvasSize;
 
@@ -26,35 +27,38 @@ function AxisSystem(props: Props) {
   );
 
   return (
-    <Overlay
-      className={styles.axisSystem}
-      style={{
-        // Take over space reserved for axis by VisCanvas
-        top: -axisOffsets.top,
-        left: -axisOffsets.left,
-        width: width + axisOffsets.left + axisOffsets.right,
-        height: height + axisOffsets.bottom + axisOffsets.top,
-        gridTemplateColumns: `${axisOffsets.left}px 1fr ${axisOffsets.right}px`,
-        gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
-      }}
-    >
-      {title && <p className={styles.title}>{title}</p>}
-      <Axis
-        type="abscissa"
-        config={abscissaConfig}
-        domain={xVisibleDomain}
-        canvasSize={canvasSize}
-        svgSize={{ width, height: axisOffsets.bottom }}
-      />
-      <Axis
-        type="ordinate"
-        config={ordinateConfig}
-        domain={yVisibleDomain}
-        canvasSize={canvasSize}
-        svgSize={{ width: axisOffsets.left, height }}
-        flipAxis
-      />
-    </Overlay>
+    // Append to `canvasWrapper` instead of default container `r3fRoot`, which hides overflow
+    <Html container={gl.domElement.parentElement?.parentElement || undefined}>
+      <div
+        className={styles.axisSystem}
+        style={{
+          // Take over space reserved for axis by VisCanvas
+          top: -axisOffsets.top,
+          left: -axisOffsets.left,
+          width: width + axisOffsets.left + axisOffsets.right,
+          height: height + axisOffsets.bottom + axisOffsets.top,
+          gridTemplateColumns: `${axisOffsets.left}px 1fr ${axisOffsets.right}px`,
+          gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
+        }}
+      >
+        {title && <p className={styles.title}>{title}</p>}
+        <Axis
+          type="abscissa"
+          config={abscissaConfig}
+          domain={xVisibleDomain}
+          canvasSize={canvasSize}
+          svgSize={{ width, height: axisOffsets.bottom }}
+        />
+        <Axis
+          type="ordinate"
+          config={ordinateConfig}
+          domain={yVisibleDomain}
+          canvasSize={canvasSize}
+          svgSize={{ width: axisOffsets.left, height }}
+          flipAxis
+        />
+      </div>
+    </Html>
   );
 }
 

@@ -5,20 +5,18 @@
 }
 
 .canvasWrapper {
+  position: relative; /* for axis system */
   width: 100%; /* fill container by default (unless size is passed in JSX) */
   height: 100%;
   margin: 0 auto;
 }
 
 .r3fRoot {
-  overflow: visible !important; /* show child axis grid, which is bigger than canvas */
   background-color: var(--h5w-canvas--bgColor, transparent);
 }
 
 .floatingToolbar {
   position: absolute;
-  top: auto !important;
-  left: auto !important;
   right: 0;
   bottom: 0;
   display: flex;

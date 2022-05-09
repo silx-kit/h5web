@@ -1,4 +1,6 @@
 .axisSystem {
+  position: absolute;
+  pointer-events: none;
   display: grid;
   grid-template-areas:
     '. top-axis .'
