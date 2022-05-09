@@ -124,6 +124,8 @@ export { default as CellWidthInput } from './toolbar/controls/CellWidthInput';
 export { default as RawVis } from './vis/raw/RawVis';
 export { default as ScalarVis } from './vis/scalar/ScalarVis';
 export { default as RgbVis } from './vis/rgb/RgbVis';
+export { default as VisGroup } from './vis/shared/VisGroup';
+export type { VisGroupProps } from './vis/shared/VisGroup';
 export { default as VisMesh } from './vis/shared/VisMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
 export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
