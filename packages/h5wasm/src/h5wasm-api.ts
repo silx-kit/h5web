@@ -22,6 +22,7 @@ import {
   isH5WasmDataset,
   isH5WasmGroup,
   isHDF5,
+  convertSelectionToRanges,
 } from './utils';
 
 export class H5WasmApi extends ProviderApi {
@@ -43,10 +44,15 @@ export class H5WasmApi extends ProviderApi {
   }
 
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
-    const { dataset } = params;
+    const { dataset, selection } = params;
 
     const h5wDataset = await this.getH5WasmEntity(dataset.path);
     assertH5WasmDataset(h5wDataset);
+
+    if (selection) {
+      const ranges = convertSelectionToRanges(h5wDataset, selection);
+      return h5wDataset.slice(ranges);
+    }
 
     return h5wDataset.value;
   }
