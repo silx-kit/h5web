@@ -7,6 +7,7 @@ import {
   TilesApi,
   ResetZoomButton,
   SelectToZoom,
+  useAxisSystemContext,
 } from '@h5web/lib';
 import type {
   Domain,
@@ -19,6 +20,7 @@ import type { Meta, Story } from '@storybook/react/types-6-0';
 import { clamp } from 'lodash';
 import ndarray from 'ndarray';
 import type { NdArray } from 'ndarray';
+import type { ReactNode } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
 import type { Vector2 } from 'three';
 
@@ -130,7 +132,7 @@ interface TiledHeatmapStoryProps extends TiledHeatmapMeshProps {
 }
 
 const Template: Story<TiledHeatmapStoryProps> = (args) => {
-  const { abscissaConfig, api, ordinateConfig, ...tiledHeatmapProps } = args;
+  const { abscissaConfig, ordinateConfig, ...tiledHeatmapProps } = args;
 
   return (
     <VisCanvas
@@ -145,7 +147,11 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
       <Zoom />
       <SelectToZoom keepRatio modifierKey="Control" />
       <ResetZoomButton />
-      <TiledHeatmapMesh api={api} {...tiledHeatmapProps} />
+      <group
+        scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
+      >
+        <TiledHeatmapMesh {...tiledHeatmapProps} />
+      </group>
     </VisCanvas>
   );
 };
@@ -213,6 +219,71 @@ FlippedAxes.args = {
     isIndexAxis: true,
     showGrid: false,
     flip: true,
+  },
+};
+
+function LinearAxesGroup(props: { children: ReactNode }) {
+  const { children } = props;
+  const { abscissaConfig, ordinateConfig, visSize } = useAxisSystemContext();
+  const { width, height } = visSize;
+  const sx =
+    ((abscissaConfig.flip ? -1 : 1) * width) /
+    (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]);
+  const sy =
+    ((ordinateConfig.flip ? -1 : 1) * height) /
+    (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0]);
+  const x = 0.5 * (abscissaConfig.visDomain[0] + abscissaConfig.visDomain[1]);
+  const y = 0.5 * (ordinateConfig.visDomain[0] + ordinateConfig.visDomain[1]);
+
+  return (
+    <group position={[-x * sx, -y * sy, 0]} scale={[sx, sy, 1]}>
+      {children}
+    </group>
+  );
+}
+
+export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
+  const { abscissaConfig, api, ordinateConfig, ...tiledHeatmapProps } = args;
+  const { baseLayerSize } = api;
+  const size = { width: 1, height: baseLayerSize.height / baseLayerSize.width };
+
+  return (
+    <VisCanvas
+      abscissaConfig={abscissaConfig}
+      ordinateConfig={ordinateConfig}
+      visRatio={Math.abs(
+        (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]) /
+          (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0])
+      )}
+    >
+      <Pan />
+      <Zoom />
+      <SelectToZoom keepRatio modifierKey="Control" />
+      <ResetZoomButton />
+      <LinearAxesGroup>
+        <group position={[1, 1, 0]} rotation={[0, 0, Math.PI / 4]}>
+          <TiledHeatmapMesh api={api} {...tiledHeatmapProps} size={size} />
+        </group>
+        <group position={[-1, 1, 0]} scale={[2, 2, 1]}>
+          <TiledHeatmapMesh api={api} {...tiledHeatmapProps} size={size} />
+        </group>
+      </LinearAxesGroup>
+    </VisCanvas>
+  );
+};
+WithTransforms.args = {
+  api: halfMandelbrotApi,
+  abscissaConfig: {
+    visDomain: [-2, 1.5],
+    isIndexAxis: true,
+    showGrid: false,
+    flip: false,
+  },
+  ordinateConfig: {
+    visDomain: [0, 2],
+    isIndexAxis: true,
+    showGrid: false,
+    flip: false,
   },
 };
 
