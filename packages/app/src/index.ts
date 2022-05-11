@@ -15,4 +15,4 @@ export type { DataContextValue } from './providers/DataProvider';
 export { default as DataProvider } from './providers/DataProvider';
 export { DataProviderApi as ProviderApi } from './providers/api';
 export type { ValuesStoreParams } from './providers/models';
-export { convertDtype, getNameFromPath } from './providers/utils';
+export { flattenValue, getNameFromPath, sliceValue } from './providers/utils';

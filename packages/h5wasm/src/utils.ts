@@ -5,8 +5,10 @@ import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
 import {
   assertNumericMetadata,
   isCompoundMetadata,
+  isEnumMetadata,
   isFloatMetadata,
   isIntegerMetadata,
+  isNumericMetadata,
   isStringMetadata,
 } from './guards';
 import type { NumericMetadata } from './models';
@@ -20,9 +22,9 @@ export function isHDF5(buffer: ArrayBuffer): boolean {
   );
 }
 
-export function convertMetadataToDType(metadata: NumericMetadata): NumericType;
-export function convertMetadataToDType(metadata: Metadata): DType;
-export function convertMetadataToDType(metadata: Metadata): DType {
+export function convertNumericMetadataToDType(
+  metadata: NumericMetadata
+): NumericType {
   if (isIntegerMetadata(metadata)) {
     const { signed, size: length, littleEndian } = metadata;
 
@@ -41,6 +43,14 @@ export function convertMetadataToDType(metadata: Metadata): DType {
       size: length * 8,
       endianness: littleEndian ? Endianness.LE : Endianness.BE,
     };
+  }
+
+  throw new Error('Expected numeric metadata');
+}
+
+export function convertMetadataToDType(metadata: Metadata): DType {
+  if (isNumericMetadata(metadata)) {
+    return convertNumericMetadataToDType(metadata);
   }
 
   if (isStringMetadata(metadata)) {
@@ -64,8 +74,8 @@ export function convertMetadataToDType(metadata: Metadata): DType {
 
       return {
         class: DTypeClass.Complex,
-        realType: convertMetadataToDType(realTypeMetadata),
-        imagType: convertMetadataToDType(imagTypeMetadata),
+        realType: convertNumericMetadataToDType(realTypeMetadata),
+        imagType: convertNumericMetadataToDType(imagTypeMetadata),
       };
     }
 
@@ -74,6 +84,25 @@ export function convertMetadataToDType(metadata: Metadata): DType {
       fields: Object.fromEntries(
         members.map((member) => [member.name, convertMetadataToDType(member)])
       ),
+    };
+  }
+
+  if (isEnumMetadata(metadata)) {
+    const { enum_type } = metadata;
+    const { members: mapping, type } = enum_type;
+
+    const mappingKeys = Object.keys(mapping);
+
+    if (mappingKeys.includes('FALSE') && mappingKeys.includes('TRUE')) {
+      return {
+        class: DTypeClass.Bool,
+      };
+    }
+
+    return {
+      class: DTypeClass.Enum,
+      mapping,
+      base: convertMetadataToDType({ ...metadata, type }),
     };
   }
 

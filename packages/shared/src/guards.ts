@@ -227,7 +227,7 @@ export function assertNumDims(dataset: Dataset<ArrayShape>, num: number) {
   }
 }
 
-function hasBoolType<S extends Shape>(
+export function hasBoolType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, BooleanType> {
   return dataset.type.class === DTypeClass.Bool;

@@ -2,7 +2,6 @@ import type {
   ArrayShape,
   AttributeValues,
   Entity,
-  Primitive,
   ScalarShape,
 } from '@h5web/shared';
 import {
@@ -19,11 +18,10 @@ import {
 } from '@h5web/shared';
 import type { MockDataset } from '@h5web/shared/src/mock/models';
 import axios from 'axios';
-import ndarray from 'ndarray';
 
-import { applyMapping } from '../../vis-packs/core/utils';
 import { DataProviderApi } from '../api';
 import type { ValuesStoreParams } from '../models';
+import { sliceValue } from '../utils';
 
 const SLOW_TIMEOUT = 3000;
 
@@ -75,14 +73,7 @@ export class MockApi extends DataProviderApi {
     assertArrayShape(dataset);
     assertPrintableType(dataset);
 
-    const { shape, type } = dataset;
-    const dataArray = ndarray(value as Primitive<typeof type>[], shape);
-    const mappedArray = applyMapping(
-      dataArray,
-      selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s, 10)))
-    );
-
-    return mappedArray.data;
+    return sliceValue(value, dataset, selection);
   }
 
   private async cancellableDelay(storeParams: ValuesStoreParams) {

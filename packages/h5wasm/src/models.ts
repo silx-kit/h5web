@@ -1,18 +1,12 @@
 import type { Group as H5WasmGroup, Metadata } from 'h5wasm';
+import type {
+  EnumTypeMetadata,
+  CompoundTypeMetadata,
+} from 'h5wasm/src/hdf5_util_helpers';
 
 export type H5WasmEntity = NonNullable<ReturnType<H5WasmGroup['get']>>;
 
 export type H5WasmAttributes = H5WasmGroup['attrs'];
-
-interface CompoundMember extends Metadata {
-  name: string;
-  offset: number;
-}
-
-interface CompoundTypeMetadata {
-  members: CompoundMember[];
-  nmembers: number;
-}
 
 export interface CompoundMetadata extends Metadata {
   compound_type: CompoundTypeMetadata;
@@ -20,4 +14,8 @@ export interface CompoundMetadata extends Metadata {
 
 export interface NumericMetadata extends Metadata {
   type: 0 | 1;
+}
+
+export interface EnumMetadata extends Metadata {
+  enum_type: EnumTypeMetadata;
 }
