@@ -13,17 +13,19 @@ import { assertNonNull, buildEntityPath, EntityKind } from '@h5web/shared';
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
 import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 
-import type { H5WasmAttributes, H5WasmEntity } from './models';
 import {
   assertH5WasmDataset,
   assertH5WasmEntityWithAttrs,
-  convertMetadataToDType,
   isH5WasmDataset,
   isH5WasmExternalLink,
   isH5WasmGroup,
   isH5WasmSoftLink,
-  isHDF5,
+} from './guards';
+import type { H5WasmAttributes, H5WasmEntity } from './models';
+import {
+  convertMetadataToDType,
   convertSelectionToRanges,
+  isHDF5,
 } from './utils';
 
 export class H5WasmApi extends ProviderApi {
@@ -64,7 +66,7 @@ export class H5WasmApi extends ProviderApi {
 
     return Object.fromEntries(
       Object.entries(h5wEntity.attrs).map(([name, attr]) => {
-        const { value } = attr as unknown as H5WasmAttribute;
+        const { value } = attr;
         return [name, value];
       })
     );
