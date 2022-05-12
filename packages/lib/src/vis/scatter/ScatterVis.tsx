@@ -133,7 +133,7 @@ function ScatterVis(props: Props) {
           tooltipLeft={tooltipLeft}
           tooltipTop={tooltipTop}
         >
-          {tooltipIndex && (
+          {tooltipIndex !== undefined && (
             <>
               <span>
                 {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(
