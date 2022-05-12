@@ -8,12 +8,22 @@ import Html from './Html';
 interface Props extends HTMLAttributes<HTMLDivElement> {
   x: number;
   y: number;
+  overflowCanvas?: boolean;
   scaleOnZoom?: boolean;
   center?: boolean;
 }
 
 function Annotation(props: Props) {
-  const { x, y, scaleOnZoom, center, children, style, ...divProps } = props;
+  const {
+    x,
+    y,
+    overflowCanvas,
+    scaleOnZoom,
+    center,
+    children,
+    style,
+    ...divProps
+  } = props;
 
   if ((center || scaleOnZoom) && style?.transform) {
     throw new Error(
@@ -35,7 +45,7 @@ function Annotation(props: Props) {
   ];
 
   return (
-    <Html>
+    <Html overflowCanvas={overflowCanvas}>
       <div
         style={{
           position: 'absolute',

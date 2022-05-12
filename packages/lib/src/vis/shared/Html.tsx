@@ -4,13 +4,25 @@ import type { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 
 interface Props {
+  overflowCanvas?: boolean;
   container?: HTMLElement;
   children?: ReactNode;
 }
 
 function Html(props: Props) {
-  const gl = useThree((state) => state.gl);
-  const { container = gl.domElement.parentElement, children } = props;
+  const {
+    overflowCanvas = false,
+    container: customContainer,
+    children,
+  } = props;
+
+  const r3fRoot = useThree((state) => state.gl.domElement.parentElement);
+  const canvasWrapper = r3fRoot?.parentElement;
+
+  // Choose DOM container in which to append `renderTarget`
+  // (`r3fRoot` hides overflow but its parent, `canvasWrapper`, does not -- cf. `VisCanvas`)
+  const container =
+    customContainer || (overflowCanvas ? canvasWrapper : r3fRoot);
 
   const [renderTarget] = useState(() => document.createElement('div'));
 
