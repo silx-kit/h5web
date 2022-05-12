@@ -5,13 +5,43 @@ import { createPortal } from 'react-dom';
 
 import FillHeight from './decorators/FillHeight';
 
-interface Props {
+export const Default: Story<{ overflowCanvas: boolean }> = (args) => {
+  const { overflowCanvas } = args;
+  return (
+    <VisCanvas
+      abscissaConfig={{ visDomain: [0, 3], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      <Html overflowCanvas={overflowCanvas}>
+        <div
+          style={{
+            position: 'absolute',
+            top: 30,
+            left: -50,
+            width: '30em',
+            padding: '0.5rem',
+            border: '3px solid blue',
+            textAlign: 'center',
+          }}
+        >
+          This <code>div</code>{' '}
+          <strong>{overflowCanvas ? 'overflows' : 'does not overflow'}</strong>{' '}
+          the canvas.
+        </div>
+      </Html>
+    </VisCanvas>
+  );
+};
+
+Default.args = {
+  overflowCanvas: false,
+};
+
+export const Container: Story<{
   outside: boolean;
   mounted: boolean;
-}
-
-export const Default: Story<Props> = (props) => {
-  const { outside, mounted } = props;
+}> = (args) => {
+  const { outside, mounted } = args;
   const [outsideContainer, setOutsideContainer] = useState<HTMLDivElement>();
   const [portalContainer, setPortalContainer] = useState<HTMLDivElement>();
 
@@ -52,14 +82,13 @@ export const Default: Story<Props> = (props) => {
   );
 };
 
-Default.args = {
+Container.args = {
   outside: false,
   mounted: true,
 };
 
 export default {
   title: 'Building Blocks/Html',
-  component: Default,
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
 } as Meta;
