@@ -43,20 +43,20 @@ function SelectionTool(props: Props) {
 
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      const { unprojectedPoint, sourceEvent } = evt;
+      const { dataPt, sourceEvent } = evt;
       if (!shouldInteract(sourceEvent)) {
         return;
       }
 
       const { target, pointerId } = sourceEvent;
       (target as Element).setPointerCapture(pointerId);
-      setStartPoint(worldToData(unprojectedPoint));
+      setStartPoint(dataPt);
 
       if (onSelectionStart) {
         onSelectionStart();
       }
     },
-    [onSelectionStart, shouldInteract, worldToData]
+    [onSelectionStart, shouldInteract]
   );
 
   const onPointerMove = useCallback(
@@ -65,15 +65,12 @@ function SelectionTool(props: Props) {
         return;
       }
 
-      const { unprojectedPoint, sourceEvent } = evt;
-      const point = worldToData(boundPointToFOV(unprojectedPoint, camera));
-      setEndPoint(point);
+      const { worldPt, sourceEvent } = evt;
+      const endPoint = worldToData(boundPointToFOV(worldPt, camera));
+      setEndPoint(endPoint);
 
       if (onSelectionChange && shouldInteract(sourceEvent)) {
-        onSelectionChange({
-          startPoint,
-          endPoint: point,
-        });
+        onSelectionChange({ startPoint, endPoint });
       }
     },
     [
@@ -92,7 +89,7 @@ function SelectionTool(props: Props) {
         return;
       }
 
-      const { sourceEvent, unprojectedPoint } = evt;
+      const { sourceEvent, worldPt } = evt;
       const { target, pointerId } = sourceEvent;
       (target as Element).releasePointerCapture(pointerId);
 
@@ -102,7 +99,7 @@ function SelectionTool(props: Props) {
       if (onSelectionEnd && shouldInteract(sourceEvent)) {
         onSelectionEnd({
           startPoint,
-          endPoint: worldToData(boundPointToFOV(unprojectedPoint, camera)),
+          endPoint: worldToData(boundPointToFOV(worldPt, camera)),
         });
       }
     },

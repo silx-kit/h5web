@@ -94,6 +94,8 @@ export type {
   InteractionInfo,
   ModifierKey,
   Selection,
+  CanvasEvent,
+  CanvasEventCallbacks,
 } from './interactions/models';
 
 export type { Domain, Dims } from '@h5web/shared';
