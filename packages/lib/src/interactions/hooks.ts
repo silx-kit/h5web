@@ -51,12 +51,12 @@ export function useMoveCameraTo() {
   );
 }
 
-function onWheel(evt: WheelEvent) {
-  evt.preventDefault();
-}
-
 function useWheelCapture() {
   const { domElement } = useThree((state) => state.gl);
+
+  const onWheel = useCallback((evt: WheelEvent) => {
+    evt.preventDefault();
+  }, []);
 
   // Handler must be registed as non-passive for `preventDefault` to have an effect
   // (React's `onWheel` prop registers handlers as passive)

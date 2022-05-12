@@ -119,12 +119,12 @@ export class H5WasmApi extends ProviderApi {
         return baseGroup;
       }
 
-      const children = h5wEntity.keys().map((name) => {
-        const h5wChild = h5wEntity.get(name);
+      const children = h5wEntity.keys().map((childName) => {
+        const h5wChild = h5wEntity.get(childName);
         assertNonNull(h5wChild);
 
-        const childPath = buildEntityPath(path, name);
-        return this.processH5WasmEntity(name, childPath, h5wChild, true);
+        const childPath = buildEntityPath(path, childName);
+        return this.processH5WasmEntity(childName, childPath, h5wChild, true);
       });
       const groupWithChildren: GroupWithChildren = { ...baseGroup, children };
 

@@ -97,11 +97,11 @@ function LineToolbar(props: Props) {
 
       <ToggleBtn
         label="Errors"
-        icon={(props) => (
+        icon={(iconProps) => (
           <FiItalic
             transform="skewX(20)"
             style={{ marginLeft: '-0.25em', marginRight: '0.0625rem' }}
-            {...props}
+            {...iconProps}
           />
         )}
         value={!disableErrors && showErrors}

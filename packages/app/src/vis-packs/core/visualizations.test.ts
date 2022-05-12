@@ -18,7 +18,7 @@ import { CORE_VIS } from './visualizations';
 
 const mockStore = {
   getSingle: (entity: Entity, attributeName: string): unknown => {
-    const attr = entity.attributes?.find((attr) => attr.name === attributeName);
+    const attr = entity.attributes?.find(({ name }) => name === attributeName);
     if (!attr) {
       return undefined;
     }

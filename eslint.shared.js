@@ -75,6 +75,10 @@ const overrides = [
           objectLiteralTypeAssertions: 'allow', // `never` is too strict
         },
       ],
+
+      // Disallow shadowing variables for an outer scope, as this can cause bugs
+      // when the inner-scope variable is removed, for instance
+      '@typescript-eslint/no-shadow': 'error',
     },
   },
   {
