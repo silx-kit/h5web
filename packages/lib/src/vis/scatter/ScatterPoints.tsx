@@ -74,7 +74,7 @@ function ScatterPoints(props: Props) {
     (evt: ThreeEvent<MouseEvent>) => {
       const { index } = evt;
 
-      if (onClick && index) {
+      if (onClick && index !== undefined) {
         onClick(index, evt);
       }
     },
@@ -84,8 +84,7 @@ function ScatterPoints(props: Props) {
   const handlePointerEnter = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
       const { index } = evt;
-
-      if (onPointerEnter && index) {
+      if (onPointerEnter && index !== undefined) {
         onPointerEnter(index, evt);
       }
     },
@@ -96,7 +95,7 @@ function ScatterPoints(props: Props) {
     (evt: ThreeEvent<PointerEvent>) => {
       const { index } = evt;
 
-      if (onPointerOut && index) {
+      if (onPointerOut && index !== undefined) {
         onPointerOut(index, evt);
       }
     },
