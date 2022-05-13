@@ -129,5 +129,7 @@ export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
 export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
 export type { TiledHeatmapMeshProps } from './vis/tiles/TiledHeatmapMesh';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
-export { getVisibleDomains } from './vis/utils';
+export { getVisibleDomains, getAxisDomain } from './vis/utils';
 export { useCameraState } from './vis/hooks';
+export { assertLength, assertDefined } from '@h5web/shared';
+export { default as DefaultInteractions } from './interactions/DefaultInteractions';
