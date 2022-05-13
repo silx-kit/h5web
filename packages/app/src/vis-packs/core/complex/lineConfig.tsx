@@ -1,3 +1,4 @@
+import type { StoreApi } from 'zustand';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
@@ -12,11 +13,9 @@ interface ComplexLineConfig {
 }
 
 function createStore() {
-  return create<ComplexLineConfig>(
+  return create<ComplexLineConfig>()(
     persist(
-      // https://github.com/pmndrs/zustand/issues/701
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (set, get) => ({
+      (set) => ({
         visType: ComplexVisType.Amplitude,
         setVisType: (visType: ComplexLineVisType) => set(() => ({ visType })),
       }),
@@ -28,7 +27,7 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<ComplexLineConfig>();
+const { Provider, useStore } = createContext<StoreApi<ComplexLineConfig>>();
 export const useComplexLineConfig = useStore;
 
 export function ComplexLineConfigProvider(props: ConfigProviderProps) {

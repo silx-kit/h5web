@@ -1,5 +1,6 @@
 import type { CustomDomain } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
+import type { StoreApi } from 'zustand';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
@@ -30,7 +31,7 @@ interface ScatterConfig {
 }
 
 function createStore() {
-  return create<ScatterConfig>(
+  return create<ScatterConfig>()(
     persist(
       // https://github.com/pmndrs/zustand/issues/701
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -67,7 +68,7 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<ScatterConfig>();
+const { Provider, useStore } = createContext<StoreApi<ScatterConfig>>();
 export { useStore as useScatterConfig };
 
 export function ScatterConfigProvider(props: ConfigProviderProps) {
