@@ -23,14 +23,14 @@
   "dependencies": {
     "@h5web/lib": "workspace:*",
     "@h5web/shared": "workspace:*",
-    "@react-hookz/web": "13.1.0",
+    "@react-hookz/web": "14.2.2",
     "@react-three/fiber": "7.0.26",
     "ndarray": "1.0.19",
     "normalize.css": "8.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "4.3.1",
-    "react-suspense-fetch": "0.4.0",
+    "react-suspense-fetch": "0.4.1",
     "three": "0.135.0"
   },
   "devDependencies": {

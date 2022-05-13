@@ -1,6 +1,7 @@
 import { CurveType } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import { omit } from 'lodash';
+import type { StoreApi } from 'zustand';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
@@ -27,11 +28,9 @@ interface LineConfig {
 }
 
 function createStore() {
-  return create<LineConfig>(
+  return create<LineConfig>()(
     persist(
-      // https://github.com/pmndrs/zustand/issues/701
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (set, get) => ({
+      (set) => ({
         curveType: CurveType.LineOnly,
         setCurveType: (type: CurveType) => set({ curveType: type }),
 
@@ -60,7 +59,7 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<LineConfig>();
+const { Provider, useStore } = createContext<StoreApi<LineConfig>>();
 export { useStore as useLineConfig };
 
 export function LineConfigProvider(props: ConfigProviderProps) {

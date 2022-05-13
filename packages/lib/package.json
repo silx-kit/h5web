@@ -44,14 +44,14 @@
     "three": ">=0.120"
   },
   "dependencies": {
-    "@react-hookz/web": "13.1.0",
-    "@visx/axis": "2.6.0",
-    "@visx/grid": "2.6.0",
+    "@react-hookz/web": "14.2.2",
+    "@visx/axis": "2.10.0",
+    "@visx/grid": "2.10.0",
     "@visx/scale": "2.2.2",
-    "@visx/shape": "2.4.0",
-    "@visx/tooltip": "2.8.0",
-    "d3-array": "3.1.1",
-    "d3-color": "3.0.1",
+    "@visx/shape": "2.10.0",
+    "@visx/tooltip": "2.10.0",
+    "d3-array": "3.1.6",
+    "d3-color": "3.1.0",
     "d3-format": "3.1.0",
     "d3-interpolate": "3.0.1",
     "d3-scale": "4.0.2",
@@ -65,7 +65,7 @@
     "react-measure": "2.5.2",
     "react-slider": "2.0.0",
     "react-use": "17.3.2",
-    "react-window": "1.8.6"
+    "react-window": "1.8.7"
   },
   "devDependencies": {
     "@h5web/shared": "workspace:*",
@@ -76,7 +76,7 @@
     "@types/d3-interpolate": "3.0.1",
     "@types/d3-scale": "4.0.2",
     "@types/d3-scale-chromatic": "3.0.0",
-    "@types/lodash": "4.14.178",
+    "@types/lodash": "4.14.182",
     "@types/ndarray": "1.0.11",
     "@types/react": "17.0.39",
     "@types/react-aria-menubutton": "6.2.9",

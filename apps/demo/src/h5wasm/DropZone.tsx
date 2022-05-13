@@ -31,7 +31,7 @@ function DropZone(props: Props) {
 
   const { getRootProps, getInputProps, open, isDragActive, fileRejections } =
     useDropzone({
-      accept: EXT,
+      accept: { '*': EXT },
       multiple: false,
       noClick: true,
       noKeyboard: true,

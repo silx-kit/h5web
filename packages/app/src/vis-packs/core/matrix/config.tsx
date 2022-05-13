@@ -1,3 +1,4 @@
+import type { StoreApi } from 'zustand';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
@@ -13,11 +14,9 @@ interface MatrixVisConfig {
 }
 
 function createStore() {
-  return create<MatrixVisConfig>(
+  return create<MatrixVisConfig>()(
     persist(
-      // https://github.com/pmndrs/zustand/issues/701
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (set, get) => ({
+      (set) => ({
         sticky: false,
         toggleSticky: () => set((state) => ({ sticky: !state.sticky })),
 
@@ -34,7 +33,7 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<MatrixVisConfig>();
+const { Provider, useStore } = createContext<StoreApi<MatrixVisConfig>>();
 export { useStore as useMatrixConfig };
 
 export function MatrixConfigProvider(props: ConfigProviderProps) {

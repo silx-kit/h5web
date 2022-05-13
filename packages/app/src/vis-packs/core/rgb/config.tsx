@@ -1,4 +1,5 @@
 import { ImageType } from '@h5web/lib';
+import type { StoreApi } from 'zustand';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
@@ -18,11 +19,9 @@ interface RgbVisConfig {
 }
 
 function createStore() {
-  return create<RgbVisConfig>(
+  return create<RgbVisConfig>()(
     persist(
-      // https://github.com/pmndrs/zustand/issues/701
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (set, get) => ({
+      (set) => ({
         showGrid: false,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
@@ -40,7 +39,7 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<RgbVisConfig>();
+const { Provider, useStore } = createContext<StoreApi<RgbVisConfig>>();
 export { useStore as useRgbConfig };
 
 export function RgbConfigProvider(props: ConfigProviderProps) {

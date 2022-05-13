@@ -35,7 +35,7 @@
   "devDependencies": {
     "@testing-library/cypress": "8.0.2",
     "@types/cypress-image-snapshot": "3.1.6",
-    "@types/jest": "27.4.1",
+    "@types/jest": "27.5.1",
     "@types/node": "16.11.7",
     "cypress": "9.5.0",
     "cypress-image-snapshot": "4.0.1",
