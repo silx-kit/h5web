@@ -40,9 +40,9 @@ function SlicingSlider(props: Props) {
           orientation="vertical"
           invert
           value={value}
-          onChange={(value) => {
-            setValue(value);
-            onDebouncedChange(value);
+          onChange={(newValue) => {
+            setValue(newValue);
+            onDebouncedChange(newValue);
           }}
           renderThumb={(thumbProps, state) => (
             <div {...thumbProps} className={styles.thumb}>

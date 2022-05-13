@@ -18,7 +18,7 @@ import {
 } from './utils';
 
 const useBounds = createMemo(getBounds);
-const useValidDomainForScale = createMemo(getValidDomainForScale);
+export const useValidDomainForScale = createMemo(getValidDomainForScale);
 
 export const useCombinedDomain = createMemo(getCombinedDomain);
 export const useValueToIndexScale = createMemo(getValueToIndexScale);

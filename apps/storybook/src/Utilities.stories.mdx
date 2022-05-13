@@ -158,7 +158,11 @@ Register event listeners on the `canvas` element. Useful to implement custom int
 ```ts
 useCanvasEvents(callbacks: CanvasEventCallbacks): void
 
-const handlePointerDown = useCallback((evt: PointerEvent) => { ... }, []);
+const handlePointerDown = useCallback((evt: CanvasEvent<PointerEvent>) => {
+  const { htmlPt, cameraPt, worldPt, dataPt, sourceEvent } = evt;
+  // ...
+}, []);
+
 useCanvasEvents({ onPointerDown: handlePointerDown }); // also supported: `onPointerMove`, `onPointerUp` and `onWheel`
 ```
 

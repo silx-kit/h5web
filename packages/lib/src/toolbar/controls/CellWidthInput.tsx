@@ -43,15 +43,15 @@ function CellWidthInput(props: Props) {
         aria-labelledby={`${ID}-label`} // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/566
         data-modified={hasValue || undefined}
         onInput={(evt) => {
-          const { value } = evt.currentTarget;
-          setInputValue(value);
+          const { value: newValue } = evt.currentTarget;
+          setInputValue(newValue);
 
-          if (!value) {
+          if (!newValue) {
             onChange(undefined);
             return;
           }
 
-          const numValue = Number.parseInt(value);
+          const numValue = Number.parseInt(newValue);
           const safeNumValue = Number.isNaN(numValue)
             ? defaultValue
             : Math.max(numValue, MIN);

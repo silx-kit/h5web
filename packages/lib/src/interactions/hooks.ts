@@ -51,12 +51,12 @@ export function useMoveCameraTo() {
   );
 }
 
-function onWheel(evt: WheelEvent) {
-  evt.preventDefault();
-}
-
 function useWheelCapture() {
   const { domElement } = useThree((state) => state.gl);
+
+  const onWheel = useCallback((evt: WheelEvent) => {
+    evt.preventDefault();
+  }, []);
 
   // Handler must be registed as non-passive for `preventDefault` to have an effect
   // (React's `onWheel` prop registers handlers as passive)
@@ -71,7 +71,7 @@ export function useZoomOnWheel(
 
   const onWheel = useCallback(
     (evt: CanvasEvent<WheelEvent>) => {
-      const { sourceEvent, unprojectedPoint } = evt;
+      const { sourceEvent, worldPt } = evt;
       const { x: zoomX, y: zoomY } = isZoomAllowed(sourceEvent);
 
       if (!zoomX && !zoomY) {
@@ -93,7 +93,7 @@ export function useZoomOnWheel(
       }
       camera.updateMatrixWorld();
 
-      const oldPosition = unprojectedPoint.clone();
+      const oldPosition = worldPt.clone();
       // Scale the change in position according to the zoom
       const delta = camera.position.clone().sub(oldPosition);
       const scaledDelta =
@@ -115,66 +115,56 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   const { onPointerDown, onPointerMove, onPointerUp, onWheel } = callbacks;
   const { domElement } = useThree((state) => state.gl);
   const camera = useThree((state) => state.camera);
-  const size = useThree((state) => state.size);
+  const { worldToData, cameraToHtmlMatrixInverse } = useAxisSystemContext();
 
-  const getUnprojectedPoint = useCallback(
-    (evt: PointerEvent | WheelEvent) => {
-      const { offsetX: x, offsetY: y } = evt;
-      const { width, height } = size;
-      const normX = (x - width / 2) / (width / 2);
-      const normY = -(y - height / 2) / (height / 2);
+  const processEvent = useCallback(
+    <T extends PointerEvent | WheelEvent>(sourceEvent: T): CanvasEvent<T> => {
+      const { offsetX, offsetY } = sourceEvent;
 
-      return new Vector3(normX, normY, 0).unproject(camera);
+      const htmlPt = new Vector3(offsetX, offsetY, 0);
+      const cameraPt = htmlPt.clone().applyMatrix4(cameraToHtmlMatrixInverse);
+      const worldPt = cameraPt.clone().unproject(camera);
+      const dataPt = worldToData(worldPt);
+
+      return { htmlPt, cameraPt, worldPt, dataPt, sourceEvent };
     },
-    [camera, size]
+    [camera, cameraToHtmlMatrixInverse, worldToData]
   );
 
   const handlePointerDown = useCallback(
     (sourceEvent: PointerEvent) => {
       if (onPointerDown) {
-        onPointerDown({
-          sourceEvent,
-          unprojectedPoint: getUnprojectedPoint(sourceEvent),
-        });
+        onPointerDown(processEvent(sourceEvent));
       }
     },
-    [getUnprojectedPoint, onPointerDown]
+    [processEvent, onPointerDown]
   );
 
   const handlePointerMove = useCallback(
     (sourceEvent: PointerEvent) => {
       if (onPointerMove) {
-        onPointerMove({
-          sourceEvent,
-          unprojectedPoint: getUnprojectedPoint(sourceEvent),
-        });
+        onPointerMove(processEvent(sourceEvent));
       }
     },
-    [getUnprojectedPoint, onPointerMove]
+    [processEvent, onPointerMove]
   );
 
   const handlePointerUp = useCallback(
     (sourceEvent: PointerEvent) => {
       if (onPointerUp) {
-        onPointerUp({
-          sourceEvent,
-          unprojectedPoint: getUnprojectedPoint(sourceEvent),
-        });
+        onPointerUp(processEvent(sourceEvent));
       }
     },
-    [getUnprojectedPoint, onPointerUp]
+    [processEvent, onPointerUp]
   );
 
   const handleWheel = useCallback(
     (sourceEvent: WheelEvent) => {
       if (onWheel) {
-        onWheel({
-          sourceEvent,
-          unprojectedPoint: getUnprojectedPoint(sourceEvent),
-        });
+        onWheel(processEvent(sourceEvent));
       }
     },
-    [getUnprojectedPoint, onWheel]
+    [processEvent, onWheel]
   );
 
   useEventListener(domElement, 'pointerdown', handlePointerDown);

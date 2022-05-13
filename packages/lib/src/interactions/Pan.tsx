@@ -22,12 +22,12 @@ function Pan(props: Interaction) {
 
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      const { unprojectedPoint, sourceEvent } = evt;
+      const { worldPt, sourceEvent } = evt;
       const { target, pointerId } = sourceEvent;
 
       if (shouldInteract(sourceEvent)) {
         (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
-        startOffsetPosition.current = unprojectedPoint.clone();
+        startOffsetPosition.current = worldPt.clone();
       }
     },
     [shouldInteract]
@@ -47,8 +47,8 @@ function Pan(props: Interaction) {
         return;
       }
 
-      const { unprojectedPoint } = evt;
-      const delta = startOffsetPosition.current.clone().sub(unprojectedPoint);
+      const { worldPt } = evt;
+      const delta = startOffsetPosition.current.clone().sub(worldPt);
       const target = camera.position.clone().add(delta);
 
       moveCameraTo(target.x, target.y);
