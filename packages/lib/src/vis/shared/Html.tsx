@@ -1,7 +1,8 @@
 import { useThree } from '@react-three/fiber';
 import { useState, useLayoutEffect } from 'react';
 import type { ReactNode } from 'react';
-import ReactDOM from 'react-dom';
+import type { Root } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 
 interface Props {
   overflowCanvas?: boolean;
@@ -16,6 +17,8 @@ function Html(props: Props) {
     children,
   } = props;
 
+  const [reactRoot, setReactRoot] = useState<Root>();
+
   const r3fRoot = useThree((state) => state.gl.domElement.parentElement);
   const canvasWrapper = r3fRoot?.parentElement;
 
@@ -27,14 +30,17 @@ function Html(props: Props) {
   const [renderTarget] = useState(() => document.createElement('div'));
 
   useLayoutEffect(() => {
-    ReactDOM.render(<>{children}</>, renderTarget); // eslint-disable-line react/jsx-no-useless-fragment
-  }, [children, renderTarget]);
+    const root = createRoot(renderTarget);
+    setReactRoot(root);
 
-  useLayoutEffect(() => {
     return () => {
-      ReactDOM.unmountComponentAtNode(renderTarget);
+      root.unmount();
     };
   }, [renderTarget]);
+
+  useLayoutEffect(() => {
+    reactRoot?.render(<>{children}</>); // eslint-disable-line react/jsx-no-useless-fragment
+  }, [children, reactRoot]);
 
   useLayoutEffect(() => {
     container?.append(renderTarget);

@@ -35,7 +35,7 @@
   },
   "peerDependencies": {
     "@h5web/app": "workspace:*",
-    "react": ">=16"
+    "react": ">=18"
   },
   "dependencies": {
     "h5wasm": "0.4.4"
@@ -45,10 +45,10 @@
     "@h5web/shared": "workspace:*",
     "@rollup/plugin-alias": "3.1.9",
     "@types/node": "16.11.7",
-    "@types/react": "17.0.39",
+    "@types/react": "18.0.9",
     "eslint": "8.21.0",
     "eslint-config-galex": "4.2.0",
-    "react": "17.0.2",
+    "react": "18.1.0",
     "rollup": "2.75.6",
     "rollup-plugin-dts": "4.2.2",
     "typescript": "4.7.3",

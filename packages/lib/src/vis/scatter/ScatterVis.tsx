@@ -122,8 +122,8 @@ function ScatterVis(props: Props) {
           onPointerEnter={(index, evt) =>
             showTooltip({
               tooltipData: index,
-              tooltipLeft: evt.sourceEvent.offsetX,
-              tooltipTop: evt.sourceEvent.offsetY,
+              tooltipLeft: evt.nativeEvent.offsetX,
+              tooltipTop: evt.nativeEvent.offsetY,
             })
           }
           onPointerOut={() => hideTooltip()}

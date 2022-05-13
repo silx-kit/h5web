@@ -59,7 +59,9 @@
     "peerDependencyRules": {
       "allowedVersions": {
         "cypress": "*",
-        "jest": "*"
+        "jest": "*",
+        "react": "18",
+        "react-dom": "18"
       },
       "ignoreMissing": [
         "require-from-string"
