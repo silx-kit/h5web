@@ -31,7 +31,7 @@ function DropZone(props: Props) {
 
   const { getRootProps, getInputProps, open, isDragActive, fileRejections } =
     useDropzone({
-      accept: { '*': EXT },
+      accept: { 'application/x-hdf5': EXT },
       multiple: false,
       noClick: true,
       noKeyboard: true,
