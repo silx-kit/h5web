@@ -19,7 +19,7 @@ import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
-import { useAxisValues, useTextureSafeNdArray } from './hooks';
+import { usePixelEdgeValues, useTextureSafeNdArray } from './hooks';
 import type { ColorMap, Layout, TooltipData } from './models';
 
 interface Props {
@@ -64,11 +64,11 @@ function HeatmapVis(props: Props) {
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
   const { rows, cols } = getDims(dataArray);
 
-  const abscissas = useAxisValues(abscissaValue, cols);
+  const abscissas = usePixelEdgeValues(abscissaValue, cols);
   const abscissaDomain = useAxisDomain(abscissas);
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
-  const ordinates = useAxisValues(ordinateValue, rows);
+  const ordinates = usePixelEdgeValues(ordinateValue, rows);
   const ordinateDomain = useAxisDomain(ordinates);
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 

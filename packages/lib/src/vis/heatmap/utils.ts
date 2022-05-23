@@ -16,7 +16,7 @@ import {
 import type { CustomDomain, DomainErrors } from '../models';
 import { DomainError } from '../models';
 import { H5WEB_SCALES } from '../scales';
-import { toArray } from '../utils';
+import { getAxisValues } from '../utils';
 import { INTERPOLATORS } from './interpolators';
 import type { ColorMap, D3Interpolator, TextureSafeTypedArray } from './models';
 
@@ -103,29 +103,18 @@ export function getLinearGradient(
   return `linear-gradient(to ${direction}, ${colorStops})`;
 }
 
-export function getAxisValues(
+export function getPixelEdgeValues(
   rawValues: NumArray | undefined,
   pixelCount: number
 ): number[] {
-  if (!rawValues) {
-    return range(pixelCount + 1);
-  }
-
-  if (rawValues.length === pixelCount + 1) {
-    return toArray(rawValues);
-  }
-
-  if (rawValues.length === pixelCount) {
+  if (rawValues && rawValues.length === pixelCount) {
     // Add value at right-hand side of last pixel, assuming raw values are regularly spaced
     const deltaCoord = rawValues[1] - rawValues[0];
     return [...rawValues, rawValues[rawValues.length - 1] + deltaCoord];
   }
 
-  throw new Error(
-    `Expected array to have length ${pixelCount} or ${pixelCount + 1}, not ${
-      rawValues.length
-    }`
-  );
+  // nEdges = nPixels + 1
+  return getAxisValues(rawValues, pixelCount + 1);
 }
 
 export function getInterpolator(colorMap: ColorMap, reverse: boolean) {
