@@ -1,24 +1,28 @@
 import type { Domain, NumArray, NumericType } from '@h5web/shared';
 import {
-  assertLength,
   assertDefined,
-  formatTooltipVal,
+  assertLength,
   formatTooltipErr,
+  formatTooltipVal,
   ScaleType,
 } from '@h5web/shared';
-import { range } from 'd3-array';
 import type { NdArray } from 'ndarray';
-import { useMemo } from 'react';
 import type { ReactElement, ReactNode } from 'react';
+import { useMemo } from 'react';
 
 import DefaultInteractions from '../../interactions/DefaultInteractions';
 import type { Interactions } from '../../interactions/models';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
-import { useAxisDomain, useCustomColors, useValueToIndexScale } from '../hooks';
+import {
+  useAxisDomain,
+  useAxisValues,
+  useCustomColors,
+  useValueToIndexScale,
+} from '../hooks';
 import type { AxisParams, CustomColor } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { extendDomain, DEFAULT_DOMAIN, formatNumType, toArray } from '../utils';
+import { DEFAULT_DOMAIN, extendDomain, formatNumType } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
 import type { AuxiliaryParams, TooltipData } from './models';
@@ -87,13 +91,7 @@ function LineVis(props: Props) {
     assertLength(array, dataArray.size, `'${label}' auxiliary`)
   );
 
-  const abscissas = useMemo(() => {
-    if (!abscissaValue) {
-      return range(dataArray.size);
-    }
-
-    return toArray(abscissaValue);
-  }, [abscissaValue, dataArray.size]);
+  const abscissas = useAxisValues(abscissaValue, dataArray.size);
 
   const abscissaToIndex = useValueToIndexScale(abscissas, true);
 

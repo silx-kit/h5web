@@ -64,6 +64,7 @@ export {
   getCombinedDomain,
   extendDomain,
   getValueToIndexScale,
+  getAxisValues,
 } from './vis/utils';
 
 export {
@@ -71,6 +72,7 @@ export {
   useDomains,
   useCombinedDomain,
   useValueToIndexScale,
+  useAxisValues,
 } from './vis/hooks';
 
 export {

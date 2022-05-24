@@ -7,13 +7,13 @@ import type { TextureSafeTypedArray } from './models';
 import {
   getVisDomain,
   getSafeDomain,
-  getAxisValues,
+  getPixelEdgeValues,
   toTextureSafeNdArray,
 } from './utils';
 
 export const useVisDomain = createMemo(getVisDomain);
 export const useSafeDomain = createMemo(getSafeDomain);
-export const useAxisValues = createMemo(getAxisValues);
+export const usePixelEdgeValues = createMemo(getPixelEdgeValues);
 
 export function useTextureSafeNdArray(
   ndArr: NdArray<NumArray>

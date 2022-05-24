@@ -142,6 +142,22 @@ scaleWithMid(2.2); // Returns 1
 scaleWithMid(3); // Returns 3
 ```
 
+### getAxisValues
+
+Return an array of axis values of the desired length.
+
+- If an array is supplied, convert it to a plain JS array if needed and check that the lengths match.
+- If no array is supplied, generate a sequence of numbers from 0 to the desired length.
+
+```ts
+getAxisValues(rawValues: NumArray | undefined, axisLength: number): number[]
+
+getAxisValues(undefined, 3) // [0, 1, 2]
+getAxisValues([-1, 0, 1], 3) // [-1, 0, 1]
+getAxisValues(Float32Array([-1, 0, 1], 3) // [-1, 0, 1]
+getAxisValues([0, 1], 3) // Throws error as 2 != 3.
+```
+
 ### Hooks
 
 - **`useDomain(...args): Domain | undefined`** - Memoised version of `getDomain`.
@@ -150,6 +166,7 @@ scaleWithMid(3); // Returns 3
 - **`useVisDomain(...args): Domain`** - Memoised version of `getVisDomain`.
 - **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
 - **`useValueToIndexScale(..args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
+- **`useAxisValues(..args): number[]`** - Memoised version of `getAxisValues`.
 
 #### useCanvasEvents
 

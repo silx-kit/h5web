@@ -12,6 +12,7 @@ import { useAxisSystemContext } from './shared/AxisSystemProvider';
 import type { AxisSystemContextValue } from './shared/AxisSystemProvider';
 import {
   getAxisDomain,
+  getAxisValues,
   getCombinedDomain,
   getValueToIndexScale,
   toArray,
@@ -23,6 +24,7 @@ export const useValidDomainForScale = createMemo(getValidDomainForScale);
 export const useCombinedDomain = createMemo(getCombinedDomain);
 export const useValueToIndexScale = createMemo(getValueToIndexScale);
 export const useAxisDomain = createMemo(getAxisDomain);
+export const useAxisValues = createMemo(getAxisValues);
 
 export const useToArray = createMemo(toArray);
 
