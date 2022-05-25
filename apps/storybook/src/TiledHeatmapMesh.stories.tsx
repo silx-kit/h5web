@@ -29,7 +29,7 @@ import FillHeight from './decorators/FillHeight';
 
 // See https://en.wikipedia.org/wiki/Mandelbrot_set
 const mandelbrot = greenlet(
-  async (
+  (
     iterations: number,
     xDomain: Domain,
     yDomain: Domain,
@@ -68,7 +68,7 @@ const mandelbrot = greenlet(
       }
     }
 
-    return array;
+    return Promise.resolve(array);
   }
 );
 
