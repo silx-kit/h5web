@@ -84,6 +84,12 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
+      - name: Cache Cypress binary 📌
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: Install ⚙️
         run: pnpm install --frozen-lockfile
 
