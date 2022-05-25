@@ -2,9 +2,15 @@
 import '@testing-library/jest-dom'; // https://github.com/testing-library/jest-dom
 
 class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  public observe() {
+    /* do nothing */
+  }
+  public unobserve() {
+    /* do nothing */
+  }
+  public disconnect() {
+    /* do nothing */
+  }
 }
 
 window.ResizeObserver = ResizeObserver;
@@ -14,6 +20,10 @@ window.matchMedia = (query) => ({
   media: query,
   addEventListener: jest.fn(),
   removeEventListener: jest.fn(),
+  onchange: jest.fn(),
+  addListener: jest.fn(),
+  removeListener: jest.fn(),
+  dispatchEvent: jest.fn(),
 });
 
 // Fake properties to avoid Re-flex warnings
@@ -34,7 +44,7 @@ afterEach(() => {
 // Fail if error or warning has been logged to the console (notably by React or React Testing Library)
 // https://github.com/facebook/jest/issues/6121#issuecomment-768052681
 let usedConsole = false;
-['log', 'error', 'warn'].forEach((key) => {
+(['log', 'error', 'warn'] as const).forEach((key) => {
   const originalFn = console[key];
   console[key] = (...args) => {
     usedConsole = true;
@@ -45,14 +55,14 @@ let usedConsole = false;
 afterEach(() => {
   if (usedConsole) {
     usedConsole = false;
-    throw `To keep the test output readable you should remove all usages of \`console\`.
+    throw new Error(`To keep the test output readable you should remove all usages of \`console\`.
 They mostly refer to fixable errors, warnings and deprecations or forgotten debugging statements.
 
 If your test relies on \`console\` you should mock it:
 
 const errorSpy = mockConsoleMethod('error');
-// Your test goes here
+/* YOUR TEST GOES HERE */
 errorSpy.mockRestore(); // optional if end of test
-`;
+`);
   }
 });

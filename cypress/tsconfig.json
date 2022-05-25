@@ -8,5 +8,5 @@
       "@types/cypress-image-snapshot"
     ]
   },
-  "include": ["specs", "*.ts"]
+  "include": ["*", "specs"]
 }

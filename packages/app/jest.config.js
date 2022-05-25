@@ -17,7 +17,7 @@ const config = {
   preset: 'ts-jest/presets/js-with-ts',
   resetMocks: true,
   roots: ['<rootDir>/src'],
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   testEnvironment: 'jsdom',
   testRegex: '\\.test\\.tsx?$',
   testTimeout: 10_000,

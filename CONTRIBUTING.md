@@ -2,7 +2,7 @@
 
 - [Quick start](#quick-start-)
 - [Development](#development)
-  - [`pnpm` cheat sheet](#pnpm-cheat-sheet)
+  - [`pnpm` v7 cheat sheet](#pnpm-v7-cheat-sheet)
   - [Dependency management](#dependency-management)
   - [Workspace dependencies](#workspace-dependencies)
   - [Icon set](#icon-set)
@@ -30,20 +30,20 @@ pnpm start
   [Storybook](https://storybook.js.org/docs/react/get-started/introduction)
   documentation site at http://localhost:6006
 
-### `pnpm` cheat sheet
+### `pnpm` v7 cheat sheet
 
 - `pnpm install` - install the dependencies of every project in the workspace
   and of the workspace itself
-- `pnpm add [-D] <pkg-name> --filter <project-name>` -
+- `pnpm --filter <project-name> add [-D] <pkg-name>` -
   [add a dependency](https://pnpm.io/cli/add) to a project in the workspace
-- `pnpm [script] [-- --<arg>]` - run a workspace script
-- `pnpm [script] [--parallel] --filter {packages} [-- --<arg>]` -
+- `pnpm [run] <script> [--<arg>]` - run a workspace script
+- `pnpm [run] --filter {packages/*} [--parallel] <script> [--<arg>]` -
   [run a script](https://pnpm.io/cli/run) in every project in the `packages`
   folder
-- `pnpm dlx <pkg-name>` - fetch a package from the registry and run its default
+- `pnpm [exec] <binary>` - run a binary located in `node_modules/.bin`
+  (equivalent to `npx <pkg-name>` for a package installed in the workspace)
+- `pnpx <pkg-name>` - fetch a package from the registry and run its default
   command binary (equivalent to `npx <pkg-name>`)
-- `pnpm exec <binary>` - run a binary located in `node_modules/.bin` (equivalent
-  to `npx <pkg-name>` for a package installed in the workspace)
 - `pnpm why -r <pkg-name>` - show all project and packages that depend on the
   specified package
 - `pnpm outdated -r` - list outdated dependencies in the workspace
@@ -56,9 +56,9 @@ pnpm start
 1. Read the changelogs and release notes of the dependencies you'd like to
    upgrade. Look for potential breaking changes, and for bug fixes and new
    features that may help improve the codebase.
-1. Run `pnpm up -r -L <pkg-name>` to update a dependency to the latest version
-   in all projects. Alternatively, you can either replace `-r` with `--filter`
-   to target specific projects, or edit the relevant `package.json` file(s)
+1. Run `pnpm up -rL <pkg-name>` to update a dependency to the latest version in
+   all projects. Alternatively, you can either replace `-r` with `--filter` to
+   target specific projects, or edit the relevant `package.json` file(s)
    manually and run `pnpm install` (but make sure to specify an exact dependency
    version rather than a range - i.e. don't prefix the version with a caret or a
    tilde).
@@ -162,21 +162,21 @@ package does not include any styles, `vite build` does not generate a
 - `pnpm prettier` - check that all files in the workspace have been formatted
   with Prettier
 - `pnpm lint` - lint and type-check every project in the workspace with ESLint
-  and TypeScript
-- `pnpm lint:all:eslint` - lint every project with ESLint
-- `pnpm lint:all:tsc` - type-check every project with TypeScript
-- `pnpm lint:eslint [--filter <project-name|{folder}>]` - lint specific projects
-- `pnpm lint:tsc [--filter <project-name|{folder}>]` - type-check specific
+  and TypeScript, as well as the workspace root and `cypress` folder
+- `pnpm lint:eslint` - lint every project with ESLint
+- `pnpm lint:tsc` - type-check every project with TypeScript
+- `pnpm [--filter <project-name|{folder/*}>] lint:eslint` - lint specific
   projects
-- `pnpm analyze --filter @h5web/<lib|app>` - analyze a package's bundle (run
+- `pnpm [--filter <project-name|{folder/*}>] lint:tsc` - type-check specific
+  projects
+- `pnpm --filter @h5web/<lib|app> analyze` - analyze a package's bundle (run
   only after building the package)
 
 ### Fixing and formatting
 
-- `pnpm prettier -- --write` - format all files with Prettier
-- `pnpm lint:all:eslint -- -- --fix` - auto-fix linting issues in the entire
-  workspace
-- `pnpm lint:eslint [--filter <project-name|{folder}>] -- --fix` - auto-fix
+- `pnpm prettier --write` - format all files with Prettier
+- `pnpm lint:eslint --fix` - auto-fix linting issues in every project
+- `pnpm [--filter <project-name|{folder/*}>] lint:eslint --fix` - auto-fix
   linting issues in specific projects
 
 ### Editor integration
@@ -188,18 +188,17 @@ install the recommended extensions.
 ## Testing
 
 - `pnpm test` - run unit and feature tests with Jest
-- `pnpm test -- --watch` - run tests related to changed files in watch mode
-- `pnpm test -- --watchAll` - run all tests in watch mode
-- `pnpm test --filter <project-name>` - run Jest in a specific project
+- `pnpm test --watch` - run tests related to changed files in watch mode
+- `pnpm test --watchAll` - run all tests in watch mode
+- `pnpm --filter <project-name> test` - run Jest in a specific project
 - `pnpm cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end
   test runner (local dev server must be running in separate terminal)
 - `pnpm cypress:run` - run end-to-end tests once (local dev server must be
   running in separate terminal)
 
-> Note that, unlike `pnpm lint`, `pnpm test` (without `--filter`) doesn't
-> recursively run the `test` script in every project in the workspace (i.e. it
-> is not equivalent to `pnpm test --filter {apps} --filter {packages}`).
+> Note that the workspace's `test` script doesn't recursively run the `test`
+> script in every project like (i.e. it is not equivalent to `pnpm -r test`).
 > Instead, it runs Jest globally using a
 > [`projects` configuration](https://jestjs.io/docs/configuration#projects-arraystring--projectconfig)
 > located in `jest.config.json`. This results in a nicer terminal output when
