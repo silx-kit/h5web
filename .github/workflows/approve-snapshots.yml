@@ -18,29 +18,24 @@ jobs:
           pr-id: ${{ github.event.issue.number }}
 
       - name: Checkout 🏷️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ steps.getBranchName.outputs.branch }}
+
+      - name: Install ⚙️
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7.x
 
       - name: Use Node 16 🕹️
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
-
-      - name: Cache pnpm modules 📌
-        uses: actions/cache@v2
-        with:
-          path: ~/.local/share/pnpm/store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
 
       - name: Install ⚙️
-        uses: pnpm/action-setup@v2.0.1
-        with:
-          version: 7.x
-          run_install: |
-            - args: [--frozen-lockfile]
+        run: pnpm install --frozen-lockfile
 
       - name: Build packages 📦
         run: pnpm packages
