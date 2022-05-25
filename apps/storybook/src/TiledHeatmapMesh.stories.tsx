@@ -17,6 +17,7 @@ import type {
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
+import greenlet from 'greenlet';
 import { clamp } from 'lodash';
 import ndarray from 'ndarray';
 import type { NdArray } from 'ndarray';
@@ -27,46 +28,49 @@ import type { Vector2 } from 'three';
 import FillHeight from './decorators/FillHeight';
 
 // See https://en.wikipedia.org/wiki/Mandelbrot_set
-function mandelbrot(
-  iterations: number,
-  xDomain: Domain,
-  yDomain: Domain,
-  size: Size
-): NdArray<Float32Array> {
-  const { width, height } = size;
-  const xRange = xDomain[1] - xDomain[0];
-  const yRange = yDomain[1] - yDomain[0];
+const mandelbrot = greenlet(
+  async (
+    iterations: number,
+    xDomain: Domain,
+    yDomain: Domain,
+    size: Size
+  ): Promise<Float32Array> => {
+    const { width, height } = size;
+    const xRange = xDomain[1] - xDomain[0];
+    const yRange = yDomain[1] - yDomain[0];
 
-  const array = ndarray(new Float32Array(height * width), [height, width]);
+    const array = new Float32Array(height * width);
 
-  for (let row = 0; row < height; row += 1) {
-    const cImag = yDomain[0] + yRange * (row / (height - 1));
-    for (let col = 0; col < width; col += 1) {
-      let value = 0;
+    for (let row = 0; row < height; row += 1) {
+      const cImag = yDomain[0] + yRange * (row / (height - 1));
+      for (let col = 0; col < width; col += 1) {
+        let value = 0;
 
-      const cReal = xDomain[0] + xRange * (col / (width - 1));
-      // z = c
-      let zReal = cReal;
-      let zImag = cImag;
-      for (let index = 0; index <= iterations; index += 1) {
-        // z = z**2 + c
-        const zRealSq = zReal ** 2;
-        const zImagSq = zImag ** 2;
-        zImag = 2 * zReal * zImag + cImag;
-        zReal = zRealSq - zImagSq + cReal;
+        const cReal = xDomain[0] + xRange * (col / (width - 1));
+        // z = c
+        let zReal = cReal;
+        let zImag = cImag;
+        for (let index = 0; index <= iterations; index += 1) {
+          // z = z**2 + c
+          const zRealSq = zReal ** 2;
+          const zImagSq = zImag ** 2;
+          zImag = 2 * zReal * zImag + cImag;
+          zReal = zRealSq - zImagSq + cReal;
 
-        // check divergence
-        if (zRealSq + zImagSq > 4) {
-          value = index / iterations;
-          break;
+          // check divergence
+          if (zRealSq + zImagSq > 4) {
+            value = index / iterations;
+            break;
+          }
         }
-      }
 
-      array.set(row, col, value);
+        array[row * width + col] = value;
+      }
     }
+
+    return array;
   }
-  return array;
-}
+);
 
 interface TileParams {
   layer: number;
@@ -111,7 +115,8 @@ class MandelbrotTilesApi extends TilesApi {
           this.yDomain[0] + yScale * (offset.y + height),
         ];
 
-        return mandelbrot(50, xRange, yRange, { width, height });
+        const arr = await mandelbrot(50, xRange, yRange, { width, height });
+        return ndarray(arr, [height, width]);
       },
       {
         type: 'Map',
