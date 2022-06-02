@@ -4,7 +4,9 @@ import ReactSlider from 'react-slider';
 
 import styles from './SlicingSlider.module.css';
 
+const ID = 'h5w-slider';
 const MIN_HEIGHT_PER_MARK = 25;
+export const SLICING_DEBOUNCE_DELAY = 250;
 
 interface Props {
   dimension: number;
@@ -17,18 +19,25 @@ function SlicingSlider(props: Props) {
   const { dimension, maxIndex, initialValue, onChange } = props;
 
   const [value, setValue] = useState(initialValue);
-  const onDebouncedChange = useDebouncedCallback(onChange, [onChange], 250);
+  const onDebouncedChange = useDebouncedCallback(
+    onChange,
+    [onChange],
+    SLICING_DEBOUNCE_DELAY
+  );
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
+  const sliderLabelId = `${ID}-${dimension}-label`;
 
   return (
     <div key={dimension} ref={containerRef} className={styles.container}>
-      <span className={styles.label}>D{dimension}</span>
+      <span id={sliderLabelId} className={styles.label}>
+        D{dimension}
+      </span>
       <span className={styles.sublabel}>0:{maxIndex}</span>
       {maxIndex > 0 ? (
         <ReactSlider
           className={styles.slider}
-          ariaLabel="Dimension slider"
+          ariaLabelledby={sliderLabelId}
           min={0}
           max={maxIndex}
           step={1}

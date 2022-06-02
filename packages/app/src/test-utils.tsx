@@ -1,5 +1,6 @@
+import { assertDefined, assertNonNull } from '@h5web/shared';
 import type { RenderResult } from '@testing-library/react';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import App from './App';
@@ -8,32 +9,64 @@ import type { Vis } from './vis-packs/core/visualizations';
 
 interface RenderAppResult extends RenderResult {
   user: ReturnType<typeof userEvent.setup>;
-  selectExplorerNode: (path: string) => Promise<void>;
+  selectExplorerNode: (name: string) => Promise<void>;
   selectVisTab: (name: Vis) => Promise<void>;
 }
 
-export async function renderApp(): Promise<RenderAppResult> {
-  const user = userEvent.setup({ delay: null }); // https://github.com/testing-library/user-event/issues/833
+type InitialPath = `/${string}`;
+interface RenderAppOpts {
+  initialPath?: InitialPath;
+  preferredVis?: Vis | undefined;
+  withFakeTimers?: boolean;
+}
+
+export async function renderApp(
+  opts: InitialPath | RenderAppOpts = '/'
+): Promise<RenderAppResult> {
+  const optsObj = typeof opts === 'string' ? { initialPath: opts } : opts;
+  const { initialPath, preferredVis, withFakeTimers }: RenderAppOpts = {
+    initialPath: '/',
+    ...optsObj,
+  };
+
+  if (preferredVis) {
+    window.localStorage.setItem(
+      'h5web:preferredVis',
+      JSON.stringify(preferredVis)
+    );
+  }
+
+  if (withFakeTimers) {
+    jest.useFakeTimers('modern');
+  }
+
+  const user = userEvent.setup(
+    withFakeTimers ? { advanceTimers: jest.advanceTimersByTime } : undefined
+  );
+
   const renderResult = render(
     <MockProvider>
-      <App />
+      <App initialPath={initialPath} />
     </MockProvider>
   );
 
-  await screen.findByLabelText('Loading root metadata...');
-  await screen.findByRole('treeitem', { name: 'entities' });
+  if (!withFakeTimers) {
+    await waitForAllLoaders();
+  }
 
   return {
     user,
     ...renderResult,
 
-    selectExplorerNode: async (path) => {
-      for await (const segment of path.split('/')) {
-        await user.click(
-          await screen.findByRole('treeitem', {
-            name: new RegExp(`^${segment}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
-          })
-        );
+    selectExplorerNode: async (name: string) => {
+      const item = await screen.findByRole('treeitem', {
+        name: new RegExp(`^${name}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
+      });
+
+      await user.click(item);
+
+      if (!withFakeTimers) {
+        await waitForAllLoaders();
       }
     },
 
@@ -43,16 +76,33 @@ export async function renderApp(): Promise<RenderAppResult> {
   };
 }
 
-export function queryVisSelector(): HTMLElement | null {
-  return screen.queryByRole('tablist', { name: 'Visualization' });
+export async function waitForAllLoaders(): Promise<void> {
+  await waitFor(() => {
+    expect(screen.queryAllByTestId(/^Loading/u)).toHaveLength(0);
+  });
 }
 
-export async function findVisSelector(): Promise<HTMLElement> {
-  return screen.findByRole('tablist', { name: 'Visualization' });
+function getVisSelector(): HTMLElement {
+  return screen.getByRole('tablist', { name: 'Visualization' });
 }
 
-export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
-  return within(await findVisSelector()).getAllByRole('tab');
+export function getVisTabs(): string[] {
+  return within(getVisSelector())
+    .getAllByRole('tab')
+    .map((tab) => {
+      assertNonNull(tab.textContent);
+      return tab.textContent;
+    });
+}
+
+export function getSelectedVisTab(): string {
+  const selectedTab = within(getVisSelector())
+    .getAllByRole('tab')
+    .find((tab) => tab.getAttribute('aria-selected') === 'true');
+
+  assertDefined(selectedTab);
+  assertNonNull(selectedTab.textContent);
+  return selectedTab.textContent;
 }
 
 /**
@@ -60,8 +110,15 @@ export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
  * Mocks are automatically restored after every test, but to restore
  * the original console method earlier, call `spy.mockRestore()`.
  */
-export function mockConsoleMethod(method: 'log' | 'warn' | 'error') {
+export function mockConsoleMethod(
+  method: 'log' | 'warn' | 'error',
+  debug?: boolean
+) {
   const spy = jest.spyOn(console, method);
-  spy.mockImplementation(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
+  spy.mockImplementation((...args) => {
+    if (debug) {
+      console.debug(...args); // eslint-disable-line no-console
+    }
+  });
   return spy;
 }

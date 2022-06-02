@@ -1,12 +1,13 @@
 import { mockFilepath } from '@h5web/shared';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
+import { SLOW_TIMEOUT } from '../providers/mock/mock-api';
 import { renderApp } from '../test-utils';
 
 test('select root group by default', async () => {
   await renderApp();
 
-  const title = await screen.findByRole('heading', { name: mockFilepath });
+  const title = screen.getByRole('heading', { name: mockFilepath });
   expect(title).toBeVisible();
 
   const fileBtn = screen.getByRole('treeitem', { name: mockFilepath });
@@ -17,9 +18,7 @@ test('select root group by default', async () => {
 test('toggle explorer sidebar', async () => {
   const { user } = await renderApp();
 
-  const fileBtn = await screen.findByRole('treeitem', {
-    name: mockFilepath,
-  });
+  const fileBtn = screen.getByRole('treeitem', { name: mockFilepath });
   const sidebarBtn = screen.getByRole('button', {
     name: 'Toggle explorer sidebar',
   });
@@ -37,48 +36,41 @@ test('toggle explorer sidebar', async () => {
 });
 
 test('navigate groups in explorer', async () => {
-  const { user } = await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
-  const groupBtn = await screen.findByRole('treeitem', { name: 'entities' });
+  const groupBtn = screen.getByRole('treeitem', { name: 'entities' });
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Expand `entities` group
-  await user.click(groupBtn);
-
+  await selectExplorerNode('entities');
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
 
-  const childGroupBtn = await screen.findByRole('treeitem', {
-    name: 'empty_group',
-  });
+  const childGroupBtn = screen.getByRole('treeitem', { name: 'empty_group' });
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Expand `empty_group` child group
-  await user.click(childGroupBtn);
-
+  await selectExplorerNode('empty_group');
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'true');
 
   // Collapse `empty_group` child group
-  await user.click(childGroupBtn);
-
+  await selectExplorerNode('empty_group');
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Select `entities` group
-  await user.click(groupBtn);
-
+  await selectExplorerNode('entities');
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true'); // remains expanded as it wasn't previously selected
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
 
   // Collapse `entities` group
-  await user.click(groupBtn);
-
+  await selectExplorerNode('entities');
   expect(
     screen.queryByRole('treeitem', { name: 'empty_group' })
   ).not.toBeInTheDocument();
@@ -87,20 +79,26 @@ test('navigate groups in explorer', async () => {
 });
 
 test('show spinner when group metadata is slow to fetch', async () => {
-  jest.useFakeTimers('modern');
-  const { selectExplorerNode } = await renderApp();
-
-  await selectExplorerNode('resilience/slow_metadata');
-  await expect(screen.findByText(/Loading/)).resolves.toBeVisible();
-  expect(screen.getByLabelText(/Loading group metadata/)).toBeVisible();
-
-  jest.runAllTimers(); // resolve slow fetch right away
-  await waitFor(() => {
-    expect(
-      screen.queryByLabelText(/Loading group metadata/)
-    ).not.toBeInTheDocument();
+  await renderApp({
+    initialPath: '/resilience/slow_metadata',
+    withFakeTimers: true,
   });
 
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
+  // Wait for `slow_metadata` group to appear in explorer (i.e. for root and `resilience` groups to finish loading)
+  await expect(
+    screen.findByRole('treeitem', { name: 'slow_metadata' })
+  ).resolves.toBeVisible();
+
+  // Ensure explorer now shows loading spinner (i.e. for `slow_metadata` group)
+  expect(screen.getByLabelText(/Loading group/)).toBeVisible();
+
+  // Wait for fetch of group metadata to succeed
+  await expect(
+    screen.findByText(/No visualization available/, undefined, {
+      timeout: SLOW_TIMEOUT,
+    })
+  ).resolves.toBeVisible();
+
+  // Spinner has been removed
+  expect(screen.queryByLabelText(/Loading group/)).not.toBeInTheDocument();
 });

@@ -35,4 +35,5 @@ const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
   );
 });
 
+Thumb.displayName = 'Thumb';
 export default Thumb;

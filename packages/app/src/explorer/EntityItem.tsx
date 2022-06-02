@@ -60,7 +60,7 @@ function EntityItem(props: Props) {
         <span className={styles.name}>{entity.name}</span>
 
         <ErrorBoundary fallback={<> </>}>
-          <Suspense fallback={null}>
+          <Suspense fallback={<span data-testid="LoadingNxBadge" />}>
             <NxBadge entity={entity} />
           </Suspense>
         </ErrorBoundary>
@@ -72,6 +72,7 @@ function EntityItem(props: Props) {
             <FiRefreshCw
               className={styles.spinner}
               aria-label="Loading group metadata..."
+              data-testid="LoadingExplorerGroup"
             />
           }
         >

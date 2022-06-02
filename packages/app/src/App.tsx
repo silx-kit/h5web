@@ -6,8 +6,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 
 import styles from './App.module.css';
+import EntityLoader from './EntityLoader';
 import ErrorFallback from './ErrorFallback';
-import LoadingFallback from './LoadingFallback';
 import VisConfigProvider from './VisConfigProvider';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import type { FeedbackContext } from './breadcrumbs/models';
@@ -72,9 +72,7 @@ function App(props: Props) {
               resetKeys={[selectedPath, isInspecting]}
               FallbackComponent={ErrorFallback}
             >
-              <Suspense
-                fallback={<LoadingFallback isInspecting={isInspecting} />}
-              >
+              <Suspense fallback={<EntityLoader isInspecting={isInspecting} />}>
                 {isInspecting ? (
                   <MetadataViewer
                     path={selectedPath}

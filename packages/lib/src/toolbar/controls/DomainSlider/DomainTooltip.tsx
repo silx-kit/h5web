@@ -137,5 +137,7 @@ const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
   );
 });
 
+DomainTooltip.displayName = 'DomainTooltip';
+
 export type { Handle as DomainTooltipHandle };
 export default DomainTooltip;

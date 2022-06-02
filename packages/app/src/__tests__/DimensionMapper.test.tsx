@@ -3,13 +3,13 @@ import { screen, waitFor, within } from '@testing-library/react';
 import { renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
-test('display mapping for X axis when visualizing 2D dataset as Line', async () => {
-  const { user, selectExplorerNode, selectVisTab } = await renderApp();
+test('control mapping for X axis when visualizing 2D dataset as Line', async () => {
+  const { user } = await renderApp({
+    initialPath: '/nD_datasets/twoD',
+    preferredVis: Vis.Line,
+  });
 
-  await selectExplorerNode('nD_datasets/twoD');
-  await selectVisTab(Vis.Line);
-
-  // Ensure that the dimension mapper is only visible for X (and not for Y)
+  // Ensure that only one dimension mapper for X is visible
   const xRadioGroup = screen.getByLabelText('Dimension as x axis');
   const yRadioGroup = screen.queryByLabelText('Dimension as y axis');
   expect(xRadioGroup).toBeVisible();
@@ -21,26 +21,31 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
   expect(xDimsButtons[0]).not.toBeChecked();
   expect(xDimsButtons[1]).toBeChecked();
 
-  const d0Slider = screen.getByRole('slider');
+  // Ensure that only one dimension slider for D0 is visible
+  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  expect(d0Slider).toBeVisible();
   expect(d0Slider).toHaveAttribute('aria-valueNow', '0');
+  expect(screen.queryByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 
-  // Ensure that the swap from [0, 'x'] to ['x', 0] works
+  // Change mapping from [0, 'x'] to ['x', 0]
   await user.click(xDimsButtons[0]);
-
   await waitFor(() => expect(xDimsButtons[0]).toBeChecked());
   expect(xDimsButtons[1]).not.toBeChecked();
 
-  const d1Slider = screen.getByRole('slider');
+  // Ensure that the dimension slider is now for D1
+  const d1Slider = screen.getByRole('slider', { name: 'D1' });
+  expect(d1Slider).toBeVisible();
   expect(d1Slider).toHaveAttribute('aria-valueNow', '0');
+  expect(screen.queryByRole('slider', { name: 'D0' })).not.toBeInTheDocument();
 });
 
-test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
-  const { user, selectExplorerNode, selectVisTab } = await renderApp();
+test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
+  const { user } = await renderApp({
+    initialPath: '/nD_datasets/twoD',
+    preferredVis: Vis.Heatmap,
+  });
 
-  await selectExplorerNode('nD_datasets/twoD');
-  await selectVisTab(Vis.Heatmap);
-
-  // Ensure that the dimension mapper is visible for X and Y
+  // Ensure that two dimension mappers for X and Y are visible
   const xRadioGroup = screen.getByLabelText('Dimension as x axis');
   const yRadioGroup = screen.getByLabelText('Dimension as y axis');
   expect(xRadioGroup).toBeVisible();
@@ -55,22 +60,21 @@ test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap',
   expect(xD1Button).toBeChecked();
   expect(yD0Button).toBeChecked();
 
-  // Ensure that the swap from ['y', 'x'] to ['x', 'y'] works
+  // Change mapping from ['y', 'x'] to ['x', 'y']
   await user.click(xD0Button);
-
   await waitFor(() => expect(xD0Button).toBeChecked());
   expect(xD1Button).not.toBeChecked();
   expect(yD0Button).not.toBeChecked();
   expect(yD1Button).toBeChecked();
 });
 
-test('display one dimension slider and mappings for X and Y axes when visualizing 3D dataset as Matrix', async () => {
-  const { selectExplorerNode, selectVisTab } = await renderApp();
+test('display one slider and two mappers when visualizing 3D dataset as Matrix', async () => {
+  await renderApp({
+    initialPath: '/nD_datasets/threeD',
+    preferredVis: Vis.Matrix,
+  });
 
-  await selectExplorerNode('nD_datasets/threeD');
-  await selectVisTab(Vis.Matrix);
-
-  // Ensure that the dimension mapper is visible for X and Y
+  // Ensure that two dimension mappers for X and Y are visible
   const xRadioGroup = await screen.findByLabelText('Dimension as x axis');
   expect(xRadioGroup).toBeVisible();
   const xDimsButtons = within(xRadioGroup).getAllByRole('radio');
@@ -84,6 +88,22 @@ test('display one dimension slider and mappings for X and Y axes when visualizin
   // Ensure that the default mapping is [0, 'y', 'x']
   expect(xDimsButtons[2]).toBeChecked();
   expect(yDimsButtons[1]).toBeChecked();
-  const d0Slider = screen.getByRole('slider');
+
+  // Ensure that only one dimension slider for D0 is visible
+  const d0Slider = screen.getByRole('slider', { name: 'D0' });
   expect(d0Slider).toHaveAttribute('aria-valueNow', '0');
+  expect(screen.queryByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
+});
+
+test('slice through 2D dataset', async () => {
+  const { user } = await renderApp({
+    initialPath: '/nD_datasets/twoD',
+    preferredVis: Vis.Line,
+  });
+
+  // Move to next slice with keyboard
+  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  await user.type(d0Slider, '{ArrowUp}');
+
+  expect(d0Slider).toHaveAttribute('aria-valuenow', '1');
 });

@@ -32,7 +32,7 @@ function DomainSlider(props: Props) {
   const [sliderDomain, setSliderDomain] = useState(visDomain);
   useEffect(() => {
     setSliderDomain(visDomain);
-  }, [visDomain, setSliderDomain]);
+  }, [visDomain]);
 
   const isAutoMin = customDomain[0] === null;
   const isAutoMax = customDomain[1] === null;

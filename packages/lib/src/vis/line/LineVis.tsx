@@ -58,6 +58,7 @@ interface Props {
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
+  testid?: string;
 }
 
 function LineVis(props: Props) {
@@ -77,6 +78,7 @@ function LineVis(props: Props) {
     renderTooltip,
     children,
     interactions,
+    testid,
   } = props;
 
   const {
@@ -112,6 +114,7 @@ function LineVis(props: Props) {
       className={styles.root}
       aria-label={title}
       data-keep-canvas-colors
+      data-testid={testid}
     >
       <VisCanvas
         title={title}

@@ -1,32 +1,24 @@
 import { screen } from '@testing-library/react';
 
-import { findVisSelector, queryVisSelector, renderApp } from '../test-utils';
+import { renderApp } from '../test-utils';
 
 test('switch between "display" and "inspect" modes', async () => {
   const { user } = await renderApp();
 
-  const inspectBtn = await screen.findByRole('tab', { name: 'Inspect' });
-  const displayBtn = screen.getByRole('tab', { name: 'Display' });
-
   // Switch to "inspect" mode
-  await user.click(inspectBtn);
-
-  expect(queryVisSelector()).not.toBeInTheDocument();
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
   expect(screen.getByRole('row', { name: /^Path/ })).toBeVisible();
 
   // Switch back to "display" mode
-  await user.click(displayBtn);
-
-  await expect(findVisSelector()).resolves.toBeVisible();
+  await user.click(screen.getByRole('tab', { name: 'Display' }));
   expect(screen.queryByRole('row', { name: /^Path/ })).not.toBeInTheDocument();
 });
 
 test('inspect group', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  await selectExplorerNode('entities');
+  const { user } = await renderApp('/entities');
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const column = await screen.findByRole('columnheader', { name: /^Group/ });
+  const column = screen.getByRole('columnheader', { name: /^Group/ });
   const nameRow = screen.getByRole('row', { name: /^Name/ });
   const pathRow = screen.getByRole('row', { name: /^Path/ });
 
@@ -36,13 +28,10 @@ test('inspect group', async () => {
 });
 
 test('inspect scalar dataset', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  await selectExplorerNode('entities/scalar_int');
+  const { user } = await renderApp('/entities/scalar_int');
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const column = await screen.findByRole('columnheader', {
-    name: /Dataset/,
-  });
+  const column = screen.getByRole('columnheader', { name: /Dataset/ });
   const nameRow = screen.getByRole('row', { name: /^Name/ });
   const pathRow = screen.getByRole('row', { name: /^Path/ });
   const shapeRow = screen.getByRole('row', { name: /^Shape/ });
@@ -56,34 +45,28 @@ test('inspect scalar dataset', async () => {
 });
 
 test('inspect array dataset', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  await selectExplorerNode('nD_datasets/threeD');
+  const { user } = await renderApp('/nD_datasets/threeD');
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const shapeRow = await screen.findByRole('row', { name: /^Shape/ });
+  const shapeRow = screen.getByRole('row', { name: /^Shape/ });
   expect(shapeRow).toHaveTextContent(/9 x 20 x 41 = 7380/);
 });
 
 test('inspect empty dataset', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  await selectExplorerNode('entities/empty_dataset');
+  const { user } = await renderApp('/entities/empty_dataset');
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const shapeRow = await screen.findByRole('row', { name: /^Shape/ });
+  const shapeRow = screen.getByRole('row', { name: /^Shape/ });
   const typeRow = screen.getByRole('row', { name: /^Type/ });
-
   expect(shapeRow).toHaveTextContent(/None/);
   expect(typeRow).toHaveTextContent(/Integer, 32-bit, little-endian/);
 });
 
 test('inspect datatype', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  await selectExplorerNode('entities/datatype');
+  const { user } = await renderApp('/entities/datatype');
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const column = await screen.findByRole('columnheader', {
-    name: /Datatype/,
-  });
+  const column = screen.getByRole('columnheader', { name: /Datatype/ });
   const nameRow = screen.getByRole('row', { name: /^Name/ });
   const pathRow = screen.getByRole('row', { name: /^Path/ });
   const typeRow = screen.getByRole('row', { name: /^Type/ });
@@ -95,11 +78,10 @@ test('inspect datatype', async () => {
 });
 
 test('inspect unresolved soft link', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  await selectExplorerNode('entities/unresolved_soft_link');
+  const { user } = await renderApp('/entities/unresolved_soft_link');
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const column = await screen.findByRole('columnheader', { name: /Entity/ });
+  const column = screen.getByRole('columnheader', { name: /Entity/ });
   const nameRow = screen.getByRole('row', { name: /^Name/ });
   const pathRow = screen.getByRole('row', { name: /^Path/ });
   const linkRow = screen.getByRole('row', { name: /^Soft link/ });
@@ -111,40 +93,37 @@ test('inspect unresolved soft link', async () => {
 });
 
 test('inspect unresolved external link', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
-  await selectExplorerNode('entities/unresolved_external_link');
+  const { user } = await renderApp('/entities/unresolved_external_link');
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const column = await screen.findByRole('columnheader', { name: /Entity/ });
+  const column = screen.getByRole('columnheader', { name: /Entity/ });
   const linkRow = screen.getByRole('row', { name: /^External link/ });
-
   expect(column).toBeVisible();
   expect(linkRow).toHaveTextContent(/my_file.h5:entry_000\/dataset/);
 });
 
 test('follow path attributes', async () => {
   const { user, selectExplorerNode } = await renderApp();
-  await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  await user.click(
-    await screen.findByRole('button', { name: 'Inspect nexus_entry' })
-  );
+  // Follow relative `default` attribute
+  await user.click(screen.getByRole('button', { name: 'Inspect nexus_entry' }));
 
-  const nxEntry = await screen.findByRole('treeitem', {
-    name: /^nexus_entry /,
-  });
+  const nxEntry = screen.getByRole('treeitem', { name: /^nexus_entry / });
   expect(nxEntry).toHaveAttribute('aria-selected', 'true');
   expect(nxEntry).toHaveAttribute('aria-expanded', 'true');
 
-  await selectExplorerNode('nx_process/absolute_default_path');
+  await selectExplorerNode('nx_process');
+  await selectExplorerNode('absolute_default_path');
 
+  // Follow absolute `default` attribute
   await user.click(
     await screen.findByRole('button', {
       name: 'Inspect /nexus_entry/nx_process/nx_data',
     })
   );
 
-  const nxData = await screen.findByRole('treeitem', { name: /nx_data/ });
+  const nxData = screen.getByRole('treeitem', { name: /nx_data/ });
   expect(nxData).toHaveAttribute('aria-selected', 'true');
   expect(nxData).toHaveAttribute('aria-expanded', 'true');
 });

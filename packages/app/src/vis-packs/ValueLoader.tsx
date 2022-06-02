@@ -5,6 +5,7 @@ import { useDataContext } from '../providers/DataProvider';
 import styles from './ValueLoader.module.css';
 
 const MAX_PROGRESS_BARS = 3;
+const LOADER_DELAY = 100;
 
 interface Props {
   message?: string;
@@ -23,42 +24,42 @@ function ValueLoader(props: Props) {
   }, [addProgressListener, removeProgressListener, setProgress]);
 
   // Wait a bit before showing loader to avoid flash
-  const [isReady] = useTimeout(100);
-
-  if (!isReady()) {
-    return null;
-  }
+  const [isReady] = useTimeout(LOADER_DELAY);
 
   return (
-    <div className={styles.loader}>
-      <div className={styles.grid}>
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-      {progress && (
-        <div className={styles.progressBars}>
-          {progress.slice(0, MAX_PROGRESS_BARS).map((val, index) => (
-            <progress className={styles.progress} key={index} value={val} /> // eslint-disable-line react/no-array-index-key
-          ))}
-        </div>
+    <div className={styles.loader} data-testid="LoadingDatasetValue">
+      {isReady() && (
+        <>
+          <div className={styles.grid}>
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+          </div>
+          {progress && (
+            <div className={styles.progressBars}>
+              {progress.slice(0, MAX_PROGRESS_BARS).map((val, index) => (
+                <progress className={styles.progress} key={index} value={val} /> // eslint-disable-line react/no-array-index-key
+              ))}
+            </div>
+          )}
+          <p>{message}...</p>
+          <p>
+            <button
+              className={styles.cancelBtn}
+              type="button"
+              onClick={() => valuesStore.cancelOngoing()}
+            >
+              Cancel?
+            </button>
+          </p>
+        </>
       )}
-      <p>{message}...</p>
-      <p>
-        <button
-          className={styles.cancelBtn}
-          type="button"
-          onClick={() => valuesStore.cancelOngoing()}
-        >
-          Cancel?
-        </button>
-      </p>
     </div>
   );
 }
