@@ -1,5 +1,10 @@
 import type { ValuesStoreParams } from '@h5web/app';
-import { getNameFromPath, ProviderApi } from '@h5web/app';
+import {
+  flattenValue,
+  getNameFromPath,
+  ProviderApi,
+  sliceValue,
+} from '@h5web/app';
 import type {
   Attribute,
   AttributeValues,
@@ -9,7 +14,13 @@ import type {
   GroupWithChildren,
   Shape,
 } from '@h5web/shared';
-import { assertNonNull, buildEntityPath, EntityKind } from '@h5web/shared';
+import {
+  assertNonNull,
+  buildEntityPath,
+  DTypeClass,
+  EntityKind,
+  hasBoolType,
+} from '@h5web/shared';
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
 import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 
@@ -52,6 +63,14 @@ export class H5WasmApi extends ProviderApi {
     const h5wDataset = await this.getH5WasmEntity(dataset.path);
     assertH5WasmDataset(h5wDataset);
 
+    if (hasBoolType(dataset)) {
+      const value = h5wDataset.to_array();
+
+      return selection
+        ? sliceValue(flattenValue(value, dataset), dataset, selection)
+        : value;
+    }
+
     if (selection) {
       const ranges = convertSelectionToRanges(h5wDataset, selection);
       return h5wDataset.slice(ranges);
@@ -66,8 +85,12 @@ export class H5WasmApi extends ProviderApi {
 
     return Object.fromEntries(
       Object.entries(h5wEntity.attrs).map(([name, attr]) => {
-        const { value } = attr;
-        return [name, value];
+        const { value, metadata } = attr;
+        const dtype = convertMetadataToDType(metadata);
+        return [
+          name,
+          dtype.class === DTypeClass.Bool ? attr.to_array() : value,
+        ];
       })
     );
   }

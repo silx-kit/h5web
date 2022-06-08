@@ -238,14 +238,14 @@ importers:
       '@types/react': 17.0.39
       eslint: '>=8'
       eslint-config-galex: 3.6.5
-      h5wasm: 0.4.2
+      h5wasm: 0.4.4
       react: 17.0.2
       rollup: 2.68.0
       rollup-plugin-dts: 4.1.0
       typescript: 4.5.5
       vite: 2.8.4
     dependencies:
-      h5wasm: 0.4.2
+      h5wasm: 0.4.4
     devDependencies:
       '@h5web/app': link:../app
       '@h5web/shared': link:../shared
@@ -9216,8 +9216,8 @@ packages:
     resolution: {integrity: sha512-W/kKzq7ZSF/LFItIjaSaccw8L6js+9SMSS5buXZs/Td7qZAT91Kd0LTxuUjSWDwuyv4MPo/fhZdkRLV1zsuClg==}
     dev: false
 
-  /h5wasm/0.4.2:
-    resolution: {integrity: sha512-RFDlZaEgBu/Aj9ei8zeVe3Rc7q69azZxtlHLJtbt1vaxBAsOjJLXW/Y9EENpbAu6CmyCR7+CMRmVtRyRcQzcWA==}
+  /h5wasm/0.4.4:
+    resolution: {integrity: sha512-kk6CT7hni4e1FazNveSQ2E8sdiPLZ+w11XuwuDTpoj1DGCixTl19VGOWPTXstKweFAF0ZOpz0i2BDMGPP04hXg==}
     dev: false
 
   /handlebars/4.7.7:
