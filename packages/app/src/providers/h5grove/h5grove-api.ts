@@ -29,7 +29,7 @@ import {
 } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
-  /* API compatible with h5grove@0.0.16 */
+  /* API compatible with h5grove@1.0.0 */
   public constructor(
     url: string,
     filepath: string,
@@ -133,7 +133,12 @@ export class H5GroveApi extends DataProviderApi {
     const { data } = await this.cancellableFetchValue<ArrayBuffer>(
       '/data/',
       params,
-      { path: params.dataset.path, selection: params.selection, format: 'bin' },
+      {
+        path: params.dataset.path,
+        selection: params.selection,
+        format: 'bin',
+        dtype: 'safe',
+      },
       'arraybuffer'
     );
 
