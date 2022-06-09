@@ -11,9 +11,10 @@ import {
   useInteraction,
 } from './hooks';
 import type { CanvasEvent, Interaction, Selection } from './models';
+import { MouseButton } from './models';
 import { boundPointToFOV } from './utils';
 
-interface Props extends Interaction {
+interface Props extends Omit<Interaction, 'button'> {
   onSelectionStart?: () => void;
   onSelectionChange?: (points: Selection) => void;
   onSelectionEnd?: (points: Selection) => void;
@@ -35,7 +36,11 @@ function SelectionTool(props: Props) {
 
   const camera = useThree((state) => state.camera);
   const { worldToData } = useAxisSystemContext();
-  const shouldInteract = useInteraction(id, { modifierKey, disabled });
+  const shouldInteract = useInteraction(id, {
+    button: MouseButton.Left,
+    modifierKey,
+    disabled,
+  });
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useRafState<Vector2 | undefined>(undefined);

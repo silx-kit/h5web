@@ -2,6 +2,11 @@ import type { Vector2, Vector3 } from 'three';
 
 export type ModifierKey = 'Alt' | 'Control' | 'Shift';
 
+export enum MouseButton {
+  'Left' = 0,
+  'Middle' = 1,
+}
+
 export interface Selection {
   startPoint: Vector2;
   endPoint: Vector2;
@@ -28,6 +33,7 @@ export interface InteractionInfo {
 }
 
 export interface Interaction {
+  button?: MouseButton;
   modifierKey?: ModifierKey;
   disabled?: boolean;
 }
