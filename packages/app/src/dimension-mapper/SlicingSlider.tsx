@@ -53,6 +53,15 @@ function SlicingSlider(props: Props) {
             setValue(newValue);
             onDebouncedChange(newValue);
           }}
+          /* When slicing in E2E tests, `onChange` is called with the old value.
+             A `setState` callback in `ReactSlider` that is supposed to be called
+             after the state is updated, is in fact called before.
+             https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L890
+             Adding `onAfterChange` fixes the issue for now. */
+          onAfterChange={(newValue) => {
+            setValue(newValue);
+            onDebouncedChange(newValue);
+          }}
           renderThumb={(thumbProps, state) => (
             <div {...thumbProps} className={styles.thumb}>
               {state.valueNow}

@@ -158,18 +158,15 @@ describe('/mock', () => {
     cy.selectExplorerNode('fourD');
 
     cy.findByRole('figure', { name: 'fourD' }).as('vis').should('be.visible');
-    cy.findAllByRole('slider', { name: 'Dimension slider' })
-      .should('have.length', 2)
-      .last()
+    cy.findAllByRole('slider', { name: /D[0-9]/u }).should('have.length', 2);
+    cy.findAllByRole('slider', { name: 'D1' })
       .as('d1Slider')
       .should('have.attr', 'aria-valuenow', 0)
       .and('have.attr', 'aria-valuemin', 0)
       .and('have.attr', 'aria-valuemax', 8);
 
     // Move slider up by three marks and check value
-    cy.get('@d1Slider').type('{uparrow}{uparrow}{uparrow}');
-    cy.waitForStableDOM();
-
+    cy.get('@d1Slider').type('{upArrow}').type('{upArrow}').type('{upArrow}');
     cy.get('@d1Slider').should('have.attr', 'aria-valuenow', 3);
     cy.get('@vis')
       .should('contain.text', '9.996e-1')
@@ -180,7 +177,7 @@ describe('/mock', () => {
     }
 
     // Move slider up by one mark to reach slice filled only with zeros
-    cy.get('@d1Slider').type('{uparrow}');
+    cy.get('@d1Slider').type('{upArrow}');
     cy.waitForStableDOM();
 
     cy.get('@d1Slider').should('have.attr', 'aria-valuenow', 4);
