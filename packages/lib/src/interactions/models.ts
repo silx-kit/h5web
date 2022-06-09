@@ -1,3 +1,4 @@
+import type { Domain } from '@h5web/shared';
 import type { Vector2, Vector3 } from 'three';
 
 export type ModifierKey = 'Alt' | 'Control' | 'Shift';
@@ -39,3 +40,10 @@ export interface Interaction {
 }
 
 export type Interactions = Record<string, Interaction | boolean>;
+
+export type ZoomTransformFn = (
+  startPt: Vector2,
+  endPt: Vector2,
+  xDomain: Domain,
+  yDomain: Domain
+) => [Vector2, Vector2];

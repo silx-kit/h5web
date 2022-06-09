@@ -33,6 +33,7 @@ function Image() {
 interface TemplateProps {
   modifierKey: ModifierKeyType;
   keepRatio?: boolean;
+  fullDimIfEmpty?: boolean;
 }
 
 const Template: Story<TemplateProps> = (args) => {
@@ -61,6 +62,12 @@ export const KeepRatio = Template.bind({});
 KeepRatio.args = {
   modifierKey: 'Control',
   keepRatio: true,
+};
+
+export const FullDimZoomIfEmpty = Template.bind({});
+FullDimZoomIfEmpty.args = {
+  modifierKey: 'Control',
+  fullDimIfEmpty: true,
 };
 
 export default {

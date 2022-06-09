@@ -3,19 +3,21 @@ import { useThree } from '@react-three/fiber';
 import { useCameraState } from '../vis/hooks';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import { getVisibleDomains } from '../vis/utils';
-import RatioSelectionRect from './RatioSelectionRect';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
 import type { Interaction, Selection } from './models';
-import { getEnclosedRectangle, getRatioRespectingRectangle } from './utils';
+import { getEnclosedRectangle, getZoomTransform } from './utils';
 
 interface Props extends Omit<Interaction, 'button'> {
   keepRatio?: boolean;
+  fullDimIfEmpty?: boolean;
 }
 
 function SelectToZoom(props: Props) {
-  const { keepRatio, ...interactionProps } = props;
+  const { keepRatio, fullDimIfEmpty, ...interactionProps } = props;
+
+  const transform = getZoomTransform(keepRatio, fullDimIfEmpty);
 
   const { dataToWorld } = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
@@ -27,19 +29,16 @@ function SelectToZoom(props: Props) {
     getVisibleDomains,
     []
   );
-  const dataRatio = Math.abs(
-    (xVisibleDomain[1] - xVisibleDomain[0]) /
-      (yVisibleDomain[1] - yVisibleDomain[0])
-  );
 
   function onSelectionEnd(selection: Selection) {
     const { startPoint: dataStartPoint, endPoint: dataEndPoint } = selection;
 
     // Work in world coordinates as we need to act on the world camera
-    const [startPoint, endPoint] = (
-      keepRatio
-        ? getRatioRespectingRectangle(dataStartPoint, dataEndPoint, dataRatio)
-        : [dataStartPoint, dataEndPoint]
+    const [startPoint, endPoint] = transform(
+      dataStartPoint,
+      dataEndPoint,
+      xVisibleDomain,
+      yVisibleDomain
     ).map(dataToWorld);
 
     if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
@@ -63,24 +62,30 @@ function SelectToZoom(props: Props) {
       {...interactionProps}
     >
       {({ startPoint, endPoint }) => {
+        const [newStartPoint, newEndPoint] = transform(
+          startPoint,
+          endPoint,
+          xVisibleDomain,
+          yVisibleDomain
+        );
         return (
           <>
             <SelectionRect
-              startPoint={startPoint}
-              endPoint={endPoint}
+              startPoint={newStartPoint}
+              endPoint={newEndPoint}
               fill="white"
               stroke="black"
-              fillOpacity={keepRatio ? 0 : 0.25}
-              strokeDasharray={keepRatio ? '4' : undefined}
+              fillOpacity={0.25}
+              clampToVis
             />
+            {/* Draw un-transformed user-drawn rectangle */}
             {keepRatio && (
-              <RatioSelectionRect
+              <SelectionRect
                 startPoint={startPoint}
                 endPoint={endPoint}
-                ratio={dataRatio}
-                fillOpacity={0.25}
-                fill="white"
                 stroke="black"
+                fillOpacity={0}
+                strokeDasharray="4"
               />
             )}
           </>
