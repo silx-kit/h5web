@@ -44,8 +44,12 @@ function InteractionsProvider(props: { children: ReactNode }) {
       const params = interactionMap.get(id);
       assertDefined(params, `Interaction ${id} is not registered.`);
 
-      const { disabled, modifierKey } = params;
+      const { disabled, modifierKey, button } = params;
       if (disabled) {
+        return false;
+      }
+
+      if (button !== undefined && event.button !== button) {
         return false;
       }
 

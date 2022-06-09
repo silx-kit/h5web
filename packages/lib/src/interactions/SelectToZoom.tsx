@@ -10,7 +10,7 @@ import { useMoveCameraTo } from './hooks';
 import type { Interaction, Selection } from './models';
 import { getEnclosedRectangle, getRatioRespectingRectangle } from './utils';
 
-interface Props extends Interaction {
+interface Props extends Omit<Interaction, 'button'> {
   keepRatio?: boolean;
 }
 

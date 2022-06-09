@@ -8,13 +8,22 @@ import {
   useMoveCameraTo,
   useInteraction,
 } from './hooks';
+import { MouseButton } from './models';
 import type { CanvasEvent, Interaction } from './models';
 
-function Pan(props: Interaction) {
-  const { modifierKey } = props;
+interface Props extends Omit<Interaction, 'button'> {
+  button?: MouseButton;
+}
+
+function Pan(props: Props) {
+  const { button = MouseButton.Left, modifierKey, disabled } = props;
 
   const camera = useThree((state) => state.camera);
-  const shouldInteract = useInteraction('Pan', props);
+  const shouldInteract = useInteraction('Pan', {
+    button,
+    modifierKey,
+    disabled,
+  });
   const moveCameraTo = useMoveCameraTo();
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
