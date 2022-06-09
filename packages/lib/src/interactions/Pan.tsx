@@ -11,11 +11,7 @@ import {
 import { MouseButton } from './models';
 import type { CanvasEvent, Interaction } from './models';
 
-interface Props extends Omit<Interaction, 'button'> {
-  button?: MouseButton;
-}
-
-function Pan(props: Props) {
+function Pan(props: Interaction) {
   const { button = MouseButton.Left, modifierKey, disabled } = props;
 
   const camera = useThree((state) => state.camera);
