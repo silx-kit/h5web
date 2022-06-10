@@ -144,7 +144,10 @@ The build process of `@h5web/lib` works as follows:
      consumers who use TypeScript. This is a two step process: first we generate
      type declarations for all TS files in the `dist-ts` folder with `tsc`, then
      we use Rollup to merge all the declarations into a single file:
-     `dist/index.d.ts`, which is referenced from `package.json`.
+     `dist/index.d.ts`, which is referenced from `package.json`. Note that since
+     `@h5web/shared` is not a published package, it cannot be marked as an
+     external dependency; its types must therefore be inlined into
+     `dist/index.d.ts`, so we make sure to tell Rollup where to find them.
 
 The build process of `@h5web/app` is the same with one exception: in addition to
 importing the package's global styles, `src/styles.ts` also imports the `lib`
@@ -156,6 +159,10 @@ import.
 The build process of`@h5web/h5wasm` is also the same as the lib's, but since the
 package does not include any styles, `vite build` does not generate a
 `style.css` file and there's not `build:css` script.
+
+Finally, since `@h5web/shared` is not a published package, it does not need to
+be built with Vite. However, its types do need to be built with `tsc` so that
+other packages can inline them in their own `dist/index.d.ts`.
 
 ## Code quality
 

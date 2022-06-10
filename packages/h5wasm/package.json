@@ -43,6 +43,7 @@
   "devDependencies": {
     "@h5web/app": "workspace:*",
     "@h5web/shared": "workspace:*",
+    "@rollup/plugin-alias": "3.1.9",
     "@types/react": "17.0.39",
     "eslint": "8.9.0",
     "eslint-config-galex": "3.6.5",
