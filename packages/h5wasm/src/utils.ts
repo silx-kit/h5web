@@ -13,15 +13,6 @@ import {
 } from './guards';
 import type { NumericMetadata } from './models';
 
-// https://www.loc.gov/preservation/digital/formats/fdd/fdd000229.shtml
-const HDF5_MAGIC_NUMBER = [0x89, 0x48, 0x44, 0x46, 0x0d, 0x0a, 0x1a, 0x0a]; // ASCII: \211 HDF \r \n \032 \n
-
-export function isHDF5(buffer: ArrayBuffer): boolean {
-  return new Uint8Array(buffer.slice(0, HDF5_MAGIC_NUMBER.length)).every(
-    (num, i) => num === HDF5_MAGIC_NUMBER[i]
-  );
-}
-
 export function convertNumericMetadataToDType(
   metadata: NumericMetadata
 ): NumericType {
