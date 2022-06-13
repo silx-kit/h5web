@@ -11,6 +11,7 @@ import {
   getIntegerTicks,
   getCombinedDomain,
   clampBound,
+  getAxisDomain,
 } from './utils';
 
 const MAX = Number.MAX_VALUE / 2;
@@ -327,5 +328,26 @@ describe('getCombinedDomain', () => {
   it('should return undefined when all domains are undefined', () => {
     const combinedDomain = getCombinedDomain([undefined, undefined]);
     expect(combinedDomain).toBeUndefined();
+  });
+});
+
+describe('getAxisDomain', () => {
+  it('should return min and max axis values in correct order', () => {
+    expect(getAxisDomain([-1, 0, 1])).toEqual([-1, 1]);
+    expect(getAxisDomain([4, 2, 0, -2])).toEqual([4, -2]);
+  });
+
+  it('should respect given scale', () => {
+    expect(getAxisDomain([-1, 0, 1], ScaleType.Log)).toEqual([1, 1]);
+    expect(getAxisDomain([4, 2, 0, -2], ScaleType.Log)).toEqual([4, 2]);
+  });
+
+  it('should allow extending domain', () => {
+    expect(getAxisDomain([4, 2, 0], ScaleType.Linear, 0.5)).toEqual([6, -2]);
+    expect(getAxisDomain([-1, 0, 1], ScaleType.Log, 1)).toEqual([0.1, 10]);
+  });
+
+  it('should return undefined when values array is empty', () => {
+    expect(getAxisDomain([])).toBeUndefined();
   });
 });
