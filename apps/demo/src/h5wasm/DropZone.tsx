@@ -31,7 +31,6 @@ function DropZone(props: Props) {
 
   const { getRootProps, getInputProps, open, isDragActive, fileRejections } =
     useDropzone({
-      accept: { 'application/x-hdf5': EXT },
       multiple: false,
       noClick: true,
       noKeyboard: true,
@@ -46,7 +45,7 @@ function DropZone(props: Props) {
         'data-disabled': isReadingFile || undefined,
       })}
     >
-      <input {...getInputProps()} />
+      <input {...getInputProps()} accept={EXT.join(',')} />
       <div className={styles.inner}>
         {isDragActive ? (
           <p className={styles.dropIt}>Drop it!</p>
@@ -58,12 +57,11 @@ function DropZone(props: Props) {
                 or use a file picker instead
               </button>
             </p>
-            <p
-              className={styles.hint}
-              role={fileRejections.length > 0 ? 'alert' : undefined}
-            >
-              Extensions allowed: <strong>{EXT.join(' ')}</strong>
-            </p>
+            {fileRejections.length > 1 && (
+              <p className={styles.hint} role="alert">
+                Please drop a single file
+              </p>
+            )}
           </>
         )}
       </div>

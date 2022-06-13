@@ -33,22 +33,13 @@ import {
   isH5WasmSoftLink,
 } from './guards';
 import type { H5WasmAttributes, H5WasmEntity } from './models';
-import {
-  convertMetadataToDType,
-  convertSelectionToRanges,
-  isHDF5,
-} from './utils';
+import { convertMetadataToDType, convertSelectionToRanges } from './utils';
 
 export class H5WasmApi extends ProviderApi {
   private readonly file: Promise<H5WasmFile>;
 
   public constructor(filename: string, buffer: ArrayBuffer) {
     super(filename);
-
-    if (!isHDF5(buffer)) {
-      throw new Error('Expected valid HDF5 file');
-    }
-
     this.file = this.initFile(buffer);
   }
 
@@ -118,7 +109,10 @@ export class H5WasmApi extends ProviderApi {
     const file = await this.file;
 
     const h5wEntity = file.get(path);
-    assertNonNull(h5wEntity, `No entity found at ${path}`);
+    assertNonNull(
+      h5wEntity,
+      path === '/' ? `Expected valid HDF5 file` : `No entity found at ${path}`
+    );
 
     return h5wEntity;
   }
