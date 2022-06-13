@@ -32,7 +32,7 @@
     "normalize.css": "8.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-icons": "4.3.1",
+    "react-icons": "4.4.0",
     "react-suspense-fetch": "0.4.1",
     "three": "0.135.0"
   },
@@ -43,7 +43,7 @@
     "@storybook/addon-links": "6.4.19",
     "@storybook/react": "6.4.19",
     "@types/d3-format": "3.0.1",
-    "@types/lodash": "4.14.178",
+    "@types/lodash": "4.14.182",
     "@types/ndarray": "1.0.11",
     "@types/react": "17.0.39",
     "@types/react-dom": "17.0.11",

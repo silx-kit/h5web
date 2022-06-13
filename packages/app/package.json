@@ -51,11 +51,11 @@
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
     "react-error-boundary": "3.1.4",
-    "react-icons": "4.3.1",
-    "react-reflex": "4.0.6",
-    "react-slider": "2.0.0",
+    "react-icons": "4.4.0",
+    "react-reflex": "4.0.9",
+    "react-slider": "2.0.1",
     "react-suspense-fetch": "0.4.1",
-    "react-use": "17.3.2",
+    "react-use": "17.4.0",
     "three": "0.135.0",
     "zustand": "4.0.0-rc.1"
   },
@@ -80,9 +80,9 @@
     "npm-run-all": "4.1.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "rollup": "2.68.0",
-    "rollup-plugin-dts": "4.1.0",
+    "rollup": "2.75.6",
+    "rollup-plugin-dts": "4.2.2",
     "typescript": "4.5.5",
-    "vite": "2.8.4"
+    "vite": "2.9.12"
   }
 }
