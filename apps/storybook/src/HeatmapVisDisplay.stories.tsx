@@ -98,101 +98,21 @@ WithAxisLabels.args = {
 
 export const WithAnnotation: Story<HeatmapVisProps> = (args) => (
   <HeatmapVis {...args}>
-    <Annotation x={10} y={15} style={{ color: 'white' }}>
-      HTML annotation positioned at (10, 15)
-    </Annotation>
-    <Annotation
-      x={10}
-      y={5}
-      center
-      style={{
-        width: 180,
-        color: 'white',
-        textAlign: 'center',
-      }}
-    >
-      Another annotation, <strong>centred</strong> on (10, 5)
+    <Annotation x={10} y={16} style={{ color: 'white' }}>
+      HTML annotation positioned at (10, 16)
     </Annotation>
     <Annotation
       x={25}
       y={10}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        width: 320,
-        height: 50,
-        color: 'white',
-        fontSize: '0.875rem',
-        textAlign: 'center',
-      }}
+      center
+      style={{ width: 180, color: 'white', textAlign: 'center' }}
     >
-      <>
-        <p
-          style={{
-            flex: '1 1 0%',
-            margin: 0,
-            padding: '0.5rem',
-            border: '10px solid pink',
-          }}
-        >
-          Annotations don't have to contain just text. You can also draw shapes
-          with CSS and SVG.
-        </p>
-        <svg
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            overflow: 'visible',
-          }}
-        >
-          <rect
-            width="100%"
-            height="100%"
-            fill="none"
-            stroke="papayawhip"
-            strokeWidth={5}
-          />
-        </svg>
-      </>
+      Another annotation, <strong>centred</strong> on (25, 10)
     </Annotation>
   </HeatmapVis>
 );
 
 WithAnnotation.args = {
-  dataArray,
-  domain,
-};
-
-export const WithAnnotationZoom: Story<HeatmapVisProps> = (args) => (
-  <HeatmapVis {...args}>
-    <Annotation
-      x={10}
-      y={15}
-      scaleOnZoom
-      style={{ width: 230, color: 'white' }}
-    >
-      HTML annotation at (10, 15) that scales with zoom.
-    </Annotation>
-    <Annotation
-      x={25}
-      y={10}
-      scaleOnZoom
-      center
-      style={{
-        width: 320,
-        color: 'white',
-        textAlign: 'center',
-      }}
-    >
-      Another annotation that scales with zoom but this time{' '}
-      <strong>centred</strong> on (25, 10)
-    </Annotation>
-  </HeatmapVis>
-);
-WithAnnotationZoom.args = {
   dataArray,
   domain,
 };
