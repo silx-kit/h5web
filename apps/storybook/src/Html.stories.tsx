@@ -46,7 +46,7 @@ export const Container: Story<{
   const [portalContainer, setPortalContainer] = useState<HTMLDivElement>();
 
   return (
-    <>
+    <div style={{ display: 'flex' }}>
       <VisCanvas
         abscissaConfig={{ visDomain: [0, 3] }}
         ordinateConfig={{ visDomain: [50, 100] }}
@@ -78,7 +78,7 @@ export const Container: Story<{
       </VisCanvas>
 
       <div ref={(elem) => elem && setOutsideContainer(elem)} />
-    </>
+    </div>
   );
 };
 

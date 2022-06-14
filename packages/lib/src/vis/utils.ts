@@ -271,7 +271,7 @@ export function getAxisOffsets(
   };
 }
 
-export function isDescending(array: number[]): boolean {
+function isDescending(array: number[]): boolean {
   return array[array.length - 1] - array[0] < 0;
 }
 
@@ -284,6 +284,7 @@ export function getAxisDomain(
   if (!rawDomain) {
     return undefined;
   }
+
   const extendedDomain = extendDomain(rawDomain, extensionFactor, scaleType);
   return isDescending(axisValues)
     ? [extendedDomain[1], extendedDomain[0]]

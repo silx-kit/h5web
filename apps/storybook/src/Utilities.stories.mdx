@@ -142,7 +142,7 @@ scaleWithMid(2.2); // Returns 1
 scaleWithMid(3); // Returns 3
 ```
 
-### getAxisValues
+#### getAxisValues
 
 Return an array of axis values of the desired length.
 
@@ -158,6 +158,22 @@ getAxisValues(Float32Array([-1, 0, 1], 3) // [-1, 0, 1]
 getAxisValues([0, 1], 3) // Throws error as 2 != 3.
 ```
 
+#### getAxisDomain
+
+Find the ascending or descending domain of an axis given its values and scale. Optionally extend the domain by a given factor.
+
+```ts
+getAxisDomain(
+  axisValues: number[],
+  scaleType: ScaleType = ScaleType.Linear,
+  extensionFactor = 0
+): Domain | undefined
+
+getAxisDomain([-1, 0, 1]); // [-1, 1]
+getAxisDomain([4, 2, 0, -2], ScaleType.Log); // [4, 2]);
+getAxisDomain([4, 2, 0], ScaleType.Linear, 0.5); // [6, -2])
+```
+
 ### Hooks
 
 - **`useDomain(...args): Domain | undefined`** - Memoised version of `getDomain`.
@@ -165,8 +181,9 @@ getAxisValues([0, 1], 3) // Throws error as 2 != 3.
 - **`useCombinedDomain(...args): Domain | undefined`** - Memoised version of `getCombinedDomain`.
 - **`useVisDomain(...args): Domain`** - Memoised version of `getVisDomain`.
 - **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
-- **`useValueToIndexScale(..args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
 - **`useAxisValues(..args): number[]`** - Memoised version of `getAxisValues`.
+- **`useAxisDomain(..args): Domain | undefined`** - Memoised version of `getAxisDomain`.
+- **`useValueToIndexScale(..args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
 
 #### useCanvasEvents
 
@@ -181,6 +198,70 @@ const handlePointerDown = useCallback((evt: CanvasEvent<PointerEvent>) => {
 }, []);
 
 useCanvasEvents({ onPointerDown: handlePointerDown }); // also supported: `onPointerMove`, `onPointerUp` and `onWheel`
+```
+
+#### useCameraState
+
+Compute and update a local React state on every React Three Fiber frame. Useful to re-render React components when the user pans/zooms.
+The hook accepts a callback, which:
+
+- receives the `camera` object and the current `AxisSystemContext` value;
+- computes and returns a state based on the camera's current scale and position (typically using a combination of
+  [camera-based](https://h5web-docs.panosc.eu/?path=/story/utilities--page#camera-based-utilities) and
+  [context](https://h5web-docs.panosc.eu/?path=/story/context--page) utilities).
+
+```ts
+const htmlPt = useCameraState(
+  (camera, context) => dataToHtml(camera, context, new Vector2(x, y)),
+  [x, y]
+);
+```
+
+Similarly to `useCallback`, `useCameraState` accepts a dependency array as second parameter. Make sure to configure ESLint's
+[`react-hooks/exhaustive-deps` rule](https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks#advanced-configuration)
+in your app to report missing dependencies:
+
+```json
+"react-hooks/exhaustive-deps": ["error", { "additionalHooks": "(useCameraState)" }]
+```
+
+Internally, `useCameraState` uses React's `useState` and R3F's [`useFrame` hooks](https://docs.pmnd.rs/react-three-fiber/api/hooks#useframe).
+To avoid unnecessary re-renders, it performs a deep comparison before updating the state with the value returned by the callback.
+
+### Camera-based utilities
+
+The utilities documented in this section require access to the R3F `camera` object. They are typically meant to be called inside
+[`useCameraState`](https://h5web-docs.panosc.eu/?path=/story/utilities--page#usecamerastate) callbacks or DOM event listeners.
+
+#### dataToHtml
+
+Convert a point from data space to HTML space.
+
+```ts
+dataToHtml(
+  camera: Camera,
+  context: AxisSystemContextValue,
+  dataPt: Vector2 | Vector3
+): Vector2
+```
+
+#### getWorldFOV
+
+Compute the field of view of the camera in world space.
+
+```ts
+getWorldFOV(camera: Camera): { topRight: Vector3; bottomLeft: Vector3; }
+```
+
+### getVisibleDomains
+
+Compute the field of view of the camera in data space.
+
+```ts
+getVisibleDomains(camera: Camera, context: AxisSystemContextValue): {
+  xVisibleDomain: Domain;
+  yVisibleDomain: Domain;
+}
 ```
 
 ### Mock data
