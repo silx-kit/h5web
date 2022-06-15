@@ -13,7 +13,7 @@ import { isString } from 'lodash';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ValuesStoreParams } from '../models';
-import { convertDtype, handleAxiosError } from '../utils';
+import { handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
   H5GroveAttrValuesResponse,
@@ -26,10 +26,11 @@ import {
   isGroupResponse,
   isSoftLinkResponse,
   typedArrayFromDType,
+  convertH5GroveDtype,
 } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
-  /* API compatible with h5grove@1.0.0 */
+  /* API compatible with h5grove@1.1.0 */
   public constructor(
     url: string,
     filepath: string,
@@ -194,7 +195,7 @@ export class H5GroveApi extends DataProviderApi {
         attributes,
         kind: EntityKind.Dataset,
         shape,
-        type: convertDtype(dtype),
+        type: convertH5GroveDtype(dtype),
         rawType: dtype,
         ...(chunks && { chunks }),
         ...(filters && { filters }),
@@ -244,7 +245,7 @@ export class H5GroveApi extends DataProviderApi {
     return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
       name,
       shape,
-      type: convertDtype(dtype),
+      type: convertH5GroveDtype(dtype),
     }));
   }
 }
