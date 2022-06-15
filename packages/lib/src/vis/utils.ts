@@ -329,7 +329,7 @@ export function dataToHtml(
 ): Vector2 {
   const { dataToWorld, cameraToHtml } = context;
   const worldPt = dataToWorld(dataPt);
-  const cameraPt = new Vector3(worldPt.x, worldPt.y, 0).project(camera);
+  const cameraPt = worldToCamera(camera, worldPt);
   return cameraToHtml(cameraPt);
 }
 
@@ -378,4 +378,11 @@ export function getAxisValues(
   throw new Error(
     `Expected array to have length ${axisLength}, not ${rawValues.length}`
   );
+}
+
+export function worldToCamera(
+  camera: Camera,
+  worldEndPoint: Vector2 | Vector3
+) {
+  return new Vector3(worldEndPoint.x, worldEndPoint.y, 0).project(camera);
 }
