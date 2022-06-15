@@ -28,7 +28,6 @@ interface ValueRequest {
 }
 
 export abstract class DataProviderApi {
-  public readonly filepath: string;
   public readonly cancelledValueRequests = new Set<ValueRequest>();
 
   protected readonly client: AxiosInstance;
@@ -37,8 +36,10 @@ export abstract class DataProviderApi {
 
   private readonly progressListeners = new Set<ProgressCallback>();
 
-  public constructor(filepath: string, config?: AxiosRequestConfig) {
-    this.filepath = filepath;
+  public constructor(
+    public readonly filepath: string,
+    config?: AxiosRequestConfig
+  ) {
     this.client = axios.create(config);
   }
 
