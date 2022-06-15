@@ -322,6 +322,10 @@ export function toArray(arr: NumArray): number[] {
   return isTypedArray(arr) ? [...arr] : arr;
 }
 
+export function worldToCamera(camera: Camera, worldPt: Vector2 | Vector3) {
+  return new Vector3(worldPt.x, worldPt.y, 0).project(camera);
+}
+
 export function dataToHtml(
   camera: Camera,
   context: AxisSystemContextValue,
@@ -378,11 +382,4 @@ export function getAxisValues(
   throw new Error(
     `Expected array to have length ${axisLength}, not ${rawValues.length}`
   );
-}
-
-export function worldToCamera(
-  camera: Camera,
-  worldEndPoint: Vector2 | Vector3
-) {
-  return new Vector3(worldEndPoint.x, worldEndPoint.y, 0).project(camera);
 }

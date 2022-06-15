@@ -233,6 +233,14 @@ To avoid unnecessary re-renders, it performs a deep comparison before updating t
 The utilities documented in this section require access to the R3F `camera` object. They are typically meant to be called inside
 [`useCameraState`](https://h5web-docs.panosc.eu/?path=/story/utilities--page#usecamerastate) callbacks or DOM event listeners.
 
+#### worldToCamera
+
+Convert a point from world space to camera space
+
+```ts
+dataToHtml(camera: Camera, worldPt: Vector2 | Vector3): Vector2
+```
+
 #### dataToHtml
 
 Convert a point from data space to HTML space.

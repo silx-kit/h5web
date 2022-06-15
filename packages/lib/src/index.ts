@@ -66,6 +66,7 @@ export {
   getAxisValues,
   getAxisDomain,
   getValueToIndexScale,
+  worldToCamera,
   dataToHtml,
   getWorldFOV,
   getVisibleDomains,
