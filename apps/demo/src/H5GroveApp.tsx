@@ -14,7 +14,7 @@ function H5GroveApp() {
     <H5GroveProvider
       url={URL}
       filepath={filepath}
-      axiosParams={{ file: filepath }}
+      axiosConfig={{ params: { file: filepath } }}
     >
       <App explorerOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </H5GroveProvider>

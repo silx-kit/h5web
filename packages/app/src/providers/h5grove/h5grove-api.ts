@@ -9,6 +9,7 @@ import type {
   NumericType,
 } from '@h5web/shared';
 import { hasScalarShape, buildEntityPath, EntityKind } from '@h5web/shared';
+import type { AxiosRequestConfig } from 'axios';
 import { isString } from 'lodash';
 
 import { DataProviderApi } from '../api';
@@ -34,9 +35,9 @@ export class H5GroveApi extends DataProviderApi {
   public constructor(
     url: string,
     filepath: string,
-    axiosParams?: Record<string, string>
+    axiosConfig?: AxiosRequestConfig
   ) {
-    super(filepath, { baseURL: url, params: axiosParams });
+    super(filepath, { baseURL: url, ...axiosConfig });
   }
 
   public async getEntity(path: string): Promise<Entity> {

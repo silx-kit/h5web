@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from 'axios';
 import type { PropsWithChildren } from 'react';
 import { useMemo } from 'react';
 
@@ -7,15 +8,15 @@ import { H5GroveApi } from './h5grove-api';
 interface Props {
   url: string;
   filepath: string;
-  axiosParams?: Record<string, string>;
+  axiosConfig?: AxiosRequestConfig;
 }
 
 function H5GroveProvider(props: PropsWithChildren<Props>) {
-  const { url, filepath, axiosParams, children } = props;
+  const { url, filepath, axiosConfig, children } = props;
 
   const api = useMemo(
-    () => new H5GroveApi(url, filepath, axiosParams),
-    [filepath, url, axiosParams]
+    () => new H5GroveApi(url, filepath, axiosConfig),
+    [filepath, url, axiosConfig]
   );
 
   return <DataProvider api={api}>{children}</DataProvider>;
