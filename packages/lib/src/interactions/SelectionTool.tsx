@@ -35,7 +35,7 @@ function SelectionTool(props: Props) {
   } = props;
 
   const camera = useThree((state) => state.camera);
-  const { worldToData } = useAxisSystemContext();
+  const { dataToWorld, worldToData } = useAxisSystemContext();
   const shouldInteract = useInteraction(id, {
     button: MouseButton.Left,
     modifierKey,
@@ -71,11 +71,19 @@ function SelectionTool(props: Props) {
       }
 
       const { worldPt, sourceEvent } = evt;
-      const newEndPoint = worldToData(boundPointToFOV(worldPt, camera));
-      setEndPoint(newEndPoint);
+      const dataEndPoint = worldToData(boundPointToFOV(worldPt, camera));
+      setEndPoint(dataEndPoint);
+
+      const worldEndPoint = dataToWorld(dataEndPoint);
+      const worldStartPoint = dataToWorld(startPoint);
 
       if (onSelectionChange && shouldInteract(sourceEvent)) {
-        onSelectionChange({ startPoint, endPoint: newEndPoint });
+        onSelectionChange({
+          startPoint,
+          endPoint: dataEndPoint,
+          worldStartPoint,
+          worldEndPoint,
+        });
       }
     },
     [
@@ -83,6 +91,7 @@ function SelectionTool(props: Props) {
       worldToData,
       camera,
       setEndPoint,
+      dataToWorld,
       onSelectionChange,
       shouldInteract,
     ]
@@ -102,9 +111,15 @@ function SelectionTool(props: Props) {
       setEndPoint(undefined);
 
       if (onSelectionEnd && shouldInteract(sourceEvent)) {
+        const dataEndPoint = worldToData(boundPointToFOV(worldPt, camera));
+        const worldEndPoint = dataToWorld(dataEndPoint);
+        const worldStartPoint = dataToWorld(startPoint);
+
         onSelectionEnd({
           startPoint,
-          endPoint: worldToData(boundPointToFOV(worldPt, camera)),
+          endPoint: dataEndPoint,
+          worldStartPoint,
+          worldEndPoint,
         });
       }
     },
@@ -115,6 +130,7 @@ function SelectionTool(props: Props) {
       shouldInteract,
       worldToData,
       camera,
+      dataToWorld,
     ]
   );
 
@@ -134,7 +150,15 @@ function SelectionTool(props: Props) {
     return null;
   }
 
-  return children({ startPoint, endPoint });
+  const worldEndPoint = dataToWorld(endPoint);
+  const worldStartPoint = dataToWorld(startPoint);
+
+  return children({
+    startPoint,
+    endPoint,
+    worldStartPoint,
+    worldEndPoint,
+  });
 }
 
 export type { Props as SelectionProps };
