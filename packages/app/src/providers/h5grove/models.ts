@@ -10,9 +10,15 @@ export interface H5GroveEntityResponse {
     | 'other';
 }
 
+export type H5GroveDtype =
+  | string
+  | {
+      [k: string]: H5GroveDtype;
+    };
+
 export interface H5GroveDatasetResponse extends H5GroveEntityResponse {
   type: EntityKind.Dataset;
-  dtype: string;
+  dtype: H5GroveDtype;
   shape: number[];
   attributes: H5GroveAttribute[];
   chunks: number[] | null;
@@ -37,7 +43,7 @@ export interface H5GroveExternalLinkResponse extends H5GroveEntityResponse {
 }
 
 export interface H5GroveAttribute {
-  dtype: string;
+  dtype: H5GroveDtype;
   name: string;
   shape: number[];
 }
