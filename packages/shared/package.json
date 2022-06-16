@@ -39,6 +39,6 @@
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
     "react": "17.0.2",
-    "typescript": "4.5.5"
+    "typescript": "4.7.3"
   }
 }

@@ -1,6 +1,11 @@
-const path = require('path');
-
 module.exports = {
+  core: {
+    builder: 'webpack5',
+    options: {
+      lazyCompilation: true,
+      fsCache: true,
+    },
+  },
   features: {
     storyStoreV7: true, // https://storybook.js.org/blog/storybook-on-demand-architecture/
   },
