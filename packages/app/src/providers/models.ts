@@ -26,7 +26,7 @@ export interface AttrValuesStore extends FetchStore<AttributeValues, Entity> {
   getSingle: (
     entity: Entity,
     attrName: NxAttribute | ImageAttribute
-  ) => unknown | undefined;
+  ) => unknown;
 }
 
 export type ExportFormat = 'csv' | 'npy' | 'tiff';

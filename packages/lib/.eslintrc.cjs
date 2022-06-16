@@ -1,9 +1,5 @@
-const { createConfig } = require('eslint-config-galex/src/createConfig');
+const { getDependencies } = require('eslint-config-galex/dist/getDependencies');
 
-const { rules, overrides } = require('../../eslint.shared');
+const { createConfig } = require('../../eslint.shared');
 
-module.exports = createConfig({
-  cwd: __dirname,
-  rules,
-  overrides,
-});
+module.exports = createConfig(__dirname, getDependencies());
