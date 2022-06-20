@@ -7,12 +7,12 @@ import type { Vector2 } from 'three';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import {
   useCanvasEvents,
-  useModifierKeyPressed,
   useInteraction,
+  useModifierKeyPressed,
 } from './hooks';
 import type { CanvasEvent, Interaction, Selection } from './models';
 import { MouseButton } from './models';
-import { boundPointToFOV } from './utils';
+import { boundPointToFOV, getModifierKeyArray } from './utils';
 
 interface Props extends Omit<Interaction, 'button'> {
   onSelectionStart?: () => void;
@@ -36,15 +36,16 @@ function SelectionTool(props: Props) {
 
   const camera = useThree((state) => state.camera);
   const { dataToWorld, worldToData } = useAxisSystemContext();
+  const modifierKeys = getModifierKeyArray(modifierKey);
   const shouldInteract = useInteraction(id, {
     button: MouseButton.Left,
-    modifierKey,
+    modifierKeys,
     disabled,
   });
 
   const [startPoint, setStartPoint] = useState<Vector2>();
   const [endPoint, setEndPoint] = useRafState<Vector2 | undefined>(undefined);
-  const isModifierKeyPressed = useModifierKeyPressed(modifierKey);
+  const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
 
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {

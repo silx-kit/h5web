@@ -1,8 +1,4 @@
-import {
-  useEventListener,
-  useKeyboardEvent,
-  useToggle,
-} from '@react-hookz/web';
+import { useEventListener, useMap } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import { useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
@@ -13,10 +9,10 @@ import { useInteractionsContext } from './InteractionsProvider';
 import type {
   CanvasEvent,
   CanvasEventCallbacks,
-  Interaction,
+  InteractionEntry,
   ModifierKey,
 } from './models';
-import { clampPositionToArea } from './utils';
+import { clampPositionToArea, isModifierKey } from './utils';
 
 const ZOOM_FACTOR = 0.95;
 
@@ -173,7 +169,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   useEventListener(domElement, 'wheel', handleWheel);
 }
 
-export function useInteraction(id: string, value: Interaction) {
+export function useInteraction(id: string, value: InteractionEntry) {
   const { shouldInteract, registerInteraction, unregisterInteraction } =
     useInteractionsContext();
 
@@ -188,23 +184,22 @@ export function useInteraction(id: string, value: Interaction) {
   );
 }
 
-export function useModifierKeyPressed(
-  modifierKey: ModifierKey | undefined
-): boolean {
-  const [isPressed, togglePressed] = useToggle(true);
+export function useModifierKeyPressed(modifierKeys: ModifierKey[]): boolean {
+  const map = useMap<ModifierKey, boolean>(modifierKeys.map((k) => [k, true]));
 
-  useKeyboardEvent(modifierKey, () => togglePressed(), [], { event: 'keyup' });
-  useKeyboardEvent(
-    modifierKey,
-    () => {
-      // `keydown` is fired repeatedly, so make sure we toggle only once
-      if (!isPressed) {
-        togglePressed();
-      }
-    },
-    [],
-    { event: 'keydown' }
-  );
+  useEventListener(window, 'keyup', (event: KeyboardEvent) => {
+    const { key: pressedKey } = event;
+    if (isModifierKey(pressedKey) && map.has(pressedKey)) {
+      map.set(pressedKey, false);
+    }
+  });
 
-  return isPressed;
+  useEventListener(window, 'keydown', (event: KeyboardEvent) => {
+    const { key: pressedKey } = event;
+    if (isModifierKey(pressedKey) && map.has(pressedKey)) {
+      map.set(pressedKey, true);
+    }
+  });
+
+  return [...map.values()].every(Boolean);
 }

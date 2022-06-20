@@ -5,7 +5,7 @@ import { Vector2 } from 'three';
 
 import type { Size } from '../vis/models';
 import { getWorldFOV } from '../vis/utils';
-import type { Interaction } from './models';
+import type { Interaction, ModifierKey } from './models';
 
 export function boundPointToFOV(
   unboundedPoint: Vector2 | Vector3,
@@ -98,4 +98,14 @@ export function clampRectangleToVis(
 
   const shift = newCenter.clone().sub(center);
   return [startPoint.clone().add(shift), endPoint.clone().add(shift)];
+}
+
+export function isModifierKey(key: string): key is ModifierKey {
+  return ['Alt', 'Control', 'Shift'].includes(key);
+}
+
+export function getModifierKeyArray(
+  keys: ModifierKey | ModifierKey[] | undefined = []
+): ModifierKey[] {
+  return Array.isArray(keys) ? keys : [keys];
 }

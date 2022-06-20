@@ -1,8 +1,14 @@
 import { useCanvasEvents, useZoomOnWheel, useInteraction } from './hooks';
-import type { Interaction } from './models';
+import type { WheelInteraction } from './models';
+import { getModifierKeyArray } from './utils';
 
-function Zoom(props: Omit<Interaction, 'button'>) {
-  const shouldInteract = useInteraction('Zoom', props);
+function Zoom(props: WheelInteraction) {
+  const { modifierKey, disabled } = props;
+  const shouldInteract = useInteraction('Zoom', {
+    modifierKeys: getModifierKeyArray(modifierKey),
+    disabled,
+    button: 'Wheel',
+  });
 
   const isZoomAllowed = (sourceEvent: WheelEvent) => {
     const shouldZoom = shouldInteract(sourceEvent);
