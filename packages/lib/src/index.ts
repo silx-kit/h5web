@@ -106,6 +106,7 @@ export type {
   CanvasEvent,
   CanvasEventCallbacks,
 } from './interactions/models';
+export { MouseButton } from './interactions/models';
 
 export type { Domain, Dims } from '@h5web/shared';
 
