@@ -55,6 +55,8 @@ export function getDefaultInteractions(
     XAxisZoom: { modifierKey: 'Alt', disabled: keepRatio },
     YAxisZoom: { modifierKey: 'Shift', disabled: keepRatio },
     SelectToZoom: { modifierKey: 'Control' },
+    XSelectToZoom: { modifierKey: ['Control', 'Alt'], disabled: keepRatio },
+    YSelectToZoom: { modifierKey: ['Control', 'Shift'], disabled: keepRatio },
   };
 }
 

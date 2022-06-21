@@ -48,6 +48,7 @@ export { default as Zoom } from './interactions/Zoom';
 export { default as XAxisZoom } from './interactions/XAxisZoom';
 export { default as YAxisZoom } from './interactions/YAxisZoom';
 export { default as SelectToZoom } from './interactions/SelectToZoom';
+export { default as AxialSelectToZoom } from './interactions/AxialSelectToZoom';
 export { default as SelectionLine } from './interactions/SelectionLine';
 export { default as SelectionRect } from './interactions/SelectionRect';
 export { default as SelectionTool } from './interactions/SelectionTool';

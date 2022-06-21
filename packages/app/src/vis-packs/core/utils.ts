@@ -20,6 +20,8 @@ export const INTERACTIONS_WITH_AXIAL_ZOOM = [
   ...BASE_INTERACTIONS,
   { shortcut: 'Alt+Wheel', description: 'Zoom in X' },
   { shortcut: 'Shift+Wheel', description: 'Zoom in Y' },
+  { shortcut: 'Ctrl+Alt+Drag', description: 'Select to zoom in X' },
+  { shortcut: 'Ctrl+Shift+Drag', description: 'Select to zoom in Y' },
 ];
 
 export function getBaseArray<T, U extends T[] | TypedArray | undefined>(

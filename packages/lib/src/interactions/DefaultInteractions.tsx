@@ -5,6 +5,7 @@ import SelectToZoom from '../interactions/SelectToZoom';
 import XAxisZoom from '../interactions/XAxisZoom';
 import YAxisZoom from '../interactions/YAxisZoom';
 import Zoom from '../interactions/Zoom';
+import AxialSelectToZoom from './AxialSelectToZoom';
 import type { Interactions } from './models';
 import { getDefaultInteractions } from './utils';
 
@@ -43,6 +44,12 @@ function DefaultInteractions(props: Props) {
       {interactions.YAxisZoom && <YAxisZoom {...interactions.YAxisZoom} />}
       {interactions.SelectToZoom && (
         <SelectToZoom {...interactions.SelectToZoom} keepRatio={keepRatio} />
+      )}
+      {interactions.XSelectToZoom && (
+        <AxialSelectToZoom axis="x" {...interactions.XSelectToZoom} />
+      )}
+      {interactions.YSelectToZoom && (
+        <AxialSelectToZoom axis="y" {...interactions.YSelectToZoom} />
       )}
     </>
   );
