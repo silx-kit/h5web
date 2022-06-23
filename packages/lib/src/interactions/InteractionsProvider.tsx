@@ -1,4 +1,3 @@
-import { assertDefined } from '@h5web/shared';
 import type { ReactNode } from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
 
@@ -44,7 +43,7 @@ function InteractionsProvider(props: { children: ReactNode }) {
     (interactionId: string, event: MouseEvent | WheelEvent) => {
       const registeredInteractions = [...interactionMap.values()];
 
-      function isButtonPressed(button?: MouseButton | 'Wheel') {
+      function isButtonPressed(button: MouseButton | 'Wheel') {
         if (event instanceof WheelEvent) {
           return button === 'Wheel';
         }
@@ -56,18 +55,13 @@ function InteractionsProvider(props: { children: ReactNode }) {
         return keys.every((k) => event.getModifierState(k));
       }
 
-      const params = interactionMap.get(interactionId);
-      assertDefined(params, `Interaction ${interactionId} is not registered.`);
-
-      const { disabled } = params;
-
-      if (disabled) {
-        return false;
+      if (!interactionMap.has(interactionId)) {
+        throw new Error(`Interaction ${interactionId} is not registered`);
       }
 
       const matchingInteractions = registeredInteractions.filter(
-        ({ modifierKeys: keys, button }) =>
-          isButtonPressed(button) && areKeysPressed(keys)
+        ({ modifierKeys: keys, button, disabled }) =>
+          !disabled && isButtonPressed(button) && areKeysPressed(keys)
       );
 
       if (matchingInteractions.length === 0) {
