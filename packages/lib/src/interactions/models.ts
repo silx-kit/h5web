@@ -34,10 +34,18 @@ export interface InteractionInfo {
   description: string;
 }
 
-export interface Interaction {
-  button?: MouseButton;
-  modifierKey?: ModifierKey;
+export interface InteractionEntry {
+  button: MouseButton | 'Wheel';
+  modifierKeys: ModifierKey[];
   disabled?: boolean;
 }
+
+export interface Interaction {
+  button?: MouseButton;
+  modifierKey?: ModifierKey | ModifierKey[];
+  disabled?: boolean;
+}
+
+export type WheelInteraction = Omit<Interaction, 'button'>;
 
 export type Interactions = Record<string, Interaction | boolean>;

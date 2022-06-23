@@ -10,20 +10,22 @@ import {
 } from './hooks';
 import { MouseButton } from './models';
 import type { CanvasEvent, Interaction } from './models';
+import { getModifierKeyArray } from './utils';
 
 function Pan(props: Interaction) {
   const { button = MouseButton.Left, modifierKey, disabled } = props;
+  const modifierKeys = getModifierKeyArray(modifierKey);
 
   const camera = useThree((state) => state.camera);
   const shouldInteract = useInteraction('Pan', {
     button,
-    modifierKey,
+    modifierKeys,
     disabled,
   });
   const moveCameraTo = useMoveCameraTo();
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
-  const isModifierKeyPressed = useModifierKeyPressed(modifierKey);
+  const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
 
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {

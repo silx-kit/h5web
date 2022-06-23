@@ -1,13 +1,18 @@
-import { assertDefined, isDefined } from '@h5web/shared';
+import { assertDefined } from '@h5web/shared';
 import type { ReactNode } from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
 
-import type { Interaction } from './models';
+import type { InteractionEntry, ModifierKey } from './models';
+import type { MouseButton } from './models';
 
 export interface InteractionsContextValue {
-  registerInteraction: (id: string, value: Interaction) => void;
+  registerInteraction: (id: string, value: InteractionEntry) => void;
   unregisterInteraction: (id: string) => void;
   shouldInteract: (id: string, event: MouseEvent) => boolean;
+}
+
+interface MapEntry extends InteractionEntry {
+  id: string;
 }
 
 const InteractionsContext = createContext({} as InteractionsContextValue);
@@ -19,11 +24,11 @@ export function useInteractionsContext() {
 function InteractionsProvider(props: { children: ReactNode }) {
   const { children } = props;
 
-  const [interactionMap] = useState(new Map<string, Interaction>());
+  const [interactionMap] = useState(new Map<string, MapEntry>());
 
   const registerInteraction = useCallback(
-    (id: string, value: Interaction) => {
-      interactionMap.set(id, value);
+    (id: string, value: InteractionEntry) => {
+      interactionMap.set(id, { id, ...value });
     },
     [interactionMap]
   );
@@ -36,29 +41,49 @@ function InteractionsProvider(props: { children: ReactNode }) {
   );
 
   const shouldInteract = useCallback(
-    (id: string, event: MouseEvent) => {
-      const registeredKeys = [...interactionMap.values()]
-        .map((params: Interaction) => params.modifierKey)
-        .filter(isDefined);
+    (interactionId: string, event: MouseEvent | WheelEvent) => {
+      const registeredInteractions = [...interactionMap.values()];
 
-      const params = interactionMap.get(id);
-      assertDefined(params, `Interaction ${id} is not registered.`);
+      function isButtonPressed(button?: MouseButton | 'Wheel') {
+        if (event instanceof WheelEvent) {
+          return button === 'Wheel';
+        }
 
-      const { disabled, modifierKey, button } = params;
+        return event.button === button;
+      }
+
+      function areKeysPressed(keys: ModifierKey[]) {
+        return keys.every((k) => event.getModifierState(k));
+      }
+
+      const params = interactionMap.get(interactionId);
+      assertDefined(params, `Interaction ${interactionId} is not registered.`);
+
+      const { disabled } = params;
+
       if (disabled) {
         return false;
       }
 
-      if (button !== undefined && event.button !== button) {
+      const matchingInteractions = registeredInteractions.filter(
+        ({ modifierKeys: keys, button }) =>
+          isButtonPressed(button) && areKeysPressed(keys)
+      );
+
+      if (matchingInteractions.length === 0) {
         return false;
       }
 
-      if (modifierKey !== undefined) {
-        return event.getModifierState(modifierKey);
+      if (matchingInteractions.length === 1) {
+        return matchingInteractions[0].id === interactionId;
       }
 
-      // Check that there is no conflicting interaction
-      return registeredKeys.every((key) => !event.getModifierState(key));
+      // If conflicting interactions, the one with the most modifier keys take precedence
+      const [maxKeyInteraction] = matchingInteractions
+        .sort((a, b) => a.modifierKeys.length - b.modifierKeys.length)
+        .reverse();
+
+      return maxKeyInteraction.id === interactionId;
     },
     [interactionMap]
   );
