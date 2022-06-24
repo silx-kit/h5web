@@ -1,18 +1,13 @@
 import type { Domain, NumArray, ScaleType } from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import { rgb } from 'd3-color';
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { BufferAttribute, BufferGeometry } from 'three';
 
 import type { ColorMap } from '../heatmap/models';
 import { getInterpolator } from '../heatmap/utils';
+import { useRaycasterThreshold } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import { createAxisScale } from '../utils';
@@ -48,27 +43,7 @@ function ScatterPoints(props: Props) {
   } = props;
 
   // Increase raycaster threshold to match point size
-  const raycaster = useThree((state) => state.raycaster);
-  useEffect(() => {
-    const oldThreshold = raycaster.params.Points?.threshold || 1;
-    if (raycaster.params.Points) {
-      raycaster.params.Points.threshold = size / 2;
-    }
-
-    return () => {
-      if (raycaster.params.Points) {
-        raycaster.params.Points.threshold = oldThreshold;
-      }
-    };
-  }, [raycaster, size]);
-
-  useFrame(() => {
-    // Consider that the zoom is the same in X and Y (regular non-axial zoom) as we can't have oval points
-    const zoom = zoomVector.x;
-    if (raycaster.params.Points) {
-      raycaster.params.Points.threshold = (size * zoom) / 2;
-    }
-  });
+  useRaycasterThreshold('Points', size);
 
   const handleClick = useCallback(
     (evt: ThreeEvent<MouseEvent>) => {
@@ -130,13 +105,11 @@ function ScatterPoints(props: Props) {
     invalidate();
   }, [color, dataGeometry, invalidate, position]);
 
-  const zoomVector = useThree((state) => state.camera.scale);
-
   return (
     <points
-      onClick={handleClick}
-      onPointerEnter={handlePointerEnter}
-      onPointerOut={handlePointerOut}
+      onClick={onClick && handleClick}
+      onPointerEnter={onPointerEnter && handlePointerEnter}
+      onPointerOut={onPointerOut && handlePointerOut}
       geometry={dataGeometry}
     >
       <GlyphMaterial size={size} glyphType={GlyphType.Circle} />

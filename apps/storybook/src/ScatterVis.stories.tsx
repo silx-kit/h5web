@@ -92,19 +92,17 @@ AxisScaleTypes.args = {
 };
 
 export const Click: Story<ScatterVisProps> = (args) => {
-  const [title, setTitle] = useState(`Click on a point !`);
+  const [index, setIndex] = useState<number>();
 
   return (
     <ScatterVis
       {...args}
-      title={title}
-      onPointClick={(index) => {
-        setTitle(
-          index !== undefined
-            ? `You clicked on point ${index} (value: ${data[index]})`
-            : `Click on a point !`
-        );
-      }}
+      title={
+        index !== undefined
+          ? `You clicked on point ${index} (value: ${data[index]})`
+          : `Click on a point!`
+      }
+      onPointClick={(i) => setIndex(i)}
     />
   );
 };
