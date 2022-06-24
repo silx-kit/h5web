@@ -104,3 +104,38 @@ export function useCustomColors(
 
   return [colors, refCallback];
 }
+
+export function useRaycasterThreshold(
+  lineOrPoints: 'Line' | 'Points',
+  desiredThreshold: number
+) {
+  const raycaster = useThree((state) => state.raycaster);
+  const camera = useThree((state) => state.camera);
+
+  useEffect(() => {
+    const params = raycaster.params[lineOrPoints];
+    const oldThreshold = params ? params.threshold : 1;
+
+    if (params) {
+      params.threshold = desiredThreshold;
+    }
+
+    return () => {
+      if (params) {
+        params.threshold = oldThreshold;
+      }
+    };
+  }, [raycaster, lineOrPoints, desiredThreshold]);
+
+  useFrame(() => {
+    // Line and Points stay the same size on the screen when zooming
+    // but as the threshold is in world units, it grows when zooming
+    // So we adapt the threshold value to the zoom
+    const zoom = camera.scale.x;
+    const params = raycaster.params[lineOrPoints];
+
+    if (params) {
+      params.threshold = (desiredThreshold * zoom) / 2;
+    }
+  });
+}

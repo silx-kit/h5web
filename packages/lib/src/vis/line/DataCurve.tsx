@@ -1,9 +1,10 @@
 import type { NumArray } from '@h5web/shared';
 import { extend, useThree } from '@react-three/fiber';
-import type { Object3DNode } from '@react-three/fiber';
-import { useLayoutEffect, useState } from 'react';
+import type { Object3DNode, ThreeEvent } from '@react-three/fiber';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { BufferGeometry, Line } from 'three';
 
+import { useRaycasterThreshold } from '../hooks';
 import ErrorBars from './ErrorBars';
 import GlyphMaterial from './GlyphMaterial';
 import { useCanvasPoints } from './hooks';
@@ -21,6 +22,8 @@ declare global {
   }
 }
 
+const LINE_WIDTH = 2;
+
 interface Props {
   abscissas: number[];
   ordinates: NumArray;
@@ -29,6 +32,7 @@ interface Props {
   color: string;
   curveType?: CurveType;
   visible?: boolean;
+  onLineClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
 }
 
 function DataCurve(props: Props) {
@@ -40,6 +44,7 @@ function DataCurve(props: Props) {
     color,
     curveType = CurveType.LineOnly,
     visible = true,
+    onLineClick,
   } = props;
 
   const [dataGeometry] = useState(() => new BufferGeometry());
@@ -52,13 +57,30 @@ function DataCurve(props: Props) {
     invalidate();
   }, [dataGeometry, invalidate, points.data]);
 
+  useRaycasterThreshold('Line', LINE_WIDTH);
+
+  const handleClick = useCallback(
+    (evt: ThreeEvent<MouseEvent>) => {
+      const { index } = evt;
+
+      if (onLineClick && index !== undefined) {
+        onLineClick(index, evt);
+      }
+    },
+    [onLineClick]
+  );
+
   const showLine = visible && curveType !== CurveType.GlyphsOnly;
   const showGlyphs = visible && curveType !== CurveType.LineOnly;
 
   return (
     <>
-      <line_ visible={showLine} geometry={dataGeometry}>
-        <lineBasicMaterial color={color} linewidth={2} />
+      <line_
+        visible={showLine}
+        geometry={dataGeometry}
+        onClick={onLineClick && handleClick}
+      >
+        <lineBasicMaterial color={color} linewidth={LINE_WIDTH} />
       </line_>
       <points visible={showGlyphs} geometry={dataGeometry}>
         <GlyphMaterial glyphType={GlyphType.Cross} color={color} size={6} />
