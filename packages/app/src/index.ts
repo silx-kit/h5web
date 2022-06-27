@@ -19,3 +19,4 @@ export { flattenValue, getNameFromPath, sliceValue } from './providers/utils';
 
 // Experimental
 export { default as Visualizer } from './visualizer/Visualizer';
+export { default as VisConfigProvider } from './VisConfigProvider';
