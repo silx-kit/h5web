@@ -63,7 +63,7 @@ function UrlForm(props: Props) {
             aria-labelledby="h5wasm-go"
             required
           />
-          <button id="h5wasm-go" className={styles.goBtn} type="submit">
+          <button id="h5wasm-url" className={styles.urlBtn} type="submit">
             {isLoading ? (
               <FiLoader className={styles.goLoader} aria-label="Loading..." />
             ) : (
