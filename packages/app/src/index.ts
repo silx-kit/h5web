@@ -16,3 +16,6 @@ export { default as DataProvider } from './providers/DataProvider';
 export { DataProviderApi as ProviderApi } from './providers/api';
 export type { ValuesStoreParams } from './providers/models';
 export { flattenValue, getNameFromPath, sliceValue } from './providers/utils';
+
+// Experimental
+export { default as Visualizer } from './visualizer/Visualizer';
