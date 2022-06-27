@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { FiChevronsRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
@@ -130,6 +131,33 @@ function Home() {
               This demo allows you to <strong>open any HDF5 files</strong> on
               your computer with H5Web. Note that if your files contain external
               links, they will not be resolved.
+            </p>
+            <p>
+              You can also provide the URL of a file hosted on a{' '}
+              <strong>static server</strong>. For instance, try these files
+              hosted on{' '}
+              <a
+                href="http://www.silx.org/pub/h5web/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                silx.org
+              </a>
+              :{' '}
+              {['water_224.h5', 'epics.h5', 'grove.h5', 'tall.h5 '].map(
+                (filename, index) => (
+                  <Fragment key={filename}>
+                    {index > 0 && ', '}
+                    <Link
+                      to={`h5wasm?url=${encodeURIComponent(
+                        `https://www.silx.org/pub/h5web/${filename}`
+                      )}`}
+                    >
+                      {filename}
+                    </Link>
+                  </Fragment>
+                )
+              )}
             </p>
           </section>
           <section>

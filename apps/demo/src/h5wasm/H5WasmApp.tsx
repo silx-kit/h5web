@@ -12,7 +12,7 @@ function H5WasmApp() {
   const [h5File, setH5File] = useState<H5File>();
 
   if (!h5File) {
-    return <DropZone onChange={setH5File} />;
+    return <DropZone onH5File={setH5File} />;
   }
 
   return (

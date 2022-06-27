@@ -1,8 +1,10 @@
 .dropZone {
-  height: 100%;
+  display: flex;
+  min-height: 100%;
   padding: 2rem;
-  text-align: center;
   background-color: var(--primary-bg);
+  text-align: center;
+  font-size: 1.125rem;
 }
 
 .activeDropZone {
@@ -16,38 +18,84 @@
 }
 
 .inner {
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  padding-bottom: 3vh;
+  padding: 1.5rem;
   border: 3px dashed currentColor;
   border-radius: 2rem;
 }
 
-.content {
-  font-size: 2rem;
-  margin: 0;
+.drop {
+  margin: -2vh 0 0;
 }
 
-.btn {
+.drop > span {
+  font-size: 2rem;
+}
+
+.browseBtn {
   composes: btnClean from global;
   display: block;
   margin: 0.25rem auto 0;
   padding: 0.25rem 1rem;
   color: #444;
-  font-size: 1.125rem;
   text-decoration: underline;
 }
 
-.btn:hover,
-.btn:focus-visible {
+.browseBtn:hover,
+.browseBtn:focus-visible {
   text-decoration: none;
 }
 
+.fromUrl {
+  margin-top: 1.5rem;
+}
+
+.fromUrl::before {
+  content: '';
+  display: block;
+  width: 15rem;
+  margin: 0 auto 1.5rem;
+  border-top: 2px solid currentColor;
+}
+
+.urlForm {
+  display: flex;
+  align-self: stretch;
+  font-size: 1rem;
+}
+
+.urlForm > fieldset {
+  flex: 1 1 0%;
+  display: flex;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.urlInput {
+  flex: 1 1 0%;
+  max-width: 20rem;
+}
+
+.goBtn {
+  composes: btnClean from global;
+  composes: ctaBtn from '../Home.module.css';
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+.goLoader {
+  animation: spin 1s ease-in-out infinite;
+}
+
 .hint {
-  margin: 2rem 0 0;
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
   font-style: italic;
 }
 
@@ -57,4 +105,10 @@
 
 .dropIt {
   font-size: 5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(180deg);
+  }
 }
