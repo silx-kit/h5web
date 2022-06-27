@@ -60,12 +60,12 @@ function UrlForm(props: Props) {
             type="url"
             defaultValue={url}
             placeholder="https://example.com/my-file.h5"
-            aria-labelledby="h5wasm-go"
+            aria-labelledby="h5wasm-url"
             required
           />
           <button id="h5wasm-url" className={styles.urlBtn} type="submit">
             {isLoading ? (
-              <FiLoader className={styles.goLoader} aria-label="Loading..." />
+              <FiLoader className={styles.urlLoader} aria-label="Loading..." />
             ) : (
               'Go'
             )}

@@ -82,14 +82,14 @@
   max-width: 20rem;
 }
 
-.goBtn {
+.urlBtn {
   composes: btnClean from global;
   composes: ctaBtn from '../Home.module.css';
   margin-left: 0.5rem;
   margin-right: 0;
 }
 
-.goLoader {
+.urlLoader {
   animation: spin 1s ease-in-out infinite;
 }
 
