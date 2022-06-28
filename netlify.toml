@@ -3,11 +3,6 @@
   to = "/index.html"
   status = 200
 
-[[redirects]]
-  from = "https://hdf5b.panosc.eu/*"
-  to = "https://h5web.panosc.eu/h5wasm/"
-  status = 200
-
 # Use pnpm instead of npm - https://github.com/netlify/build/issues/1633#issuecomment-907246600
 [build.environment]
   NPM_FLAGS = "--version"
