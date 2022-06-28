@@ -40,12 +40,7 @@ export interface InteractionEntry {
   disabled?: boolean;
 }
 
-export interface Interaction {
-  button?: MouseButton;
+export interface CommonInteractionProps {
   modifierKey?: ModifierKey | ModifierKey[];
   disabled?: boolean;
 }
-
-export type WheelInteraction = Omit<Interaction, 'button'>;
-
-export type Interactions = Record<string, Interaction | boolean>;

@@ -10,15 +10,15 @@ import {
   useInteraction,
   useModifierKeyPressed,
 } from './hooks';
-import type { CanvasEvent, Interaction, Selection } from './models';
+import type { CanvasEvent, CommonInteractionProps, Selection } from './models';
 import { MouseButton } from './models';
 import { boundPointToFOV, getModifierKeyArray } from './utils';
 
-interface Props extends Omit<Interaction, 'button'> {
+interface Props extends CommonInteractionProps {
+  id?: string;
   onSelectionStart?: () => void;
   onSelectionChange?: (points: Selection) => void;
   onSelectionEnd?: (points: Selection) => void;
-  id?: string;
   children: (points: Selection) => ReactElement;
 }
 

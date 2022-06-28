@@ -5,7 +5,7 @@ import { Vector2 } from 'three';
 
 import type { Size } from '../vis/models';
 import { getWorldFOV } from '../vis/utils';
-import type { Interaction, ModifierKey } from './models';
+import type { ModifierKey } from './models';
 
 export function boundPointToFOV(
   unboundedPoint: Vector2 | Vector3,
@@ -44,20 +44,6 @@ export function getRatioRespectingRectangle(
     new Vector2(centerPoint.x - shiftX / 2, centerPoint.y - shiftY / 2),
     new Vector2(centerPoint.x + shiftX / 2, centerPoint.y + shiftY / 2),
   ];
-}
-
-export function getDefaultInteractions(
-  keepRatio?: boolean
-): Record<string, Interaction> {
-  return {
-    Pan: {},
-    Zoom: {},
-    XAxisZoom: { modifierKey: 'Alt', disabled: keepRatio },
-    YAxisZoom: { modifierKey: 'Shift', disabled: keepRatio },
-    SelectToZoom: { modifierKey: 'Control' },
-    XSelectToZoom: { modifierKey: ['Control', 'Alt'], disabled: keepRatio },
-    YSelectToZoom: { modifierKey: ['Control', 'Shift'], disabled: keepRatio },
-  };
 }
 
 export function getEnclosedRectangle(startPoint: Vector2, endPoint: Vector2) {

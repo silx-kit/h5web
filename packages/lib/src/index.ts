@@ -43,6 +43,7 @@ export { default as HeatmapMesh } from './vis/heatmap/HeatmapMesh';
 export type { HeatmapMeshProps } from './vis/heatmap/HeatmapMesh';
 
 // Interactions
+export { default as DefaultInteractions } from './interactions/DefaultInteractions';
 export { default as Pan } from './interactions/Pan';
 export { default as Zoom } from './interactions/Zoom';
 export { default as XAxisZoom } from './interactions/XAxisZoom';
@@ -144,4 +145,3 @@ export type { TiledHeatmapMeshProps } from './vis/tiles/TiledHeatmapMesh';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
 export { useValidDomainForScale } from './vis/hooks';
 export { assertLength, assertDefined } from '@h5web/shared';
-export { default as DefaultInteractions } from './interactions/DefaultInteractions';

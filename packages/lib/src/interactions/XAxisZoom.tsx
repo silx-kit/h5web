@@ -1,8 +1,10 @@
 import { useCanvasEvents, useInteraction, useZoomOnWheel } from './hooks';
-import type { WheelInteraction } from './models';
+import type { CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
 
-function XAxisZoom(props: WheelInteraction) {
+type Props = CommonInteractionProps;
+
+function XAxisZoom(props: Props) {
   const { modifierKey, disabled } = props;
   const shouldInteract = useInteraction('XAxisZoom', {
     modifierKeys: getModifierKeyArray(modifierKey),
@@ -20,4 +22,5 @@ function XAxisZoom(props: WheelInteraction) {
   return null;
 }
 
+export type { Props as XAxisZoomProps };
 export default XAxisZoom;

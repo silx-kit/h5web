@@ -9,10 +9,14 @@ import {
   useInteraction,
 } from './hooks';
 import { MouseButton } from './models';
-import type { CanvasEvent, Interaction } from './models';
+import type { CanvasEvent, CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
 
-function Pan(props: Interaction) {
+interface Props extends CommonInteractionProps {
+  button?: MouseButton;
+}
+
+function Pan(props: Props) {
   const { button = MouseButton.Left, modifierKey, disabled } = props;
   const modifierKeys = getModifierKeyArray(modifierKey);
 
@@ -68,4 +72,5 @@ function Pan(props: Interaction) {
   return null;
 }
 
+export type { Props as PanProps };
 export default Pan;
