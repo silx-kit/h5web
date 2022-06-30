@@ -1,17 +1,17 @@
-import { Pan, ResetZoomButton, VisCanvas, Zoom } from '@h5web/lib';
-import type { ZoomProps } from '@h5web/lib';
+import { Pan, ResetZoomButton, VisCanvas, YAxisZoom } from '@h5web/lib';
+import type { YAxisZoomProps } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 
-const Template: Story<ZoomProps> = (args) => {
+const Template: Story<YAxisZoomProps> = (args) => {
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
       <Pan />
-      <Zoom {...args} />
+      <YAxisZoom {...args} />
       <ResetZoomButton />
     </VisCanvas>
   );
@@ -21,12 +21,12 @@ export const Default = Template.bind({});
 
 export const ModifierKey = Template.bind({});
 ModifierKey.args = {
-  modifierKey: ['Control'],
+  modifierKey: ['Shift'],
 };
 
 export const MultipleModifierKeys = Template.bind({});
 MultipleModifierKeys.args = {
-  modifierKey: ['Control', 'Shift', 'Alt'],
+  modifierKey: ['Control', 'Shift'],
 };
 
 export const Disabled = Template.bind({});
@@ -35,8 +35,8 @@ Disabled.args = {
 };
 
 export default {
-  title: 'Building Blocks/Interactions/Zoom',
-  component: Zoom,
+  title: 'Building Blocks/Interactions/YAxisZoom',
+  component: YAxisZoom,
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
   args: {
@@ -49,4 +49,4 @@ export default {
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} as Meta<ZoomProps>;
+} as Meta<YAxisZoomProps>;

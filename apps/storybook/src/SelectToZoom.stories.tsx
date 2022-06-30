@@ -1,14 +1,13 @@
 import {
   Pan,
   VisCanvas,
-  Zoom,
   SelectToZoom,
   ResetZoomButton,
   HeatmapMesh,
   getDomain,
-  AxialSelectToZoom,
+  Zoom,
 } from '@h5web/lib';
-import type { ModifierKey as ModifierKeyType } from '@h5web/lib';
+import type { SelectToZoomProps } from '@h5web/lib';
 import { mockValues, ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
 import ndarray from 'ndarray';
@@ -20,27 +19,8 @@ const rows = 20;
 const values = ndarray(Float32Array.from(mockValues.twoD.flat()), [rows, cols]);
 const domain = getDomain(values);
 
-function Image() {
-  return (
-    <HeatmapMesh
-      values={values}
-      domain={domain || [0, 1]}
-      colorMap="Viridis"
-      scaleType={ScaleType.Linear}
-    />
-  );
-}
-
-interface TemplateProps {
-  modifierKey: ModifierKeyType;
-  keepRatio?: boolean;
-  xAxisZoomModifierKey: ModifierKeyType;
-  yAxisZoomModifierKey: ModifierKeyType;
-}
-
-const Template: Story<TemplateProps> = (args) => {
-  const { keepRatio, modifierKey, xAxisZoomModifierKey, yAxisZoomModifierKey } =
-    args;
+const Template: Story<SelectToZoomProps> = (args) => {
+  const { keepRatio, modifierKey, disabled } = args;
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [-5, 5], showGrid: true }}
@@ -49,56 +29,59 @@ const Template: Story<TemplateProps> = (args) => {
     >
       <Pan />
       <Zoom />
-      <SelectToZoom modifierKey={modifierKey} keepRatio={keepRatio} />
-      <AxialSelectToZoom
-        axis="x"
-        modifierKey={[modifierKey, xAxisZoomModifierKey]}
-      />
-      <AxialSelectToZoom
-        axis="y"
-        modifierKey={[modifierKey, yAxisZoomModifierKey]}
+      <SelectToZoom
+        modifierKey={modifierKey}
+        keepRatio={keepRatio}
+        disabled={disabled}
       />
       <ResetZoomButton />
-      <Image />
+
+      <HeatmapMesh
+        values={values}
+        domain={domain || [0, 1]}
+        colorMap="Viridis"
+        scaleType={ScaleType.Linear}
+      />
     </VisCanvas>
   );
 };
 
 export const Default = Template.bind({});
-Default.args = {
-  modifierKey: 'Control',
-};
 
 export const KeepRatio = Template.bind({});
 KeepRatio.args = {
-  modifierKey: 'Control',
   keepRatio: true,
 };
 
-export const AxialZoom = Template.bind({});
-AxialZoom.args = {
-  modifierKey: 'Control',
-  xAxisZoomModifierKey: 'Alt',
-  yAxisZoomModifierKey: 'Shift',
+export const ModifierKey = Template.bind({});
+ModifierKey.args = {
+  modifierKey: ['Control'],
+};
+
+export const MultipleModifierKeys = Template.bind({});
+MultipleModifierKeys.args = {
+  modifierKey: ['Control', 'Shift'],
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  disabled: true,
 };
 
 export default {
-  title: 'Building Blocks/SelectToZoom',
+  title: 'Building Blocks/Interactions/SelectToZoom',
   component: SelectToZoom,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
+  args: {
+    keepRatio: false,
+    modifierKey: [],
+    disabled: false,
+  },
   argTypes: {
     modifierKey: {
-      control: { type: 'inline-radio' },
-      options: ['Alt', 'Control', 'Shift'],
-    },
-    xAxisZoomModifierKey: {
-      control: { type: 'inline-radio' },
-      options: ['Alt', 'Control', 'Shift'],
-    },
-    yAxisZoomModifierKey: {
-      control: { type: 'inline-radio' },
+      control: { type: 'inline-check' },
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} as Meta;
+} as Meta<SelectToZoomProps>;

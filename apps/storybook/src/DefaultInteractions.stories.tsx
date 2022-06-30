@@ -19,18 +19,18 @@ const Template: Story<DefaultInteractionsProps> = (args) => {
 export const Default = Template.bind({});
 
 export default {
-  title: 'Building Blocks/DefaultInteractions',
+  title: 'Building Blocks/Interactions/DefaultInteractions',
   component: DefaultInteractions,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-  argTypes: {
-    keepRatio: { defaultValue: false },
-    pan: { defaultValue: {} },
-    zoom: { defaultValue: {} },
-    xAxisZoom: { defaultValue: { modifierKey: 'Alt' } },
-    yAxisZoom: { defaultValue: { modifierKey: 'Shift' } },
-    selectToZoom: { defaultValue: { modifierKey: 'Control' } },
-    xSelectToZoom: { defaultValue: { modifierKey: ['Control', 'Alt'] } },
-    ySelectToZoom: { defaultValue: { modifierKey: ['Control', 'Shift'] } },
+  args: {
+    keepRatio: false,
+    pan: {},
+    zoom: {},
+    xAxisZoom: { modifierKey: 'Alt' },
+    yAxisZoom: { modifierKey: 'Shift' },
+    selectToZoom: { modifierKey: 'Control' },
+    xSelectToZoom: { modifierKey: ['Control', 'Alt'] },
+    ySelectToZoom: { modifierKey: ['Control', 'Shift'] },
   },
 } as Meta<DefaultInteractionsProps>;
