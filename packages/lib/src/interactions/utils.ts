@@ -88,10 +88,6 @@ export function clampRectangleToVis(
   return [startPoint.clone().add(shift), endPoint.clone().add(shift)];
 }
 
-export function isModifierKey(key: string): key is ModifierKey {
-  return ['Alt', 'Control', 'Shift'].includes(key);
-}
-
 export function getModifierKeyArray(
   keys: ModifierKey | ModifierKey[] | undefined = []
 ): ModifierKey[] {

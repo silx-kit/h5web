@@ -25,18 +25,19 @@ interface Props extends CommonInteractionProps {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 function SelectionTool(props: Props) {
   const {
-    children,
-    onSelectionStart,
-    onSelectionChange,
-    onSelectionEnd,
     id = 'Selection',
     modifierKey,
     disabled,
+    onSelectionStart,
+    onSelectionChange,
+    onSelectionEnd,
+    children,
   } = props;
 
   const camera = useThree((state) => state.camera);
   const { dataToWorld, worldToData } = useAxisSystemContext();
   const modifierKeys = getModifierKeyArray(modifierKey);
+
   const shouldInteract = useInteraction(id, {
     button: MouseButton.Left,
     modifierKeys,
