@@ -13,19 +13,20 @@ import type { CanvasEvent, CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
-  button?: MouseButton;
+  button?: MouseButton | MouseButton[];
 }
 
 function Pan(props: Props) {
   const { button = MouseButton.Left, modifierKey, disabled } = props;
-  const modifierKeys = getModifierKeyArray(modifierKey);
 
-  const camera = useThree((state) => state.camera);
+  const modifierKeys = getModifierKeyArray(modifierKey);
   const shouldInteract = useInteraction('Pan', {
     button,
     modifierKeys,
     disabled,
   });
+
+  const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 
   const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
