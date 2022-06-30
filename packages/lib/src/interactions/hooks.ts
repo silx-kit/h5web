@@ -1,5 +1,6 @@
-import { useEventListener, useMap } from '@react-hookz/web';
+import { useEventListener, useToggle } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
+import { useState } from 'react';
 import { useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
@@ -12,11 +13,11 @@ import type {
   InteractionEntry,
   ModifierKey,
 } from './models';
-import { clampPositionToArea, isModifierKey } from './utils';
+import { clampPositionToArea } from './utils';
 
 const ZOOM_FACTOR = 0.95;
-
 const ONE_VECTOR = new Vector3(1, 1, 1);
+const MODIFIER_KEYS: ModifierKey[] = ['Alt', 'Control', 'Shift'];
 
 export function useMoveCameraTo() {
   const { visSize } = useAxisSystemContext();
@@ -185,21 +186,40 @@ export function useInteraction(id: string, value: InteractionEntry) {
 }
 
 export function useModifierKeyPressed(modifierKeys: ModifierKey[]): boolean {
-  const map = useMap<ModifierKey, boolean>(modifierKeys.map((k) => [k, true]));
+  const { domElement } = useThree((state) => state.gl);
+
+  const [pressedKeys] = useState(new Map<string, boolean>());
+  const [allPressed, toggleAllPressed] = useToggle(false);
+
+  function checkAllPressed() {
+    const newAllPressed = modifierKeys.every((key) => pressedKeys.get(key));
+    if (allPressed !== newAllPressed) {
+      toggleAllPressed(newAllPressed);
+    }
+  }
 
   useEventListener(window, 'keyup', (event: KeyboardEvent) => {
-    const { key: pressedKey } = event;
-    if (isModifierKey(pressedKey) && map.has(pressedKey)) {
-      map.set(pressedKey, false);
-    }
+    const { key } = event;
+    pressedKeys.set(key, false);
+    checkAllPressed();
   });
 
   useEventListener(window, 'keydown', (event: KeyboardEvent) => {
-    const { key: pressedKey } = event;
-    if (isModifierKey(pressedKey) && map.has(pressedKey)) {
-      map.set(pressedKey, true);
-    }
+    const { key } = event;
+    pressedKeys.set(key, true);
+    checkAllPressed();
   });
 
-  return [...map.values()].every(Boolean);
+  /* Keyboard events are triggered only when the window has focus.
+   * This ensures that the `allPressed` state gets updated (if needed) when the
+   * user starts interacting with the canvas while the window is out of focus. */
+  useEventListener(domElement, 'pointerdown', (event: PointerEvent) => {
+    MODIFIER_KEYS.forEach((key) => {
+      pressedKeys.set(key, event.getModifierState(key));
+    });
+
+    checkAllPressed();
+  });
+
+  return allPressed;
 }

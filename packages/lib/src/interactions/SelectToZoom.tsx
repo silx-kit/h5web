@@ -58,8 +58,8 @@ function SelectToZoom(props: Props) {
 
   return (
     <SelectionTool
-      onSelectionEnd={onSelectionEnd}
       id="SelectToZoom"
+      onSelectionEnd={onSelectionEnd}
       {...interactionProps}
     >
       {({ startPoint, endPoint }) => {
