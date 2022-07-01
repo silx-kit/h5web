@@ -103,7 +103,7 @@ function DataCurve(props: Props) {
         visible={showLine}
         geometry={dataGeometry}
         onClick={onLineClick && handleClick}
-        onPointerOver={onLinePointerEnter && handlePointerEnter}
+        onPointerEnter={onLinePointerEnter && handlePointerEnter}
         onPointerOut={onLinePointerOut && handlePointerOut}
       >
         <lineBasicMaterial color={color} />
