@@ -35,7 +35,7 @@ export interface InteractionInfo {
 }
 
 export interface InteractionEntry {
-  button: MouseButton | 'Wheel';
+  button: MouseButton | MouseButton[] | 'Wheel';
   modifierKeys: ModifierKey[];
   disabled?: boolean;
 }

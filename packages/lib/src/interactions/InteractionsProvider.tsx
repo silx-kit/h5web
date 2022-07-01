@@ -43,12 +43,14 @@ function InteractionsProvider(props: { children: ReactNode }) {
     (interactionId: string, event: MouseEvent | WheelEvent) => {
       const registeredInteractions = [...interactionMap.values()];
 
-      function isButtonPressed(button: MouseButton | 'Wheel') {
+      function isButtonPressed(button: MouseButton | MouseButton[] | 'Wheel') {
         if (event instanceof WheelEvent) {
           return button === 'Wheel';
         }
 
-        return event.button === button;
+        return Array.isArray(button)
+          ? button.includes(event.button)
+          : event.button === button;
       }
 
       function areKeysPressed(keys: ModifierKey[]) {

@@ -1,15 +1,11 @@
+import { MouseButton } from '@h5web/lib';
 import { Pan, ResetZoomButton, VisCanvas, Zoom } from '@h5web/lib';
-import type { ModifierKey as ModifierKeyType } from '@h5web/lib';
+import type { PanProps } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react';
 
-import VisCanvasStoriesConfig from './VisCanvas.stories';
+import FillHeight from './decorators/FillHeight';
 
-interface TemplateProps {
-  disabled?: boolean;
-  modifierKey?: ModifierKeyType;
-}
-
-const Template: Story<TemplateProps> = (args) => {
+const Template: Story<PanProps> = (args) => {
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
@@ -23,36 +19,53 @@ const Template: Story<TemplateProps> = (args) => {
 };
 
 export const Default = Template.bind({});
-Default.args = {
-  disabled: false,
-  modifierKey: undefined,
+
+export const ModifierKey = Template.bind({});
+ModifierKey.args = {
+  modifierKey: ['Shift'],
+};
+
+export const MultipleModifierKey = Template.bind({});
+MultipleModifierKey.args = {
+  modifierKey: ['Control', 'Shift'],
+};
+
+export const MiddleButton = Template.bind({});
+MiddleButton.args = {
+  button: [MouseButton.Middle],
+};
+
+export const TwoButtons = Template.bind({});
+TwoButtons.args = {
+  button: [MouseButton.Left, MouseButton.Middle],
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
-  modifierKey: undefined,
-};
-
-export const ModifierKey = Template.bind({});
-ModifierKey.args = {
-  disabled: false,
-  modifierKey: 'Shift',
 };
 
 export default {
-  ...VisCanvasStoriesConfig,
   title: 'Building Blocks/PanZoom/Pan',
-  parameters: {
-    ...VisCanvasStoriesConfig.parameters,
-    controls: {
-      include: ['disabled', 'modifierKey'],
-    },
+  component: Pan,
+  parameters: { layout: 'fullscreen' },
+  decorators: [FillHeight],
+  args: {
+    button: [MouseButton.Left],
+    modifierKey: [],
+    disabled: false,
   },
   argTypes: {
+    button: {
+      control: {
+        type: 'inline-check',
+        labels: { [MouseButton.Left]: 'Left', [MouseButton.Middle]: 'Middle' },
+      },
+      options: [MouseButton.Left, MouseButton.Middle],
+    },
     modifierKey: {
-      control: { type: 'inline-radio' },
+      control: { type: 'inline-check' },
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} as Meta;
+} as Meta<PanProps>;
