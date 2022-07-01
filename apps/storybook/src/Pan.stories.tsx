@@ -46,7 +46,7 @@ Disabled.args = {
 };
 
 export default {
-  title: 'Building Blocks/PanZoom/Pan',
+  title: 'Building Blocks/Interactions/Pan',
   component: Pan,
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
