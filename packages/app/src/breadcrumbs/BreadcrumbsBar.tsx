@@ -87,23 +87,24 @@ function BreadcrumbsBar(props: Props) {
         />
       )}
 
-      <Separator />
-
       {getFeedbackURL && (
-        <LinkBtn
-          label="Feedback"
-          icon={FiMessageCircle}
-          href="/" // replaced dynamically
-          target="_blank"
-          onClick={(evt) => {
-            const feedbackUrl = getFeedbackURL({
-              filePath: filepath,
-              entityPath: path,
-            });
+        <>
+          <Separator />
+          <LinkBtn
+            label="Feedback"
+            icon={FiMessageCircle}
+            href="/" // replaced dynamically
+            target="_blank"
+            onClick={(evt) => {
+              const feedbackUrl = getFeedbackURL({
+                filePath: filepath,
+                entityPath: path,
+              });
 
-            evt.currentTarget.setAttribute('href', feedbackUrl);
-          }}
-        />
+              evt.currentTarget.setAttribute('href', feedbackUrl);
+            }}
+          />
+        </>
       )}
     </div>
   );
