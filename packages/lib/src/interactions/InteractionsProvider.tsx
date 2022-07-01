@@ -27,7 +27,11 @@ function InteractionsProvider(props: { children: ReactNode }) {
 
   const registerInteraction = useCallback(
     (id: string, value: InteractionEntry) => {
-      interactionMap.set(id, { id, ...value });
+      if (interactionMap.has(id)) {
+        console.warn(`An interaction with ID "${id}" is already registered.`); // eslint-disable-line no-console
+      } else {
+        interactionMap.set(id, { id, ...value });
+      }
     },
     [interactionMap]
   );
