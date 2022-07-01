@@ -7,10 +7,10 @@ import RatioSelectionRect from './RatioSelectionRect';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
-import type { Interaction, Selection } from './models';
+import type { CommonInteractionProps, Selection } from './models';
 import { getEnclosedRectangle, getRatioRespectingRectangle } from './utils';
 
-interface Props extends Omit<Interaction, 'button'> {
+interface Props extends CommonInteractionProps {
   keepRatio?: boolean;
 }
 
@@ -90,4 +90,5 @@ function SelectToZoom(props: Props) {
   );
 }
 
+export type { Props as SelectToZoomProps };
 export default SelectToZoom;

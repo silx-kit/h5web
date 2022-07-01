@@ -4,8 +4,8 @@ import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 
+import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
-import type { Interactions } from '../../interactions/models';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import styles from '../heatmap/HeatmapVis.module.css';
 import type { Layout } from '../heatmap/models';
@@ -21,7 +21,7 @@ interface Props {
   title?: string;
   imageType?: ImageType;
   children?: ReactNode;
-  interactions?: Interactions;
+  interactions?: DefaultInteractionsConfig;
 }
 
 function RgbVis(props: Props) {
@@ -58,10 +58,7 @@ function RgbVis(props: Props) {
           flip: true,
         }}
       >
-        <DefaultInteractions
-          interactions={interactions}
-          keepRatio={keepRatio}
-        />
+        <DefaultInteractions keepRatio={keepRatio} {...interactions} />
         <ResetZoomButton />
 
         <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />

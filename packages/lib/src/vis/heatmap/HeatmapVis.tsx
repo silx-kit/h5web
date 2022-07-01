@@ -8,8 +8,8 @@ import {
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 
+import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
-import type { Interactions } from '../../interactions/models';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { AxisParams, VisScaleType } from '../models';
@@ -38,7 +38,7 @@ interface Props {
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
-  interactions?: Interactions;
+  interactions?: DefaultInteractionsConfig;
 }
 
 function HeatmapVis(props: Props) {
@@ -100,10 +100,7 @@ function HeatmapVis(props: Props) {
           flip: flipYAxis,
         }}
       >
-        <DefaultInteractions
-          interactions={interactions}
-          keepRatio={keepRatio}
-        />
+        <DefaultInteractions keepRatio={keepRatio} {...interactions} />
         <ResetZoomButton />
 
         <TooltipMesh

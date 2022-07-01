@@ -11,8 +11,8 @@ import { toArray } from 'lodash';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
+import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
-import type { Interactions } from '../../interactions/models';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
@@ -35,7 +35,7 @@ interface Props {
   title?: string;
   size?: number;
   children?: ReactNode;
-  interactions?: Interactions;
+  interactions?: DefaultInteractionsConfig;
   onPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
 }
 
@@ -104,9 +104,7 @@ function ScatterVis(props: Props) {
         }}
         title={title}
       >
-        <DefaultInteractions
-          interactions={{ XAxisZoom: false, YAxisZoom: false, ...interactions }}
-        />
+        <DefaultInteractions {...interactions} />
         <ResetZoomButton />
 
         <ScatterPoints

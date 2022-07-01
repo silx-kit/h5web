@@ -10,8 +10,8 @@ import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 import { useMemo } from 'react';
 
+import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
-import type { Interactions } from '../../interactions/models';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import {
   useAxisDomain,
@@ -57,7 +57,7 @@ interface Props {
   auxiliaries?: AuxiliaryParams[];
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
-  interactions?: Interactions;
+  interactions?: DefaultInteractionsConfig;
 }
 
 function LineVis(props: Props) {
@@ -129,7 +129,7 @@ function LineVis(props: Props) {
           label: ordinateLabel,
         }}
       >
-        <DefaultInteractions interactions={interactions} />
+        <DefaultInteractions {...interactions} />
         <ResetZoomButton />
 
         <TooltipMesh

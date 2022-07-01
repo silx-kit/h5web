@@ -109,9 +109,9 @@ ChangeInteractionKeys.args = {
   dataArray,
   domain,
   interactions: {
-    XAxisZoom: false,
-    YAxisZoom: false,
-    SelectToZoom: { modifierKey: 'Shift' },
+    xAxisZoom: false,
+    yAxisZoom: false,
+    selectToZoom: { modifierKey: 'Shift' },
   },
 };
 

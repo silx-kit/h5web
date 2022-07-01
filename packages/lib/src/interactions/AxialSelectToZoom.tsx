@@ -7,13 +7,11 @@ import { getVisibleDomains } from '../vis/utils';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
-import type { ModifierKey, Selection } from './models';
+import type { Selection, CommonInteractionProps } from './models';
 import { getEnclosedRectangle } from './utils';
 
-interface Props {
+interface Props extends CommonInteractionProps {
   axis: 'x' | 'y';
-  disabled?: boolean;
-  modifierKey?: ModifierKey[] | ModifierKey;
 }
 
 function AxialSelectToZoom(props: Props) {
@@ -73,7 +71,7 @@ function AxialSelectToZoom(props: Props) {
   return (
     <SelectionTool
       onSelectionEnd={onSelectionEnd}
-      id={`AxialSelectToZoom${axis}`}
+      id={`${axis.toUpperCase()}SelectToZoom`}
       modifierKey={modifierKey}
       disabled={disabled}
     >
@@ -89,4 +87,5 @@ function AxialSelectToZoom(props: Props) {
   );
 }
 
+export type { Props as AxialSelectToZoomProps };
 export default AxialSelectToZoom;
