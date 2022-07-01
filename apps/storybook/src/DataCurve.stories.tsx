@@ -1,9 +1,11 @@
 import type { DataCurveProps } from '@h5web/lib';
+import { SelectionRect } from '@h5web/lib';
 import { CurveType, DataCurve, useDomain, VisCanvas } from '@h5web/lib';
 import { assertDefined, mockValues } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import { range } from 'lodash';
 import { useState } from 'react';
+import { Vector2 } from 'three';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -26,43 +28,40 @@ const Template: Story<DataCurveProps> = (args) => {
 };
 
 export const Default = Template.bind({});
-Default.args = {
-  abscissas: range(0, mockValues.oneD.length),
-  ordinates: mockValues.oneD,
-  color: 'green',
-};
-Default.argTypes = {
-  showErrors: { control: false },
+
+export const Color = Template.bind({});
+Color.args = {
+  color: 'black',
 };
 
 export const Glyphs = Template.bind({});
 Glyphs.args = {
-  abscissas: range(0, mockValues.oneD.length),
-  ordinates: mockValues.oneD,
-  color: 'black',
   curveType: CurveType.GlyphsOnly,
-};
-Glyphs.argTypes = {
-  showErrors: { control: false },
 };
 
 export const WithErrors = Template.bind({});
 WithErrors.args = {
-  abscissas: range(0, mockValues.oneD.length),
-  ordinates: mockValues.oneD,
-  errors: mockValues.oneD_errors,
   showErrors: true,
-  color: 'blue',
 };
 
-export const Click: Story<DataCurveProps> = (args) => {
+export const Interactive: Story<DataCurveProps> = (args) => {
   const [index, setIndex] = useState<number>();
+  const [hoveredIndex, setHoveredIndex] = useState<number>();
   const { abscissas, ordinates } = args;
 
   const abscissaDomain = useDomain(abscissas);
   const ordinateDomain = useDomain(ordinates);
   assertDefined(abscissaDomain);
   assertDefined(ordinateDomain);
+
+  const segmentBegin =
+    hoveredIndex !== undefined
+      ? new Vector2(abscissas[hoveredIndex], ordinates[hoveredIndex])
+      : undefined;
+  const segmentEnd =
+    hoveredIndex !== undefined
+      ? new Vector2(abscissas[hoveredIndex + 1], ordinates[hoveredIndex + 1])
+      : undefined;
 
   return (
     <VisCanvas
@@ -76,12 +75,17 @@ export const Click: Story<DataCurveProps> = (args) => {
           : 'Click on the curve!'
       }
     >
-      <DataCurve {...args} onLineClick={(i) => setIndex(i)} />
+      <DataCurve
+        {...args}
+        onLineClick={(i) => setIndex(i)}
+        onLinePointerEnter={(i) => setHoveredIndex(i)}
+        onLinePointerOut={() => setHoveredIndex(undefined)}
+      />
+      {segmentBegin && segmentEnd && (
+        <SelectionRect startPoint={segmentBegin} endPoint={segmentEnd} />
+      )}
     </VisCanvas>
   );
-};
-Click.args = {
-  ...Default.args,
 };
 
 export default {
@@ -96,10 +100,13 @@ export default {
     },
   },
   args: {
+    abscissas: range(0, mockValues.oneD.length),
+    ordinates: mockValues.oneD,
     curveType: CurveType.LineOnly,
+    color: 'blue',
     visible: true,
   },
   argTypes: {
     color: { control: { type: 'color' } },
   },
-} as Meta;
+} as Meta<DataCurveProps>;
