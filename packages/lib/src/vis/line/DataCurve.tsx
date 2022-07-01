@@ -22,8 +22,6 @@ declare global {
   }
 }
 
-const LINE_WIDTH = 2;
-
 interface Props {
   abscissas: number[];
   ordinates: NumArray;
@@ -33,6 +31,8 @@ interface Props {
   curveType?: CurveType;
   visible?: boolean;
   onLineClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
+  onLinePointerEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
+  onLinePointerOut?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
 }
 
 function DataCurve(props: Props) {
@@ -45,6 +45,8 @@ function DataCurve(props: Props) {
     curveType = CurveType.LineOnly,
     visible = true,
     onLineClick,
+    onLinePointerEnter,
+    onLinePointerOut,
   } = props;
 
   const [dataGeometry] = useState(() => new BufferGeometry());
@@ -57,7 +59,7 @@ function DataCurve(props: Props) {
     invalidate();
   }, [dataGeometry, invalidate, points.data]);
 
-  useRaycasterThreshold('Line', LINE_WIDTH);
+  useRaycasterThreshold('Line', 5);
 
   const handleClick = useCallback(
     (evt: ThreeEvent<MouseEvent>) => {
@@ -70,6 +72,28 @@ function DataCurve(props: Props) {
     [onLineClick]
   );
 
+  const handlePointerEnter = useCallback(
+    (evt: ThreeEvent<PointerEvent>) => {
+      const { index } = evt;
+
+      if (onLinePointerEnter && index !== undefined) {
+        onLinePointerEnter(index, evt);
+      }
+    },
+    [onLinePointerEnter]
+  );
+
+  const handlePointerOut = useCallback(
+    (evt: ThreeEvent<PointerEvent>) => {
+      const { index } = evt;
+
+      if (onLinePointerOut && index !== undefined) {
+        onLinePointerOut(index, evt);
+      }
+    },
+    [onLinePointerOut]
+  );
+
   const showLine = visible && curveType !== CurveType.GlyphsOnly;
   const showGlyphs = visible && curveType !== CurveType.LineOnly;
 
@@ -79,8 +103,10 @@ function DataCurve(props: Props) {
         visible={showLine}
         geometry={dataGeometry}
         onClick={onLineClick && handleClick}
+        onPointerOver={onLinePointerEnter && handlePointerEnter}
+        onPointerOut={onLinePointerOut && handlePointerOut}
       >
-        <lineBasicMaterial color={color} linewidth={LINE_WIDTH} />
+        <lineBasicMaterial color={color} />
       </line_>
       <points visible={showGlyphs} geometry={dataGeometry}>
         <GlyphMaterial glyphType={GlyphType.Cross} color={color} size={6} />
