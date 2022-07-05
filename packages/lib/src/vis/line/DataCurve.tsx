@@ -4,7 +4,6 @@ import type { Object3DNode, ThreeEvent } from '@react-three/fiber';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { BufferGeometry, Line } from 'three';
 
-import { useRaycasterThreshold } from '../hooks';
 import ErrorBars from './ErrorBars';
 import GlyphMaterial from './GlyphMaterial';
 import { useCanvasPoints } from './hooks';
@@ -58,8 +57,6 @@ function DataCurve(props: Props) {
     dataGeometry.computeBoundingSphere();
     invalidate();
   }, [dataGeometry, invalidate, points.data]);
-
-  useRaycasterThreshold('Line', 5);
 
   const handleClick = useCallback(
     (evt: ThreeEvent<MouseEvent>) => {

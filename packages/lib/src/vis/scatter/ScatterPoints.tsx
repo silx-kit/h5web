@@ -7,7 +7,6 @@ import { BufferAttribute, BufferGeometry } from 'three';
 
 import type { ColorMap } from '../heatmap/models';
 import { getInterpolator } from '../heatmap/utils';
-import { useRaycasterThreshold } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import { createAxisScale } from '../utils';
@@ -41,9 +40,6 @@ function ScatterPoints(props: Props) {
     onPointerEnter,
     onPointerOut,
   } = props;
-
-  // Increase raycaster threshold to match point size
-  useRaycasterThreshold('Points', size);
 
   const handleClick = useCallback(
     (evt: ThreeEvent<MouseEvent>) => {

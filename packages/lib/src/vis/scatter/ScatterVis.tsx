@@ -103,6 +103,8 @@ function ScatterVis(props: Props) {
           scaleType: ordinateScaleType,
         }}
         title={title}
+        // Increase raycaster threshold to match point size
+        raycasterThreshold={size}
       >
         <DefaultInteractions {...interactions} />
         <ResetZoomButton />

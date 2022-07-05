@@ -9,6 +9,7 @@ import { getSizeToFit, getAxisOffsets } from '../utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
 import RatioEnforcer from './RatioEnforcer';
+import ThresholdAdjuster from './ThresholdAdjuster';
 import ViewportCenterer from './ViewportCenterer';
 import styles from './VisCanvas.module.css';
 
@@ -18,6 +19,7 @@ interface Props {
   visRatio?: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
+  raycasterThreshold?: number;
 }
 
 function VisCanvas(props: PropsWithChildren<Props>) {
@@ -27,6 +29,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
     visRatio,
     abscissaConfig,
     ordinateConfig,
+    raycasterThreshold,
     children,
   } = props;
 
@@ -80,6 +83,9 @@ function VisCanvas(props: PropsWithChildren<Props>) {
                 {children}
                 <ViewportCenterer />
                 <RatioEnforcer visRatio={visRatio} />
+                {raycasterThreshold !== undefined && (
+                  <ThresholdAdjuster value={raycasterThreshold} />
+                )}
               </InteractionsProvider>
             </AxisSystemProvider>
           </Canvas>
