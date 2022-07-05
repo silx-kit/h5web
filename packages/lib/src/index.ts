@@ -108,7 +108,7 @@ export { useCanvasEvents } from './interactions/hooks';
 // Models
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
-export { CurveType } from './vis/line/models';
+export { CurveType, GlyphType } from './vis/line/models';
 export { ImageType } from './vis/rgb/models';
 
 export type {
