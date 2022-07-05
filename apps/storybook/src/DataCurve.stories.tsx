@@ -1,11 +1,10 @@
 import type { DataCurveProps } from '@h5web/lib';
-import { SelectionRect } from '@h5web/lib';
+import { Annotation } from '@h5web/lib';
 import { CurveType, DataCurve, useDomain, VisCanvas } from '@h5web/lib';
 import { assertDefined, mockValues } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import { range } from 'lodash';
 import { useState } from 'react';
-import { Vector2 } from 'three';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -47,21 +46,12 @@ WithErrors.args = {
 export const Interactive: Story<DataCurveProps> = (args) => {
   const [index, setIndex] = useState<number>();
   const [hoveredIndex, setHoveredIndex] = useState<number>();
-  const { abscissas, ordinates } = args;
+  const { abscissas, ordinates, color } = args;
 
   const abscissaDomain = useDomain(abscissas);
   const ordinateDomain = useDomain(ordinates);
   assertDefined(abscissaDomain);
   assertDefined(ordinateDomain);
-
-  const segmentBegin =
-    hoveredIndex !== undefined
-      ? new Vector2(abscissas[hoveredIndex], ordinates[hoveredIndex])
-      : undefined;
-  const segmentEnd =
-    hoveredIndex !== undefined
-      ? new Vector2(abscissas[hoveredIndex + 1], ordinates[hoveredIndex + 1])
-      : undefined;
 
   return (
     <VisCanvas
@@ -69,20 +59,37 @@ export const Interactive: Story<DataCurveProps> = (args) => {
       ordinateConfig={{ visDomain: ordinateDomain, showGrid: true }}
       title={
         index !== undefined
-          ? `You clicked on segment ${index} going from (${abscissas[index]}, ${
-              ordinates[index]
-            }) to (${abscissas[index + 1]}, ${ordinates[index + 1]})`
-          : 'Click on the curve!'
+          ? `You clicked on point ${index} at (${abscissas[index]}, ${ordinates[index]})!`
+          : 'Click on a point!'
       }
+      raycasterThreshold={6}
     >
       <DataCurve
         {...args}
-        onLineClick={(i) => setIndex(i)}
-        onLinePointerEnter={(i) => setHoveredIndex(i)}
-        onLinePointerOut={() => setHoveredIndex(undefined)}
+        onPointClick={(i) => setIndex(i)}
+        onPointEnter={(i) => setHoveredIndex(i)}
+        onPointLeave={() => setHoveredIndex(undefined)}
       />
-      {segmentBegin && segmentEnd && (
-        <SelectionRect startPoint={segmentBegin} endPoint={segmentEnd} />
+      {hoveredIndex && (
+        <Annotation
+          x={abscissas[hoveredIndex]}
+          y={ordinates[hoveredIndex]}
+          center
+        >
+          <svg
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              overflow: 'visible',
+              width: '100%',
+              height: '100%',
+              fill: color,
+            }}
+          >
+            <circle r={6} />
+          </svg>
+        </Annotation>
       )}
     </VisCanvas>
   );

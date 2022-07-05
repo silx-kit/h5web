@@ -29,9 +29,9 @@ interface Props {
   color: string;
   curveType?: CurveType;
   visible?: boolean;
-  onLineClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
-  onLinePointerEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
-  onLinePointerOut?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
+  onPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
+  onPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
+  onPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
 }
 
 function DataCurve(props: Props) {
@@ -43,9 +43,9 @@ function DataCurve(props: Props) {
     color,
     curveType = CurveType.LineOnly,
     visible = true,
-    onLineClick,
-    onLinePointerEnter,
-    onLinePointerOut,
+    onPointClick,
+    onPointEnter,
+    onPointLeave,
   } = props;
 
   const [dataGeometry] = useState(() => new BufferGeometry());
@@ -62,33 +62,33 @@ function DataCurve(props: Props) {
     (evt: ThreeEvent<MouseEvent>) => {
       const { index } = evt;
 
-      if (onLineClick && index !== undefined) {
-        onLineClick(index, evt);
+      if (onPointClick && index !== undefined) {
+        onPointClick(index, evt);
       }
     },
-    [onLineClick]
+    [onPointClick]
   );
 
   const handlePointerEnter = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
       const { index } = evt;
 
-      if (onLinePointerEnter && index !== undefined) {
-        onLinePointerEnter(index, evt);
+      if (onPointEnter && index !== undefined) {
+        onPointEnter(index, evt);
       }
     },
-    [onLinePointerEnter]
+    [onPointEnter]
   );
 
-  const handlePointerOut = useCallback(
+  const handlePointerLeave = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
       const { index } = evt;
 
-      if (onLinePointerOut && index !== undefined) {
-        onLinePointerOut(index, evt);
+      if (onPointLeave && index !== undefined) {
+        onPointLeave(index, evt);
       }
     },
-    [onLinePointerOut]
+    [onPointLeave]
   );
 
   const showLine = visible && curveType !== CurveType.GlyphsOnly;
@@ -96,16 +96,16 @@ function DataCurve(props: Props) {
 
   return (
     <>
-      <line_
-        visible={showLine}
-        geometry={dataGeometry}
-        onClick={onLineClick && handleClick}
-        onPointerEnter={onLinePointerEnter && handlePointerEnter}
-        onPointerOut={onLinePointerOut && handlePointerOut}
-      >
+      <line_ visible={showLine} geometry={dataGeometry}>
         <lineBasicMaterial color={color} />
       </line_>
-      <points visible={showGlyphs} geometry={dataGeometry}>
+      <points
+        visible={showGlyphs}
+        geometry={dataGeometry}
+        onClick={onPointClick && handleClick}
+        onPointerEnter={onPointEnter && handlePointerEnter}
+        onPointerLeave={onPointLeave && handlePointerLeave}
+      >
         <GlyphMaterial glyphType={GlyphType.Cross} color={color} size={6} />
       </points>
       {showErrors && errors && (
