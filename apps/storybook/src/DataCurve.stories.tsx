@@ -85,9 +85,9 @@ export const Interactive: Story<DataCurveProps> = (args) => {
     >
       <DataCurve
         {...args}
-        onPointClick={(i) => setIndex(i)}
-        onPointEnter={(i) => setHoveredIndex(i)}
-        onPointLeave={() => setHoveredIndex(undefined)}
+        onDataPointClick={(i) => setIndex(i)}
+        onDataPointEnter={(i) => setHoveredIndex(i)}
+        onDataPointLeave={() => setHoveredIndex(undefined)}
       />
       {hoveredIndex && (
         <Annotation

@@ -31,9 +31,9 @@ interface Props {
   glyphType?: GlyphType;
   glyphSize?: number;
   visible?: boolean;
-  onPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
-  onPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
-  onPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
+  onDataPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
+  onDataPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
+  onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
 }
 
 function DataCurve(props: Props) {
@@ -47,9 +47,9 @@ function DataCurve(props: Props) {
     glyphType = GlyphType.Cross,
     glyphSize = 6,
     visible = true,
-    onPointClick,
-    onPointEnter,
-    onPointLeave,
+    onDataPointClick,
+    onDataPointEnter,
+    onDataPointLeave,
   } = props;
 
   const [dataGeometry] = useState(() => new BufferGeometry());
@@ -66,33 +66,33 @@ function DataCurve(props: Props) {
     (evt: ThreeEvent<MouseEvent>) => {
       const { index } = evt;
 
-      if (onPointClick && index !== undefined) {
-        onPointClick(index, evt);
+      if (onDataPointClick && index !== undefined) {
+        onDataPointClick(index, evt);
       }
     },
-    [onPointClick]
+    [onDataPointClick]
   );
 
   const handlePointerEnter = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
       const { index } = evt;
 
-      if (onPointEnter && index !== undefined) {
-        onPointEnter(index, evt);
+      if (onDataPointEnter && index !== undefined) {
+        onDataPointEnter(index, evt);
       }
     },
-    [onPointEnter]
+    [onDataPointEnter]
   );
 
   const handlePointerLeave = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
       const { index } = evt;
 
-      if (onPointLeave && index !== undefined) {
-        onPointLeave(index, evt);
+      if (onDataPointLeave && index !== undefined) {
+        onDataPointLeave(index, evt);
       }
     },
-    [onPointLeave]
+    [onDataPointLeave]
   );
 
   const showLine = visible && curveType !== CurveType.GlyphsOnly;
@@ -106,9 +106,9 @@ function DataCurve(props: Props) {
       <points
         visible={showGlyphs}
         geometry={dataGeometry}
-        onClick={onPointClick && handleClick}
-        onPointerEnter={onPointEnter && handlePointerEnter}
-        onPointerLeave={onPointLeave && handlePointerLeave}
+        onClick={onDataPointClick && handleClick}
+        onPointerEnter={onDataPointEnter && handlePointerEnter}
+        onPointerLeave={onDataPointLeave && handlePointerLeave}
       >
         <GlyphMaterial glyphType={glyphType} color={color} size={glyphSize} />
       </points>
