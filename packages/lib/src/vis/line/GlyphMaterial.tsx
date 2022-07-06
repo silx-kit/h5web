@@ -1,5 +1,6 @@
 import { Color } from 'three';
 
+import { getUniforms } from '../utils';
 import { GlyphType } from './models';
 
 interface Props {
@@ -51,23 +52,25 @@ const GLYPH_SHADERS = {
 function GlyphMaterial(props: Props) {
   const { color, size, glyphType } = props;
 
+  // If no `color` given, use vertex colors (i.e. buffer attribute on geometry)
+  const withVertexColor = !color;
+
   const shader = {
-    uniforms: {
-      size: { value: size },
-    },
+    uniforms: getUniforms({ size, color: new Color(color) }),
     vertexShader: `
+      ${color ? 'uniform vec3 color;' : ''}
       uniform float size;
-      varying vec3 vColor;
+      varying vec3 vertexColor;
 
       void main() {
-        vColor = color;
         gl_PointSize = size;
         gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+        vertexColor = color;
       }
     `,
     fragmentShader: `
-      varying vec3 vColor;
       uniform float size;
+      varying vec3 vertexColor;
 
       ${GLYPH_SHADERS[glyphType]}
 
@@ -76,25 +79,13 @@ function GlyphMaterial(props: Props) {
         if (alpha <= 0.0) {
             discard;
         } else {
-            gl_FragColor = vec4(vColor.rgb, alpha);
+            gl_FragColor = vec4(vertexColor.rgb, alpha);
         }
       }
     `,
   };
 
-  if (color) {
-    // If color is given, make it a uniform in the shader
-    return (
-      <shaderMaterial
-        uniforms={{ color: { value: new Color(color) }, ...shader.uniforms }}
-        vertexShader={`uniform vec3 color; ${shader.vertexShader}`}
-        fragmentShader={shader.fragmentShader}
-      />
-    );
-  }
-
-  // If not, use vertex colors
-  return <shaderMaterial args={[shader]} vertexColors />;
+  return <shaderMaterial args={[shader]} vertexColors={withVertexColor} />;
 }
 
 export default GlyphMaterial;

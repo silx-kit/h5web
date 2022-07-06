@@ -28,6 +28,8 @@ interface Props {
   showErrors?: boolean;
   color: string;
   curveType?: CurveType;
+  glyphType?: GlyphType;
+  glyphSize?: number;
   visible?: boolean;
   onPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
   onPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
@@ -42,6 +44,8 @@ function DataCurve(props: Props) {
     showErrors,
     color,
     curveType = CurveType.LineOnly,
+    glyphType = GlyphType.Cross,
+    glyphSize = 6,
     visible = true,
     onPointClick,
     onPointEnter,
@@ -106,7 +110,7 @@ function DataCurve(props: Props) {
         onPointerEnter={onPointEnter && handlePointerEnter}
         onPointerLeave={onPointLeave && handlePointerLeave}
       >
-        <GlyphMaterial glyphType={GlyphType.Cross} color={color} size={6} />
+        <GlyphMaterial glyphType={glyphType} color={color} size={glyphSize} />
       </points>
       {showErrors && errors && (
         <ErrorBars

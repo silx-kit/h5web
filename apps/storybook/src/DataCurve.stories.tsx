@@ -1,6 +1,12 @@
 import type { DataCurveProps } from '@h5web/lib';
-import { Annotation } from '@h5web/lib';
-import { CurveType, DataCurve, useDomain, VisCanvas } from '@h5web/lib';
+import {
+  Annotation,
+  CurveType,
+  DataCurve,
+  GlyphType,
+  useDomain,
+  VisCanvas,
+} from '@h5web/lib';
 import { assertDefined, mockValues } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import { range } from 'lodash';
@@ -41,6 +47,19 @@ Glyphs.args = {
 export const WithErrors = Template.bind({});
 WithErrors.args = {
   showErrors: true,
+};
+
+export const GlyphTypeStory = Template.bind({});
+GlyphTypeStory.storyName = 'Glyph Type';
+GlyphTypeStory.args = {
+  curveType: CurveType.LineAndGlyphs,
+  glyphType: GlyphType.Circle,
+};
+
+export const GlyphSize = Template.bind({});
+GlyphSize.args = {
+  curveType: CurveType.LineAndGlyphs,
+  glyphSize: 10,
 };
 
 export const Interactive: Story<DataCurveProps> = (args) => {
@@ -93,6 +112,10 @@ export const Interactive: Story<DataCurveProps> = (args) => {
       )}
     </VisCanvas>
   );
+};
+Interactive.args = {
+  curveType: CurveType.LineAndGlyphs,
+  glyphType: GlyphType.Circle,
 };
 
 export default {
