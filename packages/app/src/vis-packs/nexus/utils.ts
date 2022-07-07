@@ -83,13 +83,29 @@ export function findSignalDataset(
   return dataset;
 }
 
-export function findErrorsDataset(
+export function findErrorDataset(
   group: GroupWithChildren,
   signalName: string
 ): NumArrayDataset | undefined {
   const dataset =
     getChildEntity(group, `${signalName}_errors`) ||
     getChildEntity(group, 'errors');
+
+  if (!dataset) {
+    return undefined;
+  }
+
+  assertDataset(dataset);
+  assertArrayShape(dataset);
+  assertNumericType(dataset);
+  return dataset;
+}
+
+export function findAuxErrorDataset(
+  group: GroupWithChildren,
+  auxSignalName: string
+): NumArrayDataset | undefined {
+  const dataset = getChildEntity(group, `${auxSignalName}_errors`);
 
   if (!dataset) {
     return undefined;

@@ -290,17 +290,19 @@ export function makeNxDataGroup<
     axesAttr,
     auxiliary = {},
     auxAttr,
+    attributes = [],
+    children = [],
     ...groupOpts
   } = opts;
 
   return makeNxGroup(name, 'NXdata', {
     ...groupOpts,
     attributes: [
-      ...(groupOpts.attributes ?? []),
       makeStrAttr('signal', signal.name),
       ...(axesAttr ? [makeNxAxesAttr(axesAttr)] : []),
       ...(silxStyle ? [makeSilxStyleAttr(silxStyle)] : []),
       ...(auxAttr ? [makeNxAuxAttr(auxAttr)] : []),
+      ...attributes,
     ],
     children: [
       signal,
@@ -308,6 +310,7 @@ export function makeNxDataGroup<
       ...(errors ? [errors] : []),
       ...Object.values<MockDataset>(axes),
       ...Object.values<MockDataset>(auxiliary),
+      ...children,
     ],
   });
 }

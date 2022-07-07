@@ -163,13 +163,14 @@ function LineVis(props: Props) {
                   </span>
                 </div>
 
-                {auxiliaries.map(({ label, array }, index) => (
+                {auxiliaries.map(({ label, array, errors }, index) => (
                   <div className={styles.tooltipAux} key={label}>
                     <span
                       className={styles.mark}
                       style={{ color: auxColors[index % auxColors.length] }}
                     />
                     {label} = {formatTooltipVal(array.get(xi))}
+                    {errors && ` ±${formatTooltipErr(errors.get(xi))}`}
                   </div>
                 ))}
               </>
@@ -185,11 +186,13 @@ function LineVis(props: Props) {
           color={curveColor}
           curveType={curveType}
         />
-        {auxiliaries.map(({ array }, i) => (
+        {auxiliaries.map(({ array, label, errors }, i) => (
           <DataCurve
-            key={i} // eslint-disable-line react/no-array-index-key
+            key={label}
             abscissas={abscissas}
             ordinates={array.data}
+            errors={errors?.data}
+            showErrors={showErrors}
             color={auxColors[i % auxColors.length]}
             curveType={curveType}
           />

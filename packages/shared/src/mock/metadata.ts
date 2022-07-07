@@ -153,6 +153,11 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             tertiary: makeDataset('tertiary', intType, [20, 41]),
           },
           auxAttr: ['secondary', 'tertiary'],
+          children: [
+            makeDataset('secondary_errors', floatType, [20, 41], {
+              valueId: 'twoD_errors',
+            }),
+          ],
         }),
         makeNxDataGroup('complex', {
           signal: makeDataset('twoD_complex', complexType, [2, 2], {

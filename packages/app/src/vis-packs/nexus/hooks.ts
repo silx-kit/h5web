@@ -1,20 +1,22 @@
-import type {
-  GroupWithChildren,
-  NumArrayDataset,
-  ScaleType,
-} from '@h5web/shared';
+import type { GroupWithChildren, ScaleType } from '@h5web/shared';
 import { isDefined } from '@h5web/shared';
 
 import { useDataContext } from '../../providers/DataProvider';
 import { useDatasetValues } from '../core/hooks';
 import type { AxisMapping } from '../core/models';
-import type { Auxiliary, AxisDatasetMapping, NxData } from './models';
+import type {
+  AuxDatasets,
+  Auxiliary,
+  AxisDatasetMapping,
+  NxData,
+} from './models';
 import {
   assertNxDataGroup,
   findAssociatedDatasets,
   findAxesDatasets,
-  findErrorsDataset,
+  findErrorDataset,
   findSignalDataset,
+  findAuxErrorDataset,
   findTitleDataset,
   getDatasetLabel,
   getSilxStyle,
@@ -25,20 +27,24 @@ export function useNxData(group: GroupWithChildren): NxData {
 
   assertNxDataGroup(group, attrValuesStore);
   const signalDataset = findSignalDataset(group, attrValuesStore);
-  const errorsDataset = findErrorsDataset(group, signalDataset.name);
-  const auxDatasets = findAssociatedDatasets(
+  const errorDataset = findErrorDataset(group, signalDataset.name);
+  const auxSignals = findAssociatedDatasets(
     group,
     'auxiliary_signals',
     attrValuesStore
-  );
+  ).filter(isDefined);
+  const auxDatasets = auxSignals.map((auxSignal) => ({
+    signal: auxSignal,
+    errors: findAuxErrorDataset(group, auxSignal.name),
+  }));
 
   return {
     signalDataset,
-    errorsDataset,
+    errorDataset,
     axisDatasets: findAxesDatasets(group, signalDataset, attrValuesStore),
     titleDataset: findTitleDataset(group),
     silxStyle: getSilxStyle(group, attrValuesStore),
-    auxDatasets: auxDatasets.filter(isDefined),
+    auxDatasets,
   };
 }
 
@@ -62,15 +68,22 @@ export function useAxisMapping(
 }
 
 export function useAuxiliaries(
-  auxDatasets: NumArrayDataset[],
+  auxDatasets: AuxDatasets,
   selection: string | undefined
 ): Auxiliary[] {
   const { attrValuesStore } = useDataContext();
 
-  const auxValues = useDatasetValues(auxDatasets, selection);
+  const auxValues = useDatasetValues(
+    [
+      ...auxDatasets.map((d) => d.signal),
+      ...auxDatasets.map((d) => d.errors).filter(isDefined),
+    ],
+    selection
+  );
 
-  return auxDatasets.map((dataset) => ({
-    label: getDatasetLabel(dataset, attrValuesStore),
-    value: auxValues[dataset.name],
+  return auxDatasets.map(({ signal, errors }) => ({
+    label: getDatasetLabel(signal, attrValuesStore),
+    values: auxValues[signal.name],
+    errors: errors ? auxValues[errors.name] : undefined,
   }));
 }
