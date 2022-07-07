@@ -5,7 +5,7 @@ import {
   ExportMenu,
   CellWidthInput,
 } from '@h5web/lib';
-import type { ArrayShape, Dataset, PrintableType } from '@h5web/shared';
+import type { ArrayShape, Dataset } from '@h5web/shared';
 import { hasNumericType } from '@h5web/shared';
 import { FiAnchor } from 'react-icons/fi';
 
@@ -16,8 +16,8 @@ import { useMatrixConfig } from './config';
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
-  dataset: Dataset<ArrayShape, PrintableType>;
-  selection: string | undefined;
+  dataset: Dataset<ArrayShape>;
+  selection?: string | undefined;
   cellWidth: number;
 }
 

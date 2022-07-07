@@ -12,8 +12,14 @@ interface Props {
 
 const StickyGrid = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const { children, style } = props;
-  const { rowCount, columnCount, cellSize, sticky, rowHeaderCellsWidth } =
-    useContext(SettingsContext);
+  const {
+    rowCount,
+    columnCount,
+    cellSize,
+    sticky,
+    rowHeaderCellsWidth,
+    columnHeaders,
+  } = useContext(SettingsContext);
 
   const renderedItems = useContext(RenderedItemsContext);
   const {
@@ -48,6 +54,7 @@ const StickyGrid = forwardRef<HTMLDivElement, Props>((props, ref) => {
           indexMin={colStart}
           indexMax={colStop}
           transform={`translateX(${cellSize.width * colStart}px)`}
+          headers={columnHeaders}
         />
       </div>
       <div className={styles.innerContainer}>

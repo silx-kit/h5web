@@ -10,6 +10,7 @@ interface GridSettings {
   cellSize: Size;
   sticky: boolean;
   rowHeaderCellsWidth: number;
+  columnHeaders?: string[];
   cellFormatter: (row: number, col: number) => string;
   setRenderedItems: (renderedItems: GridOnItemsRenderedProps) => void;
 }
@@ -30,6 +31,7 @@ function GridProvider(props: Props) {
     cellSize,
     sticky,
     rowHeaderCellsWidth,
+    columnHeaders,
     children,
     cellFormatter,
   } = props;
@@ -44,6 +46,7 @@ function GridProvider(props: Props) {
       cellSize,
       sticky,
       rowHeaderCellsWidth,
+      columnHeaders,
       cellFormatter,
       setRenderedItems,
     }),
@@ -54,6 +57,7 @@ function GridProvider(props: Props) {
       columnCount,
       sticky,
       rowCount,
+      columnHeaders,
     ]
   );
 
