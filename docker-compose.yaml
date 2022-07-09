@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+    reverse-proxy:
+        image: traefik:2.5
+        command: --api.insecure=true --providers.docker=true --entrypoints.web.address=:80
+        ports:
+            - "80:80"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+           
+    h5web: 
+        #image: h5web:test   ... add this line once there is an official image ...
+        build:
+            #added build just to circumvent publishing an unofficial image
+            context: https://github.com/schreiber-lab/h5web.git#add_Docker
+            #before merge: change context from fork to main repo
+
+        labels:
+            - "traefik.http.routers.catanie.rule=PathPrefix(`/`)"
+            - "traefik.http.routers.catanie.entrypoints=web"
+    
+    h5grove:
+        #image: h5grove:test ... add this line once there is an official image ...
+        build:
+            #added build just to circumvent publishing an unofficial image
+            context: https://github.com/schreiber-lab/h5grove.git#add_Dockerfile
+            #before merge: change context from fork to main repo
+
+        labels:
+            - "traefik.http.routers.catamel.rule=PathPrefix(`/attr`,`/data`,`/meta`,`/stats` )"
+            - "traefik.http.routers.catamel.entrypoints=web"
+        #volumes:
+        # specify the path to data file/dir on host machine and mount it in /data 
+        #   - "/path/to/dataset/dataset.h5:/data/dataset.h5"
