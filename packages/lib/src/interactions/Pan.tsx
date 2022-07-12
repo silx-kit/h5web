@@ -13,14 +13,20 @@ import type { CanvasEvent, CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
+  id?: string;
   button?: MouseButton | MouseButton[];
 }
 
 function Pan(props: Props) {
-  const { button = MouseButton.Left, modifierKey, disabled } = props;
+  const {
+    id = 'Pan',
+    button = MouseButton.Left,
+    modifierKey,
+    disabled,
+  } = props;
 
   const modifierKeys = getModifierKeyArray(modifierKey);
-  const shouldInteract = useInteraction('Pan', {
+  const shouldInteract = useInteraction(id, {
     button,
     modifierKeys,
     disabled,

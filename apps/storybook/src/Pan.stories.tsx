@@ -45,17 +45,43 @@ Disabled.args = {
   disabled: true,
 };
 
+export const TwoComponents: Story<PanProps> = (args) => {
+  return (
+    <VisCanvas
+      title="Pan with middle button, or with <modifierKey> + left button"
+      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      <Pan id="PanMiddle" button={MouseButton.Middle} />
+      <Pan
+        id="PanLeft"
+        button={MouseButton.Left}
+        modifierKey={args.modifierKey}
+      />
+      <Zoom />
+      <ResetZoomButton />
+    </VisCanvas>
+  );
+};
+TwoComponents.args = { modifierKey: ['Control'] };
+TwoComponents.argTypes = {
+  button: { control: false },
+  disabled: { control: false },
+};
+
 export default {
   title: 'Building Blocks/Interactions/Pan',
   component: Pan,
   parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
   args: {
+    id: undefined,
     button: [MouseButton.Left],
     modifierKey: [],
     disabled: false,
   },
   argTypes: {
+    id: { control: false },
     button: {
       control: {
         type: 'inline-check',

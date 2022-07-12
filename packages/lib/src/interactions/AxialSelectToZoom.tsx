@@ -70,10 +70,10 @@ function AxialSelectToZoom(props: Props) {
 
   return (
     <SelectionTool
-      onSelectionEnd={onSelectionEnd}
       id={`${axis.toUpperCase()}SelectToZoom`}
       modifierKey={modifierKey}
       disabled={disabled}
+      onSelectionEnd={onSelectionEnd}
     >
       {(selection) => (
         <SelectionRect
