@@ -13,10 +13,17 @@ interface Props {
   formatter: (value: Primitive<PrintableType>) => string;
   cellWidth: number;
   sticky?: boolean;
+  columnHeaders?: string[];
 }
 
 function MatrixVis(props: Props) {
-  const { dataArray, formatter, cellWidth, sticky = true } = props;
+  const {
+    dataArray,
+    formatter,
+    cellWidth,
+    sticky = true,
+    columnHeaders,
+  } = props;
   const dims = dataArray.shape;
 
   const [rowCount, columnCount = 1] = dims;
@@ -34,6 +41,7 @@ function MatrixVis(props: Props) {
       cellFormatter={cellFormatter}
       sticky={sticky}
       rowHeaderCellsWidth={ROW_HEADERS_WIDTH}
+      columnHeaders={columnHeaders}
     >
       <Grid />
     </GridProvider>

@@ -37,6 +37,11 @@ const rgb = [
 
 const rgbFlat = rgb.flat(Infinity) as number[];
 
+const oneD_cplx = range(1, 11).map((val) => [
+  val * Math.cos((val * 3.14) / 10),
+  val * Math.sin((val * 3.14) / 10),
+]);
+
 export const mockValues = {
   null: null,
   raw: { int: 42 },
@@ -47,10 +52,7 @@ export const mockValues = {
   scalar_bool: true,
   scalar_cplx: [1, 5],
   oneD,
-  oneD_cplx: range(1, 11).map((val) => [
-    val * Math.cos((val * 3.14) / 10),
-    val * Math.sin((val * 3.14) / 10),
-  ]),
+  oneD_cplx,
   oneD_linear: arr1,
   oneD_errors: oneD.map((x) => Math.abs(x) / 10),
   oneD_str: ['foo', 'bar'],
@@ -142,4 +144,7 @@ export const mockValues = {
   position: [-1, 1],
   scatter_data: arr1.map((val) => Math.cos((val * 3.14) / 40)),
   Y_scatter: arr1.map((v, i) => (i % 10) + (i % 5)),
+  oneD_compound: ['Hydrogen', 'Lithum', 'Carbon', 'Sodium', 'Argon'].map(
+    (v, i) => [v, i, oneD[i], i % 2 === 0, oneD_cplx[i]]
+  ),
 };

@@ -2,6 +2,7 @@ import type {
   ArrayShape,
   Dataset,
   H5WebComplex,
+  PrintableCompoundType,
   PrintableType,
 } from '@h5web/shared';
 import {
@@ -29,9 +30,11 @@ export function getFormatter(
 }
 
 export function getCellWidth(
-  dataset: Dataset<ArrayShape, PrintableType>
+  type: PrintableType | PrintableCompoundType
 ): number {
-  const { type } = dataset;
+  if (type.class === DTypeClass.Compound) {
+    return Math.max(...Object.values(type.fields).map(getCellWidth));
+  }
 
   if (type.class === DTypeClass.String) {
     return type.length !== undefined ? 12 * type.length : 300;

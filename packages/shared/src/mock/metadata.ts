@@ -1,3 +1,4 @@
+import { DTypeClass } from '../models-hdf5';
 import { ScaleType } from '../models-vis';
 import {
   compoundType,
@@ -49,6 +50,20 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
       makeDataset('oneD_linear', intType, [41]),
       makeDataset('oneD', intType, [41]),
       makeDataset('oneD_cplx', complexType, [10]),
+      makeDataset(
+        'oneD_compound',
+        {
+          class: DTypeClass.Compound,
+          fields: {
+            string: stringType,
+            int: intType,
+            float: floatType,
+            bool: booleanType,
+            complex: complexType,
+          },
+        },
+        [5]
+      ),
       makeDataset('twoD', intType, [20, 41]),
       makeDataset('twoD_cplx', complexType, [2, 2]),
       makeDataset('threeD', intType, [9, 20, 41]),

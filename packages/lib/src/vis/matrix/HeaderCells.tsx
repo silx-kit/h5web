@@ -9,10 +9,11 @@ interface Props {
   indexMax: number;
   transform: string; // to compensate for header cells not rendered in the range [0, indexMin]
   width?: number;
+  headers?: string[];
 }
 
 function HeaderCells(props: Props) {
-  const { indexMin, indexMax, width, transform } = props;
+  const { indexMin, indexMax, width, transform, headers } = props;
   const { cellSize } = useContext(SettingsContext);
 
   return (
@@ -28,7 +29,7 @@ function HeaderCells(props: Props) {
           }}
           data-bg={index % 2 === 1 ? '' : undefined}
         >
-          {index >= 0 && index}
+          {index >= 0 && headers ? headers[index] : index}
         </div>
       ))}
     </>

@@ -125,10 +125,12 @@ export interface StringType {
   length?: number;
 }
 
-export interface CompoundType {
+export interface CompoundType<T extends DType = DType> {
   class: DTypeClass.Compound;
-  fields: Record<string, DType>;
+  fields: Record<string, T>;
 }
+
+export type PrintableCompoundType = CompoundType<PrintableType>;
 
 interface ArrayType {
   class: DTypeClass.Array | DTypeClass.VLen;
@@ -157,6 +159,8 @@ export type Primitive<T extends DType> = T extends NumericType
   ? boolean
   : T extends ComplexType
   ? H5WebComplex
+  : T extends PrintableCompoundType
+  ? Primitive<PrintableType>[]
   : unknown;
 
 export type ArrayValue<T extends DType> =

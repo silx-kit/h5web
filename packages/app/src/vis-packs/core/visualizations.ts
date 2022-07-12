@@ -1,4 +1,7 @@
 import type { Dataset } from '@h5web/shared';
+import { hasPrintableCompoundType } from '@h5web/shared';
+import { hasCompoundType } from '@h5web/shared';
+import { hasNumDims } from '@h5web/shared';
 import {
   hasScalarShape,
   hasArrayShape,
@@ -19,6 +22,7 @@ import {
 
 import type { AttrValuesStore } from '../../providers/models';
 import type { VisDef } from '../models';
+import CompoundMatrixVisContainer from './compound/CompoundMatrixVisContainer';
 import {
   LineConfigProvider,
   HeatmapConfigProvider,
@@ -47,6 +51,7 @@ export enum Vis {
   Complex = 'Complex',
   ComplexLine = 'ComplexLine',
   RGB = 'RGB',
+  CompoundMatrix = 'CompoundMatrix',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -142,6 +147,21 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
         hasArrayShape(dataset) &&
         dataset.shape.length === 3 &&
         hasNumericType(dataset)
+      );
+    },
+  },
+
+  [Vis.CompoundMatrix]: {
+    name: Vis.Matrix,
+    Icon: FiGrid,
+    Container: CompoundMatrixVisContainer,
+    ConfigProvider: MatrixConfigProvider,
+    supportsDataset: (dataset) => {
+      return (
+        hasCompoundType(dataset) &&
+        hasPrintableCompoundType(dataset) &&
+        hasArrayShape(dataset) &&
+        hasNumDims(dataset, 1)
       );
     },
   },
