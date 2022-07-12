@@ -98,6 +98,17 @@ AuxiliaryArrays.args = {
   ],
 };
 
+export const AuxiliaryErrors = Template.bind({});
+AuxiliaryErrors.args = {
+  dataArray: primaryArray,
+  errorsArray,
+  auxiliaries: [
+    { label: 'secondary', array: secondaryArray, errors: errorsArray },
+    { label: 'tertiary', array: tertiaryArray },
+  ],
+  showErrors: true,
+};
+
 export const TypedArrays = Template.bind({});
 TypedArrays.args = {
   dataArray: toTypedNdArray(primaryArray, Float32Array),

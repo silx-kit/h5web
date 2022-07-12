@@ -30,12 +30,13 @@ const myDomain = getDomain(myArray); // [0, 3]
 
 #### getDomains
 
-Find the domains of multiple numeric arrays. Useful when dealing with auxiliary curves.
+Find the domains of multiple numeric arrays. Errors can be accounted for each array by providing an array of numeric error arrays of the same length. Useful when dealing with auxiliary curves.
 
 ```ts
 getDomains(
-  valuesArrays: AnyNumArray[],
-  scaleType: ScaleType = ScaleType.Linear
+  valueArrays: AnyNumArray[],
+  scaleType: ScaleType = ScaleType.Linear,
+  errorArrays?: (AnyNumArray | undefined)[]
 ): (Domain | undefined)[]
 
 const linearDomains = getDomains([[-1, 5, 10], ndarray([0, 1, 2, 3], [2, 2])]); // [[-1, 10], [0, 3]]
