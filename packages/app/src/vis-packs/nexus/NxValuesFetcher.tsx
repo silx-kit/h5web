@@ -17,20 +17,27 @@ function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
   const { nxData, selection, render } = props;
   const {
     signalDataset,
-    errorsDataset,
+    errorDataset,
     axisDatasets,
     auxDatasets,
     titleDataset,
     silxStyle,
   } = nxData;
 
-  usePrefetchValues([signalDataset, errorsDataset, ...auxDatasets], selection);
+  usePrefetchValues(
+    [
+      signalDataset,
+      errorDataset,
+      ...auxDatasets.flatMap((d) => [d.signal, d.errors]),
+    ],
+    selection
+  );
   usePrefetchValues([...axisDatasets, titleDataset]);
 
   const { attrValuesStore } = useDataContext();
   const signal = useDatasetValue(signalDataset, selection);
   const signalLabel = getDatasetLabel(signalDataset, attrValuesStore);
-  const errors = useDatasetValue(errorsDataset, selection);
+  const errors = useDatasetValue(errorDataset, selection);
   const axisMapping = useAxisMapping(axisDatasets, silxStyle.axisScaleTypes);
   const auxiliaries = useAuxiliaries(auxDatasets, selection);
   const title = useDatasetValue(titleDataset) || signalLabel;

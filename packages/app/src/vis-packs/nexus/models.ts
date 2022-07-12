@@ -24,13 +24,18 @@ export type NxAttribute =
   | 'SILX_style'
   | 'auxiliary_signals';
 
+export type AuxDatasets = {
+  signal: NumArrayDataset;
+  errors?: NumArrayDataset;
+}[];
+
 export interface NxData<
   T extends NumericType | ComplexType = NumericType | ComplexType
 > {
   signalDataset: Dataset<ArrayShape, T>;
-  errorsDataset?: NumArrayDataset;
+  errorDataset?: NumArrayDataset;
   axisDatasets: AxisDatasetMapping;
-  auxDatasets: NumArrayDataset[];
+  auxDatasets: AuxDatasets;
   titleDataset?: Dataset<ScalarShape, StringType>;
   silxStyle: SilxStyle;
 }
@@ -53,5 +58,6 @@ export interface SilxStyle {
 
 export interface Auxiliary {
   label: string;
-  value: NumArray;
+  values: NumArray;
+  errors?: NumArray;
 }

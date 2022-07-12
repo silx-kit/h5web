@@ -18,13 +18,13 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);
-  const { signalDataset, errorsDataset, silxStyle } = nxData;
+  const { signalDataset, errorDataset, silxStyle } = nxData;
 
   const signalDims = signalDataset.shape;
-  const errorsDims = errorsDataset?.shape;
+  const errorDims = errorDataset?.shape;
 
-  if (errorsDims && !isEqual(signalDims, errorsDims)) {
-    const dimsStr = JSON.stringify({ signalDims, errorsDims });
+  if (errorDims && !isEqual(signalDims, errorDims)) {
+    const dimsStr = JSON.stringify({ signalDims, errorsDims: errorDims });
     throw new Error(`Signal and errors dimensions don't match: ${dimsStr}`);
   }
 
