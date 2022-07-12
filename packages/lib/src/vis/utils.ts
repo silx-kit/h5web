@@ -88,10 +88,13 @@ export function getDomain(
 }
 
 export function getDomains(
-  valuesArrays: AnyNumArray[],
-  scaleType: ScaleType = ScaleType.Linear
+  valueArrays: AnyNumArray[],
+  scaleType: ScaleType = ScaleType.Linear,
+  errorArrays?: (AnyNumArray | undefined)[]
 ): (Domain | undefined)[] {
-  return valuesArrays.map((arr) => getDomain(arr, scaleType));
+  return valueArrays.map((arr, i) =>
+    getDomain(arr, scaleType, errorArrays?.[i])
+  );
 }
 
 function extendEmptyDomain(
