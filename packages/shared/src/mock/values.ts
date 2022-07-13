@@ -42,6 +42,21 @@ const oneD_cplx = range(1, 11).map((val) => [
   val * Math.sin((val * 3.14) / 10),
 ]);
 
+const oneD_compound = ['Hydrogen', 'Lithum', 'Carbon', 'Sodium', 'Argon'].map(
+  (v, i) => [v, i, oneD[i], i % 2 === 0, oneD_cplx[i]]
+);
+
+const twoD_compound = [
+  oneD_compound,
+  ['Vanadium', 'Niobium', 'Tantalum', 'Silicon', 'Germanium'].map((v, i) => [
+    v,
+    i * 10,
+    oneD[i],
+    i % 2 === 1,
+    oneD_cplx[i],
+  ]),
+];
+
 export const mockValues = {
   null: null,
   raw: { int: 42 },
@@ -144,7 +159,6 @@ export const mockValues = {
   position: [-1, 1],
   scatter_data: arr1.map((val) => Math.cos((val * 3.14) / 40)),
   Y_scatter: arr1.map((v, i) => (i % 10) + (i % 5)),
-  oneD_compound: ['Hydrogen', 'Lithum', 'Carbon', 'Sodium', 'Argon'].map(
-    (v, i) => [v, i, oneD[i], i % 2 === 0, oneD_cplx[i]]
-  ),
+  oneD_compound,
+  twoD_compound,
 };

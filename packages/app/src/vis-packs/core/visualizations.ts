@@ -1,7 +1,6 @@
 import type { Dataset } from '@h5web/shared';
 import { hasPrintableCompoundType } from '@h5web/shared';
 import { hasCompoundType } from '@h5web/shared';
-import { hasNumDims } from '@h5web/shared';
 import {
   hasScalarShape,
   hasArrayShape,
@@ -161,7 +160,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
         hasCompoundType(dataset) &&
         hasPrintableCompoundType(dataset) &&
         hasArrayShape(dataset) &&
-        hasNumDims(dataset, 1)
+        hasMinDims(dataset, 1)
       );
     },
   },
