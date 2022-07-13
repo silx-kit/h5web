@@ -34,7 +34,7 @@
     "react-dom": "17.0.2",
     "react-icons": "4.4.0",
     "react-suspense-fetch": "0.4.1",
-    "three": "0.135.0"
+    "three": "0.141.0"
   },
   "devDependencies": {
     "@babel/core": "7.18.5",
@@ -49,7 +49,7 @@
     "@types/ndarray": "1.0.11",
     "@types/react": "17.0.39",
     "@types/react-dom": "17.0.11",
-    "@types/three": "0.135.0",
+    "@types/three": "0.141.0",
     "babel-loader": "8.2.5",
     "eslint": "8.17.0",
     "eslint-config-galex": "4.1.4",

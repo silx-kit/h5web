@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import VisMesh from '../shared/VisMesh';
 import { getUniforms, VERTEX_SHADER } from '../utils';
-import { getDataTexture3D } from './utils';
+import { getData3DTexture } from './utils';
 
 interface Props {
   values: NdArray<Uint8Array | Uint8ClampedArray | Float32Array>;
@@ -13,7 +13,7 @@ interface Props {
 function RgbMesh(props: Props) {
   const { values, bgr = false } = props;
 
-  const dataTexture = useMemo(() => getDataTexture3D(values), [values]);
+  const dataTexture = useMemo(() => getData3DTexture(values), [values]);
 
   const shader = {
     uniforms: getUniforms({ data: dataTexture, bgr }),
