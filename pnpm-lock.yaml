@@ -103,7 +103,7 @@ importers:
       '@types/ndarray': 1.0.11
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
-      '@types/three': 0.135.0
+      '@types/three': 0.141.0
       babel-loader: 8.2.5
       d3-format: 3.1.0
       eslint: '>=8'
@@ -117,14 +117,14 @@ importers:
       react-icons: 4.4.0
       react-suspense-fetch: 0.4.1
       storybook-css-modules-preset: 1.1.1
-      three: 0.135.0
+      three: 0.141.0
       typescript: 4.7.3
       webpack: 5.73.0
     dependencies:
       '@h5web/lib': link:../../packages/lib
       '@h5web/shared': link:../../packages/shared
       '@react-hookz/web': 14.2.2_sfoxds7t5ydpegc3knd667wn6m
-      '@react-three/fiber': 7.0.26_apkfqzawxbvyaakrxvzzbm6zli
+      '@react-three/fiber': 7.0.26_weaphyuqmcotibvxgot4zxypyi
       d3-format: 3.1.0
       greenlet: 1.1.0
       lodash: 4.17.21
@@ -134,7 +134,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-icons: 4.4.0_react@17.0.2
       react-suspense-fetch: 0.4.1
-      three: 0.135.0
+      three: 0.141.0
     devDependencies:
       '@babel/core': 7.18.5
       '@storybook/addon-docs': 6.5.9_72wjk32secgr3i6kmmvxjjxtom
@@ -148,7 +148,7 @@ importers:
       '@types/ndarray': 1.0.11
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
-      '@types/three': 0.135.0
+      '@types/three': 0.141.0
       babel-loader: 8.2.5_te6ollfzjcco6mbxjl755ucqke
       eslint: 8.17.0
       eslint-config-galex: 4.1.4_eslint@8.17.0
@@ -194,14 +194,14 @@ importers:
       react-use: 17.4.0
       rollup: 2.75.6
       rollup-plugin-dts: 4.2.2
-      three: 0.135.0
+      three: 0.141.0
       typescript: 4.7.3
       vite: 2.9.12
       zustand: 4.0.0-rc.1
     dependencies:
       '@h5web/lib': link:../lib
       '@react-hookz/web': 14.2.2_sfoxds7t5ydpegc3knd667wn6m
-      '@react-three/fiber': 7.0.26_apkfqzawxbvyaakrxvzzbm6zli
+      '@react-three/fiber': 7.0.26_weaphyuqmcotibvxgot4zxypyi
       axios: 0.27.2
       d3-format: 3.1.0
       lodash: 4.17.21
@@ -213,7 +213,7 @@ importers:
       react-slider: 2.0.1_react@17.0.2
       react-suspense-fetch: 0.4.1
       react-use: 17.4.0_sfoxds7t5ydpegc3knd667wn6m
-      three: 0.135.0
+      three: 0.141.0
       zustand: 4.0.0-rc.1_react@17.0.2
     devDependencies:
       '@h5web/shared': link:../shared
@@ -290,7 +290,7 @@ importers:
       '@types/react-measure': 2.0.8
       '@types/react-slider': 1.3.1
       '@types/react-window': 1.8.5
-      '@types/three': 0.135.0
+      '@types/three': 0.141.0
       '@visx/axis': 2.10.0
       '@visx/grid': 2.10.0
       '@visx/scale': 2.2.2
@@ -321,7 +321,7 @@ importers:
       react-window: 1.8.7
       rollup: 2.75.6
       rollup-plugin-dts: 4.2.2
-      three: 0.135.0
+      three: 0.141.0
       typescript: 4.7.3
       vite: 2.9.12
     dependencies:
@@ -349,7 +349,7 @@ importers:
       react-window: 1.8.7_sfoxds7t5ydpegc3knd667wn6m
     devDependencies:
       '@h5web/shared': link:../shared
-      '@react-three/fiber': 7.0.26_apkfqzawxbvyaakrxvzzbm6zli
+      '@react-three/fiber': 7.0.26_weaphyuqmcotibvxgot4zxypyi
       '@rollup/plugin-alias': 3.1.9_rollup@2.75.6
       '@types/d3-array': 3.0.3
       '@types/d3-color': 3.1.0
@@ -365,7 +365,7 @@ importers:
       '@types/react-measure': 2.0.8
       '@types/react-slider': 1.3.1
       '@types/react-window': 1.8.5
-      '@types/three': 0.135.0
+      '@types/three': 0.141.0
       concat: 1.0.3
       eslint: 8.17.0
       eslint-config-galex: 4.1.4_eslint@8.17.0+jest@27.5.1
@@ -375,7 +375,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       rollup: 2.75.6
       rollup-plugin-dts: 4.2.2_fgms252lqu3rk7srzpqqayl4ya
-      three: 0.135.0
+      three: 0.141.0
       typescript: 4.7.3
       vite: 2.9.12
 
@@ -427,6 +427,14 @@ packages:
     dependencies:
       '@babel/highlight': 7.17.12
     dev: true
+
+  /@babel/code-frame/7.18.6:
+    resolution: {integrity: sha512-TDCmlK5eOvH+eH7cdAFlNXeVJqWIQ7gW9tY1GJIpUtFb6CmjVyq2VM3u71bOyR8CRihcCgMUYoDNyLXao3+70Q==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/highlight': 7.18.6
+    dev: true
+    optional: true
 
   /@babel/compat-data/7.18.5:
     resolution: {integrity: sha512-BxhE40PVCBxVEJsSBhB6UWyAuqJRxGsAw8BdHMJ3AKGydcwuWW4kOO3HmqBQAdcq/OP+/DlTVxLvsCzRTnZuGg==}
@@ -755,6 +763,12 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
+  /@babel/helper-validator-identifier/7.18.6:
+    resolution: {integrity: sha512-MmetCkz9ej86nJQV+sFCxoGGrUbU3q02kgLciwkrt9QqEB7cP39oKEY0PakknEO0Gu20SskMRi+AYZ3b1TpN9g==}
+    engines: {node: '>=6.9.0'}
+    dev: true
+    optional: true
+
   /@babel/helper-validator-option/7.16.7:
     resolution: {integrity: sha512-TRtenOuRUVo9oIQGPC5G9DgK4743cdxvtOw0weQNpZXaS16SCBi5MNjZF8vba3ETURjZpTbVn7Vvcf2eAwFozQ==}
     engines: {node: '>=6.9.0'}
@@ -791,6 +805,16 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
     dev: true
+
+  /@babel/highlight/7.18.6:
+    resolution: {integrity: sha512-u7stbOuYjaPezCuLj29hNW1v64M2Md2qupEKP1fHc7WdOA3DgLh37suiSrZYY7haUB7iBeQZ9P1uiRF359do3g==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/helper-validator-identifier': 7.18.6
+      chalk: 2.4.2
+      js-tokens: 4.0.0
+    dev: true
+    optional: true
 
   /@babel/parser/7.17.3:
     resolution: {integrity: sha512-7yJPvPV+ESz2IUTPbOL+YkIGyCqOyNIzdguKQuJGnH7bg1WTIifuM21YqokFt/THWh1AkCRn9IgoykTRCBVpzA==}
@@ -2576,7 +2600,7 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /@react-three/fiber/7.0.26_apkfqzawxbvyaakrxvzzbm6zli:
+  /@react-three/fiber/7.0.26_weaphyuqmcotibvxgot4zxypyi:
     resolution: {integrity: sha512-46NBais4fQIGcMGLBbOf84lp8y/cg73jOEVmAQQJqWX6iOVeNg29jYd15LBuCW2qPD1qDRU0rOfLbMDgwr/vxQ==}
     peerDependencies:
       react: '>=17.0'
@@ -2595,7 +2619,7 @@ packages:
       react-use-measure: 2.1.1_sfoxds7t5ydpegc3knd667wn6m
       resize-observer-polyfill: 1.5.1
       scheduler: 0.20.2
-      three: 0.135.0
+      three: 0.141.0
       use-asset: 1.0.4_react@17.0.2
       utility-types: 3.10.0
       zustand: 3.7.0_react@17.0.2
@@ -4428,8 +4452,10 @@ packages:
       '@types/jest': 27.4.1
     dev: true
 
-  /@types/three/0.135.0:
-    resolution: {integrity: sha512-l7WLhIHjhHMtlpyTSltPPAKLpiMwgMD1hXHj59AVUpYRoZP7Fd9NNOSRSvZBCPLpTHPYojgQvSJCoza9zoL7bg==}
+  /@types/three/0.141.0:
+    resolution: {integrity: sha512-OJdKDgTPVBUgc+s74DYoy4aLznbFFC38Xm4ElmU1YwGNgR7GGFVvFCX7lpVgOsT6S1zSJtGdajTsOYE8/xY9nA==}
+    dependencies:
+      '@types/webxr': 0.4.0
     dev: true
 
   /@types/uglify-js/3.16.0:
@@ -4463,6 +4489,10 @@ packages:
       '@types/webpack-sources': 3.2.0
       anymatch: 3.1.2
       source-map: 0.6.1
+    dev: true
+
+  /@types/webxr/0.4.0:
+    resolution: {integrity: sha512-LQvrACV3Pj17GpkwHwXuTd733gfY+D7b9mKdrTmLdO7vo7P/o6209Qqtk63y/FCv/lspdmi0pWz6Qe/ull9kQg==}
     dev: true
 
   /@types/yargs-parser/20.2.1:
@@ -9402,7 +9432,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.16.0
+      uglify-js: 3.16.2
     dev: true
 
   /harmony-reflect/1.6.2:
@@ -13777,7 +13807,7 @@ packages:
       rollup: 2.75.6
       typescript: 4.7.3
     optionalDependencies:
-      '@babel/code-frame': 7.16.7
+      '@babel/code-frame': 7.18.6
     dev: true
 
   /rollup/2.75.6:
@@ -14757,8 +14787,8 @@ packages:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
     dev: true
 
-  /three/0.135.0:
-    resolution: {integrity: sha512-kuEpuuxRzLv0MDsXai9huCxOSQPZ4vje6y0gn80SRmQvgz6/+rI0NAvCRAw56zYaWKMGMfqKWsxF9Qa2Z9xymQ==}
+  /three/0.141.0:
+    resolution: {integrity: sha512-JaSDAPWuk4RTzG5BYRQm8YZbERUxTfTDVouWgHMisS2to4E5fotMS9F2zPFNOIJyEFTTQDDKPpsgZVThKU3pXA==}
 
   /throat/6.0.1:
     resolution: {integrity: sha512-8hmiGIJMDlwjg7dlJ4yKGLK8EsYqKgPWbG3b4wjJddKNwc7N7Dpn08Df4szr/sZdMVeOstrdYSsqzX6BYbcB+w==}
@@ -15060,8 +15090,8 @@ packages:
     hasBin: true
     dev: true
 
-  /uglify-js/3.16.0:
-    resolution: {integrity: sha512-FEikl6bR30n0T3amyBh3LoiBdqHRy/f4H80+My34HOesOKyHfOsxAPAxOoqC0JUnC1amnO0IwkYC3sko51caSw==}
+  /uglify-js/3.16.2:
+    resolution: {integrity: sha512-AaQNokTNgExWrkEYA24BTNMSjyqEXPSfhqoS0AxmHkCJ4U+Dyy5AvbGV/sqxuxficEfGGoX3zWw9R7QpLFfEsg==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true

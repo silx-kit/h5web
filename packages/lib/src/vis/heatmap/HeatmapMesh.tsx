@@ -70,7 +70,16 @@ function HeatmapMesh(props: Props) {
       })
     );
 
-    return new DataTexture(colors, CMAP_SIZE, 1, RGBAFormat, UnsignedByteType);
+    const texture = new DataTexture(
+      colors,
+      CMAP_SIZE,
+      1,
+      RGBAFormat,
+      UnsignedByteType
+    );
+    texture.needsUpdate = true;
+
+    return texture;
   }, [colorMap, invertColorMap]);
 
   const [scaleType, gammaExponent] = Array.isArray(visScaleType)

@@ -56,7 +56,7 @@
     "react-slider": "2.0.1",
     "react-suspense-fetch": "0.4.1",
     "react-use": "17.4.0",
-    "three": "0.135.0",
+    "three": "0.141.0",
     "zustand": "4.0.0-rc.1"
   },
   "devDependencies": {

@@ -155,7 +155,7 @@ export function getDataTexture(
 ): DataTexture {
   const { rows, cols } = getDims(values);
 
-  return new DataTexture(
+  const texture = new DataTexture(
     values.data,
     cols,
     rows,
@@ -166,4 +166,7 @@ export function getDataTexture(
     ClampToEdgeWrapping,
     magFilter
   );
+  texture.needsUpdate = true;
+
+  return texture;
 }

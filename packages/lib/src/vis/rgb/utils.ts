@@ -2,7 +2,7 @@ import type { NumArray } from '@h5web/shared';
 import { getDims, toTypedNdArray } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
-import { DataTexture3D, FloatType, RedFormat, UnsignedByteType } from 'three';
+import { Data3DTexture, FloatType, RedFormat, UnsignedByteType } from 'three';
 
 /*
  * - `Float32Array | Float64Array` ndarrays must contain normalized color values in the range [0, 1].
@@ -34,14 +34,15 @@ export function toRgbSafeNdArray(
   return toTypedNdArray(ndArr, Uint8Array);
 }
 
-export function getDataTexture3D(
+export function getData3DTexture(
   values: NdArray<Uint8Array | Uint8ClampedArray | Float32Array>
-): DataTexture3D {
+): Data3DTexture {
   const { rows, cols } = getDims(values);
 
-  const texture = new DataTexture3D(values.data, 3, cols, rows);
+  const texture = new Data3DTexture(values.data, 3, cols, rows);
   texture.format = RedFormat;
   texture.type = values.dtype === 'float32' ? FloatType : UnsignedByteType;
+  texture.needsUpdate = true;
 
   return texture;
 }
