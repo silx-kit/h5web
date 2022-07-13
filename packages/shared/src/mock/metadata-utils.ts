@@ -16,6 +16,7 @@ import type {
   LinkClass,
   UnresolvedEntity,
   GroupWithChildren,
+  PrintableCompoundType,
 } from '../models-hdf5';
 import { EntityKind, DTypeClass, Endianness } from '../models-hdf5';
 import type { NxInterpretation, SilxStyle } from '../models-nexus';
@@ -62,6 +63,17 @@ export const complexType: ComplexType = {
   class: DTypeClass.Complex,
   realType: floatType,
   imagType: floatType,
+};
+
+export const printableCompoundType: PrintableCompoundType = {
+  class: DTypeClass.Compound,
+  fields: {
+    string: stringType,
+    int: intType,
+    float: floatType,
+    bool: booleanType,
+    complex: complexType,
+  },
 };
 
 /* ---------------------- */

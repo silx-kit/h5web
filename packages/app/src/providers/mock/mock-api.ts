@@ -10,7 +10,6 @@ import {
   assertDefined,
   assertMockAttribute,
   assertMockDataset,
-  assertPrintableType,
   findMockEntity,
   hasArrayShape,
   isTypedArray,
@@ -71,7 +70,6 @@ export class MockApi extends DataProviderApi {
     }
 
     assertArrayShape(dataset);
-    assertPrintableType(dataset);
 
     return sliceValue(value, dataset, selection);
   }
