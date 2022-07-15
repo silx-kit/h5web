@@ -65,46 +65,27 @@ HDF5 files straight in the browser thanks to the
 
 ## Demos
 
-The stand-alone demo app demonstrates the use of the built-in data providers and
-visualizations. Several demos are available, one per data provider:
+The [demo app](https://h5web.panosc.eu/) demonstrates the use of the built-in
+data providers and visualizations. Several demos are available, one per data
+provider:
 
-### [H5Grove](https://github.com/silx-kit/h5grove)
+- [**H5GroveProvider**](https://h5web.panosc.eu/h5grove)
+- [**HsdsProvider**](https://h5web.panosc.eu/hsds)
+- [**H5WasmProvider**](https://h5web.panosc.eu/h5wasm)
+- [**MockProvider**](https://h5web.panosc.eu/mock)
 
-This demo is available at https://h5web.panosc.eu/h5grove.
+## Ecosystem
 
-The following HDF5 files can be reached with a URL of the form
-`https://h5web.panosc.eu/h5grove?file=<name>`:
+Check out these projects from the growing H5Web ecosystem:
 
-- [`water_224.h5`](https://h5web.panosc.eu/h5grove) (**default**): A typical
-  NeXus file with various real-world datasets to demonstrate the visualizations.
-- [`compressed.h5`](https://h5web.panosc.eu/h5grove?file=compressed.h5): A file
-  with datasets compressed with various filters to test decompression.
-- [`epics.h5`](https://h5web.panosc.eu/h5grove?file=epics.h5): A test file from
-  [EPICS](https://epics.anl.gov/) group (Argonne national lab).
-- [`grove.h5`](https://h5web.panosc.eu/h5grove?file=grove.h5): A file used to
-  test the provider. It contains datasets with NaN/Infinity values, booleans,
-  complexes and other types of datasets such as RGB images and 4D stacks.
-- [`links.h5`](https://h5web.panosc.eu/h5grove?file=links.h5): A file with
-  external links, soft links and a virtual dataset to test link resolution.
-- [`tall.h5`](https://h5web.panosc.eu/h5grove?file=tall.h5): The demo file of
-  HSDS.
+- [h5grove](https://github.com/silx-kit/h5grove) - core utilities to serve HDF5
+  file contents
+- [jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web) - H5Web
+  extension for JupyterLab
+- [vscode-h5web](https://github.com/silx-kit/vscode-h5web) - H5Web extension for
+  Visual Studio Code
 
-### [HSDS](https://github.com/HDFGroup/hsds)
+## Contributing
 
-This demo is available at https://h5web.panosc.eu/hsds.
-
-All the HDF5 files mentionned above can be reached with a URL of the form
-`https://h5web.panosc.eu/hsds?file=<name>`. https://h5web.panosc.eu/hsds will
-default to `water_224.h5` but some datasets cannot be displayed as bitshuffle
-compression is not supported by HSDS yet.
-
-### [H5Wasm](https://github.com/usnistgov/h5wasm)
-
-This demo is available at https://h5web.panosc.eu/h5wasm. Just drop an HDF5 file
-from your local machine to get started.
-
-### Mock data
-
-At https://h5web.panosc.eu/mock, you can view a set of mock data generated
-entirely on the front-end. This demo and its provider, `MockProvider` are used
-for end-to-end testing purposes.
+Want to help us improve H5Web? Check out the [CONTRIBUTING](CONTRIBUTING.md)
+guide to get started.
