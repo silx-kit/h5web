@@ -76,7 +76,7 @@ provider:
 
 ## Ecosystem
 
-Check out these projects from the growing H5Web ecosystem:
+Check out these projects from the H5Web ecosystem:
 
 - [h5grove](https://github.com/silx-kit/h5grove) - core utilities to serve HDF5
   file contents
@@ -87,5 +87,10 @@ Check out these projects from the growing H5Web ecosystem:
 
 ## Contributing
 
-Want to help us improve H5Web? Check out the [CONTRIBUTING](CONTRIBUTING.md)
-guide to get started.
+Want to help improve H5Web? We're always looking for feedback, bug reports and
+feature requests, so don't hesitate to
+[open an issue](https://github.com/silx-kit/h5web/issues/new/choose) or
+[start a discussion](https://github.com/silx-kit/h5web/discussions).
+
+If you'd like to know more about contributing to the codebase, please check out
+the [CONTRIBUTING](CONTRIBUTING.md) guide.
