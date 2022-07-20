@@ -12,15 +12,13 @@ import shallow from 'zustand/shallow';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { AxisMapping } from '../models';
-import { DEFAULT_DOMAIN } from '../utils';
+import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
 import HeatmapToolbar from './HeatmapToolbar';
 import { useHeatmapConfig } from './config';
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericType>;
-  selection: string | undefined;
   value: number[] | TypedArray;
-  dims: number[];
   dimMapping: DimensionMapping;
   axisMapping?: AxisMapping;
   title: string;
@@ -31,9 +29,7 @@ interface Props {
 function MappedHeatmapVis(props: Props) {
   const {
     dataset,
-    selection,
     value,
-    dims,
     dimMapping,
     axisMapping = [],
     title,
@@ -51,6 +47,7 @@ function MappedHeatmapVis(props: Props) {
     flipYAxis,
   } = useHeatmapConfig((state) => state, shallow);
 
+  const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const [dataArray] = useMappedArray(value, slicedDims, slicedMapping);
 
@@ -65,7 +62,7 @@ function MappedHeatmapVis(props: Props) {
           <HeatmapToolbar
             dataset={dataset}
             dataDomain={dataDomain}
-            selection={selection}
+            selection={getSliceSelection(dimMapping)}
             initialScaleType={colorScaleType}
           />,
           toolbarContainer

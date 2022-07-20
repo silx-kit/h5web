@@ -21,7 +21,6 @@ function MatrixVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const axesCount = Math.min(dims.length, 2);
   const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
-  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -33,13 +32,11 @@ function MatrixVisContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
-          selection={selection}
+          selection={getSliceSelection(dimMapping)}
           render={(value) => (
             <MappedMatrixVis
               dataset={entity}
-              selection={selection}
               value={value}
-              dims={dims}
               dimMapping={dimMapping}
               toolbarContainer={toolbarContainer}
             />
