@@ -10,28 +10,27 @@ import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import { getSliceSelection } from '../utils';
 import MatrixToolbar from './MatrixToolbar';
 import { useMatrixConfig } from './config';
 import { getCellWidth, getFormatter } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
-  selection: string | undefined;
   value: ArrayValue<PrintableType>;
-  dims: number[];
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;
 }
 
 function MappedMatrixVis(props: Props) {
-  const { dataset, selection, value, dims, dimMapping, toolbarContainer } =
-    props;
+  const { dataset, value, dimMapping, toolbarContainer } = props;
 
   const { sticky, customCellWidth } = useMatrixConfig(
     (state) => state,
     shallow
   );
 
+  const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
 
@@ -44,7 +43,7 @@ function MappedMatrixVis(props: Props) {
         createPortal(
           <MatrixToolbar
             dataset={dataset}
-            selection={selection}
+            selection={getSliceSelection(dimMapping)}
             cellWidth={cellWidth}
           />,
           toolbarContainer

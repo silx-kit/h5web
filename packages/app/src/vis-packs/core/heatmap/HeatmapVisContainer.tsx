@@ -22,7 +22,6 @@ function HeatmapVisContainer(props: VisContainerProps) {
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
-  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -34,13 +33,11 @@ function HeatmapVisContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher
           dataset={entity}
-          selection={selection}
+          selection={getSliceSelection(dimMapping)}
           render={(value) => (
             <MappedHeatmapVis
               dataset={entity}
-              selection={selection}
               value={value}
-              dims={dims}
               dimMapping={dimMapping}
               title={entity.name}
               toolbarContainer={toolbarContainer}
