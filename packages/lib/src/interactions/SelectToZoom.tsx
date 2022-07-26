@@ -1,6 +1,5 @@
 import { useThree } from '@react-three/fiber';
 
-import { useCameraState } from '../vis/hooks';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import { getVisibleDomains } from '../vis/utils';
 import RatioSelectionRect from './RatioSelectionRect';
@@ -17,30 +16,33 @@ interface Props extends CommonInteractionProps {
 function SelectToZoom(props: Props) {
   const { keepRatio, ...interactionProps } = props;
 
-  const { dataToWorld } = useAxisSystemContext();
+  const context = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
 
   const { width, height } = useThree((state) => state.size);
   const camera = useThree((state) => state.camera);
 
-  const { xVisibleDomain, yVisibleDomain } = useCameraState(
-    getVisibleDomains,
-    []
-  );
-  const dataRatio = Math.abs(
-    (xVisibleDomain[1] - xVisibleDomain[0]) /
-      (yVisibleDomain[1] - yVisibleDomain[0])
-  );
+  function getDataRatio() {
+    const { xVisibleDomain, yVisibleDomain } = getVisibleDomains(
+      camera,
+      context
+    );
+    return Math.abs(
+      (xVisibleDomain[1] - xVisibleDomain[0]) /
+        (yVisibleDomain[1] - yVisibleDomain[0])
+    );
+  }
 
   function onSelectionEnd(selection: Selection) {
     const { startPoint: dataStartPoint, endPoint: dataEndPoint } = selection;
+    const dataRatio = getDataRatio();
 
     // Work in world coordinates as we need to act on the world camera
     const [startPoint, endPoint] = (
       keepRatio
         ? getRatioRespectingRectangle(dataStartPoint, dataEndPoint, dataRatio)
         : [dataStartPoint, dataEndPoint]
-    ).map(dataToWorld);
+    ).map(context.dataToWorld);
 
     if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
       return;
@@ -63,6 +65,8 @@ function SelectToZoom(props: Props) {
       {...interactionProps}
     >
       {({ startPoint, endPoint }) => {
+        const dataRatio = getDataRatio();
+
         return (
           <>
             <SelectionRect
