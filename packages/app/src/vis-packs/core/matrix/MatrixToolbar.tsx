@@ -1,9 +1,10 @@
 import {
+  CellWidthInput,
+  ExportMenu,
+  NotationToggleGroup,
   Separator,
   ToggleBtn,
   Toolbar,
-  ExportMenu,
-  CellWidthInput,
 } from '@h5web/lib';
 import type { ArrayShape, Dataset } from '@h5web/shared';
 import { hasNumericType } from '@h5web/shared';
@@ -25,8 +26,14 @@ function MatrixToolbar(props: Props) {
   const { dataset, selection, cellWidth } = props;
   const { getExportURL } = useDataContext();
 
-  const { sticky, toggleSticky, customCellWidth, setCustomCellWidth } =
-    useMatrixConfig();
+  const {
+    sticky,
+    toggleSticky,
+    customCellWidth,
+    setCustomCellWidth,
+    notation,
+    setNotation,
+  } = useMatrixConfig();
 
   return (
     <Toolbar>
@@ -37,6 +44,8 @@ function MatrixToolbar(props: Props) {
       />
 
       <Separator />
+
+      <NotationToggleGroup value={notation} onChange={setNotation} />
 
       <ToggleBtn
         label="Freeze indices"

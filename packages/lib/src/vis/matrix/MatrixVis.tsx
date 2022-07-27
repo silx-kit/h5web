@@ -10,7 +10,7 @@ const CELL_HEIGHT = 32;
 
 interface Props {
   dataArray: NdArray<ArrayValue<PrintableType>>;
-  formatter: (value: Primitive<PrintableType>) => string;
+  formatter: (value: Primitive<PrintableType>, colIndex: number) => string;
   cellWidth: number;
   sticky?: boolean;
   columnHeaders?: string[];
@@ -30,8 +30,8 @@ function MatrixVis(props: Props) {
 
   const cellFormatter =
     dims.length === 1
-      ? (row: number) => formatter(dataArray.get(row))
-      : (row: number, col: number) => formatter(dataArray.get(row, col));
+      ? (row: number) => formatter(dataArray.get(row), 0)
+      : (row: number, col: number) => formatter(dataArray.get(row, col), col);
 
   return (
     <GridProvider

@@ -273,10 +273,14 @@ export function isStringType(type: DType): type is StringType {
   return type.class === DTypeClass.String;
 }
 
+export function isComplexType(type: DType): type is ComplexType {
+  return type.class === DTypeClass.Complex;
+}
+
 export function hasComplexType<S extends Shape>(
   dataset: Dataset<S>
 ): dataset is Dataset<S, ComplexType> {
-  return dataset.type.class === DTypeClass.Complex;
+  return isComplexType(dataset.type);
 }
 
 export function assertComplexType<S extends Shape>(

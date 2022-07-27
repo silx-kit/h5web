@@ -1,29 +1,52 @@
+import { Notation } from '@h5web/lib';
 import type {
-  ArrayShape,
-  Dataset,
-  H5WebComplex,
+  ComplexType,
+  NumericType,
   PrintableCompoundType,
   PrintableType,
 } from '@h5web/shared';
-import {
-  DTypeClass,
-  formatMatrixComplex,
-  formatMatrixValue,
-  hasComplexType,
-  hasNumericType,
-} from '@h5web/shared';
+import { isComplexType } from '@h5web/shared';
+import { isNumericType } from '@h5web/shared';
+import { createComplexFormatter } from '@h5web/shared';
+import { DTypeClass } from '@h5web/shared';
+import { format } from 'd3-format';
 
 import type { ValueFormatter } from '../models';
 
+export function createNumericFormatter(
+  notation: Notation
+): ValueFormatter<NumericType> {
+  switch (notation) {
+    case Notation.FixedPoint:
+      return format('.3f');
+    case Notation.Scientific:
+      return format('.3e');
+    default:
+      return format('.5~g');
+  }
+}
+
+export function createMatrixComplexFormatter(
+  notation: Notation
+): ValueFormatter<ComplexType> {
+  const formatStr =
+    notation === Notation.FixedPoint
+      ? '.2f'
+      : `.3~${notation === Notation.Scientific ? 'e' : 'g'}`;
+
+  return createComplexFormatter(formatStr, true);
+}
+
 export function getFormatter(
-  dataset: Dataset<ArrayShape, PrintableType>
+  type: PrintableType,
+  notation: Notation
 ): ValueFormatter<PrintableType> {
-  if (hasComplexType(dataset)) {
-    return (val) => formatMatrixComplex(val as H5WebComplex);
+  if (isComplexType(type)) {
+    return createMatrixComplexFormatter(notation);
   }
 
-  if (hasNumericType(dataset)) {
-    return (val) => formatMatrixValue(val as number);
+  if (isNumericType(type)) {
+    return createNumericFormatter(notation);
   }
 
   return (val) => (val as string).toString();

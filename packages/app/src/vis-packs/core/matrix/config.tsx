@@ -1,3 +1,4 @@
+import { Notation } from '@h5web/lib';
 import type { StoreApi } from 'zustand';
 import create from 'zustand';
 import createContext from 'zustand/context';
@@ -11,6 +12,9 @@ interface MatrixVisConfig {
 
   customCellWidth: number | undefined;
   setCustomCellWidth: (val: number | undefined) => void;
+
+  notation: Notation;
+  setNotation: (not: Notation) => void;
 }
 
 function createStore() {
@@ -24,10 +28,15 @@ function createStore() {
         setCustomCellWidth: (customCellWidth) => {
           set({ customCellWidth });
         },
+
+        notation: Notation.Scientific,
+        setNotation: (notation) => {
+          set({ notation });
+        },
       }),
       {
         name: 'h5web:matrix',
-        version: 2,
+        version: 3,
       }
     )
   );
