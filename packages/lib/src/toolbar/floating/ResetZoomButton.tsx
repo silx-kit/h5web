@@ -1,6 +1,6 @@
-import { useFrame, useThree } from '@react-three/fiber';
-import { useState } from 'react';
+import { useThree } from '@react-three/fiber';
 
+import { useCameraState } from '../../vis/hooks';
 import FloatingControl from './FloatingControl';
 import styles from './ResetZoomButton.module.css';
 
@@ -8,14 +8,9 @@ function ResetZoomButton() {
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
 
-  const [isVisible, setVisible] = useState(false);
-
-  useFrame(() => {
-    const isZoomedIn = camera.scale.x < 1 || camera.scale.y < 1;
-    if (isVisible !== isZoomedIn) {
-      setVisible(isZoomedIn);
-    }
-  });
+  const isZoomedIn = useCameraState(({ scale }) => {
+    return scale.x < 1 || scale.y < 1;
+  }, []);
 
   function resetZoom() {
     camera.scale.x = 1;
@@ -31,7 +26,7 @@ function ResetZoomButton() {
       <button
         className={styles.btn}
         type="button"
-        hidden={!isVisible}
+        hidden={!isZoomedIn}
         onClick={() => resetZoom()}
       >
         <span className={styles.btnLike}>Reset zoom</span>

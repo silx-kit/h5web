@@ -1,7 +1,6 @@
 import { useThree } from '@react-three/fiber';
 import { Vector2 } from 'three';
 
-import { useCameraState } from '../vis/hooks';
 import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import { getVisibleDomains } from '../vis/utils';
 import SelectionRect from './SelectionRect';
@@ -17,18 +16,18 @@ interface Props extends CommonInteractionProps {
 function AxialSelectToZoom(props: Props) {
   const { axis, modifierKey, disabled } = props;
 
-  const { dataToWorld } = useAxisSystemContext();
+  const context = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
 
   const { width, height } = useThree((state) => state.size);
   const camera = useThree((state) => state.camera);
 
-  const { xVisibleDomain, yVisibleDomain } = useCameraState(
-    getVisibleDomains,
-    []
-  );
-
   function getAxialSelection(selection: Selection): Selection {
+    const { xVisibleDomain, yVisibleDomain } = getVisibleDomains(
+      camera,
+      context
+    );
+
     const { startPoint: mouseStartPoint, endPoint: mouseEndPoint } = selection;
     const startPoint =
       axis === 'x'
@@ -42,8 +41,8 @@ function AxialSelectToZoom(props: Props) {
     return {
       startPoint,
       endPoint,
-      worldStartPoint: dataToWorld(startPoint),
-      worldEndPoint: dataToWorld(endPoint),
+      worldStartPoint: context.dataToWorld(startPoint),
+      worldEndPoint: context.dataToWorld(endPoint),
     };
   }
 

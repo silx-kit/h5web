@@ -63,15 +63,11 @@ export function useCameraState<T>(
   const [state, setState] = useState(() => factory(camera, context));
 
   function updateState() {
-    const newState = factory(camera, context);
-
-    if (newState !== state) {
-      setState(newState);
-    }
+    setState(() => factory(camera, context)); // functional update to skip re-renders if state hasn't changed
   }
 
   // Update state when context value or dependencies change
-  useEffect(updateState, [context, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(updateState, [camera, context, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update state when canvas is redrawn (i.e. on zoom/pan)
   useFrame(updateState);
