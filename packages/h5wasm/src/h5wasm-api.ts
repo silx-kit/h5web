@@ -14,6 +14,7 @@ import type {
   GroupWithChildren,
   Shape,
 } from '@h5web/shared';
+import { hasArrayShape } from '@h5web/shared';
 import {
   assertNonNull,
   buildEntityPath,
@@ -24,6 +25,7 @@ import {
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
 import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 
+import { hasInt64Type } from './guards';
 import {
   assertH5WasmDataset,
   assertH5WasmEntityWithAttrs,
@@ -54,12 +56,15 @@ export class H5WasmApi extends ProviderApi {
     const h5wDataset = await this.getH5WasmEntity(dataset.path);
     assertH5WasmDataset(h5wDataset);
 
-    if (hasBoolType(dataset)) {
-      const value = h5wDataset.to_array();
+    // h5wasm returns integers for bool and BigInt for int64
+    // So we use to_array instead to have bool and numbers resp.
+    if (hasBoolType(dataset) || hasInt64Type(dataset)) {
+      const rawValue = h5wDataset.to_array();
+      const value = hasArrayShape(dataset)
+        ? flattenValue(rawValue, dataset)
+        : rawValue;
 
-      return selection
-        ? sliceValue(flattenValue(value, dataset), dataset, selection)
-        : value;
+      return selection ? sliceValue(value, dataset, selection) : value;
     }
 
     if (selection) {
