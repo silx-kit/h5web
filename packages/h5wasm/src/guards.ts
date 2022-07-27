@@ -1,3 +1,5 @@
+import type { Dataset } from '@h5web/shared';
+import { DTypeClass } from '@h5web/shared';
 import {
   Dataset as H5WasmDataset,
   Group as H5WasmGroup,
@@ -92,4 +94,8 @@ export function assertNumericMetadata(
   if (!isNumericMetadata(metadata)) {
     throw new Error('Expected H5Wasm numeric metadata');
   }
+}
+
+export function hasInt64Type(dataset: Dataset) {
+  return dataset.type.class === DTypeClass.Integer && dataset.type.size === 64;
 }
