@@ -1,4 +1,4 @@
-import { assertGroupWithChildren, assertMinDims } from '@h5web/shared';
+import { assertGroup, assertMinDims } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
@@ -12,7 +12,7 @@ import { assertNumericSignal } from '../utils';
 
 function NxImageContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
-  assertGroupWithChildren(entity);
+  assertGroup(entity);
 
   const nxData = useNxData(entity);
   assertNumericSignal(nxData);

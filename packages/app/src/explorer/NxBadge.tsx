@@ -1,11 +1,11 @@
-import type { Entity } from '@h5web/shared';
+import type { ChildEntity } from '@h5web/shared';
 
 import { useDataContext } from '../providers/DataProvider';
 import styles from './Explorer.module.css';
 import { needsNxBadge } from './utils';
 
 interface Props {
-  entity: Entity;
+  entity: ChildEntity;
 }
 
 function NxBadge(props: Props) {

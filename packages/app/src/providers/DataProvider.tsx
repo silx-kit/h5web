@@ -1,5 +1,5 @@
-import type { Entity } from '@h5web/shared';
-import { assertGroupWithChildren, isGroup } from '@h5web/shared';
+import type { ChildEntity, Entity, Group } from '@h5web/shared';
+import { isGroup } from '@h5web/shared';
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
@@ -43,25 +43,23 @@ function DataProvider(props: PropsWithChildren<Props>) {
   const { api, children } = props;
 
   const entitiesStore = useMemo(() => {
-    const childCache = new Map<string, Entity>();
+    const childCache = new Map<string, Exclude<ChildEntity, Group>>();
 
     const store = createFetchStore(async (path: string) => {
-      if (childCache.has(path)) {
-        return childCache.get(path) as Entity;
+      const cachedEntity = childCache.get(path);
+      if (cachedEntity) {
+        return cachedEntity;
       }
 
       const entity = await api.getEntity(path);
 
       if (isGroup(entity)) {
-        // Make sure `getEntity` doesn't return groups without `children` proprety
-        assertGroupWithChildren(entity);
-
         // Cache non-group children (datasets, datatypes and links)
-        entity.children
-          .filter((child) => !isGroup(child))
-          .forEach((child) => {
+        entity.children.forEach((child) => {
+          if (!isGroup(child)) {
             childCache.set(child.path, child);
-          });
+          }
+        });
       }
 
       return entity;

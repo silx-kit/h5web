@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared';
+import type { ChildEntity } from '@h5web/shared';
 import { isGroup, assertStr } from '@h5web/shared';
 
 import type { AttrValuesStore } from '../providers/models';
@@ -7,7 +7,7 @@ import { hasAttribute } from '../utils';
 const SUPPORTED_NX_CLASSES = new Set(['NXdata', 'NXentry', 'NXprocess']);
 
 export function needsNxBadge(
-  entity: Entity,
+  entity: ChildEntity,
   attrValuesStore: AttrValuesStore
 ): boolean {
   if (!isGroup(entity)) {

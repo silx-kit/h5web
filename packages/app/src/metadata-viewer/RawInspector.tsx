@@ -1,9 +1,9 @@
-import type { Entity } from '@h5web/shared';
+import type { ProvidedEntity } from '@h5web/shared';
 
 import styles from './RawInspector.module.css';
 
 interface Props {
-  entity: Entity;
+  entity: ProvidedEntity;
 }
 
 function RawInspector(props: Props) {

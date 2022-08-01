@@ -5,6 +5,7 @@ import type {
   Dataset,
   Entity,
   NumericType,
+  ProvidedEntity,
 } from '@h5web/shared';
 import type {
   AxiosInstance,
@@ -108,7 +109,7 @@ export abstract class DataProviderApi {
     this.progressListeners.forEach((cb) => cb([...this.progress.values()]));
   }
 
-  public abstract getEntity(path: string): Promise<Entity>;
+  public abstract getEntity(path: string): Promise<ProvidedEntity>;
   public abstract getValue(params: ValuesStoreParams): Promise<unknown>;
   public abstract getAttrValues(entity: Entity): Promise<AttributeValues>;
 }

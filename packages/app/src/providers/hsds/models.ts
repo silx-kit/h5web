@@ -66,6 +66,11 @@ interface HsdsSymbolicLink {
 /* ------------------- */
 /* ----- ENTITIES----- */
 
+export type BaseHsdsEntity = Pick<
+  HsdsEntity,
+  'id' | 'collection' | 'path' | 'name'
+>;
+
 export type HsdsEntity<T extends Entity = Entity> = T & {
   id: HsdsId;
   collection: HsdsCollection;

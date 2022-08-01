@@ -4,13 +4,14 @@ import type {
   ArrayShape,
   Dataset,
   ScalarShape,
+  ProvidedEntity,
 } from '@h5web/shared';
 import type { FetchStore } from 'react-suspense-fetch';
 
 import type { ImageAttribute } from '../vis-packs/core/models';
 import type { NxAttribute } from '../vis-packs/nexus/models';
 
-export type EntitiesStore = FetchStore<Entity, string>;
+export type EntitiesStore = FetchStore<ProvidedEntity, string>;
 
 export interface ValuesStore extends FetchStore<unknown, ValuesStoreParams> {
   cancelOngoing: () => void;

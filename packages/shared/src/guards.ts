@@ -128,14 +128,20 @@ export function isGroup(entity: Entity): entity is Group {
   return entity.kind === EntityKind.Group;
 }
 
+export function assertGroup(entity: Entity): asserts entity is Group {
+  if (!isGroup(entity)) {
+    throw new Error('Expected group');
+  }
+}
+
 export function hasChildren(group: Group): group is GroupWithChildren {
   return 'children' in group;
 }
 
 export function assertGroupWithChildren(
-  entity: Entity
-): asserts entity is GroupWithChildren {
-  if (!isGroup(entity) || !hasChildren(entity)) {
+  group: Group
+): asserts group is GroupWithChildren {
+  if (!hasChildren(group)) {
     throw new Error('Expected group with children');
   }
 }

@@ -4,13 +4,20 @@ import ndarray from 'ndarray';
 import {
   assertAbsolutePath,
   isGroup,
-  hasChildren,
   assertArray,
   assertArrayShape,
   assertDefined,
   assertDataset,
+  assertGroupWithChildren,
+  assertGroup,
 } from '../guards';
-import type { Attribute, Entity, Dataset, DType, Shape } from '../models-hdf5';
+import type {
+  Attribute,
+  Dataset,
+  DType,
+  Shape,
+  ProvidedEntity,
+} from '../models-hdf5';
 import { getChildEntity } from '../utils';
 import { mockMetadata } from './metadata';
 import type { MockAttribute, MockDataset } from './models';
@@ -31,22 +38,27 @@ export function assertMockAttribute<S extends Shape, T extends DType>(
   }
 }
 
-export function findMockEntity(path: string): Entity | undefined {
+export function findMockEntity(path: string): ProvidedEntity | undefined {
   assertAbsolutePath(path);
 
   if (path === '/') {
     return mockMetadata;
   }
 
-  const pathSegments = path.slice(1).split('/');
-  return pathSegments.reduce<Entity | undefined>(
-    (parentEntity, currSegment) => {
-      return parentEntity && isGroup(parentEntity) && hasChildren(parentEntity)
-        ? getChildEntity(parentEntity, currSegment)
-        : undefined;
-    },
-    mockMetadata
-  );
+  const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
+  const parent = findMockEntity(parentPath);
+  if (!parent) {
+    return undefined;
+  }
+
+  assertGroup(parent);
+  const childName = path.slice(path.lastIndexOf('/') + 1);
+  const child = parent && getChildEntity(parent, childName);
+
+  if (child && isGroup(child)) {
+    assertGroupWithChildren(child);
+  }
+  return child;
 }
 
 export function getMockDataArray<T = number>(path: string): NdArray<T[]> {

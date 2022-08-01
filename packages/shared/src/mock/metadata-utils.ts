@@ -17,6 +17,7 @@ import type {
   UnresolvedEntity,
   GroupWithChildren,
   PrintableCompoundType,
+  ChildEntity,
 } from '../models-hdf5';
 import { EntityKind, DTypeClass, Endianness } from '../models-hdf5';
 import type { NxInterpretation, SilxStyle } from '../models-nexus';
@@ -131,7 +132,7 @@ export function withImageAttributes<T extends Entity>(entity: T): T {
 /* ----- ENTITIES ----- */
 
 type EntityOpts = Partial<Pick<Entity, 'attributes' | 'link'>>;
-type GroupOpts = EntityOpts & { isRoot?: boolean; children?: Entity[] };
+type GroupOpts = EntityOpts & { isRoot?: boolean; children?: ChildEntity[] };
 type DatasetOpts = EntityOpts & { valueId?: MockValueId };
 
 function prefixChildrenPaths(
@@ -149,7 +150,7 @@ function prefixChildrenPaths(
 
 export function makeGroup(
   name: string,
-  children: Entity[] = [],
+  children: ChildEntity[] = [],
   opts: Omit<GroupOpts, 'children'> = {}
 ): GroupWithChildren {
   const { attributes = [], link, isRoot = false } = opts;
@@ -261,7 +262,7 @@ export function makeNxGroup(
   name: string,
   type: 'NXroot' | 'NXentry' | 'NXprocess' | 'NXdata',
   opts: { defaultPath?: string } & GroupOpts = {}
-): Group {
+): GroupWithChildren {
   const { defaultPath, children, ...groupOpts } = opts;
 
   return makeGroup(name, children, {

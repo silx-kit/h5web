@@ -1,4 +1,4 @@
-import { assertGroupWithChildren, assertNumDims } from '@h5web/shared';
+import { assertGroup, assertNumDims } from '@h5web/shared';
 
 import VisBoundary from '../../VisBoundary';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
@@ -9,7 +9,7 @@ import { assertNumericSignal } from '../utils';
 
 function NxRgbContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
-  assertGroupWithChildren(entity);
+  assertGroup(entity);
 
   const nxData = useNxData(entity);
   assertNumericSignal(nxData);

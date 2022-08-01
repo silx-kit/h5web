@@ -18,12 +18,20 @@ export interface Entity {
   link?: Link;
 }
 
+export type ProvidedEntity =
+  | GroupWithChildren
+  | Dataset
+  | Datatype
+  | UnresolvedEntity;
+
+export type ChildEntity = Group | Dataset | Datatype | UnresolvedEntity;
+
 export interface Group extends Entity {
   kind: EntityKind.Group;
 }
 
 export interface GroupWithChildren extends Group {
-  children: Entity[];
+  children: ChildEntity[];
 }
 
 export interface Dataset<S extends Shape = Shape, T extends DType = DType>

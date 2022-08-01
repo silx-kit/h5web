@@ -1,6 +1,5 @@
-import type { Entity } from '@h5web/shared';
+import type { ChildEntity, ProvidedEntity } from '@h5web/shared';
 import {
-  assertGroupWithChildren,
   assertStr,
   buildEntityPath,
   hasComplexType,
@@ -27,7 +26,7 @@ export function resolvePath(
   path: string,
   entitiesStore: EntitiesStore,
   attrValueStore: AttrValuesStore
-): { entity: Entity; supportedVis: VisDef[] } | undefined {
+): { entity: ProvidedEntity; supportedVis: VisDef[] } | undefined {
   const entity = entitiesStore.get(path);
 
   const supportedVis = findSupportedVis(entity, attrValueStore);
@@ -44,7 +43,7 @@ export function resolvePath(
 }
 
 function findSupportedVis(
-  entity: Entity,
+  entity: ProvidedEntity,
   attrValueStore: AttrValuesStore
 ): VisDef[] {
   const nxVis = getSupportedNxVis(entity, attrValueStore);
@@ -56,7 +55,7 @@ function findSupportedVis(
 }
 
 function getNxDefaultPath(
-  entity: Entity,
+  entity: ProvidedEntity,
   attrValueStore: AttrValuesStore
 ): string | undefined {
   if (!isGroup(entity)) {
@@ -73,12 +72,11 @@ function getNxDefaultPath(
       : buildEntityPath(entity.path, defaultPath);
   }
 
-  assertGroupWithChildren(entity);
   return getImplicitDefaultChild(entity.children, attrValueStore)?.path;
 }
 
 function getSupportedCoreVis(
-  entity: Entity,
+  entity: ProvidedEntity,
   attrValueStore: AttrValuesStore
 ): CoreVisDef[] {
   const supportedVis = Object.values(CORE_VIS).filter(
@@ -91,14 +89,13 @@ function getSupportedCoreVis(
 }
 
 function getSupportedNxVis(
-  entity: Entity,
+  entity: ProvidedEntity,
   attrValuesStore: AttrValuesStore
 ): VisDef[] {
   if (!isGroup(entity)) {
     return [];
   }
 
-  assertGroupWithChildren(entity);
   if (!isNxDataGroup(entity, attrValuesStore)) {
     return [];
   }
@@ -144,9 +141,9 @@ function getSupportedNxVis(
 }
 
 function getImplicitDefaultChild(
-  children: Entity[],
+  children: ChildEntity[],
   attrValueStore: AttrValuesStore
-): Entity | undefined {
+): ChildEntity | undefined {
   const nxGroups = children
     .filter(isGroup)
     .filter((g) => hasAttribute(g, 'NX_class'));

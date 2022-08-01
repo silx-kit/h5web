@@ -1,4 +1,4 @@
-import { assertGroupWithChildren } from '@h5web/shared';
+import { assertGroup } from '@h5web/shared';
 import { isEqual } from 'lodash';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -14,7 +14,7 @@ import { useNxData } from '../hooks';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
-  assertGroupWithChildren(entity);
+  assertGroup(entity);
 
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);

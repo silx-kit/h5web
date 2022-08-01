@@ -1,4 +1,4 @@
-import { assertGroupWithChildren } from '@h5web/shared';
+import { assertGroup } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
@@ -13,7 +13,7 @@ import { useNxData } from '../hooks';
 
 function NxComplexSpectrumContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
-  assertGroupWithChildren(entity);
+  assertGroup(entity);
 
   const nxData = useNxData(entity);
   assertComplexNxData(nxData);
