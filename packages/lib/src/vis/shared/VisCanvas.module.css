@@ -9,6 +9,7 @@
   width: 100%; /* fill container by default (unless size is passed in JSX) */
   height: 100%;
   margin: 0 auto;
+  z-index: 0; /* To create a stacking context for the floatingToolbar */
 }
 
 .r3fRoot {
@@ -20,4 +21,5 @@
   right: 0;
   bottom: 0;
   display: flex;
+  z-index: 1; /* for toolbar items to appear above visualizations (overflow, selectors) */
 }
