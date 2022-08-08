@@ -55,6 +55,23 @@ describe('/mock', () => {
       .and('have.attr', 'aria-colindex', 0);
   });
 
+  it('visualize 1D compound dataset as Matrix', () => {
+    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('oneD_compound');
+    cy.selectVisTab('Matrix');
+
+    cy.findByRole('tab', { name: 'Matrix' }).should(...BE_SELECTED);
+    cy.findByRole('table').should('be.visible');
+    cy.findAllByRole('cell')
+      .first()
+      .should('have.attr', 'aria-rowindex', 0)
+      .and('have.attr', 'aria-colindex', 0);
+
+    if (Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.matchImageSnapshot('matrix_compound_1D');
+    }
+  });
+
   it('visualize 2D dataset as Heatmap', () => {
     cy.selectExplorerNode('nD_datasets');
     cy.selectExplorerNode('twoD');
