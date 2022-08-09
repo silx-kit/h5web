@@ -72,14 +72,14 @@ function SelectionTool(props: Props) {
         return;
       }
 
-      const { worldPt, sourceEvent } = evt;
+      const { worldPt } = evt;
       const dataEndPoint = worldToData(boundPointToFOV(worldPt, camera));
       setEndPoint(dataEndPoint);
 
       const worldEndPoint = dataToWorld(dataEndPoint);
       const worldStartPoint = dataToWorld(startPoint);
 
-      if (onSelectionChange && shouldInteract(sourceEvent)) {
+      if (onSelectionChange && isModifierKeyPressed) {
         onSelectionChange({
           startPoint,
           endPoint: dataEndPoint,
@@ -95,7 +95,7 @@ function SelectionTool(props: Props) {
       setEndPoint,
       dataToWorld,
       onSelectionChange,
-      shouldInteract,
+      isModifierKeyPressed,
     ]
   );
 
