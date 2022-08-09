@@ -24,6 +24,7 @@ export { default as Selector } from './toolbar/controls/Selector/Selector';
 export { default as InteractionHelp } from './toolbar/controls/InteractionHelp';
 export { default as FloatingControl } from './toolbar/floating/FloatingControl';
 export { default as ResetZoomButton } from './toolbar/floating/ResetZoomButton';
+export { default as NotationToggleGroup } from './toolbar/controls/NotationToggleGroup';
 export type { DomainSliderProps } from './toolbar/controls/DomainSlider/DomainSlider';
 
 // Building blocks
@@ -110,6 +111,7 @@ export { INTERPOLATORS } from './vis/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
 export { CurveType, GlyphType } from './vis/line/models';
 export { ImageType } from './vis/rgb/models';
+export { Notation } from './vis/matrix/models';
 
 export type {
   InteractionInfo,

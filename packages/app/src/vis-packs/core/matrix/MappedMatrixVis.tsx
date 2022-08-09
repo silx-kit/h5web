@@ -25,17 +25,17 @@ interface Props {
 function MappedMatrixVis(props: Props) {
   const { dataset, value, dimMapping, toolbarContainer } = props;
 
-  const { sticky, customCellWidth } = useMatrixConfig(
+  const { sticky, customCellWidth, notation } = useMatrixConfig(
     (state) => state,
     shallow
   );
 
-  const { shape: dims } = dataset;
+  const { shape: dims, type } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
 
-  const formatter = getFormatter(dataset);
-  const cellWidth = getCellWidth(dataset.type);
+  const formatter = getFormatter(type, notation);
+  const cellWidth = getCellWidth(type);
 
   return (
     <>

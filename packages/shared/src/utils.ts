@@ -20,11 +20,9 @@ export const formatBound = format('.3~e');
 export const formatBoundInput = format('.5~e');
 export const formatTooltipVal = format('.5~g');
 export const formatTooltipErr = format('.3~g');
-export const formatMatrixValue = format('.3e');
-export const formatMatrixComplex = createComplexFormatter('.2e', true);
 export const formatScalarComplex = createComplexFormatter('.12~g');
 
-function createComplexFormatter(specifier: string, full = false) {
+export function createComplexFormatter(specifier: string, full = false) {
   const formatVal = format(specifier);
 
   return (value: H5WebComplex) => {

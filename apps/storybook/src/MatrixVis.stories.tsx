@@ -1,12 +1,9 @@
 import type { MatrixVisProps } from '@h5web/lib';
 import { getMockDataArray, MatrixVis } from '@h5web/lib';
 import type { H5WebComplex } from '@h5web/shared';
-import {
-  toTypedNdArray,
-  formatMatrixComplex,
-  formatMatrixValue,
-} from '@h5web/shared';
+import { createComplexFormatter, toTypedNdArray } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
+import { format } from 'd3-format';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -16,6 +13,9 @@ const complexDataArray = getMockDataArray<H5WebComplex>(
 );
 
 const Template: Story<MatrixVisProps> = (args) => <MatrixVis {...args} />;
+
+const formatMatrixValue = format('.3e');
+const formatMatrixComplex = createComplexFormatter('.2e', true);
 
 export const Default = Template.bind({});
 Default.args = {

@@ -13,9 +13,8 @@ import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import MatrixToolbar from '../matrix/MatrixToolbar';
 import { useMatrixConfig } from '../matrix/config';
-import { getCellWidth } from '../matrix/utils';
+import { getCellWidth, getFormatter } from '../matrix/utils';
 import { getSliceSelection } from '../utils';
-import { compoundFormatter } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableCompoundType>;
@@ -27,7 +26,7 @@ interface Props {
 function MappedCompoundMatrixVis(props: Props) {
   const { value, dataset, toolbarContainer, dimMapping } = props;
 
-  const { sticky, customCellWidth } = useMatrixConfig(
+  const { sticky, customCellWidth, notation } = useMatrixConfig(
     (state) => state,
     shallow
   );
@@ -44,6 +43,10 @@ function MappedCompoundMatrixVis(props: Props) {
     slicedMapping
   );
 
+  const fieldFormatters = Object.values(fields).map((field) =>
+    getFormatter(field, notation)
+  );
+
   return (
     <>
       {toolbarContainer &&
@@ -57,7 +60,7 @@ function MappedCompoundMatrixVis(props: Props) {
         )}
       <MatrixVis
         dataArray={mappedArray}
-        formatter={compoundFormatter}
+        formatter={(val, colIndex) => fieldFormatters[colIndex](val)}
         cellWidth={customCellWidth ?? cellWidth}
         columnHeaders={fieldNames}
         sticky={sticky}

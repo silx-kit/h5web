@@ -1,0 +1,9 @@
+.root {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  color: var(--h5w-toolbar-label--color, royalblue);
+  margin: 0 0.25rem;
+}
