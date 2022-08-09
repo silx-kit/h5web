@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared';
+import type { ProvidedEntity } from '@h5web/shared';
 import { assertDefined } from '@h5web/shared';
 import { useState } from 'react';
 
@@ -9,7 +9,7 @@ import styles from './Visualizer.module.css';
 import { useActiveVis } from './hooks';
 
 interface Props {
-  entity: Entity;
+  entity: ProvidedEntity;
   supportedVis: VisDef[];
 }
 

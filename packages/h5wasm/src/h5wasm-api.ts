@@ -8,10 +8,10 @@ import {
 import type {
   Attribute,
   AttributeValues,
-  Dataset,
+  ChildEntity,
   Entity,
   Group,
-  GroupWithChildren,
+  ProvidedEntity,
   Shape,
 } from '@h5web/shared';
 import { hasArrayShape } from '@h5web/shared';
@@ -45,7 +45,7 @@ export class H5WasmApi extends ProviderApi {
     this.file = this.initFile(buffer);
   }
 
-  public async getEntity(path: string): Promise<Entity> {
+  public async getEntity(path: string): Promise<ProvidedEntity> {
     const h5wEntity = await this.getH5WasmEntity(path);
     return this.processH5WasmEntity(getNameFromPath(path), path, h5wEntity);
   }
@@ -126,8 +126,22 @@ export class H5WasmApi extends ProviderApi {
     name: string,
     path: string,
     h5wEntity: H5WasmEntity,
+    isChild: true
+  ): ChildEntity;
+
+  private processH5WasmEntity(
+    name: string,
+    path: string,
+    h5wEntity: H5WasmEntity,
+    isChild?: false
+  ): ProvidedEntity;
+
+  private processH5WasmEntity(
+    name: string,
+    path: string,
+    h5wEntity: H5WasmEntity,
     isChild = false
-  ): Entity {
+  ): ProvidedEntity | ChildEntity {
     const baseEntity = { name, path };
 
     if (isH5WasmGroup(h5wEntity)) {
@@ -141,21 +155,21 @@ export class H5WasmApi extends ProviderApi {
         return baseGroup;
       }
 
-      const children = h5wEntity.keys().map((childName) => {
-        const h5wChild = h5wEntity.get(childName);
-        assertNonNull(h5wChild);
+      return {
+        ...baseGroup,
+        children: h5wEntity.keys().map((childName) => {
+          const h5wChild = h5wEntity.get(childName);
+          assertNonNull(h5wChild);
 
-        const childPath = buildEntityPath(path, childName);
-        return this.processH5WasmEntity(childName, childPath, h5wChild, true);
-      });
-      const groupWithChildren: GroupWithChildren = { ...baseGroup, children };
-
-      return groupWithChildren;
+          const childPath = buildEntityPath(path, childName);
+          return this.processH5WasmEntity(childName, childPath, h5wChild, true);
+        }),
+      };
     }
 
     if (isH5WasmDataset(h5wEntity)) {
       const { shape, metadata, dtype } = h5wEntity;
-      const dataset: Dataset = {
+      return {
         ...baseEntity,
         kind: EntityKind.Dataset,
         attributes: this.processH5WasmAttrs(h5wEntity.attrs),
@@ -163,8 +177,6 @@ export class H5WasmApi extends ProviderApi {
         type: convertMetadataToDType(metadata),
         rawType: dtype,
       };
-
-      return dataset;
     }
 
     if (isH5WasmSoftLink(h5wEntity)) {

@@ -4,7 +4,11 @@ import type { NdArray, TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray, isTypedArray } from './guards';
-import type { Entity, GroupWithChildren, H5WebComplex } from './models-hdf5';
+import type {
+  ChildEntity,
+  GroupWithChildren,
+  H5WebComplex,
+} from './models-hdf5';
 import { ScaleType } from './models-vis';
 import type {
   Bounds,
@@ -55,7 +59,7 @@ export function toTypedNdArray<T extends TypedArrayConstructor>(
 export function getChildEntity(
   group: GroupWithChildren,
   entityName: string
-): Entity | undefined {
+): ChildEntity | undefined {
   return group.children.find((child) => child.name === entityName);
 }
 

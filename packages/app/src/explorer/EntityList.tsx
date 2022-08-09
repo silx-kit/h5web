@@ -1,4 +1,4 @@
-import { assertGroupWithChildren, buildEntityPath } from '@h5web/shared';
+import { assertGroup, buildEntityPath } from '@h5web/shared';
 
 import { useDataContext } from '../providers/DataProvider';
 import EntityItem from './EntityItem';
@@ -16,7 +16,7 @@ function EntityList(props: Props) {
 
   const { entitiesStore } = useDataContext();
   const group = entitiesStore.get(parentPath);
-  assertGroupWithChildren(group);
+  assertGroup(group);
 
   if (group.children.length === 0) {
     return null;

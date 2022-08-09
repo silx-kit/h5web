@@ -2,11 +2,12 @@ import type {
   ArrayShape,
   Attribute,
   AttributeValues,
+  ChildEntity,
   Dataset,
   Entity,
   Group,
-  GroupWithChildren,
   NumericType,
+  ProvidedEntity,
 } from '@h5web/shared';
 import { hasScalarShape, buildEntityPath, EntityKind } from '@h5web/shared';
 import type { AxiosRequestConfig } from 'axios';
@@ -40,7 +41,7 @@ export class H5GroveApi extends DataProviderApi {
     super(filepath, { baseURL: url, ...axiosConfig });
   }
 
-  public async getEntity(path: string): Promise<Entity> {
+  public async getEntity(path: string): Promise<ProvidedEntity> {
     const response = await this.fetchEntity(path);
     return this.processEntityResponse(path, response);
   }
@@ -149,14 +150,26 @@ export class H5GroveApi extends DataProviderApi {
 
   private async processEntityResponse(
     path: string,
-    response: H5GroveEntityResponse
-  ): Promise<Entity> {
-    const { name } = response;
+    response: H5GroveEntityResponse,
+    isChild: true
+  ): Promise<ChildEntity>;
 
+  private async processEntityResponse(
+    path: string,
+    response: H5GroveEntityResponse,
+    isChild?: false
+  ): Promise<ProvidedEntity>;
+
+  private async processEntityResponse(
+    path: string,
+    response: H5GroveEntityResponse,
+    isChild = false
+  ): Promise<ProvidedEntity | ChildEntity> {
+    const { name } = response;
     const baseEntity = { name, path };
 
     if (isGroupResponse(response)) {
-      const { children, attributes: attrsMetadata } = response;
+      const { children = [], attributes: attrsMetadata } = response;
       const attributes = await this.processAttrsMetadata(path, attrsMetadata);
       const baseGroup: Group = {
         ...baseEntity,
@@ -164,22 +177,20 @@ export class H5GroveApi extends DataProviderApi {
         attributes,
       };
 
-      if (!children) {
-        /* `/meta` stops at one nesting level
-         * (i.e. children of child groups are not returned) */
+      if (isChild) {
         return baseGroup;
       }
 
-      const groupWithChildren: GroupWithChildren = {
+      return {
         ...baseGroup,
         // Fetch attribute values of any child groups in parallel
         children: await Promise.all(
-          children.map((child) =>
-            this.processEntityResponse(buildEntityPath(path, child.name), child)
-          )
+          children.map((child) => {
+            const childPath = buildEntityPath(path, child.name);
+            return this.processEntityResponse(childPath, child, true);
+          })
         ),
       };
-      return groupWithChildren;
     }
 
     if (isDatasetResponse(response)) {
@@ -191,7 +202,7 @@ export class H5GroveApi extends DataProviderApi {
         filters,
       } = response;
       const attributes = await this.processAttrsMetadata(path, attrsMetadata);
-      const dataset: Dataset = {
+      return {
         ...baseEntity,
         attributes,
         kind: EntityKind.Dataset,
@@ -201,13 +212,10 @@ export class H5GroveApi extends DataProviderApi {
         ...(chunks && { chunks }),
         ...(filters && { filters }),
       };
-
-      return dataset;
     }
 
     if (isSoftLinkResponse(response)) {
       const { target_path } = response;
-
       return {
         ...baseEntity,
         attributes: [],
@@ -218,7 +226,6 @@ export class H5GroveApi extends DataProviderApi {
 
     if (isExternalLinkResponse(response)) {
       const { target_file, target_path } = response;
-
       return {
         ...baseEntity,
         kind: EntityKind.Unresolved,

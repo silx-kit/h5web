@@ -2,6 +2,7 @@ import type {
   ArrayShape,
   AttributeValues,
   Entity,
+  ProvidedEntity,
   ScalarShape,
 } from '@h5web/shared';
 import {
@@ -29,7 +30,7 @@ export class MockApi extends DataProviderApi {
     super(mockFilepath);
   }
 
-  public async getEntity(path: string): Promise<Entity> {
+  public async getEntity(path: string): Promise<ProvidedEntity> {
     if (path.includes('slow_metadata')) {
       await new Promise<void>((resolve) => {
         setTimeout(() => resolve(), SLOW_TIMEOUT);

@@ -1,5 +1,5 @@
 import { isGroup } from '@h5web/shared';
-import type { Entity } from '@h5web/shared';
+import type { ChildEntity } from '@h5web/shared';
 import { useToggle } from '@react-hookz/web';
 import type { CSSProperties } from 'react';
 import { Suspense, useEffect } from 'react';
@@ -13,7 +13,7 @@ import NxBadge from './NxBadge';
 
 interface Props {
   path: string;
-  entity: Entity;
+  entity: ChildEntity;
   level: number;
   selectedPath: string;
   onSelect: (path: string) => void;

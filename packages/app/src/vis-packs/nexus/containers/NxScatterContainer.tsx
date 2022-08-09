@@ -1,8 +1,4 @@
-import {
-  assertDefined,
-  assertGroupWithChildren,
-  assertNumDims,
-} from '@h5web/shared';
+import { assertDefined, assertGroup, assertNumDims } from '@h5web/shared';
 import { isEqual } from 'lodash';
 
 import VisBoundary from '../../VisBoundary';
@@ -15,7 +11,7 @@ import { assertScatterAxisParams } from '../utils';
 
 function NxScatterContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
-  assertGroupWithChildren(entity);
+  assertGroup(entity);
 
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);

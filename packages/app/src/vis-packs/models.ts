@@ -1,9 +1,9 @@
-import type { Entity } from '@h5web/shared';
+import type { ProvidedEntity } from '@h5web/shared';
 import type { ElementType, ReactNode } from 'react';
 import type { IconType } from 'react-icons';
 
 export interface VisContainerProps {
-  entity: Entity;
+  entity: ProvidedEntity;
   toolbarContainer: HTMLDivElement | undefined;
 }
 

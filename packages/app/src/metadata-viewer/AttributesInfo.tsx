@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared';
+import type { ProvidedEntity } from '@h5web/shared';
 import { isComplexValue } from '@h5web/shared';
 
 import { useDataContext } from '../providers/DataProvider';
@@ -13,7 +13,7 @@ const FOLLOWABLE_ATTRS = new Set([
 ]);
 
 interface Props {
-  entity: Entity;
+  entity: ProvidedEntity;
   onFollowPath: (path: string) => void;
 }
 

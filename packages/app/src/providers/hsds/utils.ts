@@ -26,7 +26,9 @@ export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
   return isGroup(entity);
 }
 
-export function assertHsdsEntity(entity: Entity): asserts entity is HsdsEntity {
+export function assertHsdsEntity<T extends Entity>(
+  entity: T
+): asserts entity is HsdsEntity<T> {
   if (!('id' in entity)) {
     throw new Error('Expected entity to be HSDS entity');
   }

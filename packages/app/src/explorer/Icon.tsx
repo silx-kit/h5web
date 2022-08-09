@@ -1,9 +1,7 @@
 import { isGroup, EntityKind } from '@h5web/shared';
-import type { Entity } from '@h5web/shared';
-import type { IconType } from 'react-icons';
+import type { ChildEntity } from '@h5web/shared';
 import {
   FiHash,
-  FiFolder,
   FiChevronDown,
   FiChevronRight,
   FiLayers,
@@ -12,15 +10,14 @@ import {
 
 import styles from './Explorer.module.css';
 
-const LEAF_ICONS: Record<EntityKind, IconType> = {
-  [EntityKind.Group]: FiFolder,
+const LEAF_ICONS = {
   [EntityKind.Dataset]: FiLayers,
   [EntityKind.Datatype]: FiHash,
   [EntityKind.Unresolved]: FiLink,
 };
 
 interface Props {
-  entity: Entity;
+  entity: ChildEntity;
   isExpanded: boolean;
 }
 
