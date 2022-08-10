@@ -30,7 +30,7 @@
     "build": "vite build && pnpm build:dts",
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
-    "lint:tsc": "tsc --noEmit",
+    "lint:tsc": "tsc",
     "analyze": "pnpx source-map-explorer dist/index.js --no-border-checks"
   },
   "peerDependencies": {

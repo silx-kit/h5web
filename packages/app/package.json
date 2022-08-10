@@ -33,7 +33,7 @@
     "build:css": "vite build --config vite.styles.config.js && concat dist/temp/style.css dist/style.css -o dist/styles.css && rm -Rf dist/style.css dist/temp",
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
-    "lint:tsc": "tsc --noEmit",
+    "lint:tsc": "tsc",
     "test": "jest",
     "analyze": "pnpx source-map-explorer dist/index.js --no-border-checks"
   },
