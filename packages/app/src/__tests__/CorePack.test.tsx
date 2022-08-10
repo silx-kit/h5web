@@ -107,7 +107,6 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
   expect(autoScaleBtn).toHaveAttribute('aria-pressed', 'true');
 
   // Move to other slice to fetch new slice
-  // eslint-disable-next-line prefer-destructuring
   const d0Slider = screen.getAllByRole('slider', {
     name: 'Dimension slider',
   })[0];
