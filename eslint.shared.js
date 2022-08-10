@@ -14,7 +14,7 @@ module.exports = {
     return createConfig({
       cwd,
       env: { es6: true }, // https://github.com/ljosberinn/eslint-config-galex/pull/664
-      enableJavaScriptSpecificRulesInTypeScriptProject: true, // to lint `.eslintrc.js` files and the like
+      enableJavaScriptSpecificRulesInTypeScriptProject: true, // to fully lint set-up files like `.eslintrc.js`, `vite.config.js`, etc.
       rules: {
         'sort-keys-fix/sort-keys-fix': 'off', // keys should be sorted based on significance
         'import/no-default-export': 'off', // default exports are common in React

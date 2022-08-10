@@ -16,7 +16,7 @@
     "build": "run-p build:*",
     "build:dts": "tsc --build tsconfig.build.json",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
-    "lint:tsc": "tsc --noEmit"
+    "lint:tsc": "tsc"
   },
   "peerDependencies": {
     "d3-format": "3.0.1",
