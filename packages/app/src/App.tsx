@@ -20,6 +20,7 @@ interface Props {
   explorerOpen?: boolean;
   initialPath?: string;
   getFeedbackURL?: (context: FeedbackContext) => string;
+  disableDarkMode?: boolean;
 }
 
 function App(props: Props) {
@@ -27,6 +28,7 @@ function App(props: Props) {
     explorerOpen: initialExplorerOpen = true,
     initialPath = '/',
     getFeedbackURL,
+    disableDarkMode,
   } = props;
 
   const [selectedPath, setSelectedPath] = useState<string>(initialPath);
@@ -42,7 +44,11 @@ function App(props: Props) {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <ReflexContainer className={styles.root} orientation="vertical">
+      <ReflexContainer
+        className={styles.root}
+        data-allow-dark-mode={disableDarkMode ? undefined : ''}
+        orientation="vertical"
+      >
         <ReflexElement
           className={styles.explorer}
           style={{ display: isExplorerOpen ? undefined : 'none' }}

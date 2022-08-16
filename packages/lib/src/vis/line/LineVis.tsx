@@ -33,12 +33,10 @@ const COLORS: CustomColor[] = [
   {
     property: '--h5w-line--color',
     fallback: 'darkblue',
-    darkFallback: 'deepskyblue',
   },
   {
     property: '--h5w-line--colorAux',
     fallback: 'orangered, forestgreen, red, mediumorchid, olive',
-    darkFallback: 'orange, lightgreen, red, violet, gold',
   },
 ];
 

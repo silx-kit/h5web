@@ -51,6 +51,9 @@
   --h5w-domainSlider-histogram--color: var(--secondary-dark);
   --h5w-domainSlider-histogram-indicator--color: var(--secondary-darker);
   --h5w-interactionHelp-shortcut--bgColor: var(--primary-light);
+
+  --h5w-line--color: darkblue;
+  --h5w-line--colorAux: orangered, forestgreen, red, mediumorchid, olive;
 }
 
 .root *,
@@ -72,7 +75,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .root {
+  .root[data-allow-dark-mode] {
     filter: invert();
 
     /* Set shadows to lighter colors so they remain dark once inverted */
@@ -80,10 +83,14 @@
     --h5w-btnRaised-hover--shadowColor: #fff;
     --h5w-domainSlider-track--shadowColor: #f5f5f5;
     --h5w-domainSlider-dataTrack--shadowColor: #fff;
+
+    /* Change line colors for better contrast once inverted */
+    --h5w-line--color: deepskyblue;
+    --h5w-custom--line-colorAux: orange, lightgreen, red, violet, gold;
   }
 
-  .root [data-keep-colors],
-  .root [data-keep-canvas-colors] canvas {
+  .root[data-allow-dark-mode] [data-keep-colors],
+  .root[data-allow-dark-mode] [data-keep-canvas-colors] canvas {
     filter: invert(); /* invert back to normal colors */
   }
 }

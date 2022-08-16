@@ -95,5 +95,4 @@ export interface HistogramParams {
 export interface CustomColor {
   property: `--h5w-${string}`;
   fallback: string;
-  darkFallback?: string;
 }
