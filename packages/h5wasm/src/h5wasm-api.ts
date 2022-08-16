@@ -7,28 +7,26 @@ import {
 } from '@h5web/app';
 import type {
   Attribute,
-  AttributeValues,
   ChildEntity,
   Entity,
   Group,
   ProvidedEntity,
   Shape,
 } from '@h5web/shared';
-import { hasArrayShape } from '@h5web/shared';
 import {
   assertNonNull,
   buildEntityPath,
-  DTypeClass,
   EntityKind,
+  hasArrayShape,
   hasBoolType,
 } from '@h5web/shared';
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
 import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 
-import { hasInt64Type } from './guards';
 import {
   assertH5WasmDataset,
   assertH5WasmEntityWithAttrs,
+  hasInt64Type,
   isH5WasmDataset,
   isH5WasmExternalLink,
   isH5WasmGroup,
@@ -75,18 +73,13 @@ export class H5WasmApi extends ProviderApi {
     return h5wDataset.value;
   }
 
-  public async getAttrValues(entity: Entity): Promise<AttributeValues> {
+  public async getAttrValues(entity: Entity) {
     const h5wEntity = await this.getH5WasmEntity(entity.path);
     assertH5WasmEntityWithAttrs(h5wEntity);
 
     return Object.fromEntries(
       Object.entries(h5wEntity.attrs).map(([name, attr]) => {
-        const { value, metadata } = attr;
-        const dtype = convertMetadataToDType(metadata);
-        return [
-          name,
-          dtype.class === DTypeClass.Bool ? attr.to_array() : value,
-        ];
+        return [name, attr.to_array()];
       })
     );
   }
