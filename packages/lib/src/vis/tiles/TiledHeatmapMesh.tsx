@@ -8,13 +8,15 @@ import { useCameraState } from '../hooks';
 import type { Size } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import TiledLayer from './TiledLayer';
+import TiledTooltipMesh from './TiledTooltipMesh';
 import type { TilesApi } from './api';
+import { useLayerScales, useTooltipOnMoveHandler } from './hooks';
 import type { ColorMapProps } from './models';
 import {
-  getObject3DVisibleBox,
-  getObject3DPixelSize,
   getNdcToObject3DMatrix,
-  scaleToLayer,
+  getObject3DPixelSize,
+  getObject3DVisibleBox,
+  scaleBox,
 } from './utils';
 
 interface Props extends ColorMapProps {
@@ -22,6 +24,7 @@ interface Props extends ColorMapProps {
   displayLowerResolutions?: boolean;
   qualityFactor?: number;
   size?: Size;
+  showTooltip?: boolean;
 }
 
 function TiledHeatmapMesh(props: Props) {
@@ -30,6 +33,7 @@ function TiledHeatmapMesh(props: Props) {
     displayLowerResolutions = true,
     qualityFactor = 1, // 0: Lower quality, less fetch; 1: Best quality
     size,
+    showTooltip,
     ...colorMapProps
   } = props;
   const { baseLayerIndex, baseLayerSize } = api;
@@ -46,7 +50,8 @@ function TiledHeatmapMesh(props: Props) {
   );
   const visibleBox = getObject3DVisibleBox(ndcToLocalMatrix);
 
-  const bounds = scaleToLayer(visibleBox, baseLayerSize, meshSize);
+  const { xScale, yScale } = useLayerScales(baseLayerSize, meshSize);
+  const bounds = scaleBox(visibleBox, xScale, yScale);
 
   let layers: number[] = [];
   if (!bounds.isEmpty()) {
@@ -74,25 +79,31 @@ function TiledHeatmapMesh(props: Props) {
 
   const { colorMap, invertColorMap = false } = colorMapProps;
 
+  const onPointerMove = useTooltipOnMoveHandler();
+
   return (
-    <group ref={groupRef}>
-      <mesh position={[0, 0, -0.1]}>
-        <planeGeometry args={[meshSize.width, meshSize.height]} />
-        <meshBasicMaterial
-          color={getInterpolator(colorMap, invertColorMap)(0)}
-        />
-      </mesh>
-      {layers.map((layer) => (
-        <TiledLayer
-          key={layer}
-          api={api}
-          layer={layer}
-          meshSize={meshSize}
-          visibleBox={visibleBox}
-          {...colorMapProps}
-        />
-      ))}
-    </group>
+    <>
+      <group ref={groupRef}>
+        <mesh position={[0, 0, -0.1]}>
+          <planeGeometry args={[meshSize.width, meshSize.height]} />
+          <meshBasicMaterial
+            color={getInterpolator(colorMap, invertColorMap)(0)}
+          />
+        </mesh>
+        {layers.map((layer, i) => (
+          <TiledLayer
+            key={layer}
+            api={api}
+            layer={layer}
+            meshSize={meshSize}
+            visibleBox={visibleBox}
+            onPointerMove={i === layers.length - 1 ? onPointerMove : undefined} // Attach tooltip handler only to the top layer
+            {...colorMapProps}
+          />
+        ))}
+      </group>
+      {showTooltip && <TiledTooltipMesh size={meshSize} />}
+    </>
   );
 }
 

@@ -131,6 +131,26 @@ class MandelbrotTilesApi extends TilesApi {
   }
 }
 
+class CheckboardTilesApi extends TilesApi {
+  public constructor(size: Size, tileSize: Size) {
+    super(tileSize, getLayerSizes(size, tileSize));
+  }
+
+  public get(layer: number, offset: Vector2): NdArray<Uint8Array> {
+    const layerSize = this.layerSizes[layer];
+    // Clip slice to size of the level
+    const width = clamp(layerSize.width - offset.x, 0, this.tileSize.width);
+    const height = clamp(layerSize.height - offset.y, 0, this.tileSize.height);
+
+    const value = Math.abs(
+      (Math.floor(offset.x / this.tileSize.width) % 2) -
+        (Math.floor(offset.y / this.tileSize.height) % 2)
+    );
+    const arr = Uint8Array.from({ length: height * width }, () => value);
+    return ndarray(arr, [height, width]);
+  }
+}
+
 interface TiledHeatmapStoryProps extends TiledHeatmapMeshProps {
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
@@ -152,11 +172,7 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
       <Zoom />
       <SelectToZoom keepRatio modifierKey="Control" />
       <ResetZoomButton />
-      <group
-        scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
-      >
-        <TiledHeatmapMesh {...tiledHeatmapProps} />
-      </group>
+      <TiledHeatmapMesh {...tiledHeatmapProps} />
     </VisCanvas>
   );
 };
@@ -166,6 +182,16 @@ const defaultApi = new MandelbrotTilesApi(
   { width: 128, height: 128 },
   [-2, 1],
   [-1.5, 1.5]
+);
+const halfMandelbrotApi = new MandelbrotTilesApi(
+  { width: 1e9, height: 5e8 },
+  { width: 256, height: 128 },
+  [-2, 1],
+  [0, 1.5]
+);
+const checkboardApi = new CheckboardTilesApi(
+  { width: 1e9, height: 1e9 },
+  { width: 128, height: 128 }
 );
 
 export const Default = Template.bind({});
@@ -182,13 +208,6 @@ Default.args = {
     showGrid: false,
   },
 };
-
-const halfMandelbrotApi = new MandelbrotTilesApi(
-  { width: 1e9, height: 5e8 },
-  { width: 256, height: 128 },
-  [-2, 1],
-  [0, 1.5]
-);
 
 export const AxisValues = Template.bind({});
 AxisValues.args = {
@@ -292,6 +311,21 @@ WithTransforms.args = {
   },
 };
 
+export const Checkboard = Template.bind({});
+Checkboard.args = {
+  api: checkboardApi,
+  abscissaConfig: {
+    visDomain: [0, checkboardApi.baseLayerSize.width],
+    isIndexAxis: true,
+    showGrid: false,
+  },
+  ordinateConfig: {
+    visDomain: [0, checkboardApi.baseLayerSize.height],
+    isIndexAxis: true,
+    showGrid: false,
+  },
+};
+
 export default {
   title: 'Experimental/TiledHeatmapMesh',
   component: TiledHeatmapMesh,
@@ -304,6 +338,7 @@ export default {
     scaleType: ScaleType.Linear,
     displayLowerResolutions: true,
     qualityFactor: 1,
+    showTooltip: true,
   },
   argTypes: {
     scaleType: {

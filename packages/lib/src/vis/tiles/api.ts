@@ -1,8 +1,7 @@
-import type { NdArray } from 'ndarray';
 import type { Vector2 } from 'three';
 
-import type { TextureSafeTypedArray } from '../heatmap/models';
 import type { Size } from '../models';
+import type { TileArray } from './models';
 
 export function getLayerSizes(
   baseLayerSize: Size,
@@ -55,8 +54,5 @@ export abstract class TilesApi {
     return this.layerSizes.length;
   }
 
-  public abstract get(
-    layer: number,
-    offset: Vector2
-  ): NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
+  public abstract get(layer: number, offset: Vector2): TileArray;
 }
