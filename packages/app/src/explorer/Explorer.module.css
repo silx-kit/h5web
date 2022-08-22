@@ -25,7 +25,11 @@
 .btn:hover,
 .btn:focus {
   background-color: var(--primary-light);
-  outline: none;
+}
+
+.btn:focus {
+  outline: 1px solid var(--primary-dark);
+  outline-offset: -1px;
 }
 
 .btn[aria-selected='true'] {
