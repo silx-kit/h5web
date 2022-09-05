@@ -47,7 +47,7 @@
     "@types/node": "16.11.7",
     "@types/react": "17.0.39",
     "eslint": "8.21.0",
-    "eslint-config-galex": "4.2.0",
+    "eslint-config-galex": "4.2.1",
     "react": "17.0.2",
     "rollup": "2.75.6",
     "rollup-plugin-dts": "4.2.2",

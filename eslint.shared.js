@@ -13,7 +13,6 @@ module.exports = {
   createConfig: (cwd, dependencies, customOverrides = []) => {
     return createConfig({
       cwd,
-      env: { es6: true }, // https://github.com/ljosberinn/eslint-config-galex/pull/664
       enableJavaScriptSpecificRulesInTypeScriptProject: true, // to lint `.eslintrc.js` files and the like
       rules: {
         'sort-keys-fix/sort-keys-fix': 'off', // keys should be sorted based on significance
