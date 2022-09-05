@@ -51,7 +51,7 @@ export function isNumericMetadata(
 }
 
 export function isStringMetadata(metadata: Metadata) {
-  return metadata.type === 2;
+  return metadata.type === 3;
 }
 
 export function isCompoundMetadata(

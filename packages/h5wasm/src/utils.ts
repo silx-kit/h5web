@@ -45,11 +45,13 @@ export function convertMetadataToDType(metadata: Metadata): DType {
   }
 
   if (isStringMetadata(metadata)) {
-    const { size: length, cset } = metadata;
+    const { size, cset, vlen } = metadata;
 
     return {
       class: DTypeClass.String,
-      length,
+      // For variable-length string datatypes, the returned value is the size of the pointer to the actual string and
+      // not the size of actual variable-length string data (https://portal.hdfgroup.org/display/HDF5/H5T_GET_SIZE)
+      length: vlen ? undefined : size,
       charSet: cset === 1 ? 'UTF-8' : 'ASCII',
     };
   }
