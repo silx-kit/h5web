@@ -41,7 +41,7 @@
     "@react-three/fiber": ">=6.0.14",
     "react": ">=16",
     "react-dom": ">=16",
-    "three": ">=0.120"
+    "three": ">=0.138"
   },
   "dependencies": {
     "@react-hookz/web": "14.2.2",
