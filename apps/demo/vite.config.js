@@ -8,6 +8,10 @@ export default defineConfig({
   plugins: [react(), eslintPlugin()],
 
   // `es2020` required by @h5web/h5wasm for BigInt `123n` notation support
-  build: { target: 'es2020', sourcemap: true },
   optimizeDeps: { esbuildOptions: { target: 'es2020' } },
+  build: {
+    target: 'es2020',
+    // Out of memory! https://github.com/vitejs/vite/issues/2433
+    // sourcemap: true,
+  },
 });
