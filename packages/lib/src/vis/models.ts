@@ -91,8 +91,3 @@ export interface HistogramParams {
   colorMap?: ColorMap;
   invertColorMap?: boolean;
 }
-
-export interface CustomColor {
-  property: `--h5w-${string}`;
-  fallback: string;
-}
