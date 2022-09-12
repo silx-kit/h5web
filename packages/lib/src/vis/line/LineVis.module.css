@@ -4,6 +4,15 @@
   min-width: 0;
   min-height: 0;
   margin: 1rem;
+  --curve-color: var(--h5w-line--color, darkblue);
+  --aux-colors: var(
+    --h5w-line--colorAux,
+    orangered,
+    forestgreen,
+    red,
+    mediumorchid,
+    olive
+  );
 }
 
 .tooltipItem {

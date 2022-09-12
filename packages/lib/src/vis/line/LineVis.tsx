@@ -16,10 +16,10 @@ import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import {
   useAxisDomain,
   useAxisValues,
-  useCustomColors,
   useValueToIndexScale,
+  useCssColors,
 } from '../hooks';
-import type { AxisParams, CustomColor } from '../models';
+import type { AxisParams } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { DEFAULT_DOMAIN, extendDomain, formatNumType } from '../utils';
@@ -27,18 +27,6 @@ import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
 import type { AuxiliaryParams, TooltipData } from './models';
 import { CurveType } from './models';
-
-// Inspired by Matplotlib palette: https://matplotlib.org/stable/gallery/color/named_colors.html
-const COLORS: CustomColor[] = [
-  {
-    property: '--h5w-line--color',
-    fallback: 'darkblue',
-  },
-  {
-    property: '--h5w-line--colorAux',
-    fallback: 'orangered, forestgreen, red, mediumorchid, olive',
-  },
-];
 
 interface Props {
   dataArray: NdArray<NumArray>;
@@ -101,7 +89,10 @@ function LineVis(props: Props) {
     return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
 
-  const [[curveColor, auxColorList], rootRef] = useCustomColors(COLORS);
+  const [[curveColor, auxColorList], rootRef] = useCssColors([
+    '--curve-color',
+    '--aux-colors',
+  ]);
   const auxColors = auxColorList.split(',').map((col) => col.trim()); // support comma-separated list of colors
 
   return (

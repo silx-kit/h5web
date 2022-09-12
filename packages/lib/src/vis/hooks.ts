@@ -6,7 +6,6 @@ import { useEffect, useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 import { createMemo } from 'react-use';
 
-import type { CustomColor } from './models';
 import { useAxisSystemContext } from './shared/AxisSystemProvider';
 import type { AxisSystemContextValue } from './shared/AxisSystemProvider';
 import {
@@ -74,8 +73,8 @@ export function useCameraState<T>(
   return state;
 }
 
-export function useCustomColors(
-  colorDefs: CustomColor[]
+export function useCssColors(
+  colorProperties: string[]
 ): [string[], RefCallback<HTMLElement>] {
   const [styles, setStyles] = useState<CSSStyleDeclaration>();
 
@@ -87,13 +86,10 @@ export function useCustomColors(
 
   if (!styles) {
     // Return `transparent` colors on initial render
-    return [colorDefs.map(() => 'transparent'), refCallback];
+    return [colorProperties.map(() => 'transparent'), refCallback];
   }
 
-  const colors = colorDefs.map(
-    ({ property, fallback }) =>
-      styles.getPropertyValue(property).trim() || fallback
-  );
+  const colors = colorProperties.map((p) => styles.getPropertyValue(p).trim());
 
   return [colors, refCallback];
 }
