@@ -22,6 +22,7 @@ import {
 } from '@h5web/shared';
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
 import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
+import { nanoid } from 'nanoid';
 
 import {
   assertH5WasmDataset,
@@ -98,9 +99,10 @@ export class H5WasmApi extends ProviderApi {
 
     // Write file to Emscripten virtual file system
     // https://emscripten.org/docs/api_reference/Filesystem-API.html#FS.writeFile
-    FS.writeFile(this.filepath, new Uint8Array(buffer), { flags: 'w+' });
+    const id = nanoid(); // use unique ID instead of `this.filepath` to avoid slashes and other unsupported characters
+    FS.writeFile(id, new Uint8Array(buffer), { flags: 'w+' });
 
-    return new H5WasmFile(this.filepath, 'r');
+    return new H5WasmFile(id, 'r');
   }
 
   private async getH5WasmEntity(path: string): Promise<H5WasmEntity> {

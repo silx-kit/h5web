@@ -38,7 +38,8 @@
     "react": ">=16"
   },
   "dependencies": {
-    "h5wasm": "0.4.4"
+    "h5wasm": "0.4.4",
+    "nanoid": "4.0.0"
   },
   "devDependencies": {
     "@h5web/app": "workspace:*",
