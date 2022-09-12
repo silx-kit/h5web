@@ -1,6 +1,5 @@
 import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
 import type { Domain, AnyNumArray } from '@h5web/shared';
-import { useMediaQuery } from '@react-hookz/web';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useCallback, useMemo, useState } from 'react';
@@ -78,7 +77,6 @@ export function useCameraState<T>(
 export function useCustomColors(
   colorDefs: CustomColor[]
 ): [string[], RefCallback<HTMLElement>] {
-  const isDark = useMediaQuery('(prefers-color-scheme: dark)');
   const [styles, setStyles] = useState<CSSStyleDeclaration>();
 
   // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
@@ -92,12 +90,10 @@ export function useCustomColors(
     return [colorDefs.map(() => 'transparent'), refCallback];
   }
 
-  const colors = colorDefs.map(({ property, fallback, darkFallback }) => {
-    return (
-      styles.getPropertyValue(property).trim() ||
-      (isDark && darkFallback ? darkFallback : fallback)
-    );
-  });
+  const colors = colorDefs.map(
+    ({ property, fallback }) =>
+      styles.getPropertyValue(property).trim() || fallback
+  );
 
   return [colors, refCallback];
 }
