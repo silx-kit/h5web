@@ -16,7 +16,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "serve": "vite preview --port 3000",
+    "serve": "vite preview --port 5173",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc"
   },

@@ -100,7 +100,7 @@ jobs:
         run: pnpm build
 
       - name: Serve ⚡️
-        run: pnpm serve & pnpx wait-on http://localhost:3000
+        run: pnpm serve & pnpx wait-on http://localhost:5173
 
       - name: Run Cypress 🌳
         run: pnpm cypress:run
