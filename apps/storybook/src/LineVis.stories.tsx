@@ -92,6 +92,12 @@ ErrorBars.args = {
 export const AuxiliaryArrays = Template.bind({});
 AuxiliaryArrays.args = {
   dataArray: primaryArray,
+  auxiliaries: [{ array: secondaryArray }, { array: tertiaryArray }],
+};
+
+export const AuxiliaryLabels = Template.bind({});
+AuxiliaryLabels.args = {
+  dataArray: primaryArray,
   auxiliaries: [
     { label: 'secondary', array: secondaryArray },
     { label: 'tertiary', array: tertiaryArray },
