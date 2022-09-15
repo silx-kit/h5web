@@ -73,8 +73,8 @@ function LineVis(props: Props) {
 
   assertLength(abscissaValue, dataArray.size, 'abscissa');
   assertLength(errorsArray, dataArray.size, 'error');
-  auxiliaries.forEach(({ label, array }) =>
-    assertLength(array, dataArray.size, `'${label}' auxiliary`)
+  auxiliaries.forEach(({ label, array }, index) =>
+    assertLength(array, dataArray.size, `'${label || index}' auxiliary`)
   );
 
   const abscissas = useAxisValues(abscissaValue, dataArray.size);
@@ -153,12 +153,13 @@ function LineVis(props: Props) {
                 </div>
 
                 {auxiliaries.map(({ label, array, errors }, index) => (
-                  <div className={styles.tooltipAux} key={label}>
+                  <div className={styles.tooltipAux} key={label || index}>
                     <span
                       className={styles.mark}
                       style={{ color: auxColors[index % auxColors.length] }}
                     />
-                    {label} = {formatTooltipVal(array.get(xi))}
+                    {label ? `${label} = ` : ''}
+                    {formatTooltipVal(array.get(xi))}
                     {errors && ` ±${formatTooltipErr(errors.get(xi))}`}
                   </div>
                 ))}

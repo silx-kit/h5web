@@ -21,7 +21,7 @@ export interface TooltipData {
 }
 
 export interface AuxiliaryParams {
-  label: string;
   array: NdArray<NumArray>;
+  label?: string;
   errors?: NdArray<NumArray>;
 }
