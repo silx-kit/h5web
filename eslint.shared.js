@@ -38,6 +38,7 @@ module.exports = {
           ...dependencies,
           rules: {
             'react/jsx-no-constructed-context-values': 'off', // too strict
+            'react/no-unknown-property': 'off', // false positives with R3F
 
             // `useCameraState` accepts an array of deps like `useEffect`
             // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks#advanced-configuration
