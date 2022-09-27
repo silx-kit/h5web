@@ -140,6 +140,34 @@ form instead.
 />
 ```
 
+#### `disableDarkMode?: boolean` (optional)
+
+By default, the viewer follows your browser's and/or operating system's dark
+mode setting. This prop disables this beahviour by forcing the viewer into light
+mode.
+
+```tsx
+<App disableDarkMode />
+```
+
+#### `propagateErrors?: boolean` (optional)
+
+The viewer has a top-level `ErrorBoundary` that, by default, handles errors
+thrown outside of the visualization area. These include errors thrown by the
+data provider when fetching metadata for the explorer. If you prefer to
+implement your own error boundary, you may choose to let errors through the
+viewer's top-level boundary:
+
+```tsx
+import { ErrorBoundary } from 'react-error-boundary';
+
+<ErrorBoundary FallbackComponent={MyErrorFallback}>
+  <MockProvider>
+    <App propagateErrors />
+  </MockProvider>
+</ErrorBoundary>;
+```
+
 ### `H5GroveProvider`
 
 Data provider for [H5Grove](https://github.com/silx-kit/h5grove).
