@@ -68,6 +68,12 @@ MarkerSize.args = {
   size: 20,
 };
 
+export const ColorMap = Template.bind({});
+ColorMap.args = {
+  ...Default.args,
+  colorMap: 'Rainbow',
+};
+
 export const ColorScaleType = Template.bind({});
 ColorScaleType.args = {
   ...Default.args,

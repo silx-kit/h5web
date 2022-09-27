@@ -28,7 +28,7 @@ interface Props {
   ordinateParams: ScatterAxisParams;
   dataArray: NdArray<NumArray>;
   domain: Domain;
-  colorMap: ColorMap;
+  colorMap?: ColorMap;
   invertColorMap?: boolean;
   scaleType?: ScaleType;
   showGrid?: boolean;
@@ -45,7 +45,7 @@ function ScatterVis(props: Props) {
     ordinateParams,
     dataArray,
     domain,
-    colorMap,
+    colorMap = 'Viridis',
     invertColorMap = false,
     scaleType = ScaleType.Linear,
     showGrid = true,
