@@ -21,6 +21,7 @@ interface Props {
   initialPath?: string;
   getFeedbackURL?: (context: FeedbackContext) => string;
   disableDarkMode?: boolean;
+  propagateErrors?: boolean;
 }
 
 function App(props: Props) {
@@ -29,6 +30,7 @@ function App(props: Props) {
     initialPath = '/',
     getFeedbackURL,
     disableDarkMode,
+    propagateErrors,
   } = props;
 
   const [selectedPath, setSelectedPath] = useState<string>(initialPath);
@@ -43,7 +45,14 @@ function App(props: Props) {
   }
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onError={(err) => {
+        if (propagateErrors) {
+          throw err;
+        }
+      }}
+    >
       <ReflexContainer
         className={styles.root}
         data-allow-dark-mode={disableDarkMode ? undefined : ''}
