@@ -1,11 +1,9 @@
-import { ScaleType } from '@h5web/shared';
 import type { Camera } from '@react-three/fiber';
 import type { RefObject } from 'react';
+import type { Matrix4, Object3D } from 'three';
 import { Box2, Box3, Vector2, Vector3 } from 'three';
-import type { Object3D, Matrix4 } from 'three';
 
-import type { Size } from '../models';
-import { createAxisScale } from '../utils';
+import type { AxisScale, Size } from '../models';
 
 export function getTileOffsets(box: Box2, tileSize: Size): Vector2[] {
   const { width, height } = tileSize;
@@ -88,25 +86,33 @@ export function getObject3DVisibleBox(
   return NDC_BOX.clone().applyMatrix4(ndcToObject3DMatrix);
 }
 
-export function scaleToLayer(box: Box3, layerSize: Size, meshSize: Size): Box2 {
+export function scaleBox(
+  box: Box3,
+  xScale: AxisScale,
+  yScale: AxisScale
+): Box2 {
   if (box.isEmpty()) {
     return new Box2();
   }
 
-  const xScale = createAxisScale(ScaleType.Linear, {
-    domain: [-meshSize.width / 2, meshSize.width / 2],
-    range: [0, layerSize.width],
-    clamp: true,
-  });
+  const pt1 = new Vector2(xScale(box.min.x), yScale(box.min.y));
+  const pt2 = new Vector2(xScale(box.max.x), yScale(box.max.y));
 
-  const yScale = createAxisScale(ScaleType.Linear, {
-    domain: [-meshSize.height / 2, meshSize.height / 2],
-    range: [0, layerSize.height],
-    clamp: true,
-  });
+  return new Box2().setFromPoints([pt1, pt2]);
+}
 
-  return new Box2(
-    new Vector2(xScale(box.min.x), yScale(box.min.y)),
-    new Vector2(xScale(box.max.x), yScale(box.max.y))
-  );
+export function scaleFromLayerToTile(layerCoord: Vector2, tileSize: Size) {
+  const tileOffsetX =
+    Math.floor(layerCoord.x / tileSize.width) * tileSize.width;
+  const tileOffsetY =
+    Math.floor(layerCoord.y / tileSize.height) * tileSize.height;
+
+  const xInTile = layerCoord.x % tileSize.width;
+  const yInTile = layerCoord.y % tileSize.height;
+
+  return {
+    offset: new Vector2(tileOffsetX, tileOffsetY),
+    x: xInTile,
+    y: yInTile,
+  };
 }

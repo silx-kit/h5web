@@ -4,18 +4,19 @@ import { useTooltip } from '@visx/tooltip';
 import { useCallback } from 'react';
 import type { ReactElement } from 'react';
 
-import type { Coords } from '../models';
+import type { Coords, Size } from '../models';
 import { useAxisSystemContext } from './AxisSystemProvider';
 import TooltipOverlay from './TooltipOverlay';
 import VisMesh from './VisMesh';
 
 interface Props {
+  size?: Size;
   guides?: 'horizontal' | 'vertical' | 'both';
   renderTooltip: (x: number, y: number) => ReactElement | undefined;
 }
 
 function TooltipMesh(props: Props) {
-  const { guides, renderTooltip } = props;
+  const { guides, renderTooltip, size } = props;
 
   const { width, height } = useThree((state) => state.size);
 
@@ -79,7 +80,10 @@ function TooltipMesh(props: Props) {
 
   return (
     <>
-      <VisMesh {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}>
+      <VisMesh
+        {...{ onPointerMove, onPointerOut, onPointerDown, onPointerUp }}
+        size={size}
+      >
         <meshBasicMaterial opacity={0} transparent />
       </VisMesh>
       <TooltipOverlay
