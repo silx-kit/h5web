@@ -18,7 +18,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);
-  const { signalDataset, errorDataset, silxStyle } = nxData;
+  const { signalDataset, errorDataset, axisLabels, silxStyle } = nxData;
 
   const signalDims = signalDataset.shape;
   const errorDims = errorDataset?.shape;
@@ -29,8 +29,14 @@ function NxSpectrumContainer(props: VisContainerProps) {
   }
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+  const xDimIndex = dimMapping.indexOf('x');
 
-  const autoScale = useLineConfig((state) => state.autoScale);
+  const config = useLineConfig({
+    xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
+    yScaleType: silxStyle.signalScaleType,
+  });
+
+  const { autoScale } = config;
   const selection = autoScale ? getSliceSelection(dimMapping) : undefined;
 
   return (
@@ -49,7 +55,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
               signal,
               signalLabel,
               errors,
-              axisMapping,
+              axisValues,
               auxiliaries,
               title,
             } = nxValues;
@@ -60,14 +66,15 @@ function NxSpectrumContainer(props: VisContainerProps) {
                 selection={selection}
                 value={signal}
                 valueLabel={signalLabel}
-                valueScaleType={silxStyle.signalScaleType}
                 errors={errors}
                 auxiliaries={auxiliaries}
                 dims={signalDims}
                 dimMapping={dimMapping}
-                axisMapping={axisMapping}
+                axisLabels={axisLabels}
+                axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}
+                config={config}
               />
             );
           }}

@@ -7,7 +7,7 @@ import type { ConfigProviderProps } from '../../models';
 import type { ComplexLineVisType } from './models';
 import { ComplexVisType } from './models';
 
-interface ComplexLineConfig {
+export interface ComplexLineConfig {
   visType: ComplexLineVisType;
   setVisType: (visType: ComplexLineVisType) => void;
 }

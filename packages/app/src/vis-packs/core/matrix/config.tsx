@@ -6,7 +6,7 @@ import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
 
-interface MatrixVisConfig {
+export interface MatrixVisConfig {
   sticky: boolean;
   toggleSticky: () => void;
 

@@ -22,7 +22,9 @@ function LineVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
-  const autoScale = useLineConfig((state) => state.autoScale);
+  const config = useLineConfig();
+
+  const { autoScale } = config;
   const selection = autoScale ? getSliceSelection(dimMapping) : undefined;
 
   return (
@@ -50,6 +52,7 @@ function LineVisContainer(props: VisContainerProps) {
               dimMapping={dimMapping}
               title={entity.name}
               toolbarContainer={toolbarContainer}
+              config={config}
             />
           )}
         />

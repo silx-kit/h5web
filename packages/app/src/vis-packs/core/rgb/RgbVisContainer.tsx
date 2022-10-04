@@ -10,6 +10,7 @@ import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import MappedRgbVis from './MappedRgbVis';
+import { useRgbConfig } from './config';
 
 function RgbVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -25,6 +26,7 @@ function RgbVisContainer(props: VisContainerProps) {
   }
 
   const { shape: dims } = entity;
+  const config = useRgbConfig();
 
   return (
     <VisBoundary loadingMessage="Loading image">
@@ -36,6 +38,7 @@ function RgbVisContainer(props: VisContainerProps) {
             dims={dims}
             toolbarContainer={toolbarContainer}
             title={entity.name}
+            config={config}
           />
         )}
       />

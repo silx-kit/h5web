@@ -4,6 +4,8 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
+import { useComplexConfig } from '../../core/complex/config';
+import { useHeatmapConfig } from '../../core/heatmap/config';
 import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
@@ -17,11 +19,16 @@ function NxComplexImageContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertComplexSignal(nxData);
 
-  const { signalDataset, silxStyle } = nxData;
+  const { signalDataset, axisLabels, silxStyle } = nxData;
   assertMinDims(signalDataset, 2);
 
   const { shape: dims } = signalDataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+
+  const config = useComplexConfig();
+  const heatmapConfig = useHeatmapConfig({
+    scaleType: silxStyle.signalScaleType,
+  });
 
   return (
     <>
@@ -35,17 +42,19 @@ function NxComplexImageContainer(props: VisContainerProps) {
           nxData={nxData}
           selection={getSliceSelection(dimMapping)}
           render={(nxValues) => {
-            const { signal, axisMapping, title } = nxValues;
+            const { signal, axisValues, title } = nxValues;
 
             return (
               <MappedComplexVis
                 value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
-                axisMapping={axisMapping}
+                axisLabels={axisLabels}
+                axisValues={axisValues}
                 title={title}
-                colorScaleType={silxStyle.signalScaleType}
                 toolbarContainer={toolbarContainer}
+                config={config}
+                heatmapConfig={heatmapConfig}
               />
             );
           }}

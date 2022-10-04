@@ -12,6 +12,7 @@ import ValueFetcher from '../ValueFetcher';
 import { useLineConfig } from '../line/config';
 import { getSliceSelection } from '../utils';
 import MappedComplexLineVis from './MappedComplexLineVis';
+import { useComplexLineConfig } from './lineConfig';
 
 function ComplexLineVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -22,7 +23,9 @@ function ComplexLineVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
-  const autoScale = useLineConfig((state) => state.autoScale);
+  const config = useComplexLineConfig();
+  const lineConfig = useLineConfig();
+  const { autoScale } = lineConfig;
 
   return (
     <>
@@ -47,6 +50,8 @@ function ComplexLineVisContainer(props: VisContainerProps) {
               dimMapping={dimMapping}
               title={entity.name}
               toolbarContainer={toolbarContainer}
+              config={config}
+              lineConfig={lineConfig}
             />
           )}
         />

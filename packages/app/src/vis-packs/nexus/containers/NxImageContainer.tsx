@@ -4,6 +4,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
+import { useHeatmapConfig } from '../../core/heatmap/config';
 import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
@@ -17,11 +18,13 @@ function NxImageContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertNumericSignal(nxData);
 
-  const { signalDataset, silxStyle } = nxData;
+  const { signalDataset, axisLabels, silxStyle } = nxData;
   assertMinDims(signalDataset, 2);
 
   const { shape: dims } = signalDataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+
+  const config = useHeatmapConfig({ scaleType: silxStyle.signalScaleType });
 
   return (
     <>
@@ -35,17 +38,18 @@ function NxImageContainer(props: VisContainerProps) {
           nxData={nxData}
           selection={getSliceSelection(dimMapping)}
           render={(nxValues) => {
-            const { signal, axisMapping, title } = nxValues;
+            const { signal, axisValues, title } = nxValues;
 
             return (
               <MappedHeatmapVis
                 dataset={signalDataset}
                 value={signal}
                 dimMapping={dimMapping}
-                axisMapping={axisMapping}
+                axisLabels={axisLabels}
+                axisValues={axisValues}
                 title={title}
-                colorScaleType={silxStyle.signalScaleType}
                 toolbarContainer={toolbarContainer}
+                config={config}
               />
             );
           }}

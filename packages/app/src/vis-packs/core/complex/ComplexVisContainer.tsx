@@ -10,8 +10,10 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import { useHeatmapConfig } from '../heatmap/config';
 import { getSliceSelection } from '../utils';
 import MappedComplexVis from './MappedComplexVis';
+import { useComplexConfig } from './config';
 
 function ComplexVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -22,6 +24,9 @@ function ComplexVisContainer(props: VisContainerProps) {
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+
+  const config = useComplexConfig();
+  const heatmapConfig = useHeatmapConfig();
 
   return (
     <>
@@ -41,6 +46,8 @@ function ComplexVisContainer(props: VisContainerProps) {
               dimMapping={dimMapping}
               title={entity.name}
               toolbarContainer={toolbarContainer}
+              config={config}
+              heatmapConfig={heatmapConfig}
             />
           )}
         />

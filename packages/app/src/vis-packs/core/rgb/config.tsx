@@ -7,7 +7,7 @@ import { persist } from 'zustand/middleware';
 import type { ConfigProviderProps } from '../../models';
 import type { Layout } from '../heatmap/models';
 
-interface RgbVisConfig {
+export interface RgbVisConfig {
   showGrid: boolean;
   toggleGrid: () => void;
 

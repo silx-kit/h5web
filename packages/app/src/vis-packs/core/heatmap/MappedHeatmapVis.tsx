@@ -1,29 +1,24 @@
 import { HeatmapVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type {
-  ArrayShape,
-  Dataset,
-  NumericType,
-  ScaleType,
-} from '@h5web/shared';
+import type { ArrayShape, Dataset, NumArray, NumericType } from '@h5web/shared';
 import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
-import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import type { AxisMapping } from '../../nexus/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
-import type { AxisMapping } from '../models';
 import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
 import HeatmapToolbar from './HeatmapToolbar';
-import { useHeatmapConfig } from './config';
+import type { HeatmapConfig } from './config';
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericType>;
   value: number[] | TypedArray;
+  axisLabels?: AxisMapping<string>;
+  axisValues?: AxisMapping<NumArray>;
   dimMapping: DimensionMapping;
-  axisMapping?: AxisMapping;
   title: string;
-  colorScaleType?: ScaleType;
   toolbarContainer: HTMLDivElement | undefined;
+  config: HeatmapConfig;
 }
 
 function MappedHeatmapVis(props: Props) {
@@ -31,10 +26,11 @@ function MappedHeatmapVis(props: Props) {
     dataset,
     value,
     dimMapping,
-    axisMapping = [],
+    axisLabels,
+    axisValues,
     title,
-    colorScaleType,
     toolbarContainer,
+    config,
   } = props;
 
   const {
@@ -45,7 +41,7 @@ function MappedHeatmapVis(props: Props) {
     showGrid,
     invertColorMap,
     flipYAxis,
-  } = useHeatmapConfig((state) => state, shallow);
+  } = config;
 
   const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
@@ -55,6 +51,9 @@ function MappedHeatmapVis(props: Props) {
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 
+  const xDimIndex = dimMapping.indexOf('x');
+  const yDimIndex = dimMapping.indexOf('y');
+
   return (
     <>
       {toolbarContainer &&
@@ -63,7 +62,7 @@ function MappedHeatmapVis(props: Props) {
             dataset={dataset}
             dataDomain={dataDomain}
             selection={getSliceSelection(dimMapping)}
-            initialScaleType={colorScaleType}
+            config={config}
           />,
           toolbarContainer
         )}
@@ -78,8 +77,14 @@ function MappedHeatmapVis(props: Props) {
         layout={layout}
         showGrid={showGrid}
         invertColorMap={invertColorMap}
-        abscissaParams={axisMapping[dimMapping.indexOf('x')]}
-        ordinateParams={axisMapping[dimMapping.indexOf('y')]}
+        abscissaParams={{
+          label: axisLabels?.[xDimIndex],
+          value: axisValues?.[xDimIndex],
+        }}
+        ordinateParams={{
+          label: axisLabels?.[yDimIndex],
+          value: axisValues?.[yDimIndex],
+        }}
         flipYAxis={flipYAxis}
       />
     </>

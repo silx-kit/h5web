@@ -1,4 +1,3 @@
-import type { ScaleType } from '@h5web/lib';
 import {
   CurveType,
   ScaleSelector,
@@ -8,54 +7,35 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import { useEffect } from 'react';
 import { MdDomain, MdGridOn } from 'react-icons/md';
-import shallow from 'zustand/shallow';
 
-import { useLineConfig } from '../line/config';
+import type { LineConfig } from '../line/config';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
-import { useComplexLineConfig } from './lineConfig';
+import type { ComplexLineConfig } from './lineConfig';
 import type { ComplexLineVisType } from './models';
 import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
 interface Props {
-  initialXScaleType: ScaleType | undefined;
-  initialYScaleType: ScaleType | undefined;
   disableAutoScale: boolean;
+  config: ComplexLineConfig;
+  lineConfig: LineConfig;
 }
 
 function ComplexLineToolbar(props: Props) {
-  const { initialXScaleType, initialYScaleType, disableAutoScale } = props;
-
+  const { disableAutoScale, config, lineConfig } = props;
+  const { visType, setVisType } = config;
   const {
     curveType,
-    setCurveType,
     showGrid,
-    toggleGrid,
     xScaleType,
-    setXScaleType,
     yScaleType,
-    setYScaleType,
     autoScale,
+    setCurveType,
+    toggleGrid,
+    setXScaleType,
+    setYScaleType,
     toggleAutoScale,
-  } = useLineConfig((state) => state, shallow);
-
-  const { visType, setVisType } = useComplexLineConfig(
-    (state) => state,
-    shallow
-  );
-
-  useEffect(() => {
-    if (initialXScaleType) {
-      setXScaleType(initialXScaleType);
-    }
-  }, [initialXScaleType, setXScaleType]);
-
-  useEffect(() => {
-    if (initialYScaleType) {
-      setYScaleType(initialYScaleType);
-    }
-  }, [initialYScaleType, setYScaleType]);
+  } = lineConfig;
 
   return (
     <Toolbar interactions={INTERACTIONS_WITH_AXIAL_ZOOM}>

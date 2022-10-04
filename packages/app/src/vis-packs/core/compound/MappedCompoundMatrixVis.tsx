@@ -7,12 +7,11 @@ import type {
   PrintableType,
 } from '@h5web/shared';
 import { createPortal } from 'react-dom';
-import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import MatrixToolbar from '../matrix/MatrixToolbar';
-import { useMatrixConfig } from '../matrix/config';
+import type { MatrixVisConfig } from '../matrix/config';
 import { getCellWidth, getFormatter } from '../matrix/utils';
 import { getSliceSelection } from '../utils';
 
@@ -21,15 +20,12 @@ interface Props {
   value: Primitive<PrintableType>[][];
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;
+  config: MatrixVisConfig;
 }
 
 function MappedCompoundMatrixVis(props: Props) {
-  const { value, dataset, toolbarContainer, dimMapping } = props;
-
-  const { sticky, customCellWidth, notation } = useMatrixConfig(
-    (state) => state,
-    shallow
-  );
+  const { value, dataset, toolbarContainer, dimMapping, config } = props;
+  const { sticky, customCellWidth, notation } = config;
 
   const { type, shape: dims } = dataset;
   const { fields } = type;

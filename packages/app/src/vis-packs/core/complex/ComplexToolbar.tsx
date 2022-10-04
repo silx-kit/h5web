@@ -10,45 +10,37 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
-import { useEffect } from 'react';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
-import shallow from 'zustand/shallow';
 
-import { useHeatmapConfig } from '../heatmap/config';
+import type { HeatmapConfig } from '../heatmap/config';
 import { getImageInteractions } from '../utils';
-import { useComplexConfig } from './config';
+import type { ComplexConfig } from './config';
 import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
 interface Props {
   dataDomain: Domain;
-  initialScaleType: ScaleType | undefined;
+  config: ComplexConfig;
+  heatmapConfig: HeatmapConfig;
 }
 
 function ComplexToolbar(props: Props) {
-  const { dataDomain, initialScaleType } = props;
+  const { dataDomain, config, heatmapConfig } = props;
 
+  const { visType, setVisType } = config;
   const {
     customDomain,
-    setCustomDomain,
     colorMap,
-    setColorMap,
     scaleType,
-    setScaleType,
     layout,
-    setLayout,
     showGrid,
-    toggleGrid,
     invertColorMap,
+    setCustomDomain,
+    setColorMap,
+    setScaleType,
+    setLayout,
+    toggleGrid,
     toggleColorMapInversion,
-  } = useHeatmapConfig((state) => state, shallow);
-
-  const { visType, setVisType } = useComplexConfig((state) => state, shallow);
-
-  useEffect(() => {
-    if (initialScaleType) {
-      setScaleType(initialScaleType);
-    }
-  }, [initialScaleType, setScaleType]);
+  } = heatmapConfig;
 
   return (
     <Toolbar interactions={getImageInteractions(layout)}>

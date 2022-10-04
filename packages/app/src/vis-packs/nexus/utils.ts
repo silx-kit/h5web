@@ -1,4 +1,3 @@
-import type { AxisParams, ScatterAxisParams } from '@h5web/lib';
 import {
   assertArray,
   assertArrayShape,
@@ -259,10 +258,4 @@ export function assertComplexSignal(
   nxData: NxData
 ): asserts nxData is NxData<ComplexType> {
   assertComplexType(nxData.signalDataset);
-}
-
-export function assertScatterAxisParams(
-  params: AxisParams | undefined
-): asserts params is ScatterAxisParams {
-  assertDefined(params?.value);
 }

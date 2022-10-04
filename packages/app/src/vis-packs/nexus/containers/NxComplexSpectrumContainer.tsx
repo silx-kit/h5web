@@ -4,6 +4,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
+import { useComplexLineConfig } from '../../core/complex/lineConfig';
 import { useLineConfig } from '../../core/line/config';
 import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
@@ -17,13 +18,20 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
   assertComplexNxData(nxData);
-  const { signalDataset, silxStyle } = nxData;
+  const { signalDataset, axisLabels, silxStyle } = nxData;
 
   const signalDims = signalDataset.shape;
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+  const xDimIndex = dimMapping.indexOf('x');
 
-  const autoScale = useLineConfig((state) => state.autoScale);
+  const config = useComplexLineConfig();
+  const lineConfig = useLineConfig({
+    xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
+    yScaleType: silxStyle.signalScaleType,
+  });
+
+  const { autoScale } = lineConfig;
 
   return (
     <>
@@ -37,18 +45,20 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
           nxData={nxData}
           selection={autoScale ? getSliceSelection(dimMapping) : undefined}
           render={(nxValues) => {
-            const { signal, signalLabel, axisMapping, title } = nxValues;
+            const { signal, signalLabel, axisValues, title } = nxValues;
 
             return (
               <MappedComplexLineVis
                 value={signal}
                 valueLabel={signalLabel}
-                valueScaleType={silxStyle.signalScaleType}
                 dims={signalDims}
                 dimMapping={dimMapping}
-                axisMapping={axisMapping}
+                axisLabels={axisLabels}
+                axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}
+                config={config}
+                lineConfig={lineConfig}
               />
             );
           }}

@@ -9,15 +9,13 @@ import {
 } from '@h5web/lib';
 import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
-import { useEffect } from 'react';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn, MdDomain } from 'react-icons/md';
-import shallow from 'zustand/shallow';
 
 import { useDataContext } from '../../../providers/DataProvider';
 import type { ExportFormat } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
-import { useLineConfig } from './config';
+import type { LineConfig } from './config';
 
 const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
@@ -25,24 +23,13 @@ const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 interface Props {
   dataset?: Dataset<ArrayShape, NumericType>;
   selection?: string | undefined;
-  initialXScaleType: ScaleType | undefined;
-  initialYScaleType: ScaleType | undefined;
   disableAutoScale: boolean;
   disableErrors: boolean;
+  config: LineConfig;
 }
 
 function LineToolbar(props: Props) {
-  const {
-    dataset,
-    selection,
-    initialXScaleType,
-    initialYScaleType,
-    disableAutoScale,
-    disableErrors,
-  } = props;
-
-  const { getExportURL } = useDataContext();
-
+  const { dataset, selection, disableAutoScale, disableErrors, config } = props;
   const {
     curveType,
     setCurveType,
@@ -56,19 +43,9 @@ function LineToolbar(props: Props) {
     toggleAutoScale,
     showErrors,
     toggleErrors,
-  } = useLineConfig((state) => state, shallow);
+  } = config;
 
-  useEffect(() => {
-    if (initialXScaleType) {
-      setXScaleType(initialXScaleType);
-    }
-  }, [initialXScaleType, setXScaleType]);
-
-  useEffect(() => {
-    if (initialYScaleType) {
-      setYScaleType(initialYScaleType);
-    }
-  }, [initialYScaleType, setYScaleType]);
+  const { getExportURL } = useDataContext();
 
   return (
     <Toolbar interactions={INTERACTIONS_WITH_AXIAL_ZOOM}>

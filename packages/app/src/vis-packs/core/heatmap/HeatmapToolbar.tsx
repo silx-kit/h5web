@@ -13,14 +13,12 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
-import { useEffect } from 'react';
 import { MdAspectRatio } from 'react-icons/md';
-import shallow from 'zustand/shallow';
 
 import { useDataContext } from '../../../providers/DataProvider';
 import type { ExportFormat } from '../../../providers/models';
 import { getImageInteractions } from '../utils';
-import { useHeatmapConfig } from './config';
+import type { HeatmapConfig } from './config';
 
 const EXPORT_FORMATS: ExportFormat[] = ['tiff', 'npy'];
 
@@ -28,36 +26,29 @@ interface Props {
   dataset: Dataset<ArrayShape, NumericType>;
   dataDomain: Domain;
   selection: string | undefined;
-  initialScaleType: ScaleType | undefined;
+  config: HeatmapConfig;
 }
 
 function HeatmapToolbar(props: Props) {
-  const { dataset, dataDomain, selection, initialScaleType } = props;
-
-  const { getExportURL } = useDataContext();
-
+  const { dataset, dataDomain, selection, config } = props;
   const {
     customDomain,
-    setCustomDomain,
     colorMap,
-    setColorMap,
     scaleType,
-    setScaleType,
     layout,
-    setLayout,
     showGrid,
-    toggleGrid,
     invertColorMap,
-    toggleColorMapInversion,
     flipYAxis,
+    setCustomDomain,
+    setColorMap,
+    setScaleType,
+    setLayout,
+    toggleGrid,
+    toggleColorMapInversion,
     toggleYAxisFlip,
-  } = useHeatmapConfig((state) => state, shallow);
+  } = config;
 
-  useEffect(() => {
-    if (initialScaleType) {
-      setScaleType(initialScaleType);
-    }
-  }, [initialScaleType, setScaleType]);
+  const { getExportURL } = useDataContext();
 
   return (
     <Toolbar interactions={getImageInteractions(layout)}>
