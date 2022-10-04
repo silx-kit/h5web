@@ -4,22 +4,21 @@ import {
   useValidDomainForScale,
   useVisDomain,
 } from '@h5web/lib';
-import type { H5WebComplex, ScaleType } from '@h5web/shared';
+import type { H5WebComplex, NumArray } from '@h5web/shared';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import { useHeatmapConfig } from '../heatmap/config';
+import type { AxisMapping } from '../../nexus/models';
+import type { HeatmapConfig } from '../heatmap/config';
 import {
   useBaseArray,
   useMappedArray,
   useSlicedDimsAndMapping,
 } from '../hooks';
-import type { AxisMapping } from '../models';
 import { DEFAULT_DOMAIN } from '../utils';
 import ComplexToolbar from './ComplexToolbar';
-import { useComplexConfig } from './config';
+import type { ComplexConfig } from './config';
 import { ComplexVisType } from './models';
 import { getPhaseAmplitudeValues } from './utils';
 
@@ -27,10 +26,12 @@ interface Props {
   value: H5WebComplex[];
   dims: number[];
   dimMapping: DimensionMapping;
-  axisMapping?: AxisMapping;
+  axisLabels?: AxisMapping<string>;
+  axisValues?: AxisMapping<NumArray>;
   title: string;
-  colorScaleType?: ScaleType;
   toolbarContainer: HTMLDivElement | undefined;
+  config: ComplexConfig;
+  heatmapConfig: HeatmapConfig;
 }
 
 function MappedComplexVis(props: Props) {
@@ -38,12 +39,15 @@ function MappedComplexVis(props: Props) {
     value,
     dims,
     dimMapping,
-    axisMapping = [],
+    axisLabels,
+    axisValues,
     title,
-    colorScaleType,
     toolbarContainer,
+    config,
+    heatmapConfig,
   } = props;
 
+  const { visType } = config;
   const {
     customDomain,
     colorMap,
@@ -51,9 +55,7 @@ function MappedComplexVis(props: Props) {
     layout,
     showGrid,
     invertColorMap,
-  } = useHeatmapConfig((state) => state, shallow);
-
-  const { visType } = useComplexConfig((state) => state, shallow);
+  } = heatmapConfig;
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
@@ -78,13 +80,17 @@ function MappedComplexVis(props: Props) {
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 
+  const xDimIndex = dimMapping.indexOf('x');
+  const yDimIndex = dimMapping.indexOf('y');
+
   return (
     <>
       {toolbarContainer &&
         createPortal(
           <ComplexToolbar
             dataDomain={dataDomain}
-            initialScaleType={colorScaleType}
+            config={config}
+            heatmapConfig={heatmapConfig}
           />,
           toolbarContainer
         )}
@@ -98,8 +104,14 @@ function MappedComplexVis(props: Props) {
         layout={layout}
         showGrid={showGrid}
         invertColorMap={invertColorMap}
-        abscissaParams={axisMapping[dimMapping.indexOf('x')]}
-        ordinateParams={axisMapping[dimMapping.indexOf('y')]}
+        abscissaParams={{
+          label: axisLabels?.[xDimIndex],
+          value: axisValues?.[xDimIndex],
+        }}
+        ordinateParams={{
+          label: axisLabels?.[yDimIndex],
+          value: axisValues?.[yDimIndex],
+        }}
         alpha={
           visType === ComplexVisType.PhaseAmplitude
             ? {

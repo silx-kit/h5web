@@ -6,7 +6,7 @@ import { persist } from 'zustand/middleware';
 import type { ConfigProviderProps } from '../../models';
 import { ComplexVisType } from './models';
 
-interface ComplexConfig {
+export interface ComplexConfig {
   visType: ComplexVisType;
   setVisType: (visType: ComplexVisType) => void;
 }

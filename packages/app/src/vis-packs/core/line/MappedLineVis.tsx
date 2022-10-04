@@ -1,24 +1,16 @@
 import { LineVis, useCombinedDomain, useDomain, useDomains } from '@h5web/lib';
-import type {
-  ArrayShape,
-  Dataset,
-  NumArray,
-  NumericType,
-  ScaleType,
-} from '@h5web/shared';
+import type { ArrayShape, Dataset, NumArray, NumericType } from '@h5web/shared';
 import { createPortal } from 'react-dom';
-import shallow from 'zustand/shallow';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { Auxiliary } from '../../nexus/models';
+import type { Auxiliary, AxisMapping } from '../../nexus/models';
 import {
   useMappedArrays,
   useMappedArray,
   useSlicedDimsAndMapping,
 } from '../hooks';
-import type { AxisMapping } from '../models';
 import LineToolbar from './LineToolbar';
-import { useLineConfig } from './config';
+import type { LineConfig } from './config';
 
 type HookArgs = [number[], DimensionMapping, boolean];
 
@@ -27,14 +19,15 @@ interface Props {
   selection?: string | undefined;
   value: NumArray;
   valueLabel?: string;
-  valueScaleType?: ScaleType;
   errors?: NumArray;
   auxiliaries?: Auxiliary[];
   dims: number[];
   dimMapping: DimensionMapping;
-  axisMapping?: AxisMapping;
+  axisLabels?: AxisMapping<string>;
+  axisValues?: AxisMapping<NumArray>;
   title: string;
   toolbarContainer?: HTMLDivElement | undefined;
+  config: LineConfig;
 }
 
 function MappedLineVis(props: Props) {
@@ -43,18 +36,19 @@ function MappedLineVis(props: Props) {
     selection,
     value,
     valueLabel,
-    valueScaleType,
     errors,
     auxiliaries = [],
     dims,
     dimMapping,
-    axisMapping = [],
+    axisLabels,
+    axisValues,
     title,
     toolbarContainer,
+    config,
   } = props;
 
   const { yScaleType, xScaleType, curveType, showGrid, autoScale, showErrors } =
-    useLineConfig((state) => state, shallow);
+    config;
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
@@ -80,8 +74,7 @@ function MappedLineVis(props: Props) {
   );
   const auxDomains = useDomains(auxForDomain, yScaleType, auxErrorsForDomain);
   const combinedDomain = useCombinedDomain([dataDomain, ...auxDomains]);
-
-  const mappedAbscissaParams = axisMapping[dimMapping.indexOf('x')];
+  const xDimIndex = dimMapping.indexOf('x');
 
   return (
     <>
@@ -90,10 +83,9 @@ function MappedLineVis(props: Props) {
           <LineToolbar
             dataset={dataset}
             selection={selection}
-            initialXScaleType={mappedAbscissaParams?.scaleType}
-            initialYScaleType={valueScaleType}
             disableAutoScale={dims.length <= 1} // with 1D datasets, `baseArray` and `dataArray` are the same so auto-scaling is implied
             disableErrors={!errors}
+            config={config}
           />,
           toolbarContainer
         )}
@@ -105,8 +97,8 @@ function MappedLineVis(props: Props) {
         curveType={curveType}
         showGrid={showGrid}
         abscissaParams={{
-          label: mappedAbscissaParams?.label,
-          value: mappedAbscissaParams?.value,
+          label: axisLabels?.[xDimIndex],
+          value: axisValues?.[xDimIndex],
           scaleType: xScaleType,
         }}
         ordinateLabel={valueLabel}

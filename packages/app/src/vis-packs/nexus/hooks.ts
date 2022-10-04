@@ -1,15 +1,13 @@
-import type { GroupWithChildren, ScaleType } from '@h5web/shared';
+import type {
+  GroupWithChildren,
+  NumArray,
+  NumArrayDataset,
+} from '@h5web/shared';
 import { isDefined } from '@h5web/shared';
 
 import { useDataContext } from '../../providers/DataProvider';
 import { useDatasetValues } from '../core/hooks';
-import type { AxisMapping } from '../core/models';
-import type {
-  AuxDatasets,
-  Auxiliary,
-  AxisDatasetMapping,
-  NxData,
-} from './models';
+import type { AuxDatasets, Auxiliary, AxisMapping, NxData } from './models';
 import {
   assertNxDataGroup,
   findAssociatedDatasets,
@@ -28,6 +26,7 @@ export function useNxData(group: GroupWithChildren): NxData {
   assertNxDataGroup(group, attrValuesStore);
   const signalDataset = findSignalDataset(group, attrValuesStore);
   const errorDataset = findErrorDataset(group, signalDataset.name);
+  const axisDatasets = findAxesDatasets(group, signalDataset, attrValuesStore);
   const auxSignals = findAssociatedDatasets(
     group,
     'auxiliary_signals',
@@ -41,30 +40,21 @@ export function useNxData(group: GroupWithChildren): NxData {
   return {
     signalDataset,
     errorDataset,
-    axisDatasets: findAxesDatasets(group, signalDataset, attrValuesStore),
+    axisDatasets,
+    axisLabels: axisDatasets.map(
+      (dataset) => dataset && getDatasetLabel(dataset, attrValuesStore)
+    ),
     titleDataset: findTitleDataset(group),
     silxStyle: getSilxStyle(group, attrValuesStore),
     auxDatasets,
   };
 }
 
-export function useAxisMapping(
-  mapping: AxisDatasetMapping,
-  axisScaleTypes: ScaleType[] | undefined
-): AxisMapping {
-  const { attrValuesStore } = useDataContext();
-
-  const axisValues = useDatasetValues(mapping.filter(isDefined));
-
-  return mapping.map((dataset, i) => {
-    return (
-      dataset && {
-        label: getDatasetLabel(dataset, attrValuesStore),
-        value: axisValues[dataset.name],
-        scaleType: axisScaleTypes?.[i],
-      }
-    );
-  });
+export function useAxisValues(
+  axisDatasets: AxisMapping<NumArrayDataset>
+): AxisMapping<NumArray> {
+  const axisValues = useDatasetValues(axisDatasets.filter(isDefined));
+  return axisDatasets.map((dataset) => dataset && axisValues[dataset.name]);
 }
 
 export function useAuxiliaries(

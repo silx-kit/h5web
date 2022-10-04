@@ -2,6 +2,7 @@ import { assertGroup, assertNumDims } from '@h5web/shared';
 
 import VisBoundary from '../../VisBoundary';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
+import { useRgbConfig } from '../../core/rgb/config';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { useNxData } from '../hooks';
@@ -18,6 +19,7 @@ function NxRgbContainer(props: VisContainerProps) {
   assertNumDims(signalDataset, 3);
 
   const { shape: dims } = signalDataset;
+  const config = useRgbConfig();
 
   return (
     <VisBoundary loadingMessage="Loading image">
@@ -29,6 +31,7 @@ function NxRgbContainer(props: VisContainerProps) {
             dims={dims}
             toolbarContainer={toolbarContainer}
             title={nxValues.title}
+            config={config}
           />
         )}
       />

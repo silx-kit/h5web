@@ -1,5 +1,6 @@
 import { CurveType } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
+import { isDefined, ScaleType } from '@h5web/shared';
+import { useMap } from '@react-hookz/web';
 import { omit } from 'lodash';
 import type { StoreApi } from 'zustand';
 import create from 'zustand';
@@ -8,7 +9,7 @@ import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
 
-interface LineConfig {
+export interface LineConfig {
   curveType: CurveType;
   setCurveType: (type: CurveType) => void;
 
@@ -60,9 +61,37 @@ function createStore() {
 }
 
 const { Provider, useStore } = createContext<StoreApi<LineConfig>>();
-export { useStore as useLineConfig };
 
 export function LineConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
   return <Provider createStore={createStore}>{children}</Provider>;
+}
+
+export function useLineConfig(
+  initialSuggestedOpts: Partial<
+    Pick<LineConfig, 'xScaleType' | 'yScaleType'>
+  > = {}
+): LineConfig {
+  const suggestedOpts = useMap(
+    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
+  );
+
+  const persistedConfig = useStore();
+  const {
+    setXScaleType: setPersistedXScaleType,
+    setYScaleType: setPersistedYScaleType,
+  } = persistedConfig;
+
+  return {
+    ...persistedConfig,
+    ...Object.fromEntries(suggestedOpts.entries()),
+    setXScaleType: (xScaleType: ScaleType) => {
+      setPersistedXScaleType(xScaleType);
+      suggestedOpts.delete('xScaleType');
+    },
+    setYScaleType: (yScaleType: ScaleType) => {
+      setPersistedYScaleType(yScaleType);
+      suggestedOpts.delete('yScaleType');
+    },
+  };
 }

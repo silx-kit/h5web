@@ -1,32 +1,26 @@
 import { ScatterVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { ScatterAxisParams } from '@h5web/lib';
-import type { NumArray, ScaleType } from '@h5web/shared';
+import type { NumArray } from '@h5web/shared';
+import { assertDefined } from '@h5web/shared';
 import { createPortal } from 'react-dom';
-import shallow from 'zustand/shallow';
 
+import type { AxisMapping } from '../../nexus/models';
 import { useBaseArray } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import ScatterToolbar from './ScatterToolbar';
-import { useScatterConfig } from './config';
+import type { ScatterConfig } from './config';
 
 interface Props {
   value: NumArray;
-  abscissaParams: ScatterAxisParams;
-  ordinateParams: ScatterAxisParams;
+  axisLabels: AxisMapping<string>;
+  axisValues: AxisMapping<NumArray>;
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
-  colorScaleType?: ScaleType;
+  config: ScatterConfig;
 }
 
 function MappedScatterVis(props: Props) {
-  const {
-    value,
-    abscissaParams,
-    ordinateParams,
-    title,
-    toolbarContainer,
-    colorScaleType,
-  } = props;
+  const { value, axisLabels, axisValues, title, toolbarContainer, config } =
+    props;
 
   const {
     showGrid,
@@ -36,28 +30,28 @@ function MappedScatterVis(props: Props) {
     customDomain,
     xScaleType,
     yScaleType,
-  } = useScatterConfig((state) => state, shallow);
-  const dataArray = useBaseArray(value, [value.length]);
+  } = config;
 
+  const dataArray = useBaseArray(value, [value.length]);
   const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
+
+  const [xLabel, yLabel] = axisLabels;
+  const [xValue, yValue] = axisValues;
+  assertDefined(xValue);
+  assertDefined(yValue);
 
   return (
     <>
       {toolbarContainer &&
         createPortal(
-          <ScatterToolbar
-            dataDomain={dataDomain}
-            initialScaleType={colorScaleType}
-            initialXScaleType={abscissaParams.scaleType}
-            initialYScaleType={ordinateParams.scaleType}
-          />,
+          <ScatterToolbar dataDomain={dataDomain} config={config} />,
           toolbarContainer
         )}
       <ScatterVis
-        abscissaParams={{ ...abscissaParams, scaleType: xScaleType }}
-        ordinateParams={{ ...ordinateParams, scaleType: yScaleType }}
+        abscissaParams={{ label: xLabel, value: xValue, scaleType: xScaleType }}
+        ordinateParams={{ label: yLabel, value: yValue, scaleType: yScaleType }}
         dataArray={dataArray}
         domain={safeDomain}
         colorMap={colorMap}

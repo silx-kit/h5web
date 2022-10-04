@@ -11,8 +11,6 @@ import type {
   StringType,
 } from '@h5web/shared';
 
-import type { AxisMapping } from '../core/models';
-
 export type NxAttribute =
   | 'NX_class'
   | 'signal'
@@ -34,7 +32,8 @@ export interface NxData<
 > {
   signalDataset: Dataset<ArrayShape, T>;
   errorDataset?: NumArrayDataset;
-  axisDatasets: AxisDatasetMapping;
+  axisDatasets: AxisMapping<NumArrayDataset>;
+  axisLabels: AxisMapping<string>;
   auxDatasets: AuxDatasets;
   titleDataset?: Dataset<ScalarShape, StringType>;
   silxStyle: SilxStyle;
@@ -44,16 +43,16 @@ export interface NxValues<T extends NumericType | ComplexType> {
   signal: ArrayValue<T>;
   signalLabel: string;
   errors?: NumArray;
-  axisMapping: AxisMapping;
+  axisValues: AxisMapping<NumArray>;
   auxiliaries?: Auxiliary[];
   title: string;
 }
 
-export type AxisDatasetMapping = (NumArrayDataset | undefined)[];
+export type AxisMapping<T> = (T | undefined)[];
 
 export interface SilxStyle {
   signalScaleType?: ScaleType;
-  axisScaleTypes?: ScaleType[];
+  axisScaleTypes?: AxisMapping<ScaleType>;
 }
 
 export interface Auxiliary {

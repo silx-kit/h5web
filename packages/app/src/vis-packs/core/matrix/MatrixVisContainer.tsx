@@ -11,6 +11,7 @@ import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
 import { getSliceSelection } from '../utils';
 import MappedMatrixVis from './MappedMatrixVis';
+import { useMatrixConfig } from './config';
 
 function MatrixVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -21,6 +22,8 @@ function MatrixVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const axesCount = Math.min(dims.length, 2);
   const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
+
+  const config = useMatrixConfig();
 
   return (
     <>
@@ -39,6 +42,7 @@ function MatrixVisContainer(props: VisContainerProps) {
               value={value}
               dimMapping={dimMapping}
               toolbarContainer={toolbarContainer}
+              config={config}
             />
           )}
         />

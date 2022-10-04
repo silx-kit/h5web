@@ -3,11 +3,11 @@ import { isEqual } from 'lodash';
 
 import VisBoundary from '../../VisBoundary';
 import MappedScatterVis from '../../core/scatter/MappedScatterVis';
+import { useScatterConfig } from '../../core/scatter/config';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
-import { assertScatterAxisParams } from '../utils';
 
 function NxScatterContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -15,7 +15,7 @@ function NxScatterContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);
-  const { signalDataset, axisDatasets, silxStyle } = nxData;
+  const { signalDataset, axisDatasets, axisLabels, silxStyle } = nxData;
 
   assertNumDims(signalDataset, 1);
   const signalDims = signalDataset.shape;
@@ -31,25 +31,29 @@ function NxScatterContainer(props: VisContainerProps) {
     throw new Error(`Signal and axes dimensions don't match: ${dimsStr}`);
   }
 
+  const [xScaleType, yScaleType] = silxStyle.axisScaleTypes || [];
+
+  const config = useScatterConfig({
+    scaleType: silxStyle.signalScaleType,
+    xScaleType,
+    yScaleType,
+  });
+
   return (
     <VisBoundary>
       <NxValuesFetcher
         nxData={nxData}
         render={(nxValues) => {
-          const { signal, axisMapping, title } = nxValues;
-
-          const [xAxisParams, yAxisParams] = axisMapping;
-          assertScatterAxisParams(xAxisParams);
-          assertScatterAxisParams(yAxisParams);
+          const { signal, axisValues, title } = nxValues;
 
           return (
             <MappedScatterVis
               value={signal}
-              abscissaParams={xAxisParams}
-              ordinateParams={yAxisParams}
+              axisLabels={axisLabels}
+              axisValues={axisValues}
               title={title}
               toolbarContainer={toolbarContainer}
-              colorScaleType={silxStyle.signalScaleType}
+              config={config}
             />
           );
         }}

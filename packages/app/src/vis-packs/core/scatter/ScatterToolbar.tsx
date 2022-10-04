@@ -8,59 +8,35 @@ import {
   Separator,
   Toolbar,
 } from '@h5web/lib';
-import { useEffect } from 'react';
-import shallow from 'zustand/shallow';
 
 import { BASE_INTERACTIONS } from '../utils';
-import { useScatterConfig } from './config';
+import type { ScatterConfig } from './config';
 
 const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 
 interface Props {
   dataDomain: Domain;
-  initialScaleType: ScaleType | undefined;
-  initialXScaleType: ScaleType | undefined;
-  initialYScaleType: ScaleType | undefined;
+  config: ScatterConfig;
 }
 
 function ScatterToolbar(props: Props) {
-  const { dataDomain, initialScaleType, initialXScaleType, initialYScaleType } =
-    props;
-
+  const { dataDomain, config } = props;
   const {
     customDomain,
-    setCustomDomain,
     colorMap,
-    setColorMap,
     scaleType,
-    setScaleType,
     showGrid,
-    toggleGrid,
     invertColorMap,
-    toggleColorMapInversion,
     xScaleType,
-    setXScaleType,
     yScaleType,
+    setCustomDomain,
+    setColorMap,
+    setScaleType,
+    toggleGrid,
+    toggleColorMapInversion,
+    setXScaleType,
     setYScaleType,
-  } = useScatterConfig((state) => state, shallow);
-
-  useEffect(() => {
-    if (initialScaleType) {
-      setScaleType(initialScaleType);
-    }
-  }, [initialScaleType, setScaleType]);
-
-  useEffect(() => {
-    if (initialXScaleType) {
-      setXScaleType(initialXScaleType);
-    }
-  }, [initialXScaleType, setXScaleType]);
-
-  useEffect(() => {
-    if (initialYScaleType) {
-      setYScaleType(initialYScaleType);
-    }
-  }, [initialYScaleType, setYScaleType]);
+  } = config;
 
   return (
     <Toolbar interactions={BASE_INTERACTIONS}>

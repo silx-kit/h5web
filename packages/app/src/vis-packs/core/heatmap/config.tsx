@@ -1,5 +1,6 @@
 import type { CustomDomain } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
+import { isDefined, ScaleType } from '@h5web/shared';
+import { useMap } from '@react-hookz/web';
 import type { StoreApi } from 'zustand';
 import create from 'zustand';
 import createContext from 'zustand/context';
@@ -8,7 +9,7 @@ import { persist } from 'zustand/middleware';
 import type { ConfigProviderProps } from '../../models';
 import type { ColorMap, Layout } from './models';
 
-interface HeatmapConfig {
+export interface HeatmapConfig {
   customDomain: CustomDomain;
   setCustomDomain: (customDomain: CustomDomain) => void;
 
@@ -34,9 +35,7 @@ interface HeatmapConfig {
 function createStore() {
   return create<HeatmapConfig>()(
     persist(
-      // https://github.com/pmndrs/zustand/issues/701
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (set, get) => ({
+      (set) => ({
         customDomain: [null, null],
         setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
 
@@ -72,9 +71,28 @@ function createStore() {
 }
 
 const { Provider, useStore } = createContext<StoreApi<HeatmapConfig>>();
-export { useStore as useHeatmapConfig };
 
 export function HeatmapConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
   return <Provider createStore={createStore}>{children}</Provider>;
+}
+
+export function useHeatmapConfig(
+  initialSuggestedOpts: Partial<Pick<HeatmapConfig, 'scaleType'>> = {}
+): HeatmapConfig {
+  const suggestedOpts = useMap(
+    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
+  );
+
+  const persistedConfig = useStore();
+  const { setScaleType: setPersistedScaleType } = persistedConfig;
+
+  return {
+    ...persistedConfig,
+    ...Object.fromEntries(suggestedOpts.entries()),
+    setScaleType: (scaleType: ScaleType) => {
+      setPersistedScaleType(scaleType);
+      suggestedOpts.delete('scaleType');
+    },
+  };
 }

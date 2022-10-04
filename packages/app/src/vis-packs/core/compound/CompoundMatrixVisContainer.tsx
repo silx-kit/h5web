@@ -10,6 +10,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import { useMatrixConfig } from '../matrix/config';
 import { getSliceSelection } from '../utils';
 import MappedCompoundMatrixVis from './MappedCompoundMatrixVis';
 
@@ -22,6 +23,8 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+
+  const config = useMatrixConfig();
 
   return (
     <>
@@ -40,6 +43,7 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
               value={value}
               toolbarContainer={toolbarContainer}
               dimMapping={dimMapping}
+              config={config}
             />
           )}
         />

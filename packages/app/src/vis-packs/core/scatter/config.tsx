@@ -1,5 +1,6 @@
 import type { CustomDomain } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
+import { isDefined, ScaleType } from '@h5web/shared';
+import { useMap } from '@react-hookz/web';
 import type { StoreApi } from 'zustand';
 import create from 'zustand';
 import createContext from 'zustand/context';
@@ -8,7 +9,7 @@ import { persist } from 'zustand/middleware';
 import type { ConfigProviderProps } from '../../models';
 import type { ColorMap } from '../heatmap/models';
 
-interface ScatterConfig {
+export interface ScatterConfig {
   customDomain: CustomDomain;
   setCustomDomain: (customDomain: CustomDomain) => void;
 
@@ -33,9 +34,7 @@ interface ScatterConfig {
 function createStore() {
   return create<ScatterConfig>()(
     persist(
-      // https://github.com/pmndrs/zustand/issues/701
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (set, get) => ({
+      (set) => ({
         customDomain: [null, null],
         setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
 
@@ -69,9 +68,42 @@ function createStore() {
 }
 
 const { Provider, useStore } = createContext<StoreApi<ScatterConfig>>();
-export { useStore as useScatterConfig };
 
 export function ScatterConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
   return <Provider createStore={createStore}>{children}</Provider>;
+}
+
+export function useScatterConfig(
+  initialSuggestedOpts: Partial<
+    Pick<ScatterConfig, 'scaleType' | 'xScaleType' | 'yScaleType'>
+  > = {}
+): ScatterConfig {
+  const suggestedOpts = useMap(
+    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
+  );
+
+  const persistedConfig = useStore();
+  const {
+    setScaleType: setPersistedScaleType,
+    setXScaleType: setPersistedXScaleType,
+    setYScaleType: setPersistedYScaleType,
+  } = persistedConfig;
+
+  return {
+    ...persistedConfig,
+    ...Object.fromEntries(suggestedOpts.entries()),
+    setScaleType: (scaleType: ScaleType) => {
+      setPersistedScaleType(scaleType);
+      suggestedOpts.delete('scaleType');
+    },
+    setXScaleType: (xScaleType: ScaleType) => {
+      setPersistedXScaleType(xScaleType);
+      suggestedOpts.delete('xScaleType');
+    },
+    setYScaleType: (yScaleType: ScaleType) => {
+      setPersistedYScaleType(yScaleType);
+      suggestedOpts.delete('yScaleType');
+    },
+  };
 }
