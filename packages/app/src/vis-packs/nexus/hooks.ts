@@ -1,4 +1,5 @@
 import type {
+  AxisMapping,
   GroupWithChildren,
   NumArray,
   NumArrayDataset,
@@ -7,7 +8,7 @@ import { isDefined } from '@h5web/shared';
 
 import { useDataContext } from '../../providers/DataProvider';
 import { useDatasetValues } from '../core/hooks';
-import type { AuxDatasets, Auxiliary, AxisMapping, NxData } from './models';
+import type { AuxDatasets, Auxiliary, NxData } from './models';
 import {
   assertNxDataGroup,
   findAssociatedDatasets,

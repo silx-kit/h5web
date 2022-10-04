@@ -1,9 +1,15 @@
 import { LineVis, useCombinedDomain, useDomain, useDomains } from '@h5web/lib';
-import type { ArrayShape, Dataset, NumArray, NumericType } from '@h5web/shared';
+import type {
+  ArrayShape,
+  AxisMapping,
+  Dataset,
+  NumArray,
+  NumericType,
+} from '@h5web/shared';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { Auxiliary, AxisMapping } from '../../nexus/models';
+import type { Auxiliary } from '../../nexus/models';
 import {
   useMappedArrays,
   useMappedArray,

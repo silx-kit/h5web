@@ -1,9 +1,8 @@
-import type { H5WebComplex, NumArray } from '@h5web/shared';
+import type { AxisMapping, H5WebComplex, NumArray } from '@h5web/shared';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { AxisMapping } from '../../nexus/models';
 import MappedLineVis from '../line/MappedLineVis';
 import type { LineConfig } from '../line/config';
 import ComplexLineToolbar from './ComplexLineToolbar';

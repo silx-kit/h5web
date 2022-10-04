@@ -1,9 +1,8 @@
 import { ScatterVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { NumArray } from '@h5web/shared';
+import type { AxisMapping, NumArray } from '@h5web/shared';
 import { assertDefined } from '@h5web/shared';
 import { createPortal } from 'react-dom';
 
-import type { AxisMapping } from '../../nexus/models';
 import { useBaseArray } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import ScatterToolbar from './ScatterToolbar';

@@ -4,12 +4,11 @@ import {
   useValidDomainForScale,
   useVisDomain,
 } from '@h5web/lib';
-import type { H5WebComplex, NumArray } from '@h5web/shared';
+import type { AxisMapping, H5WebComplex, NumArray } from '@h5web/shared';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { AxisMapping } from '../../nexus/models';
 import type { HeatmapConfig } from '../heatmap/config';
 import {
   useBaseArray,
