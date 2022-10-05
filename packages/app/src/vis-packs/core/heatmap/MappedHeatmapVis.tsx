@@ -1,10 +1,15 @@
 import { HeatmapVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { ArrayShape, Dataset, NumArray, NumericType } from '@h5web/shared';
+import type {
+  ArrayShape,
+  AxisMapping,
+  Dataset,
+  NumArray,
+  NumericType,
+} from '@h5web/shared';
 import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { AxisMapping } from '../../nexus/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
 import HeatmapToolbar from './HeatmapToolbar';

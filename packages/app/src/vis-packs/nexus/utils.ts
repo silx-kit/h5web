@@ -220,10 +220,9 @@ export function getSilxStyle(
       signalScaleType: isScaleType(signal_scale_type)
         ? signal_scale_type
         : undefined,
-      axisScaleTypes:
-        Array.isArray(axisScaleTypes) && axisScaleTypes.every(isScaleType)
-          ? axisScaleTypes
-          : undefined,
+      axisScaleTypes: Array.isArray(axisScaleTypes)
+        ? axisScaleTypes.map((type) => (isScaleType(type) ? type : undefined))
+        : undefined,
     };
   } catch {
     console.warn(`Malformed 'SILX_style' attribute: ${silxStyle}`); // eslint-disable-line no-console

@@ -8,5 +8,7 @@ export enum NxInterpretation {
 
 export interface SilxStyle {
   signalScaleType?: ScaleType;
-  axisScaleTypes?: ScaleType[];
+  axisScaleTypes?: AxisMapping<ScaleType>;
 }
+
+export type AxisMapping<T> = (T | undefined)[];

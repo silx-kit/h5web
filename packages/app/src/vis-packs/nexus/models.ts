@@ -1,6 +1,7 @@
 import type {
   ArrayShape,
   ArrayValue,
+  AxisMapping,
   ComplexType,
   Dataset,
   NumArray,
@@ -47,8 +48,6 @@ export interface NxValues<T extends NumericType | ComplexType> {
   auxiliaries?: Auxiliary[];
   title: string;
 }
-
-export type AxisMapping<T> = (T | undefined)[];
 
 export interface SilxStyle {
   signalScaleType?: ScaleType;
