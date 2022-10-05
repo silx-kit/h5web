@@ -176,3 +176,7 @@ function convertDtypeString(dtype: string): DType {
       return { class: DTypeClass.Unknown };
   }
 }
+
+export function hasErrorMessage(error: unknown): error is { message: string } {
+  return !!error && typeof error === 'object' && 'message' in error;
+}

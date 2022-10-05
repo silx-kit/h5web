@@ -11,7 +11,6 @@ import type {
 } from '@h5web/shared';
 import { hasScalarShape, buildEntityPath, EntityKind } from '@h5web/shared';
 import type { AxiosRequestConfig } from 'axios';
-import { isString } from 'lodash';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ValuesStoreParams } from '../models';
@@ -29,10 +28,11 @@ import {
   isSoftLinkResponse,
   typedArrayFromDType,
   convertH5GroveDtype,
+  hasErrorMessage,
 } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
-  /* API compatible with h5grove@1.1.0 */
+  /* API compatible with h5grove@1.2.0 */
   public constructor(
     url: string,
     filepath: string,
@@ -89,17 +89,21 @@ export class H5GroveApi extends DataProviderApi {
       () =>
         this.client.get<H5GroveEntityResponse>(`/meta/`, { params: { path } }),
       (status, errorData) => {
-        if (status !== 404 || !isString(errorData)) {
+        if (!hasErrorMessage(errorData)) {
           return undefined;
         }
+        const { message } = errorData;
 
-        if (errorData.includes('File not found')) {
+        if (message.includes('File not found')) {
           return `File not found: '${this.filepath}'`;
         }
-        if (errorData.includes('not a valid path')) {
+        if (message.includes('Permission denied')) {
+          return `Cannot read file '${this.filepath}': Permission denied`;
+        }
+        if (message.includes('not a valid path')) {
           return `No entity found at ${path}`;
         }
-        if (errorData.includes('Cannot resolve')) {
+        if (message.includes('Cannot resolve')) {
           return `Could not resolve soft link at ${path}`;
         }
 
