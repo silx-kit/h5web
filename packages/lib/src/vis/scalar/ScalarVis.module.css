@@ -1,4 +1,5 @@
 .scalar {
+  margin: 0;
   padding: 1rem 1.5rem;
   color: inherit;
   font-family: var(--monospace);
