@@ -16,11 +16,7 @@ function H5GroveApp() {
       filepath={filepath}
       axiosConfig={{ params: { file: filepath } }}
     >
-      <App
-        explorerOpen={!query.has('wide')}
-        getFeedbackURL={getFeedbackURL}
-        disableDarkMode
-      />
+      <App explorerOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </H5GroveProvider>
   );
 }
