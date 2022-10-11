@@ -1,9 +1,10 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { FiFileText, FiRefreshCw } from 'react-icons/fi';
 
 import { useDataContext } from '../providers/DataProvider';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
+import { useKeyboardSupport } from './hooks';
 
 interface Props {
   selectedPath: string;
@@ -14,9 +15,19 @@ function Explorer(props: Props) {
   const { selectedPath, onSelect } = props;
   const { filename } = useDataContext();
 
+  const ref = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  useKeyboardSupport(ref);
+
+  useEffect(() => {
+    btnRef.current?.focus();
+  }, [btnRef]);
+
   return (
-    <div className={styles.explorer} role="tree">
+    <div ref={ref} className={styles.explorer} role="tree">
       <button
+        ref={btnRef}
         className={styles.fileBtn}
         type="button"
         role="treeitem"
