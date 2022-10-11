@@ -19,7 +19,11 @@ function RawVis(props: Props) {
     );
   }
 
-  return <pre className={styles.raw}>{valueAsStr}</pre>;
+  return (
+    <div className={styles.root}>
+      <pre className={styles.raw}>{valueAsStr}</pre>
+    </div>
+  );
 }
 
 export default RawVis;

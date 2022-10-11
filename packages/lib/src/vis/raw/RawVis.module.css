@@ -1,6 +1,11 @@
+.root {
+  overflow: auto;
+}
+
 .raw {
-  padding: 1rem;
+  min-width: fit-content; /* fix missing padding-right */
   margin: 0;
+  padding: 1rem 1.5rem;
   color: inherit;
   font-family: var(--monospace);
   font-size: inherit;

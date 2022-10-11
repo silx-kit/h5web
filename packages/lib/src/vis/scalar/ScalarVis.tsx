@@ -9,7 +9,12 @@ interface Props {
 
 function ScalarVis(props: Props) {
   const { value, formatter } = props;
-  return <pre className={styles.scalar}>{formatter(value)}</pre>;
+
+  return (
+    <div className={styles.root}>
+      <pre className={styles.scalar}>{formatter(value)}</pre>
+    </div>
+  );
 }
 
 export default ScalarVis;
