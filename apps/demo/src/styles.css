@@ -9,6 +9,7 @@
 
 body {
   box-sizing: border-box;
+  min-width: 42em;
   font-family: var(--sans-serif);
   line-height: 1.2;
   color: #020402;

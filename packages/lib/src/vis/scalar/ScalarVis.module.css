@@ -1,4 +1,9 @@
+.root {
+  overflow: auto;
+}
+
 .scalar {
+  width: fit-content; /* fix missing padding-right */
   margin: 0;
   padding: 1rem 1.5rem;
   color: inherit;
