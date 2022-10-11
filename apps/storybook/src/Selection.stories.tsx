@@ -1,4 +1,5 @@
 import type { Selection, ModifierKey } from '@h5web/lib';
+import { AxialSelectionTool } from '@h5web/lib';
 import {
   Pan,
   SelectionLine,
@@ -196,6 +197,75 @@ Persisted.argTypes = {
   panModifierKey: {
     control: { type: 'inline-radio' },
     options: ['Alt', 'Control', 'Shift', undefined],
+  },
+};
+
+export const AxialSelection: Story<TemplateProps & { axis: 'x' | 'y' }> = (
+  args
+) => {
+  const {
+    selectionType,
+    selectionModifierKey,
+    panModifierKey,
+    axis,
+    ...svgProps
+  } = args;
+
+  const [activeSelection, setActiveSelection] = useState<Selection>();
+
+  const SelectionComponent =
+    selectionType === 'line' ? SelectionLine : SelectionRect;
+
+  if (selectionModifierKey === panModifierKey) {
+    return (
+      <p style={{ margin: '1rem', color: 'darkred' }}>
+        Pan and selection modifier keys cannot both be{' '}
+        <code>{panModifierKey || 'undefined'}</code>
+      </p>
+    );
+  }
+
+  return (
+    <VisCanvas
+      title={
+        activeSelection
+          ? `Selection from ${vectorToStr(
+              activeSelection.startPoint
+            )} to ${vectorToStr(activeSelection.endPoint)}`
+          : 'No selection'
+      }
+      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      <Pan modifierKey={panModifierKey} />
+      <Zoom />
+      <ResetZoomButton />
+
+      <AxialSelectionTool
+        axis={axis}
+        onSelectionChange={setActiveSelection}
+        onSelectionEnd={() => setActiveSelection(undefined)}
+        modifierKey={selectionModifierKey}
+      >
+        {(selection) => <SelectionComponent {...selection} {...svgProps} />}
+      </AxialSelectionTool>
+    </VisCanvas>
+  );
+};
+
+AxialSelection.args = {
+  selectionType: 'rectangle',
+  panModifierKey: 'Control',
+  axis: 'x',
+};
+AxialSelection.argTypes = {
+  axis: {
+    control: { type: 'inline-radio' },
+    options: ['x', 'y'],
+  },
+  panModifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift'],
   },
 };
 

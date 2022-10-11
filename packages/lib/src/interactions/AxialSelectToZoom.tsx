@@ -1,10 +1,7 @@
 import { useThree } from '@react-three/fiber';
-import { Vector2 } from 'three';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
-import { getVisibleDomains } from '../vis/utils';
+import AxialSelectionTool from './AxialSelectionTool';
 import SelectionRect from './SelectionRect';
-import SelectionTool from './SelectionTool';
 import { useMoveCameraTo } from './hooks';
 import type { Selection, CommonInteractionProps } from './models';
 import { getEnclosedRectangle } from './utils';
@@ -16,39 +13,14 @@ interface Props extends CommonInteractionProps {
 function AxialSelectToZoom(props: Props) {
   const { axis, modifierKey, disabled } = props;
 
-  const context = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
 
   const { width, height } = useThree((state) => state.size);
   const camera = useThree((state) => state.camera);
 
-  function getAxialSelection(selection: Selection): Selection {
-    const { xVisibleDomain, yVisibleDomain } = getVisibleDomains(
-      camera,
-      context
-    );
-
-    const { startPoint: mouseStartPoint, endPoint: mouseEndPoint } = selection;
-    const startPoint =
-      axis === 'x'
-        ? new Vector2(mouseStartPoint.x, yVisibleDomain[0])
-        : new Vector2(xVisibleDomain[0], mouseStartPoint.y);
-    const endPoint =
-      axis === 'x'
-        ? new Vector2(mouseEndPoint.x, yVisibleDomain[1])
-        : new Vector2(xVisibleDomain[1], mouseEndPoint.y);
-
-    return {
-      startPoint,
-      endPoint,
-      worldStartPoint: context.dataToWorld(startPoint),
-      worldEndPoint: context.dataToWorld(endPoint),
-    };
-  }
-
   function onSelectionEnd(selection: Selection) {
     // Work in world coordinates as we need to act on the world camera
-    const { worldStartPoint, worldEndPoint } = getAxialSelection(selection);
+    const { worldStartPoint, worldEndPoint } = selection;
 
     if (
       worldStartPoint.x === worldEndPoint.x ||
@@ -68,21 +40,23 @@ function AxialSelectToZoom(props: Props) {
   }
 
   return (
-    <SelectionTool
+    <AxialSelectionTool
+      axis={axis}
       id={`${axis.toUpperCase()}SelectToZoom`}
       modifierKey={modifierKey}
       disabled={disabled}
       onSelectionEnd={onSelectionEnd}
     >
-      {(selection) => (
+      {({ startPoint, endPoint }) => (
         <SelectionRect
           fill="white"
           stroke="black"
           fillOpacity={0.25}
-          {...getAxialSelection(selection)}
+          startPoint={startPoint}
+          endPoint={endPoint}
         />
       )}
-    </SelectionTool>
+    </AxialSelectionTool>
   );
 }
 

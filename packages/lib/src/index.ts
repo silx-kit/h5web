@@ -54,6 +54,7 @@ export { default as AxialSelectToZoom } from './interactions/AxialSelectToZoom';
 export { default as SelectionLine } from './interactions/SelectionLine';
 export { default as SelectionRect } from './interactions/SelectionRect';
 export { default as SelectionTool } from './interactions/SelectionTool';
+export { default as AxialSelectionTool } from './interactions/AxialSelectionTool';
 export type { PanProps } from './interactions/Pan';
 export type { ZoomProps } from './interactions/Zoom';
 export type { XAxisZoomProps } from './interactions/XAxisZoom';
