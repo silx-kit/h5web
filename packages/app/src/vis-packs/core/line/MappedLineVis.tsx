@@ -9,7 +9,6 @@ import type {
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { Auxiliary } from '../../nexus/models';
 import {
   useMappedArrays,
   useMappedArray,
@@ -26,7 +25,9 @@ interface Props {
   value: NumArray;
   valueLabel?: string;
   errors?: NumArray;
-  auxiliaries?: Auxiliary[];
+  auxLabels?: string[];
+  auxValues?: NumArray[];
+  auxErrors?: (NumArray | undefined)[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
@@ -43,7 +44,9 @@ function MappedLineVis(props: Props) {
     value,
     valueLabel,
     errors,
-    auxiliaries = [],
+    auxLabels = [],
+    auxValues = [],
+    auxErrors = [],
     dims,
     dimMapping,
     axisLabels,
@@ -64,12 +67,9 @@ function MappedLineVis(props: Props) {
 
   const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
   const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
-  const [auxArrays, auxForDomain] = useMappedArrays(
-    auxiliaries.map((aux) => aux.values),
-    ...hookArgs
-  );
+  const [auxArrays, auxForDomain] = useMappedArrays(auxValues, ...hookArgs);
   const [auxErrorsArrays, auxErrorsForDomain] = useMappedArrays(
-    auxiliaries.map((aux) => aux.errors),
+    auxErrors,
     ...hookArgs
   );
 
@@ -112,9 +112,9 @@ function MappedLineVis(props: Props) {
         dtype={dataset?.type}
         errorsArray={errorArray}
         showErrors={showErrors}
-        auxiliaries={auxiliaries.map(({ label }, i) => ({
-          label,
-          array: auxArrays[i],
+        auxiliaries={auxArrays.map((array, i) => ({
+          label: auxLabels[i],
+          array,
           errors: auxErrorsArrays[i],
         }))}
       />

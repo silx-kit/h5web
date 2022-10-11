@@ -26,7 +26,7 @@ import type {
 
 import type { AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
-import type { NxData, SilxStyle } from './models';
+import type { DatasetInfo, NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(
   group: GroupWithChildren,
@@ -230,31 +230,31 @@ export function getSilxStyle(
   }
 }
 
-export function getDatasetLabel(
+export function getDatasetInfo(
   dataset: Dataset,
   attrValuesStore: AttrValuesStore
-): string {
-  const longName = attrValuesStore.getSingle(dataset, 'long_name');
-  if (longName && typeof longName === 'string') {
-    return longName;
-  }
+): DatasetInfo {
+  const rawLongName = attrValuesStore.getSingle(dataset, 'long_name');
+  const longName =
+    rawLongName && typeof rawLongName === 'string' ? rawLongName : undefined;
 
-  const units = attrValuesStore.getSingle(dataset, 'units');
-  if (units && typeof units === 'string') {
-    return `${dataset.name} (${units})`;
-  }
+  const rawUnits = attrValuesStore.getSingle(dataset, 'units');
+  const units = rawUnits && typeof rawUnits === 'string' ? rawUnits : undefined;
 
-  return dataset.name;
+  return {
+    label: longName || (units ? `${dataset.name} (${units})` : dataset.name),
+    unit: units,
+  };
 }
 
 export function assertNumericSignal(
   nxData: NxData
 ): asserts nxData is NxData<NumericType> {
-  assertNumericType(nxData.signalDataset);
+  assertNumericType(nxData.signalDef.dataset);
 }
 
 export function assertComplexSignal(
   nxData: NxData
 ): asserts nxData is NxData<ComplexType> {
-  assertComplexType(nxData.signalDataset);
+  assertComplexType(nxData.signalDef.dataset);
 }

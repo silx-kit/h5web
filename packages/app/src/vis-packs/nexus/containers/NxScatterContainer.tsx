@@ -15,16 +15,16 @@ function NxScatterContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);
-  const { signalDataset, axisDatasets, axisLabels, silxStyle } = nxData;
+  const { signalDef, axisDefs, silxStyle } = nxData;
 
-  assertNumDims(signalDataset, 1);
-  const signalDims = signalDataset.shape;
+  assertNumDims(signalDef.dataset, 1);
+  const signalDims = signalDef.dataset.shape;
 
-  const [xDataset, yDataset] = axisDatasets;
+  const [xDataset, yDataset] = axisDefs;
   assertDefined(xDataset);
   assertDefined(yDataset);
-  const xDims = xDataset.shape;
-  const yDims = yDataset.shape;
+  const xDims = xDataset.dataset.shape;
+  const yDims = yDataset.dataset.shape;
 
   if (!isEqual(xDims, signalDims) || !isEqual(yDims, signalDims)) {
     const dimsStr = JSON.stringify({ signalDims, xDims, yDims });
@@ -49,7 +49,7 @@ function NxScatterContainer(props: VisContainerProps) {
           return (
             <MappedScatterVis
               value={signal}
-              axisLabels={axisLabels}
+              axisLabels={axisDefs.map((def) => def?.label)}
               axisValues={axisValues}
               title={title}
               toolbarContainer={toolbarContainer}

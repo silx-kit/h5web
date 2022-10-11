@@ -19,10 +19,10 @@ function NxComplexImageContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertComplexSignal(nxData);
 
-  const { signalDataset, axisLabels, silxStyle } = nxData;
-  assertMinDims(signalDataset, 2);
+  const { signalDef, axisDefs, silxStyle } = nxData;
+  assertMinDims(signalDef.dataset, 2);
 
-  const { shape: dims } = signalDataset;
+  const { shape: dims } = signalDef.dataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const config = useComplexConfig();
@@ -49,7 +49,7 @@ function NxComplexImageContainer(props: VisContainerProps) {
                 value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
-                axisLabels={axisLabels}
+                axisLabels={axisDefs.map((def) => def?.label)}
                 axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}

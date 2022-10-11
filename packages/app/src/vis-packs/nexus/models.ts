@@ -23,39 +23,43 @@ export type NxAttribute =
   | 'SILX_style'
   | 'auxiliary_signals';
 
-export type AuxDatasets = {
-  signal: NumArrayDataset;
-  errors?: NumArrayDataset;
-}[];
+export interface DatasetInfo {
+  label: string;
+  unit: string | undefined;
+}
 
-export interface NxData<
+interface DatasetDef<
   T extends NumericType | ComplexType = NumericType | ComplexType
-> {
-  signalDataset: Dataset<ArrayShape, T>;
-  errorDataset?: NumArrayDataset;
-  axisDatasets: AxisMapping<NumArrayDataset>;
-  axisLabels: AxisMapping<string>;
-  auxDatasets: AuxDatasets;
-  titleDataset?: Dataset<ScalarShape, StringType>;
-  silxStyle: SilxStyle;
+> extends DatasetInfo {
+  dataset: Dataset<ArrayShape, T>;
 }
 
-export interface NxValues<T extends NumericType | ComplexType> {
-  signal: ArrayValue<T>;
-  signalLabel: string;
-  errors?: NumArray;
-  axisValues: AxisMapping<NumArray>;
-  auxiliaries?: Auxiliary[];
-  title: string;
-}
+type WithError<T extends DatasetDef> = T & {
+  errorDataset?: NumArrayDataset;
+};
+
+export type AuxDef = WithError<DatasetDef<NumericType>>;
 
 export interface SilxStyle {
   signalScaleType?: ScaleType;
   axisScaleTypes?: AxisMapping<ScaleType>;
 }
 
-export interface Auxiliary {
-  label: string;
-  values: NumArray;
+export interface NxData<
+  T extends NumericType | ComplexType = NumericType | ComplexType
+> {
+  titleDataset?: Dataset<ScalarShape, StringType>;
+  signalDef: WithError<DatasetDef<T>>;
+  auxDefs: AuxDef[];
+  axisDefs: AxisMapping<DatasetDef<NumericType>>;
+  silxStyle: SilxStyle;
+}
+
+export interface NxValues<T extends NumericType | ComplexType> {
+  title: string;
+  signal: ArrayValue<T>;
   errors?: NumArray;
+  auxValues: NumArray[];
+  auxErrors: (NumArray | undefined)[];
+  axisValues: AxisMapping<NumArray>;
 }

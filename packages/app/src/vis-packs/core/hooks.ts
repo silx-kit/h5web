@@ -54,17 +54,28 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
 export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: D[],
   selection?: string
-): Record<string, Value<D>> {
+): Value<D>[];
+
+export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
+  datasets: (D | undefined)[],
+  selection?: string
+): (Value<D> | undefined)[];
+
+export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
+  datasets: (D | undefined)[],
+  selection?: string
+): (Value<D> | undefined)[] {
   const { valuesStore } = useDataContext();
 
-  return Object.fromEntries(
-    datasets.map((dataset) => {
-      const value = valuesStore.get({ dataset, selection });
-      assertDatasetValue(value, dataset);
+  return datasets.map((dataset) => {
+    if (!dataset) {
+      return undefined;
+    }
 
-      return [dataset.name, value];
-    })
-  );
+    const value = valuesStore.get({ dataset, selection });
+    assertDatasetValue(value, dataset);
+    return value;
+  });
 }
 
 export function useBaseArray<T, U extends T[] | TypedArray | undefined>(
