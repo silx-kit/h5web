@@ -18,10 +18,10 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);
-  const { signalDataset, errorDataset, axisLabels, silxStyle } = nxData;
+  const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
 
-  const signalDims = signalDataset.shape;
-  const errorDims = errorDataset?.shape;
+  const signalDims = signalDef.dataset.shape;
+  const errorDims = signalDef.errorDataset?.shape;
 
   if (errorDims && !isEqual(signalDims, errorDims)) {
     const dimsStr = JSON.stringify({ signalDims, errorsDims: errorDims });
@@ -51,26 +51,22 @@ function NxSpectrumContainer(props: VisContainerProps) {
           nxData={nxData}
           selection={selection}
           render={(nxValues) => {
-            const {
-              signal,
-              signalLabel,
-              errors,
-              axisValues,
-              auxiliaries,
-              title,
-            } = nxValues;
+            const { signal, errors, axisValues, auxValues, auxErrors, title } =
+              nxValues;
 
             return (
               <MappedLineVis
-                dataset={signalDataset}
+                dataset={signalDef.dataset}
                 selection={selection}
                 value={signal}
-                valueLabel={signalLabel}
+                valueLabel={signalDef.label}
                 errors={errors}
-                auxiliaries={auxiliaries}
+                auxLabels={auxDefs.map((def) => def?.label)}
+                auxValues={auxValues}
+                auxErrors={auxErrors}
                 dims={signalDims}
                 dimMapping={dimMapping}
-                axisLabels={axisLabels}
+                axisLabels={axisDefs.map((def) => def?.label)}
                 axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}

@@ -18,10 +18,10 @@ function NxImageContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertNumericSignal(nxData);
 
-  const { signalDataset, axisLabels, silxStyle } = nxData;
-  assertMinDims(signalDataset, 2);
+  const { signalDef, axisDefs, silxStyle } = nxData;
+  assertMinDims(signalDef.dataset, 2);
 
-  const { shape: dims } = signalDataset;
+  const { shape: dims } = signalDef.dataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const config = useHeatmapConfig({ scaleType: silxStyle.signalScaleType });
@@ -42,10 +42,10 @@ function NxImageContainer(props: VisContainerProps) {
 
             return (
               <MappedHeatmapVis
-                dataset={signalDataset}
+                dataset={signalDef.dataset}
                 value={signal}
                 dimMapping={dimMapping}
-                axisLabels={axisLabels}
+                axisLabels={axisDefs.map((def) => def?.label)}
                 axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}

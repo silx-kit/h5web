@@ -15,10 +15,10 @@ function NxRgbContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertNumericSignal(nxData);
 
-  const { signalDataset } = nxData;
-  assertNumDims(signalDataset, 3);
+  const { signalDef } = nxData;
+  assertNumDims(signalDef.dataset, 3);
 
-  const { shape: dims } = signalDataset;
+  const { shape: dims } = signalDef.dataset;
   const config = useRgbConfig();
 
   return (
