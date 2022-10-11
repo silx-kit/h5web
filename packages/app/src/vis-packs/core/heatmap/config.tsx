@@ -78,14 +78,17 @@ export function HeatmapConfigProvider(props: ConfigProviderProps) {
 }
 
 export function useHeatmapConfig(
-  initialSuggestedOpts: Partial<Pick<HeatmapConfig, 'scaleType'>> = {}
+  initialSuggestedOpts: Partial<
+    Pick<HeatmapConfig, 'scaleType' | 'layout'>
+  > = {}
 ): HeatmapConfig {
   const suggestedOpts = useMap(
     Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
   );
 
   const persistedConfig = useStore();
-  const { setScaleType: setPersistedScaleType } = persistedConfig;
+  const { setScaleType: setPersistedScaleType, setLayout: setPersistedLayout } =
+    persistedConfig;
 
   return {
     ...persistedConfig,
@@ -93,6 +96,10 @@ export function useHeatmapConfig(
     setScaleType: (scaleType: ScaleType) => {
       setPersistedScaleType(scaleType);
       suggestedOpts.delete('scaleType');
+    },
+    setLayout: (layout: Layout) => {
+      setPersistedLayout(layout);
+      suggestedOpts.delete('layout');
     },
   };
 }
