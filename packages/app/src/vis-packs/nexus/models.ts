@@ -39,6 +39,7 @@ type WithError<T extends DatasetDef> = T & {
 };
 
 export type AuxDef = WithError<DatasetDef<NumericType>>;
+export type AxisDef = DatasetDef<NumericType>;
 
 export interface SilxStyle {
   signalScaleType?: ScaleType;
@@ -51,7 +52,7 @@ export interface NxData<
   titleDataset?: Dataset<ScalarShape, StringType>;
   signalDef: WithError<DatasetDef<T>>;
   auxDefs: AuxDef[];
-  axisDefs: AxisMapping<DatasetDef<NumericType>>;
+  axisDefs: AxisMapping<AxisDef>;
   silxStyle: SilxStyle;
 }
 

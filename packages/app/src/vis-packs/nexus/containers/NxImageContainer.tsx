@@ -9,7 +9,7 @@ import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { useNxData } from '../hooks';
-import { assertNumericSignal } from '../utils';
+import { assertNumericSignal, getBestLayout } from '../utils';
 
 function NxImageContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -23,8 +23,13 @@ function NxImageContainer(props: VisContainerProps) {
 
   const { shape: dims } = signalDef.dataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const xAxisDef = axisDefs[dimMapping.indexOf('x')];
+  const yAxisDef = axisDefs[dimMapping.indexOf('y')];
 
-  const config = useHeatmapConfig({ scaleType: silxStyle.signalScaleType });
+  const config = useHeatmapConfig({
+    scaleType: silxStyle.signalScaleType,
+    layout: getBestLayout(xAxisDef, yAxisDef),
+  });
 
   return (
     <>

@@ -26,7 +26,8 @@ import type {
 
 import type { AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
-import type { DatasetInfo, NxData, SilxStyle } from './models';
+import type { Layout } from '../core/heatmap/models';
+import type { AxisDef, DatasetInfo, NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(
   group: GroupWithChildren,
@@ -245,6 +246,17 @@ export function getDatasetInfo(
     label: longName || (units ? `${dataset.name} (${units})` : dataset.name),
     unit: units,
   };
+}
+
+export function getBestLayout(
+  xAxisDef: AxisDef | undefined,
+  yAxisDef: AxisDef | undefined
+): Layout | undefined {
+  if (!xAxisDef?.unit && !yAxisDef?.unit) {
+    return undefined;
+  }
+
+  return xAxisDef?.unit === yAxisDef?.unit ? 'cover' : 'fill';
 }
 
 export function assertNumericSignal(
