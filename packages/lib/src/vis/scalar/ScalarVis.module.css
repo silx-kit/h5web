@@ -5,7 +5,7 @@
 .scalar {
   width: fit-content; /* fix missing padding-right */
   margin: 0;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1.5rem !important; /* Overwritten by JupyterLab if not !important */
   color: inherit;
   font-family: var(--monospace);
   font-size: inherit;
