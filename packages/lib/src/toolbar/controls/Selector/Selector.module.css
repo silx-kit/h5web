@@ -96,7 +96,8 @@
   padding: 0.5rem 0.75rem !important; /* FIX style ordering issue with Vite */
 }
 
-.option:hover {
+.option:hover,
+.option:focus {
   background-color: var(--h5w-selector-option-hover--bgColor, whitesmoke);
 }
 
