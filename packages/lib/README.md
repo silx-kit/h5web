@@ -27,7 +27,7 @@ npm install @h5web/lib three @react-three/fiber ndarray
 ```
 
 ```tsx
-import '@h5web/lib/styles.css';
+import '@h5web/lib/dist/styles.css';
 
 import React from 'react';
 import ndarray from 'ndarray';
@@ -56,6 +56,13 @@ function MyApp() {
 
 export default MyApp;
 ```
+
+> If your bundler supports it (e.g. webpack 5), you may be able to shorten the
+> stylesheet import path as follows:
+>
+> ```ts
+> import '@h5web/lib/styles.css';
+> ```
 
 ### Examples
 
