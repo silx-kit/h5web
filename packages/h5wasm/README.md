@@ -35,7 +35,7 @@ npm install @h5web/app @h5web/h5wasm
 ```
 
 ```tsx
-import '@h5web/app/dist/styles.css';
+import '@h5web/app/styles.css';
 
 import React, { useState } from 'react';
 import type { ChangeEvent } from 'react';
@@ -92,13 +92,6 @@ function MyApp() {
 
 export default MyApp;
 ```
-
-> If your bundler supports it (e.g. webpack 5), you may be able to shorten the
-> stylesheet import path as follows:
->
-> ```ts
-> import '@h5web/app/styles.css';
-> ```
 
 ## Caveats
 
