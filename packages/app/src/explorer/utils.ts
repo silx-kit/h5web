@@ -74,3 +74,17 @@ export function focusPrevious(e: KeyboardEvent<HTMLButtonElement>) {
     e.preventDefault();
   }
 }
+
+export function focusFirst(e: KeyboardEvent<HTMLButtonElement>) {
+  const buttonList = getExplorerButtonList();
+
+  buttonList[0]?.focus();
+  e.preventDefault();
+}
+
+export function focusLast(e: KeyboardEvent<HTMLButtonElement>) {
+  const buttonList = getExplorerButtonList();
+
+  buttonList[buttonList.length - 1]?.focus();
+  e.preventDefault();
+}
