@@ -16,6 +16,7 @@ importers:
       '@types/node': 16.11.7
       cypress: 9.5.0
       cypress-image-snapshot: 4.0.1
+      cypress-wait-for-stable-dom: 0.1.0
       eslint: '>=8'
       eslint-config-galex: 4.2.2
       identity-obj-proxy: 3.0.0
@@ -32,6 +33,7 @@ importers:
       '@types/node': 16.11.7
       cypress: 9.5.0
       cypress-image-snapshot: 4.0.1_cypress@9.5.0+jest@27.5.1
+      cypress-wait-for-stable-dom: 0.1.0
       eslint: 8.23.1
       eslint-config-galex: 4.2.2_eslint@8.23.1+jest@27.5.1
       identity-obj-proxy: 3.0.0
@@ -7398,6 +7400,10 @@ packages:
       term-img: 4.1.0
     transitivePeerDependencies:
       - jest
+    dev: true
+
+  /cypress-wait-for-stable-dom/0.1.0:
+    resolution: {integrity: sha512-iVJc6CDzlu1xUnTcZph+zbkOlImaDelpvRv4G+3naugvjkF6b9EFpDmRCC/16xL1pqpkFq4rFyfhuNw4C3PQjw==}
     dev: true
 
   /cypress/9.5.0:
