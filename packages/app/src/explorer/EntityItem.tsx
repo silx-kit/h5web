@@ -1,7 +1,8 @@
 import { isGroup } from '@h5web/shared';
 import type { ChildEntity } from '@h5web/shared';
 import { useToggle } from '@react-hookz/web';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, KeyboardEvent } from 'react';
+import { useCallback } from 'react';
 import { Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FiRefreshCw } from 'react-icons/fi';
@@ -10,6 +11,7 @@ import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
 import NxBadge from './NxBadge';
+import { focusNext, focusParent, focusPrevious } from './utils';
 
 interface Props {
   path: string;
@@ -35,6 +37,41 @@ function EntityItem(props: Props) {
     }
   }, [entity, path, selectedPath, toggleExpanded]);
 
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLButtonElement>) => {
+      switch (e.key) {
+        case 'ArrowDown':
+          focusNext(e);
+          return;
+
+        case 'ArrowUp':
+          focusPrevious(e);
+          return;
+
+        case 'ArrowLeft':
+          if (isGroup(entity) && isExpanded) {
+            toggleExpanded(false);
+            e.preventDefault();
+          } else {
+            focusParent(e);
+          }
+          return;
+
+        case 'ArrowRight':
+          if (!isGroup(entity)) {
+            return;
+          }
+          if (isExpanded) {
+            focusNext(e);
+          } else {
+            toggleExpanded(true);
+            e.preventDefault();
+          }
+      }
+    },
+    [entity, isExpanded, toggleExpanded]
+  );
+
   return (
     <li
       className={styles.entity}
@@ -47,6 +84,7 @@ function EntityItem(props: Props) {
         role="treeitem"
         aria-expanded={isGroup(entity) ? isExpanded : undefined}
         aria-selected={isSelected}
+        data-path={path}
         onClick={() => {
           // Expand if collapsed; collapse is expanded and selected
           if (isGroup(entity) && (!isExpanded || isSelected)) {
@@ -55,6 +93,7 @@ function EntityItem(props: Props) {
 
           onSelect(path);
         }}
+        onKeyDown={handleKeyDown}
       >
         <Icon entity={entity} isExpanded={isExpanded} />
         <span className={styles.name}>{entity.name}</span>
