@@ -4,7 +4,7 @@ import { FiFileText, FiRefreshCw } from 'react-icons/fi';
 import { useDataContext } from '../providers/DataProvider';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
-import { useKeyboardSupport } from './hooks';
+import { EXPLORER_ID, focusNext } from './utils';
 
 interface Props {
   selectedPath: string;
@@ -18,21 +18,25 @@ function Explorer(props: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
-  useKeyboardSupport(ref);
-
   useEffect(() => {
     btnRef.current?.focus();
   }, [btnRef]);
 
   return (
-    <div ref={ref} className={styles.explorer} role="tree">
+    <div ref={ref} className={styles.explorer} role="tree" id={EXPLORER_ID}>
       <button
         ref={btnRef}
         className={styles.fileBtn}
         type="button"
         role="treeitem"
         aria-selected={selectedPath === '/'}
+        data-path="/"
         onClick={() => onSelect('/')}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            focusNext(e);
+          }
+        }}
       >
         <FiFileText className={styles.fileIcon} />
         <span className={styles.name}>{filename}</span>

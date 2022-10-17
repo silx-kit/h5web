@@ -32,6 +32,9 @@ module.exports = {
         /* Forcing use of `else` for consistency with mandatory `default` clause in `switch` statements is unreasonable.
          * `if`/`else if` serves a different purpose than `switch`. */
         'sonarjs/elseif-without-else': 'off',
+
+        // DOM dataset API is confusing since we deal with HDF5 datasets
+        'unicorn/prefer-dom-node-dataset': 'off',
       },
       overrides: [
         createReactOverride({
