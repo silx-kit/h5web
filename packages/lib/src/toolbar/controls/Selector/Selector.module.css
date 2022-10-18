@@ -101,6 +101,11 @@
   background-color: var(--h5w-selector-option-hover--bgColor, whitesmoke);
 }
 
+.option:focus {
+  outline: 1px solid var(--h5w-selector-option-focus--outlineColor, gray);
+  outline-offset: -1px;
+}
+
 .option[data-selected] {
   background-color: var(--h5w-selector-option-selected--bgColor, #eee);
 }
