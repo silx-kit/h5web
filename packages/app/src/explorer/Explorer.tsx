@@ -4,7 +4,7 @@ import { FiFileText, FiRefreshCw } from 'react-icons/fi';
 import { useDataContext } from '../providers/DataProvider';
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
-import { EXPLORER_ID, focusNext } from './utils';
+import { EXPLORER_ID, focusLast, focusNext } from './utils';
 
 interface Props {
   selectedPath: string;
@@ -33,6 +33,11 @@ function Explorer(props: Props) {
         data-path="/"
         onClick={() => onSelect('/')}
         onKeyDown={(e) => {
+          if (e.key === 'End') {
+            focusLast(e);
+            return;
+          }
+
           if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
             focusNext(e);
           }

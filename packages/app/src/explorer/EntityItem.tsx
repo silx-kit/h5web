@@ -11,7 +11,13 @@ import EntityList from './EntityList';
 import styles from './Explorer.module.css';
 import Icon from './Icon';
 import NxBadge from './NxBadge';
-import { focusNext, focusParent, focusPrevious } from './utils';
+import {
+  focusFirst,
+  focusLast,
+  focusNext,
+  focusParent,
+  focusPrevious,
+} from './utils';
 
 interface Props {
   path: string;
@@ -40,6 +46,14 @@ function EntityItem(props: Props) {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLButtonElement>) => {
       switch (e.key) {
+        case 'Home':
+          focusFirst(e);
+          return;
+
+        case 'End':
+          focusLast(e);
+          return;
+
         case 'ArrowDown':
           focusNext(e);
           return;
