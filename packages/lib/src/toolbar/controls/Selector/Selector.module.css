@@ -50,7 +50,7 @@
   top: calc(100% + 0.75rem);
   left: 50%;
   transform: translateX(-50%); /* center menu with button */
-  z-index: 1; /* above other selectors */
+  z-index: 1; /* above overflow menu */
   min-width: 100%;
   padding-top: 0.25rem;
   background-color: var(--h5w-selector-menu--bgColor, white);
