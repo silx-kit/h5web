@@ -35,6 +35,14 @@ function MatrixToolbar(props: Props) {
     setNotation,
   } = useMatrixConfig();
 
+  const exportEntries =
+    getExportURL &&
+    hasNumericType(dataset) &&
+    EXPORT_FORMATS.map((format) => ({
+      format,
+      url: getExportURL(dataset, selection, format),
+    }));
+
   return (
     <Toolbar>
       <CellWidthInput
@@ -54,15 +62,12 @@ function MatrixToolbar(props: Props) {
         onToggle={toggleSticky}
       />
 
-      {getExportURL && hasNumericType(dataset) && (
+      {exportEntries && (
         <>
           <Separator />
           <ExportMenu
-            formats={EXPORT_FORMATS}
+            entries={exportEntries}
             isSlice={selection !== undefined}
-            getFormatURL={(format: ExportFormat) =>
-              getExportURL(dataset, selection, format)
-            }
           />
         </>
       )}

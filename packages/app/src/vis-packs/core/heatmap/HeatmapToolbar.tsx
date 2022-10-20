@@ -50,6 +50,13 @@ function HeatmapToolbar(props: Props) {
 
   const { getExportURL } = useDataContext();
 
+  const exportEntries =
+    getExportURL &&
+    EXPORT_FORMATS.map((format) => ({
+      format,
+      url: getExportURL(dataset, selection, format),
+    }));
+
   return (
     <Toolbar interactions={getImageInteractions(layout)}>
       <DomainSlider
@@ -95,14 +102,8 @@ function HeatmapToolbar(props: Props) {
 
       <Separator />
 
-      {getExportURL && (
-        <ExportMenu
-          formats={EXPORT_FORMATS}
-          isSlice={selection !== undefined}
-          getFormatURL={(format: ExportFormat) =>
-            getExportURL(dataset, selection, format)
-          }
-        />
+      {exportEntries && (
+        <ExportMenu entries={exportEntries} isSlice={selection !== undefined} />
       )}
 
       <SnapshotBtn />

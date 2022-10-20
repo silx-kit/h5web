@@ -1,28 +1,28 @@
-import { isDefined } from '@h5web/shared';
 import { Button, Wrapper, Menu } from 'react-aria-menubutton';
 import { FiDownload } from 'react-icons/fi';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import styles from './Selector/Selector.module.css';
 
-interface Props<F extends string> {
-  formats: F[];
-  isSlice: boolean;
-  getFormatURL: (format: F) => string | undefined; // `undefined` if format is not supported
+export interface ExportEntry {
+  format: string;
+  url: string | undefined;
 }
 
-function ExportMenu<F extends string>(props: Props<F>) {
-  const { formats, isSlice, getFormatURL } = props;
+interface Props {
+  entries: ExportEntry[];
+  isSlice: boolean;
+}
 
-  const urls = formats.map(getFormatURL);
-  const hasSupportedFormats = urls.some(isDefined);
+function ExportMenu(props: Props) {
+  const { entries, isSlice } = props;
 
   return (
     <Wrapper className={styles.wrapper}>
       <Button
         className={styles.btn}
         tag="button"
-        disabled={!hasSupportedFormats}
+        disabled={!entries.some(({ url }) => !!url)}
       >
         <div className={styles.btnLike}>
           <FiDownload className={styles.icon} />
@@ -34,13 +34,13 @@ function ExportMenu<F extends string>(props: Props<F>) {
       </Button>
       <Menu className={styles.menu}>
         <div className={styles.list}>
-          {formats.map(
-            (format, index) =>
-              urls[index] && (
+          {entries.map(({ format, url }) => {
+            return (
+              url && (
                 <a
                   key={format}
                   className={styles.linkOption}
-                  href={urls[index]}
+                  href={url}
                   target="_blank"
                   download={`data.${format}`}
                   rel="noreferrer"
@@ -50,7 +50,8 @@ function ExportMenu<F extends string>(props: Props<F>) {
                   >{`Export to ${format.toUpperCase()}`}</span>
                 </a>
               )
-          )}
+            );
+          })}
         </div>
       </Menu>
     </Wrapper>
