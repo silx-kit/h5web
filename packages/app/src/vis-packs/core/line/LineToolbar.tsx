@@ -47,6 +47,14 @@ function LineToolbar(props: Props) {
 
   const { getExportURL } = useDataContext();
 
+  const exportEntries =
+    getExportURL &&
+    dataset &&
+    EXPORT_FORMATS.map((format) => ({
+      format,
+      url: getExportURL(dataset, selection, format),
+    }));
+
   return (
     <Toolbar interactions={INTERACTIONS_WITH_AXIAL_ZOOM}>
       <ScaleSelector
@@ -108,15 +116,12 @@ function LineToolbar(props: Props) {
         <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
       </ToggleGroup>
 
-      {getExportURL && dataset && (
+      {exportEntries && dataset && (
         <>
           <Separator />
           <ExportMenu
-            formats={EXPORT_FORMATS}
+            entries={exportEntries}
             isSlice={selection !== undefined}
-            getFormatURL={(format: ExportFormat) =>
-              getExportURL(dataset, selection, format)
-            }
           />
         </>
       )}
