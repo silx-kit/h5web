@@ -99,6 +99,16 @@ export function assertStr(
   }
 }
 
+export function assertEnvVar(
+  val: unknown,
+  name: string
+): asserts val is string {
+  assertStr(val, `Expected environment variable ${name} to be defined`);
+  if (val === '') {
+    throw new Error(`Expected environment variable ${name} to not be empty`);
+  }
+}
+
 function assertComplex(val: unknown): asserts val is H5WebComplex {
   if (
     !Array.isArray(val) ||

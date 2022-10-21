@@ -11,6 +11,9 @@ export type { FeedbackContext } from './breadcrumbs/models';
 export { useDataContext } from './providers/DataProvider';
 export type { DataContextValue } from './providers/DataProvider';
 
+// Undocumented
+export { assertEnvVar } from '@h5web/shared';
+
 // Undocumented (for @h5web/h5wasm)
 export { default as DataProvider } from './providers/DataProvider';
 export { DataProviderApi as ProviderApi } from './providers/api';
