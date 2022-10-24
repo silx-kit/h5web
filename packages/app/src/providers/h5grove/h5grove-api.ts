@@ -6,10 +6,15 @@ import type {
   Dataset,
   Entity,
   Group,
-  NumericType,
   ProvidedEntity,
+  Value,
 } from '@h5web/shared';
-import { hasScalarShape, buildEntityPath, EntityKind } from '@h5web/shared';
+import {
+  buildEntityPath,
+  EntityKind,
+  hasNumericType,
+  hasScalarShape,
+} from '@h5web/shared';
 import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
@@ -22,13 +27,13 @@ import type {
   H5GroveEntityResponse,
 } from './models';
 import {
+  convertH5GroveDtype,
+  hasErrorMessage,
   isDatasetResponse,
   isExternalLinkResponse,
   isGroupResponse,
   isSoftLinkResponse,
   typedArrayFromDType,
-  convertH5GroveDtype,
-  hasErrorMessage,
 } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
@@ -66,11 +71,16 @@ export class H5GroveApi extends DataProviderApi {
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
   }
 
-  public getExportURL(
-    dataset: Dataset<ArrayShape, NumericType>,
+  public getExportURL<D extends Dataset<ArrayShape>>(
+    dataset: D,
     selection: string | undefined,
+    _: Value<D>,
     format: ExportFormat
-  ): string | undefined {
+  ): URL | undefined {
+    if (!hasNumericType(dataset)) {
+      return undefined;
+    }
+
     const { baseURL, params } = this.client.defaults;
 
     const searchParams = new URLSearchParams(params as Record<string, string>);
@@ -81,7 +91,7 @@ export class H5GroveApi extends DataProviderApi {
       searchParams.set('selection', selection);
     }
 
-    return `${baseURL as string}/data/?${searchParams.toString()}`;
+    return new URL(`${baseURL as string}/data/?${searchParams.toString()}`);
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {

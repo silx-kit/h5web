@@ -10,6 +10,7 @@ import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { useDataContext } from '../../../providers/DataProvider';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
 import HeatmapToolbar from './HeatmapToolbar';
@@ -59,15 +60,21 @@ function MappedHeatmapVis(props: Props) {
   const xDimIndex = dimMapping.indexOf('x');
   const yDimIndex = dimMapping.indexOf('y');
 
+  const { getExportURL } = useDataContext();
+  const selection = getSliceSelection(dimMapping);
+
   return (
     <>
       {toolbarContainer &&
         createPortal(
           <HeatmapToolbar
-            dataset={dataset}
             dataDomain={dataDomain}
-            selection={getSliceSelection(dimMapping)}
+            isSlice={selection !== undefined}
             config={config}
+            getExportURL={
+              getExportURL &&
+              ((format) => getExportURL(dataset, selection, value, format))
+            }
           />,
           toolbarContainer
         )}

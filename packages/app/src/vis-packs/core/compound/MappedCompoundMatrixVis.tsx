@@ -9,6 +9,7 @@ import type {
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { useDataContext } from '../../../providers/DataProvider';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import MatrixToolbar from '../matrix/MatrixToolbar';
 import type { MatrixVisConfig } from '../matrix/config';
@@ -43,14 +44,20 @@ function MappedCompoundMatrixVis(props: Props) {
     getFormatter(field, notation)
   );
 
+  const { getExportURL } = useDataContext();
+  const selection = getSliceSelection(dimMapping);
+
   return (
     <>
       {toolbarContainer &&
         createPortal(
           <MatrixToolbar
-            dataset={dataset}
-            selection={getSliceSelection(dimMapping)}
             cellWidth={cellWidth}
+            isSlice={selection !== undefined}
+            getExportURL={
+              getExportURL &&
+              ((format) => getExportURL(dataset, selection, value, format))
+            }
           />,
           toolbarContainer
         )}

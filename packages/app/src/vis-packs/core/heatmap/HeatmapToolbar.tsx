@@ -12,10 +12,8 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
 import { MdAspectRatio } from 'react-icons/md';
 
-import { useDataContext } from '../../../providers/DataProvider';
 import type { ExportFormat } from '../../../providers/models';
 import { getImageInteractions } from '../utils';
 import type { HeatmapConfig } from './config';
@@ -23,14 +21,14 @@ import type { HeatmapConfig } from './config';
 const EXPORT_FORMATS: ExportFormat[] = ['tiff', 'npy'];
 
 interface Props {
-  dataset: Dataset<ArrayShape, NumericType>;
   dataDomain: Domain;
-  selection: string | undefined;
+  isSlice: boolean;
   config: HeatmapConfig;
+  getExportURL: ((format: ExportFormat) => URL | undefined) | undefined;
 }
 
 function HeatmapToolbar(props: Props) {
-  const { dataset, dataDomain, selection, config } = props;
+  const { isSlice, dataDomain, config, getExportURL } = props;
   const {
     customDomain,
     colorMap,
@@ -47,15 +45,6 @@ function HeatmapToolbar(props: Props) {
     toggleColorMapInversion,
     toggleYAxisFlip,
   } = config;
-
-  const { getExportURL } = useDataContext();
-
-  const exportEntries =
-    getExportURL &&
-    EXPORT_FORMATS.map((format) => ({
-      format,
-      url: getExportURL(dataset, selection, format),
-    }));
 
   return (
     <Toolbar interactions={getImageInteractions(layout)}>
@@ -102,8 +91,14 @@ function HeatmapToolbar(props: Props) {
 
       <Separator />
 
-      {exportEntries && (
-        <ExportMenu entries={exportEntries} isSlice={selection !== undefined} />
+      {getExportURL && (
+        <ExportMenu
+          isSlice={isSlice}
+          entries={EXPORT_FORMATS.map((format) => ({
+            format,
+            url: getExportURL(format),
+          }))}
+        />
       )}
 
       <SnapshotBtn />

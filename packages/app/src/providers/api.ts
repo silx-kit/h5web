@@ -4,8 +4,8 @@ import type {
   AttributeValues,
   Dataset,
   Entity,
-  NumericType,
   ProvidedEntity,
+  Value,
 } from '@h5web/shared';
 import type {
   AxiosInstance,
@@ -44,11 +44,12 @@ export abstract class DataProviderApi {
     this.client = axios.create(config);
   }
 
-  public getExportURL?(
-    dataset: Dataset<ArrayShape, NumericType>,
+  public getExportURL?<D extends Dataset<ArrayShape>>(
+    dataset: D,
     selection: string | undefined,
+    value: Value<D>,
     format: ExportFormat
-  ): string | undefined; // `undefined` if format is not supported
+  ): URL | undefined; // `undefined` if format is not supported
 
   public addProgressListener(cb: ProgressCallback): void {
     this.progressListeners.add(cb);

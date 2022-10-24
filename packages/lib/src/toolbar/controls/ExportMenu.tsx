@@ -6,7 +6,7 @@ import styles from './Selector/Selector.module.css';
 
 export interface ExportEntry {
   format: string;
-  url: string | undefined;
+  url: URL | undefined;
 }
 
 interface Props {
@@ -40,7 +40,7 @@ function ExportMenu(props: Props) {
                 <a
                   key={format}
                   className={styles.linkOption}
-                  href={url}
+                  href={url.href}
                   target="_blank"
                   download={`data.${format}`}
                   rel="noreferrer"

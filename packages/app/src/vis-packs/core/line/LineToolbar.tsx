@@ -7,12 +7,10 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import type { ArrayShape, Dataset, NumericType } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 
-import { useDataContext } from '../../../providers/DataProvider';
 import type { ExportFormat } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import type { LineConfig } from './config';
@@ -21,15 +19,17 @@ const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
-  dataset?: Dataset<ArrayShape, NumericType>;
-  selection?: string | undefined;
+  isSlice: boolean;
   disableAutoScale: boolean;
   disableErrors: boolean;
   config: LineConfig;
+  getExportURL: ((format: ExportFormat) => URL | undefined) | undefined;
 }
 
 function LineToolbar(props: Props) {
-  const { dataset, selection, disableAutoScale, disableErrors, config } = props;
+  const { isSlice, disableAutoScale, disableErrors, config, getExportURL } =
+    props;
+
   const {
     curveType,
     setCurveType,
@@ -44,16 +44,6 @@ function LineToolbar(props: Props) {
     showErrors,
     toggleErrors,
   } = config;
-
-  const { getExportURL } = useDataContext();
-
-  const exportEntries =
-    getExportURL &&
-    dataset &&
-    EXPORT_FORMATS.map((format) => ({
-      format,
-      url: getExportURL(dataset, selection, format),
-    }));
 
   return (
     <Toolbar interactions={INTERACTIONS_WITH_AXIAL_ZOOM}>
@@ -116,12 +106,15 @@ function LineToolbar(props: Props) {
         <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
       </ToggleGroup>
 
-      {exportEntries && dataset && (
+      {getExportURL && (
         <>
           <Separator />
           <ExportMenu
-            entries={exportEntries}
-            isSlice={selection !== undefined}
+            isSlice={isSlice}
+            entries={EXPORT_FORMATS.map((format) => ({
+              format,
+              url: getExportURL(format),
+            }))}
           />
         </>
       )}
