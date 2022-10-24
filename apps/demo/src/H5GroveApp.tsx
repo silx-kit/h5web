@@ -1,12 +1,15 @@
-import { App, H5GroveProvider } from '@h5web/app';
+import { App, H5GroveProvider, assertEnvVar } from '@h5web/app';
 import { useLocation } from 'react-router-dom';
 
 import { getFeedbackURL } from './utils';
 
-const URL = import.meta.env.VITE_H5GROVE_URL as string;
-const FILEPATH = import.meta.env.VITE_H5GROVE_FALLBACK_FILEPATH as string;
+const URL = import.meta.env.VITE_H5GROVE_URL;
+const FILEPATH = import.meta.env.VITE_H5GROVE_FALLBACK_FILEPATH;
 
 function H5GroveApp() {
+  assertEnvVar(URL, 'VITE_H5GROVE_URL');
+  assertEnvVar(FILEPATH, 'VITE_H5GROVE_FALLBACK_FILEPATH');
+
   const query = new URLSearchParams(useLocation().search);
   const filepath = query.get('file') || FILEPATH;
 
