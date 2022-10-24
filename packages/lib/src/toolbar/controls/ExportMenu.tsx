@@ -2,15 +2,12 @@ import { Button, Wrapper, Menu } from 'react-aria-menubutton';
 import { FiDownload } from 'react-icons/fi';
 import { MdArrowDropDown } from 'react-icons/md';
 
+import type { ExportEntryProps } from './ExportEntry';
+import ExportEntry from './ExportEntry';
 import styles from './Selector/Selector.module.css';
 
-export interface ExportEntry {
-  format: string;
-  url: URL | undefined;
-}
-
 interface Props {
-  entries: ExportEntry[];
+  entries: ExportEntryProps[];
   isSlice: boolean;
 }
 
@@ -34,24 +31,9 @@ function ExportMenu(props: Props) {
       </Button>
       <Menu className={styles.menu}>
         <div className={styles.list}>
-          {entries.map(({ format, url }) => {
-            return (
-              url && (
-                <a
-                  key={format}
-                  className={styles.linkOption}
-                  href={url.href}
-                  target="_blank"
-                  download={`data.${format}`}
-                  rel="noreferrer"
-                >
-                  <span
-                    className={styles.label}
-                  >{`Export to ${format.toUpperCase()}`}</span>
-                </a>
-              )
-            );
-          })}
+          {entries.map((entry) => (
+            <ExportEntry key={entry.format} {...entry} />
+          ))}
         </div>
       </Menu>
     </Wrapper>

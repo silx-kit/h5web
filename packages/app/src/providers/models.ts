@@ -31,5 +31,6 @@ export interface AttrValuesStore extends FetchStore<AttributeValues, Entity> {
 }
 
 export type ExportFormat = 'csv' | 'npy' | 'tiff';
+export type ExportURL = URL | (() => Promise<URL | Blob>) | undefined;
 
 export type ProgressCallback = (prog: number[]) => void;

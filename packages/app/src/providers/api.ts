@@ -18,6 +18,7 @@ import axios from 'axios';
 
 import type {
   ExportFormat,
+  ExportURL,
   ProgressCallback,
   ValuesStoreParams,
 } from './models';
@@ -44,12 +45,20 @@ export abstract class DataProviderApi {
     this.client = axios.create(config);
   }
 
+  /**
+   * Provide an export URL for the given dataset/slice and format.
+   * The following return types are supported:
+   * - `URL`                  Provider has dedicated endpoint for generating server-side exports
+   * - `() => Promise<URL>`   Provider generates single-use export URLs (i.e. signed one-time tokens)
+   * - `() => Promise<Blob>`  Export is to be generated client-side
+   * - `undefined`            Export scenario is not supported
+   */
   public getExportURL?<D extends Dataset<ArrayShape>>(
     dataset: D,
     selection: string | undefined,
     value: Value<D>,
     format: ExportFormat
-  ): URL | undefined; // `undefined` if format is not supported
+  ): ExportURL;
 
   public addProgressListener(cb: ProgressCallback): void {
     this.progressListeners.add(cb);

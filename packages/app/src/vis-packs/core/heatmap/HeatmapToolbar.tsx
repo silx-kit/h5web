@@ -14,7 +14,7 @@ import {
 } from '@h5web/lib';
 import { MdAspectRatio } from 'react-icons/md';
 
-import type { ExportFormat } from '../../../providers/models';
+import type { ExportFormat, ExportURL } from '../../../providers/models';
 import { getImageInteractions } from '../utils';
 import type { HeatmapConfig } from './config';
 
@@ -24,7 +24,7 @@ interface Props {
   dataDomain: Domain;
   isSlice: boolean;
   config: HeatmapConfig;
-  getExportURL: ((format: ExportFormat) => URL | undefined) | undefined;
+  getExportURL: ((format: ExportFormat) => ExportURL) | undefined;
 }
 
 function HeatmapToolbar(props: Props) {

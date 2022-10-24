@@ -8,7 +8,7 @@ import {
 } from '@h5web/lib';
 import { FiAnchor } from 'react-icons/fi';
 
-import type { ExportFormat } from '../../../providers/models';
+import type { ExportFormat, ExportURL } from '../../../providers/models';
 import { useMatrixConfig } from './config';
 
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
@@ -16,7 +16,7 @@ const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 interface Props {
   cellWidth: number;
   isSlice: boolean;
-  getExportURL: ((format: ExportFormat) => URL | undefined) | undefined;
+  getExportURL: ((format: ExportFormat) => ExportURL) | undefined;
 }
 
 function MatrixToolbar(props: Props) {
