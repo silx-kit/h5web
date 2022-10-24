@@ -9,6 +9,7 @@ import type {
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { useDataContext } from '../../../providers/DataProvider';
 import {
   useMappedArrays,
   useMappedArray,
@@ -82,16 +83,22 @@ function MappedLineVis(props: Props) {
   const combinedDomain = useCombinedDomain([dataDomain, ...auxDomains]);
   const xDimIndex = dimMapping.indexOf('x');
 
+  const { getExportURL } = useDataContext();
+
   return (
     <>
       {toolbarContainer &&
         createPortal(
           <LineToolbar
-            dataset={dataset}
-            selection={selection}
+            isSlice={selection !== undefined}
             disableAutoScale={dims.length <= 1} // with 1D datasets, `baseArray` and `dataArray` are the same so auto-scaling is implied
             disableErrors={!errors}
             config={config}
+            getExportURL={
+              getExportURL &&
+              dataset &&
+              ((format) => getExportURL(dataset, selection, value, format))
+            }
           />,
           toolbarContainer
         )}

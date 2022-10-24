@@ -6,25 +6,21 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import type { ArrayShape, Dataset } from '@h5web/shared';
-import { hasNumericType } from '@h5web/shared';
 import { FiAnchor } from 'react-icons/fi';
 
-import { useDataContext } from '../../../providers/DataProvider';
 import type { ExportFormat } from '../../../providers/models';
 import { useMatrixConfig } from './config';
 
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
-  dataset: Dataset<ArrayShape>;
-  selection?: string | undefined;
   cellWidth: number;
+  isSlice: boolean;
+  getExportURL: ((format: ExportFormat) => URL | undefined) | undefined;
 }
 
 function MatrixToolbar(props: Props) {
-  const { dataset, selection, cellWidth } = props;
-  const { getExportURL } = useDataContext();
+  const { cellWidth, isSlice, getExportURL } = props;
 
   const {
     sticky,
@@ -34,14 +30,6 @@ function MatrixToolbar(props: Props) {
     notation,
     setNotation,
   } = useMatrixConfig();
-
-  const exportEntries =
-    getExportURL &&
-    hasNumericType(dataset) &&
-    EXPORT_FORMATS.map((format) => ({
-      format,
-      url: getExportURL(dataset, selection, format),
-    }));
 
   return (
     <Toolbar>
@@ -62,12 +50,15 @@ function MatrixToolbar(props: Props) {
         onToggle={toggleSticky}
       />
 
-      {exportEntries && (
+      {getExportURL && (
         <>
           <Separator />
           <ExportMenu
-            entries={exportEntries}
-            isSlice={selection !== undefined}
+            isSlice={isSlice}
+            entries={EXPORT_FORMATS.map((format) => ({
+              format,
+              url: getExportURL(format),
+            }))}
           />
         </>
       )}
