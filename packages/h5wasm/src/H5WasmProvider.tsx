@@ -1,4 +1,5 @@
 import { DataProvider } from '@h5web/app';
+import type { DataProviderApi } from '@h5web/app/src/providers/api';
 import type { ReactNode } from 'react';
 import { useEffect, useMemo } from 'react';
 
@@ -7,15 +8,16 @@ import { H5WasmApi } from './h5wasm-api';
 interface Props {
   filename: string;
   buffer: ArrayBuffer;
+  getExportURL?: DataProviderApi['getExportURL'];
   children: ReactNode;
 }
 
 function H5WasmProvider(props: Props) {
-  const { filename, buffer, children } = props;
+  const { filename, buffer, getExportURL, children } = props;
 
   const api = useMemo(
-    () => new H5WasmApi(filename, buffer),
-    [filename, buffer]
+    () => new H5WasmApi(filename, buffer, getExportURL),
+    [filename, buffer, getExportURL]
   );
 
   useEffect(() => {

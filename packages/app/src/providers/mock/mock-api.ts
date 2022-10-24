@@ -1,10 +1,14 @@
 import type {
   ArrayShape,
   AttributeValues,
+  Dataset,
   Entity,
+  NumericType,
   ProvidedEntity,
   ScalarShape,
+  Value,
 } from '@h5web/shared';
+import { hasNumericType } from '@h5web/shared';
 import {
   assertArrayOrTypedArray,
   assertArrayShape,
@@ -20,13 +24,15 @@ import type { MockDataset } from '@h5web/shared/src/mock/models';
 import axios from 'axios';
 
 import { DataProviderApi } from '../api';
-import type { ValuesStoreParams } from '../models';
+import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { sliceValue } from '../utils';
 
 const SLOW_TIMEOUT = 3000;
 
 export class MockApi extends DataProviderApi {
-  public constructor() {
+  public constructor(
+    private readonly _getExportURL?: DataProviderApi['getExportURL']
+  ) {
     super(mockFilepath);
   }
 
@@ -73,6 +79,39 @@ export class MockApi extends DataProviderApi {
     assertArrayShape(dataset);
 
     return sliceValue(value, dataset, selection);
+  }
+
+  public getExportURL<D extends Dataset<ArrayShape>>(
+    dataset: D,
+    selection: string | undefined,
+    value: Value<D>,
+    format: ExportFormat
+  ): ExportURL {
+    if (this._getExportURL) {
+      this._getExportURL(dataset, selection, value, format);
+    }
+
+    if (
+      hasNumericType(dataset) &&
+      selection === undefined &&
+      format === 'csv'
+    ) {
+      return async () => {
+        let csv = '';
+        (value as Value<Dataset<ArrayShape, NumericType>>).forEach((val) => {
+          csv += `${val.toString()}\n`;
+        });
+
+        const finalCsv = csv.slice(0, -2);
+
+        // Demonstrate both `Blob` and `URL` techniques (cf. `src/providers/api.ts`)
+        return dataset.name === 'oneD'
+          ? new Blob([finalCsv])
+          : new URL(`data:text/plain,${encodeURIComponent(finalCsv)}`);
+      };
+    }
+
+    return undefined;
   }
 
   private async cancellableDelay(storeParams: ValuesStoreParams) {

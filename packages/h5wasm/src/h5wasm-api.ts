@@ -5,13 +5,19 @@ import {
   ProviderApi,
   sliceValue,
 } from '@h5web/app';
+import type { DataProviderApi } from '@h5web/app/src/providers/api';
+import type { ExportFormat, ExportURL } from '@h5web/app/src/providers/models';
 import type {
+  ArrayShape,
   Attribute,
   ChildEntity,
+  Dataset,
+  DType,
   Entity,
   Group,
   ProvidedEntity,
   Shape,
+  Value,
 } from '@h5web/shared';
 import {
   assertNonNull,
@@ -39,7 +45,11 @@ import { convertMetadataToDType, convertSelectionToRanges } from './utils';
 export class H5WasmApi extends ProviderApi {
   private readonly file: Promise<H5WasmFile>;
 
-  public constructor(filename: string, buffer: ArrayBuffer) {
+  public constructor(
+    filename: string,
+    buffer: ArrayBuffer,
+    private readonly _getExportURL?: DataProviderApi['getExportURL']
+  ) {
     super(filename);
     this.file = this.initFile(buffer);
   }
@@ -83,6 +93,15 @@ export class H5WasmApi extends ProviderApi {
         return [name, attr.to_array()];
       })
     );
+  }
+
+  public getExportURL<D extends Dataset<ArrayShape, DType>>(
+    dataset: D,
+    selection: string | undefined,
+    value: Value<D>,
+    format: ExportFormat
+  ): ExportURL {
+    return this._getExportURL?.(dataset, selection, value, format);
   }
 
   public async cleanUp(): Promise<void> {

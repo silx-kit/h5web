@@ -18,7 +18,7 @@ import {
 import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
-import type { ExportFormat, ValuesStoreParams } from '../models';
+import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
@@ -41,7 +41,8 @@ export class H5GroveApi extends DataProviderApi {
   public constructor(
     url: string,
     filepath: string,
-    axiosConfig?: AxiosRequestConfig
+    axiosConfig?: AxiosRequestConfig,
+    private readonly _getExportURL?: DataProviderApi['getExportURL']
   ) {
     super(filepath, { baseURL: url, ...axiosConfig });
   }
@@ -74,9 +75,13 @@ export class H5GroveApi extends DataProviderApi {
   public getExportURL<D extends Dataset<ArrayShape>>(
     dataset: D,
     selection: string | undefined,
-    _: Value<D>,
+    value: Value<D>,
     format: ExportFormat
-  ): URL | undefined {
+  ): ExportURL {
+    if (this._getExportURL) {
+      this._getExportURL(dataset, selection, value, format);
+    }
+
     if (!hasNumericType(dataset)) {
       return undefined;
     }

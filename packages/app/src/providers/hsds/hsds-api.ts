@@ -7,6 +7,9 @@ import type {
   AttributeValues,
   ChildEntity,
   ProvidedEntity,
+  ArrayShape,
+  DType,
+  Value,
 } from '@h5web/shared';
 import { assertGroup } from '@h5web/shared';
 import {
@@ -18,7 +21,7 @@ import {
 } from '@h5web/shared';
 
 import { DataProviderApi } from '../api';
-import type { ValuesStoreParams } from '../models';
+import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { flattenValue, handleAxiosError } from '../utils';
 import type {
   HsdsDatasetResponse,
@@ -53,7 +56,8 @@ export class HsdsApi extends DataProviderApi {
     url: string,
     username: string,
     password: string,
-    filepath: string
+    filepath: string,
+    private readonly _getExportURL?: DataProviderApi['getExportURL']
   ) {
     super(filepath, {
       baseURL: url,
@@ -146,6 +150,15 @@ export class HsdsApi extends DataProviderApi {
     return Object.fromEntries(
       attrsWithValues.map((attr) => [attr.name, attr.value])
     );
+  }
+
+  public getExportURL<D extends Dataset<ArrayShape, DType>>(
+    dataset: D,
+    selection: string | undefined,
+    value: Value<D>,
+    format: ExportFormat
+  ): ExportURL {
+    return this._getExportURL?.(dataset, selection, value, format);
   }
 
   private async fetchRootId(): Promise<HsdsId> {

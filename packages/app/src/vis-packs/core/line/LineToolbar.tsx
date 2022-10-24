@@ -11,7 +11,7 @@ import { ScaleType } from '@h5web/shared';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn, MdDomain } from 'react-icons/md';
 
-import type { ExportFormat } from '../../../providers/models';
+import type { ExportFormat, ExportURL } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import type { LineConfig } from './config';
 
@@ -23,7 +23,7 @@ interface Props {
   disableAutoScale: boolean;
   disableErrors: boolean;
   config: LineConfig;
-  getExportURL: ((format: ExportFormat) => URL | undefined) | undefined;
+  getExportURL: ((format: ExportFormat) => ExportURL) | undefined;
 }
 
 function LineToolbar(props: Props) {
