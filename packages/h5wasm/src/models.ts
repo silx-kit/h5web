@@ -4,7 +4,7 @@ import type {
   CompoundTypeMetadata,
 } from 'h5wasm/src/hdf5_util_helpers';
 
-export type H5WasmEntity = NonNullable<ReturnType<H5WasmGroup['get']>>;
+export type H5WasmEntity = ReturnType<H5WasmGroup['get']>;
 
 export type H5WasmAttributes = H5WasmGroup['attrs'];
 
