@@ -124,7 +124,7 @@ export class H5WasmApi extends ProviderApi {
     return new H5WasmFile(id, 'r');
   }
 
-  private async getH5WasmEntity(path: string): Promise<H5WasmEntity> {
+  private async getH5WasmEntity(path: string) {
     const file = await this.file;
 
     const h5wEntity = file.get(path);
@@ -173,7 +173,6 @@ export class H5WasmApi extends ProviderApi {
         ...baseGroup,
         children: h5wEntity.keys().map((childName) => {
           const h5wChild = h5wEntity.get(childName);
-          assertNonNull(h5wChild);
 
           const childPath = buildEntityPath(path, childName);
           return this.processH5WasmEntity(childName, childPath, h5wChild, true);
