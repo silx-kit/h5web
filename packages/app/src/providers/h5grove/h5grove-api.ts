@@ -73,13 +73,14 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   public getExportURL<D extends Dataset<ArrayShape>>(
+    format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>,
-    format: ExportFormat
+    value: Value<D>
   ): ExportURL {
-    if (this._getExportURL) {
-      this._getExportURL(dataset, selection, value, format);
+    const url = this._getExportURL?.(format, dataset, selection, value);
+    if (url) {
+      return url;
     }
 
     if (!hasNumericType(dataset)) {

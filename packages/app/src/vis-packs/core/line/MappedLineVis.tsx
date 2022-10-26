@@ -97,7 +97,7 @@ function MappedLineVis(props: Props) {
             getExportURL={
               getExportURL &&
               dataset &&
-              ((format) => getExportURL(dataset, selection, value, format))
+              ((format) => getExportURL(format, dataset, selection, value))
             }
           />,
           toolbarContainer

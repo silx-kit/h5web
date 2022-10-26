@@ -138,3 +138,20 @@ resources.
   <App />
 </H5WasmProvider>
 ```
+
+#### `filename: string` (required)
+
+The name of the file to display in the UI.
+
+#### `buffer: ArrayBuffer` (required)
+
+The entire file's content as a binary buffer.
+
+#### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
+
+See
+[`H5GroveProvider#getExportURL`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#getexporturl-args--url----promiseurl--blob--undefined-optional).
+
+`H5WasmProvider` does not provide a fallback implementation of `getExportURL` at
+this time, so if you don't provide your own, the export menu will remain
+disabled in the toolbar.

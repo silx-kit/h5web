@@ -46,7 +46,7 @@ export abstract class DataProviderApi {
   }
 
   /**
-   * Provide an export URL for the given dataset/slice and format.
+   * Provide an export URL for the given format and dataset/slice.
    * The following return types are supported:
    * - `URL`                  Provider has dedicated endpoint for generating server-side exports
    * - `() => Promise<URL>`   Provider generates single-use export URLs (i.e. signed one-time tokens)
@@ -54,10 +54,10 @@ export abstract class DataProviderApi {
    * - `undefined`            Export scenario is not supported
    */
   public getExportURL?<D extends Dataset<ArrayShape>>(
+    format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>,
-    format: ExportFormat
+    value: Value<D>
   ): ExportURL;
 
   public addProgressListener(cb: ProgressCallback): void {
