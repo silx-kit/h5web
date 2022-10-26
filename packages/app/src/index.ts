@@ -6,6 +6,7 @@ export { default as H5GroveProvider } from './providers/h5grove/H5GroveProvider'
 
 export { getFeedbackMailto } from './breadcrumbs/utils';
 export type { FeedbackContext } from './breadcrumbs/models';
+export type { ExportFormat, ExportURL } from './providers/models';
 
 // Context
 export { useDataContext } from './providers/DataProvider';

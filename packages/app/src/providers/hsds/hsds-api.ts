@@ -153,12 +153,12 @@ export class HsdsApi extends DataProviderApi {
   }
 
   public getExportURL<D extends Dataset<ArrayShape, DType>>(
+    format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>,
-    format: ExportFormat
+    value: Value<D>
   ): ExportURL {
-    return this._getExportURL?.(dataset, selection, value, format);
+    return this._getExportURL?.(format, dataset, selection, value);
   }
 
   private async fetchRootId(): Promise<HsdsId> {

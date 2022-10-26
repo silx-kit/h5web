@@ -197,6 +197,78 @@ parameters to send to the server. If you use one of H5Grove's default API
 implementations, then you'll need to use this prop to pass the `file` query
 parameter as shown above.
 
+#### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
+
+The `DataProvider#getExportURL` method is used by the toolbars to generate URLs
+and controls for exporting the current dataset/slice to various formats. This
+prop allows providing your own implementation of this method.
+
+`getExportURL` is called once for every export menu entry. It receives the
+export `format`, as well as the current `dataset` metadata object, `selection`
+string, and `value` array. The export entry behaviour then depends of the return
+type:
+
+- `URL`: the URL is set as the `href` of the export entry's download anchor.
+- `() => Promise<URL | Blob>`: the function is called when the user clicks on
+  the export entry. When the promise resolves, the returned `URL` or `Blob` is
+  used to trigger a download.
+- `undefined`: the export entry is not rendered.
+
+Returning an async function enables advanced use cases like generating exports
+client-side, or server-side but from an authenticated endpoint.
+
+<details>
+  <summary>Advanced examples</summary>
+
+```tsx
+// Client-side CSV export
+getExportURL={(format, dataset, selection, value) => {
+  if (format === 'csv') {
+    // Async function that will be called when the user clicks on a `CSV` export menu entry
+    return async () => {
+      // Generate CSV string from `value` array
+      let csv = '';
+      value.forEach((val) => { ... })
+
+      // Return CSV string as Blob so it can be downloaded
+      return new Blob([csv]);
+    };
+  }
+}}
+```
+
+```tsx
+// Fetch export data from authenticated endpoint
+getExportURL={(format, dataset, selection) => async () => {
+  const query = new URLSearchParams({ format, path: dataset.path, selection });
+  const response = await fetch(`${AUTH_EXPORT_ENDPOINT}?${query.toString()}`, {
+    headers: { /* authentication header */ }
+  })
+
+  return response.blob();
+}}
+```
+
+```tsx
+// Fetch a one-time export link
+getExportURL={(format, dataset, selection) => async () => {
+  const query = new URLSearchParams({ format, path: dataset.path, selection });
+  const response = await fetch(`${AUTH_TOKEN_ENDPOINT}?${query.toString()}`, {
+    headers: { /* authentication header */ }
+  })
+
+  // Response body contains temporary, pre-authenticated export URL
+  return new URL(await response.body());
+}}
+```
+
+</details>
+
+You may provide a partial implementation of `getExportURL` that handles only
+specific export scenarios. In this case, or if you don't provide a function at
+all, `H5GroveProvider` falls back to generating URLs based on the `/data`
+endpoint and `format` query param.
+
 ### `HsdsProvider`
 
 Data provider for [HSDS](https://github.com/HDFGroup/hsds).
@@ -226,6 +298,15 @@ private data.
 
 The path of the file to request.
 
+#### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
+
+See
+[`H5GroveProvider#getExportURL`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#getexporturl-args--url----promiseurl--blob--undefined-optional).
+
+`HsdsProvider` does not provide a fallback implementation of `getExportURL` at
+this time, so if you don't provide your own, the export menu will remain
+disabled in the toolbar.
+
 ### `MockProvider`
 
 Data provider for demonstration and testing purposes.
@@ -235,6 +316,14 @@ Data provider for demonstration and testing purposes.
   <App />
 </MockProvider>
 ```
+
+#### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
+
+See
+[`H5GroveProvider#getExportURL`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#getexporturl-args--url----promiseurl--blob--undefined-optional).
+
+`MockProvider` provides a very basic fallback implementation of `getExportURL`
+that can generate only client-side CSV exports of 1D datasets.
 
 ### Utilities
 

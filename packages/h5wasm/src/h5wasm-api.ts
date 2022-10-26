@@ -96,12 +96,12 @@ export class H5WasmApi extends ProviderApi {
   }
 
   public getExportURL<D extends Dataset<ArrayShape, DType>>(
+    format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>,
-    format: ExportFormat
+    value: Value<D>
   ): ExportURL {
-    return this._getExportURL?.(dataset, selection, value, format);
+    return this._getExportURL?.(format, dataset, selection, value);
   }
 
   public async cleanUp(): Promise<void> {
@@ -124,7 +124,9 @@ export class H5WasmApi extends ProviderApi {
     return new H5WasmFile(id, 'r');
   }
 
-  private async getH5WasmEntity(path: string) {
+  private async getH5WasmEntity(
+    path: string
+  ): Promise<NonNullable<H5WasmEntity>> {
     const file = await this.file;
 
     const h5wEntity = file.get(path);

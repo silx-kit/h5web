@@ -56,7 +56,7 @@ function MappedCompoundMatrixVis(props: Props) {
             isSlice={selection !== undefined}
             getExportURL={
               getExportURL &&
-              ((format) => getExportURL(dataset, selection, value, format))
+              ((format) => getExportURL(format, dataset, selection, value))
             }
           />,
           toolbarContainer
