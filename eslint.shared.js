@@ -35,6 +35,9 @@ module.exports = {
 
         // DOM dataset API is confusing since we deal with HDF5 datasets
         'unicorn/prefer-dom-node-dataset': 'off',
+
+        // The point of `switch` is to be less verbose than if/else if/else
+        'unicorn/switch-case-braces': ['warn', 'avoid'],
       },
       overrides: [
         createReactOverride({

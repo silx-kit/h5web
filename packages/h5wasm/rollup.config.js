@@ -1,7 +1,7 @@
 import alias from '@rollup/plugin-alias';
 import dts from 'rollup-plugin-dts';
 
-import { externals } from './vite.config';
+import { externals } from './vite.config.js';
 
 /** @type {import('rollup').MergedRollupOptions} */
 const config = {
