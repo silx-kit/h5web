@@ -64,7 +64,7 @@ importers:
       react-icons: 4.6.0
       react-router-dom: 6.3.0
       typescript: 4.8.4
-      vite: 3.2.0
+      vite: 3.1.3
       vite-plugin-checker: 0.5.1
       vite-plugin-eslint: 1.8.1
     dependencies:
@@ -83,13 +83,13 @@ importers:
       '@types/react': 17.0.51
       '@types/react-dom': 17.0.17
       '@types/react-router-dom': 5.3.3
-      '@vitejs/plugin-react': 2.2.0_vite@3.2.0
+      '@vitejs/plugin-react': 2.2.0_vite@3.1.3
       eslint: 8.25.0
       eslint-config-galex: 4.3.1_eslint@8.25.0
       typescript: 4.8.4
-      vite: 3.2.0
-      vite-plugin-checker: 0.5.1_rt2ejfly52q6e3pbpezwsgmsvm
-      vite-plugin-eslint: 1.8.1_eslint@8.25.0+vite@3.2.0
+      vite: 3.1.3
+      vite-plugin-checker: 0.5.1_fscnyqh7r6ztswhkbq4fq6w2f4
+      vite-plugin-eslint: 1.8.1_eslint@8.25.0+vite@3.1.3
 
   apps/storybook:
     specifiers:
@@ -4961,7 +4961,7 @@ packages:
       react-use-measure: 2.1.1_sfoxds7t5ydpegc3knd667wn6m
     dev: false
 
-  /@vitejs/plugin-react/2.2.0_vite@3.2.0:
+  /@vitejs/plugin-react/2.2.0_vite@3.1.3:
     resolution: {integrity: sha512-FFpefhvExd1toVRlokZgxgy2JtnBOdp4ZDsq7ldCWaqGSGn9UhWMAVm/1lxPL14JfNS5yGz+s9yFrQY6shoStA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -4974,7 +4974,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.19.6_@babel+core@7.19.6
       magic-string: 0.26.7
       react-refresh: 0.14.0
-      vite: 3.2.0
+      vite: 3.1.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6283,7 +6283,7 @@ packages:
       mississippi: 3.0.0
       mkdirp: 0.5.6
       move-concurrently: 1.0.1
-      promise-inflight: 1.0.1
+      promise-inflight: 1.0.1_bluebird@3.7.2
       rimraf: 2.7.1
       ssri: 6.0.2
       unique-filename: 1.1.1
@@ -13141,6 +13141,17 @@ packages:
         optional: true
     dev: true
 
+  /promise-inflight/1.0.1_bluebird@3.7.2:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
+    dependencies:
+      bluebird: 3.7.2
+    dev: true
+
   /promise.allsettled/1.0.5:
     resolution: {integrity: sha512-tVDqeZPoBC0SlzJHzWGZ2NKAguVq2oiYj7gbggbiTvH2itHohijTp7njOUA0aQ/nl+0lr/r6egmhoYu63UZ/pQ==}
     engines: {node: '>= 0.4'}
@@ -14024,6 +14035,14 @@ packages:
       typescript: 4.8.4
     optionalDependencies:
       '@babel/code-frame': 7.18.6
+    dev: true
+
+  /rollup/2.78.1:
+    resolution: {integrity: sha512-VeeCgtGi4P+o9hIg+xz4qQpRl6R401LWEXBmxYKOV4zlF82lyhgh2hTZnheFUbANE8l2A41F458iwj2vEYaXJg==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /rollup/2.79.0:
@@ -15713,7 +15732,7 @@ packages:
       vfile-message: 2.0.4
     dev: true
 
-  /vite-plugin-checker/0.5.1_rt2ejfly52q6e3pbpezwsgmsvm:
+  /vite-plugin-checker/0.5.1_fscnyqh7r6ztswhkbq4fq6w2f4:
     resolution: {integrity: sha512-NFiO1PyK9yGuaeSnJ7Whw9fnxLc1AlELnZoyFURnauBYhbIkx9n+PmIXxSFUuC9iFyACtbJQUAEuQi6yHs2Adg==}
     engines: {node: '>=14.16'}
     peerDependencies:
@@ -15745,14 +15764,14 @@ packages:
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       typescript: 4.8.4
-      vite: 3.2.0
+      vite: 3.1.3
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.7
       vscode-uri: 3.0.6
     dev: true
 
-  /vite-plugin-eslint/1.8.1_eslint@8.25.0+vite@3.2.0:
+  /vite-plugin-eslint/1.8.1_eslint@8.25.0+vite@3.1.3:
     resolution: {integrity: sha512-PqdMf3Y2fLO9FsNPmMX+//2BF5SF8nEWspZdgl4kSt7UvHDRHVVfHvxsD7ULYzZrJDGRxR81Nq7TOFgwMnUang==}
     peerDependencies:
       eslint: '>=7'
@@ -15762,7 +15781,34 @@ packages:
       '@types/eslint': 8.4.6
       eslint: 8.25.0
       rollup: 2.79.0
-      vite: 3.2.0
+      vite: 3.1.3
+    dev: true
+
+  /vite/3.1.3:
+    resolution: {integrity: sha512-/3XWiktaopByM5bd8dqvHxRt5EEgRikevnnrpND0gRfNkrMrPaGGexhtLCzv15RcCMtV2CLw+BPas8YFeSG0KA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      esbuild: 0.15.12
+      postcss: 8.4.18
+      resolve: 1.22.1
+      rollup: 2.78.1
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /vite/3.2.0:
