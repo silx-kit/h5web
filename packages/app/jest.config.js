@@ -1,4 +1,5 @@
 const DEPS_TO_TRANSFORM = [
+  'axios',
   'd3-array',
   'd3-color',
   'd3-format',

@@ -56,21 +56,16 @@ pnpm start
 1. Read the changelogs and release notes of the dependencies you'd like to
    upgrade. Look for potential breaking changes, and for bug fixes and new
    features that may help improve the codebase.
-1. Run `pnpm up -rL <pkg-name>` to update a dependency to the latest version in
+1. Run `pnpm up -rL <pkg-name>` to upgrade a dependency to the latest version in
    all projects. Alternatively, you can either replace `-r` with `--filter` to
    target specific projects, or edit the relevant `package.json` file(s)
    manually and run `pnpm install` (but make sure to specify an exact dependency
    version rather than a range - i.e. don't prefix the version with a caret or a
    tilde).
-
-Beware of the following versioning requirements:
-
-- The major version number of `@types/node` must match the version of Node
-  specified in the `engine` field of `package.json`.
-- The major version numbers of
-  [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) packages
-  must match the major version numbers of their corresponding dependencies (e.g.
-  `@types/jest@27` for `jest@27`).
+1. Run `pnpm up -r @types/node @types/react @types/react-dom @types/jest` to
+   upgrade [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)
+   packages that must remain in sync with the major versions of the libraries
+   they provide types for.
 
 Note that `pnpm` offers multiple solutions for dealing with peer dependency
 version conflicts and other package resolution issues:

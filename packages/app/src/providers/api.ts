@@ -9,6 +9,7 @@ import type {
 } from '@h5web/shared';
 import type {
   AxiosInstance,
+  AxiosProgressEvent,
   AxiosRequestConfig,
   AxiosResponse,
   CancelTokenSource,
@@ -81,12 +82,12 @@ export abstract class DataProviderApi {
     this.valueRequests.clear();
   }
 
-  protected async cancellableFetchValue<T>(
+  protected async cancellableFetchValue<T, R = AxiosResponse<T>>(
     endpoint: string,
     storeParams: ValuesStoreParams,
     queryParams: Record<string, string | boolean | undefined>,
     responseType?: ResponseType
-  ): Promise<AxiosResponse<T>> {
+  ): Promise<R> {
     const cancelSource = axios.CancelToken.source();
     const request = { storeParams, cancelSource };
     this.valueRequests.add(request);
@@ -96,12 +97,12 @@ export abstract class DataProviderApi {
 
     try {
       const { token: cancelToken } = cancelSource;
-      return await this.client.get<T>(endpoint, {
+      return await this.client.get<T, R>(endpoint, {
         cancelToken,
         params: queryParams,
         responseType,
-        onDownloadProgress: (evt: ProgressEvent) => {
-          if (evt.lengthComputable) {
+        onDownloadProgress: (evt: AxiosProgressEvent) => {
+          if (evt.total !== undefined && evt.total > 0) {
             this.progress.set(storeParams, evt.loaded / evt.total);
             this.notifyProgressChange();
           }
