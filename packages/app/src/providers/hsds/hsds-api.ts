@@ -8,7 +8,6 @@ import type {
   ChildEntity,
   ProvidedEntity,
   ArrayShape,
-  DType,
   Value,
 } from '@h5web/shared';
 import { assertGroup } from '@h5web/shared';
@@ -152,7 +151,7 @@ export class HsdsApi extends DataProviderApi {
     );
   }
 
-  public getExportURL<D extends Dataset<ArrayShape, DType>>(
+  public getExportURL<D extends Dataset<ArrayShape>>(
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,

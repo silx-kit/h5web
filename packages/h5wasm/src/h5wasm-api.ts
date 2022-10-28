@@ -12,7 +12,6 @@ import type {
   Attribute,
   ChildEntity,
   Dataset,
-  DType,
   Entity,
   Group,
   ProvidedEntity,
@@ -95,7 +94,7 @@ export class H5WasmApi extends ProviderApi {
     );
   }
 
-  public getExportURL<D extends Dataset<ArrayShape, DType>>(
+  public getExportURL<D extends Dataset<ArrayShape>>(
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
