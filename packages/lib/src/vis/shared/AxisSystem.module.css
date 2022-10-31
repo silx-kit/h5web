@@ -35,7 +35,7 @@
   fill: currentColor;
   color: var(--h5w-tickLabels--color, #333);
   font-family: var(--h5w-tickLabels--fontFamily, inherit);
-  font-size: var(--h5w-tickLabels--fontSize, inherit);
+  font-size: var(--h5w-tickLabels--fontSize, 0.75em);
 }
 
 .label {

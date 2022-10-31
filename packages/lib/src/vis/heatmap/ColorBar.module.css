@@ -64,7 +64,7 @@
   align-self: center;
   justify-content: center;
   color: var(--h5w-colorBar-bounds--color, #333);
-  font-size: var(--h5w-colorBar-bounds--fontSize, 0.875em);
+  font-size: var(--h5w-colorBar-bounds--fontSize, 0.75em);
   line-height: 1;
   white-space: nowrap;
 }
