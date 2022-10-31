@@ -1,4 +1,6 @@
 import type { Domain } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared';
+import { formatTick } from '@h5web/shared';
 import { formatBound } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
 import { AxisRight, AxisBottom } from '@visx/axis';
@@ -83,10 +85,16 @@ function ColorBar(props: Props) {
             numTicks={adaptedNumTicks(gradientLength)}
             tickClassName={styles.tick}
             tickComponent={Tick}
-            tickFormat={axisScale.tickFormat(
-              adaptedNumTicks(gradientLength),
-              '.3~g'
-            )}
+            tickFormat={
+              scaleType === ScaleType.Log
+                ? axisScale.tickFormat(
+                    adaptedNumTicks(gradientLength),
+                    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+                    // @ts-ignore: log scale's `tickFormat` accepts a formatter function
+                    formatTick
+                  )
+                : formatTick
+            }
           />
         </svg>
       )}

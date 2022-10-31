@@ -32,15 +32,16 @@ interface Props {
   config: AxisConfig;
   domain: Domain;
   canvasSize: Size;
-  svgSize: Size;
+  offset: number;
   flipAxis?: boolean;
 }
 
 function Axis(props: Props) {
-  const { type, config, domain, canvasSize, svgSize, flipAxis } = props;
+  const { type, config, domain, canvasSize, offset, flipAxis } = props;
 
   const { width, height } = canvasSize;
-  const axisLength = type === 'abscissa' ? width : height;
+  const isAbscissa = type === 'abscissa';
+  const axisLength = isAbscissa ? width : height;
 
   const { scaleType = ScaleType.Linear, isIndexAxis, showGrid, label } = config;
   // Restrain ticks scales to visible domains
@@ -58,12 +59,18 @@ function Axis(props: Props) {
 
   return (
     <>
-      <svg className={styles.axis} style={svgSize} data-type={type}>
+      <svg
+        className={styles.axis}
+        data-type={type}
+        style={
+          isAbscissa ? { width, height: offset } : { width: offset, height }
+        }
+      >
         <AxisComponent
           scale={scale}
           tickFormat={getTickFormatter(domain, axisLength, scaleType)}
           label={label}
-          labelOffset={type === 'abscissa' ? 28 : 42}
+          labelOffset={offset - (isAbscissa ? 32 : 36)}
           hideAxisLine={showGrid}
           {...ticksProp}
           {...AXIS_PROPS}

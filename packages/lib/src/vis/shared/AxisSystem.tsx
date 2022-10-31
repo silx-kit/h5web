@@ -47,14 +47,14 @@ function AxisSystem(props: Props) {
           config={abscissaConfig}
           domain={xVisibleDomain}
           canvasSize={canvasSize}
-          svgSize={{ width, height: axisOffsets.bottom }}
+          offset={axisOffsets.bottom}
         />
         <Axis
           type="ordinate"
           config={ordinateConfig}
           domain={yVisibleDomain}
           canvasSize={canvasSize}
-          svgSize={{ width: axisOffsets.left, height }}
+          offset={axisOffsets.left}
           flipAxis
         />
       </div>

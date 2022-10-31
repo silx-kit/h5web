@@ -34,7 +34,9 @@ export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 export const CAMERA_BOTTOM_LEFT = new Vector3(-1, -1, 0);
 export const CAMERA_TOP_RIGHT = new Vector3(1, 1, 0);
 
-const AXIS_OFFSETS = { vertical: 72, horizontal: 40, fallback: 16 };
+const DEFAULT_AXIS_OFFSETS = { left: 72, right: 16, top: 16, bottom: 40 };
+const TITLE_OFFSET = 24;
+const LABEL_OFFSET = 16;
 
 export const adaptedNumTicks: ScaleLinear<number, number> = scaleLinear({
   domain: [300, 900],
@@ -262,15 +264,14 @@ export function getCombinedDomain(
 }
 
 export function getAxisOffsets(
-  hasLabel: Partial<Record<keyof AxisOffsets, boolean>> = {}
+  hasLabel: Partial<Record<Exclude<keyof AxisOffsets, 'right'>, boolean>> = {}
 ) {
-  const { horizontal, vertical, fallback } = AXIS_OFFSETS;
-
+  const { left, right, top, bottom } = DEFAULT_AXIS_OFFSETS;
   return {
-    left: (hasLabel.left ? fallback : 0) + vertical,
-    bottom: (hasLabel.bottom ? fallback : 0) + horizontal,
-    right: hasLabel.right ? vertical : fallback,
-    top: hasLabel.top ? horizontal : fallback,
+    left: left + (hasLabel.left ? LABEL_OFFSET : 0),
+    right,
+    top: top + (hasLabel.top ? TITLE_OFFSET : 0),
+    bottom: bottom + (hasLabel.bottom ? LABEL_OFFSET : 0),
   };
 }
 

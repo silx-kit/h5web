@@ -19,12 +19,29 @@ import type {
   TypedArrayConstructor,
 } from './models-vis';
 
-export const formatTick = format('.5~g');
 export const formatBound = format('.3~e');
 export const formatBoundInput = format('.5~e');
 export const formatTooltipVal = format('.5~g');
 export const formatTooltipErr = format('.3~g');
 export const formatScalarComplex = createComplexFormatter('.12~g');
+
+const TICK_PRECISION = 3;
+const TICK_DECIMAL_REGEX = /0\.([0-9]+)$/u; // can start with minus sign
+const formatTickAuto = format(`.${TICK_PRECISION}~g`); // automatic mode (`Number.toPrecision`)
+const formatTickExp = format(`.${TICK_PRECISION}~e`); // exponent mode
+
+export function formatTick(val: number | { valueOf(): number }): string {
+  const str = formatTickAuto(val);
+
+  /* If automatic mode gives a decimal number with more than three decimals,
+   * force exponent notation - e.g. 0.00000123456 => 0.00000123 => 1.235e-6 */
+  const match = TICK_DECIMAL_REGEX.exec(str);
+  if (match && match[1].length > TICK_PRECISION) {
+    return formatTickExp(val);
+  }
+
+  return str;
+}
 
 export function createComplexFormatter(specifier: string, full = false) {
   const formatVal = format(specifier);
