@@ -1,12 +1,10 @@
-import type { ValuesStoreParams } from '@h5web/app';
+import type { ValuesStoreParams, ExportFormat, ExportURL } from '@h5web/app';
 import {
   flattenValue,
   getNameFromPath,
   ProviderApi,
   sliceValue,
 } from '@h5web/app';
-import type { DataProviderApi } from '@h5web/app/src/providers/api';
-import type { ExportFormat, ExportURL } from '@h5web/app/src/providers/models';
 import type {
   ArrayShape,
   Attribute,
@@ -26,7 +24,7 @@ import {
   hasBoolType,
 } from '@h5web/shared';
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
-import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
+import { File as H5WasmFile, ready as h5wasmReady, Module } from 'h5wasm';
 import { nanoid } from 'nanoid';
 
 import {
@@ -48,7 +46,7 @@ export class H5WasmApi extends ProviderApi {
   public constructor(
     filename: string,
     buffer: ArrayBuffer,
-    private readonly _getExportURL?: DataProviderApi['getExportURL']
+    private readonly _getExportURL?: ProviderApi['getExportURL']
   ) {
     super(filename);
     this.file = this.initFile(buffer);
@@ -64,6 +62,10 @@ export class H5WasmApi extends ProviderApi {
 
     const h5wDataset = await this.getH5WasmEntity(dataset.path);
     assertH5WasmDataset(h5wDataset);
+
+    if (h5wDataset.filters?.some((f) => f.id >= Module.H5Z_FILTER_RESERVED)) {
+      throw new Error('Compression filter not supported');
+    }
 
     // h5wasm returns integers for bool and BigInt for int64
     // So we use to_array instead to have bool and numbers resp.
