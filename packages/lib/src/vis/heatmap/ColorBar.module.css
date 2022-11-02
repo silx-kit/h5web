@@ -2,12 +2,12 @@
   position: relative;
   z-index: 0; /* stacking context */
   display: grid;
-  padding: 1rem;
+  padding: 20px 0 10px 0;
 }
 
 .colorBar:not([data-horizontal]) {
   grid-template-rows: min-content 1fr min-content;
-  grid-template-columns: 2.25rem 2.75rem;
+  grid-template-columns: 2.25rem 3.75rem;
   grid-template-areas:
     'max .'
     'gradient axis'
@@ -16,7 +16,7 @@
 
 .colorBar[data-horizontal] {
   height: 7rem;
-  grid-template-rows: 2.25rem 2.5rem;
+  grid-template-rows: 2.25rem 3.5rem;
   grid-template-columns: min-content 1fr min-content;
   grid-template-areas:
     'min gradient max'
@@ -64,21 +64,20 @@
   align-self: center;
   justify-content: center;
   color: var(--h5w-colorBar-bounds--color, #333);
-  font-size: var(--h5w-colorBar-bounds--fontSize, 0.875em);
-  line-height: 1;
+  font-size: var(--h5w-colorBar-bounds--fontSize, 0.75em);
   white-space: nowrap;
 }
 
 .minBound {
   composes: bound;
   grid-area: min;
-  margin: 0.5rem 0 -0.25rem;
+  margin: 8px 0 0;
 }
 
 .maxBound {
   composes: bound;
   grid-area: max;
-  margin: -0.25rem 0 0.5rem;
+  margin: 0 0 8px;
 }
 
 .colorBar[data-horizontal] .bound {
@@ -87,10 +86,10 @@
 
 .colorBar[data-horizontal] .minBound {
   justify-content: flex-end;
-  margin: 0 0.5rem 0 -0.25rem;
+  margin: 0 8px 0 0;
 }
 
 .colorBar[data-horizontal] .maxBound {
   justify-content: flex-start;
-  margin: 0 -0.25rem 0 0.5rem;
+  margin: 0 0 0 8px;
 }
