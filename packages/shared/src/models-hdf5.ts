@@ -46,7 +46,7 @@ export interface Dataset<S extends Shape = Shape, T extends DType = DType>
 
 export interface Datatype<T = DType> extends Entity {
   kind: EntityKind.Datatype;
-  type: T;
+  type?: T;
   rawType?: unknown;
 }
 

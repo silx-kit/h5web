@@ -34,6 +34,7 @@ import {
   assertH5WasmEntityWithAttrs,
   hasInt64Type,
   isH5WasmDataset,
+  isH5WasmDatatype,
   isH5WasmExternalLink,
   isH5WasmGroup,
   isH5WasmSoftLink,
@@ -221,7 +222,9 @@ export class H5WasmApi extends ProviderApi {
     return {
       ...baseEntity,
       attributes: [],
-      kind: EntityKind.Unresolved,
+      kind: isH5WasmDatatype(h5wEntity)
+        ? EntityKind.Datatype
+        : EntityKind.Unresolved,
     };
   }
 

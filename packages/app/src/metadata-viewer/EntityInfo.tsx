@@ -27,7 +27,7 @@ function EntityInfo(props: Props) {
         <th scope="row">{isRoot ? 'File path' : 'Name'}</th>
         <td>{isRoot ? filepath : name}</td>
       </tr>
-      {(isDataset(entity) || isDatatype(entity)) && (
+      {(isDataset(entity) || isDatatype(entity)) && entity.type && (
         <tr>
           <th scope="row">Type</th>
           <td>{renderType(entity.type)}</td>

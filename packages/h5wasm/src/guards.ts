@@ -2,6 +2,7 @@ import type { Dataset } from '@h5web/shared';
 import { DTypeClass } from '@h5web/shared';
 import {
   Dataset as H5WasmDataset,
+  Datatype as H5WasmDatatype,
   Group as H5WasmGroup,
   BrokenSoftLink as H5WasmSoftLink,
   ExternalLink as H5WasmExternalLink,
@@ -21,6 +22,12 @@ export function isH5WasmGroup(entity: H5WasmEntity): entity is H5WasmGroup {
 
 export function isH5WasmDataset(entity: H5WasmEntity): entity is H5WasmDataset {
   return entity instanceof H5WasmDataset;
+}
+
+export function isH5WasmDatatype(
+  entity: H5WasmEntity
+): entity is H5WasmDatatype {
+  return entity instanceof H5WasmDatatype;
 }
 
 export function isH5WasmSoftLink(
