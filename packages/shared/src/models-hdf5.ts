@@ -175,10 +175,12 @@ export type ArrayValue<T extends DType> =
   | Primitive<T>[]
   | (T extends NumericType ? TypedArray : never);
 
-export type Value<D extends Dataset> = D['shape'] extends ScalarShape
-  ? Primitive<D['type']>
-  : D['shape'] extends ArrayShape
-  ? ArrayValue<D['type']>
+export type Value<D extends Dataset> = D extends Dataset<infer S, infer T>
+  ? S extends ScalarShape
+    ? Primitive<T>
+    : S extends ArrayShape
+    ? ArrayValue<T>
+    : never
   : never;
 
 export type AttributeValues = Record<string, unknown>;
