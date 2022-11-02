@@ -183,7 +183,7 @@ export class H5WasmApi extends ProviderApi {
     }
 
     if (isH5WasmDataset(h5wEntity)) {
-      const { shape, metadata, dtype } = h5wEntity;
+      const { shape, metadata, dtype, filters } = h5wEntity;
       return {
         ...baseEntity,
         kind: EntityKind.Dataset,
@@ -191,6 +191,7 @@ export class H5WasmApi extends ProviderApi {
         shape,
         type: convertMetadataToDType(metadata),
         rawType: dtype,
+        filters,
       };
     }
 
