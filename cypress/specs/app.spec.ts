@@ -240,7 +240,7 @@ describe('/mock', () => {
     it('visualize default NXdata group as NxImage', () => {
       cy.selectExplorerNode('source.h5');
 
-      cy.findByRole('tab', { name: 'NX Image' }).should(...BE_SELECTED);
+      cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
       cy.findByRole('heading', { name: 'source.h5' }).should('be.visible');
       cy.findByRole('figure', { name: 'NeXus 2D' }).should('be.visible');
     });
@@ -249,7 +249,7 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('spectrum');
 
-      cy.findByRole('tab', { name: 'NX Spectrum' }).should(...BE_SELECTED);
+      cy.findByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
       cy.findByRole('heading', { name: 'nexus_entry / spectrum' }).should(
         'be.visible'
       );
@@ -268,7 +268,7 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('image');
 
-      cy.findByRole('tab', { name: 'NX Image' }).should(...BE_SELECTED);
+      cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
       cy.findByRole('heading', { name: 'nexus_entry / image' }).should(
         'be.visible'
       );
@@ -300,7 +300,7 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('log_spectrum');
 
-      cy.findByRole('tab', { name: 'NX Spectrum' }).should(...BE_SELECTED);
+      cy.findByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
       cy.findByRole('heading', { name: 'nexus_entry / log_spectrum' }).should(
         'be.visible'
       );

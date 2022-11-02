@@ -20,10 +20,10 @@ import {
 } from './containers';
 
 export enum NexusVis {
-  NxSpectrum = 'NX Spectrum',
-  NxComplexSpectrum = 'NX Complex Spectrum',
-  NxImage = 'NX Image',
-  NxComplexImage = 'NX Complex Image',
+  NxSpectrum = 'NX Line',
+  NxComplexSpectrum = 'NX Complex Line',
+  NxImage = 'NX Heatmap',
+  NxComplexImage = 'NX Complex Heatmap',
   NxRGB = 'NX RGB',
   NxScatter = 'NX Scatter',
 }
