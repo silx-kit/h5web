@@ -1,8 +1,11 @@
-import { assertGroup, assertNumDims } from '@h5web/shared';
+import { assertGroup, assertMinDims } from '@h5web/shared';
 
+import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
 import { useRgbConfig } from '../../core/rgb/config';
+import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { useNxData } from '../hooks';
@@ -16,26 +19,45 @@ function NxRgbContainer(props: VisContainerProps) {
   assertNumericSignal(nxData);
 
   const { signalDef } = nxData;
-  assertNumDims(signalDef.dataset, 3);
+  assertMinDims(signalDef.dataset, 3);
 
   const { shape: dims } = signalDef.dataset;
+  if (dims.at(-1) !== 3) {
+    throw new Error('Expected last dimension to have size 3');
+  }
+
+  const mappableDims = dims.slice(0, -1);
+  const [dimMapping, setDimMapping] = useDimMappingState(mappableDims, 2);
   const config = useRgbConfig();
 
   return (
-    <VisBoundary loadingMessage="Loading image">
-      <NxValuesFetcher
-        nxData={nxData}
-        render={(nxValues) => (
-          <MappedRgbVis
-            value={nxValues.signal}
-            dims={dims}
-            toolbarContainer={toolbarContainer}
-            title={nxValues.title}
-            config={config}
-          />
-        )}
+    <>
+      <DimensionMapper
+        rawDims={mappableDims}
+        mapperState={dimMapping}
+        onChange={setDimMapping}
       />
-    </VisBoundary>
+      <VisBoundary resetKey={dimMapping}>
+        <NxValuesFetcher
+          nxData={nxData}
+          selection={getSliceSelection(dimMapping)}
+          render={(nxValues) => {
+            const { signal, title } = nxValues;
+
+            return (
+              <MappedRgbVis
+                dataset={signalDef.dataset}
+                value={signal}
+                dimMapping={dimMapping}
+                title={title}
+                toolbarContainer={toolbarContainer}
+                config={config}
+              />
+            );
+          }}
+        />
+      </VisBoundary>
+    </>
   );
 }
 

@@ -1,11 +1,5 @@
 import { HeatmapVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type {
-  ArrayShape,
-  AxisMapping,
-  Dataset,
-  NumArray,
-  NumericType,
-} from '@h5web/shared';
+import type { AxisMapping, NumArray, NumArrayDataset } from '@h5web/shared';
 import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
@@ -17,7 +11,7 @@ import HeatmapToolbar from './HeatmapToolbar';
 import type { HeatmapConfig } from './config';
 
 interface Props {
-  dataset: Dataset<ArrayShape, NumericType>;
+  dataset: NumArrayDataset;
   value: number[] | TypedArray;
   axisLabels?: AxisMapping<string>;
   axisValues?: AxisMapping<NumArray>;
