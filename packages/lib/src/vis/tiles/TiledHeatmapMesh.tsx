@@ -8,7 +8,6 @@ import { useCameraState } from '../hooks';
 import type { Size } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import TiledLayer from './TiledLayer';
-import TiledTooltipMesh from './TiledTooltipMesh';
 import type { TilesApi } from './api';
 import { useLayerScales, useTooltipOnMoveHandler } from './hooks';
 import type { ColorMapProps } from './models';
@@ -24,7 +23,6 @@ interface Props extends ColorMapProps {
   displayLowerResolutions?: boolean;
   qualityFactor?: number;
   size?: Size;
-  showTooltip?: boolean;
 }
 
 function TiledHeatmapMesh(props: Props) {
@@ -33,7 +31,6 @@ function TiledHeatmapMesh(props: Props) {
     displayLowerResolutions = true,
     qualityFactor = 1, // 0: Lower quality, less fetch; 1: Best quality
     size,
-    showTooltip,
     ...colorMapProps
   } = props;
   const { baseLayerIndex, baseLayerSize } = api;
@@ -82,28 +79,25 @@ function TiledHeatmapMesh(props: Props) {
   const onPointerMove = useTooltipOnMoveHandler();
 
   return (
-    <>
-      <group ref={groupRef}>
-        <mesh position={[0, 0, -0.1]}>
-          <planeGeometry args={[meshSize.width, meshSize.height]} />
-          <meshBasicMaterial
-            color={getInterpolator(colorMap, invertColorMap)(0)}
-          />
-        </mesh>
-        {layers.map((layer, i) => (
-          <TiledLayer
-            key={layer}
-            api={api}
-            layer={layer}
-            meshSize={meshSize}
-            visibleBox={visibleBox}
-            onPointerMove={i === layers.length - 1 ? onPointerMove : undefined} // Attach tooltip handler only to the top layer
-            {...colorMapProps}
-          />
-        ))}
-      </group>
-      {showTooltip && <TiledTooltipMesh size={meshSize} />}
-    </>
+    <group ref={groupRef}>
+      <mesh position={[0, 0, -0.1]}>
+        <planeGeometry args={[meshSize.width, meshSize.height]} />
+        <meshBasicMaterial
+          color={getInterpolator(colorMap, invertColorMap)(0)}
+        />
+      </mesh>
+      {layers.map((layer, i) => (
+        <TiledLayer
+          key={layer}
+          api={api}
+          layer={layer}
+          meshSize={meshSize}
+          visibleBox={visibleBox}
+          onPointerMove={i === layers.length - 1 ? onPointerMove : undefined} // Attach tooltip handler only to the top layer
+          {...colorMapProps}
+        />
+      ))}
+    </group>
   );
 }
 
