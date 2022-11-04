@@ -139,6 +139,11 @@ export const mockValues = {
     ],
   ],
   threeD_rgb: rgb,
+  fourD_rgb: range(0, 10).map((i) =>
+    rgb.map((rgb1) =>
+      rgb1.map((rgb2) => rgb2.map((val) => Math.min(val + i * 20, 255)))
+    )
+  ),
   fourD,
   uint8: Uint8Array.from(typed),
   int16: Int16Array.from(typed),

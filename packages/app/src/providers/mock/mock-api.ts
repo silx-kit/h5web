@@ -3,7 +3,7 @@ import type {
   AttributeValues,
   Dataset,
   Entity,
-  NumericType,
+  NumArrayDataset,
   ProvidedEntity,
   ScalarShape,
   Value,
@@ -99,7 +99,7 @@ export class MockApi extends DataProviderApi {
     ) {
       return async () => {
         let csv = '';
-        (value as Value<Dataset<ArrayShape, NumericType>>).forEach((val) => {
+        (value as Value<NumArrayDataset>).forEach((val) => {
           csv += `${val.toString()}\n`;
         });
 

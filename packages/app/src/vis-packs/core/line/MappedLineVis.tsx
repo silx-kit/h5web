@@ -1,11 +1,5 @@
 import { LineVis, useCombinedDomain, useDomain, useDomains } from '@h5web/lib';
-import type {
-  ArrayShape,
-  AxisMapping,
-  Dataset,
-  NumArray,
-  NumericType,
-} from '@h5web/shared';
+import type { AxisMapping, NumArray, NumArrayDataset } from '@h5web/shared';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
@@ -21,7 +15,7 @@ import type { LineConfig } from './config';
 type HookArgs = [number[], DimensionMapping, boolean];
 
 interface Props {
-  dataset?: Dataset<ArrayShape, NumericType>;
+  dataset?: NumArrayDataset;
   selection?: string | undefined;
   value: NumArray;
   valueLabel?: string;

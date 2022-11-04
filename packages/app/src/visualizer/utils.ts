@@ -102,11 +102,12 @@ function getSupportedNxVis(
 
   const dataset = findSignalDataset(entity, attrValuesStore);
   const isCplx = hasComplexType(dataset);
-  const { interpretation } = attrValuesStore.get(dataset);
+  const { interpretation, CLASS } = attrValuesStore.get(dataset);
 
   if (
-    interpretation === NxInterpretation.RGB &&
-    hasNumDims(dataset, 3) &&
+    (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
+    hasMinDims(dataset, 3) && // 2 for axes + 1 for RGB channels
+    dataset.shape.at(-1) === 3 && // 3 channels
     !isCplx
   ) {
     return [NEXUS_VIS[NexusVis.NxRGB]];

@@ -162,7 +162,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         }),
         makeNxDataGroup('rgb-image', {
           signal: withImageAttributes(
-            makeNxDataset('threeD_rgb', intType, [3, 3, 3], {
+            makeNxDataset('fourD_rgb', intType, [10, 3, 3, 3], {
               longName: 'RGB CMY DGW',
               interpretation: 'rgb-image',
             })

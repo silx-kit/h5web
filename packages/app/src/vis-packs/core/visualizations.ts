@@ -144,7 +144,8 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
       return (
         attrValuesStore.getSingle(dataset, 'CLASS') === 'IMAGE' &&
         hasArrayShape(dataset) &&
-        dataset.shape.length === 3 &&
+        dataset.shape.length >= 3 && // 2 for axes + 1 for RGB channels
+        dataset.shape.at(-1) === 3 && // 3 channels
         hasNumericType(dataset)
       );
     },
