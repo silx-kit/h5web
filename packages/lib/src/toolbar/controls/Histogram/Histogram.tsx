@@ -8,24 +8,31 @@ import { useToArray, useCombinedDomain, useDomain } from '../../../vis/hooks';
 import type { HistogramParams } from '../../../vis/models';
 import { H5WEB_SCALES } from '../../../vis/scales';
 import Tick from '../../../vis/shared/Tick';
-import { adaptedNumTicks, DEFAULT_DOMAIN } from '../../../vis/utils';
+import {
+  adaptedNumTicks,
+  DEFAULT_DOMAIN,
+  extendDomain,
+} from '../../../vis/utils';
+import ColorBar from './ColorBar';
 import styles from './Histogram.module.css';
-import HistogramColorBar from './HistogramColorBar';
-import HistogramIndicators from './HistogramIndicators';
+import Markers from './Markers';
+
+const EXTEND_FACTOR = 0.3;
 
 interface Props extends HistogramParams {
   scaleType: ScaleType;
   dataDomain: Domain;
-  sliderDomain: Domain;
+  value: Domain;
+  onChange?: (domain: Domain) => void;
 }
 
 function Histogram(props: Props) {
-  const { values, bins, scaleType, sliderDomain, dataDomain } = props;
+  const { values, bins, scaleType, value, dataDomain, onChange } = props;
   const { colorMap, invertColorMap } = props;
 
   const binDomain = useDomain(bins, scaleType) || DEFAULT_DOMAIN;
-  const [safeSliderDomain] = useSafeDomain(sliderDomain, dataDomain, scaleType);
-  const xDomain = useCombinedDomain([binDomain, safeSliderDomain, dataDomain]);
+  const [safeValue] = useSafeDomain(value, dataDomain, scaleType);
+  const xDomain = useCombinedDomain([binDomain, safeValue, dataDomain]);
 
   const barDomain = useDomain(values);
   const yMax = barDomain ? barDomain[1] : DEFAULT_DOMAIN[1];
@@ -42,7 +49,7 @@ function Histogram(props: Props) {
   const { width, height } = size;
 
   const xScale = H5WEB_SCALES[scaleType].createScale({
-    domain: xDomain,
+    domain: xDomain && extendDomain(xDomain, EXTEND_FACTOR, scaleType),
     range: [0, width],
   });
   const yScale = scaleLinear({
@@ -50,7 +57,7 @@ function Histogram(props: Props) {
     range: [0, height],
   });
 
-  const indicatorPositions = safeSliderDomain.map(xScale) as Domain;
+  const markerPositions = safeValue.map(xScale) as Domain;
 
   return (
     <div ref={ref} className={styles.container}>
@@ -66,16 +73,23 @@ function Histogram(props: Props) {
           />
         ))}
         {colorMap && (
-          <HistogramColorBar
-            x={indicatorPositions[0]}
+          <ColorBar
+            x={markerPositions[0]}
             y={height - yScale(0)}
-            width={indicatorPositions[1] - indicatorPositions[0]}
+            width={markerPositions[1] - markerPositions[0]}
             height={yScale(0) - yScale(yMin)}
             colorMap={colorMap}
             invertColorMap={invertColorMap}
           />
         )}
-        <HistogramIndicators positions={indicatorPositions} height={height} />
+        <Markers
+          positions={markerPositions}
+          size={size}
+          onChange={
+            onChange &&
+            ((domain) => onChange(domain.map(xScale.invert) as Domain))
+          }
+        />
 
         <AxisBottom
           top={height}
@@ -97,4 +111,5 @@ function Histogram(props: Props) {
   );
 }
 
+export type { Props as HistogramProps };
 export default Histogram;
