@@ -30,7 +30,7 @@ function Tile(props: Props) {
       (e: ThreeEvent<MouseEvent>) => {
         onPointerMove(e, array);
       },
-      200,
+      50,
       { trailing: false }
     );
 

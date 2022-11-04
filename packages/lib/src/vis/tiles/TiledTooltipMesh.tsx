@@ -1,15 +1,17 @@
-import { formatTooltipVal } from '@h5web/shared';
+import type { ReactElement } from 'react';
 
 import type { Size } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import { useTooltipStore } from './store';
 
 interface Props {
-  size: Size;
+  size?: Size;
+  renderTooltip: (x: number, y: number, v: number) => ReactElement | undefined;
 }
 
 function TiledTooltipMesh(props: Props) {
-  const { size } = props;
+  const { size, renderTooltip } = props;
+
   const val = useTooltipStore((state) => state.val);
 
   return (
@@ -21,12 +23,7 @@ function TiledTooltipMesh(props: Props) {
         }
 
         const { x, y, v } = val;
-        return (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {`x=${formatTooltipVal(x)}, y=${formatTooltipVal(y)}`}
-            <strong>{formatTooltipVal(v)}</strong>
-          </div>
-        );
+        return renderTooltip(x, y, v);
       }}
     />
   );

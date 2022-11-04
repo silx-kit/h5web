@@ -154,6 +154,7 @@ export { default as RgbVis } from './vis/rgb/RgbVis';
 export { default as VisMesh } from './vis/shared/VisMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
 export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
+export { default as TiledTooltipMesh } from './vis/tiles/TiledTooltipMesh';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
 export { useValidDomainForScale } from './vis/hooks';
 export { assertLength, assertDefined } from '@h5web/shared';

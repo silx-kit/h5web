@@ -8,6 +8,7 @@ import {
   ResetZoomButton,
   SelectToZoom,
   useAxisSystemContext,
+  TiledTooltipMesh,
 } from '@h5web/lib';
 import type {
   Domain,
@@ -15,7 +16,7 @@ import type {
   TiledHeatmapMeshProps,
   AxisConfig,
 } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
+import { formatTooltipVal, ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import greenlet from 'greenlet';
 import { clamp } from 'lodash';
@@ -154,10 +155,18 @@ class CheckboardTilesApi extends TilesApi {
 interface TiledHeatmapStoryProps extends TiledHeatmapMeshProps {
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
+  showTooltip: boolean;
 }
 
+const renderTooltip = (x: number, y: number, v: number) => (
+  <div style={{ display: 'flex', flexDirection: 'column' }}>
+    {`x=${formatTooltipVal(x)}, y=${formatTooltipVal(y)}`}
+    <strong>{formatTooltipVal(v)}</strong>
+  </div>
+);
 const Template: Story<TiledHeatmapStoryProps> = (args) => {
-  const { abscissaConfig, ordinateConfig, ...tiledHeatmapProps } = args;
+  const { abscissaConfig, ordinateConfig, showTooltip, ...tiledHeatmapProps } =
+    args;
 
   return (
     <VisCanvas
@@ -173,6 +182,7 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
       <SelectToZoom keepRatio modifierKey="Control" />
       <ResetZoomButton />
       <TiledHeatmapMesh {...tiledHeatmapProps} />
+      {showTooltip && <TiledTooltipMesh renderTooltip={renderTooltip} />}
     </VisCanvas>
   );
 };
@@ -267,7 +277,13 @@ function LinearAxesGroup(props: { children: ReactNode }) {
 }
 
 export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
-  const { abscissaConfig, api, ordinateConfig, ...tiledHeatmapProps } = args;
+  const {
+    abscissaConfig,
+    api,
+    ordinateConfig,
+    showTooltip,
+    ...tiledHeatmapProps
+  } = args;
   const { baseLayerSize } = api;
   const size = { width: 1, height: baseLayerSize.height / baseLayerSize.width };
 
@@ -286,10 +302,16 @@ export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
       <ResetZoomButton />
       <LinearAxesGroup>
         <group position={[1, 1, 0]} rotation={[0, 0, Math.PI / 4]}>
-          <TiledHeatmapMesh api={api} {...tiledHeatmapProps} size={size} />
+          <TiledHeatmapMesh api={api} size={size} {...tiledHeatmapProps} />
+          {showTooltip && (
+            <TiledTooltipMesh size={size} renderTooltip={renderTooltip} />
+          )}
         </group>
         <group position={[-1, 1, 0]} scale={[2, 2, 1]}>
-          <TiledHeatmapMesh api={api} {...tiledHeatmapProps} size={size} />
+          <TiledHeatmapMesh api={api} size={size} {...tiledHeatmapProps} />
+          {showTooltip && (
+            <TiledTooltipMesh size={size} renderTooltip={renderTooltip} />
+          )}
         </group>
       </LinearAxesGroup>
     </VisCanvas>
