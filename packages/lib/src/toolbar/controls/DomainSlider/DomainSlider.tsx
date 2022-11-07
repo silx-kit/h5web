@@ -70,37 +70,38 @@ function DomainSlider(props: Props) {
       onPointerEnter={() => toggleHovered(true)}
       onPointerLeave={() => toggleHovered(false)}
     >
-      <ScaledSlider
-        value={sliderDomain}
-        safeVisDomain={safeDomain}
-        dataDomain={dataDomain}
-        scaleType={scaleType}
-        errors={errors}
-        isAutoMin={isAutoMin}
-        isAutoMax={isAutoMax}
-        onChange={(newValue) => {
-          setSliderDomain(newValue);
-          toggleEditing(false);
-        }}
-        onAfterChange={(hasMinChanged, hasMaxChanged) => {
-          onCustomDomainChange([
-            hasMinChanged ? sliderDomain[0] : customDomain[0],
-            hasMaxChanged ? sliderDomain[1] : customDomain[1],
-          ]);
-        }}
-      />
+      <div className={styles.sliderContainer}>
+        <ScaledSlider
+          value={sliderDomain}
+          safeVisDomain={safeDomain}
+          dataDomain={dataDomain}
+          scaleType={scaleType}
+          errors={errors}
+          isAutoMin={isAutoMin}
+          isAutoMax={isAutoMax}
+          onChange={(newValue) => {
+            setSliderDomain(newValue);
+            toggleEditing(false);
+          }}
+          onAfterChange={(hasMinChanged, hasMaxChanged) => {
+            onCustomDomainChange([
+              hasMinChanged ? sliderDomain[0] : customDomain[0],
+              hasMaxChanged ? sliderDomain[1] : customDomain[1],
+            ]);
+          }}
+        />
 
-      <ToggleBtn
-        iconOnly
-        small
-        label="Edit domain"
-        aria-expanded={hovered || isEditing}
-        aria-controls={TOOLTIP_ID}
-        icon={FiEdit3}
-        value={isEditing}
-        onToggle={() => toggleEditing(!isEditing)}
-      />
-
+        <ToggleBtn
+          iconOnly
+          small
+          label="Edit domain"
+          aria-expanded={hovered || isEditing}
+          aria-controls={TOOLTIP_ID}
+          icon={FiEdit3}
+          value={isEditing}
+          onToggle={() => toggleEditing(!isEditing)}
+        />
+      </div>
       <DomainTooltip
         ref={tooltipRef}
         id={TOOLTIP_ID}
@@ -137,6 +138,7 @@ function DomainSlider(props: Props) {
             dataDomain={dataDomain}
             value={sliderDomain}
             scaleType={scaleType}
+            onChange={onCustomDomainChange}
             {...histogram}
           />
         )}
