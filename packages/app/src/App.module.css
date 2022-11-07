@@ -49,7 +49,7 @@
   --h5w-selector-option-hover--bgColor: var(--secondary-light-bg);
   --h5w-selector-option-selected--bgColor: var(--secondary-light);
   --h5w-domainSlider-histogram--color: var(--secondary-dark);
-  --h5w-domainSlider-histogram-indicator--color: var(--secondary-darker);
+  --h5w-domainSlider-histogram-marker--color: var(--secondary-darker);
   --h5w-interactionHelp-shortcut--bgColor: var(--primary-light);
 
   --h5w-line--color: darkblue;

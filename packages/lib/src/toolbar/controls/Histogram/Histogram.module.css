@@ -17,8 +17,8 @@
   fill: var(--h5w-domainSlider-histogram--color, royalblue);
 }
 
-.indicators {
-  color: var(--h5w-domainSlider-histogram-indicator--color, midnightblue);
+.markers {
+  color: var(--h5w-domainSlider-histogram-marker--color, midnightblue);
   stroke: currentColor;
   fill: currentColor;
 }

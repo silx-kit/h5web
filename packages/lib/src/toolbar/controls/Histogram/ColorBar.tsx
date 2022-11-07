@@ -11,7 +11,7 @@ interface Props
   invertColorMap?: boolean;
 }
 
-function HistogramColorBar(props: Props) {
+function ColorBar(props: Props) {
   const { colorMap, invertColorMap, ...rectProps } = props;
   const interpolator = getInterpolator(colorMap, !!invertColorMap);
 
@@ -35,4 +35,4 @@ function HistogramColorBar(props: Props) {
   );
 }
 
-export default HistogramColorBar;
+export default ColorBar;
