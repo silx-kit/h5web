@@ -167,6 +167,11 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
               interpretation: 'rgb-image',
             })
           ),
+          axes: {
+            X_rgb: makeDataset('X_rgb', floatType, [3]),
+            Y_rgb: makeDataset('Y_rgb', floatType, [3]),
+          },
+          axesAttr: ['.', 'Y_rgb', 'X_rgb'],
         }),
         makeNxDataGroup('descending-axes', {
           signal: makeDataset('twoD', intType, [20, 41]),

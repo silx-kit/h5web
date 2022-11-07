@@ -4,6 +4,8 @@ const arr1 = range(-20, 21);
 const arr2 = range(0, 100, 5);
 const arr3 = range(-1, 1.25, 0.25);
 const arr4 = range(10, 40, 10);
+const arr5 = range(1, 4);
+const arr6 = range(9335, 9338);
 
 const oneD = arr1.map((val) => val ** 2);
 const twoD = arr2.map((offset) => oneD.map((val) => val - offset));
@@ -156,8 +158,10 @@ export const mockValues = {
   X: arr1,
   X_desc: [...arr1].reverse(),
   X_log: arr1.map((_, i) => (i + 1) * 0.1),
+  X_rgb: arr5,
   Y: arr2,
   Y_desc: [...arr2].reverse(),
+  Y_rgb: arr6,
   title_twoD: 'NeXus 2D',
   secondary: twoD.map((inner) => inner.map((v) => v * 2)),
   tertiary: twoD.map((inner) => inner.map((v) => v / 2)),
