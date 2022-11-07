@@ -18,7 +18,7 @@ function NxRgbContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertNumericSignal(nxData);
 
-  const { signalDef } = nxData;
+  const { signalDef, axisDefs } = nxData;
   assertMinDims(signalDef.dataset, 3);
 
   const { shape: dims } = signalDef.dataset;
@@ -42,12 +42,14 @@ function NxRgbContainer(props: VisContainerProps) {
           nxData={nxData}
           selection={getSliceSelection(dimMapping)}
           render={(nxValues) => {
-            const { signal, title } = nxValues;
+            const { signal, axisValues, title } = nxValues;
 
             return (
               <MappedRgbVis
                 dataset={signalDef.dataset}
                 value={signal}
+                axisLabels={axisDefs.map((def) => def?.label)}
+                axisValues={axisValues}
                 dimMapping={dimMapping}
                 title={title}
                 toolbarContainer={toolbarContainer}

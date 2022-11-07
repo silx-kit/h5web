@@ -1,4 +1,5 @@
 import type { NumArray } from '@h5web/shared';
+import { assertDefined } from '@h5web/shared';
 import { getDims } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
@@ -8,7 +9,10 @@ import type { DefaultInteractionsConfig } from '../../interactions/DefaultIntera
 import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import styles from '../heatmap/HeatmapVis.module.css';
+import { usePixelEdgeValues } from '../heatmap/hooks';
 import type { Layout } from '../heatmap/models';
+import { useAxisDomain } from '../hooks';
+import type { AxisParams } from '../models';
 import VisCanvas from '../shared/VisCanvas';
 import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
@@ -20,6 +24,8 @@ interface Props {
   showGrid?: boolean;
   title?: string;
   imageType?: ImageType;
+  abscissaParams?: AxisParams;
+  ordinateParams?: AxisParams;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
 }
@@ -31,11 +37,24 @@ function RgbVis(props: Props) {
     showGrid = false,
     title,
     imageType = ImageType.RGB,
+    abscissaParams = {},
+    ordinateParams = {},
     children,
     interactions,
   } = props;
 
+  const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
+  const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
   const { rows, cols } = getDims(dataArray);
+
+  const abscissas = usePixelEdgeValues(abscissaValue, cols);
+  const abscissaDomain = useAxisDomain(abscissas);
+  assertDefined(abscissaDomain, 'Abscissas have undefined domain');
+
+  const ordinates = usePixelEdgeValues(ordinateValue, rows);
+  const ordinateDomain = useAxisDomain(ordinates);
+  assertDefined(ordinateDomain, 'Ordinates have undefined domain');
+
   const safeDataArray = useMemo(() => toRgbSafeNdArray(dataArray), [dataArray]);
 
   const keepRatio = layout !== 'fill';
@@ -47,15 +66,17 @@ function RgbVis(props: Props) {
         canvasRatio={layout === 'contain' ? cols / rows : undefined}
         visRatio={keepRatio ? cols / rows : undefined}
         abscissaConfig={{
-          visDomain: [0, cols],
+          visDomain: abscissaDomain,
           showGrid,
           isIndexAxis: true,
+          label: abscissaLabel,
         }}
         ordinateConfig={{
-          visDomain: [0, rows],
+          visDomain: ordinateDomain,
           showGrid,
           isIndexAxis: true,
           flip: true,
+          label: ordinateLabel,
         }}
       >
         <DefaultInteractions keepRatio={keepRatio} {...interactions} />
