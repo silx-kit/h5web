@@ -34,10 +34,12 @@ interface Props {
   canvasSize: Size;
   offset: number;
   flipAxis?: boolean;
+  showAxis?: boolean;
 }
 
 function Axis(props: Props) {
-  const { type, config, domain, canvasSize, offset, flipAxis } = props;
+  const { type, config, domain, canvasSize, offset, flipAxis, showAxis } =
+    props;
 
   const { width, height } = canvasSize;
   const isAbscissa = type === 'abscissa';
@@ -59,23 +61,25 @@ function Axis(props: Props) {
 
   return (
     <>
-      <svg
-        className={styles.axis}
-        data-type={type}
-        style={
-          isAbscissa ? { width, height: offset } : { width: offset, height }
-        }
-      >
-        <AxisComponent
-          scale={scale}
-          tickFormat={getTickFormatter(domain, axisLength, scaleType)}
-          label={label}
-          labelOffset={offset - (isAbscissa ? 32 : 36)}
-          hideAxisLine={showGrid}
-          {...ticksProp}
-          {...AXIS_PROPS}
-        />
-      </svg>
+      {showAxis && (
+        <svg
+          className={styles.axis}
+          data-type={type}
+          style={
+            isAbscissa ? { width, height: offset } : { width: offset, height }
+          }
+        >
+          <AxisComponent
+            scale={scale}
+            tickFormat={getTickFormatter(domain, axisLength, scaleType)}
+            label={label}
+            labelOffset={offset - (isAbscissa ? 32 : 36)}
+            hideAxisLine={showGrid}
+            {...ticksProp}
+            {...AXIS_PROPS}
+          />
+        </svg>
+      )}
       {showGrid && (
         <svg className={styles.grid} style={canvasSize}>
           <GridComponent

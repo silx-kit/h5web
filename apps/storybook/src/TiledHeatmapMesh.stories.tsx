@@ -156,6 +156,7 @@ interface TiledHeatmapStoryProps extends TiledHeatmapMeshProps {
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   showTooltip: boolean;
+  showAxes: boolean;
 }
 
 const renderTooltip = (x: number, y: number, v: number) => (
@@ -165,8 +166,13 @@ const renderTooltip = (x: number, y: number, v: number) => (
   </div>
 );
 const Template: Story<TiledHeatmapStoryProps> = (args) => {
-  const { abscissaConfig, ordinateConfig, showTooltip, ...tiledHeatmapProps } =
-    args;
+  const {
+    abscissaConfig,
+    ordinateConfig,
+    showTooltip,
+    showAxes = true,
+    ...tiledHeatmapProps
+  } = args;
 
   return (
     <VisCanvas
@@ -176,6 +182,7 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
         (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]) /
           (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0])
       )}
+      showAxes={showAxes}
     >
       <Pan />
       <Zoom />
@@ -254,6 +261,12 @@ FlippedAxes.args = {
     showGrid: false,
     flip: true,
   },
+};
+
+export const NoAxes = Template.bind({});
+NoAxes.args = {
+  ...Default.args,
+  showAxes: false,
 };
 
 function LinearAxesGroup(props: { children: ReactNode }) {
