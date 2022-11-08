@@ -20,6 +20,7 @@ interface Props {
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   raycasterThreshold?: number;
+  showAxes?: boolean;
 }
 
 function VisCanvas(props: PropsWithChildren<Props>) {
@@ -30,6 +31,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
     abscissaConfig,
     ordinateConfig,
     raycasterThreshold,
+    showAxes = true,
     children,
   } = props;
 
@@ -37,11 +39,13 @@ function VisCanvas(props: PropsWithChildren<Props>) {
   const [areaSize, areaRef] = useMeasure<HTMLDivElement>(shouldMeasure);
   const canvasSize = areaSize && getSizeToFit(areaSize, canvasRatio);
 
-  const axisOffsets = getAxisOffsets({
-    left: !!ordinateConfig.label,
-    bottom: !!abscissaConfig.label,
-    top: !!title,
-  });
+  const axisOffsets = showAxes
+    ? getAxisOffsets({
+        left: !!ordinateConfig.label,
+        bottom: !!abscissaConfig.label,
+        top: !!title,
+      })
+    : { left: 0, right: 0, top: 0, bottom: 0 };
 
   const [floatingToolbar, setFloatingToolbar] = useState<HTMLDivElement>();
 
@@ -79,7 +83,11 @@ function VisCanvas(props: PropsWithChildren<Props>) {
               floatingToolbar={floatingToolbar}
             >
               <InteractionsProvider>
-                <AxisSystem axisOffsets={axisOffsets} title={title} />
+                <AxisSystem
+                  axisOffsets={axisOffsets}
+                  title={title}
+                  showAxes={showAxes}
+                />
                 {children}
                 <ViewportCenterer />
                 <RatioEnforcer visRatio={visRatio} />

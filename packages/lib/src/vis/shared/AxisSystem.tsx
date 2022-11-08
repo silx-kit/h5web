@@ -11,10 +11,11 @@ import Html from './Html';
 interface Props {
   axisOffsets: AxisOffsets;
   title?: string;
+  showAxes: boolean;
 }
 
 function AxisSystem(props: Props) {
-  const { axisOffsets, title } = props;
+  const { axisOffsets, title, showAxes } = props;
 
   const gl = useThree((state) => state.gl);
   const canvasSize = useThree((state) => state.size);
@@ -41,13 +42,14 @@ function AxisSystem(props: Props) {
           gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
         }}
       >
-        {title && <p className={styles.title}>{title}</p>}
+        {showAxes && title && <p className={styles.title}>{title}</p>}
         <Axis
           type="abscissa"
           config={abscissaConfig}
           domain={xVisibleDomain}
           canvasSize={canvasSize}
           offset={axisOffsets.bottom}
+          showAxis={showAxes}
         />
         <Axis
           type="ordinate"
@@ -55,6 +57,7 @@ function AxisSystem(props: Props) {
           domain={yVisibleDomain}
           canvasSize={canvasSize}
           offset={axisOffsets.left}
+          showAxis={showAxes}
           flipAxis
         />
       </div>

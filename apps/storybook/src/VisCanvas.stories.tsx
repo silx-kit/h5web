@@ -64,6 +64,13 @@ FlippedAxes.args = {
   ordinateConfig: { visDomain: [50, 100], showGrid: true, flip: true },
 };
 
+export const NoAxes = Template.bind({});
+NoAxes.args = {
+  abscissaConfig: { visDomain: [-5, 20], showGrid: true },
+  ordinateConfig: { visDomain: [0, 2], showGrid: true },
+  showAxes: false,
+};
+
 export const InheritedStyles = Template.bind({});
 
 InheritedStyles.args = {
