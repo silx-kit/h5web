@@ -92,8 +92,8 @@ test('update domain when moving thumbs (with keyboard)', async () => {
 
   // Jump ten steps to the right
   await user.keyboard('{PageUp}');
-  expect(maxInput).toHaveValue('2.52142e+2'); // not back to 4e+2 because of domain extension behaviour
-  expect(within(visArea).getByText('2.521e+2')).toBeInTheDocument();
+  expect(maxInput).toHaveValue('3.68841e+2'); // not back to 4e+2 because 4e+2 is not exactly on a slider division
+  expect(within(visArea).getByText('3.688e+2')).toBeInTheDocument();
 
   expect(maxThumb).toHaveAttribute('aria-valuenow', '81'); // still at original position
   expect(minInput).toHaveValue('−2.30818e+2'); // unaffected
@@ -240,8 +240,8 @@ test('handle empty domain', async () => {
   // Give min the same value as max
   await user.clear(minInput);
   await user.type(minInput, '400{enter}');
-  expect(minThumb).toHaveAttribute('aria-valuenow', '58'); // not quite in the middle because of symlog
-  expect(maxThumb).toHaveAttribute('aria-valuenow', '58');
+  expect(minThumb).toHaveAttribute('aria-valuenow', '81');
+  expect(maxThumb).toHaveAttribute('aria-valuenow', '81');
 
   const visArea = await screen.findByRole('figure');
   expect(within(visArea).getByText('−∞')).toBeInTheDocument();
@@ -250,15 +250,15 @@ test('handle empty domain', async () => {
   // Check that pearling works (i.e. that one thumb can push the other)
   maxThumb.focus();
   await user.keyboard('{ArrowLeft}');
-  expect(minInput).toHaveValue('3.97453e+2');
-  expect(maxInput).toHaveValue('3.97453e+2');
-  expect(minThumb).toHaveAttribute('aria-valuenow', '58'); // thumbs stay in the middle
-  expect(maxThumb).toHaveAttribute('aria-valuenow', '58');
+  expect(minInput).toHaveValue('3.12772e+2');
+  expect(maxInput).toHaveValue('3.12772e+2');
+  expect(minThumb).toHaveAttribute('aria-valuenow', '80');
+  expect(maxThumb).toHaveAttribute('aria-valuenow', '80');
 
   // Ensure thumbs can be separated again
   await user.keyboard('{ArrowRight}');
-  expect(maxInput).toHaveValue('3.99891e+2');
-  expect(minThumb).toHaveAttribute('aria-valuenow', '20');
+  expect(maxInput).toHaveValue('3.71154e+2');
+  expect(minThumb).toHaveAttribute('aria-valuenow', '80');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '81');
 
   // Remove focus now to avoid state update after unmount

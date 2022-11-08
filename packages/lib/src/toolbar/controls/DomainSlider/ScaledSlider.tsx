@@ -4,6 +4,7 @@ import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
 
 import { getSafeDomain } from '../../../vis/heatmap/utils';
+import { useCombinedDomain } from '../../../vis/hooks';
 import type { DomainErrors } from '../../../vis/models';
 import { clampBound, createAxisScale, extendDomain } from '../../../vis/utils';
 import styles from './DomainSlider.module.css';
@@ -38,7 +39,8 @@ function ScaledSlider(props: Props) {
   const { onChange, onAfterChange: onDone } = props;
   const { minGreater, minError, maxError } = errors;
 
-  const sliderExtent = extendDomain(safeVisDomain, EXTEND_FACTOR, scaleType);
+  const sliderDomain = useCombinedDomain([safeVisDomain, dataDomain]);
+  const sliderExtent = extendDomain(sliderDomain, EXTEND_FACTOR, scaleType);
   const scale = createAxisScale(scaleType, {
     domain: sliderExtent.map((val) => clampBound(val)),
     range: SLIDER_RANGE,
