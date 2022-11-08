@@ -121,12 +121,14 @@ export function useMappedArrays(
   mapping: DimensionMapping,
   autoScale?: boolean
 ): [NdArray<NumArray>[], NdArray<NumArray>[]];
+
 export function useMappedArrays(
   values: (NumArray | undefined)[],
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
 ): [(NdArray<NumArray> | undefined)[], (NdArray<NumArray> | undefined)[]];
+
 export function useMappedArrays(
   values: (NumArray | undefined)[],
   dims: number[],

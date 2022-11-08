@@ -2,6 +2,7 @@ import { format } from 'd3-format';
 import ndarray from 'ndarray';
 import type { NdArray, TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
+import { useMemo } from 'react';
 
 import { assertLength, isNdArray, isTypedArray } from './guards';
 import type {
@@ -181,4 +182,15 @@ export function getValidDomainForScale(
 export function getDims(dataArray: NdArray): Dims {
   const [rows, cols] = dataArray.shape;
   return { rows, cols };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createMemo<P extends any[], R, T extends (...args: P) => R>(
+  fn: T
+): T;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createMemo<P extends any[], R, T extends (...args: P) => R>(
+  fn: T
+) {
+  return (...args: P) => useMemo<R>(() => fn(...args), args); // eslint-disable-line react-hooks/exhaustive-deps
 }

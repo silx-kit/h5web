@@ -132,7 +132,19 @@ export function scaleDomain(
 
 export function toTextureSafeNdArray(
   ndArr: NdArray<NumArray>
-): NdArray<TextureSafeTypedArray> {
+): NdArray<TextureSafeTypedArray>;
+
+export function toTextureSafeNdArray(
+  ndArr: NdArray<NumArray> | undefined
+): NdArray<TextureSafeTypedArray> | undefined;
+
+export function toTextureSafeNdArray(
+  ndArr: NdArray<NumArray> | undefined
+): NdArray<TextureSafeTypedArray> | undefined {
+  if (!ndArr) {
+    return undefined;
+  }
+
   if (ndArr.dtype === 'float32' || ndArr.dtype.startsWith('uint8')) {
     return ndArr as NdArray<TextureSafeTypedArray>;
   }

@@ -1,10 +1,14 @@
-import { ScaleType, getBounds, getValidDomainForScale } from '@h5web/shared';
+import {
+  ScaleType,
+  getBounds,
+  getValidDomainForScale,
+  createMemo,
+} from '@h5web/shared';
 import type { Domain, AnyNumArray } from '@h5web/shared';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
-import { createMemo } from 'react-use';
 
 import { useAxisSystemContext } from './shared/AxisSystemProvider';
 import type { AxisSystemContextValue } from './shared/AxisSystemProvider';
