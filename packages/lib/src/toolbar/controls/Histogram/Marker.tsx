@@ -34,7 +34,7 @@ function Marker(props: Props) {
 
   return (
     <g
-      transform={dragState ? `translate(${dragState.dx}, 0)` : undefined}
+      transform={`translate(${dragState?.dx || 0}, 0)`}
       style={{ cursor: dragState ? 'ew-resize' : undefined }}
       {...handlers}
     >
