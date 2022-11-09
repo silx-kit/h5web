@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useTimeout } from 'react-use';
 
+import { useTimeout } from '../hooks';
 import { useDataContext } from '../providers/DataProvider';
 import styles from './ValueLoader.module.css';
 
@@ -23,9 +23,9 @@ function ValueLoader(props: Props) {
   }, [addProgressListener, removeProgressListener, setProgress]);
 
   // Wait a bit before showing loader to avoid flash
-  const [isReady] = useTimeout(100);
+  const isReady = useTimeout(100);
 
-  if (!isReady()) {
+  if (!isReady) {
     return null;
   }
 

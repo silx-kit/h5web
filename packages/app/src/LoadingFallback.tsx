@@ -1,6 +1,5 @@
-import { useTimeout } from 'react-use';
-
 import styles from './App.module.css';
+import { useTimeout } from './hooks';
 
 interface Props {
   isInspecting: boolean;
@@ -11,7 +10,7 @@ function LoadingFallback(props: Props) {
   const { isInspecting, message = 'Loading' } = props;
 
   // Wait a bit before showing loader to avoid flash
-  const [isReady] = useTimeout(100);
+  const isReady = useTimeout(100);
 
   return (
     <>
@@ -19,7 +18,7 @@ function LoadingFallback(props: Props) {
         className={styles.fallbackBar}
         data-mode={isInspecting ? 'inspect' : 'display'}
       />
-      {isReady() && <p className={styles.fallback}>{message}...</p>}
+      {isReady && <p className={styles.fallback}>{message}...</p>}
     </>
   );
 }
