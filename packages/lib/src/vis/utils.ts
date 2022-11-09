@@ -249,6 +249,11 @@ export function getTickFormatter(
   };
 }
 
+export function getCombinedDomain(domains: [Domain, ...Domain[]]): Domain;
+export function getCombinedDomain(
+  domains: (Domain | undefined)[]
+): Domain | undefined;
+
 export function getCombinedDomain(
   domains: (Domain | undefined)[]
 ): Domain | undefined {
