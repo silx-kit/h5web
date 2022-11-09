@@ -133,6 +133,8 @@ export type {
   Size,
   AxisConfig,
   AxisParams,
+  VisScaleType,
+  HistogramParams,
 } from './vis/models';
 
 export type { D3Interpolator, ColorMap } from './vis/heatmap/models';
