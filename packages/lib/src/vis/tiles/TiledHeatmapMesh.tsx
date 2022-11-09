@@ -9,13 +9,13 @@ import type { Size } from '../models';
 import { useAxisSystemContext } from '../shared/AxisSystemProvider';
 import TiledLayer from './TiledLayer';
 import type { TilesApi } from './api';
-import { useLayerScales, useTooltipOnMoveHandler } from './hooks';
+import { useTooltipOnMoveHandler } from './hooks';
 import type { ColorMapProps } from './models';
 import {
   getNdcToObject3DMatrix,
   getObject3DPixelSize,
   getObject3DVisibleBox,
-  scaleBox,
+  scaleBoxToLayer,
 } from './utils';
 
 interface Props extends ColorMapProps {
@@ -47,8 +47,7 @@ function TiledHeatmapMesh(props: Props) {
   );
   const visibleBox = getObject3DVisibleBox(ndcToLocalMatrix);
 
-  const { xScale, yScale } = useLayerScales(baseLayerSize, meshSize);
-  const bounds = scaleBox(visibleBox, xScale, yScale);
+  const bounds = scaleBoxToLayer(visibleBox, baseLayerSize, meshSize);
 
   let layers: number[] = [];
   if (!bounds.isEmpty()) {
