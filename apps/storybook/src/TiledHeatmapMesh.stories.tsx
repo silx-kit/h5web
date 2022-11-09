@@ -188,7 +188,11 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
       <Zoom />
       <SelectToZoom keepRatio modifierKey="Control" />
       <ResetZoomButton />
-      <TiledHeatmapMesh {...tiledHeatmapProps} />
+      <group
+        scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
+      >
+        <TiledHeatmapMesh {...tiledHeatmapProps} />
+      </group>
       {showTooltip && <TiledTooltipMesh renderTooltip={renderTooltip} />}
     </VisCanvas>
   );
@@ -336,13 +340,13 @@ WithTransforms.args = {
     visDomain: [-2, 1.5],
     isIndexAxis: true,
     showGrid: false,
-    flip: false,
+    flip: true,
   },
   ordinateConfig: {
     visDomain: [0, 2],
     isIndexAxis: true,
     showGrid: false,
-    flip: false,
+    flip: true,
   },
 };
 
