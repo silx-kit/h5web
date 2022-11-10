@@ -29,7 +29,7 @@ function RgbVisContainer(props: VisContainerProps) {
   }
 
   const { shape: dims } = entity;
-  if (dims.at(-1) !== 3) {
+  if (dims[dims.length - 1] !== 3) {
     throw new Error('Expected last dimension to have size 3');
   }
 

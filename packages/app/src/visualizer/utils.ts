@@ -107,7 +107,7 @@ function getSupportedNxVis(
   if (
     (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
     hasMinDims(dataset, 3) && // 2 for axes + 1 for RGB channels
-    dataset.shape.at(-1) === 3 && // 3 channels
+    dataset.shape[dataset.shape.length - 1] === 3 && // 3 channels
     !isCplx
   ) {
     return [NEXUS_VIS[NexusVis.NxRGB]];
