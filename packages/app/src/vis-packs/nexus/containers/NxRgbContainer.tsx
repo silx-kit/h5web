@@ -22,7 +22,7 @@ function NxRgbContainer(props: VisContainerProps) {
   assertMinDims(signalDef.dataset, 3);
 
   const { shape: dims } = signalDef.dataset;
-  if (dims.at(-1) !== 3) {
+  if (dims[dims.length - 1] !== 3) {
     throw new Error('Expected last dimension to have size 3');
   }
 
