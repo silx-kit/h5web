@@ -12,7 +12,7 @@ const Template: Story<Omit<HistogramProps, 'onChange'>> = (args) => {
   return (
     <div>
       <p>
-        Domain: [{domain[0]}, {domain[1]}]
+        Domain: [{domain[0].toFixed(2)}, {domain[1].toFixed(2)}]
       </p>
       <Histogram {...otherArgs} value={domain} onChange={setDomain} />
     </div>

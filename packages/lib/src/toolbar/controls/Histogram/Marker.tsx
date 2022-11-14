@@ -49,10 +49,10 @@ function Marker(props: Props) {
       {/* Add an invisible rectangle to help selection */}
       {dragState && (
         <rect
-          x={flipArrow ? x - ARROW_SIZE : x}
+          x={x - ARROW_SIZE}
           y={0}
           height="100%"
-          width={ARROW_SIZE}
+          width={2 * ARROW_SIZE}
           fill="transparent"
           fillOpacity={0}
           stroke="none"
