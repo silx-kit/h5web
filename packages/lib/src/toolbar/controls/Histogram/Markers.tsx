@@ -1,5 +1,6 @@
 import type { Domain } from '@h5web/shared';
 import { Drag } from '@visx/drag';
+import { useState } from 'react';
 
 import type { Size } from '../../../vis/models';
 import styles from './Histogram.module.css';
@@ -16,14 +17,21 @@ function Markers(props: Props) {
   const { height, width } = size;
   const [xMin, xMax] = positions;
 
+  // Store the mismatch between mouse position and marker to restrict correctly the marker position
+  const [deltaX, setDeltaX] = useState(0);
+
   return (
     <g className={styles.markers}>
       <Drag
         height={height}
         width={width}
         x={xMin}
-        onDragEnd={({ dx }) => onChange?.([xMin + dx, xMax])}
-        restrict={{ xMin: 0, xMax }}
+        onDragStart={({ x }) => x && setDeltaX(x - xMin)}
+        onDragEnd={({ dx }) => {
+          onChange?.([xMin + dx, xMax]);
+          setDeltaX(0);
+        }}
+        restrict={{ xMin: deltaX, xMax: xMax + deltaX }}
       >
         {(dragState) => <Marker x={xMin} dragState={onChange && dragState} />}
       </Drag>
@@ -31,8 +39,12 @@ function Markers(props: Props) {
         height={height}
         width={width}
         x={xMax}
-        onDragEnd={({ dx }) => onChange?.([xMin, xMax + dx])}
-        restrict={{ xMin, xMax: width }}
+        onDragStart={({ x }) => x && setDeltaX(x - xMax)}
+        onDragEnd={({ dx }) => {
+          onChange?.([xMin, xMax + dx]);
+          setDeltaX(0);
+        }}
+        restrict={{ xMin: xMin + deltaX, xMax: width + deltaX }}
       >
         {(dragState) => (
           <Marker x={xMax} flipArrow dragState={onChange && dragState} />
