@@ -59,7 +59,7 @@ function MetadataViewer(props: Props) {
         </MetadataTable>
       )}
 
-      {isDataset(entity) && entity.filters && (
+      {isDataset(entity) && entity.filters && entity.filters.length > 0 && (
         <MetadataTable title="Compression filters">
           <FiltersInfo filters={entity.filters} />
         </MetadataTable>
