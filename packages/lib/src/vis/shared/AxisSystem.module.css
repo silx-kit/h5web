@@ -1,5 +1,9 @@
 .axisSystem {
   position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   pointer-events: none;
   display: grid;
   grid-template-areas:

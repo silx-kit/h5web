@@ -17,10 +17,7 @@ interface Props {
 function AxisSystem(props: Props) {
   const { axisOffsets, title, showAxes } = props;
 
-  const gl = useThree((state) => state.gl);
   const canvasSize = useThree((state) => state.size);
-  const { width, height } = canvasSize;
-
   const { abscissaConfig, ordinateConfig } = useAxisSystemContext();
   const { xVisibleDomain, yVisibleDomain } = useCameraState(
     getVisibleDomains,
@@ -29,15 +26,10 @@ function AxisSystem(props: Props) {
 
   return (
     // Append to `canvasWrapper` instead of default container `r3fRoot`, which hides overflow
-    <Html container={gl.domElement.parentElement?.parentElement || undefined}>
+    <Html overflowCanvas>
       <div
         className={styles.axisSystem}
         style={{
-          // Take over space reserved for axis by VisCanvas
-          top: -axisOffsets.top,
-          left: -axisOffsets.left,
-          width: width + axisOffsets.left + axisOffsets.right,
-          height: height + axisOffsets.bottom + axisOffsets.top,
           gridTemplateColumns: `${axisOffsets.left}px 1fr ${axisOffsets.right}px`,
           gridTemplateRows: `${axisOffsets.top}px 1fr ${axisOffsets.bottom}px`,
         }}

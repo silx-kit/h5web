@@ -19,8 +19,8 @@ function Html(props: Props) {
   const r3fRoot = useThree((state) => state.gl.domElement.parentElement);
   const canvasWrapper = r3fRoot?.parentElement;
 
-  // Choose DOM container in which to append `renderTarget`
-  // (`r3fRoot` hides overflow but its parent, `canvasWrapper`, does not -- cf. `VisCanvas`)
+  // Choose DOM container in which to append `renderTarget` to control overflow
+  // (`r3fRoot` means `Html` children won't be allowed to overflow above the axes)
   const container =
     customContainer || (overflowCanvas ? canvasWrapper : r3fRoot);
 

@@ -12,6 +12,8 @@ import ThresholdAdjuster from './ThresholdAdjuster';
 import ViewportCenterer from './ViewportCenterer';
 import styles from './VisCanvas.module.css';
 
+const NO_OFFSETS = { left: 0, right: 0, top: 0, bottom: 0 };
+
 interface Props {
   title?: string;
   visRatio?: number | undefined;
@@ -38,13 +40,13 @@ function VisCanvas(props: PropsWithChildren<Props>) {
         bottom: !!abscissaConfig.label,
         top: !!title,
       })
-    : { left: 0, right: 0, top: 0, bottom: 0 };
+    : NO_OFFSETS;
 
   const floatingToolbarRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
-      className={styles.canvasArea}
+      className={styles.canvasWrapper}
       style={{
         paddingBottom: axisOffsets.bottom,
         paddingLeft: axisOffsets.left,
@@ -52,42 +54,40 @@ function VisCanvas(props: PropsWithChildren<Props>) {
         paddingRight: axisOffsets.right,
       }}
     >
-      <div className={styles.canvasWrapper}>
-        <Canvas
-          className={styles.r3fRoot}
-          orthographic
-          linear // disable automatic color encoding and gamma correction
-          flat // disable tone mapping
-          frameloop="demand" // disable game loop
-          dpr={[1, 3]} // https://discoverthreejs.com/tips-and-tricks/#performance
-          gl={{ preserveDrawingBuffer: true }} // for screenshot feature
-          resize={{ debounce: { scroll: 20, resize: 200 }, scroll: false }} // https://github.com/pmndrs/react-three-fiber/discussions/1906
+      <Canvas
+        className={styles.r3fRoot}
+        orthographic
+        linear // disable automatic color encoding and gamma correction
+        flat // disable tone mapping
+        frameloop="demand" // disable game loop
+        dpr={[1, 3]} // https://discoverthreejs.com/tips-and-tricks/#performance
+        gl={{ preserveDrawingBuffer: true }} // for screenshot feature
+        resize={{ debounce: { scroll: 20, resize: 200 }, scroll: false }} // https://github.com/pmndrs/react-three-fiber/discussions/1906
+      >
+        <ambientLight />
+        <AxisSystemProvider
+          visRatio={visRatio}
+          abscissaConfig={abscissaConfig}
+          ordinateConfig={ordinateConfig}
+          floatingToolbar={floatingToolbarRef.current}
         >
-          <ambientLight />
-          <AxisSystemProvider
-            visRatio={visRatio}
-            abscissaConfig={abscissaConfig}
-            ordinateConfig={ordinateConfig}
-            floatingToolbar={floatingToolbarRef.current}
-          >
-            <InteractionsProvider>
-              <AxisSystem
-                axisOffsets={axisOffsets}
-                title={title}
-                showAxes={showAxes}
-              />
-              {children}
-              <ViewportCenterer />
-              <RatioEnforcer visRatio={visRatio} />
-              {raycasterThreshold !== undefined && (
-                <ThresholdAdjuster value={raycasterThreshold} />
-              )}
-            </InteractionsProvider>
-          </AxisSystemProvider>
-        </Canvas>
+          <InteractionsProvider>
+            <AxisSystem
+              axisOffsets={axisOffsets}
+              title={title}
+              showAxes={showAxes}
+            />
+            {children}
+            <ViewportCenterer />
+            <RatioEnforcer visRatio={visRatio} />
+            {raycasterThreshold !== undefined && (
+              <ThresholdAdjuster value={raycasterThreshold} />
+            )}
+          </InteractionsProvider>
+        </AxisSystemProvider>
+      </Canvas>
 
-        <div ref={floatingToolbarRef} className={styles.floatingToolbar} />
-      </div>
+      <div ref={floatingToolbarRef} className={styles.floatingToolbar} />
     </div>
   );
 }
