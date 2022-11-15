@@ -1,4 +1,4 @@
-import type { CustomDomain } from '@h5web/lib';
+import type { CustomDomain, Layout } from '@h5web/lib';
 import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
 import type { StoreApi } from 'zustand';
@@ -7,7 +7,7 @@ import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
-import type { ColorMap, Layout } from './models';
+import type { ColorMap } from './models';
 
 export interface HeatmapConfig {
   customDomain: CustomDomain;

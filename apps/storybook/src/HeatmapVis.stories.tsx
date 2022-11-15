@@ -142,7 +142,7 @@ export default {
     },
     layout: {
       control: { type: 'inline-radio' },
-      options: ['contain', 'cover', 'fill'],
+      options: ['cover', 'fill'],
     },
   },
 } as Meta;

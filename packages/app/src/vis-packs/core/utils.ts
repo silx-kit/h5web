@@ -1,3 +1,4 @@
+import type { Layout } from '@h5web/lib';
 import type { Domain } from '@h5web/shared';
 import { createArrayFromView } from '@h5web/shared';
 import { isNumber } from 'lodash';
@@ -6,7 +7,6 @@ import ndarray from 'ndarray';
 
 import type { Axis, DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
-import type { Layout } from './heatmap/models';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 

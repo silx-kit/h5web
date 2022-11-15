@@ -1,15 +1,8 @@
-.canvasArea {
-  position: relative;
+.canvasWrapper {
   flex: 1 1 0%;
   overflow: hidden; /* prevent overflow when resizing */
-}
-
-.canvasWrapper {
   position: relative; /* for axis system */
-  width: 100%; /* fill container by default (unless size is passed in JSX) */
-  height: 100%;
-  margin: 0 auto;
-  z-index: 0; /* To create a stacking context for the floatingToolbar */
+  z-index: 0; /* stacking context for `.floatingToolbar` */
 }
 
 .r3fRoot {

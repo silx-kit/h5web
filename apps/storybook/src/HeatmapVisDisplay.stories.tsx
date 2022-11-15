@@ -22,13 +22,6 @@ Fill.args = {
   layout: 'fill',
 };
 
-export const Contain = Template.bind({});
-Contain.args = {
-  dataArray,
-  domain,
-  layout: 'contain',
-};
-
 export const FlipYAxis = Template.bind({});
 FlipYAxis.args = {
   dataArray,

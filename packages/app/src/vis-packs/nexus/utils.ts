@@ -1,3 +1,4 @@
+import type { Layout } from '@h5web/lib';
 import {
   assertArray,
   assertArrayShape,
@@ -26,7 +27,6 @@ import type {
 
 import type { AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
-import type { Layout } from '../core/heatmap/models';
 import type { AxisDef, DatasetInfo, NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(

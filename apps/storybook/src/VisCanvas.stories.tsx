@@ -34,9 +34,9 @@ LogScales.args = {
 
 export const AspectRatio = Template.bind({});
 AspectRatio.args = {
-  abscissaConfig: { visDomain: [0, 16], showGrid: true, isIndexAxis: true },
+  abscissaConfig: { visDomain: [0, 20], showGrid: true, isIndexAxis: true },
   ordinateConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
-  canvasRatio: 16 / 10,
+  visRatio: 20 / 10,
 };
 
 export const NoGrid = Template.bind({});
