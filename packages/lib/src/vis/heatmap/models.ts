@@ -4,7 +4,7 @@ export type D3Interpolator = (t: number) => string;
 
 export type ColorMap = keyof typeof INTERPOLATORS;
 
-export type Layout = 'contain' | 'cover' | 'fill';
+export type Layout = 'cover' | 'fill';
 
 export interface TooltipData {
   abscissa: number;

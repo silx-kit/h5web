@@ -1,3 +1,4 @@
+import type { Layout } from '@h5web/lib';
 import { ImageType } from '@h5web/lib';
 import type { StoreApi } from 'zustand';
 import create from 'zustand';
@@ -5,7 +6,6 @@ import createContext from 'zustand/context';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
-import type { Layout } from '../heatmap/models';
 
 export interface RgbVisConfig {
   showGrid: boolean;

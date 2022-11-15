@@ -84,7 +84,6 @@ function HeatmapVis(props: Props) {
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
         title={title}
-        canvasRatio={layout === 'contain' ? cols / rows : undefined}
         visRatio={keepRatio ? cols / rows : undefined}
         abscissaConfig={{
           visDomain: abscissaDomain,
