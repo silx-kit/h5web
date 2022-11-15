@@ -1,4 +1,3 @@
-import type { Layout } from '@h5web/lib';
 import {
   assertArray,
   assertArrayShape,
@@ -248,15 +247,15 @@ export function getDatasetInfo(
   };
 }
 
-export function getBestLayout(
+export function guessKeepRatio(
   xAxisDef: AxisDef | undefined,
   yAxisDef: AxisDef | undefined
-): Layout | undefined {
+): boolean | undefined {
   if (!xAxisDef?.unit && !yAxisDef?.unit) {
     return undefined;
   }
 
-  return xAxisDef?.unit === yAxisDef?.unit ? 'cover' : 'fill';
+  return xAxisDef?.unit === yAxisDef?.unit;
 }
 
 export function assertNumericSignal(

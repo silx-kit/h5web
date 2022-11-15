@@ -25,7 +25,7 @@ const Template: Story<SelectToZoomProps> = (args) => {
     <VisCanvas
       abscissaConfig={{ visDomain: [-5, 5], showGrid: true }}
       ordinateConfig={{ visDomain: [-0.5, 1.5], showGrid: true }}
-      visRatio={keepRatio ? cols / rows : undefined}
+      aspect={keepRatio ? 'equal' : 'auto'}
     >
       <Pan />
       <Zoom />

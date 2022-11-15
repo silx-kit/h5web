@@ -17,6 +17,8 @@ export interface Size {
   height: number;
 }
 
+export type Aspect = 'auto' | 'equal' | number;
+
 export type Bound = 'min' | 'max';
 export type CustomDomain = [number | null, number | null]; // `null` for persistability
 

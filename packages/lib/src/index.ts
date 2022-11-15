@@ -128,6 +128,7 @@ export { MouseButton } from './interactions/models';
 export type { Domain, Dims } from '@h5web/shared';
 
 export type {
+  Aspect,
   DomainErrors,
   CustomDomain,
   Size,
@@ -137,7 +138,7 @@ export type {
   HistogramParams,
 } from './vis/models';
 
-export type { D3Interpolator, ColorMap, Layout } from './vis/heatmap/models';
+export type { D3Interpolator, ColorMap } from './vis/heatmap/models';
 export type { ScatterAxisParams } from './vis/scatter/models';
 
 // Mock data and utilities

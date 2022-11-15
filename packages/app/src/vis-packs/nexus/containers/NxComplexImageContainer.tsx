@@ -10,7 +10,7 @@ import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { useNxData } from '../hooks';
-import { assertComplexSignal, getBestLayout } from '../utils';
+import { assertComplexSignal, guessKeepRatio } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -30,7 +30,7 @@ function NxComplexImageContainer(props: VisContainerProps) {
   const config = useComplexConfig();
   const heatmapConfig = useHeatmapConfig({
     scaleType: silxStyle.signalScaleType,
-    layout: getBestLayout(xAxisDef, yAxisDef),
+    keepRatio: guessKeepRatio(xAxisDef, yAxisDef),
   });
 
   return (

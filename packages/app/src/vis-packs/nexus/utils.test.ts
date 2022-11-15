@@ -1,30 +1,30 @@
 import { intType, makeDataset } from '@h5web/shared/src/mock/metadata-utils';
 
-import { getBestLayout } from './utils';
+import { guessKeepRatio } from './utils';
 
 const dataset = makeDataset('foo', intType, [5]);
 const defNoUnit = { label: 'foo', unit: undefined, dataset };
 const defUnitX = { label: 'foo', unit: 'mm', dataset };
 const defUnitY = { label: 'foo', unit: 'degrees', dataset };
 
-describe('getBestLayout', () => {
+describe('guessKeepRatio', () => {
   it('should return `cover` if units of both axes are provided and equal', () => {
-    expect(getBestLayout(defUnitX, defUnitX)).toBe('cover');
+    expect(guessKeepRatio(defUnitX, defUnitX)).toBe(true);
   });
 
   it('should return `fill` if units of both axes are provided but different', () => {
-    expect(getBestLayout(defUnitX, defUnitY)).toBe('fill');
+    expect(guessKeepRatio(defUnitX, defUnitY)).toBe(false);
   });
 
   it('should return `fill` if unit is provided for only one axis', () => {
-    expect(getBestLayout(defUnitX, undefined)).toBe('fill');
-    expect(getBestLayout(undefined, defUnitY)).toBe('fill');
+    expect(guessKeepRatio(defUnitX, undefined)).toBe(false);
+    expect(guessKeepRatio(undefined, defUnitY)).toBe(false);
   });
 
   it('should return `undefined` if both axis defs/units are undefined', () => {
-    expect(getBestLayout(undefined, undefined)).toBeUndefined();
-    expect(getBestLayout(defNoUnit, undefined)).toBeUndefined();
-    expect(getBestLayout(undefined, defNoUnit)).toBeUndefined();
-    expect(getBestLayout(defNoUnit, defNoUnit)).toBeUndefined();
+    expect(guessKeepRatio(undefined, undefined)).toBeUndefined();
+    expect(guessKeepRatio(defNoUnit, undefined)).toBeUndefined();
+    expect(guessKeepRatio(undefined, defNoUnit)).toBeUndefined();
+    expect(guessKeepRatio(defNoUnit, defNoUnit)).toBeUndefined();
   });
 });

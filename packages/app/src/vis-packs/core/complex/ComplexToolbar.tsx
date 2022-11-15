@@ -31,19 +31,19 @@ function ComplexToolbar(props: Props) {
     customDomain,
     colorMap,
     scaleType,
-    layout,
+    keepRatio,
     showGrid,
     invertColorMap,
     setCustomDomain,
     setColorMap,
     setScaleType,
-    setLayout,
+    toggleKeepRatio,
     toggleGrid,
     toggleColorMapInversion,
   } = heatmapConfig;
 
   return (
-    <Toolbar interactions={getImageInteractions(layout)}>
+    <Toolbar interactions={getImageInteractions(keepRatio)}>
       <DomainSlider
         dataDomain={dataDomain}
         customDomain={customDomain}
@@ -89,8 +89,8 @@ function ComplexToolbar(props: Props) {
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
-        value={layout === 'cover'}
-        onToggle={() => setLayout(layout === 'cover' ? 'fill' : 'cover')}
+        value={keepRatio}
+        onToggle={toggleKeepRatio}
       />
       <ToggleBtn
         label="Grid"

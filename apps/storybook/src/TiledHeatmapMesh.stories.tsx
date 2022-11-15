@@ -178,10 +178,7 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
     <VisCanvas
       abscissaConfig={abscissaConfig}
       ordinateConfig={ordinateConfig}
-      visRatio={Math.abs(
-        (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]) /
-          (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0])
-      )}
+      aspect="equal"
       showAxes={showAxes}
     >
       <Pan />
@@ -308,10 +305,7 @@ export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
     <VisCanvas
       abscissaConfig={abscissaConfig}
       ordinateConfig={ordinateConfig}
-      visRatio={Math.abs(
-        (abscissaConfig.visDomain[1] - abscissaConfig.visDomain[0]) /
-          (ordinateConfig.visDomain[1] - ordinateConfig.visDomain[0])
-      )}
+      aspect="equal"
     >
       <Pan />
       <Zoom />

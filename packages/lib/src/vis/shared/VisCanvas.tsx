@@ -3,8 +3,8 @@ import type { PropsWithChildren } from 'react';
 import { useRef } from 'react';
 
 import InteractionsProvider from '../../interactions/InteractionsProvider';
-import type { AxisConfig } from '../models';
-import { getAxisOffsets } from '../utils';
+import type { Aspect, AxisConfig } from '../models';
+import { getAxisOffsets, getVisRatio } from '../utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
 import RatioEnforcer from './RatioEnforcer';
@@ -16,7 +16,7 @@ const NO_OFFSETS = { left: 0, right: 0, top: 0, bottom: 0 };
 
 interface Props {
   title?: string;
-  visRatio?: number | undefined;
+  aspect?: Aspect;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   raycasterThreshold?: number;
@@ -26,13 +26,15 @@ interface Props {
 function VisCanvas(props: PropsWithChildren<Props>) {
   const {
     title,
-    visRatio,
+    aspect = 'auto',
     abscissaConfig,
     ordinateConfig,
     raycasterThreshold,
     showAxes = true,
     children,
   } = props;
+
+  const visRatio = getVisRatio(aspect, abscissaConfig, ordinateConfig);
 
   const axisOffsets = showAxes
     ? getAxisOffsets({

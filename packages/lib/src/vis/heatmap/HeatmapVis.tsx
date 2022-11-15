@@ -12,7 +12,7 @@ import type { DefaultInteractionsConfig } from '../../interactions/DefaultIntera
 import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
-import type { AxisParams, VisScaleType } from '../models';
+import type { Aspect, AxisParams, VisScaleType } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { DEFAULT_DOMAIN, formatNumType } from '../utils';
@@ -20,14 +20,14 @@ import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
 import { usePixelEdgeValues, useTextureSafeNdArray } from './hooks';
-import type { ColorMap, Layout, TooltipData } from './models';
+import type { ColorMap, TooltipData } from './models';
 
 interface Props {
   dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
   scaleType?: VisScaleType;
-  layout?: Layout;
+  aspect?: Aspect;
   showGrid?: boolean;
   title?: string;
   dtype?: NumericType;
@@ -47,7 +47,7 @@ function HeatmapVis(props: Props) {
     domain = DEFAULT_DOMAIN,
     colorMap = 'Viridis',
     scaleType = ScaleType.Linear,
-    layout = 'cover',
+    aspect = 'equal',
     showGrid = false,
     invertColorMap = false,
     title,
@@ -78,13 +78,11 @@ function HeatmapVis(props: Props) {
   const safeDataArray = useTextureSafeNdArray(dataArray);
   const safeAlphaArray = useTextureSafeNdArray(alpha?.array);
 
-  const keepRatio = layout !== 'fill';
-
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
         title={title}
-        visRatio={keepRatio ? cols / rows : undefined}
+        aspect={aspect}
         abscissaConfig={{
           visDomain: abscissaDomain,
           showGrid,
@@ -99,7 +97,7 @@ function HeatmapVis(props: Props) {
           flip: flipYAxis,
         }}
       >
-        <DefaultInteractions keepRatio={keepRatio} {...interactions} />
+        <DefaultInteractions keepRatio={aspect !== 'auto'} {...interactions} />
         <ResetZoomButton />
 
         <TooltipMesh
