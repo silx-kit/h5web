@@ -26,6 +26,7 @@ import type {
   ScaleGammaConfig,
   VisxScaleConfig,
   VisScaleType,
+  Aspect,
 } from './models';
 import { H5WEB_SCALES } from './scales';
 
@@ -266,6 +267,24 @@ export function getCombinedDomain(
     Math.min(accDomain[0], nextDomain[0]),
     Math.max(accDomain[1], nextDomain[1]),
   ]);
+}
+
+export function getVisRatio(
+  aspect: Aspect,
+  abscissaConfig: AxisConfig,
+  ordinateConfig: AxisConfig
+): number | undefined {
+  if (aspect === 'auto') {
+    return undefined;
+  }
+
+  if (aspect === 'equal') {
+    const [xMin, xMax] = abscissaConfig.visDomain;
+    const [yMin, yMax] = ordinateConfig.visDomain;
+    return Math.abs(xMax - xMin) / Math.abs(yMax - yMin);
+  }
+
+  return aspect;
 }
 
 export function getAxisOffsets(

@@ -31,7 +31,7 @@ function MappedRgbVis(props: Props) {
     config,
   } = props;
 
-  const { showGrid, layout, imageType } = config;
+  const { showGrid, keepRatio, imageType } = config;
   const { shape: dims } = dataset;
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
@@ -47,7 +47,7 @@ function MappedRgbVis(props: Props) {
         dataArray={dataArray}
         title={title}
         showGrid={showGrid}
-        layout={layout}
+        aspect={keepRatio ? 'equal' : 'auto'}
         imageType={imageType}
         abscissaParams={{
           label: axisLabels?.[xDimIndex],

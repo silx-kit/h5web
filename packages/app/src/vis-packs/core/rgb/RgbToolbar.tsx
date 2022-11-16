@@ -13,11 +13,17 @@ import { getImageInteractions } from '../utils';
 import { useRgbConfig } from './config';
 
 function RgbToolbar() {
-  const { layout, setLayout, showGrid, toggleGrid, imageType, setImageType } =
-    useRgbConfig((state) => state, shallow);
+  const {
+    imageType,
+    keepRatio,
+    showGrid,
+    setImageType,
+    toggleKeepRatio,
+    toggleGrid,
+  } = useRgbConfig((state) => state, shallow);
 
   return (
-    <Toolbar interactions={getImageInteractions(layout)}>
+    <Toolbar interactions={getImageInteractions(keepRatio)}>
       <ToggleGroup
         role="radiogroup"
         ariaLabel="Image type"
@@ -35,8 +41,8 @@ function RgbToolbar() {
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
-        value={layout === 'cover'}
-        onToggle={() => setLayout(layout === 'cover' ? 'fill' : 'cover')}
+        value={keepRatio}
+        onToggle={toggleKeepRatio}
       />
 
       <GridToggler value={showGrid} onToggle={toggleGrid} />

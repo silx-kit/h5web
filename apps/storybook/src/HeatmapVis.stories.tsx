@@ -123,7 +123,7 @@ export default {
   args: {
     colorMap: 'Viridis',
     scaleType: ScaleType.Linear,
-    layout: 'cover',
+    aspect: 'equal',
     showGrid: true,
   },
   argTypes: {
@@ -140,9 +140,9 @@ export default {
         ScaleType.Sqrt,
       ],
     },
-    layout: {
+    aspect: {
       control: { type: 'inline-radio' },
-      options: ['cover', 'fill'],
+      options: ['auto', 'equal'],
     },
   },
 } as Meta;

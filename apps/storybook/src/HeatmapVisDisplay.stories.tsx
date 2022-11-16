@@ -15,11 +15,18 @@ const domain = getDomain(dataArray.data);
 
 const Template: Story<HeatmapVisProps> = (args) => <HeatmapVis {...args} />;
 
-export const Fill = Template.bind({});
-Fill.args = {
+export const AutoAspectRatio = Template.bind({});
+AutoAspectRatio.args = {
   dataArray,
   domain,
-  layout: 'fill',
+  aspect: 'auto',
+};
+
+export const CustomAspectRatio = Template.bind({});
+CustomAspectRatio.args = {
+  dataArray,
+  domain,
+  aspect: 1,
 };
 
 export const FlipYAxis = Template.bind({});

@@ -10,9 +10,8 @@ import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import styles from '../heatmap/HeatmapVis.module.css';
 import { usePixelEdgeValues } from '../heatmap/hooks';
-import type { Layout } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
-import type { AxisParams } from '../models';
+import type { Aspect, AxisParams } from '../models';
 import VisCanvas from '../shared/VisCanvas';
 import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
@@ -20,7 +19,7 @@ import { toRgbSafeNdArray } from './utils';
 
 interface Props {
   dataArray: NdArray<NumArray>;
-  layout?: Layout;
+  aspect?: Aspect;
   showGrid?: boolean;
   title?: string;
   imageType?: ImageType;
@@ -33,7 +32,7 @@ interface Props {
 function RgbVis(props: Props) {
   const {
     dataArray,
-    layout = 'cover',
+    aspect = 'equal',
     showGrid = false,
     title,
     imageType = ImageType.RGB,
@@ -57,13 +56,11 @@ function RgbVis(props: Props) {
 
   const safeDataArray = useMemo(() => toRgbSafeNdArray(dataArray), [dataArray]);
 
-  const keepRatio = layout !== 'fill';
-
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
       <VisCanvas
         title={title}
-        visRatio={keepRatio ? cols / rows : undefined}
+        aspect={aspect}
         abscissaConfig={{
           visDomain: abscissaDomain,
           showGrid,
@@ -78,7 +75,7 @@ function RgbVis(props: Props) {
           label: ordinateLabel,
         }}
       >
-        <DefaultInteractions keepRatio={keepRatio} {...interactions} />
+        <DefaultInteractions keepRatio={aspect !== 'auto'} {...interactions} />
         <ResetZoomButton />
 
         <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />

@@ -51,7 +51,7 @@ function MappedComplexVis(props: Props) {
     customDomain,
     colorMap,
     scaleType,
-    layout,
+    keepRatio,
     showGrid,
     invertColorMap,
   } = heatmapConfig;
@@ -100,7 +100,7 @@ function MappedComplexVis(props: Props) {
         title={`${title} (${visType.toLowerCase()})`}
         colorMap={colorMap}
         scaleType={scaleType}
-        layout={layout}
+        aspect={keepRatio ? 'equal' : 'auto'}
         showGrid={showGrid}
         invertColorMap={invertColorMap}
         abscissaParams={{

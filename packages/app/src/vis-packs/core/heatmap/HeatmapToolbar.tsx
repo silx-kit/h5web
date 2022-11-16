@@ -33,21 +33,21 @@ function HeatmapToolbar(props: Props) {
     customDomain,
     colorMap,
     scaleType,
-    layout,
+    keepRatio,
     showGrid,
     invertColorMap,
     flipYAxis,
     setCustomDomain,
     setColorMap,
     setScaleType,
-    setLayout,
+    toggleKeepRatio,
     toggleGrid,
     toggleColorMapInversion,
     toggleYAxisFlip,
   } = config;
 
   return (
-    <Toolbar interactions={getImageInteractions(layout)}>
+    <Toolbar interactions={getImageInteractions(keepRatio)}>
       <DomainSlider
         dataDomain={dataDomain}
         customDomain={customDomain}
@@ -83,8 +83,8 @@ function HeatmapToolbar(props: Props) {
       <ToggleBtn
         label="Keep ratio"
         icon={MdAspectRatio}
-        value={layout === 'cover'}
-        onToggle={() => setLayout(layout === 'cover' ? 'fill' : 'cover')}
+        value={keepRatio}
+        onToggle={toggleKeepRatio}
       />
 
       <GridToggler value={showGrid} onToggle={toggleGrid} />

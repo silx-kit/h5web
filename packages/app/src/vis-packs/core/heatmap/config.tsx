@@ -1,4 +1,4 @@
-import type { CustomDomain, Layout } from '@h5web/lib';
+import type { CustomDomain } from '@h5web/lib';
 import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
 import type { StoreApi } from 'zustand';
@@ -25,8 +25,8 @@ export interface HeatmapConfig {
   showGrid: boolean;
   toggleGrid: () => void;
 
-  layout: Layout;
-  setLayout: (layout: Layout) => void;
+  keepRatio: boolean;
+  toggleKeepRatio: () => void;
 
   flipYAxis: boolean;
   toggleYAxisFlip: () => void;
@@ -55,8 +55,9 @@ function createStore() {
         showGrid: true,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
-        layout: 'cover',
-        setLayout: (layout: Layout) => set({ layout }),
+        keepRatio: true,
+        toggleKeepRatio: () =>
+          set((state) => ({ keepRatio: !state.keepRatio })),
 
         flipYAxis: false,
         toggleYAxisFlip: () =>
@@ -79,7 +80,7 @@ export function HeatmapConfigProvider(props: ConfigProviderProps) {
 
 export function useHeatmapConfig(
   initialSuggestedOpts: Partial<
-    Pick<HeatmapConfig, 'scaleType' | 'layout'>
+    Pick<HeatmapConfig, 'scaleType' | 'keepRatio'>
   > = {}
 ): HeatmapConfig {
   const suggestedOpts = useMap(
@@ -87,8 +88,10 @@ export function useHeatmapConfig(
   );
 
   const persistedConfig = useStore();
-  const { setScaleType: setPersistedScaleType, setLayout: setPersistedLayout } =
-    persistedConfig;
+  const {
+    setScaleType: setPersistedScaleType,
+    toggleKeepRatio: togglePersistedKeepRatio,
+  } = persistedConfig;
 
   return {
     ...persistedConfig,
@@ -97,9 +100,9 @@ export function useHeatmapConfig(
       setPersistedScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },
-    setLayout: (layout: Layout) => {
-      setPersistedLayout(layout);
-      suggestedOpts.delete('layout');
+    toggleKeepRatio: () => {
+      togglePersistedKeepRatio();
+      suggestedOpts.delete('keepRatio');
     },
   };
 }

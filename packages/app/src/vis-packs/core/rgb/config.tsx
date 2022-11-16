@@ -1,4 +1,3 @@
-import type { Layout } from '@h5web/lib';
 import { ImageType } from '@h5web/lib';
 import type { StoreApi } from 'zustand';
 import create from 'zustand';
@@ -11,8 +10,8 @@ export interface RgbVisConfig {
   showGrid: boolean;
   toggleGrid: () => void;
 
-  layout: Layout;
-  setLayout: (layout: Layout) => void;
+  keepRatio: boolean;
+  toggleKeepRatio: () => void;
 
   imageType: ImageType;
   setImageType: (channels: ImageType) => void;
@@ -25,8 +24,9 @@ function createStore() {
         showGrid: false,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
-        layout: 'cover',
-        setLayout: (layout: Layout) => set({ layout }),
+        keepRatio: true,
+        toggleKeepRatio: () =>
+          set((state) => ({ keepRatio: !state.keepRatio })),
 
         imageType: ImageType.RGB,
         setImageType: (imageType: ImageType) => set({ imageType }),

@@ -1,4 +1,3 @@
-import type { Layout } from '@h5web/lib';
 import type { Domain } from '@h5web/shared';
 import { createArrayFromView } from '@h5web/shared';
 import { isNumber } from 'lodash';
@@ -81,6 +80,6 @@ export function getSliceSelection(
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
 }
 
-export function getImageInteractions(layout: Layout) {
-  return layout === 'fill' ? INTERACTIONS_WITH_AXIAL_ZOOM : BASE_INTERACTIONS;
+export function getImageInteractions(keepRatio: boolean) {
+  return keepRatio ? INTERACTIONS_WITH_AXIAL_ZOOM : BASE_INTERACTIONS;
 }
