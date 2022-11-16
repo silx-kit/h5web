@@ -1,12 +1,13 @@
 import { Canvas } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
-import { useRef } from 'react';
+import { useState } from 'react';
 
 import InteractionsProvider from '../../interactions/InteractionsProvider';
 import type { Aspect, AxisConfig } from '../models';
 import { getAxisOffsets, getVisRatio } from '../utils';
 import AxisSystem from './AxisSystem';
 import AxisSystemProvider from './AxisSystemProvider';
+import Html from './Html';
 import RatioEnforcer from './RatioEnforcer';
 import ThresholdAdjuster from './ThresholdAdjuster';
 import ViewportCenterer from './ViewportCenterer';
@@ -44,7 +45,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
       })
     : NO_OFFSETS;
 
-  const floatingToolbarRef = useRef<HTMLDivElement>(null);
+  const [floatingToolbar, setFloatingToolbar] = useState<HTMLDivElement>();
 
   return (
     <div
@@ -71,7 +72,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
           visRatio={visRatio}
           abscissaConfig={abscissaConfig}
           ordinateConfig={ordinateConfig}
-          floatingToolbar={floatingToolbarRef.current}
+          floatingToolbar={floatingToolbar}
         >
           <InteractionsProvider>
             <AxisSystem
@@ -87,9 +88,13 @@ function VisCanvas(props: PropsWithChildren<Props>) {
             )}
           </InteractionsProvider>
         </AxisSystemProvider>
+        <Html>
+          <div
+            ref={(elem) => setFloatingToolbar(elem || undefined)}
+            className={styles.floatingToolbar}
+          />
+        </Html>
       </Canvas>
-
-      <div ref={floatingToolbarRef} className={styles.floatingToolbar} />
     </div>
   );
 }

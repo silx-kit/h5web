@@ -19,7 +19,7 @@ export interface AxisSystemContextValue {
   cameraToHtmlMatrix: Matrix4;
   cameraToHtmlMatrixInverse: Matrix4;
   cameraToHtml: (vec: Vector2 | Vector3) => Vector2;
-  floatingToolbar: HTMLDivElement | null;
+  floatingToolbar: HTMLDivElement | undefined;
 }
 
 const AxisSystemContext = createContext({} as AxisSystemContextValue);
@@ -32,7 +32,7 @@ interface Props {
   visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
-  floatingToolbar: HTMLDivElement | null;
+  floatingToolbar: HTMLDivElement | undefined;
 }
 
 function AxisSystemProvider(props: PropsWithChildren<Props>) {

@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 
 interface Props {
-  overflowCanvas?: boolean;
+  overflowCanvas?: boolean; // allow children to overflow above axes
   container?: HTMLElement;
   children?: ReactNode;
 }
@@ -19,8 +19,8 @@ function Html(props: Props) {
   const r3fRoot = useThree((state) => state.gl.domElement.parentElement);
   const canvasWrapper = r3fRoot?.parentElement;
 
-  // Choose DOM container in which to append `renderTarget` to control overflow
-  // (`r3fRoot` means `Html` children won't be allowed to overflow above the axes)
+  // Choose DOM container to which to append `renderTarget`
+  // (with `canvasWrapper`, `Html` children are allowed to overflow above the axes)
   const container =
     customContainer || (overflowCanvas ? canvasWrapper : r3fRoot);
 
