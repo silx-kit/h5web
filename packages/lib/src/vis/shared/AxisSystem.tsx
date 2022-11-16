@@ -25,7 +25,7 @@ function AxisSystem(props: Props) {
   );
 
   return (
-    // Append to `canvasWrapper` instead of default container `r3fRoot`, which hides overflow
+    // Append to `canvasWrapper` instead of `r3fRoot`
     <Html overflowCanvas>
       <div
         className={styles.axisSystem}
