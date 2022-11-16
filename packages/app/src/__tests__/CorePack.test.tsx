@@ -140,3 +140,34 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
   jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });
+
+test('show interactions help for heatmap according to "keep ratio"', async () => {
+  const { user } = await renderApp();
+
+  const helpBtn = await screen.findByRole('button', { name: 'Show help' });
+  const keepRatioBtn = await screen.findByRole('button', {
+    name: 'Keep ratio',
+  });
+
+  // By default, "keep ratio" should be enabled
+  expect(keepRatioBtn).toHaveAttribute('aria-pressed', 'true');
+
+  // Since "keep ratio" is enabled, only basic interactions should be available (no axial-zoom interactions)
+  await user.click(helpBtn);
+
+  await expect(screen.findByText('Pan')).resolves.toBeVisible();
+  await expect(screen.findByText('Select to zoom')).resolves.toBeVisible();
+  await expect(screen.findByText('Zoom')).resolves.toBeVisible();
+
+  expect(screen.queryByText(/zoom in x/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/zoom in y/i)).not.toBeInTheDocument();
+
+  // Toggle "keep ratio" and check that axial-zoom interactions are now available
+  await user.click(keepRatioBtn);
+  await user.click(helpBtn);
+
+  await expect(screen.findByText('Zoom in X')).resolves.toBeVisible();
+  await expect(screen.findByText('Zoom in Y')).resolves.toBeVisible();
+  await expect(screen.findByText('Select to zoom in X')).resolves.toBeVisible();
+  await expect(screen.findByText('Select to zoom in Y')).resolves.toBeVisible();
+});

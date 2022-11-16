@@ -81,5 +81,5 @@ export function getSliceSelection(
 }
 
 export function getImageInteractions(keepRatio: boolean) {
-  return keepRatio ? INTERACTIONS_WITH_AXIAL_ZOOM : BASE_INTERACTIONS;
+  return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
 }
