@@ -97,7 +97,7 @@ function HeatmapVis(props: Props) {
           flip: flipYAxis,
         }}
       >
-        <DefaultInteractions keepRatio={aspect !== 'auto'} {...interactions} />
+        <DefaultInteractions {...interactions} />
         <ResetZoomButton />
 
         <TooltipMesh

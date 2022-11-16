@@ -9,14 +9,13 @@ import { useMoveCameraTo } from './hooks';
 import type { CommonInteractionProps, Selection } from './models';
 import { getEnclosedRectangle, getRatioRespectingRectangle } from './utils';
 
-interface Props extends CommonInteractionProps {
-  keepRatio?: boolean;
-}
+type Props = CommonInteractionProps;
 
 function SelectToZoom(props: Props) {
-  const { keepRatio, ...interactionProps } = props;
-
   const context = useAxisSystemContext();
+  const { visRatio } = context;
+  const keepRatio = visRatio !== undefined;
+
   const moveCameraTo = useMoveCameraTo();
 
   const { width, height } = useThree((state) => state.size);
@@ -59,11 +58,7 @@ function SelectToZoom(props: Props) {
   }
 
   return (
-    <SelectionTool
-      id="SelectToZoom"
-      onSelectionEnd={onSelectionEnd}
-      {...interactionProps}
-    >
+    <SelectionTool id="SelectToZoom" onSelectionEnd={onSelectionEnd} {...props}>
       {({ startPoint, endPoint }) => {
         const dataRatio = getDataRatio();
 

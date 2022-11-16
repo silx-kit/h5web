@@ -8,6 +8,7 @@ import { getCanvasScale, getSizeToFit } from '../utils';
 
 export interface AxisSystemContextValue {
   visSize: Size;
+  visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   abscissaScale: AxisScale;
@@ -79,6 +80,7 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     <AxisSystemContext.Provider
       value={{
         visSize,
+        visRatio,
         abscissaConfig,
         ordinateConfig,
         abscissaScale,

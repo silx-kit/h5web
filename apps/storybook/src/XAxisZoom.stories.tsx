@@ -7,8 +7,8 @@ import FillHeight from './decorators/FillHeight';
 const Template: Story<XAxisZoomProps> = (args) => {
   return (
     <VisCanvas
-      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+      abscissaConfig={{ visDomain: [0, 10], showGrid: true }}
+      ordinateConfig={{ visDomain: [0, 10], showGrid: true }}
     >
       <Pan />
       <XAxisZoom {...args} />
@@ -32,6 +32,20 @@ MultipleModifierKeys.args = {
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
+};
+
+export const DisabledInsideEqualAspectCanvas: Story<XAxisZoomProps> = (
+  args
+) => {
+  return (
+    <VisCanvas
+      abscissaConfig={{ visDomain: [0, 10], showGrid: true }}
+      ordinateConfig={{ visDomain: [0, 10], showGrid: true }}
+      aspect="equal"
+    >
+      <XAxisZoom {...args} />
+    </VisCanvas>
+  );
 };
 
 export default {
