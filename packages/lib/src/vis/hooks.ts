@@ -10,8 +10,8 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 
-import { useAxisSystemContext } from './shared/AxisSystemProvider';
-import type { AxisSystemContextValue } from './shared/AxisSystemProvider';
+import { useVisCanvasContext } from './shared/VisCanvasProvider';
+import type { VisCanvasContextValue } from './shared/VisCanvasProvider';
 import {
   getAxisDomain,
   getAxisValues,
@@ -56,11 +56,11 @@ export function useDomains(
 }
 
 export function useCameraState<T>(
-  factory: (camera: Camera, context: AxisSystemContextValue) => T,
+  factory: (camera: Camera, context: VisCanvasContextValue) => T,
   deps: unknown[]
 ): T {
   const camera = useThree((state) => state.camera);
-  const context = useAxisSystemContext();
+  const context = useVisCanvasContext();
 
   const [state, setState] = useState(() => factory(camera, context));
 

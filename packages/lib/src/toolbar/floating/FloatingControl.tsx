@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-import { useAxisSystemContext } from '../../vis/shared/AxisSystemProvider';
 import Html from '../../vis/shared/Html';
+import { useVisCanvasContext } from '../../vis/shared/VisCanvasProvider';
 
 interface Props {
   children?: ReactNode;
@@ -10,7 +10,7 @@ interface Props {
 
 function FloatingControl(props: Props) {
   const { children } = props;
-  const { floatingToolbar } = useAxisSystemContext();
+  const { floatingToolbar } = useVisCanvasContext();
 
   if (!floatingToolbar) {
     return null;

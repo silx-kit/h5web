@@ -6,12 +6,12 @@ import InteractionsProvider from '../../interactions/InteractionsProvider';
 import type { Aspect, AxisConfig } from '../models';
 import { getAxisOffsets, getVisRatio } from '../utils';
 import AxisSystem from './AxisSystem';
-import AxisSystemProvider from './AxisSystemProvider';
 import Html from './Html';
 import RatioEnforcer from './RatioEnforcer';
 import ThresholdAdjuster from './ThresholdAdjuster';
 import ViewportCenterer from './ViewportCenterer';
 import styles from './VisCanvas.module.css';
+import VisCanvasProvider from './VisCanvasProvider';
 
 const NO_OFFSETS = { left: 0, right: 0, top: 0, bottom: 0 };
 
@@ -68,26 +68,24 @@ function VisCanvas(props: PropsWithChildren<Props>) {
         resize={{ debounce: { scroll: 20, resize: 200 }, scroll: false }} // https://github.com/pmndrs/react-three-fiber/discussions/1906
       >
         <ambientLight />
-        <AxisSystemProvider
+        <VisCanvasProvider
           visRatio={visRatio}
           abscissaConfig={abscissaConfig}
           ordinateConfig={ordinateConfig}
           floatingToolbar={floatingToolbar}
         >
-          <InteractionsProvider>
-            <AxisSystem
-              axisOffsets={axisOffsets}
-              title={title}
-              showAxes={showAxes}
-            />
-            {children}
-            <ViewportCenterer />
-            <RatioEnforcer visRatio={visRatio} />
-            {raycasterThreshold !== undefined && (
-              <ThresholdAdjuster value={raycasterThreshold} />
-            )}
-          </InteractionsProvider>
-        </AxisSystemProvider>
+          <AxisSystem
+            axisOffsets={axisOffsets}
+            title={title}
+            showAxes={showAxes}
+          />
+          <InteractionsProvider>{children}</InteractionsProvider>
+          <ViewportCenterer />
+          <RatioEnforcer />
+          {raycasterThreshold !== undefined && (
+            <ThresholdAdjuster value={raycasterThreshold} />
+          )}
+        </VisCanvasProvider>
         <Html>
           <div
             ref={(elem) => setFloatingToolbar(elem || undefined)}

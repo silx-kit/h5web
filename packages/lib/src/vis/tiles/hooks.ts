@@ -1,13 +1,13 @@
 import type { ThreeEvent } from '@react-three/fiber';
 import { useCallback } from 'react';
 
-import { useAxisSystemContext } from '../shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import type { TileArray } from './models';
 import { useTooltipStore } from './store';
 
 export function useTooltipOnMoveHandler() {
   const setTooltipValue = useTooltipStore((state) => state.setTooltipValue);
-  const { worldToData } = useAxisSystemContext();
+  const { worldToData } = useVisCanvasContext();
 
   return useCallback(
     (evt: ThreeEvent<MouseEvent>, array: TileArray) => {

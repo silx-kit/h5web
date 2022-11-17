@@ -1,7 +1,7 @@
 import type { MeshProps } from '@react-three/fiber';
 
 import type { Size } from '../models';
-import { useAxisSystemContext } from './AxisSystemProvider';
+import { useVisCanvasContext } from './VisCanvasProvider';
 
 interface Props extends MeshProps {
   size?: Size;
@@ -10,7 +10,7 @@ interface Props extends MeshProps {
 function VisMesh(props: Props) {
   const { children, size, ...meshProps } = props;
 
-  const { visSize } = useAxisSystemContext();
+  const { visSize } = useVisCanvasContext();
   const { width, height } = size ?? visSize;
 
   return (

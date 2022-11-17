@@ -4,15 +4,15 @@ import { Meta } from '@storybook/addon-docs';
 
 ## Context
 
-Children of `VisCanvas` have access to `AxisSystemContext`, which provides helpful utilities to convert vectors from data space to world space and back.
+Children of `VisCanvas` have access to `VisCanvasContext`, which provides helpful utilities to convert vectors from data space to world space and back.
 It also exposes the size and ratio of the canvas and of the visualization, as well as the axis configs passed to `VisCanvas`.
 
-Consumers of `AxisSystemContext` re-render **whenever the size of the canvas changes**.
+Consumers of `VisCanvasContext` re-render **whenever the size of the canvas changes**.
 
 ```ts
-useAxisSystemContext(): AxisSystemContextValue
+useVisCanvasContext(): VisCanvasContextValue
 
-const { visSize, dataToWorld, worldToData } = useAxisSystemContext();
+const { visSize, dataToWorld, worldToData } = useVisCanvasContext();
 ```
 
 | Name             | Description                                                                                                                                                       | Type                                                  |

@@ -67,8 +67,8 @@ export type { SelectionProps } from './interactions/SelectionTool';
 export type { DefaultInteractionsConfig } from './interactions/DefaultInteractions';
 
 // Context
-export { useAxisSystemContext } from './vis/shared/AxisSystemProvider';
-export type { AxisSystemContextValue } from './vis/shared/AxisSystemProvider';
+export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';
+export type { VisCanvasContextValue } from './vis/shared/VisCanvasProvider';
 
 // Utilities
 export {

@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import RatioSelectionRect from './RatioSelectionRect';
 import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
@@ -12,7 +12,7 @@ type Props = CommonInteractionProps;
 
 function SelectToZoom(props: Props) {
   const { canvasSize, canvasRatio, visRatio, dataToWorld } =
-    useAxisSystemContext();
+    useVisCanvasContext();
 
   const { width, height } = canvasSize;
   const keepRatio = visRatio !== undefined;

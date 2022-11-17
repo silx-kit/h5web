@@ -6,7 +6,7 @@ import { Matrix4, Vector2, Vector3 } from 'three';
 import type { AxisConfig, AxisScale, Size } from '../models';
 import { getCanvasScale, getSizeToFit } from '../utils';
 
-export interface AxisSystemContextValue {
+export interface VisCanvasContextValue {
   canvasSize: Size;
   canvasRatio: number;
   visRatio: number | undefined;
@@ -25,10 +25,10 @@ export interface AxisSystemContextValue {
   floatingToolbar: HTMLDivElement | undefined;
 }
 
-const AxisSystemContext = createContext({} as AxisSystemContextValue);
+const VisCanvasContext = createContext({} as VisCanvasContextValue);
 
-export function useAxisSystemContext() {
-  return useContext(AxisSystemContext);
+export function useVisCanvasContext() {
+  return useContext(VisCanvasContext);
 }
 
 interface Props {
@@ -38,7 +38,7 @@ interface Props {
   floatingToolbar: HTMLDivElement | undefined;
 }
 
-function AxisSystemProvider(props: PropsWithChildren<Props>) {
+function VisCanvasProvider(props: PropsWithChildren<Props>) {
   const {
     visRatio,
     abscissaConfig,
@@ -81,7 +81,7 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
   );
 
   return (
-    <AxisSystemContext.Provider
+    <VisCanvasContext.Provider
       value={{
         canvasSize,
         canvasRatio,
@@ -100,8 +100,8 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
       }}
     >
       {children}
-    </AxisSystemContext.Provider>
+    </VisCanvasContext.Provider>
   );
 }
 
-export default AxisSystemProvider;
+export default VisCanvasProvider;

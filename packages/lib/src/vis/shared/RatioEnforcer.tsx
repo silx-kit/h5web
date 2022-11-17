@@ -2,14 +2,10 @@ import { useThree } from '@react-three/fiber';
 import { useEffect } from 'react';
 
 import { useMoveCameraTo } from '../../interactions/hooks';
+import { useVisCanvasContext } from './VisCanvasProvider';
 
-interface Props {
-  visRatio: number | undefined;
-}
-
-function RatioEnforcer(props: Props) {
-  const { visRatio } = props;
-
+function RatioEnforcer() {
+  const { visRatio } = useVisCanvasContext();
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 

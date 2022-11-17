@@ -4,8 +4,8 @@ import { useCallback } from 'react';
 import type { ReactElement } from 'react';
 
 import type { Coords, Size } from '../models';
-import { useAxisSystemContext } from './AxisSystemProvider';
 import TooltipOverlay from './TooltipOverlay';
+import { useVisCanvasContext } from './VisCanvasProvider';
 import VisMesh from './VisMesh';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 
 function TooltipMesh(props: Props) {
   const { guides, renderTooltip, size } = props;
-  const { canvasSize, worldToData } = useAxisSystemContext();
+  const { canvasSize, worldToData } = useVisCanvasContext();
   const { width, height } = canvasSize;
 
   const {

@@ -17,7 +17,6 @@ import { clamp } from 'lodash';
 import type { IUniform, Vector2 } from 'three';
 import { Vector3 } from 'three';
 
-import type { AxisSystemContextValue } from '../vis/shared/AxisSystemProvider';
 import type {
   Size,
   AxisScale,
@@ -29,6 +28,7 @@ import type {
   Aspect,
 } from './models';
 import { H5WEB_SCALES } from './scales';
+import type { VisCanvasContextValue } from './shared/VisCanvasProvider';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -356,7 +356,7 @@ export function worldToCamera(camera: Camera, worldPt: Vector2 | Vector3) {
 
 export function dataToHtml(
   camera: Camera,
-  context: AxisSystemContextValue,
+  context: VisCanvasContextValue,
   dataPt: Vector2 | Vector3
 ): Vector2 {
   const { dataToWorld, cameraToHtml } = context;
@@ -378,7 +378,7 @@ export function getWorldFOV(camera: Camera): {
 
 export function getVisibleDomains(
   camera: Camera,
-  context: AxisSystemContextValue
+  context: VisCanvasContextValue
 ): {
   xVisibleDomain: Domain;
   yVisibleDomain: Domain;

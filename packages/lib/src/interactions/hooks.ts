@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import { getWorldFOV } from '../vis/utils';
 import { useInteractionsContext } from './InteractionsProvider';
 import type {
@@ -20,7 +20,7 @@ const ONE_VECTOR = new Vector3(1, 1, 1);
 const MODIFIER_KEYS: ModifierKey[] = ['Alt', 'Control', 'Shift'];
 
 export function useMoveCameraTo() {
-  const { visSize } = useAxisSystemContext();
+  const { visSize } = useVisCanvasContext();
 
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
@@ -112,7 +112,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   const { onPointerDown, onPointerMove, onPointerUp, onWheel } = callbacks;
   const { domElement } = useThree((state) => state.gl);
   const camera = useThree((state) => state.camera);
-  const { worldToData, cameraToHtmlMatrixInverse } = useAxisSystemContext();
+  const { worldToData, cameraToHtmlMatrixInverse } = useVisCanvasContext();
 
   const processEvent = useCallback(
     <T extends PointerEvent | WheelEvent>(sourceEvent: T): CanvasEvent<T> => {

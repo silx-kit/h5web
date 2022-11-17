@@ -1,7 +1,7 @@
 import type { ReactNode, CSSProperties } from 'react';
 
-import { useAxisSystemContext } from './AxisSystemProvider';
 import Html from './Html';
+import { useVisCanvasContext } from './VisCanvasProvider';
 
 interface Props {
   children?: ReactNode;
@@ -11,7 +11,7 @@ interface Props {
 
 function Overlay(props: Props) {
   const { children, style, className } = props;
-  const { canvasSize } = useAxisSystemContext();
+  const { canvasSize } = useVisCanvasContext();
 
   return (
     <Html>
