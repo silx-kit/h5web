@@ -1,8 +1,8 @@
-import { useThree } from '@react-three/fiber';
 import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
 import { useCameraState } from '../vis/hooks';
+import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import Overlay from '../vis/shared/Overlay';
 import { dataToHtml } from '../vis/utils';
 
@@ -20,7 +20,7 @@ function SelectionRect(props: Props) {
     ...restSvgProps
   } = props;
 
-  const { width, height } = useThree((state) => state.size);
+  const { canvasSize } = useAxisSystemContext();
 
   const htmlSelection = useCameraState(
     (...args) => ({
@@ -35,7 +35,7 @@ function SelectionRect(props: Props) {
 
   return (
     <Overlay>
-      <svg width={width} height={height}>
+      <svg {...canvasSize}>
         <rect
           x={Math.min(x1, x2)}
           y={Math.min(y1, y2)}

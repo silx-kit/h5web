@@ -13,24 +13,24 @@ interface Props extends SVGProps<SVGRectElement> {
 
 function RatioSelectionRect(props: Props) {
   const { startPoint, endPoint, ratio, ...svgProps } = props;
+  const { visSize, dataToWorld, worldToData } = useAxisSystemContext();
 
-  const { dataToWorld, worldToData, visSize } = useAxisSystemContext();
-
-  const [ratioStartPoint, ratioEndPoint] = getRatioRespectingRectangle(
+  const [dataStartPoint, dataEndPoint] = getRatioRespectingRectangle(
     startPoint,
     endPoint,
     ratio
-  );
-  const [newStartPoint, newEndPoint] = clampRectangleToVis(
-    dataToWorld(ratioStartPoint),
-    dataToWorld(ratioEndPoint),
+  ).map(dataToWorld);
+
+  const [worldStartPoint, worldEndPoint] = clampRectangleToVis(
+    dataStartPoint,
+    dataEndPoint,
     visSize
-  );
+  ).map(worldToData);
 
   return (
     <SelectionRect
-      startPoint={worldToData(newStartPoint)}
-      endPoint={worldToData(newEndPoint)}
+      startPoint={worldStartPoint}
+      endPoint={worldEndPoint}
       {...svgProps}
     />
   );

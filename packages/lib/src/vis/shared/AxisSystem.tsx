@@ -1,5 +1,3 @@
-import { useThree } from '@react-three/fiber';
-
 import { useCameraState } from '../hooks';
 import type { AxisOffsets } from '../models';
 import { getVisibleDomains } from '../utils';
@@ -17,8 +15,7 @@ interface Props {
 function AxisSystem(props: Props) {
   const { axisOffsets, title, showAxes } = props;
 
-  const canvasSize = useThree((state) => state.size);
-  const { abscissaConfig, ordinateConfig } = useAxisSystemContext();
+  const { canvasSize, abscissaConfig, ordinateConfig } = useAxisSystemContext();
   const { xVisibleDomain, yVisibleDomain } = useCameraState(
     getVisibleDomains,
     []

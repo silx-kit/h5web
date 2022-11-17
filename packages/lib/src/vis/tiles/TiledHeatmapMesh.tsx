@@ -1,4 +1,3 @@
-import { useThree } from '@react-three/fiber';
 import { clamp, range } from 'lodash';
 import { useRef } from 'react';
 import type { Object3D } from 'three';
@@ -35,8 +34,7 @@ function TiledHeatmapMesh(props: Props) {
   } = props;
   const { baseLayerIndex, baseLayerSize } = api;
 
-  const canvasSize = useThree((state) => state.size);
-  const { visSize } = useAxisSystemContext();
+  const { canvasSize, visSize } = useAxisSystemContext();
   const meshSize = size ?? visSize;
 
   const groupRef = useRef<Object3D>(null);

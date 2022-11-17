@@ -1,8 +1,8 @@
-import { useThree } from '@react-three/fiber';
 import { Line } from '@visx/shape';
 import { TooltipWithBounds } from '@visx/tooltip';
 import type { ReactNode } from 'react';
 
+import { useAxisSystemContext } from './AxisSystemProvider';
 import Overlay from './Overlay';
 import styles from './TooltipMesh.module.css';
 
@@ -17,7 +17,8 @@ interface Props {
 function TooltipOverlay(props: Props) {
   const { tooltipOpen, tooltipLeft, tooltipTop, guides, children } = props;
 
-  const { width, height } = useThree((state) => state.size);
+  const { canvasSize } = useAxisSystemContext();
+  const { width, height } = canvasSize;
 
   return (
     <Overlay>

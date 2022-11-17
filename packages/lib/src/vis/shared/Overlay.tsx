@@ -1,6 +1,6 @@
-import { useThree } from '@react-three/fiber';
 import type { ReactNode, CSSProperties } from 'react';
 
+import { useAxisSystemContext } from './AxisSystemProvider';
 import Html from './Html';
 
 interface Props {
@@ -11,8 +11,7 @@ interface Props {
 
 function Overlay(props: Props) {
   const { children, style, className } = props;
-
-  const { width, height } = useThree((state) => state.size);
+  const { canvasSize } = useAxisSystemContext();
 
   return (
     <Html>
@@ -22,9 +21,8 @@ function Overlay(props: Props) {
           position: 'absolute',
           top: 0,
           left: 0,
-          width,
-          height,
           pointerEvents: 'none',
+          ...canvasSize,
           ...style,
         }}
       >
