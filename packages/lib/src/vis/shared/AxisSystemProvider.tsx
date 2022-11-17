@@ -9,6 +9,7 @@ import { getCanvasScale, getSizeToFit } from '../utils';
 export interface AxisSystemContextValue {
   visSize: Size;
   visRatio: number | undefined;
+  canvasRatio: number;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   abscissaScale: AxisScale;
@@ -48,6 +49,9 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
   const availableSize = useThree((state) => state.size);
   const visSize = getSizeToFit(availableSize, visRatio);
 
+  const { width, height } = availableSize;
+  const canvasRatio = width / height;
+
   const abscissaScale = getCanvasScale(abscissaConfig, visSize.width);
   const ordinateScale = getCanvasScale(ordinateConfig, visSize.height);
 
@@ -57,11 +61,10 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     new Vector2(abscissaScale(vec.x), ordinateScale(vec.y));
 
   const cameraToHtmlMatrix = useMemo(() => {
-    const { width, height } = availableSize;
     return new Matrix4()
       .makeScale(width / 2, -height / 2, 1) // scale from normalized camera space to HTML space
       .setPosition(width / 2, height / 2, 0); // account for shift of (0,0) position (center for camera, top-left for HTML)
-  }, [availableSize]);
+  }, [width, height]);
 
   const cameraToHtmlMatrixInverse = useMemo(() => {
     return cameraToHtmlMatrix.clone().invert();
@@ -81,6 +84,7 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
       value={{
         visSize,
         visRatio,
+        canvasRatio,
         abscissaConfig,
         ordinateConfig,
         abscissaScale,
