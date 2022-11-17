@@ -2,8 +2,8 @@ import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
 import { useCameraState } from '../vis/hooks';
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import Overlay from '../vis/shared/Overlay';
+import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import { dataToHtml } from '../vis/utils';
 
 interface Props extends SVGProps<SVGLineElement> {
@@ -14,7 +14,7 @@ interface Props extends SVGProps<SVGLineElement> {
 function SelectionLine(props: Props) {
   const { startPoint, endPoint, stroke = 'black', ...restSvgProps } = props;
 
-  const { canvasSize } = useAxisSystemContext();
+  const { canvasSize } = useVisCanvasContext();
 
   const htmlSelection = useCameraState(
     (...args) => ({

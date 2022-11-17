@@ -1,7 +1,7 @@
 import type { NumArray } from '@h5web/shared';
 import { useMemo } from 'react';
 
-import { useAxisSystemContext } from '../shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 
 const CAMERA_FAR = 1000; // R3F's default
 
@@ -11,7 +11,7 @@ export function useBufferAttributes(
   data: NumArray,
   dataToColorScale: (val: number) => [number, number, number]
 ) {
-  const { abscissaScale, ordinateScale } = useAxisSystemContext();
+  const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
   return useMemo(() => {
     const position = new Float32Array(3 * data.length);

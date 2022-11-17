@@ -2,7 +2,7 @@ import type { NumArray } from '@h5web/shared';
 import { useMemo } from 'react';
 import { Vector3 } from 'three';
 
-import { useAxisSystemContext } from '../shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 
 const CAMERA_FAR = 1000; // R3F's default
 
@@ -11,7 +11,7 @@ export function useCanvasPoints(
   ordinates: NumArray,
   errors?: NumArray
 ) {
-  const { abscissaScale, ordinateScale } = useAxisSystemContext();
+  const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
   return useMemo(() => {
     const dataPoints: Vector3[] = [];

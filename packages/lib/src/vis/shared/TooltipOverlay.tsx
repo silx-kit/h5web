@@ -2,9 +2,9 @@ import { Line } from '@visx/shape';
 import { TooltipWithBounds } from '@visx/tooltip';
 import type { ReactNode } from 'react';
 
-import { useAxisSystemContext } from './AxisSystemProvider';
 import Overlay from './Overlay';
 import styles from './TooltipMesh.module.css';
+import { useVisCanvasContext } from './VisCanvasProvider';
 
 interface Props {
   tooltipOpen: boolean;
@@ -17,7 +17,7 @@ interface Props {
 function TooltipOverlay(props: Props) {
   const { tooltipOpen, tooltipLeft, tooltipTop, guides, children } = props;
 
-  const { canvasSize } = useAxisSystemContext();
+  const { canvasSize } = useVisCanvasContext();
   const { width, height } = canvasSize;
 
   return (

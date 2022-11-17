@@ -5,7 +5,7 @@ import type { Object3D } from 'three';
 import { getInterpolator } from '../heatmap/utils';
 import { useCameraState } from '../hooks';
 import type { Size } from '../models';
-import { useAxisSystemContext } from '../shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import TiledLayer from './TiledLayer';
 import type { TilesApi } from './api';
 import { useTooltipOnMoveHandler } from './hooks';
@@ -34,7 +34,7 @@ function TiledHeatmapMesh(props: Props) {
   } = props;
   const { baseLayerIndex, baseLayerSize } = api;
 
-  const { canvasSize, visSize } = useAxisSystemContext();
+  const { canvasSize, visSize } = useVisCanvasContext();
   const meshSize = size ?? visSize;
 
   const groupRef = useRef<Object3D>(null);

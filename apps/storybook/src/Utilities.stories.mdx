@@ -206,7 +206,7 @@ useCanvasEvents({ onPointerDown: handlePointerDown }); // also supported: `onPoi
 Compute and update a local React state on every React Three Fiber frame. Useful to re-render React components when the user pans/zooms.
 The hook accepts a callback, which:
 
-- receives the `camera` object and the current `AxisSystemContext` value;
+- receives the `camera` object and the current `VisCanvasContext` value;
 - computes and returns a state based on the camera's current scale and position (typically using a combination of
   [camera-based](https://h5web-docs.panosc.eu/?path=/story/utilities--page#camera-based-utilities) and
   [context](https://h5web-docs.panosc.eu/?path=/story/context--page) utilities).
@@ -249,7 +249,7 @@ Convert a point from data space to HTML space.
 ```ts
 dataToHtml(
   camera: Camera,
-  context: AxisSystemContextValue,
+  context: VisCanvasContextValue,
   dataPt: Vector2 | Vector3
 ): Vector2
 ```
@@ -267,7 +267,7 @@ getWorldFOV(camera: Camera): { topRight: Vector3; bottomLeft: Vector3; }
 Compute the field of view of the camera in data space.
 
 ```ts
-getVisibleDomains(camera: Camera, context: AxisSystemContextValue): {
+getVisibleDomains(camera: Camera, context: VisCanvasContextValue): {
   xVisibleDomain: Domain;
   yVisibleDomain: Domain;
 }

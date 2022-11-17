@@ -3,8 +3,8 @@ import type { AxisOffsets } from '../models';
 import { getVisibleDomains } from '../utils';
 import Axis from './Axis';
 import styles from './AxisSystem.module.css';
-import { useAxisSystemContext } from './AxisSystemProvider';
 import Html from './Html';
+import { useVisCanvasContext } from './VisCanvasProvider';
 
 interface Props {
   axisOffsets: AxisOffsets;
@@ -15,7 +15,7 @@ interface Props {
 function AxisSystem(props: Props) {
   const { axisOffsets, title, showAxes } = props;
 
-  const { canvasSize, abscissaConfig, ordinateConfig } = useAxisSystemContext();
+  const { canvasSize, abscissaConfig, ordinateConfig } = useVisCanvasContext();
   const { xVisibleDomain, yVisibleDomain } = useCameraState(
     getVisibleDomains,
     []

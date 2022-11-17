@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import AxialSelectionTool from './AxialSelectionTool';
 import SelectionRect from './SelectionRect';
 import { useMoveCameraTo } from './hooks';
@@ -14,7 +14,7 @@ interface Props extends CommonInteractionProps {
 function AxialSelectToZoom(props: Props) {
   const { axis, modifierKey, disabled } = props;
 
-  const { canvasSize, visRatio } = useAxisSystemContext();
+  const { canvasSize, visRatio } = useVisCanvasContext();
   const moveCameraTo = useMoveCameraTo();
 
   const { width, height } = canvasSize;

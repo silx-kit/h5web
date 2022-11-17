@@ -3,10 +3,10 @@ import { useEffect, useRef } from 'react';
 import type { Vector2 } from 'three';
 
 import { useMoveCameraTo } from '../../interactions/hooks';
-import { useAxisSystemContext } from './AxisSystemProvider';
+import { useVisCanvasContext } from './VisCanvasProvider';
 
 function ViewportCenterer() {
-  const { dataToWorld, worldToData } = useAxisSystemContext();
+  const { dataToWorld, worldToData } = useVisCanvasContext();
   const viewportCenter = useRef<Vector2>();
   const camera = useThree((state) => state.camera);
 

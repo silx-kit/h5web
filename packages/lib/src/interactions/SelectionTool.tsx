@@ -4,7 +4,7 @@ import type { ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import {
   useCanvasEvents,
   useInteraction,
@@ -35,7 +35,7 @@ function SelectionTool(props: Props) {
   } = props;
 
   const camera = useThree((state) => state.camera);
-  const { dataToWorld, worldToData } = useAxisSystemContext();
+  const { dataToWorld, worldToData } = useVisCanvasContext();
   const modifierKeys = getModifierKeyArray(modifierKey);
 
   const shouldInteract = useInteraction(id, {

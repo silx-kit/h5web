@@ -1,7 +1,7 @@
 import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import SelectionRect from './SelectionRect';
 import { clampRectangleToVis, getRatioRespectingRectangle } from './utils';
 
@@ -13,7 +13,7 @@ interface Props extends SVGProps<SVGRectElement> {
 
 function RatioSelectionRect(props: Props) {
   const { startPoint, endPoint, ratio, ...svgProps } = props;
-  const { visSize, dataToWorld, worldToData } = useAxisSystemContext();
+  const { visSize, dataToWorld, worldToData } = useVisCanvasContext();
 
   const [dataStartPoint, dataEndPoint] = getRatioRespectingRectangle(
     startPoint,

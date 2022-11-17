@@ -7,7 +7,7 @@ import {
   TilesApi,
   ResetZoomButton,
   SelectToZoom,
-  useAxisSystemContext,
+  useVisCanvasContext,
   TiledTooltipMesh,
 } from '@h5web/lib';
 import type {
@@ -272,7 +272,7 @@ NoAxes.args = {
 
 function LinearAxesGroup(props: { children: ReactNode }) {
   const { children } = props;
-  const { abscissaConfig, ordinateConfig, visSize } = useAxisSystemContext();
+  const { abscissaConfig, ordinateConfig, visSize } = useVisCanvasContext();
   const { width, height } = visSize;
   const sx =
     ((abscissaConfig.flip ? -1 : 1) * width) /

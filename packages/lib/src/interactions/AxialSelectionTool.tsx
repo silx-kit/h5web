@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber';
 import { Vector2 } from 'three';
 
-import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
+import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import { getVisibleDomains } from '../vis/utils';
 import type { SelectionProps } from './SelectionTool';
 import SelectionTool from './SelectionTool';
@@ -21,7 +21,7 @@ function AxialSelectionTool(props: Props) {
     ...restOfSelectionProps
   } = props;
 
-  const context = useAxisSystemContext();
+  const context = useVisCanvasContext();
 
   const camera = useThree((state) => state.camera);
 
