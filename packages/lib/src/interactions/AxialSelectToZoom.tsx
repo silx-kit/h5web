@@ -14,10 +14,10 @@ interface Props extends CommonInteractionProps {
 function AxialSelectToZoom(props: Props) {
   const { axis, modifierKey, disabled } = props;
 
-  const { visRatio } = useAxisSystemContext();
+  const { canvasSize, visRatio } = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
 
-  const { width, height } = useThree((state) => state.size);
+  const { width, height } = canvasSize;
   const camera = useThree((state) => state.camera);
 
   function onSelectionEnd(selection: Selection) {

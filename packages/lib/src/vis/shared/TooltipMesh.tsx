@@ -1,4 +1,3 @@
-import { useThree } from '@react-three/fiber';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
 import { useCallback } from 'react';
@@ -17,11 +16,8 @@ interface Props {
 
 function TooltipMesh(props: Props) {
   const { guides, renderTooltip, size } = props;
-
-  const { width, height } = useThree((state) => state.size);
-
-  // Scales to compute data coordinates from unprojected mesh coordinates
-  const { worldToData } = useAxisSystemContext();
+  const { canvasSize, worldToData } = useAxisSystemContext();
+  const { width, height } = canvasSize;
 
   const {
     tooltipOpen,

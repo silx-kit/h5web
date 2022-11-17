@@ -20,8 +20,12 @@ export function boundPointToFOV(
 export function getRatioRespectingRectangle(
   startPoint: Vector2,
   endPoint: Vector2,
-  ratio: number
+  ratio: number | undefined
 ) {
+  if (ratio === undefined) {
+    return [startPoint, endPoint];
+  }
+
   const widthSign = Math.sign(endPoint.x - startPoint.x);
   const width = Math.abs(endPoint.x - startPoint.x);
 

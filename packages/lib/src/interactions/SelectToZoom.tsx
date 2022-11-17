@@ -11,24 +11,24 @@ import { getEnclosedRectangle, getRatioRespectingRectangle } from './utils';
 type Props = CommonInteractionProps;
 
 function SelectToZoom(props: Props) {
-  const context = useAxisSystemContext();
-  const { visRatio, canvasRatio } = context;
+  const { canvasSize, canvasRatio, visRatio, dataToWorld } =
+    useAxisSystemContext();
+
+  const { width, height } = canvasSize;
   const keepRatio = visRatio !== undefined;
 
-  const moveCameraTo = useMoveCameraTo();
-
-  const { width, height } = useThree((state) => state.size);
   const camera = useThree((state) => state.camera);
+  const moveCameraTo = useMoveCameraTo();
 
   function onSelectionEnd(selection: Selection) {
     const { startPoint: dataStartPoint, endPoint: dataEndPoint } = selection;
 
     // Work in world coordinates as we need to act on the world camera
-    const [startPoint, endPoint] = (
-      keepRatio
-        ? getRatioRespectingRectangle(dataStartPoint, dataEndPoint, canvasRatio)
-        : [dataStartPoint, dataEndPoint]
-    ).map(context.dataToWorld);
+    const [startPoint, endPoint] = getRatioRespectingRectangle(
+      dataStartPoint,
+      dataEndPoint,
+      keepRatio ? canvasRatio : undefined
+    ).map(dataToWorld);
 
     if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
       return;

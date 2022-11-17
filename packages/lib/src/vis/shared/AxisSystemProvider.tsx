@@ -7,9 +7,10 @@ import type { AxisConfig, AxisScale, Size } from '../models';
 import { getCanvasScale, getSizeToFit } from '../utils';
 
 export interface AxisSystemContextValue {
-  visSize: Size;
-  visRatio: number | undefined;
+  canvasSize: Size;
   canvasRatio: number;
+  visRatio: number | undefined;
+  visSize: Size;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
   abscissaScale: AxisScale;
@@ -46,10 +47,10 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
     children,
   } = props;
 
-  const availableSize = useThree((state) => state.size);
-  const visSize = getSizeToFit(availableSize, visRatio);
+  const canvasSize = useThree((state) => state.size);
+  const visSize = getSizeToFit(canvasSize, visRatio);
 
-  const { width, height } = availableSize;
+  const { width, height } = canvasSize;
   const canvasRatio = width / height;
 
   const abscissaScale = getCanvasScale(abscissaConfig, visSize.width);
@@ -82,9 +83,10 @@ function AxisSystemProvider(props: PropsWithChildren<Props>) {
   return (
     <AxisSystemContext.Provider
       value={{
-        visSize,
-        visRatio,
+        canvasSize,
         canvasRatio,
+        visRatio,
+        visSize,
         abscissaConfig,
         ordinateConfig,
         abscissaScale,
