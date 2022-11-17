@@ -1,29 +1,31 @@
 import type { AxialSelectToZoomProps } from '@h5web/lib';
-import { mockValues, useDomain } from '@h5web/lib';
+import { useDomain } from '@h5web/lib';
+import { assertDefined } from '@h5web/lib';
+import { HeatmapMesh, ScaleType } from '@h5web/lib';
+import { mockValues } from '@h5web/lib';
 import { Zoom } from '@h5web/lib';
 import {
-  assertDefined,
   DataCurve,
-  getAxisValues,
   AxialSelectToZoom,
   Pan,
   ResetZoomButton,
   VisCanvas,
 } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react';
+import { range } from 'lodash';
 
 import FillHeight from './decorators/FillHeight';
+import { useMockData } from './hooks';
+
+const { oneD, twoD } = mockValues;
 
 const Template: Story<AxialSelectToZoomProps> = (args) => {
-  const domain = useDomain(mockValues.oneD);
+  const domain = useDomain(oneD);
   assertDefined(domain);
 
   return (
     <VisCanvas
-      abscissaConfig={{
-        visDomain: [0, mockValues.oneD.length],
-        showGrid: true,
-      }}
+      abscissaConfig={{ visDomain: [0, oneD.length], showGrid: true }}
       ordinateConfig={{ visDomain: domain, showGrid: true }}
     >
       <Pan />
@@ -32,9 +34,8 @@ const Template: Story<AxialSelectToZoomProps> = (args) => {
       <ResetZoomButton />
 
       <DataCurve
-        abscissas={getAxisValues(undefined, mockValues.oneD.length)}
-        ordinates={mockValues.oneD}
-        errors={mockValues.oneD_errors}
+        abscissas={range(oneD.length)}
+        ordinates={oneD}
         color="blue"
         showErrors
       />
@@ -64,6 +65,32 @@ export const Disabled = Template.bind({});
 Disabled.args = {
   axis: 'x',
   disabled: true,
+};
+
+export const DisabledInsideEqualAspectCanvas: Story<AxialSelectToZoomProps> = (
+  args
+) => {
+  const { values, domain } = useMockData(twoD, [20, 41]);
+
+  return (
+    <VisCanvas
+      abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
+      ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
+      aspect="equal"
+    >
+      <Pan />
+      <Zoom />
+      <AxialSelectToZoom {...args} />
+      <ResetZoomButton />
+
+      <HeatmapMesh
+        values={values}
+        domain={domain}
+        colorMap="Viridis"
+        scaleType={ScaleType.Linear}
+      />
+    </VisCanvas>
+  );
 };
 
 export default {

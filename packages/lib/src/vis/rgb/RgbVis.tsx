@@ -75,7 +75,7 @@ function RgbVis(props: Props) {
           label: ordinateLabel,
         }}
       >
-        <DefaultInteractions keepRatio={aspect !== 'auto'} {...interactions} />
+        <DefaultInteractions {...interactions} />
         <ResetZoomButton />
 
         <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />

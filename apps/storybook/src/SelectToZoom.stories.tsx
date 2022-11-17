@@ -4,41 +4,33 @@ import {
   SelectToZoom,
   ResetZoomButton,
   HeatmapMesh,
-  getDomain,
   Zoom,
 } from '@h5web/lib';
 import type { SelectToZoomProps } from '@h5web/lib';
 import { mockValues, ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
-import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
+import { useMockData } from './hooks';
 
-const cols = 41;
-const rows = 20;
-const values = ndarray(Float32Array.from(mockValues.twoD.flat()), [rows, cols]);
-const domain = getDomain(values);
+const { twoD } = mockValues;
 
 const Template: Story<SelectToZoomProps> = (args) => {
-  const { keepRatio, modifierKey, disabled } = args;
+  const { values, domain } = useMockData(twoD, [20, 41]);
+
   return (
     <VisCanvas
-      abscissaConfig={{ visDomain: [-5, 5], showGrid: true }}
-      ordinateConfig={{ visDomain: [-0.5, 1.5], showGrid: true }}
-      aspect={keepRatio ? 'equal' : 'auto'}
+      abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
+      ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
     >
       <Pan />
       <Zoom />
-      <SelectToZoom
-        modifierKey={modifierKey}
-        keepRatio={keepRatio}
-        disabled={disabled}
-      />
+      <SelectToZoom {...args} />
       <ResetZoomButton />
 
       <HeatmapMesh
         values={values}
-        domain={domain || [0, 1]}
+        domain={domain}
         colorMap="Viridis"
         scaleType={ScaleType.Linear}
       />
@@ -46,11 +38,30 @@ const Template: Story<SelectToZoomProps> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
+export const InsideAutoAspectCanvas = Template.bind({});
 
-export const KeepRatio = Template.bind({});
-KeepRatio.args = {
-  keepRatio: true,
+export const InsideEqualAspectCanvas: Story<SelectToZoomProps> = (args) => {
+  const { values, domain } = useMockData(twoD, [20, 41]);
+
+  return (
+    <VisCanvas
+      abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
+      ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+      aspect="equal"
+    >
+      <Pan />
+      <Zoom />
+      <SelectToZoom {...args} />
+      <ResetZoomButton />
+
+      <HeatmapMesh
+        values={values}
+        domain={domain}
+        colorMap="Viridis"
+        scaleType={ScaleType.Linear}
+      />
+    </VisCanvas>
+  );
 };
 
 export const ModifierKey = Template.bind({});
@@ -74,7 +85,6 @@ export default {
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
   args: {
-    keepRatio: false,
     modifierKey: [],
     disabled: false,
   },

@@ -1,5 +1,6 @@
 import { useThree } from '@react-three/fiber';
 
+import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import AxialSelectionTool from './AxialSelectionTool';
 import SelectionRect from './SelectionRect';
 import { useMoveCameraTo } from './hooks';
@@ -13,6 +14,7 @@ interface Props extends CommonInteractionProps {
 function AxialSelectToZoom(props: Props) {
   const { axis, modifierKey, disabled } = props;
 
+  const { visRatio } = useAxisSystemContext();
   const moveCameraTo = useMoveCameraTo();
 
   const { width, height } = useThree((state) => state.size);
@@ -44,7 +46,7 @@ function AxialSelectToZoom(props: Props) {
       axis={axis}
       id={`${axis.toUpperCase()}SelectToZoom`}
       modifierKey={modifierKey}
-      disabled={disabled}
+      disabled={visRatio !== undefined || disabled}
       onSelectionEnd={onSelectionEnd}
     >
       {({ startPoint, endPoint }) => (

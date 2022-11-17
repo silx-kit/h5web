@@ -64,10 +64,7 @@ export type { YAxisZoomProps } from './interactions/YAxisZoom';
 export type { SelectToZoomProps } from './interactions/SelectToZoom';
 export type { AxialSelectToZoomProps } from './interactions/AxialSelectToZoom';
 export type { SelectionProps } from './interactions/SelectionTool';
-export type {
-  DefaultInteractionsConfig,
-  DefaultInteractionsProps,
-} from './interactions/DefaultInteractions';
+export type { DefaultInteractionsConfig } from './interactions/DefaultInteractions';
 
 // Context
 export { useAxisSystemContext } from './vis/shared/AxisSystemProvider';

@@ -1,3 +1,4 @@
+import { useAxisSystemContext } from '../vis/shared/AxisSystemProvider';
 import { useCanvasEvents, useZoomOnWheel, useInteraction } from './hooks';
 import type { CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
@@ -6,9 +7,11 @@ type Props = CommonInteractionProps;
 
 function YAxisZoom(props: Props) {
   const { modifierKey, disabled } = props;
+  const { visRatio } = useAxisSystemContext();
+
   const shouldInteract = useInteraction('YAxisZoom', {
     modifierKeys: getModifierKeyArray(modifierKey),
-    disabled,
+    disabled: visRatio !== undefined || disabled,
     button: 'Wheel',
   });
 

@@ -183,7 +183,7 @@ const Template: Story<TiledHeatmapStoryProps> = (args) => {
     >
       <Pan />
       <Zoom />
-      <SelectToZoom keepRatio modifierKey="Control" />
+      <SelectToZoom modifierKey="Control" />
       <ResetZoomButton />
       <group
         scale={[abscissaConfig.flip ? -1 : 1, ordinateConfig.flip ? -1 : 1, 1]}
@@ -309,7 +309,7 @@ export const WithTransforms: Story<TiledHeatmapStoryProps> = (args) => {
     >
       <Pan />
       <Zoom />
-      <SelectToZoom keepRatio modifierKey="Control" />
+      <SelectToZoom modifierKey="Control" />
       <ResetZoomButton />
       <LinearAxesGroup>
         <group position={[1, 1, 0]} rotation={[0, 0, Math.PI / 4]}>
