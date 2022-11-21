@@ -8,10 +8,11 @@ export function useActiveVis<T extends VisDef>(
 ): [T, (index: number) => void] {
   const lastSupportedIndex = supportedVis.length - 1;
 
-  const [preferredVisName, savePreferredVisName, removePreferredVisName] =
-    useLocalStorageValue<string>('h5web:preferredVis', undefined, {
-      handleStorageEvent: false,
-    });
+  const {
+    value: preferredVisName,
+    set: savePreferredVisName,
+    remove: removePreferredVisName,
+  } = useLocalStorageValue<string>('h5web:preferredVis');
 
   const preferredVis = preferredVisName
     ? supportedVis.find((v) => v.name === preferredVisName)

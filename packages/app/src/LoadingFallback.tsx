@@ -1,5 +1,6 @@
+import { useTimeoutEffect, useToggle } from '@react-hookz/web';
+
 import styles from './App.module.css';
-import { useTimeout } from './hooks';
 
 interface Props {
   isInspecting: boolean;
@@ -10,7 +11,8 @@ function LoadingFallback(props: Props) {
   const { isInspecting, message = 'Loading' } = props;
 
   // Wait a bit before showing loader to avoid flash
-  const isReady = useTimeout(100);
+  const [isReady, toggleReady] = useToggle();
+  useTimeoutEffect(toggleReady, 100);
 
   return (
     <>

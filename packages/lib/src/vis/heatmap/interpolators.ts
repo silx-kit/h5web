@@ -96,4 +96,4 @@ export const INTERPOLATORS = {
   RdYlBu: interpolateRdYlBu,
   RdYlGn: interpolateRdYlGn,
   Spectral: interpolateSpectral,
-};
+}; // satisfies Record<string, D3Interpolator>;
