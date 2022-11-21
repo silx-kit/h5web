@@ -30,7 +30,7 @@ function SelectToZoom(props: Props) {
       keepRatio ? canvasRatio : undefined
     ).map(dataToWorld);
 
-    if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
+    if (startPoint.x === endPoint.x || startPoint.y === endPoint.y) {
       return;
     }
 
