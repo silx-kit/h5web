@@ -90,6 +90,7 @@ export type PrintableType =
 export interface HistogramParams {
   values: NumArray;
   bins: NumArray;
+  showLeftAxis?: boolean;
   colorMap?: ColorMap;
   invertColorMap?: boolean;
 }

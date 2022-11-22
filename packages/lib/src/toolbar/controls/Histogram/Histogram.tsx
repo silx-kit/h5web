@@ -27,7 +27,15 @@ interface Props extends HistogramParams {
 }
 
 function Histogram(props: Props) {
-  const { values, bins, scaleType, value, dataDomain, onChange } = props;
+  const {
+    values,
+    bins,
+    scaleType,
+    value,
+    dataDomain,
+    onChange,
+    showLeftAxis = true,
+  } = props;
   const { colorMap, invertColorMap } = props;
 
   const binDomain = useDomain(bins, scaleType) || DEFAULT_DOMAIN;
@@ -99,13 +107,15 @@ function Histogram(props: Props) {
           tickComponent={Tick}
           tickFormat={xScale.tickFormat(adaptedNumTicks(width), '.3~g')}
         />
-        <AxisLeft
-          scale={yScale.range([height, 0])}
-          numTicks={adaptedNumTicks(height)}
-          tickClassName={styles.tick}
-          tickComponent={Tick}
-          tickFormat={yScale.tickFormat(adaptedNumTicks(height), '.3~g')}
-        />
+        {showLeftAxis && (
+          <AxisLeft
+            scale={yScale.range([height, 0])}
+            numTicks={adaptedNumTicks(height)}
+            tickClassName={styles.tick}
+            tickComponent={Tick}
+            tickFormat={yScale.tickFormat(adaptedNumTicks(height), '.3~g')}
+          />
+        )}
       </svg>
     </div>
   );
