@@ -60,6 +60,13 @@ NonInteractive.args = {
   ...Default.args,
 };
 
+export const HideLeftAxis = Template.bind({});
+
+HideLeftAxis.args = {
+  ...Default.args,
+  showLeftAxis: false,
+};
+
 export default {
   title: 'Toolbar/Histogram',
   component: Histogram,
