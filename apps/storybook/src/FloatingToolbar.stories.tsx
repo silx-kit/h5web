@@ -18,13 +18,13 @@ export const Default: Story = () => {
         <button
           type="button"
           style={{ fontWeight: isToggled ? 'bold' : undefined }}
-          onClick={() => toggle()}
+          onClick={toggle}
         >
           Toggle me!
         </button>
       </FloatingControl>
       <FloatingControl>
-        <button type="button" onClick={() => toggleTitle()}>
+        <button type="button" onClick={toggleTitle}>
           Toggle plot title
         </button>
       </FloatingControl>

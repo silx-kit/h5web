@@ -37,7 +37,7 @@ function OverflowMenu(props: Props) {
           aria-haspopup="menu"
           aria-controls="more-menu"
           aria-expanded={isOverflowMenuOpen}
-          onClick={() => toggleOverflowMenu()}
+          onClick={toggleOverflowMenu}
         >
           <span className={styles.btnLike}>
             <FiMenu className={styles.icon} />
