@@ -1,6 +1,6 @@
 import { useKeyboardEvent, useRafState } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
-import type { ReactElement } from 'react';
+import type { ReactNode } from 'react';
 import { useCallback, useState } from 'react';
 import type { Vector2 } from 'three';
 
@@ -19,10 +19,9 @@ interface Props extends CommonInteractionProps {
   onSelectionStart?: () => void;
   onSelectionChange?: (points: Selection) => void;
   onSelectionEnd?: (points: Selection) => void;
-  children: (points: Selection) => ReactElement;
+  children: (points: Selection) => ReactNode;
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 function SelectionTool(props: Props) {
   const {
     id = 'Selection',
@@ -36,17 +35,20 @@ function SelectionTool(props: Props) {
 
   const camera = useThree((state) => state.camera);
   const { dataToWorld, worldToData } = useVisCanvasContext();
+
+  const [startPoint, setStartPoint] = useState<Vector2>();
+  const [selection, setSelection] = useRafState<Selection | undefined>(
+    undefined
+  );
+
   const modifierKeys = getModifierKeyArray(modifierKey);
+  const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
 
   const shouldInteract = useInteraction(id, {
     button: MouseButton.Left,
     modifierKeys,
     disabled,
   });
-
-  const [startPoint, setStartPoint] = useState<Vector2>();
-  const [endPoint, setEndPoint] = useRafState<Vector2 | undefined>(undefined);
-  const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
 
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
@@ -74,25 +76,25 @@ function SelectionTool(props: Props) {
 
       const { worldPt } = evt;
       const dataEndPoint = worldToData(boundPointToFOV(worldPt, camera));
-      setEndPoint(dataEndPoint);
 
-      const worldEndPoint = dataToWorld(dataEndPoint);
-      const worldStartPoint = dataToWorld(startPoint);
+      const newSelection = {
+        startPoint,
+        endPoint: dataEndPoint,
+        worldStartPoint: dataToWorld(startPoint),
+        worldEndPoint: dataToWorld(dataEndPoint),
+      };
+
+      setSelection(newSelection);
 
       if (onSelectionChange && isModifierKeyPressed) {
-        onSelectionChange({
-          startPoint,
-          endPoint: dataEndPoint,
-          worldStartPoint,
-          worldEndPoint,
-        });
+        onSelectionChange(newSelection);
       }
     },
     [
       startPoint,
       worldToData,
       camera,
-      setEndPoint,
+      setSelection,
       dataToWorld,
       onSelectionChange,
       isModifierKeyPressed,
@@ -110,24 +112,22 @@ function SelectionTool(props: Props) {
       (target as Element).releasePointerCapture(pointerId);
 
       setStartPoint(undefined);
-      setEndPoint(undefined);
+      setSelection(undefined);
 
       if (onSelectionEnd && shouldInteract(sourceEvent)) {
         const dataEndPoint = worldToData(boundPointToFOV(worldPt, camera));
-        const worldEndPoint = dataToWorld(dataEndPoint);
-        const worldStartPoint = dataToWorld(startPoint);
 
         onSelectionEnd({
           startPoint,
           endPoint: dataEndPoint,
-          worldStartPoint,
-          worldEndPoint,
+          worldStartPoint: dataToWorld(startPoint),
+          worldEndPoint: dataToWorld(dataEndPoint),
         });
       }
     },
     [
       startPoint,
-      setEndPoint,
+      setSelection,
       onSelectionEnd,
       shouldInteract,
       worldToData,
@@ -142,25 +142,17 @@ function SelectionTool(props: Props) {
     'Escape',
     () => {
       setStartPoint(undefined);
-      setEndPoint(undefined);
+      setSelection(undefined);
     },
     [],
     { event: 'keydown' }
   );
 
-  if (!startPoint || !endPoint || !isModifierKeyPressed) {
+  if (!selection || !isModifierKeyPressed) {
     return null;
   }
 
-  const worldEndPoint = dataToWorld(endPoint);
-  const worldStartPoint = dataToWorld(startPoint);
-
-  return children({
-    startPoint,
-    endPoint,
-    worldStartPoint,
-    worldEndPoint,
-  });
+  return <>{children(selection)}</>;
 }
 
 export type { Props as SelectionProps };
