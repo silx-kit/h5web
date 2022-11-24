@@ -173,7 +173,9 @@ export const Persisted: Story<TemplateProps> = (args) => {
         onSelectionEnd={setPersistedSelection}
         modifierKey={selectionModifierKey}
       >
-        {(selection) => <SelectionComponent {...selection} />}
+        {(selection) =>
+          !persistedSelection && <SelectionComponent {...selection} />
+        }
       </SelectionTool>
       {persistedSelection && (
         <SelectionComponent
