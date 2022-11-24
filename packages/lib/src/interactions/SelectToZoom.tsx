@@ -41,7 +41,7 @@ function SelectToZoom(props: Props) {
     camera.scale.set(zoomRect.width / width, zoomRect.height / height, 1);
     camera.updateMatrixWorld();
 
-    moveCameraTo(zoomRectCenter.x, zoomRectCenter.y);
+    moveCameraTo(zoomRectCenter);
   }
 
   return (

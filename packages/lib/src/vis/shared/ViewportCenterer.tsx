@@ -19,8 +19,7 @@ function ViewportCenterer() {
   useEffect(() => {
     if (viewportCenter.current) {
       // On resize, move camera to the latest saved viewport center coordinates
-      const { x, y } = dataToWorld(viewportCenter.current);
-      moveCameraTo(x, y);
+      moveCameraTo(dataToWorld(viewportCenter.current));
     }
   }, [viewportCenter, moveCameraTo, dataToWorld, camera]);
 

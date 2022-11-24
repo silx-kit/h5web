@@ -10,12 +10,12 @@ export enum MouseButton {
 export interface Selection {
   startPoint: Vector2;
   endPoint: Vector2;
-  worldStartPoint: Vector2;
-  worldEndPoint: Vector2;
+  worldStartPoint: Vector3;
+  worldEndPoint: Vector3;
 }
 
 export interface CanvasEvent<T extends MouseEvent> {
-  htmlPt: Vector3;
+  htmlPt: Vector2;
   cameraPt: Vector3;
   worldPt: Vector3;
   dataPt: Vector2;
