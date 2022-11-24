@@ -1,7 +1,7 @@
 import { useKeyboardEvent, useRafState } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { Vector2 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
@@ -77,28 +77,14 @@ function SelectionTool(props: Props) {
       const { worldPt } = evt;
       const dataEndPoint = worldToData(boundPointToFOV(worldPt, camera));
 
-      const newSelection = {
+      setSelection({
         startPoint,
         endPoint: dataEndPoint,
         worldStartPoint: dataToWorld(startPoint),
         worldEndPoint: dataToWorld(dataEndPoint),
-      };
-
-      setSelection(newSelection);
-
-      if (onSelectionChange && isModifierKeyPressed) {
-        onSelectionChange(newSelection);
-      }
+      });
     },
-    [
-      startPoint,
-      worldToData,
-      camera,
-      setSelection,
-      dataToWorld,
-      onSelectionChange,
-      isModifierKeyPressed,
-    ]
+    [startPoint, worldToData, camera, setSelection, dataToWorld]
   );
 
   const onPointerUp = useCallback(
@@ -147,6 +133,12 @@ function SelectionTool(props: Props) {
     [],
     { event: 'keydown' }
   );
+
+  useEffect(() => {
+    if (onSelectionChange && selection && isModifierKeyPressed) {
+      onSelectionChange(selection);
+    }
+  }, [selection, isModifierKeyPressed, onSelectionChange]);
 
   if (!selection || !isModifierKeyPressed) {
     return null;
