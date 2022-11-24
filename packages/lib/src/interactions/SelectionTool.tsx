@@ -1,8 +1,10 @@
+import { assertDefined } from '@h5web/shared';
 import { useKeyboardEvent, useRafState } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import type { Vector2 } from 'three';
+import type { Vector3 } from 'three';
+import { Vector2 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import {
@@ -16,10 +18,10 @@ import { boundPointToFOV, getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
   id?: string;
-  onSelectionStart?: () => void;
-  onSelectionChange?: (points: Selection) => void;
-  onSelectionEnd?: (points: Selection) => void;
-  children: (points: Selection) => ReactNode;
+  onSelectionStart?: (evt: CanvasEvent<PointerEvent>) => void;
+  onSelectionChange?: (selection: Selection) => void;
+  onSelectionEnd?: (selection: Selection) => void;
+  children: (selection: Selection) => ReactNode;
 }
 
 function SelectionTool(props: Props) {
@@ -34,9 +36,9 @@ function SelectionTool(props: Props) {
   } = props;
 
   const camera = useThree((state) => state.camera);
-  const { dataToWorld, worldToData } = useVisCanvasContext();
+  const { worldToData } = useVisCanvasContext();
 
-  const [startPoint, setStartPoint] = useState<Vector2>();
+  const [startEvt, setStartEvt] = useState<CanvasEvent<PointerEvent>>();
   const [selection, setSelection] = useRafState<Selection | undefined>(
     undefined
   );
@@ -50,19 +52,36 @@ function SelectionTool(props: Props) {
     disabled,
   });
 
+  const computeSelection = useCallback(
+    (worldEndPt: Vector3) => {
+      assertDefined(startEvt);
+      const { dataPt: startPoint, worldPt: worldStartPoint } = startEvt;
+      const boundWorldEndPoint = boundPointToFOV(worldEndPt, camera);
+
+      return {
+        startPoint,
+        endPoint: worldToData(boundWorldEndPoint),
+        worldStartPoint: new Vector2(worldStartPoint.x, worldStartPoint.y),
+        worldEndPoint: boundWorldEndPoint,
+      };
+    },
+    [camera, startEvt, worldToData]
+  );
+
   const onPointerDown = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      const { dataPt, sourceEvent } = evt;
+      const { sourceEvent } = evt;
       if (!shouldInteract(sourceEvent)) {
         return;
       }
 
       const { target, pointerId } = sourceEvent;
       (target as Element).setPointerCapture(pointerId);
-      setStartPoint(dataPt);
+
+      setStartEvt(evt);
 
       if (onSelectionStart) {
-        onSelectionStart();
+        onSelectionStart(evt);
       }
     },
     [onSelectionStart, shouldInteract]
@@ -70,26 +89,16 @@ function SelectionTool(props: Props) {
 
   const onPointerMove = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      if (!startPoint) {
-        return;
+      if (startEvt) {
+        setSelection(computeSelection(evt.worldPt));
       }
-
-      const { worldPt } = evt;
-      const dataEndPoint = worldToData(boundPointToFOV(worldPt, camera));
-
-      setSelection({
-        startPoint,
-        endPoint: dataEndPoint,
-        worldStartPoint: dataToWorld(startPoint),
-        worldEndPoint: dataToWorld(dataEndPoint),
-      });
     },
-    [startPoint, worldToData, camera, setSelection, dataToWorld]
+    [startEvt, setSelection, computeSelection]
   );
 
   const onPointerUp = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      if (!startPoint) {
+      if (!startEvt) {
         return;
       }
 
@@ -97,29 +106,14 @@ function SelectionTool(props: Props) {
       const { target, pointerId } = sourceEvent;
       (target as Element).releasePointerCapture(pointerId);
 
-      setStartPoint(undefined);
+      setStartEvt(undefined);
       setSelection(undefined);
 
       if (onSelectionEnd && shouldInteract(sourceEvent)) {
-        const dataEndPoint = worldToData(boundPointToFOV(worldPt, camera));
-
-        onSelectionEnd({
-          startPoint,
-          endPoint: dataEndPoint,
-          worldStartPoint: dataToWorld(startPoint),
-          worldEndPoint: dataToWorld(dataEndPoint),
-        });
+        onSelectionEnd(computeSelection(worldPt));
       }
     },
-    [
-      startPoint,
-      setSelection,
-      onSelectionEnd,
-      shouldInteract,
-      worldToData,
-      camera,
-      dataToWorld,
-    ]
+    [startEvt, setSelection, onSelectionEnd, shouldInteract, computeSelection]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -127,7 +121,7 @@ function SelectionTool(props: Props) {
   useKeyboardEvent(
     'Escape',
     () => {
-      setStartPoint(undefined);
+      setStartEvt(undefined);
       setSelection(undefined);
     },
     [],
