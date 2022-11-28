@@ -77,7 +77,7 @@ test('visualize 2D datasets', async () => {
 });
 
 test('visualize 1D slice of a 3D dataset with and without autoscale', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
   await selectExplorerNode('resilience/slow_slicing');
 

@@ -320,7 +320,7 @@ test('warn in console when `SILX_style` attribute is not valid JSON', async () =
 });
 
 test('cancel and retry slow fetch of NxSpectrum', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
@@ -349,7 +349,7 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
 });
 
 test('cancel and retry slow fetch of NxImage', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with image interpretation and start fetching dataset values
@@ -376,7 +376,7 @@ test('cancel and retry slow fetch of NxImage', async () => {
 });
 
 test('retry fetching automatically when re-selecting NxSpectrum', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
@@ -407,7 +407,7 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
 });
 
 test('retry fetching automatically when re-selecting NxImage', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with image interpretation and start fetching dataset values
@@ -438,7 +438,7 @@ test('retry fetching automatically when re-selecting NxImage', async () => {
 });
 
 test('retry fetching automatically when selecting other NxSpectrum slice', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
@@ -476,7 +476,7 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
 });
 
 test('retry fetching supporting datasets automatically when selecting other NxImage slice', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select NXdata group with image interpretation and start fetching dataset values
