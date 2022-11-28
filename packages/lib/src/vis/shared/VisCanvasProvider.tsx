@@ -15,13 +15,13 @@ export interface VisCanvasContextValue {
   ordinateConfig: AxisConfig;
   abscissaScale: AxisScale;
   ordinateScale: AxisScale;
-  dataToWorld: (vec: Vector2 | Vector3) => Vector2;
-  worldToData: (vec: Vector2 | Vector3) => Vector2;
+  dataToWorld: (vec: Vector2) => Vector3;
+  worldToData: (vec: Vector3) => Vector2;
 
   // For internal use only
   cameraToHtmlMatrix: Matrix4;
   cameraToHtmlMatrixInverse: Matrix4;
-  cameraToHtml: (vec: Vector2 | Vector3) => Vector2;
+  cameraToHtml: (vec: Vector3) => Vector2;
   floatingToolbar: HTMLDivElement | undefined;
 }
 
@@ -56,10 +56,17 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
   const abscissaScale = getCanvasScale(abscissaConfig, visSize.width);
   const ordinateScale = getCanvasScale(ordinateConfig, visSize.height);
 
-  const worldToData = (vec: Vector2 | Vector3) =>
-    new Vector2(abscissaScale.invert(vec.x), ordinateScale.invert(vec.y));
-  const dataToWorld = (vec: Vector2 | Vector3) =>
-    new Vector2(abscissaScale(vec.x), ordinateScale(vec.y));
+  const dataToWorld = useCallback(
+    (vec: Vector2) =>
+      new Vector3(abscissaScale(vec.x), ordinateScale(vec.y), 0),
+    [abscissaScale, ordinateScale]
+  );
+
+  const worldToData = useCallback(
+    (vec: Vector3) =>
+      new Vector2(abscissaScale.invert(vec.x), ordinateScale.invert(vec.y)),
+    [abscissaScale, ordinateScale]
+  );
 
   const cameraToHtmlMatrix = useMemo(() => {
     return new Matrix4()
@@ -72,9 +79,8 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
   }, [cameraToHtmlMatrix]);
 
   const cameraToHtml = useCallback(
-    (cameraPoint: Vector2 | Vector3) => {
-      const { x, y } = cameraPoint;
-      const htmlPoint = new Vector3(x, y, 0).applyMatrix4(cameraToHtmlMatrix);
+    (cameraPoint: Vector3) => {
+      const htmlPoint = cameraPoint.clone().applyMatrix4(cameraToHtmlMatrix);
       return new Vector2(htmlPoint.x, htmlPoint.y);
     },
     [cameraToHtmlMatrix]
@@ -91,8 +97,8 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         ordinateConfig,
         abscissaScale,
         ordinateScale,
-        worldToData,
         dataToWorld,
+        worldToData,
         cameraToHtmlMatrix,
         cameraToHtmlMatrixInverse,
         cameraToHtml,

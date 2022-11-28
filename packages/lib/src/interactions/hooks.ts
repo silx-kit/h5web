@@ -26,7 +26,7 @@ export function useMoveCameraTo() {
   const invalidate = useThree((state) => state.invalidate);
 
   return useCallback(
-    (x: number, y: number) => {
+    (worldPt: Vector3) => {
       const { position } = camera;
 
       const { topRight, bottomLeft } = getWorldFOV(camera);
@@ -34,7 +34,7 @@ export function useMoveCameraTo() {
       const height = Math.abs(topRight.y - bottomLeft.y);
 
       const clampedPosition = clampPositionToArea(
-        new Vector2(x, y),
+        worldPt,
         { width, height },
         visSize
       );
@@ -90,15 +90,15 @@ export function useZoomOnWheel(
       }
       camera.updateMatrixWorld();
 
-      const oldPosition = worldPt.clone();
       // Scale the change in position according to the zoom
+      const oldPosition = worldPt.clone();
       const delta = camera.position.clone().sub(oldPosition);
       const scaledDelta =
         sourceEvent.deltaY < 0
           ? delta.multiply(zoomVector)
           : delta.divide(zoomVector);
-      const scaledPosition = oldPosition.add(scaledDelta);
-      moveCameraTo(scaledPosition.x, scaledPosition.y);
+
+      moveCameraTo(oldPosition.add(scaledDelta));
     },
     [camera, isZoomAllowed, moveCameraTo]
   );
@@ -123,7 +123,13 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
       const worldPt = cameraPt.clone().unproject(camera);
       const dataPt = worldToData(worldPt);
 
-      return { htmlPt, cameraPt, worldPt, dataPt, sourceEvent };
+      return {
+        htmlPt: new Vector2(htmlPt.x, htmlPt.y),
+        cameraPt,
+        worldPt,
+        dataPt,
+        sourceEvent,
+      };
     },
     [camera, cameraToHtmlMatrixInverse, worldToData]
   );

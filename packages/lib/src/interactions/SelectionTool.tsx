@@ -4,7 +4,6 @@ import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import type { Vector3 } from 'three';
-import { Vector2 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import {
@@ -61,7 +60,7 @@ function SelectionTool(props: Props) {
       return {
         startPoint,
         endPoint: worldToData(boundWorldEndPoint),
-        worldStartPoint: new Vector2(worldStartPoint.x, worldStartPoint.y),
+        worldStartPoint,
         worldEndPoint: boundWorldEndPoint,
       };
     },

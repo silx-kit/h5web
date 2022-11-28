@@ -18,7 +18,8 @@ function RatioEnforcer() {
     camera.scale.x = targetScale;
     camera.scale.y = targetScale;
     camera.updateMatrixWorld();
-    moveCameraTo(camera.position.x, camera.position.y);
+
+    moveCameraTo(camera.position);
   }, [camera, moveCameraTo, visRatio]);
 
   return null;

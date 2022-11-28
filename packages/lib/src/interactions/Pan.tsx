@@ -67,9 +67,7 @@ function Pan(props: Props) {
 
       const { worldPt } = evt;
       const delta = startOffsetPosition.current.clone().sub(worldPt);
-      const target = camera.position.clone().add(delta);
-
-      moveCameraTo(target.x, target.y);
+      moveCameraTo(camera.position.clone().add(delta));
     },
     [camera, isModifierKeyPressed, moveCameraTo]
   );

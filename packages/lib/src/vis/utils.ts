@@ -350,14 +350,14 @@ export function toArray(arr: NumArray): number[] {
   return isTypedArray(arr) ? [...arr] : arr;
 }
 
-export function worldToCamera(camera: Camera, worldPt: Vector2 | Vector3) {
-  return new Vector3(worldPt.x, worldPt.y, 0).project(camera);
+export function worldToCamera(camera: Camera, worldPt: Vector3) {
+  return worldPt.clone().project(camera);
 }
 
 export function dataToHtml(
   camera: Camera,
   context: VisCanvasContextValue,
-  dataPt: Vector2 | Vector3
+  dataPt: Vector2
 ): Vector2 {
   const { dataToWorld, cameraToHtml } = context;
   const worldPt = dataToWorld(dataPt);

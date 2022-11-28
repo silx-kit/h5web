@@ -1,20 +1,19 @@
 import type { Camera } from '@react-three/fiber';
 import { clamp } from 'lodash';
-import type { Vector3 } from 'three';
-import { Vector2 } from 'three';
+import { Vector2, Vector3 } from 'three';
 
 import type { Size } from '../vis/models';
 import { getWorldFOV } from '../vis/utils';
 import type { ModifierKey } from './models';
 
 export function boundPointToFOV(
-  unboundedPoint: Vector2 | Vector3,
+  unboundedPoint: Vector3,
   camera: Camera
-): Vector2 {
+): Vector3 {
   const { topRight, bottomLeft } = getWorldFOV(camera);
   const boundedX = clamp(unboundedPoint.x, bottomLeft.x, topRight.x);
   const boundedY = clamp(unboundedPoint.y, bottomLeft.y, topRight.y);
-  return new Vector2(boundedX, boundedY);
+  return new Vector3(boundedX, boundedY, 0);
 }
 
 export function getRatioRespectingRectangle(
@@ -50,7 +49,7 @@ export function getRatioRespectingRectangle(
   ];
 }
 
-export function getEnclosedRectangle(startPoint: Vector2, endPoint: Vector2) {
+export function getEnclosedRectangle(startPoint: Vector3, endPoint: Vector3) {
   // center = start + (end - start) / 2
   const center = endPoint
     .clone()
@@ -66,24 +65,25 @@ export function getEnclosedRectangle(startPoint: Vector2, endPoint: Vector2) {
 }
 
 export function clampPositionToArea(
-  center: Vector2,
+  center: Vector3,
   rectSize: Size,
   areaSize: Size
-): Vector2 {
+): Vector3 {
   const xBound = Math.max(areaSize.width / 2 - rectSize.width / 2, 0);
   const yBound = Math.max(areaSize.height / 2 - rectSize.height / 2, 0);
 
-  return new Vector2(
+  return new Vector3(
     clamp(center.x, -xBound, xBound),
-    clamp(center.y, -yBound, yBound)
+    clamp(center.y, -yBound, yBound),
+    0
   );
 }
 
 export function clampRectangleToVis(
-  startPoint: Vector2,
-  endPoint: Vector2,
+  startPoint: Vector3,
+  endPoint: Vector3,
   visSize: Size
-): [Vector2, Vector2] {
+): [Vector3, Vector3] {
   const { center, ...rectSize } = getEnclosedRectangle(startPoint, endPoint);
 
   const newCenter = clampPositionToArea(center, rectSize, visSize);
