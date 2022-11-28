@@ -31,21 +31,21 @@ function AxialSelectionTool(props: Props) {
       context
     );
 
-    const { startPoint: mouseStartPoint, endPoint: mouseEndPoint } = selection;
-    const startPoint =
+    const { startPoint, endPoint } = selection;
+    const axialStartPoint =
       axis === 'x'
-        ? new Vector2(mouseStartPoint.x, yVisibleDomain[0])
-        : new Vector2(xVisibleDomain[0], mouseStartPoint.y);
-    const endPoint =
+        ? new Vector2(startPoint.x, yVisibleDomain[0])
+        : new Vector2(xVisibleDomain[0], startPoint.y);
+    const axialEndPoint =
       axis === 'x'
-        ? new Vector2(mouseEndPoint.x, yVisibleDomain[1])
-        : new Vector2(xVisibleDomain[1], mouseEndPoint.y);
+        ? new Vector2(endPoint.x, yVisibleDomain[1])
+        : new Vector2(xVisibleDomain[1], endPoint.y);
 
     return {
-      startPoint,
-      endPoint,
-      worldStartPoint: context.dataToWorld(startPoint),
-      worldEndPoint: context.dataToWorld(endPoint),
+      startPoint: axialStartPoint,
+      endPoint: axialEndPoint,
+      worldStartPoint: context.dataToWorld(axialStartPoint),
+      worldEndPoint: context.dataToWorld(axialEndPoint),
     };
   }
 

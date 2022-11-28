@@ -15,22 +15,19 @@ function RatioSelectionRect(props: Props) {
   const { startPoint, endPoint, ratio, ...svgProps } = props;
   const { visSize, dataToWorld, worldToData } = useVisCanvasContext();
 
-  const [dataStartPoint, dataEndPoint] = getRatioRespectingRectangle(
-    startPoint,
-    endPoint,
-    ratio
-  ).map(dataToWorld);
+  const [ratioWorldStartPoint, ratioWorldEndPoint] =
+    getRatioRespectingRectangle(startPoint, endPoint, ratio).map(dataToWorld);
 
-  const [worldStartPoint, worldEndPoint] = clampRectangleToVis(
-    dataStartPoint,
-    dataEndPoint,
+  const [clampedDataStartPoint, clampedDataEndPoint] = clampRectangleToVis(
+    ratioWorldStartPoint,
+    ratioWorldEndPoint,
     visSize
   ).map(worldToData);
 
   return (
     <SelectionRect
-      startPoint={worldStartPoint}
-      endPoint={worldEndPoint}
+      startPoint={clampedDataStartPoint}
+      endPoint={clampedDataEndPoint}
       {...svgProps}
     />
   );
