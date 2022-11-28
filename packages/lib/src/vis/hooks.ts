@@ -7,12 +7,16 @@ import {
 import type { Domain, AnyNumArray } from '@h5web/shared';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
+import { rgb } from 'd3-color';
 import { useEffect, useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 
+import type { ColorMap } from './heatmap/models';
+import { getInterpolator } from './heatmap/utils';
 import { useVisCanvasContext } from './shared/VisCanvasProvider';
 import type { VisCanvasContextValue } from './shared/VisCanvasProvider';
 import {
+  createAxisScale,
   getAxisDomain,
   getAxisValues,
   getCombinedDomain,
@@ -96,4 +100,23 @@ export function useCssColors(
   const colors = colorProperties.map((p) => styles.getPropertyValue(p).trim());
 
   return [colors, refCallback];
+}
+
+export function useDataToColorScale(
+  scaleType: ScaleType,
+  domain: Domain,
+  colorMap: ColorMap,
+  invertColorMap: boolean
+): (v: number) => [number, number, number] {
+  return useMemo(() => {
+    const numScale = createAxisScale(scaleType, {
+      domain,
+      range: [0, 1],
+    });
+    const interpolator = getInterpolator(colorMap, invertColorMap);
+    return (value: number) => {
+      const color = rgb(interpolator(numScale(value)));
+      return [color.r, color.g, color.b];
+    };
+  }, [colorMap, domain, invertColorMap, scaleType]);
 }
