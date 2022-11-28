@@ -16,7 +16,6 @@ export interface Selection {
 
 export interface CanvasEvent<T extends MouseEvent> {
   htmlPt: Vector2;
-  cameraPt: Vector3;
   worldPt: Vector3;
   dataPt: Vector2;
   sourceEvent: T;

@@ -194,7 +194,7 @@ Register event listeners on the `canvas` element. Useful to implement custom int
 useCanvasEvents(callbacks: CanvasEventCallbacks): void
 
 const handlePointerDown = useCallback((evt: CanvasEvent<PointerEvent>) => {
-  const { htmlPt, cameraPt, worldPt, dataPt, sourceEvent } = evt;
+  const { htmlPt, worldPt, dataPt, sourceEvent } = evt;
   // ...
 }, []);
 
@@ -234,12 +234,20 @@ To avoid unnecessary re-renders, it performs a deep comparison before updating t
 The utilities documented in this section require access to the R3F `camera` object. They are typically meant to be called inside
 [`useCameraState`](https://h5web-docs.panosc.eu/?path=/story/utilities--page#usecamerastate) callbacks or DOM event listeners.
 
-#### worldToCamera
+#### worldToHtml
 
-Convert a point from world space to camera space
+Convert a point from world space to HTML space
 
 ```ts
-dataToHtml(camera: Camera, worldPt: Vector2 | Vector3): Vector2
+worldToHtml(camera: Camera, context: VisCanvasContextValue, worldPt: Vector3): Vector2
+```
+
+#### htmlToWorld
+
+Convert a point from HTML space to world space
+
+```ts
+htmlToWorld(camera: Camera, context: VisCanvasContextValue, htmlPt: Vector2): Vector3
 ```
 
 #### dataToHtml
@@ -247,11 +255,15 @@ dataToHtml(camera: Camera, worldPt: Vector2 | Vector3): Vector2
 Convert a point from data space to HTML space.
 
 ```ts
-dataToHtml(
-  camera: Camera,
-  context: VisCanvasContextValue,
-  dataPt: Vector2 | Vector3
-): Vector2
+dataToHtml(camera: Camera, context: VisCanvasContextValue, dataPt: Vector2): Vector2
+```
+
+#### htmlToData
+
+Convert a point from HTML space to data space.
+
+```ts
+htmlToData(camera: Camera, context: VisCanvasContextValue, htmlPt: Vector2): Vector2
 ```
 
 #### getWorldFOV

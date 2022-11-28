@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { getWorldFOV } from '../vis/utils';
+import { getWorldFOV, htmlToWorld } from '../vis/utils';
 import { useInteractionsContext } from './InteractionsProvider';
 import type {
   CanvasEvent,
@@ -110,28 +110,22 @@ export function useZoomOnWheel(
 
 export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   const { onPointerDown, onPointerMove, onPointerUp, onWheel } = callbacks;
+
   const { domElement } = useThree((state) => state.gl);
   const camera = useThree((state) => state.camera);
-  const { worldToData, cameraToHtmlMatrixInverse } = useVisCanvasContext();
+  const context = useVisCanvasContext();
 
   const processEvent = useCallback(
     <T extends PointerEvent | WheelEvent>(sourceEvent: T): CanvasEvent<T> => {
       const { offsetX, offsetY } = sourceEvent;
 
-      const htmlPt = new Vector3(offsetX, offsetY, 0);
-      const cameraPt = htmlPt.clone().applyMatrix4(cameraToHtmlMatrixInverse);
-      const worldPt = cameraPt.clone().unproject(camera);
-      const dataPt = worldToData(worldPt);
+      const htmlPt = new Vector2(offsetX, offsetY);
+      const worldPt = htmlToWorld(camera, context, htmlPt);
+      const dataPt = context.worldToData(worldPt);
 
-      return {
-        htmlPt: new Vector2(htmlPt.x, htmlPt.y),
-        cameraPt,
-        worldPt,
-        dataPt,
-        sourceEvent,
-      };
+      return { htmlPt, worldPt, dataPt, sourceEvent };
     },
-    [camera, cameraToHtmlMatrixInverse, worldToData]
+    [camera, context]
   );
 
   const handlePointerDown = useCallback(

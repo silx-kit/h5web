@@ -3,7 +3,6 @@ import { useKeyboardEvent, useRafState } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import type { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import {
@@ -13,7 +12,7 @@ import {
 } from './hooks';
 import type { CanvasEvent, CommonInteractionProps, Selection } from './models';
 import { MouseButton } from './models';
-import { boundPointToFOV, getModifierKeyArray } from './utils';
+import { boundWorldPointToFOV, getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
   id?: string;
@@ -54,10 +53,12 @@ function SelectionTool(props: Props) {
   });
 
   const computeSelection = useCallback(
-    (worldEndPt: Vector3) => {
+    (evt: CanvasEvent<PointerEvent>) => {
       assertDefined(startEvt);
       const { dataPt: startPoint, worldPt: worldStartPoint } = startEvt;
-      const boundWorldEndPoint = boundPointToFOV(worldEndPt, camera);
+
+      const { worldPt: worldEndPt } = evt;
+      const boundWorldEndPoint = boundWorldPointToFOV(worldEndPt, camera);
 
       return {
         startPoint,
@@ -98,7 +99,7 @@ function SelectionTool(props: Props) {
   const onPointerMove = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
       if (startEvt) {
-        setSelection(computeSelection(evt.worldPt));
+        setSelection(computeSelection(evt));
       }
     },
     [startEvt, setSelection, computeSelection]
@@ -110,7 +111,7 @@ function SelectionTool(props: Props) {
         return;
       }
 
-      const { sourceEvent, worldPt } = evt;
+      const { sourceEvent } = evt;
       const { target, pointerId } = sourceEvent;
       (target as Element).releasePointerCapture(pointerId);
 
@@ -118,7 +119,7 @@ function SelectionTool(props: Props) {
       setSelection(undefined);
 
       if (onSelectionEnd && shouldInteract(sourceEvent)) {
-        onSelectionEnd(transformSelection(computeSelection(worldPt)));
+        onSelectionEnd(transformSelection(computeSelection(evt)));
       }
     },
     [

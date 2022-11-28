@@ -79,8 +79,10 @@ export {
   getAxisValues,
   getAxisDomain,
   getValueToIndexScale,
-  worldToCamera,
+  worldToHtml,
+  htmlToWorld,
   dataToHtml,
+  htmlToData,
   getWorldFOV,
   getVisibleDomains,
 } from './vis/utils';
