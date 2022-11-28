@@ -1,3 +1,4 @@
+import type { Axis } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
@@ -8,7 +9,7 @@ import type { Selection, CommonInteractionProps } from './models';
 import { getEnclosedRectangle } from './utils';
 
 interface Props extends CommonInteractionProps {
-  axis: 'x' | 'y';
+  axis: Axis;
 }
 
 function AxialSelectToZoom(props: Props) {

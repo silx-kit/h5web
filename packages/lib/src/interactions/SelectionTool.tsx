@@ -17,6 +17,7 @@ import { boundPointToFOV, getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
   id?: string;
+  transformSelection?: (selection: Selection) => Selection;
   onSelectionStart?: (evt: CanvasEvent<PointerEvent>) => void;
   onSelectionChange?: (selection: Selection) => void;
   onSelectionEnd?: (selection: Selection) => void;
@@ -28,6 +29,7 @@ function SelectionTool(props: Props) {
     id = 'Selection',
     modifierKey,
     disabled,
+    transformSelection: customTransformSelection,
     onSelectionStart,
     onSelectionChange,
     onSelectionEnd,
@@ -65,6 +67,13 @@ function SelectionTool(props: Props) {
       };
     },
     [camera, startEvt, worldToData]
+  );
+
+  const transformSelection = useCallback(
+    (selec: Selection): Selection => {
+      return customTransformSelection ? customTransformSelection(selec) : selec;
+    },
+    [customTransformSelection]
   );
 
   const onPointerDown = useCallback(
@@ -109,10 +118,17 @@ function SelectionTool(props: Props) {
       setSelection(undefined);
 
       if (onSelectionEnd && shouldInteract(sourceEvent)) {
-        onSelectionEnd(computeSelection(worldPt));
+        onSelectionEnd(transformSelection(computeSelection(worldPt)));
       }
     },
-    [startEvt, setSelection, onSelectionEnd, shouldInteract, computeSelection]
+    [
+      startEvt,
+      setSelection,
+      onSelectionEnd,
+      shouldInteract,
+      computeSelection,
+      transformSelection,
+    ]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -129,15 +145,15 @@ function SelectionTool(props: Props) {
 
   useEffect(() => {
     if (onSelectionChange && selection && isModifierKeyPressed) {
-      onSelectionChange(selection);
+      onSelectionChange(transformSelection(selection));
     }
-  }, [selection, isModifierKeyPressed, onSelectionChange]);
+  }, [selection, isModifierKeyPressed, onSelectionChange, transformSelection]);
 
   if (!selection || !isModifierKeyPressed) {
     return null;
   }
 
-  return <>{children(selection)}</>;
+  return <>{children(transformSelection(selection))}</>;
 }
 
 export type { Props as SelectionProps };

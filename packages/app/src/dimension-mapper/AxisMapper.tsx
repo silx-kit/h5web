@@ -1,8 +1,9 @@
 import { ToggleGroup } from '@h5web/lib';
+import type { Axis } from '@h5web/shared';
 import { isNumber } from 'lodash';
 
 import styles from './DimensionMapper.module.css';
-import type { Axis, DimensionMapping } from './models';
+import type { DimensionMapping } from './models';
 
 interface Props {
   axis: Axis;

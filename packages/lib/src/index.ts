@@ -122,7 +122,7 @@ export type {
 } from './interactions/models';
 export { MouseButton } from './interactions/models';
 
-export type { Domain, Dims } from '@h5web/shared';
+export type { Domain, Dims, Axis } from '@h5web/shared';
 
 export type {
   Aspect,
