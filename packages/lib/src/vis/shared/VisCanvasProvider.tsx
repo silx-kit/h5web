@@ -15,13 +15,12 @@ export interface VisCanvasContextValue {
   ordinateConfig: AxisConfig;
   abscissaScale: AxisScale;
   ordinateScale: AxisScale;
-  dataToWorld: (vec: Vector2) => Vector3;
-  worldToData: (vec: Vector3) => Vector2;
+  dataToWorld: (dataPt: Vector2) => Vector3;
+  worldToData: (worldPt: Vector3) => Vector2;
 
   // For internal use only
-  cameraToHtmlMatrix: Matrix4;
-  cameraToHtmlMatrixInverse: Matrix4;
-  cameraToHtml: (vec: Vector3) => Vector2;
+  cameraToHtml: (cameraPt: Vector3) => Vector2;
+  htmlToCamera: (htmlPt: Vector2) => Vector3;
   floatingToolbar: HTMLDivElement | undefined;
 }
 
@@ -57,14 +56,17 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
   const ordinateScale = getCanvasScale(ordinateConfig, visSize.height);
 
   const dataToWorld = useCallback(
-    (vec: Vector2) =>
-      new Vector3(abscissaScale(vec.x), ordinateScale(vec.y), 0),
+    (dataPt: Vector2) =>
+      new Vector3(abscissaScale(dataPt.x), ordinateScale(dataPt.y), 0),
     [abscissaScale, ordinateScale]
   );
 
   const worldToData = useCallback(
-    (vec: Vector3) =>
-      new Vector2(abscissaScale.invert(vec.x), ordinateScale.invert(vec.y)),
+    (worldPt: Vector3) =>
+      new Vector2(
+        abscissaScale.invert(worldPt.x),
+        ordinateScale.invert(worldPt.y)
+      ),
     [abscissaScale, ordinateScale]
   );
 
@@ -79,11 +81,20 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
   }, [cameraToHtmlMatrix]);
 
   const cameraToHtml = useCallback(
-    (cameraPoint: Vector3) => {
-      const htmlPoint = cameraPoint.clone().applyMatrix4(cameraToHtmlMatrix);
+    (cameraPt: Vector3) => {
+      const htmlPoint = cameraPt.clone().applyMatrix4(cameraToHtmlMatrix);
       return new Vector2(htmlPoint.x, htmlPoint.y);
     },
     [cameraToHtmlMatrix]
+  );
+
+  const htmlToCamera = useCallback(
+    (htmlPt: Vector2) => {
+      return new Vector3(htmlPt.x, htmlPt.y, 0).applyMatrix4(
+        cameraToHtmlMatrixInverse
+      );
+    },
+    [cameraToHtmlMatrixInverse]
   );
 
   return (
@@ -99,9 +110,8 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         ordinateScale,
         dataToWorld,
         worldToData,
-        cameraToHtmlMatrix,
-        cameraToHtmlMatrixInverse,
         cameraToHtml,
+        htmlToCamera,
         floatingToolbar,
       }}
     >

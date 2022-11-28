@@ -6,7 +6,7 @@ import type { Size } from '../vis/models';
 import { getWorldFOV } from '../vis/utils';
 import type { ModifierKey } from './models';
 
-export function boundPointToFOV(
+export function boundWorldPointToFOV(
   unboundedPoint: Vector3,
   camera: Camera
 ): Vector3 {
