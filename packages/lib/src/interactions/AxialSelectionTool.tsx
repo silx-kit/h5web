@@ -1,14 +1,16 @@
+import type { Axis } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
-import { Vector2 } from 'three';
+import { useCallback } from 'react';
+import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { getVisibleDomains } from '../vis/utils';
+import { getWorldFOV } from '../vis/utils';
 import type { SelectionProps } from './SelectionTool';
 import SelectionTool from './SelectionTool';
 import type { Selection } from './models';
 
 interface Props extends SelectionProps {
-  axis: 'x' | 'y';
+  axis: Axis;
 }
 
 function AxialSelectionTool(props: Props) {
@@ -21,48 +23,43 @@ function AxialSelectionTool(props: Props) {
     ...restOfSelectionProps
   } = props;
 
-  const context = useVisCanvasContext();
-
+  const { worldToData } = useVisCanvasContext();
   const camera = useThree((state) => state.camera);
 
-  function getAxialSelection(selection: Selection): Selection {
-    const { xVisibleDomain, yVisibleDomain } = getVisibleDomains(
-      camera,
-      context
-    );
+  const toAxialSelection = useCallback(
+    (selection: Selection): Selection => {
+      const { worldStartPoint, worldEndPoint } = selection;
+      const { bottomLeft, topRight } = getWorldFOV(camera);
 
-    const { startPoint, endPoint } = selection;
-    const axialStartPoint =
-      axis === 'x'
-        ? new Vector2(startPoint.x, yVisibleDomain[0])
-        : new Vector2(xVisibleDomain[0], startPoint.y);
-    const axialEndPoint =
-      axis === 'x'
-        ? new Vector2(endPoint.x, yVisibleDomain[1])
-        : new Vector2(xVisibleDomain[1], endPoint.y);
+      const axialWorldStartPoint =
+        axis === 'x'
+          ? new Vector3(worldStartPoint.x, bottomLeft.y, 0)
+          : new Vector3(bottomLeft.x, worldStartPoint.y, 0);
 
-    return {
-      startPoint: axialStartPoint,
-      endPoint: axialEndPoint,
-      worldStartPoint: context.dataToWorld(axialStartPoint),
-      worldEndPoint: context.dataToWorld(axialEndPoint),
-    };
-  }
+      const axialWorldEndPoint =
+        axis === 'x'
+          ? new Vector3(worldEndPoint.x, topRight.y, 0)
+          : new Vector3(topRight.x, worldEndPoint.y, 0);
+
+      return {
+        startPoint: worldToData(axialWorldStartPoint),
+        endPoint: worldToData(axialWorldEndPoint),
+        worldStartPoint: axialWorldStartPoint,
+        worldEndPoint: axialWorldEndPoint,
+      };
+    },
+    [axis, camera, worldToData]
+  );
 
   return (
     <SelectionTool
+      transformSelection={toAxialSelection}
       onSelectionStart={onSelectionStart}
-      onSelectionChange={
-        onSelectionChange &&
-        ((selection) => onSelectionChange(getAxialSelection(selection)))
-      }
-      onSelectionEnd={
-        onSelectionEnd &&
-        ((selection) => onSelectionEnd(getAxialSelection(selection)))
-      }
+      onSelectionChange={onSelectionChange}
+      onSelectionEnd={onSelectionEnd}
       {...restOfSelectionProps}
     >
-      {(selection) => children(getAxialSelection(selection))}
+      {children}
     </SelectionTool>
   );
 }

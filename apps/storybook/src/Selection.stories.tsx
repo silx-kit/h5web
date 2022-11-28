@@ -1,4 +1,4 @@
-import type { Selection, ModifierKey } from '@h5web/lib';
+import type { Selection, ModifierKey, Axis } from '@h5web/lib';
 import { AxialSelectionTool } from '@h5web/lib';
 import {
   Pan,
@@ -202,9 +202,7 @@ Persisted.argTypes = {
   },
 };
 
-export const AxialSelection: Story<TemplateProps & { axis: 'x' | 'y' }> = (
-  args
-) => {
+export const AxialSelection: Story<TemplateProps & { axis: Axis }> = (args) => {
   const {
     selectionType,
     selectionModifierKey,

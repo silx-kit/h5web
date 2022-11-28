@@ -15,6 +15,7 @@ export type TypedArrayConstructor =
   | Float64ArrayConstructor;
 
 export type Domain = [number, number];
+export type Axis = 'x' | 'y';
 
 export enum ScaleType {
   Linear = 'linear',
