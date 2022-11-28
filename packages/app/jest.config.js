@@ -21,7 +21,6 @@ const config = {
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   testEnvironment: 'jsdom',
   testRegex: '\\.test\\.tsx?$',
-  testTimeout: 10_000,
   transformIgnorePatterns: [
     `node_modules/\\.pnpm/(?!(${DEPS_TO_TRANSFORM.join('|')})@)`,
   ],
