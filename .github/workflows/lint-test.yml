@@ -88,7 +88,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/Cypress
-          key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: cypress-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install ⚙️
         run: pnpm install --frozen-lockfile
