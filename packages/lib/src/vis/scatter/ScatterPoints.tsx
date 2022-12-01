@@ -1,15 +1,13 @@
 import type { Domain, NumArray, ScaleType } from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useThree } from '@react-three/fiber';
-import { rgb } from 'd3-color';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { BufferAttribute, BufferGeometry } from 'three';
 
 import type { ColorMap } from '../heatmap/models';
-import { getInterpolator } from '../heatmap/utils';
+import { useDataToColorScale } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
-import { createAxisScale } from '../utils';
 import { useBufferAttributes } from './hooks';
 
 interface Props {
@@ -76,17 +74,12 @@ function ScatterPoints(props: Props) {
   const [dataGeometry] = useState(() => new BufferGeometry());
   const invalidate = useThree((state) => state.invalidate);
 
-  const dataToColorScale = useMemo(() => {
-    const numScale = createAxisScale(scaleType, {
-      domain,
-      range: [0, 1],
-    });
-    const interpolator = getInterpolator(colorMap, invertColorMap);
-    return (value: number) => {
-      const color = rgb(interpolator(numScale(value)));
-      return [color.r, color.g, color.b] as [number, number, number];
-    };
-  }, [colorMap, domain, invertColorMap, scaleType]);
+  const dataToColorScale = useDataToColorScale(
+    scaleType,
+    domain,
+    colorMap,
+    invertColorMap
+  );
 
   const { position, color } = useBufferAttributes(
     abscissas,

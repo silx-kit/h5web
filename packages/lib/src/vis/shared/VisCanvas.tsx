@@ -1,4 +1,3 @@
-import { Canvas } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { useState } from 'react';
 
@@ -7,6 +6,7 @@ import type { Aspect, AxisConfig } from '../models';
 import { getAxisOffsets, getVisRatio } from '../utils';
 import AxisSystem from './AxisSystem';
 import Html from './Html';
+import R3FCanvas from './R3FCanvas';
 import RatioEnforcer from './RatioEnforcer';
 import ThresholdAdjuster from './ThresholdAdjuster';
 import ViewportCenterer from './ViewportCenterer';
@@ -57,17 +57,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
         paddingRight: axisOffsets.right,
       }}
     >
-      <Canvas
-        className={styles.r3fRoot}
-        orthographic
-        linear // disable automatic color encoding and gamma correction
-        flat // disable tone mapping
-        frameloop="demand" // disable game loop
-        dpr={[1, 3]} // https://discoverthreejs.com/tips-and-tricks/#performance
-        gl={{ preserveDrawingBuffer: true }} // for screenshot feature
-        resize={{ debounce: { scroll: 20, resize: 200 }, scroll: false }} // https://github.com/pmndrs/react-three-fiber/discussions/1906
-      >
-        <ambientLight />
+      <R3FCanvas className={styles.r3fRoot} orthographic>
         <VisCanvasProvider
           visRatio={visRatio}
           abscissaConfig={abscissaConfig}
@@ -92,7 +82,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
             className={styles.floatingToolbar}
           />
         </Html>
-      </Canvas>
+      </R3FCanvas>
     </div>
   );
 }

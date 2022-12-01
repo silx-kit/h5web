@@ -163,3 +163,6 @@ export { getLayerSizes, TilesApi } from './vis/tiles/api';
 export { useValidDomainForScale } from './vis/hooks';
 export { assertLength, assertDefined } from '@h5web/shared';
 export type { TiledHeatmapMeshProps } from './vis/tiles/TiledHeatmapMesh';
+export { default as SurfaceVis } from './vis/surface/SurfaceVis';
+export type { SurfaceVisProps } from './vis/surface/SurfaceVis';
+export { default as R3FCanvas } from './vis/shared/R3FCanvas';
