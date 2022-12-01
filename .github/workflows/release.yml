@@ -14,23 +14,23 @@ jobs:
 
       - name: Match tag to package version 🧐
         id: packageVersion
-        uses: geritol/match-tag-to-package-version@0.1.0
-        env:
-          TAG_PREFIX: refs/tags/v
+        uses: geritol/match-tag-to-package-version@0.2.0
+        with:
+          TAG_PREFIX: v
 
-      - name: Install ⚙️
+      - name: Install pnpm ⚙️
         uses: pnpm/action-setup@v2
         with:
           version: 7.x
 
       - name: Use Node 16 🕹️
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version-file: 'package.json'
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
-      - name: Install ⚙️
+      - name: Install dependencies ⚙️
         run: pnpm install --frozen-lockfile
 
       - name: Build packages 📦
@@ -84,9 +84,7 @@ jobs:
         run: pnpm build:storybook
 
       - name: Deploy Storybook 🚀
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: JamesIves/github-pages-deploy-action@4.4.1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: apps/storybook/build
-          CLEAN: true
+          folder: apps/storybook/build
+          clean: true
