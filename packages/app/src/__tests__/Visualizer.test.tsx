@@ -13,7 +13,7 @@ test('show fallback message when no visualization is supported', async () => {
 });
 
 test('show loader while fetching dataset value', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { selectExplorerNode } = await renderApp();
 
   await selectExplorerNode('resilience/slow_value');
@@ -42,7 +42,7 @@ test("show error when dataset value can't be fetched", async () => {
 });
 
 test('cancel and retry slow fetch of dataset value', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching value
@@ -70,7 +70,7 @@ test('cancel and retry slow fetch of dataset value', async () => {
 });
 
 test('cancel and retry slow fetch of dataset slice', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching first slice
@@ -102,7 +102,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
 });
 
 test('retry fetching automatically when re-selecting dataset', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching
@@ -132,7 +132,7 @@ test('retry fetching automatically when re-selecting dataset', async () => {
 });
 
 test('retry fetching dataset slice automatically when re-selecting slice', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching first slice
@@ -176,7 +176,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
 });
 
 test('cancel fetching dataset slice when changing entity', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching first slice
@@ -208,7 +208,7 @@ test('cancel fetching dataset slice when changing entity', async () => {
 });
 
 test('cancel fetching dataset slice when changing vis', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { user, selectExplorerNode } = await renderApp();
 
   // Select dataset and start fetching the slice

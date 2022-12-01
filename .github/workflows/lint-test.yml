@@ -59,7 +59,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Test 👓
-        run: pnpm test
+        run: pnpm test -- --reporters="default" --reporters="github-actions"
         env:
           CI: true
 

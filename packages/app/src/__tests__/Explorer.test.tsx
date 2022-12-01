@@ -87,7 +87,7 @@ test('navigate groups in explorer', async () => {
 });
 
 test('show spinner when group metadata is slow to fetch', async () => {
-  jest.useFakeTimers('modern');
+  jest.useFakeTimers();
   const { selectExplorerNode } = await renderApp();
 
   await selectExplorerNode('resilience/slow_metadata');
