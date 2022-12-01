@@ -5,9 +5,9 @@ import { useCallback, useLayoutEffect, useState } from 'react';
 import { BufferAttribute, BufferGeometry } from 'three';
 
 import type { ColorMap } from '../heatmap/models';
-import { useDataToColorScale } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
+import { useDataToColorScale } from './hooks';
 import { useBufferAttributes } from './hooks';
 
 interface Props {

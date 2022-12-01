@@ -2,6 +2,7 @@ import type { Domain, NumArray } from '@h5web/shared';
 import { getDims, ScaleType, toTypedNdArray } from '@h5web/shared';
 import { range } from 'lodash';
 import type { NdArray } from 'ndarray';
+import type { TextureFilter } from 'three';
 import {
   ClampToEdgeWrapping,
   DataTexture,
@@ -163,8 +164,23 @@ export function toTextureSafeNdArray(
  */
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array>,
-  magFilter = NearestFilter
-): DataTexture {
+  magFilter?: TextureFilter
+): DataTexture;
+export function getDataTexture(
+  values: undefined,
+  magFilter?: TextureFilter
+): undefined;
+export function getDataTexture(
+  values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
+  magFilter?: TextureFilter
+): DataTexture | undefined;
+export function getDataTexture(
+  values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
+  magFilter: TextureFilter = NearestFilter
+): DataTexture | undefined {
+  if (!values) {
+    return undefined;
+  }
   const { rows, cols } = getDims(values);
 
   const texture = new DataTexture(
