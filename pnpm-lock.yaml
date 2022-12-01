@@ -171,10 +171,10 @@ importers:
       '@react-hookz/web': 19.2.0
       '@react-three/fiber': 7.0.26
       '@rollup/plugin-alias': 4.0.2
-      '@testing-library/dom': 8.13.0
+      '@testing-library/dom': 8.19.0
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 12.1.5
-      '@testing-library/user-event': 14.2.0
+      '@testing-library/user-event': 14.4.3
       '@types/d3-format': 3.0.1
       '@types/lodash': 4.14.189
       '@types/ndarray': 1.0.11
@@ -226,10 +226,10 @@ importers:
     devDependencies:
       '@h5web/shared': link:../shared
       '@rollup/plugin-alias': 4.0.2_rollup@3.3.0
-      '@testing-library/dom': 8.13.0
+      '@testing-library/dom': 8.19.0
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
-      '@testing-library/user-event': 14.2.0_tlwynutqiyp5mns3woioasuxnq
+      '@testing-library/user-event': 14.4.3_aaq3sbffpfe3jnxzm2zngsddei
       '@types/d3-format': 3.0.1
       '@types/lodash': 4.14.189
       '@types/ndarray': 1.0.11
@@ -2299,6 +2299,13 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
+
+  /@babel/runtime/7.20.6:
+    resolution: {integrity: sha512-Q+8MqP7TiHMWzSfwiJwXCjyf4GYA4Dgw3emg/7xmwsdLJOZUp+nMqcOwOzzYheuM1rhDu8FSj2l0aoMygEuXuA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
+    dev: true
 
   /@babel/template/7.18.10:
     resolution: {integrity: sha512-TI+rCtooWHr3QJ27kJxfjutghu44DLnasDMwpDqCXVTal9RLp3RSYNh4NdBrRP2cQAoG9A8juOQl6P6oZG4JxA==}
@@ -4448,7 +4455,7 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       '@types/aria-query': 4.2.2
       aria-query: 5.1.3
       chalk: 4.1.2
@@ -4480,19 +4487,19 @@ packages:
       react-dom: <18.0.0
     dependencies:
       '@babel/runtime': 7.17.9
-      '@testing-library/dom': 8.13.0
+      '@testing-library/dom': 8.19.0
       '@types/react-dom': 17.0.18
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: true
 
-  /@testing-library/user-event/14.2.0_tlwynutqiyp5mns3woioasuxnq:
-    resolution: {integrity: sha512-+hIlG4nJS6ivZrKnOP7OGsDu9Fxmryj9vCl8x0ZINtTJcCHs2zLsYif5GzuRiBF2ck5GZG2aQr7Msg+EHlnYVQ==}
+  /@testing-library/user-event/14.4.3_aaq3sbffpfe3jnxzm2zngsddei:
+    resolution: {integrity: sha512-kCUc5MEwaEMakkO5x7aoD+DLi02ehmEM2QCGWvNqAS1dV/fAvORWEjnjsEIvml59M7Y5kCkWN6fCCyPOe8OL6Q==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
     dependencies:
-      '@testing-library/dom': 8.13.0
+      '@testing-library/dom': 8.19.0
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -5818,7 +5825,7 @@ packages:
     resolution: {integrity: sha512-o/HelwhuKpTj/frsOsbNLNgnNGVIFsVP/SW2BSF14gVl7kAfMOJ6/8wUAUvG1R1NHKrfG+2sHZTu0yauT1qBrA==}
     engines: {node: '>=6.0'}
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       '@babel/runtime-corejs3': 7.20.1
     dev: true
 
@@ -8588,7 +8595,7 @@ packages:
     peerDependencies:
       eslint: ^6.8.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       '@testing-library/dom': 8.19.0
       eslint: 8.27.0
       requireindex: 1.2.0
@@ -8652,7 +8659,7 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       aria-query: 4.2.2
       array-includes: 3.1.6
       ast-types-flow: 0.0.7
