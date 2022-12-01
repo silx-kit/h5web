@@ -60,10 +60,10 @@
   "devDependencies": {
     "@h5web/shared": "workspace:*",
     "@rollup/plugin-alias": "4.0.2",
-    "@testing-library/dom": "8.13.0",
+    "@testing-library/dom": "8.19.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "12.1.5",
-    "@testing-library/user-event": "14.2.0",
+    "@testing-library/user-event": "14.4.3",
     "@types/d3-format": "3.0.1",
     "@types/lodash": "4.14.189",
     "@types/ndarray": "1.0.11",
