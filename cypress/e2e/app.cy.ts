@@ -117,8 +117,8 @@ describe('/mock', () => {
       .parent()
       .should('have.text', 'n 3 9 20 41');
 
-    cy.findByRole('radiogroup', { name: /x axis/ }).as('xRadioGroup');
-    cy.findByRole('radiogroup', { name: /y axis/ }).as('yRadioGroup');
+    cy.findByRole('radiogroup', { name: /x axis/u }).as('xRadioGroup');
+    cy.findByRole('radiogroup', { name: /y axis/u }).as('yRadioGroup');
     cy.get('svg[data-type="abscissa"]').as('xAxis');
     cy.get('svg[data-type="ordinate"]').as('yAxis');
 
