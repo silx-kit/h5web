@@ -1,10 +1,10 @@
 import alias from '@rollup/plugin-alias';
+import { defineConfig } from 'rollup';
 import dts from 'rollup-plugin-dts';
 
 import { externals } from './vite.config.js';
 
-/** @type {import('rollup').MergedRollupOptions} */
-const config = {
+export default defineConfig({
   input: './dist-ts/index.d.ts',
   output: [{ file: 'dist/index.d.ts', format: 'es' }],
   external: [...externals, /\.css$/u],
@@ -20,6 +20,4 @@ const config = {
     }),
     dts({ respectExternal: true }),
   ],
-};
-
-export default config;
+});
