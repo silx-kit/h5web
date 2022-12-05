@@ -193,7 +193,7 @@ export function getCanvasScale(
   return createAxisScale(scaleType ?? ScaleType.Linear, {
     domain: visDomain,
     range: [-canvasSize / 2, canvasSize / 2],
-    reverse: flip
+    reverse: flip,
   });
 }
 

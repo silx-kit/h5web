@@ -27,6 +27,12 @@ jobs:
           node-version-file: 'package.json'
           cache: 'pnpm'
 
+      - name: Cache Cypress binary 📌
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
       - name: Install dependencies ⚙️
         run: pnpm install --frozen-lockfile
 
@@ -52,6 +58,12 @@ jobs:
         with:
           node-version-file: 'package.json'
           cache: 'pnpm'
+
+      - name: Cache Cypress binary 📌
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install dependencies ⚙️
         run: pnpm install --frozen-lockfile
