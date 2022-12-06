@@ -142,18 +142,19 @@ export class H5GroveApi extends DataProviderApi {
   private async fetchData(
     params: ValuesStoreParams
   ): Promise<H5GroveDataResponse> {
-    const { data } = await this.cancellableFetchValue<H5GroveDataResponse>(
-      `/data/`,
-      params,
-      { path: params.dataset.path, selection: params.selection, flatten: true }
-    );
+    const { data } = await this.cancellableFetchValue(`/data/`, params, {
+      path: params.dataset.path,
+      selection: params.selection,
+      flatten: true,
+    });
+
     return data;
   }
 
   private async fetchBinaryData(
     params: ValuesStoreParams
   ): Promise<ArrayBuffer> {
-    const { data } = await this.cancellableFetchValue<ArrayBuffer>(
+    const { data } = await this.cancellableFetchValue(
       '/data/',
       params,
       {

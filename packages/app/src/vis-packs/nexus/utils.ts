@@ -123,9 +123,10 @@ export function findAssociatedDatasets(
 ): (NumArrayDataset | undefined)[] {
   const dsetList = attrValuesStore.getSingle(group, type) || [];
   const dsetNames = typeof dsetList === 'string' ? [dsetList] : dsetList;
-  assertArray<string>(dsetNames);
+  assertArray(dsetNames);
 
   return dsetNames.map((name) => {
+    assertStr(name);
     if (name === '.') {
       return undefined;
     }

@@ -82,12 +82,12 @@ export abstract class DataProviderApi {
     this.valueRequests.clear();
   }
 
-  protected async cancellableFetchValue<T, R = AxiosResponse<T>>(
+  protected async cancellableFetchValue(
     endpoint: string,
     storeParams: ValuesStoreParams,
     queryParams: Record<string, string | boolean | undefined>,
     responseType?: ResponseType
-  ): Promise<R> {
+  ): Promise<AxiosResponse> {
     const cancelSource = axios.CancelToken.source();
     const request = { storeParams, cancelSource };
     this.valueRequests.add(request);
@@ -97,7 +97,7 @@ export abstract class DataProviderApi {
 
     try {
       const { token: cancelToken } = cancelSource;
-      return await this.client.get<T, R>(endpoint, {
+      return await this.client.get(endpoint, {
         cancelToken,
         params: queryParams,
         responseType,

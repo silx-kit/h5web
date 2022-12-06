@@ -2,7 +2,6 @@ import { format } from 'd3-format';
 import ndarray from 'ndarray';
 import type { NdArray, TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
-import { useMemo } from 'react';
 
 import { assertLength, isNdArray, isTypedArray } from './guards';
 import type {
@@ -89,15 +88,15 @@ export function buildEntityPath(
   return `${prefix}/${entityNameOrRelativePath}`;
 }
 
-export function createArrayFromView<T, U extends TypedArray | T[]>(
-  view: NdArray<U>
-): NdArray<U> {
+export function createArrayFromView<T extends TypedArray | unknown[]>(
+  view: NdArray<T>
+): NdArray<T> {
   const { data } = view;
 
   const array = ndarray(
     (isTypedArray(data)
       ? new (data.constructor as TypedArrayConstructor)(view.size)
-      : []) as U,
+      : []) as T,
     view.shape
   );
 
@@ -182,15 +181,4 @@ export function getValidDomainForScale(
 export function getDims(dataArray: NdArray): Dims {
   const [rows, cols] = dataArray.shape;
   return { rows, cols };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function createMemo<P extends any[], R, T extends (...args: P) => R>(
-  fn: T
-): T;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function createMemo<P extends any[], R, T extends (...args: P) => R>(
-  fn: T
-) {
-  return (...args: P) => useMemo<R>(() => fn(...args), args); // eslint-disable-line react-hooks/exhaustive-deps
 }

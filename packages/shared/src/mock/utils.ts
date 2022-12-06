@@ -61,6 +61,11 @@ export function findMockEntity(path: string): ProvidedEntity | undefined {
   return child;
 }
 
+/*
+ * Get a mock dataset's value as an ndarray.
+ * Allow type-casting via generic for convenience, as the type of the values is known.
+ */
+// eslint-disable-next-line etc/no-misused-generics
 export function getMockDataArray<T = number>(path: string): NdArray<T[]> {
   const entity = findMockEntity(path);
   assertDefined(entity);
@@ -68,7 +73,7 @@ export function getMockDataArray<T = number>(path: string): NdArray<T[]> {
   assertMockDataset(entity);
 
   const { value } = entity;
-  assertArray<T>(value);
+  assertArray(value);
   assertArrayShape(entity);
 
   return ndarray(value.flat(entity.shape.length - 1) as T[], entity.shape);
