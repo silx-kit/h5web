@@ -120,15 +120,15 @@ function assertComplex(val: unknown): asserts val is H5WebComplex {
   }
 }
 
-export function assertArray<T>(val: unknown): asserts val is T[] {
+export function assertArray(val: unknown): asserts val is unknown[] {
   if (!Array.isArray(val)) {
     throw new TypeError('Expected array');
   }
 }
 
-export function assertArrayOrTypedArray<T>(
+export function assertArrayOrTypedArray(
   val: unknown
-): asserts val is T[] | TypedArray {
+): asserts val is unknown[] | TypedArray {
   if (!Array.isArray(val) && !isTypedArrayLodash(val)) {
     throw new TypeError('Expected array or typed array');
   }
@@ -370,10 +370,10 @@ export function isComplexValue(
   return type.class === DTypeClass.Complex;
 }
 
-function assertPrimitiveValue<T extends DType, D extends Dataset<Shape, T>>(
+function assertPrimitiveValue<D extends Dataset>(
   dataset: D,
   value: unknown
-): asserts value is Primitive<T> {
+): asserts value is Primitive<DType> {
   if (hasNumericType(dataset)) {
     assertNum(value);
   } else if (hasStringType(dataset)) {

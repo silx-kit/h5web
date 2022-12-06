@@ -79,10 +79,11 @@ function InteractionsProvider(props: { children: ReactNode }) {
       }
 
       // If conflicting interactions, the one with the most modifier keys take precedence
-      const [maxKeyInteraction] = matchingInteractions
-        .sort((a, b) => a.modifierKeys.length - b.modifierKeys.length)
-        .reverse();
+      matchingInteractions.sort(
+        (a, b) => b.modifierKeys.length - a.modifierKeys.length
+      );
 
+      const [maxKeyInteraction] = matchingInteractions;
       return maxKeyInteraction.id === interactionId;
     },
     [interactionMap]

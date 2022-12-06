@@ -208,9 +208,9 @@ export class HsdsApi extends DataProviderApi {
   private async fetchValue(
     entityId: HsdsId,
     params: ValuesStoreParams
-  ): Promise<unknown> {
+  ): Promise<HsdsValueResponse> {
     const { selection } = params;
-    const { data } = await this.cancellableFetchValue<HsdsValueResponse>(
+    const { data } = await this.cancellableFetchValue(
       `/datasets/${entityId}/value`,
       params,
       { select: selection && `[${selection}]` }

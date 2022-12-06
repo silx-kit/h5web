@@ -23,10 +23,10 @@ export const INTERACTIONS_WITH_AXIAL_ZOOM = [
   { shortcut: 'Ctrl+Shift+Drag', description: 'Select to zoom in Y' },
 ];
 
-export function getBaseArray<T, U extends T[] | TypedArray | undefined>(
-  value: U,
+export function getBaseArray<T extends unknown[] | TypedArray | undefined>(
+  value: T,
   rawDims: number[]
-): U extends T[] | TypedArray ? NdArray<U> : undefined;
+): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
 
 export function getBaseArray<T>(
   value: T[] | TypedArray | undefined,
@@ -36,12 +36,11 @@ export function getBaseArray<T>(
 }
 
 export function applyMapping<
-  T,
-  U extends NdArray<T[] | TypedArray> | undefined
+  T extends NdArray<unknown[] | TypedArray> | undefined
 >(
-  baseArray: U,
+  baseArray: T,
   mapping: (number | Axis | ':')[]
-): U extends NdArray<T[] | TypedArray> ? U : undefined;
+): T extends NdArray<unknown[] | TypedArray> ? T : undefined;
 
 export function applyMapping<T>(
   baseArray: NdArray<T[] | TypedArray> | undefined,

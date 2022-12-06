@@ -78,10 +78,10 @@ export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   });
 }
 
-export function useBaseArray<T, U extends T[] | TypedArray | undefined>(
-  value: U,
+export function useBaseArray<T extends unknown[] | TypedArray | undefined>(
+  value: T,
   rawDims: number[]
-): U extends T[] | TypedArray ? NdArray<U> : undefined;
+): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
 
 export function useBaseArray<T>(
   value: T[] | TypedArray | undefined,
@@ -90,13 +90,13 @@ export function useBaseArray<T>(
   return useMemo(() => getBaseArray(value, rawDims), [value, rawDims]);
 }
 
-export function useMappedArray<T, U extends T[] | TypedArray | undefined>(
-  value: U,
+export function useMappedArray<T extends unknown[] | TypedArray | undefined>(
+  value: T,
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean
-): U extends T[] | TypedArray
-  ? [NdArray<U>, NdArray<U>]
+): T extends unknown[] | TypedArray
+  ? [NdArray<T>, NdArray<T>]
   : [undefined, undefined];
 
 export function useMappedArray<T>(
