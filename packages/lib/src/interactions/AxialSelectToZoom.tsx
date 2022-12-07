@@ -22,17 +22,12 @@ function AxialSelectToZoom(props: Props) {
   const camera = useThree((state) => state.camera);
 
   function onSelectionEnd(selection: Selection) {
-    // Work in world coordinates as we need to act on the world camera
-    const { worldStartPoint, worldEndPoint } = selection;
-
-    if (
-      worldStartPoint.x === worldEndPoint.x ||
-      worldStartPoint.y === worldEndPoint.y
-    ) {
+    const [worldStart, worldEnd] = selection.world;
+    if (worldStart.x === worldEnd.x || worldStart.y === worldEnd.y) {
       return;
     }
 
-    const zoomRect = getEnclosedRectangle(worldStartPoint, worldEndPoint);
+    const zoomRect = getEnclosedRectangle(worldStart, worldEnd);
     const { center: zoomRectCenter } = zoomRect;
 
     // Change scale first so that moveCameraTo computes the updated camera bounds
@@ -50,13 +45,13 @@ function AxialSelectToZoom(props: Props) {
       disabled={visRatio !== undefined || disabled}
       onSelectionEnd={onSelectionEnd}
     >
-      {({ startPoint, endPoint }) => (
+      {({ data: [dataStart, dataEnd] }) => (
         <SelectionRect
           fill="white"
           stroke="black"
           fillOpacity={0.25}
-          startPoint={startPoint}
-          endPoint={endPoint}
+          startPoint={dataStart}
+          endPoint={dataEnd}
         />
       )}
     </AxialSelectionTool>

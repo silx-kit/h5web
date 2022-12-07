@@ -39,9 +39,7 @@ function SelectionTool(props: Props) {
   const { worldToData } = useVisCanvasContext();
 
   const [startEvt, setStartEvt] = useState<CanvasEvent<PointerEvent>>();
-  const [selection, setSelection] = useRafState<Selection | undefined>(
-    undefined
-  );
+  const [selection, setSelection] = useRafState<Selection>();
 
   const modifierKeys = getModifierKeyArray(modifierKey);
   const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
@@ -53,18 +51,16 @@ function SelectionTool(props: Props) {
   });
 
   const computeSelection = useCallback(
-    (evt: CanvasEvent<PointerEvent>) => {
+    (evt: CanvasEvent<PointerEvent>): Selection => {
       assertDefined(startEvt);
-      const { dataPt: startPoint, worldPt: worldStartPoint } = startEvt;
+      const { dataPt: dataStart, worldPt: worldStart } = startEvt;
 
-      const { worldPt: worldEndPt } = evt;
-      const boundWorldEndPoint = boundWorldPointToFOV(worldEndPt, camera);
+      const { worldPt: worldEnd } = evt;
+      const boundWorldEnd = boundWorldPointToFOV(worldEnd, camera);
 
       return {
-        startPoint,
-        endPoint: worldToData(boundWorldEndPoint),
-        worldStartPoint,
-        worldEndPoint: boundWorldEndPoint,
+        world: [worldStart, boundWorldEnd],
+        data: [dataStart, worldToData(boundWorldEnd)],
       };
     },
     [camera, startEvt, worldToData]
@@ -127,8 +123,8 @@ function SelectionTool(props: Props) {
       setSelection,
       onSelectionEnd,
       shouldInteract,
-      computeSelection,
       transformSelection,
+      computeSelection,
     ]
   );
 
