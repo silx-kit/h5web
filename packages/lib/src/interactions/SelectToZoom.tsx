@@ -21,20 +21,16 @@ function SelectToZoom(props: Props) {
   const moveCameraTo = useMoveCameraTo();
 
   function onSelectionEnd(selection: Selection) {
-    const { startPoint: dataStartPoint, endPoint: dataEndPoint } = selection;
-
-    // Work in world coordinates as we need to act on the world camera
-    const [startPoint, endPoint] = getRatioRespectingRectangle(
-      dataStartPoint,
-      dataEndPoint,
+    const [worldStart, worldEnd] = getRatioRespectingRectangle(
+      ...selection.data,
       keepRatio ? canvasRatio : undefined
-    ).map(dataToWorld);
+    ).map(dataToWorld); // work in world coordinates as we need to act on the world camera
 
-    if (startPoint.x === endPoint.x || startPoint.y === endPoint.y) {
+    if (worldStart.x === worldEnd.x || worldStart.y === worldEnd.y) {
       return;
     }
 
-    const zoomRect = getEnclosedRectangle(startPoint, endPoint);
+    const zoomRect = getEnclosedRectangle(worldStart, worldEnd);
     const { center: zoomRectCenter } = zoomRect;
 
     // Change scale first so that moveCameraTo computes the updated camera bounds
@@ -46,11 +42,11 @@ function SelectToZoom(props: Props) {
 
   return (
     <SelectionTool id="SelectToZoom" onSelectionEnd={onSelectionEnd} {...props}>
-      {({ startPoint, endPoint }) => (
+      {({ data: [dataStart, dataEnd] }) => (
         <>
           <SelectionRect
-            startPoint={startPoint}
-            endPoint={endPoint}
+            startPoint={dataStart}
+            endPoint={dataEnd}
             fill="white"
             stroke="black"
             fillOpacity={keepRatio ? 0 : 0.25}
@@ -58,8 +54,8 @@ function SelectToZoom(props: Props) {
           />
           {keepRatio && (
             <RatioSelectionRect
-              startPoint={startPoint}
-              endPoint={endPoint}
+              startPoint={dataStart}
+              endPoint={dataEnd}
               ratio={canvasRatio}
               fillOpacity={0.25}
               fill="white"
