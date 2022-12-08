@@ -2,31 +2,28 @@ import type { NumArray } from '@h5web/shared';
 import { getDims } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import { useMemo } from 'react';
-import { Float32BufferAttribute, Uint8BufferAttribute } from 'three';
+import { Float32BufferAttribute } from 'three';
 
-export function useBufferAttributes(
-  dataArray: NdArray<NumArray>,
-  dataToColorScale: (val: number) => [number, number, number]
-) {
-  const { position, color } = useMemo(() => {
+export function useBufferAttributes(dataArray: NdArray<NumArray>) {
+  const { position, uv } = useMemo(() => {
     const { rows, cols } = getDims(dataArray);
 
     const positions: number[] = [];
-    const colors: number[] = [];
+    const uvs: number[] = [];
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const value = dataArray.get(row, col);
         positions.push(col, row, value);
-        colors.push(...dataToColorScale(value));
+        uvs.push((col + 0.5) / cols, (row + 0.5) / rows);
       }
     }
 
     return {
       position: new Float32BufferAttribute(positions, 3),
-      color: new Uint8BufferAttribute(colors, 3, true),
+      uv: new Float32BufferAttribute(uvs, 2),
     };
-  }, [dataArray, dataToColorScale]);
+  }, [dataArray]);
 
   const index = useMemo(() => {
     const { rows, cols } = getDims(dataArray);
@@ -56,5 +53,5 @@ export function useBufferAttributes(
     return indices;
   }, [dataArray]);
 
-  return { position, color, index };
+  return { position, index, uv };
 }

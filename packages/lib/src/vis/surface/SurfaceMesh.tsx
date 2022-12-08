@@ -1,9 +1,10 @@
 import { getDims } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import { useLayoutEffect, useState } from 'react';
-import { BufferGeometry, DoubleSide } from 'three';
+import { BufferGeometry, LinearFilter } from 'three';
 
-import { useDataToColorScale } from '../hooks';
+import HeatmapMaterial from '../heatmap/HeatmapMaterial';
+import { useTextureSafeNdArray } from '../heatmap/hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import type { SurfaceVisProps } from './SurfaceVis';
@@ -20,30 +21,28 @@ function SurfaceMesh(props: Props) {
   const [dataGeometry] = useState(() => new BufferGeometry());
   const invalidate = useThree((state) => state.invalidate);
 
-  const dataToColorScale = useDataToColorScale(
-    scaleType,
-    domain,
-    colorMap,
-    invertColorMap
-  );
+  const safeDataArray = useTextureSafeNdArray(dataArray);
 
-  const {
-    position,
-    color,
-    index: indices,
-  } = useBufferAttributes(dataArray, dataToColorScale);
+  const { position, index, uv } = useBufferAttributes(dataArray);
 
   useLayoutEffect(() => {
     dataGeometry.setAttribute('position', position);
-    dataGeometry.setAttribute('color', color);
-    dataGeometry.setIndex(indices);
+    dataGeometry.setAttribute('uv', uv);
+    dataGeometry.setIndex(index);
     invalidate();
-  }, [dataGeometry, invalidate, position, indices, color]);
+  }, [dataGeometry, invalidate, position, index, uv]);
 
   return (
     <group position={[-cols / 2, -rows / 2, 0]}>
       <mesh geometry={dataGeometry}>
-        <meshBasicMaterial vertexColors side={DoubleSide} />
+        <HeatmapMaterial
+          values={safeDataArray}
+          domain={domain}
+          colorMap={colorMap}
+          scaleType={scaleType}
+          invertColorMap={invertColorMap}
+          magFilter={LinearFilter}
+        />
       </mesh>
       {showPoints && (
         <points geometry={dataGeometry}>

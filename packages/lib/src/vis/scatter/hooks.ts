@@ -1,7 +1,11 @@
-import type { NumArray } from '@h5web/shared';
+import type { Domain, NumArray, ScaleType } from '@h5web/shared';
+import { rgb } from 'd3-color';
 import { useMemo } from 'react';
 
+import type { ColorMap } from '../heatmap/models';
+import { getInterpolator } from '../heatmap/utils';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
+import { createAxisScale } from '../utils';
 
 const CAMERA_FAR = 1000; // R3F's default
 
@@ -40,4 +44,23 @@ export function useBufferAttributes(
     ordinateScale,
     ordinates,
   ]);
+}
+
+export function useDataToColorScale(
+  scaleType: ScaleType,
+  domain: Domain,
+  colorMap: ColorMap,
+  invertColorMap: boolean
+): (v: number) => [number, number, number] {
+  return useMemo(() => {
+    const numScale = createAxisScale(scaleType, {
+      domain,
+      range: [0, 1],
+    });
+    const interpolator = getInterpolator(colorMap, invertColorMap);
+    return (value: number) => {
+      const color = rgb(interpolator(numScale(value)));
+      return [color.r, color.g, color.b];
+    };
+  }, [colorMap, domain, invertColorMap, scaleType]);
 }
