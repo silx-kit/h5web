@@ -1,5 +1,5 @@
 import { assertDefined } from '@h5web/shared';
-import { useKeyboardEvent, useRafState } from '@react-hookz/web';
+import { useKeyboardEvent, useRafState, useSyncedRef } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import { useRef } from 'react';
@@ -29,12 +29,18 @@ function SelectionTool(props: Props) {
     id = 'Selection',
     modifierKey,
     disabled,
-    transformSelection,
+    transformSelection = (selection) => selection,
     onSelectionStart,
     onSelectionChange,
     onSelectionEnd,
     children,
   } = props;
+
+  // Wrap callbacks in up-to-date but stable refs so consumers don't have to memoise them
+  const transformSelectionRef = useSyncedRef(transformSelection);
+  const onSelectionStartRef = useSyncedRef(onSelectionStart);
+  const onSelectionChangeRef = useSyncedRef(onSelectionChange);
+  const onSelectionEndRef = useSyncedRef(onSelectionEnd);
 
   const camera = useThree((state) => state.camera);
   const { worldToData } = useVisCanvasContext();
@@ -59,16 +65,12 @@ function SelectionTool(props: Props) {
       const { worldPt: worldEnd } = evt;
       const boundWorldEnd = boundWorldPointToFOV(worldEnd, camera);
 
-      const newSelection: Selection = {
+      return transformSelectionRef.current({
         world: [worldStart, boundWorldEnd],
         data: [dataStart, worldToData(boundWorldEnd)],
-      };
-
-      return transformSelection
-        ? transformSelection(newSelection)
-        : newSelection;
+      });
     },
-    [camera, transformSelection, worldToData]
+    [camera, transformSelectionRef, worldToData]
   );
 
   const onPointerDown = useCallback(
@@ -82,9 +84,9 @@ function SelectionTool(props: Props) {
       (target as Element).setPointerCapture(pointerId);
       startEvtRef.current = evt;
 
-      onSelectionStart?.(evt);
+      onSelectionStartRef.current?.(evt);
     },
-    [onSelectionStart, shouldInteract]
+    [onSelectionStartRef, shouldInteract]
   );
 
   const onPointerMove = useCallback(
@@ -106,14 +108,14 @@ function SelectionTool(props: Props) {
       const { target, pointerId } = sourceEvent;
       (target as Element).releasePointerCapture(pointerId);
 
-      if (onSelectionEnd && shouldInteract(sourceEvent)) {
-        onSelectionEnd(computeSelection(evt));
+      if (onSelectionEndRef.current && shouldInteract(sourceEvent)) {
+        onSelectionEndRef.current(computeSelection(evt));
       }
 
       startEvtRef.current = undefined;
       setSelection(undefined);
     },
-    [setSelection, onSelectionEnd, shouldInteract, computeSelection]
+    [onSelectionEndRef, setSelection, shouldInteract, computeSelection]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -129,10 +131,10 @@ function SelectionTool(props: Props) {
   );
 
   useEffect(() => {
-    if (onSelectionChange && selection && isModifierKeyPressed) {
-      onSelectionChange(selection);
+    if (selection && isModifierKeyPressed) {
+      onSelectionChangeRef.current?.(selection);
     }
-  }, [selection, isModifierKeyPressed, onSelectionChange]);
+  }, [selection, isModifierKeyPressed, onSelectionChangeRef]);
 
   if (!selection || !isModifierKeyPressed) {
     return null;
