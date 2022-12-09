@@ -3,7 +3,7 @@ import { useKeyboardEvent, useRafState } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import { useRef } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import {
@@ -29,7 +29,7 @@ function SelectionTool(props: Props) {
     id = 'Selection',
     modifierKey,
     disabled,
-    transformSelection: customTransformSelection,
+    transformSelection,
     onSelectionStart,
     onSelectionChange,
     onSelectionEnd,
@@ -59,19 +59,16 @@ function SelectionTool(props: Props) {
       const { worldPt: worldEnd } = evt;
       const boundWorldEnd = boundWorldPointToFOV(worldEnd, camera);
 
-      return {
+      const newSelection: Selection = {
         world: [worldStart, boundWorldEnd],
         data: [dataStart, worldToData(boundWorldEnd)],
       };
-    },
-    [camera, worldToData]
-  );
 
-  const transformSelection = useCallback(
-    (selec: Selection): Selection => {
-      return customTransformSelection ? customTransformSelection(selec) : selec;
+      return transformSelection
+        ? transformSelection(newSelection)
+        : newSelection;
     },
-    [customTransformSelection]
+    [camera, transformSelection, worldToData]
   );
 
   const onPointerDown = useCallback(
@@ -85,9 +82,7 @@ function SelectionTool(props: Props) {
       (target as Element).setPointerCapture(pointerId);
       startEvtRef.current = evt;
 
-      if (onSelectionStart) {
-        onSelectionStart(evt);
-      }
+      onSelectionStart?.(evt);
     },
     [onSelectionStart, shouldInteract]
   );
@@ -112,19 +107,13 @@ function SelectionTool(props: Props) {
       (target as Element).releasePointerCapture(pointerId);
 
       if (onSelectionEnd && shouldInteract(sourceEvent)) {
-        onSelectionEnd(transformSelection(computeSelection(evt)));
+        onSelectionEnd(computeSelection(evt));
       }
 
       startEvtRef.current = undefined;
       setSelection(undefined);
     },
-    [
-      setSelection,
-      onSelectionEnd,
-      shouldInteract,
-      transformSelection,
-      computeSelection,
-    ]
+    [setSelection, onSelectionEnd, shouldInteract, computeSelection]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -141,15 +130,15 @@ function SelectionTool(props: Props) {
 
   useEffect(() => {
     if (onSelectionChange && selection && isModifierKeyPressed) {
-      onSelectionChange(transformSelection(selection));
+      onSelectionChange(selection);
     }
-  }, [selection, isModifierKeyPressed, onSelectionChange, transformSelection]);
+  }, [selection, isModifierKeyPressed, onSelectionChange]);
 
   if (!selection || !isModifierKeyPressed) {
     return null;
   }
 
-  return <>{children(transformSelection(selection))}</>;
+  return <>{children(selection)}</>;
 }
 
 export type { Props as SelectionProps };
