@@ -178,11 +178,9 @@ export const Persisted: Story<TemplateProps> = (args) => {
         onSelectionStart={() => setPersistedSelection(undefined)}
         onSelectionEnd={setPersistedSelection}
       >
-        {({ data: [dataStart, dataEnd] }) =>
-          !persistedSelection && (
-            <SelectionComponent startPoint={dataStart} endPoint={dataEnd} />
-          )
-        }
+        {({ data: [dataStart, dataEnd] }) => (
+          <SelectionComponent startPoint={dataStart} endPoint={dataEnd} />
+        )}
       </SelectionTool>
 
       {persistedSelection && (
@@ -264,6 +262,7 @@ export const AxialSelection: Story<TemplateProps & { axis: Axis }> = (args) => {
 
 AxialSelection.args = {
   selectionType: 'rectangle',
+  selectionModifierKey: undefined,
   panModifierKey: 'Control',
   axis: 'x',
 };
@@ -272,9 +271,13 @@ AxialSelection.argTypes = {
     control: { type: 'inline-radio' },
     options: ['x', 'y'],
   },
+  selectionModifierKey: {
+    control: { type: 'inline-radio' },
+    options: ['Alt', 'Control', 'Shift', undefined],
+  },
   panModifierKey: {
     control: { type: 'inline-radio' },
-    options: ['Alt', 'Control', 'Shift'],
+    options: ['Alt', 'Control', 'Shift', undefined],
   },
 };
 
