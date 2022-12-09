@@ -17,13 +17,14 @@ const { twoD } = mockValues;
 
 const Template: Story<SelectToZoomProps> = (args) => {
   const { values, domain } = useMockData(twoD, [20, 41]);
+  const { modifierKey } = args;
 
   return (
     <VisCanvas
       abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
       ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
     >
-      <Pan />
+      <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
       <Zoom />
       <SelectToZoom {...args} />
       <ResetZoomButton />
@@ -42,6 +43,7 @@ export const InsideAutoAspectCanvas = Template.bind({});
 
 export const InsideEqualAspectCanvas: Story<SelectToZoomProps> = (args) => {
   const { values, domain } = useMockData(twoD, [20, 41]);
+  const { modifierKey } = args;
 
   return (
     <VisCanvas
@@ -49,7 +51,7 @@ export const InsideEqualAspectCanvas: Story<SelectToZoomProps> = (args) => {
       ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
       aspect="equal"
     >
-      <Pan />
+      <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
       <Zoom />
       <SelectToZoom {...args} />
       <ResetZoomButton />

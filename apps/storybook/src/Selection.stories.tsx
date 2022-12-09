@@ -9,6 +9,7 @@ import {
   Zoom,
   ResetZoomButton,
 } from '@h5web/lib';
+import { useThrottledState } from '@react-hookz/web';
 import type { Meta, Story } from '@storybook/react';
 import { format } from 'd3-format';
 import { useState } from 'react';
@@ -45,7 +46,10 @@ const Template: Story<TemplateProps> = (args) => {
   const { selectionType, selectionModifierKey, panModifierKey, ...svgProps } =
     args;
 
-  const [activeSelection, setActiveSelection] = useState<Selection>();
+  const [activeSelection, setActiveSelection] = useThrottledState<
+    Selection | undefined
+  >(undefined, 50);
+
   const SelectionComponent = SELECTION_COMPONENTS[selectionType];
 
   if (selectionModifierKey === panModifierKey) {
@@ -170,9 +174,9 @@ export const Persisted: Story<TemplateProps> = (args) => {
       <ResetZoomButton />
 
       <SelectionTool
+        modifierKey={selectionModifierKey}
         onSelectionStart={() => setPersistedSelection(undefined)}
         onSelectionEnd={setPersistedSelection}
-        modifierKey={selectionModifierKey}
       >
         {({ data: [dataStart, dataEnd] }) =>
           !persistedSelection && (
@@ -192,8 +196,8 @@ export const Persisted: Story<TemplateProps> = (args) => {
 };
 Persisted.args = {
   selectionType: 'rectangle',
-  selectionModifierKey: 'Control',
-  panModifierKey: undefined,
+  selectionModifierKey: undefined,
+  panModifierKey: 'Control',
 };
 Persisted.argTypes = {
   selectionModifierKey: {
@@ -215,7 +219,10 @@ export const AxialSelection: Story<TemplateProps & { axis: Axis }> = (args) => {
     ...svgProps
   } = args;
 
-  const [activeSelection, setActiveSelection] = useState<Selection>();
+  const [activeSelection, setActiveSelection] = useThrottledState<
+    Selection | undefined
+  >(undefined, 50);
+
   const SelectionComponent = SELECTION_COMPONENTS[selectionType];
 
   if (selectionModifierKey === panModifierKey) {
