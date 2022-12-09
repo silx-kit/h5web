@@ -170,9 +170,9 @@ export const Persisted: Story<TemplateProps> = (args) => {
       <ResetZoomButton />
 
       <SelectionTool
+        modifierKey={selectionModifierKey}
         onSelectionStart={() => setPersistedSelection(undefined)}
         onSelectionEnd={setPersistedSelection}
-        modifierKey={selectionModifierKey}
       >
         {({ data: [dataStart, dataEnd] }) =>
           !persistedSelection && (
@@ -192,8 +192,8 @@ export const Persisted: Story<TemplateProps> = (args) => {
 };
 Persisted.args = {
   selectionType: 'rectangle',
-  selectionModifierKey: 'Control',
-  panModifierKey: undefined,
+  selectionModifierKey: undefined,
+  panModifierKey: 'Control',
 };
 Persisted.argTypes = {
   selectionModifierKey: {

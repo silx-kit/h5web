@@ -20,6 +20,7 @@ import { useMockData } from './hooks';
 const { oneD, twoD } = mockValues;
 
 const Template: Story<AxialSelectToZoomProps> = (args) => {
+  const { modifierKey } = args;
   const domain = useDomain(oneD);
   assertDefined(domain);
 
@@ -28,7 +29,7 @@ const Template: Story<AxialSelectToZoomProps> = (args) => {
       abscissaConfig={{ visDomain: [0, oneD.length], showGrid: true }}
       ordinateConfig={{ visDomain: domain, showGrid: true }}
     >
-      <Pan />
+      <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
       <Zoom />
       <AxialSelectToZoom {...args} />
       <ResetZoomButton />
@@ -78,7 +79,7 @@ export const DisabledInsideEqualAspectCanvas: Story<AxialSelectToZoomProps> = (
       ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
       aspect="equal"
     >
-      <Pan />
+      <Pan modifierKey="Control" />
       <Zoom />
       <AxialSelectToZoom {...args} />
       <ResetZoomButton />
@@ -91,6 +92,11 @@ export const DisabledInsideEqualAspectCanvas: Story<AxialSelectToZoomProps> = (
       />
     </VisCanvas>
   );
+};
+
+DisabledInsideEqualAspectCanvas.argTypes = {
+  modifierKey: { control: false },
+  disabled: { control: false },
 };
 
 export default {

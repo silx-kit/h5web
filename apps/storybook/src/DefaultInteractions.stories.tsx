@@ -1,20 +1,39 @@
-import { DefaultInteractions, ResetZoomButton, VisCanvas } from '@h5web/lib';
+import {
+  DefaultInteractions,
+  HeatmapMesh,
+  mockValues,
+  ResetZoomButton,
+  ScaleType,
+  VisCanvas,
+} from '@h5web/lib';
 import type { DefaultInteractionsConfig } from '@h5web/lib/src/interactions/DefaultInteractions';
 import type { Meta, Story } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
+import { useMockData } from './hooks';
+
+const { twoD } = mockValues;
 
 export const InsideAutoAspectCanvas: Story<DefaultInteractionsConfig> = (
   args
 ) => {
+  const { values, domain } = useMockData(twoD, [20, 41]);
+
   return (
     <VisCanvas
-      abscissaConfig={{ visDomain: [0, 10], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, 10], showGrid: true }}
+      abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
+      ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
       aspect="auto"
     >
       <DefaultInteractions {...args} />
       <ResetZoomButton />
+
+      <HeatmapMesh
+        values={values}
+        domain={domain}
+        colorMap="Viridis"
+        scaleType={ScaleType.Linear}
+      />
     </VisCanvas>
   );
 };
@@ -22,14 +41,23 @@ export const InsideAutoAspectCanvas: Story<DefaultInteractionsConfig> = (
 export const InsideEqualAspectCanvas: Story<DefaultInteractionsConfig> = (
   args
 ) => {
+  const { values, domain } = useMockData(twoD, [20, 41]);
+
   return (
     <VisCanvas
-      abscissaConfig={{ visDomain: [0, 10], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, 10], showGrid: true }}
+      abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
+      ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
       aspect="equal"
     >
       <DefaultInteractions {...args} />
       <ResetZoomButton />
+
+      <HeatmapMesh
+        values={values}
+        domain={domain}
+        colorMap="Viridis"
+        scaleType={ScaleType.Linear}
+      />
     </VisCanvas>
   );
 };
