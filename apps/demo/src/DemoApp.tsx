@@ -11,6 +11,10 @@ import HsdsApp from './HsdsApp';
 import MockApp from './MockApp';
 import H5WasmApp from './h5wasm/H5WasmApp';
 
+const query = new URLSearchParams(document.location.search);
+// @ts-expect-error
+window.H5WEB_EXPERIMENTAL = query.has('experimental');
+
 function DemoApp() {
   return (
     <Router>
