@@ -17,6 +17,7 @@ import {
   FiMap,
   FiCpu,
   FiImage,
+  FiPackage,
 } from 'react-icons/fi';
 
 import type { AttrValuesStore } from '../../providers/models';
@@ -40,6 +41,11 @@ import {
   ComplexLineVisContainer,
   RgbVisContainer,
 } from './containers';
+import SurfaceVisContainer from './surface/SurfaceVisContainer';
+import { SurfaceConfigProvider } from './surface/config';
+
+// @ts-expect-error
+const enableSurfaceVis = window.H5WEB_EXPERIMENTAL;
 
 export enum Vis {
   Raw = 'Raw',
@@ -51,6 +57,7 @@ export enum Vis {
   ComplexLine = 'ComplexLine',
   RGB = 'RGB',
   CompoundMatrix = 'CompoundMatrix',
+  Surface = 'Surface',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -162,6 +169,21 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
         hasPrintableCompoundType(dataset) &&
         hasArrayShape(dataset) &&
         hasMinDims(dataset, 1)
+      );
+    },
+  },
+
+  [Vis.Surface]: {
+    name: Vis.Surface,
+    Icon: FiPackage,
+    Container: SurfaceVisContainer,
+    ConfigProvider: SurfaceConfigProvider,
+    supportsDataset: (dataset) => {
+      return (
+        enableSurfaceVis &&
+        hasNumericType(dataset) &&
+        hasArrayShape(dataset) &&
+        hasMinDims(dataset, 2)
       );
     },
   },
