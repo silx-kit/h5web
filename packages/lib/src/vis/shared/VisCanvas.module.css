@@ -9,10 +9,20 @@
   background-color: var(--h5w-canvas--bgColor, transparent);
 }
 
+.svgOverlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* for SVG elements to appear above visualization */
+  pointer-events: none;
+}
+
 .floatingToolbar {
   position: absolute;
   right: 0;
   bottom: 0;
   display: flex;
-  z-index: 1; /* for toolbar items to appear above visualizations (overflow, selectors) */
+  z-index: 2; /* for toolbar items to appear above visualization and SVG elements */
 }
