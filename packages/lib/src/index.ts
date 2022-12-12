@@ -61,9 +61,10 @@ export type { PanProps } from './interactions/Pan';
 export type { ZoomProps } from './interactions/Zoom';
 export type { XAxisZoomProps } from './interactions/XAxisZoom';
 export type { YAxisZoomProps } from './interactions/YAxisZoom';
+export type { SelectionToolProps } from './interactions/SelectionTool';
 export type { SelectToZoomProps } from './interactions/SelectToZoom';
+export type { AxialSelectionToolProps } from './interactions/AxialSelectionTool';
 export type { AxialSelectToZoomProps } from './interactions/AxialSelectToZoom';
-export type { SelectionProps } from './interactions/SelectionTool';
 export type { DefaultInteractionsConfig } from './interactions/DefaultInteractions';
 
 // Context

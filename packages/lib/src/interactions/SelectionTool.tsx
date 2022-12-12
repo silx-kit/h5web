@@ -167,5 +167,5 @@ function SelectionTool(props: Props) {
   return <>{children(selection)}</>;
 }
 
-export type { Props as SelectionProps };
+export type { Props as SelectionToolProps };
 export { SelectionTool as default };
