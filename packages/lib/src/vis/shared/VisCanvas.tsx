@@ -45,6 +45,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
       })
     : NO_OFFSETS;
 
+  const [svgOverlay, setSvgOverlay] = useState<SVGSVGElement>();
   const [floatingToolbar, setFloatingToolbar] = useState<HTMLDivElement>();
 
   return (
@@ -62,6 +63,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
           visRatio={visRatio}
           abscissaConfig={abscissaConfig}
           ordinateConfig={ordinateConfig}
+          svgOverlay={svgOverlay}
           floatingToolbar={floatingToolbar}
         >
           <AxisSystem
@@ -76,6 +78,13 @@ function VisCanvas(props: PropsWithChildren<Props>) {
             <ThresholdAdjuster value={raycasterThreshold} />
           )}
         </VisCanvasProvider>
+
+        <Html>
+          <svg
+            ref={(elem) => setSvgOverlay(elem || undefined)}
+            className={styles.svgOverlay}
+          />
+        </Html>
         <Html>
           <div
             ref={(elem) => setFloatingToolbar(elem || undefined)}

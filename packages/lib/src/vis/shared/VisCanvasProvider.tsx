@@ -21,6 +21,7 @@ export interface VisCanvasContextValue {
   // For internal use only
   cameraToHtml: (cameraPt: Vector3) => Vector2;
   htmlToCamera: (htmlPt: Vector2) => Vector3;
+  svgOverlay: SVGSVGElement | undefined;
   floatingToolbar: HTMLDivElement | undefined;
 }
 
@@ -34,6 +35,7 @@ interface Props {
   visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
+  svgOverlay: SVGSVGElement | undefined;
   floatingToolbar: HTMLDivElement | undefined;
 }
 
@@ -42,6 +44,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     visRatio,
     abscissaConfig,
     ordinateConfig,
+    svgOverlay,
     floatingToolbar,
     children,
   } = props;
@@ -112,6 +115,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         worldToData,
         cameraToHtml,
         htmlToCamera,
+        svgOverlay,
         floatingToolbar,
       }}
     >

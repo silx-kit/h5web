@@ -2,8 +2,7 @@ import type { SVGProps } from 'react';
 import type { Vector2 } from 'three';
 
 import { useCameraState } from '../vis/hooks';
-import Overlay from '../vis/shared/Overlay';
-import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
+import SvgElement from '../vis/shared/SvgElement';
 import { dataToHtml } from '../vis/utils';
 
 interface Props extends SVGProps<SVGRectElement> {
@@ -20,8 +19,6 @@ function SelectionRect(props: Props) {
     ...restSvgProps
   } = props;
 
-  const { canvasSize } = useVisCanvasContext();
-
   const htmlSelection = useCameraState(
     (...args) => ({
       startPoint: dataToHtml(...args, startPoint),
@@ -34,19 +31,17 @@ function SelectionRect(props: Props) {
   const { x: x2, y: y2 } = htmlSelection.endPoint;
 
   return (
-    <Overlay>
-      <svg {...canvasSize}>
-        <rect
-          x={Math.min(x1, x2)}
-          y={Math.min(y1, y2)}
-          width={Math.abs(x2 - x1)}
-          height={Math.abs(y2 - y1)}
-          fill={fill}
-          fillOpacity={fillOpacity}
-          {...restSvgProps}
-        />
-      </svg>
-    </Overlay>
+    <SvgElement>
+      <rect
+        x={Math.min(x1, x2)}
+        y={Math.min(y1, y2)}
+        width={Math.abs(x2 - x1)}
+        height={Math.abs(y2 - y1)}
+        fill={fill}
+        fillOpacity={fillOpacity}
+        {...restSvgProps}
+      />
+    </SvgElement>
   );
 }
 
