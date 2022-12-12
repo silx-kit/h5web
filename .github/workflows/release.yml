@@ -18,23 +18,26 @@ jobs:
         with:
           TAG_PREFIX: v
 
-      - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7.x
-
       - name: Use Node 16 🕹️
         uses: actions/setup-node@v3
         with:
           node-version-file: 'package.json'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
 
-      - name: Cache Cypress binary 📌
+      - name: Install pnpm ⚙️
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7.x
+
+      - name: Restore cache 📌
         uses: actions/cache@v3
         with:
-          path: ~/.cache/Cypress
-          key: cypress-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          path: |
+            ~/setup-pnpm/node_modules/.bin/store
+            ~/.cache/Cypress
+          key: cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
       - name: Install dependencies ⚙️
         run: pnpm install --frozen-lockfile
