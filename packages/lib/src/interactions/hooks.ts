@@ -5,46 +5,62 @@ import { useCallback, useEffect } from 'react';
 import { Vector2, Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { getWorldFOV, htmlToWorld } from '../vis/utils';
+import { htmlToWorld } from '../vis/utils';
 import { useInteractionsContext } from './InteractionsProvider';
+import Box from './box';
 import type {
   CanvasEvent,
   CanvasEventCallbacks,
   InteractionEntry,
   ModifierKey,
 } from './models';
-import { clampPositionToArea } from './utils';
 
 const ZOOM_FACTOR = 0.95;
 const ONE_VECTOR = new Vector3(1, 1, 1);
 const MODIFIER_KEYS: ModifierKey[] = ['Alt', 'Control', 'Shift'];
 
 export function useMoveCameraTo() {
-  const { visSize } = useVisCanvasContext();
+  const { canvasSize, visSize } = useVisCanvasContext();
 
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
 
   return useCallback(
     (worldPt: Vector3) => {
-      const { position } = camera;
+      const { position, scale } = camera;
 
-      const { topRight, bottomLeft } = getWorldFOV(camera);
-      const width = Math.abs(topRight.x - bottomLeft.x);
-      const height = Math.abs(topRight.y - bottomLeft.y);
+      const visBox = Box.fromSize(visSize);
+      const fovBox = Box.empty(worldPt)
+        .expandBySize(canvasSize.width * scale.x, canvasSize.height * scale.y)
+        .keepWithin(visBox);
 
-      const clampedPosition = clampPositionToArea(
-        worldPt,
-        { width, height },
-        visSize
-      );
-
-      position.set(clampedPosition.x, clampedPosition.y, position.z);
-
+      position.copy(fovBox.center.setZ(position.z)); // apply new position but keep `z` component as is
       camera.updateMatrixWorld();
+
       invalidate();
     },
-    [camera, visSize, invalidate]
+    [camera, visSize, canvasSize, invalidate]
+  );
+}
+
+export function useZoomOnBox() {
+  const { canvasSize } = useVisCanvasContext();
+
+  const camera = useThree((state) => state.camera);
+  const moveCameraTo = useMoveCameraTo();
+
+  return useCallback(
+    (zoomBox: Box) => {
+      const { width, height } = canvasSize;
+
+      // Update camera scale first (since `moveCameraTo` relies on camera scale)
+      const { width: zoomWidth, height: zoomHeight } = zoomBox.size;
+      camera.scale.set(zoomWidth / width, zoomHeight / height, 1);
+
+      // Then move camera position
+      moveCameraTo(zoomBox.center);
+    },
+    [camera, canvasSize, moveCameraTo]
   );
 }
 
@@ -88,17 +104,16 @@ export function useZoomOnWheel(
         // Use `divide` instead of `multiply` by 1 / zoomVector to avoid rounding issues (https://github.com/silx-kit/h5web/issues/1088)
         camera.scale.divide(zoomVector).min(ONE_VECTOR);
       }
-      camera.updateMatrixWorld();
 
-      // Scale the change in position according to the zoom
-      const oldPosition = worldPt.clone();
-      const delta = camera.position.clone().sub(oldPosition);
-      const scaledDelta =
-        sourceEvent.deltaY < 0
-          ? delta.multiply(zoomVector)
-          : delta.divide(zoomVector);
+      // Scale change in position according to zoom
+      const delta = camera.position.clone().sub(worldPt);
+      if (sourceEvent.deltaY < 0) {
+        delta.multiply(zoomVector);
+      } else {
+        delta.divide(zoomVector);
+      }
 
-      moveCameraTo(oldPosition.add(scaledDelta));
+      moveCameraTo(worldPt.clone().add(delta));
     },
     [camera, isZoomAllowed, moveCameraTo]
   );
