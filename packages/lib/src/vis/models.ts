@@ -42,6 +42,7 @@ export interface AxisConfig {
   scaleType?: ScaleType;
   label?: string;
   flip?: boolean;
+  nice?: boolean;
 }
 
 export type VisxScaleConfig = PickScaleConfigWithoutType<

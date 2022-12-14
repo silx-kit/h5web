@@ -18,6 +18,12 @@ ArbitraryDomains.args = {
   ordinateConfig: { visDomain: [50, 100], showGrid: true },
 };
 
+export const NiceDomains = Template.bind({});
+NiceDomains.args = {
+  abscissaConfig: { visDomain: [-1.2, 2.8], showGrid: true, nice: true },
+  ordinateConfig: { visDomain: [-1.2, 2.8], showGrid: true, nice: false },
+};
+
 export const LogScales = Template.bind({});
 LogScales.args = {
   abscissaConfig: {

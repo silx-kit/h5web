@@ -45,11 +45,12 @@ function Axis(props: Props) {
   const isAbscissa = type === 'abscissa';
   const axisLength = isAbscissa ? width : height;
 
-  const { scaleType = ScaleType.Linear, isIndexAxis, showGrid, label } = config;
+  const { scaleType = ScaleType.Linear, isIndexAxis, showGrid, label, nice : _nice = false } = config;
   // Restrain ticks scales to visible domains
   const scale = createAxisScale(scaleType, {
     domain,
     range: flipAxis ? [axisLength, 0] : [0, axisLength],
+    nice: _nice,
   });
 
   const [AxisComponent, GridComponent] = COMPONENTS[type];
