@@ -120,5 +120,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
   );
 });
 
+BoundEditor.displayName = 'BoundEditor';
+
 export type { Handle as BoundEditorHandle };
 export default BoundEditor;
