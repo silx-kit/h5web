@@ -453,9 +453,8 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
   errorSpy.mockRestore();
 
   // Move to other slice to retry fetching automatically
-  const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
-  d0Slider.focus();
-  await user.keyboard('{PageUp}');
+  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  await user.type(d0Slider, '{PageUp}');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetches succeed
@@ -463,45 +462,7 @@ test('retry fetching automatically when selecting other NxSpectrum slice', async
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Move back to first slice to retry fetching it automatically
-  await user.keyboard('{PageDown}');
-  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
-
-  // Let fetch of first slice succeed
-  jest.runAllTimers();
-  await expect(screen.findByRole('figure')).resolves.toBeVisible();
-  d0Slider.blur(); // remove focus to avoid state update after unmount
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
-});
-
-test('retry fetching supporting datasets automatically when selecting other NxImage slice', async () => {
-  jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
-
-  // Select NXdata group with image interpretation and start fetching dataset values
-  await selectExplorerNode('resilience/slow_nx_image');
-  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
-
-  // Cancel all fetches at once
-  const errorSpy = mockConsoleMethod('error');
-  await user.click(await screen.findByRole('button', { name: /Cancel/ }));
-  await expect(screen.findByText('Request cancelled')).resolves.toBeVisible();
-  expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
-  errorSpy.mockRestore();
-
-  // Move to other slice to fetch new slice and retry fetching supporting datasets automatically
-  const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
-  d0Slider.focus();
-  await user.keyboard('{PageUp}');
-  await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
-
-  // Let fetches succeed
-  jest.runAllTimers();
-  await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  // Move back to first slice to retry fetching it automatically
-  await user.keyboard('{PageDown}');
+  await user.type(d0Slider, '{PageDown}');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let fetch of first slice succeed
