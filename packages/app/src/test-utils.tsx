@@ -47,12 +47,10 @@ export function queryVisSelector(): HTMLElement | null {
   return screen.queryByRole('tablist', { name: 'Visualization' });
 }
 
-export async function findVisSelector(): Promise<HTMLElement> {
-  return screen.findByRole('tablist', { name: 'Visualization' });
-}
-
 export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
-  return within(await findVisSelector()).getAllByRole('tab');
+  return within(
+    await screen.findByRole('tablist', { name: 'Visualization' })
+  ).getAllByRole('tab');
 }
 
 /**
