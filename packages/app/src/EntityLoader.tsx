@@ -7,7 +7,7 @@ interface Props {
   message?: string;
 }
 
-function LoadingFallback(props: Props) {
+function EntityLoader(props: Props) {
   const { isInspecting, message = 'Loading' } = props;
 
   // Wait a bit before showing loader to avoid flash
@@ -25,4 +25,4 @@ function LoadingFallback(props: Props) {
   );
 }
 
-export default LoadingFallback;
+export default EntityLoader;

@@ -69,29 +69,26 @@ test('update domain when moving thumbs (with keyboard)', async () => {
 
   // Move min thumb one step to the left with keyboard
   minThumb.focus();
-  await user.keyboard('{ArrowLeft}');
+  await user.type(minThumb, '{ArrowLeft}');
   expect(minInput).toHaveValue('−1.04671e+2');
-  expect(within(visArea).getByText('−1.047e+2')).toBeInTheDocument();
+  expect(within(visArea).getByText('−1.047e+2')).toBeVisible();
 
-  // Move thumb five steps to the left (in a single press)
-  await user.keyboard('{ArrowLeft>5/}'); // press key and hold for 5 keydown events, then release
+  // Move min thumb five steps to the left (in a single press)
+  await user.type(minThumb, '{ArrowLeft>5/}'); // press key and hold for 5 keydown events, then release
   expect(minInput).toHaveValue('−2.30818e+2');
-  expect(within(visArea).getByText('−2.308e+2')).toBeInTheDocument();
+  expect(within(visArea).getByText('−2.308e+2')).toBeVisible();
 
   expect(minThumb).toHaveAttribute('aria-valuenow', '20'); // still at original position
   expect(maxInput).toHaveValue('4e+2'); // unaffected
 
-  // Give focus to max thumb
+  // Move max thumb ten steps to the left
   const maxThumb = await screen.findByRole('slider', { name: /max/ });
-  maxThumb.focus();
-
-  // Jump ten steps to the left
-  await user.keyboard('{PageDown}');
+  await user.type(maxThumb, '{PageDown}');
   expect(maxInput).toHaveValue('5.72182e+1');
-  expect(within(visArea).getByText('5.722e+1')).toBeInTheDocument();
+  expect(within(visArea).getByText('5.722e+1')).toBeVisible();
 
-  // Jump ten steps to the right
-  await user.keyboard('{PageUp}');
+  // Move max thumb ten steps to the right
+  await user.type(maxThumb, '{PageUp}');
   expect(maxInput).toHaveValue('3.68841e+2'); // not back to 4e+2 because 4e+2 is not exactly on a slider division
   expect(within(visArea).getByText('3.688e+2')).toBeInTheDocument();
 
@@ -109,7 +106,7 @@ test('allow editing bounds manually', async () => {
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   expect(editBtn).toHaveAttribute('aria-pressed', 'false');
 
-  // Open tooltip with both min and max in edit mode
+  // Click on edit button to open tooltip with both min and max in edit mode
   await user.click(editBtn);
   expect(editBtn).toHaveAttribute('aria-pressed', 'true');
   expect(editBtn).toHaveAttribute('aria-expanded', 'true');
@@ -172,8 +169,7 @@ test('clamp domain in symlog scale', async () => {
   expect(maxInput).toHaveValue('8.98847e+307');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '100');
 
-  maxThumb.focus();
-  await user.keyboard('{ArrowLeft}');
+  await user.type(maxThumb, '{ArrowLeft}');
   expect(maxInput).toHaveValue('5.40006e+301');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '99'); // does not jump back to 81
 
@@ -208,8 +204,7 @@ test('control min/max autoscale behaviour', async () => {
   const maxInput = screen.getByLabelText('max');
 
   // Moving min thumb disables min autoscale
-  minThumb.focus();
-  await user.keyboard('{ArrowRight}');
+  await user.type(minThumb, '{ArrowRight}');
   expect(minBtn).toHaveAttribute('aria-pressed', 'false');
   expect(maxBtn).toHaveAttribute('aria-pressed', 'true'); // unaffected
 
@@ -248,15 +243,14 @@ test('handle empty domain', async () => {
   expect(within(visArea).getByText('+∞')).toBeInTheDocument();
 
   // Check that pearling works (i.e. that one thumb can push the other)
-  maxThumb.focus();
-  await user.keyboard('{ArrowLeft}');
+  await user.type(maxThumb, '{ArrowLeft}');
   expect(minInput).toHaveValue('3.12772e+2');
   expect(maxInput).toHaveValue('3.12772e+2');
   expect(minThumb).toHaveAttribute('aria-valuenow', '80');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '80');
 
   // Ensure thumbs can be separated again
-  await user.keyboard('{ArrowRight}');
+  await user.type(maxThumb, '{ArrowRight}');
   expect(maxInput).toHaveValue('3.71154e+2');
   expect(minThumb).toHaveAttribute('aria-valuenow', '80');
   expect(maxThumb).toHaveAttribute('aria-valuenow', '81');
