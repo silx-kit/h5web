@@ -188,13 +188,13 @@ export function getCanvasScale(
   config: AxisConfig,
   canvasSize: number
 ): AxisScale {
-  const { scaleType, visDomain, flip, nice: _nice = false } = config;
+  const { scaleType, visDomain, flip, nice = false } = config;
 
   return createAxisScale(scaleType ?? ScaleType.Linear, {
     domain: visDomain,
     range: [-canvasSize / 2, canvasSize / 2],
     reverse: flip,
-    nice: _nice,
+    nice,
   });
 }
 
