@@ -60,8 +60,15 @@ export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
  * Mocks are automatically restored after every test, but to restore
  * the original console method earlier, call `spy.mockRestore()`.
  */
-export function mockConsoleMethod(method: 'log' | 'warn' | 'error') {
+export function mockConsoleMethod(
+  method: 'log' | 'warn' | 'error',
+  debug?: boolean
+) {
   const spy = jest.spyOn(console, method);
-  spy.mockImplementation(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
+  spy.mockImplementation((...args) => {
+    if (debug) {
+      console.debug(...args); // eslint-disable-line no-console
+    }
+  });
   return spy;
 }
