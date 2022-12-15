@@ -1,6 +1,6 @@
 # Contributing
 
-- [Quick start](#quick-start-)
+- [Quick start](#quick-start)
 - [Development](#development)
   - [`pnpm` v7 cheat sheet](#pnpm-v7-cheat-sheet)
   - [Dependency management](#dependency-management)
@@ -19,7 +19,7 @@
 - [Deployment](#deployment)
 - [Release process](#release-process)
 
-## Quick start 🚀
+## Quick start
 
 ```bash
 pnpm install
