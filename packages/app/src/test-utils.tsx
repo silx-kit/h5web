@@ -1,3 +1,4 @@
+import { assertDefined, assertNonNull } from '@h5web/shared';
 import type { RenderResult } from '@testing-library/react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -62,10 +63,27 @@ export async function renderApp(
   };
 }
 
-export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
-  return within(
-    await screen.findByRole('tablist', { name: 'Visualization' })
-  ).getAllByRole('tab');
+async function findVisSelector(): Promise<HTMLElement> {
+  return screen.findByRole('tablist', { name: 'Visualization' });
+}
+
+export async function findVisTabs(): Promise<string[]> {
+  return within(await findVisSelector())
+    .getAllByRole('tab')
+    .map((tab) => {
+      assertNonNull(tab.textContent);
+      return tab.textContent;
+    });
+}
+
+export async function findSelectedVisTab(): Promise<string> {
+  const selectedTab = within(await findVisSelector())
+    .getAllByRole('tab')
+    .find((tab) => tab.getAttribute('aria-selected') === 'true');
+
+  assertDefined(selectedTab);
+  assertNonNull(selectedTab.textContent);
+  return selectedTab.textContent;
 }
 
 /**

@@ -1,7 +1,8 @@
 import { screen } from '@testing-library/react';
 
 import {
-  findVisSelectorTabs,
+  findVisTabs,
+  findSelectedVisTab,
   mockConsoleMethod,
   renderApp,
 } from '../test-utils';
@@ -10,9 +11,7 @@ import { NexusVis } from '../vis-packs/nexus/visualizations';
 test('visualize NXdata group with "spectrum" interpretation', async () => {
   await renderApp('/nexus_entry/spectrum');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
 
   await expect(
     screen.findByRole('figure', { name: 'twoD_spectrum (arb. units)' }) // signal name + `units` attribute
@@ -22,9 +21,7 @@ test('visualize NXdata group with "spectrum" interpretation', async () => {
 test('visualize NXdata group with "image" interpretation', async () => {
   await renderApp('/nexus_entry/image');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxImage);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxImage]);
 
   await expect(
     screen.findByRole('figure', { name: 'Interference fringes' }) // `long_name` attribute
@@ -34,10 +31,11 @@ test('visualize NXdata group with "image" interpretation', async () => {
 test('visualize NXdata group with 2D signal', async () => {
   await renderApp('/nexus_entry/nx_process/nx_data');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
-  expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
+  await expect(findVisTabs()).resolves.toEqual([
+    NexusVis.NxSpectrum,
+    NexusVis.NxImage,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
 
   await expect(
     screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
@@ -47,9 +45,7 @@ test('visualize NXdata group with 2D signal', async () => {
 test('visualize NXdata group with 1D signal and two 1D axes of same length', async () => {
   await renderApp('/nexus_entry/scatter');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxScatter);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxScatter]);
 
   await expect(
     screen.findByRole('figure', { name: 'scatter_data' })
@@ -59,10 +55,11 @@ test('visualize NXdata group with 1D signal and two 1D axes of same length', asy
 test('visualize NXentry group with relative path to 2D default signal', async () => {
   await renderApp('/nexus_entry');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
-  expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
+  await expect(findVisTabs()).resolves.toEqual([
+    NexusVis.NxSpectrum,
+    NexusVis.NxImage,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
 
   await expect(
     screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
@@ -72,10 +69,11 @@ test('visualize NXentry group with relative path to 2D default signal', async ()
 test('visualize NXentry group with absolute path to 2D default signal', async () => {
   await renderApp('/nexus_entry/nx_process/absolute_default_path');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
-  expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
+  await expect(findVisTabs()).resolves.toEqual([
+    NexusVis.NxSpectrum,
+    NexusVis.NxImage,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
 
   await expect(
     screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
@@ -85,10 +83,11 @@ test('visualize NXentry group with absolute path to 2D default signal', async ()
 test('visualize NXentry group with old-style signal', async () => {
   await renderApp('/nexus_entry/old-style');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
-  expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
+  await expect(findVisTabs()).resolves.toEqual([
+    NexusVis.NxSpectrum,
+    NexusVis.NxImage,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
 
   await expect(
     screen.findByRole('figure', { name: 'twoD' }) // name of dataset with `signal` attribute
@@ -98,10 +97,11 @@ test('visualize NXentry group with old-style signal', async () => {
 test('visualize NXroot group with 2D default signal', async () => {
   await renderApp();
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
-  expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
+  await expect(findVisTabs()).resolves.toEqual([
+    NexusVis.NxSpectrum,
+    NexusVis.NxImage,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
 
   await expect(
     screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
@@ -111,10 +111,11 @@ test('visualize NXroot group with 2D default signal', async () => {
 test('visualize NXdata group with 2D complex signal', async () => {
   await renderApp('/nexus_entry/complex');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
-  expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
+  await expect(findVisTabs()).resolves.toEqual([
+    NexusVis.NxSpectrum,
+    NexusVis.NxImage,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
 
   await expect(
     screen.findByRole('figure', { name: 'twoD_complex (amplitude)' }) // signal name + complex visualization type
@@ -124,9 +125,7 @@ test('visualize NXdata group with 2D complex signal', async () => {
 test('visualize NXdata group with 2D complex signal and "spectrum" interpretation', async () => {
   await renderApp('/nexus_entry/complex_spectrum');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
 
   await expect(
     screen.findByRole('figure', { name: 'twoD_complex' }) // signal name (complex vis type is displayed as ordinate label)
@@ -136,9 +135,7 @@ test('visualize NXdata group with 2D complex signal and "spectrum" interpretatio
 test('visualize NXdata group with "rgb-image" interpretation', async () => {
   await renderApp('/nexus_entry/rgb-image');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxRGB);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxRGB]);
 
   await expect(
     screen.findByRole('figure', { name: 'RGB CMY DGW' }) // `long_name` attribute
@@ -155,9 +152,7 @@ test('follow SILX styles when visualizing NXdata group', async () => {
 test('visualize NXentry group with implicit default child NXdata group', async () => {
   await renderApp('/nexus_no_default');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
 
   await expect(
     screen.findByRole('figure', { name: 'oneD' }) // signal name of NXdata group "spectrum"
@@ -241,10 +236,11 @@ test('show fallback message when NXdata group has no `signal` attribute', async 
 test('visualize NXdata group with unknown interpretation', async () => {
   await renderApp('/nexus_malformed/interpretation_unknown');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2); // support check falls back to signal dataset dimensions (4D supports both Image and Spectrum)
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
-  expect(tabs[1]).toHaveTextContent(NexusVis.NxImage);
+  await expect(findVisTabs()).resolves.toEqual([
+    NexusVis.NxSpectrum,
+    NexusVis.NxImage,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
 
   await expect(
     screen.findByRole('figure', { name: 'fourD' }) // signal name
@@ -254,9 +250,7 @@ test('visualize NXdata group with unknown interpretation', async () => {
 test('visualize NXdata group with "rgb-image" interpretation but incompatible signal', async () => {
   await renderApp('/nexus_malformed/rgb-image_incompatible');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1); // support check falls back to signal dataset dimensions (1D supports only Spectrum)
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
 
   await expect(
     screen.findByRole('figure', { name: 'oneD' }) // signal name
@@ -268,9 +262,7 @@ test('ignore unknown `SILX_style` options and invalid values', async () => {
 
   const errorSpy = mockConsoleMethod('error');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
 
   const scaleSelectors = await screen.findAllByRole('button', {
     name: 'Linear', // the scales of both axes remain unchanged
@@ -285,9 +277,7 @@ test('warn in console when `SILX_style` attribute is not valid JSON', async () =
   const warningSpy = mockConsoleMethod('warn');
   await renderApp('/nexus_malformed/silx_style_malformed');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(NexusVis.NxSpectrum);
+  await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
 
   expect(warningSpy).toHaveBeenCalledWith(
     "Malformed 'SILX_style' attribute: {"

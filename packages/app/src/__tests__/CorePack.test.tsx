@@ -1,8 +1,9 @@
 import { mockValues } from '@h5web/shared';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 
 import {
-  findVisSelectorTabs,
+  findSelectedVisTab,
+  findVisTabs,
   mockConsoleMethod,
   renderApp,
 } from '../test-utils';
@@ -11,11 +12,8 @@ import { Vis } from '../vis-packs/core/visualizations';
 test('visualise raw dataset', async () => {
   await renderApp('/entities/raw');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(Vis.Raw);
-  expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
-
+  await expect(findVisTabs()).resolves.toEqual([Vis.Raw]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Raw);
   await expect(screen.findByText(/"int": 42/)).resolves.toBeVisible();
 });
 
@@ -31,45 +29,53 @@ test('visualise scalar dataset', async () => {
   // Integer scalar
   const { selectExplorerNode } = await renderApp('/entities/scalar_int');
 
+  await expect(findVisTabs()).resolves.toEqual([Vis.Scalar]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Scalar);
   await expect(screen.findByText('0')).resolves.toBeVisible();
-
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(Vis.Scalar);
-  expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
 
   // String scalar
   await selectExplorerNode('scalar_str');
-  await expect(screen.findByText(mockValues.scalar_str)).resolves.toBeVisible();
+
+  await expect(findVisTabs()).resolves.toEqual([Vis.Scalar]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Scalar);
+  await expect(screen.findByText('foo')).resolves.toBeVisible();
 });
 
 test('visualize 1D dataset', async () => {
   await renderApp('/nD_datasets/oneD');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2);
-  expect(tabs[0]).toHaveTextContent(Vis.Matrix);
-  expect(tabs[1]).toHaveTextContent(Vis.Line);
-  expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+  await expect(findVisTabs()).resolves.toEqual([Vis.Matrix, Vis.Line]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Line);
 
   await expect(
     screen.findByRole('figure', { name: 'oneD' })
   ).resolves.toBeVisible();
 });
 
+test('visualize 1D complex dataset', async () => {
+  await renderApp('/nD_datasets/oneD_cplx');
+
+  await expect(findVisTabs()).resolves.toEqual([Vis.Matrix, Vis.Line]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Line);
+
+  await expect(
+    screen.findByRole('figure', { name: 'oneD_cplx' })
+  ).resolves.toBeVisible();
+});
+
 test('visualize 2D datasets', async () => {
   await renderApp('/nD_datasets/twoD');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(3);
-  expect(tabs[0]).toHaveTextContent(Vis.Matrix);
-  expect(tabs[1]).toHaveTextContent(Vis.Line);
-  expect(tabs[2]).toHaveTextContent(Vis.Heatmap);
-  expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
+  await expect(findVisTabs()).resolves.toEqual([
+    Vis.Matrix,
+    Vis.Line,
+    Vis.Heatmap,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Heatmap);
 
-  await expect(
-    screen.findByRole('figure', { name: 'twoD' })
-  ).resolves.toBeVisible();
+  const figure = await screen.findByRole('figure', { name: 'twoD' });
+  expect(figure).toBeVisible();
+  expect(within(figure).getByText('4e+2')).toBeVisible(); // color bar limit
 });
 
 test('visualize 1D slice of a 3D dataset as Line with and without autoscale', async () => {

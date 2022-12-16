@@ -198,7 +198,7 @@ test('cancel fetching dataset slice when changing entity', async () => {
 
 test('cancel fetching dataset slice when changing vis', async () => {
   jest.useFakeTimers();
-  const { user, selectVisTab } = await renderApp('/resilience/slow_slicing');
+  const { selectVisTab } = await renderApp('/resilience/slow_slicing');
 
   // Select dataset and start fetching the slice
   await expect(
