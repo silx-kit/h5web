@@ -88,9 +88,8 @@ test('navigate groups in explorer', async () => {
 
 test('show spinner when group metadata is slow to fetch', async () => {
   jest.useFakeTimers();
-  const { selectExplorerNode } = await renderApp();
+  await renderApp('/resilience/slow_metadata');
 
-  await selectExplorerNode('resilience/slow_metadata');
   await expect(screen.findByText(/Loading/)).resolves.toBeVisible();
   expect(screen.getByLabelText(/Loading group metadata/)).toBeVisible();
 

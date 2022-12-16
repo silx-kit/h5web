@@ -4,9 +4,8 @@ import { renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('display mapping for X axis when visualizing 2D dataset as Line', async () => {
-  const { user, selectExplorerNode, selectVisTab } = await renderApp();
+  const { user, selectVisTab } = await renderApp('/nD_datasets/twoD');
 
-  await selectExplorerNode('nD_datasets/twoD');
   await selectVisTab(Vis.Line);
 
   // Ensure that the dimension mapper is only visible for X (and not for Y)
@@ -35,9 +34,8 @@ test('display mapping for X axis when visualizing 2D dataset as Line', async () 
 });
 
 test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
-  const { user, selectExplorerNode, selectVisTab } = await renderApp();
+  const { user, selectVisTab } = await renderApp('/nD_datasets/twoD');
 
-  await selectExplorerNode('nD_datasets/twoD');
   await selectVisTab(Vis.Heatmap);
 
   // Ensure that the dimension mapper is visible for X and Y
@@ -65,9 +63,8 @@ test('display mappings for X and Y axes when visualizing 2D dataset as Heatmap',
 });
 
 test('display one dimension slider and mappings for X and Y axes when visualizing 3D dataset as Matrix', async () => {
-  const { selectExplorerNode, selectVisTab } = await renderApp();
+  const { selectVisTab } = await renderApp('/nD_datasets/threeD');
 
-  await selectExplorerNode('nD_datasets/threeD');
   await selectVisTab(Vis.Matrix);
 
   // Ensure that the dimension mapper is visible for X and Y

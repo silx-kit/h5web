@@ -8,8 +8,7 @@ import {
 import { NexusVis } from '../vis-packs/nexus/visualizations';
 
 test('visualize NXdata group with "spectrum" interpretation', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/spectrum');
+  await renderApp('/nexus_entry/spectrum');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -21,8 +20,7 @@ test('visualize NXdata group with "spectrum" interpretation', async () => {
 });
 
 test('visualize NXdata group with "image" interpretation', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/image');
+  await renderApp('/nexus_entry/image');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -34,8 +32,7 @@ test('visualize NXdata group with "image" interpretation', async () => {
 });
 
 test('visualize NXdata group with 2D signal', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  await renderApp('/nexus_entry/nx_process/nx_data');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(2);
@@ -48,8 +45,7 @@ test('visualize NXdata group with 2D signal', async () => {
 });
 
 test('visualize NXdata group with 1D signal and two 1D axes of same length', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/scatter');
+  await renderApp('/nexus_entry/scatter');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -61,8 +57,7 @@ test('visualize NXdata group with 1D signal and two 1D axes of same length', asy
 });
 
 test('visualize NXentry group with relative path to 2D default signal', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry');
+  await renderApp('/nexus_entry');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(2);
@@ -75,8 +70,7 @@ test('visualize NXentry group with relative path to 2D default signal', async ()
 });
 
 test('visualize NXentry group with absolute path to 2D default signal', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/absolute_default_path');
+  await renderApp('/nexus_entry/nx_process/absolute_default_path');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(2);
@@ -89,8 +83,7 @@ test('visualize NXentry group with absolute path to 2D default signal', async ()
 });
 
 test('visualize NXentry group with old-style signal', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/old-style');
+  await renderApp('/nexus_entry/old-style');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(2);
@@ -116,8 +109,7 @@ test('visualize NXroot group with 2D default signal', async () => {
 });
 
 test('visualize NXdata group with 2D complex signal', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/complex');
+  await renderApp('/nexus_entry/complex');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(2);
@@ -130,8 +122,7 @@ test('visualize NXdata group with 2D complex signal', async () => {
 });
 
 test('visualize NXdata group with 2D complex signal and "spectrum" interpretation', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/complex_spectrum');
+  await renderApp('/nexus_entry/complex_spectrum');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -143,8 +134,7 @@ test('visualize NXdata group with 2D complex signal and "spectrum" interpretatio
 });
 
 test('visualize NXdata group with "rgb-image" interpretation', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/rgb-image');
+  await renderApp('/nexus_entry/rgb-image');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -156,16 +146,14 @@ test('visualize NXdata group with "rgb-image" interpretation', async () => {
 });
 
 test('follow SILX styles when visualizing NXdata group', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/log_spectrum');
+  await renderApp('/nexus_entry/log_spectrum');
 
   const logSelectors = await screen.findAllByRole('button', { name: 'Log' });
   expect(logSelectors).toHaveLength(2); // `log_spectrum` requests both axes to be in log scale
 });
 
 test('visualize NXentry group with implicit default child NXdata group', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_no_default');
+  await renderApp('/nexus_no_default');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -177,10 +165,9 @@ test('visualize NXentry group with implicit default child NXdata group', async (
 });
 
 test('show error when `default` entity is not found', async () => {
-  const { selectExplorerNode } = await renderApp();
-
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('nexus_malformed/default_not_found');
+  await renderApp('/nexus_malformed/default_not_found');
+
   await expect(
     screen.findByText('No entity found at /test')
   ).resolves.toBeVisible();
@@ -189,10 +176,9 @@ test('show error when `default` entity is not found', async () => {
 });
 
 test('show error when `signal` entity is not found', async () => {
-  const { selectExplorerNode } = await renderApp();
+  await renderApp('/nexus_malformed/signal_not_found');
 
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('nexus_malformed/signal_not_found');
   await expect(
     screen.findByText('Expected "unknown" signal entity to exist')
   ).resolves.toBeVisible();
@@ -201,10 +187,9 @@ test('show error when `signal` entity is not found', async () => {
 });
 
 test('show error when `signal` entity is not a dataset', async () => {
-  const { selectExplorerNode } = await renderApp();
+  await renderApp('/nexus_malformed/signal_not_dataset');
 
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('nexus_malformed/signal_not_dataset');
   await expect(
     screen.findByText('Expected "some_group" signal to be a dataset')
   ).resolves.toBeVisible();
@@ -213,10 +198,9 @@ test('show error when `signal` entity is not a dataset', async () => {
 });
 
 test('show error when old-style `signal` entity is not a dataset', async () => {
-  const { selectExplorerNode } = await renderApp();
+  await renderApp('/nexus_malformed/signal_old-style_not_dataset');
 
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('nexus_malformed/signal_old-style_not_dataset');
   await expect(
     screen.findByText('Expected old-style "some_group" signal to be a dataset')
   ).resolves.toBeVisible();
@@ -225,10 +209,9 @@ test('show error when old-style `signal` entity is not a dataset', async () => {
 });
 
 test('show error when `signal` dataset is not array', async () => {
-  const { selectExplorerNode } = await renderApp();
+  await renderApp('/nexus_malformed/signal_not_array');
 
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('nexus_malformed/signal_not_array');
   await expect(
     screen.findByText('Expected dataset to have array shape')
   ).resolves.toBeVisible();
@@ -237,10 +220,9 @@ test('show error when `signal` dataset is not array', async () => {
 });
 
 test('show error when `signal` dataset is not numeric', async () => {
-  const { selectExplorerNode } = await renderApp();
+  await renderApp('/nexus_malformed/signal_not_numeric');
 
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('nexus_malformed/signal_not_numeric');
   await expect(
     screen.findByText('Expected dataset to have numeric or complex type')
   ).resolves.toBeVisible();
@@ -249,8 +231,7 @@ test('show error when `signal` dataset is not numeric', async () => {
 });
 
 test('show fallback message when NXdata group has no `signal` attribute', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_malformed/no_signal');
+  await renderApp('/nexus_malformed/no_signal');
 
   await expect(
     screen.findByText('No visualization available for this entity.')
@@ -258,8 +239,7 @@ test('show fallback message when NXdata group has no `signal` attribute', async 
 });
 
 test('visualize NXdata group with unknown interpretation', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_malformed/interpretation_unknown');
+  await renderApp('/nexus_malformed/interpretation_unknown');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(2); // support check falls back to signal dataset dimensions (4D supports both Image and Spectrum)
@@ -272,8 +252,7 @@ test('visualize NXdata group with unknown interpretation', async () => {
 });
 
 test('visualize NXdata group with "rgb-image" interpretation but incompatible signal', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_malformed/rgb-image_incompatible');
+  await renderApp('/nexus_malformed/rgb-image_incompatible');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1); // support check falls back to signal dataset dimensions (1D supports only Spectrum)
@@ -285,8 +264,7 @@ test('visualize NXdata group with "rgb-image" interpretation but incompatible si
 });
 
 test('ignore unknown `SILX_style` options and invalid values', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_malformed/silx_style_unknown');
+  await renderApp('/nexus_malformed/silx_style_unknown');
 
   const errorSpy = mockConsoleMethod('error');
 
@@ -304,10 +282,8 @@ test('ignore unknown `SILX_style` options and invalid values', async () => {
 });
 
 test('warn in console when `SILX_style` attribute is not valid JSON', async () => {
-  const { selectExplorerNode } = await renderApp();
-
   const warningSpy = mockConsoleMethod('warn');
-  await selectExplorerNode('nexus_malformed/silx_style_malformed');
+  await renderApp('/nexus_malformed/silx_style_malformed');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -321,10 +297,9 @@ test('warn in console when `SILX_style` attribute is not valid JSON', async () =
 
 test('cancel and retry slow fetch of NxSpectrum', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user } = await renderApp('/resilience/slow_nx_spectrum');
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
-  await selectExplorerNode('resilience/slow_nx_spectrum');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
@@ -350,10 +325,9 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
 
 test('cancel and retry slow fetch of NxImage', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user } = await renderApp('/resilience/slow_nx_image');
 
   // Select NXdata group with image interpretation and start fetching dataset values
-  await selectExplorerNode('resilience/slow_nx_image');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
@@ -377,10 +351,11 @@ test('cancel and retry slow fetch of NxImage', async () => {
 
 test('retry fetching automatically when re-selecting NxSpectrum', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user, selectExplorerNode } = await renderApp(
+    '/resilience/slow_nx_spectrum'
+  );
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
-  await selectExplorerNode('resilience/slow_nx_spectrum');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
@@ -408,10 +383,11 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
 
 test('retry fetching automatically when re-selecting NxImage', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user, selectExplorerNode } = await renderApp(
+    '/resilience/slow_nx_image'
+  );
 
   // Select NXdata group with image interpretation and start fetching dataset values
-  await selectExplorerNode('resilience/slow_nx_image');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
@@ -439,10 +415,9 @@ test('retry fetching automatically when re-selecting NxImage', async () => {
 
 test('retry fetching automatically when selecting other NxSpectrum slice', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user } = await renderApp('/resilience/slow_nx_spectrum');
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
-  await selectExplorerNode('resilience/slow_nx_spectrum');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
