@@ -15,16 +15,24 @@ interface RenderAppResult extends RenderResult {
 type InitialPath = `/${string}`;
 interface RenderAppOpts {
   initialPath?: InitialPath;
+  preferredVis?: Vis | undefined;
 }
 
 export async function renderApp(
   opts: InitialPath | RenderAppOpts = '/'
 ): Promise<RenderAppResult> {
   const optsObj = typeof opts === 'string' ? { initialPath: opts } : opts;
-  const { initialPath }: RenderAppOpts = {
+  const { initialPath, preferredVis }: RenderAppOpts = {
     initialPath: '/',
     ...optsObj,
   };
+
+  if (preferredVis) {
+    window.localStorage.setItem(
+      'h5web:preferredVis',
+      JSON.stringify(preferredVis)
+    );
+  }
 
   const user = userEvent.setup({ delay: null }); // https://github.com/testing-library/user-event/issues/833
   const renderResult = render(
