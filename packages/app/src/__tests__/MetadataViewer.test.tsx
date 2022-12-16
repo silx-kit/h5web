@@ -116,6 +116,7 @@ test('follow path attributes', async () => {
   const { user, selectExplorerNode } = await renderApp();
   await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
 
+  // Follow relative `default` attribute
   await user.click(
     await screen.findByRole('button', { name: 'Inspect nexus_entry' })
   );

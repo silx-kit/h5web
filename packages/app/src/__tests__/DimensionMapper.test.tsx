@@ -56,7 +56,7 @@ test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', 
   const yD0Button = within(yRadioGroup).getByRole('radio', { name: 'D0' });
   const yD1Button = within(yRadioGroup).getByRole('radio', { name: 'D1' });
 
-  // Ensure that default mapping is ['y', 'x']
+  // Ensure that the default mapping is ['y', 'x']
   expect(xD1Button).toBeChecked();
   expect(yD0Button).toBeChecked();
 

@@ -9,7 +9,7 @@ import {
 } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
-test('visualise raw dataset', async () => {
+test('visualize raw dataset', async () => {
   await renderApp('/entities/raw');
 
   await expect(findVisTabs()).resolves.toEqual([Vis.Raw]);
@@ -25,7 +25,7 @@ test('log raw dataset to console if too large', async () => {
   expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
 });
 
-test('visualise scalar dataset', async () => {
+test('visualize scalar dataset', async () => {
   // Integer scalar
   const { selectExplorerNode } = await renderApp('/entities/scalar_int');
 
@@ -78,7 +78,33 @@ test('visualize 2D datasets', async () => {
   expect(within(figure).getByText('4e+2')).toBeVisible(); // color bar limit
 });
 
-test('visualize 1D slice of a 3D dataset as Line with and without autoscale', async () => {
+test('visualize 2D complex dataset', async () => {
+  const { user } = await renderApp('/nD_datasets/twoD_cplx');
+
+  await expect(findVisTabs()).resolves.toEqual([
+    Vis.Matrix,
+    Vis.Line,
+    Vis.Heatmap,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Heatmap);
+
+  const figure = await screen.findByRole('figure', {
+    name: 'twoD_cplx (amplitude)',
+  });
+  expect(figure).toBeVisible();
+  expect(within(figure).getByText('5e+0')).toBeVisible(); // color bar limit
+
+  const selector = screen.getByRole('button', { name: '𝓐 Amplitude' });
+  await user.click(selector);
+  const phaseItem = screen.getByRole('menuitem', { name: 'φ Phase' });
+  await user.click(phaseItem);
+
+  expect(
+    screen.getByRole('figure', { name: 'twoD_cplx (phase)' })
+  ).toBeVisible();
+});
+
+test('visualize 1D slice of 3D dataset as Line with and without autoscale', async () => {
   const { user } = await renderApp({
     initialPath: '/resilience/slow_slicing',
     preferredVis: Vis.Line,

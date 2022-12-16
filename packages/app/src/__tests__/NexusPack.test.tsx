@@ -259,7 +259,6 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
     withFakeTimers: true,
   });
 
-  // Select NXdata group with spectrum interpretation and start fetching dataset values
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
@@ -286,7 +285,6 @@ test('cancel and retry slow fetch of NxImage', async () => {
     withFakeTimers: true,
   });
 
-  // Select NXdata group with image interpretation and start fetching dataset values
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
@@ -311,7 +309,6 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
     withFakeTimers: true,
   });
 
-  // Select NXdata group with spectrum interpretation and start fetching dataset values
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
@@ -325,7 +322,7 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
   await selectExplorerNode('entities');
   await expect(screen.findByText(/No visualization/)).resolves.toBeVisible();
 
-  // Select dataset again
+  // Select NXdata group again
   await selectExplorerNode('slow_nx_spectrum');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
@@ -340,7 +337,6 @@ test('retry fetching automatically when selecting other NxImage slice', async ()
     withFakeTimers: true,
   });
 
-  // Select NXdata group with spectrum interpretation and start fetching dataset values
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel all fetches at once
