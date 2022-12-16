@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 
 import { mockConsoleMethod, queryVisSelector, renderApp } from '../test-utils';
+import { Vis } from '../vis-packs/core/visualizations';
 
 test('show fallback message when no visualization is supported', async () => {
   await renderApp('/entities'); // simple group
@@ -201,7 +202,7 @@ test('cancel fetching dataset slice when changing entity', async () => {
 
 test('cancel fetching dataset slice when changing vis', async () => {
   jest.useFakeTimers();
-  const { user } = await renderApp('/resilience/slow_slicing');
+  const { user, selectVisTab } = await renderApp('/resilience/slow_slicing');
 
   // Select dataset and start fetching the slice
   await expect(
@@ -209,7 +210,7 @@ test('cancel fetching dataset slice when changing vis', async () => {
   ).resolves.toBeVisible();
 
   // Switch to the Line vis to cancel the fetch
-  await user.click(screen.getByRole('tab', { name: 'Line' }));
+  await selectVisTab(Vis.Line);
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -218,14 +219,15 @@ test('cancel fetching dataset slice when changing vis', async () => {
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
-  // Switch back to Heatmap and check that it refetches the slice
-  await user.click(screen.getByRole('tab', { name: 'Heatmap' }));
-  // The slice request was cancelled so it should be pending once again
+  // Switch back to Heatmap visualization
+  await selectVisTab(Vis.Heatmap);
+
+  // Ensure that fetching restarts (since it was cancelled)
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
 
-  // Let fetch of the slice succeed
+  // Let fetch of slice succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 

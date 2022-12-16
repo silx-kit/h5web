@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 
 import { renderApp } from '../test-utils';
+import { Vis } from '../vis-packs/core/visualizations';
 
 test('switch between visualizations', async () => {
   const { user } = await renderApp('/nD_datasets/oneD');
@@ -27,10 +28,10 @@ test('switch between visualizations', async () => {
 });
 
 test('restore active visualization when switching to inspect mode and back', async () => {
-  const { user } = await renderApp('/nD_datasets/twoD');
+  const { user, selectVisTab } = await renderApp('/nD_datasets/twoD');
 
   // Switch to Line visualization
-  await user.click(await screen.findByRole('tab', { name: 'Line' }));
+  await selectVisTab(Vis.Line);
 
   // Switch to inspect mode and back
   await user.click(await screen.findByRole('tab', { name: 'Inspect' }));
@@ -65,11 +66,13 @@ test('choose most advanced visualization when switching between datasets', async
 });
 
 test('remember preferred visualization when switching between datasets', async () => {
-  const { user, selectExplorerNode } = await renderApp('/nD_datasets/twoD');
+  const { user, selectExplorerNode, selectVisTab } = await renderApp(
+    '/nD_datasets/twoD'
+  );
 
   /* Switch to Matrix vis. Since this is not the most advanced visualization
    * for `twoD`, it becomes the preferred visualization. */
-  await user.click(await screen.findByRole('tab', { name: 'Matrix' }));
+  await selectVisTab(Vis.Matrix);
 
   // Select another dataset for which the Matrix vis is not the most advanced visualization
   await selectExplorerNode('oneD');
