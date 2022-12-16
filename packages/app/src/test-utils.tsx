@@ -62,10 +62,6 @@ export async function renderApp(
   };
 }
 
-export function queryVisSelector(): HTMLElement | null {
-  return screen.queryByRole('tablist', { name: 'Visualization' });
-}
-
 export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
   return within(
     await screen.findByRole('tablist', { name: 'Visualization' })

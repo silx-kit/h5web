@@ -1,15 +1,11 @@
 import { screen } from '@testing-library/react';
 
-import { mockConsoleMethod, queryVisSelector, renderApp } from '../test-utils';
+import { mockConsoleMethod, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('show fallback message when no visualization is supported', async () => {
   await renderApp('/entities'); // simple group
-
-  await expect(
-    screen.findByText('No visualization available for this entity.')
-  ).resolves.toBeInTheDocument();
-  expect(queryVisSelector()).not.toBeInTheDocument();
+  expect(screen.getByText(/No visualization available/)).toBeVisible();
 });
 
 test('show loader while fetching dataset value', async () => {
