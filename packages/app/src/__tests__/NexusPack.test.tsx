@@ -254,8 +254,10 @@ test('ignore malformed `SILX_style` attribute', async () => {
 });
 
 test('cancel and retry slow fetch of NxSpectrum', async () => {
-  jest.useFakeTimers();
-  const { user } = await renderApp('/resilience/slow_nx_spectrum');
+  const { user } = await renderApp({
+    initialPath: '/resilience/slow_nx_spectrum',
+    withFakeTimers: true,
+  });
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
@@ -276,14 +278,13 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
   jest.runAllTimers();
 
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('cancel and retry slow fetch of NxImage', async () => {
-  jest.useFakeTimers();
-  const { user } = await renderApp('/resilience/slow_nx_image');
+  const { user } = await renderApp({
+    initialPath: '/resilience/slow_nx_image',
+    withFakeTimers: true,
+  });
 
   // Select NXdata group with image interpretation and start fetching dataset values
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
@@ -302,16 +303,13 @@ test('cancel and retry slow fetch of NxImage', async () => {
   // Let fetches succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('retry fetching automatically when re-selecting NxSpectrum', async () => {
-  jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp(
-    '/resilience/slow_nx_spectrum'
-  );
+  const { user, selectExplorerNode } = await renderApp({
+    initialPath: '/resilience/slow_nx_spectrum',
+    withFakeTimers: true,
+  });
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
@@ -334,14 +332,13 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
   // Let fetches succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('retry fetching automatically when selecting other NxImage slice', async () => {
-  jest.useFakeTimers();
-  const { user } = await renderApp('/resilience/slow_nx_image');
+  const { user } = await renderApp({
+    initialPath: '/resilience/slow_nx_image',
+    withFakeTimers: true,
+  });
 
   // Select NXdata group with spectrum interpretation and start fetching dataset values
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
@@ -370,7 +367,4 @@ test('retry fetching automatically when selecting other NxImage slice', async ()
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });

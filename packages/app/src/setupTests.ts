@@ -65,4 +65,10 @@ const errorSpy = mockConsoleMethod('error');
 errorSpy.mockRestore(); // optional if end of test
 `);
   }
+
+  // Restore real timers if applicable (if fake modern timers were used)
+  // eslint-disable-next-line prefer-object-has-own
+  if (Object.prototype.hasOwnProperty.call(setTimeout, 'clock')) {
+    jest.useRealTimers();
+  }
 });

@@ -9,16 +9,15 @@ test('show fallback message when no visualization is supported', async () => {
 });
 
 test('show loader while fetching dataset value', async () => {
-  jest.useFakeTimers();
-  await renderApp('/resilience/slow_value');
+  await renderApp({
+    initialPath: '/resilience/slow_value',
+    withFakeTimers: true,
+  });
 
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   jest.runAllTimers(); // resolve slow fetch right away
   await expect(screen.findByText(/42/)).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test("show error when dataset value can't be fetched", async () => {
@@ -35,8 +34,10 @@ test("show error when dataset value can't be fetched", async () => {
 });
 
 test('cancel and retry slow fetch of dataset value', async () => {
-  jest.useFakeTimers();
-  const { user } = await renderApp('/resilience/slow_value');
+  const { user } = await renderApp({
+    initialPath: '/resilience/slow_value',
+    withFakeTimers: true,
+  });
 
   // Select dataset and start fetching value
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
@@ -56,14 +57,13 @@ test('cancel and retry slow fetch of dataset value', async () => {
   // Let fetch succeed
   jest.runAllTimers();
   await expect(screen.findByText(/42/)).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('cancel and retry slow fetch of dataset slice', async () => {
-  jest.useFakeTimers();
-  const { user } = await renderApp('/resilience/slow_slicing');
+  const { user } = await renderApp({
+    initialPath: '/resilience/slow_slicing',
+    withFakeTimers: true,
+  });
 
   // Select dataset and start fetching first slice
   await expect(
@@ -87,16 +87,13 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   // Let fetch of first slice succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('retry fetching automatically when re-selecting dataset', async () => {
-  jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp(
-    '/resilience/slow_value'
-  );
+  const { user, selectExplorerNode } = await renderApp({
+    initialPath: '/resilience/slow_value',
+    withFakeTimers: true,
+  });
 
   // Select dataset and start fetching
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
@@ -118,14 +115,13 @@ test('retry fetching automatically when re-selecting dataset', async () => {
   // Let fetch succeed
   jest.runAllTimers();
   await expect(screen.findByText(/42/)).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('retry fetching dataset slice automatically when re-selecting slice', async () => {
-  jest.useFakeTimers();
-  const { user } = await renderApp('/resilience/slow_slicing');
+  const { user } = await renderApp({
+    initialPath: '/resilience/slow_slicing',
+    withFakeTimers: true,
+  });
 
   // Select dataset and start fetching first slice
   await expect(
@@ -160,14 +156,13 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   // Let fetch of first slice succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('cancel fetching dataset slice when changing entity', async () => {
-  jest.useFakeTimers();
-  const { selectExplorerNode } = await renderApp('/resilience/slow_slicing');
+  const { selectExplorerNode } = await renderApp({
+    initialPath: '/resilience/slow_slicing',
+    withFakeTimers: true,
+  });
 
   // Select dataset and start fetching first slice
   await expect(
@@ -191,14 +186,13 @@ test('cancel fetching dataset slice when changing entity', async () => {
   // Let fetch of first slice succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
 
 test('cancel fetching dataset slice when changing vis', async () => {
-  jest.useFakeTimers();
-  const { selectVisTab } = await renderApp('/resilience/slow_slicing');
+  const { selectVisTab } = await renderApp({
+    initialPath: '/resilience/slow_slicing',
+    withFakeTimers: true,
+  });
 
   // Select dataset and start fetching the slice
   await expect(
@@ -226,7 +220,4 @@ test('cancel fetching dataset slice when changing vis', async () => {
   // Let fetch of slice succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
 });
