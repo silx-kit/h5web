@@ -1,8 +1,9 @@
 import { mockValues } from '@h5web/shared';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 
 import {
-  findVisSelectorTabs,
+  findSelectedVisTab,
+  findVisTabs,
   mockConsoleMethod,
   renderApp,
 } from '../test-utils';
@@ -11,11 +12,8 @@ import { Vis } from '../vis-packs/core/visualizations';
 test('visualise raw dataset', async () => {
   await renderApp('/entities/raw');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(Vis.Raw);
-  expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
-
+  await expect(findVisTabs()).resolves.toEqual([Vis.Raw]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Raw);
   await expect(screen.findByText(/"int": 42/)).resolves.toBeVisible();
 });
 
@@ -31,101 +29,105 @@ test('visualise scalar dataset', async () => {
   // Integer scalar
   const { selectExplorerNode } = await renderApp('/entities/scalar_int');
 
+  await expect(findVisTabs()).resolves.toEqual([Vis.Scalar]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Scalar);
   await expect(screen.findByText('0')).resolves.toBeVisible();
-
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(1);
-  expect(tabs[0]).toHaveTextContent(Vis.Scalar);
-  expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
 
   // String scalar
   await selectExplorerNode('scalar_str');
-  await expect(screen.findByText(mockValues.scalar_str)).resolves.toBeVisible();
+
+  await expect(findVisTabs()).resolves.toEqual([Vis.Scalar]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Scalar);
+  await expect(screen.findByText('foo')).resolves.toBeVisible();
 });
 
 test('visualize 1D dataset', async () => {
   await renderApp('/nD_datasets/oneD');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(2);
-  expect(tabs[0]).toHaveTextContent(Vis.Matrix);
-  expect(tabs[1]).toHaveTextContent(Vis.Line);
-  expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+  await expect(findVisTabs()).resolves.toEqual([Vis.Matrix, Vis.Line]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Line);
 
   await expect(
     screen.findByRole('figure', { name: 'oneD' })
   ).resolves.toBeVisible();
 });
 
-test('visualize 2D datasets', async () => {
-  await renderApp('/nD_datasets/twoD');
+test('visualize 1D complex dataset', async () => {
+  await renderApp('/nD_datasets/oneD_cplx');
 
-  const tabs = await findVisSelectorTabs();
-  expect(tabs).toHaveLength(3);
-  expect(tabs[0]).toHaveTextContent(Vis.Matrix);
-  expect(tabs[1]).toHaveTextContent(Vis.Line);
-  expect(tabs[2]).toHaveTextContent(Vis.Heatmap);
-  expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
+  await expect(findVisTabs()).resolves.toEqual([Vis.Matrix, Vis.Line]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Line);
 
   await expect(
-    screen.findByRole('figure', { name: 'twoD' })
+    screen.findByRole('figure', { name: 'oneD_cplx' })
   ).resolves.toBeVisible();
 });
 
-test('visualize 1D slice of a 3D dataset with and without autoscale', async () => {
+test('visualize 2D datasets', async () => {
+  await renderApp('/nD_datasets/twoD');
+
+  await expect(findVisTabs()).resolves.toEqual([
+    Vis.Matrix,
+    Vis.Line,
+    Vis.Heatmap,
+  ]);
+  await expect(findSelectedVisTab()).resolves.toBe(Vis.Heatmap);
+
+  const figure = await screen.findByRole('figure', { name: 'twoD' });
+  expect(figure).toBeVisible();
+  expect(within(figure).getByText('4e+2')).toBeVisible(); // color bar limit
+});
+
+test('visualize 1D slice of a 3D dataset as Line with and without autoscale', async () => {
   jest.useFakeTimers();
-  const { user } = await renderApp('/resilience/slow_slicing');
-
-  // Heatmap is selected by default and fetches a 2D slice.
-  await expect(
-    screen.findByText(/Loading current slice/)
-  ).resolves.toBeVisible();
-
-  // Let the 2D slice fetch succeed
-  jest.runAllTimers();
-  await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  // Select the LineVis. The autoscale is on by default: it should fetch a 1D slice.
-  await user.click(await screen.findByRole('tab', { name: Vis.Line }));
-  await expect(
-    screen.findByText(/Loading current slice/)
-  ).resolves.toBeVisible();
-
-  // Let the 1D slice fetch succeed
-  jest.runAllTimers();
-  await expect(screen.findByRole('figure')).resolves.toBeVisible();
-
-  // Check that autoscale is truly on
-  const autoScaleBtn = await screen.findByRole('button', {
-    name: 'Auto-scale',
+  const { user } = await renderApp({
+    initialPath: '/resilience/slow_slicing',
+    preferredVis: Vis.Line,
   });
+
+  // Wait for slice loader to appear (since autoscale is on by default, only the first slice gets fetched)
+  await expect(
+    screen.findByText(/Loading current slice/)
+  ).resolves.toBeVisible();
+
+  // Wait for fetch of first slice to succeed
+  jest.runAllTimers();
+  await expect(screen.findByRole('figure')).resolves.toBeVisible();
+
+  // Confirm that autoscale is indeed on
+  const autoScaleBtn = screen.getByRole('button', { name: 'Auto-scale' });
   expect(autoScaleBtn).toHaveAttribute('aria-pressed', 'true');
 
-  // Move to other slice to fetch new slice
+  // Move to next slice
   const d0Slider = screen.getByRole('slider', { name: 'D0' });
   await user.type(d0Slider, '{ArrowUp}');
+
+  // Wait for slice loader to re-appear after debounce
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
 
-  // Let the new slice fetch succeed
+  // Wait for fetch of second slice to succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
-  // Activate autoscale. It should trigger the fetch of the entire dataset.
+  // Activate autoscale
   await user.click(autoScaleBtn);
+
+  // Now, the entire dataset gets fetched
   await expect(
     screen.findByText(/Loading entire dataset/)
   ).resolves.toBeVisible();
 
-  // Let the dataset fetch succeed
+  // Wait for fetch of entire dataset to succeed
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
-  // Move to third slice to check that entire dataset is fetched
+  // Move to third slice
   await user.type(d0Slider, '{ArrowUp}');
 
-  await expect(screen.findByRole('figure')).resolves.toBeVisible();
+  // Wait for new slicing to apply to Line visualization to confirm that no more slow fetching is performed
+  await expect(screen.findByTestId('2,0,x', undefined)).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
 
   jest.runOnlyPendingTimers();

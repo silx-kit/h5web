@@ -1,3 +1,4 @@
+import { assertDefined, assertNonNull } from '@h5web/shared';
 import type { RenderResult } from '@testing-library/react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -15,16 +16,24 @@ interface RenderAppResult extends RenderResult {
 type InitialPath = `/${string}`;
 interface RenderAppOpts {
   initialPath?: InitialPath;
+  preferredVis?: Vis | undefined;
 }
 
 export async function renderApp(
   opts: InitialPath | RenderAppOpts = '/'
 ): Promise<RenderAppResult> {
   const optsObj = typeof opts === 'string' ? { initialPath: opts } : opts;
-  const { initialPath }: RenderAppOpts = {
+  const { initialPath, preferredVis }: RenderAppOpts = {
     initialPath: '/',
     ...optsObj,
   };
+
+  if (preferredVis) {
+    window.localStorage.setItem(
+      'h5web:preferredVis',
+      JSON.stringify(preferredVis)
+    );
+  }
 
   const user = userEvent.setup({ delay: null }); // https://github.com/testing-library/user-event/issues/833
   const renderResult = render(
@@ -54,14 +63,27 @@ export async function renderApp(
   };
 }
 
-export function queryVisSelector(): HTMLElement | null {
-  return screen.queryByRole('tablist', { name: 'Visualization' });
+async function findVisSelector(): Promise<HTMLElement> {
+  return screen.findByRole('tablist', { name: 'Visualization' });
 }
 
-export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
-  return within(
-    await screen.findByRole('tablist', { name: 'Visualization' })
-  ).getAllByRole('tab');
+export async function findVisTabs(): Promise<string[]> {
+  return within(await findVisSelector())
+    .getAllByRole('tab')
+    .map((tab) => {
+      assertNonNull(tab.textContent);
+      return tab.textContent;
+    });
+}
+
+export async function findSelectedVisTab(): Promise<string> {
+  const selectedTab = within(await findVisSelector())
+    .getAllByRole('tab')
+    .find((tab) => tab.getAttribute('aria-selected') === 'true');
+
+  assertDefined(selectedTab);
+  assertNonNull(selectedTab.textContent);
+  return selectedTab.textContent;
 }
 
 /**

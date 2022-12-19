@@ -1,19 +1,21 @@
 import { screen } from '@testing-library/react';
 
-import { queryVisSelector, renderApp } from '../test-utils';
+import { renderApp } from '../test-utils';
 
 test('switch between "display" and "inspect" modes', async () => {
   const { user } = await renderApp();
 
   // Switch to "inspect" mode
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
-
-  expect(queryVisSelector()).not.toBeInTheDocument();
   expect(screen.getByRole('row', { name: /^Path/ })).toBeVisible();
+  expect(
+    screen.queryByRole('tablist', { name: 'Visualization' })
+  ).not.toBeInTheDocument();
 
   // Switch back to "display" mode
   await user.click(screen.getByRole('tab', { name: 'Display' }));
   expect(screen.queryByRole('row', { name: /^Path/ })).not.toBeInTheDocument();
+  expect(screen.getByRole('tablist', { name: 'Visualization' })).toBeVisible();
 });
 
 test('inspect group', async () => {
