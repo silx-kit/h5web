@@ -159,7 +159,7 @@ describe('/mock', () => {
 
     cy.findByRole('figure', { name: 'fourD' }).as('vis').should('be.visible');
     cy.findAllByRole('slider', { name: /D[0-9]/u }).should('have.length', 2);
-    cy.findAllByRole('slider', { name: 'D1' })
+    cy.findByRole('slider', { name: 'D1' })
       .as('d1Slider')
       .should('have.attr', 'aria-valuenow', 0)
       .and('have.attr', 'aria-valuemin', 0)
