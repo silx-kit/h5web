@@ -107,11 +107,8 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
   expect(autoScaleBtn).toHaveAttribute('aria-pressed', 'true');
 
   // Move to other slice to fetch new slice
-  const d0Slider = screen.getAllByRole('slider', {
-    name: 'Dimension slider',
-  })[0];
-  d0Slider.focus();
-  await user.keyboard('{ArrowUp}');
+  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  await user.type(d0Slider, '{ArrowUp}');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -130,9 +127,8 @@ test('visualize 1D slice of a 3D dataset with and without autoscale', async () =
   jest.runAllTimers();
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
-  // Check that entire dataset is fetched
-  d0Slider.focus();
-  await user.keyboard('{ArrowUp}');
+  // Move to third slice to check that entire dataset is fetched
+  await user.type(d0Slider, '{ArrowUp}');
 
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount

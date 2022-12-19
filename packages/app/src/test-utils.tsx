@@ -47,12 +47,10 @@ export function queryVisSelector(): HTMLElement | null {
   return screen.queryByRole('tablist', { name: 'Visualization' });
 }
 
-export async function findVisSelector(): Promise<HTMLElement> {
-  return screen.findByRole('tablist', { name: 'Visualization' });
-}
-
 export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
-  return within(await findVisSelector()).getAllByRole('tab');
+  return within(
+    await screen.findByRole('tablist', { name: 'Visualization' })
+  ).getAllByRole('tab');
 }
 
 /**
@@ -60,8 +58,15 @@ export async function findVisSelectorTabs(): Promise<HTMLElement[]> {
  * Mocks are automatically restored after every test, but to restore
  * the original console method earlier, call `spy.mockRestore()`.
  */
-export function mockConsoleMethod(method: 'log' | 'warn' | 'error') {
+export function mockConsoleMethod(
+  method: 'log' | 'warn' | 'error',
+  debug?: boolean
+) {
   const spy = jest.spyOn(console, method);
-  spy.mockImplementation(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
+  spy.mockImplementation((...args) => {
+    if (debug) {
+      console.debug(...args); // eslint-disable-line no-console
+    }
+  });
   return spy;
 }

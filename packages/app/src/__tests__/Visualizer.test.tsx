@@ -149,9 +149,8 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   errorSpy.mockRestore();
 
   // Move to other slice and start fetching
-  const d0Slider = screen.getByRole('slider', { name: 'Dimension slider' });
-  d0Slider.focus();
-  await user.keyboard('{ArrowUp}');
+  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  await user.type(d0Slider, '{ArrowUp}');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -161,7 +160,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   await expect(screen.findByRole('figure')).resolves.toBeVisible();
 
   // Move back to first slice to retry fetching it automatically
-  await user.keyboard('{ArrowDown}');
+  await user.type(d0Slider, '{ArrowDown}');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
