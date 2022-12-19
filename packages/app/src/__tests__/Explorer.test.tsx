@@ -37,14 +37,14 @@ test('toggle explorer sidebar', async () => {
 });
 
 test('navigate groups in explorer', async () => {
-  const { user } = await renderApp();
+  const { selectExplorerNode } = await renderApp();
 
   const groupBtn = await screen.findByRole('treeitem', { name: 'entities' });
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Expand `entities` group
-  await user.click(groupBtn);
+  await selectExplorerNode('entities');
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
@@ -56,7 +56,7 @@ test('navigate groups in explorer', async () => {
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Expand `empty_group` child group
-  await user.click(childGroupBtn);
+  await selectExplorerNode('empty_group');
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
@@ -64,20 +64,20 @@ test('navigate groups in explorer', async () => {
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'true');
 
   // Collapse `empty_group` child group
-  await user.click(childGroupBtn);
+  await selectExplorerNode('empty_group');
 
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
   // Select `entities` group
-  await user.click(groupBtn);
+  await selectExplorerNode('entities');
 
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true'); // remains expanded as it wasn't previously selected
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
 
   // Collapse `entities` group
-  await user.click(groupBtn);
+  await selectExplorerNode('entities');
 
   expect(
     screen.queryByRole('treeitem', { name: 'empty_group' })

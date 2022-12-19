@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 
-import { renderApp } from '../test-utils';
+import { findSelectedVisTab, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('switch between visualizations', async () => {
@@ -70,9 +70,10 @@ test('remember preferred visualization when switching between datasets', async (
     '/nD_datasets/twoD'
   );
 
-  /* Switch to Matrix vis. Since this is not the most advanced visualization
+  /* Switch to Matrix vis. Since this is _not_ the most advanced visualization
    * for `twoD`, it becomes the preferred visualization. */
   await selectVisTab(Vis.Matrix);
+  await expect(findSelectedVisTab()).resolves.toBe('Matrix');
 
   // Select another dataset for which the Matrix vis is not the most advanced visualization
   await selectExplorerNode('oneD');
@@ -81,6 +82,7 @@ test('remember preferred visualization when switching between datasets', async (
   await expect(
     screen.findByRole('tab', { name: 'Matrix' })
   ).resolves.toHaveAttribute('aria-selected', 'true');
+  await expect(findSelectedVisTab()).resolves.toBe('Matrix');
 
   /* Switch to Line vis. Since this _is_ the most advanced visualization for
    * `oneD`, the preferred visualization is cleared. */
@@ -93,4 +95,5 @@ test('remember preferred visualization when switching between datasets', async (
   await expect(
     screen.findByRole('tab', { name: 'RGB' })
   ).resolves.toHaveAttribute('aria-selected', 'true');
+  await expect(findSelectedVisTab()).resolves.toBe('RGB');
 });

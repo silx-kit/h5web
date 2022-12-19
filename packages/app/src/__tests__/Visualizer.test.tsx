@@ -39,7 +39,6 @@ test('cancel and retry slow fetch of dataset value', async () => {
     withFakeTimers: true,
   });
 
-  // Select dataset and start fetching value
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel fetch
@@ -65,7 +64,6 @@ test('cancel and retry slow fetch of dataset slice', async () => {
     withFakeTimers: true,
   });
 
-  // Select dataset and start fetching first slice
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -95,7 +93,6 @@ test('retry fetching automatically when re-selecting dataset', async () => {
     withFakeTimers: true,
   });
 
-  // Select dataset and start fetching
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel fetch
@@ -123,7 +120,6 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
     withFakeTimers: true,
   });
 
-  // Select dataset and start fetching first slice
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -164,7 +160,6 @@ test('cancel fetching dataset slice when changing entity', async () => {
     withFakeTimers: true,
   });
 
-  // Select dataset and start fetching first slice
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -176,9 +171,10 @@ test('cancel fetching dataset slice when changing entity', async () => {
   // Let pending requests succeed
   jest.runAllTimers();
 
-  // Reselect dataset and check that it refetches the first slice
+  // Reselect initial dataset
   await selectExplorerNode('slow_slicing');
-  // The slice request was cancelled so it should be pending once again
+
+  // Ensure that fetching restarts (since it was cancelled)
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -199,7 +195,7 @@ test('cancel fetching dataset slice when changing vis', async () => {
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
 
-  // Switch to the Line vis to cancel the fetch
+  // Switch to Line visualization to cancel fetch
   await selectVisTab(Vis.Line);
   await expect(
     screen.findByText(/Loading current slice/)

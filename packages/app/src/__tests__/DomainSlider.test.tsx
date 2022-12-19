@@ -1,18 +1,14 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 
 import { renderApp } from '../test-utils';
 
-test('show slider with two thumbs', async () => {
-  await renderApp('/nexus_entry/nx_process/nx_data');
+test('show slider with two thumbs and reveal tooltip on hover', async () => {
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   const thumbs = await screen.findAllByRole('slider');
   expect(thumbs).toHaveLength(2);
   expect(thumbs[0]).toHaveAttribute('aria-valuenow', '20');
   expect(thumbs[1]).toHaveAttribute('aria-valuenow', '81');
-});
-
-test('show tooltip on hover', async () => {
-  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   const tooltip = screen.getByRole('dialog', { hidden: true });
@@ -20,14 +16,17 @@ test('show tooltip on hover', async () => {
   expect(editBtn).toHaveAttribute('aria-expanded', 'false');
   expect(tooltip).not.toBeVisible();
 
+  // Hover to show tooltip
   await user.hover(editBtn);
   expect(editBtn).toHaveAttribute('aria-expanded', 'true');
   expect(tooltip).toBeVisible();
 
+  // Unhover to hide tooltip
   await user.unhover(editBtn);
   expect(editBtn).toHaveAttribute('aria-expanded', 'false');
   expect(tooltip).not.toBeVisible();
 
+  // Hover and press escape to hide tooltip
   await user.hover(editBtn);
   await user.keyboard('{Escape}');
   expect(tooltip).not.toBeVisible();
@@ -36,6 +35,7 @@ test('show tooltip on hover', async () => {
 test('show min/max and data range in tooltip', async () => {
   const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
+  // Hover edit button to reveal tooltip
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   await user.hover(editBtn);
 
@@ -52,7 +52,7 @@ test('show min/max and data range in tooltip', async () => {
   expect(within(range).getByTitle('400')).toHaveTextContent('4e+2');
 });
 
-test('update domain when moving thumbs (with keyboard)', async () => {
+test('move thumbs with keyboard to update domain', async () => {
   const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   // Hover min thumb to reveal tooltip
@@ -111,7 +111,7 @@ test('edit bounds manually', async () => {
   const cancelMinBtn = screen.getByRole('button', { name: 'Cancel min' });
   expect(applyMinBtn).toBeEnabled();
   expect(cancelMinBtn).toBeEnabled();
-  await waitFor(() => expect(minInput).toHaveFocus()); // input needs time to receive focus
+  expect(minInput).toHaveFocus();
 
   // Type '1' in min input field (at the end, after the current value)
   await user.type(minInput, '1');
@@ -196,7 +196,7 @@ test('control min/max autoscale behaviour', async () => {
   await user.click(maxBtn);
   expect(maxBtn).toHaveAttribute('aria-pressed', 'true');
   expect(minBtn).toHaveAttribute('aria-pressed', 'false'); // unaffected
-  await waitFor(() => expect(maxInput).toHaveValue('4e+2')); // input needs time to be reset
+  expect(maxInput).toHaveValue('4e+2');
 });
 
 test('handle empty domain', async () => {
@@ -262,8 +262,9 @@ test('handle min > max', async () => {
 test('handle min or max <= 0 in log scale', async () => {
   const { user } = await renderApp('/nexus_entry/image');
 
+  // Ensure the scale type is log
   await expect(
-    screen.findByRole('button', { name: 'Log' }) // wait for switch to log scale
+    screen.findByRole('button', { name: 'Log' })
   ).resolves.toBeVisible();
 
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });

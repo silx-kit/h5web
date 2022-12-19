@@ -12,6 +12,9 @@
   - [Fixing and formatting](#fixing-and-formatting)
   - [Editor integration](#editor-integration)
 - [Testing](#testing)
+  - [Feature tests](#feature-tests)
+    - [Fake timers](#fake-timers)
+    - [Debugging](#debugging)
   - [Visual regression](#visual-regression)
 - [Deployment](#deployment)
 - [Release process](#release-process)
@@ -205,6 +208,62 @@ install the recommended extensions.
 > [`projects` configuration](https://jestjs.io/docs/configuration#projects-arraystring--projectconfig)
 > located in `jest.config.json`. This results in a nicer terminal output when
 > running tests on the entire workspace.
+
+### Feature tests
+
+The `@h5web/app` package includes feature tests written with
+[React Testing Library](https://testing-library.com/docs/react-testing-library/intro).
+They are located under `src/__tests__`. Each file covers a particular subtree of
+components of H5Web.
+
+H5Web's feature tests typically consist in rendering the entire app with mock
+data (i.e. inside `MockProvider`), executing an action like a real user would
+(e.g. clicking on a button, pressing a key, etc.), and then expecting something
+to happen in the DOM as a result. Most tests, perform multiple actions and
+expectations consecutively to minimise the overhead of rendering the entire app
+again and again.
+
+`MockProvider` resolves most requests instantaneously to save time in tests, but
+its API's methods are still called asynchronously like other providers. This
+means that during tests, `Suspense` loading fallbacks render just like they
+would normally; they just don't stick around in the DOM for long.
+
+This adds a bit of complexity when testing, as React doesn't like when something
+happens after a test has completed. In fact, we have to ensure that every
+component that suspends inside a test **finishes loading before the end of that
+test**. This is where Testing Library's
+[asynchronous methods](https://testing-library.com/docs/dom-testing-library/api-async)
+come in.
+
+#### Fake timers
+
+To allow developing and testing loading interfaces, as well as features like
+cancel/retry, `MockProvider` adds an artificial delay of 3s (`SLOW_TIMEOUT`) to
+some requests, notably to value requests for datasets prefixed with `slow_`.
+
+In order for this artificial delay to not slow down feature tests, we must use
+[fake timers](https://testing-library.com/docs/using-fake-timers/). This is done
+by setting the `withFakeTimers` option when calling `renderApp()`:
+
+```ts
+renderApp({ withFakeTimers: true });
+```
+
+#### Debugging
+
+You can use Testing Library's
+[`prettyDOM` utility](https://testing-library.com/docs/dom-testing-library/api-debugging#prettydom)
+to log the state of the DOM anywhere in your tests:
+
+```ts
+console.debug(prettyDOM()); // if you use `console.log` without mocking it, the test will fail
+console.debug(prettyDOM(screen.getByText('foo'))); // you can also print out a specific element
+```
+
+To ensure that the entire DOM is printed out in the terminal, you may have to
+set environment variable `DEBUG_PRINT_LIMIT`
+[to a large value](https://testing-library.com/docs/dom-testing-library/api-debugging#automatic-logging)
+when calling `pnpm test`.
 
 ### Visual regression
 
