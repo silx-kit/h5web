@@ -17,13 +17,14 @@ type InitialPath = `/${string}`;
 interface RenderAppOpts {
   initialPath?: InitialPath;
   preferredVis?: Vis | undefined;
+  withFakeTimers?: boolean;
 }
 
 export async function renderApp(
   opts: InitialPath | RenderAppOpts = '/'
 ): Promise<RenderAppResult> {
   const optsObj = typeof opts === 'string' ? { initialPath: opts } : opts;
-  const { initialPath, preferredVis }: RenderAppOpts = {
+  const { initialPath, preferredVis, withFakeTimers }: RenderAppOpts = {
     initialPath: '/',
     ...optsObj,
   };
@@ -35,7 +36,14 @@ export async function renderApp(
     );
   }
 
-  const user = userEvent.setup({ delay: null }); // https://github.com/testing-library/user-event/issues/833
+  if (withFakeTimers) {
+    jest.useFakeTimers();
+  }
+
+  const user = userEvent.setup(
+    withFakeTimers ? { advanceTimers: jest.advanceTimersByTime } : undefined
+  );
+
   const renderResult = render(
     <MockProvider>
       <App initialPath={initialPath} />

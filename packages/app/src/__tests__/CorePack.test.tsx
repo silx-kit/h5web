@@ -79,10 +79,10 @@ test('visualize 2D datasets', async () => {
 });
 
 test('visualize 1D slice of a 3D dataset as Line with and without autoscale', async () => {
-  jest.useFakeTimers();
   const { user } = await renderApp({
     initialPath: '/resilience/slow_slicing',
     preferredVis: Vis.Line,
+    withFakeTimers: true,
   });
 
   // Wait for slice loader to appear (since autoscale is on by default, only the first slice gets fetched)
@@ -128,10 +128,9 @@ test('visualize 1D slice of a 3D dataset as Line with and without autoscale', as
 
   // Wait for new slicing to apply to Line visualization to confirm that no more slow fetching is performed
   await expect(screen.findByTestId('2,0,x', undefined)).resolves.toBeVisible();
-  d0Slider.blur(); // remove focus to avoid state update after unmount
 
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
+  d0Slider.blur(); // remove focus to avoid state update after unmount
+  jest.runAllTimers();
 });
 
 test('show interactions help for heatmap according to "keep ratio"', async () => {
