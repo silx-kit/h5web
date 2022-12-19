@@ -3,8 +3,7 @@ import { screen } from '@testing-library/react';
 import { renderApp } from '../test-utils';
 
 test('switch between visualizations', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nD_datasets/oneD');
+  const { user } = await renderApp('/nD_datasets/oneD');
 
   const lineTab = await screen.findByRole('tab', { name: 'Line' });
   expect(lineTab).toBeVisible();
@@ -28,8 +27,7 @@ test('switch between visualizations', async () => {
 });
 
 test('restore active visualization when switching to inspect mode and back', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nD_datasets/twoD');
+  const { user } = await renderApp('/nD_datasets/twoD');
 
   // Switch to Line visualization
   await user.click(await screen.findByRole('tab', { name: 'Line' }));
@@ -44,9 +42,8 @@ test('restore active visualization when switching to inspect mode and back', asy
 });
 
 test('choose most advanced visualization when switching between datasets', async () => {
-  const { selectExplorerNode } = await renderApp();
+  const { selectExplorerNode } = await renderApp('/nD_datasets/oneD');
 
-  await selectExplorerNode('nD_datasets/oneD');
   await expect(
     screen.findByRole('tab', { name: 'Line' })
   ).resolves.toHaveAttribute('aria-selected', 'true');
@@ -68,8 +65,7 @@ test('choose most advanced visualization when switching between datasets', async
 });
 
 test('remember preferred visualization when switching between datasets', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nD_datasets/twoD');
+  const { user, selectExplorerNode } = await renderApp('/nD_datasets/twoD');
 
   /* Switch to Matrix vis. Since this is not the most advanced visualization
    * for `twoD`, it becomes the preferred visualization. */

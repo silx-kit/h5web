@@ -9,8 +9,7 @@ import {
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('visualise raw dataset', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('entities/raw');
+  await renderApp('/entities/raw');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(1);
@@ -21,19 +20,17 @@ test('visualise raw dataset', async () => {
 });
 
 test('log raw dataset to console if too large', async () => {
-  const { selectExplorerNode } = await renderApp();
-
   const logSpy = mockConsoleMethod('log');
-  await selectExplorerNode('entities/raw_large');
+  await renderApp('/entities/raw_large');
 
   await expect(screen.findByText(/dataset is too big/)).resolves.toBeVisible();
   expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
 });
 
 test('visualise scalar dataset', async () => {
-  const { selectExplorerNode } = await renderApp();
+  // Integer scalar
+  const { selectExplorerNode } = await renderApp('/entities/scalar_int');
 
-  await selectExplorerNode('entities/scalar_int');
   await expect(screen.findByText('0')).resolves.toBeVisible();
 
   const tabs = await findVisSelectorTabs();
@@ -41,13 +38,13 @@ test('visualise scalar dataset', async () => {
   expect(tabs[0]).toHaveTextContent(Vis.Scalar);
   expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
 
+  // String scalar
   await selectExplorerNode('scalar_str');
   await expect(screen.findByText(mockValues.scalar_str)).resolves.toBeVisible();
 });
 
 test('visualize 1D dataset', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nD_datasets/oneD');
+  await renderApp('/nD_datasets/oneD');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(2);
@@ -61,8 +58,7 @@ test('visualize 1D dataset', async () => {
 });
 
 test('visualize 2D datasets', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nD_datasets/twoD');
+  await renderApp('/nD_datasets/twoD');
 
   const tabs = await findVisSelectorTabs();
   expect(tabs).toHaveLength(3);
@@ -78,8 +74,7 @@ test('visualize 2D datasets', async () => {
 
 test('visualize 1D slice of a 3D dataset with and without autoscale', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('resilience/slow_slicing');
+  const { user } = await renderApp('/resilience/slow_slicing');
 
   // Heatmap is selected by default and fetches a 2D slice.
   await expect(

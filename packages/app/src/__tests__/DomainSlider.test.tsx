@@ -3,8 +3,7 @@ import { screen, waitFor, within } from '@testing-library/react';
 import { renderApp } from '../test-utils';
 
 test('show slider with two thumbs', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  await renderApp('/nexus_entry/nx_process/nx_data');
 
   const thumbs = await screen.findAllByRole('slider');
   expect(thumbs).toHaveLength(2);
@@ -13,8 +12,7 @@ test('show slider with two thumbs', async () => {
 });
 
 test('show tooltip on hover', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   const tooltip = screen.getByRole('dialog', { hidden: true });
@@ -36,8 +34,7 @@ test('show tooltip on hover', async () => {
 });
 
 test('show min/max and data range in tooltip', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   await user.hover(editBtn);
@@ -56,8 +53,7 @@ test('show min/max and data range in tooltip', async () => {
 });
 
 test('update domain when moving thumbs (with keyboard)', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   // Hover min thumb to reveal tooltip
   const minThumb = await screen.findByRole('slider', { name: /min/ });
@@ -99,8 +95,7 @@ test('update domain when moving thumbs (with keyboard)', async () => {
 });
 
 test('edit bounds manually', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   expect(editBtn).toHaveAttribute('aria-pressed', 'false');
@@ -147,10 +142,9 @@ test('edit bounds manually', async () => {
 });
 
 test('clamp domain in symlog scale', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
-  await user.click(screen.getByRole('button', { name: 'Edit domain' }));
+  await user.click(await screen.findByRole('button', { name: 'Edit domain' }));
   const minThumb = screen.getByRole('slider', { name: /min/ });
   const maxThumb = screen.getByRole('slider', { name: /max/ });
   const minInput = screen.getByLabelText('min');
@@ -175,8 +169,7 @@ test('clamp domain in symlog scale', async () => {
 });
 
 test('control min/max autoscale behaviour', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   const minThumb = await screen.findByRole('slider', { name: /min/ });
   await user.hover(minThumb);
@@ -207,10 +200,9 @@ test('control min/max autoscale behaviour', async () => {
 });
 
 test('handle empty domain', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
-  await user.click(screen.getByRole('button', { name: 'Edit domain' }));
+  await user.click(await screen.findByRole('button', { name: 'Edit domain' }));
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
   const minThumb = screen.getByRole('slider', { name: /min/ });
@@ -244,10 +236,9 @@ test('handle empty domain', async () => {
 });
 
 test('handle min > max', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
-  await user.click(screen.getByRole('button', { name: 'Edit domain' }));
+  await user.click(await screen.findByRole('button', { name: 'Edit domain' }));
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
 
@@ -269,8 +260,7 @@ test('handle min > max', async () => {
 });
 
 test('handle min or max <= 0 in log scale', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/image');
+  const { user } = await renderApp('/nexus_entry/image');
 
   await expect(
     screen.findByRole('button', { name: 'Log' }) // wait for switch to log scale
@@ -302,8 +292,7 @@ test('handle min or max <= 0 in log scale', async () => {
 });
 
 test('handle min <= 0 with custom max fallback in log scale', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  await selectExplorerNode('nexus_entry/image');
+  const { user } = await renderApp('/nexus_entry/image');
 
   // Ensure the scale type is log
   await expect(

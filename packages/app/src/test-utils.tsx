@@ -8,15 +8,28 @@ import type { Vis } from './vis-packs/core/visualizations';
 
 interface RenderAppResult extends RenderResult {
   user: ReturnType<typeof userEvent.setup>;
-  selectExplorerNode: (path: string) => Promise<void>;
+  selectExplorerNode: (name: string) => Promise<void>;
   selectVisTab: (name: Vis) => Promise<void>;
 }
 
-export async function renderApp(): Promise<RenderAppResult> {
+type InitialPath = `/${string}`;
+interface RenderAppOpts {
+  initialPath?: InitialPath;
+}
+
+export async function renderApp(
+  opts: InitialPath | RenderAppOpts = '/'
+): Promise<RenderAppResult> {
+  const optsObj = typeof opts === 'string' ? { initialPath: opts } : opts;
+  const { initialPath }: RenderAppOpts = {
+    initialPath: '/',
+    ...optsObj,
+  };
+
   const user = userEvent.setup({ delay: null }); // https://github.com/testing-library/user-event/issues/833
   const renderResult = render(
     <MockProvider>
-      <App />
+      <App initialPath={initialPath} />
     </MockProvider>
   );
 
@@ -27,14 +40,12 @@ export async function renderApp(): Promise<RenderAppResult> {
     user,
     ...renderResult,
 
-    selectExplorerNode: async (path) => {
-      for await (const segment of path.split('/')) {
-        await user.click(
-          await screen.findByRole('treeitem', {
-            name: new RegExp(`^${segment}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
-          })
-        );
-      }
+    selectExplorerNode: async (name) => {
+      const item = await screen.findByRole('treeitem', {
+        name: new RegExp(`^${name}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
+      });
+
+      await user.click(item);
     },
 
     selectVisTab: async (name) => {

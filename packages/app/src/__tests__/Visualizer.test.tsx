@@ -3,8 +3,7 @@ import { screen } from '@testing-library/react';
 import { mockConsoleMethod, queryVisSelector, renderApp } from '../test-utils';
 
 test('show fallback message when no visualization is supported', async () => {
-  const { selectExplorerNode } = await renderApp();
-  await selectExplorerNode('entities'); // simple group
+  await renderApp('/entities'); // simple group
 
   await expect(
     screen.findByText('No visualization available for this entity.')
@@ -14,9 +13,8 @@ test('show fallback message when no visualization is supported', async () => {
 
 test('show loader while fetching dataset value', async () => {
   jest.useFakeTimers();
-  const { selectExplorerNode } = await renderApp();
+  await renderApp('/resilience/slow_value');
 
-  await selectExplorerNode('resilience/slow_value');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   jest.runAllTimers(); // resolve slow fetch right away
@@ -27,10 +25,8 @@ test('show loader while fetching dataset value', async () => {
 });
 
 test("show error when dataset value can't be fetched", async () => {
-  const { selectExplorerNode } = await renderApp();
-
   const errorSpy = mockConsoleMethod('error');
-  await selectExplorerNode('resilience/error_value');
+  const { selectExplorerNode } = await renderApp('/resilience/error_value');
 
   await expect(screen.findByText('error')).resolves.toBeVisible();
   expect(errorSpy).toHaveBeenCalledTimes(2); // React logs two stack traces
@@ -43,10 +39,9 @@ test("show error when dataset value can't be fetched", async () => {
 
 test('cancel and retry slow fetch of dataset value', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user } = await renderApp('/resilience/slow_value');
 
   // Select dataset and start fetching value
-  await selectExplorerNode('resilience/slow_value');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel fetch
@@ -71,10 +66,9 @@ test('cancel and retry slow fetch of dataset value', async () => {
 
 test('cancel and retry slow fetch of dataset slice', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user } = await renderApp('/resilience/slow_slicing');
 
   // Select dataset and start fetching first slice
-  await selectExplorerNode('resilience/slow_slicing');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -103,10 +97,11 @@ test('cancel and retry slow fetch of dataset slice', async () => {
 
 test('retry fetching automatically when re-selecting dataset', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user, selectExplorerNode } = await renderApp(
+    '/resilience/slow_value'
+  );
 
   // Select dataset and start fetching
-  await selectExplorerNode('resilience/slow_value');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Cancel fetch
@@ -133,10 +128,9 @@ test('retry fetching automatically when re-selecting dataset', async () => {
 
 test('retry fetching dataset slice automatically when re-selecting slice', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user } = await renderApp('/resilience/slow_slicing');
 
   // Select dataset and start fetching first slice
-  await selectExplorerNode('resilience/slow_slicing');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
@@ -176,23 +170,22 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
 
 test('cancel fetching dataset slice when changing entity', async () => {
   jest.useFakeTimers();
-  const { selectExplorerNode } = await renderApp();
+  const { selectExplorerNode } = await renderApp('/resilience/slow_slicing');
 
   // Select dataset and start fetching first slice
-  await selectExplorerNode('resilience/slow_slicing');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
 
   // Switch to another entity to cancel the fetch
-  await selectExplorerNode('resilience/slow_value');
+  await selectExplorerNode('slow_value');
   await expect(screen.findByText(/Loading data/)).resolves.toBeVisible();
 
   // Let pending requests succeed
   jest.runAllTimers();
 
   // Reselect dataset and check that it refetches the first slice
-  await selectExplorerNode('resilience/slow_slicing');
+  await selectExplorerNode('slow_slicing');
   // The slice request was cancelled so it should be pending once again
   await expect(
     screen.findByText(/Loading current slice/)
@@ -208,10 +201,9 @@ test('cancel fetching dataset slice when changing entity', async () => {
 
 test('cancel fetching dataset slice when changing vis', async () => {
   jest.useFakeTimers();
-  const { user, selectExplorerNode } = await renderApp();
+  const { user } = await renderApp('/resilience/slow_slicing');
 
   // Select dataset and start fetching the slice
-  await selectExplorerNode('resilience/slow_slicing');
   await expect(
     screen.findByText(/Loading current slice/)
   ).resolves.toBeVisible();
