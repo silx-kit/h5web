@@ -19,6 +19,7 @@ function EntityLoader(props: Props) {
       <div
         className={styles.fallbackBar}
         data-mode={isInspecting ? 'inspect' : 'display'}
+        data-testid="LoadingEntity" // bypass delay in tests
       />
       {isReady && <p className={styles.fallback}>{message}...</p>}
     </>

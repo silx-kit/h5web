@@ -1,6 +1,6 @@
 import { assertDefined, assertNonNull } from '@h5web/shared';
 import type { RenderResult } from '@testing-library/react';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import App from './App';
@@ -50,8 +50,9 @@ export async function renderApp(
     </MockProvider>,
   );
 
-  await screen.findByLabelText('Loading root metadata...');
-  await screen.findByRole('treeitem', { name: 'entities' });
+  if (!withFakeTimers) {
+    await waitForAllLoaders();
+  }
 
   return {
     user,
@@ -63,6 +64,10 @@ export async function renderApp(
       });
 
       await user.click(item);
+
+      if (!withFakeTimers) {
+        await waitForAllLoaders();
+      }
     },
 
     selectVisTab: async (name) => {
@@ -71,12 +76,18 @@ export async function renderApp(
   };
 }
 
-async function findVisSelector(): Promise<HTMLElement> {
-  return screen.findByRole('tablist', { name: 'Visualization' });
+export async function waitForAllLoaders(): Promise<void> {
+  await waitFor(() => {
+    expect(screen.queryAllByTestId(/^Loading/u)).toHaveLength(0);
+  });
 }
 
-export async function findVisTabs(): Promise<string[]> {
-  return within(await findVisSelector())
+function getVisSelector(): HTMLElement {
+  return screen.getByRole('tablist', { name: 'Visualization' });
+}
+
+export function getVisTabs(): string[] {
+  return within(getVisSelector())
     .getAllByRole('tab')
     .map((tab) => {
       assertNonNull(tab.textContent);
@@ -84,8 +95,8 @@ export async function findVisTabs(): Promise<string[]> {
     });
 }
 
-export async function findSelectedVisTab(): Promise<string> {
-  const selectedTab = within(await findVisSelector())
+export function getSelectedVisTab(): string {
+  const selectedTab = within(getVisSelector())
     .getAllByRole('tab')
     .find((tab) => tab.getAttribute('aria-selected') === 'true');
 
