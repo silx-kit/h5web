@@ -44,9 +44,6 @@ import {
 import SurfaceVisContainer from './surface/SurfaceVisContainer';
 import { SurfaceConfigProvider } from './surface/config';
 
-// @ts-expect-error
-const enableSurfaceVis = window.H5WEB_EXPERIMENTAL;
-
 export enum Vis {
   Raw = 'Raw',
   Scalar = 'Scalar',
@@ -179,6 +176,9 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Container: SurfaceVisContainer,
     ConfigProvider: SurfaceConfigProvider,
     supportsDataset: (dataset) => {
+      // @ts-expect-error
+      const enableSurfaceVis = window.H5WEB_EXPERIMENTAL;
+
       return (
         enableSurfaceVis &&
         hasNumericType(dataset) &&
