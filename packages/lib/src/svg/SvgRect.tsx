@@ -29,4 +29,5 @@ function SvgRect(props: Props) {
   );
 }
 
+export type { Props as SvgRectProps };
 export default SvgRect;

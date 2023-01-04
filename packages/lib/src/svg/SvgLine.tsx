@@ -22,4 +22,5 @@ function SvgLine(props: Props) {
   );
 }
 
+export type { Props as SvgLineProps };
 export default SvgLine;

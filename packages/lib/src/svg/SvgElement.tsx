@@ -19,4 +19,5 @@ function SvgElement(props: Props) {
   return <Html>{createPortal(children, svgOverlay)}</Html>;
 }
 
+export type { Props as SvgElementProps };
 export default SvgElement;

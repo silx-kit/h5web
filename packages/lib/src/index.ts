@@ -38,6 +38,7 @@ export { default as Annotation } from './vis/shared/Annotation';
 export { default as DataToWorld } from './vis/shared/DataToWorld';
 export type { VisCanvasProps } from './vis/shared/VisCanvas';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
+export type { DataToWorldProps } from './vis/shared/DataToWorld';
 
 export { default as DataCurve } from './vis/line/DataCurve';
 export { default as ColorBar } from './vis/heatmap/ColorBar';
@@ -70,6 +71,9 @@ export type { DefaultInteractionsConfig } from './interactions/DefaultInteractio
 export { default as SvgElement } from './svg/SvgElement';
 export { default as SvgLine } from './svg/SvgLine';
 export { default as SvgRect } from './svg/SvgRect';
+export type { SvgElementProps } from './svg/SvgElement';
+export type { SvgLineProps } from './svg/SvgLine';
+export type { SvgRectProps } from './svg/SvgRect';
 
 // Context
 export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';

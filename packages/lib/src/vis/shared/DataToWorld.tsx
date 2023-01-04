@@ -18,4 +18,5 @@ function DataToWorld<T extends Vector2[]>(props: Props<T>) {
   return <>{children(...worldCoords)}</>;
 }
 
+export type { Props as DataToWorldProps };
 export default DataToWorld;
