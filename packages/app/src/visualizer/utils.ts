@@ -83,8 +83,8 @@ function getSupportedCoreVis(
     (vis) => isDataset(entity) && vis.supportsDataset(entity, attrValueStore)
   );
 
-  return supportedVis.length > 1 && supportedVis[0].name === Vis.Raw
-    ? supportedVis.slice(1)
+  return supportedVis.length > 1
+    ? supportedVis.filter((vis) => vis.name !== Vis.Raw)
     : supportedVis;
 }
 
