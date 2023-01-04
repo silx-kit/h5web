@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-import Html from './Html';
-import { useVisCanvasContext } from './VisCanvasProvider';
+import Html from '../vis/shared/Html';
+import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 
 interface Props {
   children?: ReactNode;
@@ -19,4 +19,5 @@ function SvgElement(props: Props) {
   return <Html>{createPortal(children, svgOverlay)}</Html>;
 }
 
+export type { Props as SvgElementProps };
 export default SvgElement;
