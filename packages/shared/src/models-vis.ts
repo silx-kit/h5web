@@ -36,3 +36,7 @@ export interface Dims {
   rows: number;
   cols: number;
 }
+
+// MappedTupple<number[], string> => string[]
+// MappedTupple<[number, number], string> => [string, string]
+export type MappedTuple<T, U> = { [index in keyof T]: U };

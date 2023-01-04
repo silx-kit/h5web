@@ -35,6 +35,7 @@ export { default as TooltipMesh } from './vis/shared/TooltipMesh';
 export { default as Html } from './vis/shared/Html';
 export { default as Overlay } from './vis/shared/Overlay';
 export { default as Annotation } from './vis/shared/Annotation';
+export { default as DataToWorld } from './vis/shared/DataToWorld';
 export type { VisCanvasProps } from './vis/shared/VisCanvas';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
 
@@ -53,8 +54,6 @@ export { default as XAxisZoom } from './interactions/XAxisZoom';
 export { default as YAxisZoom } from './interactions/YAxisZoom';
 export { default as SelectToZoom } from './interactions/SelectToZoom';
 export { default as AxialSelectToZoom } from './interactions/AxialSelectToZoom';
-export { default as SelectionLine } from './interactions/SelectionLine';
-export { default as SelectionRect } from './interactions/SelectionRect';
 export { default as SelectionTool } from './interactions/SelectionTool';
 export { default as AxialSelectionTool } from './interactions/AxialSelectionTool';
 export type { PanProps } from './interactions/Pan';
@@ -66,6 +65,11 @@ export type { SelectToZoomProps } from './interactions/SelectToZoom';
 export type { AxialSelectionToolProps } from './interactions/AxialSelectionTool';
 export type { AxialSelectToZoomProps } from './interactions/AxialSelectToZoom';
 export type { DefaultInteractionsConfig } from './interactions/DefaultInteractions';
+
+// SVG
+export { default as SvgElement } from './svg/SvgElement';
+export { default as SvgLine } from './svg/SvgLine';
+export { default as SvgRect } from './svg/SvgRect';
 
 // Context
 export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';
@@ -96,6 +100,7 @@ export {
   useAxisDomain,
   useValueToIndexScale,
   useCameraState,
+  useHtmlCoords,
 } from './vis/hooks';
 
 export {
@@ -108,6 +113,7 @@ export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
 
 export { scaleGamma } from './vis/scaleGamma';
 export { useCanvasEvents } from './interactions/hooks';
+export { default as Box } from './interactions/box';
 
 // Models
 export { INTERPOLATORS } from './vis/heatmap/interpolators';

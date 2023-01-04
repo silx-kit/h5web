@@ -4,11 +4,12 @@ import {
   getValidDomainForScale,
   createMemo,
 } from '@h5web/shared';
-import type { Domain, AnyNumArray } from '@h5web/shared';
+import type { Domain, AnyNumArray, MappedTuple } from '@h5web/shared';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
+import type { Vector2, Vector3 } from 'three';
 
 import { useVisCanvasContext } from './shared/VisCanvasProvider';
 import type { VisCanvasContextValue } from './shared/VisCanvasProvider';
@@ -18,6 +19,7 @@ import {
   getCombinedDomain,
   getValueToIndexScale,
   toArray,
+  worldToHtml,
 } from './utils';
 
 const useBounds = createMemo(getBounds);
@@ -96,4 +98,17 @@ export function useCssColors(
   const colors = colorProperties.map((p) => styles.getPropertyValue(p).trim());
 
   return [colors, refCallback];
+}
+
+export function useHtmlCoords<T extends Vector3[]>(
+  ...worldCoords: T
+): MappedTuple<T, Vector2> {
+  return useCameraState(
+    (...args) =>
+      worldCoords.map((pt) => worldToHtml(...args, pt)) as MappedTuple<
+        T,
+        Vector2
+      >,
+    worldCoords // eslint-disable-line react-hooks/exhaustive-deps
+  );
 }

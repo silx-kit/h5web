@@ -1,8 +1,8 @@
 import type { Axis } from '@h5web/shared';
 
+import SvgRect from '../svg/SvgRect';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import AxialSelectionTool from './AxialSelectionTool';
-import SelectionRect from './SelectionRect';
 import Box from './box';
 import { useZoomOnBox } from './hooks';
 import type { Selection, CommonInteractionProps } from './models';
@@ -34,10 +34,9 @@ function AxialSelectToZoom(props: Props) {
       disabled={visRatio !== undefined || disabled}
       onSelectionEnd={onSelectionEnd}
     >
-      {({ data: [dataStart, dataEnd] }) => (
-        <SelectionRect
-          startPoint={dataStart}
-          endPoint={dataEnd}
+      {(selection) => (
+        <SvgRect
+          coords={selection.world}
           fill="white"
           stroke="black"
           fillOpacity={0.25}

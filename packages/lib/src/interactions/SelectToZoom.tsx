@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber';
 
+import SvgRect from '../svg/SvgRect';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import SelectionRect from './SelectionRect';
 import SelectionTool from './SelectionTool';
 import Box from './box';
 import { useZoomOnBox } from './hooks';
@@ -10,8 +10,7 @@ import type { CommonInteractionProps, Rect3, Selection } from './models';
 type Props = CommonInteractionProps;
 
 function SelectToZoom(props: Props) {
-  const { canvasSize, canvasRatio, visRatio, visSize, worldToData } =
-    useVisCanvasContext();
+  const { canvasSize, canvasRatio, visRatio, visSize } = useVisCanvasContext();
 
   const { width, height } = canvasSize;
   const keepRatio = visRatio !== undefined;
@@ -50,23 +49,21 @@ function SelectToZoom(props: Props) {
 
   return (
     <SelectionTool id="SelectToZoom" onSelectionEnd={onSelectionEnd} {...props}>
-      {({ data: [dataStart, dataEnd], world: worldSelection }) => {
+      {({ world: worldSelection }) => {
         const zoomBox = computeZoomBox(worldSelection);
 
         return (
           <>
-            <SelectionRect
-              startPoint={dataStart}
-              endPoint={dataEnd}
+            <SvgRect
+              coords={worldSelection}
               fill="white"
               stroke="black"
               fillOpacity={keepRatio ? 0 : 0.25}
               strokeDasharray={keepRatio ? '4' : undefined}
             />
             {keepRatio && (
-              <SelectionRect
-                startPoint={worldToData(zoomBox.min)}
-                endPoint={worldToData(zoomBox.max)}
+              <SvgRect
+                coords={[zoomBox.min, zoomBox.max]}
                 fillOpacity={0.25}
                 fill="white"
                 stroke="black"

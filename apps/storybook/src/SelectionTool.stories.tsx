@@ -1,9 +1,9 @@
-import type { ModifierKey, Selection } from '@h5web/lib';
+import type { ModifierKey, Rect2, Selection } from '@h5web/lib';
+import { DataToWorld } from '@h5web/lib';
+import { SvgLine, SvgRect } from '@h5web/lib';
 import {
   Pan,
-  SelectionLine,
   SelectionTool,
-  SelectionRect,
   VisCanvas,
   Zoom,
   ResetZoomButton,
@@ -14,11 +14,6 @@ import { useState } from 'react';
 
 import FillHeight from './decorators/FillHeight';
 import { getTitleForSelection } from './utils';
-
-const SELECTION_COMPONENTS = {
-  line: SelectionLine,
-  rectangle: SelectionRect,
-};
 
 interface TemplateProps {
   selectionType: 'line' | 'rectangle';
@@ -35,8 +30,6 @@ const Template: Story<TemplateProps> = (args) => {
   const [activeSelection, setActiveSelection] = useThrottledState<
     Selection | undefined
   >(undefined, 50);
-
-  const SelectionComponent = SELECTION_COMPONENTS[selectionType];
 
   if (selectionModifierKey === panModifierKey) {
     return (
@@ -62,13 +55,13 @@ const Template: Story<TemplateProps> = (args) => {
         onSelectionEnd={() => setActiveSelection(undefined)}
         modifierKey={selectionModifierKey}
       >
-        {({ data: [dataStart, dataEnd] }) => (
-          <SelectionComponent
-            startPoint={dataStart}
-            endPoint={dataEnd}
-            {...svgProps}
-          />
-        )}
+        {({ world }) =>
+          selectionType === 'rectangle' ? (
+            <SvgRect coords={world} {...svgProps} />
+          ) : (
+            <SvgLine coords={world} {...svgProps} strokeWidth={2} />
+          )
+        }
       </SelectionTool>
     </VisCanvas>
   );
@@ -95,11 +88,9 @@ CustomStyles.argTypes = {
   stroke: { control: { type: 'color' } },
 };
 
-export const Persisted: Story<
-  Pick<TemplateProps, 'selectionModifierKey' | 'panModifierKey'>
-> = (args) => {
+export const PersistedDataSelection: Story<TemplateProps> = (args) => {
   const { selectionModifierKey, panModifierKey } = args;
-  const [persistedSelection, setPersistedSelection] = useState<Selection>();
+  const [persistedDataSelection, setPersistedDataSelection] = useState<Rect2>();
 
   if (selectionModifierKey === panModifierKey) {
     return (
@@ -112,7 +103,7 @@ export const Persisted: Story<
 
   return (
     <VisCanvas
-      title={getTitleForSelection(persistedSelection?.data)}
+      title={getTitleForSelection(persistedDataSelection)}
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
@@ -122,22 +113,31 @@ export const Persisted: Story<
 
       <SelectionTool
         modifierKey={selectionModifierKey}
-        onSelectionStart={() => setPersistedSelection(undefined)}
-        onSelectionEnd={setPersistedSelection}
+        onSelectionStart={() => setPersistedDataSelection(undefined)}
+        onSelectionEnd={(selection) =>
+          setPersistedDataSelection(selection.data)
+        }
       >
-        {({ data: [dataStart, dataEnd] }) => (
-          <SelectionRect startPoint={dataStart} endPoint={dataEnd} />
+        {(selection) => (
+          <SvgRect coords={selection.world} fill="teal" fillOpacity="0.3" />
         )}
       </SelectionTool>
 
-      {persistedSelection && (
-        <SelectionRect
-          startPoint={persistedSelection.data[0]}
-          endPoint={persistedSelection.data[1]}
-        />
+      {persistedDataSelection && (
+        <DataToWorld coords={persistedDataSelection}>
+          {(...worldCoords) => (
+            <SvgRect coords={worldCoords} fill="teal" fillOpacity="0.6" />
+          )}
+        </DataToWorld>
       )}
     </VisCanvas>
   );
+};
+
+PersistedDataSelection.argTypes = {
+  selectionType: { control: false },
+  fill: { control: false },
+  stroke: { control: false },
 };
 
 export default {
