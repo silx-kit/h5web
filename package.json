@@ -65,6 +65,10 @@
       "ignoreMissing": [
         "require-from-string"
       ]
-    }
+    },
+    "requiredScripts": [
+      "lint:eslint",
+      "lint:tsc"
+    ]
   }
 }
