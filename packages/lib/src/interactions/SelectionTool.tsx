@@ -19,6 +19,11 @@ import type { CanvasEvent, CommonInteractionProps, Selection } from './models';
 import { MouseButton } from './models';
 import { boundWorldPointToFOV, getModifierKeyArray } from './utils';
 
+interface SelectionState {
+  selection: Selection | undefined;
+  isCancelled?: boolean;
+}
+
 interface Props extends CommonInteractionProps {
   id?: string;
   transformSelection?: (selection: Selection) => Selection;
@@ -49,11 +54,12 @@ function SelectionTool(props: Props) {
   const camera = useThree((state) => state.camera);
   const { worldToData } = useVisCanvasContext();
 
-  const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
-  const hasSuccessfullyEndedRef = useRef<boolean>(false);
+  const [selectionState, setSelectionState] = useRafState<SelectionState>({
+    selection: undefined,
+  });
 
-  const [selection, setSelection] = useRafState<Selection>();
-  const prevSelection = usePrevious(selection);
+  const prevSelectionState = usePrevious(selectionState);
+  const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
 
   const modifierKeys = getModifierKeyArray(modifierKey);
   const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
@@ -89,14 +95,14 @@ function SelectionTool(props: Props) {
       const { worldPt: worldEnd } = evt;
       const boundWorldEnd = boundWorldPointToFOV(worldEnd, camera);
 
-      setSelection(
-        transformSelectionRef.current({
+      setSelectionState({
+        selection: transformSelectionRef.current({
           world: [worldStart, boundWorldEnd],
           data: [dataStart, worldToData(boundWorldEnd)],
-        })
-      );
+        }),
+      });
     },
-    [camera, transformSelectionRef, setSelection, worldToData]
+    [camera, transformSelectionRef, setSelectionState, worldToData]
   );
 
   const onPointerUp = useCallback(
@@ -110,10 +116,12 @@ function SelectionTool(props: Props) {
       (target as Element).releasePointerCapture(pointerId);
 
       startEvtRef.current = undefined;
-      hasSuccessfullyEndedRef.current = shouldInteract(sourceEvent);
-      setSelection(undefined);
+      setSelectionState({
+        selection: undefined,
+        isCancelled: !shouldInteract(sourceEvent),
+      });
     },
-    [setSelection, shouldInteract]
+    [setSelectionState, shouldInteract]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -122,15 +130,17 @@ function SelectionTool(props: Props) {
     'Escape',
     () => {
       startEvtRef.current = undefined;
-      setSelection(undefined);
+      setSelectionState({ selection: undefined, isCancelled: true });
     },
     [],
     { event: 'keydown' }
   );
 
   useEffect(() => {
+    const { selection, isCancelled } = selectionState;
+
     // Selection state is now defined => selection has started
-    if (!prevSelection && selection) {
+    if (!prevSelectionState?.selection && selection) {
       onSelectionStartRef.current?.(selection);
       return;
     }
@@ -139,27 +149,27 @@ function SelectionTool(props: Props) {
      * Invoke callback but only if the selection has ended successfully - i.e. if:
      * - the selection was not cancelled with Escape,
      * - and the modifier key was not released before the pointer. */
-    if (prevSelection && !selection && hasSuccessfullyEndedRef.current) {
-      hasSuccessfullyEndedRef.current = false;
-      onSelectionEndRef.current?.(prevSelection);
+    if (prevSelectionState?.selection && !selection && !isCancelled) {
+      onSelectionEndRef.current?.(prevSelectionState.selection);
       return;
     }
 
     // Selection remains defined => selection has changed
-    if (prevSelection && selection) {
+    if (prevSelectionState?.selection && selection) {
       onSelectionChangeRef.current?.(
         isModifierKeyPressed ? selection : undefined // don't pass selection object if user is not pressing modifier key
       );
     }
   }, [
-    prevSelection,
-    selection,
+    prevSelectionState,
+    selectionState,
     isModifierKeyPressed,
     onSelectionChangeRef,
     onSelectionStartRef,
     onSelectionEndRef,
   ]);
 
+  const { selection } = selectionState;
   if (!selection || !isModifierKeyPressed) {
     return null;
   }
