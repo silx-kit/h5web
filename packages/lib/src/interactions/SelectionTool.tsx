@@ -19,11 +19,6 @@ import type { CanvasEvent, CommonInteractionProps, Selection } from './models';
 import { MouseButton } from './models';
 import { boundWorldPointToFOV, getModifierKeyArray } from './utils';
 
-interface SelectionState {
-  selection: Selection | undefined;
-  isCancelled?: boolean;
-}
-
 interface Props extends CommonInteractionProps {
   id?: string;
   transformSelection?: (selection: Selection) => Selection;
@@ -54,12 +49,11 @@ function SelectionTool(props: Props) {
   const camera = useThree((state) => state.camera);
   const { worldToData } = useVisCanvasContext();
 
-  const [selectionState, setSelectionState] = useRafState<SelectionState>({
-    selection: undefined,
-  });
-
-  const prevSelectionState = usePrevious(selectionState);
   const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
+  const hasSuccessfullyEndedRef = useRef<boolean>(false);
+
+  const [selection, setSelection] = useRafState<Selection>();
+  const prevSelection = usePrevious(selection);
 
   const modifierKeys = getModifierKeyArray(modifierKey);
   const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
@@ -95,14 +89,14 @@ function SelectionTool(props: Props) {
       const { worldPt: worldEnd } = evt;
       const boundWorldEnd = boundWorldPointToFOV(worldEnd, camera);
 
-      setSelectionState({
-        selection: transformSelectionRef.current({
+      setSelection(
+        transformSelectionRef.current({
           world: [worldStart, boundWorldEnd],
           data: [dataStart, worldToData(boundWorldEnd)],
-        }),
-      });
+        })
+      );
     },
-    [camera, transformSelectionRef, setSelectionState, worldToData]
+    [camera, transformSelectionRef, setSelection, worldToData]
   );
 
   const onPointerUp = useCallback(
@@ -116,12 +110,10 @@ function SelectionTool(props: Props) {
       (target as Element).releasePointerCapture(pointerId);
 
       startEvtRef.current = undefined;
-      setSelectionState({
-        selection: undefined,
-        isCancelled: !shouldInteract(sourceEvent),
-      });
+      hasSuccessfullyEndedRef.current = shouldInteract(sourceEvent);
+      setSelection(undefined);
     },
-    [setSelectionState, shouldInteract]
+    [setSelection, shouldInteract]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -130,18 +122,16 @@ function SelectionTool(props: Props) {
     'Escape',
     () => {
       startEvtRef.current = undefined;
-      setSelectionState({ selection: undefined, isCancelled: true });
+      setSelection(undefined);
     },
     [],
     { event: 'keydown' }
   );
 
   useEffect(() => {
-    const { selection, isCancelled } = selectionState;
-
     if (selection) {
       // Previous selection was undefined and current selection is now defined => selection has started
-      if (!prevSelectionState?.selection) {
+      if (!prevSelection) {
         onSelectionStartRef.current?.(selection);
       }
 
@@ -154,20 +144,22 @@ function SelectionTool(props: Props) {
     }
 
     /* Previous selection was defined and current selection is now undefined => selection has ended.
-     * Invoke callback but only if selection wasn't cancelled. */
-    if (prevSelectionState?.selection && !isCancelled) {
-      onSelectionEndRef.current?.(prevSelectionState.selection);
+     * Invoke callback but only if selection has ended successfully - i.e. if:
+     * - selection was not cancelled with Escape, and
+     * - modifier key was released after pointer (if applicable). */
+    if (prevSelection && hasSuccessfullyEndedRef.current) {
+      hasSuccessfullyEndedRef.current = false;
+      onSelectionEndRef.current?.(prevSelection);
     }
   }, [
-    prevSelectionState,
-    selectionState,
+    prevSelection,
+    selection,
     isModifierKeyPressed,
     onSelectionChangeRef,
     onSelectionStartRef,
     onSelectionEndRef,
   ]);
 
-  const { selection } = selectionState;
   if (!selection || !isModifierKeyPressed) {
     return null;
   }
