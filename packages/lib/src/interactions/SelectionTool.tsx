@@ -22,7 +22,7 @@ import { boundWorldPointToFOV, getModifierKeyArray } from './utils';
 interface Props extends CommonInteractionProps {
   id?: string;
   transformSelection?: (selection: Selection) => Selection;
-  onSelectionStart?: (selection: Selection) => void;
+  onSelectionStart?: () => void;
   onSelectionChange?: (selection: Selection | undefined) => void;
   onSelectionEnd?: (selection: Selection) => void;
   children: (selection: Selection) => ReactNode;
@@ -132,7 +132,7 @@ function SelectionTool(props: Props) {
     if (selection) {
       // Previous selection was undefined and current selection is now defined => selection has started
       if (!prevSelection) {
-        onSelectionStartRef.current?.(selection);
+        onSelectionStartRef.current?.();
       }
 
       // Either way, current selection is defined, so invoke change callback
