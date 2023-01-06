@@ -139,26 +139,24 @@ function SelectionTool(props: Props) {
   useEffect(() => {
     const { selection, isCancelled } = selectionState;
 
-    // Selection state is now defined => selection has started
-    if (!prevSelectionState?.selection && selection) {
-      onSelectionStartRef.current?.(selection);
-      return;
-    }
+    if (selection) {
+      // Previous selection was undefined and current selection is now defined => selection has started
+      if (!prevSelectionState?.selection) {
+        onSelectionStartRef.current?.(selection);
+      }
 
-    /* Selection state is now undefined => selection has ended.
-     * Invoke callback but only if the selection has ended successfully - i.e. if:
-     * - the selection was not cancelled with Escape,
-     * - and the modifier key was not released before the pointer. */
-    if (prevSelectionState?.selection && !selection && !isCancelled) {
-      onSelectionEndRef.current?.(prevSelectionState.selection);
-      return;
-    }
-
-    // Selection remains defined => selection has changed
-    if (prevSelectionState?.selection && selection) {
+      // Either way, current selection is defined, so invoke change callback
       onSelectionChangeRef.current?.(
         isModifierKeyPressed ? selection : undefined // don't pass selection object if user is not pressing modifier key
       );
+
+      return;
+    }
+
+    /* Previous selection was defined and current selection is now undefined => selection has ended.
+     * Invoke callback but only if selection wasn't cancelled. */
+    if (prevSelectionState?.selection && !isCancelled) {
+      onSelectionEndRef.current?.(prevSelectionState.selection);
     }
   }, [
     prevSelectionState,
