@@ -3,8 +3,7 @@ import type { Axis } from '@h5web/shared';
 import SvgRect from '../svg/SvgRect';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import AxialSelectionTool from './AxialSelectionTool';
-import Box from './box';
-import { useZoomOnBox } from './hooks';
+import { useZoomOnSelection } from './hooks';
 import type { Selection, CommonInteractionProps } from './models';
 
 interface Props extends CommonInteractionProps {
@@ -15,15 +14,15 @@ function AxialSelectToZoom(props: Props) {
   const { axis, modifierKey, disabled } = props;
 
   const { visRatio } = useVisCanvasContext();
-  const zoomOnBox = useZoomOnBox();
+  const zoomOnSelection = useZoomOnSelection();
 
-  function onSelectionEnd({ world: worldSelection }: Selection) {
-    const [worldStart, worldEnd] = worldSelection;
+  function onSelectionEnd(selection: Selection) {
+    const [worldStart, worldEnd] = selection.world;
     if (worldStart.x === worldEnd.x || worldStart.y === worldEnd.y) {
       return;
     }
 
-    zoomOnBox(Box.fromPoints(...worldSelection));
+    zoomOnSelection(selection);
   }
 
   return (

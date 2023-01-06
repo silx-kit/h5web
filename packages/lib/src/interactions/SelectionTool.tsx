@@ -1,3 +1,4 @@
+import { assertDefined } from '@h5web/shared';
 import {
   useKeyboardEvent,
   usePrevious,
@@ -6,6 +7,7 @@ import {
 } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
+import { useMemo } from 'react';
 import { useRef } from 'react';
 import { useCallback, useEffect } from 'react';
 
@@ -23,9 +25,12 @@ interface Props extends CommonInteractionProps {
   id?: string;
   transformSelection?: (selection: Selection) => Selection;
   onSelectionStart?: () => void;
-  onSelectionChange?: (selection: Selection | undefined) => void;
+  onSelectionChange?: (
+    selection: Selection | undefined,
+    rawSelection: Selection
+  ) => void;
   onSelectionEnd?: (selection: Selection) => void;
-  children: (selection: Selection) => ReactNode;
+  children: (selection: Selection, rawSelection: Selection) => ReactNode;
 }
 
 function SelectionTool(props: Props) {
@@ -49,11 +54,9 @@ function SelectionTool(props: Props) {
   const camera = useThree((state) => state.camera);
   const { worldToData } = useVisCanvasContext();
 
+  const [rawSelection, setRawSelection] = useRafState<Selection>();
   const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
   const hasSuccessfullyEndedRef = useRef<boolean>(false);
-
-  const [selection, setSelection] = useRafState<Selection>();
-  const prevSelection = usePrevious(selection);
 
   const modifierKeys = getModifierKeyArray(modifierKey);
   const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
@@ -89,14 +92,12 @@ function SelectionTool(props: Props) {
       const { worldPt: worldEnd } = evt;
       const boundWorldEnd = boundWorldPointToFOV(worldEnd, camera);
 
-      setSelection(
-        transformSelectionRef.current({
-          world: [worldStart, boundWorldEnd],
-          data: [dataStart, worldToData(boundWorldEnd)],
-        })
-      );
+      setRawSelection({
+        world: [worldStart, boundWorldEnd],
+        data: [dataStart, worldToData(boundWorldEnd)],
+      });
     },
-    [camera, transformSelectionRef, setSelection, worldToData]
+    [camera, setRawSelection, worldToData]
   );
 
   const onPointerUp = useCallback(
@@ -111,9 +112,9 @@ function SelectionTool(props: Props) {
 
       startEvtRef.current = undefined;
       hasSuccessfullyEndedRef.current = shouldInteract(sourceEvent);
-      setSelection(undefined);
+      setRawSelection(undefined);
     },
-    [setSelection, shouldInteract]
+    [setRawSelection, shouldInteract]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -122,22 +123,34 @@ function SelectionTool(props: Props) {
     'Escape',
     () => {
       startEvtRef.current = undefined;
-      setSelection(undefined);
+      setRawSelection(undefined);
     },
     [],
     { event: 'keydown' }
   );
 
+  // Compute effective selection
+  const selection = useMemo(
+    () => rawSelection && transformSelectionRef.current(rawSelection),
+    [rawSelection, transformSelectionRef]
+  );
+
+  // Keep track of previous effective selection state
+  const prevSelection = usePrevious(selection);
+
   useEffect(() => {
     if (selection) {
+      assertDefined(rawSelection);
+
       // Previous selection was undefined and current selection is now defined => selection has started
       if (!prevSelection) {
         onSelectionStartRef.current?.();
       }
 
-      // Either way, current selection is defined, so invoke change callback
+      // Either way, current selection is defined, so invoke change callback with effective selection object
       onSelectionChangeRef.current?.(
-        isModifierKeyPressed ? selection : undefined // don't pass selection object if user is not pressing modifier key
+        isModifierKeyPressed ? selection : undefined, // don't pass selection object if user is not pressing modifier key
+        rawSelection
       );
 
       return;
@@ -152,11 +165,12 @@ function SelectionTool(props: Props) {
       onSelectionEndRef.current?.(prevSelection);
     }
   }, [
-    prevSelection,
     selection,
+    prevSelection,
+    rawSelection,
     isModifierKeyPressed,
-    onSelectionChangeRef,
     onSelectionStartRef,
+    onSelectionChangeRef,
     onSelectionEndRef,
   ]);
 
@@ -164,7 +178,8 @@ function SelectionTool(props: Props) {
     return null;
   }
 
-  return <>{children(selection)}</>;
+  assertDefined(rawSelection);
+  return <>{children(selection, rawSelection)}</>;
 }
 
 export type { Props as SelectionToolProps };
