@@ -17,9 +17,14 @@ import {
   useInteraction,
   useModifierKeyPressed,
 } from './hooks';
-import type { CanvasEvent, CommonInteractionProps, Selection } from './models';
+import type {
+  CanvasEvent,
+  CommonInteractionProps,
+  Rect,
+  Selection,
+} from './models';
 import { MouseButton } from './models';
-import { boundWorldPointToFOV, getModifierKeyArray } from './utils';
+import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
   id?: string;
@@ -52,7 +57,7 @@ function SelectionTool(props: Props) {
   const onSelectionEndRef = useSyncedRef(onSelectionEnd);
 
   const camera = useThree((state) => state.camera);
-  const { worldToData } = useVisCanvasContext();
+  const { canvasBox, htmlToWorld, worldToData } = useVisCanvasContext();
 
   const [rawSelection, setRawSelection] = useRafState<Selection>();
   const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
@@ -88,16 +93,14 @@ function SelectionTool(props: Props) {
         return;
       }
 
-      const { dataPt: dataStart, worldPt: worldStart } = startEvtRef.current;
-      const { worldPt: worldEnd } = evt;
-      const boundWorldEnd = boundWorldPointToFOV(worldEnd, camera);
+      const { htmlPt: htmlStart } = startEvtRef.current;
+      const html: Rect = [htmlStart, canvasBox.clampPoint(evt.htmlPt)];
+      const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
+      const data = world.map(worldToData) as Rect;
 
-      setRawSelection({
-        world: [worldStart, boundWorldEnd],
-        data: [dataStart, worldToData(boundWorldEnd)],
-      });
+      setRawSelection({ html, world, data });
     },
-    [camera, setRawSelection, worldToData]
+    [camera, canvasBox, htmlToWorld, worldToData, setRawSelection]
   );
 
   const onPointerUp = useCallback(

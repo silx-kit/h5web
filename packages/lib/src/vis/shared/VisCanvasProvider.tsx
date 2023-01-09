@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useMemo } from 'react';
 import type { Camera } from 'three';
 import { Matrix4, Vector3 } from 'three';
 
+import Box from '../../interactions/box';
 import type { AxisConfig, AxisScale, Size } from '../models';
 import { getCanvasScale, getSizeToFit } from '../utils';
 
@@ -24,6 +25,7 @@ export interface VisCanvasContextValue {
   htmlToData: (camera: Camera, htmlPt: Vector3) => Vector3;
 
   // For internal use only
+  canvasBox: Box;
   svgOverlay: SVGSVGElement | undefined;
   floatingToolbar: HTMLDivElement | undefined;
 }
@@ -57,6 +59,11 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
 
   const { width, height } = canvasSize;
   const canvasRatio = width / height;
+
+  const canvasBox = useMemo(
+    () => Box.empty().expandByPoint(new Vector3(width, height)),
+    [width, height]
+  );
 
   const abscissaScale = getCanvasScale(abscissaConfig, visSize.width);
   const ordinateScale = getCanvasScale(ordinateConfig, visSize.height);
@@ -124,6 +131,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
       value={{
         canvasSize,
         canvasRatio,
+        canvasBox,
         visRatio,
         visSize,
         abscissaConfig,

@@ -3,7 +3,6 @@ import { useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { getWorldFOV } from '../vis/utils';
 import type { SelectionToolProps } from './SelectionTool';
 import SelectionTool from './SelectionTool';
 import type { Rect, Selection } from './models';
@@ -22,28 +21,22 @@ function AxialSelectionTool(props: Props) {
     ...restOfSelectionProps
   } = props;
 
-  const { worldToData } = useVisCanvasContext();
+  const { canvasSize, htmlToWorld, worldToData } = useVisCanvasContext();
+  const { width, height } = canvasSize;
   const camera = useThree((state) => state.camera);
 
   function toAxialSelection(selection: Selection): Selection {
-    const [worldStart, worldEnd] = selection.world;
-    const { bottomLeft, topRight } = getWorldFOV(camera);
+    const [htmlStart, htmlEnd] = selection.html;
 
-    const axialWorldSelection: Rect =
+    const html: Rect =
       axis === 'x'
-        ? [
-            new Vector3(worldStart.x, bottomLeft.y, 0),
-            new Vector3(worldEnd.x, topRight.y, 0),
-          ]
-        : [
-            new Vector3(bottomLeft.x, worldStart.y, 0),
-            new Vector3(topRight.x, worldEnd.y, 0),
-          ];
+        ? [new Vector3(htmlStart.x, 0), new Vector3(htmlEnd.x, height)]
+        : [new Vector3(0, htmlStart.y), new Vector3(width, htmlEnd.y)];
 
-    return {
-      world: axialWorldSelection,
-      data: axialWorldSelection.map(worldToData) as Rect,
-    };
+    const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
+    const data = world.map(worldToData) as Rect;
+
+    return { html, world, data };
   }
 
   return (
