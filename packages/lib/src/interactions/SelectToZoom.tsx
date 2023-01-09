@@ -4,38 +4,45 @@ import SvgRect from '../svg/SvgRect';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import SelectionTool from './SelectionTool';
 import Box from './box';
-import { useZoomOnBox } from './hooks';
-import type { CommonInteractionProps, Rect3, Selection } from './models';
+import { useZoomOnSelection } from './hooks';
+import type { CommonInteractionProps, Selection } from './models';
 
 type Props = CommonInteractionProps;
 
 function SelectToZoom(props: Props) {
-  const { canvasSize, canvasRatio, visRatio, visSize } = useVisCanvasContext();
+  const { canvasSize, canvasRatio, visRatio, visSize, worldToData } =
+    useVisCanvasContext();
 
   const { width, height } = canvasSize;
   const keepRatio = visRatio !== undefined;
 
   const camera = useThree((state) => state.camera);
-  const zoomOnBox = useZoomOnBox();
+  const zoomOnSelection = useZoomOnSelection();
 
-  function computeZoomBox(worldSelection: Rect3): Box {
-    const { position, scale } = camera;
-    const zoomBox = Box.fromPoints(...worldSelection);
-
+  function computeZoomSelection(selection: Selection): Selection {
     if (!keepRatio) {
-      return zoomBox;
+      return selection;
     }
 
+    const { position, scale } = camera;
+    const { world: worldSelection } = selection;
+
+    const zoomBox = Box.fromPoints(...worldSelection);
     const visBox = Box.fromSize(visSize);
     const fovBox = Box.empty(position).expandBySize(
       width * scale.x,
       height * scale.y
     );
 
-    return zoomBox
+    zoomBox
       .expandToRatio(canvasRatio)
       .keepWithin(visBox) // when zoomed out and canvas/vis ratios differ
       .keepWithin(fovBox); // when zoomed in
+
+    return {
+      world: [zoomBox.min, zoomBox.max],
+      data: [worldToData(zoomBox.min), worldToData(zoomBox.max)],
+    };
   }
 
   function onSelectionEnd(selection: Selection) {
@@ -44,18 +51,21 @@ function SelectToZoom(props: Props) {
       return;
     }
 
-    zoomOnBox(computeZoomBox(selection.world));
+    zoomOnSelection(selection);
   }
 
   return (
-    <SelectionTool id="SelectToZoom" onSelectionEnd={onSelectionEnd} {...props}>
-      {({ world: worldSelection }) => {
-        const zoomBox = computeZoomBox(worldSelection);
-
+    <SelectionTool
+      id="SelectToZoom"
+      transformSelection={computeZoomSelection}
+      onSelectionEnd={onSelectionEnd}
+      {...props}
+    >
+      {({ world: worldSelection }, { world: rawWorldSelection }) => {
         return (
           <>
             <SvgRect
-              coords={worldSelection}
+              coords={rawWorldSelection}
               fill="white"
               stroke="black"
               fillOpacity={keepRatio ? 0 : 0.25}
@@ -63,7 +73,7 @@ function SelectToZoom(props: Props) {
             />
             {keepRatio && (
               <SvgRect
-                coords={[zoomBox.min, zoomBox.max]}
+                coords={worldSelection}
                 fillOpacity={0.25}
                 fill="white"
                 stroke="black"

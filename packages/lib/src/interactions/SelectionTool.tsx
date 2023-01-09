@@ -1,3 +1,4 @@
+import { assertDefined } from '@h5web/shared';
 import {
   useKeyboardEvent,
   usePrevious,
@@ -6,6 +7,7 @@ import {
 } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
+import { useMemo } from 'react';
 import { useRef } from 'react';
 import { useCallback, useEffect } from 'react';
 
@@ -19,18 +21,16 @@ import type { CanvasEvent, CommonInteractionProps, Selection } from './models';
 import { MouseButton } from './models';
 import { boundWorldPointToFOV, getModifierKeyArray } from './utils';
 
-interface SelectionState {
-  selection: Selection | undefined;
-  isCancelled?: boolean;
-}
-
 interface Props extends CommonInteractionProps {
   id?: string;
   transformSelection?: (selection: Selection) => Selection;
-  onSelectionStart?: (selection: Selection) => void;
-  onSelectionChange?: (selection: Selection | undefined) => void;
+  onSelectionStart?: () => void;
+  onSelectionChange?: (
+    selection: Selection | undefined,
+    rawSelection: Selection
+  ) => void;
   onSelectionEnd?: (selection: Selection) => void;
-  children: (selection: Selection) => ReactNode;
+  children: (selection: Selection, rawSelection: Selection) => ReactNode;
 }
 
 function SelectionTool(props: Props) {
@@ -54,12 +54,9 @@ function SelectionTool(props: Props) {
   const camera = useThree((state) => state.camera);
   const { worldToData } = useVisCanvasContext();
 
-  const [selectionState, setSelectionState] = useRafState<SelectionState>({
-    selection: undefined,
-  });
-
-  const prevSelectionState = usePrevious(selectionState);
+  const [rawSelection, setRawSelection] = useRafState<Selection>();
   const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
+  const hasSuccessfullyEndedRef = useRef<boolean>(false);
 
   const modifierKeys = getModifierKeyArray(modifierKey);
   const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
@@ -95,14 +92,12 @@ function SelectionTool(props: Props) {
       const { worldPt: worldEnd } = evt;
       const boundWorldEnd = boundWorldPointToFOV(worldEnd, camera);
 
-      setSelectionState({
-        selection: transformSelectionRef.current({
-          world: [worldStart, boundWorldEnd],
-          data: [dataStart, worldToData(boundWorldEnd)],
-        }),
+      setRawSelection({
+        world: [worldStart, boundWorldEnd],
+        data: [dataStart, worldToData(boundWorldEnd)],
       });
     },
-    [camera, transformSelectionRef, setSelectionState, worldToData]
+    [camera, setRawSelection, worldToData]
   );
 
   const onPointerUp = useCallback(
@@ -116,12 +111,10 @@ function SelectionTool(props: Props) {
       (target as Element).releasePointerCapture(pointerId);
 
       startEvtRef.current = undefined;
-      setSelectionState({
-        selection: undefined,
-        isCancelled: !shouldInteract(sourceEvent),
-      });
+      hasSuccessfullyEndedRef.current = shouldInteract(sourceEvent);
+      setRawSelection(undefined);
     },
-    [setSelectionState, shouldInteract]
+    [setRawSelection, shouldInteract]
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -130,49 +123,63 @@ function SelectionTool(props: Props) {
     'Escape',
     () => {
       startEvtRef.current = undefined;
-      setSelectionState({ selection: undefined, isCancelled: true });
+      setRawSelection(undefined);
     },
     [],
     { event: 'keydown' }
   );
 
-  useEffect(() => {
-    const { selection, isCancelled } = selectionState;
+  // Compute effective selection
+  const selection = useMemo(
+    () => rawSelection && transformSelectionRef.current(rawSelection),
+    [rawSelection, transformSelectionRef]
+  );
 
+  // Keep track of previous effective selection state
+  const prevSelection = usePrevious(selection);
+
+  useEffect(() => {
     if (selection) {
+      assertDefined(rawSelection);
+
       // Previous selection was undefined and current selection is now defined => selection has started
-      if (!prevSelectionState?.selection) {
-        onSelectionStartRef.current?.(selection);
+      if (!prevSelection) {
+        onSelectionStartRef.current?.();
       }
 
-      // Either way, current selection is defined, so invoke change callback
+      // Either way, current selection is defined, so invoke change callback with effective selection object
       onSelectionChangeRef.current?.(
-        isModifierKeyPressed ? selection : undefined // don't pass selection object if user is not pressing modifier key
+        isModifierKeyPressed ? selection : undefined, // don't pass selection object if user is not pressing modifier key
+        rawSelection
       );
 
       return;
     }
 
     /* Previous selection was defined and current selection is now undefined => selection has ended.
-     * Invoke callback but only if selection wasn't cancelled. */
-    if (prevSelectionState?.selection && !isCancelled) {
-      onSelectionEndRef.current?.(prevSelectionState.selection);
+     * Invoke callback but only if selection has ended successfully - i.e. if:
+     * - selection was not cancelled with Escape, and
+     * - modifier key was released after pointer (if applicable). */
+    if (prevSelection && hasSuccessfullyEndedRef.current) {
+      hasSuccessfullyEndedRef.current = false;
+      onSelectionEndRef.current?.(prevSelection);
     }
   }, [
-    prevSelectionState,
-    selectionState,
+    selection,
+    prevSelection,
+    rawSelection,
     isModifierKeyPressed,
-    onSelectionChangeRef,
     onSelectionStartRef,
+    onSelectionChangeRef,
     onSelectionEndRef,
   ]);
 
-  const { selection } = selectionState;
   if (!selection || !isModifierKeyPressed) {
     return null;
   }
 
-  return <>{children(selection)}</>;
+  assertDefined(rawSelection);
+  return <>{children(selection, rawSelection)}</>;
 }
 
 export type { Props as SelectionToolProps };

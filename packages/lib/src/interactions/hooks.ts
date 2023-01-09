@@ -13,6 +13,7 @@ import type {
   CanvasEventCallbacks,
   InteractionEntry,
   ModifierKey,
+  Selection,
 } from './models';
 
 const ZOOM_FACTOR = 0.95;
@@ -43,15 +44,16 @@ export function useMoveCameraTo() {
   );
 }
 
-export function useZoomOnBox() {
+export function useZoomOnSelection() {
   const { canvasSize } = useVisCanvasContext();
 
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 
   return useCallback(
-    (zoomBox: Box) => {
+    ({ world: worldSelection }: Selection) => {
       const { width, height } = canvasSize;
+      const zoomBox = Box.fromPoints(...worldSelection);
 
       // Update camera scale first (since `moveCameraTo` relies on camera scale)
       const { width: zoomWidth, height: zoomHeight } = zoomBox.size;
