@@ -1,11 +1,11 @@
 import type { SVGProps } from 'react';
 
-import type { Rect3 } from '../interactions/models';
+import type { Rect } from '../interactions/models';
 import { useHtmlCoords } from '../vis/hooks';
 import SvgElement from './SvgElement';
 
 interface Props extends SVGProps<SVGRectElement> {
-  coords: Rect3;
+  coords: Rect;
 }
 
 function SvgRect(props: Props) {

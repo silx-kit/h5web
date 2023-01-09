@@ -9,7 +9,7 @@ import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
-import type { Vector2, Vector3 } from 'three';
+import type { Vector3 } from 'three';
 
 import { useVisCanvasContext } from './shared/VisCanvasProvider';
 import type { VisCanvasContextValue } from './shared/VisCanvasProvider';
@@ -102,12 +102,12 @@ export function useCssColors(
 
 export function useHtmlCoords<T extends Vector3[]>(
   ...worldCoords: T
-): MappedTuple<T, Vector2> {
+): MappedTuple<T, Vector3> {
   return useCameraState(
     (...args) =>
       worldCoords.map((pt) => worldToHtml(...args, pt)) as MappedTuple<
         T,
-        Vector2
+        Vector3
       >,
     worldCoords // eslint-disable-line react-hooks/exhaustive-deps
   );

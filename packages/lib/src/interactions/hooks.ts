@@ -2,7 +2,7 @@ import { useEventListener, useToggle } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import { useState } from 'react';
 import { useCallback, useEffect } from 'react';
-import { Vector2, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import { htmlToWorld } from '../vis/utils';
@@ -136,7 +136,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
     <T extends PointerEvent | WheelEvent>(sourceEvent: T): CanvasEvent<T> => {
       const { offsetX, offsetY } = sourceEvent;
 
-      const htmlPt = new Vector2(offsetX, offsetY);
+      const htmlPt = new Vector3(offsetX, offsetY);
       const worldPt = htmlToWorld(camera, context, htmlPt);
       const dataPt = context.worldToData(worldPt);
 

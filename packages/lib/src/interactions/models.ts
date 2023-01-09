@@ -1,4 +1,4 @@
-import type { Vector2, Vector3 } from 'three';
+import type { Vector3 } from 'three';
 
 export type ModifierKey = 'Alt' | 'Control' | 'Shift';
 
@@ -7,19 +7,16 @@ export enum MouseButton {
   'Middle' = 1,
 }
 
+export type Rect = [Vector3, Vector3];
 export interface Selection {
-  world: Rect3;
-  data: Rect2;
+  world: Rect;
+  data: Rect;
 }
 
-export type Rect<T extends Vector2 | Vector3> = [T, T];
-export type Rect2 = Rect<Vector2>;
-export type Rect3 = Rect<Vector3>;
-
 export interface CanvasEvent<T extends MouseEvent> {
-  htmlPt: Vector2;
+  htmlPt: Vector3;
   worldPt: Vector3;
-  dataPt: Vector2;
+  dataPt: Vector3;
   sourceEvent: T;
 }
 
