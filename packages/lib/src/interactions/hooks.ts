@@ -5,7 +5,6 @@ import { useCallback, useEffect } from 'react';
 import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { htmlToWorld } from '../vis/utils';
 import { useInteractionsContext } from './InteractionsProvider';
 import Box from './box';
 import type {
@@ -130,19 +129,19 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
 
   const { domElement } = useThree((state) => state.gl);
   const camera = useThree((state) => state.camera);
-  const context = useVisCanvasContext();
+  const { htmlToWorld, worldToData } = useVisCanvasContext();
 
   const processEvent = useCallback(
     <T extends PointerEvent | WheelEvent>(sourceEvent: T): CanvasEvent<T> => {
       const { offsetX, offsetY } = sourceEvent;
 
       const htmlPt = new Vector3(offsetX, offsetY);
-      const worldPt = htmlToWorld(camera, context, htmlPt);
-      const dataPt = context.worldToData(worldPt);
+      const worldPt = htmlToWorld(camera, htmlPt);
+      const dataPt = worldToData(worldPt);
 
       return { htmlPt, worldPt, dataPt, sourceEvent };
     },
-    [camera, context]
+    [camera, htmlToWorld, worldToData]
   );
 
   const handlePointerDown = useCallback(

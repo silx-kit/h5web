@@ -351,41 +351,6 @@ export function toArray(arr: NumArray): number[] {
   return isTypedArray(arr) ? [...arr] : arr;
 }
 
-export function worldToHtml(
-  camera: Camera,
-  context: VisCanvasContextValue,
-  worldPt: Vector3
-) {
-  const cameraPt = worldPt.clone().project(camera);
-  return context.cameraToHtml(cameraPt);
-}
-
-export function htmlToWorld(
-  camera: Camera,
-  context: VisCanvasContextValue,
-  htmlPt: Vector3
-) {
-  return context.htmlToCamera(htmlPt).unproject(camera);
-}
-
-export function dataToHtml(
-  camera: Camera,
-  context: VisCanvasContextValue,
-  dataPt: Vector3
-): Vector3 {
-  const worldPt = context.dataToWorld(dataPt);
-  return worldToHtml(camera, context, worldPt);
-}
-
-export function htmlToData(
-  camera: Camera,
-  context: VisCanvasContextValue,
-  htmlPt: Vector3
-): Vector3 {
-  const worldPt = htmlToWorld(camera, context, htmlPt);
-  return context.worldToData(worldPt);
-}
-
 export function getWorldFOV(camera: Camera): {
   topRight: Vector3;
   bottomLeft: Vector3;
