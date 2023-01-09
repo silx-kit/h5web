@@ -39,6 +39,12 @@ Color.args = {
   color: 'black',
 };
 
+export const DashedLine = Template.bind({});
+DashedLine.args = {
+  dashSize: 5,
+  gapSize: 5,
+};
+
 export const Glyphs = Template.bind({});
 Glyphs.args = {
   curveType: CurveType.GlyphsOnly,

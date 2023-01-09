@@ -2,7 +2,7 @@ import type { NumArray } from '@h5web/shared';
 import { extend, useThree } from '@react-three/fiber';
 import type { Object3DNode, ThreeEvent } from '@react-three/fiber';
 import { useCallback, useLayoutEffect, useState } from 'react';
-import { BufferGeometry, Float32BufferAttribute, Line } from 'three';
+import { BufferGeometry, Line, } from 'three';
 
 import ErrorBars from './ErrorBars';
 import GlyphMaterial from './GlyphMaterial';
@@ -58,10 +58,9 @@ function DataCurve(props: Props) {
     onDataPointLeave,
   } = props;
 
-  const [dataGeometry] = useState(() => new BufferGeometry());
-  const vertices = (abscissas.flatMap((abscissa, i) => [abscissa, ordinates[i], 0])).flat();
-  dataGeometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
   const points = useCanvasPoints(abscissas, ordinates, errors);
+  const [dataGeometry] = useState(() => new BufferGeometry());
+  dataGeometry.setFromPoints(points.data);
   const invalidate = useThree((state) => state.invalidate);
 
   useLayoutEffect(() => {
@@ -108,8 +107,17 @@ function DataCurve(props: Props) {
 
   return (
     <>
-      <line_ onUpdate={(line_) => line_.computeLineDistances()} visible={showLine} geometry={dataGeometry}>
-        <lineDashedMaterial color={color} linewidth={linewidth} dashSize={dashSize} gapSize={gapSize}/>
+      <line_
+        visible={showLine}
+        onUpdate={(line_) => line_.computeLineDistances()}
+        geometry={dataGeometry}
+      >
+        <lineDashedMaterial
+          color={color}
+          linewidth={linewidth}
+          dashSize={dashSize}
+          gapSize={gapSize}
+        />
       </line_>
       <points
         visible={showGlyphs}
