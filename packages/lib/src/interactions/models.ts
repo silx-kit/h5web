@@ -8,7 +8,9 @@ export enum MouseButton {
 }
 
 export type Rect = [Vector3, Vector3];
+
 export interface Selection {
+  html: Rect;
   world: Rect;
   data: Rect;
 }

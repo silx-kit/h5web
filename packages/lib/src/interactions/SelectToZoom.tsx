@@ -1,57 +1,57 @@
 import { useThree } from '@react-three/fiber';
+import { Vector3 } from 'three';
 
 import SvgRect from '../svg/SvgRect';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import SelectionTool from './SelectionTool';
 import Box from './box';
 import { useZoomOnSelection } from './hooks';
-import type { CommonInteractionProps, Selection } from './models';
+import type { CommonInteractionProps, Rect, Selection } from './models';
 
 type Props = CommonInteractionProps;
 
 function SelectToZoom(props: Props) {
-  const { canvasSize, canvasRatio, visRatio, visSize, worldToData } =
-    useVisCanvasContext();
+  const {
+    canvasSize,
+    canvasRatio,
+    canvasBox,
+    visRatio,
+    visSize,
+    htmlToWorld,
+    worldToData,
+  } = useVisCanvasContext();
 
-  const { width, height } = canvasSize;
-  const keepRatio = visRatio !== undefined;
-
-  const camera = useThree((state) => state.camera);
   const zoomOnSelection = useZoomOnSelection();
+  const camera = useThree((state) => state.camera);
+  const keepRatio = visRatio !== undefined;
 
   function computeZoomSelection(selection: Selection): Selection {
     if (!keepRatio) {
       return selection;
     }
 
-    const { position, scale } = camera;
-    const { world: worldSelection } = selection;
+    const { scale } = camera;
+    const scaledVisBox = Box.empty(
+      new Vector3(canvasSize.width / 2, canvasSize.height / 2)
+    ).expandBySize(visSize.width / scale.x, visSize.height / scale.y);
 
-    const zoomBox = Box.fromPoints(...worldSelection);
-    const visBox = Box.fromSize(visSize);
-    const fovBox = Box.empty(position).expandBySize(
-      width * scale.x,
-      height * scale.y
-    );
-
-    zoomBox
+    const zoomBox = Box.fromPoints(...selection.html)
       .expandToRatio(canvasRatio)
-      .keepWithin(visBox) // when zoomed out and canvas/vis ratios differ
-      .keepWithin(fovBox); // when zoomed in
+      .keepWithin(canvasBox)
+      .keepWithin(scaledVisBox); // in case visualization doesn't cover entire canvas at current zoom level
 
-    return {
-      world: [zoomBox.min, zoomBox.max],
-      data: [worldToData(zoomBox.min), worldToData(zoomBox.max)],
-    };
+    const html = zoomBox.toRect();
+    const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
+    const data = world.map(worldToData) as Rect;
+
+    return { html, world, data };
   }
 
   function onSelectionEnd(selection: Selection) {
-    const [worldStart, worldEnd] = selection.world;
-    if (worldStart.x === worldEnd.x || worldStart.y === worldEnd.y) {
-      return;
+    const { size } = Box.fromPoints(...selection.html);
+    if (size.width > 0 && size.height > 0) {
+      zoomOnSelection(selection);
     }
-
-    zoomOnSelection(selection);
   }
 
   return (
