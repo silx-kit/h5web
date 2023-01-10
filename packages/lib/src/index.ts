@@ -131,8 +131,6 @@ export type {
   ModifierKey,
   Selection,
   Rect,
-  Rect2,
-  Rect3,
   CanvasEvent,
   CanvasEventCallbacks,
 } from './interactions/models';

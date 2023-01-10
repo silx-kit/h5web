@@ -213,7 +213,7 @@ The hook accepts a callback, which:
 
 ```ts
 const htmlPt = useCameraState(
-  (camera, context) => dataToHtml(camera, context, new Vector2(x, y)),
+  (camera, context) => dataToHtml(camera, context, new Vector3(x, y)),
   [x, y]
 );
 ```
@@ -239,7 +239,7 @@ The utilities documented in this section require access to the R3F `camera` obje
 Convert a point from world space to HTML space
 
 ```ts
-worldToHtml(camera: Camera, context: VisCanvasContextValue, worldPt: Vector3): Vector2
+worldToHtml(camera: Camera, context: VisCanvasContextValue, worldPt: Vector3): Vector3
 ```
 
 #### htmlToWorld
@@ -247,7 +247,7 @@ worldToHtml(camera: Camera, context: VisCanvasContextValue, worldPt: Vector3): V
 Convert a point from HTML space to world space
 
 ```ts
-htmlToWorld(camera: Camera, context: VisCanvasContextValue, htmlPt: Vector2): Vector3
+htmlToWorld(camera: Camera, context: VisCanvasContextValue, htmlPt: Vector3): Vector3
 ```
 
 #### dataToHtml
@@ -255,7 +255,7 @@ htmlToWorld(camera: Camera, context: VisCanvasContextValue, htmlPt: Vector2): Ve
 Convert a point from data space to HTML space.
 
 ```ts
-dataToHtml(camera: Camera, context: VisCanvasContextValue, dataPt: Vector2): Vector2
+dataToHtml(camera: Camera, context: VisCanvasContextValue, dataPt: Vector3): Vector3
 ```
 
 #### htmlToData
@@ -263,7 +263,7 @@ dataToHtml(camera: Camera, context: VisCanvasContextValue, dataPt: Vector2): Vec
 Convert a point from HTML space to data space.
 
 ```ts
-htmlToData(camera: Camera, context: VisCanvasContextValue, htmlPt: Vector2): Vector2
+htmlToData(camera: Camera, context: VisCanvasContextValue, htmlPt: Vector3): Vector3
 ```
 
 #### getWorldFOV

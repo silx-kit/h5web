@@ -1,13 +1,13 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import type { Vector2 } from 'three';
+import type { Vector3 } from 'three';
 
 import { useMoveCameraTo } from '../../interactions/hooks';
 import { useVisCanvasContext } from './VisCanvasProvider';
 
 function ViewportCenterer() {
   const { dataToWorld, worldToData } = useVisCanvasContext();
-  const viewportCenter = useRef<Vector2>();
+  const viewportCenter = useRef<Vector3>();
   const camera = useThree((state) => state.camera);
 
   const moveCameraTo = useMoveCameraTo();

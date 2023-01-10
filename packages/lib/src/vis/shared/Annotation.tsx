@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react';
-import { Vector2 } from 'three';
+import { Vector3 } from 'three';
 
 import { useCameraState } from '../hooks';
 import { dataToHtml } from '../utils';
@@ -33,7 +33,7 @@ function Annotation(props: Props) {
 
   const { htmlPt, cameraScale } = useCameraState(
     (camera, context) => ({
-      htmlPt: dataToHtml(camera, context, new Vector2(x, y)),
+      htmlPt: dataToHtml(camera, context, new Vector3(x, y)),
       cameraScale: camera.scale.clone(),
     }),
     [x, y]

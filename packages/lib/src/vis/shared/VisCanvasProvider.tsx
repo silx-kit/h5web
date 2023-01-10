@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
-import { Matrix4, Vector2, Vector3 } from 'three';
+import { Matrix4, Vector3 } from 'three';
 
 import type { AxisConfig, AxisScale, Size } from '../models';
 import { getCanvasScale, getSizeToFit } from '../utils';
@@ -15,12 +15,12 @@ export interface VisCanvasContextValue {
   ordinateConfig: AxisConfig;
   abscissaScale: AxisScale;
   ordinateScale: AxisScale;
-  dataToWorld: (dataPt: Vector2) => Vector3;
-  worldToData: (worldPt: Vector3) => Vector2;
+  dataToWorld: (dataPt: Vector3) => Vector3;
+  worldToData: (worldPt: Vector3) => Vector3;
 
   // For internal use only
-  cameraToHtml: (cameraPt: Vector3) => Vector2;
-  htmlToCamera: (htmlPt: Vector2) => Vector3;
+  cameraToHtml: (cameraPt: Vector3) => Vector3;
+  htmlToCamera: (htmlPt: Vector3) => Vector3;
   svgOverlay: SVGSVGElement | undefined;
   floatingToolbar: HTMLDivElement | undefined;
 }
@@ -59,14 +59,14 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
   const ordinateScale = getCanvasScale(ordinateConfig, visSize.height);
 
   const dataToWorld = useCallback(
-    (dataPt: Vector2) =>
-      new Vector3(abscissaScale(dataPt.x), ordinateScale(dataPt.y), 0),
+    (dataPt: Vector3) =>
+      new Vector3(abscissaScale(dataPt.x), ordinateScale(dataPt.y)),
     [abscissaScale, ordinateScale]
   );
 
   const worldToData = useCallback(
     (worldPt: Vector3) =>
-      new Vector2(
+      new Vector3(
         abscissaScale.invert(worldPt.x),
         ordinateScale.invert(worldPt.y)
       ),
@@ -85,17 +85,14 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
 
   const cameraToHtml = useCallback(
     (cameraPt: Vector3) => {
-      const htmlPoint = cameraPt.clone().applyMatrix4(cameraToHtmlMatrix);
-      return new Vector2(htmlPoint.x, htmlPoint.y);
+      return cameraPt.clone().applyMatrix4(cameraToHtmlMatrix);
     },
     [cameraToHtmlMatrix]
   );
 
   const htmlToCamera = useCallback(
-    (htmlPt: Vector2) => {
-      return new Vector3(htmlPt.x, htmlPt.y, 0).applyMatrix4(
-        cameraToHtmlMatrixInverse
-      );
+    (htmlPt: Vector3) => {
+      return htmlPt.clone().applyMatrix4(cameraToHtmlMatrixInverse);
     },
     [cameraToHtmlMatrixInverse]
   );

@@ -1,4 +1,4 @@
-import type { DataToWorldProps, Rect2, SvgLineProps } from '@h5web/lib';
+import type { DataToWorldProps, Rect, SvgLineProps } from '@h5web/lib';
 import {
   DefaultInteractions,
   SvgLine,
@@ -6,7 +6,7 @@ import {
   DataToWorld,
 } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react';
-import { Vector2, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -35,7 +35,7 @@ Custom.args = {
 };
 
 export const WithDataToWorld: Story<
-  Omit<SvgLineProps, 'coords'> & DataToWorldProps<Rect2>
+  Omit<SvgLineProps, 'coords'> & DataToWorldProps<Rect>
 > = (args) => {
   const { coords, ...lineProps } = args;
   return (
@@ -53,7 +53,7 @@ export const WithDataToWorld: Story<
 
 WithDataToWorld.storyName = 'With DataToWorld';
 WithDataToWorld.args = {
-  coords: [new Vector2(5, 15), new Vector2(30, 5)],
+  coords: [new Vector3(5, 15), new Vector3(30, 5)],
   strokeWidth: 2,
   stroke: 'orangered',
 };

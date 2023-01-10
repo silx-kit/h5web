@@ -6,7 +6,7 @@ import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import { getWorldFOV } from '../vis/utils';
 import type { SelectionToolProps } from './SelectionTool';
 import SelectionTool from './SelectionTool';
-import type { Rect2, Rect3, Selection } from './models';
+import type { Rect, Selection } from './models';
 
 interface Props extends SelectionToolProps {
   axis: Axis;
@@ -29,7 +29,7 @@ function AxialSelectionTool(props: Props) {
     const [worldStart, worldEnd] = selection.world;
     const { bottomLeft, topRight } = getWorldFOV(camera);
 
-    const axialWorldSelection: Rect3 =
+    const axialWorldSelection: Rect =
       axis === 'x'
         ? [
             new Vector3(worldStart.x, bottomLeft.y, 0),
@@ -42,7 +42,7 @@ function AxialSelectionTool(props: Props) {
 
     return {
       world: axialWorldSelection,
-      data: axialWorldSelection.map(worldToData) as Rect2,
+      data: axialWorldSelection.map(worldToData) as Rect,
     };
   }
 

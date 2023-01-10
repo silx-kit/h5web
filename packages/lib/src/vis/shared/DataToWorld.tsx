@@ -1,15 +1,15 @@
 import type { MappedTuple } from '@h5web/shared';
 import type { ReactNode } from 'react';
-import type { Vector2, Vector3 } from 'three';
+import type { Vector3 } from 'three';
 
 import { useVisCanvasContext } from './VisCanvasProvider';
 
-interface Props<T extends Vector2[]> {
+interface Props<T extends Vector3[]> {
   coords: T;
   children: (...coords: MappedTuple<T, Vector3>) => ReactNode;
 }
 
-function DataToWorld<T extends Vector2[]>(props: Props<T>) {
+function DataToWorld<T extends Vector3[]>(props: Props<T>) {
   const { coords, children } = props;
 
   const { dataToWorld } = useVisCanvasContext();

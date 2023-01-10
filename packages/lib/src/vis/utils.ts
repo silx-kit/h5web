@@ -14,7 +14,7 @@ import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import { clamp } from 'lodash';
-import type { IUniform, Vector2 } from 'three';
+import type { IUniform } from 'three';
 import { Vector3 } from 'three';
 
 import type {
@@ -363,7 +363,7 @@ export function worldToHtml(
 export function htmlToWorld(
   camera: Camera,
   context: VisCanvasContextValue,
-  htmlPt: Vector2
+  htmlPt: Vector3
 ) {
   return context.htmlToCamera(htmlPt).unproject(camera);
 }
@@ -371,8 +371,8 @@ export function htmlToWorld(
 export function dataToHtml(
   camera: Camera,
   context: VisCanvasContextValue,
-  dataPt: Vector2
-): Vector2 {
+  dataPt: Vector3
+): Vector3 {
   const worldPt = context.dataToWorld(dataPt);
   return worldToHtml(camera, context, worldPt);
 }
@@ -380,8 +380,8 @@ export function dataToHtml(
 export function htmlToData(
   camera: Camera,
   context: VisCanvasContextValue,
-  htmlPt: Vector2
-): Vector2 {
+  htmlPt: Vector3
+): Vector3 {
   const worldPt = htmlToWorld(camera, context, htmlPt);
   return context.worldToData(worldPt);
 }

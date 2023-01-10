@@ -1,4 +1,4 @@
-import type { ModifierKey, Rect2, Selection } from '@h5web/lib';
+import type { ModifierKey, Rect, Selection } from '@h5web/lib';
 import { DataToWorld } from '@h5web/lib';
 import { SvgLine, SvgRect } from '@h5web/lib';
 import {
@@ -90,7 +90,7 @@ CustomStyles.argTypes = {
 
 export const PersistedDataSelection: Story<TemplateProps> = (args) => {
   const { selectionModifierKey, panModifierKey } = args;
-  const [persistedDataSelection, setPersistedDataSelection] = useState<Rect2>();
+  const [persistedDataSelection, setPersistedDataSelection] = useState<Rect>();
 
   if (selectionModifierKey === panModifierKey) {
     return (
