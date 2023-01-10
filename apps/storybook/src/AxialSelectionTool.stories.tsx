@@ -1,5 +1,5 @@
 import type { AxialSelectionToolProps, Selection } from '@h5web/lib';
-import { SvgRect } from '@h5web/lib';
+import { getSvgRectCoords, SvgElement } from '@h5web/lib';
 import {
   AxialSelectionTool,
   Pan,
@@ -35,7 +35,15 @@ const Template: Story<AxialSelectionToolProps> = (args) => {
         onSelectionChange={setActiveSelection}
         onSelectionEnd={() => setActiveSelection(undefined)}
       >
-        {(selection) => <SvgRect coords={selection.world} />}
+        {({ html: htmlSelection }) => (
+          <SvgElement>
+            <rect
+              {...getSvgRectCoords(htmlSelection)}
+              fill="teal"
+              fillOpacity={0.5}
+            />
+          </SvgElement>
+        )}
       </AxialSelectionTool>
     </VisCanvas>
   );
