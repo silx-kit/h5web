@@ -19,7 +19,6 @@ import {
   getCombinedDomain,
   getValueToIndexScale,
   toArray,
-  worldToHtml,
 } from './utils';
 
 const useBounds = createMemo(getBounds);
@@ -103,12 +102,13 @@ export function useCssColors(
 export function useHtmlCoords<T extends Vector3[]>(
   ...worldCoords: T
 ): MappedTuple<T, Vector3> {
+  const { worldToHtml } = useVisCanvasContext();
   return useCameraState(
-    (...args) =>
-      worldCoords.map((pt) => worldToHtml(...args, pt)) as MappedTuple<
+    (camera) =>
+      worldCoords.map((pt) => worldToHtml(camera, pt)) as MappedTuple<
         T,
         Vector3
       >,
-    worldCoords // eslint-disable-line react-hooks/exhaustive-deps
+    [...worldCoords, worldToHtml] // eslint-disable-line react-hooks/exhaustive-deps
   );
 }

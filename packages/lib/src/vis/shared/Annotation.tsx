@@ -2,8 +2,8 @@ import type { HTMLAttributes } from 'react';
 import { Vector3 } from 'three';
 
 import { useCameraState } from '../hooks';
-import { dataToHtml } from '../utils';
 import Html from './Html';
+import { useVisCanvasContext } from './VisCanvasProvider';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   x: number;
@@ -31,12 +31,13 @@ function Annotation(props: Props) {
     );
   }
 
+  const { dataToHtml } = useVisCanvasContext();
   const { htmlPt, cameraScale } = useCameraState(
-    (camera, context) => ({
-      htmlPt: dataToHtml(camera, context, new Vector3(x, y)),
+    (camera) => ({
+      htmlPt: dataToHtml(camera, new Vector3(x, y)),
       cameraScale: camera.scale.clone(),
     }),
-    [x, y]
+    [x, y, dataToHtml]
   );
 
   const transforms = [
