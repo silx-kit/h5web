@@ -57,7 +57,6 @@ export { default as SelectToZoom } from './interactions/SelectToZoom';
 export { default as AxialSelectToZoom } from './interactions/AxialSelectToZoom';
 export { default as SelectionTool } from './interactions/SelectionTool';
 export { default as AxialSelectionTool } from './interactions/AxialSelectionTool';
-export { default as SvgElement } from './interactions/SvgElement';
 export type { PanProps } from './interactions/Pan';
 export type { ZoomProps } from './interactions/Zoom';
 export type { XAxisZoomProps } from './interactions/XAxisZoom';
@@ -67,7 +66,14 @@ export type { SelectToZoomProps } from './interactions/SelectToZoom';
 export type { AxialSelectionToolProps } from './interactions/AxialSelectionTool';
 export type { AxialSelectToZoomProps } from './interactions/AxialSelectToZoom';
 export type { DefaultInteractionsConfig } from './interactions/DefaultInteractions';
-export type { SvgElementProps } from './interactions/SvgElement';
+
+// SVG
+export { default as SvgElement } from './interactions/svg/SvgElement';
+export { default as SvgLine } from './interactions/svg/SvgLine';
+export { default as SvgRect } from './interactions/svg/SvgRect';
+export type { SvgElementProps } from './interactions/svg/SvgElement';
+export type { SvgLineProps } from './interactions/svg/SvgLine';
+export type { SvgRectProps } from './interactions/svg/SvgRect';
 
 // Context
 export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';
@@ -106,7 +112,6 @@ export {
 export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
 
 export { scaleGamma } from './vis/scaleGamma';
-export { getSvgRectCoords, getSvgLineCoords } from './interactions/utils';
 export { useCanvasEvents } from './interactions/hooks';
 export { default as Box } from './interactions/box';
 

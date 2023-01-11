@@ -5,8 +5,8 @@ import type {
   SelectionToolProps,
 } from '@h5web/lib';
 import { Box } from '@h5web/lib';
-import { getSvgLineCoords } from '@h5web/lib';
-import { getSvgRectCoords } from '@h5web/lib';
+import { SvgLine } from '@h5web/lib';
+import { SvgRect } from '@h5web/lib';
 import { SvgElement } from '@h5web/lib';
 import { DataToHtml } from '@h5web/lib';
 import {
@@ -62,12 +62,13 @@ const Template: Story<TemplateProps> = (args) => {
       >
         {({ html: htmlSelection }, _, isValid) => (
           <SvgElement>
-            <rect
-              {...getSvgRectCoords(htmlSelection)}
-              stroke={isValid ? 'teal' : 'orangered'}
-              strokeWidth={2}
+            <SvgRect
+              coords={htmlSelection}
               fill={isValid ? 'teal' : 'orangered'}
               fillOpacity={0.5}
+              stroke={isValid ? 'teal' : 'orangered'}
+              strokeWidth={2}
+              strokePosition="inside"
             />
           </SvgElement>
         )}
@@ -109,8 +110,8 @@ export const PersistedDataSelection: Story = () => {
       >
         {({ html: htmlSelection }, _, isValid) => (
           <SvgElement>
-            <rect
-              {...getSvgRectCoords(htmlSelection)}
+            <SvgRect
+              coords={htmlSelection}
               fill={isValid ? 'teal' : 'orangered'}
               fillOpacity="0.3"
             />
@@ -122,11 +123,7 @@ export const PersistedDataSelection: Story = () => {
         <DataToHtml points={persistedDataSelection}>
           {(...htmlSelection) => (
             <SvgElement>
-              <rect
-                {...getSvgRectCoords(htmlSelection)}
-                fill="teal"
-                fillOpacity="0.6"
-              />
+              <SvgRect coords={htmlSelection} fill="teal" fillOpacity="0.6" />
             </SvgElement>
           )}
         </DataToHtml>
@@ -168,8 +165,8 @@ export const LineWithLengthValidation: Story<TemplateProps> = () => {
       >
         {({ html: htmlSelection }, _, isValid) => (
           <SvgElement>
-            <line
-              {...getSvgLineCoords(htmlSelection)}
+            <SvgLine
+              coords={htmlSelection}
               stroke={isValid ? 'teal' : 'orangered'}
               strokeWidth={3}
               strokeLinecap="round"

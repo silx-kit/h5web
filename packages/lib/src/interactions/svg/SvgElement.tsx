@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-import Html from '../vis/shared/Html';
-import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
+import Html from '../../vis/shared/Html';
+import { useVisCanvasContext } from '../../vis/shared/VisCanvasProvider';
 
 interface Props {
   children?: ReactNode;

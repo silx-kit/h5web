@@ -2,12 +2,13 @@ import { useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
+import styles from './SelectToZoom.module.css';
 import SelectionTool from './SelectionTool';
-import SvgElement from './SvgElement';
 import Box from './box';
 import { useZoomOnSelection } from './hooks';
 import type { CommonInteractionProps, Rect, Selection } from './models';
-import { getSvgRectCoords } from './utils';
+import SvgElement from './svg/SvgElement';
+import SvgRect from './svg/SvgRect';
 
 const MIN_SIZE = 20;
 
@@ -60,21 +61,18 @@ function SelectToZoom(props: Props) {
     >
       {({ html: htmlSelection }, { html: rawHtmlSelection }, isValid) => (
         <SvgElement>
-          <rect
-            {...getSvgRectCoords(rawHtmlSelection)}
-            fill="white"
-            fillOpacity={keepRatio || !isValid ? 0 : 0.25}
-            stroke="black"
-            strokeDasharray={keepRatio || !isValid ? 4 : undefined}
-            style={{ transition: 'fill-opacity 0.2s' }}
+          <SvgRect
+            className={styles.rawSelection}
+            coords={rawHtmlSelection}
+            strokePosition="inside"
+            data-valid={(!keepRatio && isValid) || undefined}
           />
           {keepRatio && (
-            <rect
-              {...getSvgRectCoords(htmlSelection)}
-              fill="white"
-              fillOpacity={isValid ? 0.25 : 0}
-              stroke="black"
-              style={{ transition: 'fill-opacity 0.2s' }}
+            <SvgRect
+              className={styles.selection}
+              coords={htmlSelection}
+              strokePosition="inside"
+              data-valid={isValid || undefined}
             />
           )}
         </SvgElement>
