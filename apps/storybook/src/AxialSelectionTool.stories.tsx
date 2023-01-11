@@ -1,4 +1,5 @@
 import type { AxialSelectionToolProps, Selection } from '@h5web/lib';
+import { Box } from '@h5web/lib';
 import { getSvgRectCoords, SvgElement } from '@h5web/lib';
 import {
   AxialSelectionTool,
@@ -31,15 +32,15 @@ const Template: Story<AxialSelectionToolProps> = (args) => {
       <ResetZoomButton />
 
       <AxialSelectionTool
-        {...args}
         onSelectionChange={setActiveSelection}
         onSelectionEnd={() => setActiveSelection(undefined)}
+        {...args}
       >
-        {({ html: htmlSelection }) => (
+        {({ html: htmlSelection }, _, isValid) => (
           <SvgElement>
             <rect
               {...getSvgRectCoords(htmlSelection)}
-              fill="teal"
+              fill={isValid ? 'teal' : 'orangered'}
               fillOpacity={0.5}
             />
           </SvgElement>
@@ -60,6 +61,11 @@ Disabled.args = { disabled: true };
 
 export const WithModifierKey = Template.bind({});
 WithModifierKey.args = { modifierKey: 'Control' };
+
+export const WithValidation = Template.bind({});
+WithValidation.args = {
+  validate: ({ html }) => Box.fromPoints(...html).hasMinSize(200),
+};
 
 export default {
   title: 'Building Blocks/AxialSelectionTool',

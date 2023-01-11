@@ -5,8 +5,10 @@ import AxialSelectionTool from './AxialSelectionTool';
 import SvgElement from './SvgElement';
 import Box from './box';
 import { useZoomOnSelection } from './hooks';
-import type { Selection, CommonInteractionProps } from './models';
+import type { CommonInteractionProps } from './models';
 import { getSvgRectCoords } from './utils';
+
+const MIN_SIZE = 20;
 
 interface Props extends CommonInteractionProps {
   axis: Axis;
@@ -18,28 +20,24 @@ function AxialSelectToZoom(props: Props) {
   const { visRatio } = useVisCanvasContext();
   const zoomOnSelection = useZoomOnSelection();
 
-  function onSelectionEnd(selection: Selection) {
-    const { size } = Box.fromPoints(...selection.html);
-    if (size.width > 0 && size.height > 0) {
-      zoomOnSelection(selection);
-    }
-  }
-
   return (
     <AxialSelectionTool
       axis={axis}
       id={`${axis.toUpperCase()}SelectToZoom`}
       modifierKey={modifierKey}
       disabled={visRatio !== undefined || disabled}
-      onSelectionEnd={onSelectionEnd}
+      validate={({ html }) => Box.fromPoints(...html).hasMinSize(MIN_SIZE)}
+      onValidSelection={zoomOnSelection}
     >
-      {({ html: htmlSelection }) => (
+      {({ html: htmlSelection }, _, isValid) => (
         <SvgElement>
           <rect
             {...getSvgRectCoords(htmlSelection)}
             fill="white"
+            fillOpacity={isValid ? 0.25 : 0}
             stroke="black"
-            fillOpacity={0.25}
+            strokeDasharray={isValid ? undefined : 4}
+            style={{ transition: 'fill-opacity 0.2s' }}
           />
         </SvgElement>
       )}
