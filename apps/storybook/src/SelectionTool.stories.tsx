@@ -1,6 +1,8 @@
 import type { ModifierKey, Rect, Selection } from '@h5web/lib';
-import { DataToWorld } from '@h5web/lib';
-import { SvgLine, SvgRect } from '@h5web/lib';
+import { getSvgLineCoords } from '@h5web/lib';
+import { getSvgRectCoords } from '@h5web/lib';
+import { SvgElement } from '@h5web/lib';
+import { DataToHtml } from '@h5web/lib';
 import {
   Pan,
   SelectionTool,
@@ -19,13 +21,10 @@ interface TemplateProps {
   selectionType: 'line' | 'rectangle';
   selectionModifierKey?: ModifierKey;
   panModifierKey?: ModifierKey;
-  fill?: string;
-  stroke?: string;
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { selectionType, selectionModifierKey, panModifierKey, ...svgProps } =
-    args;
+  const { selectionType, selectionModifierKey, panModifierKey } = args;
 
   const [activeSelection, setActiveSelection] = useThrottledState<
     Selection | undefined
@@ -55,13 +54,27 @@ const Template: Story<TemplateProps> = (args) => {
         onSelectionEnd={() => setActiveSelection(undefined)}
         modifierKey={selectionModifierKey}
       >
-        {({ world }) =>
-          selectionType === 'rectangle' ? (
-            <SvgRect coords={world} {...svgProps} />
-          ) : (
-            <SvgLine coords={world} {...svgProps} strokeWidth={2} />
-          )
-        }
+        {({ html: htmlSelection }) => (
+          <SvgElement>
+            {selectionType === 'rectangle' ? (
+              <rect
+                {...getSvgRectCoords(htmlSelection)}
+                stroke="teal"
+                strokeWidth={2}
+                fill="teal"
+                fillOpacity={0.5}
+              />
+            ) : (
+              <line
+                {...getSvgLineCoords(htmlSelection)}
+                stroke="teal"
+                strokeWidth={3}
+                strokeDasharray="10"
+                strokeLinecap="round"
+              />
+            )}
+          </SvgElement>
+        )}
       </SelectionTool>
     </VisCanvas>
   );
@@ -76,16 +89,6 @@ export const WithModifierKey = Template.bind({});
 WithModifierKey.args = {
   selectionModifierKey: 'Control',
   panModifierKey: undefined,
-};
-
-export const CustomStyles = Template.bind({});
-CustomStyles.args = {
-  fill: 'darkturquoise',
-  stroke: 'blue',
-};
-CustomStyles.argTypes = {
-  fill: { control: { type: 'color' } },
-  stroke: { control: { type: 'color' } },
 };
 
 export const PersistedDataSelection: Story<TemplateProps> = (args) => {
@@ -118,17 +121,29 @@ export const PersistedDataSelection: Story<TemplateProps> = (args) => {
           setPersistedDataSelection(selection.data)
         }
       >
-        {(selection) => (
-          <SvgRect coords={selection.world} fill="teal" fillOpacity="0.3" />
+        {({ html: htmlSelection }) => (
+          <SvgElement>
+            <rect
+              {...getSvgRectCoords(htmlSelection)}
+              fill="teal"
+              fillOpacity="0.3"
+            />
+          </SvgElement>
         )}
       </SelectionTool>
 
       {persistedDataSelection && (
-        <DataToWorld coords={persistedDataSelection}>
-          {(...worldCoords) => (
-            <SvgRect coords={worldCoords} fill="teal" fillOpacity="0.6" />
+        <DataToHtml points={persistedDataSelection}>
+          {(...htmlSelection) => (
+            <SvgElement>
+              <rect
+                {...getSvgRectCoords(htmlSelection)}
+                fill="teal"
+                fillOpacity="0.6"
+              />
+            </SvgElement>
           )}
-        </DataToWorld>
+        </DataToHtml>
       )}
     </VisCanvas>
   );
@@ -136,8 +151,6 @@ export const PersistedDataSelection: Story<TemplateProps> = (args) => {
 
 PersistedDataSelection.argTypes = {
   selectionType: { control: false },
-  fill: { control: false },
-  stroke: { control: false },
 };
 
 export default {

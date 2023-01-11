@@ -35,10 +35,10 @@ export { default as TooltipMesh } from './vis/shared/TooltipMesh';
 export { default as Html } from './vis/shared/Html';
 export { default as Overlay } from './vis/shared/Overlay';
 export { default as Annotation } from './vis/shared/Annotation';
-export { default as DataToWorld } from './vis/shared/DataToWorld';
+export { default as DataToHtml } from './vis/shared/DataToHtml';
 export type { VisCanvasProps } from './vis/shared/VisCanvas';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
-export type { DataToWorldProps } from './vis/shared/DataToWorld';
+export type { DataToHtmlProps } from './vis/shared/DataToHtml';
 
 export { default as DataCurve } from './vis/line/DataCurve';
 export { default as ColorBar } from './vis/heatmap/ColorBar';
@@ -57,6 +57,7 @@ export { default as SelectToZoom } from './interactions/SelectToZoom';
 export { default as AxialSelectToZoom } from './interactions/AxialSelectToZoom';
 export { default as SelectionTool } from './interactions/SelectionTool';
 export { default as AxialSelectionTool } from './interactions/AxialSelectionTool';
+export { default as SvgElement } from './interactions/SvgElement';
 export type { PanProps } from './interactions/Pan';
 export type { ZoomProps } from './interactions/Zoom';
 export type { XAxisZoomProps } from './interactions/XAxisZoom';
@@ -66,14 +67,7 @@ export type { SelectToZoomProps } from './interactions/SelectToZoom';
 export type { AxialSelectionToolProps } from './interactions/AxialSelectionTool';
 export type { AxialSelectToZoomProps } from './interactions/AxialSelectToZoom';
 export type { DefaultInteractionsConfig } from './interactions/DefaultInteractions';
-
-// SVG
-export { default as SvgElement } from './svg/SvgElement';
-export { default as SvgLine } from './svg/SvgLine';
-export { default as SvgRect } from './svg/SvgRect';
-export type { SvgElementProps } from './svg/SvgElement';
-export type { SvgLineProps } from './svg/SvgLine';
-export type { SvgRectProps } from './svg/SvgRect';
+export type { SvgElementProps } from './interactions/SvgElement';
 
 // Context
 export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';
@@ -112,6 +106,7 @@ export {
 export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
 
 export { scaleGamma } from './vis/scaleGamma';
+export { getSvgRectCoords, getSvgLineCoords } from './interactions/utils';
 export { useCanvasEvents } from './interactions/hooks';
 export { default as Box } from './interactions/box';
 
