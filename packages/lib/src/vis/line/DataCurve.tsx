@@ -5,10 +5,14 @@ import type {
   Object3DNode,
   ThreeEvent,
 } from '@react-three/fiber';
-import { useCallback, useLayoutEffect, useState } from 'react';
-import { BufferGeometry, Color, Line, Vector2, Vector3 } from 'three';
-import { Line2, LineGeometry, LineMaterial } from 'three-stdlib';
-import type { LineMaterialParameters } from 'three-stdlib';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { BufferGeometry, Color, Line, Vector2, type Vector3 } from 'three';
+import {
+  Line2,
+  LineGeometry,
+  LineMaterial,
+  type LineMaterialParameters,
+} from 'three-stdlib';
 
 import ErrorBars from './ErrorBars';
 import GlyphMaterial from './GlyphMaterial';
@@ -74,25 +78,32 @@ function DataCurve(props: Props) {
     onDataPointLeave,
   } = props;
 
+  const showLine = visible && curveType !== CurveType.GlyphsOnly;
+  const showGlyphs = visible && curveType !== CurveType.LineOnly;
+
   const size = useThree((state) => state.size);
   const invalidate = useThree((state) => state.invalidate);
   const points = useCanvasPoints(abscissas, ordinates, errors);
   const bufferGeometry = useState(() => new BufferGeometry())[0];
   const lineGeometry = useState(() => new LineGeometry())[0];
-  if (lineWidth === 1) {
-    bufferGeometry.setFromPoints(points.data);
-    useLayoutEffect(() => {
-      bufferGeometry.setFromPoints(points.data);
-      invalidate();
-    }, [bufferGeometry, invalidate, points.data]);
-  } else {
-    const flatData = flattenCoordinates(points.data);
-    lineGeometry.setPositions(flatData);
-    useLayoutEffect(() => {
-      lineGeometry.setPositions(flatData);
-      invalidate();
-    }, [lineGeometry, invalidate, points.data]);
+
+  function getFlatData(): number[] {
+    return lineWidth === 1 ? [] : flattenCoordinates(points.data);
   }
+  const flatData = useMemo(getFlatData, [lineWidth, points.data]);
+  if (lineWidth === 1 || showGlyphs) {
+    bufferGeometry.setFromPoints(points.data);
+  } else {
+    lineGeometry.setPositions(flatData);
+  }
+  useLayoutEffect(() => {
+    bufferGeometry.setFromPoints(points.data);
+    invalidate();
+  }, [bufferGeometry, invalidate, points.data]);
+  useLayoutEffect(() => {
+    lineGeometry.setPositions(flatData);
+    invalidate();
+  }, [lineGeometry, invalidate, flatData]);
 
   const handleClick = useCallback(
     (evt: ThreeEvent<MouseEvent>) => {
@@ -126,9 +137,6 @@ function DataCurve(props: Props) {
     },
     [onDataPointLeave]
   );
-
-  const showLine = visible && curveType !== CurveType.GlyphsOnly;
-  const showGlyphs = visible && curveType !== CurveType.LineOnly;
 
   return (
     <>
