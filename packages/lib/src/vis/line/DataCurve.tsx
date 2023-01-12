@@ -101,7 +101,9 @@ function DataCurve(props: Props) {
     invalidate();
   }, [bufferGeometry, invalidate, points.data]);
   useLayoutEffect(() => {
-    lineGeometry.setPositions(flatData);
+    if (flatData.length >= 3) {
+      lineGeometry.setPositions(flatData);
+    }
     invalidate();
   }, [lineGeometry, invalidate, flatData]);
 
