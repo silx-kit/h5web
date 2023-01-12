@@ -45,6 +45,11 @@ DashedLine.args = {
   gapSize: 5,
 };
 
+export const LineWidth = Template.bind({});
+LineWidth.args = {
+  lineWidth: 2,
+};
+
 export const Glyphs = Template.bind({});
 Glyphs.args = {
   curveType: CurveType.GlyphsOnly,
@@ -138,6 +143,7 @@ export default {
   args: {
     abscissas: range(0, mockValues.oneD.length),
     ordinates: mockValues.oneD,
+    errors: mockValues.oneD_errors,
     curveType: CurveType.LineOnly,
     color: 'blue',
     visible: true,

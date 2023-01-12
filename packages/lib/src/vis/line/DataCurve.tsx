@@ -1,15 +1,21 @@
 import type { NumArray } from '@h5web/shared';
 import { extend, useThree } from '@react-three/fiber';
-import type { Object3DNode, ThreeEvent } from '@react-three/fiber';
+import type {
+  MaterialNode,
+  Object3DNode,
+  ThreeEvent,
+} from '@react-three/fiber';
 import { useCallback, useLayoutEffect, useState } from 'react';
-import { BufferGeometry, Line, } from 'three';
+import { BufferGeometry, Color, Line, Vector2, Vector3 } from 'three';
+import { Line2, LineGeometry, LineMaterial } from 'three-stdlib';
+import type { LineMaterialParameters } from 'three-stdlib';
 
 import ErrorBars from './ErrorBars';
 import GlyphMaterial from './GlyphMaterial';
 import { useCanvasPoints } from './hooks';
 import { CurveType, GlyphType } from './models';
 
-extend({ Line_: Line });
+extend({ Line_: Line, Line2_: Line2, LineMaterial });
 
 // https://github.com/pmndrs/react-three-fiber/issues/1152
 declare global {
@@ -17,6 +23,8 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       line_: Object3DNode<Line, typeof Line>;
+      line2_: Object3DNode<Line2, typeof Line2>;
+      lineMaterial: MaterialNode<LineMaterial, LineMaterialParameters>;
     }
   }
 }
@@ -27,7 +35,7 @@ interface Props {
   errors?: NumArray;
   showErrors?: boolean;
   color: string;
-  linewidth?: number;
+  lineWidth?: number;
   dashSize?: number;
   gapSize?: number;
   curveType?: CurveType;
@@ -39,6 +47,14 @@ interface Props {
   onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
 }
 
+function flattenCoordinates(points: Vector3[]): number[] {
+  const coords: number[] = [];
+  points.forEach((p) => {
+    coords.push(p.x, p.y, p.z);
+  });
+  return coords;
+}
+
 function DataCurve(props: Props) {
   const {
     abscissas,
@@ -46,7 +62,7 @@ function DataCurve(props: Props) {
     errors,
     showErrors,
     color,
-    linewidth = 1,
+    lineWidth = 1,
     dashSize = 3,
     gapSize = 0,
     curveType = CurveType.LineOnly,
@@ -58,16 +74,25 @@ function DataCurve(props: Props) {
     onDataPointLeave,
   } = props;
 
-  const points = useCanvasPoints(abscissas, ordinates, errors);
-  const [dataGeometry] = useState(() => new BufferGeometry());
-  dataGeometry.setFromPoints(points.data);
+  const size = useThree((state) => state.size);
   const invalidate = useThree((state) => state.invalidate);
-
-  useLayoutEffect(() => {
-    dataGeometry.setFromPoints(points.data);
-    dataGeometry.computeBoundingSphere();
-    invalidate();
-  }, [dataGeometry, invalidate, points.data]);
+  const points = useCanvasPoints(abscissas, ordinates, errors);
+  const bufferGeometry = useState(() => new BufferGeometry())[0];
+  const lineGeometry = useState(() => new LineGeometry())[0];
+  if (lineWidth === 1) {
+    bufferGeometry.setFromPoints(points.data);
+    useLayoutEffect(() => {
+      bufferGeometry.setFromPoints(points.data);
+      invalidate();
+    }, [bufferGeometry, invalidate, points.data]);
+  } else {
+    const flatData = flattenCoordinates(points.data);
+    lineGeometry.setPositions(flatData);
+    useLayoutEffect(() => {
+      lineGeometry.setPositions(flatData);
+      invalidate();
+    }, [lineGeometry, invalidate, points.data]);
+  }
 
   const handleClick = useCallback(
     (evt: ThreeEvent<MouseEvent>) => {
@@ -107,21 +132,41 @@ function DataCurve(props: Props) {
 
   return (
     <>
-      <line_
-        visible={showLine}
-        onUpdate={(line_) => line_.computeLineDistances()}
-        geometry={dataGeometry}
-      >
-        <lineDashedMaterial
-          color={color}
-          linewidth={linewidth}
-          dashSize={dashSize}
-          gapSize={gapSize}
-        />
-      </line_>
+      {lineWidth === 1 ? (
+        <line_
+          visible={showLine}
+          onUpdate={(line_) => line_.computeLineDistances()}
+          geometry={bufferGeometry}
+        >
+          {gapSize === 0 ? (
+            <lineBasicMaterial color={color} />
+          ) : (
+            <lineDashedMaterial
+              color={color}
+              dashSize={dashSize}
+              gapSize={gapSize}
+            />
+          )}
+        </line_>
+      ) : (
+        <line2_
+          visible={showLine}
+          onUpdate={(line_) => line_.computeLineDistances()}
+          geometry={lineGeometry}
+        >
+          <lineMaterial
+            color={new Color(color).getHex()}
+            dashed={gapSize > 0}
+            linewidth={lineWidth}
+            dashSize={dashSize}
+            gapSize={gapSize}
+            resolution={new Vector2(size.width, size.height)}
+          />
+        </line2_>
+      )}
       <points
         visible={showGlyphs}
-        geometry={dataGeometry}
+        geometry={bufferGeometry}
         onClick={onDataPointClick && handleClick}
         onPointerEnter={onDataPointEnter && handlePointerEnter}
         onPointerLeave={onDataPointLeave && handlePointerLeave}
