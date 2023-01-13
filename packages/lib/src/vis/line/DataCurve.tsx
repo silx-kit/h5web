@@ -10,6 +10,7 @@ import { BufferGeometry, Color, Line, Vector2, type Vector3 } from 'three';
 import {
   Line2,
   LineGeometry,
+  LineSegmentsGeometry,
   LineMaterial,
   type LineMaterialParameters,
 } from 'three-stdlib';
@@ -51,11 +52,21 @@ interface Props {
   onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
 }
 
-function flattenCoordinates(points: Vector3[]): number[] {
-  const coords: number[] = [];
-  points.forEach((p) => {
-    coords.push(p.x, p.y, p.z);
-  });
+function flattenToSegmentsCoords(points: Vector3[]): Float32Array {
+  const length = points.length - 1;
+  const coords = new Float32Array(6 * length);
+
+  let va = points[0];
+  for (let i = 0, j = 0; i < length; i++) {
+    coords[j++] = va.x;
+    coords[j++] = va.y;
+    coords[j++] = va.z;
+    const vb = points[i + 1];
+    coords[j++] = vb.x;
+    coords[j++] = vb.y;
+    coords[j++] = vb.z;
+    va = vb;
+  }
   return coords;
 }
 
@@ -86,26 +97,31 @@ function DataCurve(props: Props) {
   const points = useCanvasPoints(abscissas, ordinates, errors);
   const bufferGeometry = useState(() => new BufferGeometry())[0];
   const lineGeometry = useState(() => new LineGeometry())[0];
+  const segmentsSetPositions =
+    LineSegmentsGeometry.prototype.setPositions.bind(lineGeometry);
 
-  function getFlatData(): number[] {
-    return lineWidth === 1 ? [] : flattenCoordinates(points.data);
+  function getFlatData(): Float32Array {
+    return lineWidth === 1
+      ? new Float32Array(0)
+      : flattenToSegmentsCoords(points.data);
   }
   const flatData = useMemo(getFlatData, [lineWidth, points.data]);
   if (lineWidth === 1 || showGlyphs) {
     bufferGeometry.setFromPoints(points.data);
-  } else {
-    lineGeometry.setPositions(flatData);
+  }
+  if (lineWidth !== 1) {
+    segmentsSetPositions(flatData);
   }
   useLayoutEffect(() => {
     bufferGeometry.setFromPoints(points.data);
     invalidate();
   }, [bufferGeometry, invalidate, points.data]);
   useLayoutEffect(() => {
-    if (flatData.length >= 3) {
-      lineGeometry.setPositions(flatData);
+    if (flatData.length > 0) {
+      segmentsSetPositions(flatData);
     }
     invalidate();
-  }, [lineGeometry, invalidate, flatData]);
+  }, [lineGeometry, invalidate, flatData, segmentsSetPositions]);
 
   const handleClick = useCallback(
     (evt: ThreeEvent<MouseEvent>) => {
