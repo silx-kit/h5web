@@ -1,8 +1,8 @@
 import type { Axis } from '@h5web/shared';
-import { useThree } from '@react-three/fiber';
+import type { Camera } from 'three';
 import { Vector3 } from 'three';
 
-import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
+import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
 import type { SelectionToolProps } from './SelectionTool';
 import SelectionTool from './SelectionTool';
 import type { Rect, Selection } from './models';
@@ -21,11 +21,14 @@ function AxialSelectionTool(props: Props) {
     ...restOfSelectionProps
   } = props;
 
-  const { canvasSize, htmlToWorld, worldToData } = useVisCanvasContext();
-  const { width, height } = canvasSize;
-  const camera = useThree((state) => state.camera);
+  function toAxialSelection(
+    selection: Selection,
+    camera: Camera,
+    context: VisCanvasContextValue
+  ): Selection {
+    const { canvasSize, htmlToWorld, worldToData } = context;
+    const { width, height } = canvasSize;
 
-  function toAxialSelection(selection: Selection): Selection {
     const [htmlStart, htmlEnd] = selection.html;
 
     const html: Rect =

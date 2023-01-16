@@ -182,6 +182,49 @@ LineWithLengthValidation.parameters = {
   controls: { disable: true },
 };
 
+export const RectWithTransform: Story<TemplateProps> = () => {
+  return (
+    <VisCanvas
+      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      <Pan modifierKey="Control" />
+      <Zoom />
+      <ResetZoomButton />
+
+      <SelectionTool
+        transform={({ html: htmlSelection }, camera, context) => {
+          const { htmlToWorld, worldToData } = context;
+
+          const box = Box.fromPoints(...htmlSelection);
+          box.expandBySize(-box.size.width / 2, 1); // shrink width of selection by two (equally on both side)
+
+          const html = box.toRect();
+          const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
+          const data = world.map(worldToData) as Rect;
+          return { html, world, data };
+        }}
+      >
+        {({ html: htmlSelection }, { html: rawSelection }) => (
+          <SvgElement>
+            <SvgRect
+              coords={rawSelection}
+              fill="none"
+              stroke="black"
+              strokeDasharray={4}
+            />
+            <SvgRect coords={htmlSelection} fill="teal" fillOpacity={0.8} />
+          </SvgElement>
+        )}
+      </SelectionTool>
+    </VisCanvas>
+  );
+};
+
+RectWithTransform.parameters = {
+  controls: { disable: true },
+};
+
 export default {
   title: 'Building Blocks/SelectionTool',
   decorators: [FillHeight],
