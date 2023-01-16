@@ -41,7 +41,7 @@ function AxialSelectionTool(props: Props) {
 
   return (
     <SelectionTool
-      transformSelection={toAxialSelection}
+      transform={toAxialSelection}
       onSelectionStart={onSelectionStart}
       onSelectionChange={onSelectionChange}
       onSelectionEnd={onSelectionEnd}

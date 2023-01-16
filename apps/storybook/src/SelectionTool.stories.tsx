@@ -1,4 +1,10 @@
-import type { ModifierKey, Rect, Selection } from '@h5web/lib';
+import type {
+  ModifierKey,
+  Rect,
+  Selection,
+  SelectionToolProps,
+} from '@h5web/lib';
+import { Box } from '@h5web/lib';
 import { getSvgLineCoords } from '@h5web/lib';
 import { getSvgRectCoords } from '@h5web/lib';
 import { SvgElement } from '@h5web/lib';
@@ -17,14 +23,13 @@ import { useState } from 'react';
 import FillHeight from './decorators/FillHeight';
 import { getTitleForSelection } from './utils';
 
-interface TemplateProps {
-  selectionType: 'line' | 'rectangle';
+interface TemplateProps extends SelectionToolProps {
   selectionModifierKey?: ModifierKey;
   panModifierKey?: ModifierKey;
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { selectionType, selectionModifierKey, panModifierKey } = args;
+  const { selectionModifierKey, panModifierKey, ...toolProps } = args;
 
   const [activeSelection, setActiveSelection] = useThrottledState<
     Selection | undefined
@@ -50,29 +55,20 @@ const Template: Story<TemplateProps> = (args) => {
       <ResetZoomButton />
 
       <SelectionTool
+        modifierKey={selectionModifierKey}
         onSelectionChange={setActiveSelection}
         onSelectionEnd={() => setActiveSelection(undefined)}
-        modifierKey={selectionModifierKey}
+        {...toolProps}
       >
-        {({ html: htmlSelection }) => (
+        {({ html: htmlSelection }, _, isValid) => (
           <SvgElement>
-            {selectionType === 'rectangle' ? (
-              <rect
-                {...getSvgRectCoords(htmlSelection)}
-                stroke="teal"
-                strokeWidth={2}
-                fill="teal"
-                fillOpacity={0.5}
-              />
-            ) : (
-              <line
-                {...getSvgLineCoords(htmlSelection)}
-                stroke="teal"
-                strokeWidth={3}
-                strokeDasharray="10"
-                strokeLinecap="round"
-              />
-            )}
+            <rect
+              {...getSvgRectCoords(htmlSelection)}
+              stroke={isValid ? 'teal' : 'orangered'}
+              strokeWidth={2}
+              fill={isValid ? 'teal' : 'orangered'}
+              fillOpacity={0.5}
+            />
           </SvgElement>
         )}
       </SelectionTool>
@@ -82,27 +78,19 @@ const Template: Story<TemplateProps> = (args) => {
 
 export const Rectangle = Template.bind({});
 
-export const Line = Template.bind({});
-Line.args = { selectionType: 'line' };
-
 export const WithModifierKey = Template.bind({});
 WithModifierKey.args = {
   selectionModifierKey: 'Control',
   panModifierKey: undefined,
 };
 
-export const PersistedDataSelection: Story<TemplateProps> = (args) => {
-  const { selectionModifierKey, panModifierKey } = args;
-  const [persistedDataSelection, setPersistedDataSelection] = useState<Rect>();
+export const WithValidation = Template.bind({});
+WithValidation.args = {
+  validate: ({ html }) => Box.fromPoints(...html).hasMinSize(100),
+};
 
-  if (selectionModifierKey === panModifierKey) {
-    return (
-      <p style={{ margin: '1rem', color: 'darkred' }}>
-        Pan and selection modifier keys cannot both be{' '}
-        <code>{panModifierKey || 'undefined'}</code>
-      </p>
-    );
-  }
+export const PersistedDataSelection: Story = () => {
+  const [persistedDataSelection, setPersistedDataSelection] = useState<Rect>();
 
   return (
     <VisCanvas
@@ -110,22 +98,20 @@ export const PersistedDataSelection: Story<TemplateProps> = (args) => {
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
     >
-      <Pan modifierKey={panModifierKey} />
+      <Pan modifierKey="Control" />
       <Zoom />
       <ResetZoomButton />
 
       <SelectionTool
-        modifierKey={selectionModifierKey}
+        validate={({ html }) => Box.fromPoints(...html).hasMinSize(50)}
         onSelectionStart={() => setPersistedDataSelection(undefined)}
-        onSelectionEnd={(selection) =>
-          setPersistedDataSelection(selection.data)
-        }
+        onValidSelection={({ data }) => setPersistedDataSelection(data)}
       >
-        {({ html: htmlSelection }) => (
+        {({ html: htmlSelection }, _, isValid) => (
           <SvgElement>
             <rect
               {...getSvgRectCoords(htmlSelection)}
-              fill="teal"
+              fill={isValid ? 'teal' : 'orangered'}
               fillOpacity="0.3"
             />
           </SvgElement>
@@ -149,8 +135,54 @@ export const PersistedDataSelection: Story<TemplateProps> = (args) => {
   );
 };
 
-PersistedDataSelection.argTypes = {
-  selectionType: { control: false },
+PersistedDataSelection.parameters = {
+  controls: { disable: true },
+};
+
+export const LineWithLengthValidation: Story<TemplateProps> = () => {
+  const [isValid, setValid] = useThrottledState<boolean | undefined>(
+    undefined,
+    50
+  );
+
+  return (
+    <VisCanvas
+      title={
+        isValid === undefined
+          ? 'No selection'
+          : `Line is ${isValid ? 'longer' : 'shorter'} than 100px`
+      }
+      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      <Pan modifierKey="Control" />
+      <Zoom />
+      <ResetZoomButton />
+
+      <SelectionTool
+        validate={({ html: [start, end] }) => start.distanceTo(end) >= 100}
+        onSelectionChange={(selection, _, isValid) =>
+          setValid(selection && isValid)
+        }
+        onSelectionEnd={() => setValid(undefined)}
+      >
+        {({ html: htmlSelection }, _, isValid) => (
+          <SvgElement>
+            <line
+              {...getSvgLineCoords(htmlSelection)}
+              stroke={isValid ? 'teal' : 'orangered'}
+              strokeWidth={3}
+              strokeLinecap="round"
+            />
+          </SvgElement>
+        )}
+      </SelectionTool>
+    </VisCanvas>
+  );
+};
+
+LineWithLengthValidation.parameters = {
+  controls: { disable: true },
 };
 
 export default {
@@ -158,15 +190,10 @@ export default {
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
   args: {
-    selectionType: 'rectangle',
     selectionModifierKey: undefined,
     panModifierKey: 'Control',
   },
   argTypes: {
-    selectionType: {
-      control: { type: 'inline-radio' },
-      options: ['line', 'rectangle'],
-    },
     selectionModifierKey: {
       control: { type: 'inline-radio' },
       options: ['Alt', 'Control', 'Shift', undefined],

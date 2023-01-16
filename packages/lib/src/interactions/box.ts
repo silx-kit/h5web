@@ -50,6 +50,11 @@ class Box extends Box3 {
     return this.expandBySize(0, width / ratio - height); // increase height
   }
 
+  public hasMinSize(minWidth: number, minHeight = minWidth): boolean {
+    const { width, height } = this.size;
+    return width >= minWidth && height >= minHeight;
+  }
+
   public keepWithin(area: Box): this {
     const { center, size } = this;
     const { width: areaWidth, height: areaHeight } = area.size;

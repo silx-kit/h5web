@@ -9,6 +9,8 @@ import { useZoomOnSelection } from './hooks';
 import type { CommonInteractionProps, Rect, Selection } from './models';
 import { getSvgRectCoords } from './utils';
 
+const MIN_SIZE = 20;
+
 type Props = CommonInteractionProps;
 
 function SelectToZoom(props: Props) {
@@ -48,35 +50,31 @@ function SelectToZoom(props: Props) {
     return { html, world, data };
   }
 
-  function onSelectionEnd(selection: Selection) {
-    const { size } = Box.fromPoints(...selection.html);
-    if (size.width > 0 && size.height > 0) {
-      zoomOnSelection(selection);
-    }
-  }
-
   return (
     <SelectionTool
       id="SelectToZoom"
-      transformSelection={computeZoomSelection}
-      onSelectionEnd={onSelectionEnd}
+      transform={computeZoomSelection}
+      validate={({ html }) => Box.fromPoints(...html).hasMinSize(MIN_SIZE)}
+      onValidSelection={zoomOnSelection}
       {...props}
     >
-      {({ html: htmlSelection }, { html: rawHtmlSelection }) => (
+      {({ html: htmlSelection }, { html: rawHtmlSelection }, isValid) => (
         <SvgElement>
           <rect
-            {...getSvgRectCoords(htmlSelection)}
+            {...getSvgRectCoords(rawHtmlSelection)}
             fill="white"
-            fillOpacity={keepRatio ? 0 : 0.25}
+            fillOpacity={keepRatio || !isValid ? 0 : 0.25}
             stroke="black"
-            strokeDasharray={keepRatio ? '4' : undefined}
+            strokeDasharray={keepRatio || !isValid ? 4 : undefined}
+            style={{ transition: 'fill-opacity 0.2s' }}
           />
           {keepRatio && (
             <rect
-              {...getSvgRectCoords(rawHtmlSelection)}
+              {...getSvgRectCoords(htmlSelection)}
               fill="white"
-              fillOpacity={0.25}
+              fillOpacity={isValid ? 0.25 : 0}
               stroke="black"
+              style={{ transition: 'fill-opacity 0.2s' }}
             />
           )}
         </SvgElement>

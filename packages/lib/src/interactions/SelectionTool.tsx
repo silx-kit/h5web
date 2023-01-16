@@ -28,14 +28,21 @@ import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
   id?: string;
-  transformSelection?: (selection: Selection) => Selection;
+  transform?: (rawSelection: Selection) => Selection;
+  validate?: (selection: Selection) => boolean;
   onSelectionStart?: () => void;
   onSelectionChange?: (
     selection: Selection | undefined,
-    rawSelection: Selection
+    rawSelection: Selection,
+    isValid: boolean
   ) => void;
-  onSelectionEnd?: (selection: Selection) => void;
-  children: (selection: Selection, rawSelection: Selection) => ReactNode;
+  onSelectionEnd?: (selection: Selection, isValid: boolean) => void;
+  onValidSelection?: (selection: Selection) => void;
+  children: (
+    selection: Selection,
+    rawSelection: Selection,
+    isValid: boolean
+  ) => ReactNode;
 }
 
 function SelectionTool(props: Props) {
@@ -43,18 +50,22 @@ function SelectionTool(props: Props) {
     id = 'Selection',
     modifierKey,
     disabled,
-    transformSelection = (selection) => selection,
+    transform = (selection) => selection,
+    validate = () => true,
     onSelectionStart,
     onSelectionChange,
     onSelectionEnd,
+    onValidSelection,
     children,
   } = props;
 
   // Wrap callbacks in up-to-date but stable refs so consumers don't have to memoise them
-  const transformSelectionRef = useSyncedRef(transformSelection);
+  const transformRef = useSyncedRef(transform);
+  const validateRef = useSyncedRef(validate);
   const onSelectionStartRef = useSyncedRef(onSelectionStart);
   const onSelectionChangeRef = useSyncedRef(onSelectionChange);
   const onSelectionEndRef = useSyncedRef(onSelectionEnd);
+  const onValidSelectionRef = useSyncedRef(onValidSelection);
 
   const camera = useThree((state) => state.camera);
   const { canvasBox, htmlToWorld, worldToData } = useVisCanvasContext();
@@ -134,12 +145,19 @@ function SelectionTool(props: Props) {
 
   // Compute effective selection
   const selection = useMemo(
-    () => rawSelection && transformSelectionRef.current(rawSelection),
-    [rawSelection, transformSelectionRef]
+    () => rawSelection && transformRef.current(rawSelection),
+    [rawSelection, transformRef]
   );
 
-  // Keep track of previous effective selection state
+  // Determine if effective selection respects the minimum size threshold
+  const isValid = useMemo(
+    () => !!selection && validateRef.current(selection),
+    [selection, validateRef]
+  );
+
+  // Keep track of previous effective selection and validity
   const prevSelection = usePrevious(selection);
+  const prevIsValid = usePrevious(isValid);
 
   useEffect(() => {
     if (selection) {
@@ -153,7 +171,8 @@ function SelectionTool(props: Props) {
       // Either way, current selection is defined, so invoke change callback with effective selection object
       onSelectionChangeRef.current?.(
         isModifierKeyPressed ? selection : undefined, // don't pass selection object if user is not pressing modifier key
-        rawSelection
+        rawSelection,
+        isValid
       );
 
       return;
@@ -164,17 +183,25 @@ function SelectionTool(props: Props) {
      * - selection was not cancelled with Escape, and
      * - modifier key was released after pointer (if applicable). */
     if (prevSelection && hasSuccessfullyEndedRef.current) {
+      assertDefined(prevIsValid);
       hasSuccessfullyEndedRef.current = false;
-      onSelectionEndRef.current?.(prevSelection);
+      onSelectionEndRef.current?.(prevSelection, prevIsValid);
+
+      if (prevIsValid) {
+        onValidSelectionRef.current?.(prevSelection);
+      }
     }
   }, [
     selection,
     prevSelection,
     rawSelection,
+    isValid,
+    prevIsValid,
     isModifierKeyPressed,
     onSelectionStartRef,
     onSelectionChangeRef,
     onSelectionEndRef,
+    onValidSelectionRef,
   ]);
 
   if (!selection || !isModifierKeyPressed) {
@@ -182,7 +209,7 @@ function SelectionTool(props: Props) {
   }
 
   assertDefined(rawSelection);
-  return <>{children(selection, rawSelection)}</>;
+  return <>{children(selection, rawSelection, isValid)}</>;
 }
 
 export type { Props as SelectionToolProps };
