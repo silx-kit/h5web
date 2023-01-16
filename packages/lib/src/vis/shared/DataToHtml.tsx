@@ -1,9 +1,8 @@
 import type { MappedTuple } from '@h5web/shared';
-import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import type { Vector3 } from 'three';
 
-import { useVisCanvasContext } from './VisCanvasProvider';
+import { useCameraState } from '../hooks';
 
 interface Props<T extends Vector3[]> {
   points: T;
@@ -13,12 +12,11 @@ interface Props<T extends Vector3[]> {
 function DataToHtml<T extends Vector3[]>(props: Props<T>) {
   const { points, children } = props;
 
-  const { dataToHtml } = useVisCanvasContext();
-  const camera = useThree((state) => state.camera);
-
-  const htmlPoints = points.map((pt) => {
-    return dataToHtml(camera, pt);
-  }) as MappedTuple<T, Vector3>;
+  const htmlPoints = useCameraState(
+    (camera, { dataToHtml }) =>
+      points.map((pt) => dataToHtml(camera, pt)) as MappedTuple<T, Vector3>,
+    [points]
+  );
 
   return <>{children(...htmlPoints)}</>;
 }

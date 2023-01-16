@@ -2,11 +2,12 @@ import type { Axis } from '@h5web/shared';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import AxialSelectionTool from './AxialSelectionTool';
-import SvgElement from './SvgElement';
+import styles from './SelectToZoom.module.css';
 import Box from './box';
 import { useZoomOnSelection } from './hooks';
 import type { CommonInteractionProps } from './models';
-import { getSvgRectCoords } from './utils';
+import SvgElement from './svg/SvgElement';
+import SvgRect from './svg/SvgRect';
 
 const MIN_SIZE = 20;
 
@@ -31,13 +32,11 @@ function AxialSelectToZoom(props: Props) {
     >
       {({ html: htmlSelection }, _, isValid) => (
         <SvgElement>
-          <rect
-            {...getSvgRectCoords(htmlSelection)}
-            fill="white"
-            fillOpacity={isValid ? 0.25 : 0}
-            stroke="black"
-            strokeDasharray={isValid ? undefined : 4}
-            style={{ transition: 'fill-opacity 0.2s' }}
+          <SvgRect
+            className={styles.rawSelection}
+            coords={htmlSelection}
+            strokePosition="inside"
+            data-valid={isValid || undefined}
           />
         </SvgElement>
       )}

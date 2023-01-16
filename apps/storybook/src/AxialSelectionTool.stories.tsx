@@ -1,6 +1,7 @@
 import type { AxialSelectionToolProps, Selection } from '@h5web/lib';
 import { Box } from '@h5web/lib';
-import { getSvgRectCoords, SvgElement } from '@h5web/lib';
+import { SvgRect } from '@h5web/lib';
+import { SvgElement } from '@h5web/lib';
 import {
   AxialSelectionTool,
   Pan,
@@ -38,8 +39,8 @@ const Template: Story<AxialSelectionToolProps> = (args) => {
       >
         {({ html: htmlSelection }, _, isValid) => (
           <SvgElement>
-            <rect
-              {...getSvgRectCoords(htmlSelection)}
+            <SvgRect
+              coords={htmlSelection}
               fill={isValid ? 'teal' : 'orangered'}
               fillOpacity={0.5}
             />
