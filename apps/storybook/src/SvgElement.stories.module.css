@@ -1,0 +1,12 @@
+.rect {
+  fill: teal;
+  fill-opacity: 0.2;
+  stroke: teal;
+  stroke-width: 2;
+  pointer-events: auto;
+}
+
+.rect:hover {
+  fill: darkgoldenrod;
+  stroke: darkorange;
+}

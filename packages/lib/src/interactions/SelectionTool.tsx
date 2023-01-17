@@ -10,7 +10,9 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { useRef } from 'react';
 import { useCallback, useEffect } from 'react';
+import type { Camera } from 'three';
 
+import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import {
   useCanvasEvents,
@@ -28,7 +30,11 @@ import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
   id?: string;
-  transform?: (rawSelection: Selection) => Selection;
+  transform?: (
+    rawSelection: Selection,
+    camera: Camera,
+    context: VisCanvasContextValue
+  ) => Selection;
   validate?: (selection: Selection) => boolean;
   onSelectionStart?: () => void;
   onSelectionChange?: (
@@ -68,7 +74,8 @@ function SelectionTool(props: Props) {
   const onValidSelectionRef = useSyncedRef(onValidSelection);
 
   const camera = useThree((state) => state.camera);
-  const { canvasBox, htmlToWorld, worldToData } = useVisCanvasContext();
+  const context = useVisCanvasContext();
+  const { canvasBox, htmlToWorld, worldToData } = context;
 
   const [rawSelection, setRawSelection] = useRafState<Selection>();
   const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
@@ -145,8 +152,8 @@ function SelectionTool(props: Props) {
 
   // Compute effective selection
   const selection = useMemo(
-    () => rawSelection && transformRef.current(rawSelection),
-    [rawSelection, transformRef]
+    () => rawSelection && transformRef.current(rawSelection, camera, context),
+    [rawSelection, transformRef, camera, context]
   );
 
   // Determine if effective selection respects the minimum size threshold
