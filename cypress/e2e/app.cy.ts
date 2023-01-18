@@ -2,10 +2,6 @@
 const BE_SELECTED = ['have.attr', 'aria-selected', 'true'] as const;
 const BE_CHECKED = ['have.attr', 'aria-checked', 'true'] as const;
 
-afterEach(() => {
-  window.localStorage.clear();
-});
-
 describe('/mock', () => {
   beforeEach(() => {
     cy.visit('/mock');
