@@ -73,18 +73,15 @@ function LineVis(props: Props) {
     scaleType: abscissaScaleType,
   } = abscissaParams;
 
-  assertLength(abscissaValue, dataArray.size, 'abscissa');
   assertLength(errorsArray, dataArray.size, 'error');
   auxiliaries.forEach(({ label, array }, index) =>
     assertLength(array, dataArray.size, `'${label || index}' auxiliary`)
   );
 
   const abscissas = useAxisValues(abscissaValue, dataArray.size);
-
   const abscissaToIndex = useValueToIndexScale(abscissas, true);
 
   const abscissaDomain = useAxisDomain(abscissas, abscissaScaleType, 0.01);
-
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
   const dataDomain = useMemo(() => {
