@@ -85,7 +85,7 @@ jobs:
         run: pnpm build:storybook
 
       - name: Deploy Storybook 🚀
-        uses: JamesIves/github-pages-deploy-action@4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: apps/storybook/build
           clean: true
