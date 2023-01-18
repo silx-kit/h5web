@@ -337,9 +337,9 @@ and deploys the Storybook site.
 > A few things happen when `pnpm publish` is run inside each package's
 > directory:
 >
-> 1. First, a `prepublishOnly` script is triggered that removes the `type` field
->    from the package's `package.json`. The reason for this workaround is
->    explained in [#1219](https://github.com/silx-kit/h5web/issues/1219).
+> 1. First, a `prepack` script is triggered that removes the `type` field from
+>    the package's `package.json`. The reason for this workaround is explained
+>    in [#1219](https://github.com/silx-kit/h5web/issues/1219).
 > 2. Then, pnpm modifies `package.json` further by merging in the content of the
 >    [`publishConfig` field](https://pnpm.io/package_json#publishconfig).
 > 3. Finally, the package gets published to NPM. Note that it's possible to

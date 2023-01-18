@@ -31,7 +31,7 @@
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc",
     "analyze": "pnpx source-map-explorer dist/index.js --no-border-checks",
-    "prepublishOnly": "pnpx dot-json@latest package.json -d type"
+    "prepack": "pnpx dot-json@latest package.json -d type"
   },
   "peerDependencies": {
     "@h5web/app": "workspace:*",

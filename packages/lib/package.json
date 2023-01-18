@@ -35,7 +35,7 @@
     "lint:tsc": "tsc",
     "test": "jest",
     "analyze": "pnpx source-map-explorer dist/index.js --no-border-checks",
-    "prepublishOnly": "pnpx dot-json@latest package.json -d type"
+    "prepack": "pnpx dot-json@latest package.json -d type"
   },
   "peerDependencies": {
     "@react-three/fiber": ">=6.0.14",
