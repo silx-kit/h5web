@@ -334,6 +334,19 @@ new tag to the remote repository. This, in turn, triggers the _Release_ workflow
 on the CI, which builds and publishes the packages to NPM (with `pnpm publish`)
 and deploys the Storybook site.
 
+> A few things happen when `pnpm publish` is run inside each package's
+> directory:
+>
+> 1. First, a `prepublish` script is triggered that removes the `type` field
+>    from the package's `package.json`. The reason for this workaround is
+>    explained in [#1219](https://github.com/silx-kit/h5web/issues/1219).
+> 2. Then, pnpm modifies `package.json` further by merging in the content of the
+>    [`publishConfig` field](https://pnpm.io/package_json#publishconfig).
+> 3. Finally, the package gets published to NPM. Note that it's possible to
+>    publish to a local registry for testing purposes (e.g.
+>    [Verdaccio](https://verdaccio.org/)) by overriding NPM's default
+>    [`registry` configuration](https://docs.npmjs.com/cli/v9/using-npm/registry).
+
 Once the _Release_ workflow has completed:
 
 - Make sure the new package versions are available on NPM and that the live

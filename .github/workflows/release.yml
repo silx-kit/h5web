@@ -63,14 +63,6 @@ jobs:
           version: ${{ steps.packageVersion.outputs.PACKAGE_VERSION }}
           package: 'packages/h5wasm'
 
-      # https://github.com/silx-kit/h5web/issues/1219
-      - name: 'Remove `"type": "module"` from `package.json` files'
-        run: |
-          cd packages
-          cat <<< $(pnpm --package=node-jq dlx jq "del(.type)" app/package.json) > app/package.json
-          cat <<< $(pnpm --package=node-jq dlx jq "del(.type)" h5wasm/package.json) > h5wasm/package.json
-          cat <<< $(pnpm --package=node-jq dlx jq "del(.type)" lib/package.json) > lib/package.json
-
       - name: Publish @h5web/lib 🥳
         run: cd packages/lib && pnpm publish --access public --no-git-checks --tag $NPM_TAG
         env:
