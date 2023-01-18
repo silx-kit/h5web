@@ -165,7 +165,7 @@ export const mockValues = {
   title_twoD: 'NeXus 2D',
   secondary: twoD.map((inner) => inner.map((v) => v * 2)),
   tertiary: twoD.map((inner) => inner.map((v) => v / 2)),
-  position: [-1, 1],
+  position: [-1, 1, 3], // pixel boundaries (N + 1)
   scatter_data: arr1.map((val) => Math.cos((val * 3.14) / 40)),
   Y_scatter: arr1.map((v, i) => ((i % 10) + (i % 5)) / 123_456),
   oneD_compound,

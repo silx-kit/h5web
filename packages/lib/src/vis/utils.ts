@@ -389,11 +389,9 @@ export function getAxisValues(
     return range(axisLength);
   }
 
-  if (rawValues.length === axisLength) {
-    return toArray(rawValues);
+  if (rawValues.length < axisLength) {
+    throw new Error(`Expected array to have length ${axisLength} at least`);
   }
 
-  throw new Error(
-    `Expected array to have length ${axisLength}, not ${rawValues.length}`
-  );
+  return toArray(rawValues).slice(0, axisLength);
 }

@@ -151,7 +151,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
           signal: makeDataset('twoD_complex', complexType, [2, 2], {
             valueId: 'twoD_cplx',
           }),
-          axes: { position: makeDataset('position', intType, [2]) },
+          axes: { position: makeDataset('position', intType, [3]) },
           axesAttr: ['.', 'position'],
         }),
         makeNxDataGroup('complex_spectrum', {
