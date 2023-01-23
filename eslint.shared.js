@@ -17,7 +17,10 @@ module.exports = {
       rules: {
         'sort-keys-fix/sort-keys-fix': 'off', // keys should be sorted based on significance
         'import/no-default-export': 'off', // default exports are common in React
-        'no-negated-condition': 'off', // ternaries are sometimes more readable when `true` branch is most significant branch
+
+        // Ternaries are sometimes more readable when `true` branch is most significant branch
+        'no-negated-condition': 'off',
+        'unicorn/no-negated-condition': 'off',
 
         // Prefer explicit, consistent return - e.g. `return undefined;`
         'unicorn/no-useless-undefined': 'off',
