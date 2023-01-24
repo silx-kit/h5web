@@ -7,7 +7,7 @@ import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 const CAMERA_FAR = 1000; // R3F's default
 
 export function useCanvasPoints(
-  abscissas: number[],
+  abscissas: NumArray,
   ordinates: NumArray,
   errors?: NumArray
 ) {

@@ -11,8 +11,8 @@ import { useDataToColorScale } from './hooks';
 import { useBufferAttributes } from './hooks';
 
 interface Props {
-  abscissas: number[];
-  ordinates: number[];
+  abscissas: NumArray;
+  ordinates: NumArray;
   data: NumArray;
   domain: Domain;
   scaleType: ScaleType;

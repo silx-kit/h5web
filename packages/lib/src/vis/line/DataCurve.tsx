@@ -22,7 +22,7 @@ declare global {
 }
 
 interface Props {
-  abscissas: number[];
+  abscissas: NumArray;
   ordinates: NumArray;
   errors?: NumArray;
   showErrors?: boolean;

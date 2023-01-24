@@ -162,7 +162,7 @@ function unsafeExtendDomain(
 }
 
 export function getValueToIndexScale(
-  values: number[],
+  values: NumArray,
   switchAtMidpoints?: boolean
 ): ScaleThreshold<number, number> {
   const rawThresholds = switchAtMidpoints
@@ -170,18 +170,15 @@ export function getValueToIndexScale(
     : values; // Else, the switch from i-1 to i will happen at values[i]
 
   // First threshold (going from 0 to 1) should be for the second value. Scaling the first value should return at 0.
-  const thresholds = rawThresholds.slice(1);
+  const thresholds = toArray(rawThresholds.slice(1));
   const indices = range(values.length);
+  if (isDescending(thresholds)) {
+    thresholds.reverse();
+    indices.reverse();
+  }
 
   // ScaleThreshold only works with ascending values so the scale is reversed for descending values
-  return scaleThreshold<number, number>(
-    isDescending(thresholds)
-      ? {
-          domain: [...thresholds].reverse(),
-          range: [...indices].reverse(),
-        }
-      : { domain: thresholds, range: indices }
-  );
+  return scaleThreshold<number, number>({ domain: thresholds, range: indices });
 }
 
 export function getCanvasScale(
@@ -300,12 +297,12 @@ export function getAxisOffsets(
   };
 }
 
-function isDescending(array: number[]): boolean {
+function isDescending(array: NumArray): boolean {
   return array[array.length - 1] - array[0] < 0;
 }
 
 export function getAxisDomain(
-  axisValues: number[],
+  axisValues: NumArray,
   scaleType: ScaleType = ScaleType.Linear,
   extensionFactor = 0
 ): Domain | undefined {
@@ -348,7 +345,8 @@ export function getUniforms(
 }
 
 export function toArray(arr: NumArray): number[] {
-  return isTypedArray(arr) ? [...arr] : arr;
+  // eslint-disable-next-line unicorn/prefer-spread
+  return isTypedArray(arr) ? Array.from(arr) : arr;
 }
 
 export function getWorldFOV(camera: Camera): {
@@ -384,7 +382,7 @@ export function getVisibleDomains(
 export function getAxisValues(
   rawValues: NumArray | undefined,
   axisLength: number
-): number[] {
+): NumArray {
   if (!rawValues) {
     return range(axisLength);
   }
@@ -393,5 +391,5 @@ export function getAxisValues(
     throw new Error(`Expected array to have length ${axisLength} at least`);
   }
 
-  return toArray(rawValues).slice(0, axisLength);
+  return rawValues.slice(0, axisLength);
 }

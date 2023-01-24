@@ -18,7 +18,6 @@ import {
   getAxisValues,
   getCombinedDomain,
   getValueToIndexScale,
-  toArray,
 } from './utils';
 
 const useBounds = createMemo(getBounds);
@@ -28,8 +27,6 @@ export const useCombinedDomain = createMemo(getCombinedDomain);
 export const useValueToIndexScale = createMemo(getValueToIndexScale);
 export const useAxisDomain = createMemo(getAxisDomain);
 export const useAxisValues = createMemo(getAxisValues);
-
-export const useToArray = createMemo(toArray);
 
 export function useDomain(
   valuesArray: AnyNumArray,
