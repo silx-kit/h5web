@@ -10,8 +10,8 @@ import { createAxisScale } from '../utils';
 const CAMERA_FAR = 1000; // R3F's default
 
 export function useBufferAttributes(
-  abscissas: number[],
-  ordinates: number[],
+  abscissas: NumArray,
+  ordinates: NumArray,
   data: NumArray,
   dataToColorScale: (val: number) => [number, number, number]
 ) {

@@ -107,7 +107,7 @@ export function getLinearGradient(
 export function getPixelEdgeValues(
   rawValues: NumArray | undefined,
   pixelCount: number
-): number[] {
+): NumArray {
   if (rawValues && rawValues.length === pixelCount) {
     // Add value at right-hand side of last pixel, assuming raw values are regularly spaced
     const deltaCoord = rawValues[1] - rawValues[0];

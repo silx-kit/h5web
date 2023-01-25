@@ -7,7 +7,6 @@ import {
 } from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
-import { toArray } from 'lodash';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
@@ -57,21 +56,18 @@ function ScatterVis(props: Props) {
   } = props;
 
   const {
-    value: abscissaValue,
+    value: abscissas,
     label: abscissaLabel,
     scaleType: abscissaScaleType,
   } = abscissaParams;
   const {
-    value: ordinateValue,
+    value: ordinates,
     label: ordinateLabel,
     scaleType: ordinateScaleType,
   } = ordinateParams;
 
-  assertLength(abscissaValue, dataArray.size, 'abscissa');
-  assertLength(ordinateValue, dataArray.size, 'ordinates');
-
-  const abscissas = toArray(abscissaValue);
-  const ordinates = toArray(ordinateValue);
+  assertLength(abscissas, dataArray.size, 'abscissa');
+  assertLength(ordinates, dataArray.size, 'ordinates');
 
   const abscissaDomain = useAxisDomain(abscissas, abscissaScaleType, 0.01);
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
