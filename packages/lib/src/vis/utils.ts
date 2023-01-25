@@ -345,8 +345,7 @@ export function getUniforms(
 }
 
 export function toArray(arr: NumArray): number[] {
-  // eslint-disable-next-line unicorn/prefer-spread
-  return isTypedArray(arr) ? Array.from(arr) : arr;
+  return isTypedArray(arr) ? [...arr] : arr;
 }
 
 export function getWorldFOV(camera: Camera): {

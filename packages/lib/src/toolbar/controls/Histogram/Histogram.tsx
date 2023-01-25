@@ -65,7 +65,7 @@ function Histogram(props: Props) {
 
   const markerPositions = safeValue.map(xScale) as Domain;
 
-  const rects = [] as JSX.Element[];
+  const rects: JSX.Element[] = [];
   values.forEach((d, i) =>
     rects.push(
       <rect
