@@ -8,10 +8,10 @@ import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 import styles from './App.module.css';
 import EntityLoader from './EntityLoader';
 import ErrorFallback from './ErrorFallback';
+import Sidebar from './Sidebar';
 import VisConfigProvider from './VisConfigProvider';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import type { FeedbackContext } from './breadcrumbs/models';
-import Explorer from './explorer/Explorer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import { useDataContext } from './providers/DataProvider';
 import Visualizer from './visualizer/Visualizer';
@@ -60,12 +60,12 @@ function App(props: Props) {
         orientation="vertical"
       >
         <ReflexElement
-          className={styles.explorer}
+          className={styles.sidebar}
           style={{ display: isExplorerOpen ? undefined : 'none' }}
           flex={25}
           minSize={150}
         >
-          <Explorer selectedPath={selectedPath} onSelect={onSelectPath} />
+          <Sidebar selectedPath={selectedPath} onSelect={onSelectPath} />
         </ReflexElement>
 
         <ReflexSplitter

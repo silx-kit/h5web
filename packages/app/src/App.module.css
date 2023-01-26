@@ -9,6 +9,7 @@
 .root {
   --primary: #c0da74;
   --primary-light: #d4e09b;
+  --primary-lighter: #eaf0cd;
   --primary-dark: #9aae5d;
   --primary-bg: #f5fbef;
   --primary-light-bg: #fafdf7;
@@ -105,8 +106,9 @@
   }
 }
 
-.explorer {
+.sidebarArea {
   display: flex;
+  flex-direction: column;
   scrollbar-width: thin;
   background-color: var(--primary-bg);
 }

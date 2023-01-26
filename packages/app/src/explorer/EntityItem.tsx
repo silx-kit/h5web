@@ -2,6 +2,7 @@ import { isGroup } from '@h5web/shared';
 import type { ChildEntity } from '@h5web/shared';
 import { useToggle } from '@react-hookz/web';
 import type { CSSProperties, KeyboardEvent } from 'react';
+import { useRef } from 'react';
 import { useCallback } from 'react';
 import { Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -31,6 +32,8 @@ function EntityItem(props: Props) {
   const { path, entity, level, selectedPath, onSelect } = props;
   const isSelected = path === selectedPath;
 
+  const btnRef = useRef<HTMLButtonElement>(null);
+
   const [isExpanded, toggleExpanded] = useToggle(false);
 
   useEffect(() => {
@@ -42,6 +45,13 @@ function EntityItem(props: Props) {
       toggleExpanded(true);
     }
   }, [entity, path, selectedPath, toggleExpanded]);
+
+  // When tabbing in, restore focus on the selected element
+  useEffect(() => {
+    if (isSelected) {
+      btnRef.current?.focus();
+    }
+  }, [btnRef, isSelected]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLButtonElement>) => {
@@ -93,6 +103,7 @@ function EntityItem(props: Props) {
       role="none"
     >
       <button
+        ref={btnRef}
         className={styles.btn}
         type="button"
         role="treeitem"
