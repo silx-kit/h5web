@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputRow {
+  display: flex;
+}
+
+.inputRow input {
+  border-radius: 0.5rem;
+  margin: 0.25rem;
+  box-shadow: none;
+  height: 1.875rem;
+}
+
+.matchCount {
+  margin: 0.25rem 0.5rem;
+}
+
+.matchCount[data-noMatch] {
+  color: darkred;
+}
+
+a.btn {
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn {
+  composes: btnClean from global;
+  display: flex;
+  align-items: center;
+  padding: 0 0.25rem;
+  background-color: var(--h5w-toolbar--bgColor, aliceblue);
+}
+
+.btnLike {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.875rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+  white-space: nowrap;
+  outline: solid 1px var(--h5w-btn-hover--shadowColor, gray);
+}
+
+.btn[data-small] > .btnLike {
+  height: 1.75rem;
+  border-radius: 0.875rem;
+  font-size: 0.875em;
+}
+
+.btn[data-raised] > .btnLike {
+  box-shadow: 0 0 1px inset var(--h5w-btnRaised--shadowColor, gray),
+    -1px -1px 2px inset var(--h5w-btnRaised--shadowColor, gray);
+}
+
+.btn:hover > .btnLike {
+  background-color: var(--h5w-btn-hover--bgColor, whitesmoke);
+  box-shadow: -1px -1px 2px inset var(--h5w-btn-hover--shadowColor, var(--h5w-btnRaised--shadowColor, gray));
+  outline: none;
+}
+
+.btn[data-raised]:hover > .btnLike {
+  box-shadow: 0 0 1px inset var(--h5w-btnRaised-hover--shadowColor, dimgray),
+    -1px -1px 2px inset var(--h5w-btnRaised-hover--shadowColor, dimgray);
+}
+
+.btn:active > .btnLike,
+.btn[data-raised]:active > .btnLike,
+.btn[aria-pressed='true'] > .btnLike, /* toggle buttons, domain slider "edit" button */
+.btn[aria-checked='true'] > .btnLike, /* toggle group buttons */
+.btn[aria-haspopup][aria-expanded='true'] > .btnLike  /* selectors and overflow menu buttons */ {
+  background-color: var(--h5w-btnPressed--bgColor, white);
+  box-shadow: 1px 1px 2px inset
+    var(--h5w-btnPressed--shadowColor, var(--h5w-btnRaised--shadowColor, gray));
+}
+
+.btn[aria-pressed='true']:hover > .btnLike,
+.btn[aria-checked='true']:hover > .btnLike,
+.btn[aria-haspopup][aria-expanded='true']:hover > .btnLike {
+  box-shadow: 1px 1px 2px inset
+    var(
+      --h5w-btnPressed-hover--shadowColor,
+      var(--h5w-btnRaised-hover--shadowColor, dimgray)
+    );
+}

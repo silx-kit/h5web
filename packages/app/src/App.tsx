@@ -12,6 +12,7 @@ import VisConfigProvider from './VisConfigProvider';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import type { FeedbackContext } from './breadcrumbs/models';
 import Explorer from './explorer/Explorer';
+import SearchBoxContainer from './explorer/searchbox/SearchBoxContainer';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import { useDataContext } from './providers/DataProvider';
 import Visualizer from './visualizer/Visualizer';
@@ -65,6 +66,9 @@ function App(props: Props) {
           minSize={150}
         >
           <Explorer selectedPath={selectedPath} onSelect={onSelectPath} />
+          <Suspense fallback={null}>
+            <SearchBoxContainer onSelect={onSelectPath} />
+          </Suspense>
         </ReflexElement>
 
         <ReflexSplitter

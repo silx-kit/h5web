@@ -107,6 +107,7 @@
 
 .explorer {
   display: flex;
+  flex-direction: column;
   scrollbar-width: thin;
   background-color: var(--primary-bg);
 }

@@ -2,6 +2,7 @@ import type { ChildEntity, Entity, Group } from '@h5web/shared';
 import { isGroup } from '@h5web/shared';
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useMemo } from 'react';
+import type { FetchStore } from 'react-suspense-fetch';
 import { createFetchStore } from 'react-suspense-fetch';
 
 import { hasAttribute } from '../utils';
@@ -27,6 +28,7 @@ export interface DataContextValue {
   getExportURL?: DataProviderApi['getExportURL'];
   addProgressListener: (cb: ProgressCallback) => void;
   removeProgressListener: (cb: ProgressCallback) => void;
+  searchablePaths?: FetchStore<string[], string>;
 }
 
 const DataContext = createContext({} as DataContextValue);
@@ -102,6 +104,13 @@ function DataProvider(props: PropsWithChildren<Props>) {
     });
   }, [api]);
 
+  const { getSearchablePaths } = api;
+  const searchablePaths = getSearchablePaths
+    ? createFetchStore(async (path: string) =>
+        getSearchablePaths.bind(api)(path)
+      )
+    : undefined;
+
   return (
     <DataContext.Provider
       value={{
@@ -113,6 +122,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
         getExportURL: api.getExportURL?.bind(api),
         addProgressListener: api.addProgressListener.bind(api),
         removeProgressListener: api.removeProgressListener.bind(api),
+        searchablePaths,
       }}
     >
       {children}
