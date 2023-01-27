@@ -2,6 +2,7 @@ import type { Domain, ScaleType } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
+import type { ReactNode } from 'react';
 
 import { useSafeDomain } from '../../../vis/heatmap/hooks';
 import { useCombinedDomain, useDomain } from '../../../vis/hooks';
@@ -65,7 +66,7 @@ function Histogram(props: Props) {
 
   const markerPositions = safeValue.map(xScale) as Domain;
 
-  const rects: JSX.Element[] = [];
+  const rects: ReactNode[] = [];
   values.forEach((d, i) =>
     rects.push(
       <rect
@@ -82,7 +83,7 @@ function Histogram(props: Props) {
   return (
     <div ref={ref} className={styles.container}>
       <svg width="100%" height="100%" className={styles.histogram}>
-        {...rects}
+        {rects}
         {colorMap && (
           <ColorBar
             x={markerPositions[0]}

@@ -43,7 +43,7 @@ class Box extends Box3 {
     const { width, height } = this.size;
     const originalRatio = width / height;
 
-    if (originalRatio < ratio) {
+    if (ratio > originalRatio) {
       return this.expandBySize(height * ratio - width, 0); // increase width
     }
 
