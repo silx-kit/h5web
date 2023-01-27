@@ -42,7 +42,7 @@ interface Props extends CommonInteractionProps {
     rawSelection: Selection,
     isValid: boolean
   ) => void;
-  onSelectionEnd?: (selection: Selection, isValid: boolean) => void;
+  onSelectionEnd?: (selection: Selection | undefined, isValid: boolean) => void;
   onValidSelection?: (selection: Selection) => void;
   children: (
     selection: Selection,
@@ -185,18 +185,19 @@ function SelectionTool(props: Props) {
       return;
     }
 
-    /* Previous selection was defined and current selection is now undefined => selection has ended.
-     * Invoke callback but only if selection has ended successfully - i.e. if:
-     * - selection was not cancelled with Escape, and
-     * - modifier key was released after pointer (if applicable). */
-    if (prevSelection && hasSuccessfullyEndedRef.current) {
+    // Previous selection was defined and current selection is now undefined => selection has ended.
+    if (prevSelection) {
       assertDefined(prevIsValid);
-      hasSuccessfullyEndedRef.current = false;
-      onSelectionEndRef.current?.(prevSelection, prevIsValid);
+      onSelectionEndRef.current?.(
+        hasSuccessfullyEndedRef.current ? prevSelection : undefined, // don't pass selection object if Escape pressed or modifier key released
+        prevIsValid
+      );
 
-      if (prevIsValid) {
+      if (prevIsValid && hasSuccessfullyEndedRef.current) {
         onValidSelectionRef.current?.(prevSelection);
       }
+
+      hasSuccessfullyEndedRef.current = false;
     }
   }, [
     selection,
