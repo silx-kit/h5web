@@ -266,3 +266,159 @@ import { findMockEntity, getMockDataArray } from '@h5web/lib';
 const entity = findMockEntity('/nD_datasets/twoD');
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 ```
+
+### Box
+
+Utility class that extends Three's [Box3](https://threejs.org/docs/?q=box#api/en/math/Box3) class. Particularly useful when dealing with selection rectangles, the camera's field of view, etc.
+
+#### size
+
+Compute the width and height of the box => like [getSize](https://threejs.org/docs/?q=box#api/en/math/Box3.getSize) but much simpler to use for 2D computations.
+
+> This getter creates a new `Vector3` on every access, so avoid multiple consecutive accesses.
+
+```ts
+get size(): Size
+
+// ✔ DO
+const { size } = box;
+const ratio = size.width / size.height;
+
+// ✔ DO
+const { width, height } = box.size;
+const ratio = width / height;
+
+// ❌ DON'T
+const ratio = box.size.width / box.size.height;
+```
+
+#### center
+
+Compute the center of the box => like [getCenter](https://threejs.org/docs/?q=box#api/en/math/Box3.getCenter) but without the `target` parameter.
+
+> This getter creates a new `Vector3` on every access, so avoid multiple consecutive accesses.
+
+```ts
+get center(): Vector3
+
+// ✔ DO
+const { center } = box;
+const coords = [center.x, center.y];
+
+// ✔ DO
+const { x, y } = box.center;
+const coords = [x, y];
+
+// ❌ DON'T
+const coords = [box.center.x, box.center.y];
+```
+
+#### empty
+
+Create an empty box centered on `(0, 0, 0)` => like `new Box()`, but with `min` and `max` initialised to `(0, 0, 0)` instead of `(+∞, +∞, +∞)` and `(-∞, -∞, -∞)` respectively, which allows methods like `expandBySize` to work as expected.
+
+Optionally, center the box on a given point => like `Box.fromPoints(pt)` below, but more explicit.
+
+```ts
+static empty(center?: Vector3): Box
+
+const box1 = Box.empty(); // min: (0, 0, 0); max: (0, 0, 0)
+const box2 = Box.empty(new Vector3(10, 10)); // min: (10, 10, 0); max: (10, 10, 0)
+```
+
+#### fromPoints
+
+Initialise a box that includes all the given points.
+
+> To create a box from a single point, prefer `Box.empty(pt)`.
+
+```ts
+static fromPoints(...points: Vector3[]): Box
+
+const htmlSelection: Rect = [startPt, endPt];
+const htmlBox = Box.fromPoints(...htmlSelection);
+```
+
+#### fromSize
+
+Create a box with a given size and centered on `(0, 0, 0)`.
+
+```ts
+static fromSize(size: Size): Box
+
+const box = Box.fromSize({ width: 10, height: 20 }); // min: (-5, -10, 0); max: (5, 10, 0)
+```
+
+#### clampPoint
+
+Clamp a given point to the box.
+
+> The given point is never mutated; a new `Vector3` instance is always returned.
+
+```ts
+clampPoint(pt: Vector3): Vector3
+
+const box = Box.empty().expandByPoint(new Vector3(5, 15)); // min: (0, 0, 0); max: (5, 15, 0)
+
+const pt = new Vector3(10, 10);
+const clampedPt = box.clampPoint(pt); // (5, 10, 0)
+```
+
+#### expandBySize
+
+Expand the box by a given width and height while maintaining its current center.
+
+```ts
+expandBySize(width: number, height: number): this
+
+const box = Box.empty().expandBySize(10, 20); // min: (-5, -10, 0); max: (5, 10, 0)
+```
+
+#### expandToRatio
+
+Expand the box either horizontally or vertically, and equally on both sides, in order to reach a given ratio.
+
+```ts
+expandToRatio(ratio: number | undefined): this
+
+const box = Box.empty().expandBySize(10, 10).expandToRatio(2);
+const { size } = box; // width: 20; height: 10
+```
+
+#### hasMinSize
+
+Check whether the box has at least a given width and height.
+
+```ts
+hasMinSize(minWidth: number, minHeight = minWidth): boolean
+
+const box = Box.empty().expandBySize(10, 10);
+box.hasMinSize(5, 12); // false
+box.hasMinSize(10, 12); // true
+```
+
+#### keepWithin
+
+Shift the box so it remains within the bounds of a given box.
+If the given box is too small to fit the source box, then the source box will end up overflowing the given box equally on both sides (horizontally, vertically or both).
+
+```ts
+keepWithin(area: Box): this
+
+const boundingBox = Box.empty().expandBySize(20, 20); // min: (-10, -10, 0); max: (10, 10, 0)
+
+const box = Box.empty(new Vector3(10, 10)).expandBySize(10, 10); // min: (5, 5, 0); max: (15, 15, 0)
+const shiftedBox = box.clone().keepWithin(boundingBox); // min: (0, 0, 0); max: (10, 10, 0)
+```
+
+#### toRect
+
+Convert the box to an array of two points - i.e. `[min, max]`. Note that if the box was initialised from an array of two points,
+`toRect` may not return those same two points.
+
+```ts
+toRect(): [Vector3, Vector3]
+
+const box = Box.fromPoints(new Vector3(-10, 10), new Vector3(10, -10));
+const rect = box.toRect(); // [(-10, -10, 0), (10, 10, 0)]
+```
