@@ -32,11 +32,19 @@ class Box extends Box3 {
   }
 
   public expandBySize(width: number, height: number): this {
-    return this.expandByVector(new Vector3(width / 2, height / 2, 0));
+    const { size } = this;
+
+    /* Prevent shrinking to "negative" size.
+     * If `max.x/y` becomes lower than `min.x/y`, then `isEmpty()` returns `true`
+     * and `getCenter` and `getSize` return (0, 0, 0) regardless of `min/max`. */
+    const w = width < 0 ? Math.max(width, -size.width) : width;
+    const h = height < 0 ? Math.max(height, -size.height) : height;
+
+    return this.expandByVector(new Vector3(w, h).divideScalar(2));
   }
 
   public expandToRatio(ratio: number | undefined): this {
-    if (ratio === undefined) {
+    if (ratio === undefined || ratio <= 0) {
       return this;
     }
 

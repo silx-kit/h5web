@@ -294,7 +294,7 @@ const ratio = box.size.width / box.size.height;
 
 #### center
 
-Compute the center of the box => like [getCenter](https://threejs.org/docs/?q=box#api/en/math/Box3.getCenter) but much simpler to use.
+Compute the center of the box => like [getCenter](https://threejs.org/docs/?q=box#api/en/math/Box3.getCenter) but without the `target` parameter.
 
 > This getter creates a new `Vector3` on every access, so avoid multiple consecutive accesses.
 
@@ -403,6 +403,8 @@ Shift the box so it remains within the bounds of a given box.
 If the given box is too small to fit the source box, then the source box will end up overflowing the given box equally on both sides (horizontally, vertically or both).
 
 ```ts
+keepWithin(area: Box): this
+
 const boundingBox = Box.empty().expandBySize(20, 20); // min: (-10, -10, 0); max: (10, 10, 0)
 
 const box = Box.empty(new Vector3(10, 10)).expandBySize(10, 10); // min: (5, 5, 0); max: (15, 15, 0)
@@ -412,9 +414,11 @@ const shiftedBox = box.clone().keepWithin(boundingBox); // min: (0, 0, 0); max: 
 #### toRect
 
 Convert the box to an array of two points - i.e. `[min, max]`. Note that if the box was initialised from an array of two points,
-`toRect` is unlikely to return those same two points.
+`toRect` may not return those same two points.
 
 ```ts
+toRect(): [Vector3, Vector3]
+
 const box = Box.fromPoints(new Vector3(-10, 10), new Vector3(10, -10));
 const rect = box.toRect(); // [(-10, -10, 0), (10, 10, 0)]
 ```
