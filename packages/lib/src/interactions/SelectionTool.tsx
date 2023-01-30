@@ -189,7 +189,7 @@ function SelectionTool(props: Props) {
     if (prevSelection) {
       assertDefined(prevIsValid);
       onSelectionEndRef.current?.(
-        hasSuccessfullyEndedRef.current ? prevSelection : undefined, // don't pass selection object if Escape pressed or modifier key released
+        hasSuccessfullyEndedRef.current ? prevSelection : undefined, // pass `undefined` if Escape pressed or modifier key released
         prevIsValid
       );
 
