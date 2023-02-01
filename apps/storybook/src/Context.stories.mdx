@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs';
 
 ## Context
 
-Children of `VisCanvas` have access to `VisCanvasContext`, which provides helpful utilities to convert vectors from data space to world space and back.
+Children of `VisCanvas` have access to `VisCanvasContext`, which provides helpful utilities, notably to convert points between coordinate spaces (data, world, HTML).
 It also exposes the size and ratio of the canvas and of the visualization, as well as the axis configs passed to `VisCanvas`.
 
-Consumers of `VisCanvasContext` re-render **whenever the size of the canvas changes**.
+Consumers of `VisCanvasContext` re-render **every time the size of the canvas changes**.
 
 ```ts
 useVisCanvasContext(): VisCanvasContextValue
@@ -19,6 +19,7 @@ const { visSize, dataToWorld, worldToData } = useVisCanvasContext();
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
 | `canvasSize`     | Canvas size (equivalent to `useThree((state) => state.size)`)                                                                                                                                        | <code>Size</code>                                      |
 | `canvasRatio`    | Canvas ratio (i.e. `width / height`)                                                                                                                                                                 | <code>number</code>                                    |
+| `canvasBox`      | [`Box`](https://h5web-docs.panosc.eu/?path=/story/utilities--page#box) spanning the canvas in HTML space                                                                                             | <code>Box</code>                                       |
 | `visRatio`       | Visualization ratio: defined when `VisCanvas` receives `aspect="equal"` or `aspect={number}` (e.g. `HeatmapVis` with "keep ratio" enabled); `undefined` otherwise                                    | <code>number &#124; undefined</code>                   |
 | `visSize`        | Visualization size (different from canvas size when `visRatio` is defined)                                                                                                                           | <code>Size</code>                                      |
 | `abscissaConfig` | Abscissa configuration object passed to `VisCanvas`                                                                                                                                                  | <code>AxisConfig</code>                                |

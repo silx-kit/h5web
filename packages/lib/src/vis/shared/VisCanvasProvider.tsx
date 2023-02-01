@@ -11,6 +11,7 @@ import { getCanvasScale, getSizeToFit } from '../utils';
 export interface VisCanvasContextValue {
   canvasSize: Size;
   canvasRatio: number;
+  canvasBox: Box;
   visRatio: number | undefined;
   visSize: Size;
   abscissaConfig: AxisConfig;
@@ -26,7 +27,6 @@ export interface VisCanvasContextValue {
   getFovBox: (camera: Camera, center?: Vector3) => Box;
 
   // For internal use only
-  canvasBox: Box;
   svgOverlay: SVGSVGElement | undefined;
   floatingToolbar: HTMLDivElement | undefined;
 }
