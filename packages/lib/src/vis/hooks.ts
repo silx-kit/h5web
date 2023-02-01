@@ -53,14 +53,20 @@ export function useDomains(
   );
 }
 
-export function useCameraState<T>(factory: (camera: Camera) => T): T {
+export function useCameraState<T>(
+  factory: (camera: Camera) => T,
+  equalityFn?: (prev: T, next: T) => boolean
+): T {
   const camera = useThree((state) => state.camera);
 
   const factoryRef = useSyncedRef(factory);
   const [state, setState] = useState(() => factoryRef.current(camera));
 
   useFrame(() => {
-    setState(factoryRef.current(camera));
+    const next = factoryRef.current(camera);
+    if (!equalityFn || !equalityFn(state, next)) {
+      setState(next);
+    }
   });
 
   return state;
