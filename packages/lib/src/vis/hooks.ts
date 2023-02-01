@@ -80,7 +80,7 @@ export function useCssColors(
   // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
   const refCallback: RefCallback<HTMLElement> = useCallback(
     (elem) => setStyles(elem ? window.getComputedStyle(elem) : undefined),
-    [setStyles]
+    []
   );
 
   if (!styles) {

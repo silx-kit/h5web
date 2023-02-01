@@ -220,12 +220,13 @@ const htmlPt = useCameraState((camera) => dataToHtml(camera, new Vector3(x, y)))
 ```
 
 Internally, `useCameraState` uses React's `useState` and R3F's [`useFrame` hooks](https://docs.pmnd.rs/react-three-fiber/api/hooks#useframe).
-By default, React performs a strict equality check to avoid re-rendering the same state twice in a row. If your `factory` function returns an new object reference on every call,
-you can avoid unnecessary re-renders by providing your own equality function. Note, however, that this optimisation is pointless if `factory` always returns a different state when the camera changes.
+By default, React performs a strict equality check to avoid re-rendering the same state twice in a row. If your `factory` function returns a new object reference on every call,
+you can avoid unnecessary re-renders by providing your own equality function. Note, however, that this optimisation is pointless if `factory` always returns a different state when the camera changes. Example:
 
 ```ts
 /* Once the user has zoomed past a certain threshold, `pt` is always (0, 0, 0),
- * so there's no point in re-rendering on every interaction any more. */
+ * so if the user pans or zooms further, we can skip re-renders by checking if
+ * the previous and next `pt` have the same coordinates. */
 const pt = useCameraState(
   (camera) => camera.scale > 0.5 ? camera.position.clone() : new Vector3()),
   (prevPt, nextPt) => prevPt.equals(nextPt)

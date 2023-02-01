@@ -33,10 +33,13 @@ function AxialSelectToZoom(props: Props) {
       {({ html: htmlSelection }, _, isValid) => (
         <SvgElement>
           <SvgRect
-            className={styles.rawSelection}
+            className={styles.selection}
             coords={htmlSelection}
+            fill="white"
+            fillOpacity={isValid ? 0.25 : 0}
+            stroke="black"
             strokePosition="inside"
-            data-valid={isValid || undefined}
+            strokeDasharray={!isValid ? 4 : undefined}
           />
         </SvgElement>
       )}

@@ -42,10 +42,11 @@ export interface Dims {
   cols: number;
 }
 
-// MappedTupple<number[]> => number[]
-// MappedTupple<number[], string> => string[]
-// MappedTupple<[number, number]> => [number, number]
-// MappedTupple<[number, number], string> => [string, string]
+// MappedTuple<string[]> => string[]
+// MappedTuple<number[]> => number[]
+// MappedTuple<number[], string> => string[]
+// MappedTuple<[number, number]> => [number, number]
+// MappedTuple<[number, number], string> => [string, string]
 export type MappedTuple<T extends unknown[], U = T[number]> = {
   [index in keyof T]: U;
 };
