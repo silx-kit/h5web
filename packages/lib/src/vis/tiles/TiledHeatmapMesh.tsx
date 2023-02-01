@@ -39,10 +39,9 @@ function TiledHeatmapMesh(props: Props) {
 
   const groupRef = useRef<Object3D>(null);
 
-  const ndcToLocalMatrix = useCameraState(
-    (camera) => getNdcToObject3DMatrix(camera, groupRef),
-    []
-  );
+  const ndcToLocalMatrix = useCameraState((camera) => {
+    return getNdcToObject3DMatrix(camera, groupRef);
+  });
   const visibleBox = getObject3DVisibleBox(ndcToLocalMatrix);
 
   const bounds = scaleBoxToLayer(visibleBox, baseLayerSize, meshSize);

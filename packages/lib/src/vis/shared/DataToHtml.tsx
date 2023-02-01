@@ -3,20 +3,20 @@ import type { ReactNode } from 'react';
 import type { Vector3 } from 'three';
 
 import { useCameraState } from '../hooks';
+import { useVisCanvasContext } from './VisCanvasProvider';
 
 interface Props<T extends Vector3[]> {
   points: T;
-  children: (...points: MappedTuple<T, Vector3>) => ReactNode;
+  children: (...points: MappedTuple<T>) => ReactNode;
 }
 
 function DataToHtml<T extends Vector3[]>(props: Props<T>) {
   const { points, children } = props;
 
-  const htmlPoints = useCameraState(
-    (camera, { dataToHtml }) =>
-      points.map((pt) => dataToHtml(camera, pt)) as MappedTuple<T, Vector3>,
-    [points]
-  );
+  const { dataToHtml } = useVisCanvasContext();
+  const htmlPoints = useCameraState((camera) => {
+    return points.map((pt) => dataToHtml(camera, pt)) as MappedTuple<T>;
+  });
 
   return <>{children(...htmlPoints)}</>;
 }

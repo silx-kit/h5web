@@ -16,8 +16,7 @@ function AxisSystem(props: Props) {
   const { canvasSize, abscissaConfig, ordinateConfig, getVisibleDomains } =
     useVisCanvasContext();
 
-  const visibleDomains = useCameraState(getVisibleDomains, [getVisibleDomains]);
-  const { xVisibleDomain, yVisibleDomain } = visibleDomains;
+  const { xVisibleDomain, yVisibleDomain } = useCameraState(getVisibleDomains);
 
   return (
     // Append to `canvasWrapper` instead of `r3fRoot`
