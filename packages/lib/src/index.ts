@@ -88,7 +88,6 @@ export {
   getAxisValues,
   getAxisDomain,
   getValueToIndexScale,
-  getWorldFOV,
   getVisibleDomains,
 } from './vis/utils';
 

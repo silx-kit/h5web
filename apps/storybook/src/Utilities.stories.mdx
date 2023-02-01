@@ -236,15 +236,7 @@ To avoid unnecessary re-renders, it performs a deep comparison before updating t
 The utilities documented in this section require access to the R3F `camera` object. They are typically meant to be called inside
 [`useCameraState`](https://h5web-docs.panosc.eu/?path=/story/utilities--page#usecamerastate) callbacks or DOM event listeners.
 
-#### getWorldFOV
-
-Compute the field of view of the camera in world space.
-
-```ts
-getWorldFOV(camera: Camera): { topRight: Vector3; bottomLeft: Vector3; }
-```
-
-### getVisibleDomains
+#### getVisibleDomains
 
 Compute the field of view of the camera in data space.
 

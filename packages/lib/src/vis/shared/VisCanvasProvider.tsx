@@ -23,6 +23,7 @@ export interface VisCanvasContextValue {
   worldToData: (worldPt: Vector3) => Vector3;
   htmlToWorld: (camera: Camera, htmlPt: Vector3) => Vector3;
   htmlToData: (camera: Camera, htmlPt: Vector3) => Vector3;
+  getFovBox: (camera: Camera, center?: Vector3) => Box;
 
   // For internal use only
   canvasBox: Box;
@@ -126,6 +127,14 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     [htmlToWorld, worldToData]
   );
 
+  const getFovBox = useCallback(
+    (camera: Camera, center: Vector3 = camera.position): Box => {
+      const { scale } = camera;
+      return Box.empty(center).expandBySize(width * scale.x, height * scale.y);
+    },
+    [width, height]
+  );
+
   return (
     <VisCanvasContext.Provider
       value={{
@@ -144,6 +153,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         worldToData,
         htmlToWorld,
         htmlToData,
+        getFovBox,
         svgOverlay,
         floatingToolbar,
       }}

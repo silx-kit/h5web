@@ -20,26 +20,22 @@ const ONE_VECTOR = new Vector3(1, 1, 1);
 const MODIFIER_KEYS: ModifierKey[] = ['Alt', 'Control', 'Shift'];
 
 export function useMoveCameraTo() {
-  const { canvasSize, visSize } = useVisCanvasContext();
+  const { visSize, getFovBox } = useVisCanvasContext();
 
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
 
   return useCallback(
     (worldPt: Vector3) => {
-      const { position, scale } = camera;
-
+      const { position } = camera;
       const visBox = Box.fromSize(visSize);
-      const fovBox = Box.empty(worldPt)
-        .expandBySize(canvasSize.width * scale.x, canvasSize.height * scale.y)
-        .keepWithin(visBox);
+      const fovBox = getFovBox(camera, worldPt).keepWithin(visBox);
 
       position.copy(fovBox.center.setZ(position.z)); // apply new position but keep `z` component as is
       camera.updateMatrixWorld();
-
       invalidate();
     },
-    [camera, visSize, canvasSize, invalidate]
+    [camera, visSize, getFovBox, invalidate]
   );
 }
 
