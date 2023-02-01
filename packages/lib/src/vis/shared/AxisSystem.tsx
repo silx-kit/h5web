@@ -1,6 +1,5 @@
 import { useCameraState } from '../hooks';
 import type { AxisOffsets } from '../models';
-import { getVisibleDomains } from '../utils';
 import Axis from './Axis';
 import styles from './AxisSystem.module.css';
 import Html from './Html';
@@ -14,12 +13,11 @@ interface Props {
 
 function AxisSystem(props: Props) {
   const { axisOffsets, title, showAxes } = props;
+  const { canvasSize, abscissaConfig, ordinateConfig, getVisibleDomains } =
+    useVisCanvasContext();
 
-  const { canvasSize, abscissaConfig, ordinateConfig } = useVisCanvasContext();
-  const { xVisibleDomain, yVisibleDomain } = useCameraState(
-    getVisibleDomains,
-    []
-  );
+  const visibleDomains = useCameraState(getVisibleDomains, [getVisibleDomains]);
+  const { xVisibleDomain, yVisibleDomain } = visibleDomains;
 
   return (
     // Append to `canvasWrapper` instead of `r3fRoot`

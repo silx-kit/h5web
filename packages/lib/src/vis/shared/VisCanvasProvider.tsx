@@ -1,3 +1,4 @@
+import type { VisibleDomains } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
@@ -25,6 +26,7 @@ export interface VisCanvasContextValue {
   htmlToWorld: (camera: Camera, htmlPt: Vector3) => Vector3;
   htmlToData: (camera: Camera, htmlPt: Vector3) => Vector3;
   getFovBox: (camera: Camera, center?: Vector3) => Box;
+  getVisibleDomains: (camera: Camera) => VisibleDomains;
 
   // For internal use only
   svgOverlay: SVGSVGElement | undefined;
@@ -135,6 +137,18 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     [width, height]
   );
 
+  const getVisibleDomains = useCallback(
+    (camera: Camera): VisibleDomains => {
+      const [dataMin, dataMax] = getFovBox(camera).toRect().map(worldToData);
+
+      return {
+        xVisibleDomain: [dataMin.x, dataMax.x],
+        yVisibleDomain: [dataMin.y, dataMax.y],
+      };
+    },
+    [getFovBox, worldToData]
+  );
+
   return (
     <VisCanvasContext.Provider
       value={{
@@ -154,6 +168,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         htmlToWorld,
         htmlToData,
         getFovBox,
+        getVisibleDomains,
         svgOverlay,
         floatingToolbar,
       }}

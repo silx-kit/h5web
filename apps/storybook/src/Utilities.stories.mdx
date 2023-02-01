@@ -231,22 +231,6 @@ in your app to report missing dependencies:
 Internally, `useCameraState` uses React's `useState` and R3F's [`useFrame` hooks](https://docs.pmnd.rs/react-three-fiber/api/hooks#useframe).
 To avoid unnecessary re-renders, it performs a deep comparison before updating the state with the value returned by the callback.
 
-### Camera-based utilities
-
-The utilities documented in this section require access to the R3F `camera` object. They are typically meant to be called inside
-[`useCameraState`](https://h5web-docs.panosc.eu/?path=/story/utilities--page#usecamerastate) callbacks or DOM event listeners.
-
-#### getVisibleDomains
-
-Compute the field of view of the camera in data space.
-
-```ts
-getVisibleDomains(camera: Camera, context: VisCanvasContextValue): {
-  xVisibleDomain: Domain;
-  yVisibleDomain: Domain;
-}
-```
-
 ### Mock data
 
 The library exposes a utility function to retrieve a mock entity's metadata and a mock dataset's value as ndarray for testing purposes.

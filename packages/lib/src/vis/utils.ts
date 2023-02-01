@@ -344,22 +344,6 @@ export function toArray(arr: NumArray): number[] {
   return isTypedArray(arr) ? [...arr] : arr;
 }
 
-export function getVisibleDomains(
-  camera: Camera,
-  context: VisCanvasContextValue
-): {
-  xVisibleDomain: Domain;
-  yVisibleDomain: Domain;
-} {
-  const { worldToData, getFovBox } = context;
-  const [dataMin, dataMax] = getFovBox(camera).toRect().map(worldToData);
-
-  return {
-    xVisibleDomain: [dataMin.x, dataMax.x],
-    yVisibleDomain: [dataMin.y, dataMax.y],
-  };
-}
-
 export function getAxisValues(
   rawValues: NumArray | undefined,
   axisLength: number

@@ -17,6 +17,11 @@ export type TypedArrayConstructor =
 export type Domain = [number, number];
 export type Axis = 'x' | 'y';
 
+export interface VisibleDomains {
+  xVisibleDomain: Domain;
+  yVisibleDomain: Domain;
+}
+
 export enum ScaleType {
   Linear = 'linear',
   Log = 'log',
