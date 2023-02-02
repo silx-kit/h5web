@@ -5,14 +5,14 @@ import {
   createMemo,
 } from '@h5web/shared';
 import type { Domain, AnyNumArray, MappedTuple } from '@h5web/shared';
+import { useSyncedRef } from '@react-hookz/web';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
 import type { Vector3 } from 'three';
 
 import { useVisCanvasContext } from './shared/VisCanvasProvider';
-import type { VisCanvasContextValue } from './shared/VisCanvasProvider';
 import {
   getAxisDomain,
   getAxisValues,
@@ -54,23 +54,20 @@ export function useDomains(
 }
 
 export function useCameraState<T>(
-  factory: (camera: Camera, context: VisCanvasContextValue) => T,
-  deps: unknown[]
+  factory: (camera: Camera) => T,
+  equalityFn?: (prev: T, next: T) => boolean
 ): T {
   const camera = useThree((state) => state.camera);
-  const context = useVisCanvasContext();
 
-  const [state, setState] = useState(() => factory(camera, context));
+  const factoryRef = useSyncedRef(factory);
+  const [state, setState] = useState(() => factoryRef.current(camera));
 
-  function updateState() {
-    setState(() => factory(camera, context)); // functional update to skip re-renders if state hasn't changed
-  }
-
-  // Update state when context value or dependencies change
-  useEffect(updateState, [camera, context, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Update state when canvas is redrawn (i.e. on zoom/pan)
-  useFrame(updateState);
+  useFrame(() => {
+    const next = factoryRef.current(camera);
+    if (!equalityFn || !equalityFn(state, next)) {
+      setState(next);
+    }
+  });
 
   return state;
 }
@@ -83,7 +80,7 @@ export function useCssColors(
   // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
   const refCallback: RefCallback<HTMLElement> = useCallback(
     (elem) => setStyles(elem ? window.getComputedStyle(elem) : undefined),
-    [setStyles]
+    []
   );
 
   if (!styles) {
@@ -98,14 +95,9 @@ export function useCssColors(
 
 export function useHtmlCoords<T extends Vector3[]>(
   ...worldCoords: T
-): MappedTuple<T, Vector3> {
+): MappedTuple<T> {
   const { worldToHtml } = useVisCanvasContext();
-  return useCameraState(
-    (camera) =>
-      worldCoords.map((pt) => worldToHtml(camera, pt)) as MappedTuple<
-        T,
-        Vector3
-      >,
-    [...worldCoords, worldToHtml] // eslint-disable-line react-hooks/exhaustive-deps
-  );
+  return useCameraState((camera) => {
+    return worldCoords.map((pt) => worldToHtml(camera, pt)) as MappedTuple<T>;
+  });
 }

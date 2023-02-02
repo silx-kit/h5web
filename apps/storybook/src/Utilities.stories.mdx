@@ -206,53 +206,31 @@ useCanvasEvents({ onPointerDown: handlePointerDown }); // also supported: `onPoi
 Compute and update a local React state on every React Three Fiber frame. Useful to re-render React components when the user pans/zooms.
 The hook accepts a callback, which:
 
-- receives the `camera` object and the current `VisCanvasContext` value;
-- computes and returns a state based on the camera's current scale and position (typically using a combination of
-  [camera-based](https://h5web-docs.panosc.eu/?path=/story/utilities--page#camera-based-utilities) and
-  [context](https://h5web-docs.panosc.eu/?path=/story/context--page) utilities).
+- receives the `camera` object;
+- should compute and return a state based on the camera's current scale and position (typically using camera-based [context](https://h5web-docs.panosc.eu/?path=/story/context--page) utilities).
 
 ```ts
+useCameraState<T>(
+  factory: (camera: Camera) => T,
+  equalityFn: (prev: T, next: T) => boolean
+): T
+
 const { dataToHtml } = useVisCanvasContext();
-
-const htmlPt = useCameraState(
-  (camera, context) => dataToHtml(camera, new Vector3(x, y)),
-  [x, y, dataToHtml]
-);
-```
-
-Similarly to `useCallback`, `useCameraState` accepts a dependency array as second parameter. Make sure to configure ESLint's
-[`react-hooks/exhaustive-deps` rule](https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks#advanced-configuration)
-in your app to report missing dependencies:
-
-```json
-"react-hooks/exhaustive-deps": ["error", { "additionalHooks": "(useCameraState)" }]
+const htmlPt = useCameraState((camera) => dataToHtml(camera, new Vector3(x, y)));
 ```
 
 Internally, `useCameraState` uses React's `useState` and R3F's [`useFrame` hooks](https://docs.pmnd.rs/react-three-fiber/api/hooks#useframe).
-To avoid unnecessary re-renders, it performs a deep comparison before updating the state with the value returned by the callback.
-
-### Camera-based utilities
-
-The utilities documented in this section require access to the R3F `camera` object. They are typically meant to be called inside
-[`useCameraState`](https://h5web-docs.panosc.eu/?path=/story/utilities--page#usecamerastate) callbacks or DOM event listeners.
-
-#### getWorldFOV
-
-Compute the field of view of the camera in world space.
+By default, React performs a strict equality check to avoid re-rendering the same state twice in a row. If your `factory` function returns a new object reference on every call,
+you can avoid unnecessary re-renders by providing your own equality function. Note, however, that this optimisation is pointless if `factory` always returns a different state when the camera changes. Example:
 
 ```ts
-getWorldFOV(camera: Camera): { topRight: Vector3; bottomLeft: Vector3; }
-```
-
-### getVisibleDomains
-
-Compute the field of view of the camera in data space.
-
-```ts
-getVisibleDomains(camera: Camera, context: VisCanvasContextValue): {
-  xVisibleDomain: Domain;
-  yVisibleDomain: Domain;
-}
+/* Once the user has zoomed past a certain threshold, `pt` is always (0, 0, 0),
+ * so if the user pans or zooms further, we can skip re-renders by checking if
+ * the previous and next `pt` have the same coordinates. */
+const pt = useCameraState(
+  (camera) => camera.scale > 0.5 ? camera.position.clone() : new Vector3()),
+  (prevPt, nextPt) => prevPt.equals(nextPt)
+);
 ```
 
 ### Mock data

@@ -17,6 +17,11 @@ export type TypedArrayConstructor =
 export type Domain = [number, number];
 export type Axis = 'x' | 'y';
 
+export interface VisibleDomains {
+  xVisibleDomain: Domain;
+  yVisibleDomain: Domain;
+}
+
 export enum ScaleType {
   Linear = 'linear',
   Log = 'log',
@@ -37,6 +42,11 @@ export interface Dims {
   cols: number;
 }
 
-// MappedTupple<number[], string> => string[]
-// MappedTupple<[number, number], string> => [string, string]
-export type MappedTuple<T, U> = { [index in keyof T]: U };
+// MappedTuple<string[]> => string[]
+// MappedTuple<number[]> => number[]
+// MappedTuple<number[], string> => string[]
+// MappedTuple<[number, number]> => [number, number]
+// MappedTuple<[number, number], string> => [string, string]
+export type MappedTuple<T extends unknown[], U = T[number]> = {
+  [index in keyof T]: U;
+};

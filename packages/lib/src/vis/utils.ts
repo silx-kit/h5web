@@ -9,13 +9,11 @@ import {
   getBounds,
   DTypeClass,
 } from '@h5web/shared';
-import type { Camera } from '@react-three/fiber';
 import { scaleLinear, scaleThreshold } from '@visx/scale';
 import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import { clamp } from 'lodash';
 import type { IUniform } from 'three';
-import { Vector3 } from 'three';
 
 import type {
   Size,
@@ -28,12 +26,8 @@ import type {
   Aspect,
 } from './models';
 import { H5WEB_SCALES } from './scales';
-import type { VisCanvasContextValue } from './shared/VisCanvasProvider';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
-
-export const CAMERA_BOTTOM_LEFT = new Vector3(-1, -1, 0);
-export const CAMERA_TOP_RIGHT = new Vector3(1, 1, 0);
 
 const DEFAULT_AXIS_OFFSETS = { left: 80, right: 24, top: 16, bottom: 34 };
 const TITLE_OFFSET = 28;
@@ -346,36 +340,6 @@ export function getUniforms(
 
 export function toArray(arr: NumArray): number[] {
   return isTypedArray(arr) ? [...arr] : arr;
-}
-
-export function getWorldFOV(camera: Camera): {
-  topRight: Vector3;
-  bottomLeft: Vector3;
-} {
-  // Unproject from normalized camera space (-1, -1) to (1, 1) to world space
-  const topRight = CAMERA_TOP_RIGHT.clone().unproject(camera);
-  const bottomLeft = CAMERA_BOTTOM_LEFT.clone().unproject(camera);
-
-  return { topRight, bottomLeft };
-}
-
-export function getVisibleDomains(
-  camera: Camera,
-  context: VisCanvasContextValue
-): {
-  xVisibleDomain: Domain;
-  yVisibleDomain: Domain;
-} {
-  const { worldToData } = context;
-  const { topRight, bottomLeft } = getWorldFOV(camera);
-
-  const dataBottomLeft = worldToData(bottomLeft);
-  const dataTopRight = worldToData(topRight);
-
-  return {
-    xVisibleDomain: [dataBottomLeft.x, dataTopRight.x],
-    yVisibleDomain: [dataBottomLeft.y, dataTopRight.y],
-  };
 }
 
 export function getAxisValues(

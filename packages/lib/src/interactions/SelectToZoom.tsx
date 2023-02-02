@@ -62,17 +62,22 @@ function SelectToZoom(props: Props) {
       {({ html: htmlSelection }, { html: rawHtmlSelection }, isValid) => (
         <SvgElement>
           <SvgRect
-            className={styles.rawSelection}
+            className={styles.selection}
             coords={rawHtmlSelection}
+            fill="white"
+            fillOpacity={!keepRatio && isValid ? 0.25 : 0}
+            stroke="black"
             strokePosition="inside"
-            data-valid={(!keepRatio && isValid) || undefined}
+            strokeDasharray={keepRatio || !isValid ? 4 : undefined}
           />
           {keepRatio && (
             <SvgRect
               className={styles.selection}
               coords={htmlSelection}
+              fill="white"
+              fillOpacity={isValid ? 0.25 : 0}
+              stroke="black"
               strokePosition="inside"
-              data-valid={isValid || undefined}
             />
           )}
         </SvgElement>

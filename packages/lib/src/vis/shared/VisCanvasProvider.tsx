@@ -1,3 +1,4 @@
+import type { VisibleDomains } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
@@ -11,6 +12,7 @@ import { getCanvasScale, getSizeToFit } from '../utils';
 export interface VisCanvasContextValue {
   canvasSize: Size;
   canvasRatio: number;
+  canvasBox: Box;
   visRatio: number | undefined;
   visSize: Size;
   abscissaConfig: AxisConfig;
@@ -23,9 +25,10 @@ export interface VisCanvasContextValue {
   worldToData: (worldPt: Vector3) => Vector3;
   htmlToWorld: (camera: Camera, htmlPt: Vector3) => Vector3;
   htmlToData: (camera: Camera, htmlPt: Vector3) => Vector3;
+  getFovBox: (camera: Camera, center?: Vector3) => Box;
+  getVisibleDomains: (camera: Camera) => VisibleDomains;
 
   // For internal use only
-  canvasBox: Box;
   svgOverlay: SVGSVGElement | undefined;
   floatingToolbar: HTMLDivElement | undefined;
 }
@@ -126,6 +129,26 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     [htmlToWorld, worldToData]
   );
 
+  const getFovBox = useCallback(
+    (camera: Camera, center: Vector3 = camera.position): Box => {
+      const { scale } = camera;
+      return Box.empty(center).expandBySize(width * scale.x, height * scale.y);
+    },
+    [width, height]
+  );
+
+  const getVisibleDomains = useCallback(
+    (camera: Camera): VisibleDomains => {
+      const [dataMin, dataMax] = getFovBox(camera).toRect().map(worldToData);
+
+      return {
+        xVisibleDomain: [dataMin.x, dataMax.x],
+        yVisibleDomain: [dataMin.y, dataMax.y],
+      };
+    },
+    [getFovBox, worldToData]
+  );
+
   return (
     <VisCanvasContext.Provider
       value={{
@@ -144,6 +167,8 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         worldToData,
         htmlToWorld,
         htmlToData,
+        getFovBox,
+        getVisibleDomains,
         svgOverlay,
         floatingToolbar,
       }}

@@ -4,8 +4,8 @@ import type { Rect } from '../models';
 
 interface Props extends SVGProps<SVGRectElement> {
   coords: Rect;
+  strokePosition?: 'inside' | 'outside'; // no effect without `stroke` prop; assumes `strokeWidth` of 1 unless specified explicitely as prop (CSS ignored)
   strokeWidth?: number; // forbid string
-  strokePosition?: 'inside' | 'outside';
 }
 
 function SvgRect(props: Props) {

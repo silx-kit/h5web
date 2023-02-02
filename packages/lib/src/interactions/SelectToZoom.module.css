@@ -1,18 +1,3 @@
 .selection {
-  fill: white;
-  fill-opacity: 0;
-  stroke: black;
-  transition: 'fill-opacity 0.2s';
-}
-
-.selection[data-valid] {
-  fill-opacity: 0.25;
-}
-
-.rawSelection {
-  composes: selection;
-}
-
-.rawSelection:not([data-valid]) {
-  stroke-dasharray: 4;
+  transition: fill-opacity 0.3s;
 }
