@@ -12,6 +12,7 @@ import {
   getCombinedDomain,
   clampBound,
   getAxisDomain,
+  getVisRatio,
 } from './utils';
 
 const MAX = Number.MAX_VALUE / 2;
@@ -349,5 +350,35 @@ describe('getAxisDomain', () => {
 
   it('should return undefined when values array is empty', () => {
     expect(getAxisDomain([])).toBeUndefined();
+  });
+});
+
+describe('getVisRatio', () => {
+  it('should return undefined for `auto` aspect', () => {
+    expect(getVisRatio('auto', [0, 1], [0, 1])).toBeUndefined();
+  });
+
+  it('should compute ratio for `equal` aspect', () => {
+    expect(getVisRatio('equal', [0, 5], [0, 5])).toBe(1);
+    expect(getVisRatio('equal', [0, 1], [0, 2])).toBe(0.5);
+    expect(getVisRatio('equal', [0, 2], [0, 1])).toBe(2);
+    expect(getVisRatio('equal', [100, 200], [10, 20])).toBe(10);
+  });
+
+  it('should compute ratio for custom aspect', () => {
+    expect(getVisRatio(1, [0, 5], [0, 5])).toBe(1);
+    expect(getVisRatio(1, [0, 1], [0, 2])).toBe(0.5);
+    expect(getVisRatio(1, [0, 2], [0, 1])).toBe(2);
+    expect(getVisRatio(1, [100, 200], [10, 20])).toBe(10);
+
+    expect(getVisRatio(0.5, [0, 5], [0, 5])).toBe(2);
+    expect(getVisRatio(0.5, [0, 1], [0, 2])).toBe(1);
+    expect(getVisRatio(0.5, [0, 2], [0, 1])).toBe(4);
+    expect(getVisRatio(0.5, [100, 200], [10, 20])).toBe(20);
+
+    expect(getVisRatio(2, [0, 5], [0, 5])).toBe(0.5);
+    expect(getVisRatio(2, [0, 1], [0, 2])).toBe(0.25);
+    expect(getVisRatio(2, [0, 2], [0, 1])).toBe(1);
+    expect(getVisRatio(2, [100, 200], [10, 20])).toBe(5);
   });
 });
