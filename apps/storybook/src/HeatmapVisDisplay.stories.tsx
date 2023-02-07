@@ -26,7 +26,7 @@ export const CustomAspectRatio = Template.bind({});
 CustomAspectRatio.args = {
   dataArray,
   domain,
-  aspect: 1,
+  aspect: 2,
 };
 
 export const FlipYAxis = Template.bind({});
