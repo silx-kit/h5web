@@ -263,20 +263,20 @@ export function getCombinedDomain(
 
 export function getVisRatio(
   aspect: Aspect,
-  abscissaConfig: AxisConfig,
-  ordinateConfig: AxisConfig
+  abscissaDomain: Domain,
+  ordinateDomain: Domain
 ): number | undefined {
   if (aspect === 'auto') {
     return undefined;
   }
 
   if (aspect === 'equal') {
-    const [xMin, xMax] = abscissaConfig.visDomain;
-    const [yMin, yMax] = ordinateConfig.visDomain;
-    return Math.abs(xMax - xMin) / Math.abs(yMax - yMin);
+    return getVisRatio(1, abscissaDomain, ordinateDomain);
   }
 
-  return aspect;
+  const [xMin, xMax] = abscissaDomain;
+  const [yMin, yMax] = ordinateDomain;
+  return Math.abs(xMax - xMin) / Math.abs(yMax - yMin) / aspect;
 }
 
 export function getAxisOffsets(

@@ -35,7 +35,11 @@ function VisCanvas(props: PropsWithChildren<Props>) {
     children,
   } = props;
 
-  const visRatio = getVisRatio(aspect, abscissaConfig, ordinateConfig);
+  const visRatio = getVisRatio(
+    aspect,
+    abscissaConfig.visDomain,
+    ordinateConfig.visDomain
+  );
 
   const axisOffsets = showAxes
     ? getAxisOffsets({
