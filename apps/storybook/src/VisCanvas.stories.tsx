@@ -49,7 +49,7 @@ export const CustomAspectRatio = Template.bind({});
 CustomAspectRatio.args = {
   abscissaConfig: { visDomain: [0, 20], showGrid: true, isIndexAxis: true },
   ordinateConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
-  aspect: 1,
+  aspect: 2,
 };
 
 export const NoGrid = Template.bind({});
