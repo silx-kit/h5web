@@ -92,12 +92,3 @@ export function useCssColors(
 
   return [colors, refCallback];
 }
-
-export function useHtmlCoords<T extends Vector3[]>(
-  ...worldCoords: T
-): MappedTuple<T> {
-  const { worldToHtml } = useVisCanvasContext();
-  return useCameraState((camera) => {
-    return worldCoords.map((pt) => worldToHtml(camera, pt)) as MappedTuple<T>;
-  });
-}

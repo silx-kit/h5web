@@ -98,7 +98,6 @@ export {
   useAxisDomain,
   useValueToIndexScale,
   useCameraState,
-  useHtmlCoords,
 } from './vis/hooks';
 
 export {
