@@ -156,7 +156,7 @@ function parseAxesList(dsetList: unknown): string[] {
   return [dsetList];
 }
 
-export function findOldStyleAxesDatasets(
+function findOldStyleAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
   attrValuesStore: AttrValuesStore

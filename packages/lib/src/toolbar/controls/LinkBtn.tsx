@@ -30,5 +30,4 @@ function LinkBtn(props: Props) {
   );
 }
 
-export type { Props as BtnProps };
 export default LinkBtn;

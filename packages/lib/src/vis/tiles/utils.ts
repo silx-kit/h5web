@@ -120,19 +120,3 @@ export function scaleBoxToLayer(
 
   return new Box2().setFromPoints([pt1, pt2]);
 }
-
-export function scaleFromLayerToTile(layerCoord: Vector2, tileSize: Size) {
-  const tileOffsetX =
-    Math.floor(layerCoord.x / tileSize.width) * tileSize.width;
-  const tileOffsetY =
-    Math.floor(layerCoord.y / tileSize.height) * tileSize.height;
-
-  const xInTile = layerCoord.x % tileSize.width;
-  const yInTile = layerCoord.y % tileSize.height;
-
-  return {
-    offset: new Vector2(tileOffsetX, tileOffsetY),
-    x: xInTile,
-    y: yInTile,
-  };
-}

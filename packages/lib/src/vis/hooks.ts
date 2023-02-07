@@ -4,15 +4,13 @@ import {
   getValidDomainForScale,
   createMemo,
 } from '@h5web/shared';
-import type { Domain, AnyNumArray, MappedTuple } from '@h5web/shared';
+import type { Domain, AnyNumArray } from '@h5web/shared';
 import { useSyncedRef } from '@react-hookz/web';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useCallback, useMemo, useState } from 'react';
 import type { RefCallback } from 'react';
-import type { Vector3 } from 'three';
 
-import { useVisCanvasContext } from './shared/VisCanvasProvider';
 import {
   getAxisDomain,
   getAxisValues,
