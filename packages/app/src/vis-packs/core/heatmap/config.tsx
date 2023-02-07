@@ -65,7 +65,7 @@ function createStore() {
       }),
       {
         name: 'h5web:heatmap',
-        version: 9,
+        version: 10,
       }
     )
   );

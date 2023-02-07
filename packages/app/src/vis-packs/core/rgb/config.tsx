@@ -33,7 +33,7 @@ function createStore() {
       }),
       {
         name: 'h5web:rgb',
-        version: 1,
+        version: 2,
       }
     )
   );
