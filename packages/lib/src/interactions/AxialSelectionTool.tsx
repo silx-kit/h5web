@@ -7,7 +7,7 @@ import type { SelectionToolProps } from './SelectionTool';
 import SelectionTool from './SelectionTool';
 import type { Rect, Selection } from './models';
 
-interface Props extends SelectionToolProps {
+interface Props extends Omit<SelectionToolProps, 'transform'> {
   axis: Axis;
 }
 
