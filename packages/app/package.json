@@ -56,7 +56,7 @@
     "react-slider": "2.0.4",
     "react-suspense-fetch": "0.4.1",
     "three": "0.141.0",
-    "zustand": "4.1.4"
+    "zustand": "4.1.5"
   },
   "devDependencies": {
     "@h5web/shared": "workspace:*",

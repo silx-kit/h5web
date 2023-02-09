@@ -209,7 +209,7 @@ importers:
       three: 0.141.0
       typescript: 4.9.4
       vite: 4.0.4
-      zustand: 4.1.4
+      zustand: 4.1.5
     dependencies:
       '@h5web/lib': link:../lib
       '@react-hookz/web': 22.0.0_sfoxds7t5ydpegc3knd667wn6m
@@ -225,7 +225,7 @@ importers:
       react-slider: 2.0.4_react@17.0.2
       react-suspense-fetch: 0.4.1
       three: 0.141.0
-      zustand: 4.1.4_react@17.0.2
+      zustand: 4.1.5_react@17.0.2
     devDependencies:
       '@h5web/shared': link:../shared
       '@rollup/plugin-alias': 4.0.2_rollup@3.10.0
@@ -344,7 +344,7 @@ importers:
       three: 0.141.0
       typescript: 4.9.4
       vite: 4.0.4
-      zustand: 4.1.4
+      zustand: 4.1.5
     dependencies:
       '@react-hookz/web': 22.0.0_sfoxds7t5ydpegc3knd667wn6m
       '@visx/axis': 3.0.0_react@17.0.2
@@ -368,7 +368,7 @@ importers:
       react-measure: 2.5.2_sfoxds7t5ydpegc3knd667wn6m
       react-slider: 2.0.4_react@17.0.2
       react-window: 1.8.8_sfoxds7t5ydpegc3knd667wn6m
-      zustand: 4.1.4_react@17.0.2
+      zustand: 4.1.5_react@17.0.2
     devDependencies:
       '@h5web/shared': link:../shared
       '@react-three/fiber': 7.0.26_weaphyuqmcotibvxgot4zxypyi
@@ -16615,8 +16615,8 @@ packages:
     dependencies:
       react: 17.0.2
 
-  /zustand/4.1.4_react@17.0.2:
-    resolution: {integrity: sha512-k2jVOlWo8p4R83mQ+/uyB8ILPO2PCJOf+QVjcL+1PbMCk1w5OoPYpAIxy9zd93FSfmJqoH6lGdwzzjwqJIRU5A==}
+  /zustand/4.1.5_react@17.0.2:
+    resolution: {integrity: sha512-PsdRT8Bvq22Yyh1tvpgdHNE7OAeFKqJXUxtJvj1Ixw2B9O2YZ1M34ImQ+xyZah4wZrR4lENMoDUutKPpyXCQ/Q==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       immer: '>=9.0'
