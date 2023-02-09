@@ -83,7 +83,8 @@ function Histogram(props: Props) {
   return (
     <div ref={ref} className={styles.container}>
       <svg width="100%" height="100%" className={styles.histogram}>
-        {...rects}
+        {/* `{...rects}` breaks Storybook; `{rect}` breaks tests in Braggy */}
+        {rects.map((r) => r)}{' '}
         {colorMap && (
           <ColorBar
             x={markerPositions[0]}
@@ -102,7 +103,6 @@ function Histogram(props: Props) {
             ((domain) => onChange(domain.map(xScale.invert) as Domain))
           }
         />
-
         <AxisBottom
           top={height}
           scale={xScale}
