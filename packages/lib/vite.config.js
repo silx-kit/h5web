@@ -1,3 +1,4 @@
+import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import { URL, fileURLToPath } from 'url';
@@ -18,9 +19,7 @@ export const externals = new Set([
 ]);
 
 export default defineConfig({
-  esbuild: {
-    jsxInject: `import React from 'react'`, // auto-import React in every file
-  },
+  plugins: [react()],
   build: {
     lib: {
       entry: path.resolve('src/index.ts'),

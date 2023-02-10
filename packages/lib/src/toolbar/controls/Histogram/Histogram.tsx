@@ -83,8 +83,7 @@ function Histogram(props: Props) {
   return (
     <div ref={ref} className={styles.container}>
       <svg width="100%" height="100%" className={styles.histogram}>
-        {/* `{...rects}` breaks Storybook; `{rect}` breaks tests in Braggy */}
-        {rects.map((r) => r)}{' '}
+        {rects}
         {colorMap && (
           <ColorBar
             x={markerPositions[0]}

@@ -47,12 +47,13 @@
     "@rollup/plugin-alias": "4.0.2",
     "@types/node": "^16.18.11",
     "@types/react": "^17.0.52",
+    "@vitejs/plugin-react": "2.2.0",
     "eslint": "8.28.0",
     "eslint-config-galex": "4.4.2",
     "react": "17.0.2",
     "rollup": "3.10.0",
     "rollup-plugin-dts": "5.1.1",
     "typescript": "4.9.4",
-    "vite": "4.0.4"
+    "vite": "3.2.5"
   }
 }
