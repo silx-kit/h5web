@@ -27,6 +27,7 @@ export interface DataContextValue {
   getExportURL?: DataProviderApi['getExportURL'];
   addProgressListener: (cb: ProgressCallback) => void;
   removeProgressListener: (cb: ProgressCallback) => void;
+  getSearchablePaths?: DataProviderApi['getSearchablePaths'];
 }
 
 const DataContext = createContext({} as DataContextValue);
@@ -113,6 +114,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
         getExportURL: api.getExportURL?.bind(api),
         addProgressListener: api.addProgressListener.bind(api),
         removeProgressListener: api.removeProgressListener.bind(api),
+        getSearchablePaths: api.getSearchablePaths?.bind(api),
       }}
     >
       {children}

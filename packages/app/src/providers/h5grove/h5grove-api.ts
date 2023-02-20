@@ -25,6 +25,7 @@ import type {
   H5GroveAttrValuesResponse,
   H5GroveDataResponse,
   H5GroveEntityResponse,
+  H5GrovePathsResponse,
 } from './models';
 import {
   convertH5GroveDtype,
@@ -98,6 +99,14 @@ export class H5GroveApi extends DataProviderApi {
     }
 
     return new URL(`${baseURL as string}/data/?${searchParams.toString()}`);
+  }
+
+  public async getSearchablePaths(path: string): Promise<string[]> {
+    const { data } = await this.client.get<H5GrovePathsResponse>(`/paths/`, {
+      params: { path },
+    });
+
+    return data;
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {

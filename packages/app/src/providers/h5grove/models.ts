@@ -50,3 +50,5 @@ export interface H5GroveAttribute {
 
 export type H5GroveAttrValuesResponse = AttributeValues;
 export type H5GroveDataResponse = unknown;
+
+export type H5GrovePathsResponse = string[];
