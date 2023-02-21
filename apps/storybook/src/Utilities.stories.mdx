@@ -203,7 +203,7 @@ useCanvasEvents({ onPointerDown: handlePointerDown }); // also supported: `onPoi
 
 #### useCameraState
 
-Compute and update a local React state on every React Three Fiber frame. Useful to re-render React components when the user pans/zooms.
+Compute and update a state on every React Three Fiber frame. Useful to re-render React components when the user pans/zooms.
 The hook accepts a callback, which:
 
 - receives the `camera` object;
@@ -216,11 +216,22 @@ useCameraState<T>(
 ): T
 
 const { dataToHtml } = useVisCanvasContext();
-const htmlPt = useCameraState((camera) => dataToHtml(camera, new Vector3(x, y)));
+const htmlPt = useCameraState(
+  (camera) => dataToHtml(camera, new Vector3(x, y)),
+  [x, y, dataToHtml]
+);
 ```
 
-Internally, `useCameraState` uses React's `useState` and R3F's [`useFrame` hooks](https://docs.pmnd.rs/react-three-fiber/api/hooks#useframe).
-By default, React performs a strict equality check to avoid re-rendering the same state twice in a row. If your `factory` function returns a new object reference on every call,
+`useCameraState` accepts a dependency array as second parameter (similarly to `useCallback`) and recomputes the state synchronously whenever any dependency changes. Make sure to configure ESLint's
+[`react-hooks/exhaustive-deps` rule](https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks#advanced-configuration)
+in your app so it can report missing dependencies:
+
+```json
+"react-hooks/exhaustive-deps": ["error", { "additionalHooks": "(useCameraState)" }]
+```
+
+Internally, `useCameraState` uses R3F's [`useFrame` hooks](https://docs.pmnd.rs/react-three-fiber/api/hooks#useframe).
+By default, it performs a strict equality check with [`Object.is()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) to avoid re-rendering the same state twice in a row. If your `factory` function returns a new object reference on every call,
 you can avoid unnecessary re-renders by providing your own equality function. Note, however, that this optimisation is pointless if `factory` always returns a different state when the camera changes. Example:
 
 ```ts
@@ -229,6 +240,7 @@ you can avoid unnecessary re-renders by providing your own equality function. No
  * the previous and next `pt` have the same coordinates. */
 const pt = useCameraState(
   (camera) => camera.scale > 0.5 ? camera.position.clone() : new Vector3()),
+  [], // no dependencies
   (prevPt, nextPt) => prevPt.equals(nextPt)
 );
 ```

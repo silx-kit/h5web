@@ -32,10 +32,13 @@ function Annotation(props: Props) {
   }
 
   const { dataToHtml } = useVisCanvasContext();
-  const { htmlPt, cameraScale } = useCameraState((camera) => ({
-    htmlPt: dataToHtml(camera, new Vector3(x, y)),
-    cameraScale: camera.scale.clone(),
-  }));
+  const { htmlPt, cameraScale } = useCameraState(
+    (camera) => ({
+      htmlPt: dataToHtml(camera, new Vector3(x, y)),
+      cameraScale: camera.scale.clone(),
+    }),
+    [x, y, dataToHtml]
+  );
 
   const transforms = [
     center ? 'translate(-50%, -50%)' : '',

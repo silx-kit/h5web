@@ -5,10 +5,10 @@ import {
   createMemo,
 } from '@h5web/shared';
 import type { Domain, AnyNumArray } from '@h5web/shared';
-import { useSyncedRef } from '@react-hookz/web';
+import { useRerender, useSyncedRef } from '@react-hookz/web';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import type { RefCallback } from 'react';
 
 import {
@@ -53,21 +53,34 @@ export function useDomains(
 
 export function useCameraState<T>(
   factory: (camera: Camera) => T,
-  equalityFn?: (prev: T, next: T) => boolean
+  deps: unknown[],
+  equalityFn = (prev: T, next: T) => Object.is(prev, next)
 ): T {
   const camera = useThree((state) => state.camera);
+  const rerender = useRerender();
 
-  const factoryRef = useSyncedRef(factory);
-  const [state, setState] = useState(() => factoryRef.current(camera));
+  const stateRef = useRef<T>(); // ref instead of state to avoid re-render when deps change
+  const factoryRef = useSyncedRef(factory); // ensure `useMemo` always sees latest `factory` reference
+
+  useMemo(() => {
+    // Compute state synchronously when deps change
+    stateRef.current = factoryRef.current(camera);
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 
   useFrame(() => {
+    // Recompute state and re-render on every frame
     const next = factoryRef.current(camera);
-    if (!equalityFn || !equalityFn(state, next)) {
-      setState(next);
+
+    // ... unless state hasn't changed
+    if (equalityFn(stateRef.current as T, next)) {
+      return;
     }
+
+    stateRef.current = next;
+    rerender();
   });
 
-  return state;
+  return stateRef.current as T; // synchronous update in `useMemo` guarantees `T` (which can include `undefined`)
 }
 
 export function useCssColors(
