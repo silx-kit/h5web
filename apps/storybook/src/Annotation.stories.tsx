@@ -1,14 +1,16 @@
-import { Annotation, DefaultInteractions, VisCanvas } from '@h5web/lib';
+import type { CanvasEvent } from '@h5web/lib';
+import { Annotation, useCanvasEvents } from '@h5web/lib';
+import { useRafState } from '@react-hookz/web';
 import type { Meta, Story } from '@storybook/react';
+import { useCallback } from 'react';
+import type { Vector3 } from 'three';
 
+import DefaultCanvas from './decorators/DefaultCanvas';
 import FillHeight from './decorators/FillHeight';
+import { formatCoord } from './utils';
 
 export const Default: Story = () => (
-  <VisCanvas
-    abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
-    ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
-  >
-    <DefaultInteractions />
+  <>
     <Annotation x={10} y={16}>
       HTML annotation positioned at (10, 16)
     </Annotation>
@@ -67,15 +69,11 @@ export const Default: Story = () => (
         </svg>
       </>
     </Annotation>
-  </VisCanvas>
+  </>
 );
 
 export const WithZoom: Story = () => (
-  <VisCanvas
-    abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
-    ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
-  >
-    <DefaultInteractions />
+  <>
     <Annotation x={10} y={16} scaleOnZoom style={{ width: 230 }}>
       HTML annotation at (10, 16) that scales with zoom.
     </Annotation>
@@ -89,11 +87,37 @@ export const WithZoom: Story = () => (
       Another annotation that scales with zoom but this time{' '}
       <strong>centred</strong> on (25, 10)
     </Annotation>
-  </VisCanvas>
+  </>
 );
+
+export const FollowPointer: Story = () => {
+  const [coords, setCoords] = useRafState<Vector3>();
+
+  const onPointerMove = useCallback(
+    (evt: CanvasEvent<PointerEvent>) => {
+      setCoords(evt.dataPt);
+    },
+    [setCoords]
+  );
+
+  useCanvasEvents({ onPointerMove });
+
+  if (!coords) {
+    return <></>; // eslint-disable-line react/jsx-no-useless-fragment
+  }
+
+  const { x, y } = coords;
+  return (
+    <Annotation
+      x={x + 0.5} // slight offset from pointer
+      y={y - 0.5}
+      style={{ whiteSpace: 'nowrap' }}
+    >{`x=${formatCoord(x)}, y=${formatCoord(y)}`}</Annotation>
+  );
+};
 
 export default {
   title: 'Building Blocks/Annotation',
   parameters: { layout: 'fullscreen' },
-  decorators: [FillHeight],
+  decorators: [DefaultCanvas, FillHeight],
 } as Meta;

@@ -8,7 +8,10 @@ function ResetZoomButton() {
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
 
-  const isZoomedIn = useCameraState(({ scale }) => scale.x < 1 || scale.y < 1);
+  const isZoomedIn = useCameraState(
+    ({ scale }) => scale.x < 1 || scale.y < 1,
+    []
+  );
 
   function resetZoom() {
     camera.scale.x = 1;

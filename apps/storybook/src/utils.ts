@@ -1,7 +1,7 @@
 import type { Rect } from '@h5web/lib';
 import { format } from 'd3-format';
 
-const formatCoord = format('.2f');
+export const formatCoord = format('.2f');
 
 export function getTitleForSelection(selection: Rect | undefined) {
   if (!selection) {

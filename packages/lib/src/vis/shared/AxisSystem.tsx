@@ -16,7 +16,7 @@ function AxisSystem(props: Props) {
   const { canvasSize, abscissaConfig, ordinateConfig, getVisibleDomains } =
     useVisCanvasContext();
 
-  const { xVisibleDomain, yVisibleDomain } = useCameraState(getVisibleDomains);
+  const visibleDomains = useCameraState(getVisibleDomains, [getVisibleDomains]);
 
   return (
     // Append to `canvasWrapper` instead of `r3fRoot`
@@ -32,7 +32,7 @@ function AxisSystem(props: Props) {
         <Axis
           type="abscissa"
           config={abscissaConfig}
-          domain={xVisibleDomain}
+          domain={visibleDomains.xVisibleDomain}
           canvasSize={canvasSize}
           offset={axisOffsets.bottom}
           showAxis={showAxes}
@@ -40,7 +40,7 @@ function AxisSystem(props: Props) {
         <Axis
           type="ordinate"
           config={ordinateConfig}
-          domain={yVisibleDomain}
+          domain={visibleDomains.yVisibleDomain}
           canvasSize={canvasSize}
           offset={axisOffsets.left}
           showAxis={showAxes}
