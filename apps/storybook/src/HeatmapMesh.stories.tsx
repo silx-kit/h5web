@@ -65,6 +65,14 @@ LinearMagFilter.args = {
   magFilter: LinearFilter,
 };
 
+export const BadColor = Template.bind({});
+BadColor.args = {
+  ...Default.args,
+  domain: [0.1, 400],
+  scaleType: ScaleType.Log,
+  badColor: 'steelblue',
+};
+
 export default {
   title: 'Building Blocks/HeatmapMesh',
   component: HeatmapMesh,
