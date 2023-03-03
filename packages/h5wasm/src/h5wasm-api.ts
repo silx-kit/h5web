@@ -67,7 +67,7 @@ export class H5WasmApi extends ProviderApi {
       throw new Error('Compression filter not supported');
     }
 
-    // h5wasm returns integers for bool and BigInt for int64
+    // h5wasm returns integers for bool and BigInt for (u)int64
     // So we use to_array instead to have bool and numbers resp.
     if (hasBoolType(dataset) || hasInt64Type(dataset)) {
       const rawValue = h5wDataset.to_array();

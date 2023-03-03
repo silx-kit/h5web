@@ -104,5 +104,9 @@ export function assertNumericMetadata(
 }
 
 export function hasInt64Type(dataset: Dataset) {
-  return dataset.type.class === DTypeClass.Integer && dataset.type.size === 64;
+  return (
+    (dataset.type.class === DTypeClass.Integer ||
+      dataset.type.class === DTypeClass.Unsigned) &&
+    dataset.type.size === 64
+  );
 }
