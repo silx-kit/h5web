@@ -1,5 +1,10 @@
 import { useContext, createContext } from 'react';
-import type { ReactElement, ComponentType, SVGAttributes } from 'react';
+import type {
+  ReactElement,
+  ReactNode,
+  ComponentType,
+  SVGAttributes,
+} from 'react';
 
 import styles from './ToggleGroup.module.css';
 
@@ -30,10 +35,18 @@ interface BtnProps {
   icon?: ComponentType<SVGAttributes<SVGElement>>;
   iconOnly?: boolean;
   disabled?: boolean;
+  children?: ReactNode;
 }
 
 function Btn(props: BtnProps) {
-  const { label, value, icon: Icon, iconOnly, disabled = false } = props;
+  const {
+    label,
+    value,
+    icon: Icon,
+    iconOnly,
+    disabled = false,
+    children,
+  } = props;
   const {
     role,
     value: selectedValue,
@@ -59,6 +72,7 @@ function Btn(props: BtnProps) {
         {Icon && <Icon className={styles.icon} />}
         {!iconOnly && <span className={styles.label}>{label}</span>}
       </span>
+      {children}
     </button>
   );
 }
