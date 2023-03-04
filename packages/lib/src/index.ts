@@ -15,7 +15,11 @@ export { default as Btn } from './toolbar/controls/Btn';
 export { default as LinkBtn } from './toolbar/controls/LinkBtn';
 export { default as ToggleBtn } from './toolbar/controls/ToggleBtn';
 export { default as ToggleGroup } from './toolbar/controls/ToggleGroup';
+export { default as BoundEditor } from './toolbar/controls/DomainSlider/BoundEditor';
 export { default as DomainSlider } from './toolbar/controls/DomainSlider/DomainSlider';
+export { default as ErrorMessage } from './toolbar/controls/DomainSlider/ErrorMessage';
+export { default as ScaledSlider } from './toolbar/controls/DomainSlider/ScaledSlider';
+export { default as ColorMapOption } from './toolbar/controls/ColorMapSelector/ColorMapOption';
 export { default as ColorMapSelector } from './toolbar/controls/ColorMapSelector/ColorMapSelector';
 export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/ScaleSelector';
 export { default as GridToggler } from './toolbar/controls/GridToggler';
@@ -28,6 +32,7 @@ export { default as NotationToggleGroup } from './toolbar/controls/NotationToggl
 export { default as Histogram } from './toolbar/controls/Histogram/Histogram';
 export type { DomainSliderProps } from './toolbar/controls/DomainSlider/DomainSlider';
 export type { HistogramProps } from './toolbar/controls/Histogram/Histogram';
+export type { BoundEditorHandle } from './toolbar/controls/DomainSlider/BoundEditor';
 
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';
@@ -130,6 +135,8 @@ export type {
 export { MouseButton } from './interactions/models';
 
 export type { Domain, VisibleDomains, Dims, Axis } from '@h5web/shared';
+
+export { DomainError } from './vis/models';
 
 export type {
   Aspect,
