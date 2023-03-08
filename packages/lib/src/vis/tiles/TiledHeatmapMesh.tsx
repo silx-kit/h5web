@@ -2,7 +2,6 @@ import { clamp, range } from 'lodash';
 import { useRef } from 'react';
 import type { Group } from 'three';
 
-import { getInterpolator } from '../heatmap/utils';
 import { useCameraState } from '../hooks';
 import type { Size } from '../models';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
@@ -70,18 +69,10 @@ function TiledHeatmapMesh(props: Props) {
       : [currentLayerIndex];
   }
 
-  const { colorMap, invertColorMap = false } = colorMapProps;
-
   const onPointerMove = useTooltipOnMoveHandler();
 
   return (
     <group ref={groupRef}>
-      <mesh position={[0, 0, -0.1]}>
-        <planeGeometry args={[meshSize.width, meshSize.height]} />
-        <meshBasicMaterial
-          color={getInterpolator(colorMap, invertColorMap)(0)}
-        />
-      </mesh>
       {layers.map((layer, i) => (
         <TiledLayer
           key={layer}
