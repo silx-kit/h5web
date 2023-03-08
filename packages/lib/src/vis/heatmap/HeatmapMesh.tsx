@@ -1,4 +1,5 @@
 import type { Domain } from '@h5web/shared';
+import type { RGBColor } from 'd3-color';
 import type { NdArray } from 'ndarray';
 import type { TextureFilter } from 'three';
 
@@ -17,6 +18,7 @@ interface Props extends VisMeshProps {
   magFilter?: TextureFilter;
   alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
+  badColor?: RGBColor | string;
 }
 
 function HeatmapMesh(props: Props) {
@@ -29,6 +31,7 @@ function HeatmapMesh(props: Props) {
     magFilter,
     alphaValues,
     alphaDomain,
+    badColor,
     ...visMeshProps
   } = props;
 
@@ -43,6 +46,7 @@ function HeatmapMesh(props: Props) {
         magFilter={magFilter}
         alphaValues={alphaValues}
         alphaDomain={alphaDomain}
+        badColor={badColor}
       />
     </VisMesh>
   );
