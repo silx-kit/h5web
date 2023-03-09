@@ -30,6 +30,7 @@ interface Props {
   title: string;
   toolbarContainer?: HTMLDivElement | undefined;
   config: LineConfig;
+  ignoreValue?: (val: number) => boolean;
 }
 
 function MappedLineVis(props: Props) {
@@ -49,6 +50,7 @@ function MappedLineVis(props: Props) {
     title,
     toolbarContainer,
     config,
+    ignoreValue,
   } = props;
 
   const { yScaleType, xScaleType, curveType, showGrid, autoScale, showErrors } =
@@ -71,8 +73,10 @@ function MappedLineVis(props: Props) {
   const dataDomain = useDomain(
     dataForDomain,
     yScaleType,
-    showErrors ? errorsForDomain : undefined
+    showErrors ? errorsForDomain : undefined,
+    ignoreValue
   );
+
   const auxDomains = useDomains(auxForDomain, yScaleType, auxErrorsForDomain);
   const combinedDomain = useCombinedDomain([dataDomain, ...auxDomains]);
   const xDimIndex = dimMapping.indexOf('x');
@@ -119,6 +123,7 @@ function MappedLineVis(props: Props) {
           errors: auxErrorsArrays[i],
         }))}
         testid={dimMapping.toString()}
+        ignoreValue={ignoreValue}
       />
     </>
   );

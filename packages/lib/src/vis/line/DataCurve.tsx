@@ -34,6 +34,7 @@ interface Props {
   onDataPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
   onDataPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
+  ignoreValue?: (val: number) => boolean;
 }
 
 function DataCurve(props: Props) {
@@ -50,10 +51,11 @@ function DataCurve(props: Props) {
     onDataPointClick,
     onDataPointEnter,
     onDataPointLeave,
+    ignoreValue,
   } = props;
 
   const [dataGeometry] = useState(() => new BufferGeometry());
-  const points = useCanvasPoints(abscissas, ordinates, errors);
+  const points = useCanvasPoints(abscissas, ordinates, errors, ignoreValue);
   const invalidate = useThree((state) => state.invalidate);
 
   useLayoutEffect(() => {

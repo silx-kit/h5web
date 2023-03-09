@@ -45,6 +45,7 @@ interface Props {
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
   testid?: string;
+  ignoreValue?: (val: number) => boolean;
 }
 
 function LineVis(props: Props) {
@@ -65,6 +66,7 @@ function LineVis(props: Props) {
     children,
     interactions,
     testid,
+    ignoreValue,
   } = props;
 
   const {
@@ -175,6 +177,7 @@ function LineVis(props: Props) {
           showErrors={showErrors}
           color={curveColor}
           curveType={curveType}
+          ignoreValue={ignoreValue}
         />
         {auxiliaries.map(({ array, label, errors }, i) => (
           <DataCurve
