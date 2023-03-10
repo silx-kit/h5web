@@ -20,10 +20,11 @@ interface Props {
   scaleType: ScaleType;
   onCustomDomainChange: (domain: CustomDomain) => void;
   histogram?: HistogramParams;
+  disabled?: boolean;
 }
 
 function DomainSlider(props: Props) {
-  const { dataDomain, customDomain, scaleType } = props;
+  const { dataDomain, customDomain, scaleType, disabled = false } = props;
   const { onCustomDomainChange, histogram } = props;
 
   const visDomain = useVisDomain(customDomain, dataDomain);
@@ -67,6 +68,7 @@ function DomainSlider(props: Props) {
     <div
       ref={rootRef}
       className={styles.root}
+      data-disabled={disabled || undefined}
       onPointerEnter={() => toggleHovered(true)}
       onPointerLeave={() => toggleHovered(false)}
     >
@@ -79,6 +81,7 @@ function DomainSlider(props: Props) {
           errors={errors}
           isAutoMin={isAutoMin}
           isAutoMax={isAutoMax}
+          disabled={disabled}
           onChange={(newValue) => {
             setSliderDomain(newValue);
             toggleEditing(false);
@@ -99,6 +102,7 @@ function DomainSlider(props: Props) {
           aria-controls={TOOLTIP_ID}
           icon={FiEdit3}
           value={isEditing}
+          disabled={disabled}
           onToggle={() => toggleEditing(!isEditing)}
         />
       </div>

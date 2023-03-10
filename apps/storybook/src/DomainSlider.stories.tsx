@@ -35,6 +35,13 @@ WithError.args = {
   scaleType: ScaleType.Linear,
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  dataDomain: [4, 400],
+  scaleType: ScaleType.Linear,
+  disabled: true,
+};
+
 export const Histogram = Template.bind({});
 
 Histogram.args = {
