@@ -69,7 +69,7 @@ WithValidation.args = {
 };
 
 export default {
-  title: 'Building Blocks/AxialSelectionTool',
+  title: 'Building Blocks/Interactions/AxialSelectionTool',
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
   args: {

@@ -226,7 +226,7 @@ RectWithTransform.parameters = {
 };
 
 export default {
-  title: 'Building Blocks/SelectionTool',
+  title: 'Building Blocks/Interactions/SelectionTool',
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
   args: {
