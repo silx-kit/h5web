@@ -9,14 +9,15 @@ import type { CommonInteractionProps } from './models';
 import SvgElement from './svg/SvgElement';
 import SvgRect from './svg/SvgRect';
 
-const MIN_SIZE = 20;
+const DEFAULT_MIN_ZOOM = 20;
 
 interface Props extends CommonInteractionProps {
   axis: Axis;
+  minZoom?: number;
 }
 
 function AxialSelectToZoom(props: Props) {
-  const { axis, modifierKey, disabled } = props;
+  const { axis, modifierKey, disabled, minZoom = DEFAULT_MIN_ZOOM } = props;
 
   const { visRatio } = useVisCanvasContext();
   const zoomOnSelection = useZoomOnSelection();
@@ -27,7 +28,7 @@ function AxialSelectToZoom(props: Props) {
       id={`${axis.toUpperCase()}SelectToZoom`}
       modifierKey={modifierKey}
       disabled={visRatio !== undefined || disabled}
-      validate={({ html }) => Box.fromPoints(...html).hasMinSize(MIN_SIZE)}
+      validate={({ html }) => Box.fromPoints(...html).hasMinSize(minZoom)}
       onValidSelection={zoomOnSelection}
     >
       {({ html: htmlSelection }, _, isValid) => (
