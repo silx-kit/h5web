@@ -55,6 +55,7 @@ function App(props: Props) {
     >
       <ReflexContainer
         className={styles.root}
+        data-fullscreen-root
         data-allow-dark-mode={disableDarkMode ? undefined : ''}
         orientation="vertical"
       >
