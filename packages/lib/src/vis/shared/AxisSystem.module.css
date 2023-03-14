@@ -10,6 +10,7 @@
     '. top-axis .'
     'left-axis grid right-axis'
     '. bottom-axis .';
+  z-index: var(--h5w-zi-axisSystem);
 }
 
 .axisSystem > svg {

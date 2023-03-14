@@ -2,7 +2,20 @@
   flex: 1 1 0%;
   overflow: hidden; /* prevent overflow when resizing */
   position: relative; /* for axis system */
-  z-index: 0; /* stacking context for `.floatingToolbar` */
+  z-index: 0; /* stacking context for anything rendered above the canvas (axis grid, SVG scene, floating toolbar, tooltip, etc.) */
+
+  /*
+   * Stacking order, from furthest to closest:
+   * 1. axis system (i.e. most notably the grid)
+   * 2. SVG overlay
+   * 3. anything rendered via `Html` (`Overlay`, `Annotation`, etc.) -- by default with no z-index, which is equivalent to `z-index: 0`
+   * 4. tooltip
+   * 5. floating toolbar
+   */
+  --h5w-zi-axisSystem: -10000;
+  --h5w-zi-svgOverlay: -1000;
+  --h5w-zi-tooltip: 1000;
+  --h5w-zi-floatingToolbar: 10000;
 }
 
 .r3fRoot {
@@ -15,8 +28,8 @@
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 1; /* for SVG elements to appear above visualization */
   pointer-events: none;
+  z-index: var(--h5w-zi-svgOverlay);
 }
 
 .floatingToolbar {
@@ -24,5 +37,5 @@
   right: 0;
   bottom: 0;
   display: flex;
-  z-index: 2; /* for toolbar items to appear above visualization and SVG elements */
+  z-index: var(--h5w-zi-floatingToolbar);
 }
