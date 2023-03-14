@@ -13,10 +13,11 @@ import InteractionHelp from './controls/InteractionHelp';
 interface Props {
   children: ReactNode;
   interactions?: InteractionInfo[];
+  overflowChildren?: ReactNode;
 }
 
 function Toolbar(props: Props) {
-  const { children, interactions } = props;
+  const { children, interactions, overflowChildren = [] } = props;
 
   /* Convert `children` to flat array by traversing nested arrays and fragments.
    * (Note that `flattenChildren` guarantees stable string keys regardless of JSX logic.) */
@@ -45,6 +46,8 @@ function Toolbar(props: Props) {
   );
 
   const isSeparatorLast = inView[inView.length - 1]?.type === Separator;
+  const initialOverflows =
+    flattenChildren(overflowChildren).filter(isReactElement);
 
   return (
     <div className={styles.toolbar}>
@@ -63,7 +66,10 @@ function Toolbar(props: Props) {
       </div>
 
       <OverflowMenu>
-        {outOfView.filter((child) => child.type !== Separator)}
+        {[
+          ...initialOverflows,
+          ...outOfView.filter((child) => child.type !== Separator),
+        ]}
       </OverflowMenu>
 
       {interactions && <Separator />}
