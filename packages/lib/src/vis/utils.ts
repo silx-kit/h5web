@@ -14,6 +14,7 @@ import { tickStep, range } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import { clamp } from 'lodash';
 import type { IUniform } from 'three';
+import { BufferAttribute } from 'three';
 
 import type {
   Size,
@@ -355,4 +356,11 @@ export function getAxisValues(
   }
 
   return rawValues.slice(0, axisLength);
+}
+
+export function createBufferAttr(
+  dataLength: number,
+  itemSize: number
+): BufferAttribute {
+  return new BufferAttribute(new Float32Array(dataLength * itemSize), itemSize);
 }
