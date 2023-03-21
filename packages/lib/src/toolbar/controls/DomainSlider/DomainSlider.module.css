@@ -5,11 +5,19 @@
   align-items: center;
 }
 
+.root[data-disabled] {
+  pointer-events: none;
+}
+
 .sliderContainer {
   display: flex;
   flex: 1 1 0%;
   padding: 0 0.375rem;
   margin-right: -0.375rem;
+}
+
+.root[data-disabled] > .sliderContainer {
+  opacity: 0.5; /* edit button is itself disabled, so don't fade it more */
 }
 
 .slider {

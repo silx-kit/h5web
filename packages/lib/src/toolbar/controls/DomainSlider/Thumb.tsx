@@ -10,11 +10,12 @@ interface Props extends HTMLProps<HTMLDivElement> {
   bound: Bound;
   isAuto: boolean;
   hasError: boolean;
+  disabled: boolean;
   AutoIcon: IconType;
 }
 
 const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { bound, isAuto, hasError, AutoIcon, ...thumbProps } = props;
+  const { bound, isAuto, hasError, disabled, AutoIcon, ...thumbProps } = props;
 
   return (
     <div
@@ -22,6 +23,8 @@ const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
       {...thumbProps}
       className={styles.thumb}
       aria-label={`Change ${bound} limit`}
+      aria-disabled={disabled || undefined}
+      tabIndex={disabled ? -1 : thumbProps.tabIndex} // prevent tabbing when disabled
       data-auto={isAuto}
       data-error={hasError || undefined}
     >

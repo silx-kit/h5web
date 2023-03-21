@@ -22,6 +22,7 @@ interface Props {
   errors: DomainErrors;
   isAutoMin: boolean;
   isAutoMax: boolean;
+  disabled?: boolean;
   onChange: (newValue: Domain) => void;
   onAfterChange: (hasMinChanged: boolean, hasMaxChanged: boolean) => void;
 }
@@ -35,6 +36,7 @@ function ScaledSlider(props: Props) {
     errors,
     isAutoMin,
     isAutoMax,
+    disabled = false,
   } = props;
   const { onChange, onAfterChange: onDone } = props;
   const { minGreater, minError, maxError } = errors;
@@ -76,6 +78,7 @@ function ScaledSlider(props: Props) {
       min={SLIDER_RANGE[0]}
       max={SLIDER_RANGE[1]}
       value={scaledValue}
+      disabled={disabled}
       onBeforeChange={setBeforeChangeValue}
       onChange={(bounds) => handleChange(bounds)}
       onAfterChange={(bounds) => handleChange(bounds, true)}
@@ -84,6 +87,7 @@ function ScaledSlider(props: Props) {
           bound={index === 0 ? 'min' : 'max'}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
           hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
+          disabled={disabled}
           AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
           {...thumbProps}
         />
