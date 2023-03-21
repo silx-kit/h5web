@@ -2,6 +2,7 @@ import {
   DataToHtml,
   Pan,
   ResetZoomButton,
+  SvgCircle,
   SvgElement,
   SvgLine,
   SvgRect,
@@ -51,6 +52,7 @@ export const Default: Story = () => {
               strokeWidth={10}
               strokePosition="outside"
             />
+            <SvgCircle coords={[pt5, pt6]} fill="none" stroke="lightseagreen" />
           </SvgElement>
         )}
       </DataToHtml>
