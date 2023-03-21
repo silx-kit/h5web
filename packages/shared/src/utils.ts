@@ -122,7 +122,8 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
 
 export function getBounds(
   valuesArray: AnyNumArray,
-  errorArray?: AnyNumArray
+  errorArray?: AnyNumArray,
+  ignoreValue?: (val: number) => boolean
 ): Bounds | undefined {
   const values = getValues(valuesArray);
   const errors = errorArray && getValues(errorArray);
@@ -133,9 +134,10 @@ export function getBounds(
   const bounds = values.reduce(
     (acc: Bounds, val: number, i: number) => {
       // Ignore NaN and Infinity from the bounds computation
-      if (!Number.isFinite(val)) {
+      if (!Number.isFinite(val) || ignoreValue?.(val)) {
         return acc;
       }
+
       const newBounds = getNewBounds(acc, val);
       const err = errors?.[i];
       return err

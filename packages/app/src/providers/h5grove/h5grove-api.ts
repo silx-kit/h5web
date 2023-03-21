@@ -19,7 +19,7 @@ import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { handleAxiosError } from '../utils';
+import { typedArrayFromDType, handleAxiosError } from '../utils';
 import type {
   H5GroveAttribute,
   H5GroveAttrValuesResponse,
@@ -34,7 +34,6 @@ import {
   isExternalLinkResponse,
   isGroupResponse,
   isSoftLinkResponse,
-  typedArrayFromDType,
 } from './utils';
 
 export class H5GroveApi extends DataProviderApi {

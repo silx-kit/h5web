@@ -29,10 +29,11 @@ export const useAxisValues = createMemo(getAxisValues);
 export function useDomain(
   valuesArray: AnyNumArray,
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray
+  errorArray?: AnyNumArray,
+  ignoreValue?: (val: number) => boolean
 ): Domain | undefined {
   // Distinct memoized calls allows for bounds to not be recomputed when scale type changes
-  const bounds = useBounds(valuesArray, errorArray);
+  const bounds = useBounds(valuesArray, errorArray, ignoreValue);
   return useValidDomainForScale(bounds, scaleType);
 }
 

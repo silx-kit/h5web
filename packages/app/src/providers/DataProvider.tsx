@@ -5,10 +5,9 @@ import { createContext, useContext, useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
 
 import { hasAttribute } from '../utils';
-import type { ImageAttribute } from '../vis-packs/core/models';
-import type { NxAttribute } from '../vis-packs/nexus/models';
 import type { DataProviderApi } from './api';
 import type {
+  AttrName,
   AttrValuesStore,
   EntitiesStore,
   ProgressCallback,
@@ -95,7 +94,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
     });
 
     return Object.assign(store, {
-      getSingle: (entity: Entity, attrName: NxAttribute | ImageAttribute) => {
+      getSingle: (entity: Entity, attrName: AttrName) => {
         return hasAttribute(entity, attrName)
           ? attrValuesStore.get(entity)[attrName]
           : undefined;

@@ -6,12 +6,14 @@ import type {
   Value,
 } from '@h5web/shared';
 import { isDefined, assertDatasetValue } from '@h5web/shared';
+import { castArray } from 'lodash';
 import type { NdArray, TypedArray } from 'ndarray';
 import { useMemo } from 'react';
 
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 import { useDataContext } from '../../providers/DataProvider';
+import { typedArrayFromDType } from '../../providers/utils';
 import { applyMapping, getBaseArray } from './utils';
 
 export function usePrefetchValues(
@@ -159,4 +161,27 @@ export function useSlicedDimsAndMapping(
     ],
     [dimMapping, dims]
   );
+}
+
+export function useIgnoreFillValue(
+  dataset: Dataset
+): ((val: number) => boolean) | undefined {
+  const { attrValuesStore } = useDataContext();
+
+  const rawFillValue = attrValuesStore.getSingle(dataset, '_FillValue');
+  const wrappedFillValue = castArray(rawFillValue);
+
+  const DTypedArray = typedArrayFromDType(dataset.type);
+
+  // Cast fillValue in the type of the dataset values to be able to use `===` for the comparison
+  const fillValue =
+    DTypedArray && typeof wrappedFillValue[0] === 'number'
+      ? new DTypedArray(wrappedFillValue as number[])[0]
+      : undefined;
+
+  return useMemo(() => {
+    return fillValue !== undefined
+      ? (val: number) => val === fillValue
+      : undefined;
+  }, [fillValue]);
 }

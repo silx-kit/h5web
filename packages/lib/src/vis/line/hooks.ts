@@ -9,7 +9,8 @@ const CAMERA_FAR = 1000; // R3F's default
 export function useCanvasPoints(
   abscissas: NumArray,
   ordinates: NumArray,
-  errors?: NumArray
+  errors?: NumArray,
+  ignoreValue?: (val: number) => boolean
 ) {
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
@@ -22,7 +23,8 @@ export function useCanvasPoints(
       const x = abscissaScale(abscissas[index]);
       const y = ordinateScale(val);
 
-      const hasFiniteCoords = Number.isFinite(x) && Number.isFinite(y);
+      const hasFiniteCoords =
+        !ignoreValue?.(val) && Number.isFinite(x) && Number.isFinite(y);
       const dataVector = hasFiniteCoords
         ? new Vector3(x, y, 0)
         : /* Render points with NaN/Infinity coordinates (i.e. values <= 0 in log)
@@ -54,5 +56,5 @@ export function useCanvasPoints(
     });
 
     return { data: dataPoints, bars: errorBarSegments, caps: errorCapPoints };
-  }, [abscissaScale, abscissas, errors, ordinateScale, ordinates]);
+  }, [abscissaScale, abscissas, errors, ordinateScale, ordinates, ignoreValue]);
 }

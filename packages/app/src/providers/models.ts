@@ -13,6 +13,8 @@ import type { NxAttribute } from '../vis-packs/nexus/models';
 
 export type EntitiesStore = FetchStore<ProvidedEntity, string>;
 
+export type AttrName = NxAttribute | ImageAttribute | '_FillValue';
+
 export interface ValuesStore extends FetchStore<unknown, ValuesStoreParams> {
   cancelOngoing: () => void;
   evictCancelled: () => void;
@@ -24,10 +26,7 @@ export interface ValuesStoreParams {
 }
 
 export interface AttrValuesStore extends FetchStore<AttributeValues, Entity> {
-  getSingle: (
-    entity: Entity,
-    attrName: NxAttribute | ImageAttribute
-  ) => unknown;
+  getSingle: (entity: Entity, attrName: AttrName) => unknown;
 }
 
 export type ExportFormat = 'csv' | 'npy' | 'tiff';
