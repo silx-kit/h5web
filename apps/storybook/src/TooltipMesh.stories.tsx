@@ -60,7 +60,7 @@ WithPanZoom.args = {
 
 export default {
   ...VisCanvasStoriesConfig,
-  title: 'Building Blocks/VisCanvas/Tooltip',
+  title: 'Building Blocks/TooltipMesh',
   parameters: {
     ...VisCanvasStoriesConfig.parameters,
     controls: {
