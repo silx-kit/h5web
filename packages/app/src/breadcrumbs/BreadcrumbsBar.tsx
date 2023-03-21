@@ -1,5 +1,5 @@
 import { ToggleGroup, ToggleBtn, LinkBtn, Separator, Btn } from '@h5web/lib';
-import { useEventListener, useToggle } from '@react-hookz/web';
+import { useEventListener, useRerender } from '@react-hookz/web';
 import {
   FiMaximize,
   FiMessageCircle,
@@ -34,13 +34,10 @@ function BreadcrumbsBar(props: Props) {
   } = props;
 
   const { filepath } = useDataContext();
+  const isFullscreen = !!document.fullscreenElement;
 
-  const [isFullscreen, toggleFullScreen] = useToggle(
-    !!document.fullscreenElement
-  );
-  useEventListener(document.documentElement, 'fullscreenchange', () => {
-    toggleFullScreen();
-  });
+  const rerender = useRerender();
+  useEventListener(document, 'fullscreenchange', rerender);
 
   return (
     <div className={styles.bar}>
@@ -79,8 +76,10 @@ function BreadcrumbsBar(props: Props) {
           label="Go full screen"
           onClick={() => {
             if (!document.fullscreenElement) {
-              void document.documentElement.requestFullscreen();
-            } else if (document.exitFullscreen) {
+              void document
+                .querySelector('[data-fullscreen-root]')
+                ?.requestFullscreen();
+            } else {
               void document.exitFullscreen();
             }
           }}
