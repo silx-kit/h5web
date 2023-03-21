@@ -61,6 +61,8 @@ export abstract class DataProviderApi {
     value: Value<D>
   ): ExportURL;
 
+  public getSearchablePaths?(path: string): Promise<string[]>;
+
   public addProgressListener(cb: ProgressCallback): void {
     this.progressListeners.add(cb);
     cb([...this.progress.values()]); // notify once

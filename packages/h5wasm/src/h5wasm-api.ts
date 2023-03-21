@@ -111,6 +111,19 @@ export class H5WasmApi extends ProviderApi {
     file.close();
   }
 
+  public async getSearchablePaths(root: string): Promise<string[]> {
+    const file = await this.file;
+
+    const h5wEntity = file.get(root);
+
+    if (isH5WasmGroup(h5wEntity)) {
+      // Build absolute paths since .paths() are relative
+      return h5wEntity.paths().map((path) => `${root}${path}`);
+    }
+
+    return [];
+  }
+
   private async initFile(buffer: ArrayBuffer): Promise<H5WasmFile> {
     const { FS } = await h5wasmReady;
 
