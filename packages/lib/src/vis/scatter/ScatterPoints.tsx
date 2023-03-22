@@ -1,14 +1,15 @@
 import type { Domain, NumArray, ScaleType } from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useThree } from '@react-three/fiber';
-import { useCallback, useLayoutEffect, useState } from 'react';
-import { BufferAttribute, BufferGeometry } from 'three';
+import { useCallback, useLayoutEffect, useMemo } from 'react';
+import { BufferGeometry } from 'three';
 
 import type { ColorMap } from '../heatmap/models';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
-import { useDataToColorScale } from './hooks';
-import { useBufferAttributes } from './hooks';
+import { useVisCanvasContext } from '../shared/VisCanvasProvider';
+import { createBufferAttr } from '../utils';
+import { useValueToColor, useIndexToPosition } from './hooks';
 
 interface Props {
   abscissas: NumArray;
@@ -71,28 +72,46 @@ function ScatterPoints(props: Props) {
     [onPointerOut]
   );
 
-  const [dataGeometry] = useState(() => new BufferGeometry());
+  const { length } = data;
+  const { abscissaScale, ordinateScale } = useVisCanvasContext();
   const invalidate = useThree((state) => state.invalidate);
 
-  const dataToColorScale = useDataToColorScale(
+  const indexToPosition = useIndexToPosition(
+    abscissas,
+    abscissaScale,
+    ordinates,
+    ordinateScale
+  );
+
+  const valueToColor = useValueToColor(
     scaleType,
     domain,
     colorMap,
     invertColorMap
   );
 
-  const { position, color } = useBufferAttributes(
-    abscissas,
-    ordinates,
-    data,
-    dataToColorScale
-  );
+  const dataGeometry = useMemo(() => {
+    const geometry = new BufferGeometry();
+    geometry.setAttribute('position', createBufferAttr(length, 3));
+    geometry.setAttribute('color', createBufferAttr(length, 3));
+    return geometry;
+  }, [length]);
 
   useLayoutEffect(() => {
-    dataGeometry.setAttribute('position', new BufferAttribute(position, 3));
-    dataGeometry.setAttribute('color', new BufferAttribute(color, 3, true));
+    const { color, position } = dataGeometry.attributes;
+
+    data.forEach((val, index) => {
+      const { x, y, z } = indexToPosition(index);
+      position.setXYZ(index, x, y, z);
+
+      const { r, g, b } = valueToColor(val);
+      color.setXYZ(index, r / 255, g / 255, b / 255); // normalize RGB channels
+    });
+
+    color.needsUpdate = true;
+    position.needsUpdate = true;
     invalidate();
-  }, [color, dataGeometry, invalidate, position]);
+  }, [data, dataGeometry, indexToPosition, valueToColor, invalidate]);
 
   return (
     <points
