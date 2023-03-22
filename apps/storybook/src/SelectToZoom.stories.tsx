@@ -76,10 +76,11 @@ MultipleModifierKeys.args = {
   modifierKey: ['Control', 'Shift'],
 };
 
+export const MinZoom = Template.bind({});
+MinZoom.args = { minZoom: 200 };
+
 export const Disabled = Template.bind({});
-Disabled.args = {
-  disabled: true,
-};
+Disabled.args = { disabled: true };
 
 export default {
   title: 'Building Blocks/Interactions/SelectToZoom',

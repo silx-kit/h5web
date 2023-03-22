@@ -10,11 +10,14 @@ import type { CommonInteractionProps, Rect, Selection } from './models';
 import SvgElement from './svg/SvgElement';
 import SvgRect from './svg/SvgRect';
 
-const MIN_SIZE = 20;
+const DEFAULT_MIN_ZOOM = 20;
 
-type Props = CommonInteractionProps;
+interface Props extends CommonInteractionProps {
+  minZoom?: number;
+}
 
 function SelectToZoom(props: Props) {
+  const { minZoom = DEFAULT_MIN_ZOOM, ...commonProps } = props;
   const {
     canvasSize,
     canvasRatio,
@@ -55,9 +58,9 @@ function SelectToZoom(props: Props) {
     <SelectionTool
       id="SelectToZoom"
       transform={computeZoomSelection}
-      validate={({ html }) => Box.fromPoints(...html).hasMinSize(MIN_SIZE)}
+      validate={({ html }) => Box.fromPoints(...html).hasMinSize(minZoom)}
       onValidSelection={zoomOnSelection}
-      {...props}
+      {...commonProps}
     >
       {({ html: htmlSelection }, { html: rawHtmlSelection }, isValid) => (
         <SvgElement>

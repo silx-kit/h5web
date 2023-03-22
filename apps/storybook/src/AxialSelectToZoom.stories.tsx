@@ -62,6 +62,9 @@ MultipleModifierKeysY.args = {
   modifierKey: ['Control', 'Shift'],
 };
 
+export const MinZoom = Template.bind({});
+MinZoom.args = { minZoom: 200 };
+
 export const Disabled = Template.bind({});
 Disabled.args = {
   axis: 'x',
