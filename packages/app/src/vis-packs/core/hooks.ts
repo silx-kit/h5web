@@ -163,9 +163,7 @@ export function useSlicedDimsAndMapping(
   );
 }
 
-export function useIgnoreFillValue(
-  dataset: Dataset
-): ((val: number) => boolean) | undefined {
+export function useFillValue(dataset: Dataset): number | undefined {
   const { attrValuesStore } = useDataContext();
 
   const rawFillValue = attrValuesStore.getSingle(dataset, '_FillValue');
@@ -174,11 +172,14 @@ export function useIgnoreFillValue(
   const DTypedArray = typedArrayFromDType(dataset.type);
 
   // Cast fillValue in the type of the dataset values to be able to use `===` for the comparison
-  const fillValue =
-    DTypedArray && typeof wrappedFillValue[0] === 'number'
-      ? new DTypedArray(wrappedFillValue as number[])[0]
-      : undefined;
+  return DTypedArray && typeof wrappedFillValue[0] === 'number'
+    ? new DTypedArray(wrappedFillValue as number[])[0]
+    : undefined;
+}
 
+export function useIgnoreFillValue(
+  fillValue: number | undefined
+): ((val: number) => boolean) | undefined {
   return useMemo(() => {
     return fillValue !== undefined
       ? (val: number) => val === fillValue

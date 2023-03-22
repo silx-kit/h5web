@@ -5,7 +5,11 @@ import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
-import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import {
+  useIgnoreFillValue,
+  useMappedArray,
+  useSlicedDimsAndMapping,
+} from '../hooks';
 import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
 import HeatmapToolbar from './HeatmapToolbar';
 import type { HeatmapConfig } from './config';
@@ -19,6 +23,7 @@ interface Props {
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
   config: HeatmapConfig;
+  fillValue?: number;
 }
 
 function MappedHeatmapVis(props: Props) {
@@ -31,6 +36,7 @@ function MappedHeatmapVis(props: Props) {
     title,
     toolbarContainer,
     config,
+    fillValue,
   } = props;
 
   const {
@@ -47,7 +53,9 @@ function MappedHeatmapVis(props: Props) {
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const [dataArray] = useMappedArray(value, slicedDims, slicedMapping);
 
-  const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
+  const ignoreValue = useIgnoreFillValue(fillValue);
+  const dataDomain =
+    useDomain(dataArray, scaleType, undefined, ignoreValue) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 
@@ -92,6 +100,7 @@ function MappedHeatmapVis(props: Props) {
           value: axisValues?.[yDimIndex],
         }}
         flipYAxis={flipYAxis}
+        fillValue={fillValue}
       />
     </>
   );

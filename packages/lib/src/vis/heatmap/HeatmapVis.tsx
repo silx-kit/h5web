@@ -39,6 +39,7 @@ interface Props {
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
+  fillValue?: number;
 }
 
 function HeatmapVis(props: Props) {
@@ -59,6 +60,7 @@ function HeatmapVis(props: Props) {
     renderTooltip,
     children,
     interactions,
+    fillValue,
   } = props;
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
@@ -135,6 +137,7 @@ function HeatmapVis(props: Props) {
           alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
           scale={[1, flipYAxis ? -1 : 1, 1]}
+          fillValue={fillValue}
         />
 
         {children}

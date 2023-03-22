@@ -9,7 +9,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
-import { useIgnoreFillValue } from '../hooks';
+import { useFillValue, useIgnoreFillValue } from '../hooks';
 import { getSliceSelection } from '../utils';
 import MappedLineVis from './MappedLineVis';
 import { useLineConfig } from './config';
@@ -28,7 +28,8 @@ function LineVisContainer(props: VisContainerProps) {
   const { autoScale } = config;
   const selection = autoScale ? getSliceSelection(dimMapping) : undefined;
 
-  const ignoreValue = useIgnoreFillValue(entity);
+  const fillValue = useFillValue(entity);
+  const ignoreValue = useIgnoreFillValue(fillValue);
 
   return (
     <>

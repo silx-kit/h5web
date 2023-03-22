@@ -10,6 +10,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
 import ValueFetcher from '../ValueFetcher';
+import { useFillValue } from '../hooks';
 import { getSliceSelection } from '../utils';
 import MappedHeatmapVis from './MappedHeatmapVis';
 import { useHeatmapConfig } from './config';
@@ -25,6 +26,8 @@ function HeatmapVisContainer(props: VisContainerProps) {
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const config = useHeatmapConfig();
+
+  const fillValue = useFillValue(entity);
 
   return (
     <>
@@ -45,6 +48,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
               title={entity.name}
               toolbarContainer={toolbarContainer}
               config={config}
+              fillValue={fillValue}
             />
           )}
         />
