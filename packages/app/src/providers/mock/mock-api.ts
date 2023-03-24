@@ -8,6 +8,7 @@ import type {
   ScalarShape,
   Value,
 } from '@h5web/shared';
+import { isGroup } from '@h5web/shared';
 import { hasNumericType } from '@h5web/shared';
 import {
   assertArrayOrTypedArray,
@@ -113,6 +114,26 @@ export class MockApi extends DataProviderApi {
     }
 
     return undefined;
+  }
+
+  public async getSearchablePaths(path: string): Promise<string[]> {
+    return this.getEntityPaths(path);
+  }
+
+  private getEntityPaths(entityPath: string): string[] {
+    const entity = findMockEntity(entityPath);
+    if (!entity) {
+      return [];
+    }
+
+    if (!isGroup(entity)) {
+      return [entity.path];
+    }
+
+    return entity.children.reduce<string[]>(
+      (acc, child) => [...acc, ...this.getEntityPaths(child.path)],
+      [entity.path]
+    );
   }
 
   private async cancellableDelay(storeParams: ValuesStoreParams) {
