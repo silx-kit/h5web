@@ -1,0 +1,41 @@
+.btnBar {
+  display: flex;
+  height: 2.875rem;
+  font-size: 1.25rem;
+  background-color: var(--primary-lighter);
+}
+
+.btn {
+  composes: btnClean from global;
+  display: flex;
+  align-items: center;
+  padding: 0 0.25rem;
+  background-color: var(--primary-lighter, aliceblue);
+  padding-bottom: 0.25rem;
+}
+
+.btn[aria-selected='true'] {
+  border-bottom: solid 0.25rem var(--primary-dark);
+  padding-bottom: 0rem;
+}
+
+.btn:hover {
+  background-color: var(--primary-light);
+}
+
+.btnLike {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.875rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+  white-space: nowrap;
+}
+
+.btn[data-small] > .btnLike {
+  height: 1.75rem;
+  border-radius: 0.875rem;
+  font-size: 0.875em;
+}

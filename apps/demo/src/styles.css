@@ -17,6 +17,7 @@ body {
 
 body {
   --primary: #c0da74;
+  --primary-lighter: #eaf0cd;
   --primary-light: #d4e09b;
   --primary-dark: #9aae5d;
   --primary-bg: #f5fbef;

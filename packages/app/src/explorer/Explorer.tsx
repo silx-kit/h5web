@@ -18,9 +18,14 @@ function Explorer(props: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
+  const isRootSelected = selectedPath === '/';
+
+  // When tabbing in, restore focus on the root button if it was selected
   useEffect(() => {
-    btnRef.current?.focus();
-  }, [btnRef]);
+    if (isRootSelected) {
+      btnRef.current?.focus();
+    }
+  }, [btnRef, isRootSelected]);
 
   return (
     <div ref={ref} className={styles.explorer} role="tree" id={EXPLORER_ID}>
@@ -29,7 +34,7 @@ function Explorer(props: Props) {
         className={styles.fileBtn}
         type="button"
         role="treeitem"
-        aria-selected={selectedPath === '/'}
+        aria-selected={isRootSelected}
         data-path="/"
         onClick={() => onSelect('/')}
         onKeyDown={(e) => {
