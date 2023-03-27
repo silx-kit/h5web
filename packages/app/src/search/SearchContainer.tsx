@@ -1,49 +1,44 @@
-import { useEffect, useState } from 'react';
-
-import Search from './Search';
+import styles from './Search.module.css';
+import SearchList from './SearchList';
 
 interface Props {
+  searchValue: string;
+  setSearchValue: (newValue: string) => void;
   selectedPath: string;
   onSelect: (path: string) => void;
-  searchValue: string;
-  setSearchValue: (value: string) => void;
   getSearchablePaths: (path: string) => Promise<string[]>;
 }
 
-const BASE = '/';
-
 function SearchContainer(props: Props) {
   const {
-    selectedPath,
-    onSelect,
     searchValue,
     setSearchValue,
+    onSelect,
     getSearchablePaths,
+    selectedPath,
   } = props;
 
-  const [paths, setPaths] = useState<string[]>();
-
-  useEffect(() => {
-    const fetchPaths = async () => {
-      setPaths(await getSearchablePaths(BASE));
-    };
-    if (!paths) {
-      void fetchPaths();
-    }
-  }, [paths, getSearchablePaths]);
-
-  if (!paths) {
-    return null;
-  }
-
   return (
-    <Search
-      value={searchValue}
-      onChange={setSearchValue}
-      paths={paths}
-      selectedPath={selectedPath}
-      onSelect={onSelect}
-    />
+    <div className={styles.container}>
+      <div className={styles.inputRow}>
+        <input
+          className={styles.input}
+          value={searchValue}
+          placeholder="Search for an entity"
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+          }}
+          type="text"
+          aria-label="Path to search"
+        />
+      </div>
+      <SearchList
+        value={searchValue}
+        onSelect={onSelect}
+        getSearchablePaths={getSearchablePaths}
+        selectedPath={selectedPath}
+      />
+    </div>
   );
 }
 
