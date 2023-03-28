@@ -21,7 +21,6 @@ function Overlay(props: Props) {
           position: 'absolute',
           top: 0,
           left: 0,
-          pointerEvents: 'none',
           ...canvasSize,
           ...style,
         }}

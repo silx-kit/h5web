@@ -52,7 +52,6 @@ function Annotation(props: Props) {
           position: 'absolute',
           top: htmlPt.y,
           left: htmlPt.x,
-          pointerEvents: 'none',
           transformOrigin: scaleOnZoom && !center ? 'top left' : undefined,
           transform: transforms.join(' ').trim(),
           ...style,
