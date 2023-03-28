@@ -6,7 +6,9 @@ import {
   ScaleType,
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
+import ndarray from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
+import { useMemo } from 'react';
 
 import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
@@ -39,6 +41,7 @@ interface Props {
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
+  ignoreValue?: (v: number) => boolean;
 }
 
 function HeatmapVis(props: Props) {
@@ -59,6 +62,7 @@ function HeatmapVis(props: Props) {
     renderTooltip,
     children,
     interactions,
+    ignoreValue,
   } = props;
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
@@ -77,6 +81,18 @@ function HeatmapVis(props: Props) {
 
   const safeDataArray = useTextureSafeNdArray(dataArray);
   const safeAlphaArray = useTextureSafeNdArray(alpha?.array);
+  const maskArray = useMemo(
+    () =>
+      ignoreValue
+        ? ndarray(
+            Uint8Array.from(
+              dataArray.data.map((v) => (ignoreValue(v) ? 255 : 0))
+            ),
+            dataArray.shape
+          )
+        : undefined,
+    [dataArray, ignoreValue]
+  );
 
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
@@ -135,6 +151,7 @@ function HeatmapVis(props: Props) {
           alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
           scale={[1, flipYAxis ? -1 : 1, 1]}
+          maskValues={maskArray}
         />
 
         {children}

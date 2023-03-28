@@ -26,6 +26,7 @@ interface Props extends VisMeshProps {
   alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
   badColor?: RGBColor | string;
+  maskValues?: NdArray<Uint8Array>;
 }
 
 const DEFAULT_BAD_COLOR = rgb(255, 255, 255, 0);
@@ -54,10 +55,12 @@ function HeatmapMaterial(props: Props) {
     alphaValues,
     alphaDomain = DEFAULT_DOMAIN,
     badColor = DEFAULT_BAD_COLOR,
+    maskValues,
   } = props;
 
   const dataTexture = useDataTexture(values, magFilter);
   const alphaTexture = useDataTexture(alphaValues);
+  const maskTexture = useDataTexture(maskValues);
 
   const colorMapTexture = useMemo(() => {
     const interpolator = getInterpolator(colorMap, invertColorMap);
@@ -90,6 +93,7 @@ function HeatmapMaterial(props: Props) {
   const shader = {
     uniforms: getUniforms({
       data: dataTexture,
+      mask: maskTexture,
       colorMap: colorMapTexture,
       min: scaledDomain[0],
       oneOverRange: 1 / (scaledDomain[1] - scaledDomain[0]),
@@ -122,6 +126,8 @@ function HeatmapMaterial(props: Props) {
       uniform int withAlpha;
       uniform vec4 badColor;
 
+      uniform sampler2D mask;
+
       const float oneOverLog10 = 0.43429448190325176;
 
       varying vec2 coords;
@@ -136,8 +142,9 @@ function HeatmapMaterial(props: Props) {
 
       void main() {
         float value = texture2D(data, coords).r * normRevertFactor;
+        float maskValue = texture2D(mask, coords).r;
 
-        if (isnan(value) || !isSupported(value)) {
+        if (isnan(value) || !isSupported(value) || maskValue == 1.) {
             gl_FragColor = badColor;
         } else {
           float scaledValue = scale(value);
