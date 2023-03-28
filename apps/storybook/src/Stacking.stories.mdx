@@ -12,37 +12,40 @@ This allows its children (both direct and nested) to be stacked in relation with
 
 ### Stacking order
 
-The stacking order is organised into five layers, from furthest (behind) to closest (in front):
+The stacking order is organised into six layers, from furthest (behind) to closest (in front):
 
-1. **axis system** (including the axis grid);
-2. **SVG elements** rendered via [`SvgElement`](http://localhost:6006/?path=/story/building-blocks-svgelement--default) into the `svg` overlay, in DOM order;
-3. **HTML elements** rendered via [`Html`](http://localhost:6006/?path=/story/building-blocks-html--default), in DOM order (including [`Annotation`](http://localhost:6006/?path=/story/building-blocks-annotation--default) and [`Overlay`](http://localhost:6006/?path=/story/building-blocks-overlay--default));
-4. **tooltip**
-5. **floating toolbar** (typically with reset zoom button)
+1. **WebGL canvas**;
+2. **axis system** (including the axis grid);
+3. **SVG elements** rendered via [`SvgElement`](http://localhost:6006/?path=/story/building-blocks-svgelement--default) into the `svg` overlay, in DOM order;
+4. **HTML elements** rendered via [`Html`](http://localhost:6006/?path=/story/building-blocks-html--default), in DOM order (including [`Annotation`](http://localhost:6006/?path=/story/building-blocks-annotation--default) and [`Overlay`](http://localhost:6006/?path=/story/building-blocks-overlay--default));
+5. **tooltip**
+6. **floating toolbar** (typically with reset zoom button)
 
 ```
 ┌──────────────────────────────────┐
-│ 1. Axis system                   │
+│ 1. Canvas                        │
 │   ┌──────────────────────────────┴───┐
-│   │ 2. SVG elements                  │
+│   │ 2. Axis system                   │
 └── ┤   ┌──────────────────────────────┴───┐
-    │   │ 3. HTML elements                 │
+    │   │ 3. SVG elements                  │
     └── ┤   ┌──────────────────────────────┴───┐
-        │   │ 4. Tooltip                       │
+        │   │ 4. HTML elements                 │
         └── ┤   ┌──────────────────────────────┴───┐
-            │   │ 5. Floating toolbar              │
-            └── ┤                                  │
-                │                                  │
-                └──────────────────────────────────┘
+            │   │ 5. Tooltip                       │
+            └── ┤   ┌──────────────────────────────┴───┐
+                │   │ 6. Floating toolbar              │
+                └── ┤                                  │
+                    │                                  │
+                    └──────────────────────────────────┘
 ```
 
-As a consumer of the library, you have control over the stacking of the SVG and HTML elements that you render (i.e. layers 2 and 3).
+As a consumer of the library, you have control over the stacking of the SVG and HTML elements that you render (i.e. layers 3 and 4).
 Within each of these two layers, all you need to do to move element `A` behind, or in front of, element `B` is to **render `A`
 before or after `B`** in your React tree, respectively.
 
 However, there are some pitfalls:
 
-- Elements from layers 2 and 3 **cannot be interleaved** with one another. Consider the `svg` overlay as its own stacking context:
+- Elements from layers 3 and 4 **cannot be interleaved** with one another. Consider the `svg` overlay as its own stacking context:
   its children are stacked only in relation with one another within their parent SVG document.
 - When `Html` and `SvgElement` unmount and then remount (e.g. based on conditions), their children can end up **moving down the DOM tree** and therefore
   in front of other elements that remained in the DOM. This can be worked around in a few ways, as explained below.

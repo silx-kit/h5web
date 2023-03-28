@@ -1,3 +1,7 @@
+.overlay {
+  z-index: var(--h5w-zi-tooltip);
+}
+
 .tooltip {
   padding: 0.25rem 0.5rem;
   background-color: var(--h5w-tooltip--bgColor, rgba(255, 255, 255, 0.9));
@@ -6,7 +10,7 @@
   color: var(--h5w-tooltip--color, inherit);
   font-family: var(--h5w-tooltip--fontFamily, inherit);
   font-size: var(--h5w-tooltip--fontSize, 0.75em);
-  z-index: var(--h5w-zi-tooltip);
+  user-select: none;
 }
 
 .guides {

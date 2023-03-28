@@ -21,7 +21,7 @@ function TooltipOverlay(props: Props) {
   const { width, height } = canvasSize;
 
   return (
-    <Overlay>
+    <Overlay className={styles.overlay}>
       {tooltipOpen && children && (
         <>
           <TooltipWithBounds
