@@ -60,7 +60,7 @@ function App(props: Props) {
         orientation="vertical"
       >
         <ReflexElement
-          className={styles.sidebar}
+          className={styles.sidebarArea}
           style={{ display: isExplorerOpen ? undefined : 'none' }}
           flex={25}
           minSize={150}
