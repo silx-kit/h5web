@@ -27,6 +27,8 @@
   --sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
     'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  --toolbar-height: 2.875rem;
+  --toolbarBtn-height: 2rem;
 }
 
 .root {
@@ -37,9 +39,11 @@
   --h5w-matrix-anchorCell--bgColor: var(--primary-dark-bg);
   --h5w-btn-hover--bgColor: var(--secondary-lighter);
   --h5w-btnPressed--bgColor: var(--secondary-light);
+  --h5w-toolbar--height: var(--toolbar-height);
   --h5w-toolbar--bgColor: var(--secondary-light-bg);
   --h5w-toolbar-label--color: var(--secondary-dark);
   --h5w-toolbar-input-focus--shadowColor: var(--secondary-dark);
+  --h5w-toolbar-btn--height: var(--toolbarBtn-height);
   --h5w-domainSlider-track--bgColor: var(--secondary-dark-15);
   --h5w-domainSlider-dataTrack--bgColor: var(--secondary-dark);
   --h5w-domainSlider-dataTrack--shadowColor: var(--secondary-darker);
@@ -128,18 +132,18 @@
   flex-direction: column;
 }
 
-.fallback {
-  composes: fallback from global;
+.fallbackBar {
+  flex: none;
+  height: var(--toolbar-height);
+  background-color: var(--secondary-light-bg);
 }
 
 .fallbackBar[data-mode='inspect'] {
-  height: 2.875rem;
   background-color: var(--primary-bg);
 }
 
-.fallbackBar[data-mode='display'] {
-  height: 2.5rem;
-  background-color: var(--secondary-light-bg);
+.fallback {
+  composes: fallback from global;
 }
 
 .error {

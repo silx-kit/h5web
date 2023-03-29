@@ -31,28 +31,24 @@ function Sidebar(props: Props) {
 
   return (
     <div>
-      <div className={styles.btnBar}>
+      <div className={styles.tabBar}>
         <button
-          className={styles.btn}
+          className={styles.tab}
           type="button"
           role="tab"
           aria-selected={tab === Tab.Explore}
           onClick={() => setTab(Tab.Explore)}
         >
-          <span className={styles.btnLike}>
-            <FiList />
-          </span>
+          <FiList />
         </button>
         <button
-          className={styles.btn}
+          className={styles.tab}
           type="button"
           role="tab"
           aria-selected={tab === Tab.Search}
           onClick={() => setTab(Tab.Search)}
         >
-          <span className={styles.btnLike}>
-            <FiSearch />
-          </span>
+          <FiSearch />
         </button>
       </div>
       {tab === Tab.Explore && (
