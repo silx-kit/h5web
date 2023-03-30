@@ -8,7 +8,7 @@ function MockApp() {
 
   return (
     <MockProvider>
-      <App explorerOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
+      <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </MockProvider>
   );
 }

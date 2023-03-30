@@ -17,7 +17,9 @@ import { useDataContext } from './providers/DataProvider';
 import Visualizer from './visualizer/Visualizer';
 
 interface Props {
+  /** @deprecated */
   explorerOpen?: boolean;
+  sidebarOpen?: boolean;
   initialPath?: string;
   getFeedbackURL?: (context: FeedbackContext) => string;
   disableDarkMode?: boolean;
@@ -26,7 +28,8 @@ interface Props {
 
 function App(props: Props) {
   const {
-    explorerOpen: initialExplorerOpen = true,
+    explorerOpen = true,
+    sidebarOpen: initialSidebarOpen = explorerOpen,
     initialPath = '/',
     getFeedbackURL,
     disableDarkMode,
@@ -34,7 +37,7 @@ function App(props: Props) {
   } = props;
 
   const [selectedPath, setSelectedPath] = useState<string>(initialPath);
-  const [isExplorerOpen, toggleExplorerOpen] = useToggle(initialExplorerOpen);
+  const [isSidebarOpen, toggleSidebarOpen] = useToggle(initialSidebarOpen);
   const [isInspecting, setInspecting] = useState(false);
 
   const { valuesStore } = useDataContext();
@@ -61,7 +64,7 @@ function App(props: Props) {
       >
         <ReflexElement
           className={styles.sidebarArea}
-          style={{ display: isExplorerOpen ? undefined : 'none' }}
+          style={{ display: isSidebarOpen ? undefined : 'none' }}
           flex={25}
           minSize={150}
         >
@@ -70,15 +73,15 @@ function App(props: Props) {
 
         <ReflexSplitter
           className={styles.splitter}
-          style={{ display: isExplorerOpen ? undefined : 'none' }}
+          style={{ display: isSidebarOpen ? undefined : 'none' }}
         />
 
         <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
           <BreadcrumbsBar
             path={selectedPath}
-            isExplorerOpen={isExplorerOpen}
+            isSidebarOpen={isSidebarOpen}
             isInspecting={isInspecting}
-            onToggleExplorer={toggleExplorerOpen}
+            onToggleSidebar={toggleSidebarOpen}
             onChangeInspecting={setInspecting}
             onSelectPath={onSelectPath}
             getFeedbackURL={getFeedbackURL}

@@ -386,7 +386,7 @@ describe('/mock?wide', () => {
     cy.waitForStableDOM();
   });
 
-  it('start with the explorer closed', () => {
+  it('start with sidebar closed', () => {
     cy.findByRole('tree').should('not.exist');
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {

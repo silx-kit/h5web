@@ -14,14 +14,14 @@ test('select root group by default', async () => {
   expect(fileBtn).toHaveAttribute('aria-selected', 'true');
 });
 
-test('toggle explorer sidebar', async () => {
+test('toggle sidebar', async () => {
   const { user } = await renderApp();
 
   const fileBtn = await screen.findByRole('treeitem', {
     name: mockFilepath,
   });
   const sidebarBtn = screen.getByRole('button', {
-    name: 'Toggle explorer sidebar',
+    name: 'Toggle sidebar',
   });
 
   expect(fileBtn).toBeVisible();

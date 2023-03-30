@@ -26,7 +26,7 @@ function HsdsApp() {
       password={PASSWORD}
       filepath={filepath}
     >
-      <App explorerOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
+      <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </HsdsProvider>
   );
 }

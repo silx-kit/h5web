@@ -92,16 +92,19 @@ For `App` to work, it must be wrapped in a data provider:
 </MockProvider>
 ```
 
-#### `explorerOpen?: boolean` (optional)
+#### `sidebarOpen?: boolean` (optional)
 
-Whether the viewer should start with the explorer panel open. Defaults to
-`true`. Pass `false` to hide the explorer on initial render, thus giving more
-space to the visualization. This may be useful when H5Web is embeded inside
-another app.
+Whether the viewer should start with the sidebar open. The sidebar contains the
+explorer and search panels. Defaults to `true`. Pass `false` to hide the sidebar
+on initial render, thus giving more space to the visualization. This is useful
+when H5Web is embeded inside another app.
 
 ```tsx
-<App explorerOpen={false} />
+<App sidebarOpen={false} />
 ```
+
+> This replaces prop `explorerOpen`, which is now deprecated and will be removed
+> in v8.0.0.
 
 #### `initialPath?: string` (optional)
 
