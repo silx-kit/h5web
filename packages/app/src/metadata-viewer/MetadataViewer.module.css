@@ -14,7 +14,8 @@
 }
 
 .table thead th {
-  padding: 0.675rem 1rem;
+  height: var(--toolbar-height);
+  padding: 0 1rem;
   background-color: var(--primary-bg);
   font-size: 1.25rem;
 }

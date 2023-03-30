@@ -1,9 +1,11 @@
 .bar {
+  flex: none; /* prevent shrinking when metadata viewer scrolls */
   display: flex;
   justify-content: space-between;
-  font-size: 0.875rem;
+  height: var(--toolbar-height);
+  padding: 0 0.5rem;
   background-color: var(--secondary-bg);
-  padding: calc(0.5rem - 1px) 0.75rem 0.5rem;
+  font-size: 0.875rem;
 }
 
 .breadCrumbs {
