@@ -231,6 +231,34 @@ describe('/mock', () => {
     }
   });
 
+  it('search items in the file', () => {
+    cy.findByRole('tab', { name: 'Search' }).click();
+
+    cy.findByRole('textbox', { name: 'Path to search' }).type('scatter');
+
+    cy.findAllByRole('treeitem')
+      .should('have.length', 2)
+      .each((e) => expect(e).to.contain('scatter'));
+
+    cy.findByRole('treeitem', { name: '/nexus_entry/scatter' }).click();
+    cy.waitForStableDOM();
+
+    cy.findByRole('figure', { name: 'scatter_data' }).should('be.visible');
+
+    // Check that the selected node is kept when tabbing in Explorer
+    cy.findByRole('tab', { name: 'Explorer' }).click();
+    cy.findExplorerNode('scatter').should('have.attr', 'aria-selected', 'true');
+    // And has focus
+    cy.findExplorerNode('scatter').should('have.focus');
+
+    // Check that the search value is kept when tabbing back from Explorer
+    cy.findByRole('tab', { name: 'Search' }).click();
+    cy.findByRole('textbox', { name: 'Path to search' }).should(
+      'have.value',
+      'scatter'
+    );
+  });
+
   context('NeXus', () => {
     it('visualize default NXdata group as NxImage', () => {
       cy.selectExplorerNode('source.h5');

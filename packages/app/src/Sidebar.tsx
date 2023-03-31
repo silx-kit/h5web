@@ -38,6 +38,7 @@ function Sidebar(props: Props) {
           role="tab"
           aria-selected={tab === Tab.Explore}
           onClick={() => setTab(Tab.Explore)}
+          aria-label="Explorer"
         >
           <FiList />
         </button>
@@ -47,6 +48,7 @@ function Sidebar(props: Props) {
           role="tab"
           aria-selected={tab === Tab.Search}
           onClick={() => setTab(Tab.Search)}
+          aria-label="Search"
         >
           <FiSearch />
         </button>

@@ -9,10 +9,14 @@ addWaitForStableDomCommand({
   timeout: 2000,
 });
 
-Cypress.Commands.add('selectExplorerNode', (name: string) => {
-  cy.findByRole('treeitem', {
+Cypress.Commands.add('findExplorerNode', (name: string) => {
+  return cy.findByRole('treeitem', {
     name: new RegExp(`^${name}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
-  }).click();
+  });
+});
+
+Cypress.Commands.add('selectExplorerNode', (name: string) => {
+  cy.findExplorerNode(name).click();
   cy.waitForStableDOM();
 });
 
