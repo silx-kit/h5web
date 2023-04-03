@@ -17,7 +17,7 @@ function H5WasmApp() {
 
   return (
     <H5WasmProvider {...h5File}>
-      <App explorerOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
+      <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </H5WasmProvider>
   );
 }

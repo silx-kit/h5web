@@ -14,9 +14,9 @@ import type { FeedbackContext } from './models';
 
 interface Props {
   path: string;
-  isExplorerOpen: boolean;
+  isSidebarOpen: boolean;
   isInspecting: boolean;
-  onToggleExplorer: () => void;
+  onToggleSidebar: () => void;
   onChangeInspecting: (b: boolean) => void;
   onSelectPath: (path: string) => void;
   getFeedbackURL?: (context: FeedbackContext) => string;
@@ -25,9 +25,9 @@ interface Props {
 function BreadcrumbsBar(props: Props) {
   const {
     path,
-    isExplorerOpen,
+    isSidebarOpen,
     isInspecting,
-    onToggleExplorer,
+    onToggleSidebar,
     onChangeInspecting,
     onSelectPath,
     getFeedbackURL,
@@ -42,11 +42,11 @@ function BreadcrumbsBar(props: Props) {
   return (
     <div className={styles.bar}>
       <ToggleBtn
-        label="Toggle explorer sidebar"
+        label="Toggle sidebar"
         icon={FiSidebar}
         iconOnly
-        value={isExplorerOpen}
-        onToggle={onToggleExplorer}
+        value={isSidebarOpen}
+        onToggle={onToggleSidebar}
       />
 
       <Separator style={{ marginLeft: '0.375rem', marginRight: '0.875rem' }} />
@@ -54,7 +54,7 @@ function BreadcrumbsBar(props: Props) {
       <Breadcrumbs
         path={path}
         onSelect={onSelectPath}
-        showFilename={!isExplorerOpen}
+        showFilename={!isSidebarOpen}
       />
 
       <ToggleGroup
