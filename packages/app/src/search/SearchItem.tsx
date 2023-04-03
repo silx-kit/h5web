@@ -8,7 +8,7 @@ interface Props {
   onClick: () => void;
 }
 
-function SearchEntry(props: Props) {
+function SearchItem(props: Props) {
   const { path, isSelected, onClick } = props;
 
   return (
@@ -29,4 +29,4 @@ function SearchEntry(props: Props) {
   );
 }
 
-export default SearchEntry;
+export default SearchItem;
