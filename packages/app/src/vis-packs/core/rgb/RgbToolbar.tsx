@@ -7,12 +7,16 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import { MdAspectRatio } from 'react-icons/md';
-import shallow from 'zustand/shallow';
 
 import { getImageInteractions } from '../utils';
-import { useRgbConfig } from './config';
+import type { RgbVisConfig } from './config';
 
-function RgbToolbar() {
+interface Props {
+  config: RgbVisConfig;
+}
+
+function RgbToolbar(props: Props) {
+  const { config } = props;
   const {
     imageType,
     keepRatio,
@@ -20,7 +24,7 @@ function RgbToolbar() {
     setImageType,
     toggleKeepRatio,
     toggleGrid,
-  } = useRgbConfig((state) => state, shallow);
+  } = config;
 
   return (
     <Toolbar interactions={getImageInteractions(keepRatio)}>

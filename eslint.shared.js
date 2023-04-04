@@ -99,6 +99,9 @@ module.exports = {
             // Disallow shadowing variables for an outer scope, as this can cause bugs
             // when the inner-scope variable is removed, for instance
             '@typescript-eslint/no-shadow': 'error',
+
+            // Warn on deprecated APIs (TypeScript strikes them out but doesn't report them)
+            'etc/no-deprecated': 'warn',
           },
         }),
         createJestOverride({

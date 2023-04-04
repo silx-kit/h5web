@@ -2,9 +2,9 @@ import { CurveType } from '@h5web/lib';
 import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
 import { omit } from 'lodash';
+import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
-import create from 'zustand';
-import createContext from 'zustand/context';
+import { createStore, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
@@ -28,8 +28,8 @@ export interface LineConfig {
   toggleErrors: () => void;
 }
 
-function createStore() {
-  return create<LineConfig>()(
+function createLineConfigStore() {
+  return createStore<LineConfig>()(
     persist(
       (set) => ({
         curveType: CurveType.LineOnly,
@@ -60,11 +60,16 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<StoreApi<LineConfig>>();
+const StoreContext = createContext({} as StoreApi<LineConfig>);
 
 export function LineConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-  return <Provider createStore={createStore}>{children}</Provider>;
+
+  const [store] = useState(createLineConfigStore);
+
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
 }
 
 export function useLineConfig(
@@ -76,7 +81,7 @@ export function useLineConfig(
     Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
   );
 
-  const persistedConfig = useStore();
+  const persistedConfig = useStore(useContext(StoreContext));
   const {
     setXScaleType: setPersistedXScaleType,
     setYScaleType: setPersistedYScaleType,

@@ -1,6 +1,6 @@
+import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
-import create from 'zustand';
-import createContext from 'zustand/context';
+import { createStore, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
@@ -12,8 +12,8 @@ export interface ComplexLineConfig {
   setVisType: (visType: ComplexLineVisType) => void;
 }
 
-function createStore() {
-  return create<ComplexLineConfig>()(
+function createComplexLineConfigStore() {
+  return createStore<ComplexLineConfig>()(
     persist(
       (set) => ({
         visType: ComplexVisType.Amplitude,
@@ -27,10 +27,18 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<StoreApi<ComplexLineConfig>>();
-export const useComplexLineConfig = useStore;
+const StoreContext = createContext({} as StoreApi<ComplexLineConfig>);
 
 export function ComplexLineConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-  return <Provider createStore={createStore}>{children}</Provider>;
+
+  const [store] = useState(createComplexLineConfigStore);
+
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
+}
+
+export function useComplexLineConfig(): ComplexLineConfig {
+  return useStore(useContext(StoreContext));
 }

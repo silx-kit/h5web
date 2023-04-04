@@ -42,7 +42,8 @@ function MappedRgbVis(props: Props) {
 
   return (
     <>
-      {toolbarContainer && createPortal(<RgbToolbar />, toolbarContainer)}
+      {toolbarContainer &&
+        createPortal(<RgbToolbar config={config} />, toolbarContainer)}
       <RgbVis
         dataArray={dataArray}
         title={title}

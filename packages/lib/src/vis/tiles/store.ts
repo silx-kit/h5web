@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 interface TooltipStore {
   val: { x: number; y: number; v: number } | undefined;

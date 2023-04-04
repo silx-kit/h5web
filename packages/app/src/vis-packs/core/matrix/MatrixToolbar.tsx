@@ -9,19 +9,19 @@ import {
 import { FiAnchor } from 'react-icons/fi';
 
 import type { ExportFormat, ExportURL } from '../../../providers/models';
-import { useMatrixConfig } from './config';
+import type { MatrixVisConfig } from './config';
 
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
   cellWidth: number;
   isSlice: boolean;
+  config: MatrixVisConfig;
   getExportURL: ((format: ExportFormat) => ExportURL) | undefined;
 }
 
 function MatrixToolbar(props: Props) {
-  const { cellWidth, isSlice, getExportURL } = props;
-
+  const { cellWidth, isSlice, config, getExportURL } = props;
   const {
     sticky,
     toggleSticky,
@@ -29,7 +29,7 @@ function MatrixToolbar(props: Props) {
     setCustomCellWidth,
     notation,
     setNotation,
-  } = useMatrixConfig();
+  } = config;
 
   return (
     <Toolbar>
