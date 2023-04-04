@@ -1,9 +1,9 @@
 import type { CustomDomain } from '@h5web/lib';
 import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
+import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
-import create from 'zustand';
-import createContext from 'zustand/context';
+import { createStore, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
@@ -32,8 +32,8 @@ export interface HeatmapConfig {
   toggleYAxisFlip: () => void;
 }
 
-function createStore() {
-  return create<HeatmapConfig>()(
+function createHeatmapConfigStore() {
+  return createStore<HeatmapConfig>()(
     persist(
       (set) => ({
         customDomain: [null, null],
@@ -71,11 +71,16 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<StoreApi<HeatmapConfig>>();
+const StoreContext = createContext({} as StoreApi<HeatmapConfig>);
 
 export function HeatmapConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-  return <Provider createStore={createStore}>{children}</Provider>;
+
+  const [store] = useState(createHeatmapConfigStore);
+
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
 }
 
 export function useHeatmapConfig(
@@ -87,7 +92,7 @@ export function useHeatmapConfig(
     Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
   );
 
-  const persistedConfig = useStore();
+  const persistedConfig = useStore(useContext(StoreContext));
   const {
     setScaleType: setPersistedScaleType,
     toggleKeepRatio: togglePersistedKeepRatio,

@@ -1,9 +1,9 @@
 import type { CustomDomain } from '@h5web/lib';
 import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
+import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
-import create from 'zustand';
-import createContext from 'zustand/context';
+import { createStore, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
@@ -31,8 +31,8 @@ export interface ScatterConfig {
   setYScaleType: (type: ScaleType) => void;
 }
 
-function createStore() {
-  return create<ScatterConfig>()(
+function createScatterConfigStore() {
+  return createStore<ScatterConfig>()(
     persist(
       (set) => ({
         customDomain: [null, null],
@@ -67,11 +67,16 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<StoreApi<ScatterConfig>>();
+const StoreContext = createContext({} as StoreApi<ScatterConfig>);
 
 export function ScatterConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-  return <Provider createStore={createStore}>{children}</Provider>;
+
+  const [store] = useState(createScatterConfigStore);
+
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
 }
 
 export function useScatterConfig(
@@ -83,7 +88,7 @@ export function useScatterConfig(
     Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
   );
 
-  const persistedConfig = useStore();
+  const persistedConfig = useStore(useContext(StoreContext));
   const {
     setScaleType: setPersistedScaleType,
     setXScaleType: setPersistedXScaleType,

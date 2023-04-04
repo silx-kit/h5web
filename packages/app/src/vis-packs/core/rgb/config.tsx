@@ -1,7 +1,7 @@
 import { ImageType } from '@h5web/lib';
+import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
-import create from 'zustand';
-import createContext from 'zustand/context';
+import { createStore, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
@@ -17,8 +17,8 @@ export interface RgbVisConfig {
   setImageType: (channels: ImageType) => void;
 }
 
-function createStore() {
-  return create<RgbVisConfig>()(
+function createRgbConfigStore() {
+  return createStore<RgbVisConfig>()(
     persist(
       (set) => ({
         showGrid: false,
@@ -39,10 +39,18 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<StoreApi<RgbVisConfig>>();
-export { useStore as useRgbConfig };
+const StoreContext = createContext({} as StoreApi<RgbVisConfig>);
 
 export function RgbConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-  return <Provider createStore={createStore}>{children}</Provider>;
+
+  const [store] = useState(createRgbConfigStore);
+
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
+}
+
+export function useRgbConfig(): RgbVisConfig {
+  return useStore(useContext(StoreContext));
 }

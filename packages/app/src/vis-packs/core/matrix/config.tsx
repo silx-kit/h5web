@@ -1,7 +1,7 @@
 import { Notation } from '@h5web/lib';
+import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
-import create from 'zustand';
-import createContext from 'zustand/context';
+import { createStore, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
@@ -17,8 +17,8 @@ export interface MatrixVisConfig {
   setNotation: (not: Notation) => void;
 }
 
-function createStore() {
-  return create<MatrixVisConfig>()(
+function createMatrixConfigStore() {
+  return createStore<MatrixVisConfig>()(
     persist(
       (set) => ({
         sticky: false,
@@ -42,10 +42,18 @@ function createStore() {
   );
 }
 
-const { Provider, useStore } = createContext<StoreApi<MatrixVisConfig>>();
-export { useStore as useMatrixConfig };
+const StoreContext = createContext({} as StoreApi<MatrixVisConfig>);
 
 export function MatrixConfigProvider(props: ConfigProviderProps) {
   const { children } = props;
-  return <Provider createStore={createStore}>{children}</Provider>;
+
+  const [store] = useState(createMatrixConfigStore);
+
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
+}
+
+export function useMatrixConfig(): MatrixVisConfig {
+  return useStore(useContext(StoreContext));
 }

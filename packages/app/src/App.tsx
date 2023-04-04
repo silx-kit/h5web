@@ -28,8 +28,8 @@ interface Props {
 
 function App(props: Props) {
   const {
-    explorerOpen = true,
-    sidebarOpen: initialSidebarOpen = explorerOpen,
+    explorerOpen = true, // eslint-disable-line etc/no-deprecated
+    sidebarOpen: initialSidebarOpen = explorerOpen, // eslint-disable-line etc/no-deprecated
     initialPath = '/',
     getFeedbackURL,
     disableDarkMode,
