@@ -18,11 +18,10 @@ jobs:
         with:
           TAG_PREFIX: v
 
-      - name: Use Node 16 🕹️
+      - name: Set up Node 🕹️
         uses: actions/setup-node@v3
         with:
           node-version-file: 'package.json'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install pnpm ⚙️
         uses: pnpm/action-setup@v2
