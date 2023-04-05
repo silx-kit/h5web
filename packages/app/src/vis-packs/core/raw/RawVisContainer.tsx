@@ -11,7 +11,7 @@ function RawVisContainer(props: VisContainerProps) {
   assertNonNullShape(entity);
 
   return (
-    <VisBoundary resetKey={entity}>
+    <VisBoundary>
       <ValueFetcher
         dataset={entity}
         render={(value) => <RawVis value={value} />}
