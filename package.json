@@ -10,7 +10,7 @@
     "url": "https://github.com/silx-kit/h5web"
   },
   "engines": {
-    "node": "16.x",
+    "node": "18.x",
     "pnpm": "7.x"
   },
   "scripts": {
@@ -36,7 +36,7 @@
     "@testing-library/cypress": "9.0.0",
     "@types/cypress-image-snapshot": "3.1.6",
     "@types/jest": "^29.5.0",
-    "@types/node": "^16.18.23",
+    "@types/node": "^18.15.11",
     "cypress": "12.3.0",
     "cypress-image-snapshot": "4.0.1",
     "cypress-wait-for-stable-dom": "0.1.0",

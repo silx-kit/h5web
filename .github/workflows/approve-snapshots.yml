@@ -22,7 +22,7 @@ jobs:
         with:
           ref: ${{ steps.getBranchName.outputs.branch }}
 
-      - name: Use Node 16 🕹️
+      - name: Set up Node 🕹️
         uses: actions/setup-node@v3
         with:
           node-version-file: 'package.json'

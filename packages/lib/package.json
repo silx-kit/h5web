@@ -80,7 +80,7 @@
     "@types/d3-scale-chromatic": "3.0.0",
     "@types/lodash": "4.14.192",
     "@types/ndarray": "1.0.11",
-    "@types/node": "^16.18.23",
+    "@types/node": "^18.15.11",
     "@types/react": "^17.0.56",
     "@types/react-aria-menubutton": "6.2.9",
     "@types/react-dom": "^17.0.19",
