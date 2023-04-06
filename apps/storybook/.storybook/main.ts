@@ -1,0 +1,21 @@
+import remarkGfm from 'remark-gfm';
+
+export default {
+  stories: ['../src/**/*.stories.@(tsx|mdx)'],
+  framework: '@storybook/react-vite',
+  addons: [
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+  ],
+  docs: { autodocs: true },
+};
