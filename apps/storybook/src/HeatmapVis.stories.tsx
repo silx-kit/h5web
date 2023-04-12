@@ -94,6 +94,12 @@ Alpha.args = {
   alpha: { array: alphaArray, domain: alphaDomain },
 };
 
+export const IgnoreValue = Template.bind({});
+IgnoreValue.args = {
+  ...Default.args,
+  ignoreValue: (val) => val >= 0 && val <= 100,
+};
+
 export const TypedArray = Template.bind({});
 TypedArray.args = {
   dataArray: toTypedNdArray(dataArray, Float32Array),
