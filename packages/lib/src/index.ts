@@ -26,6 +26,7 @@ export { default as FloatingControl } from './toolbar/floating/FloatingControl';
 export { default as ResetZoomButton } from './toolbar/floating/ResetZoomButton';
 export { default as NotationToggleGroup } from './toolbar/controls/NotationToggleGroup';
 export { default as Histogram } from './toolbar/controls/Histogram/Histogram';
+export type { ToolbarProps } from './toolbar/Toolbar';
 export type { DomainSliderProps } from './toolbar/controls/DomainSlider/DomainSlider';
 export type { HistogramProps } from './toolbar/controls/Histogram/Histogram';
 
