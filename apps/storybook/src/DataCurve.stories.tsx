@@ -62,6 +62,11 @@ GlyphSize.args = {
   glyphSize: 10,
 };
 
+export const IgnoreValue = Template.bind({});
+IgnoreValue.args = {
+  ignoreValue: (val) => val % 5 === 0,
+};
+
 export const Interactive: Story<DataCurveProps> = (args) => {
   const [index, setIndex] = useState<number>();
   const [hoveredIndex, setHoveredIndex] = useState<number>();

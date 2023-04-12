@@ -6,9 +6,7 @@ import {
   ScaleType,
 } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
-import { useMemo } from 'react';
 
 import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
@@ -21,7 +19,7 @@ import { DEFAULT_DOMAIN, formatNumType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
-import { usePixelEdgeValues, useTextureSafeNdArray } from './hooks';
+import { useMask, usePixelEdgeValues, useTextureSafeNdArray } from './hooks';
 import type { ColorMap, TooltipData } from './models';
 
 interface Props {
@@ -81,18 +79,7 @@ function HeatmapVis(props: Props) {
 
   const safeDataArray = useTextureSafeNdArray(dataArray);
   const safeAlphaArray = useTextureSafeNdArray(alpha?.array);
-  const maskArray = useMemo(
-    () =>
-      ignoreValue
-        ? ndarray(
-            Uint8Array.from(
-              dataArray.data.map((v) => (ignoreValue(v) ? 255 : 0))
-            ),
-            dataArray.shape
-          )
-        : undefined,
-    [dataArray, ignoreValue]
-  );
+  const maskArray = useMask(dataArray, ignoreValue);
 
   return (
     <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
@@ -151,7 +138,7 @@ function HeatmapVis(props: Props) {
           alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
           scale={[1, flipYAxis ? -1 : 1, 1]}
-          maskValues={maskArray}
+          mask={maskArray}
         />
 
         {children}

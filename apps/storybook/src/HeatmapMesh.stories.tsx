@@ -7,6 +7,7 @@ import {
 import type { HeatmapMeshProps, Domain } from '@h5web/lib';
 import { getDims, ScaleType, toTypedNdArray } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
+import { range } from 'lodash';
 import ndarray from 'ndarray';
 import {
   ByteType,
@@ -29,6 +30,14 @@ const domain = getDomain(dataArray.data);
 const uint16Values = [0x4900, 0x4d00, 0x4f80, 0x5100]; // 10, 20, 30, 40
 const uint16DataArray = ndarray(Uint16Array.from(uint16Values), [2, 2]);
 const uint16Domain: Domain = [10, 40];
+const mask = ndarray(
+  Uint8Array.from(
+    range(0, 20 * 41).map((val) =>
+      ((val % 41) * Math.floor(val / 41)) % 5 === 0 ? 255 : 0
+    )
+  ),
+  [20, 41]
+);
 
 const Template: Story<HeatmapMeshProps> = (args) => {
   const { rows, cols } = getDims(args.values);
@@ -71,6 +80,12 @@ BadColor.args = {
   domain: [0.1, 400],
   scaleType: ScaleType.Log,
   badColor: 'steelblue',
+};
+
+export const Mask = Template.bind({});
+Mask.args = {
+  ...Default.args,
+  mask,
 };
 
 export default {

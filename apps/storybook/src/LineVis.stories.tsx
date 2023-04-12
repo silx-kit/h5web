@@ -115,6 +115,12 @@ AuxiliaryErrors.args = {
   showErrors: true,
 };
 
+export const IgnoreValue = Template.bind({});
+IgnoreValue.args = {
+  ...Default.args,
+  ignoreValue: (val) => val % 5 === 0,
+};
+
 export const TypedArrays = Template.bind({});
 TypedArrays.args = {
   dataArray: toTypedNdArray(primaryArray, Float32Array),

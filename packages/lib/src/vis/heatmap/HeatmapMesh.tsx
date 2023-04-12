@@ -19,7 +19,7 @@ interface Props extends VisMeshProps {
   alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
   badColor?: RGBColor | string;
-  maskValues?: NdArray<Uint8Array>;
+  mask?: NdArray<Uint8Array>;
 }
 
 function HeatmapMesh(props: Props) {
@@ -33,7 +33,7 @@ function HeatmapMesh(props: Props) {
     alphaValues,
     alphaDomain,
     badColor,
-    maskValues,
+    mask,
     ...visMeshProps
   } = props;
 
@@ -49,7 +49,7 @@ function HeatmapMesh(props: Props) {
         alphaValues={alphaValues}
         alphaDomain={alphaDomain}
         badColor={badColor}
-        maskValues={maskValues}
+        mask={mask}
       />
     </VisMesh>
   );
