@@ -1,5 +1,5 @@
 import type { ColorMap, CustomDomain, ToolbarProps } from '@h5web/lib';
-import { Btn, InteractionInfo } from '@h5web/lib';
+import { Btn } from '@h5web/lib';
 import {
   ScaleType,
   Toolbar,

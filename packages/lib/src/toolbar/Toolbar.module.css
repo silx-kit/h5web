@@ -56,7 +56,7 @@ a.btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--h5w-toolbar-btn--height, 1.875rem);
+  height: var(--h5w-btn--height, 1.875rem);
   padding: 0 0.5rem;
   border-radius: 0.5rem;
   transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
@@ -64,7 +64,7 @@ a.btn {
 }
 
 .btn[data-small] > .btnLike {
-  height: calc(var(--h5w-toolbar-btn--height, 1.875rem) - 0.125rem);
+  height: calc(var(--h5w-btn--height, 1.875rem) - 0.125rem);
   border-radius: 0.875rem;
   font-size: 0.875em;
 }
