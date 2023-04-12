@@ -19,7 +19,7 @@ function ScalarVisContainer(props: VisContainerProps) {
   const formatter = getFormatter(entity);
 
   return (
-    <VisBoundary resetKey={entity}>
+    <VisBoundary>
       <ValueFetcher
         dataset={entity}
         render={(value) => <ScalarVis value={value} formatter={formatter} />}
