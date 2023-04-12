@@ -2,6 +2,7 @@ import type { Domain, NumArray } from '@h5web/shared';
 import { getDims, ScaleType, toTypedNdArray } from '@h5web/shared';
 import { range } from 'lodash';
 import type { NdArray } from 'ndarray';
+import ndarray from 'ndarray';
 import type { TextureFilter } from 'three';
 import {
   ClampToEdgeWrapping,
@@ -197,4 +198,18 @@ export function getDataTexture(
   texture.needsUpdate = true;
 
   return texture;
+}
+
+export function getMask(
+  dataArray: NdArray<NumArray>,
+  ignoreValue: ((v: number) => boolean) | undefined
+): NdArray<Uint8Array> | undefined {
+  if (!ignoreValue) {
+    return undefined;
+  }
+
+  return ndarray(
+    Uint8Array.from(dataArray.data.map((v) => (ignoreValue(v) ? 255 : 0))),
+    dataArray.shape
+  );
 }

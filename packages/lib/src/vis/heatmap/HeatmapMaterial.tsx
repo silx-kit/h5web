@@ -26,7 +26,7 @@ interface Props extends VisMeshProps {
   alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
   badColor?: RGBColor | string;
-  maskValues?: NdArray<Uint8Array>;
+  mask?: NdArray<Uint8Array>;
 }
 
 const DEFAULT_BAD_COLOR = rgb(255, 255, 255, 0);
@@ -55,12 +55,12 @@ function HeatmapMaterial(props: Props) {
     alphaValues,
     alphaDomain = DEFAULT_DOMAIN,
     badColor = DEFAULT_BAD_COLOR,
-    maskValues,
+    mask,
   } = props;
 
   const dataTexture = useDataTexture(values, magFilter);
   const alphaTexture = useDataTexture(alphaValues);
-  const maskTexture = useDataTexture(maskValues);
+  const maskTexture = useDataTexture(mask);
 
   const colorMapTexture = useMemo(() => {
     const interpolator = getInterpolator(colorMap, invertColorMap);
