@@ -78,10 +78,10 @@ export function getSizeToFit(
 export function getDomain(
   valuesArray: AnyNumArray,
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray
+  errorArray?: AnyNumArray,
+  ignoreValue?: (val: number) => boolean
 ): Domain | undefined {
-  const bounds = getBounds(valuesArray, errorArray);
-
+  const bounds = getBounds(valuesArray, errorArray, ignoreValue);
   return getValidDomainForScale(bounds, scaleType);
 }
 

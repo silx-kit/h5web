@@ -12,13 +12,15 @@ Find the min and max values contained in a numeric array. The function supports 
 
 - If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first strictly positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
 - If `scaleType` is `ScaleType.Sqrt` and the domain crosses zero, clamp the min to the first positive value (including 0).
-- If `errorArray` is provided, the returned domain will be computed for `values + errors` and `values - errors`.
+- If `errorArray` is provided, the returned domain is computed for `values + errors` and `values - errors`.
+- If the optional `ignoreValue` callback is provided, it is called for each value in the array; if it returns `true`, the value is ignored from the domain computation.
 
 ```ts
 getDomain(
   valuesArray: AnyNumArray, // NdArray<TypedArray | number[]> | TypedArray | number[]
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray
+  errorArray?: AnyNumArray,
+  ignoreValue?: (val: number) => boolean
 ): Domain | undefined
 
 const linearDomain = getDomain([10, 5, -1]); // [-1, 10]
