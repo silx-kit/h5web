@@ -1,6 +1,6 @@
 import { isTypedArray as isTypedArrayLodash } from 'lodash';
 import type { Data, NdArray, TypedArray } from 'ndarray';
-import type { ReactChild, ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { EntityKind, DTypeClass } from './models-hdf5';
 import type {
@@ -48,7 +48,9 @@ export function assertAbsolutePath(path: string) {
   }
 }
 
-export function isReactElement(child: ReactChild): child is ReactElement {
+export function isReactElement(
+  child: ReactElement | string | number
+): child is ReactElement {
   return typeof child !== 'string' && typeof child !== 'number';
 }
 
