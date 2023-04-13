@@ -78,4 +78,5 @@ function Toolbar(props: Props) {
   );
 }
 
+export type { Props as ToolbarProps };
 export default Toolbar;

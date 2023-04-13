@@ -37,13 +37,13 @@
   --h5w-matrix-indexCell--bgColor: var(--primary-bg);
   --h5w-matrix-indexCell--bgColorAlt: var(--primary-light-bg);
   --h5w-matrix-anchorCell--bgColor: var(--primary-dark-bg);
+  --h5w-btn--height: var(--toolbarBtn-height);
   --h5w-btn-hover--bgColor: var(--secondary-lighter);
   --h5w-btnPressed--bgColor: var(--secondary-light);
   --h5w-toolbar--height: var(--toolbar-height);
   --h5w-toolbar--bgColor: var(--secondary-light-bg);
   --h5w-toolbar-label--color: var(--secondary-dark);
   --h5w-toolbar-input-focus--shadowColor: var(--secondary-dark);
-  --h5w-toolbar-btn--height: var(--toolbarBtn-height);
   --h5w-domainSlider-track--bgColor: var(--secondary-dark-15);
   --h5w-domainSlider-dataTrack--bgColor: var(--secondary-dark);
   --h5w-domainSlider-dataTrack--shadowColor: var(--secondary-darker);

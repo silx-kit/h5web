@@ -1,4 +1,5 @@
-import type { ColorMap, CustomDomain, InteractionInfo } from '@h5web/lib';
+import type { ColorMap, CustomDomain, ToolbarProps } from '@h5web/lib';
+import { Btn } from '@h5web/lib';
 import {
   ScaleType,
   Toolbar,
@@ -16,13 +17,12 @@ import type { Meta, Story } from '@storybook/react';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';
 
-interface TemplateProps {
+interface TemplateProps extends Omit<ToolbarProps, 'children'> {
   narrow?: boolean;
-  interactions?: InteractionInfo[];
 }
 
 const Template: Story<TemplateProps> = (args) => {
-  const { narrow, interactions } = args;
+  const { narrow, ...toolbarProps } = args;
   const [customDomain, setCustomDomain] = useState<CustomDomain>([null, null]);
   const [colorMap, setColorMap] = useState<ColorMap>('Viridis');
   const [invertColorMap, toggleColorMapInversion] = useToggle();
@@ -44,7 +44,7 @@ const Template: Story<TemplateProps> = (args) => {
   return (
     <>
       <div style={narrow ? { maxWidth: '30rem', marginLeft: 'auto' } : {}}>
-        <Toolbar interactions={interactions}>
+        <Toolbar {...toolbarProps}>
           <DomainSlider
             dataDomain={[1, 100]}
             customDomain={customDomain}
@@ -106,6 +106,11 @@ DocumentInteractions.args = {
     { shortcut: 'Space', description: 'Accelerate' },
     { shortcut: 'Ctrl+Alt', description: 'Do a backflip' },
   ],
+};
+
+export const OverflowChildren = Template.bind({});
+OverflowChildren.args = {
+  overflowChildren: <Btn label="Some button" onClick={() => {}} />,
 };
 
 export default {
