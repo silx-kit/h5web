@@ -1,7 +1,6 @@
 import { useDomain } from '@h5web/lib';
-import type { ArrayShape, Domain } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
+import { type ArrayShape, type Domain } from '@h5web/shared';
+import ndarray, { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
 type NestedNumArray = (number | NestedNumArray)[];

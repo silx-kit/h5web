@@ -1,19 +1,18 @@
-import type { Entity } from '@h5web/shared';
-import { assertMockAttribute } from '@h5web/shared';
+import { assertMockAttribute, type Entity } from '@h5web/shared';
 import {
-  intType,
-  compoundType,
-  stringType,
-  floatType,
-  makeDataset,
   booleanType,
   complexType,
+  compoundType,
+  floatType,
+  intType,
+  makeDataset,
   makeScalarDataset,
+  stringType,
   unsignedType,
   withImageAttributes,
 } from '@h5web/shared/src/mock/metadata-utils';
 
-import type { AttrValuesStore } from '../../providers/models';
+import { type AttrValuesStore } from '../../providers/models';
 import { CORE_VIS } from './visualizations';
 
 const mockStore = {

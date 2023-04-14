@@ -1,25 +1,27 @@
-import type {
-  ArrayShape,
-  Attribute,
-  ComplexType,
-  CompoundType,
-  Dataset,
-  DType,
-  Entity,
-  Group,
-  NumericType,
-  ScalarShape,
-  Shape,
+import {
+  type ArrayShape,
+  type Attribute,
+  type ComplexType,
+  type CompoundType,
+  type Dataset,
+  type DType,
+  DTypeClass,
+  Endianness,
+  type Entity,
+  type Group,
+  isGroup,
+  type NumericType,
+  type ScalarShape,
+  type Shape,
 } from '@h5web/shared';
-import { DTypeClass, Endianness, isGroup } from '@h5web/shared';
 
-import type {
-  HsdsAttribute,
-  HsdsCompoundType,
-  HsdsEntity,
-  HsdsNumericType,
-  HsdsShape,
-  HsdsType,
+import {
+  type HsdsAttribute,
+  type HsdsCompoundType,
+  type HsdsEntity,
+  type HsdsNumericType,
+  type HsdsShape,
+  type HsdsType,
 } from './models';
 
 export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {

@@ -1,31 +1,33 @@
-import type {
-  ArrayShape,
-  Attribute,
-  AttributeValues,
-  ChildEntity,
-  Dataset,
-  Entity,
-  Group,
-  ProvidedEntity,
-  Value,
-} from '@h5web/shared';
 import {
+  type ArrayShape,
+  type Attribute,
+  type AttributeValues,
   buildEntityPath,
+  type ChildEntity,
+  type Dataset,
+  type Entity,
   EntityKind,
+  type Group,
   hasNumericType,
   hasScalarShape,
+  type ProvidedEntity,
+  type Value,
 } from '@h5web/shared';
-import type { AxiosRequestConfig } from 'axios';
+import { type AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
-import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { typedArrayFromDType, handleAxiosError } from '../utils';
-import type {
-  H5GroveAttribute,
-  H5GroveAttrValuesResponse,
-  H5GroveDataResponse,
-  H5GroveEntityResponse,
-  H5GrovePathsResponse,
+import {
+  type ExportFormat,
+  type ExportURL,
+  type ValuesStoreParams,
+} from '../models';
+import { handleAxiosError, typedArrayFromDType } from '../utils';
+import {
+  type H5GroveAttribute,
+  type H5GroveAttrValuesResponse,
+  type H5GroveDataResponse,
+  type H5GroveEntityResponse,
+  type H5GrovePathsResponse,
 } from './models';
 import {
   convertH5GroveDtype,

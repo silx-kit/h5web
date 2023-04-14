@@ -1,17 +1,16 @@
-import type { Domain } from '@h5web/shared';
-import { ScaleType } from '@h5web/shared';
+import { type Domain, ScaleType } from '@h5web/shared';
 import { tickStep } from 'd3-array';
 
 import {
-  getSizeToFit,
+  clampBound,
+  extendDomain,
+  getAxisDomain,
+  getCombinedDomain,
   getDomain,
   getDomains,
-  extendDomain,
-  getValueToIndexScale,
   getIntegerTicks,
-  getCombinedDomain,
-  clampBound,
-  getAxisDomain,
+  getSizeToFit,
+  getValueToIndexScale,
   getVisRatio,
 } from './utils';
 

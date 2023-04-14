@@ -1,4 +1,4 @@
-import type { ChildEntity } from '@h5web/shared';
+import { type ChildEntity } from '@h5web/shared';
 
 import { useDataContext } from '../providers/DataProvider';
 import styles from './Explorer.module.css';

@@ -1,4 +1,4 @@
-import type { VisDef } from '../vis-packs/models';
+import { type VisDef } from '../vis-packs/models';
 import styles from './VisSelector.module.css';
 
 interface Props<T extends VisDef> {

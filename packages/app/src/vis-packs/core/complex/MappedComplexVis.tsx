@@ -4,12 +4,16 @@ import {
   useValidDomainForScale,
   useVisDomain,
 } from '@h5web/lib';
-import type { AxisMapping, H5WebComplex, NumArray } from '@h5web/shared';
+import {
+  type AxisMapping,
+  type H5WebComplex,
+  type NumArray,
+} from '@h5web/shared';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
-import type { DimensionMapping } from '../../../dimension-mapper/models';
-import type { HeatmapConfig } from '../heatmap/config';
+import { type DimensionMapping } from '../../../dimension-mapper/models';
+import { type HeatmapConfig } from '../heatmap/config';
 import {
   useBaseArray,
   useMappedArray,
@@ -17,7 +21,7 @@ import {
 } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import ComplexToolbar from './ComplexToolbar';
-import type { ComplexConfig } from './config';
+import { type ComplexConfig } from './config';
 import { ComplexVisType } from './models';
 import { getPhaseAmplitudeValues } from './utils';
 

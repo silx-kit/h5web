@@ -1,10 +1,8 @@
-import type { Axis, Domain } from '@h5web/shared';
-import { createArrayFromView } from '@h5web/shared';
+import { type Axis, createArrayFromView, type Domain } from '@h5web/shared';
 import { isNumber } from 'lodash';
-import type { NdArray, TypedArray } from 'ndarray';
-import ndarray from 'ndarray';
+import ndarray, { type NdArray, type TypedArray } from 'ndarray';
 
-import type { DimensionMapping } from '../../dimension-mapper/models';
+import { type DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
@@ -71,7 +69,7 @@ export function applyMapping<T>(
 export function getSliceSelection(
   dimMapping?: DimensionMapping
 ): string | undefined {
-  if (!dimMapping || !dimMapping.some(isNumber)) {
+  if (!dimMapping?.some(isNumber)) {
     return undefined;
   }
 

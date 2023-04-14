@@ -1,12 +1,13 @@
 import {
+  type Domain,
   getDomain,
   getMockDataArray,
   HeatmapMesh,
+  type HeatmapMeshProps,
   VisCanvas,
 } from '@h5web/lib';
-import type { HeatmapMeshProps, Domain } from '@h5web/lib';
 import { getDims, ScaleType, toTypedNdArray } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 import { range } from 'lodash';
 import ndarray from 'ndarray';
 import {

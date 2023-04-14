@@ -1,5 +1,5 @@
 import { useCameraState } from '../hooks';
-import type { AxisOffsets } from '../models';
+import { type AxisOffsets } from '../models';
 import Axis from './Axis';
 import styles from './AxisSystem.module.css';
 import Html from './Html';

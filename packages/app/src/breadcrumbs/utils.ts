@@ -1,4 +1,4 @@
-import type { FeedbackContext } from './models';
+import { type FeedbackContext } from './models';
 
 export function getFeedbackMailto(
   context: FeedbackContext,

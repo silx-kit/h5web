@@ -1,11 +1,11 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import { type Domain, type ScaleType } from '@h5web/shared';
 import { useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
 
 import { getSafeDomain } from '../../../vis/heatmap/utils';
 import { useCombinedDomain } from '../../../vis/hooks';
-import type { DomainErrors } from '../../../vis/models';
+import { type DomainErrors } from '../../../vis/models';
 import { clampBound, createAxisScale, extendDomain } from '../../../vis/utils';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';

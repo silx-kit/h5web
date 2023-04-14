@@ -1,10 +1,9 @@
 import { Notation } from '@h5web/lib';
 import { createContext, useContext, useState } from 'react';
-import type { StoreApi } from 'zustand';
-import { createStore, useStore } from 'zustand';
+import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { ConfigProviderProps } from '../../models';
+import { type ConfigProviderProps } from '../../models';
 
 export interface MatrixVisConfig {
   sticky: boolean;

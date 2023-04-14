@@ -1,9 +1,8 @@
-import { forwardRef } from 'react';
-import type { HTMLProps } from 'react';
+import { forwardRef, type HTMLProps } from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
-import type { IconType } from 'react-icons/lib';
+import { type IconType } from 'react-icons/lib';
 
-import type { Bound } from '../../../vis/models';
+import { type Bound } from '../../../vis/models';
 import styles from './Thumb.module.css';
 
 interface Props extends HTMLProps<HTMLDivElement> {

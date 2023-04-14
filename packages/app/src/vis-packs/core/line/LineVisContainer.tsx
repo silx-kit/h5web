@@ -1,18 +1,18 @@
 import {
-  assertDataset,
   assertArrayShape,
+  assertDataset,
   assertNumericType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import type { VisContainerProps } from '../../models';
-import ValueFetcher from '../ValueFetcher';
 import { useIgnoreFillValue } from '../hooks';
 import { getSliceSelection } from '../utils';
-import MappedLineVis from './MappedLineVis';
+import ValueFetcher from '../ValueFetcher';
 import { useLineConfig } from './config';
+import MappedLineVis from './MappedLineVis';
 
 function LineVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;

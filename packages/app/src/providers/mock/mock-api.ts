@@ -1,31 +1,33 @@
-import type {
-  ArrayShape,
-  AttributeValues,
-  Dataset,
-  Entity,
-  NumArrayDataset,
-  ProvidedEntity,
-  ScalarShape,
-  Value,
-} from '@h5web/shared';
-import { isGroup } from '@h5web/shared';
-import { hasNumericType } from '@h5web/shared';
 import {
+  type ArrayShape,
   assertArrayOrTypedArray,
   assertArrayShape,
   assertDefined,
   assertMockAttribute,
   assertMockDataset,
+  type AttributeValues,
+  type Dataset,
+  type Entity,
   findMockEntity,
   hasArrayShape,
+  hasNumericType,
+  isGroup,
   isTypedArray,
   mockFilepath,
+  type NumArrayDataset,
+  type ProvidedEntity,
+  type ScalarShape,
+  type Value,
 } from '@h5web/shared';
-import type { MockDataset } from '@h5web/shared/src/mock/models';
+import { type MockDataset } from '@h5web/shared/src/mock/models';
 import axios from 'axios';
 
 import { DataProviderApi } from '../api';
-import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
+import {
+  type ExportFormat,
+  type ExportURL,
+  type ValuesStoreParams,
+} from '../models';
 import { sliceValue } from '../utils';
 
 const SLOW_TIMEOUT = 3000;

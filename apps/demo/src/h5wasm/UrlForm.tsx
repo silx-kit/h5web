@@ -1,12 +1,10 @@
 import useAxios from 'axios-hooks';
-import type { FormEvent } from 'react';
-import { useCallback } from 'react';
-import { useEffect } from 'react';
+import { type FormEvent, useCallback, useEffect } from 'react';
 import { FiLoader } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './H5WasmApp.module.css';
-import type { H5File } from './models';
+import { type H5File } from './models';
 
 interface Props {
   onH5File: (h5File: H5File) => void;

@@ -1,4 +1,4 @@
-import type { DType, Primitive } from '@h5web/shared';
+import { type DType, type Primitive } from '@h5web/shared';
 
 export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';
 

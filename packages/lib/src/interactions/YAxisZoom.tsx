@@ -1,6 +1,6 @@
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { useCanvasEvents, useZoomOnWheel, useInteraction } from './hooks';
-import type { CommonInteractionProps } from './models';
+import { useCanvasEvents, useInteraction, useZoomOnWheel } from './hooks';
+import { type CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
 
 type Props = CommonInteractionProps;
@@ -25,5 +25,5 @@ function YAxisZoom(props: Props) {
   return null;
 }
 
-export type { Props as YAxisZoomProps };
+export { type Props as YAxisZoomProps };
 export default YAxisZoom;

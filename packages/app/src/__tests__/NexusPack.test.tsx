@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 
 import {
-  findVisTabs,
   findSelectedVisTab,
+  findVisTabs,
   mockConsoleMethod,
   renderApp,
 } from '../test-utils';

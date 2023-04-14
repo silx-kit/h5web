@@ -1,15 +1,15 @@
-import type {
-  ArrayShape,
-  ArrayValue,
-  AxisMapping,
-  ComplexType,
-  Dataset,
-  NumArray,
-  NumArrayDataset,
-  NumericType,
-  ScalarShape,
-  ScaleType,
-  StringType,
+import {
+  type ArrayShape,
+  type ArrayValue,
+  type AxisMapping,
+  type ComplexType,
+  type Dataset,
+  type NumArray,
+  type NumArrayDataset,
+  type NumericType,
+  type ScalarShape,
+  type ScaleType,
+  type StringType,
 } from '@h5web/shared';
 
 export type NxAttribute =

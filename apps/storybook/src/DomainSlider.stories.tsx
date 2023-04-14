@@ -1,6 +1,10 @@
-import type { DomainSliderProps, CustomDomain } from '@h5web/lib';
-import { DomainSlider, ScaleType } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import {
+  type CustomDomain,
+  DomainSlider,
+  type DomainSliderProps,
+  ScaleType,
+} from '@h5web/lib';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 import { useState } from 'react';
 
 import Center from './decorators/Center';

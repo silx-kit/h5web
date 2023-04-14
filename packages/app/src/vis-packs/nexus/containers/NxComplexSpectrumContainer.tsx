@@ -2,15 +2,15 @@ import { assertGroup } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
-import VisBoundary from '../../VisBoundary';
-import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
 import { useComplexLineConfig } from '../../core/complex/lineConfig';
+import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
 import { useLineConfig } from '../../core/line/config';
 import { getSliceSelection } from '../../core/utils';
-import type { VisContainerProps } from '../../models';
-import NxValuesFetcher from '../NxValuesFetcher';
+import { type VisContainerProps } from '../../models';
+import VisBoundary from '../../VisBoundary';
 import { assertComplexNxData } from '../guards';
 import { useNxData } from '../hooks';
+import NxValuesFetcher from '../NxValuesFetcher';
 
 function NxComplexSpectrumContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;

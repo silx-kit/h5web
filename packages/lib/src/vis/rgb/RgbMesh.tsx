@@ -1,4 +1,4 @@
-import type { NdArray } from 'ndarray';
+import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
 import VisMesh from '../shared/VisMesh';

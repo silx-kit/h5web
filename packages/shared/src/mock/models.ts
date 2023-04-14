@@ -1,5 +1,10 @@
-import type { Attribute, Dataset, DType, Shape } from '../models-hdf5';
-import type { mockValues } from './values';
+import {
+  type Attribute,
+  type Dataset,
+  type DType,
+  type Shape,
+} from '../models-hdf5';
+import { type mockValues } from './values';
 
 export interface MockDataset<S extends Shape = Shape, T extends DType = DType>
   extends Dataset<S, T> {

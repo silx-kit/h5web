@@ -1,9 +1,12 @@
-import type { Domain, NumArray } from '@h5web/shared';
-import { getDims, ScaleType, toTypedNdArray } from '@h5web/shared';
+import {
+  type Domain,
+  getDims,
+  type NumArray,
+  ScaleType,
+  toTypedNdArray,
+} from '@h5web/shared';
 import { range } from 'lodash';
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
-import type { TextureFilter } from 'three';
+import ndarray, { type NdArray } from 'ndarray';
 import {
   ClampToEdgeWrapping,
   DataTexture,
@@ -11,16 +14,20 @@ import {
   HalfFloatType,
   NearestFilter,
   RedFormat,
+  type TextureFilter,
   UnsignedByteType,
   UVMapping,
 } from 'three';
 
-import type { CustomDomain, DomainErrors } from '../models';
-import { DomainError } from '../models';
+import { type CustomDomain, DomainError, type DomainErrors } from '../models';
 import { H5WEB_SCALES } from '../scales';
 import { getAxisValues } from '../utils';
 import { INTERPOLATORS } from './interpolators';
-import type { ColorMap, D3Interpolator, TextureSafeTypedArray } from './models';
+import {
+  type ColorMap,
+  type D3Interpolator,
+  type TextureSafeTypedArray,
+} from './models';
 
 const GRADIENT_PRECISION = 1 / 20;
 export const GRADIENT_RANGE = range(

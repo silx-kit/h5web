@@ -1,17 +1,17 @@
 import { Notation } from '@h5web/lib';
-import type {
-  ComplexType,
-  NumericType,
-  PrintableCompoundType,
-  PrintableType,
+import {
+  type ComplexType,
+  createComplexFormatter,
+  DTypeClass,
+  isComplexType,
+  isNumericType,
+  type NumericType,
+  type PrintableCompoundType,
+  type PrintableType,
 } from '@h5web/shared';
-import { isComplexType } from '@h5web/shared';
-import { isNumericType } from '@h5web/shared';
-import { createComplexFormatter } from '@h5web/shared';
-import { DTypeClass } from '@h5web/shared';
 import { format } from 'd3-format';
 
-import type { ValueFormatter } from '../models';
+import { type ValueFormatter } from '../models';
 
 export function createNumericFormatter(
   notation: Notation

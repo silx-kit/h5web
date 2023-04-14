@@ -1,12 +1,12 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import { type Domain, type ScaleType } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { useSafeDomain } from '../../../vis/heatmap/hooks';
 import { useCombinedDomain, useDomain } from '../../../vis/hooks';
-import type { HistogramParams } from '../../../vis/models';
+import { type HistogramParams } from '../../../vis/models';
 import { H5WEB_SCALES } from '../../../vis/scales';
 import Tick from '../../../vis/shared/Tick';
 import {
@@ -124,5 +124,5 @@ function Histogram(props: Props) {
   );
 }
 
-export type { Props as HistogramProps };
+export { type Props as HistogramProps };
 export default Histogram;

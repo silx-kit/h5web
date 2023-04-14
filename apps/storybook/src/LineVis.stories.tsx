@@ -1,16 +1,16 @@
-import type { LineVisProps } from '@h5web/lib';
 import {
-  LineVis,
-  ScaleType,
   CurveType,
-  getDomain,
-  getMockDataArray,
-  mockValues,
   getCombinedDomain,
+  getDomain,
   getDomains,
+  getMockDataArray,
+  LineVis,
+  type LineVisProps,
+  mockValues,
+  ScaleType,
 } from '@h5web/lib';
 import { toTypedNdArray } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';

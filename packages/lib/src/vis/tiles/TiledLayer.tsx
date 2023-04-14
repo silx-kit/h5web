@@ -1,12 +1,11 @@
-import type { ThreeEvent } from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
 import { Suspense } from 'react';
-import { LinearFilter, NearestFilter, Vector2 } from 'three';
-import type { Box3 } from 'three';
+import { type Box3, LinearFilter, NearestFilter, Vector2 } from 'three';
 
-import type { Size } from '../models';
+import { type Size } from '../models';
+import { type TilesApi } from './api';
+import { type ColorMapProps, type TileArray } from './models';
 import Tile from './Tile';
-import type { TilesApi } from './api';
-import type { ColorMapProps, TileArray } from './models';
 import {
   getTileOffsets,
   scaleBoxToLayer,

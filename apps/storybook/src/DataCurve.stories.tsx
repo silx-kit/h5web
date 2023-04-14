@@ -1,14 +1,14 @@
-import type { DataCurveProps } from '@h5web/lib';
 import {
   Annotation,
   CurveType,
   DataCurve,
+  type DataCurveProps,
   GlyphType,
   useDomain,
   VisCanvas,
 } from '@h5web/lib';
 import { assertDefined, mockValues } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 import { range } from 'lodash';
 import { useState } from 'react';
 

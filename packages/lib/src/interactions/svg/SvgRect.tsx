@@ -1,6 +1,6 @@
-import type { SVGProps } from 'react';
+import { type SVGProps } from 'react';
 
-import type { Rect } from '../models';
+import { type Rect } from '../models';
 
 interface Props extends SVGProps<SVGRectElement> {
   coords: Rect;
@@ -32,5 +32,5 @@ function SvgRect(props: Props) {
   );
 }
 
-export type { Props as SvgRectProps };
+export { type Props as SvgRectProps };
 export default SvgRect;

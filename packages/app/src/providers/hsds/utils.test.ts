@@ -1,12 +1,11 @@
-import type { DType } from '@h5web/shared';
-import { DTypeClass, Endianness } from '@h5web/shared';
+import { type DType, DTypeClass, Endianness } from '@h5web/shared';
 
-import type {
-  HsdsStringType,
-  HsdsArrayType,
-  HsdsCompoundType,
-  HsdsEnumType,
-  HsdsType,
+import {
+  type HsdsArrayType,
+  type HsdsCompoundType,
+  type HsdsEnumType,
+  type HsdsStringType,
+  type HsdsType,
 } from './models';
 import { convertHsdsType } from './utils';
 

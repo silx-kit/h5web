@@ -1,9 +1,8 @@
-import type { AxiosRequestConfig } from 'axios';
-import type { PropsWithChildren } from 'react';
-import { useMemo } from 'react';
+import { type AxiosRequestConfig } from 'axios';
+import { type PropsWithChildren, useMemo } from 'react';
 
+import { type DataProviderApi } from '../api';
 import DataProvider from '../DataProvider';
-import type { DataProviderApi } from '../api';
 import { H5GroveApi } from './h5grove-api';
 
 interface Props {

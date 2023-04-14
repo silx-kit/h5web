@@ -1,6 +1,6 @@
-import type { Domain } from '@h5web/shared';
+import { type Domain } from '@h5web/shared';
 
-import type { AxisScale } from '../../../vis/models';
+import { type AxisScale } from '../../../vis/models';
 import styles from './Track.module.css';
 
 interface Props {

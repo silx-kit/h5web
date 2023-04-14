@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared';
+import { type Entity } from '@h5web/shared';
 
 /* --------------------- */
 /* ----- RESPONSES ----- */

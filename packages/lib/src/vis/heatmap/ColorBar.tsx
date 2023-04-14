@@ -1,15 +1,12 @@
-import type { Domain } from '@h5web/shared';
-import { ScaleType } from '@h5web/shared';
-import { formatTick } from '@h5web/shared';
-import { formatBound } from '@h5web/shared';
+import { type Domain, formatBound, formatTick, ScaleType } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
-import { AxisRight, AxisBottom } from '@visx/axis';
+import { AxisBottom, AxisRight } from '@visx/axis';
 
-import type { VisScaleType } from '../models';
+import { type VisScaleType } from '../models';
 import Tick from '../shared/Tick';
 import { adaptedNumTicks, createAxisScale } from '../utils';
 import styles from './ColorBar.module.css';
-import type { ColorMap } from './models';
+import { type ColorMap } from './models';
 import { getInterpolator, getLinearGradient } from './utils';
 
 interface Props {
@@ -102,5 +99,5 @@ function ColorBar(props: Props) {
   );
 }
 
-export type { Props as ColorBarProps };
+export { type Props as ColorBarProps };
 export default ColorBar;

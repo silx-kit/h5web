@@ -38,7 +38,7 @@ npm install @h5web/app @h5web/h5wasm
 import '@h5web/app/dist/styles.css';
 
 import React, { useState } from 'react';
-import type { ChangeEvent } from 'react';
+import { type ChangeEvent } from 'react';
 import { App } from '@h5web/app';
 import { H5WasmProvider } from '@h5web/h5wasm';
 

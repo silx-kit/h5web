@@ -1,6 +1,6 @@
-import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
+  type Domain,
   DomainSlider,
   ScaleSelector,
   ScaleType,
@@ -9,7 +9,7 @@ import {
   Toolbar,
 } from '@h5web/lib';
 
-import type { SurfaceConfig } from './config';
+import { type SurfaceConfig } from './config';
 
 interface Props {
   dataDomain: Domain;

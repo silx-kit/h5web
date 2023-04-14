@@ -1,4 +1,4 @@
-import type { ReactNode, CSSProperties } from 'react';
+import { type CSSProperties, type ReactNode } from 'react';
 
 import Html from './Html';
 import { useVisCanvasContext } from './VisCanvasProvider';

@@ -1,8 +1,10 @@
-import type { MatrixVisProps } from '@h5web/lib';
-import { getMockDataArray, MatrixVis } from '@h5web/lib';
-import type { H5WebComplex } from '@h5web/shared';
-import { createComplexFormatter, toTypedNdArray } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import { getMockDataArray, MatrixVis, type MatrixVisProps } from '@h5web/lib';
+import {
+  createComplexFormatter,
+  type H5WebComplex,
+  toTypedNdArray,
+} from '@h5web/shared';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 import { format } from 'd3-format';
 
 import FillHeight from './decorators/FillHeight';

@@ -1,5 +1,5 @@
-import { useCanvasEvents, useZoomOnWheel, useInteraction } from './hooks';
-import type { CommonInteractionProps } from './models';
+import { useCanvasEvents, useInteraction, useZoomOnWheel } from './hooks';
+import { type CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
 
 type Props = CommonInteractionProps;
@@ -23,5 +23,5 @@ function Zoom(props: Props) {
   return null;
 }
 
-export type { Props as ZoomProps };
+export { type Props as ZoomProps };
 export default Zoom;

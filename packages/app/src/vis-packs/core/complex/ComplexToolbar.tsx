@@ -1,6 +1,6 @@
-import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
+  type Domain,
   DomainSlider,
   ScaleSelector,
   Selector,
@@ -12,9 +12,9 @@ import {
 import { ScaleType } from '@h5web/shared';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 
-import type { HeatmapConfig } from '../heatmap/config';
+import { type HeatmapConfig } from '../heatmap/config';
 import { getImageInteractions } from '../utils';
-import type { ComplexConfig } from './config';
+import { type ComplexConfig } from './config';
 import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
 interface Props {

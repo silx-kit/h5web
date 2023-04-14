@@ -1,18 +1,17 @@
 import { useEventListener, useToggle } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
-import { useState } from 'react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { useInteractionsContext } from './InteractionsProvider';
 import Box from './box';
-import type {
-  CanvasEvent,
-  CanvasEventCallbacks,
-  InteractionEntry,
-  ModifierKey,
-  Selection,
+import { useInteractionsContext } from './InteractionsProvider';
+import {
+  type CanvasEvent,
+  type CanvasEventCallbacks,
+  type InteractionEntry,
+  type ModifierKey,
+  type Selection,
 } from './models';
 
 const ZOOM_FACTOR = 0.95;

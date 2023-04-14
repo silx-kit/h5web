@@ -1,28 +1,34 @@
-import { isGroup, hasChildren } from '../guards';
-import type {
-  Attribute,
-  Datatype,
-  Entity,
-  Group,
-  ScalarShape,
-  Shape,
-  ArrayShape,
-  NumericType,
-  StringType,
-  DType,
-  BooleanType,
-  ComplexType,
-  CompoundType,
-  LinkClass,
-  UnresolvedEntity,
-  GroupWithChildren,
-  PrintableCompoundType,
-  ChildEntity,
+import { hasChildren, isGroup } from '../guards';
+import {
+  type ArrayShape,
+  type Attribute,
+  type BooleanType,
+  type ChildEntity,
+  type ComplexType,
+  type CompoundType,
+  type Datatype,
+  type DType,
+  DTypeClass,
+  Endianness,
+  type Entity,
+  EntityKind,
+  type Group,
+  type GroupWithChildren,
+  type LinkClass,
+  type NumericType,
+  type PrintableCompoundType,
+  type ScalarShape,
+  type Shape,
+  type StringType,
+  type UnresolvedEntity,
 } from '../models-hdf5';
-import { EntityKind, DTypeClass, Endianness } from '../models-hdf5';
-import type { NxInterpretation, SilxStyle } from '../models-nexus';
+import { type NxInterpretation, type SilxStyle } from '../models-nexus';
 import { buildEntityPath } from '../utils';
-import type { MockAttribute, MockDataset, MockValueId } from './models';
+import {
+  type MockAttribute,
+  type MockDataset,
+  type MockValueId,
+} from './models';
 import { mockValues } from './values';
 
 /* -------------------------- */

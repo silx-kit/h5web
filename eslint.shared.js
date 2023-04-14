@@ -17,6 +17,7 @@ module.exports = {
       rules: {
         'sort-keys-fix/sort-keys-fix': 'off', // keys should be sorted based on significance
         'import/no-default-export': 'off', // default exports are common in React
+        'simple-import-sort/exports': 'off', // can make package entry files with numerous exports difficult to read
 
         // Ternaries are sometimes more readable when `true` branch is most significant branch
         'no-negated-condition': 'off',
@@ -41,6 +42,14 @@ module.exports = {
 
         // The point of `switch` is to be less verbose than if/else if/else
         'unicorn/switch-case-braces': ['warn', 'avoid'],
+
+        // Galex currently disables checking for duplicate imports in a TS environment
+        // and rule `import/no-duplicates` does not seem to work. Falling back to ESLint's
+        // core rule until this is fixed.
+        // https://github.com/ljosberinn/eslint-config-galex/blob/532a305887b72ecfbe375ecd39a9d9054f1d41ee/src/plugins/import.ts#L178
+        // https://github.com/import-js/eslint-plugin-import/issues/2715
+        // 'import/no-duplicates': ['error', { 'prefer-inline': true }],
+        'no-duplicate-imports': 'error',
       },
       overrides: [
         createReactOverride({
@@ -48,6 +57,9 @@ module.exports = {
           rules: {
             'react/jsx-no-constructed-context-values': 'off', // too strict
             'react/no-unknown-property': 'off', // false positives with R3F
+
+            // Suggests alternatives that are incorrect, deprecated or not at all equivalent
+            'jsx-a11y/prefer-tag-over-role': 'off',
 
             // `useCameraState` accepts an array of deps like `useEffect`
             // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks#advanced-configuration

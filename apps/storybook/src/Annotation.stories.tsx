@@ -1,9 +1,8 @@
-import type { CanvasEvent } from '@h5web/lib';
-import { Annotation, useCanvasEvents } from '@h5web/lib';
+import { Annotation, type CanvasEvent, useCanvasEvents } from '@h5web/lib';
 import { useRafState } from '@react-hookz/web';
-import type { Meta, Story } from '@storybook/react';
+import { type Meta, type Story } from '@storybook/react';
 import { useCallback } from 'react';
-import type { Vector3 } from 'three';
+import { type Vector3 } from 'three';
 
 import DefaultCanvas from './decorators/DefaultCanvas';
 import FillHeight from './decorators/FillHeight';

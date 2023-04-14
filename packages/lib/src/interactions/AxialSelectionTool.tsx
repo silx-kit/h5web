@@ -1,11 +1,9 @@
-import type { Axis } from '@h5web/shared';
-import type { Camera } from 'three';
-import { Vector3 } from 'three';
+import { type Axis } from '@h5web/shared';
+import { type Camera, Vector3 } from 'three';
 
-import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
-import type { SelectionToolProps } from './SelectionTool';
-import SelectionTool from './SelectionTool';
-import type { Rect, Selection } from './models';
+import { type VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
+import { type Rect, type Selection } from './models';
+import SelectionTool, { type SelectionToolProps } from './SelectionTool';
 
 interface Props extends Omit<SelectionToolProps, 'transform'> {
   axis: Axis;
@@ -55,5 +53,5 @@ function AxialSelectionTool(props: Props) {
   );
 }
 
-export type { Props as AxialSelectionToolProps };
+export { type Props as AxialSelectionToolProps };
 export default AxialSelectionTool;

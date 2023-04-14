@@ -1,14 +1,18 @@
 import { HeatmapVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { AxisMapping, NumArray, NumArrayDataset } from '@h5web/shared';
-import type { TypedArray } from 'ndarray';
+import {
+  type AxisMapping,
+  type NumArray,
+  type NumArrayDataset,
+} from '@h5web/shared';
+import { type TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
-import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { type DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
+import { type HeatmapConfig } from './config';
 import HeatmapToolbar from './HeatmapToolbar';
-import type { HeatmapConfig } from './config';
 
 interface Props {
   dataset: NumArrayDataset;

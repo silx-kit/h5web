@@ -1,5 +1,5 @@
 import { Html, VisCanvas } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react';
+import { type Meta, type Story } from '@storybook/react';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 

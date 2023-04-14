@@ -1,26 +1,25 @@
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
+import ndarray, { type NdArray } from 'ndarray';
 
 import {
   assertAbsolutePath,
-  isGroup,
   assertArray,
   assertArrayShape,
-  assertDefined,
   assertDataset,
-  assertGroupWithChildren,
+  assertDefined,
   assertGroup,
+  assertGroupWithChildren,
+  isGroup,
 } from '../guards';
-import type {
-  Attribute,
-  Dataset,
-  DType,
-  Shape,
-  ProvidedEntity,
+import {
+  type Attribute,
+  type Dataset,
+  type DType,
+  type ProvidedEntity,
+  type Shape,
 } from '../models-hdf5';
 import { getChildEntity } from '../utils';
 import { mockMetadata } from './metadata';
-import type { MockAttribute, MockDataset } from './models';
+import { type MockAttribute, type MockDataset } from './models';
 
 export function assertMockDataset<S extends Shape, T extends DType>(
   dataset: Dataset<S, T>

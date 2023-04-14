@@ -3,14 +3,14 @@ import { isEqual } from 'lodash';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
-import VisBoundary from '../../VisBoundary';
-import MappedLineVis from '../../core/line/MappedLineVis';
 import { useLineConfig } from '../../core/line/config';
+import MappedLineVis from '../../core/line/MappedLineVis';
 import { getSliceSelection } from '../../core/utils';
-import type { VisContainerProps } from '../../models';
-import NxValuesFetcher from '../NxValuesFetcher';
+import { type VisContainerProps } from '../../models';
+import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
+import NxValuesFetcher from '../NxValuesFetcher';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;

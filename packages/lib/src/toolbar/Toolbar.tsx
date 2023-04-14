@@ -1,14 +1,14 @@
 import { isReactElement } from '@h5web/shared';
 import { useMap, useMeasure } from '@react-hookz/web';
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 
-import type { InteractionInfo } from '../interactions/models';
+import { type InteractionInfo } from '../interactions/models';
+import InteractionHelp from './controls/InteractionHelp';
 import MeasuredControl from './MeasuredControl';
 import OverflowMenu from './OverflowMenu';
 import Separator from './Separator';
 import styles from './Toolbar.module.css';
-import InteractionHelp from './controls/InteractionHelp';
 
 interface Props {
   children: ReactNode;
@@ -78,5 +78,5 @@ function Toolbar(props: Props) {
   );
 }
 
-export type { Props as ToolbarProps };
+export { type Props as ToolbarProps };
 export default Toolbar;

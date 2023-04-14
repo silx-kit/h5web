@@ -1,4 +1,4 @@
-import type { NumArray, ScaleType } from '@h5web/shared';
+import { type NumArray, type ScaleType } from '@h5web/shared';
 
 export interface ScatterAxisParams {
   label?: string;

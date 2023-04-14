@@ -1,6 +1,10 @@
-import type { NumArray } from '@h5web/shared';
-import type { Object3DNode, ThreeEvent } from '@react-three/fiber';
-import { extend, useThree } from '@react-three/fiber';
+import { type NumArray } from '@h5web/shared';
+import {
+  extend,
+  type Object3DNode,
+  type ThreeEvent,
+  useThree,
+} from '@react-three/fiber';
 import { useCallback, useLayoutEffect, useMemo } from 'react';
 import { BufferGeometry, Line } from 'three';
 
@@ -223,5 +227,5 @@ function DataCurve(props: Props) {
   );
 }
 
-export type { Props as DataCurveProps };
+export { type Props as DataCurveProps };
 export default DataCurve;

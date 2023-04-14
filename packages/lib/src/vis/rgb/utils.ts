@@ -1,7 +1,5 @@
-import type { NumArray } from '@h5web/shared';
-import { getDims, toTypedNdArray } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
+import { getDims, type NumArray, toTypedNdArray } from '@h5web/shared';
+import ndarray, { type NdArray } from 'ndarray';
 import { Data3DTexture, FloatType, RedFormat, UnsignedByteType } from 'three';
 
 /*

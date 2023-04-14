@@ -9,11 +9,14 @@ import {
 } from '@h5web/lib';
 import { MdDomain, MdGridOn } from 'react-icons/md';
 
-import type { LineConfig } from '../line/config';
+import { type LineConfig } from '../line/config';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
-import type { ComplexLineConfig } from './lineConfig';
-import type { ComplexLineVisType } from './models';
-import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
+import { type ComplexLineConfig } from './lineConfig';
+import {
+  type ComplexLineVisType,
+  ComplexVisType,
+  VIS_TYPE_SYMBOLS,
+} from './models';
 
 interface Props {
   disableAutoScale: boolean;

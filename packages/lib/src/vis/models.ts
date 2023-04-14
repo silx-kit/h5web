@@ -1,16 +1,16 @@
-import type {
-  Domain,
-  NumericType,
-  StringType,
-  BooleanType,
-  ComplexType,
-  ScaleType,
-  NumArray,
+import {
+  type BooleanType,
+  type ComplexType,
+  type Domain,
+  type NumArray,
+  type NumericType,
+  type ScaleType,
+  type StringType,
 } from '@h5web/shared';
-import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
+import { type PickD3Scale, type PickScaleConfigWithoutType } from '@visx/scale';
 
-import type { ColorMap } from './heatmap/models';
-import type { ScaleGamma } from './scaleGamma';
+import { type ColorMap } from './heatmap/models';
+import { type ScaleGamma } from './scaleGamma';
 
 export interface Size {
   width: number;

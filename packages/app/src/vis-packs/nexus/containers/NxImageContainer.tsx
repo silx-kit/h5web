@@ -2,13 +2,13 @@ import { assertGroup, assertMinDims } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
-import VisBoundary from '../../VisBoundary';
-import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
+import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { getSliceSelection } from '../../core/utils';
-import type { VisContainerProps } from '../../models';
-import NxValuesFetcher from '../NxValuesFetcher';
+import { type VisContainerProps } from '../../models';
+import VisBoundary from '../../VisBoundary';
 import { useNxData } from '../hooks';
+import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericSignal, guessKeepRatio } from '../utils';
 
 function NxImageContainer(props: VisContainerProps) {

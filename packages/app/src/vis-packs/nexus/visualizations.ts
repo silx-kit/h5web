@@ -2,21 +2,21 @@ import { FiActivity, FiImage, FiMap } from 'react-icons/fi';
 import { MdGrain } from 'react-icons/md';
 
 import {
-  LineConfigProvider,
-  HeatmapConfigProvider,
   ComplexConfigProvider,
   ComplexLineConfigProvider,
+  HeatmapConfigProvider,
+  LineConfigProvider,
   RgbConfigProvider,
 } from '../core/configs';
 import { ScatterConfigProvider } from '../core/scatter/config';
-import type { VisDef } from '../models';
+import { type VisDef } from '../models';
 import {
-  NxSpectrumContainer,
-  NxImageContainer,
   NxComplexImageContainer,
   NxComplexSpectrumContainer,
+  NxImageContainer,
   NxRgbContainer,
   NxScatterContainer,
+  NxSpectrumContainer,
 } from './containers';
 
 export enum NexusVis {

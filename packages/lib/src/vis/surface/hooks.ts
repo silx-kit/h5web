@@ -1,6 +1,5 @@
-import type { NumArray } from '@h5web/shared';
-import { getDims } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
+import { getDims, type NumArray } from '@h5web/shared';
+import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import { Float32BufferAttribute } from 'three';
 

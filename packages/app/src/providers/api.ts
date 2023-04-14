@@ -1,27 +1,26 @@
 /* eslint-disable promise/prefer-await-to-callbacks */
-import type {
-  ArrayShape,
-  AttributeValues,
-  Dataset,
-  Entity,
-  ProvidedEntity,
-  Value,
+import {
+  type ArrayShape,
+  type AttributeValues,
+  type Dataset,
+  type Entity,
+  type ProvidedEntity,
+  type Value,
 } from '@h5web/shared';
-import type {
-  AxiosInstance,
-  AxiosProgressEvent,
-  AxiosRequestConfig,
-  AxiosResponse,
-  CancelTokenSource,
-  ResponseType,
+import axios, {
+  type AxiosInstance,
+  type AxiosProgressEvent,
+  type AxiosRequestConfig,
+  type AxiosResponse,
+  type CancelTokenSource,
+  type ResponseType,
 } from 'axios';
-import axios from 'axios';
 
-import type {
-  ExportFormat,
-  ExportURL,
-  ProgressCallback,
-  ValuesStoreParams,
+import {
+  type ExportFormat,
+  type ExportURL,
+  type ProgressCallback,
+  type ValuesStoreParams,
 } from './models';
 import { CANCELLED_ERROR_MSG } from './utils';
 

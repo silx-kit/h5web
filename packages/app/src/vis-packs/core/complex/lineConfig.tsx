@@ -1,11 +1,9 @@
 import { createContext, useContext, useState } from 'react';
-import type { StoreApi } from 'zustand';
-import { createStore, useStore } from 'zustand';
+import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { ConfigProviderProps } from '../../models';
-import type { ComplexLineVisType } from './models';
-import { ComplexVisType } from './models';
+import { type ConfigProviderProps } from '../../models';
+import { type ComplexLineVisType, ComplexVisType } from './models';
 
 export interface ComplexLineConfig {
   visType: ComplexLineVisType;

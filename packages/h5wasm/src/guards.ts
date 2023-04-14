@@ -1,19 +1,18 @@
-import type { Dataset } from '@h5web/shared';
-import { DTypeClass } from '@h5web/shared';
+import { type Dataset, DTypeClass } from '@h5web/shared';
 import {
+  BrokenSoftLink as H5WasmSoftLink,
   Dataset as H5WasmDataset,
   Datatype as H5WasmDatatype,
-  Group as H5WasmGroup,
-  BrokenSoftLink as H5WasmSoftLink,
   ExternalLink as H5WasmExternalLink,
+  Group as H5WasmGroup,
+  type Metadata,
 } from 'h5wasm';
-import type { Metadata } from 'h5wasm';
 
-import type {
-  H5WasmEntity,
-  CompoundMetadata,
-  NumericMetadata,
-  EnumMetadata,
+import {
+  type CompoundMetadata,
+  type EnumMetadata,
+  type H5WasmEntity,
+  type NumericMetadata,
 } from './models';
 
 export function isH5WasmGroup(entity: H5WasmEntity): entity is H5WasmGroup {

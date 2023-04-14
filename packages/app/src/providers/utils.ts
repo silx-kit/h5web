@@ -1,13 +1,13 @@
-import type {
-  ArrayShape,
-  Dataset,
-  DType,
-  Primitive,
-  ScalarShape,
+import {
+  type ArrayShape,
+  assertArray,
+  type Dataset,
+  type DType,
+  DTypeClass,
+  isNumericType,
+  type Primitive,
+  type ScalarShape,
 } from '@h5web/shared';
-import { isNumericType } from '@h5web/shared';
-import { DTypeClass } from '@h5web/shared';
-import { assertArray } from '@h5web/shared';
 import { AxiosError } from 'axios';
 import ndarray from 'ndarray';
 

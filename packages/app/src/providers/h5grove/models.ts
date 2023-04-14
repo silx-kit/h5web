@@ -1,4 +1,8 @@
-import type { AttributeValues, EntityKind, Filter } from '@h5web/shared';
+import {
+  type AttributeValues,
+  type EntityKind,
+  type Filter,
+} from '@h5web/shared';
 
 export interface H5GroveEntityResponse {
   name: string;

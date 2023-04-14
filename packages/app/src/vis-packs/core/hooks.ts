@@ -1,16 +1,17 @@
-import type {
-  ArrayShape,
-  Dataset,
-  NumArray,
-  ScalarShape,
-  Value,
+import {
+  type ArrayShape,
+  assertDatasetValue,
+  type Dataset,
+  isDefined,
+  type NumArray,
+  type ScalarShape,
+  type Value,
 } from '@h5web/shared';
-import { isDefined, assertDatasetValue } from '@h5web/shared';
 import { castArray } from 'lodash';
-import type { NdArray, TypedArray } from 'ndarray';
+import { type NdArray, type TypedArray } from 'ndarray';
 import { useMemo } from 'react';
 
-import type { DimensionMapping } from '../../dimension-mapper/models';
+import { type DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 import { useDataContext } from '../../providers/DataProvider';
 import { typedArrayFromDType } from '../../providers/utils';

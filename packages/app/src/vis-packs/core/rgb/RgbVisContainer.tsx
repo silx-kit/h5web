@@ -1,19 +1,19 @@
 import {
-  assertDataset,
   assertArrayShape,
-  assertNumericType,
+  assertDataset,
   assertMinDims,
+  assertNumericType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import { useDataContext } from '../../../providers/DataProvider';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import type { VisContainerProps } from '../../models';
-import ValueFetcher from '../ValueFetcher';
 import { getSliceSelection } from '../utils';
-import MappedRgbVis from './MappedRgbVis';
+import ValueFetcher from '../ValueFetcher';
 import { useRgbConfig } from './config';
+import MappedRgbVis from './MappedRgbVis';
 
 function RgbVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;

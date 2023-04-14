@@ -9,7 +9,7 @@ import {
 import { MdAspectRatio } from 'react-icons/md';
 
 import { getImageInteractions } from '../utils';
-import type { RgbVisConfig } from './config';
+import { type RgbVisConfig } from './config';
 
 interface Props {
   config: RgbVisConfig;

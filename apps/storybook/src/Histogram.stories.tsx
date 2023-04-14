@@ -1,6 +1,10 @@
-import type { Domain, HistogramProps } from '@h5web/lib';
-import { Histogram, ScaleType } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import {
+  type Domain,
+  Histogram,
+  type HistogramProps,
+  ScaleType,
+} from '@h5web/lib';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 import { useState } from 'react';
 
 import Center from './decorators/Center';

@@ -1,12 +1,12 @@
-import type { HeatmapVisProps } from '@h5web/lib';
 import {
-  HeatmapVis,
+  Annotation,
   getDomain,
   getMockDataArray,
-  Annotation,
+  HeatmapVis,
+  type HeatmapVisProps,
 } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 
 import HeatmapVisStoriesConfig from './HeatmapVis.stories';
 

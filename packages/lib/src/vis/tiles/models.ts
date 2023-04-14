@@ -1,8 +1,8 @@
-import type { Domain } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
+import { type Domain } from '@h5web/shared';
+import { type NdArray } from 'ndarray';
 
-import type { ColorMap, TextureSafeTypedArray } from '../heatmap/models';
-import type { VisScaleType } from '../models';
+import { type ColorMap, type TextureSafeTypedArray } from '../heatmap/models';
+import { type VisScaleType } from '../models';
 
 export interface ColorMapProps {
   domain: Domain;

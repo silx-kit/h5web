@@ -1,4 +1,4 @@
-import type { BufferGeometry } from 'three';
+import { type BufferGeometry } from 'three';
 
 import GlyphMaterial from './GlyphMaterial';
 import { GlyphType } from './models';

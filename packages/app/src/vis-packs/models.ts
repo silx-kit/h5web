@@ -1,6 +1,6 @@
-import type { ProvidedEntity } from '@h5web/shared';
-import type { ElementType, ReactNode } from 'react';
-import type { IconType } from 'react-icons';
+import { type ProvidedEntity } from '@h5web/shared';
+import { type ElementType, type ReactNode } from 'react';
+import { type IconType } from 'react-icons';
 
 export interface VisContainerProps {
   entity: ProvidedEntity;

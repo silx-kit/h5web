@@ -1,19 +1,19 @@
 import {
-  assertDataset,
   assertArrayShape,
   assertComplexType,
+  assertDataset,
   assertMinDims,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import type { VisContainerProps } from '../../models';
-import ValueFetcher from '../ValueFetcher';
 import { useHeatmapConfig } from '../heatmap/config';
 import { getSliceSelection } from '../utils';
-import MappedComplexVis from './MappedComplexVis';
+import ValueFetcher from '../ValueFetcher';
 import { useComplexConfig } from './config';
+import MappedComplexVis from './MappedComplexVis';
 
 function ComplexVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;

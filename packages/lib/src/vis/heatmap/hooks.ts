@@ -1,12 +1,12 @@
 import { createMemo } from '@h5web/shared';
 
 import {
-  getVisDomain,
-  getSafeDomain,
-  getPixelEdgeValues,
-  toTextureSafeNdArray,
   getDataTexture,
   getMask,
+  getPixelEdgeValues,
+  getSafeDomain,
+  getVisDomain,
+  toTextureSafeNdArray,
 } from './utils';
 
 export const useVisDomain = createMemo(getVisDomain);

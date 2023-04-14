@@ -1,16 +1,20 @@
 import { LineVis, useCombinedDomain, useDomain, useDomains } from '@h5web/lib';
-import type { AxisMapping, NumArray, NumArrayDataset } from '@h5web/shared';
+import {
+  type AxisMapping,
+  type NumArray,
+  type NumArrayDataset,
+} from '@h5web/shared';
 import { createPortal } from 'react-dom';
 
-import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { type DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
 import {
-  useMappedArrays,
   useMappedArray,
+  useMappedArrays,
   useSlicedDimsAndMapping,
 } from '../hooks';
+import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
-import type { LineConfig } from './config';
 
 type HookArgs = [number[], DimensionMapping, boolean];
 

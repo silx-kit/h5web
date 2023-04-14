@@ -1,15 +1,14 @@
-import type { Domain, NumArray, ScaleType } from '@h5web/shared';
-import type { ThreeEvent } from '@react-three/fiber';
-import { useThree } from '@react-three/fiber';
+import { type Domain, type NumArray, type ScaleType } from '@h5web/shared';
+import { type ThreeEvent, useThree } from '@react-three/fiber';
 import { useCallback, useLayoutEffect, useMemo } from 'react';
 import { BufferGeometry } from 'three';
 
-import type { ColorMap } from '../heatmap/models';
+import { type ColorMap } from '../heatmap/models';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { createBufferAttr } from '../utils';
-import { useValueToColor, useIndexToPosition } from './hooks';
+import { useIndexToPosition, useValueToColor } from './hooks';
 
 interface Props {
   abscissas: NumArray;

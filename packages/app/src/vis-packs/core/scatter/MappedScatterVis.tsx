@@ -1,12 +1,11 @@
 import { ScatterVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { AxisMapping, NumArray } from '@h5web/shared';
-import { assertDefined } from '@h5web/shared';
+import { assertDefined, type AxisMapping, type NumArray } from '@h5web/shared';
 import { createPortal } from 'react-dom';
 
 import { useBaseArray } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
+import { type ScatterConfig } from './config';
 import ScatterToolbar from './ScatterToolbar';
-import type { ScatterConfig } from './config';
 
 interface Props {
   value: NumArray;

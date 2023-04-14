@@ -1,6 +1,6 @@
-import type { NumArray } from '@h5web/shared';
+import { type NumArray } from '@h5web/shared';
 
-import type { AxisScale } from '../models';
+import { type AxisScale } from '../models';
 
 const NO_ERROR_POSITIONS = {
   topCap: undefined,

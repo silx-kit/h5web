@@ -1,4 +1,5 @@
 import {
+  type ArrayShape,
   assertArray,
   assertArrayShape,
   assertComplexType,
@@ -9,24 +10,26 @@ import {
   assertScalarShape,
   assertStr,
   assertStringType,
+  type ComplexType,
+  type Dataset,
   getChildEntity,
+  type Group,
+  type GroupWithChildren,
   isScaleType,
-} from '@h5web/shared';
-import type {
-  Group,
-  ArrayShape,
-  ComplexType,
-  Dataset,
-  GroupWithChildren,
-  NumericType,
-  ScalarShape,
-  StringType,
-  NumArrayDataset,
+  type NumArrayDataset,
+  type NumericType,
+  type ScalarShape,
+  type StringType,
 } from '@h5web/shared';
 
-import type { AttrValuesStore } from '../../providers/models';
+import { type AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
-import type { AxisDef, DatasetInfo, NxData, SilxStyle } from './models';
+import {
+  type AxisDef,
+  type DatasetInfo,
+  type NxData,
+  type SilxStyle,
+} from './models';
 
 export function isNxDataGroup(
   group: GroupWithChildren,

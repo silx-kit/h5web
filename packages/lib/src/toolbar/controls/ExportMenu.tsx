@@ -1,9 +1,8 @@
-import { Button, Wrapper, Menu } from 'react-aria-menubutton';
+import { Button, Menu, Wrapper } from 'react-aria-menubutton';
 import { FiDownload } from 'react-icons/fi';
 import { MdArrowDropDown } from 'react-icons/md';
 
-import type { ExportEntryProps } from './ExportEntry';
-import ExportEntry from './ExportEntry';
+import ExportEntry, { type ExportEntryProps } from './ExportEntry';
 import styles from './Selector/Selector.module.css';
 
 interface Props {

@@ -1,5 +1,5 @@
 import { DefaultInteractions, VisCanvas } from '@h5web/lib';
-import type { Story } from '@storybook/react';
+import { type Story } from '@storybook/react';
 
 function DefaultCanvas(MyStory: Story) {
   return (

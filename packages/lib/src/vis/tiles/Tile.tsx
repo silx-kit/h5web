@@ -1,12 +1,11 @@
-import type { ThreeEvent } from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
 import { throttle } from 'lodash';
 import { memo } from 'react';
-import { Vector2 } from 'three';
-import type { TextureFilter } from 'three';
+import { type TextureFilter, Vector2 } from 'three';
 
 import HeatmapMesh from '../heatmap/HeatmapMesh';
-import type { TilesApi } from './api';
-import type { ColorMapProps, TileArray } from './models';
+import { type TilesApi } from './api';
+import { type ColorMapProps, type TileArray } from './models';
 
 interface Props extends ColorMapProps {
   api: TilesApi;

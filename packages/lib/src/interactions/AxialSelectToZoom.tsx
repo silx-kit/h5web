@@ -1,11 +1,11 @@
-import type { Axis } from '@h5web/shared';
+import { type Axis } from '@h5web/shared';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import AxialSelectionTool from './AxialSelectionTool';
-import styles from './SelectToZoom.module.css';
 import Box from './box';
 import { useZoomOnSelection } from './hooks';
-import type { CommonInteractionProps } from './models';
+import { type CommonInteractionProps } from './models';
+import styles from './SelectToZoom.module.css';
 import SvgElement from './svg/SvgElement';
 import SvgRect from './svg/SvgRect';
 
@@ -48,5 +48,5 @@ function AxialSelectToZoom(props: Props) {
   );
 }
 
-export type { Props as AxialSelectToZoomProps };
+export { type Props as AxialSelectToZoomProps };
 export default AxialSelectToZoom;

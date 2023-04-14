@@ -1,5 +1,5 @@
-import type { NumArray } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
+import { type NumArray } from '@h5web/shared';
+import { type NdArray } from 'ndarray';
 
 export enum CurveType {
   LineOnly = 'OnlyLine',

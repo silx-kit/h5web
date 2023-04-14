@@ -1,13 +1,13 @@
-import type { HeatmapVisProps } from '@h5web/lib';
 import {
-  HeatmapVis,
-  ScaleType,
   getDomain,
   getMockDataArray,
+  HeatmapVis,
+  type HeatmapVisProps,
   INTERPOLATORS,
+  ScaleType,
 } from '@h5web/lib';
 import { assertDefined, toTypedNdArray } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';

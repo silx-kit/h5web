@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 import { getFeedbackURL } from '../utils';
 import DropZone from './DropZone';
-import type { H5File } from './models';
+import { type H5File } from './models';
 
 function H5WasmApp() {
   const query = new URLSearchParams(useLocation().search);

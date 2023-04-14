@@ -1,13 +1,13 @@
 import { assertDefined, assertGroup, assertNumDims } from '@h5web/shared';
 import { isEqual } from 'lodash';
 
-import VisBoundary from '../../VisBoundary';
-import MappedScatterVis from '../../core/scatter/MappedScatterVis';
 import { useScatterConfig } from '../../core/scatter/config';
-import type { VisContainerProps } from '../../models';
-import NxValuesFetcher from '../NxValuesFetcher';
+import MappedScatterVis from '../../core/scatter/MappedScatterVis';
+import { type VisContainerProps } from '../../models';
+import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
+import NxValuesFetcher from '../NxValuesFetcher';
 
 function NxScatterContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;

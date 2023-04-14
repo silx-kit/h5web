@@ -1,10 +1,13 @@
-import { isGroup } from '@h5web/shared';
-import type { ChildEntity } from '@h5web/shared';
+import { type ChildEntity, isGroup } from '@h5web/shared';
 import { useToggle } from '@react-hookz/web';
-import type { CSSProperties, KeyboardEvent } from 'react';
-import { useRef } from 'react';
-import { useCallback } from 'react';
-import { Suspense, useEffect } from 'react';
+import {
+  type CSSProperties,
+  type KeyboardEvent,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FiRefreshCw } from 'react-icons/fi';
 

@@ -1,6 +1,6 @@
 import { castArray } from 'lodash';
 
-import type { ModifierKey } from './models';
+import { type ModifierKey } from './models';
 
 export function getModifierKeyArray(
   keys: ModifierKey | ModifierKey[] | undefined = []

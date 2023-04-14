@@ -2,7 +2,7 @@ import { useClickOutside, useToggle } from '@react-hookz/web';
 import { useRef } from 'react';
 import { FiHelpCircle } from 'react-icons/fi';
 
-import type { InteractionInfo } from '../../interactions/models';
+import { type InteractionInfo } from '../../interactions/models';
 import styles from './InteractionHelp.module.css';
 import ToggleBtn from './ToggleBtn';
 

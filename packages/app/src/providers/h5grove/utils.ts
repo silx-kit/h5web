@@ -1,13 +1,12 @@
-import type { DType } from '@h5web/shared';
-import { DTypeClass, Endianness, EntityKind } from '@h5web/shared';
+import { type DType, DTypeClass, Endianness, EntityKind } from '@h5web/shared';
 
-import type {
-  H5GroveDatasetResponse,
-  H5GroveDtype,
-  H5GroveEntityResponse,
-  H5GroveExternalLinkResponse,
-  H5GroveGroupResponse,
-  H5GroveSoftLinkResponse,
+import {
+  type H5GroveDatasetResponse,
+  type H5GroveDtype,
+  type H5GroveEntityResponse,
+  type H5GroveExternalLinkResponse,
+  type H5GroveGroupResponse,
+  type H5GroveSoftLinkResponse,
 } from './models';
 
 // https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder

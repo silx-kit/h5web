@@ -1,5 +1,5 @@
 import { Overlay, Pan, VisCanvas, Zoom } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react';
+import { type Meta, type Story } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 

@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { FiCheck, FiSlash } from 'react-icons/fi';
 
-import type { Bound } from '../../../vis/models';
+import { type Bound } from '../../../vis/models';
 import { clampBound } from '../../../vis/utils';
 import styles from './BoundEditor.module.css';
 
@@ -122,5 +122,5 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
 
 BoundEditor.displayName = 'BoundEditor';
 
-export type { Handle as BoundEditorHandle };
+export { type Handle as BoundEditorHandle };
 export default BoundEditor;

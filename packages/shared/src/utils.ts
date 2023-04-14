@@ -1,22 +1,21 @@
 import { format } from 'd3-format';
-import ndarray from 'ndarray';
-import type { NdArray, TypedArray } from 'ndarray';
+import ndarray, { type NdArray, type TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray, isTypedArray } from './guards';
-import type {
-  ChildEntity,
-  GroupWithChildren,
-  H5WebComplex,
+import {
+  type ChildEntity,
+  type GroupWithChildren,
+  type H5WebComplex,
 } from './models-hdf5';
-import { ScaleType } from './models-vis';
-import type {
-  Bounds,
-  Domain,
-  Dims,
-  AnyNumArray,
-  NumArray,
-  TypedArrayConstructor,
+import {
+  type AnyNumArray,
+  type Bounds,
+  type Dims,
+  type Domain,
+  type NumArray,
+  ScaleType,
+  type TypedArrayConstructor,
 } from './models-vis';
 
 export const formatBound = format('.3~e');

@@ -1,12 +1,13 @@
-import type {
-  Dataset,
-  ArrayShape,
-  PrintableType,
-  H5WebComplex,
+import {
+  type ArrayShape,
+  type Dataset,
+  formatScalarComplex,
+  type H5WebComplex,
+  hasComplexType,
+  type PrintableType,
 } from '@h5web/shared';
-import { hasComplexType, formatScalarComplex } from '@h5web/shared';
 
-import type { ValueFormatter } from '../models';
+import { type ValueFormatter } from '../models';
 
 export function getFormatter(
   dataset: Dataset<ArrayShape, PrintableType>

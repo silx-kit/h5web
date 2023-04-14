@@ -1,8 +1,7 @@
-import type { ChildEntity } from '@h5web/shared';
-import { isGroup, assertStr } from '@h5web/shared';
-import type { KeyboardEvent } from 'react';
+import { assertStr, type ChildEntity, isGroup } from '@h5web/shared';
+import { type KeyboardEvent } from 'react';
 
-import type { AttrValuesStore } from '../providers/models';
+import { type AttrValuesStore } from '../providers/models';
 import { hasAttribute } from '../utils';
 
 const SUPPORTED_NX_CLASSES = new Set(['NXdata', 'NXentry', 'NXprocess']);

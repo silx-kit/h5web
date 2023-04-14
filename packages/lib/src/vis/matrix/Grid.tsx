@@ -3,9 +3,9 @@ import { useContext } from 'react';
 import { FixedSizeGrid as IndexedGrid } from 'react-window';
 
 import Cell from './Cell';
+import { SettingsContext } from './context';
 import styles from './MatrixVis.module.css';
 import StickyGrid from './StickyGrid';
-import { SettingsContext } from './context';
 
 function Grid() {
   const { rowCount, columnCount, cellSize, setRenderedItems } =

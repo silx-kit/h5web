@@ -1,14 +1,14 @@
 import { clamp, range } from 'lodash';
 import { useRef } from 'react';
-import type { Group } from 'three';
+import { type Group } from 'three';
 
 import { useCameraState } from '../hooks';
-import type { Size } from '../models';
+import { type Size } from '../models';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
-import TiledLayer from './TiledLayer';
-import type { TilesApi } from './api';
+import { type TilesApi } from './api';
 import { useTooltipOnMoveHandler } from './hooks';
-import type { ColorMapProps } from './models';
+import { type ColorMapProps } from './models';
+import TiledLayer from './TiledLayer';
 import {
   getNdcToObject3DMatrix,
   getObject3DPixelSize,
@@ -88,5 +88,5 @@ function TiledHeatmapMesh(props: Props) {
   );
 }
 
-export type { Props as TiledHeatmapMeshProps };
+export { type Props as TiledHeatmapMeshProps };
 export default TiledHeatmapMesh;

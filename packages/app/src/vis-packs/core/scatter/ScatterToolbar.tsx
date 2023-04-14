@@ -1,6 +1,6 @@
-import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
+  type Domain,
   DomainSlider,
   GridToggler,
   ScaleSelector,
@@ -10,7 +10,7 @@ import {
 } from '@h5web/lib';
 
 import { BASE_INTERACTIONS } from '../utils';
-import type { ScatterConfig } from './config';
+import { type ScatterConfig } from './config';
 
 const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 

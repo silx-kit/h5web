@@ -1,6 +1,6 @@
-import type { MappedTuple } from '@h5web/shared';
-import type { ReactNode } from 'react';
-import type { Vector3 } from 'three';
+import { type MappedTuple } from '@h5web/shared';
+import { type ReactNode } from 'react';
+import { type Vector3 } from 'three';
 
 import { useCameraState } from '../hooks';
 import { useVisCanvasContext } from './VisCanvasProvider';
@@ -22,5 +22,5 @@ function DataToHtml<T extends Vector3[]>(props: Props<T>) {
   return <>{children(...htmlPoints)}</>;
 }
 
-export type { Props as DataToHtmlProps };
+export { type Props as DataToHtmlProps };
 export default DataToHtml;

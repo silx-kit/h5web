@@ -3,11 +3,10 @@ import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
 import { omit } from 'lodash';
 import { createContext, useContext, useState } from 'react';
-import type { StoreApi } from 'zustand';
-import { createStore, useStore } from 'zustand';
+import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { ConfigProviderProps } from '../../models';
+import { type ConfigProviderProps } from '../../models';
 
 export interface LineConfig {
   curveType: CurveType;

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import Html from '../../vis/shared/Html';
@@ -19,5 +19,5 @@ function SvgElement(props: Props) {
   return <Html>{createPortal(children, svgOverlay)}</Html>;
 }
 
-export type { Props as SvgElementProps };
+export { type Props as SvgElementProps };
 export default SvgElement;

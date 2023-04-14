@@ -1,7 +1,11 @@
-import { getDomain, INTERPOLATORS, ScatterVis } from '@h5web/lib';
-import type { ScatterVisProps } from '@h5web/lib';
+import {
+  getDomain,
+  INTERPOLATORS,
+  ScatterVis,
+  type ScatterVisProps,
+} from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import { type Meta, type Story } from '@storybook/react/types-6-0';
 import ndarray from 'ndarray';
 import { useState } from 'react';
 

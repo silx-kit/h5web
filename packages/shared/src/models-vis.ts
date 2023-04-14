@@ -1,4 +1,4 @@
-import type { NdArray, TypedArray } from 'ndarray';
+import { type NdArray, type TypedArray } from 'ndarray';
 
 export type NumArray = TypedArray | number[];
 export type AnyNumArray = NdArray<NumArray> | NumArray;

@@ -1,13 +1,9 @@
-import type { Domain } from '@h5web/shared';
-import { formatBound } from '@h5web/shared';
-import type { ReactNode } from 'react';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { type Domain, formatBound } from '@h5web/shared';
+import { forwardRef, type ReactNode, useImperativeHandle, useRef } from 'react';
 
-import type { DomainErrors } from '../../../vis/models';
-import { DomainError } from '../../../vis/models';
+import { DomainError, type DomainErrors } from '../../../vis/models';
 import ToggleBtn from '../ToggleBtn';
-import type { BoundEditorHandle } from './BoundEditor';
-import BoundEditor from './BoundEditor';
+import BoundEditor, { type BoundEditorHandle } from './BoundEditor';
 import styles from './DomainTooltip.module.css';
 import ErrorMessage from './ErrorMessage';
 
@@ -139,5 +135,5 @@ const DomainTooltip = forwardRef<Handle, Props>((props, ref) => {
 
 DomainTooltip.displayName = 'DomainTooltip';
 
-export type { Handle as DomainTooltipHandle };
+export { type Handle as DomainTooltipHandle };
 export default DomainTooltip;

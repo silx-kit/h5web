@@ -1,30 +1,34 @@
-import type { ValuesStoreParams, ExportFormat, ExportURL } from '@h5web/app';
 import {
+  type ExportFormat,
+  type ExportURL,
   flattenValue,
   getNameFromPath,
   ProviderApi,
   sliceValue,
+  type ValuesStoreParams,
 } from '@h5web/app';
-import type {
-  ArrayShape,
-  Attribute,
-  ChildEntity,
-  Dataset,
-  Entity,
-  Group,
-  ProvidedEntity,
-  Shape,
-  Value,
-} from '@h5web/shared';
 import {
+  type ArrayShape,
   assertNonNull,
+  type Attribute,
   buildEntityPath,
+  type ChildEntity,
+  type Dataset,
+  type Entity,
   EntityKind,
+  type Group,
   hasArrayShape,
   hasBoolType,
+  type ProvidedEntity,
+  type Shape,
+  type Value,
 } from '@h5web/shared';
-import type { Attribute as H5WasmAttribute } from 'h5wasm';
-import { File as H5WasmFile, ready as h5wasmReady, Module } from 'h5wasm';
+import {
+  type Attribute as H5WasmAttribute,
+  File as H5WasmFile,
+  Module,
+  ready as h5wasmReady,
+} from 'h5wasm';
 import { nanoid } from 'nanoid';
 
 import {
@@ -37,7 +41,7 @@ import {
   isH5WasmGroup,
   isH5WasmSoftLink,
 } from './guards';
-import type { H5WasmAttributes, H5WasmEntity } from './models';
+import { type H5WasmAttributes, type H5WasmEntity } from './models';
 import { convertMetadataToDType, convertSelectionToRanges } from './utils';
 
 export class H5WasmApi extends ProviderApi {

@@ -1,4 +1,8 @@
-import type { AriaAttributes, ComponentType, SVGAttributes } from 'react';
+import {
+  type AriaAttributes,
+  type ComponentType,
+  type SVGAttributes,
+} from 'react';
 
 import styles from '../Toolbar.module.css';
 
@@ -44,5 +48,5 @@ function Btn(props: Props) {
   );
 }
 
-export type { Props as BtnProps };
+export { type Props as BtnProps };
 export default Btn;

@@ -1,9 +1,8 @@
-import type { ThreeEvent } from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
-import { useCallback } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useCallback } from 'react';
 
-import type { Coords, Size } from '../models';
+import { type Coords, type Size } from '../models';
 import TooltipOverlay from './TooltipOverlay';
 import { useVisCanvasContext } from './VisCanvasProvider';
 import VisMesh from './VisMesh';
@@ -94,5 +93,5 @@ function TooltipMesh(props: Props) {
   );
 }
 
-export type { Props as TooltipMeshProps };
+export { type Props as TooltipMeshProps };
 export default TooltipMesh;

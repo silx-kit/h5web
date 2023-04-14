@@ -62,5 +62,5 @@ function ExportEntry(props: Props) {
   return null;
 }
 
-export type { Props as ExportEntryProps };
+export { type Props as ExportEntryProps };
 export default ExportEntry;

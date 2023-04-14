@@ -1,17 +1,25 @@
-import type { ChildEntity, Entity, Group } from '@h5web/shared';
-import { isGroup } from '@h5web/shared';
-import type { PropsWithChildren } from 'react';
-import { createContext, useContext, useMemo } from 'react';
+import {
+  type ChildEntity,
+  type Entity,
+  type Group,
+  isGroup,
+} from '@h5web/shared';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useMemo,
+} from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
 
 import { hasAttribute } from '../utils';
-import type { DataProviderApi } from './api';
-import type {
-  AttrName,
-  AttrValuesStore,
-  EntitiesStore,
-  ProgressCallback,
-  ValuesStore,
+import { type DataProviderApi } from './api';
+import {
+  type AttrName,
+  type AttrValuesStore,
+  type EntitiesStore,
+  type ProgressCallback,
+  type ValuesStore,
 } from './models';
 import { getNameFromPath } from './utils';
 

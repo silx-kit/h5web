@@ -1,9 +1,8 @@
-import { isGroup, EntityKind } from '@h5web/shared';
-import type { ChildEntity } from '@h5web/shared';
+import { type ChildEntity, EntityKind, isGroup } from '@h5web/shared';
 import {
-  FiHash,
   FiChevronDown,
   FiChevronRight,
+  FiHash,
   FiLayers,
   FiLink,
 } from 'react-icons/fi';

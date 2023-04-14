@@ -1,9 +1,13 @@
-import type { ReactNode, CSSProperties } from 'react';
-import { useContext, forwardRef } from 'react';
+import {
+  type CSSProperties,
+  forwardRef,
+  type ReactNode,
+  useContext,
+} from 'react';
 
+import { RenderedItemsContext, SettingsContext } from './context';
 import HeaderCells from './HeaderCells';
 import styles from './MatrixVis.module.css';
-import { SettingsContext, RenderedItemsContext } from './context';
 
 interface Props {
   children: ReactNode;

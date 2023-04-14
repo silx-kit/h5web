@@ -1,15 +1,14 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import { type Domain, type ScaleType } from '@h5web/shared';
 import { useClickOutside, useKeyboardEvent, useToggle } from '@react-hookz/web';
 import { useEffect, useRef, useState } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
 
 import { useSafeDomain, useVisDomain } from '../../../vis/heatmap/hooks';
-import type { CustomDomain, HistogramParams } from '../../../vis/models';
+import { type CustomDomain, type HistogramParams } from '../../../vis/models';
 import Histogram from '../Histogram/Histogram';
 import ToggleBtn from '../ToggleBtn';
 import styles from './DomainSlider.module.css';
-import type { DomainTooltipHandle } from './DomainTooltip';
-import DomainTooltip from './DomainTooltip';
+import DomainTooltip, { type DomainTooltipHandle } from './DomainTooltip';
 import ScaledSlider from './ScaledSlider';
 
 const TOOLTIP_ID = 'domain-tooltip';
@@ -151,5 +150,5 @@ function DomainSlider(props: Props) {
   );
 }
 
-export type { Props as DomainSliderProps };
+export { type Props as DomainSliderProps };
 export default DomainSlider;

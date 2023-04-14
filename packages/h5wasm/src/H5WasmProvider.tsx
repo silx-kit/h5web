@@ -1,7 +1,6 @@
 import { DataProvider } from '@h5web/app';
-import type { DataProviderApi } from '@h5web/app/src/providers/api';
-import type { PropsWithChildren } from 'react';
-import { useState, useEffect } from 'react';
+import { type DataProviderApi } from '@h5web/app/src/providers/api';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 
 import { H5WasmApi } from './h5wasm-api';
 

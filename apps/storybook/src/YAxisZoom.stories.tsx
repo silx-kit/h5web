@@ -1,6 +1,11 @@
-import { Pan, ResetZoomButton, VisCanvas, YAxisZoom } from '@h5web/lib';
-import type { YAxisZoomProps } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react';
+import {
+  Pan,
+  ResetZoomButton,
+  VisCanvas,
+  YAxisZoom,
+  type YAxisZoomProps,
+} from '@h5web/lib';
+import { type Meta, type Story } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 

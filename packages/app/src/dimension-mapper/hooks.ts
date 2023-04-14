@@ -1,6 +1,6 @@
 import { useDebouncedState } from '@react-hookz/web';
 
-import type { DimensionMapping } from './models';
+import { type DimensionMapping } from './models';
 
 export function useDimMappingState(dims: number[], axesCount: number) {
   return useDebouncedState<DimensionMapping>(

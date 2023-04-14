@@ -1,26 +1,30 @@
-import type { ChildEntity, ProvidedEntity } from '@h5web/shared';
 import {
   assertStr,
   buildEntityPath,
+  type ChildEntity,
   hasComplexType,
   hasMinDims,
   hasNumDims,
   isDataset,
   isGroup,
   NxInterpretation,
+  type ProvidedEntity,
 } from '@h5web/shared';
 
-import type { AttrValuesStore, EntitiesStore } from '../providers/models';
+import { type AttrValuesStore, type EntitiesStore } from '../providers/models';
 import { hasAttribute } from '../utils';
-import type { CoreVisDef } from '../vis-packs/core/visualizations';
-import { CORE_VIS, Vis } from '../vis-packs/core/visualizations';
-import type { VisDef } from '../vis-packs/models';
+import {
+  CORE_VIS,
+  type CoreVisDef,
+  Vis,
+} from '../vis-packs/core/visualizations';
+import { type VisDef } from '../vis-packs/models';
 import {
   findAxesDatasets,
   findSignalDataset,
   isNxDataGroup,
 } from '../vis-packs/nexus/utils';
-import { NexusVis, NEXUS_VIS } from '../vis-packs/nexus/visualizations';
+import { NEXUS_VIS, NexusVis } from '../vis-packs/nexus/visualizations';
 
 export function resolvePath(
   path: string,

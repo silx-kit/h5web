@@ -1,9 +1,9 @@
-import type { Meta, Story } from '@storybook/react';
+import { type Meta, type Story } from '@storybook/react';
 
-import type { TemplateProps } from './ColorBar.stories';
 import ColorBarStoriesConfig, {
   ColorBarTemplate,
   Default,
+  type TemplateProps,
 } from './ColorBar.stories';
 
 export const Horizontal: Story<TemplateProps> = ColorBarTemplate.bind({});

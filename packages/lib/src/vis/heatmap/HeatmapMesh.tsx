@@ -1,13 +1,12 @@
-import type { Domain } from '@h5web/shared';
-import type { RGBColor } from 'd3-color';
-import type { NdArray } from 'ndarray';
-import type { TextureFilter } from 'three';
+import { type Domain } from '@h5web/shared';
+import { type RGBColor } from 'd3-color';
+import { type NdArray } from 'ndarray';
+import { type TextureFilter } from 'three';
 
-import type { VisScaleType } from '../models';
-import type { VisMeshProps } from '../shared/VisMesh';
-import VisMesh from '../shared/VisMesh';
+import { type VisScaleType } from '../models';
+import VisMesh, { type VisMeshProps } from '../shared/VisMesh';
 import HeatmapMaterial from './HeatmapMaterial';
-import type { ColorMap, TextureSafeTypedArray } from './models';
+import { type ColorMap, type TextureSafeTypedArray } from './models';
 
 interface Props extends VisMeshProps {
   values: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
@@ -55,5 +54,5 @@ function HeatmapMesh(props: Props) {
   );
 }
 
-export type { Props as HeatmapMeshProps };
+export { type Props as HeatmapMeshProps };
 export default HeatmapMesh;

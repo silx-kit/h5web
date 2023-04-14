@@ -1,7 +1,7 @@
 import { useLocalStorageValue } from '@react-hookz/web';
 import { useState } from 'react';
 
-import type { VisDef } from '../vis-packs/models';
+import { type VisDef } from '../vis-packs/models';
 
 export function useActiveVis<T extends VisDef>(
   supportedVis: T[]

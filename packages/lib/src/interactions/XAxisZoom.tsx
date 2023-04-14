@@ -1,6 +1,6 @@
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import { useCanvasEvents, useInteraction, useZoomOnWheel } from './hooks';
-import type { CommonInteractionProps } from './models';
+import { type CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
 
 type Props = CommonInteractionProps;
@@ -25,5 +25,5 @@ function XAxisZoom(props: Props) {
   return null;
 }
 
-export type { Props as XAxisZoomProps };
+export { type Props as XAxisZoomProps };
 export default XAxisZoom;

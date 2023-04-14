@@ -1,12 +1,12 @@
-import type { NumericType, ComplexType } from '@h5web/shared';
-import type { ReactNode } from 'react';
+import { type ComplexType, type NumericType } from '@h5web/shared';
+import { type ReactNode } from 'react';
 
 import {
   useDatasetValue,
   useDatasetValues,
   usePrefetchValues,
 } from '../core/hooks';
-import type { NxData, NxValues } from './models';
+import { type NxData, type NxValues } from './models';
 
 interface Props<T extends NumericType | ComplexType> {
   nxData: NxData<T>;

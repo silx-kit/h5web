@@ -1,23 +1,21 @@
-import type {
-  ModifierKey,
-  Rect,
-  Selection,
-  SelectionToolProps,
-} from '@h5web/lib';
-import { Box } from '@h5web/lib';
-import { SvgLine } from '@h5web/lib';
-import { SvgRect } from '@h5web/lib';
-import { SvgElement } from '@h5web/lib';
-import { DataToHtml } from '@h5web/lib';
 import {
+  Box,
+  DataToHtml,
+  type ModifierKey,
   Pan,
+  type Rect,
+  ResetZoomButton,
+  type Selection,
   SelectionTool,
+  type SelectionToolProps,
+  SvgElement,
+  SvgLine,
+  SvgRect,
   VisCanvas,
   Zoom,
-  ResetZoomButton,
 } from '@h5web/lib';
 import { useThrottledState } from '@react-hookz/web';
-import type { Meta, Story } from '@storybook/react';
+import { type Meta, type Story } from '@storybook/react';
 import { useState } from 'react';
 
 import FillHeight from './decorators/FillHeight';

@@ -1,18 +1,17 @@
-import type { GroupWithChildren } from '@h5web/shared';
-import { isDefined } from '@h5web/shared';
+import { type GroupWithChildren, isDefined } from '@h5web/shared';
 
 import { useDataContext } from '../../providers/DataProvider';
-import type { NxData } from './models';
+import { type NxData } from './models';
 import {
   assertNxDataGroup,
   findAssociatedDatasets,
+  findAuxErrorDataset,
   findAxesDatasets,
   findErrorDataset,
   findSignalDataset,
-  findAuxErrorDataset,
   findTitleDataset,
-  getSilxStyle,
   getDatasetInfo,
+  getSilxStyle,
 } from './utils';
 
 export function useNxData(group: GroupWithChildren): NxData {

@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import styles from './H5WasmApp.module.css';
+import { type H5File } from './models';
 import UrlForm from './UrlForm';
-import type { H5File } from './models';
 
 const EXT = ['.h5', '.hdf5', '.hdf', '.nx', '.nx5', '.nexus', '.nxs', '.cxi'];
 

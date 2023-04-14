@@ -1,9 +1,9 @@
-import type { ArrayValue, Primitive } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
+import { type ArrayValue, type Primitive } from '@h5web/shared';
+import { type NdArray } from 'ndarray';
 
-import type { PrintableType } from '../models';
-import Grid from './Grid';
+import { type PrintableType } from '../models';
 import GridProvider from './context';
+import Grid from './Grid';
 
 const ROW_HEADERS_WIDTH = 80;
 const CELL_HEIGHT = 32;
@@ -48,5 +48,5 @@ function MatrixVis(props: Props) {
   );
 }
 
-export type { Props as MatrixVisProps };
+export { type Props as MatrixVisProps };
 export default MatrixVis;

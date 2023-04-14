@@ -1,7 +1,12 @@
-import type { TooltipMeshProps } from '@h5web/lib';
-import { Pan, TooltipMesh, VisCanvas, Zoom } from '@h5web/lib';
+import {
+  Pan,
+  TooltipMesh,
+  type TooltipMeshProps,
+  VisCanvas,
+  Zoom,
+} from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react';
+import { type Meta, type Story } from '@storybook/react';
 
 import VisCanvasStoriesConfig from './VisCanvas.stories';
 

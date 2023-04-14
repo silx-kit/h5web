@@ -1,10 +1,16 @@
 import { ScaleType } from '@h5web/shared';
-import type { Camera } from '@react-three/fiber';
-import type { RefObject } from 'react';
-import type { Matrix4, Object3D } from 'three';
-import { Box2, Box3, Vector2, Vector3 } from 'three';
+import { type Camera } from '@react-three/fiber';
+import { type RefObject } from 'react';
+import {
+  Box2,
+  Box3,
+  type Matrix4,
+  type Object3D,
+  Vector2,
+  Vector3,
+} from 'three';
 
-import type { Size } from '../models';
+import { type Size } from '../models';
 import { createAxisScale } from '../utils';
 
 export function getTileOffsets(box: Box2, tileSize: Size): Vector2[] {

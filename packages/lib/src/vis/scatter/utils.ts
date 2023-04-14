@@ -1,10 +1,9 @@
-import type { Domain, NumArray, ScaleType } from '@h5web/shared';
-import type { RGBColor } from 'd3-color';
-import { rgb } from 'd3-color';
+import { type Domain, type NumArray, type ScaleType } from '@h5web/shared';
+import { rgb, type RGBColor } from 'd3-color';
 
-import type { ColorMap } from '../heatmap/models';
+import { type ColorMap } from '../heatmap/models';
 import { getInterpolator } from '../heatmap/utils';
-import type { AxisScale } from '../models';
+import { type AxisScale } from '../models';
 import { createAxisScale } from '../utils';
 
 const CAMERA_FAR = 1000; // R3F's default

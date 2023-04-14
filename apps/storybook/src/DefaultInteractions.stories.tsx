@@ -1,13 +1,13 @@
 import {
   DefaultInteractions,
+  type DefaultInteractionsConfig,
   HeatmapMesh,
   mockValues,
   ResetZoomButton,
   ScaleType,
   VisCanvas,
 } from '@h5web/lib';
-import type { DefaultInteractionsConfig } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react';
+import { type Meta, type Story } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 import { useMockData } from './hooks';

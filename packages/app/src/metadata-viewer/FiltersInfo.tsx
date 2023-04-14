@@ -1,4 +1,4 @@
-import type { Filter } from '@h5web/shared';
+import { type Filter } from '@h5web/shared';
 
 interface Props {
   filters: Filter[];

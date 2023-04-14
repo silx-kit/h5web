@@ -1,13 +1,13 @@
 import { SurfaceVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { NumArrayDataset } from '@h5web/shared';
-import type { TypedArray } from 'ndarray';
+import { type NumArrayDataset } from '@h5web/shared';
+import { type TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
-import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { type DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
+import { type SurfaceConfig } from './config';
 import SurfaceToolbar from './SurfaceToolbar';
-import type { SurfaceConfig } from './config';
 
 interface Props {
   dataset: NumArrayDataset;

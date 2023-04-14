@@ -1,10 +1,9 @@
-import { ScaleType } from '@h5web/shared';
-import type { Domain, NumArray } from '@h5web/shared';
-import type { NdArray } from 'ndarray';
-import type { PropsWithChildren } from 'react';
+import { type Domain, type NumArray, ScaleType } from '@h5web/shared';
+import { type NdArray } from 'ndarray';
+import { type PropsWithChildren } from 'react';
 
 import ColorBar from '../heatmap/ColorBar';
-import type { ColorMap } from '../heatmap/models';
+import { type ColorMap } from '../heatmap/models';
 import R3FCanvas from '../shared/R3FCanvas';
 import SurfaceMesh from './SurfaceMesh';
 import styles from './SurfaceVis.module.css';
@@ -53,5 +52,5 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
   );
 }
 
-export type { Props as SurfaceVisProps };
+export { type Props as SurfaceVisProps };
 export default SurfaceVis;

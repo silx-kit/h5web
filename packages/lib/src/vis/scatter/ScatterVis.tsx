@@ -1,26 +1,28 @@
-import type { Domain, NumArray } from '@h5web/shared';
 import {
   assertDefined,
   assertLength,
+  type Domain,
   formatTooltipVal,
+  type NumArray,
   ScaleType,
 } from '@h5web/shared';
-import type { ThreeEvent } from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
-import type { NdArray } from 'ndarray';
-import type { ReactNode } from 'react';
+import { type NdArray } from 'ndarray';
+import { type ReactNode } from 'react';
 
-import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
-import DefaultInteractions from '../../interactions/DefaultInteractions';
+import DefaultInteractions, {
+  type DefaultInteractionsConfig,
+} from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import ColorBar from '../heatmap/ColorBar';
-import type { ColorMap } from '../heatmap/models';
+import { type ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
 import TooltipOverlay from '../shared/TooltipOverlay';
 import VisCanvas from '../shared/VisCanvas';
+import { type ScatterAxisParams } from './models';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
-import type { ScatterAxisParams } from './models';
 
 interface Props {
   abscissaParams: ScatterAxisParams;
@@ -159,5 +161,5 @@ function ScatterVis(props: Props) {
   );
 }
 
-export type { Props as ScatterVisProps };
+export { type Props as ScatterVisProps };
 export default ScatterVis;

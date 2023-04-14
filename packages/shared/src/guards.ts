@@ -1,32 +1,32 @@
 import { isTypedArray as isTypedArrayLodash } from 'lodash';
-import type { Data, NdArray, TypedArray } from 'ndarray';
-import type { ReactElement } from 'react';
+import { type Data, type NdArray, type TypedArray } from 'ndarray';
+import { type ReactElement } from 'react';
 
-import { EntityKind, DTypeClass } from './models-hdf5';
-import type {
-  Entity,
-  Group,
-  GroupWithChildren,
-  Dataset,
-  Datatype,
-  Shape,
-  ScalarShape,
-  ArrayShape,
-  DType,
-  NumericType,
-  H5WebComplex,
-  ComplexArray,
-  BooleanType,
-  ComplexType,
-  PrintableType,
-  StringType,
-  Primitive,
-  Value,
-  CompoundType,
-  PrintableCompoundType,
+import {
+  type ArrayShape,
+  type BooleanType,
+  type ComplexArray,
+  type ComplexType,
+  type CompoundType,
+  type Dataset,
+  type Datatype,
+  type DType,
+  DTypeClass,
+  type Entity,
+  EntityKind,
+  type Group,
+  type GroupWithChildren,
+  type H5WebComplex,
+  type NumericType,
+  type Primitive,
+  type PrintableCompoundType,
+  type PrintableType,
+  type ScalarShape,
+  type Shape,
+  type StringType,
+  type Value,
 } from './models-hdf5';
-import type { AnyNumArray, NumArray } from './models-vis';
-import { ScaleType } from './models-vis';
+import { type AnyNumArray, type NumArray, ScaleType } from './models-vis';
 import { getValues } from './utils';
 
 const PRINTABLE_DTYPES = new Set([

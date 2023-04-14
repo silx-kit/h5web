@@ -1,4 +1,4 @@
-import { ToggleGroup, ToggleBtn, LinkBtn, Separator, Btn } from '@h5web/lib';
+import { Btn, LinkBtn, Separator, ToggleBtn, ToggleGroup } from '@h5web/lib';
 import { useEventListener, useRerender } from '@react-hookz/web';
 import {
   FiMaximize,
@@ -10,7 +10,7 @@ import {
 import { useDataContext } from '../providers/DataProvider';
 import Breadcrumbs from './Breadcrumbs';
 import styles from './BreadcrumbsBar.module.css';
-import type { FeedbackContext } from './models';
+import { type FeedbackContext } from './models';
 
 interface Props {
   path: string;

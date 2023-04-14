@@ -1,12 +1,16 @@
 import { RgbVis } from '@h5web/lib';
-import type { AxisMapping, NumArray, NumArrayDataset } from '@h5web/shared';
-import type { TypedArray } from 'ndarray';
+import {
+  type AxisMapping,
+  type NumArray,
+  type NumArrayDataset,
+} from '@h5web/shared';
+import { type TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
-import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { type DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import { type RgbVisConfig } from './config';
 import RgbToolbar from './RgbToolbar';
-import type { RgbVisConfig } from './config';
 
 interface Props {
   dataset: NumArrayDataset;

@@ -1,7 +1,7 @@
 import { useDataContext } from '../providers/DataProvider';
+import { resolvePath } from './utils';
 import VisManager from './VisManager';
 import styles from './Visualizer.module.css';
-import { resolvePath } from './utils';
 
 interface Props {
   path: string;

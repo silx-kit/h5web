@@ -1,6 +1,5 @@
 import { useClickOutside, useToggle } from '@react-hookz/web';
-import { useRef, Children, cloneElement } from 'react';
-import type { ReactElement } from 'react';
+import { Children, cloneElement, type ReactElement, useRef } from 'react';
 import { FiMenu } from 'react-icons/fi';
 
 import styles from './OverflowMenu.module.css';

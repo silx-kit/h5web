@@ -1,7 +1,7 @@
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
-import type { TypedArray } from 'ndarray';
+import { type TypedArray } from 'ndarray';
 
 export enum EntityKind {
   Group = 'group',

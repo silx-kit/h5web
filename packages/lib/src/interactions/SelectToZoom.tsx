@@ -2,11 +2,15 @@ import { useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import styles from './SelectToZoom.module.css';
-import SelectionTool from './SelectionTool';
 import Box from './box';
 import { useZoomOnSelection } from './hooks';
-import type { CommonInteractionProps, Rect, Selection } from './models';
+import {
+  type CommonInteractionProps,
+  type Rect,
+  type Selection,
+} from './models';
+import SelectionTool from './SelectionTool';
+import styles from './SelectToZoom.module.css';
 import SvgElement from './svg/SvgElement';
 import SvgRect from './svg/SvgRect';
 
@@ -89,5 +93,5 @@ function SelectToZoom(props: Props) {
   );
 }
 
-export type { Props as SelectToZoomProps };
+export { type Props as SelectToZoomProps };
 export default SelectToZoom;

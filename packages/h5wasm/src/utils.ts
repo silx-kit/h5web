@@ -1,6 +1,10 @@
-import type { DType, NumericType } from '@h5web/shared';
-import { DTypeClass, Endianness } from '@h5web/shared';
-import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
+import {
+  type DType,
+  DTypeClass,
+  Endianness,
+  type NumericType,
+} from '@h5web/shared';
+import { type Dataset as H5WasmDataset, type Metadata } from 'h5wasm';
 
 import {
   assertNumericMetadata,
@@ -11,7 +15,7 @@ import {
   isNumericMetadata,
   isStringMetadata,
 } from './guards';
-import type { NumericMetadata } from './models';
+import { type NumericMetadata } from './models';
 
 export function convertNumericMetadataToDType(
   metadata: NumericMetadata

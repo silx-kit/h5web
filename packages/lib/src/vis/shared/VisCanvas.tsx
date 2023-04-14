@@ -1,8 +1,7 @@
-import type { PropsWithChildren } from 'react';
-import { useState } from 'react';
+import { type PropsWithChildren, useState } from 'react';
 
 import InteractionsProvider from '../../interactions/InteractionsProvider';
-import type { Aspect, AxisConfig } from '../models';
+import { type Aspect, type AxisConfig } from '../models';
 import { getAxisOffsets, getVisRatio } from '../utils';
 import AxisSystem from './AxisSystem';
 import Html from './Html';
@@ -100,5 +99,5 @@ function VisCanvas(props: PropsWithChildren<Props>) {
   );
 }
 
-export type { Props as VisCanvasProps };
+export { type Props as VisCanvasProps };
 export default VisCanvas;

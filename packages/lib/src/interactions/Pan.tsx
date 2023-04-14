@@ -1,15 +1,18 @@
 import { useThree } from '@react-three/fiber';
-import { useRef, useCallback } from 'react';
-import type { Vector3 } from 'three';
+import { useCallback, useRef } from 'react';
+import { type Vector3 } from 'three';
 
 import {
   useCanvasEvents,
+  useInteraction,
   useModifierKeyPressed,
   useMoveCameraTo,
-  useInteraction,
 } from './hooks';
-import { MouseButton } from './models';
-import type { CanvasEvent, CommonInteractionProps } from './models';
+import {
+  type CanvasEvent,
+  type CommonInteractionProps,
+  MouseButton,
+} from './models';
 import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
@@ -77,5 +80,5 @@ function Pan(props: Props) {
   return null;
 }
 
-export type { Props as PanProps };
+export { type Props as PanProps };
 export default Pan;

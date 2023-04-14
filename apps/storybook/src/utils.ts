@@ -1,4 +1,4 @@
-import type { Rect } from '@h5web/lib';
+import { type Rect } from '@h5web/lib';
 import { format } from 'd3-format';
 
 export const formatCoord = format('.2f');

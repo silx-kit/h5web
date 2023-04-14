@@ -9,11 +9,11 @@ import {
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import { FiItalic } from 'react-icons/fi';
-import { MdGridOn, MdDomain } from 'react-icons/md';
+import { MdDomain, MdGridOn } from 'react-icons/md';
 
-import type { ExportFormat, ExportURL } from '../../../providers/models';
+import { type ExportFormat, type ExportURL } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
-import type { LineConfig } from './config';
+import { type LineConfig } from './config';
 
 const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
