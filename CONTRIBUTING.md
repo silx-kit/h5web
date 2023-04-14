@@ -4,7 +4,8 @@
 - [Development](#development)
   - [`pnpm` v7 cheat sheet](#pnpm-v7-cheat-sheet)
   - [Dependency management](#dependency-management)
-  - [Workspace dependencies](#workspace-dependencies)
+    - [DefinitelyTyped packages](#definitelytyped-packages)
+    - [Workspace dependencies](#workspace-dependencies)
   - [Icon set](#icon-set)
 - [Build](#build)
   - [Package builds](#package-builds)
@@ -33,7 +34,7 @@ pnpm start
   [Storybook](https://storybook.js.org/docs/react/get-started/introduction)
   documentation site at http://localhost:6006
 
-### `pnpm` v7 cheat sheet
+### `pnpm` cheat sheet
 
 - `pnpm install` - install the dependencies of every project in the workspace
   and of the workspace itself
@@ -45,7 +46,7 @@ pnpm start
   folder
 - `pnpm [exec] <binary>` - run a binary located in `node_modules/.bin`
   (equivalent to `npx <pkg-name>` for a package installed in the workspace)
-- `pnpx <pkg-name>` - fetch a package from the registry and run its default
+- `pnpm dlx <pkg-name>` - fetch a package from the registry and run its default
   command binary (equivalent to `npx <pkg-name>`)
 - `pnpm why -r <pkg-name>` - show all project and packages that depend on the
   specified package
@@ -65,23 +66,21 @@ pnpm start
    manually and run `pnpm install` (but make sure to specify an exact dependency
    version rather than a range - i.e. don't prefix the version with a caret or a
    tilde).
-1. Run `pnpm up -r @types/node @types/react @types/react-dom @types/jest` to
-   upgrade [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)
-   packages that must remain in sync with the major versions of the libraries
-   they provide types for.
 
-Note that `pnpm` offers multiple solutions for dealing with peer dependency
-version conflicts and other package resolution issues:
-[`pnpm.overrides`](https://pnpm.io/package_json#pnpmoverrides),
-[`pnpm.packageExtensions`](https://pnpm.io/package_json#pnpmpackageextensions)
-[`peerDependenciesMeta`](https://pnpm.io/package_json#peerdependenciesmeta),
-[`.pnpmfile.cjs`](https://pnpm.io/pnpmfile).
+> If you run into peer dependency warnings and other package resolution issues,
+> note that `pnpm` offers numerous solutions for dealing with them, like
+> [`pnpm.peerDependencyRules.allowedVersions`](https://pnpm.io/package_json#pnpmpeerdependencyrulesallowedversions).
 
-`pnpm.overrides` is currently used to force the version of ESLint to the one
-required by `eslint-config-galex`. This is needed because, in the `demo`
-project, `vite-plugin-eslint` depends on an older version of ESLint.
+#### [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) packages
 
-### Workspace dependencies
+The major versions of `@types/*` packages must be aligned with the major
+versions of the packages they provide types for—i.e. `foo@x.y.z` requires
+`@types/foo@^x`.
+
+For convenience, some `@types` packages can be quickly upgraded to their latest
+minor/patch version by running `pnpm up -r`.
+
+#### Workspace dependencies
 
 To reference a workspace dependency, use pnpm's
 [workspace protocol](https://pnpm.io/workspaces#workspace-protocol-workspace)

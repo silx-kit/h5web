@@ -24,7 +24,7 @@ jobs:
       - name: Install pnpm ⚙️
         uses: pnpm/action-setup@v2
         with:
-          version: 7.x
+          version: 8.x
 
       - name: Restore cache 📌
         uses: actions/cache@v3
@@ -59,7 +59,7 @@ jobs:
       - name: Install pnpm ⚙️
         uses: pnpm/action-setup@v2
         with:
-          version: 7.x
+          version: 8.x
 
       - name: Restore cache 📌
         uses: actions/cache@v3
@@ -96,7 +96,7 @@ jobs:
       - name: Install pnpm ⚙️
         uses: pnpm/action-setup@v2
         with:
-          version: 7.x
+          version: 8.x
 
       - name: Restore cache 📌
         uses: actions/cache@v3
@@ -118,7 +118,7 @@ jobs:
         run: pnpm build
 
       - name: Serve ⚡️
-        run: pnpm serve & pnpx wait-on http://localhost:5173
+        run: pnpm serve & pnpm dlx wait-on http://localhost:5173
 
       - name: Run Cypress 🌳
         run: pnpm cypress:run

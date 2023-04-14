@@ -11,12 +11,12 @@
   },
   "engines": {
     "node": "18.x",
-    "pnpm": "7.x"
+    "pnpm": "8.x"
   },
   "scripts": {
     "start": "start-storybook -p 6006",
     "build": "build-storybook -o build",
-    "serve": "pnpx http-server -p 6006 ./build",
+    "serve": "pnpm dlx http-server -p 6006 ./build",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc"
   },
