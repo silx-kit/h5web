@@ -12,6 +12,7 @@ export const COLORMAP_GROUPS: Record<string, ColorMap[]> = {
     'Cividis',
     'Warm',
     'Cool',
+    'Cubehelix',
     'BuGn',
     'BuPu',
     'GnBu',
