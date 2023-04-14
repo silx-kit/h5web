@@ -1,15 +1,16 @@
 import type { AxialSelectToZoomProps } from '@h5web/lib';
-import { useDomain } from '@h5web/lib';
-import { assertDefined } from '@h5web/lib';
-import { HeatmapMesh, ScaleType } from '@h5web/lib';
-import { mockValues } from '@h5web/lib';
-import { Zoom } from '@h5web/lib';
 import {
+  assertDefined,
   AxialSelectToZoom,
   DataCurve,
+  HeatmapMesh,
+  mockValues,
   Pan,
   ResetZoomButton,
+  ScaleType,
+  useDomain,
   VisCanvas,
+  Zoom,
 } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react';
 import { range } from 'lodash';

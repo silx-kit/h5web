@@ -10,9 +10,9 @@ import type {
   ProvidedEntity,
   Value,
 } from '@h5web/shared';
-import { assertGroup } from '@h5web/shared';
 import {
   assertDefined,
+  assertGroup,
   buildEntityPath,
   EntityKind,
   getChildEntity,

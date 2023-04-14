@@ -1,12 +1,12 @@
 import type { Dataset } from '@h5web/shared';
-import { hasPrintableCompoundType } from '@h5web/shared';
-import { hasCompoundType } from '@h5web/shared';
 import {
   hasArrayShape,
   hasComplexType,
+  hasCompoundType,
   hasMinDims,
   hasNonNullShape,
   hasNumericType,
+  hasPrintableCompoundType,
   hasPrintableType,
   hasScalarShape,
 } from '@h5web/shared';

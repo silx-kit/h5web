@@ -1,6 +1,6 @@
 import type { ColorMap, CustomDomain, ToolbarProps } from '@h5web/lib';
-import { Btn } from '@h5web/lib';
 import {
+  Btn,
   ColorMapSelector,
   DomainSlider,
   GridToggler,

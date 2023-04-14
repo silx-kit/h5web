@@ -46,6 +46,9 @@ module.exports = {
         // `import { type Foo }` requires TS 5.0's `verbatimModuleSyntax`, which causes issues with Jest
         // Sticking with `importsNotUsedAsValues` and `import type { Foo }` for now...
         'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+
+        // Galex currently disables checking for duplicate imports in a TS environment, even though TS doesn't warn about this
+        'import/no-duplicates': 'error',
       },
       overrides: [
         createReactOverride({

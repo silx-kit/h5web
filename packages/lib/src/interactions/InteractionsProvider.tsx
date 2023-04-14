@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
 
-import type { InteractionEntry, ModifierKey } from './models';
-import type { MouseButton } from './models';
+import type { InteractionEntry, ModifierKey, MouseButton } from './models';
 
 export interface InteractionsContextValue {
   registerInteraction: (id: string, value: InteractionEntry) => void;

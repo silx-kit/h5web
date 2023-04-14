@@ -1,6 +1,5 @@
 import type { NumArray } from '@h5web/shared';
-import { assertDefined } from '@h5web/shared';
-import { getDims } from '@h5web/shared';
+import { assertDefined, getDims } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';

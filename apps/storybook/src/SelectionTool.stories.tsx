@@ -4,15 +4,15 @@ import type {
   Selection,
   SelectionToolProps,
 } from '@h5web/lib';
-import { Box } from '@h5web/lib';
-import { SvgLine } from '@h5web/lib';
-import { SvgRect } from '@h5web/lib';
-import { SvgElement } from '@h5web/lib';
-import { DataToHtml } from '@h5web/lib';
 import {
+  Box,
+  DataToHtml,
   Pan,
   ResetZoomButton,
   SelectionTool,
+  SvgElement,
+  SvgLine,
+  SvgRect,
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
