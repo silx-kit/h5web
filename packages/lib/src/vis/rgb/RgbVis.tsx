@@ -13,8 +13,8 @@ import { usePixelEdgeValues } from '../heatmap/hooks';
 import { useAxisDomain } from '../hooks';
 import type { Aspect, AxisParams } from '../models';
 import VisCanvas from '../shared/VisCanvas';
-import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
+import RgbMesh from './RgbMesh';
 import { toRgbSafeNdArray } from './utils';
 
 interface Props {

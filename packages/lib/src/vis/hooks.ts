@@ -1,15 +1,15 @@
+import type { AnyNumArray, Domain } from '@h5web/shared';
 import {
-  ScaleType,
+  createMemo,
   getBounds,
   getValidDomainForScale,
-  createMemo,
+  ScaleType,
 } from '@h5web/shared';
-import type { Domain, AnyNumArray } from '@h5web/shared';
 import { useRerender, useSyncedRef } from '@react-hookz/web';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useCallback, useMemo, useRef, useState } from 'react';
 import type { RefCallback } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import {
   getAxisDomain,

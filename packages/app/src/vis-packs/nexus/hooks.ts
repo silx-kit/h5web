@@ -6,13 +6,13 @@ import type { NxData } from './models';
 import {
   assertNxDataGroup,
   findAssociatedDatasets,
+  findAuxErrorDataset,
   findAxesDatasets,
   findErrorDataset,
   findSignalDataset,
-  findAuxErrorDataset,
   findTitleDataset,
-  getSilxStyle,
   getDatasetInfo,
+  getSilxStyle,
 } from './utils';
 
 export function useNxData(group: GroupWithChildren): NxData {

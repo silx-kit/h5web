@@ -1,4 +1,4 @@
-import { App, H5GroveProvider, assertEnvVar } from '@h5web/app';
+import { App, assertEnvVar, H5GroveProvider } from '@h5web/app';
 import { useLocation } from 'react-router-dom';
 
 import { getFeedbackURL } from './utils';

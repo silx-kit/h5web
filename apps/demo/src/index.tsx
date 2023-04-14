@@ -1,7 +1,7 @@
+import './styles.css'; // global styles
+
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
-
-import './styles.css'; // global styles
 
 import DemoApp from './DemoApp';
 

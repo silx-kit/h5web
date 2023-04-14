@@ -1,10 +1,10 @@
 import type { LineVisProps } from '@h5web/lib';
 import {
-  LineVis,
+  Annotation,
   CurveType,
   getDomain,
   getMockDataArray,
-  Annotation,
+  LineVis,
 } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';

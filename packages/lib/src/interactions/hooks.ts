@@ -5,8 +5,8 @@ import { useCallback, useEffect } from 'react';
 import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { useInteractionsContext } from './InteractionsProvider';
 import Box from './box';
+import { useInteractionsContext } from './InteractionsProvider';
 import type {
   CanvasEvent,
   CanvasEventCallbacks,

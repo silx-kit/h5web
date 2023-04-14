@@ -1,5 +1,5 @@
-import { useContext, createContext } from 'react';
-import type { ReactElement, ComponentType, SVGAttributes } from 'react';
+import type { ComponentType, ReactElement, SVGAttributes } from 'react';
+import { createContext, useContext } from 'react';
 
 import styles from './ToggleGroup.module.css';
 

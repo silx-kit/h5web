@@ -5,8 +5,8 @@ import { HeatmapMesh, ScaleType } from '@h5web/lib';
 import { mockValues } from '@h5web/lib';
 import { Zoom } from '@h5web/lib';
 import {
-  DataCurve,
   AxialSelectToZoom,
+  DataCurve,
   Pan,
   ResetZoomButton,
   VisCanvas,

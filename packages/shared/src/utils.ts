@@ -1,6 +1,6 @@
 import { format } from 'd3-format';
-import ndarray from 'ndarray';
 import type { NdArray, TypedArray } from 'ndarray';
+import ndarray from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray, isTypedArray } from './guards';
@@ -9,15 +9,15 @@ import type {
   GroupWithChildren,
   H5WebComplex,
 } from './models-hdf5';
-import { ScaleType } from './models-vis';
 import type {
-  Bounds,
-  Domain,
-  Dims,
   AnyNumArray,
+  Bounds,
+  Dims,
+  Domain,
   NumArray,
   TypedArrayConstructor,
 } from './models-vis';
+import { ScaleType } from './models-vis';
 
 export const formatBound = format('.3~e');
 export const formatBoundInput = format('.5~e');

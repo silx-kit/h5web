@@ -71,7 +71,7 @@ export function applyMapping<T>(
 export function getSliceSelection(
   dimMapping?: DimensionMapping
 ): string | undefined {
-  if (!dimMapping || !dimMapping.some(isNumber)) {
+  if (!dimMapping?.some(isNumber)) {
     return undefined;
   }
 

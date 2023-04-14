@@ -3,20 +3,20 @@ import ndarray from 'ndarray';
 
 import {
   assertAbsolutePath,
-  isGroup,
   assertArray,
   assertArrayShape,
-  assertDefined,
   assertDataset,
-  assertGroupWithChildren,
+  assertDefined,
   assertGroup,
+  assertGroupWithChildren,
+  isGroup,
 } from '../guards';
 import type {
   Attribute,
   Dataset,
   DType,
-  Shape,
   ProvidedEntity,
+  Shape,
 } from '../models-hdf5';
 import { getChildEntity } from '../utils';
 import { mockMetadata } from './metadata';

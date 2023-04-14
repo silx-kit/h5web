@@ -11,8 +11,8 @@ import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { getSliceSelection } from '../utils';
-import MatrixToolbar from './MatrixToolbar';
 import type { MatrixVisConfig } from './config';
+import MatrixToolbar from './MatrixToolbar';
 import { getCellWidth, getFormatter } from './utils';
 
 interface Props {

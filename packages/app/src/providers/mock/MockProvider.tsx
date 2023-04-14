@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from 'react';
 import { useMemo } from 'react';
 
-import DataProvider from '../DataProvider';
 import type { DataProviderApi } from '../api';
+import DataProvider from '../DataProvider';
 import { MockApi } from './mock-api';
 
 interface Props {

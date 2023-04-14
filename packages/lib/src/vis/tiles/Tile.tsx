@@ -1,8 +1,8 @@
 import type { ThreeEvent } from '@react-three/fiber';
 import { throttle } from 'lodash';
 import { memo } from 'react';
-import { Vector2 } from 'three';
 import type { TextureFilter } from 'three';
+import { Vector2 } from 'three';
 
 import HeatmapMesh from '../heatmap/HeatmapMesh';
 import type { TilesApi } from './api';

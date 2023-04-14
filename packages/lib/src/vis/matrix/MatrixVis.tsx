@@ -2,8 +2,8 @@ import type { ArrayValue, Primitive } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 
 import type { PrintableType } from '../models';
-import Grid from './Grid';
 import GridProvider from './context';
+import Grid from './Grid';
 
 const ROW_HEADERS_WIDTH = 80;
 const CELL_HEIGHT = 32;

@@ -18,9 +18,9 @@ import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
 import TooltipOverlay from '../shared/TooltipOverlay';
 import VisCanvas from '../shared/VisCanvas';
+import type { ScatterAxisParams } from './models';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
-import type { ScatterAxisParams } from './models';
 
 interface Props {
   abscissaParams: ScatterAxisParams;

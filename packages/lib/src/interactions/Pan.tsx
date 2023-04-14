@@ -1,15 +1,15 @@
 import { useThree } from '@react-three/fiber';
-import { useRef, useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import type { Vector3 } from 'three';
 
 import {
   useCanvasEvents,
+  useInteraction,
   useModifierKeyPressed,
   useMoveCameraTo,
-  useInteraction,
 } from './hooks';
-import { MouseButton } from './models';
 import type { CanvasEvent, CommonInteractionProps } from './models';
+import { MouseButton } from './models';
 import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {

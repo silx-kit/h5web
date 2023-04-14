@@ -1,4 +1,5 @@
 import '@testing-library/cypress/add-commands';
+
 import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
 import { registerCommand as addWaitForStableDomCommand } from 'cypress-wait-for-stable-dom';
 

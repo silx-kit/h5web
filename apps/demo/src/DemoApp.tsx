@@ -1,15 +1,15 @@
 import {
   BrowserRouter as Router,
-  Routes,
-  Route,
   Navigate,
+  Route,
+  Routes,
 } from 'react-router-dom';
 
 import H5GroveApp from './H5GroveApp';
+import H5WasmApp from './h5wasm/H5WasmApp';
 import Home from './Home';
 import HsdsApp from './HsdsApp';
 import MockApp from './MockApp';
-import H5WasmApp from './h5wasm/H5WasmApp';
 
 const query = new URLSearchParams(document.location.search);
 // @ts-expect-error

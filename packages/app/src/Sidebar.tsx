@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { FiList, FiSearch } from 'react-icons/fi';
 
-import styles from './Sidebar.module.css';
 import Explorer from './explorer/Explorer';
 import { useDataContext } from './providers/DataProvider';
 import SearchContainer from './search/SearchContainer';
+import styles from './Sidebar.module.css';
 
 interface Props {
   selectedPath: string;

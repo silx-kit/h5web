@@ -3,9 +3,9 @@ import type { Camera } from 'three';
 import { Vector3 } from 'three';
 
 import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
+import type { Rect, Selection } from './models';
 import type { SelectionToolProps } from './SelectionTool';
 import SelectionTool from './SelectionTool';
-import type { Rect, Selection } from './models';
 
 interface Props extends Omit<SelectionToolProps, 'transform'> {
   axis: Axis;

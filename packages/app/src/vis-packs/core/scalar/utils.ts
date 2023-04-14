@@ -1,10 +1,10 @@
 import type {
-  Dataset,
   ArrayShape,
-  PrintableType,
+  Dataset,
   H5WebComplex,
+  PrintableType,
 } from '@h5web/shared';
-import { hasComplexType, formatScalarComplex } from '@h5web/shared';
+import { formatScalarComplex, hasComplexType } from '@h5web/shared';
 
 import type { ValueFormatter } from '../models';
 

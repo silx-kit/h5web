@@ -9,7 +9,7 @@ import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { createBufferAttr } from '../utils';
-import { useValueToColor, useIndexToPosition } from './hooks';
+import { useIndexToPosition, useValueToColor } from './hooks';
 
 interface Props {
   abscissas: NumArray;

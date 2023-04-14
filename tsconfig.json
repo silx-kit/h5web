@@ -22,6 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "importsNotUsedAsValues": "error",
+    "ignoreDeprecations": "5.0",
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true
   }

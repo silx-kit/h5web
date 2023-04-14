@@ -11,8 +11,8 @@ import { createPortal } from 'react-dom';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
-import MatrixToolbar from '../matrix/MatrixToolbar';
 import type { MatrixVisConfig } from '../matrix/config';
+import MatrixToolbar from '../matrix/MatrixToolbar';
 import { getCellWidth, getFormatter } from '../matrix/utils';
 import { getSliceSelection } from '../utils';
 

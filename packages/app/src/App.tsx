@@ -6,14 +6,14 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 
 import styles from './App.module.css';
-import EntityLoader from './EntityLoader';
-import ErrorFallback from './ErrorFallback';
-import Sidebar from './Sidebar';
-import VisConfigProvider from './VisConfigProvider';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import type { FeedbackContext } from './breadcrumbs/models';
+import EntityLoader from './EntityLoader';
+import ErrorFallback from './ErrorFallback';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
 import { useDataContext } from './providers/DataProvider';
+import Sidebar from './Sidebar';
+import VisConfigProvider from './VisConfigProvider';
 import Visualizer from './visualizer/Visualizer';
 
 interface Props {

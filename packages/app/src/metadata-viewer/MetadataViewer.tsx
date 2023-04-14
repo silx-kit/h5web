@@ -5,13 +5,13 @@ import {
   isDataset,
 } from '@h5web/shared';
 import { capitalize } from 'lodash';
-import { Suspense, memo } from 'react';
+import { memo, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { useDataContext } from '../providers/DataProvider';
 import AttrErrorFallback from './AttrErrorFallback';
-import AttrValueLoader from './AttrValueLoader';
 import AttributesInfo from './AttributesInfo';
+import AttrValueLoader from './AttrValueLoader';
 import EntityInfo from './EntityInfo';
 import FiltersInfo from './FiltersInfo';
 import MetadataTable from './MetadataTable';

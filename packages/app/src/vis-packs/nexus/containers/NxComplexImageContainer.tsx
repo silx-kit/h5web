@@ -2,14 +2,14 @@ import { assertGroup, assertMinDims } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
-import VisBoundary from '../../VisBoundary';
-import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useComplexConfig } from '../../core/complex/config';
+import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
-import NxValuesFetcher from '../NxValuesFetcher';
+import VisBoundary from '../../VisBoundary';
 import { useNxData } from '../hooks';
+import NxValuesFetcher from '../NxValuesFetcher';
 import { assertComplexSignal, guessKeepRatio } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {

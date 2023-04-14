@@ -1,5 +1,5 @@
-import Btn from './Btn';
 import type { BtnProps } from './Btn';
+import Btn from './Btn';
 
 interface Props extends Omit<BtnProps, 'onClick'> {
   value: boolean;

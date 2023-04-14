@@ -1,4 +1,4 @@
-import { ToggleGroup, ToggleBtn, LinkBtn, Separator, Btn } from '@h5web/lib';
+import { Btn, LinkBtn, Separator, ToggleBtn, ToggleGroup } from '@h5web/lib';
 import { useEventListener, useRerender } from '@react-hookz/web';
 import {
   FiMaximize,

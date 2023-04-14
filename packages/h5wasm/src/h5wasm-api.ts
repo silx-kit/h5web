@@ -1,4 +1,4 @@
-import type { ValuesStoreParams, ExportFormat, ExportURL } from '@h5web/app';
+import type { ExportFormat, ExportURL, ValuesStoreParams } from '@h5web/app';
 import {
   flattenValue,
   getNameFromPath,
@@ -24,7 +24,7 @@ import {
   hasBoolType,
 } from '@h5web/shared';
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
-import { File as H5WasmFile, ready as h5wasmReady, Module } from 'h5wasm';
+import { File as H5WasmFile, Module, ready as h5wasmReady } from 'h5wasm';
 import { nanoid } from 'nanoid';
 
 import {

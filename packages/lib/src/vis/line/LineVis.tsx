@@ -16,8 +16,8 @@ import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import {
   useAxisDomain,
   useAxisValues,
-  useValueToIndexScale,
   useCssColors,
+  useValueToIndexScale,
 } from '../hooks';
 import type { AxisParams } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';

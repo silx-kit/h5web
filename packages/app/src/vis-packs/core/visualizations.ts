@@ -2,21 +2,21 @@ import type { Dataset } from '@h5web/shared';
 import { hasPrintableCompoundType } from '@h5web/shared';
 import { hasCompoundType } from '@h5web/shared';
 import {
-  hasScalarShape,
   hasArrayShape,
-  hasNonNullShape,
-  hasMinDims,
-  hasPrintableType,
-  hasNumericType,
   hasComplexType,
+  hasMinDims,
+  hasNonNullShape,
+  hasNumericType,
+  hasPrintableType,
+  hasScalarShape,
 } from '@h5web/shared';
 import {
-  FiCode,
-  FiGrid,
   FiActivity,
-  FiMap,
+  FiCode,
   FiCpu,
+  FiGrid,
   FiImage,
+  FiMap,
   FiPackage,
 } from 'react-icons/fi';
 
@@ -24,25 +24,25 @@ import type { AttrValuesStore } from '../../providers/models';
 import type { VisDef } from '../models';
 import CompoundMatrixVisContainer from './compound/CompoundMatrixVisContainer';
 import {
-  LineConfigProvider,
-  HeatmapConfigProvider,
   ComplexConfigProvider,
   ComplexLineConfigProvider,
-  RgbConfigProvider,
+  HeatmapConfigProvider,
+  LineConfigProvider,
   MatrixConfigProvider,
+  RgbConfigProvider,
 } from './configs';
 import {
-  RawVisContainer,
-  ScalarVisContainer,
-  MatrixVisContainer,
-  LineVisContainer,
-  HeatmapVisContainer,
-  ComplexVisContainer,
   ComplexLineVisContainer,
+  ComplexVisContainer,
+  HeatmapVisContainer,
+  LineVisContainer,
+  MatrixVisContainer,
+  RawVisContainer,
   RgbVisContainer,
+  ScalarVisContainer,
 } from './containers';
-import SurfaceVisContainer from './surface/SurfaceVisContainer';
 import { SurfaceConfigProvider } from './surface/config';
+import SurfaceVisContainer from './surface/SurfaceVisContainer';
 
 export enum Vis {
   Raw = 'Raw',

@@ -5,10 +5,10 @@ import type { Group } from 'three';
 import { useCameraState } from '../hooks';
 import type { Size } from '../models';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
-import TiledLayer from './TiledLayer';
 import type { TilesApi } from './api';
 import { useTooltipOnMoveHandler } from './hooks';
 import type { ColorMapProps } from './models';
+import TiledLayer from './TiledLayer';
 import {
   getNdcToObject3DMatrix,
   getObject3DPixelSize,

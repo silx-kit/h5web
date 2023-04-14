@@ -1,5 +1,5 @@
-import { isGroup } from '@h5web/shared';
 import type { ChildEntity } from '@h5web/shared';
+import { isGroup } from '@h5web/shared';
 import { useToggle } from '@react-hookz/web';
 import type { CSSProperties, KeyboardEvent } from 'react';
 import { useRef } from 'react';

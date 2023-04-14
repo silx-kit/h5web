@@ -11,10 +11,10 @@ import { SvgElement } from '@h5web/lib';
 import { DataToHtml } from '@h5web/lib';
 import {
   Pan,
+  ResetZoomButton,
   SelectionTool,
   VisCanvas,
   Zoom,
-  ResetZoomButton,
 } from '@h5web/lib';
 import { useThrottledState } from '@react-hookz/web';
 import type { Meta, Story } from '@storybook/react';

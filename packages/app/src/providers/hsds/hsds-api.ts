@@ -1,50 +1,50 @@
 import type {
-  Group,
-  GroupWithChildren,
+  ArrayShape,
+  AttributeValues,
+  ChildEntity,
   Dataset,
   Datatype,
   Entity,
-  AttributeValues,
-  ChildEntity,
+  Group,
+  GroupWithChildren,
   ProvidedEntity,
-  ArrayShape,
   Value,
 } from '@h5web/shared';
 import { assertGroup } from '@h5web/shared';
 import {
-  getChildEntity,
   assertDefined,
-  hasArrayShape,
-  EntityKind,
   buildEntityPath,
+  EntityKind,
+  getChildEntity,
+  hasArrayShape,
 } from '@h5web/shared';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { flattenValue, handleAxiosError } from '../utils';
 import type {
+  BaseHsdsEntity,
+  HsdsAttribute,
+  HsdsAttributesResponse,
+  HsdsAttributeWithValueResponse,
+  HsdsCollection,
   HsdsDatasetResponse,
   HsdsDatatypeResponse,
+  HsdsEntity,
   HsdsGroupResponse,
-  HsdsAttributesResponse,
+  HsdsId,
+  HsdsLink,
   HsdsLinksResponse,
   HsdsRootResponse,
   HsdsValueResponse,
-  HsdsAttribute,
-  HsdsLink,
-  HsdsEntity,
-  HsdsCollection,
-  HsdsId,
-  HsdsAttributeWithValueResponse,
-  BaseHsdsEntity,
 } from './models';
 import {
   assertHsdsDataset,
-  isHsdsGroup,
+  assertHsdsEntity,
+  convertHsdsAttributes,
   convertHsdsShape,
   convertHsdsType,
-  convertHsdsAttributes,
-  assertHsdsEntity,
+  isHsdsGroup,
 } from './utils';
 
 export class HsdsApi extends DataProviderApi {

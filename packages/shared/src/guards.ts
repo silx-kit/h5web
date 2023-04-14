@@ -2,29 +2,29 @@ import { isTypedArray as isTypedArrayLodash } from 'lodash';
 import type { Data, NdArray, TypedArray } from 'ndarray';
 import type { ReactElement } from 'react';
 
-import { EntityKind, DTypeClass } from './models-hdf5';
 import type {
+  ArrayShape,
+  BooleanType,
+  ComplexArray,
+  ComplexType,
+  CompoundType,
+  Dataset,
+  Datatype,
+  DType,
   Entity,
   Group,
   GroupWithChildren,
-  Dataset,
-  Datatype,
-  Shape,
-  ScalarShape,
-  ArrayShape,
-  DType,
-  NumericType,
   H5WebComplex,
-  ComplexArray,
-  BooleanType,
-  ComplexType,
-  PrintableType,
-  StringType,
+  NumericType,
   Primitive,
-  Value,
-  CompoundType,
   PrintableCompoundType,
+  PrintableType,
+  ScalarShape,
+  Shape,
+  StringType,
+  Value,
 } from './models-hdf5';
+import { DTypeClass, EntityKind } from './models-hdf5';
 import type { AnyNumArray, NumArray } from './models-vis';
 import { ScaleType } from './models-vis';
 import { getValues } from './utils';

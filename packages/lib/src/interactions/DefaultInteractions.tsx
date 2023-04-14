@@ -1,15 +1,15 @@
-import Pan from '../interactions/Pan';
 import type { PanProps } from '../interactions/Pan';
-import SelectToZoom from '../interactions/SelectToZoom';
+import Pan from '../interactions/Pan';
 import type { SelectToZoomProps } from '../interactions/SelectToZoom';
-import XAxisZoom from '../interactions/XAxisZoom';
+import SelectToZoom from '../interactions/SelectToZoom';
 import type { XAxisZoomProps } from '../interactions/XAxisZoom';
-import YAxisZoom from '../interactions/YAxisZoom';
+import XAxisZoom from '../interactions/XAxisZoom';
 import type { YAxisZoomProps } from '../interactions/YAxisZoom';
-import Zoom from '../interactions/Zoom';
+import YAxisZoom from '../interactions/YAxisZoom';
 import type { ZoomProps } from '../interactions/Zoom';
-import AxialSelectToZoom from './AxialSelectToZoom';
+import Zoom from '../interactions/Zoom';
 import type { AxialSelectToZoomProps } from './AxialSelectToZoom';
+import AxialSelectToZoom from './AxialSelectToZoom';
 
 export interface DefaultInteractionsConfig {
   pan?: PanProps | false;
