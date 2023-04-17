@@ -30,8 +30,8 @@
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc",
-    "analyze": "pnpx source-map-explorer dist/index.js --no-border-checks",
-    "prepack": "pnpx dot-json@latest package.json -d type"
+    "analyze": "pnpm dlx source-map-explorer dist/index.js --no-border-checks",
+    "prepack": "pnpm dlx dot-json@latest package.json -d type"
   },
   "peerDependencies": {
     "@h5web/app": "workspace:*",

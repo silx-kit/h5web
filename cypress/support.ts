@@ -5,7 +5,7 @@ import { registerCommand as addWaitForStableDomCommand } from 'cypress-wait-for-
 addMatchImageSnapshotCommand();
 
 addWaitForStableDomCommand({
-  pollInterval: 300, // more than debounce on slicing slider
+  pollInterval: 400, // more than debounce on slicing slider
   timeout: 5000,
 });
 
