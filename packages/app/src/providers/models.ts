@@ -1,10 +1,10 @@
 import type {
-  AttributeValues,
-  Entity,
   ArrayShape,
+  AttributeValues,
   Dataset,
-  ScalarShape,
+  Entity,
   ProvidedEntity,
+  ScalarShape,
 } from '@h5web/shared';
 import type { FetchStore } from 'react-suspense-fetch';
 

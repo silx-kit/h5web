@@ -7,8 +7,8 @@ import HeatmapMaterial from '../heatmap/HeatmapMaterial';
 import { useTextureSafeNdArray } from '../heatmap/hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
-import type { SurfaceVisProps } from './SurfaceVis';
 import { useBufferAttributes } from './hooks';
+import type { SurfaceVisProps } from './SurfaceVis';
 
 type Props = Required<SurfaceVisProps>;
 

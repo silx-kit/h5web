@@ -5,9 +5,13 @@ import { rgb } from 'd3-color';
 import type { NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
 import type { TextureFilter } from 'three';
-import { Vector4 } from 'three';
-import { DoubleSide } from 'three';
-import { DataTexture, RGBAFormat, UnsignedByteType } from 'three';
+import {
+  DataTexture,
+  DoubleSide,
+  RGBAFormat,
+  UnsignedByteType,
+  Vector4,
+} from 'three';
 
 import type { VisScaleType } from '../models';
 import type { VisMeshProps } from '../shared/VisMesh';

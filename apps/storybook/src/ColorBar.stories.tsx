@@ -1,5 +1,5 @@
-import { ColorBar, ScaleType } from '@h5web/lib';
 import type { ColorBarProps } from '@h5web/lib';
+import { ColorBar, ScaleType } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 
 import FillHeight from './decorators/FillHeight';

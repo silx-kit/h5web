@@ -5,8 +5,8 @@ import { createPortal } from 'react-dom';
 
 import { useBaseArray } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
-import ScatterToolbar from './ScatterToolbar';
 import type { ScatterConfig } from './config';
+import ScatterToolbar from './ScatterToolbar';
 
 interface Props {
   value: NumArray;

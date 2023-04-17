@@ -1,5 +1,5 @@
 import type { HeatmapVisProps } from '@h5web/lib';
-import { HeatmapVis, ScaleType, getDomain, getMockDataArray } from '@h5web/lib';
+import { getDomain, getMockDataArray, HeatmapVis, ScaleType } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 
 import HeatmapVisStoriesConfig from './HeatmapVis.stories';

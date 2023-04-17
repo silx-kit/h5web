@@ -1,27 +1,27 @@
-import {
-  getLayerSizes,
-  Pan,
-  VisCanvas,
-  Zoom,
-  TiledHeatmapMesh,
-  TilesApi,
-  ResetZoomButton,
-  SelectToZoom,
-  useVisCanvasContext,
-  TiledTooltipMesh,
-} from '@h5web/lib';
 import type {
+  AxisConfig,
   Domain,
   Size,
   TiledHeatmapMeshProps,
-  AxisConfig,
+} from '@h5web/lib';
+import {
+  getLayerSizes,
+  Pan,
+  ResetZoomButton,
+  SelectToZoom,
+  TiledHeatmapMesh,
+  TiledTooltipMesh,
+  TilesApi,
+  useVisCanvasContext,
+  VisCanvas,
+  Zoom,
 } from '@h5web/lib';
 import { formatTooltipVal, ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import greenlet from 'greenlet';
 import { clamp } from 'lodash';
-import ndarray from 'ndarray';
 import type { NdArray } from 'ndarray';
+import ndarray from 'ndarray';
 import type { ReactNode } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
 import type { Vector2 } from 'three';

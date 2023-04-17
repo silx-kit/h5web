@@ -1,4 +1,4 @@
-import type { NumericType, ComplexType } from '@h5web/shared';
+import type { ComplexType, NumericType } from '@h5web/shared';
 import type { ReactNode } from 'react';
 
 import {

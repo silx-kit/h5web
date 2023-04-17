@@ -2,10 +2,10 @@ import type { DType } from '@h5web/shared';
 import { DTypeClass, Endianness } from '@h5web/shared';
 
 import type {
-  HsdsStringType,
   HsdsArrayType,
   HsdsCompoundType,
   HsdsEnumType,
+  HsdsStringType,
   HsdsType,
 } from './models';
 import { convertHsdsType } from './utils';

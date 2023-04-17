@@ -12,8 +12,8 @@ import {
 import type { Meta, Story } from '@storybook/react';
 import { Vector3 } from 'three';
 
-import styles from './SvgElement.stories.module.css';
 import FillHeight from './decorators/FillHeight';
+import styles from './SvgElement.stories.module.css';
 
 export const Default: Story = () => {
   return (

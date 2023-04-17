@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
-import MappedLineVis from '../line/MappedLineVis';
 import type { LineConfig } from '../line/config';
+import MappedLineVis from '../line/MappedLineVis';
 import ComplexLineToolbar from './ComplexLineToolbar';
 import type { ComplexLineConfig } from './lineConfig';
 import { ComplexVisType } from './models';

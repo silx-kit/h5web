@@ -1,10 +1,10 @@
 import type { HeatmapVisProps } from '@h5web/lib';
 import {
-  HeatmapVis,
-  ScaleType,
   getDomain,
   getMockDataArray,
+  HeatmapVis,
   INTERPOLATORS,
+  ScaleType,
 } from '@h5web/lib';
 import { assertDefined, toTypedNdArray } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';

@@ -5,8 +5,8 @@ import {
   assertScalarShape,
 } from '@h5web/shared';
 
-import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
+import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
 import { getFormatter } from './utils';
 

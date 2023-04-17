@@ -1,18 +1,18 @@
 import {
-  assertDataset,
   assertArrayShape,
+  assertDataset,
   assertMinDims,
   assertNumericType,
 } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
-import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
-import ValueFetcher from '../ValueFetcher';
+import VisBoundary from '../../VisBoundary';
 import { getSliceSelection } from '../utils';
-import MappedSurfaceVis from './MappedSurfaceVis';
+import ValueFetcher from '../ValueFetcher';
 import { useSurfaceConfig } from './config';
+import MappedSurfaceVis from './MappedSurfaceVis';
 
 function SurfaceVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;

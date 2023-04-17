@@ -1,6 +1,5 @@
-import { MouseButton } from '@h5web/lib';
-import { Pan, ResetZoomButton, VisCanvas, Zoom } from '@h5web/lib';
 import type { PanProps } from '@h5web/lib';
+import { MouseButton, Pan, ResetZoomButton, VisCanvas, Zoom } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';

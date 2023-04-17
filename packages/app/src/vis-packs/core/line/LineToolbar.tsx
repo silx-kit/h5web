@@ -9,7 +9,7 @@ import {
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared';
 import { FiItalic } from 'react-icons/fi';
-import { MdGridOn, MdDomain } from 'react-icons/md';
+import { MdDomain, MdGridOn } from 'react-icons/md';
 
 import type { ExportFormat, ExportURL } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';

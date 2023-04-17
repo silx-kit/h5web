@@ -71,6 +71,7 @@ export function applyMapping<T>(
 export function getSliceSelection(
   dimMapping?: DimensionMapping
 ): string | undefined {
+  // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
   if (!dimMapping || !dimMapping.some(isNumber)) {
     return undefined;
   }

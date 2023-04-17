@@ -1,7 +1,7 @@
 import type { ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
-import { useCallback } from 'react';
 import type { ReactElement } from 'react';
+import { useCallback } from 'react';
 
 import type { Coords, Size } from '../models';
 import TooltipOverlay from './TooltipOverlay';

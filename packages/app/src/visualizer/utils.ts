@@ -20,7 +20,7 @@ import {
   findSignalDataset,
   isNxDataGroup,
 } from '../vis-packs/nexus/utils';
-import { NexusVis, NEXUS_VIS } from '../vis-packs/nexus/visualizations';
+import { NEXUS_VIS, NexusVis } from '../vis-packs/nexus/visualizations';
 
 export function resolvePath(
   path: string,

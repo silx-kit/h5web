@@ -7,8 +7,8 @@ import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
-import HeatmapToolbar from './HeatmapToolbar';
 import type { HeatmapConfig } from './config';
+import HeatmapToolbar from './HeatmapToolbar';
 
 interface Props {
   dataset: NumArrayDataset;

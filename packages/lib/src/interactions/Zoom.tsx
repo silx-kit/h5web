@@ -1,4 +1,4 @@
-import { useCanvasEvents, useZoomOnWheel, useInteraction } from './hooks';
+import { useCanvasEvents, useInteraction, useZoomOnWheel } from './hooks';
 import type { CommonInteractionProps } from './models';
 import { getModifierKeyArray } from './utils';
 

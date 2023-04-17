@@ -1,7 +1,7 @@
 import type { Group as H5WasmGroup, Metadata } from 'h5wasm';
 import type {
-  EnumTypeMetadata,
   CompoundTypeMetadata,
+  EnumTypeMetadata,
 } from 'h5wasm/src/hdf5_util_helpers';
 
 export type H5WasmEntity = ReturnType<H5WasmGroup['get']>;

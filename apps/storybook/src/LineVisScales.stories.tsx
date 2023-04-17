@@ -1,4 +1,4 @@
-import { ScaleType, getMockDataArray } from '@h5web/lib';
+import { getMockDataArray, ScaleType } from '@h5web/lib';
 import type { Meta } from '@storybook/react/types-6-0';
 
 import LineVisStoriesConfig, { LineVisTemplate } from './LineVis.stories';

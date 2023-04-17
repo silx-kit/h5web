@@ -2,13 +2,13 @@ import { assertGroup, assertMinDims } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
-import VisBoundary from '../../VisBoundary';
-import MappedRgbVis from '../../core/rgb/MappedRgbVis';
 import { useRgbConfig } from '../../core/rgb/config';
+import MappedRgbVis from '../../core/rgb/MappedRgbVis';
 import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
-import NxValuesFetcher from '../NxValuesFetcher';
+import VisBoundary from '../../VisBoundary';
 import { useNxData } from '../hooks';
+import NxValuesFetcher from '../NxValuesFetcher';
 import { assertNumericSignal } from '../utils';
 
 function NxRgbContainer(props: VisContainerProps) {

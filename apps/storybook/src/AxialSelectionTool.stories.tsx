@@ -1,11 +1,11 @@
 import type { AxialSelectionToolProps, Selection } from '@h5web/lib';
-import { Box } from '@h5web/lib';
-import { SvgRect } from '@h5web/lib';
-import { SvgElement } from '@h5web/lib';
 import {
   AxialSelectionTool,
+  Box,
   Pan,
   ResetZoomButton,
+  SvgElement,
+  SvgRect,
   VisCanvas,
   Zoom,
 } from '@h5web/lib';

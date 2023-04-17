@@ -1,5 +1,5 @@
-import { forwardRef } from 'react';
 import type { HTMLProps } from 'react';
+import { forwardRef } from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
 import type { IconType } from 'react-icons/lib';
 

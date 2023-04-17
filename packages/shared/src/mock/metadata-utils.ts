@@ -1,25 +1,25 @@
-import { isGroup, hasChildren } from '../guards';
+import { hasChildren, isGroup } from '../guards';
 import type {
-  Attribute,
-  Datatype,
-  Entity,
-  Group,
-  ScalarShape,
-  Shape,
   ArrayShape,
-  NumericType,
-  StringType,
-  DType,
+  Attribute,
   BooleanType,
+  ChildEntity,
   ComplexType,
   CompoundType,
-  LinkClass,
-  UnresolvedEntity,
+  Datatype,
+  DType,
+  Entity,
+  Group,
   GroupWithChildren,
+  LinkClass,
+  NumericType,
   PrintableCompoundType,
-  ChildEntity,
+  ScalarShape,
+  Shape,
+  StringType,
+  UnresolvedEntity,
 } from '../models-hdf5';
-import { EntityKind, DTypeClass, Endianness } from '../models-hdf5';
+import { DTypeClass, Endianness, EntityKind } from '../models-hdf5';
 import type { NxInterpretation, SilxStyle } from '../models-nexus';
 import { buildEntityPath } from '../utils';
 import type { MockAttribute, MockDataset, MockValueId } from './models';

@@ -1,8 +1,8 @@
 import { RawVis } from '@h5web/lib';
 import { assertDataset, assertNonNullShape } from '@h5web/shared';
 
-import VisBoundary from '../../VisBoundary';
 import type { VisContainerProps } from '../../models';
+import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
 
 function RawVisContainer(props: VisContainerProps) {

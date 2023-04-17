@@ -8,8 +8,6 @@ import type {
   ScalarShape,
   Value,
 } from '@h5web/shared';
-import { isGroup } from '@h5web/shared';
-import { hasNumericType } from '@h5web/shared';
 import {
   assertArrayOrTypedArray,
   assertArrayShape,
@@ -18,6 +16,8 @@ import {
   assertMockDataset,
   findMockEntity,
   hasArrayShape,
+  hasNumericType,
+  isGroup,
   isTypedArray,
   mockFilepath,
 } from '@h5web/shared';

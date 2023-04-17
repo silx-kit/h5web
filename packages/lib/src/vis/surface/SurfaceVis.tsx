@@ -1,5 +1,5 @@
-import { ScaleType } from '@h5web/shared';
 import type { Domain, NumArray } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { PropsWithChildren } from 'react';
 

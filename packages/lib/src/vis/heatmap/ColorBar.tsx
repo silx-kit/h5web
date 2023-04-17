@@ -1,9 +1,7 @@
 import type { Domain } from '@h5web/shared';
-import { ScaleType } from '@h5web/shared';
-import { formatTick } from '@h5web/shared';
-import { formatBound } from '@h5web/shared';
+import { formatBound, formatTick, ScaleType } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
-import { AxisRight, AxisBottom } from '@visx/axis';
+import { AxisBottom, AxisRight } from '@visx/axis';
 
 import type { VisScaleType } from '../models';
 import Tick from '../shared/Tick';

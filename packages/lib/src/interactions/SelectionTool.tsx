@@ -7,9 +7,7 @@ import {
 } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
-import { useMemo } from 'react';
-import { useRef } from 'react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import type { Camera } from 'three';
 
 import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';

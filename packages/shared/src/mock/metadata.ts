@@ -1,24 +1,24 @@
 import { ScaleType } from '../models-vis';
 import {
+  booleanType,
+  complexType,
   compoundType,
   floatType,
   intType,
-  stringType,
-  makeStrAttr,
+  makeDataset,
   makeDatatype,
-  makeUnresolvedEntity,
   makeGroup,
+  makeIntAttr,
   makeNxDataGroup,
   makeNxDataset,
   makeNxGroup,
-  booleanType,
-  complexType,
   makeScalarDataset,
-  makeDataset,
-  withImageAttributes,
-  withAttributes,
-  makeIntAttr,
+  makeStrAttr,
+  makeUnresolvedEntity,
   printableCompoundType,
+  stringType,
+  withAttributes,
+  withImageAttributes,
 } from './metadata-utils';
 
 export const mockFilepath = 'source.h5';

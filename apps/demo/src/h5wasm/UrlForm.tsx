@@ -1,7 +1,6 @@
 import useAxios from 'axios-hooks';
 import type { FormEvent } from 'react';
-import { useCallback } from 'react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { FiLoader } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
 

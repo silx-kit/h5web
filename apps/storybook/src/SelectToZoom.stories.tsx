@@ -1,12 +1,12 @@
+import type { SelectToZoomProps } from '@h5web/lib';
 import {
-  Pan,
-  VisCanvas,
-  SelectToZoom,
-  ResetZoomButton,
   HeatmapMesh,
+  Pan,
+  ResetZoomButton,
+  SelectToZoom,
+  VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import type { SelectToZoomProps } from '@h5web/lib';
 import { mockValues, ScaleType } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react';
 

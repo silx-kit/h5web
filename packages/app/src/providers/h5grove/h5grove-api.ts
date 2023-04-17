@@ -19,7 +19,7 @@ import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { typedArrayFromDType, handleAxiosError } from '../utils';
+import { handleAxiosError, typedArrayFromDType } from '../utils';
 import type {
   H5GroveAttribute,
   H5GroveAttrValuesResponse,

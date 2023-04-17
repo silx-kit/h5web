@@ -2,8 +2,8 @@ import { isNumber } from 'lodash';
 
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
-import SlicingSlider from './SlicingSlider';
 import type { DimensionMapping } from './models';
+import SlicingSlider from './SlicingSlider';
 
 interface Props {
   rawDims: number[];

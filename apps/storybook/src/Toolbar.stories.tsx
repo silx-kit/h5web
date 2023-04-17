@@ -1,18 +1,18 @@
 import type { ColorMap, CustomDomain, ToolbarProps } from '@h5web/lib';
-import { Btn } from '@h5web/lib';
 import {
-  ScaleType,
-  Toolbar,
-  DomainSlider,
+  Btn,
   ColorMapSelector,
-  ScaleSelector,
-  Separator,
+  DomainSlider,
   GridToggler,
-  ToggleGroup,
+  ScaleSelector,
+  ScaleType,
+  Separator,
   ToggleBtn,
+  ToggleGroup,
+  Toolbar,
 } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { Title, Primary } from '@storybook/addon-docs';
+import { Primary, Title } from '@storybook/addon-docs';
 import type { Meta, Story } from '@storybook/react';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';

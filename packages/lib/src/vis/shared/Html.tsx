@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber';
-import { useState, useLayoutEffect } from 'react';
 import type { ReactNode } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 interface Props {

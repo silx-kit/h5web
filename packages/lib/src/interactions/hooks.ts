@@ -1,12 +1,11 @@
 import { useEventListener, useToggle } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
-import { useState } from 'react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { useInteractionsContext } from './InteractionsProvider';
 import Box from './box';
+import { useInteractionsContext } from './InteractionsProvider';
 import type {
   CanvasEvent,
   CanvasEventCallbacks,

@@ -1,8 +1,8 @@
 import { range } from 'lodash';
 import { useContext } from 'react';
 
-import styles from './MatrixVis.module.css';
 import { SettingsContext } from './context';
+import styles from './MatrixVis.module.css';
 
 interface Props {
   indexMin: number;

@@ -1,3 +1,14 @@
+import type {
+  ArrayShape,
+  ComplexType,
+  Dataset,
+  Group,
+  GroupWithChildren,
+  NumArrayDataset,
+  NumericType,
+  ScalarShape,
+  StringType,
+} from '@h5web/shared';
 import {
   assertArray,
   assertArrayShape,
@@ -11,17 +22,6 @@ import {
   assertStringType,
   getChildEntity,
   isScaleType,
-} from '@h5web/shared';
-import type {
-  Group,
-  ArrayShape,
-  ComplexType,
-  Dataset,
-  GroupWithChildren,
-  NumericType,
-  ScalarShape,
-  StringType,
-  NumArrayDataset,
 } from '@h5web/shared';
 
 import type { AttrValuesStore } from '../../providers/models';

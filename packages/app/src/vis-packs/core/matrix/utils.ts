@@ -5,10 +5,12 @@ import type {
   PrintableCompoundType,
   PrintableType,
 } from '@h5web/shared';
-import { isComplexType } from '@h5web/shared';
-import { isNumericType } from '@h5web/shared';
-import { createComplexFormatter } from '@h5web/shared';
-import { DTypeClass } from '@h5web/shared';
+import {
+  createComplexFormatter,
+  DTypeClass,
+  isComplexType,
+  isNumericType,
+} from '@h5web/shared';
 import { format } from 'd3-format';
 
 import type { ValueFormatter } from '../models';

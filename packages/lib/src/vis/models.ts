@@ -1,11 +1,11 @@
 import type {
-  Domain,
-  NumericType,
-  StringType,
   BooleanType,
   ComplexType,
-  ScaleType,
+  Domain,
   NumArray,
+  NumericType,
+  ScaleType,
+  StringType,
 } from '@h5web/shared';
 import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
 

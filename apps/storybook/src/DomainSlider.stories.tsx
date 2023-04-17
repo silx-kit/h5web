@@ -1,4 +1,4 @@
-import type { DomainSliderProps, CustomDomain } from '@h5web/lib';
+import type { CustomDomain, DomainSliderProps } from '@h5web/lib';
 import { DomainSlider, ScaleType } from '@h5web/lib';
 import type { Meta, Story } from '@storybook/react/types-6-0';
 import { useState } from 'react';

@@ -1,13 +1,13 @@
 import type { LineVisProps } from '@h5web/lib';
 import {
-  LineVis,
-  ScaleType,
   CurveType,
-  getDomain,
-  getMockDataArray,
-  mockValues,
   getCombinedDomain,
+  getDomain,
   getDomains,
+  getMockDataArray,
+  LineVis,
+  mockValues,
+  ScaleType,
 } from '@h5web/lib';
 import { toTypedNdArray } from '@h5web/shared';
 import type { Meta, Story } from '@storybook/react/types-6-0';

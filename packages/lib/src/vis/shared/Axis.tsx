@@ -1,16 +1,16 @@
 import type { Domain } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
 import type { SharedAxisProps } from '@visx/axis';
-import { AxisLeft, AxisBottom } from '@visx/axis';
+import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
 import type { ElementType } from 'react';
 
-import type { Size, AxisConfig, AxisScale } from '../models';
+import type { AxisConfig, AxisScale, Size } from '../models';
 import {
   adaptedNumTicks,
+  createAxisScale,
   getIntegerTicks,
   getTickFormatter,
-  createAxisScale,
 } from '../utils';
 import styles from './AxisSystem.module.css';
 import Tick from './Tick';

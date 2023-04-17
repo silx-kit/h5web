@@ -1,30 +1,30 @@
 import type { AnyNumArray, Domain, NumArray, NumericType } from '@h5web/shared';
 import {
-  getValidDomainForScale,
-  ScaleType,
-  isDefined,
+  DTypeClass,
   formatTick,
+  getBounds,
+  getValidDomainForScale,
+  isDefined,
   isScaleType,
   isTypedArray,
-  getBounds,
-  DTypeClass,
+  ScaleType,
 } from '@h5web/shared';
 import { scaleLinear, scaleThreshold } from '@visx/scale';
-import { tickStep, range } from 'd3-array';
+import { range, tickStep } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import { clamp } from 'lodash';
 import type { IUniform } from 'three';
 import { BufferAttribute } from 'three';
 
 import type {
-  Size,
-  AxisScale,
+  Aspect,
   AxisConfig,
   AxisOffsets,
+  AxisScale,
   ScaleGammaConfig,
-  VisxScaleConfig,
+  Size,
   VisScaleType,
-  Aspect,
+  VisxScaleConfig,
 } from './models';
 import { H5WEB_SCALES } from './scales';
 

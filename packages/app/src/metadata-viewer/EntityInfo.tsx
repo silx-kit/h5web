@@ -1,10 +1,10 @@
-import { isDataset, isDatatype } from '@h5web/shared';
 import type { ProvidedEntity } from '@h5web/shared';
+import { isDataset, isDatatype } from '@h5web/shared';
 
 import { useDataContext } from '../providers/DataProvider';
 import styles from './MetadataViewer.module.css';
 import RawInspector from './RawInspector';
-import { renderType, renderShape } from './utils';
+import { renderShape, renderType } from './utils';
 
 interface Props {
   entity: ProvidedEntity;

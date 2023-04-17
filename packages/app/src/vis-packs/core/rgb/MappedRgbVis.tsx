@@ -5,8 +5,8 @@ import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
-import RgbToolbar from './RgbToolbar';
 import type { RgbVisConfig } from './config';
+import RgbToolbar from './RgbToolbar';
 
 interface Props {
   dataset: NumArrayDataset;

@@ -4,9 +4,9 @@ import { useState } from 'react';
 
 import { useDataContext } from '../providers/DataProvider';
 import type { VisDef } from '../vis-packs/models';
+import { useActiveVis } from './hooks';
 import VisSelector from './VisSelector';
 import styles from './Visualizer.module.css';
-import { useActiveVis } from './hooks';
 
 interface Props {
   entity: ProvidedEntity;

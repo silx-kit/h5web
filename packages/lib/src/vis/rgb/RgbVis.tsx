@@ -1,6 +1,5 @@
 import type { NumArray } from '@h5web/shared';
-import { assertDefined } from '@h5web/shared';
-import { getDims } from '@h5web/shared';
+import { assertDefined, getDims } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
@@ -13,8 +12,8 @@ import { usePixelEdgeValues } from '../heatmap/hooks';
 import { useAxisDomain } from '../hooks';
 import type { Aspect, AxisParams } from '../models';
 import VisCanvas from '../shared/VisCanvas';
-import RgbMesh from './RgbMesh';
 import { ImageType } from './models';
+import RgbMesh from './RgbMesh';
 import { toRgbSafeNdArray } from './utils';
 
 interface Props {

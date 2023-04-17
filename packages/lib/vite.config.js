@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
-import { URL, fileURLToPath } from 'url';
+import { fileURLToPath, URL } from 'url';
 import { defineConfig } from 'vite';
 
 const dirname = fileURLToPath(new URL('.', import.meta.url));

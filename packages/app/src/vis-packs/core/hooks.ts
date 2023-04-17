@@ -5,7 +5,7 @@ import type {
   ScalarShape,
   Value,
 } from '@h5web/shared';
-import { isDefined, assertDatasetValue } from '@h5web/shared';
+import { assertDatasetValue, isDefined } from '@h5web/shared';
 import { castArray } from 'lodash';
 import type { NdArray, TypedArray } from 'ndarray';
 import { useMemo } from 'react';

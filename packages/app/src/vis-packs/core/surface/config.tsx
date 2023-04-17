@@ -1,6 +1,5 @@
 import type { CustomDomain } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
-import { isDefined } from '@h5web/shared';
+import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
 import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';

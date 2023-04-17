@@ -5,12 +5,12 @@ import { createPortal } from 'react-dom';
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
 import {
-  useMappedArrays,
   useMappedArray,
+  useMappedArrays,
   useSlicedDimsAndMapping,
 } from '../hooks';
-import LineToolbar from './LineToolbar';
 import type { LineConfig } from './config';
+import LineToolbar from './LineToolbar';
 
 type HookArgs = [number[], DimensionMapping, boolean];
 
