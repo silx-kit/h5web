@@ -1,4 +1,3 @@
-import type { SelectToZoomProps } from '@h5web/lib';
 import {
   HeatmapMesh,
   Pan,
@@ -8,81 +7,12 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { mockValues, ScaleType } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 import { useMockData } from './hooks';
 
-const { twoD } = mockValues;
-
-const Template: Story<SelectToZoomProps> = (args) => {
-  const { values, domain } = useMockData(twoD, [20, 41]);
-  const { modifierKey } = args;
-
-  return (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
-    >
-      <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
-      <Zoom />
-      <SelectToZoom {...args} />
-      <ResetZoomButton />
-
-      <HeatmapMesh
-        values={values}
-        domain={domain}
-        colorMap="Viridis"
-        scaleType={ScaleType.Linear}
-      />
-    </VisCanvas>
-  );
-};
-
-export const InsideAutoAspectCanvas = Template.bind({});
-
-export const InsideEqualAspectCanvas: Story<SelectToZoomProps> = (args) => {
-  const { values, domain } = useMockData(twoD, [20, 41]);
-  const { modifierKey } = args;
-
-  return (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
-      aspect="equal"
-    >
-      <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
-      <Zoom />
-      <SelectToZoom {...args} />
-      <ResetZoomButton />
-
-      <HeatmapMesh
-        values={values}
-        domain={domain}
-        colorMap="Viridis"
-        scaleType={ScaleType.Linear}
-      />
-    </VisCanvas>
-  );
-};
-
-export const ModifierKey = Template.bind({});
-ModifierKey.args = {
-  modifierKey: ['Control'],
-};
-
-export const MultipleModifierKeys = Template.bind({});
-MultipleModifierKeys.args = {
-  modifierKey: ['Control', 'Shift'],
-};
-
-export const MinZoom = Template.bind({});
-MinZoom.args = { minZoom: 200 };
-
-export const Disabled = Template.bind({});
-Disabled.args = { disabled: true };
-
-export default {
+const meta = {
   title: 'Building Blocks/Interactions/SelectToZoom',
   component: SelectToZoom,
   decorators: [FillHeight],
@@ -97,4 +27,88 @@ export default {
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} as Meta<SelectToZoomProps>;
+} satisfies Meta<typeof SelectToZoom>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const InsideAutoAspectCanvas = {
+  render: function Template(args) {
+    const { values, domain } = useMockData(mockValues.twoD, [20, 41]);
+    const { modifierKey } = args;
+
+    return (
+      <VisCanvas
+        abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+      >
+        <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
+        <Zoom />
+        <SelectToZoom {...args} />
+        <ResetZoomButton />
+
+        <HeatmapMesh
+          values={values}
+          domain={domain}
+          colorMap="Viridis"
+          scaleType={ScaleType.Linear}
+        />
+      </VisCanvas>
+    );
+  },
+} satisfies Story;
+
+export const InsideEqualAspectCanvas = {
+  render: function Template(args) {
+    const { values, domain } = useMockData(mockValues.twoD, [20, 41]);
+    const { modifierKey } = args;
+
+    return (
+      <VisCanvas
+        abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+        aspect="equal"
+      >
+        <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
+        <Zoom />
+        <SelectToZoom {...args} />
+        <ResetZoomButton />
+
+        <HeatmapMesh
+          values={values}
+          domain={domain}
+          colorMap="Viridis"
+          scaleType={ScaleType.Linear}
+        />
+      </VisCanvas>
+    );
+  },
+} satisfies Story;
+
+export const ModifierKey = {
+  ...InsideAutoAspectCanvas,
+  args: {
+    modifierKey: ['Control'],
+  },
+} satisfies Story;
+
+export const MultipleModifierKeys = {
+  ...InsideAutoAspectCanvas,
+  args: {
+    modifierKey: ['Control', 'Shift'],
+  },
+} satisfies Story;
+
+export const MinZoom = {
+  ...InsideAutoAspectCanvas,
+  args: {
+    minZoom: 200,
+  },
+} satisfies Story;
+
+export const Disabled = {
+  ...InsideAutoAspectCanvas,
+  args: {
+    disabled: true,
+  },
+} satisfies Story;

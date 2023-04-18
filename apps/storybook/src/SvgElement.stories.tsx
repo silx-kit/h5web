@@ -9,14 +9,24 @@ import {
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Vector3 } from 'three';
 
 import FillHeight from './decorators/FillHeight';
 import styles from './SvgElement.stories.module.css';
 
-export const Default: Story = () => {
-  return (
+const meta = {
+  title: 'Building Blocks/SvgElement',
+  component: SvgElement,
+  decorators: [FillHeight],
+  parameters: { layout: 'fullscreen' },
+} satisfies Meta<typeof SvgElement>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default = {
+  render: (args) => (
     <VisCanvas
       abscissaConfig={{ visDomain: [0, 10], showGrid: true }}
       ordinateConfig={{ visDomain: [0, 10], showGrid: true }}
@@ -36,7 +46,7 @@ export const Default: Story = () => {
         ]}
       >
         {(pt1, pt2, pt3, pt4, pt5, pt6) => (
-          <SvgElement>
+          <SvgElement {...args}>
             <SvgRect className={styles.rect} coords={[pt1, pt2]} />
             <SvgLine
               coords={[pt3, pt4]}
@@ -57,15 +67,5 @@ export const Default: Story = () => {
         )}
       </DataToHtml>
     </VisCanvas>
-  );
-};
-
-Default.parameters = {
-  controls: { disable: true },
-};
-
-export default {
-  title: 'Building Blocks/SvgElement',
-  parameters: { layout: 'fullscreen' },
-  decorators: [FillHeight],
-} as Meta;
+  ),
+} satisfies Story;

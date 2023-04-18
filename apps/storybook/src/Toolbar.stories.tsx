@@ -1,4 +1,4 @@
-import type { ColorMap, CustomDomain, ToolbarProps } from '@h5web/lib';
+import type { ColorMap, CustomDomain } from '@h5web/lib';
 import {
   Btn,
   ColorMapSelector,
@@ -12,39 +12,45 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { Primary, Title } from '@storybook/addon-docs';
-import type { Meta, Story } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';
 
-interface TemplateProps extends Omit<ToolbarProps, 'children'> {
-  narrow?: boolean;
-}
+const meta = {
+  title: 'Toolbar/Toolbar',
+  component: Toolbar,
+  parameters: { layout: 'fullscreen' },
+} satisfies Meta<typeof Toolbar>;
 
-const Template: Story<TemplateProps> = (args) => {
-  const { narrow, ...toolbarProps } = args;
-  const [customDomain, setCustomDomain] = useState<CustomDomain>([null, null]);
-  const [colorMap, setColorMap] = useState<ColorMap>('Viridis');
-  const [invertColorMap, toggleColorMapInversion] = useToggle();
-  const [scaleType, setScaleType] = useState(ScaleType.Linear);
-  const [showGrid, toggleGrid] = useToggle();
-  const [withTest, toggleTest] = useToggle(true);
-  const [foo, setFoo] = useState('bar');
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-  const allStates = {
-    customDomain,
-    colorMap,
-    invertColorMap,
-    scaleType,
-    showGrid,
-    withTest,
-    foo,
-  };
+export const Default = {
+  render: function Template(args) {
+    const [customDomain, setCustomDomain] = useState<CustomDomain>([
+      null,
+      null,
+    ]);
+    const [colorMap, setColorMap] = useState<ColorMap>('Viridis');
+    const [invertColorMap, toggleColorMapInversion] = useToggle();
+    const [scaleType, setScaleType] = useState(ScaleType.Linear);
+    const [showGrid, toggleGrid] = useToggle();
+    const [withTest, toggleTest] = useToggle(true);
+    const [foo, setFoo] = useState('bar');
 
-  return (
-    <>
-      <div style={narrow ? { maxWidth: '30rem', marginLeft: 'auto' } : {}}>
-        <Toolbar {...toolbarProps}>
+    const allStates = {
+      customDomain,
+      colorMap,
+      invertColorMap,
+      scaleType,
+      showGrid,
+      withTest,
+      foo,
+    };
+
+    return (
+      <>
+        <Toolbar {...args}>
           <DomainSlider
             dataDomain={[1, 100]}
             customDomain={customDomain}
@@ -84,60 +90,42 @@ const Template: Story<TemplateProps> = (args) => {
             <ToggleGroup.Btn label="Baz" value="baz" />
           </ToggleGroup>
         </Toolbar>
-      </div>
 
-      <pre style={{ padding: '0 1.5rem' }}>
-        State = {JSON.stringify(allStates, null, 2)}
-      </pre>
-    </>
-  );
-};
-
-export const Default = Template.bind({});
-
-export const Responsive = Template.bind({});
-Responsive.args = { narrow: true };
-
-export const DocumentInteractions = Template.bind({});
-DocumentInteractions.args = {
-  narrow: true,
-  interactions: [
-    { shortcut: 'Wheel', description: 'Turn' },
-    { shortcut: 'Space', description: 'Accelerate' },
-    { shortcut: 'Ctrl+Alt', description: 'Do a backflip' },
-  ],
-};
-
-export const OverflowChildren = Template.bind({});
-OverflowChildren.args = {
-  overflowChildren: <Btn label="Some button" onClick={() => {}} />,
-};
-
-export default {
-  title: 'Toolbar/Toolbar',
-  parameters: {
-    layout: 'fullscreen',
-    docs: {
-      source: { type: 'code' },
-      page: () => (
-        <>
-          <Title />
-          <p>
-            The source code of the <em>Default</em> story demonstrates a basic
-            use of the <code>Toolbar</code> component and associated toolbar
-            controls. To reveal the code, click on <em>Show code</em> below the
-            preview.
-          </p>
-          <p>
-            The following toolbar controls are available:{' '}
-            <code>DomainSlider</code>, <code>ColorMapSelector</code>,{' '}
-            <code>ScaleSelector</code>, <code>GridToggler</code>, and the
-            generic controls <code>ToggleBtn</code>, <code>ToggleGroup</code>{' '}
-            and <code>ToggleGroup.Btn</code>.
-          </p>
-          <Primary />
-        </>
-      ),
-    },
+        <pre style={{ padding: '0 1.5rem' }}>
+          State = {JSON.stringify(allStates, null, 2)}
+        </pre>
+      </>
+    );
   },
-} as Meta;
+} satisfies Story;
+
+export const Responsive = {
+  ...Default,
+  decorators: [
+    (Story: StoryFn) => (
+      <div
+        style={{ maxWidth: '30rem', marginLeft: 'auto', marginRight: 'auto' }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+} satisfies Story;
+
+export const DocumentInteractions = {
+  ...Default,
+  args: {
+    interactions: [
+      { shortcut: 'Wheel', description: 'Turn' },
+      { shortcut: 'Space', description: 'Accelerate' },
+      { shortcut: 'Ctrl+Alt', description: 'Do a backflip' },
+    ],
+  },
+} satisfies Story;
+
+export const OverflowChildren = {
+  ...Default,
+  args: {
+    overflowChildren: <Btn label="Some button" onClick={() => {}} />,
+  },
+} satisfies Story;

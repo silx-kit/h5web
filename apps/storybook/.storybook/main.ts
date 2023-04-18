@@ -1,7 +1,7 @@
 import remarkGfm from 'remark-gfm';
 
 export default {
-  stories: ['../src/**/*.stories.@(tsx|mdx)'],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(tsx|mdx)'],
   framework: '@storybook/react-vite',
   addons: [
     {
