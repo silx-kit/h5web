@@ -1,6 +1,7 @@
 ---
 name: Bug report
 about: File a bug report to help us improve.
+labels: ['bug']
 ---
 
 ### Describe the bug
