@@ -97,7 +97,7 @@ export class H5WasmApi extends ProviderApi {
     );
   }
 
-  public getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL<D extends Dataset<ArrayShape>>(
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
@@ -111,7 +111,7 @@ export class H5WasmApi extends ProviderApi {
     file.close();
   }
 
-  public async getSearchablePaths(root: string): Promise<string[]> {
+  public override async getSearchablePaths(root: string): Promise<string[]> {
     const file = await this.file;
 
     const h5wEntity = file.get(root);

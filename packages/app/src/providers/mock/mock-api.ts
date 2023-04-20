@@ -82,7 +82,7 @@ export class MockApi extends DataProviderApi {
     return sliceValue(value, dataset, selection);
   }
 
-  public getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL<D extends Dataset<ArrayShape>>(
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
@@ -116,7 +116,7 @@ export class MockApi extends DataProviderApi {
     return undefined;
   }
 
-  public async getSearchablePaths(path: string): Promise<string[]> {
+  public override async getSearchablePaths(path: string): Promise<string[]> {
     return this.getEntityPaths(path);
   }
 

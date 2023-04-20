@@ -151,7 +151,7 @@ export class HsdsApi extends DataProviderApi {
     );
   }
 
-  public getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL<D extends Dataset<ArrayShape>>(
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,

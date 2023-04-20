@@ -72,7 +72,7 @@ export class H5GroveApi extends DataProviderApi {
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
   }
 
-  public getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL<D extends Dataset<ArrayShape>>(
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
@@ -100,7 +100,7 @@ export class H5GroveApi extends DataProviderApi {
     return new URL(`${baseURL as string}/data/?${searchParams.toString()}`);
   }
 
-  public async getSearchablePaths(path: string): Promise<string[]> {
+  public override async getSearchablePaths(path: string): Promise<string[]> {
     const { data } = await this.client.get<H5GrovePathsResponse>(`/paths/`, {
       params: { path },
     });

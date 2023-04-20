@@ -27,7 +27,7 @@ class Box extends Box3 {
     return Box.empty().expandBySize(width, height);
   }
 
-  public clampPoint(pt: Vector3): Vector3 {
+  public override clampPoint(pt: Vector3): Vector3 {
     return super.clampPoint(pt, new Vector3());
   }
 
