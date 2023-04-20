@@ -112,7 +112,7 @@ export class H5GroveApi extends DataProviderApi {
     const { data } = await handleAxiosError(
       () =>
         this.client.get<H5GroveEntityResponse>(`/meta/`, { params: { path } }),
-      (status, errorData) => {
+      (_, errorData) => {
         if (!hasErrorMessage(errorData)) {
           return undefined;
         }
@@ -199,7 +199,7 @@ export class H5GroveApi extends DataProviderApi {
 
     if (isGroupResponse(response)) {
       const { children = [], attributes: attrsMetadata } = response;
-      const attributes = await this.processAttrsMetadata(path, attrsMetadata);
+      const attributes = await this.processAttrsMetadata(attrsMetadata);
       const baseGroup: Group = {
         ...baseEntity,
         kind: EntityKind.Group,
@@ -230,7 +230,7 @@ export class H5GroveApi extends DataProviderApi {
         chunks,
         filters,
       } = response;
-      const attributes = await this.processAttrsMetadata(path, attrsMetadata);
+      const attributes = await this.processAttrsMetadata(attrsMetadata);
       return {
         ...baseEntity,
         attributes,
@@ -276,7 +276,6 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   private async processAttrsMetadata(
-    path: string,
     attrsMetadata: H5GroveAttribute[]
   ): Promise<Attribute[]> {
     return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
