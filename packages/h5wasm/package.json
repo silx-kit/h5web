@@ -38,7 +38,7 @@
     "react": ">=16"
   },
   "dependencies": {
-    "h5wasm": "0.4.10",
+    "h5wasm": "0.4.11",
     "nanoid": "4.0.2"
   },
   "devDependencies": {
