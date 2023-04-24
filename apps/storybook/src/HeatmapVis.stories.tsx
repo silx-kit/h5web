@@ -94,7 +94,7 @@ export const AxisValues = {
     ordinateParams: {
       value: Array.from(
         { length: dataArray.shape[0] + 1 },
-        (_, i) => (-5 + 0.5 * i) / 100
+        (_, i) => -100 + 10 * i
       ),
     },
   },
@@ -111,7 +111,7 @@ export const DescendingAxisValues = {
     ordinateParams: {
       value: Array.from(
         { length: dataArray.shape[0] + 1 },
-        (_, i) => (5 - 0.5 * i) / 100
+        (_, i) => -100 - 10 * i
       ),
     },
   },
