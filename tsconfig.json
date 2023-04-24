@@ -18,6 +18,7 @@
     "declarationMap": true,
     "removeComments": true,
     "strict": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,

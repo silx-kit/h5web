@@ -72,7 +72,7 @@ export class H5GroveApi extends DataProviderApi {
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
   }
 
-  public getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL<D extends Dataset<ArrayShape>>(
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
@@ -100,7 +100,7 @@ export class H5GroveApi extends DataProviderApi {
     return new URL(`${baseURL as string}/data/?${searchParams.toString()}`);
   }
 
-  public async getSearchablePaths(path: string): Promise<string[]> {
+  public override async getSearchablePaths(path: string): Promise<string[]> {
     const { data } = await this.client.get<H5GrovePathsResponse>(`/paths/`, {
       params: { path },
     });
@@ -112,7 +112,7 @@ export class H5GroveApi extends DataProviderApi {
     const { data } = await handleAxiosError(
       () =>
         this.client.get<H5GroveEntityResponse>(`/meta/`, { params: { path } }),
-      (status, errorData) => {
+      (_, errorData) => {
         if (!hasErrorMessage(errorData)) {
           return undefined;
         }
@@ -199,7 +199,7 @@ export class H5GroveApi extends DataProviderApi {
 
     if (isGroupResponse(response)) {
       const { children = [], attributes: attrsMetadata } = response;
-      const attributes = await this.processAttrsMetadata(path, attrsMetadata);
+      const attributes = await this.processAttrsMetadata(attrsMetadata);
       const baseGroup: Group = {
         ...baseEntity,
         kind: EntityKind.Group,
@@ -230,7 +230,7 @@ export class H5GroveApi extends DataProviderApi {
         chunks,
         filters,
       } = response;
-      const attributes = await this.processAttrsMetadata(path, attrsMetadata);
+      const attributes = await this.processAttrsMetadata(attrsMetadata);
       return {
         ...baseEntity,
         attributes,
@@ -276,7 +276,6 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   private async processAttrsMetadata(
-    path: string,
     attrsMetadata: H5GroveAttribute[]
   ): Promise<Attribute[]> {
     return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({

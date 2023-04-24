@@ -299,7 +299,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         },
         axesAttr: ['.', 'slow_X'],
         auxiliary: {
-          secondary: makeDataset('slow_secondary', intType, [20, 41], {
+          slow_secondary: makeDataset('slow_secondary', intType, [20, 41], {
             valueId: 'secondary',
           }),
         },
