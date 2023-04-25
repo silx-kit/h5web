@@ -1,4 +1,3 @@
-import type { AxialSelectToZoomProps } from '@h5web/lib';
 import {
   assertDefined,
   AxialSelectToZoom,
@@ -12,7 +11,7 @@ import {
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { range } from 'lodash';
 
 import FillHeight from './decorators/FillHeight';
@@ -20,90 +19,7 @@ import { useMockData } from './hooks';
 
 const { oneD, twoD } = mockValues;
 
-const Template: Story<AxialSelectToZoomProps> = (args) => {
-  const { modifierKey } = args;
-  const domain = useDomain(oneD);
-  assertDefined(domain);
-
-  return (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, oneD.length], showGrid: true }}
-      ordinateConfig={{ visDomain: domain, showGrid: true }}
-    >
-      <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
-      <Zoom />
-      <AxialSelectToZoom {...args} />
-      <ResetZoomButton />
-
-      <DataCurve
-        abscissas={range(oneD.length)}
-        ordinates={oneD}
-        color="blue"
-        showErrors
-      />
-    </VisCanvas>
-  );
-};
-
-export const DefaultX = Template.bind({});
-DefaultX.args = { axis: 'x' };
-
-export const DefaultY = Template.bind({});
-DefaultY.args = { axis: 'y' };
-
-export const ModifierKeyX = Template.bind({});
-ModifierKeyX.args = {
-  axis: 'x',
-  modifierKey: ['Alt'],
-};
-
-export const MultipleModifierKeysY = Template.bind({});
-MultipleModifierKeysY.args = {
-  axis: 'y',
-  modifierKey: ['Control', 'Shift'],
-};
-
-export const MinZoom = Template.bind({});
-MinZoom.args = { minZoom: 200 };
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  axis: 'x',
-  disabled: true,
-};
-
-export const DisabledInsideEqualAspectCanvas: Story<AxialSelectToZoomProps> = (
-  args
-) => {
-  const { values, domain } = useMockData(twoD, [20, 41]);
-
-  return (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
-      aspect="equal"
-    >
-      <Pan modifierKey="Control" />
-      <Zoom />
-      <AxialSelectToZoom {...args} />
-      <ResetZoomButton />
-
-      <HeatmapMesh
-        values={values}
-        domain={domain}
-        colorMap="Viridis"
-        scaleType={ScaleType.Linear}
-      />
-    </VisCanvas>
-  );
-};
-
-DisabledInsideEqualAspectCanvas.argTypes = {
-  modifierKey: { control: false },
-  disabled: { control: false },
-};
-
-export default {
+const meta = {
   title: 'Building Blocks/Interactions/AxialSelectToZoom',
   component: AxialSelectToZoom,
   decorators: [FillHeight],
@@ -120,4 +36,109 @@ export default {
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} as Meta<AxialSelectToZoomProps>;
+} satisfies Meta<typeof AxialSelectToZoom>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+const Default = {
+  render: (args) => {
+    const { modifierKey } = args;
+    const domain = useDomain(oneD);
+    assertDefined(domain);
+
+    return (
+      <VisCanvas
+        abscissaConfig={{ visDomain: [0, oneD.length], showGrid: true }}
+        ordinateConfig={{ visDomain: domain, showGrid: true }}
+      >
+        <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
+        <Zoom />
+        <AxialSelectToZoom {...args} />
+        <ResetZoomButton />
+
+        <DataCurve
+          abscissas={range(oneD.length)}
+          ordinates={oneD}
+          color="blue"
+          showErrors
+        />
+      </VisCanvas>
+    );
+  },
+} satisfies Story;
+
+export const XAxis = {
+  ...Default,
+  args: {
+    axis: 'x',
+  },
+} satisfies Story;
+
+export const YAxis = {
+  ...Default,
+  args: {
+    axis: 'y',
+  },
+} satisfies Story;
+
+export const ModifierKeyX = {
+  ...Default,
+  args: {
+    axis: 'x',
+    modifierKey: ['Alt'],
+  },
+} satisfies Story;
+
+export const MultipleModifierKeysY = {
+  ...Default,
+  args: {
+    axis: 'y',
+    modifierKey: ['Control', 'Shift'],
+  },
+} satisfies Story;
+
+export const MinZoom = {
+  ...Default,
+  args: {
+    minZoom: 200,
+  },
+} satisfies Story;
+
+export const Disabled = {
+  ...Default,
+  args: {
+    axis: 'x',
+    disabled: true,
+  },
+} satisfies Story;
+
+export const DisabledInsideEqualAspectCanvas = {
+  render: (args) => {
+    const { values, domain } = useMockData(twoD, [20, 41]);
+
+    return (
+      <VisCanvas
+        abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
+        aspect="equal"
+      >
+        <Pan modifierKey="Control" />
+        <Zoom />
+        <AxialSelectToZoom {...args} />
+        <ResetZoomButton />
+
+        <HeatmapMesh
+          values={values}
+          domain={domain}
+          colorMap="Viridis"
+          scaleType={ScaleType.Linear}
+        />
+      </VisCanvas>
+    );
+  },
+  argTypes: {
+    modifierKey: { control: false },
+    disabled: { control: false },
+  },
+} satisfies Story;

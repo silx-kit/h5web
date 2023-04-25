@@ -1,4 +1,3 @@
-import type { DefaultInteractionsConfig } from '@h5web/lib';
 import {
   DefaultInteractions,
   HeatmapMesh,
@@ -7,62 +6,14 @@ import {
   ScaleType,
   VisCanvas,
 } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 import { useMockData } from './hooks';
 
 const { twoD } = mockValues;
 
-export const InsideAutoAspectCanvas: Story<DefaultInteractionsConfig> = (
-  args
-) => {
-  const { values, domain } = useMockData(twoD, [20, 41]);
-
-  return (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
-      aspect="auto"
-    >
-      <DefaultInteractions {...args} />
-      <ResetZoomButton />
-
-      <HeatmapMesh
-        values={values}
-        domain={domain}
-        colorMap="Viridis"
-        scaleType={ScaleType.Linear}
-      />
-    </VisCanvas>
-  );
-};
-
-export const InsideEqualAspectCanvas: Story<DefaultInteractionsConfig> = (
-  args
-) => {
-  const { values, domain } = useMockData(twoD, [20, 41]);
-
-  return (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
-      aspect="equal"
-    >
-      <DefaultInteractions {...args} />
-      <ResetZoomButton />
-
-      <HeatmapMesh
-        values={values}
-        domain={domain}
-        colorMap="Viridis"
-        scaleType={ScaleType.Linear}
-      />
-    </VisCanvas>
-  );
-};
-
-export default {
+const meta = {
   title: 'Building Blocks/Interactions/DefaultInteractions',
   component: DefaultInteractions,
   decorators: [FillHeight],
@@ -76,4 +27,55 @@ export default {
     xSelectToZoom: { modifierKey: ['Control', 'Alt'] },
     ySelectToZoom: { modifierKey: ['Control', 'Shift'] },
   },
-} as Meta<DefaultInteractionsConfig>;
+} satisfies Meta<typeof DefaultInteractions>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const InsideAutoAspectCanvas = {
+  render: (args) => {
+    const { values, domain } = useMockData(twoD, [20, 41]);
+
+    return (
+      <VisCanvas
+        abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+        aspect="auto"
+      >
+        <DefaultInteractions {...args} />
+        <ResetZoomButton />
+
+        <HeatmapMesh
+          values={values}
+          domain={domain}
+          colorMap="Viridis"
+          scaleType={ScaleType.Linear}
+        />
+      </VisCanvas>
+    );
+  },
+} satisfies Story;
+
+export const InsideEqualAspectCanvas = {
+  render: (args) => {
+    const { values, domain } = useMockData(twoD, [20, 41]);
+
+    return (
+      <VisCanvas
+        abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+        aspect="equal"
+      >
+        <DefaultInteractions {...args} />
+        <ResetZoomButton />
+
+        <HeatmapMesh
+          values={values}
+          domain={domain}
+          colorMap="Viridis"
+          scaleType={ScaleType.Linear}
+        />
+      </VisCanvas>
+    );
+  },
+} satisfies Story;

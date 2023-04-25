@@ -1,4 +1,3 @@
-import type { LineVisProps } from '@h5web/lib';
 import {
   CurveType,
   getCombinedDomain,
@@ -10,13 +9,12 @@ import {
   ScaleType,
 } from '@h5web/lib';
 import { toTypedNdArray } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import type { Meta, StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
 
 const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
-const domain = getDomain(dataArray);
 
 const primaryArray = ndarray(mockValues.twoD[0]);
 const secondaryArray = ndarray(mockValues.secondary[0]);
@@ -31,114 +29,17 @@ const errorsArray = ndarray(
   dataArray.shape
 );
 
-const Template: Story<LineVisProps> = (args) => {
-  const {
-    dataArray,
-    domain: storyDomain,
-    scaleType,
-    errorsArray,
-    auxiliaries,
-  } = args;
-
-  // If story doesn't provide `domain`, compute it automatically
-  const auxArrays = (auxiliaries || []).map(({ array }) => array);
-  const domain =
-    storyDomain ||
-    getCombinedDomain([
-      getDomain(dataArray, scaleType, errorsArray),
-      ...getDomains(auxArrays, scaleType),
-    ]);
-
-  return <LineVis {...args} domain={domain} />;
-};
-
-export const Default = Template.bind({});
-Default.args = {
-  dataArray,
-  domain,
-};
-
-export const Domain = Template.bind({});
-Domain.args = {
-  dataArray,
-  domain: [-100, 100],
-};
-
-export const Abscissas = Template.bind({});
-Abscissas.args = {
-  dataArray,
-  domain,
-  abscissaParams: {
-    value: abscissas,
-  },
-};
-
-export const DescendingAbscissas = Template.bind({});
-DescendingAbscissas.args = {
-  dataArray,
-  domain,
-  abscissaParams: {
-    value: [...abscissas].reverse(),
-  },
-};
-
-export const ErrorBars = Template.bind({});
-ErrorBars.args = {
-  dataArray,
-  errorsArray,
-  showErrors: true,
-};
-
-export const AuxiliaryArrays = Template.bind({});
-AuxiliaryArrays.args = {
-  dataArray: primaryArray,
-  auxiliaries: [{ array: secondaryArray }, { array: tertiaryArray }],
-};
-
-export const AuxiliaryLabels = Template.bind({});
-AuxiliaryLabels.args = {
-  dataArray: primaryArray,
-  auxiliaries: [
-    { label: 'secondary', array: secondaryArray },
-    { label: 'tertiary', array: tertiaryArray },
-  ],
-};
-
-export const AuxiliaryErrors = Template.bind({});
-AuxiliaryErrors.args = {
-  dataArray: primaryArray,
-  errorsArray,
-  auxiliaries: [
-    { label: 'secondary', array: secondaryArray, errors: errorsArray },
-    { label: 'tertiary', array: tertiaryArray },
-  ],
-  showErrors: true,
-};
-
-export const IgnoreValue = Template.bind({});
-IgnoreValue.args = {
-  ...Default.args,
-  ignoreValue: (val) => val % 5 === 0,
-};
-
-export const TypedArrays = Template.bind({});
-TypedArrays.args = {
-  dataArray: toTypedNdArray(primaryArray, Float32Array),
-  errorsArray: toTypedNdArray(errorsArray, Float32Array),
-  auxiliaries: [
-    { label: 'secondary', array: toTypedNdArray(secondaryArray, Float32Array) },
-  ],
-  showErrors: true,
-};
-
-export { Template as LineVisTemplate };
-export default {
+const meta = {
   title: 'Visualizations/LineVis',
   component: LineVis,
-  excludeStories: ['LineVisTemplate'],
-  parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },
   decorators: [FillHeight],
+  parameters: {
+    layout: 'fullscreen',
+    controls: { sort: 'requiredFirst' },
+  },
   args: {
+    dataArray,
+    domain: undefined, // compute dynamically in each story based on scale type, errors and auxiliaries
     curveType: CurveType.LineOnly,
     scaleType: ScaleType.Linear,
     showGrid: true,
@@ -157,4 +58,103 @@ export default {
       options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
     },
   },
-} as Meta;
+} satisfies Meta<typeof LineVis>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default = {
+  render: (args) => {
+    const { dataArray, domain, scaleType, errorsArray, auxiliaries } = args;
+
+    // If story doesn't provide `domain`, compute it automatically
+    const auxArrays = (auxiliaries || []).map(({ array }) => array);
+    const effectiveDomain =
+      domain ||
+      getCombinedDomain([
+        getDomain(dataArray, scaleType, errorsArray),
+        ...getDomains(auxArrays, scaleType),
+      ]);
+
+    return <LineVis {...args} domain={effectiveDomain} />;
+  },
+} satisfies Story;
+
+export const Domain = {
+  ...Default,
+  args: {
+    domain: [1, 20], // compatible with all scale types
+  },
+} satisfies Story;
+
+export const Abscissas = {
+  ...Default,
+  args: {
+    abscissaParams: {
+      value: abscissas,
+    },
+  },
+} satisfies Story;
+
+export const DescendingAbscissas = {
+  ...Default,
+  args: {
+    abscissaParams: {
+      value: [...abscissas].reverse(),
+    },
+  },
+} satisfies Story;
+
+export const ErrorBars = {
+  ...Default,
+  args: {
+    errorsArray,
+    showErrors: true,
+  },
+} satisfies Story;
+
+export const AuxiliaryArrays = {
+  ...Default,
+  args: {
+    dataArray: primaryArray,
+    auxiliaries: [
+      { label: 'secondary', array: secondaryArray },
+      { label: 'tertiary', array: tertiaryArray },
+    ],
+  },
+} satisfies Story;
+
+export const AuxiliaryErrors = {
+  ...Default,
+  args: {
+    dataArray: primaryArray,
+    errorsArray,
+    auxiliaries: [
+      { label: 'secondary', array: secondaryArray, errors: errorsArray },
+      { label: 'tertiary', array: tertiaryArray },
+    ],
+    showErrors: true,
+  },
+} satisfies Story;
+
+export const TypedArrays = {
+  ...Default,
+  args: {
+    dataArray: toTypedNdArray(primaryArray, Float32Array),
+    errorsArray: toTypedNdArray(errorsArray, Float32Array),
+    auxiliaries: [
+      {
+        label: 'secondary',
+        array: toTypedNdArray(secondaryArray, Float32Array),
+      },
+    ],
+    showErrors: true,
+  },
+} satisfies Story;
+
+export const IgnoreValue = {
+  ...Default,
+  args: {
+    ignoreValue: (val) => val % 5 === 0,
+  },
+} satisfies Story;

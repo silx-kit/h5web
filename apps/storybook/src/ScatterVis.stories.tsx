@@ -1,13 +1,11 @@
-import type { ScatterVisProps } from '@h5web/lib';
 import { getDomain, INTERPOLATORS, ScatterVis } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import { assertDefined, ScaleType } from '@h5web/shared';
+import type { Meta, StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 import { useState } from 'react';
 
 import FillHeight from './decorators/FillHeight';
 
-const Template: Story<ScatterVisProps> = (args) => <ScatterVis {...args} />;
 const abscissas = [
   0.14, 1.01, 2.14, 3.14, 4.05, 5.17, 6.15, 7.09, 8.13, 9.16, 0.11, 1.18, 2.04,
   3.13, 4.07, 5.17, 6.18, 7.07, 8.05, 9.09, 0.08, 1.03, 2.01, 3.05, 4.03, 5.16,
@@ -43,84 +41,18 @@ const data = [
   148.88, 167.67,
 ];
 
-const domain = getDomain(data);
 const dataArray = ndarray(data);
+const domain = getDomain(data);
+assertDefined(domain);
 
-export const Default = Template.bind({});
-Default.args = {
-  abscissaParams: { value: abscissas },
-  ordinateParams: { value: ordinates },
-  dataArray,
-  domain,
-};
-
-export const TypedArray = Template.bind({});
-TypedArray.args = {
-  abscissaParams: { value: abscissas },
-  ordinateParams: { value: ordinates },
-  dataArray: ndarray(Float32Array.from(data)),
-  domain,
-};
-
-export const MarkerSize = Template.bind({});
-MarkerSize.args = {
-  ...Default.args,
-  size: 20,
-};
-
-export const ColorMap = Template.bind({});
-ColorMap.args = {
-  ...Default.args,
-  colorMap: 'Rainbow',
-};
-
-export const ColorScaleType = Template.bind({});
-ColorScaleType.args = {
-  ...Default.args,
-  scaleType: ScaleType.SymLog,
-};
-
-export const Labels = Template.bind({});
-Labels.args = {
-  abscissaParams: { value: abscissas, label: 'Latitude' },
-  ordinateParams: { value: ordinates, label: 'Longitude' },
-  dataArray,
-  domain,
-  title: 'A Scatter vis',
-};
-
-export const AxisScaleTypes = Template.bind({});
-AxisScaleTypes.args = {
-  abscissaParams: { value: abscissas, scaleType: ScaleType.SymLog },
-  ordinateParams: { value: ordinates, scaleType: ScaleType.Log },
-  dataArray,
-  domain,
-};
-
-export const Click: Story<ScatterVisProps> = (args) => {
-  const [index, setIndex] = useState<number>();
-
-  return (
-    <ScatterVis
-      {...args}
-      title={
-        index !== undefined
-          ? `You clicked on point ${index} (value: ${data[index]})`
-          : `Click on a point!`
-      }
-      onPointClick={(i) => setIndex(i)}
-    />
-  );
-};
-Click.args = {
-  ...Default.args,
-};
-
-export default {
+const meta = {
   title: 'Visualizations/ScatterVis',
   component: ScatterVis,
-  parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },
   decorators: [FillHeight],
+  parameters: {
+    layout: 'fullscreen',
+    controls: { sort: 'requiredFirst' },
+  },
   args: {
     colorMap: 'Viridis',
     showGrid: true,
@@ -140,4 +72,80 @@ export default {
       ],
     },
   },
-} as Meta;
+} satisfies Meta<typeof ScatterVis>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default = {
+  args: {
+    abscissaParams: { value: abscissas },
+    ordinateParams: { value: ordinates },
+    dataArray,
+    domain,
+  },
+} satisfies Story;
+
+export const TypedArray = {
+  args: {
+    ...Default.args,
+    dataArray: ndarray(Float32Array.from(data)),
+  },
+} satisfies Story;
+
+export const MarkerSize = {
+  args: {
+    ...Default.args,
+    size: 20,
+  },
+} satisfies Story;
+
+export const ColorMap = {
+  args: {
+    ...Default.args,
+    colorMap: 'Rainbow',
+  },
+} satisfies Story;
+
+export const ColorScaleType = {
+  args: {
+    ...Default.args,
+    scaleType: ScaleType.SymLog,
+  },
+} satisfies Story;
+
+export const Labels = {
+  args: {
+    ...Default.args,
+    abscissaParams: { value: abscissas, label: 'Latitude' },
+    ordinateParams: { value: ordinates, label: 'Longitude' },
+    title: 'A Scatter vis',
+  },
+} satisfies Story;
+
+export const AxisScaleTypes = {
+  args: {
+    ...Default.args,
+    abscissaParams: { value: abscissas, scaleType: ScaleType.SymLog },
+    ordinateParams: { value: ordinates, scaleType: ScaleType.Log },
+  },
+} satisfies Story;
+
+export const Click = {
+  ...Default,
+  render: (args) => {
+    const [index, setIndex] = useState<number>();
+
+    return (
+      <ScatterVis
+        {...args}
+        title={
+          index !== undefined
+            ? `You clicked on point ${index} (value: ${data[index]})`
+            : `Click on a point!`
+        }
+        onPointClick={(i) => setIndex(i)}
+      />
+    );
+  },
+} satisfies Story;

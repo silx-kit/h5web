@@ -1,31 +1,27 @@
-import type { Domain, HeatmapMeshProps } from '@h5web/lib';
+import type { Domain } from '@h5web/lib';
 import {
+  DefaultInteractions,
   getDomain,
   getMockDataArray,
   HeatmapMesh,
   VisCanvas,
 } from '@h5web/lib';
-import { getDims, ScaleType, toTypedNdArray } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import {
+  assertDefined,
+  getDims,
+  ScaleType,
+  toTypedNdArray,
+} from '@h5web/shared';
+import type { Meta, StoryObj } from '@storybook/react';
 import { range } from 'lodash';
 import ndarray from 'ndarray';
-import {
-  ByteType,
-  FloatType,
-  HalfFloatType,
-  IntType,
-  LinearFilter,
-  NearestFilter,
-  ShortType,
-  UnsignedByteType,
-  UnsignedIntType,
-  UnsignedShortType,
-} from 'three';
+import { LinearFilter, NearestFilter } from 'three';
 
 import FillHeight from './decorators/FillHeight';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 const domain = getDomain(dataArray.data);
+assertDefined(domain);
 
 const uint16Values = [0x4900, 0x4d00, 0x4f80, 0x5100]; // 10, 20, 30, 40
 const uint16DataArray = ndarray(Uint16Array.from(uint16Values), [2, 2]);
@@ -39,56 +35,7 @@ const mask = ndarray(
   [20, 41]
 );
 
-const Template: Story<HeatmapMeshProps> = (args) => {
-  const { rows, cols } = getDims(args.values);
-
-  return (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, cols], isIndexAxis: true }}
-      ordinateConfig={{ visDomain: [0, rows], isIndexAxis: true }}
-    >
-      <HeatmapMesh {...args} />
-    </VisCanvas>
-  );
-};
-
-export const Default = Template.bind({});
-Default.args = {
-  values: toTypedNdArray(dataArray, Float32Array),
-  domain,
-  scaleType: ScaleType.SymLog,
-  colorMap: 'Inferno',
-};
-
-export const HalfFloatTexture = Template.bind({});
-HalfFloatTexture.args = {
-  values: uint16DataArray,
-  domain: uint16Domain,
-  scaleType: ScaleType.Linear,
-  colorMap: 'Blues',
-};
-
-export const LinearMagFilter = Template.bind({});
-LinearMagFilter.args = {
-  ...Default.args,
-  magFilter: LinearFilter,
-};
-
-export const BadColor = Template.bind({});
-BadColor.args = {
-  ...Default.args,
-  domain: [0.1, 400],
-  scaleType: ScaleType.Log,
-  badColor: 'steelblue',
-};
-
-export const Mask = Template.bind({});
-Mask.args = {
-  ...Default.args,
-  mask,
-};
-
-export default {
+const meta = {
   title: 'Building Blocks/HeatmapMesh',
   component: HeatmapMesh,
   decorators: [FillHeight],
@@ -114,29 +61,66 @@ export default {
       },
       options: [NearestFilter, LinearFilter],
     },
-    textureType: {
-      control: {
-        labels: {
-          [UnsignedByteType]: 'unsigned byte',
-          [ByteType]: 'byte',
-          [ShortType]: 'short',
-          [UnsignedShortType]: 'unsigned short',
-          [IntType]: 'int',
-          [UnsignedIntType]: 'unsigned int',
-          [FloatType]: 'float',
-          [HalfFloatType]: 'half float',
-        },
-      },
-      options: [
-        UnsignedByteType,
-        ByteType,
-        ShortType,
-        UnsignedShortType,
-        IntType,
-        UnsignedIntType,
-        FloatType,
-        HalfFloatType,
-      ],
-    },
   },
-} as Meta;
+} satisfies Meta<typeof HeatmapMesh>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default = {
+  render: (args) => {
+    const { rows, cols } = getDims(args.values);
+
+    return (
+      <VisCanvas
+        abscissaConfig={{ visDomain: [0, cols], isIndexAxis: true }}
+        ordinateConfig={{ visDomain: [0, rows], isIndexAxis: true }}
+      >
+        <DefaultInteractions />
+        <HeatmapMesh {...args} />
+      </VisCanvas>
+    );
+  },
+  args: {
+    values: toTypedNdArray(dataArray, Float32Array),
+    domain,
+    scaleType: ScaleType.SymLog,
+    colorMap: 'Inferno',
+  },
+} satisfies Story;
+
+export const HalfFloatTexture = {
+  ...Default,
+  args: {
+    values: uint16DataArray,
+    domain: uint16Domain,
+    scaleType: ScaleType.Linear,
+    colorMap: 'Blues',
+  },
+} satisfies Story;
+
+export const LinearMagFilter = {
+  ...Default,
+  args: {
+    ...Default.args,
+    magFilter: LinearFilter,
+  },
+} satisfies Story;
+
+export const BadColor = {
+  ...Default,
+  args: {
+    ...Default.args,
+    domain: [0.1, 400],
+    scaleType: ScaleType.Log,
+    badColor: 'steelblue',
+  },
+} satisfies Story;
+
+export const Mask = {
+  ...Default,
+  args: {
+    ...Default.args,
+    mask,
+  },
+} satisfies Story;

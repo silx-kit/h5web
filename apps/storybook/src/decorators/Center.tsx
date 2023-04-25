@@ -1,9 +1,9 @@
-import type { Story } from '@storybook/react';
+import type { StoryFn } from '@storybook/react';
 
-function Center(MyStory: Story) {
+function Center(Story: StoryFn) {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <MyStory />
+      <Story />
     </div>
   );
 }
