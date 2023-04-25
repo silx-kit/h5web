@@ -1,47 +1,58 @@
+import type { LineVis } from '@h5web/lib';
 import { getMockDataArray, ScaleType } from '@h5web/lib';
-import type { Meta } from '@storybook/react/types-6-0';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import LineVisStoriesConfig, { LineVisTemplate } from './LineVis.stories';
+import LineVisStoriesMeta, { Default } from './LineVis.stories';
 
-const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
 const dataArrayForXLog = getMockDataArray('/nexus_entry/log_spectrum/X_log');
 
-export const SymLogForY = LineVisTemplate.bind({});
-SymLogForY.storyName = 'Symlog for Y';
-SymLogForY.args = {
-  dataArray,
-  scaleType: ScaleType.SymLog,
-};
-
-export const LogForY = LineVisTemplate.bind({});
-LogForY.storyName = 'Log for Y';
-LogForY.args = {
-  dataArray,
-  scaleType: ScaleType.Log,
-};
-
-export const SymLogForX = LineVisTemplate.bind({});
-SymLogForX.storyName = 'Symlog for X';
-SymLogForX.args = {
-  dataArray: dataArrayForXLog,
-  scaleType: ScaleType.SymLog,
-};
-
-export const LogForX = LineVisTemplate.bind({});
-LogForX.storyName = 'Log for X';
-LogForX.args = {
-  dataArray: dataArrayForXLog,
-  abscissaParams: { scaleType: ScaleType.Log },
-};
-
-export const LogLog = LineVisTemplate.bind({});
-LogLog.args = {
-  dataArray: dataArrayForXLog,
-  scaleType: ScaleType.Log,
-  abscissaParams: { scaleType: ScaleType.Log },
-};
-
-export default {
-  ...LineVisStoriesConfig,
+const meta = {
+  ...LineVisStoriesMeta,
   title: 'Visualizations/LineVis/Scales',
-} as Meta;
+} satisfies Meta<typeof LineVis>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const SymLogForY = {
+  ...Default,
+  storyName: 'Symlog for Y',
+  args: {
+    scaleType: ScaleType.SymLog,
+  },
+} satisfies Story;
+
+export const LogForY = {
+  ...Default,
+  storyName: 'Log for Y',
+  args: {
+    scaleType: ScaleType.Log,
+  },
+} satisfies Story;
+
+export const SymLogForX = {
+  ...Default,
+  storyName: 'Symlog for X',
+  args: {
+    dataArray: dataArrayForXLog,
+    scaleType: ScaleType.SymLog,
+  },
+} satisfies Story;
+
+export const LogForX = {
+  ...Default,
+  storyName: 'Log for X',
+  args: {
+    dataArray: dataArrayForXLog,
+    abscissaParams: { scaleType: ScaleType.Log },
+  },
+} satisfies Story;
+
+export const LogLog = {
+  ...Default,
+  args: {
+    dataArray: dataArrayForXLog,
+    scaleType: ScaleType.Log,
+    abscissaParams: { scaleType: ScaleType.Log },
+  },
+} satisfies Story;

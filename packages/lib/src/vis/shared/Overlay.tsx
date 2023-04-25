@@ -1,15 +1,14 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, PropsWithChildren } from 'react';
 
 import Html from './Html';
 import { useVisCanvasContext } from './VisCanvasProvider';
 
 interface Props {
-  children?: ReactNode;
   className?: string;
   style?: CSSProperties;
 }
 
-function Overlay(props: Props) {
+function Overlay(props: PropsWithChildren<Props>) {
   const { children, style, className } = props;
   const { canvasSize } = useVisCanvasContext();
 

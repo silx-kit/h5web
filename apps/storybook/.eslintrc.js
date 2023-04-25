@@ -14,6 +14,7 @@ module.exports = createConfig(__dirname, getDependencies(), [
       'sonarjs/no-duplicate-string': 'off', // no problem repeating strings for argTypes
       'sonarjs/no-identical-functions': 'off', // clarity trumps reusability in docs
       '@typescript-eslint/no-shadow': 'off',
+      'react-hooks/rules-of-hooks': 'off', // https://github.com/storybookjs/storybook/issues/21115
     },
   },
 ]);

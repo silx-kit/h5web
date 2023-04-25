@@ -1,4 +1,3 @@
-import type { HeatmapVisProps } from '@h5web/lib';
 import {
   getDomain,
   getMockDataArray,
@@ -7,7 +6,7 @@ import {
   ScaleType,
 } from '@h5web/lib';
 import { assertDefined, toTypedNdArray } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import type { Meta, StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
@@ -22,117 +21,24 @@ const alphaArray = ndarray(
 const alphaDomain = getDomain(alphaArray);
 assertDefined(alphaDomain);
 
-const Template: Story<HeatmapVisProps> = (args) => <HeatmapVis {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-  dataArray,
-  domain,
-};
-
-export const Domain = Template.bind({});
-Domain.args = {
-  dataArray,
-  domain: [-400, 400],
-};
-
-export const ColorMap = Template.bind({});
-ColorMap.args = {
-  dataArray,
-  domain,
-  colorMap: 'Rainbow',
-};
-
-export const InvertColorMap = Template.bind({});
-InvertColorMap.args = {
-  dataArray,
-  domain,
-  colorMap: 'Rainbow',
-  invertColorMap: true,
-};
-
-export const AxisValues = Template.bind({});
-AxisValues.args = {
-  dataArray,
-  domain,
-  abscissaParams: {
-    value: Array.from(
-      { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
-      (_, i) => 100 + 10 * i
-    ),
-  },
-  ordinateParams: {
-    value: Array.from(
-      { length: dataArray.shape[0] + 1 },
-      (_, i) => (-5 + 0.5 * i) / 100
-    ),
-  },
-};
-
-export const DescendingAxisValues = Template.bind({});
-DescendingAxisValues.args = {
-  dataArray,
-  domain,
-  abscissaParams: {
-    value: Array.from(
-      { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
-      (_, i) => -100 - 10 * i
-    ),
-  },
-  ordinateParams: {
-    value: Array.from(
-      { length: dataArray.shape[0] + 1 },
-      (_, i) => (5 - 0.5 * i) / 100
-    ),
-  },
-};
-
-export const Alpha = Template.bind({});
-Alpha.args = {
-  dataArray,
-  domain,
-  alpha: { array: alphaArray, domain: alphaDomain },
-};
-
-export const IgnoreValue = Template.bind({});
-IgnoreValue.args = {
-  ...Default.args,
-  ignoreValue: (val) => val >= 0 && val <= 100,
-};
-
-export const TypedArray = Template.bind({});
-TypedArray.args = {
-  dataArray: toTypedNdArray(dataArray, Float32Array),
-  domain,
-  alpha: {
-    array: toTypedNdArray(alphaArray, Float32Array),
-    domain: alphaDomain,
-  },
-};
-
-export const ChangeInteractionKeys = Template.bind({});
-ChangeInteractionKeys.args = {
-  dataArray,
-  domain,
-  interactions: {
-    xAxisZoom: false,
-    yAxisZoom: false,
-    selectToZoom: { modifierKey: 'Shift' },
-  },
-};
-
-export default {
+const meta = {
   title: 'Visualizations/HeatmapVis',
   component: HeatmapVis,
-  parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },
   decorators: [FillHeight],
+  parameters: {
+    layout: 'fullscreen',
+    controls: { sort: 'requiredFirst' },
+  },
   args: {
+    dataArray,
+    domain,
     colorMap: 'Viridis',
     scaleType: ScaleType.Linear,
     aspect: 'equal',
     showGrid: true,
   },
   argTypes: {
+    dataArray: { control: false },
     colorMap: {
       control: { type: 'select' },
       options: Object.keys(INTERPOLATORS),
@@ -151,4 +57,99 @@ export default {
       options: ['auto', 'equal'],
     },
   },
-} as Meta;
+} satisfies Meta<typeof HeatmapVis>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default = {} satisfies Story;
+
+export const Domain = {
+  args: {
+    domain: [-400, 400],
+  },
+} satisfies Story;
+
+export const ColorMap = {
+  args: {
+    colorMap: 'Rainbow',
+  },
+} satisfies Story;
+
+export const InvertColorMap = {
+  args: {
+    ...ColorMap.args,
+    invertColorMap: true,
+  },
+} satisfies Story;
+
+export const AxisValues = {
+  args: {
+    abscissaParams: {
+      value: Array.from(
+        { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
+        (_, i) => 100 + 10 * i
+      ),
+    },
+    ordinateParams: {
+      value: Array.from(
+        { length: dataArray.shape[0] + 1 },
+        (_, i) => (-5 + 0.5 * i) / 100
+      ),
+    },
+  },
+} satisfies Story;
+
+export const DescendingAxisValues = {
+  args: {
+    abscissaParams: {
+      value: Array.from(
+        { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
+        (_, i) => -100 - 10 * i
+      ),
+    },
+    ordinateParams: {
+      value: Array.from(
+        { length: dataArray.shape[0] + 1 },
+        (_, i) => (5 - 0.5 * i) / 100
+      ),
+    },
+  },
+} satisfies Story;
+
+export const Alpha = {
+  args: {
+    alpha: {
+      array: alphaArray,
+      domain: alphaDomain,
+    },
+  },
+} satisfies Story;
+
+export const IgnoreValue = {
+  args: {
+    ignoreValue: (val) => val >= 0 && val <= 100,
+  },
+} satisfies Story;
+
+export const TypedArray = {
+  args: {
+    dataArray: toTypedNdArray(dataArray, Float32Array),
+    alpha: {
+      array: toTypedNdArray(alphaArray, Float32Array),
+      domain: alphaDomain,
+    },
+  },
+} satisfies Story;
+
+export const ChangeInteractionKeys = {
+  args: {
+    interactions: {
+      xAxisZoom: false,
+      yAxisZoom: false,
+      selectToZoom: {
+        modifierKey: 'Shift',
+      },
+    },
+  },
+} satisfies Story;

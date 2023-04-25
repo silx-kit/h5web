@@ -1,9 +1,4 @@
-import type {
-  ModifierKey,
-  Rect,
-  Selection,
-  SelectionToolProps,
-} from '@h5web/lib';
+import type { Rect, Selection } from '@h5web/lib';
 import {
   Box,
   DataToHtml,
@@ -17,173 +12,177 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { useThrottledState } from '@react-hookz/web';
-import type { Meta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import FillHeight from './decorators/FillHeight';
 import { getTitleForSelection } from './utils';
 
-interface TemplateProps extends SelectionToolProps {
-  selectionModifierKey?: ModifierKey;
-  panModifierKey?: ModifierKey;
-}
+const meta = {
+  title: 'Building Blocks/Interactions/SelectionTool',
+  component: SelectionTool,
+  decorators: [FillHeight],
+  parameters: { layout: 'fullscreen' },
+  args: {
+    modifierKey: [],
+  },
+  argTypes: {
+    modifierKey: {
+      control: { type: 'inline-check' },
+      options: ['Alt', 'Control', 'Shift'],
+    },
+  },
+} satisfies Meta<typeof SelectionTool>;
 
-const Template: Story<TemplateProps> = (args) => {
-  const { selectionModifierKey, panModifierKey, ...toolProps } = args;
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-  const [activeSelection, setActiveSelection] = useThrottledState<
-    Selection | undefined
-  >(undefined, 50);
+export const Rectangle = {
+  render: (args) => {
+    const { modifierKey } = args;
 
-  if (selectionModifierKey === panModifierKey) {
+    const [activeSelection, setActiveSelection] = useThrottledState<
+      Selection | undefined
+    >(undefined, 50);
+
     return (
-      <p style={{ margin: '1rem', color: 'darkred' }}>
-        Pan and selection modifier keys cannot both be{' '}
-        <code>{panModifierKey || 'undefined'}</code>
-      </p>
-    );
-  }
-
-  return (
-    <VisCanvas
-      title={getTitleForSelection(activeSelection?.data)}
-      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
-    >
-      <Pan modifierKey={panModifierKey} />
-      <Zoom />
-      <ResetZoomButton />
-
-      <SelectionTool
-        modifierKey={selectionModifierKey}
-        onSelectionChange={setActiveSelection}
-        onSelectionEnd={() => setActiveSelection(undefined)}
-        {...toolProps}
+      <VisCanvas
+        title={getTitleForSelection(activeSelection?.data)}
+        abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+        ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
       >
-        {({ html: htmlSelection }, _, isValid) => (
-          <SvgElement>
-            <SvgRect
-              coords={htmlSelection}
-              fill={isValid ? 'teal' : 'orangered'}
-              fillOpacity={0.5}
-              stroke={isValid ? 'teal' : 'orangered'}
-              strokeWidth={2}
-              strokePosition="inside"
-            />
-          </SvgElement>
-        )}
-      </SelectionTool>
-    </VisCanvas>
-  );
-};
+        <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
+        <Zoom />
+        <ResetZoomButton />
 
-export const Rectangle = Template.bind({});
-
-export const WithModifierKey = Template.bind({});
-WithModifierKey.args = {
-  selectionModifierKey: 'Control',
-  panModifierKey: undefined,
-};
-
-export const WithValidation = Template.bind({});
-WithValidation.args = {
-  validate: ({ html }) => Box.fromPoints(...html).hasMinSize(100),
-};
-
-export const PersistedDataSelection: Story = () => {
-  const [persistedDataSelection, setPersistedDataSelection] = useState<Rect>();
-
-  return (
-    <VisCanvas
-      title={getTitleForSelection(persistedDataSelection)}
-      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
-    >
-      <Pan modifierKey="Control" />
-      <Zoom />
-      <ResetZoomButton />
-
-      <SelectionTool
-        validate={({ html }) => Box.fromPoints(...html).hasMinSize(50)}
-        onSelectionStart={() => setPersistedDataSelection(undefined)}
-        onValidSelection={({ data }) => setPersistedDataSelection(data)}
-      >
-        {({ html: htmlSelection }, _, isValid) => (
-          <SvgElement>
-            <SvgRect
-              coords={htmlSelection}
-              fill={isValid ? 'teal' : 'orangered'}
-              fillOpacity="0.3"
-            />
-          </SvgElement>
-        )}
-      </SelectionTool>
-
-      {persistedDataSelection && (
-        <DataToHtml points={persistedDataSelection}>
-          {(...htmlSelection) => (
+        <SelectionTool
+          {...args}
+          onSelectionChange={setActiveSelection}
+          onSelectionEnd={() => setActiveSelection(undefined)}
+        >
+          {({ html: htmlSelection }, _, isValid) => (
             <SvgElement>
-              <SvgRect coords={htmlSelection} fill="teal" fillOpacity="0.6" />
+              <SvgRect
+                coords={htmlSelection}
+                fill={isValid ? 'teal' : 'orangered'}
+                fillOpacity={0.5}
+                stroke={isValid ? 'teal' : 'orangered'}
+                strokeWidth={2}
+                strokePosition="inside"
+              />
             </SvgElement>
           )}
-        </DataToHtml>
-      )}
-    </VisCanvas>
-  );
-};
+        </SelectionTool>
+      </VisCanvas>
+    );
+  },
+} satisfies Story;
 
-PersistedDataSelection.parameters = {
-  controls: { disable: true },
-};
+export const ModifierKey = {
+  ...Rectangle,
+  args: {
+    modifierKey: 'Control',
+  },
+} satisfies Story;
 
-export const LineWithLengthValidation: Story<TemplateProps> = () => {
-  const [isValid, setValid] = useThrottledState<boolean | undefined>(
-    undefined,
-    50
-  );
+export const Validation = {
+  ...Rectangle,
+  args: {
+    validate: ({ html }) => Box.fromPoints(...html).hasMinSize(100),
+  },
+} satisfies Story;
 
-  return (
-    <VisCanvas
-      title={
-        isValid === undefined
-          ? 'No selection'
-          : `Line is ${isValid ? 'longer' : 'shorter'} than 100px`
-      }
-      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
-    >
-      <Pan modifierKey="Control" />
-      <Zoom />
-      <ResetZoomButton />
+export const PersistedDataSelection = {
+  render: () => {
+    const [persistedDataSelection, setPersistedDataSelection] =
+      useState<Rect>();
 
-      <SelectionTool
-        validate={({ html: [start, end] }) => start.distanceTo(end) >= 100}
-        onSelectionChange={(selection, _, isValid) =>
-          setValid(selection && isValid)
-        }
-        onSelectionEnd={() => setValid(undefined)}
+    return (
+      <VisCanvas
+        title={getTitleForSelection(persistedDataSelection)}
+        abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+        ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
       >
-        {({ html: htmlSelection }, _, isValid) => (
-          <SvgElement>
-            <SvgLine
-              coords={htmlSelection}
-              stroke={isValid ? 'teal' : 'orangered'}
-              strokeWidth={3}
-              strokeLinecap="round"
-            />
-          </SvgElement>
+        <Pan modifierKey="Control" />
+        <Zoom />
+        <ResetZoomButton />
+
+        <SelectionTool
+          validate={({ html }) => Box.fromPoints(...html).hasMinSize(50)}
+          onSelectionStart={() => setPersistedDataSelection(undefined)}
+          onValidSelection={({ data }) => setPersistedDataSelection(data)}
+        >
+          {({ html: htmlSelection }, _, isValid) => (
+            <SvgElement>
+              <SvgRect
+                coords={htmlSelection}
+                fill={isValid ? 'teal' : 'orangered'}
+                fillOpacity="0.3"
+              />
+            </SvgElement>
+          )}
+        </SelectionTool>
+
+        {persistedDataSelection && (
+          <DataToHtml points={persistedDataSelection}>
+            {(...htmlSelection) => (
+              <SvgElement>
+                <SvgRect coords={htmlSelection} fill="teal" fillOpacity="0.6" />
+              </SvgElement>
+            )}
+          </DataToHtml>
         )}
-      </SelectionTool>
-    </VisCanvas>
-  );
-};
+      </VisCanvas>
+    );
+  },
+} satisfies Story;
 
-LineWithLengthValidation.parameters = {
-  controls: { disable: true },
-};
+export const LineWithLengthValidation = {
+  render: () => {
+    const [isValid, setValid] = useThrottledState<boolean | undefined>(
+      undefined,
+      50
+    );
 
-export const RectWithTransform: Story<TemplateProps> = () => {
-  return (
+    return (
+      <VisCanvas
+        title={
+          isValid === undefined
+            ? 'No selection'
+            : `Line is ${isValid ? 'longer' : 'shorter'} than 100px`
+        }
+        abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+        ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+      >
+        <Pan modifierKey="Control" />
+        <Zoom />
+        <ResetZoomButton />
+
+        <SelectionTool
+          validate={({ html: [start, end] }) => start.distanceTo(end) >= 100}
+          onSelectionChange={(selection, _, isValid) =>
+            setValid(selection && isValid)
+          }
+          onSelectionEnd={() => setValid(undefined)}
+        >
+          {({ html: htmlSelection }, _, isValid) => (
+            <SvgElement>
+              <SvgLine
+                coords={htmlSelection}
+                stroke={isValid ? 'teal' : 'orangered'}
+                strokeWidth={3}
+                strokeLinecap="round"
+              />
+            </SvgElement>
+          )}
+        </SelectionTool>
+      </VisCanvas>
+    );
+  },
+} satisfies Story;
+
+export const RectWithTransform = {
+  render: () => (
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
       ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
@@ -218,29 +217,5 @@ export const RectWithTransform: Story<TemplateProps> = () => {
         )}
       </SelectionTool>
     </VisCanvas>
-  );
-};
-
-RectWithTransform.parameters = {
-  controls: { disable: true },
-};
-
-export default {
-  title: 'Building Blocks/Interactions/SelectionTool',
-  decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
-  args: {
-    selectionModifierKey: undefined,
-    panModifierKey: 'Control',
-  },
-  argTypes: {
-    selectionModifierKey: {
-      control: { type: 'inline-radio' },
-      options: ['Alt', 'Control', 'Shift', undefined],
-    },
-    panModifierKey: {
-      control: { type: 'inline-radio' },
-      options: ['Alt', 'Control', 'Shift', undefined],
-    },
-  },
-} as Meta;
+  ),
+} satisfies Story;

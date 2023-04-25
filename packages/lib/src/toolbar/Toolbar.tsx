@@ -1,6 +1,6 @@
 import { isReactElement } from '@h5web/shared';
 import { useMap, useMeasure } from '@react-hookz/web';
-import type { ReactElement, ReactNode } from 'react';
+import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 
 import type { InteractionInfo } from '../interactions/models';
@@ -11,12 +11,11 @@ import Separator from './Separator';
 import styles from './Toolbar.module.css';
 
 interface Props {
-  children: ReactNode;
   interactions?: InteractionInfo[];
   overflowChildren?: ReactNode;
 }
 
-function Toolbar(props: Props) {
+function Toolbar(props: PropsWithChildren<Props>) {
   const { children, interactions, overflowChildren = [] } = props;
 
   /* Convert `children` to flat array by traversing nested arrays and fragments.

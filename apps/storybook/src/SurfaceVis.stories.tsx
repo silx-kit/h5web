@@ -1,8 +1,11 @@
-import type { SurfaceVisProps } from '@h5web/lib';
 import { getDomain, SurfaceVis } from '@h5web/lib';
-import { createArrayFromView, getMockDataArray } from '@h5web/shared';
+import {
+  assertDefined,
+  createArrayFromView,
+  getMockDataArray,
+} from '@h5web/shared';
 import { OrbitControls } from '@react-three/drei';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -10,22 +13,29 @@ const dataArray = createArrayFromView(
   getMockDataArray('/nD_datasets/fourD').pick(0, 0, null, null)
 );
 const domain = getDomain(dataArray.data);
+assertDefined(domain);
 
-const Template: Story<SurfaceVisProps> = (args) => (
-  <SurfaceVis {...args}>
-    <OrbitControls />
-  </SurfaceVis>
-);
-
-export const Default = Template.bind({});
-Default.args = {
-  dataArray,
-  domain,
-};
-
-export default {
+const meta = {
   title: 'Experimental/SurfaceVis',
   component: SurfaceVis,
-  parameters: { layout: 'fullscreen', controls: { exclude: 'dataArray' } },
+  parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
-} as Meta;
+  argTypes: {
+    dataArray: { control: false },
+  },
+} satisfies Meta<typeof SurfaceVis>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default = {
+  render: (args) => (
+    <SurfaceVis {...args}>
+      <OrbitControls />
+    </SurfaceVis>
+  ),
+  args: {
+    dataArray,
+    domain,
+  },
+} satisfies Story;
