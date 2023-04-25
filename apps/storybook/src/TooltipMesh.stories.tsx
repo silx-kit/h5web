@@ -1,76 +1,80 @@
-import type { TooltipMeshProps } from '@h5web/lib';
-import { Pan, TooltipMesh, VisCanvas, Zoom } from '@h5web/lib';
+import { DefaultInteractions, TooltipMesh, VisCanvas } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared';
-import type { Meta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import VisCanvasStoriesConfig from './VisCanvas.stories';
+import FillHeight from './decorators/FillHeight';
 
-interface TemplateProps {
-  tooltipValue?: string;
-  guides?: TooltipMeshProps['guides'];
-  panZoom?: boolean;
-}
-
-const Template: Story<TemplateProps> = (args) => {
-  const { tooltipValue, guides, panZoom } = args;
-
-  return (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
-      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
-    >
-      {panZoom && <Pan />}
-      {panZoom && <Zoom />}
-      {tooltipValue && (
-        <TooltipMesh
-          guides={guides}
-          renderTooltip={(x, y) => (
-            <>
-              {`x=${formatTooltipVal(x)}, y=${formatTooltipVal(y)}`}
-              <div>
-                <strong>{tooltipValue}</strong>
-              </div>
-            </>
-          )}
-        />
-      )}
-    </VisCanvas>
-  );
-};
-
-export const Default = Template.bind({});
-Default.args = {
-  tooltipValue: 'no value to display',
-  panZoom: false,
-};
-
-export const Guides = Template.bind({});
-Guides.args = {
-  tooltipValue: 'guides="both"',
-  guides: 'both',
-  panZoom: false,
-};
-
-export const WithPanZoom = Template.bind({});
-WithPanZoom.args = {
-  tooltipValue: '<Pan /> and <Zoom /> must come first',
-  guides: 'vertical',
-  panZoom: true,
-};
-
-export default {
-  ...VisCanvasStoriesConfig,
+const meta = {
   title: 'Building Blocks/TooltipMesh',
-  parameters: {
-    ...VisCanvasStoriesConfig.parameters,
-    controls: {
-      include: ['tooltipValue', 'guides', 'panZoom'],
-    },
-  },
+  component: TooltipMesh,
+  decorators: [FillHeight],
+  parameters: { layout: 'fullscreen' },
   argTypes: {
     guides: {
       control: { type: 'inline-radio' },
       options: ['horizontal', 'vertical', 'both'],
     },
   },
-} as Meta;
+} satisfies Meta<typeof TooltipMesh>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+function TooltipContent(props: { x: number; y: number; text?: string }) {
+  const { x, y, text } = props;
+  return (
+    <>
+      {text && (
+        <h3>
+          <code>{text}</code>
+        </h3>
+      )}
+      {`x=${formatTooltipVal(x)}, y=${formatTooltipVal(y)}`}
+    </>
+  );
+}
+
+export const Default = {
+  render: (args) => (
+    <VisCanvas
+      abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+      ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+    >
+      <DefaultInteractions />
+      <TooltipMesh {...args} />
+    </VisCanvas>
+  ),
+  args: {
+    renderTooltip: (x, y) => <TooltipContent x={x} y={y} />,
+  },
+} satisfies Story;
+
+export const HorizontalGuide = {
+  ...Default,
+  args: {
+    guides: 'horizontal',
+    renderTooltip: (x, y) => (
+      <TooltipContent text={'guides="horizontal"'} x={x} y={y} />
+    ),
+  },
+} satisfies Story;
+
+export const VerticalGuide = {
+  ...Default,
+  args: {
+    guides: 'vertical',
+    renderTooltip: (x, y) => (
+      <TooltipContent text={'guides="vertical"'} x={x} y={y} />
+    ),
+  },
+} satisfies Story;
+
+export const BothGuides = {
+  ...Default,
+  args: {
+    guides: 'both',
+    renderTooltip: (x, y) => (
+      <TooltipContent text={'guides="both"'} x={x} y={y} />
+    ),
+  },
+} satisfies Story;

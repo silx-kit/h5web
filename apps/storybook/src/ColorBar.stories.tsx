@@ -1,85 +1,30 @@
 import type { ColorBarProps } from '@h5web/lib';
 import { ColorBar, ScaleType } from '@h5web/lib';
-import type { Meta, Story } from '@storybook/react/types-6-0';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 
-export interface TemplateProps extends Omit<ColorBarProps, 'domain'> {
+export interface StoryProps extends ColorBarProps {
   domainMin: number;
   domainMax: number;
 }
 
-const Template: Story<TemplateProps> = (args) => {
-  const { domainMin: min, domainMax: max, ...colorBarArgs } = args;
-  return <ColorBar {...colorBarArgs} domain={[min, max]} />;
-};
-
-export const Default = Template.bind({});
-Default.args = {
-  domainMin: 0.1,
-  domainMax: 1,
-  scaleType: ScaleType.Linear,
-  colorMap: 'Viridis',
-};
-
-export const ColorMapStory = Template.bind({});
-ColorMapStory.storyName = 'Color Map';
-ColorMapStory.args = { ...Default.args, colorMap: 'Blues' };
-
-export const LogScale = Template.bind({});
-LogScale.args = { ...Default.args, scaleType: ScaleType.Log };
-
-export const NegativeLogScale = Template.bind({});
-NegativeLogScale.storyName = 'Log Scale with negative domain';
-NegativeLogScale.args = {
-  ...Default.args,
-  scaleType: ScaleType.Log,
-  domainMin: -10,
-  domainMax: -1,
-};
-
-export const SymLogScale = Template.bind({});
-SymLogScale.args = {
-  ...Default.args,
-  scaleType: ScaleType.SymLog,
-  domainMin: -6,
-  domainMax: 6,
-};
-
-export const WithBounds = Template.bind({});
-WithBounds.storyName = 'With bounds';
-WithBounds.args = {
-  ...Default.args,
-  domainMin: -235.111,
-  domainMax: 98765,
-  withBounds: true,
-};
-
-export const EmptyDomain = Template.bind({});
-EmptyDomain.storyName = 'Empty domain';
-EmptyDomain.args = {
-  ...Default.args,
-  domainMin: 0,
-  domainMax: 0,
-  withBounds: true,
-};
-
-export const InvertColorMap = Template.bind({});
-InvertColorMap.args = {
-  ...Default.args,
-  invertColorMap: true,
-};
-
-export { Template as ColorBarTemplate };
-export default {
+const meta = {
   title: 'Building Blocks/ColorBar',
   component: ColorBar,
-  decorators: [FillHeight],
+  decorators: [
+    (Story: StoryFn) => (
+      <div style={{ display: 'grid', padding: '0 2rem 0.75rem' }}>
+        <Story />
+      </div>
+    ),
+    FillHeight,
+  ],
   parameters: {
     layout: 'fullscreen',
-    controls: { exclude: ['domain'] },
   },
   argTypes: {
+    domain: { control: false },
     domainMin: {
       control: { type: 'range', min: -10, max: 10, step: 0.1 },
     },
@@ -91,5 +36,86 @@ export default {
       options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
     },
   },
-  excludeStories: ['ColorBarTemplate'],
-} as Meta;
+} satisfies Meta<StoryProps>;
+
+export default meta;
+
+type Story = StoryObj<StoryProps>;
+
+export const Default = {
+  render: (args) => {
+    const { domainMin: min, domainMax: max, ...colorBarArgs } = args;
+    return <ColorBar {...colorBarArgs} domain={[min, max]} />;
+  },
+  args: {
+    domainMin: 0.1,
+    domainMax: 1,
+    scaleType: ScaleType.Linear,
+    colorMap: 'Viridis',
+  },
+} satisfies Story;
+
+export const InvertColorMap = {
+  ...Default,
+  args: {
+    ...Default.args,
+    invertColorMap: true,
+  },
+} satisfies Story;
+
+export const ColorMap = {
+  ...Default,
+  args: {
+    ...Default.args,
+    colorMap: 'Blues',
+  },
+} satisfies Story;
+
+export const WithBounds = {
+  ...Default,
+  args: {
+    ...Default.args,
+    domainMin: -235.111,
+    domainMax: 98765,
+    withBounds: true,
+  },
+} satisfies Story;
+
+export const LogScale = {
+  ...Default,
+  args: {
+    ...Default.args,
+    scaleType: ScaleType.Log,
+  },
+} satisfies Story;
+
+export const NegativeLogScale = {
+  ...Default,
+  storyName: 'Log Scale with negative domain',
+  args: {
+    ...Default.args,
+    scaleType: ScaleType.Log,
+    domainMin: -10,
+    domainMax: -1,
+  },
+} satisfies Story;
+
+export const SymLogScale = {
+  ...Default,
+  args: {
+    ...Default.args,
+    scaleType: ScaleType.SymLog,
+    domainMin: -6,
+    domainMax: 6,
+  },
+} satisfies Story;
+
+export const EmptyDomain = {
+  ...Default,
+  args: {
+    ...Default.args,
+    domainMin: 0,
+    domainMax: 0,
+    withBounds: true,
+  },
+} satisfies Story;

@@ -14,8 +14,8 @@
     "pnpm": "8.x"
   },
   "scripts": {
-    "start": "start-storybook -p 6006",
-    "build": "build-storybook -o build",
+    "start": "storybook dev -p 6006",
+    "build": "storybook build -o build",
     "serve": "pnpm dlx http-server -p 6006 ./build",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc"
@@ -38,13 +38,12 @@
     "three": "0.141.0"
   },
   "devDependencies": {
-    "@babel/core": "7.20.12",
-    "@storybook/addon-docs": "6.5.16",
-    "@storybook/addon-essentials": "6.5.16",
-    "@storybook/addon-links": "6.5.16",
-    "@storybook/builder-webpack5": "6.5.16",
-    "@storybook/manager-webpack5": "6.5.16",
-    "@storybook/react": "6.5.16",
+    "@storybook/addon-docs": "7.0.5",
+    "@storybook/addon-essentials": "7.0.5",
+    "@storybook/addon-links": "7.0.5",
+    "@storybook/addon-mdx-gfm": "7.0.5",
+    "@storybook/react": "7.0.5",
+    "@storybook/react-vite": "7.0.5",
     "@types/d3-format": "3.0.1",
     "@types/lodash": "4.14.192",
     "@types/ndarray": "1.0.11",
@@ -52,12 +51,12 @@
     "@types/react": "^17.0.56",
     "@types/react-dom": "^17.0.19",
     "@types/three": "0.141.0",
-    "babel-loader": "8.2.5",
     "eslint": "8.28.0",
     "eslint-config-galex": "4.5.2",
-    "storybook-css-modules-preset": "1.1.1",
+    "remark-gfm": "3.0.1",
+    "storybook": "7.0.5",
     "typescript": "5.0.4",
-    "webpack": "5.77.0"
+    "vite": "3.2.5"
   },
   "browserslist": {
     "production": [
