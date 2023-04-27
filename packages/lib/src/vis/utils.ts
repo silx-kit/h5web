@@ -5,11 +5,16 @@ import {
   getBounds,
   getValidDomainForScale,
   isDefined,
-  isScaleType,
   isTypedArray,
   ScaleType,
 } from '@h5web/shared';
-import { scaleLinear, scaleThreshold } from '@visx/scale';
+import {
+  scaleLinear,
+  scaleLog,
+  scaleSqrt,
+  scaleSymlog,
+  scaleThreshold,
+} from '@visx/scale';
 import { range, tickStep } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
 import { clamp } from 'lodash';
@@ -26,13 +31,21 @@ import type {
   VisScaleType,
   VisxScaleConfig,
 } from './models';
-import { H5WEB_SCALES } from './scales';
+import { scaleGamma } from './scaleGamma';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
 const DEFAULT_AXIS_OFFSETS = { left: 80, right: 24, top: 16, bottom: 34 };
 const TITLE_OFFSET = 28;
 const LABEL_OFFSET = 24;
+
+export const SCALES_VALID_MINS = {
+  [ScaleType.Linear]: -Infinity,
+  [ScaleType.Log]: Number.MIN_VALUE,
+  [ScaleType.SymLog]: -Infinity,
+  [ScaleType.Sqrt]: 0,
+  [ScaleType.Gamma]: -Infinity,
+};
 
 export const adaptedNumTicks: ScaleLinear<number, number> = scaleLinear({
   domain: [300, 900],
@@ -50,12 +63,23 @@ export function createAxisScale(
   scaleType: VisScaleType,
   config: VisxScaleConfig | ScaleGammaConfig
 ): AxisScale {
-  if (isScaleType(scaleType)) {
-    return H5WEB_SCALES[scaleType].createScale(config);
+  if (Array.isArray(scaleType)) {
+    const [, exponent] = scaleType;
+    return scaleGamma({ ...(config as ScaleGammaConfig), exponent });
   }
 
-  const [, exponent] = scaleType;
-  return H5WEB_SCALES[ScaleType.Gamma].createScale({ ...config, exponent });
+  switch (scaleType) {
+    case ScaleType.Linear:
+      return scaleLinear(config);
+    case ScaleType.Log:
+      return scaleLog(config);
+    case ScaleType.SymLog:
+      return scaleSymlog(config);
+    case ScaleType.Sqrt:
+      return scaleSqrt(config);
+  }
+
+  throw new Error('Unknown scale type');
 }
 
 export function getSizeToFit(
@@ -130,7 +154,7 @@ export function extendDomain(
     return domain;
   }
 
-  const { validMin } = H5WEB_SCALES[scaleType];
+  const validMin = SCALES_VALID_MINS[scaleType];
 
   const [min] = domain;
   if (min < validMin) {

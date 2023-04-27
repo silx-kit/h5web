@@ -7,10 +7,10 @@ import type { ReactNode } from 'react';
 import { useSafeDomain } from '../../../vis/heatmap/hooks';
 import { useCombinedDomain, useDomain } from '../../../vis/hooks';
 import type { HistogramParams } from '../../../vis/models';
-import { H5WEB_SCALES } from '../../../vis/scales';
 import Tick from '../../../vis/shared/Tick';
 import {
   adaptedNumTicks,
+  createAxisScale,
   DEFAULT_DOMAIN,
   extendDomain,
 } from '../../../vis/utils';
@@ -55,7 +55,7 @@ function Histogram(props: Props) {
 
   const { width, height } = size;
 
-  const xScale = H5WEB_SCALES[scaleType].createScale({
+  const xScale = createAxisScale(scaleType, {
     domain: xDomain && extendDomain(xDomain, EXTEND_FACTOR, scaleType),
     range: [0, width],
   });
