@@ -420,9 +420,30 @@ export function assertLength(
   }
 }
 
-export function isScaleType(val: unknown): val is ScaleType {
+export function isAxisScaleType(
+  val: unknown
+): val is Exclude<ScaleType, 'sqrt' | 'gamma'> {
   return (
-    typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
+    typeof val === 'string' &&
+    [
+      ScaleType.Linear.toString(),
+      ScaleType.Log.toString(),
+      ScaleType.SymLog.toString(),
+    ].includes(val)
+  );
+}
+
+export function isColorScaleType(
+  val: unknown
+): val is Exclude<ScaleType, 'gamma'> {
+  return (
+    typeof val === 'string' &&
+    [
+      ScaleType.Linear.toString(),
+      ScaleType.Log.toString(),
+      ScaleType.SymLog.toString(),
+      ScaleType.Sqrt.toString(),
+    ].includes(val)
   );
 }
 

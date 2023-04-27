@@ -26,10 +26,10 @@ import type {
   AxisConfig,
   AxisOffsets,
   Scale,
+  ScaleConfig,
   ScaleGammaConfig,
   Size,
   VisScaleType,
-  VisxScaleConfig,
 } from './models';
 import { scaleGamma } from './scaleGamma';
 
@@ -61,7 +61,7 @@ const adaptedLogTicksThreshold = scaleLinear({
 
 export function createScale(
   scaleType: VisScaleType,
-  config: VisxScaleConfig | ScaleGammaConfig
+  config: ScaleConfig
 ): Scale {
   if (Array.isArray(scaleType)) {
     const [, exponent] = scaleType;
@@ -148,7 +148,7 @@ export function clampBound(
 export function extendDomain(
   domain: Domain,
   extendFactor: number,
-  scaleType = ScaleType.Linear
+  scaleType: Exclude<ScaleType, 'gamma'> = ScaleType.Linear
 ): Domain {
   if (extendFactor <= 0) {
     return domain;
@@ -169,7 +169,7 @@ export function extendDomain(
 function unsafeExtendDomain(
   domain: Domain,
   extendFactor: number,
-  scaleType: ScaleType
+  scaleType: Exclude<ScaleType, 'gamma'>
 ): Domain {
   const [min, max] = domain;
   if (min === max) {
@@ -319,7 +319,7 @@ function isDescending(array: NumArray): boolean {
 
 export function getAxisDomain(
   axisValues: NumArray,
-  scaleType: ScaleType = ScaleType.Linear,
+  scaleType: Exclude<ScaleType, 'sqrt' | 'gamma'> = ScaleType.Linear,
   extensionFactor = 0
 ): Domain | undefined {
   const rawDomain = getDomain(axisValues, scaleType);

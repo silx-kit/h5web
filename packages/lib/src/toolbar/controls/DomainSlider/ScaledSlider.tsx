@@ -18,7 +18,7 @@ interface Props {
   value: Domain;
   dataDomain: Domain;
   safeVisDomain: Domain;
-  scaleType: ScaleType;
+  scaleType: Exclude<ScaleType, 'gamma'>;
   errors: DomainErrors;
   isAutoMin: boolean;
   isAutoMax: boolean;

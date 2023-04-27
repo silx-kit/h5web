@@ -19,16 +19,16 @@ export interface ScatterConfig {
   invertColorMap: boolean;
   toggleColorMapInversion: () => void;
 
-  scaleType: ScaleType;
-  setScaleType: (scaleType: ScaleType) => void;
+  scaleType: Exclude<ScaleType, 'gamma'>;
+  setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => void;
 
   showGrid: boolean;
   toggleGrid: () => void;
 
-  xScaleType: ScaleType;
-  yScaleType: ScaleType;
-  setXScaleType: (type: ScaleType) => void;
-  setYScaleType: (type: ScaleType) => void;
+  xScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>;
+  yScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>;
+  setXScaleType: (type: Exclude<ScaleType, 'sqrt' | 'gamma'>) => void;
+  setYScaleType: (type: Exclude<ScaleType, 'sqrt' | 'gamma'>) => void;
 }
 
 function createScatterConfigStore() {
@@ -47,7 +47,7 @@ function createScatterConfigStore() {
         },
 
         scaleType: ScaleType.Linear,
-        setScaleType: (scaleType: ScaleType) => {
+        setScaleType: (scaleType) => {
           set(() => ({ scaleType }));
         },
 
@@ -56,8 +56,8 @@ function createScatterConfigStore() {
 
         xScaleType: ScaleType.Linear,
         yScaleType: ScaleType.Linear,
-        setXScaleType: (type: ScaleType) => set({ xScaleType: type }),
-        setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
+        setXScaleType: (type) => set({ xScaleType: type }),
+        setYScaleType: (type) => set({ yScaleType: type }),
       }),
       {
         name: 'h5web:scatter',
@@ -98,15 +98,15 @@ export function useScatterConfig(
   return {
     ...persistedConfig,
     ...Object.fromEntries(suggestedOpts.entries()),
-    setScaleType: (scaleType: ScaleType) => {
+    setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => {
       setPersistedScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },
-    setXScaleType: (xScaleType: ScaleType) => {
+    setXScaleType: (xScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>) => {
       setPersistedXScaleType(xScaleType);
       suggestedOpts.delete('xScaleType');
     },
-    setYScaleType: (yScaleType: ScaleType) => {
+    setYScaleType: (yScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>) => {
       setPersistedYScaleType(yScaleType);
       suggestedOpts.delete('yScaleType');
     },

@@ -31,7 +31,7 @@ import { CurveType } from './models';
 interface Props {
   dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
-  scaleType?: ScaleType;
+  scaleType?: Exclude<ScaleType, 'sqrt' | 'gamma'>;
   curveType?: CurveType;
   showGrid?: boolean;
   abscissaParams?: AxisParams;

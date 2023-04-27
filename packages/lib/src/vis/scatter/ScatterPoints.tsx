@@ -16,7 +16,7 @@ interface Props {
   ordinates: NumArray;
   data: NumArray;
   domain: Domain;
-  scaleType: ScaleType;
+  scaleType: Exclude<ScaleType, 'gamma'>;
   colorMap: ColorMap;
   invertColorMap: boolean;
   size: number;

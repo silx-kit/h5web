@@ -29,7 +29,7 @@ interface Props {
   domain: Domain;
   colorMap?: ColorMap;
   invertColorMap?: boolean;
-  scaleType?: ScaleType;
+  scaleType?: Exclude<ScaleType, 'gamma'>;
   showGrid?: boolean;
   title?: string;
   size?: number;

@@ -19,8 +19,8 @@ export interface SurfaceConfig {
   invertColorMap: boolean;
   toggleColorMapInversion: () => void;
 
-  scaleType: ScaleType;
-  setScaleType: (scaleType: ScaleType) => void;
+  scaleType: Exclude<ScaleType, 'gamma'>;
+  setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => void;
 }
 
 function createSurfaceConfigStore() {
@@ -39,7 +39,8 @@ function createSurfaceConfigStore() {
         },
 
         scaleType: ScaleType.Linear,
-        setScaleType: (scaleType: ScaleType) => set({ scaleType }),
+        setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) =>
+          set({ scaleType }),
       }),
       {
         name: 'h5web:surface',
@@ -74,7 +75,7 @@ export function useSurfaceConfig(
   return {
     ...persistedConfig,
     ...Object.fromEntries(suggestedOpts.entries()),
-    setScaleType: (scaleType: ScaleType) => {
+    setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => {
       setPersistedScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },

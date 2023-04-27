@@ -15,8 +15,12 @@ import type { ExportFormat, ExportURL } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import type { LineConfig } from './config';
 
-const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
+const SCALETYPE_OPTIONS = [
+  ScaleType.Linear,
+  ScaleType.Log,
+  ScaleType.SymLog,
+] as const;
 
 interface Props {
   isSlice: boolean;

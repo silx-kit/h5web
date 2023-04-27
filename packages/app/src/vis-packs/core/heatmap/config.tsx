@@ -19,8 +19,8 @@ export interface HeatmapConfig {
   invertColorMap: boolean;
   toggleColorMapInversion: () => void;
 
-  scaleType: ScaleType;
-  setScaleType: (scaleType: ScaleType) => void;
+  scaleType: Exclude<ScaleType, 'gamma'>;
+  setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => void;
 
   showGrid: boolean;
   toggleGrid: () => void;
@@ -48,7 +48,7 @@ function createHeatmapConfigStore() {
         },
 
         scaleType: ScaleType.Linear,
-        setScaleType: (scaleType: ScaleType) => {
+        setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => {
           set(() => ({ scaleType }));
         },
 
@@ -101,7 +101,7 @@ export function useHeatmapConfig(
   return {
     ...persistedConfig,
     ...Object.fromEntries(suggestedOpts.entries()),
-    setScaleType: (scaleType: ScaleType) => {
+    setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => {
       setPersistedScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },

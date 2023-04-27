@@ -16,10 +16,10 @@ export interface LineConfig {
   showGrid: boolean;
   toggleGrid: () => void;
 
-  xScaleType: ScaleType;
-  yScaleType: ScaleType;
-  setXScaleType: (type: ScaleType) => void;
-  setYScaleType: (type: ScaleType) => void;
+  xScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>;
+  yScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>;
+  setXScaleType: (type: Exclude<ScaleType, 'sqrt' | 'gamma'>) => void;
+  setYScaleType: (type: Exclude<ScaleType, 'sqrt' | 'gamma'>) => void;
 
   autoScale: boolean;
   toggleAutoScale: () => void;
@@ -40,8 +40,8 @@ function createLineConfigStore() {
 
         xScaleType: ScaleType.Linear,
         yScaleType: ScaleType.Linear,
-        setXScaleType: (type: ScaleType) => set({ xScaleType: type }),
-        setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
+        setXScaleType: (type) => set({ xScaleType: type }),
+        setYScaleType: (type) => set({ yScaleType: type }),
 
         autoScale: true,
         toggleAutoScale: () => {
@@ -90,11 +90,11 @@ export function useLineConfig(
   return {
     ...persistedConfig,
     ...Object.fromEntries(suggestedOpts.entries()),
-    setXScaleType: (xScaleType: ScaleType) => {
+    setXScaleType: (xScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>) => {
       setPersistedXScaleType(xScaleType);
       suggestedOpts.delete('xScaleType');
     },
-    setYScaleType: (yScaleType: ScaleType) => {
+    setYScaleType: (yScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>) => {
       setPersistedYScaleType(yScaleType);
       suggestedOpts.delete('yScaleType');
     },

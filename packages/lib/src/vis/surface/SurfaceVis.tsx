@@ -12,7 +12,7 @@ import styles from './SurfaceVis.module.css';
 interface Props {
   dataArray: NdArray<NumArray>;
   domain: Domain;
-  scaleType?: ScaleType;
+  scaleType?: Exclude<ScaleType, 'gamma'>;
   colorMap?: ColorMap;
   invertColorMap?: boolean;
   showPoints?: boolean;

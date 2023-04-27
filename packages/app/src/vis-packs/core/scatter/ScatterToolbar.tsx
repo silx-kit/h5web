@@ -12,7 +12,11 @@ import {
 import { BASE_INTERACTIONS } from '../utils';
 import type { ScatterConfig } from './config';
 
-const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
+const SCALETYPE_OPTIONS = [
+  ScaleType.Linear,
+  ScaleType.Log,
+  ScaleType.SymLog,
+] as const;
 
 interface Props {
   dataDomain: Domain;

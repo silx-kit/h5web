@@ -1,6 +1,7 @@
 import {
   CurveType,
   ScaleSelector,
+  ScaleType,
   Selector,
   Separator,
   ToggleBtn,
@@ -43,11 +44,13 @@ function ComplexLineToolbar(props: Props) {
         label="X"
         value={xScaleType}
         onScaleChange={setXScaleType}
+        options={[ScaleType.Linear, ScaleType.Log, ScaleType.SymLog]}
       />
       <ScaleSelector
         label="Y"
         value={yScaleType}
         onScaleChange={setYScaleType}
+        options={[ScaleType.Linear, ScaleType.Log, ScaleType.SymLog]}
       />
 
       <Separator />

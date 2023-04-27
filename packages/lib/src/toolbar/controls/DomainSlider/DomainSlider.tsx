@@ -17,7 +17,7 @@ const TOOLTIP_ID = 'domain-tooltip';
 interface Props {
   dataDomain: Domain;
   customDomain: CustomDomain;
-  scaleType: ScaleType;
+  scaleType: Exclude<ScaleType, 'gamma'>;
   onCustomDomainChange: (domain: CustomDomain) => void;
   histogram?: HistogramParams;
   disabled?: boolean;

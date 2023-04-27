@@ -28,7 +28,7 @@ export function getIndexToPosition(
 }
 
 export function getValueToColor(
-  scaleType: ScaleType,
+  scaleType: Exclude<ScaleType, 'gamma'>,
   domain: Domain,
   colorMap: ColorMap,
   invertColorMap: boolean

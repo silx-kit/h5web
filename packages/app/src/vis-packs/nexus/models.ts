@@ -42,8 +42,8 @@ export type AuxDef = WithError<DatasetDef<NumericType>>;
 export type AxisDef = DatasetDef<NumericType>;
 
 export interface SilxStyle {
-  signalScaleType?: ScaleType;
-  axisScaleTypes?: AxisMapping<ScaleType>;
+  signalScaleType?: Exclude<ScaleType, 'gamma'>;
+  axisScaleTypes?: AxisMapping<Exclude<ScaleType, 'sqrt' | 'gamma'>>;
 }
 
 export interface NxData<

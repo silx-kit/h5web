@@ -21,7 +21,7 @@ import Markers from './Markers';
 const EXTEND_FACTOR = 0.3;
 
 interface Props extends HistogramParams {
-  scaleType: ScaleType;
+  scaleType: Exclude<ScaleType, 'gamma'>;
   dataDomain: Domain;
   value: Domain;
   onChange?: (domain: Domain) => void;
