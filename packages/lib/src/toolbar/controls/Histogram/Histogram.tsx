@@ -10,7 +10,7 @@ import type { HistogramParams } from '../../../vis/models';
 import Tick from '../../../vis/shared/Tick';
 import {
   adaptedNumTicks,
-  createAxisScale,
+  createScale,
   DEFAULT_DOMAIN,
   extendDomain,
 } from '../../../vis/utils';
@@ -55,7 +55,7 @@ function Histogram(props: Props) {
 
   const { width, height } = size;
 
-  const xScale = createAxisScale(scaleType, {
+  const xScale = createScale(scaleType, {
     domain: xDomain && extendDomain(xDomain, EXTEND_FACTOR, scaleType),
     range: [0, width],
   });

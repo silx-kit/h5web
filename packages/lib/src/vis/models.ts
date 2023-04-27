@@ -59,10 +59,9 @@ export interface ScaleGammaConfig {
   clamp?: boolean;
 }
 
-export type AxisScale =
+export type Scale =
   | PickD3Scale<
       ScaleType.Linear | ScaleType.Log | ScaleType.SymLog | ScaleType.Sqrt,
-      number,
       number
     >
   | ScaleGamma;

@@ -6,7 +6,7 @@ import ReactSlider from 'react-slider';
 import { getSafeDomain } from '../../../vis/heatmap/utils';
 import { useCombinedDomain } from '../../../vis/hooks';
 import type { DomainErrors } from '../../../vis/models';
-import { clampBound, createAxisScale, extendDomain } from '../../../vis/utils';
+import { clampBound, createScale, extendDomain } from '../../../vis/utils';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
@@ -43,7 +43,7 @@ function ScaledSlider(props: Props) {
 
   const sliderDomain = useCombinedDomain([safeVisDomain, dataDomain]);
   const sliderExtent = extendDomain(sliderDomain, EXTEND_FACTOR, scaleType);
-  const scale = createAxisScale(scaleType, {
+  const scale = createScale(scaleType, {
     domain: sliderExtent.map((val) => clampBound(val)),
     range: SLIDER_RANGE,
     clamp: true,

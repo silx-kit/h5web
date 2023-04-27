@@ -1,6 +1,6 @@
 import type { NumArray } from '@h5web/shared';
 
-import type { AxisScale } from '../models';
+import type { Scale } from '../models';
 
 const NO_ERROR_POSITIONS = {
   topCap: undefined,
@@ -10,8 +10,8 @@ const NO_ERROR_POSITIONS = {
 
 export function getValueToPosition(
   abscissas: NumArray,
-  abscissaScale: AxisScale,
-  ordinateScale: AxisScale,
+  abscissaScale: Scale,
+  ordinateScale: Scale,
   ignoreValue?: (val: number) => boolean
 ): (value: number, index: number) => [number, number] | undefined {
   return (value: number, index: number) => {
@@ -28,7 +28,7 @@ export function getValueToPosition(
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function getValueToErrorPositions(
   errors: NumArray | undefined,
-  ordinateScale: AxisScale
+  ordinateScale: Scale
 ): (
   value: number,
   index: number,

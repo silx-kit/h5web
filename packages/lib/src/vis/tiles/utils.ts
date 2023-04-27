@@ -5,7 +5,7 @@ import type { Matrix4, Object3D } from 'three';
 import { Box2, Box3, Vector2, Vector3 } from 'three';
 
 import type { Size } from '../models';
-import { createAxisScale } from '../utils';
+import { createScale } from '../utils';
 
 export function getTileOffsets(box: Box2, tileSize: Size): Vector2[] {
   const { width, height } = tileSize;
@@ -89,13 +89,13 @@ export function getObject3DVisibleBox(
 }
 
 function getLayerScales(layerSize: Size, meshSize: Size) {
-  const xScale = createAxisScale(ScaleType.Linear, {
+  const xScale = createScale(ScaleType.Linear, {
     domain: [-meshSize.width / 2, meshSize.width / 2],
     range: [0, layerSize.width],
     clamp: true,
   });
 
-  const yScale = createAxisScale(ScaleType.Linear, {
+  const yScale = createScale(ScaleType.Linear, {
     domain: [-meshSize.height / 2, meshSize.height / 2],
     range: [0, layerSize.height],
     clamp: true,

@@ -5,17 +5,17 @@ import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
 import type { ElementType } from 'react';
 
-import type { AxisConfig, AxisScale, Size } from '../models';
+import type { AxisConfig, Scale, Size } from '../models';
 import {
   adaptedNumTicks,
-  createAxisScale,
+  createScale,
   getIntegerTicks,
   getTickFormatter,
 } from '../utils';
 import styles from './AxisSystem.module.css';
 import Tick from './Tick';
 
-const AXIS_PROPS: Partial<SharedAxisProps<AxisScale>> = {
+const AXIS_PROPS: Partial<SharedAxisProps<Scale>> = {
   labelClassName: styles.label,
   labelProps: {}, // remove any styling props from parent `svg` element
   tickClassName: styles.tick,
@@ -53,7 +53,7 @@ function Axis(props: Props) {
     nice = false,
   } = config;
   // Restrain ticks scales to visible domains
-  const scale = createAxisScale(scaleType, {
+  const scale = createScale(scaleType, {
     domain,
     range: flipAxis ? [axisLength, 0] : [0, axisLength],
     nice,

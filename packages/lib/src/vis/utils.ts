@@ -25,7 +25,7 @@ import type {
   Aspect,
   AxisConfig,
   AxisOffsets,
-  AxisScale,
+  Scale,
   ScaleGammaConfig,
   Size,
   VisScaleType,
@@ -59,10 +59,10 @@ const adaptedLogTicksThreshold = scaleLinear({
   range: [0.8, 1.4],
 });
 
-export function createAxisScale(
+export function createScale(
   scaleType: VisScaleType,
   config: VisxScaleConfig | ScaleGammaConfig
-): AxisScale {
+): Scale {
   if (Array.isArray(scaleType)) {
     const [, exponent] = scaleType;
     return scaleGamma({ ...(config as ScaleGammaConfig), exponent });
@@ -176,7 +176,7 @@ function unsafeExtendDomain(
     return extendEmptyDomain(min, extendFactor, scaleType);
   }
 
-  const scale = createAxisScale(scaleType, { domain, range: [0, 1] });
+  const scale = createScale(scaleType, { domain, range: [0, 1] });
   return [scale.invert(-extendFactor), scale.invert(1 + extendFactor)];
 }
 
@@ -200,13 +200,10 @@ export function getValueToIndexScale(
   return scaleThreshold<number, number>({ domain: thresholds, range: indices });
 }
 
-export function getCanvasScale(
-  config: AxisConfig,
-  canvasSize: number
-): AxisScale {
+export function getCanvasScale(config: AxisConfig, canvasSize: number): Scale {
   const { scaleType, visDomain, flip, nice = false } = config;
 
-  return createAxisScale(scaleType ?? ScaleType.Linear, {
+  return createScale(scaleType ?? ScaleType.Linear, {
     domain: visDomain,
     range: [-canvasSize / 2, canvasSize / 2],
     reverse: flip,

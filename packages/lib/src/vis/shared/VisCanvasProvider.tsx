@@ -6,7 +6,7 @@ import type { Camera } from 'three';
 import { Matrix4, Vector3 } from 'three';
 
 import Box from '../../interactions/box';
-import type { AxisConfig, AxisScale, Size } from '../models';
+import type { AxisConfig, Scale, Size } from '../models';
 import { getCanvasScale, getSizeToFit } from '../utils';
 
 export interface VisCanvasContextValue {
@@ -17,8 +17,8 @@ export interface VisCanvasContextValue {
   visSize: Size;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
-  abscissaScale: AxisScale;
-  ordinateScale: AxisScale;
+  abscissaScale: Scale;
+  ordinateScale: Scale;
   dataToWorld: (dataPt: Vector3) => Vector3;
   dataToHtml: (camera: Camera, dataPt: Vector3) => Vector3;
   worldToHtml: (camera: Camera, worldPt: Vector3) => Vector3;
