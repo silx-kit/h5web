@@ -8,7 +8,7 @@ import {
   mockValues,
   ScaleType,
 } from '@h5web/lib';
-import { toTypedNdArray } from '@h5web/shared';
+import { AXIS_SCALE_TYPES, toTypedNdArray } from '@h5web/shared';
 import type { Meta, StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 
@@ -55,7 +55,7 @@ const meta = {
     },
     scaleType: {
       control: { type: 'inline-radio' },
-      options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
+      options: AXIS_SCALE_TYPES,
     },
   },
 } satisfies Meta<typeof LineVis>;

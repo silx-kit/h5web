@@ -1,4 +1,4 @@
-import type { Domain, NumArray } from '@h5web/shared';
+import type { ColorScaleType, Domain, NumArray } from '@h5web/shared';
 import {
   assertDefined,
   assertLength,
@@ -29,7 +29,7 @@ interface Props {
   domain: Domain;
   colorMap?: ColorMap;
   invertColorMap?: boolean;
-  scaleType?: Exclude<ScaleType, 'gamma'>;
+  scaleType?: ColorScaleType;
   showGrid?: boolean;
   title?: string;
   size?: number;

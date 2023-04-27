@@ -1,4 +1,4 @@
-import type { Domain, NumArray, ScaleType } from '@h5web/shared';
+import type { ColorScaleType, Domain, NumArray } from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useThree } from '@react-three/fiber';
 import { useCallback, useLayoutEffect, useMemo } from 'react';
@@ -16,7 +16,7 @@ interface Props {
   ordinates: NumArray;
   data: NumArray;
   domain: Domain;
-  scaleType: Exclude<ScaleType, 'gamma'>;
+  scaleType: ColorScaleType;
   colorMap: ColorMap;
   invertColorMap: boolean;
   size: number;

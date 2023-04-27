@@ -8,6 +8,7 @@ import {
 } from '@h5web/lib';
 import {
   assertDefined,
+  COLOR_SCALE_TYPES,
   getDims,
   ScaleType,
   toTypedNdArray,
@@ -47,12 +48,7 @@ const meta = {
   argTypes: {
     scaleType: {
       control: { type: 'inline-radio' },
-      options: [
-        ScaleType.Linear,
-        ScaleType.Log,
-        ScaleType.SymLog,
-        ScaleType.Sqrt,
-      ],
+      options: COLOR_SCALE_TYPES,
     },
     magFilter: {
       control: {

@@ -3,11 +3,11 @@ import {
   ColorMapSelector,
   DomainSlider,
   ScaleSelector,
-  ScaleType,
   Separator,
   SnapshotBtn,
   Toolbar,
 } from '@h5web/lib';
+import { COLOR_SCALE_TYPES } from '@h5web/shared';
 
 import type { SurfaceConfig } from './config';
 
@@ -51,12 +51,7 @@ function SurfaceToolbar(props: Props) {
       <ScaleSelector
         value={scaleType}
         onScaleChange={setScaleType}
-        options={[
-          ScaleType.Linear,
-          ScaleType.Log,
-          ScaleType.SymLog,
-          ScaleType.Sqrt,
-        ]}
+        options={COLOR_SCALE_TYPES}
       />
 
       <Separator />

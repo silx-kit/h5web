@@ -1,4 +1,5 @@
 import type { CustomDomain } from '@h5web/lib';
+import type { AxisScaleType, ColorScaleType } from '@h5web/shared';
 import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
 import { createContext, useContext, useState } from 'react';
@@ -19,16 +20,16 @@ export interface ScatterConfig {
   invertColorMap: boolean;
   toggleColorMapInversion: () => void;
 
-  scaleType: Exclude<ScaleType, 'gamma'>;
-  setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => void;
+  scaleType: ColorScaleType;
+  setScaleType: (scaleType: ColorScaleType) => void;
 
   showGrid: boolean;
   toggleGrid: () => void;
 
-  xScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>;
-  yScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>;
-  setXScaleType: (type: Exclude<ScaleType, 'sqrt' | 'gamma'>) => void;
-  setYScaleType: (type: Exclude<ScaleType, 'sqrt' | 'gamma'>) => void;
+  xScaleType: AxisScaleType;
+  yScaleType: AxisScaleType;
+  setXScaleType: (type: AxisScaleType) => void;
+  setYScaleType: (type: AxisScaleType) => void;
 }
 
 function createScatterConfigStore() {
@@ -98,15 +99,15 @@ export function useScatterConfig(
   return {
     ...persistedConfig,
     ...Object.fromEntries(suggestedOpts.entries()),
-    setScaleType: (scaleType: Exclude<ScaleType, 'gamma'>) => {
+    setScaleType: (scaleType: ColorScaleType) => {
       setPersistedScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },
-    setXScaleType: (xScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>) => {
+    setXScaleType: (xScaleType: AxisScaleType) => {
       setPersistedXScaleType(xScaleType);
       suggestedOpts.delete('xScaleType');
     },
-    setYScaleType: (yScaleType: Exclude<ScaleType, 'sqrt' | 'gamma'>) => {
+    setYScaleType: (yScaleType: AxisScaleType) => {
       setPersistedYScaleType(yScaleType);
       suggestedOpts.delete('yScaleType');
     },

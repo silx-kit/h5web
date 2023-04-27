@@ -9,7 +9,7 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
+import { COLOR_SCALE_TYPES } from '@h5web/shared';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 
 import type { HeatmapConfig } from '../heatmap/config';
@@ -64,12 +64,7 @@ function ComplexToolbar(props: Props) {
       <ScaleSelector
         value={scaleType}
         onScaleChange={setScaleType}
-        options={[
-          ScaleType.Linear,
-          ScaleType.Log,
-          ScaleType.SymLog,
-          ScaleType.Sqrt,
-        ]}
+        options={COLOR_SCALE_TYPES}
       />
 
       <Separator />

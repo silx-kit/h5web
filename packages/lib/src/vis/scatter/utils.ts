@@ -1,4 +1,4 @@
-import type { Domain, NumArray, ScaleType } from '@h5web/shared';
+import type { ColorScaleType, Domain, NumArray } from '@h5web/shared';
 import type { RGBColor } from 'd3-color';
 import { rgb } from 'd3-color';
 
@@ -28,7 +28,7 @@ export function getIndexToPosition(
 }
 
 export function getValueToColor(
-  scaleType: Exclude<ScaleType, 'gamma'>,
+  scaleType: ColorScaleType,
   domain: Domain,
   colorMap: ColorMap,
   invertColorMap: boolean

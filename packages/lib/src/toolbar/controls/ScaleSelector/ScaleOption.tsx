@@ -12,7 +12,7 @@ export const SCALE_OPTIONS = {
   [ScaleType.SymLog]: { Icon: MdGraphicEqRotated, label: 'SymLog' },
   [ScaleType.Sqrt]: { Icon: SqrtIcon, label: 'Square root' },
   [ScaleType.Gamma]: { Icon: MdFlare, label: 'Gamma' },
-} satisfies Record<ScaleType | 'gamma', { Icon: IconType; label: string }>;
+} satisfies Record<ScaleType, { Icon: IconType; label: string }>;
 
 function ScaleOption(props: { option: ScaleType }) {
   const { option } = props;

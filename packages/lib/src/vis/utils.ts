@@ -1,4 +1,11 @@
-import type { AnyNumArray, Domain, NumArray, NumericType } from '@h5web/shared';
+import type {
+  AnyNumArray,
+  AxisScaleType,
+  ColorScaleType,
+  Domain,
+  NumArray,
+  NumericType,
+} from '@h5web/shared';
 import {
   DTypeClass,
   formatTick,
@@ -148,7 +155,7 @@ export function clampBound(
 export function extendDomain(
   domain: Domain,
   extendFactor: number,
-  scaleType: Exclude<ScaleType, 'gamma'> = ScaleType.Linear
+  scaleType: ColorScaleType = ScaleType.Linear
 ): Domain {
   if (extendFactor <= 0) {
     return domain;
@@ -169,7 +176,7 @@ export function extendDomain(
 function unsafeExtendDomain(
   domain: Domain,
   extendFactor: number,
-  scaleType: Exclude<ScaleType, 'gamma'>
+  scaleType: ColorScaleType
 ): Domain {
   const [min, max] = domain;
   if (min === max) {
@@ -319,7 +326,7 @@ function isDescending(array: NumArray): boolean {
 
 export function getAxisDomain(
   axisValues: NumArray,
-  scaleType: Exclude<ScaleType, 'sqrt' | 'gamma'> = ScaleType.Linear,
+  scaleType: AxisScaleType = ScaleType.Linear,
   extensionFactor = 0
 ): Domain | undefined {
   const rawDomain = getDomain(axisValues, scaleType);

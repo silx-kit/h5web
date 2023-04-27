@@ -1,13 +1,13 @@
 import {
   CurveType,
   ScaleSelector,
-  ScaleType,
   Selector,
   Separator,
   ToggleBtn,
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
+import { AXIS_SCALE_TYPES } from '@h5web/shared';
 import { MdDomain, MdGridOn } from 'react-icons/md';
 
 import type { LineConfig } from '../line/config';
@@ -44,13 +44,13 @@ function ComplexLineToolbar(props: Props) {
         label="X"
         value={xScaleType}
         onScaleChange={setXScaleType}
-        options={[ScaleType.Linear, ScaleType.Log, ScaleType.SymLog]}
+        options={AXIS_SCALE_TYPES}
       />
       <ScaleSelector
         label="Y"
         value={yScaleType}
         onScaleChange={setYScaleType}
-        options={[ScaleType.Linear, ScaleType.Log, ScaleType.SymLog]}
+        options={AXIS_SCALE_TYPES}
       />
 
       <Separator />

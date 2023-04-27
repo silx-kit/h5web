@@ -1,4 +1,4 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { ColorScaleType, Domain } from '@h5web/shared';
 import { useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
@@ -18,7 +18,7 @@ interface Props {
   value: Domain;
   dataDomain: Domain;
   safeVisDomain: Domain;
-  scaleType: Exclude<ScaleType, 'gamma'>;
+  scaleType: ColorScaleType;
   errors: DomainErrors;
   isAutoMin: boolean;
   isAutoMax: boolean;

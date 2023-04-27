@@ -30,6 +30,9 @@ export enum ScaleType {
   Gamma = 'gamma',
 }
 
+export type ColorScaleType = Exclude<ScaleType, 'gamma'>;
+export type AxisScaleType = Exclude<ScaleType, 'sqrt' | 'gamma'>;
+
 export interface Bounds {
   min: number;
   max: number;

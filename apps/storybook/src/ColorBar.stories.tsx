@@ -1,5 +1,6 @@
 import type { ColorBarProps } from '@h5web/lib';
 import { ColorBar, ScaleType } from '@h5web/lib';
+import { COLOR_SCALE_TYPES } from '@h5web/shared';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
@@ -33,7 +34,7 @@ const meta = {
     },
     scaleType: {
       control: { type: 'inline-radio' },
-      options: [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog],
+      options: COLOR_SCALE_TYPES,
     },
   },
 } satisfies Meta<StoryProps>;

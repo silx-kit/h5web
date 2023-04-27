@@ -7,7 +7,7 @@ interface Props<T extends ScaleType> {
   label?: string;
   value: T;
   onScaleChange: (scale: T) => void;
-  options: readonly T[];
+  options: T[];
 }
 
 function ScaleSelector<T extends ScaleType>(props: Props<T>) {
@@ -18,7 +18,7 @@ function ScaleSelector<T extends ScaleType>(props: Props<T>) {
       label={label}
       value={value}
       onChange={onScaleChange}
-      options={options as T[]} // remove `readonly`
+      options={options}
       optionComponent={ScaleOption}
     />
   );

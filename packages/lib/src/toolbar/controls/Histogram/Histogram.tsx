@@ -1,4 +1,4 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { ColorScaleType, Domain } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
@@ -21,7 +21,7 @@ import Markers from './Markers';
 const EXTEND_FACTOR = 0.3;
 
 interface Props extends HistogramParams {
-  scaleType: Exclude<ScaleType, 'gamma'>;
+  scaleType: ColorScaleType;
   dataDomain: Domain;
   value: Domain;
   onChange?: (domain: Domain) => void;

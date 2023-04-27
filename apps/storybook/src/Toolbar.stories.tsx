@@ -11,13 +11,12 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
+import type { AxisScaleType } from '@h5web/shared';
+import { AXIS_SCALE_TYPES } from '@h5web/shared';
 import { useToggle } from '@react-hookz/web';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';
-
-const SCALE_TYPES = [ScaleType.Linear, ScaleType.SymLog] as const;
-type SupportedScaleTypes = (typeof SCALE_TYPES)[number];
 
 const meta = {
   title: 'Toolbar/Toolbar',
@@ -36,9 +35,7 @@ export const Default = {
     ]);
     const [colorMap, setColorMap] = useState<ColorMap>('Viridis');
     const [invertColorMap, toggleColorMapInversion] = useToggle();
-    const [scaleType, setScaleType] = useState<SupportedScaleTypes>(
-      ScaleType.Linear
-    );
+    const [scaleType, setScaleType] = useState<AxisScaleType>(ScaleType.Linear);
     const [showGrid, toggleGrid] = useToggle();
     const [withTest, toggleTest] = useToggle(true);
     const [foo, setFoo] = useState('bar');
@@ -75,7 +72,7 @@ export const Default = {
           <ScaleSelector
             value={scaleType}
             onScaleChange={setScaleType}
-            options={SCALE_TYPES}
+            options={AXIS_SCALE_TYPES}
           />
 
           <Separator />
