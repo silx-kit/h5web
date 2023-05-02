@@ -21,7 +21,8 @@ import {
   assertStr,
   assertStringType,
   getChildEntity,
-  isScaleType,
+  isAxisScaleType,
+  isColorScaleType,
 } from '@h5web/shared';
 
 import type { AttrValuesStore } from '../../providers/models';
@@ -218,11 +219,13 @@ export function getSilxStyle(
       typeof axes_scale_type === 'string' ? [axes_scale_type] : axes_scale_type;
 
     return {
-      signalScaleType: isScaleType(signal_scale_type)
+      signalScaleType: isColorScaleType(signal_scale_type)
         ? signal_scale_type
         : undefined,
       axisScaleTypes: Array.isArray(axisScaleTypes)
-        ? axisScaleTypes.map((type) => (isScaleType(type) ? type : undefined))
+        ? axisScaleTypes.map((type) =>
+            isAxisScaleType(type) ? type : undefined
+          )
         : undefined,
     };
   } catch {

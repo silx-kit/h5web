@@ -1,4 +1,5 @@
 import type { CustomDomain } from '@h5web/lib';
+import type { ColorScaleType } from '@h5web/shared';
 import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
 import { createContext, useContext, useState } from 'react';
@@ -19,8 +20,8 @@ export interface SurfaceConfig {
   invertColorMap: boolean;
   toggleColorMapInversion: () => void;
 
-  scaleType: ScaleType;
-  setScaleType: (scaleType: ScaleType) => void;
+  scaleType: ColorScaleType;
+  setScaleType: (scaleType: ColorScaleType) => void;
 }
 
 function createSurfaceConfigStore() {
@@ -39,7 +40,7 @@ function createSurfaceConfigStore() {
         },
 
         scaleType: ScaleType.Linear,
-        setScaleType: (scaleType: ScaleType) => set({ scaleType }),
+        setScaleType: (scaleType: ColorScaleType) => set({ scaleType }),
       }),
       {
         name: 'h5web:surface',
@@ -74,7 +75,7 @@ export function useSurfaceConfig(
   return {
     ...persistedConfig,
     ...Object.fromEntries(suggestedOpts.entries()),
-    setScaleType: (scaleType: ScaleType) => {
+    setScaleType: (scaleType: ColorScaleType) => {
       setPersistedScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },

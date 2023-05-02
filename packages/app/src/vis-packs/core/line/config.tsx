@@ -1,4 +1,5 @@
 import { CurveType } from '@h5web/lib';
+import type { AxisScaleType } from '@h5web/shared';
 import { isDefined, ScaleType } from '@h5web/shared';
 import { useMap } from '@react-hookz/web';
 import { omit } from 'lodash';
@@ -16,10 +17,10 @@ export interface LineConfig {
   showGrid: boolean;
   toggleGrid: () => void;
 
-  xScaleType: ScaleType;
-  yScaleType: ScaleType;
-  setXScaleType: (type: ScaleType) => void;
-  setYScaleType: (type: ScaleType) => void;
+  xScaleType: AxisScaleType;
+  yScaleType: AxisScaleType;
+  setXScaleType: (type: AxisScaleType) => void;
+  setYScaleType: (type: AxisScaleType) => void;
 
   autoScale: boolean;
   toggleAutoScale: () => void;
@@ -40,8 +41,8 @@ function createLineConfigStore() {
 
         xScaleType: ScaleType.Linear,
         yScaleType: ScaleType.Linear,
-        setXScaleType: (type: ScaleType) => set({ xScaleType: type }),
-        setYScaleType: (type: ScaleType) => set({ yScaleType: type }),
+        setXScaleType: (type) => set({ xScaleType: type }),
+        setYScaleType: (type) => set({ yScaleType: type }),
 
         autoScale: true,
         toggleAutoScale: () => {
@@ -90,11 +91,11 @@ export function useLineConfig(
   return {
     ...persistedConfig,
     ...Object.fromEntries(suggestedOpts.entries()),
-    setXScaleType: (xScaleType: ScaleType) => {
+    setXScaleType: (xScaleType: AxisScaleType) => {
       setPersistedXScaleType(xScaleType);
       suggestedOpts.delete('xScaleType');
     },
-    setYScaleType: (yScaleType: ScaleType) => {
+    setYScaleType: (yScaleType: AxisScaleType) => {
       setPersistedYScaleType(yScaleType);
       suggestedOpts.delete('yScaleType');
     },

@@ -1,4 +1,4 @@
-import type { Domain, NumArray } from '@h5web/shared';
+import type { ColorScaleType, Domain, NumArray } from '@h5web/shared';
 import { ScaleType } from '@h5web/shared';
 import type { NdArray } from 'ndarray';
 import type { PropsWithChildren } from 'react';
@@ -12,7 +12,7 @@ import styles from './SurfaceVis.module.css';
 interface Props {
   dataArray: NdArray<NumArray>;
   domain: Domain;
-  scaleType?: ScaleType;
+  scaleType?: ColorScaleType;
   colorMap?: ColorMap;
   invertColorMap?: boolean;
   showPoints?: boolean;

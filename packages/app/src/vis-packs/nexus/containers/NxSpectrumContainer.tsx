@@ -1,4 +1,4 @@
-import { assertGroup } from '@h5web/shared';
+import { assertGroup, isAxisScaleType, ScaleType } from '@h5web/shared';
 import { isEqual } from 'lodash';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -33,7 +33,9 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const config = useLineConfig({
     xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
-    yScaleType: silxStyle.signalScaleType,
+    yScaleType: isAxisScaleType(silxStyle.signalScaleType)
+      ? silxStyle.signalScaleType
+      : ScaleType.Linear,
   });
 
   const { autoScale } = config;

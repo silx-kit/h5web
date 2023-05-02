@@ -1,4 +1,4 @@
-import { assertGroup } from '@h5web/shared';
+import { assertGroup, isAxisScaleType, ScaleType } from '@h5web/shared';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
@@ -27,7 +27,9 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
   const config = useComplexLineConfig();
   const lineConfig = useLineConfig({
     xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
-    yScaleType: silxStyle.signalScaleType,
+    yScaleType: isAxisScaleType(silxStyle.signalScaleType)
+      ? silxStyle.signalScaleType
+      : ScaleType.Linear,
   });
 
   const { autoScale } = lineConfig;

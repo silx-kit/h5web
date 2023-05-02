@@ -2,13 +2,14 @@ import type {
   ArrayShape,
   ArrayValue,
   AxisMapping,
+  AxisScaleType,
+  ColorScaleType,
   ComplexType,
   Dataset,
   NumArray,
   NumArrayDataset,
   NumericType,
   ScalarShape,
-  ScaleType,
   StringType,
 } from '@h5web/shared';
 
@@ -42,8 +43,8 @@ export type AuxDef = WithError<DatasetDef<NumericType>>;
 export type AxisDef = DatasetDef<NumericType>;
 
 export interface SilxStyle {
-  signalScaleType?: ScaleType;
-  axisScaleTypes?: AxisMapping<ScaleType>;
+  signalScaleType?: ColorScaleType;
+  axisScaleTypes?: AxisMapping<AxisScaleType>;
 }
 
 export interface NxData<

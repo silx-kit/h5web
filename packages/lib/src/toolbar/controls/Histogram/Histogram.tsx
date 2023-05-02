@@ -1,4 +1,4 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { ColorScaleType, Domain } from '@h5web/shared';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
@@ -7,10 +7,10 @@ import type { ReactNode } from 'react';
 import { useSafeDomain } from '../../../vis/heatmap/hooks';
 import { useCombinedDomain, useDomain } from '../../../vis/hooks';
 import type { HistogramParams } from '../../../vis/models';
-import { H5WEB_SCALES } from '../../../vis/scales';
 import Tick from '../../../vis/shared/Tick';
 import {
   adaptedNumTicks,
+  createScale,
   DEFAULT_DOMAIN,
   extendDomain,
 } from '../../../vis/utils';
@@ -21,7 +21,7 @@ import Markers from './Markers';
 const EXTEND_FACTOR = 0.3;
 
 interface Props extends HistogramParams {
-  scaleType: ScaleType;
+  scaleType: ColorScaleType;
   dataDomain: Domain;
   value: Domain;
   onChange?: (domain: Domain) => void;
@@ -55,7 +55,7 @@ function Histogram(props: Props) {
 
   const { width, height } = size;
 
-  const xScale = H5WEB_SCALES[scaleType].createScale({
+  const xScale = createScale(scaleType, {
     domain: xDomain && extendDomain(xDomain, EXTEND_FACTOR, scaleType),
     range: [0, width],
   });

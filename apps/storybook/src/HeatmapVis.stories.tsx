@@ -5,7 +5,11 @@ import {
   INTERPOLATORS,
   ScaleType,
 } from '@h5web/lib';
-import { assertDefined, toTypedNdArray } from '@h5web/shared';
+import {
+  assertDefined,
+  COLOR_SCALE_TYPES,
+  toTypedNdArray,
+} from '@h5web/shared';
 import type { Meta, StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 
@@ -45,12 +49,7 @@ const meta = {
     },
     scaleType: {
       control: { type: 'inline-radio' },
-      options: [
-        ScaleType.Linear,
-        ScaleType.Log,
-        ScaleType.SymLog,
-        ScaleType.Sqrt,
-      ],
+      options: COLOR_SCALE_TYPES,
     },
     aspect: {
       control: { type: 'inline-radio' },

@@ -5,7 +5,7 @@ import {
   TiledTooltipMesh,
   VisCanvas,
 } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
+import { COLOR_SCALE_TYPES, ScaleType } from '@h5web/shared';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from '../decorators/FillHeight';
@@ -55,12 +55,7 @@ const meta = {
   argTypes: {
     scaleType: {
       control: { type: 'inline-radio' },
-      options: [
-        ScaleType.Linear,
-        ScaleType.Log,
-        ScaleType.SymLog,
-        ScaleType.Sqrt,
-      ],
+      options: COLOR_SCALE_TYPES,
     },
     qualityFactor: {
       control: { type: 'range', min: 0, max: 1, step: 0.1 },

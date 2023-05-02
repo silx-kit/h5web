@@ -17,8 +17,7 @@ import {
 
 import type { CustomDomain, DomainErrors } from '../models';
 import { DomainError } from '../models';
-import { H5WEB_SCALES } from '../scales';
-import { getAxisValues } from '../utils';
+import { getAxisValues, SCALES_VALID_MINS } from '../utils';
 import { INTERPOLATORS } from './interpolators';
 import type { ColorMap, D3Interpolator, TextureSafeTypedArray } from './models';
 
@@ -61,7 +60,7 @@ export function getSafeDomain(
   }
 
   const [min, max] = domain;
-  const { validMin } = H5WEB_SCALES[scaleType];
+  const validMin = SCALES_VALID_MINS[scaleType];
 
   const isMinSupported = min >= validMin;
   const isMaxSupported = max >= validMin;

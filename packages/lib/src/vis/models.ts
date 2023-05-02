@@ -1,5 +1,7 @@
 import type {
+  AxisScaleType,
   BooleanType,
+  ColorScaleType,
   ComplexType,
   Domain,
   NumArray,
@@ -39,18 +41,13 @@ export interface AxisConfig {
   isIndexAxis?: boolean;
   visDomain: Domain;
   showGrid?: boolean;
-  scaleType?: ScaleType;
+  scaleType?: AxisScaleType;
   label?: string;
   flip?: boolean;
   nice?: boolean;
 }
 
-export type VisxScaleConfig = PickScaleConfigWithoutType<
-  ScaleType.Linear | ScaleType.Log | ScaleType.SymLog | ScaleType.Sqrt,
-  number
->;
-
-export type VisScaleType = Omit<ScaleType, 'gamma'> | [ScaleType.Gamma, number];
+export type VisScaleType = ColorScaleType | [ScaleType.Gamma, number];
 
 export interface ScaleGammaConfig {
   domain?: Domain;
@@ -59,13 +56,11 @@ export interface ScaleGammaConfig {
   clamp?: boolean;
 }
 
-export type AxisScale =
-  | PickD3Scale<
-      ScaleType.Linear | ScaleType.Log | ScaleType.SymLog | ScaleType.Sqrt,
-      number,
-      number
-    >
-  | ScaleGamma;
+export type ScaleConfig =
+  | PickScaleConfigWithoutType<ColorScaleType, number>
+  | ScaleGammaConfig;
+
+export type Scale = PickD3Scale<ColorScaleType, number> | ScaleGamma;
 
 export interface AxisOffsets {
   left: number;
@@ -77,7 +72,7 @@ export interface AxisOffsets {
 export interface AxisParams {
   label?: string;
   value?: NumArray;
-  scaleType?: ScaleType;
+  scaleType?: AxisScaleType;
 }
 
 export type Coords = [number, number];

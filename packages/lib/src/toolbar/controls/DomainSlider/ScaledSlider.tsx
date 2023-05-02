@@ -1,4 +1,4 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { ColorScaleType, Domain } from '@h5web/shared';
 import { useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';
@@ -6,7 +6,7 @@ import ReactSlider from 'react-slider';
 import { getSafeDomain } from '../../../vis/heatmap/utils';
 import { useCombinedDomain } from '../../../vis/hooks';
 import type { DomainErrors } from '../../../vis/models';
-import { clampBound, createAxisScale, extendDomain } from '../../../vis/utils';
+import { clampBound, createScale, extendDomain } from '../../../vis/utils';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
@@ -18,7 +18,7 @@ interface Props {
   value: Domain;
   dataDomain: Domain;
   safeVisDomain: Domain;
-  scaleType: ScaleType;
+  scaleType: ColorScaleType;
   errors: DomainErrors;
   isAutoMin: boolean;
   isAutoMax: boolean;
@@ -43,7 +43,7 @@ function ScaledSlider(props: Props) {
 
   const sliderDomain = useCombinedDomain([safeVisDomain, dataDomain]);
   const sliderExtent = extendDomain(sliderDomain, EXTEND_FACTOR, scaleType);
-  const scale = createAxisScale(scaleType, {
+  const scale = createScale(scaleType, {
     domain: sliderExtent.map((val) => clampBound(val)),
     range: SLIDER_RANGE,
     clamp: true,

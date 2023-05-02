@@ -5,7 +5,7 @@ import { AxisBottom, AxisRight } from '@visx/axis';
 
 import type { VisScaleType } from '../models';
 import Tick from '../shared/Tick';
-import { adaptedNumTicks, createAxisScale } from '../utils';
+import { adaptedNumTicks, createScale } from '../utils';
 import styles from './ColorBar.module.css';
 import type { ColorMap } from './models';
 import { getInterpolator, getLinearGradient } from './utils';
@@ -39,7 +39,7 @@ function ColorBar(props: Props) {
   const Axis = horizontal ? AxisBottom : AxisRight;
   const isEmptyDomain = domain[0] === domain[1];
 
-  const axisScale = createAxisScale(scaleType, {
+  const axisScale = createScale(scaleType, {
     domain,
     range: horizontal
       ? [0, Math.round(gradientLength + 0.5)] // fix sub-pixel misalignment

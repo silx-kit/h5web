@@ -4,15 +4,13 @@ import {
   DomainSlider,
   GridToggler,
   ScaleSelector,
-  ScaleType,
   Separator,
   Toolbar,
 } from '@h5web/lib';
+import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES } from '@h5web/shared';
 
 import { BASE_INTERACTIONS } from '../utils';
 import type { ScatterConfig } from './config';
-
-const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 
 interface Props {
   dataDomain: Domain;
@@ -44,13 +42,13 @@ function ScatterToolbar(props: Props) {
         label="X"
         value={xScaleType}
         onScaleChange={setXScaleType}
-        options={SCALETYPE_OPTIONS}
+        options={AXIS_SCALE_TYPES}
       />
       <ScaleSelector
         label="Y"
         value={yScaleType}
         onScaleChange={setYScaleType}
-        options={SCALETYPE_OPTIONS}
+        options={AXIS_SCALE_TYPES}
       />
 
       <Separator />
@@ -75,12 +73,7 @@ function ScatterToolbar(props: Props) {
       <ScaleSelector
         value={scaleType}
         onScaleChange={setScaleType}
-        options={[
-          ScaleType.Linear,
-          ScaleType.Log,
-          ScaleType.SymLog,
-          ScaleType.Sqrt,
-        ]}
+        options={COLOR_SCALE_TYPES}
       />
 
       <Separator />

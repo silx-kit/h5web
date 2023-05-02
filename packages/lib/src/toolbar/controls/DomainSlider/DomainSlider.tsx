@@ -1,4 +1,4 @@
-import type { Domain, ScaleType } from '@h5web/shared';
+import type { ColorScaleType, Domain } from '@h5web/shared';
 import { useClickOutside, useKeyboardEvent, useToggle } from '@react-hookz/web';
 import { useEffect, useRef, useState } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
@@ -17,7 +17,7 @@ const TOOLTIP_ID = 'domain-tooltip';
 interface Props {
   dataDomain: Domain;
   customDomain: CustomDomain;
-  scaleType: ScaleType;
+  scaleType: ColorScaleType;
   onCustomDomainChange: (domain: CustomDomain) => void;
   histogram?: HistogramParams;
   disabled?: boolean;

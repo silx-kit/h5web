@@ -25,9 +25,13 @@ import type {
   Value,
 } from './models-hdf5';
 import { DTypeClass, EntityKind } from './models-hdf5';
-import type { AnyNumArray, NumArray } from './models-vis';
-import { ScaleType } from './models-vis';
-import { getValues } from './utils';
+import type {
+  AnyNumArray,
+  AxisScaleType,
+  ColorScaleType,
+  NumArray,
+} from './models-vis';
+import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES, getValues } from './utils';
 
 const PRINTABLE_DTYPES = new Set([
   DTypeClass.Unsigned,
@@ -420,9 +424,15 @@ export function assertLength(
   }
 }
 
-export function isScaleType(val: unknown): val is ScaleType {
+export function isAxisScaleType(val: unknown): val is AxisScaleType {
   return (
-    typeof val === 'string' && Object.values<string>(ScaleType).includes(val)
+    typeof val === 'string' && (AXIS_SCALE_TYPES as string[]).includes(val)
+  );
+}
+
+export function isColorScaleType(val: unknown): val is ColorScaleType {
+  return (
+    typeof val === 'string' && (COLOR_SCALE_TYPES as string[]).includes(val)
   );
 }
 

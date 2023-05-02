@@ -11,13 +11,27 @@ import type {
 } from './models-hdf5';
 import type {
   AnyNumArray,
+  AxisScaleType,
   Bounds,
+  ColorScaleType,
   Dims,
   Domain,
   NumArray,
   TypedArrayConstructor,
 } from './models-vis';
 import { ScaleType } from './models-vis';
+
+export const AXIS_SCALE_TYPES: AxisScaleType[] = [
+  ScaleType.Linear,
+  ScaleType.Log,
+  ScaleType.SymLog,
+];
+export const COLOR_SCALE_TYPES: ColorScaleType[] = [
+  ScaleType.Linear,
+  ScaleType.Log,
+  ScaleType.SymLog,
+  ScaleType.Sqrt,
+];
 
 export const formatBound = format('.3~e');
 export const formatBoundInput = format('.5~e');

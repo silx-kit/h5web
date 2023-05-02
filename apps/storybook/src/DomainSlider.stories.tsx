@@ -1,5 +1,6 @@
 import type { CustomDomain } from '@h5web/lib';
 import { DomainSlider, ScaleType } from '@h5web/lib';
+import { COLOR_SCALE_TYPES } from '@h5web/shared';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
@@ -16,12 +17,7 @@ const meta = {
     customDomain: { control: false },
     scaleType: {
       control: { type: 'inline-radio' },
-      options: [
-        ScaleType.Linear,
-        ScaleType.SymLog,
-        ScaleType.Log,
-        ScaleType.Sqrt,
-      ],
+      options: COLOR_SCALE_TYPES,
     },
   },
 } satisfies Meta<typeof DomainSlider>;

@@ -1,10 +1,10 @@
 import type { Domain } from '@h5web/shared';
 
-import type { AxisScale } from '../../../vis/models';
+import type { Scale } from '../../../vis/models';
 import styles from './Track.module.css';
 
 interface Props {
-  scale: AxisScale;
+  scale: Scale;
   dataDomain: Domain;
 }
 
@@ -12,7 +12,7 @@ function Track(props: Props) {
   const { scale, dataDomain } = props;
 
   const [min, max] = dataDomain;
-  const cssScale = scale.copy().range([0, 100]) as AxisScale;
+  const cssScale = scale.copy().range([0, 100]) as Scale;
 
   return (
     <div className={styles.track}>

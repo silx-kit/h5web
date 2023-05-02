@@ -1,22 +1,17 @@
-import { ScaleType } from '@h5web/shared';
+import type { ScaleType } from '@h5web/shared';
 
 import Selector from '../Selector/Selector';
 import ScaleOption from './ScaleOption';
 
-interface Props {
+interface Props<T extends ScaleType> {
   label?: string;
-  value: ScaleType;
-  onScaleChange: (scale: ScaleType) => void;
-  options?: ScaleType[];
+  value: T;
+  onScaleChange: (scale: T) => void;
+  options: T[];
 }
 
-function ScaleSelector(props: Props) {
-  const {
-    label,
-    value,
-    onScaleChange,
-    options = Object.values(ScaleType),
-  } = props;
+function ScaleSelector<T extends ScaleType>(props: Props<T>) {
+  const { label, value, onScaleChange, options } = props;
 
   return (
     <Selector

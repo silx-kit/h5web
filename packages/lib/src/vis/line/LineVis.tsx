@@ -1,4 +1,9 @@
-import type { Domain, NumArray, NumericType } from '@h5web/shared';
+import type {
+  AxisScaleType,
+  Domain,
+  NumArray,
+  NumericType,
+} from '@h5web/shared';
 import {
   assertDefined,
   assertLength,
@@ -31,7 +36,7 @@ import { CurveType } from './models';
 interface Props {
   dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
-  scaleType?: ScaleType;
+  scaleType?: AxisScaleType;
   curveType?: CurveType;
   showGrid?: boolean;
   abscissaParams?: AxisParams;

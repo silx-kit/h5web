@@ -7,7 +7,7 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared';
+import { AXIS_SCALE_TYPES } from '@h5web/shared';
 import { FiItalic } from 'react-icons/fi';
 import { MdDomain, MdGridOn } from 'react-icons/md';
 
@@ -15,7 +15,6 @@ import type { ExportFormat, ExportURL } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import type { LineConfig } from './config';
 
-const SCALETYPE_OPTIONS = [ScaleType.Linear, ScaleType.Log, ScaleType.SymLog];
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
@@ -51,13 +50,13 @@ function LineToolbar(props: Props) {
         label="X"
         value={xScaleType}
         onScaleChange={setXScaleType}
-        options={SCALETYPE_OPTIONS}
+        options={AXIS_SCALE_TYPES}
       />
       <ScaleSelector
         label="Y"
         value={yScaleType}
         onScaleChange={setYScaleType}
-        options={SCALETYPE_OPTIONS}
+        options={AXIS_SCALE_TYPES}
       />
 
       <Separator />
