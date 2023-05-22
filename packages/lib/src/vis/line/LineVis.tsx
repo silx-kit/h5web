@@ -149,6 +149,7 @@ function LineVis(props: Props) {
                   {auxiliaries.length > 0 && (
                     <span
                       className={styles.mark}
+                      data-keep-colors
                       style={{ color: curveColor }}
                     />
                   )}
@@ -163,6 +164,7 @@ function LineVis(props: Props) {
                   <div className={styles.tooltipAux} key={label || index}>
                     <span
                       className={styles.mark}
+                      data-keep-colors
                       style={{ color: auxColors[index % auxColors.length] }}
                     />
                     {label ? `${label} = ` : ''}
