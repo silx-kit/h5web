@@ -201,6 +201,7 @@ export class H5WasmApi extends ProviderApi {
       const { shape, metadata, dtype, filters } = h5wEntity;
       return {
         ...baseEntity,
+        chunks: metadata.chunks ?? undefined,
         kind: EntityKind.Dataset,
         attributes: this.processH5WasmAttrs(h5wEntity.attrs),
         shape,
