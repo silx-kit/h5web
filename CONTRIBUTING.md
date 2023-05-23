@@ -19,6 +19,7 @@
   - [Visual regression](#visual-regression)
 - [Deployment](#deployment)
 - [Release process](#release-process)
+  - [Beta testing](#beta-testing)
 
 ## Quick start
 
