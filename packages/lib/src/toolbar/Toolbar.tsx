@@ -1,6 +1,6 @@
-import { isReactElement } from '@h5web/shared';
 import { useMap, useMeasure } from '@react-hookz/web';
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
+import { isValidElement } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 
 import type { InteractionInfo } from '../interactions/models';
@@ -20,7 +20,7 @@ function Toolbar(props: PropsWithChildren<Props>) {
 
   /* Convert `children` to flat array by traversing nested arrays and fragments.
    * (Note that `flattenChildren` guarantees stable string keys regardless of JSX logic.) */
-  const allChildren = flattenChildren(children).filter(isReactElement);
+  const allChildren = flattenChildren(children).filter(isValidElement);
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
   const availableWidth = containerSize ? containerSize.width : 0;
@@ -45,8 +45,6 @@ function Toolbar(props: PropsWithChildren<Props>) {
   );
 
   const isSeparatorLast = inView[inView.length - 1]?.type === Separator;
-  const initialOverflows =
-    flattenChildren(overflowChildren).filter(isReactElement);
 
   return (
     <div className={styles.toolbar}>
@@ -65,10 +63,8 @@ function Toolbar(props: PropsWithChildren<Props>) {
       </div>
 
       <OverflowMenu>
-        {[
-          ...initialOverflows,
-          ...outOfView.filter((child) => child.type !== Separator),
-        ]}
+        {overflowChildren}
+        {outOfView.filter((child) => child.type !== Separator)}
       </OverflowMenu>
 
       {interactions && <Separator />}
