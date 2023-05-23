@@ -1,3 +1,4 @@
+import type { AxisMapping } from '@h5web/shared';
 import { isNumber } from 'lodash';
 
 import AxisMapper from './AxisMapper';
@@ -7,12 +8,13 @@ import SlicingSlider from './SlicingSlider';
 
 interface Props {
   rawDims: number[];
+  axisLabels?: AxisMapping<string>;
   mapperState: DimensionMapping;
   onChange: (d: DimensionMapping) => void;
 }
 
 function DimensionMapper(props: Props) {
-  const { rawDims, mapperState, onChange } = props;
+  const { rawDims, axisLabels, mapperState, onChange } = props;
 
   return (
     <div className={styles.mapper}>
@@ -32,12 +34,14 @@ function DimensionMapper(props: Props) {
         <AxisMapper
           axis="x"
           rawDims={rawDims}
+          axisLabels={axisLabels}
           mapperState={mapperState}
           onChange={onChange}
         />
         <AxisMapper
           axis="y"
           rawDims={rawDims}
+          axisLabels={axisLabels}
           mapperState={mapperState}
           onChange={onChange}
         />

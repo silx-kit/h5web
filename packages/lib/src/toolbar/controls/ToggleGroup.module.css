@@ -8,6 +8,10 @@
   padding: 0 !important; /* FIX style ordering issue with Vite */
 }
 
+.btn[data-hint] {
+  text-decoration: underline dotted;
+}
+
 .btnLike {
   composes: btnLike from '../Toolbar.module.css';
 }

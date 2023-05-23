@@ -18,10 +18,13 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
   assertComplexNxData(nxData);
+
   const { signalDef, axisDefs, silxStyle } = nxData;
   const signalDims = signalDef.dataset.shape;
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+
+  const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');
 
   const config = useComplexLineConfig();
@@ -38,6 +41,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
     <>
       <DimensionMapper
         rawDims={signalDims}
+        axisLabels={axisLabels}
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
@@ -54,7 +58,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
                 valueLabel={signalDef.label}
                 dims={signalDims}
                 dimMapping={dimMapping}
-                axisLabels={axisDefs.map((def) => def?.label)}
+                axisLabels={axisLabels}
                 axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}
