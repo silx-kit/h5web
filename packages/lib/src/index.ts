@@ -115,6 +115,8 @@ export { scaleGamma } from './vis/scaleGamma';
 export { useCanvasEvents } from './interactions/hooks';
 export { default as Box } from './interactions/box';
 
+export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared';
+
 // Models
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 export { ScaleType } from '@h5web/shared';
@@ -132,7 +134,14 @@ export type {
 } from './interactions/models';
 export { MouseButton } from './interactions/models';
 
-export type { Domain, VisibleDomains, Dims, Axis } from '@h5web/shared';
+export type {
+  Domain,
+  VisibleDomains,
+  Dims,
+  Axis,
+  ColorScaleType,
+  AxisScaleType,
+} from '@h5web/shared';
 
 export type {
   Aspect,

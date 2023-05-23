@@ -1,17 +1,17 @@
 import { useClickOutside, useToggle } from '@react-hookz/web';
-import type { ReactElement } from 'react';
-import { Children, cloneElement, useRef } from 'react';
+import type { PropsWithChildren } from 'react';
+import { cloneElement, isValidElement, useRef } from 'react';
 import { FiMenu } from 'react-icons/fi';
+import flattenChildren from 'react-keyed-flatten-children';
 
 import styles from './OverflowMenu.module.css';
 import Separator from './Separator';
 
-interface Props {
-  children: ReactElement[];
-}
+interface Props {}
 
-function OverflowMenu(props: Props) {
+function OverflowMenu(props: PropsWithChildren<Props>) {
   const { children } = props;
+  const validChildren = flattenChildren(children).filter(isValidElement);
 
   const rootRef = useRef(null);
   const [isOverflowMenuOpen, toggleOverflowMenu] = useToggle(false);
@@ -22,7 +22,7 @@ function OverflowMenu(props: Props) {
     }
   });
 
-  if (children.length === 0) {
+  if (validChildren.length === 0) {
     return null;
   }
 
@@ -51,9 +51,11 @@ function OverflowMenu(props: Props) {
           hidden={!isOverflowMenuOpen}
         >
           <ul className={styles.menuList}>
-            {Children.map(children, (child) => (
+            {validChildren.map((child) => (
               // Render cloned child (React elements don't like to be moved around)
-              <li role="menuitem">{cloneElement(child)}</li>
+              <li role="menuitem" key={child.key}>
+                {cloneElement(child)}
+              </li>
             ))}
           </ul>
         </div>

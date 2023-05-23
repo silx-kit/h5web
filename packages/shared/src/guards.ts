@@ -1,6 +1,5 @@
 import { isTypedArray as isTypedArrayLodash } from 'lodash';
 import type { Data, NdArray, TypedArray } from 'ndarray';
-import type { ReactElement } from 'react';
 
 import type {
   ArrayShape,
@@ -50,12 +49,6 @@ export function assertAbsolutePath(path: string) {
   if (!isAbsolutePath(path)) {
     throw new Error("Expected path to start with '/'");
   }
-}
-
-export function isReactElement(
-  child: ReactElement | string | number
-): child is ReactElement {
-  return typeof child !== 'string' && typeof child !== 'number';
 }
 
 export function isDefined<T>(val: T): val is T extends undefined ? never : T {
