@@ -24,6 +24,8 @@ function NxComplexImageContainer(props: VisContainerProps) {
 
   const { shape: dims } = signalDef.dataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+
+  const axisLabels = axisDefs.map((def) => def?.label);
   const xAxisDef = axisDefs[dimMapping.indexOf('x')];
   const yAxisDef = axisDefs[dimMapping.indexOf('y')];
 
@@ -37,6 +39,7 @@ function NxComplexImageContainer(props: VisContainerProps) {
     <>
       <DimensionMapper
         rawDims={dims}
+        axisLabels={axisLabels}
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
@@ -52,7 +55,7 @@ function NxComplexImageContainer(props: VisContainerProps) {
                 value={signal}
                 dims={dims}
                 dimMapping={dimMapping}
-                axisLabels={axisDefs.map((def) => def?.label)}
+                axisLabels={axisLabels}
                 axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}

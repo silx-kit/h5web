@@ -29,6 +29,8 @@ function NxSpectrumContainer(props: VisContainerProps) {
   }
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+
+  const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');
 
   const config = useLineConfig({
@@ -45,6 +47,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
     <>
       <DimensionMapper
         rawDims={signalDims}
+        axisLabels={axisLabels}
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
@@ -68,7 +71,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
                 auxErrors={auxErrors}
                 dims={signalDims}
                 dimMapping={dimMapping}
-                axisLabels={axisDefs.map((def) => def?.label)}
+                axisLabels={axisLabels}
                 axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}

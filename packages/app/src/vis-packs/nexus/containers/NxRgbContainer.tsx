@@ -28,12 +28,15 @@ function NxRgbContainer(props: VisContainerProps) {
 
   const mappableDims = dims.slice(0, -1);
   const [dimMapping, setDimMapping] = useDimMappingState(mappableDims, 2);
+
+  const axisLabels = axisDefs.map((def) => def?.label);
   const config = useRgbConfig();
 
   return (
     <>
       <DimensionMapper
         rawDims={mappableDims}
+        axisLabels={axisLabels}
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
@@ -48,7 +51,7 @@ function NxRgbContainer(props: VisContainerProps) {
               <MappedRgbVis
                 dataset={signalDef.dataset}
                 value={signal}
-                axisLabels={axisDefs.map((def) => def?.label)}
+                axisLabels={axisLabels}
                 axisValues={axisValues}
                 dimMapping={dimMapping}
                 title={title}

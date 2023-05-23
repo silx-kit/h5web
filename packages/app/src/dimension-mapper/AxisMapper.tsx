@@ -1,5 +1,5 @@
 import { ToggleGroup } from '@h5web/lib';
-import type { Axis } from '@h5web/shared';
+import type { Axis, AxisMapping } from '@h5web/shared';
 import { isNumber } from 'lodash';
 
 import styles from './DimensionMapper.module.css';
@@ -8,12 +8,13 @@ import type { DimensionMapping } from './models';
 interface Props {
   axis: Axis;
   rawDims: number[];
+  axisLabels: AxisMapping<string> | undefined;
   mapperState: DimensionMapping;
   onChange: (mapperState: DimensionMapping) => void;
 }
 
 function AxisMapper(props: Props) {
-  const { axis, rawDims, mapperState, onChange } = props;
+  const { axis, rawDims, axisLabels, mapperState, onChange } = props;
   const selectedDim = mapperState.indexOf(axis);
 
   if (selectedDim === -1) {
@@ -42,8 +43,13 @@ function AxisMapper(props: Props) {
           }
         }}
       >
-        {Object.keys(rawDims).map((dimKey) => (
-          <ToggleGroup.Btn key={dimKey} label={`D${dimKey}`} value={dimKey} />
+        {Object.keys(rawDims).map((dimKey, index) => (
+          <ToggleGroup.Btn
+            key={dimKey}
+            label={`D${dimKey}`}
+            value={dimKey}
+            hint={axisLabels?.[index]}
+          />
         ))}
       </ToggleGroup>
     </div>

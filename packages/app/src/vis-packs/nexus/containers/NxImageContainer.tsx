@@ -23,6 +23,8 @@ function NxImageContainer(props: VisContainerProps) {
 
   const { shape: dims } = signalDef.dataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+
+  const axisLabels = axisDefs.map((def) => def?.label);
   const xAxisDef = axisDefs[dimMapping.indexOf('x')];
   const yAxisDef = axisDefs[dimMapping.indexOf('y')];
 
@@ -35,6 +37,7 @@ function NxImageContainer(props: VisContainerProps) {
     <>
       <DimensionMapper
         rawDims={dims}
+        axisLabels={axisLabels}
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
@@ -50,7 +53,7 @@ function NxImageContainer(props: VisContainerProps) {
                 dataset={signalDef.dataset}
                 value={signal}
                 dimMapping={dimMapping}
-                axisLabels={axisDefs.map((def) => def?.label)}
+                axisLabels={axisLabels}
                 axisValues={axisValues}
                 title={title}
                 toolbarContainer={toolbarContainer}
