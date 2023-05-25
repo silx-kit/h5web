@@ -103,7 +103,7 @@ when H5Web is embeded inside another app.
 <App sidebarOpen={false} />
 ```
 
-> This replaces prop `explorerOpen`, which is now deprecated and will be removed
+> This replaces prop `explorerOpen`, which was deprecated in v7.1.0 and removed
 > in v8.0.0.
 
 #### `initialPath?: string` (optional)

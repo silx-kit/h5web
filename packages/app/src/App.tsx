@@ -17,8 +17,6 @@ import VisConfigProvider from './VisConfigProvider';
 import Visualizer from './visualizer/Visualizer';
 
 interface Props {
-  /** @deprecated */
-  explorerOpen?: boolean;
   sidebarOpen?: boolean;
   initialPath?: string;
   getFeedbackURL?: (context: FeedbackContext) => string;
@@ -28,8 +26,7 @@ interface Props {
 
 function App(props: Props) {
   const {
-    explorerOpen = true, // eslint-disable-line etc/no-deprecated
-    sidebarOpen: initialSidebarOpen = explorerOpen, // eslint-disable-line etc/no-deprecated
+    sidebarOpen: initialSidebarOpen = true,
     initialPath = '/',
     getFeedbackURL,
     disableDarkMode,
