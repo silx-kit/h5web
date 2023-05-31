@@ -24,7 +24,8 @@ interface Props extends HistogramParams {
   scaleType: ColorScaleType;
   dataDomain: Domain;
   value: Domain;
-  onChange?: (domain: Domain) => void;
+  onChangeMin?: (val: number) => void;
+  onChangeMax?: (val: number) => void;
 }
 
 function Histogram(props: Props) {
@@ -34,7 +35,8 @@ function Histogram(props: Props) {
     scaleType,
     value,
     dataDomain,
-    onChange,
+    onChangeMin,
+    onChangeMax,
     showLeftAxis = true,
   } = props;
   const { colorMap, invertColorMap } = props;
@@ -97,9 +99,11 @@ function Histogram(props: Props) {
         <Markers
           positions={markerPositions}
           size={size}
-          onChange={
-            onChange &&
-            ((domain) => onChange(domain.map(xScale.invert) as Domain))
+          onChangeMin={
+            onChangeMin && ((val) => onChangeMin(xScale.invert(val)))
+          }
+          onChangeMax={
+            onChangeMax && ((val) => onChangeMax(xScale.invert(val)))
           }
         />
         <AxisBottom

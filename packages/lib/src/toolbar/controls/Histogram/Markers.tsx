@@ -9,11 +9,12 @@ import Marker from './Marker';
 interface Props {
   positions: Domain;
   size: Size;
-  onChange?: (domain: Domain) => void;
+  onChangeMin?: (val: number) => void;
+  onChangeMax?: (val: number) => void;
 }
 
 function Markers(props: Props) {
-  const { positions, size, onChange } = props;
+  const { positions, size, onChangeMin, onChangeMax } = props;
   const { height, width } = size;
   const [xMin, xMax] = positions;
 
@@ -28,12 +29,14 @@ function Markers(props: Props) {
         x={xMin}
         onDragStart={({ x }) => x && setDeltaX(x - xMin)}
         onDragEnd={({ dx }) => {
-          onChange?.([xMin + dx, xMax]);
+          onChangeMin?.(xMin + dx);
           setDeltaX(0);
         }}
         restrict={{ xMin: deltaX, xMax: xMax + deltaX }}
       >
-        {(dragState) => <Marker x={xMin} dragState={onChange && dragState} />}
+        {(dragState) => (
+          <Marker x={xMin} dragState={onChangeMin && dragState} />
+        )}
       </Drag>
       <Drag
         height={height}
@@ -41,13 +44,13 @@ function Markers(props: Props) {
         x={xMax}
         onDragStart={({ x }) => x && setDeltaX(x - xMax)}
         onDragEnd={({ dx }) => {
-          onChange?.([xMin, xMax + dx]);
+          onChangeMax?.(xMax + dx);
           setDeltaX(0);
         }}
         restrict={{ xMin: xMin + deltaX, xMax: width + deltaX }}
       >
         {(dragState) => (
-          <Marker x={xMax} flipArrow dragState={onChange && dragState} />
+          <Marker x={xMax} flipArrow dragState={onChangeMax && dragState} />
         )}
       </Drag>
     </g>
