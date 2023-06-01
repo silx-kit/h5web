@@ -121,13 +121,9 @@ jobs:
         run: pnpm serve & pnpm dlx wait-on http://localhost:5173
 
       - name: Run Cypress 🌳
-        run: pnpm cypress:run
+        run: pnpm cypress:run --env requireSnapshots=true
         env:
           CYPRESS_TAKE_SNAPSHOTS: true
-
-      - name: Require approval when new snapshots are created 🔎
-        uses: numtide/clean-git-action@v1
-        if: success()
 
       - name: Upload debug screenshots and diffs on failure 🖼️
         uses: actions/upload-artifact@v3
