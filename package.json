@@ -13,6 +13,7 @@
     "node": "18.x",
     "pnpm": "8.x"
   },
+  "packageManager": "pnpm@8.6.0",
   "scripts": {
     "start": "pnpm --filter demo start",
     "start:storybook": "pnpm --filter storybook start",
