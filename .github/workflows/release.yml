@@ -88,4 +88,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: apps/storybook/build
-          clean: true
+          clean: false
