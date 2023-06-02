@@ -83,9 +83,7 @@ jobs:
 
       - name: Build Storybook 🛠️
         # https://github.com/storybookjs/storybook/issues/20564
-        run: |
-          pnpm build:storybook
-          touch apps/storybook/build/.nojekyll
+        run: pnpm build:storybook && touch apps/storybook/build/.nojekyll
 
       - name: Deploy Storybook 🚀
         uses: JamesIves/github-pages-deploy-action@v4
