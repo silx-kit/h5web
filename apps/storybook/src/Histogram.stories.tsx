@@ -1,4 +1,3 @@
-import type { Domain } from '@h5web/lib';
 import { Histogram, ScaleType } from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -15,7 +14,8 @@ const meta = {
       control: { type: 'inline-radio' },
       options: COLOR_SCALE_TYPES,
     },
-    onChange: { control: false },
+    onChangeMin: { control: false },
+    onChangeMax: { control: false },
   },
 } satisfies Meta<typeof Histogram>;
 
@@ -25,14 +25,20 @@ type Story = StoryObj<typeof meta>;
 export const Default = {
   render: (args) => {
     const { value, ...otherArgs } = args;
-    const [domain, setDomain] = useState<Domain>(value);
+    const [min, setMin] = useState(value[0]);
+    const [max, setMax] = useState(value[1]);
 
     return (
       <div>
         <p>
-          Domain: [{domain[0].toFixed(2)}, {domain[1].toFixed(2)}]
+          Domain: [{min.toFixed(2)}, {max.toFixed(2)}]
         </p>
-        <Histogram {...otherArgs} value={domain} onChange={setDomain} />
+        <Histogram
+          {...otherArgs}
+          value={[min, max]}
+          onChangeMin={setMin}
+          onChangeMax={setMax}
+        />
       </div>
     );
   },
@@ -82,6 +88,7 @@ export const HideLeftAxis = {
 export const NonInteractive = {
   args: {
     ...Default.args,
-    onChange: undefined, // explicitely set to `undefined`, as Storybook seems to register default event handlers
+    onChangeMin: undefined, // explicitely set to `undefined`, as Storybook seems to register default event handlers
+    onChangeMax: undefined, // explicitely set to `undefined`, as Storybook seems to register default event handlers
   },
 } satisfies Story;
