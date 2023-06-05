@@ -1,0 +1,64 @@
+name: Deploy Storybook
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v*
+      - '!v*-beta.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🏷️
+        uses: actions/checkout@v3
+
+      - name: Set up Node 🕹️
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install pnpm ⚙️
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.x
+
+      - name: Restore cache 📌
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/setup-pnpm/node_modules/.bin/store
+            ~/.cache/Cypress
+          key: cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: Install dependencies ⚙️
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Storybook 🛠️
+        run: pnpm build:storybook
+
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'apps/storybook/build'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Deploy Storybook 🚀
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}

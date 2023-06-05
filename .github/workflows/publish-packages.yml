@@ -1,4 +1,4 @@
-name: Release
+name: Publish packages
 
 on:
   push:
@@ -80,12 +80,3 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: "${{ contains(steps.packageVersion.outputs.PACKAGE_VERSION, 'beta') && 'next' || 'latest' }}"
-
-      - name: Build Storybook 🛠️
-        # https://github.com/storybookjs/storybook/issues/20564
-        run: pnpm build:storybook && touch apps/storybook/build/.nojekyll
-
-      - name: Deploy Storybook 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: apps/storybook/build
