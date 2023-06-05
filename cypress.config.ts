@@ -1,12 +1,12 @@
+import { addMatchImageSnapshotPlugin } from '@simonsmith/cypress-image-snapshot/plugin';
 import { defineConfig } from 'cypress';
-import { addMatchImageSnapshotPlugin } from 'cypress-image-snapshot/plugin';
 
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:5173',
     supportFile: 'cypress/support.ts',
-    setupNodeEvents(on, config) {
-      addMatchImageSnapshotPlugin(on, config);
+    setupNodeEvents(on) {
+      addMatchImageSnapshotPlugin(on);
     },
   },
   retries: process.env.TAKE_SNAPSHOTS ? 3 : null,
