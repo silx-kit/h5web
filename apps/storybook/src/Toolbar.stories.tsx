@@ -2,7 +2,7 @@ import type { ColorMap, CustomDomain } from '@h5web/lib';
 import {
   Btn,
   ColorMapSelector,
-  DomainSlider,
+  DomainWidget,
   GridToggler,
   ScaleSelector,
   ScaleType,
@@ -53,7 +53,7 @@ export const Default = {
     return (
       <>
         <Toolbar {...args}>
-          <DomainSlider
+          <DomainWidget
             dataDomain={[1, 100]}
             customDomain={customDomain}
             scaleType={scaleType}

@@ -7,7 +7,7 @@ import { getSafeDomain } from '../../../vis/heatmap/utils';
 import { useCombinedDomain } from '../../../vis/hooks';
 import type { DomainErrors } from '../../../vis/models';
 import { clampBound, createScale, extendDomain } from '../../../vis/utils';
-import styles from './DomainSlider.module.css';
+import styles from './ScaledSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
 

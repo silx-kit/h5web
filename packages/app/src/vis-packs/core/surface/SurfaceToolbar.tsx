@@ -1,7 +1,7 @@
 import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
-  DomainSlider,
+  DomainWidget,
   ScaleSelector,
   Separator,
   SnapshotBtn,
@@ -31,7 +31,7 @@ function SurfaceToolbar(props: Props) {
 
   return (
     <Toolbar>
-      <DomainSlider
+      <DomainWidget
         dataDomain={dataDomain}
         customDomain={customDomain}
         scaleType={scaleType}

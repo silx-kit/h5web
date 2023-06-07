@@ -31,7 +31,7 @@ export const parameters = {
           ],
         ],
         'Toolbar',
-        ['Toolbar', 'DomainSlider', 'Histogram'],
+        ['Toolbar', 'DomainWidget', 'Histogram'],
         'Experimental',
       ],
     },

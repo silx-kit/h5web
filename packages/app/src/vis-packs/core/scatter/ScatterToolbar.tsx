@@ -1,7 +1,7 @@
 import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
-  DomainSlider,
+  DomainWidget,
   GridToggler,
   ScaleSelector,
   Separator,
@@ -53,7 +53,7 @@ function ScatterToolbar(props: Props) {
 
       <Separator />
 
-      <DomainSlider
+      <DomainWidget
         dataDomain={dataDomain}
         customDomain={customDomain}
         scaleType={scaleType}

@@ -1,7 +1,7 @@
 import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
-  DomainSlider,
+  DomainWidget,
   ExportMenu,
   FlipYAxisToggler,
   GridToggler,
@@ -48,7 +48,7 @@ function HeatmapToolbar(props: Props) {
 
   return (
     <Toolbar interactions={getImageInteractions(keepRatio)}>
-      <DomainSlider
+      <DomainWidget
         dataDomain={dataDomain}
         customDomain={customDomain}
         scaleType={scaleType}
