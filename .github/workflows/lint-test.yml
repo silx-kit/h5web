@@ -80,7 +80,7 @@ jobs:
         env:
           CI: true
 
-  e2e:
+  packages:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -114,6 +114,38 @@ jobs:
 
       - name: Build packages 📦
         run: pnpm packages
+
+  e2e:
+    runs-on: ubuntu-latest
+    # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
+    steps:
+      - name: Checkout 🏷️
+        uses: actions/checkout@v3
+
+      - name: Set up Node 🕹️
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
+
+      - name: Install pnpm ⚙️
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.x
+
+      - name: Restore cache 📌
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/setup-pnpm/node_modules/.bin/store
+            ~/.cache/Cypress
+          key: cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: Install dependencies ⚙️
+        run: pnpm install --frozen-lockfile
 
       - name: Build demo 🛠️
         run: pnpm build

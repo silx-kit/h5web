@@ -6,7 +6,7 @@ on:
       - v*
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🏷️
