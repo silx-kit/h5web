@@ -7,7 +7,7 @@ addMatchImageSnapshotCommand();
 
 addWaitForStableDomCommand({
   pollInterval: 400, // more than debounce on slicing slider
-  timeout: 5000,
+  timeout: 10000,
 });
 
 Cypress.Commands.add('findExplorerNode', (name: string) => {

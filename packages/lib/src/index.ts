@@ -151,6 +151,11 @@ export type {
   AxisConfig,
   AxisParams,
   VisScaleType,
+  ExtractScaleType,
+  ScaleConfig,
+  ScaleGammaConfig,
+  Scale,
+  AxisScale,
   HistogramParams,
 } from './vis/models';
 

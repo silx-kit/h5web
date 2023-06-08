@@ -4,16 +4,16 @@ import { rgb } from 'd3-color';
 
 import type { ColorMap } from '../heatmap/models';
 import { getInterpolator } from '../heatmap/utils';
-import type { Scale } from '../models';
+import type { AxisScale } from '../models';
 import { createScale } from '../utils';
 
 const CAMERA_FAR = 1000; // R3F's default
 
 export function getIndexToPosition(
   abscissas: NumArray,
-  abscissaScale: Scale,
+  abscissaScale: AxisScale,
   ordinates: NumArray,
-  ordinateScale: Scale
+  ordinateScale: AxisScale
 ): (index: number) => { x: number; y: number; z: number } {
   return (index: number) => {
     const x = abscissaScale(abscissas[index]);

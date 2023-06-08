@@ -32,6 +32,8 @@ import type {
   Aspect,
   AxisConfig,
   AxisOffsets,
+  AxisScale,
+  ExtractScaleType,
   Scale,
   ScaleConfig,
   ScaleGammaConfig,
@@ -65,6 +67,11 @@ const adaptedLogTicksThreshold = scaleLinear({
   domain: [300, 500],
   range: [0.8, 1.4],
 });
+
+export function createScale<
+  V extends VisScaleType,
+  S extends ExtractScaleType<V>
+>(scaleType: V, config: ScaleConfig<S>): Scale<S>;
 
 export function createScale(
   scaleType: VisScaleType,
@@ -207,7 +214,10 @@ export function getValueToIndexScale(
   return scaleThreshold<number, number>({ domain: thresholds, range: indices });
 }
 
-export function getCanvasScale(config: AxisConfig, canvasSize: number): Scale {
+export function getCanvasAxisScale(
+  config: AxisConfig,
+  canvasSize: number
+): AxisScale {
   const { scaleType, visDomain, flip, nice = false } = config;
 
   return createScale(scaleType ?? ScaleType.Linear, {

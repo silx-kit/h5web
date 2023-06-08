@@ -5,7 +5,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
 import type { ElementType } from 'react';
 
-import type { AxisConfig, Scale, Size } from '../models';
+import type { AxisConfig, AxisScale, Size } from '../models';
 import {
   adaptedNumTicks,
   createScale,
@@ -15,7 +15,7 @@ import {
 import styles from './AxisSystem.module.css';
 import Tick from './Tick';
 
-const AXIS_PROPS: Partial<SharedAxisProps<Scale>> = {
+const AXIS_PROPS: Partial<SharedAxisProps<AxisScale>> = {
   labelClassName: styles.label,
   labelProps: {}, // remove any styling props from parent `svg` element
   tickClassName: styles.tick,
