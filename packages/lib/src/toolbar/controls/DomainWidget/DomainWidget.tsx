@@ -7,9 +7,9 @@ import { useSafeDomain, useVisDomain } from '../../../vis/heatmap/hooks';
 import type { CustomDomain, HistogramParams } from '../../../vis/models';
 import Histogram from '../Histogram/Histogram';
 import ToggleBtn from '../ToggleBtn';
-import styles from './DomainSlider.module.css';
 import type { DomainTooltipHandle } from './DomainTooltip';
 import DomainTooltip from './DomainTooltip';
+import styles from './DomainWidget.module.css';
 import ScaledSlider from './ScaledSlider';
 
 const TOOLTIP_ID = 'domain-tooltip';
@@ -23,7 +23,7 @@ interface Props {
   disabled?: boolean;
 }
 
-function DomainSlider(props: Props) {
+function DomainWidget(props: Props) {
   const { dataDomain, customDomain, scaleType, disabled = false } = props;
   const { onCustomDomainChange, histogram } = props;
 
@@ -152,5 +152,5 @@ function DomainSlider(props: Props) {
   );
 }
 
-export type { Props as DomainSliderProps };
-export default DomainSlider;
+export type { Props as DomainWidgetProps };
+export default DomainWidget;

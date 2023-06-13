@@ -19,15 +19,3 @@
 .root[data-disabled] > .sliderContainer {
   opacity: 0.5; /* edit button is itself disabled, so don't fade it more */
 }
-
-.slider {
-  display: flex;
-  margin-right: -0.25rem;
-  font-size: 0.75rem;
-  cursor: pointer;
-
-  --track-width: var(--h5w-domainSlider-track--width, 8rem);
-  --track-height: var(--h5w-domainSlider-track--height, 0.625rem);
-  --thumb-size: calc(var(--track-height) * 2.5);
-  --thumb-size-auto: calc(var(--thumb-size) * 0.9);
-}

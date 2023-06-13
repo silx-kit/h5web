@@ -108,7 +108,7 @@ a.btn {
 
 .btn:active > .btnLike,
 .btn[data-raised]:active > .btnLike,
-.btn[aria-pressed='true'] > .btnLike, /* toggle buttons, domain slider "edit" button */
+.btn[aria-pressed='true'] > .btnLike, /* toggle buttons, domain widget "edit" button */
 .btn[aria-checked='true'] > .btnLike, /* toggle group buttons */
 .btn[aria-haspopup][aria-expanded='true'] > .btnLike  /* selectors and overflow menu buttons */ {
   background-color: var(--h5w-btnPressed--bgColor, white);

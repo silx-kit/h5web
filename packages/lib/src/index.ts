@@ -15,7 +15,7 @@ export { default as Btn } from './toolbar/controls/Btn';
 export { default as LinkBtn } from './toolbar/controls/LinkBtn';
 export { default as ToggleBtn } from './toolbar/controls/ToggleBtn';
 export { default as ToggleGroup } from './toolbar/controls/ToggleGroup';
-export { default as DomainSlider } from './toolbar/controls/DomainSlider/DomainSlider';
+export { default as DomainWidget } from './toolbar/controls/DomainWidget/DomainWidget';
 export { default as ColorMapSelector } from './toolbar/controls/ColorMapSelector/ColorMapSelector';
 export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/ScaleSelector';
 export { default as GridToggler } from './toolbar/controls/GridToggler';
@@ -27,7 +27,7 @@ export { default as ResetZoomButton } from './toolbar/floating/ResetZoomButton';
 export { default as NotationToggleGroup } from './toolbar/controls/NotationToggleGroup';
 export { default as Histogram } from './toolbar/controls/Histogram/Histogram';
 export type { ToolbarProps } from './toolbar/Toolbar';
-export type { DomainSliderProps } from './toolbar/controls/DomainSlider/DomainSlider';
+export type { DomainWidgetProps } from './toolbar/controls/DomainWidget/DomainWidget';
 export type { HistogramProps } from './toolbar/controls/Histogram/Histogram';
 
 // Building blocks

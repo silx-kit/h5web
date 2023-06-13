@@ -1,5 +1,5 @@
 import type { CustomDomain } from '@h5web/lib';
-import { DomainSlider, ScaleType } from '@h5web/lib';
+import { DomainWidget, ScaleType } from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
@@ -7,8 +7,8 @@ import { useState } from 'react';
 import Center from './decorators/Center';
 
 const meta = {
-  title: 'Toolbar/DomainSlider',
-  component: DomainSlider,
+  title: 'Toolbar/DomainWidget',
+  component: DomainWidget,
   decorators: [Center],
   args: {
     customDomain: undefined,
@@ -20,7 +20,7 @@ const meta = {
       options: COLOR_SCALE_TYPES,
     },
   },
-} satisfies Meta<typeof DomainSlider>;
+} satisfies Meta<typeof DomainWidget>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -31,7 +31,7 @@ export const Default = {
     const [domain, setDomain] = useState<CustomDomain>(initialDomain);
 
     return (
-      <DomainSlider
+      <DomainWidget
         {...otherArgs}
         customDomain={domain}
         onCustomDomainChange={setDomain}
