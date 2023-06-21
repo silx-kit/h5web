@@ -3,12 +3,9 @@ import { COLOR_SCALE_TYPES } from '@h5web/shared';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import Center from './decorators/Center';
-
 const meta = {
   title: 'Toolbar/Histogram',
   component: Histogram,
-  decorators: [Center],
   argTypes: {
     scaleType: {
       control: { type: 'inline-radio' },
@@ -29,8 +26,8 @@ export const Default = {
     const [max, setMax] = useState(value[1]);
 
     return (
-      <div>
-        <p>
+      <>
+        <p style={{ marginTop: 0 }}>
           Domain: [{min.toFixed(2)}, {max.toFixed(2)}]
         </p>
         <Histogram
@@ -39,7 +36,7 @@ export const Default = {
           onChangeMin={setMin}
           onChangeMax={setMax}
         />
-      </div>
+      </>
     );
   },
   args: {

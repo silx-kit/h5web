@@ -4,12 +4,12 @@ import { COLOR_SCALE_TYPES } from '@h5web/shared';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import Center from './decorators/Center';
+import DomainWidgetDecorator from './decorators/DomainWidgetDecorator';
 
 const meta = {
   title: 'Toolbar/DomainWidget',
   component: DomainWidget,
-  decorators: [Center],
+  decorators: [DomainWidgetDecorator],
   args: {
     customDomain: undefined,
   },
