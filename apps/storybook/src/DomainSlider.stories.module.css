@@ -1,0 +1,15 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sliderWrapper {
+  display: flex;
+  height: 2.5rem;
+  --h5w-domainSlider-track--width: 12rem;
+}
+
+.resetBtn {
+  margin-left: 0.75rem;
+}

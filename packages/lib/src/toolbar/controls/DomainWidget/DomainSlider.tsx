@@ -27,7 +27,7 @@ interface Props {
   onAfterChange: (hasMinChanged: boolean, hasMaxChanged: boolean) => void;
 }
 
-function ScaledSlider(props: Props) {
+function DomainSlider(props: Props) {
   const {
     value,
     dataDomain,
@@ -101,4 +101,5 @@ function ScaledSlider(props: Props) {
   );
 }
 
-export default ScaledSlider;
+export type { Props as DomainSliderProps };
+export default DomainSlider;
