@@ -7,10 +7,10 @@ import { useSafeDomain, useVisDomain } from '../../../vis/heatmap/hooks';
 import type { CustomDomain, HistogramParams } from '../../../vis/models';
 import Histogram from '../Histogram/Histogram';
 import ToggleBtn from '../ToggleBtn';
+import DomainSlider from './DomainSlider';
 import type { DomainTooltipHandle } from './DomainTooltip';
 import DomainTooltip from './DomainTooltip';
 import styles from './DomainWidget.module.css';
-import ScaledSlider from './ScaledSlider';
 
 const TOOLTIP_ID = 'domain-tooltip';
 
@@ -73,7 +73,7 @@ function DomainWidget(props: Props) {
       onPointerLeave={() => toggleHovered(false)}
     >
       <div className={styles.sliderContainer}>
-        <ScaledSlider
+        <DomainSlider
           value={sliderDomain}
           safeVisDomain={safeDomain}
           dataDomain={dataDomain}
