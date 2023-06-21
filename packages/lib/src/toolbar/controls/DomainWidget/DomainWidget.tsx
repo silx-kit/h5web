@@ -7,9 +7,9 @@ import { useSafeDomain, useVisDomain } from '../../../vis/heatmap/hooks';
 import type { CustomDomain, HistogramParams } from '../../../vis/models';
 import Histogram from '../Histogram/Histogram';
 import ToggleBtn from '../ToggleBtn';
+import type { DomainControlsHandle } from './DomainControls';
+import DomainControls from './DomainControls';
 import DomainSlider from './DomainSlider';
-import type { DomainTooltipHandle } from './DomainTooltip';
-import DomainTooltip from './DomainTooltip';
 import styles from './DomainWidget.module.css';
 
 const TOOLTIP_ID = 'domain-tooltip';
@@ -18,9 +18,9 @@ interface Props {
   dataDomain: Domain;
   customDomain: CustomDomain;
   scaleType: ColorScaleType;
-  onCustomDomainChange: (domain: CustomDomain) => void;
   histogram?: HistogramParams;
   disabled?: boolean;
+  onCustomDomainChange: (domain: CustomDomain) => void;
 }
 
 function DomainWidget(props: Props) {
@@ -56,7 +56,7 @@ function DomainWidget(props: Props) {
   }
 
   const rootRef = useRef(null);
-  const tooltipRef = useRef<DomainTooltipHandle>(null);
+  const tooltipRef = useRef<DomainControlsHandle>(null);
 
   useClickOutside(rootRef, cancelEditing);
   useKeyboardEvent('Escape', () => {
@@ -106,48 +106,62 @@ function DomainWidget(props: Props) {
           onToggle={() => toggleEditing(!isEditing)}
         />
       </div>
-      <DomainTooltip
-        ref={tooltipRef}
+
+      <div
         id={TOOLTIP_ID}
-        open={hovered || isEditing}
-        sliderDomain={sliderDomain}
-        dataDomain={dataDomain}
-        errors={errors}
-        isAutoMin={isAutoMin}
-        isAutoMax={isAutoMax}
-        onAutoMinToggle={() => {
-          const newMin = isAutoMin ? dataDomain[0] : null;
-          onCustomDomainChange([newMin, customDomain[1]]);
-          if (!isAutoMin) {
-            toggleEditingMin(false);
-          }
-        }}
-        onAutoMaxToggle={() => {
-          const newMax = isAutoMax ? dataDomain[1] : null;
-          onCustomDomainChange([customDomain[0], newMax]);
-          if (!isAutoMax) {
-            toggleEditingMax(false);
-          }
-        }}
-        isEditingMin={isEditingMin}
-        isEditingMax={isEditingMax}
-        onEditMin={toggleEditingMin}
-        onEditMax={toggleEditingMax}
-        onChangeMin={(val) => onCustomDomainChange([val, customDomain[1]])}
-        onChangeMax={(val) => onCustomDomainChange([customDomain[0], val])}
-        onSwap={() => onCustomDomainChange([customDomain[1], customDomain[0]])}
+        className={styles.tooltip}
+        role="dialog"
+        aria-label="Edit domain"
+        hidden={!hovered && !isEditing}
       >
-        {histogram && (
-          <Histogram
+        <div className={styles.tooltipInner}>
+          {histogram && (
+            <Histogram
+              dataDomain={dataDomain}
+              value={sliderDomain}
+              scaleType={scaleType}
+              onChangeMin={(val) =>
+                onCustomDomainChange([val, customDomain[1]])
+              }
+              onChangeMax={(val) =>
+                onCustomDomainChange([customDomain[0], val])
+              }
+              {...histogram}
+            />
+          )}
+          <DomainControls
+            ref={tooltipRef}
+            sliderDomain={sliderDomain}
             dataDomain={dataDomain}
-            value={sliderDomain}
-            scaleType={scaleType}
+            errors={errors}
+            isAutoMin={isAutoMin}
+            isAutoMax={isAutoMax}
+            onAutoMinToggle={() => {
+              const newMin = isAutoMin ? dataDomain[0] : null;
+              onCustomDomainChange([newMin, customDomain[1]]);
+              if (!isAutoMin) {
+                toggleEditingMin(false);
+              }
+            }}
+            onAutoMaxToggle={() => {
+              const newMax = isAutoMax ? dataDomain[1] : null;
+              onCustomDomainChange([customDomain[0], newMax]);
+              if (!isAutoMax) {
+                toggleEditingMax(false);
+              }
+            }}
+            isEditingMin={isEditingMin}
+            isEditingMax={isEditingMax}
+            onEditMin={toggleEditingMin}
+            onEditMax={toggleEditingMax}
             onChangeMin={(val) => onCustomDomainChange([val, customDomain[1]])}
             onChangeMax={(val) => onCustomDomainChange([customDomain[0], val])}
-            {...histogram}
+            onSwap={() =>
+              onCustomDomainChange([customDomain[1], customDomain[0]])
+            }
           />
-        )}
-      </DomainTooltip>
+        </div>
+      </div>
     </div>
   );
 }

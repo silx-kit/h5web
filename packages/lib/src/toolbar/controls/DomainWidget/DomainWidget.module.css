@@ -19,3 +19,20 @@
 .root[data-disabled] > .sliderContainer {
   opacity: 0.5; /* edit button is itself disabled, so don't fade it more */
 }
+
+.tooltip {
+  composes: popup from '../../Toolbar.module.css';
+  z-index: 2; /* above overflow and selector menus */
+  /* Add invisible padding around tooltip to extend hover area */
+  /* (especially for when enabling auto-scaling hides an error message). */
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+}
+
+.tooltipInner {
+  composes: popupInner from '../../Toolbar.module.css';
+  padding: 1rem 0.375rem 1rem 0.75rem;
+  display: flex;
+  align-items: center;
+}
