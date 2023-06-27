@@ -8,11 +8,12 @@ export enum MouseButton {
 }
 
 export type Rect = [Vector3, Vector3];
+export type Points = Vector3[] | Rect;
 
 export interface Selection {
-  html: Rect;
-  world: Rect;
-  data: Rect;
+  html: Points;
+  world: Points;
+  data: Points;
 }
 
 export interface CanvasEvent<T extends MouseEvent> {

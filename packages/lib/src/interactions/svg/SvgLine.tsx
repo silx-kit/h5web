@@ -1,9 +1,9 @@
 import type { SVGProps } from 'react';
 
-import type { Rect } from '../models';
+import type { Points } from '../models';
 
 interface Props extends SVGProps<SVGLineElement> {
-  coords: Rect;
+  coords: Points;
 }
 
 function SvgLine(props: Props) {

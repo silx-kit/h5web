@@ -8,7 +8,7 @@ import {
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import type { Camera } from 'three';
+import type { Camera, Vector3 } from 'three';
 
 import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
@@ -20,7 +20,7 @@ import {
 import type {
   CanvasEvent,
   CommonInteractionProps,
-  Rect,
+  Points,
   Selection,
 } from './models';
 import { MouseButton } from './models';
@@ -28,6 +28,12 @@ import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
   id?: string;
+  /** default = 2, must be >= 1 */
+  minPoints?: number;
+  /** default to minPoints, must be >= minPoints or -1 = unlimited */
+  maxPoints?: number;
+  /** max movement between pointer up/down to ignore, default = 1 */
+  maxMovement?: number;
   transform?: (
     rawSelection: Selection,
     camera: Camera,
@@ -45,13 +51,17 @@ interface Props extends CommonInteractionProps {
   children: (
     selection: Selection,
     rawSelection: Selection,
-    isValid: boolean
+    isValid: boolean,
+    isComple: boolean
   ) => ReactNode;
 }
 
 function SelectionTool(props: Props) {
   const {
     id = 'Selection',
+    minPoints = 2,
+    maxPoints = minPoints,
+    maxMovement = 1,
     modifierKey,
     disabled,
     transform = (selection) => selection,
@@ -62,6 +72,16 @@ function SelectionTool(props: Props) {
     onValidSelection,
     children,
   } = props;
+
+  if (minPoints < 1) {
+    throw new RangeError(`minPoints must be >= 1, ${minPoints}`);
+  }
+
+  if (maxPoints < minPoints && maxPoints !== -1) {
+    throw new RangeError(
+      `maxPoints must be -1 or >= minPoints, ${maxPoints} cf ${minPoints}`
+    );
+  }
 
   // Wrap callbacks in up-to-date but stable refs so consumers don't have to memoise them
   const transformRef = useSyncedRef(transform);
@@ -76,7 +96,9 @@ function SelectionTool(props: Props) {
   const { canvasBox, htmlToWorld, worldToData } = context;
 
   const [rawSelection, setRawSelection] = useRafState<Selection>();
-  const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
+  const currentPtsRef = useRef<Vector3[]>();
+  const useNewPointRef = useRef<boolean>(true);
+  const isCompleteRef = useRef<boolean>(false);
   const hasSuccessfullyEndedRef = useRef<boolean>(false);
 
   const modifierKeys = getModifierKeyArray(modifierKey);
@@ -88,61 +110,142 @@ function SelectionTool(props: Props) {
     disabled,
   });
 
-  const onPointerDown = useCallback(
+  const setPoints = useCallback(
+    (html: Vector3[]) => {
+      const world = html.map((pt) => htmlToWorld(camera, pt)) as Points;
+      const data = world.map(worldToData) as Points;
+      setRawSelection({ html, world, data });
+    },
+    [camera, htmlToWorld, setRawSelection, worldToData]
+  );
+
+  const startSelection = useCallback(
+    (eTarget: Element, pointerId: number, point: Vector3) => {
+      if (!useNewPointRef.current) {
+        useNewPointRef.current = true;
+      } else {
+        currentPtsRef.current = [point];
+        isCompleteRef.current = false;
+        eTarget.setPointerCapture(pointerId);
+        if (maxPoints === 1) {
+          // no pointer movement necessary for single point
+          setPoints([point]);
+        }
+      }
+    },
+    [maxPoints, setPoints]
+  );
+
+  const finishSelection = useCallback(
+    (
+      eTarget: Element,
+      pointerId: number,
+      isDown: boolean,
+      interact: boolean
+    ) => {
+      eTarget.releasePointerCapture(pointerId);
+      useNewPointRef.current = !isDown; // so up is ignored
+      hasSuccessfullyEndedRef.current = interact;
+      currentPtsRef.current = undefined;
+    },
+    []
+  );
+
+  const onPointerClick = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
       const { sourceEvent } = evt;
-      if (!shouldInteract(sourceEvent)) {
+      const isDown = sourceEvent.type === 'pointerdown';
+      const doInteract = shouldInteract(sourceEvent);
+      if (isDown && !doInteract) {
         return;
       }
 
       const { target, pointerId } = sourceEvent;
-      (target as Element).setPointerCapture(pointerId);
+      const eTarget = target as Element;
 
-      startEvtRef.current = evt;
+      const pts = currentPtsRef.current;
+      const cPt = canvasBox.clampPoint(evt.htmlPt);
+      if (pts === undefined) {
+        startSelection(eTarget, pointerId, cPt);
+        return;
+      }
+      const nPts = pts.length;
+      let done = false;
+      if (useNewPointRef.current) {
+        const lPt = pts[nPts - 1];
+        const absMovement =
+          nPts === 1
+            ? 0
+            : Math.max(Math.abs(lPt.x - cPt.x), Math.abs(lPt.y - cPt.y));
+        if (absMovement <= maxMovement) {
+          // clicking in same spot when complete finishes selection
+          done = isDown && isCompleteRef.current;
+        } else {
+          pts.push(cPt);
+          useNewPointRef.current = false;
+        }
+      } else {
+        useNewPointRef.current = true;
+      }
+      if (done || (nPts >= minPoints && maxPoints > 0 && nPts === maxPoints)) {
+        finishSelection(eTarget, pointerId, isDown, doInteract);
+      }
     },
-    [shouldInteract]
+    [
+      shouldInteract,
+      canvasBox,
+      minPoints,
+      maxPoints,
+      maxMovement,
+      startSelection,
+      finishSelection,
+    ]
   );
 
   const onPointerMove = useCallback(
     (evt: CanvasEvent<PointerEvent>) => {
-      if (!startEvtRef.current) {
+      const pts = currentPtsRef.current;
+      if (pts === undefined) {
         return;
       }
 
-      const { htmlPt: htmlStart } = startEvtRef.current;
-      const html: Rect = [htmlStart, canvasBox.clampPoint(evt.htmlPt)];
-      const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
-      const data = world.map(worldToData) as Rect;
-
-      setRawSelection({ html, world, data });
-    },
-    [camera, canvasBox, htmlToWorld, worldToData, setRawSelection]
-  );
-
-  const onPointerUp = useCallback(
-    (evt: CanvasEvent<PointerEvent>) => {
-      if (!startEvtRef.current) {
-        return;
+      const nPts = pts.length;
+      const cPt = canvasBox.clampPoint(evt.htmlPt);
+      if (useNewPointRef.current) {
+        pts.push(cPt);
+        useNewPointRef.current = false;
+      } else {
+        pts[nPts - 1] = cPt;
       }
-
-      const { sourceEvent } = evt;
-      const { target, pointerId } = sourceEvent;
-      (target as Element).releasePointerCapture(pointerId);
-
-      startEvtRef.current = undefined;
-      hasSuccessfullyEndedRef.current = shouldInteract(sourceEvent);
-      setRawSelection(undefined);
+      setPoints([...pts]);
     },
-    [setRawSelection, shouldInteract]
+    [canvasBox, setPoints]
   );
 
-  useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
+  useCanvasEvents({
+    onPointerDown: onPointerClick,
+    onPointerMove,
+    onPointerUp: onPointerClick,
+  });
 
   useKeyboardEvent(
     'Escape',
     () => {
-      startEvtRef.current = undefined;
+      currentPtsRef.current = undefined;
       setRawSelection(undefined);
+    },
+    [],
+    { event: 'keydown' }
+  );
+
+  useKeyboardEvent(
+    'Enter',
+    () => {
+      if (isCompleteRef.current) {
+        hasSuccessfullyEndedRef.current = true;
+        currentPtsRef.current = undefined;
+        setRawSelection(undefined);
+      }
     },
     [],
     { event: 'keydown' }
@@ -155,10 +258,14 @@ function SelectionTool(props: Props) {
   );
 
   // Determine if effective selection respects the minimum size threshold
-  const isValid = useMemo(
-    () => !!selection && validateRef.current(selection),
-    [selection, validateRef]
-  );
+  const isValid = useMemo(() => {
+    const valid = !!selection && validateRef.current(selection);
+    if (valid && selection !== undefined) {
+      const nPts = selection?.html.length;
+      isCompleteRef.current = nPts >= minPoints;
+    }
+    return valid;
+  }, [isCompleteRef, minPoints, selection, validateRef]);
 
   // Keep track of previous effective selection and validity
   const prevSelection = usePrevious(selection);
@@ -215,7 +322,9 @@ function SelectionTool(props: Props) {
   }
 
   assertDefined(rawSelection);
-  return <>{children(selection, rawSelection, isValid)}</>;
+  return (
+    <>{children(selection, rawSelection, isValid, isCompleteRef.current)}</>
+  );
 }
 
 export type { Props as SelectionToolProps };

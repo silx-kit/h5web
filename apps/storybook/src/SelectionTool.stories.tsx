@@ -1,12 +1,14 @@
-import type { Rect, Selection } from '@h5web/lib';
+import type { Points, Rect, Selection } from '@h5web/lib';
 import {
   Box,
   DataToHtml,
   Pan,
   ResetZoomButton,
   SelectionTool,
+  SvgCircle,
   SvgElement,
   SvgLine,
+  SvgPolyline,
   SvgRect,
   VisCanvas,
   Zoom,
@@ -14,6 +16,7 @@ import {
 import { useThrottledState } from '@react-hookz/web';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { Vector3 } from 'three';
 
 import FillHeight from './decorators/FillHeight';
 import { getTitleForSelection } from './utils';
@@ -110,7 +113,9 @@ export const PersistedDataSelection = {
         <SelectionTool
           validate={({ html }) => Box.fromPoints(...html).hasMinSize(50)}
           onSelectionStart={() => setPersistedDataSelection(undefined)}
-          onValidSelection={({ data }) => setPersistedDataSelection(data)}
+          onValidSelection={({ data }) =>
+            setPersistedDataSelection(data as Rect)
+          }
         >
           {({ html: htmlSelection }, _, isValid) => (
             <SvgElement>
@@ -130,6 +135,87 @@ export const PersistedDataSelection = {
                 <SvgRect coords={htmlSelection} fill="teal" fillOpacity="0.6" />
               </SvgElement>
             )}
+          </DataToHtml>
+        )}
+      </VisCanvas>
+    );
+  },
+} satisfies Story;
+
+export const PersistedPolylineSelection = {
+  args: {
+    minPoints: 3,
+  },
+
+  render: (args) => {
+    const [persistedPolylineSelection, setPersistedPolylineSelection] =
+      useState<Points>();
+
+    const { maxPoints } = { ...args };
+    return (
+      <VisCanvas
+        title={getTitleForSelection(persistedPolylineSelection)}
+        abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
+        ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
+      >
+        <Pan modifierKey="Control" />
+        <Zoom />
+        <ResetZoomButton />
+
+        <SelectionTool
+          {...args}
+          validate={({ html }) => {
+            return maxPoints === 1 && html.length === 1
+              ? true
+              : Box.fromPoints(...html).hasMinSize(50);
+          }}
+          onSelectionStart={() => setPersistedPolylineSelection(undefined)}
+          onValidSelection={({ data }) => setPersistedPolylineSelection(data)}
+        >
+          {({ html: htmlSelection }, _, isValid, isComplete) =>
+            maxPoints === 1 ? (
+              <SvgElement>
+                <SvgCircle
+                  coords={[
+                    htmlSelection[0],
+                    htmlSelection[0].clone().add(new Vector3(3)),
+                  ]}
+                  fill="teal"
+                  fillOpacity="0.3"
+                />
+              </SvgElement>
+            ) : (
+              <SvgElement>
+                <SvgPolyline
+                  coords={htmlSelection}
+                  stroke={isValid ? 'teal' : 'orangered'}
+                  strokeDasharray={isComplete ? '4 0' : '4'}
+                />
+              </SvgElement>
+            )
+          }
+        </SelectionTool>
+
+        {persistedPolylineSelection && (
+          <DataToHtml points={persistedPolylineSelection}>
+            {(...htmlSelection) =>
+              maxPoints === 1 ? (
+                <SvgElement>
+                  <SvgCircle
+                    coords={[
+                      htmlSelection[0],
+                      htmlSelection[0].clone().add(new Vector3(3)),
+                    ]}
+                    fill="teal"
+                    fillOpacity="0.3"
+                  />
+                </SvgElement>
+              ) : (
+                <SvgElement>
+                  <SvgPolyline coords={htmlSelection} stroke="teal" />
+                </SvgElement>
+              )
+            }
           </DataToHtml>
         )}
       </VisCanvas>
@@ -199,8 +285,8 @@ export const RectWithTransform = {
           box.expandBySize(-box.size.width / 2, 1); // shrink width of selection by two (equally on both side)
 
           const html = box.toRect();
-          const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
-          const data = world.map(worldToData) as Rect;
+          const world = html.map((pt) => htmlToWorld(camera, pt));
+          const data = world.map(worldToData);
           return { html, world, data };
         }}
       >

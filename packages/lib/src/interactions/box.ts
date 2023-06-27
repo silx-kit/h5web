@@ -1,7 +1,7 @@
 import { Box3, Vector3 } from 'three';
 
 import type { Size } from '../vis/models';
-import type { Rect } from './models';
+import type { Points } from './models';
 
 const ZERO_VECTOR = new Vector3(0, 0, 0);
 
@@ -77,7 +77,7 @@ class Box extends Box3 {
     return this.translate(shift);
   }
 
-  public toRect(): Rect {
+  public toRect(): Points {
     return [this.min, this.max];
   }
 }

@@ -1,9 +1,9 @@
 import type { SVGProps } from 'react';
 
-import type { Rect } from '../models';
+import type { Points } from '../models';
 
 interface Props extends SVGProps<SVGRectElement> {
-  coords: Rect;
+  coords: Points;
   strokePosition?: 'inside' | 'outside'; // no effect without `stroke` prop; assumes `strokeWidth` of 1 unless specified explicitely as prop (CSS ignored)
   strokeWidth?: number; // forbid string
 }

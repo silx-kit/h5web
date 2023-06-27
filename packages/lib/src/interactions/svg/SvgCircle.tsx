@@ -1,9 +1,9 @@
 import type { SVGProps } from 'react';
 
-import type { Rect } from '../models';
+import type { Points } from '../models';
 
 interface Props extends SVGProps<SVGCircleElement> {
-  coords: Rect;
+  coords: Points;
 }
 
 function SvgCircle(props: Props) {
