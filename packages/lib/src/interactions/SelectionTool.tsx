@@ -188,6 +188,7 @@ function SelectionTool(props: Props) {
         useNewPointRef.current = true;
       }
       if (done || (nPts >= minPoints && maxPoints > 0 && nPts === maxPoints)) {
+        setRawSelection(undefined);
         finishSelection(eTarget, pointerId, isDown, doInteract);
       }
     },
@@ -199,6 +200,7 @@ function SelectionTool(props: Props) {
       maxMovement,
       startSelection,
       finishSelection,
+      setRawSelection,
     ]
   );
 
