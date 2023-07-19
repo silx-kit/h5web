@@ -111,15 +111,16 @@ as you see fit. For instance, if you'd like to change the color of the curve of 
 
 #### Toolbar
 
-| Name                                     | Default              | Description                              |
-| ---------------------------------------- | -------------------- | ---------------------------------------- |
-| `--h5w-toolbar--bgColor`                 | `aliceblue`          | Background color of toolbar              |
-| `--h5w-toolbar--height`                  | `2.5rem`             | Height of toolbar                        |
-| `--h5w-toolbar-separator--color`         | `rgba(0, 0, 0, 0.2)` | Color of separators                      |
-| `--h5w-toolbar-label--color`             | `royalblue`          | Text color of control labels             |
-| `--h5w-toolbar-input--shadowColor`       | `dimgray`            | Box shadow color of text inputs          |
-| `--h5w-toolbar-input-hover--shadowColor` | `gray`               | Box shadow color of text inputs on hover |
-| `--h5w-toolbar-input-focus--shadowColor` | `royalblue`          | Box shadow color of text inputs on focus |
+| Name                                     | Default                    | Description                              |
+| ---------------------------------------- | -------------------------- | ---------------------------------------- |
+| `--h5w-toolbar--bgColor`                 | `aliceblue`                | Background color of toolbar              |
+| `--h5w-toolbar--height`                  | `2.5rem`                   | Height of toolbar                        |
+| `--h5w-toolbar-separator--color`         | `rgba(0, 0, 0, 0.2)`       | Color of separators                      |
+| `--h5w-toolbar-label--color`             | `royalblue`                | Text color of control labels             |
+| `--h5w-toolbar-input--shadowColor`       | `dimgray`                  | Box shadow color of text inputs          |
+| `--h5w-toolbar-input-hover--shadowColor` | `gray`                     | Box shadow color of text inputs on hover |
+| `--h5w-toolbar-input-focus--shadowColor` | `royalblue`                | Box shadow color of text inputs on focus |
+| `--h5w-toolbar-popup--bgColor`           | `rgba(255, 255, 255, 0.9)` | Background color of popups               |
 
 ##### Buttons
 
@@ -148,25 +149,25 @@ as you see fit. For instance, if you'd like to change the color of the curve of 
 
 ##### Domain widget
 
-| Name                                                 | Default                    | Description                                    |
-| ---------------------------------------------------- | -------------------------- | ---------------------------------------------- |
-| `--h5w-domainSlider-track--width`                    | `8rem`                     | Width of track                                 |
-| `--h5w-domainSlider-track--height`                   | `0.625rem`                 | Height of track                                |
-| `--h5w-domainSlider-track--bgColor`                  | `gray`                     | Background color of track                      |
-| `--h5w-domainSlider-track--shadowColor`              | `gray`                     | Box shadow color of track                      |
-| `--h5w-domainSlider-dataTrack--bgColor`              | `royalblue`                | Background color of data track                 |
-| `--h5w-domainSlider-dataTrack--shadowColor`          | `midnightblue`             | Box shadow color of data track                 |
-| `--h5w-domainSlider-thumb--bgColor`                  | `lightgray`                | Background color of thumbs                     |
-| `--h5w-domainSlider-thumb-auto--bgColor`             | `whitesmoke`               | Background color of auto-scaled thumbs         |
-| `--h5w-domainSlider-tooltip--bgColor`                | `rgba(255, 255, 255, 0.9)` | Background color of tooltip                    |
-| `--h5w-domainSlider-tooltip--colorAlt`               | `#333`                     | Text color of bounds and data range in tooltip |
-| `--h5w-domainSlider-boundInput--shadowColor`         | `dimgray`                  | Box shadow color of bound inputs               |
-| `--h5w-domainSlider-boundInput-focus--shadowColor`   | `royalblue`                | Box shadow color of bound inputs on focus      |
-| `--h5w-domainSlider-boundInput-editing--bgColor`     | `white`                    | Background color of bound inputs when editing  |
-| `--h5w-domainSlider-boundInput-editing--borderColor` | `royalblue`                | Border color of bound inputs when editing      |
-| `--h5w-domainSlider-histogram--color`                | `royalblue`                | Fill color of histogram bars                   |
-| `--h5w-domainSlider-histogram-marker--color`         | `midnightblue`             | Color of histogram markers                     |
-| `--h5w-domainSlider-histogram-bgColor`               | `white`                    | Background color of histogram                  |
+| Name                                                   | Default                                                       | Description                                   |
+| ------------------------------------------------------ | ------------------------------------------------------------- | --------------------------------------------- |
+| `--h5w-domainWidget-popup--bgColor`                    | `var(--h5w-toolbar-popup--bgColor, rgba(255, 255, 255, 0.9))` | Background color of popup                     |
+| `--h5w-domainSlider-track--width`                      | `8rem`                                                        | Width of track                                |
+| `--h5w-domainSlider-track--height`                     | `0.625rem`                                                    | Height of track                               |
+| `--h5w-domainSlider-track--bgColor`                    | `gray`                                                        | Background color of track                     |
+| `--h5w-domainSlider-track--shadowColor`                | `gray`                                                        | Box shadow color of track                     |
+| `--h5w-domainSlider-dataTrack--bgColor`                | `royalblue`                                                   | Background color of data track                |
+| `--h5w-domainSlider-dataTrack--shadowColor`            | `midnightblue`                                                | Box shadow color of data track                |
+| `--h5w-domainSlider-thumb--bgColor`                    | `lightgray`                                                   | Background color of thumbs                    |
+| `--h5w-domainSlider-thumb-auto--bgColor`               | `whitesmoke`                                                  | Background color of auto-scaled thumbs        |
+| `--h5w-domainControls--colorAlt`                       | `#333`                                                        | Text color of bounds and data range           |
+| `--h5w-domainControls-boundInput--shadowColor`         | `dimgray`                                                     | Box shadow color of bound inputs              |
+| `--h5w-domainControls-boundInput-focus--shadowColor`   | `royalblue`                                                   | Box shadow color of bound inputs on focus     |
+| `--h5w-domainControls-boundInput-editing--bgColor`     | `white`                                                       | Background color of bound inputs when editing |
+| `--h5w-domainControls-boundInput-editing--borderColor` | `royalblue`                                                   | Border color of bound inputs when editing     |
+| `--h5w-histogram--bgColor`                             | `white`                                                       | Background color of histogram                 |
+| `--h5w-histogram--color`                               | `royalblue`                                                   | Fill color of histogram bars                  |
+| `--h5w-histogram-marker--color`                        | `midnightblue`                                                | Color of histogram markers                    |
 
 ##### Interaction help
 

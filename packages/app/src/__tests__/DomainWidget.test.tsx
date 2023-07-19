@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react';
 
 import { renderApp } from '../test-utils';
 
-test('show slider with two thumbs and reveal tooltip on hover', async () => {
+test('show slider with two thumbs and reveal popup on hover', async () => {
   const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   const thumbs = await screen.findAllByRole('slider');
@@ -11,31 +11,31 @@ test('show slider with two thumbs and reveal tooltip on hover', async () => {
   expect(thumbs[1]).toHaveAttribute('aria-valuenow', '81');
 
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
-  const tooltip = screen.getByRole('dialog', { hidden: true });
+  const popup = screen.getByRole('dialog', { hidden: true });
 
   expect(editBtn).toHaveAttribute('aria-expanded', 'false');
-  expect(tooltip).not.toBeVisible();
+  expect(popup).not.toBeVisible();
 
-  // Hover to show tooltip
+  // Hover to show popup
   await user.hover(editBtn);
   expect(editBtn).toHaveAttribute('aria-expanded', 'true');
-  expect(tooltip).toBeVisible();
+  expect(popup).toBeVisible();
 
-  // Unhover to hide tooltip
+  // Unhover to hide popup
   await user.unhover(editBtn);
   expect(editBtn).toHaveAttribute('aria-expanded', 'false');
-  expect(tooltip).not.toBeVisible();
+  expect(popup).not.toBeVisible();
 
-  // Hover and press escape to hide tooltip
+  // Hover and press escape to hide popup
   await user.hover(editBtn);
   await user.keyboard('{Escape}');
-  expect(tooltip).not.toBeVisible();
+  expect(popup).not.toBeVisible();
 });
 
-test('show min/max and data range in tooltip', async () => {
+test('show min/max and data range in popup', async () => {
   const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
-  // Hover edit button to reveal tooltip
+  // Hover edit button to reveal popup
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   await user.hover(editBtn);
 
@@ -55,7 +55,7 @@ test('show min/max and data range in tooltip', async () => {
 test('move thumbs with keyboard to update domain', async () => {
   const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
-  // Hover min thumb to reveal tooltip
+  // Hover min thumb to reveal popup
   const minThumb = await screen.findByRole('slider', { name: /min/ });
   await user.hover(minThumb);
 
@@ -100,7 +100,7 @@ test('edit bounds manually', async () => {
   const editBtn = await screen.findByRole('button', { name: 'Edit domain' });
   expect(editBtn).toHaveAttribute('aria-pressed', 'false');
 
-  // Click on edit button to open tooltip with both min and max in edit mode
+  // Click on edit button to open popup with both min and max in edit mode
   await user.click(editBtn);
   expect(editBtn).toHaveAttribute('aria-pressed', 'true');
   expect(editBtn).toHaveAttribute('aria-expanded', 'true');

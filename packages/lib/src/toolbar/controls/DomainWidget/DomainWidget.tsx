@@ -12,7 +12,7 @@ import DomainControls from './DomainControls';
 import DomainSlider from './DomainSlider';
 import styles from './DomainWidget.module.css';
 
-const TOOLTIP_ID = 'domain-tooltip';
+const POPUP_ID = 'h5w-domain-popup';
 
 interface Props {
   dataDomain: Domain;
@@ -51,12 +51,12 @@ function DomainWidget(props: Props) {
   function cancelEditing() {
     if (isEditing) {
       toggleEditing(false);
-      tooltipRef.current?.cancelEditing();
+      popupRef.current?.cancelEditing();
     }
   }
 
   const rootRef = useRef(null);
-  const tooltipRef = useRef<DomainControlsHandle>(null);
+  const popupRef = useRef<DomainControlsHandle>(null);
 
   useClickOutside(rootRef, cancelEditing);
   useKeyboardEvent('Escape', () => {
@@ -99,7 +99,7 @@ function DomainWidget(props: Props) {
           small
           label="Edit domain"
           aria-expanded={hovered || isEditing}
-          aria-controls={TOOLTIP_ID}
+          aria-controls={POPUP_ID}
           icon={FiEdit3}
           value={isEditing}
           disabled={disabled}
@@ -108,13 +108,13 @@ function DomainWidget(props: Props) {
       </div>
 
       <div
-        id={TOOLTIP_ID}
-        className={styles.tooltip}
+        id={POPUP_ID}
+        className={styles.popup}
         role="dialog"
         aria-label="Edit domain"
         hidden={!hovered && !isEditing}
       >
-        <div className={styles.tooltipInner}>
+        <div className={styles.popupInner}>
           {histogram && (
             <Histogram
               dataDomain={dataDomain}
@@ -130,7 +130,7 @@ function DomainWidget(props: Props) {
             />
           )}
           <DomainControls
-            ref={tooltipRef}
+            ref={popupRef}
             sliderDomain={sliderDomain}
             dataDomain={dataDomain}
             errors={errors}

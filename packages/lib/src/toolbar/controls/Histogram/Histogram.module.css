@@ -10,15 +10,15 @@
 
 .histogram {
   overflow: visible;
-  background-color: var(--h5w-domainSlider-histogram--bgColor, white);
+  background-color: var(--h5w-histogram--bgColor, white);
 }
 
 .bar {
-  fill: var(--h5w-domainSlider-histogram--color, royalblue);
+  fill: var(--h5w-histogram--color, royalblue);
 }
 
 .markers {
-  color: var(--h5w-domainSlider-histogram-marker--color, midnightblue);
+  color: var(--h5w-histogram-marker--color, midnightblue);
   stroke: currentColor;
   fill: currentColor;
 }
