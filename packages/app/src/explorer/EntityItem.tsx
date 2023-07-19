@@ -91,7 +91,7 @@ function EntityItem(props: Props) {
           }
       }
     },
-    [entity, isExpanded, toggleExpanded]
+    [entity, isExpanded, toggleExpanded],
   );
 
   return (

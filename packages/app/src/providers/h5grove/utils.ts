@@ -17,25 +17,25 @@ const ENDIANNESS_MAPPING: Record<string, Endianness> = {
 };
 
 export function isGroupResponse(
-  response: H5GroveEntityResponse
+  response: H5GroveEntityResponse,
 ): response is H5GroveGroupResponse {
   return response.type === EntityKind.Group;
 }
 
 export function isDatasetResponse(
-  response: H5GroveEntityResponse
+  response: H5GroveEntityResponse,
 ): response is H5GroveDatasetResponse {
   return response.type === EntityKind.Dataset;
 }
 
 export function isSoftLinkResponse(
-  response: H5GroveEntityResponse
+  response: H5GroveEntityResponse,
 ): response is H5GroveSoftLinkResponse {
   return response.type === 'soft_link';
 }
 
 export function isExternalLinkResponse(
-  response: H5GroveEntityResponse
+  response: H5GroveEntityResponse,
 ): response is H5GroveExternalLinkResponse {
   return response.type === 'external_link';
 }
@@ -48,7 +48,7 @@ export function convertH5GroveDtype(dtype: H5GroveDtype): DType {
   return {
     class: DTypeClass.Compound,
     fields: Object.fromEntries(
-      Object.entries(dtype).map(([k, v]) => [k, convertH5GroveDtype(v)])
+      Object.entries(dtype).map(([k, v]) => [k, convertH5GroveDtype(v)]),
     ),
   };
 }

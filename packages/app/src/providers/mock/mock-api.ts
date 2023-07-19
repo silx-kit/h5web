@@ -32,7 +32,7 @@ const SLOW_TIMEOUT = 3000;
 
 export class MockApi extends DataProviderApi {
   public constructor(
-    private readonly _getExportURL?: DataProviderApi['getExportURL']
+    private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(mockFilepath);
   }
@@ -54,7 +54,7 @@ export class MockApi extends DataProviderApi {
       entity.attributes.map((attr) => {
         assertMockAttribute(attr);
         return [attr.name, attr.value];
-      })
+      }),
     );
   }
 
@@ -86,7 +86,7 @@ export class MockApi extends DataProviderApi {
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>
+    value: Value<D>,
   ): ExportURL {
     const url = this._getExportURL?.(format, dataset, selection, value);
     if (url) {
@@ -132,7 +132,7 @@ export class MockApi extends DataProviderApi {
 
     return entity.children.reduce<string[]>(
       (acc, child) => [...acc, ...this.getEntityPaths(child.path)],
-      [entity.path]
+      [entity.path],
     );
   }
 
@@ -157,7 +157,7 @@ export class MockApi extends DataProviderApi {
 
   private processRawValue(
     dataset: MockDataset<ArrayShape | ScalarShape>,
-    rawValue: unknown
+    rawValue: unknown,
   ) {
     assertDefined(rawValue, 'Expected mock dataset to have value');
 

@@ -18,7 +18,7 @@ function H5GroveProvider(props: PropsWithChildren<Props>) {
 
   const api = useMemo(
     () => new H5GroveApi(url, filepath, axiosConfig, getExportURL),
-    [filepath, url, axiosConfig, getExportURL]
+    [filepath, url, axiosConfig, getExportURL],
   );
 
   return <DataProvider api={api}>{children}</DataProvider>;

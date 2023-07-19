@@ -65,7 +65,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   });
 
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Cancel fetch of first slice
@@ -79,7 +79,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   // Retry fetch of first slice
   await user.click(await screen.findByRole('button', { name: /Retry/ }));
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Let fetch of first slice succeed
@@ -121,7 +121,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   });
 
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Cancel fetch of first slice
@@ -135,7 +135,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   const d0Slider = screen.getByRole('slider', { name: 'D0' });
   await user.type(d0Slider, '{ArrowUp}');
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Let fetch of other slice succeed
@@ -145,7 +145,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   // Move back to first slice to retry fetching it automatically
   await user.type(d0Slider, '{ArrowDown}');
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
   d0Slider.blur(); // remove focus to avoid state update after unmount
 
@@ -161,7 +161,7 @@ test('cancel fetching dataset slice when changing entity', async () => {
   });
 
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Switch to another entity to cancel the fetch
@@ -176,7 +176,7 @@ test('cancel fetching dataset slice when changing entity', async () => {
 
   // Ensure that fetching restarts (since it was cancelled)
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Let fetch of first slice succeed
@@ -192,13 +192,13 @@ test('cancel fetching dataset slice when changing vis', async () => {
 
   // Select dataset and start fetching the slice
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Switch to Line visualization to cancel fetch
   await selectVisTab(Vis.Line);
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Let pending requests succeed
@@ -210,7 +210,7 @@ test('cancel fetching dataset slice when changing vis', async () => {
 
   // Ensure that fetching restarts (since it was cancelled)
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Let fetch of slice succeed

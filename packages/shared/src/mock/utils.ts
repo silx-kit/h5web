@@ -23,7 +23,7 @@ import { mockMetadata } from './metadata';
 import type { MockAttribute, MockDataset } from './models';
 
 export function assertMockDataset<S extends Shape, T extends DType>(
-  dataset: Dataset<S, T>
+  dataset: Dataset<S, T>,
 ): asserts dataset is MockDataset<S, T> {
   if (!('value' in dataset)) {
     throw new Error('Expected mock dataset');
@@ -31,7 +31,7 @@ export function assertMockDataset<S extends Shape, T extends DType>(
 }
 
 export function assertMockAttribute<S extends Shape, T extends DType>(
-  attribute: Attribute<S, T>
+  attribute: Attribute<S, T>,
 ): asserts attribute is MockAttribute<S, T> {
   if (!('value' in attribute)) {
     throw new Error('Expected mock attribute');

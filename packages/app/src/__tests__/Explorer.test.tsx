@@ -80,7 +80,7 @@ test('navigate groups in explorer', async () => {
   await selectExplorerNode('entities');
 
   expect(
-    screen.queryByRole('treeitem', { name: 'empty_group' })
+    screen.queryByRole('treeitem', { name: 'empty_group' }),
   ).not.toBeInTheDocument();
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
@@ -98,7 +98,7 @@ test('show spinner when group metadata is slow to fetch', async () => {
   jest.runAllTimers(); // resolve slow fetch right away
   await waitFor(() => {
     expect(
-      screen.queryByLabelText(/Loading group metadata/)
+      screen.queryByLabelText(/Loading group metadata/),
     ).not.toBeInTheDocument();
   });
 });

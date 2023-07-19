@@ -79,7 +79,7 @@ function HeatmapMaterial(props: Props) {
       CMAP_SIZE,
       1,
       RGBAFormat,
-      UnsignedByteType
+      UnsignedByteType,
     );
     texture.needsUpdate = true;
 
@@ -111,7 +111,7 @@ function HeatmapMaterial(props: Props) {
         badColorAsRgb.r / 255,
         badColorAsRgb.g / 255,
         badColorAsRgb.b / 255,
-        badColorAsRgb.opacity
+        badColorAsRgb.opacity,
       ),
     }),
     vertexShader: VERTEX_SHADER,

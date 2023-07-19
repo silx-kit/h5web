@@ -18,7 +18,7 @@ function HsdsProvider(props: PropsWithChildren<Props>) {
 
   const api = useMemo(
     () => new HsdsApi(url, username, password, filepath, getExportURL),
-    [filepath, password, url, username, getExportURL]
+    [filepath, password, url, username, getExportURL],
   );
 
   return <DataProvider api={api}>{children}</DataProvider>;

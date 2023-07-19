@@ -30,7 +30,7 @@ export function useDomain(
   valuesArray: AnyNumArray,
   scaleType: ScaleType = ScaleType.Linear,
   errorArray?: AnyNumArray,
-  ignoreValue?: (val: number) => boolean
+  ignoreValue?: (val: number) => boolean,
 ): Domain | undefined {
   // Distinct memoized calls allows for bounds to not be recomputed when scale type changes
   const bounds = useBounds(valuesArray, errorArray, ignoreValue);
@@ -40,7 +40,7 @@ export function useDomain(
 export function useDomains(
   valuesArrays: AnyNumArray[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorsArrays?: (AnyNumArray | undefined)[]
+  errorsArrays?: (AnyNumArray | undefined)[],
 ): (Domain | undefined)[] {
   const allBounds = useMemo(() => {
     return valuesArrays.map((arr, i) => getBounds(arr, errorsArrays?.[i]));
@@ -48,14 +48,14 @@ export function useDomains(
 
   return useMemo(
     () => allBounds.map((bounds) => getValidDomainForScale(bounds, scaleType)),
-    [allBounds, scaleType]
+    [allBounds, scaleType],
   );
 }
 
 export function useCameraState<T>(
   factory: (camera: Camera) => T,
   deps: unknown[],
-  equalityFn = (prev: T, next: T) => Object.is(prev, next)
+  equalityFn = (prev: T, next: T) => Object.is(prev, next),
 ): T {
   const camera = useThree((state) => state.camera);
   const rerender = useRerender();
@@ -85,14 +85,14 @@ export function useCameraState<T>(
 }
 
 export function useCssColors(
-  colorProperties: string[]
+  colorProperties: string[],
 ): [string[], RefCallback<HTMLElement>] {
   const [styles, setStyles] = useState<CSSStyleDeclaration>();
 
   // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
   const refCallback: RefCallback<HTMLElement> = useCallback(
     (elem) => setStyles(elem ? window.getComputedStyle(elem) : undefined),
-    []
+    [],
   );
 
   if (!styles) {

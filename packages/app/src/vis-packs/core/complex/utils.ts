@@ -27,7 +27,7 @@ export function getPhaseAmplitudeValues(mappedValues: H5WebComplex[]): {
 
       return [getNewBounds(acc[0], phase), getNewBounds(acc[1], amplitude)];
     },
-    [INITIAL_BOUNDS, INITIAL_BOUNDS]
+    [INITIAL_BOUNDS, INITIAL_BOUNDS],
   );
 
   return {

@@ -18,7 +18,7 @@ import { applyMapping, getBaseArray } from './utils';
 
 export function usePrefetchValues(
   datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[],
-  selection?: string
+  selection?: string,
 ): void {
   const { valuesStore } = useDataContext();
   datasets.filter(isDefined).forEach((dataset) => {
@@ -28,17 +28,17 @@ export function usePrefetchValues(
 
 export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D,
-  selection?: string
+  selection?: string,
 ): Value<D>;
 
 export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
-  selection?: string
+  selection?: string,
 ): Value<D> | undefined;
 
 export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
-  selection?: string
+  selection?: string,
 ): Value<D> | undefined {
   const { valuesStore } = useDataContext();
 
@@ -55,17 +55,17 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
 
 export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: D[],
-  selection?: string
+  selection?: string,
 ): Value<D>[];
 
 export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: (D | undefined)[],
-  selection?: string
+  selection?: string,
 ): (Value<D> | undefined)[];
 
 export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: (D | undefined)[],
-  selection?: string
+  selection?: string,
 ): (Value<D> | undefined)[] {
   const { valuesStore } = useDataContext();
 
@@ -82,12 +82,12 @@ export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
 
 export function useBaseArray<T extends unknown[] | TypedArray | undefined>(
   value: T,
-  rawDims: number[]
+  rawDims: number[],
 ): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
 
 export function useBaseArray<T>(
   value: T[] | TypedArray | undefined,
-  rawDims: number[]
+  rawDims: number[],
 ) {
   return useMemo(() => getBaseArray(value, rawDims), [value, rawDims]);
 }
@@ -96,7 +96,7 @@ export function useMappedArray<T extends unknown[] | TypedArray | undefined>(
   value: T,
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean
+  autoScale?: boolean,
 ): T extends unknown[] | TypedArray
   ? [NdArray<T>, NdArray<T>]
   : [undefined, undefined];
@@ -105,13 +105,13 @@ export function useMappedArray<T>(
   value: T[] | TypedArray | undefined,
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean
+  autoScale?: boolean,
 ) {
   const baseArray = useBaseArray(value, dims);
 
   const mappedArray = useMemo(
     () => applyMapping(baseArray, mapping),
-    [baseArray, mapping]
+    [baseArray, mapping],
   );
 
   return [mappedArray, autoScale ? mappedArray : baseArray];
@@ -121,30 +121,30 @@ export function useMappedArrays(
   values: NumArray[],
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean
+  autoScale?: boolean,
 ): [NdArray<NumArray>[], NdArray<NumArray>[]];
 
 export function useMappedArrays(
   values: (NumArray | undefined)[],
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean
+  autoScale?: boolean,
 ): [(NdArray<NumArray> | undefined)[], (NdArray<NumArray> | undefined)[]];
 
 export function useMappedArrays(
   values: (NumArray | undefined)[],
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean
+  autoScale?: boolean,
 ): [(NdArray<NumArray> | undefined)[], (NdArray<NumArray> | undefined)[]] {
   const baseArrays = useMemo(
     () => values.map((arr) => getBaseArray(arr, dims)),
-    [dims, values]
+    [dims, values],
   );
 
   const mappedArrays = useMemo(
     () => baseArrays.map((ndArr) => applyMapping(ndArr, mapping)),
-    [baseArrays, mapping]
+    [baseArrays, mapping],
   );
 
   return [mappedArrays, autoScale ? mappedArrays : baseArrays];
@@ -152,19 +152,19 @@ export function useMappedArrays(
 
 export function useSlicedDimsAndMapping(
   dims: number[],
-  dimMapping: DimensionMapping
+  dimMapping: DimensionMapping,
 ): [number[], DimensionMapping] {
   return useMemo(
     () => [
       dims.filter((_, i) => isAxis(dimMapping[i])),
       dimMapping.filter(isAxis),
     ],
-    [dimMapping, dims]
+    [dimMapping, dims],
   );
 }
 
 export function useIgnoreFillValue(
-  dataset: Dataset
+  dataset: Dataset,
 ): ((val: number) => boolean) | undefined {
   const { attrValuesStore } = useDataContext();
 

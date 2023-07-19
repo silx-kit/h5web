@@ -13,7 +13,7 @@ import { areTilesEqual } from './utils';
 const getCheckerboardArray = greenlet(
   async (length: number, value: number): Promise<Uint8Array> => {
     return Uint8Array.from({ length }, () => value);
-  }
+  },
 );
 
 export class CheckerboardTilesApi extends TilesApi {
@@ -32,18 +32,18 @@ export class CheckerboardTilesApi extends TilesApi {
         const height = clamp(
           layerSize.height - offset.y,
           0,
-          this.tileSize.height
+          this.tileSize.height,
         );
 
         const value = Math.abs(
           (Math.floor(offset.x / this.tileSize.width) % 2) -
-            (Math.floor(offset.y / this.tileSize.height) % 2)
+            (Math.floor(offset.y / this.tileSize.height) % 2),
         );
 
         const arr = await getCheckerboardArray(width * height, value);
         return ndarray(arr, [height, width]);
       },
-      { type: 'Map', areEqual: areTilesEqual }
+      { type: 'Map', areEqual: areTilesEqual },
     );
   }
 

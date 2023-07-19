@@ -10,12 +10,12 @@ const arr6 = range(9335, 9338);
 const oneD = arr1.map((val) => val ** 2);
 const twoD = arr2.map((offset) => oneD.map((val) => val - offset));
 const threeD = arr3.map((multiplier) =>
-  twoD.map((arrOneD) => arrOneD.map((val) => val * multiplier))
+  twoD.map((arrOneD) => arrOneD.map((val) => val * multiplier)),
 );
 const fourD = arr4.map((divider) =>
   threeD.map((arrTwoD) =>
-    arrTwoD.map((arrOneD) => arrOneD.map((val) => Math.sin(val / divider)))
-  )
+    arrTwoD.map((arrOneD) => arrOneD.map((val) => Math.sin(val / divider))),
+  ),
 );
 
 const typed = [0, 1, 2, 3];
@@ -45,7 +45,7 @@ const oneD_cplx = range(1, 11).map((val) => [
 ]);
 
 const oneD_compound = ['Hydrogen', 'Lithum', 'Carbon', 'Sodium', 'Argon'].map(
-  (v, i) => [v, i, oneD[i], i % 2 === 0, oneD_cplx[i]]
+  (v, i) => [v, i, oneD[i], i % 2 === 0, oneD_cplx[i]],
 );
 
 const twoD_compound = [
@@ -143,8 +143,8 @@ export const mockValues = {
   threeD_rgb: rgb,
   fourD_rgb: range(0, 10).map((i) =>
     rgb.map((rgb1) =>
-      rgb1.map((rgb2) => rgb2.map((val) => Math.min(val + i * 20, 255)))
-    )
+      rgb1.map((rgb2) => rgb2.map((val) => Math.min(val + i * 20, 255))),
+    ),
   ),
   fourD,
   uint8: Uint8Array.from(typed),

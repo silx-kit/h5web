@@ -23,17 +23,17 @@ const defaultApi = new MandelbrotTilesApi(
   { width: 1e9, height: 1e9 },
   { width: 128, height: 128 },
   [-2, 1],
-  [-1.5, 1.5]
+  [-1.5, 1.5],
 );
 const halfMandelbrotApi = new MandelbrotTilesApi(
   { width: 1e9, height: 5e8 },
   { width: 256, height: 128 },
   [-2, 1],
-  [0, 1.5]
+  [0, 1.5],
 );
 const checkerboardApi = new CheckerboardTilesApi(
   { width: 1e9, height: 1e9 },
-  { width: 128, height: 128 }
+  { width: 128, height: 128 },
 );
 
 const meta = {

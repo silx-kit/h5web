@@ -9,5 +9,5 @@ ReactDOM.render(
   <StrictMode>
     <DemoApp />
   </StrictMode>,
-  document.querySelector('#root')
+  document.querySelector('#root'),
 );

@@ -9,7 +9,7 @@ test('switch between "display" and "inspect" modes', async () => {
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
   expect(screen.getByRole('row', { name: /^Path/ })).toBeVisible();
   expect(
-    screen.queryByRole('tablist', { name: 'Visualization' })
+    screen.queryByRole('tablist', { name: 'Visualization' }),
   ).not.toBeInTheDocument();
 
   // Switch back to "display" mode
@@ -118,7 +118,7 @@ test('follow path attributes', async () => {
 
   // Follow relative `default` attribute
   await user.click(
-    await screen.findByRole('button', { name: 'Inspect nexus_entry' })
+    await screen.findByRole('button', { name: 'Inspect nexus_entry' }),
   );
 
   const nxEntry = await screen.findByRole('treeitem', {
@@ -134,7 +134,7 @@ test('follow path attributes', async () => {
   await user.click(
     await screen.findByRole('button', {
       name: 'Inspect /nexus_entry/nx_process/nx_data',
-    })
+    }),
   );
 
   const nxData = await screen.findByRole('treeitem', { name: /nx_data/ });

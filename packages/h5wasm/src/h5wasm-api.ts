@@ -46,7 +46,7 @@ export class H5WasmApi extends ProviderApi {
   public constructor(
     filename: string,
     buffer: ArrayBuffer,
-    private readonly _getExportURL?: ProviderApi['getExportURL']
+    private readonly _getExportURL?: ProviderApi['getExportURL'],
   ) {
     super(filename);
     this.file = this.initFile(buffer);
@@ -93,7 +93,7 @@ export class H5WasmApi extends ProviderApi {
     return Object.fromEntries(
       Object.entries(h5wEntity.attrs).map(([name, attr]) => {
         return [name, attr.to_array()];
-      })
+      }),
     );
   }
 
@@ -101,7 +101,7 @@ export class H5WasmApi extends ProviderApi {
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>
+    value: Value<D>,
   ): ExportURL {
     return this._getExportURL?.(format, dataset, selection, value);
   }
@@ -140,14 +140,14 @@ export class H5WasmApi extends ProviderApi {
   }
 
   private async getH5WasmEntity(
-    path: string
+    path: string,
   ): Promise<NonNullable<H5WasmEntity>> {
     const file = await this.file;
 
     const h5wEntity = file.get(path);
     assertNonNull(
       h5wEntity,
-      path === '/' ? `Expected valid HDF5 file` : `No entity found at ${path}`
+      path === '/' ? `Expected valid HDF5 file` : `No entity found at ${path}`,
     );
 
     return h5wEntity;
@@ -157,21 +157,21 @@ export class H5WasmApi extends ProviderApi {
     name: string,
     path: string,
     h5wEntity: H5WasmEntity,
-    isChild: true
+    isChild: true,
   ): ChildEntity;
 
   private processH5WasmEntity(
     name: string,
     path: string,
     h5wEntity: H5WasmEntity,
-    isChild?: false
+    isChild?: false,
   ): ProvidedEntity;
 
   private processH5WasmEntity(
     name: string,
     path: string,
     h5wEntity: H5WasmEntity,
-    isChild = false
+    isChild = false,
   ): ProvidedEntity | ChildEntity {
     const baseEntity = { name, path };
 

@@ -61,7 +61,7 @@ export function isNonNull<T>(val: T): val is T extends null ? never : T {
 
 export function assertDefined<T>(
   val: T,
-  message = 'Expected some value'
+  message = 'Expected some value',
 ): asserts val is T extends undefined ? never : T {
   if (!isDefined(val)) {
     throw new TypeError(message);
@@ -70,7 +70,7 @@ export function assertDefined<T>(
 
 export function assertNonNull<T>(
   val: T,
-  message = 'Expected value to not be null'
+  message = 'Expected value to not be null',
 ): asserts val is T extends null ? never : T {
   if (!isNonNull(val)) {
     throw new TypeError(message);
@@ -91,7 +91,7 @@ function assertBool(val: unknown): asserts val is boolean {
 
 export function assertStr(
   val: unknown,
-  message = 'Expected string'
+  message = 'Expected string',
 ): asserts val is string {
   if (typeof val !== 'string') {
     throw new TypeError(message);
@@ -100,7 +100,7 @@ export function assertStr(
 
 export function assertEnvVar(
   val: unknown,
-  name: string
+  name: string,
 ): asserts val is string {
   assertStr(val, `Expected environment variable ${name} to be defined`);
   if (val === '') {
@@ -126,7 +126,7 @@ export function assertArray(val: unknown): asserts val is unknown[] {
 }
 
 export function assertArrayOrTypedArray(
-  val: unknown
+  val: unknown,
 ): asserts val is unknown[] | TypedArray {
   if (!Array.isArray(val) && !isTypedArrayLodash(val)) {
     throw new TypeError('Expected array or typed array');
@@ -148,7 +148,7 @@ export function hasChildren(group: Group): group is GroupWithChildren {
 }
 
 export function assertGroupWithChildren(
-  group: Group
+  group: Group,
 ): asserts group is GroupWithChildren {
   if (!hasChildren(group)) {
     throw new Error('Expected group with children');
@@ -161,7 +161,7 @@ export function isDataset(entity: Entity): entity is Dataset {
 
 export function assertDataset(
   entity: Entity,
-  message = 'Expected dataset'
+  message = 'Expected dataset',
 ): asserts entity is Dataset {
   if (!isDataset(entity)) {
     throw new Error(message);
@@ -173,7 +173,7 @@ export function isDatatype(entity: Entity): entity is Datatype {
 }
 
 export function isH5WebComplex(
-  complex: H5WebComplex | ComplexArray
+  complex: H5WebComplex | ComplexArray,
 ): complex is H5WebComplex {
   return typeof complex[0] === 'number';
 }
@@ -183,13 +183,13 @@ export function isScalarShape(shape: Shape): shape is ScalarShape {
 }
 
 export function hasScalarShape<T extends DType>(
-  dataset: Dataset<Shape, T>
+  dataset: Dataset<Shape, T>,
 ): dataset is Dataset<ScalarShape, T> {
   return isScalarShape(dataset.shape);
 }
 
 export function assertScalarShape<T extends DType>(
-  dataset: Dataset<Shape, T>
+  dataset: Dataset<Shape, T>,
 ): asserts dataset is Dataset<ScalarShape, T> {
   if (!hasScalarShape(dataset)) {
     throw new Error('Expected dataset to have scalar shape');
@@ -197,13 +197,13 @@ export function assertScalarShape<T extends DType>(
 }
 
 export function hasArrayShape<T extends DType>(
-  dataset: Dataset<Shape, T>
+  dataset: Dataset<Shape, T>,
 ): dataset is Dataset<ArrayShape, T> {
   return isNonNull(dataset.shape) && dataset.shape.length > 0;
 }
 
 export function assertArrayShape<T extends DType>(
-  dataset: Dataset<Shape, T>
+  dataset: Dataset<Shape, T>,
 ): asserts dataset is Dataset<ArrayShape, T> {
   if (!hasArrayShape(dataset)) {
     throw new Error('Expected dataset to have array shape');
@@ -211,13 +211,13 @@ export function assertArrayShape<T extends DType>(
 }
 
 export function hasNonNullShape<T extends DType>(
-  dataset: Dataset<Shape, T>
+  dataset: Dataset<Shape, T>,
 ): dataset is Dataset<ScalarShape | ArrayShape, T> {
   return isNonNull(dataset.shape);
 }
 
 export function assertNonNullShape<T extends DType>(
-  dataset: Dataset<Shape, T>
+  dataset: Dataset<Shape, T>,
 ): asserts dataset is Dataset<ScalarShape | ArrayShape, T> {
   if (!hasNonNullShape(dataset)) {
     throw new Error('Expected dataset to have non-null shape');
@@ -245,19 +245,19 @@ export function assertNumDims(dataset: Dataset<ArrayShape>, num: number) {
 }
 
 export function hasBoolType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): dataset is Dataset<S, BooleanType> {
   return dataset.type.class === DTypeClass.Bool;
 }
 
 function hasStringType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): dataset is Dataset<S, StringType> {
   return dataset.type.class === DTypeClass.String;
 }
 
 export function assertStringType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, StringType> {
   if (!hasStringType(dataset)) {
     throw new Error('Expected dataset to have string type');
@@ -266,18 +266,18 @@ export function assertStringType<S extends Shape>(
 
 export function isNumericType(type: DType): type is NumericType {
   return [DTypeClass.Integer, DTypeClass.Unsigned, DTypeClass.Float].includes(
-    type.class
+    type.class,
   );
 }
 
 export function hasNumericType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): dataset is Dataset<S, NumericType> {
   return isNumericType(dataset.type);
 }
 
 export function assertNumericType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, NumericType> {
   if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
@@ -293,13 +293,13 @@ export function isComplexType(type: DType): type is ComplexType {
 }
 
 export function hasComplexType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): dataset is Dataset<S, ComplexType> {
   return isComplexType(dataset.type);
 }
 
 export function assertComplexType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, ComplexType> {
   if (!hasComplexType(dataset)) {
     throw new Error('Expected dataset to have complex type');
@@ -307,7 +307,7 @@ export function assertComplexType<S extends Shape>(
 }
 
 export function assertNumericOrComplexType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, NumericType | ComplexType> {
   if (!hasNumericType(dataset) && !hasComplexType(dataset)) {
     throw new Error('Expected dataset to have numeric or complex type');
@@ -315,13 +315,13 @@ export function assertNumericOrComplexType<S extends Shape>(
 }
 
 export function hasPrintableType<S extends Shape>(
-  entity: Dataset<S>
+  entity: Dataset<S>,
 ): entity is Dataset<S, PrintableType> {
   return PRINTABLE_DTYPES.has(entity.type.class);
 }
 
 export function assertPrintableType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, PrintableType> {
   if (
     !hasStringType(dataset) &&
@@ -334,13 +334,13 @@ export function assertPrintableType<S extends Shape>(
 }
 
 export function hasCompoundType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): dataset is Dataset<S, CompoundType> {
   return dataset.type.class === DTypeClass.Compound;
 }
 
 export function assertCompoundType<S extends Shape>(
-  dataset: Dataset<S>
+  dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, CompoundType> {
   if (!hasCompoundType(dataset)) {
     throw new Error('Expected dataset to have compound type');
@@ -348,14 +348,14 @@ export function assertCompoundType<S extends Shape>(
 }
 
 export function hasPrintableCompoundType<S extends Shape>(
-  dataset: Dataset<S, CompoundType>
+  dataset: Dataset<S, CompoundType>,
 ): dataset is Dataset<S, PrintableCompoundType> {
   const { fields } = dataset.type;
   return Object.values(fields).every((f) => PRINTABLE_DTYPES.has(f.class));
 }
 
 export function assertPrintableCompoundType<S extends Shape>(
-  dataset: Dataset<S, CompoundType>
+  dataset: Dataset<S, CompoundType>,
 ): asserts dataset is Dataset<S, PrintableCompoundType> {
   if (!hasPrintableCompoundType(dataset)) {
     throw new Error('Expected compound dataset to have printable types');
@@ -364,14 +364,14 @@ export function assertPrintableCompoundType<S extends Shape>(
 
 export function isComplexValue(
   type: DType,
-  value: unknown
+  value: unknown,
 ): value is H5WebComplex | ComplexArray {
   return type.class === DTypeClass.Complex;
 }
 
 function assertPrimitiveValue<D extends Dataset>(
   dataset: D,
-  value: unknown
+  value: unknown,
 ): asserts value is Primitive<DType> {
   if (hasNumericType(dataset)) {
     assertNum(value);
@@ -386,7 +386,7 @@ function assertPrimitiveValue<D extends Dataset>(
 
 export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   value: unknown,
-  dataset: D
+  dataset: D,
 ): asserts value is Value<D> {
   if (hasArrayShape(dataset)) {
     assertArrayOrTypedArray(value);
@@ -403,7 +403,7 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
 export function assertLength(
   arr: AnyNumArray | undefined,
   dataLength: number,
-  arrName: string
+  arrName: string,
 ) {
   if (!arr) {
     return;
@@ -412,7 +412,7 @@ export function assertLength(
   const { length: arrLength } = getValues(arr);
   if (arrLength !== dataLength) {
     throw new Error(
-      `Expected ${arrName} array to have length ${dataLength} instead of ${arrLength}`
+      `Expected ${arrName} array to have length ${dataLength} instead of ${arrLength}`,
     );
   }
 }
@@ -430,7 +430,7 @@ export function isColorScaleType(val: unknown): val is ColorScaleType {
 }
 
 export function isNdArray<T extends Data>(
-  arr: NdArray<T> | T
+  arr: NdArray<T> | T,
 ): arr is NdArray<T> {
   return 'data' in arr;
 }
@@ -440,7 +440,7 @@ export function isTypedArray<T, U extends TypedArray>(arr: U | T[]): arr is U {
 }
 
 export function isTypedNdArray<T extends NumArray>(
-  ndArr: NdArray<T>
+  ndArr: NdArray<T>,
 ): ndArr is NdArray<Exclude<T, number[]>> {
   return ndArr.dtype !== 'array';
 }

@@ -19,7 +19,7 @@ function VisManager(props: Props) {
 
   if (!('ResizeObserver' in window)) {
     throw new Error(
-      "Your browser's version is not supported. Please upgrade to the latest version."
+      "Your browser's version is not supported. Please upgrade to the latest version.",
     );
   }
 

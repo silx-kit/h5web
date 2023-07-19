@@ -19,7 +19,7 @@ function RawInspector(props: Props) {
             // Bypass cyclic dependencies
             return key !== 'parents' && key !== 'children' ? value : undefined;
           },
-          2
+          2,
         )}
       </pre>
     </details>

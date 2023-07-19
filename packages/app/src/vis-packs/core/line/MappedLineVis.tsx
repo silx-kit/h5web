@@ -67,14 +67,14 @@ function MappedLineVis(props: Props) {
   const [auxArrays, auxForDomain] = useMappedArrays(auxValues, ...hookArgs);
   const [auxErrorsArrays, auxErrorsForDomain] = useMappedArrays(
     auxErrors,
-    ...hookArgs
+    ...hookArgs,
   );
 
   const dataDomain = useDomain(
     dataForDomain,
     yScaleType,
     showErrors ? errorsForDomain : undefined,
-    ignoreValue
+    ignoreValue,
   );
 
   const auxDomains = useDomains(auxForDomain, yScaleType, auxErrorsForDomain);
@@ -98,7 +98,7 @@ function MappedLineVis(props: Props) {
               ((format) => getExportURL(format, dataset, selection, value))
             }
           />,
-          toolbarContainer
+          toolbarContainer,
         )}
 
       <LineVis

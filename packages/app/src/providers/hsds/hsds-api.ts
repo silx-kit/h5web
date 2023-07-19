@@ -56,7 +56,7 @@ export class HsdsApi extends DataProviderApi {
     username: string,
     password: string,
     filepath: string,
-    private readonly _getExportURL?: DataProviderApi['getExportURL']
+    private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath, {
       baseURL: url,
@@ -142,12 +142,12 @@ export class HsdsApi extends DataProviderApi {
     }
 
     const attrsPromises = attributes.map(async (attr) =>
-      this.fetchAttributeWithValue(collection, id, attr.name)
+      this.fetchAttributeWithValue(collection, id, attr.name),
     );
 
     const attrsWithValues = await Promise.all(attrsPromises);
     return Object.fromEntries(
-      attrsWithValues.map((attr) => [attr.name, attr.value])
+      attrsWithValues.map((attr) => [attr.name, attr.value]),
     );
   }
 
@@ -155,7 +155,7 @@ export class HsdsApi extends DataProviderApi {
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>
+    value: Value<D>,
   ): ExportURL {
     return this._getExportURL?.(format, dataset, selection, value);
   }
@@ -164,21 +164,21 @@ export class HsdsApi extends DataProviderApi {
     const { data } = await handleAxiosError(
       () => this.client.get<HsdsRootResponse>('/'),
       (status) =>
-        status === 400 ? `File not found: ${this.filepath}` : undefined
+        status === 400 ? `File not found: ${this.filepath}` : undefined,
     );
     return data.root;
   }
 
   private async fetchDataset(id: HsdsId): Promise<HsdsDatasetResponse> {
     const { data } = await this.client.get<HsdsDatasetResponse>(
-      `/datasets/${id}`
+      `/datasets/${id}`,
     );
     return data;
   }
 
   private async fetchDatatype(id: HsdsId): Promise<HsdsDatatypeResponse> {
     const { data } = await this.client.get<HsdsDatatypeResponse>(
-      `/datatypes/${id}`
+      `/datatypes/${id}`,
     );
     return data;
   }
@@ -190,30 +190,30 @@ export class HsdsApi extends DataProviderApi {
 
   private async fetchLinks(id: HsdsId): Promise<HsdsLink[]> {
     const { data } = await this.client.get<HsdsLinksResponse>(
-      `/groups/${id}/links`
+      `/groups/${id}/links`,
     );
     return data.links;
   }
 
   private async fetchAttributes(
     entityCollection: HsdsCollection,
-    entityId: HsdsId
+    entityId: HsdsId,
   ): Promise<HsdsAttribute[]> {
     const { data } = await this.client.get<HsdsAttributesResponse>(
-      `/${entityCollection}/${entityId}/attributes`
+      `/${entityCollection}/${entityId}/attributes`,
     );
     return data.attributes;
   }
 
   private async fetchValue(
     entityId: HsdsId,
-    params: ValuesStoreParams
+    params: ValuesStoreParams,
   ): Promise<HsdsValueResponse> {
     const { selection } = params;
     const { data } = await this.cancellableFetchValue(
       `/datasets/${entityId}/value`,
       params,
-      { select: selection && `[${selection}]` }
+      { select: selection && `[${selection}]` },
     );
     return data.value;
   }
@@ -221,17 +221,17 @@ export class HsdsApi extends DataProviderApi {
   private async fetchAttributeWithValue(
     entityCollection: HsdsCollection,
     entityId: HsdsId,
-    attributeName: string
+    attributeName: string,
   ): Promise<HsdsAttributeWithValueResponse> {
     const { data } = await this.client.get<HsdsAttributeWithValueResponse>(
-      `/${entityCollection}/${entityId}/attributes/${attributeName}`
+      `/${entityCollection}/${entityId}/attributes/${attributeName}`,
     );
     return data;
   }
 
   private async resolveLink(
     link: HsdsLink,
-    path: string
+    path: string,
   ): Promise<ChildEntity> {
     if (link.class !== 'H5L_TYPE_HARD') {
       return {
@@ -264,17 +264,17 @@ export class HsdsApi extends DataProviderApi {
 
   private async processGroup(
     baseEntity: BaseHsdsEntity,
-    isChild: true
+    isChild: true,
   ): Promise<HsdsEntity<Group>>;
 
   private async processGroup(
     baseEntity: BaseHsdsEntity,
-    isChild?: false
+    isChild?: false,
   ): Promise<HsdsEntity<GroupWithChildren>>;
 
   private async processGroup(
     baseEntity: BaseHsdsEntity,
-    isChild = false
+    isChild = false,
   ): Promise<HsdsEntity<Group | GroupWithChildren>> {
     const { id, path } = baseEntity;
     const { attributeCount, linkCount } = await this.fetchGroup(id);
@@ -301,14 +301,14 @@ export class HsdsApi extends DataProviderApi {
       ...group,
       children: await Promise.all(
         links.map((link) =>
-          this.resolveLink(link, buildEntityPath(path, link.title))
-        )
+          this.resolveLink(link, buildEntityPath(path, link.title)),
+        ),
       ),
     };
   }
 
   private async processDataset(
-    baseEntity: BaseHsdsEntity
+    baseEntity: BaseHsdsEntity,
   ): Promise<HsdsEntity<Dataset>> {
     const { id } = baseEntity;
     const dataset = await this.fetchDataset(id);
@@ -328,7 +328,7 @@ export class HsdsApi extends DataProviderApi {
   }
 
   private async processDatatype(
-    baseEntity: BaseHsdsEntity
+    baseEntity: BaseHsdsEntity,
   ): Promise<HsdsEntity<Datatype>> {
     const { id } = baseEntity;
     const { type } = await this.fetchDatatype(id);

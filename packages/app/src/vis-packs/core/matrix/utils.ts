@@ -16,7 +16,7 @@ import { format } from 'd3-format';
 import type { ValueFormatter } from '../models';
 
 export function createNumericFormatter(
-  notation: Notation
+  notation: Notation,
 ): ValueFormatter<NumericType> {
   switch (notation) {
     case Notation.FixedPoint:
@@ -29,7 +29,7 @@ export function createNumericFormatter(
 }
 
 export function createMatrixComplexFormatter(
-  notation: Notation
+  notation: Notation,
 ): ValueFormatter<ComplexType> {
   const formatStr =
     notation === Notation.FixedPoint
@@ -41,7 +41,7 @@ export function createMatrixComplexFormatter(
 
 export function getFormatter(
   type: PrintableType,
-  notation: Notation
+  notation: Notation,
 ): ValueFormatter<PrintableType> {
   if (isComplexType(type)) {
     return createMatrixComplexFormatter(notation);
@@ -55,7 +55,7 @@ export function getFormatter(
 }
 
 export function getCellWidth(
-  type: PrintableType | PrintableCompoundType
+  type: PrintableType | PrintableCompoundType,
 ): number {
   if (type.class === DTypeClass.Compound) {
     return Math.max(...Object.values(type.fields).map(getCellWidth));

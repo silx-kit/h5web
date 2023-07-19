@@ -11,7 +11,7 @@ export function getTitleForSelection(selection: Rect | undefined) {
 
   const [start, end] = selection;
   return `Selection from (${formatCoord(start.x)}, ${formatCoord(
-    start.y
+    start.y,
   )}) to (${formatCoord(end.x)}, ${formatCoord(end.y)})`;
 }
 

@@ -46,16 +46,16 @@ const datasetFlt3D = makeDataset('dataset_flt_3d', intType, [5, 3, 1]);
 const datasetCplx3D = makeDataset('dataset_cplx_3d', complexType, [5, 2, 2]);
 
 const imageDataset = withImageAttributes(
-  makeDataset('image_dataset', intType, [256, 256, 3])
+  makeDataset('image_dataset', intType, [256, 256, 3]),
 );
 const fltImageDataset = withImageAttributes(
-  makeDataset('img_dset', floatType, [256, 256, 3])
+  makeDataset('img_dset', floatType, [256, 256, 3]),
 );
 const scalarImageDataset = withImageAttributes(
-  makeScalarDataset('image_dataset', intType)
+  makeScalarDataset('image_dataset', intType),
 );
 const strImageDataset = withImageAttributes(
-  makeDataset('image_dataset', stringType, [256, 256, 3])
+  makeDataset('image_dataset', stringType, [256, 256, 3]),
 );
 
 describe('Raw', () => {

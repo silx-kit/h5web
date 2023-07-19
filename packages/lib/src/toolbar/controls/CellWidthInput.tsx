@@ -21,7 +21,7 @@ function CellWidthInput(props: Props) {
   const defaultValue = Math.max(rawDefaultValue, MIN);
 
   const [inputValue, setInputValue] = useState(
-    (value ?? defaultValue).toString()
+    (value ?? defaultValue).toString(),
   );
 
   const onChangeDebounced = useDebouncedCallback(onChange, [onChange], 150);

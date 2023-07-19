@@ -48,7 +48,7 @@ function Pan(props: Props) {
         startOffsetPosition.current = worldPt.clone();
       }
     },
-    [shouldInteract]
+    [shouldInteract],
   );
 
   const onPointerUp = useCallback((evt: CanvasEvent<PointerEvent>) => {
@@ -69,7 +69,7 @@ function Pan(props: Props) {
       const delta = startOffsetPosition.current.clone().sub(worldPt);
       moveCameraTo(camera.position.clone().add(delta));
     },
-    [camera, isModifierKeyPressed, moveCameraTo]
+    [camera, isModifierKeyPressed, moveCameraTo],
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });

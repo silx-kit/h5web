@@ -60,7 +60,7 @@ export enum Vis {
 export interface CoreVisDef extends VisDef {
   supportsDataset: (
     dataset: Dataset,
-    attrValuesStore: AttrValuesStore
+    attrValuesStore: AttrValuesStore,
   ) => boolean;
 }
 

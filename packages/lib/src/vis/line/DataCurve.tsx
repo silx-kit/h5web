@@ -70,7 +70,7 @@ function DataCurve(props: Props) {
     abscissas,
     abscissaScale,
     ordinateScale,
-    ignoreValue
+    ignoreValue,
   );
 
   const valueToErrorPositions = useValueToErrorPositions(errors, ordinateScale);
@@ -121,7 +121,7 @@ function DataCurve(props: Props) {
       const { topCap, bottomCap, bar } = valueToErrorPositions(
         value,
         index,
-        pos
+        pos,
       );
 
       if (topCap) {
@@ -170,7 +170,7 @@ function DataCurve(props: Props) {
         onDataPointClick(index, evt);
       }
     },
-    [onDataPointClick]
+    [onDataPointClick],
   );
 
   const handlePointerEnter = useCallback(
@@ -181,7 +181,7 @@ function DataCurve(props: Props) {
         onDataPointEnter(index, evt);
       }
     },
-    [onDataPointEnter]
+    [onDataPointEnter],
   );
 
   const handlePointerLeave = useCallback(
@@ -192,7 +192,7 @@ function DataCurve(props: Props) {
         onDataPointLeave(index, evt);
       }
     },
-    [onDataPointLeave]
+    [onDataPointLeave],
   );
 
   const showLine = visible && curveType !== CurveType.GlyphsOnly;

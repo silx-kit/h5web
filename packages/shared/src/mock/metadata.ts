@@ -43,7 +43,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
         'unresolved_external_link',
         'External',
         'entry_000/dataset',
-        'my_file.h5'
+        'my_file.h5',
       ),
     ]),
     makeGroup('nD_datasets', [
@@ -165,7 +165,7 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
             makeNxDataset('fourD_rgb', intType, [10, 3, 3, 3], {
               longName: 'RGB CMY DGW',
               interpretation: 'rgb-image',
-            })
+            }),
           ),
           axes: {
             X_rgb: makeDataset('X_rgb', floatType, [3]),
@@ -270,15 +270,15 @@ export const mockMetadata = makeNxGroup(mockFilepath, 'NXroot', {
               unknown: ScaleType.Log,
               signal_scale_type: 'invalid',
               axes_scale_type: ['invalid'],
-            })
+            }),
           ),
-        ]
+        ],
       ),
       withAttributes(
         makeNxDataGroup('silx_style_malformed', {
           signal: makeDataset('oneD', intType, [41]),
         }),
-        [makeStrAttr('SILX_style', '{')]
+        [makeStrAttr('SILX_style', '{')],
       ),
     ]),
     makeGroup('resilience', [

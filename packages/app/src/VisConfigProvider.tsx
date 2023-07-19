@@ -27,7 +27,7 @@ function VisConfigProvider(props: Props) {
         (accChildren, NextProvider) => (
           <NextProvider>{accChildren}</NextProvider>
         ),
-        children
+        children,
       )}
     </>
   );

@@ -56,8 +56,8 @@ function createLineConfigStore() {
         name: 'h5web:line',
         partialize: (state) => omit(state, ['autoScale']),
         version: 4,
-      }
-    )
+      },
+    ),
   );
 }
 
@@ -76,10 +76,10 @@ export function LineConfigProvider(props: ConfigProviderProps) {
 export function useLineConfig(
   initialSuggestedOpts: Partial<
     Pick<LineConfig, 'xScaleType' | 'yScaleType'>
-  > = {}
+  > = {},
 ): LineConfig {
   const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
+    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
   );
 
   const persistedConfig = useStore(useContext(StoreContext));

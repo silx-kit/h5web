@@ -88,7 +88,7 @@ describe('convertH5GroveDtype', () => {
             size: 32,
           },
         },
-      }
+      },
     );
   });
 

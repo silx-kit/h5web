@@ -10,7 +10,7 @@ describe('findMockEntity', () => {
 
   it('should throw if path is relative', () => {
     expect(() => findMockEntity('nD_datasets')).toThrow(
-      /path to start with '\/'/
+      /path to start with '\/'/,
     );
   });
 

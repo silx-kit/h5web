@@ -50,7 +50,7 @@ function MappedMatrixVis(props: Props) {
               ((format) => getExportURL(format, dataset, selection, value))
             }
           />,
-          toolbarContainer
+          toolbarContainer,
         )}
 
       <MatrixVis

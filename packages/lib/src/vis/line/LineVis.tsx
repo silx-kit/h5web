@@ -82,7 +82,7 @@ function LineVis(props: Props) {
 
   assertLength(errorsArray, dataArray.size, 'error');
   auxiliaries.forEach(({ label, array }, index) =>
-    assertLength(array, dataArray.size, `'${label || index}' auxiliary`)
+    assertLength(array, dataArray.size, `'${label || index}' auxiliary`),
   );
 
   const abscissas = useAxisValues(abscissaValue, dataArray.size);

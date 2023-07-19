@@ -98,7 +98,7 @@ export const CustomContainer = {
                   rendered with a separate <code>Html</code> element and a
                   portal.
                 </p>,
-                portalTarget
+                portalTarget,
               )}
             </Html>
           )}

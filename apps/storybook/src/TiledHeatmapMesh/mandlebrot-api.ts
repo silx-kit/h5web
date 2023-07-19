@@ -18,7 +18,7 @@ const mandlebrot = greenlet(
     xDomain: Domain,
     yDomain: Domain,
     width: number,
-    height: number
+    height: number,
   ): Promise<Float32Array> => {
     const xRange = xDomain[1] - xDomain[0];
     const yRange = yDomain[1] - yDomain[0];
@@ -53,7 +53,7 @@ const mandlebrot = greenlet(
     }
 
     return array;
-  }
+  },
 );
 
 export class MandelbrotTilesApi extends TilesApi {
@@ -65,7 +65,7 @@ export class MandelbrotTilesApi extends TilesApi {
     size: Size,
     tileSize: Size,
     xDomain: Domain,
-    yDomain: Domain
+    yDomain: Domain,
   ) {
     super(tileSize, getLayerSizes(size, tileSize));
     this.xDomain = xDomain;
@@ -80,7 +80,7 @@ export class MandelbrotTilesApi extends TilesApi {
         const height = clamp(
           layerSize.height - offset.y,
           0,
-          this.tileSize.height
+          this.tileSize.height,
         );
 
         const xScale = (this.xDomain[1] - this.xDomain[0]) / layerSize.width;
@@ -97,7 +97,7 @@ export class MandelbrotTilesApi extends TilesApi {
         const arr = await mandlebrot(50, xRange, yRange, width, height);
         return ndarray(arr, [height, width]);
       },
-      { type: 'Map', areEqual: areTilesEqual }
+      { type: 'Map', areEqual: areTilesEqual },
     );
   }
 

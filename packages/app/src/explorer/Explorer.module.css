@@ -71,7 +71,9 @@
   top: 0.5rem;
   right: 0.75rem;
   font-size: 0.75em;
-  animation: spin 1.5s ease-in-out infinite, fade 0.1s 0.1s backwards;
+  animation:
+    spin 1.5s ease-in-out infinite,
+    fade 0.1s 0.1s backwards;
 }
 
 .nx {

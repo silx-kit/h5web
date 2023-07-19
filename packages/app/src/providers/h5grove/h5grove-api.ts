@@ -42,7 +42,7 @@ export class H5GroveApi extends DataProviderApi {
     url: string,
     filepath: string,
     axiosConfig?: AxiosRequestConfig,
-    private readonly _getExportURL?: DataProviderApi['getExportURL']
+    private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath, { baseURL: url, ...axiosConfig });
   }
@@ -53,7 +53,7 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   public async getValue(
-    params: ValuesStoreParams
+    params: ValuesStoreParams,
   ): Promise<H5GroveDataResponse> {
     const { dataset } = params;
 
@@ -76,7 +76,7 @@ export class H5GroveApi extends DataProviderApi {
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>
+    value: Value<D>,
   ): ExportURL {
     const url = this._getExportURL?.(format, dataset, selection, value);
     if (url) {
@@ -132,23 +132,23 @@ export class H5GroveApi extends DataProviderApi {
         }
 
         return undefined;
-      }
+      },
     );
     return data;
   }
 
   private async fetchAttrValues(
-    path: string
+    path: string,
   ): Promise<H5GroveAttrValuesResponse> {
     const { data } = await this.client.get<H5GroveAttrValuesResponse>(
       `/attr/`,
-      { params: { path } }
+      { params: { path } },
     );
     return data;
   }
 
   private async fetchData(
-    params: ValuesStoreParams
+    params: ValuesStoreParams,
   ): Promise<H5GroveDataResponse> {
     const { data } = await this.cancellableFetchValue(`/data/`, params, {
       path: params.dataset.path,
@@ -160,7 +160,7 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   private async fetchBinaryData(
-    params: ValuesStoreParams
+    params: ValuesStoreParams,
   ): Promise<ArrayBuffer> {
     const { data } = await this.cancellableFetchValue(
       '/data/',
@@ -171,7 +171,7 @@ export class H5GroveApi extends DataProviderApi {
         format: 'bin',
         dtype: 'safe',
       },
-      'arraybuffer'
+      'arraybuffer',
     );
 
     return data;
@@ -180,19 +180,19 @@ export class H5GroveApi extends DataProviderApi {
   private async processEntityResponse(
     path: string,
     response: H5GroveEntityResponse,
-    isChild: true
+    isChild: true,
   ): Promise<ChildEntity>;
 
   private async processEntityResponse(
     path: string,
     response: H5GroveEntityResponse,
-    isChild?: false
+    isChild?: false,
   ): Promise<ProvidedEntity>;
 
   private async processEntityResponse(
     path: string,
     response: H5GroveEntityResponse,
-    isChild = false
+    isChild = false,
   ): Promise<ProvidedEntity | ChildEntity> {
     const { name } = response;
     const baseEntity = { name, path };
@@ -217,7 +217,7 @@ export class H5GroveApi extends DataProviderApi {
           children.map((child) => {
             const childPath = buildEntityPath(path, child.name);
             return this.processEntityResponse(childPath, child, true);
-          })
+          }),
         ),
       };
     }
@@ -276,7 +276,7 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   private async processAttrsMetadata(
-    attrsMetadata: H5GroveAttribute[]
+    attrsMetadata: H5GroveAttribute[],
   ): Promise<Attribute[]> {
     return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
       name,

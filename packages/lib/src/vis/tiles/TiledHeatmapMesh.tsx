@@ -51,13 +51,13 @@ function TiledHeatmapMesh(props: Props) {
     const dataPointsPerPixel = Math.max(
       1,
       (pixelSize.x / meshSize.width) * baseLayerSize.width,
-      (pixelSize.y / meshSize.height) * baseLayerSize.height
+      (pixelSize.y / meshSize.height) * baseLayerSize.height,
     );
 
     const roundingOffset = 1 - clamp(qualityFactor, 0, 1);
     const subsamplingLevel = Math.min(
       Math.floor(Math.log2(dataPointsPerPixel) + roundingOffset),
-      baseLayerIndex
+      baseLayerIndex,
     );
     const currentLayerIndex = baseLayerIndex - subsamplingLevel;
 

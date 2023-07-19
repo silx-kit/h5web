@@ -31,7 +31,7 @@ function Tile(props: Props) {
         onPointerMove(e, array);
       },
       50,
-      { trailing: false }
+      { trailing: false },
     );
 
   return (

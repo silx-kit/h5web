@@ -34,7 +34,7 @@ export function useMoveCameraTo() {
       camera.updateMatrixWorld();
       invalidate();
     },
-    [camera, visSize, getFovBox, invalidate]
+    [camera, visSize, getFovBox, invalidate],
   );
 }
 
@@ -56,7 +56,7 @@ export function useZoomOnSelection() {
       // Then move camera position
       moveCameraTo(zoomBox.center);
     },
-    [camera, canvasSize, moveCameraTo]
+    [camera, canvasSize, moveCameraTo],
   );
 }
 
@@ -73,7 +73,7 @@ function useWheelCapture() {
 }
 
 export function useZoomOnWheel(
-  isZoomAllowed: (sourceEvent: WheelEvent) => { x: boolean; y: boolean }
+  isZoomAllowed: (sourceEvent: WheelEvent) => { x: boolean; y: boolean },
 ) {
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
@@ -90,7 +90,7 @@ export function useZoomOnWheel(
       const zoomVector = new Vector3(
         zoomX ? ZOOM_FACTOR : 1,
         zoomY ? ZOOM_FACTOR : 1,
-        1
+        1,
       );
 
       // sourceEvent.deltaY < 0 => Wheel down => decrease scale to reduce FOV
@@ -111,7 +111,7 @@ export function useZoomOnWheel(
 
       moveCameraTo(worldPt.clone().add(delta));
     },
-    [camera, isZoomAllowed, moveCameraTo]
+    [camera, isZoomAllowed, moveCameraTo],
   );
 
   useWheelCapture();
@@ -136,7 +136,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
 
       return { htmlPt, worldPt, dataPt, sourceEvent };
     },
-    [camera, htmlToWorld, worldToData]
+    [camera, htmlToWorld, worldToData],
   );
 
   const handlePointerDown = useCallback(
@@ -145,7 +145,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
         onPointerDown(processEvent(sourceEvent));
       }
     },
-    [processEvent, onPointerDown]
+    [processEvent, onPointerDown],
   );
 
   const handlePointerMove = useCallback(
@@ -154,7 +154,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
         onPointerMove(processEvent(sourceEvent));
       }
     },
-    [processEvent, onPointerMove]
+    [processEvent, onPointerMove],
   );
 
   const handlePointerUp = useCallback(
@@ -163,7 +163,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
         onPointerUp(processEvent(sourceEvent));
       }
     },
-    [processEvent, onPointerUp]
+    [processEvent, onPointerUp],
   );
 
   const handleWheel = useCallback(
@@ -172,7 +172,7 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
         onWheel(processEvent(sourceEvent));
       }
     },
-    [processEvent, onWheel]
+    [processEvent, onWheel],
   );
 
   useEventListener(domElement, 'pointerdown', handlePointerDown);
@@ -192,7 +192,7 @@ export function useInteraction(id: string, value: InteractionEntry) {
 
   return useCallback(
     (event: MouseEvent) => shouldInteract(id, event),
-    [id, shouldInteract]
+    [id, shouldInteract],
   );
 }
 

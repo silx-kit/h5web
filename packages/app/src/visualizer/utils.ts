@@ -25,7 +25,7 @@ import { NEXUS_VIS, NexusVis } from '../vis-packs/nexus/visualizations';
 export function resolvePath(
   path: string,
   entitiesStore: EntitiesStore,
-  attrValueStore: AttrValuesStore
+  attrValueStore: AttrValuesStore,
 ): { entity: ProvidedEntity; supportedVis: VisDef[] } | undefined {
   const entity = entitiesStore.get(path);
 
@@ -44,7 +44,7 @@ export function resolvePath(
 
 function findSupportedVis(
   entity: ProvidedEntity,
-  attrValueStore: AttrValuesStore
+  attrValueStore: AttrValuesStore,
 ): VisDef[] {
   const nxVis = getSupportedNxVis(entity, attrValueStore);
   if (nxVis.length > 0) {
@@ -56,7 +56,7 @@ function findSupportedVis(
 
 function getNxDefaultPath(
   entity: ProvidedEntity,
-  attrValueStore: AttrValuesStore
+  attrValueStore: AttrValuesStore,
 ): string | undefined {
   if (!isGroup(entity)) {
     return undefined;
@@ -77,10 +77,10 @@ function getNxDefaultPath(
 
 function getSupportedCoreVis(
   entity: ProvidedEntity,
-  attrValueStore: AttrValuesStore
+  attrValueStore: AttrValuesStore,
 ): CoreVisDef[] {
   const supportedVis = Object.values(CORE_VIS).filter(
-    (vis) => isDataset(entity) && vis.supportsDataset(entity, attrValueStore)
+    (vis) => isDataset(entity) && vis.supportsDataset(entity, attrValueStore),
   );
 
   return supportedVis.length > 1
@@ -90,7 +90,7 @@ function getSupportedCoreVis(
 
 function getSupportedNxVis(
   entity: ProvidedEntity,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): VisDef[] {
   if (!isGroup(entity)) {
     return [];
@@ -143,7 +143,7 @@ function getSupportedNxVis(
 
 function getImplicitDefaultChild(
   children: ChildEntity[],
-  attrValueStore: AttrValuesStore
+  attrValueStore: AttrValuesStore,
 ): ChildEntity | undefined {
   const nxGroups = children
     .filter(isGroup)
@@ -151,7 +151,7 @@ function getImplicitDefaultChild(
 
   // Look for an `NXdata` child group first
   const nxDataChild = nxGroups.find(
-    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXdata'
+    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXdata',
   );
 
   if (nxDataChild) {
@@ -160,7 +160,7 @@ function getImplicitDefaultChild(
 
   // Then for an `NXentry` child group
   const nxEntryChild = nxGroups.find(
-    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXentry'
+    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXentry',
   );
 
   if (nxEntryChild) {
@@ -169,6 +169,6 @@ function getImplicitDefaultChild(
 
   // Then for an `NXprocess` child group
   return nxGroups.find(
-    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXprocess'
+    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXprocess',
   );
 }

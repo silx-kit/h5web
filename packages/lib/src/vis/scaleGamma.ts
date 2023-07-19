@@ -37,7 +37,7 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
     }
 
     return _interpolate(..._range)(
-      normalize(..._domain)(clamper(x)) ** _exponent
+      normalize(..._domain)(clamper(x)) ** _exponent,
     );
   };
 
@@ -118,8 +118,8 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
   function invert(val: Output) {
     return clamper(
       interpolateNumber(..._domain)(
-        normalize(..._range)(val) ** (1 / _exponent)
-      )
+        normalize(..._range)(val) ** (1 / _exponent),
+      ),
     );
   }
 
@@ -144,7 +144,7 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
 
   function tickFormat(
     count?: number | undefined,
-    specifier?: string | undefined
+    specifier?: string | undefined,
   ) {
     return _createGammaLikeScale().tickFormat(count, specifier);
   }

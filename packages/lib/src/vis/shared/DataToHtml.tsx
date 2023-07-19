@@ -16,7 +16,7 @@ function DataToHtml<T extends Vector3[]>(props: Props<T>) {
   const { dataToHtml } = useVisCanvasContext();
   const htmlPoints = useCameraState(
     (camera) => points.map((pt) => dataToHtml(camera, pt)) as MappedTuple<T>,
-    [points, dataToHtml]
+    [points, dataToHtml],
   );
 
   return <>{children(...htmlPoints)}</>;

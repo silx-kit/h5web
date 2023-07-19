@@ -10,15 +10,15 @@ import { createScale } from '../utils';
 export function getTileOffsets(box: Box2, tileSize: Size): Vector2[] {
   const { width, height } = tileSize;
   const nCols = Math.ceil(
-    ((box.min.x % width) + box.max.x - box.min.x) / width
+    ((box.min.x % width) + box.max.x - box.min.x) / width,
   );
   const nRows = Math.ceil(
-    ((box.min.y % height) + box.max.y - box.min.y) / height
+    ((box.min.y % height) + box.max.y - box.min.y) / height,
   );
 
   const start = new Vector2(
     Math.floor(box.min.x / width) * width,
-    Math.floor(box.min.y / height) * height
+    Math.floor(box.min.y / height) * height,
   );
 
   const centers: Vector2[] = [];
@@ -35,7 +35,7 @@ export function getTileOffsets(box: Box2, tileSize: Size): Vector2[] {
 export function sortTilesByDistanceTo(
   offsets: Vector2[],
   tileSize: Size,
-  ref: Vector2
+  ref: Vector2,
 ) {
   const { width, height } = tileSize;
 
@@ -48,7 +48,7 @@ export function sortTilesByDistanceTo(
 
 export function getNdcToObject3DMatrix(
   camera: Camera,
-  object3DRef: RefObject<Object3D>
+  object3DRef: RefObject<Object3D>,
 ): Matrix4 | undefined {
   const object3D = object3DRef.current;
   if (!object3D) {
@@ -64,14 +64,14 @@ export function getNdcToObject3DMatrix(
 
 export function getObject3DPixelSize(
   ndcToObject3DMatrix: Matrix4 | undefined,
-  canvasSize: Size
+  canvasSize: Size,
 ): Vector3 {
   if (!ndcToObject3DMatrix) {
     return new Vector3();
   }
   const ndcPixelBox = new Box3(
     new Vector3(0, 0, 0),
-    new Vector3(2 / canvasSize.width, 2 / canvasSize.height, 0)
+    new Vector3(2 / canvasSize.width, 2 / canvasSize.height, 0),
   );
   const box = ndcPixelBox.applyMatrix4(ndcToObject3DMatrix);
   return box.getSize(new Vector3());
@@ -80,7 +80,7 @@ export function getObject3DPixelSize(
 const NDC_BOX = new Box3(new Vector3(-1, -1, -1), new Vector3(1, 1, 1));
 
 export function getObject3DVisibleBox(
-  ndcToObject3DMatrix: Matrix4 | undefined
+  ndcToObject3DMatrix: Matrix4 | undefined,
 ): Box3 {
   if (!ndcToObject3DMatrix) {
     return new Box3();
@@ -107,7 +107,7 @@ function getLayerScales(layerSize: Size, meshSize: Size) {
 export function scaleBoxToLayer(
   box: Box3,
   layerSize: Size,
-  meshSize: Size
+  meshSize: Size,
 ): Box2 {
   if (box.isEmpty()) {
     return new Box2();

@@ -16,7 +16,7 @@ export const CANCELLED_ERROR_MSG = 'Request cancelled';
 export function flattenValue(
   value: unknown,
   dataset: Dataset<ArrayShape>,
-  selection?: string
+  selection?: string,
 ): unknown[] {
   assertArray(value);
   const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
@@ -26,7 +26,7 @@ export function flattenValue(
 
 export async function handleAxiosError<T>(
   func: () => Promise<T>,
-  getErrorToThrow: (status: number, errorData: unknown) => string | undefined
+  getErrorToThrow: (status: number, errorData: unknown) => string | undefined,
 ): Promise<T> {
   try {
     return await func();
@@ -52,13 +52,13 @@ export function getNameFromPath(path: string) {
 export function sliceValue<T extends DType>(
   value: unknown,
   dataset: Dataset<ArrayShape | ScalarShape, T>,
-  selection: string
+  selection: string,
 ): Primitive<T>[] {
   const { shape, type } = dataset;
   const dataArray = ndarray(value as Primitive<typeof type>[], shape);
   const mappedArray = applyMapping(
     dataArray,
-    selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s, 10)))
+    selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s, 10))),
   );
 
   return mappedArray.data;

@@ -58,7 +58,7 @@ function GridProvider(props: Props) {
       sticky,
       rowCount,
       columnHeaders,
-    ]
+    ],
   );
 
   return (

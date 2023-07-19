@@ -247,7 +247,7 @@ test('handle min > max', async () => {
   expect(minInput).toHaveValue('5e+2');
   expect(maxInput).toHaveValue('4e+2');
   expect(screen.getByText(/Min greater than max/)).toHaveTextContent(
-    /falling back to data range/
+    /falling back to data range/,
   );
 
   const visArea = await screen.findByRole('figure');
@@ -264,7 +264,7 @@ test('handle min or max <= 0 in log scale', async () => {
 
   // Ensure the scale type is log
   await expect(
-    screen.findByRole('button', { name: 'Log' })
+    screen.findByRole('button', { name: 'Log' }),
   ).resolves.toBeVisible();
 
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
@@ -276,7 +276,7 @@ test('handle min or max <= 0 in log scale', async () => {
   await user.type(minInput, '-5{enter}');
   expect(minInput).toHaveValue('−5e+0');
   expect(screen.getByText(/Custom min invalid/)).toHaveTextContent(
-    /falling back to data min/
+    /falling back to data min/,
   );
 
   const visArea = await screen.findByRole('figure');
@@ -288,7 +288,7 @@ test('handle min or max <= 0 in log scale', async () => {
   expect(screen.queryByText(/Custom min invalid/)).not.toBeInTheDocument();
   expect(screen.queryByText(/Custom max invalid/)).not.toBeInTheDocument();
   expect(screen.getByText(/Min greater than max/)).toHaveTextContent(
-    /falling back to data range/
+    /falling back to data range/,
   );
 });
 
@@ -297,7 +297,7 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
 
   // Ensure the scale type is log
   await expect(
-    screen.findByRole('button', { name: 'Log' })
+    screen.findByRole('button', { name: 'Log' }),
   ).resolves.toBeVisible();
 
   await user.click(screen.getByRole('button', { name: 'Edit domain' }));
@@ -311,7 +311,7 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
   await user.type(maxInput, '1e-4{enter}'); // lower than data min
 
   expect(screen.getByText(/Custom min invalid/)).toHaveTextContent(
-    /falling back to custom max/
+    /falling back to custom max/,
   );
 
   // Min fallback = custom max, so domain is empty

@@ -21,8 +21,8 @@ function createComplexConfigStore() {
       {
         name: 'h5web:complex',
         version: 2,
-      }
-    )
+      },
+    ),
   );
 }
 

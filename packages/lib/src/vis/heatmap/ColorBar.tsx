@@ -66,7 +66,7 @@ function ColorBar(props: Props) {
             backgroundImage: getLinearGradient(
               getInterpolator(colorMap, invertColorMap),
               horizontal ? 'right' : 'top',
-              domain[0] === domain[1]
+              domain[0] === domain[1],
             ),
           }}
         />
@@ -89,7 +89,7 @@ function ColorBar(props: Props) {
                     adaptedNumTicks(gradientLength),
                     // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
                     // @ts-ignore: log scale's `tickFormat` accepts a formatter function
-                    formatTick
+                    formatTick,
                   )
                 : formatTick
             }

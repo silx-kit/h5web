@@ -56,7 +56,8 @@
   background-color: var(--h5w-selector-menu--bgColor, white);
   overflow: hidden scroll;
   scrollbar-width: thin;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
     rgba(0, 0, 0, 0.1) 0px 4px 11px;
 }
 

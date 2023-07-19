@@ -31,21 +31,21 @@ interface Props extends CommonInteractionProps {
   transform?: (
     rawSelection: Selection,
     camera: Camera,
-    context: VisCanvasContextValue
+    context: VisCanvasContextValue,
   ) => Selection;
   validate?: (selection: Selection) => boolean;
   onSelectionStart?: () => void;
   onSelectionChange?: (
     selection: Selection | undefined,
     rawSelection: Selection,
-    isValid: boolean
+    isValid: boolean,
   ) => void;
   onSelectionEnd?: (selection: Selection | undefined, isValid: boolean) => void;
   onValidSelection?: (selection: Selection) => void;
   children: (
     selection: Selection,
     rawSelection: Selection,
-    isValid: boolean
+    isValid: boolean,
   ) => ReactNode;
 }
 
@@ -100,7 +100,7 @@ function SelectionTool(props: Props) {
 
       startEvtRef.current = evt;
     },
-    [shouldInteract]
+    [shouldInteract],
   );
 
   const onPointerMove = useCallback(
@@ -116,7 +116,7 @@ function SelectionTool(props: Props) {
 
       setRawSelection({ html, world, data });
     },
-    [camera, canvasBox, htmlToWorld, worldToData, setRawSelection]
+    [camera, canvasBox, htmlToWorld, worldToData, setRawSelection],
   );
 
   const onPointerUp = useCallback(
@@ -133,7 +133,7 @@ function SelectionTool(props: Props) {
       hasSuccessfullyEndedRef.current = shouldInteract(sourceEvent);
       setRawSelection(undefined);
     },
-    [setRawSelection, shouldInteract]
+    [setRawSelection, shouldInteract],
   );
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
@@ -145,19 +145,19 @@ function SelectionTool(props: Props) {
       setRawSelection(undefined);
     },
     [],
-    { event: 'keydown' }
+    { event: 'keydown' },
   );
 
   // Compute effective selection
   const selection = useMemo(
     () => rawSelection && transformRef.current(rawSelection, camera, context),
-    [rawSelection, transformRef, camera, context]
+    [rawSelection, transformRef, camera, context],
   );
 
   // Determine if effective selection respects the minimum size threshold
   const isValid = useMemo(
     () => !!selection && validateRef.current(selection),
-    [selection, validateRef]
+    [selection, validateRef],
   );
 
   // Keep track of previous effective selection and validity
@@ -177,7 +177,7 @@ function SelectionTool(props: Props) {
       onSelectionChangeRef.current?.(
         isModifierKeyPressed ? selection : undefined, // don't pass selection object if user is not pressing modifier key
         rawSelection,
-        isValid
+        isValid,
       );
 
       return;
@@ -188,7 +188,7 @@ function SelectionTool(props: Props) {
       assertDefined(prevIsValid);
       onSelectionEndRef.current?.(
         hasSuccessfullyEndedRef.current ? prevSelection : undefined, // pass `undefined` if Escape pressed or modifier key released
-        prevIsValid
+        prevIsValid,
       );
 
       if (prevIsValid && hasSuccessfullyEndedRef.current) {

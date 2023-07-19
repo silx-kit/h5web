@@ -48,7 +48,7 @@ function ScatterPoints(props: Props) {
         onClick(index, evt);
       }
     },
-    [onClick]
+    [onClick],
   );
 
   const handlePointerEnter = useCallback(
@@ -58,7 +58,7 @@ function ScatterPoints(props: Props) {
         onPointerEnter(index, evt);
       }
     },
-    [onPointerEnter]
+    [onPointerEnter],
   );
 
   const handlePointerOut = useCallback(
@@ -69,7 +69,7 @@ function ScatterPoints(props: Props) {
         onPointerOut(index, evt);
       }
     },
-    [onPointerOut]
+    [onPointerOut],
   );
 
   const { length } = data;
@@ -80,14 +80,14 @@ function ScatterPoints(props: Props) {
     abscissas,
     abscissaScale,
     ordinates,
-    ordinateScale
+    ordinateScale,
   );
 
   const valueToColor = useValueToColor(
     scaleType,
     domain,
     colorMap,
-    invertColorMap
+    invertColorMap,
   );
 
   const dataGeometry = useMemo(() => {

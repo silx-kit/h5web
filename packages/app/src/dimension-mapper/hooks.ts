@@ -8,6 +8,6 @@ export function useDimMappingState(dims: number[], axesCount: number) {
       ...Array.from({ length: dims.length - axesCount }, () => 0),
       ...['y' as const, 'x' as const].slice(-axesCount),
     ],
-    100
+    100,
   );
 }

@@ -73,7 +73,7 @@ function MappedHeatmapVis(props: Props) {
               ((format) => getExportURL(format, dataset, selection, value))
             }
           />,
-          toolbarContainer
+          toolbarContainer,
         )}
 
       <HeatmapVis

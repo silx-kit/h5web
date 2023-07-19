@@ -30,7 +30,7 @@ export interface DatasetInfo {
 }
 
 interface DatasetDef<
-  T extends NumericType | ComplexType = NumericType | ComplexType
+  T extends NumericType | ComplexType = NumericType | ComplexType,
 > extends DatasetInfo {
   dataset: Dataset<ArrayShape, T>;
 }
@@ -48,7 +48,7 @@ export interface SilxStyle {
 }
 
 export interface NxData<
-  T extends NumericType | ComplexType = NumericType | ComplexType
+  T extends NumericType | ComplexType = NumericType | ComplexType,
 > {
   titleDataset?: Dataset<ScalarShape, StringType>;
   signalDef: WithError<DatasetDef<T>>;

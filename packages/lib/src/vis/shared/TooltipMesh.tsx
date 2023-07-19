@@ -45,7 +45,7 @@ function TooltipMesh(props: Props) {
         tooltipData: [dataCoords.x, dataCoords.y],
       });
     },
-    [worldToData, showTooltip]
+    [worldToData, showTooltip],
   );
 
   // Hide tooltip when pointer leaves mesh
@@ -69,7 +69,7 @@ function TooltipMesh(props: Props) {
         onPointerMove(evt);
       }
     },
-    [height, onPointerMove, width]
+    [height, onPointerMove, width],
   );
 
   const content = tooltipData && renderTooltip(...tooltipData);

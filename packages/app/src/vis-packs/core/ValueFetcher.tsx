@@ -10,7 +10,7 @@ interface Props<D extends Dataset> {
 }
 
 function ValueFetcher<D extends Dataset<ArrayShape | ScalarShape>>(
-  props: Props<D>
+  props: Props<D>,
 ) {
   const { dataset, selection, render } = props;
 

@@ -18,7 +18,9 @@
   box-shadow: 0 0 2px var(--h5w-toolbar-input--shadowColor, dimgray);
   font-weight: inherit;
   line-height: inherit;
-  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+  transition:
+    background-color 0.05s ease-in-out,
+    box-shadow 0.05s ease-in-out;
 }
 
 .input:hover {

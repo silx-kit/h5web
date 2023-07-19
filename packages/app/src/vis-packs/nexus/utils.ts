@@ -31,7 +31,7 @@ import type { AxisDef, DatasetInfo, NxData, SilxStyle } from './models';
 
 export function isNxDataGroup(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): boolean {
   return (
     attrValuesStore.getSingle(group, 'NX_class') === 'NXdata' &&
@@ -42,7 +42,7 @@ export function isNxDataGroup(
 
 export function assertNxDataGroup(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): void {
   if (!isNxDataGroup(group, attrValuesStore)) {
     throw new Error('Expected NXdata group');
@@ -50,13 +50,13 @@ export function assertNxDataGroup(
 }
 
 function findOldStyleSignalDataset(
-  group: GroupWithChildren
+  group: GroupWithChildren,
 ): Dataset<ArrayShape, NumericType | ComplexType> {
   const dataset = group.children.find((child) => hasAttribute(child, 'signal'));
   assertDefined(dataset);
   assertDataset(
     dataset,
-    `Expected old-style "${dataset.name}" signal to be a dataset`
+    `Expected old-style "${dataset.name}" signal to be a dataset`,
   );
   assertArrayShape(dataset);
   assertNumericOrComplexType(dataset);
@@ -65,7 +65,7 @@ function findOldStyleSignalDataset(
 
 export function findSignalDataset(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): Dataset<ArrayShape, NumericType | ComplexType> {
   if (!hasAttribute(group, 'signal')) {
     return findOldStyleSignalDataset(group);
@@ -85,7 +85,7 @@ export function findSignalDataset(
 
 export function findErrorDataset(
   group: GroupWithChildren,
-  signalName: string
+  signalName: string,
 ): NumArrayDataset | undefined {
   const dataset =
     getChildEntity(group, `${signalName}_errors`) ||
@@ -103,7 +103,7 @@ export function findErrorDataset(
 
 export function findAuxErrorDataset(
   group: GroupWithChildren,
-  auxSignalName: string
+  auxSignalName: string,
 ): NumArrayDataset | undefined {
   const dataset = getChildEntity(group, `${auxSignalName}_errors`);
 
@@ -120,7 +120,7 @@ export function findAuxErrorDataset(
 export function findAssociatedDatasets(
   group: GroupWithChildren,
   type: 'axes' | 'auxiliary_signals',
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): (NumArrayDataset | undefined)[] {
   const dsetList = attrValuesStore.getSingle(group, type) || [];
   const dsetNames = typeof dsetList === 'string' ? [dsetList] : dsetList;
@@ -160,7 +160,7 @@ function parseAxesList(dsetList: unknown): string[] {
 function findOldStyleAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): NumArrayDataset[] {
   const axesList = attrValuesStore.getSingle(signal, 'axes');
   const axesNames = parseAxesList(axesList);
@@ -178,7 +178,7 @@ function findOldStyleAxesDatasets(
 export function findAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ) {
   if (!hasAttribute(group, 'axes')) {
     return findOldStyleAxesDatasets(group, signal, attrValuesStore);
@@ -188,7 +188,7 @@ export function findAxesDatasets(
 }
 
 export function findTitleDataset(
-  group: GroupWithChildren
+  group: GroupWithChildren,
 ): Dataset<ScalarShape, StringType> | undefined {
   const dataset = getChildEntity(group, 'title');
   if (!dataset) {
@@ -203,7 +203,7 @@ export function findTitleDataset(
 
 export function getSilxStyle(
   group: Group,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): SilxStyle {
   const silxStyle = attrValuesStore.getSingle(group, 'SILX_style');
 
@@ -224,7 +224,7 @@ export function getSilxStyle(
         : undefined,
       axisScaleTypes: Array.isArray(axisScaleTypes)
         ? axisScaleTypes.map((type) =>
-            isAxisScaleType(type) ? type : undefined
+            isAxisScaleType(type) ? type : undefined,
           )
         : undefined,
     };
@@ -236,7 +236,7 @@ export function getSilxStyle(
 
 export function getDatasetInfo(
   dataset: Dataset,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): DatasetInfo {
   const rawLongName = attrValuesStore.getSingle(dataset, 'long_name');
   const longName =
@@ -253,7 +253,7 @@ export function getDatasetInfo(
 
 export function guessKeepRatio(
   xAxisDef: AxisDef | undefined,
-  yAxisDef: AxisDef | undefined
+  yAxisDef: AxisDef | undefined,
 ): boolean | undefined {
   if (!xAxisDef?.unit && !yAxisDef?.unit) {
     return undefined;
@@ -263,13 +263,13 @@ export function guessKeepRatio(
 }
 
 export function assertNumericSignal(
-  nxData: NxData
+  nxData: NxData,
 ): asserts nxData is NxData<NumericType> {
   assertNumericType(nxData.signalDef.dataset);
 }
 
 export function assertComplexSignal(
-  nxData: NxData
+  nxData: NxData,
 ): asserts nxData is NxData<ComplexType> {
   assertComplexType(nxData.signalDef.dataset);
 }

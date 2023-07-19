@@ -69,7 +69,7 @@ class Box extends Box3 {
 
     const centerClampingBox = Box.empty(area.center).expandBySize(
       Math.max(areaWidth - size.width, 0),
-      Math.max(areaHeight - size.height, 0)
+      Math.max(areaHeight - size.height, 0),
     );
 
     const shift = centerClampingBox.clampPoint(center).sub(center).setZ(0); // cancel `z` shift

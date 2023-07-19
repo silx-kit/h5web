@@ -65,7 +65,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
 
   const canvasBox = useMemo(
     () => Box.empty().expandByPoint(new Vector3(width, height)),
-    [width, height]
+    [width, height],
   );
 
   const abscissaScale = getCanvasAxisScale(abscissaConfig, visSize.width);
@@ -75,17 +75,17 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     (dataPt: Vector3) => {
       return new Vector3(abscissaScale(dataPt.x), ordinateScale(dataPt.y));
     },
-    [abscissaScale, ordinateScale]
+    [abscissaScale, ordinateScale],
   );
 
   const worldToData = useCallback(
     (worldPt: Vector3) => {
       return new Vector3(
         abscissaScale.invert(worldPt.x),
-        ordinateScale.invert(worldPt.y)
+        ordinateScale.invert(worldPt.y),
       );
     },
-    [abscissaScale, ordinateScale]
+    [abscissaScale, ordinateScale],
   );
 
   const cameraToHtmlMatrix = useMemo(() => {
@@ -102,7 +102,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     (camera: Camera, worldPt: Vector3): Vector3 => {
       return worldPt.clone().project(camera).applyMatrix4(cameraToHtmlMatrix);
     },
-    [cameraToHtmlMatrix]
+    [cameraToHtmlMatrix],
   );
 
   const htmlToWorld = useCallback(
@@ -112,21 +112,21 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         .applyMatrix4(cameraToHtmlMatrixInverse)
         .unproject(camera);
     },
-    [cameraToHtmlMatrixInverse]
+    [cameraToHtmlMatrixInverse],
   );
 
   const dataToHtml = useCallback(
     (camera: Camera, dataPt: Vector3): Vector3 => {
       return worldToHtml(camera, dataToWorld(dataPt));
     },
-    [dataToWorld, worldToHtml]
+    [dataToWorld, worldToHtml],
   );
 
   const htmlToData = useCallback(
     (camera: Camera, htmlPt: Vector3): Vector3 => {
       return worldToData(htmlToWorld(camera, htmlPt));
     },
-    [htmlToWorld, worldToData]
+    [htmlToWorld, worldToData],
   );
 
   const getFovBox = useCallback(
@@ -134,7 +134,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
       const { scale } = camera;
       return Box.empty(center).expandBySize(width * scale.x, height * scale.y);
     },
-    [width, height]
+    [width, height],
   );
 
   const getVisibleDomains = useCallback(
@@ -146,7 +146,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         yVisibleDomain: [dataMin.y, dataMax.y],
       };
     },
-    [getFovBox, worldToData]
+    [getFovBox, worldToData],
   );
 
   return (
