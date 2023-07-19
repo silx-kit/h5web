@@ -36,8 +36,8 @@
   "devDependencies": {
     "@simonsmith/cypress-image-snapshot": "7.0.0",
     "@testing-library/cypress": "9.0.0",
-    "@types/jest": "^29.5.0",
-    "@types/node": "^18.15.11",
+    "@types/jest": "^29.5.3",
+    "@types/node": "^18.16.19",
     "cypress": "12.9.0",
     "cypress-wait-for-stable-dom": "0.1.0",
     "eslint": "8.28.0",
