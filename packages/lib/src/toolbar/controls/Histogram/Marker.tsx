@@ -29,7 +29,7 @@ function Marker(props: Props) {
           dragState.dragStart(e);
         }),
     }),
-    [dragState]
+    [dragState],
   );
 
   return (

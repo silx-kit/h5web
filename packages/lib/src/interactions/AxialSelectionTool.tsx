@@ -24,7 +24,7 @@ function AxialSelectionTool(props: Props) {
   function toAxialSelection(
     selection: Selection,
     camera: Camera,
-    context: VisCanvasContextValue
+    context: VisCanvasContextValue,
   ): Selection {
     const { canvasSize, htmlToWorld, worldToData } = context;
     const { width, height } = canvasSize;

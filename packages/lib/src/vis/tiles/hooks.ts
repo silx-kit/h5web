@@ -17,11 +17,11 @@ export function useTooltipOnMoveHandler() {
       const [height, width] = array.shape;
       const val = array.get(
         Math.floor(localVec.y + height / 2),
-        Math.floor(localVec.x + width / 2)
+        Math.floor(localVec.x + width / 2),
       );
       setTooltipValue(dataVec.x, dataVec.y, val);
       evt.stopPropagation();
     },
-    [setTooltipValue, worldToData]
+    [setTooltipValue, worldToData],
   );
 }

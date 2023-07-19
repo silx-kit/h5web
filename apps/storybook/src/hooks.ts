@@ -8,11 +8,11 @@ type NestedNumArray = (number | NestedNumArray)[];
 
 export function useMockData(
   mockNumArray: NestedNumArray,
-  shape: ArrayShape = [mockNumArray.length]
+  shape: ArrayShape = [mockNumArray.length],
 ): { values: NdArray<Float32Array>; domain: Domain } {
   const values = useMemo(
     () => ndarray(Float32Array.from(mockNumArray.flat() as number[]), shape),
-    [mockNumArray, shape]
+    [mockNumArray, shape],
   );
 
   const domain = useDomain(values) || [1, 2];

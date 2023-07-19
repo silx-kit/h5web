@@ -150,13 +150,13 @@ function Home() {
                     {index > 0 && ', '}
                     <Link
                       to={`h5wasm?url=${encodeURIComponent(
-                        `https://www.silx.org/pub/h5web/${filename}`
+                        `https://www.silx.org/pub/h5web/${filename}`,
                       )}`}
                     >
                       {filename}
                     </Link>
                   </Fragment>
-                )
+                ),
               )}
             </p>
           </section>

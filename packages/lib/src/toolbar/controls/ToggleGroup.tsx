@@ -11,7 +11,7 @@ interface ToggleGroupProps {
 }
 
 const ToggleGroupContext = createContext<ToggleGroupProps | undefined>(
-  undefined
+  undefined,
 );
 
 function useToggleGroupProps(): ToggleGroupProps {

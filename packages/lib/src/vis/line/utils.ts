@@ -12,7 +12,7 @@ export function getValueToPosition(
   abscissas: NumArray,
   abscissaScale: AxisScale,
   ordinateScale: AxisScale,
-  ignoreValue?: (val: number) => boolean
+  ignoreValue?: (val: number) => boolean,
 ): (value: number, index: number) => [number, number] | undefined {
   return (value: number, index: number) => {
     const x = abscissaScale(abscissas[index]);
@@ -28,11 +28,11 @@ export function getValueToPosition(
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function getValueToErrorPositions(
   errors: NumArray | undefined,
-  ordinateScale: AxisScale
+  ordinateScale: AxisScale,
 ): (
   value: number,
   index: number,
-  position: [number, number] | undefined
+  position: [number, number] | undefined,
 ) => {
   topCap: [number, number] | undefined;
   bottomCap: [number, number] | undefined;

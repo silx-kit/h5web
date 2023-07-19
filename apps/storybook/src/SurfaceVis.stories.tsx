@@ -10,7 +10,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import FillHeight from './decorators/FillHeight';
 
 const dataArray = createArrayFromView(
-  getMockDataArray('/nD_datasets/fourD').pick(0, 0, null, null)
+  getMockDataArray('/nD_datasets/fourD').pick(0, 0, null, null),
 );
 const domain = getDomain(dataArray.data);
 assertDefined(domain);

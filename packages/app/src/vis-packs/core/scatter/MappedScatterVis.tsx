@@ -46,7 +46,7 @@ function MappedScatterVis(props: Props) {
       {toolbarContainer &&
         createPortal(
           <ScatterToolbar dataDomain={dataDomain} config={config} />,
-          toolbarContainer
+          toolbarContainer,
         )}
       <ScatterVis
         abscissaParams={{ label: xLabel, value: xValue, scaleType: xScaleType }}

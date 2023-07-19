@@ -21,7 +21,7 @@ interface RenderAppOpts {
 }
 
 export async function renderApp(
-  opts: InitialPath | RenderAppOpts = '/'
+  opts: InitialPath | RenderAppOpts = '/',
 ): Promise<RenderAppResult> {
   const optsObj = typeof opts === 'string' ? { initialPath: opts } : opts;
   const { initialPath, preferredVis, withFakeTimers }: RenderAppOpts = {
@@ -32,7 +32,7 @@ export async function renderApp(
   if (preferredVis) {
     window.localStorage.setItem(
       'h5web:preferredVis',
-      JSON.stringify(preferredVis)
+      JSON.stringify(preferredVis),
     );
   }
 
@@ -41,13 +41,13 @@ export async function renderApp(
   }
 
   const user = userEvent.setup(
-    withFakeTimers ? { advanceTimers: jest.advanceTimersByTime } : undefined
+    withFakeTimers ? { advanceTimers: jest.advanceTimersByTime } : undefined,
   );
 
   const renderResult = render(
     <MockProvider>
       <App initialPath={initialPath} />
-    </MockProvider>
+    </MockProvider>,
   );
 
   await screen.findByLabelText('Loading root metadata...');
@@ -101,7 +101,7 @@ export async function findSelectedVisTab(): Promise<string> {
  */
 export function mockConsoleMethod(
   method: 'log' | 'warn' | 'error',
-  debug?: boolean
+  debug?: boolean,
 ) {
   const spy = jest.spyOn(console, method);
   spy.mockImplementation((...args) => {

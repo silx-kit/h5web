@@ -13,35 +13,35 @@ test('visualize NXdata group with explicit signal interpretation', async () => {
   const { selectExplorerNode } = await renderApp('/nexus_entry/spectrum');
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
   await expect(
-    screen.findByRole('figure', { name: 'twoD_spectrum (arb. units)' }) // signal name + `units` attribute
+    screen.findByRole('figure', { name: 'twoD_spectrum (arb. units)' }), // signal name + `units` attribute
   ).resolves.toBeVisible();
 
   // Signal with "image" interpretation
   await selectExplorerNode('image');
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxImage]);
   await expect(
-    screen.findByRole('figure', { name: 'Interference fringes' }) // `long_name` attribute
+    screen.findByRole('figure', { name: 'Interference fringes' }), // `long_name` attribute
   ).resolves.toBeVisible();
 
   // 2D complex signal with "spectrum" interpretation
   await selectExplorerNode('complex_spectrum');
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
   await expect(
-    screen.findByRole('figure', { name: 'twoD_complex' }) // signal name (complex vis type is displayed as ordinate label)
+    screen.findByRole('figure', { name: 'twoD_complex' }), // signal name (complex vis type is displayed as ordinate label)
   ).resolves.toBeVisible();
 
   // Signal with "rgb-image" interpretation
   await selectExplorerNode('rgb-image');
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxRGB]);
   await expect(
-    screen.findByRole('figure', { name: 'RGB CMY DGW' }) // `long_name` attribute
+    screen.findByRole('figure', { name: 'RGB CMY DGW' }), // `long_name` attribute
   ).resolves.toBeVisible();
 });
 
 test('visualize NXdata group without explicit signal interpretation', async () => {
   // 2D signal (no interpretation)
   const { selectExplorerNode } = await renderApp(
-    '/nexus_entry/nx_process/nx_data'
+    '/nexus_entry/nx_process/nx_data',
   );
   await expect(findVisTabs()).resolves.toEqual([
     NexusVis.NxSpectrum,
@@ -49,14 +49,14 @@ test('visualize NXdata group without explicit signal interpretation', async () =
   ]);
   await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
   await expect(
-    screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
+    screen.findByRole('figure', { name: 'NeXus 2D' }), // `title` dataset
   ).resolves.toBeVisible();
 
   // 1D signal (no interpretation)
   await selectExplorerNode('log_spectrum');
   await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxSpectrum);
   await expect(
-    screen.findByRole('figure', { name: 'oneD' })
+    screen.findByRole('figure', { name: 'oneD' }),
   ).resolves.toBeVisible(); // signal name
 
   // 2D complex signal (no interpretation)
@@ -67,14 +67,14 @@ test('visualize NXdata group without explicit signal interpretation', async () =
   ]);
   await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
   await expect(
-    screen.findByRole('figure', { name: 'twoD_complex (amplitude)' }) // signal name + complex visualization type
+    screen.findByRole('figure', { name: 'twoD_complex (amplitude)' }), // signal name + complex visualization type
   ).resolves.toBeVisible();
 
   // 2D signal and two 1D axes of same length (implicit scatter interpretation)
   await selectExplorerNode('scatter');
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxScatter]);
   await expect(
-    screen.findByRole('figure', { name: 'scatter_data' }) // signal name
+    screen.findByRole('figure', { name: 'scatter_data' }), // signal name
   ).resolves.toBeVisible();
 });
 
@@ -88,7 +88,7 @@ test('visualize NXdata group with old-style signal', async () => {
   await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
 
   await expect(
-    screen.findByRole('figure', { name: 'twoD' }) // name of dataset with `signal` attribute
+    screen.findByRole('figure', { name: 'twoD' }), // name of dataset with `signal` attribute
   ).resolves.toBeVisible();
 });
 
@@ -102,7 +102,7 @@ test('visualize group with `default` attribute', async () => {
   ]);
   await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
   await expect(
-    screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
+    screen.findByRole('figure', { name: 'NeXus 2D' }), // `title` dataset
   ).resolves.toBeVisible();
 
   // NXentry with relative path to NXdata group with 2D signal
@@ -113,7 +113,7 @@ test('visualize group with `default` attribute', async () => {
   ]);
   await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
   await expect(
-    screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
+    screen.findByRole('figure', { name: 'NeXus 2D' }), // `title` dataset
   ).resolves.toBeVisible();
 
   // NXentry with absolute path to NXdata group with 2D signal
@@ -125,7 +125,7 @@ test('visualize group with `default` attribute', async () => {
   ]);
   await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
   await expect(
-    screen.findByRole('figure', { name: 'NeXus 2D' }) // `title` dataset
+    screen.findByRole('figure', { name: 'NeXus 2D' }), // `title` dataset
   ).resolves.toBeVisible();
 });
 
@@ -135,14 +135,14 @@ test('visualize NXentry group with implicit default child NXdata group', async (
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
 
   await expect(
-    screen.findByRole('figure', { name: 'oneD' }) // signal name of NXdata group "spectrum"
+    screen.findByRole('figure', { name: 'oneD' }), // signal name of NXdata group "spectrum"
   ).resolves.toBeVisible();
 });
 
 test('follow SILX styles on NXdata group', async () => {
   await renderApp('/nexus_entry/log_spectrum');
   await expect(
-    screen.findAllByRole('button', { name: 'Log' })
+    screen.findAllByRole('button', { name: 'Log' }),
   ).resolves.toHaveLength(2); // log for both axes
 });
 
@@ -157,14 +157,14 @@ test('handle unknown/incompatible interpretation gracefully', async () => {
   ]); // fallback based on number of dimensions
   await expect(findSelectedVisTab()).resolves.toBe(NexusVis.NxImage);
   await expect(
-    screen.findByRole('figure', { name: 'fourD' }) // signal name
+    screen.findByRole('figure', { name: 'fourD' }), // signal name
   ).resolves.toBeVisible();
 
   // Signal with too few dimensions for "rgb-image" interpretation
   await selectExplorerNode('rgb-image_incompatible');
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]); // fallback based on number of dimensions
   await expect(
-    screen.findByRole('figure', { name: 'oneD' }) // signal name
+    screen.findByRole('figure', { name: 'oneD' }), // signal name
   ).resolves.toBeVisible();
 });
 
@@ -176,14 +176,14 @@ test('show error/fallback for malformed NeXus entity', async () => {
   // `default` attribute points to non-existant entity
   await selectExplorerNode('default_not_found');
   await expect(
-    screen.findByText('No entity found at /test')
+    screen.findByText('No entity found at /test'),
   ).resolves.toBeVisible();
   errorSpy.mockClear();
 
   // No `signal` attribute
   await selectExplorerNode('no_signal');
   await expect(
-    screen.findByText('No visualization available for this entity.')
+    screen.findByText('No visualization available for this entity.'),
   ).resolves.toBeInTheDocument();
   expect(errorSpy).not.toHaveBeenCalled();
   errorSpy.mockClear();
@@ -191,35 +191,35 @@ test('show error/fallback for malformed NeXus entity', async () => {
   // `signal` attribute points to non-existant dataset
   await selectExplorerNode('signal_not_found');
   await expect(
-    screen.findByText('Expected "unknown" signal entity to exist')
+    screen.findByText('Expected "unknown" signal entity to exist'),
   ).resolves.toBeVisible();
   errorSpy.mockClear();
 
   // Signal entity is not a dataset
   await selectExplorerNode('signal_not_dataset');
   await expect(
-    screen.findByText('Expected "some_group" signal to be a dataset')
+    screen.findByText('Expected "some_group" signal to be a dataset'),
   ).resolves.toBeVisible();
   errorSpy.mockClear();
 
   // Old-style signal entity is not a dataset
   await selectExplorerNode('signal_old-style_not_dataset');
   await expect(
-    screen.findByText('Expected old-style "some_group" signal to be a dataset')
+    screen.findByText('Expected old-style "some_group" signal to be a dataset'),
   ).resolves.toBeVisible();
   errorSpy.mockClear();
 
   // Shape of signal dataset is not array
   await selectExplorerNode('signal_not_array');
   await expect(
-    screen.findByText('Expected dataset to have array shape')
+    screen.findByText('Expected dataset to have array shape'),
   ).resolves.toBeVisible();
   errorSpy.mockClear();
 
   // Type of signal dataset is not numeric
   await selectExplorerNode('signal_not_numeric');
   await expect(
-    screen.findByText('Expected dataset to have numeric or complex type')
+    screen.findByText('Expected dataset to have numeric or complex type'),
   ).resolves.toBeVisible();
   errorSpy.mockClear();
 
@@ -232,20 +232,20 @@ test('ignore malformed `SILX_style` attribute', async () => {
 
   // Unknown keys, invalid values
   const { selectExplorerNode } = await renderApp(
-    '/nexus_malformed/silx_style_unknown'
+    '/nexus_malformed/silx_style_unknown',
   );
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
   await expect(
     screen.findAllByRole('button', {
       name: 'Linear', // scales remain unchanged
-    })
+    }),
   ).resolves.toHaveLength(2);
 
   // Invalid JSON
   await selectExplorerNode('silx_style_malformed');
   await expect(findVisTabs()).resolves.toEqual([NexusVis.NxSpectrum]);
   expect(warningSpy).toHaveBeenCalledWith(
-    "Malformed 'SILX_style' attribute: {" // warn in console
+    "Malformed 'SILX_style' attribute: {", // warn in console
   );
 
   expect(errorSpy).not.toHaveBeenCalled(); // no error

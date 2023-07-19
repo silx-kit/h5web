@@ -20,7 +20,7 @@ function UrlForm(props: Props) {
 
   const [{ loading, error }, execute] = useAxios<ArrayBuffer>(
     { url, responseType: 'arraybuffer' },
-    { manual: true }
+    { manual: true },
   );
 
   const fetchFile = useCallback(async () => {

@@ -22,7 +22,7 @@ function SlicingSlider(props: Props) {
   const onDebouncedChange = useDebouncedCallback(
     onChange,
     [onChange],
-    SLICING_DEBOUNCE_DELAY
+    SLICING_DEBOUNCE_DELAY,
   );
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();

@@ -11,7 +11,7 @@ export const EXPLORER_ID = 'h5web-explorer-tree';
 
 export function needsNxBadge(
   entity: ChildEntity,
-  attrValuesStore: AttrValuesStore
+  attrValuesStore: AttrValuesStore,
 ): boolean {
   if (!isGroup(entity)) {
     return false;
@@ -45,7 +45,7 @@ export function focusParent(e: KeyboardEvent<HTMLButtonElement>) {
   const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
 
   const parentButton = buttonList.find(
-    (element) => element.getAttribute('data-path') === parentPath
+    (element) => element.getAttribute('data-path') === parentPath,
   );
   if (parentButton) {
     parentButton.focus();

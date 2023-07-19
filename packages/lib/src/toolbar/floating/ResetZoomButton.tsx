@@ -10,7 +10,7 @@ function ResetZoomButton() {
 
   const isZoomedIn = useCameraState(
     ({ scale }) => scale.x < 1 || scale.y < 1,
-    []
+    [],
   );
 
   function resetZoom() {

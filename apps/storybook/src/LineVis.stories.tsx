@@ -22,11 +22,11 @@ const tertiaryArray = ndarray(mockValues.tertiary[0]);
 
 const abscissas = Array.from(
   { length: dataArray.size },
-  (_, i) => -10 + 0.5 * i
+  (_, i) => -10 + 0.5 * i,
 );
 const errorsArray = ndarray(
   Array.from({ length: dataArray.size }, (_, i) => Math.abs(10 - 0.5 * i)),
-  dataArray.shape
+  dataArray.shape,
 );
 
 const meta = {

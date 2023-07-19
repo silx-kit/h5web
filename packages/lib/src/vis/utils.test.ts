@@ -208,7 +208,7 @@ describe('extendDomain', () => {
 
   it('should throw if domain is not compatible with sqrt scale', () => {
     expect(() => extendDomain([-1, 1], 0.5, ScaleType.Sqrt)).toThrow(
-      /compatible with sqrt scale/
+      /compatible with sqrt scale/,
     );
   });
 });

@@ -63,8 +63,8 @@ function createScatterConfigStore() {
       {
         name: 'h5web:scatter',
         version: 2,
-      }
-    )
+      },
+    ),
   );
 }
 
@@ -83,10 +83,10 @@ export function ScatterConfigProvider(props: ConfigProviderProps) {
 export function useScatterConfig(
   initialSuggestedOpts: Partial<
     Pick<ScatterConfig, 'scaleType' | 'xScaleType' | 'yScaleType'>
-  > = {}
+  > = {},
 ): ScatterConfig {
   const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
+    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
   );
 
   const persistedConfig = useStore(useContext(StoreContext));

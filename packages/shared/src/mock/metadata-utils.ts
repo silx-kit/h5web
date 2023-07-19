@@ -84,7 +84,7 @@ export function makeAttr<S extends Shape, T extends DType>(
   name: string,
   type: T,
   shape: S,
-  value: unknown
+  value: unknown,
 ): MockAttribute<S, T> {
   return { name, type, shape, value };
 }
@@ -92,28 +92,28 @@ export function makeAttr<S extends Shape, T extends DType>(
 export function makeScalarAttr<T extends DType>(
   name: string,
   type: T,
-  value: unknown
+  value: unknown,
 ): Attribute<ScalarShape, T> {
   return makeAttr(name, type, [], value);
 }
 
 export function makeStrAttr(
   name: string,
-  value: string
+  value: string,
 ): Attribute<ScalarShape, StringType> {
   return makeScalarAttr(name, stringType, value);
 }
 
 export function makeIntAttr(
   name: string,
-  value: number
+  value: number,
 ): Attribute<ScalarShape, NumericType> {
   return makeScalarAttr(name, intType, value);
 }
 
 export function withAttributes<T extends Entity>(
   entity: T,
-  attributes: Attribute[]
+  attributes: Attribute[],
 ): T {
   return {
     ...entity,
@@ -137,7 +137,7 @@ type DatasetOpts = EntityOpts & { valueId?: MockValueId };
 
 function prefixChildrenPaths(
   group: GroupWithChildren,
-  parentPath: string
+  parentPath: string,
 ): void {
   group.children.forEach((c) => {
     c.path = buildEntityPath(parentPath, c.path.slice(1));
@@ -151,7 +151,7 @@ function prefixChildrenPaths(
 export function makeGroup(
   name: string,
   children: ChildEntity[] = [],
-  opts: Omit<GroupOpts, 'children'> = {}
+  opts: Omit<GroupOpts, 'children'> = {},
 ): GroupWithChildren {
   const { attributes = [], link, isRoot = false } = opts;
   const path = isRoot ? '/' : `/${name}`;
@@ -173,7 +173,7 @@ export function makeDataset<S extends Shape, T extends DType>(
   name: string,
   type: T,
   shape: S,
-  opts: DatasetOpts = {}
+  opts: DatasetOpts = {},
 ): MockDataset<S, T> {
   const { attributes = [], valueId = name, link } = opts;
 
@@ -192,7 +192,7 @@ export function makeDataset<S extends Shape, T extends DType>(
 export function makeScalarDataset<T extends DType>(
   name: string,
   type: T,
-  opts: DatasetOpts = {}
+  opts: DatasetOpts = {},
 ): MockDataset<ScalarShape, T> {
   return makeDataset(name, type, [], opts);
 }
@@ -200,7 +200,7 @@ export function makeScalarDataset<T extends DType>(
 export function makeDatatype<T extends DType>(
   name: string,
   type: T,
-  opts: EntityOpts = {}
+  opts: EntityOpts = {},
 ): Datatype<T> {
   const { attributes = [], link } = opts;
 
@@ -218,7 +218,7 @@ export function makeUnresolvedEntity(
   name: string,
   linkClass: LinkClass,
   pathToEntity?: string,
-  file?: string
+  file?: string,
 ): UnresolvedEntity {
   return {
     name,
@@ -233,19 +233,19 @@ export function makeUnresolvedEntity(
 /* ----- NEXUS ----- */
 
 export function makeNxAxesAttr(
-  axes: string[]
+  axes: string[],
 ): Attribute<ArrayShape, StringType> {
   return makeAttr('axes', stringType, [axes.length], axes);
 }
 
 export function makeNxAuxAttr(
-  aux: string[]
+  aux: string[],
 ): Attribute<ArrayShape, StringType> {
   return makeAttr('auxiliary_signals', stringType, [aux.length], aux);
 }
 
 export function makeSilxStyleAttr(
-  style: SilxStyle
+  style: SilxStyle,
 ): Attribute<ScalarShape, StringType> {
   const { signalScaleType, axisScaleTypes } = style;
 
@@ -254,14 +254,14 @@ export function makeSilxStyleAttr(
     JSON.stringify({
       signal_scale_type: signalScaleType,
       axes_scale_type: axisScaleTypes,
-    })
+    }),
   );
 }
 
 export function makeNxGroup(
   name: string,
   type: 'NXroot' | 'NXentry' | 'NXprocess' | 'NXdata',
-  opts: { defaultPath?: string } & GroupOpts = {}
+  opts: { defaultPath?: string } & GroupOpts = {},
 ): GroupWithChildren {
   const { defaultPath, children, ...groupOpts } = opts;
 
@@ -276,7 +276,7 @@ export function makeNxGroup(
 }
 
 export function makeNxDataGroup<
-  T extends Record<string, MockDataset<ArrayShape, NumericType>>
+  T extends Record<string, MockDataset<ArrayShape, NumericType>>,
 >(
   name: string,
   opts: {
@@ -292,7 +292,7 @@ export function makeNxDataGroup<
       | { auxiliary: T; auxAttr: Extract<keyof T, string>[] }
       | { auxiliary?: never; auxAttr?: never }
     ) &
-    GroupOpts
+    GroupOpts,
 ): Group {
   const {
     signal,
@@ -336,7 +336,7 @@ export function makeNxDataset<T extends NumericType | ComplexType>(
     interpretation?: string;
     longName?: string;
     units?: string;
-  } & DatasetOpts = {}
+  } & DatasetOpts = {},
 ): MockDataset<ArrayShape, T> {
   const { interpretation, longName, units, ...datasetOpts } = opts;
 
@@ -354,7 +354,7 @@ export function makeNxDataset<T extends NumericType | ComplexType>(
 }
 
 export function withNxInterpretation<
-  T extends MockDataset<ArrayShape, NumericType | ComplexType>
+  T extends MockDataset<ArrayShape, NumericType | ComplexType>,
 >(dataset: T, interpretation: NxInterpretation): T {
   return withAttributes(dataset, [
     makeStrAttr('interpretation', interpretation),

@@ -25,26 +25,26 @@ export const INTERACTIONS_WITH_AXIAL_ZOOM = [
 
 export function getBaseArray<T extends unknown[] | TypedArray | undefined>(
   value: T,
-  rawDims: number[]
+  rawDims: number[],
 ): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
 
 export function getBaseArray<T>(
   value: T[] | TypedArray | undefined,
-  rawDims: number[]
+  rawDims: number[],
 ) {
   return value && ndarray(value, rawDims);
 }
 
 export function applyMapping<
-  T extends NdArray<unknown[] | TypedArray> | undefined
+  T extends NdArray<unknown[] | TypedArray> | undefined,
 >(
   baseArray: T,
-  mapping: (number | Axis | ':')[]
+  mapping: (number | Axis | ':')[],
 ): T extends NdArray<unknown[] | TypedArray> ? T : undefined;
 
 export function applyMapping<T>(
   baseArray: NdArray<T[] | TypedArray> | undefined,
-  mapping: (number | Axis | ':')[]
+  mapping: (number | Axis | ':')[],
 ) {
   if (!baseArray) {
     return undefined;
@@ -69,7 +69,7 @@ export function applyMapping<T>(
 }
 
 export function getSliceSelection(
-  dimMapping?: DimensionMapping
+  dimMapping?: DimensionMapping,
 ): string | undefined {
   // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
   if (!dimMapping || !dimMapping.some(isNumber)) {

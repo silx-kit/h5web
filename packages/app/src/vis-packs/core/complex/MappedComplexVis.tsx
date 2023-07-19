@@ -91,7 +91,7 @@ function MappedComplexVis(props: Props) {
             config={config}
             heatmapConfig={heatmapConfig}
           />,
-          toolbarContainer
+          toolbarContainer,
         )}
 
       <HeatmapVis

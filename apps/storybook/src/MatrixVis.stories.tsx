@@ -8,7 +8,7 @@ import FillHeight from './decorators/FillHeight';
 
 const dataArray = getMockDataArray('/nD_datasets/twoD');
 const complexDataArray = getMockDataArray<H5WebComplex>(
-  '/nD_datasets/twoD_cplx'
+  '/nD_datasets/twoD_cplx',
 );
 
 const formatMatrixValue = format('.3e');

@@ -41,7 +41,7 @@ function Toolbar(props: PropsWithChildren<Props>) {
         accWidth + width,
       ];
     },
-    [[], [], 0]
+    [[], [], 0],
   );
 
   const isSeparatorLast = inView[inView.length - 1]?.type === Separator;

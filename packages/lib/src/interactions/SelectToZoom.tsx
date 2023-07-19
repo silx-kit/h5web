@@ -39,7 +39,7 @@ function SelectToZoom(props: Props) {
 
     const { scale } = camera;
     const scaledVisBox = Box.empty(
-      new Vector3(canvasSize.width / 2, canvasSize.height / 2)
+      new Vector3(canvasSize.width / 2, canvasSize.height / 2),
     ).expandBySize(visSize.width / scale.x, visSize.height / scale.y);
 
     const zoomBox = Box.fromPoints(...selection.html)

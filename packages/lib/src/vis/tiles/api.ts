@@ -6,7 +6,7 @@ import type { TileArray } from './models';
 export function getLayerSizes(
   baseLayerSize: Size,
   tileSize: Size,
-  roundToEven = false
+  roundToEven = false,
 ): Size[] {
   if (
     baseLayerSize.width <= tileSize.width &&

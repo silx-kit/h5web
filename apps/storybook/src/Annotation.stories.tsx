@@ -126,7 +126,7 @@ function PointerTracker(props: {
       const { x, y } = evt.dataPt;
       setCoords([x, y]);
     },
-    [setCoords]
+    [setCoords],
   );
 
   useCanvasEvents({ onPointerMove });

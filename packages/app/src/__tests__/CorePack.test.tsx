@@ -48,7 +48,7 @@ test('visualize 1D dataset', async () => {
   await expect(findSelectedVisTab()).resolves.toBe(Vis.Line);
 
   await expect(
-    screen.findByRole('figure', { name: 'oneD' })
+    screen.findByRole('figure', { name: 'oneD' }),
   ).resolves.toBeVisible();
 });
 
@@ -59,7 +59,7 @@ test('visualize 1D complex dataset', async () => {
   await expect(findSelectedVisTab()).resolves.toBe(Vis.Line);
 
   await expect(
-    screen.findByRole('figure', { name: 'oneD_cplx' })
+    screen.findByRole('figure', { name: 'oneD_cplx' }),
   ).resolves.toBeVisible();
 });
 
@@ -100,7 +100,7 @@ test('visualize 2D complex dataset', async () => {
   await user.click(phaseItem);
 
   expect(
-    screen.getByRole('figure', { name: 'twoD_cplx (phase)' })
+    screen.getByRole('figure', { name: 'twoD_cplx (phase)' }),
   ).toBeVisible();
 });
 
@@ -113,7 +113,7 @@ test('visualize 1D slice of 3D dataset as Line with and without autoscale', asyn
 
   // Wait for slice loader to appear (since autoscale is on by default, only the first slice gets fetched)
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Wait for fetch of first slice to succeed
@@ -130,7 +130,7 @@ test('visualize 1D slice of 3D dataset as Line with and without autoscale', asyn
 
   // Wait for slice loader to re-appear after debounce
   await expect(
-    screen.findByText(/Loading current slice/)
+    screen.findByText(/Loading current slice/),
   ).resolves.toBeVisible();
 
   // Wait for fetch of second slice to succeed
@@ -142,7 +142,7 @@ test('visualize 1D slice of 3D dataset as Line with and without autoscale', asyn
 
   // Now, the entire dataset gets fetched
   await expect(
-    screen.findByText(/Loading entire dataset/)
+    screen.findByText(/Loading entire dataset/),
   ).resolves.toBeVisible();
 
   // Wait for fetch of entire dataset to succeed

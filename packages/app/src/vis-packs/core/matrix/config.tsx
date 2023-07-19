@@ -37,8 +37,8 @@ function createMatrixConfigStore() {
       {
         name: 'h5web:matrix',
         version: 3,
-      }
-    )
+      },
+    ),
   );
 }
 

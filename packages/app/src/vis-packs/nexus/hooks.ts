@@ -24,7 +24,7 @@ export function useNxData(group: GroupWithChildren): NxData {
   const auxSignals = findAssociatedDatasets(
     group,
     'auxiliary_signals',
-    attrValuesStore
+    attrValuesStore,
   ).filter(isDefined);
 
   return {
@@ -41,7 +41,7 @@ export function useNxData(group: GroupWithChildren): NxData {
     })),
     axisDefs: axisDatasets.map(
       (dataset) =>
-        dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) }
+        dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
     ),
     silxStyle: getSilxStyle(group, attrValuesStore),
   };

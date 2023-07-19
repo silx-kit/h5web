@@ -35,7 +35,7 @@ function MappedSurfaceVis(props: Props) {
       {toolbarContainer &&
         createPortal(
           <SurfaceToolbar dataDomain={dataDomain} config={config} />,
-          toolbarContainer
+          toolbarContainer,
         )}
 
       <SurfaceVis

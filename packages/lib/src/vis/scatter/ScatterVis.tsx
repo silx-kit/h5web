@@ -133,9 +133,9 @@ function ScatterVis(props: Props) {
             <>
               <span>
                 {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(
-                  abscissas[tooltipIndex]
+                  abscissas[tooltipIndex],
                 )}, ${ordinateLabel ?? 'y'} = ${formatTooltipVal(
-                  ordinates[tooltipIndex]
+                  ordinates[tooltipIndex],
                 )}`}
               </span>
               <div className={styles.tooltipValue}>

@@ -19,11 +19,11 @@ test('switch between visualizations', async () => {
 
   expect(screen.getByRole('tab', { name: 'Matrix' })).toHaveAttribute(
     'aria-selected',
-    'true'
+    'true',
   );
   expect(screen.getByRole('tab', { name: 'Line' })).toHaveAttribute(
     'aria-selected',
-    'false'
+    'false',
   );
 });
 
@@ -38,7 +38,7 @@ test('restore active visualization when switching to inspect mode and back', asy
   await user.click(await screen.findByRole('tab', { name: 'Display' }));
 
   await expect(
-    screen.findByRole('tab', { name: 'Line' })
+    screen.findByRole('tab', { name: 'Line' }),
   ).resolves.toHaveAttribute('aria-selected', 'true');
 });
 
@@ -46,28 +46,28 @@ test('choose most advanced visualization when switching between datasets', async
   const { selectExplorerNode } = await renderApp('/nD_datasets/oneD');
 
   await expect(
-    screen.findByRole('tab', { name: 'Line' })
+    screen.findByRole('tab', { name: 'Line' }),
   ).resolves.toHaveAttribute('aria-selected', 'true');
 
   await selectExplorerNode('twoD');
   await expect(
-    screen.findByRole('tab', { name: 'Heatmap' })
+    screen.findByRole('tab', { name: 'Heatmap' }),
   ).resolves.toHaveAttribute('aria-selected', 'true');
 
   await selectExplorerNode('threeD_rgb');
   await expect(
-    screen.findByRole('tab', { name: 'RGB' })
+    screen.findByRole('tab', { name: 'RGB' }),
   ).resolves.toHaveAttribute('aria-selected', 'true');
 
   await selectExplorerNode('threeD_bool');
   await expect(
-    screen.findByRole('tab', { name: 'Matrix' })
+    screen.findByRole('tab', { name: 'Matrix' }),
   ).resolves.toHaveAttribute('aria-selected', 'true');
 });
 
 test('remember preferred visualization when switching between datasets', async () => {
   const { user, selectExplorerNode, selectVisTab } = await renderApp(
-    '/nD_datasets/twoD'
+    '/nD_datasets/twoD',
   );
 
   /* Switch to Matrix vis. Since this is _not_ the most advanced visualization
@@ -80,7 +80,7 @@ test('remember preferred visualization when switching between datasets', async (
 
   // Check that the preferred visualization is restored
   await expect(
-    screen.findByRole('tab', { name: 'Matrix' })
+    screen.findByRole('tab', { name: 'Matrix' }),
   ).resolves.toHaveAttribute('aria-selected', 'true');
   await expect(findSelectedVisTab()).resolves.toBe('Matrix');
 
@@ -93,7 +93,7 @@ test('remember preferred visualization when switching between datasets', async (
 
   // Check that the most advanced visualization is selected
   await expect(
-    screen.findByRole('tab', { name: 'RGB' })
+    screen.findByRole('tab', { name: 'RGB' }),
   ).resolves.toHaveAttribute('aria-selected', 'true');
   await expect(findSelectedVisTab()).resolves.toBe('RGB');
 });

@@ -67,8 +67,8 @@ function createHeatmapConfigStore() {
       {
         name: 'h5web:heatmap',
         version: 10,
-      }
-    )
+      },
+    ),
   );
 }
 
@@ -87,10 +87,10 @@ export function HeatmapConfigProvider(props: ConfigProviderProps) {
 export function useHeatmapConfig(
   initialSuggestedOpts: Partial<
     Pick<HeatmapConfig, 'scaleType' | 'keepRatio'>
-  > = {}
+  > = {},
 ): HeatmapConfig {
   const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
+    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
   );
 
   const persistedConfig = useStore(useContext(StoreContext));

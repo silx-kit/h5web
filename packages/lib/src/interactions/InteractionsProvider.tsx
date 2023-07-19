@@ -32,14 +32,14 @@ function InteractionsProvider(props: { children: ReactNode }) {
         interactionMap.set(id, { id, ...value });
       }
     },
-    [interactionMap]
+    [interactionMap],
   );
 
   const unregisterInteraction = useCallback(
     (id: string) => {
       interactionMap.delete(id);
     },
-    [interactionMap]
+    [interactionMap],
   );
 
   const shouldInteract = useCallback(
@@ -66,7 +66,7 @@ function InteractionsProvider(props: { children: ReactNode }) {
 
       const matchingInteractions = registeredInteractions.filter(
         ({ modifierKeys: keys, button, disabled }) =>
-          !disabled && isButtonPressed(button) && areKeysPressed(keys)
+          !disabled && isButtonPressed(button) && areKeysPressed(keys),
       );
 
       if (matchingInteractions.length === 0) {
@@ -79,13 +79,13 @@ function InteractionsProvider(props: { children: ReactNode }) {
 
       // If conflicting interactions, the one with the most modifier keys take precedence
       matchingInteractions.sort(
-        (a, b) => b.modifierKeys.length - a.modifierKeys.length
+        (a, b) => b.modifierKeys.length - a.modifierKeys.length,
       );
 
       const [maxKeyInteraction] = matchingInteractions;
       return maxKeyInteraction.id === interactionId;
     },
-    [interactionMap]
+    [interactionMap],
   );
 
   return (

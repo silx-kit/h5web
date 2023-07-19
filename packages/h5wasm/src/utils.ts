@@ -14,7 +14,7 @@ import {
 import type { NumericMetadata } from './models';
 
 export function convertNumericMetadataToDType(
-  metadata: NumericMetadata
+  metadata: NumericMetadata,
 ): NumericType {
   if (isIntegerMetadata(metadata)) {
     const { signed, size: length, littleEndian } = metadata;
@@ -75,7 +75,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
     return {
       class: DTypeClass.Compound,
       fields: Object.fromEntries(
-        members.map((member) => [member.name, convertMetadataToDType(member)])
+        members.map((member) => [member.name, convertMetadataToDType(member)]),
       ),
     };
   }
@@ -106,7 +106,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
 
 export function convertSelectionToRanges(
   dataset: H5WasmDataset,
-  selection: string
+  selection: string,
 ): number[][] {
   const { shape } = dataset;
   const selectionMembers = selection.split(',');

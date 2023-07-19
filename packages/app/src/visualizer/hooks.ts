@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { VisDef } from '../vis-packs/models';
 
 export function useActiveVis<T extends VisDef>(
-  supportedVis: T[]
+  supportedVis: T[],
 ): [T, (index: number) => void] {
   const lastSupportedIndex = supportedVis.length - 1;
 

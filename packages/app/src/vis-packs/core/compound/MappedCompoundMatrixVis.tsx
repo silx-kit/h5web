@@ -37,11 +37,11 @@ function MappedCompoundMatrixVis(props: Props) {
   const [mappedArray] = useMappedArray(
     value.flat(1),
     [...slicedDims, fieldNames.length],
-    slicedMapping
+    slicedMapping,
   );
 
   const fieldFormatters = Object.values(fields).map((field) =>
-    getFormatter(field, notation)
+    getFormatter(field, notation),
   );
 
   const { getExportURL } = useDataContext();
@@ -60,7 +60,7 @@ function MappedCompoundMatrixVis(props: Props) {
               ((format) => getExportURL(format, dataset, selection, value))
             }
           />,
-          toolbarContainer
+          toolbarContainer,
         )}
       <MatrixVis
         dataArray={mappedArray}

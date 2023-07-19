@@ -27,7 +27,7 @@ function Annotation(props: Props) {
 
   if ((center || scaleOnZoom) && style?.transform) {
     throw new Error(
-      'Annotation with `center` and/or `scaleOnZoom` cannot have its own `transform`'
+      'Annotation with `center` and/or `scaleOnZoom` cannot have its own `transform`',
     );
   }
 
@@ -37,7 +37,7 @@ function Annotation(props: Props) {
       htmlPt: dataToHtml(camera, new Vector3(x, y)),
       cameraScale: camera.scale.clone(),
     }),
-    [x, y, dataToHtml]
+    [x, y, dataToHtml],
   );
 
   const transforms = [

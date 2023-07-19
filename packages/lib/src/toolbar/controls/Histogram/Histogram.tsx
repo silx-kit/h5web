@@ -78,8 +78,8 @@ function Histogram(props: Props) {
         y={height - yScale(d)}
         width={xScale(bins[i + 1]) - xScale(bins[i]) + 0.5} // +0.5 removes the small gap between bars
         height={yScale(d) - yScale(0)}
-      />
-    )
+      />,
+    ),
   );
 
   return (

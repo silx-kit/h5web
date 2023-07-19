@@ -60,7 +60,7 @@ function DimensionMapper(props: Props) {
                 onChange(newMapperState);
               }}
             />
-          ) : undefined
+          ) : undefined,
         )}
       </div>
     </div>

@@ -41,7 +41,7 @@ export abstract class DataProviderApi {
 
   public constructor(
     public readonly filepath: string,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig,
   ) {
     this.client = axios.create(config);
   }
@@ -58,7 +58,7 @@ export abstract class DataProviderApi {
     format: ExportFormat,
     dataset: D,
     selection: string | undefined,
-    value: Value<D>
+    value: Value<D>,
   ): ExportURL;
 
   public getSearchablePaths?(path: string): Promise<string[]>;
@@ -88,7 +88,7 @@ export abstract class DataProviderApi {
     endpoint: string,
     storeParams: ValuesStoreParams,
     queryParams: Record<string, string | boolean | undefined>,
-    responseType?: ResponseType
+    responseType?: ResponseType,
   ): Promise<AxiosResponse> {
     const cancelSource = axios.CancelToken.source();
     const request = { storeParams, cancelSource };

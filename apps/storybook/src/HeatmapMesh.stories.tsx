@@ -30,10 +30,10 @@ const uint16Domain: Domain = [10, 40];
 const mask = ndarray(
   Uint8Array.from(
     range(0, 20 * 41).map((val) =>
-      ((val % 41) * Math.floor(val / 41)) % 5 === 0 ? 255 : 0
-    )
+      ((val % 41) * Math.floor(val / 41)) % 5 === 0 ? 255 : 0,
+    ),
   ),
-  [20, 41]
+  [20, 41],
 );
 
 const meta = {

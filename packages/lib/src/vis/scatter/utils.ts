@@ -13,7 +13,7 @@ export function getIndexToPosition(
   abscissas: NumArray,
   abscissaScale: AxisScale,
   ordinates: NumArray,
-  ordinateScale: AxisScale
+  ordinateScale: AxisScale,
 ): (index: number) => { x: number; y: number; z: number } {
   return (index: number) => {
     const x = abscissaScale(abscissas[index]);
@@ -31,7 +31,7 @@ export function getValueToColor(
   scaleType: ColorScaleType,
   domain: Domain,
   colorMap: ColorMap,
-  invertColorMap: boolean
+  invertColorMap: boolean,
 ): (v: number) => RGBColor {
   const interpolator = getInterpolator(colorMap, invertColorMap);
   const numScale = createScale(scaleType, { domain, range: [0, 1] });

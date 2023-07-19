@@ -25,7 +25,7 @@ const GRADIENT_PRECISION = 1 / 20;
 export const GRADIENT_RANGE = range(
   0,
   1 + GRADIENT_PRECISION,
-  GRADIENT_PRECISION
+  GRADIENT_PRECISION,
 );
 
 const SCALE_FNS: Record<ScaleType, (val: number) => number> = {
@@ -45,7 +45,7 @@ const TEXTURE_TYPES = {
 
 export function getVisDomain(
   customDomain: CustomDomain,
-  dataDomain: Domain
+  dataDomain: Domain,
 ): Domain {
   return [customDomain[0] ?? dataDomain[0], customDomain[1] ?? dataDomain[1]];
 }
@@ -53,7 +53,7 @@ export function getVisDomain(
 export function getSafeDomain(
   domain: Domain,
   fallbackDomain: Domain,
-  scaleType: ScaleType
+  scaleType: ScaleType,
 ): [Domain, DomainErrors] {
   if (domain[0] > domain[1]) {
     return [fallbackDomain, { minGreater: true }];
@@ -84,7 +84,7 @@ export function getSafeDomain(
 
 function getColorStops(
   interpolator: D3Interpolator,
-  minMaxOnly: boolean
+  minMaxOnly: boolean,
 ): string {
   if (minMaxOnly) {
     const min = interpolator(0);
@@ -98,7 +98,7 @@ function getColorStops(
 export function getLinearGradient(
   interpolator: D3Interpolator,
   direction: 'top' | 'bottom' | 'right' | 'left',
-  minMaxOnly = false
+  minMaxOnly = false,
 ): string {
   const colorStops = getColorStops(interpolator, minMaxOnly);
   return `linear-gradient(to ${direction}, ${colorStops})`;
@@ -106,7 +106,7 @@ export function getLinearGradient(
 
 export function getPixelEdgeValues(
   rawValues: NumArray | undefined,
-  pixelCount: number
+  pixelCount: number,
 ): NumArray {
   if (rawValues && rawValues.length === pixelCount) {
     // Add value at right-hand side of last pixel, assuming raw values are regularly spaced
@@ -125,22 +125,22 @@ export function getInterpolator(colorMap: ColorMap, reverse: boolean) {
 
 export function scaleDomain(
   domain: Domain,
-  scaleType = ScaleType.Linear
+  scaleType = ScaleType.Linear,
 ): Domain {
   const scaleFn = SCALE_FNS[scaleType];
   return [scaleFn(domain[0]), scaleFn(domain[1])];
 }
 
 export function toTextureSafeNdArray(
-  ndArr: NdArray<NumArray>
+  ndArr: NdArray<NumArray>,
 ): NdArray<TextureSafeTypedArray>;
 
 export function toTextureSafeNdArray(
-  ndArr: NdArray<NumArray> | undefined
+  ndArr: NdArray<NumArray> | undefined,
 ): NdArray<TextureSafeTypedArray> | undefined;
 
 export function toTextureSafeNdArray(
-  ndArr: NdArray<NumArray> | undefined
+  ndArr: NdArray<NumArray> | undefined,
 ): NdArray<TextureSafeTypedArray> | undefined {
   if (!ndArr) {
     return undefined;
@@ -164,19 +164,19 @@ export function toTextureSafeNdArray(
  */
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array>,
-  magFilter?: TextureFilter
+  magFilter?: TextureFilter,
 ): DataTexture;
 export function getDataTexture(
   values: undefined,
-  magFilter?: TextureFilter
+  magFilter?: TextureFilter,
 ): undefined;
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
-  magFilter?: TextureFilter
+  magFilter?: TextureFilter,
 ): DataTexture | undefined;
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
-  magFilter: TextureFilter = NearestFilter
+  magFilter: TextureFilter = NearestFilter,
 ): DataTexture | undefined {
   if (!values) {
     return undefined;
@@ -192,7 +192,7 @@ export function getDataTexture(
     UVMapping,
     ClampToEdgeWrapping,
     ClampToEdgeWrapping,
-    magFilter
+    magFilter,
   );
   texture.needsUpdate = true;
 
@@ -201,7 +201,7 @@ export function getDataTexture(
 
 export function getMask(
   dataArray: NdArray<NumArray>,
-  ignoreValue: ((v: number) => boolean) | undefined
+  ignoreValue: ((v: number) => boolean) | undefined,
 ): NdArray<Uint8Array> | undefined {
   if (!ignoreValue) {
     return undefined;
@@ -209,6 +209,6 @@ export function getMask(
 
   return ndarray(
     Uint8Array.from(dataArray.data.map((v) => (ignoreValue(v) ? 255 : 0))),
-    dataArray.shape
+    dataArray.shape,
   );
 }

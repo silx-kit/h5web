@@ -38,7 +38,7 @@ function MappedComplexLineVis(props: Props) {
 
   const { phaseValues, amplitudeValues } = useMemo(
     () => getPhaseAmplitudeValues(value),
-    [value]
+    [value],
   );
 
   return (
@@ -50,7 +50,7 @@ function MappedComplexLineVis(props: Props) {
             config={config}
             lineConfig={lineConfig}
           />,
-          toolbarContainer
+          toolbarContainer,
         )}
 
       <MappedLineVis

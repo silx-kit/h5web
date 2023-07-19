@@ -3,7 +3,7 @@ import type { FeedbackContext } from './models';
 export function getFeedbackMailto(
   context: FeedbackContext,
   email: string,
-  subject = 'Feedback'
+  subject = 'Feedback',
 ): string {
   const { filePath, entityPath } = context;
   const body = `Hi,

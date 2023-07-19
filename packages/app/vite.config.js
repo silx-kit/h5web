@@ -7,7 +7,7 @@ import { defineConfig } from 'vite';
 const dirname = fileURLToPath(new URL('.', import.meta.url));
 
 const [pkg, libPkg, sharedPkg] = ['.', '../lib', '../shared'].map((prefix) =>
-  JSON.parse(fs.readFileSync(path.resolve(dirname, `${prefix}/package.json`)))
+  JSON.parse(fs.readFileSync(path.resolve(dirname, `${prefix}/package.json`))),
 );
 
 export const externals = new Set([

@@ -70,12 +70,12 @@ const adaptedLogTicksThreshold = scaleLinear({
 
 export function createScale<
   V extends VisScaleType,
-  S extends ExtractScaleType<V>
+  S extends ExtractScaleType<V>,
 >(scaleType: V, config: ScaleConfig<S>): Scale<S>;
 
 export function createScale(
   scaleType: VisScaleType,
-  config: ScaleConfig
+  config: ScaleConfig,
 ): Scale {
   if (Array.isArray(scaleType)) {
     const [, exponent] = scaleType;
@@ -98,7 +98,7 @@ export function createScale(
 
 export function getSizeToFit(
   availableSize: Size,
-  ratioToRespect: number | undefined
+  ratioToRespect: number | undefined,
 ): Size {
   const { width, height } = availableSize;
 
@@ -117,7 +117,7 @@ export function getDomain(
   valuesArray: AnyNumArray,
   scaleType: ScaleType = ScaleType.Linear,
   errorArray?: AnyNumArray,
-  ignoreValue?: (val: number) => boolean
+  ignoreValue?: (val: number) => boolean,
 ): Domain | undefined {
   const bounds = getBounds(valuesArray, errorArray, ignoreValue);
   return getValidDomainForScale(bounds, scaleType);
@@ -126,17 +126,17 @@ export function getDomain(
 export function getDomains(
   valueArrays: AnyNumArray[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArrays?: (AnyNumArray | undefined)[]
+  errorArrays?: (AnyNumArray | undefined)[],
 ): (Domain | undefined)[] {
   return valueArrays.map((arr, i) =>
-    getDomain(arr, scaleType, errorArrays?.[i])
+    getDomain(arr, scaleType, errorArrays?.[i]),
   );
 }
 
 function extendEmptyDomain(
   value: number,
   extendFactor: number,
-  scaleType: ScaleType
+  scaleType: ScaleType,
 ): Domain {
   if (scaleType === ScaleType.Log) {
     return [value * 10 ** -extendFactor, value * 10 ** extendFactor];
@@ -152,7 +152,7 @@ function extendEmptyDomain(
 
 export function clampBound(
   val: number,
-  supportedDomain: Domain = [-Number.MAX_VALUE / 2, Number.MAX_VALUE / 2]
+  supportedDomain: Domain = [-Number.MAX_VALUE / 2, Number.MAX_VALUE / 2],
 ): number {
   const [supportedMin, supportedMax] = supportedDomain;
 
@@ -162,7 +162,7 @@ export function clampBound(
 export function extendDomain(
   domain: Domain,
   extendFactor: number,
-  scaleType: ColorScaleType = ScaleType.Linear
+  scaleType: ColorScaleType = ScaleType.Linear,
 ): Domain {
   if (extendFactor <= 0) {
     return domain;
@@ -183,7 +183,7 @@ export function extendDomain(
 function unsafeExtendDomain(
   domain: Domain,
   extendFactor: number,
-  scaleType: ColorScaleType
+  scaleType: ColorScaleType,
 ): Domain {
   const [min, max] = domain;
   if (min === max) {
@@ -196,7 +196,7 @@ function unsafeExtendDomain(
 
 export function getValueToIndexScale(
   values: NumArray,
-  switchAtMidpoints?: boolean
+  switchAtMidpoints?: boolean,
 ): ScaleThreshold<number, number> {
   const rawThresholds = switchAtMidpoints
     ? values.map((_, i) => values[i - 1] + (values[i] - values[i - 1]) / 2) // Shift the thresholds for the switch from i-1 to i to happen between values[i-1] and values[i]
@@ -216,7 +216,7 @@ export function getValueToIndexScale(
 
 export function getCanvasAxisScale(
   config: AxisConfig,
-  canvasSize: number
+  canvasSize: number,
 ): AxisScale {
   const { scaleType, visDomain, flip, nice = false } = config;
 
@@ -261,7 +261,7 @@ export function getIntegerTicks(domain: Domain, count: number): number[] {
 export function getTickFormatter(
   domain: Domain,
   availableSize: number,
-  scaleType: ScaleType
+  scaleType: ScaleType,
 ): (val: number | { valueOf(): number }) => string {
   if (scaleType !== ScaleType.Log) {
     return formatTick;
@@ -283,11 +283,11 @@ export function getTickFormatter(
 
 export function getCombinedDomain(domains: [Domain, ...Domain[]]): Domain;
 export function getCombinedDomain(
-  domains: (Domain | undefined)[]
+  domains: (Domain | undefined)[],
 ): Domain | undefined;
 
 export function getCombinedDomain(
-  domains: (Domain | undefined)[]
+  domains: (Domain | undefined)[],
 ): Domain | undefined {
   const domainsToCombine = domains.filter(isDefined);
   if (domainsToCombine.length === 0) {
@@ -303,7 +303,7 @@ export function getCombinedDomain(
 export function getVisRatio(
   aspect: Aspect,
   abscissaDomain: Domain,
-  ordinateDomain: Domain
+  ordinateDomain: Domain,
 ): number | undefined {
   if (aspect === 'auto') {
     return undefined;
@@ -319,7 +319,7 @@ export function getVisRatio(
 }
 
 export function getAxisOffsets(
-  hasLabel: Partial<Record<Exclude<keyof AxisOffsets, 'right'>, boolean>> = {}
+  hasLabel: Partial<Record<Exclude<keyof AxisOffsets, 'right'>, boolean>> = {},
 ) {
   const { left, right, top, bottom } = DEFAULT_AXIS_OFFSETS;
   return {
@@ -337,7 +337,7 @@ function isDescending(array: NumArray): boolean {
 export function getAxisDomain(
   axisValues: NumArray,
   scaleType: AxisScaleType = ScaleType.Linear,
-  extensionFactor = 0
+  extensionFactor = 0,
 ): Domain | undefined {
   const rawDomain = getDomain(axisValues, scaleType);
   if (!rawDomain) {
@@ -370,10 +370,10 @@ export function formatNumType(numType: NumericType): string {
 }
 
 export function getUniforms(
-  uniforms: Record<string, unknown>
+  uniforms: Record<string, unknown>,
 ): Record<string, IUniform> {
   return Object.fromEntries(
-    Object.entries(uniforms).map(([key, value]) => [key, { value }])
+    Object.entries(uniforms).map(([key, value]) => [key, { value }]),
   );
 }
 
@@ -383,7 +383,7 @@ export function toArray(arr: NumArray): number[] {
 
 export function getAxisValues(
   rawValues: NumArray | undefined,
-  axisLength: number
+  axisLength: number,
 ): NumArray {
   if (!rawValues) {
     return range(axisLength);
@@ -398,7 +398,7 @@ export function getAxisValues(
 
 export function createBufferAttr(
   dataLength: number,
-  itemSize: number
+  itemSize: number,
 ): BufferAttribute {
   return new BufferAttribute(new Float32Array(dataLength * itemSize), itemSize);
 }

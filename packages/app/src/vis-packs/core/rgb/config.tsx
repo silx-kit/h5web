@@ -34,8 +34,8 @@ function createRgbConfigStore() {
       {
         name: 'h5web:rgb',
         version: 2,
-      }
-    )
+      },
+    ),
   );
 }
 

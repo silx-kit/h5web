@@ -34,7 +34,9 @@
   padding: 0.25rem;
   font-size: 1.125em;
   border-radius: 0.5rem;
-  transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
+  transition:
+    background-color 0.05s ease-in-out,
+    box-shadow 0.05s ease-in-out;
 }
 
 .actionBtn:hover {

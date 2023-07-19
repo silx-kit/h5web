@@ -30,7 +30,7 @@ function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
       ...auxDatasets,
       ...auxErrorDatasets,
     ],
-    selection
+    selection,
   );
 
   const title = useDatasetValue(titleDataset) || signalDef.label;

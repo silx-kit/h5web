@@ -45,7 +45,7 @@ export function useBufferAttributes(dataArray: NdArray<NumArray>) {
           // Second triangle: (x + 1 ,y) -> (x, y + 1) -> (x + 1, y + 1)
           getIndex(col + 1, row),
           getIndex(col, row + 1),
-          getIndex(col + 1, row + 1)
+          getIndex(col + 1, row + 1),
         );
       }
     }

@@ -28,7 +28,7 @@ function DropZone(props: Props) {
       reader.readAsArrayBuffer(file);
       setReadingFile(true);
     },
-    [onH5File]
+    [onH5File],
   );
 
   const { getRootProps, getInputProps, open, isDragActive, fileRejections } =

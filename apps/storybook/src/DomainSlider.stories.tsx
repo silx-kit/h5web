@@ -45,7 +45,7 @@ export const Default = {
     const [safeDomain, errors] = useSafeDomain(
       visDomain,
       dataDomain,
-      scaleType
+      scaleType,
     );
 
     const [sliderDomain, setSliderDomain] = useState<Domain>(visDomain);

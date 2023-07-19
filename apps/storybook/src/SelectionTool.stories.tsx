@@ -141,7 +141,7 @@ export const LineWithLengthValidation = {
   render: () => {
     const [isValid, setValid] = useThrottledState<boolean | undefined>(
       undefined,
-      50
+      50,
     );
 
     return (

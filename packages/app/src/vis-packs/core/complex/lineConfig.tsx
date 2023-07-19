@@ -22,8 +22,8 @@ function createComplexLineConfigStore() {
       {
         name: 'h5web:complexLine',
         version: 1,
-      }
-    )
+      },
+    ),
   );
 }
 

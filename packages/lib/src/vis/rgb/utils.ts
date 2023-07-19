@@ -10,7 +10,7 @@ import { Data3DTexture, FloatType, RedFormat, UnsignedByteType } from 'three';
  * - `number[]` and all other typed ndarrays must contain color values in the range [0, 255].
  */
 export function toRgbSafeNdArray(
-  ndArr: NdArray<NumArray>
+  ndArr: NdArray<NumArray>,
 ): NdArray<Uint8Array | Uint8ClampedArray | Float32Array> {
   if (
     ndArr.dtype === 'uint8' ||
@@ -27,7 +27,7 @@ export function toRgbSafeNdArray(
   if (ndArr.dtype === 'int8') {
     return ndarray(
       Uint8Array.from([...ndArr.data].map((val) => val + 128)),
-      ndArr.shape
+      ndArr.shape,
     );
   }
 
@@ -35,7 +35,7 @@ export function toRgbSafeNdArray(
 }
 
 export function getData3DTexture(
-  values: NdArray<Uint8Array | Uint8ClampedArray | Float32Array>
+  values: NdArray<Uint8Array | Uint8ClampedArray | Float32Array>,
 ): Data3DTexture {
   const { rows, cols } = getDims(values);
 

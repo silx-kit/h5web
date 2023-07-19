@@ -27,7 +27,7 @@ export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
 }
 
 export function assertHsdsEntity<T extends Entity>(
-  entity: T
+  entity: T,
 ): asserts entity is HsdsEntity<T> {
   if (!('id' in entity)) {
     throw new Error('Expected entity to be HSDS entity');
@@ -35,7 +35,7 @@ export function assertHsdsEntity<T extends Entity>(
 }
 
 export function assertHsdsDataset(
-  dataset: Dataset<ScalarShape | ArrayShape>
+  dataset: Dataset<ScalarShape | ArrayShape>,
 ): asserts dataset is HsdsEntity<Dataset<ScalarShape | ArrayShape>> {
   if (!('id' in dataset)) {
     throw new Error('Expected entity to be HSDS dataset');
@@ -43,7 +43,7 @@ export function assertHsdsDataset(
 }
 
 function assertHsdsNumericType(
-  type: HsdsType
+  type: HsdsType,
 ): asserts type is HsdsNumericType {
   if (type.class !== 'H5T_INTEGER' && type.class !== 'H5T_FLOAT') {
     throw new Error('Expected HSDS numeric type');
@@ -80,7 +80,7 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
 }
 
 function convertHsdsCompoundType(
-  hsdsType: HsdsCompoundType
+  hsdsType: HsdsCompoundType,
 ): CompoundType | ComplexType {
   const { fields } = hsdsType;
 
@@ -99,7 +99,7 @@ function convertHsdsCompoundType(
   return {
     class: DTypeClass.Compound,
     fields: Object.fromEntries(
-      hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)])
+      hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)]),
     ),
   };
 }

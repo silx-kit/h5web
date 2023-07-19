@@ -82,28 +82,28 @@ export function getValues(arr: AnyNumArray): NumArray {
 
 export function toTypedNdArray<T extends TypedArrayConstructor>(
   arr: NdArray<NumArray>,
-  Constructor: T
+  Constructor: T,
 ): NdArray<InstanceType<T>> {
   return ndarray(Constructor.from(arr.data) as InstanceType<T>, arr.shape);
 }
 
 export function getChildEntity(
   group: GroupWithChildren,
-  entityName: string
+  entityName: string,
 ): ChildEntity | undefined {
   return group.children.find((child) => child.name === entityName);
 }
 
 export function buildEntityPath(
   parentPath: string,
-  entityNameOrRelativePath: string
+  entityNameOrRelativePath: string,
 ): string {
   const prefix = parentPath === '/' ? '' : parentPath;
   return `${prefix}/${entityNameOrRelativePath}`;
 }
 
 export function createArrayFromView<T extends TypedArray | unknown[]>(
-  view: NdArray<T>
+  view: NdArray<T>,
 ): NdArray<T> {
   const { data } = view;
 
@@ -111,7 +111,7 @@ export function createArrayFromView<T extends TypedArray | unknown[]>(
     (isTypedArray(data)
       ? new (data.constructor as TypedArrayConstructor)(view.size)
       : []) as T,
-    view.shape
+    view.shape,
   );
 
   assign(array, view);
@@ -137,7 +137,7 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
 export function getBounds(
   valuesArray: AnyNumArray,
   errorArray?: AnyNumArray,
-  ignoreValue?: (val: number) => boolean
+  ignoreValue?: (val: number) => boolean,
 ): Bounds | undefined {
   const values = getValues(valuesArray);
   const errors = errorArray && getValues(errorArray);
@@ -163,7 +163,7 @@ export function getBounds(
       max: -Infinity,
       positiveMin: Infinity,
       strictPositiveMin: Infinity,
-    }
+    },
   );
 
   // Return undefined if min is Infinity (values is empty or contains only NaN/Infinity)
@@ -172,7 +172,7 @@ export function getBounds(
 
 export function getValidDomainForScale(
   bounds: Bounds | undefined,
-  scaleType: ScaleType
+  scaleType: ScaleType,
 ): Domain | undefined {
   if (bounds === undefined) {
     return undefined;

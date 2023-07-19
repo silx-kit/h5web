@@ -45,15 +45,15 @@
     "@h5web/app": "workspace:*",
     "@h5web/shared": "workspace:*",
     "@rollup/plugin-alias": "5.0.0",
-    "@types/node": "^18.15.11",
-    "@types/react": "^17.0.56",
-    "@vitejs/plugin-react": "4.0.0",
+    "@types/node": "^18.16.19",
+    "@types/react": "^17.0.62",
+    "@vitejs/plugin-react": "4.0.3",
     "eslint": "8.28.0",
     "eslint-config-galex": "4.5.2",
     "react": "17.0.2",
     "rollup": "3.20.2",
     "rollup-plugin-dts": "5.3.0",
     "typescript": "5.0.4",
-    "vite": "4.3.8"
+    "vite": "4.3.9"
   }
 }

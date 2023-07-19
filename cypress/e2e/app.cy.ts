@@ -15,7 +15,7 @@ describe('/mock', () => {
     cy.findByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'oneD' }).should('be.visible');
     cy.findByRole('heading', { name: 'nD_datasets / oneD' }).should(
-      'be.visible'
+      'be.visible',
     );
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
@@ -30,7 +30,7 @@ describe('/mock', () => {
     cy.findByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'oneD_cplx' }).should('be.visible');
     cy.findByRole('heading', { name: 'nD_datasets / oneD_cplx' }).should(
-      'be.visible'
+      'be.visible',
     );
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
@@ -71,7 +71,7 @@ describe('/mock', () => {
     cy.findByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
     cy.findByRole('heading', { name: 'nD_datasets / twoD' }).should(
-      'be.visible'
+      'be.visible',
     );
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
@@ -93,10 +93,10 @@ describe('/mock', () => {
 
     cy.findByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'twoD_cplx (amplitude)' }).should(
-      'be.visible'
+      'be.visible',
     );
     cy.findByRole('heading', { name: 'nD_datasets / twoD_cplx' }).should(
-      'be.visible'
+      'be.visible',
     );
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
@@ -216,7 +216,7 @@ describe('/mock', () => {
     cy.findByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'threeD_rgb' }).should('be.visible');
     cy.findByRole('heading', { name: 'nD_datasets / threeD_rgb' }).should(
-      'be.visible'
+      'be.visible',
     );
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
@@ -255,7 +255,7 @@ describe('/mock', () => {
     cy.findByRole('tab', { name: 'Search' }).click();
     cy.findByRole('textbox', { name: 'Path to search' }).should(
       'have.value',
-      'scatter'
+      'scatter',
     );
   });
 
@@ -274,10 +274,10 @@ describe('/mock', () => {
 
       cy.findByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
       cy.findByRole('heading', { name: 'nexus_entry / spectrum' }).should(
-        'be.visible'
+        'be.visible',
       );
       cy.findByRole('figure', { name: 'twoD_spectrum (arb. units)' }).should(
-        'be.visible'
+        'be.visible',
       );
 
       cy.get('svg[data-type="abscissa"] svg').should('have.text', 'X (nm)');
@@ -293,15 +293,15 @@ describe('/mock', () => {
 
       cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
       cy.findByRole('heading', { name: 'nexus_entry / image' }).should(
-        'be.visible'
+        'be.visible',
       );
       cy.findByRole('figure', { name: 'Interference fringes' }).should(
-        'be.visible'
+        'be.visible',
       );
 
       cy.get('svg[data-type="ordinate"] svg').should(
         'have.text',
-        'Angle (degrees)'
+        'Angle (degrees)',
       );
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
@@ -315,7 +315,7 @@ describe('/mock', () => {
 
       cy.get('svg[data-type="abscissa"] .visx-axis-tick').should(
         'have.text',
-        ['−20', '−10', '0', '10', '20'].join('') // minus sign − (U+2212), not hyphen - (U+002D)
+        ['−20', '−10', '0', '10', '20'].join(''), // minus sign − (U+2212), not hyphen - (U+002D)
       );
     });
 
@@ -325,7 +325,7 @@ describe('/mock', () => {
 
       cy.findByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
       cy.findByRole('heading', { name: 'nexus_entry / log_spectrum' }).should(
-        'be.visible'
+        'be.visible',
       );
 
       cy.findAllByRole('button', { name: 'Log' }).should('have.length', 2);
@@ -355,7 +355,7 @@ describe('/mock', () => {
       cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
       cy.findByRole('figure', { name: 'RGB CMY DGW' }).should('be.visible');
       cy.findByRole('heading', { name: 'nexus_entry / rgb-image' }).should(
-        'be.visible'
+        'be.visible',
       );
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
@@ -370,7 +370,7 @@ describe('/mock', () => {
       cy.findByRole('tab', { name: 'NX Scatter' }).should(...BE_SELECTED);
       cy.findByRole('figure', { name: 'scatter_data' }).should('be.visible');
       cy.findByRole('heading', { name: 'nexus_entry / scatter' }).should(
-        'be.visible'
+        'be.visible',
       );
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {

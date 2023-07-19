@@ -45,8 +45,8 @@ function createSurfaceConfigStore() {
       {
         name: 'h5web:surface',
         version: 1,
-      }
-    )
+      },
+    ),
   );
 }
 
@@ -63,10 +63,10 @@ export function SurfaceConfigProvider(props: ConfigProviderProps) {
 }
 
 export function useSurfaceConfig(
-  initialSuggestedOpts: Partial<Pick<SurfaceConfig, 'scaleType'>> = {}
+  initialSuggestedOpts: Partial<Pick<SurfaceConfig, 'scaleType'>> = {},
 ): SurfaceConfig {
   const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val))
+    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
   );
 
   const persistedConfig = useStore(useContext(StoreContext));
