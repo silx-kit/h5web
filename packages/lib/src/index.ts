@@ -17,6 +17,7 @@ export { default as ToggleBtn } from './toolbar/controls/ToggleBtn';
 export { default as ToggleGroup } from './toolbar/controls/ToggleGroup';
 export { default as DomainWidget } from './toolbar/controls/DomainWidget/DomainWidget';
 export { default as DomainSlider } from './toolbar/controls/DomainWidget/DomainSlider';
+export { default as DomainControls } from './toolbar/controls/DomainWidget/DomainControls';
 export { default as ColorMapSelector } from './toolbar/controls/ColorMapSelector/ColorMapSelector';
 export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/ScaleSelector';
 export { default as GridToggler } from './toolbar/controls/GridToggler';
@@ -30,6 +31,8 @@ export { default as Histogram } from './toolbar/controls/Histogram/Histogram';
 export type { ToolbarProps } from './toolbar/Toolbar';
 export type { DomainWidgetProps } from './toolbar/controls/DomainWidget/DomainWidget';
 export type { DomainSliderProps } from './toolbar/controls/DomainWidget/DomainSlider';
+export type { DomainControlsHandle } from './toolbar/controls/DomainWidget/DomainControls';
+export type { DomainControlsProps } from './toolbar/controls/DomainWidget/DomainControls';
 export type { HistogramProps } from './toolbar/controls/Histogram/Histogram';
 
 // Building blocks

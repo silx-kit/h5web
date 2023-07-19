@@ -57,5 +57,5 @@
 }
 
 .actionBtn {
-  composes: actionBtn from './DomainTooltip.module.css';
+  composes: actionBtn from './DomainControls.module.css';
 }

@@ -2,7 +2,7 @@ import { FiCornerDownRight } from 'react-icons/fi';
 import { MdSwapVert } from 'react-icons/md';
 
 import { DomainError } from '../../../vis/models';
-import styles from './DomainTooltip.module.css';
+import styles from './DomainControls.module.css';
 
 const ERRORS = {
   [DomainError.MinGreater]: {
