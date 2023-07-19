@@ -125,4 +125,5 @@ const DomainControls = forwardRef<Handle, Props>((props, ref) => {
 DomainControls.displayName = 'DomainControls';
 
 export type { Handle as DomainControlsHandle };
+export type { Props as DomainControlsProps };
 export default DomainControls;
