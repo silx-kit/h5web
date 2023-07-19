@@ -10,7 +10,7 @@
   margin: 0 1rem 0 0;
   text-transform: uppercase;
   font-size: inherit;
-  color: var(--h5w-domainSlider-tooltip--colorAlt, #333);
+  color: var(--h5w-domainControls--colorAlt, #333);
 }
 
 .value {
@@ -21,9 +21,9 @@
   background-color: rgba(255, 255, 255, 0.5);
   border: 1px solid transparent;
   border-radius: 0.125rem;
-  box-shadow: 0 0 2px var(--h5w-domainSlider-boundInput--shadowColor, dimgray);
+  box-shadow: 0 0 2px var(--h5w-domainControls-boundInput--shadowColor, dimgray);
   text-align: right;
-  color: var(--h5w-domainSlider-tooltip--colorAlt, #333);
+  color: var(--h5w-domainControls--colorAlt, #333);
   font-weight: inherit;
   line-height: inherit;
   transition: background-color 0.05s ease-in-out, box-shadow 0.05s ease-in-out;
@@ -32,13 +32,13 @@
 
 .value:hover {
   box-shadow: 1px 1px 2px 1px
-    var(--h5w-domainSlider-boundInput--shadowColor, dimgray);
+    var(--h5w-domainControls-boundInput--shadowColor, dimgray);
 }
 
 .value:focus,
 .boundEditor[data-editing='true'] .value:hover {
   box-shadow: 1px 1px 2px 1px
-    var(--h5w-domainSlider-boundInput-focus--shadowColor, royalblue);
+    var(--h5w-domainControls-boundInput-focus--shadowColor, royalblue);
   outline: none;
 }
 
@@ -48,9 +48,12 @@
 }
 
 .boundEditor[data-editing='true'] .value {
-  background-color: var(--h5w-domainSlider-boundInput-editing--bgColor, white);
+  background-color: var(
+    --h5w-domainControls-boundInput-editing--bgColor,
+    white
+  );
   border-color: var(
-    --h5w-domainSlider-boundInput-editing--borderColor,
+    --h5w-domainControls-boundInput-editing--borderColor,
     royalblue
   );
   outline: none;

@@ -39,7 +39,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
   }
 
   /* Expose `cancel` function to parent component through ref handle so that
-    `inputValue` can be reset when the user closes the domain tooltip. */
+    `inputValue` can be reset when the user closes the domain widget popup. */
   useImperativeHandle(ref, () => ({ cancel }));
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
     }
 
     if (isEditing && bound === 'min') {
-      // Give focus to min field when opening tooltip in edit mode
+      // Give focus to min field when opening popup in edit mode
       inputRef.current?.focus();
     }
   }, [isEditing, bound]);

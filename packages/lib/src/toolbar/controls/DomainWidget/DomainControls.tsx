@@ -49,7 +49,7 @@ const DomainControls = forwardRef<Handle, Props>((props, ref) => {
   const maxEditorRef = useRef<BoundEditorHandle>(null);
 
   /* Expose `cancelEditing` function to parent component through ref handle so that
-     editing can be cancelled when the user closes the domain tooltip. */
+     editing can be cancelled when the user closes the domain controls popup. */
   useImperativeHandle(ref, () => ({
     cancelEditing: () => {
       minEditorRef.current?.cancel();
@@ -58,7 +58,7 @@ const DomainControls = forwardRef<Handle, Props>((props, ref) => {
   }));
 
   return (
-    <div className={styles.tooltipControls}>
+    <div className={styles.root}>
       {minGreater && (
         <ErrorMessage
           error={DomainError.MinGreater}

@@ -1,8 +1,8 @@
-.tooltipControls > p {
+.root > p {
   margin-bottom: 0.75rem;
 }
 
-.tooltipControls > p:last-child {
+.root > p:last-child {
   margin-bottom: 0;
 }
 
@@ -14,7 +14,7 @@
 .dataRange > span {
   margin-left: 0.5rem;
   font-weight: 700;
-  color: var(--h5w-domainSlider-tooltip--colorAlt, #333);
+  color: var(--h5w-domainControls--colorAlt, #333);
 }
 
 .autoscale {
