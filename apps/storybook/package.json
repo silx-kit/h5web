@@ -38,12 +38,12 @@
     "three": "0.141.0"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "7.0.5",
-    "@storybook/addon-essentials": "7.0.5",
-    "@storybook/addon-links": "7.0.5",
-    "@storybook/addon-mdx-gfm": "7.0.5",
-    "@storybook/react": "7.0.5",
-    "@storybook/react-vite": "7.0.5",
+    "@storybook/addon-docs": "7.1.1",
+    "@storybook/addon-essentials": "7.1.1",
+    "@storybook/addon-links": "7.1.1",
+    "@storybook/addon-mdx-gfm": "7.1.1",
+    "@storybook/react": "7.1.1",
+    "@storybook/react-vite": "7.1.1",
     "@types/d3-format": "~3.0.1",
     "@types/lodash": "~4.14.195",
     "@types/ndarray": "1.0.11",
@@ -54,7 +54,7 @@
     "eslint": "8.28.0",
     "eslint-config-galex": "4.5.2",
     "remark-gfm": "3.0.1",
-    "storybook": "7.0.5",
+    "storybook": "7.1.1",
     "typescript": "5.0.4",
     "vite": "4.3.9"
   },

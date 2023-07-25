@@ -16,7 +16,18 @@ import { formatCoord } from './utils';
 const meta = {
   title: 'Building Blocks/Annotation',
   parameters: { layout: 'fullscreen' },
-  decorators: [FillHeight],
+  decorators: [
+    (Story) => (
+      <VisCanvas
+        abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
+      >
+        <DefaultInteractions />
+        <Story />
+      </VisCanvas>
+    ),
+    FillHeight,
+  ],
 } satisfies Meta;
 
 export default meta;
@@ -24,11 +35,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default = {
   render: () => (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
-    >
-      <DefaultInteractions />
+    <>
       <Annotation x={10} y={16}>
         HTML annotation positioned at (10, 16)
       </Annotation>
@@ -87,17 +94,13 @@ export const Default = {
           </svg>
         </>
       </Annotation>
-    </VisCanvas>
+    </>
   ),
 } satisfies Story;
 
 export const WithZoom = {
   render: () => (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
-    >
-      <DefaultInteractions />
+    <>
       <Annotation x={10} y={16} scaleOnZoom style={{ width: 230 }}>
         HTML annotation at (10, 16) that scales with zoom.
       </Annotation>
@@ -111,7 +114,7 @@ export const WithZoom = {
         Another annotation that scales with zoom but this time{' '}
         <strong>centred</strong> on (25, 10)
       </Annotation>
-    </VisCanvas>
+    </>
   ),
 } satisfies Story;
 
@@ -137,20 +140,14 @@ function PointerTracker(props: {
 
 export const FollowPointer = {
   render: () => (
-    <VisCanvas
-      abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
-      ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
-    >
-      <DefaultInteractions />
-      <PointerTracker>
-        {(x, y) => (
-          <Annotation
-            x={x + 0.5} // slight offset from pointer
-            y={y - 0.5}
-            style={{ whiteSpace: 'nowrap' }}
-          >{`x=${formatCoord(x)}, y=${formatCoord(y)}`}</Annotation>
-        )}
-      </PointerTracker>
-    </VisCanvas>
+    <PointerTracker>
+      {(x, y) => (
+        <Annotation
+          x={x + 0.5} // slight offset from pointer
+          y={y - 0.5}
+          style={{ whiteSpace: 'nowrap' }}
+        >{`x=${formatCoord(x)}, y=${formatCoord(y)}`}</Annotation>
+      )}
+    </PointerTracker>
   ),
 } satisfies Story;
