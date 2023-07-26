@@ -53,7 +53,7 @@ const meta = {
     },
     aspect: {
       control: { type: 'inline-radio' },
-      options: ['auto', 'equal'],
+      options: ['auto', 'equal', 0.25],
     },
   },
 } satisfies Meta<typeof HeatmapVis>;

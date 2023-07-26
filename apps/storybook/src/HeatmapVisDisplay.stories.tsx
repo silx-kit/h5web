@@ -27,7 +27,7 @@ export const AutoAspectRatio = {
 
 export const CustomAspectRatio = {
   args: {
-    aspect: 2,
+    aspect: 0.25,
   },
 } satisfies Story;
 
