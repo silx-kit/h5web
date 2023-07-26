@@ -17,6 +17,7 @@ function R3FCanvas(props: PropsWithChildren<Props>) {
       frameloop="demand" // disable game loop
       dpr={[1, 3]} // https://discoverthreejs.com/tips-and-tricks/#performance
       resize={{ debounce: { scroll: 20, resize: 200 }, scroll: false }} // https://github.com/pmndrs/react-three-fiber/discussions/1906
+      gl={{ preserveDrawingBuffer: true }} // for "Save Image As..." and snapshot feature to work
     >
       <ambientLight />
       {children}
