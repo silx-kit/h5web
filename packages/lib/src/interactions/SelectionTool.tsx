@@ -1,5 +1,6 @@
 import { assertDefined } from '@h5web/shared';
 import {
+  useEventListener,
   useKeyboardEvent,
   usePrevious,
   useRafState,
@@ -138,15 +139,16 @@ function SelectionTool(props: Props) {
 
   useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
 
-  useKeyboardEvent(
-    'Escape',
-    () => {
-      startEvtRef.current = undefined;
-      setRawSelection(undefined);
-    },
-    [],
-    { event: 'keydown' },
-  );
+  function cancelSelection() {
+    startEvtRef.current = undefined;
+    setRawSelection(undefined);
+  }
+
+  useKeyboardEvent('Escape', cancelSelection, [], { event: 'keydown' });
+  useEventListener(window, 'contextmenu', (evt: MouseEvent) => {
+    evt.preventDefault();
+    cancelSelection();
+  });
 
   // Compute effective selection
   const selection = useMemo(
