@@ -12,10 +12,13 @@ function RawVis(props: Props) {
     console.log(value); // eslint-disable-line no-console
 
     return (
-      <p className={styles.fallback}>
-        The dataset is too big to be displayed and was logged to the console
-        instead.
-      </p>
+      <div className={styles.fallback}>
+        <p className={styles.reason}>Too big to display</p>
+        <p className={styles.message}>
+          Dataset logged to the browser's developer console instead. Press{' '}
+          <kbd>F12</kbd> to open the developer tools and access the console.
+        </p>
+      </div>
     );
   }
 
