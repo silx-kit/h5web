@@ -18,6 +18,7 @@ export { default as ToggleGroup } from './toolbar/controls/ToggleGroup';
 export { default as DomainWidget } from './toolbar/controls/DomainWidget/DomainWidget';
 export { default as DomainSlider } from './toolbar/controls/DomainWidget/DomainSlider';
 export { default as DomainControls } from './toolbar/controls/DomainWidget/DomainControls';
+export { default as ColorMapOption } from './toolbar/controls/ColorMapSelector/ColorMapOption';
 export { default as ColorMapSelector } from './toolbar/controls/ColorMapSelector/ColorMapSelector';
 export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/ScaleSelector';
 export { default as GridToggler } from './toolbar/controls/GridToggler';
