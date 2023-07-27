@@ -9,7 +9,7 @@ export default defineConfig({
       addMatchImageSnapshotPlugin(on);
     },
   },
-  retries: process.env.TAKE_SNAPSHOTS ? 3 : null,
+  retries: process.env.CYPRESS_TAKE_SNAPSHOTS ? 3 : null,
   screenshotsFolder: 'cypress/debug',
   fixturesFolder: false,
   video: false,
