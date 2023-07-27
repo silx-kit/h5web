@@ -5,6 +5,7 @@ import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import Box from './box';
 import { useZoomOnSelection } from './hooks';
 import type { CommonInteractionProps, Rect, Selection } from './models';
+import type { SelectionToolProps } from './SelectionTool';
 import SelectionTool from './SelectionTool';
 import styles from './SelectToZoom.module.css';
 import SvgElement from './svg/SvgElement';
@@ -14,10 +15,11 @@ const DEFAULT_MIN_ZOOM = 20;
 
 interface Props extends CommonInteractionProps {
   minZoom?: number;
+  validate?: SelectionToolProps['validate'];
 }
 
 function SelectToZoom(props: Props) {
-  const { minZoom = DEFAULT_MIN_ZOOM, ...commonProps } = props;
+  const { minZoom = DEFAULT_MIN_ZOOM, validate, ...commonProps } = props;
   const {
     canvasSize,
     canvasRatio,
@@ -58,7 +60,9 @@ function SelectToZoom(props: Props) {
     <SelectionTool
       id="SelectToZoom"
       transform={computeZoomSelection}
-      validate={({ html }) => Box.fromPoints(...html).hasMinSize(minZoom)}
+      validate={
+        validate || (({ html }) => Box.fromPoints(...html).hasMinSize(minZoom))
+      }
       onValidSelection={zoomOnSelection}
       {...commonProps}
     >
