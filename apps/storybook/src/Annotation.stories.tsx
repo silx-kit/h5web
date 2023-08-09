@@ -15,7 +15,11 @@ import { formatCoord } from './utils';
 
 const meta = {
   title: 'Building Blocks/Annotation',
-  parameters: { layout: 'fullscreen' },
+  component: Annotation,
+  parameters: {
+    layout: 'fullscreen',
+    controls: { sort: 'requiredFirst' },
+  },
   decorators: [
     (Story) => (
       <VisCanvas
@@ -28,94 +32,124 @@ const meta = {
     ),
     FillHeight,
   ],
-} satisfies Meta;
+  args: {
+    overflowCanvas: false,
+    scaleOnZoom: false,
+    center: false,
+  },
+} satisfies Meta<typeof Annotation>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default = {
-  render: () => (
-    <>
-      <Annotation x={10} y={16}>
-        HTML annotation positioned at (10, 16)
+  render: (args) => {
+    const { x, y, overflowCanvas, scaleOnZoom, center, style } = args;
+
+    const features = [
+      overflowCanvas ? 'overflows the canvas' : '',
+      scaleOnZoom ? 'scales on zoom' : '',
+    ]
+      .filter((str) => str.length > 0)
+      .join(' and ');
+
+    return (
+      <Annotation {...args}>
+        <p
+          style={{
+            margin: 0,
+            backgroundColor: 'rgba(0, 255, 0, 0.3)',
+            ...style,
+          }}
+        >
+          Annotation {center ? 'centered on' : 'positioned at'} ({x}, {y})
+          {features && <> that {features}</>}
+        </p>
+        <svg
+          width="30"
+          height="30"
+          fill="transparent"
+          stroke="lightsalmon"
+          strokeWidth={3}
+          style={{
+            position: 'absolute',
+            top: center ? '50%' : 0,
+            left: center ? '50%' : 0,
+            transform: 'translate(-50%, -50%)',
+            zIndex: -1,
+            overflow: 'visible',
+          }}
+        >
+          <line x1="0%" x2="100%" y1="50%" y2="50%" />
+          <line x1="50%" x2="50%" y1="0%" y2="100%" />
+        </svg>
       </Annotation>
-      <Annotation
-        x={10}
-        y={6}
-        center
-        style={{
-          width: 180,
-          textAlign: 'center',
-        }}
-      >
-        Another annotation, <strong>centred</strong> on (10, 6)
-      </Annotation>
-      <Annotation
-        x={25}
-        y={10}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          width: 320,
-          height: 75,
-          fontSize: '0.875rem',
-          textAlign: 'center',
-        }}
-      >
-        <>
-          <p
-            style={{
-              flex: '1 1 0%',
-              margin: 0,
-              padding: '0.5rem',
-              border: '10px solid pink',
-            }}
-          >
-            Annotations don't have to contain just text. You can also draw
-            shapes with CSS and SVG.
-          </p>
-          <svg
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              overflow: 'visible',
-            }}
-          >
-            <rect
-              width="100%"
-              height="100%"
-              fill="none"
-              stroke="darksalmon"
-              strokeWidth={5}
-            />
-          </svg>
-        </>
-      </Annotation>
-    </>
-  ),
+    );
+  },
+  args: {
+    x: 10,
+    y: 16,
+  },
 } satisfies Story;
 
-export const WithZoom = {
-  render: () => (
-    <>
-      <Annotation x={10} y={16} scaleOnZoom style={{ width: 230 }}>
-        HTML annotation at (10, 16) that scales with zoom.
-      </Annotation>
-      <Annotation
-        x={25}
-        y={10}
-        scaleOnZoom
-        center
-        style={{ width: 320, textAlign: 'center' }}
-      >
-        Another annotation that scales with zoom but this time{' '}
-        <strong>centred</strong> on (25, 10)
-      </Annotation>
-    </>
+export const OverflowCanvas = {
+  ...Default,
+  args: {
+    x: 6,
+    y: 16,
+    overflowCanvas: true,
+  },
+} satisfies Story;
+
+export const Centered = {
+  ...Default,
+  args: {
+    x: 5,
+    y: 14,
+    center: true,
+  },
+} satisfies Story;
+
+export const ScaleOnZoom = {
+  ...Default,
+  args: {
+    x: 10,
+    y: 16,
+    scaleOnZoom: true,
+  },
+} satisfies Story;
+
+export const ScaleOnZoomCentered = {
+  ...Default,
+  args: {
+    x: 10,
+    y: 16,
+    scaleOnZoom: true,
+    center: true,
+  },
+} satisfies Story;
+
+export const FollowPointer = {
+  render: (args) => (
+    <PointerTracker>
+      {(x, y) => (
+        <Annotation
+          {...args}
+          x={x + 0.5} // slight offset from pointer
+          y={y - 0.5}
+          style={{ whiteSpace: 'nowrap' }}
+        >{`x=${formatCoord(x)}, y=${formatCoord(y)}`}</Annotation>
+      )}
+    </PointerTracker>
   ),
+  args: {
+    x: 0,
+    y: 0,
+  },
+  argTypes: {
+    x: { control: false },
+    y: { control: false },
+  },
 } satisfies Story;
 
 function PointerTracker(props: {
@@ -137,17 +171,3 @@ function PointerTracker(props: {
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{coords ? children(...coords) : null}</>;
 }
-
-export const FollowPointer = {
-  render: () => (
-    <PointerTracker>
-      {(x, y) => (
-        <Annotation
-          x={x + 0.5} // slight offset from pointer
-          y={y - 0.5}
-          style={{ whiteSpace: 'nowrap' }}
-        >{`x=${formatCoord(x)}, y=${formatCoord(y)}`}</Annotation>
-      )}
-    </PointerTracker>
-  ),
-} satisfies Story;
