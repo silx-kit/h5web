@@ -3,7 +3,7 @@
 A number of elements are rendered **on top of the WebGL canvas**: axis grid, annotations, SVG elements, etc.
 Some of these elements must appear above or behind others, so it's important to control and understand their **stacking order**.
 
-The closest container to all these elements, `canvasWrapper`, creates a new [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
+The closest container to all these elements, `visCanvas`, creates a new [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
 This allows its children (both direct and nested) to be stacked in relation with one another _within_ this stacking context (unless some of them define their own stacking context).
 
 ### Stacking order
