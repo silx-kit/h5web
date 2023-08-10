@@ -54,48 +54,46 @@ function VisCanvas(props: PropsWithChildren<Props>) {
 
   return (
     <div
-      className={styles.canvasWrapper}
+      className={styles.visCanvas}
       style={{
-        paddingBottom: axisOffsets.bottom,
-        paddingLeft: axisOffsets.left,
-        paddingTop: axisOffsets.top,
-        paddingRight: axisOffsets.right,
+        gridTemplateColumns: `${axisOffsets.left}px minmax(0, 1fr) ${axisOffsets.right}px`,
+        gridTemplateRows: `${axisOffsets.top}px minmax(0, 1fr) ${axisOffsets.bottom}px`,
       }}
     >
-      <R3FCanvas className={styles.r3fRoot} orthographic>
-        <VisCanvasProvider
-          visRatio={visRatio}
-          abscissaConfig={abscissaConfig}
-          ordinateConfig={ordinateConfig}
-          svgOverlay={svgOverlay}
-          floatingToolbar={floatingToolbar}
-        >
-          <AxisSystem
-            axisOffsets={axisOffsets}
-            title={title}
-            showAxes={showAxes}
-          />
-          <InteractionsProvider>{children}</InteractionsProvider>
-          <ViewportCenterer />
-          <RatioEnforcer />
-          {raycasterThreshold !== undefined && (
-            <ThresholdAdjuster value={raycasterThreshold} />
-          )}
-        </VisCanvasProvider>
+      {showAxes && title && <p className={styles.title}>{title}</p>}
 
-        <Html>
-          <svg
-            ref={(elem) => setSvgOverlay(elem || undefined)}
-            className={styles.svgOverlay}
-          />
-        </Html>
-        <Html>
-          <div
-            ref={(elem) => setFloatingToolbar(elem || undefined)}
-            className={styles.floatingToolbar}
-          />
-        </Html>
-      </R3FCanvas>
+      <div className={styles.canvasWrapper}>
+        <R3FCanvas className={styles.r3fRoot} orthographic>
+          <VisCanvasProvider
+            visRatio={visRatio}
+            abscissaConfig={abscissaConfig}
+            ordinateConfig={ordinateConfig}
+            svgOverlay={svgOverlay}
+            floatingToolbar={floatingToolbar}
+          >
+            <AxisSystem axisOffsets={axisOffsets} showAxes={showAxes} />
+            <InteractionsProvider>{children}</InteractionsProvider>
+            <ViewportCenterer />
+            <RatioEnforcer />
+            {raycasterThreshold !== undefined && (
+              <ThresholdAdjuster value={raycasterThreshold} />
+            )}
+          </VisCanvasProvider>
+
+          <Html>
+            <svg
+              ref={(elem) => setSvgOverlay(elem || undefined)}
+              className={styles.svgOverlay}
+            />
+          </Html>
+          <Html>
+            <div
+              ref={(elem) => setFloatingToolbar(elem || undefined)}
+              className={styles.floatingToolbar}
+            />
+          </Html>
+        </R3FCanvas>
+      </div>
     </div>
   );
 }

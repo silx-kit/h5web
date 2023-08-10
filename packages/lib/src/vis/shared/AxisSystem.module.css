@@ -1,21 +1,8 @@
-.axisSystem {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  pointer-events: none;
-  display: grid;
-  grid-template-areas:
-    '. top-axis .'
-    'left-axis grid right-axis'
-    '. bottom-axis .';
-  z-index: var(--h5w-zi-axisSystem);
-}
-
-.axisSystem > svg {
-  display: block;
+.axis,
+.grid {
   overflow: visible;
+  z-index: var(--h5w-zi-axisSystem);
+  pointer-events: none; /* let events through to canvas */
 }
 
 .axis[data-type='abscissa'] {
@@ -41,6 +28,7 @@
   color: var(--h5w-tickLabels--color, #333);
   font-family: var(--h5w-tickLabels--fontFamily, inherit);
   font-size: var(--h5w-tickLabels--fontSize, 0.75em);
+  user-select: none; /* prevent unwanted selection during interaction */
 }
 
 .label {
@@ -52,20 +40,8 @@
   text-anchor: middle;
 }
 
-.title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-area: top-axis;
-  margin: 0;
-  color: var(--h5w-plotTitle--color, inherit);
-  font-family: var(--h5w-plotTitle--fontFamily, inherit);
-  font-size: var(--h5w-plotTitle--fontSize, 1.125em);
-  font-weight: var(--h5w-plotTitle--fontWeight, inherit);
-}
-
 .grid {
-  grid-area: grid;
+  grid-area: canvas;
 }
 
 .grid line {

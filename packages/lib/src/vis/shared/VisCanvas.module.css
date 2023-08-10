@@ -1,8 +1,13 @@
-.canvasWrapper {
+.visCanvas {
   flex: 1 1 0%;
-  overflow: hidden; /* prevent overflow when resizing */
-  position: relative; /* for axis system */
+  overflow: hidden; /* prevent overflow, notably when resizing */
   z-index: 0; /* stacking context for anything rendered above the canvas (axis grid, SVG scene, floating toolbar, tooltip, etc.) */
+
+  display: grid;
+  grid-template-areas:
+    '. title'
+    'left-axis canvas'
+    '. bottom-axis';
 
   /*
    * Stacking order, from furthest to closest:
@@ -20,14 +25,31 @@
   --h5w-zi-floatingToolbar: 2000;
 }
 
-.r3fRoot {
-  /* `r3fRoot` is implicitely stacked at `z-index: 0`, so it intercepts events before they reach the canvas.
-   * We can't stack it explicitly without creating a new stacking context, which breaks the stacking order
-   * (the axis system ends up either behind or in front of everything else, neither of which is acceptable).
-   * So we disable pointer events and restore them only on the `canvas` and on specific interactive elements,
-   * like the floating toolbar. */
-  pointer-events: none;
+.title {
+  grid-area: title;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  color: var(--h5w-plotTitle--color, inherit);
+  font-family: var(--h5w-plotTitle--fontFamily, inherit);
+  font-size: var(--h5w-plotTitle--fontSize, 1.125em);
+  font-weight: var(--h5w-plotTitle--fontWeight, inherit);
+}
+
+.canvasWrapper {
+  grid-area: canvas;
+  position: relative; /* for `.r3fRoot`, `.svgOverlay`, `.floatingToolbar`, overflowing annotations, etc. */
   background-color: var(--h5w-canvas--bgColor, transparent);
+
+  /*
+   * `.canvasWrapper` and `.r3fRoot` are implicitely stacked at `z-index: 0`, so
+   * they intercept events before they can reach the canvas. We can't stack them
+   * explicitly without creating a new stacking context, which would break the
+   * stacking order. So we disable pointer events instead and restore them only
+   * on the `canvas` and on specific interactive elements, like the floating toolbar.
+   */
+  pointer-events: none;
 }
 
 .r3fRoot > canvas {
