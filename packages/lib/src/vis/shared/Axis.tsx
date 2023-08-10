@@ -88,13 +88,8 @@ function Axis(props: Props) {
         </svg>
       )}
       {showGrid && (
-        <svg className={styles.grid} style={canvasSize}>
-          <GridComponent
-            scale={scale}
-            width={width}
-            height={height}
-            {...ticksProp}
-          />
+        <svg className={styles.grid} {...canvasSize}>
+          <GridComponent scale={scale} {...canvasSize} {...ticksProp} />
         </svg>
       )}
     </>
