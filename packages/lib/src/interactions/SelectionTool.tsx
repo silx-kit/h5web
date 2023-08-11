@@ -146,8 +146,10 @@ function SelectionTool(props: Props) {
 
   useKeyboardEvent('Escape', cancelSelection, [], { event: 'keydown' });
   useEventListener(window, 'contextmenu', (evt: MouseEvent) => {
-    evt.preventDefault();
-    cancelSelection();
+    if (startEvtRef.current) {
+      evt.preventDefault();
+      cancelSelection();
+    }
   });
 
   // Compute effective selection
