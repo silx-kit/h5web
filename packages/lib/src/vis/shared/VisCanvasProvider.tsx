@@ -29,8 +29,8 @@ export interface VisCanvasContextValue {
   getVisibleDomains: (camera: Camera) => VisibleDomains;
 
   // For internal use only
-  svgOverlay: SVGSVGElement | undefined;
-  floatingToolbar: HTMLDivElement | undefined;
+  svgOverlay: SVGSVGElement | null;
+  floatingToolbar: HTMLDivElement | null;
 }
 
 const VisCanvasContext = createContext({} as VisCanvasContextValue);
@@ -43,8 +43,8 @@ interface Props {
   visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
-  svgOverlay: SVGSVGElement | undefined;
-  floatingToolbar: HTMLDivElement | undefined;
+  svgOverlay: SVGSVGElement | null;
+  floatingToolbar: HTMLDivElement | null;
 }
 
 function VisCanvasProvider(props: PropsWithChildren<Props>) {

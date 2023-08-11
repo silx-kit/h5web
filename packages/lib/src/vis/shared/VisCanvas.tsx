@@ -5,7 +5,6 @@ import InteractionsProvider from '../../interactions/InteractionsProvider';
 import type { Aspect, AxisConfig } from '../models';
 import { getAxisOffsets, getVisRatio } from '../utils';
 import AxisSystem from './AxisSystem';
-import Html from './Html';
 import R3FCanvas from './R3FCanvas';
 import RatioEnforcer from './RatioEnforcer';
 import ThresholdAdjuster from './ThresholdAdjuster';
@@ -49,8 +48,10 @@ function VisCanvas(props: PropsWithChildren<Props>) {
       })
     : NO_OFFSETS;
 
-  const [svgOverlay, setSvgOverlay] = useState<SVGSVGElement>();
-  const [floatingToolbar, setFloatingToolbar] = useState<HTMLDivElement>();
+  const [svgOverlay, setSvgOverlay] = useState<SVGSVGElement | null>(null);
+  const [floatingToolbar, setFloatingToolbar] = useState<HTMLDivElement | null>(
+    null,
+  );
 
   return (
     <div
@@ -79,21 +80,16 @@ function VisCanvas(props: PropsWithChildren<Props>) {
               <ThresholdAdjuster value={raycasterThreshold} />
             )}
           </VisCanvasProvider>
-
-          <Html>
-            <svg
-              ref={(elem) => setSvgOverlay(elem || undefined)}
-              className={styles.svgOverlay}
-            />
-          </Html>
-          <Html>
-            <div
-              ref={(elem) => setFloatingToolbar(elem || undefined)}
-              className={styles.floatingToolbar}
-            />
-          </Html>
         </R3FCanvas>
+
+        <svg
+          ref={setSvgOverlay}
+          className={styles.svgOverlay}
+          overflow="hidden"
+        />
       </div>
+
+      <div ref={setFloatingToolbar} className={styles.floatingToolbar} />
     </div>
   );
 }
