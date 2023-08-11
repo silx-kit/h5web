@@ -13,7 +13,7 @@ function Overlay(props: PropsWithChildren<Props>) {
   const { canvasSize } = useVisCanvasContext();
 
   return (
-    <Html>
+    <Html overflowCanvas>
       <div
         className={className}
         style={{

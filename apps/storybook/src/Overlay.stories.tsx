@@ -1,4 +1,4 @@
-import { Overlay, Pan, VisCanvas, Zoom } from '@h5web/lib';
+import { Overlay, Pan, ResetZoomButton, VisCanvas, Zoom } from '@h5web/lib';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
@@ -26,6 +26,7 @@ export const Default = {
       >
         <Zoom />
         <Pan />
+        <ResetZoomButton />
         <Overlay
           {...args}
           style={{
@@ -33,11 +34,18 @@ export const Default = {
               'linear-gradient(135deg, #444cf715 25%, transparent 25%) -20px 0/ 40px 40px, linear-gradient(225deg, #444cf715 25%, transparent 25%) -20px 0/ 40px 40px, linear-gradient(315deg, #444cf715 25%, transparent 25%) 0px 0/ 40px 40px, linear-gradient(45deg, #444cf715 25%, #e5e5f715 25%) 0px 0/ 40px 40px',
           }}
         >
-          <p style={{ position: 'absolute', top: 0, left: 10 }}>
-            This HTML overlay fills the canvas but lets pointer events through.
-            It appears above the axis system's grid and is not affected by
-            panning/zooming (unlike <code>Annotation</code>).
-          </p>
+          <div style={{ padding: '0 1rem', maxWidth: '60%', minWidth: '15em' }}>
+            <p>
+              This HTML overlay fills the canvas but lets pointer events
+              through. Unlike <code>Annotation</code>, it is not affected by
+              panning/zooming.
+            </p>
+            <p>
+              By default, children of <code>Overlay</code> can overflow the
+              bounds of the canvas. This can be changed with:{' '}
+              <code>{`<Overlay style={{ overflow: 'hidden' }} />`}</code>
+            </p>
+          </div>
         </Overlay>
       </VisCanvas>
     );
