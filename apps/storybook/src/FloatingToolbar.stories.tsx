@@ -1,4 +1,4 @@
-import { FloatingControl, VisCanvas } from '@h5web/lib';
+import { DefaultInteractions, FloatingControl, VisCanvas } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -24,6 +24,7 @@ export const Default = {
         ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
         title={withTitle ? 'Plot title' : undefined}
       >
+        <DefaultInteractions />
         <FloatingControl>
           <button
             type="button"
