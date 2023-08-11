@@ -47,7 +47,8 @@
    * they intercept events before they can reach the canvas. We can't stack them
    * explicitly without creating a new stacking context, which would break the
    * stacking order. So we disable pointer events instead and restore them only
-   * on the `canvas` and on specific interactive elements, like the floating toolbar.
+   * on the `canvas`. Consumers may restore pointer events on specific elements
+   * (annotations, SVG elements, etc.) to make them interactive.
    */
   pointer-events: none;
 }
@@ -68,10 +69,9 @@
 }
 
 .floatingToolbar {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  display: flex;
+  grid-area: canvas;
+  justify-self: end;
+  align-self: end;
   z-index: var(--h5w-zi-floatingToolbar);
-  pointer-events: auto;
+  display: flex;
 }
