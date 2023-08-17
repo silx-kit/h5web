@@ -139,6 +139,8 @@ export type {
   CanvasEventCallbacks,
 } from './interactions/models';
 export { MouseButton } from './interactions/models';
+export { useInteraction, useModifierKeyPressed } from './interactions/hooks';
+export { getModifierKeyArray } from './interactions/utils';
 
 export type {
   Domain,
