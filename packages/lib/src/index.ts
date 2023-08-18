@@ -124,30 +124,20 @@ export {
   useInteraction,
   useModifierKeyPressed,
 } from './interactions/hooks';
-export { MouseButton } from './interactions/models';
-export { getModifierKeyArray } from './interactions/utils';
 export { default as Box } from './interactions/box';
 
+// Constants
 export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared';
-
-// Models
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
+
+// Enums
 export { ScaleType } from '@h5web/shared';
 export { CurveType, GlyphType } from './vis/line/models';
 export { ImageType } from './vis/rgb/models';
 export { Notation } from './vis/matrix/models';
+export { MouseButton } from './interactions/models';
 
-export type {
-  ModifierKey,
-  Rect,
-  Selection,
-  CanvasEvent,
-  CanvasEventCallbacks,
-  InteractionInfo,
-  InteractionEntry,
-  CommonInteractionProps,
-} from './interactions/models';
-
+// Models
 export type {
   Domain,
   VisibleDomains,
@@ -175,6 +165,17 @@ export type {
 
 export type { D3Interpolator, ColorMap } from './vis/heatmap/models';
 export type { ScatterAxisParams } from './vis/scatter/models';
+
+export type {
+  ModifierKey,
+  Rect,
+  Selection,
+  CanvasEvent,
+  CanvasEventCallbacks,
+  InteractionInfo,
+  InteractionConfig,
+  CommonInteractionProps,
+} from './interactions/models';
 
 // Mock data and utilities
 export {
