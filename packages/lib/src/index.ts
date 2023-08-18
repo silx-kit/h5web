@@ -118,7 +118,13 @@ export {
 export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
 
 export { scaleGamma } from './vis/scaleGamma';
-export { useCanvasEvents } from './interactions/hooks';
+
+export {
+  useCanvasEvents,
+  useInteraction,
+  useModifierKeyPressed,
+} from './interactions/hooks';
+export { getModifierKeyArray } from './interactions/utils';
 export { default as Box } from './interactions/box';
 
 export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared';
@@ -131,16 +137,16 @@ export { ImageType } from './vis/rgb/models';
 export { Notation } from './vis/matrix/models';
 
 export type {
-  InteractionInfo,
   ModifierKey,
-  Selection,
+  MouseButton,
   Rect,
+  Selection,
   CanvasEvent,
   CanvasEventCallbacks,
+  InteractionInfo,
+  InteractionEntry,
+  CommonInteractionProps,
 } from './interactions/models';
-export { MouseButton } from './interactions/models';
-export { useInteraction, useModifierKeyPressed } from './interactions/hooks';
-export { getModifierKeyArray } from './interactions/utils';
 
 export type {
   Domain,
