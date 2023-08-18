@@ -1,5 +1,6 @@
 import { useEventListener, useToggle } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
+import { castArray } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { Vector3 } from 'three';
 
@@ -9,7 +10,7 @@ import { useInteractionsContext } from './InteractionsProvider';
 import type {
   CanvasEvent,
   CanvasEventCallbacks,
-  InteractionEntry,
+  InteractionConfig,
   ModifierKey,
   Selection,
 } from './models';
@@ -181,14 +182,17 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   useEventListener(domElement, 'wheel', handleWheel);
 }
 
-export function useInteraction(id: string, value: InteractionEntry) {
+export function useInteraction(
+  id: string,
+  config: InteractionConfig,
+): (event: MouseEvent) => boolean {
   const { shouldInteract, registerInteraction, unregisterInteraction } =
     useInteractionsContext();
 
   useEffect(() => {
-    registerInteraction(id, value);
+    registerInteraction(id, config);
     return () => unregisterInteraction(id);
-  }, [id, registerInteraction, unregisterInteraction, value]);
+  }, [id, registerInteraction, unregisterInteraction, config]);
 
   return useCallback(
     (event: MouseEvent) => shouldInteract(id, event),
@@ -196,7 +200,10 @@ export function useInteraction(id: string, value: InteractionEntry) {
   );
 }
 
-export function useModifierKeyPressed(modifierKeys: ModifierKey[]): boolean {
+export function useModifierKeyPressed(
+  modifierKey: ModifierKey | ModifierKey[] = [],
+): boolean {
+  const modifierKeys = castArray(modifierKey);
   const { domElement } = useThree((state) => state.gl);
 
   const [pressedKeys] = useState(new Map<string, boolean>());

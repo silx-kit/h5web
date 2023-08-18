@@ -25,7 +25,6 @@ import type {
   Selection,
 } from './models';
 import { MouseButton } from './models';
-import { getModifierKeyArray } from './utils';
 
 interface Props extends CommonInteractionProps {
   id?: string;
@@ -80,12 +79,11 @@ function SelectionTool(props: Props) {
   const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
   const hasSuccessfullyEndedRef = useRef<boolean>(false);
 
-  const modifierKeys = getModifierKeyArray(modifierKey);
-  const isModifierKeyPressed = useModifierKeyPressed(modifierKeys);
+  const isModifierKeyPressed = useModifierKeyPressed(modifierKey);
 
   const shouldInteract = useInteraction(id, {
     button: MouseButton.Left,
-    modifierKeys,
+    modifierKey,
     disabled,
   });
 

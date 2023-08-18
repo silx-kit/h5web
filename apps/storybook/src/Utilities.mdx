@@ -243,6 +243,54 @@ const pt = useCameraState(
 );
 ```
 
+#### useInteraction
+
+Register an interaction. You must provide a unique ID that is not used by other interactions inside the current `VisCanvas` (pan, zoom, etc.)
+
+The hook returns a function, conventionally named `shouldInteract`, that allows testing if a given mouse event (`PointerEvent` or `WheelEvent`)
+is allowed to start or continue the interaction. It checks whether the event was triggered with the same mouse button and modifier key(s)
+with which the interaction was registered and ensures that there is no interaction that is better suited to handle this event.
+
+```ts
+useInteraction(
+  id: string,
+  config: InteractionConfig,
+): (event: MouseEvent) => boolean
+
+const shouldInteract = useInteraction('MyInteraction', {
+  button: MouseButton.Left,
+  modifierKey: 'Control',
+})
+
+const onPointerDown = useCallback((evt: CanvasEvent<PointerEvent>) => {
+  if (shouldInteract(evt.sourceEvent)) {
+    /* ... */
+  }
+},
+[shouldInteract]);
+
+useCanvasEvents({ onPointerDown }};
+```
+
+#### useModifierKeyPressed
+
+Keeps track of the pressed state of one or more modifier keys.
+
+The hook removes the need for a mouse event to be fired to know the state of the given modifier keys, which allows reacting to the user releasing
+a key at any time, even when the mouse is immobile.
+
+```ts
+useModifierKeyPressed(modifierKey?: ModifierKey | ModifierKey[]): boolean
+
+const isModifierKeyPressed = useModifierKeyPressed('Shift');
+
+const onPointerMove = useCallback((evt: CanvasEvent<PointerEvent>) => {
+  if (isModifierKeyPressed) {
+    return;
+  }
+}, [isModifierKeyPressed]);
+```
+
 ### Mock data
 
 The library exposes a utility function to retrieve a mock entity's metadata and a mock dataset's value as ndarray for testing purposes.
