@@ -124,6 +124,7 @@ export {
   useInteraction,
   useModifierKeyPressed,
 } from './interactions/hooks';
+export { MouseButton } from './interactions/models';
 export { getModifierKeyArray } from './interactions/utils';
 export { default as Box } from './interactions/box';
 
@@ -138,7 +139,6 @@ export { Notation } from './vis/matrix/models';
 
 export type {
   ModifierKey,
-  MouseButton,
   Rect,
   Selection,
   CanvasEvent,
