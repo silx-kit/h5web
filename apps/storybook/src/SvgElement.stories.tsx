@@ -1,13 +1,12 @@
 import {
   DataToHtml,
-  Pan,
+  DefaultInteractions,
   ResetZoomButton,
   SvgCircle,
   SvgElement,
   SvgLine,
   SvgRect,
   VisCanvas,
-  Zoom,
 } from '@h5web/lib';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Vector3 } from 'three';
@@ -31,10 +30,8 @@ export const Default = {
       abscissaConfig={{ visDomain: [0, 10], showGrid: true }}
       ordinateConfig={{ visDomain: [0, 10], showGrid: true }}
     >
-      <Pan />
-      <Zoom />
+      <DefaultInteractions />
       <ResetZoomButton />
-
       <DataToHtml
         points={[
           new Vector3(2, 8),

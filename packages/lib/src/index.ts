@@ -123,6 +123,7 @@ export {
   useCanvasEvents,
   useInteraction,
   useModifierKeyPressed,
+  useDrag,
 } from './interactions/hooks';
 export { default as Box } from './interactions/box';
 

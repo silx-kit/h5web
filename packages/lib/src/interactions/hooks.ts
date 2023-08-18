@@ -1,7 +1,7 @@
-import { useEventListener, useToggle } from '@react-hookz/web';
+import { useEventListener, useSyncedRef, useToggle } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import { castArray } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
@@ -13,6 +13,8 @@ import type {
   InteractionConfig,
   ModifierKey,
   Selection,
+  UseDragOpts,
+  UseDragState,
 } from './models';
 
 const ZOOM_FACTOR = 0.95;
@@ -243,4 +245,72 @@ export function useModifierKeyPressed(
   });
 
   return allPressed;
+}
+
+export function useDrag(opts: UseDragOpts): UseDragState {
+  const { onDragEnd } = opts;
+
+  const camera = useThree((state) => state.camera);
+  const { htmlToData } = useVisCanvasContext();
+
+  const htmlStartRef = useRef<Vector3>();
+  const onDragEndRef = useSyncedRef(onDragEnd);
+
+  const [delta, setDelta] = useState<Vector3>();
+
+  const startDrag = useCallback((evt: PointerEvent) => {
+    const { offsetX, offsetY, target, pointerId } = evt;
+
+    if (target instanceof Element) {
+      target.setPointerCapture(pointerId);
+    }
+
+    htmlStartRef.current = new Vector3(offsetX, offsetY);
+    setDelta(new Vector3());
+  }, []);
+
+  const handlePointerMove = useCallback(
+    (canvasEvt: CanvasEvent<PointerEvent>) => {
+      if (!htmlStartRef.current) {
+        return;
+      }
+
+      const dataStart = htmlToData(camera, htmlStartRef.current);
+      setDelta(canvasEvt.dataPt.sub(dataStart));
+    },
+    [camera, htmlToData],
+  );
+
+  const handlePointerUp = useCallback(
+    (canvasEvt: CanvasEvent<PointerEvent>) => {
+      if (!htmlStartRef.current) {
+        return;
+      }
+
+      const { dataPt, sourceEvent } = canvasEvt;
+      const { target, pointerId } = sourceEvent;
+
+      if (target instanceof Element) {
+        target.releasePointerCapture(pointerId);
+      }
+
+      const dataStart = htmlToData(camera, htmlStartRef.current);
+      htmlStartRef.current = undefined;
+      setDelta(undefined);
+
+      onDragEndRef.current?.(dataPt.sub(dataStart));
+    },
+    [camera, htmlToData, onDragEndRef],
+  );
+
+  useCanvasEvents({
+    onPointerMove: handlePointerMove,
+    onPointerUp: handlePointerUp,
+  });
+
+  return {
+    delta: delta || new Vector3(),
+    isDragging: !!delta,
+    startDrag,
+  };
 }

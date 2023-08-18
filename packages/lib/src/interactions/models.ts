@@ -42,3 +42,13 @@ export interface CommonInteractionProps {
   modifierKey?: ModifierKey | ModifierKey[];
   disabled?: boolean;
 }
+
+export interface UseDragOpts {
+  onDragEnd: (delta: Vector3) => void;
+}
+
+export interface UseDragState {
+  delta: Vector3;
+  isDragging: boolean;
+  startDrag: (evt: PointerEvent) => void;
+}
