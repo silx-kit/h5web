@@ -41,6 +41,7 @@
   grid-area: canvas;
   position: relative; /* for `.r3fRoot`, `.svgOverlay`, `.floatingToolbar`, overflowing annotations, etc. */
   background-color: var(--h5w-canvas--bgColor, transparent);
+  user-select: none; /* selection may be restored on specific elements as needed (annotations, etc.) */
 
   /*
    * `.canvasWrapper` and `.r3fRoot` are implicitely stacked at `z-index: 0`, so
