@@ -2,17 +2,7 @@
   "name": "demo",
   "private": true,
   "version": "0.0.1",
-  "description": "H5Web demo",
-  "author": "European Synchrotron Radiation Facility",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/silx-kit/h5web"
-  },
-  "engines": {
-    "node": "18.x",
-    "pnpm": "8.x"
-  },
+  "description": "H5Web demo site",
   "scripts": {
     "start": "vite",
     "build": "vite build",

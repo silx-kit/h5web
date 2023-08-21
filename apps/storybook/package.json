@@ -3,16 +3,6 @@
   "private": true,
   "version": "0.0.1",
   "description": "Storybook for @h5web/lib",
-  "author": "European Synchrotron Radiation Facility",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/silx-kit/h5web"
-  },
-  "engines": {
-    "node": "18.x",
-    "pnpm": "8.x"
-  },
   "scripts": {
     "start": "storybook dev -p 6006",
     "build": "storybook build -o build",

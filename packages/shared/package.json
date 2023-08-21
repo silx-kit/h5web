@@ -3,12 +3,6 @@
   "private": true,
   "version": "0.0.1",
   "description": "Shared models, guards and utilities",
-  "author": "European Synchrotron Radiation Facility",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/silx-kit/h5web"
-  },
   "type": "module",
   "sideEffects": false,
   "main": "src/index.ts",
