@@ -1,16 +1,13 @@
 import type { ReactNode } from 'react';
 import { createContext, useCallback, useContext, useState } from 'react';
 
-import type { InteractionEntry, ModifierKey, MouseButton } from './models';
+import { Interaction } from './interaction';
+import type { InteractionConfig } from './models';
 
 export interface InteractionsContextValue {
-  registerInteraction: (id: string, value: InteractionEntry) => void;
+  registerInteraction: (id: string, config: InteractionConfig) => void;
   unregisterInteraction: (id: string) => void;
   shouldInteract: (id: string, event: MouseEvent) => boolean;
-}
-
-interface MapEntry extends InteractionEntry {
-  id: string;
 }
 
 const InteractionsContext = createContext({} as InteractionsContextValue);
@@ -22,14 +19,14 @@ export function useInteractionsContext() {
 function InteractionsProvider(props: { children: ReactNode }) {
   const { children } = props;
 
-  const [interactionMap] = useState(new Map<string, MapEntry>());
+  const [interactionMap] = useState(new Map<string, Interaction>());
 
   const registerInteraction = useCallback(
-    (id: string, value: InteractionEntry) => {
+    (id: string, config: InteractionConfig) => {
       if (interactionMap.has(id)) {
         console.warn(`An interaction with ID "${id}" is already registered.`); // eslint-disable-line no-console
       } else {
-        interactionMap.set(id, { id, ...value });
+        interactionMap.set(id, new Interaction(id, config));
       }
     },
     [interactionMap],
@@ -45,28 +42,12 @@ function InteractionsProvider(props: { children: ReactNode }) {
   const shouldInteract = useCallback(
     (interactionId: string, event: MouseEvent | WheelEvent) => {
       const registeredInteractions = [...interactionMap.values()];
-
-      function isButtonPressed(button: MouseButton | MouseButton[] | 'Wheel') {
-        if (event instanceof WheelEvent) {
-          return button === 'Wheel';
-        }
-
-        return Array.isArray(button)
-          ? button.includes(event.button)
-          : event.button === button;
-      }
-
-      function areKeysPressed(keys: ModifierKey[]) {
-        return keys.every((k) => event.getModifierState(k));
-      }
-
       if (!interactionMap.has(interactionId)) {
         throw new Error(`Interaction ${interactionId} is not registered`);
       }
 
       const matchingInteractions = registeredInteractions.filter(
-        ({ modifierKeys: keys, button, disabled }) =>
-          !disabled && isButtonPressed(button) && areKeysPressed(keys),
+        (interaction) => interaction.matches(event),
       );
 
       if (matchingInteractions.length === 0) {
@@ -77,13 +58,12 @@ function InteractionsProvider(props: { children: ReactNode }) {
         return matchingInteractions[0].id === interactionId;
       }
 
-      // If conflicting interactions, the one with the most modifier keys take precedence
-      matchingInteractions.sort(
-        (a, b) => b.modifierKeys.length - a.modifierKeys.length,
+      // If conflicting interactions, the one with the most modifier keys takes precedence
+      const maxKeysInteraction = matchingInteractions.reduce((acc, next) =>
+        next.modifierKeys.length > acc.modifierKeys.length ? next : acc,
       );
 
-      const [maxKeyInteraction] = matchingInteractions;
-      return maxKeyInteraction.id === interactionId;
+      return maxKeysInteraction.id === interactionId;
     },
     [interactionMap],
   );

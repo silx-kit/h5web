@@ -34,10 +34,8 @@ export interface InteractionInfo {
   description: string;
 }
 
-export interface InteractionEntry {
-  button: MouseButton | MouseButton[] | 'Wheel';
-  modifierKeys: ModifierKey[];
-  disabled?: boolean;
+export interface InteractionConfig extends CommonInteractionProps {
+  button?: MouseButton | MouseButton[] | 'Wheel';
 }
 
 export interface CommonInteractionProps {
