@@ -5,7 +5,6 @@ import eslintPlugin from 'vite-plugin-eslint';
 
 export default defineConfig({
   server: { open: true },
-  preview: { open: true },
   plugins: [
     react(),
     { ...eslintPlugin(), apply: 'serve' }, // dev only to reduce build time

@@ -151,7 +151,7 @@ jobs:
         run: pnpm build
 
       - name: Serve ⚡️
-        run: pnpm serve & pnpm dlx wait-on http://localhost:5173
+        run: pnpm serve & pnpm wait-on http://localhost:5173
 
       - name: Run Cypress 🌳
         run: pnpm cypress:run --env requireSnapshots=true
