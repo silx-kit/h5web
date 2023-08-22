@@ -1,4 +1,5 @@
 import type { VisibleDomains } from '@h5web/shared';
+import { assertNonNull } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
@@ -28,7 +29,10 @@ export interface VisCanvasContextValue {
   getFovBox: (camera: Camera, center?: Vector3) => Box;
   getVisibleDomains: (camera: Camera) => VisibleDomains;
 
-  // For internal use only
+  // DOM elements for use as portal targets
+  visCanvas: HTMLElement;
+  canvasArea: HTMLElement;
+  r3fRoot: HTMLElement;
   svgOverlay: SVGSVGElement | null;
   floatingToolbar: HTMLDivElement | null;
 }
@@ -149,6 +153,13 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     [getFovBox, worldToData],
   );
 
+  const r3fRoot = useThree((state) => state.gl.domElement.parentElement);
+  assertNonNull(r3fRoot);
+  const canvasArea = r3fRoot.parentElement;
+  assertNonNull(canvasArea);
+  const visCanvas = canvasArea.parentElement;
+  assertNonNull(visCanvas);
+
   return (
     <VisCanvasContext.Provider
       value={{
@@ -169,6 +180,9 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         htmlToData,
         getFovBox,
         getVisibleDomains,
+        visCanvas,
+        canvasArea,
+        r3fRoot,
         svgOverlay,
         floatingToolbar,
       }}

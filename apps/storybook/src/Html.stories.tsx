@@ -171,6 +171,8 @@ export const OverflowCanvas = {
 
 export const Portal = {
   render: () => {
+    const { visCanvas } = useVisCanvasContext();
+
     const [containerMounted, toggleContainer] = useToggle(true);
     const [customContainer, setCustomContainer] =
       useState<HTMLDivElement | null>(null);
@@ -201,10 +203,43 @@ export const Portal = {
               customContainer,
             )}
         </Html>
+        <Html>
+          {createPortal(
+            <div
+              style={{
+                gridArea: 'canvas',
+                justifySelf: 'start',
+                alignSelf: 'end',
+                width: '40em',
+                padding: '0 1rem',
+                border: '3px solid magenta',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              }}
+            >
+              <p>
+                Using a portal, you can also render HTML elements into{' '}
+                <strong>
+                  <code>visCanvas</code>
+                </strong>
+                , the root <code>div</code> rendered by <code>VisCanvas</code>,
+                which includes the axes. You can then take advantage of the CSS
+                Grid defined on <code>visCanvas</code> to position your
+                elements.
+              </p>
+              <p>
+                However, note that your elements will interfere with canvas
+                interactions (zoom, pan, etc.), since pointer events will no
+                longer be able to bubble up to <code>canvasArea</code>. You can
+                remedy this with <code>pointer-events: none</code>.
+              </p>
+            </div>,
+            visCanvas,
+          )}
+        </Html>
 
         <FloatingControl>
           <button type="button" onClick={() => toggleContainer()}>
-            {customContainer ? 'Unmount' : 'Mount'} container
+            {customContainer ? 'Unmount' : 'Mount'} custom container
           </button>
         </FloatingControl>
       </>

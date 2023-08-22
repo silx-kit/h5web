@@ -63,7 +63,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
     >
       {showAxes && title && <p className={styles.title}>{title}</p>}
 
-      <div className={styles.canvasWrapper}>
+      <div className={styles.canvasArea}>
         <R3FCanvas className={styles.r3fRoot} orthographic>
           <VisCanvasProvider
             visRatio={visRatio}
