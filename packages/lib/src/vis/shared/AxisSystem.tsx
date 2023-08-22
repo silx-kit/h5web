@@ -1,5 +1,3 @@
-import { assertDefined, assertNonNull } from '@h5web/shared';
-import { useThree } from '@react-three/fiber';
 import { createPortal } from 'react-dom';
 
 import { useCameraState } from '../hooks';
@@ -15,14 +13,13 @@ interface Props {
 
 function AxisSystem(props: Props) {
   const { axisOffsets, showAxes } = props;
-  const { canvasSize, abscissaConfig, ordinateConfig, getVisibleDomains } =
-    useVisCanvasContext();
-
-  const visCanvas = useThree(
-    (state) => state.gl.domElement.parentElement?.parentElement?.parentElement,
-  );
-  assertDefined(visCanvas);
-  assertNonNull(visCanvas);
+  const {
+    canvasSize,
+    visCanvas,
+    abscissaConfig,
+    ordinateConfig,
+    getVisibleDomains,
+  } = useVisCanvasContext();
 
   const visibleDomains = useCameraState(getVisibleDomains, [getVisibleDomains]);
 

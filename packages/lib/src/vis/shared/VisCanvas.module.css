@@ -37,14 +37,14 @@
   font-weight: var(--h5w-plotTitle--fontWeight, inherit);
 }
 
-.canvasWrapper {
+.canvasArea {
   grid-area: canvas;
   position: relative; /* for `.r3fRoot`, `.svgOverlay`, `.floatingToolbar`, overflowing annotations, etc. */
   background-color: var(--h5w-canvas--bgColor, transparent);
   user-select: none; /* selection may be restored on specific elements as needed (annotations, etc.) */
 
   /*
-   * `.canvasWrapper` and `.r3fRoot` are implicitely stacked at `z-index: 0`, so
+   * `.canvasArea` and `.r3fRoot` are implicitely stacked at `z-index: 0`, so
    * they intercept events before they can reach the canvas. We can't stack them
    * explicitly without creating a new stacking context, which would break the
    * stacking order. So we disable pointer events instead and restore them only

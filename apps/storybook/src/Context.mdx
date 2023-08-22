@@ -31,4 +31,12 @@ const { visSize, dataToWorld, worldToData } = useVisCanvasContext();
 | `getFovBox`         | Get a [`Box`](https://h5web-docs.panosc.eu/?path=/story/utilities--page#box) spanning the field of view of the camera in world space. The second parameter, `center`, which defaults to `camera.position`, can be overridden for advanced use cases. | <code>(camera: Camera, center?: Vector3) => Box</code> |
 | `getVisibleDomains` | Get the field of view of the camera as axis domains - i.e. in data space.                                                                                                                                                                            | <code>(camera: Camera) => VisibleDomains</code>        |
 
-> This table is not exhaustive. Please consider any undocumented property as experimental or meant for internal use only.
+`VisCanvasContext` also exposes a number of DOM elements that can be used for [advanced use cases](https://h5web-docs.panosc.eu/?path=/story/building-blocks-html--portal):
+
+| Name         | Description                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| `visCanvas`  | Root `div` rendered by `VisCanvas` to delimit the area of the visualization (axes included) |
+| `canvasArea` | Container that delimits the area available to the WebGL canvas                              |
+| `r3fRoot`    | React Three Fiber container rendered inside `canvasArea` that wraps the `canvas` element    |
+
+> These tables are not exhaustive. Please consider any undocumented property as experimental or meant for internal use only.

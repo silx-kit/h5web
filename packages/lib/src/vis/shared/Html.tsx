@@ -1,8 +1,8 @@
-import { assertNonNull } from '@h5web/shared';
-import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { useLayoutEffect, useState } from 'react';
 import ReactDOM, { createPortal } from 'react-dom';
+
+import { useVisCanvasContext } from './VisCanvasProvider';
 
 interface Props {
   overflowCanvas?: boolean;
@@ -11,13 +11,8 @@ interface Props {
 function Html(props: PropsWithChildren<Props>) {
   const { overflowCanvas = false, children } = props;
 
-  const r3fRoot = useThree((state) => state.gl.domElement.parentElement);
-  assertNonNull(r3fRoot);
-
-  const canvasWrapper = r3fRoot.parentElement;
-  assertNonNull(canvasWrapper);
-
-  const portalContainer = overflowCanvas ? canvasWrapper : r3fRoot;
+  const { r3fRoot, canvasArea } = useVisCanvasContext();
+  const portalContainer = overflowCanvas ? canvasArea : r3fRoot;
 
   const [renderContainer] = useState(() => {
     const div = document.createElement('div');

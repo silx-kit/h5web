@@ -62,7 +62,7 @@ export function useZoomOnSelection() {
 }
 
 function useWheelCapture() {
-  const canvasWrapper = useCanvasWrapper();
+  const { canvasArea } = useVisCanvasContext();
 
   const onWheel = useCallback((evt: WheelEvent) => {
     evt.preventDefault();
@@ -70,7 +70,7 @@ function useWheelCapture() {
 
   // Handler must be registed as non-passive for `preventDefault` to have an effect
   // (React's `onWheel` prop registers handlers as passive)
-  useEventListener(canvasWrapper, 'wheel', onWheel, { passive: false });
+  useEventListener(canvasArea, 'wheel', onWheel, { passive: false });
 }
 
 export function useZoomOnWheel(
@@ -123,9 +123,8 @@ export function useZoomOnWheel(
 export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
   const { onPointerDown, onPointerMove, onPointerUp, onWheel } = callbacks;
 
-  const canvasWrapper = useCanvasWrapper();
   const camera = useThree((state) => state.camera);
-  const { htmlToWorld, worldToData } = useVisCanvasContext();
+  const { htmlToWorld, worldToData, canvasArea } = useVisCanvasContext();
 
   const processEvent = useCallback(
     <T extends PointerEvent | WheelEvent>(sourceEvent: T): CanvasEvent<T> => {
@@ -176,10 +175,10 @@ export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
     [processEvent, onWheel],
   );
 
-  useEventListener(canvasWrapper, 'pointerdown', handlePointerDown);
-  useEventListener(canvasWrapper, 'pointermove', handlePointerMove);
-  useEventListener(canvasWrapper, 'pointerup', handlePointerUp);
-  useEventListener(canvasWrapper, 'wheel', handleWheel);
+  useEventListener(canvasArea, 'pointerdown', handlePointerDown);
+  useEventListener(canvasArea, 'pointermove', handlePointerMove);
+  useEventListener(canvasArea, 'pointerup', handlePointerUp);
+  useEventListener(canvasArea, 'wheel', handleWheel);
 }
 
 export function useInteraction(
@@ -203,6 +202,7 @@ export function useInteraction(
 export function useModifierKeyPressed(
   modifierKey: ModifierKey | ModifierKey[] = [],
 ): boolean {
+  const { canvasArea } = useVisCanvasContext();
   const modifierKeys = castArray(modifierKey);
 
   const [pressedKeys] = useState(new Map<string, boolean>());
@@ -230,8 +230,7 @@ export function useModifierKeyPressed(
   /* Keyboard events are triggered only when the window has focus.
    * This ensures that the `allPressed` state gets updated (if needed) when the
    * user starts interacting with the canvas while the window is out of focus. */
-  const canvasWrapper = useCanvasWrapper();
-  useEventListener(canvasWrapper, 'pointerdown', (event: PointerEvent) => {
+  useEventListener(canvasArea, 'pointerdown', (event: PointerEvent) => {
     MODIFIER_KEYS.forEach((key) => {
       pressedKeys.set(key, event.getModifierState(key));
     });
@@ -240,11 +239,4 @@ export function useModifierKeyPressed(
   });
 
   return allPressed;
-}
-
-function useCanvasWrapper(): HTMLDivElement {
-  return useThree(
-    (state) =>
-      state.gl.domElement.parentElement?.parentElement as HTMLDivElement,
-  );
 }
