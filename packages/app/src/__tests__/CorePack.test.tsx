@@ -21,7 +21,7 @@ test('log raw dataset to console if too large', async () => {
   const logSpy = mockConsoleMethod('log');
   await renderApp('/entities/raw_large');
 
-  await expect(screen.findByText(/dataset is too big/)).resolves.toBeVisible();
+  await expect(screen.findByText(/Too big to display/)).resolves.toBeVisible();
   expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
 });
 
