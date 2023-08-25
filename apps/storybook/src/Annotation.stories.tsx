@@ -2,13 +2,12 @@ import type { CanvasEvent } from '@h5web/lib';
 import {
   Annotation,
   DefaultInteractions,
-  useCanvasEvents,
+  useCanvasEvent,
   VisCanvas,
 } from '@h5web/lib';
 import { useRafState } from '@react-hookz/web';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ReactNode } from 'react';
-import { useCallback } from 'react';
 
 import FillHeight from './decorators/FillHeight';
 import { formatCoord } from './utils';
@@ -158,15 +157,10 @@ function PointerTracker(props: {
   const { children } = props;
   const [coords, setCoords] = useRafState<[number, number]>();
 
-  const onPointerMove = useCallback(
-    (evt: CanvasEvent<PointerEvent>) => {
-      const { x, y } = evt.dataPt;
-      setCoords([x, y]);
-    },
-    [setCoords],
-  );
-
-  useCanvasEvents({ onPointerMove });
+  useCanvasEvent('pointermove', (evt: CanvasEvent<PointerEvent>) => {
+    const { x, y } = evt.dataPt;
+    setCoords([x, y]);
+  });
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{coords ? children(...coords) : null}</>;

@@ -22,13 +22,6 @@ export interface CanvasEvent<T extends MouseEvent> {
   sourceEvent: T;
 }
 
-export interface CanvasEventCallbacks {
-  onPointerDown?: (evt: CanvasEvent<PointerEvent>) => void;
-  onPointerMove?: (evt: CanvasEvent<PointerEvent>) => void;
-  onPointerUp?: (evt: CanvasEvent<PointerEvent>) => void;
-  onWheel?: (evt: CanvasEvent<WheelEvent>) => void;
-}
-
 export interface InteractionInfo {
   shortcut: string;
   description: string;
@@ -52,3 +45,9 @@ export interface UseDragState {
   isDragging: boolean;
   startDrag: (evt: PointerEvent) => void;
 }
+
+export type MouseEventName = {
+  [Key in keyof GlobalEventHandlersEventMap]: GlobalEventHandlersEventMap[Key] extends MouseEvent
+    ? Key
+    : never;
+}[keyof GlobalEventHandlersEventMap];

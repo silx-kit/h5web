@@ -184,20 +184,26 @@ getAxisDomain([4, 2, 0], ScaleType.Linear, 0.5); // [6, -2])
 - **`useAxisDomain(..args): Domain | undefined`** - Memoised version of `getAxisDomain`.
 - **`useValueToIndexScale(..args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
 
-#### useCanvasEvents
+#### useCanvasEvent
 
-Register event listeners on the `canvas` element. Useful to implement custom interactions. Must be called from a child component of `VisCanvas`.
+Register an event listener on the `canvas` element. Only events that extend from the `MouseEvent` interface are allowed: `pointer<down|up|move>`, `wheel`, `click`, `dblclick`, etc.)
+The listener receives the coordinates of the mouse event in **HTML space** (`(offsetX, offsetY)`), Three.js **world space**, and **data space**,
+which is convenient when implementing custom interactions.
 
 ```ts
-useCanvasEvents(callbacks: CanvasEventCallbacks): void
+useCanvasEvent(
+  mouseEventName: 'pointerdown' | 'pointerup' | 'pointermove' | 'wheel' | 'click' | ...,
+  listener: (evt: CanvasEvent<PointerEvent | WheelEvent | MouseEvent | DragEvent>) => void,
+  options: AddEventListenerOptions = {},
+): void
 
-const handlePointerDown = useCallback((evt: CanvasEvent<PointerEvent>) => {
+useCanvasEvent('pointerdown', (evt: CanvasEvent<PointerEvent>) => {
   const { htmlPt, worldPt, dataPt, sourceEvent } = evt;
   // ...
-}, []);
-
-useCanvasEvents({ onPointerDown: handlePointerDown }); // also supported: `onPointerMove`, `onPointerUp` and `onWheel`
+});
 ```
+
+> Note that the hook must be called from a child component of `VisCanvas`.
 
 #### useCameraState
 
@@ -262,14 +268,11 @@ const shouldInteract = useInteraction('MyInteraction', {
   modifierKey: 'Control',
 })
 
-const onPointerDown = useCallback((evt: CanvasEvent<PointerEvent>) => {
+useCanvasEvent('pointerdown', (evt: CanvasEvent<PointerEvent>) => {
   if (shouldInteract(evt.sourceEvent)) {
     /* ... */
   }
-},
-[shouldInteract]);
-
-useCanvasEvents({ onPointerDown }};
+});
 ```
 
 #### useModifierKeyPressed
