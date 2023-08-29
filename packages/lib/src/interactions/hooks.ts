@@ -52,7 +52,11 @@ export function useZoomOnSelection() {
 
       // Update camera scale first (since `moveCameraTo` relies on camera scale)
       const { width: zoomWidth, height: zoomHeight } = zoomBox.size;
-      camera.scale.set(zoomWidth / width, zoomHeight / height, 1);
+      camera.scale.set(
+        Math.max(zoomWidth, 1) / width,
+        Math.max(zoomHeight, 1) / height,
+        1,
+      );
 
       // Then move camera position
       moveCameraTo(zoomBox.center);

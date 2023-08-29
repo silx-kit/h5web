@@ -58,7 +58,7 @@ function SelectToZoom(props: Props) {
     <SelectionTool
       id="SelectToZoom"
       transform={computeZoomSelection}
-      validate={({ html }) => Box.fromPoints(...html).hasMinSize(minZoom)}
+      validate={({ html }) => html[0].manhattanDistanceTo(html[1]) >= minZoom}
       onValidSelection={zoomOnSelection}
       {...commonProps}
     >
