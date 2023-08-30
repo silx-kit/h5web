@@ -36,7 +36,7 @@ export interface HeatmapConfig {
 function createHeatmapConfigStore() {
   return createStore<HeatmapConfig>()(
     persist(
-      (set) => ({
+      (set): HeatmapConfig => ({
         customDomain: [null, null],
         setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
 

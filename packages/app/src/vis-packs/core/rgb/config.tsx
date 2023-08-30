@@ -20,7 +20,7 @@ export interface RgbVisConfig {
 function createRgbConfigStore() {
   return createStore<RgbVisConfig>()(
     persist(
-      (set) => ({
+      (set): RgbVisConfig => ({
         showGrid: false,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 

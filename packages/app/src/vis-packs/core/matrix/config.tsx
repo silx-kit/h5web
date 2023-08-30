@@ -20,7 +20,7 @@ export interface MatrixVisConfig {
 function createMatrixConfigStore() {
   return createStore<MatrixVisConfig>()(
     persist(
-      (set) => ({
+      (set): MatrixVisConfig => ({
         sticky: false,
         toggleSticky: () => set((state) => ({ sticky: !state.sticky })),
 

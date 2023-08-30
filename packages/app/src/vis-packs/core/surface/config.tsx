@@ -26,8 +26,8 @@ export interface SurfaceConfig {
 
 function createSurfaceConfigStore() {
   return createStore<SurfaceConfig>()(
-    persist<SurfaceConfig>(
-      (set) => ({
+    persist(
+      (set): SurfaceConfig => ({
         customDomain: [null, null],
         setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
 

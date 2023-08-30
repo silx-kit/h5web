@@ -15,7 +15,7 @@ export interface ComplexLineConfig {
 function createComplexLineConfigStore() {
   return createStore<ComplexLineConfig>()(
     persist(
-      (set) => ({
+      (set): ComplexLineConfig => ({
         visType: ComplexVisType.Amplitude,
         setVisType: (visType: ComplexLineVisType) => set(() => ({ visType })),
       }),
