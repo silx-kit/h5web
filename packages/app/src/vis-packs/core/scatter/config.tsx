@@ -35,7 +35,7 @@ export interface ScatterConfig {
 function createScatterConfigStore() {
   return createStore<ScatterConfig>()(
     persist(
-      (set) => ({
+      (set): ScatterConfig => ({
         customDomain: [null, null],
         setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
 

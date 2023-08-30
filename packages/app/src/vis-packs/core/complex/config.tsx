@@ -14,7 +14,7 @@ export interface ComplexConfig {
 function createComplexConfigStore() {
   return createStore<ComplexConfig>()(
     persist(
-      (set) => ({
+      (set): ComplexConfig => ({
         visType: ComplexVisType.Amplitude,
         setVisType: (visType: ComplexVisType) => set(() => ({ visType })),
       }),

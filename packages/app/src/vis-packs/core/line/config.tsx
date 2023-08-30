@@ -32,7 +32,7 @@ export interface LineConfig {
 function createLineConfigStore() {
   return createStore<LineConfig>()(
     persist(
-      (set) => ({
+      (set): LineConfig => ({
         curveType: CurveType.LineOnly,
         setCurveType: (type: CurveType) => set({ curveType: type }),
 
