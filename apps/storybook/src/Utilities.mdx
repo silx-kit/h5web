@@ -291,6 +291,28 @@ const onPointerMove = useCallback((evt: CanvasEvent<PointerEvent>) => {
 }, [isModifierKeyPressed]);
 ```
 
+#### useDrag
+
+Manages a low-level drag interaction. The returned object contains:
+
+- the `delta` vector of the current drag interaction (with a fallback of `(0, 0, 0)`);
+- an `isDragging` boolean, indicating whether a drag is in progress; and
+- a `startDrag` function that must be called when the user starts interacting with the draggable element (i.e. on `pointerdown`).
+
+```ts
+useDrag(opts: UseDragOpts): UseDragState
+```
+
+The hook is typically coupled with a state, as demonstrated below. For a concrete implementation example,
+see the [_SvgElement/Draggable_](https://h5web-docs.panosc.eu/?path=/story/building-blocks-svgelement--draggable) story.
+
+```ts
+const [position, setPosition] = useState(() => new Vector3(0, 0));
+const { delta, isDragging, startDrag } = useDrag({
+  onDragEnd: (d) => setPosition((c) => c.clone().add(d)),
+});
+```
+
 ### Mock data
 
 The library exposes a utility function to retrieve a mock entity's metadata and a mock dataset's value as ndarray for testing purposes.

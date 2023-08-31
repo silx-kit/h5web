@@ -1,0 +1,18 @@
+.dragCircle {
+  fill: teal;
+  fill-opacity: 0.5;
+  stroke: transparent;
+  stroke-width: 2;
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.dragCircle:hover,
+.dragCircle[data-dragging] {
+  fill: blueviolet;
+}
+
+.dragCircle[data-dragging] {
+  stroke: darkmagenta;
+  cursor: grabbing;
+}
