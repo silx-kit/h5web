@@ -8,16 +8,12 @@ import {
 } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { Camera } from 'three';
 
 import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import {
-  useCanvasEvents,
-  useInteraction,
-  useModifierKeyPressed,
-} from './hooks';
+import { useCanvasEvent, useInteraction, useModifierKeyPressed } from './hooks';
 import type {
   CanvasEvent,
   CommonInteractionProps,
@@ -87,55 +83,48 @@ function SelectionTool(props: Props) {
     disabled,
   });
 
-  const onPointerDown = useCallback(
-    (evt: CanvasEvent<PointerEvent>) => {
-      const { sourceEvent } = evt;
-      if (!shouldInteract(sourceEvent)) {
-        return;
-      }
+  function handlePointerDown(evt: CanvasEvent<PointerEvent>) {
+    const { sourceEvent } = evt;
+    if (!shouldInteract(sourceEvent)) {
+      return;
+    }
 
-      const { target, pointerId } = sourceEvent;
-      (target as Element).setPointerCapture(pointerId);
+    const { target, pointerId } = sourceEvent;
+    (target as Element).setPointerCapture(pointerId);
 
-      startEvtRef.current = evt;
-    },
-    [shouldInteract],
-  );
+    startEvtRef.current = evt;
+  }
 
-  const onPointerMove = useCallback(
-    (evt: CanvasEvent<PointerEvent>) => {
-      if (!startEvtRef.current) {
-        return;
-      }
+  function handlePointerMove(evt: CanvasEvent<PointerEvent>) {
+    if (!startEvtRef.current) {
+      return;
+    }
 
-      const { htmlPt: htmlStart } = startEvtRef.current;
-      const html: Rect = [htmlStart, canvasBox.clampPoint(evt.htmlPt)];
-      const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
-      const data = world.map(worldToData) as Rect;
+    const { htmlPt: htmlStart } = startEvtRef.current;
+    const html: Rect = [htmlStart, canvasBox.clampPoint(evt.htmlPt)];
+    const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
+    const data = world.map(worldToData) as Rect;
 
-      setRawSelection({ html, world, data });
-    },
-    [camera, canvasBox, htmlToWorld, worldToData, setRawSelection],
-  );
+    setRawSelection({ html, world, data });
+  }
 
-  const onPointerUp = useCallback(
-    (evt: CanvasEvent<PointerEvent>) => {
-      if (!startEvtRef.current) {
-        return;
-      }
+  function handlePointerUp(evt: CanvasEvent<PointerEvent>) {
+    if (!startEvtRef.current) {
+      return;
+    }
 
-      const { sourceEvent } = evt;
-      const { target, pointerId } = sourceEvent;
-      (target as Element).releasePointerCapture(pointerId);
+    const { sourceEvent } = evt;
+    const { target, pointerId } = sourceEvent;
+    (target as Element).releasePointerCapture(pointerId);
 
-      startEvtRef.current = undefined;
-      hasSuccessfullyEndedRef.current = shouldInteract(sourceEvent);
-      setRawSelection(undefined);
-    },
-    [setRawSelection, shouldInteract],
-  );
+    startEvtRef.current = undefined;
+    hasSuccessfullyEndedRef.current = shouldInteract(sourceEvent);
+    setRawSelection(undefined);
+  }
 
-  useCanvasEvents({ onPointerDown, onPointerMove, onPointerUp });
+  useCanvasEvent('pointerdown', handlePointerDown);
+  useCanvasEvent('pointermove', handlePointerMove);
+  useCanvasEvent('pointerup', handlePointerUp);
 
   function cancelSelection() {
     startEvtRef.current = undefined;

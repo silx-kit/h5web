@@ -1,5 +1,10 @@
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
-import { useCanvasEvents, useInteraction, useZoomOnWheel } from './hooks';
+import {
+  useCanvasEvent,
+  useInteraction,
+  useWheelCapture,
+  useZoomOnWheel,
+} from './hooks';
 import type { CommonInteractionProps } from './models';
 
 type Props = CommonInteractionProps;
@@ -19,7 +24,8 @@ function XAxisZoom(props: Props) {
     y: false,
   });
 
-  useCanvasEvents({ onWheel: useZoomOnWheel(isZoomAllowed) });
+  useWheelCapture();
+  useCanvasEvent('wheel', useZoomOnWheel(isZoomAllowed));
 
   return null;
 }

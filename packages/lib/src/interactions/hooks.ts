@@ -9,9 +9,9 @@ import Box from './box';
 import { useInteractionsContext } from './InteractionsProvider';
 import type {
   CanvasEvent,
-  CanvasEventCallbacks,
   InteractionConfig,
   ModifierKey,
+  MouseEventName,
   Selection,
   UseDragOpts,
   UseDragState,
@@ -67,16 +67,15 @@ export function useZoomOnSelection() {
   );
 }
 
-function useWheelCapture() {
+export function useWheelCapture() {
   const { canvasArea } = useVisCanvasContext();
 
-  const onWheel = useCallback((evt: WheelEvent) => {
-    evt.preventDefault();
-  }, []);
-
-  // Handler must be registed as non-passive for `preventDefault` to have an effect
-  // (React's `onWheel` prop registers handlers as passive)
-  useEventListener(canvasArea, 'wheel', onWheel, { passive: false });
+  useEventListener(
+    canvasArea,
+    'wheel',
+    (evt: WheelEvent) => evt.preventDefault(),
+    { passive: false }, // for `preventDefault` to have an effect (React's `onWheel` prop registers handlers as passive)
+  );
 }
 
 export function useZoomOnWheel(
@@ -85,106 +84,63 @@ export function useZoomOnWheel(
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 
-  const onWheel = useCallback(
-    (evt: CanvasEvent<WheelEvent>) => {
-      const { sourceEvent, worldPt } = evt;
-      const { x: zoomX, y: zoomY } = isZoomAllowed(sourceEvent);
+  return function handleWheel(evt: CanvasEvent<WheelEvent>) {
+    const { sourceEvent, worldPt } = evt;
+    const { x: zoomX, y: zoomY } = isZoomAllowed(sourceEvent);
 
-      if (!zoomX && !zoomY) {
-        return;
-      }
+    if (!zoomX && !zoomY) {
+      return;
+    }
 
-      const zoomVector = new Vector3(
-        zoomX ? ZOOM_FACTOR : 1,
-        zoomY ? ZOOM_FACTOR : 1,
-        1,
-      );
+    const zoomVector = new Vector3(
+      zoomX ? ZOOM_FACTOR : 1,
+      zoomY ? ZOOM_FACTOR : 1,
+      1,
+    );
 
-      // sourceEvent.deltaY < 0 => Wheel down => decrease scale to reduce FOV
-      if (sourceEvent.deltaY < 0) {
-        camera.scale.multiply(zoomVector).min(ONE_VECTOR);
-      } else {
-        // Use `divide` instead of `multiply` by 1 / zoomVector to avoid rounding issues (https://github.com/silx-kit/h5web/issues/1088)
-        camera.scale.divide(zoomVector).min(ONE_VECTOR);
-      }
+    // sourceEvent.deltaY < 0 => Wheel down => decrease scale to reduce FOV
+    if (sourceEvent.deltaY < 0) {
+      camera.scale.multiply(zoomVector).min(ONE_VECTOR);
+    } else {
+      // Use `divide` instead of `multiply` by 1 / zoomVector to avoid rounding issues (https://github.com/silx-kit/h5web/issues/1088)
+      camera.scale.divide(zoomVector).min(ONE_VECTOR);
+    }
 
-      // Scale change in position according to zoom
-      const delta = camera.position.clone().sub(worldPt);
-      if (sourceEvent.deltaY < 0) {
-        delta.multiply(zoomVector);
-      } else {
-        delta.divide(zoomVector);
-      }
+    // Scale change in position according to zoom
+    const delta = camera.position.clone().sub(worldPt);
+    if (sourceEvent.deltaY < 0) {
+      delta.multiply(zoomVector);
+    } else {
+      delta.divide(zoomVector);
+    }
 
-      moveCameraTo(worldPt.clone().add(delta));
-    },
-    [camera, isZoomAllowed, moveCameraTo],
-  );
-
-  useWheelCapture();
-
-  return onWheel;
+    moveCameraTo(worldPt.clone().add(delta));
+  };
 }
 
-export function useCanvasEvents(callbacks: CanvasEventCallbacks): void {
-  const { onPointerDown, onPointerMove, onPointerUp, onWheel } = callbacks;
-
+export function useCanvasEvent<
+  T extends MouseEventName,
+  U extends GlobalEventHandlersEventMap[T],
+>(
+  mouseEventName: T,
+  listener: (evt: CanvasEvent<U>) => void,
+  options: AddEventListenerOptions = {},
+): void {
+  const listenerRef = useSyncedRef(listener); // no need to memoise listener with `useCallback`
   const camera = useThree((state) => state.camera);
   const { htmlToWorld, worldToData, canvasArea } = useVisCanvasContext();
 
-  const processEvent = useCallback(
-    <T extends PointerEvent | WheelEvent>(sourceEvent: T): CanvasEvent<T> => {
-      const { offsetX, offsetY } = sourceEvent;
+  function handleEvent(sourceEvent: U): void {
+    const { offsetX, offsetY } = sourceEvent;
 
-      const htmlPt = new Vector3(offsetX, offsetY);
-      const worldPt = htmlToWorld(camera, htmlPt);
-      const dataPt = worldToData(worldPt);
+    const htmlPt = new Vector3(offsetX, offsetY);
+    const worldPt = htmlToWorld(camera, htmlPt);
+    const dataPt = worldToData(worldPt);
 
-      return { htmlPt, worldPt, dataPt, sourceEvent };
-    },
-    [camera, htmlToWorld, worldToData],
-  );
+    listenerRef.current({ htmlPt, worldPt, dataPt, sourceEvent });
+  }
 
-  const handlePointerDown = useCallback(
-    (sourceEvent: PointerEvent) => {
-      if (onPointerDown) {
-        onPointerDown(processEvent(sourceEvent));
-      }
-    },
-    [processEvent, onPointerDown],
-  );
-
-  const handlePointerMove = useCallback(
-    (sourceEvent: PointerEvent) => {
-      if (onPointerMove) {
-        onPointerMove(processEvent(sourceEvent));
-      }
-    },
-    [processEvent, onPointerMove],
-  );
-
-  const handlePointerUp = useCallback(
-    (sourceEvent: PointerEvent) => {
-      if (onPointerUp) {
-        onPointerUp(processEvent(sourceEvent));
-      }
-    },
-    [processEvent, onPointerUp],
-  );
-
-  const handleWheel = useCallback(
-    (sourceEvent: WheelEvent) => {
-      if (onWheel) {
-        onWheel(processEvent(sourceEvent));
-      }
-    },
-    [processEvent, onWheel],
-  );
-
-  useEventListener(canvasArea, 'pointerdown', handlePointerDown);
-  useEventListener(canvasArea, 'pointermove', handlePointerMove);
-  useEventListener(canvasArea, 'pointerup', handlePointerUp);
-  useEventListener(canvasArea, 'wheel', handleWheel);
+  useEventListener(canvasArea, mouseEventName, handleEvent, options);
 }
 
 export function useInteraction(
@@ -269,44 +225,36 @@ export function useDrag(opts: UseDragOpts): UseDragState {
     setDelta(new Vector3());
   }, []);
 
-  const handlePointerMove = useCallback(
-    (canvasEvt: CanvasEvent<PointerEvent>) => {
-      if (!htmlStartRef.current) {
-        return;
-      }
+  function handlePointerMove(canvasEvt: CanvasEvent<PointerEvent>) {
+    if (!htmlStartRef.current) {
+      return;
+    }
 
-      const dataStart = htmlToData(camera, htmlStartRef.current);
-      setDelta(canvasEvt.dataPt.sub(dataStart));
-    },
-    [camera, htmlToData],
-  );
+    const dataStart = htmlToData(camera, htmlStartRef.current);
+    setDelta(canvasEvt.dataPt.sub(dataStart));
+  }
 
-  const handlePointerUp = useCallback(
-    (canvasEvt: CanvasEvent<PointerEvent>) => {
-      if (!htmlStartRef.current) {
-        return;
-      }
+  function handlePointerUp(canvasEvt: CanvasEvent<PointerEvent>) {
+    if (!htmlStartRef.current) {
+      return;
+    }
 
-      const { dataPt, sourceEvent } = canvasEvt;
-      const { target, pointerId } = sourceEvent;
+    const { dataPt, sourceEvent } = canvasEvt;
+    const { target, pointerId } = sourceEvent;
 
-      if (target instanceof Element) {
-        target.releasePointerCapture(pointerId);
-      }
+    if (target instanceof Element) {
+      target.releasePointerCapture(pointerId);
+    }
 
-      const dataStart = htmlToData(camera, htmlStartRef.current);
-      htmlStartRef.current = undefined;
-      setDelta(undefined);
+    const dataStart = htmlToData(camera, htmlStartRef.current);
+    htmlStartRef.current = undefined;
+    setDelta(undefined);
 
-      onDragEndRef.current?.(dataPt.sub(dataStart));
-    },
-    [camera, htmlToData, onDragEndRef],
-  );
+    onDragEndRef.current?.(dataPt.sub(dataStart));
+  }
 
-  useCanvasEvents({
-    onPointerMove: handlePointerMove,
-    onPointerUp: handlePointerUp,
-  });
+  useCanvasEvent('pointermove', handlePointerMove);
+  useCanvasEvent('pointerup', handlePointerUp);
 
   return {
     delta: delta || new Vector3(),

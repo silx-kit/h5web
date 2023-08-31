@@ -120,7 +120,7 @@ export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
 export { scaleGamma } from './vis/scaleGamma';
 
 export {
-  useCanvasEvents,
+  useCanvasEvent,
   useInteraction,
   useModifierKeyPressed,
   useDrag,
@@ -172,7 +172,6 @@ export type {
   Rect,
   Selection,
   CanvasEvent,
-  CanvasEventCallbacks,
   InteractionInfo,
   InteractionConfig,
   CommonInteractionProps,
