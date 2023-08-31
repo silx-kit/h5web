@@ -13,21 +13,4 @@
 
 .fallback {
   composes: fallback from global;
-  max-width: 26em;
-  line-height: 1.5;
-}
-
-.reason {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-}
-
-.message {
-  margin-top: 0;
-  font-size: 0.875em;
-}
-
-.message > kbd {
-  font-weight: 600;
 }

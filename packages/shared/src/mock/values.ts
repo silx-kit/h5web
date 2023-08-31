@@ -62,7 +62,6 @@ const twoD_compound = [
 export const mockValues = {
   null: null,
   raw: { int: 42 },
-  raw_large: { str: '.'.repeat(1000) },
   scalar_int: 0,
   scalar_int_42: 42,
   scalar_str: 'foo',

@@ -61,6 +61,10 @@ export class MockApi extends DataProviderApi {
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { dataset, selection } = params;
 
+    if (dataset.name === 'raw_large') {
+      return { str: '.'.repeat(1_000_000) };
+    }
+
     if (dataset.name === 'error_value') {
       throw new Error('error');
     }
@@ -91,6 +95,13 @@ export class MockApi extends DataProviderApi {
     const url = this._getExportURL?.(format, dataset, selection, value);
     if (url) {
       return url;
+    }
+
+    if (format === 'json') {
+      return async () => {
+        const json = JSON.stringify(value, null, 2);
+        return new Blob([json]);
+      };
     }
 
     if (

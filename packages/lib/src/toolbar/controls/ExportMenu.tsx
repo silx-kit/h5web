@@ -8,11 +8,12 @@ import styles from './Selector/Selector.module.css';
 
 interface Props {
   entries: ExportEntryProps[];
-  isSlice: boolean;
+  isSlice?: boolean;
+  align?: 'center' | 'left' | 'right';
 }
 
 function ExportMenu(props: Props) {
-  const { entries, isSlice } = props;
+  const { entries, isSlice, align = 'center' } = props;
 
   return (
     <Wrapper className={styles.wrapper}>
@@ -29,7 +30,7 @@ function ExportMenu(props: Props) {
           <MdArrowDropDown className={styles.arrowIcon} />
         </div>
       </Button>
-      <Menu className={styles.menu}>
+      <Menu className={styles.menu} data-align={align}>
         <div className={styles.list}>
           {entries.map((entry) => (
             <ExportEntry key={entry.format} {...entry} />

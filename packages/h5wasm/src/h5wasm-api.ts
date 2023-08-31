@@ -103,7 +103,16 @@ export class H5WasmApi extends ProviderApi {
     selection: string | undefined,
     value: Value<D>,
   ): ExportURL {
-    return this._getExportURL?.(format, dataset, selection, value);
+    const url = this._getExportURL?.(format, dataset, selection, value);
+    if (url) {
+      return url;
+    }
+
+    if (format === 'json') {
+      return async () => new Blob([JSON.stringify(value, null, 2)]);
+    }
+
+    return undefined;
   }
 
   public async cleanUp(): Promise<void> {
