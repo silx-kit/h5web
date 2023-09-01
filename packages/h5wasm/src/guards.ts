@@ -61,6 +61,10 @@ export function isStringMetadata(metadata: Metadata) {
   return metadata.type === 3;
 }
 
+export function isArrayMetadata(metadata: Metadata) {
+  return metadata.type === 10;
+}
+
 export function isCompoundMetadata(
   metadata: Metadata,
 ): metadata is CompoundMetadata {
