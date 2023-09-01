@@ -1,9 +1,10 @@
 import type { DType, NumericType } from '@h5web/shared';
-import { DTypeClass, Endianness } from '@h5web/shared';
+import { assertDefined, DTypeClass, Endianness } from '@h5web/shared';
 import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
 
 import {
   assertNumericMetadata,
+  isArrayMetadata,
   isCompoundMetadata,
   isEnumMetadata,
   isFloatMetadata,
@@ -53,6 +54,17 @@ export function convertMetadataToDType(metadata: Metadata): DType {
       // not the size of actual variable-length string data (https://portal.hdfgroup.org/display/HDF5/H5T_GET_SIZE)
       length: vlen ? undefined : size,
       charSet: cset === 1 ? 'UTF-8' : 'ASCII',
+    };
+  }
+
+  if (isArrayMetadata(metadata)) {
+    const { array_type } = metadata;
+    assertDefined(array_type);
+
+    return {
+      class: DTypeClass.Array,
+      base: convertMetadataToDType(array_type),
+      dims: array_type.shape,
     };
   }
 
