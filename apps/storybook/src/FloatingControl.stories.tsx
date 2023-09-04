@@ -5,10 +5,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import FillHeight from './decorators/FillHeight';
 
 const meta = {
-  title: 'Toolbar/FloatingToolbar',
+  title: 'Toolbar/FloatingControl',
+  component: FloatingControl,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-} satisfies Meta;
+} satisfies Meta<typeof FloatingControl>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
