@@ -83,7 +83,7 @@ export class H5GroveApi extends DataProviderApi {
       return url;
     }
 
-    if (!hasNumericType(dataset)) {
+    if (format !== 'json' && !hasNumericType(dataset)) {
       return undefined;
     }
 

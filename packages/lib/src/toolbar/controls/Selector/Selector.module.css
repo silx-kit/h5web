@@ -48,8 +48,6 @@
 .menu {
   position: absolute;
   top: calc(100% + 0.75rem);
-  left: 50%;
-  transform: translateX(-50%); /* center menu with button */
   z-index: 1; /* above overflow menu */
   min-width: 100%;
   padding-top: 0.25rem;
@@ -59,6 +57,18 @@
   box-shadow:
     rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
     rgba(0, 0, 0, 0.1) 0px 4px 11px;
+}
+
+.menu:not([data-align]),
+.menu[data-align='center'] {
+  left: 50%;
+  transform: translateX(-50%); /* center menu with button */
+}
+.menu[data-align='left'] {
+  left: 0;
+}
+.menu[data-align='right'] {
+  right: 0;
 }
 
 .list {

@@ -23,7 +23,9 @@
 .menuList {
   composes: popupInner from './Toolbar.module.css';
   display: grid;
+  grid-template-columns: 1fr;
   grid-gap: 0.25rem;
+  justify-items: flex-start;
   margin: 0;
   padding: 0.375rem 0.25rem;
   list-style-type: none;

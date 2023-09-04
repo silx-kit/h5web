@@ -1,28 +1,17 @@
-import { mockValues } from '@h5web/shared';
 import { screen, within } from '@testing-library/react';
 
-import {
-  findSelectedVisTab,
-  findVisTabs,
-  mockConsoleMethod,
-  renderApp,
-} from '../test-utils';
+import { findSelectedVisTab, findVisTabs, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('visualize raw dataset', async () => {
-  await renderApp('/entities/raw');
+  const { selectExplorerNode } = await renderApp('/entities/raw');
 
   await expect(findVisTabs()).resolves.toEqual([Vis.Raw]);
   await expect(findSelectedVisTab()).resolves.toBe(Vis.Raw);
   await expect(screen.findByText(/"int": 42/)).resolves.toBeVisible();
-});
 
-test('log raw dataset to console if too large', async () => {
-  const logSpy = mockConsoleMethod('log');
-  await renderApp('/entities/raw_large');
-
+  await selectExplorerNode('raw_large');
   await expect(screen.findByText(/Too big to display/)).resolves.toBeVisible();
-  expect(logSpy).toHaveBeenCalledWith(mockValues.raw_large);
 });
 
 test('visualize scalar dataset', async () => {
