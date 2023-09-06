@@ -209,33 +209,35 @@ export function useDrag(opts: UseDragOpts): UseDragState {
   const camera = useThree((state) => state.camera);
   const { htmlToData } = useVisCanvasContext();
 
-  const htmlStartRef = useRef<Vector3>();
+  const dataStartRef = useRef<Vector3>();
   const onDragEndRef = useSyncedRef(onDragEnd);
 
   const [delta, setDelta] = useState<Vector3>();
 
-  const startDrag = useCallback((evt: PointerEvent) => {
-    const { offsetX, offsetY, target, pointerId } = evt;
+  const startDrag = useCallback(
+    (evt: PointerEvent) => {
+      const { offsetX, offsetY, target, pointerId } = evt;
 
-    if (target instanceof Element) {
-      target.setPointerCapture(pointerId);
-    }
+      if (target instanceof Element) {
+        target.setPointerCapture(pointerId);
+      }
 
-    htmlStartRef.current = new Vector3(offsetX, offsetY);
-    setDelta(new Vector3());
-  }, []);
+      dataStartRef.current = htmlToData(camera, new Vector3(offsetX, offsetY));
+      setDelta(new Vector3());
+    },
+    [camera, htmlToData],
+  );
 
   function handlePointerMove(canvasEvt: CanvasEvent<PointerEvent>) {
-    if (!htmlStartRef.current) {
+    if (!dataStartRef.current) {
       return;
     }
 
-    const dataStart = htmlToData(camera, htmlStartRef.current);
-    setDelta(canvasEvt.dataPt.sub(dataStart));
+    setDelta(canvasEvt.dataPt.sub(dataStartRef.current));
   }
 
   function handlePointerUp(canvasEvt: CanvasEvent<PointerEvent>) {
-    if (!htmlStartRef.current) {
+    if (!dataStartRef.current) {
       return;
     }
 
@@ -246,11 +248,11 @@ export function useDrag(opts: UseDragOpts): UseDragState {
       target.releasePointerCapture(pointerId);
     }
 
-    const dataStart = htmlToData(camera, htmlStartRef.current);
-    htmlStartRef.current = undefined;
+    const finalDelta = dataPt.sub(dataStartRef.current);
+    dataStartRef.current = undefined;
     setDelta(undefined);
 
-    onDragEndRef.current?.(dataPt.sub(dataStart));
+    onDragEndRef.current?.(finalDelta);
   }
 
   useCanvasEvent('pointermove', handlePointerMove);
