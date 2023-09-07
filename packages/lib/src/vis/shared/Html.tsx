@@ -1,6 +1,8 @@
 import type { PropsWithChildren } from 'react';
 import { useLayoutEffect, useState } from 'react';
-import ReactDOM, { createPortal } from 'react-dom';
+import { createPortal } from 'react-dom';
+import type { Root } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 
 import { useVisCanvasContext } from './VisCanvasProvider';
 
@@ -14,26 +16,28 @@ function Html(props: PropsWithChildren<Props>) {
   const { r3fRoot, canvasArea } = useVisCanvasContext();
   const portalContainer = overflowCanvas ? canvasArea : r3fRoot;
 
-  const [renderContainer] = useState(() => {
+  const [reactRootContainer] = useState(() => {
     const div = document.createElement('div');
     div.setAttribute('hidden', '');
     return div;
   });
 
+  const [reactRoot] = useState<Root>(() => createRoot(reactRootContainer));
+
   useLayoutEffect(() => {
-    ReactDOM.render(createPortal(children, portalContainer), renderContainer);
-  }, [children, portalContainer, renderContainer]);
+    reactRoot.render(createPortal(children, portalContainer));
+  }, [children, portalContainer, reactRoot]);
 
   useLayoutEffect(() => {
     /* Since the children are rendered in a portal, it doesn't technically matter
-       which element `renderContainer` is appended to, as long as it stays in the DOM. */
-    r3fRoot.append(renderContainer);
+       which element `reactRootContainer` is appended to, as long as it stays in the DOM. */
+    r3fRoot.append(reactRootContainer);
 
     return () => {
-      ReactDOM.unmountComponentAtNode(renderContainer);
-      renderContainer.remove();
+      reactRoot.unmount();
+      reactRootContainer.remove();
     };
-  }, [r3fRoot, renderContainer]);
+  }, [r3fRoot, reactRoot, reactRootContainer]);
 
   return null;
 }

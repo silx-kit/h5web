@@ -25,6 +25,7 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   args: {
     modifierKey: [],
+    children: undefined,
   },
   argTypes: {
     modifierKey: {
