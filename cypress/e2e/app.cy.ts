@@ -283,6 +283,7 @@ describe('/mock', () => {
       cy.get('svg[data-type="abscissa"] svg').should('have.text', 'X (nm)');
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.waitForStableDOM();
         cy.matchImageSnapshot('nxspectrum');
       }
     });
@@ -331,6 +332,7 @@ describe('/mock', () => {
       cy.findAllByRole('button', { name: 'Log' }).should('have.length', 2);
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.waitForStableDOM();
         cy.matchImageSnapshot('logspectrum');
       }
     });
@@ -344,6 +346,7 @@ describe('/mock', () => {
       }).should('be.visible');
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.waitForStableDOM();
         cy.matchImageSnapshot('auxspectrum');
       }
     });
