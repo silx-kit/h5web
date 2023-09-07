@@ -99,6 +99,6 @@ test('show spinner when group metadata is slow to fetch', async () => {
     }),
   ).resolves.toBeVisible();
 
-  // Spinner has been removed
+  // Ensure loading spinner has been removed
   expect(screen.queryByLabelText(/Loading group/)).not.toBeInTheDocument();
 });
