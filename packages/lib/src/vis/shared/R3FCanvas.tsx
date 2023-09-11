@@ -8,11 +8,11 @@ interface Props {
 
 function R3FCanvas(props: PropsWithChildren<Props>) {
   const { className, orthographic, children } = props;
+
   return (
     <Canvas
       className={className}
       orthographic={orthographic}
-      linear // disable automatic color encoding and gamma correction
       flat // disable tone mapping
       frameloop="demand" // disable game loop
       dpr={[1, 3]} // https://discoverthreejs.com/tips-and-tricks/#performance
