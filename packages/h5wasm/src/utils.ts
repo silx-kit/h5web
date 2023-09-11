@@ -119,7 +119,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
 export function convertSelectionToRanges(
   dataset: H5WasmDataset,
   selection: string,
-): number[][] {
+): [number, number][] {
   const { shape } = dataset;
   const selectionMembers = selection.split(',');
 

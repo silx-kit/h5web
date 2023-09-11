@@ -50,9 +50,8 @@ test('choose most advanced visualization when switching between datasets', async
 });
 
 test('remember preferred visualization when switching between datasets', async () => {
-  const { user, selectExplorerNode, selectVisTab } = await renderApp(
-    '/nD_datasets/twoD',
-  );
+  const { user, selectExplorerNode, selectVisTab } =
+    await renderApp('/nD_datasets/twoD');
 
   /* Switch to Matrix vis. Since this is _not_ the most advanced visualization
    * for `twoD`, it becomes the preferred visualization. */
