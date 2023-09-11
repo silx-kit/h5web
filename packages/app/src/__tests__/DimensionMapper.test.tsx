@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react';
 
-import { renderApp } from '../test-utils';
+import { renderApp, waitForAllLoaders } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('control mapping for X axis when visualizing 2D dataset as Line', async () => {
@@ -99,7 +99,10 @@ test('slice through 2D dataset', async () => {
   const { user } = await renderApp({
     initialPath: '/nD_datasets/twoD',
     preferredVis: Vis.Line,
+    withFakeTimers: true, // required since React 18 upgrade (along with `waitForAllLoaders` below)
   });
+
+  await waitForAllLoaders();
 
   // Move to next slice with keyboard
   const d0Slider = screen.getByRole('slider', { name: 'D0' });

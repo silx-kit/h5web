@@ -162,7 +162,7 @@ describe('/mock', () => {
       .and('have.attr', 'aria-valuemax', 8);
 
     // Move slider up by three marks and check value
-    cy.get('@d1Slider').type('{uparrow}{uparrow}{uparrow}');
+    cy.get('@d1Slider').type('{upArrow}{upArrow}{upArrow}');
     cy.waitForStableDOM();
 
     cy.get('@d1Slider').should('have.attr', 'aria-valuenow', 3);

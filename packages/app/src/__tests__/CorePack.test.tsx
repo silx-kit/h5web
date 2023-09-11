@@ -1,85 +1,80 @@
 import { screen, within } from '@testing-library/react';
 
-import { findSelectedVisTab, findVisTabs, renderApp } from '../test-utils';
+import { SLOW_TIMEOUT } from '../providers/mock/mock-api';
+import {
+  getSelectedVisTab,
+  getVisTabs,
+  renderApp,
+  waitForAllLoaders,
+} from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('visualize raw dataset', async () => {
   const { selectExplorerNode } = await renderApp('/entities/raw');
 
-  await expect(findVisTabs()).resolves.toEqual([Vis.Raw]);
-  await expect(findSelectedVisTab()).resolves.toBe(Vis.Raw);
-  await expect(screen.findByText(/"int": 42/)).resolves.toBeVisible();
+  expect(getVisTabs()).toEqual([Vis.Raw]);
+  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(screen.getByText(/"int": 42/)).toBeVisible();
 
   await selectExplorerNode('raw_large');
-  await expect(screen.findByText(/Too big to display/)).resolves.toBeVisible();
+  expect(screen.getByText(/Too big to display/)).toBeVisible();
 });
 
 test('visualize scalar dataset', async () => {
   // Integer scalar
   const { selectExplorerNode } = await renderApp('/entities/scalar_int');
 
-  await expect(findVisTabs()).resolves.toEqual([Vis.Scalar]);
-  await expect(findSelectedVisTab()).resolves.toBe(Vis.Scalar);
-  await expect(screen.findByText('0')).resolves.toBeVisible();
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
+  expect(screen.getByText('0')).toBeVisible();
 
   // String scalar
   await selectExplorerNode('scalar_str');
 
-  await expect(findVisTabs()).resolves.toEqual([Vis.Scalar]);
-  await expect(findSelectedVisTab()).resolves.toBe(Vis.Scalar);
-  await expect(screen.findByText('foo')).resolves.toBeVisible();
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
+  expect(screen.getByText('foo')).toBeVisible();
 });
 
 test('visualize 1D dataset', async () => {
   await renderApp('/nD_datasets/oneD');
 
-  await expect(findVisTabs()).resolves.toEqual([Vis.Matrix, Vis.Line]);
-  await expect(findSelectedVisTab()).resolves.toBe(Vis.Line);
-
-  await expect(
-    screen.findByRole('figure', { name: 'oneD' }),
-  ).resolves.toBeVisible();
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
+  expect(getSelectedVisTab()).toBe(Vis.Line);
+  expect(screen.getByRole('figure', { name: 'oneD' })).toBeVisible();
 });
 
 test('visualize 1D complex dataset', async () => {
   await renderApp('/nD_datasets/oneD_cplx');
 
-  await expect(findVisTabs()).resolves.toEqual([Vis.Matrix, Vis.Line]);
-  await expect(findSelectedVisTab()).resolves.toBe(Vis.Line);
-
-  await expect(
-    screen.findByRole('figure', { name: 'oneD_cplx' }),
-  ).resolves.toBeVisible();
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
+  expect(getSelectedVisTab()).toBe(Vis.Line);
+  expect(screen.getByRole('figure', { name: 'oneD_cplx' })).toBeVisible();
 });
 
-test('visualize 2D datasets', async () => {
+test('visualize 2D dataset', async () => {
   await renderApp('/nD_datasets/twoD');
 
-  await expect(findVisTabs()).resolves.toEqual([
-    Vis.Matrix,
-    Vis.Line,
-    Vis.Heatmap,
-  ]);
-  await expect(findSelectedVisTab()).resolves.toBe(Vis.Heatmap);
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
+  expect(getSelectedVisTab()).toBe(Vis.Heatmap);
 
-  const figure = await screen.findByRole('figure', { name: 'twoD' });
+  const figure = screen.getByRole('figure', { name: 'twoD' });
   expect(figure).toBeVisible();
   expect(within(figure).getByText('4e+2')).toBeVisible(); // color bar limit
 });
 
 test('visualize 2D complex dataset', async () => {
-  const { user } = await renderApp('/nD_datasets/twoD_cplx');
-
-  await expect(findVisTabs()).resolves.toEqual([
-    Vis.Matrix,
-    Vis.Line,
-    Vis.Heatmap,
-  ]);
-  await expect(findSelectedVisTab()).resolves.toBe(Vis.Heatmap);
-
-  const figure = await screen.findByRole('figure', {
-    name: 'twoD_cplx (amplitude)',
+  const { user } = await renderApp({
+    initialPath: '/nD_datasets/twoD_cplx',
+    withFakeTimers: true, // required since React 18 upgrade (along with `waitForAllLoaders` below)
   });
+
+  await waitForAllLoaders();
+
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
+  expect(getSelectedVisTab()).toBe(Vis.Heatmap);
+
+  const figure = screen.getByRole('figure', { name: 'twoD_cplx (amplitude)' });
   expect(figure).toBeVisible();
   expect(within(figure).getByText('5e+0')).toBeVisible(); // color bar limit
 
@@ -106,8 +101,9 @@ test('visualize 1D slice of 3D dataset as Line with and without autoscale', asyn
   ).resolves.toBeVisible();
 
   // Wait for fetch of first slice to succeed
-  jest.runAllTimers();
-  await expect(screen.findByRole('figure')).resolves.toBeVisible();
+  await expect(
+    screen.findByRole('figure', undefined, { timeout: SLOW_TIMEOUT }),
+  ).resolves.toBeVisible();
 
   // Confirm that autoscale is indeed on
   const autoScaleBtn = screen.getByRole('button', { name: 'Auto-scale' });
@@ -123,8 +119,9 @@ test('visualize 1D slice of 3D dataset as Line with and without autoscale', asyn
   ).resolves.toBeVisible();
 
   // Wait for fetch of second slice to succeed
-  jest.runAllTimers();
-  await expect(screen.findByRole('figure')).resolves.toBeVisible();
+  await expect(
+    screen.findByRole('figure', undefined, { timeout: SLOW_TIMEOUT }),
+  ).resolves.toBeVisible();
 
   // Activate autoscale
   await user.click(autoScaleBtn);
@@ -135,17 +132,15 @@ test('visualize 1D slice of 3D dataset as Line with and without autoscale', asyn
   ).resolves.toBeVisible();
 
   // Wait for fetch of entire dataset to succeed
-  jest.runAllTimers();
-  await expect(screen.findByRole('figure')).resolves.toBeVisible();
+  await expect(
+    screen.findByRole('figure', undefined, { timeout: SLOW_TIMEOUT }),
+  ).resolves.toBeVisible();
 
   // Move to third slice
   await user.type(d0Slider, '{ArrowUp}');
 
   // Wait for new slicing to apply to Line visualization to confirm that no more slow fetching is performed
   await expect(screen.findByTestId('2,0,x', undefined)).resolves.toBeVisible();
-
-  d0Slider.blur(); // remove focus to avoid state update after unmount
-  jest.runAllTimers();
 });
 
 test('show interactions help for heatmap according to "keep ratio"', async () => {
