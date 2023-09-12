@@ -156,7 +156,7 @@ import.
 
 The build process of`@h5web/h5wasm` is also the same as the lib's, but since the
 package does not include any styles, `vite build` does not generate a
-`style.css` file and there's not `build:css` script.
+`style.css` file and there's no `build:css` script.
 
 Finally, since `@h5web/shared` is not a published package, it does not need to
 be built with Vite. However, its types do need to be built with `tsc` so that

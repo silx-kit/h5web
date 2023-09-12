@@ -466,8 +466,8 @@ importers:
         specifier: 4.8.0
         version: 4.8.0(react@18.2.0)
       react-keyed-flatten-children:
-        specifier: 1.3.0
-        version: 1.3.0(react@18.2.0)
+        specifier: 2.2.1
+        version: 2.2.1(react@18.2.0)
       react-measure:
         specifier: 2.5.2
         version: 2.5.2(react-dom@18.2.0)(react@18.2.0)
@@ -11651,15 +11651,14 @@ packages:
 
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
-    dev: true
 
-  /react-keyed-flatten-children@1.3.0(react@18.2.0):
-    resolution: {integrity: sha512-qB7A6n+NHU0x88qTZGAJw6dsqwI941jcRPBB640c/CyWqjPQQ+YUmXOuzPziuHb7iqplM3xksWAbGYwkQT0tXA==}
+  /react-keyed-flatten-children@2.2.1(react@18.2.0):
+    resolution: {integrity: sha512-6yBLVO6suN8c/OcJk1mzIrUHdeEzf5rtRVBhxEXAHO49D7SlJ70cG4xrSJrBIAG7MMeQ+H/T151mM2dRDNnFaA==}
     peerDependencies:
       react: '>=15.0.0'
     dependencies:
       react: 18.2.0
-      react-is: 16.13.1
+      react-is: 18.2.0
     dev: false
 
   /react-measure@2.5.2(react-dom@18.2.0)(react@18.2.0):
