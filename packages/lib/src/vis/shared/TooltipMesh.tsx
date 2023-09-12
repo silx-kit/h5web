@@ -31,17 +31,17 @@ function TooltipMesh(props: Props) {
   // Show and/or update tooltip when pointer moves except when dragging
   const onPointerMove = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
-      const { unprojectedPoint, sourceEvent } = evt;
+      const { unprojectedPoint, nativeEvent } = evt;
 
       // Keep tooltip hidden when dragging
-      if (sourceEvent.buttons !== 0) {
+      if (nativeEvent.buttons !== 0) {
         return;
       }
 
       const dataCoords = worldToData(unprojectedPoint);
       showTooltip({
-        tooltipLeft: sourceEvent.offsetX,
-        tooltipTop: sourceEvent.offsetY,
+        tooltipLeft: nativeEvent.offsetX,
+        tooltipTop: nativeEvent.offsetY,
         tooltipData: [dataCoords.x, dataCoords.y],
       });
     },
@@ -63,8 +63,8 @@ function TooltipMesh(props: Props) {
   // Show tooltip after dragging, if pointer is released inside the vis viewport
   const onPointerUp = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
-      const { sourceEvent } = evt;
-      const { offsetX: x, offsetY: y } = sourceEvent;
+      const { nativeEvent } = evt;
+      const { offsetX: x, offsetY: y } = nativeEvent;
       if (x >= 0 && x <= width && y >= 0 && y <= height) {
         onPointerMove(evt);
       }

@@ -24,6 +24,7 @@ const meta = {
     axis: 'x',
     disabled: false,
     modifierKey: undefined,
+    children: undefined,
   },
   argTypes: {
     axis: {

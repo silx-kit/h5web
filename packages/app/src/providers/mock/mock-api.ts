@@ -28,7 +28,7 @@ import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { sliceValue } from '../utils';
 
-const SLOW_TIMEOUT = 3000;
+export const SLOW_TIMEOUT = 3000;
 
 export class MockApi extends DataProviderApi {
   public constructor(
