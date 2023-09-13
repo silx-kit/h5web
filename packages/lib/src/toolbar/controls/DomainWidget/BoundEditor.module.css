@@ -14,7 +14,7 @@
 }
 
 .value {
-  flex: 1 0 auto;
+  flex: 1;
   width: 8.5em; /* -9.99999e+999 without overflowing */
   margin-right: 0.375rem;
   padding: 0.25rem 0.375rem;

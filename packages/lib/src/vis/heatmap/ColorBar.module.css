@@ -31,7 +31,7 @@
 }
 
 .gradient {
-  flex: 1 1 0%;
+  flex: 1;
   background-repeat: no-repeat; /* fix subtle bug where gradient is repeated over 1px */
 }
 

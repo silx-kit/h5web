@@ -11,7 +11,7 @@
 }
 
 .input {
-  flex: 1 1 0%;
+  flex: 1;
   height: var(--toolbarBtn-height);
   padding: 0 0.5rem;
   border: none;
