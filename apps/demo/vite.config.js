@@ -4,7 +4,6 @@ import { checker } from 'vite-plugin-checker';
 import eslintPlugin from 'vite-plugin-eslint';
 
 export default defineConfig({
-  server: { open: true },
   plugins: [
     react(),
     { ...eslintPlugin(), apply: 'serve' }, // dev only to reduce build time

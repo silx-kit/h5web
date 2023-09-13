@@ -28,6 +28,9 @@ pnpm install
 pnpm start
 ```
 
+Once the development server has started, press `o` to open the development URL
+in your browser, or `h` to show all the available keyboard shortcuts.
+
 ## Development
 
 - `pnpm start` - start the H5Web stand-alone demo

@@ -1,5 +1,5 @@
+import type { DataProviderApi } from '@h5web/app';
 import { DataProvider } from '@h5web/app';
-import type { DataProviderApi } from '@h5web/app/src/providers/api';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 

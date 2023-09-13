@@ -20,7 +20,7 @@ export { assertEnvVar } from '@h5web/shared';
 
 // Undocumented (for @h5web/h5wasm)
 export { default as DataProvider } from './providers/DataProvider';
-export { DataProviderApi as ProviderApi } from './providers/api';
+export { DataProviderApi } from './providers/api';
 export type { ValuesStoreParams } from './providers/models';
 export { flattenValue, getNameFromPath, sliceValue } from './providers/utils';
 export { assertNonNull } from '@h5web/shared';

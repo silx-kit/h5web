@@ -18,6 +18,6 @@ export default defineConfig({
         },
       ],
     }),
-    dts({ respectExternal: true }),
+    dts(),
   ],
 });

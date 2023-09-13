@@ -1,8 +1,8 @@
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '@h5web/app';
 import {
+  DataProviderApi,
   flattenValue,
   getNameFromPath,
-  ProviderApi,
   sliceValue,
 } from '@h5web/app';
 import type {
@@ -40,13 +40,13 @@ import {
 import type { H5WasmAttributes, H5WasmEntity } from './models';
 import { convertMetadataToDType, convertSelectionToRanges } from './utils';
 
-export class H5WasmApi extends ProviderApi {
+export class H5WasmApi extends DataProviderApi {
   private readonly file: Promise<H5WasmFile>;
 
   public constructor(
     filename: string,
     buffer: ArrayBuffer,
-    private readonly _getExportURL?: ProviderApi['getExportURL'],
+    private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filename);
     this.file = this.initFile(buffer);
