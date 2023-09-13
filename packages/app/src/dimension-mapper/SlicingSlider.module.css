@@ -28,7 +28,7 @@
 }
 
 .track {
-  flex: 1 0 auto;
+  flex: 1;
   margin: calc(var(--thumb-height) / 2) 0;
   width: 2px;
   background-color: var(--secondary-dark);

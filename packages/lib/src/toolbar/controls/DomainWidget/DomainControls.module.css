@@ -57,7 +57,7 @@
 }
 
 .errorMessage {
-  flex: 1 1 0%;
+  flex: 1;
   font-size: 0.9375em;
   font-weight: 600;
 }

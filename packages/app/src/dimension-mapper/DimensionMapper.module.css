@@ -42,13 +42,13 @@
 }
 
 .dimSize {
-  flex: 1 0 0%;
+  flex: 1 0;
   padding: 0 0.1875rem;
   text-align: center;
 }
 
 .sliders {
-  flex: 1 1 0%;
+  flex: 1;
   display: flex;
   justify-content: center;
   padding: 0.5rem 0;

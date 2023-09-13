@@ -1,5 +1,5 @@
 .visCanvas {
-  flex: 1 1 0%;
+  flex: 1;
   overflow: hidden; /* prevent overflow, notably when resizing */
   z-index: 0; /* stacking context for anything rendered above the canvas (axis grid, SVG scene, floating toolbar, tooltip, etc.) */
 

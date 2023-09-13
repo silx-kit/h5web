@@ -91,11 +91,11 @@
 }
 
 .selectedOption {
-  flex: 1 1 0%;
+  flex: 1;
 }
 
 .option {
-  flex: 1 1 0%;
+  flex: 1;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   white-space: nowrap;
