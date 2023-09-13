@@ -46,7 +46,7 @@
     "remark-gfm": "3.0.1",
     "storybook": "7.4.1",
     "typescript": "5.0.4",
-    "vite": "4.3.9"
+    "vite": "4.4.9"
   },
   "browserslist": {
     "production": [
