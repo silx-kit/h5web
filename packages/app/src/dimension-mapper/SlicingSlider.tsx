@@ -54,10 +54,9 @@ function SlicingSlider(props: Props) {
             onDebouncedChange(newValue);
           }}
           /* When slicing in E2E tests, `onChange` is called with the old value.
-             A `setState` callback in `ReactSlider` that is supposed to be called
-             after the state is updated, is in fact called before.
-             https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L890
-             Adding `onAfterChange` fixes the issue for now. */
+             The `onChange` event is fired via a `setState` callback in `ReactSlider`:
+             https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L908
+             Adding `onAfterChange` fixes the issue for now with react-slider@2.0.4, but not with react-slider@2.0.5+ */
           onAfterChange={(newValue) => {
             setValue(newValue);
             onDebouncedChange(newValue);

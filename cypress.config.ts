@@ -12,5 +12,4 @@ export default defineConfig({
   retries: process.env.CYPRESS_TAKE_SNAPSHOTS ? 3 : null,
   screenshotsFolder: 'cypress/debug',
   fixturesFolder: false,
-  video: false,
 });
