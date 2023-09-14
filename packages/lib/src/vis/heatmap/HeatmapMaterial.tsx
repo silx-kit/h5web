@@ -4,7 +4,7 @@ import type { RGBColor } from 'd3-color';
 import { rgb } from 'd3-color';
 import type { NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
-import type { TextureFilter } from 'three';
+import type { MagnificationTextureFilter } from 'three';
 import {
   DataTexture,
   DoubleSide,
@@ -26,7 +26,7 @@ interface Props extends VisMeshProps {
   scaleType: VisScaleType;
   colorMap: ColorMap;
   invertColorMap?: boolean;
-  magFilter?: TextureFilter;
+  magFilter?: MagnificationTextureFilter;
   alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
   badColor?: RGBColor | string;

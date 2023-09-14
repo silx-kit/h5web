@@ -1,7 +1,7 @@
 import type { ThreeEvent } from '@react-three/fiber';
 import { throttle } from 'lodash';
 import { memo } from 'react';
-import type { TextureFilter } from 'three';
+import type { MagnificationTextureFilter } from 'three';
 import { Vector2 } from 'three';
 
 import HeatmapMesh from '../heatmap/HeatmapMesh';
@@ -13,7 +13,7 @@ interface Props extends ColorMapProps {
   layer: number;
   x: number;
   y: number;
-  magFilter: TextureFilter;
+  magFilter: MagnificationTextureFilter;
   onPointerMove?: (e: ThreeEvent<MouseEvent>, array: TileArray) => void;
 }
 

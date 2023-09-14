@@ -9,10 +9,9 @@ const DEPS_TO_TRANSFORM = [
   'd3-time',
   'd3-time-format',
   'internmap',
-  'three',
 ];
 
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+/** @type {import('ts-jest/dist/types').JestConfigWithTsJest} */
 const config = {
   displayName: 'app',
   moduleNameMapper: {

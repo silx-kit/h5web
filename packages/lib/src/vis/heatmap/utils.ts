@@ -3,7 +3,7 @@ import { getDims, ScaleType, toTypedNdArray } from '@h5web/shared';
 import { range } from 'lodash';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
-import type { TextureFilter } from 'three';
+import type { MagnificationTextureFilter } from 'three';
 import {
   ClampToEdgeWrapping,
   DataTexture,
@@ -164,19 +164,19 @@ export function toTextureSafeNdArray(
  */
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array>,
-  magFilter?: TextureFilter,
+  magFilter?: MagnificationTextureFilter,
 ): DataTexture;
 export function getDataTexture(
   values: undefined,
-  magFilter?: TextureFilter,
+  magFilter?: MagnificationTextureFilter,
 ): undefined;
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
-  magFilter?: TextureFilter,
+  magFilter?: MagnificationTextureFilter,
 ): DataTexture | undefined;
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
-  magFilter: TextureFilter = NearestFilter,
+  magFilter: MagnificationTextureFilter = NearestFilter,
 ): DataTexture | undefined {
   if (!values) {
     return undefined;
