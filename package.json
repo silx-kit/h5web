@@ -34,11 +34,11 @@
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
-    "@simonsmith/cypress-image-snapshot": "8.1.1",
-    "@testing-library/cypress": "9.0.0",
+    "@simonsmith/cypress-image-snapshot": "8.1.2",
+    "@testing-library/cypress": "10.0.1",
     "@types/jest": "^29.5.4",
     "@types/node": "^18.17.15",
-    "cypress": "13.1.0",
+    "cypress": "13.2.0",
     "cypress-wait-for-stable-dom": "0.1.0",
     "eslint": "8.28.0",
     "eslint-config-galex": "4.5.2",
@@ -55,8 +55,7 @@
       "allowedVersions": {
         "@phenomnomnominal/tsquery>typescript": "5.x",
         "eslint-plugin-etc>typescript": "5.x",
-        "react-aria-menubutton>react": "18.x",
-        "@testing-library/cypress>cypress": "13.x"
+        "react-aria-menubutton>react": "18.x"
       }
     },
     "requiredScripts": [
