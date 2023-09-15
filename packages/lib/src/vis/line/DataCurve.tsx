@@ -16,15 +16,13 @@ import { CurveType, GlyphType } from './models';
  * to hide them and any segments connecting them. */
 const CAMERA_FAR = 1000; // R3F's default
 
-extend({ Line_: Line });
-
-// https://github.com/pmndrs/react-three-fiber/issues/1152
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      line_: Object3DNode<Line, typeof Line>;
-    }
+// Alias Three's `Line` to `Line_` to avoid conflict with SVG `line` in JSX
+// https://docs.pmnd.rs/react-three-fiber/tutorials/typescript#extending-threeelements
+class Line_ extends Line {}
+extend({ Line_ });
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    line_: Object3DNode<Line, typeof Line>;
   }
 }
 

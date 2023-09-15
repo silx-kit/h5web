@@ -42,19 +42,21 @@
   position: relative; /* for `.r3fRoot`, `.svgOverlay`, `.floatingToolbar`, overflowing annotations, etc. */
   background-color: var(--h5w-canvas--bgColor, transparent);
   user-select: none; /* selection may be restored on specific elements as needed (annotations, etc.) */
-
-  /*
-   * `.canvasArea` and `.r3fRoot` are implicitely stacked at `z-index: 0`, so
-   * they intercept events before they can reach the canvas. We can't stack them
-   * explicitly without creating a new stacking context, which would break the
-   * stacking order. So we disable pointer events instead and restore them only
-   * on the `canvas`. Consumers may restore pointer events on specific elements
-   * (annotations, SVG elements, etc.) to make them interactive.
-   */
-  pointer-events: none;
 }
 
-.r3fRoot > canvas {
+/*
+ * `.canvasArea` and `.r3fRoot` are implicitely stacked at `z-index: 0`, so they intercept events
+ * before they can reach the canvas (which has a negative `z-index`. We can't stack them explicitly
+ * without creating a new stacking context, which would break the stacking order. So we disable
+ * pointer events instead and restore them only on the `canvas`. Consumers may restore pointer
+ * events on specific elements * (annotations, SVG elements, etc.) to make them interactive.
+ */
+.canvasArea,
+.r3fRoot {
+  pointer-events: none !important;
+}
+
+.r3fRoot canvas {
   position: relative;
   z-index: var(--h5w-zi-canvas);
   pointer-events: auto;

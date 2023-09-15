@@ -1,5 +1,5 @@
 import type { VisibleDomains } from '@h5web/shared';
-import { assertNonNull } from '@h5web/shared';
+import { assertDefined, assertNonNull } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
@@ -61,11 +61,11 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     children,
   } = props;
 
-  const canvasSize = useThree((state) => state.size);
-  const visSize = getSizeToFit(canvasSize, visRatio);
-
-  const { width, height } = canvasSize;
+  const { width, height } = useThree((state) => state.size);
+  const canvasSize = { width, height };
   const canvasRatio = width / height;
+
+  const visSize = getSizeToFit(canvasSize, visRatio);
 
   const canvasBox = useMemo(
     () => Box.empty().expandByPoint(new Vector3(width, height)),
@@ -153,7 +153,10 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     [getFovBox, worldToData],
   );
 
-  const r3fRoot = useThree((state) => state.gl.domElement.parentElement);
+  const r3fRoot = useThree(
+    (state) => state.gl.domElement.parentElement?.parentElement,
+  );
+  assertDefined(r3fRoot);
   assertNonNull(r3fRoot);
   const canvasArea = r3fRoot.parentElement;
   assertNonNull(canvasArea);
