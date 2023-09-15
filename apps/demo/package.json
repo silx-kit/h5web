@@ -8,7 +8,8 @@
     "build": "vite build",
     "serve": "vite preview --port 5173",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
-    "lint:tsc": "tsc"
+    "lint:tsc": "tsc",
+    "analyze": "pnpm dlx source-map-explorer dist/assets/*.js --no-border-checks"
   },
   "dependencies": {
     "@h5web/app": "workspace:*",

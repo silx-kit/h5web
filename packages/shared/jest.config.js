@@ -1,6 +1,6 @@
 const DEPS_TO_TRANSFORM = ['d3-format'];
 
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+/** @type {import('ts-jest/dist/types').JestConfigWithTsJest} */
 const config = {
   displayName: 'shared',
   testRegex: '\\.test\\.tsx?$',

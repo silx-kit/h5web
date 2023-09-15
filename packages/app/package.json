@@ -61,7 +61,7 @@
     "react-reflex": "4.1.0",
     "react-slider": "2.0.4",
     "react-suspense-fetch": "0.4.1",
-    "three": "0.141.0",
+    "three": "0.156.1",
     "zustand": "4.4.1"
   },
   "devDependencies": {

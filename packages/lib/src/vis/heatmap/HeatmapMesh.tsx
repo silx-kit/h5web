@@ -1,7 +1,7 @@
 import type { Domain } from '@h5web/shared';
 import type { RGBColor } from 'd3-color';
 import type { NdArray } from 'ndarray';
-import type { TextureFilter } from 'three';
+import type { MagnificationTextureFilter } from 'three';
 
 import type { VisScaleType } from '../models';
 import type { VisMeshProps } from '../shared/VisMesh';
@@ -15,7 +15,7 @@ interface Props extends VisMeshProps {
   scaleType: VisScaleType;
   colorMap: ColorMap;
   invertColorMap?: boolean;
-  magFilter?: TextureFilter;
+  magFilter?: MagnificationTextureFilter;
   alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
   badColor?: RGBColor | string;

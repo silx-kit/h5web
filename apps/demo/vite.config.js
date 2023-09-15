@@ -14,7 +14,6 @@ export default defineConfig({
   optimizeDeps: { esbuildOptions: { target: 'es2020' } },
   build: {
     target: 'es2020',
-    // Out of memory! https://github.com/vitejs/vite/issues/2433
-    // sourcemap: true,
+    sourcemap: true,
   },
 });
