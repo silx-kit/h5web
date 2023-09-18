@@ -30,7 +30,7 @@ export const Glyphs = {
 
 export const LineAndGlyphs = {
   ...Default,
-  storyName: 'Line & Glyphs',
+  name: 'Line & Glyphs',
   args: {
     curveType: CurveType.LineAndGlyphs,
   },

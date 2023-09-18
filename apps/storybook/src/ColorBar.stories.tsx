@@ -92,7 +92,7 @@ export const LogScale = {
 
 export const NegativeLogScale = {
   ...Default,
-  storyName: 'Log Scale with negative domain',
+  name: 'Log Scale with negative domain',
   args: {
     ...Default.args,
     scaleType: ScaleType.Log,

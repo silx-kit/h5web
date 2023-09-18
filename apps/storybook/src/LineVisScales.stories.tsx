@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 
 export const SymLogForY = {
   ...Default,
-  storyName: 'Symlog for Y',
+  name: 'Symlog for Y',
   args: {
     scaleType: ScaleType.SymLog,
   },
@@ -24,7 +24,7 @@ export const SymLogForY = {
 
 export const LogForY = {
   ...Default,
-  storyName: 'Log for Y',
+  name: 'Log for Y',
   args: {
     scaleType: ScaleType.Log,
   },
@@ -32,7 +32,7 @@ export const LogForY = {
 
 export const SymLogForX = {
   ...Default,
-  storyName: 'Symlog for X',
+  name: 'Symlog for X',
   args: {
     dataArray: dataArrayForXLog,
     scaleType: ScaleType.SymLog,
@@ -41,7 +41,7 @@ export const SymLogForX = {
 
 export const LogForX = {
   ...Default,
-  storyName: 'Log for X',
+  name: 'Log for X',
   args: {
     dataArray: dataArrayForXLog,
     abscissaParams: { scaleType: ScaleType.Log },

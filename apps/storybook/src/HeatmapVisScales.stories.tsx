@@ -18,7 +18,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SymLogScale = {
-  storyName: 'Symlog Scale',
+  name: 'Symlog Scale',
   args: {
     dataArray,
     domain,
@@ -35,7 +35,7 @@ export const LogScale = {
 } satisfies Story;
 
 export const SqrtScale = {
-  storyName: 'Square Root Scale',
+  name: 'Square Root Scale',
   args: {
     dataArray,
     domain: sqrtSafeDomain,
