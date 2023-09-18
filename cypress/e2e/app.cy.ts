@@ -357,6 +357,7 @@ describe('/mock', () => {
       cy.findByRole('heading', { name: 'nexus_entry / rgb-image' }).should(
         'be.visible',
       );
+      cy.waitForStableDOM();
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
         cy.matchImageSnapshot('nxrgb');
