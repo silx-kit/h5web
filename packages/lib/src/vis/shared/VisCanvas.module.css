@@ -45,29 +45,31 @@
 }
 
 /*
- * `.canvasArea` and `.r3fRoot` are implicitely stacked at `z-index: 0`, so they intercept events
- * before they can reach the canvas (which has a negative `z-index`. We can't stack them explicitly
+ * `.canvasArea` is implicitely stacked at `z-index: 0`, so by default it intercepts events
+ * before they can reach the canvas (which has a negative `z-index`). We can't stack it explicitly
  * without creating a new stacking context, which would break the stacking order. So we disable
- * pointer events instead and restore them only on the `canvas`. Consumers may restore pointer
- * events on specific elements * (annotations, SVG elements, etc.) to make them interactive.
+ * pointer events instead. Note that they are restored on `r3fRoot` by R3F. Consumers may also restore
+ * pointer events on specific elements (annotations, SVG elements, etc.) to make them interactive.
  */
-.canvasArea,
+.canvasArea {
+  pointer-events: none;
+}
+
 .r3fRoot {
-  pointer-events: none !important;
-}
-
-.r3fRoot canvas {
-  position: relative;
   z-index: var(--h5w-zi-canvas);
-  pointer-events: auto;
 }
 
+.htmlOverlay,
 .svgOverlay {
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+.svgOverlay {
   z-index: var(--h5w-zi-svgOverlay);
 }
 

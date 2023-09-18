@@ -33,6 +33,7 @@ export interface VisCanvasContextValue {
   visCanvas: HTMLElement;
   canvasArea: HTMLElement;
   r3fRoot: HTMLElement;
+  htmlOverlay: HTMLDivElement | null;
   svgOverlay: SVGSVGElement | null;
   floatingToolbar: HTMLDivElement | null;
 }
@@ -47,6 +48,7 @@ interface Props {
   visRatio: number | undefined;
   abscissaConfig: AxisConfig;
   ordinateConfig: AxisConfig;
+  htmlOverlay: HTMLDivElement | null;
   svgOverlay: SVGSVGElement | null;
   floatingToolbar: HTMLDivElement | null;
 }
@@ -56,6 +58,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     visRatio,
     abscissaConfig,
     ordinateConfig,
+    htmlOverlay,
     svgOverlay,
     floatingToolbar,
     children,
@@ -186,6 +189,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
         visCanvas,
         canvasArea,
         r3fRoot,
+        htmlOverlay,
         svgOverlay,
         floatingToolbar,
       }}

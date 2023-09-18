@@ -48,6 +48,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
       })
     : NO_OFFSETS;
 
+  const [htmlOverlay, setHtmlOverlay] = useState<HTMLDivElement | null>(null);
   const [svgOverlay, setSvgOverlay] = useState<SVGSVGElement | null>(null);
   const [floatingToolbar, setFloatingToolbar] = useState<HTMLDivElement | null>(
     null,
@@ -69,6 +70,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
             visRatio={visRatio}
             abscissaConfig={abscissaConfig}
             ordinateConfig={ordinateConfig}
+            htmlOverlay={htmlOverlay}
             svgOverlay={svgOverlay}
             floatingToolbar={floatingToolbar}
           >
@@ -82,6 +84,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
           </VisCanvasProvider>
         </R3FCanvas>
 
+        <div ref={setHtmlOverlay} className={styles.htmlOverlay} />
         <svg
           ref={setSvgOverlay}
           className={styles.svgOverlay}

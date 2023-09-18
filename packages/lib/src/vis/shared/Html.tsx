@@ -13,8 +13,8 @@ interface Props {
 function Html(props: PropsWithChildren<Props>) {
   const { overflowCanvas = false, children } = props;
 
-  const { r3fRoot, canvasArea } = useVisCanvasContext();
-  const portalContainer = overflowCanvas ? canvasArea : r3fRoot;
+  const { canvasArea, r3fRoot, htmlOverlay } = useVisCanvasContext();
+  const portalContainer = overflowCanvas ? canvasArea : htmlOverlay;
 
   const [reactRootContainer] = useState(() => {
     const div = document.createElement('div');
@@ -25,7 +25,9 @@ function Html(props: PropsWithChildren<Props>) {
   const [reactRoot] = useState<Root>(() => createRoot(reactRootContainer));
 
   useLayoutEffect(() => {
-    reactRoot.render(createPortal(children, portalContainer));
+    if (portalContainer) {
+      reactRoot.render(createPortal(children, portalContainer));
+    }
   }, [children, portalContainer, reactRoot]);
 
   useLayoutEffect(() => {
