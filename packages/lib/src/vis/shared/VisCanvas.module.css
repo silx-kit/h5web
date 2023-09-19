@@ -11,18 +11,19 @@
 
   /*
    * Stacking order, from furthest to closest:
-   * 1. WebGL canvas
+   * 1. WebGL canvas (no z-index)
    * 2. axis system (i.e. most notably the grid)
    * 3. SVG overlay
    * 4. anything rendered via `Html` (`Overlay`, `Annotation`, etc.) — by default with no z-index, which is equivalent to `z-index: 0`
    * 5. tooltip + guides
    * 6. floating toolbar
    */
-  --h5w-zi-canvas: -3000;
-  --h5w-zi-axisSystem: -2000;
-  --h5w-zi-svgOverlay: -1000;
-  --h5w-zi-tooltip: 1000;
-  --h5w-zi-floatingToolbar: 2000;
+  --h5w-zi-axisSystem: 1000;
+  --h5w-zi-svgOverlay: 2000;
+  --h5w-zi-htmlOverlay: 3000;
+  --h5w-zi-customOverlay: 4000;
+  --h5w-zi-tooltip: 5000;
+  --h5w-zi-floatingToolbar: 6000;
 }
 
 .title {
@@ -39,38 +40,28 @@
 
 .canvasArea {
   grid-area: canvas;
-  position: relative; /* for `.r3fRoot`, `.svgOverlay`, `.floatingToolbar`, overflowing annotations, etc. */
+  position: relative; /* for `r3fRoot`, `svgOverlay`, `floatingToolbar`, overflowing annotations, etc. */
   background-color: var(--h5w-canvas--bgColor, transparent);
   user-select: none; /* selection may be restored on specific elements as needed (annotations, etc.) */
 }
 
-/*
- * `.canvasArea` is implicitely stacked at `z-index: 0`, so by default it intercepts events
- * before they can reach the canvas (which has a negative `z-index`). We can't stack it explicitly
- * without creating a new stacking context, which would break the stacking order. So we disable
- * pointer events instead. Note that they are restored on `r3fRoot` by R3F. Consumers may also restore
- * pointer events on specific elements (annotations, SVG elements, etc.) to make them interactive.
- */
-.canvasArea {
-  pointer-events: none;
-}
-
-.r3fRoot {
-  z-index: var(--h5w-zi-canvas);
-}
-
-.htmlOverlay,
-.svgOverlay {
+.svgOverlay,
+.htmlOverlay {
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .svgOverlay {
   z-index: var(--h5w-zi-svgOverlay);
+}
+
+.htmlOverlay {
+  z-index: var(--h5w-zi-htmlOverlay);
 }
 
 .floatingToolbar {

@@ -10,12 +10,13 @@ This allows its children (both direct and nested) to be stacked in relation with
 
 The stacking order is organised into six layers, from furthest (behind) to closest (in front):
 
-1. **WebGL canvas**;
-2. **axis system** (including the axis grid);
-3. **SVG elements** rendered via [`SvgElement`](http://localhost:6006/?path=/story/building-blocks-svgelement--default) into the `svg` overlay, in DOM order;
-4. **HTML elements** rendered via [`Html`](http://localhost:6006/?path=/story/building-blocks-html--default), in DOM order (including [`Annotation`](http://localhost:6006/?path=/story/building-blocks-annotation--default) and [`Overlay`](http://localhost:6006/?path=/story/building-blocks-overlay--default));
-5. **tooltip**
-6. **floating toolbar** (typically with reset zoom button)
+1. **WebGL canvas**
+2. **Axis system** (including the axis grid)
+3. **SVG elements** rendered via [`SvgElement`](http://localhost:6006/?path=/story/building-blocks-svgelement--default) into `svgOverlay`, in DOM order
+4. **HTML elements** rendered via [`Html`](http://localhost:6006/?path=/story/building-blocks-html--default) or [`Annotation`](http://localhost:6006/?path=/story/building-blocks-annotation--default) into `htmlOverlay`, in DOM order
+5. **Custom overlays** rendered with [`Overlay`](http://localhost:6006/?path=/story/building-blocks-overlay--default), in DOM order
+6. **Tooltip**
+7. **Floating toolbar** (typically with reset zoom button)
 
 ```
 ┌──────────────────────────────────┐
@@ -23,28 +24,31 @@ The stacking order is organised into six layers, from furthest (behind) to close
 │   ┌──────────────────────────────┴───┐
 │   │ 2. Axis system                   │
 └── ┤   ┌──────────────────────────────┴───┐
-    │   │ 3. SVG elements                  │
+    │   │ 3. SVG overlay                   │
     └── ┤   ┌──────────────────────────────┴───┐
-        │   │ 4. HTML elements                 │
+        │   │ 4. HTML overlay                  │
         └── ┤   ┌──────────────────────────────┴───┐
-            │   │ 5. Tooltip                       │
+            │   │ 5. Custom overlays               │
             └── ┤   ┌──────────────────────────────┴───┐
-                │   │ 6. Floating toolbar              │
-                └── ┤                                  │
-                    │                                  │
-                    └──────────────────────────────────┘
+                │   │ 6. Tooltip                       │
+                └── ┤   ┌──────────────────────────────┴───┐
+                    │   │ 7. Floating toolbar              │
+                    └── ┤                                  │
+                        │                                  │
+                        └──────────────────────────────────┘
 ```
 
-As a consumer of the library, you have control over the stacking of the SVG and HTML elements that you render (i.e. layers 3 and 4).
-Within each of these two layers, all you need to do to move element `A` behind, or in front of, element `B` is to **render `A`
+As a consumer of the library, you will typically care about the stacking order of the SVG and HTML elements that you render within layers 3 and 4.
+Within these layers, all you need to do to move element `A` behind or in front of element `B` is to **render `A`
 before or after `B`** in your React tree, respectively.
 
 However, there are some pitfalls:
 
-- Elements from layers 3 and 4 **cannot be interleaved** with one another. Consider the `svg` overlay as its own stacking context:
-  its children are stacked only in relation with one another within their parent SVG document.
-- When `Html` and `SvgElement` unmount and then remount (e.g. based on conditions), their children can end up **moving down the DOM tree** and therefore
-  in front of other elements that remained in the DOM. This can be worked around in a few ways, as explained below.
+- Elements from layers 3 and 4 **cannot be interleaved** with one another. This is because `svgOverlay` and `htmlOverlay` define their own
+  [stacking contexts](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
+- When `Annotation`, `Html`, and `SvgElement` unmount and then remount (e.g. based on JSX conditions), their children can end up
+  **moving down the DOM tree** and therefore in front of other elements that remained in the DOM.
+  This can be worked around in a few ways, as explained below.
 
 ### How to avoid unmounting `Html` and `SvgElement`
 
@@ -101,14 +105,14 @@ Another solution is to conditionally hide the children:
 
 ### What if DOM order of HTML elements cannot be changed or guaranteed?
 
-If you can't restructure your React tree to render `Html` elements in an order that follows the desired stacking,
+If you can't restructure your React tree to render `Annotation` and `Html` elements in an order that follows the desired stacking,
 or if you can't avoid unmounting/remounting them, the last resort is to **control the stacking order explicitly with `z-index`**.
 
 By default, `Html`'s internal `div` element has no `z-index`, which is equivalent to `z-index: 0`.
 Therefore, you can move an `Html` element in front of, or behind, other `Html` elements by giving
 it a **positive or negative `z-index`**, respectively.
 
-In the following example, the stacking order is maintained regardless of the React rendering order:
+In the following example, the stacking order is maintained regardless of when `foo` and `bar` first became truthy:
 
 ```tsx
 <>
@@ -118,13 +122,11 @@ In the following example, the stacking order is maintained regardless of the Rea
 </>
 ```
 
-> To avoid conflicts with the stacking order of other components (grid, tooltip, etc.), please remain within the range `[-999 999]`.
-
 ### What if DOM order of SVG elements cannot be changed or guaranteed?
 
 For `SvgElement`, the problem is more complicated, as SVG does not yet provide an equivalent to `z-index`.
-A workaround is to not use `SvgElement` at all and instead render an `svg` element yourself via `Html` with the caveats
-that this entails (i.e. you have to position and size the SVG element yourself):
+A workaround is to not use `SvgElement` at all and instead render an `svg` element yourself via `Html`, and then stack it in relation
+with other elements inside `htmlOverlay` ... with the caveats that this entails (i.e. you have to position and size the SVG element yourself):
 
 ```tsx
 <Html>
@@ -132,13 +134,17 @@ that this entails (i.e. you have to position and size the SVG element yourself):
 </Html>
 ```
 
-### How to display an HTML element behind _all_ SVG elements
+### Moving between layers with custom overlays
 
-While you can't stack `Html` elements _in between_ `SvgElement`s, nothing prevents you from stacking them behind _all_ `SvgElement`s.
+Custom overlays are rendered next to `svgOverlay` and `htmlOverlay` in the DOM, which means that they are part of the stacking context of `visCanvas`.
+By default, they are stacked in front of `htmlOverlay` and behind the tooltip, but you can move them forward or backward
+in the stacking order by providing your own `z-index`.
 
-The `z-index` of the `svg` overlay is available through CSS variable `--h5w-zi-svgOverlay`,
-so if you want an HTML `Overlay`, for instance, to appear behind the `svg` overlay, you can use the following pattern:
+For instance, if you want a custom overlay to appear behind `svgOverlay`, you can write:
 
 ```tsx
 <Overlay style={{ zIndex: 'calc(var(--h5w-zi-svgOverlay) - 1)' }}>
 ```
+
+> `z-index` values should never be hard-coded — always calculate them from one of the following CSS custom properties:
+> `--h5w-zi-axisSystem`, `--h5w-zi-svgOverlay`, `--h5w-zi-htmlOverlay`, `--h5w-zi-customOverlay`, `--h5w-zi-tooltip`, `--h5w-zi-floatingToolbar`.

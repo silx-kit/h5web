@@ -20,6 +20,8 @@ function Overlay(props: PropsWithChildren<Props>) {
           position: 'absolute',
           top: 0,
           left: 0,
+          zIndex: 'var(--h5w-zi-customOverlay)', // override to move in front of or behind other layers
+          pointerEvents: 'none', // restore interaction on specific elements with `pointer-events: auto`
           ...canvasSize,
           ...style,
         }}

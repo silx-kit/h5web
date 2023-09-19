@@ -2,7 +2,13 @@ import type { VisibleDomains } from '@h5web/shared';
 import { assertDefined, assertNonNull } from '@h5web/shared';
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
-import { createContext, useCallback, useContext, useMemo } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 import type { Camera } from 'three';
 import { Matrix4, Vector3 } from 'three';
 
@@ -165,6 +171,12 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
   assertNonNull(canvasArea);
   const visCanvas = canvasArea.parentElement;
   assertNonNull(visCanvas);
+
+  const connect = useThree((state) => state.events.connect);
+  assertDefined(connect);
+  useEffect(() => {
+    connect(canvasArea);
+  }, [canvasArea, connect]);
 
   return (
     <VisCanvasContext.Provider

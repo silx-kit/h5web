@@ -65,7 +65,7 @@ function VisCanvas(props: PropsWithChildren<Props>) {
       {showAxes && title && <p className={styles.title}>{title}</p>}
 
       <div className={styles.canvasArea}>
-        <R3FCanvas className={styles.r3fRoot} orthographic>
+        <R3FCanvas orthographic>
           <VisCanvasProvider
             visRatio={visRatio}
             abscissaConfig={abscissaConfig}
@@ -84,12 +84,12 @@ function VisCanvas(props: PropsWithChildren<Props>) {
           </VisCanvasProvider>
         </R3FCanvas>
 
-        <div ref={setHtmlOverlay} className={styles.htmlOverlay} />
         <svg
           ref={setSvgOverlay}
           className={styles.svgOverlay}
           overflow="hidden"
         />
+        <div ref={setHtmlOverlay} className={styles.htmlOverlay} />
       </div>
 
       <div ref={setFloatingToolbar} className={styles.floatingToolbar} />
