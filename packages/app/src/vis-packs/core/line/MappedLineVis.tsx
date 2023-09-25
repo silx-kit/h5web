@@ -1,5 +1,12 @@
 import { LineVis, useCombinedDomain, useDomain, useDomains } from '@h5web/lib';
-import type { AxisMapping, NumArray, NumArrayDataset } from '@h5web/shared';
+import type {
+  ArrayShape,
+  ArrayValue,
+  AxisMapping,
+  Dataset,
+  NumArray,
+  NumericLikeType,
+} from '@h5web/shared';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
@@ -8,6 +15,7 @@ import {
   useMappedArray,
   useMappedArrays,
   useSlicedDimsAndMapping,
+  useToNumArray,
 } from '../hooks';
 import type { LineConfig } from './config';
 import LineToolbar from './LineToolbar';
@@ -15,9 +23,9 @@ import LineToolbar from './LineToolbar';
 type HookArgs = [number[], DimensionMapping, boolean];
 
 interface Props {
-  dataset?: NumArrayDataset;
+  dataset?: Dataset<ArrayShape, NumericLikeType>;
   selection?: string | undefined;
-  value: NumArray;
+  value: ArrayValue<NumericLikeType>;
   valueLabel?: string;
   errors?: NumArray;
   auxLabels?: string[];
@@ -62,7 +70,8 @@ function MappedLineVis(props: Props) {
     ? [slicedDims, slicedMapping, autoScale]
     : [dims, dimMapping, autoScale];
 
-  const [dataArray, dataForDomain] = useMappedArray(value, ...hookArgs);
+  const numArray = useToNumArray(value);
+  const [dataArray, dataForDomain] = useMappedArray(numArray, ...hookArgs);
   const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
   const [auxArrays, auxForDomain] = useMappedArrays(auxValues, ...hookArgs);
   const [auxErrorsArrays, auxErrorsForDomain] = useMappedArrays(

@@ -48,6 +48,19 @@ const oneD_compound = ['Hydrogen', 'Lithum', 'Carbon', 'Sodium', 'Argon'].map(
   (v, i) => [v, i, oneD[i], i % 2 === 0, oneD_cplx[i]],
 );
 
+const oneD_bool = [
+  true,
+  false,
+  false,
+  true,
+  true,
+  true,
+  false,
+  true,
+  false,
+  false,
+];
+
 const twoD_compound = [
   oneD_compound,
   ['Vanadium', 'Niobium', 'Tantalum', 'Silicon', 'Germanium'].map((v, i) => [
@@ -72,6 +85,7 @@ export const mockValues = {
   oneD_linear: arr1,
   oneD_errors: oneD.map((x) => Math.abs(x) / 10),
   oneD_str: ['foo', 'bar'],
+  oneD_bool,
   twoD,
   twoD_errors: arr2.map((offset) => arr1.map((val) => Math.abs(val - offset))),
   twoD_cplx: [
@@ -84,6 +98,9 @@ export const mockValues = {
       [-3, 0.1],
     ],
   ],
+  twoD_bool: oneD_bool.map((rowBool) =>
+    oneD_bool.map((colBool) => (rowBool ? colBool : !colBool)),
+  ),
   threeD,
   threeD_bool: [
     [

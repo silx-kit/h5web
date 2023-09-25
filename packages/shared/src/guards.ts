@@ -14,6 +14,7 @@ import type {
   Group,
   GroupWithChildren,
   H5WebComplex,
+  NumericLikeType,
   NumericType,
   Primitive,
   PrintableCompoundType,
@@ -244,10 +245,14 @@ export function assertNumDims(dataset: Dataset<ArrayShape>, num: number) {
   }
 }
 
+export function isBoolType(type: DType): type is BooleanType {
+  return type.class === DTypeClass.Bool;
+}
+
 export function hasBoolType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, BooleanType> {
-  return dataset.type.class === DTypeClass.Bool;
+  return isBoolType(dataset.type);
 }
 
 function hasStringType<S extends Shape>(
@@ -281,6 +286,20 @@ export function assertNumericType<S extends Shape>(
 ): asserts dataset is Dataset<S, NumericType> {
   if (!hasNumericType(dataset)) {
     throw new Error('Expected dataset to have numeric type');
+  }
+}
+
+export function hasNumericLikeType<S extends Shape>(
+  dataset: Dataset<S>,
+): dataset is Dataset<S, NumericLikeType> {
+  return isNumericType(dataset.type) || isBoolType(dataset.type);
+}
+
+export function assertNumericLikeType<S extends Shape>(
+  dataset: Dataset<S>,
+): asserts dataset is Dataset<S, NumericLikeType> {
+  if (!hasNumericLikeType(dataset)) {
+    throw new Error('Expected dataset to have numeric or boolean type');
   }
 }
 

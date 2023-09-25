@@ -2,7 +2,7 @@ import type {
   AxisScaleType,
   Domain,
   NumArray,
-  NumericType,
+  NumericLikeType,
 } from '@h5web/shared';
 import {
   assertDefined,
@@ -27,7 +27,7 @@ import {
 import type { AxisParams } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { DEFAULT_DOMAIN, extendDomain, formatNumType } from '../utils';
+import { DEFAULT_DOMAIN, extendDomain, formatNumLikeType } from '../utils';
 import DataCurve from './DataCurve';
 import styles from './LineVis.module.css';
 import type { AuxiliaryParams, TooltipData } from './models';
@@ -42,7 +42,7 @@ interface Props {
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
   title?: string;
-  dtype?: NumericType;
+  dtype?: NumericLikeType;
   errorsArray?: NdArray<NumArray>;
   showErrors?: boolean;
   auxiliaries?: AuxiliaryParams[];
@@ -156,7 +156,7 @@ function LineVis(props: Props) {
                   <span>
                     <strong>{formatTooltipVal(value)}</strong>
                     {error !== undefined && ` ±${formatTooltipErr(error)}`}
-                    {dtype && <em>{` (${formatNumType(dtype)})`}</em>}
+                    {dtype && <em>{` (${formatNumLikeType(dtype)})`}</em>}
                   </span>
                 </div>
 

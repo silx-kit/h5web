@@ -51,7 +51,7 @@ export function getFormatter(
     return createNumericFormatter(notation);
   }
 
-  return (val) => (val as string).toString();
+  return (val) => (val as string | boolean).toString();
 }
 
 export function getCellWidth(

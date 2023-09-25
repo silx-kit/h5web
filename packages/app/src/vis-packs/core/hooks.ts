@@ -5,7 +5,7 @@ import type {
   ScalarShape,
   Value,
 } from '@h5web/shared';
-import { assertDatasetValue, isDefined } from '@h5web/shared';
+import { assertDatasetValue, createMemo, isDefined } from '@h5web/shared';
 import { castArray } from 'lodash';
 import type { NdArray, TypedArray } from 'ndarray';
 import { useMemo } from 'react';
@@ -14,7 +14,9 @@ import type { DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 import { useDataContext } from '../../providers/DataProvider';
 import { typedArrayFromDType } from '../../providers/utils';
-import { applyMapping, getBaseArray } from './utils';
+import { applyMapping, getBaseArray, toNumArray } from './utils';
+
+export const useToNumArray = createMemo(toNumArray);
 
 export function usePrefetchValues(
   datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[],

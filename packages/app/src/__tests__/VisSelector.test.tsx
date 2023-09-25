@@ -45,7 +45,7 @@ test('choose most advanced visualization when switching between datasets', async
   await selectExplorerNode('threeD_rgb');
   expect(getSelectedVisTab()).toBe(Vis.RGB);
 
-  await selectExplorerNode('threeD_bool');
+  await selectExplorerNode('twoD_compound');
   expect(getSelectedVisTab()).toBe(Vis.Matrix);
 });
 
