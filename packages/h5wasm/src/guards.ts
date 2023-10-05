@@ -1,5 +1,5 @@
-import type { Dataset } from '@h5web/shared';
-import { DTypeClass } from '@h5web/shared';
+import type { Dataset, DType } from '@h5web/shared';
+import { DTypeClass, isCompoundType } from '@h5web/shared';
 import type { Metadata } from 'h5wasm';
 import {
   BrokenSoftLink as H5WasmSoftLink,
@@ -107,10 +107,17 @@ export function assertNumericMetadata(
   }
 }
 
-export function hasInt64Type(dataset: Dataset) {
+function isInt64Type(type: DType): boolean {
   return (
-    (dataset.type.class === DTypeClass.Integer ||
-      dataset.type.class === DTypeClass.Unsigned) &&
-    dataset.type.size === 64
+    (type.class === DTypeClass.Integer || type.class === DTypeClass.Unsigned) &&
+    type.size === 64
+  );
+}
+
+export function hasInt64Type(dataset: Dataset) {
+  const { type } = dataset;
+  return (
+    isInt64Type(type) ||
+    (isCompoundType(type) && Object.values(type.fields).some(isInt64Type))
   );
 }
