@@ -21,7 +21,6 @@ import {
   buildEntityPath,
   EntityKind,
   hasArrayShape,
-  hasBoolType,
 } from '@h5web/shared';
 import type { Attribute as H5WasmAttribute } from 'h5wasm';
 import { File as H5WasmFile, Module, ready as h5wasmReady } from 'h5wasm';
@@ -67,10 +66,13 @@ export class H5WasmApi extends DataProviderApi {
       throw new Error('Compression filter not supported');
     }
 
-    // h5wasm returns integers for bool and BigInt for (u)int64
-    // So we use to_array instead to have bool and numbers resp.
-    if (hasBoolType(dataset) || hasInt64Type(dataset)) {
+    /* h5wasm returns bigints for (u)int64 dtypes, so we use `to_array` to get numbers instead.
+     * We do this only for datasets that are supported by at least one visualization (other than `RawVis`),
+     * so for (u)int64 scalars/arrays, and for compound datasets with at least one (u)int64 field (`MatrixVis`). */
+    if (hasInt64Type(dataset)) {
       const rawValue = h5wDataset.to_array();
+
+      // `to_array` returns nested JS arrays for nD datasets, so we need to re-flatten them
       const value = hasArrayShape(dataset)
         ? flattenValue(rawValue, dataset)
         : rawValue;

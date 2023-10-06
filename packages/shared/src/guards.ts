@@ -333,10 +333,14 @@ export function assertPrintableType<S extends Shape>(
   }
 }
 
+export function isCompoundType(type: DType): type is CompoundType {
+  return type.class === DTypeClass.Compound;
+}
+
 export function hasCompoundType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, CompoundType> {
-  return dataset.type.class === DTypeClass.Compound;
+  return isCompoundType(dataset.type);
 }
 
 export function assertCompoundType<S extends Shape>(
