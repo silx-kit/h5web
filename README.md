@@ -20,10 +20,9 @@ consists of three packages:
 > and can therefore work with any other hierarchical data format.
 
 If you're after a ready-made solution to view local HDF5 files, take a look at
-the JupyterLab extension
-[jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web). The extension
-is based on `@h5web/app` and the [h5grove](https://github.com/silx-kit/h5grove/)
-Python package.
+[myHDF5](https://myhdf5.hdfgroup.org/), at the
+[Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=h5web.vscode-h5web)
+or at the [JupyterLab extension](https://github.com/silx-kit/jupyterlab-h5web).
 
 ![H5Web GIF demo](https://user-images.githubusercontent.com/2936402/107791492-4c512980-6d54-11eb-8ba4-4a1433bdfeea.gif)
 
@@ -53,7 +52,7 @@ provide this data to the app through React Context. H5Web currently includes
 three providers, two of which are available in the `@h5web/app` package:
 
 - `H5GroveProvider` for server implementations based on
-  [H5Grove](https://github.com/silx-kit/h5grove), like
+  [h5grove](https://github.com/silx-kit/h5grove), like
   [jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web)
 - `HsdsProvider` for [HSDS](https://github.com/HDFGroup/hsds)
 
@@ -78,12 +77,13 @@ provider:
 
 Check out these projects from the H5Web ecosystem:
 
-- [h5grove](https://github.com/silx-kit/h5grove) - core utilities to serve HDF5
-  file contents
-- [jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web) - H5Web
+- [myHDF5](https://myhdf5.hdfgroup.org/) – online HDF5 file viewing service
+- [jupyterlab-h5web](https://github.com/silx-kit/jupyterlab-h5web) – H5Web
   extension for JupyterLab
-- [vscode-h5web](https://github.com/silx-kit/vscode-h5web) - H5Web extension for
+- [vscode-h5web](https://github.com/silx-kit/vscode-h5web) – H5Web extension for
   Visual Studio Code
+- [h5grove](https://github.com/silx-kit/h5grove) – core utilities to serve HDF5
+  file contents
 
 ## Contributing
 
