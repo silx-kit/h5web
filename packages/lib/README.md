@@ -20,6 +20,14 @@ source.
 For more information, visit the
 [Storybook documentation site](https://h5web-docs.panosc.eu/).
 
+## Prerequisites
+
+The `react` and `react-dom` dependencies must be installed in your project. Note
+that as of version 10, `@h5web/lib` requires **React 18**.
+
+This package supports TypeScript out of the box without the need to install a
+separate `@types/` package.
+
 ## Getting started 🚀
 
 ```bash
