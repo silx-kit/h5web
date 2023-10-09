@@ -1,4 +1,4 @@
-import type { Domain, NumArray, NumericType } from '@h5web/shared';
+import type { Domain, NumArray, NumericLikeType } from '@h5web/shared';
 import {
   assertDefined,
   formatTooltipVal,
@@ -15,7 +15,7 @@ import { useAxisDomain, useValueToIndexScale } from '../hooks';
 import type { Aspect, AxisParams, VisScaleType } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
-import { DEFAULT_DOMAIN, formatNumType } from '../utils';
+import { DEFAULT_DOMAIN, formatNumLikeType } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
@@ -30,7 +30,7 @@ interface Props {
   aspect?: Aspect;
   showGrid?: boolean;
   title?: string;
-  dtype?: NumericType;
+  dtype?: NumericLikeType;
   invertColorMap?: boolean;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
@@ -121,7 +121,7 @@ function HeatmapVis(props: Props) {
                 {`${ordinateLabel ?? 'y'}=${formatTooltipVal(ordinate)}`}
                 <div className={styles.tooltipValue}>
                   <strong>{formatTooltipVal(dataArray.get(yi, xi))}</strong>
-                  {dtype && <em>{` (${formatNumType(dtype)})`}</em>}
+                  {dtype && <em>{` (${formatNumLikeType(dtype)})`}</em>}
                   {alpha && ` (${formatTooltipVal(alpha.array.get(yi, xi))})`}
                 </div>
               </>

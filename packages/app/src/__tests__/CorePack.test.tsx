@@ -63,6 +63,17 @@ test('visualize 2D dataset', async () => {
   expect(within(figure).getByText('4e+2')).toBeVisible(); // color bar limit
 });
 
+test('visualize 2D boolean dataset', async () => {
+  await renderApp('/nD_datasets/twoD_bool');
+
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
+  expect(getSelectedVisTab()).toBe(Vis.Heatmap);
+
+  const figure = screen.getByRole('figure', { name: 'twoD_bool' });
+  expect(figure).toBeVisible();
+  expect(within(figure).getByText('1e+0')).toBeVisible(); // color bar limit
+});
+
 test('visualize 2D complex dataset', async () => {
   const { user } = await renderApp({
     initialPath: '/nD_datasets/twoD_cplx',

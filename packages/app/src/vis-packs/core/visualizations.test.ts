@@ -40,6 +40,7 @@ const datasetBool1D = makeDataset('dataset_bool_1d', booleanType, [3]);
 const datasetCplx1D = makeDataset('dataset_cplx_1d', complexType, [10]);
 const datasetInt2D = makeDataset('dataset_int_2d', intType, [5, 3]);
 const datasetUnsigned2D = makeDataset('dataset_int_2d', unsignedType, [5, 3]);
+const datasetBool2D = makeDataset('dataset_bool_2d', booleanType, [3, 2]);
 const datasetCplx2D = makeDataset('dataset_cplx_2d', complexType, [2, 2]);
 const datasetStr2D = makeDataset('dataset_str_2d', stringType, [5, 3]);
 const datasetFlt3D = makeDataset('dataset_flt_3d', intType, [5, 3, 1]);
@@ -114,13 +115,15 @@ describe('Matrix', () => {
 describe('Line', () => {
   const { supportsDataset } = CORE_VIS.Line;
 
-  it('should support array dataset with numeric type shape and at least one dimension', () => {
+  it('should support array dataset with numeric-like type and at least one dimension', () => {
     expect(supportsDataset(datasetInt1D, mockStore)).toBe(true);
     expect(supportsDataset(datasetUnsigned1D, mockStore)).toBe(true);
+    expect(supportsDataset(datasetBool1D, mockStore)).toBe(true);
+    expect(supportsDataset(datasetBool2D, mockStore)).toBe(true);
     expect(supportsDataset(datasetFlt3D, mockStore)).toBe(true);
   });
 
-  it('should not support dataset with non-numeric type', () => {
+  it('should not support dataset with non-numeric-like type', () => {
     expect(supportsDataset(datasetStr2D, mockStore)).toBe(false);
   });
 
@@ -132,13 +135,14 @@ describe('Line', () => {
 describe('Heatmap', () => {
   const { supportsDataset } = CORE_VIS.Heatmap;
 
-  it('should support array dataset with numeric type and at least two dimensions', () => {
+  it('should support array dataset with numeric-like type and at least two dimensions', () => {
     expect(supportsDataset(datasetInt2D, mockStore)).toBe(true);
     expect(supportsDataset(datasetUnsigned2D, mockStore)).toBe(true);
+    expect(supportsDataset(datasetBool2D, mockStore)).toBe(true);
     expect(supportsDataset(datasetFlt3D, mockStore)).toBe(true);
   });
 
-  it('should not support dataset with non-numeric type', () => {
+  it('should not support dataset with non-numeric-like type', () => {
     expect(supportsDataset(datasetStr2D, mockStore)).toBe(false);
   });
 

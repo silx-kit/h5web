@@ -1,18 +1,28 @@
 import { HeatmapVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { AxisMapping, NumArray, NumArrayDataset } from '@h5web/shared';
-import type { TypedArray } from 'ndarray';
+import type {
+  ArrayShape,
+  ArrayValue,
+  AxisMapping,
+  Dataset,
+  NumArray,
+  NumericLikeType,
+} from '@h5web/shared';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
-import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import {
+  useMappedArray,
+  useSlicedDimsAndMapping,
+  useToNumArray,
+} from '../hooks';
 import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
 import type { HeatmapConfig } from './config';
 import HeatmapToolbar from './HeatmapToolbar';
 
 interface Props {
-  dataset: NumArrayDataset;
-  value: number[] | TypedArray;
+  dataset: Dataset<ArrayShape, NumericLikeType>;
+  value: ArrayValue<NumericLikeType>;
   axisLabels?: AxisMapping<string>;
   axisValues?: AxisMapping<NumArray>;
   dimMapping: DimensionMapping;
@@ -46,8 +56,9 @@ function MappedHeatmapVis(props: Props) {
   } = config;
 
   const { shape: dims } = dataset;
+  const numArray = useToNumArray(value);
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const [dataArray] = useMappedArray(value, slicedDims, slicedMapping);
+  const [dataArray] = useMappedArray(numArray, slicedDims, slicedMapping);
 
   const dataDomain =
     useDomain(dataArray, scaleType, undefined, ignoreValue) || DEFAULT_DOMAIN;

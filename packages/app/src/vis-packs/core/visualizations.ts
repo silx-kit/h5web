@@ -5,6 +5,7 @@ import {
   hasCompoundType,
   hasMinDims,
   hasNonNullShape,
+  hasNumericLikeType,
   hasNumericType,
   hasPrintableCompoundType,
   hasPrintableType,
@@ -97,7 +98,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     Container: LineVisContainer,
     ConfigProvider: LineConfigProvider,
     supportsDataset: (dataset) => {
-      return hasNumericType(dataset) && hasArrayShape(dataset);
+      return hasNumericLikeType(dataset) && hasArrayShape(dataset);
     },
   },
 
@@ -108,7 +109,7 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
     ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (
-        hasNumericType(dataset) &&
+        hasNumericLikeType(dataset) &&
         hasArrayShape(dataset) &&
         hasMinDims(dataset, 2)
       );

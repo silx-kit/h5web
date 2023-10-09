@@ -331,6 +331,7 @@ describe('/mock', () => {
       cy.findAllByRole('button', { name: 'Log' }).should('have.length', 2);
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.waitForStableDOM();
         cy.matchImageSnapshot('logspectrum');
       }
     });

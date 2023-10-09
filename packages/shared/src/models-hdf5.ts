@@ -121,6 +121,8 @@ export interface NumericType {
   endianness?: Endianness;
 }
 
+export type NumericLikeType = NumericType | BooleanType;
+
 export interface ComplexType {
   class: DTypeClass.Complex;
   realType: NumericType;

@@ -1,4 +1,10 @@
-import type { Axis, Domain } from '@h5web/shared';
+import type {
+  ArrayValue,
+  Axis,
+  Domain,
+  NumArray,
+  NumericLikeType,
+} from '@h5web/shared';
 import { createArrayFromView } from '@h5web/shared';
 import { isNumber } from 'lodash';
 import type { NdArray, TypedArray } from 'ndarray';
@@ -82,4 +88,12 @@ export function getSliceSelection(
 
 export function getImageInteractions(keepRatio: boolean) {
   return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
+}
+
+export function toNumArray(arr: ArrayValue<NumericLikeType>): NumArray {
+  if (typeof arr[0] === 'boolean') {
+    return arr.map((val) => (val ? 1 : 0));
+  }
+
+  return arr as NumArray;
 }
