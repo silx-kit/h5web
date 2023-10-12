@@ -1,3 +1,16 @@
+import { Canvas } from '@storybook/addon-docs';
+import {
+  VisCanvas,
+  DefaultInteractions,
+  DataToHtml,
+  SvgElement,
+  SvgCircle,
+  Annotation,
+  TooltipMesh,
+  ResetZoomButton,
+} from '@h5web/lib';
+import { Vector3 } from 'three';
+
 ## Stacking
 
 A number of elements are rendered **on top of the WebGL canvas**: axis grid, annotations, SVG elements, etc.
@@ -22,18 +35,52 @@ The stacking order is organised into six layers, from furthest (behind) to close
 │ 1. Canvas                        │
 │   ┌──────────────────────────────┴───┐
 │   │ 2. Axis system                   │
-└── ┤   ┌──────────────────────────────┴───┐
+└───┤   ┌──────────────────────────────┴───┐
     │   │ 3. SVG elements                  │
-    └── ┤   ┌──────────────────────────────┴───┐
+    └───┤   ┌──────────────────────────────┴───┐
         │   │ 4. HTML elements                 │
-        └── ┤   ┌──────────────────────────────┴───┐
+        └───┤   ┌──────────────────────────────┴───┐
             │   │ 5. Tooltip                       │
-            └── ┤   ┌──────────────────────────────┴───┐
+            └───┤   ┌──────────────────────────────┴───┐
                 │   │ 6. Floating toolbar              │
-                └── ┤                                  │
+                └───┤                                  │
                     │                                  │
                     └──────────────────────────────────┘
 ```
+
+The example below demonstrates the default stacking order. You can hover to test the stacking of the tooltip and crosshairs,
+and zoom in to test the stacking of the reset-zoom button in the floating toolbar.
+
+<Canvas>
+  <div style={{ display: 'flex', height: '25em' }}>
+    <VisCanvas
+      abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
+      ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
+    >
+      <DefaultInteractions />
+      <ResetZoomButton />
+      <DataToHtml points={[new Vector3(30, 10), new Vector3(34, 10)]}>
+        {(pt1, pt2) => (
+          <SvgElement>
+            <SvgCircle coords={[pt1, pt2]} fill="lightblue" />
+          </SvgElement>
+        )}
+      </DataToHtml>
+      <Annotation
+        x={30}
+        y={10}
+        style={{
+          backgroundColor: 'lightgreen',
+          padding: '1rem',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <p style={{ margin: 0 }}>HTML annotation</p>
+      </Annotation>
+      <TooltipMesh guides="both" renderTooltip={(x, y) => 'Tooltip'} />
+    </VisCanvas>
+  </div>
+</Canvas>
 
 As a consumer of the library, you have control over the stacking of the SVG and HTML elements that you render (i.e. layers 3 and 4).
 Within each of these two layers, all you need to do to move element `A` behind, or in front of, element `B` is to **render `A`
