@@ -4,15 +4,12 @@ import type {
   ColorScaleType,
   Domain,
   NumArray,
-  NumericLikeType,
 } from '@h5web/shared';
 import {
-  DTypeClass,
   formatTick,
   getBounds,
   getValidDomainForScale,
   isDefined,
-  isNumericType,
   isTypedArray,
   ScaleType,
 } from '@h5web/shared';
@@ -351,13 +348,6 @@ export function getAxisDomain(
     : extendedDomain;
 }
 
-const TYPE_STRINGS: Record<NumericLikeType['class'], string> = {
-  [DTypeClass.Bool]: 'bool',
-  [DTypeClass.Integer]: 'int',
-  [DTypeClass.Unsigned]: 'uint',
-  [DTypeClass.Float]: 'float',
-};
-
 export const VERTEX_SHADER = `
   varying vec2 coords;
 
@@ -366,10 +356,6 @@ export const VERTEX_SHADER = `
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `;
-
-export function formatNumLikeType(type: NumericLikeType): string {
-  return `${TYPE_STRINGS[type.class]}${isNumericType(type) ? type.size : ''}`;
-}
 
 export function getUniforms(
   uniforms: Record<string, unknown>,

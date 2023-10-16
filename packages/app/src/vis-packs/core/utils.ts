@@ -5,7 +5,7 @@ import type {
   NumArray,
   NumericLikeType,
 } from '@h5web/shared';
-import { createArrayFromView } from '@h5web/shared';
+import { createArrayFromView, DTypeClass, isNumericType } from '@h5web/shared';
 import { isNumber } from 'lodash';
 import type { NdArray, TypedArray } from 'ndarray';
 import ndarray from 'ndarray';
@@ -96,4 +96,15 @@ export function toNumArray(arr: ArrayValue<NumericLikeType>): NumArray {
   }
 
   return arr as NumArray;
+}
+
+const TYPE_STRINGS: Record<NumericLikeType['class'], string> = {
+  [DTypeClass.Bool]: 'bool',
+  [DTypeClass.Integer]: 'int',
+  [DTypeClass.Unsigned]: 'uint',
+  [DTypeClass.Float]: 'float',
+};
+
+export function formatNumLikeType(type: NumericLikeType): string {
+  return `${TYPE_STRINGS[type.class]}${isNumericType(type) ? type.size : ''}`;
 }
