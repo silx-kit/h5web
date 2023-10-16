@@ -16,7 +16,7 @@ import {
   useSlicedDimsAndMapping,
   useToNumArray,
 } from '../hooks';
-import { DEFAULT_DOMAIN, getSliceSelection } from '../utils';
+import { DEFAULT_DOMAIN, formatNumLikeType, getSliceSelection } from '../utils';
 import type { HeatmapConfig } from './config';
 import HeatmapToolbar from './HeatmapToolbar';
 
@@ -90,7 +90,7 @@ function MappedHeatmapVis(props: Props) {
       <HeatmapVis
         dataArray={dataArray}
         title={title}
-        dtype={dataset.type}
+        dtype={dataset && formatNumLikeType(dataset.type)}
         domain={safeDomain}
         colorMap={colorMap}
         scaleType={scaleType}

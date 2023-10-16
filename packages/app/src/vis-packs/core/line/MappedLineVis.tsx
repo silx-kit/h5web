@@ -17,6 +17,7 @@ import {
   useSlicedDimsAndMapping,
   useToNumArray,
 } from '../hooks';
+import { formatNumLikeType } from '../utils';
 import type { LineConfig } from './config';
 import LineToolbar from './LineToolbar';
 
@@ -123,7 +124,7 @@ function MappedLineVis(props: Props) {
         }}
         ordinateLabel={valueLabel}
         title={title}
-        dtype={dataset?.type}
+        dtype={dataset && formatNumLikeType(dataset.type)}
         errorsArray={errorArray}
         showErrors={showErrors}
         auxiliaries={auxArrays.map((array, i) => ({
