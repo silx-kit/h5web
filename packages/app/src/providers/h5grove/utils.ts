@@ -54,11 +54,11 @@ export function convertH5GroveDtype(dtype: H5GroveDtype): DType {
 }
 
 function convertDtypeString(dtype: string): DType {
-  const regexp = /([<>=|])?([A-z])(\d*)/u;
+  const regexp = /([<>=|])?([A-Za-z])(\d*)/u;
   const matches = regexp.exec(dtype);
 
   if (matches === null) {
-    throw new Error(`Unknown dtype ${dtype}`);
+    throw new Error(`Invalid dtype string: ${dtype}`);
   }
 
   const [, endianMatch, dataType, lengthMatch] = matches;
