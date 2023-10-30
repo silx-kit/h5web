@@ -8,6 +8,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # https://docs.npmjs.com/generating-provenance-statements#publishing-packages-with-provenance-via-github-actions
+
     steps:
       - name: Checkout 🏷️
         uses: actions/checkout@v3
@@ -64,19 +67,19 @@ jobs:
           package: 'packages/h5wasm'
 
       - name: Publish @h5web/lib 🥳
-        run: cd packages/lib && pnpm publish --access public --no-git-checks --tag $NPM_TAG
+        run: cd packages/lib && pnpm publish --access public --provenance --no-git-checks --tag $NPM_TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: "${{ contains(steps.packageVersion.outputs.PACKAGE_VERSION, 'beta') && 'next' || 'latest' }}"
 
       - name: Publish @h5web/app 🥳
-        run: cd packages/app && pnpm publish --access public --no-git-checks --tag $NPM_TAG
+        run: cd packages/app && pnpm publish --access public --provenance --no-git-checks --tag $NPM_TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: "${{ contains(steps.packageVersion.outputs.PACKAGE_VERSION, 'beta') && 'next' || 'latest' }}"
 
       - name: Publish @h5web/h5wasm 🥳
-        run: cd packages/h5wasm && pnpm publish --access public --no-git-checks --tag $NPM_TAG
+        run: cd packages/h5wasm && pnpm publish --access public --provenance --no-git-checks --tag $NPM_TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: "${{ contains(steps.packageVersion.outputs.PACKAGE_VERSION, 'beta') && 'next' || 'latest' }}"
