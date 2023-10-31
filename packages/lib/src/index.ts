@@ -100,7 +100,6 @@ export {
   getDomains,
   getCombinedDomain,
   extendDomain,
-  getAxisValues,
   getAxisDomain,
   getValueToIndexScale,
   createBufferAttr,
@@ -111,12 +110,14 @@ export {
   useDomain,
   useDomains,
   useCombinedDomain,
-  useAxisValues,
   useAxisDomain,
   useValueToIndexScale,
   useCameraState,
   useGeometry,
 } from './vis/hooks';
+
+export { getAxisValues } from './vis/line/utils';
+export { useAxisValues } from './vis/line/hooks';
 
 export {
   getLinearGradient,

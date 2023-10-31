@@ -17,7 +17,7 @@ import {
 
 import type { CustomDomain, DomainErrors } from '../models';
 import { DomainError } from '../models';
-import { getAxisValues, SCALES_VALID_MINS } from '../utils';
+import { SCALES_VALID_MINS } from '../utils';
 import { INTERPOLATORS } from './interpolators';
 import type { ColorMap, D3Interpolator, TextureSafeTypedArray } from './models';
 
@@ -108,14 +108,23 @@ export function getPixelEdgeValues(
   rawValues: NumArray | undefined,
   pixelCount: number,
 ): NumArray {
-  if (rawValues && rawValues.length === pixelCount) {
+  const pixelEdgeCount = pixelCount + 1;
+
+  if (!rawValues) {
+    return range(pixelEdgeCount);
+  }
+
+  if (rawValues.length < pixelCount) {
+    throw new Error(`Expected array to have length ${pixelCount} at least`);
+  }
+
+  if (rawValues.length === pixelCount) {
     // Add value at right-hand side of last pixel, assuming raw values are regularly spaced
     const deltaCoord = rawValues[1] - rawValues[0];
     return [...rawValues, rawValues[rawValues.length - 1] + deltaCoord];
   }
 
-  // nEdges = nPixels + 1
-  return getAxisValues(rawValues, pixelCount + 1);
+  return rawValues.slice(0, pixelEdgeCount);
 }
 
 export function getInterpolator(colorMap: ColorMap, reverse: boolean) {

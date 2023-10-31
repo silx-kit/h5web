@@ -15,7 +15,6 @@ import type { BufferAttribute } from 'three';
 import type H5WebGeometry from './shared/h5webGeometry';
 import {
   getAxisDomain,
-  getAxisValues,
   getCombinedDomain,
   getValueToIndexScale,
 } from './utils';
@@ -26,7 +25,6 @@ export const useValidDomainForScale = createMemo(getValidDomainForScale);
 export const useCombinedDomain = createMemo(getCombinedDomain);
 export const useValueToIndexScale = createMemo(getValueToIndexScale);
 export const useAxisDomain = createMemo(getAxisDomain);
-export const useAxisValues = createMemo(getAxisValues);
 
 export function useDomain(
   valuesArray: AnyNumArray,
