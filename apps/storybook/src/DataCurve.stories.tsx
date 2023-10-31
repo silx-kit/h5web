@@ -25,6 +25,7 @@ const meta = {
   args: {
     abscissas: range(0, mockValues.oneD.length),
     ordinates: mockValues.oneD,
+    errors: mockValues.oneD.map(() => 10),
     curveType: CurveType.LineOnly,
     color: 'blue',
     visible: true,
