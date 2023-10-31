@@ -376,21 +376,6 @@ export function toArray(arr: NumArray): number[] {
   return isTypedArray(arr) ? [...arr] : arr;
 }
 
-export function getAxisValues(
-  rawValues: NumArray | undefined,
-  axisLength: number,
-): NumArray {
-  if (!rawValues) {
-    return range(axisLength);
-  }
-
-  if (rawValues.length < axisLength) {
-    throw new Error(`Expected array to have length ${axisLength} at least`);
-  }
-
-  return rawValues.slice(0, axisLength);
-}
-
 export function createBufferAttr(
   dataLength: number,
   itemSize = 3,

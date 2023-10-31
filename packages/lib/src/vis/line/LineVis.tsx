@@ -13,17 +13,13 @@ import { useMemo } from 'react';
 import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
-import {
-  useAxisDomain,
-  useAxisValues,
-  useCssColors,
-  useValueToIndexScale,
-} from '../hooks';
+import { useAxisDomain, useCssColors, useValueToIndexScale } from '../hooks';
 import type { AxisParams } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { DEFAULT_DOMAIN, extendDomain } from '../utils';
 import DataCurve from './DataCurve';
+import { useAxisValues } from './hooks';
 import styles from './LineVis.module.css';
 import type { AuxiliaryParams, TooltipData } from './models';
 import { CurveType } from './models';
