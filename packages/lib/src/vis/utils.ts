@@ -4,6 +4,7 @@ import type {
   ColorScaleType,
   Domain,
   NumArray,
+  TypedArrayConstructor,
 } from '@h5web/shared';
 import {
   formatTick,
@@ -41,6 +42,12 @@ import type {
 import { scaleGamma } from './scaleGamma';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
+
+/* Use this constant in geometry code to render points outside of the camera's
+ * field of view (and therefore hide them from the visualization). This is useful
+ * for points with NaN/Infinity coordinates (e.g. because of log scale), as Three
+ * logs a warning to the console when rendering such points. */
+export const CAMERA_FAR = 1000; // R3F's default
 
 const DEFAULT_AXIS_OFFSETS = { left: 80, right: 24, top: 16, bottom: 34 };
 const TITLE_OFFSET = 28;
@@ -386,7 +393,22 @@ export function getAxisValues(
 
 export function createBufferAttr(
   dataLength: number,
-  itemSize: number,
+  itemSize = 3,
+  TypedArrayCtor: TypedArrayConstructor = Float32Array,
 ): BufferAttribute {
-  return new BufferAttribute(new Float32Array(dataLength * itemSize), itemSize);
+  return new BufferAttribute(
+    new TypedArrayCtor(dataLength * itemSize),
+    itemSize,
+  );
+}
+
+export function createIndex(length: number, maxValue: number): BufferAttribute {
+  const TypedArrayCtor = maxValue <= 2 ** 16 ? Uint16Array : Uint32Array;
+  return createBufferAttr(length, 1, TypedArrayCtor);
+}
+
+export function hasR3FEventHandlers(props: Record<string, unknown>) {
+  return Object.keys(props).some((prop) =>
+    /^on(Pointer|Click|DoubleClick|ContextMenu|Wheel)/u.test(prop),
+  );
 }

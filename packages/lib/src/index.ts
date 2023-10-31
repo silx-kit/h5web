@@ -48,9 +48,15 @@ export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
 export type { DataToHtmlProps } from './vis/shared/DataToHtml';
 
 export { default as DataCurve } from './vis/line/DataCurve';
+export { default as Line } from './vis/line/Line';
+export { default as Glyphs } from './vis/line/Glyphs';
+export { default as ErrorBars } from './vis/line/ErrorBars';
 export { default as ColorBar } from './vis/heatmap/ColorBar';
 export { default as HeatmapMesh } from './vis/heatmap/HeatmapMesh';
 export type { DataCurveProps } from './vis/line/DataCurve';
+export type { LineProps } from './vis/line/Line';
+export type { GlyphsProps } from './vis/line/Glyphs';
+export type { ErrorBarsProps } from './vis/line/ErrorBars';
 export type { ColorBarProps } from './vis/heatmap/ColorBar';
 export type { HeatmapMeshProps } from './vis/heatmap/HeatmapMesh';
 
@@ -97,6 +103,8 @@ export {
   getAxisValues,
   getAxisDomain,
   getValueToIndexScale,
+  createBufferAttr,
+  createIndex,
 } from './vis/utils';
 
 export {
@@ -107,6 +115,7 @@ export {
   useAxisDomain,
   useValueToIndexScale,
   useCameraState,
+  useGeometry,
 } from './vis/hooks';
 
 export {
@@ -127,8 +136,18 @@ export {
 } from './interactions/hooks';
 export { default as Box } from './interactions/box';
 
+// Geometries
+export { default as H5WebGeometry } from './vis/shared/h5webGeometry';
+export { default as LineGeometry } from './vis/line/lineGeometry';
+export { default as GlyphsGeometry } from './vis/line/glyphsGeometry';
+export { default as ErrorBarsGeometry } from './vis/line/errorBarsGeometry';
+export { default as ErrorCapsGeometry } from './vis/line/errorCapsGeometry';
+export { default as ScatterPointsGeometry } from './vis/scatter/scatterPointsGeometry';
+export { default as SurfaceMeshGeometry } from './vis/surface/surfaceMeshGeometry';
+
 // Constants
 export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared';
+export { CAMERA_FAR } from './vis/utils';
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 
 // Enums

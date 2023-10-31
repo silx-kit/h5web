@@ -151,10 +151,10 @@ Return an array of axis values of the desired length.
 ```ts
 getAxisValues(rawValues: NumArray | undefined, axisLength: number): number[]
 
-getAxisValues(undefined, 3) // [0, 1, 2]
-getAxisValues([-1, 0, 1], 3) // [-1, 0, 1]
-getAxisValues(Float32Array([-1, 0, 1], 3) // [-1, 0, 1]
-getAxisValues([0, 1], 3) // Throws error as 2 != 3.
+getAxisValues(undefined, 3); // [0, 1, 2]
+getAxisValues([-1, 0, 1], 3); // [-1, 0, 1]
+getAxisValues(new Float32Array([-1, 0, 1]), 3); // [-1, 0, 1]
+getAxisValues([0, 1], 3); // Throws error as 2 != 3
 ```
 
 #### getAxisDomain
@@ -172,6 +172,38 @@ getAxisDomain([-1, 0, 1]); // [-1, 1]
 getAxisDomain([4, 2, 0, -2], ScaleType.Log); // [4, 2]);
 getAxisDomain([4, 2, 0], ScaleType.Linear, 0.5); // [6, -2])
 ```
+
+#### createBufferAttr
+
+Create a Three.js `BufferAttribute` for passing vertex data to shaders. Typically called when
+instanciating a new `H5WebGeometry` sub-class instance (e.g. `LineGeometry`).
+
+```ts
+function createBufferAttr(
+  dataLength: number,
+  itemSize = 3,
+  TypedArrayCtor: TypedArrayConstructor = Float32Array,
+): BufferAttribute;
+
+createBufferAttr(100);
+createBufferAttr(100, 1, Uint16Array);
+```
+
+#### createIndex
+
+Create an [index buffer attribute](https://threejs.org/docs/index.html?q=bufferge#api/en/core/BufferGeometry.index)
+to allow vertices to be re-used across multiple triangles. Argument `maxValue` helps decide
+whether to initialise the `BufferAttribute` with a `Uint16Array` or `Uint32Array`; it should
+typically receive the number of vertices (i.e. the length of the `position` attribute).
+For an example usage, see `SurfaceMeshGeometry#prepare`
+
+```ts
+createIndex(length: number, maxValue: number): BufferAttribute
+
+createIndex(100 * 2 * 3, 100); // 2 triangles per vertex; 3 indices per triangle
+```
+
+---
 
 ### Hooks
 
@@ -315,6 +347,45 @@ const { delta, isDragging, startDrag } = useDrag({
   onDragEnd: (d) => setPosition((c) => c.clone().add(d)),
 });
 ```
+
+#### useGeometry
+
+Initialise and update a buffer geometry. Requires passing the constructor of a class that
+implements the `H5WebGeometry` abstract class, which itself inherits from Three's `BufferGeometry`.
+
+```ts
+useGeometry<
+  AttributeNames extends string,
+  Params extends object,
+>(
+  Ctor: new (len: number) => H5WebGeometry<AttributeNames, Params>,
+  dataLength: number,
+  params: Params | false | undefined, // skip updates by passing `false` or `undefined`
+  isInteractive = false, // `true` to recompute bounding sphere on every update for raycasting purposes
+): H5WebGeometry<AttributeNames, Params>
+
+const lineGeometry = useGeometry(
+  LineGeometry,
+  ordinates.length,
+  visible && {
+    abscissas,
+    ordinates,
+    abscissaScale,
+    ordinateScale,
+    ignoreValue,
+  },
+);
+```
+
+The following built-in geometry classes are available and can be used as examples for
+writing your own geometries:
+
+- `LineGeometry`, used in [`Line`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-line--docs)
+- `GlyphsGeometry`, used in [`Glyphs`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-glyphs--docs)
+- `ErrorBarsGeometry`, used in [`ErrorBars`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-errorbars--docs)
+- `ErrorCapsGeometry`, used in [`ErrorBars`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-errorbars--docs)
+- `ScatterPointsGeometry`, used in [`ScatterPoints`](https://h5web-docs.panosc.eu/?path=/docs/visualizations-scattervis--docs) (undocumented)
+- `SurfaceMeshGeometry`, used in [`SurfaceMesh`](https://h5web-docs.panosc.eu/?path=/docs/experimental-surfacevis--docs) (experimental)
 
 ### Mock data
 

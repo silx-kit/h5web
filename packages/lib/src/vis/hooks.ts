@@ -9,8 +9,10 @@ import { useRerender, useSyncedRef } from '@react-hookz/web';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { RefCallback } from 'react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import type { BufferAttribute } from 'three';
 
+import type H5WebGeometry from './shared/h5webGeometry';
 import {
   getAxisDomain,
   getAxisValues,
@@ -103,4 +105,45 @@ export function useCssColors(
   const colors = colorProperties.map((p) => styles.getPropertyValue(p).trim());
 
   return [colors, refCallback];
+}
+
+export function useGeometry<
+  AttributeNames extends string,
+  Params extends object,
+>(
+  Ctor: new (len: number) => H5WebGeometry<AttributeNames, Params>,
+  dataLength: number,
+  params: Params | false | undefined, // skip updates by passing `false` or `undefined`
+  isInteractive = false, // keep bounding sphere up to date for raycaster
+): H5WebGeometry<AttributeNames, Params> {
+  const geometry = useMemo(() => new Ctor(dataLength), [Ctor, dataLength]);
+  const invalidate = useThree((state) => state.invalidate);
+
+  useLayoutEffect(() => {
+    if (!params) {
+      return;
+    }
+
+    geometry.prepare(params);
+
+    for (let i = 0; i < dataLength; i += 1) {
+      geometry.update(i);
+    }
+
+    if (isInteractive) {
+      geometry.computeBoundingSphere(); // https://github.com/mrdoob/three.js/issues/1170#issuecomment-3617180
+    }
+
+    Object.values<BufferAttribute>(geometry.attributes).forEach((attr) => {
+      attr.needsUpdate = true;
+    });
+
+    if (geometry.index) {
+      geometry.index.needsUpdate = true;
+    }
+
+    invalidate();
+  }, [geometry, ...Object.values(params || {}), invalidate]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return geometry;
 }

@@ -1,15 +1,15 @@
 import type { ColorScaleType, Domain, NumArray } from '@h5web/shared';
 import type { ThreeEvent } from '@react-three/fiber';
-import { useThree } from '@react-three/fiber';
-import { useCallback, useLayoutEffect, useMemo } from 'react';
-import { BufferGeometry } from 'three';
+import { useCallback, useMemo } from 'react';
 
+import { useInterpolator } from '../heatmap/hooks';
 import type { ColorMap } from '../heatmap/models';
+import { useGeometry } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
-import { createBufferAttr } from '../utils';
-import { useIndexToPosition, useValueToColor } from './hooks';
+import { createScale } from '../utils';
+import ScatterPointsGeometry from './scatterPointsGeometry';
 
 interface Props {
   abscissas: NumArray;
@@ -72,53 +72,35 @@ function ScatterPoints(props: Props) {
     [onPointerOut],
   );
 
-  const { length } = data;
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
-  const invalidate = useThree((state) => state.invalidate);
 
-  const indexToPosition = useIndexToPosition(
-    abscissas,
-    abscissaScale,
-    ordinates,
-    ordinateScale,
+  const interpolator = useInterpolator(colorMap, invertColorMap);
+  const colorScale = useMemo(
+    () => createScale(scaleType, { domain, range: [0, 1] }),
+    [scaleType, domain],
   );
 
-  const valueToColor = useValueToColor(
-    scaleType,
-    domain,
-    colorMap,
-    invertColorMap,
+  const geometry = useGeometry(
+    ScatterPointsGeometry,
+    data.length,
+    {
+      abscissas,
+      ordinates,
+      data,
+      abscissaScale,
+      ordinateScale,
+      colorScale,
+      interpolator,
+    },
+    true,
   );
-
-  const dataGeometry = useMemo(() => {
-    const geometry = new BufferGeometry();
-    geometry.setAttribute('position', createBufferAttr(length, 3));
-    geometry.setAttribute('color', createBufferAttr(length, 3));
-    return geometry;
-  }, [length]);
-
-  useLayoutEffect(() => {
-    const { color, position } = dataGeometry.attributes;
-
-    data.forEach((val, index) => {
-      const { x, y, z } = indexToPosition(index);
-      position.setXYZ(index, x, y, z);
-
-      const { r, g, b } = valueToColor(val);
-      color.setXYZ(index, r / 255, g / 255, b / 255); // normalize RGB channels
-    });
-
-    color.needsUpdate = true;
-    position.needsUpdate = true;
-    invalidate();
-  }, [data, dataGeometry, indexToPosition, valueToColor, invalidate]);
 
   return (
     <points
+      geometry={geometry}
       onClick={onClick && handleClick}
       onPointerEnter={onPointerEnter && handlePointerEnter}
       onPointerOut={onPointerOut && handlePointerOut}
-      geometry={dataGeometry}
     >
       <GlyphMaterial size={size} glyphType={GlyphType.Circle} />
     </points>

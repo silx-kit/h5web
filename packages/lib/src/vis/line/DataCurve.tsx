@@ -1,30 +1,11 @@
 import type { NumArray } from '@h5web/shared';
-import type { Object3DNode, ThreeEvent } from '@react-three/fiber';
-import { extend, useThree } from '@react-three/fiber';
-import { useCallback, useLayoutEffect, useMemo } from 'react';
-import { BufferGeometry, Line } from 'three';
+import type { ThreeEvent } from '@react-three/fiber';
+import { useCallback } from 'react';
 
-import { useVisCanvasContext } from '../shared/VisCanvasProvider';
-import { createBufferAttr } from '../utils';
 import ErrorBars from './ErrorBars';
-import GlyphMaterial from './GlyphMaterial';
-import { useValueToErrorPositions, useValueToPosition } from './hooks';
+import Glyphs from './Glyphs';
+import Line from './Line';
 import { CurveType, GlyphType } from './models';
-
-/* Render points with NaN/Infinity coordinates (i.e. values <= 0 in log)
- * at origin to avoid Three warning, and outside of camera's field of view
- * to hide them and any segments connecting them. */
-const CAMERA_FAR = 1000; // R3F's default
-
-// Alias Three's `Line` to `Line_` to avoid conflict with SVG `line` in JSX
-// https://docs.pmnd.rs/react-three-fiber/tutorials/typescript#extending-threeelements
-class Line_ extends Line {}
-extend({ Line_ });
-declare module '@react-three/fiber' {
-  interface ThreeElements {
-    line_: Object3DNode<Line, typeof Line>;
-  }
-}
 
 interface Props {
   abscissas: NumArray;
@@ -59,107 +40,6 @@ function DataCurve(props: Props) {
     ignoreValue,
   } = props;
 
-  const { length } = ordinates;
-  const hasErrors = !!errors;
-  const { abscissaScale, ordinateScale } = useVisCanvasContext();
-  const invalidate = useThree((state) => state.invalidate);
-
-  const valueToPosition = useValueToPosition(
-    abscissas,
-    abscissaScale,
-    ordinateScale,
-    ignoreValue,
-  );
-
-  const valueToErrorPositions = useValueToErrorPositions(errors, ordinateScale);
-
-  const dataGeometry = useMemo(() => {
-    const geometry = new BufferGeometry();
-    geometry.setAttribute('position', createBufferAttr(length, 3));
-    return geometry;
-  }, [length]);
-
-  const errorGeometries = useMemo(() => {
-    if (!hasErrors) {
-      return undefined;
-    }
-
-    const geometries = {
-      caps: new BufferGeometry(),
-      bars: new BufferGeometry(),
-    };
-
-    geometries.caps.setAttribute('position', createBufferAttr(length * 2, 3));
-    geometries.bars.setAttribute('position', createBufferAttr(length * 2, 3));
-
-    return geometries;
-  }, [hasErrors, length]);
-
-  // eslint-disable-next-line sonarjs/cognitive-complexity
-  useLayoutEffect(() => {
-    const { position: dataPosition } = dataGeometry.attributes;
-    const errorPositions = errorGeometries && {
-      caps: errorGeometries.caps.attributes.position,
-      bars: errorGeometries.bars.attributes.position,
-    };
-
-    ordinates.forEach((value, index) => {
-      const pos = valueToPosition(value, index);
-
-      if (pos) {
-        dataPosition.setXYZ(index, pos[0], pos[1], 0);
-      } else {
-        dataPosition.setXYZ(index, 0, 0, CAMERA_FAR);
-      }
-
-      if (!errorPositions) {
-        return;
-      }
-
-      const { topCap, bottomCap, bar } = valueToErrorPositions(
-        value,
-        index,
-        pos,
-      );
-
-      if (topCap) {
-        errorPositions.caps.setXYZ(index * 2 + 1, topCap[0], topCap[1], 0);
-      } else {
-        errorPositions.caps.setXYZ(index * 2 + 1, 0, 0, CAMERA_FAR);
-      }
-
-      if (bottomCap) {
-        errorPositions.caps.setXYZ(index * 2, bottomCap[0], bottomCap[1], 0);
-      } else {
-        errorPositions.caps.setXYZ(index * 2, 0, 0, CAMERA_FAR);
-      }
-
-      if (bar) {
-        errorPositions.bars.setXYZ(index * 2, bar[0], bar[1], 0);
-        errorPositions.bars.setXYZ(index * 2 + 1, bar[2], bar[3], 0);
-      } else {
-        errorPositions.bars.setXYZ(index * 2, 0, 0, CAMERA_FAR);
-        errorPositions.bars.setXYZ(index * 2 + 1, 0, 0, CAMERA_FAR);
-      }
-    });
-
-    dataGeometry.computeBoundingSphere();
-    dataPosition.needsUpdate = true;
-    if (errorPositions) {
-      errorPositions.caps.needsUpdate = true;
-      errorPositions.bars.needsUpdate = true;
-    }
-
-    invalidate();
-  }, [
-    ordinates,
-    dataGeometry,
-    errorGeometries,
-    valueToErrorPositions,
-    valueToPosition,
-    invalidate,
-  ]);
-
   const handleClick = useCallback(
     (evt: ThreeEvent<MouseEvent>) => {
       const { index } = evt;
@@ -193,27 +73,34 @@ function DataCurve(props: Props) {
     [onDataPointLeave],
   );
 
-  const showLine = visible && curveType !== CurveType.GlyphsOnly;
-  const showGlyphs = visible && curveType !== CurveType.LineOnly;
-
   return (
     <>
-      <line_ visible={showLine} geometry={dataGeometry}>
-        <lineBasicMaterial color={color} />
-      </line_>
-      <points
-        visible={showGlyphs}
-        geometry={dataGeometry}
+      <Line
+        abscissas={abscissas}
+        ordinates={ordinates}
+        color={color}
+        ignoreValue={ignoreValue}
+        visible={curveType !== CurveType.GlyphsOnly && visible}
+      />
+      <Glyphs
+        abscissas={abscissas}
+        ordinates={ordinates}
+        glyphType={glyphType}
+        color={color}
+        size={glyphSize}
+        ignoreValue={ignoreValue}
+        visible={curveType !== CurveType.LineOnly && visible}
         onClick={onDataPointClick && handleClick}
         onPointerEnter={onDataPointEnter && handlePointerEnter}
         onPointerLeave={onDataPointLeave && handlePointerLeave}
-      >
-        <GlyphMaterial glyphType={glyphType} color={color} size={glyphSize} />
-      </points>
-      {errorGeometries && (
+      />
+      {errors && (
         <ErrorBars
-          geometries={errorGeometries}
+          abscissas={abscissas}
+          ordinates={ordinates}
+          errors={errors}
           color={color}
+          ignoreValue={ignoreValue}
           visible={visible && showErrors}
         />
       )}
