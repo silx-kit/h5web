@@ -181,6 +181,7 @@ function LineVis(props: Props) {
           curveType={curveType}
           ignoreValue={ignoreValue}
         />
+
         {auxiliaries.map(({ array, label, errors }, i) => (
           <DataCurve
             key={label}
@@ -190,6 +191,7 @@ function LineVis(props: Props) {
             showErrors={showErrors}
             color={auxColors[i % auxColors.length]}
             curveType={curveType}
+            ignoreValue={ignoreValue}
           />
         ))}
 

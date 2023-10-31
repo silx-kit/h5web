@@ -2,6 +2,7 @@ import { createMemo } from '@h5web/shared';
 
 import {
   getDataTexture,
+  getInterpolator,
   getMask,
   getPixelEdgeValues,
   getSafeDomain,
@@ -15,3 +16,4 @@ export const usePixelEdgeValues = createMemo(getPixelEdgeValues);
 export const useTextureSafeNdArray = createMemo(toTextureSafeNdArray);
 export const useDataTexture = createMemo(getDataTexture);
 export const useMask = createMemo(getMask);
+export const useInterpolator = createMemo(getInterpolator);

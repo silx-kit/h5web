@@ -1,8 +1,8 @@
 import {
   assertDefined,
   AxialSelectToZoom,
-  DataCurve,
   HeatmapMesh,
+  Line,
   mockValues,
   Pan,
   ResetZoomButton,
@@ -57,12 +57,7 @@ const Default = {
         <AxialSelectToZoom {...args} />
         <ResetZoomButton />
 
-        <DataCurve
-          abscissas={range(oneD.length)}
-          ordinates={oneD}
-          color="blue"
-          showErrors
-        />
+        <Line abscissas={range(oneD.length)} ordinates={oneD} color="blue" />
       </VisCanvas>
     );
   },
