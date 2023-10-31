@@ -8,10 +8,6 @@
   padding: 0 !important; /* FIX style ordering issue with Vite */
 }
 
-.btn[data-hint] {
-  text-decoration: underline dotted;
-}
-
 .btnLike {
   composes: btnLike from '../Toolbar.module.css';
 }
@@ -33,4 +29,11 @@
 
 .label {
   composes: label from '../Toolbar.module.css';
+}
+
+.btn[data-hint] .label {
+  position: relative;
+  top: 1px;
+  border-bottom: 1px dotted currentColor;
+  line-height: 1.1;
 }
