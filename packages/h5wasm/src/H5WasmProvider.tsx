@@ -9,19 +9,20 @@ interface Props {
   filename: string;
   buffer: ArrayBuffer;
   getExportURL?: DataProviderApi['getExportURL'];
+  getPlugin?: (name: string) => Promise<ArrayBuffer | undefined>;
 }
 
 function H5WasmProvider(props: PropsWithChildren<Props>) {
-  const { filename, buffer, getExportURL, children } = props;
+  const { filename, buffer, getExportURL, getPlugin, children } = props;
 
   const [api, setApi] = useState<H5WasmApi>();
 
   useEffect(() => {
-    const h5wasmApi = new H5WasmApi(filename, buffer, getExportURL);
+    const h5wasmApi = new H5WasmApi(filename, buffer, getExportURL, getPlugin);
     setApi(h5wasmApi);
 
     return () => void h5wasmApi.cleanUp();
-  }, [filename, buffer, getExportURL]);
+  }, [filename, buffer, getExportURL, getPlugin]);
 
   if (!api) {
     return null;

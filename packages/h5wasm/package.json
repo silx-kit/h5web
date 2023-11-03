@@ -45,7 +45,7 @@
     }
   },
   "dependencies": {
-    "h5wasm": "0.6.2",
+    "h5wasm": "0.6.9",
     "nanoid": "5.0.1"
   },
   "devDependencies": {

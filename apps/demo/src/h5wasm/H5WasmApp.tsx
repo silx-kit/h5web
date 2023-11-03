@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { getFeedbackURL } from '../utils';
 import DropZone from './DropZone';
 import type { H5File } from './models';
+import { getPlugin } from './plugin-utils';
 
 function H5WasmApp() {
   const query = new URLSearchParams(useLocation().search);
@@ -16,7 +17,7 @@ function H5WasmApp() {
   }
 
   return (
-    <H5WasmProvider {...h5File}>
+    <H5WasmProvider {...h5File} getPlugin={getPlugin}>
       <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </H5WasmProvider>
   );

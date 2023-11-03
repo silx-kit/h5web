@@ -14,6 +14,18 @@ import {
 } from './guards';
 import type { NumericMetadata } from './models';
 
+// https://github.com/h5wasm/h5wasm-plugins#included-plugins
+// https://support.hdfgroup.org/services/contributions.html
+export const PLUGINS_BY_FILTER_ID: Record<number, string> = {
+  307: 'bz2',
+  32_000: 'lzf',
+  32_001: 'blosc',
+  32_004: 'lz4',
+  32_013: 'zfp',
+  32_015: 'zstd',
+  32_017: 'szf',
+};
+
 export function convertNumericMetadataToDType(
   metadata: NumericMetadata,
 ): NumericType {

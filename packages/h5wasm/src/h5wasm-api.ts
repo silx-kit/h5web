@@ -22,8 +22,8 @@ import {
   EntityKind,
   hasArrayShape,
 } from '@h5web/shared';
-import type { Attribute as H5WasmAttribute } from 'h5wasm';
-import { File as H5WasmFile, Module, ready as h5wasmReady } from 'h5wasm';
+import type { Attribute as H5WasmAttribute, Filter, Module } from 'h5wasm';
+import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 import { nanoid } from 'nanoid';
 
 import {
@@ -37,17 +37,29 @@ import {
   isH5WasmSoftLink,
 } from './guards';
 import type { H5WasmAttributes, H5WasmEntity } from './models';
-import { convertMetadataToDType, convertSelectionToRanges } from './utils';
+import {
+  convertMetadataToDType,
+  convertSelectionToRanges,
+  PLUGINS_BY_FILTER_ID,
+} from './utils';
+
+const PLUGINS_PATH = '/plugins'; // path to plugins on EMScripten virtual file system
 
 export class H5WasmApi extends DataProviderApi {
+  private readonly h5wasm: Promise<typeof Module>;
   private readonly file: Promise<H5WasmFile>;
 
   public constructor(
     filename: string,
     buffer: ArrayBuffer,
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
+    private readonly getPlugin?: (
+      name: string,
+    ) => Promise<ArrayBuffer | undefined>,
   ) {
     super(filename);
+
+    this.h5wasm = this.initH5Wasm();
     this.file = this.initFile(buffer);
   }
 
@@ -62,9 +74,8 @@ export class H5WasmApi extends DataProviderApi {
     const h5wDataset = await this.getH5WasmEntity(dataset.path);
     assertH5WasmDataset(h5wDataset);
 
-    if (h5wDataset.filters?.some((f) => f.id >= Module.H5Z_FILTER_RESERVED)) {
-      throw new Error('Compression filter not supported');
-    }
+    // Ensure all filters are supported and loaded (if available)
+    await this.processFilters(h5wDataset.filters);
 
     /* h5wasm returns bigints for (u)int64 dtypes, so we use `to_array` to get numbers instead.
      * We do this only for datasets that are supported by at least one visualization (other than `RawVis`),
@@ -135,19 +146,58 @@ export class H5WasmApi extends DataProviderApi {
     return [];
   }
 
+  private async initH5Wasm(): Promise<typeof Module> {
+    const module = await h5wasmReady;
+
+    // Replace default plugins path
+    module.remove_plugin_search_path(0);
+    module.insert_plugin_search_path(PLUGINS_PATH, 0);
+
+    // Create plugins folder on Emscripten virtual file system
+    module.FS.mkdirTree(PLUGINS_PATH);
+
+    return module;
+  }
+
   private async initFile(buffer: ArrayBuffer): Promise<H5WasmFile> {
-    const { FS } = await h5wasmReady;
+    const h5Module = await this.h5wasm;
 
-    // `FS` is guaranteed to be defined once H5Wasm is ready
-    // https://github.com/silx-kit/h5web/pull/1082#discussion_r858613242
-    assertNonNull(FS);
-
-    // Write file to Emscripten virtual file system
+    // Write HDF5 file to Emscripten virtual file system
     // https://emscripten.org/docs/api_reference/Filesystem-API.html#FS.writeFile
     const id = nanoid(); // use unique ID instead of `this.filepath` to avoid slashes and other unsupported characters
-    FS.writeFile(id, new Uint8Array(buffer), { flags: 'w+' });
+    h5Module.FS.writeFile(id, new Uint8Array(buffer), { flags: 'w+' });
 
     return new H5WasmFile(id, 'r');
+  }
+
+  private async processFilters(filters: Filter[]): Promise<void> {
+    const h5Module = await this.h5wasm;
+
+    for await (const filter of filters) {
+      if (filter.id < h5Module.H5Z_FILTER_RESERVED) {
+        continue; // filter supported out of the box
+      }
+
+      const plugin = PLUGINS_BY_FILTER_ID[filter.id];
+      if (!plugin || !this.getPlugin) {
+        throw new Error(
+          `Compression filter ${filter.id} not supported (${filter.name})`,
+        );
+      }
+
+      const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
+
+      if (h5Module.FS.analyzePath(pluginPath).exists) {
+        continue; // plugin already loaded
+      }
+
+      const buffer = await this.getPlugin(plugin);
+      if (!buffer) {
+        throw new Error(`Compression plugin ${plugin} not supported`);
+      }
+
+      h5Module.FS.writeFile(pluginPath, new Uint8Array(buffer));
+    }
   }
 
   private async getH5WasmEntity(
