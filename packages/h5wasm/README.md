@@ -120,7 +120,7 @@ means that:
 
 - your build tool must understand the BigInt notation (e.g.
   [babel-plugin-syntax-bigint](https://babeljs.io/docs/en/babel-plugin-syntax-bigint))
-- your application will only run in browsers that
+- your application will run only in browsers that
   [support BigInt](https://caniuse.com/bigint).
 
 ### External links are not resolved
@@ -165,3 +165,42 @@ See
 `H5WasmProvider` does not provide a fallback implementation of `getExportURL` at
 this time, so if you don't provide your own, the export menu will remain
 disabled in the toolbar.
+
+#### `getPlugin?: (name: string) => Promise<ArrayBuffer | undefined>`
+
+If provided, this aysnchronous function is invoked when loading a compressed
+dataset. It receives the name of a compression plugin as parameter and should
+return:
+
+- the compression plugin's source file as `ArrayBuffer`,
+- or `undefined` if the plugin is not available.
+
+`@h5web/h5wasm` is capable of identifying and requesting the plugins supported
+by the
+[`h5wasm-plugins@0.0.1`](https://github.com/h5wasm/h5wasm-plugins/tree/v0.0.1)
+package: `blosc`, `bz2`, `lz4`, `lzf`, `szf`, `zfp`, `zstd`.
+
+A typical implementation of `getPlugin` in a bundled front-end application might
+look like this:
+
+```ts
+/*
+ * Import the plugins' source files as static assets (i.e. as URLs).
+ * The exact syntax may vary depending on your bundler (Vite, webpack ...)
+ * and may require extra configuration/typing.
+ */
+import blosc from 'h5wasm-plugins/plugins/libH5Zblosc.so';
+import bz2 from 'h5wasm-plugins/plugins/libH5Zbz2.so';
+// ...
+
+const PLUGINS = { blosc, bz2 /* ... */ };
+
+async function getPlugin(name: string): Promise<ArrayBuffer | undefined> {
+  if (!PLUGINS[name]) {
+    return undefined;
+  }
+
+  const response = await fetch(PLUGINS[name]);
+  return response.arrayBuffer();
+}
+```
