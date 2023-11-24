@@ -187,7 +187,7 @@ Data provider for [H5Grove](https://github.com/silx-kit/h5grove).
 <H5GroveProvider
   url="https://h5grove.server.url"
   filepath="some-file.h5"
-  axiosParams={{ file: 'some-file.h5' }}
+  axiosConfig={{ params: { file: 'some-file.h5' } }}
 >
   <App />
 </H5GroveProvider>
@@ -201,12 +201,15 @@ The base URL of the H5Grove server.
 
 The path and/or name of the file to display in the UI.
 
-#### `axiosParams?: Record<string, string>` (optional)
+#### `axiosConfig?: AxiosRequestConfig` (optional)
 
-By default, `H5GroveProvider` does not make any assumption as to which query
-parameters to send to the server. If you use one of H5Grove's default API
-implementations, then you'll need to use this prop to pass the `file` query
-parameter as shown above.
+By default, `H5GroveProvider` does not make any assumption as to how to
+configure its internal [axios](https://axios-http.com/docs/req_config) client.
+If you use one of H5Grove's default API implementations, then you'll need to use
+this prop to pass the `file` query parameter as shown above.
+
+If your API server requires authentication or is on a different domain, you'll
+need to pass the necessary request headers and configuration as well.
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
