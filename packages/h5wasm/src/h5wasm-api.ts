@@ -5,6 +5,7 @@ import {
   getNameFromPath,
   sliceValue,
 } from '@h5web/app';
+import { assertNonNull, hasArrayShape } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Attribute,
@@ -15,13 +16,9 @@ import type {
   ProvidedEntity,
   Shape,
   Value,
-} from '@h5web/shared';
-import {
-  assertNonNull,
-  buildEntityPath,
-  EntityKind,
-  hasArrayShape,
-} from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
+import { EntityKind } from '@h5web/shared/models-hdf5';
+import { buildEntityPath } from '@h5web/shared/utils';
 import type { Attribute as H5WasmAttribute, Filter, Module } from 'h5wasm';
 import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 import { nanoid } from 'nanoid';

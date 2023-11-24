@@ -1,4 +1,8 @@
-import type { ColorScaleType, Domain, NumArray } from '@h5web/shared';
+import type {
+  ColorScaleType,
+  Domain,
+  NumArray,
+} from '@h5web/shared/models-vis';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useCallback, useMemo } from 'react';
 

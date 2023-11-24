@@ -1,5 +1,5 @@
 import { RawVis } from '@h5web/lib';
-import { assertDataset, assertNonNullShape } from '@h5web/shared';
+import { assertDataset, assertNonNullShape } from '@h5web/shared/guards';
 import { createPortal } from 'react-dom';
 
 import { useDataContext } from '../../../providers/DataProvider';

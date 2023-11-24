@@ -1,11 +1,12 @@
+import { assertArray, isNumericType } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Dataset,
   DType,
   Primitive,
   ScalarShape,
-} from '@h5web/shared';
-import { assertArray, DTypeClass, isNumericType } from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
+import { DTypeClass } from '@h5web/shared/models-hdf5';
 import { AxiosError } from 'axios';
 import ndarray from 'ndarray';
 

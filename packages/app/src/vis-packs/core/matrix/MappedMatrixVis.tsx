@@ -4,7 +4,7 @@ import type {
   ArrayValue,
   Dataset,
   PrintableType,
-} from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';

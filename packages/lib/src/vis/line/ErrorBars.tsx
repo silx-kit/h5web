@@ -1,4 +1,4 @@
-import type { NumArray } from '@h5web/shared';
+import type { NumArray } from '@h5web/shared/models-vis';
 
 import { useVisCanvasContext } from '../..';
 import { useGeometry } from '../hooks';

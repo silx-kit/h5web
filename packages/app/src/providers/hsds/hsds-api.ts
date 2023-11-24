@@ -1,3 +1,8 @@
+import {
+  assertDefined,
+  assertGroup,
+  hasArrayShape,
+} from '@h5web/shared/guards';
 import type {
   ArrayShape,
   AttributeValues,
@@ -9,15 +14,9 @@ import type {
   GroupWithChildren,
   ProvidedEntity,
   Value,
-} from '@h5web/shared';
-import {
-  assertDefined,
-  assertGroup,
-  buildEntityPath,
-  EntityKind,
-  getChildEntity,
-  hasArrayShape,
-} from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
+import { EntityKind } from '@h5web/shared/models-hdf5';
+import { buildEntityPath, getChildEntity } from '@h5web/shared/utils';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';

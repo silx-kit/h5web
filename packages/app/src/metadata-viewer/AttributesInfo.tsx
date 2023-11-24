@@ -1,5 +1,5 @@
-import type { ProvidedEntity } from '@h5web/shared';
-import { isComplexValue } from '@h5web/shared';
+import { isComplexValue } from '@h5web/shared/guards';
+import type { ProvidedEntity } from '@h5web/shared/models-hdf5';
 
 import { useDataContext } from '../providers/DataProvider';
 import AttributeLink from './AttributeLink';

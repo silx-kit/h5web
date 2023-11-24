@@ -1,9 +1,6 @@
-import {
-  buildEntityPath,
-  EntityKind,
-  isAbsolutePath,
-  isDataset,
-} from '@h5web/shared';
+import { isAbsolutePath, isDataset } from '@h5web/shared/guards';
+import { EntityKind } from '@h5web/shared/models-hdf5';
+import { buildEntityPath } from '@h5web/shared/utils';
 import { capitalize } from 'lodash';
 import { memo, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';

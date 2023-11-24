@@ -1,4 +1,4 @@
-import { createMemo } from '@h5web/shared';
+import { createMemo } from '@h5web/shared/createMemo';
 
 import {
   getDataTexture,

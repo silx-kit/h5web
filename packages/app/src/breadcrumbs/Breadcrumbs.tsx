@@ -1,4 +1,4 @@
-import { assertAbsolutePath } from '@h5web/shared';
+import { assertAbsolutePath } from '@h5web/shared/guards';
 
 import { useDataContext } from '../providers/DataProvider';
 import styles from './BreadcrumbsBar.module.css';

@@ -1,4 +1,4 @@
-import { assertDefined } from '@h5web/shared';
+import { assertDefined } from '@h5web/shared/guards';
 import {
   useEventListener,
   useKeyboardEvent,

@@ -1,4 +1,4 @@
-import { assertGroup, assertMinDims } from '@h5web/shared';
+import { assertGroup, assertMinDims } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';

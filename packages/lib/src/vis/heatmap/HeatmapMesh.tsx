@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared';
+import type { Domain } from '@h5web/shared/models-vis';
 import type { RGBColor } from 'd3-color';
 import type { NdArray } from 'ndarray';
 import type { MagnificationTextureFilter } from 'three';

@@ -1,4 +1,4 @@
-import type { MappedTuple } from '@h5web/shared';
+import type { MappedTuple } from '@h5web/shared/models-vis';
 import type { ReactNode } from 'react';
 import type { Vector3 } from 'three';
 

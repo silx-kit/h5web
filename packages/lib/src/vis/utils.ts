@@ -1,3 +1,4 @@
+import { isDefined, isTypedArray } from '@h5web/shared/guards';
 import type {
   AnyNumArray,
   AxisScaleType,
@@ -5,15 +6,13 @@ import type {
   Domain,
   NumArray,
   TypedArrayConstructor,
-} from '@h5web/shared';
+} from '@h5web/shared/models-vis';
+import { ScaleType } from '@h5web/shared/models-vis';
 import {
   formatTick,
   getBounds,
   getValidDomainForScale,
-  isDefined,
-  isTypedArray,
-  ScaleType,
-} from '@h5web/shared';
+} from '@h5web/shared/utils';
 import {
   scaleLinear,
   scaleLog,

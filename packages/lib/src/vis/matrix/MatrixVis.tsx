@@ -1,4 +1,4 @@
-import type { ArrayValue, Primitive } from '@h5web/shared';
+import type { ArrayValue, Primitive } from '@h5web/shared/models-hdf5';
 import type { NdArray } from 'ndarray';
 
 import type { PrintableType } from '../models';

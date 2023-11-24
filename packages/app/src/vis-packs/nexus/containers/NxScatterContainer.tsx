@@ -1,4 +1,8 @@
-import { assertDefined, assertGroup, assertNumDims } from '@h5web/shared';
+import {
+  assertDefined,
+  assertGroup,
+  assertNumDims,
+} from '@h5web/shared/guards';
 import { isEqual } from 'lodash';
 
 import { useScatterConfig } from '../../core/scatter/config';

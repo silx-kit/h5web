@@ -1,4 +1,4 @@
-import { ScaleType } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared/models-vis';
 import { interpolateGreys } from 'd3-scale-chromatic';
 
 import { DomainError } from '../models';

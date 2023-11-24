@@ -147,12 +147,12 @@ export { default as ScatterPointsGeometry } from './vis/scatter/scatterPointsGeo
 export { default as SurfaceMeshGeometry } from './vis/surface/surfaceMeshGeometry';
 
 // Constants
-export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared';
+export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared/utils';
 export { CAMERA_FAR } from './vis/utils';
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 
 // Enums
-export { ScaleType } from '@h5web/shared';
+export { ScaleType } from '@h5web/shared/models-vis';
 export { CurveType, GlyphType } from './vis/line/models';
 export { ImageType } from './vis/rgb/models';
 export { Notation } from './vis/matrix/models';
@@ -166,7 +166,7 @@ export type {
   Axis,
   ColorScaleType,
   AxisScaleType,
-} from '@h5web/shared';
+} from '@h5web/shared/models-vis';
 
 export type {
   Aspect,
@@ -198,12 +198,9 @@ export type {
 } from './interactions/models';
 
 // Mock data and utilities
-export {
-  mockMetadata,
-  mockValues,
-  findMockEntity,
-  getMockDataArray,
-} from '@h5web/shared';
+export { mockValues } from '@h5web/shared/mock/values';
+export { mockMetadata } from '@h5web/shared/mock/metadata';
+export { findMockEntity, getMockDataArray } from '@h5web/shared/mock/utils';
 
 // Undocumented and/or experimental
 export { default as SnapshotBtn } from './toolbar/controls/SnapshotBtn';
@@ -218,7 +215,11 @@ export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
 export { default as TiledTooltipMesh } from './vis/tiles/TiledTooltipMesh';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
 export { useValidDomainForScale } from './vis/hooks';
-export { assertLength, assertDefined, assertNonNull } from '@h5web/shared';
+export {
+  assertLength,
+  assertDefined,
+  assertNonNull,
+} from '@h5web/shared/guards';
 export type { TiledHeatmapMeshProps } from './vis/tiles/TiledHeatmapMesh';
 export { default as SurfaceVis } from './vis/surface/SurfaceVis';
 export type { SurfaceVisProps } from './vis/surface/SurfaceVis';

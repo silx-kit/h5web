@@ -1,6 +1,6 @@
 import { getMockDataArray, MatrixVis } from '@h5web/lib';
-import type { H5WebComplex } from '@h5web/shared';
-import { createComplexFormatter, toTypedNdArray } from '@h5web/shared';
+import type { H5WebComplex } from '@h5web/shared/models-hdf5';
+import { createComplexFormatter, toTypedNdArray } from '@h5web/shared/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 import { format } from 'd3-format';
 

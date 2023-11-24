@@ -6,13 +6,13 @@ import {
   HeatmapMesh,
   VisCanvas,
 } from '@h5web/lib';
+import { assertDefined } from '@h5web/shared/guards';
+import { ScaleType } from '@h5web/shared/models-vis';
 import {
-  assertDefined,
   COLOR_SCALE_TYPES,
   getDims,
-  ScaleType,
   toTypedNdArray,
-} from '@h5web/shared';
+} from '@h5web/shared/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 import { range } from 'lodash';
 import ndarray from 'ndarray';

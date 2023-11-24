@@ -2,11 +2,11 @@ import { LineVis, useCombinedDomain, useDomain, useDomains } from '@h5web/lib';
 import type {
   ArrayShape,
   ArrayValue,
-  AxisMapping,
   Dataset,
-  NumArray,
   NumericLikeType,
-} from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
+import type { AxisMapping } from '@h5web/shared/models-nexus';
+import type { NumArray } from '@h5web/shared/models-vis';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';

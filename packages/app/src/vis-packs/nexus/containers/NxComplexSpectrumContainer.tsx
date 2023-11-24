@@ -1,4 +1,5 @@
-import { assertGroup, isAxisScaleType, ScaleType } from '@h5web/shared';
+import { ScaleType } from '@h5web/lib';
+import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';

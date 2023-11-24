@@ -1,5 +1,6 @@
-import type { ChildEntity } from '@h5web/shared';
-import { EntityKind, isGroup } from '@h5web/shared';
+import { isGroup } from '@h5web/shared/guards';
+import type { ChildEntity } from '@h5web/shared/models-hdf5';
+import { EntityKind } from '@h5web/shared/models-hdf5';
 import {
   FiChevronDown,
   FiChevronRight,

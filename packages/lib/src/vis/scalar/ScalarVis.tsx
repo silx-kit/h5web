@@ -1,4 +1,4 @@
-import type { Primitive, PrintableType } from '@h5web/shared';
+import type { Primitive, PrintableType } from '@h5web/shared/models-hdf5';
 
 import styles from './ScalarVis.module.css';
 

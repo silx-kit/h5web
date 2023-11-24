@@ -1,3 +1,4 @@
+import { isGroup } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Attribute,
@@ -10,8 +11,8 @@ import type {
   NumericType,
   ScalarShape,
   Shape,
-} from '@h5web/shared';
-import { DTypeClass, Endianness, isGroup } from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
+import { DTypeClass, Endianness } from '@h5web/shared/models-hdf5';
 
 import type {
   HsdsAttribute,

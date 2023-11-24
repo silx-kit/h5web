@@ -1,3 +1,4 @@
+import { hasNumericType, hasScalarShape } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Attribute,
@@ -8,13 +9,9 @@ import type {
   Group,
   ProvidedEntity,
   Value,
-} from '@h5web/shared';
-import {
-  buildEntityPath,
-  EntityKind,
-  hasNumericType,
-  hasScalarShape,
-} from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
+import { EntityKind } from '@h5web/shared/models-hdf5';
+import { buildEntityPath } from '@h5web/shared/utils';
 import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';

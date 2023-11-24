@@ -5,7 +5,8 @@ import {
   TiledTooltipMesh,
   VisCanvas,
 } from '@h5web/lib';
-import { COLOR_SCALE_TYPES, ScaleType } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared/models-vis';
+import { COLOR_SCALE_TYPES } from '@h5web/shared/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from '../decorators/FillHeight';

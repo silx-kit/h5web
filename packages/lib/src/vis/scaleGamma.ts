@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared';
+import type { Domain } from '@h5web/shared/models-vis';
 import { scalePower } from '@visx/scale';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import type {

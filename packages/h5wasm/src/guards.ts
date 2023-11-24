@@ -1,5 +1,6 @@
-import type { Dataset, DType } from '@h5web/shared';
-import { DTypeClass, isCompoundType } from '@h5web/shared';
+import { isCompoundType } from '@h5web/shared/guards';
+import type { Dataset, DType } from '@h5web/shared/models-hdf5';
+import { DTypeClass } from '@h5web/shared/models-hdf5';
 import type { Metadata } from 'h5wasm';
 import {
   BrokenSoftLink as H5WasmSoftLink,

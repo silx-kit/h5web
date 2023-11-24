@@ -1,5 +1,5 @@
-import type { VisibleDomains } from '@h5web/shared';
-import { assertDefined, assertNonNull } from '@h5web/shared';
+import { assertDefined, assertNonNull } from '@h5web/shared/guards';
+import type { VisibleDomains } from '@h5web/shared/models-vis';
 import { useThree } from '@react-three/fiber';
 import type { PropsWithChildren } from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';

@@ -1,4 +1,4 @@
-import { isDefined } from '@h5web/shared';
+import { isDefined } from '@h5web/shared/guards';
 import type { ReactNode } from 'react';
 
 import { CORE_VIS } from './vis-packs/core/visualizations';

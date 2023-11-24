@@ -1,5 +1,5 @@
-import type { ChildEntity, Entity, Group } from '@h5web/shared';
-import { isGroup } from '@h5web/shared';
+import { isGroup } from '@h5web/shared/guards';
+import type { ChildEntity, Entity, Group } from '@h5web/shared/models-hdf5';
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';

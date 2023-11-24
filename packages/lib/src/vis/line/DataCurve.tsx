@@ -1,4 +1,4 @@
-import type { NumArray } from '@h5web/shared';
+import type { NumArray } from '@h5web/shared/models-vis';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useCallback } from 'react';
 

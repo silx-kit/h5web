@@ -1,9 +1,2 @@
-export * from './guards';
-export * from './models-hdf5';
-export * from './models-nexus';
-export * from './models-vis';
-export * from './utils';
-export * from './createMemo';
-export * from './mock/metadata';
-export * from './mock/values';
-export * from './mock/utils';
+// Placeholder file because `exports['.']` is mandatory in package.json
+export {};

@@ -1,4 +1,4 @@
-import type { NumArray } from '@h5web/shared';
+import type { NumArray } from '@h5web/shared/models-vis';
 import type { NdArray } from 'ndarray';
 
 export enum CurveType {

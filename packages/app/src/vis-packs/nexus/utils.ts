@@ -1,14 +1,3 @@
-import type {
-  ArrayShape,
-  ComplexType,
-  Dataset,
-  Group,
-  GroupWithChildren,
-  NumArrayDataset,
-  NumericType,
-  ScalarShape,
-  StringType,
-} from '@h5web/shared';
 import {
   assertArray,
   assertArrayShape,
@@ -20,10 +9,21 @@ import {
   assertScalarShape,
   assertStr,
   assertStringType,
-  getChildEntity,
   isAxisScaleType,
   isColorScaleType,
-} from '@h5web/shared';
+} from '@h5web/shared/guards';
+import type {
+  ArrayShape,
+  ComplexType,
+  Dataset,
+  Group,
+  GroupWithChildren,
+  NumArrayDataset,
+  NumericType,
+  ScalarShape,
+  StringType,
+} from '@h5web/shared/models-hdf5';
+import { getChildEntity } from '@h5web/shared/utils';
 
 import type { AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
