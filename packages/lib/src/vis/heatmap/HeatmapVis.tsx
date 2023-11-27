@@ -1,10 +1,7 @@
-import type { Domain, NumArray } from '@h5web/shared';
-import {
-  assertDefined,
-  formatTooltipVal,
-  getDims,
-  ScaleType,
-} from '@h5web/shared';
+import { assertDefined } from '@h5web/shared/guards';
+import type { Domain, NumArray } from '@h5web/shared/models-vis';
+import { ScaleType } from '@h5web/shared/models-vis';
+import { formatTooltipVal, getDims } from '@h5web/shared/utils';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 

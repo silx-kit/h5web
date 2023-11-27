@@ -1,4 +1,4 @@
-import { formatBoundInput } from '@h5web/shared';
+import { formatBoundInput } from '@h5web/shared/utils';
 import {
   forwardRef,
   useEffect,

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { NumArray } from '@h5web/shared';
+import type { NumArray } from '@h5web/shared/models-vis';
 
 import type { AxisScale } from '../models';
 import H5WebGeometry from '../shared/h5webGeometry';

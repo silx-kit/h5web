@@ -1,4 +1,4 @@
-import { getDims } from '@h5web/shared';
+import { getDims } from '@h5web/shared/utils';
 import { LinearFilter } from 'three';
 
 import HeatmapMaterial from '../heatmap/HeatmapMaterial';

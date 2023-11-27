@@ -1,4 +1,4 @@
-import type { Axis } from '@h5web/shared';
+import type { Axis } from '@h5web/shared/models-vis';
 
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import AxialSelectionTool from './AxialSelectionTool';

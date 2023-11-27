@@ -1,4 +1,5 @@
-import { assertGroup, buildEntityPath } from '@h5web/shared';
+import { assertGroup } from '@h5web/shared/guards';
+import { buildEntityPath } from '@h5web/shared/utils';
 
 import { useDataContext } from '../providers/DataProvider';
 import EntityItem from './EntityItem';

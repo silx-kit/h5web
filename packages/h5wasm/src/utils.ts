@@ -1,5 +1,6 @@
-import type { DType, NumericType } from '@h5web/shared';
-import { assertDefined, DTypeClass, Endianness } from '@h5web/shared';
+import { assertDefined } from '@h5web/shared/guards';
+import type { DType, NumericType } from '@h5web/shared/models-hdf5';
+import { DTypeClass, Endianness } from '@h5web/shared/models-hdf5';
 import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
 
 import {

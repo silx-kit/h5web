@@ -1,14 +1,14 @@
-import type { ChildEntity, ProvidedEntity } from '@h5web/shared';
 import {
   assertStr,
-  buildEntityPath,
   hasComplexType,
   hasMinDims,
   hasNumDims,
   isDataset,
   isGroup,
-  NxInterpretation,
-} from '@h5web/shared';
+} from '@h5web/shared/guards';
+import type { ChildEntity, ProvidedEntity } from '@h5web/shared/models-hdf5';
+import { NxInterpretation } from '@h5web/shared/models-nexus';
+import { buildEntityPath } from '@h5web/shared/utils';
 
 import type { AttrValuesStore, EntitiesStore } from '../providers/models';
 import { hasAttribute } from '../utils';

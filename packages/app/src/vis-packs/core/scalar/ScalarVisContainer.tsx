@@ -3,7 +3,7 @@ import {
   assertDataset,
   assertPrintableType,
   assertScalarShape,
-} from '@h5web/shared';
+} from '@h5web/shared/guards';
 
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';

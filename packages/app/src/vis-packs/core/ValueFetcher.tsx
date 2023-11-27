@@ -1,4 +1,9 @@
-import type { ArrayShape, Dataset, ScalarShape, Value } from '@h5web/shared';
+import type {
+  ArrayShape,
+  Dataset,
+  ScalarShape,
+  Value,
+} from '@h5web/shared/models-hdf5';
 import type { ReactNode } from 'react';
 
 import { useDatasetValue } from './hooks';

@@ -4,7 +4,9 @@ import {
   useValidDomainForScale,
   useVisDomain,
 } from '@h5web/lib';
-import type { AxisMapping, H5WebComplex, NumArray } from '@h5web/shared';
+import type { H5WebComplex } from '@h5web/shared/models-hdf5';
+import type { AxisMapping } from '@h5web/shared/models-nexus';
+import type { NumArray } from '@h5web/shared/models-vis';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 

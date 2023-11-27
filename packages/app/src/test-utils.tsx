@@ -1,4 +1,4 @@
-import { assertDefined, assertNonNull } from '@h5web/shared';
+import { assertDefined, assertNonNull } from '@h5web/shared/guards';
 import type { RenderResult } from '@testing-library/react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

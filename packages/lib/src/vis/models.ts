@@ -1,14 +1,16 @@
 import type {
-  AxisScaleType,
   BooleanType,
-  ColorScaleType,
   ComplexType,
+  NumericType,
+  StringType,
+} from '@h5web/shared/models-hdf5';
+import type {
+  AxisScaleType,
+  ColorScaleType,
   Domain,
   NumArray,
-  NumericType,
   ScaleType,
-  StringType,
-} from '@h5web/shared';
+} from '@h5web/shared/models-vis';
 import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
 
 import type { ColorMap } from './heatmap/models';

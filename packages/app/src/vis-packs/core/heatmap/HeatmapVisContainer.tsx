@@ -3,7 +3,7 @@ import {
   assertDataset,
   assertMinDims,
   assertNumericLikeType,
-} from '@h5web/shared';
+} from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';

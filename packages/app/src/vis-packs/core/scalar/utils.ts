@@ -1,10 +1,11 @@
+import { hasComplexType } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Dataset,
   H5WebComplex,
   PrintableType,
-} from '@h5web/shared';
-import { formatScalarComplex, hasComplexType } from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
+import { formatScalarComplex } from '@h5web/shared/utils';
 
 import type { ValueFormatter } from '../models';
 

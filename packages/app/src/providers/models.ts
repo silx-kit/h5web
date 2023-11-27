@@ -5,7 +5,7 @@ import type {
   Entity,
   ProvidedEntity,
   ScalarShape,
-} from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
 import type { FetchStore } from 'react-suspense-fetch';
 
 import type { ImageAttribute } from '../vis-packs/core/models';

@@ -1,4 +1,4 @@
-import type { ColorScaleType, Domain } from '@h5web/shared';
+import type { ColorScaleType, Domain } from '@h5web/shared/models-vis';
 import { useState } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 import ReactSlider from 'react-slider';

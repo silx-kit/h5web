@@ -1,3 +1,19 @@
+import { findMockEntity } from '@h5web/lib';
+import {
+  assertArrayOrTypedArray,
+  assertArrayShape,
+  assertDefined,
+  hasArrayShape,
+  hasNumericType,
+  isGroup,
+  isTypedArray,
+} from '@h5web/shared/guards';
+import { mockFilepath } from '@h5web/shared/mock/metadata';
+import type { MockDataset } from '@h5web/shared/mock/models';
+import {
+  assertMockAttribute,
+  assertMockDataset,
+} from '@h5web/shared/mock/utils';
 import type {
   ArrayShape,
   AttributeValues,
@@ -7,21 +23,7 @@ import type {
   ProvidedEntity,
   ScalarShape,
   Value,
-} from '@h5web/shared';
-import {
-  assertArrayOrTypedArray,
-  assertArrayShape,
-  assertDefined,
-  assertMockAttribute,
-  assertMockDataset,
-  findMockEntity,
-  hasArrayShape,
-  hasNumericType,
-  isGroup,
-  isTypedArray,
-  mockFilepath,
-} from '@h5web/shared';
-import type { MockDataset } from '@h5web/shared/src/mock/models';
+} from '@h5web/shared/models-hdf5';
 import axios from 'axios';
 
 import { DataProviderApi } from '../api';

@@ -1,15 +1,16 @@
-import type { ColorScaleType, Domain, NumArray } from '@h5web/shared';
-import {
-  assertDefined,
-  assertLength,
-  formatTooltipVal,
-  ScaleType,
-} from '@h5web/shared';
+import type {
+  ColorScaleType,
+  Domain,
+  NumArray,
+} from '@h5web/shared/models-vis';
+import { ScaleType } from '@h5web/shared/models-vis';
+import { formatTooltipVal } from '@h5web/shared/utils';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
+import { assertDefined, assertLength } from '../..';
 import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';

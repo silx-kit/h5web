@@ -1,5 +1,5 @@
-import type { ProvidedEntity } from '@h5web/shared';
-import { isDataset, isDatatype } from '@h5web/shared';
+import { isDataset, isDatatype } from '@h5web/shared/guards';
+import type { ProvidedEntity } from '@h5web/shared/models-hdf5';
 
 import { useDataContext } from '../providers/DataProvider';
 import styles from './MetadataViewer.module.css';

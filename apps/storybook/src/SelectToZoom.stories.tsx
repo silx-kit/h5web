@@ -6,7 +6,8 @@ import {
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import { mockValues, ScaleType } from '@h5web/shared';
+import { mockValues } from '@h5web/shared/mock/values';
+import { ScaleType } from '@h5web/shared/models-vis';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';

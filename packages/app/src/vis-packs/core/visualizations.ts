@@ -1,4 +1,3 @@
-import type { Dataset } from '@h5web/shared';
 import {
   hasArrayShape,
   hasComplexType,
@@ -10,7 +9,8 @@ import {
   hasPrintableCompoundType,
   hasPrintableType,
   hasScalarShape,
-} from '@h5web/shared';
+} from '@h5web/shared/guards';
+import type { Dataset } from '@h5web/shared/models-hdf5';
 import {
   FiActivity,
   FiCode,

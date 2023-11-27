@@ -7,7 +7,7 @@ import {
   SnapshotBtn,
   Toolbar,
 } from '@h5web/lib';
-import { COLOR_SCALE_TYPES } from '@h5web/shared';
+import { COLOR_SCALE_TYPES } from '@h5web/shared/utils';
 
 import type { SurfaceConfig } from './config';
 

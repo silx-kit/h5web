@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared';
+import type { Domain } from '@h5web/shared/models-vis';
 import type { NdArray } from 'ndarray';
 
 import type { ColorMap, TextureSafeTypedArray } from '../heatmap/models';

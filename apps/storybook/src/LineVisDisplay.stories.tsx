@@ -5,7 +5,7 @@ import {
   getMockDataArray,
   LineVis,
 } from '@h5web/lib';
-import { formatTooltipVal } from '@h5web/shared';
+import { formatTooltipVal } from '@h5web/shared/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import LineVisStoriesMeta, { Default } from './LineVis.stories';

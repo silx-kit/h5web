@@ -1,5 +1,5 @@
-import type { DType } from '@h5web/shared';
-import { DTypeClass, Endianness } from '@h5web/shared';
+import type { DType } from '@h5web/shared/models-hdf5';
+import { DTypeClass, Endianness } from '@h5web/shared/models-hdf5';
 
 import type {
   HsdsArrayType,

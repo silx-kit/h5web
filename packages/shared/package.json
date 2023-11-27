@@ -6,6 +6,21 @@
   "type": "module",
   "sideEffects": false,
   "main": "src/index.ts",
+  "exports": {
+    "./createMemo": "./src/createMemo.ts",
+    "./guards": "./src/guards.ts",
+    "./models-hdf5": "./src/models-hdf5.ts",
+    "./models-nexus": "./src/models-nexus.ts",
+    "./models-vis": "./src/models-vis.ts",
+    "./utils": "./src/utils.ts",
+    "./mock/metadata-utils": "./src/mock/metadata-utils.ts",
+    "./mock/metadata": "./src/mock/metadata.ts",
+    "./mock/models": "./src/mock/models.ts",
+    "./mock/utils": "./src/mock/utils.ts",
+    "./mock/values": "./src/mock/values.ts",
+    "./styles.css": "./src/styles.css",
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "build": "run-p build:*",
     "build:dts": "tsc --build tsconfig.build.json",

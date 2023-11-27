@@ -1,4 +1,4 @@
-import { ScaleType } from '@h5web/shared';
+import { ScaleType } from '@h5web/shared/models-vis';
 import type { Camera } from '@react-three/fiber';
 import type { RefObject } from 'react';
 import type { Matrix4, Object3D } from 'three';

@@ -1,5 +1,7 @@
 import { RgbVis } from '@h5web/lib';
-import type { AxisMapping, NumArray, NumArrayDataset } from '@h5web/shared';
+import type { NumArrayDataset } from '@h5web/shared/models-hdf5';
+import type { AxisMapping } from '@h5web/shared/models-nexus';
+import type { NumArray } from '@h5web/shared/models-vis';
 import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 

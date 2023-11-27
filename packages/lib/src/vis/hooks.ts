@@ -1,10 +1,7 @@
-import type { AnyNumArray, Domain } from '@h5web/shared';
-import {
-  createMemo,
-  getBounds,
-  getValidDomainForScale,
-  ScaleType,
-} from '@h5web/shared';
+import { createMemo } from '@h5web/shared/createMemo';
+import type { AnyNumArray, Domain } from '@h5web/shared/models-vis';
+import { ScaleType } from '@h5web/shared/models-vis';
+import { getBounds, getValidDomainForScale } from '@h5web/shared/utils';
 import { useRerender, useSyncedRef } from '@react-hookz/web';
 import type { Camera } from '@react-three/fiber';
 import { useFrame, useThree } from '@react-three/fiber';

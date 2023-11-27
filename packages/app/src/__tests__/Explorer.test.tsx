@@ -1,4 +1,4 @@
-import { mockFilepath } from '@h5web/shared';
+import { mockFilepath } from '@h5web/shared/mock/metadata';
 import { screen } from '@testing-library/react';
 
 import { SLOW_TIMEOUT } from '../providers/mock/mock-api';

@@ -7,7 +7,8 @@ import {
   useDomain,
   VisCanvas,
 } from '@h5web/lib';
-import { assertDefined, mockValues } from '@h5web/shared';
+import { assertDefined } from '@h5web/shared/guards';
+import { mockValues } from '@h5web/shared/mock/values';
 import type { Meta, StoryObj } from '@storybook/react';
 import { range } from 'lodash';
 import { useState } from 'react';

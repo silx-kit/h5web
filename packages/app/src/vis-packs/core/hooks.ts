@@ -1,11 +1,12 @@
+import { createMemo } from '@h5web/shared/createMemo';
+import { assertDatasetValue, isDefined } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Dataset,
-  NumArray,
   ScalarShape,
   Value,
-} from '@h5web/shared';
-import { assertDatasetValue, createMemo, isDefined } from '@h5web/shared';
+} from '@h5web/shared/models-hdf5';
+import type { NumArray } from '@h5web/shared/models-vis';
 import { castArray } from 'lodash';
 import type { NdArray, TypedArray } from 'ndarray';
 import { useMemo } from 'react';

@@ -9,7 +9,7 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import { COLOR_SCALE_TYPES } from '@h5web/shared';
+import { COLOR_SCALE_TYPES } from '@h5web/shared/utils';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 
 import type { HeatmapConfig } from '../heatmap/config';

@@ -1,5 +1,5 @@
-import type { ProvidedEntity } from '@h5web/shared';
-import { assertDefined } from '@h5web/shared';
+import { assertDefined } from '@h5web/shared/guards';
+import type { ProvidedEntity } from '@h5web/shared/models-hdf5';
 import { useState } from 'react';
 
 import { useDataContext } from '../providers/DataProvider';

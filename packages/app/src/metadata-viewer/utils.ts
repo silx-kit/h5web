@@ -1,11 +1,16 @@
-import type { ComplexArray, DType, H5WebComplex, Shape } from '@h5web/shared';
 import {
-  DTypeClass,
-  formatScalarComplex,
   isH5WebComplex,
   isNumericType,
   isScalarShape,
-} from '@h5web/shared';
+} from '@h5web/shared/guards';
+import type {
+  ComplexArray,
+  DType,
+  H5WebComplex,
+  Shape,
+} from '@h5web/shared/models-hdf5';
+import { DTypeClass } from '@h5web/shared/models-hdf5';
+import { formatScalarComplex } from '@h5web/shared/utils';
 
 export function renderShape(shape: Shape): string {
   if (shape === null) {

@@ -1,4 +1,4 @@
-import type { ProvidedEntity } from '@h5web/shared';
+import type { ProvidedEntity } from '@h5web/shared/models-hdf5';
 import type { ElementType, ReactNode } from 'react';
 import type { IconType } from 'react-icons';
 

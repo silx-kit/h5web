@@ -7,7 +7,7 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import { AXIS_SCALE_TYPES } from '@h5web/shared';
+import { AXIS_SCALE_TYPES } from '@h5web/shared/utils';
 import { FiItalic } from 'react-icons/fi';
 import { MdDomain, MdGridOn } from 'react-icons/md';
 

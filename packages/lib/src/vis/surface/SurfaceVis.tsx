@@ -1,5 +1,9 @@
-import type { ColorScaleType, Domain, NumArray } from '@h5web/shared';
-import { ScaleType } from '@h5web/shared';
+import type {
+  ColorScaleType,
+  Domain,
+  NumArray,
+} from '@h5web/shared/models-vis';
+import { ScaleType } from '@h5web/shared/models-vis';
 import type { NdArray } from 'ndarray';
 import type { PropsWithChildren } from 'react';
 

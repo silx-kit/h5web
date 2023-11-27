@@ -1,5 +1,6 @@
 import { useDomain } from '@h5web/lib';
-import type { ArrayShape, Domain } from '@h5web/shared';
+import type { ArrayShape } from '@h5web/shared/models-hdf5';
+import type { Domain } from '@h5web/shared/models-vis';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 import { useMemo } from 'react';
