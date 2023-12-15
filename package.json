@@ -55,7 +55,8 @@
       "allowedVersions": {
         "@phenomnomnominal/tsquery>typescript": "5.x",
         "eslint-plugin-etc>typescript": "5.x",
-        "react-aria-menubutton>react": "18.x"
+        "react-aria-menubutton>react": "18.x",
+        "@vitejs/plugin-react>vite": "5.x"
       }
     },
     "requiredScripts": [

@@ -179,6 +179,8 @@ other packages can inline them in their own `dist/index.d.ts`.
   projects
 - `pnpm --filter @h5web/<lib|app> analyze` - analyze a package's bundle (run
   only after building the package)
+- `pnpm --filter storybook exec storybook doctor` - diagnose problems with
+  Storybook installation
 
 ### Fixing and formatting
 

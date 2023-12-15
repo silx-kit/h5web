@@ -18,4 +18,5 @@ export default {
     '@storybook/addon-essentials',
   ],
   docs: { autodocs: true },
+  typescript: { reactDocgen: 'react-docgen' },
 };
