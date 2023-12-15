@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { Redirect, Route, Switch } from 'wouter';
 
 import H5GroveApp from './H5GroveApp';
 import H5WasmApp from './h5wasm/H5WasmApp';
@@ -17,16 +12,16 @@ window.H5WEB_EXPERIMENTAL = query.has('experimental');
 
 function DemoApp() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="h5grove" element={<H5GroveApp />} />
-        <Route path="mock" element={<MockApp />} />
-        <Route path="hsds" element={<HsdsApp />} />
-        <Route path="h5wasm" element={<H5WasmApp />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/h5grove" component={H5GroveApp} />
+      <Route path="/mock" component={MockApp} />
+      <Route path="/hsds" component={HsdsApp} />
+      <Route path="/h5wasm" component={H5WasmApp} />
+      <Route>
+        <Redirect to="/" replace />
+      </Route>
+    </Switch>
   );
 }
 

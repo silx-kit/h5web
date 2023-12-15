@@ -2,7 +2,7 @@ import useAxios from 'axios-hooks';
 import type { FormEvent } from 'react';
 import { useCallback, useEffect } from 'react';
 import { FiLoader } from 'react-icons/fi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useSearch } from 'wouter';
 
 import styles from './H5WasmApp.module.css';
 import type { H5File } from './models';
@@ -14,8 +14,8 @@ interface Props {
 function UrlForm(props: Props) {
   const { onH5File } = props;
 
-  const navigate = useNavigate();
-  const query = new URLSearchParams(useLocation().search);
+  const [, navigate] = useLocation();
+  const query = new URLSearchParams(useSearch());
   const url = query.get('url') || '';
 
   const [{ loading, error }, execute] = useAxios<ArrayBuffer>(

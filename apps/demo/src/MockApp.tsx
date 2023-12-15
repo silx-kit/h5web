@@ -1,10 +1,10 @@
 import { App, MockProvider } from '@h5web/app';
-import { useLocation } from 'react-router-dom';
+import { useSearch } from 'wouter';
 
 import { getFeedbackURL } from './utils';
 
 function MockApp() {
-  const query = new URLSearchParams(useLocation().search);
+  const query = new URLSearchParams(useSearch());
 
   return (
     <MockProvider>
