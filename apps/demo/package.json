@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "description": "H5Web demo site",
+  "type": "module",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -33,7 +34,7 @@
     "eslint": "8.28.0",
     "eslint-config-galex": "4.5.2",
     "typescript": "5.0.4",
-    "vite": "4.4.9",
+    "vite": "5.0.9",
     "vite-plugin-checker": "0.6.2",
     "vite-plugin-eslint": "1.8.1"
   }
