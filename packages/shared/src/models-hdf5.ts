@@ -164,14 +164,14 @@ interface UnknownType {
 export type Primitive<T extends DType> = T extends NumericType
   ? number
   : T extends StringType
-  ? string
-  : T extends BooleanType
-  ? boolean
-  : T extends ComplexType
-  ? H5WebComplex
-  : T extends PrintableCompoundType
-  ? Primitive<PrintableType>[]
-  : unknown;
+    ? string
+    : T extends BooleanType
+      ? boolean
+      : T extends ComplexType
+        ? H5WebComplex
+        : T extends PrintableCompoundType
+          ? Primitive<PrintableType>[]
+          : unknown;
 
 export type ArrayValue<T extends DType> =
   | Primitive<T>[]
@@ -181,8 +181,8 @@ export type Value<D extends Dataset> = D extends Dataset<infer S, infer T>
   ? S extends ScalarShape
     ? Primitive<T>
     : S extends ArrayShape
-    ? ArrayValue<T>
-    : never
+      ? ArrayValue<T>
+      : never
   : never;
 
 export type AttributeValues = Record<string, unknown>;
