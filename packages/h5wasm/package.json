@@ -46,20 +46,20 @@
   },
   "dependencies": {
     "h5wasm": "0.7.0",
-    "nanoid": "5.0.1"
+    "nanoid": "5.0.4"
   },
   "devDependencies": {
     "@h5web/app": "workspace:*",
     "@h5web/shared": "workspace:*",
-    "@rollup/plugin-alias": "5.0.0",
-    "@types/node": "^18.17.15",
-    "@types/react": "^18.2.21",
-    "@vitejs/plugin-react": "4.0.4",
+    "@rollup/plugin-alias": "5.1.0",
+    "@types/node": "^18.19.3",
+    "@types/react": "^18.2.45",
+    "@vitejs/plugin-react": "4.2.1",
     "eslint": "8.28.0",
     "eslint-config-galex": "4.5.2",
     "react": "18.2.0",
-    "rollup": "3.29.1",
-    "rollup-plugin-dts": "6.0.2",
+    "rollup": "3.29.4",
+    "rollup-plugin-dts": "6.1.0",
     "typescript": "5.0.4",
     "vite": "4.4.9"
   }

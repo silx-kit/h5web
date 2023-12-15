@@ -73,8 +73,8 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
       hsdsClass === 'H5T_FLOAT'
         ? DTypeClass.Float
         : sign === 'U'
-        ? DTypeClass.Unsigned
-        : DTypeClass.Integer,
+          ? DTypeClass.Unsigned
+          : DTypeClass.Integer,
     endianness: Endianness[endianness as 'BE' | 'LE'],
     size: Number.parseInt(size, 10),
   };

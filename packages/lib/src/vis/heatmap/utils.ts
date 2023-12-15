@@ -76,8 +76,8 @@ export function getSafeDomain(
       minError: safeMinGreater
         ? DomainError.CustomMaxFallback
         : !isMinSupported
-        ? DomainError.InvalidMinWithScale
-        : undefined,
+          ? DomainError.InvalidMinWithScale
+          : undefined,
       maxError: !isMaxSupported ? DomainError.InvalidMaxWithScale : undefined,
     },
   ];
