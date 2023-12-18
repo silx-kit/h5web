@@ -143,8 +143,6 @@ export { default as LineGeometry } from './vis/line/lineGeometry';
 export { default as GlyphsGeometry } from './vis/line/glyphsGeometry';
 export { default as ErrorBarsGeometry } from './vis/line/errorBarsGeometry';
 export { default as ErrorCapsGeometry } from './vis/line/errorCapsGeometry';
-export { default as ScatterPointsGeometry } from './vis/scatter/scatterPointsGeometry';
-export { default as SurfaceMeshGeometry } from './vis/surface/surfaceMeshGeometry';
 
 // Constants
 export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared/utils';
@@ -211,6 +209,7 @@ export { default as ScalarVis } from './vis/scalar/ScalarVis';
 export { default as RgbVis } from './vis/rgb/RgbVis';
 export { default as VisMesh } from './vis/shared/VisMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
+export { default as ScatterPointsGeometry } from './vis/scatter/scatterPointsGeometry';
 export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
 export { default as TiledTooltipMesh } from './vis/tiles/TiledTooltipMesh';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
@@ -223,4 +222,5 @@ export {
 export type { TiledHeatmapMeshProps } from './vis/tiles/TiledHeatmapMesh';
 export { default as SurfaceVis } from './vis/surface/SurfaceVis';
 export type { SurfaceVisProps } from './vis/surface/SurfaceVis';
+export { default as SurfaceMeshGeometry } from './vis/surface/surfaceMeshGeometry';
 export { default as R3FCanvas } from './vis/shared/R3FCanvas';
