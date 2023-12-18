@@ -1,7 +1,7 @@
 import type { NumArray } from '@h5web/shared/models-vis';
 
-import { useVisCanvasContext } from '../..';
 import { useGeometry } from '../hooks';
+import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import ErrorBarsGeometry from './errorBarsGeometry';
 import ErrorCapsGeometry from './errorCapsGeometry';
 import GlyphMaterial from './GlyphMaterial';

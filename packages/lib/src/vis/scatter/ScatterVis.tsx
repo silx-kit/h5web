@@ -1,3 +1,4 @@
+import { assertDefined, assertLength } from '@h5web/shared/guards';
 import type {
   ColorScaleType,
   Domain,
@@ -10,7 +11,6 @@ import { useTooltip } from '@visx/tooltip';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 
-import { assertDefined, assertLength } from '../..';
 import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
 import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
