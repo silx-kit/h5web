@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { FiChevronsRight } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 
 import styles from './Home.module.css';
 
@@ -40,7 +40,7 @@ function Home() {
         <main className={styles.demos}>
           <section>
             <h2>
-              <Link to="h5grove" className={styles.demoLink}>
+              <Link to="/h5grove" className={styles.demoLink}>
                 H5Grove <FiChevronsRight />
               </Link>
             </h2>
@@ -61,19 +61,19 @@ function Home() {
             </p>
             <ul className={styles.demoFiles}>
               <li>
-                <Link to="h5grove">
+                <Link to="/h5grove">
                   <strong>water_224.h5</strong>
                 </Link>{' '}
                 (default) - a typical NeXus file with various real-world
                 datasets to demonstrate H5Web's core visualizations.
               </li>
               <li>
-                <Link to="h5grove?file=compressed.h5">compressed.h5</Link> - a
+                <Link to="/h5grove?file=compressed.h5">compressed.h5</Link> - a
                 file with datasets compressed with various filters to test
                 decompression.
               </li>
               <li>
-                <Link to="h5grove?file=epics.h5">epics.h5</Link> - a test file
+                <Link to="/h5grove?file=epics.h5">epics.h5</Link> - a test file
                 from the{' '}
                 <a
                   href="https://epics.anl.gov/"
@@ -87,25 +87,25 @@ function Home() {
                 group (Argonne National Laboratory).
               </li>
               <li>
-                <Link to="h5grove?file=grove.h5">grove.h5</Link> - a file used
+                <Link to="/h5grove?file=grove.h5">grove.h5</Link> - a file used
                 to test the <code>H5GroveProvider</code> provider; it contains
                 datasets with <code>NaN</code>, <code>Infinity</code>, boolean
                 and complex values, as well as RGB images and 4D stacks.
               </li>
               <li>
-                <Link to="h5grove?file=links.h5">links.h5</Link> - a file with
+                <Link to="/h5grove?file=links.h5">links.h5</Link> - a file with
                 external links, soft links and a virtual dataset to test link
                 resolution.
               </li>
               <li>
-                <Link to="h5grove?file=tall.h5">tall.h5</Link> - the demo file
+                <Link to="/h5grove?file=tall.h5">tall.h5</Link> - the demo file
                 of HSDS.
               </li>
             </ul>
           </section>
           <section>
             <h2>
-              <Link to="h5wasm" className={styles.demoLink}>
+              <Link to="/h5wasm" className={styles.demoLink}>
                 H5Wasm <FiChevronsRight />
               </Link>
             </h2>
@@ -149,7 +149,7 @@ function Home() {
                   <Fragment key={filename}>
                     {index > 0 && ', '}
                     <Link
-                      to={`h5wasm?url=${encodeURIComponent(
+                      to={`/h5wasm?url=${encodeURIComponent(
                         `https://www.silx.org/pub/h5web/${filename}`,
                       )}`}
                     >
@@ -162,7 +162,7 @@ function Home() {
           </section>
           <section>
             <h2>
-              <Link to="hsds" className={styles.demoLink}>
+              <Link to="/hsds" className={styles.demoLink}>
                 HSDS <FiChevronsRight />
               </Link>
             </h2>
@@ -180,18 +180,18 @@ function Home() {
             <p>
               This demo communicates with an HSDS test server, which serves the
               same files as the H5Grove demo above:{' '}
-              <Link to="hsds">water_224.h5</Link> (<strong>default</strong>),{' '}
-              <Link to="hsds?file=compressed.h5">compressed.h5</Link> (note that
-              bitshuffle is not yet supported by HSDS),{' '}
-              <Link to="hsds?file=epics.h5">epics.h5</Link>,{' '}
-              <Link to="hsds?file=grove.h5">grove.h5</Link>,{' '}
-              <Link to="hsds?file=links.h5">links.h5</Link>,{' '}
-              <Link to="hsds?file=tall.h5">tall.h5</Link>.
+              <Link to="/hsds">water_224.h5</Link> (<strong>default</strong>),{' '}
+              <Link to="/hsds?file=compressed.h5">compressed.h5</Link> (note
+              that bitshuffle is not yet supported by HSDS),{' '}
+              <Link to="/hsds?file=epics.h5">epics.h5</Link>,{' '}
+              <Link to="/hsds?file=grove.h5">grove.h5</Link>,{' '}
+              <Link to="/hsds?file=links.h5">links.h5</Link>,{' '}
+              <Link to="/hsds?file=tall.h5">tall.h5</Link>.
             </p>
           </section>
           <section>
             <h2>
-              <Link to="mock" className={styles.demoLink}>
+              <Link to="/mock" className={styles.demoLink}>
                 Mock data <FiChevronsRight />
               </Link>
             </h2>

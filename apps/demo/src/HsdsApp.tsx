@@ -1,5 +1,5 @@
 import { App, assertEnvVar, HsdsProvider } from '@h5web/app';
-import { useLocation } from 'react-router-dom';
+import { useSearch } from 'wouter';
 
 import { getFeedbackURL } from './utils';
 
@@ -16,7 +16,7 @@ function HsdsApp() {
   assertEnvVar(SUBDOMAIN, 'VITE_HSDS_SUBDOMAIN');
   assertEnvVar(FILEPATH, 'VITE_HSDS_FALLBACK_FILEPATH');
 
-  const query = new URLSearchParams(useLocation().search);
+  const query = new URLSearchParams(useSearch());
   const filepath = `${SUBDOMAIN}${query.get('file') || FILEPATH}`;
 
   return (
