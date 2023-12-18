@@ -323,6 +323,11 @@ Here is the summarised workflow (also described with screenshots in
 - The component library's Storybook documentation site is deployed to GitHub
   Pages on every release: https://h5web-docs.panosc.eu
 
+> Note that the version of pnpm that Netlify installs by default is outdated and
+> incompatible with this monorepo. We use the
+> [`packageManager` entry](https://docs.netlify.com/configure-builds/manage-dependencies/#pnpm)
+> in the root `package.json` to specify a more recent version.
+
 ## Release process
 
 To release a new version and publish the packages to NPM:
