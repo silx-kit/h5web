@@ -1,17 +1,21 @@
 import {
+  assertDefined,
   HeatmapMesh,
+  mockValues,
   Pan,
   ResetZoomButton,
   SelectToZoom,
+  toTypedNdArray,
+  useDomain,
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import { mockValues } from '@h5web/shared/mock/values';
 import { ScaleType } from '@h5web/shared/models-vis';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
-import { useMockData } from './hooks';
+
+const dataArray = toTypedNdArray(mockValues.twoD(), Float32Array);
 
 const meta = {
   title: 'Building Blocks/Interactions/SelectToZoom',
@@ -35,13 +39,16 @@ type Story = StoryObj<typeof meta>;
 
 export const InsideAutoAspectCanvas = {
   render: (args) => {
-    const { values, domain } = useMockData(mockValues.twoD, [20, 41]);
     const { modifierKey } = args;
+    const [rows, cols] = dataArray.shape;
+
+    const domain = useDomain(dataArray);
+    assertDefined(domain);
 
     return (
       <VisCanvas
-        abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
-        ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+        abscissaConfig={{ visDomain: [0, cols], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, rows], showGrid: true }}
       >
         <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
         <Zoom />
@@ -49,7 +56,7 @@ export const InsideAutoAspectCanvas = {
         <ResetZoomButton />
 
         <HeatmapMesh
-          values={values}
+          values={dataArray}
           domain={domain}
           colorMap="Viridis"
           scaleType={ScaleType.Linear}
@@ -61,13 +68,16 @@ export const InsideAutoAspectCanvas = {
 
 export const InsideEqualAspectCanvas = {
   render: (args) => {
-    const { values, domain } = useMockData(mockValues.twoD, [20, 41]);
     const { modifierKey } = args;
+    const [rows, cols] = dataArray.shape;
+
+    const domain = useDomain(dataArray);
+    assertDefined(domain);
 
     return (
       <VisCanvas
-        abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
-        ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+        abscissaConfig={{ visDomain: [0, cols], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, rows], showGrid: true }}
         aspect="equal"
       >
         <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
@@ -76,7 +86,7 @@ export const InsideEqualAspectCanvas = {
         <ResetZoomButton />
 
         <HeatmapMesh
-          values={values}
+          values={dataArray}
           domain={domain}
           colorMap="Viridis"
           scaleType={ScaleType.Linear}

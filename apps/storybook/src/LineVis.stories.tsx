@@ -3,22 +3,25 @@ import {
   getCombinedDomain,
   getDomain,
   getDomains,
-  getMockDataArray,
   LineVis,
   mockValues,
   ScaleType,
 } from '@h5web/lib';
-import { AXIS_SCALE_TYPES, toTypedNdArray } from '@h5web/shared/utils';
+import {
+  AXIS_SCALE_TYPES,
+  createArrayFromView,
+  toTypedNdArray,
+} from '@h5web/shared/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
+const dataArray = mockValues.oneD_linear();
 
-const primaryArray = ndarray(mockValues.twoD[0]);
-const secondaryArray = ndarray(mockValues.secondary[0]);
-const tertiaryArray = ndarray(mockValues.tertiary[0]);
+const primaryArray = createArrayFromView(mockValues.twoD().pick(0));
+const secondaryArray = createArrayFromView(mockValues.secondary().pick(0));
+const tertiaryArray = createArrayFromView(mockValues.tertiary().pick(0));
 
 const abscissas = Array.from(
   { length: dataArray.size },

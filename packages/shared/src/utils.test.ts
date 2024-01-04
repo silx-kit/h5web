@@ -1,10 +1,10 @@
-import { intType, makeGroup, makeScalarDataset } from './mock/metadata-utils';
+import { group, scalar } from './mock/metadata-utils';
 import { buildEntityPath, getChildEntity } from './utils';
 
 describe('getChildEntity', () => {
-  const dataset = makeScalarDataset('dataset', intType);
-  const childGroup = makeGroup('group');
-  const rootGroup = makeGroup('root', [childGroup, dataset]);
+  const dataset = scalar('dataset', 0);
+  const childGroup = group('group');
+  const rootGroup = group('root', [childGroup, dataset]);
 
   it('should return child entity', () => {
     expect(getChildEntity(rootGroup, 'dataset')).toBe(dataset);

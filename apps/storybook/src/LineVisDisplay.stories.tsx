@@ -2,15 +2,15 @@ import {
   Annotation,
   CurveType,
   getDomain,
-  getMockDataArray,
   LineVis,
+  mockValues,
 } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import LineVisStoriesMeta, { Default } from './LineVis.stories';
 
-const dataArray = getMockDataArray('/nD_datasets/oneD_linear');
+const dataArray = mockValues.oneD_linear();
 const domain = getDomain(dataArray.data);
 
 const meta = {

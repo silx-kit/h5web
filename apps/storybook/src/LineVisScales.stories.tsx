@@ -1,10 +1,10 @@
 import type { LineVis } from '@h5web/lib';
-import { getMockDataArray, ScaleType } from '@h5web/lib';
+import { mockValues, ScaleType } from '@h5web/lib';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import LineVisStoriesMeta, { Default } from './LineVis.stories';
 
-const dataArrayForXLog = getMockDataArray('/nexus_entry/log_spectrum/X_log');
+const dataArrayForXLog = mockValues.X_log(); // eslint-disable-line new-cap
 
 const meta = {
   ...LineVisStoriesMeta,

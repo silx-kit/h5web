@@ -7,6 +7,7 @@ import {
   Pan,
   ResetZoomButton,
   ScaleType,
+  toTypedNdArray,
   useDomain,
   VisCanvas,
   Zoom,
@@ -15,9 +16,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { range } from 'lodash';
 
 import FillHeight from './decorators/FillHeight';
-import { useMockData } from './hooks';
 
-const { oneD, twoD } = mockValues;
+const dataArray1D = mockValues.oneD();
+const dataArray2D = toTypedNdArray(mockValues.twoD(), Float32Array);
 
 const meta = {
   title: 'Building Blocks/Interactions/AxialSelectToZoom',
@@ -44,12 +45,12 @@ type Story = StoryObj<typeof meta>;
 const Default = {
   render: (args) => {
     const { modifierKey } = args;
-    const domain = useDomain(oneD);
+    const domain = useDomain(dataArray1D);
     assertDefined(domain);
 
     return (
       <VisCanvas
-        abscissaConfig={{ visDomain: [0, oneD.length], showGrid: true }}
+        abscissaConfig={{ visDomain: [0, dataArray1D.size], showGrid: true }}
         ordinateConfig={{ visDomain: domain, showGrid: true }}
       >
         <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
@@ -57,7 +58,11 @@ const Default = {
         <AxialSelectToZoom {...args} />
         <ResetZoomButton />
 
-        <Line abscissas={range(oneD.length)} ordinates={oneD} color="blue" />
+        <Line
+          abscissas={range(dataArray1D.size)}
+          ordinates={dataArray1D.data}
+          color="blue"
+        />
       </VisCanvas>
     );
   },
@@ -110,12 +115,14 @@ export const Disabled = {
 
 export const DisabledInsideEqualAspectCanvas = {
   render: (args) => {
-    const { values, domain } = useMockData(twoD, [20, 41]);
+    const [rows, cols] = dataArray2D.shape;
+    const domain = useDomain(dataArray2D);
+    assertDefined(domain);
 
     return (
       <VisCanvas
-        abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
-        ordinateConfig={{ visDomain: [0, 20], showGrid: true }}
+        abscissaConfig={{ visDomain: [0, cols], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, rows], showGrid: true }}
         aspect="equal"
       >
         <Pan modifierKey="Control" />
@@ -124,7 +131,7 @@ export const DisabledInsideEqualAspectCanvas = {
         <ResetZoomButton />
 
         <HeatmapMesh
-          values={values}
+          values={dataArray2D}
           domain={domain}
           colorMap="Viridis"
           scaleType={ScaleType.Linear}

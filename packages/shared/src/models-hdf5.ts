@@ -74,7 +74,7 @@ export type NumArrayDataset = Dataset<ArrayShape, NumericType>;
 
 export type Shape = ArrayShape | ScalarShape | null;
 export type ArrayShape = number[];
-export type ScalarShape = never[];
+export type ScalarShape = [];
 
 /* ---------------- */
 /* ----- TYPE ----- */
@@ -154,7 +154,7 @@ interface EnumType {
   mapping: Record<string, number>;
 }
 
-interface UnknownType {
+export interface UnknownType {
   class: DTypeClass.Unknown;
 }
 

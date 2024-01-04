@@ -95,6 +95,8 @@ export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';
 export type { VisCanvasContextValue } from './vis/shared/VisCanvasProvider';
 
 // Utilities
+export { toTypedNdArray } from '@h5web/shared/utils';
+
 export {
   getDomain,
   getDomains,
@@ -197,8 +199,8 @@ export type {
 
 // Mock data and utilities
 export { mockValues } from '@h5web/shared/mock/values';
-export { mockMetadata } from '@h5web/shared/mock/metadata';
-export { findMockEntity, getMockDataArray } from '@h5web/shared/mock/utils';
+export { makeMockFile } from '@h5web/shared/mock/metadata';
+export { findMockEntity } from '@h5web/shared/mock/utils';
 
 // Undocumented and/or experimental
 export { default as SnapshotBtn } from './toolbar/controls/SnapshotBtn';

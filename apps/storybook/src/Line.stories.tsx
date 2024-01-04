@@ -1,11 +1,18 @@
-import { DefaultInteractions, Line, useDomain, VisCanvas } from '@h5web/lib';
+import {
+  DefaultInteractions,
+  Line,
+  mockValues,
+  useDomain,
+  VisCanvas,
+} from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { mockValues } from '@h5web/shared/mock/values';
 import { ScaleType } from '@h5web/shared/models-vis';
 import type { Meta, StoryObj } from '@storybook/react';
 import { range } from 'lodash';
 
 import FillHeight from './decorators/FillHeight';
+
+const dataArray = mockValues.oneD();
 
 const meta = {
   title: 'Building Blocks/Line',
@@ -16,8 +23,8 @@ const meta = {
     controls: { sort: 'requiredFirst' },
   },
   args: {
-    abscissas: range(0, mockValues.oneD.length),
-    ordinates: mockValues.oneD,
+    abscissas: range(0, dataArray.size),
+    ordinates: dataArray.data,
     color: 'blue',
     visible: true,
   },

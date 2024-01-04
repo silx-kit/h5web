@@ -1,8 +1,8 @@
 import {
   getDomain,
-  getMockDataArray,
   HeatmapVis,
   INTERPOLATORS,
+  mockValues,
   ScaleType,
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
@@ -12,7 +12,7 @@ import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = getMockDataArray('/nD_datasets/twoD');
+const dataArray = mockValues.twoD();
 const domain = getDomain(dataArray.data);
 
 const alphaArray = ndarray(

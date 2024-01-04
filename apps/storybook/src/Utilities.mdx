@@ -173,6 +173,24 @@ getAxisDomain([4, 2, 0, -2], ScaleType.Log); // [4, 2]);
 getAxisDomain([4, 2, 0], ScaleType.Linear, 0.5); // [6, -2])
 ```
 
+#### toTypedNdArray
+
+Convert an ndarray of primitive numbers into a typed ndarray.
+This may be useful when working with components such as `HeatmapMesh` that require WebGL-compatible typed ndarrays.
+
+```ts
+toTypedNdArray<T extends TypedArrayConstructor>(
+  arr: NdArray<NumArray>,
+  Constructor: T,
+): NdArray<InstanceType<T>>;
+
+const arr = ndarray([0, 1, 2]); // NdArray<number[]>
+toTypedNdArray(arr, Float32Array) // NdArray<Float32Array>
+toTypedNdArray(arr, Uint16Array) // NdArray<Uint16Array>
+```
+
+> Note that values outside of the representable range of the target typed array will be [normalized](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#value_encoding_and_normalization).
+
 #### createBufferAttr
 
 Create a Three.js `BufferAttribute` for passing vertex data to shaders. Typically called when
@@ -389,14 +407,22 @@ writing your own geometries:
 
 ### Mock data
 
-The library exposes a utility function to retrieve a mock entity's metadata and a mock dataset's value as ndarray for testing purposes.
-You can browse through the available mock data at https://h5web.panosc.eu/mock.
+The `mockValues` object can be used to generate mock ndarrays for testing purposes:
 
 ```ts
-import { findMockEntity, getMockDataArray } from '@h5web/lib';
+import { mockValues } from '@h5web/lib';
 
-const entity = findMockEntity('/nD_datasets/twoD');
-const dataArray = getMockDataArray('/nD_datasets/twoD');
+const dataArray = mockValues.twoD();
+```
+
+The library also exposes the `makeMockFile` utility function that is used by the [mock demo](https://h5web.panosc.eu/mock) to generate mock metadata and values.
+You can retrieve entities from the generated mock file by their paths using the `findMockEntity` utility function:
+
+```ts
+import { findMockEntity, makeMockFile } from '@h5web/lib';
+
+const mockFile = makeMockFile();
+const entity = findMockEntity(mockFile, '/nD_datasets/twoD');
 ```
 
 ### Box

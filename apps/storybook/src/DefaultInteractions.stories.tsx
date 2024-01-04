@@ -1,17 +1,19 @@
 import {
+  assertDefined,
   DefaultInteractions,
   HeatmapMesh,
   mockValues,
   ResetZoomButton,
   ScaleType,
+  toTypedNdArray,
+  useDomain,
   VisCanvas,
 } from '@h5web/lib';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
-import { useMockData } from './hooks';
 
-const { twoD } = mockValues;
+const dataArray = toTypedNdArray(mockValues.twoD(), Float32Array);
 
 const meta = {
   title: 'Building Blocks/Interactions/DefaultInteractions',
@@ -34,19 +36,21 @@ type Story = StoryObj<typeof meta>;
 
 export const InsideAutoAspectCanvas = {
   render: (args) => {
-    const { values, domain } = useMockData(twoD, [20, 41]);
+    const [rows, cols] = dataArray.shape;
+    const domain = useDomain(dataArray);
+    assertDefined(domain);
 
     return (
       <VisCanvas
-        abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
-        ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+        abscissaConfig={{ visDomain: [0, cols], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, rows], showGrid: true }}
         aspect="auto"
       >
         <DefaultInteractions {...args} />
         <ResetZoomButton />
 
         <HeatmapMesh
-          values={values}
+          values={dataArray}
           domain={domain}
           colorMap="Viridis"
           scaleType={ScaleType.Linear}
@@ -58,19 +62,21 @@ export const InsideAutoAspectCanvas = {
 
 export const InsideEqualAspectCanvas = {
   render: (args) => {
-    const { values, domain } = useMockData(twoD, [20, 41]);
+    const [rows, cols] = dataArray.shape;
+    const domain = useDomain(dataArray);
+    assertDefined(domain);
 
     return (
       <VisCanvas
-        abscissaConfig={{ visDomain: [0, values.shape[1]], showGrid: true }}
-        ordinateConfig={{ visDomain: [0, values.shape[0]], showGrid: true }}
+        abscissaConfig={{ visDomain: [0, cols], showGrid: true }}
+        ordinateConfig={{ visDomain: [0, rows], showGrid: true }}
         aspect="equal"
       >
         <DefaultInteractions {...args} />
         <ResetZoomButton />
 
         <HeatmapMesh
-          values={values}
+          values={dataArray}
           domain={domain}
           colorMap="Viridis"
           scaleType={ScaleType.Linear}

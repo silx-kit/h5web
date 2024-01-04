@@ -458,7 +458,9 @@ export function isNdArray<T extends Data>(
   return 'data' in arr;
 }
 
-export function isTypedArray<T, U extends TypedArray>(arr: U | T[]): arr is U {
+export function isTypedArray<T extends TypedArray>(
+  arr: T | unknown[],
+): arr is T {
   return !Array.isArray(arr);
 }
 

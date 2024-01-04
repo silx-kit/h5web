@@ -1,4 +1,4 @@
-import { getMockDataArray, MatrixVis } from '@h5web/lib';
+import { MatrixVis, mockValues } from '@h5web/lib';
 import type { H5WebComplex } from '@h5web/shared/models-hdf5';
 import { createComplexFormatter, toTypedNdArray } from '@h5web/shared/utils';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -6,10 +6,8 @@ import { format } from 'd3-format';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = getMockDataArray('/nD_datasets/twoD');
-const complexDataArray = getMockDataArray<H5WebComplex>(
-  '/nD_datasets/twoD_cplx',
-);
+const dataArray = mockValues.twoD();
+const complexDataArray = mockValues.twoD_cplx();
 
 const formatMatrixValue = format('.3e');
 const formatMatrixComplex = createComplexFormatter('.2e', true);
