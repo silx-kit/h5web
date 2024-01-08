@@ -21,6 +21,7 @@ import {
   withNxAttr,
 } from './metadata-utils';
 import type { MockFile } from './models';
+import { cplx } from './values';
 
 export function makeMockFile(): MockFile {
   return nxGroup('source.h5', 'NXroot', {
@@ -33,10 +34,14 @@ export function makeMockFile(): MockFile {
         datatype('datatype', compoundType({ int: intType() })),
         scalar('raw', { int: 42 }),
         scalar('raw_large', undefined), // generated dynamically by `MockProvider`
-        scalar('scalar_num', 0),
-        scalar('scalar_str', 'foo'),
-        scalar('scalar_bool', true),
-        scalar('scalar_cplx', [1, 5]),
+        scalar('scalar_num', 0, { attributes: [scalarAttr('attr', 0)] }),
+        scalar('scalar_str', 'foo', {
+          attributes: [scalarAttr('attr', 'foo')],
+        }),
+        scalar('scalar_bool', true, { attributes: [scalarAttr('attr', true)] }),
+        scalar('scalar_cplx', [1, 5], {
+          attributes: [scalarAttr('attr', cplx(1, 5))],
+        }),
         unresolved('unresolved_hard_link', 'Hard'),
         unresolved('unresolved_soft_link', 'Soft', '/foo'),
         unresolved(
