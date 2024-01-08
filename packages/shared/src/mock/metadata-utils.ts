@@ -141,8 +141,8 @@ export function withImageAttr<T extends Entity>(entity: T): T {
 type EntityOpts = Partial<Pick<Entity, 'attributes' | 'link'>>;
 type GroupOpts = EntityOpts & { isRoot?: boolean; children?: ChildEntity[] };
 
-function prefixChildrenPaths(gr: GroupWithChildren, parentPath: string): void {
-  gr.children.forEach((c) => {
+function prefixChildrenPaths(grp: GroupWithChildren, parentPath: string): void {
+  grp.children.forEach((c) => {
     c.path = buildEntityPath(parentPath, c.path.slice(1));
 
     if (isGroup(c) && hasChildren(c)) {
@@ -159,7 +159,7 @@ export function group(
   const { attributes = [], link, isRoot = false } = opts;
   const path = isRoot ? '/' : `/${name}`;
 
-  const gr: GroupWithChildren = {
+  const grp: GroupWithChildren = {
     name,
     path,
     kind: EntityKind.Group,
@@ -168,8 +168,8 @@ export function group(
     link,
   };
 
-  prefixChildrenPaths(gr, path);
-  return gr;
+  prefixChildrenPaths(grp, path);
+  return grp;
 }
 
 export function dataset<S extends Shape, T extends DType>(

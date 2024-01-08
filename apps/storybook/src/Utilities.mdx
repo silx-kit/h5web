@@ -405,7 +405,7 @@ writing your own geometries:
 - `ScatterPointsGeometry`, used in [`ScatterPoints`](https://h5web-docs.panosc.eu/?path=/docs/visualizations-scattervis--docs) (undocumented)
 - `SurfaceMeshGeometry`, used in [`SurfaceMesh`](https://h5web-docs.panosc.eu/?path=/docs/experimental-surfacevis--docs) (experimental)
 
-### Mock data
+### Mock values
 
 The `mockValues` object can be used to generate mock ndarrays for testing purposes:
 
@@ -413,16 +413,6 @@ The `mockValues` object can be used to generate mock ndarrays for testing purpos
 import { mockValues } from '@h5web/lib';
 
 const dataArray = mockValues.twoD();
-```
-
-The library also exposes the `makeMockFile` utility function that is used by the [mock demo](https://h5web.panosc.eu/mock) to generate mock metadata and values.
-You can retrieve entities from the generated mock file by their paths using the `findMockEntity` utility function:
-
-```ts
-import { findMockEntity, makeMockFile } from '@h5web/lib';
-
-const mockFile = makeMockFile();
-const entity = findMockEntity(mockFile, '/nD_datasets/twoD');
 ```
 
 ### Box
