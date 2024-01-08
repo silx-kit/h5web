@@ -42,6 +42,14 @@ export function makeMockFile(): MockFile {
         scalar('scalar_cplx', [1, 5], {
           attributes: [scalarAttr('attr', cplx(1, 5))],
         }),
+        scalar('scalar_compound', ['foo', 2], {
+          type: compoundType({ str: strType(), int: intType(8) }),
+          attributes: [
+            scalarAttr('attr', ['foo', 2], {
+              type: compoundType({ str: strType(), int: intType(8) }),
+            }),
+          ],
+        }),
         unresolved('unresolved_hard_link', 'Hard'),
         unresolved('unresolved_soft_link', 'Soft', '/foo'),
         unresolved(
