@@ -1,4 +1,5 @@
-import { dataset, intType } from '@h5web/shared/mock/metadata-utils';
+import { intType } from '@h5web/shared/hdf5-utils';
+import { dataset } from '@h5web/shared/mock/metadata-utils';
 
 import { guessKeepRatio } from './utils';
 

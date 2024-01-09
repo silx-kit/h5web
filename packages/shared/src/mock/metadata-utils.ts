@@ -2,88 +2,29 @@ import { hasChildren, isGroup } from '../guards';
 import type {
   ArrayShape,
   Attribute,
-  BooleanType,
   ChildEntity,
-  ComplexType,
-  CompoundType,
   Datatype,
   DType,
   Entity,
   Group,
   GroupWithChildren,
   LinkClass,
-  NumericType,
-  PrintableCompoundType,
-  PrintableType,
   ScalarShape,
   Shape,
-  StringType,
-  UnknownType,
   UnresolvedEntity,
 } from '../hdf5-models';
-import { DTypeClass, Endianness, EntityKind } from '../hdf5-models';
-import { buildEntityPath } from '../hdf5-utils';
+import { EntityKind } from '../hdf5-models';
+import {
+  boolType,
+  buildEntityPath,
+  cplxType,
+  floatType,
+  strType,
+  unknownType,
+} from '../hdf5-utils';
 import type { SilxStyle } from '../nexus-models';
 import type { MockAttribute, MockDataset, MockValueId } from './models';
 import { mockValues } from './values';
-
-/* ----------------- */
-/* ----- TYPES ----- */
-
-export function intType(
-  size: 8 | 16 | 32 | 64 = 32,
-  unsigned = false,
-  endianness = Endianness.LE,
-): NumericType {
-  return {
-    class: unsigned ? DTypeClass.Unsigned : DTypeClass.Integer,
-    endianness,
-    size,
-  };
-}
-
-export function floatType(
-  size: 16 | 32 | 64 = 32,
-  endianness = Endianness.LE,
-): NumericType {
-  return { class: DTypeClass.Float, endianness, size };
-}
-
-export function strType(
-  charSet: StringType['charSet'] = 'ASCII',
-  length?: number,
-): StringType {
-  return {
-    class: DTypeClass.String,
-    charSet,
-    ...(length !== undefined && { length }),
-  };
-}
-
-export function boolType(): BooleanType {
-  return { class: DTypeClass.Bool };
-}
-
-export function cplxType(
-  realType: NumericType,
-  imagType = realType,
-): ComplexType {
-  return { class: DTypeClass.Complex, realType, imagType };
-}
-
-export function compoundType(fields: Record<string, DType>): CompoundType {
-  return { class: DTypeClass.Compound, fields };
-}
-
-export function printableCompoundType(
-  fields: Record<string, PrintableType>,
-): PrintableCompoundType {
-  return { class: DTypeClass.Compound, fields };
-}
-
-export function unknownType(): UnknownType {
-  return { class: DTypeClass.Unknown };
-}
 
 function guessType(value: unknown): DType {
   if (typeof value === 'number') {
@@ -137,10 +78,7 @@ export function arrayAttr(
 ): MockAttribute<ArrayShape> {
   const { type } = opts;
 
-  return withMockValue(
-    attr(name, type || guessType(value[0]), [value.length]),
-    value,
-  );
+  return attr(name, type || guessType(value[0]), [value.length], value);
 }
 
 export function withAttr<T extends Entity>(
@@ -278,7 +216,7 @@ export function unresolved(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-export function silxStyleAttr(style: SilxStyle): MockAttribute<ScalarShape> {
+function silxStyleAttr(style: SilxStyle): MockAttribute<ScalarShape> {
   const { signalScaleType, axisScaleTypes } = style;
 
   return scalarAttr(

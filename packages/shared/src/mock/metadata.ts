@@ -1,21 +1,23 @@
-import { ScaleType } from '../vis-models';
 import {
-  array,
   boolType,
   compoundType,
   cplxType,
-  dataset,
-  datatype,
   floatType,
-  group,
   intType,
-  nxData,
-  nxGroup,
   printableCompoundType,
-  scalar,
-  scalarAttr,
   strType,
   unknownType,
+} from '../hdf5-utils';
+import { ScaleType } from '../vis-models';
+import {
+  array,
+  dataset,
+  datatype,
+  group,
+  nxData,
+  nxGroup,
+  scalar,
+  scalarAttr,
   unresolved,
   withImageAttr,
   withNxAttr,
