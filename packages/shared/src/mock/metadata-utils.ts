@@ -130,6 +130,19 @@ export function scalarAttr(
   return attr(name, type || guessType(value), [], value);
 }
 
+export function arrayAttr(
+  name: string,
+  value: unknown[],
+  opts: { type?: DType } = {},
+): MockAttribute<ArrayShape> {
+  const { type } = opts;
+
+  return withMockValue(
+    attr(name, type || guessType(value[0]), [value.length]),
+    value,
+  );
+}
+
 export function withAttr<T extends Entity>(
   entity: T,
   attributes: Attribute[],
@@ -265,14 +278,6 @@ export function unresolved(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-export function nxAxesAttr(axes: string[]): Attribute<ArrayShape, StringType> {
-  return attr('axes', strType(), [axes.length], axes);
-}
-
-export function nxAuxAttr(aux: string[]): Attribute<ArrayShape, StringType> {
-  return attr('auxiliary_signals', strType(), [aux.length], aux);
-}
-
 export function silxStyleAttr(style: SilxStyle): MockAttribute<ScalarShape> {
   const { signalScaleType, axisScaleTypes } = style;
 
@@ -323,11 +328,11 @@ export function nxData<T extends Record<string, MockDataset<ArrayShape>>>(
     signal,
     title,
     errors,
-    silxStyle,
     axes = {},
     axesAttr,
     auxiliary = {},
     auxAttr,
+    silxStyle,
     attributes = [],
     children = [],
     ...groupOpts
@@ -337,9 +342,9 @@ export function nxData<T extends Record<string, MockDataset<ArrayShape>>>(
     ...groupOpts,
     attributes: [
       scalarAttr('signal', signal.name),
-      ...(axesAttr ? [nxAxesAttr(axesAttr)] : []),
+      ...(axesAttr ? [arrayAttr('axes', axesAttr)] : []),
+      ...(auxAttr ? [arrayAttr('auxiliary_signals', auxAttr)] : []),
       ...(silxStyle ? [silxStyleAttr(silxStyle)] : []),
-      ...(auxAttr ? [nxAuxAttr(auxAttr)] : []),
       ...attributes,
     ],
     children: [
