@@ -1,6 +1,7 @@
 import {
   boolType,
   compoundType,
+  cplx,
   cplxType,
   floatType,
   intType,
@@ -8,7 +9,6 @@ import {
   strType,
   unknownType,
 } from '../hdf5-utils';
-import { cplx } from '../mock-values';
 import { ScaleType } from '../vis-models';
 import {
   array,

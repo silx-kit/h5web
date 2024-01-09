@@ -3,10 +3,7 @@ import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 
 import type { ArrayValue, DType, H5WebComplex } from './hdf5-models';
-
-export function cplx(real: number, imag: number): H5WebComplex {
-  return [real, imag];
-}
+import { cplx } from './hdf5-utils';
 
 const range1 = () => range(-20, 21);
 const range2 = () => range(0, 100, 5);

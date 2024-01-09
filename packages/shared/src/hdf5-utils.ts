@@ -5,6 +5,7 @@ import type {
   CompoundType,
   DType,
   GroupWithChildren,
+  H5WebComplex,
   NumericType,
   PrintableCompoundType,
   PrintableType,
@@ -84,4 +85,11 @@ export function printableCompoundType(
 
 export function unknownType(): UnknownType {
   return { class: DTypeClass.Unknown };
+}
+
+/* ------------------ */
+/* ----- VALUES ----- */
+
+export function cplx(real: number, imag: number): H5WebComplex {
+  return [real, imag];
 }
