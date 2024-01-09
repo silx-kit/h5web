@@ -5,8 +5,8 @@ import type {
   NumericType,
   PrintableCompoundType,
   PrintableType,
-} from '@h5web/shared/models-hdf5';
-import { DTypeClass } from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
+import { DTypeClass } from '@h5web/shared/hdf5-models';
 import { createComplexFormatter } from '@h5web/shared/utils';
 import { format } from 'd3-format';
 

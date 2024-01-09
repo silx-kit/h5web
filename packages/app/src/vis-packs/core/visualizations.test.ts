@@ -9,7 +9,7 @@ import {
   withImageAttr,
 } from '@h5web/shared/mock/metadata-utils';
 import { assertMockAttribute } from '@h5web/shared/mock/utils';
-import type { Entity } from '@h5web/shared/models-hdf5';
+import type { Entity } from '@h5web/shared/hdf5-models';
 
 import type { AttrValuesStore } from '../../providers/models';
 import { CORE_VIS } from './visualizations';

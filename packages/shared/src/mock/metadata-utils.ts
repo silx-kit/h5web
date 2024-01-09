@@ -20,8 +20,8 @@ import type {
   StringType,
   UnknownType,
   UnresolvedEntity,
-} from '../models-hdf5';
-import { DTypeClass, Endianness, EntityKind } from '../models-hdf5';
+} from '../hdf5-models';
+import { DTypeClass, Endianness, EntityKind } from '../hdf5-models';
 import type { SilxStyle } from '../models-nexus';
 import { buildEntityPath } from '../utils';
 import type { MockAttribute, MockDataset, MockValueId } from './models';

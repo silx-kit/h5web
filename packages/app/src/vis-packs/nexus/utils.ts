@@ -22,7 +22,7 @@ import type {
   NumericType,
   ScalarShape,
   StringType,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/utils';
 
 import type { AttrValuesStore } from '../../providers/models';

@@ -8,7 +8,7 @@ import type {
   ChildEntity,
   GroupWithChildren,
   H5WebComplex,
-} from './models-hdf5';
+} from './hdf5-models';
 import type {
   AnyNumArray,
   AxisScaleType,

@@ -9,8 +9,8 @@ import type {
   Group,
   ProvidedEntity,
   Value,
-} from '@h5web/shared/models-hdf5';
-import { EntityKind } from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
+import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/utils';
 import type { AxiosRequestConfig } from 'axios';
 

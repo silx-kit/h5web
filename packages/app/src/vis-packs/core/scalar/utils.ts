@@ -4,7 +4,7 @@ import type {
   Dataset,
   H5WebComplex,
   PrintableType,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
 import { formatScalarComplex } from '@h5web/shared/utils';
 
 import type { ValueFormatter } from '../models';

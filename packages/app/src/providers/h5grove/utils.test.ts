@@ -1,4 +1,4 @@
-import { DTypeClass, Endianness } from '@h5web/shared/models-hdf5';
+import { DTypeClass, Endianness } from '@h5web/shared/hdf5-models';
 
 import { convertH5GroveDtype } from './utils';
 

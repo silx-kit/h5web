@@ -8,7 +8,7 @@ import type {
   NumericType,
   ScalarShape,
   StringType,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
 import type { AxisMapping } from '@h5web/shared/models-nexus';
 import type { NumArray } from '@h5web/shared/models-vis';
 

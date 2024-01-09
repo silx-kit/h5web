@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared/models-hdf5';
+import type { Entity } from '@h5web/shared/hdf5-models';
 
 import type { AttrName } from './providers/models';
 

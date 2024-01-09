@@ -1,5 +1,5 @@
 import { assertComplexType, assertNumericType } from '@h5web/shared/guards';
-import type { ComplexType, NumericType } from '@h5web/shared/models-hdf5';
+import type { ComplexType, NumericType } from '@h5web/shared/hdf5-models';
 
 import type { NxData } from './models';
 

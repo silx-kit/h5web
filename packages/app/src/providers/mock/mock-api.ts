@@ -5,11 +5,6 @@ import {
   hasNumericType,
   isGroup,
 } from '@h5web/shared/guards';
-import type { MockFile } from '@h5web/shared/mock/models';
-import {
-  assertMockAttribute,
-  assertMockDataset,
-} from '@h5web/shared/mock/utils';
 import type {
   ArrayShape,
   AttributeValues,
@@ -18,7 +13,12 @@ import type {
   NumArrayDataset,
   ProvidedEntity,
   Value,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
+import type { MockFile } from '@h5web/shared/mock/models';
+import {
+  assertMockAttribute,
+  assertMockDataset,
+} from '@h5web/shared/mock/utils';
 import axios from 'axios';
 
 import { DataProviderApi } from '../api';

@@ -1,5 +1,5 @@
 import { RgbVis } from '@h5web/lib';
-import type { NumArrayDataset } from '@h5web/shared/models-hdf5';
+import type { NumArrayDataset } from '@h5web/shared/hdf5-models';
 import type { AxisMapping } from '@h5web/shared/models-nexus';
 import type { NumArray } from '@h5web/shared/models-vis';
 import type { TypedArray } from 'ndarray';

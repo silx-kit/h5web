@@ -6,7 +6,7 @@ import {
   isDataset,
   isGroup,
 } from '@h5web/shared/guards';
-import type { ChildEntity, ProvidedEntity } from '@h5web/shared/models-hdf5';
+import type { ChildEntity, ProvidedEntity } from '@h5web/shared/hdf5-models';
 import { NxInterpretation } from '@h5web/shared/models-nexus';
 import { buildEntityPath } from '@h5web/shared/utils';
 

@@ -1,5 +1,5 @@
 import { MatrixVis, mockValues } from '@h5web/lib';
-import type { H5WebComplex } from '@h5web/shared/models-hdf5';
+import type { H5WebComplex } from '@h5web/shared/hdf5-models';
 import { createComplexFormatter, toTypedNdArray } from '@h5web/shared/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 import { format } from 'd3-format';

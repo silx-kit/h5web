@@ -1,4 +1,4 @@
-import type { H5WebComplex } from '@h5web/shared/models-hdf5';
+import type { H5WebComplex } from '@h5web/shared/hdf5-models';
 import type { AxisMapping } from '@h5web/shared/models-nexus';
 import type { NumArray } from '@h5web/shared/models-vis';
 import { useMemo } from 'react';

@@ -1,5 +1,5 @@
 import { isAbsolutePath, isDataset } from '@h5web/shared/guards';
-import { EntityKind } from '@h5web/shared/models-hdf5';
+import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/utils';
 import { capitalize } from 'lodash';
 import { memo, Suspense } from 'react';

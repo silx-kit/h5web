@@ -5,7 +5,7 @@ import type {
   Dataset,
   ScalarShape,
   Value,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
 import type { NumArray } from '@h5web/shared/models-vis';
 import { castArray } from 'lodash';
 import type { NdArray, TypedArray } from 'ndarray';

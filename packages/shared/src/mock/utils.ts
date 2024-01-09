@@ -11,7 +11,7 @@ import type {
   GroupWithChildren,
   ProvidedEntity,
   Shape,
-} from '../models-hdf5';
+} from '../hdf5-models';
 import { getChildEntity } from '../utils';
 import type { MockAttribute, MockDataset } from './models';
 

@@ -1,5 +1,5 @@
 import { SurfaceVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { NumArrayDataset } from '@h5web/shared/models-hdf5';
+import type { NumArrayDataset } from '@h5web/shared/hdf5-models';
 import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 

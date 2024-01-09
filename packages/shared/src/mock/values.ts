@@ -2,7 +2,7 @@ import { range } from 'lodash';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 
-import type { ArrayValue, DType, H5WebComplex } from '../models-hdf5';
+import type { ArrayValue, DType, H5WebComplex } from '../hdf5-models';
 
 export function cplx(real: number, imag: number): H5WebComplex {
   return [real, imag];

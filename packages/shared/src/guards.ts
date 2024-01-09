@@ -23,8 +23,8 @@ import type {
   Shape,
   StringType,
   Value,
-} from './models-hdf5';
-import { DTypeClass, EntityKind } from './models-hdf5';
+} from './hdf5-models';
+import { DTypeClass, EntityKind } from './hdf5-models';
 import type {
   AnyNumArray,
   AxisScaleType,

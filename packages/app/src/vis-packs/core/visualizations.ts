@@ -10,7 +10,7 @@ import {
   hasPrintableType,
   hasScalarShape,
 } from '@h5web/shared/guards';
-import type { Dataset } from '@h5web/shared/models-hdf5';
+import type { Dataset } from '@h5web/shared/hdf5-models';
 import {
   FiActivity,
   FiCode,

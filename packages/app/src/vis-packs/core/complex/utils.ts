@@ -1,4 +1,4 @@
-import type { H5WebComplex } from '@h5web/shared/models-hdf5';
+import type { H5WebComplex } from '@h5web/shared/hdf5-models';
 import type { Bounds } from '@h5web/shared/models-vis';
 import { getNewBounds } from '@h5web/shared/utils';
 
