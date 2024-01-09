@@ -199,7 +199,6 @@ export type {
 
 // Mock data and utilities
 export { mockValues } from '@h5web/shared/mock-values';
-export { findMockEntity } from '@h5web/shared/mock/utils';
 
 // Undocumented and/or experimental
 export { default as SnapshotBtn } from './toolbar/controls/SnapshotBtn';

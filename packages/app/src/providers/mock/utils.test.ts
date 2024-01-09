@@ -1,4 +1,5 @@
-import { group, scalar } from './metadata-utils';
+import { group, scalar } from '@h5web/shared/mock/metadata-utils';
+
 import { findMockEntity } from './utils';
 
 const mockLeaf = scalar('leaf', 1);
