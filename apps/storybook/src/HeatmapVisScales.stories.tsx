@@ -1,10 +1,10 @@
 import type { HeatmapVisProps } from '@h5web/lib';
-import { getDomain, getMockDataArray, HeatmapVis, ScaleType } from '@h5web/lib';
+import { getDomain, HeatmapVis, mockValues, ScaleType } from '@h5web/lib';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import HeatmapVisStoriesMeta from './HeatmapVis.stories';
 
-const dataArray = getMockDataArray('/nD_datasets/twoD');
+const dataArray = mockValues.twoD();
 const domain = getDomain(dataArray.data);
 const logSafeDomain = getDomain(dataArray.data, ScaleType.Log);
 const sqrtSafeDomain = getDomain(dataArray.data, ScaleType.Sqrt);

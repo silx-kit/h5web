@@ -1,15 +1,11 @@
-import { findMockEntity } from '@h5web/lib';
+import { findMockEntity, makeMockFile } from '@h5web/lib';
 import {
-  assertArrayOrTypedArray,
   assertArrayShape,
   assertDefined,
-  hasArrayShape,
   hasNumericType,
   isGroup,
-  isTypedArray,
 } from '@h5web/shared/guards';
-import { mockFilepath } from '@h5web/shared/mock/metadata';
-import type { MockDataset } from '@h5web/shared/mock/models';
+import type { MockFile } from '@h5web/shared/mock/models';
 import {
   assertMockAttribute,
   assertMockDataset,
@@ -21,7 +17,6 @@ import type {
   Entity,
   NumArrayDataset,
   ProvidedEntity,
-  ScalarShape,
   Value,
 } from '@h5web/shared/models-hdf5';
 import axios from 'axios';
@@ -33,10 +28,14 @@ import { sliceValue } from '../utils';
 export const SLOW_TIMEOUT = 3000;
 
 export class MockApi extends DataProviderApi {
+  private readonly mockFile: MockFile;
+
   public constructor(
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
-    super(mockFilepath);
+    const mockFile = makeMockFile();
+    super(mockFile.name);
+    this.mockFile = mockFile;
   }
 
   public async getEntity(path: string): Promise<ProvidedEntity> {
@@ -46,7 +45,7 @@ export class MockApi extends DataProviderApi {
       });
     }
 
-    const entity = findMockEntity(path);
+    const entity = findMockEntity(this.mockFile, path);
     assertDefined(entity, `No entity found at ${path}`);
     return entity;
   }
@@ -62,6 +61,7 @@ export class MockApi extends DataProviderApi {
 
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { dataset, selection } = params;
+    assertMockDataset(dataset);
 
     if (dataset.name === 'raw_large') {
       return { str: '.'.repeat(1_000_000) };
@@ -75,16 +75,14 @@ export class MockApi extends DataProviderApi {
       await this.cancellableDelay(params);
     }
 
-    assertMockDataset(dataset);
-    const { value: rawValue } = dataset;
-    const value = this.processRawValue(dataset, rawValue);
+    const { value } = dataset;
+    assertDefined(value, 'Expected mock dataset to have value');
 
     if (!selection) {
       return value;
     }
 
     assertArrayShape(dataset);
-
     return sliceValue(value, dataset, selection);
   }
 
@@ -134,7 +132,7 @@ export class MockApi extends DataProviderApi {
   }
 
   private getEntityPaths(entityPath: string): string[] {
-    const entity = findMockEntity(entityPath);
+    const entity = findMockEntity(this.mockFile, entityPath);
     if (!entity) {
       return [];
     }
@@ -166,21 +164,5 @@ export class MockApi extends DataProviderApi {
     } finally {
       this.valueRequests.delete(request);
     }
-  }
-
-  private processRawValue(
-    dataset: MockDataset<ArrayShape | ScalarShape>,
-    rawValue: unknown,
-  ) {
-    assertDefined(rawValue, 'Expected mock dataset to have value');
-
-    if (!hasArrayShape(dataset)) {
-      return rawValue;
-    }
-
-    assertArrayOrTypedArray(rawValue);
-    return isTypedArray(rawValue)
-      ? rawValue
-      : rawValue.flat(dataset.shape.length - 1);
   }
 }

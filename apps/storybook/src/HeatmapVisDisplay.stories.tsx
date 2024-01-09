@@ -1,15 +1,15 @@
 import {
   Annotation,
   DefaultInteractions,
-  getMockDataArray,
   HeatmapVis,
+  mockValues,
 } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared/utils';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import HeatmapVisStoriesMeta from './HeatmapVis.stories';
 
-const dataArray = getMockDataArray('/nD_datasets/twoD');
+const dataArray = mockValues.twoD();
 
 const meta = {
   ...HeatmapVisStoriesMeta,

@@ -14,7 +14,7 @@ test('visualize NXdata group with explicit signal interpretation', async () => {
   const { selectExplorerNode } = await renderApp('/nexus_entry/spectrum');
   expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
   expect(
-    screen.getByRole('figure', { name: 'twoD_spectrum (arb. units)' }), // signal name + `units` attribute
+    screen.getByRole('figure', { name: 'twoD (arb. units)' }), // signal name + `units` attribute
   ).toBeVisible();
 
   // Signal with "image" interpretation
@@ -28,7 +28,7 @@ test('visualize NXdata group with explicit signal interpretation', async () => {
   await selectExplorerNode('complex_spectrum');
   expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
   expect(
-    screen.getByRole('figure', { name: 'twoD_complex' }), // signal name (complex vis type is displayed as ordinate label)
+    screen.getByRole('figure', { name: 'twoD_cplx' }), // signal name (complex vis type is displayed as ordinate label)
   ).toBeVisible();
 
   // Signal with "rgb-image" interpretation
@@ -58,7 +58,7 @@ test('visualize NXdata group without explicit signal interpretation', async () =
   expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
   expect(getSelectedVisTab()).toBe(NexusVis.NxImage);
   expect(
-    screen.getByRole('figure', { name: 'twoD_complex (amplitude)' }), // signal name + complex visualization type
+    screen.getByRole('figure', { name: 'twoD_cplx (amplitude)' }), // signal name + complex visualization type
   ).toBeVisible();
 
   // 2D signal and two 1D axes of same length (implicit scatter interpretation)

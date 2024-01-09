@@ -1,12 +1,5 @@
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
-
 import {
   assertAbsolutePath,
-  assertArray,
-  assertArrayShape,
-  assertDataset,
-  assertDefined,
   assertGroup,
   assertGroupWithChildren,
   isGroup,
@@ -15,11 +8,11 @@ import type {
   Attribute,
   Dataset,
   DType,
+  GroupWithChildren,
   ProvidedEntity,
   Shape,
 } from '../models-hdf5';
 import { getChildEntity } from '../utils';
-import { mockMetadata } from './metadata';
 import type { MockAttribute, MockDataset } from './models';
 
 export function assertMockDataset<S extends Shape, T extends DType>(
@@ -38,15 +31,18 @@ export function assertMockAttribute<S extends Shape, T extends DType>(
   }
 }
 
-export function findMockEntity(path: string): ProvidedEntity | undefined {
+export function findMockEntity(
+  group: GroupWithChildren,
+  path: string,
+): ProvidedEntity | undefined {
   assertAbsolutePath(path);
 
   if (path === '/') {
-    return mockMetadata;
+    return group;
   }
 
   const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
-  const parent = findMockEntity(parentPath);
+  const parent = findMockEntity(group, parentPath);
   if (!parent) {
     return undefined;
   }
@@ -59,22 +55,4 @@ export function findMockEntity(path: string): ProvidedEntity | undefined {
     assertGroupWithChildren(child);
   }
   return child;
-}
-
-/*
- * Get a mock dataset's value as an ndarray.
- * Allow type-casting via generic for convenience, as the type of the values is known.
- */
-// eslint-disable-next-line etc/no-misused-generics
-export function getMockDataArray<T = number>(path: string): NdArray<T[]> {
-  const entity = findMockEntity(path);
-  assertDefined(entity);
-  assertDataset(entity);
-  assertMockDataset(entity);
-
-  const { value } = entity;
-  assertArray(value);
-  assertArrayShape(entity);
-
-  return ndarray(value.flat(entity.shape.length - 1) as T[], entity.shape);
 }

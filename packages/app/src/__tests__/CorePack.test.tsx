@@ -22,7 +22,7 @@ test('visualize raw dataset', async () => {
 
 test('visualize scalar dataset', async () => {
   // Integer scalar
-  const { selectExplorerNode } = await renderApp('/entities/scalar_int');
+  const { selectExplorerNode } = await renderApp('/entities/scalar_num');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);

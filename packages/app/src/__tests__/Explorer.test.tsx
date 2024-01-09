@@ -1,4 +1,3 @@
-import { mockFilepath } from '@h5web/shared/mock/metadata';
 import { screen } from '@testing-library/react';
 
 import { SLOW_TIMEOUT } from '../providers/mock/mock-api';
@@ -7,10 +6,10 @@ import { renderApp } from '../test-utils';
 test('select root group by default', async () => {
   await renderApp();
 
-  const title = screen.getByRole('heading', { name: mockFilepath });
+  const title = screen.getByRole('heading', { name: 'source.h5' });
   expect(title).toBeVisible();
 
-  const fileBtn = screen.getByRole('treeitem', { name: mockFilepath });
+  const fileBtn = screen.getByRole('treeitem', { name: 'source.h5' });
   expect(fileBtn).toBeVisible();
   expect(fileBtn).toHaveAttribute('aria-selected', 'true');
 });
@@ -18,7 +17,7 @@ test('select root group by default', async () => {
 test('toggle sidebar', async () => {
   const { user } = await renderApp();
 
-  const fileBtn = screen.getByRole('treeitem', { name: mockFilepath });
+  const fileBtn = screen.getByRole('treeitem', { name: 'source.h5' });
   const sidebarBtn = screen.getByRole('button', {
     name: 'Toggle sidebar',
   });

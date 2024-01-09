@@ -28,7 +28,7 @@ test('inspect group', async () => {
 });
 
 test('inspect scalar dataset', async () => {
-  const { user } = await renderApp('/entities/scalar_int');
+  const { user } = await renderApp('/entities/scalar_num');
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
   const column = screen.getByRole('columnheader', { name: /Dataset/ });
@@ -38,10 +38,10 @@ test('inspect scalar dataset', async () => {
   const typeRow = screen.getByRole('row', { name: /^Type/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/scalar_int/);
-  expect(pathRow).toHaveTextContent(/\/entities\/scalar_int/);
+  expect(nameRow).toHaveTextContent(/scalar_num/);
+  expect(pathRow).toHaveTextContent(/\/entities\/scalar_num/);
   expect(shapeRow).toHaveTextContent(/Scalar/);
-  expect(typeRow).toHaveTextContent(/Integer, 32-bit, little-endian/);
+  expect(typeRow).toHaveTextContent(/Float, 64-bit, little-endian/);
 });
 
 test('inspect array dataset', async () => {
@@ -59,7 +59,7 @@ test('inspect empty dataset', async () => {
   const shapeRow = screen.getByRole('row', { name: /^Shape/ });
   const typeRow = screen.getByRole('row', { name: /^Type/ });
   expect(shapeRow).toHaveTextContent(/None/);
-  expect(typeRow).toHaveTextContent(/Integer, 32-bit, little-endian/);
+  expect(typeRow).toHaveTextContent(/Unknown/);
 });
 
 test('inspect datatype', async () => {

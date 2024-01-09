@@ -45,10 +45,19 @@ import { Meta } from '@storybook/addon-docs';
    ];
 
    // Flatten source array
-   const flatValues = values.flat(Infinity) as number[];
+   const flatValues = values.flat(1);
 
    // Convert to ndarray and get domain
    const dataArray = ndarray(flatValues, [2, 3]);
+   const domain = getDomain(dataArray);
+   ```
+
+   Alternatively, use one the provided mock ndarrays:
+
+   ```tsx
+   import { getDomain, mockValues } from '@h5web/lib';
+
+   const dataArray = mockValues.twoD();
    const domain = getDomain(dataArray);
    ```
 

@@ -1,16 +1,18 @@
 import {
   DefaultInteractions,
   ErrorBars,
+  mockValues,
   useDomain,
   VisCanvas,
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { mockValues } from '@h5web/shared/mock/values';
 import { ScaleType } from '@h5web/shared/models-vis';
 import type { Meta, StoryObj } from '@storybook/react';
 import { range } from 'lodash';
 
 import FillHeight from './decorators/FillHeight';
+
+const dataArray = mockValues.oneD();
 
 const meta = {
   title: 'Building Blocks/ErrorBars',
@@ -21,9 +23,9 @@ const meta = {
     controls: { sort: 'requiredFirst' },
   },
   args: {
-    abscissas: range(0, mockValues.oneD.length),
-    ordinates: mockValues.oneD,
-    errors: mockValues.oneD.map(() => 10),
+    abscissas: range(0, dataArray.size),
+    ordinates: dataArray.data,
+    errors: dataArray.data.map(() => 10),
     color: 'blue',
     visible: true,
   },

@@ -237,7 +237,7 @@ describe('/mock', () => {
     cy.findByRole('textbox', { name: 'Path to search' }).type('scatter');
 
     cy.findAllByRole('treeitem')
-      .should('have.length', 2)
+      .should('have.length', 3)
       .each((e) => expect(e).to.contain('scatter'));
 
     cy.findByRole('treeitem', { name: '/nexus_entry/scatter' }).click();
@@ -276,7 +276,7 @@ describe('/mock', () => {
       cy.findByRole('heading', { name: 'nexus_entry / spectrum' }).should(
         'be.visible',
       );
-      cy.findByRole('figure', { name: 'twoD_spectrum (arb. units)' }).should(
+      cy.findByRole('figure', { name: 'twoD (arb. units)' }).should(
         'be.visible',
       );
 
