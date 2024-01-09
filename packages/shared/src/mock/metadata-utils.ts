@@ -18,6 +18,7 @@ import type {
   ScalarShape,
   Shape,
   StringType,
+  UnknownType,
   UnresolvedEntity,
 } from '../models-hdf5';
 import { DTypeClass, Endianness, EntityKind } from '../models-hdf5';
@@ -73,6 +74,10 @@ export function printableCompoundType(
   return { class: DTypeClass.Compound, fields };
 }
 
+export function unknownType(): UnknownType {
+  return { class: DTypeClass.Unknown };
+}
+
 function guessType(value: unknown): DType {
   if (typeof value === 'number') {
     return floatType(64);
@@ -94,7 +99,7 @@ function guessType(value: unknown): DType {
     return cplxType(floatType(64));
   }
 
-  return { class: DTypeClass.Unknown };
+  return unknownType();
 }
 
 /* ---------------------- */

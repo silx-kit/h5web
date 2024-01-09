@@ -1,4 +1,3 @@
-import { DTypeClass } from '../models-hdf5';
 import { ScaleType } from '../models-vis';
 import {
   array,
@@ -16,6 +15,7 @@ import {
   scalar,
   scalarAttr,
   strType,
+  unknownType,
   unresolved,
   withImageAttr,
   withNxAttr,
@@ -30,7 +30,7 @@ export function makeMockFile(): MockFile {
     children: [
       group('entities', [
         group('empty_group'),
-        dataset('empty_dataset', { class: DTypeClass.Unknown }, null, null),
+        dataset('empty_dataset', unknownType(), null, null),
         datatype('datatype', compoundType({ int: intType() })),
         scalar('raw', { int: 42 }),
         scalar('raw_large', undefined), // generated dynamically by `MockProvider`
