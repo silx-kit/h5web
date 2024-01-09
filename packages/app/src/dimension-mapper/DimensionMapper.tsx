@@ -1,4 +1,4 @@
-import type { AxisMapping } from '@h5web/shared/models-nexus';
+import type { AxisMapping } from '@h5web/shared/nexus-models';
 import { isNumber } from 'lodash';
 
 import AxisMapper from './AxisMapper';

@@ -7,7 +7,7 @@ import {
   isGroup,
 } from '@h5web/shared/guards';
 import type { ChildEntity, ProvidedEntity } from '@h5web/shared/hdf5-models';
-import { NxInterpretation } from '@h5web/shared/models-nexus';
+import { NxInterpretation } from '@h5web/shared/nexus-models';
 import { buildEntityPath } from '@h5web/shared/utils';
 
 import type { AttrValuesStore, EntitiesStore } from '../providers/models';

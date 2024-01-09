@@ -10,7 +10,7 @@
     "./createMemo": "./src/createMemo.ts",
     "./guards": "./src/guards.ts",
     "./hdf5-models": "./src/hdf5-models.ts",
-    "./models-nexus": "./src/models-nexus.ts",
+    "./nexus-models": "./src/nexus-models.ts",
     "./models-vis": "./src/models-vis.ts",
     "./utils": "./src/utils.ts",
     "./mock/metadata-utils": "./src/mock/metadata-utils.ts",

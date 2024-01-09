@@ -1,5 +1,5 @@
 import { ToggleGroup } from '@h5web/lib';
-import type { AxisMapping } from '@h5web/shared/models-nexus';
+import type { AxisMapping } from '@h5web/shared/nexus-models';
 import type { Axis } from '@h5web/shared/models-vis';
 import { isNumber } from 'lodash';
 
