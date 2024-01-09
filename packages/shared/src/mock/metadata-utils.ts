@@ -18,6 +18,7 @@ import type {
   ScalarShape,
   Shape,
   StringType,
+  UnknownType,
   UnresolvedEntity,
 } from '../models-hdf5';
 import { DTypeClass, Endianness, EntityKind } from '../models-hdf5';
@@ -48,8 +49,15 @@ export function floatType(
   return { class: DTypeClass.Float, endianness, size };
 }
 
-export function strType(): StringType {
-  return { class: DTypeClass.String, charSet: 'ASCII' };
+export function strType(
+  charSet: StringType['charSet'] = 'ASCII',
+  length?: number,
+): StringType {
+  return {
+    class: DTypeClass.String,
+    charSet,
+    ...(length !== undefined && { length }),
+  };
 }
 
 export function boolType(): BooleanType {
@@ -73,6 +81,10 @@ export function printableCompoundType(
   return { class: DTypeClass.Compound, fields };
 }
 
+export function unknownType(): UnknownType {
+  return { class: DTypeClass.Unknown };
+}
+
 function guessType(value: unknown): DType {
   if (typeof value === 'number') {
     return floatType(64);
@@ -94,7 +106,7 @@ function guessType(value: unknown): DType {
     return cplxType(floatType(64));
   }
 
-  return { class: DTypeClass.Unknown };
+  return unknownType();
 }
 
 /* ---------------------- */

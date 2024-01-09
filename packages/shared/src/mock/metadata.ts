@@ -1,4 +1,3 @@
-import { DTypeClass } from '../models-hdf5';
 import { ScaleType } from '../models-vis';
 import {
   array,
@@ -16,11 +15,13 @@ import {
   scalar,
   scalarAttr,
   strType,
+  unknownType,
   unresolved,
   withImageAttr,
   withNxAttr,
 } from './metadata-utils';
 import type { MockFile } from './models';
+import { cplx } from './values';
 
 export function makeMockFile(): MockFile {
   return nxGroup('source.h5', 'NXroot', {
@@ -29,14 +30,26 @@ export function makeMockFile(): MockFile {
     children: [
       group('entities', [
         group('empty_group'),
-        dataset('empty_dataset', { class: DTypeClass.Unknown }, null, null),
+        dataset('empty_dataset', unknownType(), null, null),
         datatype('datatype', compoundType({ int: intType() })),
         scalar('raw', { int: 42 }),
         scalar('raw_large', undefined), // generated dynamically by `MockProvider`
-        scalar('scalar_num', 0),
-        scalar('scalar_str', 'foo'),
-        scalar('scalar_bool', true),
-        scalar('scalar_cplx', [1, 5]),
+        scalar('scalar_num', 0, { attributes: [scalarAttr('attr', 0)] }),
+        scalar('scalar_str', 'foo', {
+          attributes: [scalarAttr('attr', 'foo')],
+        }),
+        scalar('scalar_bool', true, { attributes: [scalarAttr('attr', true)] }),
+        scalar('scalar_cplx', [1, 5], {
+          attributes: [scalarAttr('attr', cplx(1, 5))],
+        }),
+        scalar('scalar_compound', ['foo', 2], {
+          type: compoundType({ str: strType('ASCII', 3), int: intType(8) }),
+          attributes: [
+            scalarAttr('attr', ['foo', 2], {
+              type: compoundType({ str: strType('UTF-8'), int: intType(8) }),
+            }),
+          ],
+        }),
         unresolved('unresolved_hard_link', 'Hard'),
         unresolved('unresolved_soft_link', 'Soft', '/foo'),
         unresolved(

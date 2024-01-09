@@ -36,12 +36,14 @@ test('inspect scalar dataset', async () => {
   const pathRow = screen.getByRole('row', { name: /^Path/ });
   const shapeRow = screen.getByRole('row', { name: /^Shape/ });
   const typeRow = screen.getByRole('row', { name: /^Type/ });
+  const attrRow = screen.getByRole('row', { name: /^attr/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/scalar_num/);
-  expect(pathRow).toHaveTextContent(/\/entities\/scalar_num/);
-  expect(shapeRow).toHaveTextContent(/Scalar/);
-  expect(typeRow).toHaveTextContent(/Float, 64-bit, little-endian/);
+  expect(nameRow).toHaveTextContent(/scalar_num$/);
+  expect(pathRow).toHaveTextContent(/\/entities\/scalar_num$/);
+  expect(typeRow).toHaveTextContent(/Float, 64-bit, little-endian$/);
+  expect(shapeRow).toHaveTextContent(/Scalar$/);
+  expect(attrRow).toHaveTextContent(/0$/);
 });
 
 test('inspect array dataset', async () => {
