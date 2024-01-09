@@ -1,7 +1,7 @@
 import { assertDefined, assertLength } from '@h5web/shared/guards';
-import type { AxisScaleType, Domain, NumArray } from '@h5web/shared/models-vis';
-import { ScaleType } from '@h5web/shared/models-vis';
 import { formatTooltipErr, formatTooltipVal } from '@h5web/shared/utils';
+import type { AxisScaleType, Domain, NumArray } from '@h5web/shared/vis-models';
+import { ScaleType } from '@h5web/shared/vis-models';
 import type { NdArray } from 'ndarray';
 import type { ReactElement, ReactNode } from 'react';
 import { useMemo } from 'react';

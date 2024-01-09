@@ -10,7 +10,7 @@ import {
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import { ScaleType } from '@h5web/shared/models-vis';
+import { ScaleType } from '@h5web/shared/vis-models';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';

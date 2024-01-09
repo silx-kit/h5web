@@ -1,5 +1,5 @@
 import { DomainControls } from '@h5web/lib';
-import type { Domain } from '@h5web/shared/models-vis';
+import type { Domain } from '@h5web/shared/vis-models';
 import { useToggle } from '@react-hookz/web';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect, useState } from 'react';

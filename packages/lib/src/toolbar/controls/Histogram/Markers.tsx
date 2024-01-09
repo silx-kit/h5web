@@ -1,4 +1,4 @@
-import type { Domain } from '@h5web/shared/models-vis';
+import type { Domain } from '@h5web/shared/vis-models';
 import { Drag } from '@visx/drag';
 import { useState } from 'react';
 

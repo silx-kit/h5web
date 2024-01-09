@@ -11,7 +11,7 @@
     "./guards": "./src/guards.ts",
     "./hdf5-models": "./src/hdf5-models.ts",
     "./nexus-models": "./src/nexus-models.ts",
-    "./models-vis": "./src/models-vis.ts",
+    "./vis-models": "./src/vis-models.ts",
     "./utils": "./src/utils.ts",
     "./mock/metadata-utils": "./src/mock/metadata-utils.ts",
     "./mock/metadata": "./src/mock/metadata.ts",

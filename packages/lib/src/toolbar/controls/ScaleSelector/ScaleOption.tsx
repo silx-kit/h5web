@@ -1,4 +1,4 @@
-import { ScaleType } from '@h5web/shared/models-vis';
+import { ScaleType } from '@h5web/shared/vis-models';
 import type { IconType } from 'react-icons/lib';
 import { MdFilterList, MdFlare, MdSort } from 'react-icons/md';
 

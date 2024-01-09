@@ -1,5 +1,5 @@
-import type { Domain } from '@h5web/shared/models-vis';
-import { ScaleType } from '@h5web/shared/models-vis';
+import type { Domain } from '@h5web/shared/vis-models';
+import { ScaleType } from '@h5web/shared/vis-models';
 import type { SharedAxisProps } from '@visx/axis';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';

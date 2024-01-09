@@ -152,7 +152,7 @@ export { CAMERA_FAR } from './vis/utils';
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 
 // Enums
-export { ScaleType } from '@h5web/shared/models-vis';
+export { ScaleType } from '@h5web/shared/vis-models';
 export { CurveType, GlyphType } from './vis/line/models';
 export { ImageType } from './vis/rgb/models';
 export { Notation } from './vis/matrix/models';
@@ -166,7 +166,7 @@ export type {
   Axis,
   ColorScaleType,
   AxisScaleType,
-} from '@h5web/shared/models-vis';
+} from '@h5web/shared/vis-models';
 
 export type {
   Aspect,

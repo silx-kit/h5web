@@ -1,4 +1,4 @@
-import type { ScaleType } from '@h5web/shared/models-vis';
+import type { ScaleType } from '@h5web/shared/vis-models';
 
 import Selector from '../Selector/Selector';
 import ScaleOption from './ScaleOption';

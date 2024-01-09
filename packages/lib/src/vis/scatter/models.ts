@@ -1,4 +1,4 @@
-import type { AxisScaleType, NumArray } from '@h5web/shared/models-vis';
+import type { AxisScaleType, NumArray } from '@h5web/shared/vis-models';
 
 export interface ScatterAxisParams {
   label?: string;

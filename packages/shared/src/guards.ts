@@ -25,13 +25,13 @@ import type {
   Value,
 } from './hdf5-models';
 import { DTypeClass, EntityKind } from './hdf5-models';
+import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES, getValues } from './utils';
 import type {
   AnyNumArray,
   AxisScaleType,
   ColorScaleType,
   NumArray,
-} from './models-vis';
-import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES, getValues } from './utils';
+} from './vis-models';
 
 const PRINTABLE_DTYPES = new Set([
   DTypeClass.Unsigned,

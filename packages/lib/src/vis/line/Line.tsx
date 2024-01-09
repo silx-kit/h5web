@@ -1,4 +1,4 @@
-import type { NumArray } from '@h5web/shared/models-vis';
+import type { NumArray } from '@h5web/shared/vis-models';
 import type { Object3DNode } from '@react-three/fiber';
 import { extend } from '@react-three/fiber';
 import { Line as R3FLine } from 'three';

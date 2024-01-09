@@ -18,8 +18,8 @@ import type {
   Domain,
   NumArray,
   TypedArrayConstructor,
-} from './models-vis';
-import { ScaleType } from './models-vis';
+} from './vis-models';
+import { ScaleType } from './vis-models';
 
 export const AXIS_SCALE_TYPES: AxisScaleType[] = [
   ScaleType.Linear,

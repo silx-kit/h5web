@@ -10,7 +10,7 @@ import type {
   Domain,
   NumArray,
   ScaleType,
-} from '@h5web/shared/models-vis';
+} from '@h5web/shared/vis-models';
 import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
 
 import type { ColorMap } from './heatmap/models';

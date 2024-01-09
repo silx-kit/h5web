@@ -2,8 +2,8 @@ import type {
   ColorScaleType,
   Domain,
   NumArray,
-} from '@h5web/shared/models-vis';
-import { ScaleType } from '@h5web/shared/models-vis';
+} from '@h5web/shared/vis-models';
+import { ScaleType } from '@h5web/shared/vis-models';
 import type { NdArray } from 'ndarray';
 import type { PropsWithChildren } from 'react';
 

@@ -1,4 +1,4 @@
-import type { ColorScaleType, Domain } from '@h5web/shared/models-vis';
+import type { ColorScaleType, Domain } from '@h5web/shared/vis-models';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';

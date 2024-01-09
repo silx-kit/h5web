@@ -11,8 +11,8 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import type { AxisScaleType } from '@h5web/shared/models-vis';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/utils';
+import type { AxisScaleType } from '@h5web/shared/vis-models';
 import { useToggle } from '@react-hookz/web';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { useState } from 'react';
