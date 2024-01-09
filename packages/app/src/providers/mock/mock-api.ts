@@ -17,7 +17,7 @@ import type {
 import {
   assertMockAttribute,
   assertMockDataset,
-} from '@h5web/shared/mock/utils';
+} from '@h5web/shared/mock-utils';
 import axios from 'axios';
 
 import { DataProviderApi } from '../api';

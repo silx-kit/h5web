@@ -1,5 +1,5 @@
-import type { Attribute, Dataset, DType, Shape } from '../hdf5-models';
-import type { MockAttribute, MockDataset } from './models';
+import type { Attribute, Dataset, DType, Shape } from './hdf5-models';
+import type { MockAttribute, MockDataset } from './mock-models';
 
 export function assertMockDataset<S extends Shape, T extends DType>(
   dataset: Dataset<S, T>,
