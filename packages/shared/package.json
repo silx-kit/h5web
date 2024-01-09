@@ -10,6 +10,7 @@
     "./createMemo": "./src/createMemo.ts",
     "./guards": "./src/guards.ts",
     "./hdf5-models": "./src/hdf5-models.ts",
+    "./hdf5-utils": "./src/hdf5-utils.ts",
     "./nexus-models": "./src/nexus-models.ts",
     "./vis-models": "./src/vis-models.ts",
     "./utils": "./src/utils.ts",

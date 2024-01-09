@@ -12,7 +12,7 @@ import type {
   ProvidedEntity,
   Shape,
 } from '../hdf5-models';
-import { getChildEntity } from '../utils';
+import { getChildEntity } from '../hdf5-utils';
 import type { MockAttribute, MockDataset } from './models';
 
 export function assertMockDataset<S extends Shape, T extends DType>(

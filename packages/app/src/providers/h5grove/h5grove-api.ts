@@ -11,7 +11,7 @@ import type {
   Value,
 } from '@h5web/shared/hdf5-models';
 import { EntityKind } from '@h5web/shared/hdf5-models';
-import { buildEntityPath } from '@h5web/shared/utils';
+import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';

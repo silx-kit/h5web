@@ -22,8 +22,8 @@ import type {
   UnresolvedEntity,
 } from '../hdf5-models';
 import { DTypeClass, Endianness, EntityKind } from '../hdf5-models';
+import { buildEntityPath } from '../hdf5-utils';
 import type { SilxStyle } from '../nexus-models';
-import { buildEntityPath } from '../utils';
 import type { MockAttribute, MockDataset, MockValueId } from './models';
 import { mockValues } from './values';
 

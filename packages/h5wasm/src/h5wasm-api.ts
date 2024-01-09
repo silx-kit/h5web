@@ -18,7 +18,7 @@ import type {
   Value,
 } from '@h5web/shared/hdf5-models';
 import { EntityKind } from '@h5web/shared/hdf5-models';
-import { buildEntityPath } from '@h5web/shared/utils';
+import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import type { Attribute as H5WasmAttribute, Filter, Module } from 'h5wasm';
 import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
 import { nanoid } from 'nanoid';

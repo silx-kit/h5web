@@ -23,7 +23,7 @@ import type {
   ScalarShape,
   StringType,
 } from '@h5web/shared/hdf5-models';
-import { getChildEntity } from '@h5web/shared/utils';
+import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
 import type { AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
