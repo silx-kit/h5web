@@ -1,13 +1,5 @@
-import type {
-  Attribute,
-  Dataset,
-  DType,
-  GroupWithChildren,
-  Shape,
-} from '../hdf5-models';
+import type { Attribute, Dataset, DType, Shape } from '../hdf5-models';
 import type { mockValues } from '../mock-values';
-
-export type MockFile = GroupWithChildren;
 
 export interface MockDataset<S extends Shape = Shape, T extends DType = DType>
   extends Dataset<S, T> {

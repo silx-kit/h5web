@@ -1,4 +1,4 @@
-import { findMockEntity, makeMockFile } from '@h5web/lib';
+import { findMockEntity } from '@h5web/lib';
 import {
   assertArrayShape,
   assertDefined,
@@ -10,11 +10,11 @@ import type {
   AttributeValues,
   Dataset,
   Entity,
+  GroupWithChildren,
   NumArrayDataset,
   ProvidedEntity,
   Value,
 } from '@h5web/shared/hdf5-models';
-import type { MockFile } from '@h5web/shared/mock/models';
 import {
   assertMockAttribute,
   assertMockDataset,
@@ -24,11 +24,12 @@ import axios from 'axios';
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { sliceValue } from '../utils';
+import { makeMockFile } from './mock-file';
 
 export const SLOW_TIMEOUT = 3000;
 
 export class MockApi extends DataProviderApi {
-  private readonly mockFile: MockFile;
+  private readonly mockFile: GroupWithChildren;
 
   public constructor(
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
