@@ -22,7 +22,7 @@ import {
   unresolved,
   withImageAttr,
   withNxAttr,
-} from '@h5web/shared/mock/metadata-utils';
+} from '@h5web/shared/mock-utils';
 import { ScaleType } from '@h5web/shared/vis-models';
 
 export function makeMockFile(): GroupWithChildren {

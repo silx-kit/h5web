@@ -1,4 +1,4 @@
-import { group, scalar } from '@h5web/shared/mock/metadata-utils';
+import { group, scalar } from '@h5web/shared/mock-utils';
 
 import { findMockEntity } from './utils';
 
