@@ -22,9 +22,9 @@ import {
   strType,
   unknownType,
 } from '../hdf5-utils';
+import { mockValues } from '../mock-values';
 import type { SilxStyle } from '../nexus-models';
 import type { MockAttribute, MockDataset, MockValueId } from './models';
-import { mockValues } from './values';
 
 function guessType(value: unknown): DType {
   if (typeof value === 'number') {

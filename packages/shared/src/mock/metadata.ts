@@ -8,6 +8,7 @@ import {
   strType,
   unknownType,
 } from '../hdf5-utils';
+import { cplx } from '../mock-values';
 import { ScaleType } from '../vis-models';
 import {
   array,
@@ -23,7 +24,6 @@ import {
   withNxAttr,
 } from './metadata-utils';
 import type { MockFile } from './models';
-import { cplx } from './values';
 
 export function makeMockFile(): MockFile {
   return nxGroup('source.h5', 'NXroot', {

@@ -5,7 +5,7 @@ import type {
   GroupWithChildren,
   Shape,
 } from '../hdf5-models';
-import type { mockValues } from './values';
+import type { mockValues } from '../mock-values';
 
 export type MockFile = GroupWithChildren;
 
