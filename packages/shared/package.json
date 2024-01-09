@@ -13,7 +13,7 @@
     "./hdf5-utils": "./src/hdf5-utils.ts",
     "./nexus-models": "./src/nexus-models.ts",
     "./vis-models": "./src/vis-models.ts",
-    "./utils": "./src/utils.ts",
+    "./vis-utils": "./src/vis-utils.ts",
     "./mock/metadata-utils": "./src/mock/metadata-utils.ts",
     "./mock/metadata": "./src/mock/metadata.ts",
     "./mock/models": "./src/mock/models.ts",

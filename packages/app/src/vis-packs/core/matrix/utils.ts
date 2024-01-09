@@ -7,7 +7,7 @@ import type {
   PrintableType,
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
-import { createComplexFormatter } from '@h5web/shared/utils';
+import { createComplexFormatter } from '@h5web/shared/vis-utils';
 import { format } from 'd3-format';
 
 import type { ValueFormatter } from '../models';

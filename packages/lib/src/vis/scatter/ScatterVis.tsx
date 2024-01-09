@@ -1,11 +1,11 @@
 import { assertDefined, assertLength } from '@h5web/shared/guards';
-import { formatTooltipVal } from '@h5web/shared/utils';
 import type {
   ColorScaleType,
   Domain,
   NumArray,
 } from '@h5web/shared/vis-models';
 import { ScaleType } from '@h5web/shared/vis-models';
+import { formatTooltipVal } from '@h5web/shared/vis-utils';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
 import type { NdArray } from 'ndarray';

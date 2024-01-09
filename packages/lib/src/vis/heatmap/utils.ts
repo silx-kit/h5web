@@ -1,6 +1,6 @@
-import { getDims, toTypedNdArray } from '@h5web/shared/utils';
 import type { Domain, NumArray } from '@h5web/shared/vis-models';
 import { ScaleType } from '@h5web/shared/vis-models';
+import { getDims, toTypedNdArray } from '@h5web/shared/vis-utils';
 import { range } from 'lodash';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';

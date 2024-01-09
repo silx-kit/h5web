@@ -1,5 +1,5 @@
-import { formatBound } from '@h5web/shared/utils';
 import type { Domain } from '@h5web/shared/vis-models';
+import { formatBound } from '@h5web/shared/vis-utils';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import type { DomainErrors } from '../../../vis/models';

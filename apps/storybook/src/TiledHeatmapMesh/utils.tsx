@@ -1,4 +1,4 @@
-import { formatTooltipVal } from '@h5web/shared/utils';
+import { formatTooltipVal } from '@h5web/shared/vis-utils';
 
 import type { TileParams } from './models';
 

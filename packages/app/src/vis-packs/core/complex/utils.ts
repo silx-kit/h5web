@@ -1,6 +1,6 @@
 import type { H5WebComplex } from '@h5web/shared/hdf5-models';
-import { getNewBounds } from '@h5web/shared/utils';
 import type { Bounds } from '@h5web/shared/vis-models';
+import { getNewBounds } from '@h5web/shared/vis-utils';
 
 const INITIAL_BOUNDS: Bounds = {
   min: Infinity,

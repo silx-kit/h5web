@@ -1,6 +1,6 @@
-import { formatBound, formatTick } from '@h5web/shared/utils';
 import type { Domain } from '@h5web/shared/vis-models';
 import { ScaleType } from '@h5web/shared/vis-models';
+import { formatBound, formatTick } from '@h5web/shared/vis-utils';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisRight } from '@visx/axis';
 

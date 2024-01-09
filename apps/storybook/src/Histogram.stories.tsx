@@ -1,5 +1,5 @@
 import { Histogram, ScaleType } from '@h5web/lib';
-import { COLOR_SCALE_TYPES } from '@h5web/shared/utils';
+import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 

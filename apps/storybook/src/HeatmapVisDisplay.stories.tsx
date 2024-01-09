@@ -4,7 +4,7 @@ import {
   HeatmapVis,
   mockValues,
 } from '@h5web/lib';
-import { formatTooltipVal } from '@h5web/shared/utils';
+import { formatTooltipVal } from '@h5web/shared/vis-utils';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import HeatmapVisStoriesMeta from './HeatmapVis.stories';

@@ -1,6 +1,6 @@
 import { assertDefined } from '@h5web/shared/guards';
-import { getDims } from '@h5web/shared/utils';
 import type { NumArray } from '@h5web/shared/vis-models';
+import { getDims } from '@h5web/shared/vis-utils';
 import type { NdArray } from 'ndarray';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
