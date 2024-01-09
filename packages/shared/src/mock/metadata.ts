@@ -43,10 +43,10 @@ export function makeMockFile(): MockFile {
           attributes: [scalarAttr('attr', cplx(1, 5))],
         }),
         scalar('scalar_compound', ['foo', 2], {
-          type: compoundType({ str: strType(), int: intType(8) }),
+          type: compoundType({ str: strType('ASCII', 3), int: intType(8) }),
           attributes: [
             scalarAttr('attr', ['foo', 2], {
-              type: compoundType({ str: strType(), int: intType(8) }),
+              type: compoundType({ str: strType('UTF-8'), int: intType(8) }),
             }),
           ],
         }),

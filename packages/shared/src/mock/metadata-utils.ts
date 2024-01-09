@@ -49,8 +49,15 @@ export function floatType(
   return { class: DTypeClass.Float, endianness, size };
 }
 
-export function strType(): StringType {
-  return { class: DTypeClass.String, charSet: 'ASCII' };
+export function strType(
+  charSet: StringType['charSet'] = 'ASCII',
+  length?: number,
+): StringType {
+  return {
+    class: DTypeClass.String,
+    charSet,
+    ...(length !== undefined && { length }),
+  };
 }
 
 export function boolType(): BooleanType {
