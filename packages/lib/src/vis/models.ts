@@ -3,14 +3,14 @@ import type {
   ComplexType,
   NumericType,
   StringType,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
 import type {
   AxisScaleType,
   ColorScaleType,
   Domain,
   NumArray,
   ScaleType,
-} from '@h5web/shared/models-vis';
+} from '@h5web/shared/vis-models';
 import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
 
 import type { ColorMap } from './heatmap/models';

@@ -4,11 +4,7 @@ import ndarray from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray, isTypedArray } from './guards';
-import type {
-  ChildEntity,
-  GroupWithChildren,
-  H5WebComplex,
-} from './models-hdf5';
+import type { H5WebComplex } from './hdf5-models';
 import type {
   AnyNumArray,
   AxisScaleType,
@@ -18,8 +14,8 @@ import type {
   Domain,
   NumArray,
   TypedArrayConstructor,
-} from './models-vis';
-import { ScaleType } from './models-vis';
+} from './vis-models';
+import { ScaleType } from './vis-models';
 
 export const AXIS_SCALE_TYPES: AxisScaleType[] = [
   ScaleType.Linear,
@@ -85,21 +81,6 @@ export function toTypedNdArray<T extends TypedArrayConstructor>(
   Constructor: T,
 ): NdArray<InstanceType<T>> {
   return ndarray(Constructor.from(arr.data) as InstanceType<T>, arr.shape);
-}
-
-export function getChildEntity(
-  group: GroupWithChildren,
-  entityName: string,
-): ChildEntity | undefined {
-  return group.children.find((child) => child.name === entityName);
-}
-
-export function buildEntityPath(
-  parentPath: string,
-  entityNameOrRelativePath: string,
-): string {
-  const prefix = parentPath === '/' ? '' : parentPath;
-  return `${prefix}/${entityNameOrRelativePath}`;
 }
 
 export function createArrayFromView<T extends TypedArray | unknown[]>(

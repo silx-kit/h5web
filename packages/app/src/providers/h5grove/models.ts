@@ -2,7 +2,7 @@ import type {
   AttributeValues,
   EntityKind,
   Filter,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
 
 export interface H5GroveEntityResponse {
   name: string;

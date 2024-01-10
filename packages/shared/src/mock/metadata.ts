@@ -1,4 +1,4 @@
-import { ScaleType } from '../models-vis';
+import { ScaleType } from '../vis-models';
 import {
   array,
   boolType,

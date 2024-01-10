@@ -1,6 +1,6 @@
 import { ToggleGroup } from '@h5web/lib';
-import type { AxisMapping } from '@h5web/shared/models-nexus';
-import type { Axis } from '@h5web/shared/models-vis';
+import type { AxisMapping } from '@h5web/shared/nexus-models';
+import type { Axis } from '@h5web/shared/vis-models';
 import { isNumber } from 'lodash';
 
 import styles from './DimensionMapper.module.css';

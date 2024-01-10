@@ -1,5 +1,5 @@
 import { assertStr, isGroup } from '@h5web/shared/guards';
-import type { ChildEntity } from '@h5web/shared/models-hdf5';
+import type { ChildEntity } from '@h5web/shared/hdf5-models';
 import type { KeyboardEvent } from 'react';
 
 import type { AttrValuesStore } from '../providers/models';

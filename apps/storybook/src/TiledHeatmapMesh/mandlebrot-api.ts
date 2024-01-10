@@ -1,6 +1,6 @@
 import type { Size } from '@h5web/lib';
 import { getLayerSizes, TilesApi } from '@h5web/lib';
-import type { Domain } from '@h5web/shared/models-vis';
+import type { Domain } from '@h5web/shared/vis-models';
 import greenlet from 'greenlet';
 import { clamp } from 'lodash';
 import type { NdArray } from 'ndarray';

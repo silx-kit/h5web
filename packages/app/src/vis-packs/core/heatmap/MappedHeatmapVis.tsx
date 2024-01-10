@@ -4,9 +4,9 @@ import type {
   ArrayValue,
   Dataset,
   NumericLikeType,
-} from '@h5web/shared/models-hdf5';
-import type { AxisMapping } from '@h5web/shared/models-nexus';
-import type { NumArray } from '@h5web/shared/models-vis';
+} from '@h5web/shared/hdf5-models';
+import type { AxisMapping } from '@h5web/shared/nexus-models';
+import type { NumArray } from '@h5web/shared/vis-models';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';

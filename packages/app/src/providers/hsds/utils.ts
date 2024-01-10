@@ -11,8 +11,8 @@ import type {
   NumericType,
   ScalarShape,
   Shape,
-} from '@h5web/shared/models-hdf5';
-import { DTypeClass, Endianness } from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
+import { DTypeClass, Endianness } from '@h5web/shared/hdf5-models';
 
 import type {
   HsdsAttribute,

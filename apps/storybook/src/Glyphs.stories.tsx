@@ -7,7 +7,7 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { ScaleType } from '@h5web/shared/models-vis';
+import { ScaleType } from '@h5web/shared/vis-models';
 import type { Meta, StoryObj } from '@storybook/react';
 import { range } from 'lodash';
 

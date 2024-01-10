@@ -14,9 +14,9 @@ import type {
   GroupWithChildren,
   ProvidedEntity,
   Value,
-} from '@h5web/shared/models-hdf5';
-import { EntityKind } from '@h5web/shared/models-hdf5';
-import { buildEntityPath, getChildEntity } from '@h5web/shared/utils';
+} from '@h5web/shared/hdf5-models';
+import { EntityKind } from '@h5web/shared/hdf5-models';
+import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';

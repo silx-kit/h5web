@@ -3,9 +3,9 @@ import type {
   ColorScaleType,
   Domain,
   NumArray,
-} from '@h5web/shared/models-vis';
-import { ScaleType } from '@h5web/shared/models-vis';
-import { formatTooltipVal } from '@h5web/shared/utils';
+} from '@h5web/shared/vis-models';
+import { ScaleType } from '@h5web/shared/vis-models';
+import { formatTooltipVal } from '@h5web/shared/vis-utils';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
 import type { NdArray } from 'ndarray';

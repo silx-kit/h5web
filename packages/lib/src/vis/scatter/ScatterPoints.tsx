@@ -2,7 +2,7 @@ import type {
   ColorScaleType,
   Domain,
   NumArray,
-} from '@h5web/shared/models-vis';
+} from '@h5web/shared/vis-models';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useCallback, useMemo } from 'react';
 

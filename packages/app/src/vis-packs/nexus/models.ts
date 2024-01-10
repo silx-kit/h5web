@@ -8,9 +8,9 @@ import type {
   NumericType,
   ScalarShape,
   StringType,
-} from '@h5web/shared/models-hdf5';
-import type { AxisMapping } from '@h5web/shared/models-nexus';
-import type { NumArray } from '@h5web/shared/models-vis';
+} from '@h5web/shared/hdf5-models';
+import type { AxisMapping } from '@h5web/shared/nexus-models';
+import type { NumArray } from '@h5web/shared/vis-models';
 
 export type NxAttribute =
   | 'NX_class'

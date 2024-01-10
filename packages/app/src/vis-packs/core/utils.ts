@@ -1,8 +1,8 @@
 import { isNumericType } from '@h5web/shared/guards';
-import type { ArrayValue, NumericLikeType } from '@h5web/shared/models-hdf5';
-import { DTypeClass } from '@h5web/shared/models-hdf5';
-import type { Axis, Domain, NumArray } from '@h5web/shared/models-vis';
-import { createArrayFromView } from '@h5web/shared/utils';
+import type { ArrayValue, NumericLikeType } from '@h5web/shared/hdf5-models';
+import { DTypeClass } from '@h5web/shared/hdf5-models';
+import type { Axis, Domain, NumArray } from '@h5web/shared/vis-models';
+import { createArrayFromView } from '@h5web/shared/vis-utils';
 import { isNumber } from 'lodash';
 import type { NdArray, TypedArray } from 'ndarray';
 import ndarray from 'ndarray';

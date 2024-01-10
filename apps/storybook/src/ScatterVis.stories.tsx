@@ -1,7 +1,7 @@
 import { getDomain, INTERPOLATORS, ScatterVis } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { ScaleType } from '@h5web/shared/models-vis';
-import { COLOR_SCALE_TYPES } from '@h5web/shared/utils';
+import { ScaleType } from '@h5web/shared/vis-models';
+import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import type { Meta, StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 import { useState } from 'react';

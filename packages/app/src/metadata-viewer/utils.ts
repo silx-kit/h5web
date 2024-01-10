@@ -8,9 +8,9 @@ import type {
   DType,
   H5WebComplex,
   Shape,
-} from '@h5web/shared/models-hdf5';
-import { DTypeClass } from '@h5web/shared/models-hdf5';
-import { formatScalarComplex } from '@h5web/shared/utils';
+} from '@h5web/shared/hdf5-models';
+import { DTypeClass } from '@h5web/shared/hdf5-models';
+import { formatScalarComplex } from '@h5web/shared/vis-utils';
 
 export function renderShape(shape: Shape): string {
   if (shape === null) {

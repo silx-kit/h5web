@@ -1,7 +1,7 @@
 import { CurveType } from '@h5web/lib';
 import { isDefined } from '@h5web/shared/guards';
-import type { AxisScaleType } from '@h5web/shared/models-vis';
-import { ScaleType } from '@h5web/shared/models-vis';
+import type { AxisScaleType } from '@h5web/shared/vis-models';
+import { ScaleType } from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
 import { omit } from 'lodash';
 import { createContext, useContext, useState } from 'react';

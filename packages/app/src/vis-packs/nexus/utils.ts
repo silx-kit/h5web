@@ -22,8 +22,8 @@ import type {
   NumericType,
   ScalarShape,
   StringType,
-} from '@h5web/shared/models-hdf5';
-import { getChildEntity } from '@h5web/shared/utils';
+} from '@h5web/shared/hdf5-models';
+import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
 import type { AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';

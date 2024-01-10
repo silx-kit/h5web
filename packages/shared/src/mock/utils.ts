@@ -11,8 +11,8 @@ import type {
   GroupWithChildren,
   ProvidedEntity,
   Shape,
-} from '../models-hdf5';
-import { getChildEntity } from '../utils';
+} from '../hdf5-models';
+import { getChildEntity } from '../hdf5-utils';
 import type { MockAttribute, MockDataset } from './models';
 
 export function assertMockDataset<S extends Shape, T extends DType>(

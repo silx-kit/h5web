@@ -6,7 +6,7 @@ import type {
   Entity,
   ProvidedEntity,
   Value,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
 import type {
   AxiosInstance,
   AxiosProgressEvent,

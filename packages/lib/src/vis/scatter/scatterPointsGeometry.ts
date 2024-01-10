@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { ColorScaleType, NumArray } from '@h5web/shared/models-vis';
+import type { ColorScaleType, NumArray } from '@h5web/shared/vis-models';
 import { rgb } from 'd3-color';
 
 import type { D3Interpolator } from '../heatmap/models';

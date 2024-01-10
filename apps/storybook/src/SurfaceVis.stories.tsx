@@ -1,6 +1,6 @@
 import { getDomain, mockValues, SurfaceVis } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { createArrayFromView } from '@h5web/shared/utils';
+import { createArrayFromView } from '@h5web/shared/vis-utils';
 import { OrbitControls } from '@react-three/drei';
 import type { Meta, StoryObj } from '@storybook/react';
 

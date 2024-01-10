@@ -7,7 +7,7 @@ import {
   Separator,
   Toolbar,
 } from '@h5web/lib';
-import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES } from '@h5web/shared/utils';
+import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 
 import { BASE_INTERACTIONS } from '../utils';
 import type { ScatterConfig } from './config';

@@ -95,7 +95,7 @@ export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';
 export type { VisCanvasContextValue } from './vis/shared/VisCanvasProvider';
 
 // Utilities
-export { toTypedNdArray } from '@h5web/shared/utils';
+export { toTypedNdArray } from '@h5web/shared/vis-utils';
 
 export {
   getDomain,
@@ -147,12 +147,12 @@ export { default as ErrorBarsGeometry } from './vis/line/errorBarsGeometry';
 export { default as ErrorCapsGeometry } from './vis/line/errorCapsGeometry';
 
 // Constants
-export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared/utils';
+export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 export { CAMERA_FAR } from './vis/utils';
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 
 // Enums
-export { ScaleType } from '@h5web/shared/models-vis';
+export { ScaleType } from '@h5web/shared/vis-models';
 export { CurveType, GlyphType } from './vis/line/models';
 export { ImageType } from './vis/rgb/models';
 export { Notation } from './vis/matrix/models';
@@ -166,7 +166,7 @@ export type {
   Axis,
   ColorScaleType,
   AxisScaleType,
-} from '@h5web/shared/models-vis';
+} from '@h5web/shared/vis-models';
 
 export type {
   Aspect,

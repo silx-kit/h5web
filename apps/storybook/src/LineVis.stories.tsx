@@ -11,7 +11,7 @@ import {
   AXIS_SCALE_TYPES,
   createArrayFromView,
   toTypedNdArray,
-} from '@h5web/shared/utils';
+} from '@h5web/shared/vis-utils';
 import type { Meta, StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 

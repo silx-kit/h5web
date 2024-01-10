@@ -5,8 +5,8 @@ import type {
   DType,
   Primitive,
   ScalarShape,
-} from '@h5web/shared/models-hdf5';
-import { DTypeClass } from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
+import { DTypeClass } from '@h5web/shared/hdf5-models';
 import { AxiosError } from 'axios';
 import ndarray from 'ndarray';
 

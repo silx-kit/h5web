@@ -1,5 +1,5 @@
 import { isDefined } from '@h5web/shared/guards';
-import type { GroupWithChildren } from '@h5web/shared/models-hdf5';
+import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
 
 import { useDataContext } from '../../providers/DataProvider';
 import type { NxData } from './models';

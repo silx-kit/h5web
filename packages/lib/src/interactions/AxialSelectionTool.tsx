@@ -1,4 +1,4 @@
-import type { Axis } from '@h5web/shared/models-vis';
+import type { Axis } from '@h5web/shared/vis-models';
 import type { Camera } from 'three';
 import { Vector3 } from 'three';
 

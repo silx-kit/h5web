@@ -1,5 +1,5 @@
+import { buildEntityPath, getChildEntity } from './hdf5-utils';
 import { group, scalar } from './mock/metadata-utils';
-import { buildEntityPath, getChildEntity } from './utils';
 
 describe('getChildEntity', () => {
   const dataset = scalar('dataset', 0);

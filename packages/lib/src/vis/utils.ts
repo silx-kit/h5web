@@ -6,13 +6,13 @@ import type {
   Domain,
   NumArray,
   TypedArrayConstructor,
-} from '@h5web/shared/models-vis';
-import { ScaleType } from '@h5web/shared/models-vis';
+} from '@h5web/shared/vis-models';
+import { ScaleType } from '@h5web/shared/vis-models';
 import {
   formatTick,
   getBounds,
   getValidDomainForScale,
-} from '@h5web/shared/utils';
+} from '@h5web/shared/vis-utils';
 import {
   scaleLinear,
   scaleLog,

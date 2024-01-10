@@ -3,7 +3,7 @@ import type {
   Dataset,
   ScalarShape,
   Value,
-} from '@h5web/shared/models-hdf5';
+} from '@h5web/shared/hdf5-models';
 import type { ReactNode } from 'react';
 
 import { useDatasetValue } from './hooks';

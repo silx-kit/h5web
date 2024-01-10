@@ -1,5 +1,5 @@
-import type { DType } from '@h5web/shared/models-hdf5';
-import { DTypeClass, Endianness, EntityKind } from '@h5web/shared/models-hdf5';
+import type { DType } from '@h5web/shared/hdf5-models';
+import { DTypeClass, Endianness, EntityKind } from '@h5web/shared/hdf5-models';
 
 import type {
   H5GroveDatasetResponse,
