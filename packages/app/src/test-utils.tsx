@@ -1,7 +1,9 @@
 import { assertDefined, assertNonNull } from '@h5web/shared/guards';
 import type { RenderResult } from '@testing-library/react';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { MockInstance } from 'vitest';
+import { expect, vi } from 'vitest';
 
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
@@ -37,11 +39,18 @@ export async function renderApp(
   }
 
   if (withFakeTimers) {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
+
+    // Workaround for React Testing Library's reliance on Jest
+    // https://github.com/testing-library/react-testing-library/issues/1197
+    // @ts-expect-error
+    globalThis.jest = { advanceTimersByTime: vi.advanceTimersByTime.bind(vi) };
   }
 
   const user = userEvent.setup(
-    withFakeTimers ? { advanceTimers: jest.advanceTimersByTime } : undefined,
+    withFakeTimers
+      ? { advanceTimers: vi.advanceTimersByTime.bind(vi) }
+      : undefined,
   );
 
   const renderResult = render(
@@ -77,7 +86,7 @@ export async function renderApp(
 }
 
 export async function waitForAllLoaders(): Promise<void> {
-  await waitFor(() => {
+  await vi.waitFor(() => {
     expect(screen.queryAllByTestId(/^Loading/u)).toHaveLength(0);
   });
 }
@@ -106,19 +115,17 @@ export function getSelectedVisTab(): string {
 }
 
 /**
- * Mock console method in test.
- * Mocks are automatically restored after every test, but to restore
- * the original console method earlier, call `spy.mockRestore()`.
+ * Mock a console method.
+ * Mocks are automatically cleared and restored after every test but you
+ * may also call `clearMock()` or `restoreMock()` yourself sooner as needed.
  */
 export function mockConsoleMethod(
   method: 'log' | 'warn' | 'error',
   debug?: boolean,
-) {
-  const spy = jest.spyOn(console, method);
-  spy.mockImplementation((...args) => {
+): MockInstance {
+  return vi.spyOn(console, method).mockImplementation((...args) => {
     if (debug) {
       console.debug(...args); // eslint-disable-line no-console
     }
   });
-  return spy;
 }

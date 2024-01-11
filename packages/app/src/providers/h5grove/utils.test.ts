@@ -9,6 +9,7 @@ import {
   uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
+import { describe, expect, it } from 'vitest';
 
 import { convertH5GroveDtype } from './utils';
 

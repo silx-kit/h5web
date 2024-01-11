@@ -117,6 +117,7 @@ module.exports = {
         }),
         createJestOverride({
           ...dependencies,
+          hasJest: /(app|lib|shared)$/u.test(cwd), // until Galex starts supporting Vitest
           rules: {
             'jest/no-focused-tests': 'warn', // warning instead of error
             'jest/prefer-strict-equal': 'off', // `toEqual` is shorter and sufficient in most cases

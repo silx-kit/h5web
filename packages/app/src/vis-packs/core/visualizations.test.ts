@@ -13,6 +13,7 @@ import {
   dataset,
   withImageAttr,
 } from '@h5web/shared/mock-utils';
+import { describe, expect, it } from 'vitest';
 
 import type { AttrValuesStore } from '../../providers/models';
 import { CORE_VIS } from './visualizations';

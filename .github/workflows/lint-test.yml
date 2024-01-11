@@ -76,9 +76,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Test 👓
-        run: pnpm test -- --reporters="default" --reporters="github-actions"
-        env:
-          CI: true
+        run: pnpm test -- --reporter default --reporter vitest-github-actions-reporter
 
   packages:
     runs-on: ubuntu-latest

@@ -1,5 +1,6 @@
 import { intType } from '@h5web/shared/hdf5-utils';
 import { dataset } from '@h5web/shared/mock-utils';
+import { describe, expect, it } from 'vitest';
 
 import { guessKeepRatio } from './utils';
 

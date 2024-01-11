@@ -1,12 +1,8 @@
 import { screen, within } from '@testing-library/react';
+import { expect, test } from 'vitest';
 
 import { SLOW_TIMEOUT } from '../providers/mock/mock-api';
-import {
-  getSelectedVisTab,
-  getVisTabs,
-  renderApp,
-  waitForAllLoaders,
-} from '../test-utils';
+import { getSelectedVisTab, getVisTabs, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('visualize raw dataset', async () => {
@@ -75,12 +71,7 @@ test('visualize 2D boolean dataset', async () => {
 });
 
 test('visualize 2D complex dataset', async () => {
-  const { user } = await renderApp({
-    initialPath: '/nD_datasets/twoD_cplx',
-    withFakeTimers: true, // required since React 18 upgrade (along with `waitForAllLoaders` below)
-  });
-
-  await waitForAllLoaders();
+  const { user } = await renderApp('/nD_datasets/twoD_cplx');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);

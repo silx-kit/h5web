@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath, URL } from 'url';
-import { defineConfig } from 'vite';
+import { defineProject } from 'vitest/config';
 
 const dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -18,7 +18,7 @@ export const externals = new Set([
   ...Object.keys(pkg.peerDependencies),
 ]);
 
-export default defineConfig({
+export default defineProject({
   plugins: [react()],
   build: {
     lib: {
@@ -31,5 +31,16 @@ export default defineConfig({
       output: { interop: 'compat' }, // for compatibility with Jest in consumer projects (default changed in Rollup 3/Vite 4: https://rollupjs.org/migration/#changed-defaults)
     },
     sourcemap: true,
+  },
+  test: {
+    setupFiles: ['src/setupTests.ts'],
+    environment: 'jsdom',
+    restoreMocks: true,
+    testTimeout: 15_000,
+    server: {
+      deps: {
+        inline: ['react-suspense-fetch'],
+      },
+    },
   },
 });
