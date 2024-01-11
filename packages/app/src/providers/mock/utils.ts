@@ -3,33 +3,12 @@ import {
   assertGroup,
   assertGroupWithChildren,
   isGroup,
-} from '../guards';
+} from '@h5web/shared/guards';
 import type {
-  Attribute,
-  Dataset,
-  DType,
   GroupWithChildren,
   ProvidedEntity,
-  Shape,
-} from '../hdf5-models';
-import { getChildEntity } from '../hdf5-utils';
-import type { MockAttribute, MockDataset } from './models';
-
-export function assertMockDataset<S extends Shape, T extends DType>(
-  dataset: Dataset<S, T>,
-): asserts dataset is MockDataset<S, T> {
-  if (!('value' in dataset)) {
-    throw new Error('Expected mock dataset');
-  }
-}
-
-export function assertMockAttribute<S extends Shape, T extends DType>(
-  attribute: Attribute<S, T>,
-): asserts attribute is MockAttribute<S, T> {
-  if (!('value' in attribute)) {
-    throw new Error('Expected mock attribute');
-  }
-}
+} from '@h5web/shared/hdf5-models';
+import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
 export function findMockEntity(
   group: GroupWithChildren,

@@ -1,118 +1,52 @@
-import { hasChildren, isGroup } from '../guards';
+import { hasChildren, isGroup } from './guards';
 import type {
   ArrayShape,
   Attribute,
-  BooleanType,
   ChildEntity,
-  ComplexType,
-  CompoundType,
+  Dataset,
   Datatype,
   DType,
   Entity,
   Group,
   GroupWithChildren,
   LinkClass,
-  NumericType,
-  PrintableCompoundType,
-  PrintableType,
   ScalarShape,
   Shape,
-  StringType,
-  UnknownType,
   UnresolvedEntity,
-} from '../hdf5-models';
-import { DTypeClass, Endianness, EntityKind } from '../hdf5-models';
-import { buildEntityPath } from '../hdf5-utils';
-import type { SilxStyle } from '../nexus-models';
-import type { MockAttribute, MockDataset, MockValueId } from './models';
-import { mockValues } from './values';
+} from './hdf5-models';
+import { EntityKind } from './hdf5-models';
+import {
+  boolType,
+  buildEntityPath,
+  cplxType,
+  floatType,
+  strType,
+  unknownType,
+} from './hdf5-utils';
+import type { MockAttribute, MockDataset, MockValueId } from './mock-models';
+import { mockValues } from './mock-values';
+import type { SilxStyle } from './nexus-models';
 
-/* ----------------- */
-/* ----- TYPES ----- */
-
-export function intType(
-  size: 8 | 16 | 32 | 64 = 32,
-  unsigned = false,
-  endianness = Endianness.LE,
-): NumericType {
-  return {
-    class: unsigned ? DTypeClass.Unsigned : DTypeClass.Integer,
-    endianness,
-    size,
-  };
-}
-
-export function floatType(
-  size: 16 | 32 | 64 = 32,
-  endianness = Endianness.LE,
-): NumericType {
-  return { class: DTypeClass.Float, endianness, size };
-}
-
-export function strType(
-  charSet: StringType['charSet'] = 'ASCII',
-  length?: number,
-): StringType {
-  return {
-    class: DTypeClass.String,
-    charSet,
-    ...(length !== undefined && { length }),
-  };
-}
-
-export function boolType(): BooleanType {
-  return { class: DTypeClass.Bool };
-}
-
-export function cplxType(
-  realType: NumericType,
-  imagType = realType,
-): ComplexType {
-  return { class: DTypeClass.Complex, realType, imagType };
-}
-
-export function compoundType(fields: Record<string, DType>): CompoundType {
-  return { class: DTypeClass.Compound, fields };
-}
-
-export function printableCompoundType(
-  fields: Record<string, PrintableType>,
-): PrintableCompoundType {
-  return { class: DTypeClass.Compound, fields };
-}
-
-export function unknownType(): UnknownType {
-  return { class: DTypeClass.Unknown };
-}
-
-function guessType(value: unknown): DType {
-  if (typeof value === 'number') {
-    return floatType(64);
+export function assertMockDataset<S extends Shape, T extends DType>(
+  dtst: Dataset<S, T>,
+): asserts dtst is MockDataset<S, T> {
+  if (!('value' in dtst)) {
+    throw new Error('Expected mock dataset');
   }
+}
 
-  if (typeof value === 'string') {
-    return strType();
+export function assertMockAttribute<S extends Shape, T extends DType>(
+  attr: Attribute<S, T>,
+): asserts attr is MockAttribute<S, T> {
+  if (!('value' in attr)) {
+    throw new Error('Expected mock attribute');
   }
-
-  if (typeof value === 'boolean') {
-    return boolType();
-  }
-
-  if (
-    Array.isArray(value) &&
-    value.length === 2 &&
-    typeof value[0] === 'number'
-  ) {
-    return cplxType(floatType(64));
-  }
-
-  return unknownType();
 }
 
 /* ---------------------- */
 /* ----- ATTRIBUTES ----- */
 
-export function attr<S extends Shape, T extends DType>(
+export function attribute<S extends Shape, T extends DType>(
   name: string,
   type: T,
   shape: S,
@@ -127,7 +61,17 @@ export function scalarAttr(
   opts: { type?: DType } = {},
 ): MockAttribute<ScalarShape> {
   const { type } = opts;
-  return attr(name, type || guessType(value), [], value);
+  return attribute(name, type || guessType(value), [], value);
+}
+
+export function arrayAttr(
+  name: string,
+  value: unknown[],
+  opts: { type?: DType } = {},
+): MockAttribute<ArrayShape> {
+  const { type } = opts;
+
+  return attribute(name, type || guessType(value[0]), [value.length], value);
 }
 
 export function withAttr<T extends Entity>(
@@ -152,16 +96,6 @@ export function withImageAttr<T extends Entity>(entity: T): T {
 
 type EntityOpts = Partial<Pick<Entity, 'attributes' | 'link'>>;
 type GroupOpts = EntityOpts & { isRoot?: boolean; children?: ChildEntity[] };
-
-function prefixChildrenPaths(grp: GroupWithChildren, parentPath: string): void {
-  grp.children.forEach((c) => {
-    c.path = buildEntityPath(parentPath, c.path.slice(1));
-
-    if (isGroup(c) && hasChildren(c)) {
-      prefixChildrenPaths(c, parentPath);
-    }
-  });
-}
 
 export function group(
   name: string,
@@ -265,26 +199,6 @@ export function unresolved(
 /* ----------------- */
 /* ----- NEXUS ----- */
 
-export function nxAxesAttr(axes: string[]): Attribute<ArrayShape, StringType> {
-  return attr('axes', strType(), [axes.length], axes);
-}
-
-export function nxAuxAttr(aux: string[]): Attribute<ArrayShape, StringType> {
-  return attr('auxiliary_signals', strType(), [aux.length], aux);
-}
-
-export function silxStyleAttr(style: SilxStyle): MockAttribute<ScalarShape> {
-  const { signalScaleType, axisScaleTypes } = style;
-
-  return scalarAttr(
-    'SILX_style',
-    JSON.stringify({
-      signal_scale_type: signalScaleType,
-      axes_scale_type: axisScaleTypes,
-    }),
-  );
-}
-
 export function nxGroup(
   name: string,
   type: 'NXroot' | 'NXentry' | 'NXprocess' | 'NXdata',
@@ -323,11 +237,11 @@ export function nxData<T extends Record<string, MockDataset<ArrayShape>>>(
     signal,
     title,
     errors,
-    silxStyle,
     axes = {},
     axesAttr,
     auxiliary = {},
     auxAttr,
+    silxStyle,
     attributes = [],
     children = [],
     ...groupOpts
@@ -337,9 +251,9 @@ export function nxData<T extends Record<string, MockDataset<ArrayShape>>>(
     ...groupOpts,
     attributes: [
       scalarAttr('signal', signal.name),
-      ...(axesAttr ? [nxAxesAttr(axesAttr)] : []),
+      ...(axesAttr ? [arrayAttr('axes', axesAttr)] : []),
+      ...(auxAttr ? [arrayAttr('auxiliary_signals', auxAttr)] : []),
       ...(silxStyle ? [silxStyleAttr(silxStyle)] : []),
-      ...(auxAttr ? [nxAuxAttr(auxAttr)] : []),
       ...attributes,
     ],
     children: [
@@ -368,4 +282,53 @@ export function withNxAttr<T extends MockDataset<ArrayShape>>(
     ...(longName ? [scalarAttr('long_name', longName)] : []),
     ...(units ? [scalarAttr('units', units)] : []),
   ]);
+}
+
+/* ------------------------ */
+/* --- INTERNAL HELPERS --- */
+
+function guessType(value: unknown): DType {
+  if (typeof value === 'number') {
+    return floatType(64);
+  }
+
+  if (typeof value === 'string') {
+    return strType();
+  }
+
+  if (typeof value === 'boolean') {
+    return boolType();
+  }
+
+  if (
+    Array.isArray(value) &&
+    value.length === 2 &&
+    typeof value[0] === 'number'
+  ) {
+    return cplxType(floatType(64));
+  }
+
+  return unknownType();
+}
+
+function prefixChildrenPaths(grp: GroupWithChildren, parentPath: string): void {
+  grp.children.forEach((c) => {
+    c.path = buildEntityPath(parentPath, c.path.slice(1));
+
+    if (isGroup(c) && hasChildren(c)) {
+      prefixChildrenPaths(c, parentPath);
+    }
+  });
+}
+
+function silxStyleAttr(style: SilxStyle): MockAttribute<ScalarShape> {
+  const { signalScaleType, axisScaleTypes } = style;
+
+  return scalarAttr(
+    'SILX_style',
+    JSON.stringify({
+      signal_scale_type: signalScaleType,
+      axes_scale_type: axisScaleTypes,
+    }),
+  );
 }

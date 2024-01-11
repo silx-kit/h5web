@@ -3,13 +3,15 @@ import {
   boolType,
   compoundType,
   cplxType,
-  dataset,
   floatType,
   intType,
   strType,
+} from '@h5web/shared/hdf5-utils';
+import {
+  assertMockAttribute,
+  dataset,
   withImageAttr,
-} from '@h5web/shared/mock/metadata-utils';
-import { assertMockAttribute } from '@h5web/shared/mock/utils';
+} from '@h5web/shared/mock-utils';
 
 import type { AttrValuesStore } from '../../providers/models';
 import { CORE_VIS } from './visualizations';

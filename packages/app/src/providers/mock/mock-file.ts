@@ -1,29 +1,31 @@
-import { ScaleType } from '../vis-models';
+import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
 import {
-  array,
   boolType,
   compoundType,
+  cplx,
   cplxType,
-  dataset,
-  datatype,
   floatType,
-  group,
   intType,
-  nxData,
-  nxGroup,
   printableCompoundType,
-  scalar,
-  scalarAttr,
   strType,
   unknownType,
+} from '@h5web/shared/hdf5-utils';
+import {
+  array,
+  dataset,
+  datatype,
+  group,
+  nxData,
+  nxGroup,
+  scalar,
+  scalarAttr,
   unresolved,
   withImageAttr,
   withNxAttr,
-} from './metadata-utils';
-import type { MockFile } from './models';
-import { cplx } from './values';
+} from '@h5web/shared/mock-utils';
+import { ScaleType } from '@h5web/shared/vis-models';
 
-export function makeMockFile(): MockFile {
+export function makeMockFile(): GroupWithChildren {
   return nxGroup('source.h5', 'NXroot', {
     isRoot: true,
     defaultPath: 'nexus_entry',
