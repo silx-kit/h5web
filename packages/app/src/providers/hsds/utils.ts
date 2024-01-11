@@ -24,6 +24,7 @@ import {
   intType,
   isBoolEnumType,
   strType,
+  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 
@@ -81,7 +82,6 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
   }
 
   const [, sign, sizeStr, endiannessAbbr] = matches;
-  const unsigned = sign === 'U';
   const size = Number.parseInt(sizeStr, 10);
   const endianness = Endianness[endiannessAbbr as 'BE' | 'LE'];
 
@@ -89,7 +89,11 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
     return floatType(size, endianness);
   }
 
-  return intType(size, unsigned, endianness);
+  if (sign === 'U') {
+    return uintType(size, endianness);
+  }
+
+  return intType(size, endianness);
 }
 
 function convertHsdsCompoundType(

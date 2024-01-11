@@ -34,16 +34,12 @@ export function buildEntityPath(
 /* ----------------- */
 /* ----- TYPES ----- */
 
-export function intType(
-  size = 32,
-  unsigned = false,
-  endianness = Endianness.LE,
-): NumericType {
-  return {
-    class: unsigned ? DTypeClass.Unsigned : DTypeClass.Integer,
-    endianness,
-    size,
-  };
+export function intType(size = 32, endianness = Endianness.LE): NumericType {
+  return { class: DTypeClass.Integer, endianness, size };
+}
+
+export function uintType(size = 32, endianness = Endianness.LE): NumericType {
+  return { class: DTypeClass.Unsigned, endianness, size };
 }
 
 export function floatType(size = 32, endianness = Endianness.LE): NumericType {

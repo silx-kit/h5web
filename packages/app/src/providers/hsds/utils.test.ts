@@ -8,6 +8,7 @@ import {
   floatType,
   intType,
   strType,
+  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 
@@ -27,12 +28,12 @@ interface TestType {
 
 const leInt = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
-  hdf5: intType(8, false, Endianness.LE),
+  hdf5: intType(8, Endianness.LE),
 } satisfies TestType;
 
-const beInt = {
+const beUint = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_U64BE' },
-  hdf5: intType(64, true, Endianness.BE),
+  hdf5: uintType(64, Endianness.BE),
 } satisfies TestType;
 
 const leFloat = {
@@ -68,7 +69,7 @@ describe('convertHsdsType', () => {
 
   it('should convert integer types', () => {
     expect(convertHsdsType(leInt.hsds)).toStrictEqual(leInt.hdf5);
-    expect(convertHsdsType(beInt.hsds)).toStrictEqual(beInt.hdf5);
+    expect(convertHsdsType(beUint.hsds)).toStrictEqual(beUint.hdf5);
   });
 
   it('should convert float types', () => {

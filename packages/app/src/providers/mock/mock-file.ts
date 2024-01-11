@@ -10,6 +10,7 @@ import {
   intType,
   printableCompoundType,
   strType,
+  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import {
@@ -67,10 +68,10 @@ export function makeMockFile(): GroupWithChildren {
           ],
         }),
         scalar('scalar_enum', 2, {
-          type: enumType(intType(8, true), { FOO: 0, BAR: 1, BAZ: 2 }),
+          type: enumType(uintType(8), { FOO: 0, BAR: 1, BAZ: 2 }),
           attributes: [
             scalarAttr('attr', 2, {
-              type: enumType(intType(8, true), { FOO: 0, BAR: 1, BAZ: 2 }),
+              type: enumType(uintType(8), { FOO: 0, BAR: 1, BAZ: 2 }),
             }),
           ],
         }),
@@ -116,11 +117,11 @@ export function makeMockFile(): GroupWithChildren {
         array('fourD'),
       ]),
       group('typed_arrays', [
-        array('uint8', { type: intType(8, true) }),
+        array('uint8', { type: uintType(8) }),
         array('int16', { type: intType(16) }),
         array('float32', { type: floatType(32) }),
         array('float64', { type: floatType(64) }),
-        withImageAttr(array('uint8_rgb', { type: intType(8, true) })),
+        withImageAttr(array('uint8_rgb', { type: uintType(8) })),
         withImageAttr(array('int8_rgb', { type: intType(8) })),
         withImageAttr(array('int32_rgb', { type: intType(32) })),
         withImageAttr(array('float32_rgb', { type: floatType(32) })),

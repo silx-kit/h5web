@@ -7,6 +7,7 @@ import {
   floatType,
   intType,
   strType,
+  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 
@@ -85,10 +86,10 @@ function convertDtypeString(dtype: string): DType {
       return floatType(length * 8, endianness);
 
     case 'i':
-      return intType(length * 8, false, endianness);
+      return intType(length * 8, endianness);
 
     case 'u':
-      return intType(length * 8, true, endianness);
+      return uintType(length * 8, endianness);
 
     case 'c':
       return cplxType(

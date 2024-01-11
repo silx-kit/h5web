@@ -6,6 +6,7 @@ import {
   floatType,
   intType,
   strType,
+  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 
@@ -14,10 +15,10 @@ import { convertH5GroveDtype } from './utils';
 describe('convertH5GroveDtype', () => {
   it('should convert integer dtypes', () => {
     expect(convertH5GroveDtype('<i4')).toStrictEqual(
-      intType(32, false, Endianness.LE),
+      intType(32, Endianness.LE),
     );
     expect(convertH5GroveDtype('>u8')).toStrictEqual(
-      intType(64, true, Endianness.BE),
+      uintType(64, Endianness.BE),
     );
   });
 
@@ -58,7 +59,7 @@ describe('convertH5GroveDtype', () => {
     ).toStrictEqual(
       compoundType({
         country: strType('ASCII', 10),
-        population: intType(32, false, Endianness.LE),
+        population: intType(32, Endianness.LE),
       }),
     );
   });

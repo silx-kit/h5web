@@ -11,6 +11,7 @@ import {
   intType,
   isBoolEnumType,
   strType,
+  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
@@ -43,14 +44,15 @@ export function convertNumericMetadataToDType(
   metadata: NumericMetadata,
 ): NumericType {
   const { signed, size: length, littleEndian } = metadata;
+  const size = length * 8;
   const endianness = littleEndian ? Endianness.LE : Endianness.BE;
 
   if (isIntegerMetadata(metadata)) {
-    return intType(length * 8, !signed, endianness);
+    return signed ? intType(size, endianness) : uintType(size, endianness);
   }
 
   if (isFloatMetadata(metadata)) {
-    return floatType(length * 8, endianness);
+    return floatType(size, endianness);
   }
 
   throw new Error('Expected numeric metadata');
