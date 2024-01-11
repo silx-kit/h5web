@@ -1,12 +1,15 @@
 import { assertDefined } from '@h5web/shared/guards';
 import type { DType, NumericType } from '@h5web/shared/hdf5-models';
-import { DTypeClass, Endianness } from '@h5web/shared/hdf5-models';
+import { Endianness } from '@h5web/shared/hdf5-models';
 import {
+  arrayType,
   boolType,
   compoundType,
   cplxType,
+  enumType,
   floatType,
   intType,
+  isBoolEnumType,
   strType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
@@ -73,11 +76,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
     const { array_type } = metadata;
     assertDefined(array_type);
 
-    return {
-      class: DTypeClass.Array,
-      base: convertMetadataToDType(array_type),
-      dims: array_type.shape,
-    };
+    return arrayType(convertMetadataToDType(array_type), array_type.shape);
   }
 
   if (isCompoundMetadata(metadata)) {
@@ -104,19 +103,13 @@ export function convertMetadataToDType(metadata: Metadata): DType {
 
   if (isEnumMetadata(metadata)) {
     const { enum_type } = metadata;
-    const { members: mapping, type } = enum_type;
+    const { members: mapping, type: baseType } = enum_type;
 
-    const mappingKeys = Object.keys(mapping);
+    const baseMetadata = { ...metadata, type: baseType };
+    assertNumericMetadata(baseMetadata);
 
-    if (mappingKeys.includes('FALSE') && mappingKeys.includes('TRUE')) {
-      return boolType();
-    }
-
-    return {
-      class: DTypeClass.Enum,
-      mapping,
-      base: convertMetadataToDType({ ...metadata, type }),
-    };
+    const type = enumType(convertNumericMetadataToDType(baseMetadata), mapping);
+    return isBoolEnumType(type) ? boolType() : type; // booleans stored as enums by h5py
   }
 
   return unknownType();

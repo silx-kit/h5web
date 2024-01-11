@@ -2,11 +2,13 @@ import { isGroup } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Attribute,
+  BooleanType,
   ComplexType,
   CompoundType,
   Dataset,
   DType,
   Entity,
+  EnumType,
   Group,
   NumericType,
   ScalarShape,
@@ -17,8 +19,10 @@ import {
   boolType,
   compoundType,
   cplxType,
+  enumType,
   floatType,
   intType,
+  isBoolEnumType,
   strType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
@@ -27,6 +31,7 @@ import type {
   HsdsAttribute,
   HsdsCompoundType,
   HsdsEntity,
+  HsdsEnumType,
   HsdsNumericType,
   HsdsShape,
   HsdsType,
@@ -110,6 +115,14 @@ function convertHsdsCompoundType(
   );
 }
 
+function convertHsdsEnumType(hsdsType: HsdsEnumType): EnumType | BooleanType {
+  const { base, mapping } = hsdsType;
+  assertHsdsNumericType(base);
+
+  const type = enumType(convertHsdsNumericType(base), mapping);
+  return isBoolEnumType(type) ? boolType() : type; // booleans stored as enums by h5py
+}
+
 export function convertHsdsType(hsdsType: HsdsType): DType {
   switch (hsdsType.class) {
     case 'H5T_INTEGER':
@@ -135,17 +148,7 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
       };
 
     case 'H5T_ENUM':
-      // Booleans are stored as Enum by h5py
-      // https://docs.h5py.org/en/stable/faq.html#what-datatypes-are-supported
-      if (hsdsType.mapping.FALSE === 0) {
-        return boolType();
-      }
-
-      return {
-        class: DTypeClass.Enum,
-        base: convertHsdsType(hsdsType.base),
-        mapping: hsdsType.mapping,
-      };
+      return convertHsdsEnumType(hsdsType);
 
     default:
       return unknownType();

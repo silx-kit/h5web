@@ -1,9 +1,11 @@
 import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
 import {
+  arrayType,
   boolType,
   compoundType,
   cplx,
   cplxType,
+  enumType,
   floatType,
   intType,
   printableCompoundType,
@@ -49,6 +51,26 @@ export function makeMockFile(): GroupWithChildren {
           attributes: [
             scalarAttr('attr', ['foo', 2], {
               type: compoundType({ str: strType('UTF-8'), int: intType(8) }),
+            }),
+          ],
+        }),
+        scalar('scalar_array', [1, 2], {
+          type: arrayType(intType(), [2]),
+          attributes: [
+            scalarAttr('attr', [1, 2], { type: arrayType(intType(), [2]) }),
+          ],
+        }),
+        scalar('scalar_vlen', [1, 2, 3], {
+          type: arrayType(intType()),
+          attributes: [
+            scalarAttr('attr', [1, 2, 3], { type: arrayType(intType()) }),
+          ],
+        }),
+        scalar('scalar_enum', 2, {
+          type: enumType(intType(8, true), { FOO: 0, BAR: 1, BAZ: 2 }),
+          attributes: [
+            scalarAttr('attr', 2, {
+              type: enumType(intType(8, true), { FOO: 0, BAR: 1, BAZ: 2 }),
             }),
           ],
         }),

@@ -1,9 +1,11 @@
 import type {
+  ArrayType,
   BooleanType,
   ChildEntity,
   ComplexType,
   CompoundType,
   DType,
+  EnumType,
   GroupWithChildren,
   H5WebComplex,
   NumericType,
@@ -78,6 +80,33 @@ export function printableCompoundType(
   fields: Record<string, PrintableType>,
 ): PrintableCompoundType {
   return { class: DTypeClass.Compound, fields };
+}
+
+export function arrayType<T extends DType>(
+  baseType: T,
+  dims?: number[],
+): ArrayType<T> {
+  return {
+    class: dims ? DTypeClass.Array : DTypeClass.VLen,
+    base: baseType,
+    ...(dims && { dims }),
+  };
+}
+
+export function enumType(
+  baseType: NumericType,
+  mapping: Record<string, number>,
+): EnumType {
+  return { class: DTypeClass.Enum, base: baseType, mapping };
+}
+
+export function isBoolEnumType(type: EnumType): boolean {
+  const { mapping } = type;
+  return (
+    Object.keys(mapping).length === 2 &&
+    mapping.FALSE === 0 &&
+    mapping.TRUE === 1
+  );
 }
 
 export function unknownType(): UnknownType {

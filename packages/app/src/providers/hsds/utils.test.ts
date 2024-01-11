@@ -1,6 +1,7 @@
 import type { DType } from '@h5web/shared/hdf5-models';
-import { DTypeClass, Endianness } from '@h5web/shared/hdf5-models';
+import { Endianness } from '@h5web/shared/hdf5-models';
 import {
+  arrayType,
   boolType,
   compoundType,
   cplxType,
@@ -82,11 +83,7 @@ describe('convertHsdsType', () => {
       dims: [4, 5],
     };
 
-    expect(convertHsdsType(arr)).toStrictEqual({
-      class: DTypeClass.Array,
-      base: leInt.hdf5,
-      dims: [4, 5],
-    });
+    expect(convertHsdsType(arr)).toStrictEqual(arrayType(leInt.hdf5, [4, 5]));
   });
 
   it('should convert the base of VLen type', () => {
@@ -95,10 +92,7 @@ describe('convertHsdsType', () => {
       base: leInt.hsds,
     };
 
-    expect(convertHsdsType(vlen)).toStrictEqual({
-      class: DTypeClass.VLen,
-      base: leInt.hdf5,
-    });
+    expect(convertHsdsType(vlen)).toStrictEqual(arrayType(leInt.hdf5));
   });
 
   it('should convert the field types of Compound type', () => {
@@ -116,7 +110,7 @@ describe('convertHsdsType', () => {
     expect(convertHsdsType(compound)).toStrictEqual(
       compoundType({
         f1: beFloat.hdf5,
-        f2: { class: DTypeClass.VLen, base: leInt.hdf5 },
+        f2: arrayType(leInt.hdf5),
       }),
     );
   });

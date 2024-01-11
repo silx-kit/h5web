@@ -142,15 +142,15 @@ export interface CompoundType<T extends DType = DType> {
 
 export type PrintableCompoundType = CompoundType<PrintableType>;
 
-interface ArrayType {
+export interface ArrayType<T extends DType = DType> {
   class: DTypeClass.Array | DTypeClass.VLen;
-  base: DType;
+  base: T;
   dims?: number[];
 }
 
-interface EnumType {
+export interface EnumType {
   class: DTypeClass.Enum;
-  base: DType;
+  base: NumericType; // technically, only int/uint
   mapping: Record<string, number>;
 }
 
