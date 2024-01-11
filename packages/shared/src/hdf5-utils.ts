@@ -9,7 +9,6 @@ import type {
   GroupWithChildren,
   H5WebComplex,
   NumericType,
-  PrintableCompoundType,
   PrintableType,
   StringType,
   UnknownType,
@@ -68,15 +67,15 @@ export function cplxType(
   return { class: DTypeClass.Complex, realType, imagType };
 }
 
-export function compoundType(fields: Record<string, DType>): CompoundType {
+export function compoundType<F extends Record<string, DType>>(
+  fields: F,
+): CompoundType<F> {
   return { class: DTypeClass.Compound, fields };
 }
 
-export function printableCompoundType(
-  fields: Record<string, PrintableType>,
-): PrintableCompoundType {
-  return { class: DTypeClass.Compound, fields };
-}
+export const printableCompoundType = compoundType<
+  Record<string, PrintableType>
+>;
 
 export function arrayType<T extends DType>(
   baseType: T,

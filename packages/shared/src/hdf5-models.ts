@@ -135,12 +135,14 @@ export interface StringType {
   length?: number;
 }
 
-export interface CompoundType<T extends DType = DType> {
+export interface CompoundType<
+  F extends Record<string, DType> = Record<string, DType>,
+> {
   class: DTypeClass.Compound;
-  fields: Record<string, T>;
+  fields: F;
 }
 
-export type PrintableCompoundType = CompoundType<PrintableType>;
+export type PrintableCompoundType = CompoundType<Record<string, PrintableType>>;
 
 export interface ArrayType<T extends DType = DType> {
   class: DTypeClass.Array | DTypeClass.VLen;
