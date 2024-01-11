@@ -135,22 +135,24 @@ export interface StringType {
   length?: number;
 }
 
-export interface CompoundType<T extends DType = DType> {
+export interface CompoundType<
+  F extends Record<string, DType> = Record<string, DType>,
+> {
   class: DTypeClass.Compound;
-  fields: Record<string, T>;
+  fields: F;
 }
 
-export type PrintableCompoundType = CompoundType<PrintableType>;
+export type PrintableCompoundType = CompoundType<Record<string, PrintableType>>;
 
-interface ArrayType {
+export interface ArrayType<T extends DType = DType> {
   class: DTypeClass.Array | DTypeClass.VLen;
-  base: DType;
+  base: T;
   dims?: number[];
 }
 
-interface EnumType {
+export interface EnumType {
   class: DTypeClass.Enum;
-  base: DType;
+  base: NumericType; // technically, only int/uint
   mapping: Record<string, number>;
 }
 

@@ -1,6 +1,19 @@
 import { assertDefined } from '@h5web/shared/guards';
 import type { DType, NumericType } from '@h5web/shared/hdf5-models';
-import { DTypeClass, Endianness } from '@h5web/shared/hdf5-models';
+import { Endianness } from '@h5web/shared/hdf5-models';
+import {
+  arrayType,
+  boolType,
+  compoundType,
+  cplxType,
+  enumType,
+  floatType,
+  intType,
+  isBoolEnumType,
+  strType,
+  uintType,
+  unknownType,
+} from '@h5web/shared/hdf5-utils';
 import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
 
 import {
@@ -30,24 +43,16 @@ export const PLUGINS_BY_FILTER_ID: Record<number, string> = {
 export function convertNumericMetadataToDType(
   metadata: NumericMetadata,
 ): NumericType {
-  if (isIntegerMetadata(metadata)) {
-    const { signed, size: length, littleEndian } = metadata;
+  const { signed, size: length, littleEndian } = metadata;
+  const size = length * 8;
+  const endianness = littleEndian ? Endianness.LE : Endianness.BE;
 
-    return {
-      class: signed ? DTypeClass.Integer : DTypeClass.Unsigned,
-      size: length * 8,
-      endianness: littleEndian ? Endianness.LE : Endianness.BE,
-    };
+  if (isIntegerMetadata(metadata)) {
+    return signed ? intType(size, endianness) : uintType(size, endianness);
   }
 
   if (isFloatMetadata(metadata)) {
-    const { size: length, littleEndian } = metadata;
-
-    return {
-      class: DTypeClass.Float,
-      size: length * 8,
-      endianness: littleEndian ? Endianness.LE : Endianness.BE,
-    };
+    return floatType(size, endianness);
   }
 
   throw new Error('Expected numeric metadata');
@@ -61,24 +66,19 @@ export function convertMetadataToDType(metadata: Metadata): DType {
   if (isStringMetadata(metadata)) {
     const { size, cset, vlen } = metadata;
 
-    return {
-      class: DTypeClass.String,
+    return strType(
+      cset === 1 ? 'UTF-8' : 'ASCII',
       // For variable-length string datatypes, the returned value is the size of the pointer to the actual string and
       // not the size of actual variable-length string data (https://portal.hdfgroup.org/display/HDF5/H5T_GET_SIZE)
-      length: vlen ? undefined : size,
-      charSet: cset === 1 ? 'UTF-8' : 'ASCII',
-    };
+      vlen ? undefined : size,
+    );
   }
 
   if (isArrayMetadata(metadata)) {
     const { array_type } = metadata;
     assertDefined(array_type);
 
-    return {
-      class: DTypeClass.Array,
-      base: convertMetadataToDType(array_type),
-      dims: array_type.shape,
-    };
+    return arrayType(convertMetadataToDType(array_type), array_type.shape);
   }
 
   if (isCompoundMetadata(metadata)) {
@@ -90,43 +90,31 @@ export function convertMetadataToDType(metadata: Metadata): DType {
       assertNumericMetadata(realTypeMetadata);
       assertNumericMetadata(imagTypeMetadata);
 
-      return {
-        class: DTypeClass.Complex,
-        realType: convertNumericMetadataToDType(realTypeMetadata),
-        imagType: convertNumericMetadataToDType(imagTypeMetadata),
-      };
+      return cplxType(
+        convertNumericMetadataToDType(realTypeMetadata),
+        convertNumericMetadataToDType(imagTypeMetadata),
+      );
     }
 
-    return {
-      class: DTypeClass.Compound,
-      fields: Object.fromEntries(
+    return compoundType(
+      Object.fromEntries(
         members.map((member) => [member.name, convertMetadataToDType(member)]),
       ),
-    };
+    );
   }
 
   if (isEnumMetadata(metadata)) {
     const { enum_type } = metadata;
-    const { members: mapping, type } = enum_type;
+    const { members: mapping, type: baseType } = enum_type;
 
-    const mappingKeys = Object.keys(mapping);
+    const baseMetadata = { ...metadata, type: baseType };
+    assertNumericMetadata(baseMetadata);
 
-    if (mappingKeys.includes('FALSE') && mappingKeys.includes('TRUE')) {
-      return {
-        class: DTypeClass.Bool,
-      };
-    }
-
-    return {
-      class: DTypeClass.Enum,
-      mapping,
-      base: convertMetadataToDType({ ...metadata, type }),
-    };
+    const type = enumType(convertNumericMetadataToDType(baseMetadata), mapping);
+    return isBoolEnumType(type) ? boolType() : type; // booleans stored as enums by h5py
   }
 
-  return {
-    class: DTypeClass.Unknown,
-  };
+  return unknownType();
 }
 
 export function convertSelectionToRanges(

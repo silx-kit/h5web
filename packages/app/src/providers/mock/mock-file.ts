@@ -1,13 +1,16 @@
 import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
 import {
+  arrayType,
   boolType,
   compoundType,
   cplx,
   cplxType,
+  enumType,
   floatType,
   intType,
   printableCompoundType,
   strType,
+  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import {
@@ -49,6 +52,26 @@ export function makeMockFile(): GroupWithChildren {
           attributes: [
             scalarAttr('attr', ['foo', 2], {
               type: compoundType({ str: strType('UTF-8'), int: intType(8) }),
+            }),
+          ],
+        }),
+        scalar('scalar_array', [1, 2], {
+          type: arrayType(intType(), [2]),
+          attributes: [
+            scalarAttr('attr', [1, 2], { type: arrayType(intType(), [2]) }),
+          ],
+        }),
+        scalar('scalar_vlen', [1, 2, 3], {
+          type: arrayType(intType()),
+          attributes: [
+            scalarAttr('attr', [1, 2, 3], { type: arrayType(intType()) }),
+          ],
+        }),
+        scalar('scalar_enum', 2, {
+          type: enumType(uintType(8), { FOO: 0, BAR: 1, BAZ: 2 }),
+          attributes: [
+            scalarAttr('attr', 2, {
+              type: enumType(uintType(8), { FOO: 0, BAR: 1, BAZ: 2 }),
             }),
           ],
         }),
@@ -94,11 +117,11 @@ export function makeMockFile(): GroupWithChildren {
         array('fourD'),
       ]),
       group('typed_arrays', [
-        array('uint8', { type: intType(8, true) }),
+        array('uint8', { type: uintType(8) }),
         array('int16', { type: intType(16) }),
         array('float32', { type: floatType(32) }),
         array('float64', { type: floatType(64) }),
-        withImageAttr(array('uint8_rgb', { type: intType(8, true) })),
+        withImageAttr(array('uint8_rgb', { type: uintType(8) })),
         withImageAttr(array('int8_rgb', { type: intType(8) })),
         withImageAttr(array('int32_rgb', { type: intType(32) })),
         withImageAttr(array('float32_rgb', { type: floatType(32) })),

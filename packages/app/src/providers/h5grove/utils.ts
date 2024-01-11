@@ -1,5 +1,15 @@
 import type { DType } from '@h5web/shared/hdf5-models';
-import { DTypeClass, Endianness, EntityKind } from '@h5web/shared/hdf5-models';
+import { Endianness, EntityKind } from '@h5web/shared/hdf5-models';
+import {
+  boolType,
+  compoundType,
+  cplxType,
+  floatType,
+  intType,
+  strType,
+  uintType,
+  unknownType,
+} from '@h5web/shared/hdf5-utils';
 
 import type {
   H5GroveDatasetResponse,
@@ -45,12 +55,11 @@ export function convertH5GroveDtype(dtype: H5GroveDtype): DType {
     return convertDtypeString(dtype);
   }
 
-  return {
-    class: DTypeClass.Compound,
-    fields: Object.fromEntries(
+  return compoundType(
+    Object.fromEntries(
       Object.entries(dtype).map(([k, v]) => [k, convertH5GroveDtype(v)]),
     ),
-  };
+  );
 }
 
 function convertDtypeString(dtype: string): DType {
@@ -71,56 +80,33 @@ function convertDtypeString(dtype: string): DType {
       // Booleans are stored as bytes but numpy represents them distinctly from "normal" bytes:
       // `|b1` for booleans vs. `|i1` for normal bytes
       // https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
-      return { class: DTypeClass.Bool };
+      return boolType();
 
     case 'f':
-      return {
-        class: DTypeClass.Float,
-        size: length * 8,
-        endianness,
-      };
+      return floatType(length * 8, endianness);
 
     case 'i':
-      return {
-        class: DTypeClass.Integer,
-        size: length * 8,
-        endianness,
-      };
+      return intType(length * 8, endianness);
 
     case 'u':
-      return {
-        class: DTypeClass.Unsigned,
-        size: length * 8,
-        endianness,
-      };
+      return uintType(length * 8, endianness);
 
     case 'c':
-      return {
-        class: DTypeClass.Complex,
-        realType: {
-          class: DTypeClass.Float,
-          size: length * 4, // Bytes are equally distributed between real and imag
+      return cplxType(
+        floatType(
+          (length / 2) * 8, // bytes are equally distributed between real and imag
           endianness,
-        },
-        imagType: {
-          class: DTypeClass.Float,
-          size: length * 4, // Bytes are equally distributed between real and imag
-          endianness,
-        },
-      };
+        ),
+      );
 
     case 'S':
-      return {
-        class: DTypeClass.String,
-        charSet: 'ASCII',
-        length,
-      };
+      return strType('ASCII', length);
 
     case 'O':
-      return { class: DTypeClass.String, charSet: 'UTF-8' };
+      return strType('UTF-8');
 
     default:
-      return { class: DTypeClass.Unknown };
+      return unknownType();
   }
 }
 

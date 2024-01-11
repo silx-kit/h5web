@@ -1,13 +1,14 @@
 import type {
+  ArrayType,
   BooleanType,
   ChildEntity,
   ComplexType,
   CompoundType,
   DType,
+  EnumType,
   GroupWithChildren,
   H5WebComplex,
   NumericType,
-  PrintableCompoundType,
   PrintableType,
   StringType,
   UnknownType,
@@ -32,22 +33,15 @@ export function buildEntityPath(
 /* ----------------- */
 /* ----- TYPES ----- */
 
-export function intType(
-  size: 8 | 16 | 32 | 64 = 32,
-  unsigned = false,
-  endianness = Endianness.LE,
-): NumericType {
-  return {
-    class: unsigned ? DTypeClass.Unsigned : DTypeClass.Integer,
-    endianness,
-    size,
-  };
+export function intType(size = 32, endianness = Endianness.LE): NumericType {
+  return { class: DTypeClass.Integer, endianness, size };
 }
 
-export function floatType(
-  size: 16 | 32 | 64 = 32,
-  endianness = Endianness.LE,
-): NumericType {
+export function uintType(size = 32, endianness = Endianness.LE): NumericType {
+  return { class: DTypeClass.Unsigned, endianness, size };
+}
+
+export function floatType(size = 32, endianness = Endianness.LE): NumericType {
   return { class: DTypeClass.Float, endianness, size };
 }
 
@@ -73,14 +67,41 @@ export function cplxType(
   return { class: DTypeClass.Complex, realType, imagType };
 }
 
-export function compoundType(fields: Record<string, DType>): CompoundType {
+export function compoundType<F extends Record<string, DType>>(
+  fields: F,
+): CompoundType<F> {
   return { class: DTypeClass.Compound, fields };
 }
 
-export function printableCompoundType(
-  fields: Record<string, PrintableType>,
-): PrintableCompoundType {
-  return { class: DTypeClass.Compound, fields };
+export const printableCompoundType = compoundType<
+  Record<string, PrintableType>
+>;
+
+export function arrayType<T extends DType>(
+  baseType: T,
+  dims?: number[],
+): ArrayType<T> {
+  return {
+    class: dims ? DTypeClass.Array : DTypeClass.VLen,
+    base: baseType,
+    ...(dims && { dims }),
+  };
+}
+
+export function enumType(
+  baseType: NumericType,
+  mapping: Record<string, number>,
+): EnumType {
+  return { class: DTypeClass.Enum, base: baseType, mapping };
+}
+
+export function isBoolEnumType(type: EnumType): boolean {
+  const { mapping } = type;
+  return (
+    Object.keys(mapping).length === 2 &&
+    mapping.FALSE === 0 &&
+    mapping.TRUE === 1
+  );
 }
 
 export function unknownType(): UnknownType {
