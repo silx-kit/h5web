@@ -13,6 +13,15 @@ import type {
   Shape,
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass, Endianness } from '@h5web/shared/hdf5-models';
+import {
+  boolType,
+  compoundType,
+  cplxType,
+  floatType,
+  intType,
+  strType,
+  unknownType,
+} from '@h5web/shared/hdf5-utils';
 
 import type {
   HsdsAttribute,
@@ -66,18 +75,16 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
     throw new Error(`Unrecognized base ${base}`);
   }
 
-  const [, sign, size, endianness] = matches;
+  const [, sign, sizeStr, endiannessAbbr] = matches;
+  const unsigned = sign === 'U';
+  const size = Number.parseInt(sizeStr, 10);
+  const endianness = Endianness[endiannessAbbr as 'BE' | 'LE'];
 
-  return {
-    class:
-      hsdsClass === 'H5T_FLOAT'
-        ? DTypeClass.Float
-        : sign === 'U'
-          ? DTypeClass.Unsigned
-          : DTypeClass.Integer,
-    endianness: Endianness[endianness as 'BE' | 'LE'],
-    size: Number.parseInt(size, 10),
-  };
+  if (hsdsClass === 'H5T_FLOAT') {
+    return floatType(size, endianness);
+  }
+
+  return intType(size, unsigned, endianness);
 }
 
 function convertHsdsCompoundType(
@@ -90,19 +97,17 @@ function convertHsdsCompoundType(
     assertHsdsNumericType(realType);
     assertHsdsNumericType(imagType);
 
-    return {
-      class: DTypeClass.Complex,
-      realType: convertHsdsNumericType(realType),
-      imagType: convertHsdsNumericType(imagType),
-    };
+    return cplxType(
+      convertHsdsNumericType(realType),
+      convertHsdsNumericType(imagType),
+    );
   }
 
-  return {
-    class: DTypeClass.Compound,
-    fields: Object.fromEntries(
+  return compoundType(
+    Object.fromEntries(
       hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)]),
     ),
-  };
+  );
 }
 
 export function convertHsdsType(hsdsType: HsdsType): DType {
@@ -115,12 +120,10 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
       return convertHsdsCompoundType(hsdsType);
 
     case 'H5T_STRING':
-      return {
-        class: DTypeClass.String,
-        charSet: hsdsType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF-8',
-        length:
-          hsdsType.length === 'H5T_VARIABLE' ? undefined : hsdsType.length,
-      };
+      return strType(
+        hsdsType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF-8',
+        hsdsType.length === 'H5T_VARIABLE' ? undefined : hsdsType.length,
+      );
 
     case 'H5T_ARRAY':
     case 'H5T_VLEN':
@@ -128,14 +131,14 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
         class:
           hsdsType.class === 'H5T_ARRAY' ? DTypeClass.Array : DTypeClass.VLen,
         base: convertHsdsType(hsdsType.base),
-        dims: hsdsType.dims,
+        ...(hsdsType.dims && { dims: hsdsType.dims }),
       };
 
     case 'H5T_ENUM':
       // Booleans are stored as Enum by h5py
       // https://docs.h5py.org/en/stable/faq.html#what-datatypes-are-supported
       if (hsdsType.mapping.FALSE === 0) {
-        return { class: DTypeClass.Bool };
+        return boolType();
       }
 
       return {
@@ -145,7 +148,7 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
       };
 
     default:
-      return { class: DTypeClass.Unknown };
+      return unknownType();
   }
 }
 

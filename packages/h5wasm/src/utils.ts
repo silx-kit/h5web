@@ -1,6 +1,15 @@
 import { assertDefined } from '@h5web/shared/guards';
 import type { DType, NumericType } from '@h5web/shared/hdf5-models';
 import { DTypeClass, Endianness } from '@h5web/shared/hdf5-models';
+import {
+  boolType,
+  compoundType,
+  cplxType,
+  floatType,
+  intType,
+  strType,
+  unknownType,
+} from '@h5web/shared/hdf5-utils';
 import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
 
 import {
@@ -30,24 +39,15 @@ export const PLUGINS_BY_FILTER_ID: Record<number, string> = {
 export function convertNumericMetadataToDType(
   metadata: NumericMetadata,
 ): NumericType {
-  if (isIntegerMetadata(metadata)) {
-    const { signed, size: length, littleEndian } = metadata;
+  const { signed, size: length, littleEndian } = metadata;
+  const endianness = littleEndian ? Endianness.LE : Endianness.BE;
 
-    return {
-      class: signed ? DTypeClass.Integer : DTypeClass.Unsigned,
-      size: length * 8,
-      endianness: littleEndian ? Endianness.LE : Endianness.BE,
-    };
+  if (isIntegerMetadata(metadata)) {
+    return intType(length * 8, !signed, endianness);
   }
 
   if (isFloatMetadata(metadata)) {
-    const { size: length, littleEndian } = metadata;
-
-    return {
-      class: DTypeClass.Float,
-      size: length * 8,
-      endianness: littleEndian ? Endianness.LE : Endianness.BE,
-    };
+    return floatType(length * 8, endianness);
   }
 
   throw new Error('Expected numeric metadata');
@@ -61,13 +61,12 @@ export function convertMetadataToDType(metadata: Metadata): DType {
   if (isStringMetadata(metadata)) {
     const { size, cset, vlen } = metadata;
 
-    return {
-      class: DTypeClass.String,
+    return strType(
+      cset === 1 ? 'UTF-8' : 'ASCII',
       // For variable-length string datatypes, the returned value is the size of the pointer to the actual string and
       // not the size of actual variable-length string data (https://portal.hdfgroup.org/display/HDF5/H5T_GET_SIZE)
-      length: vlen ? undefined : size,
-      charSet: cset === 1 ? 'UTF-8' : 'ASCII',
-    };
+      vlen ? undefined : size,
+    );
   }
 
   if (isArrayMetadata(metadata)) {
@@ -90,19 +89,17 @@ export function convertMetadataToDType(metadata: Metadata): DType {
       assertNumericMetadata(realTypeMetadata);
       assertNumericMetadata(imagTypeMetadata);
 
-      return {
-        class: DTypeClass.Complex,
-        realType: convertNumericMetadataToDType(realTypeMetadata),
-        imagType: convertNumericMetadataToDType(imagTypeMetadata),
-      };
+      return cplxType(
+        convertNumericMetadataToDType(realTypeMetadata),
+        convertNumericMetadataToDType(imagTypeMetadata),
+      );
     }
 
-    return {
-      class: DTypeClass.Compound,
-      fields: Object.fromEntries(
+    return compoundType(
+      Object.fromEntries(
         members.map((member) => [member.name, convertMetadataToDType(member)]),
       ),
-    };
+    );
   }
 
   if (isEnumMetadata(metadata)) {
@@ -112,9 +109,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
     const mappingKeys = Object.keys(mapping);
 
     if (mappingKeys.includes('FALSE') && mappingKeys.includes('TRUE')) {
-      return {
-        class: DTypeClass.Bool,
-      };
+      return boolType();
     }
 
     return {
@@ -124,9 +119,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
     };
   }
 
-  return {
-    class: DTypeClass.Unknown,
-  };
+  return unknownType();
 }
 
 export function convertSelectionToRanges(

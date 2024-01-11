@@ -33,7 +33,7 @@ export function buildEntityPath(
 /* ----- TYPES ----- */
 
 export function intType(
-  size: 8 | 16 | 32 | 64 = 32,
+  size = 32,
   unsigned = false,
   endianness = Endianness.LE,
 ): NumericType {
@@ -44,10 +44,7 @@ export function intType(
   };
 }
 
-export function floatType(
-  size: 16 | 32 | 64 = 32,
-  endianness = Endianness.LE,
-): NumericType {
+export function floatType(size = 32, endianness = Endianness.LE): NumericType {
   return { class: DTypeClass.Float, endianness, size };
 }
 
