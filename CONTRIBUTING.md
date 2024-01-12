@@ -20,6 +20,7 @@
 - [Deployment](#deployment)
 - [Release process](#release-process)
   - [Beta testing](#beta-testing)
+  - [Local testing](#local-testing)
 
 ## Quick start
 
@@ -397,3 +398,20 @@ the normal release process, making sure to run `pnpm version <x.y.z>` at step 3
 Once you've completed the release process, you may remove the `next` tag from
 the obsolete beta packages by running
 `npm dist-tag rm @h5web/lib@<x.y.z-beta.0> next`
+
+### Local testing
+
+To test a package locally in another project without publishing it to NPM,
+follow these steps:
+
+1. Run `pnpm packages`.
+1. Navigate to the package's directory - e.g. `cd packages/app`.
+1. Run `pnpm pack` to pack the package into a tarball, optionally passing a
+   target directory for the tarball with `--pack-destination <dir>`.
+1. Navigate to the project in which you want to install and test the package.
+1. Install the tarball with the project's package manager (e.g.
+   `pnpm add <path-to-tarball>`).
+
+> Like `pnpm publish`, `pnpm pack` runs the package's `prepack` script, which
+> removes `"type": "module"` from `package.json`, so don't forget to revert this
+> change when you're done.
