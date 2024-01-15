@@ -157,10 +157,32 @@ jobs:
           CYPRESS_TAKE_SNAPSHOTS: true
 
       - name: Upload debug screenshots and diffs on failure 🖼️
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
+        id: uploadSnapshots
         with:
           name: cypress
           path: |
             cypress/debug/
             cypress/snapshots/**/__diff_output__/
+
+    outputs:
+      snapshotsUrl: ${{ steps.uploadSnapshots.outputs.artifact-url }}
+
+  report:
+    runs-on: ubuntu-latest
+    needs: e2e
+    if: github.event_name == 'pull_request' && needs.e2e.outputs.snapshotsUrl
+    steps:
+      - name: Provide download link in PR
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: github.event.pull_request.number
+          body: |
+            #### :flags: Visual changes detected!
+
+            Please [download and review the snapshot diffs](${{ needs.e2e.outputs.snapshotsUrl }}). If the changes are expected:
+
+            1. Comment with `/approve`.
+            1. Wait for the CI workflow _Approve snapshots_ to open a PR called _Update Cypress reference snapshots_.
+            1. Review and merge the updated snapshots into this PR, ideally with a rebase.
