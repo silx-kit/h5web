@@ -21,8 +21,8 @@ export function renderShape(shape: Shape): string {
     return 'Scalar';
   }
 
-  return shape.length === 1
-    ? shape.toString()
+  return shape.length === 1 ?
+      shape.toString()
     : `${shape.join(' x ')} = ${shape.reduce((acc, value) => acc * value)}`;
 }
 

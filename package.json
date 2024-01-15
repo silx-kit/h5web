@@ -27,7 +27,7 @@
     "lint:tsc": "pnpm -r --parallel lint:tsc",
     "lint:cypress:tsc": "tsc --project cypress/tsconfig.json",
     "lint:root:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
-    "prettier": "prettier . --cache --check",
+    "prettier": "prettier . --cache --check --experimental-ternaries",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "cypress": "cypress open --e2e --browser firefox",

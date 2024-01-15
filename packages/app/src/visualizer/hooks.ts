@@ -14,8 +14,9 @@ export function useActiveVis<T extends VisDef>(
     remove: removePreferredVisName,
   } = useLocalStorageValue<string>('h5web:preferredVis');
 
-  const preferredVis = preferredVisName
-    ? supportedVis.find((v) => v.name === preferredVisName)
+  const preferredVis =
+    preferredVisName ?
+      supportedVis.find((v) => v.name === preferredVisName)
     : undefined;
 
   // Restore preferred vis, if any, when selecting a new entity (cf. `key` on `VisManager`)

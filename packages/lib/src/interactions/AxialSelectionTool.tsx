@@ -32,9 +32,9 @@ function AxialSelectionTool(props: Props) {
     const [htmlStart, htmlEnd] = selection.html;
 
     const html: Rect =
-      axis === 'x'
-        ? [new Vector3(htmlStart.x, 0), new Vector3(htmlEnd.x, height)]
-        : [new Vector3(0, htmlStart.y), new Vector3(width, htmlEnd.y)];
+      axis === 'x' ?
+        [new Vector3(htmlStart.x, 0), new Vector3(htmlEnd.x, height)]
+      : [new Vector3(0, htmlStart.y), new Vector3(width, htmlEnd.y)];
 
     const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
     const data = world.map(worldToData) as Rect;

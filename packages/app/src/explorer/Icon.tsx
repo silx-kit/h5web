@@ -26,11 +26,9 @@ function Icon(props: Props) {
   const { entity, isExpanded } = props;
 
   if (isGroup(entity)) {
-    return isExpanded ? (
-      <FiChevronDown className={styles.icon} />
-    ) : (
-      <FiChevronRight className={styles.icon} />
-    );
+    return isExpanded ?
+        <FiChevronDown className={styles.icon} />
+      : <FiChevronRight className={styles.icon} />;
   }
 
   const LeafIcon = LEAF_ICONS[entity.kind];

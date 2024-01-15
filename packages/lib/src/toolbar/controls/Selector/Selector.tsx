@@ -50,14 +50,13 @@ function Selector<T extends string>(props: Props<T>) {
           className={styles.menu}
           style={{ maxHeight: Math.min(MENU_IDEAL_HEIGHT, menuMaxHeight) }}
         >
-          {Array.isArray(options) ? (
+          {Array.isArray(options) ?
             <OptionList
               optionList={options}
               optionComponent={Option}
               value={value}
             />
-          ) : (
-            <ul className={styles.list}>
+          : <ul className={styles.list}>
               {Object.entries(options).map(([groupLabel, groupOptions]) => (
                 <li key={groupLabel}>
                   <span className={styles.groupLabel}>{groupLabel}</span>
@@ -71,7 +70,7 @@ function Selector<T extends string>(props: Props<T>) {
                 </li>
               ))}
             </ul>
-          )}
+          }
         </Menu>
       </Wrapper>
     </div>

@@ -12,11 +12,9 @@ function RawVis(props: Props) {
 
   return (
     <div className={styles.root}>
-      {valueAsStr.length < LARGE_THRESHOLD ? (
+      {valueAsStr.length < LARGE_THRESHOLD ?
         <pre className={styles.raw}>{valueAsStr}</pre>
-      ) : (
-        <p className={styles.fallback}>Too big to display</p>
-      )}
+      : <p className={styles.fallback}>Too big to display</p>}
     </div>
   );
 }

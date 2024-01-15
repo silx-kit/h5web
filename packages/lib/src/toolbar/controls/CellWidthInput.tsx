@@ -52,9 +52,8 @@ function CellWidthInput(props: Props) {
           }
 
           const numValue = Number.parseInt(newValue);
-          const safeNumValue = Number.isNaN(numValue)
-            ? defaultValue
-            : Math.max(numValue, MIN);
+          const safeNumValue =
+            Number.isNaN(numValue) ? defaultValue : Math.max(numValue, MIN);
 
           onChangeDebounced(safeNumValue);
         }}

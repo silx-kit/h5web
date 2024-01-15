@@ -112,9 +112,8 @@ export class HsdsApi extends DataProviderApi {
     assertDefined(child, `No entity found at ${path}`);
     assertHsdsEntity(child);
 
-    const entity = isHsdsGroup(child)
-      ? await this.processGroup({ ...child, path })
-      : child;
+    const entity =
+      isHsdsGroup(child) ? await this.processGroup({ ...child, path }) : child;
 
     this.entities.set(path, entity);
     return entity;
@@ -280,9 +279,9 @@ export class HsdsApi extends DataProviderApi {
 
     // Fetch attributes and links in parallel
     const [attributes, links] = await Promise.all([
-      attributeCount > 0
-        ? this.fetchAttributes('groups', id)
-        : Promise.resolve([]),
+      attributeCount > 0 ?
+        this.fetchAttributes('groups', id)
+      : Promise.resolve([]),
       linkCount > 0 && !isChild ? this.fetchLinks(id) : Promise.resolve([]),
     ]);
 

@@ -112,8 +112,8 @@ export function getSizeToFit(
 
   const availableRatio = width / height;
 
-  return availableRatio > ratioToRespect
-    ? { width: height * ratioToRespect, height }
+  return availableRatio > ratioToRespect ?
+      { width: height * ratioToRespect, height }
     : { width, height: width / ratioToRespect };
 }
 
@@ -202,8 +202,9 @@ export function getValueToIndexScale(
   values: NumArray,
   switchAtMidpoints?: boolean,
 ): ScaleThreshold<number, number> {
-  const rawThresholds = switchAtMidpoints
-    ? values.map((_, i) => values[i - 1] + (values[i] - values[i - 1]) / 2) // Shift the thresholds for the switch from i-1 to i to happen between values[i-1] and values[i]
+  const rawThresholds =
+    switchAtMidpoints ?
+      values.map((_, i) => values[i - 1] + (values[i] - values[i - 1]) / 2) // Shift the thresholds for the switch from i-1 to i to happen between values[i-1] and values[i]
     : values; // Else, the switch from i-1 to i will happen at values[i]
 
   // First threshold (going from 0 to 1) should be for the second value. Scaling the first value should return at 0.
@@ -349,8 +350,8 @@ export function getAxisDomain(
   }
 
   const extendedDomain = extendDomain(rawDomain, extensionFactor, scaleType);
-  return isDescending(axisValues)
-    ? [extendedDomain[1], extendedDomain[0]]
+  return isDescending(axisValues) ?
+      [extendedDomain[1], extendedDomain[0]]
     : extendedDomain;
 }
 

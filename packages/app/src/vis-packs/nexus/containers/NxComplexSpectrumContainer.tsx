@@ -31,8 +31,9 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
   const config = useComplexLineConfig();
   const lineConfig = useLineConfig({
     xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
-    yScaleType: isAxisScaleType(silxStyle.signalScaleType)
-      ? silxStyle.signalScaleType
+    yScaleType:
+      isAxisScaleType(silxStyle.signalScaleType) ?
+        silxStyle.signalScaleType
       : ScaleType.Linear,
   });
 

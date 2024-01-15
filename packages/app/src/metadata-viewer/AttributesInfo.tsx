@@ -31,13 +31,11 @@ function AttributesInfo(props: Props) {
           <tr key={name}>
             <th scope="row">{name}</th>
             <td>
-              {FOLLOWABLE_ATTRS.has(name) ? (
+              {FOLLOWABLE_ATTRS.has(name) ?
                 <AttributeLink onFollowPath={onFollowPath} value={value} />
-              ) : isComplexValue(type, value) ? (
+              : isComplexValue(type, value) ?
                 renderComplex(value)
-              ) : (
-                JSON.stringify(value)
-              )}
+              : JSON.stringify(value)}
             </td>
           </tr>
         );

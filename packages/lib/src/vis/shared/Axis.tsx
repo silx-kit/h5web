@@ -62,8 +62,9 @@ function Axis(props: Props) {
   const [AxisComponent, GridComponent] = COMPONENTS[type];
 
   const numTicks = adaptedNumTicks(axisLength);
-  const ticksProp = isIndexAxis
-    ? { tickValues: getIntegerTicks(domain, numTicks) }
+  const ticksProp =
+    isIndexAxis ?
+      { tickValues: getIntegerTicks(domain, numTicks) }
     : { numTicks };
 
   return (

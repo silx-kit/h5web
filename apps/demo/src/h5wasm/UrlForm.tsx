@@ -63,19 +63,17 @@ function UrlForm(props: Props) {
             required
           />
           <button id="h5wasm-url" className={styles.urlBtn} type="submit">
-            {isLoading ? (
+            {isLoading ?
               <FiLoader className={styles.urlLoader} aria-label="Loading..." />
-            ) : (
-              'Go'
-            )}
+            : 'Go'}
           </button>
         </fieldset>
       </form>
       {error && (
         <p className={styles.hint} role="alert">
-          {error.isAxiosError
-            ? 'Sorry, your file could not be fetched'
-            : `An error occured: ${error.message}`}
+          {error.isAxiosError ?
+            'Sorry, your file could not be fetched'
+          : `An error occured: ${error.message}`}
         </p>
       )}
     </>

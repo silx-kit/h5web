@@ -31,9 +31,8 @@ function SearchList(props: Props) {
     return <div>Loading paths...</div>;
   }
 
-  const matches = value
-    ? paths.filter((path) => getNameFromPath(path).includes(value))
-    : [];
+  const matches =
+    value ? paths.filter((path) => getNameFromPath(path).includes(value)) : [];
 
   return (
     <ul className={styles.entries}>

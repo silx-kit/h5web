@@ -73,11 +73,10 @@ export function getSafeDomain(
   return [
     [safeMinGreater ? safeMax : safeMin, safeMax],
     {
-      minError: safeMinGreater
-        ? DomainError.CustomMaxFallback
-        : !isMinSupported
-          ? DomainError.InvalidMinWithScale
-          : undefined,
+      minError:
+        safeMinGreater ? DomainError.CustomMaxFallback
+        : !isMinSupported ? DomainError.InvalidMinWithScale
+        : undefined,
       maxError: !isMaxSupported ? DomainError.InvalidMaxWithScale : undefined,
     },
   ];

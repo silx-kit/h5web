@@ -35,9 +35,8 @@ function AxisMapper(props: Props) {
             const newMapperState = [...mapperState];
 
             // Invert mappings or reset slicing index of previously selected dimension
-            newMapperState[selectedDim] = isNumber(mapperState[newDim])
-              ? 0
-              : mapperState[newDim];
+            newMapperState[selectedDim] =
+              isNumber(mapperState[newDim]) ? 0 : mapperState[newDim];
             newMapperState[newDim] = axis; // assign axis to newly selected dimension
 
             onChange(newMapperState);

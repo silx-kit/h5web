@@ -81,9 +81,8 @@ export class H5WasmApi extends DataProviderApi {
       const rawValue = h5wDataset.to_array();
 
       // `to_array` returns nested JS arrays for nD datasets, so we need to re-flatten them
-      const value = hasArrayShape(dataset)
-        ? flattenValue(rawValue, dataset)
-        : rawValue;
+      const value =
+        hasArrayShape(dataset) ? flattenValue(rawValue, dataset) : rawValue;
 
       return selection ? sliceValue(value, dataset, selection) : value;
     }
@@ -297,8 +296,9 @@ export class H5WasmApi extends DataProviderApi {
     return {
       ...baseEntity,
       attributes: [],
-      kind: isH5WasmDatatype(h5wEntity)
-        ? EntityKind.Datatype
+      kind:
+        isH5WasmDatatype(h5wEntity) ?
+          EntityKind.Datatype
         : EntityKind.Unresolved,
     };
   }

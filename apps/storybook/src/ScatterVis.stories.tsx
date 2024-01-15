@@ -137,9 +137,9 @@ export const Click = {
       <ScatterVis
         {...args}
         title={
-          index !== undefined
-            ? `You clicked on point ${index} (value: ${data[index]})`
-            : `Click on a point!`
+          index !== undefined ?
+            `You clicked on point ${index} (value: ${data[index]})`
+          : `Click on a point!`
         }
         onPointClick={(i) => setIndex(i)}
       />

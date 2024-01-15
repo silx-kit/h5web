@@ -64,8 +64,9 @@ function TiledHeatmapMesh(props: Props) {
     // displayLowerResolutions selects which levels of detail layers are displayed:
     // true: lower resolution layers displayed behind the current one
     // false: only current level of detail layer is displayed
-    layers = displayLowerResolutions
-      ? range(currentLayerIndex + 1)
+    layers =
+      displayLowerResolutions ?
+        range(currentLayerIndex + 1)
       : [currentLayerIndex];
   }
 

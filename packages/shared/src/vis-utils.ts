@@ -89,9 +89,9 @@ export function createArrayFromView<T extends TypedArray | unknown[]>(
   const { data } = view;
 
   const array = ndarray(
-    (isTypedArray(data)
-      ? new (data.constructor as TypedArrayConstructor)(view.size)
-      : []) as T,
+    (isTypedArray(data) ?
+      new (data.constructor as TypedArrayConstructor)(view.size)
+    : []) as T,
     view.shape,
   );
 
@@ -135,8 +135,8 @@ export function getBounds(
 
       const newBounds = getNewBounds(acc, val);
       const err = errors?.[i];
-      return err
-        ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
+      return err ?
+          getNewBounds(getNewBounds(newBounds, val - err), val + err)
         : newBounds;
     },
     {
@@ -163,8 +163,8 @@ export function getValidDomainForScale(
   if (scaleType === ScaleType.Log && min * max <= 0) {
     // Clamp domain minimum to first positive value,
     // or return `undefined` if domain is not unsupported: `[-x, 0]`
-    return Number.isFinite(strictPositiveMin)
-      ? [strictPositiveMin, max]
+    return Number.isFinite(strictPositiveMin) ?
+        [strictPositiveMin, max]
       : undefined;
   }
 

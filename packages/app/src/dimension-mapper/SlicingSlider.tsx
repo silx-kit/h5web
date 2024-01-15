@@ -34,7 +34,7 @@ function SlicingSlider(props: Props) {
         D{dimension}
       </span>
       <span className={styles.sublabel}>0:{maxIndex}</span>
-      {maxIndex > 0 ? (
+      {maxIndex > 0 ?
         <ReactSlider
           className={styles.slider}
           ariaLabelledby={sliderLabelId}
@@ -70,7 +70,7 @@ function SlicingSlider(props: Props) {
             index === 0 ? <div key={key} className={styles.track} /> : null
           }
         />
-      ) : null}
+      : null}
     </div>
   );
 }

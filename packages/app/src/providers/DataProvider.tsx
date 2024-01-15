@@ -95,8 +95,8 @@ function DataProvider(props: PropsWithChildren<Props>) {
 
     return Object.assign(store, {
       getSingle: (entity: Entity, attrName: AttrName) => {
-        return hasAttribute(entity, attrName)
-          ? attrValuesStore.get(entity)[attrName]
+        return hasAttribute(entity, attrName) ?
+            attrValuesStore.get(entity)[attrName]
           : undefined;
       },
     });

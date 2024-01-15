@@ -29,9 +29,9 @@ export function createMatrixComplexFormatter(
   notation: Notation,
 ): ValueFormatter<ComplexType> {
   const formatStr =
-    notation === Notation.FixedPoint
-      ? '.2f'
-      : `.3~${notation === Notation.Scientific ? 'e' : 'g'}`;
+    notation === Notation.FixedPoint ?
+      '.2f'
+    : `.3~${notation === Notation.Scientific ? 'e' : 'g'}`;
 
   return createComplexFormatter(formatStr, true);
 }

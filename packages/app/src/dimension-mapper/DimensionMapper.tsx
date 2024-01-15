@@ -48,7 +48,7 @@ function DimensionMapper(props: Props) {
       </div>
       <div className={styles.sliders}>
         {mapperState.map((val, index) =>
-          isNumber(val) ? (
+          isNumber(val) ?
             <SlicingSlider
               key={`${index}`} // eslint-disable-line react/no-array-index-key
               dimension={index}
@@ -60,7 +60,7 @@ function DimensionMapper(props: Props) {
                 onChange(newMapperState);
               }}
             />
-          ) : undefined,
+          : undefined,
         )}
       </div>
     </div>

@@ -48,9 +48,9 @@ export async function renderApp(
   }
 
   const user = userEvent.setup(
-    withFakeTimers
-      ? { advanceTimers: vi.advanceTimersByTime.bind(vi) }
-      : undefined,
+    withFakeTimers ?
+      { advanceTimers: vi.advanceTimersByTime.bind(vi) }
+    : undefined,
   );
 
   const renderResult = render(

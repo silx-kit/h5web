@@ -47,7 +47,9 @@ export interface UseDragState {
 }
 
 export type MouseEventName = {
-  [Key in keyof GlobalEventHandlersEventMap]: GlobalEventHandlersEventMap[Key] extends MouseEvent
-    ? Key
-    : never;
+  [Key in keyof GlobalEventHandlersEventMap]: GlobalEventHandlersEventMap[Key] extends (
+    MouseEvent
+  ) ?
+    Key
+  : never;
 }[keyof GlobalEventHandlersEventMap];

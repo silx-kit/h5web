@@ -15,8 +15,9 @@ export function getLayerSizes(
     return [baseLayerSize];
   }
 
-  const nextLayerSize: Size = roundToEven
-    ? {
+  const nextLayerSize: Size =
+    roundToEven ?
+      {
         width: Math.floor(baseLayerSize.width / 2),
         height: Math.floor(baseLayerSize.height / 2),
       }

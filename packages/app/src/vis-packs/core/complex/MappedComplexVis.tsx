@@ -114,12 +114,12 @@ function MappedComplexVis(props: Props) {
           value: axisValues?.[yDimIndex],
         }}
         alpha={
-          visType === ComplexVisType.PhaseAmplitude
-            ? {
-                array: amplitudeArray,
-                domain: amplitudeDomain,
-              }
-            : undefined
+          visType === ComplexVisType.PhaseAmplitude ?
+            {
+              array: amplitudeArray,
+              domain: amplitudeDomain,
+            }
+          : undefined
         }
       />
     </>

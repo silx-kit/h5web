@@ -35,9 +35,9 @@ export class Interaction {
   public matches(event: MouseEvent): boolean {
     return (
       this.isEnabled &&
-      (event instanceof WheelEvent
-        ? this.isWheel
-        : this.buttons.includes(event.button)) &&
+      (event instanceof WheelEvent ?
+        this.isWheel
+      : this.buttons.includes(event.button)) &&
       this.modifierKeys.every((key) => event.getModifierState(key))
     );
   }

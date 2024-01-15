@@ -93,9 +93,9 @@ function DomainSlider(props: Props) {
         />
       )}
       renderTrack={({ key }, { index }) =>
-        index === 0 ? (
+        index === 0 ?
           <Track key={key} scale={scale} dataDomain={dataDomain} />
-        ) : null
+        : null
       }
     />
   );

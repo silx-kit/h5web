@@ -100,9 +100,8 @@ export function useMappedArray<T extends unknown[] | TypedArray | undefined>(
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean,
-): T extends unknown[] | TypedArray
-  ? [NdArray<T>, NdArray<T>]
-  : [undefined, undefined];
+): T extends unknown[] | TypedArray ? [NdArray<T>, NdArray<T>]
+: [undefined, undefined];
 
 export function useMappedArray<T>(
   value: T[] | TypedArray | undefined,
@@ -178,13 +177,13 @@ export function useIgnoreFillValue(
 
   // Cast fillValue in the type of the dataset values to be able to use `===` for the comparison
   const fillValue =
-    DTypedArray && typeof wrappedFillValue[0] === 'number'
-      ? new DTypedArray(wrappedFillValue as number[])[0]
-      : undefined;
+    DTypedArray && typeof wrappedFillValue[0] === 'number' ?
+      new DTypedArray(wrappedFillValue as number[])[0]
+    : undefined;
 
   return useMemo(() => {
-    return fillValue !== undefined
-      ? (val: number) => val === fillValue
+    return fillValue !== undefined ?
+        (val: number) => val === fillValue
       : undefined;
   }, [fillValue]);
 }

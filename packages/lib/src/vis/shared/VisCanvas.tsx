@@ -40,8 +40,9 @@ function VisCanvas(props: PropsWithChildren<Props>) {
     ordinateConfig.visDomain,
   );
 
-  const axisOffsets = showAxes
-    ? getAxisOffsets({
+  const axisOffsets =
+    showAxes ?
+      getAxisOffsets({
         left: !!ordinateConfig.label,
         bottom: !!abscissaConfig.label,
         top: !!title,

@@ -148,9 +148,9 @@ export const LineWithLengthValidation = {
     return (
       <VisCanvas
         title={
-          isValid === undefined
-            ? 'No selection'
-            : `Line is ${isValid ? 'longer' : 'shorter'} than 100px`
+          isValid === undefined ? 'No selection' : (
+            `Line is ${isValid ? 'longer' : 'shorter'} than 100px`
+          )
         }
         abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
         ordinateConfig={{ visDomain: [50, 100], showGrid: true }}

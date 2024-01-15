@@ -31,9 +31,9 @@ function ColorBar(props: Props) {
   } = props;
 
   const [barSize, barRef] = useMeasure<HTMLDivElement>();
-  const gradientLength = barSize
-    ? horizontal
-      ? barSize.width
+  const gradientLength =
+    barSize ?
+      horizontal ? barSize.width
       : barSize.height
     : 0;
 
@@ -42,8 +42,9 @@ function ColorBar(props: Props) {
 
   const axisScale = createScale(scaleType, {
     domain,
-    range: horizontal
-      ? [0, Math.round(gradientLength + 0.5)] // fix sub-pixel misalignment
+    range:
+      horizontal ?
+        [0, Math.round(gradientLength + 0.5)] // fix sub-pixel misalignment
       : [Math.round(gradientLength + 0.5), 0],
   });
 
@@ -85,14 +86,14 @@ function ColorBar(props: Props) {
             tickClassName={styles.tick}
             tickComponent={Tick}
             tickFormat={
-              scaleType === ScaleType.Log
-                ? axisScale.tickFormat(
-                    adaptedNumTicks(gradientLength),
-                    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-                    // @ts-ignore: log scale's `tickFormat` accepts a formatter function
-                    formatTick,
-                  )
-                : formatTick
+              scaleType === ScaleType.Log ?
+                axisScale.tickFormat(
+                  adaptedNumTicks(gradientLength),
+                  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+                  // @ts-ignore: log scale's `tickFormat` accepts a formatter function
+                  formatTick,
+                )
+              : formatTick
             }
           />
         </svg>

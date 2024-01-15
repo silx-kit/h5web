@@ -36,8 +36,9 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const config = useLineConfig({
     xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
-    yScaleType: isAxisScaleType(silxStyle.signalScaleType)
-      ? silxStyle.signalScaleType
+    yScaleType:
+      isAxisScaleType(silxStyle.signalScaleType) ?
+        silxStyle.signalScaleType
       : ScaleType.Linear,
   });
 

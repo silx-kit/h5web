@@ -67,9 +67,9 @@ function getNxDefaultPath(
   if (defaultPath) {
     assertStr(defaultPath, `Expected 'default' attribute to be a string`);
 
-    return defaultPath.startsWith('/')
-      ? defaultPath
-      : buildEntityPath(entity.path, defaultPath);
+    return defaultPath.startsWith('/') ? defaultPath : (
+        buildEntityPath(entity.path, defaultPath)
+      );
   }
 
   return getImplicitDefaultChild(entity.children, attrValueStore)?.path;
@@ -83,8 +83,8 @@ function getSupportedCoreVis(
     (vis) => isDataset(entity) && vis.supportsDataset(entity, attrValueStore),
   );
 
-  return supportedVis.length > 1
-    ? supportedVis.filter((vis) => vis.name !== Vis.Raw)
+  return supportedVis.length > 1 ?
+      supportedVis.filter((vis) => vis.name !== Vis.Raw)
     : supportedVis;
 }
 

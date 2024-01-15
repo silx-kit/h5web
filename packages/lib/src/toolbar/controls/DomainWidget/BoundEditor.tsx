@@ -67,9 +67,8 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
         evt.preventDefault();
 
         const parsedValue = Number.parseFloat(inputValue.replace('−', '-')); // U+2212 minus gives `NaN`
-        const newValue = Number.isNaN(parsedValue)
-          ? value
-          : clampBound(parsedValue);
+        const newValue =
+          Number.isNaN(parsedValue) ? value : clampBound(parsedValue);
 
         // Clean up input in case value hasn't changed (since `useEffect` won't be triggered)
         setInputValue(formatBoundInput(newValue));

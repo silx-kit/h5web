@@ -29,9 +29,9 @@ function MatrixVis(props: Props) {
   const [rowCount, columnCount = 1] = dims;
 
   const cellFormatter =
-    dims.length === 1
-      ? (row: number) => formatter(dataArray.get(row), 0)
-      : (row: number, col: number) => formatter(dataArray.get(row, col), col);
+    dims.length === 1 ?
+      (row: number) => formatter(dataArray.get(row), 0)
+    : (row: number, col: number) => formatter(dataArray.get(row, col), col);
 
   return (
     <GridProvider

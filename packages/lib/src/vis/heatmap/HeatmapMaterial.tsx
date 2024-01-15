@@ -86,9 +86,8 @@ function HeatmapMaterial(props: Props) {
     return texture;
   }, [colorMap, invertColorMap]);
 
-  const [scaleType, gammaExponent] = Array.isArray(visScaleType)
-    ? visScaleType
-    : [visScaleType as ScaleType, 1];
+  const [scaleType, gammaExponent] =
+    Array.isArray(visScaleType) ? visScaleType : [visScaleType as ScaleType, 1];
 
   const scaledDomain = scaleDomain(domain, scaleType);
 

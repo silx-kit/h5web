@@ -119,8 +119,8 @@ export class MockApi extends DataProviderApi {
         const finalCsv = csv.slice(0, -2);
 
         // Demonstrate both `Blob` and `URL` techniques (cf. `src/providers/api.ts`)
-        return dataset.name === 'oneD'
-          ? new Blob([finalCsv])
+        return dataset.name === 'oneD' ?
+            new Blob([finalCsv])
           : new URL(`data:text/plain,${encodeURIComponent(finalCsv)}`);
       };
     }

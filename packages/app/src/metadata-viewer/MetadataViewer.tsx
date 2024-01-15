@@ -44,9 +44,10 @@ function MetadataViewer(props: Props) {
               <AttributesInfo
                 entity={entity}
                 onFollowPath={(pathToFollow) => {
-                  const absolutePath = isAbsolutePath(pathToFollow)
-                    ? pathToFollow
-                    : buildEntityPath(path, pathToFollow);
+                  const absolutePath =
+                    isAbsolutePath(pathToFollow) ? pathToFollow : (
+                      buildEntityPath(path, pathToFollow)
+                    );
 
                   onSelectPath(absolutePath);
                 }}

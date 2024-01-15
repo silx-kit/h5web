@@ -89,14 +89,12 @@ function App(props: Props) {
               FallbackComponent={ErrorFallback}
             >
               <Suspense fallback={<EntityLoader isInspecting={isInspecting} />}>
-                {isInspecting ? (
+                {isInspecting ?
                   <MetadataViewer
                     path={selectedPath}
                     onSelectPath={onSelectPath}
                   />
-                ) : (
-                  <Visualizer path={selectedPath} />
-                )}
+                : <Visualizer path={selectedPath} />}
               </Suspense>
             </ErrorBoundary>
           </VisConfigProvider>

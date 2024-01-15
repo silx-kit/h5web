@@ -125,9 +125,9 @@ export const Interactive = {
         abscissaConfig={{ visDomain: abscissaDomain, showGrid: true }}
         ordinateConfig={{ visDomain: ordinateDomain, showGrid: true }}
         title={
-          index !== undefined
-            ? `You clicked on point ${index} at (${abscissas[index]}, ${ordinates[index]})!`
-            : 'Click on a point!'
+          index !== undefined ?
+            `You clicked on point ${index} at (${abscissas[index]}, ${ordinates[index]})!`
+          : 'Click on a point!'
         }
         raycasterThreshold={6}
       >

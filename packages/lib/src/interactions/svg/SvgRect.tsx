@@ -17,9 +17,9 @@ function SvgRect(props: Props) {
   // Shrink/grow rectangle to simulate positioning stroke inside/outside
   // https://stackoverflow.com/questions/7241393/can-you-control-how-an-svgs-stroke-width-is-drawn
   const offset =
-    stroke && strokePosition
-      ? strokeWidth * (strokePosition === 'outside' ? 1 : -1)
-      : 0;
+    stroke && strokePosition ?
+      strokeWidth * (strokePosition === 'outside' ? 1 : -1)
+    : 0;
 
   const { min, max } = Box.fromPoints(...coords).expandBySize(offset, offset);
 

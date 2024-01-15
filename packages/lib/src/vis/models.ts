@@ -50,9 +50,8 @@ export interface AxisConfig {
 }
 
 export type VisScaleType = ColorScaleType | [ScaleType.Gamma, number];
-export type ExtractScaleType<V extends VisScaleType> = V extends ColorScaleType
-  ? V
-  : ScaleType.Gamma;
+export type ExtractScaleType<V extends VisScaleType> =
+  V extends ColorScaleType ? V : ScaleType.Gamma;
 
 export interface ScaleGammaConfig {
   domain?: Domain;
@@ -61,13 +60,12 @@ export interface ScaleGammaConfig {
   clamp?: boolean;
 }
 
-export type ScaleConfig<S = ScaleType> = S extends ColorScaleType
-  ? PickScaleConfigWithoutType<S, number>
+export type ScaleConfig<S = ScaleType> =
+  S extends ColorScaleType ? PickScaleConfigWithoutType<S, number>
   : ScaleGammaConfig;
 
-export type Scale<S = ScaleType> = S extends ColorScaleType
-  ? PickD3Scale<S, number>
-  : ScaleGamma;
+export type Scale<S = ScaleType> =
+  S extends ColorScaleType ? PickD3Scale<S, number> : ScaleGamma;
 
 export type AxisScale = Scale<AxisScaleType>;
 
