@@ -134,7 +134,7 @@ export function makeMockFile(): GroupWithChildren {
               nxData('nx_data', {
                 signal: array('twoD'),
                 silxStyle: { signalScaleType: ScaleType.SymLog },
-                title: scalar('title', 'NeXus 2D'),
+                title: scalar('title', 'NEXUS 2D'),
               }),
               nxGroup('absolute_default_path', 'NXentry', {
                 defaultPath: '/nexus_entry/nx_process/nx_data',
