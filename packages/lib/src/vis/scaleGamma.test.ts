@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { scaleGamma } from './scaleGamma';
 
 describe('scaleGamma', () => {

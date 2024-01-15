@@ -198,27 +198,29 @@ install the recommended extensions.
 
 ## Testing
 
-- `pnpm test` - run unit and feature tests with Jest
-- `pnpm test --watch` - run tests related to changed files in watch mode
-- `pnpm test --watchAll` - run all tests in watch mode
-- `pnpm --filter <project-name> test` - run Jest in a specific project
+- `pnpm test` - run unit and feature tests with [Vitest](https://vitest.dev/) in
+  watch mode (or once when on the CI)
+- `pnpm test run` - run unit and feature tests once
+- `pnpm test [run] <filter>` - run tests matching the given filter
+- `pnpm test -- --project <lib|app|...>` - run Vitest on a specific project
+- `pnpm test:ui` - run tests inside the
+  [Vitest UI](https://vitest.dev/guide/ui.html)
 - `pnpm cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end
   test runner (local dev server must be running in separate terminal)
 - `pnpm cypress:run` - run end-to-end tests once (local dev server must be
   running in separate terminal)
 
-> Note that the workspace's `test` script doesn't recursively run the `test`
-> script in every project like (i.e. it is not equivalent to `pnpm -r test`).
-> Instead, it runs Jest globally using a
-> [`projects` configuration](https://jestjs.io/docs/configuration#projects-arraystring--projectconfig)
-> located in `jest.config.json`. This results in a nicer terminal output when
-> running tests on the entire workspace.
+> Vitest is able to run on the entire monorepo thanks to the
+> [workspace configuration](https://vitest.dev/guide/workspace.html) defined in
+> `vitest.workspace.ts`. It then uses each project's Vite configuration to
+> decide how to run the tests.
 
 ### Feature tests
 
 The `@h5web/app` package includes feature tests written with
-[React Testing Library](https://testing-library.com/docs/react-testing-library/intro).
+[React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+and running in a [JSDOM environment](https://vitest.dev/guide/environment.html).
 They are located under `src/__tests__`. Each file covers a particular subtree of
 components of H5Web.
 
@@ -237,9 +239,11 @@ would normally; they just don't stick around in the DOM for long.
 This adds a bit of complexity when testing, as React doesn't like when something
 happens after a test has completed. In fact, we have to ensure that every
 component that suspends inside a test **finishes loading before the end of that
-test**. This is where Testing Library's
-[asynchronous methods](https://testing-library.com/docs/dom-testing-library/api-async)
-come in.
+test**. To do so, you can use Testing Library's asynchronous APIs for
+[finding elements](https://testing-library.com/docs/dom-testing-library/api-async/#findby-queries)
+and [interacting with them](https://testing-library.com/docs/user-event), as
+well as Vitest's [`waitFor``](https://vitest.dev/api/vi.html#vi-waitfor-0-34-5)
+utility.
 
 #### Fake timers
 

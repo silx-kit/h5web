@@ -1,5 +1,6 @@
 import { ScaleType } from '@h5web/shared/vis-models';
 import { interpolateGreys } from 'd3-scale-chromatic';
+import { describe, expect, it } from 'vitest';
 
 import { DomainError } from '../models';
 import { getLinearGradient, getSafeDomain } from './utils';

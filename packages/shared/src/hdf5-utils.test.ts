@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { buildEntityPath, getChildEntity } from './hdf5-utils';
 import { group, scalar } from './mock-utils';
 

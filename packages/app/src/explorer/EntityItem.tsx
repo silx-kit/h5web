@@ -2,7 +2,13 @@ import { isGroup } from '@h5web/shared/guards';
 import type { ChildEntity } from '@h5web/shared/hdf5-models';
 import { useToggle } from '@react-hookz/web';
 import type { CSSProperties, KeyboardEvent } from 'react';
-import { Suspense, useCallback, useEffect, useRef } from 'react';
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FiRefreshCw } from 'react-icons/fi';
 
@@ -32,17 +38,20 @@ function EntityItem(props: Props) {
 
   const btnRef = useRef<HTMLButtonElement>(null);
 
-  const [isExpanded, toggleExpanded] = useToggle(false);
+  // Group AND (selected OR parent of selected entity)
+  const shouldBeExpanded =
+    isGroup(entity) &&
+    (selectedPath === path || selectedPath.startsWith(`${path}/`));
 
-  useEffect(() => {
-    if (
-      isGroup(entity) &&
-      (selectedPath === path || selectedPath.startsWith(`${path}/`))
-    ) {
-      // If group is selected or is parent of selected entity, expand it
+  const [isExpanded, toggleExpanded] = useToggle(shouldBeExpanded);
+
+  useLayoutEffect(() => {
+    if (shouldBeExpanded) {
+      // Expand group if needed, notably when selected path changes
+      // e.g. when navigating via NX attributes
       toggleExpanded(true);
     }
-  }, [entity, path, selectedPath, toggleExpanded]);
+  }, [shouldBeExpanded, toggleExpanded]);
 
   // When tabbing in, restore focus on the selected element
   useEffect(() => {

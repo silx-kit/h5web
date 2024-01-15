@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import { expect, test } from 'vitest';
 
 import { getSelectedVisTab, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';

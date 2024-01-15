@@ -1,4 +1,5 @@
 import { group, scalar } from '@h5web/shared/mock-utils';
+import { describe, expect, it } from 'vitest';
 
 import { findMockEntity } from './utils';
 
