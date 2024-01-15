@@ -337,17 +337,21 @@ To release a new version and publish the packages to NPM:
    latest commit on `main` has passed the CI.
 1. Run `pnpm version [ patch | minor | major | <new-version> ]`
 
-This command bumps the version number in the workspace's `package.json`, commits
-the change and then tags the commit with the same version number. The
-`postversion` script then runs automatically and pushes the new commit and the
-new tag to the remote repository. This, in turn, triggers the _Release_ workflow
-on the CI, which builds and publishes the packages to NPM (with `pnpm publish`)
-and deploys the Storybook site.
-
-> A few things happen when `pnpm publish` is run inside each package's
-> directory:
+> The `pnpm version` command:
 >
-> 1. First, a `prepack` script is triggered that removes the `type` field from
+> 1. bumps the version in the workspace's `package.json`;
+> 1. copies the new version into each package's `package.json` (via the
+>    `version` script);
+> 1. commits and tags the changes, and then pushes the new commit and the new
+>    tag to the remote repository (via the `postversion` script).
+>
+> This, in turn, triggers the _Publish packages_ and _Deploy Storybook_
+> workflows on the CI, which builds and publishes the packages to NPM (with
+> `pnpm -r publish`) and deploys the Storybook site.
+>
+> A few things happen when `pnpm publish` runs for each package:
+>
+> 1. First, it triggers a `prepack` script that removes the `type` field from
 >    the package's `package.json`. The reason for this workaround is explained
 >    in [#1219](https://github.com/silx-kit/h5web/issues/1219).
 > 2. Then, pnpm modifies `package.json` further by merging in the content of the
@@ -357,7 +361,7 @@ and deploys the Storybook site.
 >    [Verdaccio](https://verdaccio.org/)) by overriding NPM's default
 >    [`registry` configuration](https://docs.npmjs.com/cli/v9/using-npm/registry).
 
-Once the _Release_ workflow has completed:
+Once the CI workflows have run successfully:
 
 - Make sure the new package versions are available on NPM and that the live
   Storybook site still works as expected.
@@ -376,9 +380,9 @@ before the official release.
    number as needed).
 
 The CI will then build and deploy the packages with `pnpm publish --tag next`.
-Once the _Release_ workflow has completed, check that the beta packages have
-been published with the correct tag by running `npm dist-tag ls @h5web/lib`.
-This command should print something like:
+Once the _Publish packages_ workflow has run successfully, check that the beta
+packages are published with the correct tag by running
+`npm dist-tag ls @h5web/lib`. This command should print something like:
 
 ```
 latest: <a.b.c>
@@ -390,6 +394,6 @@ like and make sure that they work as expected. Once you're done testing, follow
 the normal release process, making sure to run `pnpm version <x.y.z>` at step 3
 (without the `beta` suffix).
 
-Once the release process has completed, you can remove the `next` tag from the
-obsolete beta packages by running
-`npm dist-tag rm @h5web/lib@<x.y.z>-beta.0 next`
+Once you've completed the release process, you may remove the `next` tag from
+the obsolete beta packages by running
+`npm dist-tag rm @h5web/lib@<x.y.z-beta.0> next`
