@@ -31,6 +31,7 @@
     "test": "jest",
     "cypress": "cypress open --e2e --browser firefox",
     "cypress:run": "cypress run --e2e",
+    "version": "pnpm -r sync-version && git add .",
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {

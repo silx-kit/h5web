@@ -1,6 +1,6 @@
 {
   "name": "@h5web/h5wasm",
-  "version": "0.0.1",
+  "version": "10.1.0",
   "description": "H5Web providers based on H5Wasm",
   "author": "European Synchrotron Radiation Facility",
   "license": "MIT",
@@ -32,7 +32,8 @@
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc",
     "analyze": "pnpm dlx source-map-explorer dist/index.js --no-border-checks",
-    "prepack": "pnpm dlx dot-json@latest package.json -d type"
+    "prepack": "dot-json package.json -d type",
+    "sync-version": "dot-json ../../package.json version | xargs dot-json package.json version"
   },
   "peerDependencies": {
     "@h5web/app": "workspace:*",
@@ -55,6 +56,7 @@
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@vitejs/plugin-react": "4.2.1",
+    "dot-json": "1.3.0",
     "eslint": "8.56.0",
     "eslint-config-galex": "4.5.2",
     "react": "18.2.0",
