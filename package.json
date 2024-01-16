@@ -14,6 +14,7 @@
     "pnpm": "8.x"
   },
   "packageManager": "pnpm@8.12.1",
+  "type": "module",
   "scripts": {
     "start": "pnpm --filter demo start",
     "start:storybook": "pnpm --filter storybook start",
