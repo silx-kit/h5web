@@ -38,9 +38,7 @@ export default defineProject({
     restoreMocks: true,
     testTimeout: 15_000,
     server: {
-      deps: {
-        inline: ['react-suspense-fetch'],
-      },
+      deps: { inline: ['react-suspense-fetch'] },
     },
   },
 });

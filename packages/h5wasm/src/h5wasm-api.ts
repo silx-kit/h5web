@@ -256,16 +256,18 @@ export class H5WasmApi extends DataProviderApi {
     }
 
     if (isH5WasmDataset(h5wEntity)) {
-      const { shape, metadata, dtype, filters } = h5wEntity;
+      const { metadata, filters } = h5wEntity;
+      const { chunks, maxshape, shape, ...rawType } = metadata; // keep `rawType` concise
+
       return {
         ...baseEntity,
-        chunks: metadata.chunks ?? undefined,
         kind: EntityKind.Dataset,
-        attributes: this.processH5WasmAttrs(h5wEntity.attrs),
-        shape,
+        shape: metadata.shape,
         type: convertMetadataToDType(metadata),
-        rawType: dtype,
+        chunks: metadata.chunks ?? undefined,
         filters,
+        attributes: this.processH5WasmAttrs(h5wEntity.attrs),
+        rawType,
       };
     }
 
