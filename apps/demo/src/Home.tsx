@@ -87,15 +87,21 @@ function Home() {
                 group (Argonne National Laboratory).
               </li>
               <li>
-                <Link to="/h5grove?file=grove.h5">grove.h5</Link> - a file used
-                to test the <code>H5GroveProvider</code> provider; it contains
-                datasets with <code>NaN</code>, <code>Infinity</code>, boolean
-                and complex values, as well as RGB images and 4D stacks.
+                <Link to="/h5grove?file=grove.h5">grove.h5</Link> - a file
+                designed to demonstrate the capabilities of{' '}
+                <code>H5GroveProvider</code>; it contains datasets with{' '}
+                <code>NaN</code>, <code>Infinity</code>, boolean and complex
+                values, as well as RGB images and 4D stacks.
               </li>
               <li>
                 <Link to="/h5grove?file=links.h5">links.h5</Link> - a file with
                 external links, soft links and a virtual dataset to test link
                 resolution.
+              </li>
+              <li>
+                <Link to="/h5grove?file=sample.h5">sample.h5</Link> - the file
+                used to test <code>H5GroveApi</code> and <code>H5WasmApi</code>{' '}
+                internally.
               </li>
               <li>
                 <Link to="/h5grove?file=tall.h5">tall.h5</Link> - the demo file
@@ -144,20 +150,24 @@ function Home() {
                 silx.org
               </a>
               :{' '}
-              {['water_224.h5', 'epics.h5', 'grove.h5', 'tall.h5 '].map(
-                (filename, index) => (
-                  <Fragment key={filename}>
-                    {index > 0 && ', '}
-                    <Link
-                      to={`/h5wasm?url=${encodeURIComponent(
-                        `https://www.silx.org/pub/h5web/${filename}`,
-                      )}`}
-                    >
-                      {filename}
-                    </Link>
-                  </Fragment>
-                ),
-              )}
+              {[
+                'water_224.h5',
+                'epics.h5',
+                'grove.h5',
+                'sample.h5',
+                'tall.h5 ',
+              ].map((filename, index) => (
+                <Fragment key={filename}>
+                  {index > 0 && ', '}
+                  <Link
+                    to={`/h5wasm?url=${encodeURIComponent(
+                      `https://www.silx.org/pub/h5web/${filename}`,
+                    )}`}
+                  >
+                    {filename}
+                  </Link>
+                </Fragment>
+              ))}
             </p>
           </section>
           <section>

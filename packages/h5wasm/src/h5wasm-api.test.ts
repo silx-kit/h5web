@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { DataProviderApi, getValueOrError } from '@h5web/app';
+import { getValueOrError } from '@h5web/app';
 import {
   assertDataset,
   assertGroup,

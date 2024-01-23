@@ -10,8 +10,8 @@ import { DTypeClass } from '@h5web/shared/hdf5-models';
 import { AxiosError } from 'axios';
 import ndarray from 'ndarray';
 
-import type { DataProviderApi } from '..';
 import { applyMapping } from '../vis-packs/core/utils';
+import type { DataProviderApi } from './api';
 
 export const CANCELLED_ERROR_MSG = 'Request cancelled';
 
