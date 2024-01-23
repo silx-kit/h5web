@@ -10,6 +10,7 @@ import { DTypeClass } from '@h5web/shared/hdf5-models';
 import { AxiosError } from 'axios';
 import ndarray from 'ndarray';
 
+import type { DataProviderApi } from '..';
 import { applyMapping } from '../vis-packs/core/utils';
 
 export const CANCELLED_ERROR_MSG = 'Request cancelled';
@@ -111,4 +112,15 @@ export function typedArrayFromDType(dtype: DType) {
   }
 
   return undefined;
+}
+
+export async function getValueOrError(
+  api: DataProviderApi,
+  dataset: Dataset<ArrayShape | ScalarShape>,
+): Promise<unknown> {
+  try {
+    return await api.getValue({ dataset });
+  } catch (error) {
+    return error;
+  }
 }

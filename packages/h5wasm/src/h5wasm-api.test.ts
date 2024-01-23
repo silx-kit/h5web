@@ -2,17 +2,13 @@ import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { DataProviderApi, getValueOrError } from '@h5web/app';
 import {
   assertDataset,
   assertGroup,
   assertGroupWithChildren,
   hasNonNullShape,
 } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  Dataset,
-  ScalarShape,
-} from '@h5web/shared/hdf5-models';
 import { expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
@@ -27,17 +23,6 @@ async function loadTestFile(): Promise<ArrayBuffer> {
 
   const resp = await fetch(REMOTE_TEST_FILE);
   return resp.arrayBuffer();
-}
-
-async function getValueOrError(
-  api: H5WasmApi,
-  dataset: Dataset<ArrayShape | ScalarShape>,
-): Promise<unknown> {
-  try {
-    return await api.getValue({ dataset });
-  } catch (error) {
-    return error;
-  }
 }
 
 test('test file matches snapshot', async () => {

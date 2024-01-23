@@ -1,0 +1,1088 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`test file matches snapshot 1`] = `
+[
+  {
+    "name": "int8_scalar",
+    "rawType": "|i1",
+    "shape": [],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 8,
+    },
+    "value": -128,
+  },
+  {
+    "name": "int8_2D",
+    "rawType": "|i1",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 8,
+    },
+    "value": Int8Array [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "int16_scalar",
+    "rawType": "<i2",
+    "shape": [],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 16,
+    },
+    "value": -32768,
+  },
+  {
+    "name": "int16_2D",
+    "rawType": "<i2",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 16,
+    },
+    "value": Int16Array [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "int32_scalar",
+    "rawType": "<i4",
+    "shape": [],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": -2147483648,
+  },
+  {
+    "name": "int32_BE_scalar",
+    "rawType": ">i4",
+    "shape": [],
+    "type": {
+      "class": "Integer",
+      "endianness": "big-endian",
+      "size": 32,
+    },
+    "value": 0,
+  },
+  {
+    "name": "int32_2D",
+    "rawType": "<i4",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": Int32Array [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "int64_scalar",
+    "rawType": "<i8",
+    "shape": [],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": -9223372036854776000,
+  },
+  {
+    "name": "int64_2D",
+    "rawType": "<i8",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "uint8_scalar",
+    "rawType": "|u1",
+    "shape": [],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 8,
+    },
+    "value": 255,
+  },
+  {
+    "name": "uint8_2D",
+    "rawType": "|u1",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 8,
+    },
+    "value": Uint8Array [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "uint16_scalar",
+    "rawType": "<u2",
+    "shape": [],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 16,
+    },
+    "value": 65535,
+  },
+  {
+    "name": "uint16_2D",
+    "rawType": "<u2",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 16,
+    },
+    "value": Uint16Array [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "uint32_scalar",
+    "rawType": "<u4",
+    "shape": [],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": 4294967295,
+  },
+  {
+    "name": "uint32_2D",
+    "rawType": "<u4",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": Uint32Array [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "uint64_scalar",
+    "rawType": "<u8",
+    "shape": [],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": 18446744073709552000,
+  },
+  {
+    "name": "uint64_3D",
+    "rawType": "<u8",
+    "shape": [
+      2,
+      2,
+      2,
+    ],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      18446744073709552000,
+    ],
+  },
+  {
+    "name": "float16_scalar",
+    "rawType": "<f2",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 16,
+    },
+    "value": 0.00006103515625,
+  },
+  {
+    "name": "float16_2D",
+    "rawType": "<f2",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 16,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "float32_empty",
+    "rawType": "<f4",
+    "shape": null,
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": null,
+  },
+  {
+    "name": "float32_scalar",
+    "rawType": "<f4",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": 1.1754943508222875e-38,
+  },
+  {
+    "name": "float32_BE_scalar",
+    "rawType": ">f4",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "big-endian",
+      "size": 32,
+    },
+    "value": 0,
+  },
+  {
+    "name": "float32_2D",
+    "rawType": "<f4",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": Float32Array [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "float64_scalar",
+    "rawType": "<f8",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": 2.2250738585072014e-308,
+  },
+  {
+    "name": "float64_nan_scalar",
+    "rawType": "<f8",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": NaN,
+  },
+  {
+    "name": "float64_inf_scalar",
+    "rawType": "<f8",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": Infinity,
+  },
+  {
+    "name": "float64_ninf_scalar",
+    "rawType": "<f8",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": -Infinity,
+  },
+  {
+    "name": "float64_zero_scalar",
+    "rawType": "<f8",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": 0,
+  },
+  {
+    "name": "float64_nzero_scalar",
+    "rawType": "<f8",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": -0,
+  },
+  {
+    "name": "float64_pi_scalar",
+    "rawType": "<f8",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": 3.141592653589793,
+  },
+  {
+    "name": "float64_2D",
+    "rawType": "<f8",
+    "shape": [
+      3,
+      5,
+    ],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": Float64Array [
+      0,
+      1,
+      Infinity,
+      3,
+      4,
+      3,
+      4,
+      NaN,
+      6,
+      7,
+      6,
+      7,
+      -Infinity,
+      9,
+      10,
+    ],
+  },
+  {
+    "name": "float128_scalar",
+    "rawType": "<f16",
+    "shape": [],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 128,
+    },
+    "value": 0,
+  },
+  {
+    "name": "float128_2D",
+    "rawType": "<f16",
+    "shape": [
+      2,
+      3,
+    ],
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 128,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "ascii_vlen_empty",
+    "rawType": "|O",
+    "shape": null,
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+    },
+    "value": null,
+  },
+  {
+    "name": "ascii_vlen_scalar",
+    "rawType": "|O",
+    "shape": [],
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+    },
+    "value": "Some text",
+  },
+  {
+    "name": "ascii_fixed_scalar",
+    "rawType": "|S9",
+    "shape": [],
+    "type": {
+      "charSet": "ASCII",
+      "class": "String",
+      "length": 9,
+    },
+    "value": "Some text",
+  },
+  {
+    "name": "utf8_vlen_scalar",
+    "rawType": "|O",
+    "shape": [],
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+    },
+    "value": "Some text",
+  },
+  {
+    "name": "utf8_vlen_1D",
+    "rawType": "|O",
+    "shape": [
+      3,
+    ],
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+    },
+    "value": [
+      "foo",
+      "bar",
+      "baz",
+    ],
+  },
+  {
+    "name": "utf8_fixed_scalar",
+    "rawType": "|S9",
+    "shape": [],
+    "type": {
+      "charSet": "ASCII",
+      "class": "String",
+      "length": 9,
+    },
+    "value": "Some text",
+  },
+  {
+    "name": "byte_string_scalar",
+    "rawType": "|V3",
+    "shape": [],
+    "type": {
+      "class": "Unknown",
+    },
+    "value": " "",
+  },
+  {
+    "name": "datetime64_scalar",
+    "rawType": "|V8",
+    "shape": [],
+    "type": {
+      "class": "Unknown",
+    },
+    "value": [AxiosError: Request failed with status code 500],
+  },
+  {
+    "name": "datetime64_not-a-time_scalar",
+    "rawType": "|V8",
+    "shape": [],
+    "type": {
+      "class": "Unknown",
+    },
+    "value": [AxiosError: Request failed with status code 500],
+  },
+  {
+    "name": "complex64_scalar",
+    "rawType": "<c8",
+    "shape": [],
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+    },
+    "value": [
+      1.1754943508222875e-38,
+      3.4028234663852886e+38,
+    ],
+  },
+  {
+    "name": "complex64_2D",
+    "rawType": "<c8",
+    "shape": [
+      2,
+      2,
+    ],
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+    },
+    "value": [
+      [
+        1,
+        2,
+      ],
+      [
+        3,
+        4,
+      ],
+      [
+        5,
+        6,
+      ],
+      [
+        7,
+        8,
+      ],
+    ],
+  },
+  {
+    "name": "complex128_scalar",
+    "rawType": "<c16",
+    "shape": [],
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+    },
+    "value": [
+      2.2250738585072014e-308,
+      1.7976931348623157e+308,
+    ],
+  },
+  {
+    "name": "complex128_BE_scalar",
+    "rawType": ">c16",
+    "shape": [],
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "big-endian",
+        "size": 64,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "big-endian",
+        "size": 64,
+      },
+    },
+    "value": [
+      1,
+      2,
+    ],
+  },
+  {
+    "name": "complex128_2D",
+    "rawType": "<c16",
+    "shape": [
+      2,
+      2,
+    ],
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+    },
+    "value": [
+      [
+        1,
+        2,
+      ],
+      [
+        3,
+        4,
+      ],
+      [
+        5,
+        6,
+      ],
+      [
+        7,
+        8,
+      ],
+    ],
+  },
+  {
+    "name": "complex256_scalar",
+    "rawType": "<c32",
+    "shape": [],
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 128,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 128,
+      },
+    },
+    "value": [AxiosError: Request failed with status code 500],
+  },
+  {
+    "name": "complex256_2D",
+    "rawType": "<c32",
+    "shape": [
+      2,
+      2,
+    ],
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 128,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 128,
+      },
+    },
+    "value": [AxiosError: Request failed with status code 500],
+  },
+  {
+    "name": "compound_scalar",
+    "rawType": {
+      "bigint": "<i8",
+      "double": "<f8",
+      "utf-8": "|O",
+    },
+    "shape": [],
+    "type": {
+      "class": "Compound",
+      "fields": {
+        "bigint": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "size": 64,
+        },
+        "double": {
+          "class": "Float",
+          "endianness": "little-endian",
+          "size": 64,
+        },
+        "utf-8": {
+          "charSet": "UTF-8",
+          "class": "String",
+        },
+      },
+    },
+    "value": [
+      1,
+      2,
+      "foo",
+    ],
+  },
+  {
+    "name": "compound_1D",
+    "rawType": {
+      "bigint": "<i8",
+      "double": "<f8",
+      "utf-8": "|O",
+    },
+    "shape": [
+      3,
+    ],
+    "type": {
+      "class": "Compound",
+      "fields": {
+        "bigint": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "size": 64,
+        },
+        "double": {
+          "class": "Float",
+          "endianness": "little-endian",
+          "size": 64,
+        },
+        "utf-8": {
+          "charSet": "UTF-8",
+          "class": "String",
+        },
+      },
+    },
+    "value": [
+      [
+        1,
+        null,
+        "foo",
+      ],
+      [
+        2,
+        null,
+        "bar",
+      ],
+      [
+        3,
+        -0,
+        "baz",
+      ],
+    ],
+  },
+  {
+    "name": "compound_nested_scalar",
+    "rawType": {
+      "nested": {
+        "bool": "|b1",
+        "cplx": "<c8",
+      },
+    },
+    "shape": [],
+    "type": {
+      "class": "Compound",
+      "fields": {
+        "nested": {
+          "class": "Compound",
+          "fields": {
+            "bool": {
+              "class": "Boolean",
+            },
+            "cplx": {
+              "class": "Complex",
+              "imagType": {
+                "class": "Float",
+                "endianness": "little-endian",
+                "size": 32,
+              },
+              "realType": {
+                "class": "Float",
+                "endianness": "little-endian",
+                "size": 32,
+              },
+            },
+          },
+        },
+      },
+    },
+    "value": [
+      [
+        true,
+        [
+          1,
+          2,
+        ],
+      ],
+    ],
+  },
+  {
+    "name": "compound_array_vlen_1D",
+    "rawType": {
+      "arr": "|V8",
+      "vlen": "|O",
+    },
+    "shape": [
+      3,
+    ],
+    "type": {
+      "class": "Compound",
+      "fields": {
+        "arr": {
+          "class": "Unknown",
+        },
+        "vlen": {
+          "charSet": "UTF-8",
+          "class": "String",
+        },
+      },
+    },
+    "value": [
+      [
+        [
+          0,
+          1,
+        ],
+        [
+          0,
+        ],
+      ],
+      [
+        [
+          2,
+          3,
+        ],
+        [
+          0,
+          1,
+        ],
+      ],
+      [
+        [
+          4,
+          5,
+        ],
+        [
+          0,
+          1,
+          2,
+        ],
+      ],
+    ],
+  },
+  {
+    "name": "reference_scalar",
+    "rawType": "|O",
+    "shape": [],
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+    },
+    "value": "<HDF5 object reference>",
+  },
+  {
+    "name": "reference_region_scalar",
+    "rawType": "|O",
+    "shape": [],
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+    },
+    "value": "<HDF5 object reference>",
+  },
+  {
+    "name": "bool_empty",
+    "rawType": "|b1",
+    "shape": null,
+    "type": {
+      "class": "Boolean",
+    },
+    "value": null,
+  },
+  {
+    "name": "bool_false_scalar",
+    "rawType": "|b1",
+    "shape": [],
+    "type": {
+      "class": "Boolean",
+    },
+    "value": false,
+  },
+  {
+    "name": "bool_true_scalar",
+    "rawType": "|b1",
+    "shape": [],
+    "type": {
+      "class": "Boolean",
+    },
+    "value": true,
+  },
+  {
+    "name": "bool_2D",
+    "rawType": "|b1",
+    "shape": [
+      2,
+      4,
+    ],
+    "type": {
+      "class": "Boolean",
+    },
+    "value": [
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      true,
+      false,
+    ],
+  },
+  {
+    "name": "enum_uint8_scalar",
+    "rawType": "|u1",
+    "shape": [],
+    "type": {
+      "class": "Integer (unsigned)",
+      "endianness": "little-endian",
+      "size": 8,
+    },
+    "value": 1,
+  },
+  {
+    "name": "enum_int32_scalar",
+    "rawType": "<i4",
+    "shape": [],
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": 256,
+  },
+  {
+    "name": "vlen_int8_scalar",
+    "rawType": "|O",
+    "shape": [],
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+    },
+    "value": [
+      0,
+      1,
+    ],
+  },
+  {
+    "name": "vlen_int64_1D",
+    "rawType": "|O",
+    "shape": [
+      3,
+    ],
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+    },
+    "value": [
+      [
+        0,
+      ],
+      [
+        0,
+        1,
+      ],
+      [
+        0,
+        1,
+        2,
+      ],
+    ],
+  },
+]
+`;
