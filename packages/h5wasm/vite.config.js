@@ -31,4 +31,9 @@ export default defineProject({
     },
     sourcemap: true,
   },
+  test: {
+    server: {
+      deps: { inline: ['react-suspense-fetch'] },
+    },
+  },
 });
