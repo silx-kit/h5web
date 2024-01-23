@@ -1,3 +1,7 @@
+import { existsSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+
 import {
   assertDataset,
   assertGroup,
@@ -9,14 +13,11 @@ import type {
   Dataset,
   ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { existsSync } from 'fs';
-import { readFile } from 'fs/promises';
-import path from 'path';
 import { expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
 
-const LOCAL_TEST_FILE = path.resolve(__dirname, '../dist-h5/sample.h5');
+const LOCAL_TEST_FILE = path.resolve(process.cwd(), 'dist/sample.h5');
 const REMOTE_TEST_FILE = 'http://www.silx.org/pub/h5web/sample.h5'; // `https` would complicate things...
 
 async function loadTestFile(): Promise<ArrayBuffer> {

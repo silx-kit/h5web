@@ -7,7 +7,7 @@ if sys.version_info.major < 3:
     raise RuntimeError("Python 2 is not supported")
 
 BASE_PATH = os.path.dirname(os.path.realpath(sys.argv[0]))
-DIST_PATH = os.path.join(BASE_PATH, "dist-h5")
+DIST_PATH = os.path.join(BASE_PATH, "dist")
 os.makedirs(DIST_PATH, exist_ok=True)
 
 h5py.get_config().track_order = True
