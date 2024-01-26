@@ -218,16 +218,15 @@ export class H5GroveApi extends DataProviderApi {
         chunks,
         filters,
       } = h5gEntity;
-      const attributes = this.parseAttributes(attrsMetadata);
       return {
         ...baseEntity,
-        attributes,
         kind: EntityKind.Dataset,
         shape,
         type: parseDType(dtype),
         rawType: dtype,
         ...(chunks && { chunks }),
         ...(filters && { filters }),
+        attributes: this.parseAttributes(attrsMetadata),
       };
     }
 
@@ -235,8 +234,8 @@ export class H5GroveApi extends DataProviderApi {
       const { target_path } = h5gEntity;
       return {
         ...baseEntity,
-        attributes: [],
         kind: EntityKind.Unresolved,
+        attributes: [],
         link: { class: 'Soft', path: target_path },
       };
     }
@@ -258,8 +257,8 @@ export class H5GroveApi extends DataProviderApi {
     // Treat other entities as unresolved
     return {
       ...baseEntity,
-      attributes: [],
       kind: EntityKind.Unresolved,
+      attributes: [],
     };
   }
 
