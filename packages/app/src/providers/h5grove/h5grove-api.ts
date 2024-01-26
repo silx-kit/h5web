@@ -1,31 +1,24 @@
 import { hasNumericType, hasScalarShape } from '@h5web/shared/guards';
 import type {
   ArrayShape,
-  Attribute,
   AttributeValues,
-  ChildEntity,
   Dataset,
   Entity,
-  Group,
   ProvidedEntity,
   Value,
 } from '@h5web/shared/hdf5-models';
-import { EntityKind } from '@h5web/shared/hdf5-models';
-import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { handleAxiosError, typedArrayFromDType } from '../utils';
 import type {
-  H5GroveAttribute,
   H5GroveAttrValuesResponse,
   H5GroveDataResponse,
-  H5GroveEntity,
   H5GroveEntityResponse,
   H5GrovePathsResponse,
 } from './models';
-import { hasErrorMessage, parseDType } from './utils';
+import { hasErrorMessage, parseEntity } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
   /* API compatible with h5grove@1.3.0 */
@@ -40,7 +33,7 @@ export class H5GroveApi extends DataProviderApi {
 
   public async getEntity(path: string): Promise<ProvidedEntity> {
     const response = await this.fetchEntity(path);
-    return this.parseEntity(path, response);
+    return parseEntity(path, response);
   }
 
   public async getValue(
@@ -166,107 +159,5 @@ export class H5GroveApi extends DataProviderApi {
     );
 
     return data;
-  }
-
-  private parseEntity(
-    path: string,
-    h5gEntity: H5GroveEntity,
-    isChild: true,
-  ): ChildEntity;
-
-  private parseEntity(
-    path: string,
-    h5gEntity: H5GroveEntity,
-    isChild?: false,
-  ): ProvidedEntity;
-
-  private parseEntity(
-    path: string,
-    h5gEntity: H5GroveEntity,
-    isChild = false,
-  ): ProvidedEntity | ChildEntity {
-    const { name } = h5gEntity;
-    const baseEntity = { name, path };
-
-    if (h5gEntity.type === EntityKind.Group) {
-      const { children = [], attributes: attrsMetadata } = h5gEntity;
-      const attributes = this.parseAttributes(attrsMetadata);
-      const baseGroup: Group = {
-        ...baseEntity,
-        kind: EntityKind.Group,
-        attributes,
-      };
-
-      if (isChild) {
-        return baseGroup;
-      }
-
-      return {
-        ...baseGroup,
-        children: children.map((child) => {
-          const childPath = buildEntityPath(path, child.name);
-          return this.parseEntity(childPath, child, true);
-        }),
-      };
-    }
-
-    if (h5gEntity.type === EntityKind.Dataset) {
-      const {
-        attributes: attrsMetadata,
-        dtype,
-        shape,
-        chunks,
-        filters,
-      } = h5gEntity;
-      return {
-        ...baseEntity,
-        kind: EntityKind.Dataset,
-        shape,
-        type: parseDType(dtype),
-        rawType: dtype,
-        ...(chunks && { chunks }),
-        ...(filters && { filters }),
-        attributes: this.parseAttributes(attrsMetadata),
-      };
-    }
-
-    if (h5gEntity.type === 'soft_link') {
-      const { target_path } = h5gEntity;
-      return {
-        ...baseEntity,
-        kind: EntityKind.Unresolved,
-        attributes: [],
-        link: { class: 'Soft', path: target_path },
-      };
-    }
-
-    if (h5gEntity.type === 'external_link') {
-      const { target_file, target_path } = h5gEntity;
-      return {
-        ...baseEntity,
-        kind: EntityKind.Unresolved,
-        attributes: [],
-        link: {
-          class: 'External',
-          file: target_file,
-          path: target_path,
-        },
-      };
-    }
-
-    // Treat other entities as unresolved
-    return {
-      ...baseEntity,
-      kind: EntityKind.Unresolved,
-      attributes: [],
-    };
-  }
-
-  private parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
-    return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
-      name,
-      shape,
-      type: parseDType(dtype),
-    }));
   }
 }
