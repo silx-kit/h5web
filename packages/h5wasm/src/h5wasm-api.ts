@@ -20,23 +20,22 @@ import type {
 import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import type { Attribute as H5WasmAttribute, Filter, Module } from 'h5wasm';
-import { File as H5WasmFile, ready as h5wasmReady } from 'h5wasm';
+import {
+  BrokenSoftLink as H5WasmSoftLink,
+  Dataset as H5WasmDataset,
+  Datatype as H5WasmDatatype,
+  ExternalLink as H5WasmExternalLink,
+  File as H5WasmFile,
+  Group as H5WasmGroup,
+  ready as h5wasmReady,
+} from 'h5wasm';
 import { nanoid } from 'nanoid';
 
-import {
-  assertH5WasmDataset,
-  assertH5WasmEntityWithAttrs,
-  hasInt64Type,
-  isH5WasmDataset,
-  isH5WasmDatatype,
-  isH5WasmExternalLink,
-  isH5WasmGroup,
-  isH5WasmSoftLink,
-} from './guards';
+import { assertH5WasmDataset, hasInt64Type } from './guards';
 import type { H5WasmAttributes, H5WasmEntity } from './models';
 import {
-  convertMetadataToDType,
   convertSelectionToRanges,
+  parseDType,
   PLUGINS_BY_FILTER_ID,
 } from './utils';
 
@@ -62,7 +61,7 @@ export class H5WasmApi extends DataProviderApi {
 
   public async getEntity(path: string): Promise<ProvidedEntity> {
     const h5wEntity = await this.getH5WasmEntity(path);
-    return this.processH5WasmEntity(getNameFromPath(path), path, h5wEntity);
+    return this.parseEntity(getNameFromPath(path), path, h5wEntity);
   }
 
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
@@ -98,7 +97,10 @@ export class H5WasmApi extends DataProviderApi {
 
   public async getAttrValues(entity: Entity) {
     const h5wEntity = await this.getH5WasmEntity(entity.path);
-    assertH5WasmEntityWithAttrs(h5wEntity);
+
+    if (!('attrs' in h5wEntity)) {
+      throw new Error('Expected H5Wasm entity with attributes');
+    }
 
     return Object.fromEntries(
       Object.entries(h5wEntity.attrs).map(([name, attr]) => {
@@ -135,7 +137,7 @@ export class H5WasmApi extends DataProviderApi {
 
     const h5wEntity = file.get(root);
 
-    if (isH5WasmGroup(h5wEntity)) {
+    if (h5wEntity instanceof H5WasmGroup) {
       // Build absolute paths since .paths() are relative
       return h5wEntity.paths().map((path) => `${root}${path}`);
     }
@@ -211,21 +213,21 @@ export class H5WasmApi extends DataProviderApi {
     return h5wEntity;
   }
 
-  private processH5WasmEntity(
+  private parseEntity(
     name: string,
     path: string,
     h5wEntity: H5WasmEntity,
     isChild: true,
   ): ChildEntity;
 
-  private processH5WasmEntity(
+  private parseEntity(
     name: string,
     path: string,
     h5wEntity: H5WasmEntity,
     isChild?: false,
   ): ProvidedEntity;
 
-  private processH5WasmEntity(
+  private parseEntity(
     name: string,
     path: string,
     h5wEntity: H5WasmEntity,
@@ -233,11 +235,11 @@ export class H5WasmApi extends DataProviderApi {
   ): ProvidedEntity | ChildEntity {
     const baseEntity = { name, path };
 
-    if (isH5WasmGroup(h5wEntity)) {
+    if (h5wEntity instanceof H5WasmGroup) {
       const baseGroup: Group = {
         ...baseEntity,
         kind: EntityKind.Group,
-        attributes: this.processH5WasmAttrs(h5wEntity.attrs),
+        attributes: this.parseAttributes(h5wEntity.attrs),
       };
 
       if (isChild) {
@@ -250,12 +252,12 @@ export class H5WasmApi extends DataProviderApi {
           const h5wChild = h5wEntity.get(childName);
 
           const childPath = buildEntityPath(path, childName);
-          return this.processH5WasmEntity(childName, childPath, h5wChild, true);
+          return this.parseEntity(childName, childPath, h5wChild, true);
         }),
       };
     }
 
-    if (isH5WasmDataset(h5wEntity)) {
+    if (h5wEntity instanceof H5WasmDataset) {
       const { metadata, filters } = h5wEntity;
       const { chunks, maxshape, shape, ...rawType } = metadata; // keep `rawType` concise
 
@@ -263,15 +265,15 @@ export class H5WasmApi extends DataProviderApi {
         ...baseEntity,
         kind: EntityKind.Dataset,
         shape: metadata.shape,
-        type: convertMetadataToDType(metadata),
+        type: parseDType(metadata),
         chunks: metadata.chunks ?? undefined,
         filters,
-        attributes: this.processH5WasmAttrs(h5wEntity.attrs),
+        attributes: this.parseAttributes(h5wEntity.attrs),
         rawType,
       };
     }
 
-    if (isH5WasmSoftLink(h5wEntity)) {
+    if (h5wEntity instanceof H5WasmSoftLink) {
       return {
         ...baseEntity,
         attributes: [],
@@ -283,7 +285,7 @@ export class H5WasmApi extends DataProviderApi {
       };
     }
 
-    if (isH5WasmExternalLink(h5wEntity)) {
+    if (h5wEntity instanceof H5WasmExternalLink) {
       return {
         ...baseEntity,
         attributes: [],
@@ -299,19 +301,20 @@ export class H5WasmApi extends DataProviderApi {
     return {
       ...baseEntity,
       attributes: [],
-      kind: isH5WasmDatatype(h5wEntity)
-        ? EntityKind.Datatype
-        : EntityKind.Unresolved,
+      kind:
+        h5wEntity instanceof H5WasmDatatype
+          ? EntityKind.Datatype
+          : EntityKind.Unresolved,
     };
   }
 
-  private processH5WasmAttrs(h5wAttrs: H5WasmAttributes): Attribute[] {
+  private parseAttributes(h5wAttrs: H5WasmAttributes): Attribute[] {
     return Object.entries(h5wAttrs).map(([name, attr]) => {
       const { shape, metadata } = attr as unknown as H5WasmAttribute;
       return {
         name,
         shape: shape as Shape,
-        type: convertMetadataToDType(metadata),
+        type: parseDType(metadata),
       };
     });
   }

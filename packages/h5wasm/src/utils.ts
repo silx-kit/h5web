@@ -40,7 +40,7 @@ export const PLUGINS_BY_FILTER_ID: Record<number, string> = {
   32_017: 'szf',
 };
 
-export function convertNumericMetadataToDType(
+export function parseDTypeFromNumericMetadata(
   metadata: NumericMetadata,
 ): NumericType {
   const { signed, size: length, littleEndian } = metadata;
@@ -58,9 +58,9 @@ export function convertNumericMetadataToDType(
   throw new Error('Expected numeric metadata');
 }
 
-export function convertMetadataToDType(metadata: Metadata): DType {
+export function parseDType(metadata: Metadata): DType {
   if (isNumericMetadata(metadata)) {
-    return convertNumericMetadataToDType(metadata);
+    return parseDTypeFromNumericMetadata(metadata);
   }
 
   if (isStringMetadata(metadata)) {
@@ -78,7 +78,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
     const { array_type } = metadata;
     assertDefined(array_type);
 
-    return arrayType(convertMetadataToDType(array_type), array_type.shape);
+    return arrayType(parseDType(array_type), array_type.shape);
   }
 
   if (isCompoundMetadata(metadata)) {
@@ -91,14 +91,14 @@ export function convertMetadataToDType(metadata: Metadata): DType {
       assertNumericMetadata(imagTypeMetadata);
 
       return cplxType(
-        convertNumericMetadataToDType(realTypeMetadata),
-        convertNumericMetadataToDType(imagTypeMetadata),
+        parseDTypeFromNumericMetadata(realTypeMetadata),
+        parseDTypeFromNumericMetadata(imagTypeMetadata),
       );
     }
 
     return compoundType(
       Object.fromEntries(
-        members.map((member) => [member.name, convertMetadataToDType(member)]),
+        members.map((member) => [member.name, parseDType(member)]),
       ),
     );
   }
@@ -110,7 +110,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
     const baseMetadata = { ...metadata, type: baseType };
     assertNumericMetadata(baseMetadata);
 
-    const type = enumType(convertNumericMetadataToDType(baseMetadata), mapping);
+    const type = enumType(parseDTypeFromNumericMetadata(baseMetadata), mapping);
     return isBoolEnumType(type) ? boolType() : type; // booleans stored as enums by h5py
   }
 
