@@ -10,7 +10,7 @@ import { getValueOrError } from '../utils';
 import { H5GroveApi } from './h5grove-api';
 
 const H5GROVE_URL = 'https://bosquet.silx.org/h5grove';
-const TEST_FILE = 'sample.h5'; // `https` would complicate things...
+const TEST_FILE = 'sample.h5';
 
 test('test file matches snapshot', async () => {
   const api = new H5GroveApi(H5GROVE_URL, TEST_FILE, {

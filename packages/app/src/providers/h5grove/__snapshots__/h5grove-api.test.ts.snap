@@ -974,7 +974,7 @@ exports[`test file matches snapshot 1`] = `
       "charSet": "UTF-8",
       "class": "String",
     },
-    "value": "<HDF5 object reference>",
+    "value": "<HDF5 region reference>",
   },
   {
     "name": "bool_empty",

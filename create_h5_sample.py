@@ -199,12 +199,12 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
 
     # === H5T_REFERENCE ===
 
-    add_scalar(h5, "reference", for_ref.ref, h5py.special_dtype(ref=h5py.Reference))
+    add_scalar(h5, "reference", for_ref.ref, h5py.ref_dtype)
     add_scalar(
         h5,
         "reference_region",
         for_ref.regionref[0:1],
-        h5py.special_dtype(ref=h5py.Reference),
+        h5py.regionref_dtype,
     )
 
     # === H5T_ENUM ===
