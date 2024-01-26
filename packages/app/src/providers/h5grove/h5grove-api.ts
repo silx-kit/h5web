@@ -34,7 +34,7 @@ import {
 } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
-  /* API compatible with h5grove@1.2.0 */
+  /* API compatible with h5grove@1.3.0 */
   public constructor(
     url: string,
     filepath: string,
