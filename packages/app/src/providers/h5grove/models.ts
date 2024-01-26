@@ -4,55 +4,52 @@ import type {
   Filter,
 } from '@h5web/shared/hdf5-models';
 
-export interface H5GroveEntityResponse {
+export type H5GroveEntityResponse = H5GroveEntity;
+export type H5GroveDataResponse = unknown;
+export type H5GroveAttrValuesResponse = AttributeValues;
+export type H5GrovePathsResponse = string[];
+
+export type H5GroveEntity =
+  | H5GroveGroup
+  | H5GroveDataset
+  | H5GroveSoftLink
+  | H5GroveExternalLink;
+
+export interface H5GroveBaseEntity {
   name: string;
-  type:
-    | EntityKind.Dataset
-    | EntityKind.Group
-    | 'external_link'
-    | 'soft_link'
-    | 'other';
+  type: string;
 }
 
-export type H5GroveDtype =
-  | string
-  | {
-      [k: string]: H5GroveDtype;
-    };
-
-export interface H5GroveDatasetResponse extends H5GroveEntityResponse {
-  type: EntityKind.Dataset;
-  dtype: H5GroveDtype;
-  shape: number[];
+export interface H5GroveGroup extends H5GroveBaseEntity {
+  type: EntityKind.Group;
+  children?: H5GroveEntity[];
   attributes: H5GroveAttribute[];
+}
+
+export interface H5GroveDataset extends H5GroveBaseEntity {
+  type: EntityKind.Dataset;
+  shape: number[];
+  dtype: H5GroveDtype;
   chunks: number[] | null;
   filters: Filter[] | null;
-}
-
-export interface H5GroveGroupResponse extends H5GroveEntityResponse {
-  type: EntityKind.Group;
-  children?: H5GroveEntityResponse[];
   attributes: H5GroveAttribute[];
 }
 
-export interface H5GroveSoftLinkResponse extends H5GroveEntityResponse {
+export interface H5GroveSoftLink extends H5GroveBaseEntity {
   type: 'soft_link';
   target_path: string;
 }
 
-export interface H5GroveExternalLinkResponse extends H5GroveEntityResponse {
+export interface H5GroveExternalLink extends H5GroveBaseEntity {
   type: 'external_link';
   target_file: string;
   target_path: string;
 }
 
 export interface H5GroveAttribute {
-  dtype: H5GroveDtype;
   name: string;
   shape: number[];
+  dtype: H5GroveDtype;
 }
 
-export type H5GroveAttrValuesResponse = AttributeValues;
-export type H5GroveDataResponse = unknown;
-
-export type H5GrovePathsResponse = string[];
+export type H5GroveDtype = string | { [k: string]: H5GroveDtype };
