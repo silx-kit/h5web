@@ -8,23 +8,13 @@ import {
 import { assertNonNull, hasArrayShape } from '@h5web/shared/guards';
 import type {
   ArrayShape,
-  Attribute,
-  ChildEntity,
   Dataset,
   Entity,
-  Group,
   ProvidedEntity,
-  Shape,
   Value,
 } from '@h5web/shared/hdf5-models';
-import { EntityKind } from '@h5web/shared/hdf5-models';
-import { buildEntityPath } from '@h5web/shared/hdf5-utils';
-import type { Attribute as H5WasmAttribute, Filter, Module } from 'h5wasm';
+import type { Filter, Module } from 'h5wasm';
 import {
-  BrokenSoftLink as H5WasmSoftLink,
-  Dataset as H5WasmDataset,
-  Datatype as H5WasmDatatype,
-  ExternalLink as H5WasmExternalLink,
   File as H5WasmFile,
   Group as H5WasmGroup,
   ready as h5wasmReady,
@@ -32,10 +22,10 @@ import {
 import { nanoid } from 'nanoid';
 
 import { assertH5WasmDataset, hasInt64Type } from './guards';
-import type { H5WasmAttributes, H5WasmEntity } from './models';
+import type { H5WasmEntity } from './models';
 import {
   convertSelectionToRanges,
-  parseDType,
+  parseEntity,
   PLUGINS_BY_FILTER_ID,
 } from './utils';
 
@@ -61,7 +51,7 @@ export class H5WasmApi extends DataProviderApi {
 
   public async getEntity(path: string): Promise<ProvidedEntity> {
     const h5wEntity = await this.getH5WasmEntity(path);
-    return this.parseEntity(getNameFromPath(path), path, h5wEntity);
+    return parseEntity(getNameFromPath(path), path, h5wEntity);
   }
 
   public async getValue(params: ValuesStoreParams): Promise<unknown> {
@@ -169,6 +159,20 @@ export class H5WasmApi extends DataProviderApi {
     return new H5WasmFile(id, 'r');
   }
 
+  private async getH5WasmEntity(
+    path: string,
+  ): Promise<NonNullable<H5WasmEntity>> {
+    const file = await this.file;
+
+    const h5wEntity = file.get(path);
+    assertNonNull(
+      h5wEntity,
+      path === '/' ? `Expected valid HDF5 file` : `No entity found at ${path}`,
+    );
+
+    return h5wEntity;
+  }
+
   private async processFilters(filters: Filter[]): Promise<void> {
     const h5Module = await this.h5wasm;
 
@@ -197,125 +201,5 @@ export class H5WasmApi extends DataProviderApi {
 
       h5Module.FS.writeFile(pluginPath, new Uint8Array(buffer));
     }
-  }
-
-  private async getH5WasmEntity(
-    path: string,
-  ): Promise<NonNullable<H5WasmEntity>> {
-    const file = await this.file;
-
-    const h5wEntity = file.get(path);
-    assertNonNull(
-      h5wEntity,
-      path === '/' ? `Expected valid HDF5 file` : `No entity found at ${path}`,
-    );
-
-    return h5wEntity;
-  }
-
-  private parseEntity(
-    name: string,
-    path: string,
-    h5wEntity: H5WasmEntity,
-    isChild: true,
-  ): ChildEntity;
-
-  private parseEntity(
-    name: string,
-    path: string,
-    h5wEntity: H5WasmEntity,
-    isChild?: false,
-  ): ProvidedEntity;
-
-  private parseEntity(
-    name: string,
-    path: string,
-    h5wEntity: H5WasmEntity,
-    isChild = false,
-  ): ProvidedEntity | ChildEntity {
-    const baseEntity = { name, path };
-
-    if (h5wEntity instanceof H5WasmGroup) {
-      const baseGroup: Group = {
-        ...baseEntity,
-        kind: EntityKind.Group,
-        attributes: this.parseAttributes(h5wEntity.attrs),
-      };
-
-      if (isChild) {
-        return baseGroup;
-      }
-
-      return {
-        ...baseGroup,
-        children: h5wEntity.keys().map((childName) => {
-          const h5wChild = h5wEntity.get(childName);
-
-          const childPath = buildEntityPath(path, childName);
-          return this.parseEntity(childName, childPath, h5wChild, true);
-        }),
-      };
-    }
-
-    if (h5wEntity instanceof H5WasmDataset) {
-      const { metadata, filters } = h5wEntity;
-      const { chunks, maxshape, shape, ...rawType } = metadata; // keep `rawType` concise
-
-      return {
-        ...baseEntity,
-        kind: EntityKind.Dataset,
-        shape: metadata.shape,
-        type: parseDType(metadata),
-        chunks: metadata.chunks ?? undefined,
-        filters,
-        attributes: this.parseAttributes(h5wEntity.attrs),
-        rawType,
-      };
-    }
-
-    if (h5wEntity instanceof H5WasmSoftLink) {
-      return {
-        ...baseEntity,
-        attributes: [],
-        kind: EntityKind.Unresolved,
-        link: {
-          class: 'Soft',
-          path: h5wEntity.target,
-        },
-      };
-    }
-
-    if (h5wEntity instanceof H5WasmExternalLink) {
-      return {
-        ...baseEntity,
-        attributes: [],
-        kind: EntityKind.Unresolved,
-        link: {
-          class: 'External',
-          path: h5wEntity.obj_path,
-          file: h5wEntity.filename,
-        },
-      };
-    }
-
-    return {
-      ...baseEntity,
-      attributes: [],
-      kind:
-        h5wEntity instanceof H5WasmDatatype
-          ? EntityKind.Datatype
-          : EntityKind.Unresolved,
-    };
-  }
-
-  private parseAttributes(h5wAttrs: H5WasmAttributes): Attribute[] {
-    return Object.entries(h5wAttrs).map(([name, attr]) => {
-      const { shape, metadata } = attr as unknown as H5WasmAttribute;
-      return {
-        name,
-        shape: shape as Shape,
-        type: parseDType(metadata),
-      };
-    });
   }
 }
