@@ -168,29 +168,29 @@ export class H5GroveApi extends DataProviderApi {
     return data;
   }
 
-  private async parseEntity(
+  private parseEntity(
     path: string,
     h5gEntity: H5GroveEntity,
     isChild: true,
-  ): Promise<ChildEntity>;
+  ): ChildEntity;
 
-  private async parseEntity(
+  private parseEntity(
     path: string,
     h5gEntity: H5GroveEntity,
     isChild?: false,
-  ): Promise<ProvidedEntity>;
+  ): ProvidedEntity;
 
-  private async parseEntity(
+  private parseEntity(
     path: string,
     h5gEntity: H5GroveEntity,
     isChild = false,
-  ): Promise<ProvidedEntity | ChildEntity> {
+  ): ProvidedEntity | ChildEntity {
     const { name } = h5gEntity;
     const baseEntity = { name, path };
 
     if (h5gEntity.type === EntityKind.Group) {
       const { children = [], attributes: attrsMetadata } = h5gEntity;
-      const attributes = await this.parseAttributes(attrsMetadata);
+      const attributes = this.parseAttributes(attrsMetadata);
       const baseGroup: Group = {
         ...baseEntity,
         kind: EntityKind.Group,
@@ -203,13 +203,10 @@ export class H5GroveApi extends DataProviderApi {
 
       return {
         ...baseGroup,
-        // Fetch attribute values of any child groups in parallel
-        children: await Promise.all(
-          children.map((child) => {
-            const childPath = buildEntityPath(path, child.name);
-            return this.parseEntity(childPath, child, true);
-          }),
-        ),
+        children: children.map((child) => {
+          const childPath = buildEntityPath(path, child.name);
+          return this.parseEntity(childPath, child, true);
+        }),
       };
     }
 
@@ -221,7 +218,7 @@ export class H5GroveApi extends DataProviderApi {
         chunks,
         filters,
       } = h5gEntity;
-      const attributes = await this.parseAttributes(attrsMetadata);
+      const attributes = this.parseAttributes(attrsMetadata);
       return {
         ...baseEntity,
         attributes,
@@ -266,9 +263,7 @@ export class H5GroveApi extends DataProviderApi {
     };
   }
 
-  private async parseAttributes(
-    attrsMetadata: H5GroveAttribute[],
-  ): Promise<Attribute[]> {
+  private parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
     return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
       name,
       shape,
