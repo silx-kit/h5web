@@ -1,37 +1,24 @@
 import { hasNumericType, hasScalarShape } from '@h5web/shared/guards';
 import type {
   ArrayShape,
-  Attribute,
   AttributeValues,
-  ChildEntity,
   Dataset,
   Entity,
-  Group,
   ProvidedEntity,
   Value,
 } from '@h5web/shared/hdf5-models';
-import { EntityKind } from '@h5web/shared/hdf5-models';
-import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { handleAxiosError, typedArrayFromDType } from '../utils';
 import type {
-  H5GroveAttribute,
   H5GroveAttrValuesResponse,
   H5GroveDataResponse,
   H5GroveEntityResponse,
   H5GrovePathsResponse,
 } from './models';
-import {
-  convertH5GroveDtype,
-  hasErrorMessage,
-  isDatasetResponse,
-  isExternalLinkResponse,
-  isGroupResponse,
-  isSoftLinkResponse,
-} from './utils';
+import { hasErrorMessage, parseEntity } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
   /* API compatible with h5grove@1.3.0 */
@@ -46,7 +33,7 @@ export class H5GroveApi extends DataProviderApi {
 
   public async getEntity(path: string): Promise<ProvidedEntity> {
     const response = await this.fetchEntity(path);
-    return this.processEntityResponse(path, response);
+    return parseEntity(path, response);
   }
 
   public async getValue(
@@ -172,113 +159,5 @@ export class H5GroveApi extends DataProviderApi {
     );
 
     return data;
-  }
-
-  private async processEntityResponse(
-    path: string,
-    response: H5GroveEntityResponse,
-    isChild: true,
-  ): Promise<ChildEntity>;
-
-  private async processEntityResponse(
-    path: string,
-    response: H5GroveEntityResponse,
-    isChild?: false,
-  ): Promise<ProvidedEntity>;
-
-  private async processEntityResponse(
-    path: string,
-    response: H5GroveEntityResponse,
-    isChild = false,
-  ): Promise<ProvidedEntity | ChildEntity> {
-    const { name } = response;
-    const baseEntity = { name, path };
-
-    if (isGroupResponse(response)) {
-      const { children = [], attributes: attrsMetadata } = response;
-      const attributes = await this.processAttrsMetadata(attrsMetadata);
-      const baseGroup: Group = {
-        ...baseEntity,
-        kind: EntityKind.Group,
-        attributes,
-      };
-
-      if (isChild) {
-        return baseGroup;
-      }
-
-      return {
-        ...baseGroup,
-        // Fetch attribute values of any child groups in parallel
-        children: await Promise.all(
-          children.map((child) => {
-            const childPath = buildEntityPath(path, child.name);
-            return this.processEntityResponse(childPath, child, true);
-          }),
-        ),
-      };
-    }
-
-    if (isDatasetResponse(response)) {
-      const {
-        attributes: attrsMetadata,
-        dtype,
-        shape,
-        chunks,
-        filters,
-      } = response;
-      const attributes = await this.processAttrsMetadata(attrsMetadata);
-      return {
-        ...baseEntity,
-        attributes,
-        kind: EntityKind.Dataset,
-        shape,
-        type: convertH5GroveDtype(dtype),
-        rawType: dtype,
-        ...(chunks && { chunks }),
-        ...(filters && { filters }),
-      };
-    }
-
-    if (isSoftLinkResponse(response)) {
-      const { target_path } = response;
-      return {
-        ...baseEntity,
-        attributes: [],
-        kind: EntityKind.Unresolved,
-        link: { class: 'Soft', path: target_path },
-      };
-    }
-
-    if (isExternalLinkResponse(response)) {
-      const { target_file, target_path } = response;
-      return {
-        ...baseEntity,
-        kind: EntityKind.Unresolved,
-        attributes: [],
-        link: {
-          class: 'External',
-          file: target_file,
-          path: target_path,
-        },
-      };
-    }
-
-    // Treat 'other' entities as unresolved
-    return {
-      ...baseEntity,
-      attributes: [],
-      kind: EntityKind.Unresolved,
-    };
-  }
-
-  private async processAttrsMetadata(
-    attrsMetadata: H5GroveAttribute[],
-  ): Promise<Attribute[]> {
-    return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
-      name,
-      shape,
-      type: convertH5GroveDtype(dtype),
-    }));
   }
 }

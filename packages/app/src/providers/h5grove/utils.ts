@@ -1,7 +1,14 @@
-import type { DType } from '@h5web/shared/hdf5-models';
+import type {
+  Attribute,
+  ChildEntity,
+  DType,
+  Group,
+  ProvidedEntity,
+} from '@h5web/shared/hdf5-models';
 import { Endianness, EntityKind } from '@h5web/shared/hdf5-models';
 import {
   boolType,
+  buildEntityPath,
   compoundType,
   cplxType,
   floatType,
@@ -11,14 +18,109 @@ import {
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 
-import type {
-  H5GroveDatasetResponse,
-  H5GroveDtype,
-  H5GroveEntityResponse,
-  H5GroveExternalLinkResponse,
-  H5GroveGroupResponse,
-  H5GroveSoftLinkResponse,
-} from './models';
+import type { H5GroveAttribute, H5GroveDtype, H5GroveEntity } from './models';
+
+export function parseEntity(
+  path: string,
+  h5gEntity: H5GroveEntity,
+  isChild: true,
+): ChildEntity;
+
+export function parseEntity(
+  path: string,
+  h5gEntity: H5GroveEntity,
+  isChild?: false,
+): ProvidedEntity;
+
+export function parseEntity(
+  path: string,
+  h5gEntity: H5GroveEntity,
+  isChild = false,
+): ProvidedEntity | ChildEntity {
+  const { name } = h5gEntity;
+  const baseEntity = { name, path };
+
+  if (h5gEntity.type === EntityKind.Group) {
+    const { children = [], attributes: attrsMetadata } = h5gEntity;
+    const attributes = parseAttributes(attrsMetadata);
+    const baseGroup: Group = {
+      ...baseEntity,
+      kind: EntityKind.Group,
+      attributes,
+    };
+
+    if (isChild) {
+      return baseGroup;
+    }
+
+    return {
+      ...baseGroup,
+      children: children.map((child) => {
+        const childPath = buildEntityPath(path, child.name);
+        return parseEntity(childPath, child, true);
+      }),
+    };
+  }
+
+  if (h5gEntity.type === EntityKind.Dataset) {
+    const {
+      attributes: attrsMetadata,
+      dtype,
+      shape,
+      chunks,
+      filters,
+    } = h5gEntity;
+    return {
+      ...baseEntity,
+      kind: EntityKind.Dataset,
+      shape,
+      type: parseDType(dtype),
+      rawType: dtype,
+      ...(chunks && { chunks }),
+      ...(filters && { filters }),
+      attributes: parseAttributes(attrsMetadata),
+    };
+  }
+
+  if (h5gEntity.type === 'soft_link') {
+    const { target_path } = h5gEntity;
+    return {
+      ...baseEntity,
+      kind: EntityKind.Unresolved,
+      attributes: [],
+      link: { class: 'Soft', path: target_path },
+    };
+  }
+
+  if (h5gEntity.type === 'external_link') {
+    const { target_file, target_path } = h5gEntity;
+    return {
+      ...baseEntity,
+      kind: EntityKind.Unresolved,
+      attributes: [],
+      link: {
+        class: 'External',
+        file: target_file,
+        path: target_path,
+      },
+    };
+  }
+
+  // Treat other entities as unresolved
+  return {
+    ...baseEntity,
+    kind: EntityKind.Unresolved,
+    attributes: [],
+  };
+}
+
+function parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
+  return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
+    name,
+    shape,
+    type: parseDType(dtype),
+  }));
+}
 
 // https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
 const ENDIANNESS_MAPPING: Record<string, Endianness> = {
@@ -26,43 +128,19 @@ const ENDIANNESS_MAPPING: Record<string, Endianness> = {
   '>': Endianness.BE,
 };
 
-export function isGroupResponse(
-  response: H5GroveEntityResponse,
-): response is H5GroveGroupResponse {
-  return response.type === EntityKind.Group;
-}
-
-export function isDatasetResponse(
-  response: H5GroveEntityResponse,
-): response is H5GroveDatasetResponse {
-  return response.type === EntityKind.Dataset;
-}
-
-export function isSoftLinkResponse(
-  response: H5GroveEntityResponse,
-): response is H5GroveSoftLinkResponse {
-  return response.type === 'soft_link';
-}
-
-export function isExternalLinkResponse(
-  response: H5GroveEntityResponse,
-): response is H5GroveExternalLinkResponse {
-  return response.type === 'external_link';
-}
-
-export function convertH5GroveDtype(dtype: H5GroveDtype): DType {
+export function parseDType(dtype: H5GroveDtype): DType {
   if (typeof dtype === 'string') {
-    return convertDtypeString(dtype);
+    return parseDTypeFromString(dtype);
   }
 
   return compoundType(
     Object.fromEntries(
-      Object.entries(dtype).map(([k, v]) => [k, convertH5GroveDtype(v)]),
+      Object.entries(dtype).map(([k, v]) => [k, parseDType(v)]),
     ),
   );
 }
 
-function convertDtypeString(dtype: string): DType {
+function parseDTypeFromString(dtype: string): DType {
   const regexp = /([<>=|])?([A-Za-z])(\d*)/u;
   const matches = regexp.exec(dtype);
 

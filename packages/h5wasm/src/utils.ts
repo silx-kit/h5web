@@ -1,9 +1,18 @@
 import { assertDefined } from '@h5web/shared/guards';
-import type { DType, NumericType } from '@h5web/shared/hdf5-models';
-import { Endianness } from '@h5web/shared/hdf5-models';
+import type {
+  Attribute,
+  ChildEntity,
+  DType,
+  Group,
+  NumericType,
+  ProvidedEntity,
+  Shape,
+} from '@h5web/shared/hdf5-models';
+import { Endianness, EntityKind } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   boolType,
+  buildEntityPath,
   compoundType,
   cplxType,
   enumType,
@@ -14,7 +23,14 @@ import {
   uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
-import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
+import type { Metadata } from 'h5wasm';
+import {
+  BrokenSoftLink as H5WasmSoftLink,
+  Dataset as H5WasmDataset,
+  Datatype as H5WasmDatatype,
+  ExternalLink as H5WasmExternalLink,
+  Group as H5WasmGroup,
+} from 'h5wasm';
 
 import {
   assertNumericMetadata,
@@ -26,7 +42,7 @@ import {
   isNumericMetadata,
   isStringMetadata,
 } from './guards';
-import type { NumericMetadata } from './models';
+import type { H5WasmAttributes, H5WasmEntity, NumericMetadata } from './models';
 
 // https://github.com/h5wasm/h5wasm-plugins#included-plugins
 // https://support.hdfgroup.org/services/contributions.html
@@ -40,7 +56,113 @@ export const PLUGINS_BY_FILTER_ID: Record<number, string> = {
   32_017: 'szf',
 };
 
-export function convertNumericMetadataToDType(
+export function parseEntity(
+  name: string,
+  path: string,
+  h5wEntity: H5WasmEntity,
+  isChild: true,
+): ChildEntity;
+
+export function parseEntity(
+  name: string,
+  path: string,
+  h5wEntity: H5WasmEntity,
+  isChild?: false,
+): ProvidedEntity;
+
+export function parseEntity(
+  name: string,
+  path: string,
+  h5wEntity: H5WasmEntity,
+  isChild = false,
+): ProvidedEntity | ChildEntity {
+  const baseEntity = { name, path };
+
+  if (h5wEntity instanceof H5WasmGroup) {
+    const baseGroup: Group = {
+      ...baseEntity,
+      kind: EntityKind.Group,
+      attributes: parseAttributes(h5wEntity.attrs),
+    };
+
+    if (isChild) {
+      return baseGroup;
+    }
+
+    return {
+      ...baseGroup,
+      children: h5wEntity.keys().map((childName) => {
+        const h5wChild = h5wEntity.get(childName);
+
+        const childPath = buildEntityPath(path, childName);
+        return parseEntity(childName, childPath, h5wChild, true);
+      }),
+    };
+  }
+
+  if (h5wEntity instanceof H5WasmDataset) {
+    const { metadata, filters } = h5wEntity;
+    const { chunks, maxshape, shape, ...rawType } = metadata; // keep `rawType` concise
+
+    return {
+      ...baseEntity,
+      kind: EntityKind.Dataset,
+      shape: metadata.shape,
+      type: parseDType(metadata),
+      chunks: metadata.chunks ?? undefined,
+      filters,
+      attributes: parseAttributes(h5wEntity.attrs),
+      rawType,
+    };
+  }
+
+  if (h5wEntity instanceof H5WasmSoftLink) {
+    return {
+      ...baseEntity,
+      attributes: [],
+      kind: EntityKind.Unresolved,
+      link: {
+        class: 'Soft',
+        path: h5wEntity.target,
+      },
+    };
+  }
+
+  if (h5wEntity instanceof H5WasmExternalLink) {
+    return {
+      ...baseEntity,
+      attributes: [],
+      kind: EntityKind.Unresolved,
+      link: {
+        class: 'External',
+        path: h5wEntity.obj_path,
+        file: h5wEntity.filename,
+      },
+    };
+  }
+
+  return {
+    ...baseEntity,
+    attributes: [],
+    kind:
+      h5wEntity instanceof H5WasmDatatype
+        ? EntityKind.Datatype
+        : EntityKind.Unresolved,
+  };
+}
+
+function parseAttributes(h5wAttrs: H5WasmAttributes): Attribute[] {
+  return Object.entries(h5wAttrs).map(([name, attr]) => {
+    const { shape, metadata } = attr;
+    return {
+      name,
+      shape: shape as Shape,
+      type: parseDType(metadata),
+    };
+  });
+}
+
+export function parseDTypeFromNumericMetadata(
   metadata: NumericMetadata,
 ): NumericType {
   const { signed, size: length, littleEndian } = metadata;
@@ -58,9 +180,9 @@ export function convertNumericMetadataToDType(
   throw new Error('Expected numeric metadata');
 }
 
-export function convertMetadataToDType(metadata: Metadata): DType {
+export function parseDType(metadata: Metadata): DType {
   if (isNumericMetadata(metadata)) {
-    return convertNumericMetadataToDType(metadata);
+    return parseDTypeFromNumericMetadata(metadata);
   }
 
   if (isStringMetadata(metadata)) {
@@ -78,7 +200,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
     const { array_type } = metadata;
     assertDefined(array_type);
 
-    return arrayType(convertMetadataToDType(array_type), array_type.shape);
+    return arrayType(parseDType(array_type), array_type.shape);
   }
 
   if (isCompoundMetadata(metadata)) {
@@ -91,14 +213,14 @@ export function convertMetadataToDType(metadata: Metadata): DType {
       assertNumericMetadata(imagTypeMetadata);
 
       return cplxType(
-        convertNumericMetadataToDType(realTypeMetadata),
-        convertNumericMetadataToDType(imagTypeMetadata),
+        parseDTypeFromNumericMetadata(realTypeMetadata),
+        parseDTypeFromNumericMetadata(imagTypeMetadata),
       );
     }
 
     return compoundType(
       Object.fromEntries(
-        members.map((member) => [member.name, convertMetadataToDType(member)]),
+        members.map((member) => [member.name, parseDType(member)]),
       ),
     );
   }
@@ -110,7 +232,7 @@ export function convertMetadataToDType(metadata: Metadata): DType {
     const baseMetadata = { ...metadata, type: baseType };
     assertNumericMetadata(baseMetadata);
 
-    const type = enumType(convertNumericMetadataToDType(baseMetadata), mapping);
+    const type = enumType(parseDTypeFromNumericMetadata(baseMetadata), mapping);
     return isBoolEnumType(type) ? boolType() : type; // booleans stored as enums by h5py
   }
 
