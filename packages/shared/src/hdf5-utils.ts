@@ -19,7 +19,7 @@ import type {
   TimeType,
   UnknownType,
 } from './hdf5-models';
-import { DTypeClass, Endianness, H5TCharSet } from './hdf5-models';
+import { DTypeClass, Endianness, H5TCharSet, H5TOrder } from './hdf5-models';
 
 export function getChildEntity(
   group: GroupWithChildren,
@@ -170,6 +170,10 @@ export function cplx(real: number, imag: number): H5WebComplex {
 
 /* ------------------------- */
 /* --- HDF5 ENUM HELPERS --- */
+
+export function toEndianness(h5tOrder: number): Endianness {
+  return h5tOrder === H5TOrder.BE ? Endianness.BE : Endianness.LE;
+}
 
 export function toCharSet(h5tCharSet: number): CharSet {
   return h5tCharSet === H5TCharSet.ASCII ? 'ASCII' : 'UTF-8';

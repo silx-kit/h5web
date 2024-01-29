@@ -4,7 +4,13 @@ exports[`test file matches snapshot 1`] = `
 [
   {
     "name": "int8_scalar",
-    "rawType": "|i1",
+    "rawType": {
+      "class": 0,
+      "dtype": "|i1",
+      "order": 0,
+      "sign": 1,
+      "size": 1,
+    },
     "shape": [],
     "type": {
       "class": "Integer",
@@ -15,7 +21,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "int8_2D",
-    "rawType": "|i1",
+    "rawType": {
+      "class": 0,
+      "dtype": "|i1",
+      "order": 0,
+      "sign": 1,
+      "size": 1,
+    },
     "shape": [
       2,
       3,
@@ -36,7 +48,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "int16_scalar",
-    "rawType": "<i2",
+    "rawType": {
+      "class": 0,
+      "dtype": "<i2",
+      "order": 0,
+      "sign": 1,
+      "size": 2,
+    },
     "shape": [],
     "type": {
       "class": "Integer",
@@ -47,7 +65,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "int16_2D",
-    "rawType": "<i2",
+    "rawType": {
+      "class": 0,
+      "dtype": "<i2",
+      "order": 0,
+      "sign": 1,
+      "size": 2,
+    },
     "shape": [
       2,
       3,
@@ -68,7 +92,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "int32_scalar",
-    "rawType": "<i4",
+    "rawType": {
+      "class": 0,
+      "dtype": "<i4",
+      "order": 0,
+      "sign": 1,
+      "size": 4,
+    },
     "shape": [],
     "type": {
       "class": "Integer",
@@ -79,7 +109,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "int32_BE_scalar",
-    "rawType": ">i4",
+    "rawType": {
+      "class": 0,
+      "dtype": ">i4",
+      "order": 1,
+      "sign": 1,
+      "size": 4,
+    },
     "shape": [],
     "type": {
       "class": "Integer",
@@ -90,7 +126,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "int32_2D",
-    "rawType": "<i4",
+    "rawType": {
+      "class": 0,
+      "dtype": "<i4",
+      "order": 0,
+      "sign": 1,
+      "size": 4,
+    },
     "shape": [
       2,
       3,
@@ -111,7 +153,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "int64_scalar",
-    "rawType": "<i8",
+    "rawType": {
+      "class": 0,
+      "dtype": "<i8",
+      "order": 0,
+      "sign": 1,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Integer",
@@ -122,7 +170,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "int64_2D",
-    "rawType": "<i8",
+    "rawType": {
+      "class": 0,
+      "dtype": "<i8",
+      "order": 0,
+      "sign": 1,
+      "size": 8,
+    },
     "shape": [
       2,
       3,
@@ -143,7 +197,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "uint8_scalar",
-    "rawType": "|u1",
+    "rawType": {
+      "class": 0,
+      "dtype": "|u1",
+      "order": 0,
+      "sign": 0,
+      "size": 1,
+    },
     "shape": [],
     "type": {
       "class": "Integer (unsigned)",
@@ -154,7 +214,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "uint8_2D",
-    "rawType": "|u1",
+    "rawType": {
+      "class": 0,
+      "dtype": "|u1",
+      "order": 0,
+      "sign": 0,
+      "size": 1,
+    },
     "shape": [
       2,
       3,
@@ -175,7 +241,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "uint16_scalar",
-    "rawType": "<u2",
+    "rawType": {
+      "class": 0,
+      "dtype": "<u2",
+      "order": 0,
+      "sign": 0,
+      "size": 2,
+    },
     "shape": [],
     "type": {
       "class": "Integer (unsigned)",
@@ -186,7 +258,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "uint16_2D",
-    "rawType": "<u2",
+    "rawType": {
+      "class": 0,
+      "dtype": "<u2",
+      "order": 0,
+      "sign": 0,
+      "size": 2,
+    },
     "shape": [
       2,
       3,
@@ -207,7 +285,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "uint32_scalar",
-    "rawType": "<u4",
+    "rawType": {
+      "class": 0,
+      "dtype": "<u4",
+      "order": 0,
+      "sign": 0,
+      "size": 4,
+    },
     "shape": [],
     "type": {
       "class": "Integer (unsigned)",
@@ -218,7 +302,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "uint32_2D",
-    "rawType": "<u4",
+    "rawType": {
+      "class": 0,
+      "dtype": "<u4",
+      "order": 0,
+      "sign": 0,
+      "size": 4,
+    },
     "shape": [
       2,
       3,
@@ -239,7 +329,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "uint64_scalar",
-    "rawType": "<u8",
+    "rawType": {
+      "class": 0,
+      "dtype": "<u8",
+      "order": 0,
+      "sign": 0,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Integer (unsigned)",
@@ -250,7 +346,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "uint64_3D",
-    "rawType": "<u8",
+    "rawType": {
+      "class": 0,
+      "dtype": "<u8",
+      "order": 0,
+      "sign": 0,
+      "size": 8,
+    },
     "shape": [
       2,
       2,
@@ -274,7 +376,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float16_scalar",
-    "rawType": "<f2",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f2",
+      "order": 0,
+      "size": 2,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -285,7 +392,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float16_2D",
-    "rawType": "<f2",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f2",
+      "order": 0,
+      "size": 2,
+    },
     "shape": [
       2,
       3,
@@ -306,7 +418,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float32_empty",
-    "rawType": "<f4",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f4",
+      "order": 0,
+      "size": 4,
+    },
     "shape": null,
     "type": {
       "class": "Float",
@@ -317,7 +434,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float32_scalar",
-    "rawType": "<f4",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f4",
+      "order": 0,
+      "size": 4,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -328,7 +450,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float32_BE_scalar",
-    "rawType": ">f4",
+    "rawType": {
+      "class": 1,
+      "dtype": ">f4",
+      "order": 1,
+      "size": 4,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -339,7 +466,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float32_2D",
-    "rawType": "<f4",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f4",
+      "order": 0,
+      "size": 4,
+    },
     "shape": [
       2,
       3,
@@ -360,7 +492,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float64_scalar",
-    "rawType": "<f8",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f8",
+      "order": 0,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -371,7 +508,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float64_nan_scalar",
-    "rawType": "<f8",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f8",
+      "order": 0,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -382,7 +524,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float64_inf_scalar",
-    "rawType": "<f8",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f8",
+      "order": 0,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -393,7 +540,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float64_ninf_scalar",
-    "rawType": "<f8",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f8",
+      "order": 0,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -404,7 +556,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float64_zero_scalar",
-    "rawType": "<f8",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f8",
+      "order": 0,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -415,7 +572,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float64_nzero_scalar",
-    "rawType": "<f8",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f8",
+      "order": 0,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -426,7 +588,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float64_pi_scalar",
-    "rawType": "<f8",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f8",
+      "order": 0,
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -437,7 +604,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float64_2D",
-    "rawType": "<f8",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f8",
+      "order": 0,
+      "size": 8,
+    },
     "shape": [
       3,
       5,
@@ -467,7 +639,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float128_scalar",
-    "rawType": "<f16",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f16",
+      "order": 0,
+      "size": 16,
+    },
     "shape": [],
     "type": {
       "class": "Float",
@@ -478,7 +655,12 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "float128_2D",
-    "rawType": "<f16",
+    "rawType": {
+      "class": 1,
+      "dtype": "<f16",
+      "order": 0,
+      "size": 16,
+    },
     "shape": [
       2,
       3,
@@ -499,27 +681,45 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "ascii_vlen_empty",
-    "rawType": "|O",
+    "rawType": {
+      "class": 3,
+      "cset": 0,
+      "dtype": "|O",
+      "size": 8,
+      "vlen": true,
+    },
     "shape": null,
     "type": {
-      "charSet": "UTF-8",
+      "charSet": "ASCII",
       "class": "String",
     },
     "value": null,
   },
   {
     "name": "ascii_vlen_scalar",
-    "rawType": "|O",
+    "rawType": {
+      "class": 3,
+      "cset": 0,
+      "dtype": "|O",
+      "size": 8,
+      "vlen": true,
+    },
     "shape": [],
     "type": {
-      "charSet": "UTF-8",
+      "charSet": "ASCII",
       "class": "String",
     },
     "value": "Some text",
   },
   {
     "name": "ascii_fixed_scalar",
-    "rawType": "|S9",
+    "rawType": {
+      "class": 3,
+      "cset": 0,
+      "dtype": "|S9",
+      "size": 9,
+      "vlen": false,
+    },
     "shape": [],
     "type": {
       "charSet": "ASCII",
@@ -530,7 +730,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "utf8_vlen_scalar",
-    "rawType": "|O",
+    "rawType": {
+      "class": 3,
+      "cset": 1,
+      "dtype": "|O",
+      "size": 8,
+      "vlen": true,
+    },
     "shape": [],
     "type": {
       "charSet": "UTF-8",
@@ -540,7 +746,13 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "utf8_vlen_1D",
-    "rawType": "|O",
+    "rawType": {
+      "class": 3,
+      "cset": 1,
+      "dtype": "|O",
+      "size": 8,
+      "vlen": true,
+    },
     "shape": [
       3,
     ],
@@ -556,10 +768,16 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "utf8_fixed_scalar",
-    "rawType": "|S9",
+    "rawType": {
+      "class": 3,
+      "cset": 1,
+      "dtype": "|S9",
+      "size": 9,
+      "vlen": false,
+    },
     "shape": [],
     "type": {
-      "charSet": "ASCII",
+      "charSet": "UTF-8",
       "class": "String",
       "length": 9,
     },
@@ -567,34 +785,70 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "byte_string_scalar",
-    "rawType": "|V3",
+    "rawType": {
+      "class": 5,
+      "dtype": "|V3",
+      "size": 3,
+      "tag": "",
+    },
     "shape": [],
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
     "value": " "",
   },
   {
     "name": "datetime64_scalar",
-    "rawType": "|V8",
+    "rawType": {
+      "class": 5,
+      "dtype": "|V8",
+      "size": 8,
+      "tag": "",
+    },
     "shape": [],
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
     "value": [AxiosError: Request failed with status code 500],
   },
   {
     "name": "datetime64_not-a-time_scalar",
-    "rawType": "|V8",
+    "rawType": {
+      "class": 5,
+      "dtype": "|V8",
+      "size": 8,
+      "tag": "",
+    },
     "shape": [],
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
     "value": [AxiosError: Request failed with status code 500],
   },
   {
     "name": "complex64_scalar",
-    "rawType": "<c8",
+    "rawType": {
+      "class": 6,
+      "dtype": "<c8",
+      "members": {
+        "i": {
+          "class": 1,
+          "dtype": "<f4",
+          "order": 0,
+          "size": 4,
+        },
+        "r": {
+          "class": 1,
+          "dtype": "<f4",
+          "order": 0,
+          "size": 4,
+        },
+      },
+      "size": 8,
+    },
     "shape": [],
     "type": {
       "class": "Complex",
@@ -616,7 +870,25 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "complex64_2D",
-    "rawType": "<c8",
+    "rawType": {
+      "class": 6,
+      "dtype": "<c8",
+      "members": {
+        "i": {
+          "class": 1,
+          "dtype": "<f4",
+          "order": 0,
+          "size": 4,
+        },
+        "r": {
+          "class": 1,
+          "dtype": "<f4",
+          "order": 0,
+          "size": 4,
+        },
+      },
+      "size": 8,
+    },
     "shape": [
       2,
       2,
@@ -655,7 +927,25 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "complex128_scalar",
-    "rawType": "<c16",
+    "rawType": {
+      "class": 6,
+      "dtype": "<c16",
+      "members": {
+        "i": {
+          "class": 1,
+          "dtype": "<f8",
+          "order": 0,
+          "size": 8,
+        },
+        "r": {
+          "class": 1,
+          "dtype": "<f8",
+          "order": 0,
+          "size": 8,
+        },
+      },
+      "size": 16,
+    },
     "shape": [],
     "type": {
       "class": "Complex",
@@ -677,7 +967,25 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "complex128_BE_scalar",
-    "rawType": ">c16",
+    "rawType": {
+      "class": 6,
+      "dtype": ">c16",
+      "members": {
+        "i": {
+          "class": 1,
+          "dtype": ">f8",
+          "order": 1,
+          "size": 8,
+        },
+        "r": {
+          "class": 1,
+          "dtype": ">f8",
+          "order": 1,
+          "size": 8,
+        },
+      },
+      "size": 16,
+    },
     "shape": [],
     "type": {
       "class": "Complex",
@@ -699,7 +1007,25 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "complex128_2D",
-    "rawType": "<c16",
+    "rawType": {
+      "class": 6,
+      "dtype": "<c16",
+      "members": {
+        "i": {
+          "class": 1,
+          "dtype": "<f8",
+          "order": 0,
+          "size": 8,
+        },
+        "r": {
+          "class": 1,
+          "dtype": "<f8",
+          "order": 0,
+          "size": 8,
+        },
+      },
+      "size": 16,
+    },
     "shape": [
       2,
       2,
@@ -738,7 +1064,25 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "complex256_scalar",
-    "rawType": "<c32",
+    "rawType": {
+      "class": 6,
+      "dtype": "<c32",
+      "members": {
+        "i": {
+          "class": 1,
+          "dtype": "<f16",
+          "order": 0,
+          "size": 16,
+        },
+        "r": {
+          "class": 1,
+          "dtype": "<f16",
+          "order": 0,
+          "size": 16,
+        },
+      },
+      "size": 32,
+    },
     "shape": [],
     "type": {
       "class": "Complex",
@@ -757,7 +1101,25 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "complex256_2D",
-    "rawType": "<c32",
+    "rawType": {
+      "class": 6,
+      "dtype": "<c32",
+      "members": {
+        "i": {
+          "class": 1,
+          "dtype": "<f16",
+          "order": 0,
+          "size": 16,
+        },
+        "r": {
+          "class": 1,
+          "dtype": "<f16",
+          "order": 0,
+          "size": 16,
+        },
+      },
+      "size": 32,
+    },
     "shape": [
       2,
       2,
@@ -780,9 +1142,35 @@ exports[`test file matches snapshot 1`] = `
   {
     "name": "compound_scalar",
     "rawType": {
-      "bigint": "<i8",
-      "double": "<f8",
-      "utf-8": "|O",
+      "class": 6,
+      "dtype": {
+        "bigint": "<i8",
+        "double": "<f8",
+        "utf-8": "|O",
+      },
+      "members": {
+        "bigint": {
+          "class": 0,
+          "dtype": "<i8",
+          "order": 0,
+          "sign": 1,
+          "size": 8,
+        },
+        "double": {
+          "class": 1,
+          "dtype": "<f8",
+          "order": 0,
+          "size": 8,
+        },
+        "utf-8": {
+          "class": 3,
+          "cset": 1,
+          "dtype": "|O",
+          "size": 8,
+          "vlen": true,
+        },
+      },
+      "size": 24,
     },
     "shape": [],
     "type": {
@@ -813,9 +1201,35 @@ exports[`test file matches snapshot 1`] = `
   {
     "name": "compound_1D",
     "rawType": {
-      "bigint": "<i8",
-      "double": "<f8",
-      "utf-8": "|O",
+      "class": 6,
+      "dtype": {
+        "bigint": "<i8",
+        "double": "<f8",
+        "utf-8": "|O",
+      },
+      "members": {
+        "bigint": {
+          "class": 0,
+          "dtype": "<i8",
+          "order": 0,
+          "sign": 1,
+          "size": 8,
+        },
+        "double": {
+          "class": 1,
+          "dtype": "<f8",
+          "order": 0,
+          "size": 8,
+        },
+        "utf-8": {
+          "class": 3,
+          "cset": 1,
+          "dtype": "|O",
+          "size": 8,
+          "vlen": true,
+        },
+      },
+      "size": 24,
     },
     "shape": [
       3,
@@ -860,10 +1274,61 @@ exports[`test file matches snapshot 1`] = `
   {
     "name": "compound_nested_scalar",
     "rawType": {
-      "nested": {
-        "bool": "|b1",
-        "cplx": "<c8",
+      "class": 6,
+      "dtype": {
+        "nested": {
+          "bool": "|b1",
+          "cplx": "<c8",
+        },
       },
+      "members": {
+        "nested": {
+          "class": 6,
+          "dtype": {
+            "bool": "|b1",
+            "cplx": "<c8",
+          },
+          "members": {
+            "bool": {
+              "base": {
+                "class": 0,
+                "dtype": "|i1",
+                "order": 0,
+                "sign": 1,
+                "size": 1,
+              },
+              "class": 8,
+              "dtype": "|b1",
+              "members": {
+                "FALSE": 0,
+                "TRUE": 1,
+              },
+              "size": 1,
+            },
+            "cplx": {
+              "class": 6,
+              "dtype": "<c8",
+              "members": {
+                "i": {
+                  "class": 1,
+                  "dtype": "<f4",
+                  "order": 0,
+                  "size": 4,
+                },
+                "r": {
+                  "class": 1,
+                  "dtype": "<f4",
+                  "order": 0,
+                  "size": 4,
+                },
+              },
+              "size": 8,
+            },
+          },
+          "size": 9,
+        },
+      },
+      "size": 9,
     },
     "shape": [],
     "type": {
@@ -905,8 +1370,40 @@ exports[`test file matches snapshot 1`] = `
   {
     "name": "compound_array_vlen_1D",
     "rawType": {
-      "arr": "|V8",
-      "vlen": "|O",
+      "class": 6,
+      "dtype": {
+        "arr": "|V8",
+        "vlen": "|O",
+      },
+      "members": {
+        "arr": {
+          "base": {
+            "class": 1,
+            "dtype": "<f4",
+            "order": 0,
+            "size": 4,
+          },
+          "class": 10,
+          "dims": [
+            2,
+          ],
+          "dtype": "|V8",
+          "size": 8,
+        },
+        "vlen": {
+          "base": {
+            "class": 0,
+            "dtype": "<u8",
+            "order": 0,
+            "sign": 0,
+            "size": 8,
+          },
+          "class": 9,
+          "dtype": "|O",
+          "size": 16,
+        },
+      },
+      "size": 24,
     },
     "shape": [
       3,
@@ -915,11 +1412,23 @@ exports[`test file matches snapshot 1`] = `
       "class": "Compound",
       "fields": {
         "arr": {
-          "class": "Unknown",
+          "base": {
+            "class": "Float",
+            "endianness": "little-endian",
+            "size": 32,
+          },
+          "class": "Array",
+          "dims": [
+            2,
+          ],
         },
         "vlen": {
-          "charSet": "UTF-8",
-          "class": "String",
+          "base": {
+            "class": "Integer (unsigned)",
+            "endianness": "little-endian",
+            "size": 64,
+          },
+          "class": "Array (variable length)",
         },
       },
     },
@@ -958,27 +1467,48 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "reference_scalar",
-    "rawType": "|O",
+    "rawType": {
+      "class": 7,
+      "dtype": "|O",
+      "size": 8,
+    },
     "shape": [],
     "type": {
-      "charSet": "UTF-8",
-      "class": "String",
+      "class": "Reference",
     },
     "value": "<HDF5 object reference>",
   },
   {
     "name": "reference_region_scalar",
-    "rawType": "|O",
+    "rawType": {
+      "class": 7,
+      "dtype": "|O",
+      "size": 12,
+    },
     "shape": [],
     "type": {
-      "charSet": "UTF-8",
-      "class": "String",
+      "class": "Reference",
     },
     "value": "<HDF5 region reference>",
   },
   {
     "name": "bool_empty",
-    "rawType": "|b1",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "|u1",
+        "order": 0,
+        "sign": 0,
+        "size": 1,
+      },
+      "class": 8,
+      "dtype": "|b1",
+      "members": {
+        "FALSE": 0,
+        "TRUE": 1,
+      },
+      "size": 1,
+    },
     "shape": null,
     "type": {
       "class": "Boolean",
@@ -987,7 +1517,22 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "bool_false_scalar",
-    "rawType": "|b1",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "|i1",
+        "order": 0,
+        "sign": 1,
+        "size": 1,
+      },
+      "class": 8,
+      "dtype": "|b1",
+      "members": {
+        "FALSE": 0,
+        "TRUE": 1,
+      },
+      "size": 1,
+    },
     "shape": [],
     "type": {
       "class": "Boolean",
@@ -996,7 +1541,22 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "bool_true_scalar",
-    "rawType": "|b1",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "|i1",
+        "order": 0,
+        "sign": 1,
+        "size": 1,
+      },
+      "class": 8,
+      "dtype": "|b1",
+      "members": {
+        "FALSE": 0,
+        "TRUE": 1,
+      },
+      "size": 1,
+    },
     "shape": [],
     "type": {
       "class": "Boolean",
@@ -1005,7 +1565,22 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "bool_2D",
-    "rawType": "|b1",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "|i1",
+        "order": 0,
+        "sign": 1,
+        "size": 1,
+      },
+      "class": 8,
+      "dtype": "|b1",
+      "members": {
+        "FALSE": 0,
+        "TRUE": 1,
+      },
+      "size": 1,
+    },
     "shape": [
       2,
       4,
@@ -1026,33 +1601,92 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "enum_uint8_scalar",
-    "rawType": "|u1",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "|u1",
+        "order": 0,
+        "sign": 0,
+        "size": 1,
+      },
+      "class": 8,
+      "dtype": "|u1",
+      "members": {
+        "A": 0,
+        "B": 1,
+      },
+      "size": 1,
+    },
     "shape": [],
     "type": {
-      "class": "Integer (unsigned)",
-      "endianness": "little-endian",
-      "size": 8,
+      "base": {
+        "class": "Integer (unsigned)",
+        "endianness": "little-endian",
+        "size": 8,
+      },
+      "class": "Enumeration",
+      "mapping": {
+        "A": 0,
+        "B": 1,
+      },
     },
     "value": 1,
   },
   {
     "name": "enum_int32_scalar",
-    "rawType": "<i4",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "<i4",
+        "order": 0,
+        "sign": 1,
+        "size": 4,
+      },
+      "class": 8,
+      "dtype": "<i4",
+      "members": {
+        "A": 256,
+        "B": 257,
+      },
+      "size": 4,
+    },
     "shape": [],
     "type": {
-      "class": "Integer",
-      "endianness": "little-endian",
-      "size": 32,
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+      "class": "Enumeration",
+      "mapping": {
+        "A": 256,
+        "B": 257,
+      },
     },
     "value": 256,
   },
   {
     "name": "vlen_int8_scalar",
-    "rawType": "|O",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "|i1",
+        "order": 0,
+        "sign": 1,
+        "size": 1,
+      },
+      "class": 9,
+      "dtype": "|O",
+      "size": 16,
+    },
     "shape": [],
     "type": {
-      "charSet": "UTF-8",
-      "class": "String",
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 8,
+      },
+      "class": "Array (variable length)",
     },
     "value": [
       0,
@@ -1061,13 +1695,28 @@ exports[`test file matches snapshot 1`] = `
   },
   {
     "name": "vlen_int64_1D",
-    "rawType": "|O",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "<i8",
+        "order": 0,
+        "sign": 1,
+        "size": 8,
+      },
+      "class": 9,
+      "dtype": "|O",
+      "size": 16,
+    },
     "shape": [
       3,
     ],
     "type": {
-      "charSet": "UTF-8",
-      "class": "String",
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+      "class": "Array (variable length)",
     },
     "value": [
       [

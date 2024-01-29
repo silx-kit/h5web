@@ -244,6 +244,16 @@ export enum H5TClass {
   Array = 10,
 }
 
+export enum H5TOrder {
+  LE = 0,
+  BE = 1,
+}
+
+export enum H5TSign {
+  Unsigned = 0,
+  Signed = 1,
+}
+
 export enum H5TCharSet {
   ASCII = 0,
   UTF8 = 1,

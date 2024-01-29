@@ -17,31 +17,31 @@ export type H5GroveEntity =
 
 export interface H5GroveBaseEntity {
   name: string;
-  type: string;
+  kind: string;
 }
 
 export interface H5GroveGroup extends H5GroveBaseEntity {
-  type: EntityKind.Group;
+  kind: EntityKind.Group;
   children?: H5GroveEntity[];
   attributes: H5GroveAttribute[];
 }
 
 export interface H5GroveDataset extends H5GroveBaseEntity {
-  type: EntityKind.Dataset;
+  kind: EntityKind.Dataset;
   shape: number[];
-  dtype: H5GroveDtype;
+  type: H5GroveType;
   chunks: number[] | null;
   filters: Filter[] | null;
   attributes: H5GroveAttribute[];
 }
 
 export interface H5GroveSoftLink extends H5GroveBaseEntity {
-  type: 'soft_link';
+  kind: 'soft_link';
   target_path: string;
 }
 
 export interface H5GroveExternalLink extends H5GroveBaseEntity {
-  type: 'external_link';
+  kind: 'external_link';
   target_file: string;
   target_path: string;
 }
@@ -49,7 +49,80 @@ export interface H5GroveExternalLink extends H5GroveBaseEntity {
 export interface H5GroveAttribute {
   name: string;
   shape: number[];
-  dtype: H5GroveDtype;
+  type: H5GroveType;
 }
 
-export type H5GroveDtype = string | { [k: string]: H5GroveDtype };
+export type H5GroveType =
+  | H5GroveIntegerType
+  | H5GroveFloatType
+  | H5GroveTimeType
+  | H5GroveStringType
+  | H5GroveBitfieldType
+  | H5GroveOpaqueType
+  | H5GroveCompoundType
+  | H5GroveReferenceType
+  | H5GroveEnumType
+  | H5GroveVlenType
+  | H5GroveArrayType;
+
+export interface H5GroveBaseType {
+  class: number;
+  size: number;
+}
+
+export interface H5GroveIntegerType extends H5GroveBaseType {
+  class: 0;
+  order: number;
+  sign: number;
+}
+
+export interface H5GroveFloatType extends H5GroveBaseType {
+  class: 1;
+  order: number;
+}
+
+export interface H5GroveTimeType extends H5GroveBaseType {
+  class: 2;
+}
+
+export interface H5GroveStringType extends H5GroveBaseType {
+  class: 3;
+  cset: number;
+  vlen: boolean;
+}
+
+export interface H5GroveBitfieldType extends H5GroveBaseType {
+  class: 4;
+  order: number;
+}
+
+export interface H5GroveOpaqueType extends H5GroveBaseType {
+  class: 5;
+  tag: string;
+}
+
+export interface H5GroveCompoundType extends H5GroveBaseType {
+  class: 6;
+  members: Record<string, H5GroveType>;
+}
+
+export interface H5GroveReferenceType extends H5GroveBaseType {
+  class: 7;
+}
+
+export interface H5GroveEnumType extends H5GroveBaseType {
+  class: 8;
+  members: Record<string, number>;
+  base: H5GroveType;
+}
+
+export interface H5GroveVlenType extends H5GroveBaseType {
+  class: 9;
+  base: H5GroveType;
+}
+
+export interface H5GroveArrayType extends H5GroveBaseType {
+  class: 10;
+  dims: number[];
+  base: H5GroveType;
+}
