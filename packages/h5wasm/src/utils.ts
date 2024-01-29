@@ -1,26 +1,26 @@
-import { assertDefined } from '@h5web/shared/guards';
+import { assertDefined, isNumericType } from '@h5web/shared/guards';
 import type {
   Attribute,
   ChildEntity,
   DType,
   Group,
-  NumericType,
   ProvidedEntity,
   Shape,
 } from '@h5web/shared/hdf5-models';
-import { Endianness, EntityKind } from '@h5web/shared/hdf5-models';
+import { Endianness, EntityKind, H5TClass } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
-  boolType,
+  bitfieldType,
   buildEntityPath,
-  compoundType,
-  cplxType,
-  enumType,
+  compoundOrCplxType,
+  enumOrBoolType,
   floatType,
-  intType,
-  isBoolEnumType,
+  intOrUintType,
+  opaqueType,
+  referenceType,
   strType,
-  uintType,
+  timeType,
+  toCharSet,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import type { Metadata } from 'h5wasm';
@@ -32,17 +32,7 @@ import {
   Group as H5WasmGroup,
 } from 'h5wasm';
 
-import {
-  assertNumericMetadata,
-  isArrayMetadata,
-  isCompoundMetadata,
-  isEnumMetadata,
-  isFloatMetadata,
-  isIntegerMetadata,
-  isNumericMetadata,
-  isStringMetadata,
-} from './guards';
-import type { H5WasmAttributes, H5WasmEntity, NumericMetadata } from './models';
+import type { H5WasmAttributes, H5WasmEntity } from './models';
 
 // https://github.com/h5wasm/h5wasm-plugins#included-plugins
 // https://support.hdfgroup.org/services/contributions.html
@@ -162,81 +152,84 @@ function parseAttributes(h5wAttrs: H5WasmAttributes): Attribute[] {
   });
 }
 
-export function parseDTypeFromNumericMetadata(
-  metadata: NumericMetadata,
-): NumericType {
-  const { signed, size: length, littleEndian } = metadata;
-  const size = length * 8;
-  const endianness = littleEndian ? Endianness.LE : Endianness.BE;
-
-  if (isIntegerMetadata(metadata)) {
-    return signed ? intType(size, endianness) : uintType(size, endianness);
-  }
-
-  if (isFloatMetadata(metadata)) {
-    return floatType(size, endianness);
-  }
-
-  throw new Error('Expected numeric metadata');
-}
-
 export function parseDType(metadata: Metadata): DType {
-  if (isNumericMetadata(metadata)) {
-    return parseDTypeFromNumericMetadata(metadata);
+  const { type: h5tClass, size } = metadata;
+
+  if (h5tClass === H5TClass.Integer) {
+    const { signed, littleEndian } = metadata;
+    return intOrUintType(signed, size * 8, toEndianness(littleEndian));
+  }
+  if (h5tClass === H5TClass.Float) {
+    const { littleEndian } = metadata;
+    return floatType(size * 8, toEndianness(littleEndian));
   }
 
-  if (isStringMetadata(metadata)) {
-    const { size, cset, vlen } = metadata;
-
-    return strType(
-      cset === 1 ? 'UTF-8' : 'ASCII',
-      // For variable-length string datatypes, the returned value is the size of the pointer to the actual string and
-      // not the size of actual variable-length string data (https://portal.hdfgroup.org/display/HDF5/H5T_GET_SIZE)
-      vlen ? undefined : size,
-    );
+  if (h5tClass === H5TClass.Time) {
+    return timeType();
   }
 
-  if (isArrayMetadata(metadata)) {
-    const { array_type } = metadata;
-    assertDefined(array_type);
-
-    return arrayType(parseDType(array_type), array_type.shape);
+  if (h5tClass === H5TClass.String) {
+    const { cset, vlen } = metadata;
+    return strType(toCharSet(cset), vlen ? undefined : size);
   }
 
-  if (isCompoundMetadata(metadata)) {
+  if (h5tClass === H5TClass.Bitfield) {
+    return bitfieldType();
+  }
+
+  if (h5tClass === H5TClass.Opaque) {
+    return opaqueType();
+  }
+
+  if (h5tClass === H5TClass.Compound) {
     const { compound_type } = metadata;
-    const { members, nmembers } = compound_type;
+    assertDefined(compound_type);
 
-    if (nmembers === 2 && members[0].name === 'r' && members[1].name === 'i') {
-      const [realTypeMetadata, imagTypeMetadata] = members;
-      assertNumericMetadata(realTypeMetadata);
-      assertNumericMetadata(imagTypeMetadata);
-
-      return cplxType(
-        parseDTypeFromNumericMetadata(realTypeMetadata),
-        parseDTypeFromNumericMetadata(imagTypeMetadata),
-      );
-    }
-
-    return compoundType(
+    return compoundOrCplxType(
       Object.fromEntries(
-        members.map((member) => [member.name, parseDType(member)]),
+        compound_type.members.map((member) => [
+          member.name,
+          parseDType(member),
+        ]),
       ),
     );
   }
 
-  if (isEnumMetadata(metadata)) {
+  if (h5tClass === H5TClass.Reference) {
+    return referenceType();
+  }
+
+  if (h5tClass === H5TClass.Enum) {
     const { enum_type } = metadata;
-    const { members: mapping, type: baseType } = enum_type;
+    assertDefined(enum_type);
+    const { members, type } = enum_type;
 
-    const baseMetadata = { ...metadata, type: baseType };
-    assertNumericMetadata(baseMetadata);
+    const baseType = parseDType({ ...metadata, type });
+    if (!isNumericType(baseType)) {
+      throw new Error('Expected enum type to have numeric base type');
+    }
 
-    const type = enumType(parseDTypeFromNumericMetadata(baseMetadata), mapping);
-    return isBoolEnumType(type) ? boolType() : type; // booleans stored as enums by h5py
+    return enumOrBoolType(baseType, members);
+  }
+
+  if (h5tClass === H5TClass.Vlen) {
+    // Not currently provided, so unable to know base type
+    // const { array_type } = metadata;
+    // assertDefined(array_type);
+    return arrayType(unknownType());
+  }
+
+  if (h5tClass === H5TClass.Array) {
+    const { array_type } = metadata;
+    assertDefined(array_type);
+    return arrayType(parseDType(array_type), array_type.shape);
   }
 
   return unknownType();
+}
+
+function toEndianness(littleEndian: boolean): Endianness {
+  return littleEndian ? Endianness.LE : Endianness.BE;
 }
 
 export function convertSelectionToRanges(

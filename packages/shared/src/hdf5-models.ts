@@ -90,6 +90,10 @@ export enum DTypeClass {
   Array = 'Array',
   VLen = 'Array (variable length)',
   Enum = 'Enumeration',
+  Time = 'Time',
+  Bitfield = 'Bitfield',
+  Opaque = 'Opaque',
+  Reference = 'Reference',
   Unknown = 'Unknown',
 }
 
@@ -98,11 +102,17 @@ export enum Endianness {
   BE = 'big-endian',
 }
 
+export type CharSet = 'UTF-8' | 'ASCII';
+
 export type DType =
   | PrintableType
   | CompoundType
   | ArrayType
   | EnumType
+  | TimeType
+  | BitfieldType
+  | OpaqueType
+  | ReferenceType
   | UnknownType;
 
 export type PrintableType =
@@ -131,7 +141,7 @@ export interface ComplexType {
 
 export interface StringType {
   class: DTypeClass.String;
-  charSet: 'UTF-8' | 'ASCII';
+  charSet: CharSet;
   length?: number;
 }
 
@@ -154,6 +164,24 @@ export interface EnumType {
   class: DTypeClass.Enum;
   base: NumericType; // technically, only int/uint
   mapping: Record<string, number>;
+}
+
+export interface TimeType {
+  class: DTypeClass.Time;
+}
+
+export interface BitfieldType {
+  class: DTypeClass.Bitfield;
+  endianness?: Endianness;
+}
+
+export interface ReferenceType {
+  class: DTypeClass.Reference;
+}
+
+export interface OpaqueType {
+  class: DTypeClass.Opaque;
+  tag: string;
 }
 
 export interface UnknownType {
@@ -195,4 +223,28 @@ export type ComplexArray = (ComplexArray | H5WebComplex)[];
 export interface Filter {
   id: number;
   name: string;
+}
+
+/* ------------------- */
+/* ---- H5T ENUMS ---- */
+
+// https://docs.hdfgroup.org/hdf5/develop/_h5_tpublic_8h.html#title3
+
+export enum H5TClass {
+  Integer = 0,
+  Float = 1,
+  Time = 2,
+  String = 3,
+  Bitfield = 4,
+  Opaque = 5,
+  Compound = 6,
+  Reference = 7,
+  Enum = 8,
+  Vlen = 9,
+  Array = 10,
+}
+
+export enum H5TCharSet {
+  ASCII = 0,
+  UTF8 = 1,
 }
