@@ -185,6 +185,7 @@ Data provider for [H5Grove](https://github.com/silx-kit/h5grove).
 
 ```tsx
 <H5GroveProvider
+  key={/* <hash, random number, etc.> */} // optional, change the key to force a remount and clear the cache (e.g. when the content of the file changes)
   url="https://h5grove.server.url"
   filepath="some-file.h5"
   axiosConfig={{ params: { file: 'some-file.h5' } }}
@@ -289,6 +290,7 @@ Data provider for [HSDS](https://github.com/HDFGroup/hsds).
 
 ```tsx
 <HsdsProvider
+  key={/* hash, random number ... */} // optional, change the key to force a remount and clear the cache (e.g. when the content of the file changes)
   url="https://hsds.server.url"
   username="foo"
   password="abc123"
