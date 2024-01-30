@@ -1,3 +1,4 @@
+import { isNumericType } from '@h5web/shared/guards';
 import type {
   Attribute,
   ChildEntity,
@@ -5,20 +6,25 @@ import type {
   Group,
   ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
-import { Endianness, EntityKind } from '@h5web/shared/hdf5-models';
+import { EntityKind, H5TClass, H5TSign } from '@h5web/shared/hdf5-models';
 import {
-  boolType,
+  arrayType,
+  bitfieldType,
   buildEntityPath,
-  compoundType,
-  cplxType,
+  compoundOrCplxType,
+  enumOrBoolType,
   floatType,
-  intType,
+  intOrUintType,
+  opaqueType,
+  referenceType,
   strType,
-  uintType,
+  timeType,
+  toCharSet,
+  toEndianness,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 
-import type { H5GroveAttribute, H5GroveDtype, H5GroveEntity } from './models';
+import type { H5GroveAttribute, H5GroveEntity, H5GroveType } from './models';
 
 export function parseEntity(
   path: string,
@@ -40,7 +46,7 @@ export function parseEntity(
   const { name } = h5gEntity;
   const baseEntity = { name, path };
 
-  if (h5gEntity.type === EntityKind.Group) {
+  if (h5gEntity.kind === EntityKind.Group) {
     const { children = [], attributes: attrsMetadata } = h5gEntity;
     const attributes = parseAttributes(attrsMetadata);
     const baseGroup: Group = {
@@ -62,10 +68,10 @@ export function parseEntity(
     };
   }
 
-  if (h5gEntity.type === EntityKind.Dataset) {
+  if (h5gEntity.kind === EntityKind.Dataset) {
     const {
       attributes: attrsMetadata,
-      dtype,
+      type,
       shape,
       chunks,
       filters,
@@ -74,15 +80,15 @@ export function parseEntity(
       ...baseEntity,
       kind: EntityKind.Dataset,
       shape,
-      type: parseDType(dtype),
-      rawType: dtype,
+      type: parseDType(type),
+      rawType: type,
       ...(chunks && { chunks }),
       ...(filters && { filters }),
       attributes: parseAttributes(attrsMetadata),
     };
   }
 
-  if (h5gEntity.type === 'soft_link') {
+  if (h5gEntity.kind === 'soft_link') {
     const { target_path } = h5gEntity;
     return {
       ...baseEntity,
@@ -92,7 +98,7 @@ export function parseEntity(
     };
   }
 
-  if (h5gEntity.type === 'external_link') {
+  if (h5gEntity.kind === 'external_link') {
     const { target_file, target_path } = h5gEntity;
     return {
       ...baseEntity,
@@ -115,79 +121,80 @@ export function parseEntity(
 }
 
 function parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
-  return attrsMetadata.map<Attribute>(({ name, dtype, shape }) => ({
+  return attrsMetadata.map<Attribute>(({ name, type: dtype, shape }) => ({
     name,
     shape,
     type: parseDType(dtype),
   }));
 }
 
-// https://numpy.org/doc/stable/reference/generated/numpy.dtype.byteorder.html#numpy.dtype.byteorder
-const ENDIANNESS_MAPPING: Record<string, Endianness> = {
-  '<': Endianness.LE,
-  '>': Endianness.BE,
-};
-
-export function parseDType(dtype: H5GroveDtype): DType {
-  if (typeof dtype === 'string') {
-    return parseDTypeFromString(dtype);
-  }
-
-  return compoundType(
-    Object.fromEntries(
-      Object.entries(dtype).map(([k, v]) => [k, parseDType(v)]),
-    ),
-  );
-}
-
-function parseDTypeFromString(dtype: string): DType {
-  const regexp = /([<>=|])?([A-Za-z])(\d*)/u;
-  const matches = regexp.exec(dtype);
-
-  if (matches === null) {
-    throw new Error(`Invalid dtype string: ${dtype}`);
-  }
-
-  const [, endianMatch, dataType, lengthMatch] = matches;
-
-  const length = lengthMatch ? Number.parseInt(lengthMatch, 10) : 0;
-  const endianness = ENDIANNESS_MAPPING[endianMatch] || undefined;
-
-  switch (dataType) {
-    case 'b':
-      // Booleans are stored as bytes but numpy represents them distinctly from "normal" bytes:
-      // `|b1` for booleans vs. `|i1` for normal bytes
-      // https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool
-      return boolType();
-
-    case 'f':
-      return floatType(length * 8, endianness);
-
-    case 'i':
-      return intType(length * 8, endianness);
-
-    case 'u':
-      return uintType(length * 8, endianness);
-
-    case 'c':
-      return cplxType(
-        floatType(
-          (length / 2) * 8, // bytes are equally distributed between real and imag
-          endianness,
-        ),
-      );
-
-    case 'S':
-      return strType('ASCII', length);
-
-    case 'O':
-      return strType('UTF-8');
-
-    default:
-      return unknownType();
-  }
-}
-
 export function hasErrorMessage(error: unknown): error is { message: string } {
   return !!error && typeof error === 'object' && 'message' in error;
+}
+
+export function parseDType(type: H5GroveType): DType {
+  const { class: h5tClass, size } = type;
+
+  if (h5tClass === H5TClass.Integer) {
+    return intOrUintType(
+      type.sign === H5TSign.Signed,
+      size * 8,
+      toEndianness(type.order),
+    );
+  }
+
+  if (h5tClass === H5TClass.Float) {
+    return floatType(size * 8, toEndianness(type.order));
+  }
+
+  if (h5tClass === H5TClass.Time) {
+    return timeType();
+  }
+
+  if (h5tClass === H5TClass.String) {
+    const { cset, vlen } = type;
+    return strType(toCharSet(cset), vlen ? undefined : size);
+  }
+
+  if (h5tClass === H5TClass.Bitfield) {
+    return bitfieldType();
+  }
+
+  if (h5tClass === H5TClass.Opaque) {
+    return opaqueType(type.tag);
+  }
+
+  if (h5tClass === H5TClass.Compound) {
+    return compoundOrCplxType(
+      Object.fromEntries(
+        Object.entries(type.members).map(([mName, mType]) => [
+          mName,
+          parseDType(mType),
+        ]),
+      ),
+    );
+  }
+
+  if (h5tClass === H5TClass.Reference) {
+    return referenceType();
+  }
+
+  if (h5tClass === H5TClass.Enum) {
+    const base = parseDType(type.base);
+    if (!isNumericType(base)) {
+      throw new Error('Expected enum type to have numeric base type');
+    }
+
+    return enumOrBoolType(base, type.members);
+  }
+
+  if (h5tClass === H5TClass.Vlen) {
+    return arrayType(parseDType(type.base));
+  }
+
+  if (h5tClass === H5TClass.Array) {
+    return arrayType(parseDType(type.base), type.dims);
+  }
+
+  return unknownType();
 }

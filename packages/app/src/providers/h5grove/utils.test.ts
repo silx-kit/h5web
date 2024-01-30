@@ -1,61 +1,133 @@
 import { Endianness } from '@h5web/shared/hdf5-models';
 import {
+  arrayType,
+  bitfieldType,
   boolType,
   compoundType,
   cplxType,
+  enumType,
   floatType,
   intType,
+  opaqueType,
+  referenceType,
   strType,
+  timeType,
   uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import { describe, expect, it } from 'vitest';
 
+import type { H5GroveType } from './models';
 import { parseDType } from './utils';
 
 describe('parseDType', () => {
-  it('should convert integer dtypes', () => {
-    expect(parseDType('<i4')).toStrictEqual(intType(32, Endianness.LE));
-    expect(parseDType('>u8')).toStrictEqual(uintType(64, Endianness.BE));
-  });
-
-  it('should convert float dtypes', () => {
-    expect(parseDType('<f4')).toStrictEqual(floatType(32, Endianness.LE));
-    expect(parseDType('>f8')).toStrictEqual(floatType(64, Endianness.BE));
-  });
-
-  it('should convert complex dtypes', () => {
-    expect(parseDType('<c8')).toStrictEqual(
-      cplxType(floatType(32, Endianness.LE), floatType(32, Endianness.LE)),
+  it('should convert integer types', () => {
+    expect(parseDType({ class: 0, size: 1, order: 0, sign: 1 })).toStrictEqual(
+      intType(8, Endianness.LE),
+    );
+    expect(parseDType({ class: 0, size: 8, order: 1, sign: 0 })).toStrictEqual(
+      uintType(64, Endianness.BE),
     );
   });
 
-  it('should convert bytes string dtypes', () => {
-    expect(parseDType('|S6')).toStrictEqual(strType('ASCII', 6));
+  it('should convert float types', () => {
+    expect(parseDType({ class: 1, size: 4, order: 0 })).toStrictEqual(
+      floatType(32, Endianness.LE),
+    );
+    expect(parseDType({ class: 1, size: 8, order: 1 })).toStrictEqual(
+      floatType(64, Endianness.BE),
+    );
   });
 
-  it('should interpret objects as strings', () => {
-    expect(parseDType('|O')).toStrictEqual(strType('UTF-8'));
+  it('should convert string types', () => {
+    expect(
+      parseDType({ class: 3, size: 6, cset: 0, vlen: false }),
+    ).toStrictEqual(strType('ASCII', 6));
+    expect(
+      parseDType({ class: 3, size: 6, cset: 0, vlen: true }),
+    ).toStrictEqual(strType('ASCII'));
+    expect(
+      parseDType({ class: 3, size: 6, cset: 1, vlen: false }),
+    ).toStrictEqual(strType('UTF-8', 6));
+    expect(
+      parseDType({ class: 3, size: 6, cset: 1, vlen: true }),
+    ).toStrictEqual(strType('UTF-8'));
   });
 
-  it('should interpret |b1 as booleans', () => {
-    expect(parseDType('|b1')).toStrictEqual(boolType());
-  });
-
-  it('should handle "not applicable" endianness symbol', () => {
-    expect(parseDType('|f8')).toStrictEqual(floatType(64));
-  });
-
-  it('should convert compound dtype', () => {
-    expect(parseDType({ country: '|S10', population: '<i4' })).toStrictEqual(
-      compoundType({
-        country: strType('ASCII', 10),
-        population: intType(32, Endianness.LE),
+  it('should convert compound and complex types', () => {
+    expect(
+      parseDType({
+        class: 6,
+        size: 4,
+        members: { foo: { class: 1, size: 4, order: 0 } },
       }),
-    );
+    ).toStrictEqual(compoundType({ foo: floatType() }));
+
+    expect(
+      parseDType({
+        class: 6,
+        size: 8,
+        members: {
+          r: { class: 1, size: 4, order: 0 },
+          i: { class: 1, size: 4, order: 0 },
+        },
+      }),
+    ).toStrictEqual(cplxType(floatType(), floatType()));
   });
 
-  it('should handle unknown type', () => {
-    expect(parseDType('>notAType')).toStrictEqual(unknownType());
+  it('should convert enum and boolean types', () => {
+    expect(
+      parseDType({
+        class: 8,
+        size: 8,
+        base: { class: 0, size: 4, order: 0, sign: 0 },
+        members: { FOO: 41, BAR: 42 },
+      }),
+    ).toStrictEqual(enumType(uintType(), { FOO: 41, BAR: 42 }));
+
+    expect(
+      parseDType({
+        class: 8,
+        size: 2,
+        base: { class: 0, size: 1, order: 0, sign: 0 },
+        members: { FALSE: 0, TRUE: 1 },
+      }),
+    ).toStrictEqual(boolType());
+  });
+
+  it('should convert array types', () => {
+    expect(
+      parseDType({
+        class: 9,
+        size: 1,
+        base: { class: 1, size: 4, order: 0 },
+      }),
+    ).toStrictEqual(arrayType(floatType()));
+
+    expect(
+      parseDType({
+        class: 10,
+        size: 1,
+        base: { class: 1, size: 4, order: 0 },
+        dims: [2, 3],
+      }),
+    ).toStrictEqual(arrayType(floatType(), [2, 3]));
+  });
+
+  it('should convert other types', () => {
+    expect(parseDType({ class: 2, size: 1 })).toStrictEqual(timeType());
+    expect(parseDType({ class: 4, size: 1, order: 0 })).toStrictEqual(
+      bitfieldType(Endianness.LE),
+    );
+    expect(parseDType({ class: 5, size: 1, tag: 'foo' })).toStrictEqual(
+      opaqueType('foo'),
+    );
+    expect(parseDType({ class: 7, size: 1 })).toStrictEqual(referenceType());
+  });
+
+  it('should handle unknown types', () => {
+    expect(
+      parseDType({ class: 100, size: 1 } as unknown as H5GroveType),
+    ).toStrictEqual(unknownType());
   });
 });

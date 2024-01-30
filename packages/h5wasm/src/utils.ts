@@ -206,7 +206,7 @@ export function parseDType(metadata: Metadata): DType {
 
     const baseType = parseDType({ ...metadata, type });
     if (!isNumericType(baseType)) {
-      throw new Error('Expected enum type to have numeric base type');
+      throw new TypeError('Expected enum type to have numeric base type');
     }
 
     return enumOrBoolType(baseType, members);

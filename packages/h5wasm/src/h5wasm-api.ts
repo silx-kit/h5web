@@ -89,7 +89,7 @@ export class H5WasmApi extends DataProviderApi {
     const h5wEntity = await this.getH5WasmEntity(entity.path);
 
     if (!('attrs' in h5wEntity)) {
-      throw new Error('Expected H5Wasm entity with attributes');
+      throw new TypeError('Expected H5Wasm entity with attributes');
     }
 
     return Object.fromEntries(

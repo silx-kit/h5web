@@ -21,7 +21,7 @@ import type {
 import { hasErrorMessage, parseEntity } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
-  /* API compatible with h5grove@1.3.0 */
+  /* API compatible with h5grove@2.0.0b2 */
   public constructor(
     url: string,
     filepath: string,
