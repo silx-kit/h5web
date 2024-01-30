@@ -1,4 +1,5 @@
 import { App, assertEnvVar, H5GroveProvider } from '@h5web/app';
+import { useMemo } from 'react';
 import { useSearch } from 'wouter';
 
 import { getFeedbackURL } from './utils';
@@ -17,7 +18,7 @@ function H5GroveApp() {
     <H5GroveProvider
       url={URL}
       filepath={filepath}
-      axiosConfig={{ params: { file: filepath } }}
+      axiosConfig={useMemo(() => ({ params: { file: filepath } }), [filepath])}
     >
       <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
     </H5GroveProvider>

@@ -172,8 +172,8 @@ function Home() {
             <div className={styles.tip}>
               <FiAlertCircle className={styles.tipIcon} />
               <p>
-                This demo my break at any time. For a more stable and featureful
-                solution, please take a look at{' '}
+                This demo may break at any time. For a more stable and
+                featureful solution, please take a look at{' '}
                 <a href="https://myhdf5.hdfgroup.org/">myHDF5</a> or H5Web’s{' '}
                 <a href="https://marketplace.visualstudio.com/items?itemName=h5web.vscode-h5web">
                   VS Code extension

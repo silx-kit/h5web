@@ -188,7 +188,7 @@ Data provider for [H5Grove](https://github.com/silx-kit/h5grove).
   key={/* <hash, random number, etc.> */} // optional, change the key to force a remount and clear the cache (e.g. when the content of the file changes)
   url="https://h5grove.server.url"
   filepath="some-file.h5"
-  axiosConfig={{ params: { file: 'some-file.h5' } }}
+  axiosConfig={useMemo(() => ({ params: { file: 'some-file.h5' } }), [])}
 >
   <App />
 </H5GroveProvider>
@@ -211,6 +211,9 @@ this prop to pass the `file` query parameter as shown above.
 
 If your API server requires authentication or is on a different domain, you'll
 need to pass the necessary request headers and configuration as well.
+
+> Remember to memoise or extract your `axiosConfig` object so the fetching cache
+> does not get cleared if/when your app re-renders.
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
