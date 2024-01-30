@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { FiChevronsRight } from 'react-icons/fi';
+import { FiAlertCircle, FiChevronsRight } from 'react-icons/fi';
 import { Link } from 'wouter';
 
 import styles from './Home.module.css';
@@ -65,7 +65,7 @@ function Home() {
                   <strong>water_224.h5</strong>
                 </Link>{' '}
                 (default) - a typical NeXus file with various real-world
-                datasets to demonstrate H5Web's core visualizations.
+                datasets to demonstrate H5Web’s core visualizations.
               </li>
               <li>
                 <Link to="/h5grove?file=compressed.h5">compressed.h5</Link> - a
@@ -169,6 +169,18 @@ function Home() {
                 </Fragment>
               ))}
             </p>
+            <div className={styles.tip}>
+              <FiAlertCircle className={styles.tipIcon} />
+              <p>
+                This demo my break at any time. For a more stable and featureful
+                solution, please take a look at{' '}
+                <a href="https://myhdf5.hdfgroup.org/">myHDF5</a> or H5Web’s{' '}
+                <a href="https://marketplace.visualstudio.com/items?itemName=h5web.vscode-h5web">
+                  VS Code extension
+                </a>
+                .
+              </p>
+            </div>
           </section>
           <section>
             <h2>
@@ -190,7 +202,10 @@ function Home() {
             <p>
               This demo communicates with an HSDS test server, which serves the
               same files as the H5Grove demo above:{' '}
-              <Link to="/hsds">water_224.h5</Link> (<strong>default</strong>),{' '}
+              <Link to="/hsds">
+                <strong>water_224.h5</strong>
+              </Link>{' '}
+              (default),{' '}
               <Link to="/hsds?file=compressed.h5">compressed.h5</Link> (note
               that bitshuffle is not yet supported by HSDS),{' '}
               <Link to="/hsds?file=epics.h5">epics.h5</Link>,{' '}
@@ -207,7 +222,7 @@ function Home() {
             </h2>
             <p>
               This demo is used for development and automated testing purposes.
-              It provides a good overview of H5Web's functionalities, including
+              It provides a good overview of H5Web’s functionalities, including
               the core visualizations and their toolbars, slicing and mapping of
               nD datasets, NeXus visualizations and default plot detection, RGB
               images, error handling, loading state, etc.
