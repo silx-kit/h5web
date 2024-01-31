@@ -407,7 +407,7 @@ exports[`test file matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 16,
     },
-    "value": [
+    "value": Float32Array [
       0,
       1,
       2,
@@ -670,13 +670,13 @@ exports[`test file matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 128,
     },
-    "value": [
+    "value": Float64Array [
       0,
       1,
       2,
       3,
       4,
-      null,
+      Infinity,
     ],
   },
   {
