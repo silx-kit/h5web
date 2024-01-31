@@ -187,7 +187,7 @@ Data provider for [H5Grove](https://github.com/silx-kit/h5grove).
 <H5GroveProvider
   url="https://h5grove.server.url"
   filepath="some-file.h5"
-  axiosConfig={{ params: { file: 'some-file.h5' } }}
+  axiosConfig={useMemo(() => ({ params: { file: 'some-file.h5' } }), [])}
 >
   <App />
 </H5GroveProvider>
@@ -210,6 +210,9 @@ this prop to pass the `file` query parameter as shown above.
 
 If your API server requires authentication or is on a different domain, you'll
 need to pass the necessary request headers and configuration as well.
+
+> Remember to memoise or extract your `axiosConfig` object so the fetching cache
+> does not get cleared if/when your app re-renders.
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
@@ -283,6 +286,41 @@ specific export scenarios. In this case, or if you don't provide a function at
 all, `H5GroveProvider` falls back to generating URLs based on the `/data`
 endpoint and `format` query param.
 
+#### `key?: Key` (optional)
+
+If the content of the current file changes and you want to ensure that the
+viewer refetches the latest metadata and dataset values, you can take advantage
+of
+[React's `key` attribute](https://react.dev/reference/react/useState#resetting-state-with-a-key).
+Changing the value of the `key` will force a remount of `H5GroveProvider` and
+clear its internal fetching cache.
+
+It is up to you to decide what sort of `key` to use and when to update it. For
+instance:
+
+- Your server could send over a hash of the file via WebSocket.
+- You could show a toast notification with a _Refresh_ button when the file
+  changes and simply increment a number when the button is clicked (cf.
+  contrived example below).
+
+```tsx
+function MyApp() {
+  const [key, setKey] = useState(0);
+  const incrementKey = useCallback(() => setKey((val) => val + 1), []);
+
+  return (
+    <>
+      <button type="button" onClick={incrementKey}>
+        Refresh
+      </button>
+      <H5GroveProvider key={key} /* ... */>
+        <App />
+      </H5GroveProvider>
+    </>
+  );
+}
+```
+
 ### `HsdsProvider`
 
 Data provider for [HSDS](https://github.com/HDFGroup/hsds).
@@ -320,6 +358,11 @@ See
 `HsdsProvider` does not provide a fallback implementation of `getExportURL` at
 this time, so if you don't provide your own, the export menu will remain
 disabled in the toolbar.
+
+#### `key?: Key` (optional)
+
+See
+[`H5GroveProvider#key`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#key-key-optional).
 
 ### `MockProvider`
 

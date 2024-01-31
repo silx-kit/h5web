@@ -93,12 +93,33 @@
   font-style: italic;
 }
 
-.demoContext > a {
-  color: inherit;
-}
-
 .demoFiles {
   font-size: 0.875em;
+}
+
+.tip {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--secondary-darker);
+  background-color: var(--secondary-light-bg);
+  margin-top: 2.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+}
+
+.tipIcon {
+  font-size: 3.5em;
+  color: var(--secondary-dark);
+}
+
+.tip > p {
+  margin: 0;
+}
+
+.demoContext a,
+.tip a {
+  color: inherit;
 }
 
 @media (min-width: 40em) {
