@@ -87,7 +87,11 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     )
 
     add_scalar(h5, "float128", np.float128(np.finfo(np.float128).smallest_normal))
-    add_array(h5, "float128", np.array([[0, 1, 2], [3, 4, 5]], np.float128))
+    add_array(
+        h5,
+        "float128",
+        np.array([[0, 1, 2], [3, 4, np.finfo(np.float128).max]], np.float128),
+    )
 
     # === H5T_TIME ===
 
@@ -113,6 +117,11 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     # === H5T_OPAQUE ===
 
     add_scalar(h5, "byte_string", np.void(b"\x00\x11\x22"))
+    add_array(
+        h5,
+        "byte_string",
+        np.array([np.void(b"\x00"), np.void(b"\x11"), np.void(b"\x22")]),
+    )
     add_scalar(h5, "datetime64", np.void(np.datetime64("2019-09-22T17:38:30")))
     add_scalar(h5, "datetime64_not-a-time", np.void(np.datetime64("NaT")))
 

@@ -24,7 +24,7 @@
     "normalize.css": "8.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "4.12.0",
+    "react-icons": "5.0.1",
     "react-suspense-fetch": "0.4.1",
     "three": "0.159.0"
   },
