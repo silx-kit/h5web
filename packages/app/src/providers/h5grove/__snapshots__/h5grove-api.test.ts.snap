@@ -676,7 +676,7 @@ exports[`test file matches snapshot 1`] = `
       2,
       3,
       4,
-      5,
+      null,
     ],
   },
   {
@@ -797,6 +797,27 @@ exports[`test file matches snapshot 1`] = `
       "tag": "",
     },
     "value": " "",
+  },
+  {
+    "name": "byte_string_1D",
+    "rawType": {
+      "class": 5,
+      "dtype": "|V1",
+      "size": 1,
+      "tag": "",
+    },
+    "shape": [
+      3,
+    ],
+    "type": {
+      "class": "Opaque",
+      "tag": "",
+    },
+    "value": [
+      " ",
+      "",
+      """,
+    ],
   },
   {
     "name": "datetime64_scalar",
