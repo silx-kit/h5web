@@ -166,7 +166,7 @@ See
 this time, so if you don't provide your own, the export menu will remain
 disabled in the toolbar.
 
-#### `getPlugin?: (name: string) => Promise<ArrayBuffer | undefined>`
+#### `getPlugin?: (name: Plugin) => Promise<ArrayBuffer | undefined>`
 
 If provided, this aysnchronous function is invoked when loading a compressed
 dataset. It receives the name of a compression plugin as parameter and should
@@ -184,6 +184,8 @@ A typical implementation of `getPlugin` in a bundled front-end application might
 look like this:
 
 ```ts
+import type { Plugin } from '@h5web/h5wasm';
+
 /*
  * Import the plugins' source files as static assets (i.e. as URLs).
  * The exact syntax may vary depending on your bundler (Vite, webpack ...)
@@ -193,9 +195,13 @@ import blosc from 'h5wasm-plugins/plugins/libH5Zblosc.so';
 import bz2 from 'h5wasm-plugins/plugins/libH5Zbz2.so';
 // ...
 
-const PLUGINS = { blosc, bz2 /* ... */ };
+const PLUGINS: Record<Plugin, string> = {
+  [Plugin.Blosc]: blosc,
+  [Plugin.BZIP2]: bz2,
+  // ...
+};
 
-async function getPlugin(name: string): Promise<ArrayBuffer | undefined> {
+async function getPlugin(name: Plugin): Promise<ArrayBuffer | undefined> {
   if (!PLUGINS[name]) {
     return undefined;
   }

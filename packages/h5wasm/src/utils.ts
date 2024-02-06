@@ -35,15 +35,29 @@ import {
 import type { H5WasmAttributes, H5WasmEntity } from './models';
 
 // https://github.com/h5wasm/h5wasm-plugins#included-plugins
+export enum Plugin {
+  Bitshuffle = 'bshuf',
+  Blosc = 'blosc',
+  Blosc2 = 'blosc2',
+  BZIP2 = 'bz2',
+  LZ4 = 'lz4',
+  LZF = 'lzf',
+  SZ = 'szf',
+  ZFP = 'zfp',
+  Zstandard = 'zstd',
+}
+
 // https://support.hdfgroup.org/services/contributions.html
-export const PLUGINS_BY_FILTER_ID: Record<number, string> = {
-  307: 'bz2',
-  32_000: 'lzf',
-  32_001: 'blosc',
-  32_004: 'lz4',
-  32_013: 'zfp',
-  32_015: 'zstd',
-  32_017: 'szf',
+export const PLUGINS_BY_FILTER_ID: Record<number, Plugin> = {
+  307: Plugin.BZIP2,
+  32_000: Plugin.LZF,
+  32_001: Plugin.Blosc,
+  32_004: Plugin.LZ4,
+  32_008: Plugin.Bitshuffle,
+  32_013: Plugin.ZFP,
+  32_015: Plugin.Zstandard,
+  32_017: Plugin.SZ,
+  32_026: Plugin.Blosc2,
 };
 
 export function parseEntity(

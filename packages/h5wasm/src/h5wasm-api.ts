@@ -23,6 +23,7 @@ import { nanoid } from 'nanoid';
 
 import { assertH5WasmDataset, hasInt64Type } from './guards';
 import type { H5WasmEntity } from './models';
+import type { Plugin } from './utils';
 import {
   convertSelectionToRanges,
   parseEntity,
@@ -40,7 +41,7 @@ export class H5WasmApi extends DataProviderApi {
     buffer: ArrayBuffer,
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
     private readonly getPlugin?: (
-      name: string,
+      name: Plugin,
     ) => Promise<ArrayBuffer | undefined>,
   ) {
     super(filename);

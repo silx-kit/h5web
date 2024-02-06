@@ -4,12 +4,13 @@ import type { PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 
 import { H5WasmApi } from './h5wasm-api';
+import type { Plugin } from './utils';
 
 interface Props {
   filename: string;
   buffer: ArrayBuffer;
   getExportURL?: DataProviderApi['getExportURL'];
-  getPlugin?: (name: string) => Promise<ArrayBuffer | undefined>;
+  getPlugin?: (name: Plugin) => Promise<ArrayBuffer | undefined>;
 }
 
 function H5WasmProvider(props: PropsWithChildren<Props>) {
