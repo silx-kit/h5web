@@ -1,7 +1,9 @@
-import { MenuItem } from 'react-aria-menubutton';
+import ram from 'react-aria-menubutton'; // CJS
 
 import type { OptionComponent } from './models';
 import styles from './Selector.module.css';
+
+const { MenuItem } = ram;
 
 interface Props<T> {
   optionList: T[];
