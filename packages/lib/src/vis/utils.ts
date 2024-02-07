@@ -22,7 +22,7 @@ import {
 } from '@visx/scale';
 import { range, tickStep } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
-import { clamp } from 'lodash';
+import { clamp } from 'lodash-es';
 import type { IUniform } from 'three';
 import { BufferAttribute } from 'three';
 

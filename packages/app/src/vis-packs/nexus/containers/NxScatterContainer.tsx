@@ -3,7 +3,7 @@ import {
   assertGroup,
   assertNumDims,
 } from '@h5web/shared/guards';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 
 import { useScatterConfig } from '../../core/scatter/config';
 import MappedScatterVis from '../../core/scatter/MappedScatterVis';

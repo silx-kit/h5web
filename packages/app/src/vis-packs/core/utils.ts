@@ -3,7 +3,7 @@ import type { ArrayValue, NumericLikeType } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { Axis, Domain, NumArray } from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
-import { isNumber } from 'lodash';
+import { isNumber } from 'lodash-es';
 import type { NdArray, TypedArray } from 'ndarray';
 import ndarray from 'ndarray';
 

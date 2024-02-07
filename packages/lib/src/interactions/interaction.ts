@@ -1,4 +1,4 @@
-import { castArray } from 'lodash';
+import { castArray } from 'lodash-es';
 import type { ModifierKey } from 'react';
 
 import type { InteractionConfig } from './models';

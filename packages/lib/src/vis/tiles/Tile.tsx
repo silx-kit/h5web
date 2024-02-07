@@ -1,5 +1,5 @@
 import type { ThreeEvent } from '@react-three/fiber';
-import { throttle } from 'lodash';
+import { throttle } from 'lodash-es';
 import { memo } from 'react';
 import type { MagnificationTextureFilter } from 'three';
 import { Vector2 } from 'three';

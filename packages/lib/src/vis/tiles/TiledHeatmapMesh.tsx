@@ -1,4 +1,4 @@
-import { clamp, range } from 'lodash';
+import { clamp, range } from 'lodash-es';
 import { useRef } from 'react';
 import type { Group } from 'three';
 

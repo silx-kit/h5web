@@ -1,4 +1,4 @@
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import { useContext } from 'react';
 
 import { SettingsContext } from './context';

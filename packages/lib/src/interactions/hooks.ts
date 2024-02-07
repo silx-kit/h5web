@@ -1,6 +1,6 @@
 import { useEventListener, useSyncedRef, useToggle } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
-import { castArray } from 'lodash';
+import { castArray } from 'lodash-es';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
 

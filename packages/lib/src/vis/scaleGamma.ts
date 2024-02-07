@@ -7,7 +7,7 @@ import type {
   ScalePower,
   UnknownReturnType,
 } from 'd3-scale';
-import { isNumber } from 'lodash';
+import { isNumber } from 'lodash-es';
 
 import type { ScaleGammaConfig } from './models';
 

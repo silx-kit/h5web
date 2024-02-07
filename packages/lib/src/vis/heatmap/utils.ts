@@ -1,7 +1,7 @@
 import type { Domain, NumArray } from '@h5web/shared/vis-models';
 import { ScaleType } from '@h5web/shared/vis-models';
 import { getDims, toTypedNdArray } from '@h5web/shared/vis-utils';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 import type { MagnificationTextureFilter } from 'three';

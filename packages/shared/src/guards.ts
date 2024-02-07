@@ -1,4 +1,4 @@
-import { isTypedArray as isTypedArrayLodash } from 'lodash';
+import { isTypedArray as isTypedArrayLodash } from 'lodash-es';
 import type { Data, NdArray, TypedArray } from 'ndarray';
 
 import type {
