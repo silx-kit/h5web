@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout 🏷️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node 🕹️
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
 
@@ -28,7 +28,7 @@ jobs:
           version: 8.x
 
       - name: Restore cache 📌
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -38,7 +38,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies ⚙️
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Lint 🤓
         run: pnpm prettier && pnpm lint
@@ -50,10 +50,10 @@ jobs:
 
     steps:
       - name: Checkout 🏷️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node 🕹️
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
 
@@ -63,7 +63,7 @@ jobs:
           version: 8.x
 
       - name: Restore cache 📌
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -73,7 +73,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies ⚙️
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Test 👓
         run: pnpm test -- --reporter default --reporter vitest-github-actions-reporter
@@ -85,10 +85,10 @@ jobs:
 
     steps:
       - name: Checkout 🏷️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node 🕹️
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
 
@@ -98,7 +98,7 @@ jobs:
           version: 8.x
 
       - name: Restore cache 📌
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -108,7 +108,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies ⚙️
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build packages 📦
         run: pnpm packages
@@ -120,10 +120,10 @@ jobs:
 
     steps:
       - name: Checkout 🏷️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node 🕹️
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
 
@@ -133,7 +133,7 @@ jobs:
           version: 8.x
 
       - name: Restore cache 📌
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -143,7 +143,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies ⚙️
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build demo 🛠️
         run: pnpm build
