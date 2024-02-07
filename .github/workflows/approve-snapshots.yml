@@ -18,12 +18,12 @@ jobs:
           pr-id: ${{ github.event.issue.number }}
 
       - name: Checkout 🏷️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.getBranchName.outputs.branch }}
 
       - name: Set up Node 🕹️
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
 
@@ -33,7 +33,7 @@ jobs:
           version: 8.x
 
       - name: Restore cache 📌
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies ⚙️
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build packages 📦
         run: pnpm packages
