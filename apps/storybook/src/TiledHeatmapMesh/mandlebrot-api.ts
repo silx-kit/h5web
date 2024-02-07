@@ -2,7 +2,7 @@ import type { Size } from '@h5web/lib';
 import { getLayerSizes, TilesApi } from '@h5web/lib';
 import type { Domain } from '@h5web/shared/vis-models';
 import greenlet from 'greenlet';
-import { clamp } from 'lodash';
+import { clamp } from 'lodash-es';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 import { createFetchStore } from 'react-suspense-fetch';

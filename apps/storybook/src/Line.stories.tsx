@@ -8,7 +8,7 @@ import {
 import { assertDefined } from '@h5web/shared/guards';
 import { ScaleType } from '@h5web/shared/vis-models';
 import type { Meta, StoryObj } from '@storybook/react';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 
 import FillHeight from './decorators/FillHeight';
 

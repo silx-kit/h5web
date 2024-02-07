@@ -10,7 +10,7 @@ import {
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
 import type { Meta, StoryObj } from '@storybook/react';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import { useState } from 'react';
 
 import FillHeight from './decorators/FillHeight';

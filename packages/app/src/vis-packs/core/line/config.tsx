@@ -3,7 +3,7 @@ import { isDefined } from '@h5web/shared/guards';
 import type { AxisScaleType } from '@h5web/shared/vis-models';
 import { ScaleType } from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
 import { createStore, useStore } from 'zustand';

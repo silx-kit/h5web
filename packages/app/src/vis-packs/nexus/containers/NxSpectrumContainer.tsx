@@ -1,6 +1,6 @@
 import { ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';

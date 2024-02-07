@@ -1,5 +1,5 @@
 import type { AxisMapping } from '@h5web/shared/nexus-models';
-import { isNumber } from 'lodash';
+import { isNumber } from 'lodash-es';
 
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
