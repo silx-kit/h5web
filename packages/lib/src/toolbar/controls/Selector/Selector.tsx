@@ -1,10 +1,12 @@
 import { useWindowSize } from '@react-hookz/web';
-import { Button, Menu, Wrapper } from 'react-aria-menubutton';
+import ram from 'react-aria-menubutton'; // CJS
 import { MdArrowDropDown } from 'react-icons/md';
 
 import type { OptionComponent } from './models';
 import OptionList from './OptionList';
 import styles from './Selector.module.css';
+
+const { Button, Menu, Wrapper } = ram;
 
 const MENU_IDEAL_HEIGHT = 320; // 20rem
 const MENU_TOP = 87; // HACK: height of breadcrumbs bar + height of toolbar

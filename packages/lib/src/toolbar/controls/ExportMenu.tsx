@@ -1,10 +1,12 @@
-import { Button, Menu, Wrapper } from 'react-aria-menubutton';
+import ram from 'react-aria-menubutton'; // CJS
 import { FiDownload } from 'react-icons/fi';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import type { ExportEntryProps } from './ExportEntry';
 import ExportEntry from './ExportEntry';
 import styles from './Selector/Selector.module.css';
+
+const { Button, Menu, Wrapper } = ram;
 
 interface Props {
   entries: ExportEntryProps[];
