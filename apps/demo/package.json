@@ -17,7 +17,7 @@
     "@h5web/h5wasm": "workspace:*",
     "axios": "1.6.2",
     "axios-hooks": "5.0.2",
-    "h5wasm-plugins": "0.0.1",
+    "h5wasm-plugins": "0.0.3",
     "normalize.css": "8.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",

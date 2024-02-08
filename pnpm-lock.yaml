@@ -69,8 +69,8 @@ importers:
         specifier: 5.0.2
         version: 5.0.2(axios@1.6.2)(react@18.2.0)
       h5wasm-plugins:
-        specifier: 0.0.1
-        version: 0.0.1
+        specifier: 0.0.3
+        version: 0.0.3
       normalize.css:
         specifier: 8.0.1
         version: 8.0.1
@@ -9052,14 +9052,14 @@ packages:
       through2: 2.0.5
     dev: true
 
-  /h5wasm-plugins@0.0.1:
-    resolution: {integrity: sha512-aWExcfukKiT3ULIhQBDePc1xY8xhWLEmz7AZtb85xYusCGFiH3/dm7o7RIKbZtPBMfJDS4NqAr0kBNtGqh/5fw==}
+  /h5wasm-plugins@0.0.3:
+    resolution: {integrity: sha512-hOI1ERa6QfjrN/AWJW0mqFaAU4D4NtzYXjb03h7f1MufkIzCkYo/bZoB7NZy+Qy9vHsxL31rz7hNlZCPouf+tQ==}
     dependencies:
-      h5wasm: 0.6.8
+      h5wasm: 0.6.10
     dev: false
 
-  /h5wasm@0.6.8:
-    resolution: {integrity: sha512-BaEWwjxCtG8C/wmGw9SEx9cUAopvVa7E4DHmy3dyPo4i2M1dcCvcvi2kGOeX1tabOVC5O2HuBIMybdHHp40bxQ==}
+  /h5wasm@0.6.10:
+    resolution: {integrity: sha512-GxBWGVxBftyq67kAbS4WPmTH3a8hGKigdMm+IVJ7tLY7BHj+nqDTUKO9RmmPBHy6Pvq5uW1YpIJr/oGanw+RyQ==}
     dev: false
 
   /h5wasm@0.7.0:
