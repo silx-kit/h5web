@@ -6,7 +6,12 @@ import type {
   Group,
   ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
-import { EntityKind, H5TClass, H5TSign } from '@h5web/shared/hdf5-models';
+import {
+  DTypeClass,
+  EntityKind,
+  H5TClass,
+  H5TSign,
+} from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   bitfieldType,
@@ -23,7 +28,9 @@ import {
   toEndianness,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
+import type { TypedArrayConstructor } from '@h5web/shared/vis-models';
 
+import { typedArrayFromDType } from '../utils';
 import type { H5GroveAttribute, H5GroveEntity, H5GroveType } from './models';
 
 export function parseEntity(
@@ -197,4 +204,25 @@ export function parseDType(type: H5GroveType): DType {
   }
 
   return unknownType();
+}
+
+/*
+ * Take advantage of h5grove's "safe" dtype conversions (i.e. `dtype=safe`)
+ * to allow fetching more data as binary.
+ * https://github.com/silx-kit/h5grove/blob/3c851e748d52f5bb8eab12a7f8368781b86772da/h5grove/utils.py#L196
+ */
+export function h5groveTypedArrayFromDType(
+  dtype: DType,
+): TypedArrayConstructor | undefined {
+  const { class: dtypeClass } = dtype;
+
+  if (dtypeClass === DTypeClass.Float && dtype.size === 16) {
+    return Float32Array; // also saves a number[]->Float32Array conversion in texture-based visualizations
+  }
+
+  if (dtypeClass === DTypeClass.Float && dtype.size === 128) {
+    return Float64Array;
+  }
+
+  return typedArrayFromDType(dtype);
 }

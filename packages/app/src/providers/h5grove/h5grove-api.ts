@@ -11,14 +11,18 @@ import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { handleAxiosError, typedArrayFromDType } from '../utils';
+import { handleAxiosError } from '../utils';
 import type {
   H5GroveAttrValuesResponse,
   H5GroveDataResponse,
   H5GroveEntityResponse,
   H5GrovePathsResponse,
 } from './models';
-import { hasErrorMessage, parseEntity } from './utils';
+import {
+  h5groveTypedArrayFromDType,
+  hasErrorMessage,
+  parseEntity,
+} from './utils';
 
 export class H5GroveApi extends DataProviderApi {
   /* API compatible with h5grove@2.0.0b2 */
@@ -41,7 +45,7 @@ export class H5GroveApi extends DataProviderApi {
   ): Promise<H5GroveDataResponse> {
     const { dataset } = params;
 
-    const DTypedArray = typedArrayFromDType(dataset.type);
+    const DTypedArray = h5groveTypedArrayFromDType(dataset.type);
     if (DTypedArray) {
       const buffer = await this.fetchBinaryData(params);
       const array = new DTypedArray(buffer);
