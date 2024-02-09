@@ -1,0 +1,19 @@
+[pipenv]
+sort_pipfile = true
+
+[requires]
+python_version = "3.12"
+
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[scripts]
+create_sample = "python scripts/create_h5_sample.py"
+download_sample = "curl -o dist/sample.h5 http://www.silx.org/pub/h5web/sample.h5"
+start_h5grove = "python scripts/start_h5grove.py --basedir dist"
+
+[packages]
+h5py = "*"
+h5grove = {extras = ["fastapi"], version = "2.0.0b2"}

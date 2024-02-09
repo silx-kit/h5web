@@ -1,3 +1,4 @@
+from logging import warning
 import os
 import sys
 import h5py
@@ -6,28 +7,28 @@ import numpy as np
 if sys.version_info.major < 3:
     raise RuntimeError("Python 2 is not supported")
 
+if not hasattr(np, "float128"):
+    raise RuntimeError("Numpy's float128 type is not available on this system")
+
 BASE_PATH = os.path.dirname(os.path.realpath(sys.argv[0]))
-DIST_PATH = os.path.join(BASE_PATH, "dist")
+DIST_PATH = os.path.join(BASE_PATH, "../dist")
 os.makedirs(DIST_PATH, exist_ok=True)
 
 h5py.get_config().track_order = True
 
 
 def add_empty(group, name, dtype=None):
-    dataset = group.create_dataset(name + "_empty", data=h5py.Empty(dtype))
-    return dataset
+    return group.create_dataset(name + "_empty", data=h5py.Empty(dtype))
 
 
 def add_scalar(group, name, data=None, dtype=None):
-    dataset = group.create_dataset(name + "_scalar", (), dtype, data)
-    return dataset
+    return group.create_dataset(name + "_scalar", (), dtype, data)
 
 
 def add_array(group, name, data=None, dtype=None, shape=None):
-    dataset = group.create_dataset(
-        name + "_{0}D".format(len(shape or data.shape)), shape, dtype, data
+    return group.create_dataset(
+        name + "_{0}D".format(len(shape or getattr(data, "shape"))), shape, dtype, data
     )
-    return dataset
 
 
 def print_h5t_class(dataset):
@@ -156,7 +157,9 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
         ),
     )
     add_array(
-        h5, "complex256", np.array([[1 + 2j, 3 + 4j], [5 + 6j, 7 + 8j]], np.complex256)
+        h5,
+        "complex256",
+        np.array([[1 + 2j, 3 + 4j], [5 + 6j, 7 + 8j]], np.complex256),
     ),
 
     add_scalar(

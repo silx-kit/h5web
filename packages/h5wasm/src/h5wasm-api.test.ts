@@ -1,6 +1,5 @@
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 
 import { getValueOrError } from '@h5web/app';
 import {
@@ -13,8 +12,11 @@ import { expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
 
-const LOCAL_TEST_FILE = path.resolve(process.cwd(), 'dist/sample.h5');
 const REMOTE_TEST_FILE = 'http://www.silx.org/pub/h5web/sample.h5'; // `https` would complicate things...
+const LOCAL_TEST_FILE = new URL(
+  '../../../support/dist/sample.h5',
+  import.meta.url,
+);
 
 async function loadTestFile(): Promise<ArrayBuffer> {
   if (existsSync(LOCAL_TEST_FILE)) {
