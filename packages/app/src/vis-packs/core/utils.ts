@@ -3,7 +3,6 @@ import type { ArrayValue, NumericLikeType } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { Axis, Domain, NumArray } from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
-import { isNumber } from 'lodash-es';
 import type { NdArray, TypedArray } from 'ndarray';
 import ndarray from 'ndarray';
 
@@ -58,7 +57,9 @@ export function applyMapping<T>(
     mapping.includes('x') &&
     mapping.indexOf('x') < mapping.indexOf('y');
 
-  const slicingState = mapping.map((val) => (isNumber(val) ? val : null));
+  const slicingState = mapping.map((val) =>
+    typeof val === 'number' ? val : null,
+  );
 
   if (!isXBeforeY && slicingState.every((val) => val === null)) {
     return baseArray; // no mapping/slicing needed
@@ -75,7 +76,7 @@ export function getSliceSelection(
   dimMapping?: DimensionMapping,
 ): string | undefined {
   // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-  if (!dimMapping || !dimMapping.some(isNumber)) {
+  if (!dimMapping || !dimMapping.some((val) => typeof val === 'number')) {
     return undefined;
   }
 

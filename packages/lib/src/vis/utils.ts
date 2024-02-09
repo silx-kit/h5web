@@ -1,4 +1,4 @@
-import { isDefined, isTypedArray } from '@h5web/shared/guards';
+import { isDefined } from '@h5web/shared/guards';
 import type {
   AnyNumArray,
   AxisScaleType,
@@ -22,9 +22,8 @@ import {
 } from '@visx/scale';
 import { range, tickStep } from 'd3-array';
 import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
-import { clamp } from 'lodash-es';
 import type { IUniform } from 'three';
-import { BufferAttribute } from 'three';
+import { BufferAttribute, MathUtils } from 'three';
 
 import type {
   Aspect,
@@ -160,7 +159,7 @@ export function clampBound(
 ): number {
   const [supportedMin, supportedMax] = supportedDomain;
 
-  return clamp(val, supportedMin, supportedMax);
+  return MathUtils.clamp(val, supportedMin, supportedMax);
 }
 
 export function extendDomain(
@@ -372,7 +371,7 @@ export function getUniforms(
 }
 
 export function toArray(arr: NumArray): number[] {
-  return isTypedArray(arr) ? [...arr] : arr;
+  return Array.isArray(arr) ? arr : [...arr];
 }
 
 export function createBufferAttr(

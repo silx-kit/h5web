@@ -273,3 +273,10 @@ export function assertComplexSignal(
 ): asserts nxData is NxData<ComplexType> {
   assertComplexType(nxData.signalDef.dataset);
 }
+
+export function areSameDims(dims1: ArrayShape, dims2: ArrayShape): boolean {
+  return (
+    dims1.length === dims2.length &&
+    dims1.every((dim, index) => dim === dims2[index])
+  );
+}

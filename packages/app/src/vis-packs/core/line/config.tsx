@@ -3,7 +3,6 @@ import { isDefined } from '@h5web/shared/guards';
 import type { AxisScaleType } from '@h5web/shared/vis-models';
 import { ScaleType } from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
-import { omit } from 'lodash-es';
 import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
 import { createStore, useStore } from 'zustand';
@@ -55,7 +54,13 @@ function createLineConfigStore() {
       }),
       {
         name: 'h5web:line',
-        partialize: (state) => omit(state, ['autoScale']),
+        partialize: (state) => ({
+          curveType: state.curveType,
+          showGrid: state.showGrid,
+          xScaleType: state.xScaleType,
+          yScaleType: state.yScaleType,
+          showErrors: state.showErrors,
+        }),
         version: 4,
       },
     ),

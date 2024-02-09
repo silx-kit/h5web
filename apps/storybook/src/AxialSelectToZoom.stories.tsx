@@ -13,7 +13,7 @@ import {
   Zoom,
 } from '@h5web/lib';
 import type { Meta, StoryObj } from '@storybook/react';
-import { range } from 'lodash-es';
+import { range } from 'd3-array';
 
 import FillHeight from './decorators/FillHeight';
 

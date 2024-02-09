@@ -1,4 +1,4 @@
-import { range } from 'lodash-es';
+import { range } from 'd3-array';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 

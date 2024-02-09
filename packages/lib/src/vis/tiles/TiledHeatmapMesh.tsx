@@ -1,6 +1,7 @@
-import { clamp, range } from 'lodash-es';
+import { range } from 'd3-array';
 import { useRef } from 'react';
 import type { Group } from 'three';
+import { MathUtils } from 'three';
 
 import { useCameraState } from '../hooks';
 import type { Size } from '../models';
@@ -54,7 +55,7 @@ function TiledHeatmapMesh(props: Props) {
       (pixelSize.y / meshSize.height) * baseLayerSize.height,
     );
 
-    const roundingOffset = 1 - clamp(qualityFactor, 0, 1);
+    const roundingOffset = 1 - MathUtils.clamp(qualityFactor, 0, 1);
     const subsamplingLevel = Math.min(
       Math.floor(Math.log2(dataPointsPerPixel) + roundingOffset),
       baseLayerIndex,

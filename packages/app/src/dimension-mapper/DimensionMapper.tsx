@@ -1,5 +1,4 @@
 import type { AxisMapping } from '@h5web/shared/nexus-models';
-import { isNumber } from 'lodash-es';
 
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
@@ -48,7 +47,7 @@ function DimensionMapper(props: Props) {
       </div>
       <div className={styles.sliders}>
         {mapperState.map((val, index) =>
-          isNumber(val) ? (
+          typeof val === 'number' ? (
             <SlicingSlider
               key={`${index}`} // eslint-disable-line react/no-array-index-key
               dimension={index}

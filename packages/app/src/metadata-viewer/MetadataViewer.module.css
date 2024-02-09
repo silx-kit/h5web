@@ -11,6 +11,7 @@
 
 .table th {
   font-weight: 500;
+  text-transform: capitalize;
 }
 
 .table thead th {

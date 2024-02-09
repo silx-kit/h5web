@@ -25,13 +25,5 @@
     "ignoreDeprecations": "5.0",
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true
-  },
-  // For Cypress to work with `"moduleResoolution": "bundler"`
-  // https://github.com/cypress-io/cypress/issues/27731
-  "ts-node": {
-    "compilerOptions": {
-      "module": "ESNext",
-      "moduleResolution": "Node"
-    }
   }
 }

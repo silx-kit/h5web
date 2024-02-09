@@ -10,7 +10,7 @@ import { assertDefined } from '@h5web/shared/guards';
 import { ScaleType } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES, toTypedNdArray } from '@h5web/shared/vis-utils';
 import type { Meta, StoryObj } from '@storybook/react';
-import { range } from 'lodash-es';
+import { range } from 'd3-array';
 import ndarray from 'ndarray';
 import { LinearFilter, NearestFilter } from 'three';
 
@@ -25,7 +25,7 @@ const uint16DataArray = ndarray(Uint16Array.from(uint16Values), [2, 2]);
 const uint16Domain: Domain = [10, 40];
 const mask = ndarray(
   Uint8Array.from(
-    range(0, 20 * 41).map((val) =>
+    range(20 * 41).map((val) =>
       ((val % 41) * Math.floor(val / 41)) % 5 === 0 ? 255 : 0,
     ),
   ),

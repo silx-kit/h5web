@@ -1,6 +1,5 @@
 import { ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
-import { isEqual } from 'lodash-es';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
@@ -12,6 +11,7 @@ import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
+import { areSameDims } from '../utils';
 
 function NxSpectrumContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -24,7 +24,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
   const signalDims = signalDef.dataset.shape;
   const errorDims = signalDef.errorDataset?.shape;
 
-  if (errorDims && !isEqual(signalDims, errorDims)) {
+  if (errorDims && !areSameDims(signalDims, errorDims)) {
     const dimsStr = JSON.stringify({ signalDims, errorsDims: errorDims });
     throw new Error(`Signal and errors dimensions don't match: ${dimsStr}`);
   }

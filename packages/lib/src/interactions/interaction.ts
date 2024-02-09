@@ -1,4 +1,4 @@
-import { castArray } from 'lodash-es';
+import { castArray } from '@h5web/shared/vis-utils';
 import type { ModifierKey } from 'react';
 
 import type { InteractionConfig } from './models';

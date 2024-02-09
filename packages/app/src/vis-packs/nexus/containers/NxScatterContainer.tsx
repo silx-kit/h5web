@@ -3,7 +3,6 @@ import {
   assertGroup,
   assertNumDims,
 } from '@h5web/shared/guards';
-import { isEqual } from 'lodash-es';
 
 import { useScatterConfig } from '../../core/scatter/config';
 import MappedScatterVis from '../../core/scatter/MappedScatterVis';
@@ -12,6 +11,7 @@ import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
+import { areSameDims } from '../utils';
 
 function NxScatterContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -30,7 +30,7 @@ function NxScatterContainer(props: VisContainerProps) {
   const xDims = xDataset.dataset.shape;
   const yDims = yDataset.dataset.shape;
 
-  if (!isEqual(xDims, signalDims) || !isEqual(yDims, signalDims)) {
+  if (!areSameDims(xDims, signalDims) || !areSameDims(yDims, signalDims)) {
     const dimsStr = JSON.stringify({ signalDims, xDims, yDims });
     throw new Error(`Signal and axes dimensions don't match: ${dimsStr}`);
   }

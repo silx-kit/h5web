@@ -1,7 +1,6 @@
 import { isAbsolutePath, isDataset } from '@h5web/shared/guards';
 import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
-import { capitalize } from 'lodash-es';
 import { memo, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
@@ -26,7 +25,7 @@ function MetadataViewer(props: Props) {
   const entity = entitiesStore.get(path);
 
   const { kind, attributes } = entity;
-  const title = kind === EntityKind.Unresolved ? 'Entity' : capitalize(kind);
+  const title = kind === EntityKind.Unresolved ? 'Entity' : kind;
 
   return (
     <div className={styles.metadataViewer}>
