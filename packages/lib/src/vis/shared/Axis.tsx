@@ -17,7 +17,7 @@ import Tick from './Tick';
 
 const AXIS_PROPS: Partial<SharedAxisProps<AxisScale>> = {
   labelClassName: styles.label,
-  labelProps: {}, // remove any styling props from parent `svg` element
+  labelProps: { fontSize: 'inherit' },
   tickClassName: styles.tick,
   tickComponent: Tick,
 };

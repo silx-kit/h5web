@@ -1,4 +1,3 @@
-import { isTypedArray as isTypedArrayLodash } from 'lodash-es';
 import type { Data, NdArray, TypedArray } from 'ndarray';
 
 import type {
@@ -126,10 +125,24 @@ export function assertArray(val: unknown): asserts val is unknown[] {
   }
 }
 
+function isTypedArray(val: unknown): boolean {
+  return (
+    val instanceof Int8Array ||
+    val instanceof Int16Array ||
+    val instanceof Int32Array ||
+    val instanceof Uint8Array ||
+    val instanceof Uint8ClampedArray ||
+    val instanceof Uint16Array ||
+    val instanceof Uint32Array ||
+    val instanceof Float32Array ||
+    val instanceof Float64Array
+  );
+}
+
 export function assertArrayOrTypedArray(
   val: unknown,
 ): asserts val is unknown[] | TypedArray {
-  if (!Array.isArray(val) && !isTypedArrayLodash(val)) {
+  if (!Array.isArray(val) && !isTypedArray(val)) {
     throw new TypeError('Expected array or typed array');
   }
 }
@@ -456,12 +469,6 @@ export function isNdArray<T extends Data>(
   arr: NdArray<T> | T,
 ): arr is NdArray<T> {
   return 'data' in arr;
-}
-
-export function isTypedArray<T extends TypedArray>(
-  arr: T | unknown[],
-): arr is T {
-  return !Array.isArray(arr);
 }
 
 export function isTypedNdArray<T extends NumArray>(

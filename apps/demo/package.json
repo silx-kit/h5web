@@ -15,7 +15,7 @@
   "dependencies": {
     "@h5web/app": "workspace:*",
     "@h5web/h5wasm": "workspace:*",
-    "axios": "1.6.2",
+    "axios": "1.6.7",
     "axios-hooks": "5.0.2",
     "h5wasm-plugins": "0.0.3",
     "normalize.css": "8.0.1",
@@ -23,18 +23,18 @@
     "react-dom": "18.2.0",
     "react-dropzone": "14.2.3",
     "react-icons": "5.0.1",
-    "wouter": "3.0.0-rc.2"
+    "wouter": "3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.17",
+    "@types/node": "^20.11.17",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "4.2.1",
     "eslint": "8.56.0",
     "eslint-config-galex": "4.5.2",
     "typescript": "5.0.4",
-    "vite": "5.0.9",
-    "vite-plugin-checker": "0.6.2",
+    "vite": "5.1.0",
+    "vite-plugin-checker": "0.6.4",
     "vite-plugin-eslint": "1.8.1"
   }
 }

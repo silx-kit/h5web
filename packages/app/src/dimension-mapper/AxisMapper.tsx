@@ -1,7 +1,6 @@
 import { ToggleGroup } from '@h5web/lib';
 import type { AxisMapping } from '@h5web/shared/nexus-models';
 import type { Axis } from '@h5web/shared/vis-models';
-import { isNumber } from 'lodash-es';
 
 import styles from './DimensionMapper.module.css';
 import type { DimensionMapping } from './models';
@@ -35,9 +34,8 @@ function AxisMapper(props: Props) {
             const newMapperState = [...mapperState];
 
             // Invert mappings or reset slicing index of previously selected dimension
-            newMapperState[selectedDim] = isNumber(mapperState[newDim])
-              ? 0
-              : mapperState[newDim];
+            newMapperState[selectedDim] =
+              typeof mapperState[newDim] === 'number' ? 0 : mapperState[newDim];
             newMapperState[newDim] = axis; // assign axis to newly selected dimension
 
             onChange(newMapperState);

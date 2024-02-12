@@ -1,4 +1,4 @@
-import { range } from 'lodash-es';
+import { range } from 'd3-array';
 import { useContext } from 'react';
 
 import { SettingsContext } from './context';

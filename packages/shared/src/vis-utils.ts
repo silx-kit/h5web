@@ -3,7 +3,7 @@ import type { NdArray, TypedArray } from 'ndarray';
 import ndarray from 'ndarray';
 import { assign } from 'ndarray-ops';
 
-import { assertLength, isNdArray, isTypedArray } from './guards';
+import { assertLength, isNdArray } from './guards';
 import type { H5WebComplex } from './hdf5-models';
 import type {
   AnyNumArray,
@@ -89,9 +89,9 @@ export function createArrayFromView<T extends TypedArray | unknown[]>(
   const { data } = view;
 
   const array = ndarray(
-    (isTypedArray(data)
-      ? new (data.constructor as TypedArrayConstructor)(view.size)
-      : []) as T,
+    (Array.isArray(data)
+      ? []
+      : new (data.constructor as TypedArrayConstructor)(view.size)) as T,
     view.shape,
   );
 
@@ -178,4 +178,8 @@ export function getValidDomainForScale(
 export function getDims(dataArray: NdArray): Dims {
   const [rows, cols] = dataArray.shape;
   return { rows, cols };
+}
+
+export function castArray<T>(arrOrVal: T[] | T): T[] {
+  return Array.isArray(arrOrVal) ? arrOrVal : [arrOrVal];
 }

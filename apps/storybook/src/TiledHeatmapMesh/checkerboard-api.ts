@@ -1,11 +1,11 @@
 import type { Size } from '@h5web/lib';
 import { getLayerSizes, TilesApi } from '@h5web/lib';
 import greenlet from 'greenlet';
-import { clamp } from 'lodash-es';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
 import { createFetchStore } from 'react-suspense-fetch';
 import type { Vector2 } from 'three';
+import { MathUtils } from 'three';
 
 import type { TileParams } from './models';
 import { areTilesEqual } from './utils';
@@ -28,8 +28,12 @@ export class CheckerboardTilesApi extends TilesApi {
         const layerSize = this.layerSizes[layer];
 
         // Clip slice to size of the level
-        const width = clamp(layerSize.width - offset.x, 0, this.tileSize.width);
-        const height = clamp(
+        const width = MathUtils.clamp(
+          layerSize.width - offset.x,
+          0,
+          this.tileSize.width,
+        );
+        const height = MathUtils.clamp(
           layerSize.height - offset.y,
           0,
           this.tileSize.height,

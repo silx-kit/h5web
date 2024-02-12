@@ -7,7 +7,6 @@ import type {
   ScalePower,
   UnknownReturnType,
 } from 'd3-scale';
-import { isNumber } from 'lodash-es';
 
 import type { ScaleGammaConfig } from './models';
 
@@ -30,7 +29,7 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
   let _unknown: Unknown;
 
   const scaleFn = function (val: NumberValue) {
-    const x = isNumber(val) ? val : val.valueOf();
+    const x = typeof val === 'number' ? val : val.valueOf();
 
     if (Number.isNaN(x)) {
       return _unknown;

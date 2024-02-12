@@ -130,7 +130,7 @@ function EntityItem(props: Props) {
         <Icon entity={entity} isExpanded={isExpanded} />
         <span className={styles.name}>{entity.name}</span>
 
-        <ErrorBoundary fallback={<> </>}>
+        <ErrorBoundary fallback={null}>
           <Suspense fallback={<span data-testid="LoadingNxBadge" />}>
             <NxBadge entity={entity} />
           </Suspense>

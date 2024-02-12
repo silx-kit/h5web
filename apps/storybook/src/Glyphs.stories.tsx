@@ -9,7 +9,7 @@ import {
 import { assertDefined } from '@h5web/shared/guards';
 import { ScaleType } from '@h5web/shared/vis-models';
 import type { Meta, StoryObj } from '@storybook/react';
-import { range } from 'lodash-es';
+import { range } from 'd3-array';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -24,7 +24,7 @@ const meta = {
     controls: { sort: 'requiredFirst' },
   },
   args: {
-    abscissas: range(0, dataArray.size),
+    abscissas: range(dataArray.size),
     ordinates: dataArray.data,
     glyphType: GlyphTypeEnum.Cross,
     color: 'blue',

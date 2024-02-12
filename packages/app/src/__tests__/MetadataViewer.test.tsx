@@ -19,7 +19,7 @@ test('inspect group', async () => {
   const { user } = await renderApp('/entities');
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const column = screen.getByRole('columnheader', { name: /^Group/ });
+  const column = screen.getByRole('columnheader', { name: /group/ });
   const nameRow = screen.getByRole('row', { name: /^Name/ });
   const pathRow = screen.getByRole('row', { name: /^Path/ });
 
@@ -32,7 +32,7 @@ test('inspect scalar dataset', async () => {
   const { user } = await renderApp('/entities/scalar_num');
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const column = screen.getByRole('columnheader', { name: /Dataset/ });
+  const column = screen.getByRole('columnheader', { name: /dataset/ });
   const nameRow = screen.getByRole('row', { name: /^Name/ });
   const pathRow = screen.getByRole('row', { name: /^Path/ });
   const shapeRow = screen.getByRole('row', { name: /^Shape/ });
@@ -69,7 +69,7 @@ test('inspect datatype', async () => {
   const { user } = await renderApp('/entities/datatype');
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
-  const column = screen.getByRole('columnheader', { name: /Datatype/ });
+  const column = screen.getByRole('columnheader', { name: /datatype/ });
   const nameRow = screen.getByRole('row', { name: /^Name/ });
   const pathRow = screen.getByRole('row', { name: /^Path/ });
   const typeRow = screen.getByRole('row', { name: /^Type/ });

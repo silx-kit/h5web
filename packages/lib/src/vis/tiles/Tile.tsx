@@ -1,5 +1,5 @@
+import { useThrottledCallback } from '@react-hookz/web';
 import type { ThreeEvent } from '@react-three/fiber';
-import { throttle } from 'lodash-es';
 import { memo } from 'react';
 import type { MagnificationTextureFilter } from 'three';
 import { Vector2 } from 'three';
@@ -24,15 +24,13 @@ function Tile(props: Props) {
   const array = api.get(layer, new Vector2(x, y));
   const [height, width] = array.shape;
 
-  const handlePointerMove =
-    onPointerMove &&
-    throttle(
-      (e: ThreeEvent<MouseEvent>) => {
-        onPointerMove(e, array);
-      },
-      50,
-      { trailing: false },
-    );
+  const handlePointerMove = useThrottledCallback(
+    (e: ThreeEvent<MouseEvent>) => {
+      onPointerMove?.(e, array);
+    },
+    [onPointerMove],
+    50,
+  );
 
   return (
     <group
@@ -43,7 +41,7 @@ function Tile(props: Props) {
         {...colorMapProps}
         magFilter={magFilter}
         size={{ width, height }}
-        onPointerMove={handlePointerMove}
+        onPointerMove={onPointerMove && handlePointerMove}
       />
     </group>
   );

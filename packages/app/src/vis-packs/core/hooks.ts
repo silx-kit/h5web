@@ -7,7 +7,7 @@ import type {
   Value,
 } from '@h5web/shared/hdf5-models';
 import type { NumArray } from '@h5web/shared/vis-models';
-import { castArray } from 'lodash-es';
+import { castArray } from '@h5web/shared/vis-utils';
 import type { NdArray, TypedArray } from 'ndarray';
 import { useMemo } from 'react';
 
