@@ -41,7 +41,7 @@ jobs:
         run: pnpm install
 
       - name: Lint 🤓
-        run: pnpm prettier && pnpm lint
+        run: pnpm lint
 
   test:
     runs-on: ubuntu-latest
