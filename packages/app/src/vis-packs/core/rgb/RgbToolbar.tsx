@@ -1,12 +1,11 @@
 import {
-  GridToggler,
   ImageType,
   Separator,
   ToggleBtn,
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import { MdAspectRatio } from 'react-icons/md';
+import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 
 import { getImageInteractions } from '../utils';
 import type { RgbVisConfig } from './config';
@@ -49,7 +48,12 @@ function RgbToolbar(props: Props) {
         onToggle={toggleKeepRatio}
       />
 
-      <GridToggler value={showGrid} onToggle={toggleGrid} />
+      <ToggleBtn
+        label="Grid"
+        icon={MdGridOn}
+        value={showGrid}
+        onToggle={toggleGrid}
+      />
     </Toolbar>
   );
 }

@@ -1,15 +1,15 @@
-import {
-  Annotation,
-  DefaultInteractions,
-  HeatmapVis,
-  mockValues,
-} from '@h5web/lib';
+import { Annotation, DefaultInteractions, HeatmapVis } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared/vis-utils';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import ndarray from 'ndarray';
 
 import HeatmapVisStoriesMeta from './HeatmapVis.stories';
 
-const dataArray = mockValues.twoD();
+const { dataArray } = HeatmapVisStoriesMeta.args;
+const dataArrayNoSym = ndarray(
+  dataArray.data.map((val, index) => (index % 41 >= 20 ? val * 5 : val)),
+  dataArray.shape,
+);
 
 const meta = {
   ...HeatmapVisStoriesMeta,
@@ -31,8 +31,16 @@ export const CustomAspectRatio = {
   },
 } satisfies Story;
 
+export const FlipXAxis = {
+  args: {
+    dataArray: dataArrayNoSym,
+    flipXAxis: true,
+  },
+} satisfies Story;
+
 export const FlipYAxis = {
   args: {
+    dataArray: dataArrayNoSym,
     flipYAxis: true,
   },
 } satisfies Story;
