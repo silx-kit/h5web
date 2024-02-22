@@ -1,6 +1,7 @@
 .root {
+  grid-area: vis; /* when inside `visArea` in viewer */
+  flex: 1; /* when inside flex container in consumer app */
   overflow: auto;
-  flex: 1;
 }
 
 .raw {

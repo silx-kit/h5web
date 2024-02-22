@@ -72,8 +72,8 @@ describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
 
   it('should support any dataset', () => {
-    expect(supportsDataset(scalarInt, mockStore)).toBe(true);
-    expect(supportsDataset(twoDStr, mockStore)).toBe(true);
+    expect(supportsDataset(scalarInt)).toBe(true);
+    expect(supportsDataset(twoDStr)).toBe(true);
   });
 });
 
@@ -81,20 +81,20 @@ describe('Scalar', () => {
   const { supportsDataset } = CORE_VIS.Scalar;
 
   it('should support dataset with printable type and scalar shape', () => {
-    expect(supportsDataset(scalarInt, mockStore)).toBe(true);
-    expect(supportsDataset(scalarUint, mockStore)).toBe(true);
-    expect(supportsDataset(scalarFloat, mockStore)).toBe(true);
-    expect(supportsDataset(scalarStr, mockStore)).toBe(true);
-    expect(supportsDataset(scalarBool, mockStore)).toBe(true);
-    expect(supportsDataset(scalarCplx, mockStore)).toBe(true);
+    expect(supportsDataset(scalarInt)).toBe(true);
+    expect(supportsDataset(scalarUint)).toBe(true);
+    expect(supportsDataset(scalarFloat)).toBe(true);
+    expect(supportsDataset(scalarStr)).toBe(true);
+    expect(supportsDataset(scalarBool)).toBe(true);
+    expect(supportsDataset(scalarCplx)).toBe(true);
   });
 
   it('should not support dataset with non-printable type', () => {
-    expect(supportsDataset(scalarCompound, mockStore)).toBe(false);
+    expect(supportsDataset(scalarCompound)).toBe(false);
   });
 
   it('should not support dataset with non-scalar shape', () => {
-    expect(supportsDataset(oneDInt, mockStore)).toBe(false);
+    expect(supportsDataset(oneDInt)).toBe(false);
   });
 });
 
@@ -102,20 +102,20 @@ describe('Matrix', () => {
   const { supportsDataset } = CORE_VIS.Matrix;
 
   it('should support array dataset with printable type and at least one dimension', () => {
-    expect(supportsDataset(oneDInt, mockStore)).toBe(true);
-    expect(supportsDataset(oneDUint, mockStore)).toBe(true);
-    expect(supportsDataset(twoDStr, mockStore)).toBe(true);
-    expect(supportsDataset(twoDCplx, mockStore)).toBe(true);
-    expect(supportsDataset(threeDFloat, mockStore)).toBe(true);
-    expect(supportsDataset(oneDBool, mockStore)).toBe(true);
+    expect(supportsDataset(oneDInt)).toBe(true);
+    expect(supportsDataset(oneDUint)).toBe(true);
+    expect(supportsDataset(twoDStr)).toBe(true);
+    expect(supportsDataset(twoDCplx)).toBe(true);
+    expect(supportsDataset(threeDFloat)).toBe(true);
+    expect(supportsDataset(oneDBool)).toBe(true);
   });
 
   it('should not support dataset with non-printable type', () => {
-    expect(supportsDataset(oneDCompound, mockStore)).toBe(false);
+    expect(supportsDataset(oneDCompound)).toBe(false);
   });
 
   it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarInt, mockStore)).toBe(false);
+    expect(supportsDataset(scalarInt)).toBe(false);
   });
 });
 
@@ -123,19 +123,19 @@ describe('Line', () => {
   const { supportsDataset } = CORE_VIS.Line;
 
   it('should support array dataset with numeric-like type and at least one dimension', () => {
-    expect(supportsDataset(oneDInt, mockStore)).toBe(true);
-    expect(supportsDataset(oneDUint, mockStore)).toBe(true);
-    expect(supportsDataset(oneDBool, mockStore)).toBe(true);
-    expect(supportsDataset(twoDBool, mockStore)).toBe(true);
-    expect(supportsDataset(threeDFloat, mockStore)).toBe(true);
+    expect(supportsDataset(oneDInt)).toBe(true);
+    expect(supportsDataset(oneDUint)).toBe(true);
+    expect(supportsDataset(oneDBool)).toBe(true);
+    expect(supportsDataset(twoDBool)).toBe(true);
+    expect(supportsDataset(threeDFloat)).toBe(true);
   });
 
   it('should not support dataset with non-numeric-like type', () => {
-    expect(supportsDataset(twoDStr, mockStore)).toBe(false);
+    expect(supportsDataset(twoDStr)).toBe(false);
   });
 
   it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarInt, mockStore)).toBe(false);
+    expect(supportsDataset(scalarInt)).toBe(false);
   });
 });
 
@@ -143,22 +143,22 @@ describe('Heatmap', () => {
   const { supportsDataset } = CORE_VIS.Heatmap;
 
   it('should support array dataset with numeric-like type and at least two dimensions', () => {
-    expect(supportsDataset(twoDInt, mockStore)).toBe(true);
-    expect(supportsDataset(twoDUint, mockStore)).toBe(true);
-    expect(supportsDataset(twoDBool, mockStore)).toBe(true);
-    expect(supportsDataset(threeDFloat, mockStore)).toBe(true);
+    expect(supportsDataset(twoDInt)).toBe(true);
+    expect(supportsDataset(twoDUint)).toBe(true);
+    expect(supportsDataset(twoDBool)).toBe(true);
+    expect(supportsDataset(threeDFloat)).toBe(true);
   });
 
   it('should not support dataset with non-numeric-like type', () => {
-    expect(supportsDataset(twoDStr, mockStore)).toBe(false);
+    expect(supportsDataset(twoDStr)).toBe(false);
   });
 
   it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarInt, mockStore)).toBe(false);
+    expect(supportsDataset(scalarInt)).toBe(false);
   });
 
   it('should not support dataset with less than two dimensions', () => {
-    expect(supportsDataset(oneDInt, mockStore)).toBe(false);
+    expect(supportsDataset(oneDInt)).toBe(false);
   });
 });
 
@@ -166,23 +166,23 @@ describe('Complex', () => {
   const { supportsDataset } = CORE_VIS.Complex;
 
   it('should support array dataset with complex type and at least two dimensions', () => {
-    expect(supportsDataset(twoDCplx, mockStore)).toBe(true);
-    expect(supportsDataset(threeDCplx, mockStore)).toBe(true);
+    expect(supportsDataset(twoDCplx)).toBe(true);
+    expect(supportsDataset(threeDCplx)).toBe(true);
   });
 
   it('should not support dataset with non-complex type', () => {
-    expect(supportsDataset(twoDUint, mockStore)).toBe(false);
-    expect(supportsDataset(twoDInt, mockStore)).toBe(false);
-    expect(supportsDataset(threeDFloat, mockStore)).toBe(false);
-    expect(supportsDataset(twoDStr, mockStore)).toBe(false);
+    expect(supportsDataset(twoDUint)).toBe(false);
+    expect(supportsDataset(twoDInt)).toBe(false);
+    expect(supportsDataset(threeDFloat)).toBe(false);
+    expect(supportsDataset(twoDStr)).toBe(false);
   });
 
   it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarCplx, mockStore)).toBe(false);
+    expect(supportsDataset(scalarCplx)).toBe(false);
   });
 
   it('should not support dataset with less than two dimensions', () => {
-    expect(supportsDataset(oneDCplx, mockStore)).toBe(false);
+    expect(supportsDataset(oneDCplx)).toBe(false);
   });
 });
 
@@ -190,17 +190,17 @@ describe('Complex Line', () => {
   const { supportsDataset } = CORE_VIS.ComplexLine;
 
   it('should support array dataset with complex type and at least one dimension', () => {
-    expect(supportsDataset(oneDCplx, mockStore)).toBe(true);
+    expect(supportsDataset(oneDCplx)).toBe(true);
   });
 
   it('should not support dataset with non-complex type', () => {
-    expect(supportsDataset(twoDInt, mockStore)).toBe(false);
-    expect(supportsDataset(oneDUint, mockStore)).toBe(false);
-    expect(supportsDataset(twoDStr, mockStore)).toBe(false);
+    expect(supportsDataset(twoDInt)).toBe(false);
+    expect(supportsDataset(oneDUint)).toBe(false);
+    expect(supportsDataset(twoDStr)).toBe(false);
   });
 
   it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarCplx, mockStore)).toBe(false);
+    expect(supportsDataset(scalarCplx)).toBe(false);
   });
 });
 
@@ -225,16 +225,16 @@ describe('Compound Matrix', () => {
   const { supportsDataset } = CORE_VIS.CompoundMatrix;
 
   it('should support array dataset with printable compound type and at least one dimension', () => {
-    expect(supportsDataset(oneDCompound, mockStore)).toBe(true);
-    expect(supportsDataset(twoDCompound, mockStore)).toBe(true);
+    expect(supportsDataset(oneDCompound)).toBe(true);
+    expect(supportsDataset(twoDCompound)).toBe(true);
   });
 
   it('should not support dataset with non-compound type or non-printable compound type', () => {
-    expect(supportsDataset(oneDInt, mockStore)).toBe(false);
-    expect(supportsDataset(nestedCompound, mockStore)).toBe(false);
+    expect(supportsDataset(oneDInt)).toBe(false);
+    expect(supportsDataset(nestedCompound)).toBe(false);
   });
 
   it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarCompound, mockStore)).toBe(false);
+    expect(supportsDataset(scalarCompound)).toBe(false);
   });
 });

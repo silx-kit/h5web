@@ -28,7 +28,7 @@ export interface DatasetInfo {
   unit: string | undefined;
 }
 
-interface DatasetDef<
+export interface DatasetDef<
   T extends NumericType | ComplexType = NumericType | ComplexType,
 > extends DatasetInfo {
   dataset: Dataset<ArrayShape, T>;

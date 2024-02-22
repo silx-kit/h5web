@@ -1,7 +1,6 @@
 import {
   assertArray,
   assertArrayShape,
-  assertComplexType,
   assertDataset,
   assertDefined,
   assertNumericOrComplexType,
@@ -27,7 +26,7 @@ import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
 import type { AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
-import type { AxisDef, DatasetInfo, NxData, SilxStyle } from './models';
+import type { AxisDef, DatasetInfo, SilxStyle } from './models';
 
 export function isNxDataGroup(
   group: GroupWithChildren,
@@ -260,18 +259,6 @@ export function guessKeepRatio(
   }
 
   return xAxisDef?.unit === yAxisDef?.unit;
-}
-
-export function assertNumericSignal(
-  nxData: NxData,
-): asserts nxData is NxData<NumericType> {
-  assertNumericType(nxData.signalDef.dataset);
-}
-
-export function assertComplexSignal(
-  nxData: NxData,
-): asserts nxData is NxData<ComplexType> {
-  assertComplexType(nxData.signalDef.dataset);
 }
 
 export function areSameDims(dims1: ArrayShape, dims2: ArrayShape): boolean {

@@ -17,7 +17,11 @@
 .visArea {
   flex: 1;
   min-height: 0;
-  display: flex;
+  display: grid;
+  grid-template:
+    'dimMapper bar' auto
+    'dimMapper vis' 1fr
+    / auto 1fr;
 }
 
 .fallback {

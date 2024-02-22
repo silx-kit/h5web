@@ -1,9 +1,11 @@
 .root {
+  grid-area: vis; /* when inside `visArea` in viewer */
+  flex: 1; /* when inside flex container in consumer app */
   overflow: auto;
 }
 
 .scalar {
-  width: fit-content; /* fix missing padding-right */
+  min-width: fit-content; /* fix missing padding-right */
   margin: 0;
   padding: 1rem 1.5rem !important; /* Overwritten by JupyterLab if not !important */
   color: inherit;
