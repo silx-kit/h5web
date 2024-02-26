@@ -28,7 +28,7 @@ export enum NexusVis {
   NxScatter = 'NX Scatter',
 }
 
-export const NEXUS_VIS: Record<NexusVis, VisDef> = {
+export const NEXUS_VIS = {
   [NexusVis.NxSpectrum]: {
     name: NexusVis.NxSpectrum,
     Icon: FiActivity,
@@ -70,4 +70,4 @@ export const NEXUS_VIS: Record<NexusVis, VisDef> = {
     Container: NxScatterContainer,
     ConfigProvider: ScatterConfigProvider,
   },
-};
+} satisfies Record<NexusVis, VisDef>;

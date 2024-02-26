@@ -370,6 +370,27 @@ describe('/mock', () => {
       }
     });
 
+    it('visualize auxiliary signal datasets as NxImage', () => {
+      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('image_with_aux');
+
+      cy.findByRole('heading', {
+        name: 'nexus_entry / image_with_aux',
+      }).should('be.visible');
+      cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
+
+      cy.findByRole('radio', { name: 'tertiary' }).click();
+      cy.waitForStableDOM();
+
+      cy.findByRole('figure', { name: 'tertiary' })
+        .should('be.visible')
+        .and('contain.text', '−4.75e+1'); // color bar min
+
+      if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.matchImageSnapshot('auximage');
+      }
+    });
+
     it('visualize dataset with "rgb-image" interpretation as NxRGB', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('rgb-image');

@@ -1,6 +1,7 @@
 .wrapper {
+  grid-area: vis; /* when inside `visArea` in viewer */
+  flex: 1; /* when inside flex container in consumer app */
   position: relative;
-  flex: 1;
 }
 
 .grid {

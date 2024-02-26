@@ -65,7 +65,7 @@ export interface CoreVisDef extends VisDef {
   ) => boolean;
 }
 
-export const CORE_VIS: Record<Vis, CoreVisDef> = {
+export const CORE_VIS = {
   [Vis.Raw]: {
     name: Vis.Raw,
     Icon: FiCpu,
@@ -188,4 +188,4 @@ export const CORE_VIS: Record<Vis, CoreVisDef> = {
       );
     },
   },
-};
+} satisfies Record<Vis, CoreVisDef>;

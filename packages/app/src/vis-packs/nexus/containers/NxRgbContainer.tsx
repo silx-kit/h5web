@@ -7,16 +7,16 @@ import MappedRgbVis from '../../core/rgb/MappedRgbVis';
 import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
+import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { assertNumericSignal } from '../utils';
 
 function NxRgbContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertGroup(entity);
 
   const nxData = useNxData(entity);
-  assertNumericSignal(nxData);
+  assertNumericNxData(nxData);
 
   const { signalDef, axisDefs } = nxData;
   assertMinDims(signalDef.dataset, 3);

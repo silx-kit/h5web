@@ -1,0 +1,27 @@
+.bar {
+  grid-area: bar;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0.75rem 1.25rem 0;
+  font-size: 0.875em;
+}
+
+.text {
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.label > input {
+  margin-bottom: -0.1em;
+  margin-right: 0.25rem;
+  accent-color: var(--secondary-dark);
+  cursor: pointer;
+}

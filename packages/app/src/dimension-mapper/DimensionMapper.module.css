@@ -1,5 +1,5 @@
 .mapper {
-  flex: none;
+  grid-area: dimMapper;
   display: flex;
   flex-direction: column;
   padding: 1rem 0.375rem 1rem 0.375rem;

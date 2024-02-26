@@ -8,16 +8,17 @@ import { useHeatmapConfig } from '../../core/heatmap/config';
 import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
+import { assertComplexNxData } from '../guards';
 import { useNxData } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { assertComplexSignal, guessKeepRatio } from '../utils';
+import { guessKeepRatio } from '../utils';
 
 function NxComplexImageContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertGroup(entity);
 
   const nxData = useNxData(entity);
-  assertComplexSignal(nxData);
+  assertComplexNxData(nxData);
 
   const { signalDef, axisDefs, silxStyle } = nxData;
   assertMinDims(signalDef.dataset, 2);

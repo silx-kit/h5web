@@ -190,6 +190,16 @@ export function makeMockFile(): GroupWithChildren {
             auxAttr: ['secondary', 'tertiary'],
             children: [array('secondary_errors', { valueId: 'twoD_errors' })],
           }),
+          nxData('image_with_aux', {
+            signal: array('twoD'),
+            axes: { X: array('X'), Y: array('Y') },
+            axesAttr: ['Y', 'X'],
+            auxiliary: {
+              secondary: array('secondary'),
+              tertiary: array('tertiary'),
+            },
+            auxAttr: ['secondary', 'tertiary'],
+          }),
           nxData('complex', {
             signal: array('twoD_cplx'),
             axes: { position: array('position') },
