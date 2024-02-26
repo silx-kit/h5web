@@ -9,7 +9,8 @@ import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import HeatmapVisStoriesMeta from './HeatmapVis.stories';
 
-const dataArray = mockValues.twoD();
+const { dataArray } = HeatmapVisStoriesMeta.args;
+const dataArrayAsym = mockValues.twoDAsym();
 
 const meta = {
   ...HeatmapVisStoriesMeta,
@@ -31,8 +32,16 @@ export const CustomAspectRatio = {
   },
 } satisfies Story;
 
+export const FlipXAxis = {
+  args: {
+    dataArray: dataArrayAsym,
+    flipXAxis: true,
+  },
+} satisfies Story;
+
 export const FlipYAxis = {
   args: {
+    dataArray: dataArrayAsym,
     flipYAxis: true,
   },
 } satisfies Story;

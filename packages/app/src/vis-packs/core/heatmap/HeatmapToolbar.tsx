@@ -3,8 +3,6 @@ import {
   ColorMapSelector,
   DomainWidget,
   ExportMenu,
-  FlipYAxisToggler,
-  GridToggler,
   ScaleSelector,
   Separator,
   SnapshotBtn,
@@ -12,7 +10,12 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { MdAspectRatio } from 'react-icons/md';
+import {
+  MdAspectRatio,
+  MdGridOn,
+  MdSwapHoriz,
+  MdSwapVert,
+} from 'react-icons/md';
 
 import type { ExportFormat, ExportURL } from '../../../providers/models';
 import { getImageInteractions } from '../utils';
@@ -36,6 +39,7 @@ function HeatmapToolbar(props: Props) {
     keepRatio,
     showGrid,
     invertColorMap,
+    flipXAxis,
     flipYAxis,
     setCustomDomain,
     setColorMap,
@@ -43,6 +47,7 @@ function HeatmapToolbar(props: Props) {
     toggleKeepRatio,
     toggleGrid,
     toggleColorMapInversion,
+    toggleXAxisFlip,
     toggleYAxisFlip,
   } = config;
 
@@ -73,7 +78,20 @@ function HeatmapToolbar(props: Props) {
 
       <Separator />
 
-      <FlipYAxisToggler value={flipYAxis} onToggle={toggleYAxisFlip} />
+      <ToggleBtn
+        label="X"
+        aria-label="Flip X"
+        icon={MdSwapHoriz}
+        value={flipXAxis}
+        onToggle={toggleXAxisFlip}
+      />
+      <ToggleBtn
+        label="Y"
+        aria-label="Flip Y"
+        icon={MdSwapVert}
+        value={flipYAxis}
+        onToggle={toggleYAxisFlip}
+      />
 
       <ToggleBtn
         label="Keep ratio"
@@ -82,7 +100,12 @@ function HeatmapToolbar(props: Props) {
         onToggle={toggleKeepRatio}
       />
 
-      <GridToggler value={showGrid} onToggle={toggleGrid} />
+      <ToggleBtn
+        label="Grid"
+        icon={MdGridOn}
+        value={showGrid}
+        onToggle={toggleGrid}
+      />
 
       <Separator />
 

@@ -7,6 +7,9 @@ interface Props {
   onToggle: () => void;
 }
 
+/**
+ * @deprecated Use `ToggleBtn` directly instead
+ */
 function GridToggler(props: Props) {
   const { value, onToggle } = props;
 
@@ -15,4 +18,4 @@ function GridToggler(props: Props) {
   );
 }
 
-export default GridToggler;
+export default GridToggler; // eslint-disable-line etc/no-deprecated
