@@ -29,7 +29,7 @@
     }
   },
   "scripts": {
-    "build": "vite build && run-p build:*",
+    "build": "vite build && pnpm \"/^build:/\"",
     "build:css": "vite build --config vite.styles.config.js && concat dist/temp/style.css dist/style.css -o dist/styles.css && rimraf dist/style.css dist/temp",
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
@@ -98,7 +98,6 @@
     "dot-json": "1.3.0",
     "eslint": "8.56.0",
     "eslint-config-galex": "4.5.2",
-    "npm-run-all": "4.1.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "rimraf": "5.0.5",

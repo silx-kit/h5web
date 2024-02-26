@@ -46,6 +46,8 @@ in your browser, or `h` to show all the available keyboard shortcuts.
 - `pnpm --filter <project-name> add [-D] <pkg-name>` -
   [add a dependency](https://pnpm.io/cli/add) to a project in the workspace
 - `pnpm [run] <script> [--<arg>]` - run a workspace script
+- `pnpm [run] "/<regex>/" [--<arg>]` - run multiple workspace scripts in
+  parallel
 - `pnpm [run] --filter {packages/*} [--parallel] <script> [--<arg>]` -
   [run a script](https://pnpm.io/cli/run) in every project in the `packages`
   folder
@@ -168,16 +170,16 @@ other packages can inline them in their own `dist/index.d.ts`.
 
 ## Code quality
 
-- `pnpm prettier` - check that all files in the workspace have been formatted
-  with Prettier
-- `pnpm lint` - lint and type-check every project in the workspace with ESLint
-  and TypeScript, as well as the workspace root and `cypress` folder
+- `pnpm lint` - run Prettier, ESLint and TypeScript on the entire workspace
+- `pnpm lint:prettier` - check that every file is formatted with Prettier
 - `pnpm lint:eslint` - lint every project with ESLint
-- `pnpm lint:tsc` - type-check every project with TypeScript
 - `pnpm [--filter <project-name|{folder/*}>] lint:eslint` - lint specific
   projects
+- `pnpm lint:root:eslint` - lint files that don't belong to projects
+- `pnpm lint:tsc` - type-check every project with TypeScript
 - `pnpm [--filter <project-name|{folder/*}>] lint:tsc` - type-check specific
   projects
+- `pnpm lint:cypress:tsc` - type-check the `cypress` folder
 - `pnpm --filter @h5web/<lib|app> analyze` - analyze a package's bundle (run
   only after building the package)
 - `pnpm --filter storybook exec storybook doctor` - diagnose problems with
@@ -185,7 +187,7 @@ other packages can inline them in their own `dist/index.d.ts`.
 
 ### Fixing and formatting
 
-- `pnpm prettier --write` - format all files with Prettier
+- `pnpm lint:prettier --write` - format all files with Prettier
 - `pnpm lint:eslint --fix` - auto-fix linting issues in every project
 - `pnpm [--filter <project-name|{folder/*}>] lint:eslint --fix` - auto-fix
   linting issues in specific projects

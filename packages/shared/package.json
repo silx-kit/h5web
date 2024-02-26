@@ -21,7 +21,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "run-p build:*",
+    "build": "pnpm \"/^build:/\"",
     "build:dts": "tsc --build tsconfig.build.json",
     "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
     "lint:tsc": "tsc"
