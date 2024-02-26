@@ -205,7 +205,28 @@ describe('/mock', () => {
     });
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
-      cy.matchImageSnapshot('edit_domain');
+      cy.matchImageSnapshot('heatmap_domain');
+    }
+  });
+
+  it('flip heatmap', () => {
+    cy.selectExplorerNode('typed_arrays');
+    cy.selectExplorerNode('uint8');
+
+    cy.findByRole('button', { name: 'More controls' }).click();
+
+    cy.findByRole('button', { name: 'Flip X' })
+      .click()
+      .should('have.attr', 'aria-pressed', 'true');
+
+    cy.findByRole('button', { name: 'Flip Y' })
+      .click()
+      .should('have.attr', 'aria-pressed', 'true');
+
+    cy.waitForStableDOM();
+
+    if (Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.matchImageSnapshot('heatmap_flip');
     }
   });
 

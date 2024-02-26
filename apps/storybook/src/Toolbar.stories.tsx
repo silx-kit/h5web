@@ -3,7 +3,6 @@ import {
   Btn,
   ColorMapSelector,
   DomainWidget,
-  GridToggler,
   ScaleSelector,
   ScaleType,
   Separator,
@@ -17,6 +16,7 @@ import { useToggle } from '@react-hookz/web';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';
+import { MdGridOn } from 'react-icons/md';
 
 const meta = {
   title: 'Toolbar/Toolbar',
@@ -76,7 +76,13 @@ export const Default = {
           />
 
           <Separator />
-          <GridToggler value={showGrid} onToggle={toggleGrid} />
+
+          <ToggleBtn
+            label="Grid"
+            icon={MdGridOn}
+            value={showGrid}
+            onToggle={toggleGrid}
+          />
           <ToggleBtn
             label="Test"
             iconOnly

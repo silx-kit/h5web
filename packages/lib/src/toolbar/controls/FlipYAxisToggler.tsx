@@ -7,6 +7,9 @@ interface Props {
   onToggle: () => void;
 }
 
+/**
+ * @deprecated Use `ToggleBtn` directly instead
+ */
 function FlipYAxisToggler(props: Props) {
   const { value, onToggle } = props;
 
@@ -20,4 +23,4 @@ function FlipYAxisToggler(props: Props) {
   );
 }
 
-export default FlipYAxisToggler;
+export default FlipYAxisToggler; // eslint-disable-line etc/no-deprecated

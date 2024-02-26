@@ -30,6 +30,9 @@ export interface HeatmapConfig {
   keepRatio: boolean;
   toggleKeepRatio: () => void;
 
+  flipXAxis: boolean;
+  toggleXAxisFlip: () => void;
+
   flipYAxis: boolean;
   toggleYAxisFlip: () => void;
 }
@@ -64,6 +67,10 @@ function createHeatmapConfigStore() {
         flipYAxis: false,
         toggleYAxisFlip: () =>
           set((state) => ({ flipYAxis: !state.flipYAxis })),
+
+        flipXAxis: false,
+        toggleXAxisFlip: () =>
+          set((state) => ({ flipXAxis: !state.flipXAxis })),
       }),
       {
         name: 'h5web:heatmap',

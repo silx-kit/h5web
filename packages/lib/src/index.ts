@@ -21,8 +21,6 @@ export { default as DomainControls } from './toolbar/controls/DomainWidget/Domai
 export { default as ColorMapOption } from './toolbar/controls/ColorMapSelector/ColorMapOption';
 export { default as ColorMapSelector } from './toolbar/controls/ColorMapSelector/ColorMapSelector';
 export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/ScaleSelector';
-export { default as GridToggler } from './toolbar/controls/GridToggler';
-export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler';
 export { default as Selector } from './toolbar/controls/Selector/Selector';
 export { default as InteractionHelp } from './toolbar/controls/InteractionHelp';
 export { default as FloatingControl } from './toolbar/floating/FloatingControl';
@@ -224,3 +222,7 @@ export { default as SurfaceVis } from './vis/surface/SurfaceVis';
 export type { SurfaceVisProps } from './vis/surface/SurfaceVis';
 export { default as SurfaceMeshGeometry } from './vis/surface/surfaceMeshGeometry';
 export { default as R3FCanvas } from './vis/shared/R3FCanvas';
+
+// Deprecated
+export { default as GridToggler } from './toolbar/controls/GridToggler';
+export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler';

@@ -52,6 +52,7 @@ function MappedHeatmapVis(props: Props) {
     keepRatio,
     showGrid,
     invertColorMap,
+    flipXAxis,
     flipYAxis,
   } = config;
 
@@ -105,6 +106,7 @@ function MappedHeatmapVis(props: Props) {
           label: axisLabels?.[yDimIndex],
           value: axisValues?.[yDimIndex],
         }}
+        flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}
         ignoreValue={ignoreValue}
       />

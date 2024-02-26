@@ -2,12 +2,13 @@ import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
   DomainWidget,
-  GridToggler,
   ScaleSelector,
   Separator,
+  ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
 import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
+import { MdGridOn } from 'react-icons/md';
 
 import { BASE_INTERACTIONS } from '../utils';
 import type { ScatterConfig } from './config';
@@ -78,7 +79,12 @@ function ScatterToolbar(props: Props) {
 
       <Separator />
 
-      <GridToggler value={showGrid} onToggle={toggleGrid} />
+      <ToggleBtn
+        label="Grid"
+        icon={MdGridOn}
+        value={showGrid}
+        onToggle={toggleGrid}
+      />
     </Toolbar>
   );
 }

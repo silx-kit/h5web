@@ -32,6 +32,7 @@ interface Props {
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
   alpha?: { array: NdArray<NumArray>; domain: Domain };
+  flipXAxis?: boolean;
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
@@ -53,6 +54,7 @@ function HeatmapVis(props: Props) {
     abscissaParams = {},
     ordinateParams = {},
     alpha,
+    flipXAxis,
     flipYAxis,
     renderTooltip,
     children,
@@ -88,6 +90,7 @@ function HeatmapVis(props: Props) {
           showGrid,
           isIndexAxis: !abscissaValue,
           label: abscissaLabel,
+          flip: flipXAxis,
         }}
         ordinateConfig={{
           visDomain: ordinateDomain,
@@ -134,7 +137,7 @@ function HeatmapVis(props: Props) {
           scaleType={scaleType}
           alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
-          scale={[1, flipYAxis ? -1 : 1, 1]}
+          scale={[flipXAxis ? -1 : 1, flipYAxis ? -1 : 1, 1]}
           mask={maskArray}
         />
 
