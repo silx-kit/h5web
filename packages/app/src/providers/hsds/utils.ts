@@ -1,4 +1,4 @@
-import { isGroup } from '@h5web/shared/guards';
+import { assertArray, isGroup } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Attribute,
@@ -165,4 +165,15 @@ export function convertHsdsAttributes(attrs: HsdsAttribute[]): Attribute[] {
     shape: convertHsdsShape(attr.shape),
     type: convertHsdsType(attr.type),
   }));
+}
+
+export function flattenValue(
+  value: unknown,
+  dataset: Dataset<ArrayShape>,
+  selection?: string,
+): unknown[] {
+  assertArray(value);
+  const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
+  const dims = slicedDims || dataset.shape;
+  return value.flat(dims.length - 1);
 }

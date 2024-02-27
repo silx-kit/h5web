@@ -180,8 +180,17 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     add_scalar(
         h5,
         "compound_nested",
-        ((True, 1 + 2j),),
-        [("nested", [("bool", np.bool_), ("cplx", np.complex64)])],
+        ((True, 1 + 2j, 3),),
+        [
+            (
+                "nested",
+                [
+                    ("bool", np.bool_),
+                    ("cplx", np.complex64),
+                    ("bigint", np.int64),
+                ],
+            )
+        ],
     )
 
     comp = add_array(

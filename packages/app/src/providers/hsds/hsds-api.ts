@@ -20,7 +20,7 @@ import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { flattenValue, handleAxiosError } from '../utils';
+import { handleAxiosError } from '../utils';
 import type {
   BaseHsdsEntity,
   HsdsAttribute,
@@ -43,6 +43,7 @@ import {
   convertHsdsAttributes,
   convertHsdsShape,
   convertHsdsType,
+  flattenValue,
   isHsdsGroup,
 } from './utils';
 

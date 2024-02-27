@@ -7,7 +7,12 @@ import type {
   ProvidedEntity,
   Shape,
 } from '@h5web/shared/hdf5-models';
-import { Endianness, EntityKind, H5TClass } from '@h5web/shared/hdf5-models';
+import {
+  DTypeClass,
+  Endianness,
+  EntityKind,
+  H5TClass,
+} from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   bitfieldType,
@@ -246,18 +251,55 @@ function toEndianness(littleEndian: boolean): Endianness {
   return littleEndian ? Endianness.LE : Endianness.BE;
 }
 
-export function convertSelectionToRanges(
-  dataset: H5WasmDataset,
-  selection: string,
-): [number, number][] {
-  const { shape } = dataset;
+export function readSelectedValue(
+  h5wDataset: H5WasmDataset,
+  selection: string | undefined,
+) {
+  if (!selection) {
+    return h5wDataset.value;
+  }
+
+  const { shape } = h5wDataset;
   const selectionMembers = selection.split(',');
 
-  return selectionMembers.map((member, i) => {
+  const ranges = selectionMembers.map<[number, number]>((member, i) => {
     if (member === ':') {
       return [0, shape[i]];
     }
 
     return [Number(member), Number(member) + 1];
   });
+
+  return h5wDataset.slice(ranges);
+}
+
+export function hasBigInts(type: DType): boolean {
+  if (type.class === DTypeClass.Array || type.class === DTypeClass.Enum) {
+    return hasBigInts(type.base);
+  }
+
+  if (type.class === DTypeClass.Compound) {
+    return Object.values(type.fields).some(hasBigInts);
+  }
+
+  return (
+    (type.class === DTypeClass.Integer || type.class === DTypeClass.Unsigned) &&
+    type.size === 64
+  );
+}
+
+export function sanitizeBigInts(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(sanitizeBigInts);
+  }
+
+  if (value instanceof BigInt64Array || value instanceof BigUint64Array) {
+    return [...value].map(Number);
+  }
+
+  if (typeof value === 'bigint') {
+    return Number(value);
+  }
+
+  return value;
 }
