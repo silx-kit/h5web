@@ -23,7 +23,7 @@ function ComplexVisContainer(props: VisContainerProps) {
   assertComplexType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(dims, 2);
 
   const config = useComplexConfig();
   const heatmapConfig = useHeatmapConfig();

@@ -23,7 +23,10 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
   const { signalDef, axisDefs, silxStyle } = nxData;
   const signalDims = signalDef.dataset.shape;
 
-  const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(
+    signalDims,
+    1,
+  );
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');

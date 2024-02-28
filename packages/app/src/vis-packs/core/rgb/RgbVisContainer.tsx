@@ -34,7 +34,10 @@ function RgbVisContainer(props: VisContainerProps) {
   }
 
   const mappableDims = dims.slice(0, -1);
-  const [dimMapping, setDimMapping] = useDimMappingState(mappableDims, 2);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(
+    mappableDims,
+    2,
+  );
 
   const config = useRgbConfig();
 

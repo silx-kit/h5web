@@ -21,7 +21,7 @@ function ComplexLineVisContainer(props: VisContainerProps) {
   assertComplexType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(dims, 1);
 
   const config = useComplexLineConfig();
   const lineConfig = useLineConfig();

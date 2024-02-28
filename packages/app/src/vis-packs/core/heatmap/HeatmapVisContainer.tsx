@@ -23,7 +23,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
   assertNumericLikeType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(dims, 2);
 
   const config = useHeatmapConfig();
 
@@ -45,7 +45,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
               dataset={entity}
               value={value}
               dimMapping={dimMapping}
-              title={entity.name}
+              title={`${entity.name}${isStale ? '(loading)' : ''}`}
               toolbarContainer={toolbarContainer}
               config={config}
               ignoreValue={ignoreValue}

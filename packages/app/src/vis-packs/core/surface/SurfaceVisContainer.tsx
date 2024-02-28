@@ -22,7 +22,7 @@ function SurfaceVisContainer(props: VisContainerProps) {
   assertNumericType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(dims, 2);
 
   const config = useSurfaceConfig();
 
