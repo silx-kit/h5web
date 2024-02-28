@@ -22,9 +22,8 @@ import axios from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { sliceValue } from '../utils';
 import { makeMockFile } from './mock-file';
-import { findMockEntity } from './utils';
+import { findMockEntity, sliceValue } from './utils';
 
 export const SLOW_TIMEOUT = 3000;
 

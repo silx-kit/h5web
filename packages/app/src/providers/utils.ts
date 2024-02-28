@@ -1,30 +1,16 @@
-import { assertArray, isNumericType } from '@h5web/shared/guards';
+import { isNumericType } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Dataset,
   DType,
-  Primitive,
   ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import { AxiosError } from 'axios';
-import ndarray from 'ndarray';
 
-import { applyMapping } from '../vis-packs/core/utils';
 import type { DataProviderApi } from './api';
 
 export const CANCELLED_ERROR_MSG = 'Request cancelled';
-
-export function flattenValue(
-  value: unknown,
-  dataset: Dataset<ArrayShape>,
-  selection?: string,
-): unknown[] {
-  assertArray(value);
-  const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
-  const dims = slicedDims || dataset.shape;
-  return value.flat(dims.length - 1);
-}
 
 export async function handleAxiosError<T>(
   func: () => Promise<T>,
@@ -49,21 +35,6 @@ export async function handleAxiosError<T>(
 export function getNameFromPath(path: string) {
   const segments = path.split('/');
   return segments[segments.length - 1];
-}
-
-export function sliceValue<T extends DType>(
-  value: unknown,
-  dataset: Dataset<ArrayShape | ScalarShape, T>,
-  selection: string,
-): Primitive<T>[] {
-  const { shape, type } = dataset;
-  const dataArray = ndarray(value as Primitive<typeof type>[], shape);
-  const mappedArray = applyMapping(
-    dataArray,
-    selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s, 10))),
-  );
-
-  return mappedArray.data;
 }
 
 export function typedArrayFromDType(dtype: DType) {

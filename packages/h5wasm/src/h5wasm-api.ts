@@ -1,11 +1,6 @@
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '@h5web/app';
-import {
-  DataProviderApi,
-  flattenValue,
-  getNameFromPath,
-  sliceValue,
-} from '@h5web/app';
-import { assertNonNull, hasArrayShape } from '@h5web/shared/guards';
+import { DataProviderApi, getNameFromPath } from '@h5web/app';
+import { assertNonNull } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Dataset,
@@ -21,13 +16,15 @@ import {
 } from 'h5wasm';
 import { nanoid } from 'nanoid';
 
-import { assertH5WasmDataset, hasInt64Type } from './guards';
+import { assertH5WasmDataset } from './guards';
 import type { H5WasmEntity } from './models';
 import type { Plugin } from './utils';
 import {
-  convertSelectionToRanges,
+  hasBigInts,
   parseEntity,
   PLUGINS_BY_FILTER_ID,
+  readSelectedValue,
+  sanitizeBigInts,
 } from './utils';
 
 const PLUGINS_PATH = '/plugins'; // path to plugins on EMScripten virtual file system
@@ -64,26 +61,8 @@ export class H5WasmApi extends DataProviderApi {
     // Ensure all filters are supported and loaded (if available)
     await this.processFilters(h5wDataset.filters);
 
-    /* h5wasm returns bigints for (u)int64 dtypes, so we use `to_array` to get numbers instead.
-     * We do this only for datasets that are supported by at least one visualization (other than `RawVis`),
-     * so for (u)int64 scalars/arrays, and for compound datasets with at least one (u)int64 field (`MatrixVis`). */
-    if (hasInt64Type(dataset)) {
-      const rawValue = h5wDataset.to_array();
-
-      // `to_array` returns nested JS arrays for nD datasets, so we need to re-flatten them
-      const value = hasArrayShape(dataset)
-        ? flattenValue(rawValue, dataset)
-        : rawValue;
-
-      return selection ? sliceValue(value, dataset, selection) : value;
-    }
-
-    if (selection) {
-      const ranges = convertSelectionToRanges(h5wDataset, selection);
-      return h5wDataset.slice(ranges);
-    }
-
-    return h5wDataset.value;
+    const value = readSelectedValue(h5wDataset, selection);
+    return hasBigInts(dataset.type) ? sanitizeBigInts(value) : value;
   }
 
   public async getAttrValues(entity: Entity) {

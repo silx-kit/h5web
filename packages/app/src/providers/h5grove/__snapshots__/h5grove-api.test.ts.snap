@@ -1298,6 +1298,7 @@ exports[`test file matches snapshot 1`] = `
       "class": 6,
       "dtype": {
         "nested": {
+          "bigint": "<i8",
           "bool": "|b1",
           "cplx": "<c8",
         },
@@ -1306,10 +1307,18 @@ exports[`test file matches snapshot 1`] = `
         "nested": {
           "class": 6,
           "dtype": {
+            "bigint": "<i8",
             "bool": "|b1",
             "cplx": "<c8",
           },
           "members": {
+            "bigint": {
+              "class": 0,
+              "dtype": "<i8",
+              "order": 0,
+              "sign": 1,
+              "size": 8,
+            },
             "bool": {
               "base": {
                 "class": 0,
@@ -1346,10 +1355,10 @@ exports[`test file matches snapshot 1`] = `
               "size": 8,
             },
           },
-          "size": 9,
+          "size": 17,
         },
       },
-      "size": 9,
+      "size": 17,
     },
     "shape": [],
     "type": {
@@ -1358,6 +1367,11 @@ exports[`test file matches snapshot 1`] = `
         "nested": {
           "class": "Compound",
           "fields": {
+            "bigint": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "size": 64,
+            },
             "bool": {
               "class": "Boolean",
             },
@@ -1385,6 +1399,7 @@ exports[`test file matches snapshot 1`] = `
           1,
           2,
         ],
+        3,
       ],
     ],
   },
