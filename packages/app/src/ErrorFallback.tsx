@@ -6,6 +6,16 @@ import { CANCELLED_ERROR_MSG } from './providers/utils';
 function ErrorFallback(props: FallbackProps) {
   const { error, resetErrorBoundary } = props;
 
+  if (error.cause || error.cause instanceof Error) {
+    const { message } = error.cause;
+    return (
+      <details className={styles.detailedError}>
+        <summary>{error.message}</summary>
+        <pre>{message}</pre>
+      </details>
+    );
+  }
+
   return (
     <p className={styles.error}>
       {error.message}
