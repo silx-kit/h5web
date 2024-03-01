@@ -154,6 +154,20 @@
   margin-left: 0.5rem;
 }
 
+.detailedError {
+  composes: error from global;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.detailedError > summary {
+  cursor: pointer;
+}
+
+.detailedError > pre {
+  font-size: 0.875em;
+}
+
 .retryBtn {
   composes: btnClean btnLink from global;
 }
