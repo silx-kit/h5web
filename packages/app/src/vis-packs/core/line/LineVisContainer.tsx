@@ -21,7 +21,7 @@ function LineVisContainer(props: VisContainerProps) {
   assertNumericLikeType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(dims, 1);
 
   const config = useLineConfig();
 
@@ -53,7 +53,7 @@ function LineVisContainer(props: VisContainerProps) {
               value={value}
               dims={dims}
               dimMapping={dimMapping}
-              title={entity.name}
+              title={`${entity.name}${isStale ? '(loading)' : ''}`}
               toolbarContainer={toolbarContainer}
               config={config}
               ignoreValue={ignoreValue}

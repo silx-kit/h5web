@@ -1,4 +1,4 @@
-import { useDebouncedCallback, useMeasure } from '@react-hookz/web';
+import { useMeasure, useThrottledCallback } from '@react-hookz/web';
 import { useState } from 'react';
 import ReactSlider from 'react-slider';
 
@@ -6,7 +6,7 @@ import styles from './SlicingSlider.module.css';
 
 const ID = 'h5w-slider';
 const MIN_HEIGHT_PER_MARK = 25;
-const SLICING_DEBOUNCE_DELAY = 250;
+const SLICING_THROTTLE_DELAY = 100;
 
 interface Props {
   dimension: number;
@@ -19,10 +19,10 @@ function SlicingSlider(props: Props) {
   const { dimension, maxIndex, initialValue, onChange } = props;
 
   const [value, setValue] = useState(initialValue);
-  const onDebouncedChange = useDebouncedCallback(
+  const onThrottledChange = useThrottledCallback(
     onChange,
     [onChange],
-    SLICING_DEBOUNCE_DELAY,
+    SLICING_THROTTLE_DELAY,
   );
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
@@ -51,7 +51,7 @@ function SlicingSlider(props: Props) {
           value={value}
           onChange={(newValue) => {
             setValue(newValue);
-            onDebouncedChange(newValue);
+            onThrottledChange(newValue);
           }}
           /* When slicing in E2E tests, `onChange` is called with the old value.
              The `onChange` event is fired via a `setState` callback in `ReactSlider`:
@@ -59,7 +59,7 @@ function SlicingSlider(props: Props) {
              Adding `onAfterChange` fixes the issue for now with react-slider@2.0.4, but not with react-slider@2.0.5+ */
           onAfterChange={(newValue) => {
             setValue(newValue);
-            onDebouncedChange(newValue);
+            onThrottledChange(newValue);
           }}
           renderThumb={(thumbProps, state) => (
             <div {...thumbProps} className={styles.thumb}>

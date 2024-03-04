@@ -22,7 +22,7 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
   assertPrintableCompoundType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(dims, 1);
 
   const config = useMatrixConfig();
 

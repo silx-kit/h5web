@@ -26,7 +26,7 @@ function NxImageContainer(props: VisContainerProps) {
   assertMinDims(selectedDef.dataset, 2);
 
   const { shape: dims } = selectedDef.dataset;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const { dimMapping, isStale, setDimMapping } = useDimMappingState(dims, 2);
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const xAxisDef = axisDefs[dimMapping.indexOf('x')];
