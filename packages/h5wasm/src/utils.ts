@@ -37,7 +37,7 @@ import {
   Group as H5WasmGroup,
 } from 'h5wasm';
 
-import type { H5WasmAttributes, H5WasmEntity } from './models';
+import type { H5WasmAttributes, H5WasmEntity, HDF5Diag } from './models';
 
 // https://github.com/h5wasm/h5wasm-plugins#included-plugins
 export enum Plugin {
@@ -302,4 +302,67 @@ export function sanitizeBigInts(value: unknown): unknown {
   }
 
   return value;
+}
+
+const DIAG_PREDICATES: ((diag: HDF5Diag) => boolean)[] = [
+  (diag: HDF5Diag) => {
+    return (
+      diag.major === 'Data filters' &&
+      /^required filter.*not registered$/iu.test(diag.message)
+    );
+  },
+];
+
+export function getEnhancedError(error: unknown): unknown {
+  if (!(error instanceof Error) || !error.message.startsWith('HDF5-DIAG')) {
+    return error;
+  }
+
+  const diagnostics = parseDiagnostics(error.message);
+  const opts = { cause: error };
+
+  for (const predicate of DIAG_PREDICATES) {
+    const diag = diagnostics.find(predicate);
+    if (diag) {
+      return new Error(diag.message, opts);
+    }
+  }
+
+  return new Error('Error detected in HDF5', opts);
+}
+
+const MESSAGE_LINE_REGEX = /#\d{3}: (\/.+ line \d+ in .+\(\)): (.+)$/u;
+const MAJOR_LINE_REGEX = /major: (.+)$/u;
+const MINOR_LINE_REGEX = /minor: (.+)$/u;
+
+/* Each HDF5 diagnostic entry is made up of three lines:
+ * 1. "#000: <origin>: <message>"
+ * 2. "major: <major>"
+ * 3. "major: <minor>"
+ */
+export function parseDiagnostics(msg: string): HDF5Diag[] {
+  // Ignore first line (generic error) and last line (empty)
+  const lines = msg.split(/\n/u).slice(1, -1);
+
+  if (lines.length % 3 !== 0) {
+    return [];
+  }
+
+  const diags: HDF5Diag[] = [];
+  for (let i = 0; i < lines.length; i += 3) {
+    const [, origin, message] = MESSAGE_LINE_REGEX.exec(lines[i]) || [];
+    const [, major] = MAJOR_LINE_REGEX.exec(lines[i + 1]) || [];
+    const [, minor] = MINOR_LINE_REGEX.exec(lines[i + 2]) || [];
+
+    if (origin && message && major && minor) {
+      diags.push({
+        major,
+        minor,
+        message: `${message.charAt(0).toUpperCase()}${message.slice(1)}`,
+        origin,
+      });
+    }
+  }
+
+  return diags;
 }

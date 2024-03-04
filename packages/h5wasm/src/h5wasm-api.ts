@@ -20,6 +20,7 @@ import { assertH5WasmDataset } from './guards';
 import type { H5WasmEntity } from './models';
 import type { Plugin } from './utils';
 import {
+  getEnhancedError,
   hasBigInts,
   parseEntity,
   PLUGINS_BY_FILTER_ID,
@@ -61,8 +62,12 @@ export class H5WasmApi extends DataProviderApi {
     // Ensure all filters are supported and loaded (if available)
     await this.processFilters(h5wDataset.filters);
 
-    const value = readSelectedValue(h5wDataset, selection);
-    return hasBigInts(dataset.type) ? sanitizeBigInts(value) : value;
+    try {
+      const value = readSelectedValue(h5wDataset, selection);
+      return hasBigInts(dataset.type) ? sanitizeBigInts(value) : value;
+    } catch (error) {
+      throw getEnhancedError(error);
+    }
   }
 
   public async getAttrValues(entity: Entity) {
@@ -118,6 +123,9 @@ export class H5WasmApi extends DataProviderApi {
   private async initH5Wasm(): Promise<typeof Module> {
     const module = await h5wasmReady;
 
+    // Throw HDF5 errors instead of just logging them
+    module.activate_throwing_error_handler();
+
     // Replace default plugins path
     module.remove_plugin_search_path(0);
     module.insert_plugin_search_path(PLUGINS_PATH, 0);
@@ -162,10 +170,12 @@ export class H5WasmApi extends DataProviderApi {
       }
 
       const plugin = PLUGINS_BY_FILTER_ID[filter.id];
-      if (!plugin || !this.getPlugin) {
-        throw new Error(
+      if (!plugin) {
+        // eslint-disable-next-line no-console
+        console.warn(
           `Compression filter ${filter.id} not supported (${filter.name})`,
         );
+        continue;
       }
 
       const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
@@ -174,9 +184,11 @@ export class H5WasmApi extends DataProviderApi {
         continue; // plugin already loaded
       }
 
-      const buffer = await this.getPlugin(plugin);
+      const buffer = await this.getPlugin?.(plugin);
       if (!buffer) {
-        throw new Error(`Compression plugin ${plugin} not supported`);
+        // eslint-disable-next-line no-console
+        console.warn(`Compression plugin ${plugin} not available`);
+        continue;
       }
 
       h5Module.FS.writeFile(pluginPath, new Uint8Array(buffer));
