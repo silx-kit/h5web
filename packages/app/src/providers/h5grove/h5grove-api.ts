@@ -7,6 +7,7 @@ import type {
   ProvidedEntity,
   Value,
 } from '@h5web/shared/hdf5-models';
+import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
@@ -45,9 +46,13 @@ export class H5GroveApi extends DataProviderApi {
   ): Promise<H5GroveDataResponse> {
     const { dataset } = params;
 
+    if (dataset.type.class === DTypeClass.Opaque) {
+      return new Uint8Array(await this.fetchBinaryData(params));
+    }
+
     const DTypedArray = h5groveTypedArrayFromDType(dataset.type);
     if (DTypedArray) {
-      const buffer = await this.fetchBinaryData(params);
+      const buffer = await this.fetchBinaryData(params, true);
       const array = new DTypedArray(buffer);
       return hasScalarShape(dataset) ? array[0] : array;
     }
@@ -149,6 +154,7 @@ export class H5GroveApi extends DataProviderApi {
 
   private async fetchBinaryData(
     params: ValuesStoreParams,
+    safe = false,
   ): Promise<ArrayBuffer> {
     const { data } = await this.cancellableFetchValue(
       '/data/',
@@ -157,7 +163,7 @@ export class H5GroveApi extends DataProviderApi {
         path: params.dataset.path,
         selection: params.selection,
         format: 'bin',
-        dtype: 'safe',
+        dtype: safe ? 'safe' : undefined,
       },
       'arraybuffer',
     );
