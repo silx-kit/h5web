@@ -907,8 +907,8 @@ exports[`test file matches snapshot 1`] = `
       },
     },
     "value": [
-      1.1754943508222875e-38,
-      3.4028234663852886e+38,
+      1.1754944e-38,
+      3.4028235e+38,
     ],
   },
   {
@@ -1140,7 +1140,10 @@ exports[`test file matches snapshot 1`] = `
         "size": 128,
       },
     },
-    "value": [AxiosError: Request failed with status code 500],
+    "value": [
+      0,
+      null,
+    ],
   },
   {
     "name": "complex256_2D",
@@ -1180,7 +1183,24 @@ exports[`test file matches snapshot 1`] = `
         "size": 128,
       },
     },
-    "value": [AxiosError: Request failed with status code 500],
+    "value": [
+      [
+        1,
+        2,
+      ],
+      [
+        3,
+        4,
+      ],
+      [
+        5,
+        6,
+      ],
+      [
+        7,
+        8,
+      ],
+    ],
   },
   {
     "name": "compound_scalar",
