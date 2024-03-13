@@ -8,7 +8,11 @@ interface Props {
 
 function RawVis(props: Props) {
   const { value } = props;
-  const valueAsStr = JSON.stringify(value, null, 2);
+
+  const valueAsStr =
+    value instanceof Uint8Array
+      ? `Uint8Array [ ${value.toString()} ]`
+      : JSON.stringify(value, null, 2);
 
   return (
     <div className={styles.root}>

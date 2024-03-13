@@ -796,7 +796,11 @@ exports[`test file matches snapshot 1`] = `
       "class": "Opaque",
       "tag": "",
     },
-    "value": " "",
+    "value": Uint8Array [
+      0,
+      17,
+      34,
+    ],
   },
   {
     "name": "byte_string_1D",
@@ -813,10 +817,10 @@ exports[`test file matches snapshot 1`] = `
       "class": "Opaque",
       "tag": "",
     },
-    "value": [
-      " ",
-      "",
-      """,
+    "value": Uint8Array [
+      0,
+      17,
+      34,
     ],
   },
   {
@@ -832,7 +836,16 @@ exports[`test file matches snapshot 1`] = `
       "class": "Opaque",
       "tag": "",
     },
-    "value": [AxiosError: Request failed with status code 500],
+    "value": Uint8Array [
+      150,
+      177,
+      135,
+      93,
+      0,
+      0,
+      0,
+      0,
+    ],
   },
   {
     "name": "datetime64_not-a-time_scalar",
@@ -847,7 +860,16 @@ exports[`test file matches snapshot 1`] = `
       "class": "Opaque",
       "tag": "",
     },
-    "value": [AxiosError: Request failed with status code 500],
+    "value": Uint8Array [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      128,
+    ],
   },
   {
     "name": "complex64_scalar",

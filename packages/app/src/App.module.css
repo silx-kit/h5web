@@ -148,6 +148,7 @@
 
 .error {
   composes: error from global;
+  grid-area: vis;
 }
 
 .error > span {
