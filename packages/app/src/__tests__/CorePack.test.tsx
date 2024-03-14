@@ -16,6 +16,14 @@ test('visualize raw dataset', async () => {
   expect(screen.getByText(/Too big to display/)).toBeVisible();
 });
 
+test('visualize raw image dataset', async () => {
+  await renderApp('/entities/raw_png');
+
+  expect(getVisTabs()).toEqual([Vis.Raw]);
+  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(screen.getByAltText('raw_png')).toBeVisible();
+});
+
 test('visualize scalar dataset', async () => {
   // Integer scalar
   const { selectExplorerNode } = await renderApp('/entities/scalar_num');
