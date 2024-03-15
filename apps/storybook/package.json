@@ -15,8 +15,8 @@
     "@h5web/lib": "workspace:*",
     "@h5web/shared": "workspace:*",
     "@react-hookz/web": "24.0.4",
-    "@react-three/drei": "9.97.3",
-    "@react-three/fiber": "8.15.16",
+    "@react-three/drei": "9.102.3",
+    "@react-three/fiber": "8.15.19",
     "d3-array": "3.2.4",
     "d3-format": "3.1.0",
     "greenlet": "1.1.0",
@@ -26,7 +26,7 @@
     "react-dom": "18.2.0",
     "react-icons": "5.0.1",
     "react-suspense-fetch": "0.4.1",
-    "three": "0.161.0"
+    "three": "0.162.0"
   },
   "devDependencies": {
     "@storybook/addon-docs": "7.6.13",
@@ -38,16 +38,16 @@
     "@types/d3-array": "~3.2.1",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.0.14",
-    "@types/node": "^20.11.17",
-    "@types/react": "^18.2.55",
-    "@types/react-dom": "^18.2.19",
-    "@types/three": "0.161.2",
-    "eslint": "8.56.0",
+    "@types/node": "^20.11.28",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/three": "0.162.0",
+    "eslint": "8.57.0",
     "eslint-config-galex": "4.5.2",
     "remark-gfm": "3.0.1",
     "storybook": "7.6.13",
     "typescript": "5.0.4",
-    "vite": "5.1.0"
+    "vite": "5.1.6"
   },
   "browserslist": {
     "production": [

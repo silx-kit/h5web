@@ -76,7 +76,7 @@ jobs:
         run: pnpm install
 
       - name: Test 👓
-        run: pnpm test -- --reporter default --reporter vitest-github-actions-reporter
+        run: pnpm test
 
   packages:
     runs-on: ubuntu-latest
