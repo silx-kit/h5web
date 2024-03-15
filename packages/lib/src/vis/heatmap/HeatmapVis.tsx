@@ -9,7 +9,12 @@ import type { DefaultInteractionsConfig } from '../../interactions/DefaultIntera
 import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
-import type { Aspect, AxisParams, VisScaleType } from '../models';
+import type {
+  Aspect,
+  AxisParams,
+  ClassStyleAttrs,
+  VisScaleType,
+} from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { DEFAULT_DOMAIN } from '../utils';
@@ -19,7 +24,7 @@ import styles from './HeatmapVis.module.css';
 import { useMask, usePixelEdgeValues, useTextureSafeNdArray } from './hooks';
 import type { ColorMap, TooltipData } from './models';
 
-interface Props {
+interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
   colorMap?: ColorMap;
@@ -60,6 +65,8 @@ function HeatmapVis(props: Props) {
     children,
     interactions,
     ignoreValue,
+    className = '',
+    style,
   } = props;
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
@@ -81,7 +88,12 @@ function HeatmapVis(props: Props) {
   const maskArray = useMask(dataArray, ignoreValue);
 
   return (
-    <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
+    <figure
+      className={`${styles.root} ${className}`}
+      style={style}
+      aria-label={title}
+      data-keep-canvas-colors
+    >
       <VisCanvas
         title={title}
         aspect={aspect}

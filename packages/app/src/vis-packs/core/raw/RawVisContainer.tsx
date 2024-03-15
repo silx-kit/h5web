@@ -3,6 +3,7 @@ import { assertDataset, assertNonNullShape } from '@h5web/shared/guards';
 import { createPortal } from 'react-dom';
 
 import { useDataContext } from '../../../providers/DataProvider';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
@@ -31,7 +32,11 @@ function RawVisContainer(props: VisContainerProps) {
                 />,
                 toolbarContainer,
               )}
-            <RawVis value={value} title={entity.name} />
+            <RawVis
+              className={visualizerStyles.vis}
+              value={value}
+              title={entity.name}
+            />
           </>
         )}
       />

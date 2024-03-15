@@ -11,13 +11,13 @@ import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import styles from '../heatmap/HeatmapVis.module.css';
 import { usePixelEdgeValues } from '../heatmap/hooks';
 import { useAxisDomain } from '../hooks';
-import type { Aspect, AxisParams } from '../models';
+import type { Aspect, AxisParams, ClassStyleAttrs } from '../models';
 import VisCanvas from '../shared/VisCanvas';
 import { ImageType } from './models';
 import RgbMesh from './RgbMesh';
 import { toRgbSafeNdArray } from './utils';
 
-interface Props {
+interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
   aspect?: Aspect;
   showGrid?: boolean;
@@ -40,6 +40,8 @@ function RgbVis(props: Props) {
     ordinateParams = {},
     children,
     interactions,
+    className = '',
+    style,
   } = props;
 
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
@@ -57,7 +59,12 @@ function RgbVis(props: Props) {
   const safeDataArray = useMemo(() => toRgbSafeNdArray(dataArray), [dataArray]);
 
   return (
-    <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
+    <figure
+      className={`${styles.root} ${className}`}
+      style={style}
+      aria-label={title}
+      data-keep-canvas-colors
+    >
       <VisCanvas
         title={title}
         aspect={aspect}

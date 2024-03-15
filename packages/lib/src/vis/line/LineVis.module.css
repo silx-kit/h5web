@@ -1,6 +1,5 @@
 .root {
-  grid-area: vis; /* when inside `visArea` in viewer */
-  flex: 1; /* when inside flex container in consumer app */
+  flex: 1; /* fill height if inside flex container in consumer app */
   display: flex;
   min-width: 0;
   min-height: 0;

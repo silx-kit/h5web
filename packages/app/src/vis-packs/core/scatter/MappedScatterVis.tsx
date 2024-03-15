@@ -4,6 +4,7 @@ import type { AxisMapping } from '@h5web/shared/nexus-models';
 import type { NumArray } from '@h5web/shared/vis-models';
 import { createPortal } from 'react-dom';
 
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useBaseArray } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import type { ScatterConfig } from './config';
@@ -50,6 +51,7 @@ function MappedScatterVis(props: Props) {
           toolbarContainer,
         )}
       <ScatterVis
+        className={visualizerStyles.vis}
         abscissaParams={{ label: xLabel, value: xValue, scaleType: xScaleType }}
         ordinateParams={{ label: yLabel, value: yValue, scaleType: yScaleType }}
         dataArray={dataArray}

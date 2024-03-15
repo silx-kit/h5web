@@ -17,13 +17,14 @@ import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
+import type { ClassStyleAttrs } from '../models';
 import TooltipOverlay from '../shared/TooltipOverlay';
 import VisCanvas from '../shared/VisCanvas';
 import type { ScatterAxisParams } from './models';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
 
-interface Props {
+interface Props extends ClassStyleAttrs {
   abscissaParams: ScatterAxisParams;
   ordinateParams: ScatterAxisParams;
   dataArray: NdArray<NumArray>;
@@ -54,6 +55,8 @@ function ScatterVis(props: Props) {
     children,
     interactions,
     onPointClick,
+    className = '',
+    style,
   } = props;
 
   const {
@@ -85,7 +88,12 @@ function ScatterVis(props: Props) {
   } = useTooltip<number>();
 
   return (
-    <figure className={styles.root} aria-label={title} data-keep-canvas-colors>
+    <figure
+      className={`${styles.root} ${className}`}
+      style={style}
+      aria-label={title}
+      data-keep-canvas-colors
+    >
       <VisCanvas
         abscissaConfig={{
           visDomain: abscissaDomain,

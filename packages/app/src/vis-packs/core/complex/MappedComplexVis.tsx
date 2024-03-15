@@ -11,6 +11,7 @@ import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import type { HeatmapConfig } from '../heatmap/config';
 import {
   useBaseArray,
@@ -97,6 +98,7 @@ function MappedComplexVis(props: Props) {
         )}
 
       <HeatmapVis
+        className={visualizerStyles.vis}
         dataArray={dataArray}
         domain={safeDomain}
         title={`${title} (${visType.toLowerCase()})`}

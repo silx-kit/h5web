@@ -10,7 +10,7 @@ import type { DefaultInteractionsConfig } from '../../interactions/DefaultIntera
 import DefaultInteractions from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import { useAxisDomain, useCssColors, useValueToIndexScale } from '../hooks';
-import type { AxisParams } from '../models';
+import type { AxisParams, ClassStyleAttrs } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { DEFAULT_DOMAIN, extendDomain } from '../utils';
@@ -20,7 +20,7 @@ import styles from './LineVis.module.css';
 import type { AuxiliaryParams, TooltipData } from './models';
 import { CurveType } from './models';
 
-interface Props {
+interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
   scaleType?: AxisScaleType;
@@ -59,6 +59,8 @@ function LineVis(props: Props) {
     interactions,
     testid,
     ignoreValue,
+    className = '',
+    style,
   } = props;
 
   const {
@@ -91,7 +93,8 @@ function LineVis(props: Props) {
   return (
     <figure
       ref={rootRef}
-      className={styles.root}
+      className={`${styles.root} ${className}`}
+      style={style}
       aria-label={title}
       data-keep-canvas-colors
       data-testid={testid}

@@ -1,15 +1,16 @@
+import type { ClassStyleAttrs } from '../models';
 import styles from './RawVis.module.css';
 import { isImage } from './utils';
 
 const LARGE_THRESHOLD = 1_000_000;
 
-interface Props {
+interface Props extends ClassStyleAttrs {
   value: unknown;
   title?: string;
 }
 
 function RawVis(props: Props) {
-  const { value, title } = props;
+  const { value, title, className = '', style } = props;
 
   if (value instanceof Uint8Array && isImage(value)) {
     return (
@@ -25,7 +26,7 @@ function RawVis(props: Props) {
       : JSON.stringify(value, null, 2);
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} ${className}`} style={style}>
       {valueAsStr.length < LARGE_THRESHOLD ? (
         <pre className={styles.raw}>{valueAsStr}</pre>
       ) : (

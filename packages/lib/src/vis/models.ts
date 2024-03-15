@@ -12,6 +12,7 @@ import type {
   ScaleType,
 } from '@h5web/shared/vis-models';
 import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
+import type { HTMLAttributes } from 'react';
 
 import type { ColorMap } from './heatmap/models';
 import type { ScaleGamma } from './scaleGamma';
@@ -99,3 +100,8 @@ export interface HistogramParams {
   colorMap?: ColorMap;
   invertColorMap?: boolean;
 }
+
+export type ClassStyleAttrs = Pick<
+  HTMLAttributes<HTMLElement>,
+  'className' | 'style'
+>;

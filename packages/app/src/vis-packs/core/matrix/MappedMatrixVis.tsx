@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { getSliceSelection } from '../utils';
 import type { MatrixVisConfig } from './config';
@@ -54,6 +55,7 @@ function MappedMatrixVis(props: Props) {
         )}
 
       <MatrixVis
+        className={visualizerStyles.vis}
         dataArray={mappedArray}
         formatter={formatter}
         cellWidth={customCellWidth ?? cellWidth}
