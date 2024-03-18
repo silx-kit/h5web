@@ -12,6 +12,7 @@ const meta = {
   decorators: [DomainWidgetDecorator],
   args: {
     customDomain: undefined,
+    onCustomDomainChange: () => {},
   },
   argTypes: {
     customDomain: { control: false },
