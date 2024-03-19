@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "sample"
+version = "0.1.0"
+package-mode = false
+description = "Script to create HDF5 sample file for testing purposes"
+authors = ["NA"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.26.4"
+h5py = "^3.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

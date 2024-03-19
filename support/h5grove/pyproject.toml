@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "h5grove-tornado"
+version = "0.1.0"
+package-mode = false
+description = "h5grove tornado server for testing purposes"
+authors = ["NA"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+h5grove = {version = "2.0.1b1", extras = ["tornado"]}
+typing-extensions = "^4.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

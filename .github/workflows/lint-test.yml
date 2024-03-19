@@ -75,6 +75,38 @@ jobs:
       - name: Install dependencies ⚙️
         run: pnpm install
 
+      - name: Set up Python 🕹️
+        id: setup-python
+        uses: actions/setup-python@v5
+
+      - name: Restore Poetry installation 📌
+        id: poetry
+        uses: actions/cache@v3
+        with:
+          path: ~/.local
+          key: poetry-0 # increment to reset cache
+
+      - name: Install Poetry 📜
+        if: steps.poetry.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
+
+      - name: Restore Poetry environments 📌
+        id: poetry-venvs
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Create Poetry environments 📜
+        if: steps.poetry-venvs.outputs.cache-hit != 'true'
+        run: pnpm support:setup
+
+      - name: Create sample HDF5 file 🎨
+        run: pnpm support:sample
+
+      - name: Start h5grove support server 🔌
+        run: pnpm support:h5grove & pnpm wait-on http://localhost:8888 -t 1m
+
       - name: Test 👓
         run: pnpm test
 
@@ -149,7 +181,7 @@ jobs:
         run: pnpm build
 
       - name: Serve ⚡️
-        run: pnpm serve & pnpm wait-on http://localhost:5173
+        run: pnpm serve & pnpm wait-on http://localhost:5173 -t 1m
 
       - name: Run Cypress 🌳
         run: pnpm cypress:run --env requireSnapshots=true
