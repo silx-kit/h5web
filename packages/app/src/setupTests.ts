@@ -32,6 +32,10 @@ window.matchMedia = (query: string) => ({
   });
 });
 
+Object.defineProperty(window.URL, 'createObjectURL', {
+  value: () => 'blob:http://localhost',
+});
+
 // Fail tests that log to the console
 failOnConsole();
 

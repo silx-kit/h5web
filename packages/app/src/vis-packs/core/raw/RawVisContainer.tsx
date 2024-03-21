@@ -31,7 +31,7 @@ function RawVisContainer(props: VisContainerProps) {
                 />,
                 toolbarContainer,
               )}
-            <RawVis value={value} />
+            <RawVis value={value} title={entity.name} />
           </>
         )}
       />

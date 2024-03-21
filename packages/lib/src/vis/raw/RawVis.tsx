@@ -1,13 +1,23 @@
 import styles from './RawVis.module.css';
+import { isImage } from './utils';
 
 const LARGE_THRESHOLD = 1_000_000;
 
 interface Props {
   value: unknown;
+  title?: string;
 }
 
 function RawVis(props: Props) {
-  const { value } = props;
+  const { value, title } = props;
+
+  if (value instanceof Uint8Array && isImage(value)) {
+    return (
+      <div className={styles.root}>
+        <img src={URL.createObjectURL(new Blob([value]))} alt={title} />
+      </div>
+    );
+  }
 
   const valueAsStr =
     value instanceof Uint8Array
