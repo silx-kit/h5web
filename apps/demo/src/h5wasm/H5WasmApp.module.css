@@ -84,7 +84,7 @@
 
 .urlBtn {
   composes: btnClean from global;
-  composes: ctaBtn from '../Home.module.css';
+  composes: ctaBtn from '../utils.module.css';
   margin-left: 0.5rem;
   margin-right: 0;
 }

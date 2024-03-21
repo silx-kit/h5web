@@ -1,0 +1,17 @@
+.ctaBtn {
+  text-decoration: none;
+  background-color: var(--primary);
+  margin-right: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: 0.75em 0.25em;
+  color: inherit;
+}
+
+.ctaBtn:hover,
+.ctaBtn:focus-visible {
+  background-color: var(--secondary);
+}
+
+.ctaBtn:hover {
+  text-decoration: underline;
+}

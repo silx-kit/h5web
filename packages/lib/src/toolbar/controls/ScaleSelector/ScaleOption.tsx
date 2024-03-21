@@ -2,8 +2,9 @@ import { ScaleType } from '@h5web/shared/vis-models';
 import type { IconType } from 'react-icons/lib';
 import { MdFilterList, MdFlare, MdSort } from 'react-icons/md';
 
+import toolbarStyles from '../../Toolbar.module.css';
 import MdGraphicEqRotated from './MdGraphicEqRotated';
-import styles from './ScaleSelector.module.css';
+import styles from './ScaleOption.module.css';
 import SqrtIcon from './SqrtIcon';
 
 export const SCALE_OPTIONS = {
@@ -20,7 +21,7 @@ function ScaleOption(props: { option: ScaleType }) {
 
   return (
     <div className={styles.option}>
-      <Icon className={styles.icon} />
+      <Icon className={toolbarStyles.icon} />
       <span>{label}</span>
     </div>
   );

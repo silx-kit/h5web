@@ -7,6 +7,7 @@
     - [DefinitelyTyped packages](#definitelytyped-packages)
     - [Workspace dependencies](#workspace-dependencies)
   - [Icon set](#icon-set)
+  - [CSS Modules](#css-modules)
 - [Build](#build)
   - [Package builds](#package-builds)
 - [Code quality](#code-quality)
@@ -113,6 +114,89 @@ this problem in the form of the
 
 H5Web uses the [Feather icon set](https://react-icons.netlify.com/#/icons/fi).
 Icons can be imported as React components from `react-icons/fi`.
+
+### CSS Modules
+
+Styles are written with
+[CSS Modules](https://github.com/css-modules/css-modules). Global styles should
+be avoided.
+
+In most cases, a component that needs styling should come with its own CSS
+Modules file - e.g. `MyComponent.module.css`. If multiple components need to use
+the same style rules, they may import the same CSS Modules file:
+
+```tsx
+import styles from './ThisComponent.module.css';
+import otherComponentStyles from './OtherComponent.module.css';
+```
+
+However, it is better to write reusable components or take advantage of a CSS
+Modules feature called **composition**:
+
+```css
+/* utils.module.css */
+.baseBtn {
+  color: green;
+}
+
+/* ThisComponent.module.css */
+.thisBtn {
+  composes: baseBtn from './utils.module.css';
+  color: blue;
+}
+
+.selectedBtn {
+  composes: thisBtn;
+  color: red;
+}
+```
+
+To avoid
+[style ordering issues](https://github.com/privatenumber/vite-css-modules/issues/7),
+modules that are composed from other modules (`utils.module.css` in the example
+above) should be used solely for composition and never be imported. In other
+words, you should never compose from a class located in the CSS Modules file of
+another React component:
+
+```css
+/*
+  >>> BAD <<<
+  If `OtherComponent.module.css` gets imported after `ThisComponent.module.css,
+  the `.baseBtn` rule will end up after `.thisBtn` and `color: blue` will be applied.
+*/
+
+/* OtherComponent.module.css */
+.baseBtn {
+  color: blue;
+}
+
+/* ThisComponent.module.css */
+.thisBtn {
+  composes: baseBtn from './OtherComponent.module.css';
+  color: red;
+}
+
+/*
+  >>> GOOD <<<
+  Move `.baseBtn` to a utility module.
+*/
+
+/* utils.module.css */
+.baseBtn {
+  color: blue;
+}
+
+/* OtherComponent.module.css */
+.otherBtn {
+  composes: baseBtn from './utils.module.css';
+}
+
+/* ThisComponent.module.css */
+.thisBtn {
+  composes: baseBtn from './utils.module.css';
+  color: red;
+}
+```
 
 ## Build
 

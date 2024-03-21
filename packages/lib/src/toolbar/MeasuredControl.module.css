@@ -1,0 +1,13 @@
+.controlWrapper[data-measured='false'] {
+  position: relative;
+  overflow: hidden; /* hide controls while they are being measured */
+}
+
+.controlWrapper[data-measured='false'] > .control {
+  position: absolute;
+}
+
+.controlWrapper,
+.control {
+  display: flex;
+}
