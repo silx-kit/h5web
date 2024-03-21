@@ -1,7 +1,7 @@
 import remarkGfm from 'remark-gfm';
 
 export default {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(tsx|mdx)'],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.tsx'],
   framework: '@storybook/react-vite',
   addons: [
     {
@@ -18,5 +18,4 @@ export default {
     '@storybook/addon-essentials',
   ],
   docs: { autodocs: true },
-  typescript: { reactDocgen: 'react-docgen' },
 };
