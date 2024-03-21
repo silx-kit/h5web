@@ -13,20 +13,14 @@ import { expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
 
-const LOCAL_TEST_FILE = path.resolve(process.cwd(), 'dist/sample.h5');
-const REMOTE_TEST_FILE = 'http://www.silx.org/pub/h5web/sample.h5'; // `https` would complicate things...
-
-async function loadTestFile(): Promise<ArrayBuffer> {
-  if (existsSync(LOCAL_TEST_FILE)) {
-    return readFile(LOCAL_TEST_FILE);
-  }
-
-  const resp = await fetch(REMOTE_TEST_FILE);
-  return resp.arrayBuffer();
-}
+const TEST_FILE = path.resolve(process.cwd(), 'support/sample/dist/sample.h5');
 
 test('test file matches snapshot', async () => {
-  const buffer = await loadTestFile();
+  if (!existsSync(TEST_FILE)) {
+    throw new Error("Sample file doesn't exist");
+  }
+
+  const buffer = await readFile(TEST_FILE);
   const api = new H5WasmApi('sample.h5', buffer);
 
   const root = await api.getEntity('/');

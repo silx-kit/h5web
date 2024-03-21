@@ -9,7 +9,7 @@ import { expect, test } from 'vitest';
 import { getValueOrError } from '../utils';
 import { H5GroveApi } from './h5grove-api';
 
-const H5GROVE_URL = 'https://bosquet.silx.org/h5grove';
+const H5GROVE_URL = 'http://localhost:8888'; // when running `pnpm support:h5grove`
 const TEST_FILE = 'sample.h5';
 
 test('test file matches snapshot', async () => {

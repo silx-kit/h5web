@@ -17,6 +17,7 @@
   - [Feature tests](#feature-tests)
     - [Fake timers](#fake-timers)
     - [Debugging](#debugging)
+  - [Providers tests](#providers-tests)
   - [Visual regression](#visual-regression)
 - [Deployment](#deployment)
 - [Release process](#release-process)
@@ -286,11 +287,18 @@ install the recommended extensions.
 
 - `pnpm test` - run unit and feature tests with [Vitest](https://vitest.dev/) in
   watch mode (or once when on the CI)
+  > For the providers test to work, the sample HDF5 file must first be created
+  > and the h5grove support server must be running in a separate terminal; see
+  > `pnpm support:*` scripts and [_Providers tests_](#providers-tests) section.
 - `pnpm test run` - run unit and feature tests once
 - `pnpm test [run] <filter>` - run tests matching the given filter
 - `pnpm test -- --project <lib|app|...>` - run Vitest on a specific project
 - `pnpm test:ui` - run tests inside the
   [Vitest UI](https://vitest.dev/guide/ui.html)
+- `pnpm support:setup` - create/update Poetry environments required for
+  [testing the providers](#providers-tests)
+- `pnpm support:sample` - create `sample.h5`
+- `pnpm support:h5grove` - start h5grove support server
 - `pnpm cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end
   test runner (local dev server must be running in separate terminal)
@@ -360,6 +368,68 @@ To ensure that the entire DOM is printed out in the terminal, you may have to
 set environment variable `DEBUG_PRINT_LIMIT`
 [to a large value](https://testing-library.com/docs/dom-testing-library/api-debugging#automatic-logging)
 when calling `pnpm test`.
+
+### Providers
+
+Two data providers are currently tested through their respective APIs:
+`H5GroveApi` and `H5WasmApi`. Each API test (`<provider>-api.test.ts`) works as
+follows:
+
+1. It instanciates the API using a sample file called `sample.h5`, located in
+   `support/sample/dist`, that contains a lot of HDF5 datasets of various shapes
+   and types.
+1. It retrieves the values of all the datasets in the sample file and stores
+   them in an object.
+1. It takes a snapshot of that object and compares it to the existing snapshot
+   (`<provider>-api.test.ts.snap`).
+1. If the new snapshot is the same, the test succeeds; if the new snapshot
+   differs, the test fails and the differences are shown.
+
+To get up and running with testing the providers locally, we recommend using
+pyenv and Poetry:
+
+1. Install the Python version specified in `.python-version` with
+   [pyenv](https://github.com/pyenv/pyenv):
+   ```bash
+   pyenv install
+   ```
+1. Install [Poetry](https://python-poetry.org/docs/) with
+   [pipx](https://pipx.pypa.io/stable/installation/):
+   ```bash
+   pipx install poetry
+   ```
+1. Create the Poetry environements:
+   ```bash
+   pyenv exec pnpm support:setup
+   ```
+
+Once the Poetry environments are created, you can create `sample.h5`, start
+h5grove and run the API tests:
+
+```bash
+pyenv exec pnpm support:sample
+pyenv exec pnpm support:h5grove
+pyenv exec pnpm test api
+```
+
+> If the Python version specified in `.python-version` is globally available on
+> your system, you may run the scripts above without `pyenv exec`.
+
+> If you need to intervene on the `support` projects and the Python version
+> specified in `.python-version` is not globally available, make sure to run all
+> Poetry commands from the root of the monorepo as follows:
+
+    ```bash
+    pyenv exec poetry -C support/<project> <cmd>
+    pyenv exec poetry -C support/<project> add <dep>
+    pyenv exec poetry -C support/<project> run python <script>.py
+    ```
+
+If you're unable to create the sample file (for instance because your
+environment lacks support for `float128`), you may
+[download it from silx.org](http://www.silx.org/pub/h5web/sample.h5) and place
+it into the `support/sample/dist` folder. However, please beware that the file
+may not be up to date.
 
 ### Visual regression
 
