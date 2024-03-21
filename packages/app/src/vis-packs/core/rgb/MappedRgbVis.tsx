@@ -6,6 +6,7 @@ import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { RgbVisConfig } from './config';
 import RgbToolbar from './RgbToolbar';
@@ -47,6 +48,7 @@ function MappedRgbVis(props: Props) {
       {toolbarContainer &&
         createPortal(<RgbToolbar config={config} />, toolbarContainer)}
       <RgbVis
+        className={visualizerStyles.vis}
         dataArray={dataArray}
         title={title}
         showGrid={showGrid}

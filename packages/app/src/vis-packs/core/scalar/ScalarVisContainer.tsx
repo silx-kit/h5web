@@ -5,6 +5,7 @@ import {
   assertScalarShape,
 } from '@h5web/shared/guards';
 
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
@@ -22,7 +23,13 @@ function ScalarVisContainer(props: VisContainerProps) {
     <VisBoundary>
       <ValueFetcher
         dataset={entity}
-        render={(value) => <ScalarVis value={value} formatter={formatter} />}
+        render={(value) => (
+          <ScalarVis
+            className={visualizerStyles.vis}
+            value={value}
+            formatter={formatter}
+          />
+        )}
       />
     </VisBoundary>
   );

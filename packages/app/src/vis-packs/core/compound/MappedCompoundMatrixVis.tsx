@@ -10,6 +10,7 @@ import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { MatrixVisConfig } from '../matrix/config';
 import MatrixToolbar from '../matrix/MatrixToolbar';
@@ -63,6 +64,7 @@ function MappedCompoundMatrixVis(props: Props) {
           toolbarContainer,
         )}
       <MatrixVis
+        className={visualizerStyles.vis}
         dataArray={mappedArray}
         formatter={(val, colIndex) => fieldFormatters[colIndex](val)}
         cellWidth={customCellWidth ?? cellWidth}

@@ -27,3 +27,7 @@
 .fallback {
   composes: fallback from global;
 }
+
+.vis {
+  grid-area: vis;
+}

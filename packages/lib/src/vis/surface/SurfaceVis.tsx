@@ -9,11 +9,12 @@ import type { PropsWithChildren } from 'react';
 
 import ColorBar from '../heatmap/ColorBar';
 import type { ColorMap } from '../heatmap/models';
+import type { ClassStyleAttrs } from '../models';
 import R3FCanvas from '../shared/R3FCanvas';
 import SurfaceMesh from './SurfaceMesh';
 import styles from './SurfaceVis.module.css';
 
-interface Props {
+interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
   domain: Domain;
   scaleType?: ColorScaleType;
@@ -31,10 +32,16 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
     invertColorMap = false,
     showPoints = false,
     children,
+    className = '',
+    style,
   } = props;
 
   return (
-    <figure className={styles.root} data-keep-canvas-colors>
+    <figure
+      className={`${styles.root} ${className}`}
+      style={style}
+      data-keep-canvas-colors
+    >
       <R3FCanvas className={styles.canvas}>
         <SurfaceMesh
           dataArray={dataArray}

@@ -1,15 +1,28 @@
+import type {
+  ColorScaleType,
+  Domain,
+  NumArray,
+} from '@h5web/shared/vis-models';
 import { getDims } from '@h5web/shared/vis-utils';
+import type { NdArray } from 'ndarray';
 import { LinearFilter } from 'three';
 
 import HeatmapMaterial from '../heatmap/HeatmapMaterial';
 import { useTextureSafeNdArray } from '../heatmap/hooks';
+import type { ColorMap } from '../heatmap/models';
 import { useGeometry } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import SurfaceMeshGeometry from './surfaceMeshGeometry';
-import type { SurfaceVisProps } from './SurfaceVis';
 
-type Props = Required<SurfaceVisProps>;
+interface Props {
+  dataArray: NdArray<NumArray>;
+  domain: Domain;
+  scaleType: ColorScaleType;
+  colorMap: ColorMap;
+  invertColorMap: boolean;
+  showPoints: boolean;
+}
 
 function SurfaceMesh(props: Props) {
   const { dataArray, domain, colorMap, invertColorMap, scaleType, showPoints } =

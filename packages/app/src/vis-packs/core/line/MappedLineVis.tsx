@@ -11,6 +11,7 @@ import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import {
   useMappedArray,
   useMappedArrays,
@@ -112,6 +113,7 @@ function MappedLineVis(props: Props) {
         )}
 
       <LineVis
+        className={visualizerStyles.vis}
         dataArray={dataArray}
         domain={combinedDomain}
         scaleType={yScaleType}

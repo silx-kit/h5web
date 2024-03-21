@@ -4,6 +4,7 @@ import type { TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import type { SurfaceConfig } from './config';
@@ -39,6 +40,7 @@ function MappedSurfaceVis(props: Props) {
         )}
 
       <SurfaceVis
+        className={visualizerStyles.vis}
         dataArray={dataArray}
         domain={safeDomain}
         colorMap={colorMap}

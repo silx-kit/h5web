@@ -11,6 +11,7 @@ import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import {
   useMappedArray,
   useSlicedDimsAndMapping,
@@ -89,6 +90,7 @@ function MappedHeatmapVis(props: Props) {
         )}
 
       <HeatmapVis
+        className={visualizerStyles.vis}
         dataArray={dataArray}
         title={title}
         dtype={dataset && formatNumLikeType(dataset.type)}
