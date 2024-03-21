@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { FiHelpCircle } from 'react-icons/fi';
 
 import type { InteractionInfo } from '../../interactions/models';
+import overflowMenuStyles from '../OverflowMenu.module.css';
 import styles from './InteractionHelp.module.css';
 import ToggleBtn from './ToggleBtn';
 
@@ -23,7 +24,7 @@ function InteractionHelp(props: Props) {
   });
 
   return (
-    <div className={styles.root} ref={rootRef}>
+    <div className={overflowMenuStyles.root} ref={rootRef}>
       <ToggleBtn
         icon={FiHelpCircle}
         iconOnly
@@ -31,10 +32,10 @@ function InteractionHelp(props: Props) {
         label="Show help"
         value={isHelpMenuOpen}
       />
-      <div className={styles.menu} hidden={!isHelpMenuOpen}>
-        <div className={styles.menuList}>
+      <div className={overflowMenuStyles.menu} hidden={!isHelpMenuOpen}>
+        <div className={overflowMenuStyles.menuList}>
           {interactions.map(({ shortcut, description }) => (
-            <li key={shortcut}>
+            <li key={shortcut} className={styles.entry}>
               <span>{description}</span>{' '}
               <kbd className={styles.shortcut}>{shortcut}</kbd>
             </li>

@@ -1,16 +1,4 @@
-.root {
-  composes: root from '../OverflowMenu.module.css';
-}
-
-.menu {
-  composes: menu from '../OverflowMenu.module.css';
-}
-
-.menuList {
-  composes: menuList from '../OverflowMenu.module.css';
-}
-
-.menuList > li {
+.entry {
   display: flex;
   align-items: center;
   justify-content: space-between;

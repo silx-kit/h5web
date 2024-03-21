@@ -11,6 +11,7 @@ import { FiCheck, FiSlash } from 'react-icons/fi';
 import type { Bound } from '../../../vis/models';
 import { clampBound } from '../../../vis/utils';
 import styles from './BoundEditor.module.css';
+import domainControlsStyles from './DomainControls.module.css';
 
 interface Props {
   bound: Bound;
@@ -100,7 +101,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
       />
 
       <button
-        className={styles.actionBtn}
+        className={domainControlsStyles.actionBtn}
         type="submit"
         disabled={!isEditing}
         aria-label={`Apply ${bound}`}
@@ -108,7 +109,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
         <FiCheck />
       </button>
       <button
-        className={styles.actionBtn}
+        className={domainControlsStyles.actionBtn}
         type="button"
         disabled={!isEditing}
         aria-label={`Cancel ${bound}`}

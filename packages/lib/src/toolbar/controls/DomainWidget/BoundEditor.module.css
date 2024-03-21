@@ -60,7 +60,3 @@
   );
   outline: none;
 }
-
-.actionBtn {
-  composes: actionBtn from './DomainControls.module.css';
-}

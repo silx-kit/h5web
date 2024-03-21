@@ -37,109 +37,25 @@
 }
 
 .btn {
-  composes: btnClean from global;
-  display: flex;
-  align-items: center;
-  padding: 0 0.25rem;
-}
-
-a.btn {
-  color: inherit;
-  text-decoration: none;
-}
-
-.btn[data-small] {
-  padding: 0 0.125rem;
+  composes: btn from './utils.module.css';
 }
 
 .btnLike {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--h5w-btn--height, 1.875rem);
-  padding: 0 0.5rem;
-  border-radius: 0.5rem;
-  transition:
-    background-color 0.05s ease-in-out,
-    box-shadow 0.05s ease-in-out;
-  white-space: nowrap;
-}
-
-.btn[data-small] > .btnLike {
-  height: calc(var(--h5w-btn--height, 1.875rem) - 0.125rem);
-  border-radius: 0.875rem;
-  font-size: 0.875em;
-}
-
-.btn[data-raised] > .btnLike {
-  box-shadow:
-    0 0 1px inset var(--h5w-btnRaised--shadowColor, gray),
-    -1px -1px 2px inset var(--h5w-btnRaised--shadowColor, gray);
+  composes: btnLike from './utils.module.css';
 }
 
 .icon {
-  font-size: 1.5em;
-  padding-top: 1px;
-}
-
-.btn[data-small] .icon {
-  font-size: 1.375em;
-}
-
-.icon:not(:last-child) {
-  margin-right: 0.375rem;
-}
-
-.btn[data-small] .icon:not(:last-child) {
-  margin-right: 0.25rem;
+  composes: icon from './utils.module.css';
 }
 
 .label {
-  margin-right: 0.125rem;
-  line-height: 1.5em;
-}
-
-.btn:hover > .btnLike {
-  background-color: var(--h5w-btn-hover--bgColor, whitesmoke);
-  box-shadow: -1px -1px 2px inset var(--h5w-btn-hover--shadowColor, var(--h5w-btnRaised--shadowColor, gray));
-}
-
-.btn[data-raised]:hover > .btnLike {
-  box-shadow:
-    0 0 1px inset var(--h5w-btnRaised-hover--shadowColor, dimgray),
-    -1px -1px 2px inset var(--h5w-btnRaised-hover--shadowColor, dimgray);
-}
-
-.btn:active > .btnLike,
-.btn[data-raised]:active > .btnLike,
-.btn[aria-pressed='true'] > .btnLike, /* toggle buttons, domain widget "edit" button */
-.btn[aria-checked='true'] > .btnLike, /* toggle group buttons */
-.btn[aria-haspopup][aria-expanded='true'] > .btnLike  /* selectors and overflow menu buttons */ {
-  background-color: var(--h5w-btnPressed--bgColor, white);
-  box-shadow: 1px 1px 2px inset
-    var(--h5w-btnPressed--shadowColor, var(--h5w-btnRaised--shadowColor, gray));
-}
-
-.btn[aria-pressed='true']:hover > .btnLike,
-.btn[aria-checked='true']:hover > .btnLike,
-.btn[aria-haspopup][aria-expanded='true']:hover > .btnLike {
-  box-shadow: 1px 1px 2px inset
-    var(
-      --h5w-btnPressed-hover--shadowColor,
-      var(--h5w-btnRaised-hover--shadowColor, dimgray)
-    );
+  composes: label from './utils.module.css';
 }
 
 .popup {
-  position: absolute;
-  bottom: 1px; /* guarantees overlap with toolbar for hover-only popup */
-  padding-top: calc(0.375rem + 1px);
-  transform: translateY(100%);
+  composes: popup from './utils.module.css';
 }
 
 .popupInner {
-  background-color: var(--h5w-toolbar-popup--bgColor, rgba(255, 255, 255, 0.9));
-  box-shadow:
-    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
-    rgba(0, 0, 0, 0.1) 0px 4px 11px;
+  composes: popupInner from './utils.module.css';
 }

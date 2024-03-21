@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import Measure from 'react-measure';
 
-import styles from './Toolbar.module.css';
+import styles from './MeasuredControl.module.css';
 
 interface Props {
   children: ReactElement;

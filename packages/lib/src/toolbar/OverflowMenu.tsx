@@ -6,6 +6,7 @@ import flattenChildren from 'react-keyed-flatten-children';
 
 import styles from './OverflowMenu.module.css';
 import Separator from './Separator';
+import toolbarStyles from './Toolbar.module.css';
 
 interface Props {}
 
@@ -31,7 +32,7 @@ function OverflowMenu(props: PropsWithChildren<Props>) {
       <Separator />
       <div ref={rootRef} className={styles.root}>
         <button
-          className={styles.btn}
+          className={toolbarStyles.btn}
           type="button"
           aria-label="More controls"
           aria-haspopup="menu"
@@ -39,8 +40,8 @@ function OverflowMenu(props: PropsWithChildren<Props>) {
           aria-expanded={isOverflowMenuOpen}
           onClick={toggleOverflowMenu}
         >
-          <span className={styles.btnLike}>
-            <FiMenu className={styles.icon} />
+          <span className={toolbarStyles.btnLike}>
+            <FiMenu className={toolbarStyles.icon} />
           </span>
         </button>
 

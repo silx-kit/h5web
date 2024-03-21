@@ -4,12 +4,12 @@
 }
 
 .btn {
-  composes: btn from '../Toolbar.module.css';
-  padding: 0 !important; /* FIX style ordering issue with Vite */
+  composes: btn from '../utils.module.css';
+  padding: 0;
 }
 
 .btnLike {
-  composes: btnLike from '../Toolbar.module.css';
+  composes: btnLike from '../utils.module.css';
 }
 
 .btn:not(:first-child) > .btnLike {
@@ -24,11 +24,11 @@
 }
 
 .icon {
-  composes: icon from '../Toolbar.module.css';
+  composes: icon from '../utils.module.css';
 }
 
 .label {
-  composes: label from '../Toolbar.module.css';
+  composes: label from '../utils.module.css';
 }
 
 .btn[data-hint] .label {

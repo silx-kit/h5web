@@ -3,25 +3,13 @@
   display: flex;
 }
 
-.btn {
-  composes: btn from './Toolbar.module.css';
-}
-
-.btnLike {
-  composes: btnLike from './Toolbar.module.css';
-}
-
-.icon {
-  composes: icon from './Toolbar.module.css';
-}
-
 .menu {
-  composes: popup from './Toolbar.module.css';
+  composes: popup from './utils.module.css';
   right: 0.25rem;
 }
 
 .menuList {
-  composes: popupInner from './Toolbar.module.css';
+  composes: popupInner from './utils.module.css';
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 0.25rem;
