@@ -26,7 +26,7 @@ import {
 } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
-  /* API compatible with h5grove@2.0.0 */
+  /* API compatible with h5grove@2.1.0 */
   public constructor(
     url: string,
     filepath: string,
