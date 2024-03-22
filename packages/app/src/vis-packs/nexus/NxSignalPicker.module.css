@@ -2,9 +2,14 @@
   grid-area: bar;
   display: flex;
   align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  min-width: 0;
   margin: 0;
-  padding: 0.75rem 1.25rem 0;
+  padding: 0.675rem 1.25rem 0;
   font-size: 0.875em;
+  line-height: 1.4;
 }
 
 .text {
