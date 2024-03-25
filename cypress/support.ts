@@ -3,7 +3,9 @@ import '@testing-library/cypress/add-commands';
 import { addMatchImageSnapshotCommand } from '@simonsmith/cypress-image-snapshot/command';
 import { registerCommand as addWaitForStableDomCommand } from 'cypress-wait-for-stable-dom';
 
-addMatchImageSnapshotCommand();
+addMatchImageSnapshotCommand({
+  storeReceivedOnFailure: true, // store failing snapshots to allow for manual update
+});
 
 addWaitForStableDomCommand({
   pollInterval: 400, // more than debounce on slicing slider
