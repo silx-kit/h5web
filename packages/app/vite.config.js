@@ -2,6 +2,7 @@ import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath, URL } from 'url';
+import { patchCssModules } from 'vite-css-modules';
 import { defineProject } from 'vitest/config';
 
 const dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -19,7 +20,7 @@ export const externals = new Set([
 ]);
 
 export default defineProject({
-  plugins: [react()],
+  plugins: [react(), patchCssModules()],
   build: {
     lib: {
       entry: path.resolve('src/index.ts'),
