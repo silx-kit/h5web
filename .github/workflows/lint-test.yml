@@ -196,3 +196,4 @@ jobs:
           path: |
             cypress/debug/
             cypress/snapshots/**/__diff_output__/
+            cypress/snapshots/**/__received_output__/

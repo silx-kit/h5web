@@ -5,6 +5,7 @@ dist*/
 
 /cypress/debug/
 /cypress/snapshots/**/__diff_output__
+/cypress/snapshots/**/__received_output__
 
 .env.local
 .env.*.local

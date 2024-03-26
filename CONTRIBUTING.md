@@ -477,6 +477,12 @@ Here is the summarised workflow (also described with screenshots in
 9. Go back to your main PR and wait for the jobs of the _Lint & Test_ workflow
    to succeed.
 
+> It is also possible to download the artifacts from the CI and manually
+> commit/push the updated snapshots without going through the steps above. This
+> may be the best option if, for instance, the visual diffing tests fail on the
+> `main` branch after a commit is pushed to it directly or after a PR is
+> forcefully merged.
+
 ## Deployment
 
 - The project's `main` branch is continuously deployed to

@@ -67,6 +67,7 @@ jobs:
           path: |
             cypress/debug/
             cypress/snapshots/**/__diff_output__/
+            cypress/snapshots/**/__received_output__/
 
       - name: Open PR to update reference snapshots 🎁
         uses: peter-evans/create-pull-request@v4
