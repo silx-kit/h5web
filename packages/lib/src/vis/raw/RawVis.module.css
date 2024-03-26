@@ -6,14 +6,20 @@
 .raw {
   min-width: fit-content; /* fix missing padding-right */
   margin: 0;
-  padding: 1rem 1.5rem !important; /* Overwritten by JupyterLab if not !important */
+  padding: 1rem 1.5rem !important; /* overridden by JupyterLab if not !important */
   color: inherit;
   font-family: var(--monospace);
   font-size: inherit;
 }
 
-.root > img {
+.img {
   display: block;
+
+  /* Ensure image size is not restricted, since container can scroll.
+    (This notably overrides VS Code's default webview styles, which include
+    `img { max-width/height: 100%; }`.)  */
+  max-width: none;
+  max-height: none;
 }
 
 .fallback {
