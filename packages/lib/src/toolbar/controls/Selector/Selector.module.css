@@ -45,6 +45,21 @@
   transform: rotate(180deg);
 }
 
+.exportMenu {
+  display: flex;
+  flex-direction: column;
+  min-width: var(--popover-anchor-width);
+  margin-top: 0.375rem;
+  padding: 0.25rem 0;
+  background-color: var(--h5w-selector-menu--bgColor, white);
+  overflow: hidden scroll;
+  scrollbar-width: thin;
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 4px 11px;
+  outline: none;
+}
+
 .menu {
   position: absolute;
   top: calc(100% + 0.75rem);
@@ -57,18 +72,6 @@
   box-shadow:
     rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
     rgba(0, 0, 0, 0.1) 0px 4px 11px;
-}
-
-.menu:not([data-align]),
-.menu[data-align='center'] {
-  left: 50%;
-  transform: translateX(-50%); /* center menu with button */
-}
-.menu[data-align='left'] {
-  left: 0;
-}
-.menu[data-align='right'] {
-  right: 0;
 }
 
 .list {
@@ -108,10 +111,12 @@
 }
 
 .option:hover,
+.option[data-active-item],
 .option:focus {
   background-color: var(--h5w-selector-option-hover--bgColor, whitesmoke);
 }
 
+.option[data-focus-visible],
 .option:focus {
   outline: 1px solid var(--h5w-selector-option-focus--outlineColor, gray);
   outline-offset: -1px;

@@ -41,3 +41,8 @@ body {
 #root {
   height: 100vh;
 }
+
+a:focus-visible,
+[tabindex='0']:focus-visible {
+  outline: 1px dotted ButtonText;
+}

@@ -1,4 +1,4 @@
-import ram from 'react-aria-menubutton'; // CJS
+import { Menu, MenuButton, MenuItem, MenuProvider } from '@ariakit/react';
 import { FiDownload } from 'react-icons/fi';
 import { MdArrowDropDown } from 'react-icons/md';
 
@@ -6,22 +6,25 @@ import type { ExportEntryProps } from './ExportEntry';
 import ExportEntry from './ExportEntry';
 import styles from './Selector/Selector.module.css';
 
-const { Button, Menu, Wrapper } = ram;
+const PLACEMENTS = {
+  center: 'bottom',
+  left: 'bottom-start',
+  right: 'bottom-end',
+} as const;
 
 interface Props {
   entries: ExportEntryProps[];
   isSlice?: boolean;
-  align?: 'center' | 'left' | 'right';
+  align?: keyof typeof PLACEMENTS;
 }
 
 function ExportMenu(props: Props) {
   const { entries, isSlice, align = 'center' } = props;
 
   return (
-    <Wrapper className={styles.wrapper}>
-      <Button
+    <MenuProvider placement={PLACEMENTS[align]}>
+      <MenuButton
         className={styles.btn}
-        tag="button"
         disabled={!entries.some(({ url }) => !!url)}
       >
         <div className={styles.btnLike}>
@@ -31,15 +34,13 @@ function ExportMenu(props: Props) {
           </span>
           <MdArrowDropDown className={styles.arrowIcon} />
         </div>
-      </Button>
-      <Menu className={styles.menu} data-align={align}>
-        <div className={styles.list}>
-          {entries.map((entry) => (
-            <ExportEntry key={entry.format} {...entry} />
-          ))}
-        </div>
+      </MenuButton>
+      <Menu className={styles.exportMenu}>
+        {entries.map((entry) => (
+          <MenuItem key={entry.format} render={<ExportEntry {...entry} />} />
+        ))}
       </Menu>
-    </Wrapper>
+    </MenuProvider>
   );
 }
 
