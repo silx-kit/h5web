@@ -414,6 +414,9 @@ importers:
 
   packages/lib:
     dependencies:
+      '@ariakit/react':
+        specifier: 0.4.4
+        version: 0.4.4(react-dom@18.2.0)(react@18.2.0)
       '@react-hookz/web':
         specifier: 24.0.4
         version: 24.0.4(react-dom@18.2.0)(react@18.2.0)
@@ -653,6 +656,34 @@ packages:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
     dev: true
+
+  /@ariakit/core@0.4.4:
+    resolution: {integrity: sha512-ig/P1ymKaQU5MxtXRbeB5rHj87UhiwOViTtbpt2ey6v+NqWPG4+VY1RozT9xWI4dw5i+4Cf3vPd2Wgjv5whP9g==}
+    dev: false
+
+  /@ariakit/react-core@0.4.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-17adQvlRw/996/fmaHfsAiaYh8244BF8AgjZPVsTlxA9oXNunVzaEpmtgZ1XLdq1Tc10cIsZEsWup3vQ/6Ak0A==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
+    dependencies:
+      '@ariakit/core': 0.4.4
+      '@floating-ui/dom': 1.6.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /@ariakit/react@0.4.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pqIPJFsrQrUkX8ogm2TVfudPO4RnRgd6X3y5g0QPXipL3L7RlR6MQptgLAq2FnDGMvTvQPFSlvBoza5YvQG3NQ==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
+    dependencies:
+      '@ariakit/react-core': 0.4.4(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /@aw-web-design/x-default-browser@1.4.126:
     resolution: {integrity: sha512-Xk1sIhyNC/esHGGVjL/niHLowM0csl/kFO5uawBy4IrWwy0o1G8LGt3jP6nmWGz+USxeeqbihAmp/oVZju6wug==}
@@ -2585,6 +2616,23 @@ packages:
   /@fal-works/esbuild-plugin-global-externals@2.1.2:
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
     dev: true
+
+  /@floating-ui/core@1.6.0:
+    resolution: {integrity: sha512-PcF++MykgmTj3CIyOQbKA/hDzOAiqI3mhuoN44WRCopIs1sgoDoU4oty4Jtqaj/y3oDU6fnVSm4QG0a3t5i0+g==}
+    dependencies:
+      '@floating-ui/utils': 0.2.1
+    dev: false
+
+  /@floating-ui/dom@1.6.3:
+    resolution: {integrity: sha512-RnDthu3mzPlQ31Ss/BTwQ1zjzIhr3lk1gZB1OC56h/1vEtaXkESrOqL5fQVMfXpwGtRwX+YsZBdyHtJMQnkArw==}
+    dependencies:
+      '@floating-ui/core': 1.6.0
+      '@floating-ui/utils': 0.2.1
+    dev: false
+
+  /@floating-ui/utils@0.2.1:
+    resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
+    dev: false
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
