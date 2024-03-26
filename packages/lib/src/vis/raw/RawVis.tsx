@@ -14,8 +14,12 @@ function RawVis(props: Props) {
 
   if (value instanceof Uint8Array && isImage(value)) {
     return (
-      <div className={styles.root}>
-        <img src={URL.createObjectURL(new Blob([value]))} alt={title} />
+      <div className={`${styles.root} ${className}`} style={style}>
+        <img
+          className={styles.img}
+          src={URL.createObjectURL(new Blob([value]))}
+          alt={title}
+        />
       </div>
     );
   }
