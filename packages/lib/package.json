@@ -51,6 +51,7 @@
     }
   },
   "dependencies": {
+    "@ariakit/react": "0.4.4",
     "@react-hookz/web": "24.0.4",
     "@visx/axis": "3.10.1",
     "@visx/drag": "3.3.0",
