@@ -3,12 +3,12 @@ import { useTimeoutEffect, useToggle } from '@react-hookz/web';
 import styles from './App.module.css';
 
 interface Props {
-  isInspecting: boolean;
+  isInspecting?: boolean;
   message?: string;
 }
 
 function EntityLoader(props: Props) {
-  const { isInspecting, message = 'Loading' } = props;
+  const { isInspecting = false, message = 'Loading' } = props;
 
   // Wait a bit before showing loader to avoid flash
   const [isReady, toggleReady] = useToggle();

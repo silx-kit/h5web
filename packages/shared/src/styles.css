@@ -30,7 +30,7 @@
 .fallback {
   margin: 0;
   padding: 1em;
-  color: var(--secondary-dark);
+  color: var(--h5w-fallback--color, royalblue);
 }
 
 .error {

@@ -32,6 +32,7 @@
 }
 
 .root {
+  --h5w-fallback--color: var(--secondary-dark);
   --h5w-matrix--fontFamily: var(--monospace);
   --h5w-matrix-cell--bgColorAlt: var(--secondary-light-bg);
   --h5w-matrix-indexCell--bgColor: var(--primary-bg);

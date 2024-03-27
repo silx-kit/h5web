@@ -17,6 +17,9 @@ export type { DataContextValue } from './providers/DataProvider';
 
 // Undocumented
 export { assertEnvVar } from '@h5web/shared/guards';
+export { default as VisConfigProvider } from './VisConfigProvider';
+export { default as Visualizer } from './visualizer/Visualizer';
+export { default as ErrorFallback } from './ErrorFallback';
 
 // Undocumented (for @h5web/h5wasm)
 export { default as DataProvider } from './providers/DataProvider';

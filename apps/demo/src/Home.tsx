@@ -216,7 +216,7 @@ function Home() {
           </section>
           <section>
             <h2>
-              <Link to="/mock" className={styles.demoLink}>
+              <Link to="/mock?custom" className={styles.demoLink}>
                 Mock data <FiChevronsRight />
               </Link>
             </h2>

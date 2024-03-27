@@ -39,6 +39,10 @@ export class MockApi extends DataProviderApi {
   }
 
   public async getEntity(path: string): Promise<ProvidedEntity> {
+    if (path.includes('resilience')) {
+      throw new Error('error');
+    }
+
     if (path.includes('slow_metadata')) {
       await new Promise<void>((resolve) => {
         setTimeout(() => resolve(), SLOW_TIMEOUT);
