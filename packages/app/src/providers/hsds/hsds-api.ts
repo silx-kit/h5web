@@ -81,7 +81,9 @@ export class HsdsApi extends DataProviderApi {
     });
   }
 
-  public async getEntity(path: string): Promise<HsdsEntity<ProvidedEntity>> {
+  public override async getEntity(
+    path: string,
+  ): Promise<HsdsEntity<ProvidedEntity>> {
     const cachedEntity = this.entities.get(path);
     if (cachedEntity) {
       return cachedEntity;
@@ -121,7 +123,7 @@ export class HsdsApi extends DataProviderApi {
     return entity;
   }
 
-  public async getValue(params: ValuesStoreParams): Promise<unknown> {
+  public override async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { dataset } = params;
     assertHsdsDataset(dataset);
 
@@ -133,7 +135,9 @@ export class HsdsApi extends DataProviderApi {
     return hasArrayShape(dataset) ? flattenValue(value, dataset) : value;
   }
 
-  public async getAttrValues(entity: Entity): Promise<AttributeValues> {
+  public override async getAttrValues(
+    entity: Entity,
+  ): Promise<AttributeValues> {
     assertHsdsEntity(entity);
 
     const { id, collection, attributes } = entity;

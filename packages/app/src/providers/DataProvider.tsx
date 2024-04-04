@@ -1,5 +1,6 @@
 import { isGroup } from '@h5web/shared/guards';
 import type { ChildEntity, Entity, Group } from '@h5web/shared/hdf5-models';
+import { getNameFromPath } from '@h5web/shared/hdf5-utils';
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useMemo } from 'react';
 import { createFetchStore } from 'react-suspense-fetch';
@@ -13,7 +14,6 @@ import type {
   ProgressCallback,
   ValuesStore,
 } from './models';
-import { getNameFromPath } from './utils';
 
 export interface DataContextValue {
   filepath: string;

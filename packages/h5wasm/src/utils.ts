@@ -1,4 +1,8 @@
-import { assertDefined, isNumericType } from '@h5web/shared/guards';
+import {
+  assertDefined,
+  assertNonNull,
+  isNumericType,
+} from '@h5web/shared/guards';
 import type {
   Attribute,
   ChildEntity,
@@ -241,6 +245,7 @@ export function parseDType(metadata: Metadata): DType {
   if (h5tClass === H5TClass.Array) {
     const { array_type } = metadata;
     assertDefined(array_type);
+    assertNonNull(array_type.shape);
     return arrayType(parseDType(array_type), array_type.shape);
   }
 
@@ -260,8 +265,9 @@ export function readSelectedValue(
   }
 
   const { shape } = h5wDataset;
-  const selectionMembers = selection.split(',');
+  assertNonNull(shape);
 
+  const selectionMembers = selection.split(',');
   const ranges = selectionMembers.map<[number, number]>((member, i) => {
     if (member === ':') {
       return [0, shape[i]];

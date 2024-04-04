@@ -57,8 +57,8 @@ export interface UnresolvedEntity extends Entity {
 export type LinkClass = 'Hard' | 'Soft' | 'External';
 interface Link {
   class: LinkClass;
-  path?: string;
   file?: string;
+  path?: string;
 }
 
 export interface Attribute<S extends Shape = Shape, T extends DType = DType> {

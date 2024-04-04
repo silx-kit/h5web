@@ -1,5 +1,5 @@
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '@h5web/app';
-import { DataProviderApi, getNameFromPath } from '@h5web/app';
+import { DataProviderApi } from '@h5web/app';
 import { assertNonNull } from '@h5web/shared/guards';
 import type {
   ArrayShape,
@@ -8,6 +8,7 @@ import type {
   ProvidedEntity,
   Value,
 } from '@h5web/shared/hdf5-models';
+import { getNameFromPath } from '@h5web/shared/hdf5-utils';
 import type { Filter, Module } from 'h5wasm';
 import {
   File as H5WasmFile,
@@ -48,12 +49,12 @@ export class H5WasmApi extends DataProviderApi {
     this.file = this.initFile(buffer);
   }
 
-  public async getEntity(path: string): Promise<ProvidedEntity> {
+  public override async getEntity(path: string): Promise<ProvidedEntity> {
     const h5wEntity = await this.getH5WasmEntity(path);
     return parseEntity(getNameFromPath(path), path, h5wEntity);
   }
 
-  public async getValue(params: ValuesStoreParams): Promise<unknown> {
+  public override async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { dataset, selection } = params;
 
     const h5wDataset = await this.getH5WasmEntity(dataset.path);
@@ -70,7 +71,7 @@ export class H5WasmApi extends DataProviderApi {
     }
   }
 
-  public async getAttrValues(entity: Entity) {
+  public override async getAttrValues(entity: Entity) {
     const h5wEntity = await this.getH5WasmEntity(entity.path);
 
     if (!('attrs' in h5wEntity)) {
@@ -102,11 +103,6 @@ export class H5WasmApi extends DataProviderApi {
     return undefined;
   }
 
-  public async cleanUp(): Promise<void> {
-    const file = await this.file;
-    file.close();
-  }
-
   public override async getSearchablePaths(root: string): Promise<string[]> {
     const file = await this.file;
 
@@ -118,6 +114,11 @@ export class H5WasmApi extends DataProviderApi {
     }
 
     return [];
+  }
+
+  public async cleanUp(): Promise<void> {
+    const file = await this.file;
+    file.close();
   }
 
   private async initH5Wasm(): Promise<typeof Module> {
