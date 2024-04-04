@@ -36,12 +36,12 @@ export class H5GroveApi extends DataProviderApi {
     super(filepath, { baseURL: url, ...axiosConfig });
   }
 
-  public async getEntity(path: string): Promise<ProvidedEntity> {
+  public override async getEntity(path: string): Promise<ProvidedEntity> {
     const response = await this.fetchEntity(path);
     return parseEntity(path, response);
   }
 
-  public async getValue(
+  public override async getValue(
     params: ValuesStoreParams,
   ): Promise<H5GroveDataResponse> {
     const { dataset } = params;
@@ -60,7 +60,9 @@ export class H5GroveApi extends DataProviderApi {
     return this.fetchData(params);
   }
 
-  public async getAttrValues(entity: Entity): Promise<AttributeValues> {
+  public override async getAttrValues(
+    entity: Entity,
+  ): Promise<AttributeValues> {
     const { path, attributes } = entity;
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
   }

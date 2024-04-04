@@ -38,7 +38,7 @@ export class MockApi extends DataProviderApi {
     this.mockFile = mockFile;
   }
 
-  public async getEntity(path: string): Promise<ProvidedEntity> {
+  public override async getEntity(path: string): Promise<ProvidedEntity> {
     if (path.includes('slow_metadata')) {
       await new Promise<void>((resolve) => {
         setTimeout(() => resolve(), SLOW_TIMEOUT);
@@ -50,16 +50,7 @@ export class MockApi extends DataProviderApi {
     return entity;
   }
 
-  public async getAttrValues(entity: Entity): Promise<AttributeValues> {
-    return Object.fromEntries(
-      entity.attributes.map((attr) => {
-        assertMockAttribute(attr);
-        return [attr.name, attr.value];
-      }),
-    );
-  }
-
-  public async getValue(params: ValuesStoreParams): Promise<unknown> {
+  public override async getValue(params: ValuesStoreParams): Promise<unknown> {
     const { dataset, selection } = params;
     assertMockDataset(dataset);
 
@@ -84,6 +75,17 @@ export class MockApi extends DataProviderApi {
 
     assertArrayShape(dataset);
     return sliceValue(value, dataset, selection);
+  }
+
+  public override async getAttrValues(
+    entity: Entity,
+  ): Promise<AttributeValues> {
+    return Object.fromEntries(
+      entity.attributes.map((attr) => {
+        assertMockAttribute(attr);
+        return [attr.name, attr.value];
+      }),
+    );
   }
 
   public override getExportURL<D extends Dataset<ArrayShape>>(

@@ -1,6 +1,6 @@
+import { getNameFromPath } from '@h5web/shared/hdf5-utils';
 import { useEffect, useState } from 'react';
 
-import { getNameFromPath } from '../providers/utils';
 import styles from './Search.module.css';
 import SearchItem from './SearchItem';
 

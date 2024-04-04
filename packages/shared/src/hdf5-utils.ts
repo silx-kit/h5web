@@ -36,6 +36,11 @@ export function buildEntityPath(
   return `${prefix}/${entityNameOrRelativePath}`;
 }
 
+export function getNameFromPath(path: string) {
+  const segments = path.split('/');
+  return segments[segments.length - 1];
+}
+
 /* ----------------- */
 /* ----- TYPES ----- */
 

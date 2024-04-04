@@ -357,8 +357,8 @@ importers:
   packages/h5wasm:
     dependencies:
       h5wasm:
-        specifier: 0.7.2
-        version: 0.7.2
+        specifier: 0.7.3
+        version: 0.7.3
       nanoid:
         specifier: 5.0.6
         version: 5.0.6
@@ -8022,8 +8022,8 @@ packages:
     resolution: {integrity: sha512-GxBWGVxBftyq67kAbS4WPmTH3a8hGKigdMm+IVJ7tLY7BHj+nqDTUKO9RmmPBHy6Pvq5uW1YpIJr/oGanw+RyQ==}
     dev: false
 
-  /h5wasm@0.7.2:
-    resolution: {integrity: sha512-+jbCShZ5kzQVV0oJBiMiyh3updPHD3mpEAHFpPp8erhkSSZ+MoZuNzaJX2s3UO+8QUQigbHpNzeqDePLcjX61Q==}
+  /h5wasm@0.7.3:
+    resolution: {integrity: sha512-8Xvj/0aYAC0N5Qx3iXNk4VrfKdOwMxLcH1Hv4sGdewnNHYMXgUkRFOLVNXmv+A60F5nIEAiYo7//Jknvv9krIA==}
     dev: false
 
   /handlebars@4.7.8:

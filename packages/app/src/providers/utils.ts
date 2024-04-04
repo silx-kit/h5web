@@ -32,11 +32,6 @@ export async function handleAxiosError<T>(
   }
 }
 
-export function getNameFromPath(path: string) {
-  const segments = path.split('/');
-  return segments[segments.length - 1];
-}
-
 export function typedArrayFromDType(dtype: DType) {
   /* Adapted from https://github.com/ludwigschubert/js-numpy-parser/blob/v1.2.3/src/main.js#L116 */
   if (!isNumericType(dtype)) {
