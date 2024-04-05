@@ -356,9 +356,12 @@ importers:
 
   packages/h5wasm:
     dependencies:
+      comlink:
+        specifier: 4.4.1
+        version: 4.4.1
       h5wasm:
-        specifier: 0.7.3
-        version: 0.7.3
+        specifier: 0.7.4
+        version: 0.7.4
       nanoid:
         specifier: 5.0.6
         version: 5.0.6
@@ -5820,6 +5823,10 @@ packages:
     dependencies:
       delayed-stream: 1.0.0
 
+  /comlink@4.4.1:
+    resolution: {integrity: sha512-+1dlx0aY5Jo1vHy/tSsIGpSkN4tS9rZSW8FIhG0JH/crs9wwweswIo/POr451r7bZww3hFbPAKnTpimzL/mm4Q==}
+    dev: false
+
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
@@ -8022,8 +8029,8 @@ packages:
     resolution: {integrity: sha512-GxBWGVxBftyq67kAbS4WPmTH3a8hGKigdMm+IVJ7tLY7BHj+nqDTUKO9RmmPBHy6Pvq5uW1YpIJr/oGanw+RyQ==}
     dev: false
 
-  /h5wasm@0.7.3:
-    resolution: {integrity: sha512-8Xvj/0aYAC0N5Qx3iXNk4VrfKdOwMxLcH1Hv4sGdewnNHYMXgUkRFOLVNXmv+A60F5nIEAiYo7//Jknvv9krIA==}
+  /h5wasm@0.7.4:
+    resolution: {integrity: sha512-JmkW/R/cSBn1axJmZKuIUN2HIKisUhNncsJPwojUspS8Y3puKs8L/l9CH7VDIKgUIV8jiccEGFeOz2tWPD877g==}
     dev: false
 
   /handlebars@4.7.8:

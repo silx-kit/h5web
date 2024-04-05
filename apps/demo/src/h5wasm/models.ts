@@ -1,4 +1,4 @@
-export interface H5File {
+export interface RemoteFile {
   filename: string;
   buffer: ArrayBuffer;
 }

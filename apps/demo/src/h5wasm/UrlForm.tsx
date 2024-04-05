@@ -5,14 +5,14 @@ import { FiLoader } from 'react-icons/fi';
 import { useLocation, useSearch } from 'wouter';
 
 import styles from './H5WasmApp.module.css';
-import type { H5File } from './models';
+import type { RemoteFile } from './models';
 
 interface Props {
-  onH5File: (h5File: H5File) => void;
+  onLoad: (h5File: RemoteFile) => void;
 }
 
 function UrlForm(props: Props) {
-  const { onH5File } = props;
+  const { onLoad } = props;
 
   const [, navigate] = useLocation();
   const query = new URLSearchParams(useSearch());
@@ -26,9 +26,12 @@ function UrlForm(props: Props) {
   const fetchFile = useCallback(async () => {
     if (url) {
       const { data } = await execute();
-      onH5File({ filename: url.slice(url.lastIndexOf('/') + 1), buffer: data });
+      onLoad({
+        filename: url.slice(url.lastIndexOf('/') + 1),
+        buffer: data,
+      });
     }
-  }, [url, execute, onH5File]);
+  }, [url, execute, onLoad]);
 
   useEffect(() => {
     void fetchFile();
