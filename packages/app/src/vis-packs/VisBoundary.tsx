@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import ErrorFallback from '../ErrorFallback';
 import { useDataContext } from '../providers/DataProvider';
+import visualizerStyles from '../visualizer/Visualizer.module.css';
 import ValueLoader from './ValueLoader';
 
 interface Props {
@@ -19,7 +20,9 @@ function VisBoundary(props: Props) {
   return (
     <ErrorBoundary
       resetKeys={[resetKey]}
-      FallbackComponent={ErrorFallback}
+      fallbackRender={(args) => (
+        <ErrorFallback className={visualizerStyles.vis} {...args} />
+      )}
       onError={() => valuesStore.evictCancelled()}
     >
       <Suspense fallback={<ValueLoader message={loadingMessage} />}>

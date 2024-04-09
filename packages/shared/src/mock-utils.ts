@@ -201,7 +201,7 @@ export function unresolved(
 
 export function nxGroup(
   name: string,
-  type: 'NXroot' | 'NXentry' | 'NXprocess' | 'NXdata',
+  type: 'NXroot' | 'NXentry' | 'NXprocess' | 'NXdata' | 'NXnote',
   opts: { defaultPath?: string } & GroupOpts = {},
 ): GroupWithChildren {
   const { defaultPath, children, ...groupOpts } = opts;

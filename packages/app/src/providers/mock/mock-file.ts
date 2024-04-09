@@ -259,6 +259,18 @@ export function makeMockFile(): GroupWithChildren {
           }),
         ],
       }),
+      nxGroup('nexus_note', 'NXnote', {
+        children: [
+          scalar(
+            'data',
+            JSON.stringify({
+              energy: 10.2,
+              geometry: { dist: 0.1, rot: 0.074 },
+            }),
+          ),
+          scalar('type', 'application/json'),
+        ],
+      }),
       nxGroup('nexus_no_default', 'NXprocess', {
         defaultPath: undefined,
         children: [
@@ -320,6 +332,18 @@ export function makeMockFile(): GroupWithChildren {
         nxData('silx_style_malformed', {
           signal: array('oneD'),
           attributes: [scalarAttr('SILX_style', '{')],
+        }),
+        nxGroup('note_invalid_json', 'NXnote', {
+          children: [
+            scalar('data', "{foo: 'bar'}"),
+            scalar('type', 'application/json'),
+          ],
+        }),
+        nxGroup('note_unknown_mime_type', 'NXnote', {
+          children: [
+            scalar('data', 'foo: bar'),
+            scalar('type', 'application/yaml'),
+          ],
         }),
       ]),
       group('resilience', [
