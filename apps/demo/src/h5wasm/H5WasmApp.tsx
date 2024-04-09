@@ -27,7 +27,7 @@ function H5WasmApp() {
 
   if (h5File instanceof File) {
     return (
-      <H5WasmLocalFileProvider file={h5File}>
+      <H5WasmLocalFileProvider file={h5File} getPlugin={getPlugin}>
         <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
       </H5WasmLocalFileProvider>
     );

@@ -10,11 +10,18 @@ import { ready as h5wasmReady, ready } from 'h5wasm';
 
 import { parseDType } from '../utils';
 
-export async function initH5Wasm(): typeof ready {
+export async function initH5Wasm(pluginsPath: string): typeof ready {
   const module = await ready;
 
   // Throw HDF5 errors instead of just logging them
   module.activate_throwing_error_handler();
+
+  // Replace default plugins path
+  module.remove_plugin_search_path(0);
+  module.insert_plugin_search_path(pluginsPath, 0);
+
+  // Create plugins folder on Emscripten virtual file system
+  module.FS.mkdirTree(pluginsPath);
 
   return module;
 }

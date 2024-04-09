@@ -6,9 +6,10 @@ import { nanoid } from 'nanoid';
 import { readSelectedValue } from '../utils';
 import { initH5Wasm, mountWorkerFS, parseEntity } from './worker.utils';
 
+const PLUGINS_PATH = '/plugins'; // path to plugins on EMScripten virtual file system
 const WORKERFS_MOUNT_PT = '/workerfs';
 
-const h5wasmReady = initH5Wasm();
+const h5wasmReady = initH5Wasm(PLUGINS_PATH);
 const workerFSReady = mountWorkerFS(WORKERFS_MOUNT_PT);
 
 async function openFile(file: File): Promise<bigint> {
@@ -64,12 +65,28 @@ async function getAttrValue(
   return new Attribute(fileId, path, attrName).json_value;
 }
 
+async function isPluginLoaded(plugin: string): Promise<boolean> {
+  const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
+
+  const { FS } = await h5wasmReady;
+  return FS.analyzePath(pluginPath).exists;
+}
+
+async function loadPlugin(plugin: string, buffer: ArrayBuffer): Promise<void> {
+  const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
+
+  const { FS } = await h5wasmReady;
+  FS.writeFile(pluginPath, new Uint8Array(buffer));
+}
+
 const api = {
   openFile,
   closeFile,
   getEntity,
   getValue,
   getAttrValue,
+  isPluginLoaded,
+  loadPlugin,
 };
 
 expose(api);
