@@ -1,5 +1,6 @@
+import { isTypedArray } from '@h5web/shared/guards';
 import type { ProvidedEntity } from '@h5web/shared/hdf5-models';
-import { expose } from 'comlink';
+import { expose, transfer } from 'comlink';
 import { Attribute, Dataset } from 'h5wasm';
 import { nanoid } from 'nanoid';
 
@@ -54,7 +55,8 @@ async function getValue(
   path: string,
   selection?: string | undefined,
 ): Promise<unknown> {
-  return readSelectedValue(new Dataset(fileId, path), selection);
+  const value = readSelectedValue(new Dataset(fileId, path), selection);
+  return isTypedArray(value) ? transfer(value, [value.buffer]) : value;
 }
 
 async function getAttrValue(

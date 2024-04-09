@@ -125,7 +125,7 @@ export function assertArray(val: unknown): asserts val is unknown[] {
   }
 }
 
-function isTypedArray(val: unknown): boolean {
+export function isTypedArray(val: unknown): val is TypedArray {
   return (
     val instanceof Int8Array ||
     val instanceof Int16Array ||
