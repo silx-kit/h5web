@@ -1,3 +1,4 @@
+import type { DataProviderApi } from '@h5web/app';
 import { DataProvider } from '@h5web/app';
 import type { PropsWithChildren } from 'react';
 import { useMemo, useState } from 'react';
@@ -6,12 +7,16 @@ import { H5WasmLocalFileApi } from './h5wasm-local-file-api';
 
 interface Props {
   file: File;
+  getExportURL?: DataProviderApi['getExportURL'];
 }
 
 function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
-  const { file, children } = props;
+  const { file, getExportURL, children } = props;
 
-  const api = useMemo(() => new H5WasmLocalFileApi(file), [file]);
+  const api = useMemo(
+    () => new H5WasmLocalFileApi(file, getExportURL),
+    [file, getExportURL],
+  );
 
   const [prevApi, setPrevApi] = useState(api);
   if (prevApi !== api) {

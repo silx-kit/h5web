@@ -42,19 +42,7 @@ import {
 } from 'h5wasm';
 
 import type { H5WasmAttributes, H5WasmEntity, HDF5Diag } from './models';
-
-// https://github.com/h5wasm/h5wasm-plugins#included-plugins
-export enum Plugin {
-  Bitshuffle = 'bshuf',
-  Blosc = 'blosc',
-  Blosc2 = 'blosc2',
-  BZIP2 = 'bz2',
-  LZ4 = 'lz4',
-  LZF = 'lzf',
-  SZ = 'szf',
-  ZFP = 'zfp',
-  Zstandard = 'zstd',
-}
+import { Plugin } from './models';
 
 // https://support.hdfgroup.org/services/contributions.html
 export const PLUGINS_BY_FILTER_ID: Record<number, Plugin> = {
