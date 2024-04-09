@@ -91,6 +91,11 @@ export class H5WasmLocalFileApi extends DataProviderApi {
     return undefined;
   }
 
+  public override async getSearchablePaths(root: string): Promise<string[]> {
+    const fileId = await this.fileId;
+    return this.remote.getDescendantPaths(fileId, root);
+  }
+
   public async cleanUp(): Promise<number> {
     return this.remote.closeFile(await this.fileId);
   }

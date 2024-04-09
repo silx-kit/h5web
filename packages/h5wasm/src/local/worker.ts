@@ -67,6 +67,13 @@ async function getAttrValue(
   return new Attribute(fileId, path, attrName).json_value;
 }
 
+async function getDescendantPaths(fileId: bigint, rootPath: string) {
+  const h5wasm = await h5wasmReady;
+  return h5wasm
+    .get_names(fileId, rootPath, true)
+    .map((path) => `${rootPath}${path}`);
+}
+
 async function isPluginLoaded(plugin: string): Promise<boolean> {
   const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
 
@@ -87,6 +94,7 @@ const api = {
   getEntity,
   getValue,
   getAttrValue,
+  getDescendantPaths,
   isPluginLoaded,
   loadPlugin,
 };
