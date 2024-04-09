@@ -1,14 +1,16 @@
+import { isTypedArray } from '@h5web/shared/guards';
 import type { ProvidedEntity } from '@h5web/shared/hdf5-models';
-import { expose } from 'comlink';
+import { expose, transfer } from 'comlink';
 import { Attribute, Dataset } from 'h5wasm';
 import { nanoid } from 'nanoid';
 
 import { readSelectedValue } from '../utils';
 import { initH5Wasm, mountWorkerFS, parseEntity } from './worker.utils';
 
+const PLUGINS_PATH = '/plugins'; // path to plugins on EMScripten virtual file system
 const WORKERFS_MOUNT_PT = '/workerfs';
 
-const h5wasmReady = initH5Wasm();
+const h5wasmReady = initH5Wasm(PLUGINS_PATH);
 const workerFSReady = mountWorkerFS(WORKERFS_MOUNT_PT);
 
 async function openFile(file: File): Promise<bigint> {
@@ -53,7 +55,8 @@ async function getValue(
   path: string,
   selection?: string | undefined,
 ): Promise<unknown> {
-  return readSelectedValue(new Dataset(fileId, path), selection);
+  const value = readSelectedValue(new Dataset(fileId, path), selection);
+  return isTypedArray(value) ? transfer(value, [value.buffer]) : value;
 }
 
 async function getAttrValue(
@@ -64,12 +67,36 @@ async function getAttrValue(
   return new Attribute(fileId, path, attrName).json_value;
 }
 
+async function getDescendantPaths(fileId: bigint, rootPath: string) {
+  const h5wasm = await h5wasmReady;
+  return h5wasm
+    .get_names(fileId, rootPath, true)
+    .map((path) => `${rootPath}${path}`);
+}
+
+async function isPluginLoaded(plugin: string): Promise<boolean> {
+  const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
+
+  const { FS } = await h5wasmReady;
+  return FS.analyzePath(pluginPath).exists;
+}
+
+async function loadPlugin(plugin: string, buffer: ArrayBuffer): Promise<void> {
+  const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
+
+  const { FS } = await h5wasmReady;
+  FS.writeFile(pluginPath, new Uint8Array(buffer));
+}
+
 const api = {
   openFile,
   closeFile,
   getEntity,
   getValue,
   getAttrValue,
+  getDescendantPaths,
+  isPluginLoaded,
+  loadPlugin,
 };
 
 expose(api);

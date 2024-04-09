@@ -4,7 +4,7 @@ import type { PropsWithChildren } from 'react';
 import { useMemo, useState } from 'react';
 
 import { H5WasmApi } from './h5wasm-api';
-import type { Plugin } from './utils';
+import type { Plugin } from './models';
 
 interface Props {
   filename: string;

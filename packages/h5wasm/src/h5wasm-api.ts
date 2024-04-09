@@ -18,8 +18,7 @@ import {
 import { nanoid } from 'nanoid';
 
 import { assertH5WasmDataset } from './guards';
-import type { H5WasmEntity } from './models';
-import type { Plugin } from './utils';
+import type { H5WasmEntity, Plugin } from './models';
 import {
   getEnhancedError,
   hasBigInts,
