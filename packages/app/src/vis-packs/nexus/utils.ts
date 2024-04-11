@@ -48,6 +48,13 @@ export function assertNxDataGroup(
   }
 }
 
+export function isNxNoteGroup(
+  group: GroupWithChildren,
+  attrValuesStore: AttrValuesStore,
+): boolean {
+  return attrValuesStore.getSingle(group, 'NX_class') === 'NXnote';
+}
+
 function findOldStyleSignalDataset(
   group: GroupWithChildren,
 ): Dataset<ArrayShape, NumericType | ComplexType> {
@@ -266,4 +273,12 @@ export function areSameDims(dims1: ArrayShape, dims2: ArrayShape): boolean {
     dims1.length === dims2.length &&
     dims1.every((dim, index) => dim === dims2[index])
   );
+}
+
+export function parseJson(value: string): unknown {
+  try {
+    return JSON.parse(value);
+  } catch (error: unknown) {
+    throw new Error('Expected valid JSON', { cause: error });
+  }
 }

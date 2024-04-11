@@ -1,4 +1,4 @@
-import { FiActivity, FiImage, FiMap } from 'react-icons/fi';
+import { FiActivity, FiFileText, FiImage, FiMap } from 'react-icons/fi';
 import { MdGrain } from 'react-icons/md';
 
 import {
@@ -18,6 +18,7 @@ import {
   NxScatterContainer,
   NxSpectrumContainer,
 } from './containers';
+import NxNoteContainer from './containers/NxNoteContainer';
 
 export enum NexusVis {
   NxSpectrum = 'NX Line',
@@ -26,6 +27,7 @@ export enum NexusVis {
   NxComplexImage = 'NX Complex Heatmap',
   NxRGB = 'NX RGB',
   NxScatter = 'NX Scatter',
+  NxNote = 'NX Note',
 }
 
 export const NEXUS_VIS = {
@@ -69,5 +71,11 @@ export const NEXUS_VIS = {
     Icon: MdGrain,
     Container: NxScatterContainer,
     ConfigProvider: ScatterConfigProvider,
+  },
+
+  [NexusVis.NxNote]: {
+    name: NexusVis.NxNote,
+    Icon: FiFileText,
+    Container: NxNoteContainer,
   },
 } satisfies Record<NexusVis, VisDef>;

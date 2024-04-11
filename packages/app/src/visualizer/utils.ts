@@ -19,6 +19,7 @@ import {
   findAxesDatasets,
   findSignalDataset,
   isNxDataGroup,
+  isNxNoteGroup,
 } from '../vis-packs/nexus/utils';
 import { NEXUS_VIS, NexusVis } from '../vis-packs/nexus/visualizations';
 
@@ -94,6 +95,10 @@ function getSupportedNxVis(
 ): VisDef[] {
   if (!isGroup(entity)) {
     return [];
+  }
+
+  if (isNxNoteGroup(entity, attrValuesStore)) {
+    return [NEXUS_VIS[NexusVis.NxNote]];
   }
 
   if (!isNxDataGroup(entity, attrValuesStore)) {
