@@ -15,6 +15,12 @@ export interface RgbVisConfig {
 
   imageType: ImageType;
   setImageType: (channels: ImageType) => void;
+
+  flipXAxis: boolean;
+  toggleXAxisFlip: () => void;
+
+  flipYAxis: boolean;
+  toggleYAxisFlip: () => void;
 }
 
 function createRgbConfigStore() {
@@ -30,10 +36,18 @@ function createRgbConfigStore() {
 
         imageType: ImageType.RGB,
         setImageType: (imageType: ImageType) => set({ imageType }),
+
+        flipXAxis: false,
+        toggleXAxisFlip: () =>
+          set((state) => ({ flipXAxis: !state.flipXAxis })),
+
+        flipYAxis: true,
+        toggleYAxisFlip: () =>
+          set((state) => ({ flipYAxis: !state.flipYAxis })),
       }),
       {
         name: 'h5web:rgb',
-        version: 2,
+        version: 3,
       },
     ),
   );
