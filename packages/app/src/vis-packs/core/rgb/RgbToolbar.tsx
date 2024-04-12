@@ -5,7 +5,12 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import { MdAspectRatio, MdGridOn } from 'react-icons/md';
+import {
+  MdAspectRatio,
+  MdGridOn,
+  MdSwapHoriz,
+  MdSwapVert,
+} from 'react-icons/md';
 
 import { getImageInteractions } from '../utils';
 import type { RgbVisConfig } from './config';
@@ -20,9 +25,13 @@ function RgbToolbar(props: Props) {
     imageType,
     keepRatio,
     showGrid,
+    flipXAxis,
+    flipYAxis,
     setImageType,
     toggleKeepRatio,
     toggleGrid,
+    toggleXAxisFlip,
+    toggleYAxisFlip,
   } = config;
 
   return (
@@ -40,6 +49,21 @@ function RgbToolbar(props: Props) {
       </ToggleGroup>
 
       <Separator />
+
+      <ToggleBtn
+        label="X"
+        aria-label="Flip X"
+        icon={MdSwapHoriz}
+        value={flipXAxis}
+        onToggle={toggleXAxisFlip}
+      />
+      <ToggleBtn
+        label="Y"
+        aria-label="Flip Y"
+        icon={MdSwapVert}
+        value={flipYAxis}
+        onToggle={toggleYAxisFlip}
+      />
 
       <ToggleBtn
         label="Keep ratio"

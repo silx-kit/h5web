@@ -34,7 +34,7 @@ function MappedRgbVis(props: Props) {
     config,
   } = props;
 
-  const { showGrid, keepRatio, imageType } = config;
+  const { showGrid, keepRatio, imageType, flipXAxis, flipYAxis } = config;
   const { shape: dims } = dataset;
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
@@ -62,6 +62,8 @@ function MappedRgbVis(props: Props) {
           label: axisLabels?.[yDimIndex],
           value: axisValues?.[yDimIndex],
         }}
+        flipXAxis={flipXAxis}
+        flipYAxis={flipYAxis}
       />
     </>
   );
