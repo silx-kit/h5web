@@ -25,6 +25,8 @@ interface Props extends ClassStyleAttrs {
   imageType?: ImageType;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
+  flipXAxis?: boolean;
+  flipYAxis?: boolean;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
 }
@@ -38,6 +40,8 @@ function RgbVis(props: Props) {
     imageType = ImageType.RGB,
     abscissaParams = {},
     ordinateParams = {},
+    flipXAxis,
+    flipYAxis,
     children,
     interactions,
     className = '',
@@ -73,19 +77,24 @@ function RgbVis(props: Props) {
           showGrid,
           isIndexAxis: true,
           label: abscissaLabel,
+          flip: flipXAxis,
         }}
         ordinateConfig={{
           visDomain: ordinateDomain,
           showGrid,
           isIndexAxis: true,
-          flip: true,
+          flip: flipYAxis,
           label: ordinateLabel,
         }}
       >
         <DefaultInteractions {...interactions} />
         <ResetZoomButton />
 
-        <RgbMesh values={safeDataArray} bgr={imageType === ImageType.BGR} />
+        <RgbMesh
+          values={safeDataArray}
+          bgr={imageType === ImageType.BGR}
+          scale={[flipXAxis ? -1 : 1, flipYAxis ? -1 : 1, 1]}
+        />
 
         {children}
       </VisCanvas>

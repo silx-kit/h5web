@@ -1,17 +1,18 @@
 import type { NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
+import type { VisMeshProps } from '../shared/VisMesh';
 import VisMesh from '../shared/VisMesh';
 import { getUniforms, VERTEX_SHADER } from '../utils';
 import { getData3DTexture } from './utils';
 
-interface Props {
+interface Props extends VisMeshProps {
   values: NdArray<Uint8Array | Uint8ClampedArray | Float32Array>;
   bgr?: boolean;
 }
 
 function RgbMesh(props: Props) {
-  const { values, bgr = false } = props;
+  const { values, bgr = false, ...visMeshProps } = props;
 
   const dataTexture = useMemo(() => getData3DTexture(values), [values]);
 
@@ -39,7 +40,7 @@ function RgbMesh(props: Props) {
   };
 
   return (
-    <VisMesh scale={[1, -1, 1]}>
+    <VisMesh {...visMeshProps}>
       <shaderMaterial args={[shader]} />
     </VisMesh>
   );
