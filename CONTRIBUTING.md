@@ -2,7 +2,7 @@
 
 - [Quick start](#quick-start)
 - [Development](#development)
-  - [`pnpm` v7 cheat sheet](#pnpm-v7-cheat-sheet)
+  - [`pnpm` cheat sheet](#pnpm-cheat-sheet)
   - [Dependency management](#dependency-management)
     - [DefinitelyTyped packages](#definitelytyped-packages)
     - [Workspace dependencies](#workspace-dependencies)
