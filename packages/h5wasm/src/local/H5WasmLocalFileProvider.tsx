@@ -1,7 +1,7 @@
 import type { DataProviderApi } from '@h5web/app';
 import { DataProvider } from '@h5web/app';
 import type { PropsWithChildren } from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef } from 'react';
 
 import type { Plugin } from '../models';
 import { H5WasmLocalFileApi } from './h5wasm-local-file-api';
@@ -15,16 +15,16 @@ interface Props {
 function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
   const { file, getExportURL, getPlugin, children } = props;
 
-  const api = useMemo(
-    () => new H5WasmLocalFileApi(file, getExportURL, getPlugin),
-    [file, getExportURL, getPlugin],
-  );
+  const prevApiRef = useRef<H5WasmLocalFileApi>();
 
-  const [prevApi, setPrevApi] = useState(api);
-  if (prevApi !== api) {
-    setPrevApi(api);
-    void prevApi.cleanUp(); // https://github.com/silx-kit/h5web/pull/1568
-  }
+  const api = useMemo(() => {
+    const newApi = new H5WasmLocalFileApi(file, getExportURL, getPlugin);
+
+    void prevApiRef.current?.cleanUp();
+    prevApiRef.current = newApi;
+
+    return newApi;
+  }, [file, getExportURL, getPlugin]);
 
   return <DataProvider api={api}>{children}</DataProvider>;
 }
