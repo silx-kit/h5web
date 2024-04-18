@@ -116,8 +116,10 @@ export class H5WasmApi extends DataProviderApi {
   }
 
   public async cleanUp(): Promise<void> {
+    const module = await h5wasmReady;
     const file = await this.file;
-    file.close();
+    // `file.close()` flushes the file, which is not needed
+    module.ccall('H5Fclose', 'number', ['bigint'], [file.file_id]);
   }
 
   private async initH5Wasm(): Promise<typeof Module> {

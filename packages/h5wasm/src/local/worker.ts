@@ -38,7 +38,6 @@ async function openFile(file: File): Promise<bigint> {
 
 async function closeFile(fileId: bigint): Promise<number> {
   const h5wasm = await h5wasmReady;
-  h5wasm.flush(fileId);
   return h5wasm.ccall('H5Fclose', 'number', ['bigint'], [fileId]);
 }
 

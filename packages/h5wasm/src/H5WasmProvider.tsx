@@ -1,7 +1,7 @@
 import type { DataProviderApi } from '@h5web/app';
 import { DataProvider } from '@h5web/app';
 import type { PropsWithChildren } from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { H5WasmApi } from './h5wasm-api';
 import type { Plugin } from './models';
@@ -16,16 +16,16 @@ interface Props {
 function H5WasmProvider(props: PropsWithChildren<Props>) {
   const { filename, buffer, getExportURL, getPlugin, children } = props;
 
-  const api = useMemo(
-    () => new H5WasmApi(filename, buffer, getExportURL, getPlugin),
-    [buffer, filename, getExportURL, getPlugin],
-  );
+  const prevApiRef = useRef<H5WasmApi>();
 
-  const [prevApi, setPrevApi] = useState(api);
-  if (prevApi !== api) {
-    setPrevApi(api);
-    void prevApi.cleanUp(); // https://github.com/silx-kit/h5web/pull/1568
-  }
+  const api = useMemo(() => {
+    const newApi = new H5WasmApi(filename, buffer, getExportURL, getPlugin);
+
+    void prevApiRef.current?.cleanUp();
+    prevApiRef.current = newApi;
+
+    return newApi;
+  }, [buffer, filename, getExportURL, getPlugin]);
 
   return <DataProvider api={api}>{children}</DataProvider>;
 }
