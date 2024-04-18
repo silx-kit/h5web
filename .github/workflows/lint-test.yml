@@ -81,7 +81,7 @@ jobs:
 
       - name: Restore Poetry installation 📌
         id: poetry
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.local
           key: poetry-0 # increment to reset cache
@@ -92,7 +92,7 @@ jobs:
 
       - name: Restore Poetry environments 📌
         id: poetry-venvs
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
