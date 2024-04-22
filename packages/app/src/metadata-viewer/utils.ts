@@ -34,8 +34,8 @@ export function renderType(type: DType): string {
 
   if (type.class === DTypeClass.String) {
     const { length, charSet } = type;
-    return `${charSet ? `${charSet} string` : 'String'}${
-      length !== undefined ? `, ${length} characters` : ''
+    return `${charSet ? `${charSet} string` : 'String'}, ${
+      length === undefined ? 'variable length' : `${length} characters`
     }`;
   }
 
