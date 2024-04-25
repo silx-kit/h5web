@@ -19,6 +19,7 @@ function RawVis(props: Props) {
           className={styles.img}
           src={URL.createObjectURL(new Blob([value]))}
           alt={title}
+          data-keep-colors
         />
       </div>
     );
