@@ -9,7 +9,7 @@ import {
 import { useThree } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import { useEffect, useMemo, useRef } from 'react';
-import type { Camera } from 'three';
+import type { Camera, Vector3 } from 'three';
 
 import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
@@ -83,6 +83,16 @@ function SelectionTool(props: Props) {
     disabled,
   });
 
+  function computeRawSelection(
+    htmlStart: Vector3,
+    htmlEnd = htmlStart,
+  ): Selection {
+    const html: Rect = [htmlStart, canvasBox.clampPoint(htmlEnd)];
+    const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
+    const data = world.map(worldToData) as Rect;
+    return { html, world, data };
+  }
+
   function handlePointerDown(evt: CanvasEvent<PointerEvent>) {
     const { sourceEvent } = evt;
     if (!shouldInteract(sourceEvent)) {
@@ -93,19 +103,16 @@ function SelectionTool(props: Props) {
     (target as Element).setPointerCapture(pointerId);
 
     startEvtRef.current = evt;
+    setRawSelection(computeRawSelection(evt.htmlPt));
   }
 
   function handlePointerMove(evt: CanvasEvent<PointerEvent>) {
-    if (!startEvtRef.current) {
+    const { current: startEvt } = startEvtRef;
+    if (!startEvt) {
       return;
     }
 
-    const { htmlPt: htmlStart } = startEvtRef.current;
-    const html: Rect = [htmlStart, canvasBox.clampPoint(evt.htmlPt)];
-    const world = html.map((pt) => htmlToWorld(camera, pt)) as Rect;
-    const data = world.map(worldToData) as Rect;
-
-    setRawSelection({ html, world, data });
+    setRawSelection(computeRawSelection(startEvt.htmlPt, evt.htmlPt));
   }
 
   function handlePointerUp(evt: CanvasEvent<PointerEvent>) {
