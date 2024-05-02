@@ -39,13 +39,20 @@ import type {
 } from './models';
 import { scaleGamma } from './scaleGamma';
 
-export const DEFAULT_DOMAIN: Domain = [0.1, 1];
+// Orthographic camera configuration (cf. `R3FCanvas.tsx`)
+export const CAMERA_NEAR = 0;
+export const CAMERA_FAR = 1000;
+export const CAMERA_Z = CAMERA_FAR;
 
-/* Use this constant in geometry code to render points outside of the camera's
- * field of view (and therefore hide them from the visualization). This is useful
- * for points with NaN/Infinity coordinates (e.g. because of log scale), as Three
- * logs a warning to the console when rendering such points. */
-export const CAMERA_FAR = 1000; // R3F's default
+// Resulting visible `z` range for objects in the scene
+export const Z_MIN = CAMERA_Z - CAMERA_FAR; // 0
+export const Z_MAX = CAMERA_Z - CAMERA_NEAR; // 1000
+
+/* `z` position located outside of the camera's frustrum (too far).
+ * Used to hide points with NaN/infinite coordinates without Three warnings. */
+export const Z_OUT = Z_MIN - 1;
+
+export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
 const DEFAULT_AXIS_OFFSETS = { left: 80, right: 24, top: 16, bottom: 34 };
 const TITLE_OFFSET = 28;

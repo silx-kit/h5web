@@ -405,6 +405,16 @@ writing your own geometries:
 - `ScatterPointsGeometry`, used in [`ScatterPoints`](https://h5web-docs.panosc.eu/?path=/docs/visualizations-scattervis--docs) (undocumented)
 - `SurfaceMeshGeometry`, used in [`SurfaceMesh`](https://h5web-docs.panosc.eu/?path=/docs/experimental-surfacevis--docs) (experimental)
 
+### Constants
+
+#### `Z_MIN = 0`, `Z_MAX = 1000`
+
+R3F/Three objects inside `VisCanvas` with a `z` position in the range `[Z_MIN Z_MAX]`
+are in view of the scene's orthographic camera. Objects positioned further than `Z_MIN`
+(`z < 0`) or closer than `Z_MAX` (`z > 1000`, i.e. behind the camera) are not in view of
+the camera, and therefore not rendered at all. By default, objects are positioned in view
+of the camera, at `z = 0`.
+
 ### Mock values
 
 The `mockValues` object can be used to generate mock ndarrays for testing purposes:

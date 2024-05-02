@@ -5,7 +5,7 @@ import { rgb } from 'd3-color';
 import type { D3Interpolator } from '../heatmap/models';
 import type { AxisScale, Scale } from '../models';
 import H5WebGeometry from '../shared/h5webGeometry';
-import { CAMERA_FAR, createBufferAttr } from '../utils';
+import { createBufferAttr, Z_OUT } from '../utils';
 
 interface Params {
   abscissas: NumArray;
@@ -42,7 +42,7 @@ class ScatterPointsGeometry extends H5WebGeometry<
     const y = ordinateScale(ordinates[index]);
 
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
-      this.attributes.position.setXYZ(index, 0, 0, CAMERA_FAR);
+      this.attributes.position.setXYZ(index, 0, 0, Z_OUT);
       this.attributes.color.setXYZ(index, 0, 0, 0);
       return;
     }
