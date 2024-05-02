@@ -3,7 +3,7 @@ import type { NumArray } from '@h5web/shared/vis-models';
 
 import type { AxisScale } from '../models';
 import H5WebGeometry from '../shared/h5webGeometry';
-import { CAMERA_FAR, createBufferAttr } from '../utils';
+import { createBufferAttr, Z_OUT } from '../utils';
 
 interface Params {
   abscissas: NumArray;
@@ -27,7 +27,7 @@ class LineGeometry extends H5WebGeometry<'position', Params> {
     const isIgnored = ignoreValue ? ignoreValue(value) : false;
 
     if (isIgnored) {
-      this.attributes.position.setXYZ(index, 0, 0, CAMERA_FAR);
+      this.attributes.position.setXYZ(index, 0, 0, Z_OUT);
       return;
     }
 
@@ -35,7 +35,7 @@ class LineGeometry extends H5WebGeometry<'position', Params> {
     const y = ordinateScale(value);
 
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
-      this.attributes.position.setXYZ(index, 0, 0, CAMERA_FAR);
+      this.attributes.position.setXYZ(index, 0, 0, Z_OUT);
       return;
     }
 

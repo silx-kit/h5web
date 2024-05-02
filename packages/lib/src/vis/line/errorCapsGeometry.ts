@@ -3,7 +3,7 @@ import type { NumArray } from '@h5web/shared/vis-models';
 
 import type { AxisScale } from '../models';
 import H5WebGeometry from '../shared/h5webGeometry';
-import { CAMERA_FAR, createBufferAttr } from '../utils';
+import { createBufferAttr, Z_OUT } from '../utils';
 
 interface Params {
   abscissas: NumArray;
@@ -35,8 +35,8 @@ class ErrorCapsGeometry extends H5WebGeometry<'position', Params> {
     const bufferIndex = index * 2;
 
     if (isIgnored) {
-      this.attributes.position.setXYZ(bufferIndex, 0, 0, CAMERA_FAR);
-      this.attributes.position.setXYZ(bufferIndex + 1, 0, 0, CAMERA_FAR);
+      this.attributes.position.setXYZ(bufferIndex, 0, 0, Z_OUT);
+      this.attributes.position.setXYZ(bufferIndex + 1, 0, 0, Z_OUT);
       return;
     }
 
@@ -44,8 +44,8 @@ class ErrorCapsGeometry extends H5WebGeometry<'position', Params> {
     const y = ordinateScale(value);
 
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
-      this.attributes.position.setXYZ(bufferIndex, 0, 0, CAMERA_FAR);
-      this.attributes.position.setXYZ(bufferIndex + 1, 0, 0, CAMERA_FAR);
+      this.attributes.position.setXYZ(bufferIndex, 0, 0, Z_OUT);
+      this.attributes.position.setXYZ(bufferIndex + 1, 0, 0, Z_OUT);
       return;
     }
 
@@ -56,13 +56,13 @@ class ErrorCapsGeometry extends H5WebGeometry<'position', Params> {
     if (Number.isFinite(yBottom)) {
       this.attributes.position.setXYZ(bufferIndex, x, yBottom, 0);
     } else {
-      this.attributes.position.setXYZ(bufferIndex, 0, 0, CAMERA_FAR);
+      this.attributes.position.setXYZ(bufferIndex, 0, 0, Z_OUT);
     }
 
     if (Number.isFinite(yTop)) {
       this.attributes.position.setXYZ(bufferIndex + 1, x, yTop, 0);
     } else {
-      this.attributes.position.setXYZ(bufferIndex + 1, 0, 0, CAMERA_FAR);
+      this.attributes.position.setXYZ(bufferIndex + 1, 0, 0, Z_OUT);
     }
   }
 }
