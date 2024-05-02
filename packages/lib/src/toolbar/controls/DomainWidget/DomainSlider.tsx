@@ -82,8 +82,9 @@ function DomainSlider(props: Props) {
       onBeforeChange={setBeforeChangeValue}
       onChange={(bounds) => handleChange(bounds)}
       onAfterChange={(bounds) => handleChange(bounds, true)}
-      renderThumb={(thumbProps, { index }) => (
+      renderThumb={({ key, ...thumbProps }, { index }) => (
         <Thumb
+          key={key}
           bound={index === 0 ? 'min' : 'max'}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
           hasError={minGreater || (index === 0 ? !!minError : !!maxError)}

@@ -61,8 +61,8 @@ function SlicingSlider(props: Props) {
             setValue(newValue);
             onDebouncedChange(newValue);
           }}
-          renderThumb={(thumbProps, state) => (
-            <div {...thumbProps} className={styles.thumb}>
+          renderThumb={({ key, ...thumbProps }, state) => (
+            <div key={key} {...thumbProps} className={styles.thumb}>
               {state.valueNow}
             </div>
           )}
