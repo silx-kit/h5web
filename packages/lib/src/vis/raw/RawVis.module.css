@@ -1,6 +1,7 @@
 .root {
   flex: 1; /* fill height if inside flex container in consumer app */
   overflow: auto;
+  scrollbar-width: thin;
 }
 
 .raw {
@@ -10,16 +11,6 @@
   color: inherit;
   font-family: var(--monospace);
   font-size: inherit;
-}
-
-.img {
-  display: block;
-
-  /* Ensure image size is not restricted, since container can scroll.
-    (This notably overrides VS Code's default webview styles, which include
-    `img { max-width/height: 100%; }`.)  */
-  max-width: none;
-  max-height: none;
 }
 
 .fallback {

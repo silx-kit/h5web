@@ -30,6 +30,7 @@ import {
   HeatmapConfigProvider,
   LineConfigProvider,
   MatrixConfigProvider,
+  RawConfigProvider,
   RgbConfigProvider,
 } from './configs';
 import {
@@ -70,6 +71,7 @@ export const CORE_VIS = {
     name: Vis.Raw,
     Icon: FiCpu,
     Container: RawVisContainer,
+    ConfigProvider: RawConfigProvider,
     supportsDataset: hasNonNullShape,
   },
 

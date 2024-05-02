@@ -1,0 +1,21 @@
+.root {
+  flex: 1; /* fill height if inside flex container in consumer app */
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.img {
+  display: block;
+}
+
+.img[data-fit] {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.img:not([data-fit]) {
+  /* Remove size restriction explicitly in case consumer app applies
+   * its own "responsive image" styles (like VS Code). */
+  max-width: none;
+  max-height: none;
+}
