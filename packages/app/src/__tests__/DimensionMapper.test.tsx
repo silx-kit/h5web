@@ -1,5 +1,5 @@
 import { screen, within } from '@testing-library/react';
-import { expect, test, vi } from 'vitest';
+import { expect, test } from 'vitest';
 
 import { renderApp, waitForAllLoaders } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
@@ -30,7 +30,7 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
 
   // Change mapping from [0, 'x'] to ['x', 0]
   await user.click(xDimsButtons[0]);
-  await vi.waitFor(() => expect(xDimsButtons[0]).toBeChecked());
+  expect(xDimsButtons[0]).toBeChecked();
   expect(xDimsButtons[1]).not.toBeChecked();
 
   // Ensure that the dimension slider is now for D1
@@ -63,7 +63,7 @@ test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', 
 
   // Change mapping from ['y', 'x'] to ['x', 'y']
   await user.click(xD0Button);
-  await vi.waitFor(() => expect(xD0Button).toBeChecked());
+  expect(xD0Button).toBeChecked();
   expect(xD1Button).not.toBeChecked();
   expect(yD0Button).not.toBeChecked();
   expect(yD1Button).toBeChecked();
