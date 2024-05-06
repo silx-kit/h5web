@@ -3,6 +3,7 @@ import type { AxisMapping } from '@h5web/shared/nexus-models';
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
 import type { DimensionMapping } from './models';
+import PrefetchBtn from './PrefetchBtn';
 import SlicingSlider from './SlicingSlider';
 
 interface Props {
@@ -10,10 +11,11 @@ interface Props {
   axisLabels?: AxisMapping<string>;
   mapperState: DimensionMapping;
   onChange: (d: DimensionMapping) => void;
+  onPrefetchDim?: (index: number) => void;
 }
 
 function DimensionMapper(props: Props) {
-  const { rawDims, axisLabels, mapperState, onChange } = props;
+  const { rawDims, axisLabels, mapperState, onChange, onPrefetchDim } = props;
 
   return (
     <div className={styles.mapper}>
@@ -46,21 +48,25 @@ function DimensionMapper(props: Props) {
         />
       </div>
       <div className={styles.sliders}>
-        {mapperState.map((val, index) =>
-          typeof val === 'number' ? (
-            <SlicingSlider
-              key={`${index}`} // eslint-disable-line react/no-array-index-key
-              dimension={index}
-              maxIndex={rawDims[index] - 1}
-              initialValue={val}
-              onChange={(newVal: number) => {
-                const newMapperState = [...mapperState];
-                newMapperState[index] = newVal;
-                onChange(newMapperState);
-              }}
-            />
-          ) : undefined,
-        )}
+        {mapperState.map((val, index) => {
+          return (
+            typeof val === 'number' && (
+              <SlicingSlider
+                key={index} // eslint-disable-line react/no-array-index-key
+                dimension={index}
+                maxIndex={rawDims[index] - 1}
+                initialValue={val}
+                onChange={(newVal: number) => {
+                  const newMapperState = [...mapperState];
+                  newMapperState[index] = newVal;
+                  onChange(newMapperState);
+                }}
+              >
+                <PrefetchBtn onClick={() => onPrefetchDim?.(index)} />
+              </SlicingSlider>
+            )
+          );
+        })}
       </div>
     </div>
   );

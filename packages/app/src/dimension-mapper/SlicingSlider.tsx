@@ -1,4 +1,5 @@
 import { useDebouncedCallback, useMeasure } from '@react-hookz/web';
+import type { PropsWithChildren } from 'react';
 import { useState } from 'react';
 import ReactSlider from 'react-slider';
 
@@ -15,8 +16,8 @@ interface Props {
   onChange: (value: number) => void;
 }
 
-function SlicingSlider(props: Props) {
-  const { dimension, maxIndex, initialValue, onChange } = props;
+function SlicingSlider(props: PropsWithChildren<Props>) {
+  const { dimension, maxIndex, initialValue, children, onChange } = props;
 
   const [value, setValue] = useState(initialValue);
   const onDebouncedChange = useDebouncedCallback(
@@ -29,48 +30,52 @@ function SlicingSlider(props: Props) {
   const sliderLabelId = `${ID}-${dimension}-label`;
 
   return (
-    <div key={dimension} ref={containerRef} className={styles.container}>
+    <div ref={containerRef} className={styles.container}>
       <span id={sliderLabelId} className={styles.label}>
         D{dimension}
       </span>
       <span className={styles.sublabel}>0:{maxIndex}</span>
-      {maxIndex > 0 ? (
-        <ReactSlider
-          className={styles.slider}
-          ariaLabelledby={sliderLabelId}
-          min={0}
-          max={maxIndex}
-          step={1}
-          marks={
-            containerSize &&
-            containerSize.height / (maxIndex + 1) >= MIN_HEIGHT_PER_MARK
-          }
-          markClassName={styles.mark}
-          orientation="vertical"
-          invert
-          value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
-            onDebouncedChange(newValue);
-          }}
-          /* When slicing in E2E tests, `onChange` is called with the old value.
+
+      {maxIndex > 0 && (
+        <>
+          <ReactSlider
+            className={styles.slider}
+            ariaLabelledby={sliderLabelId}
+            min={0}
+            max={maxIndex}
+            step={1}
+            marks={
+              containerSize &&
+              containerSize.height / (maxIndex + 1) >= MIN_HEIGHT_PER_MARK
+            }
+            markClassName={styles.mark}
+            orientation="vertical"
+            invert
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+              onDebouncedChange(newValue);
+            }}
+            /* When slicing in E2E tests, `onChange` is called with the old value.
              The `onChange` event is fired via a `setState` callback in `ReactSlider`:
              https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L908
              Adding `onAfterChange` fixes the issue for now with react-slider@2.0.4, but not with react-slider@2.0.5+ */
-          onAfterChange={(newValue) => {
-            setValue(newValue);
-            onDebouncedChange(newValue);
-          }}
-          renderThumb={({ key, ...thumbProps }, state) => (
-            <div key={key} {...thumbProps} className={styles.thumb}>
-              {state.valueNow}
-            </div>
-          )}
-          renderTrack={({ key }, { index }) =>
-            index === 0 ? <div key={key} className={styles.track} /> : null
-          }
-        />
-      ) : null}
+            onAfterChange={(newValue) => {
+              setValue(newValue);
+              onDebouncedChange(newValue);
+            }}
+            renderThumb={({ key, ...thumbProps }, state) => (
+              <div key={key} {...thumbProps} className={styles.thumb}>
+                {state.valueNow}
+              </div>
+            )}
+            renderTrack={({ key }, { index }) =>
+              index === 0 ? <div key={key} className={styles.track} /> : null
+            }
+          />
+          {children}
+        </>
+      )}
     </div>
   );
 }

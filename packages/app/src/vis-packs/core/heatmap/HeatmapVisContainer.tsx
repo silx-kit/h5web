@@ -6,7 +6,10 @@ import {
 } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { useDimMappingState } from '../../../dimension-mapper/hooks';
+import {
+  useDimMappingState,
+  useDimPrefetcher,
+} from '../../../dimension-mapper/hooks';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { useIgnoreFillValue } from '../hooks';
@@ -24,6 +27,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const handlePrefetchDim = useDimPrefetcher(entity, dims, dimMapping);
 
   const config = useHeatmapConfig();
 
@@ -35,6 +39,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
         rawDims={dims}
         mapperState={dimMapping}
         onChange={setDimMapping}
+        onPrefetchDim={handlePrefetchDim}
       />
       <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
         <ValueFetcher

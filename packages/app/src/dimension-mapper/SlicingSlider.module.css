@@ -2,7 +2,7 @@
   flex: 0 1 4rem;
   display: flex;
   flex-direction: column;
-  padding: 0 0.5rem;
+  padding-top: 0.5rem;
   --thumb-height: 1.5rem;
   --mark-height: 0.5rem;
 }

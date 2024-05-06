@@ -3,6 +3,7 @@ import type { AriaAttributes, ComponentType, SVGAttributes } from 'react';
 import styles from '../Toolbar.module.css';
 
 interface Props extends AriaAttributes {
+  className?: string;
   label: string;
   icon?: ComponentType<SVGAttributes<SVGElement>>;
   iconOnly?: boolean;
@@ -14,6 +15,7 @@ interface Props extends AriaAttributes {
 
 function Btn(props: Props) {
   const {
+    className = '',
     label,
     icon: Icon,
     iconOnly,
@@ -26,7 +28,7 @@ function Btn(props: Props) {
 
   return (
     <button
-      className={styles.btn}
+      className={`${className} ${styles.btn}`}
       type="button"
       title={iconOnly ? label : undefined}
       aria-label={iconOnly ? label : undefined}

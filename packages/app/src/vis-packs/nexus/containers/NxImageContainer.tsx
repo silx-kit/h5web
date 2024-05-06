@@ -2,7 +2,10 @@ import { assertGroup, assertMinDims } from '@h5web/shared/guards';
 import { useState } from 'react';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { useDimMappingState } from '../../../dimension-mapper/hooks';
+import {
+  useDimMappingState,
+  useDimPrefetcher,
+} from '../../../dimension-mapper/hooks';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { getSliceSelection } from '../../core/utils';
@@ -27,6 +30,12 @@ function NxImageContainer(props: VisContainerProps) {
 
   const { shape: dims } = selectedDef.dataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+
+  const handlePrefetchDim = useDimPrefetcher(
+    selectedDef.dataset,
+    dims,
+    dimMapping,
+  );
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const xAxisDef = axisDefs[dimMapping.indexOf('x')];
@@ -60,6 +69,7 @@ function NxImageContainer(props: VisContainerProps) {
         axisLabels={axisLabels}
         mapperState={dimMapping}
         onChange={setDimMapping}
+        onPrefetchDim={handlePrefetchDim}
       />
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
