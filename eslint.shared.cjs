@@ -77,6 +77,11 @@ module.exports = {
             '@typescript-eslint/explicit-module-boundary-types': 'off', // worsens readability sometimes (e.g. for React components)
             '@typescript-eslint/no-unnecessary-type-arguments': 'off', // lots of false positives
 
+            // Incompatible with TS >= 5.2
+            // https://github.com/cartant/eslint-plugin-etc/issues/64
+            'etc/no-internal': 'off',
+            'etc/no-misused-generics': 'off',
+
             // Allow removing properties with destructuring
             '@typescript-eslint/no-unused-vars': [
               'warn',
@@ -112,7 +117,8 @@ module.exports = {
             '@typescript-eslint/no-shadow': 'error',
 
             // Warn on deprecated APIs (TypeScript strikes them out but doesn't report them)
-            'etc/no-deprecated': 'warn',
+            // Incompatible with TS >= 5.2
+            // 'etc/no-deprecated': 'warn',
           },
         }),
         createJestOverride({

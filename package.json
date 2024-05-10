@@ -49,7 +49,7 @@
     "eslint": "8.57.0",
     "eslint-config-galex": "4.5.2",
     "prettier": "3.2.5",
-    "typescript": "5.0.4",
+    "typescript": "5.4.5",
     "vitest": "1.5.2",
     "vitest-fail-on-console": "0.6.3",
     "wait-on": "7.2.0"
