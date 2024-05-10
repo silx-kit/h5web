@@ -14,7 +14,7 @@ export type TypedArrayConstructor =
   | Float32ArrayConstructor
   | Float64ArrayConstructor;
 
-export type Domain = [number, number];
+export type Domain = [min: number, max: number];
 export type Axis = 'x' | 'y';
 
 export interface VisibleDomains {
