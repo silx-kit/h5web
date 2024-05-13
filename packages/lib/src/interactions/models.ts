@@ -7,7 +7,7 @@ export enum MouseButton {
   'Middle' = 1,
 }
 
-export type Rect = [Vector3, Vector3];
+export type Rect = [start: Vector3, end: Vector3];
 
 export interface Selection {
   html: Rect;

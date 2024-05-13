@@ -18,4 +18,4 @@ function GridToggler(props: Props) {
   );
 }
 
-export default GridToggler; // eslint-disable-line etc/no-deprecated
+export default GridToggler;

@@ -47,7 +47,7 @@
     "eslint-config-galex": "4.5.2",
     "remark-gfm": "4.0.0",
     "storybook": "8.0.0",
-    "typescript": "5.0.4",
+    "typescript": "5.4.5",
     "vite": "5.1.6"
   },
   "browserslist": {

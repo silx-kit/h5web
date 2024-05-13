@@ -23,4 +23,4 @@ function FlipYAxisToggler(props: Props) {
   );
 }
 
-export default FlipYAxisToggler; // eslint-disable-line etc/no-deprecated
+export default FlipYAxisToggler;

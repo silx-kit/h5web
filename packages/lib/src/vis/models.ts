@@ -25,7 +25,7 @@ export interface Size {
 export type Aspect = 'auto' | 'equal' | number;
 
 export type Bound = 'min' | 'max';
-export type CustomDomain = [number | null, number | null]; // `null` for persistability
+export type CustomDomain = [min: number | null, max: number | null]; // `null` for persistability
 
 export interface DomainErrors {
   minGreater?: boolean;
@@ -85,7 +85,7 @@ export interface AxisParams {
   scaleType?: AxisScaleType;
 }
 
-export type Coords = [number, number];
+export type Coords = [x: number, y: number];
 
 export type PrintableType =
   | BooleanType

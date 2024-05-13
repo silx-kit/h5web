@@ -104,7 +104,7 @@
     "rollup": "4.13.0",
     "rollup-plugin-dts": "6.1.0",
     "three": "0.162.0",
-    "typescript": "5.0.4",
+    "typescript": "5.4.5",
     "vite": "5.1.6",
     "vite-css-modules": "1.4.2",
     "vitest": "1.5.2"

@@ -218,7 +218,7 @@ export type Value<D extends Dataset> =
 
 export type AttributeValues = Record<string, unknown>;
 
-export type H5WebComplex = [number, number];
+export type H5WebComplex = [real: number, imag: number];
 export type ComplexArray = (ComplexArray | H5WebComplex)[];
 
 export interface Filter {
