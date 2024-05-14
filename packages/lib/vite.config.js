@@ -1,4 +1,4 @@
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
 import path from 'path';
 import { patchCssModules } from 'vite-css-modules';

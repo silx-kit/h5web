@@ -1,4 +1,4 @@
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import { patchCssModules } from 'vite-css-modules';
 import { checker } from 'vite-plugin-checker';
