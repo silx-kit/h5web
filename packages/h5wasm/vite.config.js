@@ -1,14 +1,11 @@
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath, URL } from 'url';
 import { defineProject } from 'vitest/config';
 
-const dirname = fileURLToPath(new URL('.', import.meta.url));
-
-const [pkg, appPkg, sharedPkg] = ['.', '../app', '../shared'].map((prefix) =>
-  JSON.parse(fs.readFileSync(path.resolve(dirname, `${prefix}/package.json`))),
-);
+const [pkg, appPkg, sharedPkg] = ['.', '../app', '../shared']
+  .map((prefix) => path.resolve(import.meta.dirname, `${prefix}/package.json`))
+  .map((pkgPath) => JSON.parse(fs.readFileSync(pkgPath)));
 
 export const externals = new Set([
   ...Object.keys(sharedPkg.peerDependencies),

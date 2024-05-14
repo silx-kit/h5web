@@ -40,18 +40,17 @@
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
-    "@simonsmith/cypress-image-snapshot": "9.0.1",
+    "@simonsmith/cypress-image-snapshot": "9.0.3",
     "@testing-library/cypress": "10.0.1",
-    "@types/node": "^20.11.28",
-    "@vitest/ui": "1.5.2",
-    "cypress": "13.7.0",
+    "@types/node": "^20.12.11",
+    "cypress": "13.9.0",
     "cypress-wait-for-stable-dom": "0.1.0",
     "eslint": "8.57.0",
     "eslint-config-galex": "4.5.2",
     "prettier": "3.2.5",
     "typescript": "5.4.5",
-    "vitest": "1.5.2",
-    "vitest-fail-on-console": "0.6.3",
+    "vitest": "1.6.0",
+    "vitest-fail-on-console": "0.7.0",
     "wait-on": "7.2.0"
   },
   "pnpm": {
