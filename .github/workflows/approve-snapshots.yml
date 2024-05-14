@@ -60,7 +60,7 @@ jobs:
           CYPRESS_TAKE_SNAPSHOTS: true
 
       - name: Upload debug screenshots and diffs on failure 🖼️
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress
