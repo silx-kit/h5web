@@ -16,8 +16,9 @@ module.exports = {
       enableJavaScriptSpecificRulesInTypeScriptProject: true, // to lint `.eslintrc.js` files and the like
       rules: {
         'sort-keys-fix/sort-keys-fix': 'off', // keys should be sorted based on significance
-        'import/no-default-export': 'off', // default exports are common in React
         'simple-import-sort/exports': 'off', // can make package entry files with numerous exports difficult to read
+        'import/no-default-export': 'off', // default exports are common in React
+        'import/dynamic-import-chunkname': 'off', // Vite generates human-readable chunk names
 
         // Ternaries are sometimes more readable when `true` branch is most significant branch
         'no-negated-condition': 'off',
