@@ -29,7 +29,6 @@ function RawToolbar(props: Props) {
           <Separator />
           <ExportMenu
             entries={[{ format: 'json', url: getExportURL('json') }]}
-            align="right"
           />
         </>
       )}

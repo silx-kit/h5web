@@ -59,7 +59,6 @@ function MatrixToolbar(props: Props) {
               format,
               url: getExportURL(format),
             }))}
-            align="right"
           />
         </>
       )}
