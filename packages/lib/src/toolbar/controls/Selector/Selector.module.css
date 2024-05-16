@@ -45,6 +45,16 @@
   transform: rotate(180deg);
 }
 
+.exportMenu {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0;
+  background-color: var(--h5w-selector-menu--bgColor, white);
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 4px 11px;
+}
+
 .menu {
   position: absolute;
   top: calc(100% + 0.75rem);
@@ -95,28 +105,26 @@
 }
 
 .option {
-  flex: 1;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   white-space: nowrap;
 }
 
-.linkOption {
-  composes: btn from '../../utils.module.css';
-  composes: option;
-  padding: 0.5rem 0.75rem;
-}
-
 .option:hover,
-.option:focus {
+.option[data-active] {
   background-color: var(--h5w-selector-option-hover--bgColor, whitesmoke);
 }
 
-.option:focus {
+.option:focus-visible {
   outline: 1px solid var(--h5w-selector-option-focus--outlineColor, gray);
   outline-offset: -1px;
 }
 
 .option[data-selected] {
   background-color: var(--h5w-selector-option-selected--bgColor, #eee);
+}
+
+.btnOption {
+  composes: btn from '../../utils.module.css';
+  composes: option;
 }
