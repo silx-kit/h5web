@@ -263,7 +263,7 @@ test('handle min or max <= 0 in log scale', async () => {
   const { user } = await renderApp('/nexus_entry/image');
 
   // Ensure the scale type is log
-  expect(screen.getByRole('button', { name: 'Log' })).toBeVisible();
+  expect(screen.getByRole('combobox', { name: 'Log' })).toBeVisible();
 
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
   await user.click(editBtn);
@@ -296,7 +296,7 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
   const { user } = await renderApp('/nexus_entry/image');
 
   // Ensure the scale type is log
-  expect(screen.getByRole('button', { name: 'Log' })).toBeVisible();
+  expect(screen.getByRole('combobox', { name: 'Log' })).toBeVisible();
 
   await user.click(screen.getByRole('button', { name: 'Edit domain' }));
   const minInput = screen.getByLabelText('min');

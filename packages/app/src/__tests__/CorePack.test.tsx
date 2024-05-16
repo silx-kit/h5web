@@ -88,9 +88,9 @@ test('visualize 2D complex dataset', async () => {
   expect(figure).toBeVisible();
   expect(within(figure).getByText('5e+0')).toBeVisible(); // color bar limit
 
-  const selector = screen.getByRole('button', { name: '𝓐 Amplitude' });
+  const selector = screen.getByRole('combobox', { name: '𝓐 Amplitude' });
   await user.click(selector);
-  const phaseItem = screen.getByRole('menuitem', { name: 'φ Phase' });
+  const phaseItem = screen.getByRole('option', { name: 'φ Phase' });
   await user.click(phaseItem);
 
   expect(

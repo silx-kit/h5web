@@ -1,14 +1,14 @@
 .root {
   display: flex;
-  align-items: center;
 }
 
 .selectorLabel {
+  align-self: center;
+  margin-left: 0.25rem;
   color: var(
     --h5w-selector-label--color,
     var(--h5w-toolbar-label--color, royalblue)
   );
-  margin-left: 0.25rem;
 }
 
 .wrapper {
@@ -45,40 +45,16 @@
   transform: rotate(180deg);
 }
 
-.exportMenu {
+.menu {
   display: flex;
   flex-direction: column;
   padding: 0.25rem 0;
-  background-color: var(--h5w-selector-menu--bgColor, white);
-  box-shadow:
-    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
-    rgba(0, 0, 0, 0.1) 0px 4px 11px;
-}
-
-.menu {
-  position: absolute;
-  top: calc(100% + 0.75rem);
-  z-index: 1; /* above overflow menu */
-  min-width: 100%;
-  padding-top: 0.25rem;
-  background-color: var(--h5w-selector-menu--bgColor, white);
-  overflow: hidden scroll;
+  overflow: hidden auto;
   scrollbar-width: thin;
+  background-color: var(--h5w-selector-menu--bgColor, white);
   box-shadow:
     rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
     rgba(0, 0, 0, 0.1) 0px 4px 11px;
-}
-
-.menu:not([data-align]),
-.menu[data-align='center'] {
-  left: 50%;
-  transform: translateX(-50%); /* center menu with button */
-}
-.menu[data-align='left'] {
-  left: 0;
-}
-.menu[data-align='right'] {
-  right: 0;
 }
 
 .list {
@@ -104,27 +80,23 @@
   flex: 1;
 }
 
-.option {
+.btnOption {
+  composes: btn from '../../utils.module.css';
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   white-space: nowrap;
 }
 
-.option:hover,
-.option[data-active] {
+.btnOption:hover,
+.btnOption[data-active] {
   background-color: var(--h5w-selector-option-hover--bgColor, whitesmoke);
 }
 
-.option:focus-visible {
+.btnOption:focus-visible {
   outline: 1px solid var(--h5w-selector-option-focus--outlineColor, gray);
   outline-offset: -1px;
 }
 
-.option[data-selected] {
+.btnOption[aria-selected] {
   background-color: var(--h5w-selector-option-selected--bgColor, #eee);
-}
-
-.btnOption {
-  composes: btn from '../../utils.module.css';
-  composes: option;
 }

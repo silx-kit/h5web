@@ -111,7 +111,7 @@ test('visualize NXentry group with implicit default child NXdata group', async (
 test('follow SILX styles on NXdata group', async () => {
   await renderApp('/nexus_entry/log_spectrum');
 
-  const logSelectors = screen.getAllByRole('button', { name: 'Log' });
+  const logSelectors = screen.getAllByRole('combobox', { name: /Log/ });
   expect(logSelectors).toHaveLength(2); // log for both axes
 });
 
@@ -194,7 +194,7 @@ test('ignore malformed `SILX_style` attribute', async () => {
   );
 
   expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
-  const scaleSelectors = screen.getAllByRole('button', { name: 'Linear' });
+  const scaleSelectors = screen.getAllByRole('combobox', { name: /Linear/ });
   expect(scaleSelectors).toHaveLength(2); // scales remain unchanged
 
   // Invalid JSON
