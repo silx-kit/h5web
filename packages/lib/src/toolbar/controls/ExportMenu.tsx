@@ -11,9 +11,9 @@ import { assertDefined } from '@h5web/shared/guards';
 import { useToggle } from '@react-hookz/web';
 import { useId, useRef, useState } from 'react';
 import { FiDownload } from 'react-icons/fi';
-import { MdArrowDropDown } from 'react-icons/md';
 
 import toolbarStyles from '../Toolbar.module.css';
+import Btn from './Btn';
 import { useFloatingDismiss } from './hooks';
 import { download, floatingMinWidth } from './utils';
 
@@ -68,25 +68,18 @@ function ExportMenu(props: Props) {
 
   return (
     <>
-      <button
+      <Btn
         ref={refs.setReference}
         id={referenceId}
-        className={toolbarStyles.btn}
-        type="button"
+        label={`Export${isSlice ? ' slice' : ''}`}
+        icon={FiDownload}
+        withArrow
         disabled={availableEntries.length === 0}
         aria-haspopup="menu"
-        aria-expanded={isOpen || undefined}
+        aria-expanded={isOpen}
         aria-controls={(isOpen && context.floatingId) || undefined}
         {...getReferenceProps()}
-      >
-        <span className={toolbarStyles.btnLike}>
-          <FiDownload className={toolbarStyles.icon} />
-          <span className={toolbarStyles.label}>
-            Export{isSlice && ' slice'}
-          </span>
-          <MdArrowDropDown className={toolbarStyles.arrowIcon} />
-        </span>
-      </button>
+      />
 
       {isOpen && (
         <div

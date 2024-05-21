@@ -12,6 +12,7 @@ import { FiHelpCircle } from 'react-icons/fi';
 
 import type { InteractionInfo } from '../../interactions/models';
 import toolbarStyles from '../Toolbar.module.css';
+import Btn from './Btn';
 import { useFloatingDismiss } from './hooks';
 import styles from './InteractionHelp.module.css';
 
@@ -39,22 +40,17 @@ function InteractionHelp(props: Props) {
 
   return (
     <>
-      <button
+      <Btn
         ref={refs.setReference}
         id={referenceId}
-        className={toolbarStyles.btn}
-        type="button"
-        title="Show help"
-        aria-label="Show help"
+        label="Show help"
+        icon={FiHelpCircle}
+        iconOnly
         aria-haspopup="dialog"
-        aria-expanded={isOpen || undefined}
+        aria-expanded={isOpen}
         aria-controls={(isOpen && context.floatingId) || undefined}
         {...getReferenceProps()}
-      >
-        <span className={toolbarStyles.btnLike}>
-          <FiHelpCircle className={toolbarStyles.icon} />
-        </span>
-      </button>
+      />
 
       {isOpen && (
         <div

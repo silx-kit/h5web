@@ -12,10 +12,10 @@ import { cloneElement, isValidElement, useId } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import flattenChildren from 'react-keyed-flatten-children';
 
+import Btn from './controls/Btn';
 import { useFloatingDismiss } from './controls/hooks';
 import styles from './OverflowMenu.module.css';
 import Separator from './Separator';
-import toolbarStyles from './Toolbar.module.css';
 
 interface Props {}
 
@@ -47,31 +47,24 @@ function OverflowMenu(props: PropsWithChildren<Props>) {
     <>
       <Separator />
 
-      <button
+      <Btn
         ref={refs.setReference}
         id={referenceId}
-        className={toolbarStyles.btn}
-        type="button"
-        aria-label="More controls"
+        label="More controls"
+        icon={FiMenu}
+        iconOnly
         aria-haspopup="dialog"
-        aria-expanded={isOpen || undefined}
+        aria-expanded={isOpen}
         aria-controls={(isOpen && context.floatingId) || undefined}
         {...getReferenceProps()}
-      >
-        <span className={toolbarStyles.btnLike}>
-          <FiMenu className={toolbarStyles.icon} />
-        </span>
-      </button>
+      />
 
       {isOpen && (
         <div
           ref={refs.setFloating}
           id={context.floatingId}
           className={styles.popup}
-          style={{
-            ...floatingStyles,
-            overflow: 'visible', // don't clip nested floating elements
-          }}
+          style={floatingStyles}
           role="dialog"
           aria-labelledby={referenceId}
           {...getFloatingProps()}

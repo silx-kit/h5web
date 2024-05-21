@@ -101,7 +101,7 @@ function Selector<T extends string>(props: Props<T>) {
         role="combobox"
         aria-labelledby={`${label ? labelId : ''} ${currentOptionId}`}
         aria-haspopup="listbox"
-        aria-expanded={isOpen || undefined}
+        aria-expanded={isOpen}
         aria-controls={(isOpen && context.floatingId) || undefined}
         {...getReferenceProps()}
       >
