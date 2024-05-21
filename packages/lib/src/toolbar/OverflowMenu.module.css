@@ -1,26 +1,10 @@
-.root {
-  position: relative;
-  display: flex;
-}
-
-.menu {
+.popup {
   composes: popup from './utils.module.css';
-  right: 0.25rem;
+  padding: 0.25rem;
 }
 
-.menuList {
-  composes: popupInner from './utils.module.css';
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 0.25rem;
-  justify-items: flex-start;
-  margin: 0;
-  padding: 0.375rem 0.25rem;
-  list-style-type: none;
-}
-
-.menu > li {
+.control {
   display: flex;
   justify-content: flex-end;
-  min-height: 2.25rem;
+  min-height: calc(var(--h5w-btn--height, 1.875rem) + 0.5rem);
 }

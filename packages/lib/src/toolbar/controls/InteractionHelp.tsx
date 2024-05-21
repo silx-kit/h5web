@@ -1,11 +1,19 @@
-import { useClickOutside, useToggle } from '@react-hookz/web';
-import { useRef } from 'react';
+import {
+  autoUpdate,
+  offset,
+  shift,
+  useClick,
+  useFloating,
+  useInteractions,
+} from '@floating-ui/react';
+import { useToggle } from '@react-hookz/web';
+import { useId } from 'react';
 import { FiHelpCircle } from 'react-icons/fi';
 
 import type { InteractionInfo } from '../../interactions/models';
-import overflowMenuStyles from '../OverflowMenu.module.css';
+import toolbarStyles from '../Toolbar.module.css';
+import { useFloatingDismiss } from './hooks';
 import styles from './InteractionHelp.module.css';
-import ToggleBtn from './ToggleBtn';
 
 interface Props {
   interactions: InteractionInfo[];
@@ -14,35 +22,61 @@ interface Props {
 function InteractionHelp(props: Props) {
   const { interactions } = props;
 
-  const [isHelpMenuOpen, toggleHelpMenu] = useToggle(false);
-  const rootRef = useRef(null);
+  const [isOpen, toggle] = useToggle();
+  const referenceId = useId();
 
-  useClickOutside(rootRef, () => {
-    if (isHelpMenuOpen) {
-      toggleHelpMenu(false);
-    }
+  const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
+    open: isOpen,
+    middleware: [offset(6), shift({ padding: 6 })],
+    onOpenChange: toggle,
+    whileElementsMounted: autoUpdate,
   });
 
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useClick(context),
+    useFloatingDismiss(context),
+  ]);
+
   return (
-    <div className={overflowMenuStyles.root} ref={rootRef}>
-      <ToggleBtn
-        icon={FiHelpCircle}
-        iconOnly
-        onToggle={toggleHelpMenu}
-        label="Show help"
-        value={isHelpMenuOpen}
-      />
-      <div className={overflowMenuStyles.menu} hidden={!isHelpMenuOpen}>
-        <div className={overflowMenuStyles.menuList}>
-          {interactions.map(({ shortcut, description }) => (
-            <li key={shortcut} className={styles.entry}>
-              <span>{description}</span>{' '}
-              <kbd className={styles.shortcut}>{shortcut}</kbd>
-            </li>
-          ))}
+    <>
+      <button
+        ref={refs.setReference}
+        id={referenceId}
+        className={toolbarStyles.btn}
+        type="button"
+        title="Show help"
+        aria-label="Show help"
+        aria-haspopup="dialog"
+        aria-expanded={isOpen || undefined}
+        aria-controls={(isOpen && context.floatingId) || undefined}
+        {...getReferenceProps()}
+      >
+        <span className={toolbarStyles.btnLike}>
+          <FiHelpCircle className={toolbarStyles.icon} />
+        </span>
+      </button>
+
+      {isOpen && (
+        <div
+          ref={refs.setFloating}
+          id={context.floatingId}
+          className={toolbarStyles.popup}
+          style={floatingStyles}
+          role="dialog"
+          aria-labelledby={referenceId}
+          {...getFloatingProps()}
+        >
+          <ul className={styles.list}>
+            {interactions.map(({ shortcut, description }) => (
+              <li key={shortcut} className={styles.entry}>
+                <span>{description}</span>{' '}
+                <kbd className={styles.shortcut}>{shortcut}</kbd>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

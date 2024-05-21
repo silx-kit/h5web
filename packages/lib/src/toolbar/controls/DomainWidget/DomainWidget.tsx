@@ -109,12 +109,12 @@ function DomainWidget(props: Props) {
 
       <div
         id={POPUP_ID}
-        className={styles.popup}
+        className={styles.popupOuter}
         role="dialog"
         aria-label="Edit domain"
         hidden={!hovered && !isEditing}
       >
-        <div className={styles.popupInner}>
+        <div className={styles.popup}>
           {histogram && (
             <Histogram
               dataDomain={dataDomain}

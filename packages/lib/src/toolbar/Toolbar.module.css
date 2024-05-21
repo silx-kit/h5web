@@ -52,10 +52,55 @@
   composes: label from './utils.module.css';
 }
 
+.arrowIcon {
+  align-self: center;
+  margin-top: 1px;
+  margin-left: 1px;
+  margin-right: -0.25rem;
+  color: var(--h5w-selector-arrowIcon--color, dimgray);
+  font-size: 1.25em;
+}
+
+.btn[aria-expanded='true'] .arrowIcon {
+  transform: rotate(180deg);
+}
+
 .popup {
   composes: popup from './utils.module.css';
 }
 
-.popupInner {
-  composes: popupInner from './utils.module.css';
+.menu {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0;
+  overflow: hidden auto;
+  scrollbar-width: thin;
+  background-color: var(--h5w-selector-menu--bgColor, white);
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 4px 11px;
+}
+
+.btnOption {
+  composes: btnClean from global;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  line-height: 1.5em; /* same as icon, if any */
+  transition: background-color 0.05s ease-in-out;
+  white-space: nowrap;
+}
+
+.btnOption:hover,
+.btnOption[data-active] {
+  background-color: var(--h5w-selector-option-hover--bgColor, whitesmoke);
+}
+
+.btnOption:focus-visible {
+  outline: 1px solid var(--h5w-selector-option-focus--outlineColor, gray);
+  outline-offset: -1px;
+}
+
+.btnOption[aria-selected] {
+  background-color: var(--h5w-selector-option-selected--bgColor, #eee);
 }

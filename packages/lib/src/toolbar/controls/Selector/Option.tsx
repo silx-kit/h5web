@@ -2,7 +2,7 @@ import type { UseInteractionsReturn } from '@floating-ui/react';
 import { useListItem } from '@floating-ui/react';
 import type { PropsWithChildren } from 'react';
 
-import selectorStyles from './Selector.module.css';
+import toolbarStyles from '../../Toolbar.module.css';
 
 interface Props {
   activeIndex: number | null;
@@ -19,7 +19,7 @@ function Option(props: PropsWithChildren<Props>) {
   return (
     <button
       ref={ref}
-      className={selectorStyles.btnOption}
+      className={toolbarStyles.btnOption}
       type="button"
       role="option"
       aria-selected={index === selectedIndex || undefined}

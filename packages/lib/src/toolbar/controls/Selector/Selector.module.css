@@ -1,8 +1,4 @@
-.root {
-  display: flex;
-}
-
-.selectorLabel {
+.label {
   align-self: center;
   margin-left: 0.25rem;
   color: var(
@@ -11,92 +7,23 @@
   );
 }
 
-.wrapper {
-  position: relative;
-  display: flex;
-}
-
-.btn {
-  composes: btn from '../../utils.module.css';
-}
-
-.btnLike {
-  composes: btnLike from '../../utils.module.css';
-  padding: 0 0.375rem 0 0.5625rem;
-}
-
-.icon {
-  composes: icon from '../../utils.module.css';
-}
-
-.label {
-  composes: label from '../../utils.module.css';
-}
-
-.arrowIcon {
-  align-self: center;
-  margin-top: 1px;
-  margin-left: 1px;
-  color: var(--h5w-selector-arrowIcon--color, dimgray);
-  font-size: 1.25em;
-}
-
-.btn[aria-expanded='true'] .arrowIcon {
-  transform: rotate(180deg);
-}
-
-.menu {
-  display: flex;
-  flex-direction: column;
-  padding: 0.25rem 0;
-  overflow: hidden auto;
-  scrollbar-width: thin;
-  background-color: var(--h5w-selector-menu--bgColor, white);
-  box-shadow:
-    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
-    rgba(0, 0, 0, 0.1) 0px 4px 11px;
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  margin: 0 0 0.25rem;
+.groups {
+  margin: -0.5rem 0 0;
   padding-left: 0;
   list-style-type: none;
 }
 
+.groups > li {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+}
+
 .groupLabel {
-  display: block;
-  margin-top: 0.75rem;
   margin-bottom: 0.25rem;
   padding-left: 0.75rem;
   color: var(--h5w-selector-groupLabel--color, gray);
   text-transform: uppercase;
   font-size: 0.75em;
   font-weight: 600;
-}
-
-.selectedOption {
-  flex: 1;
-}
-
-.btnOption {
-  composes: btn from '../../utils.module.css';
-  padding: 0.5rem 0.75rem;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.btnOption:hover,
-.btnOption[data-active] {
-  background-color: var(--h5w-selector-option-hover--bgColor, whitesmoke);
-}
-
-.btnOption:focus-visible {
-  outline: 1px solid var(--h5w-selector-option-focus--outlineColor, gray);
-  outline-offset: -1px;
-}
-
-.btnOption[aria-selected] {
-  background-color: var(--h5w-selector-option-selected--bgColor, #eee);
 }

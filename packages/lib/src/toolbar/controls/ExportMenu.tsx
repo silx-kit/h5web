@@ -13,8 +13,8 @@ import { useId, useRef, useState } from 'react';
 import { FiDownload } from 'react-icons/fi';
 import { MdArrowDropDown } from 'react-icons/md';
 
+import toolbarStyles from '../Toolbar.module.css';
 import { useFloatingDismiss } from './hooks';
-import styles from './Selector/Selector.module.css';
 import { download, floatingMinWidth } from './utils';
 
 const PLACEMENTS = {
@@ -71,18 +71,20 @@ function ExportMenu(props: Props) {
       <button
         ref={refs.setReference}
         id={referenceId}
-        className={styles.btn}
+        className={toolbarStyles.btn}
         type="button"
         disabled={availableEntries.length === 0}
         aria-haspopup="menu"
         aria-expanded={isOpen || undefined}
-        aria-controls={context.floatingId}
+        aria-controls={(isOpen && context.floatingId) || undefined}
         {...getReferenceProps()}
       >
-        <span className={styles.btnLike}>
-          <FiDownload className={styles.icon} />
-          <span className={styles.label}>Export{isSlice && ' slice'}</span>
-          <MdArrowDropDown className={styles.arrowIcon} />
+        <span className={toolbarStyles.btnLike}>
+          <FiDownload className={toolbarStyles.icon} />
+          <span className={toolbarStyles.label}>
+            Export{isSlice && ' slice'}
+          </span>
+          <MdArrowDropDown className={toolbarStyles.arrowIcon} />
         </span>
       </button>
 
@@ -90,7 +92,7 @@ function ExportMenu(props: Props) {
         <div
           ref={refs.setFloating}
           id={context.floatingId}
-          className={styles.menu}
+          className={toolbarStyles.menu}
           style={floatingStyles}
           role="menu"
           aria-labelledby={referenceId}
@@ -107,7 +109,7 @@ function ExportMenu(props: Props) {
                 ref={(node) => {
                   listRef.current[index] = node;
                 }}
-                className={styles.btnOption}
+                className={toolbarStyles.btnOption}
                 type="button"
                 tabIndex={isActive ? 0 : -1}
                 data-active={isActive || undefined}
@@ -118,7 +120,7 @@ function ExportMenu(props: Props) {
                   },
                 })}
               >
-                <span className={styles.label}>
+                <span className={toolbarStyles.label}>
                   Export to {format.toUpperCase()}
                 </span>
               </button>
