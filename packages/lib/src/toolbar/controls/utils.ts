@@ -18,6 +18,10 @@ export async function download(
   anchor.remove();
 }
 
+export function getAllOptions<T>(options: Record<string, T[]> | T[]): T[] {
+  return Array.isArray(options) ? options : Object.values(options).flat();
+}
+
 export const floatingMinWidth = {
   name: 'minWidth',
   fn({ x, y, elements, rects }: MiddlewareState) {

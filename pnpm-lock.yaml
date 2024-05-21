@@ -462,9 +462,6 @@ importers:
       ndarray-ops:
         specifier: 1.2.2
         version: 1.2.2
-      react-aria-menubutton:
-        specifier: 7.0.3
-        version: 7.0.3(react@18.3.1)
       react-icons:
         specifier: 5.2.1
         version: 5.2.1(react@18.3.1)
@@ -520,9 +517,6 @@ importers:
       '@types/react':
         specifier: ^18.3.2
         version: 18.3.2
-      '@types/react-aria-menubutton':
-        specifier: ~6.2.14
-        version: 6.2.14
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -2452,9 +2446,6 @@ packages:
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
 
-  '@types/react-aria-menubutton@6.2.14':
-    resolution: {integrity: sha512-RJwtv9FgYLMvBSmUsg+soGjtffFzetA1iMLJIBLAbE2VXtf/QlvltGEwHb1HZ9caddWP/nwyV2HRn3NJQDpqeg==}
-
   '@types/react-dom@18.3.0':
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
 
@@ -3973,9 +3964,6 @@ packages:
   flow-parser@0.236.0:
     resolution: {integrity: sha512-0OEk9Gr+Yj7wjDW2KgaNYUypKau71jAfFyeLQF5iVtxqc6uJHag/MT7pmaEApf4qM7u86DkBcd4ualddYMfbLw==}
     engines: {node: '>=0.4.0'}
-
-  focus-group@0.3.1:
-    resolution: {integrity: sha512-IA01dzk2cStQso/qnt2rWhXCFBZlBfjZmohB9mXUx9feEaJcORAK0FQGvwaApsNNGwzEnqrp/2qTR4lq8PXfnQ==}
 
   follow-redirects@1.15.6:
     resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
@@ -5568,11 +5556,6 @@ packages:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
     engines: {node: '>= 0.8'}
 
-  react-aria-menubutton@7.0.3:
-    resolution: {integrity: sha512-Ql4W3rNiZmuVJ1wQ0UUeV4OZX3IZq2evsfEqJGefSMdfkK6o8X/6Ufxrzu0wL+/Dr7JUY3xnrnIQimSCFghlCQ==}
-    peerDependencies:
-      react: ^16.3.0 || ^17.0.0
-
   react-colorful@5.6.1:
     resolution: {integrity: sha512-1exovf0uGTGyq5mXQT0zgQ80uvj2PCwvF8zY1RN9/vbJVSjSo3fsB/4L3ObbF7u70NduSiK4xu4Y6q1MHoUGEw==}
     peerDependencies:
@@ -6168,9 +6151,6 @@ packages:
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
-
-  teeny-tap@0.2.0:
-    resolution: {integrity: sha512-HnA3I2sxRQe/SZgQTQgQvvA17DhfzhBJ1LfSOXZ5VUTbxGLvnAqUef84ZGNNSEbk1ZMEIDeghTHZagJ7LifAgg==}
 
   telejson@7.2.0:
     resolution: {integrity: sha512-1QTEcJkJEhc8OnStBx/ILRu5J2p0GjvWsBx56bmZRqnrkdBMUe+nX92jxV+p3dB4CP6PZCdJMQJwCggkNBMzkQ==}
@@ -9178,10 +9158,6 @@ snapshots:
 
   '@types/range-parser@1.2.7': {}
 
-  '@types/react-aria-menubutton@6.2.14':
-    dependencies:
-      '@types/react': 18.3.2
-
   '@types/react-dom@18.3.0':
     dependencies:
       '@types/react': 18.3.2
@@ -11145,8 +11121,6 @@ snapshots:
 
   flow-parser@0.236.0: {}
 
-  focus-group@0.3.1: {}
-
   follow-redirects@1.15.6: {}
 
   for-each@0.3.3:
@@ -12864,13 +12838,6 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  react-aria-menubutton@7.0.3(react@18.3.1):
-    dependencies:
-      focus-group: 0.3.1
-      prop-types: 15.8.1
-      react: 18.3.1
-      teeny-tap: 0.2.0
-
   react-colorful@5.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -13618,8 +13585,6 @@ snapshots:
       minizlib: 2.1.2
       mkdirp: 1.0.4
       yallist: 4.0.0
-
-  teeny-tap@0.2.0: {}
 
   telejson@7.2.0:
     dependencies:

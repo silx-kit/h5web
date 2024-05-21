@@ -57,8 +57,7 @@
     "peerDependencyRules": {
       "allowedVersions": {
         "@phenomnomnominal/tsquery>typescript": "5.x",
-        "eslint-plugin-etc>typescript": "5.x",
-        "react-aria-menubutton>react": "18.x"
+        "eslint-plugin-etc>typescript": "5.x"
       }
     },
     "requiredScripts": [

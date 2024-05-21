@@ -90,7 +90,7 @@ function ExportMenu(props: Props) {
         <div
           ref={refs.setFloating}
           id={context.floatingId}
-          className={styles.exportMenu}
+          className={styles.menu}
           style={floatingStyles}
           role="menu"
           aria-labelledby={referenceId}

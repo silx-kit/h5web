@@ -1,16 +1,25 @@
-import { useWindowSize } from '@react-hookz/web';
-import ram from 'react-aria-menubutton'; // CJS
+import {
+  autoUpdate,
+  FloatingList,
+  offset,
+  shift,
+  size,
+  useClick,
+  useFloating,
+  useInteractions,
+  useListNavigation,
+} from '@floating-ui/react';
+import { useToggle } from '@react-hookz/web';
+import { useId, useRef, useState } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
+import { useFloatingDismiss } from '../hooks';
+import { getAllOptions } from '../utils';
 import type { OptionComponent } from './models';
-import OptionList from './OptionList';
+import Option from './Option';
 import styles from './Selector.module.css';
 
-const { Button, Menu, Wrapper } = ram;
-
-const MENU_IDEAL_HEIGHT = 320; // 20rem
-const MENU_TOP = 87; // HACK: height of breadcrumbs bar + height of toolbar
-const MENU_BOTTOM = 16; // offset from bottom of viewport
+const MENU_MAX_HEIGHT = 320; // 20rem
 
 interface Props<T> {
   label?: string;
@@ -28,54 +37,136 @@ function Selector<T extends string>(props: Props<T>) {
     disabled,
     onChange,
     options,
-    optionComponent: Option,
+    optionComponent: OptionComp,
   } = props;
 
-  const { height: winHeight } = useWindowSize();
-  const menuMaxHeight = winHeight - MENU_TOP - MENU_BOTTOM;
+  const [isOpen, toggle] = useToggle();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(() => {
+    return getAllOptions(options).indexOf(value);
+  });
+
+  const labelId = useId();
+  const referenceId = useId();
+  const selectedOptionId = useId();
+  const listRef = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
+    open: isOpen,
+    middleware: [
+      offset(6),
+      size({
+        padding: 12,
+        apply({ availableHeight, elements, rects }) {
+          Object.assign(elements.floating.style, {
+            maxHeight: `${Math.min(availableHeight, MENU_MAX_HEIGHT)}px`,
+            minWidth: `${rects.reference.width}px`,
+          });
+        },
+      }),
+      shift({ padding: 6 }),
+    ],
+    onOpenChange: toggle,
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [
+      useClick(context),
+      useFloatingDismiss(context),
+      useListNavigation(context, {
+        listRef,
+        activeIndex,
+        loop: true,
+        focusItemOnHover: false,
+        onNavigate: setActiveIndex,
+      }),
+    ],
+  );
+
+  function handleSelect(index: number, option: T) {
+    setSelectedIndex(index);
+    toggle(false);
+    onChange(option);
+  }
 
   return (
     <div className={styles.root}>
-      {label && <span className={styles.selectorLabel}>{label}</span>}
+      {label && (
+        <span id={labelId} className={styles.selectorLabel}>
+          {label}
+        </span>
+      )}
 
-      <Wrapper className={styles.wrapper} onSelection={onChange}>
-        <Button className={styles.btn} tag="button" disabled={disabled}>
-          <div className={styles.btnLike}>
-            <span className={styles.selectedOption}>
-              <Option option={value} isSelected />
-            </span>
-            <MdArrowDropDown className={styles.arrowIcon} />
-          </div>
-        </Button>
+      <button
+        ref={refs.setReference}
+        id={referenceId}
+        className={styles.btn}
+        type="button"
+        disabled={disabled}
+        role="combobox"
+        aria-labelledby={`${label ? labelId : ''} ${selectedOptionId}`}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen || undefined}
+        aria-controls={context.floatingId}
+        {...getReferenceProps()}
+      >
+        <span className={styles.btnLike}>
+          <span id={selectedOptionId} className={styles.selectedOption}>
+            <OptionComp option={value} isSelected />
+          </span>
+          <MdArrowDropDown className={styles.arrowIcon} />
+        </span>
+      </button>
 
-        <Menu
+      {isOpen && (
+        <div
+          ref={refs.setFloating}
+          id={context.floatingId}
           className={styles.menu}
-          style={{ maxHeight: Math.min(MENU_IDEAL_HEIGHT, menuMaxHeight) }}
+          style={floatingStyles}
+          role="listbox"
+          aria-labelledby={referenceId}
+          {...getFloatingProps()}
         >
-          {Array.isArray(options) ? (
-            <OptionList
-              optionList={options}
-              optionComponent={Option}
-              value={value}
-            />
-          ) : (
-            <ul className={styles.list}>
-              {Object.entries(options).map(([groupLabel, groupOptions]) => (
-                <li key={groupLabel}>
-                  <span className={styles.groupLabel}>{groupLabel}</span>
-                  <ul className={styles.list}>
-                    <OptionList
-                      optionList={groupOptions}
-                      optionComponent={Option}
-                      value={value}
-                    />
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Menu>
-      </Wrapper>
+          <FloatingList elementsRef={listRef}>
+            {Array.isArray(options) ? (
+              options.map((option) => (
+                <Option
+                  key={option}
+                  activeIndex={activeIndex}
+                  selectedIndex={selectedIndex}
+                  getItemProps={getItemProps}
+                  onSelect={(index) => handleSelect(index, option)}
+                >
+                  <OptionComp option={option} />
+                </Option>
+              ))
+            ) : (
+              <ul className={styles.list}>
+                {Object.entries(options).map(([groupLabel, groupOptions]) => (
+                  <li key={groupLabel}>
+                    <span className={styles.groupLabel}>{groupLabel}</span>
+                    <ul className={styles.list}>
+                      {groupOptions.map((option) => (
+                        <Option
+                          key={option}
+                          activeIndex={activeIndex}
+                          selectedIndex={selectedIndex}
+                          getItemProps={getItemProps}
+                          onSelect={(index) => handleSelect(index, option)}
+                        >
+                          <OptionComp option={option} />
+                        </Option>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </FloatingList>
+        </div>
+      )}
     </div>
   );
 }

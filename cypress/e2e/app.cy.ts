@@ -349,7 +349,7 @@ describe('/mock', () => {
         'be.visible',
       );
 
-      cy.findAllByRole('button', { name: 'Log' }).should('have.length', 2);
+      cy.findAllByRole('combobox', { name: /Log/u }).should('have.length', 2);
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
         cy.waitForStableDOM();
