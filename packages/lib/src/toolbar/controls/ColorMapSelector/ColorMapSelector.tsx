@@ -4,7 +4,6 @@ import type { ColorMap } from '../../../vis/heatmap/models';
 import Selector from '../Selector/Selector';
 import ToggleBtn from '../ToggleBtn';
 import ColorMapOption from './ColorMapOption';
-import styles from './ColorMapSelector.module.css';
 import { COLORMAP_GROUPS } from './groups';
 
 interface Props {
@@ -18,7 +17,7 @@ function ColorMapSelector(props: Props) {
   const { value, onValueChange, invert, onInversionChange } = props;
 
   return (
-    <div className={styles.selectorWrapper}>
+    <>
       <Selector
         value={value}
         onChange={onValueChange}
@@ -32,7 +31,7 @@ function ColorMapSelector(props: Props) {
         value={invert}
         onToggle={onInversionChange}
       />
-    </div>
+    </>
   );
 }
 

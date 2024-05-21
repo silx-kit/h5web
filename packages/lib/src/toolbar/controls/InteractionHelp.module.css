@@ -1,16 +1,21 @@
+.list {
+  margin: 0;
+  padding: 0.25rem 0.5rem;
+  list-style-type: none;
+}
+
 .entry {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.25rem 0.25rem;
+  padding: 0.375rem 0;
   white-space: nowrap;
 }
 
 .shortcut {
-  background-color: var(--h5w-interactionHelp-shortcut--bgColor, lightgray);
-  color: var(--h5w-interactionHelp-shortcut--color, inherit);
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  flex-grow: 0;
   margin-left: 1rem;
+  padding: 0.25rem;
+  background-color: var(--h5w-interactionHelp-shortcut--bgColor, lightgray);
+  border-radius: 0.25rem;
+  color: var(--h5w-interactionHelp-shortcut--color, inherit);
 }

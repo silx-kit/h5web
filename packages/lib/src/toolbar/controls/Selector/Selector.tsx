@@ -13,6 +13,7 @@ import { useToggle } from '@react-hookz/web';
 import { useId, useRef, useState } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
+import toolbarStyles from '../../Toolbar.module.css';
 import { useFloatingDismiss } from '../hooks';
 import { getAllOptions } from '../utils';
 import type { OptionComponent } from './models';
@@ -48,7 +49,7 @@ function Selector<T extends string>(props: Props<T>) {
 
   const labelId = useId();
   const referenceId = useId();
-  const selectedOptionId = useId();
+  const currentOptionId = useId();
   const listRef = useRef<(HTMLButtonElement | null)[]>([]);
 
   const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
@@ -91,9 +92,9 @@ function Selector<T extends string>(props: Props<T>) {
   }
 
   return (
-    <div className={styles.root}>
+    <>
       {label && (
-        <span id={labelId} className={styles.selectorLabel}>
+        <span id={labelId} className={styles.label}>
           {label}
         </span>
       )}
@@ -101,21 +102,19 @@ function Selector<T extends string>(props: Props<T>) {
       <button
         ref={refs.setReference}
         id={referenceId}
-        className={styles.btn}
+        className={toolbarStyles.btn}
         type="button"
         disabled={disabled}
         role="combobox"
-        aria-labelledby={`${label ? labelId : ''} ${selectedOptionId}`}
+        aria-labelledby={`${label ? labelId : ''} ${currentOptionId}`}
         aria-haspopup="listbox"
         aria-expanded={isOpen || undefined}
-        aria-controls={context.floatingId}
+        aria-controls={(isOpen && context.floatingId) || undefined}
         {...getReferenceProps()}
       >
-        <span className={styles.btnLike}>
-          <span id={selectedOptionId} className={styles.selectedOption}>
-            <OptionComp option={value} isSelected />
-          </span>
-          <MdArrowDropDown className={styles.arrowIcon} />
+        <span id={currentOptionId} className={toolbarStyles.btnLike}>
+          <OptionComp option={value} />
+          <MdArrowDropDown className={toolbarStyles.arrowIcon} />
         </span>
       </button>
 
@@ -123,7 +122,7 @@ function Selector<T extends string>(props: Props<T>) {
         <div
           ref={refs.setFloating}
           id={context.floatingId}
-          className={styles.menu}
+          className={toolbarStyles.menu}
           style={floatingStyles}
           role="listbox"
           aria-labelledby={referenceId}
@@ -143,23 +142,21 @@ function Selector<T extends string>(props: Props<T>) {
                 </Option>
               ))
             ) : (
-              <ul className={styles.list}>
+              <ul className={styles.groups}>
                 {Object.entries(options).map(([groupLabel, groupOptions]) => (
                   <li key={groupLabel}>
                     <span className={styles.groupLabel}>{groupLabel}</span>
-                    <ul className={styles.list}>
-                      {groupOptions.map((option) => (
-                        <Option
-                          key={option}
-                          activeIndex={activeIndex}
-                          selectedIndex={selectedIndex}
-                          getItemProps={getItemProps}
-                          onSelect={(index) => handleSelect(index, option)}
-                        >
-                          <OptionComp option={option} />
-                        </Option>
-                      ))}
-                    </ul>
+                    {groupOptions.map((option) => (
+                      <Option
+                        key={option}
+                        activeIndex={activeIndex}
+                        selectedIndex={selectedIndex}
+                        getItemProps={getItemProps}
+                        onSelect={(index) => handleSelect(index, option)}
+                      >
+                        <OptionComp option={option} />
+                      </Option>
+                    ))}
                   </li>
                 ))}
               </ul>
@@ -167,7 +164,7 @@ function Selector<T extends string>(props: Props<T>) {
           </FloatingList>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
