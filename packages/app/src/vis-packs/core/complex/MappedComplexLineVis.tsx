@@ -1,6 +1,7 @@
 import type { H5WebComplex } from '@h5web/shared/hdf5-models';
 import type { AxisMapping } from '@h5web/shared/nexus-models';
 import type { NumArray } from '@h5web/shared/vis-models';
+import { ComplexVisType } from '@h5web/shared/vis-models';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -9,8 +10,7 @@ import type { LineConfig } from '../line/config';
 import MappedLineVis from '../line/MappedLineVis';
 import ComplexLineToolbar from './ComplexLineToolbar';
 import type { ComplexLineConfig } from './lineConfig';
-import { ComplexVisType } from './models';
-import { getPhaseAmplitudeValues } from './utils';
+import { COMPLEX_VIS_TYPE_LABELS, getPhaseAmplitudeValues } from './utils';
 
 interface Props {
   value: H5WebComplex[];
@@ -60,7 +60,9 @@ function MappedComplexLineVis(props: Props) {
           visType === ComplexVisType.Amplitude ? amplitudeValues : phaseValues
         }
         valueLabel={
-          valueLabel ? `${valueLabel} (${visType.toLowerCase()})` : visType
+          valueLabel
+            ? `${valueLabel} (${COMPLEX_VIS_TYPE_LABELS[visType].toLowerCase()})`
+            : COMPLEX_VIS_TYPE_LABELS[visType]
         }
         config={lineConfig}
         {...lineProps}

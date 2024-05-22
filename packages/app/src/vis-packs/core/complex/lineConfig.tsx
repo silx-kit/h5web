@@ -1,11 +1,12 @@
+import { ComplexVisType } from '@h5web/shared/vis-models';
 import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
 import { createStore, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
-import type { ComplexLineVisType } from './models';
-import { ComplexVisType } from './models';
+
+type ComplexLineVisType = ComplexVisType.Phase | ComplexVisType.Amplitude;
 
 export interface ComplexLineConfig {
   visType: ComplexLineVisType;
@@ -21,7 +22,7 @@ function createComplexLineConfigStore() {
       }),
       {
         name: 'h5web:complexLine',
-        version: 1,
+        version: 2,
       },
     ),
   );

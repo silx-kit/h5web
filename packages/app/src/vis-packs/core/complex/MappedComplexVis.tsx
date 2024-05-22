@@ -7,6 +7,7 @@ import {
 import type { H5WebComplex } from '@h5web/shared/hdf5-models';
 import type { AxisMapping } from '@h5web/shared/nexus-models';
 import type { NumArray } from '@h5web/shared/vis-models';
+import { ComplexVisType } from '@h5web/shared/vis-models';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -21,8 +22,7 @@ import {
 import { DEFAULT_DOMAIN } from '../utils';
 import ComplexToolbar from './ComplexToolbar';
 import type { ComplexConfig } from './config';
-import { ComplexVisType } from './models';
-import { getPhaseAmplitudeValues } from './utils';
+import { COMPLEX_VIS_TYPE_LABELS, getPhaseAmplitudeValues } from './utils';
 
 interface Props {
   value: H5WebComplex[];
@@ -101,7 +101,7 @@ function MappedComplexVis(props: Props) {
         className={visualizerStyles.vis}
         dataArray={dataArray}
         domain={safeDomain}
-        title={`${title} (${visType.toLowerCase()})`}
+        title={`${title} (${COMPLEX_VIS_TYPE_LABELS[visType].toLowerCase()})`}
         colorMap={colorMap}
         scaleType={scaleType}
         aspect={keepRatio ? 'equal' : 'auto'}

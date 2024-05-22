@@ -10,13 +10,13 @@ import {
   useListNavigation,
 } from '@floating-ui/react';
 import { useToggle } from '@react-hookz/web';
+import type { ReactNode } from 'react';
 import { useId, useRef, useState } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import toolbarStyles from '../../Toolbar.module.css';
 import { useFloatingDismiss } from '../hooks';
 import { getAllOptions } from '../utils';
-import type { OptionComponent } from './models';
 import Option from './Option';
 import styles from './Selector.module.css';
 
@@ -28,18 +28,11 @@ interface Props<T> {
   disabled?: boolean;
   onChange: (value: T) => void;
   options: Record<string, T[]> | T[];
-  optionComponent: OptionComponent<T>;
+  renderOption: (option: T) => ReactNode;
 }
 
 function Selector<T extends string>(props: Props<T>) {
-  const {
-    label,
-    value,
-    disabled,
-    onChange,
-    options,
-    optionComponent: OptionComp,
-  } = props;
+  const { label, value, disabled, onChange, options, renderOption } = props;
 
   const [isOpen, toggle] = useToggle();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -113,7 +106,7 @@ function Selector<T extends string>(props: Props<T>) {
         {...getReferenceProps()}
       >
         <span id={currentOptionId} className={toolbarStyles.btnLike}>
-          <OptionComp option={value} />
+          {renderOption(value)}
           <MdArrowDropDown className={toolbarStyles.arrowIcon} />
         </span>
       </button>
@@ -138,7 +131,7 @@ function Selector<T extends string>(props: Props<T>) {
                   getItemProps={getItemProps}
                   onSelect={(index) => handleSelect(index, option)}
                 >
-                  <OptionComp option={option} />
+                  {renderOption(option)}
                 </Option>
               ))
             ) : (
@@ -154,7 +147,7 @@ function Selector<T extends string>(props: Props<T>) {
                         getItemProps={getItemProps}
                         onSelect={(index) => handleSelect(index, option)}
                       >
-                        <OptionComp option={option} />
+                        {renderOption(option)}
                       </Option>
                     ))}
                   </li>

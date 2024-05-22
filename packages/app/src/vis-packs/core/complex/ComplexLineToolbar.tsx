@@ -1,20 +1,19 @@
 import {
+  ComplexVisTypeSelector,
   CurveType,
   ScaleSelector,
-  Selector,
   Separator,
   ToggleBtn,
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
+import { ComplexVisType } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { MdDomain, MdGridOn } from 'react-icons/md';
 
 import type { LineConfig } from '../line/config';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import type { ComplexLineConfig } from './lineConfig';
-import type { ComplexLineVisType } from './models';
-import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
 interface Props {
   disableAutoScale: boolean;
@@ -55,14 +54,10 @@ function ComplexLineToolbar(props: Props) {
 
       <Separator />
 
-      <Selector
+      <ComplexVisTypeSelector
         value={visType}
-        onChange={(value: ComplexLineVisType) => setVisType(value)}
+        onChange={setVisType}
         options={[ComplexVisType.Amplitude, ComplexVisType.Phase]}
-        optionComponent={({ option }) => (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
-        )}
       />
 
       <Separator />
