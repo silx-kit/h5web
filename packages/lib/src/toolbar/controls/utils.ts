@@ -1,5 +1,3 @@
-import type { MiddlewareState } from '@floating-ui/react';
-
 export async function download(
   url: URL | (() => Promise<URL | Blob>),
   filename: string,
@@ -21,11 +19,3 @@ export async function download(
 export function getAllOptions<T>(options: Record<string, T[]> | T[]): T[] {
   return Array.isArray(options) ? options : Object.values(options).flat();
 }
-
-export const floatingMinWidth = {
-  name: 'minWidth',
-  fn({ x, y, elements, rects }: MiddlewareState) {
-    elements.floating.style.minWidth = `${rects.reference.width.toString()}px`;
-    return { x, y };
-  },
-};

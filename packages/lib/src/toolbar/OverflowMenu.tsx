@@ -13,7 +13,7 @@ import { FiMenu } from 'react-icons/fi';
 import flattenChildren from 'react-keyed-flatten-children';
 
 import Btn from './controls/Btn';
-import { useFloatingDismiss } from './controls/hooks';
+import { POPOVER_CLEARANCE, useFloatingDismiss } from './controls/hooks';
 import styles from './OverflowMenu.module.css';
 import Separator from './Separator';
 
@@ -29,7 +29,10 @@ function OverflowMenu(props: PropsWithChildren<Props>) {
   const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
     open: isOpen,
     placement: 'bottom-end',
-    middleware: [offset(6), shift({ padding: 6 })],
+    middleware: [
+      offset(POPOVER_CLEARANCE),
+      shift({ padding: POPOVER_CLEARANCE }),
+    ],
     onOpenChange: toggle,
     whileElementsMounted: autoUpdate,
   });

@@ -1,21 +1,16 @@
 import {
-  autoUpdate,
-  offset,
-  shift,
   useClick,
-  useFloating,
   useInteractions,
   useListNavigation,
 } from '@floating-ui/react';
 import { assertDefined } from '@h5web/shared/guards';
-import { useToggle } from '@react-hookz/web';
 import { useId, useRef, useState } from 'react';
 import { FiDownload } from 'react-icons/fi';
 
 import toolbarStyles from '../Toolbar.module.css';
 import Btn from './Btn';
-import { useFloatingDismiss } from './hooks';
-import { download, floatingMinWidth } from './utils';
+import { useFloatingDismiss, useFloatingMenu } from './hooks';
+import { download } from './utils';
 
 interface ExportEntry {
   format: string;
@@ -31,18 +26,12 @@ function ExportMenu(props: Props) {
   const { entries, isSlice } = props;
   const availableEntries = entries.filter(({ url }) => !!url);
 
-  const [isOpen, toggle] = useToggle();
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { context, refs, floatingStyles } = useFloatingMenu();
+  const { open: isOpen, onOpenChange: toggle } = context;
 
   const referenceId = useId();
   const listRef = useRef<(HTMLButtonElement | null)[]>([]);
-
-  const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
-    open: isOpen,
-    middleware: [floatingMinWidth, offset(6), shift({ padding: 6 })],
-    onOpenChange: toggle,
-    whileElementsMounted: autoUpdate,
-  });
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
     [
