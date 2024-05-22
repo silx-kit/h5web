@@ -17,12 +17,6 @@ import Btn from './Btn';
 import { useFloatingDismiss } from './hooks';
 import { download, floatingMinWidth } from './utils';
 
-const PLACEMENTS = {
-  center: 'bottom',
-  left: 'bottom-start',
-  right: 'bottom-end',
-} as const;
-
 interface ExportEntry {
   format: string;
   url: URL | (() => Promise<URL | Blob>) | undefined;
@@ -31,11 +25,10 @@ interface ExportEntry {
 interface Props {
   entries: ExportEntry[];
   isSlice?: boolean;
-  align?: keyof typeof PLACEMENTS;
 }
 
 function ExportMenu(props: Props) {
-  const { entries, isSlice, align = 'center' } = props;
+  const { entries, isSlice } = props;
   const availableEntries = entries.filter(({ url }) => !!url);
 
   const [isOpen, toggle] = useToggle();
@@ -46,7 +39,6 @@ function ExportMenu(props: Props) {
 
   const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
     open: isOpen,
-    placement: PLACEMENTS[align],
     middleware: [floatingMinWidth, offset(6), shift({ padding: 6 })],
     onOpenChange: toggle,
     whileElementsMounted: autoUpdate,
