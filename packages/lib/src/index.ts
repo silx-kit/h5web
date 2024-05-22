@@ -224,7 +224,3 @@ export { default as SurfaceVis } from './vis/surface/SurfaceVis';
 export type { SurfaceVisProps } from './vis/surface/SurfaceVis';
 export { default as SurfaceMeshGeometry } from './vis/surface/surfaceMeshGeometry';
 export { default as R3FCanvas } from './vis/shared/R3FCanvas';
-
-// Deprecated
-export { default as GridToggler } from './toolbar/controls/GridToggler';
-export { default as FlipYAxisToggler } from './toolbar/controls/FlipYAxisToggler';
