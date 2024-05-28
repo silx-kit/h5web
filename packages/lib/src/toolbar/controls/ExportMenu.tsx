@@ -11,17 +11,11 @@ import { assertDefined } from '@h5web/shared/guards';
 import { useToggle } from '@react-hookz/web';
 import { useId, useRef, useState } from 'react';
 import { FiDownload } from 'react-icons/fi';
-import { MdArrowDropDown } from 'react-icons/md';
 
 import toolbarStyles from '../Toolbar.module.css';
+import Btn from './Btn';
 import { useFloatingDismiss } from './hooks';
 import { download, floatingMinWidth } from './utils';
-
-const PLACEMENTS = {
-  center: 'bottom',
-  left: 'bottom-start',
-  right: 'bottom-end',
-} as const;
 
 interface ExportEntry {
   format: string;
@@ -31,11 +25,10 @@ interface ExportEntry {
 interface Props {
   entries: ExportEntry[];
   isSlice?: boolean;
-  align?: keyof typeof PLACEMENTS;
 }
 
 function ExportMenu(props: Props) {
-  const { entries, isSlice, align = 'center' } = props;
+  const { entries, isSlice } = props;
   const availableEntries = entries.filter(({ url }) => !!url);
 
   const [isOpen, toggle] = useToggle();
@@ -46,7 +39,6 @@ function ExportMenu(props: Props) {
 
   const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
     open: isOpen,
-    placement: PLACEMENTS[align],
     middleware: [floatingMinWidth, offset(6), shift({ padding: 6 })],
     onOpenChange: toggle,
     whileElementsMounted: autoUpdate,
@@ -68,25 +60,18 @@ function ExportMenu(props: Props) {
 
   return (
     <>
-      <button
+      <Btn
         ref={refs.setReference}
         id={referenceId}
-        className={toolbarStyles.btn}
-        type="button"
+        label={`Export${isSlice ? ' slice' : ''}`}
+        icon={FiDownload}
+        withArrow
         disabled={availableEntries.length === 0}
         aria-haspopup="menu"
-        aria-expanded={isOpen || undefined}
+        aria-expanded={isOpen}
         aria-controls={(isOpen && context.floatingId) || undefined}
         {...getReferenceProps()}
-      >
-        <span className={toolbarStyles.btnLike}>
-          <FiDownload className={toolbarStyles.icon} />
-          <span className={toolbarStyles.label}>
-            Export{isSlice && ' slice'}
-          </span>
-          <MdArrowDropDown className={toolbarStyles.arrowIcon} />
-        </span>
-      </button>
+      />
 
       {isOpen && (
         <div
