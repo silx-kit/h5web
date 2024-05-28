@@ -1,21 +1,21 @@
 import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
+  ComplexVisTypeSelector,
   DomainWidget,
   ScaleSelector,
-  Selector,
   Separator,
   SnapshotBtn,
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
+import { ComplexVisType } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 
 import type { HeatmapConfig } from '../heatmap/config';
 import { getImageInteractions } from '../utils';
 import type { ComplexConfig } from './config';
-import { ComplexVisType, VIS_TYPE_SYMBOLS } from './models';
 
 interface Props {
   dataDomain: Domain;
@@ -69,14 +69,10 @@ function ComplexToolbar(props: Props) {
 
       <Separator />
 
-      <Selector
+      <ComplexVisTypeSelector
         value={visType}
-        onChange={(value: ComplexVisType) => setVisType(value)}
+        onChange={setVisType}
         options={Object.values(ComplexVisType)}
-        optionComponent={({ option }) => (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <>{`${VIS_TYPE_SYMBOLS[option]} ${option}`}</>
-        )}
       />
 
       <Separator />

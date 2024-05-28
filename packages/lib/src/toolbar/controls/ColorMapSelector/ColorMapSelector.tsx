@@ -3,7 +3,8 @@ import { FiShuffle } from 'react-icons/fi';
 import type { ColorMap } from '../../../vis/heatmap/models';
 import Selector from '../Selector/Selector';
 import ToggleBtn from '../ToggleBtn';
-import ColorMapOption from './ColorMapOption';
+import ColorMapGradient from './ColorMapGradient';
+import styles from './ColorMapSelector.module.css';
 import { COLORMAP_GROUPS } from './groups';
 
 interface Props {
@@ -22,8 +23,14 @@ function ColorMapSelector(props: Props) {
         value={value}
         onChange={onValueChange}
         options={COLORMAP_GROUPS}
-        optionComponent={ColorMapOption}
+        renderOption={(option) => (
+          <div className={styles.option}>
+            {option}
+            <ColorMapGradient colorMap={option} />
+          </div>
+        )}
       />
+
       <ToggleBtn
         small
         label="Invert"

@@ -18,9 +18,10 @@ export { default as ToggleGroup } from './toolbar/controls/ToggleGroup';
 export { default as DomainWidget } from './toolbar/controls/DomainWidget/DomainWidget';
 export { default as DomainSlider } from './toolbar/controls/DomainWidget/DomainSlider';
 export { default as DomainControls } from './toolbar/controls/DomainWidget/DomainControls';
-export { default as ColorMapOption } from './toolbar/controls/ColorMapSelector/ColorMapOption';
+export { default as ColorMapGradient } from './toolbar/controls/ColorMapSelector/ColorMapGradient';
 export { default as ColorMapSelector } from './toolbar/controls/ColorMapSelector/ColorMapSelector';
 export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/ScaleSelector';
+export { default as ComplexVisTypeSelector } from './toolbar/controls/ComplexVisTypeSelector';
 export { default as Selector } from './toolbar/controls/Selector/Selector';
 export { default as InteractionHelp } from './toolbar/controls/InteractionHelp';
 export { default as FloatingControl } from './toolbar/floating/FloatingControl';
@@ -150,7 +151,7 @@ export { Z_MIN, Z_MAX } from './vis/utils';
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 
 // Enums
-export { ScaleType } from '@h5web/shared/vis-models';
+export { ScaleType, ComplexVisType } from '@h5web/shared/vis-models';
 export { CurveType, GlyphType } from './vis/line/models';
 export { ImageType } from './vis/rgb/models';
 export { Notation } from './vis/matrix/models';

@@ -1,10 +1,10 @@
+import { ComplexVisType } from '@h5web/shared/vis-models';
 import { createContext, useContext, useState } from 'react';
 import type { StoreApi } from 'zustand';
 import { createStore, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { ConfigProviderProps } from '../../models';
-import { ComplexVisType } from './models';
 
 export interface ComplexConfig {
   visType: ComplexVisType;
@@ -20,7 +20,7 @@ function createComplexConfigStore() {
       }),
       {
         name: 'h5web:complex',
-        version: 2,
+        version: 3,
       },
     ),
   );

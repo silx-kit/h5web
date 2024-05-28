@@ -33,6 +33,12 @@ export enum ScaleType {
 export type ColorScaleType = Exclude<ScaleType, 'gamma'>;
 export type AxisScaleType = Exclude<ScaleType, 'sqrt' | 'gamma'>;
 
+export enum ComplexVisType {
+  Phase = 'phase',
+  Amplitude = 'amplitude',
+  PhaseAmplitude = 'phase-amplitude',
+}
+
 export interface Bounds {
   min: number;
   max: number;

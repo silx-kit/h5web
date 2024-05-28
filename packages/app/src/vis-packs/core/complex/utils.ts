@@ -1,5 +1,6 @@
 import type { H5WebComplex } from '@h5web/shared/hdf5-models';
 import type { Bounds } from '@h5web/shared/vis-models';
+import { ComplexVisType } from '@h5web/shared/vis-models';
 import { getNewBounds } from '@h5web/shared/vis-utils';
 
 const INITIAL_BOUNDS: Bounds = {
@@ -7,6 +8,12 @@ const INITIAL_BOUNDS: Bounds = {
   max: -Infinity,
   positiveMin: Infinity,
   strictPositiveMin: Infinity,
+};
+
+export const COMPLEX_VIS_TYPE_LABELS = {
+  [ComplexVisType.Amplitude]: 'Amplitude',
+  [ComplexVisType.Phase]: 'Phase',
+  [ComplexVisType.PhaseAmplitude]: 'Phase & Amplitude',
 };
 
 export function getPhaseAmplitudeValues(mappedValues: H5WebComplex[]): {
