@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
 import path from 'path';
+import { loadEnv } from 'vite';
 import { patchCssModules } from 'vite-css-modules';
 import { defineProject } from 'vitest/config';
 
@@ -33,6 +34,7 @@ export default defineProject({
   test: {
     setupFiles: ['src/setupTests.ts'],
     environment: 'jsdom',
+    env: loadEnv('test', import.meta.dirname, 'VITEST_'),
     restoreMocks: true,
     testTimeout: 15_000,
     server: {

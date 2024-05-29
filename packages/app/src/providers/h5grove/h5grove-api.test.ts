@@ -1,5 +1,6 @@
 import {
   assertDataset,
+  assertEnvVar,
   assertGroup,
   assertGroupWithChildren,
   hasNonNullShape,
@@ -9,8 +10,10 @@ import { expect, test } from 'vitest';
 import { getValueOrError } from '../utils';
 import { H5GroveApi } from './h5grove-api';
 
-const H5GROVE_URL = 'http://localhost:8888'; // when running `pnpm support:h5grove`
-const TEST_FILE = 'sample.h5';
+const H5GROVE_URL = import.meta.env.VITEST_H5GROVE_URL;
+const TEST_FILE = import.meta.env.VITEST_H5GROVE_TEST_FILE;
+assertEnvVar(H5GROVE_URL, 'VITE_H5GROVE_URL');
+assertEnvVar(TEST_FILE, 'VITE_TEST_FILE');
 
 test('test file matches snapshot', async () => {
   const api = new H5GroveApi(H5GROVE_URL, TEST_FILE, {
