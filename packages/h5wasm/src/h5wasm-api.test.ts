@@ -5,21 +5,28 @@ import path from 'node:path';
 import { getValueOrError } from '@h5web/app';
 import {
   assertDataset,
+  assertEnvVar,
   assertGroup,
   assertGroupWithChildren,
   hasNonNullShape,
 } from '@h5web/shared/guards';
-import { expect, test } from 'vitest';
+import { beforeAll, expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
 
-const TEST_FILE = path.resolve(process.cwd(), 'support/sample/dist/sample.h5');
+const SKIP = import.meta.env.VITEST_H5WASM_SKIP === 'true';
+const H5WASM_TEST_FILE = import.meta.env.VITEST_H5WASM_TEST_FILE;
+assertEnvVar(H5WASM_TEST_FILE, 'VITEST_H5WASM_TEST_FILE');
 
-test('test file matches snapshot', async () => {
+const TEST_FILE = path.resolve(process.cwd(), H5WASM_TEST_FILE);
+
+beforeAll(() => {
   if (!existsSync(TEST_FILE)) {
     throw new Error("Sample file doesn't exist");
   }
+});
 
+test.skipIf(SKIP)('test file matches snapshot', async () => {
   const buffer = await readFile(TEST_FILE);
   const api = new H5WasmApi('sample.h5', buffer);
 

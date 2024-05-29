@@ -1,18 +1,27 @@
 import {
   assertDataset,
+  assertEnvVar,
   assertGroup,
   assertGroupWithChildren,
   hasNonNullShape,
 } from '@h5web/shared/guards';
-import { expect, test } from 'vitest';
+import { beforeAll, expect, test } from 'vitest';
 
+import { assertListeningAt } from '../../test-utils';
 import { getValueOrError } from '../utils';
 import { H5GroveApi } from './h5grove-api';
 
-const H5GROVE_URL = 'http://localhost:8888'; // when running `pnpm support:h5grove`
-const TEST_FILE = 'sample.h5';
+const SKIP = import.meta.env.VITEST_H5GROVE_SKIP === 'true';
+const H5GROVE_URL = import.meta.env.VITEST_H5GROVE_URL;
+const TEST_FILE = import.meta.env.VITEST_H5GROVE_TEST_FILE;
+assertEnvVar(H5GROVE_URL, 'VITE_H5GROVE_URL');
+assertEnvVar(TEST_FILE, 'VITE_TEST_FILE');
 
-test('test file matches snapshot', async () => {
+beforeAll(async () => {
+  await assertListeningAt(H5GROVE_URL);
+});
+
+test.skipIf(SKIP)('test file matches snapshot', async () => {
   const api = new H5GroveApi(H5GROVE_URL, TEST_FILE, {
     params: { file: TEST_FILE },
   });

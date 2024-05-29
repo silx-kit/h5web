@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
 import path from 'path';
+import { loadEnv } from 'vite';
 import { defineProject } from 'vitest/config';
 
 const [pkg, appPkg, sharedPkg] = ['.', '../app', '../shared']
@@ -29,6 +30,7 @@ export default defineProject({
     sourcemap: true,
   },
   test: {
+    env: loadEnv('test', import.meta.dirname, 'VITEST_'),
     server: {
       deps: { inline: ['react-suspense-fetch'] },
     },
