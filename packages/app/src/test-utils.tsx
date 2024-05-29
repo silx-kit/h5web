@@ -129,3 +129,14 @@ export function mockConsoleMethod(
     }
   });
 }
+
+export async function assertListeningAt(
+  url: string,
+  message = `Expected server listening at ${url}`,
+) {
+  try {
+    await fetch(url);
+  } catch {
+    throw new Error(message);
+  }
+}
