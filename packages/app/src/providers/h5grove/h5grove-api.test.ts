@@ -11,6 +11,7 @@ import { assertListeningAt } from '../../test-utils';
 import { getValueOrError } from '../utils';
 import { H5GroveApi } from './h5grove-api';
 
+const SKIP = import.meta.env.VITEST_H5GROVE_SKIP === 'true';
 const H5GROVE_URL = import.meta.env.VITEST_H5GROVE_URL;
 const TEST_FILE = import.meta.env.VITEST_H5GROVE_TEST_FILE;
 assertEnvVar(H5GROVE_URL, 'VITE_H5GROVE_URL');
@@ -20,7 +21,7 @@ beforeAll(async () => {
   await assertListeningAt(H5GROVE_URL);
 });
 
-test('test file matches snapshot', async () => {
+test.skipIf(SKIP)('test file matches snapshot', async () => {
   const api = new H5GroveApi(H5GROVE_URL, TEST_FILE, {
     params: { file: TEST_FILE },
   });

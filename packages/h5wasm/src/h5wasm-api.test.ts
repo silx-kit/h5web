@@ -14,6 +14,7 @@ import { beforeAll, expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
 
+const SKIP = import.meta.env.VITEST_H5WASM_SKIP === 'true';
 const H5WASM_TEST_FILE = import.meta.env.VITEST_H5WASM_TEST_FILE;
 assertEnvVar(H5WASM_TEST_FILE, 'VITEST_H5WASM_TEST_FILE');
 
@@ -25,7 +26,7 @@ beforeAll(() => {
   }
 });
 
-test('test file matches snapshot', async () => {
+test.skipIf(SKIP)('test file matches snapshot', async () => {
   const buffer = await readFile(TEST_FILE);
   const api = new H5WasmApi('sample.h5', buffer);
 
