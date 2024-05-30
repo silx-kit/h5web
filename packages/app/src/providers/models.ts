@@ -29,6 +29,10 @@ export interface AttrValuesStore extends FetchStore<AttributeValues, Entity> {
   getSingle: (entity: Entity, attrName: AttrName) => unknown;
 }
 
+export interface ViewerConfig {
+  slicingTiming: number;
+}
+
 export type ExportFormat = 'json' | 'csv' | 'npy' | 'tiff';
 export type ExportURL = URL | (() => Promise<URL | Blob>) | undefined;
 

@@ -2,11 +2,11 @@ import { useDebouncedCallback, useMeasure } from '@react-hookz/web';
 import { useState } from 'react';
 import ReactSlider from 'react-slider';
 
+import { useViewerConfig } from '../providers/DataProvider';
 import styles from './SlicingSlider.module.css';
 
 const ID = 'h5w-slider';
 const MIN_HEIGHT_PER_MARK = 25;
-const SLICING_DEBOUNCE_DELAY = 250;
 
 interface Props {
   dimension: number;
@@ -17,12 +17,13 @@ interface Props {
 
 function SlicingSlider(props: Props) {
   const { dimension, maxIndex, initialValue, onChange } = props;
+  const { slicingTiming } = useViewerConfig();
 
   const [value, setValue] = useState(initialValue);
   const onDebouncedChange = useDebouncedCallback(
     onChange,
     [onChange],
-    SLICING_DEBOUNCE_DELAY,
+    slicingTiming,
   );
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();

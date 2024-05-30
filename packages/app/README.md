@@ -286,6 +286,17 @@ specific export scenarios. In this case, or if you don't provide a function at
 all, `H5GroveProvider` falls back to generating URLs based on the `/data`
 endpoint and `format` query param.
 
+#### `viewerConfig: Partial<ViewerConfig>` (optional)
+
+Customise the behaviour of the viewer:
+
+- `slicingTiming: number` – debounce delay for the dimension slicing sliders
+  (default: 250)
+
+  Should be high-enough to not overload your h5grove server and to give enough
+  time for the data to reach the client. This depends on the size of your users'
+  datasets, on your users' bandwidths, and on the performance of your server.
+
 #### `key?: Key` (optional)
 
 If the content of the current file changes and you want to ensure that the
@@ -359,6 +370,17 @@ See
 this time, so if you don't provide your own, the export menu will remain
 disabled in the toolbar.
 
+#### `viewerConfig: Partial<ViewerConfig>` (optional)
+
+Customise the behaviour of the viewer:
+
+- `slicingTiming: number` – debounce delay for the dimension slicing sliders
+  (default: 250)
+
+  Should be high-enough to not overload your HSDS server and to give enough time
+  for the data to reach the client. This depends on the size of your users'
+  datasets, on your users' bandwidths, and on the performance of your server.
+
 #### `key?: Key` (optional)
 
 See
@@ -381,6 +403,13 @@ See
 
 `MockProvider` provides a very basic fallback implementation of `getExportURL`
 that can generate only client-side CSV exports of 1D datasets.
+
+#### `viewerConfig: Partial<ViewerConfig>` (optional)
+
+Customise the behaviour of the viewer:
+
+- `slicingTiming: number` – debounce delay for the dimension slicing sliders
+  (default: 20)
 
 ### Utilities
 
