@@ -184,16 +184,6 @@ async function getPlugin(name: Plugin): Promise<ArrayBuffer | undefined> {
 }
 ```
 
-#### `viewerConfig: Partial<ViewerConfig>` (optional)
-
-Customise the behaviour of the viewer:
-
-- `slicingTiming: number` – debounce delay for the dimension slicing sliders
-  (default: 20)
-
-  You may want to choose a higher number to reduce lag when viewing very large
-  datasets.
-
 ### `H5WasmProvider`
 
 - `filename: string` (required) - the name of the file
@@ -222,8 +212,3 @@ See
 
 See
 [`H5WasmLocalFileProvider#getPlugin`](#getplugin-name-plugin--promisearraybuffer--undefined)
-
-#### `viewerConfig: Partial<ViewerConfig>` (optional)
-
-See
-[`H5WasmLocalFileProvider#viewerConfig`](#viewerconfig-partialviewerconfig-optional)

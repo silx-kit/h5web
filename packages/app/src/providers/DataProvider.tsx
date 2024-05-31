@@ -13,7 +13,6 @@ import type {
   EntitiesStore,
   ProgressCallback,
   ValuesStore,
-  ViewerConfig,
 } from './models';
 
 export interface DataContextValue {
@@ -22,7 +21,6 @@ export interface DataContextValue {
   entitiesStore: EntitiesStore;
   valuesStore: ValuesStore;
   attrValuesStore: AttrValuesStore;
-  viewerConfig: ViewerConfig;
 
   // Undocumented
   getExportURL?: DataProviderApi['getExportURL'];
@@ -36,17 +34,13 @@ const DataContext = createContext({} as DataContextValue);
 export function useDataContext() {
   return useContext(DataContext);
 }
-export function useViewerConfig() {
-  return useContext(DataContext).viewerConfig;
-}
 
 interface Props {
   api: DataProviderApi;
-  viewerConfig: ViewerConfig;
 }
 
 function DataProvider(props: PropsWithChildren<Props>) {
-  const { api, viewerConfig, children } = props;
+  const { api, children } = props;
 
   const entitiesStore = useMemo(() => {
     const childCache = new Map<string, Exclude<ChildEntity, Group>>();
@@ -116,7 +110,6 @@ function DataProvider(props: PropsWithChildren<Props>) {
         entitiesStore,
         valuesStore,
         attrValuesStore,
-        viewerConfig,
         getExportURL: api.getExportURL?.bind(api),
         addProgressListener: api.addProgressListener.bind(api),
         removeProgressListener: api.removeProgressListener.bind(api),
