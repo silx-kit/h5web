@@ -31,8 +31,5 @@ export default defineProject({
   },
   test: {
     env: loadEnv('test', import.meta.dirname, 'VITEST_'),
-    server: {
-      deps: { inline: ['react-suspense-fetch'] },
-    },
   },
 });

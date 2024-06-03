@@ -60,7 +60,6 @@
     "react-icons": "5.2.1",
     "react-reflex": "4.2.6",
     "react-slider": "2.0.4",
-    "react-suspense-fetch": "0.4.1",
     "three": "0.164.1",
     "zustand": "4.5.2"
   },

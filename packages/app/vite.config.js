@@ -37,8 +37,5 @@ export default defineProject({
     env: loadEnv('test', import.meta.dirname, 'VITEST_'),
     restoreMocks: true,
     testTimeout: 15_000,
-    server: {
-      deps: { inline: ['react-suspense-fetch'] },
-    },
   },
 });

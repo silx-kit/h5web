@@ -1,9 +1,9 @@
 import { isGroup } from '@h5web/shared/guards';
 import type { ChildEntity, Entity, Group } from '@h5web/shared/hdf5-models';
 import { getNameFromPath } from '@h5web/shared/hdf5-utils';
+import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useMemo } from 'react';
-import { createFetchStore } from 'react-suspense-fetch';
 
 import { hasAttribute } from '../utils';
 import type { DataProviderApi } from './api';
@@ -70,10 +70,8 @@ function DataProvider(props: PropsWithChildren<Props>) {
   }, [api]);
 
   const valuesStore = useMemo(() => {
-    const store = createFetchStore(api.getValue.bind(api), {
-      type: 'Map',
-      areEqual: (a, b) =>
-        a.dataset.path === b.dataset.path && a.selection === b.selection,
+    const store = createFetchStore(api.getValue.bind(api), (a, b) => {
+      return a.dataset.path === b.dataset.path && a.selection === b.selection;
     });
 
     return Object.assign(store, {
@@ -88,10 +86,10 @@ function DataProvider(props: PropsWithChildren<Props>) {
   }, [api]);
 
   const attrValuesStore = useMemo(() => {
-    const store = createFetchStore(api.getAttrValues.bind(api), {
-      type: 'Map',
-      areEqual: (a, b) => a.path === b.path,
-    });
+    const store = createFetchStore(
+      api.getAttrValues.bind(api),
+      (a, b) => a.path === b.path,
+    );
 
     return Object.assign(store, {
       getSingle: (entity: Entity, attrName: AttrName) => {

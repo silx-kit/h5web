@@ -18,6 +18,7 @@
     "./mock-models": "./src/mock-models.ts",
     "./mock-utils": "./src/mock-utils.ts",
     "./mock-values": "./src/mock-values.ts",
+    "./react-suspense-fetch": "./src/react-suspense-fetch.ts",
     "./styles.css": "./src/styles.css",
     ".": "./src/index.ts"
   },
