@@ -13,15 +13,16 @@ interface Instance<Result> {
 export interface FetchStore<Input, Result> {
   prefetch: (input: Input) => void;
   get: (input: Input) => Result;
+  preset: (input: Input, result: Result) => void;
   evict: (input: Input) => void;
   abort: (input: Input) => void;
 }
 
 export function createFetchStore<Input, Result>(
   fetchFunc: FetchFunc<Input, Result>,
-  areEqual?: AreEqual<Input>,
+  areEqual: AreEqual<Input> = Object.is,
 ) {
-  const cache = createCache<Input, Result>(areEqual);
+  const cache = createCache<Input, Instance<Result>>(areEqual);
 
   return {
     prefetch: (input: Input): void => {
@@ -34,6 +35,14 @@ export function createFetchStore<Input, Result>(
       cache.set(input, instance);
       return instance.get();
     },
+    preset: (input: Input, result: Result): void => {
+      cache.set(input, {
+        get: () => result,
+        abort: () => {
+          /* noop */
+        },
+      });
+    },
     evict: (input: Input): void => {
       cache.delete(input);
     },
@@ -43,15 +52,7 @@ export function createFetchStore<Input, Result>(
   };
 }
 
-function createCache<Input, Result>(areEqual?: AreEqual<Input>) {
-  if (!areEqual) {
-    return new Map<Input, Instance<Result>>();
-  }
-
-  return createMapLikeWithComparator<Input, Instance<Result>>(areEqual);
-}
-
-function createMapLikeWithComparator<K, V>(areEqual: AreEqual<K>) {
+function createCache<K, V>(areEqual: AreEqual<K>) {
   const map = new Map<K, V>();
 
   return {
@@ -88,9 +89,9 @@ function createInstance<Input, Result>(
   input: Input,
   fetchFunc: FetchFunc<Input, Result>,
 ): Instance<Result> {
-  let promise: Promise<void> | null = null;
-  let result: Result | null = null;
-  let error: unknown = null;
+  let promise: Promise<void> | undefined;
+  let result: Result | undefined;
+  let error: unknown;
   const controller = new AbortController();
 
   promise = (async () => {
@@ -99,7 +100,7 @@ function createInstance<Input, Result>(
     } catch (error_) {
       error = error_;
     } finally {
-      promise = null;
+      promise = undefined;
     }
   })();
 
@@ -108,7 +109,7 @@ function createInstance<Input, Result>(
       if (promise) {
         throw promise; // eslint-disable-line @typescript-eslint/no-throw-literal
       }
-      if (error !== null) {
+      if (error !== undefined) {
         throw error; // eslint-disable-line @typescript-eslint/no-throw-literal
       }
       return result as Result;
