@@ -3,6 +3,13 @@
 
 import type { TypedArray } from 'ndarray';
 
+import type {
+  H5T_CSET,
+  H5T_ORDER,
+  H5T_TO_CHAR_SET,
+  H5T_TO_ENDIANNESS,
+} from './h5t';
+
 export enum EntityKind {
   Group = 'group',
   Dataset = 'dataset',
@@ -97,12 +104,8 @@ export enum DTypeClass {
   Unknown = 'Unknown',
 }
 
-export enum Endianness {
-  LE = 'little-endian',
-  BE = 'big-endian',
-}
-
-export type CharSet = 'UTF-8' | 'ASCII';
+export type Endianness = (typeof H5T_TO_ENDIANNESS)[H5T_ORDER];
+export type CharSet = (typeof H5T_TO_CHAR_SET)[H5T_CSET];
 
 export type DType =
   | PrintableType
@@ -128,7 +131,7 @@ export interface BooleanType {
 export interface NumericType {
   class: DTypeClass.Integer | DTypeClass.Unsigned | DTypeClass.Float;
   size: number;
-  endianness?: Endianness;
+  endianness: Endianness | undefined;
 }
 
 export type NumericLikeType = NumericType | BooleanType;
@@ -141,7 +144,7 @@ export interface ComplexType {
 
 export interface StringType {
   class: DTypeClass.String;
-  charSet: CharSet;
+  charSet: CharSet | undefined;
   length?: number;
 }
 
@@ -172,7 +175,7 @@ export interface TimeType {
 
 export interface BitfieldType {
   class: DTypeClass.Bitfield;
-  endianness?: Endianness;
+  endianness: Endianness | undefined;
 }
 
 export interface ReferenceType {
@@ -224,38 +227,4 @@ export type ComplexArray = (ComplexArray | H5WebComplex)[];
 export interface Filter {
   id: number;
   name: string;
-}
-
-/* ------------------- */
-/* ---- H5T ENUMS ---- */
-
-// https://docs.hdfgroup.org/hdf5/develop/_h5_tpublic_8h.html#title3
-
-export enum H5TClass {
-  Integer = 0,
-  Float = 1,
-  Time = 2,
-  String = 3,
-  Bitfield = 4,
-  Opaque = 5,
-  Compound = 6,
-  Reference = 7,
-  Enum = 8,
-  Vlen = 9,
-  Array = 10,
-}
-
-export enum H5TOrder {
-  LE = 0,
-  BE = 1,
-}
-
-export enum H5TSign {
-  Unsigned = 0,
-  Signed = 1,
-}
-
-export enum H5TCharSet {
-  ASCII = 0,
-  UTF8 = 1,
 }

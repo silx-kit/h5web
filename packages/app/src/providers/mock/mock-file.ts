@@ -1,3 +1,4 @@
+import { H5T_CSET } from '@h5web/shared/h5t';
 import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
@@ -60,10 +61,16 @@ export function makeMockFile(): GroupWithChildren {
           attributes: [scalarAttr('attr', cplx(1, 5))],
         }),
         scalar('scalar_compound', ['foo', 2], {
-          type: compoundType({ str: strType('ASCII', 3), int: intType(8) }),
+          type: compoundType({
+            str: strType(H5T_CSET.ASCII, 3),
+            int: intType(8),
+          }),
           attributes: [
             scalarAttr('attr', ['foo', 2], {
-              type: compoundType({ str: strType('UTF-8'), int: intType(8) }),
+              type: compoundType({
+                str: strType(H5T_CSET.UTF8),
+                int: intType(8),
+              }),
             }),
           ],
         }),

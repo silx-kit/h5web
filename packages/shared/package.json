@@ -9,6 +9,7 @@
   "exports": {
     "./createMemo": "./src/createMemo.ts",
     "./guards": "./src/guards.ts",
+    "./h5t": "./src/h5t.ts",
     "./hdf5-models": "./src/hdf5-models.ts",
     "./hdf5-utils": "./src/hdf5-utils.ts",
     "./nexus-models": "./src/nexus-models.ts",

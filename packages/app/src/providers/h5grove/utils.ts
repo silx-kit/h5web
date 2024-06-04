@@ -1,4 +1,5 @@
 import { isNumericType } from '@h5web/shared/guards';
+import { H5T_CLASS } from '@h5web/shared/h5t';
 import type {
   Attribute,
   ChildEntity,
@@ -6,12 +7,7 @@ import type {
   Group,
   ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
-import {
-  DTypeClass,
-  EntityKind,
-  H5TClass,
-  H5TSign,
-} from '@h5web/shared/hdf5-models';
+import { DTypeClass, EntityKind } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   bitfieldType,
@@ -24,8 +20,6 @@ import {
   referenceType,
   strType,
   timeType,
-  toCharSet,
-  toEndianness,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import type { TypedArrayConstructor } from '@h5web/shared/vis-models';
@@ -142,36 +136,32 @@ export function hasErrorMessage(error: unknown): error is { message: string } {
 export function parseDType(type: H5GroveType): DType {
   const { class: h5tClass, size } = type;
 
-  if (h5tClass === H5TClass.Integer) {
-    return intOrUintType(
-      type.sign === H5TSign.Signed,
-      size * 8,
-      toEndianness(type.order),
-    );
+  if (h5tClass === H5T_CLASS.INTEGER) {
+    return intOrUintType(type.sign, size * 8, type.order);
   }
 
-  if (h5tClass === H5TClass.Float) {
-    return floatType(size * 8, toEndianness(type.order));
+  if (h5tClass === H5T_CLASS.FLOAT) {
+    return floatType(size * 8, type.order);
   }
 
-  if (h5tClass === H5TClass.Time) {
+  if (h5tClass === H5T_CLASS.TIME) {
     return timeType();
   }
 
-  if (h5tClass === H5TClass.String) {
+  if (h5tClass === H5T_CLASS.STRING) {
     const { cset, vlen } = type;
-    return strType(toCharSet(cset), vlen ? undefined : size);
+    return strType(cset, vlen ? undefined : size);
   }
 
-  if (h5tClass === H5TClass.Bitfield) {
+  if (h5tClass === H5T_CLASS.BITFIELD) {
     return bitfieldType();
   }
 
-  if (h5tClass === H5TClass.Opaque) {
+  if (h5tClass === H5T_CLASS.OPAQUE) {
     return opaqueType(type.tag);
   }
 
-  if (h5tClass === H5TClass.Compound) {
+  if (h5tClass === H5T_CLASS.COMPOUND) {
     return compoundOrCplxType(
       Object.fromEntries(
         Object.entries(type.members).map(([mName, mType]) => [
@@ -182,11 +172,11 @@ export function parseDType(type: H5GroveType): DType {
     );
   }
 
-  if (h5tClass === H5TClass.Reference) {
+  if (h5tClass === H5T_CLASS.REFERENCE) {
     return referenceType();
   }
 
-  if (h5tClass === H5TClass.Enum) {
+  if (h5tClass === H5T_CLASS.ENUM) {
     const base = parseDType(type.base);
     if (!isNumericType(base)) {
       throw new Error('Expected enum type to have numeric base type');
@@ -195,11 +185,11 @@ export function parseDType(type: H5GroveType): DType {
     return enumOrBoolType(base, type.members);
   }
 
-  if (h5tClass === H5TClass.Vlen) {
+  if (h5tClass === H5T_CLASS.VLEN) {
     return arrayType(parseDType(type.base));
   }
 
-  if (h5tClass === H5TClass.Array) {
+  if (h5tClass === H5T_CLASS.ARRAY) {
     return arrayType(parseDType(type.base), type.dims);
   }
 
