@@ -88,6 +88,7 @@ export interface H5GroveTimeType extends H5GroveBaseType {
 export interface H5GroveStringType extends H5GroveBaseType {
   class: 3;
   cset: number;
+  strPad?: number; // optional for backwards compatibility with h5grove <= 2.1.0
   vlen: boolean;
 }
 

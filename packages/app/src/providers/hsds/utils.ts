@@ -1,5 +1,5 @@
 import { assertArray, isGroup } from '@h5web/shared/guards';
-import { H5T_CSET, H5T_ORDER } from '@h5web/shared/h5t';
+import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
 import type {
   ArrayShape,
   Attribute,
@@ -138,10 +138,13 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
       return convertHsdsCompoundType(hsdsType);
 
     case 'H5T_STRING': {
-      const { charSet, length } = hsdsType;
+      const { charSet, strPad, length } = hsdsType;
       return strType(
         H5T_CSET[
           charSet.slice(charSet.lastIndexOf('_') + 1) as keyof typeof H5T_CSET
+        ],
+        H5T_STR[
+          strPad.slice(strPad.lastIndexOf('_') + 1) as keyof typeof H5T_STR
         ],
         length === 'H5T_VARIABLE' ? undefined : length,
       );

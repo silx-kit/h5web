@@ -149,8 +149,8 @@ export function parseDType(type: H5GroveType): DType {
   }
 
   if (h5tClass === H5T_CLASS.STRING) {
-    const { cset, vlen } = type;
-    return strType(cset, vlen ? undefined : size);
+    const { cset, strPad, vlen } = type;
+    return strType(cset, strPad, vlen ? undefined : size);
   }
 
   if (h5tClass === H5T_CLASS.BITFIELD) {

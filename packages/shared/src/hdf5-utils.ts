@@ -3,8 +3,10 @@ import {
   H5T_CSET,
   H5T_ORDER,
   H5T_SIGN,
+  H5T_STR,
   H5T_TO_CHAR_SET,
   H5T_TO_ENDIANNESS,
+  H5T_TO_STR_PAD,
 } from './h5t';
 import type {
   ArrayType,
@@ -85,11 +87,13 @@ export function floatType(size = 32, h5tOrder = H5T_ORDER.LE): NumericType {
 
 export function strType(
   h5tCharSet = H5T_CSET.ASCII,
+  h5tStrPad = H5T_STR.NULLTERM,
   length?: number,
 ): StringType {
   return {
     class: DTypeClass.String,
     charSet: H5T_TO_CHAR_SET[h5tCharSet],
+    strPad: H5T_TO_STR_PAD[h5tStrPad],
     ...(length !== undefined && { length }),
   };
 }

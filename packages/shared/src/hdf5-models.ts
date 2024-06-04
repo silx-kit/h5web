@@ -6,8 +6,10 @@ import type { TypedArray } from 'ndarray';
 import type {
   H5T_CSET,
   H5T_ORDER,
+  H5T_STR,
   H5T_TO_CHAR_SET,
   H5T_TO_ENDIANNESS,
+  H5T_TO_STR_PAD,
 } from './h5t';
 
 export enum EntityKind {
@@ -106,6 +108,7 @@ export enum DTypeClass {
 
 export type Endianness = (typeof H5T_TO_ENDIANNESS)[H5T_ORDER];
 export type CharSet = (typeof H5T_TO_CHAR_SET)[H5T_CSET];
+export type StrPad = (typeof H5T_TO_STR_PAD)[H5T_STR];
 
 export type DType =
   | PrintableType
@@ -145,6 +148,7 @@ export interface ComplexType {
 export interface StringType {
   class: DTypeClass.String;
   charSet: CharSet | undefined;
+  strPad: StrPad | undefined;
   length?: number;
 }
 

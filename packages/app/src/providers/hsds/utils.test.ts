@@ -1,4 +1,4 @@
-import { H5T_CSET, H5T_ORDER } from '@h5web/shared/h5t';
+import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
 import type { DType } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
@@ -52,11 +52,12 @@ describe('convertHsdsType', () => {
     const asciiStr: HsdsStringType = {
       class: 'H5T_STRING',
       charSet: 'H5T_CSET_ASCII',
+      strPad: 'H5T_STR_NULLTERM',
       length: 25,
     };
 
     expect(convertHsdsType(asciiStr)).toStrictEqual(
-      strType(H5T_CSET.ASCII, 25),
+      strType(H5T_CSET.ASCII, H5T_STR.NULLTERM, 25),
     );
   });
 
@@ -64,10 +65,13 @@ describe('convertHsdsType', () => {
     const unicodeStr: HsdsStringType = {
       class: 'H5T_STRING',
       charSet: 'H5T_CSET_UTF8',
+      strPad: 'H5T_STR_NULLPAD',
       length: 'H5T_VARIABLE',
     };
 
-    expect(convertHsdsType(unicodeStr)).toStrictEqual(strType(H5T_CSET.UTF8));
+    expect(convertHsdsType(unicodeStr)).toStrictEqual(
+      strType(H5T_CSET.UTF8, H5T_STR.NULLPAD),
+    );
   });
 
   it('should convert integer types', () => {

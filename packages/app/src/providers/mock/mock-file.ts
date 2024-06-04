@@ -1,4 +1,4 @@
-import { H5T_CSET } from '@h5web/shared/h5t';
+import { H5T_CSET, H5T_STR } from '@h5web/shared/h5t';
 import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
@@ -62,7 +62,7 @@ export function makeMockFile(): GroupWithChildren {
         }),
         scalar('scalar_compound', ['foo', 2], {
           type: compoundType({
-            str: strType(H5T_CSET.ASCII, 3),
+            str: strType(H5T_CSET.ASCII, H5T_STR.NULLPAD, 3),
             int: intType(8),
           }),
           attributes: [
