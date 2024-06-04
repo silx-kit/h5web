@@ -13,7 +13,7 @@ import { FiHelpCircle } from 'react-icons/fi';
 import type { InteractionInfo } from '../../interactions/models';
 import toolbarStyles from '../Toolbar.module.css';
 import Btn from './Btn';
-import { useFloatingDismiss } from './hooks';
+import { POPOVER_CLEARANCE, useFloatingDismiss } from './hooks';
 import styles from './InteractionHelp.module.css';
 
 interface Props {
@@ -28,7 +28,10 @@ function InteractionHelp(props: Props) {
 
   const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
     open: isOpen,
-    middleware: [offset(6), shift({ padding: 6 })],
+    middleware: [
+      offset(POPOVER_CLEARANCE),
+      shift({ padding: POPOVER_CLEARANCE }),
+    ],
     onOpenChange: toggle,
     whileElementsMounted: autoUpdate,
   });

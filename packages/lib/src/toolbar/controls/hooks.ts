@@ -1,7 +1,45 @@
-import type { ElementProps, FloatingContext } from '@floating-ui/react';
-import { useClickOutside, useKeyboardEvent } from '@react-hookz/web';
+import type {
+  ElementProps,
+  FloatingContext,
+  UseFloatingReturn,
+} from '@floating-ui/react';
+import {
+  autoUpdate,
+  offset,
+  shift,
+  size,
+  useFloating,
+} from '@floating-ui/react';
+import { useClickOutside, useKeyboardEvent, useToggle } from '@react-hookz/web';
 import type { FocusEvent } from 'react';
 import { useCallback, useMemo } from 'react';
+
+export const POPOVER_CLEARANCE = 6;
+
+const MENU_MAX_HEIGHT = 320; // 20rem
+
+export function useFloatingMenu(): UseFloatingReturn<HTMLButtonElement> {
+  const [isOpen, toggle] = useToggle();
+
+  return useFloating<HTMLButtonElement>({
+    open: isOpen,
+    middleware: [
+      offset(POPOVER_CLEARANCE),
+      size({
+        padding: POPOVER_CLEARANCE * 2,
+        apply({ availableHeight, elements, rects }) {
+          Object.assign(elements.floating.style, {
+            maxHeight: `${Math.min(availableHeight, MENU_MAX_HEIGHT)}px`,
+            minWidth: `${rects.reference.width}px`,
+          });
+        },
+      }),
+      shift({ padding: POPOVER_CLEARANCE }),
+    ],
+    onOpenChange: toggle,
+    whileElementsMounted: autoUpdate,
+  });
+}
 
 /* Custom dismiss interaction hook for Floating UI widgets.
  * Reduces bundle size (~16 kB) by replacing:

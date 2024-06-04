@@ -1,26 +1,18 @@
 import {
-  autoUpdate,
   FloatingList,
-  offset,
-  shift,
-  size,
   useClick,
-  useFloating,
   useInteractions,
   useListNavigation,
 } from '@floating-ui/react';
-import { useToggle } from '@react-hookz/web';
 import type { ReactNode } from 'react';
 import { useId, useRef, useState } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import toolbarStyles from '../../Toolbar.module.css';
-import { useFloatingDismiss } from '../hooks';
+import { useFloatingDismiss, useFloatingMenu } from '../hooks';
 import { getAllOptions } from '../utils';
 import Option from './Option';
 import styles from './Selector.module.css';
-
-const MENU_MAX_HEIGHT = 320; // 20rem
 
 interface Props<T> {
   label?: string;
@@ -34,34 +26,17 @@ interface Props<T> {
 function Selector<T extends string>(props: Props<T>) {
   const { label, value, disabled, onChange, options, renderOption } = props;
 
-  const [isOpen, toggle] = useToggle();
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState(() => {
-    return getAllOptions(options).indexOf(value);
-  });
+  const { context, refs, floatingStyles } = useFloatingMenu();
+  const { open: isOpen, onOpenChange: toggle } = context;
 
   const labelId = useId();
   const referenceId = useId();
   const currentOptionId = useId();
   const listRef = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
-    open: isOpen,
-    middleware: [
-      offset(6),
-      size({
-        padding: 12,
-        apply({ availableHeight, elements, rects }) {
-          Object.assign(elements.floating.style, {
-            maxHeight: `${Math.min(availableHeight, MENU_MAX_HEIGHT)}px`,
-            minWidth: `${rects.reference.width}px`,
-          });
-        },
-      }),
-      shift({ padding: 6 }),
-    ],
-    onOpenChange: toggle,
-    whileElementsMounted: autoUpdate,
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(() => {
+    return getAllOptions(options).indexOf(value);
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
