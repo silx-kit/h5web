@@ -3,6 +3,7 @@ import {
   assertNonNull,
   isNumericType,
 } from '@h5web/shared/guards';
+import { H5T_CLASS, H5T_ORDER, H5T_SIGN } from '@h5web/shared/h5t';
 import type {
   Attribute,
   ChildEntity,
@@ -11,12 +12,7 @@ import type {
   ProvidedEntity,
   Shape,
 } from '@h5web/shared/hdf5-models';
-import {
-  DTypeClass,
-  Endianness,
-  EntityKind,
-  H5TClass,
-} from '@h5web/shared/hdf5-models';
+import { DTypeClass, EntityKind } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   bitfieldType,
@@ -29,7 +25,6 @@ import {
   referenceType,
   strType,
   timeType,
-  toCharSet,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import type { Metadata } from 'h5wasm';
@@ -163,36 +158,41 @@ function parseAttributes(h5wAttrs: H5WasmAttributes): Attribute[] {
   });
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function parseDType(metadata: Metadata): DType {
   const { type: h5tClass, size } = metadata;
 
-  if (h5tClass === H5TClass.Integer) {
+  if (h5tClass === H5T_CLASS.INTEGER) {
     const { signed, littleEndian } = metadata;
-    return intOrUintType(signed, size * 8, toEndianness(littleEndian));
+    return intOrUintType(
+      signed ? H5T_SIGN.SIGN_2 : H5T_SIGN.NONE,
+      size * 8,
+      littleEndian ? H5T_ORDER.LE : H5T_ORDER.BE,
+    );
   }
-  if (h5tClass === H5TClass.Float) {
+  if (h5tClass === H5T_CLASS.FLOAT) {
     const { littleEndian } = metadata;
-    return floatType(size * 8, toEndianness(littleEndian));
+    return floatType(size * 8, littleEndian ? H5T_ORDER.LE : H5T_ORDER.BE);
   }
 
-  if (h5tClass === H5TClass.Time) {
+  if (h5tClass === H5T_CLASS.TIME) {
     return timeType();
   }
 
-  if (h5tClass === H5TClass.String) {
+  if (h5tClass === H5T_CLASS.STRING) {
     const { cset, vlen } = metadata;
-    return strType(toCharSet(cset), vlen ? undefined : size);
+    return strType(cset, vlen ? undefined : size);
   }
 
-  if (h5tClass === H5TClass.Bitfield) {
+  if (h5tClass === H5T_CLASS.BITFIELD) {
     return bitfieldType();
   }
 
-  if (h5tClass === H5TClass.Opaque) {
+  if (h5tClass === H5T_CLASS.OPAQUE) {
     return opaqueType();
   }
 
-  if (h5tClass === H5TClass.Compound) {
+  if (h5tClass === H5T_CLASS.COMPOUND) {
     const { compound_type } = metadata;
     assertDefined(compound_type);
 
@@ -206,11 +206,11 @@ export function parseDType(metadata: Metadata): DType {
     );
   }
 
-  if (h5tClass === H5TClass.Reference) {
+  if (h5tClass === H5T_CLASS.REFERENCE) {
     return referenceType();
   }
 
-  if (h5tClass === H5TClass.Enum) {
+  if (h5tClass === H5T_CLASS.ENUM) {
     const { enum_type } = metadata;
     assertDefined(enum_type);
     const { members, type } = enum_type;
@@ -223,14 +223,14 @@ export function parseDType(metadata: Metadata): DType {
     return enumOrBoolType(baseType, members);
   }
 
-  if (h5tClass === H5TClass.Vlen) {
+  if (h5tClass === H5T_CLASS.VLEN) {
     // Not currently provided, so unable to know base type
     // const { array_type } = metadata;
     // assertDefined(array_type);
     return arrayType(unknownType());
   }
 
-  if (h5tClass === H5TClass.Array) {
+  if (h5tClass === H5T_CLASS.ARRAY) {
     const { array_type } = metadata;
     assertDefined(array_type);
     assertNonNull(array_type.shape);
@@ -238,10 +238,6 @@ export function parseDType(metadata: Metadata): DType {
   }
 
   return unknownType();
-}
-
-function toEndianness(littleEndian: boolean): Endianness {
-  return littleEndian ? Endianness.LE : Endianness.BE;
 }
 
 export function readSelectedValue(

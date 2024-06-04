@@ -1,5 +1,5 @@
+import { H5T_CSET, H5T_ORDER } from '@h5web/shared/h5t';
 import type { DType } from '@h5web/shared/hdf5-models';
-import { Endianness } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   boolType,
@@ -29,22 +29,22 @@ interface TestType {
 
 const leInt = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
-  hdf5: intType(8, Endianness.LE),
+  hdf5: intType(8, H5T_ORDER.LE),
 } satisfies TestType;
 
 const beUint = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_U64BE' },
-  hdf5: uintType(64, Endianness.BE),
+  hdf5: uintType(64, H5T_ORDER.BE),
 } satisfies TestType;
 
 const leFloat = {
   hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F32LE' },
-  hdf5: floatType(32, Endianness.LE),
+  hdf5: floatType(32, H5T_ORDER.LE),
 } satisfies TestType;
 
 const beFloat = {
   hsds: { class: 'H5T_FLOAT', base: 'H5T_IEEE_F64BE' },
-  hdf5: floatType(64, Endianness.BE),
+  hdf5: floatType(64, H5T_ORDER.BE),
 } satisfies TestType;
 
 describe('convertHsdsType', () => {
@@ -55,7 +55,9 @@ describe('convertHsdsType', () => {
       length: 25,
     };
 
-    expect(convertHsdsType(asciiStr)).toStrictEqual(strType('ASCII', 25));
+    expect(convertHsdsType(asciiStr)).toStrictEqual(
+      strType(H5T_CSET.ASCII, 25),
+    );
   });
 
   it('should convert variable-length UTF-8 string type', () => {
@@ -65,7 +67,7 @@ describe('convertHsdsType', () => {
       length: 'H5T_VARIABLE',
     };
 
-    expect(convertHsdsType(unicodeStr)).toStrictEqual(strType('UTF-8'));
+    expect(convertHsdsType(unicodeStr)).toStrictEqual(strType(H5T_CSET.UTF8));
   });
 
   it('should convert integer types', () => {

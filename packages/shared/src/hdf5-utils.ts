@@ -1,9 +1,15 @@
 import { isNumericType } from './guards';
+import {
+  H5T_CSET,
+  H5T_ORDER,
+  H5T_SIGN,
+  H5T_TO_CHAR_SET,
+  H5T_TO_ENDIANNESS,
+} from './h5t';
 import type {
   ArrayType,
   BitfieldType,
   BooleanType,
-  CharSet,
   ChildEntity,
   ComplexType,
   CompoundType,
@@ -19,7 +25,7 @@ import type {
   TimeType,
   UnknownType,
 } from './hdf5-models';
-import { DTypeClass, Endianness, H5TCharSet, H5TOrder } from './hdf5-models';
+import { DTypeClass } from './hdf5-models';
 
 export function getChildEntity(
   group: GroupWithChildren,
@@ -44,34 +50,46 @@ export function getNameFromPath(path: string) {
 /* ----------------- */
 /* ----- TYPES ----- */
 
-export function intType(size = 32, endianness = Endianness.LE): NumericType {
-  return { class: DTypeClass.Integer, endianness, size };
+export function intType(size = 32, h5tOrder = H5T_ORDER.LE): NumericType {
+  return {
+    class: DTypeClass.Integer,
+    endianness: H5T_TO_ENDIANNESS[h5tOrder],
+    size,
+  };
 }
 
-export function uintType(size = 32, endianness = Endianness.LE): NumericType {
-  return { class: DTypeClass.Unsigned, endianness, size };
+export function uintType(size = 32, h5tOrder = H5T_ORDER.LE): NumericType {
+  return {
+    class: DTypeClass.Unsigned,
+    endianness: H5T_TO_ENDIANNESS[h5tOrder],
+    size,
+  };
 }
 
 export function intOrUintType(
-  isSigned: boolean,
+  h5tSign: H5T_SIGN,
   size = 32,
-  endianness = Endianness.LE,
+  h5tOrder = H5T_ORDER.LE,
 ) {
-  const func = isSigned ? intType : uintType;
-  return func(size, endianness);
+  const func = h5tSign === H5T_SIGN.SIGN_2 ? intType : uintType;
+  return func(size, h5tOrder);
 }
 
-export function floatType(size = 32, endianness = Endianness.LE): NumericType {
-  return { class: DTypeClass.Float, endianness, size };
+export function floatType(size = 32, h5tOrder = H5T_ORDER.LE): NumericType {
+  return {
+    class: DTypeClass.Float,
+    endianness: H5T_TO_ENDIANNESS[h5tOrder],
+    size,
+  };
 }
 
 export function strType(
-  charSet: CharSet = 'ASCII',
+  h5tCharSet = H5T_CSET.ASCII,
   length?: number,
 ): StringType {
   return {
     class: DTypeClass.String,
-    charSet,
+    charSet: H5T_TO_CHAR_SET[h5tCharSet],
     ...(length !== undefined && { length }),
   };
 }
@@ -150,8 +168,11 @@ export function timeType(): TimeType {
   return { class: DTypeClass.Time };
 }
 
-export function bitfieldType(endianness = Endianness.LE): BitfieldType {
-  return { class: DTypeClass.Bitfield, endianness };
+export function bitfieldType(h5tOrder = H5T_ORDER.LE): BitfieldType {
+  return {
+    class: DTypeClass.Bitfield,
+    endianness: H5T_TO_ENDIANNESS[h5tOrder],
+  };
 }
 
 export function opaqueType(tag = ''): OpaqueType {
@@ -171,15 +192,4 @@ export function unknownType(): UnknownType {
 
 export function cplx(real: number, imag: number): H5WebComplex {
   return [real, imag];
-}
-
-/* ------------------------- */
-/* --- HDF5 ENUM HELPERS --- */
-
-export function toEndianness(h5tOrder: number): Endianness {
-  return h5tOrder === H5TOrder.BE ? Endianness.BE : Endianness.LE;
-}
-
-export function toCharSet(h5tCharSet: number): CharSet {
-  return h5tCharSet === H5TCharSet.ASCII ? 'ASCII' : 'UTF-8';
 }

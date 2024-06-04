@@ -1,4 +1,5 @@
 import { assertArray, isGroup } from '@h5web/shared/guards';
+import { H5T_CSET, H5T_ORDER } from '@h5web/shared/h5t';
 import type {
   ArrayShape,
   Attribute,
@@ -14,7 +15,7 @@ import type {
   ScalarShape,
   Shape,
 } from '@h5web/shared/hdf5-models';
-import { DTypeClass, Endianness } from '@h5web/shared/hdf5-models';
+import { DTypeClass } from '@h5web/shared/hdf5-models';
 import {
   boolType,
   compoundType,
@@ -81,19 +82,19 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
     throw new Error(`Unrecognized base ${base}`);
   }
 
-  const [, sign, sizeStr, endiannessAbbr] = matches;
+  const [, sign, sizeStr, h5tOrderStr] = matches;
   const size = Number.parseInt(sizeStr, 10);
-  const endianness = Endianness[endiannessAbbr as 'BE' | 'LE'];
+  const h5tOrder = H5T_ORDER[h5tOrderStr as keyof typeof H5T_ORDER];
 
   if (hsdsClass === 'H5T_FLOAT') {
-    return floatType(size, endianness);
+    return floatType(size, h5tOrder);
   }
 
   if (sign === 'U') {
-    return uintType(size, endianness);
+    return uintType(size, h5tOrder);
   }
 
-  return intType(size, endianness);
+  return intType(size, h5tOrder);
 }
 
 function convertHsdsCompoundType(
@@ -136,11 +137,15 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
     case 'H5T_COMPOUND':
       return convertHsdsCompoundType(hsdsType);
 
-    case 'H5T_STRING':
+    case 'H5T_STRING': {
+      const { charSet, length } = hsdsType;
       return strType(
-        hsdsType.charSet.endsWith('ASCII') ? 'ASCII' : 'UTF-8',
-        hsdsType.length === 'H5T_VARIABLE' ? undefined : hsdsType.length,
+        H5T_CSET[
+          charSet.slice(charSet.lastIndexOf('_') + 1) as keyof typeof H5T_CSET
+        ],
+        length === 'H5T_VARIABLE' ? undefined : length,
       );
+    }
 
     case 'H5T_ARRAY':
     case 'H5T_VLEN':
