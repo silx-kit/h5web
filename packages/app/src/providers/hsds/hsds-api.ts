@@ -123,11 +123,14 @@ export class HsdsApi extends DataProviderApi {
     return entity;
   }
 
-  public override async getValue(params: ValuesStoreParams): Promise<unknown> {
+  public override async getValue(
+    params: ValuesStoreParams,
+    signal?: AbortSignal,
+  ): Promise<unknown> {
     const { dataset } = params;
     assertHsdsDataset(dataset);
 
-    const value = await this.fetchValue(dataset.id, params);
+    const value = await this.fetchValue(dataset.id, params, signal);
 
     // https://github.com/HDFGroup/hsds/issues/88
     // HSDS does not reduce the number of dimensions when selecting indices
@@ -212,12 +215,14 @@ export class HsdsApi extends DataProviderApi {
   private async fetchValue(
     entityId: HsdsId,
     params: ValuesStoreParams,
+    signal?: AbortSignal,
   ): Promise<HsdsValueResponse> {
     const { selection } = params;
     const { data } = await this.cancellableFetchValue(
       `/datasets/${entityId}/value`,
       params,
       { select: selection && `[${selection}]` },
+      signal,
     );
     return data.value;
   }

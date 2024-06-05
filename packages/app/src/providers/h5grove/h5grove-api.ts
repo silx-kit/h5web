@@ -43,21 +43,22 @@ export class H5GroveApi extends DataProviderApi {
 
   public override async getValue(
     params: ValuesStoreParams,
+    signal?: AbortSignal,
   ): Promise<H5GroveDataResponse> {
     const { dataset } = params;
 
     if (dataset.type.class === DTypeClass.Opaque) {
-      return new Uint8Array(await this.fetchBinaryData(params));
+      return new Uint8Array(await this.fetchBinaryData(params, signal));
     }
 
     const DTypedArray = h5groveTypedArrayFromDType(dataset.type);
     if (DTypedArray) {
-      const buffer = await this.fetchBinaryData(params, true);
+      const buffer = await this.fetchBinaryData(params, signal, true);
       const array = new DTypedArray(buffer);
       return hasScalarShape(dataset) ? array[0] : array;
     }
 
-    return this.fetchData(params);
+    return this.fetchData(params, signal);
   }
 
   public override async getAttrValues(
@@ -144,18 +145,25 @@ export class H5GroveApi extends DataProviderApi {
 
   private async fetchData(
     params: ValuesStoreParams,
+    signal?: AbortSignal,
   ): Promise<H5GroveDataResponse> {
-    const { data } = await this.cancellableFetchValue(`/data/`, params, {
-      path: params.dataset.path,
-      selection: params.selection,
-      flatten: true,
-    });
+    const { data } = await this.cancellableFetchValue(
+      `/data/`,
+      params,
+      {
+        path: params.dataset.path,
+        selection: params.selection,
+        flatten: true,
+      },
+      signal,
+    );
 
     return data;
   }
 
   private async fetchBinaryData(
     params: ValuesStoreParams,
+    signal?: AbortSignal,
     safe = false,
   ): Promise<ArrayBuffer> {
     const { data } = await this.cancellableFetchValue(
@@ -167,6 +175,7 @@ export class H5GroveApi extends DataProviderApi {
         format: 'bin',
         dtype: safe ? 'safe' : undefined,
       },
+      signal,
       'arraybuffer',
     );
 

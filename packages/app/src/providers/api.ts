@@ -12,7 +12,6 @@ import type {
   AxiosProgressEvent,
   AxiosRequestConfig,
   AxiosResponse,
-  CancelTokenSource,
   ResponseType,
 } from 'axios';
 import axios from 'axios';
@@ -23,18 +22,9 @@ import type {
   ProgressCallback,
   ValuesStoreParams,
 } from './models';
-import { CANCELLED_ERROR_MSG } from './utils';
-
-interface ValueRequest {
-  storeParams: ValuesStoreParams;
-  cancelSource: CancelTokenSource;
-}
 
 export abstract class DataProviderApi {
-  public readonly cancelledValueRequests = new Set<ValueRequest>();
-
   protected readonly client: AxiosInstance;
-  protected readonly valueRequests = new Set<ValueRequest>();
   protected progress = new Map<ValuesStoreParams, number>();
 
   private readonly progressListeners = new Set<ProgressCallback>();
@@ -72,35 +62,19 @@ export abstract class DataProviderApi {
     this.progressListeners.delete(cb);
   }
 
-  public cancelValueRequests(): void {
-    // Cancel every active value request
-    this.valueRequests.forEach((request) => {
-      request.cancelSource.cancel(CANCELLED_ERROR_MSG);
-
-      // Save request so params can later be evicted from the values store (cf. `Provider.tsx`)
-      this.cancelledValueRequests.add(request);
-    });
-
-    this.valueRequests.clear();
-  }
-
   protected async cancellableFetchValue(
     endpoint: string,
     storeParams: ValuesStoreParams,
     queryParams: Record<string, string | boolean | undefined>,
+    signal?: AbortSignal,
     responseType?: ResponseType,
   ): Promise<AxiosResponse> {
-    const cancelSource = axios.CancelToken.source();
-    const request = { storeParams, cancelSource };
-    this.valueRequests.add(request);
-
     this.progress.set(storeParams, 0);
     this.notifyProgressChange();
 
     try {
-      const { token: cancelToken } = cancelSource;
       return await this.client.get(endpoint, {
-        cancelToken,
+        signal,
         params: queryParams,
         responseType,
         onDownloadProgress: (evt: AxiosProgressEvent) => {
@@ -110,9 +84,17 @@ export abstract class DataProviderApi {
           }
         },
       });
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        // Throw abort reason instead of axios `CancelError`
+        // https://github.com/axios/axios/issues/5758
+        throw new Error(
+          typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
+        );
+      }
+      throw error;
     } finally {
-      // Remove cancellation source and progress when request fulfills
-      this.valueRequests.delete(request);
+      // Remove progress when request fulfills
       this.progress.delete(storeParams);
       this.notifyProgressChange();
     }
@@ -123,6 +105,9 @@ export abstract class DataProviderApi {
   }
 
   public abstract getEntity(path: string): Promise<ProvidedEntity>;
-  public abstract getValue(params: ValuesStoreParams): Promise<unknown>;
+  public abstract getValue(
+    params: ValuesStoreParams,
+    signal?: AbortSignal,
+  ): Promise<unknown>;
   public abstract getAttrValues(entity: Entity): Promise<AttributeValues>;
 }

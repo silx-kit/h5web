@@ -1,13 +1,14 @@
 type FetchFunc<Input, Result> = (
   input: Input,
-  options: { signal: AbortSignal },
+  signal: AbortSignal,
 ) => Promise<Result>;
 
 type AreEqual<Input> = (a: Input, b: Input) => boolean;
 
 interface Instance<Result> {
   get: () => Result;
-  abort: () => void;
+  isError: () => boolean;
+  abort: (reason?: string) => void;
 }
 
 export interface FetchStore<Input, Result> {
@@ -15,7 +16,9 @@ export interface FetchStore<Input, Result> {
   get: (input: Input) => Result;
   preset: (input: Input, result: Result) => void;
   evict: (input: Input) => void;
-  abort: (input: Input) => void;
+  evictErrors: () => void;
+  abort: (input: Input, reason?: string) => void;
+  abortAll: (reason?: string) => void;
 }
 
 export function createFetchStore<Input, Result>(
@@ -38,16 +41,25 @@ export function createFetchStore<Input, Result>(
     preset: (input: Input, result: Result): void => {
       cache.set(input, {
         get: () => result,
-        abort: () => {
-          /* noop */
-        },
+        isError: () => false,
+        abort: () => undefined,
       });
     },
     evict: (input: Input): void => {
       cache.delete(input);
     },
-    abort: (input: Input): void => {
-      cache.get(input)?.abort();
+    evictErrors: () => {
+      cache.entries().forEach(([input, instance]) => {
+        if (instance.isError()) {
+          cache.delete(input);
+        }
+      });
+    },
+    abort: (input: Input, reason?: string): void => {
+      cache.get(input)?.abort(reason);
+    },
+    abortAll: (reason?: string): void => {
+      cache.values().forEach((instance) => instance.abort(reason));
     },
   };
 }
@@ -82,6 +94,8 @@ function createCache<K, V>(areEqual: AreEqual<K>) {
         }
       }
     },
+    entries: () => [...map.entries()],
+    values: () => [...map.values()],
   };
 }
 
@@ -96,7 +110,7 @@ function createInstance<Input, Result>(
 
   promise = (async () => {
     try {
-      result = await fetchFunc(input, { signal: controller.signal });
+      result = await fetchFunc(input, controller.signal);
     } catch (error_) {
       error = error_;
     } finally {
@@ -114,8 +128,9 @@ function createInstance<Input, Result>(
       }
       return result as Result;
     },
-    abort: () => {
-      controller.abort();
+    isError: () => error !== undefined,
+    abort: (reason?: string) => {
+      controller.abort(reason);
     },
   };
 }
