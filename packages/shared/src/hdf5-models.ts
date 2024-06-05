@@ -51,6 +51,7 @@ export interface Dataset<S extends Shape = Shape, T extends DType = DType>
   rawType?: unknown;
   chunks?: number[];
   filters?: Filter[];
+  virtualSources?: VirtualSource[];
 }
 
 export interface Datatype<T = DType> extends Entity {
@@ -74,6 +75,16 @@ export interface Attribute<S extends Shape = Shape, T extends DType = DType> {
   name: string;
   shape: S;
   type: T;
+}
+
+export interface Filter {
+  id: number;
+  name: string;
+}
+
+export interface VirtualSource {
+  file: string;
+  path: string;
 }
 
 export type NumArrayDataset = Dataset<ArrayShape, NumericType>;
@@ -227,8 +238,3 @@ export type AttributeValues = Record<string, unknown>;
 
 export type H5WebComplex = [real: number, imag: number];
 export type ComplexArray = (ComplexArray | H5WebComplex)[];
-
-export interface Filter {
-  id: number;
-  name: string;
-}
