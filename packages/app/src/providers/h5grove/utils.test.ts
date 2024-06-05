@@ -1,4 +1,4 @@
-import { H5T_CSET, H5T_ORDER } from '@h5web/shared/h5t';
+import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
 import {
   arrayType,
   bitfieldType,
@@ -42,13 +42,13 @@ describe('parseDType', () => {
   it('should convert string types', () => {
     expect(
       parseDType({ class: 3, size: 6, cset: 0, vlen: false }),
-    ).toStrictEqual(strType(H5T_CSET.ASCII, 6));
+    ).toStrictEqual(strType(H5T_CSET.ASCII, undefined, 6));
     expect(
       parseDType({ class: 3, size: 6, cset: 0, vlen: true }),
     ).toStrictEqual(strType(H5T_CSET.ASCII));
     expect(
-      parseDType({ class: 3, size: 6, cset: 1, vlen: false }),
-    ).toStrictEqual(strType(H5T_CSET.UTF8, 6));
+      parseDType({ class: 3, size: 6, cset: 1, strPad: 1, vlen: false }),
+    ).toStrictEqual(strType(H5T_CSET.UTF8, H5T_STR.NULLPAD, 6));
     expect(
       parseDType({ class: 3, size: 6, cset: 1, vlen: true }),
     ).toStrictEqual(strType(H5T_CSET.UTF8));

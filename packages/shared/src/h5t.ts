@@ -36,6 +36,12 @@ export enum H5T_CSET {
   UTF8 = 1,
 }
 
+export enum H5T_STR {
+  NULLTERM = 0,
+  NULLPAD = 1,
+  SPACEPAD = 2,
+}
+
 /* ---------------------- */
 /* ---- H5T MAPPINGS ---- */
 
@@ -50,4 +56,10 @@ export const H5T_TO_ENDIANNESS = {
 export const H5T_TO_CHAR_SET = {
   [H5T_CSET.ASCII]: 'ASCII',
   [H5T_CSET.UTF8]: 'UTF-8',
+} as const;
+
+export const H5T_TO_STR_PAD = {
+  [H5T_STR.NULLTERM]: 'null-terminated',
+  [H5T_STR.NULLPAD]: 'null-padded',
+  [H5T_STR.SPACEPAD]: 'space-padded',
 } as const;

@@ -7,7 +7,7 @@ authors = ["NA"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-h5grove = {version = "2.1.0", extras = ["tornado"]}
+h5grove = {version = "2.2.0", extras = ["tornado"]}
 typing-extensions = "^4.10.0"
 
 [build-system]

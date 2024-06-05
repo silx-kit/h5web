@@ -3,6 +3,7 @@ import {
   assertNonNull,
   isNumericType,
 } from '@h5web/shared/guards';
+import type { H5T_STR } from '@h5web/shared/h5t';
 import { H5T_CLASS, H5T_ORDER, H5T_SIGN } from '@h5web/shared/h5t';
 import type {
   Attribute,
@@ -180,8 +181,8 @@ export function parseDType(metadata: Metadata): DType {
   }
 
   if (h5tClass === H5T_CLASS.STRING) {
-    const { cset, vlen } = metadata;
-    return strType(cset, vlen ? undefined : size);
+    const { cset, strpad, vlen } = metadata;
+    return strType(cset, strpad as H5T_STR, vlen ? undefined : size);
   }
 
   if (h5tClass === H5T_CLASS.BITFIELD) {

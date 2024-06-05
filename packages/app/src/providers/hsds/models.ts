@@ -1,3 +1,4 @@
+import type { H5T_CSET, H5T_STR } from '@h5web/shared/h5t';
 import type { Entity } from '@h5web/shared/hdf5-models';
 
 /* --------------------- */
@@ -104,7 +105,8 @@ export interface HsdsNumericType {
 
 export interface HsdsStringType {
   class: 'H5T_STRING';
-  charSet: `H5T_CSET_${'ASCII' | 'UTF8'}`;
+  charSet: `H5T_CSET_${keyof typeof H5T_CSET}`;
+  strPad: `H5T_STR_${keyof typeof H5T_STR}`;
   length: number | 'H5T_VARIABLE';
 }
 
