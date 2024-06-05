@@ -19,7 +19,7 @@ function DataToHtml<T extends Vector3[]>(props: Props<T>) {
     [points, dataToHtml],
   );
 
-  return <>{children(...htmlPoints)}</>;
+  return children(...htmlPoints);
 }
 
 export type { Props as DataToHtmlProps };

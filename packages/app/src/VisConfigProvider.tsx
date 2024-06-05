@@ -22,15 +22,9 @@ interface Props {
 function VisConfigProvider(props: Props) {
   const { children } = props;
 
-  return (
-    <>
-      {[...allConfigProviders].reduce(
-        (accChildren, NextProvider) => (
-          <NextProvider>{accChildren}</NextProvider>
-        ),
-        children,
-      )}
-    </>
+  return [...allConfigProviders].reduce(
+    (accChildren, NextProvider) => <NextProvider>{accChildren}</NextProvider>,
+    children,
   );
 }
 

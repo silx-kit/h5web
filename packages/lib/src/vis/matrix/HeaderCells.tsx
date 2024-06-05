@@ -16,24 +16,20 @@ function HeaderCells(props: Props) {
   const { indexMin, indexMax, width, transform, headers } = props;
   const { cellSize } = useContext(SettingsContext);
 
-  return (
-    <>
-      {range(indexMin, indexMax + 1).map((index) => (
-        <div
-          key={index.toString()}
-          className={styles.indexCell}
-          style={{
-            width: width || cellSize.width,
-            height: cellSize.height,
-            transform,
-          }}
-          data-bg={index % 2 === 1 ? '' : undefined}
-        >
-          {index >= 0 && headers ? headers[index] : index}
-        </div>
-      ))}
-    </>
-  );
+  return range(indexMin, indexMax + 1).map((index) => (
+    <div
+      key={index.toString()}
+      className={styles.indexCell}
+      style={{
+        width: width || cellSize.width,
+        height: cellSize.height,
+        transform,
+      }}
+      data-bg={index % 2 === 1 ? '' : undefined}
+    >
+      {index >= 0 && headers ? headers[index] : index}
+    </div>
+  ));
 }
 
 export default HeaderCells;

@@ -20,7 +20,7 @@ function ValueFetcher<D extends Dataset<ArrayShape | ScalarShape>>(
   const { dataset, selection, render } = props;
 
   const value = useDatasetValue(dataset, selection);
-  return <>{render(value)}</>;
+  return render(value);
 }
 
 export default ValueFetcher;

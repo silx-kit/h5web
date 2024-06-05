@@ -26,7 +26,7 @@ export function toRgbSafeNdArray(
 
   if (ndArr.dtype === 'int8') {
     return ndarray(
-      Uint8Array.from([...ndArr.data].map((val) => val + 128)),
+      Uint8Array.from(ndArr.data.map((val) => val + 128)),
       ndArr.shape,
     );
   }

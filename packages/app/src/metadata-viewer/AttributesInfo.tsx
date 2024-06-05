@@ -23,27 +23,23 @@ function AttributesInfo(props: Props) {
   const { attrValuesStore } = useDataContext();
   const attrValues = attrValuesStore.get(entity);
 
-  return (
-    <>
-      {entity.attributes.map(({ name, type }) => {
-        const value = attrValues[name];
-        return (
-          <tr key={name}>
-            <th scope="row">{name}</th>
-            <td>
-              {FOLLOWABLE_ATTRS.has(name) ? (
-                <AttributeLink onFollowPath={onFollowPath} value={value} />
-              ) : isComplexValue(type, value) ? (
-                renderComplex(value)
-              ) : (
-                JSON.stringify(value)
-              )}
-            </td>
-          </tr>
-        );
-      })}
-    </>
-  );
+  return entity.attributes.map(({ name, type }) => {
+    const value = attrValues[name];
+    return (
+      <tr key={name}>
+        <th scope="row">{name}</th>
+        <td>
+          {FOLLOWABLE_ATTRS.has(name) ? (
+            <AttributeLink onFollowPath={onFollowPath} value={value} />
+          ) : isComplexValue(type, value) ? (
+            renderComplex(value)
+          ) : (
+            JSON.stringify(value)
+          )}
+        </td>
+      </tr>
+    );
+  });
 }
 
 export default AttributesInfo;

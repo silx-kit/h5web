@@ -45,6 +45,7 @@ interface Props extends CommonInteractionProps {
   ) => ReactNode;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 function SelectionTool(props: Props) {
   const {
     id = 'Selection',
@@ -213,7 +214,7 @@ function SelectionTool(props: Props) {
   }
 
   assertDefined(rawSelection);
-  return <>{children(selection, rawSelection, isValid)}</>;
+  return children(selection, rawSelection, isValid);
 }
 
 export type { Props as SelectionToolProps };
