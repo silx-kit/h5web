@@ -124,8 +124,7 @@ export function getBounds(
   const errors = errorArray && getValues(errorArray);
   assertLength(errorArray, values.length, 'error');
 
-  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-  // @ts-ignore (https://github.com/microsoft/TypeScript/issues/44593)
+  // @ts-expect-error (https://github.com/microsoft/TypeScript/issues/44593)
   const bounds = values.reduce(
     (acc: Bounds, val: number, i: number) => {
       // Ignore NaN and Infinity from the bounds computation

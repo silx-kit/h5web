@@ -88,8 +88,7 @@ function ColorBar(props: Props) {
               scaleType === ScaleType.Log
                 ? axisScale.tickFormat(
                     adaptedNumTicks(gradientLength),
-                    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-                    // @ts-ignore: log scale's `tickFormat` accepts a formatter function
+                    // @ts-expect-error: log scale's `tickFormat` accepts a formatter function
                     formatTick,
                   )
                 : formatTick
