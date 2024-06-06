@@ -41,7 +41,7 @@ function AttributeLink(props: Props) {
     );
   }
 
-  return <>{JSON.stringify(value)}</>;
+  return JSON.stringify(value);
 }
 
 export default AttributeLink;

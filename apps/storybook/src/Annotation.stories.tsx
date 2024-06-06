@@ -162,6 +162,5 @@ function PointerTracker(props: {
     setCoords([x, y]);
   });
 
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  return <>{coords ? children(...coords) : null}</>;
+  return coords ? children(...coords) : null;
 }

@@ -40,9 +40,7 @@ function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
   const auxErrors = useDatasetValues(auxErrorDatasets, selection);
   const axisValues = useDatasetValues(axisDatasets);
 
-  return (
-    <>{render({ title, signal, errors, auxValues, auxErrors, axisValues })}</>
-  );
+  return render({ title, signal, errors, auxValues, auxErrors, axisValues });
 }
 
 export default NxValuesFetcher;

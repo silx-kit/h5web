@@ -89,7 +89,7 @@ export const ModifierKey = {
 export const Validation = {
   ...Rectangle,
   args: {
-    validate: ({ html }) => Box.fromPoints(...html).hasMinSize(100),
+    validate: ({ html }) => Box.fromPoints(...(html as Rect)).hasMinSize(100),
   },
 } satisfies Story;
 
