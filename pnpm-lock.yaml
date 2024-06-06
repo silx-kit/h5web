@@ -156,9 +156,6 @@ importers:
       react-icons:
         specifier: 5.2.1
         version: 5.2.1(react@18.3.1)
-      react-suspense-fetch:
-        specifier: 0.4.1
-        version: 0.4.1
       three:
         specifier: 0.164.1
         version: 0.164.1
@@ -259,9 +256,6 @@ importers:
       react-slider:
         specifier: 2.0.4
         version: 2.0.4(react@18.3.1)
-      react-suspense-fetch:
-        specifier: 0.4.1
-        version: 0.4.1
       three:
         specifier: 0.164.1
         version: 0.164.1
@@ -5644,9 +5638,6 @@ packages:
     resolution: {integrity: sha512-sWwQD01n6v+MbeLCYthJGZPc0kzOyhQHyd0bSo0edg+IAxTVQmj3Oy4SBK65eX6gNwS9meUn6Z5sIBUVmwAd9g==}
     peerDependencies:
       react: ^16 || ^17 || ^18
-
-  react-suspense-fetch@0.4.1:
-    resolution: {integrity: sha512-Kc8VzZUjDjvWfoOBzPEhniaJwgwOPqW0x94ec8e3GGhLe6SlZDU2YhYgoLqM9L8xzXeGR6nhP7/PnjvI1KoTlA==}
 
   react-use-measure@2.1.1:
     resolution: {integrity: sha512-nocZhN26cproIiIduswYpV5y5lQpSQS1y/4KuvUCjSKmw7ZWIS/+g3aFnX3WdBkyuGUtTLif3UTqnLLhbDoQig==}
@@ -12941,8 +12932,6 @@ snapshots:
     dependencies:
       prop-types: 15.8.1
       react: 18.3.1
-
-  react-suspense-fetch@0.4.1: {}
 
   react-use-measure@2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

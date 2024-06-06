@@ -1,9 +1,9 @@
 import { isGroup } from '@h5web/shared/guards';
-import type { ChildEntity, Entity, Group } from '@h5web/shared/hdf5-models';
+import type { Entity } from '@h5web/shared/hdf5-models';
 import { getNameFromPath } from '@h5web/shared/hdf5-utils';
+import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useMemo } from 'react';
-import { createFetchStore } from 'react-suspense-fetch';
 
 import { hasAttribute } from '../utils';
 import type { DataProviderApi } from './api';
@@ -43,21 +43,14 @@ function DataProvider(props: PropsWithChildren<Props>) {
   const { api, children } = props;
 
   const entitiesStore = useMemo(() => {
-    const childCache = new Map<string, Exclude<ChildEntity, Group>>();
-
     const store = createFetchStore(async (path: string) => {
-      const cachedEntity = childCache.get(path);
-      if (cachedEntity) {
-        return cachedEntity;
-      }
-
       const entity = await api.getEntity(path);
 
       if (isGroup(entity)) {
         // Cache non-group children (datasets, datatypes and links)
         entity.children.forEach((child) => {
           if (!isGroup(child)) {
-            childCache.set(child.path, child);
+            store.preset(child.path, child);
           }
         });
       }
@@ -70,10 +63,8 @@ function DataProvider(props: PropsWithChildren<Props>) {
   }, [api]);
 
   const valuesStore = useMemo(() => {
-    const store = createFetchStore(api.getValue.bind(api), {
-      type: 'Map',
-      areEqual: (a, b) =>
-        a.dataset.path === b.dataset.path && a.selection === b.selection,
+    const store = createFetchStore(api.getValue.bind(api), (a, b) => {
+      return a.dataset.path === b.dataset.path && a.selection === b.selection;
     });
 
     return Object.assign(store, {
@@ -88,10 +79,10 @@ function DataProvider(props: PropsWithChildren<Props>) {
   }, [api]);
 
   const attrValuesStore = useMemo(() => {
-    const store = createFetchStore(api.getAttrValues.bind(api), {
-      type: 'Map',
-      areEqual: (a, b) => a.path === b.path,
-    });
+    const store = createFetchStore(
+      api.getAttrValues.bind(api),
+      (a, b) => a.path === b.path,
+    );
 
     return Object.assign(store, {
       getSingle: (entity: Entity, attrName: AttrName) => {

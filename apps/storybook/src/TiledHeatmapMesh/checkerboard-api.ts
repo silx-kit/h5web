@@ -1,9 +1,9 @@
 import type { Size } from '@h5web/lib';
 import { getLayerSizes, TilesApi } from '@h5web/lib';
+import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
 import greenlet from 'greenlet';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';
-import { createFetchStore } from 'react-suspense-fetch';
 import type { Vector2 } from 'three';
 import { MathUtils } from 'three';
 
@@ -22,33 +22,30 @@ export class CheckerboardTilesApi extends TilesApi {
   public constructor(size: Size, tileSize: Size) {
     super(tileSize, getLayerSizes(size, tileSize));
 
-    this.store = createFetchStore(
-      async (tile: TileParams) => {
-        const { layer, offset } = tile;
-        const layerSize = this.layerSizes[layer];
+    this.store = createFetchStore(async (tile: TileParams) => {
+      const { layer, offset } = tile;
+      const layerSize = this.layerSizes[layer];
 
-        // Clip slice to size of the level
-        const width = MathUtils.clamp(
-          layerSize.width - offset.x,
-          0,
-          this.tileSize.width,
-        );
-        const height = MathUtils.clamp(
-          layerSize.height - offset.y,
-          0,
-          this.tileSize.height,
-        );
+      // Clip slice to size of the level
+      const width = MathUtils.clamp(
+        layerSize.width - offset.x,
+        0,
+        this.tileSize.width,
+      );
+      const height = MathUtils.clamp(
+        layerSize.height - offset.y,
+        0,
+        this.tileSize.height,
+      );
 
-        const value = Math.abs(
-          (Math.floor(offset.x / this.tileSize.width) % 2) -
-            (Math.floor(offset.y / this.tileSize.height) % 2),
-        );
+      const value = Math.abs(
+        (Math.floor(offset.x / this.tileSize.width) % 2) -
+          (Math.floor(offset.y / this.tileSize.height) % 2),
+      );
 
-        const arr = await getCheckerboardArray(width * height, value);
-        return ndarray(arr, [height, width]);
-      },
-      { type: 'Map', areEqual: areTilesEqual },
-    );
+      const arr = await getCheckerboardArray(width * height, value);
+      return ndarray(arr, [height, width]);
+    }, areTilesEqual);
   }
 
   public get(layer: number, offset: Vector2): NdArray<Uint8Array> {
