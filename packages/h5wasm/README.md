@@ -23,8 +23,8 @@ built-in data providers:
 
 This package, `@h5web/h5wasm`, provides two additional data providers that can
 **read HDF5 files straight in the browser** thanks to the
-[h5wasm](https://github.com/usnistgov/h5wasm) library: `H5WasmProvider` and
-`H5WasmLocalFileProvider`.
+[h5wasm](https://github.com/usnistgov/h5wasm) library: `H5WasmLocalFileProvider`
+and `H5WasmBufferProvider`.
 
 Check out
 [this code sandbox](https://codesandbox.io/p/sandbox/h5web-h5wasm-77j67x?file=%2Fsrc%2FMyApp.tsx%3A1%2C1)
@@ -104,12 +104,10 @@ The provider doesn't know how to resolve links to groups and datasets contained
 in other HDF5 files. Such links will appear as unresolved entities in the
 viewer.
 
-### File size is limited (`H5WasmProvider` only)
+### Buffer size limit with `H5WasmBufferProvider`
 
-> This limitation doesn't apply to `H5WasmLocalFileProvider`.
-
-Since `H5WasmProvider` requires the entire HDF5 file to be passed as a single
-`ArrayBuffer`, there's a limit to how big a file you can load. This limit
+Since `H5WasmBufferProvider` requires the entire HDF5 file to be passed as a
+single `ArrayBuffer`, there's a limit to how big a file you can load. This limit
 depends on your browser, on your operating system, and on your machine's
 resources.
 
@@ -184,15 +182,15 @@ async function getPlugin(name: Plugin): Promise<ArrayBuffer | undefined> {
 }
 ```
 
-### `H5WasmProvider`
+### `H5WasmBufferProvider`
 
 - `filename: string` (required) - the name of the file
 - `buffer: ArrayBuffer` (required) - the content of the file
 
 ```tsx
-<H5WasmProvider filename="foo.h5" buffer={buffer}>
+<H5WasmBufferProvider filename="foo.h5" buffer={buffer}>
   <App />
-</H5WasmProvider>
+</H5WasmBufferProvider>
 ```
 
 #### `filename: string` (required)

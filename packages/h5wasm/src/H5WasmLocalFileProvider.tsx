@@ -3,8 +3,9 @@ import { DataProvider } from '@h5web/app';
 import type { PropsWithChildren } from 'react';
 import { useMemo, useRef } from 'react';
 
-import type { Plugin } from '../models';
-import { H5WasmLocalFileApi } from './h5wasm-local-file-api';
+import { H5WasmApi } from './h5wasm-api';
+import type { Plugin } from './models';
+import { getH5WasmRemote } from './remote';
 
 interface Props {
   file: File;
@@ -15,10 +16,19 @@ interface Props {
 function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
   const { file, getExportURL, getPlugin, children } = props;
 
-  const prevApiRef = useRef<H5WasmLocalFileApi>();
+  const prevApiRef = useRef<H5WasmApi>();
 
   const api = useMemo(() => {
-    const newApi = new H5WasmLocalFileApi(file, getExportURL, getPlugin);
+    const remote = getH5WasmRemote();
+    const fileId = remote.openLocalFile(file);
+
+    const newApi = new H5WasmApi(
+      remote,
+      file.name,
+      fileId,
+      getExportURL,
+      getPlugin,
+    );
 
     void prevApiRef.current?.cleanUp();
     prevApiRef.current = newApi;

@@ -1,5 +1,5 @@
 import { App } from '@h5web/app';
-import { H5WasmLocalFileProvider, H5WasmProvider } from '@h5web/h5wasm';
+import { H5WasmBufferProvider, H5WasmLocalFileProvider } from '@h5web/h5wasm';
 import { useState } from 'react';
 import { useSearch } from 'wouter';
 
@@ -34,9 +34,9 @@ function H5WasmApp() {
   }
 
   return (
-    <H5WasmProvider {...h5File} getPlugin={getPlugin}>
+    <H5WasmBufferProvider {...h5File} getPlugin={getPlugin}>
       <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
-    </H5WasmProvider>
+    </H5WasmBufferProvider>
   );
 }
 

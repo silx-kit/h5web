@@ -58,9 +58,9 @@ three providers, two of which are available in the `@h5web/app` package:
 
 ### [@h5web/h5wasm](https://www.npmjs.com/package/@h5web/h5wasm)
 
-This package includes a third data provider, `H5WasmProvider`, that can read
-HDF5 files straight in the browser thanks to the
-[h5wasm](https://github.com/usnistgov/h5wasm) library.
+This package includes two additional data providers, `H5WasmLocalFileProvider`
+and `H5WasmBufferProvider`, that can read HDF5 files straight in the browser
+thanks to the [h5wasm](https://github.com/usnistgov/h5wasm) library.
 
 ## Demos
 
@@ -70,7 +70,10 @@ provider:
 
 - [**H5GroveProvider**](https://h5web.panosc.eu/h5grove)
 - [**HsdsProvider**](https://h5web.panosc.eu/hsds)
-- [**H5WasmProvider**](https://h5web.panosc.eu/h5wasm)
+- [**H5WasmLocalFileProvider**](https://h5web.panosc.eu/h5wasm) (when browsing
+  for a local file)
+- [**H5WasmBufferProvider**](https://h5web.panosc.eu/h5wasm) (when supplying the
+  URL of a remote file)
 - [**MockProvider**](https://h5web.panosc.eu/mock)
 
 ## Ecosystem

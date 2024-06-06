@@ -2,37 +2,50 @@ import { isTypedArray } from '@h5web/shared/guards';
 import type { ProvidedEntity } from '@h5web/shared/hdf5-models';
 import { expose, transfer } from 'comlink';
 import { Attribute, Dataset } from 'h5wasm';
-import { nanoid } from 'nanoid';
 
-import { readSelectedValue } from '../utils';
-import { initH5Wasm, mountWorkerFS, parseEntity } from './worker.utils';
+import {
+  getAvailableFileName,
+  initH5Wasm,
+  mountWorkerFS,
+  parseEntity,
+  PLUGINS_FOLDER,
+  readSelectedValue,
+  WORKERFS_FOLDER,
+} from './worker-utils';
 
-const PLUGINS_PATH = '/plugins'; // path to plugins on EMScripten virtual file system
-const WORKERFS_MOUNT_PT = '/workerfs';
+const h5wasmReady = initH5Wasm();
 
-const h5wasmReady = initH5Wasm(PLUGINS_PATH);
-const workerFSReady = mountWorkerFS(WORKERFS_MOUNT_PT);
-
-async function openFile(file: File): Promise<bigint> {
+async function openFileBuffer(buffer: ArrayBuffer): Promise<bigint> {
   const h5wasm = await h5wasmReady;
+
   const { FS } = h5wasm;
+  const fileName = getAvailableFileName(FS);
+
+  FS.writeFile(fileName, new Uint8Array(buffer), { flags: 'w+' });
+
+  return h5wasm.ccall(
+    'H5Fopen',
+    'bigint',
+    ['string', 'number', 'bigint'],
+    [fileName, h5wasm.H5F_ACC_RDONLY, 0n],
+  );
+}
+
+async function openLocalFile(file: File): Promise<bigint> {
+  const h5wasm = await h5wasmReady;
+  const rootNode = await mountWorkerFS(h5wasm);
+
+  const { FS } = h5wasm;
+  const fileName = getAvailableFileName(FS, WORKERFS_FOLDER);
+
   const { WORKERFS } = FS.filesystems;
-
-  const rootNode = await workerFSReady;
-
-  const fileName = nanoid();
-  const filePath = `${WORKERFS_MOUNT_PT}/${fileName}`;
-  if (FS.analyzePath(filePath).exists) {
-    return openFile(file); // non-unique file name; try again
-  }
-
   WORKERFS.createNode(rootNode, fileName, WORKERFS.FILE_MODE, 0, file);
 
   return h5wasm.ccall(
     'H5Fopen',
     'bigint',
     ['string', 'number', 'bigint'],
-    [filePath, h5wasm.H5F_ACC_RDONLY, 0n],
+    [`${WORKERFS_FOLDER}/${fileName}`, h5wasm.H5F_ACC_RDONLY, 0n],
   );
 }
 
@@ -74,21 +87,22 @@ async function getDescendantPaths(fileId: bigint, rootPath: string) {
 }
 
 async function isPluginLoaded(plugin: string): Promise<boolean> {
-  const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
+  const pluginPath = `/${PLUGINS_FOLDER}/libH5Z${plugin}.so`;
 
   const { FS } = await h5wasmReady;
   return FS.analyzePath(pluginPath).exists;
 }
 
 async function loadPlugin(plugin: string, buffer: ArrayBuffer): Promise<void> {
-  const pluginPath = `${PLUGINS_PATH}/libH5Z${plugin}.so`;
+  const pluginPath = `/${PLUGINS_FOLDER}/libH5Z${plugin}.so`;
 
   const { FS } = await h5wasmReady;
   FS.writeFile(pluginPath, new Uint8Array(buffer));
 }
 
 const api = {
-  openFile,
+  openFileBuffer,
+  openLocalFile,
   closeFile,
   getEntity,
   getValue,
@@ -98,6 +112,9 @@ const api = {
   loadPlugin,
 };
 
-expose(api);
-
+export default api; // to allow testing in Node (without Web Worker)
 export type H5WasmWorkerAPI = typeof api;
+
+if (import.meta.env.MODE !== 'test') {
+  expose(api);
+}
