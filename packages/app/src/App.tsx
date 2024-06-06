@@ -40,8 +40,8 @@ function App(props: Props) {
   const { valuesStore } = useDataContext();
   function onSelectPath(path: string) {
     setSelectedPath(path);
-    valuesStore.cancelOngoing();
-    valuesStore.evictCancelled();
+    valuesStore.abortAll('entity changed');
+    valuesStore.evictErrors();
   }
 
   return (

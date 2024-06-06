@@ -63,18 +63,8 @@ function DataProvider(props: PropsWithChildren<Props>) {
   }, [api]);
 
   const valuesStore = useMemo(() => {
-    const store = createFetchStore(api.getValue.bind(api), (a, b) => {
+    return createFetchStore(api.getValue.bind(api), (a, b) => {
       return a.dataset.path === b.dataset.path && a.selection === b.selection;
-    });
-
-    return Object.assign(store, {
-      cancelOngoing: () => api.cancelValueRequests(),
-      evictCancelled: () => {
-        api.cancelledValueRequests.forEach(({ storeParams }) => {
-          valuesStore.evict(storeParams);
-        });
-        api.cancelledValueRequests.clear();
-      },
     });
   }, [api]);
 

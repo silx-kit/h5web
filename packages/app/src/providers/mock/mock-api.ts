@@ -18,7 +18,6 @@ import {
   assertMockAttribute,
   assertMockDataset,
 } from '@h5web/shared/mock-utils';
-import axios from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
@@ -50,7 +49,10 @@ export class MockApi extends DataProviderApi {
     return entity;
   }
 
-  public override async getValue(params: ValuesStoreParams): Promise<unknown> {
+  public override async getValue(
+    params: ValuesStoreParams,
+    signal?: AbortSignal,
+  ): Promise<unknown> {
     const { dataset, selection } = params;
     assertMockDataset(dataset);
 
@@ -63,7 +65,7 @@ export class MockApi extends DataProviderApi {
     }
 
     if (dataset.name.startsWith('slow')) {
-      await this.cancellableDelay(params);
+      await this.cancellableDelay(signal);
     }
 
     const { value } = dataset;
@@ -149,22 +151,24 @@ export class MockApi extends DataProviderApi {
     );
   }
 
-  private async cancellableDelay(storeParams: ValuesStoreParams) {
-    const cancelSource = axios.CancelToken.source();
-    const request = { storeParams, cancelSource };
-    this.valueRequests.add(request);
+  private async cancellableDelay(signal?: AbortSignal) {
+    await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        signal?.removeEventListener('abort', handleAbort);
+        resolve();
+      }, SLOW_TIMEOUT);
 
-    try {
-      await new Promise<void>((resolve, reject) => {
-        const timeout = setTimeout(() => resolve(), SLOW_TIMEOUT);
+      function handleAbort() {
+        clearTimeout(timeout);
+        signal?.removeEventListener('abort', handleAbort);
+        reject(
+          new Error(
+            typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
+          ),
+        );
+      }
 
-        void cancelSource.token.promise.then((error) => {
-          clearTimeout(timeout);
-          reject(error);
-        });
-      });
-    } finally {
-      this.valueRequests.delete(request);
-    }
+      signal?.addEventListener('abort', handleAbort);
+    });
   }
 }

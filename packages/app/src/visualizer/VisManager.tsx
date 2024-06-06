@@ -31,8 +31,8 @@ function VisManager(props: Props) {
   const { valuesStore } = useDataContext();
   function onVisChange(index: number) {
     setActiveVis(index);
-    valuesStore.cancelOngoing();
-    valuesStore.evictCancelled();
+    valuesStore.abortAll('visualization changed');
+    valuesStore.evictErrors();
   }
 
   return (

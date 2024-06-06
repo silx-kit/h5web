@@ -23,7 +23,7 @@ function VisBoundary(props: Props) {
       fallbackRender={(args) => (
         <ErrorFallback className={visualizerStyles.vis} {...args} />
       )}
-      onError={() => valuesStore.evictCancelled()}
+      onError={() => valuesStore.evictErrors()}
     >
       <Suspense fallback={<ValueLoader message={loadingMessage} />}>
         {children}
