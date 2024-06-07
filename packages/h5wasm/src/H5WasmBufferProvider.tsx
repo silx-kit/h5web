@@ -5,6 +5,7 @@ import { useMemo, useRef } from 'react';
 
 import { H5WasmApi } from './h5wasm-api';
 import type { Plugin } from './models';
+import { getH5WasmRemote } from './remote';
 
 interface Props {
   filename: string;
@@ -13,13 +14,22 @@ interface Props {
   getPlugin?: (name: Plugin) => Promise<ArrayBuffer | undefined>;
 }
 
-function H5WasmProvider(props: PropsWithChildren<Props>) {
+function H5WasmBufferProvider(props: PropsWithChildren<Props>) {
   const { filename, buffer, getExportURL, getPlugin, children } = props;
 
   const prevApiRef = useRef<H5WasmApi>();
 
   const api = useMemo(() => {
-    const newApi = new H5WasmApi(filename, buffer, getExportURL, getPlugin);
+    const remote = getH5WasmRemote();
+    const fileId = remote.openFileBuffer(buffer);
+
+    const newApi = new H5WasmApi(
+      remote,
+      filename,
+      fileId,
+      getExportURL,
+      getPlugin,
+    );
 
     void prevApiRef.current?.cleanUp();
     prevApiRef.current = newApi;
@@ -30,4 +40,4 @@ function H5WasmProvider(props: PropsWithChildren<Props>) {
   return <DataProvider api={api}>{children}</DataProvider>;
 }
 
-export default H5WasmProvider;
+export default H5WasmBufferProvider;

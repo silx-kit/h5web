@@ -13,6 +13,7 @@ import {
 import { beforeAll, expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
+import remote from './worker';
 
 const SKIP = import.meta.env.VITEST_H5WASM_SKIP === 'true';
 const H5WASM_TEST_FILE = import.meta.env.VITEST_H5WASM_TEST_FILE;
@@ -28,7 +29,9 @@ beforeAll(() => {
 
 test.skipIf(SKIP)('test file matches snapshot', async () => {
   const buffer = await readFile(TEST_FILE);
-  const api = new H5WasmApi('sample.h5', buffer);
+  const fileId = remote.openFileBuffer(buffer);
+
+  const api = new H5WasmApi(remote, 'sample.h5', fileId);
 
   const root = await api.getEntity('/');
   assertGroup(root);
