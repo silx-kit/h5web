@@ -11,6 +11,7 @@ import type {
   DType,
   Group,
   ProvidedEntity,
+  VirtualSource,
 } from '@h5web/shared/hdf5-models';
 import { EntityKind } from '@h5web/shared/hdf5-models';
 import {
@@ -130,15 +131,16 @@ export function parseEntity(
 
   if (kind === h5wasm.H5G_DATASET) {
     const metadata = h5wasm.get_dataset_metadata(fileId, path);
-    const { chunks, maxshape, shape, ...rawType } = metadata; // keep `rawType` concise
+    const { chunks, maxshape, shape, virtual_sources, ...rawType } = metadata; // keep `rawType` concise
 
     return {
       ...baseEntity,
       kind: EntityKind.Dataset,
-      shape: metadata.shape,
+      shape,
       type: parseDType(metadata),
-      chunks: metadata.chunks ?? undefined,
+      chunks: chunks ?? undefined,
       filters: h5wasm.get_dataset_filters(fileId, path),
+      virtualSources: parseVirtualSources(metadata),
       attributes: parseAttributes(h5wasm, fileId, path),
       rawType,
     };
@@ -285,6 +287,13 @@ function parseDType(metadata: Metadata): DType {
   }
 
   return unknownType();
+}
+
+function parseVirtualSources(metadata: Metadata): VirtualSource[] | undefined {
+  return metadata.virtual_sources?.map(({ file_name, dset_name }) => ({
+    file: file_name,
+    path: dset_name,
+  }));
 }
 
 export function readSelectedValue(

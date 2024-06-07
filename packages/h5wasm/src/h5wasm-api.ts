@@ -1,12 +1,11 @@
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '@h5web/app';
 import { DataProviderApi } from '@h5web/app';
-import { isDefined } from '@h5web/shared/guards';
+import { assertDataset, isDefined } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   AttributeValues,
   Dataset,
   Entity,
-  Filter,
   ProvidedEntity,
   Value,
 } from '@h5web/shared/hdf5-models';
@@ -42,7 +41,7 @@ export class H5WasmApi extends DataProviderApi {
     const { dataset, selection } = params;
     const fileId = await this.fileId;
 
-    await this.processFilters(dataset.filters);
+    await this.processFilters(dataset);
 
     try {
       const value = await this.remote.getValue(fileId, dataset.path, selection);
@@ -94,8 +93,21 @@ export class H5WasmApi extends DataProviderApi {
     return this.remote.closeFile(await this.fileId);
   }
 
-  private async processFilters(filters: Filter[] = []): Promise<void> {
-    const pluginsToLoad = filters
+  private async processFilters(dataset: Dataset): Promise<void> {
+    const fileId = await this.fileId;
+
+    // Retrieve filters of any local virtual source datasets
+    const localSources = await Promise.all(
+      (dataset.virtualSources?.filter(({ file }) => file === '.') || []).map(
+        ({ path }) => this.remote.getEntity(fileId, path),
+      ),
+    );
+    const allFilters = [dataset, ...localSources].flatMap((source) => {
+      assertDataset(source);
+      return source.filters || [];
+    });
+
+    const pluginsToLoad = allFilters
       .map(({ id }) => PLUGINS_BY_FILTER_ID[id])
       .filter(isDefined);
 
