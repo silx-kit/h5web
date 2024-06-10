@@ -1,3 +1,4 @@
+import type { CustomDomain } from '@h5web/lib';
 import { CurveType } from '@h5web/lib';
 import { isDefined } from '@h5web/shared/guards';
 import type { AxisScaleType } from '@h5web/shared/vis-models';
@@ -11,6 +12,9 @@ import { persist } from 'zustand/middleware';
 import type { ConfigProviderProps } from '../../models';
 
 export interface LineConfig {
+  customDomain: CustomDomain;
+  setCustomDomain: (customDomain: CustomDomain) => void;
+
   curveType: CurveType;
   setCurveType: (type: CurveType) => void;
 
@@ -22,9 +26,6 @@ export interface LineConfig {
   setXScaleType: (type: AxisScaleType) => void;
   setYScaleType: (type: AxisScaleType) => void;
 
-  autoScale: boolean;
-  toggleAutoScale: () => void;
-
   showErrors: boolean;
   toggleErrors: () => void;
 }
@@ -33,6 +34,9 @@ function createLineConfigStore() {
   return createStore<LineConfig>()(
     persist(
       (set): LineConfig => ({
+        customDomain: [null, null],
+        setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
+
         curveType: CurveType.LineOnly,
         setCurveType: (type: CurveType) => set({ curveType: type }),
 
@@ -44,24 +48,12 @@ function createLineConfigStore() {
         setXScaleType: (type) => set({ xScaleType: type }),
         setYScaleType: (type) => set({ yScaleType: type }),
 
-        autoScale: true,
-        toggleAutoScale: () => {
-          set((state) => ({ autoScale: !state.autoScale }));
-        },
-
         showErrors: true,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
       }),
       {
         name: 'h5web:line',
-        partialize: (state) => ({
-          curveType: state.curveType,
-          showGrid: state.showGrid,
-          xScaleType: state.xScaleType,
-          yScaleType: state.yScaleType,
-          showErrors: state.showErrors,
-        }),
-        version: 4,
+        version: 5,
       },
     ),
   );

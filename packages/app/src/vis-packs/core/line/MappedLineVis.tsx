@@ -1,4 +1,11 @@
-import { LineVis, useCombinedDomain, useDomain, useDomains } from '@h5web/lib';
+import {
+  LineVis,
+  useCombinedDomain,
+  useDomain,
+  useDomains,
+  useSafeDomain,
+  useVisDomain,
+} from '@h5web/lib';
 import type {
   ArrayShape,
   ArrayValue,
@@ -18,15 +25,12 @@ import {
   useSlicedDimsAndMapping,
   useToNumArray,
 } from '../hooks';
-import { formatNumLikeType } from '../utils';
+import { DEFAULT_DOMAIN, formatNumLikeType, getSliceSelection } from '../utils';
 import type { LineConfig } from './config';
 import LineToolbar from './LineToolbar';
 
-type HookArgs = [number[], DimensionMapping, boolean];
-
 interface Props {
   dataset?: Dataset<ArrayShape, NumericLikeType>;
-  selection?: string | undefined;
   value: ArrayValue<NumericLikeType>;
   valueLabel?: string;
   errors?: NumArray;
@@ -46,7 +50,6 @@ interface Props {
 function MappedLineVis(props: Props) {
   const {
     dataset,
-    selection,
     value,
     valueLabel,
     errors,
@@ -63,16 +66,19 @@ function MappedLineVis(props: Props) {
     ignoreValue,
   } = props;
 
-  const { yScaleType, xScaleType, curveType, showGrid, autoScale, showErrors } =
-    config;
-
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-
-  const hookArgs: HookArgs = autoScale
-    ? [slicedDims, slicedMapping, autoScale]
-    : [dims, dimMapping, autoScale];
+  const {
+    customDomain,
+    yScaleType,
+    xScaleType,
+    curveType,
+    showGrid,
+    showErrors,
+  } = config;
 
   const numArray = useToNumArray(value);
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
+
+  const hookArgs = [slicedDims, slicedMapping] as const;
   const [dataArray, dataForDomain] = useMappedArray(numArray, ...hookArgs);
   const [errorArray, errorsForDomain] = useMappedArray(errors, ...hookArgs);
   const [auxArrays, auxForDomain] = useMappedArrays(auxValues, ...hookArgs);
@@ -89,18 +95,24 @@ function MappedLineVis(props: Props) {
   );
 
   const auxDomains = useDomains(auxForDomain, yScaleType, auxErrorsForDomain);
-  const combinedDomain = useCombinedDomain([dataDomain, ...auxDomains]);
+  const combinedDomain =
+    useCombinedDomain([dataDomain, ...auxDomains]) || DEFAULT_DOMAIN;
+
+  const visDomain = useVisDomain(customDomain, combinedDomain);
+  const [safeDomain] = useSafeDomain(visDomain, combinedDomain, yScaleType);
+
   const xDimIndex = dimMapping.indexOf('x');
 
   const { getExportURL } = useDataContext();
+  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
       {toolbarContainer &&
         createPortal(
           <LineToolbar
+            dataDomain={combinedDomain}
             isSlice={selection !== undefined}
-            disableAutoScale={dims.length <= 1} // with 1D datasets, `baseArray` and `dataArray` are the same so auto-scaling is implied
             disableErrors={!errors}
             config={config}
             getExportURL={
@@ -115,7 +127,7 @@ function MappedLineVis(props: Props) {
       <LineVis
         className={visualizerStyles.vis}
         dataArray={dataArray}
-        domain={combinedDomain}
+        domain={safeDomain}
         scaleType={yScaleType}
         curveType={curveType}
         showGrid={showGrid}

@@ -1,5 +1,7 @@
+import type { Domain } from '@h5web/lib';
 import {
   CurveType,
+  DomainWidget,
   ExportMenu,
   ScaleSelector,
   Separator,
@@ -9,7 +11,7 @@ import {
 } from '@h5web/lib';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { FiItalic } from 'react-icons/fi';
-import { MdDomain, MdGridOn } from 'react-icons/md';
+import { MdGridOn } from 'react-icons/md';
 
 import type { ExportFormat, ExportURL } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
@@ -18,34 +20,41 @@ import type { LineConfig } from './config';
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
+  dataDomain: Domain;
   isSlice: boolean;
-  disableAutoScale: boolean;
   disableErrors: boolean;
   config: LineConfig;
   getExportURL: ((format: ExportFormat) => ExportURL) | undefined;
 }
 
 function LineToolbar(props: Props) {
-  const { isSlice, disableAutoScale, disableErrors, config, getExportURL } =
-    props;
+  const { isSlice, dataDomain, disableErrors, config, getExportURL } = props;
 
   const {
+    customDomain,
     curveType,
-    setCurveType,
     showGrid,
-    toggleGrid,
     xScaleType,
-    setXScaleType,
     yScaleType,
-    setYScaleType,
-    autoScale,
-    toggleAutoScale,
     showErrors,
+    setCustomDomain,
+    setCurveType,
+    toggleGrid,
+    setXScaleType,
+    setYScaleType,
     toggleErrors,
   } = config;
 
   return (
     <Toolbar interactions={INTERACTIONS_WITH_AXIAL_ZOOM}>
+      <DomainWidget
+        dataDomain={dataDomain}
+        customDomain={customDomain}
+        scaleType={yScaleType}
+        onCustomDomainChange={setCustomDomain}
+      />
+      <Separator />
+
       <ScaleSelector
         label="X"
         value={xScaleType}
@@ -60,14 +69,6 @@ function LineToolbar(props: Props) {
       />
 
       <Separator />
-
-      <ToggleBtn
-        label="Auto-scale"
-        icon={MdDomain}
-        value={!disableAutoScale && autoScale}
-        onToggle={toggleAutoScale}
-        disabled={disableAutoScale}
-      />
 
       <ToggleBtn
         label="Errors"
