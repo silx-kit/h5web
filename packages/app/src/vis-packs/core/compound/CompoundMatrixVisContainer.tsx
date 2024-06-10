@@ -25,6 +25,7 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   const config = useMatrixConfig();
+  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -33,10 +34,10 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary loadingMessage="Loading current slice">
+      <VisBoundary isSlice={selection !== undefined}>
         <ValueFetcher
           dataset={entity}
-          selection={getSliceSelection(dimMapping)}
+          selection={selection}
           render={(value) => (
             <MappedCompoundMatrixVis
               dataset={entity}

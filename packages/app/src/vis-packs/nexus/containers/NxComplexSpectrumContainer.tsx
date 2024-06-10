@@ -36,8 +36,6 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
       : ScaleType.Linear,
   });
 
-  const { autoScale } = lineConfig;
-
   return (
     <>
       <DimensionMapper
@@ -49,7 +47,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxData}
-          selection={autoScale ? getSliceSelection(dimMapping) : undefined}
+          selection={getSliceSelection(dimMapping)}
           render={(nxValues) => {
             const { signal, axisValues, title } = nxValues;
 

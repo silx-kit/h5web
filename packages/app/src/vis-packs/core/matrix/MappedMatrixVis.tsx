@@ -30,7 +30,7 @@ function MappedMatrixVis(props: Props) {
 
   const { shape: dims, type } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
+  const mappedArray = useMappedArray(value, slicedDims, slicedMapping);
 
   const formatter = getFormatter(type, notation);
   const cellWidth = getCellWidth(type);

@@ -37,6 +37,7 @@ function RgbVisContainer(props: VisContainerProps) {
   const [dimMapping, setDimMapping] = useDimMappingState(mappableDims, 2);
 
   const config = useRgbConfig();
+  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -45,10 +46,10 @@ function RgbVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
+      <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
         <ValueFetcher
           dataset={entity}
-          selection={getSliceSelection(dimMapping)}
+          selection={selection}
           render={(value) => (
             <MappedRgbVis
               dataset={entity}

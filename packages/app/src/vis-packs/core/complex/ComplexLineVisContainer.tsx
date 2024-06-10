@@ -25,7 +25,7 @@ function ComplexLineVisContainer(props: VisContainerProps) {
 
   const config = useComplexLineConfig();
   const lineConfig = useLineConfig();
-  const { autoScale } = lineConfig;
+  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -34,15 +34,10 @@ function ComplexLineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary
-        resetKey={dimMapping}
-        loadingMessage={`Loading ${
-          autoScale ? 'current slice' : 'entire dataset'
-        }`}
-      >
+      <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
         <ValueFetcher
           dataset={entity}
-          selection={autoScale ? getSliceSelection(dimMapping) : undefined}
+          selection={selection}
           render={(value) => (
             <MappedComplexLineVis
               value={value}

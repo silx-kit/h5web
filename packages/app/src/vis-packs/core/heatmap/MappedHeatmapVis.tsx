@@ -60,7 +60,7 @@ function MappedHeatmapVis(props: Props) {
   const { shape: dims } = dataset;
   const numArray = useToNumArray(value);
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const [dataArray] = useMappedArray(numArray, slicedDims, slicedMapping);
+  const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
 
   const dataDomain =
     useDomain(dataArray, scaleType, undefined, ignoreValue) || DEFAULT_DOMAIN;

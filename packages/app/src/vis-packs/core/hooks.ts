@@ -99,25 +99,16 @@ export function useMappedArray<T extends unknown[] | TypedArray | undefined>(
   value: T,
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean,
-): T extends unknown[] | TypedArray
-  ? [NdArray<T>, NdArray<T>]
-  : [undefined, undefined];
+): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
 
 export function useMappedArray<T>(
   value: T[] | TypedArray | undefined,
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean,
 ) {
   const baseArray = useBaseArray(value, dims);
 
-  const mappedArray = useMemo(
-    () => applyMapping(baseArray, mapping),
-    [baseArray, mapping],
-  );
-
-  return [mappedArray, autoScale ? mappedArray : baseArray];
+  return useMemo(() => applyMapping(baseArray, mapping), [baseArray, mapping]);
 }
 
 export function useMappedArrays(
@@ -125,32 +116,28 @@ export function useMappedArrays(
   dims: number[],
   mapping: DimensionMapping,
   autoScale?: boolean,
-): [NdArray<NumArray>[], NdArray<NumArray>[]];
+): NdArray<NumArray>[];
 
 export function useMappedArrays(
   values: (NumArray | undefined)[],
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean,
-): [(NdArray<NumArray> | undefined)[], (NdArray<NumArray> | undefined)[]];
+): (NdArray<NumArray> | undefined)[];
 
 export function useMappedArrays(
   values: (NumArray | undefined)[],
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean,
-): [(NdArray<NumArray> | undefined)[], (NdArray<NumArray> | undefined)[]] {
+): (NdArray<NumArray> | undefined)[] {
   const baseArrays = useMemo(
     () => values.map((arr) => getBaseArray(arr, dims)),
-    [dims, values],
+    [dims, ...values], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  const mappedArrays = useMemo(
+  return useMemo(
     () => baseArrays.map((ndArr) => applyMapping(ndArr, mapping)),
     [baseArrays, mapping],
   );
-
-  return [mappedArrays, autoScale ? mappedArrays : baseArrays];
 }
 
 export function useSlicedDimsAndMapping(

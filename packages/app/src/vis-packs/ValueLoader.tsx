@@ -8,11 +8,11 @@ import styles from './ValueLoader.module.css';
 const MAX_PROGRESS_BARS = 3;
 
 interface Props {
-  message?: string;
+  isSlice?: boolean;
 }
 
 function ValueLoader(props: Props) {
-  const { message = 'Loading data' } = props;
+  const { isSlice = false } = props;
   const { valuesStore, addProgressListener, removeProgressListener } =
     useDataContext();
 
@@ -49,7 +49,7 @@ function ValueLoader(props: Props) {
               ))}
             </div>
           )}
-          <p>{message}...</p>
+          <p>{isSlice ? 'Loading current slice' : 'Loading data'}...</p>
           <p>
             <button
               className={styles.cancelBtn}
