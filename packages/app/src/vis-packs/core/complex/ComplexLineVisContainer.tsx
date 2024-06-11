@@ -8,6 +8,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
+import { useValuesCached } from '../hooks';
 import { useLineConfig } from '../line/config';
 import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
@@ -32,6 +33,7 @@ function ComplexLineVisContainer(props: VisContainerProps) {
       <DimensionMapper
         dims={dims}
         dimMapping={dimMapping}
+        isCached={useValuesCached(entity)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
