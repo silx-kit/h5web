@@ -8,7 +8,7 @@ import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
-import { useNxData } from '../hooks';
+import { useNxData, useNxValuesCached } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
 
 function NxRgbContainer(props: VisContainerProps) {
@@ -38,6 +38,7 @@ function NxRgbContainer(props: VisContainerProps) {
         dims={dims}
         axisLabels={axisLabels}
         dimMapping={dimMapping}
+        isCached={useNxValuesCached(nxData)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping}>

@@ -10,6 +10,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { useHeatmapConfig } from '../heatmap/config';
+import { useValuesInCache } from '../hooks';
 import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
 import { useComplexConfig } from './config';
@@ -34,6 +35,7 @@ function ComplexVisContainer(props: VisContainerProps) {
       <DimensionMapper
         dims={dims}
         dimMapping={dimMapping}
+        isCached={useValuesInCache(entity)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>

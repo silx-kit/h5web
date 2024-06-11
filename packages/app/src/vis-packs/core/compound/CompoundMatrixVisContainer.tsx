@@ -9,6 +9,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
+import { useValuesInCache } from '../hooks';
 import { useMatrixConfig } from '../matrix/config';
 import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
@@ -32,6 +33,7 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
       <DimensionMapper
         dims={dims}
         dimMapping={dimMapping}
+        isCached={useValuesInCache(entity)}
         onChange={setDimMapping}
       />
       <VisBoundary isSlice={selection !== undefined}>

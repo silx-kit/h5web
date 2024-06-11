@@ -12,6 +12,7 @@ interface Instance<Result> {
 }
 
 export interface FetchStore<Input, Result> {
+  has: (input: Input) => boolean;
   prefetch: (input: Input) => void;
   get: (input: Input) => Result;
   preset: (input: Input, result: Result) => void;
@@ -28,6 +29,7 @@ export function createFetchStore<Input, Result>(
   const cache = createCache<Input, Instance<Result>>(areEqual);
 
   return {
+    has: (input: Input): boolean => cache.has(input),
     prefetch: (input: Input): void => {
       if (!cache.has(input)) {
         cache.set(input, createInstance(input, fetchFunc));

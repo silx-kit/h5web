@@ -1,7 +1,9 @@
 import { isDefined } from '@h5web/shared/guards';
 import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
 
+import type { DimensionMapping } from '../../dimension-mapper/models';
 import { useDataContext } from '../../providers/DataProvider';
+import { useValuesInCache } from '../core/hooks';
 import type { NxData } from './models';
 import {
   assertNxDataGroup,
@@ -45,4 +47,16 @@ export function useNxData(group: GroupWithChildren): NxData {
     ),
     silxStyle: getSilxStyle(group, attrValuesStore),
   };
+}
+
+export function useNxValuesCached(
+  nxData: NxData,
+): (dimMapping: DimensionMapping) => boolean {
+  const { signalDef, auxDefs } = nxData;
+
+  return useValuesInCache(
+    signalDef.dataset,
+    signalDef.errorDataset,
+    ...auxDefs.flatMap((def) => [def?.dataset, def?.errorDataset]),
+  );
 }

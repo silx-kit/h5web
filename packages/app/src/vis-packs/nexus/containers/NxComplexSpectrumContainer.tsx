@@ -10,7 +10,7 @@ import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertComplexNxData } from '../guards';
-import { useNxData } from '../hooks';
+import { useNxData, useNxValuesCached } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
 
 function NxComplexSpectrumContainer(props: VisContainerProps) {
@@ -42,6 +42,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
         dims={signalDims}
         axisLabels={axisLabels}
         dimMapping={dimMapping}
+        isCached={useNxValuesCached(nxData)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping}>
