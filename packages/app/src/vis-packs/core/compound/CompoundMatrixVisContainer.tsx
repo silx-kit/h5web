@@ -30,8 +30,8 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
   return (
     <>
       <DimensionMapper
-        rawDims={dims}
-        mapperState={dimMapping}
+        dims={dims}
+        dimMapping={dimMapping}
         onChange={setDimMapping}
       />
       <VisBoundary isSlice={selection !== undefined}>

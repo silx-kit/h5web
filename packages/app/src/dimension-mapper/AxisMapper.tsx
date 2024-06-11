@@ -7,15 +7,14 @@ import type { DimensionMapping } from './models';
 
 interface Props {
   axis: Axis;
-  rawDims: number[];
   axisLabels: AxisMapping<string> | undefined;
-  mapperState: DimensionMapping;
+  dimMapping: DimensionMapping;
   onChange: (mapperState: DimensionMapping) => void;
 }
 
 function AxisMapper(props: Props) {
-  const { axis, rawDims, axisLabels, mapperState, onChange } = props;
-  const selectedDim = mapperState.indexOf(axis);
+  const { axis, axisLabels, dimMapping, onChange } = props;
+  const selectedDim = dimMapping.indexOf(axis);
 
   if (selectedDim === -1) {
     return null;
@@ -31,23 +30,23 @@ function AxisMapper(props: Props) {
         onChange={(val) => {
           const newDim = Number(val);
           if (selectedDim !== newDim) {
-            const newMapperState = [...mapperState];
+            const newMapping = [...dimMapping];
 
             // Invert mappings or reset slicing index of previously selected dimension
-            newMapperState[selectedDim] =
-              typeof mapperState[newDim] === 'number' ? 0 : mapperState[newDim];
-            newMapperState[newDim] = axis; // assign axis to newly selected dimension
+            newMapping[selectedDim] =
+              typeof dimMapping[newDim] === 'number' ? 0 : dimMapping[newDim];
+            newMapping[newDim] = axis; // assign axis to newly selected dimension
 
-            onChange(newMapperState);
+            onChange(newMapping);
           }
         }}
       >
-        {Object.keys(rawDims).map((dimKey, index) => (
+        {dimMapping.map((_, i) => (
           <ToggleGroup.Btn
-            key={dimKey}
-            label={`D${dimKey}`}
-            value={dimKey}
-            hint={axisLabels?.[index]}
+            key={i} // eslint-disable-line react/no-array-index-key
+            label={`D${i}`}
+            value={i.toString()}
+            hint={axisLabels?.[i]}
           />
         ))}
       </ToggleGroup>
