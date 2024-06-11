@@ -44,9 +44,9 @@ function NxSpectrumContainer(props: VisContainerProps) {
   return (
     <>
       <DimensionMapper
-        rawDims={signalDims}
+        dims={signalDims}
         axisLabels={axisLabels}
-        mapperState={dimMapping}
+        dimMapping={dimMapping}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping}>

@@ -56,9 +56,9 @@ function NxImageContainer(props: VisContainerProps) {
         />
       )}
       <DimensionMapper
-        rawDims={dims}
+        dims={dims}
         axisLabels={axisLabels}
-        mapperState={dimMapping}
+        dimMapping={dimMapping}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping}>

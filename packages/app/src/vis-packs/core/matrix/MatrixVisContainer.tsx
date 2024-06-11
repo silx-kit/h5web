@@ -29,8 +29,8 @@ function MatrixVisContainer(props: VisContainerProps) {
   return (
     <>
       <DimensionMapper
-        rawDims={dims}
-        mapperState={dimMapping}
+        dims={dims}
+        dimMapping={dimMapping}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
