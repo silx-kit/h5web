@@ -2,6 +2,8 @@ import type { ProvidedEntity } from '@h5web/shared/hdf5-models';
 
 import styles from './RawInspector.module.css';
 
+const KEYS_TO_SKIP = new Set(['parents', 'children', 'value']);
+
 interface Props {
   entity: ProvidedEntity;
 }
@@ -16,8 +18,8 @@ function RawInspector(props: Props) {
         {JSON.stringify(
           entity,
           (key, value) => {
-            // Bypass cyclic dependencies
-            return key !== 'parents' && key !== 'children' ? value : undefined;
+            // Bypass `value` and cyclic dependencies
+            return KEYS_TO_SKIP.has(key) ? undefined : value;
           },
           2,
         )}
