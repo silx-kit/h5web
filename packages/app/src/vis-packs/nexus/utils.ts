@@ -137,10 +137,15 @@ export function findAssociatedDatasets(
     if (name === '.') {
       return undefined;
     }
+    if (name.includes('/')) {
+      throw new Error(
+        `Expected "${name}" to be the name of a child dataset, not a path`,
+      );
+    }
 
     const dataset = getChildEntity(group, name);
-    assertDefined(dataset);
-    assertDataset(dataset);
+    assertDefined(dataset, `Expected child entity "${name}" to exist`);
+    assertDataset(dataset, `Expected child "${name}" to be a dataset`);
     assertArrayShape(dataset);
     assertNumericType(dataset);
     return dataset;
