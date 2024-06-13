@@ -13,7 +13,7 @@ function MetadataTable(props: PropsWithChildren<Props>) {
     <table className={styles.table}>
       <thead>
         <tr>
-          <th scope="col" colSpan={2}>
+          <th className={styles.title} scope="col" colSpan={2}>
             {title}
           </th>
         </tr>
