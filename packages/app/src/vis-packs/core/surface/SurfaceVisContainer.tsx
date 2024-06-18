@@ -25,6 +25,7 @@ function SurfaceVisContainer(props: VisContainerProps) {
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const config = useSurfaceConfig();
+  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -33,10 +34,10 @@ function SurfaceVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
+      <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
         <ValueFetcher
           dataset={entity}
-          selection={getSliceSelection(dimMapping)}
+          selection={selection}
           render={(value) => (
             <MappedSurfaceVis
               dataset={entity}

@@ -1,44 +1,54 @@
 import {
   ComplexVisTypeSelector,
   CurveType,
+  DomainWidget,
   ScaleSelector,
   Separator,
   ToggleBtn,
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
+import type { Domain } from '@h5web/shared/vis-models';
 import { ComplexVisType } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { MdDomain, MdGridOn } from 'react-icons/md';
+import { MdGridOn } from 'react-icons/md';
 
 import type { LineConfig } from '../line/config';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import type { ComplexLineConfig } from './lineConfig';
 
 interface Props {
-  disableAutoScale: boolean;
+  dataDomain: Domain;
   config: ComplexLineConfig;
   lineConfig: LineConfig;
 }
 
 function ComplexLineToolbar(props: Props) {
-  const { disableAutoScale, config, lineConfig } = props;
+  const { dataDomain, config, lineConfig } = props;
   const { visType, setVisType } = config;
   const {
+    customDomain,
     curveType,
     showGrid,
     xScaleType,
     yScaleType,
-    autoScale,
+    setCustomDomain,
     setCurveType,
     toggleGrid,
     setXScaleType,
     setYScaleType,
-    toggleAutoScale,
   } = lineConfig;
 
   return (
     <Toolbar interactions={INTERACTIONS_WITH_AXIAL_ZOOM}>
+      <DomainWidget
+        dataDomain={dataDomain}
+        customDomain={customDomain}
+        scaleType={yScaleType}
+        onCustomDomainChange={setCustomDomain}
+      />
+      <Separator />
+
       <ScaleSelector
         label="X"
         value={xScaleType}
@@ -61,14 +71,6 @@ function ComplexLineToolbar(props: Props) {
       />
 
       <Separator />
-
-      <ToggleBtn
-        label="Auto-scale"
-        icon={MdDomain}
-        value={!disableAutoScale && autoScale}
-        onToggle={toggleAutoScale}
-        disabled={disableAutoScale}
-      />
 
       <ToggleBtn
         label="Grid"

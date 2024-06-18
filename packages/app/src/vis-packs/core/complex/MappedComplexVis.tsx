@@ -61,7 +61,7 @@ function MappedComplexVis(props: Props) {
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
-  const [mappedArray] = useMappedArray(value, slicedDims, slicedMapping);
+  const mappedArray = useMappedArray(value, slicedDims, slicedMapping);
 
   const { phaseValues, phaseBounds, amplitudeValues, amplitudeBounds } =
     useMemo(() => getPhaseAmplitudeValues(mappedArray.data), [mappedArray]);

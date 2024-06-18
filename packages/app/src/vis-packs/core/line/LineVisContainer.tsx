@@ -24,11 +24,8 @@ function LineVisContainer(props: VisContainerProps) {
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
 
   const config = useLineConfig();
-
-  const { autoScale } = config;
-  const selection = autoScale ? getSliceSelection(dimMapping) : undefined;
-
   const ignoreValue = useIgnoreFillValue(entity);
+  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -37,19 +34,13 @@ function LineVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary
-        resetKey={dimMapping}
-        loadingMessage={`Loading ${
-          autoScale ? 'current slice' : 'entire dataset'
-        }`}
-      >
+      <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
         <ValueFetcher
           dataset={entity}
           selection={selection}
           render={(value) => (
             <MappedLineVis
               dataset={entity}
-              selection={selection}
               value={value}
               dims={dims}
               dimMapping={dimMapping}

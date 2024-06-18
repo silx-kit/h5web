@@ -27,6 +27,7 @@ function ComplexVisContainer(props: VisContainerProps) {
 
   const config = useComplexConfig();
   const heatmapConfig = useHeatmapConfig();
+  const selection = getSliceSelection(dimMapping);
 
   return (
     <>
@@ -35,10 +36,10 @@ function ComplexVisContainer(props: VisContainerProps) {
         mapperState={dimMapping}
         onChange={setDimMapping}
       />
-      <VisBoundary resetKey={dimMapping} loadingMessage="Loading current slice">
+      <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
         <ValueFetcher
           dataset={entity}
-          selection={getSliceSelection(dimMapping)}
+          selection={selection}
           render={(value) => (
             <MappedComplexVis
               value={value}

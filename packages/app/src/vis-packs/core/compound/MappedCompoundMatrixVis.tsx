@@ -35,7 +35,7 @@ function MappedCompoundMatrixVis(props: Props) {
   const cellWidth = getCellWidth(type);
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const [mappedArray] = useMappedArray(
+  const mappedArray = useMappedArray(
     value.flat(1),
     [...slicedDims, fieldNames.length],
     slicedMapping,

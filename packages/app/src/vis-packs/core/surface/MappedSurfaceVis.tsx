@@ -25,7 +25,7 @@ function MappedSurfaceVis(props: Props) {
 
   const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const [dataArray] = useMappedArray(value, slicedDims, slicedMapping);
+  const dataArray = useMappedArray(value, slicedDims, slicedMapping);
 
   const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);

@@ -1,7 +1,6 @@
 import { screen, within } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
-import { SLOW_TIMEOUT } from '../providers/mock/mock-api';
 import { getSelectedVisTab, getVisTabs, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
@@ -96,61 +95,6 @@ test('visualize 2D complex dataset', async () => {
   expect(
     screen.getByRole('figure', { name: 'twoD_cplx (phase)' }),
   ).toBeVisible();
-});
-
-test('visualize 1D slice of 3D dataset as Line with and without autoscale', async () => {
-  const { user } = await renderApp({
-    initialPath: '/resilience/slow_slicing',
-    preferredVis: Vis.Line,
-    withFakeTimers: true,
-  });
-
-  // Wait for slice loader to appear (since autoscale is on by default, only the first slice gets fetched)
-  await expect(
-    screen.findByText(/Loading current slice/),
-  ).resolves.toBeVisible();
-
-  // Wait for fetch of first slice to succeed
-  await expect(
-    screen.findByRole('figure', undefined, { timeout: SLOW_TIMEOUT }),
-  ).resolves.toBeVisible();
-
-  // Confirm that autoscale is indeed on
-  const autoScaleBtn = screen.getByRole('button', { name: 'Auto-scale' });
-  expect(autoScaleBtn).toHaveAttribute('aria-pressed', 'true');
-
-  // Move to next slice
-  const d0Slider = screen.getByRole('slider', { name: 'D0' });
-  await user.type(d0Slider, '{ArrowUp}');
-
-  // Wait for slice loader to re-appear after debounce
-  await expect(
-    screen.findByText(/Loading current slice/),
-  ).resolves.toBeVisible();
-
-  // Wait for fetch of second slice to succeed
-  await expect(
-    screen.findByRole('figure', undefined, { timeout: SLOW_TIMEOUT }),
-  ).resolves.toBeVisible();
-
-  // Activate autoscale
-  await user.click(autoScaleBtn);
-
-  // Now, the entire dataset gets fetched
-  await expect(
-    screen.findByText(/Loading entire dataset/),
-  ).resolves.toBeVisible();
-
-  // Wait for fetch of entire dataset to succeed
-  await expect(
-    screen.findByRole('figure', undefined, { timeout: SLOW_TIMEOUT }),
-  ).resolves.toBeVisible();
-
-  // Move to third slice
-  await user.type(d0Slider, '{ArrowUp}');
-
-  // Wait for new slicing to apply to Line visualization to confirm that no more slow fetching is performed
-  await expect(screen.findByTestId('2,0,x', undefined)).resolves.toBeVisible();
 });
 
 test('show interactions help for heatmap according to "keep ratio"', async () => {

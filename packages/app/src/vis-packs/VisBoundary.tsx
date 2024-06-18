@@ -9,12 +9,12 @@ import ValueLoader from './ValueLoader';
 
 interface Props {
   resetKey?: unknown;
-  loadingMessage?: string;
+  isSlice?: boolean;
   children: ReactNode;
 }
 
 function VisBoundary(props: Props) {
-  const { resetKey, loadingMessage, children } = props;
+  const { resetKey, isSlice, children } = props;
   const { valuesStore } = useDataContext();
 
   return (
@@ -25,7 +25,7 @@ function VisBoundary(props: Props) {
       )}
       onError={() => valuesStore.evictErrors()}
     >
-      <Suspense fallback={<ValueLoader message={loadingMessage} />}>
+      <Suspense fallback={<ValueLoader isSlice={isSlice} />}>
         {children}
       </Suspense>
     </ErrorBoundary>
