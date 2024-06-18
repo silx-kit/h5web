@@ -23,7 +23,6 @@ import {
 
 import type { AttrValuesStore } from '../../providers/models';
 import type { VisDef } from '../models';
-import CompoundMatrixVisContainer from './compound/CompoundMatrixVisContainer';
 import {
   ComplexConfigProvider,
   ComplexLineConfigProvider,
@@ -36,6 +35,7 @@ import {
 import {
   ComplexLineVisContainer,
   ComplexVisContainer,
+  CompoundVisContainer,
   HeatmapVisContainer,
   LineVisContainer,
   MatrixVisContainer,
@@ -55,7 +55,7 @@ export enum Vis {
   Complex = 'Complex',
   ComplexLine = 'ComplexLine',
   RGB = 'RGB',
-  CompoundMatrix = 'CompoundMatrix',
+  Compound = 'Compound',
   Surface = 'Surface',
 }
 
@@ -158,17 +158,17 @@ export const CORE_VIS = {
     },
   },
 
-  [Vis.CompoundMatrix]: {
-    name: Vis.Matrix,
+  [Vis.Compound]: {
+    name: Vis.Compound,
     Icon: FiGrid,
-    Container: CompoundMatrixVisContainer,
+    Container: CompoundVisContainer,
     ConfigProvider: MatrixConfigProvider,
     supportsDataset: (dataset) => {
       return (
         hasCompoundType(dataset) &&
         hasPrintableCompoundType(dataset) &&
-        hasArrayShape(dataset) &&
-        hasMinDims(dataset, 1)
+        hasNonNullShape(dataset) &&
+        (hasScalarShape(dataset) || hasMinDims(dataset, 1))
       );
     },
   },

@@ -81,6 +81,10 @@ export async function renderApp(
 
     selectVisTab: async (name) => {
       await user.click(await screen.findByRole('tab', { name }));
+
+      if (!withFakeTimers) {
+        await waitForAllLoaders();
+      }
     },
   };
 }

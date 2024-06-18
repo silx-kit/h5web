@@ -20,6 +20,7 @@ function Grid(props: ClassStyleAttrs) {
       ref={wrapperRef}
       className={`${styles.wrapper} ${className}`}
       style={style}
+      data-test-size="500,500"
     >
       {wrapperSize && (
         <IndexedGrid
@@ -31,7 +32,8 @@ function Grid(props: ClassStyleAttrs) {
           rowCount={rowCount}
           columnWidth={cellSize.width}
           columnCount={columnCount}
-          overscanCount={8}
+          overscanColumnCount={8}
+          overscanRowCount={16}
           onItemsRendered={setRenderedItems}
         >
           {Cell}

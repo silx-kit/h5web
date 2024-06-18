@@ -5,6 +5,7 @@ import type {
   Primitive,
   PrintableCompoundType,
   PrintableType,
+  ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
@@ -18,14 +19,14 @@ import { getCellWidth, getFormatter } from '../matrix/utils';
 import { getSliceSelection } from '../utils';
 
 interface Props {
-  dataset: Dataset<ArrayShape, PrintableCompoundType>;
-  value: Primitive<PrintableType>[][];
+  dataset: Dataset<ScalarShape | ArrayShape, PrintableCompoundType>;
+  value: Primitive<PrintableType>[] | Primitive<PrintableType>[][];
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;
   config: MatrixVisConfig;
 }
 
-function MappedCompoundMatrixVis(props: Props) {
+function MappedCompoundVis(props: Props) {
   const { value, dataset, toolbarContainer, dimMapping, config } = props;
   const { sticky, customCellWidth, notation } = config;
 
@@ -34,7 +35,11 @@ function MappedCompoundMatrixVis(props: Props) {
   const fieldNames = Object.keys(fields);
   const cellWidth = getCellWidth(type);
 
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(
+    dims.length === 0 ? [1] : dims,
+    dimMapping,
+  );
+
   const mappedArray = useMappedArray(
     value.flat(1),
     [...slicedDims, fieldNames.length],
@@ -75,4 +80,4 @@ function MappedCompoundMatrixVis(props: Props) {
   );
 }
 
-export default MappedCompoundMatrixVis;
+export default MappedCompoundVis;

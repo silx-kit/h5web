@@ -25,7 +25,7 @@ import {
 export const useToNumArray = createMemo(toNumArray);
 
 export function useValuesInCache(
-  ...datasets: (Dataset<ArrayShape> | undefined)[]
+  ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]
 ): (dimMapping: DimensionMapping) => boolean {
   const { valuesStore } = useDataContext();
   return (dimMapping) => {

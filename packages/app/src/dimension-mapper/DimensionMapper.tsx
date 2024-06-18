@@ -17,6 +17,10 @@ function DimensionMapper(props: Props) {
   const { dims, axisLabels, dimMapping, isCached, onChange } = props;
   const mappableDims = dims.slice(0, dimMapping.length);
 
+  if (dimMapping.length === 0) {
+    return null;
+  }
+
   return (
     <div className={styles.mapper}>
       <div className={styles.axisMapperWrapper}>
