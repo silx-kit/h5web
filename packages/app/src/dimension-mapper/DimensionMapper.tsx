@@ -6,14 +6,16 @@ import type { DimensionMapping } from './models';
 import SlicingSlider from './SlicingSlider';
 
 interface Props {
-  rawDims: number[];
+  dims: number[];
   axisLabels?: AxisMapping<string>;
-  mapperState: DimensionMapping;
+  dimMapping: DimensionMapping;
+  isCached?: (dimMapping: DimensionMapping) => boolean;
   onChange: (d: DimensionMapping) => void;
 }
 
 function DimensionMapper(props: Props) {
-  const { rawDims, axisLabels, mapperState, onChange } = props;
+  const { dims, axisLabels, dimMapping, isCached, onChange } = props;
+  const mappableDims = dims.slice(0, dimMapping.length);
 
   return (
     <div className={styles.mapper}>
@@ -22,9 +24,9 @@ function DimensionMapper(props: Props) {
           <span className={styles.dimsLabel}>
             <abbr title="Number of elements in each dimension">n</abbr>
           </span>
-          {rawDims.map((d, i) => (
+          {mappableDims.map((d, i) => (
             // eslint-disable-next-line react/no-array-index-key
-            <span key={`${i}${d}`} className={styles.dimSize}>
+            <span key={i} className={styles.dimSize}>
               {' '}
               {d}
             </span>
@@ -32,31 +34,37 @@ function DimensionMapper(props: Props) {
         </div>
         <AxisMapper
           axis="x"
-          rawDims={rawDims}
           axisLabels={axisLabels}
-          mapperState={mapperState}
+          dimMapping={dimMapping}
           onChange={onChange}
         />
         <AxisMapper
           axis="y"
-          rawDims={rawDims}
           axisLabels={axisLabels}
-          mapperState={mapperState}
+          dimMapping={dimMapping}
           onChange={onChange}
         />
       </div>
       <div className={styles.sliders}>
-        {mapperState.map((val, index) =>
+        {dimMapping.map((val, index) =>
           typeof val === 'number' ? (
             <SlicingSlider
-              key={`${index}`} // eslint-disable-line react/no-array-index-key
+              key={index} // eslint-disable-line react/no-array-index-key
               dimension={index}
-              maxIndex={rawDims[index] - 1}
+              length={dims[index]}
               initialValue={val}
-              onChange={(newVal: number) => {
-                const newMapperState = [...mapperState];
-                newMapperState[index] = newVal;
-                onChange(newMapperState);
+              isFastSlice={
+                isCached &&
+                ((newVal) => {
+                  const newMapping = [...dimMapping];
+                  newMapping[index] = newVal;
+                  return isCached(newMapping);
+                })
+              }
+              onChange={(newVal) => {
+                const newMapping = [...dimMapping];
+                newMapping[index] = newVal;
+                onChange(newMapping);
               }}
             />
           ) : undefined,

@@ -9,7 +9,7 @@ import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertComplexNxData } from '../guards';
-import { useNxData } from '../hooks';
+import { useNxData, useNxValuesCached } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { guessKeepRatio } from '../utils';
 
@@ -39,9 +39,10 @@ function NxComplexImageContainer(props: VisContainerProps) {
   return (
     <>
       <DimensionMapper
-        rawDims={dims}
+        dims={dims}
         axisLabels={axisLabels}
-        mapperState={dimMapping}
+        dimMapping={dimMapping}
+        isCached={useNxValuesCached(nxData)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping}>

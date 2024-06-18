@@ -15,9 +15,26 @@ import type { DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 import { useDataContext } from '../../providers/DataProvider';
 import { typedArrayFromDType } from '../../providers/utils';
-import { applyMapping, getBaseArray, toNumArray } from './utils';
+import {
+  applyMapping,
+  getBaseArray,
+  getSliceSelection,
+  toNumArray,
+} from './utils';
 
 export const useToNumArray = createMemo(toNumArray);
+
+export function useValuesInCache(
+  ...datasets: (Dataset<ArrayShape> | undefined)[]
+): (dimMapping: DimensionMapping) => boolean {
+  const { valuesStore } = useDataContext();
+  return (dimMapping) => {
+    const selection = getSliceSelection(dimMapping);
+    return datasets.every(
+      (dataset) => !dataset || valuesStore.has({ dataset, selection }),
+    );
+  };
+}
 
 export function usePrefetchValues(
   datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[],

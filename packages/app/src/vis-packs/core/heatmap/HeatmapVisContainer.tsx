@@ -9,7 +9,7 @@ import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { useIgnoreFillValue } from '../hooks';
+import { useIgnoreFillValue, useValuesInCache } from '../hooks';
 import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
 import { useHeatmapConfig } from './config';
@@ -27,14 +27,15 @@ function HeatmapVisContainer(props: VisContainerProps) {
 
   const config = useHeatmapConfig();
 
-  const ignoreValue = useIgnoreFillValue(entity);
   const selection = getSliceSelection(dimMapping);
+  const ignoreValue = useIgnoreFillValue(entity);
 
   return (
     <>
       <DimensionMapper
-        rawDims={dims}
-        mapperState={dimMapping}
+        dims={dims}
+        dimMapping={dimMapping}
+        isCached={useValuesInCache(entity)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>

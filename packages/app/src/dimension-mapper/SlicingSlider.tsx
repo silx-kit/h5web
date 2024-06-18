@@ -1,28 +1,31 @@
-import { useDebouncedCallback, useMeasure } from '@react-hookz/web';
+import { useMeasure } from '@react-hookz/web';
 import { useState } from 'react';
 import ReactSlider from 'react-slider';
 
 import styles from './SlicingSlider.module.css';
+import { useDynamicDebouncedCallback } from './utils';
 
 const ID = 'h5w-slider';
 const MIN_HEIGHT_PER_MARK = 25;
-const SLICING_DEBOUNCE_DELAY = 250;
+const SHORT_DELAY = 20;
+const LONG_DELAY = 250;
 
 interface Props {
   dimension: number;
-  maxIndex: number;
+  length: number;
   initialValue: number;
+  isFastSlice?: (value: number) => boolean;
   onChange: (value: number) => void;
 }
 
 function SlicingSlider(props: Props) {
-  const { dimension, maxIndex, initialValue, onChange } = props;
+  const { dimension, length, initialValue, isFastSlice, onChange } = props;
 
   const [value, setValue] = useState(initialValue);
-  const onDebouncedChange = useDebouncedCallback(
+  const onDebouncedChange = useDynamicDebouncedCallback(
     onChange,
     [onChange],
-    SLICING_DEBOUNCE_DELAY,
+    (val) => (isFastSlice?.(val) ? SHORT_DELAY : LONG_DELAY),
   );
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
@@ -33,17 +36,17 @@ function SlicingSlider(props: Props) {
       <span id={sliderLabelId} className={styles.label}>
         D{dimension}
       </span>
-      <span className={styles.sublabel}>0:{maxIndex}</span>
-      {maxIndex > 0 ? (
+      <span className={styles.sublabel}>0:{length - 1}</span>
+      {length > 1 ? (
         <ReactSlider
           className={styles.slider}
           ariaLabelledby={sliderLabelId}
           min={0}
-          max={maxIndex}
+          max={length - 1}
           step={1}
           marks={
             containerSize &&
-            containerSize.height / (maxIndex + 1) >= MIN_HEIGHT_PER_MARK
+            containerSize.height / length >= MIN_HEIGHT_PER_MARK
           }
           markClassName={styles.mark}
           orientation="vertical"

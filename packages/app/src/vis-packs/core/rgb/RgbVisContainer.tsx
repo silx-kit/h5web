@@ -10,6 +10,7 @@ import { useDimMappingState } from '../../../dimension-mapper/hooks';
 import { useDataContext } from '../../../providers/DataProvider';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
+import { useValuesInCache } from '../hooks';
 import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
 import { useRgbConfig } from './config';
@@ -42,8 +43,9 @@ function RgbVisContainer(props: VisContainerProps) {
   return (
     <>
       <DimensionMapper
-        rawDims={mappableDims}
-        mapperState={dimMapping}
+        dims={dims}
+        dimMapping={dimMapping}
+        isCached={useValuesInCache(entity)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
