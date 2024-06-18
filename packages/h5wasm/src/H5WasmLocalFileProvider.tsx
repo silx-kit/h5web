@@ -9,12 +9,13 @@ import { getH5WasmRemote } from './remote';
 
 interface Props {
   file: File;
+  resetKeys?: unknown[];
   getExportURL?: DataProviderApi['getExportURL'];
   getPlugin?: (name: Plugin) => Promise<ArrayBuffer | undefined>;
 }
 
 function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
-  const { file, getExportURL, getPlugin, children } = props;
+  const { file, resetKeys = [], getExportURL, getPlugin, children } = props;
 
   const prevApiRef = useRef<H5WasmApi>();
 
@@ -34,7 +35,7 @@ function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
     prevApiRef.current = newApi;
 
     return newApi;
-  }, [file, getExportURL, getPlugin]);
+  }, [file, ...resetKeys, getExportURL, getPlugin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <DataProvider api={api}>{children}</DataProvider>;
 }
