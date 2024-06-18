@@ -132,7 +132,6 @@ export function useMappedArrays(
   values: NumArray[],
   dims: number[],
   mapping: DimensionMapping,
-  autoScale?: boolean,
 ): NdArray<NumArray>[];
 
 export function useMappedArrays(

@@ -9,9 +9,12 @@
   margin-top: 1rem;
 }
 
+.title {
+  text-transform: capitalize;
+}
+
 .table th {
   font-weight: 500;
-  text-transform: capitalize;
 }
 
 .table thead th {
