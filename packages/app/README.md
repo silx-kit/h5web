@@ -286,16 +286,14 @@ specific export scenarios. In this case, or if you don't provide a function at
 all, `H5GroveProvider` falls back to generating URLs based on the `/data`
 endpoint and `format` query param.
 
-#### `key?: Key` (optional)
+#### `resetKeys?: unknown[]` (optional)
 
-If the content of the current file changes and you want to ensure that the
-viewer refetches the latest metadata and dataset values, you can take advantage
-of
-[React's `key` attribute](https://react.dev/reference/react/useState#resetting-state-with-a-key).
-Changing the value of the `key` will force a remount of `H5GroveProvider` and
-clear its internal fetching cache.
+You can pass variables in `resetKeys` that, when changed, will reset the
+provider's internal fetch cache. You may want to do this, for instance, when the
+content of the current file changes and you want the viewer to refetch the
+latest metadata and dataset values.
 
-It is up to you to decide what sort of `key` to use and when to update it. For
+It is up to you to decide what sort of keys to use and when to update them. For
 instance:
 
 - Your server could send over a hash of the file via WebSocket.
@@ -313,7 +311,7 @@ function MyApp() {
       <button type="button" onClick={incrementKey}>
         Refresh
       </button>
-      <H5GroveProvider key={key} /* ... */>
+      <H5GroveProvider resetKeys={[key]} /* ... */>
         <App />
       </H5GroveProvider>
     </>
@@ -359,10 +357,10 @@ See
 this time, so if you don't provide your own, the export menu will remain
 disabled in the toolbar.
 
-#### `key?: Key` (optional)
+#### `resetKeys?: unknown[]` (optional)
 
 See
-[`H5GroveProvider#key`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#key-key-optional).
+[`H5GroveProvider#resetKeys`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#resetkeys-unknown-optional).
 
 ### `MockProvider`
 

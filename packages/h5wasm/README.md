@@ -182,6 +182,11 @@ async function getPlugin(name: Plugin): Promise<ArrayBuffer | undefined> {
 }
 ```
 
+#### `resetKeys?: unknown[]` (optional)
+
+See
+[`H5GroveProvider#resetKeys`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#resetkeys-unknown-optional).
+
 ### `H5WasmBufferProvider`
 
 - `filename: string` (required) - the name of the file
