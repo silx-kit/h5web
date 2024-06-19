@@ -95,7 +95,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
-          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-0 # increment to reset cache
 
       - name: Create Poetry environments 📜
         if: steps.poetry-venvs.outputs.cache-hit != 'true'
