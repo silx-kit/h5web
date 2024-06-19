@@ -38,6 +38,7 @@ export enum ComplexVisType {
   Amplitude = 'amplitude',
   PhaseAmplitude = 'phase-amplitude',
 }
+export type ComplexLineVisType = Exclude<ComplexVisType, 'phase-amplitude'>;
 
 export interface Bounds {
   min: number;

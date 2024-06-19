@@ -231,6 +231,14 @@ export const mockValues = {
       twoD().data.map((v) => v * 2),
       [20, 41],
     ),
+  secondary_cplx: () =>
+    ndarray(
+      [
+        [cplx(1, -6), cplx(-3.1, -1)],
+        [cplx(6, -1), cplx(-4, 1.1)],
+      ].flat(1),
+      [2, 2],
+    ),
   tertiary: () =>
     ndarray(
       twoD().data.map((v) => v / 2),

@@ -10,6 +10,7 @@ module.exports = createConfig(__dirname, getDependencies(), [
       'testing-library/await-async-utils': 'off', // Cypress has its own way of dealing with asynchronicity
       'testing-library/prefer-screen-queries': 'off', // Cypress provides `cy` object instead of `screen`
       'sonarjs/no-duplicate-string': 'off', // incompatible with Cypress testing syntax
+      'sonarjs/cognitive-complexity': 'off', // allow long `describe` and `context` functions
       'unicorn/numeric-separators-style': 'off', // not supported
     },
   },

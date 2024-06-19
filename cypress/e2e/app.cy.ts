@@ -289,7 +289,7 @@ describe('/mock', () => {
       cy.findByRole('figure', { name: 'NeXus 2D' }).should('be.visible');
     });
 
-    it('visualize dataset with "spectrum" interpretation as NxSpectrum', () => {
+    it('visualize dataset with "spectrum" interpretation as NxLine', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('spectrum');
 
@@ -304,7 +304,7 @@ describe('/mock', () => {
       cy.get('svg[data-type="abscissa"] svg').should('have.text', 'X (nm)');
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
-        cy.matchImageSnapshot('nxspectrum');
+        cy.matchImageSnapshot('nxline');
       }
     });
 
@@ -340,7 +340,7 @@ describe('/mock', () => {
       );
     });
 
-    it('visualize dataset with log scales on both axes on NxSpectrum with SILX_style', () => {
+    it('visualize dataset with log scales on both axes on NxLine with SILX_style', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('log_spectrum');
 
@@ -357,7 +357,7 @@ describe('/mock', () => {
       }
     });
 
-    it('visualize signal and auxiliary signals datasets as NxSpectrum', () => {
+    it('visualize signal and auxiliary signals datasets as NxLine', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('spectrum_with_aux');
 
@@ -388,6 +388,32 @@ describe('/mock', () => {
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
         cy.matchImageSnapshot('auximage');
+      }
+    });
+
+    it('visualize 2D complex signal as NxImage', () => {
+      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('complex');
+
+      cy.findByRole('heading', {
+        name: 'nexus_entry / complex',
+      }).should('be.visible');
+
+      if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.matchImageSnapshot('nximage_complex_2d');
+      }
+    });
+
+    it('visualize 2D complex signal with "spectrum" interpretation and auxiliaries as NxLine', () => {
+      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('complex_spectrum');
+
+      cy.findByRole('heading', {
+        name: 'nexus_entry / complex_spectrum',
+      }).should('be.visible');
+
+      if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.matchImageSnapshot('nxline_complex_2d_aux');
       }
     });
 

@@ -6,13 +6,15 @@ import type { NxData } from './models';
 export function assertNumericNxData(
   nxData: NxData,
 ): asserts nxData is NxData<NumericType> {
-  const { signalDef } = nxData;
+  const { signalDef, auxDefs } = nxData;
   assertNumericType(signalDef.dataset);
+  auxDefs.forEach((def) => assertNumericType(def.dataset));
 }
 
 export function assertComplexNxData(
   nxData: NxData,
 ): asserts nxData is NxData<ComplexType> {
-  const { signalDef } = nxData;
+  const { signalDef, auxDefs } = nxData;
   assertComplexType(signalDef.dataset);
+  auxDefs.forEach((def) => assertComplexType(def.dataset));
 }

@@ -1,4 +1,3 @@
-import { isDefined } from '@h5web/shared/guards';
 import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
 
 import type { DimensionMapping } from '../../dimension-mapper/models';
@@ -7,8 +6,8 @@ import { useValuesInCache } from '../core/hooks';
 import type { NxData } from './models';
 import {
   assertNxDataGroup,
-  findAssociatedDatasets,
   findAuxErrorDataset,
+  findAuxiliaryDatasets,
   findAxesDatasets,
   findErrorDataset,
   findSignalDataset,
@@ -23,11 +22,7 @@ export function useNxData(group: GroupWithChildren): NxData {
   assertNxDataGroup(group, attrValuesStore);
   const signalDataset = findSignalDataset(group, attrValuesStore);
   const axisDatasets = findAxesDatasets(group, signalDataset, attrValuesStore);
-  const auxSignals = findAssociatedDatasets(
-    group,
-    'auxiliary_signals',
-    attrValuesStore,
-  ).filter(isDefined);
+  const auxSignals = findAuxiliaryDatasets(group, attrValuesStore);
 
   return {
     titleDataset: findTitleDataset(group),
