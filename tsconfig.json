@@ -25,5 +25,6 @@
     "ignoreDeprecations": "5.0",
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true
-  }
+  },
+  "include": ["*", "cypress", "apps/*/*", "packages/*/*"]
 }
