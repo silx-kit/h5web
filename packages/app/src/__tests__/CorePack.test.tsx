@@ -39,6 +39,14 @@ test('visualize scalar dataset', async () => {
   expect(screen.getByText('foo')).toBeVisible();
 });
 
+test('visualize scalar compound dataset', async () => {
+  await renderApp('/entities/scalar_compound');
+
+  expect(getVisTabs()).toEqual([Vis.Compound]);
+  expect(getSelectedVisTab()).toBe(Vis.Compound);
+  expect(screen.getByText('foo')).toBeVisible();
+});
+
 test('visualize 1D dataset', async () => {
   await renderApp('/nD_datasets/oneD');
 
@@ -47,12 +55,29 @@ test('visualize 1D dataset', async () => {
   expect(screen.getByRole('figure', { name: 'oneD' })).toBeVisible();
 });
 
+test('visualize 1D dataset as matrix', async () => {
+  const { selectVisTab } = await renderApp('/nD_datasets/oneD');
+  await selectVisTab(Vis.Matrix);
+
+  expect(getSelectedVisTab()).toBe(Vis.Matrix);
+  expect(screen.getByText('4.000e+2')).toBeVisible();
+  expect(screen.getByText('3.610e+2')).toBeVisible();
+});
+
 test('visualize 1D complex dataset', async () => {
   await renderApp('/nD_datasets/oneD_cplx');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
   expect(screen.getByRole('figure', { name: 'oneD_cplx' })).toBeVisible();
+});
+
+test('visualize 1D compound dataset', async () => {
+  await renderApp('/nD_datasets/oneD_compound');
+
+  expect(getVisTabs()).toEqual([Vis.Compound]);
+  expect(getSelectedVisTab()).toBe(Vis.Compound);
+  expect(screen.getByText('Argon')).toBeVisible();
 });
 
 test('visualize 2D dataset', async () => {
@@ -64,6 +89,23 @@ test('visualize 2D dataset', async () => {
   const figure = screen.getByRole('figure', { name: 'twoD' });
   expect(figure).toBeVisible();
   expect(within(figure).getByText('4e+2')).toBeVisible(); // color bar limit
+});
+
+test('visualize 2D dataset as line', async () => {
+  const { selectVisTab } = await renderApp('/nD_datasets/twoD');
+  await selectVisTab(Vis.Line);
+
+  expect(getSelectedVisTab()).toBe(Vis.Line);
+  expect(screen.getByRole('figure', { name: 'twoD' })).toBeVisible();
+});
+
+test('visualize 2D dataset as matrix', async () => {
+  const { selectVisTab } = await renderApp('/nD_datasets/twoD');
+  await selectVisTab(Vis.Matrix);
+
+  expect(getSelectedVisTab()).toBe(Vis.Matrix);
+  expect(screen.getByText('4.000e+2')).toBeVisible();
+  expect(screen.getByText('3.950e+2')).toBeVisible();
 });
 
 test('visualize 2D boolean dataset', async () => {

@@ -47,7 +47,7 @@ test('choose most advanced visualization when switching between datasets', async
   expect(getSelectedVisTab()).toBe(Vis.RGB);
 
   await selectExplorerNode('twoD_compound');
-  expect(getSelectedVisTab()).toBe(Vis.Matrix);
+  expect(getSelectedVisTab()).toBe(Vis.Compound);
 });
 
 test('remember preferred visualization when switching between datasets', async () => {
@@ -57,7 +57,7 @@ test('remember preferred visualization when switching between datasets', async (
   /* Switch to Matrix vis. Since this is _not_ the most advanced visualization
    * for `twoD`, it becomes the preferred visualization. */
   await selectVisTab(Vis.Matrix);
-  expect(getSelectedVisTab()).toBe('Matrix');
+  expect(getSelectedVisTab()).toBe(Vis.Matrix);
 
   // Select another dataset for which the Matrix vis is not the most advanced visualization
   await selectExplorerNode('oneD');

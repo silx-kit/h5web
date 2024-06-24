@@ -221,8 +221,12 @@ describe('RGB', () => {
   });
 });
 
-describe('Compound Matrix', () => {
-  const { supportsDataset } = CORE_VIS.CompoundMatrix;
+describe('Compound', () => {
+  const { supportsDataset } = CORE_VIS.Compound;
+
+  it('should support scalar dataset with printable compound type', () => {
+    expect(supportsDataset(scalarCompound)).toBe(true);
+  });
 
   it('should support array dataset with printable compound type and at least one dimension', () => {
     expect(supportsDataset(oneDCompound)).toBe(true);
@@ -232,9 +236,5 @@ describe('Compound Matrix', () => {
   it('should not support dataset with non-compound type or non-printable compound type', () => {
     expect(supportsDataset(oneDInt)).toBe(false);
     expect(supportsDataset(nestedCompound)).toBe(false);
-  });
-
-  it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarCompound)).toBe(false);
   });
 });

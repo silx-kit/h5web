@@ -1,7 +1,7 @@
 import {
-  assertArrayShape,
   assertCompoundType,
   assertDataset,
+  assertNonNullShape,
   assertPrintableCompoundType,
 } from '@h5web/shared/guards';
 
@@ -13,12 +13,12 @@ import { useValuesInCache } from '../hooks';
 import { useMatrixConfig } from '../matrix/config';
 import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
-import MappedCompoundMatrixVis from './MappedCompoundMatrixVis';
+import MappedCompoundVis from './MappedCompoundVis';
 
-function CompoundMatrixVisContainer(props: VisContainerProps) {
+function CompoundVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertDataset(entity);
-  assertArrayShape(entity);
+  assertNonNullShape(entity);
   assertCompoundType(entity);
   assertPrintableCompoundType(entity);
 
@@ -41,7 +41,7 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
           dataset={entity}
           selection={selection}
           render={(value) => (
-            <MappedCompoundMatrixVis
+            <MappedCompoundVis
               dataset={entity}
               value={value}
               toolbarContainer={toolbarContainer}
@@ -55,4 +55,4 @@ function CompoundMatrixVisContainer(props: VisContainerProps) {
   );
 }
 
-export default CompoundMatrixVisContainer;
+export default CompoundVisContainer;
