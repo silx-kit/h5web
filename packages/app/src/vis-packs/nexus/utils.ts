@@ -10,6 +10,7 @@ import {
   assertStringType,
   isAxisScaleType,
   isColorScaleType,
+  isDefined,
 } from '@h5web/shared/guards';
 import type {
   ArrayShape,
@@ -127,7 +128,7 @@ export function findAssociatedDatasets(
   group: GroupWithChildren,
   type: 'axes' | 'auxiliary_signals',
   attrValuesStore: AttrValuesStore,
-): (NumArrayDataset | undefined)[] {
+): (Dataset<ArrayShape> | undefined)[] {
   const dsetList = attrValuesStore.getSingle(group, type) || [];
   const dsetNames = typeof dsetList === 'string' ? [dsetList] : dsetList;
   assertArray(dsetNames);
@@ -147,7 +148,6 @@ export function findAssociatedDatasets(
     assertDefined(dataset, `Expected child entity "${name}" to exist`);
     assertDataset(dataset, `Expected child "${name}" to be a dataset`);
     assertArrayShape(dataset);
-    assertNumericType(dataset);
     return dataset;
   });
 }
@@ -190,12 +190,31 @@ export function findAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
-) {
+): (NumArrayDataset | undefined)[] {
   if (!hasAttribute(group, 'axes')) {
     return findOldStyleAxesDatasets(group, signal, attrValuesStore);
   }
 
-  return findAssociatedDatasets(group, 'axes', attrValuesStore);
+  return findAssociatedDatasets(group, 'axes', attrValuesStore).map(
+    (dataset) => {
+      if (dataset) {
+        assertNumericType(dataset);
+      }
+      return dataset;
+    },
+  );
+}
+
+export function findAuxiliaryDatasets(
+  group: GroupWithChildren,
+  attrValuesStore: AttrValuesStore,
+): Dataset<ArrayShape, NumericType | ComplexType>[] {
+  return findAssociatedDatasets(group, 'auxiliary_signals', attrValuesStore)
+    .filter(isDefined)
+    .map((dataset) => {
+      assertNumericOrComplexType(dataset);
+      return dataset;
+    });
 }
 
 export function findTitleDataset(

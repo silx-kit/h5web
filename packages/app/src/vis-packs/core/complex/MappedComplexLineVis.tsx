@@ -1,23 +1,30 @@
-import { LineVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import type { H5WebComplex } from '@h5web/shared/hdf5-models';
+import {
+  LineVis,
+  useCombinedDomain,
+  useDomain,
+  useDomains,
+  useSafeDomain,
+  useVisDomain,
+} from '@h5web/lib';
+import type { ArrayValue, ComplexType } from '@h5web/shared/hdf5-models';
 import type { AxisMapping } from '@h5web/shared/nexus-models';
 import type { NumArray } from '@h5web/shared/vis-models';
-import { ComplexVisType } from '@h5web/shared/vis-models';
-import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { LineConfig } from '../line/config';
 import { DEFAULT_DOMAIN } from '../utils';
 import ComplexLineToolbar from './ComplexLineToolbar';
+import { useMappedComplexArrays } from './hooks';
 import type { ComplexLineConfig } from './lineConfig';
-import { COMPLEX_VIS_TYPE_LABELS, getPhaseAmplitudeValues } from './utils';
+import { COMPLEX_VIS_TYPE_LABELS } from './utils';
 
 interface Props {
-  value: H5WebComplex[];
+  value: ArrayValue<ComplexType>;
   valueLabel?: string;
+  auxLabels?: string[];
+  auxValues?: ArrayValue<ComplexType>[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
@@ -32,6 +39,8 @@ function MappedComplexLineVis(props: Props) {
   const {
     value,
     valueLabel,
+    auxLabels = [],
+    auxValues = [],
     dims,
     dimMapping,
     axisLabels,
@@ -46,21 +55,20 @@ function MappedComplexLineVis(props: Props) {
   const { customDomain, yScaleType, xScaleType, curveType, showGrid } =
     lineConfig;
 
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const { phaseValues, amplitudeValues } = useMemo(
-    () => getPhaseAmplitudeValues(value),
-    [value],
+  const [dataArray, ...auxArrays] = useMappedComplexArrays(
+    [value, ...auxValues],
+    dims,
+    dimMapping,
+    visType,
   );
 
-  const dataArray = useMappedArray(
-    visType === ComplexVisType.Amplitude ? amplitudeValues : phaseValues,
-    slicedDims,
-    slicedMapping,
-  );
+  const dataDomain = useDomain(dataArray, yScaleType);
+  const auxDomains = useDomains(auxArrays, yScaleType);
+  const combinedDomain =
+    useCombinedDomain([dataDomain, ...auxDomains]) || DEFAULT_DOMAIN;
 
-  const dataDomain = useDomain(dataArray, yScaleType) || DEFAULT_DOMAIN;
-  const visDomain = useVisDomain(customDomain, dataDomain);
-  const [safeDomain] = useSafeDomain(visDomain, dataDomain, yScaleType);
+  const visDomain = useVisDomain(customDomain, combinedDomain);
+  const [safeDomain] = useSafeDomain(visDomain, combinedDomain, yScaleType);
 
   const xDimIndex = dimMapping.indexOf('x');
   const ordinateLabel = valueLabel
@@ -72,7 +80,7 @@ function MappedComplexLineVis(props: Props) {
       {toolbarContainer &&
         createPortal(
           <ComplexLineToolbar
-            dataDomain={dataDomain}
+            dataDomain={combinedDomain}
             config={config}
             lineConfig={lineConfig}
           />,
@@ -93,6 +101,10 @@ function MappedComplexLineVis(props: Props) {
         }}
         ordinateLabel={ordinateLabel}
         title={title}
+        auxiliaries={auxArrays.map((array, i) => ({
+          label: auxLabels[i],
+          array,
+        }))}
         testid={dimMapping.toString()}
       />
     </>

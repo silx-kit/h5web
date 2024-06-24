@@ -19,8 +19,8 @@ function NxSpectrumContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);
-  const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
 
+  const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
   const signalDims = signalDef.dataset.shape;
   const errorDims = signalDef.errorDataset?.shape;
 
