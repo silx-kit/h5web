@@ -399,19 +399,6 @@ describe('/mock', () => {
       }
     });
 
-    it('visualize 2D complex signal as NxImage', () => {
-      cy.selectExplorerNode('nexus_entry');
-      cy.selectExplorerNode('complex');
-
-      cy.findByRole('heading', {
-        name: 'nexus_entry / complex',
-      }).should('be.visible');
-
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
-        cy.matchImageSnapshot('nximage_complex_2d');
-      }
-    });
-
     it('visualize 2D complex signal with "spectrum" interpretation and auxiliaries as NxLine', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('complex_spectrum');
@@ -422,6 +409,19 @@ describe('/mock', () => {
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
         cy.matchImageSnapshot('nxline_complex_2d_aux');
+      }
+    });
+
+    it('visualize 2D complex signal as NxImage', () => {
+      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('complex_image');
+
+      cy.findByRole('heading', {
+        name: 'nexus_entry / complex_image',
+      }).should('be.visible');
+
+      if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.matchImageSnapshot('nximage_complex_2d');
       }
     });
 

@@ -1,4 +1,5 @@
 import { assertGroup, assertMinDims } from '@h5web/shared/guards';
+import { useState } from 'react';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/hooks';
@@ -9,7 +10,8 @@ import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertComplexNxData } from '../guards';
-import { useNxData, useNxValuesCached } from '../hooks';
+import { useNxData, useNxImageDataToFetch, useNxValuesCached } from '../hooks';
+import NxSignalPicker from '../NxSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { guessKeepRatio } from '../utils';
 
@@ -20,10 +22,11 @@ function NxComplexImageContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertComplexNxData(nxData);
 
-  const { signalDef, axisDefs, silxStyle } = nxData;
-  assertMinDims(signalDef.dataset, 2);
+  const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
+  const [selectedDef, setSelectedDef] = useState(signalDef);
+  assertMinDims(selectedDef.dataset, 2);
 
-  const { shape: dims } = signalDef.dataset;
+  const { shape: dims } = selectedDef.dataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const axisLabels = axisDefs.map((def) => def?.label);
@@ -36,8 +39,16 @@ function NxComplexImageContainer(props: VisContainerProps) {
     keepRatio: guessKeepRatio(xAxisDef, yAxisDef),
   });
 
+  const nxDataToFetch = useNxImageDataToFetch(nxData, selectedDef);
+
   return (
     <>
+      {auxDefs.length > 0 && (
+        <NxSignalPicker
+          definitions={[signalDef, ...auxDefs]}
+          onChange={setSelectedDef}
+        />
+      )}
       <DimensionMapper
         dims={dims}
         axisLabels={axisLabels}
@@ -47,7 +58,7 @@ function NxComplexImageContainer(props: VisContainerProps) {
       />
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
-          nxData={nxData}
+          nxData={nxDataToFetch}
           selection={getSliceSelection(dimMapping)}
           render={(nxValues) => {
             const { signal, axisValues, title } = nxValues;

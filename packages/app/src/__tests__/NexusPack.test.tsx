@@ -55,7 +55,7 @@ test('visualize NXdata group without explicit signal interpretation', async () =
   expect(screen.getByRole('figure', { name: 'oneD' })).toBeVisible(); // signal name
 
   // 2D complex signal (no interpretation)
-  await selectExplorerNode('complex');
+  await selectExplorerNode('complex_image');
   expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
   expect(getSelectedVisTab()).toBe(NexusVis.NxImage);
   expect(
