@@ -1,9 +1,13 @@
-import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
+import type {
+  ComplexType,
+  GroupWithChildren,
+  NumericType,
+} from '@h5web/shared/hdf5-models';
 
 import type { DimensionMapping } from '../../dimension-mapper/models';
 import { useDataContext } from '../../providers/DataProvider';
 import { useValuesInCache } from '../core/hooks';
-import type { NxData } from './models';
+import type { DatasetDef, NxData } from './models';
 import {
   assertNxDataGroup,
   findAuxErrorDataset,
@@ -41,6 +45,23 @@ export function useNxData(group: GroupWithChildren): NxData {
         dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
     ),
     silxStyle: getSilxStyle(group, attrValuesStore),
+  };
+}
+
+export function useNxImageDataToFetch<T extends NumericType | ComplexType>(
+  nxData: NxData<T>,
+  selectedDef: DatasetDef<T>,
+): NxData<T> {
+  const { signalDef } = nxData;
+
+  return {
+    ...nxData,
+    signalDef: selectedDef,
+    auxDefs: [], // fetch selected signal only
+    titleDataset:
+      selectedDef.dataset === signalDef.dataset
+        ? nxData.titleDataset
+        : undefined, // when auxiliary signal is selected, always use its label as title
   };
 }
 

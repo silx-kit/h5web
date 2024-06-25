@@ -219,15 +219,17 @@ export function makeMockFile(): GroupWithChildren {
             },
             auxAttr: ['secondary', 'tertiary'],
           }),
-          nxData('complex', {
-            signal: array('twoD_cplx'),
-            axes: { position: array('position') },
-            axesAttr: ['.', 'position'],
-          }),
           nxData('complex_spectrum', {
             signal: withNxAttr(array('twoD_cplx'), {
               interpretation: 'spectrum',
             }),
+            auxiliary: { secondary_cplx: array('secondary_cplx') },
+            auxAttr: ['secondary_cplx'],
+          }),
+          nxData('complex_image', {
+            signal: array('twoD_cplx'),
+            axes: { position: array('position') },
+            axesAttr: ['.', 'position'],
             auxiliary: { secondary_cplx: array('secondary_cplx') },
             auxAttr: ['secondary_cplx'],
           }),

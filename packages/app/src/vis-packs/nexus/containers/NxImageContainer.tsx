@@ -1,5 +1,4 @@
 import { assertGroup, assertMinDims } from '@h5web/shared/guards';
-import type { NumericType } from '@h5web/shared/hdf5-models';
 import { useState } from 'react';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -10,8 +9,7 @@ import { getSliceSelection } from '../../core/utils';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
-import { useNxData, useNxValuesCached } from '../hooks';
-import type { NxData } from '../models';
+import { useNxData, useNxImageDataToFetch, useNxValuesCached } from '../hooks';
 import NxSignalPicker from '../NxSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { guessKeepRatio } from '../utils';
@@ -39,15 +37,7 @@ function NxImageContainer(props: VisContainerProps) {
     keepRatio: guessKeepRatio(xAxisDef, yAxisDef),
   });
 
-  const nxDataToFetch: NxData<NumericType> = {
-    ...nxData,
-    signalDef: selectedDef,
-    auxDefs: [], // fetch selected signal only
-    titleDataset:
-      selectedDef.dataset === signalDef.dataset
-        ? nxData.titleDataset
-        : undefined, // when auxiliary signal is selected, always use its label as title
-  };
+  const nxDataToFetch = useNxImageDataToFetch(nxData, selectedDef);
 
   return (
     <>
