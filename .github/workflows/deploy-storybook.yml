@@ -42,7 +42,7 @@ jobs:
         run: pnpm build:storybook
 
       - name: Upload artifacts
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: 'apps/storybook/build'
 
