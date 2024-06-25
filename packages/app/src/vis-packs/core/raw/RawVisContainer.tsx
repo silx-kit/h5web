@@ -1,5 +1,4 @@
 import { RawImageVis, RawVis } from '@h5web/lib';
-import { isBinaryImage } from '@h5web/lib/src/vis/raw/utils';
 import { assertDataset, assertNonNullShape } from '@h5web/shared/guards';
 import { createPortal } from 'react-dom';
 
@@ -10,6 +9,7 @@ import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
 import { useRawConfig } from './config';
 import RawToolbar from './RawToolbar';
+import { isBinaryImage } from './utils';
 
 function RawVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
