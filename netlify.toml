@@ -14,4 +14,4 @@
     # - `script-src 'unsafe-eval'` because of cwise dependency in H5Web
     # - `img-src blob:` for JPEG/PNG images in Raw visualization
     # - `worker-src blob:` for H5WasmLocalFileProvider's inline worker
-    Content-Security-Policy = "default-src 'none'; connect-src 'self' data:; script-src 'self' 'unsafe-eval'; style-src 'self'; img-src blob:; worker-src blob:"
+    Content-Security-Policy = "default-src 'none'; connect-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; worker-src blob:"
