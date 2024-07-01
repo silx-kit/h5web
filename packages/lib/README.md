@@ -83,16 +83,4 @@ various front-end development stacks:
 
 ### Browser support
 
-H5Web works out of the box on **Firefox 78 ESR**.
-
-Support for Firefox 68 ESR is possible by polyfilling the `ResizeObserver` API.
-One easy way to do this is with [polyfill.io](https://polyfill.io/v3/):
-
-```html
-<head>
-  <!-- title, meta, link, etc. -->
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2CResizeObserver"></script>
-</head>
-```
-
-Older versions of Firefox are not supported.
+H5Web works out of the box on **Firefox 78 ESR**. Support for Firefox 68 ESR is possible by polyfilling the `ResizeObserver` API. Older versions of Firefox are not supported.
