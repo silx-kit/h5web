@@ -8,10 +8,3 @@
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
-
-    # CSP policy strict by default, then allow:
-    # - `connect-src data:` for download URLs when exporting datasets/slices in h5wasm demo
-    # - `script-src 'unsafe-eval'` because of cwise dependency in H5Web
-    # - `img-src blob:` for JPEG/PNG images in Raw visualization
-    # - `worker-src blob:` for H5WasmLocalFileProvider's inline worker
-    Content-Security-Policy = "default-src 'none'; connect-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; worker-src blob:"
