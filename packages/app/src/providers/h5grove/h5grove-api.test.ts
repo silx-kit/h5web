@@ -11,9 +11,9 @@ import { assertListeningAt } from '../../test-utils';
 import { getValueOrError } from '../utils';
 import { H5GroveApi } from './h5grove-api';
 
-const SKIP = import.meta.env.VITEST_H5GROVE_SKIP === 'true';
-const H5GROVE_URL = import.meta.env.VITEST_H5GROVE_URL;
-const TEST_FILE = import.meta.env.VITEST_H5GROVE_TEST_FILE;
+const SKIP = import.meta.env.VITE_H5GROVE_SKIP === 'true';
+const H5GROVE_URL = import.meta.env.VITE_H5GROVE_URL;
+const TEST_FILE = import.meta.env.VITE_H5GROVE_TEST_FILE;
 assertEnvVar(H5GROVE_URL, 'VITE_H5GROVE_URL');
 assertEnvVar(TEST_FILE, 'VITE_TEST_FILE');
 

@@ -15,9 +15,9 @@ import { beforeAll, expect, test } from 'vitest';
 import { H5WasmApi } from './h5wasm-api';
 import remote from './worker';
 
-const SKIP = import.meta.env.VITEST_H5WASM_SKIP === 'true';
-const H5WASM_TEST_FILE = import.meta.env.VITEST_H5WASM_TEST_FILE;
-assertEnvVar(H5WASM_TEST_FILE, 'VITEST_H5WASM_TEST_FILE');
+const SKIP = import.meta.env.VITE_H5WASM_SKIP === 'true';
+const H5WASM_TEST_FILE = import.meta.env.VITE_H5WASM_TEST_FILE;
+assertEnvVar(H5WASM_TEST_FILE, 'VITE_H5WASM_TEST_FILE');
 
 const TEST_FILE = path.resolve(process.cwd(), H5WASM_TEST_FILE);
 
