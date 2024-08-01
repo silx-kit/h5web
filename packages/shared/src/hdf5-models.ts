@@ -121,6 +121,9 @@ export type Endianness = (typeof H5T_TO_ENDIANNESS)[H5T_ORDER];
 export type CharSet = (typeof H5T_TO_CHAR_SET)[H5T_CSET];
 export type StrPad = (typeof H5T_TO_STR_PAD)[H5T_STR];
 
+export type NumericLikeType = NumericType | BooleanType | EnumType;
+export type PrintableType = StringType | NumericLikeType | ComplexType;
+
 export type DType =
   | PrintableType
   | CompoundType
@@ -130,9 +133,6 @@ export type DType =
   | OpaqueType
   | ReferenceType
   | UnknownType;
-
-export type PrintableType = StringType | NumericLikeType | ComplexType;
-export type NumericLikeType = NumericType | BooleanType | EnumType;
 
 export interface BooleanType {
   class: DTypeClass.Bool;
