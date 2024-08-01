@@ -1794,7 +1794,7 @@ exports[`test file matches snapshot 1`] = `
         "C": 2,
       },
     },
-    "value": [
+    "value": Uint8Array [
       0,
       2,
       2,
@@ -1843,7 +1843,7 @@ exports[`test file matches snapshot 1`] = `
         "C": 2,
       },
     },
-    "value": [
+    "value": Uint8Array [
       0,
       2,
       2,
