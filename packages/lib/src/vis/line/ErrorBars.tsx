@@ -20,7 +20,7 @@ function ErrorBars(props: Props) {
   const { abscissas, ordinates, errors, color, visible, ignoreValue } = props;
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
-  const geometryParams = visible && {
+  const geometryParams = {
     abscissas,
     ordinates,
     errors,
@@ -33,12 +33,14 @@ function ErrorBars(props: Props) {
     ErrorBarsGeometry,
     ordinates.length,
     geometryParams,
+    { skipUpdates: !visible },
   );
 
   const capsGeometry = useGeometry(
     ErrorCapsGeometry,
     ordinates.length,
     geometryParams,
+    { skipUpdates: !visible },
   );
 
   return (

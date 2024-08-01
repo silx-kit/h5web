@@ -35,14 +35,17 @@ function Glyphs(props: Props) {
   const geometry = useGeometry(
     GlyphsGeometry,
     ordinates.length,
-    visible && {
+    {
       abscissas,
       ordinates,
       abscissaScale,
       ordinateScale,
       ignoreValue,
     },
-    hasR3FEventHandlers(pointsProps),
+    {
+      skipUpdates: !visible,
+      isInteractive: hasR3FEventHandlers(pointsProps),
+    },
   );
 
   return (

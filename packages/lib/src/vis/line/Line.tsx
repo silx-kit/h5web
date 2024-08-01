@@ -41,14 +41,17 @@ function Line(props: Props) {
   const geometry = useGeometry(
     LineGeometry,
     ordinates.length,
-    visible && {
+    {
       abscissas,
       ordinates,
       abscissaScale,
       ordinateScale,
       ignoreValue,
     },
-    hasR3FEventHandlers(lineProps),
+    {
+      skipUpdates: !visible,
+      isInteractive: hasR3FEventHandlers(lineProps),
+    },
   );
 
   return (

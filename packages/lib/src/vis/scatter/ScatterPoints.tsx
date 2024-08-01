@@ -96,7 +96,7 @@ function ScatterPoints(props: Props) {
       colorScale,
       interpolator,
     },
-    true,
+    { isInteractive: true },
   );
 
   return (
