@@ -175,7 +175,7 @@ export interface ArrayType<T extends DType = DType> {
 export interface EnumType {
   class: DTypeClass.Enum;
   base: NumericType; // technically, only int/uint
-  mapping: Record<string, number>;
+  mapping: Record<number, string>;
 }
 
 export interface TimeType {

@@ -1966,8 +1966,8 @@ exports[`test file matches snapshot 1`] = `
       },
       "class": "Enumeration",
       "mapping": {
-        "A": 0,
-        "B": 1,
+        "0": "A",
+        "1": "B",
       },
     },
     "value": 1,
@@ -1999,8 +1999,8 @@ exports[`test file matches snapshot 1`] = `
       },
       "class": "Enumeration",
       "mapping": {
-        "A": 256,
-        "B": 257,
+        "256": "A",
+        "257": "B",
       },
     },
     "value": 256,
@@ -2035,9 +2035,9 @@ exports[`test file matches snapshot 1`] = `
       },
       "class": "Enumeration",
       "mapping": {
-        "A": 0,
-        "B": 1,
-        "C": 2,
+        "0": "A",
+        "1": "B",
+        "2": "C",
       },
     },
     "value": Uint8Array [
@@ -2084,9 +2084,9 @@ exports[`test file matches snapshot 1`] = `
       },
       "class": "Enumeration",
       "mapping": {
-        "A": 0,
-        "B": 1,
-        "C": 2,
+        "0": "A",
+        "1": "B",
+        "2": "C",
       },
     },
     "value": Uint8Array [

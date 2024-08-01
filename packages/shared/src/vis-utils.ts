@@ -77,12 +77,9 @@ export function createComplexFormatter(
 }
 
 export function createEnumFormatter(
-  mapping: Record<string, number>,
+  mapping: Record<number, string>,
 ): ValueFormatter<EnumType> {
-  return (value) => {
-    const entry = Object.entries(mapping).find(([, v]) => value === v);
-    return entry?.[0] || value.toString();
-  };
+  return (value) => (value in mapping ? mapping[value] : value.toString());
 }
 
 export function getValues(arr: AnyNumArray): NumArray {
