@@ -272,6 +272,16 @@ export function makeMockFile(): GroupWithChildren {
               }),
             ],
           }),
+          nxGroup('numeric-like', 'NXprocess', {
+            children: [
+              nxData('bool', { signal: array('twoD_bool') }),
+              nxData('enum', {
+                signal: array('twoD_enum', {
+                  type: enumType(uintType(8), ENUM_MAPPING),
+                }),
+              }),
+            ],
+          }),
         ],
       }),
       nxGroup('nexus_note', 'NXnote', {

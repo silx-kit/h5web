@@ -351,11 +351,13 @@ export function assertComplexType<S extends Shape>(
   }
 }
 
-export function assertNumericOrComplexType<S extends Shape>(
+export function assertNumericLikeOrComplexType<S extends Shape>(
   dataset: Dataset<S>,
-): asserts dataset is Dataset<S, NumericType | ComplexType> {
-  if (!hasNumericType(dataset) && !hasComplexType(dataset)) {
-    throw new Error('Expected dataset to have numeric or complex type');
+): asserts dataset is Dataset<S, NumericLikeType | ComplexType> {
+  if (!hasNumericLikeType(dataset) && !hasComplexType(dataset)) {
+    throw new Error(
+      'Expected dataset to have numeric, boolean, enum or complex type',
+    );
   }
 }
 

@@ -3,7 +3,7 @@ import {
   assertArrayShape,
   assertDataset,
   assertDefined,
-  assertNumericOrComplexType,
+  assertNumericLikeOrComplexType,
   assertNumericType,
   assertScalarShape,
   assertStr,
@@ -19,7 +19,7 @@ import type {
   Group,
   GroupWithChildren,
   NumArrayDataset,
-  NumericType,
+  NumericLikeType,
   ScalarShape,
   StringType,
 } from '@h5web/shared/hdf5-models';
@@ -58,7 +58,7 @@ export function isNxNoteGroup(
 
 function findOldStyleSignalDataset(
   group: GroupWithChildren,
-): Dataset<ArrayShape, NumericType | ComplexType> {
+): Dataset<ArrayShape, NumericLikeType | ComplexType> {
   const dataset = group.children.find((child) => hasAttribute(child, 'signal'));
   assertDefined(dataset);
   assertDataset(
@@ -66,14 +66,14 @@ function findOldStyleSignalDataset(
     `Expected old-style "${dataset.name}" signal to be a dataset`,
   );
   assertArrayShape(dataset);
-  assertNumericOrComplexType(dataset);
+  assertNumericLikeOrComplexType(dataset);
   return dataset;
 }
 
 export function findSignalDataset(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
-): Dataset<ArrayShape, NumericType | ComplexType> {
+): Dataset<ArrayShape, NumericLikeType | ComplexType> {
   if (!hasAttribute(group, 'signal')) {
     return findOldStyleSignalDataset(group);
   }
@@ -86,7 +86,7 @@ export function findSignalDataset(
   assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
   assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
   assertArrayShape(dataset);
-  assertNumericOrComplexType(dataset);
+  assertNumericLikeOrComplexType(dataset);
   return dataset;
 }
 
@@ -208,11 +208,11 @@ export function findAxesDatasets(
 export function findAuxiliaryDatasets(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
-): Dataset<ArrayShape, NumericType | ComplexType>[] {
+): Dataset<ArrayShape, NumericLikeType | ComplexType>[] {
   return findAssociatedDatasets(group, 'auxiliary_signals', attrValuesStore)
     .filter(isDefined)
     .map((dataset) => {
-      assertNumericOrComplexType(dataset);
+      assertNumericLikeOrComplexType(dataset);
       return dataset;
     });
 }
