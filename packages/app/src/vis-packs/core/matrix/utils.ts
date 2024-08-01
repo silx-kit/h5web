@@ -1,5 +1,5 @@
 import { Notation } from '@h5web/lib';
-import { isComplexType, isNumericType } from '@h5web/shared/guards';
+import { isComplexType, isEnumType, isNumericType } from '@h5web/shared/guards';
 import type {
   ComplexType,
   NumericType,
@@ -7,10 +7,12 @@ import type {
   PrintableType,
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
-import { createComplexFormatter } from '@h5web/shared/vis-utils';
+import type { ValueFormatter } from '@h5web/shared/vis-models';
+import {
+  createComplexFormatter,
+  createEnumFormatter,
+} from '@h5web/shared/vis-utils';
 import { format } from 'd3-format';
-
-import type { ValueFormatter } from '../models';
 
 export function createNumericFormatter(
   notation: Notation,
@@ -46,6 +48,10 @@ export function getFormatter(
 
   if (isNumericType(type)) {
     return createNumericFormatter(notation);
+  }
+
+  if (isEnumType(type)) {
+    return createEnumFormatter(type.mapping);
   }
 
   return (val) => (val as string | boolean).toString();

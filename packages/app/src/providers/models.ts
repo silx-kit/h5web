@@ -8,7 +8,6 @@ import type {
 } from '@h5web/shared/hdf5-models';
 import type { FetchStore } from '@h5web/shared/react-suspense-fetch';
 
-import type { ImageAttribute } from '../vis-packs/core/models';
 import type { NxAttribute } from '../vis-packs/nexus/models';
 
 export type EntitiesStore = FetchStore<string, ProvidedEntity>;
@@ -23,6 +22,7 @@ export interface AttrValuesStore extends FetchStore<Entity, AttributeValues> {
   getSingle: (entity: Entity, attrName: AttrName) => unknown;
 }
 
+export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';
 export type AttrName = NxAttribute | ImageAttribute | '_FillValue';
 
 export type ExportFormat = 'json' | 'csv' | 'npy' | 'tiff';

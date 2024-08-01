@@ -125,18 +125,14 @@ export type DType =
   | PrintableType
   | CompoundType
   | ArrayType
-  | EnumType
   | TimeType
   | BitfieldType
   | OpaqueType
   | ReferenceType
   | UnknownType;
 
-export type PrintableType =
-  | BooleanType
-  | NumericType
-  | ComplexType
-  | StringType;
+export type PrintableType = StringType | NumericLikeType | ComplexType;
+export type NumericLikeType = NumericType | BooleanType | EnumType;
 
 export interface BooleanType {
   class: DTypeClass.Bool;
@@ -147,8 +143,6 @@ export interface NumericType {
   size: number;
   endianness: Endianness | undefined;
 }
-
-export type NumericLikeType = NumericType | BooleanType | EnumType;
 
 export interface ComplexType {
   class: DTypeClass.Complex;
@@ -209,7 +203,7 @@ export interface UnknownType {
 /* ----------------- */
 /* ----- VALUE ----- */
 
-export type Primitive<T extends DType> = T extends NumericType
+export type Primitive<T extends DType> = T extends NumericType | EnumType
   ? number
   : T extends StringType
     ? string
@@ -223,7 +217,7 @@ export type Primitive<T extends DType> = T extends NumericType
 
 export type ArrayValue<T extends DType> =
   | Primitive<T>[]
-  | (T extends NumericType ? TypedArray : never);
+  | (T extends NumericType | EnumType ? TypedArray : never);
 
 export type Value<D extends Dataset> =
   D extends Dataset<infer S, infer T>

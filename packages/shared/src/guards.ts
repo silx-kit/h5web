@@ -39,6 +39,7 @@ const PRINTABLE_DTYPES = new Set([
   DTypeClass.Float,
   DTypeClass.String,
   DTypeClass.Bool,
+  DTypeClass.Enum,
   DTypeClass.Complex,
 ]);
 
@@ -273,6 +274,12 @@ export function isEnumType(type: DType): type is EnumType {
   return type.class === DTypeClass.Enum;
 }
 
+export function hasEnumType<S extends Shape>(
+  dataset: Dataset<S>,
+): dataset is Dataset<S, EnumType> {
+  return isEnumType(dataset.type);
+}
+
 function hasStringType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, StringType> {
@@ -365,6 +372,7 @@ export function assertPrintableType<S extends Shape>(
     !hasStringType(dataset) &&
     !hasNumericType(dataset) &&
     !hasBoolType(dataset) &&
+    !hasEnumType(dataset) &&
     !hasComplexType(dataset)
   ) {
     throw new Error('Expected dataset to have displayable type');
