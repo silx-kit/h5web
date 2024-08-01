@@ -1,7 +1,19 @@
-import { assertComplexType, assertNumericType } from '@h5web/shared/guards';
+import {
+  assertComplexType,
+  assertNumericLikeType,
+  assertNumericType,
+} from '@h5web/shared/guards';
 import type { ComplexType, NumericType } from '@h5web/shared/hdf5-models';
 
 import type { NxData } from './models';
+
+export function assertNumericLikeNxData(
+  nxData: NxData,
+): asserts nxData is NxData<NumericType> {
+  const { signalDef, auxDefs } = nxData;
+  assertNumericLikeType(signalDef.dataset);
+  auxDefs.forEach((def) => assertNumericLikeType(def.dataset));
+}
 
 export function assertNumericNxData(
   nxData: NxData,

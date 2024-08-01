@@ -17,13 +17,11 @@ import type {
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import {
-  boolType,
   compoundType,
   cplxType,
-  enumType,
+  enumOrBoolType,
   floatType,
   intType,
-  isBoolEnumType,
   strType,
   uintType,
   unknownType,
@@ -123,9 +121,7 @@ function convertHsdsCompoundType(
 function convertHsdsEnumType(hsdsType: HsdsEnumType): EnumType | BooleanType {
   const { base, mapping } = hsdsType;
   assertHsdsNumericType(base);
-
-  const type = enumType(convertHsdsNumericType(base), mapping);
-  return isBoolEnumType(type) ? boolType() : type; // booleans stored as enums by h5py
+  return enumOrBoolType(convertHsdsNumericType(base), mapping);
 }
 
 export function convertHsdsType(hsdsType: HsdsType): DType {

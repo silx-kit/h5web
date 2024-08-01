@@ -20,6 +20,8 @@ const oneD = () => ndarray(range1().map((val) => val ** 2));
 const oneD_bool = () =>
   ndarray([true, false, false, true, true, true, false, true, false, false]);
 
+const oneD_enum = () => ndarray([0, 2, 2, 1, 1, 0, 2, 2, 1, 1]);
+
 const oneD_cplx = () =>
   ndarray(
     range9().map((val) =>
@@ -90,6 +92,7 @@ export const mockValues = {
   oneD_cplx,
   oneD_compound,
   oneD_bool,
+  oneD_enum,
   oneD_errors: () => ndarray(oneD().data.map((val) => Math.abs(val) / 10)),
   oneD_str: () => ndarray(['foo', 'bar']),
   twoD,
@@ -132,6 +135,15 @@ export const mockValues = {
     return ndarray(
       dataOneDBool.flatMap((rowBool) =>
         dataOneDBool.map((colBool) => (rowBool ? colBool : !colBool)),
+      ),
+      [10, 10],
+    );
+  },
+  twoD_enum: () => {
+    const { data: dataOneDEnum } = oneD_enum();
+    return ndarray(
+      dataOneDEnum.flatMap((rowEnum, i) =>
+        dataOneDEnum.map((colEnum) => (i % 2 === 0 ? colEnum : rowEnum)),
       ),
       [10, 10],
     );

@@ -64,6 +64,22 @@ test('visualize 1D dataset as matrix', async () => {
   expect(screen.getByText('3.610e+2')).toBeVisible();
 });
 
+test('visualize 1D boolean dataset', async () => {
+  await renderApp('/nD_datasets/oneD_bool');
+
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
+  expect(getSelectedVisTab()).toBe(Vis.Line);
+  expect(screen.getByRole('figure', { name: 'oneD_bool' })).toBeVisible();
+});
+
+test('visualize 1D enum dataset', async () => {
+  await renderApp('/nD_datasets/oneD_enum');
+
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
+  expect(getSelectedVisTab()).toBe(Vis.Line);
+  expect(screen.getByRole('figure', { name: 'oneD_enum' })).toBeVisible();
+});
+
 test('visualize 1D complex dataset', async () => {
   await renderApp('/nD_datasets/oneD_cplx');
 
@@ -117,6 +133,17 @@ test('visualize 2D boolean dataset', async () => {
   const figure = screen.getByRole('figure', { name: 'twoD_bool' });
   expect(figure).toBeVisible();
   expect(within(figure).getByText('1e+0')).toBeVisible(); // color bar limit
+});
+
+test('visualize 2D enum dataset', async () => {
+  await renderApp('/nD_datasets/twoD_enum');
+
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
+  expect(getSelectedVisTab()).toBe(Vis.Heatmap);
+
+  const figure = screen.getByRole('figure', { name: 'twoD_enum' });
+  expect(figure).toBeVisible();
+  expect(within(figure).getByText('2e+0')).toBeVisible(); // color bar limit
 });
 
 test('visualize 2D complex dataset', async () => {

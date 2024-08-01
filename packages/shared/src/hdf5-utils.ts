@@ -143,29 +143,31 @@ export function arrayType<T extends DType>(
 
 export function enumType(
   baseType: NumericType,
-  mapping: Record<string, number>,
+  hdf5Mapping: Record<string, number>,
 ): EnumType {
-  return { class: DTypeClass.Enum, base: baseType, mapping };
-}
-
-export function isBoolEnumType(type: EnumType): boolean {
-  const { mapping } = type;
-  return (
-    Object.keys(mapping).length === 2 &&
-    mapping.FALSE === 0 &&
-    mapping.TRUE === 1
-  );
+  return {
+    class: DTypeClass.Enum,
+    base: baseType,
+    // Swap mapping to optimise retrieval of enum keys from numeric values
+    mapping: Object.fromEntries(
+      Object.entries(hdf5Mapping).map(([k, v]) => [v, k]),
+    ),
+  };
 }
 
 export function enumOrBoolType(
   baseType: NumericType,
-  mapping: Record<string, number>,
+  hdf5Mapping: Record<string, number>,
 ): EnumType | BooleanType {
-  if (mapping.FALSE === 0 && mapping.TRUE === 1) {
+  if (
+    Object.keys(hdf5Mapping).length === 2 &&
+    hdf5Mapping.FALSE === 0 &&
+    hdf5Mapping.TRUE === 1
+  ) {
     return boolType();
   }
 
-  return enumType(baseType, mapping);
+  return enumType(baseType, hdf5Mapping);
 }
 
 export function timeType(): TimeType {

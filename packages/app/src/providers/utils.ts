@@ -1,4 +1,4 @@
-import { isNumericType } from '@h5web/shared/guards';
+import { isEnumType, isNumericType } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Dataset,
@@ -33,11 +33,15 @@ export async function handleAxiosError<T>(
 }
 
 export function typedArrayFromDType(dtype: DType) {
-  /* Adapted from https://github.com/ludwigschubert/js-numpy-parser/blob/v1.2.3/src/main.js#L116 */
+  if (isEnumType(dtype)) {
+    return typedArrayFromDType(dtype.base);
+  }
+
   if (!isNumericType(dtype)) {
     return undefined;
   }
 
+  /* Adapted from https://github.com/ludwigschubert/js-numpy-parser/blob/v1.2.3/src/main.js#L116 */
   const { class: dtypeClass, size } = dtype;
 
   if (dtypeClass === DTypeClass.Integer) {

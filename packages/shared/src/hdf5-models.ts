@@ -121,22 +121,18 @@ export type Endianness = (typeof H5T_TO_ENDIANNESS)[H5T_ORDER];
 export type CharSet = (typeof H5T_TO_CHAR_SET)[H5T_CSET];
 export type StrPad = (typeof H5T_TO_STR_PAD)[H5T_STR];
 
+export type NumericLikeType = NumericType | BooleanType | EnumType;
+export type PrintableType = StringType | NumericLikeType | ComplexType;
+
 export type DType =
   | PrintableType
   | CompoundType
   | ArrayType
-  | EnumType
   | TimeType
   | BitfieldType
   | OpaqueType
   | ReferenceType
   | UnknownType;
-
-export type PrintableType =
-  | BooleanType
-  | NumericType
-  | ComplexType
-  | StringType;
 
 export interface BooleanType {
   class: DTypeClass.Bool;
@@ -147,8 +143,6 @@ export interface NumericType {
   size: number;
   endianness: Endianness | undefined;
 }
-
-export type NumericLikeType = NumericType | BooleanType;
 
 export interface ComplexType {
   class: DTypeClass.Complex;
@@ -181,7 +175,7 @@ export interface ArrayType<T extends DType = DType> {
 export interface EnumType {
   class: DTypeClass.Enum;
   base: NumericType; // technically, only int/uint
-  mapping: Record<string, number>;
+  mapping: Record<number, string>;
 }
 
 export interface TimeType {
@@ -209,7 +203,7 @@ export interface UnknownType {
 /* ----------------- */
 /* ----- VALUE ----- */
 
-export type Primitive<T extends DType> = T extends NumericType
+export type Primitive<T extends DType> = T extends NumericType | EnumType
   ? number
   : T extends StringType
     ? string
@@ -223,7 +217,7 @@ export type Primitive<T extends DType> = T extends NumericType
 
 export type ArrayValue<T extends DType> =
   | Primitive<T>[]
-  | (T extends NumericType ? TypedArray : never);
+  | (T extends NumericType | EnumType ? TypedArray : never);
 
 export type Value<D extends Dataset> =
   D extends Dataset<infer S, infer T>

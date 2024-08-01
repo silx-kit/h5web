@@ -4,7 +4,7 @@ import ndarray from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray } from './guards';
-import type { H5WebComplex } from './hdf5-models';
+import type { ComplexType, EnumType } from './hdf5-models';
 import type {
   AnyNumArray,
   AxisScaleType,
@@ -14,6 +14,7 @@ import type {
   Domain,
   NumArray,
   TypedArrayConstructor,
+  ValueFormatter,
 } from './vis-models';
 import { ScaleType } from './vis-models';
 
@@ -53,10 +54,13 @@ export function formatTick(val: number | { valueOf(): number }): string {
   return str;
 }
 
-export function createComplexFormatter(specifier: string, full = false) {
+export function createComplexFormatter(
+  specifier: string,
+  full = false,
+): ValueFormatter<ComplexType> {
   const formatVal = format(specifier);
 
-  return (value: H5WebComplex) => {
+  return (value) => {
     const [real, imag] = value;
 
     if (imag === 0 && !full) {
@@ -70,6 +74,12 @@ export function createComplexFormatter(specifier: string, full = false) {
     const sign = Math.sign(imag) >= 0 ? ' + ' : ' − ';
     return `${formatVal(real)}${sign}${formatVal(Math.abs(imag))} i`;
   };
+}
+
+export function createEnumFormatter(
+  mapping: Record<number, string>,
+): ValueFormatter<EnumType> {
+  return (value) => (value in mapping ? mapping[value] : value.toString());
 }
 
 export function getValues(arr: AnyNumArray): NumArray {

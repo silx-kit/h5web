@@ -246,6 +246,18 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
         256,
         h5py.enum_dtype({"A": 256, "B": 257}, np.int32),
     )
+    add_array(
+        h5,
+        "enum",
+        np.array([0, 2, 2, 1, 1, 0, 2, 2, 1, 1]),
+        h5py.enum_dtype({"A": 0, "B": 1, "C": 2}),
+    )
+    add_array(
+        h5,
+        "enum",
+        np.array([[0, 2, 2, 1, 1, 0, 2, 2, 1, 1], [2, 0, 1, 1, 0, 2, 2, 2, 2, 1]]),
+        h5py.enum_dtype({"A": 0, "B": 1, "C": 2}),
+    )
 
     # === H5T_VLEN ===
 

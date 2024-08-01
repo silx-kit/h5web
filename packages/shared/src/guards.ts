@@ -10,6 +10,7 @@ import type {
   Datatype,
   DType,
   Entity,
+  EnumType,
   Group,
   GroupWithChildren,
   H5WebComplex,
@@ -38,6 +39,7 @@ const PRINTABLE_DTYPES = new Set([
   DTypeClass.Float,
   DTypeClass.String,
   DTypeClass.Bool,
+  DTypeClass.Enum,
   DTypeClass.Complex,
 ]);
 
@@ -268,6 +270,16 @@ export function hasBoolType<S extends Shape>(
   return isBoolType(dataset.type);
 }
 
+export function isEnumType(type: DType): type is EnumType {
+  return type.class === DTypeClass.Enum;
+}
+
+export function hasEnumType<S extends Shape>(
+  dataset: Dataset<S>,
+): dataset is Dataset<S, EnumType> {
+  return isEnumType(dataset.type);
+}
+
 function hasStringType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, StringType> {
@@ -305,14 +317,15 @@ export function assertNumericType<S extends Shape>(
 export function hasNumericLikeType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, NumericLikeType> {
-  return isNumericType(dataset.type) || isBoolType(dataset.type);
+  const { type } = dataset;
+  return isNumericType(type) || isBoolType(type) || isEnumType(type);
 }
 
 export function assertNumericLikeType<S extends Shape>(
   dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, NumericLikeType> {
   if (!hasNumericLikeType(dataset)) {
-    throw new Error('Expected dataset to have numeric or boolean type');
+    throw new Error('Expected dataset to have numeric, boolean or enum type');
   }
 }
 
@@ -338,11 +351,13 @@ export function assertComplexType<S extends Shape>(
   }
 }
 
-export function assertNumericOrComplexType<S extends Shape>(
+export function assertNumericLikeOrComplexType<S extends Shape>(
   dataset: Dataset<S>,
-): asserts dataset is Dataset<S, NumericType | ComplexType> {
-  if (!hasNumericType(dataset) && !hasComplexType(dataset)) {
-    throw new Error('Expected dataset to have numeric or complex type');
+): asserts dataset is Dataset<S, NumericLikeType | ComplexType> {
+  if (!hasNumericLikeType(dataset) && !hasComplexType(dataset)) {
+    throw new Error(
+      'Expected dataset to have numeric, boolean, enum or complex type',
+    );
   }
 }
 
@@ -359,6 +374,7 @@ export function assertPrintableType<S extends Shape>(
     !hasStringType(dataset) &&
     !hasNumericType(dataset) &&
     !hasBoolType(dataset) &&
+    !hasEnumType(dataset) &&
     !hasComplexType(dataset)
   ) {
     throw new Error('Expected dataset to have displayable type');

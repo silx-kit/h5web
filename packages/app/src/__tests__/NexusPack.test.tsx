@@ -76,6 +76,22 @@ test('visualize NXdata group with old-style signal', async () => {
   ).toBeVisible();
 });
 
+test('visualize NXdata group with boolean signal', async () => {
+  await renderApp('/nexus_entry/numeric-like/bool');
+  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
+  expect(
+    screen.getByRole('figure', { name: 'twoD_bool' }), // name of dataset with `signal` attribute
+  ).toBeVisible();
+});
+
+test('visualize NXdata group with enum signal', async () => {
+  await renderApp('/nexus_entry/numeric-like/enum');
+  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
+  expect(
+    screen.getByRole('figure', { name: 'twoD_enum' }), // name of dataset with `signal` attribute
+  ).toBeVisible();
+});
+
 test('visualize group with `default` attribute', async () => {
   // NXroot with relative path to NXentry group with relative path to NXdata group with 2D signal
   const { selectExplorerNode } = await renderApp();
@@ -177,7 +193,9 @@ test('show error/fallback for malformed NeXus entity', async () => {
   // Type of signal dataset is not numeric
   await selectExplorerNode('signal_not_numeric');
   expect(
-    screen.getByText('Expected dataset to have numeric or complex type'),
+    screen.getByText(
+      'Expected dataset to have numeric, boolean, enum or complex type',
+    ),
   ).toBeVisible();
   errorSpy.mockClear();
 
