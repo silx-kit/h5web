@@ -10,6 +10,7 @@ import type {
   Datatype,
   DType,
   Entity,
+  EnumType,
   Group,
   GroupWithChildren,
   H5WebComplex,
@@ -268,6 +269,10 @@ export function hasBoolType<S extends Shape>(
   return isBoolType(dataset.type);
 }
 
+export function isEnumType(type: DType): type is EnumType {
+  return type.class === DTypeClass.Enum;
+}
+
 function hasStringType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, StringType> {
@@ -305,14 +310,15 @@ export function assertNumericType<S extends Shape>(
 export function hasNumericLikeType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, NumericLikeType> {
-  return isNumericType(dataset.type) || isBoolType(dataset.type);
+  const { type } = dataset;
+  return isNumericType(type) || isBoolType(type) || isEnumType(type);
 }
 
 export function assertNumericLikeType<S extends Shape>(
   dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, NumericLikeType> {
   if (!hasNumericLikeType(dataset)) {
-    throw new Error('Expected dataset to have numeric or boolean type');
+    throw new Error('Expected dataset to have numeric, boolean or enum type');
   }
 }
 

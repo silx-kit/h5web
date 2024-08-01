@@ -148,7 +148,7 @@ export interface NumericType {
   endianness: Endianness | undefined;
 }
 
-export type NumericLikeType = NumericType | BooleanType;
+export type NumericLikeType = NumericType | BooleanType | EnumType;
 
 export interface ComplexType {
   class: DTypeClass.Complex;

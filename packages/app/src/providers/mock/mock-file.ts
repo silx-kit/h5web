@@ -40,6 +40,8 @@ const PNG_RED_DOT = new Uint8Array([
   0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82,
 ]);
 
+const ENUM_MAPPING = { FOO: 0, BAR: 1, BAZ: 2 };
+
 export function makeMockFile(): GroupWithChildren {
   return nxGroup('source.h5', 'NXroot', {
     isRoot: true,
@@ -87,10 +89,10 @@ export function makeMockFile(): GroupWithChildren {
           ],
         }),
         scalar('scalar_enum', 2, {
-          type: enumType(uintType(8), { FOO: 0, BAR: 1, BAZ: 2 }),
+          type: enumType(uintType(8), ENUM_MAPPING),
           attributes: [
             scalarAttr('attr', 2, {
-              type: enumType(uintType(8), { FOO: 0, BAR: 1, BAZ: 2 }),
+              type: enumType(uintType(8), ENUM_MAPPING),
             }),
           ],
         }),
@@ -117,6 +119,7 @@ export function makeMockFile(): GroupWithChildren {
           }),
         }),
         array('oneD_bool'),
+        array('oneD_enum', { type: enumType(uintType(8), ENUM_MAPPING) }),
         array('twoD'),
         array('twoD_cplx'),
         array('twoD_compound', {
@@ -129,6 +132,7 @@ export function makeMockFile(): GroupWithChildren {
           }),
         }),
         array('twoD_bool'),
+        array('twoD_enum', { type: enumType(uintType(8), ENUM_MAPPING) }),
         array('threeD'),
         array('threeD_bool'),
         array('threeD_cplx'),

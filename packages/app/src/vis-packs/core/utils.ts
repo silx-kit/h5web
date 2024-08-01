@@ -98,6 +98,7 @@ export function toNumArray(arr: ArrayValue<NumericLikeType>): NumArray {
 
 const TYPE_STRINGS: Record<NumericLikeType['class'], string> = {
   [DTypeClass.Bool]: 'bool',
+  [DTypeClass.Enum]: 'enum',
   [DTypeClass.Integer]: 'int',
   [DTypeClass.Unsigned]: 'uint',
   [DTypeClass.Float]: 'float',

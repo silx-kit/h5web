@@ -1760,6 +1760,113 @@ exports[`test file matches snapshot 1`] = `
     "value": 256,
   },
   {
+    "name": "enum_1D",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "|u1",
+        "order": 0,
+        "sign": 0,
+        "size": 1,
+      },
+      "class": 8,
+      "dtype": "|u1",
+      "members": {
+        "A": 0,
+        "B": 1,
+        "C": 2,
+      },
+      "size": 1,
+    },
+    "shape": [
+      10,
+    ],
+    "type": {
+      "base": {
+        "class": "Integer (unsigned)",
+        "endianness": "little-endian",
+        "size": 8,
+      },
+      "class": "Enumeration",
+      "mapping": {
+        "A": 0,
+        "B": 1,
+        "C": 2,
+      },
+    },
+    "value": [
+      0,
+      2,
+      2,
+      1,
+      1,
+      0,
+      2,
+      2,
+      1,
+      1,
+    ],
+  },
+  {
+    "name": "enum_2D",
+    "rawType": {
+      "base": {
+        "class": 0,
+        "dtype": "|u1",
+        "order": 0,
+        "sign": 0,
+        "size": 1,
+      },
+      "class": 8,
+      "dtype": "|u1",
+      "members": {
+        "A": 0,
+        "B": 1,
+        "C": 2,
+      },
+      "size": 1,
+    },
+    "shape": [
+      2,
+      10,
+    ],
+    "type": {
+      "base": {
+        "class": "Integer (unsigned)",
+        "endianness": "little-endian",
+        "size": 8,
+      },
+      "class": "Enumeration",
+      "mapping": {
+        "A": 0,
+        "B": 1,
+        "C": 2,
+      },
+    },
+    "value": [
+      0,
+      2,
+      2,
+      1,
+      1,
+      0,
+      2,
+      2,
+      1,
+      1,
+      2,
+      0,
+      1,
+      1,
+      0,
+      2,
+      2,
+      2,
+      2,
+      1,
+    ],
+  },
+  {
     "name": "vlen_int8_scalar",
     "rawType": {
       "base": {
