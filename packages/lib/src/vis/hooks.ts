@@ -108,37 +108,53 @@ export function useGeometry<
 >(
   Ctor: new (len: number) => H5WebGeometry<AttributeNames, Params>,
   dataLength: number,
-  params: Params | false | undefined, // skip updates by passing `false` or `undefined`
-  isInteractive = false, // keep bounding sphere up to date for raycaster
+  params: Params,
+  config: {
+    skipUpdates?: boolean; // set to `true` when R3F object is hidden
+    isInteractive?: boolean; // set to `true` to keep bounding sphere up to date for raycaster
+  } = {},
 ): H5WebGeometry<AttributeNames, Params> {
+  const { skipUpdates = false, isInteractive = false } = config;
+
   const geometry = useMemo(() => new Ctor(dataLength), [Ctor, dataLength]);
   const invalidate = useThree((state) => state.invalidate);
 
-  useLayoutEffect(() => {
-    if (!params) {
-      return;
-    }
+  useLayoutEffect(
+    () => {
+      if (skipUpdates) {
+        return;
+      }
 
-    geometry.prepare(params);
+      geometry.prepare(params);
 
-    for (let i = 0; i < dataLength; i += 1) {
-      geometry.update(i);
-    }
+      for (let i = 0; i < dataLength; i += 1) {
+        geometry.update(i);
+      }
 
-    if (isInteractive) {
-      geometry.computeBoundingSphere(); // https://github.com/mrdoob/three.js/issues/1170#issuecomment-3617180
-    }
+      if (isInteractive) {
+        geometry.computeBoundingSphere(); // https://github.com/mrdoob/three.js/issues/1170#issuecomment-3617180
+      }
 
-    Object.values<BufferAttribute>(geometry.attributes).forEach((attr) => {
-      attr.needsUpdate = true;
-    });
+      Object.values<BufferAttribute>(geometry.attributes).forEach((attr) => {
+        attr.needsUpdate = true;
+      });
 
-    if (geometry.index) {
-      geometry.index.needsUpdate = true;
-    }
+      if (geometry.index) {
+        geometry.index.needsUpdate = true;
+      }
 
-    invalidate();
-  }, [geometry, ...Object.values(params || {}), invalidate]); // eslint-disable-line react-hooks/exhaustive-deps
+      invalidate();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      geometry,
+      dataLength,
+      ...Object.values(params), // eslint-disable-line react-hooks/exhaustive-deps
+      skipUpdates,
+      isInteractive,
+      invalidate,
+    ],
+  );
 
   return geometry;
 }

@@ -378,20 +378,24 @@ useGeometry<
 >(
   Ctor: new (len: number) => H5WebGeometry<AttributeNames, Params>,
   dataLength: number,
-  params: Params | false | undefined, // skip updates by passing `false` or `undefined`
-  isInteractive = false, // `true` to recompute bounding sphere on every update for raycasting purposes
+  params: Params,
+  config?: {
+    skipUpdates?: boolean; // set to `true` when R3F object is hidden
+    isInteractive?: boolean; // set to `true` to keep bounding sphere up to date for raycaster
+  },
 ): H5WebGeometry<AttributeNames, Params>
 
 const lineGeometry = useGeometry(
   LineGeometry,
   ordinates.length,
-  visible && {
+  {
     abscissas,
     ordinates,
     abscissaScale,
     ordinateScale,
     ignoreValue,
   },
+  { skipUpdates: !visible }
 );
 ```
 
