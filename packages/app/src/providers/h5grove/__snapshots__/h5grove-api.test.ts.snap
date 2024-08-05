@@ -771,9 +771,9 @@ exports[`test file matches snapshot 1`] = `
       "strPad": "null-terminated",
     },
     "value": [
-      "foo",
-      "bar",
-      "baz",
+      "a",
+      "bc",
+      "def",
     ],
   },
   {
@@ -1931,6 +1931,47 @@ exports[`test file matches snapshot 1`] = `
         0,
         1,
         2,
+      ],
+    ],
+  },
+  {
+    "name": "vlen_utf8_1D",
+    "rawType": {
+      "base": {
+        "class": 3,
+        "cset": 1,
+        "dtype": "|O",
+        "size": 8,
+        "strpad": 0,
+        "vlen": true,
+      },
+      "class": 9,
+      "dtype": "|O",
+      "size": 16,
+    },
+    "shape": [
+      3,
+    ],
+    "type": {
+      "base": {
+        "charSet": "UTF-8",
+        "class": "String",
+        "strPad": "null-terminated",
+      },
+      "class": "Array (variable length)",
+    },
+    "value": [
+      [
+        "a",
+      ],
+      [
+        "a",
+        "bc",
+      ],
+      [
+        "a",
+        "bc",
+        "def",
       ],
     ],
   },

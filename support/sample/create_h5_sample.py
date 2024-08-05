@@ -107,7 +107,7 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
         np.string_("Some text"),
     )
     add_scalar(h5, "utf8_vlen", "Some text")
-    add_array(h5, "utf8_vlen", np.array(["foo", "bar", "baz"], h5py.string_dtype()))
+    add_array(h5, "utf8_vlen", np.array(["a", "bc", "def"], h5py.string_dtype()))
     add_scalar(h5, "utf8_fixed", "Some text", h5py.string_dtype("utf-8", 9))
 
     # === H5T_BITFIELD ===
@@ -193,7 +193,7 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
         ],
     )
 
-    comp = add_array(
+    add_array(
         h5,
         "compound_array_vlen",
         np.array(
@@ -260,18 +260,24 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     )
 
     # === H5T_VLEN ===
-
     # https://docs.h5py.org/en/stable/special.html#arbitrary-vlen-data
-    scalar_vlen = add_scalar(h5, "vlen_int8", dtype=h5py.vlen_dtype(np.int8))
-    scalar_vlen[()] = [0, 1]
 
-    # https://docs.h5py.org/en/stable/special.html#arbitrary-vlen-data
-    scalar_vlen = add_array(
+    vlen_scalar = add_scalar(h5, "vlen_int8", dtype=h5py.vlen_dtype(np.int8))
+    vlen_scalar[()] = [0, 1]
+
+    vlen_array = add_array(
         h5, "vlen_int64", shape=(3,), dtype=h5py.vlen_dtype(np.int64)
     )
-    scalar_vlen[0] = [0]
-    scalar_vlen[1] = [0, 1]
-    scalar_vlen[2] = [0, 1, 2]
+    vlen_array[0] = [0]
+    vlen_array[1] = [0, 1]
+    vlen_array[2] = [0, 1, 2]
+
+    vlen_array = add_array(
+        h5, "vlen_utf8", shape=(3,), dtype=h5py.vlen_dtype(h5py.string_dtype())
+    )
+    vlen_array[0] = ['a']
+    vlen_array[1] = ['a', 'bc']
+    vlen_array[2] = ['a', 'bc', 'def']
 
     # === H5T_ARRAY ===
 

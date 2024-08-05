@@ -17,7 +17,7 @@
   - [Feature tests](#feature-tests)
     - [Fake timers](#fake-timers)
     - [Debugging](#debugging)
-  - [Providers tests](#providers-tests)
+  - [Providers](#providers)
   - [Visual regression](#visual-regression)
 - [Deployment](#deployment)
 - [Release process](#release-process)
