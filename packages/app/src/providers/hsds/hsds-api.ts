@@ -59,6 +59,7 @@ export class HsdsApi extends DataProviderApi {
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath, {
+      adapter: 'fetch',
       baseURL: url,
       params: { domain: filepath },
       auth: { username, password },

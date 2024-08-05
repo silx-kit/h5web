@@ -15,8 +15,8 @@
     "@h5web/lib": "workspace:*",
     "@h5web/shared": "workspace:*",
     "@react-hookz/web": "24.0.4",
-    "@react-three/drei": "9.105.6",
-    "@react-three/fiber": "8.16.6",
+    "@react-three/drei": "9.109.2",
+    "@react-three/fiber": "8.16.8",
     "d3-array": "3.2.4",
     "d3-format": "3.1.0",
     "greenlet": "1.1.0",
@@ -25,7 +25,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-icons": "5.2.1",
-    "three": "0.164.1"
+    "three": "0.167.1"
   },
   "devDependencies": {
     "@storybook/addon-docs": "8.0.10",
@@ -39,15 +39,15 @@
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.0.14",
     "@types/node": "^20.12.11",
-    "@types/react": "^18.3.2",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@types/three": "0.164.0",
+    "@types/three": "0.167.1",
     "eslint": "8.57.0",
     "eslint-config-galex": "4.5.2",
     "remark-gfm": "4.0.0",
     "storybook": "8.0.10",
     "typescript": "5.4.5",
-    "vite": "5.2.11"
+    "vite": "5.3.5"
   },
   "browserslist": {
     "production": [

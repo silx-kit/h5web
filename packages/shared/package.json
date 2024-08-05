@@ -41,7 +41,7 @@
     "@types/ndarray": "~1.0.14",
     "@types/ndarray-ops": "~1.2.7",
     "@types/node": "^20.12.11",
-    "@types/react": "^18.3.2",
+    "@types/react": "^18.3.3",
     "d3-format": "3.1.0",
     "eslint": "8.57.0",
     "eslint-config-galex": "4.5.2",
@@ -49,6 +49,6 @@
     "ndarray-ops": "1.2.2",
     "react": "18.3.1",
     "typescript": "5.4.5",
-    "vitest": "1.6.0"
+    "vitest": "2.0.5"
   }
 }
