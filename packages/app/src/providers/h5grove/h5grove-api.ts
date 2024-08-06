@@ -33,7 +33,7 @@ export class H5GroveApi extends DataProviderApi {
     axiosConfig?: AxiosRequestConfig,
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
-    super(filepath, { baseURL: url, ...axiosConfig });
+    super(filepath, { adapter: 'fetch', baseURL: url, ...axiosConfig });
   }
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
