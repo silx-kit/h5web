@@ -266,6 +266,13 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     vlen_scalar[()] = [0, 1]
 
     vlen_array = add_array(
+        h5, "vlen_float32", shape=(2,), dtype=h5py.vlen_dtype(np.float32)
+    )
+    # Skip to make sure providers fill the gap with an empty array
+    # vlen_array[0] = []
+    vlen_array[1] = [0]
+
+    vlen_array = add_array(
         h5, "vlen_int64", shape=(3,), dtype=h5py.vlen_dtype(np.int64)
     )
     vlen_array[0] = [0]

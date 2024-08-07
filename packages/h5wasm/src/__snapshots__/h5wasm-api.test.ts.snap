@@ -1636,7 +1636,7 @@ exports[`test file matches snapshot 1`] = `
     },
     "value": [
       [
-        true,
+        1,
         [
           1,
           2,
@@ -1680,6 +1680,13 @@ exports[`test file matches snapshot 1`] = `
             "size": 8,
             "type": 9,
             "vlen": false,
+            "vlen_type": {
+              "littleEndian": true,
+              "signed": false,
+              "size": 8,
+              "type": 0,
+              "vlen": false,
+            },
           },
         ],
         "nmembers": 2,
@@ -1710,7 +1717,9 @@ exports[`test file matches snapshot 1`] = `
         },
         "vlen": {
           "base": {
-            "class": "Unknown",
+            "class": "Integer (unsigned)",
+            "endianness": "little-endian",
+            "size": 64,
           },
           "class": "Array (variable length)",
         },
@@ -1722,21 +1731,30 @@ exports[`test file matches snapshot 1`] = `
           0,
           1,
         ],
-        "Uint8Array (unstable)",
+        [
+          0,
+        ],
       ],
       [
         [
           2,
           3,
         ],
-        "Uint8Array (unstable)",
+        [
+          0,
+          1,
+        ],
       ],
       [
         [
           4,
           5,
         ],
-        "Uint8Array (unstable)",
+        [
+          0,
+          1,
+          2,
+        ],
       ],
     ],
   },
@@ -1820,7 +1838,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Boolean",
     },
-    "value": false,
+    "value": 0,
   },
   {
     "name": "bool_true_scalar",
@@ -1844,7 +1862,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Boolean",
     },
-    "value": true,
+    "value": 1,
   },
   {
     "name": "bool_2D",
@@ -1871,15 +1889,15 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Boolean",
     },
-    "value": [
-      true,
-      false,
-      true,
-      true,
-      false,
-      false,
-      true,
-      false,
+    "value": Int8Array [
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
     ],
   },
   {
@@ -2064,15 +2082,62 @@ exports[`test file matches snapshot 1`] = `
       "total_size": 1,
       "type": 9,
       "vlen": false,
+      "vlen_type": {
+        "littleEndian": true,
+        "signed": true,
+        "size": 1,
+        "type": 0,
+        "vlen": false,
+      },
     },
     "shape": [],
     "type": {
       "base": {
-        "class": "Unknown",
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 8,
       },
       "class": "Array (variable length)",
     },
-    "value": "Uint8Array (unstable)",
+    "value": Int8Array [
+      0,
+      1,
+    ],
+  },
+  {
+    "name": "vlen_float32_1D",
+    "rawType": {
+      "littleEndian": true,
+      "signed": false,
+      "size": 8,
+      "total_size": 2,
+      "type": 9,
+      "vlen": false,
+      "vlen_type": {
+        "littleEndian": true,
+        "signed": false,
+        "size": 4,
+        "type": 1,
+        "vlen": false,
+      },
+    },
+    "shape": [
+      2,
+    ],
+    "type": {
+      "base": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+      "class": "Array (variable length)",
+    },
+    "value": [
+      Float32Array [],
+      Float32Array [
+        0,
+      ],
+    ],
   },
   {
     "name": "vlen_int64_1D",
@@ -2083,17 +2148,39 @@ exports[`test file matches snapshot 1`] = `
       "total_size": 3,
       "type": 9,
       "vlen": false,
+      "vlen_type": {
+        "littleEndian": true,
+        "signed": true,
+        "size": 8,
+        "type": 0,
+        "vlen": false,
+      },
     },
     "shape": [
       3,
     ],
     "type": {
       "base": {
-        "class": "Unknown",
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 64,
       },
       "class": "Array (variable length)",
     },
-    "value": "Uint8Array (unstable)",
+    "value": [
+      [
+        0,
+      ],
+      [
+        0,
+        1,
+      ],
+      [
+        0,
+        1,
+        2,
+      ],
+    ],
   },
   {
     "name": "vlen_utf8_1D",
@@ -2104,17 +2191,41 @@ exports[`test file matches snapshot 1`] = `
       "total_size": 3,
       "type": 9,
       "vlen": false,
+      "vlen_type": {
+        "cset": 1,
+        "littleEndian": true,
+        "signed": false,
+        "size": 4,
+        "strpad": 0,
+        "type": 3,
+        "vlen": true,
+      },
     },
     "shape": [
       3,
     ],
     "type": {
       "base": {
-        "class": "Unknown",
+        "charSet": "UTF-8",
+        "class": "String",
+        "strPad": "null-terminated",
       },
       "class": "Array (variable length)",
     },
-    "value": "Uint8Array (unstable)",
+    "value": [
+      [
+        "a",
+      ],
+      [
+        "a",
+        "bc",
+      ],
+      [
+        "a",
+        "bc",
+        "def",
+      ],
+    ],
   },
 ]
 `;
