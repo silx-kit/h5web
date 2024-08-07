@@ -85,9 +85,9 @@ function assertNum(val: unknown): asserts val is number {
   }
 }
 
-function assertBool(val: unknown): asserts val is boolean {
-  if (typeof val !== 'boolean') {
-    throw new TypeError('Expected boolean');
+function assertNumOrBool(val: unknown): asserts val is number | boolean {
+  if (typeof val !== 'number' && typeof val !== 'boolean') {
+    throw new TypeError('Expected boolean or number');
   }
 }
 
@@ -430,7 +430,7 @@ function assertPrimitiveValue<D extends Dataset>(
   } else if (hasStringType(dataset)) {
     assertStr(value);
   } else if (hasBoolType(dataset)) {
-    assertBool(value);
+    assertNumOrBool(value);
   } else if (hasComplexType(dataset)) {
     assertComplex(value);
   }

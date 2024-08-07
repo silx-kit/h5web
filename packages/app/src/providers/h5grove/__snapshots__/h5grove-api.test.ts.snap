@@ -1895,6 +1895,37 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "name": "vlen_float32_1D",
+    "rawType": {
+      "base": {
+        "class": 1,
+        "dtype": "<f4",
+        "order": 0,
+        "size": 4,
+      },
+      "class": 9,
+      "dtype": "|O",
+      "size": 16,
+    },
+    "shape": [
+      2,
+    ],
+    "type": {
+      "base": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+      "class": "Array (variable length)",
+    },
+    "value": [
+      [],
+      [
+        0,
+      ],
+    ],
+  },
+  {
     "name": "vlen_int64_1D",
     "rawType": {
       "base": {

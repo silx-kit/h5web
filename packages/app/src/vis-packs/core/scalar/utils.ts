@@ -1,12 +1,14 @@
-import { hasComplexType, hasEnumType } from '@h5web/shared/guards';
+import { hasBoolType, hasComplexType, hasEnumType } from '@h5web/shared/guards';
 import type {
   ArrayShape,
+  BooleanType,
   Dataset,
   PrintableType,
 } from '@h5web/shared/hdf5-models';
 import type { ValueFormatter } from '@h5web/shared/vis-models';
 import {
   createEnumFormatter,
+  formatBool,
   formatScalarComplex,
 } from '@h5web/shared/vis-utils';
 
@@ -17,9 +19,13 @@ export function getFormatter(
     return formatScalarComplex;
   }
 
+  if (hasBoolType(dataset)) {
+    return formatBool as ValueFormatter<BooleanType>;
+  }
+
   if (hasEnumType(dataset)) {
     return createEnumFormatter(dataset.type.mapping);
   }
 
-  return (val) => (val as number | string | boolean).toString();
+  return (val) => (val as number | string).toString();
 }

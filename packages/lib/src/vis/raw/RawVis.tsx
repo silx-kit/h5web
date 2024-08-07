@@ -1,5 +1,8 @@
+import { isTypedArray } from '@h5web/shared/guards';
+
 import type { ClassStyleAttrs } from '../models';
 import styles from './RawVis.module.css';
+import { getTypedArrayClass } from './utils';
 
 const LARGE_THRESHOLD = 1_000_000;
 
@@ -10,10 +13,9 @@ interface Props extends ClassStyleAttrs {
 function RawVis(props: Props) {
   const { value, className = '', style } = props;
 
-  const valueAsStr =
-    value instanceof Uint8Array
-      ? `Uint8Array [ ${value.toString()} ]`
-      : JSON.stringify(value, null, 2);
+  const valueAsStr = isTypedArray(value)
+    ? `${getTypedArrayClass(value)} [ ${value.toString()} ]`
+    : JSON.stringify(value, null, 2);
 
   return (
     <div className={`${styles.root} ${className}`} style={style}>
