@@ -273,10 +273,9 @@ function parseDType(metadata: Metadata): DType {
   }
 
   if (h5tClass === H5T_CLASS.VLEN) {
-    // Not currently provided, so unable to know base type
-    // const { array_type } = metadata;
-    // assertDefined(array_type);
-    return arrayType(unknownType());
+    const { vlen_type } = metadata;
+    assertDefined(vlen_type);
+    return arrayType(parseDType(vlen_type));
   }
 
   if (h5tClass === H5T_CLASS.ARRAY) {

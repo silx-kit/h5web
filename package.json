@@ -53,6 +53,13 @@
     "wait-on": "7.2.0"
   },
   "pnpm": {
+    "packageExtensions": {
+      "@typescript-eslint/eslint-plugin": {
+        "dependencies": {
+          "typescript": "5.0.3"
+        }
+      }
+    },
     "peerDependencyRules": {
       "allowedVersions": {
         "@phenomnomnominal/tsquery>typescript": "5.x",

@@ -1,6 +1,12 @@
 import { Notation } from '@h5web/lib';
-import { isComplexType, isEnumType, isNumericType } from '@h5web/shared/guards';
+import {
+  isBoolType,
+  isComplexType,
+  isEnumType,
+  isNumericType,
+} from '@h5web/shared/guards';
 import type {
+  BooleanType,
   ComplexType,
   NumericType,
   PrintableCompoundType,
@@ -11,6 +17,7 @@ import type { ValueFormatter } from '@h5web/shared/vis-models';
 import {
   createComplexFormatter,
   createEnumFormatter,
+  formatBool,
 } from '@h5web/shared/vis-utils';
 import { format } from 'd3-format';
 
@@ -50,11 +57,15 @@ export function getFormatter(
     return createNumericFormatter(notation);
   }
 
+  if (isBoolType(type)) {
+    return formatBool as ValueFormatter<BooleanType>;
+  }
+
   if (isEnumType(type)) {
     return createEnumFormatter(type.mapping);
   }
 
-  return (val) => (val as string | boolean).toString();
+  return (val) => (val as string).toString(); // call `toString()` for safety, in case type cast is wrong
 }
 
 export function getCellWidth(
