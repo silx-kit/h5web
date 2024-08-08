@@ -579,6 +579,10 @@ importers:
       d3-array:
         specifier: 3.2.4
         version: 3.2.4
+    optionalDependencies:
+      zustand:
+        specifier: 4.5.4
+        version: 4.5.4(@types/react@18.3.3)(react@18.3.1)
     devDependencies:
       '@types/d3-array':
         specifier: ~3.2.1

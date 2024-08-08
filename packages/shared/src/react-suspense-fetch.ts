@@ -1,9 +1,14 @@
+import type { StoreApi } from 'zustand/vanilla';
+import { createStore } from 'zustand/vanilla';
+
 type FetchFunc<Input, Result> = (
   input: Input,
   signal: AbortSignal,
+  onProgress: OnProgress,
 ) => Promise<Result>;
 
 type AreEqual<Input> = (a: Input, b: Input) => boolean;
+export type OnProgress = (value: number) => void;
 
 interface Instance<Result> {
   get: () => Result;
@@ -20,6 +25,13 @@ export interface FetchStore<Input, Result> {
   evictErrors: () => void;
   abort: (input: Input, reason?: string) => void;
   abortAll: (reason?: string) => void;
+  get progressStore(): StoreApi<ProgressState<Input>>;
+}
+
+interface ProgressState<Input> {
+  ongoing: Map<Input, number>;
+  setProgress: (input: Input, value: number) => void;
+  clearProgress: (input: Input) => void;
 }
 
 export function createFetchStore<Input, Result>(
@@ -28,15 +40,30 @@ export function createFetchStore<Input, Result>(
 ) {
   const cache = createCache<Input, Instance<Result>>(areEqual);
 
+  const progressStore = createStore<ProgressState<Input>>((set, get) => ({
+    ongoing: new Map(),
+    setProgress: (input, value) => {
+      const ongoing = new Map(get().ongoing);
+      ongoing.set(input, value);
+      set({ ongoing });
+    },
+    clearProgress: (input) => {
+      const ongoing = new Map(get().ongoing);
+      ongoing.delete(input);
+      set({ ongoing });
+    },
+  }));
+
   return {
     has: (input: Input): boolean => cache.has(input),
     prefetch: (input: Input): void => {
       if (!cache.has(input)) {
-        cache.set(input, createInstance(input, fetchFunc));
+        cache.set(input, createInstance(input, fetchFunc, progressStore));
       }
     },
     get: (input: Input): Result => {
-      const instance = cache.get(input) || createInstance(input, fetchFunc);
+      const instance =
+        cache.get(input) || createInstance(input, fetchFunc, progressStore);
       cache.set(input, instance);
       return instance.get();
     },
@@ -62,6 +89,9 @@ export function createFetchStore<Input, Result>(
     },
     abortAll: (reason?: string): void => {
       cache.values().forEach((instance) => instance.abort(reason));
+    },
+    get progressStore() {
+      return progressStore;
     },
   };
 }
@@ -104,6 +134,7 @@ function createCache<K, V>(areEqual: AreEqual<K>) {
 function createInstance<Input, Result>(
   input: Input,
   fetchFunc: FetchFunc<Input, Result>,
+  progressStore: StoreApi<ProgressState<Input>>,
 ): Instance<Result> {
   let promise: Promise<void> | undefined;
   let result: Result | undefined;
@@ -112,10 +143,14 @@ function createInstance<Input, Result>(
 
   promise = (async () => {
     try {
-      result = await fetchFunc(input, controller.signal);
+      progressStore.getState().setProgress(input, 0);
+      result = await fetchFunc(input, controller.signal, (value) => {
+        progressStore.getState().setProgress(input, value);
+      });
     } catch (error_) {
       error = error_;
     } finally {
+      progressStore.getState().clearProgress(input);
       promise = undefined;
     }
   })();

@@ -35,6 +35,9 @@
     "ndarray-ops": "1.2.2",
     "react": ">=18"
   },
+  "optionalDependencies": {
+    "zustand": "4.5.4"
+  },
   "devDependencies": {
     "@types/d3-array": "~3.2.1",
     "@types/d3-format": "~3.0.4",
