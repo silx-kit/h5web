@@ -10,7 +10,27 @@ interface Props extends FallbackProps {
 function ErrorFallback(props: Props) {
   const { className = '', error, resetErrorBoundary } = props;
 
-  if (error.cause || error.cause instanceof Error) {
+  if (error.message === CANCELLED_ERROR_MSG) {
+    return (
+      <p className={`${styles.error} ${className}`}>
+        {CANCELLED_ERROR_MSG}
+        <span>–</span>
+        <button
+          className={styles.retryBtn}
+          type="button"
+          onClick={() => resetErrorBoundary()}
+        >
+          Retry?
+        </button>
+      </p>
+    );
+  }
+
+  if (
+    error.cause &&
+    error.cause instanceof Error &&
+    error.message !== error.cause.message
+  ) {
     const { message } = error.cause;
     return (
       <details className={`${styles.detailedError} ${className}`}>
@@ -20,23 +40,7 @@ function ErrorFallback(props: Props) {
     );
   }
 
-  return (
-    <p className={`${styles.error} ${className}`}>
-      {error.message}
-      {error.message === CANCELLED_ERROR_MSG && (
-        <>
-          <span>–</span>
-          <button
-            className={styles.retryBtn}
-            type="button"
-            onClick={() => resetErrorBoundary()}
-          >
-            Retry?
-          </button>
-        </>
-      )}
-    </p>
-  );
+  return <p className={`${styles.error} ${className}`}>{error.message}</p>;
 }
 
 export default ErrorFallback;

@@ -9,6 +9,10 @@ export type H5GroveDataResponse = unknown;
 export type H5GroveAttrValuesResponse = AttributeValues;
 export type H5GrovePathsResponse = string[];
 
+export interface H5GroveErrorResponse {
+  message: string;
+}
+
 export type H5GroveEntity =
   | H5GroveGroup
   | H5GroveDataset
