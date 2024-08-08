@@ -8,6 +8,7 @@ import type {
   Value,
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
+import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
 import type { AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
@@ -44,21 +45,29 @@ export class H5GroveApi extends DataProviderApi {
   public override async getValue(
     params: ValuesStoreParams,
     signal?: AbortSignal,
+    onProgress?: OnProgress,
   ): Promise<H5GroveDataResponse> {
     const { dataset } = params;
 
     if (dataset.type.class === DTypeClass.Opaque) {
-      return new Uint8Array(await this.fetchBinaryData(params, signal));
+      return new Uint8Array(
+        await this.fetchBinaryData(params, signal, onProgress),
+      );
     }
 
     const DTypedArray = h5groveTypedArrayFromDType(dataset.type);
     if (DTypedArray) {
-      const buffer = await this.fetchBinaryData(params, signal, true);
+      const buffer = await this.fetchBinaryData(
+        params,
+        signal,
+        onProgress,
+        true,
+      );
       const array = new DTypedArray(buffer);
       return hasScalarShape(dataset) ? array[0] : array;
     }
 
-    return this.fetchData(params, signal);
+    return this.fetchData(params, signal, onProgress);
   }
 
   public override async getAttrValues(
@@ -146,16 +155,17 @@ export class H5GroveApi extends DataProviderApi {
   private async fetchData(
     params: ValuesStoreParams,
     signal?: AbortSignal,
+    onProgress?: OnProgress,
   ): Promise<H5GroveDataResponse> {
     const { data } = await this.cancellableFetchValue(
       `/data/`,
-      params,
       {
         path: params.dataset.path,
         selection: params.selection,
         flatten: true,
       },
       signal,
+      onProgress,
     );
 
     return data;
@@ -164,11 +174,11 @@ export class H5GroveApi extends DataProviderApi {
   private async fetchBinaryData(
     params: ValuesStoreParams,
     signal?: AbortSignal,
+    onProgress?: OnProgress,
     safe = false,
   ): Promise<ArrayBuffer> {
     const { data } = await this.cancellableFetchValue(
       '/data/',
-      params,
       {
         path: params.dataset.path,
         selection: params.selection,
@@ -176,6 +186,7 @@ export class H5GroveApi extends DataProviderApi {
         dtype: safe ? 'safe' : undefined,
       },
       signal,
+      onProgress,
       'arraybuffer',
     );
 

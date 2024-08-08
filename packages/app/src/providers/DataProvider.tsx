@@ -11,7 +11,6 @@ import type {
   AttrName,
   AttrValuesStore,
   EntitiesStore,
-  ProgressCallback,
   ValuesStore,
 } from './models';
 
@@ -24,8 +23,6 @@ export interface DataContextValue {
 
   // Undocumented
   getExportURL?: DataProviderApi['getExportURL'];
-  addProgressListener: (cb: ProgressCallback) => void;
-  removeProgressListener: (cb: ProgressCallback) => void;
   getSearchablePaths?: DataProviderApi['getSearchablePaths'];
 }
 
@@ -92,8 +89,6 @@ function DataProvider(props: PropsWithChildren<Props>) {
         valuesStore,
         attrValuesStore,
         getExportURL: api.getExportURL?.bind(api),
-        addProgressListener: api.addProgressListener.bind(api),
-        removeProgressListener: api.removeProgressListener.bind(api),
         getSearchablePaths: api.getSearchablePaths?.bind(api),
       }}
     >

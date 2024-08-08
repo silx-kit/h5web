@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
-import { SLOW_TIMEOUT } from '../providers/mock/mock-api';
+import { SLOW_TIMEOUT } from '../providers/mock/utils';
 import { mockConsoleMethod, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
