@@ -18,6 +18,8 @@ import ndarray from 'ndarray';
 
 import { applyMapping } from '../../vis-packs/core/utils';
 
+export const SLOW_TIMEOUT = 3000;
+
 export function findMockEntity(
   group: GroupWithChildren,
   path: string,
@@ -57,4 +59,44 @@ export function sliceValue<T extends DType>(
   );
 
   return mappedArray.data;
+}
+
+export function getChildrenPaths(
+  mockFile: GroupWithChildren,
+  entityPath: string,
+): string[] {
+  const entity = findMockEntity(mockFile, entityPath);
+  if (!entity) {
+    return [];
+  }
+
+  if (!isGroup(entity)) {
+    return [entity.path];
+  }
+
+  return entity.children.reduce<string[]>(
+    (acc, child) => [...acc, ...getChildrenPaths(mockFile, child.path)],
+    [entity.path],
+  );
+}
+
+export async function cancellableDelay(signal?: AbortSignal) {
+  await new Promise<void>((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      signal?.removeEventListener('abort', handleAbort);
+      resolve();
+    }, SLOW_TIMEOUT);
+
+    function handleAbort() {
+      clearTimeout(timeout);
+      signal?.removeEventListener('abort', handleAbort);
+      reject(
+        new Error(
+          typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
+        ),
+      );
+    }
+
+    signal?.addEventListener('abort', handleAbort);
+  });
 }
