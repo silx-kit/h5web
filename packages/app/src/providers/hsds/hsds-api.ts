@@ -17,6 +17,7 @@ import type {
 } from '@h5web/shared/hdf5-models';
 import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
+import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
@@ -127,11 +128,12 @@ export class HsdsApi extends DataProviderApi {
   public override async getValue(
     params: ValuesStoreParams,
     signal?: AbortSignal,
+    onProgress?: OnProgress,
   ): Promise<unknown> {
     const { dataset } = params;
     assertHsdsDataset(dataset);
 
-    const value = await this.fetchValue(dataset.id, params, signal);
+    const value = await this.fetchValue(dataset.id, params, signal, onProgress);
 
     // https://github.com/HDFGroup/hsds/issues/88
     // HSDS does not reduce the number of dimensions when selecting indices
@@ -217,13 +219,14 @@ export class HsdsApi extends DataProviderApi {
     entityId: HsdsId,
     params: ValuesStoreParams,
     signal?: AbortSignal,
+    onProgress?: OnProgress,
   ): Promise<HsdsValueResponse> {
     const { selection } = params;
     const { data } = await this.cancellableFetchValue(
       `/datasets/${entityId}/value`,
-      params,
       { select: selection && `[${selection}]` },
       signal,
+      onProgress,
     );
     return data.value;
   }

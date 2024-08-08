@@ -2,7 +2,6 @@ import {
   assertArrayShape,
   assertDefined,
   hasNumericType,
-  isGroup,
 } from '@h5web/shared/guards';
 import type {
   ArrayShape,
@@ -22,9 +21,13 @@ import {
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
 import { makeMockFile } from './mock-file';
-import { findMockEntity, sliceValue } from './utils';
-
-export const SLOW_TIMEOUT = 3000;
+import {
+  cancellableDelay,
+  findMockEntity,
+  getChildrenPaths,
+  sliceValue,
+  SLOW_TIMEOUT,
+} from './utils';
 
 export class MockApi extends DataProviderApi {
   private readonly mockFile: GroupWithChildren;
@@ -33,6 +36,7 @@ export class MockApi extends DataProviderApi {
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     const mockFile = makeMockFile();
+
     super(mockFile.name);
     this.mockFile = mockFile;
   }
@@ -65,7 +69,7 @@ export class MockApi extends DataProviderApi {
     }
 
     if (dataset.name.startsWith('slow')) {
-      await this.cancellableDelay(signal);
+      await cancellableDelay(signal);
     }
 
     const { value } = dataset;
@@ -132,43 +136,6 @@ export class MockApi extends DataProviderApi {
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
-    return this.getEntityPaths(path);
-  }
-
-  private getEntityPaths(entityPath: string): string[] {
-    const entity = findMockEntity(this.mockFile, entityPath);
-    if (!entity) {
-      return [];
-    }
-
-    if (!isGroup(entity)) {
-      return [entity.path];
-    }
-
-    return entity.children.reduce<string[]>(
-      (acc, child) => [...acc, ...this.getEntityPaths(child.path)],
-      [entity.path],
-    );
-  }
-
-  private async cancellableDelay(signal?: AbortSignal) {
-    await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        signal?.removeEventListener('abort', handleAbort);
-        resolve();
-      }, SLOW_TIMEOUT);
-
-      function handleAbort() {
-        clearTimeout(timeout);
-        signal?.removeEventListener('abort', handleAbort);
-        reject(
-          new Error(
-            typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
-          ),
-        );
-      }
-
-      signal?.addEventListener('abort', handleAbort);
-    });
+    return getChildrenPaths(this.mockFile, path);
   }
 }
