@@ -18,10 +18,12 @@ import type {
 import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
 import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
+import type { AxiosInstance } from 'axios';
+import axios from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { handleAxiosError } from '../utils';
+import { createAxiosProgressHandler, processAxiosError } from '../utils';
 import type {
   BaseHsdsEntity,
   HsdsAttribute,
@@ -50,6 +52,7 @@ import {
 
 export class HsdsApi extends DataProviderApi {
   private readonly entities = new Map<string, HsdsEntity<ProvidedEntity>>();
+  private readonly client: AxiosInstance;
 
   /* API compatible with HSDS@6717a7bb8c2245492090be34ec3ccd63ecb20b70 */
   public constructor(
@@ -59,7 +62,9 @@ export class HsdsApi extends DataProviderApi {
     filepath: string,
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
-    super(filepath, {
+    super(filepath);
+
+    this.client = axios.create({
       adapter: 'fetch',
       baseURL: url,
       params: { domain: filepath },
@@ -105,9 +110,9 @@ export class HsdsApi extends DataProviderApi {
     }
 
     /* HSDS doesn't allow fetching entities by path.
-       We need to fetch every ascendant group right up to the root group
-       in order to find the ID of the entity at the requested path.
-       Entities are cached along the way for efficiency. */
+     * We need to fetch every ascendant group right up to the root group
+     * in order to find the ID of the entity at the requested path.
+     * Entities are cached along the way for efficiency. */
     const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
     const parentGroup = await this.getEntity(parentPath);
     assertGroup(parentGroup);
@@ -135,9 +140,9 @@ export class HsdsApi extends DataProviderApi {
 
     const value = await this.fetchValue(dataset.id, params, signal, onProgress);
 
-    // https://github.com/HDFGroup/hsds/issues/88
-    // HSDS does not reduce the number of dimensions when selecting indices
-    // Therefore the flattening must be done on all dimensions regardless of the selection
+    /* HSDS doesn't reduce the number of dimensions when selecting indices,
+     * so the flattening must be done on all dimensions regardless of the selection.
+     * https://github.com/HDFGroup/hsds/issues/88 */
     return hasArrayShape(dataset) ? flattenValue(value, dataset) : value;
   }
 
@@ -171,12 +176,14 @@ export class HsdsApi extends DataProviderApi {
   }
 
   private async fetchRootId(): Promise<HsdsId> {
-    const { data } = await handleAxiosError(
-      () => this.client.get<HsdsRootResponse>('/'),
-      (status) =>
-        status === 400 ? `File not found: ${this.filepath}` : undefined,
-    );
-    return data.root;
+    try {
+      const { data } = await this.client.get<HsdsRootResponse>('/');
+      return data.root;
+    } catch (error) {
+      throw processAxiosError(error, (axiosError) => {
+        return axiosError.status === 400 && `File not found: ${this.filepath}`;
+      });
+    }
   }
 
   private async fetchDataset(id: HsdsId): Promise<HsdsDatasetResponse> {
@@ -222,13 +229,24 @@ export class HsdsApi extends DataProviderApi {
     onProgress?: OnProgress,
   ): Promise<HsdsValueResponse> {
     const { selection } = params;
-    const { data } = await this.cancellableFetchValue(
-      `/datasets/${entityId}/value`,
-      { select: selection && `[${selection}]` },
-      signal,
-      onProgress,
-    );
-    return data.value;
+
+    try {
+      const { data } = await this.client.get(`/datasets/${entityId}/value`, {
+        params: { select: selection ? `[${selection}]` : undefined },
+        signal,
+        onDownloadProgress: createAxiosProgressHandler(onProgress),
+      });
+      return data.value;
+    } catch (error) {
+      throw processAxiosError(error, (axiosError) => {
+        return (
+          axios.isCancel(axiosError) &&
+          // Throw abort reason instead of axios `CancelError`
+          // https://github.com/axios/axios/issues/5758
+          (typeof signal?.reason === 'string' ? signal.reason : 'cancelled')
+        );
+      });
+    }
   }
 
   private async fetchAttributeWithValue(
