@@ -18,7 +18,11 @@ export const PLUGINS_BY_FILTER_ID: Record<number, Plugin> = {
 };
 
 export function hasBigInts(type: DType): boolean {
-  if (type.class === DTypeClass.Array || type.class === DTypeClass.Enum) {
+  if (
+    type.class === DTypeClass.Enum ||
+    type.class === DTypeClass.Array ||
+    type.class === DTypeClass.VLen
+  ) {
     return hasBigInts(type.base);
   }
 

@@ -208,7 +208,7 @@ export type Primitive<T extends DType> = T extends NumericType | EnumType
   : T extends StringType
     ? string
     : T extends BooleanType
-      ? boolean
+      ? number | boolean // let providers choose
       : T extends ComplexType
         ? H5WebComplex
         : T extends PrintableCompoundType
@@ -217,7 +217,7 @@ export type Primitive<T extends DType> = T extends NumericType | EnumType
 
 export type ArrayValue<T extends DType> =
   | Primitive<T>[]
-  | (T extends NumericType | EnumType ? TypedArray : never);
+  | (T extends NumericType | BooleanType | EnumType ? TypedArray : never);
 
 export type Value<D extends Dataset> =
   D extends Dataset<infer S, infer T>

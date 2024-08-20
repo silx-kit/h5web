@@ -4,7 +4,12 @@ import ndarray from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray } from './guards';
-import type { ComplexType, EnumType } from './hdf5-models';
+import type {
+  BooleanType,
+  ComplexType,
+  EnumType,
+  Primitive,
+} from './hdf5-models';
 import type {
   AnyNumArray,
   AxisScaleType,
@@ -52,6 +57,10 @@ export function formatTick(val: number | { valueOf(): number }): string {
   }
 
   return str;
+}
+
+export function formatBool(value: Primitive<BooleanType>): string {
+  return (typeof value === 'number' ? !!value : value).toString();
 }
 
 export function createComplexFormatter(

@@ -61,20 +61,12 @@ test.skipIf(SKIP)('test file matches snapshot', async () => {
   expect(children).toMatchSnapshot();
 });
 
-// Hide unstable uint8 value arrays for H5T_VLEN and H5T_REFERENCE datasets from snapshot
 function processValue(value: unknown, child: Dataset): unknown {
-  const { name, type } = child;
+  const { type } = child;
 
-  if (type.class === DTypeClass.Reference || type.class === DTypeClass.VLen) {
+  // Hide unstable H5T_REFERENCE values from snapshot
+  if (type.class === DTypeClass.Reference) {
     return `Uint8Array (unstable)`;
-  }
-
-  // Special case for compound dataset with H5T_VLEN field
-  if (name === 'compound_array_vlen_1D') {
-    return (value as [number[], Uint8Array][]).map((item) => [
-      item[0],
-      `Uint8Array (unstable)`,
-    ]);
   }
 
   return value;
