@@ -19,11 +19,11 @@ import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
 import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
 import type { AxiosInstance } from 'axios';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { createAxiosProgressHandler, processAxiosError } from '../utils';
+import { createAxiosProgressHandler } from '../utils';
 import type {
   BaseHsdsEntity,
   HsdsAttribute,
@@ -180,9 +180,11 @@ export class HsdsApi extends DataProviderApi {
       const { data } = await this.client.get<HsdsRootResponse>('/');
       return data.root;
     } catch (error) {
-      throw processAxiosError(error, (axiosError) => {
-        return axiosError.status === 400 && `File not found: ${this.filepath}`;
-      });
+      if (error instanceof AxiosError && error.status === 400) {
+        throw new Error(`File not found: ${this.filepath}`, { cause: error });
+      }
+
+      throw error;
     }
   }
 
@@ -236,16 +238,19 @@ export class HsdsApi extends DataProviderApi {
         signal,
         onDownloadProgress: createAxiosProgressHandler(onProgress),
       });
+
       return data.value;
     } catch (error) {
-      throw processAxiosError(error, (axiosError) => {
-        return (
-          axios.isCancel(axiosError) &&
-          // Throw abort reason instead of axios `CancelError`
-          // https://github.com/axios/axios/issues/5758
-          (typeof signal?.reason === 'string' ? signal.reason : 'cancelled')
+      if (error instanceof AxiosError && axios.isCancel(error)) {
+        // Throw abort reason instead of axios `CancelError`
+        // https://github.com/axios/axios/issues/5758
+        throw new Error(
+          typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
+          { cause: error },
         );
-      });
+      }
+
+      throw error;
     }
   }
 

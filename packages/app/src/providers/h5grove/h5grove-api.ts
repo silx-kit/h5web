@@ -10,11 +10,11 @@ import type {
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { DataProviderApi } from '../api';
 import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
-import { createAxiosProgressHandler, processAxiosError } from '../utils';
+import { createAxiosProgressHandler } from '../utils';
 import type {
   H5GroveAttrValuesResponse,
   H5GroveDataResponse,
@@ -23,8 +23,8 @@ import type {
 } from './models';
 import {
   h5groveTypedArrayFromDType,
+  isH5GroveError,
   parseEntity,
-  processFetchEntityError,
 } from './utils';
 
 export class H5GroveApi extends DataProviderApi {
@@ -79,14 +79,16 @@ export class H5GroveApi extends DataProviderApi {
 
       return await this.fetchData(params, signal, onProgress);
     } catch (error) {
-      throw processAxiosError(error, (axiosError) => {
-        return (
-          axios.isCancel(axiosError) &&
-          // Throw abort reason instead of axios `CancelError`
-          // https://github.com/axios/axios/issues/5758
-          (typeof signal?.reason === 'string' ? signal.reason : 'cancelled')
+      if (error instanceof AxiosError && axios.isCancel(error)) {
+        // Throw abort reason instead of axios `CancelError`
+        // https://github.com/axios/axios/issues/5758
+        throw new Error(
+          typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
+          { cause: error },
         );
-      });
+      }
+
+      throw error;
     }
   }
 
@@ -140,7 +142,33 @@ export class H5GroveApi extends DataProviderApi {
       });
       return data;
     } catch (error) {
-      throw processFetchEntityError(error, path, this.filepath);
+      if (
+        !(error instanceof AxiosError) ||
+        !isH5GroveError(error.response?.data)
+      ) {
+        throw error;
+      }
+
+      const { message } = error.response.data;
+      if (message.includes('File not found')) {
+        throw new Error(`File not found: '${this.filepath}'`, { cause: error });
+      }
+      if (message.includes('Permission denied')) {
+        throw new Error(
+          `Cannot read file '${this.filepath}': Permission denied`,
+          { cause: error },
+        );
+      }
+      if (message.includes('not a valid path')) {
+        throw new Error(`No entity found at ${path}`, { cause: error });
+      }
+      if (message.includes('Cannot resolve')) {
+        throw new Error(`Could not resolve soft link at ${path}`, {
+          cause: error,
+        });
+      }
+
+      throw error;
     }
   }
 

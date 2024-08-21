@@ -8,7 +8,6 @@ import type {
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
 import type { AxiosProgressEvent } from 'axios';
-import { AxiosError } from 'axios';
 
 import type { DataProviderApi } from './api';
 
@@ -75,20 +74,6 @@ export async function getValueOrError(
   } catch (error) {
     return error;
   }
-}
-
-export function processAxiosError(
-  error: unknown,
-  getMessageToThrow: (error: AxiosError) => string | false | undefined,
-): unknown {
-  if (error instanceof AxiosError) {
-    const messageToThrow = getMessageToThrow(error);
-    if (messageToThrow) {
-      return new Error(messageToThrow, { cause: error });
-    }
-  }
-
-  return error;
 }
 
 export function createAxiosProgressHandler(onProgress: OnProgress | undefined) {

@@ -24,7 +24,7 @@ import {
 } from '@h5web/shared/hdf5-utils';
 import type { TypedArrayConstructor } from '@h5web/shared/vis-models';
 
-import { processAxiosError, typedArrayFromDType } from '../utils';
+import { typedArrayFromDType } from '../utils';
 import type {
   H5GroveAttribute,
   H5GroveEntity,
@@ -134,46 +134,15 @@ function parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
   }));
 }
 
-function isH5GroveError(payload: unknown): payload is H5GroveErrorResponse {
+export function isH5GroveError(
+  payload: unknown,
+): payload is H5GroveErrorResponse {
   return (
     !!payload &&
     typeof payload === 'object' &&
     'message' in payload &&
     typeof payload.message === 'string'
   );
-}
-
-export function processFetchEntityError(
-  error: unknown,
-  entityPath: string,
-  filePath: string,
-): unknown {
-  return processAxiosError(error, (axiosError) => {
-    if (!axiosError.response) {
-      return undefined;
-    }
-
-    const { data } = axiosError.response;
-    if (!isH5GroveError(data)) {
-      return undefined;
-    }
-
-    const { message } = data;
-    if (message.includes('File not found')) {
-      return `File not found: '${filePath}'`;
-    }
-    if (message.includes('Permission denied')) {
-      return `Cannot read file '${filePath}': Permission denied`;
-    }
-    if (message.includes('not a valid path')) {
-      return `No entity found at ${entityPath}`;
-    }
-    if (message.includes('Cannot resolve')) {
-      return `Could not resolve soft link at ${entityPath}`;
-    }
-
-    return undefined;
-  });
 }
 
 export function parseDType(type: H5GroveType): DType {
