@@ -85,6 +85,8 @@ Check out these projects from the H5Web ecosystem:
   extension for JupyterLab
 - [vscode-h5web](https://github.com/silx-kit/vscode-h5web) – H5Web extension for
   Visual Studio Code
+- [h5whale](https://github.com/silx-kit/h5whale) – full-stack Docker application
+  to visualise HDF5 files
 - [h5grove](https://github.com/silx-kit/h5grove) – core utilities to serve HDF5
   file contents
 
