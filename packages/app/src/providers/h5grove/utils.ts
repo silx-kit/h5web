@@ -25,7 +25,12 @@ import {
 import type { TypedArrayConstructor } from '@h5web/shared/vis-models';
 
 import { typedArrayFromDType } from '../utils';
-import type { H5GroveAttribute, H5GroveEntity, H5GroveType } from './models';
+import type {
+  H5GroveAttribute,
+  H5GroveEntity,
+  H5GroveErrorResponse,
+  H5GroveType,
+} from './models';
 
 export function parseEntity(
   path: string,
@@ -129,8 +134,15 @@ function parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
   }));
 }
 
-export function hasErrorMessage(error: unknown): error is { message: string } {
-  return !!error && typeof error === 'object' && 'message' in error;
+export function isH5GroveError(
+  payload: unknown,
+): payload is H5GroveErrorResponse {
+  return (
+    !!payload &&
+    typeof payload === 'object' &&
+    'message' in payload &&
+    typeof payload.message === 'string'
+  );
 }
 
 export function parseDType(type: H5GroveType): DType {

@@ -6,31 +6,12 @@ import type {
   ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
-import { AxiosError } from 'axios';
+import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
+import type { AxiosProgressEvent } from 'axios';
 
 import type { DataProviderApi } from './api';
 
 export const CANCELLED_ERROR_MSG = 'Request cancelled';
-
-export async function handleAxiosError<T>(
-  func: () => Promise<T>,
-  getErrorToThrow: (status: number, errorData: unknown) => string | undefined,
-): Promise<T> {
-  try {
-    return await func();
-  } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      const { status, data } = error.response;
-      const errorToThrow = getErrorToThrow(status, data);
-
-      if (errorToThrow) {
-        throw new Error(errorToThrow);
-      }
-    }
-
-    throw error;
-  }
-}
 
 export function typedArrayFromDType(dtype: DType) {
   if (isEnumType(dtype)) {
@@ -93,4 +74,15 @@ export async function getValueOrError(
   } catch (error) {
     return error;
   }
+}
+
+export function createAxiosProgressHandler(onProgress: OnProgress | undefined) {
+  return (
+    onProgress &&
+    ((evt: AxiosProgressEvent) => {
+      if (evt.total !== undefined && evt.total > 0) {
+        onProgress(evt.loaded / evt.total);
+      }
+    })
+  );
 }
