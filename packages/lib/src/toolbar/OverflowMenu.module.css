@@ -5,6 +5,6 @@
 
 .control {
   display: flex;
-  justify-content: flex-end;
+  justify-content: var(--h5w-overflowMenu-control--justify, flex-end);
   min-height: calc(var(--h5w-btn--height, 1.875rem) + 0.5rem);
 }
