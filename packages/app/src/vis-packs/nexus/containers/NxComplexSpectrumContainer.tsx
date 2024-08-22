@@ -2,7 +2,7 @@ import { ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { useDimMappingState } from '../../../dimension-mapper/hooks';
+import { useDimMappingState } from '../../../dimension-mapper/store';
 import { useComplexLineConfig } from '../../core/complex/lineConfig';
 import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
 import { useLineConfig } from '../../core/line/config';

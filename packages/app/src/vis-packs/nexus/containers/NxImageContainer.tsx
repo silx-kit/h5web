@@ -2,7 +2,7 @@ import { assertGroup, assertMinDims } from '@h5web/shared/guards';
 import { useState } from 'react';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { useDimMappingState } from '../../../dimension-mapper/hooks';
+import { useDimMappingState } from '../../../dimension-mapper/store';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { getSliceSelection } from '../../core/utils';

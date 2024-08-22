@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
-import { renderApp, waitForAllLoaders } from '../test-utils';
+import { getDimMappingBtn, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('control mapping for X axis when visualizing 2D dataset as Line', async () => {
@@ -100,14 +100,92 @@ test('slice through 2D dataset', async () => {
   const { user } = await renderApp({
     initialPath: '/nD_datasets/twoD',
     preferredVis: Vis.Line,
-    withFakeTimers: true, // required since React 18 upgrade (along with `waitForAllLoaders` below)
   });
-
-  await waitForAllLoaders();
 
   // Move to next slice with keyboard
   const d0Slider = screen.getByRole('slider', { name: 'D0' });
   await user.type(d0Slider, '{ArrowUp}');
 
   expect(d0Slider).toHaveAttribute('aria-valuenow', '1');
+});
+
+test('maintain mapping when switching to inspect mode and back', async () => {
+  const { user } = await renderApp({
+    initialPath: '/nD_datasets/twoD',
+    preferredVis: Vis.Heatmap,
+  });
+
+  // Swap axes for D0 and D1
+  await user.click(getDimMappingBtn('x', 0));
+
+  // Toggle inspect mode
+  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
+  await user.click(screen.getByRole('tab', { name: 'Display' }));
+
+  expect(getDimMappingBtn('x', 0)).toBeChecked();
+  expect(getDimMappingBtn('x', 1)).not.toBeChecked();
+});
+
+test('maintain mapping when switching to visualization with same axes count', async () => {
+  const { user, selectVisTab } = await renderApp({
+    initialPath: '/nD_datasets/twoD',
+    preferredVis: Vis.Heatmap,
+  });
+
+  // Swap axes for D0 and D1
+  await user.click(getDimMappingBtn('x', 0));
+
+  // Switch to Matrix visualization
+  await selectVisTab(Vis.Matrix);
+
+  expect(getDimMappingBtn('x', 0)).toBeChecked();
+  expect(getDimMappingBtn('x', 1)).not.toBeChecked();
+});
+
+test('maintain mapping when switching to dataset with same dimensions', async () => {
+  const { user, selectExplorerNode } = await renderApp({
+    initialPath: '/nD_datasets/twoD_bool',
+    preferredVis: Vis.Line,
+  });
+
+  // Swap axes for D0 and D1
+  await user.click(getDimMappingBtn('x', 0));
+
+  // Switch to dataset with same dimensions
+  await selectExplorerNode('twoD_enum');
+
+  expect(getDimMappingBtn('x', 0)).toBeChecked();
+  expect(getDimMappingBtn('x', 1)).not.toBeChecked();
+});
+
+test('reset mapping when switching to visualization with different axes count', async () => {
+  const { user, selectVisTab } = await renderApp({
+    initialPath: '/nD_datasets/twoD',
+    preferredVis: Vis.Heatmap,
+  });
+
+  // Swap axes for D0 and D1
+  await user.click(getDimMappingBtn('x', 0));
+
+  // Switch to Line visualization
+  await selectVisTab(Vis.Line);
+
+  expect(getDimMappingBtn('x', 0)).not.toBeChecked();
+  expect(getDimMappingBtn('x', 1)).toBeChecked();
+});
+
+test('reset mapping when switching to dataset with different dimensions', async () => {
+  const { user, selectExplorerNode } = await renderApp({
+    initialPath: '/nD_datasets/twoD',
+    preferredVis: Vis.Heatmap,
+  });
+
+  // Swap axes for D0 and D1
+  await user.click(getDimMappingBtn('x', 0));
+
+  // Switch to dataset with different dimensions
+  await selectExplorerNode('twoD_cplx');
+
+  expect(getDimMappingBtn('x', 0)).not.toBeChecked();
+  expect(getDimMappingBtn('x', 1)).toBeChecked();
 });

@@ -118,6 +118,11 @@ export function getSelectedVisTab(): string {
   return selectedTab.textContent;
 }
 
+export function getDimMappingBtn(axis: 'x' | 'y', dim: number): HTMLElement {
+  const radioGroup = screen.getByLabelText(`Dimension as ${axis} axis`);
+  return within(radioGroup).getByRole('radio', { name: `D${dim}` });
+}
+
 /**
  * Mock a console method.
  * Mocks are automatically cleared and restored after every test but you
