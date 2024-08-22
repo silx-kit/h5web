@@ -8,6 +8,7 @@ import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 import styles from './App.module.css';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
 import type { FeedbackContext } from './breadcrumbs/models';
+import { DimMappingProvider } from './dimension-mapper/store';
 import EntityLoader from './EntityLoader';
 import ErrorFallback from './ErrorFallback';
 import MetadataViewer from './metadata-viewer/MetadataViewer';
@@ -84,21 +85,25 @@ function App(props: Props) {
             getFeedbackURL={getFeedbackURL}
           />
           <VisConfigProvider>
-            <ErrorBoundary
-              resetKeys={[selectedPath, isInspecting]}
-              FallbackComponent={ErrorFallback}
-            >
-              <Suspense fallback={<EntityLoader isInspecting={isInspecting} />}>
-                {isInspecting ? (
-                  <MetadataViewer
-                    path={selectedPath}
-                    onSelectPath={onSelectPath}
-                  />
-                ) : (
-                  <Visualizer path={selectedPath} />
-                )}
-              </Suspense>
-            </ErrorBoundary>
+            <DimMappingProvider>
+              <ErrorBoundary
+                resetKeys={[selectedPath, isInspecting]}
+                FallbackComponent={ErrorFallback}
+              >
+                <Suspense
+                  fallback={<EntityLoader isInspecting={isInspecting} />}
+                >
+                  {isInspecting ? (
+                    <MetadataViewer
+                      path={selectedPath}
+                      onSelectPath={onSelectPath}
+                    />
+                  ) : (
+                    <Visualizer path={selectedPath} />
+                  )}
+                </Suspense>
+              </ErrorBoundary>
+            </DimMappingProvider>
           </VisConfigProvider>
         </ReflexElement>
       </ReflexContainer>

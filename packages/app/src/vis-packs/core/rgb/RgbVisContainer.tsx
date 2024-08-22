@@ -6,7 +6,7 @@ import {
 } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { useDimMappingState } from '../../../dimension-mapper/hooks';
+import { useDimMappingState } from '../../../dimension-mapper/store';
 import { useDataContext } from '../../../providers/DataProvider';
 import type { VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
