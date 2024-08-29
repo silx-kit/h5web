@@ -1,10 +1,4 @@
 import type {
-  BooleanType,
-  ComplexType,
-  NumericType,
-  StringType,
-} from '@h5web/shared/hdf5-models';
-import type {
   AxisScaleType,
   ColorScaleType,
   Domain,
@@ -86,12 +80,6 @@ export interface AxisParams {
 }
 
 export type Coords = [x: number, y: number];
-
-export type PrintableType =
-  | BooleanType
-  | NumericType
-  | ComplexType
-  | StringType;
 
 export interface HistogramParams {
   values: NumArray;

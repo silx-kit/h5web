@@ -20,6 +20,7 @@ import {
   buildEntityPath,
   cplxType,
   floatType,
+  intType,
   strType,
   unknownType,
 } from './hdf5-utils';
@@ -297,7 +298,7 @@ function guessType(value: unknown): DType {
   }
 
   if (typeof value === 'boolean') {
-    return boolType();
+    return boolType(intType(8));
   }
 
   if (

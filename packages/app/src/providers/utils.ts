@@ -1,4 +1,4 @@
-import { isEnumType, isNumericType } from '@h5web/shared/guards';
+import { isBoolType, isEnumType, isNumericType } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Dataset,
@@ -8,13 +8,14 @@ import type {
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
 import type { AxiosProgressEvent } from 'axios';
+import { isAxiosError } from 'axios';
 
 import type { DataProviderApi } from './api';
 
 export const CANCELLED_ERROR_MSG = 'Request cancelled';
 
 export function typedArrayFromDType(dtype: DType) {
-  if (isEnumType(dtype)) {
+  if (isEnumType(dtype) || isBoolType(dtype)) {
     return typedArrayFromDType(dtype.base);
   }
 
@@ -72,7 +73,7 @@ export async function getValueOrError(
   try {
     return await api.getValue({ dataset });
   } catch (error) {
-    return error;
+    return isAxiosError(error) ? error.message : error;
   }
 }
 

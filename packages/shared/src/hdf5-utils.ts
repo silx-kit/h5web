@@ -98,10 +98,6 @@ export function strType(
   };
 }
 
-export function boolType(): BooleanType {
-  return { class: DTypeClass.Bool };
-}
-
 export function cplxType(
   realType: NumericType,
   imagType = realType,
@@ -139,6 +135,10 @@ export function arrayType<T extends DType>(
   };
 }
 
+export function boolType(baseType: NumericType): BooleanType {
+  return { class: DTypeClass.Bool, base: baseType };
+}
+
 export function enumType(
   baseType: NumericType,
   hdf5Mapping: Record<string, number>,
@@ -162,7 +162,7 @@ export function enumOrBoolType(
     hdf5Mapping.FALSE === 0 &&
     hdf5Mapping.TRUE === 1
   ) {
-    return boolType();
+    return boolType(baseType);
   }
 
   return enumType(baseType, hdf5Mapping);

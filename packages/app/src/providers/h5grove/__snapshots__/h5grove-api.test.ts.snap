@@ -1431,6 +1431,11 @@ exports[`test file matches snapshot 1`] = `
               "size": 64,
             },
             "bool": {
+              "base": {
+                "class": "Integer",
+                "endianness": "little-endian",
+                "size": 8,
+              },
               "class": "Boolean",
             },
             "cplx": {
@@ -1605,6 +1610,11 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": null,
     "type": {
+      "base": {
+        "class": "Integer (unsigned)",
+        "endianness": "little-endian",
+        "size": 8,
+      },
       "class": "Boolean",
     },
     "value": null,
@@ -1629,9 +1639,14 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": [],
     "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 8,
+      },
       "class": "Boolean",
     },
-    "value": false,
+    "value": 0,
   },
   {
     "name": "bool_true_scalar",
@@ -1653,9 +1668,14 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": [],
     "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 8,
+      },
       "class": "Boolean",
     },
-    "value": true,
+    "value": 1,
   },
   {
     "name": "bool_2D",
@@ -1680,17 +1700,22 @@ exports[`test file matches snapshot 1`] = `
       4,
     ],
     "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 8,
+      },
       "class": "Boolean",
     },
-    "value": [
-      true,
-      false,
-      true,
-      true,
-      false,
-      false,
-      true,
-      false,
+    "value": Int8Array [
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
     ],
   },
   {
