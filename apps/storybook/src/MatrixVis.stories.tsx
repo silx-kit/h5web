@@ -1,5 +1,4 @@
 import { MatrixVis, mockValues } from '@h5web/lib';
-import type { H5WebComplex } from '@h5web/shared/hdf5-models';
 import {
   createComplexFormatter,
   toTypedNdArray,
@@ -10,10 +9,11 @@ import { format } from 'd3-format';
 import FillHeight from './decorators/FillHeight';
 
 const dataArray = mockValues.twoD();
+const typedDataArray = toTypedNdArray(dataArray, Float32Array);
 const complexDataArray = mockValues.twoD_cplx();
 
-const formatMatrixValue = format('.3e');
-const formatMatrixComplex = createComplexFormatter('.2e', true);
+const formatNum = format('.3e');
+const formatCplx = createComplexFormatter('.2e', true);
 
 const meta = {
   title: 'Visualizations/MatrixVis',
@@ -30,8 +30,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default = {
   args: {
-    dataArray,
-    formatter: (val) => formatMatrixValue(val as number),
+    dims: dataArray.shape,
+    cellFormatter: (row, col) => formatNum(dataArray.get(row, col)),
   },
 } satisfies Story;
 
@@ -51,16 +51,16 @@ export const StaticHeaderCells = {
 
 export const Complex = {
   args: {
-    dataArray: complexDataArray,
-    formatter: (val) => formatMatrixComplex(val as H5WebComplex),
+    dims: complexDataArray.shape,
+    cellFormatter: (row, col) => formatCplx(complexDataArray.get(row, col)),
     cellWidth: 232,
   },
 } satisfies Story;
 
 export const TypedArray = {
   args: {
-    dataArray: toTypedNdArray(dataArray, Float32Array),
-    formatter: (val) => formatMatrixValue(val as number),
+    dims: typedDataArray.shape,
+    cellFormatter: (row, col) => formatNum(typedDataArray.get(row, col)),
   },
 } satisfies Story;
 

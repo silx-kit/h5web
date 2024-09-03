@@ -1,7 +1,6 @@
-import type { ArrayValue, Primitive } from '@h5web/shared/hdf5-models';
-import type { NdArray } from 'ndarray';
+import type { ArrayShape } from '@h5web/shared/hdf5-models';
 
-import type { ClassStyleAttrs, PrintableType } from '../models';
+import type { ClassStyleAttrs } from '../models';
 import GridProvider from './context';
 import Grid from './Grid';
 
@@ -9,8 +8,8 @@ const ROW_HEADERS_WIDTH = 80;
 const CELL_HEIGHT = 32;
 
 interface Props extends ClassStyleAttrs {
-  dataArray: NdArray<ArrayValue<PrintableType>>;
-  formatter: (value: Primitive<PrintableType>, colIndex: number) => string;
+  dims: ArrayShape;
+  cellFormatter: (row: number, col: number) => string;
   cellWidth: number;
   sticky?: boolean;
   columnHeaders?: string[];
@@ -18,22 +17,15 @@ interface Props extends ClassStyleAttrs {
 
 function MatrixVis(props: Props) {
   const {
-    dataArray,
-    formatter,
+    dims,
+    cellFormatter,
     cellWidth,
     sticky = true,
     columnHeaders,
     className = '',
     style,
   } = props;
-  const dims = dataArray.shape;
-
   const [rowCount, columnCount = 1] = dims;
-
-  const cellFormatter =
-    dims.length === 1
-      ? (row: number) => formatter(dataArray.get(row), 0)
-      : (row: number, col: number) => formatter(dataArray.get(row, col), col);
 
   return (
     <GridProvider

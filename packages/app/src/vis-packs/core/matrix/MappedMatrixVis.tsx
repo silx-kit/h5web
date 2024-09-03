@@ -1,9 +1,9 @@
 import { MatrixVis } from '@h5web/lib';
 import type {
   ArrayShape,
-  ArrayValue,
   Dataset,
   PrintableType,
+  Value,
 } from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
@@ -18,7 +18,7 @@ import { getCellWidth, getFormatter } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
-  value: ArrayValue<PrintableType>;
+  value: Value<Props['dataset']>;
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;
   config: MatrixVisConfig;
@@ -56,8 +56,10 @@ function MappedMatrixVis(props: Props) {
 
       <MatrixVis
         className={visualizerStyles.vis}
-        dataArray={mappedArray}
-        formatter={formatter}
+        dims={mappedArray.shape}
+        cellFormatter={(row: number, col: number) =>
+          formatter(mappedArray.get(row, col))
+        }
         cellWidth={customCellWidth ?? cellWidth}
         sticky={sticky}
       />
