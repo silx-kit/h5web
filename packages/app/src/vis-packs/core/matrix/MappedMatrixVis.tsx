@@ -14,7 +14,7 @@ import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { getSliceSelection } from '../utils';
 import type { MatrixVisConfig } from './config';
 import MatrixToolbar from './MatrixToolbar';
-import { getCellWidth, getFormatter } from './utils';
+import { getCellFormatter, getCellWidth } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
@@ -32,7 +32,7 @@ function MappedMatrixVis(props: Props) {
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const mappedArray = useMappedArray(value, slicedDims, slicedMapping);
 
-  const formatter = getFormatter(type, notation);
+  const cellFormatter = getCellFormatter(mappedArray, type, notation);
   const cellWidth = getCellWidth(type);
 
   const { getExportURL } = useDataContext();
@@ -57,9 +57,7 @@ function MappedMatrixVis(props: Props) {
       <MatrixVis
         className={visualizerStyles.vis}
         dims={mappedArray.shape}
-        cellFormatter={(row: number, col: number) =>
-          formatter(mappedArray.get(row, col))
-        }
+        cellFormatter={cellFormatter}
         cellWidth={customCellWidth ?? cellWidth}
         sticky={sticky}
       />

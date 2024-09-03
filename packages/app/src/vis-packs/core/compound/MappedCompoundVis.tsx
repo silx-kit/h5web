@@ -14,7 +14,7 @@ import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import type { MatrixVisConfig } from '../matrix/config';
 import MatrixToolbar from '../matrix/MatrixToolbar';
-import { getCellWidth, getFormatter } from '../matrix/utils';
+import { getCellFormatter, getCellWidth } from '../matrix/utils';
 import { getSliceSelection } from '../utils';
 
 interface Props {
@@ -46,7 +46,7 @@ function MappedCompoundVis(props: Props) {
   );
 
   const fieldFormatters = Object.values(fields).map((field) =>
-    getFormatter(field, notation),
+    getCellFormatter(mappedArray, field, notation),
   );
 
   const { getExportURL } = useDataContext();
@@ -70,9 +70,7 @@ function MappedCompoundVis(props: Props) {
       <MatrixVis
         className={visualizerStyles.vis}
         dims={mappedArray.shape}
-        cellFormatter={(row, col) =>
-          fieldFormatters[col](mappedArray.get(row, col))
-        }
+        cellFormatter={(row, col) => fieldFormatters[col](row, col)}
         cellWidth={customCellWidth ?? cellWidth}
         columnHeaders={fieldNames}
         sticky={sticky}

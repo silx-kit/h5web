@@ -1,12 +1,13 @@
 import { Notation } from '@h5web/lib';
 import {
+  assertNdArrayValue,
   isBoolType,
   isComplexType,
   isEnumType,
   isNumericType,
 } from '@h5web/shared/guards';
 import type {
-  BooleanType,
+  ArrayValue,
   ComplexType,
   NumericType,
   PrintableCompoundType,
@@ -20,6 +21,7 @@ import {
   formatBool,
 } from '@h5web/shared/vis-utils';
 import { format } from 'd3-format';
+import type { NdArray } from 'ndarray';
 
 export function createNumericFormatter(
   notation: Notation,
@@ -45,27 +47,37 @@ export function createMatrixComplexFormatter(
   return createComplexFormatter(formatStr, true);
 }
 
-export function getFormatter(
+export function getCellFormatter(
+  dataArray: NdArray<ArrayValue<PrintableType>>,
   type: PrintableType,
   notation: Notation,
-): ValueFormatter<PrintableType> {
+): (row: number, col: number) => string {
   if (isComplexType(type)) {
-    return createMatrixComplexFormatter(notation);
+    assertNdArrayValue(type, dataArray);
+    const formatter = createMatrixComplexFormatter(notation);
+    return (row, col) => formatter(dataArray.get(row, col));
   }
 
   if (isNumericType(type)) {
-    return createNumericFormatter(notation);
+    assertNdArrayValue(type, dataArray);
+    const formatter = createNumericFormatter(notation);
+    return (row, col) => formatter(dataArray.get(row, col));
   }
 
   if (isBoolType(type)) {
-    return formatBool as ValueFormatter<BooleanType>;
+    assertNdArrayValue(type, dataArray);
+    return (row, col) => formatBool(dataArray.get(row, col));
   }
 
   if (isEnumType(type)) {
-    return createEnumFormatter(type.mapping);
+    assertNdArrayValue(type, dataArray);
+    const formatter = createEnumFormatter(type.mapping);
+    return (row, col) => formatter(dataArray.get(row, col));
   }
 
-  return (val) => (val as string).toString(); // call `toString()` for safety, in case type cast is wrong
+  // `StringType`
+  assertNdArrayValue(type, dataArray);
+  return (row, col) => dataArray.get(row, col);
 }
 
 export function getCellWidth(

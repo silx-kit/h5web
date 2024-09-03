@@ -2,6 +2,7 @@ import type { Data, NdArray, TypedArray } from 'ndarray';
 
 import type {
   ArrayShape,
+  ArrayValue,
   BooleanType,
   ComplexArray,
   ComplexType,
@@ -435,6 +436,15 @@ function assertPrimitiveValue<T extends DType>(
     assertComplex(value);
   } else if (isCompoundType(type)) {
     assertArray(value);
+  }
+}
+
+export function assertNdArrayValue<T extends DType>(
+  type: T,
+  value: NdArray<unknown[] | TypedArray>,
+): asserts value is NdArray<ArrayValue<T>> {
+  if (value.data.length > 0) {
+    assertPrimitiveValue(type, value.data[0]);
   }
 }
 
