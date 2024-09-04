@@ -1,11 +1,10 @@
-import { isEnumType, isNumericType } from '@h5web/shared/guards';
+import { isEnumType, isFloatType, isIntegerType } from '@h5web/shared/guards';
 import type {
   ArrayShape,
   Dataset,
   DType,
   ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
 import type { AxiosProgressEvent } from 'axios';
 
@@ -18,15 +17,8 @@ export function typedArrayFromDType(dtype: DType) {
     return typedArrayFromDType(dtype.base);
   }
 
-  if (!isNumericType(dtype)) {
-    return undefined;
-  }
-
-  /* Adapted from https://github.com/ludwigschubert/js-numpy-parser/blob/v1.2.3/src/main.js#L116 */
-  const { class: dtypeClass, size } = dtype;
-
-  if (dtypeClass === DTypeClass.Integer) {
-    switch (size) {
+  if (isIntegerType(dtype) && dtype.signed) {
+    switch (dtype.size) {
       case 8:
         return Int8Array;
       case 16:
@@ -38,8 +30,8 @@ export function typedArrayFromDType(dtype: DType) {
     }
   }
 
-  if (dtypeClass === DTypeClass.Unsigned) {
-    switch (size) {
+  if (isIntegerType(dtype) && !dtype.signed) {
+    switch (dtype.size) {
       case 8:
         return Uint8Array;
       case 16:
@@ -51,8 +43,8 @@ export function typedArrayFromDType(dtype: DType) {
     }
   }
 
-  if (dtypeClass === DTypeClass.Float) {
-    switch (size) {
+  if (isFloatType(dtype)) {
+    switch (dtype.size) {
       case 16: // No support for 16-bit floating values in JS
         return undefined;
       case 32:

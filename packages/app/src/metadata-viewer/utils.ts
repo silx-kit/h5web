@@ -1,5 +1,6 @@
 import {
   isH5WebComplex,
+  isIntegerType,
   isNumericType,
   isScalarShape,
 } from '@h5web/shared/guards';
@@ -29,7 +30,9 @@ export function renderShape(shape: Shape): string {
 export function renderType(type: DType): string {
   if (isNumericType(type)) {
     const { endianness, size } = type;
-    return `${type.class}, ${size}-bit${endianness ? `, ${endianness}` : ''}`;
+    const signStr = isIntegerType(type) && !type.signed ? ' (unsigned)' : '';
+    const endiannessStr = endianness ? `, ${endianness}` : '';
+    return `${type.class}${signStr}, ${size}-bit${endiannessStr}`;
   }
 
   if (type.class === DTypeClass.String) {

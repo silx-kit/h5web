@@ -1,5 +1,5 @@
 import { isNumericType } from '@h5web/shared/guards';
-import { H5T_CLASS } from '@h5web/shared/h5t';
+import { H5T_CLASS, H5T_SIGN } from '@h5web/shared/h5t';
 import type {
   Attribute,
   ChildEntity,
@@ -15,7 +15,7 @@ import {
   compoundOrCplxType,
   enumOrBoolType,
   floatType,
-  intOrUintType,
+  intType,
   opaqueType,
   referenceType,
   strType,
@@ -149,7 +149,7 @@ export function parseDType(type: H5GroveType): DType {
   const { class: h5tClass, size } = type;
 
   if (h5tClass === H5T_CLASS.INTEGER) {
-    return intOrUintType(type.sign, size * 8, type.order);
+    return intType(type.sign === H5T_SIGN.SIGN_2, size * 8, type.order);
   }
 
   if (h5tClass === H5T_CLASS.FLOAT) {

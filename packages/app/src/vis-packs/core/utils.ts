@@ -1,4 +1,4 @@
-import { isNumericType } from '@h5web/shared/guards';
+import { isIntegerType, isNumericType } from '@h5web/shared/guards';
 import type { ArrayValue, NumericLikeType } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { Axis, Domain, NumArray } from '@h5web/shared/vis-models';
@@ -100,10 +100,11 @@ const TYPE_STRINGS: Record<NumericLikeType['class'], string> = {
   [DTypeClass.Bool]: 'bool',
   [DTypeClass.Enum]: 'enum',
   [DTypeClass.Integer]: 'int',
-  [DTypeClass.Unsigned]: 'uint',
   [DTypeClass.Float]: 'float',
 };
 
 export function formatNumLikeType(type: NumericLikeType): string {
-  return `${TYPE_STRINGS[type.class]}${isNumericType(type) ? type.size : ''}`;
+  const unsignedPrefix = isIntegerType(type) && !type.signed ? 'u' : '';
+  const sizeSuffix = isNumericType(type) ? type.size : '';
+  return `${unsignedPrefix}${TYPE_STRINGS[type.class]}${sizeSuffix}`;
 }

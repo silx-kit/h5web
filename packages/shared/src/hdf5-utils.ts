@@ -2,7 +2,6 @@ import { isNumericType } from './guards';
 import {
   H5T_CSET,
   H5T_ORDER,
-  H5T_SIGN,
   H5T_STR,
   H5T_TO_CHAR_SET,
   H5T_TO_ENDIANNESS,
@@ -19,6 +18,7 @@ import type {
   EnumType,
   GroupWithChildren,
   H5WebComplex,
+  IntegerType,
   NumericType,
   OpaqueType,
   PrintableType,
@@ -52,29 +52,17 @@ export function getNameFromPath(path: string) {
 /* ----------------- */
 /* ----- TYPES ----- */
 
-export function intType(size = 32, h5tOrder = H5T_ORDER.LE): NumericType {
-  return {
-    class: DTypeClass.Integer,
-    endianness: H5T_TO_ENDIANNESS[h5tOrder],
-    size,
-  };
-}
-
-export function uintType(size = 32, h5tOrder = H5T_ORDER.LE): NumericType {
-  return {
-    class: DTypeClass.Unsigned,
-    endianness: H5T_TO_ENDIANNESS[h5tOrder],
-    size,
-  };
-}
-
-export function intOrUintType(
-  h5tSign: H5T_SIGN,
+export function intType(
+  signed = true,
   size = 32,
   h5tOrder = H5T_ORDER.LE,
-) {
-  const func = h5tSign === H5T_SIGN.SIGN_2 ? intType : uintType;
-  return func(size, h5tOrder);
+): IntegerType {
+  return {
+    class: DTypeClass.Integer,
+    signed,
+    endianness: H5T_TO_ENDIANNESS[h5tOrder],
+    size,
+  };
 }
 
 export function floatType(size = 32, h5tOrder = H5T_ORDER.LE): NumericType {
