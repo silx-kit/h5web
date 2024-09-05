@@ -1,4 +1,4 @@
-import { isTypedArray } from '@h5web/shared/guards';
+import { isAnyTypedArray } from '@h5web/shared/guards';
 
 import type { ClassStyleAttrs } from '../models';
 import styles from './RawVis.module.css';
@@ -12,7 +12,7 @@ interface Props extends ClassStyleAttrs {
 function RawVis(props: Props) {
   const { value, className = '', style } = props;
 
-  const valueAsStr = isTypedArray(value)
+  const valueAsStr = isAnyTypedArray(value)
     ? `${value.constructor.name} [ ${value.toString()} ]`
     : JSON.stringify(value, null, 2);
 

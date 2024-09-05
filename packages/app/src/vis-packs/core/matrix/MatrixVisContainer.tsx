@@ -1,7 +1,7 @@
 import {
   assertArrayShape,
   assertDataset,
-  assertPrintableType,
+  assertPrintableOrBigIntType,
 } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -18,7 +18,7 @@ function MatrixVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
-  assertPrintableType(entity);
+  assertPrintableOrBigIntType(entity);
 
   const { shape: dims } = entity;
   const axesCount = Math.min(dims.length, 2);

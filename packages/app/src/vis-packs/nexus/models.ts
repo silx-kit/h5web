@@ -2,6 +2,7 @@ import type { AxisScaleType, ColorScaleType } from '@h5web/lib';
 import type {
   ArrayShape,
   ArrayValue,
+  BigIntegerType,
   ComplexType,
   Dataset,
   NumArrayDataset,
@@ -30,7 +31,10 @@ export interface DatasetInfo {
 }
 
 export interface DatasetDef<
-  T extends NumericLikeType | ComplexType = NumericLikeType | ComplexType,
+  T extends NumericLikeType | BigIntegerType | ComplexType =
+    | NumericLikeType
+    | BigIntegerType
+    | ComplexType,
 > extends DatasetInfo {
   dataset: Dataset<ArrayShape, T>;
 }
@@ -47,7 +51,10 @@ export interface SilxStyle {
 }
 
 export interface NxData<
-  T extends NumericLikeType | ComplexType = NumericLikeType | ComplexType,
+  T extends NumericLikeType | BigIntegerType | ComplexType =
+    | NumericLikeType
+    | BigIntegerType
+    | ComplexType,
 > {
   titleDataset?: Dataset<ScalarShape, StringType>;
   signalDef: WithError<DatasetDef<T>>;
@@ -56,7 +63,9 @@ export interface NxData<
   silxStyle: SilxStyle;
 }
 
-export interface NxValues<T extends NumericType | ComplexType> {
+export interface NxValues<
+  T extends NumericLikeType | BigIntegerType | ComplexType,
+> {
   title: string;
   signal: ArrayValue<T>;
   errors?: NumArray;

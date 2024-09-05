@@ -1,7 +1,7 @@
 import {
   assertArrayShape,
   assertDataset,
-  assertNumericLikeType,
+  assertNumericLikeOrBigIntType,
 } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -18,7 +18,7 @@ function LineVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
-  assertNumericLikeType(entity);
+  assertNumericLikeOrBigIntType(entity);
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);

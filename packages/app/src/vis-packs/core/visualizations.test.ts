@@ -1,5 +1,6 @@
 import type { Entity } from '@h5web/shared/hdf5-models';
 import {
+  bigIntType,
   boolType,
   compoundType,
   cplxType,
@@ -31,6 +32,8 @@ const mockStore = {
 
 const scalarInt = dataset('int', intType(), []);
 const scalarUint = dataset('uint', intType(false, 32), []);
+const scalarBigInt = dataset('bigint', bigIntType(), []);
+const scalarBigUint = dataset('biguint', bigIntType(false), []);
 const scalarFloat = dataset('float', floatType(), []);
 const scalarStr = dataset('float', strType(), []);
 const scalarBool = dataset('bool', boolType(), []);
@@ -72,6 +75,7 @@ describe('Raw', () => {
 
   it('should support any dataset', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
+    expect(supportsDataset(scalarBigInt)).toBe(true);
     expect(supportsDataset(twoDStr)).toBe(true);
   });
 });
@@ -89,6 +93,7 @@ describe('Scalar', () => {
   });
 
   it('should not support dataset with non-printable type', () => {
+    expect(supportsDataset(scalarBigUint)).toBe(false);
     expect(supportsDataset(scalarCompound)).toBe(false);
   });
 

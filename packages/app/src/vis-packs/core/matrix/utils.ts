@@ -65,7 +65,7 @@ export function getFormatter(
     return createEnumFormatter(type.mapping);
   }
 
-  return (val) => (val as string).toString(); // call `toString()` for safety, in case type cast is wrong
+  return (val) => (val as bigint | string).toString(); // call `toString()` for safety, in case type cast is wrong
 }
 
 export function getCellWidth(

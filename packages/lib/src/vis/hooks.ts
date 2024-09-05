@@ -1,5 +1,5 @@
 import { createMemo } from '@h5web/shared/createMemo';
-import type { AnyNumArray, Domain } from '@h5web/shared/vis-models';
+import type { Domain, MaybeNdArray, NumArray } from '@h5web/shared/vis-models';
 import { ScaleType } from '@h5web/shared/vis-models';
 import { getBounds, getValidDomainForScale } from '@h5web/shared/vis-utils';
 import { useRerender, useSyncedRef } from '@react-hookz/web';
@@ -24,9 +24,9 @@ export const useValueToIndexScale = createMemo(getValueToIndexScale);
 export const useAxisDomain = createMemo(getAxisDomain);
 
 export function useDomain(
-  valuesArray: AnyNumArray,
+  valuesArray: MaybeNdArray<NumArray>,
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray,
+  errorArray?: MaybeNdArray<NumArray>,
   ignoreValue?: (val: number) => boolean,
 ): Domain | undefined {
   // Distinct memoized calls allows for bounds to not be recomputed when scale type changes
@@ -35,9 +35,9 @@ export function useDomain(
 }
 
 export function useDomains(
-  valuesArrays: AnyNumArray[],
+  valuesArrays: MaybeNdArray<NumArray>[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorsArrays?: (AnyNumArray | undefined)[],
+  errorsArrays?: (MaybeNdArray<NumArray> | undefined)[],
 ): (Domain | undefined)[] {
   const allBounds = useMemo(() => {
     return valuesArrays.map((arr, i) => getBounds(arr, errorsArrays?.[i]));

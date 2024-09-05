@@ -11,12 +11,12 @@ import type {
   Primitive,
 } from './hdf5-models';
 import type {
-  AnyNumArray,
   AxisScaleType,
   Bounds,
   ColorScaleType,
   Dims,
   Domain,
+  MaybeNdArray,
   NumArray,
   TypedArrayConstructor,
   ValueFormatter,
@@ -91,7 +91,9 @@ export function createEnumFormatter(
   return (value) => (value in mapping ? mapping[value] : value.toString());
 }
 
-export function getValues(arr: AnyNumArray): NumArray {
+export function unwrapNdArray<T extends unknown[] | TypedArray>(
+  arr: MaybeNdArray<T>,
+): T {
   return isNdArray(arr) ? arr.data : arr;
 }
 
@@ -135,12 +137,12 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
 }
 
 export function getBounds(
-  valuesArray: AnyNumArray,
-  errorArray?: AnyNumArray,
+  valuesArray: MaybeNdArray<NumArray>,
+  errorArray?: MaybeNdArray<NumArray>,
   ignoreValue?: (val: number) => boolean,
 ): Bounds | undefined {
-  const values = getValues(valuesArray);
-  const errors = errorArray && getValues(errorArray);
+  const values = unwrapNdArray(valuesArray);
+  const errors = errorArray && unwrapNdArray(errorArray);
   assertLength(errorArray, values.length, 'error');
 
   // @ts-expect-error (https://github.com/microsoft/TypeScript/issues/44593)

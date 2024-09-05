@@ -102,6 +102,7 @@ export type ScalarShape = [];
 export enum DTypeClass {
   Bool = 'Boolean',
   Integer = 'Integer',
+  BigInteger = 'Big Integer',
   Float = 'Float',
   Complex = 'Complex',
   String = 'String',
@@ -126,6 +127,7 @@ export type PrintableType = StringType | NumericLikeType | ComplexType;
 
 export type DType =
   | PrintableType
+  | BigIntegerType
   | CompoundType
   | ArrayType
   | TimeType
@@ -145,6 +147,13 @@ export interface IntegerType {
   endianness: Endianness | undefined;
 }
 
+export interface BigIntegerType {
+  class: DTypeClass.BigInteger;
+  signed: boolean;
+  size: number;
+  endianness: Endianness | undefined;
+}
+
 export interface FloatType {
   class: DTypeClass.Float;
   size: number;
@@ -153,8 +162,8 @@ export interface FloatType {
 
 export interface ComplexType {
   class: DTypeClass.Complex;
-  realType: NumericType;
-  imagType: NumericType;
+  realType: NumericType | BigIntegerType;
+  imagType: NumericType | BigIntegerType;
 }
 
 export interface StringType {
@@ -181,7 +190,7 @@ export interface ArrayType<T extends DType = DType> {
 
 export interface EnumType {
   class: DTypeClass.Enum;
-  base: NumericType; // technically, only int/uint
+  base: NumericType | BigIntegerType; // technically, only int/uint
   mapping: Record<number, string>;
 }
 
@@ -216,15 +225,21 @@ export type Primitive<T extends DType> = T extends NumericType | EnumType
     ? string
     : T extends BooleanType
       ? number | boolean // let providers choose
-      : T extends ComplexType
-        ? H5WebComplex
-        : T extends PrintableCompoundType
-          ? Primitive<PrintableType>[]
-          : unknown;
+      : T extends BigIntegerType
+        ? bigint
+        : T extends ComplexType
+          ? H5WebComplex
+          : T extends PrintableCompoundType
+            ? Primitive<PrintableType>[]
+            : unknown;
 
 export type ArrayValue<T extends DType> =
   | Primitive<T>[]
-  | (T extends NumericType | BooleanType | EnumType ? TypedArray : never);
+  | (T extends NumericType | BooleanType | EnumType
+      ? TypedArray
+      : T extends BigIntegerType
+        ? BigInt64Array | BigUint64Array
+        : never);
 
 export type Value<D extends Dataset> =
   D extends Dataset<infer S, infer T>

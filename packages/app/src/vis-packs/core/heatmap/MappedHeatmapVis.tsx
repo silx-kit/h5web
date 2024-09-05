@@ -1,9 +1,10 @@
 import { HeatmapVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
 import type {
   ArrayShape,
-  ArrayValue,
+  BigIntegerType,
   Dataset,
   NumericLikeType,
+  Value,
 } from '@h5web/shared/hdf5-models';
 import type { AxisMapping } from '@h5web/shared/nexus-models';
 import type { NumArray } from '@h5web/shared/vis-models';
@@ -17,13 +18,17 @@ import {
   useSlicedDimsAndMapping,
   useToNumArray,
 } from '../hooks';
-import { DEFAULT_DOMAIN, formatNumLikeType, getSliceSelection } from '../utils';
+import {
+  DEFAULT_DOMAIN,
+  formatNumLikeOrBigIntType,
+  getSliceSelection,
+} from '../utils';
 import type { HeatmapConfig } from './config';
 import HeatmapToolbar from './HeatmapToolbar';
 
 interface Props {
-  dataset: Dataset<ArrayShape, NumericLikeType>;
-  value: ArrayValue<NumericLikeType>;
+  dataset: Dataset<ArrayShape, NumericLikeType | BigIntegerType>;
+  value: Value<Props['dataset']>;
   axisLabels?: AxisMapping<string>;
   axisValues?: AxisMapping<NumArray>;
   dimMapping: DimensionMapping;
@@ -93,7 +98,7 @@ function MappedHeatmapVis(props: Props) {
         className={visualizerStyles.vis}
         dataArray={dataArray}
         title={title}
-        dtype={dataset && formatNumLikeType(dataset.type)}
+        dtype={dataset && formatNumLikeOrBigIntType(dataset.type)}
         domain={safeDomain}
         colorMap={colorMap}
         scaleType={scaleType}

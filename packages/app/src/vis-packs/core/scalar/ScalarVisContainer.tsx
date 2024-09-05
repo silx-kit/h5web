@@ -1,7 +1,7 @@
 import { ScalarVis } from '@h5web/lib';
 import {
   assertDataset,
-  assertPrintableType,
+  assertPrintableOrBigIntType,
   assertScalarShape,
 } from '@h5web/shared/guards';
 
@@ -15,7 +15,7 @@ function ScalarVisContainer(props: VisContainerProps) {
   const { entity } = props;
   assertDataset(entity);
   assertScalarShape(entity);
-  assertPrintableType(entity);
+  assertPrintableOrBigIntType(entity);
 
   const formatter = getFormatter(entity);
 

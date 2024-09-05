@@ -27,5 +27,5 @@ export function getFormatter(
     return createEnumFormatter(dataset.type.mapping);
   }
 
-  return (val) => (val as number | string).toString();
+  return (val) => (val as number | bigint | string).toString();
 }

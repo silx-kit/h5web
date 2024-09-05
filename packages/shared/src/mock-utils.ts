@@ -16,6 +16,7 @@ import type {
 } from './hdf5-models';
 import { EntityKind } from './hdf5-models';
 import {
+  bigIntType,
   boolType,
   buildEntityPath,
   cplxType,
@@ -290,6 +291,10 @@ export function withNxAttr<T extends MockDataset<ArrayShape>>(
 function guessType(value: unknown): DType {
   if (typeof value === 'number') {
     return floatType(64);
+  }
+
+  if (typeof value === 'bigint') {
+    return bigIntType();
   }
 
   if (typeof value === 'string') {

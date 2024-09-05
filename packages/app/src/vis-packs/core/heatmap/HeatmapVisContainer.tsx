@@ -2,7 +2,7 @@ import {
   assertArrayShape,
   assertDataset,
   assertMinDims,
-  assertNumericLikeType,
+  assertNumericLikeOrBigIntType,
 } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
@@ -20,7 +20,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
   assertDataset(entity);
   assertArrayShape(entity);
   assertMinDims(entity, 2);
-  assertNumericLikeType(entity);
+  assertNumericLikeOrBigIntType(entity);
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);

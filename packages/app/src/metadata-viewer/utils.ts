@@ -1,4 +1,5 @@
 import {
+  isBigIntegerType,
   isH5WebComplex,
   isIntegerType,
   isNumericType,
@@ -30,8 +31,13 @@ export function renderShape(shape: Shape): string {
 export function renderType(type: DType): string {
   if (isNumericType(type)) {
     const { endianness, size } = type;
-    const signStr = isIntegerType(type) && !type.signed ? ' (unsigned)' : '';
+
+    const signStr =
+      (isIntegerType(type) || isBigIntegerType(type)) && !type.signed
+        ? ' (unsigned)'
+        : '';
     const endiannessStr = endianness ? `, ${endianness}` : '';
+
     return `${type.class}${signStr}, ${size}-bit${endiannessStr}`;
   }
 

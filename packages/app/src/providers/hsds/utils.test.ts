@@ -2,6 +2,7 @@ import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
 import type { DType } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
+  bigIntType,
   boolType,
   compoundType,
   cplxType,
@@ -32,8 +33,18 @@ const leInt = {
 } satisfies TestType;
 
 const beUint = {
+  hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_U32BE' },
+  hdf5: intType(false, 32, H5T_ORDER.BE),
+} satisfies TestType;
+
+const leBigInt = {
+  hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_I64LE' },
+  hdf5: bigIntType(true, H5T_ORDER.LE),
+} satisfies TestType;
+
+const beBigUint = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_U64BE' },
-  hdf5: intType(false, 64, H5T_ORDER.BE),
+  hdf5: bigIntType(false, H5T_ORDER.BE),
 } satisfies TestType;
 
 const leFloat = {
@@ -76,6 +87,11 @@ describe('convertHsdsType', () => {
   it('should convert integer types', () => {
     expect(convertHsdsType(leInt.hsds)).toStrictEqual(leInt.hdf5);
     expect(convertHsdsType(beUint.hsds)).toStrictEqual(beUint.hdf5);
+  });
+
+  it('should convert big integer types', () => {
+    expect(convertHsdsType(leBigInt.hsds)).toStrictEqual(leBigInt.hdf5);
+    expect(convertHsdsType(beBigUint.hsds)).toStrictEqual(beBigUint.hdf5);
   });
 
   it('should convert float types', () => {

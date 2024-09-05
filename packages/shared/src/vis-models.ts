@@ -2,8 +2,13 @@ import type { NdArray, TypedArray } from 'ndarray';
 
 import type { DType, Primitive } from './hdf5-models';
 
-export type NumArray = TypedArray | number[];
-export type AnyNumArray = NdArray<NumArray> | NumArray;
+export type NumArray = number[] | TypedArray;
+
+export type MaybeNdArray<
+  T extends unknown[] | TypedArray = unknown[] | TypedArray,
+> = NdArray<T> | T;
+
+export type BigIntTypedArray = BigInt64Array | BigUint64Array;
 
 export type TypedArrayConstructor =
   | Int8ArrayConstructor

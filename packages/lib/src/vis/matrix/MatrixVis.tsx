@@ -1,7 +1,11 @@
-import type { ArrayValue, Primitive } from '@h5web/shared/hdf5-models';
+import type {
+  ArrayValue,
+  Primitive,
+  PrintableType,
+} from '@h5web/shared/hdf5-models';
 import type { NdArray } from 'ndarray';
 
-import type { ClassStyleAttrs, PrintableType } from '../models';
+import type { ClassStyleAttrs } from '../models';
 import GridProvider from './context';
 import Grid from './Grid';
 

@@ -1,5 +1,13 @@
-import { isIntegerType, isNumericType } from '@h5web/shared/guards';
-import type { ArrayValue, NumericLikeType } from '@h5web/shared/hdf5-models';
+import {
+  isBigIntegerType,
+  isIntegerType,
+  isNumericType,
+} from '@h5web/shared/guards';
+import type {
+  ArrayValue,
+  BigIntegerType,
+  NumericLikeType,
+} from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { Axis, Domain, NumArray } from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
@@ -88,23 +96,36 @@ export function getImageInteractions(keepRatio: boolean) {
   return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
 }
 
-export function toNumArray(arr: ArrayValue<NumericLikeType>): NumArray {
+export function toNumArray(
+  arr: ArrayValue<NumericLikeType | BigIntegerType>,
+): NumArray {
   if (typeof arr[0] === 'boolean') {
-    return arr.map((val) => (val ? 1 : 0));
+    return (arr as boolean[]).map((val) => (val ? 1 : 0));
+  }
+
+  if (typeof arr[0] === 'bigint') {
+    return ((Array.isArray(arr) ? arr : [...arr]) as bigint[]).map(Number);
   }
 
   return arr as NumArray;
 }
 
-const TYPE_STRINGS: Record<NumericLikeType['class'], string> = {
+const TYPE_STRINGS: Record<
+  (NumericLikeType | BigIntegerType)['class'],
+  string
+> = {
   [DTypeClass.Bool]: 'bool',
   [DTypeClass.Enum]: 'enum',
   [DTypeClass.Integer]: 'int',
+  [DTypeClass.BigInteger]: 'bigint',
   [DTypeClass.Float]: 'float',
 };
 
-export function formatNumLikeType(type: NumericLikeType): string {
-  const unsignedPrefix = isIntegerType(type) && !type.signed ? 'u' : '';
+export function formatNumLikeOrBigIntType(
+  type: NumericLikeType | BigIntegerType,
+): string {
+  const unsignedPrefix =
+    (isIntegerType(type) || isBigIntegerType(type)) && !type.signed ? 'u' : '';
   const sizeSuffix = isNumericType(type) ? type.size : '';
   return `${unsignedPrefix}${TYPE_STRINGS[type.class]}${sizeSuffix}`;
 }

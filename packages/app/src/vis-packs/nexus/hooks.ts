@@ -1,7 +1,8 @@
 import type {
+  BigIntegerType,
   ComplexType,
   GroupWithChildren,
-  NumericType,
+  NumericLikeType,
 } from '@h5web/shared/hdf5-models';
 
 import type { DimensionMapping } from '../../dimension-mapper/models';
@@ -48,10 +49,9 @@ export function useNxData(group: GroupWithChildren): NxData {
   };
 }
 
-export function useNxImageDataToFetch<T extends NumericType | ComplexType>(
-  nxData: NxData<T>,
-  selectedDef: DatasetDef<T>,
-): NxData<T> {
+export function useNxImageDataToFetch<
+  T extends NumericLikeType | BigIntegerType | ComplexType,
+>(nxData: NxData<T>, selectedDef: DatasetDef<T>): NxData<T> {
   const { signalDef } = nxData;
 
   return {

@@ -1,5 +1,6 @@
 import {
   hasArrayShape,
+  hasBigIntegerType,
   hasComplexType,
   hasCompoundType,
   hasMinDims,
@@ -80,7 +81,10 @@ export const CORE_VIS = {
     Icon: FiCode,
     Container: ScalarVisContainer,
     supportsDataset: (dataset) => {
-      return hasPrintableType(dataset) && hasScalarShape(dataset);
+      return (
+        hasScalarShape(dataset) &&
+        (hasPrintableType(dataset) || hasBigIntegerType(dataset))
+      );
     },
   },
 
@@ -90,7 +94,10 @@ export const CORE_VIS = {
     Container: MatrixVisContainer,
     ConfigProvider: MatrixConfigProvider,
     supportsDataset: (dataset) => {
-      return hasPrintableType(dataset) && hasArrayShape(dataset);
+      return (
+        hasArrayShape(dataset) &&
+        (hasPrintableType(dataset) || hasBigIntegerType(dataset))
+      );
     },
   },
 
@@ -100,7 +107,10 @@ export const CORE_VIS = {
     Container: LineVisContainer,
     ConfigProvider: LineConfigProvider,
     supportsDataset: (dataset) => {
-      return hasNumericLikeType(dataset) && hasArrayShape(dataset);
+      return (
+        hasArrayShape(dataset) &&
+        (hasNumericLikeType(dataset) || hasBigIntegerType(dataset))
+      );
     },
   },
 
@@ -111,9 +121,9 @@ export const CORE_VIS = {
     ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (
-        hasNumericLikeType(dataset) &&
         hasArrayShape(dataset) &&
-        hasMinDims(dataset, 2)
+        hasMinDims(dataset, 2) &&
+        (hasNumericLikeType(dataset) || hasBigIntegerType(dataset))
       );
     },
   },

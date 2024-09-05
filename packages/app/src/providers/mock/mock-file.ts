@@ -54,6 +54,11 @@ export function makeMockFile(): GroupWithChildren {
         scalar('raw_large', undefined), // generated dynamically by `MockProvider`
         dataset('raw_png', opaqueType(), [], PNG_RED_DOT),
         scalar('scalar_num', 0, { attributes: [scalarAttr('attr', 0)] }),
+        scalar('scalar_bigint', BigInt(Number.MAX_SAFE_INTEGER) + 1n, {
+          attributes: [
+            scalarAttr('attr', BigInt(Number.MAX_SAFE_INTEGER) + 1n),
+          ],
+        }),
         scalar('scalar_str', 'foo', {
           attributes: [scalarAttr('attr', 'foo')],
         }),
@@ -107,6 +112,7 @@ export function makeMockFile(): GroupWithChildren {
       group('nD_datasets', [
         array('oneD_linear'),
         array('oneD'),
+        array('oneD_bigint'),
         array('oneD_cplx'),
         array('oneD_compound', {
           type: printableCompoundType({
@@ -122,6 +128,7 @@ export function makeMockFile(): GroupWithChildren {
           type: enumType(intType(false, 8), ENUM_MAPPING),
         }),
         array('twoD'),
+        array('twoD_bigint'),
         array('twoD_cplx'),
         array('twoD_compound', {
           type: printableCompoundType({

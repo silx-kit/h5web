@@ -1,6 +1,7 @@
 import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
 import {
   arrayType,
+  bigIntType,
   bitfieldType,
   boolType,
   compoundType,
@@ -24,8 +25,17 @@ describe('parseDType', () => {
     expect(parseDType({ class: 0, size: 1, order: 0, sign: 1 })).toStrictEqual(
       intType(true, 8, H5T_ORDER.LE),
     );
+    expect(parseDType({ class: 0, size: 4, order: 1, sign: 0 })).toStrictEqual(
+      intType(false, 32, H5T_ORDER.BE),
+    );
+  });
+
+  it('should convert big integer types', () => {
+    expect(parseDType({ class: 0, size: 8, order: 0, sign: 1 })).toStrictEqual(
+      bigIntType(true, H5T_ORDER.LE),
+    );
     expect(parseDType({ class: 0, size: 8, order: 1, sign: 0 })).toStrictEqual(
-      intType(false, 64, H5T_ORDER.BE),
+      bigIntType(false, H5T_ORDER.BE),
     );
   });
 

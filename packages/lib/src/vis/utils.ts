@@ -1,9 +1,9 @@
 import { isDefined } from '@h5web/shared/guards';
 import type {
-  AnyNumArray,
   AxisScaleType,
   ColorScaleType,
   Domain,
+  MaybeNdArray,
   NumArray,
   TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
@@ -124,9 +124,9 @@ export function getSizeToFit(
 }
 
 export function getDomain(
-  valuesArray: AnyNumArray,
+  valuesArray: MaybeNdArray<NumArray>,
   scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray,
+  errorArray?: MaybeNdArray<NumArray>,
   ignoreValue?: (val: number) => boolean,
 ): Domain | undefined {
   const bounds = getBounds(valuesArray, errorArray, ignoreValue);
@@ -134,9 +134,9 @@ export function getDomain(
 }
 
 export function getDomains(
-  valueArrays: AnyNumArray[],
+  valueArrays: MaybeNdArray<NumArray>[],
   scaleType: ScaleType = ScaleType.Linear,
-  errorArrays?: (AnyNumArray | undefined)[],
+  errorArrays?: (MaybeNdArray<NumArray> | undefined)[],
 ): (Domain | undefined)[] {
   return valueArrays.map((arr, i) =>
     getDomain(arr, scaleType, errorArrays?.[i]),

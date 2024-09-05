@@ -9,6 +9,7 @@ import {
 } from './h5t';
 import type {
   ArrayType,
+  BigIntegerType,
   BitfieldType,
   BooleanType,
   ChildEntity,
@@ -16,6 +17,7 @@ import type {
   CompoundType,
   DType,
   EnumType,
+  FloatType,
   GroupWithChildren,
   H5WebComplex,
   IntegerType,
@@ -60,16 +62,38 @@ export function intType(
   return {
     class: DTypeClass.Integer,
     signed,
-    endianness: H5T_TO_ENDIANNESS[h5tOrder],
     size,
+    endianness: H5T_TO_ENDIANNESS[h5tOrder],
   };
 }
 
-export function floatType(size = 32, h5tOrder = H5T_ORDER.LE): NumericType {
+export function bigIntType(
+  signed = true,
+  h5tOrder = H5T_ORDER.LE,
+): BigIntegerType {
+  return {
+    class: DTypeClass.BigInteger,
+    signed,
+    size: 64,
+    endianness: H5T_TO_ENDIANNESS[h5tOrder],
+  };
+}
+
+export function intOrBigIntType(
+  signed = true,
+  size = 32,
+  h5tOrder = H5T_ORDER.LE,
+): IntegerType | BigIntegerType {
+  return size === 64
+    ? bigIntType(signed, h5tOrder)
+    : intType(signed, size, h5tOrder);
+}
+
+export function floatType(size = 32, h5tOrder = H5T_ORDER.LE): FloatType {
   return {
     class: DTypeClass.Float,
-    endianness: H5T_TO_ENDIANNESS[h5tOrder],
     size,
+    endianness: H5T_TO_ENDIANNESS[h5tOrder],
   };
 }
 
@@ -91,7 +115,7 @@ export function boolType(): BooleanType {
 }
 
 export function cplxType(
-  realType: NumericType,
+  realType: NumericType | BigIntegerType,
   imagType = realType,
 ): ComplexType {
   return { class: DTypeClass.Complex, realType, imagType };
@@ -130,7 +154,7 @@ export function arrayType<T extends DType>(
 }
 
 export function enumType(
-  baseType: NumericType,
+  baseType: NumericType | BigIntegerType,
   hdf5Mapping: Record<string, number>,
 ): EnumType {
   return {
@@ -144,7 +168,7 @@ export function enumType(
 }
 
 export function enumOrBoolType(
-  baseType: NumericType,
+  baseType: NumericType | BigIntegerType,
   hdf5Mapping: Record<string, number>,
 ): EnumType | BooleanType {
   if (

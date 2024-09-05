@@ -2,6 +2,7 @@ import type { Data, NdArray, TypedArray } from 'ndarray';
 
 import type {
   ArrayShape,
+  BigIntegerType,
   BooleanType,
   ComplexArray,
   ComplexType,
@@ -28,12 +29,17 @@ import type {
 } from './hdf5-models';
 import { DTypeClass, EntityKind } from './hdf5-models';
 import type {
-  AnyNumArray,
   AxisScaleType,
+  BigIntTypedArray,
   ColorScaleType,
+  MaybeNdArray,
   NumArray,
 } from './vis-models';
-import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES, getValues } from './vis-utils';
+import {
+  AXIS_SCALE_TYPES,
+  COLOR_SCALE_TYPES,
+  unwrapNdArray,
+} from './vis-utils';
 
 const PRINTABLE_DTYPES = new Set([
   DTypeClass.Integer,
@@ -86,6 +92,12 @@ function assertNum(val: unknown): asserts val is number {
   }
 }
 
+function assertBigInt(val: unknown): asserts val is bigint {
+  if (typeof val !== 'bigint') {
+    throw new TypeError('Expected bigint');
+  }
+}
+
 function assertNumOrBool(val: unknown): asserts val is number | boolean {
   if (typeof val !== 'number' && typeof val !== 'boolean') {
     throw new TypeError('Expected boolean or number');
@@ -128,7 +140,9 @@ export function assertArray(val: unknown): asserts val is unknown[] {
   }
 }
 
-export function isTypedArray(val: unknown): val is TypedArray {
+export function isAnyTypedArray(
+  val: unknown,
+): val is TypedArray | BigIntTypedArray {
   return (
     val instanceof Int8Array ||
     val instanceof Int16Array ||
@@ -138,14 +152,16 @@ export function isTypedArray(val: unknown): val is TypedArray {
     val instanceof Uint16Array ||
     val instanceof Uint32Array ||
     val instanceof Float32Array ||
-    val instanceof Float64Array
+    val instanceof Float64Array ||
+    val instanceof BigInt64Array ||
+    val instanceof BigUint64Array
   );
 }
 
-export function assertArrayOrTypedArray(
+export function assertArrayOrAnyTypedArray(
   val: unknown,
 ): asserts val is unknown[] | TypedArray {
-  if (!Array.isArray(val) && !isTypedArray(val)) {
+  if (!Array.isArray(val) && !isAnyTypedArray(val)) {
     throw new TypeError('Expected array or typed array');
   }
 }
@@ -317,7 +333,7 @@ export function assertNumericType<S extends Shape>(
   dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, NumericType> {
   if (!hasNumericType(dataset)) {
-    throw new Error('Expected dataset to have numeric type');
+    throw new Error('Expected dataset to have integer or float type');
   }
 }
 
@@ -332,7 +348,35 @@ export function assertNumericLikeType<S extends Shape>(
   dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, NumericLikeType> {
   if (!hasNumericLikeType(dataset)) {
-    throw new Error('Expected dataset to have numeric, boolean or enum type');
+    throw new Error(
+      'Expected dataset to have integer, float, boolean or enum type',
+    );
+  }
+}
+
+export function isBigIntegerType(type: DType): type is BigIntegerType {
+  return type.class === DTypeClass.BigInteger;
+}
+
+export function hasBigIntegerType<S extends Shape>(
+  dataset: Dataset<S>,
+): dataset is Dataset<S, BigIntegerType> {
+  return isBigIntegerType(dataset.type);
+}
+
+export function hasNumericLikeOrBigIntType<S extends Shape>(
+  dataset: Dataset<S>,
+): dataset is Dataset<S, NumericLikeType | BigIntegerType> {
+  return hasNumericLikeType(dataset) || hasBigIntegerType(dataset);
+}
+
+export function assertNumericLikeOrBigIntType<S extends Shape>(
+  dataset: Dataset<S>,
+): asserts dataset is Dataset<S, NumericLikeType | BigIntegerType> {
+  if (!hasNumericLikeOrBigIntType(dataset)) {
+    throw new Error(
+      'Expected dataset to have integer, big integer, float, boolean or enum type',
+    );
   }
 }
 
@@ -388,6 +432,21 @@ export function assertPrintableType<S extends Shape>(
   }
 }
 
+export function assertPrintableOrBigIntType<S extends Shape>(
+  dataset: Dataset<S>,
+): asserts dataset is Dataset<S, PrintableType> {
+  if (
+    !hasStringType(dataset) &&
+    !hasNumericType(dataset) &&
+    !hasBigIntegerType(dataset) &&
+    !hasBoolType(dataset) &&
+    !hasEnumType(dataset) &&
+    !hasComplexType(dataset)
+  ) {
+    throw new Error('Expected dataset to have displayable type');
+  }
+}
+
 export function isCompoundType(type: DType): type is CompoundType {
   return type.class === DTypeClass.Compound;
 }
@@ -434,6 +493,8 @@ function assertPrimitiveValue<D extends Dataset>(
 ): asserts value is Primitive<DType> {
   if (hasNumericType(dataset)) {
     assertNum(value);
+  } else if (hasBigIntegerType(dataset)) {
+    assertBigInt(value);
   } else if (hasStringType(dataset)) {
     assertStr(value);
   } else if (hasBoolType(dataset)) {
@@ -448,7 +509,7 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   dataset: D,
 ): asserts value is Value<D> {
   if (hasArrayShape(dataset)) {
-    assertArrayOrTypedArray(value);
+    assertArrayOrAnyTypedArray(value);
 
     if (value.length > 0) {
       assertPrimitiveValue(dataset, value[0]);
@@ -460,7 +521,7 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
 }
 
 export function assertLength(
-  arr: AnyNumArray | undefined,
+  arr: MaybeNdArray | undefined,
   dataLength: number,
   arrName: string,
 ) {
@@ -468,7 +529,7 @@ export function assertLength(
     return;
   }
 
-  const { length: arrLength } = getValues(arr);
+  const { length: arrLength } = unwrapNdArray(arr);
   if (arrLength !== dataLength) {
     throw new Error(
       `Expected ${arrName} array to have length ${dataLength} instead of ${arrLength}`,

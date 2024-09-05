@@ -2,7 +2,10 @@ import { createMemo } from '@h5web/shared/createMemo';
 import { assertDatasetValue, isDefined } from '@h5web/shared/guards';
 import type {
   ArrayShape,
+  ArrayValue,
+  BigIntegerType,
   Dataset,
+  NumericLikeType,
   ScalarShape,
   Value,
 } from '@h5web/shared/hdf5-models';
@@ -23,6 +26,11 @@ import {
 } from './utils';
 
 export const useToNumArray = createMemo(toNumArray);
+export function useToNumArrays(
+  arrays: ArrayValue<NumericLikeType | BigIntegerType>[],
+): NumArray[] {
+  return useMemo(() => arrays.map(toNumArray), arrays); // eslint-disable-line react-hooks/exhaustive-deps
+}
 
 export function useValuesInCache(
   ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]
