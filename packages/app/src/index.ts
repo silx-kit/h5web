@@ -24,3 +24,4 @@ export { default as DataProvider } from './providers/DataProvider';
 export { DataProviderApi } from './providers/api';
 export type { ValuesStoreParams } from './providers/models';
 export { getValueOrError } from './providers/utils';
+export { supportBigIntToJSON } from './utils';

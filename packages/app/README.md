@@ -389,6 +389,39 @@ import { getFeedbackMailto } from '@h5web/app';
 }} />
 ```
 
+#### `supportBigIntToJSON`
+
+Invoke this function before rendering your application to add support for big
+integers in the _Raw_ visualization and in the metadata inspector:
+
+```jsx
+supportBigIntToJSON(); // for `RawVis`
+createRoot(document.querySelector('#root')).render(<MyApp />);
+```
+
+This is recommended if you're working with a provider that supports 64-bit
+integers — i.e. one that may provide dataset and attribute values that include
+primitive
+[`bigint` numbers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#bigint_type).
+
+The _Raw_ visualization and metadata inspector rely on `JSON.stringify()` to
+render dataset and attribute values. By default, `JSON.stringify()` does not
+know how to serialize such numbers and throws an error if it ever tries to
+stringify one. `supportBigIntToJSON()` teaches `JSON.stringify()` to convert big
+integers to strings.
+
+```js
+> JSON.stringify(1n);
+TypeError: Do not know how to serialize a BigInt
+
+> supportBigIntToJSON();
+> JSON.stringify(1n);
+"1n"
+```
+
+> The `n` suffix (i.e. the same suffix used for `bigint` literals in JS) is
+> added to help distinguish big integers from other strings.
+
 ### Context
 
 The viewer component `App` communicates with its wrapping data provider through
