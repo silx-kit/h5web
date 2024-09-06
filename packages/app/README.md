@@ -389,6 +389,40 @@ import { getFeedbackMailto } from '@h5web/app';
 }} />
 ```
 
+#### `enableBigIntSerialization`
+
+Invoke this function before rendering your application to allow the _Raw_
+visualization and metadata inspector to serialize and display
+[big integers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#bigint_type):
+
+```jsx
+enableBigIntSerialization();
+createRoot(document.querySelector('#root')).render(<MyApp />);
+```
+
+This is recommended if you're working with a provider that supports 64-bit
+integers — i.e. one that may provide dataset and attribute values that include
+primitive `bigint` numbers.
+
+The _Raw_ visualization and metadata inspector rely on `JSON.stringify()` to
+render dataset and attribute values. By default, `JSON.stringify()` does not
+know how to serialize `bigint` numbers and throws an error if it encounters one.
+`enableBigIntSerialization()` teaches `JSON.stringify()` to convert big integers
+to strings:
+
+```js
+> JSON.stringify(123n);
+TypeError: Do not know how to serialize a BigInt
+
+> enableBigIntSerialization();
+> JSON.stringify(123n);
+"123n"
+```
+
+> The `n` suffix (i.e. the same suffix used for `bigint` literals as
+> demonstrated above) is added to help distinguish big integer strings from
+> other strings.
+
 ### Context
 
 The viewer component `App` communicates with its wrapping data provider through
