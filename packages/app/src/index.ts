@@ -6,6 +6,7 @@ export { default as MockProvider } from './providers/mock/MockProvider';
 export { default as HsdsProvider } from './providers/hsds/HsdsProvider';
 export { default as H5GroveProvider } from './providers/h5grove/H5GroveProvider';
 
+export { enableBigIntSerialization } from './utils';
 export { getFeedbackMailto } from './breadcrumbs/utils';
 export type { FeedbackContext } from './breadcrumbs/models';
 export type { ExportFormat, ExportURL } from './providers/models';
