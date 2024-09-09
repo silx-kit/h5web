@@ -26,8 +26,7 @@ function ScalarVisContainer(props: VisContainerProps) {
         render={(value) => (
           <ScalarVis
             className={visualizerStyles.vis}
-            value={value}
-            formatter={formatter}
+            value={formatter(value)}
           />
         )}
       />
