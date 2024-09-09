@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "comlink": "4.4.1",
-    "h5wasm": "0.7.6",
+    "h5wasm": "0.7.8",
     "nanoid": "5.0.7"
   },
   "devDependencies": {

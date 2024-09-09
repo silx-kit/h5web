@@ -23,12 +23,7 @@ async function openFileBuffer(buffer: ArrayBuffer): Promise<bigint> {
 
   FS.writeFile(fileName, new Uint8Array(buffer), { flags: 'w+' });
 
-  return h5wasm.ccall(
-    'H5Fopen',
-    'bigint',
-    ['string', 'number', 'bigint'],
-    [fileName, h5wasm.H5F_ACC_RDONLY, 0n],
-  );
+  return h5wasm.open(fileName, undefined, undefined); // https://github.com/emscripten-core/emscripten/issues/22389
 }
 
 async function openLocalFile(file: File): Promise<bigint> {
@@ -41,17 +36,12 @@ async function openLocalFile(file: File): Promise<bigint> {
   const { WORKERFS } = FS.filesystems;
   WORKERFS.createNode(rootNode, fileName, WORKERFS.FILE_MODE, 0, file);
 
-  return h5wasm.ccall(
-    'H5Fopen',
-    'bigint',
-    ['string', 'number', 'bigint'],
-    [`${WORKERFS_FOLDER}/${fileName}`, h5wasm.H5F_ACC_RDONLY, 0n],
-  );
+  return h5wasm.open(`${WORKERFS_FOLDER}/${fileName}`, undefined, undefined); // https://github.com/emscripten-core/emscripten/issues/22389
 }
 
 async function closeFile(fileId: bigint): Promise<number> {
   const h5wasm = await h5wasmReady;
-  return h5wasm.ccall('H5Fclose', 'number', ['bigint'], [fileId]);
+  return h5wasm.close_file(fileId);
 }
 
 async function getEntity(
