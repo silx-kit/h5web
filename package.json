@@ -58,6 +58,13 @@
         "dependencies": {
           "typescript": "5.0.3"
         }
+      },
+      "eslint-plugin-tailwindcss": {
+        "peerDependenciesMeta": {
+          "tailwindcss": {
+            "optional": true
+          }
+        }
       }
     },
     "peerDependencyRules": {

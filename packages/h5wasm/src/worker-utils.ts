@@ -147,7 +147,7 @@ export function parseEntity(
   }
 
   if (kind === h5wasm.H5G_TYPE) {
-    const metadata = h5wasm.get_dataset_metadata(fileId, path);
+    const metadata = h5wasm.get_datatype_metadata(fileId, path);
     const { chunks, maxshape, shape, ...rawType } = metadata; // keep `rawType` concise
 
     return {

@@ -1,0 +1,46 @@
+.urlForm {
+  display: flex;
+  align-self: stretch;
+  font-size: 1rem;
+}
+
+.urlForm > fieldset {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.urlInput {
+  flex: 1;
+  max-width: 20rem;
+}
+
+.urlBtn {
+  composes: btnClean from global;
+  composes: ctaBtn from '../utils.module.css';
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+.urlLoader {
+  animation: spin 1s ease-in-out infinite;
+}
+
+.hint {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.hint[role='alert'] {
+  color: crimson;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(180deg);
+  }
+}
