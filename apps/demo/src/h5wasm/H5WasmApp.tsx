@@ -12,24 +12,27 @@ function H5WasmApp() {
   const query = new URLSearchParams(useSearch());
   const [h5File, setH5File] = useState<File | RemoteFile>();
 
+  if (!h5File) {
+    return <DropZone onH5File={setH5File} />;
+  }
+
   return (
     <DropZone onH5File={setH5File}>
-      {h5File &&
-        (h5File instanceof File ? (
-          <H5WasmLocalFileProvider file={h5File} getPlugin={getPlugin}>
-            <App
-              sidebarOpen={!query.has('wide')}
-              getFeedbackURL={getFeedbackURL}
-            />
-          </H5WasmLocalFileProvider>
-        ) : (
-          <H5WasmBufferProvider {...h5File} getPlugin={getPlugin}>
-            <App
-              sidebarOpen={!query.has('wide')}
-              getFeedbackURL={getFeedbackURL}
-            />
-          </H5WasmBufferProvider>
-        ))}
+      {h5File instanceof File ? (
+        <H5WasmLocalFileProvider file={h5File} getPlugin={getPlugin}>
+          <App
+            sidebarOpen={!query.has('wide')}
+            getFeedbackURL={getFeedbackURL}
+          />
+        </H5WasmLocalFileProvider>
+      ) : (
+        <H5WasmBufferProvider {...h5File} getPlugin={getPlugin}>
+          <App
+            sidebarOpen={!query.has('wide')}
+            getFeedbackURL={getFeedbackURL}
+          />
+        </H5WasmBufferProvider>
+      )}
     </DropZone>
   );
 }
