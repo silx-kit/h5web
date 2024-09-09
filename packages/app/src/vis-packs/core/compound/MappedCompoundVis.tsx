@@ -2,10 +2,9 @@ import { MatrixVis } from '@h5web/lib';
 import type {
   ArrayShape,
   Dataset,
-  Primitive,
   PrintableCompoundType,
-  PrintableType,
   ScalarShape,
+  Value,
 } from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
@@ -20,7 +19,7 @@ import { getSliceSelection } from '../utils';
 
 interface Props {
   dataset: Dataset<ScalarShape | ArrayShape, PrintableCompoundType>;
-  value: Primitive<PrintableType>[] | Primitive<PrintableType>[][];
+  value: Value<Props['dataset']>;
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;
   config: MatrixVisConfig;
@@ -70,8 +69,10 @@ function MappedCompoundVis(props: Props) {
         )}
       <MatrixVis
         className={visualizerStyles.vis}
-        dataArray={mappedArray}
-        formatter={(val, colIndex) => fieldFormatters[colIndex](val)}
+        dims={mappedArray.shape}
+        cellFormatter={(row, col) =>
+          fieldFormatters[col](mappedArray.get(row, col))
+        }
         cellWidth={customCellWidth ?? cellWidth}
         columnHeaders={fieldNames}
         sticky={sticky}
