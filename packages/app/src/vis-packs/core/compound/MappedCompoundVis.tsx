@@ -1,8 +1,9 @@
 import { MatrixVis } from '@h5web/lib';
 import type {
   ArrayShape,
+  CompoundType,
   Dataset,
-  PrintableCompoundType,
+  PrintableType,
   ScalarShape,
   Value,
 } from '@h5web/shared/hdf5-models';
@@ -18,7 +19,7 @@ import { getCellWidth, getFormatter } from '../matrix/utils';
 import { getSliceSelection } from '../utils';
 
 interface Props {
-  dataset: Dataset<ScalarShape | ArrayShape, PrintableCompoundType>;
+  dataset: Dataset<ScalarShape | ArrayShape, CompoundType<PrintableType>>;
   value: Value<Props['dataset']>;
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;

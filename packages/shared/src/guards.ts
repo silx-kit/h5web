@@ -17,7 +17,6 @@ import type {
   NumericLikeType,
   NumericType,
   Primitive,
-  PrintableCompoundType,
   PrintableType,
   ScalarShape,
   Shape,
@@ -401,14 +400,14 @@ export function assertCompoundType<S extends Shape>(
 
 export function hasPrintableCompoundType<S extends Shape>(
   dataset: Dataset<S, CompoundType>,
-): dataset is Dataset<S, PrintableCompoundType> {
+): dataset is Dataset<S, CompoundType<PrintableType>> {
   const { fields } = dataset.type;
   return Object.values(fields).every((f) => PRINTABLE_DTYPES.has(f.class));
 }
 
 export function assertPrintableCompoundType<S extends Shape>(
   dataset: Dataset<S, CompoundType>,
-): asserts dataset is Dataset<S, PrintableCompoundType> {
+): asserts dataset is Dataset<S, CompoundType<PrintableType>> {
   if (!hasPrintableCompoundType(dataset)) {
     throw new Error('Expected compound dataset to have printable types');
   }
@@ -435,6 +434,9 @@ function assertPrimitiveValue<T extends DType>(
     assertComplex(value);
   } else if (isCompoundType(type)) {
     assertArray(value);
+    Object.values(type.fields).forEach((fieldType, index) => {
+      assertPrimitiveValue(fieldType, value[index]);
+    });
   }
 }
 

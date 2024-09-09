@@ -157,14 +157,10 @@ export interface StringType {
   length?: number;
 }
 
-export interface CompoundType<
-  F extends Record<string, DType> = Record<string, DType>,
-> {
+export interface CompoundType<T extends DType = DType> {
   class: DTypeClass.Compound;
-  fields: F;
+  fields: Record<string, T>;
 }
-
-export type PrintableCompoundType = CompoundType<Record<string, PrintableType>>;
 
 export interface ArrayType<T extends DType = DType> {
   class: DTypeClass.Array | DTypeClass.VLen;
@@ -211,13 +207,13 @@ export type Primitive<T extends DType> = T extends NumericType | EnumType
       ? number | boolean // let providers choose
       : T extends ComplexType
         ? H5WebComplex
-        : T extends PrintableCompoundType
-          ? Primitive<PrintableType>[]
+        : T extends CompoundType<infer TFields>
+          ? Primitive<TFields>[]
           : unknown;
 
 export type ArrayValue<T extends DType> =
   | Primitive<T>[]
-  | (T extends NumericType | BooleanType | EnumType ? TypedArray : never);
+  | (T extends NumericLikeType ? TypedArray : never);
 
 export type Value<D extends Dataset> =
   D extends Dataset<infer S, infer T>

@@ -8,8 +8,8 @@ import {
 import type {
   BooleanType,
   ComplexType,
+  CompoundType,
   NumericType,
-  PrintableCompoundType,
   PrintableType,
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
@@ -69,7 +69,7 @@ export function getFormatter(
 }
 
 export function getCellWidth(
-  type: PrintableType | PrintableCompoundType,
+  type: PrintableType | CompoundType<PrintableType>,
 ): number {
   if (type.class === DTypeClass.Compound) {
     return Math.max(...Object.values(type.fields).map(getCellWidth));

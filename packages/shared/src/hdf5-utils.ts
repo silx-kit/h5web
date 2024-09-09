@@ -109,19 +109,17 @@ export function cplxType(
   return { class: DTypeClass.Complex, realType, imagType };
 }
 
-export function compoundType<F extends Record<string, DType>>(
-  fields: F,
-): CompoundType<F> {
+export function compoundType<T extends DType>(
+  fields: Record<string, T>,
+): CompoundType<T> {
   return { class: DTypeClass.Compound, fields };
 }
 
-export const printableCompoundType = compoundType<
-  Record<string, PrintableType>
->;
+export const printableCompoundType = compoundType<PrintableType>;
 
-export function compoundOrCplxType<F extends Record<string, DType>>(
-  fields: F,
-): CompoundType<F> | ComplexType {
+export function compoundOrCplxType<T extends DType>(
+  fields: Record<string, T>,
+): CompoundType<T> | ComplexType {
   const { r, i } = fields;
   if (r && isNumericType(r) && i && isNumericType(i)) {
     return cplxType(r, i);
