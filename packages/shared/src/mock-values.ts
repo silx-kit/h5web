@@ -17,6 +17,11 @@ const range9 = () => range(1, 11);
 
 const oneD = () => ndarray(range1().map((val) => val ** 2));
 
+const oneD_bigint = () =>
+  ndarray(
+    range8().map((_, i) => BigInt(Number.MAX_SAFE_INTEGER) + BigInt(i - 5)),
+  );
+
 const oneD_bool = () =>
   ndarray([true, false, false, true, true, true, false, true, false, false]);
 
@@ -89,6 +94,7 @@ const threeD_rgb = () =>
 export const mockValues = {
   oneD,
   oneD_linear: () => ndarray(range1()),
+  oneD_bigint,
   oneD_cplx,
   oneD_compound,
   oneD_bool,
@@ -101,6 +107,15 @@ export const mockValues = {
     return ndarray(
       dataTwoD.map((val, index) => (index % 41 >= 20 ? val * 5 : val)),
       shapeTwoD,
+    );
+  },
+  twoD_bigint: () => {
+    const { data: dataOneDBigInt } = oneD_bigint();
+    return ndarray(
+      range5().flatMap((_, i) =>
+        dataOneDBigInt.map((val) => val + 1n + BigInt(i) * 10n),
+      ),
+      [3, 5],
     );
   },
   twoD_cplx: () =>
