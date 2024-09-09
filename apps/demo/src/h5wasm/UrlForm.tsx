@@ -4,8 +4,8 @@ import { useCallback, useEffect } from 'react';
 import { FiLoader } from 'react-icons/fi';
 import { useLocation, useSearch } from 'wouter';
 
-import styles from './H5WasmApp.module.css';
 import type { RemoteFile } from './models';
+import styles from './UrlForm.module.css';
 
 interface Props {
   onLoad: (h5File: RemoteFile) => void;

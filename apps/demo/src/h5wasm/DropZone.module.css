@@ -1,20 +1,45 @@
 .dropZone {
+  position: relative;
   display: flex;
   min-height: 100%;
-  padding: 2rem;
   background-color: var(--primary-bg);
-  text-align: center;
-  font-size: 1.125rem;
 }
 
-.activeDropZone {
-  composes: dropZone;
+.dropZone[data-active]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
   background-color: var(--primary);
+  opacity: 0.8;
 }
 
 .dropZone[data-disabled] {
   opacity: 0.3;
   pointer-events: none;
+}
+
+.dropIt {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+}
+
+.h5web {
+  flex: 1;
+  display: flex;
+  height: 100vh;
+  z-index: 0; /* STACKING CONTEXT */
 }
 
 .inner {
@@ -23,9 +48,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1.5rem;
+  margin: 2rem;
+  padding: 3rem 1.5rem;
   border: 3px dashed currentColor;
   border-radius: 2rem;
+  font-size: 1.125rem;
+  text-align: center;
 }
 
 .drop {
@@ -62,37 +90,6 @@
   border-top: 2px solid currentColor;
 }
 
-.urlForm {
-  display: flex;
-  align-self: stretch;
-  font-size: 1rem;
-}
-
-.urlForm > fieldset {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-
-.urlInput {
-  flex: 1;
-  max-width: 20rem;
-}
-
-.urlBtn {
-  composes: btnClean from global;
-  composes: ctaBtn from '../utils.module.css';
-  margin-left: 0.5rem;
-  margin-right: 0;
-}
-
-.urlLoader {
-  animation: spin 1s ease-in-out infinite;
-}
-
 .hint {
   margin: 0.5rem 0 0;
   font-size: 1rem;
@@ -101,14 +98,4 @@
 
 .hint[role='alert'] {
   color: crimson;
-}
-
-.dropIt {
-  font-size: 5rem;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(180deg);
-  }
 }
