@@ -1,8 +1,4 @@
-import type {
-  AttributeValues,
-  EntityKind,
-  Filter,
-} from '@h5web/shared/hdf5-models';
+import type { AttributeValues, Filter } from '@h5web/shared/hdf5-models';
 
 export type H5GroveEntityResponse = H5GroveEntity;
 export type H5GroveDataResponse = unknown;
@@ -16,6 +12,7 @@ export interface H5GroveErrorResponse {
 export type H5GroveEntity =
   | H5GroveGroup
   | H5GroveDataset
+  | H5GroveDatatype
   | H5GroveSoftLink
   | H5GroveExternalLink;
 
@@ -25,17 +22,23 @@ export interface H5GroveBaseEntity {
 }
 
 export interface H5GroveGroup extends H5GroveBaseEntity {
-  kind: EntityKind.Group;
+  kind: 'group';
   children?: H5GroveEntity[];
   attributes: H5GroveAttribute[];
 }
 
 export interface H5GroveDataset extends H5GroveBaseEntity {
-  kind: EntityKind.Dataset;
+  kind: 'dataset';
   shape: number[];
   type: H5GroveType;
   chunks: number[] | null;
   filters: Filter[] | null;
+  attributes: H5GroveAttribute[];
+}
+
+export interface H5GroveDatatype extends H5GroveBaseEntity {
+  kind: 'datatype';
+  type: H5GroveType;
   attributes: H5GroveAttribute[];
 }
 
