@@ -52,7 +52,7 @@ export function parseEntity(
   const { name } = h5gEntity;
   const baseEntity = { name, path };
 
-  if (h5gEntity.kind === EntityKind.Group) {
+  if (h5gEntity.kind === 'group') {
     const { children = [], attributes: attrsMetadata } = h5gEntity;
     const attributes = parseAttributes(attrsMetadata);
     const baseGroup: Group = {
@@ -74,7 +74,7 @@ export function parseEntity(
     };
   }
 
-  if (h5gEntity.kind === EntityKind.Dataset) {
+  if (h5gEntity.kind === 'dataset') {
     const {
       attributes: attrsMetadata,
       type,
@@ -90,6 +90,17 @@ export function parseEntity(
       rawType: type,
       ...(chunks && { chunks }),
       ...(filters && { filters }),
+      attributes: parseAttributes(attrsMetadata),
+    };
+  }
+
+  if (h5gEntity.kind === 'datatype') {
+    const { attributes: attrsMetadata, type } = h5gEntity;
+    return {
+      ...baseEntity,
+      kind: EntityKind.Datatype,
+      type: parseDType(type),
+      rawType: type,
       attributes: parseAttributes(attrsMetadata),
     };
   }
