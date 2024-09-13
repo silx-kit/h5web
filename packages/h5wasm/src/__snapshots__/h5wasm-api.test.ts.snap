@@ -1615,6 +1615,11 @@ exports[`test file matches snapshot 1`] = `
               "size": 64,
             },
             "bool": {
+              "base": {
+                "class": "Integer",
+                "endianness": "little-endian",
+                "size": 8,
+              },
               "class": "Boolean",
             },
             "cplx": {
@@ -1812,6 +1817,11 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": null,
     "type": {
+      "base": {
+        "class": "Integer (unsigned)",
+        "endianness": "little-endian",
+        "size": 8,
+      },
       "class": "Boolean",
     },
     "value": null,
@@ -1836,6 +1846,11 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": [],
     "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 8,
+      },
       "class": "Boolean",
     },
     "value": 0,
@@ -1860,6 +1875,11 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": [],
     "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 8,
+      },
       "class": "Boolean",
     },
     "value": 1,
@@ -1887,6 +1907,11 @@ exports[`test file matches snapshot 1`] = `
       4,
     ],
     "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "size": 8,
+      },
       "class": "Boolean",
     },
     "value": Int8Array [

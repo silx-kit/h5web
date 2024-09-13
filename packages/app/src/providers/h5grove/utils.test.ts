@@ -89,10 +89,10 @@ describe('parseDType', () => {
       parseDType({
         class: 8,
         size: 2,
-        base: { class: 0, size: 1, order: 0, sign: 0 },
+        base: { class: 0, size: 1, order: 0, sign: 1 },
         members: { FALSE: 0, TRUE: 1 },
       }),
-    ).toStrictEqual(boolType());
+    ).toStrictEqual(boolType(intType(8)));
   });
 
   it('should convert array types', () => {

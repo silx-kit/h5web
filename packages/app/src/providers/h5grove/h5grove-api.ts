@@ -30,7 +30,7 @@ import {
 export class H5GroveApi extends DataProviderApi {
   private readonly client: AxiosInstance;
 
-  /* API compatible with h5grove@2.1.0 */
+  /* API compatible with h5grove@2.3.0 */
   public constructor(
     url: string,
     filepath: string,

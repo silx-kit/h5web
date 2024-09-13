@@ -130,7 +130,7 @@ describe('convertHsdsType', () => {
       mapping: { FALSE: 0, TRUE: 1 },
     };
 
-    expect(convertHsdsType(boolEnum)).toStrictEqual(boolType());
+    expect(convertHsdsType(boolEnum)).toStrictEqual(boolType(intType(8)));
   });
 
   it('should convert the complex compound type into Complex type', () => {

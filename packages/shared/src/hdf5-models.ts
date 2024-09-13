@@ -134,10 +134,6 @@ export type DType =
   | ReferenceType
   | UnknownType;
 
-export interface BooleanType {
-  class: DTypeClass.Bool;
-}
-
 export interface NumericType {
   class: DTypeClass.Integer | DTypeClass.Unsigned | DTypeClass.Float;
   size: number;
@@ -166,6 +162,11 @@ export interface ArrayType<T extends DType = DType> {
   class: DTypeClass.Array | DTypeClass.VLen;
   base: T;
   dims?: number[];
+}
+
+export interface BooleanType {
+  class: DTypeClass.Bool;
+  base: NumericType; // typically int8 with h5py
 }
 
 export interface EnumType {
