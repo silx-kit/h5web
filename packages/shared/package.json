@@ -33,10 +33,25 @@
     "d3-format": "3.1.0",
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
-    "react": ">=18"
-  },
-  "optionalDependencies": {
+    "react": ">=18",
     "zustand": "4.5.4"
+  },
+  "peerDependenciesMeta": {
+    "d3-array": {
+      "optional": true
+    },
+    "d3-format": {
+      "optional": true
+    },
+    "ndarray": {
+      "optional": true
+    },
+    "ndarray-ops": {
+      "optional": true
+    },
+    "zustand": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/d3-array": "~3.2.1",
@@ -53,6 +68,7 @@
     "ndarray-ops": "1.2.2",
     "react": "18.3.1",
     "typescript": "5.4.5",
-    "vitest": "2.0.5"
+    "vitest": "2.0.5",
+    "zustand": "4.5.4"
   }
 }

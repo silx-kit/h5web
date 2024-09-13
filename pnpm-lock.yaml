@@ -575,10 +575,6 @@ importers:
         version: 2.0.5(@types/node@20.12.11)(jsdom@24.1.1)
 
   packages/shared:
-    optionalDependencies:
-      zustand:
-        specifier: 4.5.4
-        version: 4.5.4(@types/react@18.3.3)(react@18.3.1)
     devDependencies:
       '@types/d3-array':
         specifier: ~3.2.1
@@ -625,6 +621,9 @@ importers:
       vitest:
         specifier: 2.0.5
         version: 2.0.5(@types/node@20.12.11)(jsdom@24.1.1)
+      zustand:
+        specifier: 4.5.4
+        version: 4.5.4(@types/react@18.3.3)(react@18.3.1)
 
 packages:
 
