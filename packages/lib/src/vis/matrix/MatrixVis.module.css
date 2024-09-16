@@ -1,6 +1,7 @@
 .wrapper {
   flex: 1; /* fill height if inside flex container in consumer app */
   position: relative;
+  overflow: hidden; /* when resizing */
 }
 
 .grid {

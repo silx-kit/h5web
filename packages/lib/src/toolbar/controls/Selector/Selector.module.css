@@ -5,6 +5,7 @@
     --h5w-selector-label--color,
     var(--h5w-toolbar-label--color, royalblue)
   );
+  white-space: nowrap;
 }
 
 .groups {
