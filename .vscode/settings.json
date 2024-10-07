@@ -17,6 +17,12 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.preferences.importModuleSpecifier": "relative",
 
+  // Show only `console.log()` snippet when auto-completing `log`
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": [
+    "^console$",
+    "^three/.*$"
+  ],
+
   "eslint.codeAction.disableRuleComment": { "location": "sameLine" },
   "eslint.workingDirectories": [
     { "pattern": "./apps/*/" },
