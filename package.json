@@ -10,7 +10,7 @@
     "url": "https://github.com/silx-kit/h5web"
   },
   "engines": {
-    "node": "20.x",
+    "node": ">=20",
     "pnpm": "9.x"
   },
   "packageManager": "pnpm@9.0.6",
