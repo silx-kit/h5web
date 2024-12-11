@@ -88,7 +88,7 @@ export function withAttr<T extends Entity>(
 export function withImageAttr<T extends Entity>(entity: T): T {
   return withAttr(entity, [
     scalarAttr('CLASS', 'IMAGE'),
-    scalarAttr('IMAGE_VERSION', '1.2'),
+    scalarAttr('IMAGE_SUBCLASS', 'IMAGE_TRUECOLOR'),
   ]);
 }
 
