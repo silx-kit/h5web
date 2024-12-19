@@ -14,3 +14,4 @@ dist*/
 Thumbs.db
 *.log
 *.tsbuildinfo
+.eslintcache

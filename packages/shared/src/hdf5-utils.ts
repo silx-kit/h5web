@@ -8,26 +8,26 @@ import {
   H5T_TO_ENDIANNESS,
   H5T_TO_STR_PAD,
 } from './h5t';
-import type {
-  ArrayType,
-  BitfieldType,
-  BooleanType,
-  ChildEntity,
-  ComplexType,
-  CompoundType,
-  DType,
-  EnumType,
-  GroupWithChildren,
-  H5WebComplex,
-  NumericType,
-  OpaqueType,
-  PrintableType,
-  ReferenceType,
-  StringType,
-  TimeType,
-  UnknownType,
+import {
+  type ArrayType,
+  type BitfieldType,
+  type BooleanType,
+  type ChildEntity,
+  type ComplexType,
+  type CompoundType,
+  type DType,
+  DTypeClass,
+  type EnumType,
+  type GroupWithChildren,
+  type H5WebComplex,
+  type NumericType,
+  type OpaqueType,
+  type PrintableType,
+  type ReferenceType,
+  type StringType,
+  type TimeType,
+  type UnknownType,
 } from './hdf5-models';
-import { DTypeClass } from './hdf5-models';
 
 export function getChildEntity(
   group: GroupWithChildren,
@@ -44,7 +44,7 @@ export function buildEntityPath(
   return `${prefix}/${entityNameOrRelativePath}`;
 }
 
-export function getNameFromPath(path: string) {
+export function getNameFromPath(path: string): string {
   const segments = path.split('/');
   return segments[segments.length - 1];
 }
@@ -72,7 +72,7 @@ export function intOrUintType(
   h5tSign: H5T_SIGN,
   size = 32,
   h5tOrder = H5T_ORDER.LE,
-) {
+): NumericType {
   const func = h5tSign === H5T_SIGN.SIGN_2 ? intType : uintType;
   return func(size, h5tOrder);
 }

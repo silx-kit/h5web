@@ -2,4 +2,7 @@ const { getDependencies } = require('eslint-config-galex/dist/getDependencies');
 
 const { createConfig } = require('../../eslint.shared.cjs');
 
-module.exports = createConfig(__dirname, getDependencies());
+const config = createConfig(__dirname, getDependencies());
+console.log(config);
+
+module.exports = config;

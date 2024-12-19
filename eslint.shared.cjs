@@ -15,41 +15,41 @@ module.exports = {
       cwd,
       enableJavaScriptSpecificRulesInTypeScriptProject: true, // to lint `.eslintrc.js` files and the like
       rules: {
-        'sort-keys-fix/sort-keys-fix': 'off', // keys should be sorted based on significance
-        'simple-import-sort/exports': 'off', // can make package entry files with numerous exports difficult to read
-        'import/no-default-export': 'off', // default exports are common in React
-        'import/dynamic-import-chunkname': 'off', // Vite generates human-readable chunk names
+        // 'sort-keys-fix/sort-keys-fix': 'off', // keys should be sorted based on significance
+        // 'simple-import-sort/exports': 'off', // can make package entry files with numerous exports difficult to read
+        // 'import/no-default-export': 'off', // default exports are common in React
+        // 'import/dynamic-import-chunkname': 'off', // Vite generates human-readable chunk names
 
         // Ternaries are sometimes more readable when `true` branch is most significant branch
-        'no-negated-condition': 'off',
-        'unicorn/no-negated-condition': 'off',
+        // 'no-negated-condition': 'off',
+        // 'unicorn/no-negated-condition': 'off',
 
         // Prefer explicit, consistent return - e.g. `return undefined;`
-        'unicorn/no-useless-undefined': 'off',
-        'consistent-return': 'error',
+        // 'unicorn/no-useless-undefined': 'off',
+        // 'consistent-return': 'error',
 
         // Properties available after typeguard may be tedious to destructure (e.g. in JSX)
-        'unicorn/consistent-destructuring': 'off',
+        // =====> 'unicorn/consistent-destructuring': 'off',
 
         // Not really more readable and makes Jest crash
-        'unicorn/prefer-prototype-methods': 'off',
+        // =====> 'unicorn/prefer-prototype-methods': 'off',
 
         /* Forcing use of `else` for consistency with mandatory `default` clause in `switch` statements is unreasonable.
          * `if`/`else if` serves a different purpose than `switch`. */
-        'sonarjs/elseif-without-else': 'off',
+        // 'sonarjs/elseif-without-else': 'off',
 
         // DOM dataset API is confusing since we deal with HDF5 datasets
         'unicorn/prefer-dom-node-dataset': 'off',
 
         // The point of `switch` is to be less verbose than if/else if/else
-        'unicorn/switch-case-braces': ['warn', 'avoid'],
+        // 'unicorn/switch-case-braces': ['warn', 'avoid'],
 
         // `import { type Foo }` requires TS 5.0's `verbatimModuleSyntax`, which causes issues with Jest
         // Sticking with `importsNotUsedAsValues` and `import type { Foo }` for now...
-        'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+        // 'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
 
         // Galex currently disables checking for duplicate imports in a TS environment, even though TS doesn't warn about this
-        'import/no-duplicates': 'error',
+        // 'import/no-duplicates': 'error',
       },
       overrides: [
         createReactOverride({

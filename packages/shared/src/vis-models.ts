@@ -1,6 +1,6 @@
-import type { NdArray, TypedArray } from 'ndarray';
+import { type NdArray, type TypedArray } from 'ndarray';
 
-import type { DType, Primitive } from './hdf5-models';
+import { type DType, type Primitive } from './hdf5-models';
 
 export type NumArray = TypedArray | number[];
 export type AnyNumArray = NdArray<NumArray> | NumArray;
