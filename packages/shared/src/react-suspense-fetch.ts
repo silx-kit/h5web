@@ -1,5 +1,4 @@
-import type { StoreApi } from 'zustand/vanilla';
-import { createStore } from 'zustand/vanilla';
+import { createStore, type StoreApi } from 'zustand/vanilla';
 
 type FetchFunc<Input, Result> = (
   input: Input,
@@ -37,7 +36,7 @@ interface ProgressState<Input> {
 export function createFetchStore<Input, Result>(
   fetchFunc: FetchFunc<Input, Result>,
   areEqual: AreEqual<Input> = Object.is,
-) {
+): FetchStore<Input, Result> {
   const cache = createCache<Input, Instance<Result>>(areEqual);
 
   const progressStore = createStore<ProgressState<Input>>((set, get) => ({
@@ -88,7 +87,9 @@ export function createFetchStore<Input, Result>(
       cache.get(input)?.abort(reason);
     },
     abortAll: (reason?: string): void => {
-      cache.values().forEach((instance) => instance.abort(reason));
+      cache.values().forEach((instance) => {
+        instance.abort(reason);
+      });
     },
     get progressStore() {
       return progressStore;
@@ -158,10 +159,10 @@ function createInstance<Input, Result>(
   return {
     get: () => {
       if (promise) {
-        throw promise; // eslint-disable-line @typescript-eslint/no-throw-literal
+        throw promise; // eslint-disable-line @typescript-eslint/only-throw-error
       }
       if (error !== undefined) {
-        throw error; // eslint-disable-line @typescript-eslint/no-throw-literal
+        throw error; // eslint-disable-line @typescript-eslint/only-throw-error
       }
       return result as Result;
     },

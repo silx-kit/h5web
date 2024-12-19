@@ -1,15 +1,15 @@
 /* -------------------- */
 /* ----- ENTITIES ----- */
 
-import type { TypedArray } from 'ndarray';
+import { type TypedArray } from 'ndarray';
 
-import type {
-  H5T_CSET,
-  H5T_ORDER,
-  H5T_STR,
-  H5T_TO_CHAR_SET,
-  H5T_TO_ENDIANNESS,
-  H5T_TO_STR_PAD,
+import {
+  type H5T_CSET,
+  type H5T_ORDER,
+  type H5T_STR,
+  type H5T_TO_CHAR_SET,
+  type H5T_TO_ENDIANNESS,
+  type H5T_TO_STR_PAD,
 } from './h5t';
 
 export enum EntityKind {

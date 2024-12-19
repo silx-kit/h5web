@@ -1,20 +1,20 @@
 import { hasChildren, isGroup } from './guards';
-import type {
-  ArrayShape,
-  Attribute,
-  ChildEntity,
-  Dataset,
-  Datatype,
-  DType,
-  Entity,
-  Group,
-  GroupWithChildren,
-  LinkClass,
-  ScalarShape,
-  Shape,
-  UnresolvedEntity,
+import {
+  type ArrayShape,
+  type Attribute,
+  type ChildEntity,
+  type Dataset,
+  type Datatype,
+  type DType,
+  type Entity,
+  EntityKind,
+  type Group,
+  type GroupWithChildren,
+  type LinkClass,
+  type ScalarShape,
+  type Shape,
+  type UnresolvedEntity,
 } from './hdf5-models';
-import { EntityKind } from './hdf5-models';
 import {
   boolType,
   buildEntityPath,
@@ -24,9 +24,13 @@ import {
   strType,
   unknownType,
 } from './hdf5-utils';
-import type { MockAttribute, MockDataset, MockValueId } from './mock-models';
+import {
+  type MockAttribute,
+  type MockDataset,
+  type MockValueId,
+} from './mock-models';
 import { mockValues } from './mock-values';
-import type { SilxStyle } from './nexus-models';
+import { type SilxStyle } from './nexus-models';
 
 export function assertMockDataset<S extends Shape, T extends DType>(
   dtst: Dataset<S, T>,
@@ -314,6 +318,7 @@ function guessType(value: unknown): DType {
 
 function prefixChildrenPaths(grp: GroupWithChildren, parentPath: string): void {
   grp.children.forEach((c) => {
+    // eslint-disable-next-line no-param-reassign
     c.path = buildEntityPath(parentPath, c.path.slice(1));
 
     if (isGroup(c) && hasChildren(c)) {
@@ -328,8 +333,8 @@ function silxStyleAttr(style: SilxStyle): MockAttribute<ScalarShape> {
   return scalarAttr(
     'SILX_style',
     JSON.stringify({
-      signal_scale_type: signalScaleType,
-      axes_scale_type: axisScaleTypes,
+      signal_scale_type: signalScaleType, // eslint-disable-line camelcase
+      axes_scale_type: axisScaleTypes, // eslint-disable-line camelcase
     }),
   );
 }
