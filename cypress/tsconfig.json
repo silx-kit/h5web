@@ -1,5 +1,6 @@
 {
   "extends": "../tsconfig.json",
+  "include": ["*", "e2e"],
   "compilerOptions": {
     "isolatedModules": false,
     "sourceMap": false,
@@ -8,6 +9,5 @@
       "@testing-library/cypress",
       "@simonsmith/cypress-image-snapshot/types"
     ]
-  },
-  "include": ["*", "e2e"]
+  }
 }
