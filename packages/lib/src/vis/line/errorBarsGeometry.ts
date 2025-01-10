@@ -20,7 +20,7 @@ class ErrorBarsGeometry extends H5WebGeometry<'position', Params> {
     this.setAttribute('position', createBufferAttr(length * 2));
   }
 
-  public update(index: number) {
+  public update(index: number): void {
     const {
       abscissas,
       ordinates,

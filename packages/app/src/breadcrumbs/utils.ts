@@ -15,7 +15,7 @@ export function getFeedbackMailto(
 Here is some additional context:
 
 - User agent: ${navigator.userAgent}
-- Location: ${window.location.href}
+- Location: ${globalThis.location.href}
 - File path: ${filePath}
 - Entity path: ${entityPath}
 - << Any other info (JupyterLab, etc.) >>

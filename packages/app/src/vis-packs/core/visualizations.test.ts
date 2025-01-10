@@ -28,7 +28,7 @@ const mockStore = {
     assertMockAttribute(attr);
     return attr.value;
   },
-} as AttrValuesStore;
+};
 
 const scalarInt = dataset('int', intType(), []);
 const scalarUint = dataset('uint', uintType(), []);
@@ -208,16 +208,20 @@ describe('RGB', () => {
   const { supportsDataset } = CORE_VIS.RGB;
 
   it('should support array dataset with IMAGE attribute and numeric type', () => {
-    expect(supportsDataset(image, mockStore)).toBe(true);
-    expect(supportsDataset(imageFloat, mockStore)).toBe(true);
+    expect(supportsDataset(image, mockStore as AttrValuesStore)).toBe(true);
+    expect(supportsDataset(imageFloat, mockStore as AttrValuesStore)).toBe(
+      true,
+    );
   });
 
   it('should not support dataset with non-numeric type', () => {
-    expect(supportsDataset(imageStr, mockStore)).toBe(false);
+    expect(supportsDataset(imageStr, mockStore as AttrValuesStore)).toBe(false);
   });
 
   it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(imageScalar, mockStore)).toBe(false);
+    expect(supportsDataset(imageScalar, mockStore as AttrValuesStore)).toBe(
+      false,
+    );
   });
 });
 

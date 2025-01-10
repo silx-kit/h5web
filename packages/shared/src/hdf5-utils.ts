@@ -44,7 +44,7 @@ export function buildEntityPath(
   return `${prefix}/${entityNameOrRelativePath}`;
 }
 
-export function getNameFromPath(path: string) {
+export function getNameFromPath(path: string): string {
   const segments = path.split('/');
   return segments[segments.length - 1];
 }
@@ -72,7 +72,7 @@ export function intOrUintType(
   h5tSign: H5T_SIGN,
   size = 32,
   h5tOrder = H5T_ORDER.LE,
-) {
+): NumericType {
   const func = h5tSign === H5T_SIGN.SIGN_2 ? intType : uintType;
   return func(size, h5tOrder);
 }

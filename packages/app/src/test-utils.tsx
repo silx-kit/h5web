@@ -32,7 +32,7 @@ export async function renderApp(
   };
 
   if (preferredVis) {
-    window.localStorage.setItem(
+    globalThis.localStorage.setItem(
       'h5web:preferredVis',
       JSON.stringify(preferredVis),
     );
@@ -41,9 +41,8 @@ export async function renderApp(
   if (withFakeTimers) {
     vi.useFakeTimers();
 
-    // Workaround for React Testing Library's reliance on Jest
+    // @ts-expect-error - Workaround for React Testing Library's reliance on Jest
     // https://github.com/testing-library/react-testing-library/issues/1197
-    // @ts-expect-error
     globalThis.jest = { advanceTimersByTime: vi.advanceTimersByTime.bind(vi) };
   }
 

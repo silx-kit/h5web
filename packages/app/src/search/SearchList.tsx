@@ -19,9 +19,9 @@ function SearchList(props: Props) {
   const [paths, setPaths] = useState<string[]>();
 
   useEffect(() => {
-    const fetchPaths = async () => {
+    async function fetchPaths() {
       setPaths(await getSearchablePaths(BASE));
-    };
+    }
     if (!paths) {
       void fetchPaths();
     }

@@ -105,10 +105,10 @@ export function useBaseArray<T extends unknown[] | TypedArray | undefined>(
   rawDims: number[],
 ): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
 
-export function useBaseArray<T>(
-  value: T[] | TypedArray | undefined,
+export function useBaseArray(
+  value: unknown[] | TypedArray | undefined,
   rawDims: number[],
-) {
+): NdArray<unknown[] | TypedArray> | undefined {
   return useMemo(() => getBaseArray(value, rawDims), [value, rawDims]);
 }
 
@@ -118,11 +118,11 @@ export function useMappedArray<T extends unknown[] | TypedArray | undefined>(
   mapping: DimensionMapping,
 ): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
 
-export function useMappedArray<T>(
-  value: T[] | TypedArray | undefined,
+export function useMappedArray(
+  value: unknown[] | TypedArray | undefined,
   dims: number[],
   mapping: DimensionMapping,
-) {
+): NdArray<unknown[] | TypedArray> | undefined {
   const baseArray = useBaseArray(value, dims);
 
   return useMemo(() => applyMapping(baseArray, mapping), [baseArray, mapping]);

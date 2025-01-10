@@ -13,7 +13,7 @@ import { range } from 'd3-array';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = mockValues.oneD();
+const oneD = mockValues.oneD();
 
 const meta = {
   title: 'Building Blocks/Glyphs',
@@ -24,8 +24,8 @@ const meta = {
     controls: { sort: 'requiredFirst' },
   },
   args: {
-    abscissas: range(dataArray.size),
-    ordinates: dataArray.data,
+    abscissas: range(oneD.size),
+    ordinates: oneD.data,
     glyphType: GlyphTypeEnum.Cross,
     color: 'blue',
     size: 6,

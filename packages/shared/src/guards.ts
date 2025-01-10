@@ -42,11 +42,11 @@ const PRINTABLE_DTYPES = new Set([
   DTypeClass.Complex,
 ]);
 
-export function isAbsolutePath(path: string) {
+export function isAbsolutePath(path: string): boolean {
   return path.startsWith('/');
 }
 
-export function assertAbsolutePath(path: string) {
+export function assertAbsolutePath(path: string): void {
   if (!isAbsolutePath(path)) {
     throw new Error("Expected path to start with '/'");
   }
@@ -243,7 +243,7 @@ export function hasMinDims(dataset: Dataset<ArrayShape>, min: number): boolean {
   return dataset.shape.length >= min;
 }
 
-export function assertMinDims(dataset: Dataset<ArrayShape>, min: number) {
+export function assertMinDims(dataset: Dataset<ArrayShape>, min: number): void {
   if (!hasMinDims(dataset, min)) {
     throw new Error(`Expected dataset with at least ${min} dimensions`);
   }
@@ -253,7 +253,7 @@ export function hasNumDims(dataset: Dataset<ArrayShape>, num: number): boolean {
   return dataset.shape.length === num;
 }
 
-export function assertNumDims(dataset: Dataset<ArrayShape>, num: number) {
+export function assertNumDims(dataset: Dataset<ArrayShape>, num: number): void {
   if (!hasNumDims(dataset, num)) {
     throw new Error(`Expected dataset with ${num} dimensions`);
   }
@@ -420,8 +420,8 @@ export function isComplexValue(
   return type.class === DTypeClass.Complex;
 }
 
-function assertPrimitiveValue<T extends DType>(
-  type: T,
+function assertPrimitiveValue(
+  type: DType,
   value: unknown,
 ): asserts value is Primitive<DType> {
   if (isNumericType(type)) {
@@ -461,7 +461,7 @@ export function assertLength(
   arr: AnyNumArray | undefined,
   dataLength: number,
   arrName: string,
-) {
+): void {
   if (!arr) {
     return;
   }

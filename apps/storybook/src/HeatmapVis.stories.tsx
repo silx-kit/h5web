@@ -12,12 +12,12 @@ import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = mockValues.twoD();
-const domain = getDomain(dataArray.data);
+const twoD = mockValues.twoD();
+const domain = getDomain(twoD.data);
 
 const alphaArray = ndarray(
-  dataArray.data.map((x) => Math.abs(x)),
-  dataArray.shape,
+  twoD.data.map((x) => Math.abs(x)),
+  twoD.shape,
 );
 const alphaDomain = getDomain(alphaArray);
 assertDefined(alphaDomain);
@@ -31,7 +31,7 @@ const meta = {
     controls: { sort: 'requiredFirst' },
   },
   args: {
-    dataArray,
+    dataArray: twoD,
     domain,
     colorMap: 'Viridis',
     scaleType: ScaleType.Linear,
@@ -83,15 +83,12 @@ export const AxisValues = {
   args: {
     abscissaParams: {
       value: Array.from(
-        { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
+        { length: twoD.shape[1] }, // works even when right edge of last pixel is not provided
         (_, i) => 100 + 10 * i,
       ),
     },
     ordinateParams: {
-      value: Array.from(
-        { length: dataArray.shape[0] + 1 },
-        (_, i) => -100 + 10 * i,
-      ),
+      value: Array.from({ length: twoD.shape[0] + 1 }, (_, i) => -100 + 10 * i),
     },
   },
 } satisfies Story;
@@ -100,15 +97,12 @@ export const DescendingAxisValues = {
   args: {
     abscissaParams: {
       value: Array.from(
-        { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
+        { length: twoD.shape[1] }, // works even when right edge of last pixel is not provided
         (_, i) => -100 - 10 * i,
       ),
     },
     ordinateParams: {
-      value: Array.from(
-        { length: dataArray.shape[0] + 1 },
-        (_, i) => -100 - 10 * i,
-      ),
+      value: Array.from({ length: twoD.shape[0] + 1 }, (_, i) => -100 - 10 * i),
     },
   },
 } satisfies Story;
@@ -130,7 +124,7 @@ export const IgnoreValue = {
 
 export const TypedArray = {
   args: {
-    dataArray: toTypedNdArray(dataArray, Float32Array),
+    dataArray: toTypedNdArray(twoD, Float32Array),
     alpha: {
       array: toTypedNdArray(alphaArray, Float32Array),
       domain: alphaDomain,

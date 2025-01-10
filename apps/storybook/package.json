@@ -8,7 +8,7 @@
     "start": "storybook dev -p 6006",
     "build": "storybook build -o build",
     "serve": "pnpm dlx http-server -p 6006 ./build",
-    "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
+    "lint:eslint": "eslint --max-warnings=0",
     "lint:tsc": "tsc"
   },
   "dependencies": {
@@ -42,8 +42,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/three": "0.167.1",
-    "eslint": "8.57.0",
-    "eslint-config-galex": "4.5.2",
+    "eslint": "9.16.0",
     "remark-gfm": "4.0.0",
     "storybook": "8.3.5",
     "typescript": "5.4.5",

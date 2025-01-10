@@ -29,7 +29,7 @@ import {
   timeType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
-import type { Dataset as H5WasmDataset, Metadata } from 'h5wasm';
+import type { Dataset as H5WasmDataset, Metadata, OutputData } from 'h5wasm';
 import { ready as h5wasmReady } from 'h5wasm';
 import { nanoid } from 'nanoid';
 
@@ -207,7 +207,7 @@ function parseAttributes(
   });
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 function parseDType(metadata: Metadata): DType {
   const { type: h5tClass, size } = metadata;
 
@@ -287,6 +287,7 @@ function parseDType(metadata: Metadata): DType {
 
   return unknownType();
 }
+/* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
 
 function parseVirtualSources(metadata: Metadata): VirtualSource[] | undefined {
   return metadata.virtual_sources?.map(({ file_name, dset_name }) => ({
@@ -298,7 +299,7 @@ function parseVirtualSources(metadata: Metadata): VirtualSource[] | undefined {
 export function readSelectedValue(
   h5wDataset: H5WasmDataset,
   selection: string | undefined,
-) {
+): OutputData | null {
   if (!selection) {
     return h5wDataset.value;
   }

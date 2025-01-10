@@ -75,11 +75,13 @@ export class HsdsApi extends DataProviderApi {
         }
 
         try {
-          return JSON.parse(data);
+          return JSON.parse(data) as unknown;
         } catch {
           // https://github.com/HDFGroup/hsds/issues/87
           try {
-            return JSON.parse(data.replaceAll(/(NaN|-?Infinity)/gu, '"$&"'));
+            return JSON.parse(
+              data.replaceAll(/-?Infinity|NaN/gu, '"$&"'),
+            ) as unknown;
           } catch {
             return data;
           }
@@ -229,15 +231,18 @@ export class HsdsApi extends DataProviderApi {
     params: ValuesStoreParams,
     signal?: AbortSignal,
     onProgress?: OnProgress,
-  ): Promise<HsdsValueResponse> {
+  ): Promise<unknown> {
     const { selection } = params;
 
     try {
-      const { data } = await this.client.get(`/datasets/${entityId}/value`, {
-        params: { select: selection ? `[${selection}]` : undefined },
-        signal,
-        onDownloadProgress: createAxiosProgressHandler(onProgress),
-      });
+      const { data } = await this.client.get<HsdsValueResponse>(
+        `/datasets/${entityId}/value`,
+        {
+          params: { select: selection ? `[${selection}]` : undefined },
+          signal,
+          onDownloadProgress: createAxiosProgressHandler(onProgress),
+        },
+      );
 
       return data.value;
     } catch (error) {
@@ -336,7 +341,7 @@ export class HsdsApi extends DataProviderApi {
     return {
       ...group,
       children: await Promise.all(
-        links.map((link) =>
+        links.map(async (link) =>
           this.resolveLink(link, buildEntityPath(path, link.title)),
         ),
       ),

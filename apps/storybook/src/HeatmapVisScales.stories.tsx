@@ -4,10 +4,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import HeatmapVisStoriesMeta from './HeatmapVis.stories';
 
-const dataArray = mockValues.twoD();
-const domain = getDomain(dataArray.data);
-const logSafeDomain = getDomain(dataArray.data, ScaleType.Log);
-const sqrtSafeDomain = getDomain(dataArray.data, ScaleType.Sqrt);
+const twoD = mockValues.twoD();
+const domain = getDomain(twoD.data);
+const logSafeDomain = getDomain(twoD.data, ScaleType.Log);
+const sqrtSafeDomain = getDomain(twoD.data, ScaleType.Sqrt);
 
 const meta = {
   ...HeatmapVisStoriesMeta,
@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 export const SymLogScale = {
   name: 'Symlog Scale',
   args: {
-    dataArray,
+    dataArray: twoD,
     domain,
     scaleType: ScaleType.SymLog,
   },
@@ -28,7 +28,7 @@ export const SymLogScale = {
 
 export const LogScale = {
   args: {
-    dataArray,
+    dataArray: twoD,
     domain: logSafeDomain,
     scaleType: ScaleType.Log,
   },
@@ -37,7 +37,7 @@ export const LogScale = {
 export const SqrtScale = {
   name: 'Square Root Scale',
   args: {
-    dataArray,
+    dataArray: twoD,
     domain: sqrtSafeDomain,
     scaleType: ScaleType.Sqrt,
   },

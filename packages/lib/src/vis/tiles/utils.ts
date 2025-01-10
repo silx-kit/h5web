@@ -36,7 +36,7 @@ export function sortTilesByDistanceTo(
   offsets: Vector2[],
   tileSize: Size,
   ref: Vector2,
-) {
+): void {
   const { width, height } = tileSize;
 
   offsets.sort((a, b) => {

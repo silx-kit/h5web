@@ -314,6 +314,7 @@ function guessType(value: unknown): DType {
 
 function prefixChildrenPaths(grp: GroupWithChildren, parentPath: string): void {
   grp.children.forEach((c) => {
+    // eslint-disable-next-line no-param-reassign
     c.path = buildEntityPath(parentPath, c.path.slice(1));
 
     if (isGroup(c) && hasChildren(c)) {

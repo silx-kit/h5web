@@ -46,7 +46,7 @@ export function useFloatingMenu(): UseFloatingReturn<HTMLButtonElement> {
  * - `useDismiss` (Escape key, click outside)
  * - `FloatingFocusManager` (focus out) */
 export function useFloatingDismiss(context: FloatingContext): ElementProps {
-  const { refs, onOpenChange } = context;
+  const { refs, onOpenChange } = context; // eslint-disable-line @typescript-eslint/unbound-method
   const { domReference, floating } = refs;
 
   const handleBlur = useCallback(
@@ -67,8 +67,8 @@ export function useFloatingDismiss(context: FloatingContext): ElementProps {
   const floatingProps = useMemo(() => ({ onBlur: handleBlur }), [handleBlur]);
 
   useKeyboardEvent('Escape', () => onOpenChange(false));
-  useClickOutside(refs.floating, (evt) => {
-    const triggerRef = refs.domReference.current;
+  useClickOutside(floating, (evt) => {
+    const triggerRef = domReference.current;
     if (evt.target instanceof Element && triggerRef?.contains(evt.target)) {
       return; // skip
     }

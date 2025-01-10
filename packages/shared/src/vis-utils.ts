@@ -42,11 +42,11 @@ export const formatTooltipErr = format('.3~g');
 export const formatScalarComplex = createComplexFormatter('.12~g');
 
 const TICK_PRECISION = 3;
-const TICK_DECIMAL_REGEX = /0\.([0-9]+)$/u; // can start with minus sign
+const TICK_DECIMAL_REGEX = /0\.(\d+)$/u; // can start with minus sign
 const formatTickAuto = format(`.${TICK_PRECISION}~g`); // automatic mode (`Number.toPrecision`)
 const formatTickExp = format(`.${TICK_PRECISION}~e`); // exponent mode
 
-export function formatTick(val: number | { valueOf(): number }): string {
+export function formatTick(val: number | { valueOf: () => number }): string {
   const str = formatTickAuto(val);
 
   /* If automatic mode gives a decimal number with more than three decimals,
@@ -73,7 +73,7 @@ export function createComplexFormatter(
     const [real, imag] = value;
 
     if (imag === 0 && !full) {
-      return `${formatVal(real)}`;
+      return formatVal(real);
     }
 
     if (real === 0 && !full) {
@@ -105,13 +105,13 @@ export function toTypedNdArray<T extends TypedArrayConstructor>(
 export function createArrayFromView<T extends TypedArray | unknown[]>(
   view: NdArray<T>,
 ): NdArray<T> {
-  const { data } = view;
+  const { data, size, shape } = view;
 
   const array = ndarray(
     (Array.isArray(data)
       ? []
-      : new (data.constructor as TypedArrayConstructor)(view.size)) as T,
-    view.shape,
+      : new (data.constructor as TypedArrayConstructor)(size)) as T,
+    shape,
   );
 
   assign(array, view);
@@ -163,7 +163,7 @@ export function getBounds(
       positiveMin: Infinity,
       strictPositiveMin: Infinity,
     },
-  );
+  ) as Bounds;
 
   // Return undefined if min is Infinity (values is empty or contains only NaN/Infinity)
   return Number.isFinite(bounds.min) ? bounds : undefined;

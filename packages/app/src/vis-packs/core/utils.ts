@@ -1,3 +1,4 @@
+import type { InteractionInfo } from '@h5web/lib';
 import { isNumericType } from '@h5web/shared/guards';
 import type { ArrayValue, NumericLikeType } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
@@ -30,10 +31,10 @@ export function getBaseArray<T extends unknown[] | TypedArray | undefined>(
   rawDims: number[],
 ): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
 
-export function getBaseArray<T>(
-  value: T[] | TypedArray | undefined,
+export function getBaseArray(
+  value: unknown[] | TypedArray | undefined,
   rawDims: number[],
-) {
+): NdArray<unknown[] | TypedArray> | undefined {
   return value && ndarray(value, rawDims);
 }
 
@@ -44,10 +45,10 @@ export function applyMapping<
   mapping: (number | Axis | ':')[],
 ): T extends NdArray<unknown[] | TypedArray> ? T : undefined;
 
-export function applyMapping<T>(
-  baseArray: NdArray<T[] | TypedArray> | undefined,
+export function applyMapping(
+  baseArray: NdArray<unknown[] | TypedArray> | undefined,
   mapping: (number | Axis | ':')[],
-) {
+): NdArray<unknown[] | TypedArray> | undefined {
   if (!baseArray) {
     return undefined;
   }
@@ -84,7 +85,7 @@ export function getSliceSelection(
   return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
 }
 
-export function getImageInteractions(keepRatio: boolean) {
+export function getImageInteractions(keepRatio: boolean): InteractionInfo[] {
   return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
 }
 

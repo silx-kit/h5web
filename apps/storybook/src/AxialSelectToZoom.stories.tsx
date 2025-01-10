@@ -17,8 +17,8 @@ import { range } from 'd3-array';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray1D = mockValues.oneD();
-const dataArray2D = toTypedNdArray(mockValues.twoD(), Float32Array);
+const oneD = mockValues.oneD();
+const typedTwoD = toTypedNdArray(mockValues.twoD(), Float32Array);
 
 const meta = {
   title: 'Building Blocks/Interactions/AxialSelectToZoom',
@@ -45,12 +45,12 @@ type Story = StoryObj<typeof meta>;
 const Default = {
   render: (args) => {
     const { modifierKey } = args;
-    const domain = useDomain(dataArray1D);
+    const domain = useDomain(oneD);
     assertDefined(domain);
 
     return (
       <VisCanvas
-        abscissaConfig={{ visDomain: [0, dataArray1D.size], showGrid: true }}
+        abscissaConfig={{ visDomain: [0, oneD.size], showGrid: true }}
         ordinateConfig={{ visDomain: domain, showGrid: true }}
       >
         <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
@@ -58,11 +58,7 @@ const Default = {
         <AxialSelectToZoom {...args} />
         <ResetZoomButton />
 
-        <Line
-          abscissas={range(dataArray1D.size)}
-          ordinates={dataArray1D.data}
-          color="blue"
-        />
+        <Line abscissas={range(oneD.size)} ordinates={oneD.data} color="blue" />
       </VisCanvas>
     );
   },
@@ -115,8 +111,8 @@ export const Disabled = {
 
 export const DisabledInsideEqualAspectCanvas = {
   render: (args) => {
-    const [rows, cols] = dataArray2D.shape;
-    const domain = useDomain(dataArray2D);
+    const [rows, cols] = typedTwoD.shape;
+    const domain = useDomain(typedTwoD);
     assertDefined(domain);
 
     return (
@@ -131,7 +127,7 @@ export const DisabledInsideEqualAspectCanvas = {
         <ResetZoomButton />
 
         <HeatmapMesh
-          values={dataArray2D}
+          values={typedTwoD}
           domain={domain}
           colorMap="Viridis"
           scaleType={ScaleType.Linear}

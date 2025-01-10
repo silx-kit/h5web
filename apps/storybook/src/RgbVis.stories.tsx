@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = mockValues.threeD_rgb();
+const rgbThreeD = mockValues.threeD_rgb();
 
 const meta = {
   title: 'Visualizations/RgbVis',
@@ -14,7 +14,7 @@ const meta = {
     controls: { sort: 'requiredFirst' },
   },
   args: {
-    dataArray,
+    dataArray: rgbThreeD,
     aspect: 'equal',
     showGrid: true,
   },
@@ -42,13 +42,13 @@ export const AxisValues = {
   args: {
     abscissaParams: {
       value: Array.from(
-        { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
+        { length: rgbThreeD.shape[1] }, // works even when right edge of last pixel is not provided
         (_, i) => 100 + 10 * i,
       ),
     },
     ordinateParams: {
       value: Array.from(
-        { length: dataArray.shape[0] + 1 },
+        { length: rgbThreeD.shape[0] + 1 },
         (_, i) => -100 + 10 * i,
       ),
     },
@@ -59,13 +59,13 @@ export const DescendingAxisValues = {
   args: {
     abscissaParams: {
       value: Array.from(
-        { length: dataArray.shape[1] }, // works even when right edge of last pixel is not provided
+        { length: rgbThreeD.shape[1] }, // works even when right edge of last pixel is not provided
         (_, i) => -100 - 10 * i,
       ),
     },
     ordinateParams: {
       value: Array.from(
-        { length: dataArray.shape[0] + 1 },
+        { length: rgbThreeD.shape[0] + 1 },
         (_, i) => -100 - 10 * i,
       ),
     },
@@ -101,14 +101,14 @@ export const CustomAspectRatio = {
 
 export const FlipXAxis = {
   args: {
-    dataArray,
+    dataArray: rgbThreeD,
     flipXAxis: true,
   },
 } satisfies Story;
 
 export const FlipYAxis = {
   args: {
-    dataArray,
+    dataArray: rgbThreeD,
     flipYAxis: true,
   },
 } satisfies Story;

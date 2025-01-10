@@ -19,13 +19,13 @@ function YAxisZoom(props: Props) {
     disabled: visRatio !== undefined || disabled,
   });
 
-  const isZoomAllowed = (sourceEvent: WheelEvent) => ({
+  const handleWheel = useZoomOnWheel((sourceEvent: WheelEvent) => ({
     x: false,
     y: shouldInteract(sourceEvent),
-  });
+  }));
 
   useWheelCapture();
-  useCanvasEvent('wheel', useZoomOnWheel(isZoomAllowed));
+  useCanvasEvent('wheel', handleWheel);
 
   return null;
 }

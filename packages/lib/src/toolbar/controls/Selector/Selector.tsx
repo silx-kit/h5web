@@ -27,7 +27,7 @@ function Selector<T extends string>(props: Props<T>) {
   const { label, value, disabled, onChange, options, renderOption } = props;
 
   const { context, refs, floatingStyles } = useFloatingMenu();
-  const { open: isOpen, onOpenChange: toggle } = context;
+  const { open: isOpen, floatingId, onOpenChange: toggle } = context;
 
   const labelId = useId();
   const referenceId = useId();
@@ -77,7 +77,7 @@ function Selector<T extends string>(props: Props<T>) {
         aria-labelledby={`${label ? labelId : ''} ${currentOptionId}`}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        aria-controls={(isOpen && context.floatingId) || undefined}
+        aria-controls={(isOpen && floatingId) || undefined}
         {...getReferenceProps()}
       >
         <span id={currentOptionId} className={toolbarStyles.btnLike}>
@@ -89,7 +89,7 @@ function Selector<T extends string>(props: Props<T>) {
       {isOpen && (
         <div
           ref={refs.setFloating}
-          id={context.floatingId}
+          id={floatingId}
           className={toolbarStyles.menu}
           style={floatingStyles}
           role="listbox"

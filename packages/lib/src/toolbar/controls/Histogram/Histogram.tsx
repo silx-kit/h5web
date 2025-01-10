@@ -69,7 +69,7 @@ function Histogram(props: Props) {
   const markerPositions = safeValue.map(xScale) as Domain;
 
   const rects: ReactNode[] = [];
-  values.forEach((d, i) =>
+  values.forEach((d, i) => {
     rects.push(
       <rect
         className={styles.bar}
@@ -79,8 +79,8 @@ function Histogram(props: Props) {
         width={xScale(bins[i + 1]) - xScale(bins[i]) + 0.5} // +0.5 removes the small gap between bars
         height={yScale(d) - yScale(0)}
       />,
-    ),
-  );
+    );
+  });
 
   return (
     <div ref={ref} className={styles.container}>

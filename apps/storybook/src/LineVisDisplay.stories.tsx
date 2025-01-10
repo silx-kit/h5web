@@ -10,8 +10,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import LineVisStoriesMeta, { Default } from './LineVis.stories';
 
-const dataArray = mockValues.oneD_linear();
-const domain = getDomain(dataArray.data);
+const linOneD = mockValues.oneD_linear();
+const domain = getDomain(linOneD.data);
 
 const meta = {
   ...LineVisStoriesMeta,
@@ -47,14 +47,14 @@ export const CustomTooltip = {
   ...Default,
   args: {
     abscissaParams: {
-      value: Array.from({ length: dataArray.size }, (_, i) => -10 + 0.5 * i),
+      value: Array.from({ length: linOneD.size }, (_, i) => -10 + 0.5 * i),
     },
     renderTooltip: (data) => {
       const { abscissa, xi, x } = data;
       return (
         <>
           <div>
-            <strong>{`value = ${dataArray.get(xi)}`}</strong>
+            <strong>{`value = ${linOneD.get(xi)}`}</strong>
           </div>
           <div>{`abscissa = ${abscissa}`}</div>
           <div>{`xi = ${xi}`}</div>

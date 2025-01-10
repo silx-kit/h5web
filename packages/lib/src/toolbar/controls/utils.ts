@@ -1,7 +1,7 @@
 export async function download(
   url: URL | (() => Promise<URL | Blob>),
   filename: string,
-) {
+): Promise<void> {
   const urlOrBlob = url instanceof URL ? url : await url();
 
   const anchor = document.createElement('a');

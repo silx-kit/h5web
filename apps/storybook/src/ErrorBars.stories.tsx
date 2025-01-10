@@ -12,7 +12,7 @@ import { range } from 'd3-array';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = mockValues.oneD();
+const oneD = mockValues.oneD();
 
 const meta = {
   title: 'Building Blocks/ErrorBars',
@@ -23,9 +23,9 @@ const meta = {
     controls: { sort: 'requiredFirst' },
   },
   args: {
-    abscissas: range(dataArray.size),
-    ordinates: dataArray.data,
-    errors: dataArray.data.map(() => 10),
+    abscissas: range(oneD.size),
+    ordinates: oneD.data,
+    errors: oneD.data.map(() => 10),
     color: 'blue',
     visible: true,
   },

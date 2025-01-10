@@ -88,7 +88,7 @@ export function useCssColors(
 
   // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
   const refCallback: RefCallback<HTMLElement> = useCallback(
-    (elem) => setStyles(elem ? window.getComputedStyle(elem) : undefined),
+    (elem) => setStyles(elem ? globalThis.getComputedStyle(elem) : undefined),
     [],
   );
 
@@ -136,7 +136,7 @@ export function useGeometry<
       }
 
       Object.values<BufferAttribute>(geometry.attributes).forEach((attr) => {
-        attr.needsUpdate = true;
+        attr.needsUpdate = true; // eslint-disable-line no-param-reassign
       });
 
       if (geometry.index) {

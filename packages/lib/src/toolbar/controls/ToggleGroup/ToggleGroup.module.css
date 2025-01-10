@@ -4,12 +4,12 @@
 }
 
 .btn {
-  composes: btn from '../utils.module.css';
+  composes: btn from '../../utils.module.css';
   padding: 0;
 }
 
 .btnLike {
-  composes: btnLike from '../utils.module.css';
+  composes: btnLike from '../../utils.module.css';
 }
 
 .btn:not(:first-child) > .btnLike {
@@ -24,11 +24,11 @@
 }
 
 .icon {
-  composes: icon from '../utils.module.css';
+  composes: icon from '../../utils.module.css';
 }
 
 .label {
-  composes: label from '../utils.module.css';
+  composes: label from '../../utils.module.css';
 }
 
 .btn[data-hint] .label {

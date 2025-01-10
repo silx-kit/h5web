@@ -27,7 +27,7 @@ function ExportMenu(props: Props) {
   const availableEntries = entries.filter(({ url }) => !!url);
 
   const { context, refs, floatingStyles } = useFloatingMenu();
-  const { open: isOpen, onOpenChange: toggle } = context;
+  const { floatingId, open: isOpen, onOpenChange: toggle } = context;
 
   const referenceId = useId();
   const listRef = useRef<(HTMLButtonElement | null)[]>([]);
@@ -58,14 +58,14 @@ function ExportMenu(props: Props) {
         disabled={availableEntries.length === 0}
         aria-haspopup="menu"
         aria-expanded={isOpen}
-        aria-controls={(isOpen && context.floatingId) || undefined}
+        aria-controls={(isOpen && floatingId) || undefined}
         {...getReferenceProps()}
       />
 
       {isOpen && (
         <div
           ref={refs.setFloating}
-          id={context.floatingId}
+          id={floatingId}
           className={toolbarStyles.menu}
           style={floatingStyles}
           role="menu"

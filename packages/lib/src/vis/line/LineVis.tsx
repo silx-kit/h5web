@@ -70,9 +70,9 @@ function LineVis(props: Props) {
   } = abscissaParams;
 
   assertLength(errorsArray, dataArray.size, 'error');
-  auxiliaries.forEach(({ label, array }, index) =>
-    assertLength(array, dataArray.size, `'${label || index}' auxiliary`),
-  );
+  auxiliaries.forEach(({ label, array }, index) => {
+    assertLength(array, dataArray.size, `'${label || index}' auxiliary`);
+  });
 
   const abscissas = useAxisValues(abscissaValue, dataArray.size);
   const abscissaToIndex = useValueToIndexScale(abscissas, true);

@@ -25,8 +25,8 @@ function TiledLayer(props: Props) {
   const { api, layer, meshSize, visibleBox, onPointerMove, ...colorMapProps } =
     props;
 
-  const { baseLayerIndex, numLayers, tileSize } = api;
-  const layerSize = api.layerSizes[layer];
+  const { baseLayerIndex, numLayers, tileSize, layerSizes } = api;
+  const layerSize = layerSizes[layer];
 
   if (visibleBox.isEmpty()) {
     return null;

@@ -21,14 +21,14 @@ const ZOOM_FACTOR = 0.95;
 const ONE_VECTOR = new Vector3(1, 1, 1);
 const MODIFIER_KEYS: ModifierKey[] = ['Alt', 'Control', 'Shift'];
 
-export function useMoveCameraTo() {
+export function useMoveCameraTo(): (worldPt: Vector3) => void {
   const { visSize, getFovBox } = useVisCanvasContext();
 
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
 
   return useCallback(
-    (worldPt: Vector3) => {
+    (worldPt) => {
       const { position } = camera;
       const visBox = Box.fromSize(visSize);
       const fovBox = getFovBox(camera, worldPt).keepWithin(visBox);
@@ -41,14 +41,14 @@ export function useMoveCameraTo() {
   );
 }
 
-export function useZoomOnSelection() {
+export function useZoomOnSelection(): (selection: Selection) => void {
   const { canvasSize } = useVisCanvasContext();
 
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 
   return useCallback(
-    ({ world: worldSelection }: Selection) => {
+    ({ world: worldSelection }) => {
       const { width, height } = canvasSize;
       const zoomBox = Box.fromPoints(...worldSelection);
 
@@ -67,7 +67,7 @@ export function useZoomOnSelection() {
   );
 }
 
-export function useWheelCapture() {
+export function useWheelCapture(): void {
   const { canvasArea } = useVisCanvasContext();
 
   useEventListener(
@@ -80,11 +80,11 @@ export function useWheelCapture() {
 
 export function useZoomOnWheel(
   isZoomAllowed: (sourceEvent: WheelEvent) => { x: boolean; y: boolean },
-) {
+): (evt: CanvasEvent<WheelEvent>) => void {
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 
-  return function handleWheel(evt: CanvasEvent<WheelEvent>) {
+  return (evt) => {
     const { sourceEvent, worldPt } = evt;
     const { x: zoomX, y: zoomY } = isZoomAllowed(sourceEvent);
 
@@ -177,13 +177,13 @@ export function useModifierKeyPressed(
     }
   }
 
-  useEventListener(window, 'keyup', (event: KeyboardEvent) => {
+  useEventListener(globalThis, 'keyup', (event: KeyboardEvent) => {
     const { key } = event;
     pressedKeys.set(key, false);
     checkAllPressed();
   });
 
-  useEventListener(window, 'keydown', (event: KeyboardEvent) => {
+  useEventListener(globalThis, 'keydown', (event: KeyboardEvent) => {
     const { key } = event;
     pressedKeys.set(key, true);
     checkAllPressed();

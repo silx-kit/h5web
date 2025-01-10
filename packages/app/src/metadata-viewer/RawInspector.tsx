@@ -17,7 +17,7 @@ function RawInspector(props: Props) {
       <pre className={styles.content}>
         {JSON.stringify(
           entity,
-          (key, value) => {
+          (key, value: unknown) => {
             // Bypass `value` and cyclic dependencies
             return KEYS_TO_SKIP.has(key) ? undefined : value;
           },

@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import LineVisStoriesMeta, { Default } from './LineVis.stories';
 
-const dataArrayForXLog = mockValues.X_log(); // eslint-disable-line new-cap
+const xLog = mockValues.X_log(); // eslint-disable-line new-cap
 
 const meta = {
   ...LineVisStoriesMeta,
@@ -34,7 +34,7 @@ export const SymLogForX = {
   ...Default,
   name: 'Symlog for X',
   args: {
-    dataArray: dataArrayForXLog,
+    dataArray: xLog,
     scaleType: ScaleType.SymLog,
   },
 } satisfies Story;
@@ -43,7 +43,7 @@ export const LogForX = {
   ...Default,
   name: 'Log for X',
   args: {
-    dataArray: dataArrayForXLog,
+    dataArray: xLog,
     abscissaParams: { scaleType: ScaleType.Log },
   },
 } satisfies Story;
@@ -51,7 +51,7 @@ export const LogForX = {
 export const LogLog = {
   ...Default,
   args: {
-    dataArray: dataArrayForXLog,
+    dataArray: xLog,
     scaleType: ScaleType.Log,
     abscissaParams: { scaleType: ScaleType.Log },
   },

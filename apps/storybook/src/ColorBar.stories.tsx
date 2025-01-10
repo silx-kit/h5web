@@ -77,7 +77,7 @@ export const WithBounds = {
   args: {
     ...Default.args,
     domainMin: -235.111,
-    domainMax: 98765,
+    domainMax: 98_765,
     withBounds: true,
   },
 } satisfies Story;

@@ -14,7 +14,7 @@ export { default as Separator } from './toolbar/Separator';
 export { default as Btn } from './toolbar/controls/Btn';
 export { default as LinkBtn } from './toolbar/controls/LinkBtn';
 export { default as ToggleBtn } from './toolbar/controls/ToggleBtn';
-export { default as ToggleGroup } from './toolbar/controls/ToggleGroup';
+export { default as ToggleGroup } from './toolbar/controls/ToggleGroup/ToggleGroup';
 export { default as DomainWidget } from './toolbar/controls/DomainWidget/DomainWidget';
 export { default as DomainSlider } from './toolbar/controls/DomainWidget/DomainSlider';
 export { default as DomainControls } from './toolbar/controls/DomainWidget/DomainControls';

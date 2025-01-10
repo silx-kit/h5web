@@ -19,7 +19,7 @@ class LineGeometry extends H5WebGeometry<'position', Params> {
     this.setAttribute('position', createBufferAttr(length));
   }
 
-  public update(index: number) {
+  public update(index: number): void {
     const { abscissas, ordinates, abscissaScale, ordinateScale, ignoreValue } =
       this.params!;
 

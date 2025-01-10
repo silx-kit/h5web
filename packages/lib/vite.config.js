@@ -1,6 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 import react from '@vitejs/plugin-react-swc';
-import fs from 'fs';
-import path from 'path';
 import { patchCssModules } from 'vite-css-modules';
 import { defineProject } from 'vitest/config';
 
