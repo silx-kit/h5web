@@ -26,5 +26,5 @@
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true
   },
-  "include": ["*", "cypress", "apps/*/*", "packages/*/*"]
+  "include": ["*", "cypress"]
 }
