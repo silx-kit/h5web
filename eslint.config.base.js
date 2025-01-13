@@ -507,7 +507,8 @@ export function createConfig(opts = {}) {
       {
         /**
          * Import plugin: https://github.com/import-js/eslint-plugin-import
-         * Assume ESM (`"type": "module"` in `package.json`)
+         * - Assume ESM (`"type": "module"` in `package.json`)
+         * - Disable slow rules: https://typescript-eslint.io/troubleshooting/typed-linting/performance/#eslint-plugin-import
          */
         name: 'h5web/defaults/rules/import',
         plugins: { import: importPlugin },
@@ -524,22 +525,16 @@ export function createConfig(opts = {}) {
           'import/first': 'warn', // move all imports to the top
           // 'import/group-exports': 'off', // can move related pieces of code far apart from one another
           // 'import/max-dependencies': 'off', // arbitrary
-          'import/named': 'error',
-          'import/namespace': 'error',
+          // 'import/named': 'off', // too slow even when applied only to a few JS files
+          // 'import/namespace': 'off', // too slow even when applied only to a few JS files
           'import/newline-after-import': 'warn',
           // 'import/no-absolute-path': 'off', // project-specific
           'import/no-amd': 'error',
           'import/no-anonymous-default-export': 'warn', // good for IntelliSense, `console.log` debugging, etc.
           'import/no-commonjs': 'error', // only allowed in CJS files
-          'import/no-cycle': [
-            'warn',
-            {
-              ignoreExternal: true,
-              maxDepth: 5, // performance vs benefit tradeoff
-            },
-          ],
+          // 'import/no-cycle': 'off', // way too slow!
           // 'import/no-default-export': 'off', // common practice in React projects
-          'import/no-deprecated': 'warn',
+          // 'import/no-deprecated': 'off', // too slow even when applied only to a few JS files; cf. also `@typescript-eslint/no-deprecated`
           'import/no-duplicates': [
             'warn',
             {
@@ -592,15 +587,12 @@ export function createConfig(opts = {}) {
       withTypeScript && {
         /**
          * Import plugin on TS/TSX files.
-         * Turn off rules that TypeScript can report:
-         * https://typescript-eslint.io/troubleshooting/typed-linting/performance/#eslint-plugin-import
+         * Turn off rules that TypeScript can report.
          */
         name: 'h5web/defaults/rules-ts/import',
         files: ['**/*.{ts,tsx}'],
         rules: {
           'import/default': 'off',
-          'import/named': 'off',
-          'import/namespace': 'off',
           'import/no-named-as-default-member': 'off',
           'import/no-unresolved': 'off',
         },
