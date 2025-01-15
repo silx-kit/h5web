@@ -278,8 +278,15 @@ export function getTickFormatter(
   }
 
   // If available size allows for all log ticks to be rendered without overlap, use default formatter
-  const [min, max] = domain[0] > 0 ? domain : [-domain[1], -domain[0]];
   const threshold = adaptedLogTicksThreshold(availableSize);
+
+  /* In log scale, domain is either fully positive or fully negative
+   * (otherwise, it's `[NaN, NaN]` and it doesn't matter which formatter we use).
+   * If fully negative, convert to fully positive for threshold logic to work. */
+  const absDomain = domain.map(Math.abs) as Domain;
+  absDomain.sort((a, b) => a - b);
+
+  const [min, max] = absDomain;
   if (max / min < 10 ** threshold) {
     return formatTick;
   }
