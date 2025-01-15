@@ -264,6 +264,7 @@ other packages can inline them in their own `dist/index.d.ts`.
 - `pnpm lint:tsc` - type-check every project with TypeScript
 - `pnpm [--filter <project-name|{folder/*}>] lint:tsc` - type-check specific
   projects
+- `pnpm lint:root:tsc` - type-check files at the root of the monorepo
 - `pnpm lint:cypress:tsc` - type-check the `cypress` folder
 - `pnpm --filter @h5web/<lib|app> analyze` - analyze a package's bundle (run
   only after building the package)
