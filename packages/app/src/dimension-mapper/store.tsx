@@ -1,11 +1,15 @@
-import type { ArrayShape } from '@h5web/shared/hdf5-models';
-import type { PropsWithChildren } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
-import type { StoreApi } from 'zustand';
-import { createStore, useStore } from 'zustand';
+import { type ArrayShape } from '@h5web/shared/hdf5-models';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { createStore, type StoreApi, useStore } from 'zustand';
 
 import { areSameDims } from '../vis-packs/nexus/utils';
-import type { DimensionMapping } from './models';
+import { type DimensionMapping } from './models';
 
 interface DimMappingState {
   dims: ArrayShape;

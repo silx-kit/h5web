@@ -1,17 +1,17 @@
-import type { AxisScaleType, ColorScaleType } from '@h5web/lib';
-import type {
-  ArrayShape,
-  ArrayValue,
-  ComplexType,
-  Dataset,
-  NumArrayDataset,
-  NumericLikeType,
-  NumericType,
-  ScalarShape,
-  StringType,
+import { type AxisScaleType, type ColorScaleType } from '@h5web/lib';
+import {
+  type ArrayShape,
+  type ArrayValue,
+  type ComplexType,
+  type Dataset,
+  type NumArrayDataset,
+  type NumericLikeType,
+  type NumericType,
+  type ScalarShape,
+  type StringType,
 } from '@h5web/shared/hdf5-models';
-import type { AxisMapping } from '@h5web/shared/nexus-models';
-import type { NumArray } from '@h5web/shared/vis-models';
+import { type AxisMapping } from '@h5web/shared/nexus-models';
+import { type NumArray } from '@h5web/shared/vis-models';
 
 export type NxAttribute =
   | 'NX_class'

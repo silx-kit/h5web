@@ -1,13 +1,13 @@
-import type {
-  ComplexType,
-  GroupWithChildren,
-  NumericType,
+import {
+  type ComplexType,
+  type GroupWithChildren,
+  type NumericType,
 } from '@h5web/shared/hdf5-models';
 
-import type { DimensionMapping } from '../../dimension-mapper/models';
+import { type DimensionMapping } from '../../dimension-mapper/models';
 import { useDataContext } from '../../providers/DataProvider';
 import { useValuesInCache } from '../core/hooks';
-import type { DatasetDef, NxData } from './models';
+import { type DatasetDef, type NxData } from './models';
 import {
   assertNxDataGroup,
   findAuxErrorDataset,

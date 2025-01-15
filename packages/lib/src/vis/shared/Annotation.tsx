@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from 'react';
+import { type HTMLAttributes } from 'react';
 import { Vector3 } from 'three';
 
 import { useCameraState } from '../hooks';

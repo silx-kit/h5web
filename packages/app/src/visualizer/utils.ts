@@ -6,15 +6,21 @@ import {
   isDataset,
   isGroup,
 } from '@h5web/shared/guards';
-import type { ChildEntity, ProvidedEntity } from '@h5web/shared/hdf5-models';
+import {
+  type ChildEntity,
+  type ProvidedEntity,
+} from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import { NxInterpretation } from '@h5web/shared/nexus-models';
 
-import type { AttrValuesStore, EntitiesStore } from '../providers/models';
+import { type AttrValuesStore, type EntitiesStore } from '../providers/models';
 import { hasAttribute } from '../utils';
-import type { CoreVisDef } from '../vis-packs/core/visualizations';
-import { CORE_VIS, Vis } from '../vis-packs/core/visualizations';
-import type { VisDef } from '../vis-packs/models';
+import {
+  CORE_VIS,
+  type CoreVisDef,
+  Vis,
+} from '../vis-packs/core/visualizations';
+import { type VisDef } from '../vis-packs/models';
 import {
   findAxesDatasets,
   findSignalDataset,

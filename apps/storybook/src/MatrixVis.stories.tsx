@@ -3,7 +3,7 @@ import {
   createComplexFormatter,
   toTypedNdArray,
 } from '@h5web/shared/vis-utils';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { format } from 'd3-format';
 
 import FillHeight from './decorators/FillHeight';

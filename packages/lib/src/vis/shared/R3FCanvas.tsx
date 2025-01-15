@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { CAMERA_FAR, CAMERA_NEAR, CAMERA_Z } from '../utils';
 

@@ -3,42 +3,45 @@ import {
   assertGroup,
   hasArrayShape,
 } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  AttributeValues,
-  ChildEntity,
-  Dataset,
-  Datatype,
-  Entity,
-  Group,
-  GroupWithChildren,
-  ProvidedEntity,
-  Value,
+import {
+  type ArrayShape,
+  type AttributeValues,
+  type ChildEntity,
+  type Dataset,
+  type Datatype,
+  type Entity,
+  EntityKind,
+  type Group,
+  type GroupWithChildren,
+  type ProvidedEntity,
+  type Value,
 } from '@h5web/shared/hdf5-models';
-import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
-import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
-import type { AxiosInstance } from 'axios';
-import axios, { AxiosError } from 'axios';
+import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
+import axios, { AxiosError, type AxiosInstance } from 'axios';
 
 import { DataProviderApi } from '../api';
-import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
+import {
+  type ExportFormat,
+  type ExportURL,
+  type ValuesStoreParams,
+} from '../models';
 import { createAxiosProgressHandler } from '../utils';
-import type {
-  BaseHsdsEntity,
-  HsdsAttribute,
-  HsdsAttributesResponse,
-  HsdsAttributeWithValueResponse,
-  HsdsCollection,
-  HsdsDatasetResponse,
-  HsdsDatatypeResponse,
-  HsdsEntity,
-  HsdsGroupResponse,
-  HsdsId,
-  HsdsLink,
-  HsdsLinksResponse,
-  HsdsRootResponse,
-  HsdsValueResponse,
+import {
+  type BaseHsdsEntity,
+  type HsdsAttribute,
+  type HsdsAttributesResponse,
+  type HsdsAttributeWithValueResponse,
+  type HsdsCollection,
+  type HsdsDatasetResponse,
+  type HsdsDatatypeResponse,
+  type HsdsEntity,
+  type HsdsGroupResponse,
+  type HsdsId,
+  type HsdsLink,
+  type HsdsLinksResponse,
+  type HsdsRootResponse,
+  type HsdsValueResponse,
 } from './models';
 import {
   assertHsdsDataset,

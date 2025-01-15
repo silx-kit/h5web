@@ -1,14 +1,13 @@
 import { range } from 'd3-array';
 import { useRef } from 'react';
-import type { Group } from 'three';
-import { MathUtils } from 'three';
+import { type Group, MathUtils } from 'three';
 
 import { useCameraState } from '../hooks';
-import type { Size } from '../models';
+import { type Size } from '../models';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
-import type { TilesApi } from './api';
+import { type TilesApi } from './api';
 import { useTooltipOnMoveHandler } from './hooks';
-import type { ColorMapProps } from './models';
+import { type ColorMapProps } from './models';
 import TiledLayer from './TiledLayer';
 import {
   getNdcToObject3DMatrix,

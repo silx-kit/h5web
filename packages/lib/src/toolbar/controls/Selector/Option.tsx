@@ -1,6 +1,5 @@
-import type { UseInteractionsReturn } from '@floating-ui/react';
-import { useListItem } from '@floating-ui/react';
-import type { PropsWithChildren } from 'react';
+import { type UseInteractionsReturn, useListItem } from '@floating-ui/react';
+import { type PropsWithChildren } from 'react';
 
 import toolbarStyles from '../../Toolbar.module.css';
 

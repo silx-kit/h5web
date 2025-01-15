@@ -1,9 +1,9 @@
 import { ToggleGroup } from '@h5web/lib';
-import type { AxisMapping } from '@h5web/shared/nexus-models';
-import type { Axis } from '@h5web/shared/vis-models';
+import { type AxisMapping } from '@h5web/shared/nexus-models';
+import { type Axis } from '@h5web/shared/vis-models';
 
 import styles from './DimensionMapper.module.css';
-import type { DimensionMapping } from './models';
+import { type DimensionMapping } from './models';
 
 interface Props {
   axis: Axis;

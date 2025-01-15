@@ -1,13 +1,17 @@
 import { assertDefined, assertNonNull } from '@h5web/shared/guards';
-import type { VisibleDomains } from '@h5web/shared/vis-models';
+import { type VisibleDomains } from '@h5web/shared/vis-models';
 import { useThree } from '@react-three/fiber';
-import type { PropsWithChildren } from 'react';
-import { createContext, useCallback, useContext, useMemo } from 'react';
-import type { Camera } from 'three';
-import { Matrix4, Vector3 } from 'three';
+import {
+  createContext,
+  type PropsWithChildren,
+  useCallback,
+  useContext,
+  useMemo,
+} from 'react';
+import { type Camera, Matrix4, Vector3 } from 'three';
 
 import Box from '../../interactions/box';
-import type { AxisConfig, AxisScale, Size } from '../models';
+import { type AxisConfig, type AxisScale, type Size } from '../models';
 import { getCanvasAxisScale, getSizeToFit } from '../utils';
 
 export interface VisCanvasContextValue {

@@ -12,22 +12,22 @@ import {
   isColorScaleType,
   isDefined,
 } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  ComplexType,
-  Dataset,
-  Group,
-  GroupWithChildren,
-  NumArrayDataset,
-  NumericLikeType,
-  ScalarShape,
-  StringType,
+import {
+  type ArrayShape,
+  type ComplexType,
+  type Dataset,
+  type Group,
+  type GroupWithChildren,
+  type NumArrayDataset,
+  type NumericLikeType,
+  type ScalarShape,
+  type StringType,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
-import type { AttrValuesStore } from '../../providers/models';
+import { type AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
-import type { AxisDef, DatasetInfo, SilxStyle } from './models';
+import { type AxisDef, type DatasetInfo, type SilxStyle } from './models';
 
 export function isNxDataGroup(
   group: GroupWithChildren,

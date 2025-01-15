@@ -1,21 +1,21 @@
 import { assertArray, isGroup } from '@h5web/shared/guards';
 import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
-import type {
-  ArrayShape,
-  Attribute,
-  BooleanType,
-  ComplexType,
-  CompoundType,
-  Dataset,
-  DType,
-  Entity,
-  EnumType,
-  Group,
-  NumericType,
-  ScalarShape,
-  Shape,
+import {
+  type ArrayShape,
+  type Attribute,
+  type BooleanType,
+  type ComplexType,
+  type CompoundType,
+  type Dataset,
+  type DType,
+  DTypeClass,
+  type Entity,
+  type EnumType,
+  type Group,
+  type NumericType,
+  type ScalarShape,
+  type Shape,
 } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
 import {
   compoundType,
   cplxType,
@@ -27,14 +27,14 @@ import {
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 
-import type {
-  HsdsAttribute,
-  HsdsCompoundType,
-  HsdsEntity,
-  HsdsEnumType,
-  HsdsNumericType,
-  HsdsShape,
-  HsdsType,
+import {
+  type HsdsAttribute,
+  type HsdsCompoundType,
+  type HsdsEntity,
+  type HsdsEnumType,
+  type HsdsNumericType,
+  type HsdsShape,
+  type HsdsType,
 } from './models';
 
 export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {

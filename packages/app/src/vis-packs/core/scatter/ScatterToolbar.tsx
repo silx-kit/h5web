@@ -1,6 +1,6 @@
-import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
+  type Domain,
   DomainWidget,
   ScaleSelector,
   Separator,
@@ -11,7 +11,7 @@ import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { MdGridOn } from 'react-icons/md';
 
 import { BASE_INTERACTIONS } from '../utils';
-import type { ScatterConfig } from './config';
+import { type ScatterConfig } from './config';
 
 interface Props {
   dataDomain: Domain;

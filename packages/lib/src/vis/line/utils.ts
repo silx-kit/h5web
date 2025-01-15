@@ -1,4 +1,4 @@
-import type { NumArray } from '@h5web/shared/vis-models';
+import { type NumArray } from '@h5web/shared/vis-models';
 import { range } from 'd3-array';
 
 export function getAxisValues(

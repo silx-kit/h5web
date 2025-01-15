@@ -1,5 +1,4 @@
-import type { Domain } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
+import { type Domain, ScaleType } from '@h5web/shared/vis-models';
 import { tickStep } from 'd3-array';
 import { describe, expect, it } from 'vitest';
 

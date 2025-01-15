@@ -6,18 +6,18 @@ import {
   useSafeDomain,
   useVisDomain,
 } from '@h5web/lib';
-import type { ArrayValue, ComplexType } from '@h5web/shared/hdf5-models';
-import type { AxisMapping } from '@h5web/shared/nexus-models';
-import type { NumArray } from '@h5web/shared/vis-models';
+import { type ArrayValue, type ComplexType } from '@h5web/shared/hdf5-models';
+import { type AxisMapping } from '@h5web/shared/nexus-models';
+import { type NumArray } from '@h5web/shared/vis-models';
 import { createPortal } from 'react-dom';
 
-import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import type { LineConfig } from '../line/config';
+import { type LineConfig } from '../line/config';
 import { DEFAULT_DOMAIN } from '../utils';
 import ComplexLineToolbar from './ComplexLineToolbar';
 import { useMappedComplexArrays } from './hooks';
-import type { ComplexLineConfig } from './lineConfig';
+import { type ComplexLineConfig } from './lineConfig';
 import { COMPLEX_VIS_TYPE_LABELS } from './utils';
 
 interface Props {

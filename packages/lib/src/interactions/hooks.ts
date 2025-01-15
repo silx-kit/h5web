@@ -7,14 +7,14 @@ import { Vector3 } from 'three';
 import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
 import Box from './box';
 import { useInteractionsContext } from './InteractionsProvider';
-import type {
-  CanvasEvent,
-  InteractionConfig,
-  ModifierKey,
-  MouseEventName,
-  Selection,
-  UseDragOpts,
-  UseDragState,
+import {
+  type CanvasEvent,
+  type InteractionConfig,
+  type ModifierKey,
+  type MouseEventName,
+  type Selection,
+  type UseDragOpts,
+  type UseDragState,
 } from './models';
 
 const ZOOM_FACTOR = 0.95;

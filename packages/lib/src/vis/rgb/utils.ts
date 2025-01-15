@@ -1,7 +1,6 @@
-import type { NumArray } from '@h5web/shared/vis-models';
+import { type NumArray } from '@h5web/shared/vis-models';
 import { getDims, toTypedNdArray } from '@h5web/shared/vis-utils';
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
+import ndarray, { type NdArray } from 'ndarray';
 import { Data3DTexture, FloatType, RedFormat, UnsignedByteType } from 'three';
 
 /*

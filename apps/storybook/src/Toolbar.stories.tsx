@@ -1,7 +1,8 @@
-import type { ColorMap, CustomDomain } from '@h5web/lib';
 import {
   Btn,
+  type ColorMap,
   ColorMapSelector,
+  type CustomDomain,
   DomainWidget,
   ScaleSelector,
   ScaleType,
@@ -10,10 +11,10 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import type { AxisScaleType } from '@h5web/shared/vis-models';
+import { type AxisScaleType } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { useToggle } from '@react-hookz/web';
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { type Meta, type StoryFn, type StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';
 import { MdGridOn } from 'react-icons/md';

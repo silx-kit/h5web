@@ -1,4 +1,4 @@
-import type { Filter } from '@h5web/shared/hdf5-models';
+import { type Filter } from '@h5web/shared/hdf5-models';
 
 interface Props {
   filters: Filter[];

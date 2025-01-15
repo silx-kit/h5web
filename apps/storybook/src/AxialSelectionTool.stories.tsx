@@ -1,16 +1,16 @@
-import type { Selection } from '@h5web/lib';
 import {
   AxialSelectionTool,
   Box,
   Pan,
   ResetZoomButton,
+  type Selection,
   SvgElement,
   SvgRect,
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
 import { useThrottledState } from '@react-hookz/web';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 import { getTitleForSelection } from './utils';

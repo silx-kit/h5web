@@ -16,6 +16,7 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.preferences.autoImportSpecifierExcludeRegexes": [
     "^(node:)?(console|util)$",
     "^three/.*$"

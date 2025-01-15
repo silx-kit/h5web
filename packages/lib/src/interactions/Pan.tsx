@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber';
 import { useRef } from 'react';
-import type { Vector3 } from 'three';
+import { type Vector3 } from 'three';
 
 import {
   useCanvasEvent,
@@ -8,8 +8,11 @@ import {
   useModifierKeyPressed,
   useMoveCameraTo,
 } from './hooks';
-import type { CanvasEvent, CommonInteractionProps } from './models';
-import { MouseButton } from './models';
+import {
+  type CanvasEvent,
+  type CommonInteractionProps,
+  MouseButton,
+} from './models';
 
 interface Props extends CommonInteractionProps {
   id?: string;

@@ -1,5 +1,5 @@
-import type { NumArray } from '@h5web/shared/vis-models';
-import type { ThreeEvent } from '@react-three/fiber';
+import { type NumArray } from '@h5web/shared/vis-models';
+import { type ThreeEvent } from '@react-three/fiber';
 import { useCallback } from 'react';
 
 import ErrorBars from './ErrorBars';

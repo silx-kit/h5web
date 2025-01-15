@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import '@testing-library/jest-dom/vitest';
 
-import type { Measures } from '@react-hookz/web';
+import { type Measures } from '@react-hookz/web';
 import { cleanup as rtlCleanup } from '@testing-library/react';
 import { useState } from 'react';
 import { afterEach, vi } from 'vitest';

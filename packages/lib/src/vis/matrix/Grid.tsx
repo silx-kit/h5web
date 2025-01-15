@@ -2,7 +2,7 @@ import { useMeasure } from '@react-hookz/web';
 import { useContext } from 'react';
 import { FixedSizeGrid as IndexedGrid } from 'react-window';
 
-import type { ClassStyleAttrs } from '../models';
+import { type ClassStyleAttrs } from '../models';
 import Cell from './Cell';
 import { SettingsContext } from './context';
 import styles from './MatrixVis.module.css';

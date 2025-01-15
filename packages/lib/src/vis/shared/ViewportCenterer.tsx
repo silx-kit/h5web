@@ -1,6 +1,6 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
-import type { Vector3 } from 'three';
+import { type Vector3 } from 'three';
 
 import { useMoveCameraTo } from '../../interactions/hooks';
 import { useVisCanvasContext } from './VisCanvasProvider';

@@ -1,11 +1,9 @@
-import type { Domain } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
-import type { SharedAxisProps } from '@visx/axis';
-import { AxisBottom, AxisLeft } from '@visx/axis';
+import { type Domain, ScaleType } from '@h5web/shared/vis-models';
+import { AxisBottom, AxisLeft, type SharedAxisProps } from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
-import type { ElementType } from 'react';
+import { type ElementType } from 'react';
 
-import type { AxisConfig, AxisScale, Size } from '../models';
+import { type AxisConfig, type AxisScale, type Size } from '../models';
 import {
   adaptedNumTicks,
   createScale,

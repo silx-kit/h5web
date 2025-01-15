@@ -1,4 +1,4 @@
-import type { ClassStyleAttrs } from '../models';
+import { type ClassStyleAttrs } from '../models';
 import styles from './ScalarVis.module.css';
 
 interface Props extends ClassStyleAttrs {

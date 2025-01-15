@@ -6,9 +6,8 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import type { Meta, StoryObj } from '@storybook/react';
-import type { PropsWithChildren } from 'react';
-import { useState } from 'react';
+import { type Meta, type StoryObj } from '@storybook/react';
+import { type PropsWithChildren, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import FillHeight from './decorators/FillHeight';

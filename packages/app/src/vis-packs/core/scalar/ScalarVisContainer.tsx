@@ -6,7 +6,7 @@ import {
 } from '@h5web/shared/guards';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
 import { getFormatter } from './utils';

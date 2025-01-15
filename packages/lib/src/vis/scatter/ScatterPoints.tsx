@@ -1,13 +1,13 @@
-import type {
-  ColorScaleType,
-  Domain,
-  NumArray,
+import {
+  type ColorScaleType,
+  type Domain,
+  type NumArray,
 } from '@h5web/shared/vis-models';
-import type { ThreeEvent } from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
 import { useCallback, useMemo } from 'react';
 
 import { useInterpolator } from '../heatmap/hooks';
-import type { ColorMap } from '../heatmap/models';
+import { type ColorMap } from '../heatmap/models';
 import { useGeometry } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';

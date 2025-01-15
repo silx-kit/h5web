@@ -1,6 +1,6 @@
-import type { ComplexType, NumericType } from '@h5web/shared/hdf5-models';
+import { type ComplexType, type NumericType } from '@h5web/shared/hdf5-models';
 
-import type { DatasetDef } from './models';
+import { type DatasetDef } from './models';
 import styles from './NxSignalPicker.module.css';
 
 interface Props<T extends NumericType | ComplexType> {

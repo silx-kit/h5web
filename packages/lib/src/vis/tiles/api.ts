@@ -1,7 +1,7 @@
-import type { Vector2 } from 'three';
+import { type Vector2 } from 'three';
 
-import type { Size } from '../models';
-import type { TileArray } from './models';
+import { type Size } from '../models';
+import { type TileArray } from './models';
 
 export function getLayerSizes(
   baseLayerSize: Size,

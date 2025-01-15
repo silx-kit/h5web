@@ -1,7 +1,6 @@
-import type { ReactNode } from 'react';
-import { isValidElement } from 'react';
+import { isValidElement, type ReactNode } from 'react';
 
-import type { ReactElementWithKey } from './models';
+import { type ReactElementWithKey } from './models';
 
 export function isValidElementWithKey(
   node: ReactNode,

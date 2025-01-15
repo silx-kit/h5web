@@ -1,5 +1,5 @@
 import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
-import type { DType } from '@h5web/shared/hdf5-models';
+import { type DType } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   boolType,
@@ -13,12 +13,12 @@ import {
 } from '@h5web/shared/hdf5-utils';
 import { describe, expect, it } from 'vitest';
 
-import type {
-  HsdsArrayType,
-  HsdsCompoundType,
-  HsdsEnumType,
-  HsdsStringType,
-  HsdsType,
+import {
+  type HsdsArrayType,
+  type HsdsCompoundType,
+  type HsdsEnumType,
+  type HsdsStringType,
+  type HsdsType,
 } from './models';
 import { convertHsdsType } from './utils';
 

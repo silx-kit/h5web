@@ -6,7 +6,7 @@ import {
 
 import { useScatterConfig } from '../../core/scatter/config';
 import MappedScatterVis from '../../core/scatter/MappedScatterVis';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
 import { useNxData } from '../hooks';

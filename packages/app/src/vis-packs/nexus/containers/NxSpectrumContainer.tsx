@@ -6,7 +6,7 @@ import { useDimMappingState } from '../../../dimension-mapper/store';
 import { useLineConfig } from '../../core/line/config';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import { getSliceSelection } from '../../core/utils';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericLikeNxData } from '../guards';
 import { useNxData, useNxValuesCached } from '../hooks';

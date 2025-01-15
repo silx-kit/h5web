@@ -1,27 +1,26 @@
 import { format } from 'd3-format';
-import type { NdArray, TypedArray } from 'ndarray';
-import ndarray from 'ndarray';
+import ndarray, { type NdArray, type TypedArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray } from './guards';
-import type {
-  BooleanType,
-  ComplexType,
-  EnumType,
-  Primitive,
+import {
+  type BooleanType,
+  type ComplexType,
+  type EnumType,
+  type Primitive,
 } from './hdf5-models';
-import type {
-  AnyNumArray,
-  AxisScaleType,
-  Bounds,
-  ColorScaleType,
-  Dims,
-  Domain,
-  NumArray,
-  TypedArrayConstructor,
-  ValueFormatter,
+import {
+  type AnyNumArray,
+  type AxisScaleType,
+  type Bounds,
+  type ColorScaleType,
+  type Dims,
+  type Domain,
+  type NumArray,
+  ScaleType,
+  type TypedArrayConstructor,
+  type ValueFormatter,
 } from './vis-models';
-import { ScaleType } from './vis-models';
 
 export const AXIS_SCALE_TYPES: AxisScaleType[] = [
   ScaleType.Linear,

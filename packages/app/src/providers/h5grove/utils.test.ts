@@ -17,7 +17,7 @@ import {
 } from '@h5web/shared/hdf5-utils';
 import { describe, expect, it } from 'vitest';
 
-import type { H5GroveType } from './models';
+import { type H5GroveType } from './models';
 import { parseDType } from './utils';
 
 describe('parseDType', () => {

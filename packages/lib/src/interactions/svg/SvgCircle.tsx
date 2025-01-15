@@ -1,6 +1,6 @@
-import type { SVGProps } from 'react';
+import { type SVGProps } from 'react';
 
-import type { Rect } from '../models';
+import { type Rect } from '../models';
 
 interface Props extends SVGProps<SVGCircleElement> {
   coords: Rect;

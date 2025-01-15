@@ -1,14 +1,14 @@
-import type {
-  ArrayShape,
-  AttributeValues,
-  Dataset,
-  Entity,
-  ProvidedEntity,
-  ScalarShape,
+import {
+  type ArrayShape,
+  type AttributeValues,
+  type Dataset,
+  type Entity,
+  type ProvidedEntity,
+  type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import type { FetchStore } from '@h5web/shared/react-suspense-fetch';
+import { type FetchStore } from '@h5web/shared/react-suspense-fetch';
 
-import type { NxAttribute } from '../vis-packs/nexus/models';
+import { type NxAttribute } from '../vis-packs/nexus/models';
 
 export type EntitiesStore = FetchStore<string, ProvidedEntity>;
 export type ValuesStore = FetchStore<ValuesStoreParams, unknown>;

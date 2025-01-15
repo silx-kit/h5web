@@ -1,18 +1,18 @@
 import { MatrixVis } from '@h5web/lib';
-import type {
-  ArrayShape,
-  Dataset,
-  PrintableType,
-  Value,
+import {
+  type ArrayShape,
+  type Dataset,
+  type PrintableType,
+  type Value,
 } from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
-import type { DimensionMapping } from '../../../dimension-mapper/models';
+import { type DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { getSliceSelection } from '../utils';
-import type { MatrixVisConfig } from './config';
+import { type MatrixVisConfig } from './config';
 import MatrixToolbar from './MatrixToolbar';
 import { getCellWidth, getFormatter } from './utils';
 

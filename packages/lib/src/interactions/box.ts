@@ -1,7 +1,7 @@
 import { Box3, Vector3 } from 'three';
 
-import type { Size } from '../vis/models';
-import type { Rect } from './models';
+import { type Size } from '../vis/models';
+import { type Rect } from './models';
 
 const ZERO_VECTOR = new Vector3(0, 0, 0);
 

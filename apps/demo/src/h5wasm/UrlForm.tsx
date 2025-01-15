@@ -1,10 +1,9 @@
 import useAxios from 'axios-hooks';
-import type { FormEvent } from 'react';
-import { useCallback, useEffect } from 'react';
+import { type FormEvent, useCallback, useEffect } from 'react';
 import { FiLoader } from 'react-icons/fi';
 import { useLocation, useSearch } from 'wouter';
 
-import type { RemoteFile } from './models';
+import { type RemoteFile } from './models';
 import styles from './UrlForm.module.css';
 
 interface Props {

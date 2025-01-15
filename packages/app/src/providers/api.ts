@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import type {
-  ArrayShape,
-  AttributeValues,
-  Dataset,
-  Entity,
-  ProvidedEntity,
-  Value,
+import {
+  type ArrayShape,
+  type AttributeValues,
+  type Dataset,
+  type Entity,
+  type ProvidedEntity,
+  type Value,
 } from '@h5web/shared/hdf5-models';
-import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
+import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 
-import type { ExportFormat, ExportURL, ValuesStoreParams } from './models';
+import {
+  type ExportFormat,
+  type ExportURL,
+  type ValuesStoreParams,
+} from './models';
 
 export abstract class DataProviderApi {
   public constructor(public readonly filepath: string) {}

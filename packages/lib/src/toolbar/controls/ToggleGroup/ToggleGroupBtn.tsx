@@ -1,4 +1,4 @@
-import type { ComponentType, SVGAttributes } from 'react';
+import { type ComponentType, type SVGAttributes } from 'react';
 
 import { useToggleGroupProps } from './context';
 import styles from './ToggleGroup.module.css';

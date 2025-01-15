@@ -1,5 +1,9 @@
-import type { ComponentType, HTMLAttributes, SVGAttributes } from 'react';
-import { forwardRef } from 'react';
+import {
+  type ComponentType,
+  forwardRef,
+  type HTMLAttributes,
+  type SVGAttributes,
+} from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import styles from '../Toolbar.module.css';

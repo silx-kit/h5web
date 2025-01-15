@@ -1,7 +1,6 @@
-import type { PropsWithChildren } from 'react';
-import { useMemo } from 'react';
+import { type PropsWithChildren, useMemo } from 'react';
 
-import type { DataProviderApi } from '../api';
+import { type DataProviderApi } from '../api';
 import DataProvider from '../DataProvider';
 import { HsdsApi } from './hsds-api';
 

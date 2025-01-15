@@ -7,7 +7,7 @@ import {
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
 import { COLOR_SCALE_TYPES, toTypedNdArray } from '@h5web/shared/vis-utils';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';

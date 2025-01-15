@@ -1,6 +1,6 @@
-import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
+  type Domain,
   DomainWidget,
   ScaleSelector,
   Separator,
@@ -9,7 +9,7 @@ import {
 } from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 
-import type { SurfaceConfig } from './config';
+import { type SurfaceConfig } from './config';
 
 interface Props {
   dataDomain: Domain;

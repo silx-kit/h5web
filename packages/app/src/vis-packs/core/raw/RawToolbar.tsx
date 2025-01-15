@@ -1,8 +1,8 @@
 import { ExportMenu, Separator, ToggleBtn, Toolbar } from '@h5web/lib';
 import { MdOutlineFitScreen } from 'react-icons/md';
 
-import type { ExportFormat, ExportURL } from '../../../providers/models';
-import type { RawConfig } from './config';
+import { type ExportFormat, type ExportURL } from '../../../providers/models';
+import { type RawConfig } from './config';
 
 interface Props {
   isImage: boolean;

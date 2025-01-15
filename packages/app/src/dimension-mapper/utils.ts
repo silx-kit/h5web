@@ -1,7 +1,6 @@
-import type { Axis } from '@h5web/shared/vis-models';
+import { type Axis } from '@h5web/shared/vis-models';
 import { useSyncedRef, useUnmountEffect } from '@react-hookz/web';
-import type { DependencyList } from 'react';
-import { useEffect, useMemo, useRef } from 'react';
+import { type DependencyList, useEffect, useMemo, useRef } from 'react';
 
 export function isAxis(elem: number | Axis): elem is Axis {
   return typeof elem !== 'number';

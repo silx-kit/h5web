@@ -1,25 +1,32 @@
 import { hasNumericType, hasScalarShape } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  AttributeValues,
-  Dataset,
-  Entity,
-  ProvidedEntity,
-  Value,
+import {
+  type ArrayShape,
+  type AttributeValues,
+  type Dataset,
+  DTypeClass,
+  type Entity,
+  type ProvidedEntity,
+  type Value,
 } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
-import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
-import type { AxiosInstance, AxiosRequestConfig } from 'axios';
-import axios, { AxiosError } from 'axios';
+import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
+import axios, {
+  AxiosError,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+} from 'axios';
 
 import { DataProviderApi } from '../api';
-import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
+import {
+  type ExportFormat,
+  type ExportURL,
+  type ValuesStoreParams,
+} from '../models';
 import { createAxiosProgressHandler } from '../utils';
-import type {
-  H5GroveAttrValuesResponse,
-  H5GroveDataResponse,
-  H5GroveEntityResponse,
-  H5GrovePathsResponse,
+import {
+  type H5GroveAttrValuesResponse,
+  type H5GroveDataResponse,
+  type H5GroveEntityResponse,
+  type H5GrovePathsResponse,
 } from './models';
 import {
   h5groveTypedArrayFromDType,

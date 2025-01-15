@@ -3,15 +3,15 @@ import {
   assertDefined,
   hasNumericType,
 } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  AttributeValues,
-  Dataset,
-  Entity,
-  GroupWithChildren,
-  NumArrayDataset,
-  ProvidedEntity,
-  Value,
+import {
+  type ArrayShape,
+  type AttributeValues,
+  type Dataset,
+  type Entity,
+  type GroupWithChildren,
+  type NumArrayDataset,
+  type ProvidedEntity,
+  type Value,
 } from '@h5web/shared/hdf5-models';
 import {
   assertMockAttribute,
@@ -19,7 +19,11 @@ import {
 } from '@h5web/shared/mock-utils';
 
 import { DataProviderApi } from '../api';
-import type { ExportFormat, ExportURL, ValuesStoreParams } from '../models';
+import {
+  type ExportFormat,
+  type ExportURL,
+  type ValuesStoreParams,
+} from '../models';
 import { makeMockFile } from './mock-file';
 import {
   cancellableDelay,

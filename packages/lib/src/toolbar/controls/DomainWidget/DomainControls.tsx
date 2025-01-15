@@ -1,12 +1,10 @@
-import type { Domain } from '@h5web/shared/vis-models';
+import { type Domain } from '@h5web/shared/vis-models';
 import { formatBound } from '@h5web/shared/vis-utils';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import type { DomainErrors } from '../../../vis/models';
-import { DomainError } from '../../../vis/models';
+import { DomainError, type DomainErrors } from '../../../vis/models';
 import ToggleBtn from '../ToggleBtn';
-import type { BoundEditorHandle } from './BoundEditor';
-import BoundEditor from './BoundEditor';
+import BoundEditor, { type BoundEditorHandle } from './BoundEditor';
 import styles from './DomainControls.module.css';
 import ErrorMessage from './ErrorMessage';
 

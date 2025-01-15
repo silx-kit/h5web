@@ -1,13 +1,16 @@
 import { assertDefined, assertNonNull } from '@h5web/shared/guards';
-import type { RenderResult } from '@testing-library/react';
-import { render, screen, within } from '@testing-library/react';
+import {
+  render,
+  type RenderResult,
+  screen,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { MockInstance } from 'vitest';
-import { expect, vi } from 'vitest';
+import { expect, type MockInstance, vi } from 'vitest';
 
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
-import type { Vis } from './vis-packs/core/visualizations';
+import { type Vis } from './vis-packs/core/visualizations';
 
 interface RenderAppResult extends RenderResult {
   user: ReturnType<typeof userEvent.setup>;

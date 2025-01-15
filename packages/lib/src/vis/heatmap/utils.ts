@@ -1,26 +1,31 @@
-import type { Domain, NumArray } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
+import {
+  type Domain,
+  type NumArray,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 import { getDims, toTypedNdArray } from '@h5web/shared/vis-utils';
 import { range } from 'd3-array';
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
-import type { MagnificationTextureFilter } from 'three';
+import ndarray, { type NdArray } from 'ndarray';
 import {
   ClampToEdgeWrapping,
   DataTexture,
   FloatType,
   HalfFloatType,
+  type MagnificationTextureFilter,
   NearestFilter,
   RedFormat,
   UnsignedByteType,
   UVMapping,
 } from 'three';
 
-import type { CustomDomain, DomainErrors } from '../models';
-import { DomainError } from '../models';
+import { type CustomDomain, DomainError, type DomainErrors } from '../models';
 import { SCALES_VALID_MINS } from '../utils';
 import { INTERPOLATORS } from './interpolators';
-import type { ColorMap, D3Interpolator, TextureSafeTypedArray } from './models';
+import {
+  type ColorMap,
+  type D3Interpolator,
+  type TextureSafeTypedArray,
+} from './models';
 
 const GRADIENT_PRECISION = 1 / 20;
 export const GRADIENT_RANGE = range(

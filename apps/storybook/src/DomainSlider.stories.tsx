@@ -1,13 +1,13 @@
-import type { CustomDomain } from '@h5web/lib';
 import {
+  type CustomDomain,
   DomainSlider,
   ScaleType,
   useSafeDomain,
   useVisDomain,
 } from '@h5web/lib';
-import type { Domain } from '@h5web/shared/vis-models';
+import { type Domain } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { useEffect, useState } from 'react';
 
 import styles from './DomainSlider.stories.module.css';

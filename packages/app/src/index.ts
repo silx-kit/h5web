@@ -1,4 +1,4 @@
-import type { DataProviderApi } from './providers/api';
+import { type DataProviderApi } from './providers/api';
 
 export { default as App } from './App';
 

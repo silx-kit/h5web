@@ -1,14 +1,13 @@
-import type { Domain } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
+import { type Domain, ScaleType } from '@h5web/shared/vis-models';
 import { formatBound, formatTick } from '@h5web/shared/vis-utils';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisRight } from '@visx/axis';
 
-import type { VisScaleType } from '../models';
+import { type VisScaleType } from '../models';
 import Tick from '../shared/Tick';
 import { adaptedNumTicks, createScale } from '../utils';
 import styles from './ColorBar.module.css';
-import type { ColorMap } from './models';
+import { type ColorMap } from './models';
 import { getInterpolator, getLinearGradient } from './utils';
 
 interface Props {

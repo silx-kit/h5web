@@ -1,4 +1,4 @@
-import type { ProvidedEntity } from '@h5web/shared/hdf5-models';
+import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
 
 import styles from './RawInspector.module.css';
 

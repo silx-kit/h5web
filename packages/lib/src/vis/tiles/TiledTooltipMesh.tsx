@@ -1,6 +1,6 @@
-import type { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 
-import type { Size } from '../models';
+import { type Size } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import { useTooltipStore } from './store';
 

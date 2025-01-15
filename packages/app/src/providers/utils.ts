@@ -1,17 +1,16 @@
 import { isBoolType, isEnumType, isNumericType } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  Dataset,
-  DType,
-  ScalarShape,
+import {
+  type ArrayShape,
+  type Dataset,
+  type DType,
+  DTypeClass,
+  type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
-import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
-import type { TypedArrayConstructor } from '@h5web/shared/vis-models';
-import type { AxiosProgressEvent } from 'axios';
-import { isAxiosError } from 'axios';
+import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
+import { type TypedArrayConstructor } from '@h5web/shared/vis-models';
+import { type AxiosProgressEvent, isAxiosError } from 'axios';
 
-import type { DataProviderApi } from './api';
+import { type DataProviderApi } from './api';
 
 export const CANCELLED_ERROR_MSG = 'Request cancelled';
 

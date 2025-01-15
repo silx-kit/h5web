@@ -4,14 +4,14 @@ import {
   assertGroupWithChildren,
   isGroup,
 } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  Dataset,
-  DType,
-  GroupWithChildren,
-  Primitive,
-  ProvidedEntity,
-  ScalarShape,
+import {
+  type ArrayShape,
+  type Dataset,
+  type DType,
+  type GroupWithChildren,
+  type Primitive,
+  type ProvidedEntity,
+  type ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 import ndarray from 'ndarray';

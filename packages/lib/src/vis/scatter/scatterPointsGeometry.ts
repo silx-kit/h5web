@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { ColorScaleType, NumArray } from '@h5web/shared/vis-models';
+import { type ColorScaleType, type NumArray } from '@h5web/shared/vis-models';
 import { rgb } from 'd3-color';
 
-import type { D3Interpolator } from '../heatmap/models';
-import type { AxisScale, Scale } from '../models';
+import { type D3Interpolator } from '../heatmap/models';
+import { type AxisScale, type Scale } from '../models';
 import H5WebGeometry from '../shared/h5webGeometry';
 import { createBufferAttr, Z_OUT } from '../utils';
 

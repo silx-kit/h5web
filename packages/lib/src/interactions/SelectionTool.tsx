@@ -7,20 +7,21 @@ import {
   useSyncedRef,
 } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
-import type { ReactNode } from 'react';
-import { useEffect, useMemo, useRef } from 'react';
-import type { Camera, Vector3 } from 'three';
+import { type ReactNode, useEffect, useMemo, useRef } from 'react';
+import { type Camera, type Vector3 } from 'three';
 
-import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
-import { useVisCanvasContext } from '../vis/shared/VisCanvasProvider';
+import {
+  useVisCanvasContext,
+  type VisCanvasContextValue,
+} from '../vis/shared/VisCanvasProvider';
 import { useCanvasEvent, useInteraction, useModifierKeyPressed } from './hooks';
-import type {
-  CanvasEvent,
-  CommonInteractionProps,
-  Rect,
-  Selection,
+import {
+  type CanvasEvent,
+  type CommonInteractionProps,
+  MouseButton,
+  type Rect,
+  type Selection,
 } from './models';
-import { MouseButton } from './models';
 
 interface Props extends CommonInteractionProps {
   id?: string;

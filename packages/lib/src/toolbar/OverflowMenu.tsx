@@ -7,8 +7,12 @@ import {
   useInteractions,
 } from '@floating-ui/react';
 import { useToggle } from '@react-hookz/web';
-import type { PropsWithChildren } from 'react';
-import { cloneElement, isValidElement, useId } from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  type PropsWithChildren,
+  useId,
+} from 'react';
 import { FiMenu } from 'react-icons/fi';
 import flattenChildren from 'react-keyed-flatten-children';
 

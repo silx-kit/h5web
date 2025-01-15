@@ -9,7 +9,7 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { range } from 'd3-array';
 import { useState } from 'react';
 

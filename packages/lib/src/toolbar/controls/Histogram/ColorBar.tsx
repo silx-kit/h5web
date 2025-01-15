@@ -1,6 +1,6 @@
-import type { SVGProps } from 'react';
+import { type SVGProps } from 'react';
 
-import type { ColorMap } from '../../../vis/heatmap/models';
+import { type ColorMap } from '../../../vis/heatmap/models';
 import { getInterpolator, GRADIENT_RANGE } from '../../../vis/heatmap/utils';
 
 interface Props

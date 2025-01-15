@@ -1,6 +1,6 @@
 import { Line } from '@visx/shape';
 import { TooltipWithBounds } from '@visx/tooltip';
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import Overlay from './Overlay';
 import styles from './TooltipMesh.module.css';

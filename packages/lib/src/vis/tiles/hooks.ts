@@ -1,8 +1,8 @@
-import type { ThreeEvent } from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
 import { useCallback } from 'react';
 
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
-import type { TileArray } from './models';
+import { type TileArray } from './models';
 import { useTooltipStore } from './store';
 
 export function useTooltipOnMoveHandler(): (

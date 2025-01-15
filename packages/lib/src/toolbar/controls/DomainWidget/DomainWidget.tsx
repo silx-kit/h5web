@@ -1,14 +1,13 @@
-import type { ColorScaleType, Domain } from '@h5web/shared/vis-models';
+import { type ColorScaleType, type Domain } from '@h5web/shared/vis-models';
 import { useClickOutside, useKeyboardEvent, useToggle } from '@react-hookz/web';
 import { useEffect, useRef, useState } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
 
 import { useSafeDomain, useVisDomain } from '../../../vis/heatmap/hooks';
-import type { CustomDomain, HistogramParams } from '../../../vis/models';
+import { type CustomDomain, type HistogramParams } from '../../../vis/models';
 import Histogram from '../Histogram/Histogram';
 import ToggleBtn from '../ToggleBtn';
-import type { DomainControlsHandle } from './DomainControls';
-import DomainControls from './DomainControls';
+import DomainControls, { type DomainControlsHandle } from './DomainControls';
 import DomainSlider from './DomainSlider';
 import styles from './DomainWidget.module.css';
 

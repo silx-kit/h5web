@@ -8,7 +8,7 @@ import {
   SvgRect,
   VisCanvas,
 } from '@h5web/lib';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { Vector3 } from 'three';
 
 import FillHeight from './decorators/FillHeight';

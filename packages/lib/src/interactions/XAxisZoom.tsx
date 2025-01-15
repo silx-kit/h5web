@@ -5,7 +5,7 @@ import {
   useWheelCapture,
   useZoomOnWheel,
 } from './hooks';
-import type { CommonInteractionProps } from './models';
+import { type CommonInteractionProps } from './models';
 
 type Props = CommonInteractionProps;
 

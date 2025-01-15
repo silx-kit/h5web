@@ -1,4 +1,4 @@
-import type { INTERPOLATORS } from './interpolators';
+import { type INTERPOLATORS } from './interpolators';
 
 export type D3Interpolator = (t: number) => string;
 

@@ -1,4 +1,4 @@
-import type { CSSProperties, PropsWithChildren } from 'react';
+import { type CSSProperties, type PropsWithChildren } from 'react';
 
 import Html from './Html';
 import { useVisCanvasContext } from './VisCanvasProvider';

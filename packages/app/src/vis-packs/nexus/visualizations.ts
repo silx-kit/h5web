@@ -9,7 +9,7 @@ import {
   RgbConfigProvider,
 } from '../core/configs';
 import { ScatterConfigProvider } from '../core/scatter/config';
-import type { VisDef } from '../models';
+import { type VisDef } from '../models';
 import {
   NxComplexImageContainer,
   NxComplexSpectrumContainer,

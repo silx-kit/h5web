@@ -1,5 +1,5 @@
 import { isTypedArray } from '@h5web/shared/guards';
-import type { ProvidedEntity } from '@h5web/shared/hdf5-models';
+import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
 import { expose, transfer } from 'comlink';
 import { Attribute, Dataset } from 'h5wasm';
 

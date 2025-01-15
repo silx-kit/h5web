@@ -1,13 +1,21 @@
 import { createMemo } from '@h5web/shared/createMemo';
-import type { AnyNumArray, Domain } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
+import {
+  type AnyNumArray,
+  type Domain,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 import { getBounds, getValidDomainForScale } from '@h5web/shared/vis-utils';
 import { useRerender, useSyncedRef } from '@react-hookz/web';
-import type { Camera } from '@react-three/fiber';
-import { useFrame, useThree } from '@react-three/fiber';
-import type { RefCallback } from 'react';
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { BufferAttribute } from 'three';
+import { type Camera, useFrame, useThree } from '@react-three/fiber';
+import {
+  type RefCallback,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { type BufferAttribute } from 'three';
 
 import type H5WebGeometry from './shared/h5webGeometry';
 import {

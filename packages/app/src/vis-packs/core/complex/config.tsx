@@ -1,10 +1,9 @@
 import { ComplexVisType } from '@h5web/shared/vis-models';
 import { createContext, useContext, useState } from 'react';
-import type { StoreApi } from 'zustand';
-import { createStore, useStore } from 'zustand';
+import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { ConfigProviderProps } from '../../models';
+import { type ConfigProviderProps } from '../../models';
 
 export interface ComplexConfig {
   visType: ComplexVisType;

@@ -1,12 +1,11 @@
 import { useThrottledCallback } from '@react-hookz/web';
-import type { ThreeEvent } from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
 import { memo } from 'react';
-import type { MagnificationTextureFilter } from 'three';
-import { Vector2 } from 'three';
+import { type MagnificationTextureFilter, Vector2 } from 'three';
 
 import HeatmapMesh from '../heatmap/HeatmapMesh';
-import type { TilesApi } from './api';
-import type { ColorMapProps, TileArray } from './models';
+import { type TilesApi } from './api';
+import { type ColorMapProps, type TileArray } from './models';
 
 interface Props extends ColorMapProps {
   api: TilesApi;

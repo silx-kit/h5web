@@ -1,8 +1,7 @@
-import type { NdArray } from 'ndarray';
+import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
-import type { VisMeshProps } from '../shared/VisMesh';
-import VisMesh from '../shared/VisMesh';
+import VisMesh, { type VisMeshProps } from '../shared/VisMesh';
 import { getUniforms, VERTEX_SHADER } from '../utils';
 import { getData3DTexture } from './utils';
 

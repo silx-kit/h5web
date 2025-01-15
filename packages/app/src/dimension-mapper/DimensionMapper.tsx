@@ -1,8 +1,8 @@
-import type { AxisMapping } from '@h5web/shared/nexus-models';
+import { type AxisMapping } from '@h5web/shared/nexus-models';
 
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
-import type { DimensionMapping } from './models';
+import { type DimensionMapping } from './models';
 import SlicingSlider from './SlicingSlider';
 
 interface Props {

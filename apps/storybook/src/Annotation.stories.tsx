@@ -1,13 +1,13 @@
-import type { CanvasEvent } from '@h5web/lib';
 import {
   Annotation,
+  type CanvasEvent,
   DefaultInteractions,
   useCanvasEvent,
   VisCanvas,
 } from '@h5web/lib';
 import { useRafState } from '@react-hookz/web';
-import type { Meta, StoryObj } from '@storybook/react';
-import type { ReactNode } from 'react';
+import { type Meta, type StoryObj } from '@storybook/react';
+import { type ReactNode } from 'react';
 
 import FillHeight from './decorators/FillHeight';
 import { formatCoord } from './utils';

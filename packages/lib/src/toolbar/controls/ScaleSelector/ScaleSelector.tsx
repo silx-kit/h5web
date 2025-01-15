@@ -1,5 +1,5 @@
 import { ScaleType } from '@h5web/shared/vis-models';
-import type { IconType } from 'react-icons';
+import { type IconType } from 'react-icons';
 import { MdFilterList, MdFlare, MdSort } from 'react-icons/md';
 
 import toolbarStyles from '../../Toolbar.module.css';

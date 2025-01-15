@@ -1,6 +1,6 @@
 import { isTypedArray } from '@h5web/shared/guards';
 
-import type { ClassStyleAttrs } from '../models';
+import { type ClassStyleAttrs } from '../models';
 import styles from './RawVis.module.css';
 
 const LARGE_THRESHOLD = 1_000_000;

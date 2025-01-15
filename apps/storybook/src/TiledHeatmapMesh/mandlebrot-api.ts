@@ -1,14 +1,11 @@
-import type { Size } from '@h5web/lib';
-import { getLayerSizes, TilesApi } from '@h5web/lib';
+import { getLayerSizes, type Size, TilesApi } from '@h5web/lib';
 import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
-import type { Domain } from '@h5web/shared/vis-models';
+import { type Domain } from '@h5web/shared/vis-models';
 import greenlet from 'greenlet';
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
-import type { Vector2 } from 'three';
-import { MathUtils } from 'three';
+import ndarray, { type NdArray } from 'ndarray';
+import { MathUtils, type Vector2 } from 'three';
 
-import type { TileParams } from './models';
+import { type TileParams } from './models';
 import { areTilesEqual } from './utils';
 
 // https://en.wikipedia.org/wiki/Mandelbrot_set

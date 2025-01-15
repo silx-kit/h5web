@@ -1,7 +1,7 @@
-import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
   ComplexVisTypeSelector,
+  type Domain,
   DomainWidget,
   ScaleSelector,
   Separator,
@@ -13,9 +13,9 @@ import { ComplexVisType } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { MdAspectRatio, MdGridOn } from 'react-icons/md';
 
-import type { HeatmapConfig } from '../heatmap/config';
+import { type HeatmapConfig } from '../heatmap/config';
 import { getImageInteractions } from '../utils';
-import type { ComplexConfig } from './config';
+import { type ComplexConfig } from './config';
 
 interface Props {
   dataDomain: Domain;

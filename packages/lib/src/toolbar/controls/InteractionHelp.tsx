@@ -10,7 +10,7 @@ import { useToggle } from '@react-hookz/web';
 import { useId } from 'react';
 import { FiHelpCircle } from 'react-icons/fi';
 
-import type { InteractionInfo } from '../../interactions/models';
+import { type InteractionInfo } from '../../interactions/models';
 import toolbarStyles from '../Toolbar.module.css';
 import Btn from './Btn';
 import { POPOVER_CLEARANCE, useFloatingDismiss } from './hooks';
