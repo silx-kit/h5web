@@ -30,7 +30,7 @@ beforeAll(() => {
 });
 
 test.skipIf(SKIP)('test file matches snapshot', async () => {
-  const buffer = await readFile(TEST_FILE);
+  const { buffer } = new Uint8Array(await readFile(TEST_FILE)); // https://stackoverflow.com/a/79345743
   const fileId = remote.openFileBuffer(buffer);
 
   const api = new H5WasmApi(remote, 'sample.h5', fileId);

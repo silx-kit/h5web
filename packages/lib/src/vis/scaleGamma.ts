@@ -32,6 +32,7 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
     const x = typeof val === 'number' ? val : val.valueOf();
 
     if (Number.isNaN(x)) {
+      // @ts-expect-error - never assigned (i.e. `undefined`)
       return _unknown;
     }
 
@@ -91,6 +92,7 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
 
   function unknown(): UnknownReturnType<Unknown, never>;
   function unknown() {
+    // @ts-expect-error - never assigned (i.e. `undefined`)
     return _unknown;
   }
 

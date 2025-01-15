@@ -16,6 +16,10 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": [
+    "^(node:)?(console|util)$",
+    "^three/.*$"
+  ],
 
   "eslint.codeAction.disableRuleComment": { "location": "sameLine" },
   "eslint.workingDirectories": [

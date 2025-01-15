@@ -260,6 +260,8 @@ other packages can inline them in their own `dist/index.d.ts`.
 - `pnpm lint:eslint` - lint every project with ESLint
 - `pnpm [--filter <project-name|{folder/*}>] lint:eslint` - lint specific
   projects
+- `pnpm --filter <project-name> lint:eslint --inspect-config` - inspect the
+  linting configuration of a project
 - `pnpm lint:root:eslint` - lint files that don't belong to projects
 - `pnpm lint:tsc` - type-check every project with TypeScript
 - `pnpm [--filter <project-name|{folder/*}>] lint:tsc` - type-check specific
