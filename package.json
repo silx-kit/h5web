@@ -28,7 +28,7 @@
     "lint:eslint": "pnpm -r --parallel lint:eslint",
     "lint:tsc": "pnpm -r --parallel lint:tsc",
     "lint:cypress:tsc": "tsc --project cypress/tsconfig.json",
-    "lint:root:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
+    "lint:root:eslint": "eslint --max-warnings=0",
     "test": "vitest",
     "support:setup": "poetry -C support/sample install && poetry -C support/h5grove install",
     "support:sample": "poetry -C support/sample run python support/sample/create_h5_sample.py",
@@ -40,39 +40,34 @@
   },
   "devDependencies": {
     "@simonsmith/cypress-image-snapshot": "9.1.0",
+    "@stylistic/eslint-plugin-js": "2.12.1",
     "@testing-library/cypress": "10.0.2",
     "@types/node": "^20.12.11",
+    "@vitest/eslint-plugin": "1.1.20",
+    "confusing-browser-globals": "1.0.11",
     "cypress": "13.13.2",
     "cypress-wait-for-stable-dom": "0.1.0",
-    "eslint": "8.57.0",
-    "eslint-config-galex": "4.5.2",
+    "eslint": "9.16.0",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-promise": "7.2.1",
+    "eslint-plugin-react": "7.37.2",
+    "eslint-plugin-react-hooks": "5.1.0",
+    "eslint-plugin-regexp": "2.7.0",
+    "eslint-plugin-simple-import-sort": "12.1.1",
+    "eslint-plugin-storybook": "0.11.2",
+    "eslint-plugin-testing-library": "7.1.1",
+    "eslint-plugin-unicorn": "56.0.1",
+    "globals": "15.13.0",
+    "lodash": "4.17.21",
     "prettier": "3.3.3",
     "typescript": "5.4.5",
+    "typescript-eslint": "8.18.0",
     "vitest": "2.0.5",
     "vitest-fail-on-console": "0.7.0",
     "wait-on": "7.2.0"
   },
   "pnpm": {
-    "packageExtensions": {
-      "@typescript-eslint/eslint-plugin": {
-        "dependencies": {
-          "typescript": "5.0.3"
-        }
-      },
-      "eslint-plugin-tailwindcss": {
-        "peerDependenciesMeta": {
-          "tailwindcss": {
-            "optional": true
-          }
-        }
-      }
-    },
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "@phenomnomnominal/tsquery>typescript": "5.x",
-        "eslint-plugin-etc>typescript": "5.x"
-      }
-    },
     "requiredScripts": [
       "lint:eslint",
       "lint:tsc"

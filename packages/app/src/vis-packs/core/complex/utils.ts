@@ -30,7 +30,7 @@ export function getPhaseAmplitudeValues(mappedValues: H5WebComplex[]): {
       const phase = Math.atan2(imag, real);
       phaseValues.push(phase);
 
-      const amplitude = Math.sqrt(real ** 2 + imag ** 2);
+      const amplitude = Math.hypot(real, imag);
       amplitudeValues.push(amplitude);
 
       return [getNewBounds(acc[0], phase), getNewBounds(acc[1], amplitude)];

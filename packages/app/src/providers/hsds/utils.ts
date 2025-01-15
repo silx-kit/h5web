@@ -73,7 +73,7 @@ export function convertHsdsShape(shape: HsdsShape): Shape {
 function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
   const { class: hsdsClass, base } = hsdsType;
 
-  const regex = /H5T_(?:STD|IEEE)_([A-Z])(\d+)(BE|LE)/u;
+  const regex = /H5T_(?:IEEE|STD)_([A-Z])(\d+)(BE|LE)/u;
   const matches = regex.exec(base);
 
   if (!matches) {
@@ -81,7 +81,7 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
   }
 
   const [, sign, sizeStr, h5tOrderStr] = matches;
-  const size = Number.parseInt(sizeStr, 10);
+  const size = Number.parseInt(sizeStr);
   const h5tOrder = H5T_ORDER[h5tOrderStr as keyof typeof H5T_ORDER];
 
   if (hsdsClass === 'H5T_FLOAT') {
@@ -112,9 +112,7 @@ function convertHsdsCompoundType(
   }
 
   return compoundType(
-    Object.fromEntries(
-      hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)]),
-    ),
+    Object.fromEntries(fields.map((v) => [v.name, convertHsdsType(v.type)])),
   );
 }
 

@@ -18,14 +18,18 @@ function Marker(props: Props) {
       onPointerMove: dragState?.dragMove,
       onPointerUp:
         dragState &&
-        ((e: PointerEvent<Element>) => {
-          (e.target as Element).releasePointerCapture(e.pointerId);
+        ((e: PointerEvent) => {
+          if (e.target instanceof Element) {
+            e.target.releasePointerCapture(e.pointerId);
+          }
           dragState.dragEnd(e);
         }),
       onPointerDown:
         dragState &&
-        ((e: PointerEvent<Element>) => {
-          (e.target as Element).setPointerCapture(e.pointerId);
+        ((e: PointerEvent) => {
+          if (e.target instanceof Element) {
+            e.target.setPointerCapture(e.pointerId);
+          }
           dragState.dragStart(e);
         }),
     }),

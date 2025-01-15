@@ -17,7 +17,7 @@ function VisManager(props: Props) {
   const { entity, supportedVis } = props;
   assertDefined(supportedVis[0], 'Expected supported visualization');
 
-  if (!('ResizeObserver' in window)) {
+  if (!('ResizeObserver' in globalThis)) {
     throw new Error(
       "Your browser's version is not supported. Please upgrade to the latest version.",
     );

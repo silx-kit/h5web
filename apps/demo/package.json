@@ -8,7 +8,7 @@
     "start": "vite",
     "build": "vite build",
     "serve": "vite preview --port 5173",
-    "lint:eslint": "eslint \"**/*.{js,cjs,ts,tsx}\" --max-warnings=0",
+    "lint:eslint": "eslint --max-warnings=0",
     "lint:tsc": "tsc",
     "analyze": "pnpm dlx source-map-explorer dist/assets/*.js --no-border-checks"
   },
@@ -30,8 +30,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "3.7.0",
-    "eslint": "8.57.0",
-    "eslint-config-galex": "4.5.2",
+    "eslint": "9.16.0",
     "typescript": "5.4.5",
     "vite": "5.3.5",
     "vite-css-modules": "1.4.2",

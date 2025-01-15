@@ -124,7 +124,7 @@ export class H5GroveApi extends DataProviderApi {
       searchParams.set('selection', selection);
     }
 
-    return new URL(`${baseURL as string}/data/?${searchParams.toString()}`);
+    return new URL(`${baseURL || ''}/data/?${searchParams.toString()}`);
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {

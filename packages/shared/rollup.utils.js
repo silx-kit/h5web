@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath, URL } from 'node:url';
 
 const dirname = fileURLToPath(new URL('.', import.meta.url));
 const pkg = JSON.parse(fs.readFileSync(path.resolve(dirname, 'package.json')));

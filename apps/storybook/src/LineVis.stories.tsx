@@ -17,19 +17,16 @@ import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = mockValues.oneD_linear();
+const oneD = mockValues.oneD_linear();
 
 const primaryArray = createArrayFromView(mockValues.twoD().pick(0));
 const secondaryArray = createArrayFromView(mockValues.secondary().pick(0));
 const tertiaryArray = createArrayFromView(mockValues.tertiary().pick(0));
 
-const abscissas = Array.from(
-  { length: dataArray.size },
-  (_, i) => -10 + 0.5 * i,
-);
-const errorsArray = ndarray(
-  Array.from({ length: dataArray.size }, (_, i) => Math.abs(10 - 0.5 * i)),
-  dataArray.shape,
+const abscissas = Array.from({ length: oneD.size }, (_, i) => -10 + 0.5 * i);
+const errors = ndarray(
+  Array.from({ length: oneD.size }, (_, i) => Math.abs(10 - 0.5 * i)),
+  oneD.shape,
 );
 
 const meta = {
@@ -41,7 +38,7 @@ const meta = {
     controls: { sort: 'requiredFirst' },
   },
   args: {
-    dataArray,
+    dataArray: oneD,
     domain: undefined, // compute dynamically in each story based on scale type, errors and auxiliaries
     curveType: CurveType.LineOnly,
     scaleType: ScaleType.Linear,
@@ -111,7 +108,7 @@ export const DescendingAbscissas = {
 export const ErrorBars = {
   ...Default,
   args: {
-    errorsArray,
+    errorsArray: errors,
     showErrors: true,
   },
 } satisfies Story;
@@ -131,9 +128,9 @@ export const AuxiliaryErrors = {
   ...Default,
   args: {
     dataArray: primaryArray,
-    errorsArray,
+    errorsArray: errors,
     auxiliaries: [
-      { label: 'secondary', array: secondaryArray, errors: errorsArray },
+      { label: 'secondary', array: secondaryArray, errors },
       { label: 'tertiary', array: tertiaryArray },
     ],
     showErrors: true,
@@ -144,7 +141,7 @@ export const TypedArrays = {
   ...Default,
   args: {
     dataArray: toTypedNdArray(primaryArray, Float32Array),
-    errorsArray: toTypedNdArray(errorsArray, Float32Array),
+    errorsArray: toTypedNdArray(errors, Float32Array),
     auxiliaries: [
       {
         label: 'secondary',

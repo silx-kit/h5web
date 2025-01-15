@@ -101,9 +101,9 @@ export function createScale(
       return scaleSymlog(config);
     case ScaleType.Sqrt:
       return scaleSqrt(config);
+    default:
+      throw new Error('Unknown scale type');
   }
-
-  throw new Error('Unknown scale type');
 }
 
 export function getSizeToFit(
@@ -272,13 +272,13 @@ export function getTickFormatter(
   domain: Domain,
   availableSize: number,
   scaleType: ScaleType,
-): (val: number | { valueOf(): number }) => string {
+): (val: number | { valueOf: () => number }) => string {
   if (scaleType !== ScaleType.Log) {
     return formatTick;
   }
 
   // If available size allows for all log ticks to be rendered without overlap, use default formatter
-  const [min, max] = domain[0] > 0 ? domain : [-domain[1], -[domain[0]]];
+  const [min, max] = domain[0] > 0 ? domain : [-domain[1], -domain[0]];
   const threshold = adaptedLogTicksThreshold(availableSize);
   if (max / min < 10 ** threshold) {
     return formatTick;
@@ -330,7 +330,7 @@ export function getVisRatio(
 
 export function getAxisOffsets(
   hasLabel: Partial<Record<Exclude<keyof AxisOffsets, 'right'>, boolean>> = {},
-) {
+): AxisOffsets {
   const { left, right, top, bottom } = DEFAULT_AXIS_OFFSETS;
   return {
     left: left + (hasLabel.left ? LABEL_OFFSET : 0),
@@ -397,8 +397,8 @@ export function createIndex(length: number, maxValue: number): BufferAttribute {
   return createBufferAttr(length, 1, TypedArrayCtor);
 }
 
-export function hasR3FEventHandlers(props: Record<string, unknown>) {
+export function hasR3FEventHandlers(props: Record<string, unknown>): boolean {
   return Object.keys(props).some((prop) =>
-    /^on(Pointer|Click|DoubleClick|ContextMenu|Wheel)/u.test(prop),
+    /^on(?:Click|ContextMenu|DoubleClick|Pointer|Wheel)/u.test(prop),
   );
 }

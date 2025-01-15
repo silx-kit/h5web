@@ -7,7 +7,9 @@ function AttrErrorFallback(props: FallbackProps) {
 
   return (
     <tr>
-      <td className={styles.error}>{error.message}</td>
+      <td className={styles.error}>
+        {error instanceof Error ? error.message : 'Unknown error'}
+      </td>
     </tr>
   );
 }

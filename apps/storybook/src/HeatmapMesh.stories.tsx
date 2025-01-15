@@ -16,11 +16,11 @@ import { LinearFilter, NearestFilter } from 'three';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = mockValues.twoD();
-const domain = getDomain(dataArray.data);
+const twoD = mockValues.twoD();
+const domain = getDomain(twoD.data);
 assertDefined(domain);
 
-const uint16Values = [0x4900, 0x4d00, 0x4f80, 0x5100]; // 10, 20, 30, 40
+const uint16Values = [0x49_00, 0x4d_00, 0x4f_80, 0x51_00]; // 10, 20, 30, 40
 const uint16DataArray = ndarray(Uint16Array.from(uint16Values), [2, 2]);
 const uint16Domain: Domain = [10, 40];
 const mask = ndarray(
@@ -74,7 +74,7 @@ export const Default = {
     );
   },
   args: {
-    values: toTypedNdArray(dataArray, Float32Array),
+    values: toTypedNdArray(twoD, Float32Array),
     domain,
     scaleType: ScaleType.SymLog,
     colorMap: 'Inferno',

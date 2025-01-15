@@ -18,7 +18,7 @@ function normalize(a: number, b: number) {
 type Range = number;
 type Output = Range;
 type Unknown = never;
-export type ScaleGamma = ScalePower<Range, Output, Unknown>;
+export type ScaleGamma = ScalePower<Range, Output>;
 
 export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
   let _domain: Domain = config?.domain || [0, 1];
@@ -28,7 +28,7 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
   let _interpolate: InterpolatorFactory<Range, Output> = interpolateNumber;
   let _unknown: Unknown;
 
-  const scaleFn = function (val: NumberValue) {
+  function scaleFn(val: NumberValue) {
     const x = typeof val === 'number' ? val : val.valueOf();
 
     if (Number.isNaN(x)) {
@@ -38,7 +38,7 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
     return _interpolate(..._range)(
       normalize(..._domain)(clamper(x)) ** _exponent,
     );
-  };
+  }
 
   function clamper(x: number) {
     if (!_clamp) {
@@ -131,20 +131,17 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
     });
   }
 
-  function nice(count?: number | undefined) {
+  function nice(count?: number) {
     const scaleLike = _createGammaLikeScale().nice(count);
     _domain = scaleLike.domain() as Domain;
     return scale;
   }
 
-  function ticks(count?: number | undefined) {
+  function ticks(count?: number) {
     return _createGammaLikeScale().ticks(count);
   }
 
-  function tickFormat(
-    count?: number | undefined,
-    specifier?: string | undefined,
-  ) {
+  function tickFormat(count?: number, specifier?: string) {
     return _createGammaLikeScale().tickFormat(count, specifier);
   }
 

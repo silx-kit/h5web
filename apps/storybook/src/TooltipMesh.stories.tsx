@@ -54,7 +54,7 @@ export const HorizontalGuide = {
   args: {
     guides: 'horizontal',
     renderTooltip: (x, y) => (
-      <TooltipContent text={'guides="horizontal"'} x={x} y={y} />
+      <TooltipContent text='guides="horizontal"' x={x} y={y} />
     ),
   },
 } satisfies Story;
@@ -64,7 +64,7 @@ export const VerticalGuide = {
   args: {
     guides: 'vertical',
     renderTooltip: (x, y) => (
-      <TooltipContent text={'guides="vertical"'} x={x} y={y} />
+      <TooltipContent text='guides="vertical"' x={x} y={y} />
     ),
   },
 } satisfies Story;
@@ -74,7 +74,7 @@ export const BothGuides = {
   args: {
     guides: 'both',
     renderTooltip: (x, y) => (
-      <TooltipContent text={'guides="both"'} x={x} y={y} />
+      <TooltipContent text='guides="both"' x={x} y={y} />
     ),
   },
 } satisfies Story;

@@ -19,7 +19,7 @@ class SurfaceMeshGeometry extends H5WebGeometry<'position' | 'uv', Params> {
     this.setAttribute('uv', createBufferAttr(length, 2));
   }
 
-  public override prepare(params: Params) {
+  public override prepare(params: Params): void {
     super.prepare(params);
     const { rows, cols } = params;
 

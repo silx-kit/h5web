@@ -1,4 +1,4 @@
 declare module '*.module.css' {
-  const classes: { readonly [key: string]: string };
+  const classes: readonly Record<string, string>;
   export default classes;
 }

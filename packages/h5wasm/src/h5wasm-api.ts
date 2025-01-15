@@ -99,7 +99,7 @@ export class H5WasmApi extends DataProviderApi {
     // Retrieve filters of any local virtual source datasets
     const localSources = await Promise.all(
       (dataset.virtualSources?.filter(({ file }) => file === '.') || []).map(
-        ({ path }) => this.remote.getEntity(fileId, path),
+        async ({ path }) => this.remote.getEntity(fileId, path),
       ),
     );
     const allFilters = [dataset, ...localSources].flatMap((source) => {
@@ -107,23 +107,27 @@ export class H5WasmApi extends DataProviderApi {
       return source.filters || [];
     });
 
-    const pluginsToLoad = allFilters
-      .map(({ id }) => PLUGINS_BY_FILTER_ID[id])
-      .filter(isDefined);
+    // Load corresponding plugins
+    await Promise.all(
+      allFilters
+        .map(({ id }) => PLUGINS_BY_FILTER_ID[id])
+        .filter(isDefined)
+        .map(this.loadPlugin.bind(this)),
+    );
+  }
 
-    for await (const plugin of pluginsToLoad) {
-      if (await this.remote.isPluginLoaded(plugin)) {
-        continue; // plugin already loaded
-      }
-
-      const buffer = await this.getPlugin?.(plugin);
-      if (!buffer) {
-        // eslint-disable-next-line no-console
-        console.warn(`Compression plugin ${plugin} not available`);
-        continue;
-      }
-
-      await this.remote.loadPlugin(plugin, transfer(buffer, [buffer]));
+  private async loadPlugin(plugin: Plugin): Promise<void> {
+    if (await this.remote.isPluginLoaded(plugin)) {
+      return; // plugin already loaded
     }
+
+    const buffer = await this.getPlugin?.(plugin);
+    if (!buffer) {
+      // eslint-disable-next-line no-console
+      console.warn(`Compression plugin ${plugin} not available`);
+      return;
+    }
+
+    await this.remote.loadPlugin(plugin, transfer(buffer, [buffer]));
   }
 }

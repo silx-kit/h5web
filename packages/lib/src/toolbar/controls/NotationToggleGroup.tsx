@@ -1,6 +1,6 @@
 import { Notation } from '../../vis/matrix/models';
 import styles from './NotationToggleGroup.module.css';
-import ToggleGroup from './ToggleGroup';
+import ToggleGroup from './ToggleGroup/ToggleGroup';
 
 interface Props {
   value: Notation;

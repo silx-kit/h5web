@@ -20,7 +20,9 @@ function MeasuredControl(props: Props) {
         }
       }}
     >
-      {({ measureRef }) => (
+      {(
+        { measureRef }, // eslint-disable-line @typescript-eslint/unbound-method
+      ) => (
         <div
           className={styles.controlWrapper}
           data-measured={knownWidth !== undefined} // hide control until measured for the first time

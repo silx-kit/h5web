@@ -12,7 +12,9 @@ export function assertNumericLikeNxData(
 ): asserts nxData is NxData<NumericType> {
   const { signalDef, auxDefs } = nxData;
   assertNumericLikeType(signalDef.dataset);
-  auxDefs.forEach((def) => assertNumericLikeType(def.dataset));
+  auxDefs.forEach((def) => {
+    assertNumericLikeType(def.dataset);
+  });
 }
 
 export function assertNumericNxData(
@@ -20,7 +22,9 @@ export function assertNumericNxData(
 ): asserts nxData is NxData<NumericType> {
   const { signalDef, auxDefs } = nxData;
   assertNumericType(signalDef.dataset);
-  auxDefs.forEach((def) => assertNumericType(def.dataset));
+  auxDefs.forEach((def) => {
+    assertNumericType(def.dataset);
+  });
 }
 
 export function assertComplexNxData(
@@ -28,5 +32,7 @@ export function assertComplexNxData(
 ): asserts nxData is NxData<ComplexType> {
   const { signalDef, auxDefs } = nxData;
   assertComplexType(signalDef.dataset);
-  auxDefs.forEach((def) => assertComplexType(def.dataset));
+  auxDefs.forEach((def) => {
+    assertComplexType(def.dataset);
+  });
 }

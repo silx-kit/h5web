@@ -7,13 +7,13 @@ import { useState } from 'react';
 import { afterEach, vi } from 'vitest';
 import failOnConsole from 'vitest-fail-on-console';
 
-window.ResizeObserver = class ResizeObserver {
+globalThis.ResizeObserver = class ResizeObserver {
   public observe() {}
   public unobserve() {}
   public disconnect() {}
 };
 
-window.matchMedia = (query: string) => ({
+globalThis.matchMedia = (query: string) => ({
   matches: false,
   media: query,
   addEventListener: vi.fn(),
@@ -28,13 +28,13 @@ window.matchMedia = (query: string) => ({
 // https://github.com/leefsmp/Re-Flex/issues/27
 // https://github.com/jsdom/jsdom/issues/135
 ['offsetWidth', 'offsetHeight'].forEach((prop) => {
-  Object.defineProperty(window.HTMLElement.prototype, prop, {
+  Object.defineProperty(globalThis.HTMLElement.prototype, prop, {
     configurable: true,
     value: 500,
   });
 });
 
-Object.defineProperty(window.URL, 'createObjectURL', {
+Object.defineProperty(globalThis.URL, 'createObjectURL', {
   value: () => 'blob:http://localhost',
 });
 
@@ -49,9 +49,8 @@ afterEach(() => {
     vi.runAllTimers();
     vi.useRealTimers();
 
-    // Remove workaround for RTL when fake timers are enabled
+    // @ts-expect-error - Remove workaround for RTL when fake timers are enabled
     // (cf. `renderApp()` in test-utils.tsx)
-    // @ts-expect-error
     delete globalThis.jest;
   }
 });
@@ -68,7 +67,7 @@ vi.mock('@react-hookz/web', async (importOriginal) => {
       const [size, setSize] = useState<Measures>();
       const ref = vi.fn((elem: HTMLElement | null) => {
         if (!size && elem?.dataset.testSize) {
-          const [width, height] = elem?.dataset.testSize.split(',');
+          const [width, height] = elem.dataset.testSize.split(',');
           setSize({
             width: Number.parseInt(width),
             height: Number.parseInt(height),

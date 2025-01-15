@@ -72,6 +72,7 @@ function LineToolbar(props: Props) {
 
       <ToggleBtn
         label="Errors"
+        // eslint-disable-next-line react/no-unstable-nested-components
         icon={(iconProps) => (
           <FiItalic
             transform="skewX(20)"

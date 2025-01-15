@@ -5,12 +5,13 @@ import { CANCELLED_ERROR_MSG } from './providers/utils';
 
 interface Props extends FallbackProps {
   className?: string;
+  error: unknown;
 }
 
 function ErrorFallback(props: Props) {
   const { className = '', error, resetErrorBoundary } = props;
 
-  if (error.message === CANCELLED_ERROR_MSG) {
+  if (error instanceof Error && error.message === CANCELLED_ERROR_MSG) {
     return (
       <p className={`${styles.error} ${className}`}>
         {CANCELLED_ERROR_MSG}
@@ -27,6 +28,7 @@ function ErrorFallback(props: Props) {
   }
 
   if (
+    error instanceof Error &&
     error.cause &&
     error.cause instanceof Error &&
     error.message !== error.cause.message
@@ -40,7 +42,11 @@ function ErrorFallback(props: Props) {
     );
   }
 
-  return <p className={`${styles.error} ${className}`}>{error.message}</p>;
+  return (
+    <p className={`${styles.error} ${className}`}>
+      {error instanceof Error ? error.message : 'Unknown error'}
+    </p>
+  );
 }
 
 export default ErrorFallback;

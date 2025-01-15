@@ -5,14 +5,17 @@ import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import type { TileArray } from './models';
 import { useTooltipStore } from './store';
 
-export function useTooltipOnMoveHandler() {
+export function useTooltipOnMoveHandler(): (
+  evt: ThreeEvent<MouseEvent>,
+  array: TileArray,
+) => void {
   const setTooltipValue = useTooltipStore((state) => state.setTooltipValue);
   const { worldToData } = useVisCanvasContext();
 
   return useCallback(
-    (evt: ThreeEvent<MouseEvent>, array: TileArray) => {
-      const { unprojectedPoint } = evt;
-      const localVec = evt.object.worldToLocal(unprojectedPoint.clone());
+    (evt, array) => {
+      const { object, unprojectedPoint } = evt;
+      const localVec = object.worldToLocal(unprojectedPoint.clone());
       const dataVec = worldToData(unprojectedPoint.clone());
       const [height, width] = array.shape;
       const val = array.get(

@@ -179,8 +179,8 @@ export const CORE_VIS = {
     Container: SurfaceVisContainer,
     ConfigProvider: SurfaceConfigProvider,
     supportsDataset: (dataset) => {
-      // @ts-expect-error
-      const enableSurfaceVis = window.H5WEB_EXPERIMENTAL;
+      // @ts-expect-error - Untyped global flag
+      const enableSurfaceVis = globalThis.H5WEB_EXPERIMENTAL as boolean;
 
       return (
         enableSurfaceVis &&

@@ -89,7 +89,7 @@ export const ModifierKey = {
 export const Validation = {
   ...Rectangle,
   args: {
-    validate: ({ html }) => Box.fromPoints(...(html as Rect)).hasMinSize(100),
+    validate: ({ html }) => Box.fromPoints(...html).hasMinSize(100),
   },
 } satisfies Story;
 
@@ -161,16 +161,16 @@ export const LineWithLengthValidation = {
 
         <SelectionTool
           validate={({ html: [start, end] }) => start.distanceTo(end) >= 100}
-          onSelectionChange={(selection, _, isValid) =>
-            setValid(selection && isValid)
+          onSelectionChange={(selection, _, isValidSelection) =>
+            setValid(selection && isValidSelection)
           }
           onSelectionEnd={() => setValid(undefined)}
         >
-          {({ html: htmlSelection }, _, isValid) => (
+          {({ html: htmlSelection }, _, isValidSelection) => (
             <SvgElement>
               <SvgLine
                 coords={htmlSelection}
-                stroke={isValid ? 'teal' : 'orangered'}
+                stroke={isValidSelection ? 'teal' : 'orangered'}
                 strokeWidth={3}
                 strokeLinecap="round"
               />

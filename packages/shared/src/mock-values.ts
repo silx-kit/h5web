@@ -1,3 +1,4 @@
+/* eslint-disable func-style */
 import { range } from 'd3-array';
 import type { NdArray } from 'ndarray';
 import ndarray from 'ndarray';

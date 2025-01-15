@@ -49,10 +49,10 @@ export function parseEntity(
   h5gEntity: H5GroveEntity,
   isChild = false,
 ): ProvidedEntity | ChildEntity {
-  const { name } = h5gEntity;
+  const { name, kind } = h5gEntity;
   const baseEntity = { name, path };
 
-  if (h5gEntity.kind === 'group') {
+  if (kind === 'group') {
     const { children = [], attributes: attrsMetadata } = h5gEntity;
     const attributes = parseAttributes(attrsMetadata);
     const baseGroup: Group = {
@@ -94,7 +94,7 @@ export function parseEntity(
     };
   }
 
-  if (h5gEntity.kind === 'datatype') {
+  if (kind === 'datatype') {
     const { attributes: attrsMetadata, type } = h5gEntity;
     return {
       ...baseEntity,
@@ -105,7 +105,7 @@ export function parseEntity(
     };
   }
 
-  if (h5gEntity.kind === 'soft_link') {
+  if (kind === 'soft_link') {
     const { target_path } = h5gEntity;
     return {
       ...baseEntity,
@@ -115,7 +115,7 @@ export function parseEntity(
     };
   }
 
-  if (h5gEntity.kind === 'external_link') {
+  if (kind === 'external_link') {
     const { target_file, target_path } = h5gEntity;
     return {
       ...baseEntity,
@@ -156,6 +156,7 @@ export function isH5GroveError(
   );
 }
 
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 export function parseDType(type: H5GroveType): DType {
   const { class: h5tClass, size } = type;
 
@@ -218,6 +219,7 @@ export function parseDType(type: H5GroveType): DType {
 
   return unknownType();
 }
+/* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
 
 /*
  * Take advantage of h5grove's "safe" dtype conversions (i.e. `dtype=safe`)

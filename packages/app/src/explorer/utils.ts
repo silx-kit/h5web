@@ -35,9 +35,9 @@ function getExplorerButtonList(): HTMLButtonElement[] {
   return [...(explorer?.querySelectorAll('button') || [])];
 }
 
-export function focusParent(e: KeyboardEvent<HTMLButtonElement>) {
+export function focusParent(e: KeyboardEvent<HTMLButtonElement>): void {
   const activeElement = e.currentTarget;
-  const path = activeElement.getAttribute('data-path');
+  const { path } = activeElement.dataset;
   if (!path) {
     return;
   }
@@ -45,7 +45,7 @@ export function focusParent(e: KeyboardEvent<HTMLButtonElement>) {
   const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
 
   const parentButton = buttonList.find(
-    (element) => element.getAttribute('data-path') === parentPath,
+    (element) => element.dataset.path === parentPath,
   );
   if (parentButton) {
     parentButton.focus();
@@ -53,18 +53,18 @@ export function focusParent(e: KeyboardEvent<HTMLButtonElement>) {
   }
 }
 
-export function focusNext(e: KeyboardEvent<HTMLButtonElement>) {
+export function focusNext(e: KeyboardEvent<HTMLButtonElement>): void {
   const activeElement = e.currentTarget;
   const buttonList = getExplorerButtonList();
   const activeIndex = buttonList.indexOf(activeElement);
 
-  if (activeIndex >= 0 && activeIndex < buttonList.length - 1) {
+  if (activeIndex !== -1 && activeIndex < buttonList.length - 1) {
     buttonList[activeIndex + 1].focus();
     e.preventDefault();
   }
 }
 
-export function focusPrevious(e: KeyboardEvent<HTMLButtonElement>) {
+export function focusPrevious(e: KeyboardEvent<HTMLButtonElement>): void {
   const activeElement = e.currentTarget;
   const buttonList = getExplorerButtonList();
   const activeIndex = buttonList.indexOf(activeElement);
@@ -75,14 +75,14 @@ export function focusPrevious(e: KeyboardEvent<HTMLButtonElement>) {
   }
 }
 
-export function focusFirst(e: KeyboardEvent<HTMLButtonElement>) {
+export function focusFirst(e: KeyboardEvent<HTMLButtonElement>): void {
   const buttonList = getExplorerButtonList();
 
   buttonList[0]?.focus();
   e.preventDefault();
 }
 
-export function focusLast(e: KeyboardEvent<HTMLButtonElement>) {
+export function focusLast(e: KeyboardEvent<HTMLButtonElement>): void {
   const buttonList = getExplorerButtonList();
 
   buttonList[buttonList.length - 1]?.focus();

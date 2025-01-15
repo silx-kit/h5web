@@ -52,7 +52,7 @@ export function useNxImageDataToFetch<T extends NumericType | ComplexType>(
   nxData: NxData<T>,
   selectedDef: DatasetDef<T>,
 ): NxData<T> {
-  const { signalDef } = nxData;
+  const { signalDef, titleDataset } = nxData;
 
   return {
     ...nxData,
@@ -60,8 +60,9 @@ export function useNxImageDataToFetch<T extends NumericType | ComplexType>(
     auxDefs: [], // fetch selected signal only
     titleDataset:
       selectedDef.dataset === signalDef.dataset
-        ? nxData.titleDataset
-        : undefined, // when auxiliary signal is selected, always use its label as title
+        ? titleDataset
+        : // when auxiliary signal is selected, don't fetch title dataset (i.e. use the auxiliary's label as title)
+          undefined,
   };
 }
 

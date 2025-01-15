@@ -34,6 +34,7 @@ async function openLocalFile(file: File): Promise<bigint> {
   const fileName = getAvailableFileName(FS, WORKERFS_FOLDER);
 
   const { WORKERFS } = FS.filesystems;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   WORKERFS.createNode(rootNode, fileName, WORKERFS.FILE_MODE, 0, file);
 
   return h5wasm.open(`${WORKERFS_FOLDER}/${fileName}`, undefined, undefined); // https://github.com/emscripten-core/emscripten/issues/22389
@@ -55,7 +56,7 @@ async function getEntity(
 async function getValue(
   fileId: bigint,
   path: string,
-  selection?: string | undefined,
+  selection?: string,
 ): Promise<unknown> {
   const value = readSelectedValue(new Dataset(fileId, path), selection);
   return isTypedArray(value) ? transfer(value, [value.buffer]) : value;
@@ -69,7 +70,10 @@ async function getAttrValue(
   return new Attribute(fileId, path, attrName).json_value;
 }
 
-async function getDescendantPaths(fileId: bigint, rootPath: string) {
+async function getDescendantPaths(
+  fileId: bigint,
+  rootPath: string,
+): Promise<string[]> {
   const h5wasm = await h5wasmReady;
   return h5wasm
     .get_names(fileId, rootPath, true)

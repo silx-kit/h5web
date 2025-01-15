@@ -13,7 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = toTypedNdArray(mockValues.twoD(), Float32Array);
+const typedTwoD = toTypedNdArray(mockValues.twoD(), Float32Array);
 
 const meta = {
   title: 'Building Blocks/Interactions/DefaultInteractions',
@@ -36,8 +36,8 @@ type Story = StoryObj<typeof meta>;
 
 export const InsideAutoAspectCanvas = {
   render: (args) => {
-    const [rows, cols] = dataArray.shape;
-    const domain = useDomain(dataArray);
+    const [rows, cols] = typedTwoD.shape;
+    const domain = useDomain(typedTwoD);
     assertDefined(domain);
 
     return (
@@ -50,7 +50,7 @@ export const InsideAutoAspectCanvas = {
         <ResetZoomButton />
 
         <HeatmapMesh
-          values={dataArray}
+          values={typedTwoD}
           domain={domain}
           colorMap="Viridis"
           scaleType={ScaleType.Linear}
@@ -62,8 +62,8 @@ export const InsideAutoAspectCanvas = {
 
 export const InsideEqualAspectCanvas = {
   render: (args) => {
-    const [rows, cols] = dataArray.shape;
-    const domain = useDomain(dataArray);
+    const [rows, cols] = typedTwoD.shape;
+    const domain = useDomain(typedTwoD);
     assertDefined(domain);
 
     return (
@@ -76,7 +76,7 @@ export const InsideEqualAspectCanvas = {
         <ResetZoomButton />
 
         <HeatmapMesh
-          values={dataArray}
+          values={typedTwoD}
           domain={domain}
           colorMap="Viridis"
           scaleType={ScaleType.Linear}

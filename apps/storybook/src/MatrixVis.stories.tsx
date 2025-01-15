@@ -8,9 +8,9 @@ import { format } from 'd3-format';
 
 import FillHeight from './decorators/FillHeight';
 
-const dataArray = mockValues.twoD();
-const typedDataArray = toTypedNdArray(dataArray, Float32Array);
-const complexDataArray = mockValues.twoD_cplx();
+const twoD = mockValues.twoD();
+const typedTwoD = toTypedNdArray(twoD, Float32Array);
+const cplxTwoD = mockValues.twoD_cplx();
 
 const formatNum = format('.3e');
 const formatCplx = createComplexFormatter('.2e', true);
@@ -30,8 +30,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default = {
   args: {
-    dims: dataArray.shape,
-    cellFormatter: (row, col) => formatNum(dataArray.get(row, col)),
+    dims: twoD.shape,
+    cellFormatter: (row, col) => formatNum(twoD.get(row, col)),
   },
 } satisfies Story;
 
@@ -51,16 +51,16 @@ export const StaticHeaderCells = {
 
 export const Complex = {
   args: {
-    dims: complexDataArray.shape,
-    cellFormatter: (row, col) => formatCplx(complexDataArray.get(row, col)),
+    dims: cplxTwoD.shape,
+    cellFormatter: (row, col) => formatCplx(cplxTwoD.get(row, col)),
     cellWidth: 232,
   },
 } satisfies Story;
 
 export const TypedArray = {
   args: {
-    dims: typedDataArray.shape,
-    cellFormatter: (row, col) => formatNum(typedDataArray.get(row, col)),
+    dims: typedTwoD.shape,
+    cellFormatter: (row, col) => formatNum(typedTwoD.get(row, col)),
   },
 } satisfies Story;
 

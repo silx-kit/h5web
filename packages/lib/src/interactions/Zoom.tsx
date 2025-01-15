@@ -16,14 +16,13 @@ function Zoom(props: Props) {
     disabled,
   });
 
-  const isZoomAllowed = (sourceEvent: WheelEvent) => {
+  const handleWheel = useZoomOnWheel((sourceEvent: WheelEvent) => {
     const shouldZoom = shouldInteract(sourceEvent);
-
     return { x: shouldZoom, y: shouldZoom };
-  };
+  });
 
   useWheelCapture();
-  useCanvasEvent('wheel', useZoomOnWheel(isZoomAllowed));
+  useCanvasEvent('wheel', handleWheel);
 
   return null;
 }

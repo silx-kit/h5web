@@ -51,11 +51,11 @@ export function sliceValue<T extends DType>(
   dataset: Dataset<ArrayShape | ScalarShape, T>,
   selection: string,
 ): Primitive<T>[] {
-  const { shape, type } = dataset;
-  const dataArray = ndarray(value as Primitive<typeof type>[], shape);
+  const { shape } = dataset;
+  const dataArray = ndarray(value as Primitive<typeof dataset.type>[], shape);
   const mappedArray = applyMapping(
     dataArray,
-    selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s, 10))),
+    selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s))),
   );
 
   return mappedArray.data;
@@ -80,7 +80,7 @@ export function getChildrenPaths(
   );
 }
 
-export async function cancellableDelay(signal?: AbortSignal) {
+export async function cancellableDelay(signal?: AbortSignal): Promise<void> {
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
       signal?.removeEventListener('abort', handleAbort);

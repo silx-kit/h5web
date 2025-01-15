@@ -45,7 +45,6 @@ interface Props extends CommonInteractionProps {
   ) => ReactNode;
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 function SelectionTool(props: Props) {
   const {
     id = 'Selection',
@@ -95,7 +94,7 @@ function SelectionTool(props: Props) {
   }
 
   function handlePointerDown(evt: CanvasEvent<PointerEvent>) {
-    const { sourceEvent } = evt;
+    const { sourceEvent, htmlPt } = evt;
     if (!shouldInteract(sourceEvent)) {
       return;
     }
@@ -104,7 +103,7 @@ function SelectionTool(props: Props) {
     (target as Element).setPointerCapture(pointerId);
 
     startEvtRef.current = evt;
-    setRawSelection(computeRawSelection(evt.htmlPt));
+    setRawSelection(computeRawSelection(htmlPt));
   }
 
   function handlePointerMove(evt: CanvasEvent<PointerEvent>) {
@@ -140,7 +139,7 @@ function SelectionTool(props: Props) {
   }
 
   useKeyboardEvent('Escape', cancelSelection, [], { event: 'keydown' });
-  useEventListener(window, 'contextmenu', (evt: MouseEvent) => {
+  useEventListener(globalThis, 'contextmenu', (evt: MouseEvent) => {
     if (startEvtRef.current) {
       evt.preventDefault();
       cancelSelection();

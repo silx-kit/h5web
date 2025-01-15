@@ -7,6 +7,7 @@ import type {
 } from '@h5web/shared/hdf5-models';
 import { DTypeClass } from '@h5web/shared/hdf5-models';
 import type { OnProgress } from '@h5web/shared/react-suspense-fetch';
+import type { TypedArrayConstructor } from '@h5web/shared/vis-models';
 import type { AxiosProgressEvent } from 'axios';
 import { isAxiosError } from 'axios';
 
@@ -14,7 +15,9 @@ import type { DataProviderApi } from './api';
 
 export const CANCELLED_ERROR_MSG = 'Request cancelled';
 
-export function typedArrayFromDType(dtype: DType) {
+export function typedArrayFromDType(
+  dtype: DType,
+): TypedArrayConstructor | undefined {
   if (isEnumType(dtype) || isBoolType(dtype)) {
     return typedArrayFromDType(dtype.base);
   }
@@ -77,7 +80,9 @@ export async function getValueOrError(
   }
 }
 
-export function createAxiosProgressHandler(onProgress: OnProgress | undefined) {
+export function createAxiosProgressHandler(
+  onProgress: OnProgress | undefined,
+): ((evt: AxiosProgressEvent) => void) | undefined {
   return (
     onProgress &&
     ((evt: AxiosProgressEvent) => {

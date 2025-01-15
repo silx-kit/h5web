@@ -20,6 +20,7 @@ function VisBoundary(props: Props) {
   return (
     <ErrorBoundary
       resetKeys={[resetKey]}
+      // eslint-disable-next-line react/no-unstable-nested-components
       fallbackRender={(args) => (
         <ErrorFallback className={visualizerStyles.vis} {...args} />
       )}
