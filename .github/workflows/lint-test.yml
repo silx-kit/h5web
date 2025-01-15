@@ -84,20 +84,20 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.local
-          key: poetry-1 # increment to reset cache
+          key: poetry-3 # increment to reset cache
 
       - name: Install Poetry 📜
         if: steps.poetry.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
-          version: 1.8.5
+          version: 2.0.1
 
       - name: Restore Poetry environments 📌
         id: poetry-venvs
         uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
-          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-3 # increment to reset cache
+          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-5 # increment to reset cache
 
       - name: Create Poetry environments 📜
         if: steps.poetry-venvs.outputs.cache-hit != 'true'
