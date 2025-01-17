@@ -117,6 +117,7 @@ export function compoundOrCplxType<T extends DType>(
   fields: Record<string, T>,
 ): CompoundType<T> | ComplexType {
   const { r, i } = fields;
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (r && isNumericType(r) && i && isNumericType(i)) {
     return cplxType(r, i);
   }

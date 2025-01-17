@@ -15,7 +15,7 @@ import FillHeight from './decorators/FillHeight';
 
 const meta = {
   decorators: [FillHeight],
-  tags: ['autodocs', '!dev'], // use in `Stacking` doc page and hide from sidebar
+  tags: ['!dev'], // hide from sidebar (use in `Stacking.mdx` doc page only)
 } satisfies Meta;
 
 export default meta;

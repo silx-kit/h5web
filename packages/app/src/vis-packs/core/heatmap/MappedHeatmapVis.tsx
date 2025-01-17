@@ -93,7 +93,7 @@ function MappedHeatmapVis(props: Props) {
         className={visualizerStyles.vis}
         dataArray={dataArray}
         title={title}
-        dtype={dataset && formatNumLikeType(dataset.type)}
+        dtype={formatNumLikeType(dataset.type)}
         domain={safeDomain}
         colorMap={colorMap}
         scaleType={scaleType}

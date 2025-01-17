@@ -56,7 +56,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
               <MappedComplexLineVis
                 value={signal}
                 valueLabel={signalDef.label}
-                auxLabels={auxDefs.map((def) => def?.label)}
+                auxLabels={auxDefs.map((def) => def.label)}
                 auxValues={auxValues}
                 dims={signalDims}
                 dimMapping={dimMapping}

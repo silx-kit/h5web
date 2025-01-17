@@ -12,7 +12,8 @@
   position: relative;
   padding: 0;
   border-radius: 50%;
-  box-shadow: -1px -1px 2px inset var(--h5w-btnRaised-hover--shadowColor, dimgray);
+  box-shadow: -1px -1px 2px inset
+    var(--h5w-btnRaised-hover--shadowColor, dimgray);
   transition:
     background-color 0.05s ease-in-out,
     box-shadow 0.05s ease-in-out;
@@ -32,11 +33,13 @@
 
 .thumb[data-auto='false']:hover > .thumbBtnLike {
   opacity: 0.8;
-  box-shadow: -2px -2px 2px inset var(--h5w-btnRaised-hover--shadowColor, dimgray);
+  box-shadow: -2px -2px 2px inset
+    var(--h5w-btnRaised-hover--shadowColor, dimgray);
 }
 
 .thumb[data-auto='true']:hover > .thumbBtnLike {
-  box-shadow: -2px -2px 2px inset var(--h5w-btnRaised-hover--shadowColor, dimgray);
+  box-shadow: -2px -2px 2px inset
+    var(--h5w-btnRaised-hover--shadowColor, dimgray);
 }
 
 .thumb[data-error] {

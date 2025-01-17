@@ -38,7 +38,7 @@ export function findMockEntity(
 
   assertGroup(parent);
   const childName = path.slice(path.lastIndexOf('/') + 1);
-  const child = parent && getChildEntity(parent, childName);
+  const child = getChildEntity(parent, childName);
 
   if (child && isGroup(child)) {
     assertGroupWithChildren(child);

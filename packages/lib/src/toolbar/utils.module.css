@@ -67,7 +67,8 @@ a.btn {
 
 .btn:hover > .btnLike {
   background-color: var(--h5w-btn-hover--bgColor, whitesmoke);
-  box-shadow: -1px -1px 2px inset var(--h5w-btn-hover--shadowColor, var(--h5w-btnRaised--shadowColor, gray));
+  box-shadow: -1px -1px 2px inset
+    var(--h5w-btn-hover--shadowColor, var(--h5w-btnRaised--shadowColor, gray));
 }
 
 .btn[data-raised]:hover > .btnLike {

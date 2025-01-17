@@ -34,7 +34,7 @@
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
     "react": ">=18",
-    "zustand": "4.5.4"
+    "zustand": "5.0.3"
   },
   "peerDependenciesMeta": {
     "d3-array": {
@@ -62,12 +62,12 @@
     "@types/react": "^18.3.3",
     "d3-array": "3.2.4",
     "d3-format": "3.1.0",
-    "eslint": "9.16.0",
+    "eslint": "9.18.0",
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
     "react": "18.3.1",
     "typescript": "5.7.3",
-    "vitest": "2.0.5",
-    "zustand": "4.5.4"
+    "vitest": "2.1.8",
+    "zustand": "5.0.3"
   }
 }

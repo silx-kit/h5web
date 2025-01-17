@@ -74,6 +74,6 @@ export function useNxValuesCached(
   return useValuesInCache(
     signalDef.dataset,
     signalDef.errorDataset,
-    ...auxDefs.flatMap((def) => [def?.dataset, def?.errorDataset]),
+    ...auxDefs.flatMap((def) => [def.dataset, def.errorDataset]),
   );
 }

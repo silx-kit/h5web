@@ -58,7 +58,7 @@ function Histogram(props: Props) {
   const { width, height } = size;
 
   const xScale = createScale(scaleType, {
-    domain: xDomain && extendDomain(xDomain, EXTEND_FACTOR, scaleType),
+    domain: extendDomain(xDomain, EXTEND_FACTOR, scaleType),
     range: [0, width],
   });
   const yScale = scaleLinear({
