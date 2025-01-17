@@ -102,19 +102,6 @@ export function createConfig(opts = {}) {
           globals: { ...globals.browser },
         },
       },
-      withVitest && {
-        /**
-         * Configure Vitest globals on test files.
-         */
-        name: 'h5web/defaults/globals-vitest',
-        files: [
-          '**/__tests__/**/*.{js,jsx,ts,tsx}',
-          '**/*.test.{js,jsx,ts,tsx}',
-        ],
-        languageOptions: {
-          globals: { ...vitestPlugin.environments.env.globals },
-        },
-      },
       {
         /**
          * ESLint core rules: https://eslint.org/docs/latest/rules/
@@ -790,8 +777,8 @@ export function createConfig(opts = {}) {
           '@typescript-eslint/consistent-type-assertions': [
             'error',
             {
-              assertionStyle: 'as',
-              objectLiteralTypeAssertions: 'allow-as-parameter', // prefer `const x: T = { ... };` to `const x = { ... } as T; `
+              arrayLiteralTypeAssertions: 'allow-as-parameter', // prefer `const x: T[] = [ ... ];` to `const x = [ ... ] as T[];`
+              objectLiteralTypeAssertions: 'allow-as-parameter', // prefer `const x: T = { ... };` to `const x = { ... } as T;`
             },
           ],
           '@typescript-eslint/consistent-type-exports': 'warn',
@@ -831,7 +818,7 @@ export function createConfig(opts = {}) {
               allowComparingNullableBooleansToTrue: false,
             },
           ],
-          '@typescript-eslint/no-unnecessary-condition': 'off', // false positives
+          '@typescript-eslint/no-unnecessary-condition': 'warn', // false positives due to not enabling `noUncheckedIndexedAccess` can be disabled inline
           '@typescript-eslint/no-unnecessary-parameter-property-assignment':
             'warn',
           '@typescript-eslint/no-unnecessary-qualifier': 'warn',

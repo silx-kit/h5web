@@ -30,4 +30,5 @@ labels: ['bug']
 - OS: [e.g. iOS]
 - Browser: [e.g. Chrome, Safari]
 - Version: [e.g. 22]
-- H5Web context: [choose one or several] demo, jupyterlab_h5web, @h5web/lib, @h5web/app
+- H5Web context: [choose one or several] demo, jupyterlab_h5web, @h5web/lib,
+  @h5web/app

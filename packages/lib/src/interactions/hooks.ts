@@ -252,7 +252,7 @@ export function useDrag(opts: UseDragOpts): UseDragState {
     dataStartRef.current = undefined;
     setDelta(undefined);
 
-    onDragEndRef.current?.(finalDelta);
+    onDragEndRef.current(finalDelta);
   }
 
   useCanvasEvent('pointermove', handlePointerMove);

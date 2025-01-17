@@ -214,6 +214,7 @@ export function parseDType(type: H5GroveType): DType {
     return arrayType(parseDType(type.base));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (h5tClass === H5T_CLASS.ARRAY) {
     return arrayType(parseDType(type.base), type.dims);
   }

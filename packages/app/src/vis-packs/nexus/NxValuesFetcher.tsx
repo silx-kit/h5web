@@ -19,8 +19,8 @@ function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
   const { signalDef, axisDefs, auxDefs, titleDataset } = nxData;
 
   const axisDatasets = axisDefs.map((def) => def?.dataset);
-  const auxDatasets = auxDefs.map((def) => def?.dataset);
-  const auxErrorDatasets = auxDefs.map((def) => def?.errorDataset);
+  const auxDatasets = auxDefs.map((def) => def.dataset);
+  const auxErrorDatasets = auxDefs.map((def) => def.errorDataset);
 
   usePrefetchValues([titleDataset, ...axisDatasets]);
   usePrefetchValues(

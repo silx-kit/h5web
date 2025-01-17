@@ -8,8 +8,8 @@ test('show slider with two thumbs and reveal popup on hover', async () => {
 
   const thumbs = screen.getAllByRole('slider');
   expect(thumbs).toHaveLength(2);
-  expect(thumbs[0]).toHaveAttribute('aria-valuenow', '20');
-  expect(thumbs[1]).toHaveAttribute('aria-valuenow', '81');
+  expect(thumbs[0]).toHaveValue(20);
+  expect(thumbs[1]).toHaveValue(81);
 
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
   const popup = screen.getByRole('dialog', { hidden: true });
@@ -74,7 +74,7 @@ test('move thumbs with keyboard to update domain', async () => {
   expect(minInput).toHaveValue('−2.30818e+2');
   expect(within(visArea).getByText('−2.308e+2')).toBeVisible();
 
-  expect(minThumb).toHaveAttribute('aria-valuenow', '20'); // still at original position
+  expect(minThumb).toHaveValue(20); // still at original position
   expect(maxInput).toHaveValue('4e+2'); // unaffected
 
   // Move max thumb ten steps to the left
@@ -88,7 +88,7 @@ test('move thumbs with keyboard to update domain', async () => {
   expect(maxInput).toHaveValue('3.68841e+2'); // not back to 4e+2 because 4e+2 is not exactly on a slider division
   expect(within(visArea).getByText('3.688e+2')).toBeInTheDocument();
 
-  expect(maxThumb).toHaveAttribute('aria-valuenow', '81'); // still at original position
+  expect(maxThumb).toHaveValue(81); // still at original position
   expect(minInput).toHaveValue('−2.30818e+2'); // unaffected
 });
 
@@ -155,17 +155,17 @@ test('clamp domain in symlog scale', async () => {
   await user.type(minInput, '-1e+1000');
   await user.click(screen.getByRole('button', { name: 'Apply min' }));
   expect(minInput).toHaveValue('−8.98847e+307');
-  expect(minThumb).toHaveAttribute('aria-valuenow', '1');
+  expect(minThumb).toHaveValue(1);
 
   await user.clear(maxInput);
   await user.type(maxInput, '1e+1000');
   await user.click(screen.getByRole('button', { name: 'Apply max' }));
   expect(maxInput).toHaveValue('8.98847e+307');
-  expect(maxThumb).toHaveAttribute('aria-valuenow', '100');
+  expect(maxThumb).toHaveValue(100);
 
   await user.type(maxThumb, '{ArrowLeft}');
   expect(maxInput).toHaveValue('5.40006e+301');
-  expect(maxThumb).toHaveAttribute('aria-valuenow', '99'); // does not jump back to 81
+  expect(maxThumb).toHaveValue(99); // does not jump back to 81
 });
 
 test('control min/max autoscale behaviour', async () => {
@@ -213,8 +213,8 @@ test('handle empty domain', async () => {
   await user.clear(minInput);
   await user.type(minInput, '400');
   await user.click(screen.getByRole('button', { name: 'Apply min' }));
-  expect(minThumb).toHaveAttribute('aria-valuenow', '81');
-  expect(maxThumb).toHaveAttribute('aria-valuenow', '81');
+  expect(minThumb).toHaveValue(81);
+  expect(maxThumb).toHaveValue(81);
 
   const visArea = screen.getByRole('figure');
   expect(within(visArea).getByText('−∞')).toBeVisible();
@@ -224,14 +224,14 @@ test('handle empty domain', async () => {
   await user.type(maxThumb, '{ArrowLeft}');
   expect(minInput).toHaveValue('3.12772e+2');
   expect(maxInput).toHaveValue('3.12772e+2');
-  expect(minThumb).toHaveAttribute('aria-valuenow', '80');
-  expect(maxThumb).toHaveAttribute('aria-valuenow', '80');
+  expect(minThumb).toHaveValue(80);
+  expect(maxThumb).toHaveValue(80);
 
   // Ensure thumbs can be separated again
   await user.type(maxThumb, '{ArrowRight}');
   expect(maxInput).toHaveValue('3.71154e+2');
-  expect(minThumb).toHaveAttribute('aria-valuenow', '80');
-  expect(maxThumb).toHaveAttribute('aria-valuenow', '81');
+  expect(minThumb).toHaveValue(80);
+  expect(maxThumb).toHaveValue(81);
 });
 
 test('handle min > max', async () => {
