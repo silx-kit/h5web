@@ -1,15 +1,15 @@
-import type {
-  AxisScaleType,
-  ColorScaleType,
-  Domain,
-  NumArray,
-  ScaleType,
+import {
+  type AxisScaleType,
+  type ColorScaleType,
+  type Domain,
+  type NumArray,
+  type ScaleType,
 } from '@h5web/shared/vis-models';
-import type { PickD3Scale, PickScaleConfigWithoutType } from '@visx/scale';
-import type { HTMLAttributes } from 'react';
+import { type PickD3Scale, type PickScaleConfigWithoutType } from '@visx/scale';
+import { type HTMLAttributes } from 'react';
 
-import type { ColorMap } from './heatmap/models';
-import type { ScaleGamma } from './scaleGamma';
+import { type ColorMap } from './heatmap/models';
+import { type ScaleGamma } from './scaleGamma';
 
 export interface Size {
   width: number;

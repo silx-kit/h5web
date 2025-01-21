@@ -1,5 +1,5 @@
 import { H5T_CSET, H5T_STR } from '@h5web/shared/h5t';
-import type { GroupWithChildren } from '@h5web/shared/hdf5-models';
+import { type GroupWithChildren } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   boolType,

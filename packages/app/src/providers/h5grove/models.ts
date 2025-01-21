@@ -1,4 +1,4 @@
-import type { AttributeValues, Filter } from '@h5web/shared/hdf5-models';
+import { type AttributeValues, type Filter } from '@h5web/shared/hdf5-models';
 
 export type H5GroveEntityResponse = H5GroveEntity;
 export type H5GroveDataResponse = unknown;

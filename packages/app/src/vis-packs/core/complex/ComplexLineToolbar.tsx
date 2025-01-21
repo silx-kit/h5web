@@ -8,14 +8,13 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import type { Domain } from '@h5web/shared/vis-models';
-import { ComplexVisType } from '@h5web/shared/vis-models';
+import { ComplexVisType, type Domain } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { MdGridOn } from 'react-icons/md';
 
-import type { LineConfig } from '../line/config';
+import { type LineConfig } from '../line/config';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
-import type { ComplexLineConfig } from './lineConfig';
+import { type ComplexLineConfig } from './lineConfig';
 
 interface Props {
   dataDomain: Domain;

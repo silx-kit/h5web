@@ -12,7 +12,7 @@ import {
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { range } from 'd3-array';
 
 import FillHeight from './decorators/FillHeight';

@@ -1,4 +1,4 @@
-import type { Entity } from '@h5web/shared/hdf5-models';
+import { type Entity } from '@h5web/shared/hdf5-models';
 import {
   boolType,
   compoundType,
@@ -15,7 +15,7 @@ import {
 } from '@h5web/shared/mock-utils';
 import { describe, expect, it } from 'vitest';
 
-import type { AttrValuesStore } from '../../providers/models';
+import { type AttrValuesStore } from '../../providers/models';
 import { CORE_VIS } from './visualizations';
 
 const mockStore = {

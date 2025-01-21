@@ -6,7 +6,7 @@ import {
   mockValues,
 } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared/vis-utils';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
 import LineVisStoriesMeta, { Default } from './LineVis.stories';
 

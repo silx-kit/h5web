@@ -1,5 +1,5 @@
 import { memo, useContext } from 'react';
-import type { GridChildComponentProps } from 'react-window';
+import { type GridChildComponentProps } from 'react-window';
 
 import { SettingsContext } from './context';
 import styles from './MatrixVis.module.css';

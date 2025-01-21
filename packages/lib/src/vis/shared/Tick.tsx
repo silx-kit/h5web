@@ -1,4 +1,4 @@
-import type { TickRendererProps } from '@visx/axis';
+import { type TickRendererProps } from '@visx/axis';
 
 function Tick(props: TickRendererProps) {
   const { formattedValue, ...tickProps } = props;

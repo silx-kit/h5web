@@ -1,13 +1,14 @@
 import { isNumericType } from '@h5web/shared/guards';
 import { H5T_CLASS } from '@h5web/shared/h5t';
-import type {
-  Attribute,
-  ChildEntity,
-  DType,
-  Group,
-  ProvidedEntity,
+import {
+  type Attribute,
+  type ChildEntity,
+  type DType,
+  DTypeClass,
+  EntityKind,
+  type Group,
+  type ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
-import { DTypeClass, EntityKind } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   bitfieldType,
@@ -22,14 +23,14 @@ import {
   timeType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
-import type { TypedArrayConstructor } from '@h5web/shared/vis-models';
+import { type TypedArrayConstructor } from '@h5web/shared/vis-models';
 
 import { typedArrayFromDType } from '../utils';
-import type {
-  H5GroveAttribute,
-  H5GroveEntity,
-  H5GroveErrorResponse,
-  H5GroveType,
+import {
+  type H5GroveAttribute,
+  type H5GroveEntity,
+  type H5GroveErrorResponse,
+  type H5GroveType,
 } from './models';
 
 export function parseEntity(

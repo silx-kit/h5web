@@ -1,5 +1,5 @@
-import type { H5T_CSET, H5T_STR } from '@h5web/shared/h5t';
-import type { Entity } from '@h5web/shared/hdf5-models';
+import { type H5T_CSET, type H5T_STR } from '@h5web/shared/h5t';
+import { type Entity } from '@h5web/shared/hdf5-models';
 
 /* --------------------- */
 /* ----- RESPONSES ----- */

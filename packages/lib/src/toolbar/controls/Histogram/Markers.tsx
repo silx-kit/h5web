@@ -1,8 +1,8 @@
-import type { Domain } from '@h5web/shared/vis-models';
+import { type Domain } from '@h5web/shared/vis-models';
 import { Drag } from '@visx/drag';
 import { useState } from 'react';
 
-import type { Size } from '../../../vis/models';
+import { type Size } from '../../../vis/models';
 import styles from './Histogram.module.css';
 import Marker from './Marker';
 

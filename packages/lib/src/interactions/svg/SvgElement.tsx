@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
 
 import Html from '../../vis/shared/Html';

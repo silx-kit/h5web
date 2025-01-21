@@ -7,7 +7,7 @@ import {
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/store';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { useIgnoreFillValue, useValuesInCache } from '../hooks';
 import { getSliceSelection } from '../utils';

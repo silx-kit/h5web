@@ -1,15 +1,15 @@
-import type {
-  ColorScaleType,
-  Domain,
-  NumArray,
+import {
+  type ColorScaleType,
+  type Domain,
+  type NumArray,
 } from '@h5web/shared/vis-models';
 import { getDims } from '@h5web/shared/vis-utils';
-import type { NdArray } from 'ndarray';
+import { type NdArray } from 'ndarray';
 import { LinearFilter } from 'three';
 
 import HeatmapMaterial from '../heatmap/HeatmapMaterial';
 import { useTextureSafeNdArray } from '../heatmap/hooks';
-import type { ColorMap } from '../heatmap/models';
+import { type ColorMap } from '../heatmap/models';
 import { useGeometry } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';

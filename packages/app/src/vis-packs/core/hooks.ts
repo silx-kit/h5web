@@ -1,17 +1,17 @@
 import { createMemo } from '@h5web/shared/createMemo';
 import { assertDatasetValue, isDefined } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  Dataset,
-  ScalarShape,
-  Value,
+import {
+  type ArrayShape,
+  type Dataset,
+  type ScalarShape,
+  type Value,
 } from '@h5web/shared/hdf5-models';
-import type { NumArray } from '@h5web/shared/vis-models';
+import { type NumArray } from '@h5web/shared/vis-models';
 import { castArray } from '@h5web/shared/vis-utils';
-import type { NdArray, TypedArray } from 'ndarray';
+import { type NdArray, type TypedArray } from 'ndarray';
 import { useMemo } from 'react';
 
-import type { DimensionMapping } from '../../dimension-mapper/models';
+import { type DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 import { useDataContext } from '../../providers/DataProvider';
 import { typedArrayFromDType } from '../../providers/utils';

@@ -1,10 +1,8 @@
-import type { DataProviderApi } from '@h5web/app';
-import { DataProvider } from '@h5web/app';
-import type { PropsWithChildren } from 'react';
-import { useMemo, useRef } from 'react';
+import { DataProvider, type DataProviderApi } from '@h5web/app';
+import { type PropsWithChildren, useMemo, useRef } from 'react';
 
 import { H5WasmApi } from './h5wasm-api';
-import type { Plugin } from './models';
+import { type Plugin } from './models';
 import { getH5WasmRemote } from './remote';
 
 interface Props {

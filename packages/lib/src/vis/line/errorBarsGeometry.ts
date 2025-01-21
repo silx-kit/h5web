@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { NumArray } from '@h5web/shared/vis-models';
+import { type NumArray } from '@h5web/shared/vis-models';
 
-import type { AxisScale } from '../models';
+import { type AxisScale } from '../models';
 import H5WebGeometry from '../shared/h5webGeometry';
 import { createBufferAttr, Z_OUT } from '../utils';
 

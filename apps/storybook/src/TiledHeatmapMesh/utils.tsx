@@ -1,6 +1,6 @@
 import { formatTooltipVal } from '@h5web/shared/vis-utils';
 
-import type { TileParams } from './models';
+import { type TileParams } from './models';
 
 export function renderTooltip(x: number, y: number, v: number) {
   return (

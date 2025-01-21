@@ -1,26 +1,27 @@
 import { assertDefined, assertLength } from '@h5web/shared/guards';
-import type {
-  ColorScaleType,
-  Domain,
-  NumArray,
+import {
+  type ColorScaleType,
+  type Domain,
+  type NumArray,
+  ScaleType,
 } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
 import { formatTooltipVal } from '@h5web/shared/vis-utils';
-import type { ThreeEvent } from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
-import type { NdArray } from 'ndarray';
-import type { ReactNode } from 'react';
+import { type NdArray } from 'ndarray';
+import { type ReactNode } from 'react';
 
-import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
-import DefaultInteractions from '../../interactions/DefaultInteractions';
+import DefaultInteractions, {
+  type DefaultInteractionsConfig,
+} from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import ColorBar from '../heatmap/ColorBar';
-import type { ColorMap } from '../heatmap/models';
+import { type ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
-import type { ClassStyleAttrs } from '../models';
+import { type ClassStyleAttrs } from '../models';
 import TooltipOverlay from '../shared/TooltipOverlay';
 import VisCanvas from '../shared/VisCanvas';
-import type { ScatterAxisParams } from './models';
+import { type ScatterAxisParams } from './models';
 import ScatterPoints from './ScatterPoints';
 import styles from './ScatterVis.module.css';
 

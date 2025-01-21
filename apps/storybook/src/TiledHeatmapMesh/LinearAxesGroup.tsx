@@ -1,5 +1,5 @@
 import { useVisCanvasContext } from '@h5web/lib';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 interface Props {}
 

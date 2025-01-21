@@ -7,7 +7,7 @@ import { useComplexConfig } from '../../core/complex/config';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import { getSliceSelection } from '../../core/utils';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertComplexNxData } from '../guards';
 import { useNxData, useNxImageDataToFetch, useNxValuesCached } from '../hooks';

@@ -9,7 +9,7 @@ import {
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import NxNoteFetcher from '../NxNoteFetcher';
 import { parseJson } from '../utils';

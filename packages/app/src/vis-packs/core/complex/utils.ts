@@ -1,6 +1,5 @@
-import type { H5WebComplex } from '@h5web/shared/hdf5-models';
-import type { Bounds } from '@h5web/shared/vis-models';
-import { ComplexVisType } from '@h5web/shared/vis-models';
+import { type H5WebComplex } from '@h5web/shared/hdf5-models';
+import { type Bounds, ComplexVisType } from '@h5web/shared/vis-models';
 import { getNewBounds } from '@h5web/shared/vis-utils';
 
 const INITIAL_BOUNDS: Bounds = {

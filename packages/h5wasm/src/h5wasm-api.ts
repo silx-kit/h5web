@@ -1,24 +1,28 @@
-import type { ExportFormat, ExportURL, ValuesStoreParams } from '@h5web/app';
-import { DataProviderApi } from '@h5web/app';
+import {
+  DataProviderApi,
+  type ExportFormat,
+  type ExportURL,
+  type ValuesStoreParams,
+} from '@h5web/app';
 import { assertDataset, isDefined } from '@h5web/shared/guards';
-import type {
-  ArrayShape,
-  AttributeValues,
-  Dataset,
-  Entity,
-  ProvidedEntity,
-  Value,
+import {
+  type ArrayShape,
+  type AttributeValues,
+  type Dataset,
+  type Entity,
+  type ProvidedEntity,
+  type Value,
 } from '@h5web/shared/hdf5-models';
 import { transfer } from 'comlink';
 
-import type { Plugin } from './models';
+import { type Plugin } from './models';
 import {
   getEnhancedError,
   hasBigInts,
   PLUGINS_BY_FILTER_ID,
   sanitizeBigInts,
 } from './utils';
-import type { H5WasmWorkerAPI } from './worker';
+import { type H5WasmWorkerAPI } from './worker';
 
 export class H5WasmApi extends DataProviderApi {
   public constructor(

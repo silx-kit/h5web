@@ -1,20 +1,20 @@
 import { hasChildren, isGroup } from './guards';
-import type {
-  ArrayShape,
-  Attribute,
-  ChildEntity,
-  Dataset,
-  Datatype,
-  DType,
-  Entity,
-  Group,
-  GroupWithChildren,
-  LinkClass,
-  ScalarShape,
-  Shape,
-  UnresolvedEntity,
+import {
+  type ArrayShape,
+  type Attribute,
+  type ChildEntity,
+  type Dataset,
+  type Datatype,
+  type DType,
+  type Entity,
+  EntityKind,
+  type Group,
+  type GroupWithChildren,
+  type LinkClass,
+  type ScalarShape,
+  type Shape,
+  type UnresolvedEntity,
 } from './hdf5-models';
-import { EntityKind } from './hdf5-models';
 import {
   boolType,
   buildEntityPath,
@@ -24,9 +24,13 @@ import {
   strType,
   unknownType,
 } from './hdf5-utils';
-import type { MockAttribute, MockDataset, MockValueId } from './mock-models';
+import {
+  type MockAttribute,
+  type MockDataset,
+  type MockValueId,
+} from './mock-models';
 import { mockValues } from './mock-values';
-import type { SilxStyle } from './nexus-models';
+import { type SilxStyle } from './nexus-models';
 
 export function assertMockDataset<S extends Shape, T extends DType>(
   dtst: Dataset<S, T>,

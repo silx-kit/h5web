@@ -1,18 +1,15 @@
-import type {
-  ElementProps,
-  FloatingContext,
-  UseFloatingReturn,
-} from '@floating-ui/react';
 import {
   autoUpdate,
+  type ElementProps,
+  type FloatingContext,
   offset,
   shift,
   size,
   useFloating,
+  type UseFloatingReturn,
 } from '@floating-ui/react';
 import { useClickOutside, useKeyboardEvent, useToggle } from '@react-hookz/web';
-import type { FocusEvent } from 'react';
-import { useCallback, useMemo } from 'react';
+import { type FocusEvent, useCallback, useMemo } from 'react';
 
 export const POPOVER_CLEARANCE = 6;
 

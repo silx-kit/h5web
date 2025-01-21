@@ -1,9 +1,9 @@
 import { assertDefined } from '@h5web/shared/guards';
-import type { ProvidedEntity } from '@h5web/shared/hdf5-models';
+import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
 import { useState } from 'react';
 
 import { useDataContext } from '../providers/DataProvider';
-import type { VisDef } from '../vis-packs/models';
+import { type VisDef } from '../vis-packs/models';
 import { useActiveVis } from './hooks';
 import VisSelector from './VisSelector';
 import styles from './Visualizer.module.css';

@@ -3,13 +3,13 @@ import {
   isNumericType,
   isScalarShape,
 } from '@h5web/shared/guards';
-import type {
-  ComplexArray,
-  DType,
-  H5WebComplex,
-  Shape,
+import {
+  type ComplexArray,
+  type DType,
+  DTypeClass,
+  type H5WebComplex,
+  type Shape,
 } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
 import { formatScalarComplex } from '@h5web/shared/vis-utils';
 
 export function renderShape(shape: Shape): string {

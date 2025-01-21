@@ -1,17 +1,17 @@
 import { assertDefined } from '@h5web/shared/guards';
-import type { NumArray } from '@h5web/shared/vis-models';
+import { type NumArray } from '@h5web/shared/vis-models';
 import { getDims } from '@h5web/shared/vis-utils';
-import type { NdArray } from 'ndarray';
-import type { ReactNode } from 'react';
-import { useMemo } from 'react';
+import { type NdArray } from 'ndarray';
+import { type ReactNode, useMemo } from 'react';
 
-import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
-import DefaultInteractions from '../../interactions/DefaultInteractions';
+import DefaultInteractions, {
+  type DefaultInteractionsConfig,
+} from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import styles from '../heatmap/HeatmapVis.module.css';
 import { usePixelEdgeValues } from '../heatmap/hooks';
 import { useAxisDomain } from '../hooks';
-import type { Aspect, AxisParams, ClassStyleAttrs } from '../models';
+import { type Aspect, type AxisParams, type ClassStyleAttrs } from '../models';
 import VisCanvas from '../shared/VisCanvas';
 import { ImageType } from './models';
 import RgbMesh from './RgbMesh';

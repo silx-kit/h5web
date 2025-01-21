@@ -1,6 +1,6 @@
-import type { MappedTuple } from '@h5web/shared/vis-models';
-import type { ReactNode } from 'react';
-import type { Vector3 } from 'three';
+import { type MappedTuple } from '@h5web/shared/vis-models';
+import { type ReactNode } from 'react';
+import { type Vector3 } from 'three';
 
 import { useCameraState } from '../hooks';
 import { useVisCanvasContext } from './VisCanvasProvider';

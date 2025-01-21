@@ -515,7 +515,7 @@ export function createConfig(opts = {}) {
         rules: {
           'import/consistent-type-specifier-style': [
             'warn',
-            'prefer-top-level', // TODO switch to `prefer-inline`: `import { type Foo } from 'foo';`
+            'prefer-inline', // `import { type Foo } from 'foo';`
           ],
           'import/default': 'error',
           // 'import/dynamic-import-chunkname': 'off', // bundler-specific
@@ -539,7 +539,7 @@ export function createConfig(opts = {}) {
             'warn',
             {
               considerQueryString: true, // e.g. `?worker`
-              'prefer-inline': false, // TODO switch to `true` for compatibility with TypeScript inline `type` imports
+              'prefer-inline': true, // for compatibility with TypeScript's inline `type` imports
             },
           ],
           // 'import/no-dynamic-require': 'off', // CommonJS

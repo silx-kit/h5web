@@ -1,9 +1,9 @@
-import type {
-  Dataset,
-  ScalarShape,
-  StringType,
+import {
+  type Dataset,
+  type ScalarShape,
+  type StringType,
 } from '@h5web/shared/hdf5-models';
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { useDatasetValues, usePrefetchValues } from '../core/hooks';
 

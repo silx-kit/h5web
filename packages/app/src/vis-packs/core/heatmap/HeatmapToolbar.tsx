@@ -1,6 +1,6 @@
-import type { Domain } from '@h5web/lib';
 import {
   ColorMapSelector,
+  type Domain,
   DomainWidget,
   ExportMenu,
   ScaleSelector,
@@ -17,9 +17,9 @@ import {
   MdSwapVert,
 } from 'react-icons/md';
 
-import type { ExportFormat, ExportURL } from '../../../providers/models';
+import { type ExportFormat, type ExportURL } from '../../../providers/models';
 import { getImageInteractions } from '../utils';
-import type { HeatmapConfig } from './config';
+import { type HeatmapConfig } from './config';
 
 const EXPORT_FORMATS: ExportFormat[] = ['tiff', 'npy'];
 

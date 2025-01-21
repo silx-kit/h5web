@@ -1,4 +1,4 @@
-import type { CustomDomain, Domain, Rect } from '@h5web/lib';
+import { type CustomDomain, type Domain, type Rect } from '@h5web/lib';
 import { format } from 'd3-format';
 
 export const formatCoord = format('.2f');

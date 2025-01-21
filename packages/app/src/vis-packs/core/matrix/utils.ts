@@ -5,15 +5,15 @@ import {
   isEnumType,
   isNumericType,
 } from '@h5web/shared/guards';
-import type {
-  BooleanType,
-  ComplexType,
-  CompoundType,
-  NumericType,
-  PrintableType,
+import {
+  type BooleanType,
+  type ComplexType,
+  type CompoundType,
+  DTypeClass,
+  type NumericType,
+  type PrintableType,
 } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
-import type { ValueFormatter } from '@h5web/shared/vis-models';
+import { type ValueFormatter } from '@h5web/shared/vis-models';
 import {
   createComplexFormatter,
   createEnumFormatter,

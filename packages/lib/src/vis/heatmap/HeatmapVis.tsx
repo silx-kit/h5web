@@ -1,19 +1,23 @@
 import { assertDefined } from '@h5web/shared/guards';
-import type { Domain, NumArray } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
+import {
+  type Domain,
+  type NumArray,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 import { formatTooltipVal, getDims } from '@h5web/shared/vis-utils';
-import type { NdArray } from 'ndarray';
-import type { ReactElement, ReactNode } from 'react';
+import { type NdArray } from 'ndarray';
+import { type ReactElement, type ReactNode } from 'react';
 
-import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
-import DefaultInteractions from '../../interactions/DefaultInteractions';
+import DefaultInteractions, {
+  type DefaultInteractionsConfig,
+} from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import { useAxisDomain, useValueToIndexScale } from '../hooks';
-import type {
-  Aspect,
-  AxisParams,
-  ClassStyleAttrs,
-  VisScaleType,
+import {
+  type Aspect,
+  type AxisParams,
+  type ClassStyleAttrs,
+  type VisScaleType,
 } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
@@ -22,7 +26,7 @@ import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
 import { useMask, usePixelEdgeValues, useTextureSafeNdArray } from './hooks';
-import type { ColorMap, TooltipData } from './models';
+import { type ColorMap, type TooltipData } from './models';
 
 interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;

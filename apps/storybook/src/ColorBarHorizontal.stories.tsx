@@ -1,7 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { StoryProps } from './ColorBar.stories';
-import ColorBarStoriesMeta, { Default } from './ColorBar.stories';
+import ColorBarStoriesMeta, {
+  Default,
+  type StoryProps,
+} from './ColorBar.stories';
 
 const meta = {
   ...ColorBarStoriesMeta,

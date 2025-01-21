@@ -1,24 +1,27 @@
 import { assertDefined, assertLength } from '@h5web/shared/guards';
-import type { AxisScaleType, Domain, NumArray } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
+import {
+  type AxisScaleType,
+  type Domain,
+  type NumArray,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 import { formatTooltipErr, formatTooltipVal } from '@h5web/shared/vis-utils';
-import type { NdArray } from 'ndarray';
-import type { ReactElement, ReactNode } from 'react';
-import { useMemo } from 'react';
+import { type NdArray } from 'ndarray';
+import { type ReactElement, type ReactNode, useMemo } from 'react';
 
-import type { DefaultInteractionsConfig } from '../../interactions/DefaultInteractions';
-import DefaultInteractions from '../../interactions/DefaultInteractions';
+import DefaultInteractions, {
+  type DefaultInteractionsConfig,
+} from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import { useAxisDomain, useCssColors, useValueToIndexScale } from '../hooks';
-import type { AxisParams, ClassStyleAttrs } from '../models';
+import { type AxisParams, type ClassStyleAttrs } from '../models';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { DEFAULT_DOMAIN, extendDomain } from '../utils';
 import DataCurve from './DataCurve';
 import { useAxisValues } from './hooks';
 import styles from './LineVis.module.css';
-import type { AuxiliaryParams, TooltipData } from './models';
-import { CurveType } from './models';
+import { type AuxiliaryParams, CurveType, type TooltipData } from './models';
 
 interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;

@@ -1,8 +1,7 @@
-import type { ReactNode } from 'react';
-import { createContext, useMemo, useState } from 'react';
-import type { GridOnItemsRenderedProps } from 'react-window';
+import { createContext, type ReactNode, useMemo, useState } from 'react';
+import { type GridOnItemsRenderedProps } from 'react-window';
 
-import type { Size } from '../models';
+import { type Size } from '../models';
 
 interface GridSettings {
   rowCount: number;

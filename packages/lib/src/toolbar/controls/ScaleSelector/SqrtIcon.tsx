@@ -1,7 +1,7 @@
 /**
  * Inspired by FiActivity
  */
-import type { SVGProps } from 'react';
+import { type SVGProps } from 'react';
 
 function SqrtIcon(props: SVGProps<SVGSVGElement>) {
   return (

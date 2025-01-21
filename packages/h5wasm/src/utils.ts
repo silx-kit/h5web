@@ -1,8 +1,6 @@
-import type { DType } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
+import { type DType, DTypeClass } from '@h5web/shared/hdf5-models';
 
-import type { HDF5Diag } from './models';
-import { Plugin } from './models';
+import { type HDF5Diag, Plugin } from './models';
 
 // https://support.hdfgroup.org/services/contributions.html
 export const PLUGINS_BY_FILTER_ID: Record<number, Plugin> = {

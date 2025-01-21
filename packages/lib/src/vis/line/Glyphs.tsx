@@ -1,5 +1,5 @@
-import type { NumArray } from '@h5web/shared/vis-models';
-import type { PointsProps } from '@react-three/fiber';
+import { type NumArray } from '@h5web/shared/vis-models';
+import { type PointsProps } from '@react-three/fiber';
 
 import { useGeometry } from '../hooks';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';

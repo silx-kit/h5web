@@ -10,8 +10,7 @@ import {
   assertGroupWithChildren,
   hasNonNullShape,
 } from '@h5web/shared/guards';
-import type { Dataset } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
+import { type Dataset, DTypeClass } from '@h5web/shared/hdf5-models';
 import { beforeAll, expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';

@@ -1,4 +1,4 @@
-import type { ScaleType } from './vis-models';
+import { type ScaleType } from './vis-models';
 
 export enum NxInterpretation {
   Spectrum = 'spectrum',

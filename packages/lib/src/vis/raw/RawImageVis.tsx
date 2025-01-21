@@ -1,4 +1,4 @@
-import type { ClassStyleAttrs } from '../models';
+import { type ClassStyleAttrs } from '../models';
 import styles from './RawImageVis.module.css';
 
 interface Props extends ClassStyleAttrs {

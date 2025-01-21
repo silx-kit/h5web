@@ -1,9 +1,10 @@
-import type { Rect, Selection } from '@h5web/lib';
 import {
   Box,
   DataToHtml,
   Pan,
+  type Rect,
   ResetZoomButton,
+  type Selection,
   SelectionTool,
   SvgElement,
   SvgLine,
@@ -12,7 +13,7 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { useThrottledState } from '@react-hookz/web';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import FillHeight from './decorators/FillHeight';

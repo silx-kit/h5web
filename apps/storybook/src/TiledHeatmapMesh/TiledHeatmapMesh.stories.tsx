@@ -1,13 +1,15 @@
-import type { AxisConfig, Domain, TiledHeatmapMeshProps } from '@h5web/lib';
 import {
+  type AxisConfig,
   DefaultInteractions,
+  type Domain,
   TiledHeatmapMesh,
+  type TiledHeatmapMeshProps,
   TiledTooltipMesh,
   VisCanvas,
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
 import FillHeight from '../decorators/FillHeight';
 import { CheckerboardTilesApi } from './checkerboard-api';

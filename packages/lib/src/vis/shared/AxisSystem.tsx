@@ -1,7 +1,7 @@
 import { createPortal } from 'react-dom';
 
 import { useCameraState } from '../hooks';
-import type { AxisOffsets } from '../models';
+import { type AxisOffsets } from '../models';
 import Axis from './Axis';
 import Html from './Html';
 import { useVisCanvasContext } from './VisCanvasProvider';

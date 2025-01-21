@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 
 import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
 import { useRawConfig } from './config';

@@ -10,7 +10,7 @@ import {
   hasPrintableType,
   hasScalarShape,
 } from '@h5web/shared/guards';
-import type { Dataset } from '@h5web/shared/hdf5-models';
+import { type Dataset } from '@h5web/shared/hdf5-models';
 import {
   FiActivity,
   FiCode,
@@ -21,8 +21,8 @@ import {
   FiPackage,
 } from 'react-icons/fi';
 
-import type { AttrValuesStore } from '../../providers/models';
-import type { VisDef } from '../models';
+import { type AttrValuesStore } from '../../providers/models';
+import { type VisDef } from '../models';
 import {
   ComplexConfigProvider,
   ComplexLineConfigProvider,

@@ -6,7 +6,7 @@ import { useDimMappingState } from '../../../dimension-mapper/store';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { getSliceSelection } from '../../core/utils';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericLikeNxData } from '../guards';
 import { useNxData, useNxImageDataToFetch, useNxValuesCached } from '../hooks';

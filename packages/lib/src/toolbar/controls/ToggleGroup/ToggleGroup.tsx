@@ -1,10 +1,8 @@
-import type { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 
-import type { ToggleGroupContextValue } from './context';
-import { ToggleGroupContext } from './context';
+import { ToggleGroupContext, type ToggleGroupContextValue } from './context';
 import styles from './ToggleGroup.module.css';
-import type { ToggleGroupBtnProps } from './ToggleGroupBtn';
-import ToggleGroupBtn from './ToggleGroupBtn';
+import ToggleGroupBtn, { type ToggleGroupBtnProps } from './ToggleGroupBtn';
 
 interface Props extends ToggleGroupContextValue {
   ariaLabel?: string;

@@ -5,7 +5,7 @@ import { useSearch } from 'wouter';
 
 import { getFeedbackURL } from '../utils';
 import DropZone from './DropZone';
-import type { RemoteFile } from './models';
+import { type RemoteFile } from './models';
 import { getPlugin } from './plugin-utils';
 
 function H5WasmApp() {

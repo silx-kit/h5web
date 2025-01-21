@@ -1,12 +1,12 @@
-import type { ColorScaleType, Domain } from '@h5web/shared/vis-models';
+import { type ColorScaleType, type Domain } from '@h5web/shared/vis-models';
 import { useMeasure } from '@react-hookz/web';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { useSafeDomain } from '../../../vis/heatmap/hooks';
 import { useCombinedDomain, useDomain } from '../../../vis/hooks';
-import type { HistogramParams } from '../../../vis/models';
+import { type HistogramParams } from '../../../vis/models';
 import Tick from '../../../vis/shared/Tick';
 import {
   adaptedNumTicks,

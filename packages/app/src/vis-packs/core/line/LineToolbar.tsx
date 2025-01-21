@@ -1,6 +1,6 @@
-import type { Domain } from '@h5web/lib';
 import {
   CurveType,
+  type Domain,
   DomainWidget,
   ExportMenu,
   ScaleSelector,
@@ -13,9 +13,9 @@ import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { FiItalic } from 'react-icons/fi';
 import { MdGridOn } from 'react-icons/md';
 
-import type { ExportFormat, ExportURL } from '../../../providers/models';
+import { type ExportFormat, type ExportURL } from '../../../providers/models';
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
-import type { LineConfig } from './config';
+import { type LineConfig } from './config';
 
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 

@@ -1,9 +1,8 @@
 /* eslint-disable func-style */
 import { range } from 'd3-array';
-import type { NdArray } from 'ndarray';
-import ndarray from 'ndarray';
+import ndarray, { type NdArray } from 'ndarray';
 
-import type { ArrayValue, DType, H5WebComplex } from './hdf5-models';
+import { type ArrayValue, type DType, type H5WebComplex } from './hdf5-models';
 import { cplx } from './hdf5-utils';
 
 const range1 = () => range(-20, 21);

@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import Measure from 'react-measure';
 
 import styles from './MeasuredControl.module.css';

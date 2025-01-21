@@ -1,5 +1,4 @@
-import type { BufferAttribute } from 'three';
-import { BufferGeometry } from 'three';
+import { type BufferAttribute, BufferGeometry } from 'three';
 
 abstract class H5WebGeometry<
   AttributeNames extends string,

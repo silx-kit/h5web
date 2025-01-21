@@ -8,8 +8,8 @@ import {
 } from '@h5web/lib';
 import { FiAnchor } from 'react-icons/fi';
 
-import type { ExportFormat, ExportURL } from '../../../providers/models';
-import type { MatrixVisConfig } from './config';
+import { type ExportFormat, type ExportURL } from '../../../providers/models';
+import { type MatrixVisConfig } from './config';
 
 const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 

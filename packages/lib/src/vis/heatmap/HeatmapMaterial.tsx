@@ -1,23 +1,21 @@
-import type { Domain } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
-import type { RGBColor } from 'd3-color';
-import { rgb } from 'd3-color';
-import type { NdArray } from 'ndarray';
+import { type Domain, ScaleType } from '@h5web/shared/vis-models';
+import { rgb, type RGBColor } from 'd3-color';
+import { type NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
-import type { MagnificationTextureFilter } from 'three';
 import {
   DataTexture,
   DoubleSide,
+  type MagnificationTextureFilter,
   RGBAFormat,
   UnsignedByteType,
   Vector4,
 } from 'three';
 
-import type { VisScaleType } from '../models';
-import type { VisMeshProps } from '../shared/VisMesh';
+import { type VisScaleType } from '../models';
+import { type VisMeshProps } from '../shared/VisMesh';
 import { DEFAULT_DOMAIN, getUniforms, VERTEX_SHADER } from '../utils';
 import { useDataTexture } from './hooks';
-import type { ColorMap, TextureSafeTypedArray } from './models';
+import { type ColorMap, type TextureSafeTypedArray } from './models';
 import { getInterpolator, scaleDomain } from './utils';
 
 interface Props extends VisMeshProps {

@@ -1,34 +1,35 @@
-import type { Data, NdArray, TypedArray } from 'ndarray';
+import { type Data, type NdArray, type TypedArray } from 'ndarray';
 
-import type {
-  ArrayShape,
-  BooleanType,
-  ComplexArray,
-  ComplexType,
-  CompoundType,
-  Dataset,
-  Datatype,
-  DType,
-  Entity,
-  EnumType,
-  Group,
-  GroupWithChildren,
-  H5WebComplex,
-  NumericLikeType,
-  NumericType,
-  Primitive,
-  PrintableType,
-  ScalarShape,
-  Shape,
-  StringType,
-  Value,
+import {
+  type ArrayShape,
+  type BooleanType,
+  type ComplexArray,
+  type ComplexType,
+  type CompoundType,
+  type Dataset,
+  type Datatype,
+  type DType,
+  DTypeClass,
+  type Entity,
+  EntityKind,
+  type EnumType,
+  type Group,
+  type GroupWithChildren,
+  type H5WebComplex,
+  type NumericLikeType,
+  type NumericType,
+  type Primitive,
+  type PrintableType,
+  type ScalarShape,
+  type Shape,
+  type StringType,
+  type Value,
 } from './hdf5-models';
-import { DTypeClass, EntityKind } from './hdf5-models';
-import type {
-  AnyNumArray,
-  AxisScaleType,
-  ColorScaleType,
-  NumArray,
+import {
+  type AnyNumArray,
+  type AxisScaleType,
+  type ColorScaleType,
+  type NumArray,
 } from './vis-models';
 import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES, getValues } from './vis-utils';
 

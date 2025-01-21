@@ -1,14 +1,14 @@
-import type { Domain } from '@h5web/shared/vis-models';
+import { type Domain } from '@h5web/shared/vis-models';
 import { scalePower } from '@visx/scale';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
-import type {
-  InterpolatorFactory,
-  NumberValue,
-  ScalePower,
-  UnknownReturnType,
+import {
+  type InterpolatorFactory,
+  type NumberValue,
+  type ScalePower,
+  type UnknownReturnType,
 } from 'd3-scale';
 
-import type { ScaleGammaConfig } from './models';
+import { type ScaleGammaConfig } from './models';
 
 function normalize(a: number, b: number) {
   const extent = b - a;

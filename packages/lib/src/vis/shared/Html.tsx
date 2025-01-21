@@ -1,8 +1,6 @@
-import type { PropsWithChildren } from 'react';
-import { useLayoutEffect, useState } from 'react';
+import { type PropsWithChildren, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import type { Root } from 'react-dom/client';
-import { createRoot } from 'react-dom/client';
+import { createRoot, type Root } from 'react-dom/client';
 
 import { useVisCanvasContext } from './VisCanvasProvider';
 

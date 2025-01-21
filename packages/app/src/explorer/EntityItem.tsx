@@ -1,8 +1,9 @@
 import { isGroup } from '@h5web/shared/guards';
-import type { ChildEntity } from '@h5web/shared/hdf5-models';
+import { type ChildEntity } from '@h5web/shared/hdf5-models';
 import { useToggle } from '@react-hookz/web';
-import type { CSSProperties, KeyboardEvent } from 'react';
 import {
+  type CSSProperties,
+  type KeyboardEvent,
   Suspense,
   useCallback,
   useEffect,

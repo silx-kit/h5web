@@ -1,11 +1,11 @@
 import { useMap, useMeasure } from '@react-hookz/web';
-import type { PropsWithChildren, ReactNode } from 'react';
+import { type PropsWithChildren, type ReactNode } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 
-import type { InteractionInfo } from '../interactions/models';
+import { type InteractionInfo } from '../interactions/models';
 import InteractionHelp from './controls/InteractionHelp';
 import MeasuredControl from './MeasuredControl';
-import type { ReactElementWithKey } from './models';
+import { type ReactElementWithKey } from './models';
 import OverflowMenu from './OverflowMenu';
 import Separator from './Separator';
 import styles from './Toolbar.module.css';

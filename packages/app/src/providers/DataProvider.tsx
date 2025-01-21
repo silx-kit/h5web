@@ -1,17 +1,21 @@
 import { isGroup } from '@h5web/shared/guards';
-import type { Entity } from '@h5web/shared/hdf5-models';
+import { type Entity } from '@h5web/shared/hdf5-models';
 import { getNameFromPath } from '@h5web/shared/hdf5-utils';
 import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
-import type { PropsWithChildren } from 'react';
-import { createContext, useContext, useMemo } from 'react';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useMemo,
+} from 'react';
 
 import { hasAttribute } from '../utils';
-import type { DataProviderApi } from './api';
-import type {
-  AttrName,
-  AttrValuesStore,
-  EntitiesStore,
-  ValuesStore,
+import { type DataProviderApi } from './api';
+import {
+  type AttrName,
+  type AttrValuesStore,
+  type EntitiesStore,
+  type ValuesStore,
 } from './models';
 
 export interface DataContextValue {

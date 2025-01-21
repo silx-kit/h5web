@@ -1,13 +1,19 @@
-import type { InteractionInfo } from '@h5web/lib';
+import { type InteractionInfo } from '@h5web/lib';
 import { isNumericType } from '@h5web/shared/guards';
-import type { ArrayValue, NumericLikeType } from '@h5web/shared/hdf5-models';
-import { DTypeClass } from '@h5web/shared/hdf5-models';
-import type { Axis, Domain, NumArray } from '@h5web/shared/vis-models';
+import {
+  type ArrayValue,
+  DTypeClass,
+  type NumericLikeType,
+} from '@h5web/shared/hdf5-models';
+import {
+  type Axis,
+  type Domain,
+  type NumArray,
+} from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
-import type { NdArray, TypedArray } from 'ndarray';
-import ndarray from 'ndarray';
+import ndarray, { type NdArray, type TypedArray } from 'ndarray';
 
-import type { DimensionMapping } from '../../dimension-mapper/models';
+import { type DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];

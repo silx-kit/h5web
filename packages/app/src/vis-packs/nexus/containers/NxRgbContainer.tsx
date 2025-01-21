@@ -5,7 +5,7 @@ import { useDimMappingState } from '../../../dimension-mapper/store';
 import { useRgbConfig } from '../../core/rgb/config';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
 import { getSliceSelection } from '../../core/utils';
-import type { VisContainerProps } from '../../models';
+import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
 import { useNxData, useNxValuesCached } from '../hooks';

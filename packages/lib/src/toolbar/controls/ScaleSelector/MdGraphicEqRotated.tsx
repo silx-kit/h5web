@@ -2,7 +2,7 @@
  * Apache License 2.0 - https://github.com/google/material-design-icons
  * Copyright (c) Google
  */
-import type { SVGProps } from 'react';
+import { type SVGProps } from 'react';
 
 function MdGraphicEqRotated(props: SVGProps<SVGSVGElement>) {
   return (

@@ -1,9 +1,8 @@
-import type { PropsWithChildren } from 'react';
-import { useCallback } from 'react';
+import { type PropsWithChildren, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import styles from './DropZone.module.css';
-import type { RemoteFile } from './models';
+import { type RemoteFile } from './models';
 import UrlForm from './UrlForm';
 
 const EXT = ['.h5', '.hdf5', '.hdf', '.nx', '.nx5', '.nexus', '.nxs', '.cxi'];

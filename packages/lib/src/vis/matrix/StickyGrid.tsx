@@ -1,5 +1,9 @@
-import type { CSSProperties, ReactNode } from 'react';
-import { forwardRef, useContext } from 'react';
+import {
+  type CSSProperties,
+  forwardRef,
+  type ReactNode,
+  useContext,
+} from 'react';
 
 import { RenderedItemsContext, SettingsContext } from './context';
 import HeaderCells from './HeaderCells';

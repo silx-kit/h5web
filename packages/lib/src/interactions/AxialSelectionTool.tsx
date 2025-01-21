@@ -1,11 +1,9 @@
-import type { Axis } from '@h5web/shared/vis-models';
-import type { Camera } from 'three';
-import { Vector3 } from 'three';
+import { type Axis } from '@h5web/shared/vis-models';
+import { type Camera, Vector3 } from 'three';
 
-import type { VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
-import type { Rect, Selection } from './models';
-import type { SelectionToolProps } from './SelectionTool';
-import SelectionTool from './SelectionTool';
+import { type VisCanvasContextValue } from '../vis/shared/VisCanvasProvider';
+import { type Rect, type Selection } from './models';
+import SelectionTool, { type SelectionToolProps } from './SelectionTool';
 
 interface Props extends Omit<SelectionToolProps, 'transform'> {
   axis: Axis;

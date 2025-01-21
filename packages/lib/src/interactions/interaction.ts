@@ -1,8 +1,7 @@
 import { castArray } from '@h5web/shared/vis-utils';
-import type { ModifierKey } from 'react';
+import { type ModifierKey } from 'react';
 
-import type { InteractionConfig } from './models';
-import { MouseButton } from './models';
+import { type InteractionConfig, MouseButton } from './models';
 
 export class Interaction {
   public readonly buttons: MouseButton[];

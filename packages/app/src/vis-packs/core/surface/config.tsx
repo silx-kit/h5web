@@ -1,15 +1,13 @@
-import type { CustomDomain } from '@h5web/lib';
+import { type CustomDomain } from '@h5web/lib';
 import { isDefined } from '@h5web/shared/guards';
-import type { ColorScaleType } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
+import { type ColorScaleType, ScaleType } from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
 import { createContext, useContext, useState } from 'react';
-import type { StoreApi } from 'zustand';
-import { createStore, useStore } from 'zustand';
+import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { ConfigProviderProps } from '../../models';
-import type { ColorMap } from '../heatmap/models';
+import { type ConfigProviderProps } from '../../models';
+import { type ColorMap } from '../heatmap/models';
 
 export interface SurfaceConfig {
   customDomain: CustomDomain;

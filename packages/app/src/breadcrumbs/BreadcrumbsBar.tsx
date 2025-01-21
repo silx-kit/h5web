@@ -10,7 +10,7 @@ import {
 import { useDataContext } from '../providers/DataProvider';
 import Breadcrumbs from './Breadcrumbs';
 import styles from './BreadcrumbsBar.module.css';
-import type { FeedbackContext } from './models';
+import { type FeedbackContext } from './models';
 
 interface Props {
   path: string;

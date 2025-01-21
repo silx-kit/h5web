@@ -4,8 +4,7 @@ import {
   useInteractions,
   useListNavigation,
 } from '@floating-ui/react';
-import type { ReactNode } from 'react';
-import { useId, useRef, useState } from 'react';
+import { type ReactNode, useId, useRef, useState } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import toolbarStyles from '../../Toolbar.module.css';

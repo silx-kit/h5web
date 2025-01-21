@@ -7,7 +7,7 @@ import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 
 import styles from './App.module.css';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
-import type { FeedbackContext } from './breadcrumbs/models';
+import { type FeedbackContext } from './breadcrumbs/models';
 import { DimMappingProvider } from './dimension-mapper/store';
 import EntityLoader from './EntityLoader';
 import ErrorFallback from './ErrorFallback';

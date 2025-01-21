@@ -1,7 +1,7 @@
-import type { SVGProps } from 'react';
+import { type SVGProps } from 'react';
 
 import Box from '../box';
-import type { Rect } from '../models';
+import { type Rect } from '../models';
 
 interface Props extends SVGProps<SVGPathElement> {
   coords: Rect;

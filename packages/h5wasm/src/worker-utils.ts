@@ -3,17 +3,21 @@ import {
   assertNonNull,
   isNumericType,
 } from '@h5web/shared/guards';
-import type { H5T_STR } from '@h5web/shared/h5t';
-import { H5T_CLASS, H5T_ORDER, H5T_SIGN } from '@h5web/shared/h5t';
-import type {
-  Attribute,
-  ChildEntity,
-  DType,
-  Group,
-  ProvidedEntity,
-  VirtualSource,
+import {
+  H5T_CLASS,
+  H5T_ORDER,
+  H5T_SIGN,
+  type H5T_STR,
+} from '@h5web/shared/h5t';
+import {
+  type Attribute,
+  type ChildEntity,
+  type DType,
+  EntityKind,
+  type Group,
+  type ProvidedEntity,
+  type VirtualSource,
 } from '@h5web/shared/hdf5-models';
-import { EntityKind } from '@h5web/shared/hdf5-models';
 import {
   arrayType,
   bitfieldType,
@@ -29,8 +33,12 @@ import {
   timeType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
-import type { Dataset as H5WasmDataset, Metadata, OutputData } from 'h5wasm';
-import { ready as h5wasmReady } from 'h5wasm';
+import {
+  type Dataset as H5WasmDataset,
+  type Metadata,
+  type OutputData,
+  ready as h5wasmReady,
+} from 'h5wasm';
 import { nanoid } from 'nanoid';
 
 export const PLUGINS_FOLDER = 'plugins'; // path to plugins on EMScripten virtual file system

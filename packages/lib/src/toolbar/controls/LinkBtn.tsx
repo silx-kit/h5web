@@ -1,4 +1,8 @@
-import type { AnchorHTMLAttributes, ComponentType, SVGAttributes } from 'react';
+import {
+  type AnchorHTMLAttributes,
+  type ComponentType,
+  type SVGAttributes,
+} from 'react';
 
 import styles from '../Toolbar.module.css';
 

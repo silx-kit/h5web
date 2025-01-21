@@ -1,13 +1,13 @@
 import { isDefined } from '@h5web/shared/guards';
-import type {
-  AnyNumArray,
-  AxisScaleType,
-  ColorScaleType,
-  Domain,
-  NumArray,
-  TypedArrayConstructor,
+import {
+  type AnyNumArray,
+  type AxisScaleType,
+  type ColorScaleType,
+  type Domain,
+  type NumArray,
+  ScaleType,
+  type TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
-import { ScaleType } from '@h5web/shared/vis-models';
 import {
   formatTick,
   getBounds,
@@ -21,21 +21,20 @@ import {
   scaleThreshold,
 } from '@visx/scale';
 import { range, tickStep } from 'd3-array';
-import type { ScaleLinear, ScaleThreshold } from 'd3-scale';
-import type { IUniform } from 'three';
-import { BufferAttribute, MathUtils } from 'three';
+import { type ScaleLinear, type ScaleThreshold } from 'd3-scale';
+import { BufferAttribute, type IUniform, MathUtils } from 'three';
 
-import type {
-  Aspect,
-  AxisConfig,
-  AxisOffsets,
-  AxisScale,
-  ExtractScaleType,
-  Scale,
-  ScaleConfig,
-  ScaleGammaConfig,
-  Size,
-  VisScaleType,
+import {
+  type Aspect,
+  type AxisConfig,
+  type AxisOffsets,
+  type AxisScale,
+  type ExtractScaleType,
+  type Scale,
+  type ScaleConfig,
+  type ScaleGammaConfig,
+  type Size,
+  type VisScaleType,
 } from './models';
 import { scaleGamma } from './scaleGamma';
 
