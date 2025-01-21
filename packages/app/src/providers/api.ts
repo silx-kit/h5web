@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import {
   type ArrayShape,
   type AttributeValues,

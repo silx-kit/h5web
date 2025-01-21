@@ -214,6 +214,9 @@ export function parseDType(type: H5GroveType): DType {
     return arrayType(parseDType(type.base));
   }
 
+  // `H5GroveType` doesn't allow for any other `h5tClass` value at this point,
+  // but we keep the `unknownType` fallback for runtime safety.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (h5tClass === H5T_CLASS.ARRAY) {
     return arrayType(parseDType(type.base), type.dims);
   }

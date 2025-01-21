@@ -6,19 +6,21 @@ const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   addons: [
     {
+      name: '@storybook/addon-essentials',
+      options: { docs: false }, // `addon-docs` needs to be configured separately
+    },
+    {
       name: '@storybook/addon-docs',
       options: {
         mdxPluginOptions: {
           mdxCompileOptions: {
-            remarkPlugins: [remarkGfm],
+            remarkPlugins: [remarkGfm], // https://storybook.js.org/docs/writing-docs/mdx#markdown-tables-arent-rendering-correctly
           },
         },
       },
     },
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
   ],
-  docs: { autodocs: true },
 };
 
 export default config;

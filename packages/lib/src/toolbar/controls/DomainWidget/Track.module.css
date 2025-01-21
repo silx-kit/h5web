@@ -16,6 +16,7 @@
   top: 0;
   bottom: 0;
   background-color: var(--h5w-domainSlider-dataTrack--bgColor, royalblue);
-  box-shadow: 0 -2px 3px inset var(--h5w-domainSlider-dataTrack--shadowColor, midnightblue);
+  box-shadow: 0 -2px 3px inset
+    var(--h5w-domainSlider-dataTrack--shadowColor, midnightblue);
   border-radius: 2px;
 }

@@ -25,7 +25,7 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
   // Ensure that only one dimension slider for D0 is visible
   const d0Slider = screen.getByRole('slider', { name: 'D0' });
   expect(d0Slider).toBeVisible();
-  expect(d0Slider).toHaveAttribute('aria-valueNow', '0');
+  expect(d0Slider).toHaveValue(0);
   expect(screen.queryByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 
   // Change mapping from [0, 'x'] to ['x', 0]
@@ -36,7 +36,7 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
   // Ensure that the dimension slider is now for D1
   const d1Slider = screen.getByRole('slider', { name: 'D1' });
   expect(d1Slider).toBeVisible();
-  expect(d1Slider).toHaveAttribute('aria-valueNow', '0');
+  expect(d1Slider).toHaveValue(0);
   expect(screen.queryByRole('slider', { name: 'D0' })).not.toBeInTheDocument();
 });
 
@@ -92,7 +92,7 @@ test('display one slider and two mappers when visualizing 3D dataset as Matrix',
 
   // Ensure that only one dimension slider for D0 is visible
   const d0Slider = screen.getByRole('slider', { name: 'D0' });
-  expect(d0Slider).toHaveAttribute('aria-valueNow', '0');
+  expect(d0Slider).toHaveValue(0);
   expect(screen.queryByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 });
 
@@ -106,7 +106,7 @@ test('slice through 2D dataset', async () => {
   const d0Slider = screen.getByRole('slider', { name: 'D0' });
   await user.type(d0Slider, '{ArrowUp}');
 
-  expect(d0Slider).toHaveAttribute('aria-valuenow', '1');
+  expect(d0Slider).toHaveValue(1);
 });
 
 test('maintain mapping when switching to inspect mode and back', async () => {

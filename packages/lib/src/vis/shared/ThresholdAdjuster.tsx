@@ -12,16 +12,12 @@ function ThresholdAdjuster(props: Props) {
 
   useEffect(() => {
     const params = raycaster.params.Points;
-    const oldThreshold = params ? params.threshold : 1;
+    const { threshold: oldThreshold } = params;
 
-    if (params) {
-      params.threshold = value;
-    }
+    params.threshold = value;
 
     return () => {
-      if (params) {
-        params.threshold = oldThreshold;
-      }
+      params.threshold = oldThreshold;
     };
   }, [raycaster, value]);
 
@@ -30,10 +26,7 @@ function ThresholdAdjuster(props: Props) {
     // but as the threshold is in world units, it grows when zooming
     // So we adapt the threshold value to the zoom
     const zoom = (camera.scale.x + camera.scale.y) / 2;
-
-    if (raycaster.params.Points) {
-      raycaster.params.Points.threshold = (value * zoom) / 2;
-    }
+    raycaster.params.Points.threshold = (value * zoom) / 2;
   });
 
   return null;
