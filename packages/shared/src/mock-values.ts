@@ -266,6 +266,24 @@ export const mockValues = {
       ].flat(1),
       [2, 2],
     ),
+  secondary_bool: () => {
+    const { data: dataOneDBool } = oneD_bool();
+    return ndarray(
+      dataOneDBool.flatMap((rowBool) =>
+        dataOneDBool.map((colBool) => (rowBool ? !colBool : colBool)),
+      ),
+      [10, 10],
+    );
+  },
+  secondary_enum: () => {
+    const { data: dataOneDEnum } = oneD_enum();
+    return ndarray(
+      dataOneDEnum.flatMap((rowEnum) =>
+        dataOneDEnum.map((colEnum, j) => (j % 2 === 0 ? colEnum : rowEnum)),
+      ),
+      [10, 10],
+    );
+  },
   tertiary: () =>
     ndarray(
       twoD().data.map((v) => v / 2),

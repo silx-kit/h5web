@@ -284,11 +284,21 @@ export function makeMockFile(): GroupWithChildren {
           }),
           nxGroup('numeric-like', 'NXprocess', {
             children: [
-              nxData('bool', { signal: array('twoD_bool') }),
+              nxData('bool', {
+                signal: array('twoD_bool'),
+                auxiliary: { secondary_bool: array('secondary_bool') },
+                auxAttr: ['secondary_bool'],
+              }),
               nxData('enum', {
                 signal: array('twoD_enum', {
                   type: enumType(intType(false, 8), ENUM_MAPPING),
                 }),
+                auxiliary: {
+                  secondary_enum: array('secondary_enum', {
+                    type: enumType(intType(false, 8), ENUM_MAPPING),
+                  }),
+                },
+                auxAttr: ['secondary_enum'],
               }),
             ],
           }),

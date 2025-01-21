@@ -1,14 +1,19 @@
-import { type ComplexType, type NumericType } from '@h5web/shared/hdf5-models';
+import {
+  type ComplexType,
+  type NumericLikeType,
+} from '@h5web/shared/hdf5-models';
 
 import { type DatasetDef } from './models';
 import styles from './NxSignalPicker.module.css';
 
-interface Props<T extends NumericType | ComplexType> {
+interface Props<T extends NumericLikeType | ComplexType> {
   definitions: DatasetDef<T>[];
   onChange: (def: DatasetDef<T>) => void;
 }
 
-function NxSignalPicker<T extends NumericType | ComplexType>(props: Props<T>) {
+function NxSignalPicker<T extends NumericLikeType | ComplexType>(
+  props: Props<T>,
+) {
   const { definitions, onChange } = props;
 
   return (
