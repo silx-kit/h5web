@@ -28,10 +28,7 @@ export function hasBigInts(type: DType): boolean {
     return Object.values(type.fields).some(hasBigInts);
   }
 
-  return (
-    (type.class === DTypeClass.Integer || type.class === DTypeClass.Unsigned) &&
-    type.size === 64
-  );
+  return type.class === DTypeClass.Integer && type.size === 64;
 }
 
 export function sanitizeBigInts(value: unknown): unknown {

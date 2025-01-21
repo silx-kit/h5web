@@ -302,7 +302,7 @@ function guessType(value: unknown): DType {
   }
 
   if (typeof value === 'boolean') {
-    return boolType(intType(8));
+    return boolType(intType(true, 8));
   }
 
   if (

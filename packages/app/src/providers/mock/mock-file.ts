@@ -12,7 +12,6 @@ import {
   opaqueType,
   printableCompoundType,
   strType,
-  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import {
@@ -70,13 +69,13 @@ export function makeMockFile(): GroupWithChildren {
         scalar('scalar_compound', ['foo', 2], {
           type: compoundType({
             str: strType(H5T_CSET.ASCII, H5T_STR.NULLPAD, 3),
-            int: intType(8),
+            int: intType(true, 8),
           }),
           attributes: [
             scalarAttr('attr', ['foo', 2], {
               type: compoundType({
                 str: strType(H5T_CSET.UTF8),
-                int: intType(8),
+                int: intType(true, 8),
               }),
             }),
           ],
@@ -94,10 +93,10 @@ export function makeMockFile(): GroupWithChildren {
           ],
         }),
         scalar('scalar_enum', 2, {
-          type: enumType(uintType(8), ENUM_MAPPING),
+          type: enumType(intType(false, 8), ENUM_MAPPING),
           attributes: [
             scalarAttr('attr', 2, {
-              type: enumType(uintType(8), ENUM_MAPPING),
+              type: enumType(intType(false, 8), ENUM_MAPPING),
             }),
           ],
         }),
@@ -120,12 +119,14 @@ export function makeMockFile(): GroupWithChildren {
             string: strType(),
             int: intType(),
             float: floatType(),
-            bool: boolType(intType(8)),
+            bool: boolType(intType(true, 8)),
             complex: cplxType(floatType()),
           }),
         }),
         array('oneD_bool'),
-        array('oneD_enum', { type: enumType(uintType(8), ENUM_MAPPING) }),
+        array('oneD_enum', {
+          type: enumType(intType(false, 8), ENUM_MAPPING),
+        }),
         array('twoD'),
         array('twoD_bigint'),
         array('twoD_cplx'),
@@ -134,12 +135,14 @@ export function makeMockFile(): GroupWithChildren {
             string: strType(),
             int: intType(),
             float: floatType(),
-            bool: boolType(intType(8)),
+            bool: boolType(intType(true, 8)),
             complex: cplxType(floatType()),
           }),
         }),
         array('twoD_bool'),
-        array('twoD_enum', { type: enumType(uintType(8), ENUM_MAPPING) }),
+        array('twoD_enum', {
+          type: enumType(intType(false, 8), ENUM_MAPPING),
+        }),
         array('threeD'),
         array('threeD_bool'),
         array('threeD_cplx'),
@@ -147,13 +150,13 @@ export function makeMockFile(): GroupWithChildren {
         array('fourD'),
       ]),
       group('typed_arrays', [
-        array('uint8', { type: uintType(8) }),
-        array('int16', { type: intType(16) }),
+        array('uint8', { type: intType(false, 8) }),
+        array('int16', { type: intType(true, 16) }),
         array('float32', { type: floatType(32) }),
         array('float64', { type: floatType(64) }),
-        withImageAttr(array('uint8_rgb', { type: uintType(8) })),
-        withImageAttr(array('int8_rgb', { type: intType(8) })),
-        withImageAttr(array('int32_rgb', { type: intType(32) })),
+        withImageAttr(array('uint8_rgb', { type: intType(false, 8) })),
+        withImageAttr(array('int8_rgb', { type: intType(true, 8) })),
+        withImageAttr(array('int32_rgb', { type: intType(true, 32) })),
         withImageAttr(array('float32_rgb', { type: floatType(32) })),
       ]),
       nxGroup('nexus_entry', 'NXentry', {
@@ -284,7 +287,7 @@ export function makeMockFile(): GroupWithChildren {
               nxData('bool', { signal: array('twoD_bool') }),
               nxData('enum', {
                 signal: array('twoD_enum', {
-                  type: enumType(uintType(8), ENUM_MAPPING),
+                  type: enumType(intType(false, 8), ENUM_MAPPING),
                 }),
               }),
             ],

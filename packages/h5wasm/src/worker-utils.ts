@@ -3,12 +3,7 @@ import {
   assertNonNull,
   isNumericType,
 } from '@h5web/shared/guards';
-import {
-  H5T_CLASS,
-  H5T_ORDER,
-  H5T_SIGN,
-  type H5T_STR,
-} from '@h5web/shared/h5t';
+import { H5T_CLASS, H5T_ORDER, type H5T_STR } from '@h5web/shared/h5t';
 import {
   type Attribute,
   type ChildEntity,
@@ -26,7 +21,7 @@ import {
   enumOrBoolType,
   floatType,
   getNameFromPath,
-  intOrUintType,
+  intType,
   opaqueType,
   referenceType,
   strType,
@@ -221,8 +216,8 @@ function parseDType(metadata: Metadata): DType {
 
   if (h5tClass === H5T_CLASS.INTEGER) {
     const { signed, littleEndian } = metadata;
-    return intOrUintType(
-      signed ? H5T_SIGN.SIGN_2 : H5T_SIGN.NONE,
+    return intType(
+      signed,
       size * 8,
       littleEndian ? H5T_ORDER.LE : H5T_ORDER.BE,
     );

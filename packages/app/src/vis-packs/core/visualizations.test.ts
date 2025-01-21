@@ -6,7 +6,6 @@ import {
   floatType,
   intType,
   strType,
-  uintType,
 } from '@h5web/shared/hdf5-utils';
 import {
   assertMockAttribute,
@@ -31,20 +30,20 @@ const mockStore = {
 };
 
 const scalarInt = dataset('int', intType(), []);
-const scalarUint = dataset('uint', uintType(), []);
+const scalarUint = dataset('uint', intType(false), []);
 const scalarFloat = dataset('float', floatType(), []);
 const scalarStr = dataset('float', strType(), []);
-const scalarBool = dataset('bool', boolType(intType(8)), []);
+const scalarBool = dataset('bool', boolType(intType(true, 8)), []);
 const scalarCplx = dataset('cplx', cplxType(floatType()), []);
 const scalarCompound = dataset('comp', compoundType({ int: intType() }), []);
 const oneDInt = dataset('int_1d', intType(), [5]);
-const oneDUint = dataset('uint_1d', uintType(), [5]);
-const oneDBool = dataset('bool_1d', boolType(intType(8)), [3]);
+const oneDUint = dataset('uint_1d', intType(false), [5]);
+const oneDBool = dataset('bool_1d', boolType(intType(true, 8)), [3]);
 const oneDCplx = dataset('cplx_1d', cplxType(floatType()), [10]);
 const oneDCompound = dataset('comp_1d', compoundType({ int: intType() }), [5]);
 const twoDInt = dataset('int_2d', intType(), [5, 3]);
-const twoDUint = dataset('uint_2d', uintType(), [5, 3]);
-const twoDBool = dataset('bool_2d', boolType(intType(8)), [3, 2]);
+const twoDUint = dataset('uint_2d', intType(false), [5, 3]);
+const twoDBool = dataset('bool_2d', boolType(intType(true, 8)), [3, 2]);
 const twoDCplx = dataset('cplx_2d', cplxType(floatType()), [2, 2]);
 const twoDStr = dataset('str_2d', strType(), [5, 3]);
 const threeDFloat = dataset('float_3d', intType(), [5, 3, 1]);
