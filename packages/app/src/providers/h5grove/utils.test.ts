@@ -12,7 +12,6 @@ import {
   referenceType,
   strType,
   timeType,
-  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import { describe, expect, it } from 'vitest';
@@ -23,10 +22,10 @@ import { parseDType } from './utils';
 describe('parseDType', () => {
   it('should convert integer types', () => {
     expect(parseDType({ class: 0, size: 1, order: 0, sign: 1 })).toStrictEqual(
-      intType(8, H5T_ORDER.LE),
+      intType(true, 8, H5T_ORDER.LE),
     );
     expect(parseDType({ class: 0, size: 8, order: 1, sign: 0 })).toStrictEqual(
-      uintType(64, H5T_ORDER.BE),
+      intType(false, 64, H5T_ORDER.BE),
     );
   });
 
@@ -83,7 +82,7 @@ describe('parseDType', () => {
         base: { class: 0, size: 4, order: 0, sign: 0 },
         members: { FOO: 41, BAR: 42 },
       }),
-    ).toStrictEqual(enumType(uintType(), { FOO: 41, BAR: 42 }));
+    ).toStrictEqual(enumType(intType(false), { FOO: 41, BAR: 42 }));
 
     expect(
       parseDType({
@@ -92,7 +91,7 @@ describe('parseDType', () => {
         base: { class: 0, size: 1, order: 0, sign: 1 },
         members: { FALSE: 0, TRUE: 1 },
       }),
-    ).toStrictEqual(boolType(intType(8)));
+    ).toStrictEqual(boolType(intType(true, 8)));
   });
 
   it('should convert array types', () => {

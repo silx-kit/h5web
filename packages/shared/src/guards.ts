@@ -13,9 +13,11 @@ import {
   type Entity,
   EntityKind,
   type EnumType,
+  type FloatType,
   type Group,
   type GroupWithChildren,
   type H5WebComplex,
+  type IntegerType,
   type NumericLikeType,
   type NumericType,
   type Primitive,
@@ -34,7 +36,6 @@ import {
 import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES, getValues } from './vis-utils';
 
 const PRINTABLE_DTYPES = new Set([
-  DTypeClass.Unsigned,
   DTypeClass.Integer,
   DTypeClass.Float,
   DTypeClass.String,
@@ -294,10 +295,16 @@ export function assertStringType<S extends Shape>(
   }
 }
 
+export function isIntegerType(type: DType): type is IntegerType {
+  return type.class === DTypeClass.Integer;
+}
+
+export function isFloatType(type: DType): type is FloatType {
+  return type.class === DTypeClass.Float;
+}
+
 export function isNumericType(type: DType): type is NumericType {
-  return [DTypeClass.Integer, DTypeClass.Unsigned, DTypeClass.Float].includes(
-    type.class,
-  );
+  return isIntegerType(type) || isFloatType(type);
 }
 
 export function hasNumericType<S extends Shape>(

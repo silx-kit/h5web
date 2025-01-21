@@ -102,7 +102,6 @@ export type ScalarShape = [];
 export enum DTypeClass {
   Bool = 'Boolean',
   Integer = 'Integer',
-  Unsigned = 'Integer (unsigned)',
   Float = 'Float',
   Complex = 'Complex',
   String = 'String',
@@ -121,6 +120,7 @@ export type Endianness = (typeof H5T_TO_ENDIANNESS)[H5T_ORDER];
 export type CharSet = (typeof H5T_TO_CHAR_SET)[H5T_CSET];
 export type StrPad = (typeof H5T_TO_STR_PAD)[H5T_STR];
 
+export type NumericType = IntegerType | FloatType;
 export type NumericLikeType = NumericType | BooleanType | EnumType;
 export type PrintableType = StringType | NumericLikeType | ComplexType;
 
@@ -134,8 +134,15 @@ export type DType =
   | ReferenceType
   | UnknownType;
 
-export interface NumericType {
-  class: DTypeClass.Integer | DTypeClass.Unsigned | DTypeClass.Float;
+export interface IntegerType {
+  class: DTypeClass.Integer;
+  signed: boolean;
+  size: number;
+  endianness: Endianness | undefined;
+}
+
+export interface FloatType {
+  class: DTypeClass.Float;
   size: number;
   endianness: Endianness | undefined;
 }

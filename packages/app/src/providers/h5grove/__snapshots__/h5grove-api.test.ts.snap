@@ -15,6 +15,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
+      "signed": true,
       "size": 8,
     },
     "value": -128,
@@ -35,6 +36,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
+      "signed": true,
       "size": 8,
     },
     "value": Int8Array [
@@ -59,6 +61,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
+      "signed": true,
       "size": 16,
     },
     "value": -32768,
@@ -79,6 +82,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
+      "signed": true,
       "size": 16,
     },
     "value": Int16Array [
@@ -103,6 +107,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
+      "signed": true,
       "size": 32,
     },
     "value": -2147483648,
@@ -120,6 +125,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "big-endian",
+      "signed": true,
       "size": 32,
     },
     "value": 0,
@@ -140,6 +146,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
+      "signed": true,
       "size": 32,
     },
     "value": Int32Array [
@@ -164,6 +171,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
+      "signed": true,
       "size": 64,
     },
     "value": -9223372036854776000,
@@ -184,6 +192,7 @@ exports[`test file matches snapshot 1`] = `
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
+      "signed": true,
       "size": 64,
     },
     "value": [
@@ -206,8 +215,9 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": [],
     "type": {
-      "class": "Integer (unsigned)",
+      "class": "Integer",
       "endianness": "little-endian",
+      "signed": false,
       "size": 8,
     },
     "value": 255,
@@ -226,8 +236,9 @@ exports[`test file matches snapshot 1`] = `
       3,
     ],
     "type": {
-      "class": "Integer (unsigned)",
+      "class": "Integer",
       "endianness": "little-endian",
+      "signed": false,
       "size": 8,
     },
     "value": Uint8Array [
@@ -250,8 +261,9 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": [],
     "type": {
-      "class": "Integer (unsigned)",
+      "class": "Integer",
       "endianness": "little-endian",
+      "signed": false,
       "size": 16,
     },
     "value": 65535,
@@ -270,8 +282,9 @@ exports[`test file matches snapshot 1`] = `
       3,
     ],
     "type": {
-      "class": "Integer (unsigned)",
+      "class": "Integer",
       "endianness": "little-endian",
+      "signed": false,
       "size": 16,
     },
     "value": Uint16Array [
@@ -294,8 +307,9 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": [],
     "type": {
-      "class": "Integer (unsigned)",
+      "class": "Integer",
       "endianness": "little-endian",
+      "signed": false,
       "size": 32,
     },
     "value": 4294967295,
@@ -314,8 +328,9 @@ exports[`test file matches snapshot 1`] = `
       3,
     ],
     "type": {
-      "class": "Integer (unsigned)",
+      "class": "Integer",
       "endianness": "little-endian",
+      "signed": false,
       "size": 32,
     },
     "value": Uint32Array [
@@ -338,8 +353,9 @@ exports[`test file matches snapshot 1`] = `
     },
     "shape": [],
     "type": {
-      "class": "Integer (unsigned)",
+      "class": "Integer",
       "endianness": "little-endian",
+      "signed": false,
       "size": 64,
     },
     "value": 18446744073709552000,
@@ -359,8 +375,9 @@ exports[`test file matches snapshot 1`] = `
       2,
     ],
     "type": {
-      "class": "Integer (unsigned)",
+      "class": "Integer",
       "endianness": "little-endian",
+      "signed": false,
       "size": 64,
     },
     "value": [
@@ -1255,6 +1272,7 @@ exports[`test file matches snapshot 1`] = `
         "bigint": {
           "class": "Integer",
           "endianness": "little-endian",
+          "signed": true,
           "size": 64,
         },
         "double": {
@@ -1318,6 +1336,7 @@ exports[`test file matches snapshot 1`] = `
         "bigint": {
           "class": "Integer",
           "endianness": "little-endian",
+          "signed": true,
           "size": 64,
         },
         "double": {
@@ -1428,12 +1447,14 @@ exports[`test file matches snapshot 1`] = `
             "bigint": {
               "class": "Integer",
               "endianness": "little-endian",
+              "signed": true,
               "size": 64,
             },
             "bool": {
               "base": {
                 "class": "Integer",
                 "endianness": "little-endian",
+                "signed": true,
                 "size": 8,
               },
               "class": "Boolean",
@@ -1523,8 +1544,9 @@ exports[`test file matches snapshot 1`] = `
         },
         "vlen": {
           "base": {
-            "class": "Integer (unsigned)",
+            "class": "Integer",
             "endianness": "little-endian",
+            "signed": false,
             "size": 64,
           },
           "class": "Array (variable length)",
@@ -1611,8 +1633,9 @@ exports[`test file matches snapshot 1`] = `
     "shape": null,
     "type": {
       "base": {
-        "class": "Integer (unsigned)",
+        "class": "Integer",
         "endianness": "little-endian",
+        "signed": false,
         "size": 8,
       },
       "class": "Boolean",
@@ -1642,6 +1665,7 @@ exports[`test file matches snapshot 1`] = `
       "base": {
         "class": "Integer",
         "endianness": "little-endian",
+        "signed": true,
         "size": 8,
       },
       "class": "Boolean",
@@ -1671,6 +1695,7 @@ exports[`test file matches snapshot 1`] = `
       "base": {
         "class": "Integer",
         "endianness": "little-endian",
+        "signed": true,
         "size": 8,
       },
       "class": "Boolean",
@@ -1703,6 +1728,7 @@ exports[`test file matches snapshot 1`] = `
       "base": {
         "class": "Integer",
         "endianness": "little-endian",
+        "signed": true,
         "size": 8,
       },
       "class": "Boolean",
@@ -1739,8 +1765,9 @@ exports[`test file matches snapshot 1`] = `
     "shape": [],
     "type": {
       "base": {
-        "class": "Integer (unsigned)",
+        "class": "Integer",
         "endianness": "little-endian",
+        "signed": false,
         "size": 8,
       },
       "class": "Enumeration",
@@ -1774,6 +1801,7 @@ exports[`test file matches snapshot 1`] = `
       "base": {
         "class": "Integer",
         "endianness": "little-endian",
+        "signed": true,
         "size": 32,
       },
       "class": "Enumeration",
@@ -1808,8 +1836,9 @@ exports[`test file matches snapshot 1`] = `
     ],
     "type": {
       "base": {
-        "class": "Integer (unsigned)",
+        "class": "Integer",
         "endianness": "little-endian",
+        "signed": false,
         "size": 8,
       },
       "class": "Enumeration",
@@ -1857,8 +1886,9 @@ exports[`test file matches snapshot 1`] = `
     ],
     "type": {
       "base": {
-        "class": "Integer (unsigned)",
+        "class": "Integer",
         "endianness": "little-endian",
+        "signed": false,
         "size": 8,
       },
       "class": "Enumeration",
@@ -1910,6 +1940,7 @@ exports[`test file matches snapshot 1`] = `
       "base": {
         "class": "Integer",
         "endianness": "little-endian",
+        "signed": true,
         "size": 8,
       },
       "class": "Array (variable length)",
@@ -1971,6 +2002,7 @@ exports[`test file matches snapshot 1`] = `
       "base": {
         "class": "Integer",
         "endianness": "little-endian",
+        "signed": true,
         "size": 64,
       },
       "class": "Array (variable length)",

@@ -8,7 +8,6 @@ import {
   floatType,
   intType,
   strType,
-  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 import { describe, expect, it } from 'vitest';
@@ -29,12 +28,12 @@ interface TestType {
 
 const leInt = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
-  hdf5: intType(8, H5T_ORDER.LE),
+  hdf5: intType(true, 8, H5T_ORDER.LE),
 } satisfies TestType;
 
 const beUint = {
   hsds: { class: 'H5T_INTEGER', base: 'H5T_STD_U64BE' },
-  hdf5: uintType(64, H5T_ORDER.BE),
+  hdf5: intType(false, 64, H5T_ORDER.BE),
 } satisfies TestType;
 
 const leFloat = {
@@ -130,7 +129,7 @@ describe('convertHsdsType', () => {
       mapping: { FALSE: 0, TRUE: 1 },
     };
 
-    expect(convertHsdsType(boolEnum)).toStrictEqual(boolType(intType(8)));
+    expect(convertHsdsType(boolEnum)).toStrictEqual(boolType(intType(true, 8)));
   });
 
   it('should convert the complex compound type into Complex type', () => {

@@ -23,7 +23,6 @@ import {
   floatType,
   intType,
   strType,
-  uintType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
 
@@ -88,11 +87,7 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
     return floatType(size, h5tOrder);
   }
 
-  if (sign === 'U') {
-    return uintType(size, h5tOrder);
-  }
-
-  return intType(size, h5tOrder);
+  return intType(sign === 'I', size, h5tOrder);
 }
 
 function convertHsdsCompoundType(
