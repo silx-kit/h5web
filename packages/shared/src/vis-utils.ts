@@ -1,9 +1,10 @@
 import { format } from 'd3-format';
-import ndarray, { type NdArray, type TypedArray } from 'ndarray';
+import ndarray, { type NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray } from './guards';
 import {
+  type ArrayValue,
   type BooleanType,
   type ComplexType,
   type EnumType,
@@ -101,7 +102,7 @@ export function toTypedNdArray<T extends TypedArrayConstructor>(
   return ndarray(Constructor.from(arr.data) as InstanceType<T>, arr.shape);
 }
 
-export function createArrayFromView<T extends TypedArray | unknown[]>(
+export function createArrayFromView<T extends ArrayValue>(
   view: NdArray<T>,
 ): NdArray<T> {
   const { data, size, shape } = view;

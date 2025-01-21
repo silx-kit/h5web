@@ -2,13 +2,14 @@ import { createMemo } from '@h5web/shared/createMemo';
 import { assertDatasetValue, isDefined } from '@h5web/shared/guards';
 import {
   type ArrayShape,
+  type ArrayValue,
   type Dataset,
   type ScalarShape,
   type Value,
 } from '@h5web/shared/hdf5-models';
 import { type NumArray } from '@h5web/shared/vis-models';
 import { castArray } from '@h5web/shared/vis-utils';
-import { type NdArray, type TypedArray } from 'ndarray';
+import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
 import { type DimensionMapping } from '../../dimension-mapper/models';
@@ -100,29 +101,29 @@ export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
   });
 }
 
-export function useBaseArray<T extends unknown[] | TypedArray | undefined>(
+export function useBaseArray<T extends ArrayValue | undefined>(
   value: T,
   rawDims: number[],
-): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
+): T extends ArrayValue ? NdArray<T> : undefined;
 
 export function useBaseArray(
-  value: unknown[] | TypedArray | undefined,
+  value: ArrayValue | undefined,
   rawDims: number[],
-): NdArray<unknown[] | TypedArray> | undefined {
+): NdArray<ArrayValue> | undefined {
   return useMemo(() => getBaseArray(value, rawDims), [value, rawDims]);
 }
 
-export function useMappedArray<T extends unknown[] | TypedArray | undefined>(
+export function useMappedArray<T extends ArrayValue | undefined>(
   value: T,
   dims: number[],
   mapping: DimensionMapping,
-): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
+): T extends ArrayValue ? NdArray<T> : undefined;
 
 export function useMappedArray(
-  value: unknown[] | TypedArray | undefined,
+  value: ArrayValue | undefined,
   dims: number[],
   mapping: DimensionMapping,
-): NdArray<unknown[] | TypedArray> | undefined {
+): NdArray<ArrayValue> | undefined {
   const baseArray = useBaseArray(value, dims);
 
   return useMemo(() => applyMapping(baseArray, mapping), [baseArray, mapping]);

@@ -142,14 +142,6 @@ export function isTypedArray(val: unknown): val is TypedArray {
   );
 }
 
-export function assertArrayOrTypedArray(
-  val: unknown,
-): asserts val is unknown[] | TypedArray {
-  if (!Array.isArray(val) && !isTypedArray(val)) {
-    throw new TypeError('Expected array or typed array');
-  }
-}
-
 export function isGroup(entity: Entity): entity is Group {
   return entity.kind === EntityKind.Group;
 }
@@ -431,7 +423,7 @@ export function isComplexValue(
 function assertPrimitiveValue(
   type: DType,
   value: unknown,
-): asserts value is Primitive<DType> {
+): asserts value is Primitive {
   if (isNumericType(type)) {
     assertNum(value);
   } else if (isStringType(type)) {
@@ -457,7 +449,9 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   if (hasScalarShape(dataset)) {
     assertPrimitiveValue(type, value);
   } else {
-    assertArrayOrTypedArray(value);
+    if (!Array.isArray(value) && !isTypedArray(value)) {
+      throw new TypeError('Expected array or typed array');
+    }
 
     if (value.length > 0) {
       assertPrimitiveValue(type, value[0]);

@@ -207,21 +207,19 @@ export interface UnknownType {
 /* ----------------- */
 /* ----- VALUE ----- */
 
-export type Primitive<T extends DType> = T extends NumericType | EnumType
-  ? number
+export type Primitive<T extends DType = DType> = T extends NumericLikeType
+  ? number | (T extends BooleanType ? boolean : never) // let providers choose how to return booleans
   : T extends StringType
     ? string
-    : T extends BooleanType
-      ? number | boolean // let providers choose
-      : T extends ComplexType
-        ? H5WebComplex
-        : T extends CompoundType<infer TFields>
-          ? Primitive<TFields>[]
-          : unknown;
+    : T extends ComplexType
+      ? H5WebComplex
+      : T extends CompoundType<infer TFields>
+        ? Primitive<TFields>[]
+        : unknown;
 
-export type ArrayValue<T extends DType> =
-  | Primitive<T>[]
-  | (T extends NumericLikeType ? TypedArray : never);
+export type ArrayValue<T extends DType = DType> = T extends NumericLikeType
+  ? TypedArray | number[] | (T extends BooleanType ? boolean[] : never) // don't use `Primitive` to avoid `(number | boolean)[]`
+  : Primitive<T>[];
 
 export type Value<D extends Dataset> =
   D extends Dataset<infer S, infer T>
