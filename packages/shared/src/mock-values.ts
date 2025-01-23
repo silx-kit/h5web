@@ -2,7 +2,7 @@
 import { range } from 'd3-array';
 import ndarray, { type NdArray } from 'ndarray';
 
-import { type ArrayValue, type DType, type H5WebComplex } from './hdf5-models';
+import { type ArrayValue, type H5WebComplex } from './hdf5-models';
 import { cplx } from './hdf5-utils';
 
 const range1 = () => range(-20, 21);
@@ -276,4 +276,4 @@ export const mockValues = {
     ndarray(range1().map((val) => Math.cos((val * 3.14) / 40))),
   Y_scatter: () =>
     ndarray(range1().map((_, i) => ((i % 10) + (i % 5)) / 123_456)),
-} satisfies Record<string, () => NdArray<ArrayValue<DType>>>;
+} satisfies Record<string, () => NdArray<ArrayValue>>;

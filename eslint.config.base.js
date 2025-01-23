@@ -822,6 +822,7 @@ export function createConfig(opts = {}) {
           '@typescript-eslint/no-unnecessary-parameter-property-assignment':
             'warn',
           '@typescript-eslint/no-unnecessary-qualifier': 'warn',
+          '@typescript-eslint/no-unnecessary-type-arguments': 'warn', // downgrade
           '@typescript-eslint/no-unsafe-argument': 'warn',
           '@typescript-eslint/no-unsafe-assignment': 'off', // too tricky to fix when `any` is declared externally (JSON.parse, Array.isArray, etc.)
           '@typescript-eslint/no-unused-vars': [

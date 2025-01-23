@@ -11,7 +11,7 @@ import {
   type NumArray,
 } from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
-import ndarray, { type NdArray, type TypedArray } from 'ndarray';
+import ndarray, { type NdArray } from 'ndarray';
 
 import { type DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
@@ -32,29 +32,27 @@ export const INTERACTIONS_WITH_AXIAL_ZOOM = [
   { shortcut: 'Ctrl+Shift+Drag', description: 'Select to zoom in Y' },
 ];
 
-export function getBaseArray<T extends unknown[] | TypedArray | undefined>(
+export function getBaseArray<T extends ArrayValue | undefined>(
   value: T,
   rawDims: number[],
-): T extends unknown[] | TypedArray ? NdArray<T> : undefined;
+): T extends ArrayValue ? NdArray<T> : undefined;
 
 export function getBaseArray(
-  value: unknown[] | TypedArray | undefined,
+  value: ArrayValue | undefined,
   rawDims: number[],
-): NdArray<unknown[] | TypedArray> | undefined {
+): NdArray<ArrayValue> | undefined {
   return value && ndarray(value, rawDims);
 }
 
-export function applyMapping<
-  T extends NdArray<unknown[] | TypedArray> | undefined,
->(
+export function applyMapping<T extends NdArray<ArrayValue> | undefined>(
   baseArray: T,
   mapping: (number | Axis | ':')[],
-): T extends NdArray<unknown[] | TypedArray> ? T : undefined;
+): T extends NdArray<ArrayValue> ? T : undefined;
 
 export function applyMapping(
-  baseArray: NdArray<unknown[] | TypedArray> | undefined,
+  baseArray: NdArray<ArrayValue> | undefined,
   mapping: (number | Axis | ':')[],
-): NdArray<unknown[] | TypedArray> | undefined {
+): NdArray<ArrayValue> | undefined {
   if (!baseArray) {
     return undefined;
   }
@@ -95,12 +93,16 @@ export function getImageInteractions(keepRatio: boolean): InteractionInfo[] {
   return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
 }
 
+function isBoolArray(val: ArrayValue<NumericLikeType>): val is boolean[] {
+  return Array.isArray(val) && typeof val[0] === 'boolean';
+}
+
 export function toNumArray(arr: ArrayValue<NumericLikeType>): NumArray {
-  if (typeof arr[0] === 'boolean') {
+  if (isBoolArray(arr)) {
     return arr.map((val) => (val ? 1 : 0));
   }
 
-  return arr as NumArray;
+  return arr;
 }
 
 const TYPE_STRINGS: Record<NumericLikeType['class'], string> = {
