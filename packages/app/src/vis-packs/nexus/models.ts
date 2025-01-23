@@ -56,7 +56,7 @@ export interface NxData<
   silxStyle: SilxStyle;
 }
 
-export interface NxValues<T extends NumericType | ComplexType> {
+export interface NxValues<T extends NumericLikeType | ComplexType> {
   title: string;
   signal: ArrayValue<T>;
   errors?: NumArray;

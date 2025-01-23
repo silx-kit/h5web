@@ -4,6 +4,7 @@ import {
   type ArrayShape,
   type ArrayValue,
   type Dataset,
+  type NumericLikeType,
   type ScalarShape,
   type Value,
 } from '@h5web/shared/hdf5-models';
@@ -24,6 +25,12 @@ import {
 } from './utils';
 
 export const useToNumArray = createMemo(toNumArray);
+
+export function useToNumArrays(
+  arrays: ArrayValue<NumericLikeType>[],
+): NumArray[] {
+  return useMemo(() => arrays.map(toNumArray), arrays); // eslint-disable-line react-hooks/exhaustive-deps
+}
 
 export function useValuesInCache(
   ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]
@@ -129,23 +136,23 @@ export function useMappedArray(
   return useMemo(() => applyMapping(baseArray, mapping), [baseArray, mapping]);
 }
 
-export function useMappedArrays(
-  values: NumArray[],
+export function useMappedArrays<T extends ArrayValue>(
+  values: T[],
   dims: number[],
   mapping: DimensionMapping,
-): NdArray<NumArray>[];
+): NdArray<T>[];
+
+export function useMappedArrays<T extends ArrayValue>(
+  values: (T | undefined)[],
+  dims: number[],
+  mapping: DimensionMapping,
+): (NdArray<T> | undefined)[];
 
 export function useMappedArrays(
-  values: (NumArray | undefined)[],
+  values: (ArrayValue | undefined)[],
   dims: number[],
   mapping: DimensionMapping,
-): (NdArray<NumArray> | undefined)[];
-
-export function useMappedArrays(
-  values: (NumArray | undefined)[],
-  dims: number[],
-  mapping: DimensionMapping,
-): (NdArray<NumArray> | undefined)[] {
+): (NdArray<ArrayValue> | undefined)[] {
   const baseArrays = useMemo(
     () => values.map((arr) => getBaseArray(arr, dims)),
     [dims, ...values], // eslint-disable-line react-hooks/exhaustive-deps

@@ -1,4 +1,7 @@
-import { type ComplexType, type NumericType } from '@h5web/shared/hdf5-models';
+import {
+  type ComplexType,
+  type NumericLikeType,
+} from '@h5web/shared/hdf5-models';
 import { type ReactNode } from 'react';
 
 import {
@@ -8,13 +11,15 @@ import {
 } from '../core/hooks';
 import { type NxData, type NxValues } from './models';
 
-interface Props<T extends NumericType | ComplexType> {
+interface Props<T extends NumericLikeType | ComplexType> {
   nxData: NxData<T>;
   selection?: string; // for slice-by-slice fetching
   render: (val: NxValues<T>) => ReactNode;
 }
 
-function NxValuesFetcher<T extends NumericType | ComplexType>(props: Props<T>) {
+function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
+  props: Props<T>,
+) {
   const { nxData, selection, render } = props;
   const { signalDef, axisDefs, auxDefs, titleDataset } = nxData;
 

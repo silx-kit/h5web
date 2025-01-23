@@ -8,9 +8,9 @@ import {
 } from '@h5web/lib';
 import {
   type ArrayShape,
-  type ArrayValue,
   type Dataset,
   type NumericLikeType,
+  type Value,
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { type NumArray } from '@h5web/shared/vis-models';
@@ -24,18 +24,19 @@ import {
   useMappedArrays,
   useSlicedDimsAndMapping,
   useToNumArray,
+  useToNumArrays,
 } from '../hooks';
 import { DEFAULT_DOMAIN, formatNumLikeType, getSliceSelection } from '../utils';
 import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
 
 interface Props {
-  dataset?: Dataset<ArrayShape, NumericLikeType>;
-  value: ArrayValue<NumericLikeType>;
+  dataset: Dataset<ArrayShape, NumericLikeType>;
+  value: Value<Props['dataset']>;
   valueLabel?: string;
   errors?: NumArray;
   auxLabels?: string[];
-  auxValues?: NumArray[];
+  auxValues?: Value<Props['dataset']>[];
   auxErrors?: (NumArray | undefined)[];
   dims: number[];
   dimMapping: DimensionMapping;
@@ -76,12 +77,13 @@ function MappedLineVis(props: Props) {
   } = config;
 
   const numArray = useToNumArray(value);
+  const numAuxArrays = useToNumArrays(auxValues);
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
   const hookArgs = [slicedDims, slicedMapping] as const;
   const dataArray = useMappedArray(numArray, ...hookArgs);
   const errorArray = useMappedArray(errors, ...hookArgs);
-  const auxArrays = useMappedArrays(auxValues, ...hookArgs);
+  const auxArrays = useMappedArrays(numAuxArrays, ...hookArgs);
   const auxErrorsArrays = useMappedArrays(auxErrors, ...hookArgs);
 
   const dataDomain = useDomain(
@@ -114,7 +116,6 @@ function MappedLineVis(props: Props) {
             config={config}
             getExportURL={
               getExportURL &&
-              dataset &&
               ((format) => getExportURL(format, dataset, selection, value))
             }
           />,
@@ -135,7 +136,7 @@ function MappedLineVis(props: Props) {
         }}
         ordinateLabel={valueLabel}
         title={title}
-        dtype={dataset && formatNumLikeType(dataset.type)}
+        dtype={formatNumLikeType(dataset.type)}
         errorsArray={errorArray}
         showErrors={showErrors}
         auxiliaries={auxArrays.map((array, i) => ({
