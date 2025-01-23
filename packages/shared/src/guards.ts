@@ -20,9 +20,9 @@ import {
   type IntegerType,
   type NumericLikeType,
   type NumericType,
-  type Primitive,
   type PrintableType,
   type ScalarShape,
+  type ScalarValue,
   type Shape,
   type StringType,
   type Value,
@@ -423,7 +423,7 @@ export function isComplexValue(
 function assertPrimitiveValue(
   type: DType,
   value: unknown,
-): asserts value is Primitive {
+): asserts value is ScalarValue {
   if (isNumericType(type)) {
     assertNum(value);
   } else if (isStringType(type)) {

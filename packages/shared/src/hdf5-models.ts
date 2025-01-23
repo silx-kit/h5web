@@ -87,8 +87,6 @@ export interface VirtualSource {
   path: string;
 }
 
-export type NumArrayDataset = Dataset<ArrayShape, NumericType>;
-
 /* ----------------- */
 /* ----- SHAPE ----- */
 
@@ -207,24 +205,24 @@ export interface UnknownType {
 /* ----------------- */
 /* ----- VALUE ----- */
 
-export type Primitive<T extends DType = DType> = T extends NumericLikeType
+export type ScalarValue<T extends DType = DType> = T extends NumericLikeType
   ? number | (T extends BooleanType ? boolean : never) // let providers choose how to return booleans
   : T extends StringType
     ? string
     : T extends ComplexType
       ? H5WebComplex
       : T extends CompoundType<infer TFields>
-        ? Primitive<TFields>[]
+        ? ScalarValue<TFields>[]
         : unknown;
 
 export type ArrayValue<T extends DType = DType> = T extends NumericLikeType
-  ? TypedArray | number[] | (T extends BooleanType ? boolean[] : never) // don't use `Primitive` to avoid `(number | boolean)[]`
-  : Primitive<T>[];
+  ? TypedArray | number[] | (T extends BooleanType ? boolean[] : never) // don't use `ScalarValue` to avoid `(number | boolean)[]`
+  : ScalarValue<T>[];
 
 export type Value<D extends Dataset> =
   D extends Dataset<infer S, infer T>
     ? S extends ScalarShape
-      ? Primitive<T>
+      ? ScalarValue<T>
       : S extends ArrayShape
         ? ArrayValue<T>
         : never

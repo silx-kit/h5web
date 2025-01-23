@@ -4,9 +4,13 @@ import {
   useValidDomainForScale,
   useVisDomain,
 } from '@h5web/lib';
-import { type H5WebComplex } from '@h5web/shared/hdf5-models';
+import {
+  type ArrayValue,
+  type ComplexType,
+  type NumericType,
+} from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
-import { ComplexVisType, type NumArray } from '@h5web/shared/vis-models';
+import { ComplexVisType } from '@h5web/shared/vis-models';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -24,11 +28,11 @@ import { type ComplexConfig } from './config';
 import { COMPLEX_VIS_TYPE_LABELS, getPhaseAmplitudeValues } from './utils';
 
 interface Props {
-  value: H5WebComplex[];
+  value: ArrayValue<ComplexType>;
   dims: number[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
-  axisValues?: AxisMapping<NumArray>;
+  axisValues?: AxisMapping<ArrayValue<NumericType>>;
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
   config: ComplexConfig;

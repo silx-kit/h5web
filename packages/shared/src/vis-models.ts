@@ -1,6 +1,6 @@
 import { type NdArray, type TypedArray } from 'ndarray';
 
-import { type DType, type Primitive } from './hdf5-models';
+import { type DType, type ScalarValue } from './hdf5-models';
 
 export type NumArray = TypedArray | number[];
 export type AnyNumArray = NdArray<NumArray> | NumArray;
@@ -63,4 +63,4 @@ export type MappedTuple<T extends unknown[], U = T[number]> = {
   [index in keyof T]: U;
 };
 
-export type ValueFormatter<T extends DType> = (val: Primitive<T>) => string;
+export type ValueFormatter<T extends DType> = (val: ScalarValue<T>) => string;

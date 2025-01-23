@@ -1,11 +1,12 @@
 import { MatrixVis } from '@h5web/lib';
 import {
   type ArrayShape,
+  type ArrayValue,
   type CompoundType,
   type Dataset,
   type PrintableType,
   type ScalarShape,
-  type Value,
+  type ScalarValue,
 } from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
@@ -20,7 +21,9 @@ import { getSliceSelection } from '../utils';
 
 interface Props {
   dataset: Dataset<ScalarShape | ArrayShape, CompoundType<PrintableType>>;
-  value: Value<Props['dataset']>;
+  value:
+    | ScalarValue<CompoundType<PrintableType>>
+    | ArrayValue<CompoundType<PrintableType>>;
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;
   config: MatrixVisConfig;
