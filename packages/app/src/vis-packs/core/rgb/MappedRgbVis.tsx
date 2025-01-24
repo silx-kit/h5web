@@ -1,8 +1,11 @@
 import { RgbVis } from '@h5web/lib';
-import { type NumArrayDataset } from '@h5web/shared/hdf5-models';
+import {
+  type ArrayShape,
+  type ArrayValue,
+  type Dataset,
+  type NumericType,
+} from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
-import { type NumArray } from '@h5web/shared/vis-models';
-import { type TypedArray } from 'ndarray';
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
@@ -12,10 +15,10 @@ import { type RgbVisConfig } from './config';
 import RgbToolbar from './RgbToolbar';
 
 interface Props {
-  dataset: NumArrayDataset;
-  value: number[] | TypedArray;
+  dataset: Dataset<ArrayShape, NumericType>;
+  value: ArrayValue<NumericType>;
   axisLabels?: AxisMapping<string>;
-  axisValues?: AxisMapping<NumArray>;
+  axisValues?: AxisMapping<ArrayValue<NumericType>>;
   dimMapping: DimensionMapping;
   title: string;
   toolbarContainer: HTMLDivElement | undefined;

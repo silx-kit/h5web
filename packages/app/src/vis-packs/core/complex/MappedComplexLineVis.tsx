@@ -6,9 +6,12 @@ import {
   useSafeDomain,
   useVisDomain,
 } from '@h5web/lib';
-import { type ArrayValue, type ComplexType } from '@h5web/shared/hdf5-models';
+import {
+  type ArrayValue,
+  type ComplexType,
+  type NumericType,
+} from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
-import { type NumArray } from '@h5web/shared/vis-models';
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
@@ -28,7 +31,7 @@ interface Props {
   dims: number[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
-  axisValues?: AxisMapping<NumArray>;
+  axisValues?: AxisMapping<ArrayValue<NumericType>>;
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
   config: ComplexLineConfig;

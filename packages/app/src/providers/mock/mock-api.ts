@@ -5,11 +5,12 @@ import {
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
+  type ArrayValue,
   type AttributeValues,
   type Dataset,
   type Entity,
   type GroupWithChildren,
-  type NumArrayDataset,
+  type NumericType,
   type ProvidedEntity,
   type Value,
 } from '@h5web/shared/hdf5-models';
@@ -123,7 +124,7 @@ export class MockApi extends DataProviderApi {
     ) {
       return async () => {
         let csv = '';
-        (value as Value<NumArrayDataset>).forEach((val) => {
+        (value as ArrayValue<NumericType>).forEach((val) => {
           csv += `${val.toString()}\n`;
         });
 

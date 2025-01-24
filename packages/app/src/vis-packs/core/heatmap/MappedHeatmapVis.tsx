@@ -4,9 +4,9 @@ import {
   type ArrayValue,
   type Dataset,
   type NumericLikeType,
+  type NumericType,
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
-import { type NumArray } from '@h5web/shared/vis-models';
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
@@ -25,7 +25,7 @@ interface Props {
   dataset: Dataset<ArrayShape, NumericLikeType>;
   value: ArrayValue<NumericLikeType>;
   axisLabels?: AxisMapping<string>;
-  axisValues?: AxisMapping<NumArray>;
+  axisValues?: AxisMapping<ArrayValue<NumericType>>;
   dimMapping: DimensionMapping;
   title: string;
   toolbarContainer: HTMLDivElement | undefined;

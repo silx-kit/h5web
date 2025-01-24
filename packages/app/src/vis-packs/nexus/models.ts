@@ -4,7 +4,6 @@ import {
   type ArrayValue,
   type ComplexType,
   type Dataset,
-  type NumArrayDataset,
   type NumericLikeType,
   type NumericType,
   type ScalarShape,
@@ -36,7 +35,7 @@ export interface DatasetDef<
 }
 
 type WithError<T extends DatasetDef> = T & {
-  errorDataset?: NumArrayDataset;
+  errorDataset?: Dataset<ArrayShape, NumericType>;
 };
 
 export type AxisDef = DatasetDef<NumericType>;

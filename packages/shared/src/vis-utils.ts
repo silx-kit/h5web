@@ -8,7 +8,7 @@ import {
   type BooleanType,
   type ComplexType,
   type EnumType,
-  type Primitive,
+  type ScalarValue,
 } from './hdf5-models';
 import {
   type AnyNumArray,
@@ -59,7 +59,7 @@ export function formatTick(val: number | { valueOf: () => number }): string {
   return str;
 }
 
-export function formatBool(value: Primitive<BooleanType>): string {
+export function formatBool(value: ScalarValue<BooleanType>): string {
   return (typeof value === 'number' ? !!value : value).toString();
 }
 

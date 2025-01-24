@@ -18,8 +18,8 @@ import {
   type Dataset,
   type Group,
   type GroupWithChildren,
-  type NumArrayDataset,
   type NumericLikeType,
+  type NumericType,
   type ScalarShape,
   type StringType,
 } from '@h5web/shared/hdf5-models';
@@ -93,7 +93,7 @@ export function findSignalDataset(
 export function findErrorDataset(
   group: GroupWithChildren,
   signalName: string,
-): NumArrayDataset | undefined {
+): Dataset<ArrayShape, NumericType> | undefined {
   const dataset =
     getChildEntity(group, `${signalName}_errors`) ||
     getChildEntity(group, 'errors');
@@ -111,7 +111,7 @@ export function findErrorDataset(
 export function findAuxErrorDataset(
   group: GroupWithChildren,
   auxSignalName: string,
-): NumArrayDataset | undefined {
+): Dataset<ArrayShape, NumericType> | undefined {
   const dataset = getChildEntity(group, `${auxSignalName}_errors`);
 
   if (!dataset) {
@@ -172,7 +172,7 @@ function findOldStyleAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
-): NumArrayDataset[] {
+): Dataset<ArrayShape, NumericType>[] {
   const axesList = attrValuesStore.getSingle(signal, 'axes');
   const axesNames = parseAxesList(axesList);
 
@@ -190,7 +190,7 @@ export function findAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
-): (NumArrayDataset | undefined)[] {
+): (Dataset<ArrayShape, NumericType> | undefined)[] {
   if (!hasAttribute(group, 'axes')) {
     return findOldStyleAxesDatasets(group, signal, attrValuesStore);
   }

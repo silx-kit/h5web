@@ -8,12 +8,12 @@ import {
 } from '@h5web/lib';
 import {
   type ArrayShape,
+  type ArrayValue,
   type Dataset,
   type NumericLikeType,
-  type Value,
+  type NumericType,
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
-import { type NumArray } from '@h5web/shared/vis-models';
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
@@ -32,16 +32,16 @@ import LineToolbar from './LineToolbar';
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericLikeType>;
-  value: Value<Props['dataset']>;
+  value: ArrayValue<NumericLikeType>;
   valueLabel?: string;
-  errors?: NumArray;
+  errors?: ArrayValue<NumericType>;
   auxLabels?: string[];
-  auxValues?: Value<Props['dataset']>[];
-  auxErrors?: (NumArray | undefined)[];
+  auxValues?: ArrayValue<NumericLikeType>[];
+  auxErrors?: (ArrayValue<NumericType> | undefined)[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
-  axisValues?: AxisMapping<NumArray>;
+  axisValues?: AxisMapping<ArrayValue<NumericType>>;
   title: string;
   toolbarContainer?: HTMLDivElement | undefined;
   config: LineConfig;

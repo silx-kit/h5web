@@ -1,7 +1,7 @@
 import { ScatterVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
+import { type ArrayValue, type NumericType } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
-import { type NumArray } from '@h5web/shared/vis-models';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
@@ -11,9 +11,9 @@ import { type ScatterConfig } from './config';
 import ScatterToolbar from './ScatterToolbar';
 
 interface Props {
-  value: NumArray;
+  value: ArrayValue<NumericType>;
   axisLabels: AxisMapping<string>;
-  axisValues: AxisMapping<NumArray>;
+  axisValues: AxisMapping<ArrayValue<NumericType>>;
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
   config: ScatterConfig;

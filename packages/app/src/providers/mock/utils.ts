@@ -9,9 +9,9 @@ import {
   type Dataset,
   type DType,
   type GroupWithChildren,
-  type Primitive,
   type ProvidedEntity,
   type ScalarShape,
+  type ScalarValue,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 import ndarray from 'ndarray';
@@ -50,9 +50,9 @@ export function sliceValue<T extends DType>(
   value: unknown,
   dataset: Dataset<ArrayShape | ScalarShape, T>,
   selection: string,
-): Primitive<T>[] {
+): ScalarValue<T>[] {
   const { shape } = dataset;
-  const dataArray = ndarray(value as Primitive<typeof dataset.type>[], shape);
+  const dataArray = ndarray(value as ScalarValue<typeof dataset.type>[], shape);
   const mappedArray = applyMapping(
     dataArray,
     selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s))),

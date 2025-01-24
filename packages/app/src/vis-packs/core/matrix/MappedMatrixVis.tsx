@@ -1,9 +1,9 @@
 import { MatrixVis } from '@h5web/lib';
 import {
   type ArrayShape,
+  type ArrayValue,
   type Dataset,
   type PrintableType,
-  type Value,
 } from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
@@ -18,7 +18,7 @@ import { getCellWidth, getFormatter } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
-  value: Value<Props['dataset']>;
+  value: ArrayValue<PrintableType>;
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;
   config: MatrixVisConfig;

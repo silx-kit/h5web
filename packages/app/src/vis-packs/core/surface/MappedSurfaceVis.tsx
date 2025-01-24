@@ -1,6 +1,10 @@
 import { SurfaceVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
-import { type NumArrayDataset } from '@h5web/shared/hdf5-models';
-import { type TypedArray } from 'ndarray';
+import {
+  type ArrayShape,
+  type ArrayValue,
+  type Dataset,
+  type NumericType,
+} from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
@@ -11,8 +15,8 @@ import { type SurfaceConfig } from './config';
 import SurfaceToolbar from './SurfaceToolbar';
 
 interface Props {
-  dataset: NumArrayDataset;
-  value: number[] | TypedArray;
+  dataset: Dataset<ArrayShape, NumericType>;
+  value: ArrayValue<NumericType>;
   dimMapping: DimensionMapping;
   toolbarContainer: HTMLDivElement | undefined;
   config: SurfaceConfig;
