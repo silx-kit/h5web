@@ -38,6 +38,7 @@
 .h5web {
   flex: 1;
   display: flex;
+  min-width: 0;
   height: 100vh;
   z-index: 0; /* STACKING CONTEXT */
 }
