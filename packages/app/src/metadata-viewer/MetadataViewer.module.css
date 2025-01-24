@@ -48,6 +48,7 @@
 }
 
 .metadataViewer {
+  flex: 1;
   overflow-y: scroll;
   scrollbar-width: thin;
 }
