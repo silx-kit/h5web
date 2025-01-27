@@ -61,6 +61,16 @@ const twoD = () => {
   );
 };
 
+const twoD_bool = () => {
+  const { data: dataOneDBool } = oneD_bool();
+  return ndarray(
+    dataOneDBool.flatMap((rowBool) =>
+      dataOneDBool.map((colBool) => (rowBool ? colBool : !colBool)),
+    ),
+    [10, 10],
+  );
+};
+
 const threeD = () => {
   const { data: dataTwoD } = twoD();
   return ndarray(
@@ -145,15 +155,7 @@ export const mockValues = {
       [2, 5],
     );
   },
-  twoD_bool: () => {
-    const { data: dataOneDBool } = oneD_bool();
-    return ndarray(
-      dataOneDBool.flatMap((rowBool) =>
-        dataOneDBool.map((colBool) => (rowBool ? colBool : !colBool)),
-      ),
-      [10, 10],
-    );
-  },
+  twoD_bool,
   twoD_enum: () => {
     const { data: dataOneDEnum } = oneD_enum();
     return ndarray(
@@ -267,12 +269,10 @@ export const mockValues = {
       [2, 2],
     ),
   secondary_bool: () => {
-    const { data: dataOneDBool } = oneD_bool();
+    const { data: dataTwoDBool, shape: shapeTwoDBool } = twoD_bool();
     return ndarray(
-      dataOneDBool.flatMap((rowBool) =>
-        dataOneDBool.map((colBool) => (rowBool ? !colBool : colBool)),
-      ),
-      [10, 10],
+      dataTwoDBool.map((val) => !val),
+      shapeTwoDBool,
     );
   },
   secondary_enum: () => {
