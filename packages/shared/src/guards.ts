@@ -412,22 +412,24 @@ export function isComplexValue(
   return type.class === DTypeClass.Complex;
 }
 
-function assertPrimitiveValue(
+function assertScalarValue(
   type: DType,
   value: unknown,
 ): asserts value is ScalarValue {
   if (isNumericType(type)) {
     assertNum(value);
-  } else if (isStringType(type)) {
-    assertStr(value);
   } else if (isBoolType(type)) {
     assertNumOrBool(value);
+  } else if (isEnumType(type)) {
+    assertNum(value);
+  } else if (isStringType(type)) {
+    assertStr(value);
   } else if (isComplexType(type)) {
     assertComplex(value);
   } else if (isCompoundType(type)) {
     assertArray(value);
     Object.values(type.fields).forEach((fieldType, index) => {
-      assertPrimitiveValue(fieldType, value[index]);
+      assertScalarValue(fieldType, value[index]);
     });
   }
 }
@@ -439,14 +441,14 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   const { type } = dataset;
 
   if (hasScalarShape(dataset)) {
-    assertPrimitiveValue(type, value);
+    assertScalarValue(type, value);
   } else {
     if (!Array.isArray(value) && !isTypedArray(value)) {
       throw new TypeError('Expected array or typed array');
     }
 
     if (value.length > 0) {
-      assertPrimitiveValue(type, value[0]);
+      assertScalarValue(type, value[0]);
     }
   }
 }
