@@ -29,8 +29,8 @@ function MappedRgbVis(props: Props) {
   const {
     dataset,
     value,
-    axisLabels,
-    axisValues,
+    axisLabels = [],
+    axisValues = [],
     dimMapping,
     title,
     toolbarContainer,
@@ -58,12 +58,12 @@ function MappedRgbVis(props: Props) {
         aspect={keepRatio ? 'equal' : 'auto'}
         imageType={imageType}
         abscissaParams={{
-          label: axisLabels?.[xDimIndex],
-          value: axisValues?.[xDimIndex],
+          label: axisLabels[xDimIndex],
+          value: axisValues[xDimIndex],
         }}
         ordinateParams={{
-          label: axisLabels?.[yDimIndex],
-          value: axisValues?.[yDimIndex],
+          label: axisLabels[yDimIndex],
+          value: axisValues[yDimIndex],
         }}
         flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}

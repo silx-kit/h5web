@@ -59,8 +59,8 @@ function MappedLineVis(props: Props) {
     auxErrors = [],
     dims,
     dimMapping,
-    axisLabels,
-    axisValues,
+    axisLabels = [],
+    axisValues = [],
     title,
     toolbarContainer,
     config,
@@ -130,8 +130,8 @@ function MappedLineVis(props: Props) {
         curveType={curveType}
         showGrid={showGrid}
         abscissaParams={{
-          label: axisLabels?.[xDimIndex],
-          value: axisValues?.[xDimIndex],
+          label: axisLabels[xDimIndex],
+          value: axisValues[xDimIndex],
           scaleType: xScaleType,
         }}
         ordinateLabel={valueLabel}

@@ -44,8 +44,8 @@ function MappedComplexVis(props: Props) {
     value,
     dims,
     dimMapping,
-    axisLabels,
-    axisValues,
+    axisLabels = [],
+    axisValues = [],
     title,
     toolbarContainer,
     config,
@@ -111,12 +111,12 @@ function MappedComplexVis(props: Props) {
         showGrid={showGrid}
         invertColorMap={invertColorMap}
         abscissaParams={{
-          label: axisLabels?.[xDimIndex],
-          value: axisValues?.[xDimIndex],
+          label: axisLabels[xDimIndex],
+          value: axisValues[xDimIndex],
         }}
         ordinateParams={{
-          label: axisLabels?.[yDimIndex],
-          value: axisValues?.[yDimIndex],
+          label: axisLabels[yDimIndex],
+          value: axisValues[yDimIndex],
         }}
         alpha={
           visType === ComplexVisType.PhaseAmplitude
