@@ -82,14 +82,14 @@ function MappedLineVis(props: Props) {
 
   const hookArgs = [slicedDims, slicedMapping] as const;
   const dataArray = useMappedArray(numArray, ...hookArgs);
-  const errorArray = useMappedArray(errors, ...hookArgs);
+  const errorsArray = useMappedArray(errors, ...hookArgs);
   const auxArrays = useMappedArrays(numAuxArrays, ...hookArgs);
   const auxErrorsArrays = useMappedArrays(auxErrors, ...hookArgs);
 
   const dataDomain = useDomain(
     dataArray,
     yScaleType,
-    showErrors ? errorArray : undefined,
+    showErrors ? errorsArray : undefined,
     ignoreValue,
   );
 
@@ -137,7 +137,7 @@ function MappedLineVis(props: Props) {
         ordinateLabel={valueLabel}
         title={title}
         dtype={formatNumLikeType(dataset.type)}
-        errorsArray={errorArray}
+        errorsArray={errorsArray}
         showErrors={showErrors}
         auxiliaries={auxArrays.map((array, i) => ({
           label: auxLabels[i],
