@@ -297,12 +297,12 @@ function guessType(value: unknown): DType {
     return floatType(64);
   }
 
-  if (typeof value === 'string') {
-    return strType();
-  }
-
   if (typeof value === 'boolean') {
     return boolType(intType(true, 8));
+  }
+
+  if (typeof value === 'string') {
+    return strType();
   }
 
   if (

@@ -35,15 +35,6 @@ import {
 } from './vis-models';
 import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES, getValues } from './vis-utils';
 
-const PRINTABLE_DTYPES = new Set([
-  DTypeClass.Integer,
-  DTypeClass.Float,
-  DTypeClass.String,
-  DTypeClass.Bool,
-  DTypeClass.Enum,
-  DTypeClass.Complex,
-]);
-
 export function isAbsolutePath(path: string): boolean {
   return path.startsWith('/');
 }
@@ -88,7 +79,7 @@ function assertNum(val: unknown): asserts val is number {
 
 function assertNumOrBool(val: unknown): asserts val is number | boolean {
   if (typeof val !== 'number' && typeof val !== 'boolean') {
-    throw new TypeError('Expected boolean or number');
+    throw new TypeError('Expected number or boolean');
   }
 }
 
@@ -313,11 +304,14 @@ export function assertNumericType<S extends Shape>(
   }
 }
 
+export function isNumericLikeType(type: DType): type is NumericLikeType {
+  return isNumericType(type) || isBoolType(type) || isEnumType(type);
+}
+
 export function hasNumericLikeType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, NumericLikeType> {
-  const { type } = dataset;
-  return isNumericType(type) || isBoolType(type) || isEnumType(type);
+  return isNumericLikeType(dataset.type);
 }
 
 export function assertNumericLikeType<S extends Shape>(
@@ -360,22 +354,20 @@ export function assertNumericLikeOrComplexType<S extends Shape>(
   }
 }
 
+export function isPrintableType(type: DType): type is PrintableType {
+  return isStringType(type) || isNumericLikeType(type) || isComplexType(type);
+}
+
 export function hasPrintableType<S extends Shape>(
-  entity: Dataset<S>,
-): entity is Dataset<S, PrintableType> {
-  return PRINTABLE_DTYPES.has(entity.type.class);
+  dataset: Dataset<S>,
+): dataset is Dataset<S, PrintableType> {
+  return isPrintableType(dataset.type);
 }
 
 export function assertPrintableType<S extends Shape>(
   dataset: Dataset<S>,
 ): asserts dataset is Dataset<S, PrintableType> {
-  if (
-    !hasStringType(dataset) &&
-    !hasNumericType(dataset) &&
-    !hasBoolType(dataset) &&
-    !hasEnumType(dataset) &&
-    !hasComplexType(dataset)
-  ) {
+  if (!hasPrintableType(dataset)) {
     throw new Error('Expected dataset to have displayable type');
   }
 }
@@ -402,7 +394,7 @@ export function hasPrintableCompoundType<S extends Shape>(
   dataset: Dataset<S, CompoundType>,
 ): dataset is Dataset<S, CompoundType<PrintableType>> {
   const { fields } = dataset.type;
-  return Object.values(fields).every((f) => PRINTABLE_DTYPES.has(f.class));
+  return Object.values(fields).every(isPrintableType);
 }
 
 export function assertPrintableCompoundType<S extends Shape>(
