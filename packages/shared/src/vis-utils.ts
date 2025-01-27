@@ -20,7 +20,6 @@ import {
   type NumArray,
   ScaleType,
   type TypedArrayConstructor,
-  type ValueFormatter,
 } from './vis-models';
 
 export const AXIS_SCALE_TYPES: AxisScaleType[] = [
@@ -66,7 +65,7 @@ export function formatBool(value: ScalarValue<BooleanType>): string {
 export function createComplexFormatter(
   specifier: string,
   full = false,
-): ValueFormatter<ComplexType> {
+): (val: ScalarValue<ComplexType>) => string {
   const formatVal = format(specifier);
 
   return (value) => {
@@ -87,7 +86,7 @@ export function createComplexFormatter(
 
 export function createEnumFormatter(
   mapping: Record<number, string>,
-): ValueFormatter<EnumType> {
+): (val: ScalarValue<EnumType>) => string {
   return (value) => (value in mapping ? mapping[value] : value.toString());
 }
 
