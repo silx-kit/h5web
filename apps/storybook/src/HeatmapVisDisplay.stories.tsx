@@ -10,7 +10,7 @@ import { type Meta, type StoryFn, type StoryObj } from '@storybook/react';
 import HeatmapVisStoriesMeta from './HeatmapVis.stories';
 
 const { dataArray } = HeatmapVisStoriesMeta.args;
-const asymTwoD = mockValues.twoDAsym();
+const asymTwoD = mockValues.twoD_asym();
 
 const meta = {
   ...HeatmapVisStoriesMeta,

@@ -102,7 +102,7 @@ export const mockValues = {
   oneD_errors: () => ndarray(oneD().data.map((val) => Math.abs(val) / 10)),
   oneD_str: () => ndarray(['foo', 'bar']),
   twoD,
-  twoDAsym: () => {
+  twoD_asym: () => {
     const { data: dataTwoD, shape: shapeTwoD } = twoD();
     return ndarray(
       dataTwoD.map((val, index) => (index % 41 >= 20 ? val * 5 : val)),
