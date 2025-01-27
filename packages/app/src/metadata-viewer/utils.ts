@@ -1,7 +1,7 @@
 import {
+  isFloatType,
   isH5WebComplex,
   isIntegerType,
-  isNumericType,
   isScalarShape,
 } from '@h5web/shared/guards';
 import {
@@ -28,17 +28,15 @@ export function renderShape(shape: Shape): string {
 }
 
 export function renderType(type: DType): string {
-  if (isNumericType(type)) {
-    const { endianness, size } = type;
+  if (isIntegerType(type)) {
+    const sign = type.signed ? ' (signed)' : ' (unsigned)';
+    const endianness = type.endianness ? `, ${type.endianness}` : '';
+    return `Integer${sign}, ${type.size}-bit${endianness}`;
+  }
 
-    const endiannessStr = endianness ? `, ${endianness}` : '';
-    const signStr = isIntegerType(type)
-      ? type.signed
-        ? ' (signed)'
-        : ' (unsigned)'
-      : '';
-
-    return `${type.class}${signStr}, ${size}-bit${endiannessStr}`;
+  if (isFloatType(type)) {
+    const endianness = type.endianness ? `, ${type.endianness}` : '';
+    return `Float, ${type.size}-bit${endianness}`;
   }
 
   if (type.class === DTypeClass.String) {
