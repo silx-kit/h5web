@@ -10,7 +10,6 @@ import {
   type StringType,
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
-import { type NumArray } from '@h5web/shared/vis-models';
 
 export type NxAttribute =
   | 'NX_class'
@@ -58,8 +57,8 @@ export interface NxData<
 export interface NxValues<T extends NumericLikeType | ComplexType> {
   title: string;
   signal: ArrayValue<T>;
-  errors?: NumArray;
+  errors?: ArrayValue<NumericType>;
   auxValues: ArrayValue<T>[];
-  auxErrors: (NumArray | undefined)[];
-  axisValues: AxisMapping<NumArray>;
+  auxErrors: (ArrayValue<NumericType> | undefined)[];
+  axisValues: AxisMapping<ArrayValue<NumericType>>;
 }
