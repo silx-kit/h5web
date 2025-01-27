@@ -67,7 +67,6 @@ function NxSpectrumContainer(props: VisContainerProps) {
                 auxLabels={auxDefs.map((def) => def.label)}
                 auxValues={auxValues}
                 auxErrors={auxErrors}
-                dims={signalDims}
                 dimMapping={dimMapping}
                 axisLabels={axisLabels}
                 axisValues={axisValues}

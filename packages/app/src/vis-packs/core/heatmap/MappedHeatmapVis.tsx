@@ -57,8 +57,9 @@ function MappedHeatmapVis(props: Props) {
     flipYAxis,
   } = config;
 
-  const { shape: dims } = dataset;
   const numArray = useToNumArray(value);
+
+  const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
 
