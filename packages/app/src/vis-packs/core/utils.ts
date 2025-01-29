@@ -1,5 +1,9 @@
 import { type InteractionInfo } from '@h5web/lib';
-import { isIntegerType, isNumericType } from '@h5web/shared/guards';
+import {
+  isBigIntTypeArray,
+  isIntegerType,
+  isNumericType,
+} from '@h5web/shared/guards';
 import {
   type ArrayValue,
   DTypeClass,
@@ -93,11 +97,33 @@ export function getImageInteractions(keepRatio: boolean): InteractionInfo[] {
   return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
 }
 
+function isBigIntArray(val: ArrayValue<NumericLikeType>): val is bigint[] {
+  return Array.isArray(val) && typeof val[0] === 'bigint';
+}
+
 function isBoolArray(val: ArrayValue<NumericLikeType>): val is boolean[] {
   return Array.isArray(val) && typeof val[0] === 'boolean';
 }
 
-export function toNumArray(arr: ArrayValue<NumericLikeType>): NumArray {
+export function toNumArray<T extends ArrayValue<NumericLikeType> | undefined>(
+  arr: T,
+): T extends ArrayValue<NumericLikeType> ? NumArray : undefined;
+
+export function toNumArray(
+  arr: ArrayValue<NumericLikeType> | undefined,
+): NumArray | undefined {
+  if (!arr) {
+    return undefined;
+  }
+
+  if (isBigIntTypeArray(arr)) {
+    return Float64Array.from(arr, Number); // cast to float 64
+  }
+
+  if (isBigIntArray(arr)) {
+    return arr.map(Number); // cast to float 64
+  }
+
   if (isBoolArray(arr)) {
     return arr.map((val) => (val ? 1 : 0));
   }

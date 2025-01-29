@@ -11,6 +11,7 @@ import {
   type H5T_TO_ENDIANNESS,
   type H5T_TO_STR_PAD,
 } from './h5t';
+import { type BigIntTypedArray } from './vis-models';
 
 export enum EntityKind {
   Group = 'group',
@@ -120,6 +121,7 @@ export type StrPad = (typeof H5T_TO_STR_PAD)[H5T_STR];
 
 export type NumericType = IntegerType | FloatType;
 export type NumericLikeType = NumericType | BooleanType | EnumType;
+
 export type PrintableType = StringType | NumericLikeType | ComplexType;
 
 export type DType =
@@ -206,7 +208,10 @@ export interface UnknownType {
 /* ----- VALUE ----- */
 
 export type ScalarValue<T extends DType = DType> = T extends NumericLikeType
-  ? number | (T extends BooleanType ? boolean : never) // let providers choose how to return booleans
+  ?
+      | number
+      | (T extends NumericType ? bigint : never) // let providers return bigints
+      | (T extends BooleanType ? boolean : never) // let providers return booleans
   : T extends StringType
     ? string
     : T extends ComplexType
@@ -216,7 +221,11 @@ export type ScalarValue<T extends DType = DType> = T extends NumericLikeType
         : unknown;
 
 export type ArrayValue<T extends DType = DType> = T extends NumericLikeType
-  ? TypedArray | number[] | (T extends BooleanType ? boolean[] : never) // don't use `ScalarValue` to avoid `(number | boolean)[]`
+  ?
+      | TypedArray
+      | number[]
+      | (T extends NumericType ? BigIntTypedArray | bigint[] : never)
+      | (T extends BooleanType ? boolean[] : never) // don't use `ScalarValue` to avoid `(number | boolean)[]`
   : ScalarValue<T>[];
 
 export type Value<D extends Dataset> =

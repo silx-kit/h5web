@@ -61,6 +61,16 @@ const twoD = () => {
   );
 };
 
+const twoD_bigint = () => {
+  const { data: dataOneDBigInt } = oneD_bigint();
+  return ndarray(
+    range5().flatMap((_, i) =>
+      dataOneDBigInt.map((val) => val + 1n + BigInt(i) * 10n),
+    ),
+    [3, 10],
+  );
+};
+
 const twoD_bool = () => {
   const { data: dataOneDBool } = oneD_bool();
   return ndarray(
@@ -119,15 +129,7 @@ export const mockValues = {
       shapeTwoD,
     );
   },
-  twoD_bigint: () => {
-    const { data: dataOneDBigInt } = oneD_bigint();
-    return ndarray(
-      range5().flatMap((_, i) =>
-        dataOneDBigInt.map((val) => val + 1n + BigInt(i) * 10n),
-      ),
-      [3, 5],
-    );
-  },
+  twoD_bigint,
   twoD_cplx: () =>
     ndarray(
       [
@@ -226,6 +228,7 @@ export const mockValues = {
   },
   uint8: () => ndarray(Uint8Array.from(range7()), [2, 2]),
   int16: () => ndarray(Int16Array.from(range7()), [2, 2]),
+  int64: () => ndarray(BigInt64Array.from(range7(), BigInt), [2, 2]),
   float32: () => ndarray(Float32Array.from(range7()), [2, 2]),
   float64: () => ndarray(Float64Array.from(range7()), [2, 2]),
   int8_rgb: () =>
@@ -248,6 +251,7 @@ export const mockValues = {
   },
   X_log: () => ndarray(range1().map((_, i) => (i + 1) * 0.1)),
   X_rgb: () => ndarray(range5()),
+  X_bigint: () => ndarray(range8().map(BigInt)),
   Y: () => ndarray(range2()),
   Y_desc: () => {
     const arr = range1();
@@ -268,6 +272,13 @@ export const mockValues = {
       ].flat(1),
       [2, 2],
     ),
+  secondary_bigint: () => {
+    const { data: dataTwoDBigInt, shape: shapeTwoDBigInt } = twoD_bigint();
+    return ndarray(
+      dataTwoDBigInt.map((val) => val + 1n),
+      shapeTwoDBigInt,
+    );
+  },
   secondary_bool: () => {
     const { data: dataTwoDBool, shape: shapeTwoDBool } = twoD_bool();
     return ndarray(

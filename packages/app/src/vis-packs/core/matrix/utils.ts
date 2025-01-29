@@ -3,6 +3,7 @@ import {
   isBoolType,
   isComplexType,
   isEnumType,
+  isIntegerType,
   isNumericType,
 } from '@h5web/shared/guards';
 import {
@@ -23,7 +24,7 @@ import { format } from 'd3-format';
 
 export function createNumericFormatter(
   notation: Notation,
-): (val: ScalarValue<NumericType>) => string {
+): (val: number) => string {
   switch (notation) {
     case Notation.FixedPoint:
       return format('.3f');
@@ -31,6 +32,19 @@ export function createNumericFormatter(
       return format('.3e');
     default:
       return format('.5~g');
+  }
+}
+
+export function createBigIntFormatter(
+  notation: Notation,
+): (val: ScalarValue<NumericType>) => string {
+  switch (notation) {
+    case Notation.Scientific: {
+      const formatter = createNumericFormatter(notation);
+      return (val) => formatter(Number(val));
+    }
+    default:
+      return (val) => val.toString();
   }
 }
 
@@ -54,6 +68,10 @@ export function getFormatter(
   type: PrintableType,
   notation: Notation,
 ): ValueFormatter<PrintableType> {
+  if (isIntegerType(type) && type.size === 64) {
+    return createBigIntFormatter(notation);
+  }
+
   if (isNumericType(type)) {
     return createNumericFormatter(notation);
   }

@@ -18,7 +18,7 @@
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.preferences.autoImportSpecifierExcludeRegexes": [
-    "^(node:)?(console|util)$",
+    "^(node:)?(console|util|test)$",
     "^three/.*$"
   ],
 

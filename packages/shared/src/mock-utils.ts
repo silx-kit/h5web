@@ -297,6 +297,10 @@ function guessType(value: unknown): DType {
     return floatType(64);
   }
 
+  if (typeof value === 'bigint') {
+    return intType(true, 64);
+  }
+
   if (typeof value === 'boolean') {
     return boolType(intType(true, 8));
   }

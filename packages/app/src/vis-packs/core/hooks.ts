@@ -28,7 +28,15 @@ export const useToNumArray = createMemo(toNumArray);
 
 export function useToNumArrays(
   arrays: ArrayValue<NumericLikeType>[],
-): NumArray[] {
+): NumArray[];
+
+export function useToNumArrays(
+  arrays: (ArrayValue<NumericLikeType> | undefined)[],
+): (NumArray | undefined)[];
+
+export function useToNumArrays(
+  arrays: (ArrayValue<NumericLikeType> | undefined)[],
+): (NumArray | undefined)[] {
   return useMemo(() => arrays.map(toNumArray), arrays); // eslint-disable-line react-hooks/exhaustive-deps
 }
 

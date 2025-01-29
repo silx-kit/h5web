@@ -16,6 +16,7 @@ import {
   useMappedArray,
   useSlicedDimsAndMapping,
   useToNumArray,
+  useToNumArrays,
 } from '../hooks';
 import { DEFAULT_DOMAIN, formatNumLikeType, getSliceSelection } from '../utils';
 import { type HeatmapConfig } from './config';
@@ -58,6 +59,7 @@ function MappedHeatmapVis(props: Props) {
   } = config;
 
   const numArray = useToNumArray(value);
+  const numAxisArrays = useToNumArrays(axisValues);
 
   const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
@@ -103,11 +105,11 @@ function MappedHeatmapVis(props: Props) {
         invertColorMap={invertColorMap}
         abscissaParams={{
           label: axisLabels[xDimIndex],
-          value: axisValues[xDimIndex],
+          value: numAxisArrays[xDimIndex],
         }}
         ordinateParams={{
           label: axisLabels[yDimIndex],
-          value: axisValues[yDimIndex],
+          value: numAxisArrays[yDimIndex],
         }}
         flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}

@@ -30,6 +30,7 @@ import {
 import {
   type AnyNumArray,
   type AxisScaleType,
+  type BigIntTypedArray,
   type ColorScaleType,
   type NumArray,
 } from './vis-models';
@@ -74,6 +75,12 @@ export function assertNonNull<T>(
 function assertNum(val: unknown): asserts val is number {
   if (typeof val !== 'number') {
     throw new TypeError('Expected number');
+  }
+}
+
+function assertNumOrBigInt(val: unknown): asserts val is number | bigint {
+  if (typeof val !== 'number' && typeof val !== 'bigint') {
+    throw new TypeError('Expected number or bigint');
   }
 }
 
@@ -131,6 +138,10 @@ export function isTypedArray(val: unknown): val is TypedArray {
     val instanceof Float32Array ||
     val instanceof Float64Array
   );
+}
+
+export function isBigIntTypeArray(val: unknown): val is BigIntTypedArray {
+  return val instanceof BigInt64Array || val instanceof BigUint64Array;
 }
 
 export function isGroup(entity: Entity): entity is Group {
@@ -412,11 +423,13 @@ export function isComplexValue(
   return type.class === DTypeClass.Complex;
 }
 
-function assertScalarValue(
-  type: DType,
+export function assertScalarValue(
   value: unknown,
+  type: DType,
 ): asserts value is ScalarValue {
-  if (isNumericType(type)) {
+  if (isIntegerType(type) && type.size === 64) {
+    assertNumOrBigInt(value);
+  } else if (isNumericType(type)) {
     assertNum(value);
   } else if (isBoolType(type)) {
     assertNumOrBool(value);
@@ -429,7 +442,7 @@ function assertScalarValue(
   } else if (isCompoundType(type)) {
     assertArray(value);
     Object.values(type.fields).forEach((fieldType, index) => {
-      assertScalarValue(fieldType, value[index]);
+      assertScalarValue(value[index], fieldType);
     });
   }
 }
@@ -441,14 +454,18 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   const { type } = dataset;
 
   if (hasScalarShape(dataset)) {
-    assertScalarValue(type, value);
+    assertScalarValue(value, type);
   } else {
-    if (!Array.isArray(value) && !isTypedArray(value)) {
+    if (
+      !Array.isArray(value) &&
+      !isTypedArray(value) &&
+      !isBigIntTypeArray(value)
+    ) {
       throw new TypeError('Expected array or typed array');
     }
 
     if (value.length > 0) {
-      assertScalarValue(type, value[0]);
+      assertScalarValue(value[0], type);
     }
   }
 }

@@ -1,5 +1,3 @@
-import { type DType, DTypeClass } from '@h5web/shared/hdf5-models';
-
 import { type HDF5Diag, Plugin } from './models';
 
 // https://support.hdfgroup.org/services/contributions.html
@@ -14,38 +12,6 @@ export const PLUGINS_BY_FILTER_ID: Record<number, Plugin> = {
   32_017: Plugin.SZ,
   32_026: Plugin.Blosc2,
 };
-
-export function hasBigInts(type: DType): boolean {
-  if (
-    type.class === DTypeClass.Enum ||
-    type.class === DTypeClass.Array ||
-    type.class === DTypeClass.VLen
-  ) {
-    return hasBigInts(type.base);
-  }
-
-  if (type.class === DTypeClass.Compound) {
-    return Object.values(type.fields).some(hasBigInts);
-  }
-
-  return type.class === DTypeClass.Integer && type.size === 64;
-}
-
-export function sanitizeBigInts(value: unknown): unknown {
-  if (Array.isArray(value)) {
-    return value.map(sanitizeBigInts);
-  }
-
-  if (value instanceof BigInt64Array || value instanceof BigUint64Array) {
-    return [...value].map(Number);
-  }
-
-  if (typeof value === 'bigint') {
-    return Number(value);
-  }
-
-  return value;
-}
 
 const DIAG_PREDICATES: ((diag: HDF5Diag) => boolean)[] = [
   (diag: HDF5Diag) => {

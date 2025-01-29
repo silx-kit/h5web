@@ -222,6 +222,7 @@ function parseDType(metadata: Metadata): DType {
       littleEndian ? H5T_ORDER.LE : H5T_ORDER.BE,
     );
   }
+
   if (h5tClass === H5T_CLASS.FLOAT) {
     const { littleEndian } = metadata;
     return floatType(size * 8, littleEndian ? H5T_ORDER.LE : H5T_ORDER.BE);

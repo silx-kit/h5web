@@ -80,11 +80,14 @@ function MappedLineVis(props: Props) {
 
   const numArray = useToNumArray(value);
   const numAuxArrays = useToNumArrays(auxValues);
+  const numErrorsArray = useToNumArray(errors);
+  const numAuxErrorsArrays = useToNumArrays(auxErrors);
+  const numAxisArrays = useToNumArrays(axisValues);
 
   const dataArray = useMappedArray(numArray, ...hookArgs);
-  const errorsArray = useMappedArray(errors, ...hookArgs);
+  const errorsArray = useMappedArray(numErrorsArray, ...hookArgs);
   const auxArrays = useMappedArrays(numAuxArrays, ...hookArgs);
-  const auxErrorsArrays = useMappedArrays(auxErrors, ...hookArgs);
+  const auxErrorsArrays = useMappedArrays(numAuxErrorsArrays, ...hookArgs);
 
   const dataDomain = useDomain(
     dataArray,
@@ -131,7 +134,7 @@ function MappedLineVis(props: Props) {
         showGrid={showGrid}
         abscissaParams={{
           label: axisLabels[xDimIndex],
-          value: axisValues[xDimIndex],
+          value: numAxisArrays[xDimIndex],
           scaleType: xScaleType,
         }}
         ordinateLabel={valueLabel}
