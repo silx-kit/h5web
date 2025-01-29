@@ -5,7 +5,7 @@ import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useBaseArray } from '../hooks';
+import { useBaseArray, useToNumArray, useToNumArrays } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import { type ScatterConfig } from './config';
 import ScatterToolbar from './ScatterToolbar';
@@ -33,13 +33,16 @@ function MappedScatterVis(props: Props) {
     yScaleType,
   } = config;
 
-  const dataArray = useBaseArray(value, [value.length]);
+  const numArray = useToNumArray(value);
+  const numAxisArrays = useToNumArrays(axisValues);
+
+  const dataArray = useBaseArray(numArray, [value.length]);
   const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 
   const [xLabel, yLabel] = axisLabels;
-  const [xValue, yValue] = axisValues;
+  const [xValue, yValue] = numAxisArrays;
   assertDefined(xValue);
   assertDefined(yValue);
 

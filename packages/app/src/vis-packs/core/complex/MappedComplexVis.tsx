@@ -21,6 +21,7 @@ import {
   useBaseArray,
   useMappedArray,
   useSlicedDimsAndMapping,
+  useToNumArrays,
 } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import ComplexToolbar from './ComplexToolbar';
@@ -62,8 +63,9 @@ function MappedComplexVis(props: Props) {
     invertColorMap,
   } = heatmapConfig;
 
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
+  const numAxisArrays = useToNumArrays(axisValues);
 
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const mappedArray = useMappedArray(value, slicedDims, slicedMapping);
 
   const { phaseValues, phaseBounds, amplitudeValues, amplitudeBounds } =
@@ -112,11 +114,11 @@ function MappedComplexVis(props: Props) {
         invertColorMap={invertColorMap}
         abscissaParams={{
           label: axisLabels[xDimIndex],
-          value: axisValues[xDimIndex],
+          value: numAxisArrays[xDimIndex],
         }}
         ordinateParams={{
           label: axisLabels[yDimIndex],
-          value: axisValues[yDimIndex],
+          value: numAxisArrays[yDimIndex],
         }}
         alpha={
           visType === ComplexVisType.PhaseAmplitude

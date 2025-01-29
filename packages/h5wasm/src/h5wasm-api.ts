@@ -16,12 +16,7 @@ import {
 import { transfer } from 'comlink';
 
 import { type Plugin } from './models';
-import {
-  getEnhancedError,
-  hasBigInts,
-  PLUGINS_BY_FILTER_ID,
-  sanitizeBigInts,
-} from './utils';
+import { getEnhancedError, PLUGINS_BY_FILTER_ID } from './utils';
 import { type H5WasmWorkerAPI } from './worker';
 
 export class H5WasmApi extends DataProviderApi {
@@ -48,8 +43,7 @@ export class H5WasmApi extends DataProviderApi {
     await this.processFilters(dataset);
 
     try {
-      const value = await this.remote.getValue(fileId, dataset.path, selection);
-      return hasBigInts(dataset.type) ? sanitizeBigInts(value) : value;
+      return await this.remote.getValue(fileId, dataset.path, selection);
     } catch (error) {
       throw getEnhancedError(error);
     }
