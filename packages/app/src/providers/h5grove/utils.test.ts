@@ -13,6 +13,7 @@ import {
   strType,
   timeType,
   unknownType,
+  vlenType,
 } from '@h5web/shared/hdf5-utils';
 import { describe, expect, it } from 'vitest';
 
@@ -94,15 +95,17 @@ describe('parseDType', () => {
     ).toStrictEqual(boolType(intType(true, 8)));
   });
 
-  it('should convert array types', () => {
+  it('should convert vlen type', () => {
     expect(
       parseDType({
         class: 9,
         size: 1,
         base: { class: 1, size: 4, order: 0 },
       }),
-    ).toStrictEqual(arrayType(floatType()));
+    ).toStrictEqual(vlenType(floatType()));
+  });
 
+  it('should convert array type', () => {
     expect(
       parseDType({
         class: 10,

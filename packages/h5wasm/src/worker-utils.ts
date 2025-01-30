@@ -27,6 +27,7 @@ import {
   strType,
   timeType,
   unknownType,
+  vlenType,
 } from '@h5web/shared/hdf5-utils';
 import {
   type Dataset as H5WasmDataset,
@@ -279,7 +280,7 @@ function parseDType(metadata: Metadata): DType {
   if (h5tClass === H5T_CLASS.VLEN) {
     const { vlen_type } = metadata;
     assertDefined(vlen_type);
-    return arrayType(parseDType(vlen_type));
+    return vlenType(parseDType(vlen_type));
   }
 
   if (h5tClass === H5T_CLASS.ARRAY) {

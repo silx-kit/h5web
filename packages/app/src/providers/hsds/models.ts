@@ -94,6 +94,7 @@ export interface HsdsShape {
 export type HsdsType =
   | HsdsNumericType
   | HsdsStringType
+  | HsdsVLenType
   | HsdsArrayType
   | HsdsCompoundType
   | HsdsEnumType;
@@ -110,10 +111,15 @@ export interface HsdsStringType {
   length: number | 'H5T_VARIABLE';
 }
 
-export interface HsdsArrayType {
-  class: 'H5T_ARRAY' | 'H5T_VLEN';
+export interface HsdsVLenType {
+  class: 'H5T_VLEN';
   base: HsdsType;
-  dims?: number[];
+}
+
+export interface HsdsArrayType {
+  class: 'H5T_ARRAY';
+  base: HsdsType;
+  dims: number[];
 }
 
 export interface HsdsCompoundType {

@@ -8,7 +8,6 @@ import {
   type CompoundType,
   type Dataset,
   type DType,
-  DTypeClass,
   type Entity,
   type EnumType,
   type Group,
@@ -17,6 +16,7 @@ import {
   type Shape,
 } from '@h5web/shared/hdf5-models';
 import {
+  arrayType,
   compoundType,
   cplxType,
   enumOrBoolType,
@@ -24,6 +24,7 @@ import {
   intType,
   strType,
   unknownType,
+  vlenType,
 } from '@h5web/shared/hdf5-utils';
 
 import {
@@ -139,14 +140,11 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
       );
     }
 
-    case 'H5T_ARRAY':
     case 'H5T_VLEN':
-      return {
-        class:
-          hsdsType.class === 'H5T_ARRAY' ? DTypeClass.Array : DTypeClass.VLen,
-        base: convertHsdsType(hsdsType.base),
-        ...(hsdsType.dims && { dims: hsdsType.dims }),
-      };
+      return vlenType(convertHsdsType(hsdsType.base));
+
+    case 'H5T_ARRAY':
+      return arrayType(convertHsdsType(hsdsType.base), hsdsType.dims);
 
     case 'H5T_ENUM':
       return convertHsdsEnumType(hsdsType);

@@ -9,6 +9,7 @@ import {
   intType,
   strType,
   unknownType,
+  vlenType,
 } from '@h5web/shared/hdf5-utils';
 import { describe, expect, it } from 'vitest';
 
@@ -18,6 +19,7 @@ import {
   type HsdsEnumType,
   type HsdsStringType,
   type HsdsType,
+  type HsdsVLenType,
 } from './models';
 import { convertHsdsType } from './utils';
 
@@ -83,6 +85,15 @@ describe('convertHsdsType', () => {
     expect(convertHsdsType(beFloat.hsds)).toStrictEqual(beFloat.hdf5);
   });
 
+  it('should convert the base of VLen type', () => {
+    const vlen: HsdsVLenType = {
+      class: 'H5T_VLEN',
+      base: leInt.hsds,
+    };
+
+    expect(convertHsdsType(vlen)).toStrictEqual(vlenType(leInt.hdf5));
+  });
+
   it('should convert the base of Array type', () => {
     const arr: HsdsArrayType = {
       class: 'H5T_ARRAY',
@@ -93,20 +104,8 @@ describe('convertHsdsType', () => {
     expect(convertHsdsType(arr)).toStrictEqual(arrayType(leInt.hdf5, [4, 5]));
   });
 
-  it('should convert the base of VLen type', () => {
-    const vlen: HsdsArrayType = {
-      class: 'H5T_VLEN',
-      base: leInt.hsds,
-    };
-
-    expect(convertHsdsType(vlen)).toStrictEqual(arrayType(leInt.hdf5));
-  });
-
   it('should convert the field types of Compound type', () => {
-    const vlen: HsdsArrayType = {
-      class: 'H5T_VLEN',
-      base: leInt.hsds,
-    };
+    const vlen: HsdsVLenType = { class: 'H5T_VLEN', base: leInt.hsds };
     const compound: HsdsCompoundType = {
       class: 'H5T_COMPOUND',
       fields: [
@@ -117,7 +116,7 @@ describe('convertHsdsType', () => {
     expect(convertHsdsType(compound)).toStrictEqual(
       compoundType({
         f1: beFloat.hdf5,
-        f2: arrayType(leInt.hdf5),
+        f2: vlenType(leInt.hdf5),
       }),
     );
   });
