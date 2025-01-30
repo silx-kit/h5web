@@ -3,8 +3,8 @@ import {
   isBoolType,
   isComplexType,
   isEnumType,
+  isFloatType,
   isIntegerType,
-  isNumericType,
 } from '@h5web/shared/guards';
 import {
   type ComplexType,
@@ -22,7 +22,18 @@ import {
 } from '@h5web/shared/vis-utils';
 import { format } from 'd3-format';
 
-export function createNumericFormatter(
+export function createIntegerFormatter(
+  notation: Notation,
+): (val: ScalarValue<NumericType>) => string {
+  if (notation === Notation.Scientific) {
+    const formatter = format('.3e');
+    return (val) => formatter(Number(val));
+  }
+
+  return (val) => val.toString();
+}
+
+export function createFloatFormatter(
   notation: Notation,
 ): (val: number) => string {
   switch (notation) {
@@ -32,19 +43,6 @@ export function createNumericFormatter(
       return format('.3e');
     default:
       return format('.5~g');
-  }
-}
-
-export function createBigIntFormatter(
-  notation: Notation,
-): (val: ScalarValue<NumericType>) => string {
-  switch (notation) {
-    case Notation.Scientific: {
-      const formatter = createNumericFormatter(notation);
-      return (val) => formatter(Number(val));
-    }
-    default:
-      return (val) => val.toString();
   }
 }
 
@@ -68,12 +66,12 @@ export function getFormatter(
   type: PrintableType,
   notation: Notation,
 ): ValueFormatter<PrintableType> {
-  if (isIntegerType(type) && type.size === 64) {
-    return createBigIntFormatter(notation);
+  if (isIntegerType(type)) {
+    return createIntegerFormatter(notation);
   }
 
-  if (isNumericType(type)) {
-    return createNumericFormatter(notation);
+  if (isFloatType(type)) {
+    return createFloatFormatter(notation);
   }
 
   if (isBoolType(type)) {
