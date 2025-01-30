@@ -10,7 +10,7 @@
     "url": "https://github.com/silx-kit/h5web"
   },
   "engines": {
-    "node": "20.x",
+    "node": "22.x",
     "pnpm": "9.x"
   },
   "packageManager": "pnpm@9.15.4",
@@ -43,7 +43,7 @@
     "@simonsmith/cypress-image-snapshot": "9.1.0",
     "@stylistic/eslint-plugin-js": "2.13.0",
     "@testing-library/cypress": "10.0.2",
-    "@types/node": "^20.17.12",
+    "@types/node": "^22.12.0",
     "@vitest/eslint-plugin": "1.1.25",
     "confusing-browser-globals": "1.0.11",
     "cypress": "13.17.0",
