@@ -16,7 +16,7 @@ getDomain(
   valuesArray: AnyNumArray, // NdArray<TypedArray | number[]> | TypedArray | number[]
   scaleType: ScaleType = ScaleType.Linear,
   errorArray?: AnyNumArray,
-  ignoreValue?: (val: number) => boolean
+  ignoreValue?: IgnoreValue
 ): Domain | undefined
 
 const linearDomain = getDomain([10, 5, -1]); // [-1, 10]

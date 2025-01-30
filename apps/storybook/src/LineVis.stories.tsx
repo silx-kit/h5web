@@ -24,7 +24,7 @@ const secondaryArray = createArrayFromView(mockValues.secondary().pick(0));
 const tertiaryArray = createArrayFromView(mockValues.tertiary().pick(0));
 
 const abscissas = Array.from({ length: oneD.size }, (_, i) => -10 + 0.5 * i);
-const errors = ndarray(
+const errorsOneD = ndarray(
   Array.from({ length: oneD.size }, (_, i) => Math.abs(10 - 0.5 * i)),
   oneD.shape,
 );
@@ -65,15 +65,34 @@ type Story = StoryObj<typeof meta>;
 
 export const Default = {
   render: (args) => {
-    const { dataArray, domain, scaleType, errorsArray, auxiliaries } = args;
+    const {
+      dataArray,
+      domain,
+      scaleType,
+      errorsArray,
+      auxiliaries,
+      showErrors,
+      ignoreValue,
+    } = args;
 
     // If story doesn't provide `domain`, compute it automatically
     const auxArrays = (auxiliaries || []).map(({ array }) => array);
+    const auxErrorsArrays = (auxiliaries || []).map(({ errors }) => errors);
+
     const effectiveDomain =
       domain ||
       getCombinedDomain([
-        getDomain(dataArray, scaleType, errorsArray),
-        ...getDomains(auxArrays, scaleType),
+        getDomain(
+          dataArray,
+          scaleType,
+          showErrors ? errorsArray : undefined,
+          ignoreValue,
+        ),
+        ...getDomains(
+          auxArrays,
+          scaleType,
+          showErrors ? auxErrorsArrays : undefined,
+        ),
       ]);
 
     return <LineVis {...args} domain={effectiveDomain} />;
@@ -108,7 +127,7 @@ export const DescendingAbscissas = {
 export const ErrorBars = {
   ...Default,
   args: {
-    errorsArray: errors,
+    errorsArray: errorsOneD,
     showErrors: true,
   },
 } satisfies Story;
@@ -128,9 +147,9 @@ export const AuxiliaryErrors = {
   ...Default,
   args: {
     dataArray: primaryArray,
-    errorsArray: errors,
+    errorsArray: errorsOneD,
     auxiliaries: [
-      { label: 'secondary', array: secondaryArray, errors },
+      { label: 'secondary', array: secondaryArray, errors: errorsOneD },
       { label: 'tertiary', array: tertiaryArray },
     ],
     showErrors: true,
@@ -141,7 +160,7 @@ export const TypedArrays = {
   ...Default,
   args: {
     dataArray: toTypedNdArray(primaryArray, Float32Array),
-    errorsArray: toTypedNdArray(errors, Float32Array),
+    errorsArray: toTypedNdArray(errorsOneD, Float32Array),
     auxiliaries: [
       {
         label: 'secondary',

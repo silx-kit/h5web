@@ -5,6 +5,7 @@ import {
   DefaultInteractions,
   GlyphType as GlyphTypeEnum,
   mockValues,
+  ScaleType,
   useDomain,
   VisCanvas,
 } from '@h5web/lib';
@@ -46,10 +47,16 @@ type Story = StoryObj<typeof meta>;
 
 export const Default = {
   render: (args) => {
-    const { abscissas, ordinates } = args;
+    const { abscissas, ordinates, errors, showErrors, ignoreValue } = args;
 
     const abscissaDomain = useDomain(abscissas);
-    const ordinateDomain = useDomain(ordinates);
+    const ordinateDomain = useDomain(
+      ordinates,
+      ScaleType.Linear,
+      showErrors ? errors : undefined,
+      ignoreValue,
+    );
+
     assertDefined(abscissaDomain);
     assertDefined(ordinateDomain);
 

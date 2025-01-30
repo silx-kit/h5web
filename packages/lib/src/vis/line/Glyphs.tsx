@@ -1,4 +1,4 @@
-import { type NumArray } from '@h5web/shared/vis-models';
+import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 import { type PointsProps } from '@react-three/fiber';
 
 import { useGeometry } from '../hooks';
@@ -15,7 +15,7 @@ interface Props extends PointsProps {
   color: string;
   size?: number;
   visible?: boolean;
-  ignoreValue?: (val: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 function Glyphs(props: Props) {

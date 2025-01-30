@@ -1,6 +1,7 @@
 import { assertDefined } from '@h5web/shared/guards';
 import {
   type Domain,
+  type IgnoreValue,
   type NumArray,
   ScaleType,
 } from '@h5web/shared/vis-models';
@@ -46,7 +47,7 @@ interface Props extends ClassStyleAttrs {
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
-  ignoreValue?: (v: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 function HeatmapVis(props: Props) {

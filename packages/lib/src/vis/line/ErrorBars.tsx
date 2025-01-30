@@ -1,4 +1,4 @@
-import { type NumArray } from '@h5web/shared/vis-models';
+import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 
 import { useGeometry } from '../hooks';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
@@ -13,7 +13,7 @@ interface Props {
   errors: NumArray;
   color: string;
   visible?: boolean;
-  ignoreValue?: (val: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 function ErrorBars(props: Props) {

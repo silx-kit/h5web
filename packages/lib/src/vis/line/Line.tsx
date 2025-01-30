@@ -1,4 +1,4 @@
-import { type NumArray } from '@h5web/shared/vis-models';
+import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 import { extend, type Object3DNode } from '@react-three/fiber';
 import { Line as R3FLine } from 'three';
 
@@ -22,7 +22,7 @@ interface Props extends Object3DNode<R3FLine, typeof R3FLine> {
   ordinates: NumArray;
   color: string;
   visible?: boolean;
-  ignoreValue?: (val: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 function Line(props: Props) {

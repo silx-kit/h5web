@@ -1,4 +1,5 @@
 import {
+  type IgnoreValue,
   LineVis,
   useCombinedDomain,
   useDomain,
@@ -45,7 +46,7 @@ interface Props {
   title: string;
   toolbarContainer?: HTMLDivElement | undefined;
   config: LineConfig;
-  ignoreValue?: (val: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 function MappedLineVis(props: Props) {

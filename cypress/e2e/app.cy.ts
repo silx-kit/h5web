@@ -112,6 +112,24 @@ describe('/mock', () => {
     }
   });
 
+  it('visualize datasets with fill value', () => {
+    cy.selectExplorerNode('nD_datasets');
+
+    cy.selectExplorerNode('oneD_fillvalue');
+    cy.findByRole('figure', { name: 'oneD_fillvalue' }).should('be.visible');
+
+    if (Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.matchImageSnapshot('fillvalue_1D');
+    }
+
+    cy.selectExplorerNode('twoD_fillvalue');
+    cy.findByRole('figure', { name: 'twoD_fillvalue' }).should('be.visible');
+
+    if (Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.matchImageSnapshot('fillvalue_2D');
+    }
+  });
+
   it('map dimensions of 4D dataset when visualized as Heatmap', () => {
     cy.selectExplorerNode('nD_datasets');
     cy.selectExplorerNode('fourD');
