@@ -23,9 +23,12 @@ import {
   timeType,
   unknownType,
 } from '@h5web/shared/hdf5-utils';
-import { type TypedArrayConstructor } from '@h5web/shared/vis-models';
+import {
+  type BigIntTypedArrayConstructor,
+  type TypedArrayConstructor,
+} from '@h5web/shared/vis-models';
 
-import { typedArrayFromDType } from '../utils';
+import { bigIntTypedArrayFromDType, typedArrayFromDType } from '../utils';
 import {
   type H5GroveAttribute,
   type H5GroveEntity,
@@ -232,7 +235,7 @@ export function parseDType(type: H5GroveType): DType {
  */
 export function h5groveTypedArrayFromDType(
   dtype: DType,
-): TypedArrayConstructor | undefined {
+): TypedArrayConstructor | BigIntTypedArrayConstructor | undefined {
   const { class: dtypeClass } = dtype;
 
   if (dtypeClass === DTypeClass.Float && dtype.size === 16) {
@@ -243,5 +246,5 @@ export function h5groveTypedArrayFromDType(
     return Float64Array;
   }
 
-  return typedArrayFromDType(dtype);
+  return typedArrayFromDType(dtype) || bigIntTypedArrayFromDType(dtype);
 }
