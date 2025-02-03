@@ -17,6 +17,7 @@ import {
   type ColorScaleType,
   type Dims,
   type Domain,
+  type IgnoreValue,
   type NumArray,
   ScaleType,
   type TypedArrayConstructor,
@@ -136,7 +137,7 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
 export function getBounds(
   valuesArray: AnyNumArray,
   errorArray?: AnyNumArray,
-  ignoreValue?: (val: number) => boolean,
+  ignoreValue?: IgnoreValue,
 ): Bounds | undefined {
   const values = getValues(valuesArray);
   const errors = errorArray && getValues(errorArray);

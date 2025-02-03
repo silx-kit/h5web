@@ -1,4 +1,10 @@
-import { HeatmapVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
+import {
+  HeatmapVis,
+  type IgnoreValue,
+  useDomain,
+  useSafeDomain,
+  useVisDomain,
+} from '@h5web/lib';
 import {
   type ArrayShape,
   type ArrayValue,
@@ -30,7 +36,7 @@ interface Props {
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
   config: HeatmapConfig;
-  ignoreValue?: (val: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 function MappedHeatmapVis(props: Props) {

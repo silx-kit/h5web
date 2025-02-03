@@ -8,7 +8,7 @@ import {
   type ScalarShape,
   type Value,
 } from '@h5web/shared/hdf5-models';
-import { type NumArray } from '@h5web/shared/vis-models';
+import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 import { castArray } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
@@ -177,25 +177,25 @@ export function useSlicedDimsAndMapping(
   );
 }
 
-export function useIgnoreFillValue(
-  dataset: Dataset,
-): ((val: number) => boolean) | undefined {
+export function useIgnoreFillValue(dataset: Dataset): IgnoreValue | undefined {
   const { attrValuesStore } = useDataContext();
 
   const rawFillValue = attrValuesStore.getSingle(dataset, '_FillValue');
-  const wrappedFillValue = castArray(rawFillValue);
-
-  const DTypedArray = typedArrayFromDType(dataset.type);
-
-  // Cast fillValue in the type of the dataset values to be able to use `===` for the comparison
-  const fillValue =
-    DTypedArray && typeof wrappedFillValue[0] === 'number'
-      ? new DTypedArray(wrappedFillValue as number[])[0]
-      : undefined;
 
   return useMemo(() => {
-    return fillValue !== undefined
-      ? (val: number) => val === fillValue
-      : undefined;
-  }, [fillValue]);
+    const DTypedArray = typedArrayFromDType(dataset.type);
+    const wrappedFillValue = castArray(rawFillValue);
+
+    // Cast fillValue in the type of the dataset values to be able to use `===` for the comparison
+    const fillValue =
+      DTypedArray && typeof wrappedFillValue[0] === 'number'
+        ? new DTypedArray(wrappedFillValue as number[])[0]
+        : undefined;
+
+    if (fillValue === undefined) {
+      return undefined;
+    }
+
+    return (val) => val === fillValue;
+  }, [dataset, rawFillValue]);
 }

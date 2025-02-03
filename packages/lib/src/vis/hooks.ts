@@ -2,6 +2,7 @@ import { createMemo } from '@h5web/shared/createMemo';
 import {
   type AnyNumArray,
   type Domain,
+  type IgnoreValue,
   ScaleType,
 } from '@h5web/shared/vis-models';
 import { getBounds, getValidDomainForScale } from '@h5web/shared/vis-utils';
@@ -35,7 +36,7 @@ export function useDomain(
   valuesArray: AnyNumArray,
   scaleType: ScaleType = ScaleType.Linear,
   errorArray?: AnyNumArray,
-  ignoreValue?: (val: number) => boolean,
+  ignoreValue?: IgnoreValue,
 ): Domain | undefined {
   // Distinct memoized calls allows for bounds to not be recomputed when scale type changes
   const bounds = useBounds(valuesArray, errorArray, ignoreValue);

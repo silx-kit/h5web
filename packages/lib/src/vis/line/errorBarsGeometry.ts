@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { type NumArray } from '@h5web/shared/vis-models';
+import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 
 import { type AxisScale } from '../models';
 import H5WebGeometry from '../shared/h5webGeometry';
@@ -11,7 +11,7 @@ interface Params {
   errors: NumArray;
   abscissaScale: AxisScale;
   ordinateScale: AxisScale;
-  ignoreValue?: (val: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 class ErrorBarsGeometry extends H5WebGeometry<'position', Params> {
@@ -31,10 +31,9 @@ class ErrorBarsGeometry extends H5WebGeometry<'position', Params> {
     } = this.params!;
 
     const value = ordinates[index];
-    const isIgnored = ignoreValue ? ignoreValue(value) : false;
     const bufferIndex = index * 2;
 
-    if (isIgnored) {
+    if (ignoreValue?.(value)) {
       this.attributes.position.setXYZ(bufferIndex, 0, 0, Z_OUT);
       this.attributes.position.setXYZ(bufferIndex + 1, 0, 0, Z_OUT);
       return;
