@@ -28,6 +28,7 @@ import {
   type StringType,
   type TimeType,
   type UnknownType,
+  type VLenType,
 } from './hdf5-models';
 
 export function getChildEntity(
@@ -114,15 +115,15 @@ export function compoundOrCplxType<T extends DType>(
   return compoundType(fields);
 }
 
+export function vlenType<T extends DType>(baseType: T): VLenType<T> {
+  return { class: DTypeClass.VLen, base: baseType };
+}
+
 export function arrayType<T extends DType>(
   baseType: T,
-  dims?: number[],
+  dims: number[],
 ): ArrayType<T> {
-  return {
-    class: dims ? DTypeClass.Array : DTypeClass.VLen,
-    base: baseType,
-    ...(dims && { dims }),
-  };
+  return { class: DTypeClass.Array, base: baseType, dims };
 }
 
 export function boolType(baseType: NumericType): BooleanType {

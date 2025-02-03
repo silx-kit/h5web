@@ -22,6 +22,7 @@ import {
   strType,
   timeType,
   unknownType,
+  vlenType,
 } from '@h5web/shared/hdf5-utils';
 import {
   type BigIntTypedArrayConstructor,
@@ -214,7 +215,7 @@ export function parseDType(type: H5GroveType): DType {
   }
 
   if (h5tClass === H5T_CLASS.VLEN) {
-    return arrayType(parseDType(type.base));
+    return vlenType(parseDType(type.base));
   }
 
   // `H5GroveType` doesn't allow for any other `h5tClass` value at this point,

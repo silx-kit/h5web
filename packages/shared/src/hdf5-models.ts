@@ -128,6 +128,7 @@ export type DType =
   | PrintableType
   | CompoundType
   | ArrayType
+  | VLenType
   | TimeType
   | BitfieldType
   | OpaqueType
@@ -166,9 +167,14 @@ export interface CompoundType<T extends DType = DType> {
 }
 
 export interface ArrayType<T extends DType = DType> {
-  class: DTypeClass.Array | DTypeClass.VLen;
+  class: DTypeClass.Array;
   base: T;
-  dims?: number[];
+  dims: number[];
+}
+
+export interface VLenType<T extends DType = DType> {
+  class: DTypeClass.VLen;
+  base: T;
 }
 
 export interface BooleanType {

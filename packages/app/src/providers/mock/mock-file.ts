@@ -13,6 +13,7 @@ import {
   printableCompoundType,
   strType,
   unknownType,
+  vlenType,
 } from '@h5web/shared/hdf5-utils';
 import {
   array,
@@ -87,9 +88,9 @@ export function makeMockFile(): GroupWithChildren {
           ],
         }),
         scalar('scalar_vlen', [1, 2, 3], {
-          type: arrayType(intType()),
+          type: vlenType(intType()),
           attributes: [
-            scalarAttr('attr', [1, 2, 3], { type: arrayType(intType()) }),
+            scalarAttr('attr', [1, 2, 3], { type: vlenType(intType()) }),
           ],
         }),
         scalar('scalar_enum', 2, {
