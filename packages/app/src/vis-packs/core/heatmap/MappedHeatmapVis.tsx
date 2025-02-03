@@ -38,8 +38,8 @@ function MappedHeatmapVis(props: Props) {
     dataset,
     value,
     dimMapping,
-    axisLabels,
-    axisValues,
+    axisLabels = [],
+    axisValues = [],
     title,
     toolbarContainer,
     config,
@@ -57,8 +57,9 @@ function MappedHeatmapVis(props: Props) {
     flipYAxis,
   } = config;
 
-  const { shape: dims } = dataset;
   const numArray = useToNumArray(value);
+
+  const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
 
@@ -101,12 +102,12 @@ function MappedHeatmapVis(props: Props) {
         showGrid={showGrid}
         invertColorMap={invertColorMap}
         abscissaParams={{
-          label: axisLabels?.[xDimIndex],
-          value: axisValues?.[xDimIndex],
+          label: axisLabels[xDimIndex],
+          value: axisValues[xDimIndex],
         }}
         ordinateParams={{
-          label: axisLabels?.[yDimIndex],
-          value: axisValues?.[yDimIndex],
+          label: axisLabels[yDimIndex],
+          value: axisValues[yDimIndex],
         }}
         flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}

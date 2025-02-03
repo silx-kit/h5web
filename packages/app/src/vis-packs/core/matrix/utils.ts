@@ -6,12 +6,12 @@ import {
   isNumericType,
 } from '@h5web/shared/guards';
 import {
-  type BooleanType,
   type ComplexType,
   type CompoundType,
   DTypeClass,
   type NumericType,
   type PrintableType,
+  type ScalarValue,
 } from '@h5web/shared/hdf5-models';
 import { type ValueFormatter } from '@h5web/shared/vis-models';
 import {
@@ -23,7 +23,7 @@ import { format } from 'd3-format';
 
 export function createNumericFormatter(
   notation: Notation,
-): ValueFormatter<NumericType> {
+): (val: ScalarValue<NumericType>) => string {
   switch (notation) {
     case Notation.FixedPoint:
       return format('.3f');
@@ -36,7 +36,7 @@ export function createNumericFormatter(
 
 export function createMatrixComplexFormatter(
   notation: Notation,
-): ValueFormatter<ComplexType> {
+): (val: ScalarValue<ComplexType>) => string {
   const formatStr =
     notation === Notation.FixedPoint
       ? '.2f'
@@ -48,24 +48,29 @@ export function createMatrixComplexFormatter(
 export function getFormatter(
   type: PrintableType,
   notation: Notation,
-): ValueFormatter<PrintableType> {
-  if (isComplexType(type)) {
-    return createMatrixComplexFormatter(notation);
-  }
+): (val: ScalarValue<PrintableType>) => string; // override distributivity of `ValueFormatter`
 
+export function getFormatter(
+  type: PrintableType,
+  notation: Notation,
+): ValueFormatter<PrintableType> {
   if (isNumericType(type)) {
     return createNumericFormatter(notation);
   }
 
   if (isBoolType(type)) {
-    return formatBool as ValueFormatter<BooleanType>;
+    return formatBool;
   }
 
   if (isEnumType(type)) {
     return createEnumFormatter(type.mapping);
   }
 
-  return (val) => (val as string).toString(); // call `toString()` for safety, in case type cast is wrong
+  if (isComplexType(type)) {
+    return createMatrixComplexFormatter(notation);
+  }
+
+  return (val: string) => val.toString(); // call `toString()` for safety, in case type cast is wrong
 }
 
 export function getCellWidth(

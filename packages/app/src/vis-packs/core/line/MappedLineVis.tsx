@@ -38,7 +38,6 @@ interface Props {
   auxLabels?: string[];
   auxValues?: ArrayValue<NumericLikeType>[];
   auxErrors?: (ArrayValue<NumericType> | undefined)[];
-  dims: number[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
   axisValues?: AxisMapping<ArrayValue<NumericType>>;
@@ -57,10 +56,9 @@ function MappedLineVis(props: Props) {
     auxLabels = [],
     auxValues = [],
     auxErrors = [],
-    dims,
     dimMapping,
-    axisLabels,
-    axisValues,
+    axisLabels = [],
+    axisValues = [],
     title,
     toolbarContainer,
     config,
@@ -76,20 +74,22 @@ function MappedLineVis(props: Props) {
     showErrors,
   } = config;
 
+  const { shape: dims } = dataset;
+  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
+  const hookArgs = [slicedDims, slicedMapping] as const;
+
   const numArray = useToNumArray(value);
   const numAuxArrays = useToNumArrays(auxValues);
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
-  const hookArgs = [slicedDims, slicedMapping] as const;
   const dataArray = useMappedArray(numArray, ...hookArgs);
-  const errorArray = useMappedArray(errors, ...hookArgs);
+  const errorsArray = useMappedArray(errors, ...hookArgs);
   const auxArrays = useMappedArrays(numAuxArrays, ...hookArgs);
   const auxErrorsArrays = useMappedArrays(auxErrors, ...hookArgs);
 
   const dataDomain = useDomain(
     dataArray,
     yScaleType,
-    showErrors ? errorArray : undefined,
+    showErrors ? errorsArray : undefined,
     ignoreValue,
   );
 
@@ -130,14 +130,14 @@ function MappedLineVis(props: Props) {
         curveType={curveType}
         showGrid={showGrid}
         abscissaParams={{
-          label: axisLabels?.[xDimIndex],
-          value: axisValues?.[xDimIndex],
+          label: axisLabels[xDimIndex],
+          value: axisValues[xDimIndex],
           scaleType: xScaleType,
         }}
         ordinateLabel={valueLabel}
         title={title}
         dtype={formatNumLikeType(dataset.type)}
-        errorsArray={errorArray}
+        errorsArray={errorsArray}
         showErrors={showErrors}
         auxiliaries={auxArrays.map((array, i) => ({
           label: auxLabels[i],

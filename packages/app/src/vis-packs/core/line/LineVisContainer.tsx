@@ -43,7 +43,6 @@ function LineVisContainer(props: VisContainerProps) {
             <MappedLineVis
               dataset={entity}
               value={value}
-              dims={dims}
               dimMapping={dimMapping}
               title={entity.name}
               toolbarContainer={toolbarContainer}

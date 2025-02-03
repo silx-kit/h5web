@@ -54,13 +54,17 @@ export interface Dims {
   cols: number;
 }
 
-// MappedTuple<string[]> => string[]
-// MappedTuple<number[]> => number[]
-// MappedTuple<number[], string> => string[]
-// MappedTuple<[number, number]> => [number, number]
-// MappedTuple<[number, number], string> => [string, string]
+// MappedTuple<string[]> => `string[]`
+// MappedTuple<number[]> => `number[]`
+// MappedTuple<number[], string> => `string[]`
+// MappedTuple<[number, number]> => `[number, number]`
+// MappedTuple<[number, number], string> => `[string, string]`
 export type MappedTuple<T extends unknown[], U = T[number]> = {
   [index in keyof T]: U;
 };
 
-export type ValueFormatter<T extends DType> = (val: ScalarValue<T>) => string;
+// ValueFormatter<StringType> => `(val: string) => string`
+// ValueFormatter<NumericLikeType> => `(val: number) => string | (val: number | boolean) => string`
+export type ValueFormatter<T extends DType> = T extends DType
+  ? (val: ScalarValue<T>) => string
+  : never;
