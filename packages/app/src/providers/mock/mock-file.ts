@@ -160,6 +160,7 @@ export function makeMockFile(): GroupWithChildren {
       group('typed_arrays', [
         array('uint8', { type: intType(false, 8) }),
         array('int16', { type: intType(true, 16) }),
+        array('int64', { type: intType(true, 64) }),
         array('float32', { type: floatType(32) }),
         array('float64', { type: floatType(64) }),
         withImageAttr(array('uint8_rgb', { type: intType(false, 8) })),
@@ -274,6 +275,13 @@ export function makeMockFile(): GroupWithChildren {
             signal: array('scatter_data'),
             axes: { X: array('X'), Y_scatter: array('Y_scatter') },
             axesAttr: ['X', 'Y_scatter'],
+          }),
+          nxData('bigint', {
+            signal: array('twoD_bigint'),
+            auxiliary: { secondary_bigint: array('secondary_bigint') },
+            auxAttr: ['secondary_bigint'],
+            axes: { X_bigint: array('X_bigint') },
+            axesAttr: ['.', 'X_bigint'],
           }),
           nxGroup('old-style', 'NXdata', {
             children: [

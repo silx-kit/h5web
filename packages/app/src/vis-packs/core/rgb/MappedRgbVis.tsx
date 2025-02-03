@@ -10,7 +10,12 @@ import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import {
+  useMappedArray,
+  useSlicedDimsAndMapping,
+  useToNumArray,
+  useToNumArrays,
+} from '../hooks';
 import { type RgbVisConfig } from './config';
 import RgbToolbar from './RgbToolbar';
 
@@ -40,8 +45,12 @@ function MappedRgbVis(props: Props) {
   const { showGrid, keepRatio, imageType, flipXAxis, flipYAxis } = config;
   const { shape: dims } = dataset;
 
+  const numAxisArrays = useToNumArrays(axisValues);
+
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const dataArray = useMappedArray(value, slicedDims, slicedMapping);
+
+  const numArray = useToNumArray(value);
+  const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
 
   const xDimIndex = dimMapping.indexOf('x');
   const yDimIndex = dimMapping.indexOf('y');
@@ -59,11 +68,11 @@ function MappedRgbVis(props: Props) {
         imageType={imageType}
         abscissaParams={{
           label: axisLabels[xDimIndex],
-          value: axisValues[xDimIndex],
+          value: numAxisArrays[xDimIndex],
         }}
         ordinateParams={{
           label: axisLabels[yDimIndex],
-          value: axisValues[yDimIndex],
+          value: numAxisArrays[yDimIndex],
         }}
         flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}

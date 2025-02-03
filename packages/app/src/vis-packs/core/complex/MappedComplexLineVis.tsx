@@ -16,6 +16,7 @@ import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { useToNumArrays } from '../hooks';
 import { type LineConfig } from '../line/config';
 import { DEFAULT_DOMAIN } from '../utils';
 import ComplexLineToolbar from './ComplexLineToolbar';
@@ -58,6 +59,7 @@ function MappedComplexLineVis(props: Props) {
   const { customDomain, yScaleType, xScaleType, curveType, showGrid } =
     lineConfig;
 
+  const numAxisArrays = useToNumArrays(axisValues);
   const [dataArray, ...auxArrays] = useMappedComplexArrays(
     [value, ...auxValues],
     dims,
@@ -99,7 +101,7 @@ function MappedComplexLineVis(props: Props) {
         showGrid={showGrid}
         abscissaParams={{
           label: axisLabels[xDimIndex],
-          value: axisValues[xDimIndex],
+          value: numAxisArrays[xDimIndex],
           scaleType: xScaleType,
         }}
         ordinateLabel={ordinateLabel}

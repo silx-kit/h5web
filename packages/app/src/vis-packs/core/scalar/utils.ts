@@ -31,5 +31,5 @@ export function getFormatter<T extends PrintableType>(
     return createEnumFormatter(dataset.type.mapping);
   }
 
-  return (val: number | string) => val.toString();
+  return (val: number | bigint | string) => val.toString();
 }

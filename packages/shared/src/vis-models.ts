@@ -1,4 +1,9 @@
-import { type NdArray, type TypedArray } from 'ndarray';
+import {
+  type MaybeBigInt64Array,
+  type MaybeBigUint64Array,
+  type NdArray,
+  type TypedArray,
+} from 'ndarray';
 
 import { type DType, type ScalarValue } from './hdf5-models';
 
@@ -15,6 +20,8 @@ export type TypedArrayConstructor =
   | Uint32ArrayConstructor
   | Float32ArrayConstructor
   | Float64ArrayConstructor;
+
+export type BigIntTypedArray = MaybeBigInt64Array | MaybeBigUint64Array;
 
 export type Domain = [min: number, max: number];
 export type Axis = 'x' | 'y';

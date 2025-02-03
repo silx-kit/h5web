@@ -31,6 +31,7 @@ const mockStore = {
 
 const scalarInt = dataset('int', intType(), []);
 const scalarUint = dataset('uint', intType(false), []);
+const scalarBigInt = dataset('bigint', intType(true, 64), []);
 const scalarFloat = dataset('float', floatType(), []);
 const scalarStr = dataset('float', strType(), []);
 const scalarBool = dataset('bool', boolType(intType(true, 8)), []);
@@ -38,6 +39,7 @@ const scalarCplx = dataset('cplx', cplxType(floatType()), []);
 const scalarCompound = dataset('comp', compoundType({ int: intType() }), []);
 const oneDInt = dataset('int_1d', intType(), [5]);
 const oneDUint = dataset('uint_1d', intType(false), [5]);
+const oneDBigUint = dataset('biguint_1d', intType(false, 64), [5]);
 const oneDBool = dataset('bool_1d', boolType(intType(true, 8)), [3]);
 const oneDCplx = dataset('cplx_1d', cplxType(floatType()), [10]);
 const oneDCompound = dataset('comp_1d', compoundType({ int: intType() }), [5]);
@@ -82,6 +84,7 @@ describe('Scalar', () => {
   it('should support dataset with printable type and scalar shape', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
     expect(supportsDataset(scalarUint)).toBe(true);
+    expect(supportsDataset(scalarBigInt)).toBe(true);
     expect(supportsDataset(scalarFloat)).toBe(true);
     expect(supportsDataset(scalarStr)).toBe(true);
     expect(supportsDataset(scalarBool)).toBe(true);
@@ -103,6 +106,7 @@ describe('Matrix', () => {
   it('should support array dataset with printable type and at least one dimension', () => {
     expect(supportsDataset(oneDInt)).toBe(true);
     expect(supportsDataset(oneDUint)).toBe(true);
+    expect(supportsDataset(oneDBigUint)).toBe(true);
     expect(supportsDataset(twoDStr)).toBe(true);
     expect(supportsDataset(twoDCplx)).toBe(true);
     expect(supportsDataset(threeDFloat)).toBe(true);
@@ -124,6 +128,7 @@ describe('Line', () => {
   it('should support array dataset with numeric-like type and at least one dimension', () => {
     expect(supportsDataset(oneDInt)).toBe(true);
     expect(supportsDataset(oneDUint)).toBe(true);
+    expect(supportsDataset(oneDBigUint)).toBe(true);
     expect(supportsDataset(oneDBool)).toBe(true);
     expect(supportsDataset(twoDBool)).toBe(true);
     expect(supportsDataset(threeDFloat)).toBe(true);

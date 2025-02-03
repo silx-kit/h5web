@@ -9,7 +9,11 @@ import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import {
+  useMappedArray,
+  useSlicedDimsAndMapping,
+  useToNumArray,
+} from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import { type SurfaceConfig } from './config';
 import SurfaceToolbar from './SurfaceToolbar';
@@ -29,7 +33,9 @@ function MappedSurfaceVis(props: Props) {
 
   const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const dataArray = useMappedArray(value, slicedDims, slicedMapping);
+
+  const numArray = useToNumArray(value);
+  const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
 
   const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);

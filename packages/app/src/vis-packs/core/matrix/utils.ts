@@ -3,7 +3,8 @@ import {
   isBoolType,
   isComplexType,
   isEnumType,
-  isNumericType,
+  isFloatType,
+  isIntegerType,
 } from '@h5web/shared/guards';
 import {
   type ComplexType,
@@ -21,9 +22,20 @@ import {
 } from '@h5web/shared/vis-utils';
 import { format } from 'd3-format';
 
-export function createNumericFormatter(
+export function createIntegerFormatter(
   notation: Notation,
 ): (val: ScalarValue<NumericType>) => string {
+  if (notation === Notation.Scientific) {
+    const formatter = format('.3e');
+    return (val) => formatter(Number(val));
+  }
+
+  return (val) => val.toString();
+}
+
+export function createFloatFormatter(
+  notation: Notation,
+): (val: number) => string {
   switch (notation) {
     case Notation.FixedPoint:
       return format('.3f');
@@ -54,8 +66,12 @@ export function getFormatter(
   type: PrintableType,
   notation: Notation,
 ): ValueFormatter<PrintableType> {
-  if (isNumericType(type)) {
-    return createNumericFormatter(notation);
+  if (isIntegerType(type)) {
+    return createIntegerFormatter(notation);
+  }
+
+  if (isFloatType(type)) {
+    return createFloatFormatter(notation);
   }
 
   if (isBoolType(type)) {

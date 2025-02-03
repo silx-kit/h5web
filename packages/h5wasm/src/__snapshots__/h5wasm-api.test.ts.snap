@@ -182,7 +182,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": true,
       "size": 64,
     },
-    "value": -9223372036854776000,
+    "value": -9223372036854775808n,
   },
   {
     "name": "int64_2D",
@@ -204,14 +204,14 @@ exports[`test file matches snapshot 1`] = `
       "signed": true,
       "size": 64,
     },
-    "value": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-    ],
+    "value": BigInt64Array {
+      "0": 0n,
+      "1": 1n,
+      "2": 2n,
+      "3": 3n,
+      "4": 4n,
+      "5": 5n,
+    },
   },
   {
     "name": "uint8_scalar",
@@ -374,7 +374,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": false,
       "size": 64,
     },
-    "value": 18446744073709552000,
+    "value": 18446744073709551615n,
   },
   {
     "name": "uint64_3D",
@@ -397,16 +397,16 @@ exports[`test file matches snapshot 1`] = `
       "signed": false,
       "size": 64,
     },
-    "value": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      18446744073709552000,
-    ],
+    "value": BigUint64Array {
+      "0": 0n,
+      "1": 1n,
+      "2": 2n,
+      "3": 3n,
+      "4": 4n,
+      "5": 5n,
+      "6": 6n,
+      "7": 18446744073709551615n,
+    },
   },
   {
     "name": "float16_scalar",
@@ -1434,7 +1434,7 @@ exports[`test file matches snapshot 1`] = `
       },
     },
     "value": [
-      1,
+      1n,
       2,
       "foo",
     ],
@@ -1512,17 +1512,17 @@ exports[`test file matches snapshot 1`] = `
     },
     "value": [
       [
-        1,
+        1n,
         NaN,
         "foo",
       ],
       [
-        2,
+        2n,
         Infinity,
         "bar",
       ],
       [
-        3,
+        3n,
         -0,
         "baz",
       ],
@@ -1667,7 +1667,7 @@ exports[`test file matches snapshot 1`] = `
           1,
           2,
         ],
-        3,
+        3n,
       ],
     ],
   },
@@ -1758,30 +1758,30 @@ exports[`test file matches snapshot 1`] = `
           0,
           1,
         ],
-        [
-          0,
-        ],
+        BigUint64Array {
+          "0": 0n,
+        },
       ],
       [
         [
           2,
           3,
         ],
-        [
-          0,
-          1,
-        ],
+        BigUint64Array {
+          "0": 0n,
+          "1": 1n,
+        },
       ],
       [
         [
           4,
           5,
         ],
-        [
-          0,
-          1,
-          2,
-        ],
+        BigUint64Array {
+          "0": 0n,
+          "1": 1n,
+          "2": 2n,
+        },
       ],
     ],
   },
@@ -2225,18 +2225,18 @@ exports[`test file matches snapshot 1`] = `
       "class": "Array (variable length)",
     },
     "value": [
-      [
-        0,
-      ],
-      [
-        0,
-        1,
-      ],
-      [
-        0,
-        1,
-        2,
-      ],
+      BigInt64Array {
+        "0": 0n,
+      },
+      BigInt64Array {
+        "0": 0n,
+        "1": 1n,
+      },
+      BigInt64Array {
+        "0": 0n,
+        "1": 1n,
+        "2": 2n,
+      },
     ],
   },
   {
