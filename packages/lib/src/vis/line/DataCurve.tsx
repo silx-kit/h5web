@@ -1,4 +1,4 @@
-import { type NumArray } from '@h5web/shared/vis-models';
+import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 import { type ThreeEvent } from '@react-three/fiber';
 import { useCallback } from 'react';
 
@@ -20,7 +20,7 @@ interface Props {
   onDataPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
   onDataPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
-  ignoreValue?: (val: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 function DataCurve(props: Props) {

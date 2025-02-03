@@ -112,6 +112,10 @@ export function makeMockFile(): GroupWithChildren {
       group('nD_datasets', [
         array('oneD_linear'),
         array('oneD'),
+        array('oneD_fillvalue', {
+          valueId: 'oneD',
+          attributes: [scalar('_FillValue', 400)],
+        }),
         array('oneD_bigint'),
         array('oneD_cplx'),
         array('oneD_compound', {
@@ -128,6 +132,10 @@ export function makeMockFile(): GroupWithChildren {
           type: enumType(intType(false, 8), ENUM_MAPPING),
         }),
         array('twoD'),
+        array('twoD_fillvalue', {
+          valueId: 'twoD',
+          attributes: [scalar('_FillValue', 400)],
+        }),
         array('twoD_bigint'),
         array('twoD_cplx'),
         array('twoD_compound', {

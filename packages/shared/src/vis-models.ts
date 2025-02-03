@@ -54,6 +54,8 @@ export interface Dims {
   cols: number;
 }
 
+export type IgnoreValue = (val: number) => boolean;
+
 // MappedTuple<string[]> => `string[]`
 // MappedTuple<number[]> => `number[]`
 // MappedTuple<number[], string> => `string[]`

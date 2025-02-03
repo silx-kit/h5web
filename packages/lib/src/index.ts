@@ -165,6 +165,7 @@ export type {
   Axis,
   ColorScaleType,
   AxisScaleType,
+  IgnoreValue,
 } from '@h5web/shared/vis-models';
 
 export type {

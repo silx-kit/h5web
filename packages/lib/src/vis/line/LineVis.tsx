@@ -2,6 +2,7 @@ import { assertDefined, assertLength } from '@h5web/shared/guards';
 import {
   type AxisScaleType,
   type Domain,
+  type IgnoreValue,
   type NumArray,
   ScaleType,
 } from '@h5web/shared/vis-models';
@@ -40,7 +41,7 @@ interface Props extends ClassStyleAttrs {
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
   testid?: string;
-  ignoreValue?: (val: number) => boolean;
+  ignoreValue?: IgnoreValue;
 }
 
 function LineVis(props: Props) {

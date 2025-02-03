@@ -1,5 +1,6 @@
 import {
   type Domain,
+  type IgnoreValue,
   type NumArray,
   ScaleType,
 } from '@h5web/shared/vis-models';
@@ -219,7 +220,7 @@ export function getDataTexture(
 
 export function getMask(
   dataArray: NdArray<NumArray>,
-  ignoreValue: ((v: number) => boolean) | undefined,
+  ignoreValue?: IgnoreValue,
 ): NdArray<Uint8Array> | undefined {
   if (!ignoreValue) {
     return undefined;
