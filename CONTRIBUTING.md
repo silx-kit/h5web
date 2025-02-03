@@ -26,13 +26,21 @@
 
 ## Quick start
 
+Install [Node](https://nodejs.org/en) and [pnpm](https://pnpm.io/), following
+the version ranges declared in the `engines` field of the root `package.json`
+file.
+
+> If you work on multiple projects that require different versions of Node and
+> pnpm, we recommend installing them in an isolated environement (e.g. with
+> [Conda](https://docs.conda.io/projects/conda/en/stable/)) or with a
+> specialised tool like [Volta](https://docs.volta.sh/).
+
+Then, run:
+
 ```bash
 pnpm install
 pnpm start
 ```
-
-Once the development server has started, press `o` to open the development URL
-in your browser, or `h` to show all the available keyboard shortcuts.
 
 ## Development
 
