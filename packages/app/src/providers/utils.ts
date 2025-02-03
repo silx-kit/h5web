@@ -11,7 +11,10 @@ import {
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
-import { type TypedArrayConstructor } from '@h5web/shared/vis-models';
+import {
+  type BigIntTypedArrayConstructor,
+  type TypedArrayConstructor,
+} from '@h5web/shared/vis-models';
 import { type AxiosProgressEvent, isAxiosError } from 'axios';
 
 import { type DataProviderApi } from './api';
@@ -33,7 +36,7 @@ export function typedArrayFromDType(
         return Int16Array;
       case 32:
         return Int32Array;
-      case 64: // No support for 64-bit integer values in JS
+      case 64: // combine with `bigIntTypedArrayFromDType` when relevant
         return undefined;
     }
   }
@@ -46,14 +49,15 @@ export function typedArrayFromDType(
         return Uint16Array;
       case 32:
         return Uint32Array;
-      case 64: // No support for 64-bit unsigned integer values in JS
+      case 64: // combine with `bigIntTypedArrayFromDType` when relevant
         return undefined;
     }
   }
 
   if (isFloatType(dtype)) {
     switch (dtype.size) {
-      case 16: // No support for 16-bit floating values in JS
+      case 16: // no support for 16-bit floating values in JS
+      case 128: // no support for 128-bit floating values in JS
         return undefined;
       case 32:
         return Float32Array;
@@ -63,6 +67,16 @@ export function typedArrayFromDType(
   }
 
   return undefined;
+}
+
+export function bigIntTypedArrayFromDType(
+  dtype: DType,
+): BigIntTypedArrayConstructor | undefined {
+  if (!isIntegerType(dtype) || dtype.size !== 64) {
+    return undefined;
+  }
+
+  return dtype.signed ? BigInt64Array : BigUint64Array;
 }
 
 export async function getValueOrError(

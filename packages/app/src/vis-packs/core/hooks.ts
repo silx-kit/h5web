@@ -16,7 +16,10 @@ import { useMemo } from 'react';
 import { type DimensionMapping } from '../../dimension-mapper/models';
 import { isAxis } from '../../dimension-mapper/utils';
 import { useDataContext } from '../../providers/DataProvider';
-import { typedArrayFromDType } from '../../providers/utils';
+import {
+  bigIntTypedArrayFromDType,
+  typedArrayFromDType,
+} from '../../providers/utils';
 import {
   applyMapping,
   getBaseArray,
@@ -191,8 +194,11 @@ export function useIgnoreFillValue(dataset: Dataset): IgnoreValue | undefined {
   const rawFillValue = attrValuesStore.getSingle(dataset, '_FillValue');
 
   return useMemo(() => {
-    const DTypedArray = typedArrayFromDType(dataset.type);
     const wrappedFillValue = castArray(rawFillValue);
+
+    const DTypedArray = bigIntTypedArrayFromDType(dataset.type)
+      ? Float64Array // matches `useToNumArray` logic
+      : typedArrayFromDType(dataset.type);
 
     // Cast fillValue in the type of the dataset values to be able to use `===` for the comparison
     const fillValue =
