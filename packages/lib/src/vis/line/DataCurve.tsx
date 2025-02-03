@@ -1,11 +1,11 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 import { type ThreeEvent } from '@react-three/fiber';
-import { useCallback } from 'react';
 
 import ErrorBars from './ErrorBars';
 import Glyphs from './Glyphs';
 import Line from './Line';
 import { CurveType, GlyphType } from './models';
+import { useEventHandler } from './utils';
 
 interface Props {
   abscissas: NumArray;
@@ -17,6 +17,9 @@ interface Props {
   glyphType?: GlyphType;
   glyphSize?: number;
   visible?: boolean;
+  onLineClick?: (index: number, event: ThreeEvent<MouseEvent>) => void;
+  onLineEnter?: (index: number, event: ThreeEvent<PointerEvent>) => void;
+  onLineLeave?: (index: number, event: ThreeEvent<PointerEvent>) => void;
   onDataPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
   onDataPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
@@ -34,44 +37,14 @@ function DataCurve(props: Props) {
     glyphType = GlyphType.Cross,
     glyphSize = 6,
     visible = true,
+    onLineClick,
+    onLineEnter,
+    onLineLeave,
     onDataPointClick,
     onDataPointEnter,
     onDataPointLeave,
     ignoreValue,
   } = props;
-
-  const handleClick = useCallback(
-    (evt: ThreeEvent<MouseEvent>) => {
-      const { index } = evt;
-
-      if (onDataPointClick && index !== undefined) {
-        onDataPointClick(index, evt);
-      }
-    },
-    [onDataPointClick],
-  );
-
-  const handlePointerEnter = useCallback(
-    (evt: ThreeEvent<PointerEvent>) => {
-      const { index } = evt;
-
-      if (onDataPointEnter && index !== undefined) {
-        onDataPointEnter(index, evt);
-      }
-    },
-    [onDataPointEnter],
-  );
-
-  const handlePointerLeave = useCallback(
-    (evt: ThreeEvent<PointerEvent>) => {
-      const { index } = evt;
-
-      if (onDataPointLeave && index !== undefined) {
-        onDataPointLeave(index, evt);
-      }
-    },
-    [onDataPointLeave],
-  );
 
   return (
     <>
@@ -81,6 +54,9 @@ function DataCurve(props: Props) {
         color={color}
         ignoreValue={ignoreValue}
         visible={curveType !== CurveType.GlyphsOnly && visible}
+        onClick={useEventHandler(onLineClick)}
+        onPointerEnter={useEventHandler(onLineEnter)}
+        onPointerLeave={useEventHandler(onLineLeave)}
       />
       <Glyphs
         abscissas={abscissas}
@@ -90,9 +66,9 @@ function DataCurve(props: Props) {
         size={glyphSize}
         ignoreValue={ignoreValue}
         visible={curveType !== CurveType.LineOnly && visible}
-        onClick={onDataPointClick && handleClick}
-        onPointerEnter={onDataPointEnter && handlePointerEnter}
-        onPointerLeave={onDataPointLeave && handlePointerLeave}
+        onClick={useEventHandler(onDataPointClick)}
+        onPointerEnter={useEventHandler(onDataPointEnter)}
+        onPointerLeave={useEventHandler(onDataPointLeave)}
       />
       {errors && (
         <ErrorBars
