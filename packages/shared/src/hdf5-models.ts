@@ -216,7 +216,7 @@ export interface UnknownType {
 export type ScalarValue<T extends DType = DType> = T extends NumericLikeType
   ?
       | number
-      | (T extends NumericType ? bigint : never) // let providers return bigints
+      | (T extends IntegerType ? bigint : never) // let providers return bigints
       | (T extends BooleanType ? boolean : never) // let providers return booleans
   : T extends StringType
     ? string
@@ -230,7 +230,7 @@ export type ArrayValue<T extends DType = DType> = T extends NumericLikeType
   ?
       | TypedArray
       | number[]
-      | (T extends NumericType ? BigIntTypedArray | bigint[] : never)
+      | (T extends IntegerType ? BigIntTypedArray | bigint[] : never)
       | (T extends BooleanType ? boolean[] : never) // don't use `ScalarValue` to avoid `(number | boolean)[]`
   : ScalarValue<T>[];
 

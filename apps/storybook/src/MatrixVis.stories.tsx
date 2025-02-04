@@ -13,7 +13,7 @@ const typedTwoD = toTypedNdArray(twoD, Float32Array);
 const cplxTwoD = mockValues.twoD_cplx();
 
 const formatNum = format('.3e');
-const formatCplx = createComplexFormatter('.2e', true);
+const formatCplx = createComplexFormatter(format('.2e'));
 
 const meta = {
   title: 'Visualizations/MatrixVis',

@@ -25,7 +25,7 @@ function NotationToggleGroup(props: Props) {
       >
         <ToggleGroup.Btn label="Auto" value={Notation.Auto} />
         <ToggleGroup.Btn label="Scientific" value={Notation.Scientific} />
-        <ToggleGroup.Btn label="Fixed-point" value={Notation.FixedPoint} />
+        <ToggleGroup.Btn label="Exact" value={Notation.Exact} />
       </ToggleGroup>
     </div>
   );
