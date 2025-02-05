@@ -39,7 +39,7 @@ export const formatBound = format('.3~e');
 export const formatBoundInput = format('.5~e');
 export const formatTooltipVal = format('.5~g');
 export const formatTooltipErr = format('.3~g');
-export const formatScalarComplex = createComplexFormatter('.12~g');
+export const formatScalarComplex = createComplexFormatter(format('.12~g'));
 
 const TICK_PRECISION = 3;
 const TICK_DECIMAL_REGEX = /0\.(\d+)$/u; // can start with minus sign
@@ -64,24 +64,13 @@ export function formatBool(value: ScalarValue<BooleanType>): string {
 }
 
 export function createComplexFormatter(
-  specifier: string,
-  full = false,
+  formatReal: (val: number) => string,
+  formatImag = formatReal,
 ): (val: ScalarValue<ComplexType>) => string {
-  const formatVal = format(specifier);
-
   return (value) => {
     const [real, imag] = value;
-
-    if (imag === 0 && !full) {
-      return formatVal(real);
-    }
-
-    if (real === 0 && !full) {
-      return `${formatVal(imag)} i`;
-    }
-
     const sign = Math.sign(imag) >= 0 ? ' + ' : ' − ';
-    return `${formatVal(real)}${sign}${formatVal(Math.abs(imag))} i`;
+    return `${formatReal(real)}${sign}${formatImag(Math.abs(imag))} i`;
   };
 }
 

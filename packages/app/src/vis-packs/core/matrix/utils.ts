@@ -7,7 +7,6 @@ import {
   isIntegerType,
 } from '@h5web/shared/guards';
 import {
-  type ComplexType,
   type CompoundType,
   DTypeClass,
   type NumericType,
@@ -37,8 +36,8 @@ export function createFloatFormatter(
   notation: Notation,
 ): (val: number) => string {
   switch (notation) {
-    case Notation.FixedPoint:
-      return format('.3f');
+    case Notation.Exact:
+      return (val) => val.toString();
     case Notation.Scientific:
       return format('.3e');
     default:
@@ -46,21 +45,10 @@ export function createFloatFormatter(
   }
 }
 
-export function createMatrixComplexFormatter(
+export function getFormatter<T extends PrintableType>(
+  type: T,
   notation: Notation,
-): (val: ScalarValue<ComplexType>) => string {
-  const formatStr =
-    notation === Notation.FixedPoint
-      ? '.2f'
-      : `.3~${notation === Notation.Scientific ? 'e' : 'g'}`;
-
-  return createComplexFormatter(formatStr, true);
-}
-
-export function getFormatter(
-  type: PrintableType,
-  notation: Notation,
-): (val: ScalarValue<PrintableType>) => string; // override distributivity of `ValueFormatter`
+): (val: ScalarValue<T>) => string; // override distributivity of `ValueFormatter`
 
 export function getFormatter(
   type: PrintableType,
@@ -83,10 +71,13 @@ export function getFormatter(
   }
 
   if (isComplexType(type)) {
-    return createMatrixComplexFormatter(notation);
+    return createComplexFormatter(
+      getFormatter(type.realType, notation),
+      getFormatter(type.imagType, notation),
+    );
   }
 
-  return (val: string) => val.toString(); // call `toString()` for safety, in case type cast is wrong
+  return (val: string) => val.toString();
 }
 
 export function getCellWidth(
