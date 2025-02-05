@@ -1,5 +1,6 @@
 import { ScaleType, VisCanvas } from '@h5web/lib';
 import { type Meta, type StoryFn, type StoryObj } from '@storybook/react';
+import { format } from 'd3-format';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -31,6 +32,23 @@ export const NiceDomains = {
   args: {
     abscissaConfig: { visDomain: [-1.2, 2.8], showGrid: true, nice: true },
     ordinateConfig: { visDomain: [-1.2, 2.8], showGrid: true, nice: false },
+  },
+} satisfies Story;
+
+export const TickFormatters = {
+  args: {
+    abscissaConfig: {
+      visDomain: [-1.2, 2.8],
+      showGrid: true,
+      formatTick: (val) => {
+        return Math.round(val) === val ? val.toString() : val.toFixed(3);
+      },
+    },
+    ordinateConfig: {
+      visDomain: [50, 100],
+      showGrid: true,
+      formatTick: format('.2e'),
+    },
   },
 } satisfies Story;
 
