@@ -1,3 +1,4 @@
+import { useToggle } from '@react-hookz/web';
 import { type ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
 import { type ReactElement, useCallback } from 'react';
@@ -10,7 +11,11 @@ import VisMesh from './VisMesh';
 interface Props {
   size?: Size;
   guides?: 'horizontal' | 'vertical' | 'both';
-  renderTooltip: (x: number, y: number) => ReactElement | undefined;
+  renderTooltip: (
+    x: number,
+    y: number,
+    exact: boolean,
+  ) => ReactElement | undefined;
 }
 
 function TooltipMesh(props: Props) {
@@ -26,6 +31,8 @@ function TooltipMesh(props: Props) {
     showTooltip,
     hideTooltip,
   } = useTooltip<Coords>();
+
+  const [isExact, toggleExact] = useToggle();
 
   // Show and/or update tooltip when pointer moves except when dragging
   const onPointerMove = useCallback(
@@ -57,7 +64,16 @@ function TooltipMesh(props: Props) {
   }, [hideTooltip, tooltipOpen]);
 
   // Hide tooltip when user starts panning
-  const onPointerDown = useCallback(() => hideTooltip(), [hideTooltip]);
+  const onPointerDown = useCallback(
+    (evt: ThreeEvent<PointerEvent>) => {
+      if (evt.button === 1) {
+        toggleExact();
+      } else {
+        hideTooltip();
+      }
+    },
+    [hideTooltip, toggleExact],
+  );
 
   // Show tooltip after dragging, if pointer is released inside the vis viewport
   const onPointerUp = useCallback(
@@ -71,7 +87,7 @@ function TooltipMesh(props: Props) {
     [height, onPointerMove, width],
   );
 
-  const content = tooltipData && renderTooltip(...tooltipData);
+  const content = tooltipData && renderTooltip(...tooltipData, isExact);
 
   return (
     <>
