@@ -42,6 +42,7 @@ export interface AxisConfig {
   label?: string;
   flip?: boolean;
   nice?: boolean;
+  formatTick?: (val: number) => string;
 }
 
 export type VisScaleType = ColorScaleType | [ScaleType.Gamma, number];

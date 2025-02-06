@@ -49,6 +49,7 @@ function Axis(props: Props) {
     showGrid,
     label,
     nice = false,
+    formatTick,
   } = config;
   // Restrain ticks scales to visible domains
   const scale = createScale(scaleType, {
@@ -76,7 +77,9 @@ function Axis(props: Props) {
         >
           <AxisComponent
             scale={scale}
-            tickFormat={getTickFormatter(domain, axisLength, scaleType)}
+            tickFormat={
+              formatTick || getTickFormatter(domain, axisLength, scaleType)
+            }
             label={label}
             labelOffset={offset - (isAbscissa ? 32 : 36)}
             hideAxisLine={showGrid}
