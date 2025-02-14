@@ -25,6 +25,12 @@ function RawVisContainer(props: VisContainerProps) {
         dataset={entity}
         render={(value) => {
           const isImage = value instanceof Uint8Array && isBinaryImage(value);
+          // 判断是否多张图片
+          const isImageArray =
+            Array.isArray(value) &&
+            value.length > 0 &&
+            value[0] instanceof Uint8Array &&
+            isBinaryImage(value[0]);
 
           return (
             <>
@@ -42,9 +48,10 @@ function RawVisContainer(props: VisContainerProps) {
                   toolbarContainer,
                 )}
 
-              {isImage ? (
+              {isImage || isImageArray ? (
                 <RawImageVis
                   className={visualizerStyles.vis}
+                  type={isImageArray ? 'array' : 'single'}
                   value={value}
                   title={entity.name}
                   fit={config.fitImage}
