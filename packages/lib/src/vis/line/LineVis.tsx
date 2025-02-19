@@ -124,7 +124,7 @@ function LineVis(props: Props) {
 
         <TooltipMesh
           guides="vertical"
-          renderTooltip={(x) => {
+          renderTooltip={(x, _, exact) => {
             const xi = abscissaToIndex(x);
             const abscissa = abscissas[xi];
 
@@ -137,7 +137,7 @@ function LineVis(props: Props) {
 
             return (
               <>
-                {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(abscissa)}`}
+                {`${abscissaLabel ?? 'x'} = ${exact ? abscissa : formatTooltipVal(abscissa)}`}
 
                 <div className={styles.tooltipValue}>
                   {auxiliaries.length > 0 && (
@@ -148,8 +148,9 @@ function LineVis(props: Props) {
                     />
                   )}
                   <span>
-                    <strong>{formatTooltipVal(value)}</strong>
-                    {error !== undefined && ` ±${formatTooltipErr(error)}`}
+                    <strong>{exact ? value : formatTooltipVal(value)}</strong>
+                    {error !== undefined &&
+                      ` ±${exact ? error : formatTooltipErr(error)}`}
                     {dtype && <em>{` (${dtype})`}</em>}
                   </span>
                 </div>
@@ -162,8 +163,9 @@ function LineVis(props: Props) {
                       style={{ color: auxColors[index % auxColors.length] }}
                     />
                     {label ? `${label} = ` : ''}
-                    {formatTooltipVal(array.get(xi))}
-                    {errors && ` ±${formatTooltipErr(errors.get(xi))}`}
+                    {exact ? array.get(xi) : formatTooltipVal(array.get(xi))}
+                    {errors &&
+                      ` ±${exact ? errors.get(xi) : formatTooltipErr(errors.get(xi))}`}
                   </div>
                 ))}
               </>
