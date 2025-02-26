@@ -4,11 +4,11 @@ import {
   type Dataset,
   type Entity,
   type ProvidedEntity,
-  type Value,
 } from '@h5web/shared/hdf5-models';
 import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 
 import {
+  type Exporter,
   type ExportFormat,
   type ExportURL,
   type ValuesStoreParams,
@@ -35,11 +35,11 @@ export abstract class DataProviderApi {
    * - `() => Promise<Blob>`  Export is generated client-side
    * - `undefined`            Export scenario is not supported
    */
-  public getExportURL?<D extends Dataset<ArrayShape>>( // optional, so can't be abstract
+  public getExportURL?( // optional, so can't be abstract
     format: ExportFormat,
-    dataset: D,
-    selection: string | undefined,
-    value: Value<D>,
+    dataset: Dataset<ArrayShape>,
+    selection?: string,
+    builtInExporter?: Exporter,
   ): ExportURL;
 
   public getSearchablePaths?(path: string): Promise<string[]>; // optional, so can't be abstract

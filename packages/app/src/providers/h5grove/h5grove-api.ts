@@ -6,7 +6,6 @@ import {
   DTypeClass,
   type Entity,
   type ProvidedEntity,
-  type Value,
 } from '@h5web/shared/hdf5-models';
 import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 import axios, {
@@ -17,6 +16,7 @@ import axios, {
 
 import { DataProviderApi } from '../api';
 import {
+  type Exporter,
   type ExportFormat,
   type ExportURL,
   type ValuesStoreParams,
@@ -33,6 +33,8 @@ import {
   isH5GroveError,
   parseEntity,
 } from './utils';
+
+const SUPPORTED_EXPORT_FORMATS = new Set<ExportFormat>(['npy', 'tiff']);
 
 export class H5GroveApi extends DataProviderApi {
   private readonly client: AxiosInstance;
@@ -106,18 +108,28 @@ export class H5GroveApi extends DataProviderApi {
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
   }
 
-  public override getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL(
     format: ExportFormat,
-    dataset: D,
-    selection: string | undefined,
-    value: Value<D>,
+    dataset: Dataset<ArrayShape>,
+    selection?: string,
+    builtInExporter?: Exporter,
   ): ExportURL {
-    const url = this._getExportURL?.(format, dataset, selection, value);
+    const url = this._getExportURL?.(
+      format,
+      dataset,
+      selection,
+      builtInExporter,
+    );
+
     if (url) {
       return url;
     }
 
-    if (format !== 'json' && !hasNumericType(dataset)) {
+    if (builtInExporter) {
+      return async () => new Blob([builtInExporter()]);
+    }
+
+    if (!SUPPORTED_EXPORT_FORMATS.has(format) || !hasNumericType(dataset)) {
       return undefined;
     }
 

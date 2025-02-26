@@ -14,7 +14,6 @@ import {
   type Group,
   type GroupWithChildren,
   type ProvidedEntity,
-  type Value,
 } from '@h5web/shared/hdf5-models';
 import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
 import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
@@ -22,6 +21,7 @@ import axios, { AxiosError, type AxiosInstance } from 'axios';
 
 import { DataProviderApi } from '../api';
 import {
+  type Exporter,
   type ExportFormat,
   type ExportURL,
   type ValuesStoreParams,
@@ -171,13 +171,28 @@ export class HsdsApi extends DataProviderApi {
     );
   }
 
-  public override getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL(
     format: ExportFormat,
-    dataset: D,
-    selection: string | undefined,
-    value: Value<D>,
+    dataset: Dataset<ArrayShape>,
+    selection?: string,
+    builtInExporter?: Exporter,
   ): ExportURL {
-    return this._getExportURL?.(format, dataset, selection, value);
+    const url = this._getExportURL?.(
+      format,
+      dataset,
+      selection,
+      builtInExporter,
+    );
+
+    if (url) {
+      return url;
+    }
+
+    if (!builtInExporter) {
+      return undefined;
+    }
+
+    return async () => new Blob([builtInExporter()]);
   }
 
   private async fetchRootId(): Promise<HsdsId> {

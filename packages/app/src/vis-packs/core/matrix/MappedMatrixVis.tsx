@@ -9,12 +9,18 @@ import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
+import { type Exporter, type ExportFormat } from '../../../providers/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
 import { getSliceSelection } from '../utils';
 import { type MatrixVisConfig } from './config';
 import MatrixToolbar from './MatrixToolbar';
-import { getCellWidth, getFormatter } from './utils';
+import {
+  generateCsv,
+  getCellWidth,
+  getCsvFormatter,
+  getFormatter,
+} from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
@@ -38,6 +44,12 @@ function MappedMatrixVis(props: Props) {
   const { getExportURL } = useDataContext();
   const selection = getSliceSelection(dimMapping);
 
+  function getExporter(format: ExportFormat): Exporter | undefined {
+    return format === 'csv'
+      ? () => generateCsv(mappedArray, getCsvFormatter(type))
+      : undefined;
+  }
+
   return (
     <>
       {toolbarContainer &&
@@ -48,7 +60,8 @@ function MappedMatrixVis(props: Props) {
             config={config}
             getExportURL={
               getExportURL &&
-              ((format) => getExportURL(format, dataset, selection, value))
+              ((format) =>
+                getExportURL(format, dataset, selection, getExporter(format)))
             }
           />,
           toolbarContainer,

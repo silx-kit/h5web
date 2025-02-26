@@ -184,6 +184,7 @@ export type {
   HistogramParams,
 } from './vis/models';
 
+export type { AuxiliaryParams } from './vis/line/models';
 export type { D3Interpolator, ColorMap } from './vis/heatmap/models';
 export type { ScatterAxisParams } from './vis/scatter/models';
 

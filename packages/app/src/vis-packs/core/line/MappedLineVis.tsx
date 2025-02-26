@@ -19,6 +19,7 @@ import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
 import { useDataContext } from '../../../providers/DataProvider';
+import { type Exporter, type ExportFormat } from '../../../providers/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import {
   useMappedArray,
@@ -30,6 +31,7 @@ import {
 import { DEFAULT_DOMAIN, formatNumLikeType, getSliceSelection } from '../utils';
 import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
+import { generateCsv } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericLikeType>;
@@ -90,6 +92,12 @@ function MappedLineVis(props: Props) {
   const auxArrays = useMappedArrays(numAuxArrays, ...hookArgs);
   const auxErrorsArrays = useMappedArrays(numAuxErrorsArrays, ...hookArgs);
 
+  const auxiliaries = auxArrays.map((array, i) => ({
+    label: auxLabels[i],
+    array,
+    errors: auxErrorsArrays[i],
+  }));
+
   const dataDomain = useDomain(
     dataArray,
     yScaleType,
@@ -109,6 +117,18 @@ function MappedLineVis(props: Props) {
   const { getExportURL } = useDataContext();
   const selection = getSliceSelection(dimMapping);
 
+  function getExporter(format: ExportFormat): Exporter | undefined {
+    return format === 'csv'
+      ? () =>
+          generateCsv(
+            valueLabel && dataset.name, // column headers for NeXus only
+            dataArray,
+            errorsArray,
+            auxiliaries,
+          )
+      : undefined;
+  }
+
   return (
     <>
       {toolbarContainer &&
@@ -120,7 +140,8 @@ function MappedLineVis(props: Props) {
             config={config}
             getExportURL={
               getExportURL &&
-              ((format) => getExportURL(format, dataset, selection, value))
+              ((format) =>
+                getExportURL(format, dataset, selection, getExporter(format)))
             }
           />,
           toolbarContainer,
@@ -143,11 +164,7 @@ function MappedLineVis(props: Props) {
         dtype={formatNumLikeType(dataset.type)}
         errorsArray={errorsArray}
         showErrors={showErrors}
-        auxiliaries={auxArrays.map((array, i) => ({
-          label: auxLabels[i],
-          array,
-          errors: auxErrorsArrays[i],
-        }))}
+        auxiliaries={auxiliaries}
         testid={dimMapping.toString()}
         ignoreValue={ignoreValue}
       />

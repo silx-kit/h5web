@@ -3,6 +3,7 @@ import { assertDataset, assertNonNullShape } from '@h5web/shared/guards';
 import { createPortal } from 'react-dom';
 
 import { useDataContext } from '../../../providers/DataProvider';
+import { type Exporter, type ExportFormat } from '../../../providers/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
@@ -26,6 +27,12 @@ function RawVisContainer(props: VisContainerProps) {
         render={(value) => {
           const isImage = value instanceof Uint8Array && isBinaryImage(value);
 
+          function getExporter(format: ExportFormat): Exporter | undefined {
+            return format === 'json'
+              ? () => JSON.stringify(value, null, 2)
+              : undefined;
+          }
+
           return (
             <>
               {toolbarContainer &&
@@ -36,7 +43,12 @@ function RawVisContainer(props: VisContainerProps) {
                     getExportURL={
                       getExportURL &&
                       ((format) =>
-                        getExportURL(format, entity, undefined, value))
+                        getExportURL(
+                          format,
+                          entity,
+                          undefined,
+                          getExporter(format),
+                        ))
                     }
                   />,
                   toolbarContainer,
