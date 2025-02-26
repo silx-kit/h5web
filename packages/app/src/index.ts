@@ -9,8 +9,12 @@ export { default as H5GroveProvider } from './providers/h5grove/H5GroveProvider'
 export { enableBigIntSerialization } from './utils';
 export { getFeedbackMailto } from './breadcrumbs/utils';
 export type { FeedbackContext } from './breadcrumbs/models';
-export type { ExportFormat, ExportURL } from './providers/models';
 export type GetExportURL = NonNullable<DataProviderApi['getExportURL']>;
+export type {
+  ExportFormat,
+  ExportURL,
+  BuiltInExporter,
+} from '@h5web/shared/vis-models';
 
 // Context
 export { useDataContext } from './providers/DataProvider';

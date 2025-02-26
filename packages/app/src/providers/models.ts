@@ -25,7 +25,4 @@ export interface AttrValuesStore extends FetchStore<Entity, AttributeValues> {
 export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';
 export type AttrName = NxAttribute | ImageAttribute | '_FillValue';
 
-export type ExportFormat = 'json' | 'csv' | 'npy' | 'tiff';
-export type ExportURL = URL | (() => Promise<URL | Blob>) | undefined;
-
 export type ProgressCallback = (prog: number[]) => void;

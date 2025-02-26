@@ -8,7 +8,13 @@ import {
   type ScalarShape,
   type Value,
 } from '@h5web/shared/hdf5-models';
-import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
+import {
+  type BuiltInExporter,
+  type ExportEntry,
+  type ExportFormat,
+  type IgnoreValue,
+  type NumArray,
+} from '@h5web/shared/vis-models';
 import { castArray } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
@@ -212,4 +218,20 @@ export function useIgnoreFillValue(dataset: Dataset): IgnoreValue | undefined {
 
     return (val) => val === fillValue;
   }, [dataset, rawFillValue]);
+}
+
+export function useExportEntries<F extends ExportFormat[]>(
+  formats: F,
+  dataset: Dataset,
+  selection?: string,
+  exporters: Partial<Record<F[number], BuiltInExporter>> = {},
+): ExportEntry[] {
+  const { getExportURL } = useDataContext();
+
+  return formats
+    .map((format: F[number]) => {
+      const url = getExportURL?.(format, dataset, selection, exporters[format]);
+      return url ? { format, url } : undefined;
+    })
+    .filter(isDefined);
 }
