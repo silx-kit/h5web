@@ -479,3 +479,32 @@ function MyApp() {
   return <pre>{JSON.stringify(group, null, 2)}</pre>;
 }
 ```
+
+For convenience, the following hooks are available to access data through the
+data context: `useEntity`, `useDatasetValue`.
+
+We also provide a large number of type guards and assertion functions to narrow
+down the kind/shape/type of HDF5 entities returned by `useEntity`, as well as a
+memoised hook called `useNdArray` to create ndarrays that can be passed to the
+visualization components (available in `@h5web/lib`).
+
+```tsx
+function MyApp() {
+  const entity = useEntity('/nD_datasets/twoD'); // ProvidedEntity
+  assertDataset(entity); // Dataset
+  assertArrayShape(entity); // Dataset<ArrayShape>
+  assertFloatType(entity); // Dataset<ArrayShape, FloatType>
+
+  const value = useDatasetValue(entity); // number[] | TypedArray
+  const dataArray = useNdArray(value, entity.shape);
+  const domain = useDomain(dataArray);
+
+  return (
+    <HeatmapVis
+      style={{ width: '100vw', height: '100vh' }}
+      dataArray={dataArray}
+      domain={domain}
+    />
+  );
+}
+```

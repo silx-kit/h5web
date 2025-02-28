@@ -5,10 +5,10 @@ import {
 } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
+import { useValuesInCache } from '../../../dimension-mapper/hooks';
 import { useDimMappingState } from '../../../dimension-mapper/store';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { useValuesInCache } from '../hooks';
 import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
 import { useMatrixConfig } from './config';

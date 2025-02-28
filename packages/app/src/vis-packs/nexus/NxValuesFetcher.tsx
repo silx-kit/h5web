@@ -8,7 +8,7 @@ import {
   useDatasetValue,
   useDatasetValues,
   usePrefetchValues,
-} from '../core/hooks';
+} from '../../hooks';
 import { type NxData, type NxValues } from './models';
 
 interface Props<T extends NumericLikeType | ComplexType> {

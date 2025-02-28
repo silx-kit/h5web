@@ -15,14 +15,18 @@ export type GetExportURL = NonNullable<DataProviderApi['getExportURL']>;
 // Context
 export { useDataContext } from './providers/DataProvider';
 export type { DataContextValue } from './providers/DataProvider';
+export type {
+  EntitiesStore,
+  ValuesStore,
+  ValuesStoreParams,
+  AttrValuesStore,
+} from './providers/models';
 
-// Undocumented (for @h5web/h5wasm)
-export { default as DataProvider } from './providers/DataProvider';
-export { DataProviderApi } from './providers/api';
-export type { ValuesStoreParams } from './providers/models';
-export { getValueOrError } from './providers/utils';
+// Hooks
+export { useEntity, useDatasetValue } from './hooks';
+export { useBaseArray as useNdArray } from './vis-packs/core/hooks';
 
-// Undocumented models
+// Models
 export { EntityKind } from '@h5web/shared/hdf5-models';
 
 export type {
@@ -66,13 +70,14 @@ export type {
   UnknownType,
 
   // Value
+  Value,
   ScalarValue,
   ArrayValue,
   AttributeValues,
   H5WebComplex,
 } from '@h5web/shared/hdf5-models';
 
-// Undocumented guards and assertions
+// Type guards and assertions
 export {
   isDefined,
   isNonNull,
@@ -117,6 +122,8 @@ export {
   isPrintableType,
   isCompoundType,
   hasStringType,
+  hasIntegerType,
+  hasFloatType,
   hasNumericType,
   hasBoolType,
   hasEnumType,
@@ -125,7 +132,11 @@ export {
   hasPrintableType,
   hasCompoundType,
   assertStringType,
+  assertIntegerType,
+  assertFloatType,
   assertNumericType,
+  assertBoolType,
+  assertEnumType,
   assertNumericLikeType,
   assertComplexType,
   assertPrintableType,
@@ -133,3 +144,8 @@ export {
   assertScalarValue,
   assertDatasetValue,
 } from '@h5web/shared/guards';
+
+// Undocumented (for @h5web/h5wasm)
+export { default as DataProvider } from './providers/DataProvider';
+export { DataProviderApi } from './providers/api';
+export { getValueOrError } from './providers/utils';

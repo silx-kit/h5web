@@ -5,7 +5,7 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { type ReactNode } from 'react';
 
-import { useDatasetValues, usePrefetchValues } from '../core/hooks';
+import { useDatasetValues, usePrefetchValues } from '../../hooks';
 
 interface Props {
   dataDataset: Dataset<ScalarShape, StringType>;
