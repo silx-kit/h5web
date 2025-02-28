@@ -481,7 +481,8 @@ function MyApp() {
 ```
 
 For convenience, the following hooks are available to access data through the
-data context: `useEntity`, `useDatasetValue`.
+data context: `useEntity`, `useDatasetValue`, `useDatasetsValues`,
+`usePrefetchValues`.
 
 We also provide a large number of type guards and assertion functions to narrow
 down the kind/shape/type of HDF5 entities returned by `useEntity`, as well as a
@@ -507,4 +508,30 @@ function MyApp() {
     />
   );
 }
+```
+
+When accessing the values of multiple datasets with multiple consecutive calls
+to `useDatasetValue` (and/or `useDatasetsValues`), invoke `usePrefetchValues`
+first to ensure that the values are requested in parallel rather than
+sequentially:
+
+```tsx
+const axesDatasets = [abscissasDataset, ordinatesDataset];
+usePrefetchValues([valuesDataset, ...axesDatasets]);
+
+const values = useDatasetValue(valuesDataset);
+const [abscissas, ordinates] = useDatasetsValues(axesDatasets);
+```
+
+All three hooks accept a `selection` parameter to request specific slices from
+n-dimensional datasets:
+
+```tsx
+const selection = '0,:,:';
+usePrefetchValues([valuesDataset], selection); // prefetch the first 2D slice
+usePrefetchValues([abscissasDataset, ordinatesDataset]); // pretech in full (i.e. no selection)
+
+const values = useDatasetValue(valuesDataset, selection);
+const abscissas = useDatasetValue(abscissasDataset);
+const ordinates = useDatasetValue(ordinatesDataset);
 ```

@@ -5,8 +5,8 @@ import {
 import { type ReactNode } from 'react';
 
 import {
+  useDatasetsValues,
   useDatasetValue,
-  useDatasetValues,
   usePrefetchValues,
 } from '../../hooks';
 import { type NxData, type NxValues } from './models';
@@ -41,9 +41,9 @@ function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
   const title = useDatasetValue(titleDataset) || signalDef.label;
   const signal = useDatasetValue(signalDef.dataset, selection);
   const errors = useDatasetValue(signalDef.errorDataset, selection);
-  const auxValues = useDatasetValues(auxDatasets, selection);
-  const auxErrors = useDatasetValues(auxErrorDatasets, selection);
-  const axisValues = useDatasetValues(axisDatasets);
+  const auxValues = useDatasetsValues(auxDatasets, selection);
+  const auxErrors = useDatasetsValues(auxErrorDatasets, selection);
+  const axisValues = useDatasetsValues(axisDatasets);
 
   return render({ title, signal, errors, auxValues, auxErrors, axisValues });
 }

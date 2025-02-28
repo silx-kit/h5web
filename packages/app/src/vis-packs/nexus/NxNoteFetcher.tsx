@@ -5,7 +5,7 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { type ReactNode } from 'react';
 
-import { useDatasetValues, usePrefetchValues } from '../../hooks';
+import { useDatasetsValues, usePrefetchValues } from '../../hooks';
 
 interface Props {
   dataDataset: Dataset<ScalarShape, StringType>;
@@ -17,7 +17,7 @@ function NxNoteFetcher(props: Props) {
   const { dataDataset, typeDataset, render } = props;
 
   usePrefetchValues([dataDataset, typeDataset]);
-  const [value, mimeType] = useDatasetValues([dataDataset, typeDataset]);
+  const [value, mimeType] = useDatasetsValues([dataDataset, typeDataset]);
 
   return <>{render(value, mimeType)}</>;
 }

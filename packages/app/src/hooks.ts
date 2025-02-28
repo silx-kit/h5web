@@ -51,17 +51,17 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   return value;
 }
 
-export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
+export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: D[],
   selection?: string,
 ): Value<D>[];
 
-export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
+export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: (D | undefined)[],
   selection?: string,
 ): (Value<D> | undefined)[];
 
-export function useDatasetValues<D extends Dataset<ArrayShape | ScalarShape>>(
+export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
   datasets: (D | undefined)[],
   selection?: string,
 ): (Value<D> | undefined)[] {
