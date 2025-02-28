@@ -6,7 +6,7 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { type ReactNode } from 'react';
 
-import { useDatasetValue } from './hooks';
+import { useDatasetValue } from '../../hooks';
 
 interface Props<D extends Dataset> {
   dataset: D;

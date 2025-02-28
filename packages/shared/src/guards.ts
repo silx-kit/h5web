@@ -332,10 +332,40 @@ export function isNumericType(type: DType): type is NumericType {
   return isIntegerType(type) || isFloatType(type);
 }
 
+export function hasIntegerType<S extends Shape>(
+  dataset: Dataset<S>,
+): dataset is Dataset<S, IntegerType> {
+  return isIntegerType(dataset.type);
+}
+
+export function hasFloatType<S extends Shape>(
+  dataset: Dataset<S>,
+): dataset is Dataset<S, FloatType> {
+  return isFloatType(dataset.type);
+}
+
 export function hasNumericType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, NumericType> {
   return isNumericType(dataset.type);
+}
+
+export function assertIntegerType<S extends Shape>(
+  dataset: Dataset<S>,
+  message = 'Expected dataset to have integer type',
+): asserts dataset is Dataset<S, IntegerType> {
+  if (!hasIntegerType(dataset)) {
+    throw new Error(message);
+  }
+}
+
+export function assertFloatType<S extends Shape>(
+  dataset: Dataset<S>,
+  message = 'Expected dataset to have float type',
+): asserts dataset is Dataset<S, FloatType> {
+  if (!hasFloatType(dataset)) {
+    throw new Error(message);
+  }
 }
 
 export function assertNumericType<S extends Shape>(
@@ -351,14 +381,18 @@ export function isBoolType(type: DType): type is BooleanType {
   return type.class === DTypeClass.Bool;
 }
 
+export function isEnumType(type: DType): type is EnumType {
+  return type.class === DTypeClass.Enum;
+}
+
+export function isNumericLikeType(type: DType): type is NumericLikeType {
+  return isNumericType(type) || isBoolType(type) || isEnumType(type);
+}
+
 export function hasBoolType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, BooleanType> {
   return isBoolType(dataset.type);
-}
-
-export function isEnumType(type: DType): type is EnumType {
-  return type.class === DTypeClass.Enum;
 }
 
 export function hasEnumType<S extends Shape>(
@@ -367,14 +401,28 @@ export function hasEnumType<S extends Shape>(
   return isEnumType(dataset.type);
 }
 
-export function isNumericLikeType(type: DType): type is NumericLikeType {
-  return isNumericType(type) || isBoolType(type) || isEnumType(type);
-}
-
 export function hasNumericLikeType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, NumericLikeType> {
   return isNumericLikeType(dataset.type);
+}
+
+export function assertBoolType<S extends Shape>(
+  dataset: Dataset<S>,
+  message = 'Expected dataset to have boolean type',
+): asserts dataset is Dataset<S, BooleanType> {
+  if (!hasBoolType(dataset)) {
+    throw new Error(message);
+  }
+}
+
+export function assertEnumType<S extends Shape>(
+  dataset: Dataset<S>,
+  message = 'Expected dataset to have enum type',
+): asserts dataset is Dataset<S, EnumType> {
+  if (!hasEnumType(dataset)) {
+    throw new Error(message);
+  }
 }
 
 export function assertNumericLikeType<S extends Shape>(

@@ -1,7 +1,7 @@
 import { assertGroup } from '@h5web/shared/guards';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 
-import { useDataContext } from '../providers/DataProvider';
+import { useEntity } from '../hooks';
 import EntityItem from './EntityItem';
 import styles from './Explorer.module.css';
 
@@ -15,8 +15,7 @@ interface Props {
 function EntityList(props: Props) {
   const { level, parentPath, selectedPath, onSelect } = props;
 
-  const { entitiesStore } = useDataContext();
-  const group = entitiesStore.get(parentPath);
+  const group = useEntity(parentPath);
   assertGroup(group);
 
   if (group.children.length === 0) {

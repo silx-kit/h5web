@@ -4,7 +4,7 @@ import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import { memo, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { useDataContext } from '../providers/DataProvider';
+import { useEntity } from '../hooks';
 import AttrErrorFallback from './AttrErrorFallback';
 import AttributesInfo from './AttributesInfo';
 import AttrValueLoader from './AttrValueLoader';
@@ -21,9 +21,7 @@ interface Props {
 function MetadataViewer(props: Props) {
   const { path, onSelectPath } = props;
 
-  const { entitiesStore } = useDataContext();
-  const entity = entitiesStore.get(path);
-
+  const entity = useEntity(path);
   const { kind, attributes } = entity;
   const title = kind === EntityKind.Unresolved ? 'Entity' : kind;
 
