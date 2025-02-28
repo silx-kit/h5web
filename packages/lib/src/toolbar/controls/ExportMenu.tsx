@@ -3,7 +3,7 @@ import {
   useInteractions,
   useListNavigation,
 } from '@floating-ui/react';
-import { assertDefined } from '@h5web/shared/guards';
+import { type ExportEntry } from '@h5web/shared/vis-models';
 import { useId, useRef, useState } from 'react';
 import { FiDownload } from 'react-icons/fi';
 
@@ -12,11 +12,6 @@ import Btn from './Btn';
 import { useFloatingDismiss, useFloatingMenu } from './hooks';
 import { download } from './utils';
 
-interface ExportEntry {
-  format: string;
-  url: URL | (() => Promise<URL | Blob>) | undefined;
-}
-
 interface Props {
   entries: ExportEntry[];
   isSlice?: boolean;
@@ -24,7 +19,6 @@ interface Props {
 
 function ExportMenu(props: Props) {
   const { entries, isSlice } = props;
-  const availableEntries = entries.filter(({ url }) => !!url);
 
   const { context, refs, floatingStyles } = useFloatingMenu();
   const { floatingId, open: isOpen, onOpenChange: toggle } = context;
@@ -55,7 +49,7 @@ function ExportMenu(props: Props) {
         label={`Export${isSlice ? ' slice' : ''}`}
         icon={FiDownload}
         withArrow
-        disabled={availableEntries.length === 0}
+        disabled={entries.length === 0}
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-controls={(isOpen && floatingId) || undefined}
@@ -72,10 +66,9 @@ function ExportMenu(props: Props) {
           aria-labelledby={referenceId}
           {...getFloatingProps()}
         >
-          {availableEntries.map((entry, index) => {
+          {entries.map((entry, index) => {
             const { format, url } = entry;
             const isActive = activeIndex === index;
-            assertDefined(url);
 
             return (
               <button

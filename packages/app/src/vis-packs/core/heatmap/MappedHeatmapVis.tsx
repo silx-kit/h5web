@@ -16,9 +16,9 @@ import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
-import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import {
+  useExportEntries,
   useMappedArray,
   useSlicedDimsAndMapping,
   useToNumArray,
@@ -76,11 +76,11 @@ function MappedHeatmapVis(props: Props) {
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 
+  const selection = getSliceSelection(dimMapping);
   const xDimIndex = dimMapping.indexOf('x');
   const yDimIndex = dimMapping.indexOf('y');
 
-  const { getExportURL } = useDataContext();
-  const selection = getSliceSelection(dimMapping);
+  const exportEntries = useExportEntries(['tiff', 'npy'], dataset, selection);
 
   return (
     <>
@@ -90,10 +90,7 @@ function MappedHeatmapVis(props: Props) {
             dataDomain={dataDomain}
             isSlice={selection !== undefined}
             config={config}
-            getExportURL={
-              getExportURL &&
-              ((format) => getExportURL(format, dataset, selection, value))
-            }
+            exportEntries={exportEntries}
           />,
           toolbarContainer,
         )}

@@ -9,6 +9,7 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
+import { type ExportEntry } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import {
   MdAspectRatio,
@@ -17,21 +18,18 @@ import {
   MdSwapVert,
 } from 'react-icons/md';
 
-import { type ExportFormat, type ExportURL } from '../../../providers/models';
 import { getImageInteractions } from '../utils';
 import { type HeatmapConfig } from './config';
-
-const EXPORT_FORMATS: ExportFormat[] = ['tiff', 'npy'];
 
 interface Props {
   dataDomain: Domain;
   isSlice: boolean;
   config: HeatmapConfig;
-  getExportURL: ((format: ExportFormat) => ExportURL) | undefined;
+  exportEntries: ExportEntry[];
 }
 
 function HeatmapToolbar(props: Props) {
-  const { isSlice, dataDomain, config, getExportURL } = props;
+  const { isSlice, dataDomain, config, exportEntries } = props;
   const {
     customDomain,
     colorMap,
@@ -109,14 +107,8 @@ function HeatmapToolbar(props: Props) {
 
       <Separator />
 
-      {getExportURL && (
-        <ExportMenu
-          isSlice={isSlice}
-          entries={EXPORT_FORMATS.map((format) => ({
-            format,
-            url: getExportURL(format),
-          }))}
-        />
+      {exportEntries.length > 0 && (
+        <ExportMenu isSlice={isSlice} entries={exportEntries} />
       )}
 
       <SnapshotBtn />

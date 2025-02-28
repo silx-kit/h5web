@@ -1,17 +1,17 @@
 import { ExportMenu, Separator, ToggleBtn, Toolbar } from '@h5web/lib';
+import { type ExportEntry } from '@h5web/shared/vis-models';
 import { MdOutlineFitScreen } from 'react-icons/md';
 
-import { type ExportFormat, type ExportURL } from '../../../providers/models';
 import { type RawConfig } from './config';
 
 interface Props {
   isImage: boolean;
   config: RawConfig;
-  getExportURL: ((format: ExportFormat) => ExportURL) | undefined;
+  exportEntries: ExportEntry[];
 }
 
 function RawToolbar(props: Props) {
-  const { isImage, config, getExportURL } = props;
+  const { isImage, config, exportEntries } = props;
   const { fitImage, toggleFitImage } = config;
 
   return (
@@ -24,12 +24,10 @@ function RawToolbar(props: Props) {
         onToggle={toggleFitImage}
       />
 
-      {getExportURL && (
+      {exportEntries.length > 0 && (
         <>
           <Separator />
-          <ExportMenu
-            entries={[{ format: 'json', url: getExportURL('json') }]}
-          />
+          <ExportMenu entries={exportEntries} />
         </>
       )}
     </Toolbar>

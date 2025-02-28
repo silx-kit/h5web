@@ -1,14 +1,21 @@
-import { hasNumericType, hasScalarShape } from '@h5web/shared/guards';
 import {
-  type ArrayShape,
+  hasArrayShape,
+  hasNumericType,
+  hasScalarShape,
+} from '@h5web/shared/guards';
+import {
   type AttributeValues,
   type Dataset,
   DTypeClass,
   type Entity,
   type ProvidedEntity,
-  type Value,
 } from '@h5web/shared/hdf5-models';
 import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
+import {
+  type BuiltInExporter,
+  type ExportFormat,
+  type ExportURL,
+} from '@h5web/shared/vis-models';
 import axios, {
   AxiosError,
   type AxiosInstance,
@@ -16,11 +23,7 @@ import axios, {
 } from 'axios';
 
 import { DataProviderApi } from '../api';
-import {
-  type ExportFormat,
-  type ExportURL,
-  type ValuesStoreParams,
-} from '../models';
+import { type ValuesStoreParams } from '../models';
 import { createAxiosProgressHandler } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
@@ -33,6 +36,8 @@ import {
   isH5GroveError,
   parseEntity,
 } from './utils';
+
+const SUPPORTED_EXPORT_FORMATS = new Set<ExportFormat>(['npy', 'tiff']);
 
 export class H5GroveApi extends DataProviderApi {
   private readonly client: AxiosInstance;
@@ -106,18 +111,32 @@ export class H5GroveApi extends DataProviderApi {
     return attributes.length > 0 ? this.fetchAttrValues(path) : {};
   }
 
-  public override getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL(
     format: ExportFormat,
-    dataset: D,
-    selection: string | undefined,
-    value: Value<D>,
-  ): ExportURL {
-    const url = this._getExportURL?.(format, dataset, selection, value);
+    dataset: Dataset,
+    selection?: string,
+    builtInExporter?: BuiltInExporter,
+  ): ExportURL | undefined {
+    const url = this._getExportURL?.(
+      format,
+      dataset,
+      selection,
+      builtInExporter,
+    );
+
     if (url) {
       return url;
     }
 
-    if (format !== 'json' && !hasNumericType(dataset)) {
+    if (builtInExporter) {
+      return async () => new Blob([builtInExporter()]);
+    }
+
+    if (
+      !SUPPORTED_EXPORT_FORMATS.has(format) ||
+      !hasArrayShape(dataset) ||
+      !hasNumericType(dataset)
+    ) {
       return undefined;
     }
 

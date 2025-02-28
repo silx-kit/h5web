@@ -1,9 +1,4 @@
-import {
-  DataProviderApi,
-  type ExportFormat,
-  type ExportURL,
-  type ValuesStoreParams,
-} from '@h5web/app';
+import { DataProviderApi, type ValuesStoreParams } from '@h5web/app';
 import { assertDataset, isDefined } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -11,8 +6,12 @@ import {
   type Dataset,
   type Entity,
   type ProvidedEntity,
-  type Value,
 } from '@h5web/shared/hdf5-models';
+import {
+  type BuiltInExporter,
+  type ExportFormat,
+  type ExportURL,
+} from '@h5web/shared/vis-models';
 import { transfer } from 'comlink';
 
 import { type Plugin } from './models';
@@ -64,22 +63,28 @@ export class H5WasmApi extends DataProviderApi {
     );
   }
 
-  public override getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL(
     format: ExportFormat,
-    dataset: D,
-    selection: string | undefined,
-    value: Value<D>,
-  ): ExportURL {
-    const url = this._getExportURL?.(format, dataset, selection, value);
+    dataset: Dataset<ArrayShape>,
+    selection?: string,
+    builtInExporter?: BuiltInExporter,
+  ): ExportURL | undefined {
+    const url = this._getExportURL?.(
+      format,
+      dataset,
+      selection,
+      builtInExporter,
+    );
+
     if (url) {
       return url;
     }
 
-    if (format === 'json') {
-      return async () => new Blob([JSON.stringify(value, null, 2)]);
+    if (!builtInExporter) {
+      return undefined;
     }
 
-    return undefined;
+    return async () => new Blob([builtInExporter()]);
   }
 
   public override async getSearchablePaths(root: string): Promise<string[]> {

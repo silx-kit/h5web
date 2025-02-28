@@ -1,4 +1,5 @@
 import {
+  type AxisParams,
   type IgnoreValue,
   LineVis,
   useCombinedDomain,
@@ -18,9 +19,9 @@ import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
-import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import {
+  useExportEntries,
   useMappedArray,
   useMappedArrays,
   useSlicedDimsAndMapping,
@@ -30,6 +31,7 @@ import {
 import { DEFAULT_DOMAIN, formatNumLikeType, getSliceSelection } from '../utils';
 import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
+import { generateCsv } from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericLikeType>;
@@ -104,10 +106,31 @@ function MappedLineVis(props: Props) {
   const visDomain = useVisDomain(customDomain, combinedDomain);
   const [safeDomain] = useSafeDomain(visDomain, combinedDomain, yScaleType);
 
+  const selection = getSliceSelection(dimMapping);
   const xDimIndex = dimMapping.indexOf('x');
 
-  const { getExportURL } = useDataContext();
-  const selection = getSliceSelection(dimMapping);
+  const abscissaParams: AxisParams = {
+    label: axisLabels[xDimIndex],
+    value: numAxisArrays[xDimIndex],
+    scaleType: xScaleType,
+  };
+
+  const auxiliaries = auxArrays.map((array, i) => ({
+    label: auxLabels[i],
+    array,
+    errors: auxErrorsArrays[i],
+  }));
+
+  const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
+    csv: () =>
+      generateCsv(
+        valueLabel,
+        dataArray,
+        abscissaParams,
+        errorsArray,
+        auxiliaries,
+      ),
+  });
 
   return (
     <>
@@ -118,10 +141,7 @@ function MappedLineVis(props: Props) {
             isSlice={selection !== undefined}
             disableErrors={!errors}
             config={config}
-            getExportURL={
-              getExportURL &&
-              ((format) => getExportURL(format, dataset, selection, value))
-            }
+            exportEntries={exportEntries}
           />,
           toolbarContainer,
         )}
@@ -133,21 +153,13 @@ function MappedLineVis(props: Props) {
         scaleType={yScaleType}
         curveType={curveType}
         showGrid={showGrid}
-        abscissaParams={{
-          label: axisLabels[xDimIndex],
-          value: numAxisArrays[xDimIndex],
-          scaleType: xScaleType,
-        }}
+        abscissaParams={abscissaParams}
         ordinateLabel={valueLabel}
         title={title}
         dtype={formatNumLikeType(dataset.type)}
         errorsArray={errorsArray}
         showErrors={showErrors}
-        auxiliaries={auxArrays.map((array, i) => ({
-          label: auxLabels[i],
-          array,
-          errors: auxErrorsArrays[i],
-        }))}
+        auxiliaries={auxiliaries}
         testid={dimMapping.toString()}
         ignoreValue={ignoreValue}
       />

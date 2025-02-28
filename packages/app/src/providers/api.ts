@@ -1,18 +1,17 @@
 import {
-  type ArrayShape,
   type AttributeValues,
   type Dataset,
   type Entity,
   type ProvidedEntity,
-  type Value,
 } from '@h5web/shared/hdf5-models';
 import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
-
 import {
+  type BuiltInExporter,
   type ExportFormat,
   type ExportURL,
-  type ValuesStoreParams,
-} from './models';
+} from '@h5web/shared/vis-models';
+
+import { type ValuesStoreParams } from './models';
 
 export abstract class DataProviderApi {
   public constructor(public readonly filepath: string) {}
@@ -35,12 +34,12 @@ export abstract class DataProviderApi {
    * - `() => Promise<Blob>`  Export is generated client-side
    * - `undefined`            Export scenario is not supported
    */
-  public getExportURL?<D extends Dataset<ArrayShape>>( // optional, so can't be abstract
+  public getExportURL?( // optional, so can't be abstract
     format: ExportFormat,
-    dataset: D,
-    selection: string | undefined,
-    value: Value<D>,
-  ): ExportURL;
+    dataset: Dataset,
+    selection?: string,
+    builtInExporter?: BuiltInExporter,
+  ): ExportURL | undefined;
 
   public getSearchablePaths?(path: string): Promise<string[]>; // optional, so can't be abstract
 }

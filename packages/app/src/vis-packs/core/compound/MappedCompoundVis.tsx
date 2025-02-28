@@ -11,13 +11,17 @@ import {
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
-import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import {
+  useExportEntries,
+  useMappedArray,
+  useSlicedDimsAndMapping,
+} from '../hooks';
 import { type MatrixVisConfig } from '../matrix/config';
 import MatrixToolbar from '../matrix/MatrixToolbar';
-import { getCellWidth, getFormatter } from '../matrix/utils';
+import { getCellWidth, getCsvFormatter, getFormatter } from '../matrix/utils';
 import { getSliceSelection } from '../utils';
+import { generateCsv } from './utils';
 
 interface Props {
   dataset: Dataset<ScalarShape | ArrayShape, CompoundType<PrintableType>>;
@@ -49,12 +53,19 @@ function MappedCompoundVis(props: Props) {
     slicedMapping,
   );
 
+  const selection = getSliceSelection(dimMapping);
   const fieldFormatters = Object.values(fields).map((field) =>
     getFormatter(field, notation),
   );
 
-  const { getExportURL } = useDataContext();
-  const selection = getSliceSelection(dimMapping);
+  const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
+    csv: () =>
+      generateCsv(
+        fieldNames,
+        mappedArray,
+        Object.values(fields).map((field) => getCsvFormatter(field)),
+      ),
+  });
 
   return (
     <>
@@ -64,10 +75,7 @@ function MappedCompoundVis(props: Props) {
             cellWidth={cellWidth}
             isSlice={selection !== undefined}
             config={config}
-            getExportURL={
-              getExportURL &&
-              ((format) => getExportURL(format, dataset, selection, value))
-            }
+            exportEntries={exportEntries}
           />,
           toolbarContainer,
         )}

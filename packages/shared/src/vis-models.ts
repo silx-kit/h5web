@@ -66,6 +66,15 @@ export interface Dims {
 
 export type IgnoreValue = (val: number) => boolean;
 
+export interface ExportEntry {
+  format: string;
+  url: ExportURL;
+}
+
+export type ExportFormat = 'json' | 'csv' | 'npy' | 'tiff';
+export type ExportURL = URL | (() => Promise<URL | Blob>);
+export type BuiltInExporter = () => string;
+
 // MappedTuple<string[]> => `string[]`
 // MappedTuple<number[]> => `number[]`
 // MappedTuple<number[], string> => `string[]`

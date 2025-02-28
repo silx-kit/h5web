@@ -8,13 +8,21 @@ import {
 import { createPortal } from 'react-dom';
 
 import { type DimensionMapping } from '../../../dimension-mapper/models';
-import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useMappedArray, useSlicedDimsAndMapping } from '../hooks';
+import {
+  useExportEntries,
+  useMappedArray,
+  useSlicedDimsAndMapping,
+} from '../hooks';
 import { getSliceSelection } from '../utils';
 import { type MatrixVisConfig } from './config';
 import MatrixToolbar from './MatrixToolbar';
-import { getCellWidth, getFormatter } from './utils';
+import {
+  generateCsv,
+  getCellWidth,
+  getCsvFormatter,
+  getFormatter,
+} from './utils';
 
 interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
@@ -34,9 +42,11 @@ function MappedMatrixVis(props: Props) {
 
   const formatter = getFormatter(type, notation);
   const cellWidth = getCellWidth(type);
-
-  const { getExportURL } = useDataContext();
   const selection = getSliceSelection(dimMapping);
+
+  const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
+    csv: () => generateCsv(mappedArray, getCsvFormatter(type)),
+  });
 
   return (
     <>
@@ -46,10 +56,7 @@ function MappedMatrixVis(props: Props) {
             cellWidth={cellWidth}
             isSlice={selection !== undefined}
             config={config}
-            getExportURL={
-              getExportURL &&
-              ((format) => getExportURL(format, dataset, selection, value))
-            }
+            exportEntries={exportEntries}
           />,
           toolbarContainer,
         )}
