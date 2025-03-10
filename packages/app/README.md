@@ -206,43 +206,28 @@ need to pass the necessary request headers and configuration as well.
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
-The `DataProvider#getExportURL` method is used by the toolbars to generate URLs
-and controls for exporting the current dataset/slice to various formats. This
-prop allows providing your own implementation of this method.
+Some visualizations allow exporting the current dataset/slice to various
+formats. For instance, the _Line_ visualization allows exporting to CSV and NPY;
+the _Heatmap_ visualization to NPY and TIFF, etc.
 
-`getExportURL` is called once for every export menu entry. It receives the
-export `format`, as well as the current `dataset` metadata object, `selection`
-string, and `value` array. The export entry behaviour then depends of the return
-type:
+For each format, the viewer invokes the provider's `getExportURL` method. If
+this method returns a `URL` or an async function, then the export menu in the
+toolbar shows an entry for the corresponding export format.
 
-- `URL`: the URL is set as the `href` of the export entry's download anchor.
-- `() => Promise<URL | Blob>`: the function is called when the user clicks on
-  the export entry. When the promise resolves, the returned `URL` or `Blob` is
-  used to trigger a download.
-- `undefined`: the export entry is not rendered.
+In the case of JSON and CSV, the viewer itself takes care of the export by
+providing its own "exporter" function to the `getExportURL` method. When this
+happens, the `getExportURL` method just returns a function that calls the
+exporter.
 
-Returning an async function enables advanced use cases like generating exports
-client-side, or server-side but from an authenticated endpoint.
+In the case of NPY and TIFF, `H5GroveApi#getExportURL` returns a `URL` so the
+export can be generated server-side by `h5grove`.
+
+The optional `getExportURL` prop is called internally by the `getExportURL`
+method and allows taking over the export process. It enables advanced use cases
+like generating exports from an authenticated endpoint.
 
 <details>
   <summary>Advanced examples</summary>
-
-```tsx
-// Client-side CSV export
-getExportURL={(format, dataset, selection, value) => {
-  if (format === 'csv') {
-    // Async function that will be called when the user clicks on a `CSV` export menu entry
-    return async () => {
-      // Generate CSV string from `value` array
-      let csv = '';
-      value.forEach((val) => { ... })
-
-      // Return CSV string as Blob so it can be downloaded
-      return new Blob([csv]);
-    };
-  }
-}}
-```
 
 ```tsx
 // Fetch export data from authenticated endpoint
@@ -269,12 +254,19 @@ getExportURL={(format, dataset, selection) => async () => {
 }}
 ```
 
-</details>
+```tsx
+// Tweak a built-in export payload in some way (round or format numbers, truncate lines, etc.)
+getExportURL={(format, dataset, selection, builtInExporter) => async () => {
+  if (!builtInExporter || format !== 'csv') {
+    return undefined;
+  }
 
-You may provide a partial implementation of `getExportURL` that handles only
-specific export scenarios. In this case, or if you don't provide a function at
-all, `H5GroveProvider` falls back to generating URLs based on the `/data`
-endpoint and `format` query param.
+  const csvPayload = builtInExporter();
+  return csvPayload.split('\n').slice(0, 100).join('\n'); // truncate to first 100 lines
+}}
+```
+
+</details>
 
 #### `resetKeys?: unknown[]` (optional)
 
@@ -343,9 +335,7 @@ The path of the file to request.
 See
 [`H5GroveProvider#getExportURL`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#getexporturl-args--url----promiseurl--blob--undefined-optional).
 
-`HsdsProvider` does not provide a fallback implementation of `getExportURL` at
-this time, so if you don't provide your own, the export menu will remain
-disabled in the toolbar.
+`HsdsProvider` doesn't support the NPY and TIFF export formats out of the box.
 
 #### `resetKeys?: unknown[]` (optional)
 
@@ -367,8 +357,7 @@ Data provider for demonstration and testing purposes.
 See
 [`H5GroveProvider#getExportURL`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#getexporturl-args--url----promiseurl--blob--undefined-optional).
 
-`MockProvider` provides a very basic fallback implementation of `getExportURL`
-that can generate only client-side CSV exports of 1D datasets.
+`MockProvider` doesn't support the NPY and TIFF export formats out of the box.
 
 ### Utilities
 
