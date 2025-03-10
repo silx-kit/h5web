@@ -1,30 +1,24 @@
-import {
-  assertArrayShape,
-  assertDefined,
-  hasNumericType,
-} from '@h5web/shared/guards';
+import { assertArrayShape, assertDefined } from '@h5web/shared/guards';
 import {
   type ArrayShape,
-  type ArrayValue,
   type AttributeValues,
   type Dataset,
   type Entity,
   type GroupWithChildren,
-  type NumericType,
   type ProvidedEntity,
-  type Value,
 } from '@h5web/shared/hdf5-models';
 import {
   assertMockAttribute,
   assertMockDataset,
 } from '@h5web/shared/mock-utils';
-
-import { DataProviderApi } from '../api';
 import {
+  type BuiltInExporter,
   type ExportFormat,
   type ExportURL,
-  type ValuesStoreParams,
-} from '../models';
+} from '@h5web/shared/vis-models';
+
+import { DataProviderApi } from '../api';
+import { type ValuesStoreParams } from '../models';
 import { makeMockFile } from './mock-file';
 import {
   cancellableDelay,
@@ -99,45 +93,35 @@ export class MockApi extends DataProviderApi {
     );
   }
 
-  public override getExportURL<D extends Dataset<ArrayShape>>(
+  public override getExportURL(
     format: ExportFormat,
-    dataset: D,
-    selection: string | undefined,
-    value: Value<D>,
-  ): ExportURL {
-    const url = this._getExportURL?.(format, dataset, selection, value);
+    dataset: Dataset<ArrayShape>,
+    selection?: string,
+    builtInExporter?: BuiltInExporter,
+  ): ExportURL | undefined {
+    const url = this._getExportURL?.(
+      format,
+      dataset,
+      selection,
+      builtInExporter,
+    );
+
     if (url) {
       return url;
     }
 
-    if (format === 'json') {
-      return async () => {
-        const json = JSON.stringify(value, null, 2);
-        return new Blob([json]);
-      };
+    if (!builtInExporter) {
+      return undefined;
     }
 
-    if (
-      hasNumericType(dataset) &&
-      selection === undefined &&
-      format === 'csv'
-    ) {
-      return async () => {
-        let csv = '';
-        (value as ArrayValue<NumericType>).forEach((val) => {
-          csv += `${val.toString()}\n`;
-        });
+    return async () => {
+      const payload = builtInExporter();
 
-        const finalCsv = csv.slice(0, -2);
-
-        // Demonstrate both `Blob` and `URL` techniques (cf. `src/providers/api.ts`)
-        return dataset.name === 'oneD'
-          ? new Blob([finalCsv])
-          : new URL(`data:text/plain,${encodeURIComponent(finalCsv)}`);
-      };
-    }
-
-    return undefined;
+      // Demonstrate both `Blob` and `URL` techniques (cf. `src/providers/api.ts`)
+      return dataset.name === 'oneD'
+        ? new Blob([payload])
+        : new URL(`data:text/plain,${encodeURIComponent(payload)}`);
+    };
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
