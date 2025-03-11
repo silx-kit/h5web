@@ -13,15 +13,16 @@ export function generateCsv(
 
   // Column headers
   if (name) {
-    csv += name;
-    csv += abscissaParams.value
-      ? `,${abscissaParams.label || 'abscissas'}`
-      : '';
+    const abscissaLabel = abscissaParams.label?.replaceAll(',', '');
+
+    csv += name.replaceAll(',', '');
+    csv += abscissaParams.value ? `,${abscissaLabel || 'abscissas'}` : '';
     csv += errorsArray ? `,errors` : '';
 
     for (const aux of auxiliaries) {
-      csv += `,${aux.label}`;
-      csv += aux.errors ? `,${aux.label}_errors` : '';
+      const auxLabel = aux.label.replaceAll(',', '');
+      csv += `,${auxLabel}`;
+      csv += aux.errors ? `,${auxLabel}_errors` : '';
     }
   }
 

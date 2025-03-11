@@ -9,7 +9,7 @@ export function generateCsv(
   compoundArray: NdArray<ScalarValue<PrintableType>[]>,
   formatters: ((val: ScalarValue<PrintableType>) => string)[],
 ): string {
-  let csv = names.join(','); // column headers
+  let csv = names.map((n) => n.replaceAll(',', '')).join(','); // column headers
   const [dim1, dim2] = compoundArray.shape;
 
   for (let i = 0; i < dim1; i += 1) {
