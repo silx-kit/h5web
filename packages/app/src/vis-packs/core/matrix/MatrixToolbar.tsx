@@ -6,22 +6,20 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
+import { type ExportEntry } from '@h5web/shared/vis-models';
 import { FiAnchor } from 'react-icons/fi';
 
-import { type ExportFormat, type ExportURL } from '../../../providers/models';
 import { type MatrixVisConfig } from './config';
-
-const EXPORT_FORMATS: ExportFormat[] = ['npy', 'csv'];
 
 interface Props {
   cellWidth: number;
   isSlice: boolean;
   config: MatrixVisConfig;
-  getExportURL: ((format: ExportFormat) => ExportURL) | undefined;
+  exportEntries: ExportEntry[];
 }
 
 function MatrixToolbar(props: Props) {
-  const { cellWidth, isSlice, config, getExportURL } = props;
+  const { cellWidth, isSlice, config, exportEntries } = props;
   const {
     sticky,
     toggleSticky,
@@ -50,16 +48,10 @@ function MatrixToolbar(props: Props) {
         onToggle={toggleSticky}
       />
 
-      {getExportURL && (
+      {exportEntries.length > 0 && (
         <>
           <Separator />
-          <ExportMenu
-            isSlice={isSlice}
-            entries={EXPORT_FORMATS.map((format) => ({
-              format,
-              url: getExportURL(format),
-            }))}
-          />
+          <ExportMenu isSlice={isSlice} entries={exportEntries} />
         </>
       )}
     </Toolbar>

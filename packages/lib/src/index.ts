@@ -166,6 +166,10 @@ export type {
   ColorScaleType,
   AxisScaleType,
   IgnoreValue,
+  ExportEntry,
+  ExportURL,
+  ExportFormat,
+  BuiltInExporter,
 } from '@h5web/shared/vis-models';
 
 export type {
@@ -184,6 +188,7 @@ export type {
   HistogramParams,
 } from './vis/models';
 
+export type { AuxiliaryParams } from './vis/line/models';
 export type { D3Interpolator, ColorMap } from './vis/heatmap/models';
 export type { ScatterAxisParams } from './vis/scatter/models';
 

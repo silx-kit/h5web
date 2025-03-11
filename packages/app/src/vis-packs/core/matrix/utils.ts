@@ -7,6 +7,7 @@ import {
   isIntegerType,
 } from '@h5web/shared/guards';
 import {
+  type ArrayValue,
   type CompoundType,
   DTypeClass,
   type NumericType,
@@ -20,6 +21,7 @@ import {
   formatBool,
 } from '@h5web/shared/vis-utils';
 import { format } from 'd3-format';
+import { type NdArray } from 'ndarray';
 
 export function createIntegerFormatter(
   notation: Notation,
@@ -80,6 +82,20 @@ export function getFormatter(
   return (val: string) => val.toString();
 }
 
+export function getCsvFormatter<T extends PrintableType>(
+  type: T,
+): (val: ScalarValue<T>) => string;
+
+export function getCsvFormatter<T extends PrintableType>(
+  type: T,
+): ValueFormatter<PrintableType> {
+  if (isComplexType(type)) {
+    return createComplexFormatter((val) => val.toString());
+  }
+
+  return (val: string | number | bigint | boolean) => val.toString();
+}
+
 export function getCellWidth(
   type: PrintableType | CompoundType<PrintableType>,
 ): number {
@@ -100,4 +116,24 @@ export function getCellWidth(
   }
 
   return 120;
+}
+
+export function generateCsv(
+  oneOrTwoDArray: NdArray<ArrayValue<PrintableType>>,
+  formatter: (val: ScalarValue<PrintableType>) => string,
+): string {
+  let csv = '';
+  const [dim1, dim2 = 1] = oneOrTwoDArray.shape;
+
+  for (let i = 0; i < dim1; i += 1) {
+    let line = i > 0 ? '\n' : '';
+
+    for (let j = 0; j < dim2; j += 1) {
+      line += `${formatter(oneOrTwoDArray.get(i, j))},`;
+    }
+
+    csv += line.slice(0, -1); // trim trailing comma
+  }
+
+  return csv;
 }
