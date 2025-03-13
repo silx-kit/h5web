@@ -2,6 +2,7 @@ import { type Data, type NdArray, type TypedArray } from 'ndarray';
 
 import {
   type ArrayShape,
+  type ArrayType,
   type BooleanType,
   type ComplexArray,
   type ComplexType,
@@ -26,6 +27,7 @@ import {
   type Shape,
   type StringType,
   type Value,
+  type VLenType,
 } from './hdf5-models';
 import {
   type AnyNumArray,
@@ -523,6 +525,10 @@ export function isComplexValue(
   return type.class === DTypeClass.Complex;
 }
 
+export function isArrayOrVlenType(type: DType): type is ArrayType | VLenType {
+  return type.class === DTypeClass.Array || type.class === DTypeClass.VLen;
+}
+
 export function assertScalarValue(
   value: unknown,
   type: DType,
@@ -544,6 +550,11 @@ export function assertScalarValue(
     Object.values(type.fields).forEach((fieldType, index) => {
       assertScalarValue(value[index], fieldType);
     });
+  } else if (isArrayOrVlenType(type)) {
+    assertArrayOrTypedArray(value);
+    if (value.length > 0) {
+      assertScalarValue(value[0], type.base);
+    }
   }
 }
 

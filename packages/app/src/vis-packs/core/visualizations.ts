@@ -167,8 +167,7 @@ export const CORE_VIS = {
       return (
         hasCompoundType(dataset) &&
         hasPrintableCompoundType(dataset) &&
-        hasNonNullShape(dataset) &&
-        (hasScalarShape(dataset) || hasMinDims(dataset, 1))
+        hasNonNullShape(dataset)
       );
     },
   },
