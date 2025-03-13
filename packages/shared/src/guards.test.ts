@@ -133,27 +133,100 @@ describe('assertDatasetValue', () => {
         dataset('foo', intType(true, 64), [2]),
       ),
     ).not.toThrow();
+
+    expect(() =>
+      assertDatasetValue(
+        Float32Array.from([0, 1]), // big ints can be returned as any kind of numbers
+        dataset('foo', intType(true, 64), [2]),
+      ),
+    ).not.toThrow();
   });
 
-  describe('assertDatasetValue', () => {
-    it("should throw when value doesn't satisfy dataset type and shape", () => {
-      expect(() =>
-        assertDatasetValue(
-          true,
-          dataset('foo', enumType(intType(), { FOO: 0 }), []),
-        ),
-      ).toThrow('Expected number');
+  it("should throw when value doesn't satisfy dataset type and shape", () => {
+    expect(() =>
+      assertDatasetValue(
+        true,
+        dataset('foo', enumType(intType(), { FOO: 0 }), []),
+      ),
+    ).toThrow('Expected number');
 
-      expect(() =>
-        assertDatasetValue(['foo', 'bar'], dataset('foo', intType(), [2])),
-      ).toThrow('Expected number');
+    expect(() =>
+      assertDatasetValue(['foo', 'bar'], dataset('foo', intType(), [2])),
+    ).toThrow('Expected number');
 
-      expect(() =>
-        assertDatasetValue(
-          BigInt64Array.from([0n, 1n]),
-          dataset('foo', intType(), [2]),
-        ),
-      ).toThrow('Expected number');
-    });
+    expect(() =>
+      assertDatasetValue(
+        BigInt64Array.from([0n, 1n]),
+        dataset('foo', intType(), [2]),
+      ),
+    ).toThrow('Expected number');
+  });
+
+  it('should not throw when value shape satisfies selection', () => {
+    expect(() =>
+      assertDatasetValue(
+        0, // scalar => OK
+        dataset('foo', intType(), [1]), // 1D dataset
+        '0', // scalar selection (only in "Array" vis)
+      ),
+    ).not.toThrow();
+
+    expect(() =>
+      assertDatasetValue(
+        [0], // array => OK
+        dataset('foo', intType(), [1]), // 1D dataset
+        ':', // entire array
+      ),
+    ).not.toThrow();
+
+    expect(() =>
+      assertDatasetValue(
+        0, // scalar => OK
+        dataset('foo', intType(), [1, 1]), // 2D dataset
+        '0,0', // scalar selection (only in "Array" vis)
+      ),
+    ).not.toThrow();
+
+    expect(() =>
+      assertDatasetValue(
+        [0], // array => OK
+        dataset('foo', intType(), [1, 1]), // 2D dataset
+        '0,:', // 1D slice selection
+      ),
+    ).not.toThrow();
+  });
+
+  it("should throw when value shape doesn't satisfy selection", () => {
+    expect(() =>
+      assertDatasetValue(
+        [0], // array => NOT OK
+        dataset('foo', intType(), [1]), // 1D dataset
+        '0', // scalar selection (only in "Array" vis)
+      ),
+    ).toThrow('Expected number');
+
+    expect(() =>
+      assertDatasetValue(
+        0, // scalar => NOT OK
+        dataset('foo', intType(), [1]), // 1D dataset
+        ':', // entire array
+      ),
+    ).toThrow('Expected array or typed array');
+
+    expect(() =>
+      assertDatasetValue(
+        [0], // array => NOT OK
+        dataset('foo', intType(), [1, 1]), // 2D dataset
+        '0,0', // scalar selection (only in "Array" vis)
+      ),
+    ).toThrow('Expected number');
+
+    expect(() =>
+      assertDatasetValue(
+        0, // scalar => NOT OK
+        dataset('foo', intType(), [1, 1]), // 2D dataset
+        '0,:', // 1D slice
+      ),
+    ).toThrow('Expected array');
   });
 });

@@ -23,7 +23,7 @@ interface DimMappingState {
   ) => void;
 }
 
-function createLineConfigStore() {
+function createDimMappingStore() {
   return createStore<DimMappingState>((set) => ({
     dims: [],
     axesCount: 0,
@@ -41,7 +41,7 @@ interface Props {}
 export function DimMappingProvider(props: PropsWithChildren<Props>) {
   const { children } = props;
 
-  const [store] = useState(createLineConfigStore);
+  const [store] = useState(createDimMappingStore);
 
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
@@ -62,7 +62,7 @@ export function useDimMappingState(
   const mapping = isStale
     ? [
         ...Array.from({ length: dims.length - axesCount }, () => 0),
-        ...(dims.length > 0
+        ...(dims.length > 0 && axesCount > 0
           ? ['y' as const, 'x' as const].slice(-axesCount)
           : []),
       ]

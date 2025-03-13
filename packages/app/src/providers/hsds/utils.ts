@@ -1,4 +1,4 @@
-import { assertArray, isGroup } from '@h5web/shared/guards';
+import { assertArray, isGroup, isScalarSelection } from '@h5web/shared/guards';
 import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
 import {
   type ArrayShape,
@@ -166,9 +166,13 @@ export function flattenValue(
   value: unknown,
   dataset: Dataset<ArrayShape>,
   selection?: string,
-): unknown[] {
+): unknown {
   assertArray(value);
-  const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
-  const dims = slicedDims || dataset.shape;
-  return value.flat(dims.length - 1);
+
+  // Always flatten on all dimensions, regardless of selection
+  // https://github.com/HDFGroup/hsds/issues/88
+  const flattened = value.flat(dataset.shape.length - 1);
+
+  // Remove last remaining dimension when selecting a scalar value
+  return isScalarSelection(selection) ? flattened[0] : flattened;
 }

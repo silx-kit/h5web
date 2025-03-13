@@ -529,6 +529,10 @@ export function isArrayOrVlenType(type: DType): type is ArrayType | VLenType {
   return type.class === DTypeClass.Array || type.class === DTypeClass.VLen;
 }
 
+export function isScalarSelection(selection: string | undefined): boolean {
+  return selection !== undefined && /^\d+(?:,\d+)*$/u.test(selection);
+}
+
 export function assertScalarValue(
   value: unknown,
   type: DType,
@@ -561,10 +565,11 @@ export function assertScalarValue(
 export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   value: unknown,
   dataset: D,
+  selection?: string,
 ): asserts value is Value<D> {
   const { type } = dataset;
 
-  if (hasScalarShape(dataset)) {
+  if (hasScalarShape(dataset) || isScalarSelection(selection)) {
     assertScalarValue(value, type);
   } else {
     assertArrayOrTypedArray(value);

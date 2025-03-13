@@ -904,6 +904,31 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "name": "byte_string_2D",
+    "rawType": {
+      "littleEndian": false,
+      "signed": false,
+      "size": 1,
+      "total_size": 4,
+      "type": 5,
+      "vlen": false,
+    },
+    "shape": [
+      2,
+      2,
+    ],
+    "type": {
+      "class": "Opaque",
+      "tag": "",
+    },
+    "value": Uint8Array [
+      0,
+      17,
+      0,
+      17,
+    ],
+  },
+  {
     "name": "datetime64_scalar",
     "rawType": {
       "littleEndian": false,
@@ -1782,6 +1807,120 @@ exports[`test file matches snapshot 1`] = `
           "1": 1n,
           "2": 2n,
         },
+      ],
+    ],
+  },
+  {
+    "name": "compound_mixed_2D",
+    "rawType": {
+      "compound_type": {
+        "members": [
+          {
+            "enum_type": {
+              "members": {
+                "FALSE": 0,
+                "TRUE": 1,
+              },
+              "nmembers": 2,
+              "type": 0,
+            },
+            "littleEndian": true,
+            "name": "bool",
+            "offset": 0,
+            "shape": [],
+            "signed": true,
+            "size": 1,
+            "type": 8,
+            "vlen": false,
+          },
+          {
+            "array_type": {
+              "littleEndian": true,
+              "shape": [
+                2,
+              ],
+              "signed": false,
+              "size": 4,
+              "total_size": 2,
+              "type": 1,
+              "vlen": false,
+            },
+            "littleEndian": true,
+            "name": "arr",
+            "offset": 1,
+            "shape": [],
+            "signed": false,
+            "size": 8,
+            "type": 10,
+            "vlen": false,
+          },
+        ],
+        "nmembers": 2,
+      },
+      "littleEndian": true,
+      "signed": false,
+      "size": 9,
+      "total_size": 4,
+      "type": 6,
+      "vlen": false,
+    },
+    "shape": [
+      2,
+      2,
+    ],
+    "type": {
+      "class": "Compound",
+      "fields": {
+        "arr": {
+          "base": {
+            "class": "Float",
+            "endianness": "little-endian",
+            "size": 32,
+          },
+          "class": "Array",
+          "dims": [
+            2,
+          ],
+        },
+        "bool": {
+          "base": {
+            "class": "Integer",
+            "endianness": "little-endian",
+            "signed": true,
+            "size": 8,
+          },
+          "class": "Boolean",
+        },
+      },
+    },
+    "value": [
+      [
+        1,
+        [
+          0,
+          1,
+        ],
+      ],
+      [
+        0,
+        [
+          2,
+          3,
+        ],
+      ],
+      [
+        0,
+        [
+          4,
+          5,
+        ],
+      ],
+      [
+        1,
+        [
+          6,
+          7,
+        ],
       ],
     ],
   },

@@ -5,6 +5,7 @@ import {
   cplxType,
   floatType,
   intType,
+  opaqueType,
   strType,
 } from '@h5web/shared/hdf5-utils';
 import {
@@ -29,6 +30,7 @@ const mockStore = {
   },
 };
 
+const nullShape = dataset('null', intType(), null);
 const scalarInt = dataset('int', intType(), []);
 const scalarUint = dataset('uint', intType(false), []);
 const scalarBigInt = dataset('bigint', intType(true, 64), []);
@@ -37,12 +39,14 @@ const scalarStr = dataset('float', strType(), []);
 const scalarBool = dataset('bool', boolType(intType(true, 8)), []);
 const scalarCplx = dataset('cplx', cplxType(floatType()), []);
 const scalarCompound = dataset('comp', compoundType({ int: intType() }), []);
+const scalarOpaque = dataset('opaque', opaqueType(), []);
 const oneDInt = dataset('int_1d', intType(), [5]);
 const oneDUint = dataset('uint_1d', intType(false), [5]);
 const oneDBigUint = dataset('biguint_1d', intType(false, 64), [5]);
 const oneDBool = dataset('bool_1d', boolType(intType(true, 8)), [3]);
 const oneDCplx = dataset('cplx_1d', cplxType(floatType()), [10]);
 const oneDCompound = dataset('comp_1d', compoundType({ int: intType() }), [5]);
+const oneDOpaque = dataset('opaque_1d', opaqueType(), [5]);
 const twoDInt = dataset('int_2d', intType(), [5, 3]);
 const twoDUint = dataset('uint_2d', intType(false), [5, 3]);
 const twoDBool = dataset('bool_2d', boolType(intType(true, 8)), [3, 2]);
@@ -72,9 +76,14 @@ const nestedCompound = dataset(
 describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
 
-  it('should support any dataset', () => {
+  it('should support any scalar dataset', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
-    expect(supportsDataset(twoDStr)).toBe(true);
+    expect(supportsDataset(scalarOpaque)).toBe(true);
+  });
+
+  it('should not support dataset with non-scalar shape', () => {
+    expect(supportsDataset(nullShape)).toBe(false);
+    expect(supportsDataset(oneDInt)).toBe(false);
   });
 });
 
@@ -97,6 +106,21 @@ describe('Scalar', () => {
 
   it('should not support dataset with non-scalar shape', () => {
     expect(supportsDataset(oneDInt)).toBe(false);
+  });
+});
+
+describe('Array', () => {
+  const { supportsDataset } = CORE_VIS.Array;
+
+  it('should support any array dataset', () => {
+    expect(supportsDataset(oneDBigUint)).toBe(true);
+    expect(supportsDataset(oneDOpaque)).toBe(true);
+  });
+
+  it('should not support dataset with non-array shape', () => {
+    expect(supportsDataset(nullShape)).toBe(false);
+    expect(supportsDataset(scalarUint)).toBe(false);
+    expect(supportsDataset(scalarOpaque)).toBe(false);
   });
 });
 

@@ -132,6 +132,13 @@ export function makeMockFile(): GroupWithChildren {
         array('oneD_enum', {
           type: enumType(intType(false, 8), ENUM_MAPPING),
         }),
+        array('oneD_opaque', { type: opaqueType() }),
+        dataset(
+          'oneD_opaque_png',
+          opaqueType(),
+          [2],
+          [PNG_RED_DOT, PNG_RED_DOT],
+        ),
         array('twoD'),
         array('twoD_fillvalue', {
           valueId: 'twoD',
@@ -152,6 +159,7 @@ export function makeMockFile(): GroupWithChildren {
         array('twoD_enum', {
           type: enumType(intType(false, 8), ENUM_MAPPING),
         }),
+        array('twoD_opaque', { type: opaqueType() }),
         array('threeD'),
         array('threeD_bool'),
         array('threeD_cplx'),

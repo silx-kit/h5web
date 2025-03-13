@@ -43,6 +43,7 @@
 
 .dimSize {
   flex: 1 0;
+  min-width: 2.25em; /* in case there are no axes */
   padding: 0 0.1875rem;
   text-align: center;
 }

@@ -3,20 +3,17 @@ import {
   assertGroup,
   assertGroupWithChildren,
   isGroup,
+  isScalarSelection,
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type Dataset,
-  type DType,
   type GroupWithChildren,
   type ProvidedEntity,
-  type ScalarShape,
-  type ScalarValue,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
+import { createArrayFromView } from '@h5web/shared/vis-utils';
 import ndarray from 'ndarray';
-
-import { applyMapping } from '../../vis-packs/core/utils';
 
 export const SLOW_TIMEOUT = 3000;
 
@@ -46,19 +43,22 @@ export function findMockEntity(
   return child;
 }
 
-export function sliceValue<T extends DType>(
-  value: unknown,
-  dataset: Dataset<ArrayShape | ScalarShape, T>,
+export function sliceValue(
+  value: unknown[],
+  dataset: Dataset<ArrayShape>,
   selection: string,
-): ScalarValue<T>[] {
+): unknown {
   const { shape } = dataset;
-  const dataArray = ndarray(value as ScalarValue<typeof dataset.type>[], shape);
-  const mappedArray = applyMapping(
-    dataArray,
-    selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s))),
-  );
+  const dataArray = ndarray(value, shape);
 
-  return mappedArray.data;
+  const slicingState = selection
+    .split(',')
+    .map((val) => (val === ':' ? null : Number.parseInt(val)));
+
+  const slicedView = dataArray.pick(...slicingState);
+  const slicedArray = createArrayFromView(slicedView);
+
+  return isScalarSelection(selection) ? slicedArray.get(0) : slicedArray.data;
 }
 
 export function getChildrenPaths(
