@@ -86,6 +86,6 @@ export type MappedTuple<T extends unknown[], U = T[number]> = {
 
 // ValueFormatter<StringType> => `(val: string) => string`
 // ValueFormatter<NumericLikeType> => `(val: number) => string | (val: number | boolean) => string`
-export type ValueFormatter<T extends DType> = T extends DType
+export type ValueFormatter<T extends DType = DType> = T extends DType
   ? (val: ScalarValue<T>) => string
   : never;

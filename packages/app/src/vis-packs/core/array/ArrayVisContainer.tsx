@@ -5,8 +5,8 @@ import { useValuesInCache } from '../../../dimension-mapper/hooks';
 import { useDimMappingState } from '../../../dimension-mapper/store';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { useRawConfig } from '../raw/config';
-import MappedRawVis from '../raw/MappedRawVis';
+import { useScalarConfig } from '../scalar/config';
+import MappedScalarVis from '../scalar/MappedScalarVis';
 import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
 
@@ -18,7 +18,7 @@ function ArrayVisContainer(props: VisContainerProps) {
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 0); // no axes, slicing only
 
-  const config = useRawConfig();
+  const config = useScalarConfig();
   const selection = getSliceSelection(dimMapping);
 
   return (
@@ -34,7 +34,7 @@ function ArrayVisContainer(props: VisContainerProps) {
           dataset={entity}
           selection={selection}
           render={(value) => (
-            <MappedRawVis
+            <MappedScalarVis
               dataset={entity}
               value={value}
               toolbarContainer={toolbarContainer}

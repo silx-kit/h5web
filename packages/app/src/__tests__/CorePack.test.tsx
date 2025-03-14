@@ -7,8 +7,8 @@ import { Vis } from '../vis-packs/core/visualizations';
 test('visualize raw dataset', async () => {
   const { selectExplorerNode } = await renderApp('/entities/raw');
 
-  expect(getVisTabs()).toEqual([Vis.Raw]);
-  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(screen.getByText(/"int": 42/)).toBeVisible();
 
   await selectExplorerNode('raw_large');
@@ -18,8 +18,8 @@ test('visualize raw dataset', async () => {
 test('visualize raw image dataset', async () => {
   await renderApp('/entities/raw_png');
 
-  expect(getVisTabs()).toEqual([Vis.Raw]);
-  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(screen.getByAltText('raw_png')).toBeVisible();
 });
 

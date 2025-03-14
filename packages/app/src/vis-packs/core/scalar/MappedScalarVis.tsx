@@ -1,4 +1,4 @@
-import { RawImageVis, RawVis } from '@h5web/lib';
+import { BinaryImageVis, ScalarVis } from '@h5web/lib';
 import {
   type ArrayShape,
   type Dataset,
@@ -8,31 +8,32 @@ import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useExportEntries } from '../hooks';
-import { type RawConfig } from './config';
-import RawToolbar from './RawToolbar';
-import { isBinaryImage } from './utils';
+import { type ScalarConfig } from './config';
+import ScalarToolbar from './ScalarToolbar';
+import { getFormatter, isBinaryImage } from './utils';
 
 interface Props {
   dataset: Dataset<ScalarShape | ArrayShape>;
   value: unknown;
   toolbarContainer?: HTMLDivElement | undefined;
-  config: RawConfig;
+  config: ScalarConfig;
 }
 
-function MappedRawVis(props: Props) {
+function MappedScalarVis(props: Props) {
   const { dataset, value, toolbarContainer, config } = props;
-
-  const isImage = value instanceof Uint8Array && isBinaryImage(value);
 
   const exportEntries = useExportEntries(['json'], dataset, undefined, {
     json: () => JSON.stringify(value, null, 2),
   });
 
+  const isImage = value instanceof Uint8Array && isBinaryImage(value);
+  const formatter = getFormatter(dataset.type);
+
   return (
     <>
       {toolbarContainer &&
         createPortal(
-          <RawToolbar
+          <ScalarToolbar
             isImage={isImage}
             config={config}
             exportEntries={exportEntries}
@@ -41,17 +42,17 @@ function MappedRawVis(props: Props) {
         )}
 
       {isImage ? (
-        <RawImageVis
+        <BinaryImageVis
           className={visualizerStyles.vis}
           value={value}
           title={dataset.name}
           fit={config.fitImage}
         />
       ) : (
-        <RawVis className={visualizerStyles.vis} value={value} />
+        <ScalarVis className={visualizerStyles.vis} value={formatter(value)} />
       )}
     </>
   );
 }
 
-export default MappedRawVis;
+export default MappedScalarVis;

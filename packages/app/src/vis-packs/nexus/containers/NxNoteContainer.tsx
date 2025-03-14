@@ -1,4 +1,4 @@
-import { RawVis } from '@h5web/lib';
+import { ScalarVis } from '@h5web/lib';
 import {
   assertDataset,
   assertDefined,
@@ -46,8 +46,12 @@ function NxNoteContainer(props: VisContainerProps) {
             );
           }
 
+          const json = parseJson(value);
           return (
-            <RawVis className={visualizerStyles.vis} value={parseJson(value)} />
+            <ScalarVis
+              className={visualizerStyles.vis}
+              value={JSON.stringify(json, null, 2)}
+            />
           );
         }}
       />

@@ -2,15 +2,15 @@ import { ExportMenu, Separator, ToggleBtn, Toolbar } from '@h5web/lib';
 import { type ExportEntry } from '@h5web/shared/vis-models';
 import { MdOutlineFitScreen } from 'react-icons/md';
 
-import { type RawConfig } from './config';
+import { type ScalarConfig } from './config';
 
 interface Props {
   isImage: boolean;
-  config: RawConfig;
+  config: ScalarConfig;
   exportEntries: ExportEntry[];
 }
 
-function RawToolbar(props: Props) {
+function ScalarToolbar(props: Props) {
   const { isImage, config, exportEntries } = props;
   const { fitImage, toggleFitImage } = config;
 
@@ -34,4 +34,4 @@ function RawToolbar(props: Props) {
   );
 }
 
-export default RawToolbar;
+export default ScalarToolbar;
