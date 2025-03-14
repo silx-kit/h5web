@@ -47,19 +47,19 @@ test('navigate groups in explorer', async () => {
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
 
-  const childGroupBtn = screen.getByRole('treeitem', { name: 'empty_group' });
+  const childGroupBtn = screen.getByRole('treeitem', { name: 'group_empty' });
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
-  // Expand `empty_group` child group
-  await selectExplorerNode('empty_group');
+  // Expand `group_empty` child group
+  await selectExplorerNode('group_empty');
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'true');
 
-  // Collapse `empty_group` child group
-  await selectExplorerNode('empty_group');
+  // Collapse `group_empty` child group
+  await selectExplorerNode('group_empty');
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
@@ -72,7 +72,7 @@ test('navigate groups in explorer', async () => {
   // Collapse `entities` group
   await selectExplorerNode('entities');
   expect(
-    screen.queryByRole('treeitem', { name: 'empty_group' }),
+    screen.queryByRole('treeitem', { name: 'group_empty' }),
   ).not.toBeInTheDocument();
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');

@@ -111,7 +111,7 @@ to `'/'`.
 
 ```tsx
 <MockProvider>
-  <App initialPath="/nD_datasets/threeD" />
+  <App initialPath="/arrays/threeD" />
 </MockProvider>
 ```
 
@@ -480,7 +480,7 @@ visualization components (available in `@h5web/lib`).
 
 ```tsx
 function MyApp() {
-  const entity = useEntity('/nD_datasets/twoD'); // ProvidedEntity
+  const entity = useEntity('/arrays/twoD'); // ProvidedEntity
   assertDataset(entity); // Dataset
   assertArrayShape(entity); // Dataset<ArrayShape>
   assertFloatType(entity); // Dataset<ArrayShape, FloatType>

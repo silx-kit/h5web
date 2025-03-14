@@ -29,7 +29,7 @@ test('inspect group', async () => {
 });
 
 test('inspect scalar dataset', async () => {
-  const { user } = await renderApp('/entities/scalar_num');
+  const { user } = await renderApp('/scalars/float');
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
   const column = screen.getByRole('columnheader', { name: /dataset/ });
@@ -40,15 +40,15 @@ test('inspect scalar dataset', async () => {
   const attrRow = screen.getByRole('row', { name: /^attr/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/scalar_num$/);
-  expect(pathRow).toHaveTextContent(/\/entities\/scalar_num$/);
+  expect(nameRow).toHaveTextContent(/float$/);
+  expect(pathRow).toHaveTextContent(/\/scalars\/float$/);
   expect(typeRow).toHaveTextContent(/Float, 64-bit, little-endian$/);
   expect(shapeRow).toHaveTextContent(/Scalar$/);
-  expect(attrRow).toHaveTextContent(/0$/);
+  expect(attrRow).toHaveTextContent(/0\.123$/);
 });
 
 test('inspect array dataset', async () => {
-  const { user } = await renderApp('/nD_datasets/threeD');
+  const { user } = await renderApp('/arrays/threeD');
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
   const shapeRow = screen.getByRole('row', { name: /^Shape/ });
@@ -56,7 +56,7 @@ test('inspect array dataset', async () => {
 });
 
 test('inspect empty dataset', async () => {
-  const { user } = await renderApp('/entities/empty_dataset');
+  const { user } = await renderApp('/entities/dataset_empty');
   await user.click(screen.getByRole('tab', { name: 'Inspect' }));
 
   const shapeRow = screen.getByRole('row', { name: /^Shape/ });

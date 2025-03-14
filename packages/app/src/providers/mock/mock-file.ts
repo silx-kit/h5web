@@ -48,26 +48,42 @@ export function makeMockFile(): GroupWithChildren {
     defaultPath: 'nexus_entry',
     children: [
       group('entities', [
-        group('empty_group'),
-        dataset('empty_dataset', unknownType(), null, null),
+        group('group_empty'),
+        dataset('dataset_empty', unknownType(), null, null),
         datatype('datatype', compoundType({ int: intType() })),
-        scalar('raw', { int: 42 }),
-        scalar('raw_large', undefined), // generated dynamically by `MockProvider`
-        dataset('raw_png', opaqueType(), [], PNG_RED_DOT),
-        scalar('scalar_num', 0, { attributes: [scalarAttr('attr', 0)] }),
-        scalar('scalar_bigint', BigInt(Number.MAX_SAFE_INTEGER) + 1n, {
+        unresolved('unresolved_hard_link', 'Hard'),
+        unresolved('unresolved_soft_link', 'Soft', '/foo'),
+        unresolved(
+          'unresolved_external_link',
+          'External',
+          'entry_000/dataset',
+          'my_file.h5',
+        ),
+      ]),
+      group('scalars', [
+        scalar('float', 0.123, { attributes: [scalarAttr('attr', 0.123)] }),
+        scalar('int', 1, { type: intType(false, 16) }),
+        scalar('bigint', BigInt(Number.MAX_SAFE_INTEGER) + 1n, {
           attributes: [
             scalarAttr('attr', BigInt(Number.MAX_SAFE_INTEGER) + 1n),
           ],
         }),
-        scalar('scalar_str', 'foo', {
+        scalar('string', 'foo', {
           attributes: [scalarAttr('attr', 'foo')],
         }),
-        scalar('scalar_bool', true, { attributes: [scalarAttr('attr', true)] }),
-        scalar('scalar_cplx', [1, 5], {
+        scalar('boolean', true, { attributes: [scalarAttr('attr', true)] }),
+        scalar('enum', 2, {
+          type: enumType(intType(false, 8), ENUM_MAPPING),
+          attributes: [
+            scalarAttr('attr', 2, {
+              type: enumType(intType(false, 8), ENUM_MAPPING),
+            }),
+          ],
+        }),
+        scalar('complex', [1, 5], {
           attributes: [scalarAttr('attr', cplx(1, 5))],
         }),
-        scalar('scalar_compound', ['foo', 2], {
+        scalar('compound', ['foo', 2], {
           type: compoundType({
             str: strType(H5T_CSET.ASCII, H5T_STR.NULLPAD, 3),
             int: intType(true, 8),
@@ -81,36 +97,24 @@ export function makeMockFile(): GroupWithChildren {
             }),
           ],
         }),
-        scalar('scalar_array', [1, 2], {
+        scalar('array', [1, 2], {
           type: arrayType(intType(), [2]),
           attributes: [
             scalarAttr('attr', [1, 2], { type: arrayType(intType(), [2]) }),
           ],
         }),
-        scalar('scalar_vlen', [1, 2, 3], {
+        scalar('vlen', [1, 2, 3], {
           type: vlenType(intType()),
           attributes: [
             scalarAttr('attr', [1, 2, 3], { type: vlenType(intType()) }),
           ],
         }),
-        scalar('scalar_enum', 2, {
-          type: enumType(intType(false, 8), ENUM_MAPPING),
-          attributes: [
-            scalarAttr('attr', 2, {
-              type: enumType(intType(false, 8), ENUM_MAPPING),
-            }),
-          ],
-        }),
-        unresolved('unresolved_hard_link', 'Hard'),
-        unresolved('unresolved_soft_link', 'Soft', '/foo'),
-        unresolved(
-          'unresolved_external_link',
-          'External',
-          'entry_000/dataset',
-          'my_file.h5',
-        ),
+        dataset('opaque', opaqueType(), [], new Uint8Array([0, 1, 2])),
+        dataset('opaque_png', opaqueType(), [], PNG_RED_DOT),
+        scalar('unknown', { int: 42 }),
+        scalar('unknown_large', undefined), // generated dynamically by `MockProvider`
       ]),
-      group('nD_datasets', [
+      group('arrays', [
         array('oneD_linear'),
         array('oneD'),
         array('oneD_fillvalue', {
@@ -118,6 +122,10 @@ export function makeMockFile(): GroupWithChildren {
           attributes: [scalar('_FillValue', 400)],
         }),
         array('oneD_bigint'),
+        array('oneD_bool'),
+        array('oneD_enum', {
+          type: enumType(intType(false, 8), ENUM_MAPPING),
+        }),
         array('oneD_cplx'),
         array('oneD_compound', {
           type: printableCompoundType({
@@ -128,11 +136,12 @@ export function makeMockFile(): GroupWithChildren {
             complex: cplxType(floatType()),
           }),
         }),
-        array('oneD_bool'),
-        array('oneD_enum', {
-          type: enumType(intType(false, 8), ENUM_MAPPING),
-        }),
-        array('oneD_opaque', { type: opaqueType() }),
+        dataset(
+          'oneD_opaque',
+          opaqueType(),
+          [2],
+          [new Uint8Array([0, 1, 2]), new Uint8Array([3, 4, 5])],
+        ),
         dataset(
           'oneD_opaque_png',
           opaqueType(),
@@ -145,6 +154,10 @@ export function makeMockFile(): GroupWithChildren {
           attributes: [scalar('_FillValue', 400)],
         }),
         array('twoD_bigint'),
+        array('twoD_bool'),
+        array('twoD_enum', {
+          type: enumType(intType(false, 8), ENUM_MAPPING),
+        }),
         array('twoD_cplx'),
         array('twoD_compound', {
           type: printableCompoundType({
@@ -155,11 +168,6 @@ export function makeMockFile(): GroupWithChildren {
             complex: cplxType(floatType()),
           }),
         }),
-        array('twoD_bool'),
-        array('twoD_enum', {
-          type: enumType(intType(false, 8), ENUM_MAPPING),
-        }),
-        array('twoD_opaque', { type: opaqueType() }),
         array('threeD'),
         array('threeD_bool'),
         array('threeD_cplx'),

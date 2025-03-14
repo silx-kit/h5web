@@ -6,7 +6,7 @@ import { Vis } from '../vis-packs/core/visualizations';
 
 test('control mapping for X axis when visualizing 2D dataset as Line', async () => {
   const { user } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Line,
   });
 
@@ -42,7 +42,7 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
 
 test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
   const { user } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -71,7 +71,7 @@ test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', 
 
 test('display one slider and two mappers when visualizing 3D dataset as Matrix', async () => {
   await renderApp({
-    initialPath: '/nD_datasets/threeD',
+    initialPath: '/arrays/threeD',
     preferredVis: Vis.Matrix,
   });
 
@@ -96,9 +96,20 @@ test('display one slider and two mappers when visualizing 3D dataset as Matrix',
   expect(screen.queryByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 });
 
+test('slice through 1D opaque dataset', async () => {
+  const { user } = await renderApp('/arrays/oneD_opaque');
+
+  // Move to next slice with keyboard
+  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  await user.type(d0Slider, '{ArrowUp}');
+
+  expect(d0Slider).toHaveValue(1);
+  expect(screen.getByText('Uint8Array [ 3,4,5 ]')).toBeVisible();
+});
+
 test('slice through 2D dataset', async () => {
   const { user } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Line,
   });
 
@@ -124,7 +135,7 @@ test('slice through 2D opaque dataset', async () => {
 
 test('maintain mapping when switching to inspect mode and back', async () => {
   const { user } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -141,7 +152,7 @@ test('maintain mapping when switching to inspect mode and back', async () => {
 
 test('maintain mapping when switching to visualization with same axes count', async () => {
   const { user, selectVisTab } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -157,7 +168,7 @@ test('maintain mapping when switching to visualization with same axes count', as
 
 test('maintain mapping when switching to dataset with same dimensions', async () => {
   const { user, selectExplorerNode } = await renderApp({
-    initialPath: '/nD_datasets/twoD_bool',
+    initialPath: '/arrays/twoD_bool',
     preferredVis: Vis.Line,
   });
 
@@ -173,7 +184,7 @@ test('maintain mapping when switching to dataset with same dimensions', async ()
 
 test('reset mapping when switching to visualization with different axes count', async () => {
   const { user, selectVisTab } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -189,7 +200,7 @@ test('reset mapping when switching to visualization with different axes count', 
 
 test('reset mapping when switching to dataset with different dimensions', async () => {
   const { user, selectExplorerNode } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
