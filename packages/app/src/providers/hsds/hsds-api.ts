@@ -140,15 +140,15 @@ export class HsdsApi extends DataProviderApi {
     signal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown> {
-    const { dataset } = params;
+    const { dataset, selection } = params;
     assertHsdsDataset(dataset);
 
     const value = await this.fetchValue(dataset.id, params, signal, onProgress);
 
-    /* HSDS doesn't reduce the number of dimensions when selecting indices,
-     * so the flattening must be done on all dimensions regardless of the selection.
-     * https://github.com/HDFGroup/hsds/issues/88 */
-    return hasArrayShape(dataset) ? flattenValue(value, dataset) : value;
+    // HSDS doesn't reduce the number of dimensions when slicing
+    return hasArrayShape(dataset)
+      ? flattenValue(value, dataset, selection)
+      : value;
   }
 
   public override async getAttrValues(

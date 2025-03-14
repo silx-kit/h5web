@@ -47,7 +47,7 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   // If `selection` is undefined, the entire dataset will be fetched
   const value = valuesStore.get({ dataset, selection });
 
-  assertDatasetValue(value, dataset);
+  assertDatasetValue(value, dataset, selection);
   return value;
 }
 
@@ -73,7 +73,7 @@ export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
     }
 
     const value = valuesStore.get({ dataset, selection });
-    assertDatasetValue(value, dataset);
+    assertDatasetValue(value, dataset, selection);
     return value;
   });
 }

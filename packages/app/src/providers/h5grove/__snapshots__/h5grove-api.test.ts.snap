@@ -853,6 +853,29 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "name": "byte_string_2D",
+    "rawType": {
+      "class": 5,
+      "dtype": "|V1",
+      "size": 1,
+      "tag": "",
+    },
+    "shape": [
+      2,
+      2,
+    ],
+    "type": {
+      "class": "Opaque",
+      "tag": "",
+    },
+    "value": Uint8Array [
+      0,
+      17,
+      0,
+      17,
+    ],
+  },
+  {
     "name": "datetime64_scalar",
     "rawType": {
       "class": 5,
@@ -1582,6 +1605,108 @@ exports[`test file matches snapshot 1`] = `
           0,
           1,
           2,
+        ],
+      ],
+    ],
+  },
+  {
+    "name": "compound_mixed_2D",
+    "rawType": {
+      "class": 6,
+      "dtype": {
+        "arr": "|V8",
+        "bool": "|b1",
+      },
+      "members": {
+        "arr": {
+          "base": {
+            "class": 1,
+            "dtype": "<f4",
+            "order": 0,
+            "size": 4,
+          },
+          "class": 10,
+          "dims": [
+            2,
+          ],
+          "dtype": "|V8",
+          "size": 8,
+        },
+        "bool": {
+          "base": {
+            "class": 0,
+            "dtype": "|i1",
+            "order": 0,
+            "sign": 1,
+            "size": 1,
+          },
+          "class": 8,
+          "dtype": "|b1",
+          "members": {
+            "FALSE": 0,
+            "TRUE": 1,
+          },
+          "size": 1,
+        },
+      },
+      "size": 9,
+    },
+    "shape": [
+      2,
+      2,
+    ],
+    "type": {
+      "class": "Compound",
+      "fields": {
+        "arr": {
+          "base": {
+            "class": "Float",
+            "endianness": "little-endian",
+            "size": 32,
+          },
+          "class": "Array",
+          "dims": [
+            2,
+          ],
+        },
+        "bool": {
+          "base": {
+            "class": "Integer",
+            "endianness": "little-endian",
+            "signed": true,
+            "size": 8,
+          },
+          "class": "Boolean",
+        },
+      },
+    },
+    "value": [
+      [
+        true,
+        [
+          0,
+          1,
+        ],
+      ],
+      [
+        false,
+        [
+          2,
+          3,
+        ],
+      ],
+      [
+        false,
+        [
+          4,
+          5,
+        ],
+      ],
+      [
+        true,
+        [
+          6,
+          7,
         ],
       ],
     ],

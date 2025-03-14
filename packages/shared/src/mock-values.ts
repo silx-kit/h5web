@@ -121,6 +121,8 @@ export const mockValues = {
   oneD_enum,
   oneD_errors: () => ndarray(oneD().data.map((val) => Math.abs(val) / 10)),
   oneD_str: () => ndarray(['foo', 'bar']),
+  oneD_opaque: () =>
+    ndarray([new Uint8Array([0, 1, 2]), new Uint8Array([3, 4, 5])]),
   twoD,
   twoD_asym: () => {
     const { data: dataTwoD, shape: shapeTwoD } = twoD();
@@ -174,6 +176,16 @@ export const mockValues = {
       [20, 41],
     );
   },
+  twoD_opaque: () =>
+    ndarray(
+      [
+        new Uint8Array([0, 1]),
+        new Uint8Array([2, 3]),
+        new Uint8Array([4, 5]),
+        new Uint8Array([6, 7]),
+      ],
+      [2, 2],
+    ),
   threeD,
   threeD_cplx: () =>
     ndarray(

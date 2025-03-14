@@ -2,6 +2,7 @@ import {
   assertDefined,
   assertNonNull,
   isNumericType,
+  isScalarSelection,
 } from '@h5web/shared/guards';
 import { H5T_CLASS, H5T_ORDER, type H5T_STR } from '@h5web/shared/h5t';
 import {
@@ -321,5 +322,14 @@ export function readSelectedValue(
     return [Number(member), Number(member) + 1];
   });
 
-  return h5wDataset.slice(ranges);
+  const slicedValue = h5wDataset.slice(ranges);
+  assertNonNull(slicedValue);
+
+  /* h5wasm unwraps scalar slices inconsistently - e.g. it does so for opaque
+   * datasets but not for compound datasets */
+  if (isScalarSelection(selection) && Array.isArray(slicedValue)) {
+    return slicedValue[0];
+  }
+
+  return slicedValue;
 }

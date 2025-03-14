@@ -122,6 +122,13 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
         "byte_string",
         np.array([np.void(b"\x00"), np.void(b"\x11"), np.void(b"\x22")]),
     )
+    add_array(
+        h5,
+        "byte_string",
+        np.array(
+            [[np.void(b"\x00"), np.void(b"\x11")], [np.void(b"\x00"), np.void(b"\x11")]]
+        ),
+    )
     add_scalar(h5, "datetime64", np.void(np.datetime64("2019-09-22T17:38:30")))
     add_scalar(h5, "datetime64_not-a-time", np.void(np.datetime64("NaT")))
 
@@ -215,6 +222,36 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
         ),
     )
 
+    add_array(
+        h5,
+        "compound_mixed",
+        np.array(
+            [
+                [
+                    (
+                        True,
+                        np.array([0, 1], np.float32),
+                    ),
+                    (
+                        False,
+                        np.array([2, 3], np.float32),
+                    ),
+                ],
+                [
+                    (
+                        False,
+                        np.array([4, 5], np.float32),
+                    ),
+                    (
+                        True,
+                        np.array([6, 7], np.float32),
+                    ),
+                ],
+            ],
+            [("bool", np.bool_), ("arr", np.float32, (2,))],
+        ),
+    )
+
     # === H5T_REFERENCE ===
 
     add_scalar(h5, "reference", for_ref.ref, h5py.ref_dtype)
@@ -282,9 +319,9 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     vlen_array = add_array(
         h5, "vlen_utf8", shape=(3,), dtype=h5py.vlen_dtype(h5py.string_dtype())
     )
-    vlen_array[0] = ['a']
-    vlen_array[1] = ['a', 'bc']
-    vlen_array[2] = ['a', 'bc', 'def']
+    vlen_array[0] = ["a"]
+    vlen_array[1] = ["a", "bc"]
+    vlen_array[2] = ["a", "bc", "def"]
 
     # === H5T_ARRAY ===
 

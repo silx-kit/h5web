@@ -1,4 +1,8 @@
-import { assertArrayShape, assertDefined } from '@h5web/shared/guards';
+import {
+  assertArray,
+  assertArrayShape,
+  assertDefined,
+} from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type AttributeValues,
@@ -79,6 +83,8 @@ export class MockApi extends DataProviderApi {
     }
 
     assertArrayShape(dataset);
+    assertArray(value);
+
     return sliceValue(value, dataset, selection);
   }
 

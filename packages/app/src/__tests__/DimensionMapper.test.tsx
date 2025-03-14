@@ -109,6 +109,19 @@ test('slice through 2D dataset', async () => {
   expect(d0Slider).toHaveValue(1);
 });
 
+test('slice through 2D opaque dataset', async () => {
+  const { user } = await renderApp('/nD_datasets/twoD_opaque');
+
+  expect(screen.getByText('Uint8Array [ 0,1 ]')).toBeVisible();
+
+  // Move to next slice with keyboard
+  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  await user.type(d0Slider, '{ArrowUp}');
+
+  expect(d0Slider).toHaveValue(1);
+  await expect(screen.findByText('Uint8Array [ 4,5 ]')).resolves.toBeVisible();
+});
+
 test('maintain mapping when switching to inspect mode and back', async () => {
   const { user } = await renderApp({
     initialPath: '/nD_datasets/twoD',

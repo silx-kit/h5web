@@ -2,6 +2,7 @@ import { type Data, type NdArray, type TypedArray } from 'ndarray';
 
 import {
   type ArrayShape,
+  type ArrayType,
   type BooleanType,
   type ComplexArray,
   type ComplexType,
@@ -26,6 +27,7 @@ import {
   type Shape,
   type StringType,
   type Value,
+  type VLenType,
 } from './hdf5-models';
 import {
   type AnyNumArray,
@@ -523,6 +525,14 @@ export function isComplexValue(
   return type.class === DTypeClass.Complex;
 }
 
+export function isArrayOrVlenType(type: DType): type is ArrayType | VLenType {
+  return type.class === DTypeClass.Array || type.class === DTypeClass.VLen;
+}
+
+export function isScalarSelection(selection: string | undefined): boolean {
+  return selection !== undefined && /^\d+(?:,\d+)*$/u.test(selection);
+}
+
 export function assertScalarValue(
   value: unknown,
   type: DType,
@@ -544,16 +554,22 @@ export function assertScalarValue(
     Object.values(type.fields).forEach((fieldType, index) => {
       assertScalarValue(value[index], fieldType);
     });
+  } else if (isArrayOrVlenType(type)) {
+    assertArrayOrTypedArray(value);
+    if (value.length > 0) {
+      assertScalarValue(value[0], type.base);
+    }
   }
 }
 
 export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   value: unknown,
   dataset: D,
+  selection?: string,
 ): asserts value is Value<D> {
   const { type } = dataset;
 
-  if (hasScalarShape(dataset)) {
+  if (hasScalarShape(dataset) || isScalarSelection(selection)) {
     assertScalarValue(value, type);
   } else {
     assertArrayOrTypedArray(value);

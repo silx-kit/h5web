@@ -96,6 +96,14 @@ test('visualize 1D compound dataset', async () => {
   expect(screen.getByText('Argon')).toBeVisible();
 });
 
+test('visualize 1D opaque dataset', async () => {
+  await renderApp('/nD_datasets/oneD_opaque');
+
+  expect(getVisTabs()).toEqual([Vis.Array]);
+  expect(getSelectedVisTab()).toBe(Vis.Array);
+  expect(screen.getByText('Uint8Array [ 0,1,2 ]')).toBeVisible();
+});
+
 test('visualize 2D dataset', async () => {
   await renderApp('/nD_datasets/twoD');
 
@@ -164,6 +172,14 @@ test('visualize 2D complex dataset', async () => {
   expect(
     screen.getByRole('figure', { name: 'twoD_cplx (phase)' }),
   ).toBeVisible();
+});
+
+test('visualize 2D opaque dataset', async () => {
+  await renderApp('/nD_datasets/twoD_opaque');
+
+  expect(getVisTabs()).toEqual([Vis.Array]);
+  expect(getSelectedVisTab()).toBe(Vis.Array);
+  expect(screen.getByText('Uint8Array [ 0,1 ]')).toBeVisible();
 });
 
 test('show interactions help for heatmap according to "keep ratio"', async () => {
