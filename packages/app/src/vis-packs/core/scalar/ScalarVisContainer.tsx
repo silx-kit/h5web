@@ -1,32 +1,28 @@
-import { ScalarVis } from '@h5web/lib';
-import {
-  assertDataset,
-  assertPrintableType,
-  assertScalarShape,
-} from '@h5web/shared/guards';
+import { assertDataset, assertScalarShape } from '@h5web/shared/guards';
 
-import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
-import { getFormatter } from './utils';
+import { useScalarConfig } from './config';
+import MappedScalarVis from './MappedScalarVis';
 
 function ScalarVisContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertScalarShape(entity);
-  assertPrintableType(entity);
 
-  const formatter = getFormatter(entity);
+  const config = useScalarConfig();
 
   return (
     <VisBoundary>
       <ValueFetcher
         dataset={entity}
         render={(value) => (
-          <ScalarVis
-            className={visualizerStyles.vis}
-            value={formatter(value)}
+          <MappedScalarVis
+            dataset={entity}
+            value={value}
+            toolbarContainer={toolbarContainer}
+            config={config}
           />
         )}
       />

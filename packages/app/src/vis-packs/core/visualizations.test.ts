@@ -73,24 +73,10 @@ const nestedCompound = dataset(
   [2],
 );
 
-describe('Raw', () => {
-  const { supportsDataset } = CORE_VIS.Raw;
-
-  it('should support any scalar dataset', () => {
-    expect(supportsDataset(scalarInt)).toBe(true);
-    expect(supportsDataset(scalarOpaque)).toBe(true);
-  });
-
-  it('should not support dataset with non-scalar shape', () => {
-    expect(supportsDataset(nullShape)).toBe(false);
-    expect(supportsDataset(oneDInt)).toBe(false);
-  });
-});
-
 describe('Scalar', () => {
   const { supportsDataset } = CORE_VIS.Scalar;
 
-  it('should support dataset with printable type and scalar shape', () => {
+  it('should support any scalar dataset', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
     expect(supportsDataset(scalarUint)).toBe(true);
     expect(supportsDataset(scalarBigInt)).toBe(true);
@@ -98,13 +84,12 @@ describe('Scalar', () => {
     expect(supportsDataset(scalarStr)).toBe(true);
     expect(supportsDataset(scalarBool)).toBe(true);
     expect(supportsDataset(scalarCplx)).toBe(true);
-  });
-
-  it('should not support dataset with non-printable type', () => {
-    expect(supportsDataset(scalarCompound)).toBe(false);
+    expect(supportsDataset(scalarCompound)).toBe(true);
+    expect(supportsDataset(scalarOpaque)).toBe(true);
   });
 
   it('should not support dataset with non-scalar shape', () => {
+    expect(supportsDataset(nullShape)).toBe(false);
     expect(supportsDataset(oneDInt)).toBe(false);
   });
 });

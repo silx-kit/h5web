@@ -82,7 +82,7 @@ function getNxDefaultPath(
   return getImplicitDefaultChild(entity.children, attrValueStore)?.path;
 }
 
-const FALLBACK_VIS = new Set([Vis.Raw, Vis.Array]);
+const FALLBACK_VIS = new Set([Vis.Scalar, Vis.Array]);
 
 function getSupportedCoreVis(
   entity: ProvidedEntity,

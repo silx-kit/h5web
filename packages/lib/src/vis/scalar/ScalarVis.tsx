@@ -1,6 +1,8 @@
 import { type ClassStyleAttrs } from '../models';
 import styles from './ScalarVis.module.css';
 
+const LARGE_THRESHOLD = 1_000_000;
+
 interface Props extends ClassStyleAttrs {
   value: string;
 }
@@ -10,7 +12,11 @@ function ScalarVis(props: Props) {
 
   return (
     <div className={`${styles.root} ${className}`} style={style}>
-      <pre className={styles.scalar}>{value}</pre>
+      {value.length < LARGE_THRESHOLD ? (
+        <pre className={styles.scalar}>{value}</pre>
+      ) : (
+        <p className={styles.fallback}>Too big to display</p>
+      )}
     </div>
   );
 }

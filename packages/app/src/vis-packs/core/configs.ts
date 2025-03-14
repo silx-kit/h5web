@@ -1,4 +1,4 @@
-export { RawConfigProvider } from './raw/config';
+export { ScalarConfigProvider } from './scalar/config';
 export { MatrixConfigProvider } from './matrix/config';
 export { LineConfigProvider } from './line/config';
 export { HeatmapConfigProvider } from './heatmap/config';
