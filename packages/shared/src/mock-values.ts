@@ -174,6 +174,7 @@ export const mockValues = {
       [20, 41],
     );
   },
+  twoD_neg: () => ndarray(range(-10, 0), [1, 10]),
   threeD,
   threeD_cplx: () =>
     ndarray(
