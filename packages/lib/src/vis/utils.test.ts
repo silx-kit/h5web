@@ -39,60 +39,44 @@ describe('getSizeToFit', () => {
 
 describe('getDomain', () => {
   it('should return min and max values of data array', () => {
-    const data = [2, 0, 10, 5, 2, -1];
-    const domain = getDomain(data);
-    expect(domain).toEqual([-1, 10]);
+    expect(getDomain([2, 0, 10, 5, 2, -1])).toEqual([-1, 10]);
   });
 
   it('should return `undefined` if data is empty', () => {
-    const domain = getDomain([]);
-    expect(domain).toBeUndefined();
+    expect(getDomain([])).toBeUndefined();
   });
 
   it('should ignore NaN and Infinity', () => {
-    const domain = getDomain([2, NAN, 10, INFINITY, 2, -1]);
-    expect(domain).toEqual([-1, 10]);
+    expect(getDomain([2, NAN, 10, INFINITY, 2, -1])).toEqual([-1, 10]);
   });
 
   it('should return `undefined` if data contains only NaN and Infinity', () => {
-    const domain = getDomain([NAN, NAN, -INFINITY, INFINITY]);
-    expect(domain).toBeUndefined();
+    expect(getDomain([NAN, NAN, -INFINITY, INFINITY])).toBeUndefined();
   });
 
   describe('with log scale', () => {
-    it('should support negative domain', () => {
-      const domain = getDomain([-2, -10, -5, -2, -1], ScaleType.Log);
-      expect(domain).toEqual([-10, -1]);
-    });
-
-    it('should clamp domain min to first strict positive value when domain crosses zero', () => {
-      const domain = getDomain([2, 0, 10, 5, 2, -1], ScaleType.Log);
-      expect(domain).toEqual([2, 10]);
+    it('should clamp domain min to first strictly positive value when domain crosses zero', () => {
+      expect(getDomain([2, 0, 10, -1], ScaleType.Log)).toEqual([2, 10]);
     });
 
     it('should return `undefined` if domain is not supported', () => {
-      const domain = getDomain([-2, 0, -10, -5, -2, -1], ScaleType.Log);
-      expect(domain).toBeUndefined();
+      expect(getDomain([-2, 0, -10], ScaleType.Log)).toBeUndefined();
+      expect(getDomain([-2, -5, -10], ScaleType.Log)).toBeUndefined();
     });
   });
 
   describe('with sqrt scale', () => {
-    it('should support negative domain', () => {
-      const domain = getDomain([-2, -10, -5, -2, -1], ScaleType.Sqrt);
-      expect(domain).toEqual([-10, -1]);
-    });
-
-    it('should support negative domain including 0', () => {
-      const domain = getDomain([-2, 0, -10, -5, -2, -1], ScaleType.Sqrt);
-      expect(domain).toEqual([-10, 0]);
+    it('should support positive domain including 0', () => {
+      expect(getDomain([1, 3, 0, 2], ScaleType.Sqrt)).toEqual([0, 3]);
     });
 
     it('should clamp domain min to first positive value when domain crosses zero', () => {
-      const domain = getDomain([2, 0, 10, 5, 2, -1], ScaleType.Sqrt);
-      expect(domain).toEqual([0, 10]);
+      expect(getDomain([2, 0, 10, -1], ScaleType.Sqrt)).toEqual([0, 10]);
+      expect(getDomain([2, 5, 10, -1], ScaleType.Sqrt)).toEqual([2, 10]);
+    });
 
-      const domain2 = getDomain([2, 10, 5, 2, -1], ScaleType.Sqrt);
-      expect(domain2).toEqual([2, 10]);
+    it('should return `undefined` if domain is fully negative', () => {
+      expect(getDomain([-2, -10], ScaleType.Sqrt)).toBeUndefined();
     });
   });
 });
@@ -108,12 +92,11 @@ describe('getDomains', () => {
   });
 
   it('should return domains of multiple arrays in log scale', () => {
-    const arr1 = [-2, -10, -5, -2, -1];
-    const arr2 = [2, 0, 10, 5, 2, -1];
-    const arr3 = [-2, 0, -10, -5, -2, -1];
+    const arr1 = [2, 0, 10, 5, 2, -1];
+    const arr2 = [-2, 0, -10, -5, -2, -1];
 
-    const domain = getDomains([arr1, arr2, arr3], ScaleType.Log);
-    expect(domain).toEqual([[-10, -1], [2, 10], undefined]);
+    const domain = getDomains([arr1, arr2], ScaleType.Log);
+    expect(domain).toEqual([[2, 10], undefined]);
   });
 });
 
