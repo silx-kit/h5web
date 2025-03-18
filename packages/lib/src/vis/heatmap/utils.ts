@@ -13,6 +13,7 @@ import {
   FloatType,
   HalfFloatType,
   type MagnificationTextureFilter,
+  type MinificationTextureFilter,
   NearestFilter,
   RedFormat,
   UnsignedByteType,
@@ -184,18 +185,22 @@ export function toTextureSafeNdArray(
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array>,
   magFilter?: MagnificationTextureFilter,
+  minFilter?: MinificationTextureFilter,
 ): DataTexture;
 export function getDataTexture(
   values: undefined,
   magFilter?: MagnificationTextureFilter,
+  minFilter?: MinificationTextureFilter,
 ): undefined;
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
   magFilter?: MagnificationTextureFilter,
+  minFilter?: MinificationTextureFilter,
 ): DataTexture | undefined;
 export function getDataTexture(
   values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
   magFilter: MagnificationTextureFilter = NearestFilter,
+  minFilter: MinificationTextureFilter = NearestFilter,
 ): DataTexture | undefined {
   if (!values) {
     return undefined;
@@ -212,6 +217,7 @@ export function getDataTexture(
     ClampToEdgeWrapping,
     ClampToEdgeWrapping,
     magFilter,
+    minFilter,
   );
   texture.needsUpdate = true;
 

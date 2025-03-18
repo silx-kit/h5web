@@ -9,6 +9,7 @@ import { assertDefined } from '@h5web/shared/guards';
 import { COLOR_SCALE_TYPES, toTypedNdArray } from '@h5web/shared/vis-utils';
 import { type Meta, type StoryObj } from '@storybook/react';
 import ndarray from 'ndarray';
+import { LinearFilter, NearestFilter } from 'three';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -37,6 +38,8 @@ const meta = {
     scaleType: ScaleType.Linear,
     aspect: 'equal',
     showGrid: true,
+    magFilter: NearestFilter,
+    minFilter: NearestFilter,
   },
   argTypes: {
     dataArray: { control: false },
@@ -51,6 +54,20 @@ const meta = {
     aspect: {
       control: { type: 'inline-radio' },
       options: ['auto', 'equal', 0.25],
+    },
+    magFilter: {
+      control: {
+        type: 'inline-radio',
+        labels: { [NearestFilter]: 'nearest', [LinearFilter]: 'linear' },
+      },
+      options: [NearestFilter, LinearFilter], // https://threejs.org/docs/#api/en/constants/Textures
+    },
+    minFilter: {
+      control: {
+        type: 'inline-radio',
+        labels: { [NearestFilter]: 'nearest', [LinearFilter]: 'linear' },
+      },
+      options: [NearestFilter, LinearFilter], // ... and more https://threejs.org/docs/#api/en/constants/Textures
     },
   },
 } satisfies Meta<typeof HeatmapVis>;
