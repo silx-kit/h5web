@@ -40,6 +40,7 @@ const meta = {
   args: {
     invertColorMap: false,
     magFilter: NearestFilter,
+    minFilter: NearestFilter,
   },
   argTypes: {
     scaleType: {
@@ -47,6 +48,13 @@ const meta = {
       options: COLOR_SCALE_TYPES,
     },
     magFilter: {
+      control: {
+        type: 'inline-radio',
+        labels: { [NearestFilter]: 'nearest', [LinearFilter]: 'linear' },
+      },
+      options: [NearestFilter, LinearFilter],
+    },
+    minFilter: {
       control: {
         type: 'inline-radio',
         labels: { [NearestFilter]: 'nearest', [LinearFilter]: 'linear' },

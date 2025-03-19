@@ -6,6 +6,7 @@ import {
   DataTexture,
   DoubleSide,
   type MagnificationTextureFilter,
+  type MinificationTextureFilter,
   RGBAFormat,
   UnsignedByteType,
   Vector4,
@@ -24,10 +25,11 @@ interface Props extends VisMeshProps {
   scaleType: VisScaleType;
   colorMap: ColorMap;
   invertColorMap?: boolean;
-  magFilter?: MagnificationTextureFilter;
   alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
   alphaDomain?: Domain;
   badColor?: RGBColor | string;
+  magFilter?: MagnificationTextureFilter;
+  minFilter?: MinificationTextureFilter;
   mask?: NdArray<Uint8Array>;
 }
 
@@ -53,14 +55,15 @@ function HeatmapMaterial(props: Props) {
     scaleType: visScaleType,
     colorMap,
     invertColorMap = false,
-    magFilter,
     alphaValues,
     alphaDomain = DEFAULT_DOMAIN,
     badColor = DEFAULT_BAD_COLOR,
+    magFilter,
+    minFilter,
     mask,
   } = props;
 
-  const dataTexture = useDataTexture(values, magFilter);
+  const dataTexture = useDataTexture(values, magFilter, minFilter);
   const alphaTexture = useDataTexture(alphaValues);
   const maskTexture = useDataTexture(mask);
 

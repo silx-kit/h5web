@@ -8,6 +8,10 @@ import {
 import { formatTooltipVal, getDims } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { type ReactElement, type ReactNode } from 'react';
+import {
+  type MagnificationTextureFilter,
+  type MinificationTextureFilter,
+} from 'three';
 
 import DefaultInteractions, {
   type DefaultInteractionsConfig,
@@ -42,6 +46,8 @@ interface Props extends ClassStyleAttrs {
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
   alpha?: { array: NdArray<NumArray>; domain: Domain };
+  magFilter?: MagnificationTextureFilter;
+  minFilter?: MinificationTextureFilter;
   flipXAxis?: boolean;
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
@@ -64,6 +70,8 @@ function HeatmapVis(props: Props) {
     abscissaParams = {},
     ordinateParams = {},
     alpha,
+    magFilter,
+    minFilter,
     flipXAxis,
     flipYAxis,
     renderTooltip,
@@ -155,6 +163,8 @@ function HeatmapVis(props: Props) {
           alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
           scale={[flipXAxis ? -1 : 1, flipYAxis ? -1 : 1, 1]}
+          magFilter={magFilter}
+          minFilter={minFilter}
           mask={maskArray}
         />
 
