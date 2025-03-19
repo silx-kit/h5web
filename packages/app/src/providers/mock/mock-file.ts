@@ -137,6 +137,7 @@ export function makeMockFile(): GroupWithChildren {
           valueId: 'twoD',
           attributes: [scalar('_FillValue', 400)],
         }),
+        array('twoD_neg'),
         array('twoD_bigint'),
         array('twoD_cplx'),
         array('twoD_compound', {

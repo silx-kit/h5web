@@ -17,9 +17,14 @@ function ViewportCenterer() {
   });
 
   useEffect(() => {
+    // On resize, move camera to the latest saved viewport center coordinates
     if (viewportCenter.current) {
-      // On resize, move camera to the latest saved viewport center coordinates
-      moveCameraTo(dataToWorld(viewportCenter.current));
+      const newPos = dataToWorld(viewportCenter.current);
+
+      // Ignore previous center if no longer valid with current scale
+      if (Number.isFinite(newPos.x) && Number.isFinite(newPos.y)) {
+        moveCameraTo(newPos);
+      }
     }
   }, [viewportCenter, moveCameraTo, dataToWorld, camera]);
 

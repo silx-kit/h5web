@@ -167,16 +167,17 @@ export function getValidDomainForScale(
   }
 
   const { min, max, positiveMin, strictPositiveMin } = bounds;
-  if (scaleType === ScaleType.Log && min * max <= 0) {
-    // Clamp domain minimum to first positive value,
-    // or return `undefined` if domain is not unsupported: `[-x, 0]`
+
+  if (scaleType === ScaleType.Log && min <= 0) {
     return Number.isFinite(strictPositiveMin)
-      ? [strictPositiveMin, max]
-      : undefined;
+      ? [strictPositiveMin, max] // clamp min to first strictly positive value, if any
+      : undefined; // can't make valid domain - e.g. [-5, -2], [-10, 0]
   }
 
-  if (scaleType === ScaleType.Sqrt && min * max < 0) {
-    return [positiveMin, max];
+  if (scaleType === ScaleType.Sqrt && min < 0) {
+    return Number.isFinite(positiveMin)
+      ? [positiveMin, max] // clamp min to first positive value, if any
+      : undefined; // can't make valid domain - e.g. [-5, -2]
   }
 
   return [min, max];
