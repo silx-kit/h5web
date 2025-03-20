@@ -66,9 +66,9 @@ export default MyApp;
 The following code sandboxes demonstrate how to set up and use `@h5web/app` with
 various front-end development stacks:
 
-- [Vite](https://codesandbox.io/p/sandbox/h5webapp-vite-5c204?file=%2Fsrc%2FMyApp.tsx%3A12%2C1)
-- [Create React App v4](https://codesandbox.io/p/sandbox/h5webapp-cra-v4-0y1lj?file=%2Fsrc%2FMyApp.tsx%3A1%2C1)
+- [Vite](https://codesandbox.io/p/sandbox/h5webapp-vite-5c204?file=%2Fsrc%2FMyApp.tsx)
 - [Create React App v5](https://codesandbox.io/p/sandbox/h5webapp-cra-v5-bzmbh1?file=%2Fsrc%2FMyApp.tsx)
+  (deprecated)
 
 ### Browser support
 

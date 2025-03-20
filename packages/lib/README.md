@@ -77,9 +77,9 @@ export default MyApp;
 The following code sandboxes demonstrate how to set up and use `@h5web/lib` with
 various front-end development stacks:
 
-- [Vite](https://codesandbox.io/p/sandbox/h5weblib-vite-xru04?file=%2Fsrc%2FApp.tsx%3A1%2C1)
-- [Create React App v4](https://codesandbox.io/p/sandbox/h5weblib-cra-v4-2te48?file=%2Fsrc%2FApp.tsx%3A1%2C1)
-- [Create React App v5](https://codesandbox.io/p/sandbox/h5weblib-cra-v5-nhznhh?file=%2Fsrc%2FApp.tsx%3A1%2C1)
+- [Vite](https://codesandbox.io/p/sandbox/h5weblib-vite-xru04?file=%2Fsrc%2FApp.tsx)
+- [Create React App v5](https://codesandbox.io/p/sandbox/h5weblib-cra-v5-nhznhh?file=%2Fsrc%2FApp.tsx)
+  (deprecated)
 
 ### Browser support
 
