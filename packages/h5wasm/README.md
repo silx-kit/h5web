@@ -27,7 +27,7 @@ This package, `@h5web/h5wasm`, provides two additional data providers that can
 and `H5WasmBufferProvider`.
 
 Check out
-[this code sandbox](https://codesandbox.io/p/sandbox/h5web-h5wasm-77j67x?file=%2Fsrc%2FMyApp.tsx%3A1%2C1)
+[this code sandbox](https://codesandbox.io/p/sandbox/h5web-h5wasm-77j67x?file=%2Fsrc%2FMyApp.tsx)
 for a demonstration of how to set up `@h5web/h5wasm` and use
 `H5WasmLocalFileProvider`.
 
