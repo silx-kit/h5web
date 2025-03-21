@@ -1,4 +1,4 @@
-import { createConfig, detectOpts } from './eslint.config.base.js';
+import { createConfig, detectOpts } from '@h5web/eslint-config';
 
 const opts = detectOpts(import.meta.dirname);
 

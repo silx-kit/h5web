@@ -1,12 +1,12 @@
-import { createConfig, detectOpts } from '@h5web/eslint-config';
+import { createConfig, detectOpts } from './index.js';
 
 const opts = detectOpts(import.meta.dirname);
 
 const config = [
   ...createConfig(opts),
   {
-    name: 'h5web/demo/ignores',
-    ignores: ['dist/'],
+    name: 'h5web/eslint-config/ignores',
+    ignores: [],
   },
 ];
 

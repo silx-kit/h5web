@@ -19,13 +19,15 @@ import _ from 'lodash';
 import tseslint from 'typescript-eslint';
 
 const DEFAULT_OPTS = {
-  typescript: false,
-  react: false,
-  storybook: false,
-  vitest: false,
   cypress: false,
-  reactTestingLibrary: false,
   cypressTestingLibrary: false,
+  react: false,
+  reactTestingLibrary: false,
+  rollup: false,
+  storybook: false,
+  typescript: false,
+  vite: false,
+  vitest: false,
 };
 
 export function detectOpts(projectDir) {
@@ -39,27 +41,38 @@ export function detectOpts(projectDir) {
   ]);
 
   return {
-    typescript: deps.has('typescript') && fs.existsSync(tsconfigPath),
-    react: deps.has('react'),
-    storybook: deps.has('storybook'),
-    vitest: deps.has('vitest'),
     cypress: deps.has('cypress'),
-    reactTestingLibrary: deps.has('@testing-library/react'),
     cypressTestingLibrary: deps.has('@testing-library/cypress'),
+    react: deps.has('react'),
+    reactTestingLibrary: deps.has('@testing-library/react'),
+    rollup: deps.has('rollup'),
+    storybook: deps.has('storybook'),
+    typescript: deps.has('typescript') && fs.existsSync(tsconfigPath),
+    vite: deps.has('vite'),
+    vitest: deps.has('vitest'),
   };
 }
 
 // eslint-disable-next-line complexity
 export function createConfig(opts = {}) {
   const {
-    typescript: withTypeScript,
-    react: withReact,
-    storybook: withStorybook,
-    vitest: withVitest,
     cypress: withCypress,
-    reactTestingLibrary: withReactTestingLibrary,
     cypressTestingLibrary: withCypressTestingLibrary,
+    react: withReact,
+    reactTestingLibrary: withReactTestingLibrary,
+    rollup: withRollup,
+    storybook: withStorybook,
+    typescript: withTypeScript,
+    vite: withVite,
+    vitest: withVitest,
   } = { ...DEFAULT_OPTS, ...opts };
+
+  const nodeFiles = [
+    '**/eslint.*.{js,ts}',
+    withCypress && '**/cypress.*.{js,ts}',
+    withRollup && '**/rollup.*.{js,ts}',
+    withVite && '**/vite.*.{js,ts}',
+  ];
 
   return tseslint.config(
     _.compact([
@@ -93,8 +106,19 @@ export function createConfig(opts = {}) {
       },
       {
         /**
-         * Configure browser globals on files we're confident aren't meant to run
-         * in a non-browser environment.
+         * Configure Node globals on files we're confident are meant to run
+         * in a Node environment.
+         */
+        name: 'h5web/defaults/globals-node',
+        files: nodeFiles.filter((entry) => !!entry),
+        languageOptions: {
+          globals: { ...globals.node },
+        },
+      },
+      {
+        /**
+         * Configure browser globals on files we're confident are meant to run
+         * in a browser environment.
          */
         name: 'h5web/defaults/globals-browser',
         files: ['**/*.{jsx,tsx}'],
