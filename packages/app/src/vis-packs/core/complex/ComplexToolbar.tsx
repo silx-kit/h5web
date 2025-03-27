@@ -79,13 +79,13 @@ function ComplexToolbar(props: Props) {
 
       <ToggleBtn
         label="Keep ratio"
-        icon={MdAspectRatio}
+        Icon={MdAspectRatio}
         value={keepRatio}
         onToggle={toggleKeepRatio}
       />
       <ToggleBtn
         label="Grid"
-        icon={MdGridOn}
+        Icon={MdGridOn}
         value={showGrid}
         onToggle={toggleGrid}
       />

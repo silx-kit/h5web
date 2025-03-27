@@ -58,7 +58,7 @@ function OverflowMenu(props: PropsWithChildren<Props>) {
         ref={refs.setReference}
         id={referenceId}
         label="More controls"
-        icon={FiMenu}
+        Icon={FiMenu}
         iconOnly
         aria-haspopup="dialog"
         aria-expanded={isOpen}

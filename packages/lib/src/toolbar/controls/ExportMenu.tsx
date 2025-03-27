@@ -47,7 +47,7 @@ function ExportMenu(props: Props) {
         ref={refs.setReference}
         id={referenceId}
         label={`Export${isSlice ? ' slice' : ''}`}
-        icon={FiDownload}
+        Icon={FiDownload}
         withArrow
         disabled={entries.length === 0}
         aria-haspopup="menu"

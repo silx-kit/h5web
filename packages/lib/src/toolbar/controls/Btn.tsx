@@ -1,16 +1,11 @@
-import {
-  type ComponentType,
-  forwardRef,
-  type HTMLAttributes,
-  type SVGAttributes,
-} from 'react';
+import { type ComponentType, forwardRef, type HTMLAttributes } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import styles from '../Toolbar.module.css';
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   label: string;
-  icon?: ComponentType<SVGAttributes<SVGElement>>;
+  Icon?: ComponentType<{ className: string }>;
   iconOnly?: boolean;
   small?: boolean;
   raised?: boolean;
@@ -21,7 +16,7 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
 const Btn = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   const {
     label,
-    icon: Icon,
+    Icon,
     iconOnly,
     small,
     raised,

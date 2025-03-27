@@ -10,11 +10,11 @@ import {
 } from '@h5web/lib';
 import { type Domain, type ExportEntry } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { FiItalic } from 'react-icons/fi';
 import { MdGridOn } from 'react-icons/md';
 
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { type LineConfig } from './config';
+import ErrorsIcon from './ErrorsIcon';
 
 interface Props {
   dataDomain: Domain;
@@ -69,14 +69,7 @@ function LineToolbar(props: Props) {
 
       <ToggleBtn
         label="Errors"
-        // eslint-disable-next-line react/no-unstable-nested-components
-        icon={(iconProps) => (
-          <FiItalic
-            transform="skewX(20)"
-            style={{ marginLeft: '-0.25em', marginRight: '0.0625rem' }}
-            {...iconProps}
-          />
-        )}
+        Icon={ErrorsIcon}
         value={!disableErrors && showErrors}
         onToggle={toggleErrors}
         disabled={disableErrors}
@@ -84,7 +77,7 @@ function LineToolbar(props: Props) {
 
       <ToggleBtn
         label="Grid"
-        icon={MdGridOn}
+        Icon={MdGridOn}
         value={showGrid}
         onToggle={toggleGrid}
       />

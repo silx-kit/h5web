@@ -43,7 +43,7 @@ function BreadcrumbsBar(props: Props) {
     <div className={styles.bar}>
       <ToggleBtn
         label="Toggle sidebar"
-        icon={FiSidebar}
+        Icon={FiSidebar}
         iconOnly
         value={isSidebarOpen}
         onToggle={onToggleSidebar}
@@ -71,7 +71,7 @@ function BreadcrumbsBar(props: Props) {
 
       {document.fullscreenEnabled && (
         <Btn
-          icon={isFullscreen ? FiMinimize : FiMaximize}
+          Icon={isFullscreen ? FiMinimize : FiMaximize}
           iconOnly
           label="Go full screen"
           onClick={() => {

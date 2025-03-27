@@ -80,14 +80,14 @@ export const Default = {
 
           <ToggleBtn
             label="Grid"
-            icon={MdGridOn}
+            Icon={MdGridOn}
             value={showGrid}
             onToggle={toggleGrid}
           />
           <ToggleBtn
             label="Test"
             iconOnly
-            icon={FiTarget}
+            Icon={FiTarget}
             value={withTest}
             onToggle={toggleTest}
           />

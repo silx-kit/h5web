@@ -99,7 +99,7 @@ function DomainWidget(props: Props) {
           label="Edit domain"
           aria-expanded={hovered || isEditing}
           aria-controls={POPUP_ID}
-          icon={FiEdit3}
+          Icon={FiEdit3}
           value={isEditing}
           disabled={disabled}
           onToggle={() => toggleEditing(!isEditing)}

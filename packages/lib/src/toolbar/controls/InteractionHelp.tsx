@@ -47,7 +47,7 @@ function InteractionHelp(props: Props) {
         ref={refs.setReference}
         id={referenceId}
         label="Show help"
-        icon={FiHelpCircle}
+        Icon={FiHelpCircle}
         iconOnly
         aria-haspopup="dialog"
         aria-expanded={isOpen}

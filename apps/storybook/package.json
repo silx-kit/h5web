@@ -28,7 +28,7 @@
     "three": "0.172.0"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.0.3",
+    "@esrf/eslint-config": "1.0.4",
     "@storybook/addon-docs": "8.5.0",
     "@storybook/addon-essentials": "8.5.0",
     "@storybook/addon-links": "8.5.0",

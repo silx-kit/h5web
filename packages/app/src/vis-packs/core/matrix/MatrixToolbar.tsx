@@ -43,7 +43,7 @@ function MatrixToolbar(props: Props) {
 
       <ToggleBtn
         label="Freeze indices"
-        icon={FiAnchor}
+        Icon={FiAnchor}
         value={sticky}
         onToggle={toggleSticky}
       />
