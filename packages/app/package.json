@@ -52,7 +52,7 @@
     "@h5web/lib": "workspace:*",
     "@react-hookz/web": "25.0.1",
     "@react-three/fiber": "8.17.12",
-    "axios": "1.7.9",
+    "axios": "1.8.4",
     "d3-format": "3.1.0",
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
