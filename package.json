@@ -35,7 +35,7 @@
     "support:sample": "poetry -C support/sample run python create_h5_sample.py",
     "support:h5grove": "poetry -C support/h5grove run python tornado_app.py --basedir ../sample/dist",
     "cypress": "cypress open --e2e --browser firefox",
-    "cypress:run": "cypress run --e2e",
+    "cypress:run": "cypress run --e2e --browser firefox",
     "version": "pnpm -r sync-version && git add .",
     "postversion": "git push && git push --tags"
   },
