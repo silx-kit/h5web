@@ -26,12 +26,13 @@
     "wouter": "3.3.5"
   },
   "devDependencies": {
+    "@esrf/eslint-config": "1.0.3",
     "@types/node": "^22.12.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "3.7.2",
-    "eslint": "9.18.0",
-    "typescript": "5.7.3",
+    "eslint": "9.23.0",
+    "typescript": "5.8.2",
     "vite": "5.4.11",
     "vite-css-modules": "1.8.4",
     "vite-plugin-checker": "0.8.0",

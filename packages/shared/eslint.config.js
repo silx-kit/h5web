@@ -1,13 +1,11 @@
-import { createConfig, detectOpts } from '../../eslint.config.base.js';
+import { createConfig, detectOpts } from '@esrf/eslint-config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 const opts = detectOpts(import.meta.dirname);
 
-const config = [
+const config = defineConfig([
+  globalIgnores(['dist-ts/']),
   ...createConfig(opts),
-  {
-    name: 'h5web/shared/ignores',
-    ignores: ['dist-ts/'],
-  },
-];
+]);
 
 export default config;
