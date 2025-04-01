@@ -35,7 +35,7 @@ npm install @h5web/lib three @react-three/fiber ndarray
 ```
 
 ```tsx
-import '@h5web/lib/dist/styles.css';
+import '@h5web/lib/styles.css';
 
 import React from 'react';
 import ndarray from 'ndarray';

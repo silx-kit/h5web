@@ -1,0 +1,2 @@
+/* Global lib styles for demo (via packages/app/src/styles.css) and Storybook */
+@import '@h5web/shared/styles.css'; /* global shared styles */

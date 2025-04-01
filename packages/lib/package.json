@@ -13,7 +13,11 @@
   "files": [
     "dist"
   ],
-  "main": "src/index.ts",
+  "exports": {
+    "./global-styles.css": "./src/global-styles.css",
+    "./dist/styles.css": "./dist/styles.css",
+    ".": "./src/index.ts"
+  },
   "publishConfig": {
     "main": "dist/index.js",
     "module": "dist/index.mjs",
@@ -30,7 +34,7 @@
   },
   "scripts": {
     "build": "vite build && pnpm \"/^build:/\"",
-    "build:css": "vite build --config vite.styles.config.js && concat dist/temp/style.css dist/style.css -o dist/styles.css && rimraf dist/style.css dist/temp",
+    "build:css": "vite build --config vite.styles.config.js && concat dist/temp/styles.css dist/lib.css -o dist/styles.css && rimraf dist/lib.css dist/temp",
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint --max-warnings=0",
     "lint:tsc": "tsc",
@@ -93,7 +97,7 @@
     "@types/react-slider": "~1.3.6",
     "@types/react-window": "~1.8.8",
     "@types/three": "0.172.0",
-    "@vitejs/plugin-react-swc": "3.7.2",
+    "@vitejs/plugin-react-swc": "3.8.1",
     "concat": "1.0.3",
     "dot-json": "1.3.0",
     "eslint": "9.23.0",
@@ -104,8 +108,8 @@
     "rollup-plugin-dts": "6.1.1",
     "three": "0.172.0",
     "typescript": "5.8.2",
-    "vite": "5.4.11",
+    "vite": "6.2.4",
     "vite-css-modules": "1.8.4",
-    "vitest": "2.1.8"
+    "vitest": "3.1.1"
   }
 }

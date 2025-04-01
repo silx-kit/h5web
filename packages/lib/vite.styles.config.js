@@ -7,7 +7,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve('src/styles.ts'),
       formats: ['es'],
-      fileName: () => 'styles.js',
+      fileName: 'styles',
     },
     outDir: 'dist/temp',
     emptyOutDir: false,

@@ -1,5 +1,3 @@
-import 'normalize.css';
-import '@h5web/shared/styles.css'; // importing via `@h5web/lib/src/styles.css` fails due ot lack of `~` prefix (as it is not supported by Vite)
 import '../src/styles.css';
 
 import { type Preview } from '@storybook/react';
