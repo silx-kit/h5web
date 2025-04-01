@@ -1,5 +1,5 @@
 import { App, assertEnvVar, HsdsProvider } from '@h5web/app';
-import { useSearch } from 'wouter';
+import { useSearchParams } from 'wouter';
 
 import { getFeedbackURL } from './utils';
 
@@ -16,8 +16,8 @@ function HsdsApp() {
   assertEnvVar(SUBDOMAIN, 'VITE_HSDS_SUBDOMAIN');
   assertEnvVar(FILEPATH, 'VITE_HSDS_FALLBACK_FILEPATH');
 
-  const query = new URLSearchParams(useSearch());
-  const filepath = `${SUBDOMAIN}${query.get('file') || FILEPATH}`;
+  const [searchParams] = useSearchParams();
+  const filepath = `${SUBDOMAIN}${searchParams.get('file') || FILEPATH}`;
 
   return (
     <HsdsProvider
@@ -26,7 +26,10 @@ function HsdsApp() {
       password={PASSWORD}
       filepath={filepath}
     >
-      <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
+      <App
+        sidebarOpen={!searchParams.has('wide')}
+        getFeedbackURL={getFeedbackURL}
+      />
     </HsdsProvider>
   );
 }

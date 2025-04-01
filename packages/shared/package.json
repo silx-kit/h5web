@@ -54,13 +54,13 @@
     }
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.0.4",
+    "@esrf/eslint-config": "1.0.6",
     "@types/d3-array": "~3.2.1",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "~1.0.14",
     "@types/ndarray-ops": "~1.2.7",
-    "@types/node": "^22.12.0",
-    "@types/react": "^18.3.3",
+    "@types/node": "^22.13.16",
+    "@types/react": "^18.3.20",
     "d3-array": "3.2.4",
     "d3-format": "3.1.0",
     "eslint": "9.23.0",
