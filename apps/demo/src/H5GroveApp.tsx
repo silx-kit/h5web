@@ -1,6 +1,6 @@
 import { App, assertEnvVar, H5GroveProvider } from '@h5web/app';
 import { useMemo } from 'react';
-import { useSearch } from 'wouter';
+import { useSearchParams } from 'wouter';
 
 import { getFeedbackURL } from './utils';
 
@@ -11,8 +11,8 @@ function H5GroveApp() {
   assertEnvVar(URL, 'VITE_H5GROVE_URL');
   assertEnvVar(FILEPATH, 'VITE_H5GROVE_FALLBACK_FILEPATH');
 
-  const query = new URLSearchParams(useSearch());
-  const filepath = query.get('file') || FILEPATH;
+  const [searchParams] = useSearchParams();
+  const filepath = searchParams.get('file') || FILEPATH;
 
   return (
     <H5GroveProvider
@@ -20,7 +20,10 @@ function H5GroveApp() {
       filepath={filepath}
       axiosConfig={useMemo(() => ({ params: { file: filepath } }), [filepath])}
     >
-      <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
+      <App
+        sidebarOpen={!searchParams.has('wide')}
+        getFeedbackURL={getFeedbackURL}
+      />
     </H5GroveProvider>
   );
 }

@@ -1,7 +1,7 @@
 import useAxios from 'axios-hooks';
 import { type FormEvent, useCallback, useEffect } from 'react';
 import { FiLoader } from 'react-icons/fi';
-import { useLocation, useSearch } from 'wouter';
+import { useSearchParams } from 'wouter';
 
 import { type RemoteFile } from './models';
 import styles from './UrlForm.module.css';
@@ -13,9 +13,8 @@ interface Props {
 function UrlForm(props: Props) {
   const { onLoad } = props;
 
-  const [, navigate] = useLocation();
-  const query = new URLSearchParams(useSearch());
-  const url = query.get('url') || '';
+  const [searchParams, setSearchParams] = useSearchParams();
+  const url = searchParams.get('url') || '';
 
   const [{ loading, error }, execute] = useAxios<ArrayBuffer>(
     { url, responseType: 'arraybuffer' },
@@ -44,7 +43,10 @@ function UrlForm(props: Props) {
     if (newUrl === url) {
       void fetchFile(); // refetch
     } else {
-      navigate(`?${new URLSearchParams({ url: newUrl }).toString()}`);
+      setSearchParams((prev) => {
+        prev.set(url, newUrl);
+        return prev;
+      });
     }
   }
 

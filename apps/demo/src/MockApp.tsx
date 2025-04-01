@@ -1,14 +1,17 @@
 import { App, MockProvider } from '@h5web/app';
-import { useSearch } from 'wouter';
+import { useSearchParams } from 'wouter';
 
 import { getFeedbackURL } from './utils';
 
 function MockApp() {
-  const query = new URLSearchParams(useSearch());
+  const [searchParams] = useSearchParams();
 
   return (
     <MockProvider>
-      <App sidebarOpen={!query.has('wide')} getFeedbackURL={getFeedbackURL} />
+      <App
+        sidebarOpen={!searchParams.has('wide')}
+        getFeedbackURL={getFeedbackURL}
+      />
     </MockProvider>
   );
 }
