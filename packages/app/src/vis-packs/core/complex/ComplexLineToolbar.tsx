@@ -73,7 +73,7 @@ function ComplexLineToolbar(props: Props) {
 
       <ToggleBtn
         label="Grid"
-        icon={MdGridOn}
+        Icon={MdGridOn}
         value={showGrid}
         onToggle={toggleGrid}
       />

@@ -18,7 +18,7 @@ function RawToolbar(props: Props) {
     <Toolbar>
       <ToggleBtn
         label="Fit image"
-        icon={MdOutlineFitScreen}
+        Icon={MdOutlineFitScreen}
         value={fitImage}
         disabled={!isImage}
         onToggle={toggleFitImage}

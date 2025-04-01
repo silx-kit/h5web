@@ -51,7 +51,7 @@
     "nanoid": "5.0.9"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.0.3",
+    "@esrf/eslint-config": "1.0.4",
     "@h5web/app": "workspace:*",
     "@h5web/shared": "workspace:*",
     "@rollup/plugin-alias": "5.1.0",

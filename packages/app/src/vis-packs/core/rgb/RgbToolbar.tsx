@@ -53,28 +53,28 @@ function RgbToolbar(props: Props) {
       <ToggleBtn
         label="X"
         aria-label="Flip X"
-        icon={MdSwapHoriz}
+        Icon={MdSwapHoriz}
         value={flipXAxis}
         onToggle={toggleXAxisFlip}
       />
       <ToggleBtn
         label="Y"
         aria-label="Flip Y"
-        icon={MdSwapVert}
+        Icon={MdSwapVert}
         value={flipYAxis}
         onToggle={toggleYAxisFlip}
       />
 
       <ToggleBtn
         label="Keep ratio"
-        icon={MdAspectRatio}
+        Icon={MdAspectRatio}
         value={keepRatio}
         onToggle={toggleKeepRatio}
       />
 
       <ToggleBtn
         label="Grid"
-        icon={MdGridOn}
+        Icon={MdGridOn}
         value={showGrid}
         onToggle={toggleGrid}
       />

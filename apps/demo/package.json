@@ -26,7 +26,7 @@
     "wouter": "3.3.5"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.0.3",
+    "@esrf/eslint-config": "1.0.4",
     "@types/node": "^22.12.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

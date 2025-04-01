@@ -63,7 +63,7 @@ function CellWidthInput(props: Props) {
 
       <Btn
         label="Reset"
-        icon={FiRotateCw}
+        Icon={FiRotateCw}
         iconOnly
         small
         disabled={!hasValue}

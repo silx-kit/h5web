@@ -54,7 +54,7 @@
     }
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.0.3",
+    "@esrf/eslint-config": "1.0.4",
     "@types/d3-array": "~3.2.1",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "~1.0.14",
