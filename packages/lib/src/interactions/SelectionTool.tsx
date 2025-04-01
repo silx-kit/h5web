@@ -218,4 +218,4 @@ function SelectionTool(props: Props) {
 }
 
 export type { Props as SelectionToolProps };
-export { SelectionTool as default };
+export default SelectionTool;

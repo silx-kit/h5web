@@ -75,6 +75,7 @@
     "zustand": "5.0.3"
   },
   "devDependencies": {
+    "@esrf/eslint-config": "1.0.3",
     "@h5web/shared": "workspace:*",
     "@react-three/fiber": "8.17.12",
     "@rollup/plugin-alias": "5.1.0",
@@ -95,14 +96,14 @@
     "@vitejs/plugin-react-swc": "3.7.2",
     "concat": "1.0.3",
     "dot-json": "1.3.0",
-    "eslint": "9.18.0",
+    "eslint": "9.23.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "rimraf": "6.0.1",
     "rollup": "4.30.1",
     "rollup-plugin-dts": "6.1.1",
     "three": "0.172.0",
-    "typescript": "5.7.3",
+    "typescript": "5.8.2",
     "vite": "5.4.11",
     "vite-css-modules": "1.8.4",
     "vitest": "2.1.8"

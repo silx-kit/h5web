@@ -1,13 +1,8 @@
-import { createConfig, detectOpts } from '../../eslint.config.base.js';
+import { createConfig, detectOpts } from '@esrf/eslint-config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 const opts = detectOpts(import.meta.dirname);
 
-const config = [
-  ...createConfig(opts),
-  {
-    name: 'h5web/storybook/ignores',
-    ignores: ['build/'],
-  },
-];
+const config = defineConfig([globalIgnores(['build/']), ...createConfig(opts)]);
 
 export default config;
