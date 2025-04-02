@@ -29,11 +29,11 @@ body {
   --secondary-darker: #0e5846;
   --secondary-bg: #d9f4ec;
   --secondary-light-bg: #ecfaf6;
-  --monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
-    monospace;
-  --sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  --monospace:
+    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  --sans-serif:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
