@@ -1,5 +1,5 @@
 @import 'normalize.css';
-@import '@h5web/app/src/styles.css'; /* global app styles */
+@import '@h5web/app/global-styles.css';
 
 *,
 *::before,

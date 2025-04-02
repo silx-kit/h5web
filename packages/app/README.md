@@ -36,7 +36,7 @@ npm install @h5web/app
 ```
 
 ```tsx
-import '@h5web/app/dist/styles.css';
+import '@h5web/app/styles.css';
 
 import React from 'react';
 import { App, MockProvider } from '@h5web/app';

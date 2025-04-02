@@ -1,3 +1,6 @@
+@import 'normalize.css';
+@import '@h5web/lib/global-styles.css';
+
 *,
 *::before,
 *::after {

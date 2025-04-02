@@ -233,9 +233,9 @@ The build process of `@h5web/lib` works as follows:
      concatenate them with the local styles compiled at the first step. To do
      so, we run Vite again but with a different config: `vite.styles.config.js`,
      and a different entrypoint: `src/styles.ts`. The output files are placed in
-     a temporary folder: `dist/temp`. We then concatenate `dist/temp/style.css`
-     (the global styles) and `dist/style.css` (the local styles) and output the
-     result to `dist/styles.css`, which is the stylesheet referenced from
+     a temporary folder: `dist/temp`. We then concatenate `dist/temp/styles.css`
+     (the global styles) and `dist/<app|lib>.css` (the local styles) and output
+     the result to `dist/styles.css`, which is the stylesheet referenced from
      `package.json` that consumers need to import.
    - The job of `build:dts` is to generate type declarations for package
      consumers who use TypeScript. This is a two step process: first we generate
