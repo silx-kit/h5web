@@ -1,3 +1,33 @@
+# Workspace packages
 packages:
   - 'apps/*'
   - 'packages/*'
+
+# Enforce Node and pnpm versions specified in `engines` field of `package.json`
+engineStrict: true
+
+# Use whichever pnpm version is available in the environement
+managePackageManagerVersions: false
+
+# Manage peer dependencies explicitly and predictibly
+strictPeerDependencies: true
+autoInstallPeers: false
+resolvePeersFromWorkspaceRoot: false
+
+# Fail install if any dependency has unreviewed build scripts
+strictDepBuilds: true
+onlyBuiltDependencies:
+  - '@swc/core'
+  - 'cypress'
+  - 'esbuild'
+
+# Save exact dependency versions in `package.json`
+savePrefix: ''
+
+# Check that `node_modules` is up to date before running scripts
+verifyDepsBeforeRun: 'error'
+
+# Every project must have these scripts in their `package.json`
+requiredScripts:
+  - 'lint:eslint'
+  - 'lint:tsc'
