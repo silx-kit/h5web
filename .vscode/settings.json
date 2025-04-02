@@ -9,9 +9,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[python]": { "editor.defaultFormatter": "ms-python.black-formatter" },
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
 
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
@@ -26,5 +24,7 @@
   "eslint.workingDirectories": [
     { "pattern": "./apps/*/" },
     { "pattern": "./packages/*/" }
-  ]
+  ],
+
+  "black-formatter.importStrategy": "fromEnvironment"
 }
