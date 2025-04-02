@@ -124,7 +124,7 @@ function MappedLineVis(props: Props) {
   const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
     csv: () =>
       generateCsv(
-        valueLabel,
+        valueLabel || dataset.name,
         dataArray,
         abscissaParams,
         errorsArray,
