@@ -10,13 +10,14 @@ export function generateCsv(
   auxiliaries: (AuxiliaryParams & { label: string })[], // required label
 ): string {
   let csv = '';
+  const isNexus = !!name;
 
   // Column headers
-  if (name) {
+  if (isNexus) {
     const abscissaLabel = abscissaParams.label?.replaceAll(',', '');
 
-    csv += name.replaceAll(',', '');
-    csv += abscissaParams.value ? `,${abscissaLabel || 'abscissas'}` : '';
+    csv += abscissaLabel || 'x';
+    csv += `,${name.replaceAll(',', '')}`;
     csv += errorsArray ? `,errors` : '';
 
     for (const aux of auxiliaries) {
@@ -30,8 +31,11 @@ export function generateCsv(
   for (let i = 0; i < dataArray.shape[0]; i += 1) {
     csv += csv.length > 0 ? '\n' : '';
 
+    csv += isNexus
+      ? `${(abscissaParams.value ? abscissaParams.value[i] : i).toString()},`
+      : '';
+
     csv += dataArray.get(i).toString();
-    csv += abscissaParams.value ? `,${abscissaParams.value[i].toString()}` : '';
     csv += errorsArray ? `,${errorsArray.get(i).toString()}` : '';
 
     for (const aux of auxiliaries) {
