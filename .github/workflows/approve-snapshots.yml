@@ -1,13 +1,14 @@
 name: Approve snapshots
 
 on:
+  workflow_dispatch:
   issue_comment:
     types: [created]
 
 jobs:
   approve:
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request && github.event.comment.body == '/approve'
+    if: github.event_name == 'workflow_dispatch' || github.event.issue.pull_request && github.event.comment.body == '/approve'
 
     steps:
       - name: Get branch name for PR
@@ -20,7 +21,7 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.getBranchName.outputs.branch }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.ref || steps.getBranchName.outputs.branch }}
 
       - name: Set up Node 🕹️
         uses: actions/setup-node@v4
