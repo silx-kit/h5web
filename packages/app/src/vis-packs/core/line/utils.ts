@@ -3,7 +3,7 @@ import { type NumArray } from '@h5web/shared/vis-models';
 import { type NdArray } from 'ndarray';
 
 export function generateCsv(
-  name: string | undefined,
+  name: string,
   dataArray: NdArray<NumArray>,
   abscissaParams: AxisParams,
   errorsArray: NdArray<NumArray> | undefined,
@@ -12,26 +12,22 @@ export function generateCsv(
   let csv = '';
 
   // Column headers
-  if (name) {
-    const abscissaLabel = abscissaParams.label?.replaceAll(',', '');
+  csv += abscissaParams.label?.replaceAll(',', '') || 'x';
+  csv += `,${name.replaceAll(',', '')}`;
+  csv += errorsArray ? `,errors` : '';
 
-    csv += name.replaceAll(',', '');
-    csv += abscissaParams.value ? `,${abscissaLabel || 'abscissas'}` : '';
-    csv += errorsArray ? `,errors` : '';
-
-    for (const aux of auxiliaries) {
-      const auxLabel = aux.label.replaceAll(',', '');
-      csv += `,${auxLabel}`;
-      csv += aux.errors ? `,${auxLabel}_errors` : '';
-    }
+  for (const aux of auxiliaries) {
+    const auxLabel = aux.label.replaceAll(',', '');
+    csv += `,${auxLabel}`;
+    csv += aux.errors ? `,${auxLabel}_errors` : '';
   }
 
   // Column values
   for (let i = 0; i < dataArray.shape[0]; i += 1) {
     csv += csv.length > 0 ? '\n' : '';
 
-    csv += dataArray.get(i).toString();
-    csv += abscissaParams.value ? `,${abscissaParams.value[i].toString()}` : '';
+    csv += (abscissaParams.value ? abscissaParams.value[i] : i).toString();
+    csv += `,${dataArray.get(i).toString()}`;
     csv += errorsArray ? `,${errorsArray.get(i).toString()}` : '';
 
     for (const aux of auxiliaries) {
