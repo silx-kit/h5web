@@ -35,7 +35,7 @@
     "support:sample": "poetry -C support/sample run python create_h5_sample.py",
     "support:h5grove": "poetry -C support/h5grove run python tornado_app.py --basedir ../sample/dist",
     "cypress": "cypress open --e2e --browser firefox",
-    "cypress:run": "cypress run --e2e --browser firefox",
+    "cypress:run": "cypress run --e2e",
     "version": "pnpm -r sync-version && git add .",
     "postversion": "git push && git push --tags"
   },
@@ -44,7 +44,7 @@
     "@simonsmith/cypress-image-snapshot": "9.1.0",
     "@testing-library/cypress": "10.0.3",
     "@types/node": "^22.13.16",
-    "cypress": "14.2.1",
+    "cypress": "13.17.0",
     "cypress-wait-for-stable-dom": "0.1.0",
     "eslint": "9.23.0",
     "prettier": "3.5.3",
