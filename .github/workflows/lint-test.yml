@@ -186,9 +186,10 @@ jobs:
         run: pnpm serve & pnpm wait-on http://localhost:5173 -t 1m
 
       - name: Run Cypress 🌳
-        run: pnpm cypress:run --env requireSnapshots=true --browser chrome
+        run: pnpm cypress:run --env requireSnapshots=true
         env:
           CYPRESS_TAKE_SNAPSHOTS: true
+          ELECTRON_EXTRA_LAUNCH_ARGS: --enable-unsafe-swiftshader
 
       - name: Upload debug screenshots and diffs on failure 🖼️
         uses: actions/upload-artifact@v4
