@@ -453,6 +453,10 @@ rendering of the app depends on the GPU. For this reason, visual regression
 tests are run only on the CI. This is done through an environment variable
 called `CYPRESS_TAKE_SNAPSHOTS`.
 
+> Locally, we run the tests without snapshots in Firefox, since it's our main
+> target browser. On the CI, Firefox takes flaky snapshots, so we have to run
+> the tests in Chrome instead.
+
 Visual regression tests may fail in the CI, either expectedly (e.g. when
 implementing a new feature) or unexpectedly (when detecting a regression). When
 this happens, the diff images and debug screenshots that Cypress generates are
