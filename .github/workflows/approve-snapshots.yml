@@ -54,10 +54,10 @@ jobs:
         run: pnpm build
 
       - name: Serve ⚡️
-        run: pnpm serve & pnpm dlx wait-on http://localhost:5173 -t 1m
+        run: pnpm serve & pnpm wait-on http://localhost:5173 -t 1m
 
       - name: Run Cypress 🌳
-        run: pnpm cypress:run --env updateSnapshots=true
+        run: pnpm cypress:run --env updateSnapshots=true --browser chrome
         env:
           CYPRESS_TAKE_SNAPSHOTS: true
 
