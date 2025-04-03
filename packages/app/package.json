@@ -67,7 +67,7 @@
     "zustand": "5.0.3"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.0.6",
+    "@esrf/eslint-config": "1.1.0",
     "@h5web/shared": "workspace:*",
     "@rollup/plugin-alias": "5.1.1",
     "@testing-library/dom": "10.4.0",
