@@ -186,7 +186,7 @@ jobs:
         run: pnpm serve & pnpm wait-on http://localhost:5173 -t 1m
 
       - name: Run Cypress 🌳
-        run: pnpm cypress:run --env requireSnapshots=true
+        run: pnpm cypress:run --env requireSnapshots=true --browser chrome
         env:
           CYPRESS_TAKE_SNAPSHOTS: true
 
