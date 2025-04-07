@@ -50,6 +50,7 @@ interface Props extends ClassStyleAttrs {
   minFilter?: MinificationTextureFilter;
   flipXAxis?: boolean;
   flipYAxis?: boolean;
+  exactNotation?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
@@ -74,6 +75,7 @@ function HeatmapVis(props: Props) {
     minFilter,
     flipXAxis,
     flipYAxis,
+    exactNotation,
     renderTooltip,
     children,
     interactions,
@@ -81,6 +83,7 @@ function HeatmapVis(props: Props) {
     className = '',
     style,
   } = props;
+
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
   const { rows, cols } = getDims(dataArray);
@@ -142,12 +145,17 @@ function HeatmapVis(props: Props) {
 
             return (
               <>
-                {`${abscissaLabel ?? 'x'}=${formatTooltipVal(abscissa)}, `}
-                {`${ordinateLabel ?? 'y'}=${formatTooltipVal(ordinate)}`}
+                {`${abscissaLabel ?? 'x'}=${exactNotation ? abscissa : formatTooltipVal(abscissa)}, `}
+                {`${ordinateLabel ?? 'y'}=${exactNotation ? ordinate : formatTooltipVal(ordinate)}`}
                 <div className={styles.tooltipValue}>
-                  <strong>{formatTooltipVal(dataArray.get(yi, xi))}</strong>
+                  <strong>
+                    {exactNotation
+                      ? dataArray.get(yi, xi)
+                      : formatTooltipVal(dataArray.get(yi, xi))}
+                  </strong>
                   {dtype && <em>{` (${dtype})`}</em>}
-                  {alpha && ` (${formatTooltipVal(alpha.array.get(yi, xi))})`}
+                  {alpha &&
+                    ` (${exactNotation ? alpha.array.get(yi, xi) : formatTooltipVal(alpha.array.get(yi, xi))})`}
                 </div>
               </>
             );

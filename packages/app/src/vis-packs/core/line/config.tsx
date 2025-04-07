@@ -25,6 +25,9 @@ export interface LineConfig {
 
   showErrors: boolean;
   toggleErrors: () => void;
+
+  exactNotation: boolean;
+  toggleExactNotation: () => void;
 }
 
 function createLineConfigStore() {
@@ -47,6 +50,10 @@ function createLineConfigStore() {
 
         showErrors: true,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
+
+        exactNotation: false,
+        toggleExactNotation: () =>
+          set((state) => ({ exactNotation: !state.exactNotation })),
       }),
       {
         name: 'h5web:line',

@@ -14,6 +14,7 @@ import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import {
   MdAspectRatio,
   MdGridOn,
+  MdQueryStats,
   MdSwapHoriz,
   MdSwapVert,
 } from 'react-icons/md';
@@ -39,6 +40,7 @@ function HeatmapToolbar(props: Props) {
     invertColorMap,
     flipXAxis,
     flipYAxis,
+    exactNotation,
     setCustomDomain,
     setColorMap,
     setScaleType,
@@ -47,6 +49,7 @@ function HeatmapToolbar(props: Props) {
     toggleColorMapInversion,
     toggleXAxisFlip,
     toggleYAxisFlip,
+    toggleExactNotation,
   } = config;
 
   return (
@@ -103,6 +106,13 @@ function HeatmapToolbar(props: Props) {
         Icon={MdGridOn}
         value={showGrid}
         onToggle={toggleGrid}
+      />
+
+      <ToggleBtn
+        label="Exact"
+        Icon={MdQueryStats}
+        value={exactNotation}
+        onToggle={toggleExactNotation}
       />
 
       <Separator />

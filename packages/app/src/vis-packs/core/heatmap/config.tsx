@@ -33,6 +33,9 @@ export interface HeatmapConfig {
 
   flipYAxis: boolean;
   toggleYAxisFlip: () => void;
+
+  exactNotation: boolean;
+  toggleExactNotation: () => void;
 }
 
 function createHeatmapConfigStore() {
@@ -69,6 +72,10 @@ function createHeatmapConfigStore() {
         flipXAxis: false,
         toggleXAxisFlip: () =>
           set((state) => ({ flipXAxis: !state.flipXAxis })),
+
+        exactNotation: false,
+        toggleExactNotation: () =>
+          set((state) => ({ exactNotation: !state.exactNotation })),
       }),
       {
         name: 'h5web:heatmap',

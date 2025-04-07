@@ -62,6 +62,7 @@ function MappedHeatmapVis(props: Props) {
     invertColorMap,
     flipXAxis,
     flipYAxis,
+    exactNotation,
   } = config;
 
   const numArray = useToNumArray(value);
@@ -116,6 +117,7 @@ function MappedHeatmapVis(props: Props) {
         }}
         flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}
+        exactNotation={exactNotation}
         ignoreValue={ignoreValue}
       />
     </>

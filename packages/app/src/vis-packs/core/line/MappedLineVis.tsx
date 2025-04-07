@@ -75,6 +75,7 @@ function MappedLineVis(props: Props) {
     curveType,
     showGrid,
     showErrors,
+    exactNotation,
   } = config;
 
   const { shape: dims } = dataset;
@@ -160,6 +161,7 @@ function MappedLineVis(props: Props) {
         errorsArray={errorsArray}
         showErrors={showErrors}
         auxiliaries={auxiliaries}
+        exactNotation={exactNotation}
         testid={dimMapping.toString()}
         ignoreValue={ignoreValue}
       />

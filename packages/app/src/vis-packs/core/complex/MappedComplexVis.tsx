@@ -61,6 +61,7 @@ function MappedComplexVis(props: Props) {
     keepRatio,
     showGrid,
     invertColorMap,
+    exactNotation,
   } = heatmapConfig;
 
   const numAxisArrays = useToNumArrays(axisValues);
@@ -111,6 +112,7 @@ function MappedComplexVis(props: Props) {
         scaleType={scaleType}
         aspect={keepRatio ? 'equal' : 'auto'}
         showGrid={showGrid}
+        exactNotation={exactNotation}
         invertColorMap={invertColorMap}
         abscissaParams={{
           label: axisLabels[xDimIndex],

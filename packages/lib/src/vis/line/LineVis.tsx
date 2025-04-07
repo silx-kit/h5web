@@ -37,6 +37,7 @@ interface Props extends ClassStyleAttrs {
   errorsArray?: NdArray<NumArray>;
   showErrors?: boolean;
   auxiliaries?: AuxiliaryParams[];
+  exactNotation?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
@@ -58,6 +59,7 @@ function LineVis(props: Props) {
     errorsArray,
     showErrors = false,
     auxiliaries = [],
+    exactNotation,
     renderTooltip,
     children,
     interactions,
@@ -124,7 +126,7 @@ function LineVis(props: Props) {
 
         <TooltipMesh
           guides="vertical"
-          renderTooltip={(x, _, exact) => {
+          renderTooltip={(x) => {
             const xi = abscissaToIndex(x);
             const abscissa = abscissas[xi];
 
@@ -137,7 +139,7 @@ function LineVis(props: Props) {
 
             return (
               <>
-                {`${abscissaLabel ?? 'x'} = ${exact ? abscissa : formatTooltipVal(abscissa)}`}
+                {`${abscissaLabel ?? 'x'} = ${exactNotation ? abscissa : formatTooltipVal(abscissa)}`}
 
                 <div className={styles.tooltipValue}>
                   {auxiliaries.length > 0 && (
@@ -148,9 +150,11 @@ function LineVis(props: Props) {
                     />
                   )}
                   <span>
-                    <strong>{exact ? value : formatTooltipVal(value)}</strong>
+                    <strong>
+                      {exactNotation ? value : formatTooltipVal(value)}
+                    </strong>
                     {error !== undefined &&
-                      ` ±${exact ? error : formatTooltipErr(error)}`}
+                      ` ±${exactNotation ? error : formatTooltipErr(error)}`}
                     {dtype && <em>{` (${dtype})`}</em>}
                   </span>
                 </div>
@@ -163,9 +167,11 @@ function LineVis(props: Props) {
                       style={{ color: auxColors[index % auxColors.length] }}
                     />
                     {label ? `${label} = ` : ''}
-                    {exact ? array.get(xi) : formatTooltipVal(array.get(xi))}
+                    {exactNotation
+                      ? array.get(xi)
+                      : formatTooltipVal(array.get(xi))}
                     {errors &&
-                      ` ±${exact ? errors.get(xi) : formatTooltipErr(errors.get(xi))}`}
+                      ` ±${exactNotation ? errors.get(xi) : formatTooltipErr(errors.get(xi))}`}
                   </div>
                 ))}
               </>

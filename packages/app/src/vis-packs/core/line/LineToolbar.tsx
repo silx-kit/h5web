@@ -10,7 +10,7 @@ import {
 } from '@h5web/lib';
 import { type Domain, type ExportEntry } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { MdGridOn } from 'react-icons/md';
+import { MdGridOn, MdQueryStats } from 'react-icons/md';
 
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { type LineConfig } from './config';
@@ -34,12 +34,14 @@ function LineToolbar(props: Props) {
     xScaleType,
     yScaleType,
     showErrors,
+    exactNotation,
     setCustomDomain,
     setCurveType,
     toggleGrid,
     setXScaleType,
     setYScaleType,
     toggleErrors,
+    toggleExactNotation,
   } = config;
 
   return (
@@ -80,6 +82,13 @@ function LineToolbar(props: Props) {
         Icon={MdGridOn}
         value={showGrid}
         onToggle={toggleGrid}
+      />
+
+      <ToggleBtn
+        label="Exact"
+        Icon={MdQueryStats}
+        value={exactNotation}
+        onToggle={toggleExactNotation}
       />
 
       <Separator />

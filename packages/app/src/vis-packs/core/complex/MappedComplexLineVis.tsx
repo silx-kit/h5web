@@ -56,8 +56,14 @@ function MappedComplexLineVis(props: Props) {
   } = props;
 
   const { visType } = config;
-  const { customDomain, yScaleType, xScaleType, curveType, showGrid } =
-    lineConfig;
+  const {
+    customDomain,
+    yScaleType,
+    xScaleType,
+    curveType,
+    showGrid,
+    exactNotation,
+  } = lineConfig;
 
   const numAxisArrays = useToNumArrays(axisValues);
   const [dataArray, ...auxArrays] = useMappedComplexArrays(
@@ -110,6 +116,7 @@ function MappedComplexLineVis(props: Props) {
           label: auxLabels[i],
           array,
         }))}
+        exactNotation={exactNotation}
         testid={dimMapping.toString()}
       />
     </>
