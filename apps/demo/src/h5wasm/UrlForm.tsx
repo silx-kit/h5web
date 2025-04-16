@@ -44,7 +44,7 @@ function UrlForm(props: Props) {
       void fetchFile(); // refetch
     } else {
       setSearchParams((prev) => {
-        prev.set(url, newUrl);
+        prev.set('url', newUrl);
         return prev;
       });
     }
