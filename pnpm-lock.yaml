@@ -60,8 +60,8 @@ importers:
         specifier: 5.1.1
         version: 5.1.1(axios@1.8.4)(react@18.3.1)
       h5wasm-plugins:
-        specifier: 0.0.3
-        version: 0.0.3
+        specifier: 0.1.0
+        version: 0.1.0
       normalize.css:
         specifier: 8.0.1
         version: 8.0.1
@@ -351,8 +351,8 @@ importers:
         specifier: 4.4.2
         version: 4.4.2
       h5wasm:
-        specifier: 0.7.9
-        version: 0.7.9
+        specifier: 0.8.1
+        version: 0.8.1
       nanoid:
         specifier: 5.1.5
         version: 5.1.5
@@ -3122,14 +3122,11 @@ packages:
   greenlet@1.1.0:
     resolution: {integrity: sha512-W/kKzq7ZSF/LFItIjaSaccw8L6js+9SMSS5buXZs/Td7qZAT91Kd0LTxuUjSWDwuyv4MPo/fhZdkRLV1zsuClg==}
 
-  h5wasm-plugins@0.0.3:
-    resolution: {integrity: sha512-hOI1ERa6QfjrN/AWJW0mqFaAU4D4NtzYXjb03h7f1MufkIzCkYo/bZoB7NZy+Qy9vHsxL31rz7hNlZCPouf+tQ==}
+  h5wasm-plugins@0.1.0:
+    resolution: {integrity: sha512-6AECez/wEKbCfHOrAjAl92H7lzJManZGh0Ezg6Fe7KQiuEOianyW7nr3g+49OukyOLVdhmiC+o9FuOIAboWiug==}
 
-  h5wasm@0.6.10:
-    resolution: {integrity: sha512-GxBWGVxBftyq67kAbS4WPmTH3a8hGKigdMm+IVJ7tLY7BHj+nqDTUKO9RmmPBHy6Pvq5uW1YpIJr/oGanw+RyQ==}
-
-  h5wasm@0.7.9:
-    resolution: {integrity: sha512-V3N+SSQdrTjQUqwu6sJsOcwocZCXeZnwmuNO/gervRaTiqJD1lSybqB+7d3YSciej3OIwmturEP1UzhIOZ77pA==}
+  h5wasm@0.8.1:
+    resolution: {integrity: sha512-zPYBB3iqFN6of3G0AgoXvDt8XbtQlapfnz58UGNbjxloyOSYIs+I0HMl+V9slFQXQpNIxVrUI7vUaosROpPAIg==}
 
   has-bigints@1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
@@ -7908,13 +7905,11 @@ snapshots:
 
   greenlet@1.1.0: {}
 
-  h5wasm-plugins@0.0.3:
+  h5wasm-plugins@0.1.0:
     dependencies:
-      h5wasm: 0.6.10
+      h5wasm: 0.8.1
 
-  h5wasm@0.6.10: {}
-
-  h5wasm@0.7.9: {}
+  h5wasm@0.8.1: {}
 
   has-bigints@1.1.0: {}
 
