@@ -64,16 +64,11 @@ function Home() {
                 <Link to="/h5grove">
                   <strong>water_224.h5</strong>
                 </Link>{' '}
-                (default) - a typical NeXus file with various real-world
-                datasets to demonstrate H5Web’s core visualizations.
+                (default) − a typical NeXus file with various real-world
+                datasets to demonstrate H5Web’s core visualizations;
               </li>
               <li>
-                <Link to="/h5grove?file=compressed.h5">compressed.h5</Link> - a
-                file with datasets compressed with various filters to test
-                decompression.
-              </li>
-              <li>
-                <Link to="/h5grove?file=epics.h5">epics.h5</Link> - a test file
+                <Link to="/h5grove?file=epics.h5">epics.h5</Link> − a test file
                 from the{' '}
                 <a
                   href="https://epics.anl.gov/"
@@ -84,28 +79,30 @@ function Home() {
                     EPICS
                   </abbr>
                 </a>{' '}
-                group (Argonne National Laboratory).
+                group (Argonne National Laboratory);
               </li>
               <li>
-                <Link to="/h5grove?file=grove.h5">grove.h5</Link> - a file
+                <Link to="/h5grove?file=filters.h5">filters.h5</Link> − a file
+                with datasets compressed with various filters to test
+                decompression;
+              </li>
+              <li>
+                <Link to="/h5grove?file=grove.h5">grove.h5</Link> − a file
                 designed to demonstrate the capabilities of{' '}
-                <code>H5GroveProvider</code>; it contains datasets with{' '}
-                <code>NaN</code>, <code>Infinity</code>, boolean and complex
-                values, as well as RGB images and 4D stacks.
+                <code>H5GroveProvider</code>, with <code>NaN</code>,{' '}
+                <code>Infinity</code>, boolean and complex values, as well as
+                RGB images and 4D stacks;
               </li>
               <li>
-                <Link to="/h5grove?file=links.h5">links.h5</Link> - a file with
-                external links, soft links and a virtual dataset to test link
-                resolution.
+                <Link to="/h5grove?file=links.h5">links.h5</Link> − a file to
+                demonstrate link resolution: hard link, soft link, external
+                link, virtual dataset;
               </li>
               <li>
-                <Link to="/h5grove?file=sample.h5">sample.h5</Link> - the file
+                <Link to="/h5grove?file=sample.h5">sample.h5</Link> − the file
                 used to test <code>H5GroveApi</code> and <code>H5WasmApi</code>{' '}
-                internally.
-              </li>
-              <li>
-                <Link to="/h5grove?file=tall.h5">tall.h5</Link> - the demo file
-                of HSDS.
+                internally with numerous combinations of dataset shapes and
+                types.
               </li>
             </ul>
           </section>
@@ -153,9 +150,10 @@ function Home() {
               {[
                 'water_224.h5',
                 'epics.h5',
+                'filters.h5 ',
                 'grove.h5',
+                'links.h5',
                 'sample.h5',
-                'tall.h5 ',
               ].map((filename, index) => (
                 <Fragment key={filename}>
                   {index > 0 && ', '}
@@ -200,17 +198,14 @@ function Home() {
               object storage (AWS S3, Azure Blob Storage, or OpenIO).
             </p>
             <p>
-              This demo communicates with an HSDS test server, which serves the
-              same files as the H5Grove demo above:{' '}
+              This demo communicates with an HSDS test server, which serves some
+              of the same files as the H5Grove demo above:{' '}
               <Link to="/hsds">
                 <strong>water_224.h5</strong>
               </Link>{' '}
-              (default),{' '}
-              <Link to="/hsds?file=compressed.h5">compressed.h5</Link> (note
-              that bitshuffle is not yet supported by HSDS),{' '}
               <Link to="/hsds?file=epics.h5">epics.h5</Link>,{' '}
               <Link to="/hsds?file=grove.h5">grove.h5</Link>,{' '}
-              <Link to="/hsds?file=links.h5">links.h5</Link>,{' '}
+              <Link to="/hsds?file=sample_hsds.h5">sample_hsds.h5</Link>,{' '}
               <Link to="/hsds?file=tall.h5">tall.h5</Link>.
             </p>
           </section>
