@@ -15,15 +15,24 @@ import styles from './Selector.module.css';
 
 interface Props<T> {
   label?: string;
-  value: T;
-  disabled?: boolean;
-  onChange: (value: T) => void;
   options: Record<string, T[]> | T[];
+  disabled?: boolean;
+  value: T;
+  onChange: (value: T) => void;
   renderOption: (option: T) => ReactNode;
+  renderSelection?: (option: T) => ReactNode;
 }
 
 function Selector<T extends string>(props: Props<T>) {
-  const { label, value, disabled, onChange, options, renderOption } = props;
+  const {
+    label,
+    options,
+    disabled,
+    value,
+    onChange,
+    renderOption,
+    renderSelection = renderOption,
+  } = props;
 
   const { context, refs, floatingStyles } = useFloatingMenu();
   const { open: isOpen, floatingId, onOpenChange: toggle } = context;
@@ -80,7 +89,7 @@ function Selector<T extends string>(props: Props<T>) {
         {...getReferenceProps()}
       >
         <span id={currentOptionId} className={toolbarStyles.btnLike}>
-          {renderOption(value)}
+          {renderSelection(value)}
           <MdArrowDropDown className={toolbarStyles.arrowIcon} />
         </span>
       </button>
