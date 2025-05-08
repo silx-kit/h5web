@@ -22,8 +22,6 @@ jobs:
 
       - name: Install pnpm ⚙️
         uses: pnpm/action-setup@v3
-        with:
-          version: 9.x
 
       - name: Restore cache 📌
         uses: actions/cache@v4
