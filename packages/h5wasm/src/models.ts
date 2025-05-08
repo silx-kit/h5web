@@ -11,9 +11,9 @@ export enum Plugin {
   Blosc = 'blosc',
   Blosc2 = 'blosc2',
   BZIP2 = 'bz2',
+  JPEG = 'jpeg',
   LZ4 = 'lz4',
   LZF = 'lzf',
-  SZ = 'szf',
   ZFP = 'zfp',
   Zstandard = 'zstd',
 }
