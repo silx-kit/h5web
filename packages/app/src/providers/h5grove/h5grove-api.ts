@@ -16,11 +16,7 @@ import {
   type ExportFormat,
   type ExportURL,
 } from '@h5web/shared/vis-models';
-import axios, {
-  AxiosError,
-  type AxiosInstance,
-  type AxiosRequestConfig,
-} from 'axios';
+import axios, { AxiosError, type AxiosInstance } from 'axios';
 
 import { DataProviderApi } from '../api';
 import { type ValuesStoreParams } from '../models';
@@ -40,22 +36,18 @@ import {
 const SUPPORTED_EXPORT_FORMATS = new Set<ExportFormat>(['npy', 'tiff']);
 
 export class H5GroveApi extends DataProviderApi {
-  private readonly client: AxiosInstance;
-
   /* API compatible with h5grove@2.3.0 */
   public constructor(
-    url: string,
     filepath: string,
-    axiosConfig?: AxiosRequestConfig,
+    private readonly axiosClient: AxiosInstance,
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);
 
-    this.client = axios.create({
-      adapter: 'fetch',
-      baseURL: url,
-      ...axiosConfig,
-    });
+    this.axiosClient.defaults.params = {
+      file: filepath,
+      ...this.axiosClient.defaults.params,
+    };
   }
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
@@ -140,7 +132,7 @@ export class H5GroveApi extends DataProviderApi {
       return undefined;
     }
 
-    const { baseURL, params } = this.client.defaults;
+    const { baseURL, params } = this.axiosClient.defaults;
 
     const searchParams = new URLSearchParams(params as Record<string, string>);
     searchParams.set('path', dataset.path);
@@ -154,18 +146,24 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
-    const { data } = await this.client.get<H5GrovePathsResponse>(`/paths/`, {
-      params: { path },
-    });
+    const { data } = await this.axiosClient.get<H5GrovePathsResponse>(
+      `/paths/`,
+      {
+        params: { path },
+      },
+    );
 
     return data;
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
     try {
-      const { data } = await this.client.get<H5GroveEntityResponse>(`/meta/`, {
-        params: { path },
-      });
+      const { data } = await this.axiosClient.get<H5GroveEntityResponse>(
+        `/meta/`,
+        {
+          params: { path },
+        },
+      );
       return data;
     } catch (error) {
       if (
@@ -201,7 +199,7 @@ export class H5GroveApi extends DataProviderApi {
   private async fetchAttrValues(
     path: string,
   ): Promise<H5GroveAttrValuesResponse> {
-    const { data } = await this.client.get<H5GroveAttrValuesResponse>(
+    const { data } = await this.axiosClient.get<H5GroveAttrValuesResponse>(
       `/attr/`,
       { params: { path } },
     );
@@ -213,7 +211,7 @@ export class H5GroveApi extends DataProviderApi {
     signal: AbortSignal | undefined,
     onProgress: OnProgress | undefined,
   ): Promise<H5GroveDataResponse> {
-    const { data } = await this.client.get<H5GroveDataResponse>('/data/', {
+    const { data } = await this.axiosClient.get<H5GroveDataResponse>('/data/', {
       params: {
         path: params.dataset.path,
         selection: params.selection,
@@ -231,7 +229,7 @@ export class H5GroveApi extends DataProviderApi {
     onProgress: OnProgress | undefined,
     safe = false,
   ): Promise<ArrayBuffer> {
-    const { data } = await this.client.get<ArrayBuffer>('/data/', {
+    const { data } = await this.axiosClient.get<ArrayBuffer>('/data/', {
       responseType: 'arraybuffer',
       params: {
         path: params.dataset.path,

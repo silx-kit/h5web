@@ -55,42 +55,38 @@ import {
 
 export class HsdsApi extends DataProviderApi {
   private readonly entities = new Map<string, HsdsEntity<ProvidedEntity>>();
-  private readonly client: AxiosInstance;
 
   /* API compatible with HSDS@6717a7bb8c2245492090be34ec3ccd63ecb20b70 */
   public constructor(
-    url: string,
-    username: string,
-    password: string,
     filepath: string,
+    private readonly axiosClient: AxiosInstance,
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);
 
-    this.client = axios.create({
-      adapter: 'fetch',
-      baseURL: url,
-      params: { domain: filepath },
-      auth: { username, password },
-      transformResponse: (data: unknown) => {
-        if (typeof data !== 'string') {
+    this.axiosClient.defaults.params = {
+      domain: filepath,
+      ...this.axiosClient.defaults.params,
+    };
+
+    this.axiosClient.defaults.transformResponse = (data: unknown) => {
+      if (typeof data !== 'string') {
+        return data;
+      }
+
+      try {
+        return JSON.parse(data) as unknown;
+      } catch {
+        // https://github.com/HDFGroup/hsds/issues/87
+        try {
+          return JSON.parse(
+            data.replaceAll(/-?Infinity|NaN/gu, '"$&"'),
+          ) as unknown;
+        } catch {
           return data;
         }
-
-        try {
-          return JSON.parse(data) as unknown;
-        } catch {
-          // https://github.com/HDFGroup/hsds/issues/87
-          try {
-            return JSON.parse(
-              data.replaceAll(/-?Infinity|NaN/gu, '"$&"'),
-            ) as unknown;
-          } catch {
-            return data;
-          }
-        }
-      },
-    });
+      }
+    };
   }
 
   public override async getEntity(
@@ -197,7 +193,7 @@ export class HsdsApi extends DataProviderApi {
 
   private async fetchRootId(): Promise<HsdsId> {
     try {
-      const { data } = await this.client.get<HsdsRootResponse>('/');
+      const { data } = await this.axiosClient.get<HsdsRootResponse>('/');
       return data.root;
     } catch (error) {
       if (error instanceof AxiosError && error.status === 400) {
@@ -209,26 +205,28 @@ export class HsdsApi extends DataProviderApi {
   }
 
   private async fetchDataset(id: HsdsId): Promise<HsdsDatasetResponse> {
-    const { data } = await this.client.get<HsdsDatasetResponse>(
+    const { data } = await this.axiosClient.get<HsdsDatasetResponse>(
       `/datasets/${id}`,
     );
     return data;
   }
 
   private async fetchDatatype(id: HsdsId): Promise<HsdsDatatypeResponse> {
-    const { data } = await this.client.get<HsdsDatatypeResponse>(
+    const { data } = await this.axiosClient.get<HsdsDatatypeResponse>(
       `/datatypes/${id}`,
     );
     return data;
   }
 
   private async fetchGroup(id: HsdsId): Promise<HsdsGroupResponse> {
-    const { data } = await this.client.get<HsdsGroupResponse>(`/groups/${id}`);
+    const { data } = await this.axiosClient.get<HsdsGroupResponse>(
+      `/groups/${id}`,
+    );
     return data;
   }
 
   private async fetchLinks(id: HsdsId): Promise<HsdsLink[]> {
-    const { data } = await this.client.get<HsdsLinksResponse>(
+    const { data } = await this.axiosClient.get<HsdsLinksResponse>(
       `/groups/${id}/links`,
     );
     return data.links;
@@ -238,7 +236,7 @@ export class HsdsApi extends DataProviderApi {
     entityCollection: HsdsCollection,
     entityId: HsdsId,
   ): Promise<HsdsAttribute[]> {
-    const { data } = await this.client.get<HsdsAttributesResponse>(
+    const { data } = await this.axiosClient.get<HsdsAttributesResponse>(
       `/${entityCollection}/${entityId}/attributes`,
     );
     return data.attributes;
@@ -253,7 +251,7 @@ export class HsdsApi extends DataProviderApi {
     const { selection } = params;
 
     try {
-      const { data } = await this.client.get<HsdsValueResponse>(
+      const { data } = await this.axiosClient.get<HsdsValueResponse>(
         `/datasets/${entityId}/value`,
         {
           params: { select: selection ? `[${selection}]` : undefined },
@@ -282,7 +280,7 @@ export class HsdsApi extends DataProviderApi {
     entityId: HsdsId,
     attributeName: string,
   ): Promise<HsdsAttributeWithValueResponse> {
-    const { data } = await this.client.get<HsdsAttributeWithValueResponse>(
+    const { data } = await this.axiosClient.get<HsdsAttributeWithValueResponse>(
       `/${entityCollection}/${entityId}/attributes/${attributeName}`,
     );
     return data;

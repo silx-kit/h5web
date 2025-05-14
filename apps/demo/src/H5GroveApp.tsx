@@ -1,4 +1,5 @@
 import { App, assertEnvVar, H5GroveProvider } from '@h5web/app';
+import axios from 'axios';
 import { useMemo } from 'react';
 import { useSearchParams } from 'wouter';
 
@@ -14,12 +15,12 @@ function H5GroveApp() {
   const [searchParams] = useSearchParams();
   const filepath = searchParams.get('file') || FILEPATH;
 
+  const client = useMemo(() => {
+    return axios.create({ adapter: 'fetch', baseURL: URL });
+  }, []);
+
   return (
-    <H5GroveProvider
-      url={URL}
-      filepath={filepath}
-      axiosConfig={useMemo(() => ({ params: { file: filepath } }), [filepath])}
-    >
+    <H5GroveProvider filepath={filepath} axiosClient={client}>
       <App
         sidebarOpen={!searchParams.has('wide')}
         getFeedbackURL={getFeedbackURL}
