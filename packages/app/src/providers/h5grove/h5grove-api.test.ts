@@ -5,7 +5,6 @@ import {
   assertGroupWithChildren,
   hasNonNullShape,
 } from '@h5web/shared/guards';
-import axios from 'axios';
 import { beforeAll, expect, test } from 'vitest';
 
 import { assertListeningAt } from '../../test-utils';
@@ -23,8 +22,7 @@ beforeAll(async () => {
 });
 
 test.skipIf(SKIP)('test file matches snapshot', async () => {
-  const client = axios.create({ adapter: 'fetch', baseURL: H5GROVE_URL });
-  const api = new H5GroveApi(TEST_FILE, client);
+  const api = new H5GroveApi(TEST_FILE, H5GROVE_URL);
 
   const root = await api.getEntity('/');
   assertGroup(root);

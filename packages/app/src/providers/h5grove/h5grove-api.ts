@@ -16,22 +16,16 @@ import {
   type ExportFormat,
   type ExportURL,
 } from '@h5web/shared/vis-models';
-import axios, { AxiosError, type AxiosInstance } from 'axios';
 
 import { DataProviderApi } from '../api';
 import { type ValuesStoreParams } from '../models';
-import { createAxiosProgressHandler } from '../utils';
+import { createBasicFetcher, FetcherError, toJSON } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
-  type H5GroveDataResponse,
   type H5GroveEntityResponse,
   type H5GrovePathsResponse,
 } from './models';
-import {
-  h5groveTypedArrayFromDType,
-  isH5GroveError,
-  parseEntity,
-} from './utils';
+import { H5GroveError, h5groveTypedArrayFromDType, parseEntity } from './utils';
 
 const SUPPORTED_EXPORT_FORMATS = new Set<ExportFormat>(['npy', 'tiff']);
 
@@ -39,60 +33,65 @@ export class H5GroveApi extends DataProviderApi {
   /* API compatible with h5grove@2.3.0 */
   public constructor(
     filepath: string,
-    private readonly axiosClient: AxiosInstance,
+    private readonly baseURL: string,
+    private readonly fetcher = createBasicFetcher(),
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);
-
-    this.axiosClient.defaults.params = {
-      file: filepath,
-      ...this.axiosClient.defaults.params,
-    };
   }
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
-    const response = await this.fetchEntity(path);
-    return parseEntity(path, response);
+    try {
+      const data = await this.fetcher(`${this.baseURL}/meta/`, {
+        file: this.filepath,
+        path,
+      });
+
+      return parseEntity(path, toJSON(data) as H5GroveEntityResponse);
+    } catch (error) {
+      throw this.getH5GroveError(error, path) || error;
+    }
   }
 
   public override async getValue(
-    params: ValuesStoreParams,
-    signal?: AbortSignal,
+    storeParams: ValuesStoreParams,
+    abortSignal?: AbortSignal,
     onProgress?: OnProgress,
-  ): Promise<H5GroveDataResponse> {
-    const { dataset } = params;
+  ): Promise<unknown> {
+    const { dataset, selection } = storeParams;
+    const { path } = dataset;
+
+    const url = `${this.baseURL}/data/`;
+    const opts = { abortSignal, onProgress };
+    const baseParams = {
+      file: this.filepath,
+      path,
+      ...(selection && { selection }),
+    };
 
     try {
       if (dataset.type.class === DTypeClass.Opaque) {
-        return new Uint8Array(
-          await this.fetchBinaryData(params, signal, onProgress),
-        );
+        const params = { ...baseParams, format: 'bin' };
+        const buffer = await this.fetcher(url, params, opts);
+
+        return new Uint8Array(buffer);
       }
 
       const DTypedArray = h5groveTypedArrayFromDType(dataset.type);
       if (DTypedArray) {
-        const buffer = await this.fetchBinaryData(
-          params,
-          signal,
-          onProgress,
-          true,
-        );
+        const params = { ...baseParams, format: 'bin', dtype: 'safe' };
+        const buffer = await this.fetcher(url, params, opts);
+
         const array = new DTypedArray(buffer);
         return hasScalarShape(dataset) ? array[0] : array;
       }
 
-      return await this.fetchData(params, signal, onProgress);
-    } catch (error) {
-      if (error instanceof AxiosError && axios.isCancel(error)) {
-        // Throw abort reason instead of axios `CancelError`
-        // https://github.com/axios/axios/issues/5758
-        throw new Error(
-          typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
-          { cause: error },
-        );
-      }
+      const params = { ...baseParams, flatten: 'true' };
+      const buffer = await this.fetcher(url, params, opts);
 
-      throw error;
+      return toJSON(buffer);
+    } catch (error) {
+      throw this.getH5GroveError(error, path) || error;
     }
   }
 
@@ -100,7 +99,20 @@ export class H5GroveApi extends DataProviderApi {
     entity: Entity,
   ): Promise<AttributeValues> {
     const { path, attributes } = entity;
-    return attributes.length > 0 ? this.fetchAttrValues(path) : {};
+    if (attributes.length === 0) {
+      return {};
+    }
+
+    try {
+      const data = await this.fetcher(`${this.baseURL}/attr/`, {
+        file: this.filepath,
+        path,
+      });
+
+      return toJSON(data) as H5GroveAttrValuesResponse;
+    } catch (error) {
+      throw this.getH5GroveError(error, path) || error;
+    }
   }
 
   public override getExportURL(
@@ -132,114 +144,54 @@ export class H5GroveApi extends DataProviderApi {
       return undefined;
     }
 
-    const { baseURL, params } = this.axiosClient.defaults;
+    const searchParams = new URLSearchParams({
+      file: this.filepath,
+      path: dataset.path,
+      format,
+      ...(selection && { selection }),
+    });
 
-    const searchParams = new URLSearchParams(params as Record<string, string>);
-    searchParams.set('path', dataset.path);
-    searchParams.set('format', format);
-
-    if (selection) {
-      searchParams.set('selection', selection);
-    }
-
-    return new URL(`${baseURL || ''}/data/?${searchParams.toString()}`);
+    return new URL(`${this.baseURL || ''}/data/?${searchParams.toString()}`);
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
-    const { data } = await this.axiosClient.get<H5GrovePathsResponse>(
-      `/paths/`,
-      {
-        params: { path },
-      },
-    );
-
-    return data;
-  }
-
-  private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
     try {
-      const { data } = await this.axiosClient.get<H5GroveEntityResponse>(
-        `/meta/`,
-        {
-          params: { path },
-        },
-      );
-      return data;
+      const data = await this.fetcher(`${this.baseURL}/paths/`, {
+        file: this.filepath,
+        path,
+      });
+
+      return toJSON(data) as H5GrovePathsResponse;
     } catch (error) {
-      if (
-        !(error instanceof AxiosError) ||
-        !isH5GroveError(error.response?.data)
-      ) {
-        throw error;
-      }
-
-      const { message } = error.response.data;
-      if (message.includes('File not found')) {
-        throw new Error(`File not found: '${this.filepath}'`, { cause: error });
-      }
-      if (message.includes('Permission denied')) {
-        throw new Error(
-          `Cannot read file '${this.filepath}': Permission denied`,
-          { cause: error },
-        );
-      }
-      if (message.includes('not a valid path')) {
-        throw new Error(`No entity found at ${path}`, { cause: error });
-      }
-      if (message.includes('Cannot resolve')) {
-        throw new Error(`Could not resolve soft link at ${path}`, {
-          cause: error,
-        });
-      }
-
-      throw error;
+      throw this.getH5GroveError(error, path) || error;
     }
   }
 
-  private async fetchAttrValues(
+  private getH5GroveError(
+    error: unknown,
     path: string,
-  ): Promise<H5GroveAttrValuesResponse> {
-    const { data } = await this.axiosClient.get<H5GroveAttrValuesResponse>(
-      `/attr/`,
-      { params: { path } },
-    );
-    return data;
-  }
+  ): H5GroveError | undefined {
+    if (!(error instanceof FetcherError)) {
+      return undefined;
+    }
 
-  private async fetchData(
-    params: ValuesStoreParams,
-    signal: AbortSignal | undefined,
-    onProgress: OnProgress | undefined,
-  ): Promise<H5GroveDataResponse> {
-    const { data } = await this.axiosClient.get<H5GroveDataResponse>('/data/', {
-      params: {
-        path: params.dataset.path,
-        selection: params.selection,
-        flatten: true,
-      },
-      signal,
-      onDownloadProgress: createAxiosProgressHandler(onProgress),
-    });
-    return data;
-  }
+    const { statusText } = error;
+    if (statusText.includes('File not found')) {
+      throw new H5GroveError(`File not found: '${this.filepath}'`, error);
+    }
+    if (statusText.includes('Permission denied')) {
+      throw new H5GroveError(
+        `Cannot read file '${this.filepath}': Permission denied`,
+        error,
+      );
+    }
+    if (statusText.includes('not a valid path')) {
+      throw new H5GroveError(`No entity found at ${path}`, error);
+    }
+    if (statusText.includes('Cannot resolve')) {
+      throw new H5GroveError(`Could not resolve soft link at ${path}`, error);
+    }
 
-  private async fetchBinaryData(
-    params: ValuesStoreParams,
-    signal: AbortSignal | undefined,
-    onProgress: OnProgress | undefined,
-    safe = false,
-  ): Promise<ArrayBuffer> {
-    const { data } = await this.axiosClient.get<ArrayBuffer>('/data/', {
-      responseType: 'arraybuffer',
-      params: {
-        path: params.dataset.path,
-        selection: params.selection,
-        format: 'bin',
-        dtype: safe ? 'safe' : undefined,
-      },
-      signal,
-      onDownloadProgress: createAxiosProgressHandler(onProgress),
-    });
-    return data;
+    return undefined;
   }
 }

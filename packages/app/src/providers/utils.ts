@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import {
   isBoolType,
   isEnumType,
@@ -15,11 +16,12 @@ import {
   type BigIntTypedArrayConstructor,
   type TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
-import { type AxiosProgressEvent, isAxiosError } from 'axios';
+import { type AxiosInstance, type AxiosProgressEvent } from 'axios';
 
 import { type DataProviderApi } from './api';
+import { type AxiosError, type Fetcher, type FetcherOptions } from './models';
 
-export const CANCELLED_ERROR_MSG = 'Request cancelled';
+export const CANCELLED_BY_USER = 'Cancelled by user';
 
 export function typedArrayFromDType(
   dtype: DType,
@@ -86,8 +88,77 @@ export async function getValueOrError(
   try {
     return await api.getValue({ dataset });
   } catch (error) {
-    return isAxiosError(error) ? error.message : error;
+    return error instanceof FetcherError ? error.message : error;
   }
+}
+
+export function toJSON(buffer: ArrayBuffer): unknown {
+  return JSON.parse(new TextDecoder().decode(buffer));
+}
+
+export function createBasicFetcher(): Fetcher {
+  return async (
+    url: string,
+    params: Record<string, string>,
+    opts: FetcherOptions = {},
+  ): Promise<ArrayBuffer> => {
+    const { abortSignal } = opts;
+    const queryParams = new URLSearchParams(params);
+
+    try {
+      const response = await fetch(`${url}?${queryParams.toString()}`, {
+        signal: abortSignal,
+      });
+
+      const buffer = await response.arrayBuffer();
+      if (response.ok) {
+        return buffer;
+      }
+
+      throw new FetcherError(response.status, response.statusText, buffer);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        throw new AbortError(abortSignal, error);
+      }
+
+      throw error;
+    }
+  };
+}
+
+export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
+  return async (
+    url: string,
+    params: Record<string, string>,
+    opts: FetcherOptions = {},
+  ): Promise<ArrayBuffer> => {
+    const { abortSignal, onProgress } = opts;
+
+    try {
+      const { data } = await axiosInstance.get<ArrayBuffer>(url, {
+        responseType: 'arraybuffer',
+        params,
+        signal: abortSignal,
+        onDownloadProgress: createAxiosProgressHandler(onProgress),
+      });
+      return data;
+    } catch (error) {
+      if (error instanceof Error && error.name === 'CanceledError') {
+        throw new AbortError(abortSignal, error);
+      }
+
+      if (isAxiosError(error)) {
+        const { status, statusText, data } = error.response;
+        throw new FetcherError(status, statusText, data);
+      }
+
+      throw error;
+    }
+  };
+}
+
+function isAxiosError(error: unknown): error is AxiosError {
+  return error instanceof Error && 'isAxiosError' in error;
 }
 
 export function createAxiosProgressHandler(
@@ -101,4 +172,26 @@ export function createAxiosProgressHandler(
       }
     })
   );
+}
+
+export class AbortError extends Error {
+  public constructor(signal: AbortSignal | undefined, cause: unknown) {
+    const message =
+      typeof signal?.reason === 'string' ? signal.reason : undefined;
+
+    super(message, { cause });
+    this.name = 'AbortError';
+  }
+}
+
+export class FetcherError extends Error {
+  public constructor(
+    public readonly status: number,
+    public readonly statusText: string,
+    public readonly payload: ArrayBuffer,
+    cause?: unknown,
+  ) {
+    super(`Request failed with status code ${status}`, { cause });
+    this.name = 'FetcherError';
+  }
 }

@@ -33,7 +33,6 @@ import { bigIntTypedArrayFromDType, typedArrayFromDType } from '../utils';
 import {
   type H5GroveAttribute,
   type H5GroveEntity,
-  type H5GroveErrorResponse,
   type H5GroveType,
 } from './models';
 
@@ -150,17 +149,6 @@ function parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
   }));
 }
 
-export function isH5GroveError(
-  payload: unknown,
-): payload is H5GroveErrorResponse {
-  return (
-    !!payload &&
-    typeof payload === 'object' &&
-    'message' in payload &&
-    typeof payload.message === 'string'
-  );
-}
-
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 export function parseDType(type: H5GroveType): DType {
   const { class: h5tClass, size } = type;
@@ -248,4 +236,11 @@ export function h5groveTypedArrayFromDType(
   }
 
   return typedArrayFromDType(dtype) || bigIntTypedArrayFromDType(dtype);
+}
+
+export class H5GroveError extends Error {
+  public constructor(message: string, cause: unknown) {
+    super(message, { cause });
+    this.name = 'H5GroveError';
+  }
 }
