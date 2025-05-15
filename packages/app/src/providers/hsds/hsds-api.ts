@@ -137,13 +137,18 @@ export class HsdsApi extends DataProviderApi {
 
   public override async getValue(
     params: ValuesStoreParams,
-    signal?: AbortSignal,
+    abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown> {
     const { dataset } = params;
     assertHsdsDataset(dataset);
 
-    const value = await this.fetchValue(dataset.id, params, signal, onProgress);
+    const value = await this.fetchValue(
+      dataset.id,
+      params,
+      abortSignal,
+      onProgress,
+    );
 
     /* HSDS doesn't reduce the number of dimensions when selecting indices,
      * so the flattening must be done on all dimensions regardless of the selection.
@@ -247,7 +252,7 @@ export class HsdsApi extends DataProviderApi {
   private async fetchValue(
     entityId: HsdsId,
     params: ValuesStoreParams,
-    signal?: AbortSignal,
+    abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown> {
     const { selection } = params;
@@ -257,7 +262,7 @@ export class HsdsApi extends DataProviderApi {
         `/datasets/${entityId}/value`,
         {
           params: { select: selection ? `[${selection}]` : undefined },
-          signal,
+          signal: abortSignal,
           onDownloadProgress: createAxiosProgressHandler(onProgress),
         },
       );
@@ -268,7 +273,9 @@ export class HsdsApi extends DataProviderApi {
         // Throw abort reason instead of axios `CancelError`
         // https://github.com/axios/axios/issues/5758
         throw new Error(
-          typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
+          typeof abortSignal?.reason === 'string'
+            ? abortSignal.reason
+            : 'cancelled',
           { cause: error },
         );
       }

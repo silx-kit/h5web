@@ -80,23 +80,27 @@ export function getChildrenPaths(
   );
 }
 
-export async function cancellableDelay(signal?: AbortSignal): Promise<void> {
+export async function cancellableDelay(
+  abortSignal?: AbortSignal,
+): Promise<void> {
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
-      signal?.removeEventListener('abort', handleAbort);
+      abortSignal?.removeEventListener('abort', handleAbort);
       resolve();
     }, SLOW_TIMEOUT);
 
     function handleAbort() {
       clearTimeout(timeout);
-      signal?.removeEventListener('abort', handleAbort);
+      abortSignal?.removeEventListener('abort', handleAbort);
       reject(
         new Error(
-          typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
+          typeof abortSignal?.reason === 'string'
+            ? abortSignal.reason
+            : 'cancelled',
         ),
       );
     }
 
-    signal?.addEventListener('abort', handleAbort);
+    abortSignal?.addEventListener('abort', handleAbort);
   });
 }
