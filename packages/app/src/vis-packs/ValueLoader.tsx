@@ -2,7 +2,7 @@ import { useTimeoutEffect, useToggle } from '@react-hookz/web';
 import { useStore } from 'zustand';
 
 import { useDataContext } from '../providers/DataProvider';
-import { CANCELLED_ERROR_MSG } from '../providers/utils';
+import { CANCELLED_BY_USER } from '../providers/utils';
 import styles from './ValueLoader.module.css';
 
 const MAX_PROGRESS_BARS = 3;
@@ -53,7 +53,7 @@ function ValueLoader(props: Props) {
             <button
               className={styles.cancelBtn}
               type="button"
-              onClick={() => valuesStore.abortAll(CANCELLED_ERROR_MSG)}
+              onClick={() => valuesStore.abortAll(CANCELLED_BY_USER)}
             >
               Cancel?
             </button>

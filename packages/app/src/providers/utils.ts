@@ -19,7 +19,7 @@ import { type AxiosProgressEvent, isAxiosError } from 'axios';
 
 import { type DataProviderApi } from './api';
 
-export const CANCELLED_ERROR_MSG = 'Request cancelled';
+export const CANCELLED_BY_USER = 'Cancelled by user';
 
 export function typedArrayFromDType(
   dtype: DType,

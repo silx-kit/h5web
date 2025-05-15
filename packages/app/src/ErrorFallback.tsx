@@ -1,7 +1,7 @@
 import { type FallbackProps } from 'react-error-boundary';
 
 import styles from './App.module.css';
-import { CANCELLED_ERROR_MSG } from './providers/utils';
+import { CANCELLED_BY_USER } from './providers/utils';
 
 interface Props extends FallbackProps {
   className?: string;
@@ -11,10 +11,10 @@ interface Props extends FallbackProps {
 function ErrorFallback(props: Props) {
   const { className = '', error, resetErrorBoundary } = props;
 
-  if (error instanceof Error && error.message === CANCELLED_ERROR_MSG) {
+  if (error instanceof Error && error.message === CANCELLED_BY_USER) {
     return (
       <p className={`${styles.error} ${className}`}>
-        {CANCELLED_ERROR_MSG}
+        Request cancelled
         <span>–</span>
         <button
           className={styles.retryBtn}
