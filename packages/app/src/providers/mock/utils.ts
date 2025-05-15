@@ -17,6 +17,7 @@ import { getChildEntity } from '@h5web/shared/hdf5-utils';
 import ndarray from 'ndarray';
 
 import { applyMapping } from '../../vis-packs/core/utils';
+import { AbortError } from '../utils';
 
 export const SLOW_TIMEOUT = 3000;
 
@@ -92,13 +93,7 @@ export async function cancellableDelay(
     function handleAbort() {
       clearTimeout(timeout);
       abortSignal?.removeEventListener('abort', handleAbort);
-      reject(
-        new Error(
-          typeof abortSignal?.reason === 'string'
-            ? abortSignal.reason
-            : 'cancelled',
-        ),
-      );
+      reject(new AbortError(abortSignal));
     }
 
     abortSignal?.addEventListener('abort', handleAbort);

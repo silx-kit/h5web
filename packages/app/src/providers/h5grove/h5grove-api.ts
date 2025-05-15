@@ -24,7 +24,7 @@ import axios, {
 
 import { DataProviderApi } from '../api';
 import { type ValuesStoreParams } from '../models';
-import { createAxiosProgressHandler } from '../utils';
+import { AbortError, createAxiosProgressHandler } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
   type H5GroveDataResponse,
@@ -92,14 +92,7 @@ export class H5GroveApi extends DataProviderApi {
       return await this.fetchData(params, abortSignal, onProgress);
     } catch (error) {
       if (error instanceof AxiosError && axios.isCancel(error)) {
-        // Throw abort reason instead of axios `CancelError`
-        // https://github.com/axios/axios/issues/5758
-        throw new Error(
-          typeof abortSignal?.reason === 'string'
-            ? abortSignal.reason
-            : 'cancelled',
-          { cause: error },
-        );
+        throw new AbortError(abortSignal, error);
       }
 
       throw error;

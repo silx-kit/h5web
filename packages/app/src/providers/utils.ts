@@ -102,3 +102,13 @@ export function createAxiosProgressHandler(
     })
   );
 }
+
+export class AbortError extends Error {
+  public constructor(abortSignal?: AbortSignal, cause?: unknown) {
+    const message =
+      typeof abortSignal?.reason === 'string' ? abortSignal.reason : undefined;
+
+    super(message, { cause });
+    this.name = 'AbortError';
+  }
+}
