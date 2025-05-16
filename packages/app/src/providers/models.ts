@@ -6,7 +6,10 @@ import {
   type ProvidedEntity,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { type FetchStore } from '@h5web/shared/react-suspense-fetch';
+import {
+  type FetchStore,
+  type OnProgress,
+} from '@h5web/shared/react-suspense-fetch';
 
 import { type NxAttribute } from '../vis-packs/nexus/models';
 
@@ -26,3 +29,14 @@ export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';
 export type AttrName = NxAttribute | ImageAttribute | '_FillValue';
 
 export type ProgressCallback = (prog: number[]) => void;
+
+export type Fetcher = (
+  url: string,
+  params: Record<string, string>,
+  opts?: FetcherOptions,
+) => Promise<ArrayBuffer>;
+
+export interface FetcherOptions {
+  abortSignal?: AbortSignal;
+  onProgress?: OnProgress;
+}

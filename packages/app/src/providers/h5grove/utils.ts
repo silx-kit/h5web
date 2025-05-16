@@ -150,7 +150,7 @@ function parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
   }));
 }
 
-export function isH5GroveError(
+export function isH5GroveErrorResponse(
   payload: unknown,
 ): payload is H5GroveErrorResponse {
   return (

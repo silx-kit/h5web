@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import {
   isBoolType,
   isEnumType,
@@ -15,9 +16,15 @@ import {
   type BigIntTypedArrayConstructor,
   type TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
-import { type AxiosProgressEvent, isAxiosError } from 'axios';
+import {
+  type AxiosInstance,
+  type AxiosProgressEvent,
+  isAxiosError,
+  isCancel,
+} from 'axios';
 
 import { type DataProviderApi } from './api';
+import { type Fetcher, type FetcherOptions } from './models';
 
 export function typedArrayFromDType(
   dtype: DType,
@@ -88,6 +95,10 @@ export async function getValueOrError(
   }
 }
 
+export function toJSON(buffer: ArrayBuffer): unknown {
+  return JSON.parse(new TextDecoder().decode(buffer));
+}
+
 export function createAxiosProgressHandler(
   onProgress: OnProgress | undefined,
 ): ((evt: AxiosProgressEvent) => void) | undefined {
@@ -101,12 +112,55 @@ export function createAxiosProgressHandler(
   );
 }
 
+export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
+  return async (
+    url: string,
+    params: Record<string, string>,
+    opts: FetcherOptions = {},
+  ): Promise<ArrayBuffer> => {
+    const { abortSignal, onProgress } = opts;
+
+    try {
+      const { data } = await axiosInstance.get<ArrayBuffer>(url, {
+        responseType: 'arraybuffer',
+        params: { ...axiosInstance.defaults.params, ...params },
+        signal: abortSignal,
+        onDownloadProgress: createAxiosProgressHandler(onProgress),
+      });
+      return data;
+    } catch (error) {
+      if (isCancel(error)) {
+        throw new AbortError(abortSignal, error);
+      }
+
+      if (isAxiosError<ArrayBuffer>(error) && error.response) {
+        const { status, statusText, data } = error.response;
+        throw new FetcherError(status, statusText, data, error);
+      }
+
+      throw error;
+    }
+  };
+}
+
 export class AbortError extends Error {
   public constructor(abortSignal?: AbortSignal, cause?: unknown) {
-    const message =
+    const reason =
       typeof abortSignal?.reason === 'string' ? abortSignal.reason : undefined;
 
-    super(message, { cause });
+    super(`Request aborted: ${reason}`, { cause });
     this.name = 'AbortError';
+  }
+}
+
+export class FetcherError extends Error {
+  public constructor(
+    public readonly status: number,
+    public readonly statusText: string,
+    public readonly buffer: ArrayBuffer,
+    cause?: unknown,
+  ) {
+    super(`Request failed: ${status} ${statusText}`, { cause });
+    this.name = 'FetcherError';
   }
 }

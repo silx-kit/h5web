@@ -16,15 +16,11 @@ import {
   type ExportFormat,
   type ExportURL,
 } from '@h5web/shared/vis-models';
-import axios, {
-  AxiosError,
-  type AxiosInstance,
-  type AxiosRequestConfig,
-} from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
-import { type ValuesStoreParams } from '../models';
-import { AbortError, createAxiosProgressHandler } from '../utils';
+import { type Fetcher, type ValuesStoreParams } from '../models';
+import { createAxiosFetcher, FetcherError, toJSON } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
   type H5GroveDataResponse,
@@ -33,29 +29,31 @@ import {
 } from './models';
 import {
   h5groveTypedArrayFromDType,
-  isH5GroveError,
+  isH5GroveErrorResponse,
   parseEntity,
 } from './utils';
 
 const SUPPORTED_EXPORT_FORMATS = new Set<ExportFormat>(['npy', 'tiff']);
 
 export class H5GroveApi extends DataProviderApi {
-  private readonly client: AxiosInstance;
+  private readonly fetcher: Fetcher;
 
   /* API compatible with h5grove@2.3.0 */
   public constructor(
-    url: string,
+    private readonly baseURL: string,
     filepath: string,
-    axiosConfig?: AxiosRequestConfig,
+    private readonly axiosConfig?: AxiosRequestConfig,
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);
 
-    this.client = axios.create({
-      adapter: 'fetch',
-      baseURL: url,
-      ...axiosConfig,
-    });
+    this.fetcher = createAxiosFetcher(
+      axios.create({
+        adapter: 'fetch',
+        baseURL,
+        ...axiosConfig,
+      }),
+    );
   }
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
@@ -70,33 +68,25 @@ export class H5GroveApi extends DataProviderApi {
   ): Promise<H5GroveDataResponse> {
     const { dataset } = params;
 
-    try {
-      if (dataset.type.class === DTypeClass.Opaque) {
-        return new Uint8Array(
-          await this.fetchBinaryData(params, abortSignal, onProgress),
-        );
-      }
-
-      const DTypedArray = h5groveTypedArrayFromDType(dataset.type);
-      if (DTypedArray) {
-        const buffer = await this.fetchBinaryData(
-          params,
-          abortSignal,
-          onProgress,
-          true,
-        );
-        const array = new DTypedArray(buffer);
-        return hasScalarShape(dataset) ? array[0] : array;
-      }
-
-      return await this.fetchData(params, abortSignal, onProgress);
-    } catch (error) {
-      if (error instanceof AxiosError && axios.isCancel(error)) {
-        throw new AbortError(abortSignal, error);
-      }
-
-      throw error;
+    if (dataset.type.class === DTypeClass.Opaque) {
+      return new Uint8Array(
+        await this.fetchBinaryData(params, abortSignal, onProgress),
+      );
     }
+
+    const DTypedArray = h5groveTypedArrayFromDType(dataset.type);
+    if (DTypedArray) {
+      const buffer = await this.fetchBinaryData(
+        params,
+        abortSignal,
+        onProgress,
+        true,
+      );
+      const array = new DTypedArray(buffer);
+      return hasScalarShape(dataset) ? array[0] : array;
+    }
+
+    return await this.fetchData(params, abortSignal, onProgress);
   }
 
   public override async getAttrValues(
@@ -135,42 +125,36 @@ export class H5GroveApi extends DataProviderApi {
       return undefined;
     }
 
-    const { baseURL, params } = this.client.defaults;
+    const searchParams = new URLSearchParams({
+      ...(this.axiosConfig?.params as Record<string, string>),
+      path: dataset.path,
+      format,
+      ...(selection && { selection }),
+    });
 
-    const searchParams = new URLSearchParams(params as Record<string, string>);
-    searchParams.set('path', dataset.path);
-    searchParams.set('format', format);
-
-    if (selection) {
-      searchParams.set('selection', selection);
-    }
-
-    return new URL(`${baseURL || ''}/data/?${searchParams.toString()}`);
+    return new URL(`${this.baseURL || ''}/data/?${searchParams.toString()}`);
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
-    const { data } = await this.client.get<H5GrovePathsResponse>(`/paths/`, {
-      params: { path },
-    });
-
-    return data;
+    const buffer = await this.fetcher(`/paths/`, { path });
+    return toJSON(buffer) as H5GrovePathsResponse;
   }
 
   private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
     try {
-      const { data } = await this.client.get<H5GroveEntityResponse>(`/meta/`, {
-        params: { path },
-      });
-      return data;
+      const buffer = await this.fetcher(`/meta/`, { path });
+      return toJSON(buffer) as H5GroveEntityResponse;
     } catch (error) {
-      if (
-        !(error instanceof AxiosError) ||
-        !isH5GroveError(error.response?.data)
-      ) {
+      if (!(error instanceof FetcherError)) {
         throw error;
       }
 
-      const { message } = error.response.data;
+      const payload = toJSON(error.buffer);
+      if (!isH5GroveErrorResponse(payload)) {
+        throw error;
+      }
+
+      const { message } = payload;
       if (message.includes('File not found')) {
         throw new Error(`File not found: '${this.filepath}'`, { cause: error });
       }
@@ -196,11 +180,8 @@ export class H5GroveApi extends DataProviderApi {
   private async fetchAttrValues(
     path: string,
   ): Promise<H5GroveAttrValuesResponse> {
-    const { data } = await this.client.get<H5GroveAttrValuesResponse>(
-      `/attr/`,
-      { params: { path } },
-    );
-    return data;
+    const buffer = await this.fetcher(`/attr/`, { path });
+    return toJSON(buffer) as H5GroveAttrValuesResponse;
   }
 
   private async fetchData(
@@ -208,16 +189,19 @@ export class H5GroveApi extends DataProviderApi {
     abortSignal: AbortSignal | undefined,
     onProgress: OnProgress | undefined,
   ): Promise<H5GroveDataResponse> {
-    const { data } = await this.client.get<H5GroveDataResponse>('/data/', {
-      params: {
-        path: params.dataset.path,
-        selection: params.selection,
-        flatten: true,
+    const { dataset, selection } = params;
+
+    const buffer = await this.fetcher(
+      '/data/',
+      {
+        path: dataset.path,
+        ...(selection && { selection }),
+        flatten: 'true',
       },
-      signal: abortSignal,
-      onDownloadProgress: createAxiosProgressHandler(onProgress),
-    });
-    return data;
+      { abortSignal, onProgress },
+    );
+
+    return toJSON(buffer);
   }
 
   private async fetchBinaryData(
@@ -226,17 +210,17 @@ export class H5GroveApi extends DataProviderApi {
     onProgress: OnProgress | undefined,
     safe = false,
   ): Promise<ArrayBuffer> {
-    const { data } = await this.client.get<ArrayBuffer>('/data/', {
-      responseType: 'arraybuffer',
-      params: {
-        path: params.dataset.path,
-        selection: params.selection,
+    const { dataset, selection } = params;
+
+    return this.fetcher(
+      '/data/',
+      {
+        path: dataset.path,
+        ...(selection && { selection }),
         format: 'bin',
-        dtype: safe ? 'safe' : undefined,
+        ...(safe && { dtype: 'safe' }),
       },
-      signal: abortSignal,
-      onDownloadProgress: createAxiosProgressHandler(onProgress),
-    });
-    return data;
+      { abortSignal, onProgress },
+    );
   }
 }
