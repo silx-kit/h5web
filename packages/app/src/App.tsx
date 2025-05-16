@@ -41,8 +41,7 @@ function App(props: Props) {
   const { valuesStore } = useDataContext();
   function onSelectPath(path: string) {
     setSelectedPath(path);
-    valuesStore.abortAll('entity changed');
-    valuesStore.evictErrors();
+    valuesStore.abortAll('entity changed', true);
   }
 
   return (
