@@ -22,8 +22,8 @@ export interface FetchStore<Input, Result> {
   preset: (input: Input, result: Result) => void;
   evict: (input: Input) => void;
   evictErrors: () => void;
-  abort: (input: Input, reason?: string) => void;
-  abortAll: (reason?: string) => void;
+  abort: (input: Input, reason?: string, evict?: boolean) => void;
+  abortAll: (reason?: string, evict?: boolean) => void;
   get progressStore(): StoreApi<ProgressState<Input>>;
 }
 
@@ -83,12 +83,20 @@ export function createFetchStore<Input, Result>(
         }
       });
     },
-    abort: (input: Input, reason?: string): void => {
+    abort: (input: Input, reason?: string, evict?: boolean): void => {
       cache.get(input)?.abort(reason);
+
+      if (evict) {
+        cache.delete(input);
+      }
     },
-    abortAll: (reason?: string): void => {
-      cache.values().forEach((instance) => {
+    abortAll: (reason?: string, evict?: boolean): void => {
+      cache.entries().forEach(([input, instance]) => {
         instance.abort(reason);
+
+        if (evict) {
+          cache.delete(input);
+        }
       });
     },
     get progressStore() {
