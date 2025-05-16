@@ -20,7 +20,7 @@ export abstract class DataProviderApi {
 
   public abstract getValue(
     params: ValuesStoreParams,
-    signal?: AbortSignal,
+    abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown>;
 

@@ -24,7 +24,7 @@ import axios, {
 
 import { DataProviderApi } from '../api';
 import { type ValuesStoreParams } from '../models';
-import { createAxiosProgressHandler } from '../utils';
+import { AbortError, createAxiosProgressHandler } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
   type H5GroveDataResponse,
@@ -65,7 +65,7 @@ export class H5GroveApi extends DataProviderApi {
 
   public override async getValue(
     params: ValuesStoreParams,
-    signal?: AbortSignal,
+    abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<H5GroveDataResponse> {
     const { dataset } = params;
@@ -73,7 +73,7 @@ export class H5GroveApi extends DataProviderApi {
     try {
       if (dataset.type.class === DTypeClass.Opaque) {
         return new Uint8Array(
-          await this.fetchBinaryData(params, signal, onProgress),
+          await this.fetchBinaryData(params, abortSignal, onProgress),
         );
       }
 
@@ -81,7 +81,7 @@ export class H5GroveApi extends DataProviderApi {
       if (DTypedArray) {
         const buffer = await this.fetchBinaryData(
           params,
-          signal,
+          abortSignal,
           onProgress,
           true,
         );
@@ -89,15 +89,10 @@ export class H5GroveApi extends DataProviderApi {
         return hasScalarShape(dataset) ? array[0] : array;
       }
 
-      return await this.fetchData(params, signal, onProgress);
+      return await this.fetchData(params, abortSignal, onProgress);
     } catch (error) {
       if (error instanceof AxiosError && axios.isCancel(error)) {
-        // Throw abort reason instead of axios `CancelError`
-        // https://github.com/axios/axios/issues/5758
-        throw new Error(
-          typeof signal?.reason === 'string' ? signal.reason : 'cancelled',
-          { cause: error },
-        );
+        throw new AbortError(abortSignal, error);
       }
 
       throw error;
@@ -210,7 +205,7 @@ export class H5GroveApi extends DataProviderApi {
 
   private async fetchData(
     params: ValuesStoreParams,
-    signal: AbortSignal | undefined,
+    abortSignal: AbortSignal | undefined,
     onProgress: OnProgress | undefined,
   ): Promise<H5GroveDataResponse> {
     const { data } = await this.client.get<H5GroveDataResponse>('/data/', {
@@ -219,7 +214,7 @@ export class H5GroveApi extends DataProviderApi {
         selection: params.selection,
         flatten: true,
       },
-      signal,
+      signal: abortSignal,
       onDownloadProgress: createAxiosProgressHandler(onProgress),
     });
     return data;
@@ -227,7 +222,7 @@ export class H5GroveApi extends DataProviderApi {
 
   private async fetchBinaryData(
     params: ValuesStoreParams,
-    signal: AbortSignal | undefined,
+    abortSignal: AbortSignal | undefined,
     onProgress: OnProgress | undefined,
     safe = false,
   ): Promise<ArrayBuffer> {
@@ -239,7 +234,7 @@ export class H5GroveApi extends DataProviderApi {
         format: 'bin',
         dtype: safe ? 'safe' : undefined,
       },
-      signal,
+      signal: abortSignal,
       onDownloadProgress: createAxiosProgressHandler(onProgress),
     });
     return data;

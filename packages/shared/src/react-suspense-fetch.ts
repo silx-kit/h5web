@@ -2,7 +2,7 @@ import { createStore, type StoreApi } from 'zustand/vanilla';
 
 type FetchFunc<Input, Result> = (
   input: Input,
-  signal: AbortSignal,
+  abortSignal: AbortSignal,
   onProgress: OnProgress,
 ) => Promise<Result>;
 

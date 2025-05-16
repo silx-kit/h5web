@@ -19,8 +19,6 @@ import { type AxiosProgressEvent, isAxiosError } from 'axios';
 
 import { type DataProviderApi } from './api';
 
-export const CANCELLED_ERROR_MSG = 'Request cancelled';
-
 export function typedArrayFromDType(
   dtype: DType,
 ): TypedArrayConstructor | undefined {
@@ -101,4 +99,14 @@ export function createAxiosProgressHandler(
       }
     })
   );
+}
+
+export class AbortError extends Error {
+  public constructor(abortSignal?: AbortSignal, cause?: unknown) {
+    const message =
+      typeof abortSignal?.reason === 'string' ? abortSignal.reason : undefined;
+
+    super(message, { cause });
+    this.name = 'AbortError';
+  }
 }

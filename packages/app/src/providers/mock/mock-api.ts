@@ -54,7 +54,7 @@ export class MockApi extends DataProviderApi {
 
   public override async getValue(
     params: ValuesStoreParams,
-    signal?: AbortSignal,
+    abortSignal?: AbortSignal,
   ): Promise<unknown> {
     const { dataset, selection } = params;
     assertMockDataset(dataset);
@@ -68,7 +68,7 @@ export class MockApi extends DataProviderApi {
     }
 
     if (dataset.name.startsWith('slow')) {
-      await cancellableDelay(signal);
+      await cancellableDelay(abortSignal);
     }
 
     const { value } = dataset;
