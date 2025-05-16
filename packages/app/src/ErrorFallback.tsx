@@ -1,7 +1,7 @@
 import { type FallbackProps } from 'react-error-boundary';
 
 import styles from './App.module.css';
-import { AbortError, CANCELLED_BY_USER } from './providers/utils';
+import { AbortError } from './providers/utils';
 
 interface Props extends FallbackProps {
   className?: string;
@@ -11,7 +11,7 @@ interface Props extends FallbackProps {
 function ErrorFallback(props: Props) {
   const { className = '', error, resetErrorBoundary } = props;
 
-  if (error instanceof AbortError && error.message === CANCELLED_BY_USER) {
+  if (error instanceof AbortError) {
     return (
       <p className={`${styles.error} ${className}`}>
         Request cancelled
