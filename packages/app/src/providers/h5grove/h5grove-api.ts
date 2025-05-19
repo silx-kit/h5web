@@ -59,35 +59,7 @@ export class H5GroveApi extends DataProviderApi {
       const buffer = await this.fetcher(`${this.baseURL}/meta/`, { path });
       return parseEntity(path, toJSON(buffer) as H5GroveEntityResponse);
     } catch (error) {
-      if (!(error instanceof FetcherError)) {
-        throw error;
-      }
-
-      const payload = toJSON(error.buffer);
-      if (!isH5GroveErrorResponse(payload)) {
-        throw error;
-      }
-
-      const { message } = payload;
-      if (message.includes('File not found')) {
-        throw new Error(`File not found: '${this.filepath}'`, { cause: error });
-      }
-      if (message.includes('Permission denied')) {
-        throw new Error(
-          `Cannot read file '${this.filepath}': Permission denied`,
-          { cause: error },
-        );
-      }
-      if (message.includes('not a valid path')) {
-        throw new Error(`No entity found at ${path}`, { cause: error });
-      }
-      if (message.includes('Cannot resolve')) {
-        throw new Error(`Could not resolve soft link at ${path}`, {
-          cause: error,
-        });
-      }
-
-      throw error;
+      throw this.wrapH5GroveError(error, path) || error;
     }
   }
 
@@ -107,26 +79,30 @@ export class H5GroveApi extends DataProviderApi {
       ...(selection && { selection }),
     };
 
-    if (type.class === DTypeClass.Opaque) {
-      const params = { ...baseParams, format: 'bin' };
+    try {
+      if (type.class === DTypeClass.Opaque) {
+        const params = { ...baseParams, format: 'bin' };
+        const buffer = await this.fetcher(url, params, opts);
+
+        return new Uint8Array(buffer);
+      }
+
+      const DTypedArray = h5groveTypedArrayFromDType(type);
+      if (DTypedArray) {
+        const params = { ...baseParams, format: 'bin', dtype: 'safe' };
+        const buffer = await this.fetcher(url, params, opts);
+
+        const array = new DTypedArray(buffer);
+        return hasScalarShape(dataset) ? array[0] : array;
+      }
+
+      const params = { ...baseParams, flatten: 'true' };
       const buffer = await this.fetcher(url, params, opts);
 
-      return new Uint8Array(buffer);
+      return toJSON(buffer);
+    } catch (error) {
+      throw this.wrapH5GroveError(error, path) || error;
     }
-
-    const DTypedArray = h5groveTypedArrayFromDType(type);
-    if (DTypedArray) {
-      const params = { ...baseParams, format: 'bin', dtype: 'safe' };
-      const buffer = await this.fetcher(url, params, opts);
-
-      const array = new DTypedArray(buffer);
-      return hasScalarShape(dataset) ? array[0] : array;
-    }
-
-    const params = { ...baseParams, flatten: 'true' };
-    const buffer = await this.fetcher(url, params, opts);
-
-    return toJSON(buffer);
   }
 
   public override async getAttrValues(
@@ -138,12 +114,16 @@ export class H5GroveApi extends DataProviderApi {
       return {};
     }
 
-    const data = await this.fetcher(`${this.baseURL}/attr/`, {
-      file: this.filepath,
-      path,
-    });
+    try {
+      const data = await this.fetcher(`${this.baseURL}/attr/`, {
+        file: this.filepath,
+        path,
+      });
 
-    return toJSON(data) as H5GroveAttrValuesResponse;
+      return toJSON(data) as H5GroveAttrValuesResponse;
+    } catch (error) {
+      throw this.wrapH5GroveError(error, path) || error;
+    }
   }
 
   public override getExportURL(
@@ -186,7 +166,43 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
-    const buffer = await this.fetcher(`${this.baseURL}/paths/`, { path });
-    return toJSON(buffer) as H5GrovePathsResponse;
+    try {
+      const buffer = await this.fetcher(`${this.baseURL}/paths/`, { path });
+      return toJSON(buffer) as H5GrovePathsResponse;
+    } catch (error) {
+      throw this.wrapH5GroveError(error, path) || error;
+    }
+  }
+
+  private wrapH5GroveError(error: unknown, path: string): Error | undefined {
+    if (!(error instanceof FetcherError)) {
+      return undefined;
+    }
+
+    const payload = toJSON(error.buffer);
+    if (!isH5GroveErrorResponse(payload)) {
+      return undefined;
+    }
+
+    const { message } = payload;
+    if (message.includes('File not found')) {
+      return new Error(`File not found: '${this.filepath}'`, { cause: error });
+    }
+    if (message.includes('Permission denied')) {
+      return new Error(
+        `Cannot read file '${this.filepath}': Permission denied`,
+        { cause: error },
+      );
+    }
+    if (message.includes('not a valid path')) {
+      return new Error(`No entity found at ${path}`, { cause: error });
+    }
+    if (message.includes('Cannot resolve')) {
+      return new Error(`Could not resolve soft link at ${path}`, {
+        cause: error,
+      });
+    }
+
+    return undefined;
   }
 }
