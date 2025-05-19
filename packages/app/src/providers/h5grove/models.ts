@@ -1,7 +1,6 @@
 import { type AttributeValues, type Filter } from '@h5web/shared/hdf5-models';
 
 export type H5GroveEntityResponse = H5GroveEntity;
-export type H5GroveDataResponse = unknown;
 export type H5GroveAttrValuesResponse = AttributeValues;
 export type H5GrovePathsResponse = string[];
 
