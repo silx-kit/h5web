@@ -16,11 +16,10 @@ import {
   type ExportFormat,
   type ExportURL,
 } from '@h5web/shared/vis-models';
-import axios, { type AxiosRequestConfig } from 'axios';
 
 import { DataProviderApi } from '../api';
 import { type Fetcher, type ValuesStoreParams } from '../models';
-import { createAxiosFetcher, FetcherError, toJSON } from '../utils';
+import { createBasicFetcher, FetcherError, toJSON } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
   type H5GroveEntityResponse,
@@ -35,28 +34,23 @@ import {
 const SUPPORTED_EXPORT_FORMATS = new Set<ExportFormat>(['npy', 'tiff']);
 
 export class H5GroveApi extends DataProviderApi {
-  private readonly fetcher: Fetcher;
-
   /* API compatible with h5grove@2.3.0 */
   public constructor(
     private readonly baseURL: string,
     filepath: string,
-    private readonly axiosConfig?: AxiosRequestConfig,
+    private readonly fetcher: Fetcher = createBasicFetcher(),
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);
-
-    this.fetcher = createAxiosFetcher(
-      axios.create({
-        adapter: 'fetch',
-        ...axiosConfig,
-      }),
-    );
   }
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
     try {
-      const buffer = await this.fetcher(`${this.baseURL}/meta/`, { path });
+      const buffer = await this.fetcher(`${this.baseURL}/meta/`, {
+        file: this.filepath,
+        path,
+      });
+
       return parseEntity(path, toJSON(buffer) as H5GroveEntityResponse);
     } catch (error) {
       throw this.wrapH5GroveError(error, path) || error;
@@ -156,7 +150,7 @@ export class H5GroveApi extends DataProviderApi {
     }
 
     const searchParams = new URLSearchParams({
-      ...(this.axiosConfig?.params as Record<string, string>),
+      file: this.filepath,
       path: dataset.path,
       format,
       ...(selection && { selection }),
@@ -167,7 +161,11 @@ export class H5GroveApi extends DataProviderApi {
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
     try {
-      const buffer = await this.fetcher(`${this.baseURL}/paths/`, { path });
+      const buffer = await this.fetcher(`${this.baseURL}/paths/`, {
+        file: this.filepath,
+        path,
+      });
+
       return toJSON(buffer) as H5GrovePathsResponse;
     } catch (error) {
       throw this.wrapH5GroveError(error, path) || error;
