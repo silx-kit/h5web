@@ -22,7 +22,7 @@ function H5GroveApp() {
   const filepath = searchParams.get('file') || FILEPATH;
 
   return (
-    <H5GroveProvider baseUrl={URL} filepath={filepath} fetcher={fetcher}>
+    <H5GroveProvider url={URL} filepath={filepath} fetcher={fetcher}>
       <App
         sidebarOpen={!searchParams.has('wide')}
         getFeedbackURL={getFeedbackURL}

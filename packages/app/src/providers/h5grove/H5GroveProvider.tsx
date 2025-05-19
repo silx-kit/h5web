@@ -6,7 +6,7 @@ import { type Fetcher } from '../models';
 import { H5GroveApi } from './h5grove-api';
 
 interface Props {
-  baseUrl: string;
+  url: string;
   filepath: string;
   resetKeys?: unknown[];
   fetcher?: Fetcher;
@@ -15,7 +15,7 @@ interface Props {
 
 function H5GroveProvider(props: PropsWithChildren<Props>) {
   const {
-    baseUrl,
+    url,
     filepath,
     resetKeys = [],
     fetcher,
@@ -24,8 +24,8 @@ function H5GroveProvider(props: PropsWithChildren<Props>) {
   } = props;
 
   const api = useMemo(
-    () => new H5GroveApi(baseUrl, filepath, fetcher, getExportURL),
-    [filepath, baseUrl, ...resetKeys, fetcher, getExportURL], // eslint-disable-line react-hooks/exhaustive-deps
+    () => new H5GroveApi(url, filepath, fetcher, getExportURL),
+    [filepath, url, ...resetKeys, fetcher, getExportURL], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return <DataProvider api={api}>{children}</DataProvider>;
