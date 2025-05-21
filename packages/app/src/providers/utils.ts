@@ -90,7 +90,14 @@ export async function getValueOrError(
 }
 
 export function toJSON(buffer: ArrayBuffer): unknown {
-  return JSON.parse(new TextDecoder().decode(buffer));
+  try {
+    return JSON.parse(new TextDecoder().decode(buffer));
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      throw new TypeError('Expected valid JSON', { cause: error });
+    }
+    throw error;
+  }
 }
 
 export function createBasicFetcher(): Fetcher {

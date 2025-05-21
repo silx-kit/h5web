@@ -179,8 +179,15 @@ export function toExtendedJSON(buffer: ArrayBuffer): unknown {
   try {
     return JSON.parse(str);
   } catch {
-    // Convert Infinity/NaN to JSON strings and try again
-    // https://github.com/HDFGroup/hsds/issues/87
-    return JSON.parse(str.replaceAll(/-?Infinity|NaN/gu, '"$&"'));
+    try {
+      // Convert Infinity/NaN to JSON strings and try again
+      // https://github.com/HDFGroup/hsds/issues/87
+      return JSON.parse(str.replaceAll(/-?Infinity|NaN/gu, '"$&"'));
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        throw new TypeError('Expected valid JSON', { cause: error });
+      }
+      throw error;
+    }
   }
 }

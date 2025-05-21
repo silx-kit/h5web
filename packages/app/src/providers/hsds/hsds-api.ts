@@ -186,47 +186,67 @@ export class HsdsApi extends DataProviderApi {
   }
 
   private async fetchDataset(id: HsdsId): Promise<HsdsDatasetResponse> {
-    const buffer = await this.fetcher(`${this.baseURL}/datasets/${id}`, {
-      domain: this.filepath,
-    });
+    try {
+      const buffer = await this.fetcher(`${this.baseURL}/datasets/${id}`, {
+        domain: this.filepath,
+      });
 
-    return toJSON(buffer) as HsdsDatasetResponse;
+      return toJSON(buffer) as HsdsDatasetResponse;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
+    }
   }
 
   private async fetchDatatype(id: HsdsId): Promise<HsdsDatatypeResponse> {
-    const buffer = await this.fetcher(`${this.baseURL}/datatypes/${id}`, {
-      domain: this.filepath,
-    });
+    try {
+      const buffer = await this.fetcher(`${this.baseURL}/datatypes/${id}`, {
+        domain: this.filepath,
+      });
 
-    return toJSON(buffer) as HsdsDatatypeResponse;
+      return toJSON(buffer) as HsdsDatatypeResponse;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
+    }
   }
 
   private async fetchGroup(id: HsdsId): Promise<HsdsGroupResponse> {
-    const buffer = await this.fetcher(`${this.baseURL}/groups/${id}`, {
-      domain: this.filepath,
-    });
+    try {
+      const buffer = await this.fetcher(`${this.baseURL}/groups/${id}`, {
+        domain: this.filepath,
+      });
 
-    return toJSON(buffer) as HsdsGroupResponse;
+      return toJSON(buffer) as HsdsGroupResponse;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
+    }
   }
 
   private async fetchLinks(id: HsdsId): Promise<HsdsLink[]> {
-    const buffer = await this.fetcher(`${this.baseURL}/groups/${id}/links`, {
-      domain: this.filepath,
-    });
+    try {
+      const buffer = await this.fetcher(`${this.baseURL}/groups/${id}/links`, {
+        domain: this.filepath,
+      });
 
-    return (toJSON(buffer) as HsdsLinksResponse).links;
+      return (toJSON(buffer) as HsdsLinksResponse).links;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
+    }
   }
 
   private async fetchAttributes(
     entityCollection: HsdsCollection,
     entityId: HsdsId,
   ): Promise<HsdsAttribute[]> {
-    const buffer = await this.fetcher(
-      `${this.baseURL}/${entityCollection}/${entityId}/attributes`,
-      { domain: this.filepath },
-    );
+    try {
+      const buffer = await this.fetcher(
+        `${this.baseURL}/${entityCollection}/${entityId}/attributes`,
+        { domain: this.filepath },
+      );
 
-    return (toJSON(buffer) as HsdsAttributesResponse).attributes;
+      return (toJSON(buffer) as HsdsAttributesResponse).attributes;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
+    }
   }
 
   private async fetchValue(
@@ -235,16 +255,20 @@ export class HsdsApi extends DataProviderApi {
     abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown> {
-    const buffer = await this.fetcher(
-      `${this.baseURL}/datasets/${entityId}/value`,
-      {
-        domain: this.filepath,
-        ...(selection && { select: `[${selection}]` }),
-      },
-      { abortSignal, onProgress },
-    );
+    try {
+      const buffer = await this.fetcher(
+        `${this.baseURL}/datasets/${entityId}/value`,
+        {
+          domain: this.filepath,
+          ...(selection && { select: `[${selection}]` }),
+        },
+        { abortSignal, onProgress },
+      );
 
-    return (toExtendedJSON(buffer) as HsdsValueResponse).value;
+      return (toExtendedJSON(buffer) as HsdsValueResponse).value;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
+    }
   }
 
   private async fetchAttributeWithValue(
@@ -252,12 +276,16 @@ export class HsdsApi extends DataProviderApi {
     entityId: HsdsId,
     attributeName: string,
   ): Promise<HsdsAttributeWithValueResponse> {
-    const buffer = await this.fetcher(
-      `${this.baseURL}/${entityCollection}/${entityId}/attributes/${attributeName}`,
-      { domain: this.filepath },
-    );
+    try {
+      const buffer = await this.fetcher(
+        `${this.baseURL}/${entityCollection}/${entityId}/attributes/${attributeName}`,
+        { domain: this.filepath },
+      );
 
-    return toExtendedJSON(buffer) as HsdsAttributeWithValueResponse;
+      return toExtendedJSON(buffer) as HsdsAttributeWithValueResponse;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
+    }
   }
 
   private async resolveLink(
