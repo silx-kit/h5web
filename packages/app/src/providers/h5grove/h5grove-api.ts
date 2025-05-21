@@ -23,7 +23,6 @@ import { type Fetcher, type ValuesStoreParams } from '../models';
 import { createAxiosFetcher, FetcherError, toJSON } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
-  type H5GroveDataResponse,
   type H5GroveEntityResponse,
   type H5GrovePathsResponse,
 } from './models';
@@ -50,50 +49,81 @@ export class H5GroveApi extends DataProviderApi {
     this.fetcher = createAxiosFetcher(
       axios.create({
         adapter: 'fetch',
-        baseURL,
         ...axiosConfig,
       }),
     );
   }
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
-    const response = await this.fetchEntity(path);
-    return parseEntity(path, response);
+    try {
+      const buffer = await this.fetcher(`${this.baseURL}/meta/`, { path });
+      return parseEntity(path, toJSON(buffer) as H5GroveEntityResponse);
+    } catch (error) {
+      throw this.wrapH5GroveError(error, path) || error;
+    }
   }
 
   public override async getValue(
-    params: ValuesStoreParams,
+    storeParams: ValuesStoreParams,
     abortSignal?: AbortSignal,
     onProgress?: OnProgress,
-  ): Promise<H5GroveDataResponse> {
-    const { dataset } = params;
+  ): Promise<unknown> {
+    const { dataset, selection } = storeParams;
+    const { path, type } = dataset;
 
-    if (dataset.type.class === DTypeClass.Opaque) {
-      return new Uint8Array(
-        await this.fetchBinaryData(params, abortSignal, onProgress),
-      );
+    const url = `${this.baseURL}/data/`;
+    const opts = { abortSignal, onProgress };
+    const baseParams = {
+      file: this.filepath,
+      path,
+      ...(selection && { selection }),
+    };
+
+    try {
+      if (type.class === DTypeClass.Opaque) {
+        const params = { ...baseParams, format: 'bin' };
+        const buffer = await this.fetcher(url, params, opts);
+
+        return new Uint8Array(buffer);
+      }
+
+      const DTypedArray = h5groveTypedArrayFromDType(type);
+      if (DTypedArray) {
+        const params = { ...baseParams, format: 'bin', dtype: 'safe' };
+        const buffer = await this.fetcher(url, params, opts);
+
+        const array = new DTypedArray(buffer);
+        return hasScalarShape(dataset) ? array[0] : array;
+      }
+
+      const params = { ...baseParams, flatten: 'true' };
+      const buffer = await this.fetcher(url, params, opts);
+
+      return toJSON(buffer);
+    } catch (error) {
+      throw this.wrapH5GroveError(error, path) || error;
     }
-
-    const DTypedArray = h5groveTypedArrayFromDType(dataset.type);
-    if (DTypedArray) {
-      const buffer = await this.fetchBinaryData(
-        params,
-        abortSignal,
-        onProgress,
-        true,
-      );
-      const array = new DTypedArray(buffer);
-      return hasScalarShape(dataset) ? array[0] : array;
-    }
-
-    return await this.fetchData(params, abortSignal, onProgress);
   }
 
   public override async getAttrValues(
     entity: Entity,
   ): Promise<AttributeValues> {
     const { path, attributes } = entity;
-    return attributes.length > 0 ? this.fetchAttrValues(path) : {};
+
+    if (attributes.length === 0) {
+      return {};
+    }
+
+    try {
+      const data = await this.fetcher(`${this.baseURL}/attr/`, {
+        file: this.filepath,
+        path,
+      });
+
+      return toJSON(data) as H5GroveAttrValuesResponse;
+    } catch (error) {
+      throw this.wrapH5GroveError(error, path) || error;
+    }
   }
 
   public override getExportURL(
@@ -136,91 +166,43 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
-    const buffer = await this.fetcher(`/paths/`, { path });
-    return toJSON(buffer) as H5GrovePathsResponse;
-  }
-
-  private async fetchEntity(path: string): Promise<H5GroveEntityResponse> {
     try {
-      const buffer = await this.fetcher(`/meta/`, { path });
-      return toJSON(buffer) as H5GroveEntityResponse;
+      const buffer = await this.fetcher(`${this.baseURL}/paths/`, { path });
+      return toJSON(buffer) as H5GrovePathsResponse;
     } catch (error) {
-      if (!(error instanceof FetcherError)) {
-        throw error;
-      }
-
-      const payload = toJSON(error.buffer);
-      if (!isH5GroveErrorResponse(payload)) {
-        throw error;
-      }
-
-      const { message } = payload;
-      if (message.includes('File not found')) {
-        throw new Error(`File not found: '${this.filepath}'`, { cause: error });
-      }
-      if (message.includes('Permission denied')) {
-        throw new Error(
-          `Cannot read file '${this.filepath}': Permission denied`,
-          { cause: error },
-        );
-      }
-      if (message.includes('not a valid path')) {
-        throw new Error(`No entity found at ${path}`, { cause: error });
-      }
-      if (message.includes('Cannot resolve')) {
-        throw new Error(`Could not resolve soft link at ${path}`, {
-          cause: error,
-        });
-      }
-
-      throw error;
+      throw this.wrapH5GroveError(error, path) || error;
     }
   }
 
-  private async fetchAttrValues(
-    path: string,
-  ): Promise<H5GroveAttrValuesResponse> {
-    const buffer = await this.fetcher(`/attr/`, { path });
-    return toJSON(buffer) as H5GroveAttrValuesResponse;
-  }
+  private wrapH5GroveError(error: unknown, path: string): Error | undefined {
+    if (!(error instanceof FetcherError)) {
+      return undefined;
+    }
 
-  private async fetchData(
-    params: ValuesStoreParams,
-    abortSignal: AbortSignal | undefined,
-    onProgress: OnProgress | undefined,
-  ): Promise<H5GroveDataResponse> {
-    const { dataset, selection } = params;
+    const payload = toJSON(error.buffer);
+    if (!isH5GroveErrorResponse(payload)) {
+      return undefined;
+    }
 
-    const buffer = await this.fetcher(
-      '/data/',
-      {
-        path: dataset.path,
-        ...(selection && { selection }),
-        flatten: 'true',
-      },
-      { abortSignal, onProgress },
-    );
+    const { message } = payload;
+    if (message.includes('File not found')) {
+      return new Error(`File not found: '${this.filepath}'`, { cause: error });
+    }
+    if (message.includes('Permission denied')) {
+      return new Error(
+        `Cannot read file '${this.filepath}': Permission denied`,
+        { cause: error },
+      );
+    }
+    if (message.includes('not a valid path')) {
+      return new Error(`No entity found at ${path}`, { cause: error });
+    }
+    if (message.includes('Cannot resolve')) {
+      return new Error(`Could not resolve soft link at ${path}`, {
+        cause: error,
+      });
+    }
 
-    return toJSON(buffer);
-  }
-
-  private async fetchBinaryData(
-    params: ValuesStoreParams,
-    abortSignal: AbortSignal | undefined,
-    onProgress: OnProgress | undefined,
-    safe = false,
-  ): Promise<ArrayBuffer> {
-    const { dataset, selection } = params;
-
-    return this.fetcher(
-      '/data/',
-      {
-        path: dataset.path,
-        ...(selection && { selection }),
-        format: 'bin',
-        ...(safe && { dtype: 'safe' }),
-      },
-      { abortSignal, onProgress },
-    );
+    return undefined;
   }
 }
