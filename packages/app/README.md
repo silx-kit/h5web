@@ -191,15 +191,17 @@ back-end. The function accepts a URL together with some query parameters and
 options, and is expected to return a promise that resolves to an `ArrayBuffer`.
 
 If `fetcher` is not provided, `H5GroveProvider` creates one based on the native
-Fetch API using [`createBasicFetcher`](#createbasicfetcher). While this fetcher
-is sufficient to start with, it has significant limitations (e.g. it doesn't
-track requests progress, doesn't support passing authentication headers, etc.)
-For better user experience and security, we recommend using a fetcher that
+Fetch API using
+[`createBasicFetcher`](#createbasicfetcher-fetchopts-omitrequestinit-signal--fetcher).
+While this fetcher is sufficient to start with, it has significant limitations
+(e.g. it doesn't track requests progress, doesn't pass authentication headers,
+etc.) For better user experience and security, we recommend using a fetcher that
 relies on a fetching library like [axios](https://axios-http.com/) (cf.
-[`createAxiosFetcher`](#createaxiosfetcher)).
+[`createAxiosFetcher`](#createaxiosfetcher-axiosinstance-axiosinstance--fetcher)),
+or at least initialising your own basic fetcher with authentication headers.
 
 > If you have to initialise the `fetcher` during render, make sure to memoise it
-> so the fetching cache does not get cleared if/when your app re-renders.
+> so the fetching cache doesn't get cleared if/when your app re-renders.
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
@@ -327,6 +329,34 @@ private data.
 
 The path of the file to request.
 
+#### `fetcher?: Fetcher` (optional)
+
+An asynchronous function to fetch data and metadata from an HSDS back-end. The
+function accepts a URL together with some query parameters and options, and is
+expected to return a promise that resolves to an `ArrayBuffer`. The fetcher must
+also send the required HSDS authentication headers.
+
+To get you started, if your HSDS back-end is configured with basic HTTP
+authentication, you can use
+[`createBasicFetcher`](#createbasicfetcher-fetchopts-omitrequestinit-signal--fetcher)
+together with
+[`buildBasicAuthHeader`](#buildbasicauthheader-username-string-password-string--recordstring-string):
+
+```ts
+const fetcher = createBasicFetcher({
+  headers: buildBasicAuthHeader(USERNAME, PASSWORD),
+});
+```
+
+Note, however, that this authentication mechanism is not secure; do not use it
+to grant access to private data. The basic fetcher also has the limitation that
+it doesn't track requests progress, so you may want to use a fetcher that relies
+on a fetching library like [axios](https://axios-http.com/) (cf.
+[`createAxiosFetcher`](#createaxiosfetcher-axiosinstance-axiosinstance--fetcher)).
+
+> If you have to initialise the `fetcher` during render, make sure to memoise it
+> so the fetching cache doesn't get cleared if/when your app re-renders.
+
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
 See
@@ -358,17 +388,20 @@ See
 
 ### Utilities
 
-#### `createBasicFetcher`
+#### `createBasicFetcher: (fetchOpts?: Omit<RequestInit, 'signal'>) => Fetcher`
 
 Create a [`fetcher` function](#fetcher-fetcher-optional) that uses the native
-Fetch API. This is called internally to initialise a fetcher when one is not
-passed to `H5GroveProvider`.
+Fetch API. Accepts an optional
+[`RequestInit`](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit)
+object to configure requests:
 
-> This utility could be handy when testing, for instance to set up spies on the
-> returned `fetcher` function to make sure that it is called when you expect it
-> to be and with the right parameters.
+```ts
+const fetcher = createBasicFetcher({
+  headers: { Authorization: `Bearer ${token}` },
+});
+```
 
-#### `createAxiosFetcher`
+#### `createAxiosFetcher: (axiosInstance: AxiosInstance) => Fetcher`
 
 Create a [`fetcher` function](#fetcher-fetcher-optional) from an
 [axios](https://axios-http.com/) instance. Note that you will need to install
@@ -394,7 +427,12 @@ tokens and retry requests automatically. However, do note that some options have
 no effect, notably `url`/`baseUrl`, `responseType`, `signal` and
 `onDownloadProgress`.
 
-#### `getFeedbackMailto`
+#### `buildBasicAuthHeader: (username: string, password: string) => Record<string, string>`
+
+Build an `Authorization` header for basic HTTP authentication from a username
+and password.
+
+#### `getFeedbackMailto: (context: FeedbackContext, email: string, subject?) => string`
 
 Generate a feedback `mailto:` URL using H5Web's built-in feedback email
 template.
@@ -411,7 +449,7 @@ import { getFeedbackMailto } from '@h5web/app';
 }} />
 ```
 
-#### `enableBigIntSerialization`
+#### `enableBigIntSerialization: () => void`
 
 Invoke this function before rendering your application to allow the _Raw_
 visualization and metadata inspector to serialize and display
