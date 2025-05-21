@@ -11,17 +11,11 @@ import {
   type DType,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 import {
   type BigIntTypedArrayConstructor,
   type TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
-import {
-  type AxiosInstance,
-  type AxiosProgressEvent,
-  isAxiosError,
-  isCancel,
-} from 'axios';
+import { type AxiosInstance, isAxiosError, isCancel } from 'axios';
 
 import { type DataProviderApi } from './api';
 import { type Fetcher, type FetcherOptions } from './models';
@@ -99,19 +93,6 @@ export function toJSON(buffer: ArrayBuffer): unknown {
   return JSON.parse(new TextDecoder().decode(buffer));
 }
 
-export function createAxiosProgressHandler(
-  onProgress: OnProgress | undefined,
-): ((evt: AxiosProgressEvent) => void) | undefined {
-  return (
-    onProgress &&
-    ((evt: AxiosProgressEvent) => {
-      if (evt.total !== undefined && evt.total > 0) {
-        onProgress(evt.loaded / evt.total);
-      }
-    })
-  );
-}
-
 export function createBasicFetcher(): Fetcher {
   return async (
     url: string,
@@ -155,7 +136,13 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
         responseType: 'arraybuffer',
         params: { ...axiosInstance.defaults.params, ...params },
         signal: abortSignal,
-        onDownloadProgress: createAxiosProgressHandler(onProgress),
+        onDownloadProgress:
+          onProgress &&
+          ((evt) => {
+            if (evt.total !== undefined && evt.total > 0) {
+              onProgress(evt.loaded / evt.total);
+            }
+          }),
       });
       return data;
     } catch (error) {

@@ -147,7 +147,7 @@ export async function assertListeningAt(
 ) {
   try {
     await fetch(url);
-  } catch {
-    throw new Error(message);
+  } catch (error) {
+    throw new Error(message, { cause: error });
   }
 }

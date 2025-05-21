@@ -1,4 +1,11 @@
-import { App, assertEnvVar, HsdsProvider } from '@h5web/app';
+import {
+  App,
+  assertEnvVar,
+  createAxiosFetcher,
+  HsdsProvider,
+} from '@h5web/app';
+import axios from 'axios';
+import { useMemo } from 'react';
 import { useSearchParams } from 'wouter';
 
 import { getFeedbackURL } from './utils';
@@ -19,13 +26,17 @@ function HsdsApp() {
   const [searchParams] = useSearchParams();
   const filepath = `${SUBDOMAIN}${searchParams.get('file') || FILEPATH}`;
 
+  const fetcher = useMemo(() => {
+    return createAxiosFetcher(
+      axios.create({
+        adapter: 'fetch',
+        auth: { username: USERNAME, password: PASSWORD },
+      }),
+    );
+  }, []);
+
   return (
-    <HsdsProvider
-      url={URL}
-      username={USERNAME}
-      password={PASSWORD}
-      filepath={filepath}
-    >
+    <HsdsProvider url={URL} filepath={filepath} fetcher={fetcher}>
       <App
         sidebarOpen={!searchParams.has('wide')}
         getFeedbackURL={getFeedbackURL}

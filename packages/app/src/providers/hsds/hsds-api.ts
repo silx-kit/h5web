@@ -22,11 +22,10 @@ import {
   type ExportFormat,
   type ExportURL,
 } from '@h5web/shared/vis-models';
-import axios, { AxiosError, type AxiosInstance } from 'axios';
 
 import { DataProviderApi } from '../api';
-import { type ValuesStoreParams } from '../models';
-import { AbortError, createAxiosProgressHandler } from '../utils';
+import { type Fetcher, type ValuesStoreParams } from '../models';
+import { FetcherError, toJSON } from '../utils';
 import {
   type BaseHsdsEntity,
   type HsdsAttribute,
@@ -51,46 +50,20 @@ import {
   convertHsdsType,
   flattenValue,
   isHsdsGroup,
+  toExtendedJSON,
 } from './utils';
 
 export class HsdsApi extends DataProviderApi {
   private readonly entities = new Map<string, HsdsEntity<ProvidedEntity>>();
-  private readonly client: AxiosInstance;
 
   /* API compatible with HSDS@6717a7bb8c2245492090be34ec3ccd63ecb20b70 */
   public constructor(
-    url: string,
-    username: string,
-    password: string,
+    private readonly baseURL: string,
     filepath: string,
+    private readonly fetcher: Fetcher,
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);
-
-    this.client = axios.create({
-      adapter: 'fetch',
-      baseURL: url,
-      params: { domain: filepath },
-      auth: { username, password },
-      transformResponse: (data: unknown) => {
-        if (typeof data !== 'string') {
-          return data;
-        }
-
-        try {
-          return JSON.parse(data) as unknown;
-        } catch {
-          // https://github.com/HDFGroup/hsds/issues/87
-          try {
-            return JSON.parse(
-              data.replaceAll(/-?Infinity|NaN/gu, '"$&"'),
-            ) as unknown;
-          } catch {
-            return data;
-          }
-        }
-      },
-    });
   }
 
   public override async getEntity(
@@ -145,7 +118,7 @@ export class HsdsApi extends DataProviderApi {
 
     const value = await this.fetchValue(
       dataset.id,
-      params,
+      params.selection,
       abortSignal,
       onProgress,
     );
@@ -202,79 +175,76 @@ export class HsdsApi extends DataProviderApi {
 
   private async fetchRootId(): Promise<HsdsId> {
     try {
-      const { data } = await this.client.get<HsdsRootResponse>('/');
-      return data.root;
-    } catch (error) {
-      if (error instanceof AxiosError && error.status === 400) {
-        throw new Error(`File not found: ${this.filepath}`, { cause: error });
-      }
+      const buffer = await this.fetcher(`${this.baseURL}/`, {
+        domain: this.filepath,
+      });
 
-      throw error;
+      return (toJSON(buffer) as HsdsRootResponse).root;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
     }
   }
 
   private async fetchDataset(id: HsdsId): Promise<HsdsDatasetResponse> {
-    const { data } = await this.client.get<HsdsDatasetResponse>(
-      `/datasets/${id}`,
-    );
-    return data;
+    const buffer = await this.fetcher(`${this.baseURL}/datasets/${id}`, {
+      domain: this.filepath,
+    });
+
+    return toJSON(buffer) as HsdsDatasetResponse;
   }
 
   private async fetchDatatype(id: HsdsId): Promise<HsdsDatatypeResponse> {
-    const { data } = await this.client.get<HsdsDatatypeResponse>(
-      `/datatypes/${id}`,
-    );
-    return data;
+    const buffer = await this.fetcher(`${this.baseURL}/datatypes/${id}`, {
+      domain: this.filepath,
+    });
+
+    return toJSON(buffer) as HsdsDatatypeResponse;
   }
 
   private async fetchGroup(id: HsdsId): Promise<HsdsGroupResponse> {
-    const { data } = await this.client.get<HsdsGroupResponse>(`/groups/${id}`);
-    return data;
+    const buffer = await this.fetcher(`${this.baseURL}/groups/${id}`, {
+      domain: this.filepath,
+    });
+
+    return toJSON(buffer) as HsdsGroupResponse;
   }
 
   private async fetchLinks(id: HsdsId): Promise<HsdsLink[]> {
-    const { data } = await this.client.get<HsdsLinksResponse>(
-      `/groups/${id}/links`,
-    );
-    return data.links;
+    const buffer = await this.fetcher(`${this.baseURL}/groups/${id}/links`, {
+      domain: this.filepath,
+    });
+
+    return (toJSON(buffer) as HsdsLinksResponse).links;
   }
 
   private async fetchAttributes(
     entityCollection: HsdsCollection,
     entityId: HsdsId,
   ): Promise<HsdsAttribute[]> {
-    const { data } = await this.client.get<HsdsAttributesResponse>(
-      `/${entityCollection}/${entityId}/attributes`,
+    const buffer = await this.fetcher(
+      `${this.baseURL}/${entityCollection}/${entityId}/attributes`,
+      { domain: this.filepath },
     );
-    return data.attributes;
+
+    return (toJSON(buffer) as HsdsAttributesResponse).attributes;
   }
 
   private async fetchValue(
     entityId: HsdsId,
-    params: ValuesStoreParams,
+    selection?: string,
     abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown> {
-    const { selection } = params;
+    const buffer = await this.fetcher(
+      `${this.baseURL}/datasets/${entityId}/value`,
+      {
+        domain: this.filepath,
+        ...(selection && { select: `[${selection}]` }),
+      },
+      { abortSignal, onProgress },
+    );
 
-    try {
-      const { data } = await this.client.get<HsdsValueResponse>(
-        `/datasets/${entityId}/value`,
-        {
-          params: { select: selection ? `[${selection}]` : undefined },
-          signal: abortSignal,
-          onDownloadProgress: createAxiosProgressHandler(onProgress),
-        },
-      );
-
-      return data.value;
-    } catch (error) {
-      if (error instanceof AxiosError && axios.isCancel(error)) {
-        throw new AbortError(abortSignal, error);
-      }
-
-      throw error;
-    }
+    return (toExtendedJSON(buffer) as HsdsValueResponse).value;
   }
 
   private async fetchAttributeWithValue(
@@ -282,10 +252,12 @@ export class HsdsApi extends DataProviderApi {
     entityId: HsdsId,
     attributeName: string,
   ): Promise<HsdsAttributeWithValueResponse> {
-    const { data } = await this.client.get<HsdsAttributeWithValueResponse>(
-      `/${entityCollection}/${entityId}/attributes/${attributeName}`,
+    const buffer = await this.fetcher(
+      `${this.baseURL}/${entityCollection}/${entityId}/attributes/${attributeName}`,
+      { domain: this.filepath },
     );
-    return data;
+
+    return toExtendedJSON(buffer) as HsdsAttributeWithValueResponse;
   }
 
   private async resolveLink(
@@ -399,5 +371,13 @@ export class HsdsApi extends DataProviderApi {
       type: convertHsdsType(type),
       rawType: type,
     };
+  }
+
+  private wrapHsdsError(error: unknown): Error | undefined {
+    if (error instanceof FetcherError && error.status === 400) {
+      return new Error(`File not found: ${this.filepath}`, { cause: error });
+    }
+
+    return undefined;
   }
 }
