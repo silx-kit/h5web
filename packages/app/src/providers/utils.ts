@@ -15,7 +15,7 @@ import {
   type BigIntTypedArrayConstructor,
   type TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
-import { type AxiosInstance, isAxiosError, isCancel } from 'axios';
+import { type AxiosError, type AxiosInstance } from 'axios';
 
 import { type DataProviderApi } from './api';
 import { type Fetcher, type FetcherOptions } from './models';
@@ -142,7 +142,7 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
     const { abortSignal, onProgress } = opts;
 
     try {
-      const { data } = await axiosInstance.get<ArrayBuffer>(url, {
+      const { data } = await axiosInstance.get(url, {
         responseType: 'arraybuffer',
         params: { ...axiosInstance.defaults.params, ...params },
         signal: abortSignal,
@@ -154,20 +154,25 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
             }
           }),
       });
-      return data;
+
+      return data as ArrayBuffer;
     } catch (error) {
-      if (isCancel(error)) {
+      if (error instanceof Error && error.name === 'CanceledError') {
         throw new AbortError(abortSignal, error);
       }
 
-      if (isAxiosError<ArrayBuffer>(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         const { status, statusText, data } = error.response;
-        throw new FetcherError(status, statusText, data, error);
+        throw new FetcherError(status, statusText, data as ArrayBuffer, error);
       }
 
       throw error;
     }
   };
+}
+
+function isAxiosError(error: unknown): error is AxiosError {
+  return error instanceof Error && 'isAxiosError' in error;
 }
 
 export function buildBasicAuthHeader(

@@ -232,9 +232,6 @@ importers:
       '@react-three/fiber':
         specifier: 8.17.12
         version: 8.17.12(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
-      axios:
-        specifier: 1.8.4
-        version: 1.8.4
       d3-format:
         specifier: 3.1.0
         version: 3.1.0
@@ -305,6 +302,9 @@ importers:
       '@vitejs/plugin-react-swc':
         specifier: 3.8.1
         version: 3.8.1(vite@6.2.4(@types/node@22.13.16))
+      axios:
+        specifier: 1.8.4
+        version: 1.8.4
       concat:
         specifier: 1.0.3
         version: 1.0.3
