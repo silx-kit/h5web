@@ -54,13 +54,6 @@ function MyApp() {
 export default MyApp;
 ```
 
-> If your bundler supports it (e.g. webpack 5), you may be able to shorten the
-> stylesheet import path as follows:
->
-> ```ts
-> import '@h5web/app/styles.css';
-> ```
-
 ### Examples
 
 The following code sandboxes demonstrate how to set up and use `@h5web/app` with
@@ -191,18 +184,22 @@ The base URL of the H5Grove server.
 
 The path and/or name of the file to display in the UI.
 
-#### `axiosConfig?: AxiosRequestConfig` (optional)
+#### `fetcher?: Fetcher` (optional)
 
-By default, `H5GroveProvider` does not make any assumption as to how to
-configure its internal [axios](https://axios-http.com/docs/req_config) client.
-If you use one of H5Grove's default API implementations, then you'll need to use
-this prop to pass the `file` query parameter as shown above.
+An optional asynchronous function to fetch data and metadata from an h5grove
+back-end. The function accepts a URL together with some query parameters and
+options, and is expected to return a promise that resolves to an `ArrayBuffer`.
 
-If your API server requires authentication or is on a different domain, you'll
-need to pass the necessary request headers and configuration as well.
+If `fetcher` is not provided, `H5GroveProvider` creates one based on the native
+Fetch API using [`createBasicFetcher`](#createbasicfetcher). While this fetcher
+is sufficient to start with, it has significant limitations (e.g. it doesn't
+track requests progress, doesn't support passing authentication headers, etc.)
+For better user experience and security, we recommend using a fetcher that
+relies on a fetching library like [axios](https://axios-http.com/) (cf.
+[`createAxiosFetcher`](#createaxiosfetcher)).
 
-> Remember to memoise or extract your `axiosConfig` object so the fetching cache
-> does not get cleared if/when your app re-renders.
+> If you have to initialise the `fetcher` during render, make sure to memoise it
+> so the fetching cache does not get cleared if/when your app re-renders.
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
@@ -360,6 +357,42 @@ See
 `MockProvider` doesn't support the NPY and TIFF export formats out of the box.
 
 ### Utilities
+
+#### `createBasicFetcher`
+
+Create a [`fetcher` function](#fetcher-fetcher-optional) that uses the native
+Fetch API. This is called internally to initialise a fetcher when one is not
+passed to `H5GroveProvider`.
+
+> This utility could be handy when testing, for instance to set up spies on the
+> returned `fetcher` function to make sure that it is called when you expect it
+> to be and with the right parameters.
+
+#### `createAxiosFetcher`
+
+Create a [`fetcher` function](#fetcher-fetcher-optional) from an
+[axios](https://axios-http.com/) instance. Note that you will need to install
+`axios` in your application.
+
+```tsx
+const fetcher = createAxiosFetcher(axios.create({ adapter: 'fetch' }));
+
+function MyApp() {
+  //...
+  return (
+    <H5GroveProvider url={URL} filepath={FILE} fetcher={fetcher}>
+      {/*...*/}
+    </H5GroveProvider>
+  );
+}
+```
+
+You can [configure](https://axios-http.com/docs/req_config) the axios instance
+as you see fit. For instance, you can specify authentication headers, or set up
+[request interceptors](https://axios-http.com/docs/interceptors) to refresh
+tokens and retry requests automatically. However, do note that some options have
+no effect, notably `url`/`baseUrl`, `responseType`, `signal` and
+`onDownloadProgress`.
 
 #### `getFeedbackMailto`
 

@@ -28,8 +28,8 @@ export interface FetchStore<Input, Result> {
 }
 
 interface ProgressState<Input> {
-  ongoing: Map<Input, number>;
-  setProgress: (input: Input, value: number) => void;
+  ongoing: Map<Input, number | undefined>;
+  setProgress: (input: Input, value?: number) => void;
   clearProgress: (input: Input) => void;
 }
 
@@ -152,7 +152,7 @@ function createInstance<Input, Result>(
 
   promise = (async () => {
     try {
-      progressStore.getState().setProgress(input, 0);
+      progressStore.getState().setProgress(input);
       result = await fetchFunc(input, controller.signal, (value) => {
         progressStore.getState().setProgress(input, value);
       });

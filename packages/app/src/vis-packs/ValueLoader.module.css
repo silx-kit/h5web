@@ -24,6 +24,18 @@
   border: none;
   border-radius: 0.75rem;
   overflow: hidden;
+  appearance: none;
+
+  --indeterminate-bg: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
 }
 
 .progress::-webkit-progress-value {
@@ -32,6 +44,25 @@
 
 .progress::-moz-progress-bar {
   background-color: var(--primary);
+}
+
+.progress:indeterminate::-webkit-progress-value {
+  width: 100% !important;
+  background-image: var(--indeterminate-bg);
+  background-size: 3rem 3rem;
+  animation: stripes 1s linear infinite;
+}
+
+.progress:indeterminate::-moz-progress-bar {
+  background-image: var(--indeterminate-bg);
+  background-size: 3rem 3rem;
+  animation: stripes 1s linear infinite;
+}
+
+@keyframes stripes {
+  to {
+    background-position: 3rem 0;
+  }
 }
 
 .loader > p {

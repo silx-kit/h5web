@@ -22,9 +22,7 @@ beforeAll(async () => {
 });
 
 test.skipIf(SKIP)('test file matches snapshot', async () => {
-  const api = new H5GroveApi(H5GROVE_URL, TEST_FILE, {
-    params: { file: TEST_FILE },
-  });
+  const api = new H5GroveApi(H5GROVE_URL, TEST_FILE);
 
   const root = await api.getEntity('/');
   assertGroup(root);

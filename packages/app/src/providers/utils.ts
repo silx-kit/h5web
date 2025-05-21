@@ -112,6 +112,36 @@ export function createAxiosProgressHandler(
   );
 }
 
+export function createBasicFetcher(): Fetcher {
+  return async (
+    url: string,
+    params: Record<string, string>,
+    opts: FetcherOptions = {},
+  ): Promise<ArrayBuffer> => {
+    const { abortSignal } = opts;
+    const queryParams = new URLSearchParams(params);
+
+    try {
+      const response = await fetch(`${url}?${queryParams.toString()}`, {
+        signal: abortSignal,
+      });
+
+      const buffer = await response.arrayBuffer();
+      if (response.ok) {
+        return buffer;
+      }
+
+      throw new FetcherError(response.status, response.statusText, buffer);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        throw new AbortError(abortSignal, error);
+      }
+
+      throw error;
+    }
+  };
+}
+
 export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
   return async (
     url: string,
