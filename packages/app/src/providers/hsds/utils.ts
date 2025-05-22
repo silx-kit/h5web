@@ -172,3 +172,22 @@ export function flattenValue(
   const dims = slicedDims || dataset.shape;
   return value.flat(dims.length - 1);
 }
+
+export function toExtendedJSON(buffer: ArrayBuffer): unknown {
+  const str = new TextDecoder().decode(buffer);
+
+  try {
+    return JSON.parse(str);
+  } catch {
+    try {
+      // Convert Infinity/NaN to JSON strings and try again
+      // https://github.com/HDFGroup/hsds/issues/87
+      return JSON.parse(str.replaceAll(/-?Infinity|NaN/gu, '"$&"'));
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        throw new TypeError('Expected valid JSON', { cause: error });
+      }
+      throw error;
+    }
+  }
+}
