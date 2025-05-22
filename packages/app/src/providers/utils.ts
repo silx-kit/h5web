@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import {
   isBoolType,
   isEnumType,
@@ -11,6 +10,7 @@ import {
   type DType,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
+import { AbortError } from '@h5web/shared/react-suspense-fetch';
 import {
   type BigIntTypedArrayConstructor,
   type TypedArrayConstructor,
@@ -124,8 +124,8 @@ export function createBasicFetcher(
 
       throw new FetcherError(response.status, response.statusText, buffer);
     } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') {
-        throw new AbortError(abortSignal, error);
+      if (abortSignal?.aborted && abortSignal.reason instanceof AbortError) {
+        throw abortSignal.reason;
       }
 
       throw error;
@@ -157,8 +157,8 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
 
       return data as ArrayBuffer;
     } catch (error) {
-      if (error instanceof Error && error.name === 'CanceledError') {
-        throw new AbortError(abortSignal, error);
+      if (abortSignal?.aborted && abortSignal.reason instanceof AbortError) {
+        throw abortSignal.reason;
       }
 
       if (isAxiosError(error) && error.response) {
@@ -180,16 +180,6 @@ export function buildBasicAuthHeader(
   password: string,
 ): Record<string, string> {
   return { Authorization: `Basic ${btoa(`${username}:${password}`)}` };
-}
-
-export class AbortError extends Error {
-  public constructor(abortSignal?: AbortSignal, cause?: unknown) {
-    const reason =
-      typeof abortSignal?.reason === 'string' ? abortSignal.reason : undefined;
-
-    super(`Request aborted: ${reason}`, { cause });
-    this.name = 'AbortError';
-  }
 }
 
 export class FetcherError extends Error {
