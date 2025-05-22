@@ -192,16 +192,13 @@ options, and is expected to return a promise that resolves to an `ArrayBuffer`.
 
 If `fetcher` is not provided, `H5GroveProvider` creates one based on the native
 Fetch API using
-[`createBasicFetcher`](#createbasicfetcher-fetchopts-omitrequestinit-signal--fetcher).
-While this fetcher is sufficient to start with, it has significant limitations
-(e.g. it doesn't track requests progress, doesn't pass authentication headers,
-etc.) For better user experience and security, we recommend using a fetcher that
-relies on a fetching library like [axios](https://axios-http.com/) (cf.
-[`createAxiosFetcher`](#createaxiosfetcher-axiosinstance-axiosinstance--fetcher)),
-or at least initialising your own basic fetcher with authentication headers.
+[`createBasicFetcher`](#createbasicfetcher-fetchopts-omitrequestinit-signal--fetcher)
+but without any form of authentication. In production, we recommend deploying a
+secure h5grove back-end and initialising a fetcher that sends the expected
+authentication headers.
 
 > If you have to initialise the `fetcher` during render, make sure to memoise it
-> so the fetching cache doesn't get cleared if/when your app re-renders.
+> so the fetching cache isn't cleared every time your app re-renders.
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
@@ -348,14 +345,11 @@ const fetcher = createBasicFetcher({
 });
 ```
 
-Note, however, that this authentication mechanism is not secure; do not use it
-to grant access to private data. The basic fetcher also has the limitation that
-it doesn't track requests progress, so you may want to use a fetcher that relies
-on a fetching library like [axios](https://axios-http.com/) (cf.
-[`createAxiosFetcher`](#createaxiosfetcher-axiosinstance-axiosinstance--fetcher)).
+However, beware that this authentication mechanism is not secure — do not use it
+to grant access to private data.
 
 > If you have to initialise the `fetcher` during render, make sure to memoise it
-> so the fetching cache doesn't get cleared if/when your app re-renders.
+> so the fetching cache isn't cleared every time your app re-renders.
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
@@ -390,10 +384,10 @@ See
 
 #### `createBasicFetcher: (fetchOpts?: Omit<RequestInit, 'signal'>) => Fetcher`
 
-Create a [`fetcher` function](#fetcher-fetcher-optional) that uses the native
+Create a [`fetcher` function](#fetcher-fetcher-optional) based on the native
 Fetch API. Accepts an optional
 [`RequestInit`](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit)
-object to configure requests:
+object to configure requests, for instance with an `Authentication` header:
 
 ```ts
 const fetcher = createBasicFetcher({
