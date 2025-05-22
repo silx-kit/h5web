@@ -180,6 +180,7 @@ function isAxiosError(error: unknown): error is AxiosError {
   return error instanceof Error && 'isAxiosError' in error;
 }
 
+// Inspired by https://github.com/elbywan/wretch/blob/master/src/addons/progress.ts
 function trackProgress(response: Response, onProgress?: OnProgress): Response {
   const { body } = response;
 
