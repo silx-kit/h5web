@@ -100,7 +100,9 @@ export function toJSON(buffer: ArrayBuffer): unknown {
   }
 }
 
-export function createBasicFetcher(): Fetcher {
+export function createBasicFetcher(
+  fetchOpts: Omit<RequestInit, 'signal'> = {},
+): Fetcher {
   return async (
     url: string,
     params: Record<string, string>,
@@ -111,6 +113,7 @@ export function createBasicFetcher(): Fetcher {
 
     try {
       const response = await fetch(`${url}?${queryParams.toString()}`, {
+        ...fetchOpts,
         signal: abortSignal,
       });
 
@@ -165,6 +168,13 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
       throw error;
     }
   };
+}
+
+export function buildBasicAuthHeader(
+  username: string,
+  password: string,
+): Record<string, string> {
+  return { Authorization: `Basic ${btoa(`${username}:${password}`)}` };
 }
 
 export class AbortError extends Error {
