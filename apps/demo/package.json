@@ -15,7 +15,6 @@
   "dependencies": {
     "@h5web/app": "workspace:*",
     "@h5web/h5wasm": "workspace:*",
-    "axios": "1.8.4",
     "axios-hooks": "5.1.1",
     "h5wasm-plugins": "0.0.3",
     "normalize.css": "8.0.1",
