@@ -1,7 +1,7 @@
+import { AbortError } from '@h5web/shared/react-suspense-fetch';
 import { type FallbackProps } from 'react-error-boundary';
 
 import styles from './App.module.css';
-import { AbortError } from './providers/utils';
 
 interface Props extends FallbackProps {
   className?: string;

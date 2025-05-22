@@ -17,7 +17,6 @@ import { getChildEntity } from '@h5web/shared/hdf5-utils';
 import ndarray from 'ndarray';
 
 import { applyMapping } from '../../vis-packs/core/utils';
-import { AbortError } from '../utils';
 
 export const SLOW_TIMEOUT = 3000;
 
@@ -82,20 +81,20 @@ export function getChildrenPaths(
 }
 
 export async function cancellableDelay(
-  abortSignal?: AbortSignal,
+  abortSignal: AbortSignal,
 ): Promise<void> {
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
-      abortSignal?.removeEventListener('abort', handleAbort);
+      abortSignal.removeEventListener('abort', handleAbort);
       resolve();
     }, SLOW_TIMEOUT);
 
     function handleAbort() {
       clearTimeout(timeout);
-      abortSignal?.removeEventListener('abort', handleAbort);
-      reject(new AbortError(abortSignal));
+      abortSignal.removeEventListener('abort', handleAbort);
+      reject(abortSignal.reason); // eslint-disable-line @typescript-eslint/prefer-promise-reject-errors
     }
 
-    abortSignal?.addEventListener('abort', handleAbort);
+    abortSignal.addEventListener('abort', handleAbort);
   });
 }
