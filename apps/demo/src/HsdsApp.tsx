@@ -1,10 +1,10 @@
 import {
   App,
   assertEnvVar,
-  createAxiosFetcher,
+  buildBasicAuthHeader,
+  createBasicFetcher,
   HsdsProvider,
 } from '@h5web/app';
-import axios from 'axios';
 import { useMemo } from 'react';
 import { useSearchParams } from 'wouter';
 
@@ -27,12 +27,9 @@ function HsdsApp() {
   const filepath = `${SUBDOMAIN}${searchParams.get('file') || FILEPATH}`;
 
   const fetcher = useMemo(() => {
-    return createAxiosFetcher(
-      axios.create({
-        adapter: 'fetch',
-        auth: { username: USERNAME, password: PASSWORD },
-      }),
-    );
+    return createBasicFetcher({
+      headers: buildBasicAuthHeader(USERNAME, PASSWORD),
+    });
   }, []);
 
   return (

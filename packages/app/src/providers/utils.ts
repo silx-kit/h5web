@@ -10,7 +10,10 @@ import {
   type DType,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { AbortError } from '@h5web/shared/react-suspense-fetch';
+import {
+  AbortError,
+  type OnProgress,
+} from '@h5web/shared/react-suspense-fetch';
 import {
   type BigIntTypedArrayConstructor,
   type TypedArrayConstructor,
@@ -108,7 +111,7 @@ export function createBasicFetcher(
     params: Record<string, string>,
     opts: FetcherOptions = {},
   ): Promise<ArrayBuffer> => {
-    const { abortSignal } = opts;
+    const { abortSignal, onProgress } = opts;
     const queryParams = new URLSearchParams(params);
 
     try {
@@ -117,12 +120,14 @@ export function createBasicFetcher(
         signal: abortSignal,
       });
 
-      const buffer = await response.arrayBuffer();
-      if (response.ok) {
+      const tracked = trackProgress(response, onProgress);
+      const buffer = await tracked.arrayBuffer();
+
+      if (tracked.ok) {
         return buffer;
       }
 
-      throw new FetcherError(response.status, response.statusText, buffer);
+      throw new FetcherError(tracked.status, tracked.statusText, buffer);
     } catch (error) {
       if (abortSignal?.aborted && abortSignal.reason instanceof AbortError) {
         throw abortSignal.reason;
@@ -173,6 +178,39 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
 
 function isAxiosError(error: unknown): error is AxiosError {
   return error instanceof Error && 'isAxiosError' in error;
+}
+
+// Inspired by https://github.com/elbywan/wretch/blob/master/src/addons/progress.ts
+function trackProgress(response: Response, onProgress?: OnProgress): Response {
+  const { body } = response;
+
+  if (!body || !onProgress) {
+    return response;
+  }
+
+  const contentLength = response.headers.get('content-length');
+  const total = contentLength ? Number.parseInt(contentLength, 10) : null;
+
+  if (total === null || Number.isNaN(total)) {
+    return response;
+  }
+
+  let loaded = 0;
+
+  try {
+    const transform = new TransformStream<Uint8Array>({
+      transform(chunk, controller) {
+        loaded += chunk.length;
+
+        onProgress(loaded / Math.max(loaded, total));
+        controller.enqueue(chunk);
+      },
+    });
+
+    return new Response(body.pipeThrough(transform), response);
+  } catch {
+    return response;
+  }
 }
 
 export function buildBasicAuthHeader(

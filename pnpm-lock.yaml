@@ -53,9 +53,6 @@ importers:
       '@h5web/h5wasm':
         specifier: workspace:*
         version: link:../../packages/h5wasm
-      axios:
-        specifier: 1.8.4
-        version: 1.8.4
       axios-hooks:
         specifier: 5.1.1
         version: 5.1.1(axios@1.8.4)(react@18.3.1)

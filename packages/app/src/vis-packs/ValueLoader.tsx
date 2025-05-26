@@ -19,7 +19,7 @@ function ValueLoader(props: Props) {
   useTimeoutEffect(toggleReady, 100);
 
   // Track progress
-  const { ongoing } = useStore(valuesStore.progressStore);
+  const ongoing = useStore(valuesStore.progressStore, (state) => state.ongoing);
 
   return (
     <div className={styles.loader} data-testid="LoadingDatasetValue">
