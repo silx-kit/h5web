@@ -1,4 +1,4 @@
-import { createStore, type StoreApi } from 'zustand/vanilla';
+import { createStore, type StoreApi } from 'zustand';
 
 type FetchFunc<Input, Result> = (
   input: Input,
