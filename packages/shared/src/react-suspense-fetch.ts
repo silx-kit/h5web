@@ -176,7 +176,14 @@ function createInstance<Input, Result>(
     },
     isError: () => error !== undefined,
     abort: (reason?: string) => {
-      controller.abort(reason);
+      controller.abort(new AbortError(reason));
     },
   };
+}
+
+export class AbortError extends Error {
+  public constructor(reason?: string) {
+    super(reason);
+    this.name = 'AbortError';
+  }
 }

@@ -67,7 +67,7 @@ export class MockApi extends DataProviderApi {
       throw new Error('error');
     }
 
-    if (dataset.name.startsWith('slow')) {
+    if (dataset.name.startsWith('slow') && abortSignal) {
       await cancellableDelay(abortSignal);
     }
 
