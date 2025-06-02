@@ -1,6 +1,6 @@
 {
   "name": "@h5web/h5wasm",
-  "version": "14.0.1",
+  "version": "15.0.0-beta.0",
   "description": "H5Web providers based on H5Wasm",
   "author": "European Synchrotron Radiation Facility",
   "license": "MIT",
