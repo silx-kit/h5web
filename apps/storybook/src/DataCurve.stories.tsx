@@ -32,6 +32,7 @@ const meta = {
     errors: oneD.data.map(() => 10),
     curveType: CurveType.LineOnly,
     color: 'blue',
+    materialProps: {},
     visible: true,
   },
   argTypes: {
@@ -39,6 +40,10 @@ const meta = {
     ordinates: { control: false },
     errors: { control: false },
     color: { control: { type: 'color' } },
+    materialProps: {
+      control: 'object',
+      description: 'Properties passed to the underlying Three.js material.',
+    },
   },
 } satisfies Meta<typeof DataCurve>;
 

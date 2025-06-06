@@ -1,5 +1,8 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
-import { type ThreeEvent } from '@react-three/fiber';
+import {
+  type LineBasicMaterialProps,
+  type ThreeEvent,
+} from '@react-three/fiber';
 
 import ErrorBars from './ErrorBars';
 import Glyphs from './Glyphs';
@@ -16,6 +19,7 @@ interface Props {
   curveType?: CurveType;
   glyphType?: GlyphType;
   glyphSize?: number;
+  materialProps?: LineBasicMaterialProps;
   visible?: boolean;
   onLineClick?: (index: number, event: ThreeEvent<MouseEvent>) => void;
   onLineEnter?: (index: number, event: ThreeEvent<PointerEvent>) => void;
@@ -36,6 +40,7 @@ function DataCurve(props: Props) {
     curveType = CurveType.LineOnly,
     glyphType = GlyphType.Cross,
     glyphSize = 6,
+    materialProps = {},
     visible = true,
     onLineClick,
     onLineEnter,
@@ -53,6 +58,7 @@ function DataCurve(props: Props) {
         ordinates={ordinates}
         color={color}
         ignoreValue={ignoreValue}
+        materialProps={materialProps}
         visible={curveType !== CurveType.GlyphsOnly && visible}
         onClick={useEventHandler(onLineClick)}
         onPointerEnter={useEventHandler(onLineEnter)}
