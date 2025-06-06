@@ -33,6 +33,7 @@ const meta = {
     curveType: CurveType.LineOnly,
     color: 'blue',
     visible: true,
+    lineWidth: 1,
   },
   argTypes: {
     abscissas: { control: false },

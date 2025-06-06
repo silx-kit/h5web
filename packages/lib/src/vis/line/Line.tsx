@@ -8,7 +8,6 @@ import { hasR3FEventHandlers } from '../utils';
 import LineGeometry from './lineGeometry';
 
 // Alias Three's `Line` to `Line_` to avoid conflict with SVG `line` in JSX
-// https://docs.pmnd.rs/react-three-fiber/tutorials/typescript#extending-threeelements
 class Line_ extends R3FLine {}
 extend({ Line_ });
 declare module '@react-three/fiber' {
@@ -21,6 +20,7 @@ interface Props extends Object3DNode<R3FLine, typeof R3FLine> {
   abscissas: NumArray;
   ordinates: NumArray;
   color: string;
+  lineWidth?: number;
   visible?: boolean;
   ignoreValue?: IgnoreValue;
 }
@@ -30,6 +30,7 @@ function Line(props: Props) {
     abscissas,
     ordinates,
     color,
+    lineWidth = 1,
     visible = true,
     ignoreValue,
     ...lineProps
@@ -55,7 +56,7 @@ function Line(props: Props) {
 
   return (
     <line_ geometry={geometry} visible={visible} {...lineProps}>
-      <lineBasicMaterial color={color} />
+      <lineBasicMaterial color={color} linewidth={lineWidth} />
     </line_>
   );
 }

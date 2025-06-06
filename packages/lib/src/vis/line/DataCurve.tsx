@@ -14,6 +14,7 @@ interface Props {
   showErrors?: boolean;
   color: string;
   curveType?: CurveType;
+  lineWidth?: number;
   glyphType?: GlyphType;
   glyphSize?: number;
   visible?: boolean;
@@ -34,6 +35,7 @@ function DataCurve(props: Props) {
     showErrors,
     color,
     curveType = CurveType.LineOnly,
+    lineWidth = 1,
     glyphType = GlyphType.Cross,
     glyphSize = 6,
     visible = true,
@@ -52,6 +54,7 @@ function DataCurve(props: Props) {
         abscissas={abscissas}
         ordinates={ordinates}
         color={color}
+        lineWidth={lineWidth}
         ignoreValue={ignoreValue}
         visible={curveType !== CurveType.GlyphsOnly && visible}
         onClick={useEventHandler(onLineClick)}
