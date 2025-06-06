@@ -1,22 +1,24 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
-import { extend, type Object3DNode } from '@react-three/fiber';
-import { Line as R3FLine } from 'three';
+import { extend, type Object3DNode, useThree } from '@react-three/fiber';
+import { Vector2 } from 'three';
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineGeometry as R3FLineGeometry } from 'three/addons/lines/LineGeometry.js';
 
 import { useGeometry } from '../hooks';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { hasR3FEventHandlers } from '../utils';
 import LineGeometry from './lineGeometry';
 
-// Alias Three's `Line` to `Line_` to avoid conflict with SVG `line` in JSX
-class Line_ extends R3FLine {}
-extend({ Line_ });
+extend({ Line2 });
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    line_: Object3DNode<R3FLine, typeof R3FLine>;
+    line2: Object3DNode<Line2, typeof Line2>;
+    lineMaterial: Object3DNode<LineMaterial, typeof LineMaterial>;
   }
 }
 
-interface Props extends Object3DNode<R3FLine, typeof R3FLine> {
+interface Props extends Object3DNode<Line2, typeof Line2> {
   abscissas: NumArray;
   ordinates: NumArray;
   color: string;
@@ -37,6 +39,7 @@ function Line(props: Props) {
   } = props;
 
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
+  const { size } = useThree();
 
   const geometry = useGeometry(
     LineGeometry,
@@ -54,10 +57,26 @@ function Line(props: Props) {
     },
   );
 
+  // Create Line2 geometry from the same data
+  const line2Geometry = new R3FLineGeometry();
+  const positions = new Float32Array(geometry.getAttribute('position').array);
+  line2Geometry.setPositions(positions);
+
+  const line2Material = new LineMaterial({
+    color: color,
+    linewidth: lineWidth,
+    resolution: new Vector2(size.width, size.height),
+  });
+
   return (
-    <line_ geometry={geometry} visible={visible} {...lineProps}>
-      <lineBasicMaterial color={color} linewidth={lineWidth} />
-    </line_>
+    <>
+      <line2
+        geometry={line2Geometry}
+        material={line2Material}
+        visible={visible}
+        {...lineProps}
+      />
+    </>
   );
 }
 
