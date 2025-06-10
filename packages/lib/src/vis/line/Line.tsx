@@ -1,5 +1,9 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
-import { extend, type Object3DNode } from '@react-three/fiber';
+import {
+  extend,
+  type LineBasicMaterialProps,
+  type Object3DNode,
+} from '@react-three/fiber';
 import { Line as R3FLine } from 'three';
 
 import { useGeometry } from '../hooks';
@@ -21,6 +25,7 @@ interface Props extends Object3DNode<R3FLine, typeof R3FLine> {
   abscissas: NumArray;
   ordinates: NumArray;
   color: string;
+  materialProps?: LineBasicMaterialProps;
   visible?: boolean;
   ignoreValue?: IgnoreValue;
 }
@@ -30,6 +35,7 @@ function Line(props: Props) {
     abscissas,
     ordinates,
     color,
+    materialProps = {},
     visible = true,
     ignoreValue,
     ...lineProps
@@ -55,7 +61,7 @@ function Line(props: Props) {
 
   return (
     <line_ geometry={geometry} visible={visible} {...lineProps}>
-      <lineBasicMaterial color={color} />
+      <lineBasicMaterial color={color} {...materialProps} />
     </line_>
   );
 }
