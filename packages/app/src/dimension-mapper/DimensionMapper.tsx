@@ -6,6 +6,7 @@ import { type DimensionMapping } from './models';
 import SlicingSlider from './SlicingSlider';
 
 interface Props {
+  className: string;
   dims: number[];
   axisLabels?: AxisMapping<string>;
   dimMapping: DimensionMapping;
@@ -14,7 +15,7 @@ interface Props {
 }
 
 function DimensionMapper(props: Props) {
-  const { dims, axisLabels, dimMapping, isCached, onChange } = props;
+  const { className, dims, axisLabels, dimMapping, isCached, onChange } = props;
   const mappableDims = dims.slice(0, dimMapping.length);
 
   if (dimMapping.length === 0) {
@@ -22,7 +23,7 @@ function DimensionMapper(props: Props) {
   }
 
   return (
-    <div className={styles.mapper}>
+    <div className={`${styles.mapper} ${className}`}>
       <div className={styles.axisMapperWrapper}>
         <div className={styles.dims}>
           <span className={styles.dimsLabel}>

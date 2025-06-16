@@ -3,6 +3,7 @@ import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/store';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useComplexLineConfig } from '../../core/complex/lineConfig';
 import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
 import { useLineConfig } from '../../core/line/config';
@@ -39,6 +40,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
   return (
     <>
       <DimensionMapper
+        className={visualizerStyles.dimMapper}
         dims={signalDims}
         axisLabels={axisLabels}
         dimMapping={dimMapping}

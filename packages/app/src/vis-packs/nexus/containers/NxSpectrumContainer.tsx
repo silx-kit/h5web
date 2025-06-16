@@ -3,6 +3,7 @@ import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/store';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useLineConfig } from '../../core/line/config';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import { getSliceSelection } from '../../core/utils';
@@ -44,6 +45,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
   return (
     <>
       <DimensionMapper
+        className={visualizerStyles.dimMapper}
         dims={signalDims}
         axisLabels={axisLabels}
         dimMapping={dimMapping}

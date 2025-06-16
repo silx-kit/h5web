@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/store';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useComplexConfig } from '../../core/complex/config';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
@@ -50,6 +51,7 @@ function NxComplexImageContainer(props: VisContainerProps) {
         />
       )}
       <DimensionMapper
+        className={visualizerStyles.dimMapper}
         dims={dims}
         axisLabels={axisLabels}
         dimMapping={dimMapping}

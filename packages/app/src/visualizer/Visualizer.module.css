@@ -28,6 +28,10 @@
   composes: fallback from global;
 }
 
+.dimMapper {
+  grid-area: dimMapper;
+}
+
 .vis {
   grid-area: vis;
 }
