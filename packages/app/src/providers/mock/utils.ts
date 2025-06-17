@@ -14,9 +14,8 @@ import {
   type ScalarValue,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
+import { createArrayFromView } from '@h5web/shared/vis-utils';
 import ndarray from 'ndarray';
-
-import { applyMapping } from '../../vis-packs/core/utils';
 
 export const SLOW_TIMEOUT = 3000;
 
@@ -53,12 +52,12 @@ export function sliceValue<T extends DType>(
 ): ScalarValue<T>[] {
   const { shape } = dataset;
   const dataArray = ndarray(value as ScalarValue<typeof dataset.type>[], shape);
-  const mappedArray = applyMapping(
-    dataArray,
-    selection.split(',').map((s) => (s === ':' ? s : Number.parseInt(s))),
-  );
 
-  return mappedArray.data;
+  const slicingState = selection
+    .split(',')
+    .map((s) => (s === ':' ? null : Number.parseInt(s)));
+
+  return createArrayFromView(dataArray.pick(...slicingState)).data;
 }
 
 export function getChildrenPaths(

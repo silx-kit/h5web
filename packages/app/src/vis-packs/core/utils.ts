@@ -9,11 +9,7 @@ import {
   DTypeClass,
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
-import {
-  type Axis,
-  type Domain,
-  type NumArray,
-} from '@h5web/shared/vis-models';
+import { type Domain, type NumArray } from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
 import ndarray, { type NdArray } from 'ndarray';
 
@@ -50,12 +46,12 @@ export function getBaseArray(
 
 export function applyMapping<T extends NdArray<ArrayValue> | undefined>(
   baseArray: T,
-  mapping: (number | Axis | ':')[],
+  mapping: DimensionMapping,
 ): T extends NdArray<ArrayValue> ? T : undefined;
 
 export function applyMapping(
   baseArray: NdArray<ArrayValue> | undefined,
-  mapping: (number | Axis | ':')[],
+  mapping: DimensionMapping,
 ): NdArray<ArrayValue> | undefined {
   if (!baseArray) {
     return undefined;
