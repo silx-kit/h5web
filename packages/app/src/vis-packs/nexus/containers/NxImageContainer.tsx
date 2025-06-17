@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/store';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { getSliceSelection } from '../../core/utils';
@@ -48,6 +49,7 @@ function NxImageContainer(props: VisContainerProps) {
         />
       )}
       <DimensionMapper
+        className={visualizerStyles.dimMapper}
         dims={dims}
         axisLabels={axisLabels}
         dimMapping={dimMapping}

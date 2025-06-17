@@ -7,6 +7,7 @@ import {
 import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useValuesInCache } from '../../../dimension-mapper/hooks';
 import { useDimMappingState } from '../../../dimension-mapper/store';
+import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { useLineConfig } from '../line/config';
@@ -31,6 +32,7 @@ function ComplexLineVisContainer(props: VisContainerProps) {
   return (
     <>
       <DimensionMapper
+        className={visualizerStyles.dimMapper}
         dims={dims}
         dimMapping={dimMapping}
         isCached={useValuesInCache(entity)}
