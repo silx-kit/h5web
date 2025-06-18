@@ -10,12 +10,13 @@ interface Props {
   dims: number[];
   axisLabels?: AxisMapping<string>;
   dimMapping: DimensionMapping;
-  isCached?: (dimMapping: DimensionMapping) => boolean;
+  canSliceFast?: (nextMapping: DimensionMapping) => boolean;
   onChange: (d: DimensionMapping) => void;
 }
 
 function DimensionMapper(props: Props) {
-  const { className, dims, axisLabels, dimMapping, isCached, onChange } = props;
+  const { className, dims, axisLabels, dimMapping, canSliceFast, onChange } =
+    props;
   const mappableDims = dims.slice(0, dimMapping.length);
 
   if (dimMapping.length === 0) {
@@ -59,11 +60,11 @@ function DimensionMapper(props: Props) {
               length={dims[index]}
               initialValue={val}
               isFastSlice={
-                isCached &&
+                canSliceFast &&
                 ((newVal) => {
                   const newMapping = [...dimMapping];
                   newMapping[index] = newVal;
-                  return isCached(newMapping);
+                  return canSliceFast(newMapping);
                 })
               }
               onChange={(newVal) => {

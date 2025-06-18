@@ -42,7 +42,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
         dims={signalDims}
         axisLabels={axisLabels}
         dimMapping={dimMapping}
-        isCached={useNxValuesCached(nxData)}
+        canSliceFast={useNxValuesCached(nxData)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping}>

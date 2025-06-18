@@ -34,7 +34,7 @@ function SurfaceVisContainer(props: VisContainerProps) {
         className={visualizerStyles.dimMapper}
         dims={dims}
         dimMapping={dimMapping}
-        isCached={useValuesInCache(entity)}
+        canSliceFast={useValuesInCache(entity)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
