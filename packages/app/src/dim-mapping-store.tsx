@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 
-import { areSameDims } from '../vis-packs/nexus/utils';
+import { areSameDims } from './vis-packs/nexus/utils';
 
 interface DimMappingState {
   dims: ArrayShape;

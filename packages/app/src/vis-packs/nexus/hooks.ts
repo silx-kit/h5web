@@ -5,7 +5,7 @@ import {
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
 
-import { useValuesInCache } from '../../dimension-mapper/hooks';
+import { useValuesInCache } from '../../hooks';
 import { useDataContext } from '../../providers/DataProvider';
 import { type DatasetDef, type NxData } from './models';
 import {

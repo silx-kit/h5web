@@ -1,7 +1,7 @@
 import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import { assertGroup, assertMinDims } from '@h5web/shared/guards';
 
-import { useDimMappingState } from '../../../dimension-mapper/store';
+import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useRgbConfig } from '../../core/rgb/config';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';

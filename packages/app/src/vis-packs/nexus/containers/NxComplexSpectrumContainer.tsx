@@ -1,7 +1,7 @@
 import { DimensionMapper, getSliceSelection, ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
 
-import { useDimMappingState } from '../../../dimension-mapper/store';
+import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useComplexLineConfig } from '../../core/complex/lineConfig';
 import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';

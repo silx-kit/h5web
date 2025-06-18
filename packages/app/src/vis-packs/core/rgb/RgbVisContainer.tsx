@@ -6,8 +6,8 @@ import {
   assertNumericType,
 } from '@h5web/shared/guards';
 
-import { useValuesInCache } from '../../../dimension-mapper/hooks';
-import { useDimMappingState } from '../../../dimension-mapper/store';
+import { useDimMappingState } from '../../../dim-mapping-store';
+import { useValuesInCache } from '../../../hooks';
 import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
