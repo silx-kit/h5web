@@ -1,4 +1,5 @@
 import {
+  type DimensionMapping,
   LineVis,
   useCombinedDomain,
   useDomain,
@@ -14,7 +15,6 @@ import {
 import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
-import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useToNumArrays } from '../hooks';
 import { type LineConfig } from '../line/config';

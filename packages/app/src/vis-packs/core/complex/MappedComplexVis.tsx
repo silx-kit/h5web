@@ -1,6 +1,8 @@
 import {
+  type DimensionMapping,
   HeatmapVis,
   useSafeDomain,
+  useSlicedDimsAndMapping,
   useValidDomainForScale,
   useVisDomain,
 } from '@h5web/lib';
@@ -14,15 +16,9 @@ import { ComplexVisType } from '@h5web/shared/vis-models';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
-import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type HeatmapConfig } from '../heatmap/config';
-import {
-  useBaseArray,
-  useMappedArray,
-  useSlicedDimsAndMapping,
-  useToNumArrays,
-} from '../hooks';
+import { useBaseArray, useMappedArray, useToNumArrays } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import ComplexToolbar from './ComplexToolbar';
 import { type ComplexConfig } from './config';

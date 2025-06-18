@@ -1,30 +1,20 @@
-import { type Axis } from '@h5web/shared/vis-models';
 import { useSyncedRef, useUnmountEffect } from '@react-hookz/web';
 import { type DependencyList, useEffect, useMemo, useRef } from 'react';
 
 import { type DimensionMapping } from './models';
+import { isAxis } from './utils';
 
-export function isAxis(elem: number | Axis): elem is Axis {
-  return typeof elem !== 'number';
-}
-
-export function initDimMapping(
+export function useSlicedDimsAndMapping(
   dims: number[],
-  axesCount: number,
-): DimensionMapping {
-  if (axesCount < 0 || axesCount > 2) {
-    throw new RangeError('Expected 0, 1 or 2 axes');
-  }
-
-  // Cap number of axes to number of dimensions
-  const safeAxesCount = Math.min(axesCount, dims.length);
-
-  return [
-    ...Array.from({ length: dims.length - safeAxesCount }, () => 0),
-    ...(safeAxesCount > 0
-      ? ['y' as const, 'x' as const].slice(-safeAxesCount)
-      : []),
-  ];
+  dimMapping: DimensionMapping,
+): [number[], DimensionMapping] {
+  return useMemo(
+    () => [
+      dims.filter((_, i) => isAxis(dimMapping[i])),
+      dimMapping.filter(isAxis),
+    ],
+    [dimMapping, dims],
+  );
 }
 
 // Debounced callback with a delay that can be adjusted on every invocation

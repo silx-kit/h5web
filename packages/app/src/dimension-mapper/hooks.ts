@@ -1,3 +1,4 @@
+import { type DimensionMapping, getSliceSelection } from '@h5web/lib';
 import {
   type ArrayShape,
   type Dataset,
@@ -5,8 +6,6 @@ import {
 } from '@h5web/shared/hdf5-models';
 
 import { useDataContext } from '../providers/DataProvider';
-import { getSliceSelection } from '../vis-packs/core/utils';
-import { type DimensionMapping } from './models';
 
 export function useValuesInCache(
   ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]

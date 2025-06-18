@@ -1,4 +1,11 @@
-import { SurfaceVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
+import {
+  type DimensionMapping,
+  SurfaceVis,
+  useDomain,
+  useSafeDomain,
+  useSlicedDimsAndMapping,
+  useVisDomain,
+} from '@h5web/lib';
 import {
   type ArrayShape,
   type ArrayValue,
@@ -7,13 +14,8 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
-import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import {
-  useMappedArray,
-  useSlicedDimsAndMapping,
-  useToNumArray,
-} from '../hooks';
+import { useMappedArray, useToNumArray } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import { type SurfaceConfig } from './config';
 import SurfaceToolbar from './SurfaceToolbar';

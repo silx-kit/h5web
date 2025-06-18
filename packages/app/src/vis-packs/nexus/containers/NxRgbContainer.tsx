@@ -1,11 +1,10 @@
+import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import { assertGroup, assertMinDims } from '@h5web/shared/guards';
 
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useRgbConfig } from '../../core/rgb/config';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
-import { getSliceSelection } from '../../core/utils';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';

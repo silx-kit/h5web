@@ -1,3 +1,4 @@
+import { type DimensionMapping } from '@h5web/lib';
 import { createMemo } from '@h5web/shared/createMemo';
 import { isDefined } from '@h5web/shared/guards';
 import {
@@ -16,8 +17,6 @@ import { castArray } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
-import { type DimensionMapping } from '../../dimension-mapper/models';
-import { isAxis } from '../../dimension-mapper/utils';
 import { useDataContext } from '../../providers/DataProvider';
 import {
   bigIntTypedArrayFromDType,
@@ -94,19 +93,6 @@ export function useMappedArrays(
   return useMemo(
     () => baseArrays.map((ndArr) => applyMapping(ndArr, mapping)),
     [baseArrays, mapping],
-  );
-}
-
-export function useSlicedDimsAndMapping(
-  dims: number[],
-  dimMapping: DimensionMapping,
-): [number[], DimensionMapping] {
-  return useMemo(
-    () => [
-      dims.filter((_, i) => isAxis(dimMapping[i])),
-      dimMapping.filter(isAxis),
-    ],
-    [dimMapping, dims],
   );
 }
 

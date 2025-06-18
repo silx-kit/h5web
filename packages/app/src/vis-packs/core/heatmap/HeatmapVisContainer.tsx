@@ -1,3 +1,4 @@
+import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import {
   assertArrayShape,
   assertDataset,
@@ -5,14 +6,12 @@ import {
   assertNumericLikeType,
 } from '@h5web/shared/guards';
 
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useValuesInCache } from '../../../dimension-mapper/hooks';
 import { useDimMappingState } from '../../../dimension-mapper/store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { useIgnoreFillValue } from '../hooks';
-import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
 import { useHeatmapConfig } from './config';
 import MappedHeatmapVis from './MappedHeatmapVis';

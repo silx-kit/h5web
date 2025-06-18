@@ -1,12 +1,10 @@
-import { ScaleType } from '@h5web/lib';
+import { DimensionMapper, getSliceSelection, ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
 
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useLineConfig } from '../../core/line/config';
 import MappedLineVis from '../../core/line/MappedLineVis';
-import { getSliceSelection } from '../../core/utils';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericLikeNxData } from '../guards';

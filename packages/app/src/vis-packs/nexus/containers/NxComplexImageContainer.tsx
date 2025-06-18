@@ -1,13 +1,12 @@
+import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import { assertGroup, assertMinDims } from '@h5web/shared/guards';
 import { useState } from 'react';
 
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
 import { useDimMappingState } from '../../../dimension-mapper/store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useComplexConfig } from '../../core/complex/config';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
-import { getSliceSelection } from '../../core/utils';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertComplexNxData } from '../guards';

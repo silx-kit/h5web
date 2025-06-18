@@ -1,4 +1,8 @@
-import { RgbVis } from '@h5web/lib';
+import {
+  type DimensionMapping,
+  RgbVis,
+  useSlicedDimsAndMapping,
+} from '@h5web/lib';
 import {
   type ArrayShape,
   type ArrayValue,
@@ -8,14 +12,8 @@ import {
 import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
-import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import {
-  useMappedArray,
-  useSlicedDimsAndMapping,
-  useToNumArray,
-  useToNumArrays,
-} from '../hooks';
+import { useMappedArray, useToNumArray, useToNumArrays } from '../hooks';
 import { type RgbVisConfig } from './config';
 import RgbToolbar from './RgbToolbar';
 
