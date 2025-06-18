@@ -56,6 +56,12 @@
   --h5w-histogram--color: var(--secondary-dark);
   --h5w-histogram-marker--color: var(--secondary-darker);
   --h5w-interactionHelp-shortcut--bgColor: var(--primary-light);
+  --h5w-dimMapper--bgColor: var(--primary-light-bg);
+  --h5w-slicingSlider-bounds--color: var(--secondary-darker);
+  --h5w-slicingSlider-track--color: var(--secondary-dark);
+  --h5w-slicingSlider-thumb--borderColor: var(--secondary);
+  --h5w-slicingSlider-thumb--bgColor: var(--primary-bg);
+  --h5w-slicingSlider-mark--bgColor: var(--primary-bg);
 
   --h5w-line--color: darkblue;
   --h5w-line--colorAux: orangered, forestgreen, red, mediumorchid, olive;
