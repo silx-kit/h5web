@@ -1,12 +1,12 @@
 import { type AxisMapping } from '@h5web/shared/nexus-models';
+import { type HTMLAttributes } from 'react';
 
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
 import { type DimensionMapping } from './models';
 import SlicingSlider from './SlicingSlider';
 
-interface Props {
-  className: string;
+interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   dims: number[];
   axisLabels?: AxisMapping<string>;
   dimMapping: DimensionMapping;
@@ -15,8 +15,15 @@ interface Props {
 }
 
 function DimensionMapper(props: Props) {
-  const { className, dims, axisLabels, dimMapping, canSliceFast, onChange } =
-    props;
+  const {
+    className,
+    dims,
+    axisLabels,
+    dimMapping,
+    canSliceFast,
+    onChange,
+    ...htmlProps
+  } = props;
   const mappableDims = dims.slice(0, dimMapping.length);
 
   if (dimMapping.length === 0) {
@@ -24,7 +31,7 @@ function DimensionMapper(props: Props) {
   }
 
   return (
-    <div className={`${styles.mapper} ${className}`}>
+    <div className={`${styles.mapper} ${className}`} {...htmlProps}>
       <div className={styles.axisMapperWrapper}>
         <div className={styles.dims}>
           <span className={styles.dimsLabel}>
