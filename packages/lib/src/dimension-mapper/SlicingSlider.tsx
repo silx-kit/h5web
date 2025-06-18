@@ -70,7 +70,7 @@ function SlicingSlider(props: Props) {
           }}
           renderThumb={({ key, ...thumbProps }, state) => (
             <div key={key} {...thumbProps} className={styles.thumb}>
-              {state.valueNow}
+              <span className={styles.thumbValue}>{state.valueNow}</span>
             </div>
           )}
           renderTrack={({ key }, { index }) =>
