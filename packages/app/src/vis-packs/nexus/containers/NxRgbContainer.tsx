@@ -37,7 +37,7 @@ function NxRgbContainer(props: VisContainerProps) {
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={dims}
-        axisLabels={axisLabels}
+        dimHints={axisLabels}
         dimMapping={dimMapping}
         canSliceFast={useNxValuesCached(nxData)}
         onChange={setDimMapping}

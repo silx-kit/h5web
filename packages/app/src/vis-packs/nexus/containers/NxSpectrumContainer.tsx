@@ -45,7 +45,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={signalDims}
-        axisLabels={axisLabels}
+        dimHints={axisLabels}
         dimMapping={dimMapping}
         canSliceFast={useNxValuesCached(nxData)}
         onChange={setDimMapping}

@@ -7,13 +7,13 @@ import { type DimensionMapping } from './models';
 
 interface Props {
   axis: Axis;
-  axisLabels: AxisMapping<string> | undefined;
+  dimHints: AxisMapping<string> | undefined;
   dimMapping: DimensionMapping;
   onChange: (mapperState: DimensionMapping) => void;
 }
 
 function AxisMapper(props: Props) {
-  const { axis, axisLabels, dimMapping, onChange } = props;
+  const { axis, dimHints, dimMapping, onChange } = props;
   const selectedDim = dimMapping.indexOf(axis);
 
   if (selectedDim === -1) {
@@ -46,7 +46,7 @@ function AxisMapper(props: Props) {
             key={i} // eslint-disable-line react/no-array-index-key
             label={`D${i}`}
             value={i.toString()}
-            hint={axisLabels?.[i]}
+            hint={dimHints?.[i]}
           />
         ))}
       </ToggleGroup>

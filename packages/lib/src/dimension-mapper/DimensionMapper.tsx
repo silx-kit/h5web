@@ -8,7 +8,7 @@ import SlicingSlider from './SlicingSlider';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   dims: number[];
-  axisLabels?: AxisMapping<string>;
+  dimHints?: AxisMapping<string>;
   dimMapping: DimensionMapping;
   canSliceFast?: (nextMapping: DimensionMapping) => boolean;
   onChange: (d: DimensionMapping) => void;
@@ -18,7 +18,7 @@ function DimensionMapper(props: Props) {
   const {
     className,
     dims,
-    axisLabels,
+    dimHints,
     dimMapping,
     canSliceFast,
     onChange,
@@ -47,13 +47,13 @@ function DimensionMapper(props: Props) {
         </div>
         <AxisMapper
           axis="x"
-          axisLabels={axisLabels}
+          dimHints={dimHints}
           dimMapping={dimMapping}
           onChange={onChange}
         />
         <AxisMapper
           axis="y"
-          axisLabels={axisLabels}
+          dimHints={dimHints}
           dimMapping={dimMapping}
           onChange={onChange}
         />
