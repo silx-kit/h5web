@@ -83,8 +83,8 @@ export function useValuesInCache(
   ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]
 ): (dimMapping: DimensionMapping) => boolean {
   const { valuesStore } = useDataContext();
-  return (dimMapping) => {
-    const selection = getSliceSelection(dimMapping);
+  return (nextMapping) => {
+    const selection = getSliceSelection(nextMapping);
     return datasets.every(
       (dataset) => !dataset || valuesStore.has({ dataset, selection }),
     );

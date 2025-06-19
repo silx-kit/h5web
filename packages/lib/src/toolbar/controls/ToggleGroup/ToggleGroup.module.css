@@ -5,7 +5,7 @@
 
 .btn {
   composes: btn from '../../utils.module.css';
-  padding: 0;
+  padding: 0 !important; /* style ordering issue in Storybook */
 }
 
 .btnLike {

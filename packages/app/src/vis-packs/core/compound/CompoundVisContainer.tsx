@@ -34,7 +34,7 @@ function CompoundVisContainer(props: VisContainerProps) {
         className={visualizerStyles.dimMapper}
         dims={dims}
         dimMapping={dimMapping}
-        isCached={useValuesInCache(entity)}
+        canSliceFast={useValuesInCache(entity)}
         onChange={setDimMapping}
       />
       <VisBoundary isSlice={selection !== undefined}>

@@ -1,21 +1,29 @@
 import { type AxisMapping } from '@h5web/shared/nexus-models';
+import { type HTMLAttributes } from 'react';
 
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
 import { type DimensionMapping } from './models';
 import SlicingSlider from './SlicingSlider';
 
-interface Props {
-  className: string;
+interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   dims: number[];
-  axisLabels?: AxisMapping<string>;
+  dimHints?: AxisMapping<string>;
   dimMapping: DimensionMapping;
-  isCached?: (dimMapping: DimensionMapping) => boolean;
+  canSliceFast?: (nextMapping: DimensionMapping) => boolean;
   onChange: (d: DimensionMapping) => void;
 }
 
 function DimensionMapper(props: Props) {
-  const { className, dims, axisLabels, dimMapping, isCached, onChange } = props;
+  const {
+    className,
+    dims,
+    dimHints,
+    dimMapping,
+    canSliceFast,
+    onChange,
+    ...htmlProps
+  } = props;
   const mappableDims = dims.slice(0, dimMapping.length);
 
   if (dimMapping.length === 0) {
@@ -23,7 +31,7 @@ function DimensionMapper(props: Props) {
   }
 
   return (
-    <div className={`${styles.mapper} ${className}`}>
+    <div className={`${styles.mapper} ${className}`} {...htmlProps}>
       <div className={styles.axisMapperWrapper}>
         <div className={styles.dims}>
           <span className={styles.dimsLabel}>
@@ -39,13 +47,13 @@ function DimensionMapper(props: Props) {
         </div>
         <AxisMapper
           axis="x"
-          axisLabels={axisLabels}
+          dimHints={dimHints}
           dimMapping={dimMapping}
           onChange={onChange}
         />
         <AxisMapper
           axis="y"
-          axisLabels={axisLabels}
+          dimHints={dimHints}
           dimMapping={dimMapping}
           onChange={onChange}
         />
@@ -59,11 +67,11 @@ function DimensionMapper(props: Props) {
               length={dims[index]}
               initialValue={val}
               isFastSlice={
-                isCached &&
+                canSliceFast &&
                 ((newVal) => {
                   const newMapping = [...dimMapping];
                   newMapping[index] = newVal;
-                  return isCached(newMapping);
+                  return canSliceFast(newMapping);
                 })
               }
               onChange={(newVal) => {

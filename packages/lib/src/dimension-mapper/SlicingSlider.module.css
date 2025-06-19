@@ -30,9 +30,8 @@
 .track {
   flex: 1;
   margin: calc(var(--thumb-height) / 2) 0;
-  width: 2px;
-  background-color: var(--secondary-dark);
-  border-radius: 1px;
+  border-left: 2px solid var(--secondary-dark);
+  border-radius: 2px;
 }
 
 .thumb {

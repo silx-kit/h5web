@@ -21,6 +21,10 @@ interface Props {
 function SlicingSlider(props: Props) {
   const { dimension, length, initialValue, isFastSlice, onChange } = props;
 
+  if (length <= 0) {
+    throw new Error('Expected non-empty dimension');
+  }
+
   const [value, setValue] = useState(initialValue);
   const onDebouncedChange = useDynamicDebouncedCallback(
     onChange,

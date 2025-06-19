@@ -50,9 +50,9 @@ function NxImageContainer(props: VisContainerProps) {
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={dims}
-        axisLabels={axisLabels}
+        dimHints={axisLabels}
         dimMapping={dimMapping}
-        isCached={useNxValuesCached(nxData)}
+        canSliceFast={useNxValuesCached(nxData)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping}>
