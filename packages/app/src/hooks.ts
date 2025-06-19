@@ -1,3 +1,4 @@
+import { type DimensionMapping, getSliceSelection } from '@h5web/lib';
 import { assertDatasetValue, isDefined } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -76,4 +77,16 @@ export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
     assertDatasetValue(value, dataset);
     return value;
   });
+}
+
+export function useValuesInCache(
+  ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]
+): (dimMapping: DimensionMapping) => boolean {
+  const { valuesStore } = useDataContext();
+  return (dimMapping) => {
+    const selection = getSliceSelection(dimMapping);
+    return datasets.every(
+      (dataset) => !dataset || valuesStore.has({ dataset, selection }),
+    );
+  };
 }

@@ -1,8 +1,11 @@
 import {
+  type DimensionMapping,
+  getSliceSelection,
   HeatmapVis,
   type IgnoreValue,
   useDomain,
   useSafeDomain,
+  useSlicedDimsAndMapping,
   useVisDomain,
 } from '@h5web/lib';
 import {
@@ -15,16 +18,14 @@ import {
 import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
-import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import {
   useExportEntries,
   useMappedArray,
-  useSlicedDimsAndMapping,
   useToNumArray,
   useToNumArrays,
 } from '../hooks';
-import { DEFAULT_DOMAIN, formatNumLikeType, getSliceSelection } from '../utils';
+import { DEFAULT_DOMAIN, formatNumLikeType } from '../utils';
 import { type HeatmapConfig } from './config';
 import HeatmapToolbar from './HeatmapToolbar';
 

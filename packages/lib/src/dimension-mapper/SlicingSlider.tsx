@@ -2,8 +2,8 @@ import { useMeasure } from '@react-hookz/web';
 import { useState } from 'react';
 import ReactSlider from 'react-slider';
 
+import { useDynamicDebouncedCallback } from './hooks';
 import styles from './SlicingSlider.module.css';
-import { useDynamicDebouncedCallback } from './utils';
 
 const ID = 'h5w-slider';
 const MIN_HEIGHT_PER_MARK = 25;

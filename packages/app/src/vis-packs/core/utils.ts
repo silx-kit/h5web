@@ -1,4 +1,4 @@
-import { type InteractionInfo } from '@h5web/lib';
+import { type DimensionMapping, type InteractionInfo } from '@h5web/lib';
 import {
   isBigIntTypedArray,
   isIntegerType,
@@ -12,9 +12,6 @@ import {
 import { type Domain, type NumArray } from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
 import ndarray, { type NdArray } from 'ndarray';
-
-import { type DimensionMapping } from '../../dimension-mapper/models';
-import { isAxis } from '../../dimension-mapper/utils';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -75,18 +72,6 @@ export function applyMapping(
 
   // Create ndarray from mapped view so `mappedArray.data` only contains values relevant to vis
   return createArrayFromView(mappedView);
-}
-
-export function getSliceSelection(
-  dimMapping?: DimensionMapping,
-): string | undefined {
-  // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-  if (!dimMapping || !dimMapping.some((val) => typeof val === 'number')) {
-    return undefined;
-  }
-
-  // Create slice selection string from dim mapping - e.g. [0, 'y', 'x'] => "0,:,:"
-  return dimMapping.map((dim) => (isAxis(dim) ? ':' : dim)).join(',');
 }
 
 export function getImageInteractions(keepRatio: boolean): InteractionInfo[] {

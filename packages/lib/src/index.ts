@@ -35,6 +35,13 @@ export type { DomainControlsHandle } from './toolbar/controls/DomainWidget/Domai
 export type { DomainControlsProps } from './toolbar/controls/DomainWidget/DomainControls';
 export type { HistogramProps } from './toolbar/controls/Histogram/Histogram';
 
+// Dimension mapper
+export { default as DimensionMapper } from './dimension-mapper/DimensionMapper';
+export { initDimMapping, getSliceSelection } from './dimension-mapper/utils';
+export { useSlicedDimsAndMapping } from './dimension-mapper/hooks';
+export { type DimensionMapping } from './dimension-mapper/models';
+export { type AxisMapping } from '@h5web/shared/nexus-models';
+
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';
 export { default as TooltipMesh } from './vis/shared/TooltipMesh';

@@ -1,11 +1,11 @@
+import { type DimensionMapping } from '@h5web/lib';
 import {
   type ComplexType,
   type GroupWithChildren,
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
 
-import { useValuesInCache } from '../../dimension-mapper/hooks';
-import { type DimensionMapping } from '../../dimension-mapper/models';
+import { useValuesInCache } from '../../hooks';
 import { useDataContext } from '../../providers/DataProvider';
 import { type DatasetDef, type NxData } from './models';
 import {

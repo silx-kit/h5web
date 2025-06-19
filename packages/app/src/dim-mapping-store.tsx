@@ -1,3 +1,4 @@
+import { type DimensionMapping, initDimMapping } from '@h5web/lib';
 import { type ArrayShape } from '@h5web/shared/hdf5-models';
 import {
   createContext,
@@ -8,9 +9,7 @@ import {
 } from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 
-import { areSameDims } from '../vis-packs/nexus/utils';
-import { type DimensionMapping } from './models';
-import { initDimMapping } from './utils';
+import { areSameDims } from './vis-packs/nexus/utils';
 
 interface DimMappingState {
   dims: ArrayShape;

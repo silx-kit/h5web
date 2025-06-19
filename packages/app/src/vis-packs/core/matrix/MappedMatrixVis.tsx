@@ -1,4 +1,9 @@
-import { MatrixVis } from '@h5web/lib';
+import {
+  type DimensionMapping,
+  getSliceSelection,
+  MatrixVis,
+  useSlicedDimsAndMapping,
+} from '@h5web/lib';
 import {
   type ArrayShape,
   type ArrayValue,
@@ -7,14 +12,9 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 
-import { type DimensionMapping } from '../../../dimension-mapper/models';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import {
-  useExportEntries,
-  useMappedArray,
-  useSlicedDimsAndMapping,
-} from '../hooks';
-import { getSliceSelection } from '../utils';
+import { useExportEntries, useMappedArray } from '../hooks';
+import {} from '../utils';
 import { type MatrixVisConfig } from './config';
 import MatrixToolbar from './MatrixToolbar';
 import {

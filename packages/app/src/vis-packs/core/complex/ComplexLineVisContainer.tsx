@@ -1,17 +1,16 @@
+import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import {
   assertArrayShape,
   assertComplexType,
   assertDataset,
 } from '@h5web/shared/guards';
 
-import DimensionMapper from '../../../dimension-mapper/DimensionMapper';
-import { useValuesInCache } from '../../../dimension-mapper/hooks';
-import { useDimMappingState } from '../../../dimension-mapper/store';
+import { useDimMappingState } from '../../../dim-mapping-store';
+import { useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { useLineConfig } from '../line/config';
-import { getSliceSelection } from '../utils';
 import ValueFetcher from '../ValueFetcher';
 import { useComplexLineConfig } from './lineConfig';
 import MappedComplexLineVis from './MappedComplexLineVis';
