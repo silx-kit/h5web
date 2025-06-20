@@ -3,19 +3,22 @@
   display: flex;
   flex-direction: column;
   padding: 0 0.5rem;
-  --thumb-height: 1.5rem;
-  --mark-height: 0.5rem;
+
+  --track-width: var(--h5w-slicingSlider-track--width, 2px);
+  --track-color: var(--h5w-slicingSlider-track--color, royalblue);
+  --thumb-size: 1.375em;
 }
 
 .label {
   margin-bottom: 0.25rem;
   text-align: center;
+  font-size: 0.875em;
 }
 
 .sublabel {
   composes: label;
-  font-size: 0.825rem;
-  color: var(--secondary-darker);
+  font-size: 0.75em;
+  color: var(--h5w-slicingSlider-bounds--color, midnightblue);
 }
 
 .slider {
@@ -29,38 +32,34 @@
 
 .track {
   flex: 1;
-  margin: calc(var(--thumb-height) / 2) 0;
-  border-left: 2px solid var(--secondary-dark);
-  border-radius: 2px;
+  margin: calc(var(--thumb-size) / 2) 0;
+  border-left: var(--track-width) solid var(--track-color);
+  border-radius: var(--track-width);
 }
 
 .thumb {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.125rem;
-  background-color: var(--primary-bg);
-  border: 2px solid var(--secondary);
-  border-radius: 1.5em;
-  height: var(--thumb-height);
-  min-width: 1.5rem;
-  font-size: 0.625rem;
+  padding: 0.125rem 0.25rem;
+  background-color: var(--h5w-slicingSlider-thumb--bgColor, aliceblue);
+  border: 2px solid var(--h5w-slicingSlider-thumb--borderColor, cornflowerblue);
+  border-radius: calc(var(--thumb-size) / 2);
+  height: var(--thumb-size);
+  min-width: var(--thumb-size);
   cursor: grab;
 }
 
-.thumb:global(.active) {
-  border-color: var(--secondary-dark);
-}
-
-.thumb:active {
-  cursor: none;
+.thumbValue {
+  font-size: 0.625em;
 }
 
 .mark {
-  width: var(--mark-height);
-  height: var(--mark-height);
-  background-color: var(--primary-bg);
-  border: 2px solid var(--secondary-dark);
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--h5w-slicingSlider-mark--bgColor, #eee);
+  border: 2px solid
+    var(--h5w-slicingSlider-mark--borderColor, var(--track-color));
   border-radius: 50%;
   transform: translateY(-100%);
 }
