@@ -28,6 +28,7 @@ export type BigIntTypedArrayConstructor =
 
 export type Domain = [min: number, max: number];
 export type Axis = 'x' | 'y';
+export type DimensionMapping = (number | Axis)[];
 
 export interface VisibleDomains {
   xVisibleDomain: Domain;
