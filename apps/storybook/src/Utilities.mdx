@@ -221,6 +221,55 @@ createIndex(length: number, maxValue: number): BufferAttribute
 createIndex(100 * 2 * 3, 100); // 2 triangles per vertex; 3 indices per triangle
 ```
 
+#### initDimMapping
+
+Initialise a dimension mapping array from the given dimensions, for a visualization with the given number of axes.
+
+This function assumes that the last dimension should be mapped to the `x` axis, that the second last dimension
+should be mapped to the `y` axis`, and that the user should be able to slice through the remaining dimensions
+(starting at index `0`) with the `DimensionMapper`.
+
+```tsx
+initDimMapping(dims: number[], axesCount: number): DimensionMapping
+
+initDimMapping([5], 1); // ['x']
+initDimMapping([5, 10], 2); // ['y', 'x']
+initDimMapping([5, 10, 15, 20], 2); // [0, 0, 'y', 'x']
+
+const [dimMapping, setDimMapping] = useState(initDimMapping(dims, 1))
+<DimensionMapper value={dimMapping} onChange={setDimMapping} />
+```
+
+#### getSliceSelection
+
+Convert a dimension mapping array to a selection string that can be passed to the data provider
+to retrieve a specific dataset slice (cf. `DataProvider#getValue`). If the dimension mapping array
+has no sliceable dimension (i.e. only `'x'` and/or `'y'`), the returned selection is `undefined`,
+which instructs the provider to retrieve the entire dataset.
+
+```ts
+getSliceSelection(dimMapping?: DimensionMapping): string | undefined
+
+getSliceSelection(['x']); // undefined
+getSliceSelection(['y', 'x']); // undefined
+
+getSliceSelection([10, 'x']); // '10,:'
+getSliceSelection([0, 5, 'y', 'x']); // '0,5,:,:'
+getSliceSelection(['x', 10, 20, 30]); // ':,10,20,30'
+```
+
+#### getSlicedDimsAndMapping
+
+Use after retrieving a dataset slice to compute the remaining dimensions and axis mapping of the slice.
+
+```ts
+getSlicedDimsAndMapping(dims: number[], dimMapping: DimensionMapping): [number[], DimensionMapping]
+
+getSlicedDimsAndMapping([10, 20], ['y', 'x']); // [[10, 20], ['y', 'x']] (i.e. no slicing performed)
+getSlicedDimsAndMapping([10, 20, 30], [0, 'x', 0]); // [[2], ['x']]
+getSlicedDimsAndMapping([10, 20, 30], ['x', 10, 'y']); // [[10, 30], ['x', 'y']]
+```
+
 ---
 
 ### Hooks
@@ -230,9 +279,10 @@ createIndex(100 * 2 * 3, 100); // 2 triangles per vertex; 3 indices per triangle
 - **`useCombinedDomain(...args): Domain | undefined`** - Memoised version of `getCombinedDomain`.
 - **`useVisDomain(...args): Domain`** - Memoised version of `getVisDomain`.
 - **`useSafeDomain(...args): [Domain, DomainErrors]`** - Memoised version of `getSafeDomain`.
-- **`useAxisValues(..args): number[]`** - Memoised version of `getAxisValues`.
-- **`useAxisDomain(..args): Domain | undefined`** - Memoised version of `getAxisDomain`.
-- **`useValueToIndexScale(..args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
+- **`useAxisValues(...args): number[]`** - Memoised version of `getAxisValues`.
+- **`useAxisDomain(...args): Domain | undefined`** - Memoised version of `getAxisDomain`.
+- **`useValueToIndexScale(...args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
+- **`useSlicedDimsAndMapping(...args): [number[], DimensionMapping]`** - Memoised version of `getSlicedDimsAndMapping`.
 
 #### useCanvasEvent
 

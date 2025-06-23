@@ -37,10 +37,6 @@ export type { HistogramProps } from './toolbar/controls/Histogram/Histogram';
 
 // Dimension mapper
 export { default as DimensionMapper } from './dimension-mapper/DimensionMapper';
-export { initDimMapping, getSliceSelection } from './dimension-mapper/utils';
-export { useSlicedDimsAndMapping } from './dimension-mapper/hooks';
-export { type DimensionMapping } from './dimension-mapper/models';
-export { type AxisMapping } from '@h5web/shared/nexus-models';
 
 // Building blocks
 export { default as VisCanvas } from './vis/shared/VisCanvas';
@@ -145,6 +141,13 @@ export {
 } from './interactions/hooks';
 export { default as Box } from './interactions/box';
 
+export {
+  initDimMapping,
+  getSliceSelection,
+  getSlicedDimsAndMapping,
+} from './dimension-mapper/utils';
+export { useSlicedDimsAndMapping } from './dimension-mapper/hooks';
+
 // Geometries
 export { default as H5WebGeometry } from './vis/shared/h5webGeometry';
 export { default as LineGeometry } from './vis/line/lineGeometry';
@@ -170,6 +173,7 @@ export type {
   VisibleDomains,
   Dims,
   Axis,
+  DimensionMapping,
   ColorScaleType,
   AxisScaleType,
   IgnoreValue,

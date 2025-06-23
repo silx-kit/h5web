@@ -1,14 +1,13 @@
-import { type AxisMapping } from '@h5web/shared/nexus-models';
+import { type DimensionMapping } from '@h5web/shared/vis-models';
 import { type HTMLAttributes } from 'react';
 
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
-import { type DimensionMapping } from './models';
 import SlicingSlider from './SlicingSlider';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   dims: number[];
-  dimHints?: AxisMapping<string>;
+  dimHints?: (string | undefined)[];
   dimMapping: DimensionMapping;
   canSliceFast?: (nextMapping: DimensionMapping) => boolean;
   onChange: (d: DimensionMapping) => void;

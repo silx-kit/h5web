@@ -1,21 +1,10 @@
+import { createMemo } from '@h5web/shared/createMemo';
 import { useSyncedRef, useUnmountEffect } from '@react-hookz/web';
 import { type DependencyList, useEffect, useMemo, useRef } from 'react';
 
-import { type DimensionMapping } from './models';
-import { isAxis } from './utils';
+import { getSlicedDimsAndMapping } from './utils';
 
-export function useSlicedDimsAndMapping(
-  dims: number[],
-  dimMapping: DimensionMapping,
-): [number[], DimensionMapping] {
-  return useMemo(
-    () => [
-      dims.filter((_, i) => isAxis(dimMapping[i])),
-      dimMapping.filter(isAxis),
-    ],
-    [dimMapping, dims],
-  );
-}
+export const useSlicedDimsAndMapping = createMemo(getSlicedDimsAndMapping);
 
 // Debounced callback with a delay that can be adjusted on every invocation
 export function useDynamicDebouncedCallback<

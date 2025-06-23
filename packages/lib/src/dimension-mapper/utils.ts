@@ -1,6 +1,4 @@
-import { type Axis } from '@h5web/shared/vis-models';
-
-import { type DimensionMapping } from './models';
+import { type Axis, type DimensionMapping } from '@h5web/shared/vis-models';
 
 export function initDimMapping(
   dims: number[],
@@ -35,4 +33,14 @@ export function getSliceSelection(
 
 export function isAxis(elem: number | Axis): elem is Axis {
   return typeof elem !== 'number';
+}
+
+export function getSlicedDimsAndMapping(
+  dims: number[],
+  dimMapping: DimensionMapping,
+): [number[], DimensionMapping] {
+  return [
+    dims.filter((_, i) => isAxis(dimMapping[i])),
+    dimMapping.filter(isAxis),
+  ];
 }
