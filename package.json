@@ -11,9 +11,9 @@
   },
   "engines": {
     "node": "22.x",
-    "pnpm": "9.x"
+    "pnpm": ">=10.6"
   },
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.12.3",
   "type": "module",
   "scripts": {
     "start": "pnpm --filter demo start",
@@ -52,11 +52,5 @@
     "vitest": "3.1.1",
     "vitest-fail-on-console": "0.7.1",
     "wait-on": "8.0.3"
-  },
-  "pnpm": {
-    "requiredScripts": [
-      "lint:eslint",
-      "lint:tsc"
-    ]
   }
 }

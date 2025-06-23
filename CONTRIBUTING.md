@@ -303,7 +303,7 @@ install the recommended extensions.
   > `pnpm support:*` scripts and [_Providers tests_](#providers-tests) section.
 - `pnpm test run` - run unit and feature tests once
 - `pnpm test [run] <filter>` - run tests matching the given filter
-- `pnpm test -- --project <lib|app|...>` - run Vitest on a specific project
+- `pnpm test --project <lib|app|...>` - run Vitest on a specific project
 - `pnpm support:setup` - create/update Poetry environments required for
   [testing the providers](#providers-tests)
 - `pnpm support:sample` - create `sample.h5`
