@@ -8,6 +8,7 @@ import Zoom, { type ZoomProps } from '../interactions/Zoom';
 import AxialSelectToZoom, {
   type AxialSelectToZoomProps,
 } from './AxialSelectToZoom';
+import PreventDefaultContextMenu from './PreventDefaultContextMenu';
 
 export interface DefaultInteractionsConfig {
   pan?: PanProps | false;
@@ -51,6 +52,8 @@ function DefaultInteractions(props: DefaultInteractionsConfig) {
           {...interactions.ySelectToZoom}
         />
       )}
+
+      <PreventDefaultContextMenu />
     </>
   );
 }

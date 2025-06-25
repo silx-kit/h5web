@@ -1,4 +1,4 @@
-## Context
+## VisCanvasContext
 
 Children of `VisCanvas` have access to `VisCanvasContext`, which provides helpful utilities, notably to convert points between coordinate spaces (data, world, HTML).
 It also exposes the size and ratio of the canvas and of the visualization, as well as the axis configs passed to `VisCanvas`.
@@ -40,3 +40,19 @@ const { visSize, dataToWorld, worldToData } = useVisCanvasContext();
 | `r3fRoot`    | React Three Fiber container rendered inside `canvasArea` that wraps the `canvas` element    |
 
 > These tables are not exhaustive. Please consider any undocumented property as experimental or meant for internal use only.
+
+## InteractionsContext
+
+Children of `VisCanvas` also have access to `InteractionsContext`, which provides low-level utilities for coordinating mouse interactivity on the canvas.
+However, thanks to the `useInteraction` hook, which allows registering new interactions, there's little need to access `InteractionsContext` directly.
+
+The only utility you may need is `getInteractions`, which allows accessing all registered interactions that are currently enabled. If you pass mouse button(s)
+and/or modifier key(s) to it, it can filter the interactions and return only those that are compatible. Note that `getInteractions` only works
+when called inside an event handler, not during render.
+
+```ts
+getInteractions: (
+  button?: InteractionConfig['button'],
+  modifierKey?: InteractionConfig['modifierKey'],
+) => Interaction[];
+```

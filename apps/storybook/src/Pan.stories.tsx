@@ -1,4 +1,11 @@
-import { MouseButton, Pan, ResetZoomButton, VisCanvas, Zoom } from '@h5web/lib';
+import {
+  MouseButton,
+  Pan,
+  PreventDefaultContextMenu,
+  ResetZoomButton,
+  VisCanvas,
+  Zoom,
+} from '@h5web/lib';
 import { type Meta, type StoryObj } from '@storybook/react';
 
 import FillHeight from './decorators/FillHeight';
@@ -19,9 +26,13 @@ const meta = {
     button: {
       control: {
         type: 'inline-check',
-        labels: { [MouseButton.Left]: 'Left', [MouseButton.Middle]: 'Middle' },
+        labels: {
+          [MouseButton.Left]: 'Left',
+          [MouseButton.Middle]: 'Middle',
+          [MouseButton.Right]: 'Right',
+        },
       },
-      options: [MouseButton.Left, MouseButton.Middle],
+      options: [MouseButton.Left, MouseButton.Middle, MouseButton.Right],
     },
     modifierKey: {
       control: { type: 'inline-check' },
@@ -43,6 +54,7 @@ export const Default = {
         <Pan {...args} />
         <Zoom />
         <ResetZoomButton />
+        <PreventDefaultContextMenu />
       </VisCanvas>
     );
   },
@@ -66,6 +78,13 @@ export const MiddleButton = {
   ...Default,
   args: {
     button: [MouseButton.Middle],
+  },
+} satisfies Story;
+
+export const RightButton = {
+  ...Default,
+  args: {
+    button: [MouseButton.Right],
   },
 } satisfies Story;
 
