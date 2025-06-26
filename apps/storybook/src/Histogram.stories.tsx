@@ -43,7 +43,7 @@ export const Default = {
     dataDomain: [4, 400],
     value: [10, 100],
     values: [130, 92, 76, 68, 60, 52, 50, 26],
-    bins: [4, 53.5, 103, 152.5, 202, 251.5, 301, 350.5, 400],
+    bins: [4, 53.5, 103, 152.5, 202, 251.5, 301, 350.5],
     scaleType: ScaleType.Linear,
   },
 } satisfies Story;
@@ -70,7 +70,7 @@ export const TypedValues = {
   args: {
     ...Default.args,
     values: new Int32Array([26, 50, 52, 60, 68, 76, 92, 130]),
-    bins: new Float32Array([4, 53.5, 103, 152.5, 202, 251.5, 301, 350.5, 400]),
+    bins: new Float32Array([4, 53.5, 103, 152.5, 202, 251.5, 301, 350.5]),
   },
 } satisfies Story;
 

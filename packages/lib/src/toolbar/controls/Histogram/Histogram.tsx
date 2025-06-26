@@ -4,7 +4,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleLinear } from '@visx/scale';
 import { type ReactNode } from 'react';
 
-import { useSafeDomain } from '../../../vis/heatmap/hooks';
+import { usePixelEdgeValues, useSafeDomain } from '../../../vis/heatmap/hooks';
 import { useCombinedDomain, useDomain } from '../../../vis/hooks';
 import { type HistogramParams } from '../../../vis/models';
 import Tick from '../../../vis/shared/Tick';
@@ -31,7 +31,7 @@ interface Props extends HistogramParams {
 function Histogram(props: Props) {
   const {
     values,
-    bins,
+    bins: rawBins,
     scaleType,
     value,
     dataDomain,
@@ -41,6 +41,7 @@ function Histogram(props: Props) {
   } = props;
   const { colorMap, invertColorMap } = props;
 
+  const bins = usePixelEdgeValues(rawBins, values.length);
   const binDomain = useDomain(bins, scaleType) || DEFAULT_DOMAIN;
   const [safeValue] = useSafeDomain(value, dataDomain, scaleType);
   const xDomain = useCombinedDomain([binDomain, safeValue, dataDomain]);
