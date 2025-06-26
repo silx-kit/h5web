@@ -1,3 +1,4 @@
+import { castArray } from '@h5web/shared/vis-utils';
 import {
   createContext,
   type ReactNode,
@@ -12,6 +13,10 @@ import { type InteractionConfig } from './models';
 export interface InteractionsContextValue {
   registerInteraction: (id: string, config: InteractionConfig) => void;
   unregisterInteraction: (id: string) => void;
+  getInteractions: (
+    button?: InteractionConfig['button'],
+    modifierKey?: InteractionConfig['modifierKey'],
+  ) => Interaction[];
   shouldInteract: (id: string, event: MouseEvent) => boolean;
 }
 
@@ -27,7 +32,7 @@ function InteractionsProvider(props: { children: ReactNode }) {
   const [interactionMap] = useState(new Map<string, Interaction>());
 
   const registerInteraction = useCallback(
-    (id: string, config: InteractionConfig) => {
+    (id: string, config: InteractionConfig): void => {
       if (interactionMap.has(id)) {
         console.warn(`An interaction with ID "${id}" is already registered.`); // eslint-disable-line no-console
       } else {
@@ -38,14 +43,49 @@ function InteractionsProvider(props: { children: ReactNode }) {
   );
 
   const unregisterInteraction = useCallback(
-    (id: string) => {
+    (id: string): void => {
       interactionMap.delete(id);
     },
     [interactionMap],
   );
 
+  const getInteractions = useCallback(
+    (
+      button?: InteractionConfig['button'],
+      modifierKey?: InteractionConfig['modifierKey'],
+    ): Interaction[] => {
+      const interactions = [...interactionMap.values()].filter(
+        (inter) => inter.isEnabled,
+      );
+
+      if (button === undefined) {
+        return interactions;
+      }
+
+      const modifierKeys = modifierKey ? castArray(modifierKey) : [];
+
+      if (button === 'Wheel') {
+        return interactions.filter(
+          (inter) =>
+            inter.isWheel &&
+            modifierKeys.every((k) => inter.modifierKeys.includes(k)),
+        );
+      }
+
+      const buttons = castArray(button);
+      return interactions.filter((inter) =>
+        buttons.some(
+          (b) =>
+            inter.buttons.includes(b) &&
+            modifierKeys.every((k) => inter.modifierKeys.includes(k)),
+        ),
+      );
+    },
+    [interactionMap],
+  );
+
   const shouldInteract = useCallback(
-    (interactionId: string, event: MouseEvent | WheelEvent) => {
+    (interactionId: string, event: MouseEvent | WheelEvent): boolean => {
       const registeredInteractions = [...interactionMap.values()];
       if (!interactionMap.has(interactionId)) {
         throw new Error(`Interaction ${interactionId} is not registered`);
@@ -78,6 +118,7 @@ function InteractionsProvider(props: { children: ReactNode }) {
       value={{
         registerInteraction,
         unregisterInteraction,
+        getInteractions,
         shouldInteract,
       }}
     >

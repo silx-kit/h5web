@@ -72,6 +72,7 @@ export { default as SelectToZoom } from './interactions/SelectToZoom';
 export { default as AxialSelectToZoom } from './interactions/AxialSelectToZoom';
 export { default as SelectionTool } from './interactions/SelectionTool';
 export { default as AxialSelectionTool } from './interactions/AxialSelectionTool';
+export { default as PreventDefaultContextMenu } from './interactions/PreventDefaultContextMenu';
 export type { PanProps } from './interactions/Pan';
 export type { ZoomProps } from './interactions/Zoom';
 export type { XAxisZoomProps } from './interactions/XAxisZoom';
@@ -81,6 +82,7 @@ export type { SelectToZoomProps } from './interactions/SelectToZoom';
 export type { AxialSelectionToolProps } from './interactions/AxialSelectionTool';
 export type { AxialSelectToZoomProps } from './interactions/AxialSelectToZoom';
 export type { DefaultInteractionsConfig } from './interactions/DefaultInteractions';
+export type { PreventDefaultContextMenuProps } from './interactions/PreventDefaultContextMenu';
 
 // SVG
 export { default as SvgElement } from './interactions/svg/SvgElement';
@@ -92,9 +94,11 @@ export type { SvgLineProps } from './interactions/svg/SvgLine';
 export type { SvgRectProps } from './interactions/svg/SvgRect';
 export type { SvgCircleProps } from './interactions/svg/SvgCircle';
 
-// Context
+// Contexts
 export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';
+export { useInteractionsContext } from './interactions/InteractionsProvider';
 export type { VisCanvasContextValue } from './vis/shared/VisCanvasProvider';
+export type { InteractionsContextValue } from './interactions/InteractionsProvider';
 
 // Utilities
 export { toTypedNdArray } from '@h5web/shared/vis-utils';

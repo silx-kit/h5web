@@ -12,7 +12,7 @@ const preview: Preview = {
         order: [
           'Getting started',
           'Utilities',
-          'Context',
+          'Contexts',
           'Customization',
           'Visualizations',
           ['LineVis'],

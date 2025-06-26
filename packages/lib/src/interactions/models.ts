@@ -5,6 +5,7 @@ export type ModifierKey = 'Alt' | 'Control' | 'Shift';
 export enum MouseButton {
   'Left' = 0,
   'Middle' = 1,
+  'Right' = 2,
 }
 
 export type Rect = [start: Vector3, end: Vector3];
