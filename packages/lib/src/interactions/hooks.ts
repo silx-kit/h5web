@@ -42,7 +42,7 @@ export function useMoveCameraTo(): (worldPt: Vector3) => void {
 }
 
 export function useZoomOnSelection(): (selection: Selection) => void {
-  const { canvasSize } = useVisCanvasContext();
+  const { canvasSize, visSize } = useVisCanvasContext();
 
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
@@ -52,8 +52,13 @@ export function useZoomOnSelection(): (selection: Selection) => void {
       const { width, height } = canvasSize;
       const zoomBox = Box.fromPoints(...worldSelection);
 
+      // Clamp the zoom box to the visualization boundaries to prevent erratic behavior
+      // when selection extends outside the plot area
+      const visBox = Box.fromSize(visSize);
+      const clampedZoomBox = zoomBox.keepWithin(visBox);
+
       // Update camera scale first (since `moveCameraTo` relies on camera scale)
-      const { width: zoomWidth, height: zoomHeight } = zoomBox.size;
+      const { width: zoomWidth, height: zoomHeight } = clampedZoomBox.size;
       camera.scale.set(
         Math.max(zoomWidth, 1) / width,
         Math.max(zoomHeight, 1) / height,
@@ -61,9 +66,9 @@ export function useZoomOnSelection(): (selection: Selection) => void {
       );
 
       // Then move camera position
-      moveCameraTo(zoomBox.center);
+      moveCameraTo(clampedZoomBox.center);
     },
-    [camera, canvasSize, moveCameraTo],
+    [camera, canvasSize, visSize, moveCameraTo],
   );
 }
 
