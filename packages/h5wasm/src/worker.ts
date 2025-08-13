@@ -37,7 +37,11 @@ async function openLocalFile(file: File): Promise<bigint> {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   WORKERFS.createNode(rootNode, fileName, WORKERFS.FILE_MODE, 0, file);
 
-  return h5wasm.open(`${WORKERFS_FOLDER}/${fileName}`, undefined, undefined); // https://github.com/emscripten-core/emscripten/issues/22389
+  return h5wasm.open(
+    `${WORKERFS_FOLDER}/${fileName}`,
+    h5wasm.H5F_ACC_SWMR_READ, // in case file is opened for writing in a concurrent process
+    undefined, // https://github.com/emscripten-core/emscripten/issues/22389
+  );
 }
 
 async function closeFile(fileId: bigint): Promise<number> {
