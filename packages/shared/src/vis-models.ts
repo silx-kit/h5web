@@ -28,7 +28,11 @@ export type BigIntTypedArrayConstructor =
 
 export type Domain = [min: number, max: number];
 export type Axis = 'x' | 'y';
-export type DimensionMapping = (number | Axis)[];
+
+// number = sliceable dimension
+// Axis = mappable dimension
+// null = locked dimension (e.g. last dimension in RGB dataset)
+export type DimensionMapping = (number | Axis | null)[];
 
 export interface VisibleDomains {
   xVisibleDomain: Domain;

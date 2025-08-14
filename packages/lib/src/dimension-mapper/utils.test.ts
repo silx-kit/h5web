@@ -7,13 +7,13 @@ import {
 } from './utils';
 
 describe('initDimMapping', () => {
-  it('should map axes to dimensions', () => {
+  it('should map dimensions to axes', () => {
     expect(initDimMapping([], 0)).toStrictEqual([]);
     expect(initDimMapping([1], 1)).toStrictEqual(['x']);
     expect(initDimMapping([1, 1], 2)).toStrictEqual(['y', 'x']);
   });
 
-  it('should slice extra dimensions', () => {
+  it('should initialise extra dimensions for slicing', () => {
     expect(initDimMapping([1], 0)).toStrictEqual([0]);
     expect(initDimMapping([1, 1], 1)).toStrictEqual([0, 'x']);
     expect(initDimMapping([1, 1, 1], 1)).toStrictEqual([0, 0, 'x']);
@@ -21,14 +21,31 @@ describe('initDimMapping', () => {
     expect(initDimMapping([1, 1, 1, 1], 2)).toStrictEqual([0, 0, 'y', 'x']);
   });
 
-  it('should cap number of axes to number of dimensions', () => {
-    expect(initDimMapping([], 1)).toStrictEqual([]);
-    expect(initDimMapping([], 2)).toStrictEqual([]);
-    expect(initDimMapping([1], 2)).toStrictEqual(['x']);
+  it('should lock dimensions', () => {
+    expect(initDimMapping([1], 0, 1)).toStrictEqual([null]);
+    expect(initDimMapping([1, 1, 1], 1, 2)).toStrictEqual(['x', null, null]);
+    expect(initDimMapping([1, 1, 1], 2, 1)).toStrictEqual(['y', 'x', null]);
+    expect(initDimMapping([1, 1, 1, 1], 2, 1)).toStrictEqual([
+      0,
+      'y',
+      'x',
+      null,
+    ]);
   });
 
-  it('should throw when number of axes not supported', () => {
+  it('should cap number of axes and locked dimensions to actual number of dimensions', () => {
+    expect(initDimMapping([], 2)).toStrictEqual([]); // axes capped to 0
+    expect(initDimMapping([1], 2)).toStrictEqual(['x']); // axes capped to 1
+    expect(initDimMapping([], 0, 1)).toStrictEqual([]); // locked dims capped to 0
+    expect(initDimMapping([1], 1, 1)).toStrictEqual(['x']); // locked dims capped to 0
+    expect(initDimMapping([1], 0, 2)).toStrictEqual([null]); // locked dims capped to 1
+    expect(initDimMapping([1], 2, 1)).toStrictEqual(['x']); // axes capped to 1 and locked dims to 0
+    expect(initDimMapping([1, 1, 1], 1, 3)).toStrictEqual(['x', null, null]); // locked dims capped to 2
+  });
+
+  it('should throw when number of axes or locked dimensions is not supported', () => {
     expect(() => initDimMapping([1], -1)).toThrow(RangeError);
+    expect(() => initDimMapping([1], 1, -1)).toThrow(RangeError);
     expect(() => initDimMapping([1, 1, 1], 3)).toThrow(RangeError);
   });
 });
