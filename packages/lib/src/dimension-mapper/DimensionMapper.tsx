@@ -23,7 +23,9 @@ function DimensionMapper(props: Props) {
     onChange,
     ...htmlProps
   } = props;
-  const mappableDims = dims.slice(0, dimMapping.length);
+  if (dims.length !== dimMapping.length) {
+    throw new Error('Expected dimensions and mapping arrays of same length');
+  }
 
   if (dimMapping.length === 0) {
     return null;
@@ -36,7 +38,7 @@ function DimensionMapper(props: Props) {
           <span className={styles.dimsLabel}>
             <abbr title="Number of elements in each dimension">n</abbr>
           </span>
-          {mappableDims.map((d, i) => (
+          {dims.map((d, i) => (
             // eslint-disable-next-line react/no-array-index-key
             <span key={i} className={styles.dimSize}>
               {' '}

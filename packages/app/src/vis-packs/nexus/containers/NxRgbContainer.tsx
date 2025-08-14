@@ -26,8 +26,7 @@ function NxRgbContainer(props: VisContainerProps) {
     throw new Error('Expected last dimension to have size 3');
   }
 
-  const mappableDims = dims.slice(0, -1);
-  const [dimMapping, setDimMapping] = useDimMappingState(mappableDims, 2);
+  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2, 1);
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const config = useRgbConfig();

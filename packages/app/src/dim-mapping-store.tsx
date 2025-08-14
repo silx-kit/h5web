@@ -14,11 +14,13 @@ import { areSameDims } from './vis-packs/nexus/utils';
 interface DimMappingState {
   dims: ArrayShape;
   axesCount: number;
+  lockedDimsCount: number;
   mapping: DimensionMapping;
   setMapping: (mapping: DimensionMapping) => void;
   reset: (
     dims: ArrayShape,
     axesCount: number,
+    lockedDimsCount: number,
     mapping: DimensionMapping,
   ) => void;
 }
@@ -27,10 +29,11 @@ function createDimMappingStore() {
   return createStore<DimMappingState>((set) => ({
     dims: [],
     axesCount: 0,
+    lockedDimsCount: 0,
     mapping: [],
     setMapping: (mapping) => set({ mapping }),
-    reset: (dims, axesCount, mapping) => {
-      set({ dims, axesCount, mapping });
+    reset: (dims, axesCount, lockedDimsCount, mapping) => {
+      set({ dims, axesCount, lockedDimsCount, mapping });
     },
   }));
 }
@@ -51,18 +54,23 @@ export function DimMappingProvider(props: PropsWithChildren<Props>) {
 export function useDimMappingState(
   dims: number[],
   axesCount: number,
+  lockedDimsCount = 0,
 ): [DimensionMapping, (mapping: DimensionMapping) => void] {
   const state = useStore(useContext(StoreContext));
 
   /* If current mapping was initialised with different axes count and dimensions,
    * need to compute new mapping and reset state. */
   const isStale =
-    axesCount !== state.axesCount || !areSameDims(dims, state.dims);
+    axesCount !== state.axesCount ||
+    lockedDimsCount !== state.lockedDimsCount ||
+    !areSameDims(dims, state.dims);
 
-  const mapping = isStale ? initDimMapping(dims, axesCount) : state.mapping;
+  const mapping = isStale
+    ? initDimMapping(dims, axesCount, lockedDimsCount)
+    : state.mapping;
 
   useEffect(() => {
-    state.reset(dims, axesCount, mapping);
+    state.reset(dims, axesCount, lockedDimsCount, mapping);
   }, [isStale]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return [mapping, state.setMapping];
