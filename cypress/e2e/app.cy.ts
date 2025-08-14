@@ -285,7 +285,7 @@ describe('/mock', () => {
 
     cy.findAllByRole('treeitem')
       .should('have.length', 3)
-      .each((e) => expect(e).to.contain('scatter'));
+      .each((e) => expect(e).toContain('scatter'));
 
     cy.findByRole('treeitem', { name: '/nexus_entry/scatter' }).click();
     cy.waitForStableDOM();

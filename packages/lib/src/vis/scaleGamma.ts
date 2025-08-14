@@ -5,7 +5,6 @@ import {
   type InterpolatorFactory,
   type NumberValue,
   type ScalePower,
-  type UnknownReturnType,
 } from 'd3-scale';
 
 import { type ScaleGammaConfig } from './models';
@@ -17,7 +16,6 @@ function normalize(a: number, b: number) {
 
 type Range = number;
 type Output = Range;
-type Unknown = never;
 export type ScaleGamma = ScalePower<Range, Output>;
 
 export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
@@ -26,14 +24,12 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
   let _exponent = config?.exponent ?? 1;
   let _clamp = config?.clamp || false;
   let _interpolate: InterpolatorFactory<Range, Output> = interpolateNumber;
-  let _unknown: Unknown;
 
   function scaleFn(val: NumberValue) {
     const x = typeof val === 'number' ? val : val.valueOf();
 
     if (Number.isNaN(x)) {
-      // @ts-expect-error - never assigned (i.e. `undefined`)
-      return _unknown;
+      return undefined as never;
     }
 
     return _interpolate(..._range)(
@@ -88,12 +84,6 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
       return scale;
     }
     return _clamp;
-  }
-
-  function unknown(): UnknownReturnType<Unknown, never>;
-  function unknown() {
-    // @ts-expect-error - never assigned (i.e. `undefined`)
-    return _unknown;
   }
 
   function interpolate(): InterpolatorFactory<Range, Output>;
@@ -163,7 +153,7 @@ export function scaleGamma(config?: ScaleGammaConfig): ScaleGamma {
     clamp,
     interpolate,
     invert,
-    unknown,
+    unknown: () => undefined as never,
     exponent,
     nice,
     ticks,

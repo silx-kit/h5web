@@ -79,7 +79,7 @@ export function getFormatter(
     );
   }
 
-  return (val: string) => val.toString();
+  return (val: string) => val;
 }
 
 export function getCsvFormatter<T extends PrintableType>(
