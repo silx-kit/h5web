@@ -1294,6 +1294,82 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "name": "compound_num_keys_scalar",
+    "rawType": {
+      "class": 6,
+      "dtype": {
+        "0": "|b1",
+        "1": "<i8",
+        "2": "|O",
+      },
+      "members": {
+        "0": {
+          "base": {
+            "class": 0,
+            "dtype": "|i1",
+            "order": 0,
+            "sign": 1,
+            "size": 1,
+          },
+          "class": 8,
+          "dtype": "|b1",
+          "members": {
+            "FALSE": 0,
+            "TRUE": 1,
+          },
+          "size": 1,
+        },
+        "1": {
+          "class": 0,
+          "dtype": "<i8",
+          "order": 0,
+          "sign": 1,
+          "size": 8,
+        },
+        "2": {
+          "class": 3,
+          "cset": 1,
+          "dtype": "|O",
+          "size": 8,
+          "strpad": 0,
+          "vlen": true,
+        },
+      },
+      "size": 17,
+    },
+    "shape": [],
+    "type": {
+      "class": "Compound",
+      "fields": {
+        "0": {
+          "base": {
+            "class": "Integer",
+            "endianness": "little-endian",
+            "signed": true,
+            "size": 8,
+          },
+          "class": "Boolean",
+        },
+        "1": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "2": {
+          "charSet": "UTF-8",
+          "class": "String",
+          "strPad": "null-terminated",
+        },
+      },
+    },
+    "value": [
+      5,
+      "foo",
+      false,
+    ],
+  },
+  {
     "name": "compound_1D",
     "rawType": {
       "class": 6,

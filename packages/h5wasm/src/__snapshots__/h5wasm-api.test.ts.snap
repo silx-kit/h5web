@@ -1440,6 +1440,93 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "name": "compound_num_keys_scalar",
+    "rawType": {
+      "compound_type": {
+        "members": [
+          {
+            "littleEndian": true,
+            "name": "1",
+            "offset": 0,
+            "shape": [],
+            "signed": true,
+            "size": 8,
+            "type": 0,
+            "vlen": false,
+          },
+          {
+            "cset": 1,
+            "littleEndian": true,
+            "name": "2",
+            "offset": 8,
+            "shape": [],
+            "signed": false,
+            "size": 4,
+            "strpad": 0,
+            "type": 3,
+            "vlen": true,
+          },
+          {
+            "enum_type": {
+              "members": {
+                "FALSE": 0,
+                "TRUE": 1,
+              },
+              "nmembers": 2,
+              "type": 0,
+            },
+            "littleEndian": true,
+            "name": "0",
+            "offset": 12,
+            "shape": [],
+            "signed": true,
+            "size": 1,
+            "type": 8,
+            "vlen": false,
+          },
+        ],
+        "nmembers": 3,
+      },
+      "littleEndian": true,
+      "signed": false,
+      "size": 13,
+      "total_size": 1,
+      "type": 6,
+      "vlen": false,
+    },
+    "shape": [],
+    "type": {
+      "class": "Compound",
+      "fields": {
+        "0": {
+          "base": {
+            "class": "Integer",
+            "endianness": "little-endian",
+            "signed": true,
+            "size": 8,
+          },
+          "class": "Boolean",
+        },
+        "1": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "2": {
+          "charSet": "UTF-8",
+          "class": "String",
+          "strPad": "null-terminated",
+        },
+      },
+    },
+    "value": [
+      5n,
+      "foo",
+      0,
+    ],
+  },
+  {
     "name": "compound_1D",
     "rawType": {
       "compound_type": {

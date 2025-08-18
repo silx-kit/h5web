@@ -165,6 +165,12 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
         (1, 2.0, "foo"),
         [("bigint", np.int64), ("double", np.float64), ("utf-8", h5py.string_dtype())],
     )
+    add_scalar(
+        h5,
+        "compound_num_keys",
+        (5, "foo", False),
+        [("1", np.int64), ("2", h5py.string_dtype()), ("0", np.bool_)],
+    )
     for_ref = add_array(
         h5,
         "compound",
@@ -282,9 +288,9 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     vlen_array = add_array(
         h5, "vlen_utf8", shape=(3,), dtype=h5py.vlen_dtype(h5py.string_dtype())
     )
-    vlen_array[0] = ['a']
-    vlen_array[1] = ['a', 'bc']
-    vlen_array[2] = ['a', 'bc', 'def']
+    vlen_array[0] = ["a"]
+    vlen_array[1] = ["a", "bc"]
+    vlen_array[2] = ["a", "bc", "def"]
 
     # === H5T_ARRAY ===
 
