@@ -125,16 +125,17 @@ describe('Matrix', () => {
 describe('Line', () => {
   const { supportsDataset } = CORE_VIS.Line;
 
-  it('should support array dataset with numeric-like type and at least one dimension', () => {
+  it('should support array dataset with numeric-like or complex type and at least one dimension', () => {
     expect(supportsDataset(oneDInt)).toBe(true);
     expect(supportsDataset(oneDUint)).toBe(true);
     expect(supportsDataset(oneDBigUint)).toBe(true);
     expect(supportsDataset(oneDBool)).toBe(true);
+    expect(supportsDataset(oneDCplx)).toBe(true);
     expect(supportsDataset(twoDBool)).toBe(true);
     expect(supportsDataset(threeDFloat)).toBe(true);
   });
 
-  it('should not support dataset with non-numeric-like type', () => {
+  it('should not support dataset with non-numeric-like or complex type', () => {
     expect(supportsDataset(twoDStr)).toBe(false);
   });
 
@@ -187,24 +188,6 @@ describe('Complex', () => {
 
   it('should not support dataset with less than two dimensions', () => {
     expect(supportsDataset(oneDCplx)).toBe(false);
-  });
-});
-
-describe('Complex Line', () => {
-  const { supportsDataset } = CORE_VIS.ComplexLine;
-
-  it('should support array dataset with complex type and at least one dimension', () => {
-    expect(supportsDataset(oneDCplx)).toBe(true);
-  });
-
-  it('should not support dataset with non-complex type', () => {
-    expect(supportsDataset(twoDInt)).toBe(false);
-    expect(supportsDataset(oneDUint)).toBe(false);
-    expect(supportsDataset(twoDStr)).toBe(false);
-  });
-
-  it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarCplx)).toBe(false);
   });
 });
 

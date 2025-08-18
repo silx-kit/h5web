@@ -4,6 +4,7 @@ import {
   hasCompoundType,
   hasMinDims,
   hasNonNullShape,
+  hasNumericLikeOrComplexType,
   hasNumericLikeType,
   hasNumericType,
   hasPrintableCompoundType,
@@ -25,7 +26,6 @@ import { type AttrValuesStore } from '../../providers/models';
 import { type VisDef } from '../models';
 import {
   ComplexConfigProvider,
-  ComplexLineConfigProvider,
   HeatmapConfigProvider,
   LineConfigProvider,
   MatrixConfigProvider,
@@ -33,7 +33,6 @@ import {
   RgbConfigProvider,
 } from './configs';
 import {
-  ComplexLineVisContainer,
   ComplexVisContainer,
   CompoundVisContainer,
   HeatmapVisContainer,
@@ -53,7 +52,6 @@ export enum Vis {
   Line = 'Line',
   Heatmap = 'Heatmap',
   Complex = 'Complex',
-  ComplexLine = 'ComplexLine',
   RGB = 'RGB',
   Compound = 'Compound',
   Surface = 'Surface',
@@ -100,7 +98,7 @@ export const CORE_VIS = {
     Container: LineVisContainer,
     ConfigProvider: LineConfigProvider,
     supportsDataset: (dataset) => {
-      return hasNumericLikeType(dataset) && hasArrayShape(dataset);
+      return hasNumericLikeOrComplexType(dataset) && hasArrayShape(dataset);
     },
   },
 
@@ -115,16 +113,6 @@ export const CORE_VIS = {
         hasArrayShape(dataset) &&
         hasMinDims(dataset, 2)
       );
-    },
-  },
-
-  [Vis.ComplexLine]: {
-    name: Vis.Line,
-    Icon: FiActivity,
-    Container: ComplexLineVisContainer,
-    ConfigProvider: ComplexLineConfigProvider,
-    supportsDataset: (dataset) => {
-      return hasComplexType(dataset) && hasArrayShape(dataset);
     },
   },
 
