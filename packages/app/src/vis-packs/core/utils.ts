@@ -37,6 +37,12 @@ export const INTERACTIONS_WITH_AXIAL_ZOOM = [
   { shortcut: 'Ctrl+Shift+Drag', description: 'Select to zoom in Y' },
 ];
 
+export const COMPLEX_VIS_TYPE_LABELS = {
+  [ComplexVisType.Amplitude]: 'Amplitude',
+  [ComplexVisType.Phase]: 'Phase',
+  [ComplexVisType.PhaseAmplitude]: 'Phase & Amplitude',
+};
+
 export function getBaseArray<T extends ArrayValue | undefined>(
   value: T,
   rawDims: number[],

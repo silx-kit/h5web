@@ -1,11 +1,9 @@
 import {
   hasArrayShape,
-  hasComplexType,
   hasCompoundType,
   hasMinDims,
   hasNonNullShape,
   hasNumericLikeOrComplexType,
-  hasNumericLikeType,
   hasNumericType,
   hasPrintableCompoundType,
   hasPrintableType,
@@ -25,7 +23,6 @@ import {
 import { type AttrValuesStore } from '../../providers/models';
 import { type VisDef } from '../models';
 import {
-  ComplexConfigProvider,
   HeatmapConfigProvider,
   LineConfigProvider,
   MatrixConfigProvider,
@@ -33,7 +30,6 @@ import {
   RgbConfigProvider,
 } from './configs';
 import {
-  ComplexVisContainer,
   CompoundVisContainer,
   HeatmapVisContainer,
   LineVisContainer,
@@ -51,7 +47,6 @@ export enum Vis {
   Matrix = 'Matrix',
   Line = 'Line',
   Heatmap = 'Heatmap',
-  Complex = 'Complex',
   RGB = 'RGB',
   Compound = 'Compound',
   Surface = 'Surface',
@@ -109,21 +104,7 @@ export const CORE_VIS = {
     ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (
-        hasNumericLikeType(dataset) &&
-        hasArrayShape(dataset) &&
-        hasMinDims(dataset, 2)
-      );
-    },
-  },
-
-  [Vis.Complex]: {
-    name: Vis.Heatmap,
-    Icon: FiMap,
-    Container: ComplexVisContainer,
-    ConfigProvider: ComplexConfigProvider,
-    supportsDataset: (dataset) => {
-      return (
-        hasComplexType(dataset) &&
+        hasNumericLikeOrComplexType(dataset) &&
         hasArrayShape(dataset) &&
         hasMinDims(dataset, 2)
       );
