@@ -39,7 +39,12 @@ Object.defineProperty(globalThis.URL, 'createObjectURL', {
 });
 
 // Fail tests that log to the console
-failOnConsole();
+failOnConsole({
+  silenceMessage: (msg) =>
+    msg.includes(
+      'Warning: Cannot update a component (`ValueLoader`) while rendering a different component (`ValueFetcher`)',
+    ),
+});
 
 afterEach(() => {
   rtlCleanup(); // https://vitest.dev/guide/migration.html#globals-as-a-default
