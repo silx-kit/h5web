@@ -124,10 +124,14 @@ export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
 }
 
 export function getBounds(
-  valuesArray: AnyNumArray,
+  valuesArray: AnyNumArray | undefined,
   errorArray?: AnyNumArray,
   ignoreValue?: IgnoreValue,
 ): Bounds | undefined {
+  if (!valuesArray) {
+    return undefined;
+  }
+
   const values = getValues(valuesArray);
   const errors = errorArray && getValues(errorArray);
   assertLength(errorArray, values.length, 'error');

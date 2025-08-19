@@ -8,7 +8,7 @@ import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { assertNumericLikeNxData } from '../guards';
+import { assertNumericLikeOrComplexNxData } from '../guards';
 import { useNxData, useNxImageDataToFetch, useNxValuesCached } from '../hooks';
 import NxSignalPicker from '../NxSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
@@ -19,7 +19,7 @@ function NxImageContainer(props: VisContainerProps) {
   assertGroup(entity);
 
   const nxData = useNxData(entity);
-  assertNumericLikeNxData(nxData);
+  assertNumericLikeOrComplexNxData(nxData);
 
   const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
   const [selectedDef, setSelectedDef] = useState(signalDef);

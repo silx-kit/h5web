@@ -112,22 +112,19 @@ function getSupportedNxVis(
   }
 
   const dataset = findSignalDataset(entity, attrValuesStore);
-  const isCplx = hasComplexType(dataset);
   const { interpretation, CLASS } = attrValuesStore.get(dataset);
 
   if (
     (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
     hasMinDims(dataset, 3) && // 2 for axes + 1 for RGB channels
     dataset.shape[dataset.shape.length - 1] === 3 && // 3 channels
-    !isCplx
+    !hasComplexType(dataset)
   ) {
     return [NEXUS_VIS[NexusVis.NxRGB]];
   }
 
-  const imageVis = isCplx ? NexusVis.NxComplexImage : NexusVis.NxImage;
-
   if (interpretation === NxInterpretation.Image) {
-    return [NEXUS_VIS[imageVis]];
+    return [NEXUS_VIS[NexusVis.NxImage]];
   }
 
   if (interpretation === NxInterpretation.Spectrum) {
@@ -136,7 +133,7 @@ function getSupportedNxVis(
 
   // Fall back on dimension checks: 2D+ are Spectrum+Image, 1D can be Scatter or Spectrum
   if (hasMinDims(dataset, 2)) {
-    return [NEXUS_VIS[NexusVis.NxSpectrum], NEXUS_VIS[imageVis]];
+    return [NEXUS_VIS[NexusVis.NxSpectrum], NEXUS_VIS[NexusVis.NxImage]];
   }
 
   const axisDatasets = findAxesDatasets(entity, dataset, attrValuesStore);

@@ -1,4 +1,5 @@
 import {
+  ComplexVisType,
   type DimensionMapping,
   getSliceSelection,
   HeatmapVis,
@@ -8,9 +9,11 @@ import {
   useSlicedDimsAndMapping,
   useVisDomain,
 } from '@h5web/lib';
+import { isComplexType } from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type ArrayValue,
+  type ComplexType,
   type Dataset,
   type NumericLikeType,
   type NumericType,
@@ -25,13 +28,17 @@ import {
   useToNumArray,
   useToNumArrays,
 } from '../hooks';
-import { DEFAULT_DOMAIN, formatNumLikeType } from '../utils';
+import {
+  COMPLEX_VIS_TYPE_LABELS,
+  DEFAULT_DOMAIN,
+  formatNumLikeType,
+} from '../utils';
 import { type HeatmapConfig } from './config';
 import HeatmapToolbar from './HeatmapToolbar';
 
 interface Props {
-  dataset: Dataset<ArrayShape, NumericLikeType>;
-  value: ArrayValue<NumericLikeType>;
+  dataset: Dataset<ArrayShape, NumericLikeType | ComplexType>;
+  value: ArrayValue<NumericLikeType | ComplexType>;
   axisLabels?: AxisMapping<string>;
   axisValues?: AxisMapping<ArrayValue<NumericType>>;
   dimMapping: DimensionMapping;
@@ -58,6 +65,7 @@ function MappedHeatmapVis(props: Props) {
     customDomain,
     colorMap,
     scaleType,
+    complexVisType,
     keepRatio,
     showGrid,
     invertColorMap,
@@ -65,15 +73,31 @@ function MappedHeatmapVis(props: Props) {
     flipYAxis,
   } = config;
 
-  const numArray = useToNumArray(value);
+  const { shape: dims, type } = dataset;
+  const isComplex = isComplexType(type);
+
+  // If complex dataset displayed as phase/amplitude: `numArray` = amplitude; `alphaArray` = phase
+  const isPhaseAmp = complexVisType === ComplexVisType.PhaseAmplitude;
+
+  const numArray = useToNumArray(
+    value,
+    isPhaseAmp ? ComplexVisType.Amplitude : complexVisType,
+  );
+  const phaseArray = useToNumArray(
+    isComplex && isPhaseAmp ? value : undefined,
+    ComplexVisType.Phase,
+  );
+
   const numAxisArrays = useToNumArrays(axisValues);
 
-  const { shape: dims } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
+  const alphaArray = useMappedArray(phaseArray, slicedDims, slicedMapping);
 
   const dataDomain =
     useDomain(dataArray, scaleType, undefined, ignoreValue) || DEFAULT_DOMAIN;
+  const alphaDomain = useDomain(alphaArray, scaleType) || DEFAULT_DOMAIN;
+
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 
@@ -90,6 +114,7 @@ function MappedHeatmapVis(props: Props) {
           <HeatmapToolbar
             dataDomain={dataDomain}
             isSlice={selection !== undefined}
+            withComplexSelector={isComplex}
             config={config}
             exportEntries={exportEntries}
           />,
@@ -99,8 +124,8 @@ function MappedHeatmapVis(props: Props) {
       <HeatmapVis
         className={visualizerStyles.vis}
         dataArray={dataArray}
-        title={title}
-        dtype={formatNumLikeType(dataset.type)}
+        title={`${title}${isComplex ? ` (${COMPLEX_VIS_TYPE_LABELS[complexVisType].toLowerCase()})` : ''}`}
+        dtype={!isComplex ? formatNumLikeType(type) : undefined}
         domain={safeDomain}
         colorMap={colorMap}
         scaleType={scaleType}
@@ -118,6 +143,9 @@ function MappedHeatmapVis(props: Props) {
         flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}
         ignoreValue={ignoreValue}
+        alpha={
+          alphaArray ? { array: alphaArray, domain: alphaDomain } : undefined
+        }
       />
     </>
   );

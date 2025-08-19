@@ -24,7 +24,6 @@ import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { COMPLEX_VIS_TYPE_LABELS } from '../complex/utils';
 import {
   useExportEntries,
   useMappedArray,
@@ -32,7 +31,12 @@ import {
   useToNumArray,
   useToNumArrays,
 } from '../hooks';
-import { DEFAULT_DOMAIN, formatNumLikeType, isComplexArray } from '../utils';
+import {
+  COMPLEX_VIS_TYPE_LABELS,
+  DEFAULT_DOMAIN,
+  formatNumLikeType,
+  isComplexArray,
+} from '../utils';
 import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
 import { generateCsv } from './utils';
