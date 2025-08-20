@@ -1,6 +1,6 @@
 import { type CustomDomain, DomainWidget, ScaleType } from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { type Meta, type StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
 import DomainWidgetDecorator from './decorators/DomainWidgetDecorator';

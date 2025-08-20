@@ -1,4 +1,4 @@
-import { type StoryContext, type StoryFn } from '@storybook/react';
+import { type StoryContext, type StoryFn } from '@storybook/react-vite';
 
 function FillHeight(Story: StoryFn, context: StoryContext) {
   const { viewMode } = context;

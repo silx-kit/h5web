@@ -12,7 +12,7 @@ import {
   createArrayFromView,
   toTypedNdArray,
 } from '@h5web/shared/vis-utils';
-import { type Meta, type StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import ndarray from 'ndarray';
 
 import FillHeight from './decorators/FillHeight';

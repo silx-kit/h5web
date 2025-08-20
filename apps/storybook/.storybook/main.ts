@@ -2,25 +2,19 @@ import { type StorybookConfig } from '@storybook/react-vite';
 import remarkGfm from 'remark-gfm';
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.tsx'],
   framework: '@storybook/react-vite',
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.tsx'],
   addons: [
-    {
-      name: '@storybook/addon-essentials',
-      options: { docs: false }, // `addon-docs` needs to be configured separately
-    },
     {
       name: '@storybook/addon-docs',
       options: {
-        mdxPluginOptions: {
-          mdxCompileOptions: {
-            remarkPlugins: [remarkGfm], // https://storybook.js.org/docs/writing-docs/mdx#markdown-tables-arent-rendering-correctly
-          },
-        },
+        // https://storybook.js.org/docs/writing-docs/mdx#markdown-tables-arent-rendering-correctly
+        mdxPluginOptions: { mdxCompileOptions: { remarkPlugins: [remarkGfm] } },
       },
     },
     '@storybook/addon-links',
   ],
+  core: { disableTelemetry: true },
 };
 
 export default config;
