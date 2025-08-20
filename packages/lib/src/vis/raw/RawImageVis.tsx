@@ -14,7 +14,7 @@ function RawImageVis(props: Props) {
     <div className={`${styles.root} ${className}`} style={style}>
       <img
         className={styles.img}
-        src={URL.createObjectURL(new Blob([value]))}
+        src={URL.createObjectURL(new Blob([value.buffer as ArrayBuffer]))}
         alt={title}
         data-keep-colors
         data-fit={fit || undefined}

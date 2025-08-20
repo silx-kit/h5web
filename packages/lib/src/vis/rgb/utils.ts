@@ -38,7 +38,12 @@ export function getData3DTexture(
 ): Data3DTexture {
   const { rows, cols } = getDims(values);
 
-  const texture = new Data3DTexture(values.data, 3, cols, rows);
+  const texture = new Data3DTexture(
+    values.data as ArrayBufferView<ArrayBuffer>,
+    3,
+    cols,
+    rows,
+  );
   texture.format = RedFormat;
   texture.type = values.dtype === 'float32' ? FloatType : UnsignedByteType;
   texture.needsUpdate = true;

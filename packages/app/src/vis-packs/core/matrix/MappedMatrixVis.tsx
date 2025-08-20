@@ -14,7 +14,6 @@ import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useExportEntries, useMappedArray } from '../hooks';
-import {} from '../utils';
 import { type MatrixVisConfig } from './config';
 import MatrixToolbar from './MatrixToolbar';
 import {
