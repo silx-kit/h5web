@@ -175,7 +175,7 @@ test('show interactions help for heatmap according to "keep ratio"', async () =>
   });
 
   // By default, "keep ratio" should be enabled
-  expect(keepRatioBtn).toHaveAttribute('aria-pressed', 'true');
+  expect(keepRatioBtn).toBePressed();
 
   // Since "keep ratio" is enabled, only basic interactions should be available (no axial-zoom interactions)
   await user.click(helpBtn);

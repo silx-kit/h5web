@@ -24,15 +24,15 @@ test('toggle sidebar', async () => {
   });
 
   expect(fileBtn).toBeVisible();
-  expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
+  expect(sidebarBtn).toBePressed();
 
   await user.click(sidebarBtn);
   expect(fileBtn).not.toBeVisible();
-  expect(sidebarBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(sidebarBtn).not.toBePressed();
 
   await user.click(sidebarBtn);
   expect(fileBtn).toBeVisible();
-  expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
+  expect(sidebarBtn).toBePressed();
 });
 
 test('navigate groups in explorer', async () => {

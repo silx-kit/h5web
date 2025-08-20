@@ -96,11 +96,11 @@ test('edit bounds manually', async () => {
   const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
 
   const editBtn = screen.getByRole('button', { name: 'Edit domain' });
-  expect(editBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(editBtn).not.toBePressed();
 
   // Click on edit button to open popup with both min and max in edit mode
   await user.click(editBtn);
-  expect(editBtn).toHaveAttribute('aria-pressed', 'true');
+  expect(editBtn).toBePressed();
   expect(editBtn).toHaveAttribute('aria-expanded', 'true');
   const minInput = screen.getByLabelText('min');
   const maxInput = screen.getByLabelText('max');
@@ -127,7 +127,7 @@ test('edit bounds manually', async () => {
   await user.type(minInput, '1');
   await user.click(applyMinBtn);
   expect(within(visArea).getByText('−9.5e+11')).toBeVisible(); // applied
-  expect(editBtn).toHaveAttribute('aria-pressed', 'true'); // because max still in edit mode
+  expect(editBtn).toBePressed(); // because max still in edit mode
 
   // Replace value of max input field and apply new max
   await user.clear(maxInput);
@@ -139,7 +139,7 @@ test('edit bounds manually', async () => {
 
   expect(maxInput).toHaveValue('1e+5'); // auto-format
   expect(within(visArea).getByText('1e+5')).toBeVisible();
-  expect(editBtn).toHaveAttribute('aria-pressed', 'false'); // min and max no longer in edit mode
+  expect(editBtn).not.toBePressed(); // min and max no longer in edit mode
 });
 
 test('clamp domain in symlog scale', async () => {
@@ -179,24 +179,24 @@ test('control min/max autoscale behaviour', async () => {
   const maxInput = screen.getByLabelText('max');
 
   // Autoscale is enabled for both min and max by default
-  expect(minBtn).toHaveAttribute('aria-pressed', 'true');
-  expect(maxBtn).toHaveAttribute('aria-pressed', 'true');
+  expect(minBtn).toBePressed();
+  expect(maxBtn).toBePressed();
 
   // Moving min thumb disables min autoscale
   await user.type(minThumb, '{ArrowRight}');
-  expect(minBtn).toHaveAttribute('aria-pressed', 'false');
-  expect(maxBtn).toHaveAttribute('aria-pressed', 'true'); // unaffected
+  expect(minBtn).not.toBePressed();
+  expect(maxBtn).toBePressed(); // unaffected
 
   // Editing max disables max autoscale
   await user.type(maxInput, '0');
   await user.click(screen.getByRole('button', { name: 'Apply max' }));
   expect(maxInput).toHaveValue('4e+20');
-  expect(maxBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(maxBtn).not.toBePressed();
 
   // Re-enable max autoscale
   await user.click(maxBtn);
-  expect(maxBtn).toHaveAttribute('aria-pressed', 'true');
-  expect(minBtn).toHaveAttribute('aria-pressed', 'false'); // unaffected
+  expect(maxBtn).toBePressed();
+  expect(minBtn).not.toBePressed(); // unaffected
   expect(maxInput).toHaveValue('4e+2');
 });
 
