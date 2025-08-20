@@ -24,14 +24,10 @@ function createMatrixConfigStore() {
         toggleSticky: () => set((state) => ({ sticky: !state.sticky })),
 
         customCellWidth: undefined,
-        setCustomCellWidth: (customCellWidth) => {
-          set({ customCellWidth });
-        },
+        setCustomCellWidth: (customCellWidth) => set({ customCellWidth }),
 
         notation: Notation.Scientific,
-        setNotation: (notation) => {
-          set({ notation });
-        },
+        setNotation: (notation) => set({ notation }),
       }),
       {
         name: 'h5web:matrix',

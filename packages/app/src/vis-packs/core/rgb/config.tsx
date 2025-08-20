@@ -34,7 +34,7 @@ function createRgbConfigStore() {
           set((state) => ({ keepRatio: !state.keepRatio })),
 
         imageType: ImageType.RGB,
-        setImageType: (imageType: ImageType) => set({ imageType }),
+        setImageType: (imageType) => set({ imageType }),
 
         flipXAxis: false,
         toggleXAxisFlip: () =>

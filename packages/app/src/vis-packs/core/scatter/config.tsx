@@ -40,20 +40,17 @@ function createScatterConfigStore() {
     persist(
       (set): ScatterConfig => ({
         customDomain: [null, null],
-        setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
+        setCustomDomain: (customDomain) => set({ customDomain }),
 
         colorMap: 'Viridis',
-        setColorMap: (colorMap: ColorMap) => set({ colorMap }),
+        setColorMap: (colorMap) => set({ colorMap }),
 
         invertColorMap: false,
-        toggleColorMapInversion: () => {
-          set((state) => ({ invertColorMap: !state.invertColorMap }));
-        },
+        toggleColorMapInversion: () =>
+          set((state) => ({ invertColorMap: !state.invertColorMap })),
 
         scaleType: ScaleType.Linear,
-        setScaleType: (scaleType) => {
-          set(() => ({ scaleType }));
-        },
+        setScaleType: (scaleType) => set(() => ({ scaleType })),
 
         showGrid: true,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),

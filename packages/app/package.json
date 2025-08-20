@@ -57,17 +57,17 @@
   },
   "dependencies": {
     "@h5web/lib": "workspace:*",
-    "@react-hookz/web": "25.0.1",
-    "@react-three/fiber": "8.17.12",
+    "@react-hookz/web": "25.1.1",
+    "@react-three/fiber": "8.18.0",
     "d3-format": "3.1.0",
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
-    "react-error-boundary": "5.0.0",
+    "react-error-boundary": "6.0.0",
     "react-icons": "5.4.0",
     "react-reflex": "4.2.7",
     "react-slider": "2.0.4",
-    "three": "0.172.0",
-    "zustand": "5.0.3"
+    "three": "0.179.1",
+    "zustand": "5.0.8"
   },
   "devDependencies": {
     "@esrf/eslint-config": "1.4.0",
