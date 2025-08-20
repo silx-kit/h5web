@@ -8,7 +8,7 @@ import {
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
 import { ScaleType } from '@h5web/shared/vis-models';
-import { type Meta, type StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { range } from 'd3-array';
 
 import FillHeight from './decorators/FillHeight';

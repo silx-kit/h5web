@@ -11,7 +11,7 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared/vis-models';
-import { type Meta, type StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 
 import FillHeight from './decorators/FillHeight';
 

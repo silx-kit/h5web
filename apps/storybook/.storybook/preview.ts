@@ -1,12 +1,11 @@
 import '../src/styles.css';
 
-import { type Preview } from '@storybook/react';
+import { type Preview } from '@storybook/react-vite';
 
 const preview: Preview = {
   tags: ['autodocs'],
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
-    docs: { source: { excludeDecorators: true } },
     options: {
       storySort: {
         order: [

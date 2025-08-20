@@ -1,6 +1,6 @@
 import { DefaultInteractions, FloatingControl, VisCanvas } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 
 import FillHeight from './decorators/FillHeight';
 

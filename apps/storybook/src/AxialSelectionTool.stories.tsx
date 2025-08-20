@@ -10,7 +10,7 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { useThrottledState } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 
 import FillHeight from './decorators/FillHeight';
 import { getTitleForSelection } from './utils';

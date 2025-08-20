@@ -1,5 +1,5 @@
 import { ScaleType, VisCanvas } from '@h5web/lib';
-import { type Meta, type StoryFn, type StoryObj } from '@storybook/react';
+import { type Meta, type StoryFn, type StoryObj } from '@storybook/react-vite';
 import { format } from 'd3-format';
 
 import FillHeight from './decorators/FillHeight';

@@ -6,7 +6,7 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { type PropsWithChildren, useState } from 'react';
 import { createPortal } from 'react-dom';
 
