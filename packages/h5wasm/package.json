@@ -37,10 +37,14 @@
   },
   "peerDependencies": {
     "@h5web/app": "workspace:*",
-    "react": ">=18",
+    "@types/react": "18.x",
+    "react": "18.x",
     "typescript": ">=4.5"
   },
   "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
     "typescript": {
       "optional": true
     }
