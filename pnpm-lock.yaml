@@ -217,6 +217,12 @@ importers:
       '@react-three/fiber':
         specifier: 8.18.0
         version: 8.18.0(@types/react@18.3.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.179.1)
+      '@types/d3-format':
+        specifier: ~3.0.4
+        version: 3.0.4
+      '@types/ndarray':
+        specifier: 1.0.14
+        version: 1.0.14
       d3-format:
         specifier: 3.1.0
         version: 3.1.0
@@ -263,12 +269,6 @@ importers:
       '@testing-library/user-event':
         specifier: 14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
-      '@types/d3-format':
-        specifier: ~3.0.4
-        version: 3.0.4
-      '@types/ndarray':
-        specifier: 1.0.14
-        version: 1.0.14
       '@types/node':
         specifier: ^22.17.2
         version: 22.17.2
@@ -393,6 +393,36 @@ importers:
       '@react-hookz/web':
         specifier: 25.1.1
         version: 25.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/d3-array':
+        specifier: ~3.2.1
+        version: 3.2.1
+      '@types/d3-color':
+        specifier: ~3.1.3
+        version: 3.1.3
+      '@types/d3-format':
+        specifier: ~3.0.4
+        version: 3.0.4
+      '@types/d3-interpolate':
+        specifier: ~3.0.4
+        version: 3.0.4
+      '@types/d3-scale':
+        specifier: ~4.0.9
+        version: 4.0.9
+      '@types/d3-scale-chromatic':
+        specifier: ~3.1.0
+        version: 3.1.0
+      '@types/ndarray':
+        specifier: ~1.0.14
+        version: 1.0.14
+      '@types/react-measure':
+        specifier: ~2.0.12
+        version: 2.0.12
+      '@types/react-slider':
+        specifier: ~1.3.6
+        version: 1.3.6
+      '@types/react-window':
+        specifier: ~1.8.8
+        version: 1.8.8
       '@visx/axis':
         specifier: 3.12.0
         version: 3.12.0(react@18.3.1)
@@ -469,27 +499,6 @@ importers:
       '@rollup/plugin-alias':
         specifier: 5.1.1
         version: 5.1.1(rollup@4.46.4)
-      '@types/d3-array':
-        specifier: ~3.2.1
-        version: 3.2.1
-      '@types/d3-color':
-        specifier: ~3.1.3
-        version: 3.1.3
-      '@types/d3-format':
-        specifier: ~3.0.4
-        version: 3.0.4
-      '@types/d3-interpolate':
-        specifier: ~3.0.4
-        version: 3.0.4
-      '@types/d3-scale':
-        specifier: ~4.0.9
-        version: 4.0.9
-      '@types/d3-scale-chromatic':
-        specifier: ~3.1.0
-        version: 3.1.0
-      '@types/ndarray':
-        specifier: ~1.0.14
-        version: 1.0.14
       '@types/node':
         specifier: ^22.17.2
         version: 22.17.2
@@ -499,15 +508,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.7
         version: 18.3.7(@types/react@18.3.23)
-      '@types/react-measure':
-        specifier: ~2.0.12
-        version: 2.0.12
-      '@types/react-slider':
-        specifier: ~1.3.6
-        version: 1.3.6
-      '@types/react-window':
-        specifier: ~1.8.8
-        version: 1.8.8
       '@types/three':
         specifier: 0.179.0
         version: 0.179.0
