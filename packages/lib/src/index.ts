@@ -45,9 +45,13 @@ export { default as Html } from './vis/shared/Html';
 export { default as Overlay } from './vis/shared/Overlay';
 export { default as Annotation } from './vis/shared/Annotation';
 export { default as DataToHtml } from './vis/shared/DataToHtml';
+export { default as Tooltip } from './vis/shared/Tooltip';
+export { default as Guides } from './vis/shared/Guides';
 export type { VisCanvasProps } from './vis/shared/VisCanvas';
 export type { TooltipMeshProps } from './vis/shared/TooltipMesh';
 export type { DataToHtmlProps } from './vis/shared/DataToHtml';
+export type { TooltipProps } from './vis/shared/Tooltip';
+export type { GuidesProps } from './vis/shared/Guides';
 
 export { default as DataCurve } from './vis/line/DataCurve';
 export { default as Line } from './vis/line/Line';

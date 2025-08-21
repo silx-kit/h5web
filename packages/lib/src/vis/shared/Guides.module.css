@@ -1,0 +1,9 @@
+.overlay {
+  z-index: var(--h5w-zi-tooltip);
+}
+
+.guides {
+  stroke: var(--h5w-tooltip-guide--color, gray);
+  stroke-width: var(--h5w-tooltip-guide--width, 1.5);
+  stroke-opacity: var(--h5w-tooltip-guide--opacity, 0.5);
+}

@@ -1,16 +1,17 @@
 import { type ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
-import { type ReactElement, useCallback } from 'react';
+import { type ReactNode, useCallback } from 'react';
 
 import { type Coords, type Size } from '../models';
-import TooltipOverlay from './TooltipOverlay';
+import Guides from './Guides';
+import Tooltip from './Tooltip';
 import { useVisCanvasContext } from './VisCanvasProvider';
 import VisMesh from './VisMesh';
 
 interface Props {
   size?: Size;
   guides?: 'horizontal' | 'vertical' | 'both';
-  renderTooltip: (x: number, y: number) => ReactElement | undefined;
+  renderTooltip: (x: number, y: number) => ReactNode;
 }
 
 function TooltipMesh(props: Props) {
@@ -81,14 +82,14 @@ function TooltipMesh(props: Props) {
       >
         <meshBasicMaterial opacity={0} transparent />
       </VisMesh>
-      <TooltipOverlay
-        tooltipOpen={tooltipOpen}
-        tooltipLeft={tooltipLeft}
-        tooltipTop={tooltipTop}
-        guides={guides}
-      >
+      <Guides
+        show={tooltipOpen}
+        left={guides !== 'horizontal' && tooltipLeft}
+        top={guides !== 'vertical' && tooltipTop}
+      />
+      <Tooltip show={tooltipOpen} left={tooltipLeft} top={tooltipTop}>
         {content}
-      </TooltipOverlay>
+      </Tooltip>
     </>
   );
 }
