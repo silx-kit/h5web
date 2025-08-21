@@ -78,3 +78,11 @@ export const BothGuides = {
     ),
   },
 } satisfies Story;
+
+export const GuidesOnly = {
+  ...Default,
+  args: {
+    guides: 'both',
+    renderTooltip: () => undefined,
+  },
+} satisfies Story;

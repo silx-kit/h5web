@@ -19,7 +19,7 @@ import ColorBar from '../heatmap/ColorBar';
 import { type ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
 import { type ClassStyleAttrs } from '../models';
-import TooltipOverlay from '../shared/TooltipOverlay';
+import Tooltip from '../shared/Tooltip';
 import VisCanvas from '../shared/VisCanvas';
 import { type ScatterAxisParams } from './models';
 import ScatterPoints from './ScatterPoints';
@@ -134,26 +134,20 @@ function ScatterVis(props: Props) {
           }
           onPointerOut={() => hideTooltip()}
         />
-        <TooltipOverlay
-          tooltipOpen={tooltipOpen}
-          tooltipLeft={tooltipLeft}
-          tooltipTop={tooltipTop}
-        >
-          {tooltipIndex !== undefined && (
-            <>
-              <span>
-                {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(
-                  abscissas[tooltipIndex],
-                )}, ${ordinateLabel ?? 'y'} = ${formatTooltipVal(
-                  ordinates[tooltipIndex],
-                )}`}
-              </span>
-              <div className={styles.tooltipValue}>
-                <strong>{formatTooltipVal(dataArray.get(tooltipIndex))}</strong>
-              </div>
-            </>
-          )}
-        </TooltipOverlay>
+        {tooltipIndex !== undefined && (
+          <Tooltip show={tooltipOpen} left={tooltipLeft} top={tooltipTop}>
+            <span>
+              {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(
+                abscissas[tooltipIndex],
+              )}, ${ordinateLabel ?? 'y'} = ${formatTooltipVal(
+                ordinates[tooltipIndex],
+              )}`}
+            </span>
+            <div className={styles.tooltipValue}>
+              <strong>{formatTooltipVal(dataArray.get(tooltipIndex))}</strong>
+            </div>
+          </Tooltip>
+        )}
 
         {children}
       </VisCanvas>
