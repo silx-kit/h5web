@@ -167,11 +167,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 Data provider for [H5Grove](https://github.com/silx-kit/h5grove).
 
 ```tsx
-<H5GroveProvider
-  url="https://h5grove.server.url"
-  filepath="some-file.h5"
-  axiosConfig={useMemo(() => ({ params: { file: 'some-file.h5' } }), [])}
->
+<H5GroveProvider url="https://h5grove.server.url" filepath="some-file.h5">
   <App />
 </H5GroveProvider>
 ```
@@ -393,6 +389,17 @@ object to configure requests, for instance with an `Authentication` header:
 const fetcher = createBasicFetcher({
   headers: { Authorization: `Bearer ${token}` },
 });
+```
+
+To add custom query parameters to the requests:
+
+```ts
+const basicFetcher = createBasicFetcher();
+
+async function fetcher(...args: Parameters<Fetcher>) {
+  const [url, params, opts] = args;
+  return basicFetcher(url, { ...params, myOwnParam }, opts);
+}
 ```
 
 #### `createAxiosFetcher: (axiosInstance: AxiosInstance) => Fetcher`
