@@ -11,9 +11,11 @@ import {
   useSlicedDimsAndMapping,
   useVisDomain,
 } from '@h5web/lib';
+import { isComplexType } from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type ArrayValue,
+  type ComplexType,
   type Dataset,
   type NumericLikeType,
   type NumericType,
@@ -22,6 +24,7 @@ import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { COMPLEX_VIS_TYPE_LABELS } from '../complex/utils';
 import {
   useExportEntries,
   useMappedArray,
@@ -29,18 +32,18 @@ import {
   useToNumArray,
   useToNumArrays,
 } from '../hooks';
-import { DEFAULT_DOMAIN, formatNumLikeType } from '../utils';
+import { DEFAULT_DOMAIN, formatNumLikeType, isComplexArray } from '../utils';
 import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
 import { generateCsv } from './utils';
 
 interface Props {
-  dataset: Dataset<ArrayShape, NumericLikeType>;
-  value: ArrayValue<NumericLikeType>;
+  dataset: Dataset<ArrayShape, NumericLikeType | ComplexType>;
+  value: ArrayValue<NumericLikeType | ComplexType>;
   valueLabel?: string;
   errors?: ArrayValue<NumericType>;
   auxLabels?: string[];
-  auxValues?: ArrayValue<NumericLikeType>[];
+  auxValues?: ArrayValue<NumericLikeType | ComplexType>[];
   auxErrors?: (ArrayValue<NumericType> | undefined)[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
@@ -55,7 +58,7 @@ function MappedLineVis(props: Props) {
   const {
     dataset,
     value,
-    valueLabel,
+    valueLabel = dataset.name,
     errors,
     auxLabels = [],
     auxValues = [],
@@ -73,17 +76,18 @@ function MappedLineVis(props: Props) {
     customDomain,
     yScaleType,
     xScaleType,
+    complexVisType,
     curveType,
     showGrid,
     showErrors,
   } = config;
 
-  const { shape: dims } = dataset;
+  const { shape: dims, type } = dataset;
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const hookArgs = [slicedDims, slicedMapping] as const;
 
-  const numArray = useToNumArray(value);
-  const numAuxArrays = useToNumArrays(auxValues);
+  const numArray = useToNumArray(value, complexVisType);
+  const numAuxArrays = useToNumArrays(auxValues, complexVisType);
   const numErrorsArray = useToNumArray(errors);
   const numAuxErrorsArrays = useToNumArrays(auxErrors);
   const numAxisArrays = useToNumArrays(axisValues);
@@ -116,6 +120,10 @@ function MappedLineVis(props: Props) {
     scaleType: xScaleType,
   };
 
+  const ordinateLabel = isComplexType(type)
+    ? `${valueLabel} (${COMPLEX_VIS_TYPE_LABELS[complexVisType].toLowerCase()})`
+    : valueLabel;
+
   const auxiliaries = auxArrays.map((array, i) => ({
     label: auxLabels[i],
     array,
@@ -125,7 +133,7 @@ function MappedLineVis(props: Props) {
   const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
     csv: () =>
       generateCsv(
-        valueLabel || dataset.name,
+        ordinateLabel,
         dataArray,
         abscissaParams,
         errorsArray,
@@ -141,6 +149,9 @@ function MappedLineVis(props: Props) {
             dataDomain={combinedDomain}
             isSlice={selection !== undefined}
             disableErrors={!errors}
+            withComplexSelector={
+              isComplexType(dataset.type) || auxValues.some(isComplexArray)
+            }
             config={config}
             exportEntries={exportEntries}
           />,
@@ -155,9 +166,9 @@ function MappedLineVis(props: Props) {
         curveType={curveType}
         showGrid={showGrid}
         abscissaParams={abscissaParams}
-        ordinateLabel={valueLabel}
+        ordinateLabel={ordinateLabel !== title ? ordinateLabel : undefined}
         title={title}
-        dtype={formatNumLikeType(dataset.type)}
+        dtype={isComplexType(type) ? complexVisType : formatNumLikeType(type)}
         errorsArray={errorsArray}
         showErrors={showErrors}
         auxiliaries={auxiliaries}

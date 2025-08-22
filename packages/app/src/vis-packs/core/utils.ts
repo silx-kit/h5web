@@ -1,15 +1,23 @@
 import { type DimensionMapping, type InteractionInfo } from '@h5web/lib';
 import {
   isBigIntTypedArray,
+  isComplex,
   isIntegerType,
   isNumericType,
 } from '@h5web/shared/guards';
 import {
   type ArrayValue,
+  type ComplexType,
   DTypeClass,
+  type H5WebComplex,
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
-import { type Domain, type NumArray } from '@h5web/shared/vis-models';
+import {
+  type ComplexLineVisType,
+  ComplexVisType,
+  type Domain,
+  type NumArray,
+} from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
 import ndarray, { type NdArray } from 'ndarray';
 
@@ -78,6 +86,12 @@ export function getImageInteractions(keepRatio: boolean): InteractionInfo[] {
   return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
 }
 
+export function isComplexArray(
+  val: ArrayValue<NumericLikeType | ComplexType>,
+): val is H5WebComplex[] {
+  return Array.isArray(val) && isComplex(val[0]);
+}
+
 function isBigIntArray(val: ArrayValue<NumericLikeType>): val is bigint[] {
   return Array.isArray(val) && typeof val[0] === 'bigint';
 }
@@ -86,15 +100,25 @@ function isBoolArray(val: ArrayValue<NumericLikeType>): val is boolean[] {
   return Array.isArray(val) && typeof val[0] === 'boolean';
 }
 
-export function toNumArray<T extends ArrayValue<NumericLikeType> | undefined>(
+export function toNumArray<
+  T extends ArrayValue<NumericLikeType | ComplexType> | undefined,
+>(
   arr: T,
-): T extends ArrayValue<NumericLikeType> ? NumArray : undefined;
+  complexVisType?: ComplexLineVisType,
+): T extends ArrayValue<NumericLikeType | ComplexType> ? NumArray : undefined;
 
 export function toNumArray(
-  arr: ArrayValue<NumericLikeType> | undefined,
+  arr: ArrayValue<NumericLikeType | ComplexType> | undefined,
+  complexVisType: ComplexLineVisType = ComplexVisType.Amplitude,
 ): NumArray | undefined {
   if (!arr) {
     return undefined;
+  }
+
+  if (isComplexArray(arr)) {
+    return complexVisType === ComplexVisType.Amplitude
+      ? arr.map(([real, imag]) => Math.hypot(real, imag))
+      : arr.map(([real, imag]) => Math.atan2(imag, real));
   }
 
   if (isBigIntTypedArray(arr)) {

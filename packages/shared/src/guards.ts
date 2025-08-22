@@ -112,16 +112,20 @@ export function assertEnvVar(
   }
 }
 
+export function isComplex(val: unknown): val is H5WebComplex {
+  return (
+    Array.isArray(val) &&
+    val.length === 2 &&
+    typeof val[0] === 'number' &&
+    typeof val[1] === 'number'
+  );
+}
+
 export function assertComplex(
   val: unknown,
   message = 'Expected complex',
 ): asserts val is H5WebComplex {
-  if (
-    !Array.isArray(val) ||
-    val.length !== 2 ||
-    typeof val[0] !== 'number' ||
-    typeof val[1] !== 'number'
-  ) {
+  if (!isComplex(val)) {
     throw new TypeError(message);
   }
 }
@@ -425,6 +429,12 @@ export function isNumericLikeType(type: DType): type is NumericLikeType {
   return isNumericType(type) || isBoolType(type) || isEnumType(type);
 }
 
+export function isNumericLikeOrComplexType(
+  type: DType,
+): type is NumericLikeType | ComplexType {
+  return isNumericLikeType(type) || isComplexType(type);
+}
+
 export function hasBoolType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, BooleanType> {
@@ -441,6 +451,12 @@ export function hasNumericLikeType<S extends Shape>(
   dataset: Dataset<S>,
 ): dataset is Dataset<S, NumericLikeType> {
   return isNumericLikeType(dataset.type);
+}
+
+export function hasNumericLikeOrComplexType<S extends Shape>(
+  dataset: Dataset<S>,
+): dataset is Dataset<S, NumericLikeType | ComplexType> {
+  return isNumericLikeOrComplexType(dataset.type);
 }
 
 export function assertBoolType<S extends Shape>(
@@ -493,7 +509,7 @@ export function assertNumericLikeOrComplexType<S extends Shape>(
   dataset: Dataset<S>,
   message = 'Expected dataset to have numeric, boolean, enum or complex type',
 ): asserts dataset is Dataset<S, NumericLikeType | ComplexType> {
-  if (!hasNumericLikeType(dataset) && !hasComplexType(dataset)) {
+  if (!hasNumericLikeOrComplexType(dataset)) {
     throw new Error(message);
   }
 }

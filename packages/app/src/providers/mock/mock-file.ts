@@ -248,8 +248,11 @@ export function makeMockFile(): GroupWithChildren {
             signal: withNxAttr(array('twoD_cplx'), {
               interpretation: 'spectrum',
             }),
-            auxiliary: { secondary_cplx: array('secondary_cplx') },
-            auxAttr: ['secondary_cplx'],
+            auxiliary: {
+              secondary_cplx: array('secondary_cplx'),
+              tertiary_float: array('tertiary_float'),
+            },
+            auxAttr: ['secondary_cplx', 'tertiary_float'],
           }),
           nxData('complex_image', {
             signal: array('twoD_cplx'),

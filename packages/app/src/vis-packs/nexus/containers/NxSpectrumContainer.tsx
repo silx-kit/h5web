@@ -7,7 +7,7 @@ import { useLineConfig } from '../../core/line/config';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { assertNumericLikeNxData } from '../guards';
+import { assertNumericLikeOrComplexNxData } from '../guards';
 import { useNxData, useNxValuesCached } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { areSameDims } from '../utils';
@@ -17,7 +17,7 @@ function NxSpectrumContainer(props: VisContainerProps) {
   assertGroup(entity);
 
   const nxData = useNxData(entity);
-  assertNumericLikeNxData(nxData);
+  assertNumericLikeOrComplexNxData(nxData);
 
   const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
   const signalDims = signalDef.dataset.shape;

@@ -125,19 +125,18 @@ function getSupportedNxVis(
   }
 
   const imageVis = isCplx ? NexusVis.NxComplexImage : NexusVis.NxImage;
-  const spectrumVis = isCplx ? NexusVis.NxComplexSpectrum : NexusVis.NxSpectrum;
 
   if (interpretation === NxInterpretation.Image) {
     return [NEXUS_VIS[imageVis]];
   }
 
   if (interpretation === NxInterpretation.Spectrum) {
-    return [NEXUS_VIS[spectrumVis]];
+    return [NEXUS_VIS[NexusVis.NxSpectrum]];
   }
 
   // Fall back on dimension checks: 2D+ are Spectrum+Image, 1D can be Scatter or Spectrum
   if (hasMinDims(dataset, 2)) {
-    return [NEXUS_VIS[spectrumVis], NEXUS_VIS[imageVis]];
+    return [NEXUS_VIS[NexusVis.NxSpectrum], NEXUS_VIS[imageVis]];
   }
 
   const axisDatasets = findAxesDatasets(entity, dataset, attrValuesStore);
@@ -149,7 +148,7 @@ function getSupportedNxVis(
     return [NEXUS_VIS[NexusVis.NxScatter]];
   }
 
-  return [NEXUS_VIS[spectrumVis]];
+  return [NEXUS_VIS[NexusVis.NxSpectrum]];
 }
 
 function getImplicitDefaultChild(

@@ -1,5 +1,6 @@
 import {
   assertComplexType,
+  assertNumericLikeOrComplexType,
   assertNumericLikeType,
   assertNumericType,
   isDefined,
@@ -21,6 +22,26 @@ export function assertNumericLikeNxData(
 
   auxDefs.forEach((def) => {
     assertNumericLikeType(def.dataset);
+  });
+
+  if (signalDef.errorDataset) {
+    assertNumericType(signalDef.errorDataset);
+  }
+
+  axisDefs.filter(isDefined).forEach((def) => {
+    assertNumericType(def.dataset);
+  });
+}
+
+export function assertNumericLikeOrComplexNxData(
+  nxData: NxData,
+): asserts nxData is NxData {
+  const { signalDef, auxDefs, axisDefs } = nxData;
+
+  assertNumericLikeOrComplexType(signalDef.dataset);
+
+  auxDefs.forEach((def) => {
+    assertNumericLikeOrComplexType(def.dataset);
   });
 
   if (signalDef.errorDataset) {

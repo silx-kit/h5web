@@ -3,7 +3,6 @@ import { MdGrain } from 'react-icons/md';
 
 import {
   ComplexConfigProvider,
-  ComplexLineConfigProvider,
   HeatmapConfigProvider,
   LineConfigProvider,
   RgbConfigProvider,
@@ -12,7 +11,6 @@ import { ScatterConfigProvider } from '../core/scatter/config';
 import { type VisDef } from '../models';
 import {
   NxComplexImageContainer,
-  NxComplexSpectrumContainer,
   NxImageContainer,
   NxRgbContainer,
   NxScatterContainer,
@@ -22,7 +20,6 @@ import NxNoteContainer from './containers/NxNoteContainer';
 
 export enum NexusVis {
   NxSpectrum = 'NX Line',
-  NxComplexSpectrum = 'NX Complex Line',
   NxImage = 'NX Heatmap',
   NxComplexImage = 'NX Complex Heatmap',
   NxRGB = 'NX RGB',
@@ -36,13 +33,6 @@ export const NEXUS_VIS = {
     Icon: FiActivity,
     Container: NxSpectrumContainer,
     ConfigProvider: LineConfigProvider,
-  },
-
-  [NexusVis.NxComplexSpectrum]: {
-    name: NexusVis.NxSpectrum,
-    Icon: FiActivity,
-    Container: NxComplexSpectrumContainer,
-    ConfigProvider: ComplexLineConfigProvider,
   },
 
   [NexusVis.NxImage]: {

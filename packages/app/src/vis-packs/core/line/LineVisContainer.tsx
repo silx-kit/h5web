@@ -2,7 +2,7 @@ import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import {
   assertArrayShape,
   assertDataset,
-  assertNumericLikeType,
+  assertNumericLikeOrComplexType,
 } from '@h5web/shared/guards';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
@@ -19,7 +19,7 @@ function LineVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
-  assertNumericLikeType(entity);
+  assertNumericLikeOrComplexType(entity);
 
   const { shape: dims } = entity;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
