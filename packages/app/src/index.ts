@@ -14,9 +14,12 @@ export {
 
 export { enableBigIntSerialization } from './utils';
 export { getFeedbackMailto } from './breadcrumbs/utils';
+export { AbortError } from '@h5web/shared/react-suspense-fetch';
+
 export type { FeedbackContext } from './breadcrumbs/models';
 export type GetExportURL = NonNullable<DataProviderApi['getExportURL']>;
 export type {
+  NumArray,
   ExportFormat,
   ExportURL,
   BuiltInExporter,
@@ -30,6 +33,8 @@ export type {
   ValuesStore,
   ValuesStoreParams,
   AttrValuesStore,
+  Fetcher,
+  FetcherOptions,
 } from './providers/models';
 
 // Hooks
@@ -160,7 +165,16 @@ export {
   assertDatasetValue,
 } from '@h5web/shared/guards';
 
-// Undocumented (for @h5web/h5wasm)
+// Undocumented
 export { default as DataProvider } from './providers/DataProvider';
 export { DataProviderApi } from './providers/api';
 export { getValueOrError } from './providers/utils';
+export { useValuesInCache } from './hooks';
+export { applyMapping, getBaseArray, toNumArray } from './vis-packs/core/utils';
+export {
+  useBaseArray,
+  useMappedArray,
+  useMappedArrays,
+  useToNumArray,
+  useToNumArrays,
+} from './vis-packs/core/hooks';
