@@ -153,9 +153,45 @@ export function isBigIntTypedArray(val: unknown): val is BigIntTypedArray {
   return val instanceof BigInt64Array || val instanceof BigUint64Array;
 }
 
+export function assertTypedArray(
+  val: unknown,
+  message = 'Expected typed array',
+): asserts val is TypedArray {
+  if (!isTypedArray(val)) {
+    throw new TypeError(message);
+  }
+}
+
+export function assertBigIntTypedArray(
+  val: unknown,
+  message = 'Expected bigint typed array',
+): asserts val is BigIntTypedArray {
+  if (!isBigIntTypedArray(val)) {
+    throw new TypeError(message);
+  }
+}
+
 export function assertArrayOrTypedArray(
   val: unknown,
   message = 'Expected array or typed array',
+): asserts val is unknown[] | TypedArray {
+  if (!Array.isArray(val) && !isTypedArray(val)) {
+    throw new TypeError(message);
+  }
+}
+
+export function assertAnyTypedArray(
+  val: unknown,
+  message = 'Expected typed array or bigint typed array',
+): asserts val is TypedArray | BigIntTypedArray {
+  if (!isTypedArray(val) && !isBigIntTypedArray(val)) {
+    throw new TypeError(message);
+  }
+}
+
+export function assertArrayOrAnyTypedArray(
+  val: unknown,
+  message = 'Expected array, typed array or bigint typed array',
 ): asserts val is unknown[] | TypedArray | BigIntTypedArray {
   if (!Array.isArray(val) && !isTypedArray(val) && !isBigIntTypedArray(val)) {
     throw new TypeError(message);
@@ -556,7 +592,7 @@ export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
   if (hasScalarShape(dataset)) {
     assertScalarValue(value, type);
   } else {
-    assertArrayOrTypedArray(value);
+    assertArrayOrAnyTypedArray(value);
 
     if (value.length > 0) {
       assertScalarValue(value[0], type);
