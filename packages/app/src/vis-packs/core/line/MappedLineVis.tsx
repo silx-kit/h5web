@@ -28,6 +28,8 @@ import {
   useExportEntries,
   useMappedArray,
   useMappedArrays,
+  usePhaseAmp,
+  usePhaseAmps,
   useToNumArray,
   useToNumArrays,
 } from '../hooks';
@@ -90,15 +92,22 @@ function MappedLineVis(props: Props) {
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
   const hookArgs = [slicedDims, slicedMapping] as const;
 
-  const numArray = useToNumArray(value, complexVisType);
-  const numAuxArrays = useToNumArrays(auxValues, complexVisType);
+  const phaseAmp = usePhaseAmp(value);
+  const auxPhaseAmps = usePhaseAmps(auxValues);
+
   const numErrorsArray = useToNumArray(errors);
   const numAuxErrorsArrays = useToNumArrays(auxErrors);
   const numAxisArrays = useToNumArrays(axisValues);
 
-  const dataArray = useMappedArray(numArray, ...hookArgs);
+  const dataArray = useMappedArray(
+    phaseAmp[complexVisType] || phaseAmp.amplitude,
+    ...hookArgs,
+  );
+  const auxArrays = useMappedArrays(
+    auxPhaseAmps.map((pa) => pa[complexVisType] || phaseAmp.amplitude),
+    ...hookArgs,
+  );
   const errorsArray = useMappedArray(numErrorsArray, ...hookArgs);
-  const auxArrays = useMappedArrays(numAuxArrays, ...hookArgs);
   const auxErrorsArrays = useMappedArrays(numAuxErrorsArrays, ...hookArgs);
 
   const dataDomain = useDomain(

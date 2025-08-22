@@ -25,7 +25,7 @@ import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import {
   useExportEntries,
   useMappedArray,
-  useToNumArray,
+  usePhaseAmp,
   useToNumArrays,
 } from '../hooks';
 import {
@@ -75,24 +75,24 @@ function MappedHeatmapVis(props: Props) {
 
   const { shape: dims, type } = dataset;
   const isComplex = isComplexType(type);
-
-  // If complex dataset displayed as phase/amplitude: `numArray` = amplitude; `alphaArray` = phase
   const isPhaseAmp = complexVisType === ComplexVisType.PhaseAmplitude;
 
-  const numArray = useToNumArray(
-    value,
-    isPhaseAmp ? ComplexVisType.Amplitude : complexVisType,
-  );
-  const phaseArray = useToNumArray(
-    isComplex && isPhaseAmp ? value : undefined,
-    ComplexVisType.Phase,
-  );
-
+  const phaseAmp = usePhaseAmp(value);
   const numAxisArrays = useToNumArrays(axisValues);
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
-  const alphaArray = useMappedArray(phaseArray, slicedDims, slicedMapping);
+  const dataArray = useMappedArray(
+    isPhaseAmp
+      ? phaseAmp.amplitude
+      : phaseAmp[complexVisType] || phaseAmp.amplitude,
+    slicedDims,
+    slicedMapping,
+  );
+  const alphaArray = useMappedArray(
+    isPhaseAmp ? phaseAmp.phase : undefined,
+    slicedDims,
+    slicedMapping,
+  );
 
   const dataDomain =
     useDomain(dataArray, scaleType, undefined, ignoreValue) || DEFAULT_DOMAIN;

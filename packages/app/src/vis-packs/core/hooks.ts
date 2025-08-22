@@ -9,8 +9,6 @@ import {
 } from '@h5web/shared/hdf5-models';
 import {
   type BuiltInExporter,
-  type ComplexLineVisType,
-  ComplexVisType,
   type ExportEntry,
   type ExportFormat,
   type IgnoreValue,
@@ -25,28 +23,31 @@ import {
   bigIntTypedArrayFromDType,
   typedArrayFromDType,
 } from '../../providers/utils';
-import { applyMapping, getBaseArray, toNumArray } from './utils';
+import { type PhaseAmp } from './models';
+import { applyMapping, getBaseArray, getPhaseAmp, toNumArray } from './utils';
 
 export const useToNumArray = createMemo(toNumArray);
 
 export function useToNumArrays(
-  arrays: ArrayValue<NumericLikeType | ComplexType>[],
-  complexVisType?: ComplexLineVisType,
+  arrays: ArrayValue<NumericLikeType>[],
 ): NumArray[];
 
 export function useToNumArrays(
-  arrays: (ArrayValue<NumericLikeType | ComplexType> | undefined)[],
-  complexVisType?: ComplexLineVisType,
+  arrays: (ArrayValue<NumericLikeType> | undefined)[],
 ): (NumArray | undefined)[];
 
 export function useToNumArrays(
-  arrays: (ArrayValue<NumericLikeType | ComplexType> | undefined)[],
-  complexVisType: ComplexLineVisType = ComplexVisType.Amplitude,
+  arrays: (ArrayValue<NumericLikeType> | undefined)[],
 ): (NumArray | undefined)[] {
-  return useMemo(
-    () => arrays.map((arr) => toNumArray(arr, complexVisType)),
-    [...arrays, complexVisType], // eslint-disable-line react-hooks/exhaustive-deps
-  );
+  return useMemo(() => arrays.map(toNumArray), arrays); // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+export const usePhaseAmp = createMemo(getPhaseAmp);
+
+export function usePhaseAmps(
+  arrays: ArrayValue<NumericLikeType | ComplexType>[],
+): PhaseAmp[] {
+  return useMemo(() => arrays.map(getPhaseAmp), arrays); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
 export function useBaseArray<T extends ArrayValue | undefined>(

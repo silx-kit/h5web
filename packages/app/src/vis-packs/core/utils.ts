@@ -13,13 +13,14 @@ import {
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
 import {
-  type ComplexLineVisType,
   ComplexVisType,
   type Domain,
   type NumArray,
 } from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
 import ndarray, { type NdArray } from 'ndarray';
+
+import { type PhaseAmp } from './models';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
 
@@ -106,25 +107,15 @@ function isBoolArray(val: ArrayValue<NumericLikeType>): val is boolean[] {
   return Array.isArray(val) && typeof val[0] === 'boolean';
 }
 
-export function toNumArray<
-  T extends ArrayValue<NumericLikeType | ComplexType> | undefined,
->(
+export function toNumArray<T extends ArrayValue<NumericLikeType> | undefined>(
   arr: T,
-  complexVisType?: ComplexLineVisType,
-): T extends ArrayValue<NumericLikeType | ComplexType> ? NumArray : undefined;
+): T extends ArrayValue<NumericLikeType> ? NumArray : undefined;
 
 export function toNumArray(
-  arr: ArrayValue<NumericLikeType | ComplexType> | undefined,
-  complexVisType: ComplexLineVisType = ComplexVisType.Amplitude,
+  arr: ArrayValue<NumericLikeType> | undefined,
 ): NumArray | undefined {
   if (!arr) {
     return undefined;
-  }
-
-  if (isComplexArray(arr)) {
-    return complexVisType === ComplexVisType.Amplitude
-      ? arr.map(([real, imag]) => Math.hypot(real, imag))
-      : arr.map(([real, imag]) => Math.atan2(imag, real));
   }
 
   if (isBigIntTypedArray(arr)) {
@@ -140,6 +131,24 @@ export function toNumArray(
   }
 
   return arr;
+}
+
+export function getPhaseAmp(
+  arr: ArrayValue<NumericLikeType | ComplexType>,
+): PhaseAmp {
+  if (!isComplexArray(arr)) {
+    return { amplitude: toNumArray(arr), phase: undefined };
+  }
+
+  const phase: number[] = Array.from({ length: arr.length });
+  const amplitude: number[] = Array.from({ length: arr.length });
+
+  arr.forEach(([real, imag], i) => {
+    phase[i] = Math.atan2(imag, real);
+    amplitude[i] = Math.hypot(real, imag);
+  });
+
+  return { amplitude, phase };
 }
 
 const TYPE_STRINGS: Record<NumericLikeType['class'], string> = {
