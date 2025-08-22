@@ -132,6 +132,7 @@ as you see fit. For instance, if you'd like to change the color of the curve of 
 | `--h5w-btnPressed--bgColor`           | `white`                                            | Background color of pressed buttons                       |
 | `--h5w-btnPressed--shadowColor`       | `var(--h5w-btnRaised--shadowColor, gray)`          | Box shadow color of pressed buttons                       |
 | `--h5w-btnPressed-hover--shadowColor` | `var(--h5w-btnRaised-hover--shadowColor, dimgray)` | Box shadow color of pressed buttons on hover              |
+| `--h5w-btnRaised--bgColor`            | `transparent`                                      | Background color of raised buttons                        |
 | `--h5w-btnRaised--shadowColor`        | `gray`                                             | Box shadow color of raised buttons                        |
 | `--h5w-btnRaised-hover--shadowColor`  | `dimgray`                                          | Box shadow color of raised buttons on hover               |
 
@@ -184,13 +185,13 @@ as you see fit. For instance, if you'd like to change the color of the curve of 
 
 #### Dimension mapper
 
-| Name                                     | Default                                            | Description                       |
-| ---------------------------------------- | -------------------------------------------------- | --------------------------------- |
-| `--h5w-dimMapper--bgColor`               | `ghostwhite`                                       | Background color                  |
-| `--h5w-slicingSlider-bounds--color`      | `midnightblue`                                     | Color of slicing slider bounds    |
-| `--h5w-slicingSlider-track--width`       | `2px`                                              | Width of slicing slider tracks    |
-| `--h5w-slicingSlider-track--color`       | `royalblue`                                        | Color of slider tracks            |
-| `--h5w-slicingSlider-thumb--borderColor` | `aliceblue`                                        | Border color of slider thumbs     |
-| `--h5w-slicingSlider-thumb--bgColor`     | `cornflowerblue`                                   | Background color of slider thumbs |
-| `--h5w-slicingSlider-mark--borderColor`  | `var(--h5w-slicingSlider-track--color, royalblue)` | Border color of track marks       |
-| `--h5w-slicingSlider-mark--bgColor`      | `#eee`                                             | Background color of track marks   |
+| Name                                     | Default                                               | Description                       |
+| ---------------------------------------- | ----------------------------------------------------- | --------------------------------- |
+| `--h5w-dimMapper--bgColor`               | `ghostwhite`                                          | Background color                  |
+| `--h5w-slicingSlider-bounds--color`      | `#333`                                                | Color of slicing slider bounds    |
+| `--h5w-slicingSlider-track--width`       | `2px`                                                 | Width of slicing slider tracks    |
+| `--h5w-slicingSlider-track--color`       | `slategray`                                           | Color of slider tracks            |
+| `--h5w-slicingSlider-thumb--bgColor`     | `whitesmoke`                                          | Background color of slider thumbs |
+| `--h5w-slicingSlider-thumb--borderColor` | `var(--h5w-slicingSlider-track--color, slategray)`    | Border color of slider thumbs     |
+| `--h5w-slicingSlider-mark--bgColor`      | `var(--h5w-slicingSlider-thumb--bgColor, whitesmoke)` | Background color of track marks   |
+| `--h5w-slicingSlider-mark--borderColor`  | `var(--h5w-slicingSlider-track--color, slategray)`    | Border color of track marks       |

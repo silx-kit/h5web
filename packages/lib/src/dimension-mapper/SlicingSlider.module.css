@@ -5,8 +5,9 @@
   padding: 0 0.5rem;
 
   --track-width: var(--h5w-slicingSlider-track--width, 2px);
-  --track-color: var(--h5w-slicingSlider-track--color, royalblue);
+  --track-color: var(--h5w-slicingSlider-track--color, slategray);
   --thumb-size: 1.375em;
+  --thumb-bgColor: var(--h5w-slicingSlider-thumb--bgColor, whitesmoke);
 }
 
 .label {
@@ -18,7 +19,7 @@
 .sublabel {
   composes: label;
   font-size: 0.75em;
-  color: var(--h5w-slicingSlider-bounds--color, midnightblue);
+  color: var(--h5w-slicingSlider-bounds--color, #333);
 }
 
 .slider {
@@ -42,8 +43,9 @@
   align-items: center;
   justify-content: center;
   padding: 0.125rem 0.25rem;
-  background-color: var(--h5w-slicingSlider-thumb--bgColor, aliceblue);
-  border: 2px solid var(--h5w-slicingSlider-thumb--borderColor, cornflowerblue);
+  background-color: var(--thumb-bgColor);
+  border: 2px solid
+    var(--h5w-slicingSlider-thumb--borderColor, var(--track-color));
   border-radius: calc(var(--thumb-size) / 2);
   height: var(--thumb-size);
   min-width: var(--thumb-size);
@@ -57,7 +59,10 @@
 .mark {
   width: 0.5rem;
   height: 0.5rem;
-  background-color: var(--h5w-slicingSlider-mark--bgColor, #eee);
+  background-color: var(
+    --h5w-slicingSlider-mark--bgColor,
+    var(--thumb-bgColor)
+  );
   border: 2px solid
     var(--h5w-slicingSlider-mark--borderColor, var(--track-color));
   border-radius: 50%;
