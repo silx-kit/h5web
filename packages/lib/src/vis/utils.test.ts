@@ -42,8 +42,9 @@ describe('getDomain', () => {
     expect(getDomain([2, 0, 10, 5, 2, -1])).toEqual([-1, 10]);
   });
 
-  it('should return `undefined` if data is empty', () => {
+  it('should return `undefined` if data is empty or undefined', () => {
     expect(getDomain([])).toBeUndefined();
+    expect(getDomain(undefined)).toBeUndefined();
   });
 
   it('should ignore NaN and Infinity', () => {
@@ -86,9 +87,10 @@ describe('getDomains', () => {
     const arr1 = [2, 0, 10, 5, 2, -1];
     const arr2: number[] = [];
     const arr3 = [100];
+    const arr4 = undefined;
 
-    const domain = getDomains([arr1, arr2, arr3]);
-    expect(domain).toEqual([[-1, 10], undefined, [100, 100]]);
+    const domain = getDomains([arr1, arr2, arr3, arr4]);
+    expect(domain).toEqual([[-1, 10], undefined, [100, 100], undefined]);
   });
 
   it('should return domains of multiple arrays in log scale', () => {

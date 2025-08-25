@@ -301,6 +301,14 @@ export const mockValues = {
       twoD().data.map((v) => v / 2),
       [20, 41],
     ),
+  tertiary_float: () =>
+    ndarray(
+      [
+        [-2, -1.6],
+        [-1, 1],
+      ].flat(1),
+      [2, 2],
+    ),
   position: () => ndarray([-1, 1, 3]), // pixel boundaries (N + 1)
   scatter_data: () =>
     ndarray(range1().map((val) => Math.cos((val * 3.14) / 40))),

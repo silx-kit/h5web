@@ -146,14 +146,16 @@ describe('Line', () => {
 describe('Heatmap', () => {
   const { supportsDataset } = CORE_VIS.Heatmap;
 
-  it('should support array dataset with numeric-like type and at least two dimensions', () => {
+  it('should support array dataset with numeric-like or complex type and at least two dimensions', () => {
     expect(supportsDataset(twoDInt)).toBe(true);
     expect(supportsDataset(twoDUint)).toBe(true);
     expect(supportsDataset(twoDBool)).toBe(true);
+    expect(supportsDataset(twoDCplx)).toBe(true);
     expect(supportsDataset(threeDFloat)).toBe(true);
+    expect(supportsDataset(threeDCplx)).toBe(true);
   });
 
-  it('should not support dataset with non-numeric-like type', () => {
+  it('should not support dataset with non-numeric-like or complex type', () => {
     expect(supportsDataset(twoDStr)).toBe(false);
   });
 
@@ -163,30 +165,6 @@ describe('Heatmap', () => {
 
   it('should not support dataset with less than two dimensions', () => {
     expect(supportsDataset(oneDInt)).toBe(false);
-  });
-});
-
-describe('Complex', () => {
-  const { supportsDataset } = CORE_VIS.Complex;
-
-  it('should support array dataset with complex type and at least two dimensions', () => {
-    expect(supportsDataset(twoDCplx)).toBe(true);
-    expect(supportsDataset(threeDCplx)).toBe(true);
-  });
-
-  it('should not support dataset with non-complex type', () => {
-    expect(supportsDataset(twoDUint)).toBe(false);
-    expect(supportsDataset(twoDInt)).toBe(false);
-    expect(supportsDataset(threeDFloat)).toBe(false);
-    expect(supportsDataset(twoDStr)).toBe(false);
-  });
-
-  it('should not support dataset with non-array shape', () => {
-    expect(supportsDataset(scalarCplx)).toBe(false);
-  });
-
-  it('should not support dataset with less than two dimensions', () => {
-    expect(supportsDataset(oneDCplx)).toBe(false);
   });
 });
 

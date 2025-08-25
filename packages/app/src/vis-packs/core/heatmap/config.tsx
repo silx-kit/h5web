@@ -1,6 +1,10 @@
 import { type CustomDomain } from '@h5web/lib';
 import { isDefined } from '@h5web/shared/guards';
-import { type ColorScaleType, ScaleType } from '@h5web/shared/vis-models';
+import {
+  type ColorScaleType,
+  ComplexVisType,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
 import { createContext, useContext, useState } from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
@@ -22,6 +26,9 @@ export interface HeatmapConfig {
   scaleType: ColorScaleType;
   setScaleType: (scaleType: ColorScaleType) => void;
 
+  complexVisType: ComplexVisType;
+  setComplexVisType: (complexVisType: ComplexVisType) => void;
+
   showGrid: boolean;
   toggleGrid: () => void;
 
@@ -40,10 +47,10 @@ function createHeatmapConfigStore() {
     persist(
       (set): HeatmapConfig => ({
         customDomain: [null, null],
-        setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
+        setCustomDomain: (customDomain) => set({ customDomain }),
 
         colorMap: 'Viridis',
-        setColorMap: (colorMap: ColorMap) => set({ colorMap }),
+        setColorMap: (colorMap) => set({ colorMap }),
 
         invertColorMap: false,
         toggleColorMapInversion: () => {
@@ -51,9 +58,10 @@ function createHeatmapConfigStore() {
         },
 
         scaleType: ScaleType.Linear,
-        setScaleType: (scaleType: ColorScaleType) => {
-          set(() => ({ scaleType }));
-        },
+        setScaleType: (scaleType) => set(() => ({ scaleType })),
+
+        complexVisType: ComplexVisType.Amplitude,
+        setComplexVisType: (complexVisType) => set(() => ({ complexVisType })),
 
         showGrid: true,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
@@ -72,7 +80,7 @@ function createHeatmapConfigStore() {
       }),
       {
         name: 'h5web:heatmap',
-        version: 10,
+        version: 11,
       },
     ),
   );

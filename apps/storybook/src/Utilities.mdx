@@ -13,7 +13,7 @@ Find the min and max values contained in a numeric array. The function supports 
 
 ```ts
 getDomain(
-  valuesArray: AnyNumArray, // NdArray<TypedArray | number[]> | TypedArray | number[]
+  valuesArray: AnyNumArray | undefined, // NdArray<TypedArray | number[]> | TypedArray | number[] | undefined
   scaleType: ScaleType = ScaleType.Linear,
   errorArray?: AnyNumArray,
   ignoreValue?: IgnoreValue
@@ -32,7 +32,7 @@ Find the domains of multiple numeric arrays. Errors can be accounted for each ar
 
 ```ts
 getDomains(
-  valueArrays: AnyNumArray[],
+  valueArrays: (AnyNumArray | undefined)[],
   scaleType: ScaleType = ScaleType.Linear,
   errorArrays?: (AnyNumArray | undefined)[]
 ): (Domain | undefined)[]

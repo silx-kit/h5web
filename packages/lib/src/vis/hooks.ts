@@ -33,7 +33,7 @@ export const useValueToIndexScale = createMemo(getValueToIndexScale);
 export const useAxisDomain = createMemo(getAxisDomain);
 
 export function useDomain(
-  valuesArray: AnyNumArray,
+  valuesArray: AnyNumArray | undefined,
   scaleType: ScaleType = ScaleType.Linear,
   errorArray?: AnyNumArray,
   ignoreValue?: IgnoreValue,
@@ -44,7 +44,7 @@ export function useDomain(
 }
 
 export function useDomains(
-  valuesArrays: AnyNumArray[],
+  valuesArrays: (AnyNumArray | undefined)[],
   scaleType: ScaleType = ScaleType.Linear,
   errorsArrays?: (AnyNumArray | undefined)[],
 ): (Domain | undefined)[] {

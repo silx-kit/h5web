@@ -124,11 +124,10 @@ function getSupportedNxVis(
     return [NEXUS_VIS[NexusVis.NxRGB]];
   }
 
-  const imageVis = isCplx ? NexusVis.NxComplexImage : NexusVis.NxImage;
   const spectrumVis = isCplx ? NexusVis.NxComplexSpectrum : NexusVis.NxSpectrum;
 
   if (interpretation === NxInterpretation.Image) {
-    return [NEXUS_VIS[imageVis]];
+    return [NEXUS_VIS[NexusVis.NxImage]];
   }
 
   if (interpretation === NxInterpretation.Spectrum) {
@@ -137,7 +136,7 @@ function getSupportedNxVis(
 
   // Fall back on dimension checks: 2D+ are Spectrum+Image, 1D can be Scatter or Spectrum
   if (hasMinDims(dataset, 2)) {
-    return [NEXUS_VIS[spectrumVis], NEXUS_VIS[imageVis]];
+    return [NEXUS_VIS[spectrumVis], NEXUS_VIS[NexusVis.NxImage]];
   }
 
   const axisDatasets = findAxesDatasets(entity, dataset, attrValuesStore);

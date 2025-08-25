@@ -1,5 +1,6 @@
 import {
   ColorMapSelector,
+  ComplexVisTypeSelector,
   type Domain,
   DomainWidget,
   ExportMenu,
@@ -9,7 +10,7 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import { type ExportEntry } from '@h5web/shared/vis-models';
+import { ComplexVisType, type ExportEntry } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import {
   MdAspectRatio,
@@ -24,16 +25,18 @@ import { type HeatmapConfig } from './config';
 interface Props {
   dataDomain: Domain;
   isSlice: boolean;
+  isComplex: boolean;
   config: HeatmapConfig;
   exportEntries: ExportEntry[];
 }
 
 function HeatmapToolbar(props: Props) {
-  const { isSlice, dataDomain, config, exportEntries } = props;
+  const { dataDomain, isSlice, isComplex, config, exportEntries } = props;
   const {
     customDomain,
     colorMap,
     scaleType,
+    complexVisType,
     keepRatio,
     showGrid,
     invertColorMap,
@@ -42,6 +45,7 @@ function HeatmapToolbar(props: Props) {
     setCustomDomain,
     setColorMap,
     setScaleType,
+    setComplexVisType,
     toggleKeepRatio,
     toggleGrid,
     toggleColorMapInversion,
@@ -73,6 +77,14 @@ function HeatmapToolbar(props: Props) {
         onScaleChange={setScaleType}
         options={COLOR_SCALE_TYPES}
       />
+
+      {isComplex && (
+        <ComplexVisTypeSelector
+          value={complexVisType}
+          onChange={setComplexVisType}
+          options={Object.values(ComplexVisType)}
+        />
+      )}
 
       <Separator />
 

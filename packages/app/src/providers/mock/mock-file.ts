@@ -255,8 +255,11 @@ export function makeMockFile(): GroupWithChildren {
             signal: array('twoD_cplx'),
             axes: { position: array('position') },
             axesAttr: ['.', 'position'],
-            auxiliary: { secondary_cplx: array('secondary_cplx') },
-            auxAttr: ['secondary_cplx'],
+            auxiliary: {
+              secondary_cplx: array('secondary_cplx'),
+              tertiary_float: array('tertiary_float'),
+            },
+            auxAttr: ['secondary_cplx', 'tertiary_float'],
           }),
           nxData('rgb-image', {
             signal: withImageAttr(
