@@ -124,7 +124,7 @@ export function getSizeToFit(
 }
 
 export function getDomain(
-  valuesArray: AnyNumArray,
+  valuesArray: AnyNumArray | undefined,
   scaleType: ScaleType = ScaleType.Linear,
   errorArray?: AnyNumArray,
   ignoreValue?: IgnoreValue,
@@ -134,7 +134,7 @@ export function getDomain(
 }
 
 export function getDomains(
-  valueArrays: AnyNumArray[],
+  valueArrays: (AnyNumArray | undefined)[],
   scaleType: ScaleType = ScaleType.Linear,
   errorArrays?: (AnyNumArray | undefined)[],
 ): (Domain | undefined)[] {
