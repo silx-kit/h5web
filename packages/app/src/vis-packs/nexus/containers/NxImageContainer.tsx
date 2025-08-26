@@ -1,14 +1,21 @@
 import { DimensionMapper, getSliceSelection } from '@h5web/lib';
-import { assertGroup, assertMinDims } from '@h5web/shared/guards';
+import {
+  assertDatasetValue,
+  assertGroup,
+  assertMinDims,
+  assertNumericLikeType,
+  hasComplexType,
+} from '@h5web/shared/guards';
 import { useState } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { useComplexConfig } from '../../core/complex/config';
+import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { assertNumericLikeNxData } from '../guards';
 import { useNxData, useNxImageDataToFetch, useNxValuesCached } from '../hooks';
 import NxSignalPicker from '../NxSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
@@ -19,19 +26,20 @@ function NxImageContainer(props: VisContainerProps) {
   assertGroup(entity);
 
   const nxData = useNxData(entity);
-  assertNumericLikeNxData(nxData);
 
   const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
   const [selectedDef, setSelectedDef] = useState(signalDef);
-  assertMinDims(selectedDef.dataset, 2);
+  const { dataset: selectedDataset } = selectedDef;
 
-  const { shape: dims } = selectedDef.dataset;
+  assertMinDims(selectedDataset, 2);
+  const { shape: dims } = selectedDataset;
   const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const xAxisDef = axisDefs[dimMapping.indexOf('x')];
   const yAxisDef = axisDefs[dimMapping.indexOf('y')];
 
+  const complexConfig = useComplexConfig();
   const config = useHeatmapConfig({
     scaleType: silxStyle.signalScaleType,
     keepRatio: guessKeepRatio(xAxisDef, yAxisDef),
@@ -62,9 +70,29 @@ function NxImageContainer(props: VisContainerProps) {
           render={(nxValues) => {
             const { signal, axisValues, title } = nxValues;
 
+            if (hasComplexType(selectedDataset)) {
+              assertDatasetValue(signal, selectedDataset);
+
+              return (
+                <MappedComplexVis
+                  value={signal}
+                  dims={dims}
+                  dimMapping={dimMapping}
+                  axisLabels={axisLabels}
+                  axisValues={axisValues}
+                  title={title}
+                  toolbarContainer={toolbarContainer}
+                  config={complexConfig}
+                  heatmapConfig={config}
+                />
+              );
+            }
+
+            assertNumericLikeType(selectedDataset);
+            assertDatasetValue(signal, selectedDataset);
             return (
               <MappedHeatmapVis
-                dataset={selectedDef.dataset}
+                dataset={selectedDataset}
                 value={signal}
                 dimMapping={dimMapping}
                 axisLabels={axisLabels}

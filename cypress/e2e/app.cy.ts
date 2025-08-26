@@ -441,6 +441,14 @@ describe('/mock', () => {
       if (Cypress.env('TAKE_SNAPSHOTS')) {
         cy.matchImageSnapshot('nximage_complex_2d');
       }
+
+      // Select float auxiliary signal
+      cy.findByLabelText('tertiary_float').check();
+      cy.findByRole('figure', { name: 'tertiary_float' }).should('be.visible');
+
+      if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.matchImageSnapshot('nximage_complex_2d_float_aux');
+      }
     });
 
     it('visualize dataset with "rgb-image" interpretation as NxRGB', () => {
