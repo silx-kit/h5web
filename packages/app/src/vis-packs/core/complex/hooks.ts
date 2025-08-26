@@ -3,25 +3,45 @@ import {
   type DimensionMapping,
   useSlicedDimsAndMapping,
 } from '@h5web/lib';
-import { type H5WebComplex } from '@h5web/shared/hdf5-models';
-import { type ComplexLineVisType } from '@h5web/shared/vis-models';
+import { isComplexArray } from '@h5web/shared/guards';
+import {
+  type ArrayValue,
+  type ComplexType,
+  type NumericLikeType,
+} from '@h5web/shared/hdf5-models';
+import {
+  type ComplexLineVisType,
+  type NumArray,
+} from '@h5web/shared/vis-models';
 import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
-import { applyMapping, getBaseArray } from '../utils';
+import { applyMapping, getBaseArray, toNumArray } from '../utils';
 import { getPhaseAmplitudeValues } from './utils';
 
 export function useMappedComplexArrays(
-  values: H5WebComplex[][],
+  values: ArrayValue<NumericLikeType | ComplexType>[],
   dims: number[],
   mapping: DimensionMapping,
   complexVisType: ComplexLineVisType,
-): NdArray<number[]>[] {
+): NdArray<NumArray>[] {
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, mapping);
 
   const phaseAmplitudeValues = useMemo(
-    () => values.map(getPhaseAmplitudeValues),
-    [...values], // eslint-disable-line react-hooks/exhaustive-deps
+    () =>
+      values.map((arr) => {
+        if (isComplexArray(arr)) {
+          return getPhaseAmplitudeValues(arr);
+        }
+
+        // Consider real numbers as complex numbers with no imaginary parts
+        const numArray = toNumArray(arr);
+        return {
+          phaseValues: numArray.map(() => 0),
+          amplitudeValues: numArray.map((v) => Math.abs(v)),
+        };
+      }),
+    values, // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const baseArrays = useMemo(() => {

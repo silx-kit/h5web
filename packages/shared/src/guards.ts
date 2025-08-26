@@ -112,6 +112,15 @@ export function assertEnvVar(
   }
 }
 
+export function isComplex(val: unknown): val is H5WebComplex {
+  return (
+    Array.isArray(val) &&
+    val.length === 2 &&
+    typeof val[0] === 'number' &&
+    typeof val[1] === 'number'
+  );
+}
+
 export function assertComplex(
   val: unknown,
   message = 'Expected complex',
@@ -133,6 +142,10 @@ export function assertArray(
   if (!Array.isArray(val)) {
     throw new TypeError(message);
   }
+}
+
+export function isComplexArray(val: unknown): val is H5WebComplex[] {
+  return Array.isArray(val) && isComplex(val[0]);
 }
 
 export function isTypedArray(val: unknown): val is TypedArray {

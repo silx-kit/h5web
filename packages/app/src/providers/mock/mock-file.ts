@@ -229,9 +229,9 @@ export function makeMockFile(): GroupWithChildren {
             axesAttr: ['.', 'X'],
             auxiliary: {
               secondary: array('secondary'),
-              tertiary: array('tertiary'),
+              tertiary: array('tertiary_cplx'),
             },
-            auxAttr: ['secondary', 'tertiary'],
+            auxAttr: ['secondary', 'tertiary_cplx'],
             children: [array('secondary_errors', { valueId: 'twoD_errors' })],
           }),
           nxData('image_with_aux', {
@@ -248,8 +248,11 @@ export function makeMockFile(): GroupWithChildren {
             signal: withNxAttr(array('twoD_cplx'), {
               interpretation: 'spectrum',
             }),
-            auxiliary: { secondary_cplx: array('secondary_cplx') },
-            auxAttr: ['secondary_cplx'],
+            auxiliary: {
+              secondary_cplx: array('secondary_cplx'),
+              tertiary_float: array('tertiary_float'),
+            },
+            auxAttr: ['secondary_cplx', 'tertiary_float'],
           }),
           nxData('complex_image', {
             signal: array('twoD_cplx'),
