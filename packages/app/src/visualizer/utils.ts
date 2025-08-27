@@ -124,19 +124,19 @@ function getSupportedNxVis(
     return [NEXUS_VIS[NexusVis.NxRGB]];
   }
 
-  const spectrumVis = isCplx ? NexusVis.NxComplexSpectrum : NexusVis.NxSpectrum;
+  const nxLineVis = isCplx ? NexusVis.NxComplexLine : NexusVis.NxLine;
 
   if (interpretation === NxInterpretation.Image) {
-    return [NEXUS_VIS[NexusVis.NxImage]];
+    return [NEXUS_VIS[NexusVis.NxHeatmap]];
   }
 
   if (interpretation === NxInterpretation.Spectrum) {
-    return [NEXUS_VIS[spectrumVis]];
+    return [NEXUS_VIS[nxLineVis]];
   }
 
-  // Fall back on dimension checks: 2D+ are Spectrum+Image, 1D can be Scatter or Spectrum
+  // Fall back on dimension checks: 2D+ is Line + Heatmap, 1D can be Scatter or Line
   if (hasMinDims(dataset, 2)) {
-    return [NEXUS_VIS[spectrumVis], NEXUS_VIS[NexusVis.NxImage]];
+    return [NEXUS_VIS[nxLineVis], NEXUS_VIS[NexusVis.NxHeatmap]];
   }
 
   const axisDatasets = findAxesDatasets(entity, dataset, attrValuesStore);
@@ -148,7 +148,7 @@ function getSupportedNxVis(
     return [NEXUS_VIS[NexusVis.NxScatter]];
   }
 
-  return [NEXUS_VIS[spectrumVis]];
+  return [NEXUS_VIS[nxLineVis]];
 }
 
 function getImplicitDefaultChild(

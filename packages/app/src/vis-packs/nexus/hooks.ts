@@ -48,10 +48,9 @@ export function useNxData(group: GroupWithChildren): NxData {
   };
 }
 
-export function useNxImageDataToFetch<T extends NumericLikeType | ComplexType>(
-  nxData: NxData<T>,
-  selectedDef: DatasetDef<T>,
-): NxData<T> {
+export function useNxHeatmapDataToFetch<
+  T extends NumericLikeType | ComplexType,
+>(nxData: NxData<T>, selectedDef: DatasetDef<T>): NxData<T> {
   const { signalDef, titleDataset } = nxData;
 
   return {

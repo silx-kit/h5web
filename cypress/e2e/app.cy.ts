@@ -307,7 +307,7 @@ describe('/mock', () => {
   });
 
   context('NeXus', () => {
-    it('visualize default NXdata group as NxImage', () => {
+    it('visualize default NXdata group as NxHeatmap', () => {
       cy.selectExplorerNode('source.h5');
 
       cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
@@ -334,7 +334,7 @@ describe('/mock', () => {
       }
     });
 
-    it('visualize dataset with "image" interpretation as NxImage', () => {
+    it('visualize dataset with "image" interpretation as NxHeatmap', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('image');
 
@@ -352,7 +352,7 @@ describe('/mock', () => {
       );
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
-        cy.matchImageSnapshot('nximage');
+        cy.matchImageSnapshot('nxheatmap');
       }
     });
 
@@ -396,7 +396,7 @@ describe('/mock', () => {
       }
     });
 
-    it('visualize auxiliary signal datasets as NxImage', () => {
+    it('visualize auxiliary signal datasets as NxHeatmap', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('image_with_aux');
 
@@ -430,7 +430,7 @@ describe('/mock', () => {
       }
     });
 
-    it('visualize 2D complex signal as NxImage', () => {
+    it('visualize 2D complex signal as NxHeatmap', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('complex_image');
 
@@ -439,7 +439,7 @@ describe('/mock', () => {
       }).should('be.visible');
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
-        cy.matchImageSnapshot('nximage_complex_2d');
+        cy.matchImageSnapshot('nxheatmap_complex_2d');
       }
 
       // Select float auxiliary signal
@@ -447,7 +447,7 @@ describe('/mock', () => {
       cy.findByRole('figure', { name: 'tertiary_float' }).should('be.visible');
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
-        cy.matchImageSnapshot('nximage_complex_2d_float_aux');
+        cy.matchImageSnapshot('nxheatmap_complex_2d_float_aux');
       }
     });
 

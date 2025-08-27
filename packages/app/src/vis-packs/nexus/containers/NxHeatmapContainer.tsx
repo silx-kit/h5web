@@ -10,17 +10,21 @@ import { useState } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import MappedComplexVis from '../../core/complex/MappedComplexVis';
+import MappedComplexHeatmapVis from '../../core/complex/MappedComplexHeatmapVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { useNxData, useNxImageDataToFetch, useNxValuesCached } from '../hooks';
+import {
+  useNxData,
+  useNxHeatmapDataToFetch,
+  useNxValuesCached,
+} from '../hooks';
 import NxSignalPicker from '../NxSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { guessKeepRatio } from '../utils';
 
-function NxImageContainer(props: VisContainerProps) {
+function NxHeatmapContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertGroup(entity);
 
@@ -43,7 +47,7 @@ function NxImageContainer(props: VisContainerProps) {
     keepRatio: guessKeepRatio(xAxisDef, yAxisDef),
   });
 
-  const nxDataToFetch = useNxImageDataToFetch(nxData, selectedDef);
+  const nxDataToFetch = useNxHeatmapDataToFetch(nxData, selectedDef);
 
   return (
     <>
@@ -72,7 +76,7 @@ function NxImageContainer(props: VisContainerProps) {
               assertDatasetValue(signal, selectedDataset);
 
               return (
-                <MappedComplexVis
+                <MappedComplexHeatmapVis
                   value={signal}
                   dims={dims}
                   dimMapping={dimMapping}
@@ -106,4 +110,4 @@ function NxImageContainer(props: VisContainerProps) {
   );
 }
 
-export default NxImageContainer;
+export default NxHeatmapContainer;

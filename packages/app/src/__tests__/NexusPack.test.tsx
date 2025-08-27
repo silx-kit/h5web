@@ -13,21 +13,21 @@ import { NexusVis } from '../vis-packs/nexus/visualizations';
 test('visualize NXdata group with explicit signal interpretation', async () => {
   // Signal with "spectrum" interpretation
   const { selectExplorerNode } = await renderApp('/nexus_entry/spectrum');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine]);
   expect(
     screen.getByRole('figure', { name: 'twoD (arb. units)' }), // signal name + `units` attribute
   ).toBeVisible();
 
   // Signal with "image" interpretation
   await selectExplorerNode('image');
-  expect(getVisTabs()).toEqual([NexusVis.NxImage]);
+  expect(getVisTabs()).toEqual([NexusVis.NxHeatmap]);
   expect(
     screen.getByRole('figure', { name: 'Interference fringes' }), // `long_name` attribute
   ).toBeVisible();
 
   // 2D complex signal with "spectrum" interpretation
   await selectExplorerNode('complex_spectrum');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine]);
   expect(
     screen.getByRole('figure', { name: 'twoD_cplx' }), // signal name (complex vis type is displayed as ordinate label)
   ).toBeVisible();
@@ -45,19 +45,19 @@ test('visualize NXdata group without explicit signal interpretation', async () =
   const { selectExplorerNode } = await renderApp(
     '/nexus_entry/nx_process/nx_data',
   );
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
-  expect(getSelectedVisTab()).toBe(NexusVis.NxImage);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
+  expect(getSelectedVisTab()).toBe(NexusVis.NxHeatmap);
   expect(screen.getByRole('figure', { name: 'NeXus 2D' })).toBeVisible(); // `title` dataset
 
   // 1D signal (no interpretation)
   await selectExplorerNode('log_spectrum');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine]);
   expect(screen.getByRole('figure', { name: 'oneD' })).toBeVisible(); // signal name
 
   // 2D complex signal (no interpretation)
   await selectExplorerNode('complex_image');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
-  expect(getSelectedVisTab()).toBe(NexusVis.NxImage);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
+  expect(getSelectedVisTab()).toBe(NexusVis.NxHeatmap);
   expect(
     screen.getByRole('figure', { name: 'twoD_cplx (amplitude)' }), // signal name + complex visualization type
   ).toBeVisible();
@@ -70,7 +70,7 @@ test('visualize NXdata group without explicit signal interpretation', async () =
 
 test('visualize NXdata group with old-style signal', async () => {
   await renderApp('/nexus_entry/old-style');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
   expect(
     screen.getByRole('figure', { name: 'twoD' }), // name of dataset with `signal` attribute
   ).toBeVisible();
@@ -78,7 +78,7 @@ test('visualize NXdata group with old-style signal', async () => {
 
 test('visualize NXdata group with boolean signal', async () => {
   await renderApp('/nexus_entry/numeric-like/bool');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
   expect(
     screen.getByRole('figure', { name: 'twoD_bool' }), // name of dataset with `signal` attribute
   ).toBeVisible();
@@ -86,7 +86,7 @@ test('visualize NXdata group with boolean signal', async () => {
 
 test('visualize NXdata group with enum signal', async () => {
   await renderApp('/nexus_entry/numeric-like/enum');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
   expect(
     screen.getByRole('figure', { name: 'twoD_enum' }), // name of dataset with `signal` attribute
   ).toBeVisible();
@@ -95,14 +95,14 @@ test('visualize NXdata group with enum signal', async () => {
 test('visualize group with `default` attribute', async () => {
   // NXroot with relative path to NXentry group with relative path to NXdata group with 2D signal
   const { selectExplorerNode } = await renderApp();
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
   expect(
     screen.getByRole('figure', { name: 'NeXus 2D' }), // `title` dataset
   ).toBeVisible();
 
   // NXentry with relative path to NXdata group with 2D signal
   await selectExplorerNode('nexus_entry');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
   expect(
     screen.getByRole('figure', { name: 'NeXus 2D' }), // `title` dataset
   ).toBeVisible();
@@ -110,7 +110,7 @@ test('visualize group with `default` attribute', async () => {
   // NXentry with absolute path to NXdata group with 2D signal
   await selectExplorerNode('nx_process');
   await selectExplorerNode('absolute_default_path');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
   expect(
     screen.getByRole('figure', { name: 'NeXus 2D' }), // `title` dataset
   ).toBeVisible();
@@ -118,7 +118,7 @@ test('visualize group with `default` attribute', async () => {
 
 test('visualize NXentry group with implicit default child NXdata group', async () => {
   await renderApp('/nexus_no_default');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine]);
   expect(
     screen.getByRole('figure', { name: 'oneD' }), // signal name of NXdata group "spectrum"
   ).toBeVisible();
@@ -136,12 +136,12 @@ test('handle unknown/incompatible interpretation gracefully', async () => {
 
   // Signal with unknown interpretation
   await selectExplorerNode('interpretation_unknown');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum, NexusVis.NxImage]); // fallback based on number of dimensions
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]); // fallback based on number of dimensions
   expect(screen.getByRole('figure', { name: 'fourD' })).toBeVisible(); // signal name
 
   // Signal with too few dimensions for "rgb-image" interpretation
   await selectExplorerNode('rgb-image_incompatible');
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]); // fallback based on number of dimensions
+  expect(getVisTabs()).toEqual([NexusVis.NxLine]); // fallback based on number of dimensions
   expect(screen.getByRole('figure', { name: 'oneD' })).toBeVisible(); // signal name
 });
 
@@ -211,14 +211,14 @@ test('ignore malformed `SILX_style` attribute', async () => {
     '/nexus_malformed/silx_style_unknown',
   );
 
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine]);
   const scaleSelectors = screen.getAllByRole('combobox', { name: /Linear/ });
   expect(scaleSelectors).toHaveLength(2); // scales remain unchanged
 
   // Invalid JSON
   await selectExplorerNode('silx_style_malformed');
 
-  expect(getVisTabs()).toEqual([NexusVis.NxSpectrum]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine]);
   expect(warningSpy).toHaveBeenCalledWith(
     "Malformed 'SILX_style' attribute: {", // warn in console
   );
@@ -228,7 +228,7 @@ test('ignore malformed `SILX_style` attribute', async () => {
   errorSpy.mockRestore();
 });
 
-test('cancel and retry slow fetch of NxSpectrum', async () => {
+test('cancel and retry slow fetch of NxLine', async () => {
   const { user } = await renderApp({
     initialPath: '/resilience/slow_nx_spectrum',
     withFakeTimers: true,
@@ -252,7 +252,7 @@ test('cancel and retry slow fetch of NxSpectrum', async () => {
   ).resolves.toBeVisible();
 });
 
-test('cancel and retry slow fetch of NxImage', async () => {
+test('cancel and retry slow fetch of NxHeatmap', async () => {
   const { user } = await renderApp({
     initialPath: '/resilience/slow_nx_image',
     withFakeTimers: true,
@@ -276,7 +276,7 @@ test('cancel and retry slow fetch of NxImage', async () => {
   ).resolves.toBeVisible();
 });
 
-test('retry fetching automatically when re-selecting NxSpectrum', async () => {
+test('retry fetching automatically when re-selecting NxLine', async () => {
   const { user, selectExplorerNode } = await renderApp({
     initialPath: '/resilience/slow_nx_spectrum',
     withFakeTimers: true,
@@ -304,7 +304,7 @@ test('retry fetching automatically when re-selecting NxSpectrum', async () => {
   ).resolves.toBeVisible();
 });
 
-test('retry fetching automatically when selecting other NxImage slice', async () => {
+test('retry fetching automatically when selecting other NxHeatmap slice', async () => {
   const { user } = await renderApp({
     initialPath: '/resilience/slow_nx_image',
     withFakeTimers: true,
