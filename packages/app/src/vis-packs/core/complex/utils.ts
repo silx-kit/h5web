@@ -1,13 +1,5 @@
 import { type H5WebComplex } from '@h5web/shared/hdf5-models';
-import { type Bounds, ComplexVisType } from '@h5web/shared/vis-models';
-import { getNewBounds } from '@h5web/shared/vis-utils';
-
-const INITIAL_BOUNDS: Bounds = {
-  min: Infinity,
-  max: -Infinity,
-  positiveMin: Infinity,
-  strictPositiveMin: Infinity,
-};
+import { ComplexVisType } from '@h5web/shared/vis-models';
 
 export const COMPLEX_VIS_TYPE_LABELS = {
   [ComplexVisType.Amplitude]: 'Amplitude',
@@ -15,32 +7,17 @@ export const COMPLEX_VIS_TYPE_LABELS = {
   [ComplexVisType.PhaseAmplitude]: 'Phase & Amplitude',
 };
 
-export function getPhaseAmplitudeValues(mappedValues: H5WebComplex[]): {
-  phaseValues: number[];
-  phaseBounds: Bounds;
-  amplitudeValues: number[];
-  amplitudeBounds: Bounds;
+export function getPhaseAmplitude(values: H5WebComplex[]): {
+  phase: number[];
+  amplitude: number[];
 } {
-  const phaseValues: number[] = [];
-  const amplitudeValues: number[] = [];
+  const phase: number[] = Array.from({ length: values.length });
+  const amplitude: number[] = Array.from({ length: values.length });
 
-  const [phaseBounds, amplitudeBounds] = mappedValues.reduce(
-    (acc, [real, imag]) => {
-      const phase = Math.atan2(imag, real);
-      phaseValues.push(phase);
+  values.forEach(([real, imag], i) => {
+    phase[i] = Math.atan2(imag, real);
+    amplitude[i] = Math.hypot(real, imag);
+  });
 
-      const amplitude = Math.hypot(real, imag);
-      amplitudeValues.push(amplitude);
-
-      return [getNewBounds(acc[0], phase), getNewBounds(acc[1], amplitude)];
-    },
-    [INITIAL_BOUNDS, INITIAL_BOUNDS],
-  );
-
-  return {
-    phaseValues,
-    phaseBounds,
-    amplitudeValues,
-    amplitudeBounds,
-  };
+  return { phase, amplitude };
 }

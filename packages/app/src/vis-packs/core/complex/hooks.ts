@@ -1,62 +1,36 @@
-import {
-  ComplexVisType,
-  type DimensionMapping,
-  useSlicedDimsAndMapping,
-} from '@h5web/lib';
+import { createMemo } from '@h5web/shared/createMemo';
 import { isComplexArray } from '@h5web/shared/guards';
 import {
   type ArrayValue,
   type ComplexType,
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
-import {
-  type ComplexLineVisType,
-  type NumArray,
-} from '@h5web/shared/vis-models';
-import { type NdArray } from 'ndarray';
-import { useMemo } from 'react';
+import { type NumArray } from '@h5web/shared/vis-models';
 
-import { applyMapping, getBaseArray, toNumArray } from '../utils';
-import { getPhaseAmplitudeValues } from './utils';
+import { toNumArray } from '../utils';
+import { getPhaseAmplitude } from './utils';
 
-export function useMappedComplexArrays(
+export const usePhaseAmplitude = createMemo(getPhaseAmplitude);
+
+export function usePhaseAmplitudeArrays(
   values: ArrayValue<NumericLikeType | ComplexType>[],
-  dims: number[],
-  mapping: DimensionMapping,
-  complexVisType: ComplexLineVisType,
-): NdArray<NumArray>[] {
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, mapping);
+): { phaseArrays: NumArray[]; amplitudeArrays: NumArray[] } {
+  const phaseArrays: NumArray[] = [];
+  const amplitudeArrays: NumArray[] = [];
 
-  const phaseAmplitudeValues = useMemo(
-    () =>
-      values.map((arr) => {
-        if (isComplexArray(arr)) {
-          return getPhaseAmplitudeValues(arr);
-        }
+  values.forEach((arr) => {
+    if (isComplexArray(arr)) {
+      const { phase, amplitude } = getPhaseAmplitude(arr);
+      phaseArrays.push(phase);
+      amplitudeArrays.push(amplitude);
+      return;
+    }
 
-        // Consider real numbers as complex numbers with no imaginary parts
-        const numArray = toNumArray(arr);
-        return {
-          phaseValues: numArray.map(() => 0),
-          amplitudeValues: numArray.map((v) => Math.abs(v)),
-        };
-      }),
-    values, // eslint-disable-line react-hooks/exhaustive-deps
-  );
+    // Consider real numbers as complex numbers with no imaginary parts
+    const numArray = toNumArray(arr);
+    phaseArrays.push(numArray.map(() => 0));
+    amplitudeArrays.push(numArray.map((v) => Math.abs(v)));
+  });
 
-  const baseArrays = useMemo(() => {
-    return phaseAmplitudeValues.map((paValues) =>
-      getBaseArray(
-        complexVisType === ComplexVisType.Phase
-          ? paValues.phaseValues
-          : paValues.amplitudeValues,
-        slicedDims,
-      ),
-    );
-  }, [complexVisType, slicedDims, phaseAmplitudeValues]);
-
-  return useMemo(
-    () => baseArrays.map((ndArr) => applyMapping(ndArr, slicedMapping)),
-    [baseArrays, slicedMapping],
-  );
+  return { phaseArrays, amplitudeArrays };
 }

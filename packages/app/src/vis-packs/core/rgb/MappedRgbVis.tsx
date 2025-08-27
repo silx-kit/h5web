@@ -41,14 +41,13 @@ function MappedRgbVis(props: Props) {
   } = props;
 
   const { showGrid, keepRatio, imageType, flipXAxis, flipYAxis } = config;
-  const { shape: dims } = dataset;
-
-  const numAxisArrays = useToNumArrays(axisValues);
-
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
 
   const numArray = useToNumArray(value);
-  const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
+  const numAxisArrays = useToNumArrays(axisValues);
+
+  const { shape: dims } = dataset;
+  const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
+  const dataArray = useMappedArray(numArray, ...mappingArgs);
 
   const xDimIndex = dimMapping.indexOf('x');
   const yDimIndex = dimMapping.indexOf('y');

@@ -30,14 +30,13 @@ interface Props {
 
 function MappedSurfaceVis(props: Props) {
   const { dataset, value, dimMapping, toolbarContainer, config } = props;
-
   const { customDomain, colorMap, scaleType, invertColorMap } = config;
 
-  const { shape: dims } = dataset;
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-
   const numArray = useToNumArray(value);
-  const dataArray = useMappedArray(numArray, slicedDims, slicedMapping);
+
+  const { shape: dims } = dataset;
+  const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
+  const dataArray = useMappedArray(numArray, ...mappingArgs);
 
   const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);

@@ -1,9 +1,9 @@
 import {
   type DimensionMapping,
   HeatmapVis,
+  useDomain,
   useSafeDomain,
   useSlicedDimsAndMapping,
-  useValidDomainForScale,
   useVisDomain,
 } from '@h5web/lib';
 import {
@@ -13,15 +13,15 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { ComplexVisType } from '@h5web/shared/vis-models';
-import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type HeatmapConfig } from '../heatmap/config';
 import HeatmapToolbar from '../heatmap/HeatmapToolbar';
-import { useBaseArray, useMappedArray, useToNumArrays } from '../hooks';
+import { useMappedArray, useToNumArrays } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
-import { COMPLEX_VIS_TYPE_LABELS, getPhaseAmplitudeValues } from './utils';
+import { usePhaseAmplitude } from './hooks';
+import { COMPLEX_VIS_TYPE_LABELS } from './utils';
 
 interface Props {
   value: ArrayValue<ComplexType>;
@@ -58,26 +58,20 @@ function MappedComplexHeatmapVis(props: Props) {
     invertColorMap,
   } = config;
 
+  const { phase, amplitude } = usePhaseAmplitude(value);
   const numAxisArrays = useToNumArrays(axisValues);
 
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const mappedArray = useMappedArray(value, slicedDims, slicedMapping);
+  const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
+  const phaseArray = useMappedArray(phase, ...mappingArgs);
+  const amplitudeArray = useMappedArray(amplitude, ...mappingArgs);
 
-  const { phaseValues, phaseBounds, amplitudeValues, amplitudeBounds } =
-    useMemo(() => getPhaseAmplitudeValues(mappedArray.data), [mappedArray]);
+  const phaseDomain = useDomain(phase, scaleType) || DEFAULT_DOMAIN;
+  const amplitudeDomain = useDomain(amplitude, scaleType) || DEFAULT_DOMAIN;
 
-  const phaseArray = useBaseArray(phaseValues, mappedArray.shape);
-  const amplitudeArray = useBaseArray(amplitudeValues, mappedArray.shape);
-
-  const phaseDomain =
-    useValidDomainForScale(phaseBounds, scaleType) || DEFAULT_DOMAIN;
-  const amplitudeDomain =
-    useValidDomainForScale(amplitudeBounds, scaleType) || DEFAULT_DOMAIN;
-
-  const dataArray =
-    complexVisType !== ComplexVisType.Amplitude ? phaseArray : amplitudeArray;
-  const dataDomain =
-    complexVisType !== ComplexVisType.Amplitude ? phaseDomain : amplitudeDomain;
+  const [dataArray, dataDomain] =
+    complexVisType !== ComplexVisType.Amplitude
+      ? [phaseArray, phaseDomain]
+      : [amplitudeArray, amplitudeDomain];
 
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
