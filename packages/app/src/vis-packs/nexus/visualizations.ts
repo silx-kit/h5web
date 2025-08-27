@@ -9,42 +9,42 @@ import {
 import { ScatterConfigProvider } from '../core/scatter/config';
 import { type VisDef } from '../models';
 import {
-  NxComplexSpectrumContainer,
-  NxImageContainer,
+  NxComplexLineContainer,
+  NxHeatmapContainer,
+  NxLineContainer,
   NxRgbContainer,
   NxScatterContainer,
-  NxSpectrumContainer,
 } from './containers';
 import NxNoteContainer from './containers/NxNoteContainer';
 
 export enum NexusVis {
-  NxSpectrum = 'NX Line',
-  NxComplexSpectrum = 'NX Complex Line',
-  NxImage = 'NX Heatmap',
+  NxLine = 'NX Line',
+  NxComplexLine = 'NX Complex Line',
+  NxHeatmap = 'NX Heatmap',
   NxRGB = 'NX RGB',
   NxScatter = 'NX Scatter',
   NxNote = 'NX Note',
 }
 
 export const NEXUS_VIS = {
-  [NexusVis.NxSpectrum]: {
-    name: NexusVis.NxSpectrum,
+  [NexusVis.NxLine]: {
+    name: NexusVis.NxLine,
     Icon: FiActivity,
-    Container: NxSpectrumContainer,
+    Container: NxLineContainer,
     ConfigProvider: LineConfigProvider,
   },
 
-  [NexusVis.NxComplexSpectrum]: {
-    name: NexusVis.NxSpectrum,
+  [NexusVis.NxComplexLine]: {
+    name: NexusVis.NxLine,
     Icon: FiActivity,
-    Container: NxComplexSpectrumContainer,
+    Container: NxComplexLineContainer,
     ConfigProvider: LineConfigProvider,
   },
 
-  [NexusVis.NxImage]: {
-    name: NexusVis.NxImage,
+  [NexusVis.NxHeatmap]: {
+    name: NexusVis.NxHeatmap,
     Icon: FiMap,
-    Container: NxImageContainer,
+    Container: NxHeatmapContainer,
     ConfigProvider: HeatmapConfigProvider,
   },
 

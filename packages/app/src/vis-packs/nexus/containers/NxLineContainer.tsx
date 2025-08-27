@@ -3,23 +3,30 @@ import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
 import { useLineConfig } from '../../core/line/config';
+import MappedLineVis from '../../core/line/MappedLineVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { assertComplexNxData } from '../guards';
+import { assertNumericLikeNxData } from '../guards';
 import { useNxData, useNxValuesCached } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
+import { areSameDims } from '../utils';
 
-function NxComplexSpectrumContainer(props: VisContainerProps) {
+function NxLineContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertGroup(entity);
 
   const nxData = useNxData(entity);
-  assertComplexNxData(nxData);
+  assertNumericLikeNxData(nxData);
 
   const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
   const signalDims = signalDef.dataset.shape;
+  const errorDims = signalDef.errorDataset?.shape;
+
+  if (errorDims && !areSameDims(signalDims, errorDims)) {
+    const dimsStr = JSON.stringify({ signalDims, errorsDims: errorDims });
+    throw new Error(`Signal and errors dimensions don't match: ${dimsStr}`);
+  }
 
   const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
 
@@ -48,15 +55,18 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
           nxData={nxData}
           selection={getSliceSelection(dimMapping)}
           render={(nxValues) => {
-            const { signal, axisValues, auxValues, title } = nxValues;
+            const { signal, errors, axisValues, auxValues, auxErrors, title } =
+              nxValues;
 
             return (
-              <MappedComplexLineVis
+              <MappedLineVis
+                dataset={signalDef.dataset}
                 value={signal}
                 valueLabel={signalDef.label}
+                errors={errors}
                 auxLabels={auxDefs.map((def) => def.label)}
                 auxValues={auxValues}
-                dims={signalDims}
+                auxErrors={auxErrors}
                 dimMapping={dimMapping}
                 axisLabels={axisLabels}
                 axisValues={axisValues}
@@ -72,4 +82,4 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
   );
 }
 
-export default NxComplexSpectrumContainer;
+export default NxLineContainer;

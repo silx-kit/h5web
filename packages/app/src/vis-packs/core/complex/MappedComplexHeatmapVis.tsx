@@ -34,7 +34,7 @@ interface Props {
   config: HeatmapConfig;
 }
 
-function MappedComplexVis(props: Props) {
+function MappedComplexHeatmapVis(props: Props) {
   const {
     value,
     dims,
@@ -126,4 +126,4 @@ function MappedComplexVis(props: Props) {
   );
 }
 
-export default MappedComplexVis;
+export default MappedComplexHeatmapVis;

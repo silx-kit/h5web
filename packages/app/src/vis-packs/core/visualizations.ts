@@ -31,8 +31,8 @@ import {
   RgbConfigProvider,
 } from './configs';
 import {
+  ComplexHeatmapVisContainer,
   ComplexLineVisContainer,
-  ComplexVisContainer,
   CompoundVisContainer,
   HeatmapVisContainer,
   LineVisContainer,
@@ -50,7 +50,7 @@ export enum Vis {
   Matrix = 'Matrix',
   Line = 'Line',
   Heatmap = 'Heatmap',
-  Complex = 'Complex',
+  ComplexHeatmap = 'ComplexHeatmap',
   ComplexLine = 'ComplexLine',
   RGB = 'RGB',
   Compound = 'Compound',
@@ -102,6 +102,16 @@ export const CORE_VIS = {
     },
   },
 
+  [Vis.ComplexLine]: {
+    name: Vis.Line,
+    Icon: FiActivity,
+    Container: ComplexLineVisContainer,
+    ConfigProvider: LineConfigProvider,
+    supportsDataset: (dataset) => {
+      return hasComplexType(dataset) && hasArrayShape(dataset);
+    },
+  },
+
   [Vis.Heatmap]: {
     name: Vis.Heatmap,
     Icon: FiMap,
@@ -116,20 +126,10 @@ export const CORE_VIS = {
     },
   },
 
-  [Vis.ComplexLine]: {
-    name: Vis.Line,
-    Icon: FiActivity,
-    Container: ComplexLineVisContainer,
-    ConfigProvider: LineConfigProvider,
-    supportsDataset: (dataset) => {
-      return hasComplexType(dataset) && hasArrayShape(dataset);
-    },
-  },
-
-  [Vis.Complex]: {
+  [Vis.ComplexHeatmap]: {
     name: Vis.Heatmap,
     Icon: FiMap,
-    Container: ComplexVisContainer,
+    Container: ComplexHeatmapVisContainer,
     ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (

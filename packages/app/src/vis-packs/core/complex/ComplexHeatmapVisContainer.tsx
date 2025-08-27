@@ -13,9 +13,9 @@ import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { useHeatmapConfig } from '../heatmap/config';
 import ValueFetcher from '../ValueFetcher';
-import MappedComplexVis from './MappedComplexVis';
+import MappedComplexHeatmapVis from './MappedComplexHeatmapVis';
 
-function ComplexVisContainer(props: VisContainerProps) {
+function ComplexHeatmapVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertArrayShape(entity);
@@ -42,7 +42,7 @@ function ComplexVisContainer(props: VisContainerProps) {
           dataset={entity}
           selection={selection}
           render={(value) => (
-            <MappedComplexVis
+            <MappedComplexHeatmapVis
               value={value}
               dims={dims}
               dimMapping={dimMapping}
@@ -57,4 +57,4 @@ function ComplexVisContainer(props: VisContainerProps) {
   );
 }
 
-export default ComplexVisContainer;
+export default ComplexHeatmapVisContainer;
