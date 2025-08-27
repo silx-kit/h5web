@@ -10,6 +10,7 @@ import {
 import {
   type ArrayValue,
   type ComplexType,
+  type NumericLikeType,
   type NumericType,
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
@@ -28,7 +29,7 @@ interface Props {
   value: ArrayValue<ComplexType>;
   valueLabel?: string;
   auxLabels?: string[];
-  auxValues?: ArrayValue<ComplexType>[];
+  auxValues?: ArrayValue<NumericLikeType | ComplexType>[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;

@@ -49,7 +49,7 @@ export interface NxData<
 > {
   titleDataset?: Dataset<ScalarShape, StringType>;
   signalDef: WithError<DatasetDef<T>>;
-  auxDefs: WithError<DatasetDef<T>>[];
+  auxDefs: WithError<DatasetDef>[];
   axisDefs: AxisMapping<AxisDef>;
   silxStyle: SilxStyle;
 }
@@ -58,7 +58,7 @@ export interface NxValues<T extends NumericLikeType | ComplexType> {
   title: string;
   signal: ArrayValue<T>;
   errors?: ArrayValue<NumericType>;
-  auxValues: ArrayValue<T>[];
+  auxValues: ArrayValue<NumericLikeType | ComplexType>[];
   auxErrors: (ArrayValue<NumericType> | undefined)[];
   axisValues: AxisMapping<ArrayValue<NumericType>>;
 }

@@ -301,6 +301,11 @@ export const mockValues = {
       twoD().data.map((v) => v / 2),
       [20, 41],
     ),
+  tertiary_cplx: () =>
+    ndarray(
+      twoD().data.map((v) => cplx(v / 2, v / 4)),
+      [20, 41],
+    ),
   tertiary_float: () =>
     ndarray(
       [

@@ -1,5 +1,6 @@
 import {
   assertComplexType,
+  assertNumericLikeOrComplexType,
   assertNumericLikeType,
   assertNumericType,
   isDefined,
@@ -20,7 +21,7 @@ export function assertNumericLikeNxData(
   assertNumericLikeType(signalDef.dataset);
 
   auxDefs.forEach((def) => {
-    assertNumericLikeType(def.dataset);
+    assertNumericLikeOrComplexType(def.dataset);
   });
 
   if (signalDef.errorDataset) {
@@ -60,7 +61,7 @@ export function assertComplexNxData(
   assertComplexType(signalDef.dataset);
 
   auxDefs.forEach((def) => {
-    assertComplexType(def.dataset);
+    assertNumericLikeOrComplexType(def.dataset);
   });
 
   if (signalDef.errorDataset) {

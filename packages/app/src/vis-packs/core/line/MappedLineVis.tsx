@@ -11,14 +11,17 @@ import {
   useSlicedDimsAndMapping,
   useVisDomain,
 } from '@h5web/lib';
+import { isComplexArray } from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type ArrayValue,
+  type ComplexType,
   type Dataset,
   type NumericLikeType,
   type NumericType,
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
+import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
@@ -29,7 +32,7 @@ import {
   useToNumArray,
   useToNumArrays,
 } from '../hooks';
-import { DEFAULT_DOMAIN, formatNumLikeType } from '../utils';
+import { DEFAULT_DOMAIN, formatNumLikeType, toNumArray } from '../utils';
 import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
 import { generateCsv } from './utils';
@@ -40,7 +43,7 @@ interface Props {
   valueLabel?: string;
   errors?: ArrayValue<NumericType>;
   auxLabels?: string[];
-  auxValues?: ArrayValue<NumericLikeType>[];
+  auxValues?: ArrayValue<NumericLikeType | ComplexType>[];
   auxErrors?: (ArrayValue<NumericType> | undefined)[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
@@ -83,7 +86,18 @@ function MappedLineVis(props: Props) {
   const hookArgs = [slicedDims, slicedMapping] as const;
 
   const numArray = useToNumArray(value);
-  const numAuxArrays = useToNumArrays(auxValues);
+  const numAuxArrays = useMemo(
+    () =>
+      auxValues.map((arr) => {
+        if (isComplexArray(arr)) {
+          return arr.map(([real, imag]) => Math.hypot(real, imag)); // amplitude
+        }
+
+        return toNumArray(arr);
+      }),
+    auxValues, // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
   const numErrorsArray = useToNumArray(errors);
   const numAuxErrorsArrays = useToNumArrays(auxErrors);
   const numAxisArrays = useToNumArrays(axisValues);
