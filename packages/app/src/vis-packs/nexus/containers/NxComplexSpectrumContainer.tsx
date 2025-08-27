@@ -3,7 +3,6 @@ import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useComplexLineConfig } from '../../core/complex/lineConfig';
 import MappedComplexLineVis from '../../core/complex/MappedComplexLineVis';
 import { useLineConfig } from '../../core/line/config';
 import { type VisContainerProps } from '../../models';
@@ -27,8 +26,7 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
   const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');
 
-  const config = useComplexLineConfig();
-  const lineConfig = useLineConfig({
+  const config = useLineConfig({
     xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
     yScaleType: isAxisScaleType(silxStyle.signalScaleType)
       ? silxStyle.signalScaleType
@@ -65,7 +63,6 @@ function NxComplexSpectrumContainer(props: VisContainerProps) {
                 title={title}
                 toolbarContainer={toolbarContainer}
                 config={config}
-                lineConfig={lineConfig}
               />
             );
           }}
