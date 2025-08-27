@@ -82,8 +82,7 @@ function MappedLineVis(props: Props) {
   } = config;
 
   const { shape: dims } = dataset;
-  const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(dims, dimMapping);
-  const hookArgs = [slicedDims, slicedMapping] as const;
+  const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
 
   const numArray = useToNumArray(value);
   const numAuxArrays = useMemo(
@@ -102,10 +101,10 @@ function MappedLineVis(props: Props) {
   const numAuxErrorsArrays = useToNumArrays(auxErrors);
   const numAxisArrays = useToNumArrays(axisValues);
 
-  const dataArray = useMappedArray(numArray, ...hookArgs);
-  const errorsArray = useMappedArray(numErrorsArray, ...hookArgs);
-  const auxArrays = useMappedArrays(numAuxArrays, ...hookArgs);
-  const auxErrorsArrays = useMappedArrays(numAuxErrorsArrays, ...hookArgs);
+  const dataArray = useMappedArray(numArray, ...mappingArgs);
+  const errorsArray = useMappedArray(numErrorsArray, ...mappingArgs);
+  const auxArrays = useMappedArrays(numAuxArrays, ...mappingArgs);
+  const auxErrorsArrays = useMappedArrays(numAuxErrorsArrays, ...mappingArgs);
 
   const dataDomain = useDomain(
     dataArray,

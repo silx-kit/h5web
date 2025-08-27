@@ -1,10 +1,11 @@
 import {
+  ComplexVisType,
   type DimensionMapping,
   LineVis,
   useCombinedDomain,
-  useDomain,
   useDomains,
   useSafeDomain,
+  useSlicedDimsAndMapping,
   useVisDomain,
 } from '@h5web/lib';
 import {
@@ -17,11 +18,11 @@ import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useToNumArrays } from '../hooks';
+import { useMappedArrays, useToNumArrays } from '../hooks';
 import { type LineConfig } from '../line/config';
 import LineToolbar from '../line/LineToolbar';
 import { DEFAULT_DOMAIN } from '../utils';
-import { useMappedComplexArrays } from './hooks';
+import { usePhaseAmplitudeArrays } from './hooks';
 import { COMPLEX_VIS_TYPE_LABELS } from './utils';
 
 interface Props {
@@ -62,19 +63,29 @@ function MappedComplexLineVis(props: Props) {
     showGrid,
   } = config;
 
+  const { phaseArrays, amplitudeArrays } = usePhaseAmplitudeArrays([
+    value,
+    ...auxValues,
+  ]);
   const numAxisArrays = useToNumArrays(axisValues);
-  const [dataArray, ...auxArrays] = useMappedComplexArrays(
-    [value, ...auxValues],
-    dims,
-    dimMapping,
-    complexVisType,
+
+  const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
+  const mappedPhaseArrays = useMappedArrays(phaseArrays, ...mappingArgs);
+  const mappedAmplitudeArrays = useMappedArrays(
+    amplitudeArrays,
+    ...mappingArgs,
   );
 
-  const dataDomain = useDomain(dataArray, yScaleType);
-  const auxDomains = useDomains(auxArrays, yScaleType);
-  const combinedDomain =
-    useCombinedDomain([dataDomain, ...auxDomains]) || DEFAULT_DOMAIN;
+  const phaseDomains = useDomains(mappedPhaseArrays, yScaleType);
+  const amplitudeDomains = useDomains(mappedAmplitudeArrays, yScaleType);
 
+  const [pickedArrays, pickedDomains] =
+    complexVisType === ComplexVisType.Phase
+      ? [mappedPhaseArrays, phaseDomains]
+      : [mappedAmplitudeArrays, amplitudeDomains];
+
+  const [dataArray, ...auxArrays] = pickedArrays;
+  const combinedDomain = useCombinedDomain(pickedDomains) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, combinedDomain);
   const [safeDomain] = useSafeDomain(visDomain, combinedDomain, yScaleType);
 
