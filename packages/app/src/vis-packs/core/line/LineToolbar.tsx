@@ -1,4 +1,5 @@
 import {
+  ComplexVisTypeSelector,
   CurveType,
   DomainWidget,
   ExportMenu,
@@ -8,7 +9,11 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import { type Domain, type ExportEntry } from '@h5web/shared/vis-models';
+import {
+  ComplexVisType,
+  type Domain,
+  type ExportEntry,
+} from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { MdGridOn } from 'react-icons/md';
 
@@ -18,14 +23,22 @@ import ErrorsIcon from './ErrorsIcon';
 
 interface Props {
   dataDomain: Domain;
-  isSlice: boolean;
-  disableErrors: boolean;
+  isSlice?: boolean;
+  isComplex?: boolean;
+  disableErrors?: boolean;
   config: LineConfig;
-  exportEntries: ExportEntry[];
+  exportEntries?: ExportEntry[];
 }
 
 function LineToolbar(props: Props) {
-  const { isSlice, dataDomain, disableErrors, config, exportEntries } = props;
+  const {
+    dataDomain,
+    isSlice,
+    isComplex,
+    disableErrors,
+    config,
+    exportEntries,
+  } = props;
 
   const {
     customDomain,
@@ -33,12 +46,14 @@ function LineToolbar(props: Props) {
     showGrid,
     xScaleType,
     yScaleType,
+    complexVisType,
     showErrors,
     setCustomDomain,
     setCurveType,
     toggleGrid,
     setXScaleType,
     setYScaleType,
+    setComplexVisType,
     toggleErrors,
   } = config;
 
@@ -65,15 +80,28 @@ function LineToolbar(props: Props) {
         options={AXIS_SCALE_TYPES}
       />
 
+      {isComplex && (
+        <>
+          <Separator />
+          <ComplexVisTypeSelector
+            value={complexVisType}
+            onChange={setComplexVisType}
+            options={[ComplexVisType.Amplitude, ComplexVisType.Phase]}
+          />
+        </>
+      )}
+
       <Separator />
 
-      <ToggleBtn
-        label="Errors"
-        Icon={ErrorsIcon}
-        value={!disableErrors && showErrors}
-        onToggle={toggleErrors}
-        disabled={disableErrors}
-      />
+      {!isComplex && (
+        <ToggleBtn
+          label="Errors"
+          Icon={ErrorsIcon}
+          value={!disableErrors && showErrors}
+          onToggle={toggleErrors}
+          disabled={disableErrors}
+        />
+      )}
 
       <ToggleBtn
         label="Grid"
@@ -97,7 +125,7 @@ function LineToolbar(props: Props) {
         <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
       </ToggleGroup>
 
-      {exportEntries.length > 0 && (
+      {exportEntries && exportEntries.length > 0 && (
         <>
           <Separator />
           <ExportMenu isSlice={isSlice} entries={exportEntries} />

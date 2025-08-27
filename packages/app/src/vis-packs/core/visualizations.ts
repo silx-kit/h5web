@@ -24,8 +24,6 @@ import {
 import { type AttrValuesStore } from '../../providers/models';
 import { type VisDef } from '../models';
 import {
-  ComplexConfigProvider,
-  ComplexLineConfigProvider,
   HeatmapConfigProvider,
   LineConfigProvider,
   MatrixConfigProvider,
@@ -122,7 +120,7 @@ export const CORE_VIS = {
     name: Vis.Line,
     Icon: FiActivity,
     Container: ComplexLineVisContainer,
-    ConfigProvider: ComplexLineConfigProvider,
+    ConfigProvider: LineConfigProvider,
     supportsDataset: (dataset) => {
       return hasComplexType(dataset) && hasArrayShape(dataset);
     },
@@ -132,7 +130,7 @@ export const CORE_VIS = {
     name: Vis.Heatmap,
     Icon: FiMap,
     Container: ComplexVisContainer,
-    ConfigProvider: ComplexConfigProvider,
+    ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (
         hasComplexType(dataset) &&

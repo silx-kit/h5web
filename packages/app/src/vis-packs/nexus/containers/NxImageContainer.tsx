@@ -10,7 +10,6 @@ import { useState } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useComplexConfig } from '../../core/complex/config';
 import MappedComplexVis from '../../core/complex/MappedComplexVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
@@ -39,7 +38,6 @@ function NxImageContainer(props: VisContainerProps) {
   const xAxisDef = axisDefs[dimMapping.indexOf('x')];
   const yAxisDef = axisDefs[dimMapping.indexOf('y')];
 
-  const complexConfig = useComplexConfig();
   const config = useHeatmapConfig({
     scaleType: silxStyle.signalScaleType,
     keepRatio: guessKeepRatio(xAxisDef, yAxisDef),
@@ -82,8 +80,7 @@ function NxImageContainer(props: VisContainerProps) {
                   axisValues={axisValues}
                   title={title}
                   toolbarContainer={toolbarContainer}
-                  config={complexConfig}
-                  heatmapConfig={config}
+                  config={config}
                 />
               );
             }

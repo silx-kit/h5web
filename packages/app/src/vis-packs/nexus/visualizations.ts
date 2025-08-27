@@ -2,7 +2,6 @@ import { FiActivity, FiFileText, FiImage, FiMap } from 'react-icons/fi';
 import { MdGrain } from 'react-icons/md';
 
 import {
-  ComplexLineConfigProvider,
   HeatmapConfigProvider,
   LineConfigProvider,
   RgbConfigProvider,
@@ -39,7 +38,7 @@ export const NEXUS_VIS = {
     name: NexusVis.NxSpectrum,
     Icon: FiActivity,
     Container: NxComplexSpectrumContainer,
-    ConfigProvider: ComplexLineConfigProvider,
+    ConfigProvider: LineConfigProvider,
   },
 
   [NexusVis.NxImage]: {

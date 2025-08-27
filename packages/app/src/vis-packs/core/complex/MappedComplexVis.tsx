@@ -18,10 +18,9 @@ import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type HeatmapConfig } from '../heatmap/config';
+import HeatmapToolbar from '../heatmap/HeatmapToolbar';
 import { useBaseArray, useMappedArray, useToNumArrays } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
-import ComplexToolbar from './ComplexToolbar';
-import { type ComplexConfig } from './config';
 import { COMPLEX_VIS_TYPE_LABELS, getPhaseAmplitudeValues } from './utils';
 
 interface Props {
@@ -32,8 +31,7 @@ interface Props {
   axisValues?: AxisMapping<ArrayValue<NumericType>>;
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
-  config: ComplexConfig;
-  heatmapConfig: HeatmapConfig;
+  config: HeatmapConfig;
 }
 
 function MappedComplexVis(props: Props) {
@@ -46,18 +44,19 @@ function MappedComplexVis(props: Props) {
     title,
     toolbarContainer,
     config,
-    heatmapConfig,
   } = props;
 
-  const { visType } = config;
   const {
     customDomain,
     colorMap,
     scaleType,
+    complexVisType,
+    flipXAxis,
+    flipYAxis,
     keepRatio,
     showGrid,
     invertColorMap,
-  } = heatmapConfig;
+  } = config;
 
   const numAxisArrays = useToNumArrays(axisValues);
 
@@ -76,9 +75,9 @@ function MappedComplexVis(props: Props) {
     useValidDomainForScale(amplitudeBounds, scaleType) || DEFAULT_DOMAIN;
 
   const dataArray =
-    visType !== ComplexVisType.Amplitude ? phaseArray : amplitudeArray;
+    complexVisType !== ComplexVisType.Amplitude ? phaseArray : amplitudeArray;
   const dataDomain =
-    visType !== ComplexVisType.Amplitude ? phaseDomain : amplitudeDomain;
+    complexVisType !== ComplexVisType.Amplitude ? phaseDomain : amplitudeDomain;
 
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
@@ -90,11 +89,7 @@ function MappedComplexVis(props: Props) {
     <>
       {toolbarContainer &&
         createPortal(
-          <ComplexToolbar
-            dataDomain={dataDomain}
-            config={config}
-            heatmapConfig={heatmapConfig}
-          />,
+          <HeatmapToolbar dataDomain={dataDomain} isComplex config={config} />,
           toolbarContainer,
         )}
 
@@ -102,12 +97,14 @@ function MappedComplexVis(props: Props) {
         className={visualizerStyles.vis}
         dataArray={dataArray}
         domain={safeDomain}
-        title={`${title} (${COMPLEX_VIS_TYPE_LABELS[visType].toLowerCase()})`}
+        title={`${title} (${COMPLEX_VIS_TYPE_LABELS[complexVisType].toLowerCase()})`}
         colorMap={colorMap}
         scaleType={scaleType}
         aspect={keepRatio ? 'equal' : 'auto'}
         showGrid={showGrid}
         invertColorMap={invertColorMap}
+        flipXAxis={flipXAxis}
+        flipYAxis={flipYAxis}
         abscissaParams={{
           label: axisLabels[xDimIndex],
           value: numAxisArrays[xDimIndex],
@@ -117,7 +114,7 @@ function MappedComplexVis(props: Props) {
           value: numAxisArrays[yDimIndex],
         }}
         alpha={
-          visType === ComplexVisType.PhaseAmplitude
+          complexVisType === ComplexVisType.PhaseAmplitude
             ? {
                 array: amplitudeArray,
                 domain: amplitudeDomain,

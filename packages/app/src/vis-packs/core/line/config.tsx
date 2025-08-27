@@ -1,6 +1,11 @@
 import { CurveType, type CustomDomain } from '@h5web/lib';
 import { isDefined } from '@h5web/shared/guards';
-import { type AxisScaleType, ScaleType } from '@h5web/shared/vis-models';
+import {
+  type AxisScaleType,
+  type ComplexLineVisType,
+  ComplexVisType,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
 import { createContext, useContext, useState } from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
@@ -23,6 +28,9 @@ export interface LineConfig {
   setXScaleType: (type: AxisScaleType) => void;
   setYScaleType: (type: AxisScaleType) => void;
 
+  complexVisType: ComplexLineVisType;
+  setComplexVisType: (visType: ComplexLineVisType) => void;
+
   showErrors: boolean;
   toggleErrors: () => void;
 }
@@ -32,25 +40,28 @@ function createLineConfigStore() {
     persist(
       (set): LineConfig => ({
         customDomain: [null, null],
-        setCustomDomain: (customDomain: CustomDomain) => set({ customDomain }),
+        setCustomDomain: (customDomain) => set({ customDomain }),
 
         curveType: CurveType.LineOnly,
-        setCurveType: (type: CurveType) => set({ curveType: type }),
+        setCurveType: (curveType) => set({ curveType }),
 
         showGrid: true,
         toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
         xScaleType: ScaleType.Linear,
         yScaleType: ScaleType.Linear,
-        setXScaleType: (type) => set({ xScaleType: type }),
-        setYScaleType: (type) => set({ yScaleType: type }),
+        setXScaleType: (xScaleType) => set({ xScaleType }),
+        setYScaleType: (yScaleType) => set({ yScaleType }),
+
+        complexVisType: ComplexVisType.Amplitude,
+        setComplexVisType: (complexVisType) => set(() => ({ complexVisType })),
 
         showErrors: true,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
       }),
       {
         name: 'h5web:line',
-        version: 5,
+        version: 6,
       },
     ),
   );

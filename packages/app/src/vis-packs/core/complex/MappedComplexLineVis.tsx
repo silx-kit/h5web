@@ -19,10 +19,9 @@ import { createPortal } from 'react-dom';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useToNumArrays } from '../hooks';
 import { type LineConfig } from '../line/config';
+import LineToolbar from '../line/LineToolbar';
 import { DEFAULT_DOMAIN } from '../utils';
-import ComplexLineToolbar from './ComplexLineToolbar';
 import { useMappedComplexArrays } from './hooks';
-import { type ComplexLineConfig } from './lineConfig';
 import { COMPLEX_VIS_TYPE_LABELS } from './utils';
 
 interface Props {
@@ -36,8 +35,7 @@ interface Props {
   axisValues?: AxisMapping<ArrayValue<NumericType>>;
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
-  config: ComplexLineConfig;
-  lineConfig: LineConfig;
+  config: LineConfig;
 }
 
 function MappedComplexLineVis(props: Props) {
@@ -53,19 +51,23 @@ function MappedComplexLineVis(props: Props) {
     title,
     toolbarContainer,
     config,
-    lineConfig,
   } = props;
 
-  const { visType } = config;
-  const { customDomain, yScaleType, xScaleType, curveType, showGrid } =
-    lineConfig;
+  const {
+    customDomain,
+    yScaleType,
+    xScaleType,
+    complexVisType,
+    curveType,
+    showGrid,
+  } = config;
 
   const numAxisArrays = useToNumArrays(axisValues);
   const [dataArray, ...auxArrays] = useMappedComplexArrays(
     [value, ...auxValues],
     dims,
     dimMapping,
-    visType,
+    complexVisType,
   );
 
   const dataDomain = useDomain(dataArray, yScaleType);
@@ -78,18 +80,14 @@ function MappedComplexLineVis(props: Props) {
 
   const xDimIndex = dimMapping.indexOf('x');
   const ordinateLabel = valueLabel
-    ? `${valueLabel} (${COMPLEX_VIS_TYPE_LABELS[visType].toLowerCase()})`
-    : COMPLEX_VIS_TYPE_LABELS[visType];
+    ? `${valueLabel} (${COMPLEX_VIS_TYPE_LABELS[complexVisType].toLowerCase()})`
+    : COMPLEX_VIS_TYPE_LABELS[complexVisType];
 
   return (
     <>
       {toolbarContainer &&
         createPortal(
-          <ComplexLineToolbar
-            dataDomain={combinedDomain}
-            config={config}
-            lineConfig={lineConfig}
-          />,
+          <LineToolbar dataDomain={combinedDomain} isComplex config={config} />,
           toolbarContainer,
         )}
 
