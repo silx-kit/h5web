@@ -61,9 +61,6 @@
   --h5w-slicingSlider-track--color: var(--secondary-dark);
   --h5w-slicingSlider-thumb--borderColor: var(--secondary);
   --h5w-slicingSlider-thumb--bgColor: var(--primary-bg);
-
-  --h5w-line--color: darkblue;
-  --h5w-line--colorAux: orangered, forestgreen, red, mediumorchid, olive;
 }
 
 .root *,
@@ -96,7 +93,7 @@
 
     /* Change line colors for better contrast once inverted */
     --h5w-line--color: deepskyblue;
-    --h5w-custom--line-colorAux: orange, lightgreen, red, violet, gold;
+    --h5w-line--colorAux: orange, lightgreen, red, violet, gold;
   }
 
   .root[data-allow-dark-mode] [data-keep-colors],
