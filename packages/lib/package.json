@@ -43,10 +43,10 @@
     "sync-version": "dot-json ../../package.json version | xargs dot-json package.json version"
   },
   "peerDependencies": {
+    "@react-three/fiber": "8.x",
     "@types/react": "18.x",
     "@types/react-dom": "18.x",
     "@types/three": ">=0.138",
-    "@react-three/fiber": "8.x",
     "react": "18.x",
     "react-dom": "18.x",
     "three": ">=0.138",
@@ -101,7 +101,7 @@
     "zustand": "5.0.8"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.4.0",
+    "@esrf/eslint-config": "1.5.1",
     "@h5web/shared": "workspace:*",
     "@react-three/fiber": "8.18.0",
     "@rollup/plugin-alias": "5.1.1",
@@ -112,7 +112,7 @@
     "@vitejs/plugin-react-swc": "4.0.1",
     "concat": "1.0.3",
     "dot-json": "1.3.0",
-    "eslint": "9.33.0",
+    "eslint": "9.35.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "rimraf": "6.0.1",

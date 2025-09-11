@@ -74,7 +74,7 @@
     }
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.4.0",
+    "@esrf/eslint-config": "1.5.1",
     "@types/d3-array": "~3.2.1",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "~1.0.14",
@@ -83,7 +83,7 @@
     "@types/react": "^18.3.23",
     "d3-array": "3.2.4",
     "d3-format": "3.1.0",
-    "eslint": "9.33.0",
+    "eslint": "9.35.0",
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
     "react": "18.3.1",
