@@ -38,11 +38,15 @@
   "peerDependencies": {
     "@h5web/app": "workspace:*",
     "@types/react": "18.x",
+    "h5wasm-plugins": "0.1.2",
     "react": "18.x",
     "typescript": ">=4.5"
   },
   "peerDependenciesMeta": {
     "@types/react": {
+      "optional": true
+    },
+    "h5wasm-plugins": {
       "optional": true
     },
     "typescript": {
@@ -51,7 +55,7 @@
   },
   "dependencies": {
     "comlink": "4.4.2",
-    "h5wasm": "0.7.9",
+    "h5wasm": "0.8.5",
     "nanoid": "5.1.5"
   },
   "devDependencies": {
