@@ -59,8 +59,9 @@ function MappedComplexLineVis(props: Props) {
     yScaleType,
     xScaleType,
     complexVisType,
-    curveType,
+    showAux,
     showGrid,
+    curveType,
   } = config;
 
   const { phaseArrays, amplitudeArrays } = usePhaseAmplitudeArrays([
@@ -98,7 +99,12 @@ function MappedComplexLineVis(props: Props) {
     <>
       {toolbarContainer &&
         createPortal(
-          <LineToolbar dataDomain={combinedDomain} isComplex config={config} />,
+          <LineToolbar
+            dataDomain={combinedDomain}
+            isComplex
+            withAux={auxValues.length > 0}
+            config={config}
+          />,
           toolbarContainer,
         )}
 
@@ -107,8 +113,6 @@ function MappedComplexLineVis(props: Props) {
         dataArray={dataArray}
         domain={safeDomain}
         scaleType={yScaleType}
-        curveType={curveType}
-        showGrid={showGrid}
         abscissaParams={{
           label: axisLabels[xDimIndex],
           value: numAxisArrays[xDimIndex],
@@ -120,6 +124,9 @@ function MappedComplexLineVis(props: Props) {
           label: auxLabels[i],
           array,
         }))}
+        showAux={showAux}
+        showGrid={showGrid}
+        curveType={curveType}
         testid={dimMapping.toString()}
       />
     </>

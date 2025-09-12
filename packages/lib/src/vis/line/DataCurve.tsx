@@ -35,7 +35,7 @@ function DataCurve(props: Props) {
     abscissas,
     ordinates,
     errors,
-    showErrors,
+    showErrors = true,
     color,
     curveType = CurveType.LineOnly,
     glyphType = GlyphType.Cross,
