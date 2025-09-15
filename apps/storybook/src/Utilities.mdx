@@ -229,12 +229,17 @@ This function assumes that the last dimension should be mapped to the `x` axis, 
 should be mapped to the `y` axis`, and that the user should be able to slice through the remaining dimensions
 (starting at index `0`) with the `DimensionMapper`.
 
+The third parameter allows specifying a number of "locked" dimensions, starting from the last. This is used notably
+with RGB datasets: the last dimenion always holds the three channel values so the _RBG_ visualization would break
+if an axis were mapped to it.
+
 ```tsx
-initDimMapping(dims: number[], axesCount: number): DimensionMapping
+initDimMapping(dims: number[], axesCount: number, lockedDimsCount = 0): DimensionMapping
 
 initDimMapping([5], 1); // ['x']
 initDimMapping([5, 10], 2); // ['y', 'x']
 initDimMapping([5, 10, 15, 20], 2); // [0, 0, 'y', 'x']
+initDimMapping([5, 10, 15, 20], 2, 1); // [0, 'y', 'x', null]
 
 const [dimMapping, setDimMapping] = useState(initDimMapping(dims, 1))
 <DimensionMapper value={dimMapping} onChange={setDimMapping} />
@@ -282,6 +287,7 @@ getSlicedDimsAndMapping([10, 20, 30], ['x', 10, 'y']); // [[10, 30], ['x', 'y']]
 - **`useAxisValues(...args): number[]`** - Memoised version of `getAxisValues`.
 - **`useAxisDomain(...args): Domain | undefined`** - Memoised version of `getAxisDomain`.
 - **`useValueToIndexScale(...args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
+- **`useDimMapping(...args): DimensionMapping`** - Memoised version of `getDimMapping`.
 - **`useSlicedDimsAndMapping(...args): [number[], DimensionMapping]`** - Memoised version of `getSlicedDimsAndMapping`.
 
 #### useCanvasEvent
