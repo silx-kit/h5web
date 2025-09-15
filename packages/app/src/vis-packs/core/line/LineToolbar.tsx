@@ -15,7 +15,7 @@ import {
   type ExportEntry,
 } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { MdGridOn } from 'react-icons/md';
+import { MdGridOn, MdLegendToggle } from 'react-icons/md';
 
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { type LineConfig } from './config';
@@ -25,7 +25,8 @@ interface Props {
   dataDomain: Domain;
   isSlice?: boolean;
   isComplex?: boolean;
-  disableErrors?: boolean;
+  withErrors?: boolean;
+  withAux?: boolean;
   config: LineConfig;
   exportEntries?: ExportEntry[];
 }
@@ -35,26 +36,29 @@ function LineToolbar(props: Props) {
     dataDomain,
     isSlice,
     isComplex,
-    disableErrors,
+    withErrors,
+    withAux,
     config,
     exportEntries,
   } = props;
 
   const {
     customDomain,
-    curveType,
-    showGrid,
     xScaleType,
     yScaleType,
     complexVisType,
     showErrors,
+    showAux,
+    showGrid,
+    curveType,
     setCustomDomain,
-    setCurveType,
-    toggleGrid,
     setXScaleType,
     setYScaleType,
     setComplexVisType,
+    toggleAux,
     toggleErrors,
+    toggleGrid,
+    setCurveType,
   } = config;
 
   return (
@@ -93,13 +97,21 @@ function LineToolbar(props: Props) {
 
       <Separator />
 
-      {!isComplex && (
+      {withErrors && (
         <ToggleBtn
           label="Errors"
           Icon={ErrorsIcon}
-          value={!disableErrors && showErrors}
+          value={showErrors}
           onToggle={toggleErrors}
-          disabled={disableErrors}
+        />
+      )}
+
+      {withAux && (
+        <ToggleBtn
+          label="Aux"
+          Icon={MdLegendToggle}
+          value={showAux}
+          onToggle={toggleAux}
         />
       )}
 
@@ -109,8 +121,6 @@ function LineToolbar(props: Props) {
         value={showGrid}
         onToggle={toggleGrid}
       />
-
-      <Separator />
 
       <ToggleGroup
         role="radiogroup"

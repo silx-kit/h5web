@@ -76,9 +76,10 @@ function MappedLineVis(props: Props) {
     customDomain,
     yScaleType,
     xScaleType,
-    curveType,
-    showGrid,
     showErrors,
+    showAux,
+    showGrid,
+    curveType,
   } = config;
 
   const { shape: dims } = dataset;
@@ -153,7 +154,8 @@ function MappedLineVis(props: Props) {
           <LineToolbar
             dataDomain={combinedDomain}
             isSlice={selection !== undefined}
-            disableErrors={!errors}
+            withErrors={!!errors}
+            withAux={auxiliaries.length > 0}
             config={config}
             exportEntries={exportEntries}
           />,
@@ -165,8 +167,6 @@ function MappedLineVis(props: Props) {
         dataArray={dataArray}
         domain={safeDomain}
         scaleType={yScaleType}
-        curveType={curveType}
-        showGrid={showGrid}
         abscissaParams={abscissaParams}
         ordinateLabel={valueLabel}
         title={title}
@@ -174,6 +174,9 @@ function MappedLineVis(props: Props) {
         errorsArray={errorsArray}
         showErrors={showErrors}
         auxiliaries={auxiliaries}
+        showAux={showAux}
+        showGrid={showGrid}
+        curveType={curveType}
         testid={dimMapping.toString()}
         ignoreValue={ignoreValue}
       />
