@@ -3,8 +3,9 @@ import { type ArrayShape } from '@h5web/shared/hdf5-models';
 import {
   createContext,
   type PropsWithChildren,
+  useCallback,
   useContext,
-  useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
@@ -16,25 +17,14 @@ interface DimMappingState {
   axesCount: number;
   lockedDimsCount: number;
   mapping: DimensionMapping;
-  setMapping: (mapping: DimensionMapping) => void;
-  reset: (
-    dims: ArrayShape,
-    axesCount: number,
-    lockedDimsCount: number,
-    mapping: DimensionMapping,
-  ) => void;
 }
 
 function createDimMappingStore() {
-  return createStore<DimMappingState>((set) => ({
+  return createStore<DimMappingState>(() => ({
     dims: [],
     axesCount: 0,
     lockedDimsCount: 0,
     mapping: [],
-    setMapping: (mapping) => set({ mapping }),
-    reset: (dims, axesCount, lockedDimsCount, mapping) => {
-      set({ dims, axesCount, lockedDimsCount, mapping });
-    },
   }));
 }
 
@@ -56,22 +46,31 @@ export function useDimMappingState(
   axesCount: number,
   lockedDimsCount = 0,
 ): [DimensionMapping, (mapping: DimensionMapping) => void] {
-  const state = useStore(useContext(StoreContext));
+  const store = useContext(StoreContext);
+  const state = useStore(store);
 
-  /* If current mapping was initialised with different axes count and dimensions,
-   * need to compute new mapping and reset state. */
-  const isStale =
-    axesCount !== state.axesCount ||
-    lockedDimsCount !== state.lockedDimsCount ||
-    !areSameDims(dims, state.dims);
+  // Prepare new, memoised mapping and setter
+  const mapping = useMemo(
+    () => initDimMapping(dims, axesCount, lockedDimsCount),
+    [axesCount, dims, lockedDimsCount],
+  );
 
-  const mapping = isStale
-    ? initDimMapping(dims, axesCount, lockedDimsCount)
-    : state.mapping;
+  const setMapping = useCallback(
+    (newMapping: DimensionMapping) => {
+      store.setState({ dims, axesCount, lockedDimsCount, mapping: newMapping });
+    },
+    [dims, axesCount, lockedDimsCount, store],
+  );
 
-  useEffect(() => {
-    state.reset(dims, axesCount, lockedDimsCount, mapping);
-  }, [isStale]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (
+    areSameDims(dims, state.dims) &&
+    axesCount === state.axesCount &&
+    lockedDimsCount === state.lockedDimsCount
+  ) {
+    // Previous dimension mapping is still valid, so use it
+    return [state.mapping, setMapping];
+  }
 
-  return [mapping, state.setMapping];
+  // Return new mapping
+  return [mapping, setMapping];
 }
