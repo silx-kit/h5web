@@ -17,6 +17,7 @@ export type NxAttribute =
   | 'interpretation'
   | 'axes'
   | 'default'
+  | 'default_slice'
   | 'long_name'
   | 'units'
   | 'SILX_style'
@@ -39,6 +40,7 @@ type WithError<T extends DatasetDef> = T & {
 
 export type AxisDef = DatasetDef<NumericType>;
 
+export type DefaultSlice = (number | '.')[];
 export interface SilxStyle {
   signalScaleType?: ColorScaleType;
   axisScaleTypes?: AxisMapping<AxisScaleType>;
@@ -51,6 +53,7 @@ export interface NxData<
   signalDef: WithError<DatasetDef<T>>;
   auxDefs: WithError<DatasetDef>[];
   axisDefs: AxisMapping<AxisDef>;
+  defaultSlice?: DefaultSlice;
   silxStyle: SilxStyle;
 }
 
