@@ -366,6 +366,32 @@ describe('/mock', () => {
       );
     });
 
+    it('visualize dataset with default slice', () => {
+      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('default_slice');
+
+      cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
+      cy.findByRole('heading', { name: 'nexus_entry / default_slice' }).should(
+        'be.visible',
+      );
+
+      cy.findAllByRole('slider', { name: /D\d/u }).should('have.length', 2);
+      cy.findByRole('slider', { name: 'D0' }).should(
+        'have.attr',
+        'aria-valuenow',
+        1,
+      );
+      cy.findByRole('slider', { name: 'D2' }).should(
+        'have.attr',
+        'aria-valuenow',
+        2,
+      );
+
+      if (Cypress.env('TAKE_SNAPSHOTS')) {
+        cy.matchImageSnapshot('default_slice');
+      }
+    });
+
     it('visualize dataset with log scales on both axes on NxLine with SILX_style', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('log_spectrum');

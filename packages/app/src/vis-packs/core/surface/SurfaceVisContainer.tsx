@@ -23,7 +23,10 @@ function SurfaceVisContainer(props: VisContainerProps) {
   assertNumericType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const [dimMapping, setDimMapping] = useDimMappingState({
+    dims,
+    axesCount: 2,
+  });
 
   const config = useSurfaceConfig();
   const selection = getSliceSelection(dimMapping);

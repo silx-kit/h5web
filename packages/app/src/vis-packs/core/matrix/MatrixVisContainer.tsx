@@ -22,7 +22,7 @@ function MatrixVisContainer(props: VisContainerProps) {
 
   const { shape: dims } = entity;
   const axesCount = Math.min(dims.length, 2);
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, axesCount);
+  const [dimMapping, setDimMapping] = useDimMappingState({ dims, axesCount });
 
   const config = useMatrixConfig();
   const selection = getSliceSelection(dimMapping);

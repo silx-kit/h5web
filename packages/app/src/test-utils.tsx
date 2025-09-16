@@ -11,11 +11,12 @@ import { expect, type MockInstance, vi } from 'vitest';
 import App from './App';
 import MockProvider from './providers/mock/MockProvider';
 import { type Vis } from './vis-packs/core/visualizations';
+import { type NexusVis } from './vis-packs/nexus/visualizations';
 
 interface RenderAppResult extends RenderResult {
   user: ReturnType<typeof userEvent.setup>;
   selectExplorerNode: (name: string) => Promise<void>;
-  selectVisTab: (name: Vis) => Promise<void>;
+  selectVisTab: (name: Vis | NexusVis) => Promise<void>;
 }
 
 type InitialPath = `/${string}`;

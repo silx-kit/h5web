@@ -18,10 +18,14 @@ function NxComplexLineContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertComplexNxData(nxData);
 
-  const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
+  const { signalDef, axisDefs, auxDefs, defaultSlice, silxStyle } = nxData;
   const signalDims = signalDef.dataset.shape;
 
-  const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+  const [dimMapping, setDimMapping] = useDimMappingState({
+    dims: signalDims,
+    axesCount: 1,
+    defaultSlice,
+  });
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');

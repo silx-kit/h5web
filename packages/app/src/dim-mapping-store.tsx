@@ -10,7 +10,8 @@ import {
 } from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 
-import { areSameDims } from './vis-packs/nexus/utils';
+import { type DefaultSlice } from './vis-packs/nexus/models';
+import { applyDefaultSlice, areSameDims } from './vis-packs/nexus/utils';
 
 interface DimMappingState {
   dims: ArrayShape;
@@ -41,19 +42,25 @@ export function DimMappingProvider(props: PropsWithChildren<Props>) {
   );
 }
 
-export function useDimMappingState(
-  dims: number[],
-  axesCount: number,
-  lockedDimsCount = 0,
-): [DimensionMapping, (mapping: DimensionMapping) => void] {
+export function useDimMappingState(opts: {
+  dims: number[];
+  axesCount: number;
+  lockedDimsCount?: number;
+  defaultSlice?: DefaultSlice;
+}): [DimensionMapping, (mapping: DimensionMapping) => void] {
+  const { dims, axesCount, lockedDimsCount = 0, defaultSlice } = opts;
+
   const store = useContext(StoreContext);
   const state = useStore(store);
 
   // Prepare new, memoised mapping and setter
-  const mapping = useMemo(
-    () => initDimMapping(dims, axesCount, lockedDimsCount),
-    [axesCount, dims, lockedDimsCount],
-  );
+  const mapping = useMemo(() => {
+    const newMapping = initDimMapping(dims, axesCount, lockedDimsCount);
+
+    return defaultSlice
+      ? applyDefaultSlice(newMapping, defaultSlice)
+      : newMapping;
+  }, [dims, axesCount, lockedDimsCount, defaultSlice]);
 
   const setMapping = useCallback(
     (newMapping: DimensionMapping) => {

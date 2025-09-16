@@ -19,7 +19,7 @@ function NxLineContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertNumericLikeNxData(nxData);
 
-  const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
+  const { signalDef, axisDefs, auxDefs, defaultSlice, silxStyle } = nxData;
   const signalDims = signalDef.dataset.shape;
   const errorDims = signalDef.errorDataset?.shape;
 
@@ -28,7 +28,11 @@ function NxLineContainer(props: VisContainerProps) {
     throw new Error(`Signal and errors dimensions don't match: ${dimsStr}`);
   }
 
-  const [dimMapping, setDimMapping] = useDimMappingState(signalDims, 1);
+  const [dimMapping, setDimMapping] = useDimMappingState({
+    dims: signalDims,
+    axesCount: 1,
+    defaultSlice,
+  });
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');
