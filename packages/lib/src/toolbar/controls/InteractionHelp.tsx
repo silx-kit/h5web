@@ -16,6 +16,9 @@ import Btn from './Btn';
 import { POPOVER_CLEARANCE, useFloatingDismiss } from './hooks';
 import styles from './InteractionHelp.module.css';
 
+// https://developer.mozilla.org/en-US/docs/Web/API/Navigator/platform
+const IS_MAC = navigator.platform.startsWith('Mac'); // eslint-disable-line @typescript-eslint/no-deprecated
+
 interface Props {
   interactions: InteractionInfo[];
 }
@@ -69,7 +72,9 @@ function InteractionHelp(props: Props) {
             {interactions.map(({ shortcut, description }) => (
               <li key={shortcut} className={styles.entry}>
                 <span>{description}</span>{' '}
-                <kbd className={styles.shortcut}>{shortcut}</kbd>
+                <kbd className={styles.shortcut}>
+                  {IS_MAC ? shortcut.replace('Alt', 'Opt') : shortcut}
+                </kbd>
               </li>
             ))}
           </ul>
