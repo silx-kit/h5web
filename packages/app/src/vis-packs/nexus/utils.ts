@@ -1,3 +1,4 @@
+import { type DimensionMapping } from '@h5web/lib';
 import {
   assertArray,
   assertArrayShape,
@@ -27,7 +28,12 @@ import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
 import { type AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
-import { type AxisDef, type DatasetInfo, type SilxStyle } from './models';
+import {
+  type AxisDef,
+  type DatasetInfo,
+  type DefaultSlice,
+  type SilxStyle,
+} from './models';
 
 export function isNxDataGroup(
   group: GroupWithChildren,
@@ -231,6 +237,33 @@ export function findTitleDataset(
   return dataset;
 }
 
+export function getDefaultSlice(
+  group: Group,
+  signalDims: number[],
+  attrValuesStore: AttrValuesStore,
+): DefaultSlice | undefined {
+  const defaultSliceRaw = attrValuesStore.getSingle(group, 'default_slice');
+
+  if (
+    !Array.isArray(defaultSliceRaw) ||
+    defaultSliceRaw.length !== signalDims.length ||
+    !defaultSliceRaw.every((v) => typeof v === 'string')
+  ) {
+    return undefined;
+  }
+
+  const defaultSlice = defaultSliceRaw.map((v) => {
+    return v === '.' ? v : Number.parseInt(v);
+  });
+
+  const isValid = defaultSlice.every((v, i) => {
+    // Check for invalid or out-of-bounds indices
+    return v === '.' || (!Number.isNaN(v) && v >= 0 && v < signalDims[i]);
+  });
+
+  return isValid ? defaultSlice : undefined;
+}
+
 export function getSilxStyle(
   group: Group,
   attrValuesStore: AttrValuesStore,
@@ -297,6 +330,19 @@ export function areSameDims(dims1: ArrayShape, dims2: ArrayShape): boolean {
     dims1.length === dims2.length &&
     dims1.every((dim, index) => dim === dims2[index])
   );
+}
+
+export function applyDefaultSlice(
+  mapping: DimensionMapping,
+  defaultSlice: DefaultSlice,
+): DimensionMapping {
+  const mappedDims = mapping.filter((v) => typeof v !== 'number');
+  if (mappedDims.length !== defaultSlice.filter((v) => v === '.').length) {
+    return mapping; // default slice incompatible with mapping; leave mapping as is
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return defaultSlice.map((v) => (v === '.' ? mappedDims.shift()! : v));
 }
 
 export function parseJson(value: string): unknown {

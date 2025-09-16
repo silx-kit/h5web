@@ -22,7 +22,10 @@ function LineVisContainer(props: VisContainerProps) {
   assertNumericLikeType(entity);
 
   const { shape: dims } = entity;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 1);
+  const [dimMapping, setDimMapping] = useDimMappingState({
+    dims,
+    axesCount: 1,
+  });
 
   const config = useLineConfig();
   const ignoreValue = useIgnoreFillValue(entity);

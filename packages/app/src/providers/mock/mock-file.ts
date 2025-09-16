@@ -17,6 +17,7 @@ import {
 } from '@h5web/shared/hdf5-utils';
 import {
   array,
+  arrayAttr,
   dataset,
   datatype,
   group,
@@ -326,6 +327,10 @@ export function makeMockFile(): GroupWithChildren {
               }),
             ],
           }),
+          nxData('default_slice', {
+            signal: array('fourD'),
+            attributes: [arrayAttr('default_slice', ['1', '.', '2', '.'])],
+          }),
         ],
       }),
       nxGroup('nexus_note', 'NXnote', {
@@ -382,6 +387,18 @@ export function makeMockFile(): GroupWithChildren {
         }),
         nxData('rgb-image_incompatible', {
           signal: withNxAttr(array('oneD'), { interpretation: 'rgb-image' }),
+        }),
+        nxData('default_slice_not_strings', {
+          signal: array('fourD'),
+          attributes: [arrayAttr('default_slice', [1, '.', 2, '.'])],
+        }),
+        nxData('default_slice_wrong_length', {
+          signal: array('fourD'),
+          attributes: [arrayAttr('default_slice', ['1', '.', '2'])],
+        }),
+        nxData('default_slice_out_of_bounds', {
+          signal: array('fourD'),
+          attributes: [arrayAttr('default_slice', ['3', '.', '2', '.'])], // slicing index for first dimension should be within [0, 2]
         }),
         nxData('silx_style_unknown', {
           signal: array('oneD'),

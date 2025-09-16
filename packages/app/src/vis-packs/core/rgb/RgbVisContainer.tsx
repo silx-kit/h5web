@@ -34,7 +34,11 @@ function RgbVisContainer(props: VisContainerProps) {
     throw new Error('Expected last dimension to have size 3');
   }
 
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2, 1);
+  const [dimMapping, setDimMapping] = useDimMappingState({
+    dims,
+    axesCount: 2,
+    lockedDimsCount: 1,
+  });
 
   const config = useRgbConfig();
   const selection = getSliceSelection(dimMapping);

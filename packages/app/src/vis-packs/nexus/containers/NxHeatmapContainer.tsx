@@ -30,13 +30,17 @@ function NxHeatmapContainer(props: VisContainerProps) {
 
   const nxData = useNxData(entity);
 
-  const { signalDef, axisDefs, auxDefs, silxStyle } = nxData;
+  const { signalDef, axisDefs, auxDefs, defaultSlice, silxStyle } = nxData;
   const [selectedDef, setSelectedDef] = useState(signalDef);
   const { dataset: selectedDataset } = selectedDef;
 
   assertMinDims(selectedDataset, 2);
   const { shape: dims } = selectedDataset;
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2);
+  const [dimMapping, setDimMapping] = useDimMappingState({
+    dims,
+    axesCount: 2,
+    defaultSlice,
+  });
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const xAxisDef = axisDefs[dimMapping.indexOf('x')];

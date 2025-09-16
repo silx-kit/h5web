@@ -17,6 +17,7 @@ import {
   findSignalDataset,
   findTitleDataset,
   getDatasetInfo,
+  getDefaultSlice,
   getSilxStyle,
 } from './utils';
 
@@ -44,6 +45,7 @@ export function useNxData(group: GroupWithChildren): NxData {
       (dataset) =>
         dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
     ),
+    defaultSlice: getDefaultSlice(group, signalDataset.shape, attrValuesStore),
     silxStyle: getSilxStyle(group, attrValuesStore),
   };
 }

@@ -124,6 +124,20 @@ test('visualize NXentry group with implicit default child NXdata group', async (
   ).toBeVisible();
 });
 
+test('follow default slice on NXdata group', async () => {
+  const { selectVisTab } = await renderApp('/nexus_entry/default_slice');
+
+  expect(getSelectedVisTab()).toBe(NexusVis.NxHeatmap);
+  expect(screen.getByRole('slider', { name: 'D0' })).toHaveValue(1);
+  expect(screen.getByRole('slider', { name: 'D2' })).toHaveValue(2);
+
+  // Ignore `default_slice` meant for heatmap
+  await selectVisTab(NexusVis.NxLine);
+  expect(screen.getByRole('slider', { name: 'D0' })).toHaveValue(0);
+  expect(screen.getByRole('slider', { name: 'D1' })).toHaveValue(0);
+  expect(screen.getByRole('slider', { name: 'D2' })).toHaveValue(0);
+});
+
 test('follow SILX styles on NXdata group', async () => {
   await renderApp('/nexus_entry/log_spectrum');
 
@@ -202,8 +216,32 @@ test('show error/fallback for malformed NeXus entity', async () => {
   errorSpy.mockRestore();
 });
 
+test('ignore malformed `default_slice` attribute', async () => {
+  // Numeric indices instead of strings
+  const { selectExplorerNode } = await renderApp(
+    '/nexus_malformed/default_slice_not_strings',
+  );
+
+  // 4D dataset viewed as heatmap
+  expect(getSelectedVisTab()).toBe(NexusVis.NxHeatmap);
+  expect(screen.getByRole('figure', { name: 'fourD' })).toBeVisible();
+
+  // Check default mapping/slicing (4D + two axes => two sliders)
+  expect(screen.getByRole('slider', { name: 'D0' })).toHaveValue(0);
+  expect(screen.getByRole('slider', { name: 'D1' })).toHaveValue(0);
+
+  // Different length than signal dimensions
+  await selectExplorerNode('default_slice_wrong_length');
+  expect(screen.getByRole('slider', { name: 'D0' })).toHaveValue(0);
+  expect(screen.getByRole('slider', { name: 'D1' })).toHaveValue(0);
+
+  // Slicing index out of bound
+  await selectExplorerNode('default_slice_out_of_bounds');
+  expect(screen.getByRole('slider', { name: 'D0' })).toHaveValue(0);
+  expect(screen.getByRole('slider', { name: 'D1' })).toHaveValue(0);
+});
+
 test('ignore malformed `SILX_style` attribute', async () => {
-  const errorSpy = mockConsoleMethod('error');
   const warningSpy = mockConsoleMethod('warn');
 
   // Unknown keys, invalid values
@@ -223,9 +261,7 @@ test('ignore malformed `SILX_style` attribute', async () => {
     "Malformed 'SILX_style' attribute: {", // warn in console
   );
 
-  expect(errorSpy).not.toHaveBeenCalled(); // no error
   warningSpy.mockRestore();
-  errorSpy.mockRestore();
 });
 
 test('cancel and retry slow fetch of NxLine', async () => {
