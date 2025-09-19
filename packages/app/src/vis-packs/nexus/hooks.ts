@@ -1,4 +1,5 @@
 import { type DimensionMapping } from '@h5web/lib';
+import { createMemo } from '@h5web/shared/createMemo';
 import {
   type ComplexType,
   type GroupWithChildren,
@@ -17,8 +18,11 @@ import {
   findSignalDataset,
   findTitleDataset,
   getDatasetInfo,
+  getDefaultSlice,
   getSilxStyle,
 } from './utils';
+
+export const useDefaultSlice = createMemo(getDefaultSlice);
 
 export function useNxData(group: GroupWithChildren): NxData {
   const { attrValuesStore } = useDataContext();
@@ -44,6 +48,7 @@ export function useNxData(group: GroupWithChildren): NxData {
       (dataset) =>
         dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
     ),
+    defaultSlice: useDefaultSlice(group, signalDataset.shape, attrValuesStore),
     silxStyle: getSilxStyle(group, attrValuesStore),
   };
 }

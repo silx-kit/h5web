@@ -18,7 +18,7 @@ function NxRgbContainer(props: VisContainerProps) {
   const nxData = useNxData(entity);
   assertNumericNxData(nxData);
 
-  const { signalDef, axisDefs } = nxData;
+  const { signalDef, axisDefs, defaultSlice } = nxData;
   assertMinDims(signalDef.dataset, 3);
 
   const { shape: dims } = signalDef.dataset;
@@ -26,7 +26,12 @@ function NxRgbContainer(props: VisContainerProps) {
     throw new Error('Expected last dimension to have size 3');
   }
 
-  const [dimMapping, setDimMapping] = useDimMappingState(dims, 2, 1);
+  const [dimMapping, setDimMapping] = useDimMappingState({
+    dims,
+    axesCount: 2,
+    lockedDimsCount: 1,
+    defaultSlice,
+  });
 
   const axisLabels = axisDefs.map((def) => def?.label);
   const config = useRgbConfig();
