@@ -28,6 +28,7 @@ interface Props {
   onDataPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   ignoreValue?: IgnoreValue;
+  piecewiseConstant?: boolean;
 }
 
 function DataCurve(props: Props) {
@@ -49,6 +50,7 @@ function DataCurve(props: Props) {
     onDataPointEnter,
     onDataPointLeave,
     ignoreValue,
+    piecewiseConstant,
   } = props;
 
   return (
@@ -59,6 +61,7 @@ function DataCurve(props: Props) {
         color={color}
         ignoreValue={ignoreValue}
         materialProps={materialProps}
+        piecewiseConstant={piecewiseConstant}
         visible={curveType !== CurveType.GlyphsOnly && visible}
         onClick={useEventHandler(onLineClick)}
         onPointerEnter={useEventHandler(onLineEnter)}

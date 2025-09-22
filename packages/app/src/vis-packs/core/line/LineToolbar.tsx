@@ -15,6 +15,7 @@ import {
   type ExportEntry,
 } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
+import { FiGitPullRequest } from 'react-icons/fi';
 import { MdGridOn } from 'react-icons/md';
 
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
@@ -48,6 +49,7 @@ function LineToolbar(props: Props) {
     yScaleType,
     complexVisType,
     showErrors,
+    piecewiseConstant,
     setCustomDomain,
     setCurveType,
     toggleGrid,
@@ -55,6 +57,7 @@ function LineToolbar(props: Props) {
     setYScaleType,
     setComplexVisType,
     toggleErrors,
+    togglePiecewiseContant,
   } = config;
 
   return (
@@ -108,6 +111,13 @@ function LineToolbar(props: Props) {
         Icon={MdGridOn}
         value={showGrid}
         onToggle={toggleGrid}
+      />
+
+      <ToggleBtn
+        label="PiecewiseConstant"
+        Icon={FiGitPullRequest}
+        value={piecewiseConstant}
+        onToggle={togglePiecewiseContant}
       />
 
       <Separator />
