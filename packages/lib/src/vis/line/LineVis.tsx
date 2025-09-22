@@ -28,8 +28,6 @@ interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
   scaleType?: AxisScaleType;
-  curveType?: CurveType;
-  showGrid?: boolean;
   abscissaParams?: AxisParams;
   ordinateLabel?: string;
   title?: string;
@@ -37,6 +35,9 @@ interface Props extends ClassStyleAttrs {
   errorsArray?: NdArray<NumArray>;
   showErrors?: boolean;
   auxiliaries?: AuxiliaryParams[];
+  showAux?: boolean;
+  showGrid?: boolean;
+  curveType?: CurveType;
   renderTooltip?: (data: TooltipData) => ReactElement;
   children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
@@ -56,8 +57,9 @@ function LineVis(props: Props) {
     title,
     dtype,
     errorsArray,
-    showErrors = false,
+    showErrors = true,
     auxiliaries = [],
+    showAux = true,
     renderTooltip,
     children,
     interactions,
@@ -191,6 +193,7 @@ function LineVis(props: Props) {
             color={auxColors[i % auxColors.length]}
             curveType={curveType}
             ignoreValue={ignoreValue}
+            visible={showAux}
           />
         ))}
 

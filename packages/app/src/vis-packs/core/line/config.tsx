@@ -17,12 +17,6 @@ export interface LineConfig {
   customDomain: CustomDomain;
   setCustomDomain: (customDomain: CustomDomain) => void;
 
-  curveType: CurveType;
-  setCurveType: (type: CurveType) => void;
-
-  showGrid: boolean;
-  toggleGrid: () => void;
-
   xScaleType: AxisScaleType;
   yScaleType: AxisScaleType;
   setXScaleType: (type: AxisScaleType) => void;
@@ -33,6 +27,15 @@ export interface LineConfig {
 
   showErrors: boolean;
   toggleErrors: () => void;
+
+  showAux: boolean;
+  toggleAux: () => void;
+
+  showGrid: boolean;
+  toggleGrid: () => void;
+
+  curveType: CurveType;
+  setCurveType: (type: CurveType) => void;
 }
 
 function createLineConfigStore() {
@@ -41,12 +44,6 @@ function createLineConfigStore() {
       (set): LineConfig => ({
         customDomain: [null, null],
         setCustomDomain: (customDomain) => set({ customDomain }),
-
-        curveType: CurveType.LineOnly,
-        setCurveType: (curveType) => set({ curveType }),
-
-        showGrid: true,
-        toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
 
         xScaleType: ScaleType.Linear,
         yScaleType: ScaleType.Linear,
@@ -58,10 +55,19 @@ function createLineConfigStore() {
 
         showErrors: true,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
+
+        showAux: true,
+        toggleAux: () => set((state) => ({ showAux: !state.showAux })),
+
+        showGrid: true,
+        toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
+
+        curveType: CurveType.LineOnly,
+        setCurveType: (curveType) => set({ curveType }),
       }),
       {
         name: 'h5web:line',
-        version: 6,
+        version: 7,
       },
     ),
   );
