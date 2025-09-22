@@ -42,6 +42,7 @@ interface Props extends ClassStyleAttrs {
   interactions?: DefaultInteractionsConfig;
   testid?: string;
   ignoreValue?: IgnoreValue;
+  piecewiseConstant?: boolean;
 }
 
 function LineVis(props: Props) {
@@ -63,6 +64,7 @@ function LineVis(props: Props) {
     interactions,
     testid,
     ignoreValue,
+    piecewiseConstant,
     className = '',
     style,
   } = props;
@@ -179,6 +181,7 @@ function LineVis(props: Props) {
           color={curveColor}
           curveType={curveType}
           ignoreValue={ignoreValue}
+          piecewiseConstant={piecewiseConstant}
         />
 
         {auxiliaries.map(({ array, label, errors }, i) => (
@@ -191,6 +194,7 @@ function LineVis(props: Props) {
             color={auxColors[i % auxColors.length]}
             curveType={curveType}
             ignoreValue={ignoreValue}
+            piecewiseConstant={piecewiseConstant}
           />
         ))}
 

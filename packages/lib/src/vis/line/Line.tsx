@@ -10,6 +10,7 @@ import { useGeometry } from '../hooks';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { hasR3FEventHandlers } from '../utils';
 import LineGeometry from './lineGeometry';
+import PieceWiseConstantLineGeometry from './piecewiseConstantLineGeometry';
 
 // Alias Three's `Line` to `Line_` to avoid conflict with SVG `line` in JSX
 // https://docs.pmnd.rs/react-three-fiber/tutorials/typescript#extending-threeelements
@@ -28,6 +29,7 @@ interface Props extends Object3DNode<R3FLine, typeof R3FLine> {
   materialProps?: LineBasicMaterialProps;
   visible?: boolean;
   ignoreValue?: IgnoreValue;
+  piecewiseConstant?: boolean;
 }
 
 function Line(props: Props) {
@@ -38,13 +40,18 @@ function Line(props: Props) {
     materialProps = {},
     visible = true,
     ignoreValue,
+    piecewiseConstant,
     ...lineProps
   } = props;
 
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
+  const Geometry = piecewiseConstant
+    ? PieceWiseConstantLineGeometry
+    : LineGeometry;
+
   const geometry = useGeometry(
-    LineGeometry,
+    Geometry,
     ordinates.length,
     {
       abscissas,

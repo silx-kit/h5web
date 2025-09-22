@@ -33,6 +33,9 @@ export interface LineConfig {
 
   showErrors: boolean;
   toggleErrors: () => void;
+
+  piecewiseConstant: boolean;
+  togglePiecewiseContant: () => void;
 }
 
 function createLineConfigStore() {
@@ -58,10 +61,14 @@ function createLineConfigStore() {
 
         showErrors: true,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
+
+        piecewiseConstant: false,
+        togglePiecewiseContant: () =>
+          set((state) => ({ piecewiseConstant: !state.piecewiseConstant })),
       }),
       {
         name: 'h5web:line',
-        version: 6,
+        version: 7,
       },
     ),
   );
