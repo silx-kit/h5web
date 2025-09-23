@@ -12,6 +12,7 @@ import {
   isAxisScaleType,
   isColorScaleType,
   isDefined,
+  isGroup,
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -25,6 +26,7 @@ import {
   type StringType,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
+import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 
 import { type AttrValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
@@ -34,6 +36,65 @@ import {
   type DefaultSlice,
   type SilxStyle,
 } from './models';
+
+import { type EntitiesStore } from '../../providers/models';
+
+/**
+ * Resolve a (possibly nested) entity name relative to an NXdata group.
+ * - If `name` is a nested path (contains '/'), traverse child groups.
+ * - If traversal fails and `entitiesStore` is provided, build an absolute
+ *   path and query the store.
+ * Returns the resolved entity or undefined.
+ */
+export function resolveNxEntity(
+  group: GroupWithChildren,
+  name: string,
+  entitiesStore?: EntitiesStore,
+): any | undefined {
+  if (!name) return undefined;
+
+  // dot means none
+  if (name === '.') return undefined;
+
+  // If it's a nested path, prefer resolving via the global entities store
+  // because the `group` object may not contain grandchildren at runtime.
+  if (name.includes('/')) {
+    if (entitiesStore) {
+      const path = buildEntityPath(group.path, name);
+      const ent = entitiesStore.get(path);
+      if (ent) return ent;
+    }
+
+    // Fallback: try traversal relative to the group (best-effort)
+    const segments = name.split('/');
+    let current: GroupWithChildren | undefined = group as GroupWithChildren;
+    let ent: any;
+    for (let i = 0; i < segments.length; i += 1) {
+      ent = getChildEntity(current, segments[i]);
+      if (!ent) {
+        ent = undefined;
+        break;
+      }
+      if (i < segments.length - 1) {
+        if (!isGroup(ent)) return undefined;
+        current = ent as GroupWithChildren;
+      }
+    }
+
+    return ent;
+  }
+
+  // Not a nested path: try direct child first, then entities store
+  const child = getChildEntity(group, name);
+  if (child) return child;
+
+  if (entitiesStore) {
+    const path = buildEntityPath(group.path, name);
+    return entitiesStore.get(path);
+  }
+
+  return undefined;
+}
 
 export function isNxDataGroup(
   group: GroupWithChildren,
@@ -79,6 +140,7 @@ function findOldStyleSignalDataset(
 export function findSignalDataset(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
+  entitiesStore?: EntitiesStore,
 ): Dataset<ArrayShape, NumericLikeType | ComplexType> {
   if (!hasAttribute(group, 'signal')) {
     return findOldStyleSignalDataset(group);
@@ -88,12 +150,12 @@ export function findSignalDataset(
   assertDefined(signal, "Expected 'signal' attribute");
   assertStr(signal, "Expected 'signal' attribute to be a string");
 
-  const dataset = getChildEntity(group, signal);
-  assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
-  assertDataset(dataset, `Expected "${signal}" signal to be a dataset`);
-  assertArrayShape(dataset);
-  assertNumericLikeOrComplexType(dataset);
-  return dataset;
+  const ent = resolveNxEntity(group, signal, entitiesStore);
+  assertDefined(ent, `Expected "${signal}" signal entity to exist`);
+  assertDataset(ent, `Expected "${signal}" signal to be a dataset`);
+  assertArrayShape(ent);
+  assertNumericLikeOrComplexType(ent);
+  return ent as Dataset<ArrayShape, NumericLikeType | ComplexType>;
 }
 
 export function findErrorDataset(
@@ -134,6 +196,7 @@ export function findAssociatedDatasets(
   group: GroupWithChildren,
   type: 'axes' | 'auxiliary_signals',
   attrValuesStore: AttrValuesStore,
+  entitiesStore?: EntitiesStore,
 ): (Dataset<ArrayShape> | undefined)[] {
   const dsetList = attrValuesStore.getSingle(group, type) || [];
   const dsetNames = typeof dsetList === 'string' ? [dsetList] : dsetList;
@@ -144,17 +207,11 @@ export function findAssociatedDatasets(
     if (name === '.') {
       return undefined;
     }
-    if (name.includes('/')) {
-      throw new Error(
-        `Expected "${name}" to be the name of a child dataset, not a path`,
-      );
-    }
-
-    const dataset = getChildEntity(group, name);
-    assertDefined(dataset, `Expected child entity "${name}" to exist`);
-    assertDataset(dataset, `Expected child "${name}" to be a dataset`);
-    assertArrayShape(dataset);
-    return dataset;
+  const ent = resolveNxEntity(group, name, entitiesStore);
+  assertDefined(ent, `Expected entity "${name}" to exist`);
+  assertDataset(ent, `Expected "${name}" to be a dataset`);
+  assertArrayShape(ent);
+  return ent;
   });
 }
 
@@ -178,17 +235,18 @@ function findOldStyleAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
+  entitiesStore?: EntitiesStore,
 ): Dataset<ArrayShape, NumericType>[] {
   const axesList = attrValuesStore.getSingle(signal, 'axes');
   const axesNames = parseAxesList(axesList);
 
   return axesNames.map((name) => {
-    const dataset = getChildEntity(group, name);
-    assertDefined(dataset);
-    assertDataset(dataset);
-    assertArrayShape(dataset);
-    assertNumericType(dataset);
-    return dataset;
+  const ent = resolveNxEntity(group, name, entitiesStore);
+  assertDefined(ent);
+  assertDataset(ent);
+  assertArrayShape(ent);
+  assertNumericType(ent);
+  return ent;
   });
 }
 
@@ -196,12 +254,23 @@ export function findAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
+  entitiesStore?: EntitiesStore,
 ): (Dataset<ArrayShape, NumericType> | undefined)[] {
   if (!hasAttribute(group, 'axes')) {
-    return findOldStyleAxesDatasets(group, signal, attrValuesStore);
+    return findOldStyleAxesDatasets(
+      group,
+      signal,
+      attrValuesStore,
+      entitiesStore,
+    );
   }
 
-  return findAssociatedDatasets(group, 'axes', attrValuesStore).map(
+  return findAssociatedDatasets(
+    group,
+    'axes',
+    attrValuesStore,
+    entitiesStore,
+  ).map(
     (dataset) => {
       if (dataset) {
         assertNumericType(dataset);
@@ -214,8 +283,14 @@ export function findAxesDatasets(
 export function findAuxiliaryDatasets(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
+  entitiesStore?: EntitiesStore,
 ): Dataset<ArrayShape, NumericLikeType | ComplexType>[] {
-  return findAssociatedDatasets(group, 'auxiliary_signals', attrValuesStore)
+  return findAssociatedDatasets(
+    group,
+    'auxiliary_signals',
+    attrValuesStore,
+    entitiesStore,
+  )
     .filter(isDefined)
     .map((dataset) => {
       assertNumericLikeOrComplexType(dataset);

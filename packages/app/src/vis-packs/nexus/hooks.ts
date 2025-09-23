@@ -4,6 +4,8 @@ import {
   type ComplexType,
   type GroupWithChildren,
   type NumericLikeType,
+  type Dataset,
+  type ArrayShape,
 } from '@h5web/shared/hdf5-models';
 
 import { useValuesInCache } from '../../hooks';
@@ -12,25 +14,60 @@ import { type DatasetDef, type NxData } from './models';
 import {
   assertNxDataGroup,
   findAuxErrorDataset,
-  findAuxiliaryDatasets,
-  findAxesDatasets,
   findErrorDataset,
   findSignalDataset,
+  findAxesDatasets,
+  findAuxiliaryDatasets,
   findTitleDataset,
   getDatasetInfo,
   getDefaultSlice,
   getSilxStyle,
 } from './utils';
+import { resolveNxEntity } from './utils';
+import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
+import {
+  assertDefined,
+  assertDataset,
+  assertArrayShape,
+  assertNumericLikeOrComplexType,
+  assertNumericType,
+  assertStr,
+} from '@h5web/shared/guards';
 
 export const useDefaultSlice = createMemo(getDefaultSlice);
 
 export function useNxData(group: GroupWithChildren): NxData {
-  const { attrValuesStore } = useDataContext();
+  const { entitiesStore, attrValuesStore } = useDataContext();
 
   assertNxDataGroup(group, attrValuesStore);
-  const signalDataset = findSignalDataset(group, attrValuesStore);
-  const axisDatasets = findAxesDatasets(group, signalDataset, attrValuesStore);
-  const auxSignals = findAuxiliaryDatasets(group, attrValuesStore);
+
+  // Resolve signal (supports nested paths)
+  const rawSignal = attrValuesStore.getSingle(group, 'signal');
+  const signalEnt =
+    typeof rawSignal === 'string'
+      ? resolveNxEntity(group, rawSignal, entitiesStore)
+      : undefined;
+  const signalDataset: Dataset<ArrayShape, NumericLikeType | ComplexType> =
+    (signalEnt as any) || findSignalDataset(group, attrValuesStore, entitiesStore);
+
+  // Resolve axes: prefer group 'axes' attribute, otherwise old-style on signal
+  const rawAxesAttr =
+    attrValuesStore.getSingle(group, 'axes') ||
+    (signalDataset ? attrValuesStore.getSingle(signalDataset, 'axes') : undefined);
+
+  const axisDatasets = findAxesDatasets(
+    group,
+    signalDataset,
+    attrValuesStore,
+    entitiesStore,
+  );
+
+  // Resolve auxiliary signals (support nested paths)
+  const auxSignals = findAuxiliaryDatasets(
+    group,
+    attrValuesStore,
+    entitiesStore,
+  );
 
   return {
     titleDataset: findTitleDataset(group),
@@ -45,8 +82,7 @@ export function useNxData(group: GroupWithChildren): NxData {
       ...getDatasetInfo(auxSignal, attrValuesStore),
     })),
     axisDefs: axisDatasets.map(
-      (dataset) =>
-        dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
+      (dataset) => dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
     ),
     defaultSlice: useDefaultSlice(group, signalDataset.shape, attrValuesStore),
     silxStyle: getSilxStyle(group, attrValuesStore),

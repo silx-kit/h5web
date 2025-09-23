@@ -9,6 +9,7 @@ import {
 import {
   type ChildEntity,
   type ProvidedEntity,
+  type GroupWithChildren,
 } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import { NxInterpretation } from '@h5web/shared/nexus-models';
@@ -36,7 +37,7 @@ export function resolvePath(
 ): { entity: ProvidedEntity; supportedVis: VisDef[] } | undefined {
   const entity = entitiesStore.get(path);
 
-  const supportedVis = findSupportedVis(entity, attrValueStore);
+  const supportedVis = findSupportedVis(entity, attrValueStore, entitiesStore);
   if (supportedVis.length > 0) {
     return { entity, supportedVis };
   }
@@ -52,8 +53,9 @@ export function resolvePath(
 function findSupportedVis(
   entity: ProvidedEntity,
   attrValueStore: AttrValuesStore,
+  entitiesStore: EntitiesStore,
 ): VisDef[] {
-  const nxVis = getSupportedNxVis(entity, attrValueStore);
+  const nxVis = getSupportedNxVis(entity, attrValueStore, entitiesStore);
   if (nxVis.length > 0) {
     return nxVis;
   }
@@ -97,23 +99,24 @@ function getSupportedCoreVis(
 
 function getSupportedNxVis(
   entity: ProvidedEntity,
-  attrValuesStore: AttrValuesStore,
+  attrValueStore: AttrValuesStore,
+  entitiesStore: EntitiesStore,
 ): VisDef[] {
   if (!isGroup(entity)) {
     return [];
   }
 
-  if (isNxNoteGroup(entity, attrValuesStore)) {
+  if (isNxNoteGroup(entity, attrValueStore)) {
     return [NEXUS_VIS[NexusVis.NxNote]];
   }
 
-  if (!isNxDataGroup(entity, attrValuesStore)) {
+  if (!isNxDataGroup(entity, attrValueStore)) {
     return [];
   }
 
-  const dataset = findSignalDataset(entity, attrValuesStore);
+  const dataset = findSignalDataset(entity as GroupWithChildren, attrValueStore, entitiesStore);
   const isCplx = hasComplexType(dataset);
-  const { interpretation, CLASS } = attrValuesStore.get(dataset);
+  const { interpretation, CLASS } = attrValueStore.get(dataset);
 
   if (
     (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
@@ -139,7 +142,7 @@ function getSupportedNxVis(
     return [NEXUS_VIS[nxLineVis], NEXUS_VIS[NexusVis.NxHeatmap]];
   }
 
-  const axisDatasets = findAxesDatasets(entity, dataset, attrValuesStore);
+  const axisDatasets = findAxesDatasets(entity as GroupWithChildren, dataset, attrValueStore, entitiesStore);
 
   if (
     axisDatasets.length === 2 &&
