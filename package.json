@@ -11,9 +11,9 @@
   },
   "engines": {
     "node": "22.x",
-    "pnpm": ">=10.6"
+    "pnpm": ">=10.16"
   },
-  "packageManager": "pnpm@10.12.3",
+  "packageManager": "pnpm@10.16.0",
   "type": "module",
   "scripts": {
     "start": "pnpm --filter demo start",
