@@ -125,16 +125,31 @@ export function isNxNoteGroup(
 
 function findOldStyleSignalDataset(
   group: GroupWithChildren,
+  attrValuesStore: AttrValuesStore,
+  entitiesStore?: EntitiesStore,
 ): Dataset<ArrayShape, NumericLikeType | ComplexType> {
-  const dataset = group.children.find((child) => hasAttribute(child, 'signal'));
-  assertDefined(dataset);
+  const child = group.children.find((c) => hasAttribute(c, 'signal'));
+  console.log('old style signal', child);
+  assertDefined(child);
+
+  // If the child with a `signal` attribute is itself an NXdata group, delegate
+  // to `findSignalDataset` to resolve the real signal dataset inside it.
+  if (isGroup(child)) {
+    const nxClass = attrValuesStore.getSingle(child, 'NX_class');
+    if (nxClass === 'NXdata') {
+      return findSignalDataset(child as GroupWithChildren, attrValuesStore, entitiesStore);
+    }
+  }
+
+  // Otherwise expect the child to be a dataset (old-style where a dataset
+  // child carries the `signal` attribute).
   assertDataset(
-    dataset,
-    `Expected old-style "${dataset.name}" signal to be a dataset`,
+    child,
+    `Expected old-style "${child.name}" signal to be a dataset`,
   );
-  assertArrayShape(dataset);
-  assertNumericLikeOrComplexType(dataset);
-  return dataset;
+  assertArrayShape(child);
+  assertNumericLikeOrComplexType(child);
+  return child as Dataset<ArrayShape, NumericLikeType | ComplexType>;
 }
 
 export function findSignalDataset(
@@ -143,14 +158,23 @@ export function findSignalDataset(
   entitiesStore?: EntitiesStore,
 ): Dataset<ArrayShape, NumericLikeType | ComplexType> {
   if (!hasAttribute(group, 'signal')) {
-    return findOldStyleSignalDataset(group);
+    return findOldStyleSignalDataset(group, attrValuesStore, entitiesStore);
   }
 
   const signal = attrValuesStore.getSingle(group, 'signal');
   assertDefined(signal, "Expected 'signal' attribute");
-  assertStr(signal, "Expected 'signal' attribute to be a string");
+  // Accept either a string or a single-element array of string (some files use
+  // an array for attributes similarly to 'axes' / 'auxiliary_signals')
+  let signalName: string;
+  if (typeof signal === 'string') {
+    signalName = signal;
+  } else if (Array.isArray(signal) && signal.length === 1 && typeof signal[0] === 'string') {
+    signalName = signal[0];
+  } else {
+    throw new Error("Expected 'signal' attribute to be a string");
+  }
 
-  const ent = resolveNxEntity(group, signal, entitiesStore);
+  const ent = resolveNxEntity(group, signalName, entitiesStore);
   assertDefined(ent, `Expected "${signal}" signal entity to exist`);
   assertDataset(ent, `Expected "${signal}" signal to be a dataset`);
   assertArrayShape(ent);

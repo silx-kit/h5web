@@ -18,6 +18,7 @@ import {
   DTypeClass,
   type EnumType,
   type FloatType,
+  type Group,
   type GroupWithChildren,
   type H5WebComplex,
   type IntegerType,
@@ -32,10 +33,18 @@ import {
 } from './hdf5-models';
 
 export function getChildEntity(
-  group: GroupWithChildren,
+  group: Group,
   entityName: string,
 ): ChildEntity | undefined {
-  return group.children.find((child) => child.name === entityName);
+  // Some providers may return a plain Group (no `children` field).
+  // Be defensive: if there are no children, return undefined instead of
+  // throwing when accessing `children.find`.
+  const children = (group as GroupWithChildren).children;
+  if (!children) {
+    return undefined;
+  }
+
+  return children.find((child) => child.name === entityName);
 }
 
 export function buildEntityPath(
