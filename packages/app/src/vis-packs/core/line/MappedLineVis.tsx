@@ -79,7 +79,7 @@ function MappedLineVis(props: Props) {
     curveType,
     showGrid,
     showErrors,
-    piecewiseConstant,
+    interpolation,
   } = config;
 
   const { shape: dims } = dataset;
@@ -177,7 +177,7 @@ function MappedLineVis(props: Props) {
         auxiliaries={auxiliaries}
         testid={dimMapping.toString()}
         ignoreValue={ignoreValue}
-        piecewiseConstant={piecewiseConstant}
+        interpolation={interpolation}
       />
     </>
   );

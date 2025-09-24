@@ -22,7 +22,12 @@ import { DEFAULT_DOMAIN, extendDomain } from '../utils';
 import DataCurve from './DataCurve';
 import { useAxisValues } from './hooks';
 import styles from './LineVis.module.css';
-import { type AuxiliaryParams, CurveType, type TooltipData } from './models';
+import {
+  type AuxiliaryParams,
+  CurveType,
+  Interpolation,
+  type TooltipData,
+} from './models';
 
 interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
@@ -42,7 +47,7 @@ interface Props extends ClassStyleAttrs {
   interactions?: DefaultInteractionsConfig;
   testid?: string;
   ignoreValue?: IgnoreValue;
-  piecewiseConstant?: boolean;
+  interpolation?: Interpolation;
 }
 
 function LineVis(props: Props) {
@@ -64,7 +69,7 @@ function LineVis(props: Props) {
     interactions,
     testid,
     ignoreValue,
-    piecewiseConstant,
+    interpolation = Interpolation.Linear,
     className = '',
     style,
   } = props;
@@ -181,7 +186,7 @@ function LineVis(props: Props) {
           color={curveColor}
           curveType={curveType}
           ignoreValue={ignoreValue}
-          piecewiseConstant={piecewiseConstant}
+          interpolation={interpolation}
         />
 
         {auxiliaries.map(({ array, label, errors }, i) => (
@@ -194,7 +199,7 @@ function LineVis(props: Props) {
             color={auxColors[i % auxColors.length]}
             curveType={curveType}
             ignoreValue={ignoreValue}
-            piecewiseConstant={piecewiseConstant}
+            interpolation={interpolation}
           />
         ))}
 
