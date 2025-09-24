@@ -51,7 +51,7 @@ test('choose most advanced visualization when switching between datasets', async
 });
 
 test('remember preferred visualization when switching between datasets', async () => {
-  const { user, selectExplorerNode, selectVisTab } =
+  const { selectExplorerNode, selectVisTab } =
     await renderApp('/nD_datasets/twoD');
 
   /* Switch to Matrix vis. Since this is _not_ the most advanced visualization
@@ -67,7 +67,7 @@ test('remember preferred visualization when switching between datasets', async (
 
   /* Switch to Line vis. Since this _is_ the most advanced visualization for
    * `oneD`, the preferred visualization is cleared. */
-  await user.click(screen.getByRole('tab', { name: 'Line' })); // becomes preferred vis
+  await selectVisTab(Vis.Line);
 
   // Select another dataset with a more advanced visualization than Line
   await selectExplorerNode('threeD_rgb');
