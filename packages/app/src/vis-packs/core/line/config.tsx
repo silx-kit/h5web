@@ -1,4 +1,4 @@
-import { CurveType, type CustomDomain } from '@h5web/lib';
+import { CurveType, type CustomDomain, Interpolation } from '@h5web/lib';
 import { isDefined } from '@h5web/shared/guards';
 import {
   type AxisScaleType,
@@ -34,8 +34,8 @@ export interface LineConfig {
   showErrors: boolean;
   toggleErrors: () => void;
 
-  piecewiseConstant: boolean;
-  togglePiecewiseContant: () => void;
+  interpolation: Interpolation;
+  setInterpolation: (interpolation: Interpolation) => void;
 }
 
 function createLineConfigStore() {
@@ -62,13 +62,12 @@ function createLineConfigStore() {
         showErrors: true,
         toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
 
-        piecewiseConstant: false,
-        togglePiecewiseContant: () =>
-          set((state) => ({ piecewiseConstant: !state.piecewiseConstant })),
+        interpolation: Interpolation.Linear,
+        setInterpolation: (interpolation) => set({ interpolation }),
       }),
       {
         name: 'h5web:line',
-        version: 7,
+        version: 8,
       },
     ),
   );

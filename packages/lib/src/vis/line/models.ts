@@ -25,3 +25,8 @@ export interface AuxiliaryParams {
   label?: string;
   errors?: NdArray<NumArray>;
 }
+
+export enum Interpolation {
+  Linear = 'Linear',
+  Constant = 'Constant',
+}

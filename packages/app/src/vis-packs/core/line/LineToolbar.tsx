@@ -3,6 +3,7 @@ import {
   CurveType,
   DomainWidget,
   ExportMenu,
+  Interpolation,
   ScaleSelector,
   Separator,
   ToggleBtn,
@@ -49,7 +50,7 @@ function LineToolbar(props: Props) {
     yScaleType,
     complexVisType,
     showErrors,
-    piecewiseConstant,
+    interpolation,
     setCustomDomain,
     setCurveType,
     toggleGrid,
@@ -57,7 +58,7 @@ function LineToolbar(props: Props) {
     setYScaleType,
     setComplexVisType,
     toggleErrors,
-    togglePiecewiseContant,
+    setInterpolation,
   } = config;
 
   return (
@@ -116,8 +117,14 @@ function LineToolbar(props: Props) {
       <ToggleBtn
         label="PiecewiseConstant"
         Icon={FiGitPullRequest}
-        value={piecewiseConstant}
-        onToggle={togglePiecewiseContant}
+        value={interpolation === Interpolation.Constant}
+        onToggle={() => {
+          if (interpolation === Interpolation.Constant) {
+            setInterpolation(Interpolation.Linear);
+            return;
+          }
+          setInterpolation(Interpolation.Constant);
+        }}
       />
 
       <Separator />

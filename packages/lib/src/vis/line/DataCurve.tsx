@@ -7,7 +7,7 @@ import {
 import ErrorBars from './ErrorBars';
 import Glyphs from './Glyphs';
 import Line from './Line';
-import { CurveType, GlyphType } from './models';
+import { CurveType, GlyphType, type Interpolation } from './models';
 import { useEventHandler } from './utils';
 
 interface Props {
@@ -28,7 +28,7 @@ interface Props {
   onDataPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   ignoreValue?: IgnoreValue;
-  piecewiseConstant?: boolean;
+  interpolation?: Interpolation;
 }
 
 function DataCurve(props: Props) {
@@ -50,7 +50,7 @@ function DataCurve(props: Props) {
     onDataPointEnter,
     onDataPointLeave,
     ignoreValue,
-    piecewiseConstant,
+    interpolation,
   } = props;
 
   return (
@@ -61,7 +61,7 @@ function DataCurve(props: Props) {
         color={color}
         ignoreValue={ignoreValue}
         materialProps={materialProps}
-        piecewiseConstant={piecewiseConstant}
+        interpolation={interpolation}
         visible={curveType !== CurveType.GlyphsOnly && visible}
         onClick={useEventHandler(onLineClick)}
         onPointerEnter={useEventHandler(onLineEnter)}

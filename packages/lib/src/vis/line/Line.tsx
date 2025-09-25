@@ -10,6 +10,7 @@ import { useGeometry } from '../hooks';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { hasR3FEventHandlers } from '../utils';
 import LineGeometry from './lineGeometry';
+import { Interpolation } from './models';
 import PieceWiseConstantLineGeometry from './piecewiseConstantLineGeometry';
 
 // Alias Three's `Line` to `Line_` to avoid conflict with SVG `line` in JSX
@@ -29,7 +30,7 @@ interface Props extends Object3DNode<R3FLine, typeof R3FLine> {
   materialProps?: LineBasicMaterialProps;
   visible?: boolean;
   ignoreValue?: IgnoreValue;
-  piecewiseConstant?: boolean;
+  interpolation?: Interpolation;
 }
 
 function Line(props: Props) {
@@ -40,15 +41,16 @@ function Line(props: Props) {
     materialProps = {},
     visible = true,
     ignoreValue,
-    piecewiseConstant,
+    interpolation,
     ...lineProps
   } = props;
 
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
-  const Geometry = piecewiseConstant
-    ? PieceWiseConstantLineGeometry
-    : LineGeometry;
+  const Geometry =
+    interpolation === Interpolation.Constant
+      ? PieceWiseConstantLineGeometry
+      : LineGeometry;
 
   const geometry = useGeometry(
     Geometry,
