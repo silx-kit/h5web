@@ -34,11 +34,9 @@ export interface DatasetDef<
   dataset: Dataset<ArrayShape, T>;
   /** Optional parsed arithmetic expression that was present in the original signal name (e.g. '* 10') */
   expr?: string;
-  /** Optional simple scalar transform parsed from signal attribute (e.g. "*10") */
+  /** Optional scalar transform expression parsed from signal attribute (e.g. "*10+1" or "(v*10+1)/100") */
   transform?: {
-    op: '+' | '-' | '*' | '/';
-    operand: number;
-    expression?: string; // original expression for display
+    expression?: string; // original expression (with 'v' as placeholder for dataset values)
   };
 }
 

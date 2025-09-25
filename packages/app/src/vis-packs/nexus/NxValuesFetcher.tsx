@@ -45,29 +45,22 @@ function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
   const auxErrors = useDatasetsValues(auxErrorDatasets, selection);
   const axisValues = useDatasetsValues(axisDatasets);
 
-  // Apply simple scalar transforms when specified on the dataset defs.
-  const applyTransform = (arr: any, transform: { op: '+' | '-' | '*' | '/'; operand: number } | undefined) => {
-    if (!arr || !transform) return arr;
-    // arr may be TypedArray or ndarray-like; we handle common JS arrays and TypedArrays
+  // Apply scalar transforms when specified on the dataset defs.
+  // transform.expression is a sanitized JS expression fragment like '*10+1' or '**2'.
+  const applyTransform = (arr: any, transform: { expression?: string } | undefined) => {
+    if (!arr || !transform || !transform.expression) return arr;
+    const expr = transform.expression;
+    // Basic validation: only allow digits, variable 'v', operators, parentheses, decimals and exponent notation
+    if (!/^[v0-9+\-*/().eE]+$/.test(expr)) return arr;
+
+    // Build a function `f(v)` to evaluate the expression in local scope
+    // eslint-disable-next-line no-new-func
+    const f = new Function('v', `return ${expr};`);
+
     const data = Array.isArray(arr) ? arr : ('data' in arr ? (arr as any).data : arr);
-    const mapped = data.map((v: number) => {
-      if (typeof v !== 'number') return v;
-      switch (transform.op) {
-        case '+':
-          return v + transform.operand;
-        case '-':
-          return v - transform.operand;
-        case '*':
-          return v * transform.operand;
-        case '/':
-          return v / transform.operand;
-        default:
-          return v;
-      }
-    });
-    // If original was ndarray-like, try to return same shape object shape
+    const mapped = data.map((v: number) => (typeof v === 'number' ? f(v) : v));
+
     if (arr && 'data' in arr) {
-      // shallow clone with replaced data array
       return { ...arr, data: mapped } as any;
     }
     return mapped;

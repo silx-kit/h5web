@@ -79,15 +79,22 @@ export function useNxData(group: GroupWithChildren): NxData {
     signalDef: (() => {
       const baseInfo = getDatasetInfo(signalDataset, attrValuesStore);
       const transform = parsedSignalExpr
-        ? { op: parsedSignalExpr.op, operand: parsedSignalExpr.operand, expression: parsedSignalExpr.expression }
+        ? { expression: parsedSignalExpr.expression }
         : undefined;
+      // Determine display suffix from the raw signal attribute so we keep
+      // parentheses and chained operations exactly as the user wrote them.
+      const displaySuffix =
+        parsedSignalExpr && typeof rawSignal === 'string'
+          ? rawSignal.slice(rawSignal.indexOf(parsedSignalExpr.baseName) + parsedSignalExpr.baseName.length)
+          : undefined;
+
       return {
         dataset: signalDataset,
         errorDataset: findErrorDataset(group, signalDataset.name),
         ...baseInfo,
         ...(transform ? { transform } : {}),
         ...(transform ? { expr: transform.expression } : {}),
-        label: applyExpressionToLabel(baseInfo.label, transform ? { expression: transform.expression } : undefined),
+        label: displaySuffix ? `${baseInfo.label} ${displaySuffix}` : baseInfo.label,
       } as DatasetDef;
     })(),
     auxDefs: auxSignals.map((auxSignal) => ({

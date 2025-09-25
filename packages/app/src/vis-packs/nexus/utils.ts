@@ -439,19 +439,35 @@ export function getDatasetInfo(
 // Parse a simple arithmetic expression appended to a signal name.
 // Supports patterns like: "dataset*10", "dataset * 10", "dataset+5.2", "dataset /2"
 export function parseSignalExpression(raw: string):
-  | { baseName: string; op: '+' | '-' | '*' | '/'; operand: number; expression: string }
+  | { baseName: string; expression: string }
   | undefined {
   if (typeof raw !== 'string') return undefined;
 
-  // regex: capture base name (everything up to operator), operator, and numeric operand
-  const m = raw.match(/^\s*(.*?)\s*([+\-*/])\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)\s*$/);
-  if (!m) return undefined;
+  const s = raw.trim();
+  // If it's a plain identifier, no expression
+  if (/^[A-Za-z_][A-Za-z0-9_\.\-/]*$/.test(s)) return undefined;
 
-  const [, baseName, op, operandStr] = m;
-  const operand = Number.parseFloat(operandStr);
-  if (Number.isNaN(operand)) return undefined;
+  // Find first identifier that looks like a dataset name (letters/underscore start)
+  const nameMatch = s.match(/[A-Za-z_][A-Za-z0-9_\.\-]*/);
+  if (!nameMatch) return undefined;
+  const baseName = nameMatch[0];
 
-  return { baseName, op: op as any, operand, expression: `${op}${operandStr}` };
+  // Replace all occurrences of the base name with 'v' to build an evaluable expression
+  let expressionRaw = s.replace(new RegExp(baseName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 'v');
+
+  // Collapse whitespace
+  expressionRaw = expressionRaw.replace(/\s+/g, '');
+
+  // If expression starts with an operator (e.g. '*10+1'), prefix with 'v' to make a full expression
+  if (/^[+\-*/]/.test(expressionRaw)) {
+    expressionRaw = `v${expressionRaw}`;
+  }
+
+  // Allow digits, the variable 'v', whitespace (already removed), parentheses, dot, e/E and operators +-*/ (including '**')
+  if (!/^[v0-9+\-*/().eE]+$/.test(expressionRaw)) return undefined;
+
+  const expression = expressionRaw;
+  return { baseName, expression };
 }
 
 export function applyExpressionToLabel(label: string, transform?: { expression?: string }) {
