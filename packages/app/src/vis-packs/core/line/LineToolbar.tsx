@@ -1,13 +1,11 @@
 import {
   ComplexVisTypeSelector,
-  CurveType,
   DomainWidget,
   ExportMenu,
-  Interpolation,
+  LineAspectSelector,
   ScaleSelector,
   Separator,
   ToggleBtn,
-  ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
 import {
@@ -16,7 +14,6 @@ import {
   type ExportEntry,
 } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { FiGitPullRequest } from 'react-icons/fi';
 import { MdGridOn } from 'react-icons/md';
 
 import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
@@ -114,33 +111,12 @@ function LineToolbar(props: Props) {
         onToggle={toggleGrid}
       />
 
-      <ToggleBtn
-        label="PiecewiseConstant"
-        Icon={FiGitPullRequest}
-        value={interpolation === Interpolation.Constant}
-        onToggle={() => {
-          if (interpolation === Interpolation.Constant) {
-            setInterpolation(Interpolation.Linear);
-            return;
-          }
-          setInterpolation(Interpolation.Constant);
-        }}
+      <LineAspectSelector
+        curveType={curveType}
+        onCurveTypeChanged={setCurveType}
+        interpolation={interpolation}
+        onInterpolationChanged={setInterpolation}
       />
-
-      <Separator />
-
-      <ToggleGroup
-        role="radiogroup"
-        ariaLabel="Curve type"
-        value={curveType}
-        onChange={(val) => {
-          setCurveType(val as CurveType);
-        }}
-      >
-        <ToggleGroup.Btn label="Line" value={CurveType.LineOnly} />
-        <ToggleGroup.Btn label="Points" value={CurveType.GlyphsOnly} />
-        <ToggleGroup.Btn label="Both" value={CurveType.LineAndGlyphs} />
-      </ToggleGroup>
 
       {exportEntries && exportEntries.length > 0 && (
         <>
