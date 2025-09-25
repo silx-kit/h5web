@@ -13,28 +13,36 @@ import { NexusVis } from '../vis-packs/nexus/visualizations';
 test('visualize NXdata group with explicit signal interpretation', async () => {
   // Signal with "spectrum" interpretation
   const { selectExplorerNode } = await renderApp('/nexus_entry/spectrum');
-  expect(getVisTabs()).toEqual([NexusVis.NxLine]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
+  expect(getSelectedVisTab()).toBe(NexusVis.NxLine);
   expect(
     screen.getByRole('figure', { name: 'twoD (arb. units)' }), // signal name + `units` attribute
   ).toBeVisible();
 
   // Signal with "image" interpretation
   await selectExplorerNode('image');
-  expect(getVisTabs()).toEqual([NexusVis.NxHeatmap]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
+  expect(getSelectedVisTab()).toBe(NexusVis.NxHeatmap);
   expect(
     screen.getByRole('figure', { name: 'Interference fringes' }), // `long_name` attribute
   ).toBeVisible();
 
   // 2D complex signal with "spectrum" interpretation
   await selectExplorerNode('complex_spectrum');
-  expect(getVisTabs()).toEqual([NexusVis.NxLine]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxHeatmap]);
+  expect(getSelectedVisTab()).toBe(NexusVis.NxLine);
   expect(
     screen.getByRole('figure', { name: 'twoD_cplx' }), // signal name (complex vis type is displayed as ordinate label)
   ).toBeVisible();
 
   // Signal with "rgb-image" interpretation
   await selectExplorerNode('rgb-image');
-  expect(getVisTabs()).toEqual([NexusVis.NxRGB]);
+  expect(getVisTabs()).toEqual([
+    NexusVis.NxLine,
+    NexusVis.NxHeatmap,
+    NexusVis.NxRGB,
+  ]);
+  expect(getSelectedVisTab()).toBe(NexusVis.NxRGB);
   expect(
     screen.getByRole('figure', { name: 'RGB CMY DGW' }), // `long_name` attribute
   ).toBeVisible();
@@ -64,7 +72,8 @@ test('visualize NXdata group without explicit signal interpretation', async () =
 
   // 2D signal and two 1D axes of same length (implicit scatter interpretation)
   await selectExplorerNode('scatter');
-  expect(getVisTabs()).toEqual([NexusVis.NxScatter]);
+  expect(getVisTabs()).toEqual([NexusVis.NxLine, NexusVis.NxScatter]);
+  expect(getSelectedVisTab()).toBe(NexusVis.NxScatter);
   expect(screen.getByRole('figure', { name: 'scatter_data' })).toBeVisible(); // signal name
 });
 

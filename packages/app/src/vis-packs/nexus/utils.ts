@@ -35,6 +35,17 @@ import {
   type SilxStyle,
 } from './models';
 
+export function getSignal(
+  group: GroupWithChildren,
+  attrValuesStore: AttrValuesStore,
+): Dataset<ArrayShape, NumericLikeType | ComplexType> | undefined {
+  if (!isNxDataGroup(group, attrValuesStore)) {
+    return undefined;
+  }
+
+  return findSignalDataset(group, attrValuesStore);
+}
+
 export function isNxDataGroup(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,

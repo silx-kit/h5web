@@ -13,7 +13,7 @@ function Visualizer(props: Props) {
   const { entitiesStore, attrValuesStore } = useDataContext();
   const resolution = resolvePath(path, entitiesStore, attrValuesStore);
 
-  if (!resolution) {
+  if (!resolution || resolution.supportedVis.length === 0) {
     return (
       <p className={styles.fallback}>
         No visualization available for this entity.
@@ -27,6 +27,9 @@ function Visualizer(props: Props) {
       key={entity.path} // reset local states when changing entity (e.g. active vis)
       entity={entity}
       supportedVis={supportedVis}
+      primaryVis={supportedVis.find((v) => {
+        return v.isPrimary?.(entity, attrValuesStore);
+      })}
     />
   );
 }
