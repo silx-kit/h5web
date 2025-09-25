@@ -22,8 +22,10 @@ import {
   getDatasetInfo,
   getDefaultSlice,
   getSilxStyle,
+  resolveNxEntity,
+  parseSignalExpression,
+  applyExpressionToLabel,
 } from './utils';
-import { resolveNxEntity } from './utils';
 import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
 import {
   assertDefined,
@@ -43,9 +45,11 @@ export function useNxData(group: GroupWithChildren): NxData {
 
   // Resolve signal (supports nested paths)
   const rawSignal = attrValuesStore.getSingle(group, 'signal');
+  const parsedSignalExpr = typeof rawSignal === 'string' ? parseSignalExpression(rawSignal) : undefined;
+  const signalNameToResolve = parsedSignalExpr ? parsedSignalExpr.baseName : (typeof rawSignal === 'string' ? rawSignal : undefined);
   const signalEnt =
-    typeof rawSignal === 'string'
-      ? resolveNxEntity(group, rawSignal, entitiesStore)
+    typeof signalNameToResolve === 'string'
+      ? resolveNxEntity(group, signalNameToResolve, entitiesStore)
       : undefined;
   const signalDataset: Dataset<ArrayShape, NumericLikeType | ComplexType> =
     (signalEnt as any) || findSignalDataset(group, attrValuesStore, entitiesStore);
@@ -71,11 +75,21 @@ export function useNxData(group: GroupWithChildren): NxData {
 
   return {
     titleDataset: findTitleDataset(group),
-    signalDef: {
-      dataset: signalDataset,
-      errorDataset: findErrorDataset(group, signalDataset.name),
-      ...getDatasetInfo(signalDataset, attrValuesStore),
-    },
+    // compute base dataset info and augment label with expression when present
+    signalDef: (() => {
+      const baseInfo = getDatasetInfo(signalDataset, attrValuesStore);
+      const transform = parsedSignalExpr
+        ? { op: parsedSignalExpr.op, operand: parsedSignalExpr.operand, expression: parsedSignalExpr.expression }
+        : undefined;
+      return {
+        dataset: signalDataset,
+        errorDataset: findErrorDataset(group, signalDataset.name),
+        ...baseInfo,
+        ...(transform ? { transform } : {}),
+        ...(transform ? { expr: transform.expression } : {}),
+        label: applyExpressionToLabel(baseInfo.label, transform ? { expression: transform.expression } : undefined),
+      } as DatasetDef;
+    })(),
     auxDefs: auxSignals.map((auxSignal) => ({
       dataset: auxSignal,
       errorDataset: findAuxErrorDataset(group, auxSignal.name),

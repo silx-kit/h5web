@@ -96,6 +96,8 @@ export function resolveNxEntity(
   return undefined;
 }
 
+// (Parser implementation moved lower in file to avoid duplicate declarations)
+
 export function isNxDataGroup(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
@@ -174,11 +176,17 @@ export function findSignalDataset(
     throw new Error("Expected 'signal' attribute to be a string");
   }
 
-  const ent = resolveNxEntity(group, signalName, entitiesStore);
+  // Support simple inline arithmetic in the signal attribute, e.g. "dataset*10"
+  const parsed = parseSignalExpression(signalName);
+  const baseName = parsed ? parsed.baseName : signalName;
+
+  const ent = resolveNxEntity(group, baseName, entitiesStore);
   assertDefined(ent, `Expected "${signal}" signal entity to exist`);
   assertDataset(ent, `Expected "${signal}" signal to be a dataset`);
   assertArrayShape(ent);
   assertNumericLikeOrComplexType(ent);
+  // Note: we return the raw dataset entity here; callers can attach the
+  // parsed transform (if any) to the DatasetDef when building NxData.
   return ent as Dataset<ArrayShape, NumericLikeType | ComplexType>;
 }
 
@@ -426,6 +434,29 @@ export function getDatasetInfo(
     label: longName || (units ? `${dataset.name} (${units})` : dataset.name),
     unit: units,
   };
+}
+
+// Parse a simple arithmetic expression appended to a signal name.
+// Supports patterns like: "dataset*10", "dataset * 10", "dataset+5.2", "dataset /2"
+export function parseSignalExpression(raw: string):
+  | { baseName: string; op: '+' | '-' | '*' | '/'; operand: number; expression: string }
+  | undefined {
+  if (typeof raw !== 'string') return undefined;
+
+  // regex: capture base name (everything up to operator), operator, and numeric operand
+  const m = raw.match(/^\s*(.*?)\s*([+\-*/])\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)\s*$/);
+  if (!m) return undefined;
+
+  const [, baseName, op, operandStr] = m;
+  const operand = Number.parseFloat(operandStr);
+  if (Number.isNaN(operand)) return undefined;
+
+  return { baseName, op: op as any, operand, expression: `${op}${operandStr}` };
+}
+
+export function applyExpressionToLabel(label: string, transform?: { expression?: string }) {
+  if (!transform || !transform.expression) return label;
+  return `${label} ${transform.expression}`;
 }
 
 export function guessKeepRatio(

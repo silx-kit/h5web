@@ -32,6 +32,14 @@ export interface DatasetDef<
   T extends NumericLikeType | ComplexType = NumericLikeType | ComplexType,
 > extends DatasetInfo {
   dataset: Dataset<ArrayShape, T>;
+  /** Optional parsed arithmetic expression that was present in the original signal name (e.g. '* 10') */
+  expr?: string;
+  /** Optional simple scalar transform parsed from signal attribute (e.g. "*10") */
+  transform?: {
+    op: '+' | '-' | '*' | '/';
+    operand: number;
+    expression?: string; // original expression for display
+  };
 }
 
 type WithError<T extends DatasetDef> = T & {
