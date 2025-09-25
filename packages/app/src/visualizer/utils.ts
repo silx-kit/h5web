@@ -32,18 +32,18 @@ import { NEXUS_VIS, NexusVis } from '../vis-packs/nexus/visualizations';
 export function resolvePath(
   path: string,
   entitiesStore: EntitiesStore,
-  attrValueStore: AttrValuesStore,
+  attrValuesStore: AttrValuesStore,
 ): { entity: ProvidedEntity; supportedVis: VisDef[] } | undefined {
   const entity = entitiesStore.get(path);
 
-  const supportedVis = findSupportedVis(entity, attrValueStore);
+  const supportedVis = findSupportedVis(entity, attrValuesStore);
   if (supportedVis.length > 0) {
     return { entity, supportedVis };
   }
 
-  const nxDefaultPath = getNxDefaultPath(entity, attrValueStore);
+  const nxDefaultPath = getNxDefaultPath(entity, attrValuesStore);
   if (nxDefaultPath) {
-    return resolvePath(nxDefaultPath, entitiesStore, attrValueStore);
+    return resolvePath(nxDefaultPath, entitiesStore, attrValuesStore);
   }
 
   return undefined;
@@ -51,43 +51,22 @@ export function resolvePath(
 
 function findSupportedVis(
   entity: ProvidedEntity,
-  attrValueStore: AttrValuesStore,
+  attrValuesStore: AttrValuesStore,
 ): VisDef[] {
-  const nxVis = getSupportedNxVis(entity, attrValueStore);
+  const nxVis = getSupportedNxVis(entity, attrValuesStore);
   if (nxVis.length > 0) {
     return nxVis;
   }
 
-  return getSupportedCoreVis(entity, attrValueStore);
-}
-
-function getNxDefaultPath(
-  entity: ProvidedEntity,
-  attrValueStore: AttrValuesStore,
-): string | undefined {
-  if (!isGroup(entity)) {
-    return undefined;
-  }
-
-  const { default: defaultPath } = attrValueStore.get(entity);
-
-  if (defaultPath) {
-    assertStr(defaultPath, `Expected 'default' attribute to be a string`);
-
-    return defaultPath.startsWith('/')
-      ? defaultPath
-      : buildEntityPath(entity.path, defaultPath);
-  }
-
-  return getImplicitDefaultChild(entity.children, attrValueStore)?.path;
+  return getSupportedCoreVis(entity, attrValuesStore);
 }
 
 function getSupportedCoreVis(
   entity: ProvidedEntity,
-  attrValueStore: AttrValuesStore,
+  attrValuesStore: AttrValuesStore,
 ): CoreVisDef[] {
   const supportedVis = Object.values(CORE_VIS).filter(
-    (vis) => isDataset(entity) && vis.supportsDataset(entity, attrValueStore),
+    (vis) => isDataset(entity) && vis.supportsDataset(entity, attrValuesStore),
   );
 
   return supportedVis.length > 1
@@ -151,9 +130,30 @@ function getSupportedNxVis(
   return [NEXUS_VIS[nxLineVis]];
 }
 
+function getNxDefaultPath(
+  entity: ProvidedEntity,
+  attrValuesStore: AttrValuesStore,
+): string | undefined {
+  if (!isGroup(entity)) {
+    return undefined;
+  }
+
+  const { default: defaultPath } = attrValuesStore.get(entity);
+
+  if (defaultPath) {
+    assertStr(defaultPath, `Expected 'default' attribute to be a string`);
+
+    return defaultPath.startsWith('/')
+      ? defaultPath
+      : buildEntityPath(entity.path, defaultPath);
+  }
+
+  return getImplicitDefaultChild(entity.children, attrValuesStore)?.path;
+}
+
 function getImplicitDefaultChild(
   children: ChildEntity[],
-  attrValueStore: AttrValuesStore,
+  attrValuesStore: AttrValuesStore,
 ): ChildEntity | undefined {
   const nxGroups = children
     .filter(isGroup)
@@ -161,7 +161,7 @@ function getImplicitDefaultChild(
 
   // Look for an `NXdata` child group first
   const nxDataChild = nxGroups.find(
-    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXdata',
+    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXdata',
   );
 
   if (nxDataChild) {
@@ -170,7 +170,7 @@ function getImplicitDefaultChild(
 
   // Then for an `NXentry` child group
   const nxEntryChild = nxGroups.find(
-    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXentry',
+    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXentry',
   );
 
   if (nxEntryChild) {
@@ -179,6 +179,6 @@ function getImplicitDefaultChild(
 
   // Then for an `NXprocess` child group
   return nxGroups.find(
-    (g) => attrValueStore.getSingle(g, 'NX_class') === 'NXprocess',
+    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXprocess',
   );
 }
