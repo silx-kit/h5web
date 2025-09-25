@@ -61,8 +61,19 @@ export function resolveNxEntity(
   if (name.includes('/')) {
     if (entitiesStore) {
       const path = buildEntityPath(group.path, name);
-      const ent = entitiesStore.get(path);
-      if (ent) return ent;
+      try {
+        const ent = entitiesStore.get(path);
+        if (ent) return ent;
+      } catch (err) {
+        // If a Promise was thrown (suspense), re-throw it so React can handle
+        // the suspension. Otherwise swallow provider errors (e.g. "No entity
+        // found at ...") and fall back to best-effort traversal so that
+        // callers (like findSignalDataset) can surface NX-specific error
+        // messages instead.
+        if (err && typeof (err as any).then === 'function') {
+          throw err;
+        }
+      }
     }
 
     // Fallback: try traversal relative to the group (best-effort)
@@ -90,7 +101,14 @@ export function resolveNxEntity(
 
   if (entitiesStore) {
     const path = buildEntityPath(group.path, name);
-    return entitiesStore.get(path);
+    try {
+      return entitiesStore.get(path);
+    } catch (err) {
+      if (err && typeof (err as any).then === 'function') {
+        throw err;
+      }
+      return undefined;
+    }
   }
 
   return undefined;
