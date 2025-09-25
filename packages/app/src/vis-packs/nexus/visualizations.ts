@@ -1,6 +1,16 @@
+import { hasComplexType, hasMinDims, hasNumDims } from '@h5web/shared/guards';
+import {
+  type ArrayShape,
+  type ComplexType,
+  type Dataset,
+  type GroupWithChildren,
+  type NumericLikeType,
+} from '@h5web/shared/hdf5-models';
+import { NxInterpretation } from '@h5web/shared/nexus-models';
 import { FiActivity, FiFileText, FiImage, FiMap } from 'react-icons/fi';
 import { MdGrain } from 'react-icons/md';
 
+import { type AttrValuesStore } from '../../providers/models';
 import {
   HeatmapConfigProvider,
   LineConfigProvider,
@@ -16,55 +26,92 @@ import {
   NxScatterContainer,
 } from './containers';
 import NxNoteContainer from './containers/NxNoteContainer';
+import { findAxesDatasets } from './utils';
 
-export enum NexusVis {
+export const NX_NOTE_VIS = {
+  name: 'NX Note',
+  Icon: FiFileText,
+  Container: NxNoteContainer,
+} satisfies VisDef;
+
+export enum NxDataVis {
   NxLine = 'NX Line',
   NxComplexLine = 'NX Complex Line',
   NxHeatmap = 'NX Heatmap',
   NxRGB = 'NX RGB',
   NxScatter = 'NX Scatter',
-  NxNote = 'NX Note',
 }
 
-export const NEXUS_VIS = {
-  [NexusVis.NxLine]: {
-    name: NexusVis.NxLine,
+export interface NxDataVisDef extends VisDef {
+  supportsNxDataGroup: (
+    group: GroupWithChildren,
+    signal: Dataset<ArrayShape, NumericLikeType | ComplexType>,
+    attrValuesStore: AttrValuesStore,
+  ) => boolean;
+  isPrimary: (interpretation: unknown) => boolean;
+}
+
+export const NX_DATA_VIS = {
+  [NxDataVis.NxLine]: {
+    name: NxDataVis.NxLine,
     Icon: FiActivity,
     Container: NxLineContainer,
     ConfigProvider: LineConfigProvider,
+    supportsNxDataGroup: (_, signal) => !hasComplexType(signal),
+    isPrimary: (interpretation) => interpretation === NxInterpretation.Spectrum,
   },
 
-  [NexusVis.NxComplexLine]: {
-    name: NexusVis.NxLine,
+  [NxDataVis.NxComplexLine]: {
+    name: NxDataVis.NxLine,
     Icon: FiActivity,
     Container: NxComplexLineContainer,
     ConfigProvider: LineConfigProvider,
+    supportsNxDataGroup: (_, signal) => hasComplexType(signal),
+    isPrimary: (interpretation) => interpretation === NxInterpretation.Spectrum,
   },
 
-  [NexusVis.NxHeatmap]: {
-    name: NexusVis.NxHeatmap,
+  [NxDataVis.NxHeatmap]: {
+    name: NxDataVis.NxHeatmap,
     Icon: FiMap,
     Container: NxHeatmapContainer,
     ConfigProvider: HeatmapConfigProvider,
+    supportsNxDataGroup: (_, signal) => hasMinDims(signal, 2),
+    isPrimary: (interpretation) => interpretation === NxInterpretation.Image,
   },
 
-  [NexusVis.NxRGB]: {
-    name: NexusVis.NxRGB,
+  [NxDataVis.NxRGB]: {
+    name: NxDataVis.NxRGB,
     Icon: FiImage,
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
+    supportsNxDataGroup: (_, signal, attrValuesStore) => {
+      const { interpretation, CLASS } = attrValuesStore.get(signal);
+      return (
+        (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
+        hasMinDims(signal, 3) && // 2 for axes + 1 for RGB channels
+        signal.shape[signal.shape.length - 1] === 3 && // 3 channels
+        !hasComplexType(signal)
+      );
+    },
+    isPrimary: () => true, // always primary if supported
   },
 
-  [NexusVis.NxScatter]: {
-    name: NexusVis.NxScatter,
+  [NxDataVis.NxScatter]: {
+    name: NxDataVis.NxScatter,
     Icon: MdGrain,
     Container: NxScatterContainer,
     ConfigProvider: ScatterConfigProvider,
-  },
+    supportsNxDataGroup: (group, signal, attrValuesStore) => {
+      if (!hasNumDims(signal, 1)) {
+        return false;
+      }
 
-  [NexusVis.NxNote]: {
-    name: NexusVis.NxNote,
-    Icon: FiFileText,
-    Container: NxNoteContainer,
+      const axisDatasets = findAxesDatasets(group, signal, attrValuesStore);
+      return (
+        axisDatasets.length === 2 &&
+        axisDatasets.every((d) => d && hasNumDims(d, 1))
+      );
+    },
+    isPrimary: () => true, // always primary if supported
   },
-} satisfies Record<NexusVis, VisDef>;
+} satisfies Record<NxDataVis, NxDataVisDef>;

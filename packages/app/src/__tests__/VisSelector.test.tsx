@@ -1,8 +1,9 @@
 import { screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
-import { getSelectedVisTab, renderApp } from '../test-utils';
+import { getSelectedVisTab, getVisTabs, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
+import { NxDataVis } from '../vis-packs/nexus/visualizations';
 
 test('switch between visualizations', async () => {
   const { user } = await renderApp('/nD_datasets/oneD');
@@ -74,4 +75,26 @@ test('remember preferred visualization when switching between datasets', async (
 
   // Check that the most advanced visualization is selected
   expect(getSelectedVisTab()).toBe(Vis.RGB);
+});
+
+test('prioritize primary over preferred visualization', async () => {
+  // Visualize NXdata group with 2D signal but no interpretation
+  const { selectExplorerNode, selectVisTab } = await renderApp(
+    '/nexus_entry/nx_process/nx_data',
+  );
+
+  // Check that both NxLine and NxHeatmap are supported
+  expect(getVisTabs()).toEqual([NxDataVis.NxLine, NxDataVis.NxHeatmap]);
+  expect(getSelectedVisTab()).toBe(NxDataVis.NxHeatmap);
+
+  // Switch to NxLine vis so it becomes the preferred visualization
+  await selectVisTab(NxDataVis.NxLine);
+  expect(getSelectedVisTab()).toBe(NxDataVis.NxLine);
+
+  // Select NXdata group with `image` interpretation
+  await selectExplorerNode('image');
+
+  // Check that the preferred visualization is NOT restored
+  expect(getVisTabs()).toEqual([NxDataVis.NxLine, NxDataVis.NxHeatmap]);
+  expect(getSelectedVisTab()).toBe(NxDataVis.NxHeatmap);
 });
