@@ -11,10 +11,11 @@ import styles from './Visualizer.module.css';
 interface Props {
   entity: ProvidedEntity;
   supportedVis: VisDef[];
+  primaryVis: VisDef | undefined;
 }
 
 function VisManager(props: Props) {
-  const { entity, supportedVis } = props;
+  const { entity, supportedVis, primaryVis } = props;
   assertDefined(supportedVis[0], 'Expected supported visualization');
 
   if (!('ResizeObserver' in globalThis)) {
@@ -23,7 +24,7 @@ function VisManager(props: Props) {
     );
   }
 
-  const [activeVis, setActiveVis] = useActiveVis(supportedVis);
+  const [activeVis, setActiveVis] = useActiveVis(supportedVis, primaryVis);
   const { Container } = activeVis;
 
   const [visBarElem, setVisBarElem] = useState<HTMLDivElement>();
