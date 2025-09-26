@@ -236,7 +236,9 @@ export function makeMockFile(): GroupWithChildren {
             children: [array('secondary_errors', { valueId: 'twoD_errors' })],
           }),
           nxData('image_with_aux', {
-            signal: array('twoD'),
+            signal: withNxAttr(array('twoD'), {
+              interpretation: 'image',
+            }),
             axes: { X: array('X'), Y: array('Y') },
             axesAttr: ['Y', 'X'],
             auxiliary: {

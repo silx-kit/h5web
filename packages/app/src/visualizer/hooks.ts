@@ -3,11 +3,10 @@ import { useState } from 'react';
 
 import { type VisDef } from '../vis-packs/models';
 
-export function useActiveVis<T extends VisDef>(
-  supportedVis: T[],
-): [T, (index: number) => void] {
-  const lastSupportedIndex = supportedVis.length - 1;
-
+export function useActiveVis(
+  supportedVis: VisDef[],
+  primaryVis: VisDef | undefined,
+): [VisDef, (index: number) => void] {
   const {
     value: preferredVisName,
     set: savePreferredVisName,
@@ -18,8 +17,10 @@ export function useActiveVis<T extends VisDef>(
     ? supportedVis.find((v) => v.name === preferredVisName)
     : undefined;
 
-  // Restore preferred vis, if any, when selecting a new entity (cf. `key` on `VisManager`)
-  const state = useState<T>(preferredVis || supportedVis[lastSupportedIndex]);
+  const lastSupportedIndex = supportedVis.length - 1;
+  const lastVis = supportedVis[lastSupportedIndex];
+
+  const state = useState(primaryVis || preferredVis || lastVis); // reset when selecting a new entity (cf. `key` on `VisManager`)
   const [activeVis, setActiveVis] = state;
 
   return [
