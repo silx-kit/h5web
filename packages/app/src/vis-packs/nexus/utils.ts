@@ -465,12 +465,15 @@ export function parseSignalExpression(raw: string):
   // If it's a plain identifier, no expression
   if (/^[A-Za-z_][A-Za-z0-9_\.\-/]*$/.test(s)) return undefined;
 
-  // Find first identifier that looks like a dataset name (letters/underscore start)
-  const nameMatch = s.match(/[A-Za-z_][A-Za-z0-9_\.\-]*/);
+  // Find first identifier/path that looks like a dataset name (letters/underscore start)
+  // Allow nested paths (with '/') and dots/dashes in segment names.
+  const nameMatch = s.match(/[A-Za-z_][A-Za-z0-9_\.\-/]*/);
   if (!nameMatch) return undefined;
+  // Use the full matched path (may include '/') as the baseName so callers can
+  // resolve nested entities like 'subentry/data/xdata'.
   const baseName = nameMatch[0];
 
-  // Replace all occurrences of the base name with 'v' to build an evaluable expression
+  // Replace the full matched base path with 'v' to build an evaluable expression
   let expressionRaw = s.replace(new RegExp(baseName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 'v');
 
   // Collapse whitespace
