@@ -257,11 +257,16 @@ export function findAssociatedDatasets(
     if (name === '.') {
       return undefined;
     }
-  const ent = resolveNxEntity(group, name, entitiesStore);
-  assertDefined(ent, `Expected entity "${name}" to exist`);
-  assertDataset(ent, `Expected "${name}" to be a dataset`);
-  assertArrayShape(ent);
-  return ent;
+
+    // Support expressions that may include a path, e.g. "subentry/data/x*10"
+    const parsed = parseSignalExpression(name as string);
+    const baseName = parsed ? parsed.baseName : (name as string);
+
+    const ent = resolveNxEntity(group, baseName, entitiesStore);
+    assertDefined(ent, `Expected entity "${name}" to exist`);
+    assertDataset(ent, `Expected "${name}" to be a dataset`);
+    assertArrayShape(ent);
+    return ent;
   });
 }
 
