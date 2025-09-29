@@ -17,54 +17,53 @@ import {
 } from './containers';
 import NxNoteContainer from './containers/NxNoteContainer';
 
-export enum NexusVis {
+export const NX_NOTE_VIS = {
+  name: 'NX Note',
+  Icon: FiFileText,
+  Container: NxNoteContainer,
+} satisfies VisDef;
+
+export enum NxDataVis {
   NxLine = 'NX Line',
   NxComplexLine = 'NX Complex Line',
   NxHeatmap = 'NX Heatmap',
   NxRGB = 'NX RGB',
   NxScatter = 'NX Scatter',
-  NxNote = 'NX Note',
 }
 
-export const NEXUS_VIS = {
-  [NexusVis.NxLine]: {
-    name: NexusVis.NxLine,
+export const NX_DATA_VIS = {
+  [NxDataVis.NxLine]: {
+    name: NxDataVis.NxLine,
     Icon: FiActivity,
     Container: NxLineContainer,
     ConfigProvider: LineConfigProvider,
   },
 
-  [NexusVis.NxComplexLine]: {
-    name: NexusVis.NxLine,
+  [NxDataVis.NxComplexLine]: {
+    name: NxDataVis.NxLine,
     Icon: FiActivity,
     Container: NxComplexLineContainer,
     ConfigProvider: LineConfigProvider,
   },
 
-  [NexusVis.NxHeatmap]: {
-    name: NexusVis.NxHeatmap,
+  [NxDataVis.NxHeatmap]: {
+    name: NxDataVis.NxHeatmap,
     Icon: FiMap,
     Container: NxHeatmapContainer,
     ConfigProvider: HeatmapConfigProvider,
   },
 
-  [NexusVis.NxRGB]: {
-    name: NexusVis.NxRGB,
+  [NxDataVis.NxRGB]: {
+    name: NxDataVis.NxRGB,
     Icon: FiImage,
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
   },
 
-  [NexusVis.NxScatter]: {
-    name: NexusVis.NxScatter,
+  [NxDataVis.NxScatter]: {
+    name: NxDataVis.NxScatter,
     Icon: MdGrain,
     Container: NxScatterContainer,
     ConfigProvider: ScatterConfigProvider,
   },
-
-  [NexusVis.NxNote]: {
-    name: NexusVis.NxNote,
-    Icon: FiFileText,
-    Container: NxNoteContainer,
-  },
-} satisfies Record<NexusVis, VisDef>;
+} satisfies Record<NxDataVis, VisDef>;
