@@ -422,43 +422,33 @@ const { delta, isDragging, startDrag } = useDrag({
 });
 ```
 
-#### useGeometry
+#### useUpdateGeometry
 
-Initialise and update a buffer geometry. Requires passing the constructor of a class that
-implements the `H5WebGeometry` abstract class, which itself inherits from Three's `BufferGeometry`.
+Keep a geometry instance up to date. Requires passing an instance of a Three.js `BufferGeometry` subclass
+that implements the `H5WebGeometry` interface.
 
 ```ts
-useGeometry<
-  AttributeNames extends string,
-  Params extends object,
->(
-  Ctor: new (len: number) => H5WebGeometry<AttributeNames, Params>,
-  dataLength: number,
-  params: Params,
+useUpdateGeometry(
+  geometry: H5WebGeometry & BufferGeometry,
   config?: {
     skipUpdates?: boolean; // set to `true` when R3F object is hidden
     isInteractive?: boolean; // set to `true` to keep bounding sphere up to date for raycaster
   },
-): H5WebGeometry<AttributeNames, Params>
+): void
 
-const lineGeometry = useGeometry(
-  LineGeometry,
-  ordinates.length,
-  {
-    abscissas,
-    ordinates,
-    abscissaScale,
-    ordinateScale,
-    ignoreValue,
-  },
-  { skipUpdates: !visible }
+const lineGeometry = useMemo(
+  () => new LineGeometry({abscissas, ordinates, abscissaScale, ordinateScale }),
+  [abscissas, ordinates, abscissaScale, ordinateScale]
 );
+
+useUpdateGeometry(lineGeometry, { skipUpdates: !visible });
 ```
 
 The following built-in geometry classes are available and can be used as examples for
 writing your own geometries:
 
 - `LineGeometry`, used in [`Line`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-line--docs)
+- `LineConstantGeometry`, used in [`Line`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-line--docs) with constant interpolation
 - `GlyphsGeometry`, used in [`Glyphs`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-glyphs--docs)
 - `ErrorBarsGeometry`, used in [`ErrorBars`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-errorbars--docs)
 - `ErrorCapsGeometry`, used in [`ErrorBars`](https://h5web-docs.panosc.eu/?path=/docs/building-blocks-errorbars--docs)

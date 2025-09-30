@@ -4,26 +4,26 @@ import {
   type LineBasicMaterialProps,
   type Object3DNode,
 } from '@react-three/fiber';
-import { Line as R3FLine } from 'three';
+import { useMemo } from 'react';
+import { Line as Line_ } from 'three';
 
-import { useGeometry } from '../hooks';
+import { useUpdateGeometry } from '../hooks';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { hasR3FEventHandlers } from '../utils';
+import LineConstantGeometry from './lineConstantGeometry';
 import LineGeometry from './lineGeometry';
 import { Interpolation } from './models';
-import PieceWiseConstantLineGeometry from './piecewiseConstantLineGeometry';
 
 // Alias Three's `Line` to `Line_` to avoid conflict with SVG `line` in JSX
 // https://docs.pmnd.rs/react-three-fiber/tutorials/typescript#extending-threeelements
-class Line_ extends R3FLine {}
 extend({ Line_ });
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    line_: Object3DNode<R3FLine, typeof R3FLine>;
+    line_: Object3DNode<Line_, typeof Line_>;
   }
 }
 
-interface Props extends Object3DNode<R3FLine, typeof R3FLine> {
+interface Props extends Object3DNode<Line_, typeof Line_> {
   abscissas: NumArray;
   ordinates: NumArray;
   color: string;
@@ -49,24 +49,25 @@ function Line(props: Props) {
 
   const Geometry =
     interpolation === Interpolation.Constant
-      ? PieceWiseConstantLineGeometry
+      ? LineConstantGeometry
       : LineGeometry;
 
-  const geometry = useGeometry(
-    Geometry,
-    ordinates.length,
-    {
-      abscissas,
-      ordinates,
-      abscissaScale,
-      ordinateScale,
-      ignoreValue,
-    },
-    {
-      skipUpdates: !visible,
-      isInteractive: hasR3FEventHandlers(lineProps),
-    },
+  const geometry = useMemo(
+    () =>
+      new Geometry({
+        abscissas,
+        ordinates,
+        abscissaScale,
+        ordinateScale,
+        ignoreValue,
+      }),
+    [Geometry, abscissaScale, abscissas, ignoreValue, ordinateScale, ordinates],
   );
+
+  useUpdateGeometry(geometry, {
+    skipUpdates: !visible,
+    isInteractive: hasR3FEventHandlers(lineProps),
+  });
 
   return (
     <line_ geometry={geometry} visible={visible} {...lineProps}>

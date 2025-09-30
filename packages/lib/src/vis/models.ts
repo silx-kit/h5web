@@ -94,3 +94,7 @@ export type ClassStyleAttrs = Pick<
   HTMLAttributes<HTMLElement>,
   'className' | 'style'
 >;
+
+export interface H5WebGeometry {
+  update: () => void;
+}

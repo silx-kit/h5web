@@ -1,7 +1,8 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 import { type PointsProps } from '@react-three/fiber';
+import { useMemo } from 'react';
 
-import { useGeometry } from '../hooks';
+import { useUpdateGeometry } from '../hooks';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { hasR3FEventHandlers } from '../utils';
 import GlyphMaterial from './GlyphMaterial';
@@ -32,21 +33,22 @@ function Glyphs(props: Props) {
 
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
-  const geometry = useGeometry(
-    GlyphsGeometry,
-    ordinates.length,
-    {
-      abscissas,
-      ordinates,
-      abscissaScale,
-      ordinateScale,
-      ignoreValue,
-    },
-    {
-      skipUpdates: !visible,
-      isInteractive: hasR3FEventHandlers(pointsProps),
-    },
+  const geometry = useMemo(
+    () =>
+      new GlyphsGeometry({
+        abscissas,
+        ordinates,
+        abscissaScale,
+        ordinateScale,
+        ignoreValue,
+      }),
+    [abscissaScale, abscissas, ignoreValue, ordinateScale, ordinates],
   );
+
+  useUpdateGeometry(geometry, {
+    skipUpdates: !visible,
+    isInteractive: hasR3FEventHandlers(pointsProps),
+  });
 
   return (
     <points geometry={geometry} visible={visible} {...pointsProps}>

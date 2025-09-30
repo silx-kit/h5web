@@ -1,37 +1,26 @@
-import { type NumArray } from '@h5web/shared/vis-models';
 import { type BufferAttribute, BufferGeometry } from 'three';
 
 import { type H5WebGeometry } from '../models';
 import { createBufferAttr, Z_OUT } from '../utils';
 import { type LineGeometryParams } from './lineGeometry';
 
-interface Params extends LineGeometryParams {
-  errors: NumArray;
-}
-
-class ErrorCapsGeometry
+class LineConstantGeometry
   extends BufferGeometry<Record<'position', BufferAttribute>>
   implements H5WebGeometry
 {
-  public constructor(private readonly params: Params) {
+  public constructor(private readonly params: LineGeometryParams) {
     super();
     const { length } = params.ordinates;
-    this.setAttribute('position', createBufferAttr(length * 2));
+    this.setAttribute('position', createBufferAttr(2 * length - 1));
   }
 
   public update(): void {
     const { position: positions } = this.attributes;
-    const {
-      abscissas,
-      ordinates,
-      errors,
-      abscissaScale,
-      ordinateScale,
-      ignoreValue,
-    } = this.params;
+    const { abscissas, ordinates, abscissaScale, ordinateScale, ignoreValue } =
+      this.params;
 
     for (const [index, value] of ordinates.entries()) {
-      const posIndex = index * 2;
+      const posIndex = 2 * index;
 
       if (ignoreValue?.(value)) {
         positions.setXYZ(posIndex, 0, 0, Z_OUT);
@@ -48,23 +37,22 @@ class ErrorCapsGeometry
         continue;
       }
 
-      const error = errors[index];
-      const yBottom = ordinateScale(value - error);
-      const yTop = ordinateScale(value + error);
+      positions.setXYZ(posIndex, x, y, 0);
 
-      if (Number.isFinite(yBottom)) {
-        positions.setXYZ(posIndex, x, yBottom, 0);
-      } else {
-        positions.setXYZ(posIndex, 0, 0, Z_OUT);
-      }
-
-      if (Number.isFinite(yTop)) {
-        positions.setXYZ(posIndex + 1, x, yTop, 0);
-      } else {
+      if (index >= abscissas.length - 1) {
         positions.setXYZ(posIndex + 1, 0, 0, Z_OUT);
+        continue;
       }
+
+      const nextX = abscissaScale(abscissas[index + 1]);
+      const nextY = ordinateScale(ordinates[index + 1]);
+      if (!Number.isFinite(nextX) || !Number.isFinite(nextY)) {
+        positions.setXYZ(posIndex + 1, 0, 0, Z_OUT);
+        continue;
+      }
+      positions.setXYZ(posIndex + 1, nextX, y, 0);
     }
   }
 }
 
-export default ErrorCapsGeometry;
+export default LineConstantGeometry;
