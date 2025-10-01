@@ -16,9 +16,9 @@ import {
   useRef,
   useState,
 } from 'react';
-import { type BufferAttribute } from 'three';
+import { type BufferGeometry } from 'three';
 
-import type H5WebGeometry from './shared/h5webGeometry';
+import { type H5WebGeometry } from './models';
 import {
   getAxisDomain,
   getCombinedDomain,
@@ -111,59 +111,36 @@ export function useCssColors(
   return [colors, refCallback];
 }
 
-export function useGeometry<
-  AttributeNames extends string,
-  Params extends object,
->(
-  Ctor: new (len: number) => H5WebGeometry<AttributeNames, Params>,
-  dataLength: number,
-  params: Params,
+export function useUpdateGeometry(
+  geometry: H5WebGeometry & BufferGeometry,
   config: {
     skipUpdates?: boolean; // set to `true` when R3F object is hidden
     isInteractive?: boolean; // set to `true` to keep bounding sphere up to date for raycaster
   } = {},
-): H5WebGeometry<AttributeNames, Params> {
+): void {
   const { skipUpdates = false, isInteractive = false } = config;
-
-  const geometry = useMemo(() => new Ctor(dataLength), [Ctor, dataLength]);
   const invalidate = useThree((state) => state.invalidate);
 
-  useLayoutEffect(
-    () => {
-      if (skipUpdates) {
-        return;
-      }
+  useLayoutEffect(() => {
+    if (skipUpdates) {
+      return;
+    }
 
-      geometry.prepare(params);
+    geometry.update();
 
-      for (let i = 0; i < dataLength; i += 1) {
-        geometry.update(i);
-      }
+    if (isInteractive) {
+      geometry.computeBoundingBox();
+      geometry.computeBoundingSphere();
+    }
 
-      if (isInteractive) {
-        geometry.computeBoundingSphere(); // https://github.com/mrdoob/three.js/issues/1170#issuecomment-3617180
-      }
+    Object.values(geometry.attributes).forEach((attr) => {
+      attr.needsUpdate = true; // eslint-disable-line no-param-reassign
+    });
 
-      Object.values<BufferAttribute>(geometry.attributes).forEach((attr) => {
-        attr.needsUpdate = true; // eslint-disable-line no-param-reassign
-      });
+    if (geometry.index) {
+      geometry.index.needsUpdate = true; // eslint-disable-line no-param-reassign
+    }
 
-      if (geometry.index) {
-        geometry.index.needsUpdate = true;
-      }
-
-      invalidate();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      geometry,
-      dataLength,
-      ...Object.values(params), // eslint-disable-line react-hooks/exhaustive-deps
-      skipUpdates,
-      isInteractive,
-      invalidate,
-    ],
-  );
-
-  return geometry;
+    invalidate();
+  }, [geometry, skipUpdates, isInteractive, invalidate]);
 }

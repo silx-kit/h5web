@@ -5,12 +5,13 @@ import {
 } from '@h5web/shared/vis-models';
 import { getDims } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
+import { useMemo } from 'react';
 import { LinearFilter } from 'three';
 
 import HeatmapMaterial from '../heatmap/HeatmapMaterial';
 import { useTextureSafeNdArray } from '../heatmap/hooks';
 import { type ColorMap } from '../heatmap/models';
-import { useGeometry } from '../hooks';
+import { useUpdateGeometry } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import SurfaceMeshGeometry from './surfaceMeshGeometry';
@@ -31,11 +32,12 @@ function SurfaceMesh(props: Props) {
   const { rows, cols } = getDims(dataArray);
   const safeDataArray = useTextureSafeNdArray(dataArray);
 
-  const geometry = useGeometry(SurfaceMeshGeometry, dataArray.size, {
-    values: dataArray.data,
-    rows,
-    cols,
-  });
+  const geometry = useMemo(
+    () => new SurfaceMeshGeometry({ dataArray, rows, cols }),
+    [dataArray, rows, cols],
+  );
+
+  useUpdateGeometry(geometry);
 
   return (
     <group position={[-cols / 2, -rows / 2, 0]}>

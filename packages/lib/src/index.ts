@@ -126,7 +126,7 @@ export {
   useAxisDomain,
   useValueToIndexScale,
   useCameraState,
-  useGeometry,
+  useUpdateGeometry,
 } from './vis/hooks';
 
 export { getAxisValues } from './vis/line/utils';
@@ -158,7 +158,6 @@ export {
 export { useSlicedDimsAndMapping } from './dimension-mapper/hooks';
 
 // Geometries
-export { default as H5WebGeometry } from './vis/shared/h5webGeometry';
 export { default as LineGeometry } from './vis/line/lineGeometry';
 export { default as GlyphsGeometry } from './vis/line/glyphsGeometry';
 export { default as ErrorBarsGeometry } from './vis/line/errorBarsGeometry';
@@ -206,6 +205,7 @@ export type {
   Scale,
   AxisScale,
   HistogramParams,
+  H5WebGeometry,
 } from './vis/models';
 
 export type { AuxiliaryParams } from './vis/line/models';

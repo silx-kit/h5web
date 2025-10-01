@@ -8,7 +8,7 @@ import { useCallback, useMemo } from 'react';
 
 import { useInterpolator } from '../heatmap/hooks';
 import { type ColorMap } from '../heatmap/models';
-import { useGeometry } from '../hooks';
+import { useUpdateGeometry } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
@@ -84,20 +84,29 @@ function ScatterPoints(props: Props) {
     [scaleType, domain],
   );
 
-  const geometry = useGeometry(
-    ScatterPointsGeometry,
-    data.length,
-    {
-      abscissas,
-      ordinates,
-      data,
+  const geometry = useMemo(
+    () =>
+      new ScatterPointsGeometry({
+        abscissas,
+        ordinates,
+        data,
+        abscissaScale,
+        ordinateScale,
+        colorScale,
+        interpolator,
+      }),
+    [
       abscissaScale,
-      ordinateScale,
+      abscissas,
       colorScale,
+      data,
       interpolator,
-    },
-    { isInteractive: true },
+      ordinateScale,
+      ordinates,
+    ],
   );
+
+  useUpdateGeometry(geometry, { isInteractive: true });
 
   return (
     <points

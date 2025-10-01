@@ -1,6 +1,7 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
+import { useMemo } from 'react';
 
-import { useGeometry } from '../hooks';
+import { useUpdateGeometry } from '../hooks';
 import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import ErrorBarsGeometry from './errorBarsGeometry';
 import ErrorCapsGeometry from './errorCapsGeometry';
@@ -17,31 +18,33 @@ interface Props {
 }
 
 function ErrorBars(props: Props) {
-  const { abscissas, ordinates, errors, color, visible, ignoreValue } = props;
-  const { abscissaScale, ordinateScale } = useVisCanvasContext();
-
-  const geometryParams = {
+  const {
     abscissas,
     ordinates,
     errors,
-    abscissaScale,
-    ordinateScale,
+    color,
+    visible = false,
     ignoreValue,
-  };
+  } = props;
+  const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
-  const barsGeometry = useGeometry(
-    ErrorBarsGeometry,
-    ordinates.length,
-    geometryParams,
-    { skipUpdates: !visible },
+  const params = useMemo(
+    () => ({
+      abscissas,
+      ordinates,
+      errors,
+      abscissaScale,
+      ordinateScale,
+      ignoreValue,
+    }),
+    [abscissaScale, abscissas, errors, ignoreValue, ordinateScale, ordinates],
   );
 
-  const capsGeometry = useGeometry(
-    ErrorCapsGeometry,
-    ordinates.length,
-    geometryParams,
-    { skipUpdates: !visible },
-  );
+  const barsGeometry = useMemo(() => new ErrorBarsGeometry(params), [params]);
+  useUpdateGeometry(barsGeometry, { skipUpdates: !visible });
+
+  const capsGeometry = useMemo(() => new ErrorCapsGeometry(params), [params]);
+  useUpdateGeometry(capsGeometry, { skipUpdates: !visible });
 
   return (
     <>
