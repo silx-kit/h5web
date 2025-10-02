@@ -1,57 +1,83 @@
-import { type BufferAttribute, BufferGeometry } from 'three';
+import {
+  type BufferAttribute,
+  InstancedInterleavedBuffer,
+  InterleavedBufferAttribute,
+} from 'three';
+import { LineGeometry as ThreeLineGeometry } from 'three/addons/lines/LineGeometry.js';
 
 import { type H5WebGeometry } from '../models';
 import { createBufferAttr, Z_OUT } from '../utils';
 import { type LineGeometryParams } from './lineGeometry';
 
-class LineConstantGeometry
-  extends BufferGeometry<Record<'position', BufferAttribute>>
-  implements H5WebGeometry
-{
+class LineConstantGeometry extends ThreeLineGeometry implements H5WebGeometry {
+  private readonly length: number;
+  private readonly positions: BufferAttribute;
+
   public constructor(private readonly params: LineGeometryParams) {
     super();
-    const { length } = params.ordinates;
-    this.setAttribute('position', createBufferAttr(2 * length - 1));
+
+    this.length = params.ordinates.length;
+    this.positions = createBufferAttr((this.length - 1) * 4); // two segments per point, two positions per segment
+
+    // Parts of `LineGeometry#setPositions` that don't need to be called on every update
+    // https://github.com/mrdoob/three.js/blob/40728556ec00833b54be287807cd6fb04a897313/examples/jsm/lines/LineSegmentsGeometry.js#L97
+    const { array } = this.positions;
+    const instancedBuffer = new InstancedInterleavedBuffer(array, 2 * 3); // two sets of `xyz` coords per line segment
+    const startAttr = new InterleavedBufferAttribute(instancedBuffer, 3, 0);
+    const endAttr = new InterleavedBufferAttribute(instancedBuffer, 3, 3);
+    this.setAttribute('instanceStart', startAttr);
+    this.setAttribute('instanceEnd', endAttr);
+    this.instanceCount = startAttr.count;
   }
 
   public update(): void {
-    const { position: positions } = this.attributes;
     const { abscissas, ordinates, abscissaScale, ordinateScale, ignoreValue } =
       this.params;
 
     for (const [index, value] of ordinates.entries()) {
-      const posIndex = 2 * index;
+      const posIndex = index * 4;
 
-      if (ignoreValue?.(value)) {
-        positions.setXYZ(posIndex, 0, 0, Z_OUT);
-        positions.setXYZ(posIndex + 1, 0, 0, Z_OUT);
+      if (index >= this.length - 1) {
+        this.setInvalidSegments(posIndex);
+        continue;
+      }
+
+      const nextValue = ordinates[index + 1];
+
+      if (ignoreValue?.(value) || ignoreValue?.(nextValue)) {
+        this.setInvalidSegments(posIndex);
         continue;
       }
 
       const x = abscissaScale(abscissas[index]);
       const y = ordinateScale(value);
-
-      if (!Number.isFinite(x) || !Number.isFinite(y)) {
-        positions.setXYZ(posIndex, 0, 0, Z_OUT);
-        positions.setXYZ(posIndex + 1, 0, 0, Z_OUT);
-        continue;
-      }
-
-      positions.setXYZ(posIndex, x, y, 0);
-
-      if (index >= abscissas.length - 1) {
-        positions.setXYZ(posIndex + 1, 0, 0, Z_OUT);
-        continue;
-      }
-
       const nextX = abscissaScale(abscissas[index + 1]);
-      const nextY = ordinateScale(ordinates[index + 1]);
-      if (!Number.isFinite(nextX) || !Number.isFinite(nextY)) {
-        positions.setXYZ(posIndex + 1, 0, 0, Z_OUT);
+      const nextY = ordinateScale(nextValue);
+
+      if (
+        !Number.isFinite(x) ||
+        !Number.isFinite(y) ||
+        !Number.isFinite(nextX) ||
+        !Number.isFinite(nextY)
+      ) {
+        this.setInvalidSegments(posIndex);
         continue;
       }
-      positions.setXYZ(posIndex + 1, nextX, y, 0);
+
+      this.positions.setXYZ(posIndex, x, y, 0);
+      this.positions.setXYZ(posIndex + 1, nextX, y, 0);
+
+      this.positions.setXYZ(posIndex + 2, nextX, y, 0);
+      this.positions.setXYZ(posIndex + 3, nextX, nextY, 0);
     }
+  }
+
+  private setInvalidSegments(posIndex: number): void {
+    this.positions.setXYZ(posIndex, 0, 0, Z_OUT);
+    this.positions.setXYZ(posIndex + 1, 0, 0, Z_OUT);
+
+    this.positions.setXYZ(posIndex + 2, 0, 0, Z_OUT);
+    this.positions.setXYZ(posIndex + 3, 0, 0, Z_OUT);
   }
 }
 
