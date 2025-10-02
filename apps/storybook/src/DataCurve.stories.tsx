@@ -4,6 +4,7 @@ import {
   DataCurve,
   DefaultInteractions,
   GlyphType as GlyphTypeEnum,
+  Interpolation,
   mockValues,
   ScaleType,
   useDomain,
@@ -81,6 +82,28 @@ export const Color = {
   ...Default,
   args: {
     color: 'black',
+  },
+} satisfies Story;
+
+export const Width = {
+  ...Default,
+  args: {
+    width: 3,
+  },
+} satisfies Story;
+
+export const ConstantInterpolation = {
+  ...Default,
+  args: {
+    interpolation: Interpolation.Constant,
+  },
+} satisfies Story;
+
+export const ConstantWithWidth = {
+  ...Default,
+  args: {
+    width: 3,
+    interpolation: Interpolation.Constant,
   },
 } satisfies Story;
 

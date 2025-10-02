@@ -1,8 +1,6 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
-import {
-  type LineBasicMaterialProps,
-  type ThreeEvent,
-} from '@react-three/fiber';
+import { type ThreeEvent } from '@react-three/fiber';
+import { type LineMaterialParameters } from 'three/addons/lines/LineMaterial.js';
 
 import ErrorBars from './ErrorBars';
 import Glyphs from './Glyphs';
@@ -17,9 +15,11 @@ interface Props {
   showErrors?: boolean;
   color: string;
   curveType?: CurveType;
+  width?: number;
+  interpolation?: Interpolation;
   glyphType?: GlyphType;
   glyphSize?: number;
-  materialProps?: LineBasicMaterialProps;
+  materialProps?: LineMaterialParameters;
   visible?: boolean;
   onLineClick?: (index: number, event: ThreeEvent<MouseEvent>) => void;
   onLineEnter?: (index: number, event: ThreeEvent<PointerEvent>) => void;
@@ -28,7 +28,6 @@ interface Props {
   onDataPointEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   onDataPointLeave?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
   ignoreValue?: IgnoreValue;
-  interpolation?: Interpolation;
 }
 
 function DataCurve(props: Props) {
@@ -38,6 +37,8 @@ function DataCurve(props: Props) {
     errors,
     showErrors,
     color,
+    width,
+    interpolation,
     curveType = CurveType.LineOnly,
     glyphType = GlyphType.Cross,
     glyphSize = 6,
@@ -50,7 +51,6 @@ function DataCurve(props: Props) {
     onDataPointEnter,
     onDataPointLeave,
     ignoreValue,
-    interpolation,
   } = props;
 
   return (
@@ -59,9 +59,10 @@ function DataCurve(props: Props) {
         abscissas={abscissas}
         ordinates={ordinates}
         color={color}
+        width={width}
+        interpolation={interpolation}
         ignoreValue={ignoreValue}
         materialProps={materialProps}
-        interpolation={interpolation}
         visible={curveType !== CurveType.GlyphsOnly && visible}
         onClick={useEventHandler(onLineClick)}
         onPointerEnter={useEventHandler(onLineEnter)}
