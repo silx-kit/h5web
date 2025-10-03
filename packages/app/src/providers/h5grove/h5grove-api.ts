@@ -201,6 +201,6 @@ export class H5GroveApi extends DataProviderApi {
       });
     }
 
-    return undefined;
+    return new Error(error.message, { cause: error });
   }
 }
