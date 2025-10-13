@@ -1,9 +1,10 @@
 import { useClick, useInteractions } from '@floating-ui/react';
 import { useId } from 'react';
-import { MdArrowDropDown, MdAutoGraph } from 'react-icons/md';
+import { MdAutoGraph } from 'react-icons/md';
 
 import { CurveType, Interpolation } from '../../../vis/line/models';
 import toolbarStyles from '../../Toolbar.module.css';
+import Btn from '../Btn';
 import { useFloatingDismiss, useFloatingMenu } from '../hooks';
 import RadioGroup from './RadioGroup';
 
@@ -29,7 +30,7 @@ function LineAspectSelector(props: Props) {
   } = props;
 
   const { context, refs, floatingStyles } = useFloatingMenu();
-  const { open: isOpen, floatingId } = context;
+  const { floatingId, open: isOpen } = context;
 
   const referenceId = useId();
 
@@ -40,22 +41,17 @@ function LineAspectSelector(props: Props) {
 
   return (
     <>
-      <button
+      <Btn
         ref={refs.setReference}
         id={referenceId}
-        className={toolbarStyles.btn}
-        type="button"
+        label="Aspect"
+        Icon={MdAutoGraph}
+        withArrow
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-controls={(isOpen && floatingId) || undefined}
         {...getReferenceProps()}
-      >
-        <span className={toolbarStyles.btnLike}>
-          <MdAutoGraph className={toolbarStyles.icon} />
-          Aspect
-          <MdArrowDropDown className={toolbarStyles.arrowIcon} />
-        </span>
-      </button>
+      />
 
       {isOpen && (
         <div
@@ -76,11 +72,11 @@ function LineAspectSelector(props: Props) {
           />
           <RadioGroup
             name="interpolation"
-            value={interpolation}
-            options={Object.values(Interpolation)}
             label="Interpolation"
-            onValueChanged={onInterpolationChanged}
+            options={Object.values(Interpolation)}
             disabled={curveType === CurveType.GlyphsOnly}
+            value={interpolation}
+            onValueChanged={onInterpolationChanged}
           />
         </div>
       )}
