@@ -2,7 +2,7 @@ import {
   ComplexVisTypeSelector,
   DomainWidget,
   ExportMenu,
-  LineAspectSelector,
+  LineAspectMenu,
   ScaleSelector,
   Separator,
   ToggleBtn,
@@ -111,7 +111,7 @@ function LineToolbar(props: Props) {
         onToggle={toggleGrid}
       />
 
-      <LineAspectSelector
+      <LineAspectMenu
         curveType={curveType}
         onCurveTypeChanged={setCurveType}
         interpolation={interpolation}

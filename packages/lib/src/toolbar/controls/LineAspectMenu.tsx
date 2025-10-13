@@ -2,10 +2,10 @@ import { useClick, useInteractions } from '@floating-ui/react';
 import { useId } from 'react';
 import { MdAutoGraph } from 'react-icons/md';
 
-import { CurveType, Interpolation } from '../../../vis/line/models';
-import toolbarStyles from '../../Toolbar.module.css';
-import Btn from '../Btn';
-import { useFloatingDismiss, useFloatingMenu } from '../hooks';
+import { CurveType, Interpolation } from '../../vis/line/models';
+import toolbarStyles from '../Toolbar.module.css';
+import Btn from './Btn';
+import { useFloatingDismiss, useFloatingMenu } from './hooks';
 import RadioGroup from './RadioGroup';
 
 const CURVE_TYPE_LABELS: Record<CurveType, string> = {
@@ -21,7 +21,7 @@ interface Props {
   onInterpolationChanged: (interpolation: Interpolation) => void;
 }
 
-function LineAspectSelector(props: Props) {
+function LineAspectMenu(props: Props) {
   const {
     curveType,
     onCurveTypeChanged,
@@ -84,4 +84,4 @@ function LineAspectSelector(props: Props) {
   );
 }
 
-export default LineAspectSelector;
+export default LineAspectMenu;
