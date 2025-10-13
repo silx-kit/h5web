@@ -15,6 +15,7 @@ export { default as Btn } from './toolbar/controls/Btn';
 export { default as LinkBtn } from './toolbar/controls/LinkBtn';
 export { default as ToggleBtn } from './toolbar/controls/ToggleBtn';
 export { default as ToggleGroup } from './toolbar/controls/ToggleGroup/ToggleGroup';
+export { default as RadioGroup } from './toolbar/controls/RadioGroup';
 export { default as DomainWidget } from './toolbar/controls/DomainWidget/DomainWidget';
 export { default as DomainSlider } from './toolbar/controls/DomainWidget/DomainSlider';
 export { default as DomainControls } from './toolbar/controls/DomainWidget/DomainControls';
@@ -24,8 +25,6 @@ export { default as ScaleSelector } from './toolbar/controls/ScaleSelector/Scale
 export { default as ComplexVisTypeSelector } from './toolbar/controls/ComplexVisTypeSelector';
 export { default as Selector } from './toolbar/controls/Selector/Selector';
 export { default as InteractionHelp } from './toolbar/controls/InteractionHelp';
-export { default as FloatingControl } from './toolbar/floating/FloatingControl';
-export { default as ResetZoomButton } from './toolbar/floating/ResetZoomButton';
 export { default as NotationToggleGroup } from './toolbar/controls/NotationToggleGroup';
 export { default as Histogram } from './toolbar/controls/Histogram/Histogram';
 export { default as LineAspectMenu } from './toolbar/controls/LineAspectMenu';
@@ -35,6 +34,10 @@ export type { DomainSliderProps } from './toolbar/controls/DomainWidget/DomainSl
 export type { DomainControlsHandle } from './toolbar/controls/DomainWidget/DomainControls';
 export type { DomainControlsProps } from './toolbar/controls/DomainWidget/DomainControls';
 export type { HistogramProps } from './toolbar/controls/Histogram/Histogram';
+
+// Floating controls
+export { default as FloatingControl } from './toolbar/floating/FloatingControl';
+export { default as ResetZoomButton } from './toolbar/floating/ResetZoomButton';
 
 // Dimension mapper
 export { default as DimensionMapper } from './dimension-mapper/DimensionMapper';
