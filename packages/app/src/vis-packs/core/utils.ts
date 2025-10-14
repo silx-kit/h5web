@@ -1,4 +1,8 @@
-import { type DimensionMapping, type InteractionInfo } from '@h5web/lib';
+import {
+  CurveType,
+  type DimensionMapping,
+  type InteractionInfo,
+} from '@h5web/lib';
 import {
   isBigIntTypedArray,
   isIntegerType,
@@ -28,6 +32,12 @@ export const INTERACTIONS_WITH_AXIAL_ZOOM = [
   { shortcut: 'Ctrl+Alt+Drag', description: 'Select to zoom in X' },
   { shortcut: 'Ctrl+Shift+Drag', description: 'Select to zoom in Y' },
 ];
+
+export const CURVE_TYPE_LABELS: Record<CurveType, string> = {
+  [CurveType.LineOnly]: 'Line',
+  [CurveType.GlyphsOnly]: 'Points',
+  [CurveType.LineAndGlyphs]: 'Both',
+};
 
 export function getBaseArray<T extends ArrayValue | undefined>(
   value: T,
