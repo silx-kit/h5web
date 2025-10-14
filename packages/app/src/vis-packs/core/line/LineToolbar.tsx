@@ -1,8 +1,11 @@
 import {
   ComplexVisTypeSelector,
+  CurveType,
   DomainWidget,
   ExportMenu,
-  LineAspectMenu,
+  Interpolation,
+  Menu,
+  RadioGroup,
   ScaleSelector,
   Separator,
   ToggleBtn,
@@ -14,9 +17,9 @@ import {
   type ExportEntry,
 } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { MdGridOn } from 'react-icons/md';
+import { MdAutoGraph, MdGridOn } from 'react-icons/md';
 
-import { INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
+import { CURVE_TYPE_LABELS, INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { type LineConfig } from './config';
 import ErrorsIcon from './ErrorsIcon';
 
@@ -111,12 +114,23 @@ function LineToolbar(props: Props) {
         onToggle={toggleGrid}
       />
 
-      <LineAspectMenu
-        curveType={curveType}
-        onCurveTypeChanged={setCurveType}
-        interpolation={interpolation}
-        onInterpolationChanged={setInterpolation}
-      />
+      <Menu label="Aspect" Icon={MdAutoGraph}>
+        <RadioGroup
+          name="curvetype"
+          value={curveType}
+          options={Object.values(CurveType)}
+          optionsLabels={CURVE_TYPE_LABELS}
+          onValueChanged={setCurveType}
+        />
+        <RadioGroup
+          name="interpolation"
+          label="Interpolation"
+          options={Object.values(Interpolation)}
+          disabled={curveType === CurveType.GlyphsOnly}
+          value={interpolation}
+          onValueChanged={setInterpolation}
+        />
+      </Menu>
 
       {exportEntries && exportEntries.length > 0 && (
         <>
