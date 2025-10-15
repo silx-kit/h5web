@@ -1,4 +1,4 @@
-import { assertDefined, Menu, RadioGroup } from '@h5web/lib';
+import { assertDefined, Menu, RadioGroup, Separator } from '@h5web/lib';
 import {
   type ComplexType,
   type NumericLikeType,
@@ -27,6 +27,8 @@ function NxSignalPicker<T extends NumericLikeType | ComplexType>(
 
   return createPortal(
     <div className={styles.wrapper}>
+      <Separator />
+
       <Menu label="Signals" Icon={MdLineAxis}>
         <RadioGroup
           name="signals"
