@@ -26,7 +26,7 @@ export const Default = {
         {...args}
         options={OPTIONS}
         value={value}
-        onValueChanged={setValue}
+        onChange={setValue}
       />
     );
   },

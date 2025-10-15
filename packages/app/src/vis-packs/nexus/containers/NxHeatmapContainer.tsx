@@ -58,9 +58,12 @@ function NxHeatmapContainer(props: VisContainerProps) {
       {auxDefs.length > 0 && (
         <NxSignalPicker
           definitions={[signalDef, ...auxDefs]}
+          value={selectedDef}
           onChange={setSelectedDef}
+          toolbarContainer={toolbarContainer}
         />
       )}
+
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={dims}
@@ -69,6 +72,7 @@ function NxHeatmapContainer(props: VisContainerProps) {
         canSliceFast={useNxValuesCached(nxData)}
         onChange={setDimMapping}
       />
+
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxDataToFetch}
