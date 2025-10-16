@@ -7,19 +7,12 @@ interface Props<T extends string> {
   optionsLabels?: Record<T, string>;
   disabled?: boolean;
   value: T;
-  onValueChanged: (value: T) => void;
+  onChange: (value: T) => void;
 }
 
 function RadioGroup<T extends string>(props: Props<T>) {
-  const {
-    name,
-    label,
-    options,
-    optionsLabels,
-    disabled,
-    value,
-    onValueChanged,
-  } = props;
+  const { name, label, options, optionsLabels, disabled, value, onChange } =
+    props;
 
   return (
     <>
@@ -40,7 +33,7 @@ function RadioGroup<T extends string>(props: Props<T>) {
                 name={name}
                 type="radio"
                 checked={option === value}
-                onChange={() => onValueChanged(option)}
+                onChange={() => onChange(option)}
                 aria-labelledby={`${option}-label`}
               />
               <span className={styles.optionText}>

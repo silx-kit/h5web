@@ -9,7 +9,6 @@
 .visBar {
   flex: none;
   display: flex;
-  justify-content: space-between;
   height: var(--toolbar-height);
   background-color: var(--secondary-light-bg);
 }

@@ -431,8 +431,8 @@ describe('/mock', () => {
       }).should('be.visible');
       cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
 
+      cy.findByRole('button', { name: 'Signals' }).click();
       cy.findByRole('radio', { name: 'tertiary' }).click();
-      cy.waitForStableDOM();
 
       cy.findByRole('figure', { name: 'tertiary' })
         .should('be.visible')
@@ -469,7 +469,9 @@ describe('/mock', () => {
       }
 
       // Select float auxiliary signal
-      cy.findByLabelText('tertiary_float').check();
+      cy.findByRole('button', { name: 'Signals' }).click();
+      cy.findByRole('radio', { name: 'tertiary_float' }).click();
+
       cy.findByRole('figure', { name: 'tertiary_float' }).should('be.visible');
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {

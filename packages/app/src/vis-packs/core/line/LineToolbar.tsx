@@ -120,7 +120,7 @@ function LineToolbar(props: Props) {
           value={curveType}
           options={Object.values(CurveType)}
           optionsLabels={CURVE_TYPE_LABELS}
-          onValueChanged={setCurveType}
+          onChange={setCurveType}
         />
         <RadioGroup
           name="interpolation"
@@ -128,7 +128,7 @@ function LineToolbar(props: Props) {
           options={Object.values(Interpolation)}
           disabled={curveType === CurveType.GlyphsOnly}
           value={interpolation}
-          onValueChanged={setInterpolation}
+          onChange={setInterpolation}
         />
       </Menu>
 
