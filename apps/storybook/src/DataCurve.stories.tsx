@@ -30,7 +30,6 @@ const meta = {
   args: {
     abscissas: range(oneD.size),
     ordinates: oneD.data,
-    errors: oneD.data.map(() => 10),
     curveType: CurveType.LineOnly,
     color: 'blue',
     materialProps: {},
@@ -53,13 +52,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default = {
   render: (args) => {
-    const { abscissas, ordinates, errors, showErrors, ignoreValue } = args;
+    const { abscissas, ordinates, errors, ignoreValue } = args;
 
     const abscissaDomain = useDomain(abscissas);
     const ordinateDomain = useDomain(
       ordinates,
       ScaleType.Linear,
-      showErrors ? errors : undefined,
+      errors,
       ignoreValue,
     );
 
@@ -117,7 +116,7 @@ export const Glyphs = {
 export const WithErrors = {
   ...Default,
   args: {
-    showErrors: true,
+    errors: oneD.data.map(() => 10),
   },
 } satisfies Story;
 
