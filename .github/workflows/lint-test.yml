@@ -89,7 +89,7 @@ jobs:
         if: steps.poetry.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
-          version: 2.0.1
+          version: 2.2.1
 
       - name: Restore Poetry environments 📌
         id: poetry-venvs
