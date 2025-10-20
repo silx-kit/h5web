@@ -418,7 +418,7 @@ h5grove and run the API tests:
 ```bash
 pyenv exec pnpm support:sample
 pyenv exec pnpm support:h5grove
-pyenv exec pnpm test api
+pnpm test api
 ```
 
 > If the Python version specified in `.python-version` is globally available on
