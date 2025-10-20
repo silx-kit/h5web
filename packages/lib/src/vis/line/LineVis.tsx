@@ -62,7 +62,7 @@ function LineVis(props: Props) {
     title,
     dtype,
     errorsArray,
-    showErrors = false,
+    showErrors = true,
     auxiliaries = [],
     renderTooltip,
     children,

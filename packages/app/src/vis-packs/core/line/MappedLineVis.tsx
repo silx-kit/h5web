@@ -154,7 +154,7 @@ function MappedLineVis(props: Props) {
           <LineToolbar
             dataDomain={combinedDomain}
             isSlice={selection !== undefined}
-            disableErrors={!errors}
+            withErrors={!!errors}
             config={config}
             exportEntries={exportEntries}
           />,

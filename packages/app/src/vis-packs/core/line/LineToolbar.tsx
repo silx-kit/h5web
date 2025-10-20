@@ -27,20 +27,14 @@ interface Props {
   dataDomain: Domain;
   isSlice?: boolean;
   isComplex?: boolean;
-  disableErrors?: boolean;
+  withErrors?: boolean;
   config: LineConfig;
   exportEntries?: ExportEntry[];
 }
 
 function LineToolbar(props: Props) {
-  const {
-    dataDomain,
-    isSlice,
-    isComplex,
-    disableErrors,
-    config,
-    exportEntries,
-  } = props;
+  const { dataDomain, isSlice, isComplex, withErrors, config, exportEntries } =
+    props;
 
   const {
     customDomain,
@@ -97,13 +91,12 @@ function LineToolbar(props: Props) {
 
       <Separator />
 
-      {!isComplex && (
+      {withErrors && (
         <ToggleBtn
           label="Errors"
           Icon={ErrorsIcon}
-          value={!disableErrors && showErrors}
+          value={showErrors}
           onToggle={toggleErrors}
-          disabled={disableErrors}
         />
       )}
 
