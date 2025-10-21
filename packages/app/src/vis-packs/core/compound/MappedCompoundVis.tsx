@@ -34,7 +34,7 @@ interface Props {
 
 function MappedCompoundVis(props: Props) {
   const { value, dataset, toolbarContainer, dimMapping, config } = props;
-  const { sticky, customCellWidth, notation } = config;
+  const { customCellWidth, notation } = config;
 
   const { type, shape: dims } = dataset;
   const { fields } = type;
@@ -86,7 +86,6 @@ function MappedCompoundVis(props: Props) {
         }
         cellWidth={customCellWidth ?? cellWidth}
         columnHeaders={fieldNames}
-        sticky={sticky}
       />
     </>
   );

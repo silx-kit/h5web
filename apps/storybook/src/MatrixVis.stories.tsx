@@ -42,13 +42,6 @@ export const CellWidth = {
   },
 } satisfies Story;
 
-export const StaticHeaderCells = {
-  args: {
-    ...Default.args,
-    sticky: false,
-  },
-} satisfies Story;
-
 export const Complex = {
   args: {
     dims: cplxTwoD.shape,

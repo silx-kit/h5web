@@ -1,33 +1,30 @@
 import { range } from 'd3-array';
-import { useContext } from 'react';
 
-import { SettingsContext } from './context';
 import styles from './MatrixVis.module.css';
 
 interface Props {
+  width: number;
+  height: number;
   indexMin: number;
   indexMax: number;
   transform: string; // to compensate for header cells not rendered in the range [0, indexMin]
-  width?: number;
   headers?: string[];
 }
 
 function HeaderCells(props: Props) {
-  const { indexMin, indexMax, width, transform, headers } = props;
-  const { cellSize } = useContext(SettingsContext);
+  const { width, height, indexMin, indexMax, transform, headers } = props;
 
   return range(indexMin, indexMax + 1).map((index) => (
     <div
       key={index.toString()}
       className={styles.indexCell}
-      style={{
-        width: width || cellSize.width,
-        height: cellSize.height,
-        transform,
-      }}
+      style={{ width, height, transform }}
       data-bg={index % 2 === 1 ? '' : undefined}
+      {...(headers
+        ? { role: 'columnheader', 'aria-colindex': index + 1 }
+        : { 'aria-hidden': 'true' })}
     >
-      {index >= 0 && headers ? headers[index] : index}
+      {headers?.[index] || index}
     </div>
   ));
 }
