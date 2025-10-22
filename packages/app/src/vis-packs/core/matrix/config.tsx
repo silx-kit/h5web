@@ -6,9 +6,6 @@ import { persist } from 'zustand/middleware';
 import { type ConfigProviderProps } from '../../models';
 
 export interface MatrixVisConfig {
-  sticky: boolean;
-  toggleSticky: () => void;
-
   customCellWidth: number | undefined;
   setCustomCellWidth: (val: number | undefined) => void;
 
@@ -20,9 +17,6 @@ function createMatrixConfigStore() {
   return createStore<MatrixVisConfig>()(
     persist(
       (set): MatrixVisConfig => ({
-        sticky: false,
-        toggleSticky: () => set((state) => ({ sticky: !state.sticky })),
-
         customCellWidth: undefined,
         setCustomCellWidth: (customCellWidth) => set({ customCellWidth }),
 
@@ -31,7 +25,7 @@ function createMatrixConfigStore() {
       }),
       {
         name: 'h5web:matrix',
-        version: 3,
+        version: 4,
       },
     ),
   );

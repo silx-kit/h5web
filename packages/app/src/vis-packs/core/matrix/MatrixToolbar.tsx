@@ -3,11 +3,9 @@ import {
   ExportMenu,
   NotationToggleGroup,
   Separator,
-  ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
 import { type ExportEntry } from '@h5web/shared/vis-models';
-import { FiAnchor } from 'react-icons/fi';
 
 import { type MatrixVisConfig } from './config';
 
@@ -20,14 +18,7 @@ interface Props {
 
 function MatrixToolbar(props: Props) {
   const { cellWidth, isSlice, config, exportEntries } = props;
-  const {
-    sticky,
-    toggleSticky,
-    customCellWidth,
-    setCustomCellWidth,
-    notation,
-    setNotation,
-  } = config;
+  const { customCellWidth, setCustomCellWidth, notation, setNotation } = config;
 
   return (
     <Toolbar>
@@ -40,13 +31,6 @@ function MatrixToolbar(props: Props) {
       <Separator />
 
       <NotationToggleGroup value={notation} onChange={setNotation} />
-
-      <ToggleBtn
-        label="Freeze indices"
-        Icon={FiAnchor}
-        value={sticky}
-        onToggle={toggleSticky}
-      />
 
       {exportEntries.length > 0 && (
         <>

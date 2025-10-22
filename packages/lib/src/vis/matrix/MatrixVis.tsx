@@ -1,17 +1,19 @@
 import { type ArrayShape } from '@h5web/shared/hdf5-models';
+import { useMemo, useState } from 'react';
+import { Grid } from 'react-window';
+import { useStore } from 'zustand';
 
 import { type ClassStyleAttrs } from '../models';
-import GridProvider from './context';
-import Grid from './Grid';
-
-const ROW_HEADERS_WIDTH = 80;
-const CELL_HEIGHT = 32;
+import Cell from './Cell';
+import styles from './MatrixVis.module.css';
+import StickyIndices from './StickyIndices';
+import { createRenderedCellsStore } from './store';
+import { CELL_HEIGHT } from './utils';
 
 interface Props extends ClassStyleAttrs {
   dims: ArrayShape;
   cellFormatter: (row: number, col: number) => string;
   cellWidth: number;
-  sticky?: boolean;
   columnHeaders?: string[];
 }
 
@@ -20,25 +22,35 @@ function MatrixVis(props: Props) {
     dims,
     cellFormatter,
     cellWidth,
-    sticky = true,
     columnHeaders,
     className = '',
     style,
   } = props;
   const [rowCount, columnCount = 1] = dims;
 
+  const [store] = useState(createRenderedCellsStore);
+  const setRenderedCells = useStore(store, (state) => state.setRenderedCells);
+
   return (
-    <GridProvider
-      rowCount={rowCount}
-      columnCount={columnCount}
-      cellSize={{ width: cellWidth, height: CELL_HEIGHT }}
-      cellFormatter={cellFormatter}
-      sticky={sticky}
-      rowHeaderCellsWidth={ROW_HEADERS_WIDTH}
-      columnHeaders={columnHeaders}
-    >
-      <Grid className={className} style={style} />
-    </GridProvider>
+    <div className={`${styles.root} ${className}`} style={style}>
+      <Grid
+        className={styles.grid}
+        cellComponent={Cell}
+        cellProps={useMemo(() => ({ cellFormatter }), [cellFormatter])}
+        rowCount={rowCount}
+        rowHeight={CELL_HEIGHT}
+        columnCount={columnCount}
+        columnWidth={cellWidth}
+        overscanCount={10}
+        onCellsRendered={(_, allCells) => setRenderedCells(allCells)}
+      >
+        <StickyIndices
+          store={store}
+          columnWidth={cellWidth}
+          columnHeaders={columnHeaders}
+        />
+      </Grid>
+    </div>
   );
 }
 

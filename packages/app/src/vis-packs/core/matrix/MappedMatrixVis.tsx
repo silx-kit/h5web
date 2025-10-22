@@ -33,7 +33,7 @@ interface Props {
 
 function MappedMatrixVis(props: Props) {
   const { dataset, value, dimMapping, toolbarContainer, config } = props;
-  const { sticky, customCellWidth, notation } = config;
+  const { customCellWidth, notation } = config;
 
   const { shape: dims, type } = dataset;
   const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
@@ -67,7 +67,6 @@ function MappedMatrixVis(props: Props) {
           formatter(mappedArray.get(row, col))
         }
         cellWidth={customCellWidth ?? cellWidth}
-        sticky={sticky}
       />
     </>
   );

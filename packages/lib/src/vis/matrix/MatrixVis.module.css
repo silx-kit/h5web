@@ -1,32 +1,44 @@
-.wrapper {
-  flex: 1; /* fill height if inside flex container in consumer app */
-  position: relative;
-  overflow: hidden; /* when resizing */
+.root {
+  display: flex;
+  overflow: hidden;
 }
 
 .grid {
-  position: absolute !important; /* prevent feedback loop with `useMeasure` on wrapper */
-  z-index: 0; /* stacking context */
+  z-index: 0; /* STACKING CONTEXT */
+  display: grid;
+  grid-template-areas: 'colHeaders colHeaders' 'rowHeaders grid';
+  grid-template-columns: min-content 1fr;
+  grid-template-rows: min-content 1fr;
   color: var(--h5w-matrix--color, inherit);
   font-family: var(--h5w-matrix--fontFamily, monospace);
   font-size: var(--h5w-matrix--fontSize, inherit);
   scrollbar-width: thin;
 }
 
-.innerContainer {
-  display: flex;
+/* Grid sizing element */
+.grid > :last-child {
+  grid-area: grid;
 }
 
 .colHeaders {
+  grid-area: colHeaders;
+  position: sticky;
+  top: 0;
+  z-index: 2; /* above row header cells and content cells */
   display: flex;
 }
 
 .rowHeaders {
+  grid-area: rowHeaders;
+  position: sticky;
+  left: 0;
+  z-index: 1; /* above content cells */
   display: flex;
   flex-direction: column;
 }
 
 .indexCell {
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,28 +61,13 @@
 
 .topLeftCell {
   composes: indexCell;
-}
-
-.stickyGrid[data-sticky] .colHeaders {
-  position: sticky;
-  top: 0;
-  z-index: 2; /* above row header cells and content cells */
-}
-
-.stickyGrid[data-sticky] .rowHeaders {
-  position: sticky;
-  left: 0;
-  z-index: 1; /* above content cells */
-}
-
-.stickyGrid[data-sticky] .topLeftCell {
   position: sticky;
   left: 0;
   top: 0;
   z-index: 1; /* above column header cells */
 }
 
-.cell {
+.dataCell {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,6 +76,6 @@
   white-space: nowrap;
 }
 
-.cell[data-bg] {
+.dataCell[data-bg] {
   background-color: var(--h5w-matrix-cell--bgColorAlt, #eee);
 }

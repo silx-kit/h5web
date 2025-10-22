@@ -44,11 +44,14 @@ describe('/mock', () => {
     cy.selectVisTab('Matrix');
 
     cy.findByRole('tab', { name: 'Matrix' }).should(...BE_SELECTED);
-    cy.findByRole('table').should('be.visible');
-    cy.findAllByRole('cell')
+    cy.findByRole('grid').should('be.visible');
+    cy.findAllByRole('gridcell')
       .first()
-      .should('have.attr', 'aria-rowindex', 0)
-      .and('have.attr', 'aria-colindex', 0);
+      .should('have.attr', 'aria-colindex', 1)
+      .and('have.text', '4.000e+2')
+      .parent()
+      .should('have.attr', 'role', 'row')
+      .and('have.attr', 'aria-rowindex', 1);
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
       cy.matchImageSnapshot('matrix_1D');
@@ -61,11 +64,19 @@ describe('/mock', () => {
     cy.selectVisTab('Compound');
 
     cy.findByRole('tab', { name: 'Compound' }).should(...BE_SELECTED);
-    cy.findByRole('table').should('be.visible');
-    cy.findAllByRole('cell')
+    cy.findByRole('grid').should('be.visible');
+    cy.findAllByRole('gridcell')
       .first()
-      .should('have.attr', 'aria-rowindex', 0)
-      .and('have.attr', 'aria-colindex', 0);
+      .should('have.attr', 'aria-colindex', 1)
+      .and('have.text', 'Hydrogen')
+      .parent()
+      .should('have.attr', 'role', 'row')
+      .and('have.attr', 'aria-rowindex', 1);
+
+    cy.findAllByRole('columnheader')
+      .first()
+      .should('have.attr', 'aria-colindex', 1)
+      .and('have.text', 'string');
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
       cy.matchImageSnapshot('compound_1D');
