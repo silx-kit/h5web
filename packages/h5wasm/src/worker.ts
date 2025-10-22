@@ -23,7 +23,7 @@ async function openFileBuffer(buffer: ArrayBuffer): Promise<bigint> {
 
   FS.writeFile(fileName, new Uint8Array(buffer), { flags: 'w+' });
 
-  return h5wasm.open(fileName, undefined, undefined); // https://github.com/emscripten-core/emscripten/issues/22389
+  return h5wasm.open(fileName);
 }
 
 async function openLocalFile(file: File): Promise<bigint> {
@@ -40,7 +40,6 @@ async function openLocalFile(file: File): Promise<bigint> {
   return h5wasm.open(
     `${WORKERFS_FOLDER}/${fileName}`,
     h5wasm.H5F_ACC_SWMR_READ, // in case file is opened for writing in a concurrent process
-    undefined, // https://github.com/emscripten-core/emscripten/issues/22389
   );
 }
 
