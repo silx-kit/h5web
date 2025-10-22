@@ -42,15 +42,15 @@
   "devDependencies": {
     "@esrf/eslint-config": "1.5.1",
     "@simonsmith/cypress-image-snapshot": "9.1.0",
-    "@testing-library/cypress": "10.0.3",
-    "@types/node": "^22.17.2",
+    "@testing-library/cypress": "10.1.0",
+    "@types/node": "^22.18.12",
     "cypress": "13.17.0",
     "cypress-wait-for-stable-dom": "0.1.0",
     "eslint": "9.35.0",
     "prettier": "3.6.2",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "vitest": "3.1.4",
-    "vitest-fail-on-console": "0.9.0",
-    "wait-on": "8.0.4"
+    "vitest-fail-on-console": "0.10.1",
+    "wait-on": "9.0.1"
   }
 }
