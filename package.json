@@ -29,7 +29,6 @@
     "lint:tsc": "pnpm -r --parallel lint:tsc",
     "lint:root:eslint": "eslint --max-warnings=0",
     "lint:root:tsc": "tsc",
-    "lint:cypress:tsc": "tsc --project cypress/tsconfig.json",
     "test": "vitest",
     "support:setup": "poetry -C support/sample install && poetry -C support/h5grove install",
     "support:sample": "poetry -C support/sample run python create_h5_sample.py",
@@ -41,7 +40,7 @@
   },
   "devDependencies": {
     "@esrf/eslint-config": "1.5.1",
-    "@simonsmith/cypress-image-snapshot": "9.1.0",
+    "@simonsmith/cypress-image-snapshot": "10.0.2",
     "@testing-library/cypress": "10.1.0",
     "@types/node": "^22.18.12",
     "cypress": "13.17.0",

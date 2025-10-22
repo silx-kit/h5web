@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@types/jest-image-snapshot@6.4.0':
+    hash: 07ed6e0cefab5e80d5a8ac347e4a2cd91541b744e95b8e22df28e2264457b75e
+    path: patches/@types__jest-image-snapshot@6.4.0.patch
+
 importers:
 
   .:
@@ -12,8 +17,8 @@ importers:
         specifier: 1.5.1
         version: 1.5.1(eslint@9.35.0)(storybook@9.1.13(@testing-library/dom@10.4.1)(prettier@3.6.2)(vite@7.1.11(@types/node@22.18.12)))(typescript@5.9.3)(vitest@3.1.4(@types/debug@4.1.12)(@types/node@22.18.12)(jsdom@26.1.0))
       '@simonsmith/cypress-image-snapshot':
-        specifier: 9.1.0
-        version: 9.1.0(cypress@13.17.0)
+        specifier: 10.0.2
+        version: 10.0.2(cypress@13.17.0)
       '@testing-library/cypress':
         specifier: 10.1.0
         version: 10.1.0(cypress@13.17.0)
@@ -1300,10 +1305,10 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@simonsmith/cypress-image-snapshot@9.1.0':
-    resolution: {integrity: sha512-Lme+POO6mQi9eXEe3OB/6mBhdb73qbDgE/VkSCNZWVQlCt6wOOZCjVKCvfO8mPPmKjnEiePzSTSjTvpwDSogBg==}
+  '@simonsmith/cypress-image-snapshot@10.0.2':
+    resolution: {integrity: sha512-FXapCkDKsL6F0M3Pqh8mIjhS5R4Jt8LaVxojLkGcza/WeqBxRYjkq+INfVV3hfzGRpQHsF3hklU1srALEDciQQ==}
     peerDependencies:
-      cypress: '>10.0.0'
+      cypress: '>13.0.0'
 
   '@sinclair/typebox@0.34.41':
     resolution: {integrity: sha512-6gS8pZzSXdyRHTIqoqSVknxolr1kzfy4/CeDnrzsVz8TTIWUbOBr6gnzOmTYJ3eXQNh4IYHIGi5aIL7sOZ2G/g==}
@@ -5617,9 +5622,9 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@simonsmith/cypress-image-snapshot@9.1.0(cypress@13.17.0)':
+  '@simonsmith/cypress-image-snapshot@10.0.2(cypress@13.17.0)':
     dependencies:
-      '@types/jest-image-snapshot': 6.4.0
+      '@types/jest-image-snapshot': 6.4.0(patch_hash=07ed6e0cefab5e80d5a8ac347e4a2cd91541b744e95b8e22df28e2264457b75e)
       chalk: 4.1.2
       cypress: 13.17.0
       jest-image-snapshot: 6.5.1
@@ -5923,7 +5928,7 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
 
-  '@types/jest-image-snapshot@6.4.0':
+  '@types/jest-image-snapshot@6.4.0(patch_hash=07ed6e0cefab5e80d5a8ac347e4a2cd91541b744e95b8e22df28e2264457b75e)':
     dependencies:
       '@types/jest': 30.0.0
       '@types/pixelmatch': 5.2.6

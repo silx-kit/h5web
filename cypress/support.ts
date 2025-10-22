@@ -1,3 +1,4 @@
+/// <reference types="@testing-library/cypress" />
 import '@testing-library/cypress/add-commands';
 
 import { addMatchImageSnapshotCommand } from '@simonsmith/cypress-image-snapshot/command';

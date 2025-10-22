@@ -1,0 +1,10 @@
+diff --git a/index.d.ts b/index.d.ts
+index 1b2d7a0d05f4303110fc0430384c380e1f4679a9..54baedc5130a9a3998789953cb53d10d9408b072 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1,5 +1,3 @@
+-/// <reference types="jest" />
+-
+ import { PixelmatchOptions } from "pixelmatch";
+ import { Options as SSIMOptions } from "ssim.js";
+ 
