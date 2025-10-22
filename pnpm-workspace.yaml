@@ -39,3 +39,6 @@ savePrefix: ''
 requiredScripts:
   - 'lint:eslint'
   - 'lint:tsc'
+
+patchedDependencies:
+  '@types/jest-image-snapshot@6.4.0': patches/@types__jest-image-snapshot@6.4.0.patch
