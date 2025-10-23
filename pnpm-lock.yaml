@@ -477,8 +477,8 @@ importers:
         specifier: 2.5.2
         version: 2.5.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-slider:
-        specifier: 2.0.4
-        version: 2.0.4(react@18.3.1)
+        specifier: 2.0.6
+        version: 2.0.6(react@18.3.1)
       react-window:
         specifier: 2.2.1
         version: 2.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4011,8 +4011,8 @@ packages:
     peerDependencies:
       react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  react-slider@2.0.4:
-    resolution: {integrity: sha512-sWwQD01n6v+MbeLCYthJGZPc0kzOyhQHyd0bSo0edg+IAxTVQmj3Oy4SBK65eX6gNwS9meUn6Z5sIBUVmwAd9g==}
+  react-slider@2.0.6:
+    resolution: {integrity: sha512-gJxG1HwmuMTJ+oWIRCmVWvgwotNCbByTwRkFZC6U4MBsHqJBmxwbYRJUmxy4Tke1ef8r9jfXjgkmY/uHOCEvbA==}
     peerDependencies:
       react: ^16 || ^17 || ^18
 
@@ -8862,7 +8862,7 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  react-slider@2.0.4(react@18.3.1):
+  react-slider@2.0.6(react@18.3.1):
     dependencies:
       prop-types: 15.8.1
       react: 18.3.1
