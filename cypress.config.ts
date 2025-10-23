@@ -9,7 +9,8 @@ export default defineConfig({
       addMatchImageSnapshotPlugin(on);
     },
   },
-  retries: process.env.CYPRESS_TAKE_SNAPSHOTS ? 3 : null,
+  defaultBrowser: 'firefox',
+  retries: process.env.CYPRESS_TAKE_SNAPSHOTS ? 2 : null,
   screenshotsFolder: 'cypress/debug',
   fixturesFolder: false,
 });
