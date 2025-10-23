@@ -100,7 +100,7 @@
     "zustand": "5.0.8"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.5.1",
+    "@esrf/eslint-config": "1.5.2",
     "@h5web/shared": "workspace:*",
     "@react-three/fiber": "8.18.0",
     "@rollup/plugin-alias": "5.1.1",
