@@ -24,17 +24,17 @@ jobs:
           pr-id: ${{ github.event.issue.number }}
 
       - name: Checkout 🏷️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ steps.getBranchName && steps.getBranchName.outputs.branch || github.event.ref }}
 
       - name: Set up Node 🕹️
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
 
       - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
 
       - name: Restore cache 📌
         uses: actions/cache@v4
@@ -74,9 +74,10 @@ jobs:
             cypress/snapshots/**/__received_output__/
 
       - name: Open PR to update reference snapshots 🎁
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.USER_TOKEN }}
           branch: update-snapshots
+          delete-branch: true
           title: 'Update Cypress reference snapshots'
           commit-message: 'Update Cypress reference snapshots'
