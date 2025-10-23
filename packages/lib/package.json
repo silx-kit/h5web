@@ -119,8 +119,8 @@
     "rollup-plugin-dts": "6.2.3",
     "three": "0.180.0",
     "typescript": "5.9.3",
-    "vite": "7.1.11",
+    "vite": "7.1.12",
     "vite-css-modules": "1.11.1",
-    "vitest": "3.1.4"
+    "vitest": "4.0.1"
   }
 }
