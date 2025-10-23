@@ -199,7 +199,10 @@ describe('/mock', () => {
       .and('have.attr', 'aria-valuemax', 8);
 
     // Move slider up by three marks and check value
-    cy.get('@d1Slider').type('{upArrow}{upArrow}{upArrow}');
+    cy.get('@d1Slider').focus();
+    cy.press(Cypress.Keyboard.Keys.UP);
+    cy.press(Cypress.Keyboard.Keys.UP);
+    cy.press(Cypress.Keyboard.Keys.UP);
     cy.waitForStableDOM();
 
     cy.get('@d1Slider').should('have.attr', 'aria-valuenow', 3);
@@ -212,7 +215,8 @@ describe('/mock', () => {
     }
 
     // Move slider up by one mark to reach slice filled only with zeros
-    cy.get('@d1Slider').type('{upArrow}');
+    cy.get('@d1Slider').focus();
+    cy.press(Cypress.Keyboard.Keys.UP);
     cy.waitForStableDOM();
 
     cy.get('@d1Slider').should('have.attr', 'aria-valuenow', 4);
