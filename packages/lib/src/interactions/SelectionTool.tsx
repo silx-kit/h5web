@@ -73,7 +73,7 @@ function SelectionTool(props: Props) {
   const { canvasBox, htmlToWorld, worldToData } = context;
 
   const [rawSelection, setRawSelection] = useRafState<Selection>();
-  const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
+  const startEvtRef = useRef<CanvasEvent<PointerEvent>>(undefined);
   const hasSuccessfullyEndedRef = useRef<boolean>(false);
 
   const isModifierKeyPressed = useModifierKeyPressed(modifierKey);

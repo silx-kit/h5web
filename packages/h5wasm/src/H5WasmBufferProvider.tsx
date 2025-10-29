@@ -15,7 +15,7 @@ interface Props {
 function H5WasmBufferProvider(props: PropsWithChildren<Props>) {
   const { filename, buffer, getExportURL, getPlugin, children } = props;
 
-  const prevApiRef = useRef<H5WasmApi>();
+  const prevApiRef = useRef<H5WasmApi>(undefined);
 
   const api = useMemo(() => {
     const remote = getH5WasmRemote();

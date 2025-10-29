@@ -32,7 +32,7 @@ function Pan(props: Props) {
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 
-  const startOffsetPosition = useRef<Vector3>(); // `useRef` to avoid re-renders
+  const startOffsetPosition = useRef<Vector3>(undefined); // `useRef` to avoid re-renders
   const isModifierKeyPressed = useModifierKeyPressed(modifierKey);
 
   function handlePointerDown(evt: CanvasEvent<PointerEvent>) {

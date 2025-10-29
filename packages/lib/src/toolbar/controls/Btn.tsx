@@ -1,9 +1,10 @@
-import { type ComponentType, forwardRef, type HTMLAttributes } from 'react';
+import { type ComponentType, type HTMLAttributes, type Ref } from 'react';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import styles from '../Toolbar.module.css';
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
+  ref?: Ref<HTMLButtonElement | null>;
   label: string;
   Icon?: ComponentType<{ className: string }>;
   iconOnly?: boolean;
@@ -13,8 +14,9 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
 }
 
-const Btn = forwardRef<HTMLButtonElement, Props>((props, ref) => {
+function Btn(props: Props) {
   const {
+    ref,
     label,
     Icon,
     iconOnly,
@@ -44,9 +46,7 @@ const Btn = forwardRef<HTMLButtonElement, Props>((props, ref) => {
       </span>
     </button>
   );
-});
-
-Btn.displayName = 'Btn';
+}
 
 export type { Props as BtnProps };
 export default Btn;
