@@ -1,24 +1,18 @@
 import { assertDefined, Menu, RadioGroup, Separator } from '@h5web/lib';
-import {
-  type ComplexType,
-  type NumericLikeType,
-} from '@h5web/shared/hdf5-models';
 import { createPortal } from 'react-dom';
 import { MdLineAxis } from 'react-icons/md';
 
 import { type DatasetDef } from './models';
-import styles from './NxSignalPicker.module.css';
+import styles from './NxHeatmapSignalPicker.module.css';
 
-interface Props<T extends NumericLikeType | ComplexType> {
-  definitions: DatasetDef<T>[];
+interface Props {
+  definitions: DatasetDef[];
   toolbarContainer: HTMLDivElement | undefined;
-  value: DatasetDef<T>;
-  onChange: (def: DatasetDef<T>) => void;
+  value: DatasetDef;
+  onChange: (def: DatasetDef) => void;
 }
 
-function NxSignalPicker<T extends NumericLikeType | ComplexType>(
-  props: Props<T>,
-) {
+function NxHeatmapSignalPicker(props: Props) {
   const { definitions, toolbarContainer, value, onChange } = props;
 
   if (!toolbarContainer) {
@@ -46,4 +40,4 @@ function NxSignalPicker<T extends NumericLikeType | ComplexType>(
   );
 }
 
-export default NxSignalPicker;
+export default NxHeatmapSignalPicker;
