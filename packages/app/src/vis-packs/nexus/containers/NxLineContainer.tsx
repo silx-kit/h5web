@@ -1,5 +1,6 @@
 import { DimensionMapper, getSliceSelection, ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
+import { useState } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
@@ -9,6 +10,7 @@ import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericLikeNxData } from '../guards';
 import { useNxData, useNxValuesCached } from '../hooks';
+import NxLineSignalPicker from '../NxLineSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { areSameDims } from '../utils';
 
@@ -34,8 +36,12 @@ function NxLineContainer(props: VisContainerProps) {
     defaultSlice,
   });
 
+  const auxLabels = auxDefs.map((def) => def.label);
   const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');
+
+  const [isSignalVisible, setSignalVisible] = useState(true);
+  const [visibleAux, setVisibleAux] = useState(auxDefs.map(() => true));
 
   const config = useLineConfig({
     xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
@@ -46,6 +52,18 @@ function NxLineContainer(props: VisContainerProps) {
 
   return (
     <>
+      {auxDefs.length > 0 && (
+        <NxLineSignalPicker
+          signalLabel={signalDef.label}
+          signalChecked={isSignalVisible}
+          auxLabels={auxLabels}
+          auxChecked={visibleAux}
+          onSignalChange={setSignalVisible}
+          onAuxChange={setVisibleAux}
+          toolbarContainer={toolbarContainer}
+        />
+      )}
+
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={signalDims}
@@ -54,6 +72,7 @@ function NxLineContainer(props: VisContainerProps) {
         canSliceFast={useNxValuesCached(nxData)}
         onChange={setDimMapping}
       />
+
       <VisBoundary resetKey={dimMapping}>
         <NxValuesFetcher
           nxData={nxData}
@@ -67,10 +86,12 @@ function NxLineContainer(props: VisContainerProps) {
                 dataset={signalDef.dataset}
                 value={signal}
                 valueLabel={signalDef.label}
+                valueVisible={isSignalVisible}
                 errors={errors}
-                auxLabels={auxDefs.map((def) => def.label)}
+                auxLabels={auxLabels}
                 auxValues={auxValues}
                 auxErrors={auxErrors}
+                selectedAux={visibleAux}
                 dimMapping={dimMapping}
                 axisLabels={axisLabels}
                 axisValues={axisValues}

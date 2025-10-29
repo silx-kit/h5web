@@ -48,6 +48,7 @@ interface Props extends ClassStyleAttrs {
   testid?: string;
   ignoreValue?: IgnoreValue;
   interpolation?: Interpolation;
+  visible?: boolean;
 }
 
 function LineVis(props: Props) {
@@ -70,6 +71,7 @@ function LineVis(props: Props) {
     testid,
     ignoreValue,
     interpolation = Interpolation.Linear,
+    visible = true,
     className = '',
     style,
   } = props;
@@ -100,6 +102,7 @@ function LineVis(props: Props) {
     '--aux-colors',
   ]);
   const auxColors = auxColorList.split(',').map((col) => col.trim()); // support comma-separated list of colors
+  const visibleAux = auxiliaries.filter((aux) => aux.visible);
 
   return (
     <figure
@@ -147,7 +150,7 @@ function LineVis(props: Props) {
                 {`${abscissaLabel ?? 'x'} = ${formatTooltipVal(abscissa)}`}
 
                 <div className={styles.tooltipValue}>
-                  {auxiliaries.length > 0 && (
+                  {visibleAux.length > 0 && (
                     <span
                       className={styles.mark}
                       data-keep-colors
@@ -161,7 +164,7 @@ function LineVis(props: Props) {
                   </span>
                 </div>
 
-                {auxiliaries.map(({ label, array, errors }, index) => (
+                {visibleAux.map(({ label, array, errors }, index) => (
                   <div className={styles.tooltipAux} key={label || index}>
                     <span
                       className={styles.mark}
@@ -187,9 +190,10 @@ function LineVis(props: Props) {
           curveType={curveType}
           ignoreValue={ignoreValue}
           interpolation={interpolation}
+          visible={visible}
         />
 
-        {auxiliaries.map(({ array, label, errors }, i) => (
+        {auxiliaries.map(({ array, label, errors, visible: auxVisible }, i) => (
           <DataCurve
             key={label}
             abscissas={abscissas}
@@ -200,6 +204,7 @@ function LineVis(props: Props) {
             curveType={curveType}
             ignoreValue={ignoreValue}
             interpolation={interpolation}
+            visible={auxVisible}
           />
         ))}
 

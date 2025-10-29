@@ -41,10 +41,12 @@ interface Props {
   dataset: Dataset<ArrayShape, NumericLikeType>;
   value: ArrayValue<NumericLikeType>;
   valueLabel?: string;
+  valueVisible?: boolean;
   errors?: ArrayValue<NumericType>;
   auxLabels?: string[];
   auxValues?: ArrayValue<NumericLikeType | ComplexType>[];
   auxErrors?: (ArrayValue<NumericType> | undefined)[];
+  selectedAux?: boolean[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
   axisValues?: AxisMapping<ArrayValue<NumericType>>;
@@ -59,10 +61,12 @@ function MappedLineVis(props: Props) {
     dataset,
     value,
     valueLabel,
+    valueVisible = true,
     errors,
     auxLabels = [],
     auxValues = [],
     auxErrors = [],
+    selectedAux = [],
     dimMapping,
     axisLabels = [],
     axisValues = [],
@@ -134,6 +138,7 @@ function MappedLineVis(props: Props) {
     label: auxLabels[i],
     array,
     errors: auxErrorsArrays[i],
+    visible: selectedAux[i],
   }));
 
   const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
@@ -178,6 +183,7 @@ function MappedLineVis(props: Props) {
         testid={dimMapping.toString()}
         ignoreValue={ignoreValue}
         interpolation={interpolation}
+        visible={valueVisible}
       />
     </>
   );
