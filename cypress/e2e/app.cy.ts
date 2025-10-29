@@ -488,6 +488,7 @@ describe('/mock', () => {
       cy.findByRole('radio', { name: 'tertiary_float' }).click();
 
       cy.findByRole('figure', { name: 'tertiary_float' }).should('be.visible');
+      cy.waitForStableDOM();
 
       if (Cypress.env('TAKE_SNAPSHOTS')) {
         cy.matchImageSnapshot('nxheatmap_complex_2d_float_aux');
