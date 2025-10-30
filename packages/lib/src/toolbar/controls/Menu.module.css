@@ -1,0 +1,4 @@
+.menu {
+  composes: menu from '../utils.module.css';
+  padding: 0.5rem 0;
+}

@@ -1,6 +1,6 @@
 .label {
   margin-top: 0.75rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
   padding-left: 0.75rem;
   color: var(--h5w-selector-groupLabel--color, gray);
   text-transform: uppercase;
@@ -11,7 +11,6 @@
 .options {
   display: flex;
   flex-direction: column;
-  padding: 0.25rem 0;
 }
 
 .option {

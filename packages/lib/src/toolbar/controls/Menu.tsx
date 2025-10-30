@@ -1,9 +1,9 @@
 import { useClick, useInteractions } from '@floating-ui/react';
 import { type ComponentType, type PropsWithChildren, useId } from 'react';
 
-import toolbarStyles from '../Toolbar.module.css';
 import Btn from './Btn';
 import { useFloatingDismiss, useFloatingMenu } from './hooks';
+import styles from './Menu.module.css';
 
 interface Props {
   label: string;
@@ -41,7 +41,7 @@ function Menu(props: PropsWithChildren<Props>) {
         <div
           ref={refs.setFloating}
           id={floatingId}
-          className={toolbarStyles.menu}
+          className={styles.menu}
           style={floatingStyles}
           role="menu"
           aria-labelledby={referenceId}
