@@ -27,7 +27,7 @@ onlyBuiltDependencies:
   - 'esbuild'
 
 # Don't install dependency versions that are less than a day old
-minimumReleaseAge: 1440
+# minimumReleaseAge: 1440
 
 # Save exact dependency versions in `package.json`
 savePrefix: ''
@@ -39,6 +39,3 @@ savePrefix: ''
 requiredScripts:
   - 'lint:eslint'
   - 'lint:tsc'
-
-patchedDependencies:
-  '@types/jest-image-snapshot@6.4.0': patches/@types__jest-image-snapshot@6.4.0.patch

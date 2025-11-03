@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@esrf/eslint-config": "1.6.0",
-    "@simonsmith/cypress-image-snapshot": "10.0.2",
+    "@simonsmith/cypress-image-snapshot": "10.0.3",
     "@testing-library/cypress": "10.1.0",
     "@types/node": "^24.9.2",
     "cypress": "15.5.0",
