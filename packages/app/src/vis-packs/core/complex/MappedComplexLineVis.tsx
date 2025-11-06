@@ -28,8 +28,10 @@ import { COMPLEX_VIS_TYPE_LABELS } from './utils';
 interface Props {
   value: ArrayValue<ComplexType>;
   valueLabel?: string;
+  valueVisible?: boolean;
   auxLabels?: string[];
   auxValues?: ArrayValue<NumericLikeType | ComplexType>[];
+  auxVisible?: boolean[];
   dims: number[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
@@ -43,8 +45,10 @@ function MappedComplexLineVis(props: Props) {
   const {
     value,
     valueLabel,
+    valueVisible,
     auxLabels = [],
     auxValues = [],
+    auxVisible = [],
     dims,
     dimMapping,
     axisLabels = [],
@@ -85,7 +89,14 @@ function MappedComplexLineVis(props: Props) {
       : [mappedAmplitudeArrays, amplitudeDomains];
 
   const [dataArray, ...auxArrays] = pickedArrays;
-  const combinedDomain = useCombinedDomain(pickedDomains) || DEFAULT_DOMAIN;
+  const [dataDomain, ...auxDomains] = pickedDomains;
+
+  const combinedDomain =
+    useCombinedDomain([
+      valueVisible ? dataDomain : undefined,
+      ...auxDomains.filter((_, i) => auxVisible[i]),
+    ]) || DEFAULT_DOMAIN;
+
   const visDomain = useVisDomain(customDomain, combinedDomain);
   const [safeDomain] = useSafeDomain(visDomain, combinedDomain, yScaleType);
 
@@ -93,6 +104,18 @@ function MappedComplexLineVis(props: Props) {
   const ordinateLabel = valueLabel
     ? `${valueLabel} (${COMPLEX_VIS_TYPE_LABELS[complexVisType].toLowerCase()})`
     : COMPLEX_VIS_TYPE_LABELS[complexVisType];
+
+  const abscissaParams = {
+    label: axisLabels[xDimIndex],
+    value: numAxisArrays[xDimIndex],
+    scaleType: xScaleType,
+  };
+
+  const auxiliaries = auxArrays.map((array, i) => ({
+    label: auxLabels[i],
+    array,
+    visible: auxVisible[i],
+  }));
 
   return (
     <>
@@ -109,17 +132,11 @@ function MappedComplexLineVis(props: Props) {
         scaleType={yScaleType}
         curveType={curveType}
         showGrid={showGrid}
-        abscissaParams={{
-          label: axisLabels[xDimIndex],
-          value: numAxisArrays[xDimIndex],
-          scaleType: xScaleType,
-        }}
+        abscissaParams={abscissaParams}
         ordinateLabel={ordinateLabel}
         title={title}
-        auxiliaries={auxArrays.map((array, i) => ({
-          label: auxLabels[i],
-          array,
-        }))}
+        auxiliaries={auxiliaries}
+        visible={valueVisible}
         testid={dimMapping.toString()}
       />
     </>
