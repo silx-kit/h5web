@@ -104,3 +104,15 @@ a.btn {
     rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
     rgba(0, 0, 0, 0.1) 0px 4px 11px;
 }
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0;
+  overflow: hidden auto;
+  scrollbar-width: thin;
+  background-color: var(--h5w-selector-menu--bgColor, white);
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 4px 11px;
+}
