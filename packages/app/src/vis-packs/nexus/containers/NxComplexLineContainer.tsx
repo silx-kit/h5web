@@ -1,5 +1,6 @@
 import { DimensionMapper, getSliceSelection, ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
+import { useState } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
@@ -9,6 +10,7 @@ import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertComplexNxData } from '../guards';
 import { useNxData, useNxValuesCached } from '../hooks';
+import NxLineSignalPicker from '../NxLineSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
 
 function NxComplexLineContainer(props: VisContainerProps) {
@@ -27,8 +29,12 @@ function NxComplexLineContainer(props: VisContainerProps) {
     defaultSlice,
   });
 
+  const auxLabels = auxDefs.map((def) => def.label);
   const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');
+
+  const [isSignalVisible, setSignalVisible] = useState(true);
+  const [auxVisible, setAuxVisible] = useState(auxDefs.map(() => true));
 
   const config = useLineConfig({
     xScaleType: silxStyle.axisScaleTypes?.[xDimIndex],
@@ -39,6 +45,18 @@ function NxComplexLineContainer(props: VisContainerProps) {
 
   return (
     <>
+      {auxDefs.length > 0 && (
+        <NxLineSignalPicker
+          signalLabel={signalDef.label}
+          signalChecked={isSignalVisible}
+          auxLabels={auxLabels}
+          auxChecked={auxVisible}
+          onSignalChange={setSignalVisible}
+          onAuxChange={setAuxVisible}
+          toolbarContainer={toolbarContainer}
+        />
+      )}
+
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={signalDims}
@@ -58,8 +76,10 @@ function NxComplexLineContainer(props: VisContainerProps) {
               <MappedComplexLineVis
                 value={signal}
                 valueLabel={signalDef.label}
-                auxLabels={auxDefs.map((def) => def.label)}
+                valueVisible={isSignalVisible}
+                auxLabels={auxLabels}
                 auxValues={auxValues}
+                auxVisible={auxVisible}
                 dims={signalDims}
                 dimMapping={dimMapping}
                 axisLabels={axisLabels}

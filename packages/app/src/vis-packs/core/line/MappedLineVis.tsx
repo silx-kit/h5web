@@ -1,5 +1,4 @@
 import {
-  type AxisParams,
   type DimensionMapping,
   getSliceSelection,
   type IgnoreValue,
@@ -41,10 +40,12 @@ interface Props {
   dataset: Dataset<ArrayShape, NumericLikeType>;
   value: ArrayValue<NumericLikeType>;
   valueLabel?: string;
+  valueVisible?: boolean;
   errors?: ArrayValue<NumericType>;
   auxLabels?: string[];
   auxValues?: ArrayValue<NumericLikeType | ComplexType>[];
   auxErrors?: (ArrayValue<NumericType> | undefined)[];
+  auxVisible?: boolean[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
   axisValues?: AxisMapping<ArrayValue<NumericType>>;
@@ -59,10 +60,12 @@ function MappedLineVis(props: Props) {
     dataset,
     value,
     valueLabel,
+    valueVisible = true,
     errors,
     auxLabels = [],
     auxValues = [],
     auxErrors = [],
+    auxVisible = [],
     dimMapping,
     axisLabels = [],
     axisValues = [],
@@ -114,9 +117,17 @@ function MappedLineVis(props: Props) {
     ignoreValue,
   );
 
-  const auxDomains = useDomains(auxArrays, yScaleType, auxErrorsArrays);
+  const auxDomains = useDomains(
+    auxArrays,
+    yScaleType,
+    showErrors ? auxErrorsArrays : undefined,
+  );
+
   const combinedDomain =
-    useCombinedDomain([dataDomain, ...auxDomains]) || DEFAULT_DOMAIN;
+    useCombinedDomain([
+      valueVisible ? dataDomain : undefined,
+      ...auxDomains.filter((_, i) => auxVisible[i]),
+    ]) || DEFAULT_DOMAIN;
 
   const visDomain = useVisDomain(customDomain, combinedDomain);
   const [safeDomain] = useSafeDomain(visDomain, combinedDomain, yScaleType);
@@ -124,7 +135,7 @@ function MappedLineVis(props: Props) {
   const selection = getSliceSelection(dimMapping);
   const xDimIndex = dimMapping.indexOf('x');
 
-  const abscissaParams: AxisParams = {
+  const abscissaParams = {
     label: axisLabels[xDimIndex],
     value: numAxisArrays[xDimIndex],
     scaleType: xScaleType,
@@ -134,6 +145,7 @@ function MappedLineVis(props: Props) {
     label: auxLabels[i],
     array,
     errors: auxErrorsArrays[i],
+    visible: auxVisible[i],
   }));
 
   const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
@@ -178,6 +190,7 @@ function MappedLineVis(props: Props) {
         testid={dimMapping.toString()}
         ignoreValue={ignoreValue}
         interpolation={interpolation}
+        visible={valueVisible}
       />
     </>
   );

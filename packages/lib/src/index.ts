@@ -16,6 +16,7 @@ export { default as LinkBtn } from './toolbar/controls/LinkBtn';
 export { default as ToggleBtn } from './toolbar/controls/ToggleBtn';
 export { default as ToggleGroup } from './toolbar/controls/ToggleGroup/ToggleGroup';
 export { default as RadioGroup } from './toolbar/controls/RadioGroup';
+export { default as Checkbox } from './toolbar/controls/Checkbox';
 export { default as Menu } from './toolbar/controls/Menu';
 export { default as DomainWidget } from './toolbar/controls/DomainWidget/DomainWidget';
 export { default as DomainSlider } from './toolbar/controls/DomainWidget/DomainSlider';

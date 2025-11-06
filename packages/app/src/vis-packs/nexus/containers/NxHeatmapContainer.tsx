@@ -20,7 +20,7 @@ import {
   useNxHeatmapDataToFetch,
   useNxValuesCached,
 } from '../hooks';
-import NxSignalPicker from '../NxSignalPicker';
+import NxHeatmapSignalPicker from '../NxHeatmapSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { guessKeepRatio } from '../utils';
 
@@ -56,7 +56,7 @@ function NxHeatmapContainer(props: VisContainerProps) {
   return (
     <>
       {auxDefs.length > 0 && (
-        <NxSignalPicker
+        <NxHeatmapSignalPicker
           definitions={[signalDef, ...auxDefs]}
           value={selectedDef}
           onChange={setSelectedDef}
