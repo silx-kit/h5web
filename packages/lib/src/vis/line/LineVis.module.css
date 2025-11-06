@@ -25,6 +25,10 @@
   composes: tooltipItem;
 }
 
+.tooltipValue[data-hidden] {
+  opacity: 0.3;
+}
+
 .tooltipValue,
 .tooltipValue + .tooltipAux {
   margin-top: 0.25rem;
