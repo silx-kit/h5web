@@ -18,6 +18,7 @@ export { default as ToggleGroup } from './toolbar/controls/ToggleGroup/ToggleGro
 export { default as RadioGroup } from './toolbar/controls/RadioGroup';
 export { default as Checkbox } from './toolbar/controls/Checkbox';
 export { default as Menu } from './toolbar/controls/Menu';
+export { default as MenuSeparator } from './toolbar/controls/MenuSeparator';
 export { default as DomainWidget } from './toolbar/controls/DomainWidget/DomainWidget';
 export { default as DomainSlider } from './toolbar/controls/DomainWidget/DomainSlider';
 export { default as DomainControls } from './toolbar/controls/DomainWidget/DomainControls';
