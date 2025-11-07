@@ -9,12 +9,10 @@
   padding: 0.25rem 0;
 }
 
-.auxHeading {
-  margin-top: 0.75rem;
-  margin-bottom: 0.25rem;
-  padding-left: 0.75rem;
+.allAuxOption {
   color: var(--h5w-selector-groupLabel--color, gray);
   text-transform: uppercase;
   font-size: 0.75em;
   font-weight: 600;
+  line-height: 1.6;
 }

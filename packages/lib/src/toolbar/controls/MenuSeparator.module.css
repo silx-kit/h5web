@@ -1,0 +1,4 @@
+.sep {
+  margin: 0.375rem 0.75rem;
+  border-top: 1px solid var(--h5w-toolbar-separator--color, rgba(0, 0, 0, 0.2));
+}

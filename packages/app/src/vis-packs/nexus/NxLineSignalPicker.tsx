@@ -1,4 +1,4 @@
-import { Checkbox, Menu, Separator } from '@h5web/lib';
+import { Checkbox, Menu, MenuSeparator, Separator } from '@h5web/lib';
 import { createPortal } from 'react-dom';
 import { MdLineAxis } from 'react-icons/md';
 
@@ -29,6 +29,9 @@ function NxLineSignalPicker(props: Props) {
     return null;
   }
 
+  const someAuxChecked = auxChecked.some(Boolean);
+  const allAuxChecked = auxChecked.every(Boolean);
+
   return createPortal(
     <div className={styles.wrapper}>
       <Separator />
@@ -40,7 +43,17 @@ function NxLineSignalPicker(props: Props) {
           onChange={onSignalChange}
         />
 
-        <span className={styles.auxHeading}>Auxiliaries</span>
+        <MenuSeparator />
+        <Checkbox
+          className={styles.allAuxOption}
+          label="Auxiliary signals"
+          checked={allAuxChecked}
+          indeterminate={someAuxChecked && !allAuxChecked}
+          onChange={() => {
+            onAuxChange(auxChecked.map(() => !allAuxChecked));
+          }}
+        />
+
         {auxLabels.map((label, index) => {
           return (
             <Checkbox
