@@ -34,10 +34,6 @@ globalThis.matchMedia = (query: string) => ({
   });
 });
 
-Object.defineProperty(globalThis.URL, 'createObjectURL', {
-  value: () => 'blob:http://localhost',
-});
-
 // Fail tests that log to the console
 failOnConsole();
 

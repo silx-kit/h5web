@@ -39,16 +39,16 @@
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.6.0",
+    "@esrf/eslint-config": "1.6.1",
     "@simonsmith/cypress-image-snapshot": "10.0.3",
     "@testing-library/cypress": "10.1.0",
-    "@types/node": "^24.9.2",
-    "cypress": "15.5.0",
+    "@types/node": "^24.10.0",
+    "cypress": "15.6.0",
     "cypress-wait-for-stable-dom": "0.1.0",
     "eslint": "9.38.0",
     "prettier": "3.6.2",
     "typescript": "5.9.3",
-    "vitest": "4.0.5",
+    "vitest": "4.0.8",
     "vitest-fail-on-console": "0.10.1",
     "wait-on": "9.0.1"
   }
