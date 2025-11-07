@@ -74,12 +74,12 @@
     }
   },
   "devDependencies": {
-    "@esrf/eslint-config": "1.6.0",
+    "@esrf/eslint-config": "1.6.1",
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "~1.0.14",
     "@types/ndarray-ops": "~1.2.7",
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.10.0",
     "@types/react": "^18.3.26",
     "d3-array": "3.2.4",
     "d3-format": "3.1.0",
@@ -88,7 +88,7 @@
     "ndarray-ops": "1.2.2",
     "react": "18.3.1",
     "typescript": "5.9.3",
-    "vitest": "4.0.5",
+    "vitest": "4.0.8",
     "zustand": "5.0.8"
   }
 }
