@@ -102,7 +102,7 @@ function LineVis(props: Props) {
     '--aux-colors',
   ]);
   const auxColors = auxColorList.split(',').map((col) => col.trim()); // support comma-separated list of colors
-  const visibleAux = auxiliaries.filter((aux) => aux.visible);
+  const hasVisibleAux = auxiliaries.some((aux) => aux.visible);
 
   return (
     <figure
@@ -153,7 +153,7 @@ function LineVis(props: Props) {
                   className={styles.tooltipValue}
                   data-hidden={!visible || undefined}
                 >
-                  {visibleAux.length > 0 && (
+                  {hasVisibleAux && (
                     <span
                       className={styles.mark}
                       data-keep-colors
@@ -167,18 +167,21 @@ function LineVis(props: Props) {
                   </span>
                 </div>
 
-                {visibleAux.map(({ label, array, errors }, index) => (
-                  <div className={styles.tooltipAux} key={label || index}>
-                    <span
-                      className={styles.mark}
-                      data-keep-colors
-                      style={{ color: auxColors[index % auxColors.length] }}
-                    />
-                    {label ? `${label} = ` : ''}
-                    {formatTooltipVal(array.get(xi))}
-                    {errors && ` ±${formatTooltipErr(errors.get(xi))}`}
-                  </div>
-                ))}
+                {auxiliaries.map(
+                  ({ label, array, errors, visible: auxVisible }, index) =>
+                    auxVisible ? (
+                      <div className={styles.tooltipAux} key={label || index}>
+                        <span
+                          className={styles.mark}
+                          data-keep-colors
+                          style={{ color: auxColors[index % auxColors.length] }}
+                        />
+                        {label ? `${label} = ` : ''}
+                        {formatTooltipVal(array.get(xi))}
+                        {errors && ` ±${formatTooltipErr(errors.get(xi))}`}
+                      </div>
+                    ) : null,
+                )}
               </>
             );
           }}
