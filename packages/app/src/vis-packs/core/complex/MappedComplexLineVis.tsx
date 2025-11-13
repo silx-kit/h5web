@@ -65,6 +65,7 @@ function MappedComplexLineVis(props: Props) {
     complexVisType,
     curveType,
     showGrid,
+    interpolation,
   } = config;
 
   const { phaseArrays, amplitudeArrays } = usePhaseAmplitudeArrays([
@@ -137,6 +138,7 @@ function MappedComplexLineVis(props: Props) {
         title={title}
         auxiliaries={auxiliaries}
         visible={valueVisible}
+        interpolation={interpolation}
         testid={dimMapping.toString()}
       />
     </>

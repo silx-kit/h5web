@@ -227,6 +227,27 @@ describe('/mock', () => {
     }
   });
 
+  it.only('visualize line with constant interpolation', () => {
+    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('oneD');
+
+    cy.findByRole('button', { name: 'More controls' }).click();
+    cy.findByRole('button', { name: 'Aspect' }).click();
+    cy.findByLabelText('Constant').click();
+    cy.waitForStableDOM();
+
+    if (Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.matchImageSnapshot('line_constant');
+    }
+
+    cy.selectExplorerNode('oneD_cplx');
+    cy.waitForStableDOM();
+
+    if (Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.matchImageSnapshot('line_complex_constant');
+    }
+  });
+
   it('edit heatmap color map limits', () => {
     cy.selectExplorerNode('nD_datasets');
     cy.selectExplorerNode('twoD');
