@@ -179,9 +179,7 @@ test('show error/fallback for malformed NeXus entity', async () => {
 
   // No `signal` attribute
   await selectExplorerNode('no_signal');
-  expect(
-    screen.getByText('No visualization available for this entity.'),
-  ).toBeInTheDocument();
+  expect(screen.getByText(/Nothing to display/)).toBeInTheDocument();
   expect(errorSpy).not.toHaveBeenCalled();
   errorSpy.mockClear();
 
@@ -340,7 +338,7 @@ test('retry fetching automatically when re-selecting NxLine', async () => {
 
   // Switch to other entity with no visualization
   await selectExplorerNode('entities');
-  await expect(screen.findByText(/No visualization/)).resolves.toBeVisible();
+  await expect(screen.findByText(/Nothing to display/)).resolves.toBeVisible();
 
   // Select NXdata group again
   await selectExplorerNode('slow_nx_spectrum');

@@ -27,6 +27,16 @@
   composes: fallback from global;
 }
 
+.fallback > p:first-child {
+  margin: 0;
+}
+
+.fallbackHint {
+  margin: 0.75em 0 0;
+  font-style: italic;
+  font-size: 90%;
+}
+
 .dimMapper {
   grid-area: dimMapper;
 }
