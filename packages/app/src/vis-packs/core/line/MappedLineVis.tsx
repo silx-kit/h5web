@@ -187,10 +187,10 @@ function MappedLineVis(props: Props) {
         errorsArray={errorsArray}
         showErrors={showErrors}
         auxiliaries={auxiliaries}
-        testid={dimMapping.toString()}
         ignoreValue={ignoreValue}
         interpolation={interpolation}
         visible={valueVisible}
+        testid={dimMapping.toString()}
       />
     </>
   );
