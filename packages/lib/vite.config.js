@@ -20,8 +20,9 @@ export default defineProject({
   build: {
     lib: {
       entry: path.resolve('src/index.ts'),
-      formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format === 'es' ? 'mjs' : 'js'}`,
+      formats: ['es'],
+      fileName: 'index',
+      cssFileName: 'lib',
     },
     rollupOptions: {
       external: [...externals].map((dep) => new RegExp(`^${dep}($|\\/)`, 'u')), // e.g. externalize `react-icons/fi`

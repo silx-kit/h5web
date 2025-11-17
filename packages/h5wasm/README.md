@@ -46,7 +46,7 @@ npm install @h5web/app @h5web/h5wasm
 ```
 
 ```tsx
-import '@h5web/app/dist/styles.css';
+import '@h5web/app/styles.css';
 
 import { useState } from 'react';
 import { App } from '@h5web/app';
