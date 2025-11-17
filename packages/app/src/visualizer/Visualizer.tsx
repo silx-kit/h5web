@@ -15,9 +15,12 @@ function Visualizer(props: Props) {
 
   if (!resolution) {
     return (
-      <p className={styles.fallback}>
-        No visualization available for this entity.
-      </p>
+      <div className={styles.fallback}>
+        <p>Nothing to display</p>
+        <p className={styles.fallbackHint}>
+          Please select another entity in the sidebar.
+        </p>
+      </div>
     );
   }
 

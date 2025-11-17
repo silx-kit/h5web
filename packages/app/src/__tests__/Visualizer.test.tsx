@@ -7,7 +7,7 @@ import { Vis } from '../vis-packs/core/visualizations';
 
 test('show fallback message when no visualization is supported', async () => {
   await renderApp('/entities'); // simple group
-  expect(screen.getByText(/No visualization available/)).toBeVisible();
+  expect(screen.getByText(/Nothing to display/)).toBeVisible();
 });
 
 test('show loader while fetching dataset value', async () => {
@@ -31,7 +31,7 @@ test("show error when dataset value can't be fetched", async () => {
 
   // Make sure error boundary resets when selecting another entity
   await selectExplorerNode('entities');
-  expect(screen.getByText(/No visualization/)).toBeVisible();
+  expect(screen.getByText(/Nothing to display/)).toBeVisible();
 });
 
 test('cancel and retry slow fetch of dataset value', async () => {
@@ -103,7 +103,7 @@ test('retry fetching automatically when re-selecting dataset', async () => {
 
   // Switch to other entity with no visualization
   await selectExplorerNode('entities');
-  await expect(screen.findByText(/No visualization/)).resolves.toBeVisible();
+  await expect(screen.findByText(/Nothing to display/)).resolves.toBeVisible();
 
   // Select dataset again
   await selectExplorerNode('slow_value');

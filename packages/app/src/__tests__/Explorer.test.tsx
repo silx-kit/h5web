@@ -94,7 +94,7 @@ test('show spinner when group metadata is slow to fetch', async () => {
 
   // Wait for fetch of group metadata to succeed
   await expect(
-    screen.findByText(/No visualization available/, undefined, {
+    screen.findByText(/Nothing to display/, undefined, {
       timeout: SLOW_TIMEOUT,
     }),
   ).resolves.toBeVisible();
