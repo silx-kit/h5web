@@ -15,21 +15,13 @@
   ],
   "exports": {
     "./global-styles.css": "./src/global-styles.css",
-    "./dist/styles.css": "./dist/styles.css",
+    "./styles.css": "./dist/styles.css",
     ".": "./src/index.ts"
   },
   "publishConfig": {
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.ts",
     "exports": {
-      "./dist/styles.css": "./dist/styles.css",
       "./styles.css": "./dist/styles.css",
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.mjs",
-        "default": "./dist/index.js"
-      }
+      ".": "./dist/index.js"
     }
   },
   "scripts": {

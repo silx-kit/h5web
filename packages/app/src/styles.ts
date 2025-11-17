@@ -3,4 +3,4 @@
    Output is later concatenated with local app styles. */
 
 import 'react-reflex/styles.css';
-import '@h5web/lib/dist/styles.css'; // distributed lib styles
+import '@h5web/lib/styles.css'; // distributed lib styles

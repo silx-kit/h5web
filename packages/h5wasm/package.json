@@ -13,17 +13,12 @@
   "files": [
     "dist"
   ],
-  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "publishConfig": {
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.ts",
     "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.mjs",
-        "default": "./dist/index.js"
-      }
+      ".": "./dist/index.js"
     }
   },
   "scripts": {
