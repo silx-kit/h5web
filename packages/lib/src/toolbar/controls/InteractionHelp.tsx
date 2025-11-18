@@ -17,7 +17,8 @@ import { POPOVER_CLEARANCE, useFloatingDismiss } from './hooks';
 import styles from './InteractionHelp.module.css';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/platform
-const IS_MAC = navigator.platform.startsWith('Mac'); // eslint-disable-line @typescript-eslint/no-deprecated
+const IS_MAC =
+  'navigator' in globalThis && globalThis.navigator.platform.startsWith('Mac'); // eslint-disable-line @typescript-eslint/no-deprecated
 
 interface Props {
   interactions: InteractionInfo[];
