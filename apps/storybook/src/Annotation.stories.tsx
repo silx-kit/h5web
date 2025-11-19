@@ -153,7 +153,7 @@ export const FollowPointer = {
 
 function PointerTracker(props: {
   children: (x: number, y: number) => ReactNode;
-}) {
+}): ReactNode {
   const { children } = props;
   const [coords, setCoords] = useRafState<[number, number]>();
 

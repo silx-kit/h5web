@@ -1,9 +1,9 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
-import { extend, type Object3DNode } from '@react-three/fiber';
-import { useMemo } from 'react';
-import { Line2 } from 'three/addons/lines/Line2.js';
+import { extend } from '@react-three/fiber';
+import { type ComponentProps, useMemo } from 'react';
+import { Line2 as ThreeLine2 } from 'three/addons/lines/Line2.js';
 import {
-  LineMaterial,
+  LineMaterial as ThreeLineMaterial,
   type LineMaterialParameters,
 } from 'three/addons/lines/LineMaterial.js';
 
@@ -14,15 +14,10 @@ import LineConstantGeometry from './lineConstantGeometry';
 import LineGeometry from './lineGeometry';
 import { Interpolation } from './models';
 
-extend({ Line2, LineMaterial });
-declare module '@react-three/fiber' {
-  interface ThreeElements {
-    line2: Object3DNode<Line2, typeof Line2>;
-    lineMaterial: Object3DNode<LineMaterial, typeof LineMaterial>;
-  }
-}
+const Line2 = extend(ThreeLine2);
+const LineMaterial = extend(ThreeLineMaterial);
 
-interface Props extends Object3DNode<Line2, typeof Line2> {
+interface Props extends ComponentProps<typeof Line2> {
   abscissas: NumArray;
   ordinates: NumArray;
   color: string;
@@ -71,9 +66,9 @@ function Line(props: Props) {
   });
 
   return (
-    <line2 geometry={geometry} visible={visible} {...lineProps}>
-      <lineMaterial color={color} linewidth={width} {...materialProps} />
-    </line2>
+    <Line2 geometry={geometry} visible={visible} {...lineProps}>
+      <LineMaterial color={color} linewidth={width} {...materialProps} />
+    </Line2>
   );
 }
 

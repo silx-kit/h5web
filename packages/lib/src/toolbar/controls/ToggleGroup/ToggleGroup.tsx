@@ -14,11 +14,11 @@ function ToggleGroup(props: Props) {
   const { role, ariaLabel, value, disabled, onChange, children, id } = props;
 
   return (
-    <ToggleGroupContext.Provider value={{ role, value, disabled, onChange }}>
+    <ToggleGroupContext value={{ role, value, disabled, onChange }}>
       <div className={styles.group} role={role} aria-label={ariaLabel} id={id}>
         {children}
       </div>
-    </ToggleGroupContext.Provider>
+    </ToggleGroupContext>
   );
 }
 

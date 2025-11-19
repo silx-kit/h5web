@@ -1,6 +1,12 @@
 import { type Domain, ScaleType } from '@h5web/shared/vis-models';
-import { AxisBottom, AxisLeft, type SharedAxisProps } from '@visx/axis';
+import {
+  AxisBottom,
+  AxisLeft,
+  type SharedAxisProps,
+  type TickFormatter,
+} from '@visx/axis';
 import { GridColumns, GridRows } from '@visx/grid';
+import { type ScaleInput } from '@visx/scale';
 import { type ElementType } from 'react';
 
 import { type AxisConfig, type AxisScale, type Size } from '../models';
@@ -13,17 +19,17 @@ import {
 import styles from './AxisSystem.module.css';
 import Tick from './Tick';
 
-const AXIS_PROPS: Partial<SharedAxisProps<AxisScale>> = {
+const AXIS_PROPS = {
   labelClassName: styles.label,
   labelProps: { fontSize: 'inherit' },
   tickClassName: styles.tick,
   tickComponent: Tick,
-};
+} satisfies Partial<SharedAxisProps<AxisScale>>;
 
-const COMPONENTS: Record<string, [ElementType, ElementType]> = {
+const COMPONENTS = {
   abscissa: [AxisBottom, GridColumns],
   ordinate: [AxisLeft, GridRows],
-};
+} satisfies Record<string, [ElementType, ElementType]>;
 
 interface Props {
   type: 'abscissa' | 'ordinate';
@@ -65,6 +71,9 @@ function Axis(props: Props) {
     ? { tickValues: getIntegerTicks(domain, numTicks) }
     : { numTicks };
 
+  const tickFormat =
+    formatTick || getTickFormatter(domain, axisLength, scaleType);
+
   return (
     <>
       {showAxis && (
@@ -77,9 +86,7 @@ function Axis(props: Props) {
         >
           <AxisComponent
             scale={scale}
-            tickFormat={
-              formatTick || getTickFormatter(domain, axisLength, scaleType)
-            }
+            tickFormat={tickFormat as TickFormatter<ScaleInput<AxisScale>>}
             label={label}
             labelOffset={offset - (isAbscissa ? 32 : 36)}
             hideAxisLine={showGrid}
