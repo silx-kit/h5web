@@ -1,4 +1,4 @@
-import { assertStr, isDataset, isGroup } from '@h5web/shared/guards';
+import { assertStr, isDataset, isDefined, isGroup } from '@h5web/shared/guards';
 import {
   type ChildEntity,
   type Dataset,
@@ -22,14 +22,15 @@ import {
 } from '../vis-packs/nexus/utils';
 import { NX_DATA_VIS, NX_NOTE_VIS } from '../vis-packs/nexus/visualizations';
 
-export function resolvePath(
+export async function getResolvePath(
   path: string,
   entitiesStore: EntitiesStore,
   attrValuesStore: AttrValuesStore,
-):
+): Promise<
   | { entity: ProvidedEntity; supportedVis: VisDef[]; primaryVis?: VisDef }
-  | undefined {
-  const entity = entitiesStore.get(path);
+  | undefined
+> {
+  const entity = await entitiesStore.get(path);
 
   if (isDataset(entity)) {
     const supportedVis = getSupportedCoreVis(entity, attrValuesStore);
@@ -47,12 +48,16 @@ export function resolvePath(
   if (isNxDataGroup(entity, attrValuesStore)) {
     const signal = findSignalDataset(entity, attrValuesStore);
 
-    const supportedVis = Object.values(NX_DATA_VIS).filter((vis) =>
-      vis.supports(entity, signal, attrValuesStore),
+    const results = await Promise.all(
+      Object.values(NX_DATA_VIS).map(async (vis) => {
+        const supported = await vis.supports(entity, signal, attrValuesStore);
+        return supported ? vis : undefined;
+      }),
     );
 
+    const supportedVis = results.filter(isDefined);
     if (supportedVis.length > 0) {
-      const { interpretation } = attrValuesStore.get(signal);
+      const { interpretation } = await attrValuesStore.get(signal);
       return {
         entity,
         supportedVis,
@@ -61,9 +66,9 @@ export function resolvePath(
     }
   }
 
-  const nxDefaultPath = getNxDefaultPath(entity, attrValuesStore);
+  const nxDefaultPath = await getNxDefaultPath(entity, attrValuesStore);
   if (nxDefaultPath) {
-    return resolvePath(nxDefaultPath, entitiesStore, attrValuesStore);
+    return getResolvePath(nxDefaultPath, entitiesStore, attrValuesStore);
   }
 
   return undefined;
@@ -83,11 +88,11 @@ function getSupportedCoreVis(
     : supportedVis;
 }
 
-function getNxDefaultPath(
+async function getNxDefaultPath(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
-): string | undefined {
-  const { default: defaultPath } = attrValuesStore.get(group);
+): Promise<string | undefined> {
+  const { default: defaultPath } = await attrValuesStore.get(group);
 
   if (defaultPath) {
     assertStr(defaultPath, `Expected 'default' attribute to be a string`);

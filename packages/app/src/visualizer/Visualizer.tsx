@@ -1,5 +1,7 @@
+import { use } from 'react';
+
 import { useDataContext } from '../providers/DataProvider';
-import { resolvePath } from './utils';
+import { getResolvePath as resolvePath } from './utils';
 import VisManager from './VisManager';
 import styles from './Visualizer.module.css';
 
@@ -11,7 +13,7 @@ function Visualizer(props: Props) {
   const { path } = props;
 
   const { entitiesStore, attrValuesStore } = useDataContext();
-  const resolution = resolvePath(path, entitiesStore, attrValuesStore);
+  const resolution = use(resolvePath(path, entitiesStore, attrValuesStore));
 
   if (!resolution) {
     return (
