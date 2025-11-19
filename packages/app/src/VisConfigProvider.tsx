@@ -1,5 +1,5 @@
 import { isDefined } from '@h5web/shared/guards';
-import { type ReactNode } from 'react';
+import { type PropsWithChildren, type ReactNode } from 'react';
 
 import { CORE_VIS } from './vis-packs/core/visualizations';
 import { type VisDef } from './vis-packs/models';
@@ -15,11 +15,9 @@ const nexusProviders = Object.values<VisDef>(NX_DATA_VIS)
 
 const allConfigProviders = new Set([...coreProviders, ...nexusProviders]);
 
-interface Props {
-  children: ReactNode;
-}
+interface Props {}
 
-function VisConfigProvider(props: Props) {
+function VisConfigProvider(props: PropsWithChildren<Props>): ReactNode {
   const { children } = props;
 
   return [...allConfigProviders].reduce(

@@ -7,7 +7,7 @@ import { useVisCanvasContext } from './VisCanvasProvider';
 
 function ViewportCenterer() {
   const { dataToWorld, worldToData } = useVisCanvasContext();
-  const viewportCenter = useRef<Vector3>();
+  const viewportCenter = useRef<Vector3>(undefined);
   const camera = useThree((state) => state.camera);
 
   const moveCameraTo = useMoveCameraTo();

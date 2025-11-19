@@ -66,7 +66,7 @@ export function useCameraState<T>(
   const camera = useThree((state) => state.camera);
   const rerender = useRerender();
 
-  const stateRef = useRef<T>(); // ref instead of state to avoid re-render when deps change
+  const stateRef = useRef<T>(undefined); // ref instead of state to avoid re-render when deps change
   const factoryRef = useSyncedRef(factory); // ensure `useMemo` always sees latest `factory` reference
 
   useMemo(() => {

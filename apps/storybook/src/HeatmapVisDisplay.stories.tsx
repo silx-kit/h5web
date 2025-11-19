@@ -5,7 +5,7 @@ import {
   mockValues,
 } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared/vis-utils';
-import { type Meta, type StoryFn, type StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 
 import HeatmapVisStoriesMeta from './HeatmapVis.stories';
 
@@ -78,7 +78,7 @@ export const CustomTooltip = {
 
 export const WheelCapture = {
   decorators: [
-    (VisCanvasStory: StoryFn) => (
+    (VisCanvasStory) => (
       <>
         <div style={{ display: 'flex', height: '100vh' }}>
           <VisCanvasStory />

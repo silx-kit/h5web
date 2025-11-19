@@ -1,6 +1,6 @@
 import { ColorBar, type ColorBarProps, ScaleType } from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { type Meta, type StoryFn, type StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 
 import FillHeight from './decorators/FillHeight';
 
@@ -13,7 +13,7 @@ const meta = {
   title: 'Building Blocks/ColorBar',
   component: ColorBar,
   decorators: [
-    (Story: StoryFn) => (
+    (Story) => (
       <div style={{ display: 'grid', padding: '0 2rem 0.75rem' }}>
         <Story />
       </div>

@@ -93,9 +93,7 @@ export function HeatmapConfigProvider(props: ConfigProviderProps) {
 
   const [store] = useState(createHeatmapConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useHeatmapConfig(
