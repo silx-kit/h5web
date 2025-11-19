@@ -47,7 +47,7 @@ export interface NxDataVisDef extends VisDef {
     group: GroupWithChildren,
     signal: Dataset<ArrayShape, NumericLikeType | ComplexType>,
     attrValuesStore: AttrValuesStore,
-  ) => boolean;
+  ) => Promise<boolean>;
   isPrimary: (interpretation: unknown) => boolean;
 }
 
@@ -57,7 +57,7 @@ export const NX_DATA_VIS = {
     Icon: FiActivity,
     Container: NxLineContainer,
     ConfigProvider: LineConfigProvider,
-    supports: (_, signal) => !hasComplexType(signal),
+    supports: async (_, signal) => !hasComplexType(signal),
     isPrimary: (interpretation) => interpretation === NxInterpretation.Spectrum,
   },
 
@@ -66,7 +66,7 @@ export const NX_DATA_VIS = {
     Icon: FiActivity,
     Container: NxComplexLineContainer,
     ConfigProvider: LineConfigProvider,
-    supports: (_, signal) => hasComplexType(signal),
+    supports: async (_, signal) => hasComplexType(signal),
     isPrimary: (interpretation) => interpretation === NxInterpretation.Spectrum,
   },
 
@@ -75,7 +75,7 @@ export const NX_DATA_VIS = {
     Icon: FiMap,
     Container: NxHeatmapContainer,
     ConfigProvider: HeatmapConfigProvider,
-    supports: (_, signal) => hasMinDims(signal, 2),
+    supports: async (_, signal) => hasMinDims(signal, 2),
     isPrimary: (interpretation) => interpretation === NxInterpretation.Image,
   },
 
@@ -84,8 +84,8 @@ export const NX_DATA_VIS = {
     Icon: FiImage,
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
-    supports: (_, signal, attrValuesStore) => {
-      const { interpretation, CLASS } = attrValuesStore.get(signal);
+    supports: async (_, signal, attrValuesStore) => {
+      const { interpretation, CLASS } = await attrValuesStore.get(signal);
       return (
         (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
         hasMinDims(signal, 3) && // 2 for axes + 1 for RGB channels
@@ -101,7 +101,7 @@ export const NX_DATA_VIS = {
     Icon: MdGrain,
     Container: NxScatterContainer,
     ConfigProvider: ScatterConfigProvider,
-    supports: (group, signal, attrValuesStore) => {
+    supports: async (group, signal, attrValuesStore) => {
       if (!hasNumDims(signal, 1)) {
         return false;
       }
