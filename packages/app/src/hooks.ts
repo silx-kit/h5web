@@ -7,12 +7,13 @@ import {
   type ScalarShape,
   type Value,
 } from '@h5web/shared/hdf5-models';
+import { use } from 'react';
 
 import { useDataContext } from './providers/DataProvider';
 
 export function useEntity(path: string): ProvidedEntity {
   const { entitiesStore } = useDataContext();
-  return entitiesStore.get(path);
+  return use(entitiesStore.get(path));
 }
 
 export function usePrefetchValues(
@@ -46,7 +47,7 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   }
 
   // If `selection` is undefined, the entire dataset will be fetched
-  const value = valuesStore.get({ dataset, selection });
+  const value = use(valuesStore.get({ dataset, selection }));
 
   assertDatasetValue(value, dataset);
   return value;
@@ -73,7 +74,7 @@ export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
       return undefined;
     }
 
-    const value = valuesStore.get({ dataset, selection });
+    const value = use(valuesStore.get({ dataset, selection }));
     assertDatasetValue(value, dataset);
     return value;
   });

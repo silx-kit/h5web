@@ -10,7 +10,7 @@ type AreEqual<Input> = (a: Input, b: Input) => boolean;
 export type OnProgress = (value: number) => void;
 
 interface Instance<Result> {
-  get: () => Result;
+  get: () => Promise<Result>;
   isError: () => boolean;
   abort: (reason?: string) => void;
 }
@@ -18,7 +18,7 @@ interface Instance<Result> {
 export interface FetchStore<Input, Result> {
   has: (input: Input) => boolean;
   prefetch: (input: Input) => void;
-  get: (input: Input) => Result;
+  get: (input: Input) => Promise<Result>;
   preset: (input: Input, result: Result) => void;
   evict: (input: Input) => void;
   evictErrors: () => void;
@@ -60,7 +60,7 @@ export function createFetchStore<Input, Result>(
         cache.set(input, createInstance(input, fetchFunc, progressStore));
       }
     },
-    get: (input: Input): Result => {
+    get: async (input: Input): Promise<Result> => {
       const instance =
         cache.get(input) || createInstance(input, fetchFunc, progressStore);
       cache.set(input, instance);
@@ -68,7 +68,7 @@ export function createFetchStore<Input, Result>(
     },
     preset: (input: Input, result: Result): void => {
       cache.set(input, {
-        get: () => result,
+        get: async () => result,
         isError: () => false,
         abort: () => undefined,
       });
@@ -145,34 +145,22 @@ function createInstance<Input, Result>(
   fetchFunc: FetchFunc<Input, Result>,
   progressStore: StoreApi<ProgressState<Input>>,
 ): Instance<Result> {
-  let promise: Promise<void> | undefined;
   let result: Result | undefined;
   let error: unknown;
   const controller = new AbortController();
 
-  promise = (async () => {
-    try {
-      progressStore.getState().setProgress(input);
-      result = await fetchFunc(input, controller.signal, (value) => {
-        progressStore.getState().setProgress(input, value);
-      });
-    } catch (error_) {
-      error = error_;
-    } finally {
-      progressStore.getState().clearProgress(input);
-      promise = undefined;
-    }
+  const promise: Promise<Result> = (async () => {
+    progressStore.getState().setProgress(input);
+    result = await fetchFunc(input, controller.signal, (value) => {
+      progressStore.getState().setProgress(input, value);
+    });
+    progressStore.getState().clearProgress(input);
+    return result;
   })();
 
   return {
-    get: () => {
-      if (promise) {
-        throw promise; // eslint-disable-line @typescript-eslint/only-throw-error
-      }
-      if (error !== undefined) {
-        throw error; // eslint-disable-line @typescript-eslint/only-throw-error
-      }
-      return result as Result;
+    get: async () => {
+      return promise;
     },
     isError: () => error !== undefined,
     abort: (reason?: string) => {
