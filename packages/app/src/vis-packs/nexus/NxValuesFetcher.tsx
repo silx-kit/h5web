@@ -19,7 +19,7 @@ interface Props<T extends NumericLikeType | ComplexType> {
 
 function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
   props: Props<T>,
-) {
+): ReactNode {
   const { nxData, selection, render } = props;
   const { signalDef, axisDefs, auxDefs, titleDataset } = nxData;
 

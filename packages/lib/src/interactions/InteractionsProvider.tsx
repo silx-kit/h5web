@@ -114,7 +114,7 @@ function InteractionsProvider(props: { children: ReactNode }) {
   );
 
   return (
-    <InteractionsContext.Provider
+    <InteractionsContext
       value={{
         registerInteraction,
         unregisterInteraction,
@@ -123,7 +123,7 @@ function InteractionsProvider(props: { children: ReactNode }) {
       }}
     >
       {children}
-    </InteractionsContext.Provider>
+    </InteractionsContext>
   );
 }
 

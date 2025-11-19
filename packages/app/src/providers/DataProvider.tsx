@@ -19,6 +19,7 @@ import {
 } from './models';
 
 export interface DataContextValue {
+  api: DataProviderApi;
   filepath: string;
   filename: string;
   entitiesStore: EntitiesStore;
@@ -85,8 +86,9 @@ function DataProvider(props: PropsWithChildren<Props>) {
   }, [api]);
 
   return (
-    <DataContext.Provider
+    <DataContext
       value={{
+        api,
         filepath: api.filepath,
         filename: getNameFromPath(api.filepath),
         entitiesStore,
@@ -97,7 +99,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
       }}
     >
       {children}
-    </DataContext.Provider>
+    </DataContext>
   );
 }
 

@@ -1,4 +1,4 @@
-import { type UseDrag } from '@visx/drag/lib/useDrag';
+import { type UseDrag } from '@visx/drag';
 import { type PointerEvent, useMemo } from 'react';
 
 const ARROW_SIZE = 10;

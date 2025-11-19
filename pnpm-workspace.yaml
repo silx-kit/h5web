@@ -19,6 +19,10 @@ strictPeerDependencies: true
 autoInstallPeers: false
 resolvePeersFromWorkspaceRoot: false
 
+peerDependencyRules:
+  allowedVersions:
+    'react-slider>react': '19'
+
 # Fail install if any dependency has unreviewed build scripts
 strictDepBuilds: true
 onlyBuiltDependencies:
