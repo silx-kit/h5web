@@ -1,5 +1,6 @@
-import { assertStr, isGroup } from '@h5web/shared/guards';
+import { isGroup } from '@h5web/shared/guards';
 import { type ChildEntity } from '@h5web/shared/hdf5-models';
+import memoizee from 'memoizee';
 import { type KeyboardEvent } from 'react';
 
 import { type AttrValuesStore } from '../providers/models';
@@ -9,10 +10,12 @@ const SUPPORTED_NX_CLASSES = new Set(['NXdata', 'NXentry', 'NXprocess']);
 
 export const EXPLORER_ID = 'h5web-explorer-tree';
 
-export function needsNxBadge(
+export const needsNxBadge = memoizee(_needsNxBadge, { promise: true });
+
+async function _needsNxBadge(
   entity: ChildEntity,
   attrValuesStore: AttrValuesStore,
-): boolean {
+): Promise<boolean> {
   if (!isGroup(entity)) {
     return false;
   }
@@ -21,13 +24,12 @@ export function needsNxBadge(
     return true;
   }
 
-  const nxClass = attrValuesStore.getSingle(entity, 'NX_class');
-  if (nxClass) {
-    assertStr(nxClass);
-    return SUPPORTED_NX_CLASSES.has(nxClass);
+  if (!hasAttribute(entity, 'NX_class')) {
+    return false;
   }
 
-  return false;
+  const { NX_class: nxClass } = await attrValuesStore.get(entity);
+  return typeof nxClass === 'string' && SUPPORTED_NX_CLASSES.has(nxClass);
 }
 
 function getExplorerButtonList(): HTMLButtonElement[] {

@@ -1,21 +1,24 @@
 import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import { assertGroup, assertMinDims } from '@h5web/shared/guards';
+import { use } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
+import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useRgbConfig } from '../../core/rgb/config';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
-import { useNxData, useNxValuesCached } from '../hooks';
+import { findNxData, useNxValuesCached } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
 
 function NxRgbContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertGroup(entity);
 
-  const nxData = useNxData(entity);
+  const { attrValuesStore } = useDataContext();
+  const nxData = use(findNxData(entity, attrValuesStore));
   assertNumericNxData(nxData);
 
   const { signalDef, axisDefs, defaultSlice } = nxData;

@@ -6,9 +6,10 @@ import {
   assertNumericLikeType,
   hasComplexType,
 } from '@h5web/shared/guards';
-import { useState } from 'react';
+import { use, useState } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
+import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import MappedComplexHeatmapVis from '../../core/complex/MappedComplexHeatmapVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
@@ -16,7 +17,7 @@ import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import {
-  useNxData,
+  findNxData,
   useNxHeatmapDataToFetch,
   useNxValuesCached,
 } from '../hooks';
@@ -28,7 +29,8 @@ function NxHeatmapContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertGroup(entity);
 
-  const nxData = useNxData(entity);
+  const { attrValuesStore } = useDataContext();
+  const nxData = use(findNxData(entity, attrValuesStore));
 
   const { signalDef, axisDefs, auxDefs, defaultSlice, silxStyle } = nxData;
   const [selectedDef, setSelectedDef] = useState(signalDef);

@@ -29,6 +29,7 @@ onlyBuiltDependencies:
   - '@swc/core'
   - 'cypress'
   - 'esbuild'
+  - 'es5-ext'
 
 # Save exact dependency versions in `package.json`
 savePrefix: ''

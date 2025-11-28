@@ -1,15 +1,16 @@
 import { DimensionMapper, getSliceSelection, ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
-import { useState } from 'react';
+import { use, useState } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
+import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useLineConfig } from '../../core/line/config';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericLikeNxData } from '../guards';
-import { useNxData, useNxValuesCached } from '../hooks';
+import { findNxData, useNxValuesCached } from '../hooks';
 import NxLineSignalPicker from '../NxLineSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { areSameDims } from '../utils';
@@ -18,7 +19,8 @@ function NxLineContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertGroup(entity);
 
-  const nxData = useNxData(entity);
+  const { attrValuesStore } = useDataContext();
+  const nxData = use(findNxData(entity, attrValuesStore));
   assertNumericLikeNxData(nxData);
 
   const { signalDef, axisDefs, auxDefs, defaultSlice, silxStyle } = nxData;

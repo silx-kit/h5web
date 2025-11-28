@@ -5,6 +5,7 @@ import {
   assertMinDims,
   assertNumericType,
 } from '@h5web/shared/guards';
+import { use } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import { useValuesInCache } from '../../../hooks';
@@ -24,8 +25,8 @@ function RgbVisContainer(props: VisContainerProps) {
   assertNumericType(entity);
 
   const { attrValuesStore } = useDataContext();
-  const subclassAttr = attrValuesStore.getSingle(entity, 'IMAGE_SUBCLASS');
-  if (subclassAttr && subclassAttr !== 'IMAGE_TRUECOLOR') {
+  const { IMAGE_SUBCLASS: imageSubclass } = use(attrValuesStore.get(entity));
+  if (imageSubclass && imageSubclass !== 'IMAGE_TRUECOLOR') {
     throw new Error('RGB Vis only supports IMAGE_TRUECOLOR.');
   }
 

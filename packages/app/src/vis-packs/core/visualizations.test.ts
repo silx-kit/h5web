@@ -18,14 +18,13 @@ import { type AttrValuesStore } from '../../providers/models';
 import { CORE_VIS } from './visualizations';
 
 const mockStore = {
-  getSingle: (entity: Entity, attributeName: string): unknown => {
-    const attr = entity.attributes.find(({ name }) => name === attributeName);
-    if (!attr) {
-      return undefined;
-    }
-
-    assertMockAttribute(attr);
-    return attr.value;
+  get: (entity: Entity): unknown => {
+    return Object.fromEntries(
+      entity.attributes.map((attr) => {
+        assertMockAttribute(attr);
+        return [attr.name, attr.value];
+      }),
+    );
   },
 };
 

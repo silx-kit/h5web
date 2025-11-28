@@ -1,7 +1,7 @@
 import { use } from 'react';
 
 import { useDataContext } from '../providers/DataProvider';
-import { getResolvePath as resolvePath } from './utils';
+import { resolvePath } from './utils';
 import VisManager from './VisManager';
 import styles from './Visualizer.module.css';
 

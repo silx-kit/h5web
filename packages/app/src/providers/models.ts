@@ -15,14 +15,11 @@ import { type NxAttribute } from '../vis-packs/nexus/models';
 
 export type EntitiesStore = FetchStore<string, ProvidedEntity>;
 export type ValuesStore = FetchStore<ValuesStoreParams, unknown>;
+export type AttrValuesStore = FetchStore<Entity, AttributeValues>;
 
 export interface ValuesStoreParams {
   dataset: Dataset<ScalarShape | ArrayShape>;
   selection?: string | undefined;
-}
-
-export interface AttrValuesStore extends FetchStore<Entity, AttributeValues> {
-  getSingle: (entity: Entity, attrName: AttrName) => unknown;
 }
 
 export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';

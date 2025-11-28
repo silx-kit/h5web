@@ -106,7 +106,12 @@ export const NX_DATA_VIS = {
         return false;
       }
 
-      const axisDatasets = findAxesDatasets(group, signal, attrValuesStore);
+      const axisDatasets = await findAxesDatasets(
+        group,
+        signal,
+        attrValuesStore,
+      );
+
       return (
         axisDatasets.length === 2 &&
         axisDatasets.every((d) => d && hasNumDims(d, 1))
