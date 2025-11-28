@@ -3,13 +3,15 @@ import {
   assertGroup,
   assertNumDims,
 } from '@h5web/shared/guards';
+import { use } from 'react';
 
+import { useDataContext } from '../../../providers/DataProvider';
 import { useScatterConfig } from '../../core/scatter/config';
 import MappedScatterVis from '../../core/scatter/MappedScatterVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
-import { useNxData } from '../hooks';
+import { findNxData } from '../hooks';
 import NxValuesFetcher from '../NxValuesFetcher';
 import { areSameDims } from '../utils';
 
@@ -17,7 +19,8 @@ function NxScatterContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertGroup(entity);
 
-  const nxData = useNxData(entity);
+  const { attrValuesStore } = useDataContext();
+  const nxData = use(findNxData(entity, attrValuesStore));
   assertNumericNxData(nxData);
   const { signalDef, axisDefs, silxStyle } = nxData;
 

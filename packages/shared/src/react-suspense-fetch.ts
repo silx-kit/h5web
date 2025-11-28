@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/promise-function-async */
 import { createStore, type StoreApi } from 'zustand';
 
 type FetchFunc<Input, Result> = (
@@ -60,15 +61,16 @@ export function createFetchStore<Input, Result>(
         cache.set(input, createInstance(input, fetchFunc, progressStore));
       }
     },
-    get: async (input: Input): Promise<Result> => {
+    get: (input: Input): Promise<Result> => {
       const instance =
         cache.get(input) || createInstance(input, fetchFunc, progressStore);
       cache.set(input, instance);
       return instance.get();
     },
     preset: (input: Input, result: Result): void => {
+      const promise = Promise.resolve(result);
       cache.set(input, {
-        get: async () => result,
+        get: () => promise,
         isError: () => false,
         abort: () => undefined,
       });
@@ -159,9 +161,7 @@ function createInstance<Input, Result>(
   })();
 
   return {
-    get: async () => {
-      return promise;
-    },
+    get: () => promise,
     isError: () => error !== undefined,
     abort: (reason?: string) => {
       controller.abort(new AbortError(reason));

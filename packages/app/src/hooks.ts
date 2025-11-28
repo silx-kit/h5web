@@ -3,6 +3,7 @@ import { assertDatasetValue, isDefined } from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type Dataset,
+  type Entity,
   type ProvidedEntity,
   type ScalarShape,
   type Value,
@@ -10,6 +11,8 @@ import {
 import { use } from 'react';
 
 import { useDataContext } from './providers/DataProvider';
+import { type AttrName } from './providers/models';
+import { hasAttribute } from './utils';
 
 export function useEntity(path: string): ProvidedEntity {
   const { entitiesStore } = useDataContext();
@@ -90,4 +93,15 @@ export function useValuesInCache(
       (dataset) => !dataset || valuesStore.has({ dataset, selection }),
     );
   };
+}
+
+export function useAttrValue(entity: Entity, attrName: AttrName): unknown {
+  const { attrValuesStore } = useDataContext();
+
+  if (!hasAttribute(entity, attrName)) {
+    return undefined;
+  }
+
+  const attrValues = use(attrValuesStore.get(entity));
+  return attrValues[attrName];
 }

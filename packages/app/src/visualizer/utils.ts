@@ -6,6 +6,7 @@ import {
   type ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
+import memoizee from 'memoizee';
 
 import { type AttrValuesStore, type EntitiesStore } from '../providers/models';
 import { hasAttribute } from '../utils';
@@ -22,7 +23,9 @@ import {
 } from '../vis-packs/nexus/utils';
 import { NX_DATA_VIS, NX_NOTE_VIS } from '../vis-packs/nexus/visualizations';
 
-export async function getResolvePath(
+export const resolvePath = memoizee(_resolvePath, { promise: true });
+
+async function _resolvePath(
   path: string,
   entitiesStore: EntitiesStore,
   attrValuesStore: AttrValuesStore,
@@ -33,7 +36,7 @@ export async function getResolvePath(
   const entity = await entitiesStore.get(path);
 
   if (isDataset(entity)) {
-    const supportedVis = getSupportedCoreVis(entity, attrValuesStore);
+    const supportedVis = await findSupportedCoreVis(entity, attrValuesStore);
     return supportedVis.length > 0 ? { entity, supportedVis } : undefined;
   }
 
@@ -41,12 +44,12 @@ export async function getResolvePath(
     return undefined;
   }
 
-  if (isNxNoteGroup(entity, attrValuesStore)) {
+  if (await isNxNoteGroup(entity, attrValuesStore)) {
     return { entity, supportedVis: [NX_NOTE_VIS] };
   }
 
-  if (isNxDataGroup(entity, attrValuesStore)) {
-    const signal = findSignalDataset(entity, attrValuesStore);
+  if (await isNxDataGroup(entity, attrValuesStore)) {
+    const signal = await findSignalDataset(entity, attrValuesStore);
 
     const results = await Promise.all(
       Object.values(NX_DATA_VIS).map(async (vis) => {
@@ -66,29 +69,33 @@ export async function getResolvePath(
     }
   }
 
-  const nxDefaultPath = await getNxDefaultPath(entity, attrValuesStore);
+  const nxDefaultPath = await findNxDefaultPath(entity, attrValuesStore);
   if (nxDefaultPath) {
-    return getResolvePath(nxDefaultPath, entitiesStore, attrValuesStore);
+    return resolvePath(nxDefaultPath, entitiesStore, attrValuesStore);
   }
 
   return undefined;
 }
 
-function getSupportedCoreVis(
+async function findSupportedCoreVis(
   dataset: Dataset,
   attrValuesStore: AttrValuesStore,
-): CoreVisDef[] {
-  const supportedVis = Object.values(CORE_VIS).filter((vis) =>
-    vis.supportsDataset(dataset, attrValuesStore),
+): Promise<CoreVisDef[]> {
+  const results = await Promise.all(
+    Object.values(CORE_VIS).map(async (vis) => {
+      const supported = await vis.supportsDataset(dataset, attrValuesStore);
+      return supported ? vis : undefined;
+    }),
   );
 
+  const supportedVis = results.filter(isDefined);
   // Remove `Raw` vis unless it's the only supported vis
   return supportedVis.length > 1
     ? supportedVis.filter((vis) => vis.name !== Vis.Raw)
     : supportedVis;
 }
 
-async function getNxDefaultPath(
+async function findNxDefaultPath(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): Promise<string | undefined> {
@@ -102,37 +109,44 @@ async function getNxDefaultPath(
       : buildEntityPath(group.path, defaultPath);
   }
 
-  return getImplicitDefaultChild(group.children, attrValuesStore)?.path;
+  const child = await findImplicitDefaultChild(group.children, attrValuesStore);
+  return child?.path;
 }
 
-function getImplicitDefaultChild(
+async function findImplicitDefaultChild(
   children: ChildEntity[],
   attrValuesStore: AttrValuesStore,
-): ChildEntity | undefined {
+): Promise<ChildEntity | undefined> {
   const nxGroups = children
     .filter(isGroup)
     .filter((g) => hasAttribute(g, 'NX_class'));
 
   // Look for an `NXdata` child group first
-  const nxDataChild = nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXdata',
-  );
-
-  if (nxDataChild) {
-    return nxDataChild;
+  for (const g of nxGroups) {
+    // eslint-disable-next-line no-await-in-loop -- need sequential awaits to avoid overfetching
+    const attrs = await attrValuesStore.get(g);
+    if (attrs.NX_class === 'NXdata') {
+      return g;
+    }
   }
 
   // Then for an `NXentry` child group
-  const nxEntryChild = nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXentry',
-  );
-
-  if (nxEntryChild) {
-    return nxEntryChild;
+  for (const g of nxGroups) {
+    // eslint-disable-next-line no-await-in-loop
+    const attrs = await attrValuesStore.get(g);
+    if (attrs.NX_class === 'NXentry') {
+      return g;
+    }
   }
 
   // Then for an `NXprocess` child group
-  return nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXprocess',
-  );
+  for (const g of nxGroups) {
+    // eslint-disable-next-line no-await-in-loop
+    const attrs = await attrValuesStore.get(g);
+    if (attrs.NX_class === 'NXprocess') {
+      return g;
+    }
+  }
+
+  return undefined;
 }

@@ -1,55 +1,73 @@
 import { type DimensionMapping } from '@h5web/lib';
-import { createMemo } from '@h5web/shared/createMemo';
 import {
   type ComplexType,
   type GroupWithChildren,
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
+import memoizee from 'memoizee';
 
 import { useValuesInCache } from '../../hooks';
-import { useDataContext } from '../../providers/DataProvider';
+import { type AttrValuesStore } from '../../providers/models';
 import { type DatasetDef, type NxData } from './models';
 import {
-  assertNxDataGroup,
   findAuxErrorDataset,
   findAuxiliaryDatasets,
   findAxesDatasets,
-  findErrorDataset,
+  findDatasetInfo,
+  findDefaultSlice,
   findSignalDataset,
-  findTitleDataset,
-  getDatasetInfo,
-  getDefaultSlice,
-  getSilxStyle,
+  findSilxStyle,
+  getErrorDataset,
+  getTitleDataset,
+  isNxDataGroup,
 } from './utils';
 
-export const useDefaultSlice = createMemo(getDefaultSlice);
+export const findNxData = memoizee(_findNxData, { promise: true });
+async function _findNxData(
+  group: GroupWithChildren,
+  attrValuesStore: AttrValuesStore,
+): Promise<NxData> {
+  if (!(await isNxDataGroup(group, attrValuesStore))) {
+    throw new Error('Expected NXdata group');
+  }
 
-export function useNxData(group: GroupWithChildren): NxData {
-  const { attrValuesStore } = useDataContext();
-
-  assertNxDataGroup(group, attrValuesStore);
-  const signalDataset = findSignalDataset(group, attrValuesStore);
-  const axisDatasets = findAxesDatasets(group, signalDataset, attrValuesStore);
-  const auxSignals = findAuxiliaryDatasets(group, attrValuesStore);
+  const signalDataset = await findSignalDataset(group, attrValuesStore);
+  const axisDatasets = await findAxesDatasets(
+    group,
+    signalDataset,
+    attrValuesStore,
+  );
+  const auxSignals = await findAuxiliaryDatasets(group, attrValuesStore);
 
   return {
-    titleDataset: findTitleDataset(group),
+    titleDataset: getTitleDataset(group),
     signalDef: {
       dataset: signalDataset,
-      errorDataset: findErrorDataset(group, signalDataset.name),
-      ...getDatasetInfo(signalDataset, attrValuesStore),
+      errorDataset: getErrorDataset(group, signalDataset.name),
+      ...(await findDatasetInfo(signalDataset, attrValuesStore)),
     },
-    auxDefs: auxSignals.map((auxSignal) => ({
-      dataset: auxSignal,
-      errorDataset: findAuxErrorDataset(group, auxSignal.name),
-      ...getDatasetInfo(auxSignal, attrValuesStore),
-    })),
-    axisDefs: axisDatasets.map(
-      (dataset) =>
-        dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
+    auxDefs: await Promise.all(
+      auxSignals.map(async (auxSignal) => ({
+        dataset: auxSignal,
+        errorDataset: findAuxErrorDataset(group, auxSignal.name),
+        ...(await findDatasetInfo(auxSignal, attrValuesStore)),
+      })),
     ),
-    defaultSlice: useDefaultSlice(group, signalDataset.shape, attrValuesStore),
-    silxStyle: getSilxStyle(group, attrValuesStore),
+    axisDefs: await Promise.all(
+      axisDatasets.map(
+        async (dataset) =>
+          dataset && {
+            dataset,
+            ...(await findDatasetInfo(dataset, attrValuesStore)),
+          },
+      ),
+    ),
+    defaultSlice: await findDefaultSlice(
+      group,
+      signalDataset.shape,
+      attrValuesStore,
+    ),
+    silxStyle: await findSilxStyle(group, attrValuesStore),
   };
 }
 

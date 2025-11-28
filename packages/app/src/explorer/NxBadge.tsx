@@ -1,4 +1,5 @@
 import { type ChildEntity } from '@h5web/shared/hdf5-models';
+import { use } from 'react';
 
 import { useDataContext } from '../providers/DataProvider';
 import styles from './Explorer.module.css';
@@ -12,7 +13,7 @@ function NxBadge(props: Props) {
   const { entity } = props;
   const { attrValuesStore } = useDataContext();
 
-  if (!needsNxBadge(entity, attrValuesStore)) {
+  if (!use(needsNxBadge(entity, attrValuesStore))) {
     return null;
   }
 

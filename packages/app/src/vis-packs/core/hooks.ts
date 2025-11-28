@@ -17,6 +17,7 @@ import { castArray } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
+import { useAttrValue } from '../../hooks';
 import { useDataContext } from '../../providers/DataProvider';
 import {
   bigIntTypedArrayFromDType,
@@ -97,11 +98,13 @@ export function useMappedArrays(
 }
 
 export function useIgnoreFillValue(dataset: Dataset): IgnoreValue | undefined {
-  const { attrValuesStore } = useDataContext();
-
-  const rawFillValue = attrValuesStore.getSingle(dataset, '_FillValue');
+  const rawFillValue = useAttrValue(dataset, '_FillValue');
 
   return useMemo(() => {
+    if (rawFillValue === undefined) {
+      return undefined;
+    }
+
     const wrappedFillValue = castArray(rawFillValue);
 
     const DTypedArray = bigIntTypedArrayFromDType(dataset.type)

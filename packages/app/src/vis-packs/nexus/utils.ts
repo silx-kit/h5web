@@ -35,31 +35,24 @@ import {
   type SilxStyle,
 } from './models';
 
-export function isNxDataGroup(
+export async function isNxDataGroup(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
-): boolean {
+): Promise<boolean> {
+  const { NX_class: nxClass } = await attrValuesStore.get(group);
   return (
-    attrValuesStore.getSingle(group, 'NX_class') === 'NXdata' &&
+    nxClass === 'NXdata' &&
     (hasAttribute(group, 'signal') ||
       group.children.some((child) => hasAttribute(child, 'signal')))
   );
 }
 
-export function assertNxDataGroup(
+export async function isNxNoteGroup(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
-): void {
-  if (!isNxDataGroup(group, attrValuesStore)) {
-    throw new Error('Expected NXdata group');
-  }
-}
-
-export function isNxNoteGroup(
-  group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore,
-): boolean {
-  return attrValuesStore.getSingle(group, 'NX_class') === 'NXnote';
+): Promise<boolean> {
+  const { NX_class: nxClass } = await attrValuesStore.get(group);
+  return nxClass === 'NXnote';
 }
 
 function findOldStyleSignalDataset(
@@ -76,15 +69,15 @@ function findOldStyleSignalDataset(
   return dataset;
 }
 
-export function findSignalDataset(
+export async function findSignalDataset(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
-): Dataset<ArrayShape, NumericLikeType | ComplexType> {
+): Promise<Dataset<ArrayShape, NumericLikeType | ComplexType>> {
   if (!hasAttribute(group, 'signal')) {
     return findOldStyleSignalDataset(group);
   }
 
-  const signal = attrValuesStore.getSingle(group, 'signal');
+  const { signal } = await attrValuesStore.get(group);
   assertDefined(signal, "Expected 'signal' attribute");
   assertStr(signal, "Expected 'signal' attribute to be a string");
 
@@ -96,7 +89,7 @@ export function findSignalDataset(
   return dataset;
 }
 
-export function findErrorDataset(
+export function getErrorDataset(
   group: GroupWithChildren,
   signalName: string,
 ): Dataset<ArrayShape, NumericType> | undefined {
@@ -130,12 +123,13 @@ export function findAuxErrorDataset(
   return dataset;
 }
 
-export function findAssociatedDatasets(
+export async function findAssociatedDatasets(
   group: GroupWithChildren,
   type: 'axes' | 'auxiliary_signals',
   attrValuesStore: AttrValuesStore,
-): (Dataset<ArrayShape> | undefined)[] {
-  const dsetList = attrValuesStore.getSingle(group, type) || [];
+): Promise<(Dataset<ArrayShape> | undefined)[]> {
+  const attrValues = await attrValuesStore.get(group);
+  const dsetList = attrValues[type] || [];
   const dsetNames = typeof dsetList === 'string' ? [dsetList] : dsetList;
   assertArray(dsetNames);
 
@@ -174,13 +168,13 @@ function parseAxesList(dsetList: unknown): string[] {
   return [dsetList];
 }
 
-function findOldStyleAxesDatasets(
+async function findOldStyleAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
-): Dataset<ArrayShape, NumericType>[] {
-  const axesList = attrValuesStore.getSingle(signal, 'axes');
-  const axesNames = parseAxesList(axesList);
+): Promise<Dataset<ArrayShape, NumericType>[]> {
+  const { axes } = await attrValuesStore.get(signal);
+  const axesNames = parseAxesList(axes);
 
   return axesNames.map((name) => {
     const dataset = getChildEntity(group, name);
@@ -192,38 +186,41 @@ function findOldStyleAxesDatasets(
   });
 }
 
-export function findAxesDatasets(
+export async function findAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
-): (Dataset<ArrayShape, NumericType> | undefined)[] {
+): Promise<(Dataset<ArrayShape, NumericType> | undefined)[]> {
   if (!hasAttribute(group, 'axes')) {
     return findOldStyleAxesDatasets(group, signal, attrValuesStore);
   }
 
-  return findAssociatedDatasets(group, 'axes', attrValuesStore).map(
-    (dataset) => {
-      if (dataset) {
-        assertNumericType(dataset);
-      }
-      return dataset;
-    },
-  );
+  const datasets = await findAssociatedDatasets(group, 'axes', attrValuesStore);
+  return datasets.map((dataset) => {
+    if (dataset) {
+      assertNumericType(dataset);
+    }
+    return dataset;
+  });
 }
 
-export function findAuxiliaryDatasets(
+export async function findAuxiliaryDatasets(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
-): Dataset<ArrayShape, NumericLikeType | ComplexType>[] {
-  return findAssociatedDatasets(group, 'auxiliary_signals', attrValuesStore)
-    .filter(isDefined)
-    .map((dataset) => {
-      assertNumericLikeOrComplexType(dataset);
-      return dataset;
-    });
+): Promise<Dataset<ArrayShape, NumericLikeType | ComplexType>[]> {
+  const datasets = await findAssociatedDatasets(
+    group,
+    'auxiliary_signals',
+    attrValuesStore,
+  );
+
+  return datasets.filter(isDefined).map((dataset) => {
+    assertNumericLikeOrComplexType(dataset);
+    return dataset;
+  });
 }
 
-export function findTitleDataset(
+export function getTitleDataset(
   group: GroupWithChildren,
 ): Dataset<ScalarShape, StringType> | undefined {
   const dataset = getChildEntity(group, 'title');
@@ -237,12 +234,12 @@ export function findTitleDataset(
   return dataset;
 }
 
-export function getDefaultSlice(
+export async function findDefaultSlice(
   group: Group,
   signalDims: number[],
   attrValuesStore: AttrValuesStore,
-): DefaultSlice | undefined {
-  const defaultSliceRaw = attrValuesStore.getSingle(group, 'default_slice');
+): Promise<DefaultSlice | undefined> {
+  const { default_slice: defaultSliceRaw } = await attrValuesStore.get(group);
 
   if (
     !Array.isArray(defaultSliceRaw) ||
@@ -279,11 +276,11 @@ export function getDefaultSlice(
   return defaultSlice;
 }
 
-export function getSilxStyle(
+export async function findSilxStyle(
   group: Group,
   attrValuesStore: AttrValuesStore,
-): SilxStyle {
-  const silxStyle = attrValuesStore.getSingle(group, 'SILX_style');
+): Promise<SilxStyle> {
+  const { SILX_style: silxStyle } = await attrValuesStore.get(group);
 
   if (!silxStyle || typeof silxStyle !== 'string') {
     return {};
@@ -312,15 +309,15 @@ export function getSilxStyle(
   }
 }
 
-export function getDatasetInfo(
+export async function findDatasetInfo(
   dataset: Dataset,
   attrValuesStore: AttrValuesStore,
-): DatasetInfo {
-  const rawLongName = attrValuesStore.getSingle(dataset, 'long_name');
+): Promise<DatasetInfo> {
+  const { long_name: rawLongName } = await attrValuesStore.get(dataset);
   const longName =
     rawLongName && typeof rawLongName === 'string' ? rawLongName : undefined;
 
-  const rawUnits = attrValuesStore.getSingle(dataset, 'units');
+  const { units: rawUnits } = await attrValuesStore.get(dataset);
   const units = rawUnits && typeof rawUnits === 'string' ? rawUnits : undefined;
 
   return {

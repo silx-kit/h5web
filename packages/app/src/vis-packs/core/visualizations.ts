@@ -61,7 +61,7 @@ export interface CoreVisDef extends VisDef {
   supportsDataset: (
     dataset: Dataset,
     attrValuesStore: AttrValuesStore,
-  ) => boolean;
+  ) => Promise<boolean>;
 }
 
 export const CORE_VIS = {
@@ -70,14 +70,14 @@ export const CORE_VIS = {
     Icon: FiCpu,
     Container: RawVisContainer,
     ConfigProvider: RawConfigProvider,
-    supportsDataset: hasNonNullShape,
+    supportsDataset: async (dataset) => hasNonNullShape(dataset),
   },
 
   [Vis.Scalar]: {
     name: Vis.Scalar,
     Icon: FiCode,
     Container: ScalarVisContainer,
-    supportsDataset: (dataset) => {
+    supportsDataset: async (dataset) => {
       return hasPrintableType(dataset) && hasScalarShape(dataset);
     },
   },
@@ -87,7 +87,7 @@ export const CORE_VIS = {
     Icon: FiGrid,
     Container: MatrixVisContainer,
     ConfigProvider: MatrixConfigProvider,
-    supportsDataset: (dataset) => {
+    supportsDataset: async (dataset) => {
       return hasPrintableType(dataset) && hasArrayShape(dataset);
     },
   },
@@ -97,7 +97,7 @@ export const CORE_VIS = {
     Icon: FiActivity,
     Container: LineVisContainer,
     ConfigProvider: LineConfigProvider,
-    supportsDataset: (dataset) => {
+    supportsDataset: async (dataset) => {
       return hasNumericLikeType(dataset) && hasArrayShape(dataset);
     },
   },
@@ -107,7 +107,7 @@ export const CORE_VIS = {
     Icon: FiActivity,
     Container: ComplexLineVisContainer,
     ConfigProvider: LineConfigProvider,
-    supportsDataset: (dataset) => {
+    supportsDataset: async (dataset) => {
       return hasComplexType(dataset) && hasArrayShape(dataset);
     },
   },
@@ -117,7 +117,7 @@ export const CORE_VIS = {
     Icon: FiMap,
     Container: HeatmapVisContainer,
     ConfigProvider: HeatmapConfigProvider,
-    supportsDataset: (dataset) => {
+    supportsDataset: async (dataset) => {
       return (
         hasNumericLikeType(dataset) &&
         hasArrayShape(dataset) &&
@@ -131,7 +131,7 @@ export const CORE_VIS = {
     Icon: FiMap,
     Container: ComplexHeatmapVisContainer,
     ConfigProvider: HeatmapConfigProvider,
-    supportsDataset: (dataset) => {
+    supportsDataset: async (dataset) => {
       return (
         hasComplexType(dataset) &&
         hasArrayShape(dataset) &&
@@ -145,9 +145,10 @@ export const CORE_VIS = {
     Icon: FiImage,
     Container: RgbVisContainer,
     ConfigProvider: RgbConfigProvider,
-    supportsDataset: (dataset, attrValuesStore) => {
+    supportsDataset: async (dataset, attrValuesStore) => {
+      const { CLASS: classAttr } = await attrValuesStore.get(dataset);
       return (
-        attrValuesStore.getSingle(dataset, 'CLASS') === 'IMAGE' &&
+        classAttr === 'IMAGE' &&
         hasArrayShape(dataset) &&
         dataset.shape.length >= 3 && // 2 for axes + 1 for RGB channels
         dataset.shape[dataset.shape.length - 1] === 3 && // 3 channels on last dim
@@ -161,7 +162,7 @@ export const CORE_VIS = {
     Icon: FiGrid,
     Container: CompoundVisContainer,
     ConfigProvider: MatrixConfigProvider,
-    supportsDataset: (dataset) => {
+    supportsDataset: async (dataset) => {
       return (
         hasCompoundType(dataset) &&
         hasPrintableCompoundType(dataset) &&
@@ -176,7 +177,7 @@ export const CORE_VIS = {
     Icon: FiPackage,
     Container: SurfaceVisContainer,
     ConfigProvider: SurfaceConfigProvider,
-    supportsDataset: (dataset) => {
+    supportsDataset: async (dataset) => {
       // @ts-expect-error - Untyped global flag
       const enableSurfaceVis = globalThis.H5WEB_EXPERIMENTAL as boolean;
 
