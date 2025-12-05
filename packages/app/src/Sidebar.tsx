@@ -20,11 +20,9 @@ function Sidebar(props: Props) {
   const { selectedPath, onSelect } = props;
 
   const [tab, setTab] = useState<Tab>(Tab.Explore);
-
   const [searchValue, setSearchValue] = useState<string>('');
 
   const { getSearchablePaths } = useDataContext();
-
   if (!getSearchablePaths) {
     return <Explorer selectedPath={selectedPath} onSelect={onSelect} />;
   }

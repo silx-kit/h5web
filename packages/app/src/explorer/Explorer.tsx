@@ -20,7 +20,9 @@ function Explorer(props: Props) {
 
   const isRootSelected = selectedPath === '/';
 
-  // When tabbing in, restore focus on the root button if it was selected
+  /* When swtiching between sidebar tabs (explore/search), we need to restore
+   * focus on the selected tree item. This effect takes care of the root button;
+   * another similar effect is located in the `EntityItem` component. */
   useEffect(() => {
     if (isRootSelected) {
       btnRef.current?.focus();

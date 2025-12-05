@@ -46,15 +46,14 @@ function EntityItem(props: Props) {
 
   const [isExpanded, toggleExpanded] = useToggle(shouldBeExpanded);
 
+  // Expand group if needed — e.g. when navigating via NX attributes
   useLayoutEffect(() => {
     if (shouldBeExpanded) {
-      // Expand group if needed, notably when selected path changes
-      // e.g. when navigating via NX attributes
       toggleExpanded(true);
     }
   }, [shouldBeExpanded, toggleExpanded]);
 
-  // When tabbing in, restore focus on the selected element
+  // Restore focus on selected entity when swtiching between sidebar tabs
   useEffect(() => {
     if (isSelected) {
       btnRef.current?.focus();
