@@ -102,11 +102,17 @@ jobs:
         if: steps.poetry-venvs.outputs.cache-hit != 'true'
         run: pnpm support:setup
 
-      - name: Create sample HDF5 file 🎨
-        run: pnpm support:sample
+      - name: Create sample HDF5 files 🎨
+        run: pnpm support:sample && pnpm support:sample --hsds
 
       - name: Start h5grove support server 🔌
         run: pnpm support:h5grove & pnpm wait-on http://localhost:8888 -t 1m
+
+      - name: Start HSDS support server 🔌
+        run: pnpm support:hsds & pnpm wait-on http://localhost:5101 -t 1m
+
+      - name: Load HSDS sample file 📥
+        run: pnpm support:hsds:load
 
       - name: Test 👓
         run: pnpm test

@@ -306,8 +306,12 @@ install the recommended extensions.
 - `pnpm test --project <project-name>` - run Vitest on a specific project
 - `pnpm support:setup` - create/update Poetry environments required for
   [testing the providers](#providers-tests)
-- `pnpm support:sample` - create `sample.h5`
+- `pnpm support:sample` - create `sample.h5` (for h5grove and h5wasm)
+- `pnpm support:sample --hsds` - create `sample-hsds.h5` (for HSDS)
 - `pnpm support:h5grove` - start h5grove support server
+- `pnpm support:hsds` - start HSDS support server
+- `pnpm support:hsds:load` - load HSDS sample file (HSDS support server must be
+  running in separate terminal)
 - `pnpm cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end
   test runner (local dev server must be running in separate terminal)

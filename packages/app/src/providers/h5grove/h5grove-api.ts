@@ -18,7 +18,7 @@ import {
 } from '@h5web/shared/vis-models';
 
 import { DataProviderApi } from '../api';
-import { type Fetcher, type ValuesStoreParams } from '../models';
+import { type ValuesStoreParams } from '../models';
 import { createBasicFetcher, FetcherError, toJSON } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
@@ -38,7 +38,7 @@ export class H5GroveApi extends DataProviderApi {
   public constructor(
     private readonly baseURL: string,
     filepath: string,
-    private readonly fetcher: Fetcher = createBasicFetcher(),
+    private readonly fetcher = createBasicFetcher(),
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);

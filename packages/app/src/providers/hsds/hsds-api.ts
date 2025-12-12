@@ -24,8 +24,8 @@ import {
 } from '@h5web/shared/vis-models';
 
 import { DataProviderApi } from '../api';
-import { type Fetcher, type ValuesStoreParams } from '../models';
-import { FetcherError, toJSON } from '../utils';
+import { type ValuesStoreParams } from '../models';
+import { createBasicFetcher, FetcherError, toJSON } from '../utils';
 import {
   type BaseHsdsEntity,
   type HsdsAttribute,
@@ -60,7 +60,7 @@ export class HsdsApi extends DataProviderApi {
   public constructor(
     private readonly baseURL: string,
     filepath: string,
-    private readonly fetcher: Fetcher,
+    private readonly fetcher = createBasicFetcher(),
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);
