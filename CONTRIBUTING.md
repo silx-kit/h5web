@@ -306,8 +306,12 @@ install the recommended extensions.
 - `pnpm test --project <project-name>` - run Vitest on a specific project
 - `pnpm support:setup` - create/update Poetry environments required for
   [testing the providers](#providers-tests)
-- `pnpm support:sample` - create `sample.h5`
+- `pnpm support:sample` - create `sample.h5` (for h5grove and h5wasm)
+- `pnpm support:sample --hsds` - create `sample-hsds.h5` (for HSDS)
 - `pnpm support:h5grove` - start h5grove support server
+- `pnpm support:hsds` - start HSDS support server
+- `pnpm support:hsds:load` - load HSDS sample file (HSDS support server must be
+  running in separate terminal)
 - `pnpm cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end
   test runner (local dev server must be running in separate terminal)
@@ -380,11 +384,11 @@ when calling `pnpm test`.
 
 ### Providers
 
-Two data providers are currently tested through their respective APIs:
-`H5GroveApi` and `H5WasmApi`. Each API test (`<provider>-api.test.ts`) works as
+The data providers are tested through their respective APIs: `H5GroveApi`,
+`H5WasmApi` and `HsdsApi`. Each API test (`<provider>-api.test.ts`) works as
 follows:
 
-1. It instanciates the API using a sample file called `sample.h5`, located in
+1. It instanciates the API using a sample HDF5 file, located in
    `support/sample/dist`, that contains a lot of HDF5 datasets of various shapes
    and types.
 1. It retrieves the values of all the datasets in the sample file and stores
@@ -412,13 +416,24 @@ pyenv and Poetry:
    pyenv exec pnpm support:setup
    ```
 
-Once the Poetry environments are created, you can create `sample.h5`, start
-h5grove and run the API tests:
+Once the Poetry environments are created, create the sample files, start the
+h5grove and HSDS support servers (h5wasm doesn't need one), and run the API
+tests:
 
 ```bash
-pyenv exec pnpm support:sample
+# Create sample files
+pyenv exec pnpm support:sample # for h5grove and h5wasm
+pyenv exec pnpm support:sample --hsds # for HSDS
+
+# Start support servers in separate terminals
 pyenv exec pnpm support:h5grove
-pnpm test api
+pyenv exec pnpm support:hsds
+
+# Load sample file into HSDS
+pyenv exec pnpm support:hsds:load
+
+# Run the API tests
+pnpm test api # or `<provider>-api` for a specific provider's API test
 ```
 
 > If the Python version specified in `.python-version` is globally available on
@@ -439,6 +454,10 @@ environment lacks support for `float128`), you may
 [download it from silx.org](http://www.silx.org/pub/h5web/sample.h5) and place
 it into the `support/sample/dist` folder. However, please beware that the file
 may not be up to date.
+
+Environment variables defined in `.env.test` files, and overridden in
+`.env.test.local` files, can be used to skip a provider's API test, change its
+support server URL, or change its test file.
 
 ### Visual regression
 

@@ -9,20 +9,20 @@ import { beforeAll, expect, test } from 'vitest';
 
 import { assertListeningAt } from '../../test-utils';
 import { getValueOrError } from '../utils';
-import { H5GroveApi } from './h5grove-api';
+import { HsdsApi } from './hsds-api';
 
-const SKIP = import.meta.env.VITE_H5GROVE_SKIP === 'true';
-const H5GROVE_URL = import.meta.env.VITE_H5GROVE_URL;
-const H5GROVE_TEST_FILE = import.meta.env.VITE_H5GROVE_TEST_FILE;
-assertEnvVar(H5GROVE_URL, 'VITE_H5GROVE_URL');
-assertEnvVar(H5GROVE_TEST_FILE, 'VITE_H5GROVE_TEST_FILE');
+const SKIP = import.meta.env.VITE_HSDS_SKIP === 'true';
+const HSDS_URL = import.meta.env.VITE_HSDS_URL;
+const HSDS_TEST_DOMAIN = import.meta.env.VITE_HSDS_TEST_DOMAIN;
+assertEnvVar(HSDS_URL, 'VITE_HSDS_URL');
+assertEnvVar(HSDS_TEST_DOMAIN, 'VITE_HSDS_TEST_DOMAIN');
 
 beforeAll(async () => {
-  await assertListeningAt(H5GROVE_URL);
+  await assertListeningAt(HSDS_URL);
 });
 
 test.skipIf(SKIP)('test file matches snapshot', async () => {
-  const api = new H5GroveApi(H5GROVE_URL, H5GROVE_TEST_FILE);
+  const api = new HsdsApi(HSDS_URL, HSDS_TEST_DOMAIN);
 
   const root = await api.getEntity('/');
   assertGroup(root);
