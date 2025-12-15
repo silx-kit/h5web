@@ -24,7 +24,7 @@ function Toolbar(props: PropsWithChildren<Props>) {
   const allChildren = flattenChildren(children).filter(isValidElementWithKey);
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
-  const availableWidth = containerSize ? containerSize.width : 0;
+  const availableWidth = containerSize ? containerSize.width : Infinity; // render all controls in view until container is measured
 
   const childrenWidths = useMap<string, number>();
 
