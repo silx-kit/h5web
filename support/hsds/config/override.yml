@@ -1,0 +1,5 @@
+default_public: True # allow unauthorized read access
+bucket_name: root
+admin_user: test
+max_task_count: 10000 # allow more parallel requests
+log_level: WARN # increased from INFO

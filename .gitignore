@@ -7,10 +7,13 @@ dist*/
 /cypress/snapshots/**/__diff_output__
 /cypress/snapshots/**/__received_output__
 
+/support/hsds/root/
+
 .env.local
 .env.*.local
 
 .DS_Store
 Thumbs.db
-*.log
-*.tsbuildinfo
+
+**/*.log
+**/*.tsbuildinfo

@@ -1,0 +1,18 @@
+[project]
+name = "hsds-support"
+version = "0.1.0"
+description = "HSDS server for testing purposes"
+authors = [{name = "ESRF"}]
+requires-python = ">=3.12"
+dependencies = [
+  "hsds",
+  "h5pyd"
+]
+
+[tool.poetry]
+package-mode = false
+requires-poetry = ">=2"
+
+[build-system]
+requires = ["poetry-core>=2"]
+build-backend = "poetry.core.masonry.api"

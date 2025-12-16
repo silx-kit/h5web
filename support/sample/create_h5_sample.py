@@ -1,5 +1,6 @@
 import os
 import sys
+import argparse
 import h5py
 import numpy as np
 
@@ -9,6 +10,12 @@ if sys.version_info.major < 3:
 BASE_PATH = os.path.dirname(os.path.realpath(sys.argv[0]))
 DIST_PATH = os.path.join(BASE_PATH, "dist")
 os.makedirs(DIST_PATH, exist_ok=True)
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--hsds", action=argparse.BooleanOptionalAction)
+args = parser.parse_args()
+
+filename = "sample-hsds.h5" if args.hsds else "sample.h5"
 
 h5py.get_config().track_order = True
 
@@ -35,7 +42,7 @@ def print_h5t_class(dataset):
     print("H5T_class=" + str(dataset.id.get_type().get_class()))
 
 
-with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
+with h5py.File(os.path.join(DIST_PATH, filename), "w") as h5:
     # === H5T_INTEGER ===
 
     add_scalar(h5, "int8", np.int8(np.iinfo(np.int8).min))
@@ -86,12 +93,13 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
         np.array([[0, 1, np.inf, 3, 4], [3, 4, np.nan, 6, 7], [6, 7, np.NINF, 9, 10]]),
     )
 
-    add_scalar(h5, "float128", np.float128(np.finfo(np.float128).smallest_normal))
-    add_array(
-        h5,
-        "float128",
-        np.array([[0, 1, 2], [3, 4, np.finfo(np.float128).max]], np.float128),
-    )
+    if not args.hsds:
+        add_scalar(h5, "float128", np.float128(np.finfo(np.float128).smallest_normal))
+        add_array(
+            h5,
+            "float128",
+            np.array([[0, 1, 2], [3, 4, np.finfo(np.float128).max]], np.float128),
+        )
 
     # === H5T_TIME ===
 
@@ -148,16 +156,21 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     add_array(
         h5, "complex128", np.array([[1 + 2j, 3 + 4j], [5 + 6j, 7 + 8j]], np.complex128)
     ),
-    add_scalar(
-        h5,
-        "complex256",
-        np.complex256(
-            np.finfo(np.complex256).smallest_normal + np.finfo(np.complex256).max * 1j
+
+    if not args.hsds:
+        add_scalar(
+            h5,
+            "complex256",
+            np.complex256(
+                np.finfo(np.complex256).smallest_normal
+                + np.finfo(np.complex256).max * 1j
+            ),
+        )
+        add_array(
+            h5,
+            "complex256",
+            np.array([[1 + 2j, 3 + 4j], [5 + 6j, 7 + 8j]], np.complex256),
         ),
-    )
-    add_array(
-        h5, "complex256", np.array([[1 + 2j, 3 + 4j], [5 + 6j, 7 + 8j]], np.complex256)
-    ),
 
     add_scalar(
         h5,
@@ -183,21 +196,22 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
             ],
         ),
     )
-    add_scalar(
-        h5,
-        "compound_nested",
-        ((True, 1 + 2j, 3),),
-        [
-            (
-                "nested",
-                [
-                    ("bool", np.bool_),
-                    ("cplx", np.complex64),
-                    ("bigint", np.int64),
-                ],
-            )
-        ],
-    )
+    if not args.hsds:
+        add_scalar(
+            h5,
+            "compound_nested",
+            ((True, 1 + 2j, 3),),
+            [
+                (
+                    "nested",
+                    [
+                        ("bool", np.bool_),
+                        ("cplx", np.complex64),
+                        ("bigint", np.int64),
+                    ],
+                )
+            ],
+        )
 
     add_array(
         h5,
@@ -224,12 +238,13 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     # === H5T_REFERENCE ===
 
     add_scalar(h5, "reference", for_ref.ref, h5py.ref_dtype)
-    add_scalar(
-        h5,
-        "reference_region",
-        for_ref.regionref[0:1],
-        h5py.regionref_dtype,
-    )
+    if not args.hsds:
+        add_scalar(
+            h5,
+            "reference_region",
+            for_ref.regionref[0:1],
+            h5py.regionref_dtype,
+        )
 
     # === H5T_ENUM ===
 
@@ -285,12 +300,13 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
     vlen_array[1] = [0, 1]
     vlen_array[2] = [0, 1, 2]
 
-    vlen_array = add_array(
-        h5, "vlen_utf8", shape=(3,), dtype=h5py.vlen_dtype(h5py.string_dtype())
-    )
-    vlen_array[0] = ["a"]
-    vlen_array[1] = ["a", "bc"]
-    vlen_array[2] = ["a", "bc", "def"]
+    if not args.hsds:
+        vlen_array = add_array(
+            h5, "vlen_utf8", shape=(3,), dtype=h5py.vlen_dtype(h5py.string_dtype())
+        )
+        vlen_array[0] = ["a"]
+        vlen_array[1] = ["a", "bc"]
+        vlen_array[2] = ["a", "bc", "def"]
 
     # === H5T_ARRAY ===
 
