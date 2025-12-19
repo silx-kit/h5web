@@ -3,10 +3,9 @@ import { type SVGProps } from 'react';
 import { type ColorMap } from '../../../vis/heatmap/models';
 import { getInterpolator, GRADIENT_RANGE } from '../../../vis/heatmap/utils';
 
-interface Props
-  extends Required<
-    Pick<SVGProps<SVGRectElement>, 'x' | 'y' | 'width' | 'height'>
-  > {
+interface Props extends Required<
+  Pick<SVGProps<SVGRectElement>, 'x' | 'y' | 'width' | 'height'>
+> {
   colorMap: ColorMap;
   invertColorMap?: boolean;
 }

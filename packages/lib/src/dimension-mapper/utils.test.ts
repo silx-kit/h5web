@@ -44,9 +44,9 @@ describe('initDimMapping', () => {
   });
 
   it('should throw when number of axes or locked dimensions is not supported', () => {
-    expect(() => initDimMapping([1], -1)).toThrow(RangeError);
-    expect(() => initDimMapping([1], 1, -1)).toThrow(RangeError);
-    expect(() => initDimMapping([1, 1, 1], 3)).toThrow(RangeError);
+    expect(() => initDimMapping([1], -1)).toThrowError(RangeError);
+    expect(() => initDimMapping([1], 1, -1)).toThrowError(RangeError);
+    expect(() => initDimMapping([1, 1, 1], 3)).toThrowError(RangeError);
   });
 });
 

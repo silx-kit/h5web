@@ -10,7 +10,7 @@ const meta = {
   component: DomainWidget,
   decorators: [DomainWidgetDecorator],
   args: {
-    customDomain: undefined,
+    customDomain: [null, null],
     onCustomDomainChange: () => {},
   },
   argTypes: {
@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default = {
   render: (args) => {
-    const { customDomain: initialDomain = [null, null], ...otherArgs } = args;
+    const { customDomain: initialDomain, ...otherArgs } = args;
     const [domain, setDomain] = useState<CustomDomain>(initialDomain);
 
     return (
