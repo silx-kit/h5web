@@ -177,9 +177,15 @@ describe('extendDomain', () => {
 
   it('should throw if domain is not compatible with log scale', () => {
     const errRegex = /compatible with log scale/;
-    expect(() => extendDomain([-1, 1], 0.5, ScaleType.Log)).toThrow(errRegex);
-    expect(() => extendDomain([0, 1], 0.5, ScaleType.Log)).toThrow(errRegex);
-    expect(() => extendDomain([0, 0], 0.5, ScaleType.Log)).toThrow(errRegex);
+    expect(() => extendDomain([-1, 1], 0.5, ScaleType.Log)).toThrowError(
+      errRegex,
+    );
+    expect(() => extendDomain([0, 1], 0.5, ScaleType.Log)).toThrowError(
+      errRegex,
+    );
+    expect(() => extendDomain([0, 0], 0.5, ScaleType.Log)).toThrowError(
+      errRegex,
+    );
   });
 
   it('should not extend domain outside of supported values with sqrt scale', () => {
@@ -190,7 +196,7 @@ describe('extendDomain', () => {
   });
 
   it('should throw if domain is not compatible with sqrt scale', () => {
-    expect(() => extendDomain([-1, 1], 0.5, ScaleType.Sqrt)).toThrow(
+    expect(() => extendDomain([-1, 1], 0.5, ScaleType.Sqrt)).toThrowError(
       /compatible with sqrt scale/,
     );
   });

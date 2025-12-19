@@ -72,7 +72,7 @@ export async function renderApp(
 
     selectExplorerNode: async (name) => {
       const item = await screen.findByRole('treeitem', {
-        name: new RegExp(`^${name}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
+        name: new RegExp(String.raw`^${name}(?: \(NeXus group\))?$`, 'u'), // account for potential NeXus badge
       });
 
       await user.click(item);

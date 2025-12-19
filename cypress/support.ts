@@ -16,7 +16,7 @@ addWaitForStableDomCommand({
 
 Cypress.Commands.add('findExplorerNode', (name: string) => {
   return cy.findByRole('treeitem', {
-    name: new RegExp(`^${name}(?: \\(NeXus group\\))?$`, 'u'), // account for potential NeXus badge
+    name: new RegExp(String.raw`^${name}(?: \(NeXus group\))?$`, 'u'), // account for potential NeXus badge
   });
 });
 

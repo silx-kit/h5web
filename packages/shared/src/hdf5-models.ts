@@ -44,8 +44,10 @@ export interface GroupWithChildren extends Group {
   children: ChildEntity[];
 }
 
-export interface Dataset<S extends Shape = Shape, T extends DType = DType>
-  extends Entity {
+export interface Dataset<
+  S extends Shape = Shape,
+  T extends DType = DType,
+> extends Entity {
   kind: EntityKind.Dataset;
   shape: S;
   type: T;

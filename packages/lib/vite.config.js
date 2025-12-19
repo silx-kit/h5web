@@ -25,7 +25,9 @@ export default defineProject({
       cssFileName: 'lib',
     },
     rollupOptions: {
-      external: [...externals].map((dep) => new RegExp(`^${dep}($|\\/)`, 'u')), // e.g. externalize `react-icons/fi`
+      external: [...externals].map(
+        (dep) => new RegExp(String.raw`^${dep}($|\/)`, 'u'), // e.g. externalize `react-icons/fi`
+      ),
       output: { interop: 'compat' }, // for compatibility with Jest in consumer projects (default changed in Rollup 3/Vite 4: https://rollupjs.org/migration/#changed-defaults)
     },
     sourcemap: true,

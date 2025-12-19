@@ -25,7 +25,9 @@ export default defineProject({
       fileName: 'index',
     },
     rollupOptions: {
-      external: [...externals].map((dep) => new RegExp(`^${dep}($|\\/)`, 'u')), // e.g. externalize `react-icons/fi`
+      external: [...externals].map(
+        (dep) => new RegExp(String.raw`^${dep}($|\/)`, 'u'), // e.g. externalize `react-icons/fi`
+      ),
     },
     sourcemap: true,
   },

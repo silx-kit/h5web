@@ -14,23 +14,27 @@ import { dataset } from './mock-utils';
 
 describe('assertScalarValue', () => {
   it('should not throw when value satisfies dtype', () => {
-    expect(() => assertScalarValue(0, intType())).not.toThrow();
-    expect(() => assertScalarValue(0, intType(false))).not.toThrow();
-    expect(() => assertScalarValue(0, floatType())).not.toThrow();
+    expect(() => assertScalarValue(0, intType())).not.toThrowError();
+    expect(() => assertScalarValue(0, intType(false))).not.toThrowError();
+    expect(() => assertScalarValue(0, floatType())).not.toThrowError();
 
-    expect(() => assertScalarValue(0, intType(true, 64))).not.toThrow();
-    expect(() => assertScalarValue(0n, intType(true, 64))).not.toThrow();
+    expect(() => assertScalarValue(0, intType(true, 64))).not.toThrowError();
+    expect(() => assertScalarValue(0n, intType(true, 64))).not.toThrowError();
 
-    expect(() => assertScalarValue(0, boolType(intType()))).not.toThrow();
-    expect(() => assertScalarValue(false, boolType(intType()))).not.toThrow();
+    expect(() => assertScalarValue(0, boolType(intType()))).not.toThrowError();
+    expect(() =>
+      assertScalarValue(false, boolType(intType())),
+    ).not.toThrowError();
 
     expect(() =>
       assertScalarValue(0, enumType(intType(), { FOO: 0 })),
-    ).not.toThrow();
+    ).not.toThrowError();
 
-    expect(() => assertScalarValue('', strType())).not.toThrow();
+    expect(() => assertScalarValue('', strType())).not.toThrowError();
 
-    expect(() => assertScalarValue([0, 0], cplxType(intType()))).not.toThrow();
+    expect(() =>
+      assertScalarValue([0, 0], cplxType(intType())),
+    ).not.toThrowError();
 
     expect(() =>
       assertScalarValue(
@@ -40,55 +44,67 @@ describe('assertScalarValue', () => {
           str: strType(),
         }),
       ),
-    ).not.toThrow();
+    ).not.toThrowError();
   });
 
   it("should throw when value doesn't satisfies dtype", () => {
-    expect(() => assertScalarValue('', intType())).toThrow('Expected number');
-    expect(() => assertScalarValue(0n, intType())).toThrow('Expected number');
-    expect(() => assertScalarValue(true, intType())).toThrow('Expected number');
-    expect(() => assertScalarValue([], intType())).toThrow('Expected number');
-    expect(() => assertScalarValue(null, intType())).toThrow('Expected number');
-    expect(() => assertScalarValue(undefined, intType())).toThrow(
+    expect(() => assertScalarValue('', intType())).toThrowError(
+      'Expected number',
+    );
+    expect(() => assertScalarValue(0n, intType())).toThrowError(
+      'Expected number',
+    );
+    expect(() => assertScalarValue(true, intType())).toThrowError(
+      'Expected number',
+    );
+    expect(() => assertScalarValue([], intType())).toThrowError(
+      'Expected number',
+    );
+    expect(() => assertScalarValue(null, intType())).toThrowError(
+      'Expected number',
+    );
+    expect(() => assertScalarValue(undefined, intType())).toThrowError(
       'Expected number',
     );
 
-    expect(() => assertScalarValue(true, intType(true, 64))).toThrow(
+    expect(() => assertScalarValue(true, intType(true, 64))).toThrowError(
       'Expected number or bigint',
     );
 
-    expect(() => assertScalarValue('', boolType(intType()))).toThrow(
+    expect(() => assertScalarValue('', boolType(intType()))).toThrowError(
       'Expected number or boolean',
     );
 
     expect(() =>
       assertScalarValue('', enumType(intType(), { FOO: 0 })),
-    ).toThrow('Expected number');
+    ).toThrowError('Expected number');
 
-    expect(() => assertScalarValue(0, strType())).toThrow('Expected string');
-
-    expect(() => assertScalarValue(0, cplxType(floatType()))).toThrow(
-      'Expected complex',
-    );
-    expect(() => assertScalarValue([0], cplxType(floatType()))).toThrow(
-      'Expected complex',
-    );
-    expect(() => assertScalarValue([0, ''], cplxType(floatType()))).toThrow(
-      'Expected complex',
+    expect(() => assertScalarValue(0, strType())).toThrowError(
+      'Expected string',
     );
 
-    expect(() => assertScalarValue(0, compoundType({}))).toThrow(
+    expect(() => assertScalarValue(0, cplxType(floatType()))).toThrowError(
+      'Expected complex',
+    );
+    expect(() => assertScalarValue([0], cplxType(floatType()))).toThrowError(
+      'Expected complex',
+    );
+    expect(() =>
+      assertScalarValue([0, ''], cplxType(floatType())),
+    ).toThrowError('Expected complex');
+
+    expect(() => assertScalarValue(0, compoundType({}))).toThrowError(
       'Expected array',
     );
     expect(() =>
       assertScalarValue(0, compoundType({ foo: intType() })),
-    ).toThrow('Expected array');
+    ).toThrowError('Expected array');
     expect(() =>
       assertScalarValue([], compoundType({ foo: intType() })),
-    ).toThrow('Expected number');
+    ).toThrowError('Expected number');
     expect(() =>
       assertScalarValue([''], compoundType({ foo: intType() })),
-    ).toThrow('Expected number');
+    ).toThrowError('Expected number');
   });
 });
 
@@ -96,43 +112,43 @@ describe('assertDatasetValue', () => {
   it('should not throw when value satisfies dataset type and shape', () => {
     expect(() =>
       assertDatasetValue(0, dataset('foo', intType(), [])),
-    ).not.toThrow();
+    ).not.toThrowError();
 
     expect(() =>
       assertDatasetValue(0n, dataset('foo', intType(false, 64), [])),
-    ).not.toThrow();
+    ).not.toThrowError();
 
     expect(() =>
       assertDatasetValue('', dataset('foo', strType(), [])),
-    ).not.toThrow();
+    ).not.toThrowError();
 
     expect(() =>
       assertDatasetValue(
         [true, false],
         dataset('foo', boolType(intType()), [2]),
       ),
-    ).not.toThrow();
+    ).not.toThrowError();
 
     expect(() =>
       assertDatasetValue(
         Float32Array.from([0, 1]),
         dataset('foo', floatType(), [2]),
       ),
-    ).not.toThrow();
+    ).not.toThrowError();
 
     expect(() =>
       assertDatasetValue(
         BigInt64Array.from([0n, 1n]),
         dataset('foo', intType(true, 64), [2]),
       ),
-    ).not.toThrow();
+    ).not.toThrowError();
 
     expect(() =>
       assertDatasetValue(
         Float32Array.from([0, 1]), // big ints can be returned as any kind of numbers
         dataset('foo', intType(true, 64), [2]),
       ),
-    ).not.toThrow();
+    ).not.toThrowError();
   });
 
   describe('assertDatasetValue', () => {
@@ -142,18 +158,18 @@ describe('assertDatasetValue', () => {
           true,
           dataset('foo', enumType(intType(), { FOO: 0 }), []),
         ),
-      ).toThrow('Expected number');
+      ).toThrowError('Expected number');
 
       expect(() =>
         assertDatasetValue(['foo', 'bar'], dataset('foo', intType(), [2])),
-      ).toThrow('Expected number');
+      ).toThrowError('Expected number');
 
       expect(() =>
         assertDatasetValue(
           BigInt64Array.from([0n, 1n]),
           dataset('foo', intType(), [2]),
         ),
-      ).toThrow('Expected number');
+      ).toThrowError('Expected number');
     });
   });
 });
