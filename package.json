@@ -43,6 +43,8 @@
     "@simonsmith/cypress-image-snapshot": "10.0.3",
     "@testing-library/cypress": "10.1.0",
     "@types/node": "^24.10.4",
+    "@vitest/coverage-v8": "4.0.16",
+    "@vitest/ui": "4.0.16",
     "cypress": "15.8.1",
     "cypress-wait-for-stable-dom": "0.1.0",
     "eslint": "9.39.2",
