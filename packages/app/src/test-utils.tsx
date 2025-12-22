@@ -98,6 +98,10 @@ export async function waitForAllLoaders(): Promise<void> {
   });
 }
 
+export function getExplorerItem(name: string) {
+  return screen.getByRole('treeitem', { name });
+}
+
 function getVisSelector(): HTMLElement {
   return screen.getByRole('tablist', { name: 'Visualization' });
 }

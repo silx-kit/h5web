@@ -61,30 +61,30 @@ function EntityItem(props: Props) {
   }, [btnRef, isSelected]);
 
   const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLButtonElement>) => {
-      switch (e.key) {
+    (evt: KeyboardEvent<HTMLButtonElement>) => {
+      switch (evt.key) {
         case 'Home':
-          focusFirst(e);
+          focusFirst(evt);
           return;
 
         case 'End':
-          focusLast(e);
+          focusLast(evt);
           return;
 
         case 'ArrowDown':
-          focusNext(e);
+          focusNext(evt);
           return;
 
         case 'ArrowUp':
-          focusPrevious(e);
+          focusPrevious(evt);
           return;
 
         case 'ArrowLeft':
           if (isGroup(entity) && isExpanded) {
             toggleExpanded(false);
-            e.preventDefault();
+            evt.preventDefault();
           } else {
-            focusParent(e);
+            focusParent(evt);
           }
           return;
 
@@ -93,10 +93,10 @@ function EntityItem(props: Props) {
             return;
           }
           if (isExpanded) {
-            focusNext(e);
+            focusNext(evt, true);
           } else {
             toggleExpanded(true);
-            e.preventDefault();
+            evt.preventDefault();
           }
       }
     },
