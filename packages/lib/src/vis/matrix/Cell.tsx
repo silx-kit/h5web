@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { type CellComponentProps } from 'react-window';
 
 import styles from './MatrixVis.module.css';
@@ -27,4 +26,4 @@ function Cell(props: CellComponentProps<Props>) {
   );
 }
 
-export default memo(Cell);
+export default Cell;

@@ -1,7 +1,7 @@
 import { isAbsolutePath, isDataset } from '@h5web/shared/guards';
 import { EntityKind } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
-import { memo, Suspense } from 'react';
+import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { useEntity } from '../hooks';
@@ -62,5 +62,4 @@ function MetadataViewer(props: Props) {
   );
 }
 
-// Optimise consecutive renders when selecting a link in the explorer
-export default memo(MetadataViewer);
+export default MetadataViewer;

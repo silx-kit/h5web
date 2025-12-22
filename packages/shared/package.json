@@ -79,8 +79,8 @@
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "~1.0.14",
     "@types/ndarray-ops": "~1.2.7",
-    "@types/node": "^24.10.0",
-    "@types/react": "^18.3.26",
+    "@types/node": "^24.10.4",
+    "@types/react": "^18.3.27",
     "d3-array": "3.2.4",
     "d3-format": "3.1.0",
     "eslint": "9.39.2",
@@ -88,7 +88,7 @@
     "ndarray-ops": "1.2.2",
     "react": "18.3.1",
     "typescript": "5.9.3",
-    "vitest": "4.0.8",
-    "zustand": "5.0.8"
+    "vitest": "4.0.16",
+    "zustand": "5.0.9"
   }
 }
