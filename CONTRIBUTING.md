@@ -304,6 +304,9 @@ install the recommended extensions.
 - `pnpm test run` - run unit and feature tests once
 - `pnpm test [run] <filter>` - run tests matching the given filter
 - `pnpm test --project <project-name>` - run Vitest on a specific project
+- `pnpm test --coverage` measure coverage
+- `pnpm test --ui [--coverage]` - run tests in Vitest UI (with or without
+  coverage)
 - `pnpm support:setup` - create/update Poetry environments required for
   [testing the providers](#providers-tests)
 - `pnpm support:sample` - create `sample.h5`
