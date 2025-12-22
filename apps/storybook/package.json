@@ -35,15 +35,15 @@
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.0.14",
-    "@types/node": "^24.9.2",
-    "@types/react": "^18.3.26",
+    "@types/node": "^24.10.4",
+    "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
     "@types/three": "0.181.0",
     "eslint": "9.39.2",
     "remark-gfm": "4.0.1",
     "storybook": "9.1.13",
     "typescript": "5.9.3",
-    "vite": "7.1.12"
+    "vite": "7.3.0"
   },
   "browserslist": {
     "production": [
