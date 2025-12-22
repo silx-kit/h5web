@@ -10,6 +10,8 @@ export const PLUGINS_BY_FILTER_ID: Record<number, Plugin> = {
   32_013: Plugin.ZFP,
   32_015: Plugin.Zstandard,
   32_019: Plugin.JPEG,
+  32_022: Plugin.Bitgroom,
+  32_023: Plugin.Bitround,
   32_026: Plugin.Blosc2,
 };
 

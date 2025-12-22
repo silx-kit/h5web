@@ -7,6 +7,8 @@ export interface HDF5Diag {
 
 // https://github.com/h5wasm/h5wasm-plugins#included-plugins
 export enum Plugin {
+  Bitgroom = 'bitgroom',
+  Bitround = 'bitround',
   Bitshuffle = 'bshuf',
   Blosc = 'blosc',
   Blosc2 = 'blosc2',
