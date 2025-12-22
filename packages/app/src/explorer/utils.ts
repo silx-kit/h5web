@@ -1,4 +1,9 @@
-import { assertStr, isGroup } from '@h5web/shared/guards';
+import {
+  assertDefined,
+  assertNonNull,
+  assertStr,
+  isGroup,
+} from '@h5web/shared/guards';
 import { type ChildEntity } from '@h5web/shared/hdf5-models';
 import { type KeyboardEvent } from 'react';
 
@@ -30,18 +35,19 @@ export function needsNxBadge(
   return false;
 }
 
-function getExplorerButtonList(): HTMLButtonElement[] {
-  const explorer = document.querySelector(`#${EXPLORER_ID}`);
-  return [...(explorer?.querySelectorAll('button') || [])];
+function getButtonList(
+  parent = document.querySelector(`#${EXPLORER_ID}`),
+): HTMLButtonElement[] {
+  assertNonNull(parent);
+  return [...parent.querySelectorAll('button')];
 }
 
-export function focusParent(e: KeyboardEvent<HTMLButtonElement>): void {
-  const activeElement = e.currentTarget;
+export function focusParent(evt: KeyboardEvent<HTMLButtonElement>): void {
+  const activeElement = evt.currentTarget;
   const { path } = activeElement.dataset;
-  if (!path) {
-    return;
-  }
-  const buttonList = getExplorerButtonList();
+  assertDefined(path);
+
+  const buttonList = getButtonList();
   const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
 
   const parentButton = buttonList.find(
@@ -49,42 +55,46 @@ export function focusParent(e: KeyboardEvent<HTMLButtonElement>): void {
   );
   if (parentButton) {
     parentButton.focus();
-    e.preventDefault();
+    evt.preventDefault();
   }
 }
 
-export function focusNext(e: KeyboardEvent<HTMLButtonElement>): void {
-  const activeElement = e.currentTarget;
-  const buttonList = getExplorerButtonList();
+export function focusNext(
+  evt: KeyboardEvent<HTMLButtonElement>,
+  childOnly = false,
+): void {
+  const activeElement = evt.currentTarget;
+  const parent = childOnly ? activeElement.parentElement : undefined;
+  const buttonList = getButtonList(parent);
   const activeIndex = buttonList.indexOf(activeElement);
 
   if (activeIndex !== -1 && activeIndex < buttonList.length - 1) {
     buttonList[activeIndex + 1].focus();
-    e.preventDefault();
+    evt.preventDefault();
   }
 }
 
-export function focusPrevious(e: KeyboardEvent<HTMLButtonElement>): void {
-  const activeElement = e.currentTarget;
-  const buttonList = getExplorerButtonList();
+export function focusPrevious(evt: KeyboardEvent<HTMLButtonElement>): void {
+  const activeElement = evt.currentTarget;
+  const buttonList = getButtonList();
   const activeIndex = buttonList.indexOf(activeElement);
 
   if (activeIndex > 0) {
     buttonList[activeIndex - 1].focus();
-    e.preventDefault();
+    evt.preventDefault();
   }
 }
 
-export function focusFirst(e: KeyboardEvent<HTMLButtonElement>): void {
-  const buttonList = getExplorerButtonList();
+export function focusFirst(evt: KeyboardEvent<HTMLButtonElement>): void {
+  const buttonList = getButtonList();
 
   buttonList[0]?.focus();
-  e.preventDefault();
+  evt.preventDefault();
 }
 
-export function focusLast(e: KeyboardEvent<HTMLButtonElement>): void {
-  const buttonList = getExplorerButtonList();
+export function focusLast(evt: KeyboardEvent<HTMLButtonElement>): void {
+  const buttonList = getButtonList();
 
   buttonList[buttonList.length - 1]?.focus();
-  e.preventDefault();
+  evt.preventDefault();
 }
