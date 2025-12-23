@@ -49,7 +49,7 @@ function BreadcrumbsBar(props: Props) {
         onToggle={onToggleSidebar}
       />
 
-      <Separator style={{ marginLeft: '0.375rem', marginRight: '0.875rem' }} />
+      <Separator className={styles.sep} />
 
       <Breadcrumbs
         path={path}
