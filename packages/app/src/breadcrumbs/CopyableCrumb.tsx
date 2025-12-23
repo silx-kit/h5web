@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useTimeoutEffect, useToggle } from '@react-hookz/web';
 import { FiCheck, FiClipboard } from 'react-icons/fi';
 
 import styles from './BreadcrumbsBar.module.css';
@@ -11,20 +11,23 @@ interface Props {
 function CopyableCrumb(props: Props) {
   const { name, path } = props;
 
-  const [isPathCopied, setPathCopied] = useState(false);
+  const [isPathCopied, togglePathCopied] = useToggle();
   const CopyIcon = isPathCopied ? FiCheck : FiClipboard;
+
+  useTimeoutEffect(togglePathCopied, isPathCopied ? 3000 : undefined);
 
   return (
     <button
       className={styles.crumbButton}
       type="button"
       title="Copy path to clipboard"
+      aria-label={`${name} (copy path)`}
+      data-current
+      data-copied={isPathCopied || undefined}
       onClick={() => {
         void navigator.clipboard.writeText(path);
-        setPathCopied(true);
+        togglePathCopied(true);
       }}
-      onPointerLeave={() => setPathCopied(false)}
-      data-current
     >
       <span className={styles.crumb}>{name}</span>
       <CopyIcon className={styles.copyIcon} />

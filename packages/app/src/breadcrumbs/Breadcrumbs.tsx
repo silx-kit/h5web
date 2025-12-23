@@ -27,7 +27,7 @@ function Breadcrumbs(props: Props) {
     );
   }
 
-  // Remove leading /
+  // Remove leading slash
   const crumbs = path.slice(1).split('/');
 
   return (
@@ -43,7 +43,11 @@ function Breadcrumbs(props: Props) {
           />
         );
       })}
-      <CopyableCrumb name={crumbs[crumbs.length - 1]} path={path} />
+      <CopyableCrumb
+        key={path} // reset path copied state
+        name={crumbs[crumbs.length - 1]}
+        path={path}
+      />
     </h1>
   );
 }
