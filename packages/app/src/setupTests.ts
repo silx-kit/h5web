@@ -7,6 +7,10 @@ import { useState } from 'react';
 import { afterEach, vi } from 'vitest';
 import failOnConsole from 'vitest-fail-on-console';
 
+import { enableBigIntSerialization } from './utils';
+
+enableBigIntSerialization();
+
 globalThis.ResizeObserver = class ResizeObserver {
   public observe() {}
   public unobserve() {}

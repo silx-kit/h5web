@@ -85,6 +85,10 @@ export class MockApi extends DataProviderApi {
   public override async getAttrValues(
     entity: Entity,
   ): Promise<AttributeValues> {
+    if (entity.name === 'error_value') {
+      throw new Error('some error');
+    }
+
     return Object.fromEntries(
       entity.attributes.map((attr) => {
         assertMockAttribute(attr);
