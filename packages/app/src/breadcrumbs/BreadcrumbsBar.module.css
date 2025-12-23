@@ -58,7 +58,6 @@
 
 .copyIcon {
   position: absolute;
-  display: none;
   font-size: 0.9rem;
   top: calc(50% - 0.125rem);
   right: 0.875rem;
@@ -66,6 +65,6 @@
   transform: translate(100%, -50%);
 }
 
-.crumbButton:hover > .copyIcon {
-  display: flex;
+.crumbButton:not(:hover, :focus-visible, [data-copied]) > .copyIcon {
+  display: none;
 }
