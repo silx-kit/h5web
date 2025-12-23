@@ -154,7 +154,10 @@ export function makeMockFile(): GroupWithChildren {
         array('twoD_enum', {
           type: enumType(intType(false, 8), ENUM_MAPPING),
         }),
-        array('threeD'),
+        array('threeD', {
+          chunks: [1, 20, 41],
+          filters: [{ id: 12_345, name: 'Some filter' }],
+        }),
         array('threeD_bool'),
         array('threeD_cplx'),
         withImageAttr(array('threeD_rgb')),
@@ -431,7 +434,7 @@ export function makeMockFile(): GroupWithChildren {
         }),
       ]),
       group('resilience', [
-        scalar('error_value', 0),
+        scalar('error_value', 0, { attributes: [scalarAttr('attr', 1)] }),
         scalar('slow_value', 42),
         array('slow_slicing', { valueId: 'threeD' }),
         group('slow_metadata'),

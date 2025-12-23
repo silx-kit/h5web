@@ -101,6 +101,8 @@ export function withImageAttr<T extends Entity>(entity: T): T {
 
 type EntityOpts = Partial<Pick<Entity, 'attributes' | 'link'>>;
 type GroupOpts = EntityOpts & { isRoot?: boolean; children?: ChildEntity[] };
+type DatasetOpts = EntityOpts &
+  Pick<Dataset, 'chunks' | 'filters' | 'virtualSources'>;
 
 export function group(
   name: string,
@@ -128,9 +130,9 @@ export function dataset<S extends Shape, T extends DType>(
   type: T,
   shape: S,
   value?: unknown,
-  opts: EntityOpts = {},
+  opts: DatasetOpts = {},
 ): MockDataset<S, T> {
-  const { attributes = [], link } = opts;
+  const { attributes = [], link, chunks, filters, virtualSources } = opts;
 
   return {
     name,
@@ -141,23 +143,26 @@ export function dataset<S extends Shape, T extends DType>(
     type,
     value,
     link,
+    chunks,
+    filters,
+    virtualSources,
   };
 }
 
 export function scalar(
   name: string,
   value: unknown,
-  opts: EntityOpts & { type?: DType } = {},
+  opts: DatasetOpts & { type?: DType } = {},
 ): MockDataset<ScalarShape> {
-  const { type, ...entityOpts } = opts;
-  return dataset(name, type || guessType(value), [], value, entityOpts);
+  const { type, ...datasetOpts } = opts;
+  return dataset(name, type || guessType(value), [], value, datasetOpts);
 }
 
 export function array(
   name: string,
-  opts: EntityOpts & { type?: DType; valueId?: MockValueId } = {},
+  opts: DatasetOpts & { type?: DType; valueId?: MockValueId } = {},
 ): MockDataset<ArrayShape> {
-  const { type, valueId = name, ...entityOpts } = opts;
+  const { type, valueId = name, ...datasetOpts } = opts;
   const arr = mockValues[valueId as MockValueId]();
 
   return dataset(
@@ -165,7 +170,7 @@ export function array(
     type || guessType(arr.data[0]),
     arr.shape,
     arr.data,
-    entityOpts,
+    datasetOpts,
   );
 }
 
