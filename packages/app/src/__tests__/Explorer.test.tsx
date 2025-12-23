@@ -1,8 +1,8 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
 import { SLOW_TIMEOUT } from '../providers/mock/utils';
-import { getExplorerItem, renderApp } from '../test-utils';
+import { getExplorerItem, renderApp, waitForAllLoaders } from '../test-utils';
 
 test('select root group by default', async () => {
   await renderApp();
@@ -103,14 +103,16 @@ test('navigate with arrow keys', async () => {
 
   // Arrow right again to expand group
   await user.keyboard('{ArrowRight}');
+  await waitForAllLoaders();
   expect(entitiesItem).toHaveFocus(); // still focused
   expect(entitiesItem).toHaveAttribute('aria-expanded', 'true'); // now expanded
 
-  await user.keyboard('{ArrowRight}{ArrowRight}');
+  await user.keyboard('{ArrowRight}');
   const emptyGroupItem = getExplorerItem('empty_group');
-  await waitFor(() => {
-    expect(emptyGroupItem).toHaveFocus();
-  });
+  expect(emptyGroupItem).toHaveFocus();
+
+  await user.keyboard('{ArrowRight}');
+  await waitForAllLoaders();
   expect(emptyGroupItem).toHaveAttribute('aria-expanded', 'true');
 
   // Arrow right does nothing when group is empty or focused item is not a group
@@ -145,21 +147,21 @@ test('select explorer items with enter key', async () => {
 
   // Enter to select and expand
   await user.keyboard('{Enter}');
+  await waitForAllLoaders();
   expect(entitiesItem).toHaveAttribute('aria-selected', 'true');
   expect(entitiesItem).toHaveAttribute('aria-expanded', 'true');
 
   await user.keyboard('{ArrowDown}{ArrowDown}');
+  const emptyDatasetItem = getExplorerItem('empty_dataset');
+  expect(emptyDatasetItem).toHaveFocus();
 
   // Enter to select dataset
   await user.keyboard('{Enter}');
-  await waitFor(() => {
-    expect(getExplorerItem('empty_dataset')).toHaveAttribute(
-      'aria-selected',
-      'true',
-    );
-  });
+  await waitForAllLoaders();
+  expect(emptyDatasetItem).toHaveAttribute('aria-selected', 'true');
 
   await user.keyboard('{ArrowUp}{ArrowUp}');
+  expect(entitiesItem).toHaveFocus();
 
   // Enter to re-select expanded group
   await user.keyboard('{Enter}');
