@@ -64,7 +64,7 @@ importers:
         version: 5.1.1(axios@1.13.2)(react@18.3.1)
       h5wasm-plugins:
         specifier: 0.2.1
-        version: 0.2.1(h5wasm@0.8.8)
+        version: 0.2.1(h5wasm@0.8.10)
       normalize.css:
         specifier: 8.0.1
         version: 8.0.1
@@ -333,8 +333,8 @@ importers:
         specifier: 4.4.2
         version: 4.4.2
       h5wasm:
-        specifier: 0.8.8
-        version: 0.8.8
+        specifier: 0.8.10
+        version: 0.8.10
       nanoid:
         specifier: 5.1.6
         version: 5.1.6
@@ -2801,8 +2801,8 @@ packages:
       h5wasm:
         optional: true
 
-  h5wasm@0.8.8:
-    resolution: {integrity: sha512-wgob0VuCgvVU6E2S4fwPkwf+SbsPfk1fuRgX5o392NDyPfJMjWlM+ZvVuRBTaoo/futq3Fd1iPcRA74s9wMC2w==}
+  h5wasm@0.8.10:
+    resolution: {integrity: sha512-NBgMgrT3Jtwkg1N9BFo84wKybMSH56NrzwP2tlDeHBSSgCuyTEEfy1iVs+asfDPFBetcJX7NqUX9XeJi1yLgYw==}
 
   has-bigints@1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
@@ -7095,11 +7095,11 @@ snapshots:
 
   greenlet@1.1.0: {}
 
-  h5wasm-plugins@0.2.1(h5wasm@0.8.8):
+  h5wasm-plugins@0.2.1(h5wasm@0.8.10):
     optionalDependencies:
-      h5wasm: 0.8.8
+      h5wasm: 0.8.10
 
-  h5wasm@0.8.8: {}
+  h5wasm@0.8.10: {}
 
   has-bigints@1.1.0: {}
 
