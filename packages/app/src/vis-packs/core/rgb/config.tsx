@@ -59,9 +59,7 @@ export function RgbConfigProvider(props: ConfigProviderProps) {
 
   const [store] = useState(createRgbConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useRgbConfig(): RgbVisConfig {

@@ -14,7 +14,7 @@ import {
 import { type AxisScaleType } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryFn, type StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';
 import { MdGridOn } from 'react-icons/md';
@@ -115,7 +115,7 @@ export const Default = {
 export const Responsive = {
   ...Default,
   decorators: [
-    (Story: StoryFn) => (
+    (Story) => (
       <div
         style={{ maxWidth: '30rem', marginLeft: 'auto', marginRight: 'auto' }}
       >

@@ -38,9 +38,7 @@ export function MatrixConfigProvider(props: ConfigProviderProps) {
 
   const [store] = useState(createMatrixConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useMatrixConfig(): MatrixVisConfig {

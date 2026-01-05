@@ -209,7 +209,7 @@ export function useDrag(opts: UseDragOpts): UseDragState {
   const camera = useThree((state) => state.camera);
   const { htmlToData } = useVisCanvasContext();
 
-  const dataStartRef = useRef<Vector3>();
+  const dataStartRef = useRef<Vector3>(undefined);
   const onDragEndRef = useSyncedRef(onDragEnd);
 
   const [delta, setDelta] = useState<Vector3>();

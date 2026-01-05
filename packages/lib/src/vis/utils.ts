@@ -272,7 +272,7 @@ export function getTickFormatter(
   domain: Domain,
   availableSize: number,
   scaleType: ScaleType,
-): (val: number | { valueOf: () => number }) => string {
+): (val: number) => string {
   if (scaleType !== ScaleType.Log) {
     return formatTick;
   }

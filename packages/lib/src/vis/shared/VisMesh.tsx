@@ -1,13 +1,15 @@
-import { type MeshProps } from '@react-three/fiber';
+import { type ThreeElements } from '@react-three/fiber';
 
 import { type Size } from '../models';
 import { useVisCanvasContext } from './VisCanvasProvider';
 
-interface Props extends MeshProps {
+export type VisMeshProps = Props & ThreeElements['mesh'];
+
+interface Props {
   size?: Size;
 }
 
-function VisMesh(props: Props) {
+function VisMesh(props: VisMeshProps) {
   const { children, size, ...meshProps } = props;
 
   const { visSize } = useVisCanvasContext();
@@ -21,5 +23,4 @@ function VisMesh(props: Props) {
   );
 }
 
-export type { Props as VisMeshProps };
 export default VisMesh;

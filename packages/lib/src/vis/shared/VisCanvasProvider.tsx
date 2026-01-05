@@ -157,10 +157,10 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     [getFovBox, worldToData],
   );
 
-  const r3fRoot = useThree(
-    (state) => state.gl.domElement.parentElement?.parentElement,
-  );
-  assertDefined(r3fRoot);
+  const gl = useThree((state) => state.gl);
+  const canvasWrapper = gl.domElement.parentElement;
+  assertNonNull(canvasWrapper);
+  const r3fRoot = canvasWrapper.parentElement;
   assertNonNull(r3fRoot);
   const canvasArea = r3fRoot.parentElement;
   assertNonNull(canvasArea);
@@ -168,7 +168,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
   assertNonNull(visCanvas);
 
   return (
-    <VisCanvasContext.Provider
+    <VisCanvasContext
       value={{
         canvasSize,
         canvasRatio,
@@ -195,7 +195,7 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
       }}
     >
       {children}
-    </VisCanvasContext.Provider>
+    </VisCanvasContext>
   );
 }
 

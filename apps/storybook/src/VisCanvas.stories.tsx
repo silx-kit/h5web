@@ -1,5 +1,5 @@
 import { ScaleType, VisCanvas } from '@h5web/lib';
-import { type Meta, type StoryFn, type StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { format } from 'd3-format';
 
 import FillHeight from './decorators/FillHeight';
@@ -141,7 +141,7 @@ export const InheritedStyles = {
     title: 'The title',
   },
   decorators: [
-    (VisCanvasStory: StoryFn) => (
+    (VisCanvasStory) => (
       <div
         style={{
           flex: '1 1 0%',

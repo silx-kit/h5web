@@ -46,7 +46,7 @@ interface Props extends CommonInteractionProps {
   ) => ReactNode;
 }
 
-function SelectionTool(props: Props) {
+function SelectionTool(props: Props): ReactNode {
   const {
     id = 'Selection',
     modifierKey,
@@ -73,7 +73,7 @@ function SelectionTool(props: Props) {
   const { canvasBox, htmlToWorld, worldToData } = context;
 
   const [rawSelection, setRawSelection] = useRafState<Selection>();
-  const startEvtRef = useRef<CanvasEvent<PointerEvent>>();
+  const startEvtRef = useRef<CanvasEvent<PointerEvent>>(undefined);
   const hasSuccessfullyEndedRef = useRef<boolean>(false);
 
   const isModifierKeyPressed = useModifierKeyPressed(modifierKey);

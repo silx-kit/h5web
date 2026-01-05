@@ -37,9 +37,7 @@ export function DimMappingProvider(props: PropsWithChildren<Props>) {
 
   const [store] = useState(createDimMappingStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useDimMappingState(opts: {

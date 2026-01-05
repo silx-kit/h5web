@@ -85,7 +85,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
   }, [api]);
 
   return (
-    <DataContext.Provider
+    <DataContext
       value={{
         filepath: api.filepath,
         filename: getNameFromPath(api.filepath),
@@ -97,7 +97,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
       }}
     >
       {children}
-    </DataContext.Provider>
+    </DataContext>
   );
 }
 

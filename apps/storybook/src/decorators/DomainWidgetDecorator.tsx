@@ -1,6 +1,8 @@
-import { type StoryFn } from '@storybook/react-vite';
+import { type Decorator } from '@storybook/react-vite';
 
-function DomainWidgetDecorator(Story: StoryFn) {
+function DomainWidgetDecorator(...args: Parameters<Decorator>) {
+  const [Story] = args;
+
   return (
     <div
       style={{

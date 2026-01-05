@@ -75,9 +75,7 @@ export function ScatterConfigProvider(props: ConfigProviderProps) {
 
   const [store] = useState(createScatterConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useScatterConfig(

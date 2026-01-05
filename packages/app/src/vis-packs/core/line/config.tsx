@@ -80,9 +80,7 @@ export function LineConfigProvider(props: ConfigProviderProps) {
 
   const [store] = useState(createLineConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useLineConfig(
