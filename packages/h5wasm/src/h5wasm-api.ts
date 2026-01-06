@@ -32,7 +32,11 @@ export class H5WasmApi extends DataProviderApi {
   }
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
-    return this.remote.getEntity(await this.fileId, path);
+    try {
+      return await this.remote.getEntity(await this.fileId, path);
+    } catch (error) {
+      throw getEnhancedError(error);
+    }
   }
 
   public override async getValue(params: ValuesStoreParams): Promise<unknown> {
