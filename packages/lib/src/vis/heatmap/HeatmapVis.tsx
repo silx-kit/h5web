@@ -7,7 +7,7 @@ import {
 } from '@h5web/shared/vis-models';
 import { formatTooltipVal, getDims } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
-import { type ReactElement, type ReactNode } from 'react';
+import { type PropsWithChildren, type ReactElement } from 'react';
 import {
   type MagnificationTextureFilter,
   type MinificationTextureFilter,
@@ -51,12 +51,11 @@ interface Props extends ClassStyleAttrs {
   flipXAxis?: boolean;
   flipYAxis?: boolean;
   renderTooltip?: (data: TooltipData) => ReactElement;
-  children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
   ignoreValue?: IgnoreValue;
 }
 
-function HeatmapVis(props: Props) {
+function HeatmapVis(props: PropsWithChildren<Props>) {
   const {
     dataArray,
     domain = DEFAULT_DOMAIN,

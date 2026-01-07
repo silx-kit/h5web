@@ -8,7 +8,7 @@ import {
 } from '@h5web/shared/vis-models';
 import { formatTooltipErr, formatTooltipVal } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
-import { type ReactElement, type ReactNode, useMemo } from 'react';
+import { type PropsWithChildren, type ReactElement, useMemo } from 'react';
 
 import DefaultInteractions, {
   type DefaultInteractionsConfig,
@@ -43,7 +43,6 @@ interface Props extends ClassStyleAttrs {
   showErrors?: boolean;
   auxiliaries?: AuxiliaryParams[];
   renderTooltip?: (data: TooltipData) => ReactElement;
-  children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
   testid?: string;
   ignoreValue?: IgnoreValue;
@@ -51,7 +50,7 @@ interface Props extends ClassStyleAttrs {
   visible?: boolean;
 }
 
-function LineVis(props: Props) {
+function LineVis(props: PropsWithChildren<Props>) {
   const {
     dataArray,
     domain,

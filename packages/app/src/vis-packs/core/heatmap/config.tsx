@@ -3,14 +3,19 @@ import { isDefined } from '@h5web/shared/guards';
 import {
   type ColorScaleType,
   ComplexVisType,
+  type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
-import { createContext, useContext, useState } from 'react';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useState,
+} from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { type ConfigProviderProps } from '../../models';
 import { type ColorMap } from './models';
 
 export interface HeatmapConfig {
@@ -88,7 +93,7 @@ function createHeatmapConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<HeatmapConfig>);
 
-export function HeatmapConfigProvider(props: ConfigProviderProps) {
+export function HeatmapConfigProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
   const [store] = useState(createHeatmapConfigStore);

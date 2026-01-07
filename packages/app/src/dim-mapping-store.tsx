@@ -1,5 +1,6 @@
 import { type DimensionMapping, initDimMapping } from '@h5web/lib';
 import { type ArrayShape } from '@h5web/shared/hdf5-models';
+import { type NoProps } from '@h5web/shared/vis-models';
 import {
   createContext,
   type PropsWithChildren,
@@ -31,8 +32,7 @@ function createDimMappingStore() {
 
 const StoreContext = createContext({} as StoreApi<DimMappingState>);
 
-interface Props {}
-export function DimMappingProvider(props: PropsWithChildren<Props>) {
+export function DimMappingProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
   const [store] = useState(createDimMappingStore);

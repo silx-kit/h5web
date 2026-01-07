@@ -151,9 +151,11 @@ export const FollowPointer = {
   },
 } satisfies Story;
 
-function PointerTracker(props: {
+interface PointerTrackerProps {
   children: (x: number, y: number) => ReactNode;
-}) {
+}
+
+function PointerTracker(props: PointerTrackerProps) {
   const { children } = props;
   const [coords, setCoords] = useRafState<[number, number]>();
 

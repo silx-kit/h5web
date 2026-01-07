@@ -20,7 +20,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function TooltipContent(props: { x: number; y: number; text?: string }) {
+interface TooltipContentProps {
+  x: number;
+  y: number;
+  text?: string;
+}
+
+function TooltipContent(props: TooltipContentProps) {
   const { x, y, text } = props;
   return (
     <>

@@ -1,7 +1,8 @@
+import { type NoProps } from '@h5web/shared/vis-models';
 import { castArray } from '@h5web/shared/vis-utils';
 import {
   createContext,
-  type ReactNode,
+  type PropsWithChildren,
   useCallback,
   useContext,
   useState,
@@ -26,7 +27,7 @@ export function useInteractionsContext() {
   return useContext(InteractionsContext);
 }
 
-function InteractionsProvider(props: { children: ReactNode }) {
+function InteractionsProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
   const [interactionMap] = useState(new Map<string, Interaction>());

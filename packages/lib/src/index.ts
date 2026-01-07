@@ -99,7 +99,6 @@ export { default as SvgElement } from './interactions/svg/SvgElement';
 export { default as SvgLine } from './interactions/svg/SvgLine';
 export { default as SvgRect } from './interactions/svg/SvgRect';
 export { default as SvgCircle } from './interactions/svg/SvgCircle';
-export type { SvgElementProps } from './interactions/svg/SvgElement';
 export type { SvgLineProps } from './interactions/svg/SvgLine';
 export type { SvgRectProps } from './interactions/svg/SvgRect';
 export type { SvgCircleProps } from './interactions/svg/SvgCircle';

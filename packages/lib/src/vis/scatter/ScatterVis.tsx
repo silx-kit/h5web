@@ -9,7 +9,7 @@ import { formatTooltipVal } from '@h5web/shared/vis-utils';
 import { type ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
 import { type NdArray } from 'ndarray';
-import { type ReactNode } from 'react';
+import { type PropsWithChildren } from 'react';
 
 import DefaultInteractions, {
   type DefaultInteractionsConfig,
@@ -36,12 +36,11 @@ interface Props extends ClassStyleAttrs {
   showGrid?: boolean;
   title?: string;
   size?: number;
-  children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
   onPointClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
 }
 
-function ScatterVis(props: Props) {
+function ScatterVis(props: PropsWithChildren<Props>) {
   const {
     abscissaParams,
     ordinateParams,

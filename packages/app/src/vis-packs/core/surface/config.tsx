@@ -1,12 +1,20 @@
 import { type CustomDomain } from '@h5web/lib';
 import { isDefined } from '@h5web/shared/guards';
-import { type ColorScaleType, ScaleType } from '@h5web/shared/vis-models';
+import {
+  type ColorScaleType,
+  type NoProps,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
-import { createContext, useContext, useState } from 'react';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useState,
+} from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { type ConfigProviderProps } from '../../models';
 import { type ColorMap } from '../heatmap/models';
 
 export interface SurfaceConfig {
@@ -50,7 +58,7 @@ function createSurfaceConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<SurfaceConfig>);
 
-export function SurfaceConfigProvider(props: ConfigProviderProps) {
+export function SurfaceConfigProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
   const [store] = useState(createSurfaceConfigStore);

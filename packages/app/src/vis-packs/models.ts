@@ -1,5 +1,6 @@
 import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
-import { type ElementType, type ReactNode } from 'react';
+import { type NoProps } from '@h5web/shared/vis-models';
+import { type ElementType, type PropsWithChildren } from 'react';
 import { type IconType } from 'react-icons';
 
 export interface VisContainerProps {
@@ -7,13 +8,9 @@ export interface VisContainerProps {
   toolbarContainer: HTMLDivElement | undefined;
 }
 
-export interface ConfigProviderProps {
-  children: ReactNode;
-}
-
 export interface VisDef {
   name: string;
   Icon: IconType;
   Container: ElementType<VisContainerProps>;
-  ConfigProvider?: ElementType<ConfigProviderProps>;
+  ConfigProvider?: ElementType<PropsWithChildren<NoProps>>;
 }
