@@ -1,9 +1,13 @@
 import { ImageType } from '@h5web/lib';
-import { createContext, useContext, useState } from 'react';
+import { type NoProps } from '@h5web/shared/vis-models';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useState,
+} from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-import { type ConfigProviderProps } from '../../models';
 
 export interface RgbVisConfig {
   showGrid: boolean;
@@ -54,7 +58,7 @@ function createRgbConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<RgbVisConfig>);
 
-export function RgbConfigProvider(props: ConfigProviderProps) {
+export function RgbConfigProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
   const [store] = useState(createRgbConfigStore);

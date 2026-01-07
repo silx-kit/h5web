@@ -7,6 +7,8 @@ import {
 
 import { type DType, type ScalarValue } from './hdf5-models';
 
+export interface NoProps {}
+
 export type NumArray = TypedArray | number[];
 export type AnyNumArray = NdArray<NumArray> | NumArray;
 

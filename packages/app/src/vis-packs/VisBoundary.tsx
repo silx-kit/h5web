@@ -1,4 +1,4 @@
-import { type ReactNode, Suspense } from 'react';
+import { type PropsWithChildren, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import ErrorFallback from '../ErrorFallback';
@@ -9,10 +9,9 @@ import ValueLoader from './ValueLoader';
 interface Props {
   resetKey?: unknown;
   isSlice?: boolean;
-  children: ReactNode;
 }
 
-function VisBoundary(props: Props) {
+function VisBoundary(props: PropsWithChildren<Props>) {
   const { resetKey, isSlice, children } = props;
   const { valuesStore } = useDataContext();
 

@@ -6,6 +6,7 @@ import {
   useFloating,
   useInteractions,
 } from '@floating-ui/react';
+import { type NoProps } from '@h5web/shared/vis-models';
 import { useToggle } from '@react-hookz/web';
 import {
   cloneElement,
@@ -21,9 +22,7 @@ import { POPOVER_CLEARANCE, useFloatingDismiss } from './controls/hooks';
 import styles from './OverflowMenu.module.css';
 import Separator from './Separator';
 
-interface Props {}
-
-function OverflowMenu(props: PropsWithChildren<Props>) {
+function OverflowMenu(props: PropsWithChildren<NoProps>) {
   const { children } = props;
   const validChildren = flattenChildren(children).filter(isValidElement);
 

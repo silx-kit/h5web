@@ -2,7 +2,7 @@ import { assertDefined } from '@h5web/shared/guards';
 import { type NumArray } from '@h5web/shared/vis-models';
 import { getDims } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
-import { type ReactNode, useMemo } from 'react';
+import { type PropsWithChildren, useMemo } from 'react';
 
 import DefaultInteractions, {
   type DefaultInteractionsConfig,
@@ -27,11 +27,10 @@ interface Props extends ClassStyleAttrs {
   ordinateParams?: AxisParams;
   flipXAxis?: boolean;
   flipYAxis?: boolean;
-  children?: ReactNode;
   interactions?: DefaultInteractionsConfig;
 }
 
-function RgbVis(props: Props) {
+function RgbVis(props: PropsWithChildren<Props>) {
   const {
     dataArray,
     aspect = 'equal',

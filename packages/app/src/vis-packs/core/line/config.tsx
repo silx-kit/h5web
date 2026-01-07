@@ -4,14 +4,18 @@ import {
   type AxisScaleType,
   type ComplexLineVisType,
   ComplexVisType,
+  type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
 import { useMap } from '@react-hookz/web';
-import { createContext, useContext, useState } from 'react';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useState,
+} from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-import { type ConfigProviderProps } from '../../models';
 
 export interface LineConfig {
   customDomain: CustomDomain;
@@ -75,7 +79,7 @@ function createLineConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<LineConfig>);
 
-export function LineConfigProvider(props: ConfigProviderProps) {
+export function LineConfigProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
   const [store] = useState(createLineConfigStore);

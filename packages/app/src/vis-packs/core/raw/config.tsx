@@ -1,8 +1,12 @@
-import { createContext, useContext, useState } from 'react';
+import { type NoProps } from '@h5web/shared/vis-models';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useState,
+} from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-import { type ConfigProviderProps } from '../../models';
 
 export interface RawConfig {
   fitImage: boolean;
@@ -26,7 +30,7 @@ function createRawConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<RawConfig>);
 
-export function RawConfigProvider(props: ConfigProviderProps) {
+export function RawConfigProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
   const [store] = useState(createRawConfigStore);

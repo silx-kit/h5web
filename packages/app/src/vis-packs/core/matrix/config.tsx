@@ -1,9 +1,13 @@
 import { Notation } from '@h5web/lib';
-import { createContext, useContext, useState } from 'react';
+import { type NoProps } from '@h5web/shared/vis-models';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useState,
+} from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-import { type ConfigProviderProps } from '../../models';
 
 export interface MatrixVisConfig {
   customCellWidth: number | undefined;
@@ -33,7 +37,7 @@ function createMatrixConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<MatrixVisConfig>);
 
-export function MatrixConfigProvider(props: ConfigProviderProps) {
+export function MatrixConfigProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
   const [store] = useState(createMatrixConfigStore);
