@@ -3,6 +3,7 @@ import {
   getSliceSelection,
   HeatmapVis,
   type IgnoreValue,
+  KeepZoom,
   useDomain,
   useSafeDomain,
   useSlicedDimsAndMapping,
@@ -118,7 +119,9 @@ function MappedHeatmapVis(props: Props) {
         flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}
         ignoreValue={ignoreValue}
-      />
+      >
+        <KeepZoom visKey="heatmap" />
+      </HeatmapVis>
     </>
   );
 }

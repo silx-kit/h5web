@@ -1,5 +1,5 @@
 import { useThree } from '@react-three/fiber';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 import { useMoveCameraTo } from '../../interactions/hooks';
 import { useVisCanvasContext } from './VisCanvasProvider';
@@ -9,8 +9,8 @@ function RatioEnforcer() {
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 
-  useEffect(() => {
-    if (!visRatio || camera.scale.x === camera.scale.y) {
+  useLayoutEffect(() => {
+    if (visRatio === undefined || camera.scale.x === camera.scale.y) {
       return;
     }
 

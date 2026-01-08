@@ -1,6 +1,7 @@
 import {
   type DimensionMapping,
   HeatmapVis,
+  KeepZoom,
   useDomain,
   useSafeDomain,
   useSlicedDimsAndMapping,
@@ -115,7 +116,9 @@ function MappedComplexHeatmapVis(props: Props) {
               }
             : undefined
         }
-      />
+      >
+        <KeepZoom visKey="heatmap" />
+      </HeatmapVis>
     </>
   );
 }

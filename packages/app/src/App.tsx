@@ -1,5 +1,6 @@
-import '@h5web/lib'; // make sure lib styles come first in CSS bundle
+import '@h5web/lib'; // eslint-disable-line import/no-duplicates -- make sure lib styles come first in CSS bundle
 
+import { KeepZoomProvider } from '@h5web/lib'; // eslint-disable-line import/no-duplicates
 import { useToggle } from '@react-hookz/web';
 import { Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -85,23 +86,25 @@ function App(props: Props) {
           />
           <VisConfigProvider>
             <DimMappingProvider>
-              <ErrorBoundary
-                resetKeys={[selectedPath, isInspecting]}
-                FallbackComponent={ErrorFallback}
-              >
-                <Suspense
-                  fallback={<EntityLoader isInspecting={isInspecting} />}
+              <KeepZoomProvider>
+                <ErrorBoundary
+                  resetKeys={[selectedPath, isInspecting]}
+                  FallbackComponent={ErrorFallback}
                 >
-                  {isInspecting ? (
-                    <MetadataViewer
-                      path={selectedPath}
-                      onSelectPath={onSelectPath}
-                    />
-                  ) : (
-                    <Visualizer path={selectedPath} />
-                  )}
-                </Suspense>
-              </ErrorBoundary>
+                  <Suspense
+                    fallback={<EntityLoader isInspecting={isInspecting} />}
+                  >
+                    {isInspecting ? (
+                      <MetadataViewer
+                        path={selectedPath}
+                        onSelectPath={onSelectPath}
+                      />
+                    ) : (
+                      <Visualizer path={selectedPath} />
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
+              </KeepZoomProvider>
             </DimMappingProvider>
           </VisConfigProvider>
         </ReflexElement>

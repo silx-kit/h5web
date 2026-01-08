@@ -1,4 +1,10 @@
-import { ScatterVis, useDomain, useSafeDomain, useVisDomain } from '@h5web/lib';
+import {
+  KeepZoom,
+  ScatterVis,
+  useDomain,
+  useSafeDomain,
+  useVisDomain,
+} from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
 import { type ArrayValue, type NumericType } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
@@ -64,7 +70,9 @@ function MappedScatterVis(props: Props) {
         scaleType={scaleType}
         showGrid={showGrid}
         title={title}
-      />
+      >
+        <KeepZoom visKey="scatter" />
+      </ScatterVis>
     </>
   );
 }

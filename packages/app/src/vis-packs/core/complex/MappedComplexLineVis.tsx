@@ -1,6 +1,7 @@
 import {
   ComplexVisType,
   type DimensionMapping,
+  KeepZoom,
   LineVis,
   useCombinedDomain,
   useDomains,
@@ -140,7 +141,9 @@ function MappedComplexLineVis(props: Props) {
         visible={valueVisible}
         interpolation={interpolation}
         testid={dimMapping.toString()}
-      />
+      >
+        <KeepZoom visKey="line" xOnly />
+      </LineVis>
     </>
   );
 }
