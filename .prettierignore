@@ -3,3 +3,5 @@ pnpm-lock.yaml
 /apps/demo/dist/
 /apps/storybook/build/
 /packages/**/dist*/
+
+/coverage/
