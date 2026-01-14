@@ -1,5 +1,6 @@
 import {
   type DimensionMapping,
+  KeepZoom,
   RgbVis,
   useSlicedDimsAndMapping,
 } from '@h5web/lib';
@@ -73,7 +74,9 @@ function MappedRgbVis(props: Props) {
         }}
         flipXAxis={flipXAxis}
         flipYAxis={flipYAxis}
-      />
+      >
+        <KeepZoom visKey="rgb" />
+      </RgbVis>
     </>
   );
 }

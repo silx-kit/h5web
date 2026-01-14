@@ -2,6 +2,7 @@ import {
   type DimensionMapping,
   getSliceSelection,
   type IgnoreValue,
+  KeepZoom,
   LineVis,
   useCombinedDomain,
   useDomain,
@@ -191,7 +192,9 @@ function MappedLineVis(props: Props) {
         interpolation={interpolation}
         visible={valueVisible}
         testid={dimMapping.toString()}
-      />
+      >
+        <KeepZoom visKey="line" xOnly />
+      </LineVis>
     </>
   );
 }

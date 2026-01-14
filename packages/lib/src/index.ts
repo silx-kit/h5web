@@ -83,6 +83,8 @@ export { default as AxialSelectToZoom } from './interactions/AxialSelectToZoom';
 export { default as SelectionTool } from './interactions/SelectionTool';
 export { default as AxialSelectionTool } from './interactions/AxialSelectionTool';
 export { default as PreventDefaultContextMenu } from './interactions/PreventDefaultContextMenu';
+export { default as KeepZoom } from './interactions/KeepZoom';
+export { KeepZoomProvider } from './interactions/keep-zoom-store';
 export type { PanProps } from './interactions/Pan';
 export type { ZoomProps } from './interactions/Zoom';
 export type { XAxisZoomProps } from './interactions/XAxisZoom';

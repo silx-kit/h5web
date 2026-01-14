@@ -7,8 +7,5 @@ interface TooltipStore {
 
 export const useTooltipStore = create<TooltipStore>((set) => ({
   val: undefined,
-  setTooltipValue: (x: number, y: number, v: number) =>
-    set(() => ({
-      val: { x, y, v },
-    })),
+  setTooltipValue: (x, y, v) => set(() => ({ val: { x, y, v } })),
 }));
