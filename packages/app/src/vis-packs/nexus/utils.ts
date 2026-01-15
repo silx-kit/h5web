@@ -26,12 +26,13 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
-import { type AttrValuesStore } from '../../providers/models';
+import { type AttrValuesStore, type ValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
 import {
   type AxisDef,
   type DatasetInfo,
   type DefaultSlice,
+  type ScalingInfo,
   type SilxStyle,
 } from './models';
 
@@ -126,6 +127,38 @@ export function findAuxErrorDataset(
 
   assertDataset(dataset);
   assertArrayShape(dataset);
+  assertNumericType(dataset);
+  return dataset;
+}
+
+export function findScalingFactor(
+  group: GroupWithChildren,
+  datasetName: string,
+): Dataset<ScalarShape, NumericType> | undefined {
+  const dataset = getChildEntity(group, `${datasetName}_scaling_factor`);
+
+  if (!dataset) {
+    return undefined;
+  }
+
+  assertDataset(dataset);
+  assertScalarShape(dataset);
+  assertNumericType(dataset);
+  return dataset;
+}
+
+export function findOffset(
+  group: GroupWithChildren,
+  datasetName: string,
+): Dataset<ScalarShape, NumericType> | undefined {
+  const dataset = getChildEntity(group, `${datasetName}_offset`);
+
+  if (!dataset) {
+    return undefined;
+  }
+
+  assertDataset(dataset);
+  assertScalarShape(dataset);
   assertNumericType(dataset);
   return dataset;
 }
@@ -310,6 +343,27 @@ export function getSilxStyle(
     console.warn(`Malformed 'SILX_style' attribute: ${silxStyle}`); // eslint-disable-line no-console
     return {};
   }
+}
+
+export function getScalingInfo(
+  group: GroupWithChildren,
+  datasetName: string,
+  valuesStore: ValuesStore,
+): ScalingInfo {
+  const scalingFactorDataset = findScalingFactor(group, datasetName);
+  const scalingFactor = scalingFactorDataset
+    ? Number(valuesStore.get({ dataset: scalingFactorDataset }))
+    : undefined;
+
+  const offsetDataset = findOffset(group, datasetName);
+  const offset = offsetDataset
+    ? Number(valuesStore.get({ dataset: offsetDataset }))
+    : undefined;
+
+  return {
+    scalingFactor,
+    offset,
+  };
 }
 
 export function getDatasetInfo(
