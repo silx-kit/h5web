@@ -148,6 +148,14 @@ export function isComplexArray(val: unknown): val is H5WebComplex[] {
   return Array.isArray(val) && isComplex(val[0]);
 }
 
+export function isBigIntArray(val: unknown): val is bigint[] {
+  return Array.isArray(val) && typeof val[0] === 'bigint';
+}
+
+export function isBoolArray(val: unknown): val is boolean[] {
+  return Array.isArray(val) && typeof val[0] === 'boolean';
+}
+
 export function isTypedArray(val: unknown): val is TypedArray {
   return (
     val instanceof Int8Array ||

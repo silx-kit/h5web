@@ -1,4 +1,9 @@
 import {
+  assertDefined,
+  isBigIntArray,
+  isBigIntTypedArray,
+} from '@h5web/shared/guards';
+import {
   type ComplexType,
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
@@ -44,20 +49,19 @@ function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
   const auxValues = useDatasetsValues(auxDatasets, selection);
   const auxErrors = useDatasetsValues(auxErrorDatasets, selection);
   const rawAxisValues = useDatasetsValues(axisDatasets);
+
   const axisValues = rawAxisValues.map((value, i) => {
-    const axisScalingFactor = axisDefs[i]?.scalingFactor;
-    const axisOffset = axisDefs[i]?.offset;
-    if (value && (axisScalingFactor || axisOffset)) {
-      const offset = axisOffset ?? 0;
-      const scalingFactor = axisScalingFactor ?? 1;
-      const scaledValue: number[] = [];
-      value.forEach((v) => {
-        scaledValue.push(scalingFactor * Number(v) + offset);
-      });
-      return scaledValue;
+    if (!value || isBigIntArray(value) || isBigIntTypedArray(value)) {
+      return value;
     }
 
-    return value;
+    assertDefined(axisDefs[i]);
+    const { scalingFactor, offset } = axisDefs[i];
+    if (scalingFactor === undefined || offset === undefined) {
+      return value;
+    }
+
+    return value.map((v) => scalingFactor * v + offset);
   });
 
   return render({ title, signal, errors, auxValues, auxErrors, axisValues });
