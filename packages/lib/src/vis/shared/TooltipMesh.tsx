@@ -1,3 +1,4 @@
+import { useSyncedRef } from '@react-hookz/web';
 import { type ThreeEvent } from '@react-three/fiber';
 import { useTooltip } from '@visx/tooltip';
 import { type ReactNode, useCallback } from 'react';
@@ -28,6 +29,8 @@ function TooltipMesh(props: Props) {
     hideTooltip,
   } = useTooltip<Coords>();
 
+  const tooltipOpenRef = useSyncedRef(tooltipOpen);
+
   // Show and/or update tooltip when pointer moves except when dragging
   const onPointerMove = useCallback(
     (evt: ThreeEvent<PointerEvent>) => {
@@ -52,10 +55,10 @@ function TooltipMesh(props: Props) {
   const onPointerOut = useCallback(() => {
     /* `onPointerOut` is called after `onPointerUp` for some reason,
      * so we make sure not to hide the tooltip again in this case. */
-    if (tooltipOpen) {
+    if (tooltipOpenRef.current) {
       hideTooltip();
     }
-  }, [hideTooltip, tooltipOpen]);
+  }, [hideTooltip, tooltipOpenRef]);
 
   // Hide tooltip when user starts panning
   const onPointerDown = useCallback(() => hideTooltip(), [hideTooltip]);
