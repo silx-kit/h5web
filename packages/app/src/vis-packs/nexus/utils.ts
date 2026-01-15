@@ -4,6 +4,7 @@ import {
   assertArrayShape,
   assertDataset,
   assertDefined,
+  assertNum,
   assertNumericLikeOrComplexType,
   assertNumericType,
   assertScalarShape,
@@ -131,7 +132,7 @@ export function findAuxErrorDataset(
   return dataset;
 }
 
-export function findScalingFactor(
+export function findScalingFactorDataset(
   group: GroupWithChildren,
   datasetName: string,
 ): Dataset<ScalarShape, NumericType> | undefined {
@@ -147,7 +148,7 @@ export function findScalingFactor(
   return dataset;
 }
 
-export function findOffset(
+export function findOffsetDataset(
   group: GroupWithChildren,
   datasetName: string,
 ): Dataset<ScalarShape, NumericType> | undefined {
@@ -345,24 +346,38 @@ export function getSilxStyle(
   }
 }
 
-export function getScalingInfo(
+function getNumericValue(
+  dataset: Dataset<ScalarShape, NumericType> | undefined,
+  valuesStore: ValuesStore,
+): number | undefined {
+  if (dataset === undefined) {
+    return undefined;
+  }
+
+  const value = valuesStore.get({ dataset });
+  assertNum(value);
+  return value;
+}
+
+export function getAxisDef(
   group: GroupWithChildren,
-  datasetName: string,
+  dataset: Dataset,
+  attrValuesStore: AttrValuesStore,
   valuesStore: ValuesStore,
 ): ScalingInfo {
-  const scalingFactorDataset = findScalingFactor(group, datasetName);
-  const scalingFactor = scalingFactorDataset
-    ? Number(valuesStore.get({ dataset: scalingFactorDataset }))
-    : undefined;
-
-  const offsetDataset = findOffset(group, datasetName);
-  const offset = offsetDataset
-    ? Number(valuesStore.get({ dataset: offsetDataset }))
-    : undefined;
+  const scalingFactor = getNumericValue(
+    findScalingFactorDataset(group, dataset.name),
+    valuesStore,
+  );
+  const offset = getNumericValue(
+    findOffsetDataset(group, dataset.name),
+    valuesStore,
+  );
 
   return {
     scalingFactor,
     offset,
+    ...getDatasetInfo(dataset, attrValuesStore),
   };
 }
 
