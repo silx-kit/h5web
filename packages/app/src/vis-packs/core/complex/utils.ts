@@ -14,7 +14,7 @@ const TWO_PI = 2 * Math.PI;
 export const COMPLEX_VIS_TYPE_LABELS = {
   [ComplexVisType.Amplitude]: 'Amplitude',
   [ComplexVisType.Phase]: 'Phase',
-  [ComplexVisType.PhaseUnwrapped]: 'Phase (unwrapped)',
+  [ComplexVisType.PhaseUnwrapped]: 'Phase, unwrapped',
   [ComplexVisType.PhaseAmplitude]: 'Phase & Amplitude',
 } satisfies Record<ComplexVisType, string>;
 
