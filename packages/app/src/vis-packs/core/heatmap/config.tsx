@@ -2,6 +2,7 @@ import { type CustomDomain } from '@h5web/lib';
 import { isDefined } from '@h5web/shared/guards';
 import {
   type ColorScaleType,
+  type ComplexHeatmapVisType,
   ComplexVisType,
   type NoProps,
   ScaleType,
@@ -31,8 +32,8 @@ export interface HeatmapConfig {
   scaleType: ColorScaleType;
   setScaleType: (scaleType: ColorScaleType) => void;
 
-  complexVisType: ComplexVisType;
-  setComplexVisType: (complexVisType: ComplexVisType) => void;
+  complexVisType: ComplexHeatmapVisType;
+  setComplexVisType: (complexVisType: ComplexHeatmapVisType) => void;
 
   showGrid: boolean;
   toggleGrid: () => void;

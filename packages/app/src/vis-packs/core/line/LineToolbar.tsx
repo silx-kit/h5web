@@ -12,6 +12,7 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import {
+  type ComplexLineVisType,
   ComplexVisType,
   type Domain,
   type ExportEntry,
@@ -22,6 +23,12 @@ import { MdAutoGraph, MdGridOn } from 'react-icons/md';
 import { CURVE_TYPE_LABELS, INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { type LineConfig } from './config';
 import ErrorsIcon from './ErrorsIcon';
+
+const COMPLEX_VIS_TYPES: ComplexLineVisType[] = [
+  ComplexVisType.Amplitude,
+  ComplexVisType.Phase,
+  ComplexVisType.PhaseUnwrapped,
+];
 
 interface Props {
   dataDomain: Domain;
@@ -84,7 +91,7 @@ function LineToolbar(props: Props) {
           <ComplexVisTypeSelector
             value={complexVisType}
             onChange={setComplexVisType}
-            options={[ComplexVisType.Amplitude, ComplexVisType.Phase]}
+            options={COMPLEX_VIS_TYPES}
           />
         </>
       )}
