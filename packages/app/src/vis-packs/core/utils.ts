@@ -4,7 +4,9 @@ import {
   type InteractionInfo,
 } from '@h5web/lib';
 import {
+  isBigIntArray,
   isBigIntTypedArray,
+  isBoolArray,
   isIntegerType,
   isNumericType,
 } from '@h5web/shared/guards';
@@ -86,14 +88,6 @@ export function applyMapping(
 
 export function getImageInteractions(keepRatio: boolean): InteractionInfo[] {
   return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
-}
-
-function isBigIntArray(val: ArrayValue<NumericLikeType>): val is bigint[] {
-  return Array.isArray(val) && typeof val[0] === 'bigint';
-}
-
-function isBoolArray(val: ArrayValue<NumericLikeType>): val is boolean[] {
-  return Array.isArray(val) && typeof val[0] === 'boolean';
 }
 
 export function toNumArray<T extends ArrayValue<NumericLikeType> | undefined>(

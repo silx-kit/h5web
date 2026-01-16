@@ -28,6 +28,11 @@ export interface DatasetInfo {
   unit: string | undefined;
 }
 
+export interface ScalingInfo {
+  scalingFactor: number | undefined;
+  offset: number | undefined;
+}
+
 export interface DatasetDef<
   T extends NumericLikeType | ComplexType = NumericLikeType | ComplexType,
 > extends DatasetInfo {
@@ -38,7 +43,7 @@ type WithError<T extends DatasetDef> = T & {
   errorDataset?: Dataset<ArrayShape, NumericType>;
 };
 
-export type AxisDef = DatasetDef<NumericType>;
+export type AxisDef = DatasetDef<NumericType> & ScalingInfo;
 
 export type DefaultSlice = (number | '.')[];
 export interface SilxStyle {

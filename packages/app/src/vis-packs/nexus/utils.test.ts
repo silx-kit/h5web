@@ -5,9 +5,27 @@ import { describe, expect, it } from 'vitest';
 import { applyDefaultSlice, guessKeepRatio } from './utils';
 
 const axisDataset = dataset('foo', intType(), [5]);
-const axisDefNoUnit = { label: 'foo', unit: undefined, dataset: axisDataset };
-const axisDefUnitX = { label: 'foo', unit: 'mm', dataset: axisDataset };
-const axisDefUnitY = { label: 'foo', unit: 'degrees', dataset: axisDataset };
+const axisDefNoUnit = {
+  label: 'foo',
+  unit: undefined,
+  dataset: axisDataset,
+  scalingFactor: undefined,
+  offset: undefined,
+};
+const axisDefUnitX = {
+  label: 'foo',
+  unit: 'mm',
+  dataset: axisDataset,
+  scalingFactor: undefined,
+  offset: undefined,
+};
+const axisDefUnitY = {
+  label: 'foo',
+  unit: 'degrees',
+  dataset: axisDataset,
+  scalingFactor: undefined,
+  offset: undefined,
+};
 
 describe('guessKeepRatio', () => {
   it('should return `cover` if units of both axes are provided and equal', () => {
