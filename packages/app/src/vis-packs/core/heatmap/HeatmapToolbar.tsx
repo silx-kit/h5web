@@ -10,7 +10,11 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import { ComplexVisType, type ExportEntry } from '@h5web/shared/vis-models';
+import {
+  type ComplexHeatmapVisType,
+  ComplexVisType,
+  type ExportEntry,
+} from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import {
   MdAspectRatio,
@@ -21,6 +25,12 @@ import {
 
 import { getImageInteractions } from '../utils';
 import { type HeatmapConfig } from './config';
+
+const COMPLEX_VIS_TYPES: ComplexHeatmapVisType[] = [
+  ComplexVisType.Amplitude,
+  ComplexVisType.Phase,
+  ComplexVisType.PhaseAmplitude,
+];
 
 interface Props {
   dataDomain: Domain;
@@ -82,7 +92,7 @@ function HeatmapToolbar(props: Props) {
         <ComplexVisTypeSelector
           value={complexVisType}
           onChange={setComplexVisType}
-          options={Object.values(ComplexVisType)}
+          options={COMPLEX_VIS_TYPES}
         />
       )}
 

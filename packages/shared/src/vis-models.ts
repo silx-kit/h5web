@@ -53,11 +53,19 @@ export type ColorScaleType = Exclude<ScaleType, 'gamma'>;
 export type AxisScaleType = Exclude<ScaleType, 'sqrt' | 'gamma'>;
 
 export enum ComplexVisType {
-  Phase = 'phase',
   Amplitude = 'amplitude',
+  Phase = 'phase',
+  PhaseUnwrapped = 'phase-unwrapped',
   PhaseAmplitude = 'phase-amplitude',
 }
-export type ComplexLineVisType = Exclude<ComplexVisType, 'phase-amplitude'>;
+export type ComplexLineVisType = Exclude<
+  ComplexVisType,
+  ComplexVisType.PhaseAmplitude
+>;
+export type ComplexHeatmapVisType = Exclude<
+  ComplexVisType,
+  ComplexVisType.PhaseUnwrapped
+>;
 
 export interface Bounds {
   min: number;

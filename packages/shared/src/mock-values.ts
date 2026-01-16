@@ -30,10 +30,7 @@ const oneD_enum = () => ndarray([0, 2, 2, 1, 1, 0, 2, 2, 1, 1]);
 const oneD_cplx = () =>
   ndarray(
     range9().map((val) =>
-      cplx(
-        val * Math.cos((val * 3.14) / 10),
-        val * Math.sin((val * 3.14) / 10),
-      ),
+      cplx(val * Math.cos(val * 3.14), val * Math.sin(val * 3.14)),
     ),
   );
 

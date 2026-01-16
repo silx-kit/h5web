@@ -69,26 +69,34 @@ function MappedComplexLineVis(props: Props) {
     interpolation,
   } = config;
 
-  const { phaseArrays, amplitudeArrays } = usePhaseAmplitudeArrays([
-    value,
-    ...auxValues,
-  ]);
+  const { phaseArrays, unwrappedPhaseArrays, amplitudeArrays } =
+    usePhaseAmplitudeArrays([value, ...auxValues]);
   const numAxisArrays = useToNumArrays(axisValues);
 
   const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
   const mappedPhaseArrays = useMappedArrays(phaseArrays, ...mappingArgs);
+  const mappedUnwrappedPhaseArrays = useMappedArrays(
+    unwrappedPhaseArrays,
+    ...mappingArgs,
+  );
   const mappedAmplitudeArrays = useMappedArrays(
     amplitudeArrays,
     ...mappingArgs,
   );
 
   const phaseDomains = useDomains(mappedPhaseArrays, yScaleType);
+  const unwrappedPhaseDomains = useDomains(
+    mappedUnwrappedPhaseArrays,
+    yScaleType,
+  );
   const amplitudeDomains = useDomains(mappedAmplitudeArrays, yScaleType);
 
   const [pickedArrays, pickedDomains] =
-    complexVisType === ComplexVisType.Phase
-      ? [mappedPhaseArrays, phaseDomains]
-      : [mappedAmplitudeArrays, amplitudeDomains];
+    complexVisType === ComplexVisType.Amplitude
+      ? [mappedAmplitudeArrays, amplitudeDomains]
+      : complexVisType === ComplexVisType.Phase
+        ? [mappedPhaseArrays, phaseDomains]
+        : [mappedUnwrappedPhaseArrays, unwrappedPhaseDomains];
 
   const [dataArray, ...auxArrays] = pickedArrays;
   const [dataDomain, ...auxDomains] = pickedDomains;

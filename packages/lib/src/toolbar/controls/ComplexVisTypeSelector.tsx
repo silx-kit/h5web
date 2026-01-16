@@ -3,8 +3,9 @@ import { ComplexVisType } from '@h5web/shared/vis-models';
 import Selector from './Selector/Selector';
 
 const VIS_TYPE_OPTIONS = {
-  [ComplexVisType.Phase]: 'φ Phase',
   [ComplexVisType.Amplitude]: '𝓐 Amplitude',
+  [ComplexVisType.Phase]: 'φ Phase',
+  [ComplexVisType.PhaseUnwrapped]: 'φ Phase (unwrapped)',
   [ComplexVisType.PhaseAmplitude]: 'φ𝓐 Phase & Amp.',
 } satisfies Record<ComplexVisType, string>;
 
