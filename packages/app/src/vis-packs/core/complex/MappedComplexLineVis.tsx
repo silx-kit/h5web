@@ -84,12 +84,13 @@ function MappedComplexLineVis(props: Props) {
     ...mappingArgs,
   );
 
-  const phaseDomains = useDomains(mappedPhaseArrays, yScaleType);
-  const unwrappedPhaseDomains = useDomains(
-    mappedUnwrappedPhaseArrays,
-    yScaleType,
-  );
-  const amplitudeDomains = useDomains(mappedAmplitudeArrays, yScaleType);
+  const phaseDomains = useDomains(mappedPhaseArrays, { scaleType: yScaleType });
+  const unwrappedPhaseDomains = useDomains(mappedUnwrappedPhaseArrays, {
+    scaleType: yScaleType,
+  });
+  const amplitudeDomains = useDomains(mappedAmplitudeArrays, {
+    scaleType: yScaleType,
+  });
 
   const [pickedArrays, pickedDomains] =
     complexVisType === ComplexVisType.Amplitude

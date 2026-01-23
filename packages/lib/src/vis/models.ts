@@ -2,6 +2,7 @@ import {
   type AxisScaleType,
   type ColorScaleType,
   type Domain,
+  type IgnoreValue,
   type NumArray,
   type ScaleType,
 } from '@h5web/shared/vis-models';
@@ -20,6 +21,12 @@ export type Aspect = 'auto' | 'equal' | number;
 
 export type Bound = 'min' | 'max';
 export type CustomDomain = [min: number | null, max: number | null]; // `null` for persistability
+
+export interface GetDomainOpts {
+  includeErrors?: boolean;
+  scaleType?: ScaleType;
+  ignoreValue?: IgnoreValue;
+}
 
 export interface DomainErrors {
   minGreater?: boolean;

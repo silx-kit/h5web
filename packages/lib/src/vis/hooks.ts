@@ -2,10 +2,13 @@ import { createMemo } from '@h5web/shared/createMemo';
 import {
   type AnyNumArray,
   type Domain,
-  type IgnoreValue,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { getBounds, getValidDomainForScale } from '@h5web/shared/vis-utils';
+import {
+  getBounds,
+  getBoundsWithErrors,
+  getValidDomainForScale,
+} from '@h5web/shared/vis-utils';
 import { useRerender, useSyncedRef } from '@react-hookz/web';
 import { type Camera, useFrame, useThree } from '@react-three/fiber';
 import {
@@ -18,14 +21,15 @@ import {
 } from 'react';
 import { type BufferGeometry } from 'three';
 
-import { type H5WebGeometry } from './models';
+import { type GetDomainOpts, type H5WebGeometry } from './models';
 import {
   getAxisDomain,
   getCombinedDomain,
   getValueToIndexScale,
 } from './utils';
 
-const useBounds = createMemo(getBounds);
+export const useBounds = createMemo(getBounds);
+export const useBoundsWithErrors = createMemo(getBoundsWithErrors);
 export const useValidDomainForScale = createMemo(getValidDomainForScale);
 
 export const useCombinedDomain = createMemo(getCombinedDomain);
@@ -33,29 +37,71 @@ export const useValueToIndexScale = createMemo(getValueToIndexScale);
 export const useAxisDomain = createMemo(getAxisDomain);
 
 export function useDomain(
-  valuesArray: AnyNumArray,
-  scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray,
-  ignoreValue?: IgnoreValue,
+  values: AnyNumArray,
+  opts: GetDomainOpts & { errors?: AnyNumArray } = {},
 ): Domain | undefined {
-  // Distinct memoized calls allows for bounds to not be recomputed when scale type changes
-  const bounds = useBounds(valuesArray, errorArray, ignoreValue);
-  return useValidDomainForScale(bounds, scaleType);
+  const {
+    errors,
+    includeErrors = true,
+    scaleType = ScaleType.Linear,
+    ignoreValue,
+  } = opts;
+
+  // Memoize bounds separately so they are not recomputed when scale type changes
+  const bounds = useMemo(() => {
+    if (errors) {
+      return getBoundsWithErrors(values, errors, ignoreValue);
+    }
+
+    const b = getBounds(values, ignoreValue);
+    return [b, b];
+  }, [values, errors, ignoreValue]);
+
+  return useMemo(() => {
+    const [boundsWithErrors, boundsWithoutErrors] = bounds;
+
+    return getValidDomainForScale(
+      includeErrors ? boundsWithErrors : boundsWithoutErrors,
+      scaleType,
+    );
+  }, [bounds, scaleType, includeErrors]);
 }
 
 export function useDomains(
   valuesArrays: AnyNumArray[],
-  scaleType: ScaleType = ScaleType.Linear,
-  errorsArrays?: (AnyNumArray | undefined)[],
+  opts: GetDomainOpts & { errorsArrays?: (AnyNumArray | undefined)[] } = {},
 ): (Domain | undefined)[] {
-  const allBounds = useMemo(() => {
-    return valuesArrays.map((arr, i) => getBounds(arr, errorsArrays?.[i]));
-  }, [valuesArrays, errorsArrays]);
+  const {
+    errorsArrays,
+    includeErrors = true,
+    scaleType = ScaleType.Linear,
+    ignoreValue,
+  } = opts;
 
-  return useMemo(
-    () => allBounds.map((bounds) => getValidDomainForScale(bounds, scaleType)),
-    [allBounds, scaleType],
-  );
+  // Memoize bounds separately so they are not recomputed when scale type changes
+  const allBounds = useMemo(() => {
+    if (errorsArrays) {
+      return valuesArrays.map((arr, i) => {
+        return getBoundsWithErrors(arr, errorsArrays[i], ignoreValue);
+      });
+    }
+
+    return valuesArrays.map((arr) => {
+      const b = getBounds(arr, ignoreValue);
+      return [b, b];
+    });
+  }, [valuesArrays, errorsArrays, ignoreValue]);
+
+  return useMemo(() => {
+    return allBounds.map((bounds) => {
+      const [boundsWithErrors, boundsWithoutErrors] = bounds;
+
+      return getValidDomainForScale(
+        includeErrors ? boundsWithErrors : boundsWithoutErrors,
+        scaleType,
+      );
+    });
+  }, [allBounds, includeErrors, scaleType]);
 }
 
 export function useCameraState<T>(

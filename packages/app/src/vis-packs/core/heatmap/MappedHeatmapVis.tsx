@@ -74,7 +74,7 @@ function MappedHeatmapVis(props: Props) {
   const dataArray = useMappedArray(numArray, ...mappingArgs);
 
   const dataDomain =
-    useDomain(dataArray, scaleType, undefined, ignoreValue) || DEFAULT_DOMAIN;
+    useDomain(dataArray, { scaleType, ignoreValue }) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 

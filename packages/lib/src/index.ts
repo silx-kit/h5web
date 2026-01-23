@@ -245,7 +245,16 @@ export { default as ScatterPointsGeometry } from './vis/scatter/scatterPointsGeo
 export { default as TiledHeatmapMesh } from './vis/tiles/TiledHeatmapMesh';
 export { default as TiledTooltipMesh } from './vis/tiles/TiledTooltipMesh';
 export { getLayerSizes, TilesApi } from './vis/tiles/api';
-export { useValidDomainForScale } from './vis/hooks';
+export {
+  useBounds,
+  useBoundsWithErrors,
+  useValidDomainForScale,
+} from './vis/hooks';
+export {
+  getBounds,
+  getBoundsWithErrors,
+  getValidDomainForScale,
+} from '@h5web/shared/vis-utils';
 export {
   assertLength,
   assertDefined,

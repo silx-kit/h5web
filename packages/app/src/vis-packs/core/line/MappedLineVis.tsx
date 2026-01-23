@@ -111,18 +111,19 @@ function MappedLineVis(props: Props) {
   const auxArrays = useMappedArrays(numAuxArrays, ...mappingArgs);
   const auxErrorsArrays = useMappedArrays(numAuxErrorsArrays, ...mappingArgs);
 
-  const dataDomain = useDomain(
-    dataArray,
-    yScaleType,
-    showErrors ? errorsArray : undefined,
+  const dataDomain = useDomain(dataArray, {
+    errors: errorsArray,
+    includeErrors: showErrors,
+    scaleType: yScaleType,
     ignoreValue,
-  );
+  });
 
-  const auxDomains = useDomains(
-    auxArrays,
-    yScaleType,
-    showErrors ? auxErrorsArrays : undefined,
-  );
+  const auxDomains = useDomains(auxArrays, {
+    errorsArrays: auxErrorsArrays,
+    includeErrors: showErrors,
+    scaleType: yScaleType,
+    ignoreValue,
+  });
 
   const combinedDomain =
     useCombinedDomain([
