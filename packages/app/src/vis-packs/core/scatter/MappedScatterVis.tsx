@@ -43,7 +43,7 @@ function MappedScatterVis(props: Props) {
   const numAxisArrays = useToNumArrays(axisValues);
 
   const dataArray = useBaseArray(numArray, [value.length]);
-  const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
+  const dataDomain = useDomain(dataArray, { scaleType }) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 

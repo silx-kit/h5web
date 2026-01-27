@@ -6,7 +6,6 @@ import {
   GlyphType as GlyphTypeEnum,
   Interpolation,
   mockValues,
-  ScaleType,
   useDomain,
   VisCanvas,
 } from '@h5web/lib';
@@ -55,12 +54,10 @@ export const Default = {
     const { abscissas, ordinates, errors, ignoreValue } = args;
 
     const abscissaDomain = useDomain(abscissas);
-    const ordinateDomain = useDomain(
-      ordinates,
-      ScaleType.Linear,
+    const ordinateDomain = useDomain(ordinates, {
       errors,
       ignoreValue,
-    );
+    });
 
     assertDefined(abscissaDomain);
     assertDefined(ordinateDomain);

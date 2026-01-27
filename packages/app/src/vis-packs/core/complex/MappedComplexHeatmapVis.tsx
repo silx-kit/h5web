@@ -66,8 +66,8 @@ function MappedComplexHeatmapVis(props: Props) {
   const phaseArray = useMappedArray(phase, ...mappingArgs);
   const amplitudeArray = useMappedArray(amplitude, ...mappingArgs);
 
-  const phaseDomain = useDomain(phase, scaleType) || DEFAULT_DOMAIN;
-  const amplitudeDomain = useDomain(amplitude, scaleType) || DEFAULT_DOMAIN;
+  const phaseDomain = useDomain(phase, { scaleType }) || DEFAULT_DOMAIN;
+  const amplitudeDomain = useDomain(amplitude, { scaleType }) || DEFAULT_DOMAIN;
 
   const [dataArray, dataDomain] =
     complexVisType !== ComplexVisType.Amplitude

@@ -11,8 +11,8 @@ import HeatmapVisStoriesMeta from './HeatmapVis.stories';
 
 const twoD = mockValues.twoD();
 const domain = getDomain(twoD.data);
-const logSafeDomain = getDomain(twoD.data, ScaleType.Log);
-const sqrtSafeDomain = getDomain(twoD.data, ScaleType.Sqrt);
+const logSafeDomain = getDomain(twoD.data, { scaleType: ScaleType.Log });
+const sqrtSafeDomain = getDomain(twoD.data, { scaleType: ScaleType.Sqrt });
 
 const meta = {
   ...HeatmapVisStoriesMeta,

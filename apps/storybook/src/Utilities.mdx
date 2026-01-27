@@ -6,35 +6,46 @@ The library exposes a number of utility functions and custom React hooks, which 
 
 Find the min and max values contained in a numeric array. The function supports plain arrays, typed arrays and ndarrays: `number[]`, `TypedArray`, `NdArray<number[]>`, `NdArray<TypedArray>`
 
-- If `scaleType` is `ScaleType.Log` and the domain crosses zero, clamp the min to the first strictly positive value or return `undefined` if the domain is not supported (i.e. `[-x, 0]`).
-- If `scaleType` is `ScaleType.Sqrt` and the domain crosses zero, clamp the min to the first positive value (including 0).
-- If `errorArray` is provided, the returned domain is computed for `values + errors` and `values - errors`.
-- If the optional `ignoreValue` callback is provided, it is called for each value in the array; if it returns `true`, the value is ignored from the domain computation.
+The second parameter is an options object:
+
+- `errors` – the errors to be added/subtracted to the values (one error per value)
+- `includeErrors` – whether to return the domain with or without the errors (`true` by default)
+- `scaleType` – the scale with which the returned domain must be compatible:
+  - with `ScaleType.Log`, the min is clamped to the first strictly positive value
+  - with `ScaleType.Sqrt` the min is clamped to the first positive value including 0
+- `ignoreValue` – a function called for each value in the array; if it returns `true`, the value is ignored from the domain computation
+
+Note that `getDomain` returns `undefined` if:
+
+- all the values in the array are infinite, NaN or ignored via `ignoreValue`;
+- the domain is not compatible with the given `scaleType` (e.g. `[-x, 0]` in log scale).
 
 ```ts
-getDomain(
-  valuesArray: AnyNumArray, // NdArray<TypedArray | number[]> | TypedArray | number[]
-  scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray,
-  ignoreValue?: IgnoreValue
-): Domain | undefined
+getDomain(values: AnyNumArray, opts?: GetDomainOpts & { errors?: AnyNumArray }): Domain | undefined
 
 const linearDomain = getDomain([10, 5, -1]); // [-1, 10]
-const logDomain = getDomain([-1, 2, 10], ScaleType.Log); // [2, 10]
+const logDomain = getDomain([-1, 0, 2], { scaleType: ScaleType.Log }); // [2, 2]
+const sqrtDomain = getDomain([-1, 0, 2], { scaleType: ScaleType.Sqrt }); // [0, 2]
 
 const myArray = ndarray([0, 1, 2, 3], [2, 2]);
 const myDomain = getDomain(myArray); // [0, 3]
+
+const withErrors = getDomain([2, -1, 10], { errors: [1, 2, 3] }); // [-3, 13]
+const withoutErrors = getDomain([2, -1, 10], { errors: [1, 2, 3], includeErrors: false }); // [-1, 10]
+const withIgnore = getDomain([30, 20, 10], { ignoreValue: (val) => val > 20 }); // [10, 20]
+
+const undef1 = getDomain([2, NaN, Infinity], { ignoreValue: (val) => val === 2 }); // undefined
+const undef2 = getDomain([0, -1, -2], { scaleType: ScaleType.Log }); // undefined
 ```
 
 #### getDomains
 
-Find the domains of multiple numeric arrays. Errors can be accounted for each array by providing an array of numeric error arrays of the same length. Useful when dealing with auxiliary curves.
+Find the domains of multiple numeric arrays. Useful when dealing with auxiliary curves.
 
 ```ts
 getDomains(
-  valueArrays: AnyNumArray[],
-  scaleType: ScaleType = ScaleType.Linear,
-  errorArrays?: (AnyNumArray | undefined)[]
+  valuesArrays: AnyNumArray[],
+  opts?: GetDomainOpts & { errorsArrays: (AnyNumArray | undefined)[] }
 ): (Domain | undefined)[]
 
 const linearDomains = getDomains([[-1, 5, 10], ndarray([0, 1, 2, 3], [2, 2])]); // [[-1, 10], [0, 3]]

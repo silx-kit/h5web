@@ -38,7 +38,7 @@ function MappedSurfaceVis(props: Props) {
   const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
   const dataArray = useMappedArray(numArray, ...mappingArgs);
 
-  const dataDomain = useDomain(dataArray, scaleType) || DEFAULT_DOMAIN;
+  const dataDomain = useDomain(dataArray, { scaleType }) || DEFAULT_DOMAIN;
   const visDomain = useVisDomain(customDomain, dataDomain);
   const [safeDomain] = useSafeDomain(visDomain, dataDomain, scaleType);
 

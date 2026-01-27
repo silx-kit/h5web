@@ -4,7 +4,6 @@ import {
   type AxisScaleType,
   type ColorScaleType,
   type Domain,
-  type IgnoreValue,
   type NumArray,
   ScaleType,
   type TypedArrayConstructor,
@@ -12,6 +11,7 @@ import {
 import {
   formatTick,
   getBounds,
+  getBoundsWithErrors,
   getValidDomainForScale,
 } from '@h5web/shared/vis-utils';
 import {
@@ -31,6 +31,7 @@ import {
   type AxisOffsets,
   type AxisScale,
   type ExtractScaleType,
+  type GetDomainOpts,
   type Scale,
   type ScaleConfig,
   type ScaleGammaConfig,
@@ -124,23 +125,42 @@ export function getSizeToFit(
 }
 
 export function getDomain(
-  valuesArray: AnyNumArray,
-  scaleType: ScaleType = ScaleType.Linear,
-  errorArray?: AnyNumArray,
-  ignoreValue?: IgnoreValue,
+  values: AnyNumArray,
+  opts: GetDomainOpts & { errors?: AnyNumArray } = {},
 ): Domain | undefined {
-  const bounds = getBounds(valuesArray, errorArray, ignoreValue);
-  return getValidDomainForScale(bounds, scaleType);
+  const {
+    errors,
+    includeErrors = true,
+    scaleType = ScaleType.Linear,
+    ignoreValue,
+  } = opts;
+
+  if (!errors) {
+    const bounds = getBounds(values, ignoreValue);
+    return getValidDomainForScale(bounds, scaleType);
+  }
+
+  const [boundsWithErrors, boundsWithoutErrors] = getBoundsWithErrors(
+    values,
+    errors,
+    ignoreValue,
+  );
+
+  return getValidDomainForScale(
+    includeErrors ? boundsWithErrors : boundsWithoutErrors,
+    scaleType,
+  );
 }
 
 export function getDomains(
-  valueArrays: AnyNumArray[],
-  scaleType: ScaleType = ScaleType.Linear,
-  errorArrays?: (AnyNumArray | undefined)[],
+  valuesArrays: AnyNumArray[],
+  opts: GetDomainOpts & { errorsArrays?: (AnyNumArray | undefined)[] } = {},
 ): (Domain | undefined)[] {
-  return valueArrays.map((arr, i) =>
-    getDomain(arr, scaleType, errorArrays?.[i]),
-  );
+  const { errorsArrays, ...otherOpts } = opts;
+
+  return valuesArrays.map((arr, i) => {
+    return getDomain(arr, { errors: errorsArrays?.[i], ...otherOpts });
+  });
 }
 
 function extendEmptyDomain(
@@ -356,7 +376,7 @@ export function getAxisDomain(
   scaleType: AxisScaleType = ScaleType.Linear,
   extensionFactor = 0,
 ): Domain | undefined {
-  const rawDomain = getDomain(axisValues, scaleType);
+  const rawDomain = getDomain(axisValues, { scaleType });
   if (!rawDomain) {
     return undefined;
   }

@@ -45,12 +45,11 @@ export const Default = {
     const { abscissas, ordinates, errors, ignoreValue } = args;
 
     const abscissaDomain = useDomain(abscissas);
-    const ordinateDomain = useDomain(
-      ordinates,
-      ScaleType.Log,
+    const ordinateDomain = useDomain(ordinates, {
       errors,
+      scaleType: ScaleType.Log,
       ignoreValue,
-    );
+    });
 
     assertDefined(abscissaDomain);
     assertDefined(ordinateDomain);

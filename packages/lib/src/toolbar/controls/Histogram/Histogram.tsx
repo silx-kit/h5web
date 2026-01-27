@@ -42,7 +42,7 @@ function Histogram(props: Props) {
   const { colorMap, invertColorMap } = props;
 
   const bins = usePixelEdgeValues(rawBins, values.length);
-  const binDomain = useDomain(bins, scaleType) || DEFAULT_DOMAIN;
+  const binDomain = useDomain(bins, { scaleType }) || DEFAULT_DOMAIN;
   const [safeValue] = useSafeDomain(value, dataDomain, scaleType);
   const xDomain = useCombinedDomain([binDomain, safeValue, dataDomain]);
 

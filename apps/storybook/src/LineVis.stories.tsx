@@ -1,7 +1,6 @@
 import {
   CurveType,
   getCombinedDomain,
-  getDomain,
   getDomains,
   LineVis,
   mockValues,
@@ -81,19 +80,14 @@ export const Default = {
 
     const effectiveDomain =
       domain ||
-      getCombinedDomain([
-        getDomain(
-          dataArray,
+      getCombinedDomain(
+        getDomains([dataArray, ...auxArrays], {
+          errorsArrays: [errorsArray, ...auxErrorsArrays],
+          includeErrors: showErrors,
           scaleType,
-          showErrors ? errorsArray : undefined,
           ignoreValue,
-        ),
-        ...getDomains(
-          auxArrays,
-          scaleType,
-          showErrors ? auxErrorsArrays : undefined,
-        ),
-      ]);
+        }),
+      );
 
     return <LineVis {...args} domain={effectiveDomain} />;
   },

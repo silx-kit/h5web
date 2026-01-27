@@ -107,55 +107,77 @@ export function createArrayFromView<T extends ArrayValue>(
   return array;
 }
 
-export function getNewBounds(oldBounds: Bounds, value: number): Bounds {
-  const {
-    min: oldMin,
-    max: oldMax,
-    positiveMin: oldPositiveMin,
-    strictPositiveMin: oldStrictPositiveMin,
-  } = oldBounds;
-  return {
-    min: Math.min(value, oldMin),
-    max: Math.max(value, oldMax),
-    positiveMin: value >= 0 ? Math.min(value, oldPositiveMin) : oldPositiveMin,
-    strictPositiveMin:
-      value > 0 ? Math.min(value, oldStrictPositiveMin) : oldStrictPositiveMin,
-  };
+const INITIAL_BOUNDS = {
+  min: Infinity,
+  max: -Infinity,
+  positiveMin: Infinity,
+  strictPositiveMin: Infinity,
+};
+
+/* eslint-disable no-param-reassign */
+function mutateBounds(bounds: Bounds, value: number): void {
+  const { min, max, positiveMin, strictPositiveMin } = bounds;
+
+  bounds.min = Math.min(value, min);
+  bounds.max = Math.max(value, max);
+  bounds.positiveMin = value >= 0 ? Math.min(value, positiveMin) : positiveMin;
+  bounds.strictPositiveMin =
+    value > 0 ? Math.min(value, strictPositiveMin) : strictPositiveMin;
 }
+/* eslint-enable no-param-reassign */
 
 export function getBounds(
   valuesArray: AnyNumArray,
-  errorArray?: AnyNumArray,
   ignoreValue?: IgnoreValue,
 ): Bounds | undefined {
   const values = getValues(valuesArray);
-  const errors = errorArray && getValues(errorArray);
-  assertLength(errorArray, values.length, 'error');
+  const valuesBounds = { ...INITIAL_BOUNDS };
 
-  // @ts-expect-error (https://github.com/microsoft/TypeScript/issues/44593)
-  const bounds = values.reduce(
-    (acc: Bounds, val: number, i: number) => {
-      // Ignore NaN and Infinity from the bounds computation
-      if (!Number.isFinite(val) || ignoreValue?.(val)) {
-        return acc;
-      }
+  for (const val of values) {
+    if (Number.isFinite(val) && !ignoreValue?.(val)) {
+      mutateBounds(valuesBounds, val);
+    }
+  }
 
-      const newBounds = getNewBounds(acc, val);
-      const err = errors?.[i];
-      return err
-        ? getNewBounds(getNewBounds(newBounds, val - err), val + err)
-        : newBounds;
-    },
-    {
-      min: Infinity,
-      max: -Infinity,
-      positiveMin: Infinity,
-      strictPositiveMin: Infinity,
-    },
-  ) as Bounds;
+  // Return `undefined` bounds if min is still Infinity (i.e. no values or only NaN/Infinity)
+  return Number.isFinite(valuesBounds.min) ? valuesBounds : undefined;
+}
 
-  // Return undefined if min is Infinity (values is empty or contains only NaN/Infinity)
-  return Number.isFinite(bounds.min) ? bounds : undefined;
+export function getBoundsWithErrors(
+  valuesArray: AnyNumArray,
+  errorsArray: AnyNumArray | undefined,
+  ignoreValue?: IgnoreValue,
+): [
+  boundsWithErrors: Bounds | undefined,
+  boundsWithoutErrors: Bounds | undefined,
+] {
+  const values = getValues(valuesArray);
+  const errors = errorsArray && getValues(errorsArray);
+  assertLength(errorsArray, values.length, 'error');
+
+  const boundsWithErrors = { ...INITIAL_BOUNDS };
+  const boundsWithoutErrors = { ...INITIAL_BOUNDS };
+
+  for (const [i, val] of values.entries()) {
+    if (!Number.isFinite(val) || ignoreValue?.(val)) {
+      continue;
+    }
+
+    mutateBounds(boundsWithErrors, val);
+    mutateBounds(boundsWithoutErrors, val);
+
+    const err = errors?.[i];
+    if (err !== undefined && Number.isFinite(err)) {
+      mutateBounds(boundsWithErrors, val - err);
+      mutateBounds(boundsWithErrors, val + err);
+    }
+  }
+
+  // Return `undefined` bounds if min is still Infinity (i.e. no values or only NaN/Infinity)
+  return [
+    Number.isFinite(boundsWithErrors.min) ? boundsWithErrors : undefined,
+    Number.isFinite(boundsWithoutErrors.min) ? boundsWithoutErrors : undefined,
+  ];
 }
 
 export function getValidDomainForScale(
