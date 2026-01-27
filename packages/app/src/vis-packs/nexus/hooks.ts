@@ -19,13 +19,14 @@ import {
   findTitleDataset,
   getDatasetInfo,
   getDefaultSlice,
+  getScalingInfo,
   getSilxStyle,
 } from './utils';
 
 export const useDefaultSlice = createMemo(getDefaultSlice);
 
 export function useNxData(group: GroupWithChildren): NxData {
-  const { attrValuesStore } = useDataContext();
+  const { attrValuesStore, valuesStore } = useDataContext();
 
   assertNxDataGroup(group, attrValuesStore);
   const signalDataset = findSignalDataset(group, attrValuesStore);
@@ -46,7 +47,10 @@ export function useNxData(group: GroupWithChildren): NxData {
     })),
     axisDefs: axisDatasets.map(
       (dataset) =>
-        dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
+        dataset && {
+          dataset,
+          ...getAxisDef(group, dataset, attrValuesStore, valuesStore),
+        },
     ),
     defaultSlice: useDefaultSlice(group, signalDataset.shape, attrValuesStore),
     silxStyle: getSilxStyle(group, attrValuesStore),

@@ -4,6 +4,7 @@ import {
   assertArrayShape,
   assertDataset,
   assertDefined,
+  assertNum,
   assertNumericLikeOrComplexType,
   assertNumericType,
   assertScalarShape,
@@ -26,12 +27,13 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
-import { type AttrValuesStore } from '../../providers/models';
+import { type AttrValuesStore, type ValuesStore } from '../../providers/models';
 import { hasAttribute } from '../../utils';
 import {
   type AxisDef,
   type DatasetInfo,
   type DefaultSlice,
+  type ScalingInfo,
   type SilxStyle,
 } from './models';
 
@@ -126,6 +128,38 @@ export function findAuxErrorDataset(
 
   assertDataset(dataset);
   assertArrayShape(dataset);
+  assertNumericType(dataset);
+  return dataset;
+}
+
+export function findScalingFactorDataset(
+  group: GroupWithChildren,
+  datasetName: string,
+): Dataset<ScalarShape, NumericType> | undefined {
+  const dataset = getChildEntity(group, `${datasetName}_scaling_factor`);
+
+  if (!dataset) {
+    return undefined;
+  }
+
+  assertDataset(dataset);
+  assertScalarShape(dataset);
+  assertNumericType(dataset);
+  return dataset;
+}
+
+export function findOffsetDataset(
+  group: GroupWithChildren,
+  datasetName: string,
+): Dataset<ScalarShape, NumericType> | undefined {
+  const dataset = getChildEntity(group, `${datasetName}_offset`);
+
+  if (!dataset) {
+    return undefined;
+  }
+
+  assertDataset(dataset);
+  assertScalarShape(dataset);
   assertNumericType(dataset);
   return dataset;
 }
@@ -310,6 +344,41 @@ export function getSilxStyle(
     console.warn(`Malformed 'SILX_style' attribute: ${silxStyle}`); // eslint-disable-line no-console
     return {};
   }
+}
+
+function getNumericValue(
+  dataset: Dataset<ScalarShape, NumericType> | undefined,
+  valuesStore: ValuesStore,
+): number | undefined {
+  if (dataset === undefined) {
+    return undefined;
+  }
+
+  const value = valuesStore.get({ dataset });
+  assertNum(value);
+  return value;
+}
+
+export function getAxisDef(
+  group: GroupWithChildren,
+  dataset: Dataset,
+  attrValuesStore: AttrValuesStore,
+  valuesStore: ValuesStore,
+): ScalingInfo {
+  const scalingFactor = getNumericValue(
+    findScalingFactorDataset(group, dataset.name),
+    valuesStore,
+  );
+  const offset = getNumericValue(
+    findOffsetDataset(group, dataset.name),
+    valuesStore,
+  );
+
+  return {
+    scalingFactor,
+    offset,
+    ...getDatasetInfo(dataset, attrValuesStore),
+  };
 }
 
 export function getDatasetInfo(
