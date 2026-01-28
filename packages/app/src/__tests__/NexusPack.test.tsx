@@ -206,17 +206,13 @@ test('show error/fallback for malformed NeXus entity', async () => {
 
   // Shape of signal dataset is not array
   await selectExplorerNode('signal_not_array');
-  expect(
-    screen.getByText('Expected dataset to have array shape'),
-  ).toBeVisible();
+  expect(screen.getByText('Expected array shape')).toBeVisible();
   errorSpy.mockClear();
 
   // Type of signal dataset is not numeric
   await selectExplorerNode('signal_not_numeric');
   expect(
-    screen.getByText(
-      'Expected dataset to have numeric, boolean, enum or complex type',
-    ),
+    screen.getByText('Expected numeric, boolean, enum or complex type'),
   ).toBeVisible();
   errorSpy.mockClear();
 

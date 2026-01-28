@@ -1,9 +1,31 @@
-import { type Entity } from '@h5web/shared/hdf5-models';
+import { assertValue } from '@h5web/shared/guards';
+import {
+  type Attribute,
+  type Entity,
+  type Value,
+} from '@h5web/shared/hdf5-models';
 
-import { type AttrName } from './providers/models';
+import { type AttrName, type AttrValuesStore } from './providers/models';
 
 export function hasAttribute(entity: Entity, attributeName: AttrName): boolean {
   return entity.attributes.some((attr) => attr.name === attributeName);
+}
+
+export function findAttribute(
+  entity: Entity,
+  attributeName: AttrName,
+): Attribute | undefined {
+  return entity.attributes.find((attr) => attr.name === attributeName);
+}
+
+export function getAttributeValue<A extends Attribute>(
+  entity: Entity,
+  attribute: A,
+  attrValuesStore: AttrValuesStore,
+): Value<A> {
+  const value = attrValuesStore.get(entity)[attribute.name];
+  assertValue(value, attribute);
+  return value;
 }
 
 export function enableBigIntSerialization(): void {

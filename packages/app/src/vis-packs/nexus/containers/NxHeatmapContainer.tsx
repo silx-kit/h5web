@@ -1,9 +1,9 @@
 import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import {
-  assertDatasetValue,
   assertGroup,
   assertMinDims,
   assertNumericLikeType,
+  assertValue,
   hasComplexType,
 } from '@h5web/shared/guards';
 import { useState } from 'react';
@@ -81,7 +81,7 @@ function NxHeatmapContainer(props: VisContainerProps) {
             const { signal, axisValues, title } = nxValues;
 
             if (hasComplexType(selectedDataset)) {
-              assertDatasetValue(signal, selectedDataset);
+              assertValue(signal, selectedDataset);
 
               return (
                 <MappedComplexHeatmapVis
@@ -98,7 +98,7 @@ function NxHeatmapContainer(props: VisContainerProps) {
             }
 
             assertNumericLikeType(selectedDataset);
-            assertDatasetValue(signal, selectedDataset);
+            assertValue(signal, selectedDataset);
             return (
               <MappedHeatmapVis
                 dataset={selectedDataset}

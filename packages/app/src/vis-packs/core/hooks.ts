@@ -1,6 +1,10 @@
 import { type DimensionMapping } from '@h5web/lib';
 import { createMemo } from '@h5web/shared/createMemo';
-import { isDefined } from '@h5web/shared/guards';
+import {
+  hasNumericType,
+  hasScalarShape,
+  isDefined,
+} from '@h5web/shared/guards';
 import {
   type ArrayValue,
   type Dataset,
@@ -13,7 +17,6 @@ import {
   type IgnoreValue,
   type NumArray,
 } from '@h5web/shared/vis-models';
-import { castArray } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 
@@ -22,6 +25,7 @@ import {
   bigIntTypedArrayFromDType,
   typedArrayFromDType,
 } from '../../providers/utils';
+import { findAttribute, getAttributeValue } from '../../utils';
 import { applyMapping, getBaseArray, toNumArray } from './utils';
 
 export const useToNumArray = createMemo(toNumArray);
@@ -99,27 +103,38 @@ export function useMappedArrays(
 export function useIgnoreFillValue(dataset: Dataset): IgnoreValue | undefined {
   const { attrValuesStore } = useDataContext();
 
-  const rawFillValue = attrValuesStore.getSingle(dataset, '_FillValue');
-
   return useMemo(() => {
-    const wrappedFillValue = castArray(rawFillValue);
+    const fillValueAttr = findAttribute(dataset, '_FillValue');
+
+    if (
+      !fillValueAttr ||
+      !hasScalarShape(fillValueAttr) ||
+      !hasNumericType(fillValueAttr)
+    ) {
+      return undefined;
+    }
+
+    const rawFillValue = getAttributeValue(
+      dataset,
+      fillValueAttr,
+      attrValuesStore,
+    );
 
     const DTypedArray = bigIntTypedArrayFromDType(dataset.type)
       ? Float64Array // matches `useToNumArray` logic
       : typedArrayFromDType(dataset.type);
 
     // Cast fillValue in the type of the dataset values to be able to use `===` for the comparison
-    const fillValue =
-      DTypedArray && typeof wrappedFillValue[0] === 'number'
-        ? new DTypedArray(wrappedFillValue as number[])[0]
-        : undefined;
+    const fillValue = DTypedArray
+      ? new DTypedArray([Number(rawFillValue)])[0]
+      : undefined;
 
     if (fillValue === undefined) {
       return undefined;
     }
 
     return (val) => val === fillValue;
-  }, [dataset, rawFillValue]);
+  }, [dataset, attrValuesStore]);
 }
 
 export function useExportEntries<F extends ExportFormat[]>(

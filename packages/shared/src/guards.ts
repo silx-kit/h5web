@@ -17,6 +17,8 @@ import {
   type Group,
   type GroupWithChildren,
   type H5WebComplex,
+  type HasShape,
+  type HasType,
   type IntegerType,
   type NumericLikeType,
   type NumericType,
@@ -273,17 +275,17 @@ export function isScalarShape(shape: Shape): shape is ScalarShape {
   return isNonNull(shape) && shape.length === 0;
 }
 
-export function hasScalarShape<T extends DType>(
-  dataset: Dataset<Shape, T>,
-): dataset is Dataset<ScalarShape, T> {
-  return isScalarShape(dataset.shape);
+export function hasScalarShape<O extends HasShape>(
+  obj: O,
+): obj is O & HasShape<ScalarShape> {
+  return isScalarShape(obj.shape);
 }
 
-export function assertScalarShape<T extends DType>(
-  dataset: Dataset<Shape, T>,
-  message = 'Expected dataset to have scalar shape',
-): asserts dataset is Dataset<ScalarShape, T> {
-  if (!hasScalarShape(dataset)) {
+export function assertScalarShape<O extends HasShape>(
+  obj: O,
+  message = 'Expected scalar shape',
+): asserts obj is O & HasShape<ScalarShape> {
+  if (!hasScalarShape(obj)) {
     throw new Error(message);
   }
 }
@@ -292,32 +294,32 @@ export function isArrayShape(shape: Shape): shape is ArrayShape {
   return isNonNull(shape) && shape.length > 0;
 }
 
-export function hasArrayShape<T extends DType>(
-  dataset: Dataset<Shape, T>,
-): dataset is Dataset<ArrayShape, T> {
-  return isNonNull(dataset.shape) && dataset.shape.length > 0;
+export function hasArrayShape<O extends HasShape>(
+  obj: O,
+): obj is O & HasShape<ArrayShape> {
+  return isArrayShape(obj.shape);
 }
 
-export function assertArrayShape<T extends DType>(
-  dataset: Dataset<Shape, T>,
-  message = 'Expected dataset to have array shape',
-): asserts dataset is Dataset<ArrayShape, T> {
-  if (!hasArrayShape(dataset)) {
+export function assertArrayShape<O extends HasShape>(
+  obj: O,
+  message = 'Expected array shape',
+): asserts obj is O & HasShape<ArrayShape> {
+  if (!hasArrayShape(obj)) {
     throw new Error(message);
   }
 }
 
-export function hasNonNullShape<T extends DType>(
-  dataset: Dataset<Shape, T>,
-): dataset is Dataset<ScalarShape | ArrayShape, T> {
-  return isNonNull(dataset.shape);
+export function hasNonNullShape<O extends HasShape>(
+  obj: O,
+): obj is O & HasShape<ScalarShape | ArrayShape> {
+  return isNonNull(obj.shape);
 }
 
-export function assertNonNullShape<T extends DType>(
-  dataset: Dataset<Shape, T>,
-  message = 'Expected dataset to have non-null shape',
-): asserts dataset is Dataset<ScalarShape | ArrayShape, T> {
-  if (!hasNonNullShape(dataset)) {
+export function assertNonNullShape<O extends HasShape>(
+  obj: O,
+  message = 'Expected non-null shape',
+): asserts obj is O & HasShape<ScalarShape | ArrayShape> {
+  if (!hasNonNullShape(obj)) {
     throw new Error(message);
   }
 }
@@ -354,17 +356,17 @@ export function isStringType(type: DType): type is StringType {
   return type.class === DTypeClass.String;
 }
 
-export function hasStringType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, StringType> {
-  return isStringType(dataset.type);
+export function hasStringType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<StringType> {
+  return isStringType(obj.type);
 }
 
-export function assertStringType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have string type',
-): asserts dataset is Dataset<S, StringType> {
-  if (!hasStringType(dataset)) {
+export function assertStringType<O extends HasType>(
+  obj: O,
+  message = 'Expected string type',
+): asserts obj is O & HasType<StringType> {
+  if (!hasStringType(obj)) {
     throw new Error(message);
   }
 }
@@ -381,47 +383,47 @@ export function isNumericType(type: DType): type is NumericType {
   return isIntegerType(type) || isFloatType(type);
 }
 
-export function hasIntegerType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, IntegerType> {
-  return isIntegerType(dataset.type);
+export function hasIntegerType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<IntegerType> {
+  return isIntegerType(obj.type);
 }
 
-export function hasFloatType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, FloatType> {
-  return isFloatType(dataset.type);
+export function hasFloatType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<FloatType> {
+  return isFloatType(obj.type);
 }
 
-export function hasNumericType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, NumericType> {
-  return isNumericType(dataset.type);
+export function hasNumericType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<NumericType> {
+  return isNumericType(obj.type);
 }
 
-export function assertIntegerType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have integer type',
-): asserts dataset is Dataset<S, IntegerType> {
-  if (!hasIntegerType(dataset)) {
+export function assertIntegerType<O extends HasType>(
+  obj: O,
+  message = 'Expected integer type',
+): asserts obj is O & HasType<IntegerType> {
+  if (!hasIntegerType(obj)) {
     throw new Error(message);
   }
 }
 
-export function assertFloatType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have float type',
-): asserts dataset is Dataset<S, FloatType> {
-  if (!hasFloatType(dataset)) {
+export function assertFloatType<O extends HasType>(
+  obj: O,
+  message = 'Expected float type',
+): asserts obj is O & HasType<FloatType> {
+  if (!hasFloatType(obj)) {
     throw new Error(message);
   }
 }
 
-export function assertNumericType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have numeric type',
-): asserts dataset is Dataset<S, NumericType> {
-  if (!hasNumericType(dataset)) {
+export function assertNumericType<O extends HasType>(
+  obj: O,
+  message = 'Expected numeric type',
+): asserts obj is O & HasType<NumericType> {
+  if (!hasNumericType(obj)) {
     throw new Error(message);
   }
 }
@@ -438,47 +440,47 @@ export function isNumericLikeType(type: DType): type is NumericLikeType {
   return isNumericType(type) || isBoolType(type) || isEnumType(type);
 }
 
-export function hasBoolType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, BooleanType> {
-  return isBoolType(dataset.type);
+export function hasBoolType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<BooleanType> {
+  return isBoolType(obj.type);
 }
 
-export function hasEnumType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, EnumType> {
-  return isEnumType(dataset.type);
+export function hasEnumType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<EnumType> {
+  return isEnumType(obj.type);
 }
 
-export function hasNumericLikeType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, NumericLikeType> {
-  return isNumericLikeType(dataset.type);
+export function hasNumericLikeType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<NumericLikeType> {
+  return isNumericLikeType(obj.type);
 }
 
-export function assertBoolType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have boolean type',
-): asserts dataset is Dataset<S, BooleanType> {
-  if (!hasBoolType(dataset)) {
+export function assertBoolType<O extends HasType>(
+  obj: O,
+  message = 'Expected boolean type',
+): asserts obj is O & HasType<BooleanType> {
+  if (!hasBoolType(obj)) {
     throw new Error(message);
   }
 }
 
-export function assertEnumType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have enum type',
-): asserts dataset is Dataset<S, EnumType> {
-  if (!hasEnumType(dataset)) {
+export function assertEnumType<O extends HasType>(
+  obj: O,
+  message = 'Expected enum type',
+): asserts obj is O & HasType<EnumType> {
+  if (!hasEnumType(obj)) {
     throw new Error(message);
   }
 }
 
-export function assertNumericLikeType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have numeric, boolean or enum type',
-): asserts dataset is Dataset<S, NumericLikeType> {
-  if (!hasNumericLikeType(dataset)) {
+export function assertNumericLikeType<O extends HasType>(
+  obj: O,
+  message = 'Expected numeric, boolean or enum type',
+): asserts obj is O & HasType<NumericLikeType> {
+  if (!hasNumericLikeType(obj)) {
     throw new Error(message);
   }
 }
@@ -487,26 +489,26 @@ export function isComplexType(type: DType): type is ComplexType {
   return type.class === DTypeClass.Complex;
 }
 
-export function hasComplexType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, ComplexType> {
-  return isComplexType(dataset.type);
+export function hasComplexType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<ComplexType> {
+  return isComplexType(obj.type);
 }
 
-export function assertComplexType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have complex type',
-): asserts dataset is Dataset<S, ComplexType> {
-  if (!hasComplexType(dataset)) {
+export function assertComplexType<O extends HasType>(
+  obj: O,
+  message = 'Expected complex type',
+): asserts obj is O & HasType<ComplexType> {
+  if (!hasComplexType(obj)) {
     throw new Error(message);
   }
 }
 
-export function assertNumericLikeOrComplexType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have numeric, boolean, enum or complex type',
-): asserts dataset is Dataset<S, NumericLikeType | ComplexType> {
-  if (!hasNumericLikeType(dataset) && !hasComplexType(dataset)) {
+export function assertNumericLikeOrComplexType<O extends HasType>(
+  obj: O,
+  message = 'Expected numeric, boolean, enum or complex type',
+): asserts obj is O & HasType<NumericLikeType | ComplexType> {
+  if (!hasNumericLikeType(obj) && !hasComplexType(obj)) {
     throw new Error(message);
   }
 }
@@ -515,17 +517,17 @@ export function isPrintableType(type: DType): type is PrintableType {
   return isStringType(type) || isNumericLikeType(type) || isComplexType(type);
 }
 
-export function hasPrintableType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, PrintableType> {
-  return isPrintableType(dataset.type);
+export function hasPrintableType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<PrintableType> {
+  return isPrintableType(obj.type);
 }
 
-export function assertPrintableType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have displayable type',
-): asserts dataset is Dataset<S, PrintableType> {
-  if (!hasPrintableType(dataset)) {
+export function assertPrintableType<O extends HasType>(
+  obj: O,
+  message = 'Expected printable type',
+): asserts obj is O & HasType<PrintableType> {
+  if (!hasPrintableType(obj)) {
     throw new Error(message);
   }
 }
@@ -534,33 +536,33 @@ export function isCompoundType(type: DType): type is CompoundType {
   return type.class === DTypeClass.Compound;
 }
 
-export function hasCompoundType<S extends Shape>(
-  dataset: Dataset<S>,
-): dataset is Dataset<S, CompoundType> {
-  return isCompoundType(dataset.type);
+export function hasCompoundType<O extends HasType>(
+  obj: O,
+): obj is O & HasType<CompoundType> {
+  return isCompoundType(obj.type);
 }
 
-export function assertCompoundType<S extends Shape>(
-  dataset: Dataset<S>,
-  message = 'Expected dataset to have compound type',
-): asserts dataset is Dataset<S, CompoundType> {
-  if (!hasCompoundType(dataset)) {
+export function assertCompoundType<O extends HasType>(
+  obj: O,
+  message = 'Expected compound type',
+): asserts obj is O & HasType<CompoundType> {
+  if (!hasCompoundType(obj)) {
     throw new Error(message);
   }
 }
 
-export function hasPrintableCompoundType<S extends Shape>(
-  dataset: Dataset<S, CompoundType>,
-): dataset is Dataset<S, CompoundType<PrintableType>> {
-  const { fields } = dataset.type;
+export function hasPrintableCompoundType<O extends HasType<CompoundType>>(
+  obj: O,
+): obj is O & HasType<CompoundType<PrintableType>> {
+  const { fields } = obj.type;
   return Object.values(fields).every(isPrintableType);
 }
 
-export function assertPrintableCompoundType<S extends Shape>(
-  dataset: Dataset<S, CompoundType>,
-  message = 'Expected compound dataset to have printable types',
-): asserts dataset is Dataset<S, CompoundType<PrintableType>> {
-  if (!hasPrintableCompoundType(dataset)) {
+export function assertPrintableCompoundType<O extends HasType<CompoundType>>(
+  obj: O,
+  message = 'Expected printable compound type',
+): asserts obj is O & HasType<CompoundType<PrintableType>> {
+  if (!hasPrintableCompoundType(obj)) {
     throw new Error(message);
   }
 }
@@ -572,10 +574,10 @@ export function isComplexValue(
   return type.class === DTypeClass.Complex;
 }
 
-export function assertScalarValue(
+export function assertScalarValue<T extends DType>(
   value: unknown,
-  type: DType,
-): asserts value is ScalarValue {
+  type: T,
+): asserts value is ScalarValue<T> {
   if (isIntegerType(type) && type.size === 64) {
     assertNumOrBigInt(value);
   } else if (isNumericType(type)) {
@@ -596,13 +598,13 @@ export function assertScalarValue(
   }
 }
 
-export function assertDatasetValue<D extends Dataset<ScalarShape | ArrayShape>>(
+export function assertValue<O extends HasShape & HasType>(
   value: unknown,
-  dataset: D,
-): asserts value is Value<D> {
-  const { type } = dataset;
+  obj: O,
+): asserts value is Value<O> {
+  const { type } = obj;
 
-  if (hasScalarShape(dataset)) {
+  if (hasScalarShape(obj)) {
     assertScalarValue(value, type);
   } else {
     assertArrayOrAnyTypedArray(value);

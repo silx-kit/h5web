@@ -97,6 +97,10 @@ export type Shape = ArrayShape | ScalarShape | null;
 export type ArrayShape = number[];
 export type ScalarShape = [];
 
+export interface HasShape<S extends Shape = Shape> {
+  shape: S;
+}
+
 /* ---------------- */
 /* ----- TYPE ----- */
 
@@ -212,6 +216,10 @@ export interface UnknownType {
   class: DTypeClass.Unknown;
 }
 
+export interface HasType<T extends DType = DType> {
+  type: T;
+}
+
 /* ----------------- */
 /* ----- VALUE ----- */
 
@@ -236,14 +244,14 @@ export type ArrayValue<T extends DType = DType> = T extends NumericLikeType
       | (T extends BooleanType ? boolean[] : never) // don't use `ScalarValue` to avoid `(number | boolean)[]`
   : ScalarValue<T>[];
 
-export type Value<D extends Dataset> =
-  D extends Dataset<infer S, infer T>
-    ? S extends ScalarShape
-      ? ScalarValue<T>
-      : S extends ArrayShape
-        ? ArrayValue<T>
-        : never
-    : never;
+export type Value<D extends HasShape & HasType> = D extends HasShape<infer S> &
+  HasType<infer T>
+  ? [S] extends [ScalarShape] // `[S]` is a work around for `Value<Dataset<Shape & ArrayShape>>` resolving to `ScalarValue | ArrayValue`
+    ? ScalarValue<T>
+    : S extends ArrayShape
+      ? ArrayValue<T>
+      : never
+  : never;
 
 export type AttributeValues = Record<string, unknown>;
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { assertDatasetValue, assertScalarValue } from './guards';
+import { assertScalarValue, assertValue } from './guards';
 import {
   boolType,
   compoundType,
@@ -108,43 +108,37 @@ describe('assertScalarValue', () => {
   });
 });
 
-describe('assertDatasetValue', () => {
+describe('assertValue', () => {
   it('should not throw when value satisfies dataset type and shape', () => {
     expect(() =>
-      assertDatasetValue(0, dataset('foo', intType(), [])),
+      assertValue(0, dataset('foo', intType(), [])),
     ).not.toThrowError();
 
     expect(() =>
-      assertDatasetValue(0n, dataset('foo', intType(false, 64), [])),
+      assertValue(0n, dataset('foo', intType(false, 64), [])),
     ).not.toThrowError();
 
     expect(() =>
-      assertDatasetValue('', dataset('foo', strType(), [])),
+      assertValue('', dataset('foo', strType(), [])),
     ).not.toThrowError();
 
     expect(() =>
-      assertDatasetValue(
-        [true, false],
-        dataset('foo', boolType(intType()), [2]),
-      ),
+      assertValue([true, false], dataset('foo', boolType(intType()), [2])),
     ).not.toThrowError();
 
     expect(() =>
-      assertDatasetValue(
-        Float32Array.from([0, 1]),
-        dataset('foo', floatType(), [2]),
-      ),
+      assertValue(Float32Array.from([0, 1]), dataset('foo', floatType(), [2])),
     ).not.toThrowError();
 
     expect(() =>
-      assertDatasetValue(
+      assertValue(
         BigInt64Array.from([0n, 1n]),
         dataset('foo', intType(true, 64), [2]),
       ),
     ).not.toThrowError();
 
     expect(() =>
-      assertDatasetValue(
+      assertValue(
         Float32Array.from([0, 1]), // big ints can be returned as any kind of numbers
         dataset('foo', intType(true, 64), [2]),
       ),
@@ -154,18 +148,15 @@ describe('assertDatasetValue', () => {
   describe('assertDatasetValue', () => {
     it("should throw when value doesn't satisfy dataset type and shape", () => {
       expect(() =>
-        assertDatasetValue(
-          true,
-          dataset('foo', enumType(intType(), { FOO: 0 }), []),
-        ),
+        assertValue(true, dataset('foo', enumType(intType(), { FOO: 0 }), [])),
       ).toThrowError('Expected number');
 
       expect(() =>
-        assertDatasetValue(['foo', 'bar'], dataset('foo', intType(), [2])),
+        assertValue(['foo', 'bar'], dataset('foo', intType(), [2])),
       ).toThrowError('Expected number');
 
       expect(() =>
-        assertDatasetValue(
+        assertValue(
           BigInt64Array.from([0n, 1n]),
           dataset('foo', intType(), [2]),
         ),

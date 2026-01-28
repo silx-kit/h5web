@@ -1,14 +1,15 @@
 import {
   assertDefined,
   assertNonNull,
-  assertStr,
+  hasScalarShape,
+  hasStringType,
   isGroup,
 } from '@h5web/shared/guards';
 import { type ChildEntity } from '@h5web/shared/hdf5-models';
 import { type KeyboardEvent } from 'react';
 
 import { type AttrValuesStore } from '../providers/models';
-import { hasAttribute } from '../utils';
+import { findAttribute, getAttributeValue, hasAttribute } from '../utils';
 
 const SUPPORTED_NX_CLASSES = new Set(['NXdata', 'NXentry', 'NXprocess']);
 
@@ -26,13 +27,17 @@ export function needsNxBadge(
     return true;
   }
 
-  const nxClass = attrValuesStore.getSingle(entity, 'NX_class');
-  if (nxClass) {
-    assertStr(nxClass);
-    return SUPPORTED_NX_CLASSES.has(nxClass);
+  const nxClassAttr = findAttribute(entity, 'NX_class');
+  if (
+    !nxClassAttr ||
+    !hasScalarShape(nxClassAttr) ||
+    !hasStringType(nxClassAttr)
+  ) {
+    return false;
   }
 
-  return false;
+  const nxClass = getAttributeValue(entity, nxClassAttr, attrValuesStore);
+  return SUPPORTED_NX_CLASSES.has(nxClass);
 }
 
 function getButtonList(
