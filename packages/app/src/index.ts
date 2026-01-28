@@ -167,7 +167,7 @@ export {
   assertPrintableType,
   assertCompoundType,
   assertScalarValue,
-  assertDatasetValue,
+  assertValue,
 } from '@h5web/shared/guards';
 
 // Undocumented

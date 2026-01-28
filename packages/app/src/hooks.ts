@@ -1,5 +1,5 @@
 import { type DimensionMapping, getSliceSelection } from '@h5web/lib';
-import { assertDatasetValue, isDefined } from '@h5web/shared/guards';
+import { assertValue, isDefined } from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type Dataset,
@@ -48,7 +48,7 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
   // If `selection` is undefined, the entire dataset will be fetched
   const value = valuesStore.get({ dataset, selection });
 
-  assertDatasetValue(value, dataset);
+  assertValue(value, dataset);
   return value;
 }
 
@@ -74,7 +74,7 @@ export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
     }
 
     const value = valuesStore.get({ dataset, selection });
-    assertDatasetValue(value, dataset);
+    assertValue(value, dataset);
     return value;
   });
 }
