@@ -1,7 +1,6 @@
 import { hasBoolType, hasComplexType, hasEnumType } from '@h5web/shared/guards';
 import {
-  type ArrayShape,
-  type Dataset,
+  type HasType,
   type PrintableType,
   type ScalarValue,
 } from '@h5web/shared/hdf5-models';
@@ -13,21 +12,21 @@ import {
 } from '@h5web/shared/vis-utils';
 
 export function getFormatter(
-  dataset: Dataset<ArrayShape, PrintableType>,
+  obj: HasType<PrintableType>,
 ): (val: ScalarValue<PrintableType>) => string; // override distributivity of `ValueFormatter`
 
 export function getFormatter<T extends PrintableType>(
-  dataset: Dataset<ArrayShape, T>,
+  obj: HasType<T>,
 ): ValueFormatter<PrintableType> {
-  if (hasBoolType(dataset)) {
+  if (hasBoolType(obj)) {
     return formatBool;
   }
 
-  if (hasEnumType(dataset)) {
-    return createEnumFormatter(dataset.type.mapping);
+  if (hasEnumType(obj)) {
+    return createEnumFormatter(obj.type.mapping);
   }
 
-  if (hasComplexType(dataset)) {
+  if (hasComplexType(obj)) {
     return createComplexFormatter((val) => val.toString());
   }
 

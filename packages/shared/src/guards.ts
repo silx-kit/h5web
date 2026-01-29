@@ -324,30 +324,30 @@ export function assertNonNullShape<O extends HasShape>(
   }
 }
 
-export function hasMinDims(dataset: Dataset<ArrayShape>, min: number): boolean {
-  return dataset.shape.length >= min;
+export function hasMinDims(obj: HasShape<ArrayShape>, min: number): boolean {
+  return obj.shape.length >= min;
 }
 
 export function assertMinDims(
-  dataset: Dataset<ArrayShape>,
+  obj: HasShape<ArrayShape>,
   min: number,
   message = `Expected dataset with at least ${min} dimensions`,
 ): void {
-  if (!hasMinDims(dataset, min)) {
+  if (!hasMinDims(obj, min)) {
     throw new Error(message);
   }
 }
 
-export function hasNumDims(dataset: Dataset<ArrayShape>, num: number): boolean {
-  return dataset.shape.length === num;
+export function hasNumDims(obj: HasShape<ArrayShape>, num: number): boolean {
+  return obj.shape.length === num;
 }
 
 export function assertNumDims(
-  dataset: Dataset<ArrayShape>,
+  obj: HasShape<ArrayShape>,
   num: number,
-  message = `Expected dataset with ${num} dimensions`,
+  message = `Expected ${num} dimensions`,
 ): void {
-  if (!hasNumDims(dataset, num)) {
+  if (!hasNumDims(obj, num)) {
     throw new Error(message);
   }
 }
