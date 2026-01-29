@@ -53,8 +53,8 @@ export function assertMockAttribute<S extends Shape, T extends DType>(
 
 export function attribute<S extends Shape, T extends DType>(
   name: string,
-  type: T,
   shape: S,
+  type: T,
   value: unknown,
 ): MockAttribute<S, T> {
   return { name, type, shape, value };
@@ -66,7 +66,7 @@ export function scalarAttr(
   opts: { type?: DType } = {},
 ): MockAttribute<ScalarShape> {
   const { type } = opts;
-  return attribute(name, type || guessType(value), [], value);
+  return attribute(name, [], type || guessType(value), value);
 }
 
 export function arrayAttr(
@@ -76,7 +76,7 @@ export function arrayAttr(
 ): MockAttribute<ArrayShape> {
   const { type } = opts;
 
-  return attribute(name, type || guessType(value[0]), [value.length], value);
+  return attribute(name, [value.length], type || guessType(value[0]), value);
 }
 
 export function withAttr<T extends Entity>(
