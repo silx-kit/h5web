@@ -1,21 +1,17 @@
 import { describe, expect, it } from 'vitest';
 
-import { renderShape } from './utils';
+import { renderDims } from './utils';
 
-describe('renderShape', () => {
-  it('should render scalar shape', () => {
-    expect(renderShape([])).toBe('Scalar');
+describe('renderDims', () => {
+  it('should render zero dimension', () => {
+    expect(renderDims([])).toBe('Scalar');
   });
 
-  it('should render shape with one dimension', () => {
-    expect(renderShape([5])).toBe('5');
+  it('should render single dimension', () => {
+    expect(renderDims([5])).toBe('5');
   });
 
-  it('should render shape with multiple dimensions', () => {
-    expect(renderShape([10, 2, 6])).toBe('10 x 2 x 6 = 120');
-  });
-
-  it('should render null shape', () => {
-    expect(renderShape(null)).toBe('None');
+  it('should render multiple dimensions', () => {
+    expect(renderDims([10, 2, 6])).toBe('10 x 2 x 6 = 120');
   });
 });

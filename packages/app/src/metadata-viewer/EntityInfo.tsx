@@ -1,10 +1,10 @@
-import { isDataset, isDatatype } from '@h5web/shared/guards';
+import { isDataset, isDatatype, isNonNullShape } from '@h5web/shared/guards';
 import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
 
 import { useDataContext } from '../providers/DataProvider';
 import styles from './MetadataViewer.module.css';
 import RawInspector from './RawInspector';
-import { renderShape, renderType } from './utils';
+import { renderDims, renderType } from './utils';
 
 interface Props {
   entity: ProvidedEntity;
@@ -36,13 +36,15 @@ function EntityInfo(props: Props) {
       {isDataset(entity) && (
         <tr>
           <th scope="row">Shape</th>
-          <td>{renderShape(entity.shape)}</td>
+          <td>
+            {isNonNullShape(entity.shape) ? renderDims(entity.shape) : 'None'}
+          </td>
         </tr>
       )}
       {isDataset(entity) && entity.chunks && (
         <tr>
           <th scope="row">Chunk shape</th>
-          <td>{renderShape(entity.chunks)}</td>
+          <td>{renderDims(entity.chunks)}</td>
         </tr>
       )}
       {entity.link?.path && (

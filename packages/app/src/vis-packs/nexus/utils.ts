@@ -340,7 +340,7 @@ export function guessKeepRatio(
   return xAxisDef?.unit === yAxisDef?.unit;
 }
 
-export function areSameDims(dims1: ArrayShape, dims2: ArrayShape): boolean {
+export function areSameDims(dims1: number[], dims2: number[]): boolean {
   return (
     dims1.length === dims2.length &&
     dims1.every((dim, index) => dim === dims2[index])

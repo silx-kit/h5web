@@ -146,6 +146,19 @@ export function assertArray(
   }
 }
 
+export function isNonEmptyArray<T>(val: T[]): val is [T, ...T[]] {
+  return val.length > 0;
+}
+
+export function assertNonEmptyArray<T>(
+  val: T[],
+  message = 'Expected non-empty array',
+): asserts val is [T, ...T[]] {
+  if (!isNonEmptyArray(val)) {
+    throw new Error(message);
+  }
+}
+
 export function isComplexArray(val: unknown): val is H5WebComplex[] {
   return Array.isArray(val) && isComplex(val[0]);
 }
@@ -309,10 +322,16 @@ export function assertArrayShape<O extends HasShape>(
   }
 }
 
+export function isNonNullShape(
+  shape: Shape,
+): shape is ScalarShape | ArrayShape {
+  return isNonNull(shape);
+}
+
 export function hasNonNullShape<O extends HasShape>(
   obj: O,
 ): obj is O & HasShape<ScalarShape | ArrayShape> {
-  return isNonNull(obj.shape);
+  return isNonNullShape(obj.shape);
 }
 
 export function assertNonNullShape<O extends HasShape>(

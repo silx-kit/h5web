@@ -2,29 +2,25 @@ import {
   isFloatType,
   isH5WebComplex,
   isIntegerType,
-  isScalarShape,
 } from '@h5web/shared/guards';
 import {
   type ComplexArray,
   type DType,
   DTypeClass,
   type H5WebComplex,
-  type Shape,
 } from '@h5web/shared/hdf5-models';
 import { formatScalarComplex } from '@h5web/shared/vis-utils';
 
-export function renderShape(shape: Shape): string {
-  if (shape === null) {
-    return 'None';
-  }
-
-  if (isScalarShape(shape)) {
+export function renderDims(dims: number[]): string {
+  if (dims.length === 0) {
     return 'Scalar';
   }
 
-  return shape.length === 1
-    ? shape.toString()
-    : `${shape.join(' x ')} = ${shape.reduce((acc, value) => acc * value)}`;
+  if (dims.length === 1) {
+    return dims.toString();
+  }
+
+  return `${dims.join(' x ')} = ${dims.reduce((acc, value) => acc * value)}`;
 }
 
 export function renderType(type: DType): string {

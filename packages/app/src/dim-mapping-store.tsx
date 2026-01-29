@@ -1,5 +1,4 @@
 import { type DimensionMapping, initDimMapping } from '@h5web/lib';
-import { type ArrayShape } from '@h5web/shared/hdf5-models';
 import { type NoProps } from '@h5web/shared/vis-models';
 import {
   createContext,
@@ -15,7 +14,7 @@ import { type DefaultSlice } from './vis-packs/nexus/models';
 import { applyDefaultSlice, areSameDims } from './vis-packs/nexus/utils';
 
 interface DimMappingState {
-  dims: ArrayShape;
+  dims: number[];
   axesCount: number;
   lockedDimsCount: number;
   mapping: DimensionMapping;

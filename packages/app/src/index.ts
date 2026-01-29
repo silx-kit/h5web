@@ -125,6 +125,7 @@ export {
   assertDatatype,
   isScalarShape,
   isArrayShape,
+  isNonNullShape,
   hasScalarShape,
   hasArrayShape,
   hasNonNullShape,

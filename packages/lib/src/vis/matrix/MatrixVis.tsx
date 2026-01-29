@@ -1,4 +1,4 @@
-import { type ArrayShape } from '@h5web/shared/hdf5-models';
+import { assertNonEmptyArray } from '@h5web/shared/guards';
 import { useMemo, useState } from 'react';
 import { Grid } from 'react-window';
 import { useStore } from 'zustand';
@@ -11,7 +11,7 @@ import { createRenderedCellsStore } from './store';
 import { CELL_HEIGHT } from './utils';
 
 interface Props extends ClassStyleAttrs {
-  dims: ArrayShape;
+  dims: number[];
   cellFormatter: (row: number, col: number) => string;
   cellWidth: number;
   columnHeaders?: string[];
@@ -26,6 +26,8 @@ function MatrixVis(props: Props) {
     className = '',
     style,
   } = props;
+
+  assertNonEmptyArray(dims);
   const [rowCount, columnCount = 1] = dims;
 
   const [store] = useState(createRenderedCellsStore);
