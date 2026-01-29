@@ -5,7 +5,7 @@ import {
   type NumArray,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { formatTooltipVal, getDims } from '@h5web/shared/vis-utils';
+import { formatTooltipVal } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { type PropsWithChildren, type ReactElement } from 'react';
 import {
@@ -82,7 +82,7 @@ function HeatmapVis(props: PropsWithChildren<Props>) {
   } = props;
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
-  const { rows, cols } = getDims(dataArray);
+  const [rows, cols] = dataArray.shape;
 
   const abscissas = usePixelEdgeValues(abscissaValue, cols);
   const abscissaDomain = useAxisDomain(abscissas);

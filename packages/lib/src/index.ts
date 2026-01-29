@@ -185,7 +185,6 @@ export { MouseButton } from './interactions/models';
 export type {
   Domain,
   VisibleDomains,
-  Dims,
   Axis,
   DimensionMapping,
   ColorScaleType,

@@ -1,5 +1,5 @@
 import { type NumArray } from '@h5web/shared/vis-models';
-import { getDims, toTypedNdArray } from '@h5web/shared/vis-utils';
+import { toTypedNdArray } from '@h5web/shared/vis-utils';
 import ndarray, { type NdArray } from 'ndarray';
 import { Data3DTexture, FloatType, RedFormat, UnsignedByteType } from 'three';
 
@@ -36,7 +36,7 @@ export function toRgbSafeNdArray(
 export function getData3DTexture(
   values: NdArray<Uint8Array | Uint8ClampedArray | Float32Array>,
 ): Data3DTexture {
-  const { rows, cols } = getDims(values);
+  const [rows, cols] = values.shape;
 
   const texture = new Data3DTexture(values.data, 3, cols, rows);
   texture.format = RedFormat;

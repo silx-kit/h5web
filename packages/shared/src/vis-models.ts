@@ -74,11 +74,6 @@ export interface Bounds {
   strictPositiveMin: number;
 }
 
-export interface Dims {
-  rows: number;
-  cols: number;
-}
-
 export type IgnoreValue = (val: number) => boolean;
 
 export interface ExportEntry {

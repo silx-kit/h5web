@@ -3,7 +3,6 @@ import {
   type Domain,
   type NumArray,
 } from '@h5web/shared/vis-models';
-import { getDims } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
 import { LinearFilter } from 'three';
@@ -29,7 +28,7 @@ function SurfaceMesh(props: Props) {
   const { dataArray, domain, colorMap, invertColorMap, scaleType, showPoints } =
     props;
 
-  const { rows, cols } = getDims(dataArray);
+  const [rows, cols] = dataArray.shape;
   const safeDataArray = useTextureSafeNdArray(dataArray);
 
   const geometry = useMemo(

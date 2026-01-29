@@ -4,7 +4,7 @@ import {
   type NumArray,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { getDims, toTypedNdArray } from '@h5web/shared/vis-utils';
+import { toTypedNdArray } from '@h5web/shared/vis-utils';
 import { range } from 'd3-array';
 import ndarray, { type NdArray } from 'ndarray';
 import {
@@ -205,7 +205,7 @@ export function getDataTexture(
   if (!values) {
     return undefined;
   }
-  const { rows, cols } = getDims(values);
+  const [rows, cols] = values.shape;
 
   const texture = new DataTexture(
     values.data,

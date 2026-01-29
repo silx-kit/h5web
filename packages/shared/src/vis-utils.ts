@@ -15,7 +15,6 @@ import {
   type AxisScaleType,
   type Bounds,
   type ColorScaleType,
-  type Dims,
   type Domain,
   type IgnoreValue,
   type NumArray,
@@ -203,11 +202,6 @@ export function getValidDomainForScale(
   }
 
   return [min, max];
-}
-
-export function getDims(dataArray: NdArray): Dims {
-  const [rows, cols] = dataArray.shape;
-  return { rows, cols };
 }
 
 export function castArray<T>(arrOrVal: T[] | T): T[] {

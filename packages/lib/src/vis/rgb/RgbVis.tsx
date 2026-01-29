@@ -1,6 +1,5 @@
 import { assertDefined } from '@h5web/shared/guards';
 import { type NumArray } from '@h5web/shared/vis-models';
-import { getDims } from '@h5web/shared/vis-utils';
 import { type NdArray } from 'ndarray';
 import { type PropsWithChildren, useMemo } from 'react';
 
@@ -49,7 +48,7 @@ function RgbVis(props: PropsWithChildren<Props>) {
 
   const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
   const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
-  const { rows, cols } = getDims(dataArray);
+  const [rows, cols] = dataArray.shape;
 
   const abscissas = usePixelEdgeValues(abscissaValue, cols);
   const abscissaDomain = useAxisDomain(abscissas);
