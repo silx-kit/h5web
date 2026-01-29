@@ -149,8 +149,8 @@ export const CORE_VIS = {
       return (
         attrValuesStore.getSingle(dataset, 'CLASS') === 'IMAGE' &&
         hasArrayShape(dataset) &&
-        dataset.shape.length >= 3 && // 2 for axes + 1 for RGB channels
-        dataset.shape[dataset.shape.length - 1] === 3 && // 3 channels on last dim
+        dataset.shape.dims.length >= 3 && // 2 for axes + 1 for RGB channels
+        dataset.shape.dims[dataset.shape.dims.length - 1] === 3 && // 3 channels on last dim
         hasNumericType(dataset)
       );
     },
@@ -165,8 +165,7 @@ export const CORE_VIS = {
       return (
         hasCompoundType(dataset) &&
         hasPrintableCompoundType(dataset) &&
-        hasNonNullShape(dataset) &&
-        (hasScalarShape(dataset) || hasMinDims(dataset, 1))
+        hasNonNullShape(dataset)
       );
     },
   },

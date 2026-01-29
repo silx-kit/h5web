@@ -16,11 +16,13 @@ import {
   type UnresolvedEntity,
 } from './hdf5-models';
 import {
+  arrayShape,
   boolType,
   buildEntityPath,
   cplxType,
   floatType,
   intType,
+  scalarShape,
   strType,
   unknownType,
 } from './hdf5-utils';
@@ -66,7 +68,7 @@ export function scalarAttr(
   opts: { type?: DType } = {},
 ): MockAttribute<ScalarShape> {
   const { type } = opts;
-  return attribute(name, [], type || guessType(value), value);
+  return attribute(name, scalarShape(), type || guessType(value), value);
 }
 
 export function arrayAttr(
@@ -76,7 +78,12 @@ export function arrayAttr(
 ): MockAttribute<ArrayShape> {
   const { type } = opts;
 
-  return attribute(name, [value.length], type || guessType(value[0]), value);
+  return attribute(
+    name,
+    arrayShape([value.length]),
+    type || guessType(value[0]),
+    value,
+  );
 }
 
 export function withAttr<T extends Entity>(
@@ -155,7 +162,13 @@ export function scalar(
   opts: DatasetOpts & { type?: DType } = {},
 ): MockDataset<ScalarShape> {
   const { type, ...datasetOpts } = opts;
-  return dataset(name, [], type || guessType(value), value, datasetOpts);
+  return dataset(
+    name,
+    scalarShape(),
+    type || guessType(value),
+    value,
+    datasetOpts,
+  );
 }
 
 export function array(
@@ -167,7 +180,7 @@ export function array(
 
   return dataset(
     name,
-    arr.shape,
+    arrayShape(arr.shape),
     type || guessType(arr.data[0]),
     arr.data,
     datasetOpts,

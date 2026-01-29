@@ -12,7 +12,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -31,10 +34,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -60,7 +66,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -79,10 +88,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -108,7 +120,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -127,7 +142,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "big-endian",
@@ -146,10 +164,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -175,7 +196,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -194,10 +218,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -223,7 +250,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -242,10 +272,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -271,7 +304,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -290,10 +326,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -319,7 +358,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -338,10 +380,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -367,7 +412,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -386,11 +434,14 @@ exports[`test file matches snapshot 1`] = `
       "type": 0,
       "vlen": false,
     },
-    "shape": [
-      2,
-      2,
-      2,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        2,
+        2,
+      ],
+    },
     "type": {
       "class": "Integer",
       "endianness": "little-endian",
@@ -418,7 +469,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -436,10 +490,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -457,7 +514,9 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": null,
+    "shape": {
+      "class": "Null",
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -475,7 +534,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -493,7 +555,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "big-endian",
@@ -511,10 +576,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -539,7 +607,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -557,7 +628,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -575,7 +649,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -593,7 +670,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -611,7 +691,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -629,7 +712,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -647,7 +733,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -665,10 +754,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [
-      3,
-      5,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+        5,
+      ],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -702,7 +794,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -720,10 +815,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 1,
       "vlen": false,
     },
-    "shape": [
-      2,
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
     "type": {
       "class": "Float",
       "endianness": "little-endian",
@@ -743,7 +841,9 @@ exports[`test file matches snapshot 1`] = `
       "type": 3,
       "vlen": true,
     },
-    "shape": null,
+    "shape": {
+      "class": "Null",
+    },
     "type": {
       "charSet": "ASCII",
       "class": "String",
@@ -763,7 +863,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 3,
       "vlen": true,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "charSet": "ASCII",
       "class": "String",
@@ -783,7 +886,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 3,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "charSet": "ASCII",
       "class": "String",
@@ -804,7 +910,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 3,
       "vlen": true,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "charSet": "UTF-8",
       "class": "String",
@@ -824,9 +933,12 @@ exports[`test file matches snapshot 1`] = `
       "type": 3,
       "vlen": true,
     },
-    "shape": [
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
     "type": {
       "charSet": "UTF-8",
       "class": "String",
@@ -850,7 +962,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 3,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "charSet": "UTF-8",
       "class": "String",
@@ -869,7 +984,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 5,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Opaque",
       "tag": "",
@@ -890,9 +1008,12 @@ exports[`test file matches snapshot 1`] = `
       "type": 5,
       "vlen": false,
     },
-    "shape": [
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
     "type": {
       "class": "Opaque",
       "tag": "",
@@ -913,7 +1034,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 5,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Opaque",
       "tag": "",
@@ -939,7 +1063,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 5,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Opaque",
       "tag": "",
@@ -990,7 +1117,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Complex",
       "imagType": {
@@ -1044,10 +1174,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [
-      2,
-      2,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        2,
+      ],
+    },
     "type": {
       "class": "Complex",
       "imagType": {
@@ -1115,7 +1248,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Complex",
       "imagType": {
@@ -1169,7 +1305,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Complex",
       "imagType": {
@@ -1223,10 +1362,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [
-      2,
-      2,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        2,
+      ],
+    },
     "type": {
       "class": "Complex",
       "imagType": {
@@ -1294,7 +1436,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Complex",
       "imagType": {
@@ -1345,10 +1490,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [
-      2,
-      2,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        2,
+      ],
+    },
     "type": {
       "class": "Complex",
       "imagType": {
@@ -1411,7 +1559,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Compound",
       "fields": {
@@ -1494,7 +1645,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Compound",
       "fields": {
@@ -1573,9 +1727,12 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
     "type": {
       "class": "Compound",
       "fields": {
@@ -1708,7 +1865,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Compound",
       "fields": {
@@ -1811,9 +1971,12 @@ exports[`test file matches snapshot 1`] = `
       "type": 6,
       "vlen": false,
     },
-    "shape": [
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
     "type": {
       "class": "Compound",
       "fields": {
@@ -1883,7 +2046,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 7,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Reference",
     },
@@ -1900,7 +2066,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 7,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "class": "Reference",
     },
@@ -1924,7 +2093,9 @@ exports[`test file matches snapshot 1`] = `
       "type": 8,
       "vlen": false,
     },
-    "shape": null,
+    "shape": {
+      "class": "Null",
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -1954,7 +2125,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 8,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -1984,7 +2158,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 8,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -2014,10 +2191,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 8,
       "vlen": false,
     },
-    "shape": [
-      2,
-      4,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        4,
+      ],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -2056,7 +2236,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 8,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -2090,7 +2273,10 @@ exports[`test file matches snapshot 1`] = `
       "type": 8,
       "vlen": false,
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -2125,9 +2311,12 @@ exports[`test file matches snapshot 1`] = `
       "type": 8,
       "vlen": false,
     },
-    "shape": [
-      10,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        10,
+      ],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -2174,10 +2363,13 @@ exports[`test file matches snapshot 1`] = `
       "type": 8,
       "vlen": false,
     },
-    "shape": [
-      2,
-      10,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        10,
+      ],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -2232,7 +2424,10 @@ exports[`test file matches snapshot 1`] = `
         "vlen": false,
       },
     },
-    "shape": [],
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -2264,9 +2459,12 @@ exports[`test file matches snapshot 1`] = `
         "vlen": false,
       },
     },
-    "shape": [
-      2,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+      ],
+    },
     "type": {
       "base": {
         "class": "Float",
@@ -2299,9 +2497,12 @@ exports[`test file matches snapshot 1`] = `
         "vlen": false,
       },
     },
-    "shape": [
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
     "type": {
       "base": {
         "class": "Integer",
@@ -2345,9 +2546,12 @@ exports[`test file matches snapshot 1`] = `
         "vlen": true,
       },
     },
-    "shape": [
-      3,
-    ],
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
     "type": {
       "base": {
         "charSet": "UTF-8",

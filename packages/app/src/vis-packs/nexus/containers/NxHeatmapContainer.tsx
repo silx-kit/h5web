@@ -35,7 +35,7 @@ function NxHeatmapContainer(props: VisContainerProps) {
   const { dataset: selectedDataset } = selectedDef;
 
   assertMinDims(selectedDataset, 2);
-  const { shape: dims } = selectedDataset;
+  const { dims } = selectedDataset.shape;
   const [dimMapping, setDimMapping] = useDimMappingState({
     dims,
     axesCount: 2,

@@ -93,9 +93,27 @@ export interface VirtualSource {
 /* ----------------- */
 /* ----- SHAPE ----- */
 
-export type Shape = ArrayShape | ScalarShape | null;
-export type ArrayShape = number[];
-export type ScalarShape = [];
+export enum ShapeClass {
+  Array = 'Array',
+  Scalar = 'Scalar',
+  Null = 'Null',
+}
+
+export type Shape = ArrayShape | ScalarShape | NullShape;
+
+export interface ArrayShape {
+  class: ShapeClass.Array;
+  dims: number[];
+}
+
+export interface ScalarShape {
+  class: ShapeClass.Scalar;
+  dims: [];
+}
+
+export interface NullShape {
+  class: ShapeClass.Null;
+}
 
 export interface HasShape<S extends Shape = Shape> {
   shape: S;
@@ -246,7 +264,7 @@ export type ArrayValue<T extends DType = DType> = T extends NumericLikeType
 
 export type Value<D extends HasShape & HasType> = D extends HasShape<infer S> &
   HasType<infer T>
-  ? [S] extends [ScalarShape] // `[S]` is a work around for `Value<Dataset<Shape & ArrayShape>>` resolving to `ScalarValue | ArrayValue`
+  ? S extends ScalarShape
     ? ScalarValue<T>
     : S extends ArrayShape
       ? ArrayValue<T>

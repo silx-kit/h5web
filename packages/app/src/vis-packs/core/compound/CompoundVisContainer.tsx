@@ -22,7 +22,7 @@ function CompoundVisContainer(props: VisContainerProps) {
   assertCompoundType(entity);
   assertPrintableCompoundType(entity);
 
-  const { shape: dims } = entity;
+  const { dims } = entity.shape;
   const [dimMapping, setDimMapping] = useDimMappingState({
     dims,
     axesCount: 1,

@@ -22,13 +22,13 @@ function NxScatterContainer(props: VisContainerProps) {
   const { signalDef, axisDefs, silxStyle } = nxData;
 
   assertNumDims(signalDef.dataset, 1);
-  const signalDims = signalDef.dataset.shape;
+  const { dims: signalDims } = signalDef.dataset.shape;
 
   const [xDataset, yDataset] = axisDefs;
   assertDefined(xDataset);
   assertDefined(yDataset);
-  const xDims = xDataset.dataset.shape;
-  const yDims = yDataset.dataset.shape;
+  const { dims: xDims } = xDataset.dataset.shape;
+  const { dims: yDims } = yDataset.dataset.shape;
 
   if (!areSameDims(xDims, signalDims) || !areSameDims(yDims, signalDims)) {
     const dimsStr = JSON.stringify({ signalDims, xDims, yDims });

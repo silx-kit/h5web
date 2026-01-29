@@ -36,13 +36,13 @@ function MappedCompoundVis(props: Props) {
   const { value, dataset, toolbarContainer, dimMapping, config } = props;
   const { customCellWidth, notation } = config;
 
-  const { type, shape: dims } = dataset;
+  const { type, shape } = dataset;
   const { fields } = type;
   const fieldNames = Object.keys(fields);
   const cellWidth = getCellWidth(type);
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(
-    dims.length === 0 ? [1] : dims,
+    shape.dims.length === 0 ? [1] : shape.dims,
     dimMapping,
   );
 

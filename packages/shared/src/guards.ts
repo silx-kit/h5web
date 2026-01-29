@@ -26,6 +26,7 @@ import {
   type ScalarShape,
   type ScalarValue,
   type Shape,
+  ShapeClass,
   type StringType,
   type Value,
 } from './hdf5-models';
@@ -155,7 +156,7 @@ export function assertNonEmptyArray<T>(
   message = 'Expected non-empty array',
 ): asserts val is [T, ...T[]] {
   if (!isNonEmptyArray(val)) {
-    throw new Error(message);
+    throw new TypeError(message);
   }
 }
 
@@ -285,7 +286,7 @@ export function isH5WebComplex(
 }
 
 export function isScalarShape(shape: Shape): shape is ScalarShape {
-  return isNonNull(shape) && shape.length === 0;
+  return shape.class === ShapeClass.Scalar;
 }
 
 export function hasScalarShape<O extends HasShape>(
@@ -304,7 +305,7 @@ export function assertScalarShape<O extends HasShape>(
 }
 
 export function isArrayShape(shape: Shape): shape is ArrayShape {
-  return isNonNull(shape) && shape.length > 0;
+  return shape.class === ShapeClass.Array;
 }
 
 export function hasArrayShape<O extends HasShape>(
@@ -325,7 +326,7 @@ export function assertArrayShape<O extends HasShape>(
 export function isNonNullShape(
   shape: Shape,
 ): shape is ScalarShape | ArrayShape {
-  return isNonNull(shape);
+  return shape.class !== ShapeClass.Null;
 }
 
 export function hasNonNullShape<O extends HasShape>(
@@ -344,7 +345,7 @@ export function assertNonNullShape<O extends HasShape>(
 }
 
 export function hasMinDims(obj: HasShape<ArrayShape>, min: number): boolean {
-  return obj.shape.length >= min;
+  return obj.shape.dims.length >= min;
 }
 
 export function assertMinDims(
@@ -358,7 +359,7 @@ export function assertMinDims(
 }
 
 export function hasNumDims(obj: HasShape<ArrayShape>, num: number): boolean {
-  return obj.shape.length === num;
+  return obj.shape.dims.length === num;
 }
 
 export function assertNumDims(

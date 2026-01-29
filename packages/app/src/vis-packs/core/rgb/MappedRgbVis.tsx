@@ -46,7 +46,7 @@ function MappedRgbVis(props: Props) {
   const numArray = useToNumArray(value);
   const numAxisArrays = useToNumArrays(axisValues);
 
-  const { shape: dims } = dataset;
+  const { dims } = dataset.shape;
   const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
   const dataArray = useMappedArray(numArray, ...mappingArgs);
 

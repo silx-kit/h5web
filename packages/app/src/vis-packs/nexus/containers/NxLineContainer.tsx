@@ -22,8 +22,8 @@ function NxLineContainer(props: VisContainerProps) {
   assertNumericLikeNxData(nxData);
 
   const { signalDef, axisDefs, auxDefs, defaultSlice, silxStyle } = nxData;
-  const signalDims = signalDef.dataset.shape;
-  const errorDims = signalDef.errorDataset?.shape;
+  const signalDims = signalDef.dataset.shape.dims;
+  const errorDims = signalDef.errorDataset?.shape.dims;
 
   if (errorDims && !areSameDims(signalDims, errorDims)) {
     const dimsStr = JSON.stringify({ signalDims, errorsDims: errorDims });

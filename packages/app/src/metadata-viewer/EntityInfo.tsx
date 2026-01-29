@@ -37,7 +37,9 @@ function EntityInfo(props: Props) {
         <tr>
           <th scope="row">Shape</th>
           <td>
-            {isNonNullShape(entity.shape) ? renderDims(entity.shape) : 'None'}
+            {isNonNullShape(entity.shape)
+              ? renderDims(entity.shape.dims)
+              : 'None'}
           </td>
         </tr>
       )}

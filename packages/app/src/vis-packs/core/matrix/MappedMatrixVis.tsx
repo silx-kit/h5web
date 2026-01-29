@@ -35,8 +35,8 @@ function MappedMatrixVis(props: Props) {
   const { dataset, value, dimMapping, toolbarContainer, config } = props;
   const { customCellWidth, notation } = config;
 
-  const { shape: dims, type } = dataset;
-  const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
+  const { shape, type } = dataset;
+  const mappingArgs = useSlicedDimsAndMapping(shape.dims, dimMapping);
   const mappedArray = useMappedArray(value, ...mappingArgs);
 
   const formatter = getFormatter(type, notation);
