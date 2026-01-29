@@ -29,44 +29,44 @@ const mockStore = {
   },
 };
 
-const scalarInt = dataset('int', intType(), []);
-const scalarUint = dataset('uint', intType(false), []);
-const scalarBigInt = dataset('bigint', intType(true, 64), []);
-const scalarFloat = dataset('float', floatType(), []);
-const scalarStr = dataset('float', strType(), []);
-const scalarBool = dataset('bool', boolType(intType(true, 8)), []);
-const scalarCplx = dataset('cplx', cplxType(floatType()), []);
-const scalarCompound = dataset('comp', compoundType({ int: intType() }), []);
-const oneDInt = dataset('int_1d', intType(), [5]);
-const oneDUint = dataset('uint_1d', intType(false), [5]);
-const oneDBigUint = dataset('biguint_1d', intType(false, 64), [5]);
-const oneDBool = dataset('bool_1d', boolType(intType(true, 8)), [3]);
-const oneDCplx = dataset('cplx_1d', cplxType(floatType()), [10]);
-const oneDCompound = dataset('comp_1d', compoundType({ int: intType() }), [5]);
-const twoDInt = dataset('int_2d', intType(), [5, 3]);
-const twoDUint = dataset('uint_2d', intType(false), [5, 3]);
-const twoDBool = dataset('bool_2d', boolType(intType(true, 8)), [3, 2]);
-const twoDCplx = dataset('cplx_2d', cplxType(floatType()), [2, 2]);
-const twoDStr = dataset('str_2d', strType(), [5, 3]);
-const threeDFloat = dataset('float_3d', intType(), [5, 3, 1]);
-const threeDCplx = dataset('cplx_3d', cplxType(floatType()), [5, 2, 2]);
+const scalarInt = dataset('int', [], intType());
+const scalarUint = dataset('uint', [], intType(false));
+const scalarBigInt = dataset('bigint', [], intType(true, 64));
+const scalarFloat = dataset('float', [], floatType());
+const scalarStr = dataset('float', [], strType());
+const scalarBool = dataset('bool', [], boolType(intType(true, 8)));
+const scalarCplx = dataset('cplx', [], cplxType(floatType()));
+const scalarCompound = dataset('comp', [], compoundType({ int: intType() }));
+const oneDInt = dataset('int_1d', [5], intType());
+const oneDUint = dataset('uint_1d', [5], intType(false));
+const oneDBigUint = dataset('biguint_1d', [5], intType(false, 64));
+const oneDBool = dataset('bool_1d', [3], boolType(intType(true, 8)));
+const oneDCplx = dataset('cplx_1d', [10], cplxType(floatType()));
+const oneDCompound = dataset('comp_1d', [5], compoundType({ int: intType() }));
+const twoDInt = dataset('int_2d', [5, 3], intType());
+const twoDUint = dataset('uint_2d', [5, 3], intType(false));
+const twoDBool = dataset('bool_2d', [3, 2], boolType(intType(true, 8)));
+const twoDCplx = dataset('cplx_2d', [2, 2], cplxType(floatType()));
+const twoDStr = dataset('str_2d', [5, 3], strType());
+const threeDFloat = dataset('float_3d', [5, 3, 1], intType());
+const threeDCplx = dataset('cplx_3d', [5, 2, 2], cplxType(floatType()));
 const twoDCompound = dataset(
   'comp_2d',
-  compoundType({ int: intType() }),
   [5, 3],
+  compoundType({ int: intType() }),
 );
 
-const image = withImageAttr(dataset('image', intType(), [256, 256, 3]));
+const image = withImageAttr(dataset('image', [256, 256, 3], intType()));
 const imageFloat = withImageAttr(
-  dataset('image_float', floatType(), [256, 256, 3]),
+  dataset('image_float', [256, 256, 3], floatType()),
 );
-const imageStr = withImageAttr(dataset('image_str', strType(), [256, 256, 3]));
-const imageScalar = withImageAttr(dataset('image_scalar', intType(), []));
+const imageStr = withImageAttr(dataset('image_str', [256, 256, 3], strType()));
+const imageScalar = withImageAttr(dataset('image_scalar', [], intType()));
 
 const nestedCompound = dataset(
   'comp_nested',
-  compoundType({ comp: compoundType({ int: intType() }) }),
   [2],
+  compoundType({ comp: compoundType({ int: intType() }) }),
 );
 
 describe('Raw', () => {

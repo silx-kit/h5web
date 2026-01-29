@@ -127,8 +127,8 @@ export function group(
 
 export function dataset<S extends Shape, T extends DType>(
   name: string,
-  type: T,
   shape: S,
+  type: T,
   value?: unknown,
   opts: DatasetOpts = {},
 ): MockDataset<S, T> {
@@ -155,7 +155,7 @@ export function scalar(
   opts: DatasetOpts & { type?: DType } = {},
 ): MockDataset<ScalarShape> {
   const { type, ...datasetOpts } = opts;
-  return dataset(name, type || guessType(value), [], value, datasetOpts);
+  return dataset(name, [], type || guessType(value), value, datasetOpts);
 }
 
 export function array(
@@ -167,8 +167,8 @@ export function array(
 
   return dataset(
     name,
-    type || guessType(arr.data[0]),
     arr.shape,
+    type || guessType(arr.data[0]),
     arr.data,
     datasetOpts,
   );

@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { applyDefaultSlice, guessKeepRatio } from './utils';
 
-const axisDataset = dataset('foo', intType(), [5]);
+const axisDataset = dataset('foo', [5], intType());
 const axisDefNoUnit = { label: 'foo', unit: undefined, dataset: axisDataset };
 const axisDefUnitX = { label: 'foo', unit: 'mm', dataset: axisDataset };
 const axisDefUnitY = { label: 'foo', unit: 'degrees', dataset: axisDataset };

@@ -50,11 +50,11 @@ export function makeMockFile(): GroupWithChildren {
     children: [
       group('entities', [
         group('empty_group'),
-        dataset('empty_dataset', unknownType(), null, null),
+        dataset('empty_dataset', null, unknownType(), null),
         datatype('datatype', compoundType({ int: intType() })),
         scalar('raw', { int: 42 }),
         scalar('raw_large', undefined), // generated dynamically by `MockProvider`
-        dataset('raw_png', opaqueType(), [], PNG_RED_DOT),
+        dataset('raw_png', [], opaqueType(), PNG_RED_DOT),
         scalar('scalar_num', 0, { attributes: [scalarAttr('attr', 0)] }),
         scalar('scalar_bigint', BigInt(Number.MAX_SAFE_INTEGER) + 1n, {
           attributes: [
