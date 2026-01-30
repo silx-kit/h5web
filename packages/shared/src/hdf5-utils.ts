@@ -8,6 +8,7 @@ import {
   H5T_TO_STR_PAD,
 } from './h5t';
 import {
+  type ArrayShape,
   type ArrayType,
   type BitfieldType,
   type BooleanType,
@@ -21,10 +22,14 @@ import {
   type GroupWithChildren,
   type H5WebComplex,
   type IntegerType,
+  type NullShape,
   type NumericType,
   type OpaqueType,
   type PrintableType,
   type ReferenceType,
+  type ScalarShape,
+  type Shape,
+  ShapeClass,
   type StringType,
   type TimeType,
   type UnknownType,
@@ -49,6 +54,33 @@ export function buildEntityPath(
 export function getNameFromPath(path: string): string {
   const segments = path.split('/');
   return segments[segments.length - 1];
+}
+
+/* ----------------- */
+/* ----- SHAPES ----- */
+
+export function nullShape(): NullShape {
+  return { class: ShapeClass.Null };
+}
+
+export function scalarShape(): ScalarShape {
+  return { class: ShapeClass.Scalar, dims: [] };
+}
+
+export function arrayShape(dims: number[]): ArrayShape {
+  return { class: ShapeClass.Array, dims };
+}
+
+export function parseShape(dims: number[] | null | undefined): Shape {
+  if (!dims) {
+    return nullShape();
+  }
+
+  if (dims.length === 0) {
+    return scalarShape();
+  }
+
+  return arrayShape(dims);
 }
 
 /* ----------------- */

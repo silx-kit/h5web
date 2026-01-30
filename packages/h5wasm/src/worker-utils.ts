@@ -23,6 +23,7 @@ import {
   getNameFromPath,
   intType,
   opaqueType,
+  parseShape,
   referenceType,
   strType,
   timeType,
@@ -140,7 +141,7 @@ export function parseEntity(
     return {
       ...baseEntity,
       kind: EntityKind.Dataset,
-      shape,
+      shape: parseShape(shape),
       type: parseDType(metadata),
       chunks: chunks ?? undefined,
       filters: h5wasm.get_dataset_filters(fileId, path),
@@ -205,7 +206,7 @@ function parseAttributes(
     const metadata = h5wasm.get_attribute_metadata(fileId, path, name);
     return {
       name,
-      shape: metadata.shape,
+      shape: parseShape(metadata.shape),
       type: parseDType(metadata),
     };
   });

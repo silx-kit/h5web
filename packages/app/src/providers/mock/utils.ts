@@ -50,8 +50,8 @@ export function sliceValue<T extends DType>(
   dataset: Dataset<ArrayShape | ScalarShape, T>,
   selection: string,
 ): ScalarValue<T>[] {
-  const { shape } = dataset;
-  const dataArray = ndarray(value as ScalarValue<typeof dataset.type>[], shape);
+  const { dims } = dataset.shape;
+  const dataArray = ndarray(value as ScalarValue<typeof dataset.type>[], dims);
 
   const slicingState = selection
     .split(',')

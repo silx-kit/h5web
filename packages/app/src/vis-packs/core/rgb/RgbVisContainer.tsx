@@ -29,7 +29,7 @@ function RgbVisContainer(props: VisContainerProps) {
     throw new Error('RGB Vis only supports IMAGE_TRUECOLOR.');
   }
 
-  const { shape: dims } = entity;
+  const { dims } = entity.shape;
   if (dims[dims.length - 1] !== 3) {
     throw new Error('Expected last dimension to have size 3');
   }

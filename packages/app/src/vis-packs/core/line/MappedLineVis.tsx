@@ -86,7 +86,7 @@ function MappedLineVis(props: Props) {
     interpolation,
   } = config;
 
-  const { shape: dims } = dataset;
+  const { dims } = dataset.shape;
   const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
 
   const numArray = useToNumArray(value);

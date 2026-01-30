@@ -20,7 +20,7 @@ function MatrixVisContainer(props: VisContainerProps) {
   assertArrayShape(entity);
   assertPrintableType(entity);
 
-  const { shape: dims } = entity;
+  const { dims } = entity.shape;
   const axesCount = Math.min(dims.length, 2);
   const [dimMapping, setDimMapping] = useDimMappingState({ dims, axesCount });
 

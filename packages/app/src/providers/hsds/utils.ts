@@ -16,12 +16,15 @@ import {
   type Shape,
 } from '@h5web/shared/hdf5-models';
 import {
+  arrayShape,
   arrayType,
   compoundType,
   cplxType,
   enumOrBoolType,
   floatType,
   intType,
+  nullShape,
+  scalarShape,
   strType,
   unknownType,
   vlenType,
@@ -66,8 +69,17 @@ function assertHsdsNumericType(
 }
 
 export function convertHsdsShape(shape: HsdsShape): Shape {
-  const { class: shapeClass, dims } = shape;
-  return dims || (shapeClass === 'H5S_SCALAR' ? [] : null);
+  const { class: shapeClass } = shape;
+
+  if (shapeClass === 'H5S_SIMPLE') {
+    return arrayShape(shape.dims);
+  }
+
+  if (shapeClass === 'H5S_SCALAR') {
+    return scalarShape();
+  }
+
+  return nullShape();
 }
 
 function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
@@ -169,7 +181,7 @@ export function flattenValue(
 ): unknown[] {
   assertArray(value);
   const slicedDims = selection?.split(',').filter((s) => s.includes(':'));
-  const dims = slicedDims || dataset.shape;
+  const dims = slicedDims || dataset.shape.dims;
   return value.flat(dims.length - 1);
 }
 

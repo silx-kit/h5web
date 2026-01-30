@@ -21,7 +21,7 @@ function NxComplexLineContainer(props: VisContainerProps) {
   assertComplexNxData(nxData);
 
   const { signalDef, axisDefs, auxDefs, defaultSlice, silxStyle } = nxData;
-  const signalDims = signalDef.dataset.shape;
+  const { dims: signalDims } = signalDef.dataset.shape;
 
   const [dimMapping, setDimMapping] = useDimMappingState({
     dims: signalDims,

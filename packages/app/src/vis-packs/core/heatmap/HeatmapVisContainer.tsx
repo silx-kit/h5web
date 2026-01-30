@@ -23,7 +23,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
   assertMinDims(entity, 2);
   assertNumericLikeType(entity);
 
-  const { shape: dims } = entity;
+  const { dims } = entity.shape;
   const [dimMapping, setDimMapping] = useDimMappingState({
     dims,
     axesCount: 2,

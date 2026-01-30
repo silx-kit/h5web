@@ -48,7 +48,11 @@ export function useNxData(group: GroupWithChildren): NxData {
       (dataset) =>
         dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
     ),
-    defaultSlice: useDefaultSlice(group, signalDataset.shape, attrValuesStore),
+    defaultSlice: useDefaultSlice(
+      group,
+      signalDataset.shape.dims,
+      attrValuesStore,
+    ),
     silxStyle: getSilxStyle(group, attrValuesStore),
   };
 }

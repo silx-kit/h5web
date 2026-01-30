@@ -18,6 +18,7 @@ import {
   floatType,
   intType,
   opaqueType,
+  parseShape,
   referenceType,
   strType,
   timeType,
@@ -90,7 +91,7 @@ export function parseEntity(
     return {
       ...baseEntity,
       kind: EntityKind.Dataset,
-      shape,
+      shape: parseShape(shape),
       type: parseDType(type),
       rawType: type,
       ...(chunks && { chunks }),
@@ -145,7 +146,7 @@ export function parseEntity(
 function parseAttributes(attrsMetadata: H5GroveAttribute[]): Attribute[] {
   return attrsMetadata.map<Attribute>(({ name, type: dtype, shape }) => ({
     name,
-    shape,
+    shape: parseShape(shape),
     type: parseDType(dtype),
   }));
 }

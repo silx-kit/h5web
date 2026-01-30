@@ -89,7 +89,7 @@ export const NX_DATA_VIS = {
       return (
         (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
         hasMinDims(signal, 3) && // 2 for axes + 1 for RGB channels
-        signal.shape[signal.shape.length - 1] === 3 && // 3 channels
+        signal.shape.dims[signal.shape.dims.length - 1] === 3 && // 3 channels
         !hasComplexType(signal)
       );
     },

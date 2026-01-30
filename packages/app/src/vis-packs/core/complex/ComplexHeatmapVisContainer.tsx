@@ -22,7 +22,7 @@ function ComplexHeatmapVisContainer(props: VisContainerProps) {
   assertMinDims(entity, 2);
   assertComplexType(entity);
 
-  const { shape: dims } = entity;
+  const { dims } = entity.shape;
   const [dimMapping, setDimMapping] = useDimMappingState({
     dims,
     axesCount: 2,

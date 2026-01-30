@@ -176,6 +176,7 @@ export { default as DataProvider } from './providers/DataProvider';
 export { DataProviderApi } from './providers/api';
 export { getValueOrError } from './providers/utils';
 export { useValuesInCache } from './hooks';
+export { parseShape } from '@h5web/shared/hdf5-utils';
 
 export { default as ValueFetcher } from './vis-packs/core/ValueFetcher';
 export { applyMapping, getBaseArray, toNumArray } from './vis-packs/core/utils';

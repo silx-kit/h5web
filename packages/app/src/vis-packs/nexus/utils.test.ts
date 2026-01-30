@@ -1,10 +1,10 @@
-import { intType } from '@h5web/shared/hdf5-utils';
+import { arrayShape, intType } from '@h5web/shared/hdf5-utils';
 import { dataset } from '@h5web/shared/mock-utils';
 import { describe, expect, it } from 'vitest';
 
 import { applyDefaultSlice, guessKeepRatio } from './utils';
 
-const axisDataset = dataset('foo', [5], intType());
+const axisDataset = dataset('foo', arrayShape([5]), intType());
 const axisDefNoUnit = { label: 'foo', unit: undefined, dataset: axisDataset };
 const axisDefUnitX = { label: 'foo', unit: 'mm', dataset: axisDataset };
 const axisDefUnitY = { label: 'foo', unit: 'degrees', dataset: axisDataset };

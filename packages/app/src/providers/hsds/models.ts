@@ -86,9 +86,19 @@ export interface HsdsAttribute {
 /* ------------------------ */
 /* ----- SHAPE & TYPE ----- */
 
-export interface HsdsShape {
-  class: 'H5S_SIMPLE' | 'H5S_SCALAR' | 'H5S_NUL';
-  dims?: number[];
+export type HsdsShape = HsdsSimpleShape | HsdsScalarShape | HsdsNulShape;
+
+interface HsdsSimpleShape {
+  class: 'H5S_SIMPLE';
+  dims: [number, ...number[]];
+}
+
+interface HsdsScalarShape {
+  class: 'H5S_SCALAR';
+}
+
+interface HsdsNulShape {
+  class: 'H5S_NUL';
 }
 
 export type HsdsType =
