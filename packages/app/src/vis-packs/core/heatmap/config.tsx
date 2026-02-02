@@ -1,5 +1,4 @@
 import { type CustomDomain } from '@h5web/lib';
-import { isDefined } from '@h5web/shared/guards';
 import {
   type ColorScaleType,
   type ComplexHeatmapVisType,
@@ -7,7 +6,6 @@ import {
   type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { useMap } from '@react-hookz/web';
 import {
   createContext,
   type PropsWithChildren,
@@ -17,6 +15,7 @@ import {
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { useSuggestion } from '../hooks';
 import { type ColorMap } from './models';
 
 export interface HeatmapConfig {
@@ -100,26 +99,21 @@ export function HeatmapConfigProvider(props: PropsWithChildren<NoProps>) {
 }
 
 export function useHeatmapConfig(
-  initialSuggestedOpts: Partial<
-    Pick<HeatmapConfig, 'scaleType' | 'keepRatio'>
-  > = {},
+  suggestions: Partial<Pick<HeatmapConfig, 'scaleType' | 'keepRatio'>> = {},
 ): HeatmapConfig {
-  const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
-  );
-
   const config = useStore(useContext(StoreContext));
 
-  return {
-    ...config,
-    ...Object.fromEntries(suggestedOpts.entries()),
-    setScaleType: (scaleType: ColorScaleType) => {
-      config.setScaleType(scaleType);
-      suggestedOpts.delete('scaleType');
-    },
-    setKeepRatio: (keepRatio: boolean) => {
-      config.setKeepRatio(keepRatio);
-      suggestedOpts.delete('keepRatio');
-    },
-  };
+  const [scaleType, setScaleType] = useSuggestion(
+    suggestions.scaleType,
+    config.scaleType,
+    config.setScaleType,
+  );
+
+  const [keepRatio, setKeepRatio] = useSuggestion(
+    suggestions.keepRatio,
+    config.keepRatio,
+    config.setKeepRatio,
+  );
+
+  return { ...config, scaleType, keepRatio, setScaleType, setKeepRatio };
 }

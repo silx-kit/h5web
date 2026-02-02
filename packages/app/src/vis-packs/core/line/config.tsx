@@ -1,5 +1,4 @@
 import { CurveType, type CustomDomain, Interpolation } from '@h5web/lib';
-import { isDefined } from '@h5web/shared/guards';
 import {
   type AxisScaleType,
   type ComplexLineVisType,
@@ -7,7 +6,6 @@ import {
   type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { useMap } from '@react-hookz/web';
 import {
   createContext,
   type PropsWithChildren,
@@ -16,6 +14,8 @@ import {
 } from 'react';
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
+
+import { useSuggestion } from '../hooks';
 
 export interface LineConfig {
   customDomain: CustomDomain;
@@ -90,26 +90,21 @@ export function LineConfigProvider(props: PropsWithChildren<NoProps>) {
 }
 
 export function useLineConfig(
-  initialSuggestedOpts: Partial<
-    Pick<LineConfig, 'xScaleType' | 'yScaleType'>
-  > = {},
+  suggestions: Partial<Pick<LineConfig, 'xScaleType' | 'yScaleType'>> = {},
 ): LineConfig {
-  const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
-  );
-
   const config = useStore(useContext(StoreContext));
 
-  return {
-    ...config,
-    ...Object.fromEntries(suggestedOpts.entries()),
-    setXScaleType: (xScaleType: AxisScaleType) => {
-      config.setXScaleType(xScaleType);
-      suggestedOpts.delete('xScaleType');
-    },
-    setYScaleType: (yScaleType: AxisScaleType) => {
-      config.setYScaleType(yScaleType);
-      suggestedOpts.delete('yScaleType');
-    },
-  };
+  const [xScaleType, setXScaleType] = useSuggestion(
+    suggestions.xScaleType,
+    config.xScaleType,
+    config.setXScaleType,
+  );
+
+  const [yScaleType, setYScaleType] = useSuggestion(
+    suggestions.yScaleType,
+    config.yScaleType,
+    config.setYScaleType,
+  );
+
+  return { ...config, xScaleType, yScaleType, setXScaleType, setYScaleType };
 }

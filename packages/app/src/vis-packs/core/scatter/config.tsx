@@ -1,12 +1,10 @@
 import { type CustomDomain } from '@h5web/lib';
-import { isDefined } from '@h5web/shared/guards';
 import {
   type AxisScaleType,
   type ColorScaleType,
   type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { useMap } from '@react-hookz/web';
 import {
   createContext,
   type PropsWithChildren,
@@ -17,6 +15,7 @@ import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { type ColorMap } from '../heatmap/models';
+import { useSuggestion } from '../hooks';
 
 export interface ScatterConfig {
   customDomain: CustomDomain;
@@ -85,30 +84,37 @@ export function ScatterConfigProvider(props: PropsWithChildren<NoProps>) {
 }
 
 export function useScatterConfig(
-  initialSuggestedOpts: Partial<
+  suggestions: Partial<
     Pick<ScatterConfig, 'scaleType' | 'xScaleType' | 'yScaleType'>
   > = {},
 ): ScatterConfig {
-  const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
+  const config = useStore(useContext(StoreContext));
+
+  const [scaleType, setScaleType] = useSuggestion(
+    suggestions.scaleType,
+    config.scaleType,
+    config.setScaleType,
   );
 
-  const config = useStore(useContext(StoreContext));
+  const [xScaleType, setXScaleType] = useSuggestion(
+    suggestions.xScaleType,
+    config.xScaleType,
+    config.setXScaleType,
+  );
+
+  const [yScaleType, setYScaleType] = useSuggestion(
+    suggestions.yScaleType,
+    config.yScaleType,
+    config.setYScaleType,
+  );
 
   return {
     ...config,
-    ...Object.fromEntries(suggestedOpts.entries()),
-    setScaleType: (scaleType: ColorScaleType) => {
-      config.setScaleType(scaleType);
-      suggestedOpts.delete('scaleType');
-    },
-    setXScaleType: (xScaleType: AxisScaleType) => {
-      config.setXScaleType(xScaleType);
-      suggestedOpts.delete('xScaleType');
-    },
-    setYScaleType: (yScaleType: AxisScaleType) => {
-      config.setYScaleType(yScaleType);
-      suggestedOpts.delete('yScaleType');
-    },
+    scaleType,
+    xScaleType,
+    yScaleType,
+    setScaleType,
+    setXScaleType,
+    setYScaleType,
   };
 }
