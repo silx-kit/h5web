@@ -15,6 +15,7 @@ import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
 import { useRgbConfig } from './config';
 import MappedRgbVis from './MappedRgbVis';
+import { assertSubclassIfPresent } from './utils';
 
 function RgbVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -24,16 +25,9 @@ function RgbVisContainer(props: VisContainerProps) {
   assertNumericType(entity);
 
   const { attrValuesStore } = useDataContext();
-  const subclassAttr = attrValuesStore.getSingle(entity, 'IMAGE_SUBCLASS');
-  if (subclassAttr && subclassAttr !== 'IMAGE_TRUECOLOR') {
-    throw new Error('RGB Vis only supports IMAGE_TRUECOLOR.');
-  }
+  assertSubclassIfPresent(entity, attrValuesStore);
 
   const { dims } = entity.shape;
-  if (dims[dims.length - 1] !== 3) {
-    throw new Error('Expected last dimension to have size 3');
-  }
-
   const [dimMapping, setDimMapping] = useDimMappingState({
     dims,
     axesCount: 2,

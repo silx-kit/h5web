@@ -2,9 +2,11 @@ import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import { assertGroup, assertMinDims } from '@h5web/shared/guards';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
+import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useRgbConfig } from '../../core/rgb/config';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
+import { assertSubclassIfPresent } from '../../core/rgb/utils';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
@@ -21,11 +23,10 @@ function NxRgbContainer(props: VisContainerProps) {
   const { signalDef, axisDefs, defaultSlice } = nxData;
   assertMinDims(signalDef.dataset, 3);
 
-  const { dims } = signalDef.dataset.shape;
-  if (dims[dims.length - 1] !== 3) {
-    throw new Error('Expected last dimension to have size 3');
-  }
+  const { attrValuesStore } = useDataContext();
+  assertSubclassIfPresent(signalDef.dataset, attrValuesStore);
 
+  const { dims } = signalDef.dataset.shape;
   const [dimMapping, setDimMapping] = useDimMappingState({
     dims,
     axesCount: 2,

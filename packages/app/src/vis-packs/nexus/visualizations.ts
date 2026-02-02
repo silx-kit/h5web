@@ -1,4 +1,9 @@
-import { hasComplexType, hasMinDims, hasNumDims } from '@h5web/shared/guards';
+import {
+  hasComplexType,
+  hasMinDims,
+  hasNumDims,
+  hasNumericType,
+} from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type ComplexType,
@@ -11,6 +16,7 @@ import { FiActivity, FiFileText, FiImage, FiMap } from 'react-icons/fi';
 import { MdGrain } from 'react-icons/md';
 
 import { type AttrValuesStore } from '../../providers/models';
+import { findAttribute, getAttributeValue } from '../../utils';
 import {
   HeatmapConfigProvider,
   LineConfigProvider,
@@ -86,12 +92,16 @@ export const NX_DATA_VIS = {
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
     supports: (_, signal, interpretation, attrValuesStore) => {
-      const { CLASS } = attrValuesStore.get(signal);
+      const classAttr = findAttribute(signal, 'CLASS');
+      const classVal = classAttr
+        ? getAttributeValue(signal, classAttr, attrValuesStore)
+        : undefined;
+
       return (
-        (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
+        (interpretation === NxInterpretation.RGB || classVal === 'IMAGE') &&
         hasMinDims(signal, 3) && // 2 for axes + 1 for RGB channels
         signal.shape.dims[signal.shape.dims.length - 1] === 3 && // 3 channels
-        !hasComplexType(signal)
+        hasNumericType(signal)
       );
     },
     isPrimary: () => true, // always primary if supported
