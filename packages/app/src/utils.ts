@@ -1,7 +1,9 @@
 import { assertValue } from '@h5web/shared/guards';
 import {
+  type ArrayShape,
   type Attribute,
   type Entity,
+  type ScalarShape,
   type Value,
 } from '@h5web/shared/hdf5-models';
 
@@ -18,11 +20,9 @@ export function findAttribute(
   return entity.attributes.find((attr) => attr.name === attributeName);
 }
 
-export function getAttributeValue<A extends Attribute>(
-  entity: Entity,
-  attribute: A,
-  attrValuesStore: AttrValuesStore,
-): Value<A> {
+export function getAttributeValue<
+  A extends Attribute<ScalarShape | ArrayShape>,
+>(entity: Entity, attribute: A, attrValuesStore: AttrValuesStore): Value<A> {
   const value = attrValuesStore.get(entity)[attribute.name];
   assertValue(value, attribute);
   return value;

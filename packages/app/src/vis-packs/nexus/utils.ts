@@ -8,6 +8,7 @@ import {
   assertScalarShape,
   assertStringType,
   hasArrayShape,
+  hasNonNullShape,
   hasScalarShape,
   hasStringType,
   isAxisScaleType,
@@ -151,7 +152,7 @@ export function findAssociatedDatasets(
   attrValuesStore: AttrValuesStore,
 ): (Dataset<ArrayShape> | undefined)[] {
   const attr = findAttribute(group, type);
-  if (!attr || !hasStringType(attr)) {
+  if (!attr || !hasNonNullShape(attr) || !hasStringType(attr)) {
     return [];
   }
 

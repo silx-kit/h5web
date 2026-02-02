@@ -1,5 +1,4 @@
 import { isGroup } from '@h5web/shared/guards';
-import { type Entity } from '@h5web/shared/hdf5-models';
 import { getNameFromPath } from '@h5web/shared/hdf5-utils';
 import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
 import {
@@ -9,10 +8,8 @@ import {
   useMemo,
 } from 'react';
 
-import { hasAttribute } from '../utils';
 import { type DataProviderApi } from './api';
 import {
-  type AttrName,
   type AttrValuesStore,
   type EntitiesStore,
   type ValuesStore,
@@ -70,18 +67,10 @@ function DataProvider(props: PropsWithChildren<Props>) {
   }, [api]);
 
   const attrValuesStore = useMemo(() => {
-    const store = createFetchStore(
+    return createFetchStore(
       api.getAttrValues.bind(api),
       (a, b) => a.path === b.path,
     );
-
-    return Object.assign(store, {
-      getSingle: (entity: Entity, attrName: AttrName) => {
-        return hasAttribute(entity, attrName)
-          ? attrValuesStore.get(entity)[attrName]
-          : undefined;
-      },
-    });
   }, [api]);
 
   return (

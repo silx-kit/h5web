@@ -3,6 +3,8 @@ import {
   hasMinDims,
   hasNumDims,
   hasNumericType,
+  hasScalarShape,
+  hasStringType,
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -93,9 +95,10 @@ export const NX_DATA_VIS = {
     ConfigProvider: RgbConfigProvider,
     supports: (_, signal, interpretation, attrValuesStore) => {
       const classAttr = findAttribute(signal, 'CLASS');
-      const classVal = classAttr
-        ? getAttributeValue(signal, classAttr, attrValuesStore)
-        : undefined;
+      const classVal =
+        classAttr && hasScalarShape(classAttr) && hasStringType(classAttr)
+          ? getAttributeValue(signal, classAttr, attrValuesStore)
+          : undefined;
 
       return (
         (interpretation === NxInterpretation.RGB || classVal === 'IMAGE') &&
