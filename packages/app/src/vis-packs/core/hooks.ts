@@ -17,8 +17,9 @@ import {
   type IgnoreValue,
   type NumArray,
 } from '@h5web/shared/vis-models';
+import { useToggle } from '@react-hookz/web';
 import { type NdArray } from 'ndarray';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useDataContext } from '../../providers/DataProvider';
 import {
@@ -151,4 +152,26 @@ export function useExportEntries<F extends ExportFormat[]>(
       return url ? { format, url } : undefined;
     })
     .filter(isDefined);
+}
+
+export function useSuggestion<T>(
+  suggestion: T | undefined,
+  storeValue: T,
+  storeSetter: (val: T) => void,
+): [T, (val: T) => void] {
+  const [isIgnored, ignoreSuggestion] = useToggle();
+
+  const patchedSetter = useCallback(
+    (val: T) => {
+      storeSetter(val);
+      ignoreSuggestion();
+    },
+    [storeSetter, ignoreSuggestion],
+  );
+
+  if (isIgnored || !isDefined(suggestion)) {
+    return [storeValue, storeSetter];
+  }
+
+  return [suggestion, patchedSetter];
 }

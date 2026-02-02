@@ -28,10 +28,10 @@ function RgbToolbar(props: Props) {
     flipXAxis,
     flipYAxis,
     setImageType,
-    toggleKeepRatio,
-    toggleGrid,
-    toggleXAxisFlip,
-    toggleYAxisFlip,
+    setKeepRatio,
+    setShowGrid,
+    setFlipXAxis,
+    setFlipYAxis,
   } = config;
 
   return (
@@ -55,28 +55,28 @@ function RgbToolbar(props: Props) {
         aria-label="Flip X"
         Icon={MdSwapHoriz}
         value={flipXAxis}
-        onToggle={toggleXAxisFlip}
+        onToggle={() => setFlipXAxis(!flipXAxis)}
       />
       <ToggleBtn
         label="Y"
         aria-label="Flip Y"
         Icon={MdSwapVert}
         value={flipYAxis}
-        onToggle={toggleYAxisFlip}
+        onToggle={() => setFlipYAxis(!flipYAxis)}
       />
 
       <ToggleBtn
         label="Keep ratio"
         Icon={MdAspectRatio}
         value={keepRatio}
-        onToggle={toggleKeepRatio}
+        onToggle={() => setKeepRatio(!keepRatio)}
       />
 
       <ToggleBtn
         label="Grid"
         Icon={MdGridOn}
         value={showGrid}
-        onToggle={toggleGrid}
+        onToggle={() => setShowGrid(!showGrid)}
       />
     </Toolbar>
   );

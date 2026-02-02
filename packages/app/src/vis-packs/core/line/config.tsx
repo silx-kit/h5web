@@ -1,5 +1,4 @@
 import { CurveType, type CustomDomain, Interpolation } from '@h5web/lib';
-import { isDefined } from '@h5web/shared/guards';
 import {
   type AxisScaleType,
   type ComplexLineVisType,
@@ -7,7 +6,6 @@ import {
   type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { useMap } from '@react-hookz/web';
 import {
   createContext,
   type PropsWithChildren,
@@ -17,6 +15,8 @@ import {
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { useSuggestion } from '../hooks';
+
 export interface LineConfig {
   customDomain: CustomDomain;
   setCustomDomain: (customDomain: CustomDomain) => void;
@@ -25,7 +25,7 @@ export interface LineConfig {
   setCurveType: (type: CurveType) => void;
 
   showGrid: boolean;
-  toggleGrid: () => void;
+  setShowGrid: (showGrid: boolean) => void;
 
   xScaleType: AxisScaleType;
   yScaleType: AxisScaleType;
@@ -36,7 +36,7 @@ export interface LineConfig {
   setComplexVisType: (visType: ComplexLineVisType) => void;
 
   showErrors: boolean;
-  toggleErrors: () => void;
+  setShowErrors: (showErrors: boolean) => void;
 
   interpolation: Interpolation;
   setInterpolation: (interpolation: Interpolation) => void;
@@ -53,7 +53,7 @@ function createLineConfigStore() {
         setCurveType: (curveType) => set({ curveType }),
 
         showGrid: true,
-        toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
+        setShowGrid: (showGrid) => set({ showGrid }),
 
         xScaleType: ScaleType.Linear,
         yScaleType: ScaleType.Linear,
@@ -64,7 +64,7 @@ function createLineConfigStore() {
         setComplexVisType: (complexVisType) => set(() => ({ complexVisType })),
 
         showErrors: true,
-        toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
+        setShowErrors: (showErrors) => set({ showErrors }),
 
         interpolation: Interpolation.Linear,
         setInterpolation: (interpolation) => set({ interpolation }),
@@ -90,30 +90,21 @@ export function LineConfigProvider(props: PropsWithChildren<NoProps>) {
 }
 
 export function useLineConfig(
-  initialSuggestedOpts: Partial<
-    Pick<LineConfig, 'xScaleType' | 'yScaleType'>
-  > = {},
+  suggestions: Partial<Pick<LineConfig, 'xScaleType' | 'yScaleType'>> = {},
 ): LineConfig {
-  const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
+  const config = useStore(useContext(StoreContext));
+
+  const [xScaleType, setXScaleType] = useSuggestion(
+    suggestions.xScaleType,
+    config.xScaleType,
+    config.setXScaleType,
   );
 
-  const persistedConfig = useStore(useContext(StoreContext));
-  const {
-    setXScaleType: setPersistedXScaleType,
-    setYScaleType: setPersistedYScaleType,
-  } = persistedConfig;
+  const [yScaleType, setYScaleType] = useSuggestion(
+    suggestions.yScaleType,
+    config.yScaleType,
+    config.setYScaleType,
+  );
 
-  return {
-    ...persistedConfig,
-    ...Object.fromEntries(suggestedOpts.entries()),
-    setXScaleType: (xScaleType: AxisScaleType) => {
-      setPersistedXScaleType(xScaleType);
-      suggestedOpts.delete('xScaleType');
-    },
-    setYScaleType: (yScaleType: AxisScaleType) => {
-      setPersistedYScaleType(yScaleType);
-      suggestedOpts.delete('yScaleType');
-    },
-  };
+  return { ...config, xScaleType, yScaleType, setXScaleType, setYScaleType };
 }

@@ -1,11 +1,9 @@
 import { type CustomDomain } from '@h5web/lib';
-import { isDefined } from '@h5web/shared/guards';
 import {
   type ColorScaleType,
   type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { useMap } from '@react-hookz/web';
 import {
   createContext,
   type PropsWithChildren,
@@ -16,6 +14,7 @@ import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { type ColorMap } from '../heatmap/models';
+import { useSuggestion } from '../hooks';
 
 export interface SurfaceConfig {
   customDomain: CustomDomain;
@@ -25,7 +24,7 @@ export interface SurfaceConfig {
   setColorMap: (colorMap: ColorMap) => void;
 
   invertColorMap: boolean;
-  toggleColorMapInversion: () => void;
+  setInvertColorMap: (invertColorMap: boolean) => void;
 
   scaleType: ColorScaleType;
   setScaleType: (scaleType: ColorScaleType) => void;
@@ -42,8 +41,7 @@ function createSurfaceConfigStore() {
         setColorMap: (colorMap) => set({ colorMap }),
 
         invertColorMap: false,
-        toggleColorMapInversion: () =>
-          set((state) => ({ invertColorMap: !state.invertColorMap })),
+        setInvertColorMap: (invertColorMap) => set({ invertColorMap }),
 
         scaleType: ScaleType.Linear,
         setScaleType: (scaleType) => set({ scaleType }),
@@ -69,21 +67,15 @@ export function SurfaceConfigProvider(props: PropsWithChildren<NoProps>) {
 }
 
 export function useSurfaceConfig(
-  initialSuggestedOpts: Partial<Pick<SurfaceConfig, 'scaleType'>> = {},
+  suggestions: Partial<Pick<SurfaceConfig, 'scaleType'>> = {},
 ): SurfaceConfig {
-  const suggestedOpts = useMap(
-    Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
+  const config = useStore(useContext(StoreContext));
+
+  const [scaleType, setScaleType] = useSuggestion(
+    suggestions.scaleType,
+    config.scaleType,
+    config.setScaleType,
   );
 
-  const persistedConfig = useStore(useContext(StoreContext));
-  const { setScaleType: setPersistedScaleType } = persistedConfig;
-
-  return {
-    ...persistedConfig,
-    ...Object.fromEntries(suggestedOpts.entries()),
-    setScaleType: (scaleType: ColorScaleType) => {
-      setPersistedScaleType(scaleType);
-      suggestedOpts.delete('scaleType');
-    },
-  };
+  return { ...config, scaleType, setScaleType };
 }

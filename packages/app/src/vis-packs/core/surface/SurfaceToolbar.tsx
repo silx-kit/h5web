@@ -26,7 +26,7 @@ function SurfaceToolbar(props: Props) {
     setCustomDomain,
     setColorMap,
     setScaleType,
-    toggleColorMapInversion,
+    setInvertColorMap,
   } = config;
 
   return (
@@ -43,7 +43,7 @@ function SurfaceToolbar(props: Props) {
         value={colorMap}
         onValueChange={setColorMap}
         invert={invertColorMap}
-        onInversionChange={toggleColorMapInversion}
+        onInversionChange={() => setInvertColorMap(!invertColorMap)}
       />
 
       <Separator />

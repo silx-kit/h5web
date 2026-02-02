@@ -31,8 +31,8 @@ function ScatterToolbar(props: Props) {
     setCustomDomain,
     setColorMap,
     setScaleType,
-    toggleGrid,
-    toggleColorMapInversion,
+    setShowGrid,
+    setInvertColorMap,
     setXScaleType,
     setYScaleType,
   } = config;
@@ -66,7 +66,7 @@ function ScatterToolbar(props: Props) {
         value={colorMap}
         onValueChange={setColorMap}
         invert={invertColorMap}
-        onInversionChange={toggleColorMapInversion}
+        onInversionChange={() => setInvertColorMap(!invertColorMap)}
       />
 
       <Separator />
@@ -83,7 +83,7 @@ function ScatterToolbar(props: Props) {
         label="Grid"
         Icon={MdGridOn}
         value={showGrid}
-        onToggle={toggleGrid}
+        onToggle={() => setShowGrid(!showGrid)}
       />
     </Toolbar>
   );
