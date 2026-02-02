@@ -10,43 +10,40 @@ import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface RgbVisConfig {
-  showGrid: boolean;
-  toggleGrid: () => void;
-
-  keepRatio: boolean;
-  toggleKeepRatio: () => void;
-
   imageType: ImageType;
   setImageType: (channels: ImageType) => void;
 
+  keepRatio: boolean;
+  setKeepRatio: (keepRatio: boolean) => void;
+
+  showGrid: boolean;
+  setShowGrid: (showGrid: boolean) => void;
+
   flipXAxis: boolean;
-  toggleXAxisFlip: () => void;
+  setFlipXAxis: (flipXAxis: boolean) => void;
 
   flipYAxis: boolean;
-  toggleYAxisFlip: () => void;
+  setFlipYAxis: (flipYAxis: boolean) => void;
 }
 
 function createRgbConfigStore() {
   return createStore<RgbVisConfig>()(
     persist(
       (set): RgbVisConfig => ({
-        showGrid: false,
-        toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
-
-        keepRatio: true,
-        toggleKeepRatio: () =>
-          set((state) => ({ keepRatio: !state.keepRatio })),
-
         imageType: ImageType.RGB,
         setImageType: (imageType) => set({ imageType }),
 
+        keepRatio: true,
+        setKeepRatio: (keepRatio) => set({ keepRatio }),
+
+        showGrid: false,
+        setShowGrid: (showGrid) => set({ showGrid }),
+
         flipXAxis: false,
-        toggleXAxisFlip: () =>
-          set((state) => ({ flipXAxis: !state.flipXAxis })),
+        setFlipXAxis: (flipXAxis) => set({ flipXAxis }),
 
         flipYAxis: true,
-        toggleYAxisFlip: () =>
-          set((state) => ({ flipYAxis: !state.flipYAxis })),
+        setFlipYAxis: (flipYAxis) => set({ flipYAxis }),
       }),
       {
         name: 'h5web:rgb',

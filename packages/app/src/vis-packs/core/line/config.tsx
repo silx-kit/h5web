@@ -25,7 +25,7 @@ export interface LineConfig {
   setCurveType: (type: CurveType) => void;
 
   showGrid: boolean;
-  toggleGrid: () => void;
+  setShowGrid: (showGrid: boolean) => void;
 
   xScaleType: AxisScaleType;
   yScaleType: AxisScaleType;
@@ -36,7 +36,7 @@ export interface LineConfig {
   setComplexVisType: (visType: ComplexLineVisType) => void;
 
   showErrors: boolean;
-  toggleErrors: () => void;
+  setShowErrors: (showErrors: boolean) => void;
 
   interpolation: Interpolation;
   setInterpolation: (interpolation: Interpolation) => void;
@@ -53,7 +53,7 @@ function createLineConfigStore() {
         setCurveType: (curveType) => set({ curveType }),
 
         showGrid: true,
-        toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
+        setShowGrid: (showGrid) => set({ showGrid }),
 
         xScaleType: ScaleType.Linear,
         yScaleType: ScaleType.Linear,
@@ -64,7 +64,7 @@ function createLineConfigStore() {
         setComplexVisType: (complexVisType) => set(() => ({ complexVisType })),
 
         showErrors: true,
-        toggleErrors: () => set((state) => ({ showErrors: !state.showErrors })),
+        setShowErrors: (showErrors) => set({ showErrors }),
 
         interpolation: Interpolation.Linear,
         setInterpolation: (interpolation) => set({ interpolation }),
@@ -98,21 +98,17 @@ export function useLineConfig(
     Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
   );
 
-  const persistedConfig = useStore(useContext(StoreContext));
-  const {
-    setXScaleType: setPersistedXScaleType,
-    setYScaleType: setPersistedYScaleType,
-  } = persistedConfig;
+  const config = useStore(useContext(StoreContext));
 
   return {
-    ...persistedConfig,
+    ...config,
     ...Object.fromEntries(suggestedOpts.entries()),
     setXScaleType: (xScaleType: AxisScaleType) => {
-      setPersistedXScaleType(xScaleType);
+      config.setXScaleType(xScaleType);
       suggestedOpts.delete('xScaleType');
     },
     setYScaleType: (yScaleType: AxisScaleType) => {
-      setPersistedYScaleType(yScaleType);
+      config.setYScaleType(yScaleType);
       suggestedOpts.delete('yScaleType');
     },
   };

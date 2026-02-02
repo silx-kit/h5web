@@ -25,7 +25,7 @@ export interface SurfaceConfig {
   setColorMap: (colorMap: ColorMap) => void;
 
   invertColorMap: boolean;
-  toggleColorMapInversion: () => void;
+  setInvertColorMap: (invertColorMap: boolean) => void;
 
   scaleType: ColorScaleType;
   setScaleType: (scaleType: ColorScaleType) => void;
@@ -42,8 +42,7 @@ function createSurfaceConfigStore() {
         setColorMap: (colorMap) => set({ colorMap }),
 
         invertColorMap: false,
-        toggleColorMapInversion: () =>
-          set((state) => ({ invertColorMap: !state.invertColorMap })),
+        setInvertColorMap: (invertColorMap) => set({ invertColorMap }),
 
         scaleType: ScaleType.Linear,
         setScaleType: (scaleType) => set({ scaleType }),
@@ -75,14 +74,13 @@ export function useSurfaceConfig(
     Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
   );
 
-  const persistedConfig = useStore(useContext(StoreContext));
-  const { setScaleType: setPersistedScaleType } = persistedConfig;
+  const config = useStore(useContext(StoreContext));
 
   return {
-    ...persistedConfig,
+    ...config,
     ...Object.fromEntries(suggestedOpts.entries()),
     setScaleType: (scaleType: ColorScaleType) => {
-      setPersistedScaleType(scaleType);
+      config.setScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },
   };

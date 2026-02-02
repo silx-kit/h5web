@@ -27,7 +27,7 @@ export interface HeatmapConfig {
   setColorMap: (colorMap: ColorMap) => void;
 
   invertColorMap: boolean;
-  toggleColorMapInversion: () => void;
+  setInvertColorMap: (invertColorMap: boolean) => void;
 
   scaleType: ColorScaleType;
   setScaleType: (scaleType: ColorScaleType) => void;
@@ -36,16 +36,16 @@ export interface HeatmapConfig {
   setComplexVisType: (complexVisType: ComplexHeatmapVisType) => void;
 
   showGrid: boolean;
-  toggleGrid: () => void;
+  setShowGrid: (showGrid: boolean) => void;
 
   keepRatio: boolean;
-  toggleKeepRatio: () => void;
+  setKeepRatio: (keepRatio: boolean) => void;
 
   flipXAxis: boolean;
-  toggleXAxisFlip: () => void;
+  setFlipXAxis: (flipXAxis: boolean) => void;
 
   flipYAxis: boolean;
-  toggleYAxisFlip: () => void;
+  setFlipYAxis: (flipYAxis: boolean) => void;
 }
 
 function createHeatmapConfigStore() {
@@ -59,9 +59,7 @@ function createHeatmapConfigStore() {
         setColorMap: (colorMap) => set({ colorMap }),
 
         invertColorMap: false,
-        toggleColorMapInversion: () => {
-          set((state) => ({ invertColorMap: !state.invertColorMap }));
-        },
+        setInvertColorMap: (invertColorMap) => set({ invertColorMap }),
 
         scaleType: ScaleType.Linear,
         setScaleType: (scaleType) => set(() => ({ scaleType })),
@@ -70,23 +68,20 @@ function createHeatmapConfigStore() {
         setComplexVisType: (complexVisType) => set(() => ({ complexVisType })),
 
         showGrid: true,
-        toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
+        setShowGrid: (showGrid) => set({ showGrid }),
 
         keepRatio: true,
-        toggleKeepRatio: () =>
-          set((state) => ({ keepRatio: !state.keepRatio })),
+        setKeepRatio: (keepRatio) => set({ keepRatio }),
 
         flipYAxis: false,
-        toggleYAxisFlip: () =>
-          set((state) => ({ flipYAxis: !state.flipYAxis })),
+        setFlipYAxis: (flipYAxis) => set({ flipYAxis }),
 
         flipXAxis: false,
-        toggleXAxisFlip: () =>
-          set((state) => ({ flipXAxis: !state.flipXAxis })),
+        setFlipXAxis: (flipXAxis) => set({ flipXAxis }),
       }),
       {
         name: 'h5web:heatmap',
-        version: 11,
+        version: 12,
       },
     ),
   );
@@ -113,21 +108,17 @@ export function useHeatmapConfig(
     Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
   );
 
-  const persistedConfig = useStore(useContext(StoreContext));
-  const {
-    setScaleType: setPersistedScaleType,
-    toggleKeepRatio: togglePersistedKeepRatio,
-  } = persistedConfig;
+  const config = useStore(useContext(StoreContext));
 
   return {
-    ...persistedConfig,
+    ...config,
     ...Object.fromEntries(suggestedOpts.entries()),
     setScaleType: (scaleType: ColorScaleType) => {
-      setPersistedScaleType(scaleType);
+      config.setScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },
-    toggleKeepRatio: () => {
-      togglePersistedKeepRatio();
+    setKeepRatio: (keepRatio: boolean) => {
+      config.setKeepRatio(keepRatio);
       suggestedOpts.delete('keepRatio');
     },
   };

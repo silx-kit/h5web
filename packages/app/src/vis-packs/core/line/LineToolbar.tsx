@@ -54,11 +54,11 @@ function LineToolbar(props: Props) {
     interpolation,
     setCustomDomain,
     setCurveType,
-    toggleGrid,
+    setShowGrid,
     setXScaleType,
     setYScaleType,
     setComplexVisType,
-    toggleErrors,
+    setShowErrors,
     setInterpolation,
   } = config;
 
@@ -103,7 +103,7 @@ function LineToolbar(props: Props) {
           label="Errors"
           Icon={ErrorsIcon}
           value={showErrors}
-          onToggle={toggleErrors}
+          onToggle={() => setShowErrors(!showErrors)}
         />
       )}
 
@@ -111,7 +111,7 @@ function LineToolbar(props: Props) {
         label="Grid"
         Icon={MdGridOn}
         value={showGrid}
-        onToggle={toggleGrid}
+        onToggle={() => setShowGrid(!showGrid)}
       />
 
       <Menu label="Aspect" Icon={MdAutoGraph}>

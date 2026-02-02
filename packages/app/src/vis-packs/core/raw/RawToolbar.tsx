@@ -12,7 +12,7 @@ interface Props {
 
 function RawToolbar(props: Props) {
   const { isImage, config, exportEntries } = props;
-  const { fitImage, toggleFitImage } = config;
+  const { fitImage, setFitImage } = config;
 
   return (
     <Toolbar>
@@ -21,7 +21,7 @@ function RawToolbar(props: Props) {
         Icon={MdOutlineFitScreen}
         value={fitImage}
         disabled={!isImage}
-        onToggle={toggleFitImage}
+        onToggle={() => setFitImage(!fitImage)}
       />
 
       {exportEntries.length > 0 && (

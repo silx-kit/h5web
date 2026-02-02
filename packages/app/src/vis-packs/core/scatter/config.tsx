@@ -26,13 +26,13 @@ export interface ScatterConfig {
   setColorMap: (colorMap: ColorMap) => void;
 
   invertColorMap: boolean;
-  toggleColorMapInversion: () => void;
+  setInvertColorMap: (invertColorMap: boolean) => void;
 
   scaleType: ColorScaleType;
   setScaleType: (scaleType: ColorScaleType) => void;
 
   showGrid: boolean;
-  toggleGrid: () => void;
+  setShowGrid: (showGrid: boolean) => void;
 
   xScaleType: AxisScaleType;
   yScaleType: AxisScaleType;
@@ -51,14 +51,13 @@ function createScatterConfigStore() {
         setColorMap: (colorMap) => set({ colorMap }),
 
         invertColorMap: false,
-        toggleColorMapInversion: () =>
-          set((state) => ({ invertColorMap: !state.invertColorMap })),
+        setInvertColorMap: (invertColorMap) => set({ invertColorMap }),
 
         scaleType: ScaleType.Linear,
         setScaleType: (scaleType) => set(() => ({ scaleType })),
 
         showGrid: true,
-        toggleGrid: () => set((state) => ({ showGrid: !state.showGrid })),
+        setShowGrid: (showGrid) => set({ showGrid }),
 
         xScaleType: ScaleType.Linear,
         yScaleType: ScaleType.Linear,
@@ -94,26 +93,21 @@ export function useScatterConfig(
     Object.entries(initialSuggestedOpts).filter(([, val]) => isDefined(val)),
   );
 
-  const persistedConfig = useStore(useContext(StoreContext));
-  const {
-    setScaleType: setPersistedScaleType,
-    setXScaleType: setPersistedXScaleType,
-    setYScaleType: setPersistedYScaleType,
-  } = persistedConfig;
+  const config = useStore(useContext(StoreContext));
 
   return {
-    ...persistedConfig,
+    ...config,
     ...Object.fromEntries(suggestedOpts.entries()),
     setScaleType: (scaleType: ColorScaleType) => {
-      setPersistedScaleType(scaleType);
+      config.setScaleType(scaleType);
       suggestedOpts.delete('scaleType');
     },
     setXScaleType: (xScaleType: AxisScaleType) => {
-      setPersistedXScaleType(xScaleType);
+      config.setXScaleType(xScaleType);
       suggestedOpts.delete('xScaleType');
     },
     setYScaleType: (yScaleType: AxisScaleType) => {
-      setPersistedYScaleType(yScaleType);
+      config.setYScaleType(yScaleType);
       suggestedOpts.delete('yScaleType');
     },
   };

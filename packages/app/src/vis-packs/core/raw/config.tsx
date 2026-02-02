@@ -10,7 +10,7 @@ import { persist } from 'zustand/middleware';
 
 export interface RawConfig {
   fitImage: boolean;
-  toggleFitImage: () => void;
+  setFitImage: (fitImage: boolean) => void;
 }
 
 function createRawConfigStore() {
@@ -18,7 +18,7 @@ function createRawConfigStore() {
     persist(
       (set): RawConfig => ({
         fitImage: true,
-        toggleFitImage: () => set((state) => ({ fitImage: !state.fitImage })),
+        setFitImage: (fitImage) => set({ fitImage }),
       }),
       {
         name: 'h5web:raw',
