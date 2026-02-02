@@ -46,9 +46,10 @@ export interface NxDataVisDef extends VisDef {
   supports: (
     group: GroupWithChildren,
     signal: Dataset<ArrayShape, NumericLikeType | ComplexType>,
+    interpretation: string | undefined,
     attrValuesStore: AttrValuesStore,
   ) => boolean;
-  isPrimary: (interpretation: unknown) => boolean;
+  isPrimary: (interpretation: string | undefined) => boolean;
 }
 
 export const NX_DATA_VIS = {
@@ -84,8 +85,8 @@ export const NX_DATA_VIS = {
     Icon: FiImage,
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
-    supports: (_, signal, attrValuesStore) => {
-      const { interpretation, CLASS } = attrValuesStore.get(signal);
+    supports: (_, signal, interpretation, attrValuesStore) => {
+      const { CLASS } = attrValuesStore.get(signal);
       return (
         (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
         hasMinDims(signal, 3) && // 2 for axes + 1 for RGB channels
@@ -101,7 +102,7 @@ export const NX_DATA_VIS = {
     Icon: MdGrain,
     Container: NxScatterContainer,
     ConfigProvider: ScatterConfigProvider,
-    supports: (group, signal, attrValuesStore) => {
+    supports: (group, signal, _, attrValuesStore) => {
       if (!hasNumDims(signal, 1)) {
         return false;
       }

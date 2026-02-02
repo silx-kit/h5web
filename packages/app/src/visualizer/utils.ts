@@ -1,4 +1,9 @@
-import { assertStr, isDataset, isGroup } from '@h5web/shared/guards';
+import {
+  hasScalarShape,
+  hasStringType,
+  isDataset,
+  isGroup,
+} from '@h5web/shared/guards';
 import {
   type ChildEntity,
   type Dataset,
@@ -8,6 +13,7 @@ import {
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 
 import { type AttrValuesStore, type EntitiesStore } from '../providers/models';
+import { findAttribute, getAttributeValue } from '../utils';
 import {
   CORE_VIS,
   type CoreVisDef,
@@ -47,12 +53,19 @@ export function resolvePath(
   if (isNxDataGroup(entity, attrValuesStore)) {
     const signal = findSignalDataset(entity, attrValuesStore);
 
+    const interpretationAttr = findAttribute(signal, 'interpretation');
+    const interpretation =
+      interpretationAttr &&
+      hasScalarShape(interpretationAttr) &&
+      hasStringType(interpretationAttr)
+        ? getAttributeValue(signal, interpretationAttr, attrValuesStore)
+        : undefined;
+
     const supportedVis = Object.values(NX_DATA_VIS).filter((vis) =>
-      vis.supports(entity, signal, attrValuesStore),
+      vis.supports(entity, signal, interpretation, attrValuesStore),
     );
 
     if (supportedVis.length > 0) {
-      const { interpretation } = attrValuesStore.get(signal);
       return {
         entity,
         supportedVis,
@@ -87,17 +100,21 @@ function getNxDefaultPath(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): string | undefined {
-  const { default: defaultPath } = attrValuesStore.get(group);
+  const defaultAttr = findAttribute(group, 'default');
 
-  if (defaultPath) {
-    assertStr(defaultPath, `Expected 'default' attribute to be a string`);
-
-    return defaultPath.startsWith('/')
-      ? defaultPath
-      : buildEntityPath(group.path, defaultPath);
+  if (
+    !defaultAttr ||
+    !hasScalarShape(defaultAttr) ||
+    !hasStringType(defaultAttr)
+  ) {
+    return getImplicitDefaultChild(group.children, attrValuesStore)?.path;
   }
 
-  return getImplicitDefaultChild(group.children, attrValuesStore)?.path;
+  const defaultPath = getAttributeValue(group, defaultAttr, attrValuesStore);
+
+  return defaultPath.startsWith('/')
+    ? defaultPath
+    : buildEntityPath(group.path, defaultPath);
 }
 
 function getImplicitDefaultChild(
