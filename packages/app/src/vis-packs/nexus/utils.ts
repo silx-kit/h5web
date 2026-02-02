@@ -9,7 +9,6 @@ import {
   assertStringType,
   hasArrayShape,
   hasNonNullShape,
-  hasScalarShape,
   hasStringType,
   isAxisScaleType,
   isColorScaleType,
@@ -30,7 +29,12 @@ import { getChildEntity } from '@h5web/shared/hdf5-utils';
 import { castArray } from '@h5web/shared/vis-utils';
 
 import { type AttrValuesStore } from '../../providers/models';
-import { findAttribute, getAttributeValue, hasAttribute } from '../../utils';
+import {
+  findAttribute,
+  findScalarStrAttr,
+  getAttributeValue,
+  hasAttribute,
+} from '../../utils';
 import {
   type AxisDef,
   type DatasetInfo,
@@ -42,11 +46,7 @@ export function getNxClass(
   group: Group,
   attrValuesStore: AttrValuesStore,
 ): string | undefined {
-  const attr = findAttribute(group, 'NX_class');
-  if (!attr || !hasScalarShape(attr) || !hasStringType(attr)) {
-    return undefined;
-  }
-
+  const attr = findScalarStrAttr(group, 'NX_class');
   return getAttributeValue(group, attr, attrValuesStore);
 }
 
@@ -194,8 +194,8 @@ function findOldStyleAxesDatasets(
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
 ): Dataset<ArrayShape, NumericType>[] {
-  const axesAttr = findAttribute(signal, 'axes');
-  if (!axesAttr || !hasScalarShape(axesAttr) || !hasStringType(axesAttr)) {
+  const axesAttr = findScalarStrAttr(signal, 'axes');
+  if (!axesAttr) {
     return [];
   }
 
@@ -309,13 +309,8 @@ export function getSilxStyle(
   group: Group,
   attrValuesStore: AttrValuesStore,
 ): SilxStyle {
-  const silxStyleAttr = findAttribute(group, 'SILX_style');
-
-  if (
-    !silxStyleAttr ||
-    !hasScalarShape(silxStyleAttr) ||
-    !hasStringType(silxStyleAttr)
-  ) {
+  const silxStyleAttr = findScalarStrAttr(group, 'SILX_style');
+  if (!silxStyleAttr) {
     return {};
   }
 
@@ -348,18 +343,11 @@ export function getDatasetInfo(
   dataset: Dataset,
   attrValuesStore: AttrValuesStore,
 ): DatasetInfo {
-  const longNameAttr = findAttribute(dataset, 'long_name');
-  const unitsAttr = findAttribute(dataset, 'units');
+  const longNameAttr = findScalarStrAttr(dataset, 'long_name');
+  const longName = getAttributeValue(dataset, longNameAttr, attrValuesStore);
 
-  const longName =
-    longNameAttr && hasScalarShape(longNameAttr) && hasStringType(longNameAttr)
-      ? getAttributeValue(dataset, longNameAttr, attrValuesStore)
-      : undefined;
-
-  const units =
-    unitsAttr && hasScalarShape(unitsAttr) && hasStringType(unitsAttr)
-      ? getAttributeValue(dataset, unitsAttr, attrValuesStore)
-      : undefined;
+  const unitsAttr = findScalarStrAttr(dataset, 'units');
+  const units = getAttributeValue(dataset, unitsAttr, attrValuesStore);
 
   return {
     label: longName || (units ? `${dataset.name} (${units})` : dataset.name),

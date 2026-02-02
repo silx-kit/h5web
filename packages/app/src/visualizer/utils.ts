@@ -1,9 +1,4 @@
-import {
-  hasScalarShape,
-  hasStringType,
-  isDataset,
-  isGroup,
-} from '@h5web/shared/guards';
+import { isDataset, isGroup } from '@h5web/shared/guards';
 import {
   type ChildEntity,
   type Dataset,
@@ -13,7 +8,7 @@ import {
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 
 import { type AttrValuesStore, type EntitiesStore } from '../providers/models';
-import { findAttribute, getAttributeValue } from '../utils';
+import { findScalarStrAttr, getAttributeValue } from '../utils';
 import {
   CORE_VIS,
   type CoreVisDef,
@@ -53,13 +48,12 @@ export function resolvePath(
   if (isNxDataGroup(entity, attrValuesStore)) {
     const signal = findSignalDataset(entity, attrValuesStore);
 
-    const interpretationAttr = findAttribute(signal, 'interpretation');
-    const interpretation =
-      interpretationAttr &&
-      hasScalarShape(interpretationAttr) &&
-      hasStringType(interpretationAttr)
-        ? getAttributeValue(signal, interpretationAttr, attrValuesStore)
-        : undefined;
+    const interpretationAttr = findScalarStrAttr(signal, 'interpretation');
+    const interpretation = getAttributeValue(
+      signal,
+      interpretationAttr,
+      attrValuesStore,
+    );
 
     const supportedVis = Object.values(NX_DATA_VIS).filter((vis) =>
       vis.supports(entity, signal, interpretation, attrValuesStore),
@@ -100,18 +94,12 @@ function getNxDefaultPath(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): string | undefined {
-  const defaultAttr = findAttribute(group, 'default');
-
-  if (
-    !defaultAttr ||
-    !hasScalarShape(defaultAttr) ||
-    !hasStringType(defaultAttr)
-  ) {
+  const defaultAttr = findScalarStrAttr(group, 'default');
+  if (!defaultAttr) {
     return getImplicitDefaultChild(group.children, attrValuesStore)?.path;
   }
 
   const defaultPath = getAttributeValue(group, defaultAttr, attrValuesStore);
-
   return defaultPath.startsWith('/')
     ? defaultPath
     : buildEntityPath(group.path, defaultPath);

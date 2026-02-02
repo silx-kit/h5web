@@ -3,8 +3,6 @@ import {
   hasMinDims,
   hasNumDims,
   hasNumericType,
-  hasScalarShape,
-  hasStringType,
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -18,7 +16,7 @@ import { FiActivity, FiFileText, FiImage, FiMap } from 'react-icons/fi';
 import { MdGrain } from 'react-icons/md';
 
 import { type AttrValuesStore } from '../../providers/models';
-import { findAttribute, getAttributeValue } from '../../utils';
+import { findScalarStrAttr, getAttributeValue } from '../../utils';
 import {
   HeatmapConfigProvider,
   LineConfigProvider,
@@ -94,11 +92,8 @@ export const NX_DATA_VIS = {
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
     supports: (_, signal, interpretation, attrValuesStore) => {
-      const classAttr = findAttribute(signal, 'CLASS');
-      const classVal =
-        classAttr && hasScalarShape(classAttr) && hasStringType(classAttr)
-          ? getAttributeValue(signal, classAttr, attrValuesStore)
-          : undefined;
+      const classAttr = findScalarStrAttr(signal, 'CLASS');
+      const classVal = getAttributeValue(signal, classAttr, attrValuesStore);
 
       return (
         (interpretation === NxInterpretation.RGB || classVal === 'IMAGE') &&

@@ -1,10 +1,6 @@
 import { type DimensionMapping } from '@h5web/lib';
 import { createMemo } from '@h5web/shared/createMemo';
-import {
-  hasNumericType,
-  hasScalarShape,
-  isDefined,
-} from '@h5web/shared/guards';
+import { isDefined } from '@h5web/shared/guards';
 import {
   type ArrayValue,
   type Dataset,
@@ -26,7 +22,7 @@ import {
   bigIntTypedArrayFromDType,
   typedArrayFromDType,
 } from '../../providers/utils';
-import { findAttribute, getAttributeValue } from '../../utils';
+import { findScalarNumAttr, getAttributeValue } from '../../utils';
 import { applyMapping, getBaseArray, toNumArray } from './utils';
 
 export const useToNumArray = createMemo(toNumArray);
@@ -105,13 +101,8 @@ export function useIgnoreFillValue(dataset: Dataset): IgnoreValue | undefined {
   const { attrValuesStore } = useDataContext();
 
   return useMemo(() => {
-    const fillValueAttr = findAttribute(dataset, '_FillValue');
-
-    if (
-      !fillValueAttr ||
-      !hasScalarShape(fillValueAttr) ||
-      !hasNumericType(fillValueAttr)
-    ) {
+    const fillValueAttr = findScalarNumAttr(dataset, '_FillValue');
+    if (!fillValueAttr) {
       return undefined;
     }
 

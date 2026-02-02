@@ -15,7 +15,7 @@ import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
 import { useRgbConfig } from './config';
 import MappedRgbVis from './MappedRgbVis';
-import { assertSubclassIfPresent } from './utils';
+import { assertImageSubclassIfPresent } from './utils';
 
 function RgbVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -25,7 +25,7 @@ function RgbVisContainer(props: VisContainerProps) {
   assertNumericType(entity);
 
   const { attrValuesStore } = useDataContext();
-  assertSubclassIfPresent(entity, attrValuesStore);
+  assertImageSubclassIfPresent(entity, attrValuesStore);
 
   const { dims } = entity.shape;
   const [dimMapping, setDimMapping] = useDimMappingState({

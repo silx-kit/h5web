@@ -9,7 +9,6 @@ import {
   hasPrintableCompoundType,
   hasPrintableType,
   hasScalarShape,
-  hasStringType,
 } from '@h5web/shared/guards';
 import { type Dataset } from '@h5web/shared/hdf5-models';
 import {
@@ -23,7 +22,7 @@ import {
 } from 'react-icons/fi';
 
 import { type AttrValuesStore } from '../../providers/models';
-import { findAttribute, getAttributeValue } from '../../utils';
+import { findScalarStrAttr, getAttributeValue } from '../../utils';
 import { type VisDef } from '../models';
 import {
   HeatmapConfigProvider,
@@ -148,11 +147,8 @@ export const CORE_VIS = {
     Container: RgbVisContainer,
     ConfigProvider: RgbConfigProvider,
     supportsDataset: (dataset, attrValuesStore) => {
-      const classAttr = findAttribute(dataset, 'CLASS');
-      const classVal =
-        classAttr && hasScalarShape(classAttr) && hasStringType(classAttr)
-          ? getAttributeValue(dataset, classAttr, attrValuesStore)
-          : undefined;
+      const classAttr = findScalarStrAttr(dataset, 'CLASS');
+      const classVal = getAttributeValue(dataset, classAttr, attrValuesStore);
 
       return (
         classVal === 'IMAGE' &&

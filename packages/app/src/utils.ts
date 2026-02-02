@@ -1,9 +1,16 @@
-import { assertValue } from '@h5web/shared/guards';
+import {
+  assertValue,
+  hasNumericType,
+  hasScalarShape,
+  hasStringType,
+} from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type Attribute,
   type Entity,
+  type NumericType,
   type ScalarShape,
+  type StringType,
   type Value,
 } from '@h5web/shared/hdf5-models';
 
@@ -20,9 +27,47 @@ export function findAttribute(
   return entity.attributes.find((attr) => attr.name === attributeName);
 }
 
+export function findScalarNumAttr(
+  entity: Entity,
+  attributeName: AttrName,
+): Attribute<ScalarShape, NumericType> | undefined {
+  const attr = findAttribute(entity, attributeName);
+  return attr && hasScalarShape(attr) && hasNumericType(attr)
+    ? attr
+    : undefined;
+}
+
+export function findScalarStrAttr(
+  entity: Entity,
+  attributeName: AttrName,
+): Attribute<ScalarShape, StringType> | undefined {
+  const attr = findAttribute(entity, attributeName);
+  return attr && hasScalarShape(attr) && hasStringType(attr) ? attr : undefined;
+}
+
 export function getAttributeValue<
   A extends Attribute<ScalarShape | ArrayShape>,
->(entity: Entity, attribute: A, attrValuesStore: AttrValuesStore): Value<A> {
+>(entity: Entity, attribute: A, attrValuesStore: AttrValuesStore): Value<A>;
+
+export function getAttributeValue<
+  A extends Attribute<ScalarShape | ArrayShape>,
+>(
+  entity: Entity,
+  attribute: A | undefined,
+  attrValuesStore: AttrValuesStore,
+): Value<A> | undefined;
+
+export function getAttributeValue<
+  A extends Attribute<ScalarShape | ArrayShape>,
+>(
+  entity: Entity,
+  attribute: A | undefined,
+  attrValuesStore: AttrValuesStore,
+): Value<A> | undefined {
+  if (!attribute) {
+    return undefined;
+  }
+
   const value = attrValuesStore.get(entity)[attribute.name];
   assertValue(value, attribute);
   return value;

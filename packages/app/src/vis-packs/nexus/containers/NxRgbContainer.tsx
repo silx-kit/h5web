@@ -6,7 +6,7 @@ import { useDataContext } from '../../../providers/DataProvider';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useRgbConfig } from '../../core/rgb/config';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
-import { assertSubclassIfPresent } from '../../core/rgb/utils';
+import { assertImageSubclassIfPresent } from '../../core/rgb/utils';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
@@ -24,7 +24,7 @@ function NxRgbContainer(props: VisContainerProps) {
   assertMinDims(signalDef.dataset, 3);
 
   const { attrValuesStore } = useDataContext();
-  assertSubclassIfPresent(signalDef.dataset, attrValuesStore);
+  assertImageSubclassIfPresent(signalDef.dataset, attrValuesStore);
 
   const { dims } = signalDef.dataset.shape;
   const [dimMapping, setDimMapping] = useDimMappingState({
