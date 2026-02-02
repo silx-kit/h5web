@@ -9,6 +9,8 @@ import {
   assertScalarShape,
   assertStr,
   assertStringType,
+  hasScalarShape,
+  hasStringType,
   isAxisScaleType,
   isColorScaleType,
   isDefined,
@@ -27,7 +29,7 @@ import {
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 
 import { type AttrValuesStore } from '../../providers/models';
-import { hasAttribute } from '../../utils';
+import { findAttribute, getAttributeValue, hasAttribute } from '../../utils';
 import {
   type AxisDef,
   type DatasetInfo,
@@ -35,12 +37,24 @@ import {
   type SilxStyle,
 } from './models';
 
+export function getNxClass(
+  group: Group,
+  attrValuesStore: AttrValuesStore,
+): string | undefined {
+  const attr = findAttribute(group, 'NX_class');
+  if (!attr || !hasScalarShape(attr) || !hasStringType(attr)) {
+    return undefined;
+  }
+
+  return getAttributeValue(group, attr, attrValuesStore);
+}
+
 export function isNxDataGroup(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): boolean {
   return (
-    attrValuesStore.getSingle(group, 'NX_class') === 'NXdata' &&
+    getNxClass(group, attrValuesStore) === 'NXdata' &&
     (hasAttribute(group, 'signal') ||
       group.children.some((child) => hasAttribute(child, 'signal')))
   );
@@ -59,7 +73,7 @@ export function isNxNoteGroup(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): boolean {
-  return attrValuesStore.getSingle(group, 'NX_class') === 'NXnote';
+  return getNxClass(group, attrValuesStore) === 'NXnote';
 }
 
 function findOldStyleSignalDataset(

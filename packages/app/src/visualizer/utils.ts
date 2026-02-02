@@ -8,7 +8,6 @@ import {
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 
 import { type AttrValuesStore, type EntitiesStore } from '../providers/models';
-import { hasAttribute } from '../utils';
 import {
   CORE_VIS,
   type CoreVisDef,
@@ -17,6 +16,7 @@ import {
 import { type VisDef } from '../vis-packs/models';
 import {
   findSignalDataset,
+  getNxClass,
   isNxDataGroup,
   isNxNoteGroup,
 } from '../vis-packs/nexus/utils';
@@ -104,30 +104,29 @@ function getImplicitDefaultChild(
   children: ChildEntity[],
   attrValuesStore: AttrValuesStore,
 ): ChildEntity | undefined {
-  const nxGroups = children
-    .filter(isGroup)
-    .filter((g) => hasAttribute(g, 'NX_class'));
+  let firstNxEntry: ChildEntity | undefined;
+  let firstNxProcess: ChildEntity | undefined;
 
-  // Look for an `NXdata` child group first
-  const nxDataChild = nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXdata',
-  );
+  for (const child of children) {
+    if (!isGroup(child)) {
+      continue;
+    }
 
-  if (nxDataChild) {
-    return nxDataChild;
+    // Use first `NXdata` child group
+    const nxClass = getNxClass(child, attrValuesStore);
+    if (nxClass === 'NXdata') {
+      return child;
+    }
+
+    if (nxClass === 'NXentry' && !firstNxEntry) {
+      firstNxEntry = child;
+    }
+
+    if (nxClass === 'NXprocess' && !firstNxProcess) {
+      firstNxProcess = child;
+    }
   }
 
-  // Then for an `NXentry` child group
-  const nxEntryChild = nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXentry',
-  );
-
-  if (nxEntryChild) {
-    return nxEntryChild;
-  }
-
-  // Then for an `NXprocess` child group
-  return nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXprocess',
-  );
+  // No `NXdata`; use first `NXentry` or `NXprocess` if any
+  return firstNxEntry || firstNxProcess;
 }
