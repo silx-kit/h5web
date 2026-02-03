@@ -22,6 +22,7 @@ import {
 } from 'react-icons/fi';
 
 import { type AttrValuesStore } from '../../providers/models';
+import { findScalarStrAttr, getAttributeValue } from '../../utils';
 import { type VisDef } from '../models';
 import {
   HeatmapConfigProvider,
@@ -146,10 +147,13 @@ export const CORE_VIS = {
     Container: RgbVisContainer,
     ConfigProvider: RgbConfigProvider,
     supportsDataset: (dataset, attrValuesStore) => {
+      const classAttr = findScalarStrAttr(dataset, 'CLASS');
+      const classVal = getAttributeValue(dataset, classAttr, attrValuesStore);
+
       return (
-        attrValuesStore.getSingle(dataset, 'CLASS') === 'IMAGE' &&
+        classVal === 'IMAGE' &&
         hasArrayShape(dataset) &&
-        dataset.shape.dims.length >= 3 && // 2 for axes + 1 for RGB channels
+        hasMinDims(dataset, 3) && // 2 for axes + 1 for RGB channels
         dataset.shape.dims[dataset.shape.dims.length - 1] === 3 && // 3 channels on last dim
         hasNumericType(dataset)
       );

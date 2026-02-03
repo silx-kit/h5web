@@ -1,14 +1,15 @@
 import { type DimensionMapping } from '@h5web/lib';
 import {
-  assertArray,
   assertArrayShape,
   assertDataset,
   assertDefined,
   assertNumericLikeOrComplexType,
   assertNumericType,
   assertScalarShape,
-  assertStr,
   assertStringType,
+  hasArrayShape,
+  hasNonNullShape,
+  hasStringType,
   isAxisScaleType,
   isColorScaleType,
   isDefined,
@@ -25,9 +26,15 @@ import {
   type StringType,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
+import { castArray } from '@h5web/shared/vis-utils';
 
 import { type AttrValuesStore } from '../../providers/models';
-import { hasAttribute } from '../../utils';
+import {
+  findAttribute,
+  findScalarStrAttr,
+  getAttributeValue,
+  hasAttribute,
+} from '../../utils';
 import {
   type AxisDef,
   type DatasetInfo,
@@ -35,12 +42,20 @@ import {
   type SilxStyle,
 } from './models';
 
+export function getNxClass(
+  group: Group,
+  attrValuesStore: AttrValuesStore,
+): string | undefined {
+  const attr = findScalarStrAttr(group, 'NX_class');
+  return getAttributeValue(group, attr, attrValuesStore);
+}
+
 export function isNxDataGroup(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): boolean {
   return (
-    attrValuesStore.getSingle(group, 'NX_class') === 'NXdata' &&
+    getNxClass(group, attrValuesStore) === 'NXdata' &&
     (hasAttribute(group, 'signal') ||
       group.children.some((child) => hasAttribute(child, 'signal')))
   );
@@ -59,7 +74,7 @@ export function isNxNoteGroup(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): boolean {
-  return attrValuesStore.getSingle(group, 'NX_class') === 'NXnote';
+  return getNxClass(group, attrValuesStore) === 'NXnote';
 }
 
 function findOldStyleSignalDataset(
@@ -80,13 +95,14 @@ export function findSignalDataset(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): Dataset<ArrayShape, NumericLikeType | ComplexType> {
-  if (!hasAttribute(group, 'signal')) {
+  const signalAttr = findAttribute(group, 'signal');
+  if (!signalAttr) {
     return findOldStyleSignalDataset(group);
   }
 
-  const signal = attrValuesStore.getSingle(group, 'signal');
-  assertDefined(signal, "Expected 'signal' attribute");
-  assertStr(signal, "Expected 'signal' attribute to be a string");
+  assertScalarShape(signalAttr);
+  assertStringType(signalAttr, "Expected 'signal' attribute to be a string");
+  const signal = getAttributeValue(group, signalAttr, attrValuesStore);
 
   const dataset = getChildEntity(group, signal);
   assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
@@ -135,15 +151,18 @@ export function findAssociatedDatasets(
   type: 'axes' | 'auxiliary_signals',
   attrValuesStore: AttrValuesStore,
 ): (Dataset<ArrayShape> | undefined)[] {
-  const dsetList = attrValuesStore.getSingle(group, type) || [];
-  const dsetNames = typeof dsetList === 'string' ? [dsetList] : dsetList;
-  assertArray(dsetNames);
+  const attr = findAttribute(group, type);
+  if (!attr || !hasNonNullShape(attr) || !hasStringType(attr)) {
+    return [];
+  }
+
+  const dsetNames = castArray(getAttributeValue(group, attr, attrValuesStore));
 
   return dsetNames.map((name) => {
-    assertStr(name);
     if (name === '.') {
       return undefined;
     }
+
     if (name.includes('/')) {
       throw new Error(
         `Expected "${name}" to be the name of a child dataset, not a path`,
@@ -158,11 +177,7 @@ export function findAssociatedDatasets(
   });
 }
 
-function parseAxesList(dsetList: unknown): string[] {
-  if (typeof dsetList !== 'string') {
-    return [];
-  }
-
+function parseAxesList(dsetList: string): string[] {
   if (dsetList.includes(':')) {
     return dsetList.split(':');
   }
@@ -179,10 +194,14 @@ function findOldStyleAxesDatasets(
   signal: Dataset,
   attrValuesStore: AttrValuesStore,
 ): Dataset<ArrayShape, NumericType>[] {
-  const axesList = attrValuesStore.getSingle(signal, 'axes');
-  const axesNames = parseAxesList(axesList);
+  const axesAttr = findScalarStrAttr(signal, 'axes');
+  if (!axesAttr) {
+    return [];
+  }
 
-  return axesNames.map((name) => {
+  const axes = getAttributeValue(signal, axesAttr, attrValuesStore);
+
+  return parseAxesList(axes).map((name) => {
     const dataset = getChildEntity(group, name);
     assertDefined(dataset);
     assertDataset(dataset);
@@ -242,14 +261,21 @@ export function getDefaultSlice(
   signalDims: number[],
   attrValuesStore: AttrValuesStore,
 ): DefaultSlice | undefined {
-  const defaultSliceRaw = attrValuesStore.getSingle(group, 'default_slice');
+  const defaultSliceAttr = findAttribute(group, 'default_slice');
 
   if (
-    !Array.isArray(defaultSliceRaw) ||
-    !defaultSliceRaw.every((v) => typeof v === 'string')
+    !defaultSliceAttr ||
+    !hasArrayShape(defaultSliceAttr) ||
+    !hasStringType(defaultSliceAttr)
   ) {
     return undefined;
   }
+
+  const defaultSliceRaw = getAttributeValue(
+    group,
+    defaultSliceAttr,
+    attrValuesStore,
+  );
 
   if (defaultSliceRaw.length !== signalDims.length) {
     // eslint-disable-next-line no-console
@@ -283,11 +309,12 @@ export function getSilxStyle(
   group: Group,
   attrValuesStore: AttrValuesStore,
 ): SilxStyle {
-  const silxStyle = attrValuesStore.getSingle(group, 'SILX_style');
-
-  if (!silxStyle || typeof silxStyle !== 'string') {
+  const silxStyleAttr = findScalarStrAttr(group, 'SILX_style');
+  if (!silxStyleAttr) {
     return {};
   }
+
+  const silxStyle = getAttributeValue(group, silxStyleAttr, attrValuesStore);
 
   try {
     const rawSilxStyle = JSON.parse(silxStyle);
@@ -316,12 +343,11 @@ export function getDatasetInfo(
   dataset: Dataset,
   attrValuesStore: AttrValuesStore,
 ): DatasetInfo {
-  const rawLongName = attrValuesStore.getSingle(dataset, 'long_name');
-  const longName =
-    rawLongName && typeof rawLongName === 'string' ? rawLongName : undefined;
+  const longNameAttr = findScalarStrAttr(dataset, 'long_name');
+  const longName = getAttributeValue(dataset, longNameAttr, attrValuesStore);
 
-  const rawUnits = attrValuesStore.getSingle(dataset, 'units');
-  const units = rawUnits && typeof rawUnits === 'string' ? rawUnits : undefined;
+  const unitsAttr = findScalarStrAttr(dataset, 'units');
+  const units = getAttributeValue(dataset, unitsAttr, attrValuesStore);
 
   return {
     label: longName || (units ? `${dataset.name} (${units})` : dataset.name),

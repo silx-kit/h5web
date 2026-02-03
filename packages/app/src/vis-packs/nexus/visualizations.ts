@@ -1,4 +1,9 @@
-import { hasComplexType, hasMinDims, hasNumDims } from '@h5web/shared/guards';
+import {
+  hasComplexType,
+  hasMinDims,
+  hasNumDims,
+  hasNumericType,
+} from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type ComplexType,
@@ -11,6 +16,7 @@ import { FiActivity, FiFileText, FiImage, FiMap } from 'react-icons/fi';
 import { MdGrain } from 'react-icons/md';
 
 import { type AttrValuesStore } from '../../providers/models';
+import { findScalarStrAttr, getAttributeValue } from '../../utils';
 import {
   HeatmapConfigProvider,
   LineConfigProvider,
@@ -46,9 +52,10 @@ export interface NxDataVisDef extends VisDef {
   supports: (
     group: GroupWithChildren,
     signal: Dataset<ArrayShape, NumericLikeType | ComplexType>,
+    interpretation: string | undefined,
     attrValuesStore: AttrValuesStore,
   ) => boolean;
-  isPrimary: (interpretation: unknown) => boolean;
+  isPrimary: (interpretation: string | undefined) => boolean;
 }
 
 export const NX_DATA_VIS = {
@@ -84,13 +91,15 @@ export const NX_DATA_VIS = {
     Icon: FiImage,
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
-    supports: (_, signal, attrValuesStore) => {
-      const { interpretation, CLASS } = attrValuesStore.get(signal);
+    supports: (_, signal, interpretation, attrValuesStore) => {
+      const classAttr = findScalarStrAttr(signal, 'CLASS');
+      const classVal = getAttributeValue(signal, classAttr, attrValuesStore);
+
       return (
-        (interpretation === NxInterpretation.RGB || CLASS === 'IMAGE') &&
+        (interpretation === NxInterpretation.RGB || classVal === 'IMAGE') &&
         hasMinDims(signal, 3) && // 2 for axes + 1 for RGB channels
         signal.shape.dims[signal.shape.dims.length - 1] === 3 && // 3 channels
-        !hasComplexType(signal)
+        hasNumericType(signal)
       );
     },
     isPrimary: () => true, // always primary if supported
@@ -101,7 +110,7 @@ export const NX_DATA_VIS = {
     Icon: MdGrain,
     Container: NxScatterContainer,
     ConfigProvider: ScatterConfigProvider,
-    supports: (group, signal, attrValuesStore) => {
+    supports: (group, signal, _, attrValuesStore) => {
       if (!hasNumDims(signal, 1)) {
         return false;
       }

@@ -1,4 +1,4 @@
-import { assertStr, isDataset, isGroup } from '@h5web/shared/guards';
+import { isDataset, isGroup } from '@h5web/shared/guards';
 import {
   type ChildEntity,
   type Dataset,
@@ -8,7 +8,7 @@ import {
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 
 import { type AttrValuesStore, type EntitiesStore } from '../providers/models';
-import { hasAttribute } from '../utils';
+import { findScalarStrAttr, getAttributeValue } from '../utils';
 import {
   CORE_VIS,
   type CoreVisDef,
@@ -17,6 +17,7 @@ import {
 import { type VisDef } from '../vis-packs/models';
 import {
   findSignalDataset,
+  getNxClass,
   isNxDataGroup,
   isNxNoteGroup,
 } from '../vis-packs/nexus/utils';
@@ -47,12 +48,18 @@ export function resolvePath(
   if (isNxDataGroup(entity, attrValuesStore)) {
     const signal = findSignalDataset(entity, attrValuesStore);
 
+    const interpretationAttr = findScalarStrAttr(signal, 'interpretation');
+    const interpretation = getAttributeValue(
+      signal,
+      interpretationAttr,
+      attrValuesStore,
+    );
+
     const supportedVis = Object.values(NX_DATA_VIS).filter((vis) =>
-      vis.supports(entity, signal, attrValuesStore),
+      vis.supports(entity, signal, interpretation, attrValuesStore),
     );
 
     if (supportedVis.length > 0) {
-      const { interpretation } = attrValuesStore.get(signal);
       return {
         entity,
         supportedVis,
@@ -87,47 +94,44 @@ function getNxDefaultPath(
   group: GroupWithChildren,
   attrValuesStore: AttrValuesStore,
 ): string | undefined {
-  const { default: defaultPath } = attrValuesStore.get(group);
-
-  if (defaultPath) {
-    assertStr(defaultPath, `Expected 'default' attribute to be a string`);
-
-    return defaultPath.startsWith('/')
-      ? defaultPath
-      : buildEntityPath(group.path, defaultPath);
+  const defaultAttr = findScalarStrAttr(group, 'default');
+  if (!defaultAttr) {
+    return getImplicitDefaultChild(group.children, attrValuesStore)?.path;
   }
 
-  return getImplicitDefaultChild(group.children, attrValuesStore)?.path;
+  const defaultPath = getAttributeValue(group, defaultAttr, attrValuesStore);
+  return defaultPath.startsWith('/')
+    ? defaultPath
+    : buildEntityPath(group.path, defaultPath);
 }
 
 function getImplicitDefaultChild(
   children: ChildEntity[],
   attrValuesStore: AttrValuesStore,
 ): ChildEntity | undefined {
-  const nxGroups = children
-    .filter(isGroup)
-    .filter((g) => hasAttribute(g, 'NX_class'));
+  let firstNxEntry: ChildEntity | undefined;
+  let firstNxProcess: ChildEntity | undefined;
 
-  // Look for an `NXdata` child group first
-  const nxDataChild = nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXdata',
-  );
+  for (const child of children) {
+    if (!isGroup(child)) {
+      continue;
+    }
 
-  if (nxDataChild) {
-    return nxDataChild;
+    // Use first `NXdata` child group
+    const nxClass = getNxClass(child, attrValuesStore);
+    if (nxClass === 'NXdata') {
+      return child;
+    }
+
+    if (nxClass === 'NXentry' && !firstNxEntry) {
+      firstNxEntry = child;
+    }
+
+    if (nxClass === 'NXprocess' && !firstNxProcess) {
+      firstNxProcess = child;
+    }
   }
 
-  // Then for an `NXentry` child group
-  const nxEntryChild = nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXentry',
-  );
-
-  if (nxEntryChild) {
-    return nxEntryChild;
-  }
-
-  // Then for an `NXprocess` child group
-  return nxGroups.find(
-    (g) => attrValuesStore.getSingle(g, 'NX_class') === 'NXprocess',
-  );
+  // No `NXdata`; use first `NXentry` or `NXprocess` if any
+  return firstNxEntry || firstNxProcess;
 }
