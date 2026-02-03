@@ -10,8 +10,8 @@ import { useDimMappingState } from '../../../dim-mapping-store';
 import { useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
+import { useNcIgnoreValue } from '../../netcdf/hooks';
 import VisBoundary from '../../VisBoundary';
-import { useIgnoreFillValue } from '../hooks';
 import ValueFetcher from '../ValueFetcher';
 import { useHeatmapConfig } from './config';
 import MappedHeatmapVis from './MappedHeatmapVis';
@@ -30,9 +30,8 @@ function HeatmapVisContainer(props: VisContainerProps) {
   });
 
   const config = useHeatmapConfig();
-
   const selection = getSliceSelection(dimMapping);
-  const ignoreValue = useIgnoreFillValue(entity);
+  const ignoreValue = useNcIgnoreValue(entity);
 
   return (
     <>

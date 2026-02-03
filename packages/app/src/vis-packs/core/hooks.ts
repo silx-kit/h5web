@@ -10,7 +10,6 @@ import {
   type BuiltInExporter,
   type ExportEntry,
   type ExportFormat,
-  type IgnoreValue,
   type NumArray,
 } from '@h5web/shared/vis-models';
 import { useToggle } from '@react-hookz/web';
@@ -18,11 +17,6 @@ import { type NdArray } from 'ndarray';
 import { useCallback, useMemo } from 'react';
 
 import { useDataContext } from '../../providers/DataProvider';
-import {
-  bigIntTypedArrayFromDType,
-  typedArrayFromDType,
-} from '../../providers/utils';
-import { findScalarNumAttr, getAttributeValue } from '../../utils';
 import { applyMapping, getBaseArray, toNumArray } from './utils';
 
 export const useToNumArray = createMemo(toNumArray);
@@ -95,38 +89,6 @@ export function useMappedArrays(
     () => baseArrays.map((ndArr) => applyMapping(ndArr, mapping)),
     [baseArrays, mapping],
   );
-}
-
-export function useIgnoreFillValue(dataset: Dataset): IgnoreValue | undefined {
-  const { attrValuesStore } = useDataContext();
-
-  return useMemo(() => {
-    const fillValueAttr = findScalarNumAttr(dataset, '_FillValue');
-    if (!fillValueAttr) {
-      return undefined;
-    }
-
-    const rawFillValue = getAttributeValue(
-      dataset,
-      fillValueAttr,
-      attrValuesStore,
-    );
-
-    const DTypedArray = bigIntTypedArrayFromDType(dataset.type)
-      ? Float64Array // matches `useToNumArray` logic
-      : typedArrayFromDType(dataset.type);
-
-    // Cast fillValue in the type of the dataset values to be able to use `===` for the comparison
-    const fillValue = DTypedArray
-      ? new DTypedArray([Number(rawFillValue)])[0]
-      : undefined;
-
-    if (fillValue === undefined) {
-      return undefined;
-    }
-
-    return (val) => val === fillValue;
-  }, [dataset, attrValuesStore]);
 }
 
 export function useExportEntries<F extends ExportFormat[]>(

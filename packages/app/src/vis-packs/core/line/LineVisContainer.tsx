@@ -9,8 +9,8 @@ import { useDimMappingState } from '../../../dim-mapping-store';
 import { useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
+import { useNcIgnoreValue } from '../../netcdf/hooks';
 import VisBoundary from '../../VisBoundary';
-import { useIgnoreFillValue } from '../hooks';
 import ValueFetcher from '../ValueFetcher';
 import { useLineConfig } from './config';
 import MappedLineVis from './MappedLineVis';
@@ -28,8 +28,8 @@ function LineVisContainer(props: VisContainerProps) {
   });
 
   const config = useLineConfig();
-  const ignoreValue = useIgnoreFillValue(entity);
   const selection = getSliceSelection(dimMapping);
+  const ignoreValue = useNcIgnoreValue(entity);
 
   return (
     <>

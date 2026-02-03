@@ -123,21 +123,21 @@ describe('/mock', () => {
     }
   });
 
-  it('visualize datasets with fill value', () => {
-    cy.selectExplorerNode('nD_datasets');
+  it('visualize dataset with fill value', () => {
+    cy.selectExplorerNode('netcdf');
 
-    cy.selectExplorerNode('oneD_fillvalue');
-    cy.findByRole('figure', { name: 'oneD_fillvalue' }).should('be.visible');
-
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
-      cy.matchImageSnapshot('fillvalue_1D');
-    }
-
-    cy.selectExplorerNode('twoD_fillvalue');
-    cy.findByRole('figure', { name: 'twoD_fillvalue' }).should('be.visible');
+    cy.selectExplorerNode('_FillValue');
+    cy.findByRole('figure', { name: '_FillValue' }).should('be.visible');
 
     if (Cypress.env('TAKE_SNAPSHOTS')) {
       cy.matchImageSnapshot('fillvalue_2D');
+    }
+
+    cy.selectVisTab('Line');
+    cy.waitForStableDOM();
+
+    if (Cypress.env('TAKE_SNAPSHOTS')) {
+      cy.matchImageSnapshot('fillvalue_1D');
     }
   });
 

@@ -7,6 +7,7 @@ import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useLineConfig } from '../../core/line/config';
 import MappedLineVis from '../../core/line/MappedLineVis';
 import { type VisContainerProps } from '../../models';
+import { useNcIgnoreValue } from '../../netcdf/hooks';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericLikeNxData } from '../guards';
 import { useNxData, useNxValuesCached } from '../hooks';
@@ -49,6 +50,8 @@ function NxLineContainer(props: VisContainerProps) {
       ? silxStyle.signalScaleType
       : ScaleType.Linear,
   });
+
+  const ignoreValue = useNcIgnoreValue(signalDef.dataset);
 
   return (
     <>
@@ -98,6 +101,7 @@ function NxLineContainer(props: VisContainerProps) {
                 title={title}
                 toolbarContainer={toolbarContainer}
                 config={config}
+                ignoreValue={ignoreValue}
               />
             );
           }}
