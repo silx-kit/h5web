@@ -14,22 +14,22 @@ import {
   type Value,
 } from '@h5web/shared/hdf5-models';
 
-import { type AttrName, type AttrValuesStore } from './providers/models';
+import { type AttrValuesStore } from './providers/models';
 
-export function hasAttribute(entity: Entity, attributeName: AttrName): boolean {
+export function hasAttribute(entity: Entity, attributeName: string): boolean {
   return entity.attributes.some((attr) => attr.name === attributeName);
 }
 
 export function findAttribute(
   entity: Entity,
-  attributeName: AttrName,
+  attributeName: string,
 ): Attribute | undefined {
   return entity.attributes.find((attr) => attr.name === attributeName);
 }
 
 export function findScalarNumAttr(
   entity: Entity,
-  attributeName: AttrName,
+  attributeName: string,
 ): Attribute<ScalarShape, NumericType> | undefined {
   const attr = findAttribute(entity, attributeName);
   return attr && hasScalarShape(attr) && hasNumericType(attr)
@@ -39,7 +39,7 @@ export function findScalarNumAttr(
 
 export function findScalarStrAttr(
   entity: Entity,
-  attributeName: AttrName,
+  attributeName: string,
 ): Attribute<ScalarShape, StringType> | undefined {
   const attr = findAttribute(entity, attributeName);
   return attr && hasScalarShape(attr) && hasStringType(attr) ? attr : undefined;

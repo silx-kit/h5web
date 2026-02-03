@@ -11,18 +11,6 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
 
-export type NxAttribute =
-  | 'NX_class'
-  | 'signal'
-  | 'interpretation'
-  | 'axes'
-  | 'default'
-  | 'default_slice'
-  | 'long_name'
-  | 'units'
-  | 'SILX_style'
-  | 'auxiliary_signals';
-
 export interface DatasetInfo {
   label: string;
   unit: string | undefined;

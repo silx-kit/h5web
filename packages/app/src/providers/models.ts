@@ -11,8 +11,6 @@ import {
   type OnProgress,
 } from '@h5web/shared/react-suspense-fetch';
 
-import { type NxAttribute } from '../vis-packs/nexus/models';
-
 export type EntitiesStore = FetchStore<string, ProvidedEntity>;
 export type ValuesStore = FetchStore<ValuesStoreParams, unknown>;
 export type AttrValuesStore = FetchStore<Entity, AttributeValues>;
@@ -21,9 +19,6 @@ export interface ValuesStoreParams {
   dataset: Dataset<ScalarShape | ArrayShape>;
   selection?: string | undefined;
 }
-
-export type ImageAttribute = 'CLASS' | 'IMAGE_SUBCLASS';
-export type AttrName = NxAttribute | ImageAttribute | '_FillValue';
 
 export type ProgressCallback = (prog: number[]) => void;
 
