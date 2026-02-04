@@ -34,7 +34,7 @@ function KeepZoom(props: Props) {
   useLayoutEffect(() => {
     const state = store.getState().states.get(visKey); // non-reactive state to avoid render loop
 
-    if (state && state.visContextKey === visContextKeyRef.current) {
+    if (state?.visContextKey === visContextKeyRef.current) {
       camera.scale.copy(state.scale);
       moveCameraToRef.current(state.position);
     }

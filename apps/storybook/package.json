@@ -27,10 +27,10 @@
     "three": "0.182.0"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "2.1.0",
-    "@storybook/addon-docs": "10.1.10",
-    "@storybook/addon-links": "10.1.10",
-    "@storybook/react-vite": "10.1.10",
+    "@esrf/eslint-config": "2.2.2",
+    "@storybook/addon-docs": "10.2.6",
+    "@storybook/addon-links": "10.2.6",
+    "@storybook/react-vite": "10.2.6",
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.0.14",
@@ -40,7 +40,7 @@
     "@types/three": "0.182.0",
     "eslint": "9.39.2",
     "remark-gfm": "4.0.1",
-    "storybook": "10.1.10",
+    "storybook": "10.2.6",
     "typescript": "5.9.3",
     "vite": "7.3.0"
   },
