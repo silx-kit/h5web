@@ -1,6 +1,7 @@
 import { H5T_CSET, H5T_STR } from '@h5web/shared/h5t';
 import { type GroupWithChildren } from '@h5web/shared/hdf5-models';
 import {
+  arrayShape,
   arrayType,
   boolType,
   compoundType,
@@ -116,10 +117,6 @@ export function makeMockFile(): GroupWithChildren {
       group('nD_datasets', [
         array('oneD_linear'),
         array('oneD'),
-        array('oneD_fillvalue', {
-          valueId: 'oneD',
-          attributes: [scalar('_FillValue', 400)],
-        }),
         array('oneD_bigint'),
         array('oneD_cplx'),
         array('oneD_compound', {
@@ -136,10 +133,6 @@ export function makeMockFile(): GroupWithChildren {
           type: enumType(intType(false, 8), ENUM_MAPPING),
         }),
         array('twoD'),
-        array('twoD_fillvalue', {
-          valueId: 'twoD',
-          attributes: [scalar('_FillValue', 400)],
-        }),
         array('twoD_neg'),
         array('twoD_bigint'),
         array('twoD_cplx'),
@@ -433,6 +426,34 @@ export function makeMockFile(): GroupWithChildren {
             scalar('data', 'foo: bar'),
             scalar('type', 'application/yaml'),
           ],
+        }),
+      ]),
+      group('netcdf', [
+        array('valid_min', {
+          valueId: 'twoD',
+          attributes: [scalar('valid_min', 5)],
+        }),
+        array('valid_max', {
+          valueId: 'twoD',
+          attributes: [scalar('valid_max', 200)],
+        }),
+        array('valid_min_max', {
+          valueId: 'twoD',
+          attributes: [scalar('valid_min', 5), scalar('valid_max', 200)],
+        }),
+        array('valid_range', {
+          valueId: 'twoD',
+          attributes: [
+            dataset('valid_range', arrayShape([2]), floatType(), [5, 200]),
+          ],
+        }),
+        array('_FillValue', {
+          valueId: 'twoD',
+          attributes: [scalar('_FillValue', 100)],
+        }),
+        array('_FillValue (negative)', {
+          valueId: 'twoD',
+          attributes: [scalar('_FillValue', -9)],
         }),
       ]),
       group('resilience', [
