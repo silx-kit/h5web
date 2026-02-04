@@ -227,7 +227,7 @@ describe('/mock', () => {
     }
   });
 
-  it.only('visualize line with constant interpolation', () => {
+  it('visualize line with constant interpolation', () => {
     cy.selectExplorerNode('nD_datasets');
     cy.selectExplorerNode('oneD');
 

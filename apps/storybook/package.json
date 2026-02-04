@@ -27,7 +27,7 @@
     "three": "0.182.0"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "2.0.0",
+    "@esrf/eslint-config": "2.1.0",
     "@storybook/addon-docs": "10.1.10",
     "@storybook/addon-links": "10.1.10",
     "@storybook/react-vite": "10.1.10",
