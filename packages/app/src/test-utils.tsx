@@ -15,7 +15,7 @@ import { type NxDataVis } from './vis-packs/nexus/visualizations';
 
 interface RenderAppResult extends RenderResult {
   user: ReturnType<typeof userEvent.setup>;
-  selectExplorerNode: (name: string) => Promise<void>;
+  selectExplorerNode: (name: string, exact?: boolean) => Promise<void>;
   selectVisTab: (name: Vis | NxDataVis) => Promise<void>;
 }
 
@@ -70,9 +70,11 @@ export async function renderApp(
     user,
     ...renderResult,
 
-    selectExplorerNode: async (name) => {
+    selectExplorerNode: async (name, exact = false) => {
       const item = await screen.findByRole('treeitem', {
-        name: new RegExp(String.raw`^${name}(?: \(NeXus group\))?$`, 'u'), // account for potential NeXus badge
+        name: exact
+          ? name
+          : new RegExp(String.raw`^${name}(?: \(NeXus group\))?$`, 'u'), // account for potential NeXus badge
       });
 
       await user.click(item);
