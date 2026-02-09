@@ -16,8 +16,8 @@
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.preferences.autoImportSpecifierExcludeRegexes": [
+    "^console$",
     "^node:",
-    "^three",
     "^ndarray-ops"
   ],
 
