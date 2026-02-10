@@ -2,14 +2,14 @@ import { assertDefined, Menu, RadioGroup, Separator } from '@h5web/lib';
 import { createPortal } from 'react-dom';
 import { MdLineAxis } from 'react-icons/md';
 
-import { type DatasetDef } from './models';
+import { type FieldDef } from './models';
 import styles from './NxHeatmapSignalPicker.module.css';
 
 interface Props {
-  definitions: DatasetDef[];
+  definitions: FieldDef[];
   toolbarContainer: HTMLDivElement | undefined;
-  value: DatasetDef;
-  onChange: (def: DatasetDef) => void;
+  value: FieldDef;
+  onChange: (def: FieldDef) => void;
 }
 
 function NxHeatmapSignalPicker(props: Props) {

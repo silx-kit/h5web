@@ -11,22 +11,22 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
 
-export interface DatasetInfo {
+export interface FieldInfo {
   label: string;
   unit: string | undefined;
 }
 
-export interface DatasetDef<
+export interface FieldDef<
   T extends NumericLikeType | ComplexType = NumericLikeType | ComplexType,
-> extends DatasetInfo {
+> extends FieldInfo {
   dataset: Dataset<ArrayShape, T>;
 }
 
-type WithError<T extends DatasetDef> = T & {
+type WithError<T extends FieldDef> = T & {
   errorDataset?: Dataset<ArrayShape, NumericType>;
 };
 
-export type AxisDef = DatasetDef<NumericType>;
+export type AxisDef = FieldDef<NumericType>;
 
 export type DefaultSlice = (number | '.')[];
 export interface SilxStyle {
@@ -38,8 +38,8 @@ export interface NxData<
   T extends NumericLikeType | ComplexType = NumericLikeType | ComplexType,
 > {
   titleDataset?: Dataset<ScalarShape, StringType>;
-  signalDef: WithError<DatasetDef<T>>;
-  auxDefs: WithError<DatasetDef>[];
+  signalDef: WithError<FieldDef<T>>;
+  auxDefs: WithError<FieldDef>[];
   axisDefs: AxisMapping<AxisDef>;
   defaultSlice?: DefaultSlice;
   silxStyle: SilxStyle;

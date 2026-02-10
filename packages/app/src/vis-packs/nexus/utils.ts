@@ -37,8 +37,8 @@ import {
 } from '../../utils';
 import {
   type AxisDef,
-  type DatasetInfo,
   type DefaultSlice,
+  type FieldInfo,
   type SilxStyle,
 } from './models';
 
@@ -339,10 +339,10 @@ export function getSilxStyle(
   }
 }
 
-export function getDatasetInfo(
+export function getFieldInfo(
   dataset: Dataset,
   attrValuesStore: AttrValuesStore,
-): DatasetInfo {
+): FieldInfo {
   const longNameAttr = findScalarStrAttr(dataset, 'long_name');
   const longName = getAttributeValue(dataset, longNameAttr, attrValuesStore);
 

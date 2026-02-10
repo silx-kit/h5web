@@ -8,7 +8,7 @@ import {
 
 import { useValuesInCache } from '../../hooks';
 import { useDataContext } from '../../providers/DataProvider';
-import { type DatasetDef, type NxData } from './models';
+import { type FieldDef, type NxData } from './models';
 import {
   assertNxDataGroup,
   findAuxErrorDataset,
@@ -17,8 +17,8 @@ import {
   findErrorDataset,
   findSignalDataset,
   findTitleDataset,
-  getDatasetInfo,
   getDefaultSlice,
+  getFieldInfo,
   getSilxStyle,
 } from './utils';
 
@@ -37,16 +37,16 @@ export function useNxData(group: GroupWithChildren): NxData {
     signalDef: {
       dataset: signalDataset,
       errorDataset: findErrorDataset(group, signalDataset.name),
-      ...getDatasetInfo(signalDataset, attrValuesStore),
+      ...getFieldInfo(signalDataset, attrValuesStore),
     },
     auxDefs: auxSignals.map((auxSignal) => ({
       dataset: auxSignal,
       errorDataset: findAuxErrorDataset(group, auxSignal.name),
-      ...getDatasetInfo(auxSignal, attrValuesStore),
+      ...getFieldInfo(auxSignal, attrValuesStore),
     })),
     axisDefs: axisDatasets.map(
       (dataset) =>
-        dataset && { dataset, ...getDatasetInfo(dataset, attrValuesStore) },
+        dataset && { dataset, ...getFieldInfo(dataset, attrValuesStore) },
     ),
     defaultSlice: useDefaultSlice(
       group,
@@ -59,7 +59,7 @@ export function useNxData(group: GroupWithChildren): NxData {
 
 export function useNxHeatmapDataToFetch<
   T extends NumericLikeType | ComplexType,
->(nxData: NxData<T>, selectedDef: DatasetDef<T>): NxData<T> {
+>(nxData: NxData<T>, selectedDef: FieldDef<T>): NxData<T> {
   const { signalDef, titleDataset } = nxData;
 
   return {
