@@ -90,6 +90,23 @@ export interface VirtualSource {
   path: string;
 }
 
+/* --------------------- */
+/* ---- DEFINITIONS ---- */
+
+export interface DatasetDef<
+  SC extends ShapeClass = ShapeClass,
+  DTC extends DTypeClass = DTypeClass,
+> {
+  path: string;
+  shape?: SC;
+  type?: DTC;
+}
+
+export type DatasetFromDef<D extends DatasetDef> = Dataset<
+  D['shape'] extends ShapeClass ? ShapeClassMap[D['shape']] : Shape,
+  D['type'] extends DTypeClass ? DTypeClassMap[D['type']] : DType
+>;
+
 /* ----------------- */
 /* ----- SHAPE ----- */
 
@@ -97,6 +114,12 @@ export enum ShapeClass {
   Array = 'Array',
   Scalar = 'Scalar',
   Null = 'Null',
+}
+
+export interface ShapeClassMap {
+  [ShapeClass.Array]: ArrayShape;
+  [ShapeClass.Scalar]: ScalarShape;
+  [ShapeClass.Null]: NullShape;
 }
 
 export type Shape = ArrayShape | ScalarShape | NullShape;
@@ -137,6 +160,23 @@ export enum DTypeClass {
   Opaque = 'Opaque',
   Reference = 'Reference',
   Unknown = 'Unknown',
+}
+
+export interface DTypeClassMap {
+  [DTypeClass.Bool]: BooleanType;
+  [DTypeClass.Integer]: IntegerType;
+  [DTypeClass.Float]: FloatType;
+  [DTypeClass.Complex]: ComplexType;
+  [DTypeClass.String]: StringType;
+  [DTypeClass.Compound]: CompoundType;
+  [DTypeClass.Array]: ArrayType;
+  [DTypeClass.VLen]: VLenType;
+  [DTypeClass.Enum]: EnumType;
+  [DTypeClass.Time]: TimeType;
+  [DTypeClass.Bitfield]: BitfieldType;
+  [DTypeClass.Opaque]: OpaqueType;
+  [DTypeClass.Reference]: ReferenceType;
+  [DTypeClass.Unknown]: UnknownType;
 }
 
 export type Endianness = (typeof H5T_TO_ENDIANNESS)[H5T_ORDER];

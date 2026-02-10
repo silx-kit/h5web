@@ -542,8 +542,8 @@ function MyApp() {
 ```
 
 For convenience, the following hooks are available to access data through the
-data context: `useEntity`, `useDatasetValue`, `useDatasetsValues`,
-`usePrefetchValues`.
+data context: `useEntity`, `useDatasets`, `useDatasetValue`,
+`useDatasetsValues`, `usePrefetchValues`.
 
 We also provide a large number of type guards and assertion functions to narrow
 down the kind/shape/type of HDF5 entities returned by `useEntity`, as well as a
@@ -569,6 +569,19 @@ function MyApp() {
     />
   );
 }
+```
+
+The `useDatasets` hook is a declarative alternative to `useEntity` that can
+retrieve multiple datasets at once and doesn't require invoking assertion
+functions afterwards:
+
+```ts
+// `twoD` => `Dataset<ArrayShape, FloatType>`
+// `title` => `Dataset<ScalarShape, StringType>`
+const { twoD, title } = useDatasets({
+  twoD: { path: '/nD_datasets/twoD', shape: ShapeClass.Array, type: DTypeClass.Float }
+  title: { path: '/path/to/title', shape: ShapeClass.Scalar, type: DTypeClass.String }
+});
 ```
 
 When accessing the values of multiple datasets with multiple consecutive calls
