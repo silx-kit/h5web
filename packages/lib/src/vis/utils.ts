@@ -27,9 +27,7 @@ import { BufferAttribute, type IUniform, MathUtils } from 'three';
 
 import {
   type Aspect,
-  type AxisConfig,
   type AxisOffsets,
-  type AxisScale,
   type ExtractScaleType,
   type GetDomainOpts,
   type Scale,
@@ -242,20 +240,6 @@ export function getValueToIndexScale(
 
   // ScaleThreshold only works with ascending values so the scale is reversed for descending values
   return scaleThreshold<number, number>({ domain: thresholds, range: indices });
-}
-
-export function getCanvasAxisScale(
-  config: AxisConfig,
-  canvasSize: number,
-): AxisScale {
-  const { scaleType, visDomain, flip, nice = false } = config;
-
-  return createScale(scaleType ?? ScaleType.Linear, {
-    domain: visDomain,
-    range: [-canvasSize / 2, canvasSize / 2],
-    reverse: flip,
-    nice,
-  });
 }
 
 /**

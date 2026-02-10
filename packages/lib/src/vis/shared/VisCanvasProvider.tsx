@@ -11,8 +11,9 @@ import {
 import { type Camera, Matrix4, Vector3 } from 'three';
 
 import Box from '../../interactions/box';
+import { useCanvasAxisScale } from '../hooks';
 import { type AxisConfig, type AxisScale, type Size } from '../models';
-import { getCanvasAxisScale, getSizeToFit } from '../utils';
+import { getSizeToFit } from '../utils';
 
 export interface VisCanvasContextValue {
   canvasSize: Size;
@@ -76,8 +77,8 @@ function VisCanvasProvider(props: PropsWithChildren<Props>) {
     [width, height],
   );
 
-  const abscissaScale = getCanvasAxisScale(abscissaConfig, visSize.width);
-  const ordinateScale = getCanvasAxisScale(ordinateConfig, visSize.height);
+  const abscissaScale = useCanvasAxisScale(abscissaConfig, visSize.width);
+  const ordinateScale = useCanvasAxisScale(ordinateConfig, visSize.height);
 
   const dataToWorld = useCallback(
     (dataPt: Vector3) => {

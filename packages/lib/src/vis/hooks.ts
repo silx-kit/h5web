@@ -21,8 +21,14 @@ import {
 } from 'react';
 import { type BufferGeometry } from 'three';
 
-import { type GetDomainOpts, type H5WebGeometry } from './models';
 import {
+  type AxisConfig,
+  type AxisScale,
+  type GetDomainOpts,
+  type H5WebGeometry,
+} from './models';
+import {
+  createScale,
   getAxisDomain,
   getCombinedDomain,
   getValueToIndexScale,
@@ -102,6 +108,27 @@ export function useDomains(
       );
     });
   }, [allBounds, includeErrors, scaleType]);
+}
+
+export function useCanvasAxisScale(
+  config: AxisConfig,
+  canvasSize: number,
+): AxisScale {
+  const {
+    scaleType = ScaleType.Linear,
+    visDomain,
+    flip = false,
+    nice = false,
+  } = config;
+
+  return useMemo(() => {
+    return createScale(scaleType, {
+      domain: visDomain,
+      range: [-canvasSize / 2, canvasSize / 2],
+      reverse: flip,
+      nice,
+    });
+  }, [canvasSize, flip, nice, scaleType, visDomain]);
 }
 
 export function useCameraState<T>(
