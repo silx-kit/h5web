@@ -4,7 +4,6 @@ import {
   assertShape,
   assertType,
   assertValue,
-  isDefined,
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -51,27 +50,17 @@ export function useDatasets<R extends Record<string, DatasetDef>>(
   ) as { [K in keyof R]: DatasetFromDef<R[K]> };
 }
 
-export function usePrefetchValues(
-  datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[],
-  selection?: string,
-): void {
-  const { valuesStore } = useDataContext();
-  datasets.filter(isDefined).forEach((dataset) => {
-    valuesStore.prefetch({ dataset, selection });
-  });
-}
-
-export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
+export function useValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D,
   selection?: string,
 ): Value<D>;
 
-export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
+export function useValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
   selection?: string,
 ): Value<D> | undefined;
 
-export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
+export function useValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
   selection?: string,
 ): Value<D> | undefined {
@@ -86,33 +75,6 @@ export function useDatasetValue<D extends Dataset<ArrayShape | ScalarShape>>(
 
   assertValue(value, dataset);
   return value;
-}
-
-export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
-  datasets: D[],
-  selection?: string,
-): Value<D>[];
-
-export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
-  datasets: (D | undefined)[],
-  selection?: string,
-): (Value<D> | undefined)[];
-
-export function useDatasetsValues<D extends Dataset<ArrayShape | ScalarShape>>(
-  datasets: (D | undefined)[],
-  selection?: string,
-): (Value<D> | undefined)[] {
-  const { valuesStore } = useDataContext();
-
-  return datasets.map((dataset) => {
-    if (!dataset) {
-      return undefined;
-    }
-
-    const value = valuesStore.get({ dataset, selection });
-    assertValue(value, dataset);
-    return value;
-  });
 }
 
 export function useValuesInCache(

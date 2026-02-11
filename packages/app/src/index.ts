@@ -38,13 +38,7 @@ export type {
 } from './providers/models';
 
 // Hooks
-export {
-  useEntity,
-  useDatasets,
-  useDatasetValue,
-  useDatasetsValues,
-  usePrefetchValues,
-} from './hooks';
+export { useEntity, useDatasets, useValue } from './hooks';
 export { useBaseArray as useNdArray } from './vis-packs/core/hooks';
 
 // Models

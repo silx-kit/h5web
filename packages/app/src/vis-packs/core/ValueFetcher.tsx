@@ -6,7 +6,7 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { type ReactNode } from 'react';
 
-import { useDatasetValue } from '../../hooks';
+import { useValue } from '../../hooks';
 
 interface Props<D extends Dataset> {
   dataset: D;
@@ -19,7 +19,7 @@ function ValueFetcher<D extends Dataset<ArrayShape | ScalarShape>>(
 ) {
   const { dataset, selection, render } = props;
 
-  const value = useDatasetValue(dataset, selection);
+  const value = useValue(dataset, selection);
   return render(value);
 }
 
