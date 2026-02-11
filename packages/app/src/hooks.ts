@@ -16,6 +16,7 @@ import {
 } from '@h5web/shared/hdf5-models';
 
 import { useDataContext } from './providers/DataProvider';
+import { type ValuesStoreParams } from './providers/models';
 
 export function useEntity(path: string): ProvidedEntity {
   const { entitiesStore } = useDataContext();
@@ -75,6 +76,34 @@ export function useValue<D extends Dataset<ArrayShape | ScalarShape>>(
 
   assertValue(value, dataset);
   return value;
+}
+
+type ValueFromParams<
+  T extends ValuesStoreParams['dataset'] | ValuesStoreParams,
+> = Value<T extends ValuesStoreParams ? T['dataset'] : T>;
+
+export function useValues<
+  R extends Record<string, ValuesStoreParams['dataset'] | ValuesStoreParams>,
+>(datasets: R): { [K in keyof R]: ValueFromParams<R[K]> } {
+  const { valuesStore } = useDataContext();
+
+  const storeParams = Object.entries(datasets).map(
+    ([key, datasetOrStoreParams]) =>
+      [
+        key,
+        'dataset' in datasetOrStoreParams
+          ? datasetOrStoreParams // already store params => keep as is
+          : { dataset: datasetOrStoreParams, selection: undefined }, // dataset => prepare store params
+      ] as const,
+  );
+
+  storeParams.forEach(([, params]) => {
+    valuesStore.prefetch(params);
+  });
+
+  return Object.fromEntries(
+    storeParams.map(([key, params]) => [key, valuesStore.get(params)]),
+  ) as { [K in keyof R]: ValueFromParams<R[K]> };
 }
 
 export function useValuesInCache(
