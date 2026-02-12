@@ -4,11 +4,8 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { type ReactNode } from 'react';
 
-import {
-  useDatasetsValues,
-  useDatasetValue,
-  usePrefetchValues,
-} from '../../hooks';
+import { useValue } from '../../hooks';
+import { useNxValues, usePrefetchNxValues } from './hooks';
 import { type NxData, type NxValues } from './models';
 
 interface Props<T extends NumericLikeType | ComplexType> {
@@ -27,8 +24,8 @@ function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
   const auxDatasets = auxDefs.map((def) => def.dataset);
   const auxErrorDatasets = auxDefs.map((def) => def.errorDataset);
 
-  usePrefetchValues([titleDataset, ...axisDatasets]);
-  usePrefetchValues(
+  usePrefetchNxValues([titleDataset, ...axisDatasets]);
+  usePrefetchNxValues(
     [
       signalDef.dataset,
       signalDef.errorDataset,
@@ -38,12 +35,12 @@ function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
     selection,
   );
 
-  const title = useDatasetValue(titleDataset) || signalDef.label;
-  const signal = useDatasetValue(signalDef.dataset, selection);
-  const errors = useDatasetValue(signalDef.errorDataset, selection);
-  const auxValues = useDatasetsValues(auxDatasets, selection);
-  const auxErrors = useDatasetsValues(auxErrorDatasets, selection);
-  const axisValues = useDatasetsValues(axisDatasets);
+  const title = useValue(titleDataset) || signalDef.label;
+  const signal = useValue(signalDef.dataset, selection);
+  const errors = useValue(signalDef.errorDataset, selection);
+  const auxValues = useNxValues(auxDatasets, selection);
+  const auxErrors = useNxValues(auxErrorDatasets, selection);
+  const axisValues = useNxValues(axisDatasets);
 
   return render({ title, signal, errors, auxValues, auxErrors, axisValues });
 }

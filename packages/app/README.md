@@ -541,71 +541,73 @@ function MyApp() {
 }
 ```
 
-For convenience, the following hooks are available to access data through the
-data context: `useEntity`, `useDatasets`, `useDatasetValue`,
-`useDatasetsValues`, `usePrefetchValues`.
-
-We also provide a large number of type guards and assertion functions to narrow
-down the kind/shape/type of HDF5 entities returned by `useEntity`, as well as a
-memoised hook called `useNdArray` to create ndarrays that can be passed to the
-visualization components (available in `@h5web/lib`).
+A common need is to find specific datasets in a file and retrieve their values.
+You can do so with hooks `useDatasets` and `useValues` as follows:
 
 ```tsx
+const DATASETS_DEFS = {
+  twoD: { path: '/twoD', shape: ShapeClass.Array, type: DTypeClass.Float }
+  title: { path: '/title', shape: ShapeClass.Scalar, type: DTypeClass.String }
+};
+
 function MyApp() {
-  const entity = useEntity('/nD_datasets/twoD'); // ProvidedEntity
-  assertDataset(entity); // Dataset
-  assertArrayShape(entity); // Dataset<ArrayShape>
-  assertFloatType(entity); // Dataset<ArrayShape, FloatType>
+  const datasets = useDatasets(DATASETS_DEFS);
+  const { twoD, title } = useValues(datasets); // `number[] | TypedArray` and `string` respectively
 
-  const value = useDatasetValue(entity); // number[] | TypedArray
-  const dataArray = useNdArray(value, entity.shape);
-  const domain = useDomain(dataArray);
-
-  return (
-    <HeatmapVis
-      style={{ width: '100vw', height: '100vh' }}
-      dataArray={dataArray}
-      domain={domain}
-    />
-  );
+  // Or if you just need a specific slice from the `twoD` dataset:
+  const { slice, title } = useValues({
+    slice: { dataset: datasets.twoD, selection: '2,:' },
+    title: dataset.title,
+  })
 }
 ```
 
-The `useDatasets` hook is a declarative alternative to `useEntity` that can
-retrieve multiple datasets at once and doesn't require invoking assertion
-functions afterwards:
-
-```ts
-// `twoD` => `Dataset<ArrayShape, FloatType>`
-// `title` => `Dataset<ScalarShape, StringType>`
-const { twoD, title } = useDatasets({
-  twoD: { path: '/nD_datasets/twoD', shape: ShapeClass.Array, type: DTypeClass.Float }
-  title: { path: '/path/to/title', shape: ShapeClass.Scalar, type: DTypeClass.String }
-});
-```
-
-When accessing the values of multiple datasets with multiple consecutive calls
-to `useDatasetValue` (and/or `useDatasetsValues`), invoke `usePrefetchValues`
-first to ensure that the values are requested in parallel rather than
-sequentially:
+We also provide two simpler hooks, `useEntity` and `useValue`, as well as a
+large number of type guards and assertion functions to narrow down the
+kind/shape/type of HDF5 entities returned by `useEntity`.
 
 ```tsx
-const axesDatasets = [abscissasDataset, ordinatesDataset];
-usePrefetchValues([valuesDataset, ...axesDatasets]);
+const entity = useEntity('/nD_datasets/twoD'); // ProvidedEntity
+assertDataset(entity); // Dataset
+assertArrayShape(entity); // Dataset<ArrayShape>
+assertFloatType(entity); // Dataset<ArrayShape, FloatType>
 
-const values = useDatasetValue(valuesDataset);
-const [abscissas, ordinates] = useDatasetsValues(axesDatasets);
+const value = useValue(entity); // number[] | TypedArray
+
+// Or a specific slice:
+const slice = useValue(entity, '2,:');
 ```
 
-All three hooks accept a `selection` parameter to request specific slices from
-n-dimensional datasets:
+Once you have a raw value array, you can use the memoised hook `useNdArray` to
+wrap it in an ndarray, and then pass it down to a visualization component from
+`@h5web/lib`:
 
 ```tsx
-const selection = '0,:,:';
-usePrefetchValues([valuesDataset], selection); // prefetch the first 2D slice
-usePrefetchValues([abscissasDataset, ordinatesDataset]); // pretech in full (i.e. no selection)
+const value = useValue(entity); // number[] | TypedArray
+const dataArray = useNdArray(value, entity.shape); // NdArray<number[] | TypedArray>
+const domain = useDomain(dataArray); // [number, number]
 
-const values = useDatasetValue(valuesDataset, selection);
-const abscissas = useDatasetValue(abscissasDataset);
-const ordinates = useDatasetValue(ordinatesDataset);
+return (
+  <HeatmapVis
+    style={{ width: '100vw', height: '100vh' }}
+    dataArray={dataArray}
+    domain={domain}
+  />
+);
+```
+
+Every store comes with a `prefetch` method that works like `get` but doesn't
+trigger the `Suspense` boundary and doesn't return a value. If you work with a
+remote provider like H5Grove and need to access multiple entities/values at
+once, it's important to prefetch every entity/value first so the requests are
+done in parallel. `useDatasets` and `useValues` do this automatically, but not
+`useEntity` and `useValue`:
+
+```tsx
+const { valuesStore } = useDataContext();
+valuesStore.prefetch(abscissasDataset);
+valuesStore.prefetch(ordinatesDataset);
+
+const abscissas = useValue(abscissasDataset);
+const ordinates = useValue(ordinatesDataset);
 ```
