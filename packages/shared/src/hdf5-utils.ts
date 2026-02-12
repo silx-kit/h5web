@@ -15,6 +15,7 @@ import {
   type ChildEntity,
   type ComplexType,
   type CompoundType,
+  type DatasetDef,
   type DType,
   DTypeClass,
   type EnumType,
@@ -54,6 +55,23 @@ export function buildEntityPath(
 export function getNameFromPath(path: string): string {
   const segments = path.split('/');
   return segments[segments.length - 1];
+}
+
+/* --------------------- */
+/* ---- DEFINITIONS ---- */
+
+export function arrayDef<T extends DTypeClass>(
+  path: string,
+  type: T,
+): DatasetDef<ShapeClass.Array, T> {
+  return { path, shape: ShapeClass.Array, type };
+}
+
+export function scalarDef<T extends DTypeClass>(
+  path: string,
+  type: T,
+): DatasetDef<ShapeClass.Scalar, T> {
+  return { path, shape: ShapeClass.Scalar, type };
 }
 
 /* ----------------- */

@@ -187,7 +187,7 @@ export {
   findScalarStrAttr,
   getAttributeValue,
 } from './utils';
-export { parseShape } from '@h5web/shared/hdf5-utils';
+export { arrayDef, scalarDef, parseShape } from '@h5web/shared/hdf5-utils';
 
 export { default as ValueFetcher } from './vis-packs/core/ValueFetcher';
 export { applyMapping, getBaseArray, toNumArray } from './vis-packs/core/utils';
