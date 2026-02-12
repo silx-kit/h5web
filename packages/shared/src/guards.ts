@@ -10,6 +10,7 @@ import {
   type Datatype,
   type DType,
   DTypeClass,
+  type DTypeClassMap,
   type Entity,
   EntityKind,
   type EnumType,
@@ -27,6 +28,7 @@ import {
   type ScalarValue,
   type Shape,
   ShapeClass,
+  type ShapeClassMap,
   type StringType,
   type Value,
 } from './hdf5-models';
@@ -285,6 +287,30 @@ export function isH5WebComplex(
   return typeof complex[0] === 'number';
 }
 
+export function isShape<C extends ShapeClass>(
+  shape: Shape,
+  shapeClass: C,
+): shape is ShapeClassMap[C] {
+  return shape.class === shapeClass;
+}
+
+export function hasShape<O extends HasShape, C extends ShapeClass>(
+  obj: O,
+  shapeClass: C,
+): obj is O & HasShape<ShapeClassMap[C]> {
+  return obj.shape.class === shapeClass;
+}
+
+export function assertShape<O extends HasShape, C extends ShapeClass>(
+  obj: O,
+  shapeClass: C,
+  message = `Expected ${shapeClass.toLowerCase()} shape`,
+): asserts obj is O & ShapeClassMap[C] {
+  if (obj.shape.class !== shapeClass) {
+    throw new TypeError(message);
+  }
+}
+
 export function isScalarShape(shape: Shape): shape is ScalarShape {
   return shape.class === ShapeClass.Scalar;
 }
@@ -369,6 +395,30 @@ export function assertNumDims(
 ): void {
   if (!hasNumDims(obj, num)) {
     throw new Error(message);
+  }
+}
+
+export function isType<C extends DTypeClass>(
+  type: DType,
+  dtypeClass: C,
+): type is DTypeClassMap[C] {
+  return type.class === dtypeClass;
+}
+
+export function hasType<O extends HasType, C extends DTypeClass>(
+  obj: O,
+  dtypeClass: C,
+): obj is O & HasType<DTypeClassMap[C]> {
+  return obj.type.class === dtypeClass;
+}
+
+export function assertType<O extends HasType, C extends DTypeClass>(
+  obj: O,
+  dtypeClass: C,
+  message = `Expected ${dtypeClass.toLowerCase()} type`,
+): asserts obj is O & DTypeClassMap[C] {
+  if (obj.type.class !== dtypeClass) {
+    throw new TypeError(message);
   }
 }
 
@@ -618,10 +668,9 @@ export function assertScalarValue<T extends DType>(
   }
 }
 
-export function assertValue<O extends HasShape & HasType>(
-  value: unknown,
-  obj: O,
-): asserts value is Value<O> {
+export function assertValue<
+  O extends HasShape<ArrayShape | ScalarShape> & HasType,
+>(value: unknown, obj: O): asserts value is Value<O> {
   const { type } = obj;
 
   if (hasScalarShape(obj)) {

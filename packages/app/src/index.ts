@@ -40,6 +40,7 @@ export type {
 // Hooks
 export {
   useEntity,
+  useDatasets,
   useDatasetValue,
   useDatasetsValues,
   usePrefetchValues,
@@ -47,7 +48,7 @@ export {
 export { useBaseArray as useNdArray } from './vis-packs/core/hooks';
 
 // Models
-export { EntityKind } from '@h5web/shared/hdf5-models';
+export { EntityKind, ShapeClass, DTypeClass } from '@h5web/shared/hdf5-models';
 
 export type {
   // Entity
@@ -123,12 +124,15 @@ export {
   assertGroupWithChildren,
   assertDataset,
   assertDatatype,
+  isShape,
   isScalarShape,
   isArrayShape,
   isNonNullShape,
+  hasShape,
   hasScalarShape,
   hasArrayShape,
   hasNonNullShape,
+  assertShape,
   assertScalarShape,
   assertArrayShape,
   assertNonNullShape,
@@ -136,6 +140,7 @@ export {
   hasNumDims,
   assertMinDims,
   assertNumDims,
+  isType,
   isStringType,
   isIntegerType,
   isFloatType,
@@ -146,6 +151,7 @@ export {
   isComplexType,
   isPrintableType,
   isCompoundType,
+  hasType,
   hasStringType,
   hasIntegerType,
   hasFloatType,
@@ -156,6 +162,7 @@ export {
   hasComplexType,
   hasPrintableType,
   hasCompoundType,
+  assertType,
   assertStringType,
   assertIntegerType,
   assertFloatType,
