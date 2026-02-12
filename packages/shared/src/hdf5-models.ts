@@ -103,8 +103,12 @@ export interface DatasetDef<
 }
 
 export type DatasetFromDef<D extends DatasetDef> = Dataset<
-  D['shape'] extends ShapeClass ? ShapeClassMap[D['shape']] : Shape,
-  D['type'] extends DTypeClass ? DTypeClassMap[D['type']] : DType
+  NonNullable<D['shape']> extends ShapeClass
+    ? ShapeClassMap[NonNullable<D['shape']>]
+    : Shape,
+  NonNullable<D['type']> extends DTypeClass
+    ? DTypeClassMap[NonNullable<D['type']>]
+    : DType
 >;
 
 /* ----------------- */
