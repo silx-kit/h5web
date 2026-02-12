@@ -59,6 +59,9 @@ export type {
   Filter,
   VirtualSource,
 
+  // Definition
+  DatasetDef,
+
   // Shape
   Shape,
   ScalarShape,
