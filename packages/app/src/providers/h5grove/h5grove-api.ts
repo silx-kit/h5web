@@ -34,7 +34,7 @@ import {
 const SUPPORTED_EXPORT_FORMATS = new Set<ExportFormat>(['npy', 'tiff']);
 
 export class H5GroveApi extends DataProviderApi {
-  /* API compatible with h5grove@2.3.0 */
+  /* API compatible with h5grove@3.0.0rc1 */
   public constructor(
     private readonly baseURL: string,
     filepath: string,
@@ -46,7 +46,7 @@ export class H5GroveApi extends DataProviderApi {
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
     try {
-      const buffer = await this.fetcher(`${this.baseURL}/meta/`, {
+      const buffer = await this.fetcher(`${this.baseURL}/meta`, {
         file: this.filepath,
         path,
       });
@@ -65,7 +65,7 @@ export class H5GroveApi extends DataProviderApi {
     const { dataset, selection } = storeParams;
     const { path, type } = dataset;
 
-    const url = `${this.baseURL}/data/`;
+    const url = `${this.baseURL}/data`;
     const opts = { abortSignal, onProgress };
     const baseParams = {
       file: this.filepath,
@@ -109,7 +109,7 @@ export class H5GroveApi extends DataProviderApi {
     }
 
     try {
-      const data = await this.fetcher(`${this.baseURL}/attr/`, {
+      const data = await this.fetcher(`${this.baseURL}/attr`, {
         file: this.filepath,
         path,
       });
@@ -156,12 +156,12 @@ export class H5GroveApi extends DataProviderApi {
       ...(selection && { selection }),
     });
 
-    return new URL(`${this.baseURL || ''}/data/?${searchParams.toString()}`);
+    return new URL(`${this.baseURL || ''}/data?${searchParams.toString()}`);
   }
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
     try {
-      const buffer = await this.fetcher(`${this.baseURL}/paths/`, {
+      const buffer = await this.fetcher(`${this.baseURL}/paths`, {
         file: this.filepath,
         path,
       });

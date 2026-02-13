@@ -41,16 +41,16 @@ describe('parseDType', () => {
 
   it('should convert string types', () => {
     expect(
-      parseDType({ class: 3, size: 6, cset: 0, vlen: false }),
+      parseDType({ class: 3, size: 6, cset: 0, strPad: 0, vlen: false }),
     ).toStrictEqual(strType(H5T_CSET.ASCII, undefined, 6));
     expect(
-      parseDType({ class: 3, size: 6, cset: 0, vlen: true }),
+      parseDType({ class: 3, size: 6, cset: 0, strPad: 0, vlen: true }),
     ).toStrictEqual(strType(H5T_CSET.ASCII));
     expect(
       parseDType({ class: 3, size: 6, cset: 1, strPad: 1, vlen: false }),
     ).toStrictEqual(strType(H5T_CSET.UTF8, H5T_STR.NULLPAD, 6));
     expect(
-      parseDType({ class: 3, size: 6, cset: 1, vlen: true }),
+      parseDType({ class: 3, size: 6, cset: 1, strPad: 0, vlen: true }),
     ).toStrictEqual(strType(H5T_CSET.UTF8));
   });
 
