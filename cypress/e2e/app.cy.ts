@@ -1,3 +1,5 @@
+const takeSnapshots: boolean = Cypress.expose('takeSnapshots') || false;
+
 // For ARIA-based checks
 const BE_SELECTED = ['have.attr', 'aria-selected', 'true'] as const;
 const BE_CHECKED = ['have.attr', 'aria-checked', 'true'] as const;
@@ -18,7 +20,7 @@ describe('/mock', () => {
       'be.visible',
     );
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('line_1D');
     }
   });
@@ -33,7 +35,7 @@ describe('/mock', () => {
       'be.visible',
     );
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('line_complex_1D');
     }
   });
@@ -53,7 +55,7 @@ describe('/mock', () => {
       .should('have.attr', 'role', 'row')
       .and('have.attr', 'aria-rowindex', 1);
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('matrix_1D');
     }
   });
@@ -78,7 +80,7 @@ describe('/mock', () => {
       .should('have.attr', 'aria-colindex', 1)
       .and('have.text', 'string');
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('compound_1D');
     }
   });
@@ -93,7 +95,7 @@ describe('/mock', () => {
       'be.visible',
     );
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_2D');
     }
 
@@ -101,7 +103,7 @@ describe('/mock', () => {
     cy.findByRole('button', { name: 'Invert' }).click();
     cy.waitForStableDOM();
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_2D_inverted_cmap');
     }
   });
@@ -118,7 +120,7 @@ describe('/mock', () => {
       'be.visible',
     );
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_2D_complex');
     }
   });
@@ -129,14 +131,14 @@ describe('/mock', () => {
     cy.selectExplorerNode('_FillValue');
     cy.findByRole('figure', { name: '_FillValue' }).should('be.visible');
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('fillvalue_2D');
     }
 
     cy.selectVisTab('Line');
     cy.waitForStableDOM();
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('fillvalue_1D');
     }
   });
@@ -167,7 +169,7 @@ describe('/mock', () => {
     cy.get('@xAxis').should('have.text', [0, 10, 20, 30, 40].join(''));
     cy.get('@yAxis').should('have.text', ['−10', 0, 10, 20, 30].join('')); // minus sign − (U+2212), not hyphen - (U+002D)
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_4d_default');
     }
 
@@ -181,7 +183,7 @@ describe('/mock', () => {
       cy.findByRole('radio', { name: 'D1' }).should(...BE_CHECKED);
     });
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_4d_remapped');
     }
   });
@@ -210,7 +212,7 @@ describe('/mock', () => {
       .should('contain.text', '9.996e-1')
       .and('contain.text', '−1e+0');
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_4d_sliced');
     }
 
@@ -222,7 +224,7 @@ describe('/mock', () => {
     cy.get('@d1Slider').should('have.attr', 'aria-valuenow', 4);
     cy.get('@vis').should('contain.text', '+∞').and('contain.text', '−∞');
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_4d_zeros');
     }
   });
@@ -236,14 +238,14 @@ describe('/mock', () => {
     cy.findByLabelText('Constant').click();
     cy.waitForStableDOM();
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('line_constant');
     }
 
     cy.selectExplorerNode('oneD_cplx');
     cy.waitForStableDOM();
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('line_complex_constant');
     }
   });
@@ -266,7 +268,7 @@ describe('/mock', () => {
       cy.findByText('4e+2').should('be.visible');
     });
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_domain');
     }
   });
@@ -287,7 +289,7 @@ describe('/mock', () => {
 
     cy.waitForStableDOM();
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_flip');
     }
   });
@@ -302,14 +304,14 @@ describe('/mock', () => {
       'be.visible',
     );
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('rgb_image');
     }
 
     cy.findByRole('radio', { name: 'BGR' }).click();
     cy.waitForStableDOM();
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('bgr_image');
     }
   });
@@ -365,7 +367,7 @@ describe('/mock', () => {
 
       cy.get('svg[data-type="abscissa"] svg').should('have.text', 'X (nm)');
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('nxline');
       }
     });
@@ -387,7 +389,7 @@ describe('/mock', () => {
         'Angle (degrees)',
       );
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('nxheatmap');
       }
     });
@@ -423,7 +425,7 @@ describe('/mock', () => {
         2,
       );
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('default_slice');
       }
     });
@@ -439,7 +441,7 @@ describe('/mock', () => {
 
       cy.findAllByRole('combobox', { name: /Log/u }).should('have.length', 2);
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.waitForStableDOM();
         cy.matchImageSnapshot('logspectrum');
       }
@@ -453,7 +455,7 @@ describe('/mock', () => {
         name: 'nexus_entry / spectrum_with_aux',
       }).should('be.visible');
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('auxspectrum');
       }
     });
@@ -474,7 +476,7 @@ describe('/mock', () => {
         .should('be.visible')
         .and('contain.text', '−4.75e+1'); // color bar min
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('auximage');
       }
     });
@@ -487,7 +489,7 @@ describe('/mock', () => {
         name: 'nexus_entry / complex_spectrum',
       }).should('be.visible');
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('nxline_complex_2d_aux');
       }
     });
@@ -500,7 +502,7 @@ describe('/mock', () => {
         name: 'nexus_entry / complex_image',
       }).should('be.visible');
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('nxheatmap_complex_2d');
       }
 
@@ -511,7 +513,7 @@ describe('/mock', () => {
       cy.findByRole('figure', { name: 'tertiary_float' }).should('be.visible');
       cy.waitForStableDOM();
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('nxheatmap_complex_2d_float_aux');
       }
     });
@@ -527,7 +529,7 @@ describe('/mock', () => {
       );
       cy.waitForStableDOM();
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('nxrgb');
       }
     });
@@ -542,7 +544,7 @@ describe('/mock', () => {
         'be.visible',
       );
 
-      if (Cypress.env('TAKE_SNAPSHOTS')) {
+      if (takeSnapshots) {
         cy.matchImageSnapshot('nxscatter');
       }
     });
@@ -558,7 +560,7 @@ describe('/mock?wide', () => {
   it('start with sidebar closed', () => {
     cy.findByRole('tree').should('not.exist');
 
-    if (Cypress.env('TAKE_SNAPSHOTS')) {
+    if (takeSnapshots) {
       cy.matchImageSnapshot('wide');
     }
   });

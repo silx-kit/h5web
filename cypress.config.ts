@@ -10,7 +10,7 @@ export default defineConfig({
     },
   },
   defaultBrowser: 'firefox',
-  retries: process.env.CYPRESS_TAKE_SNAPSHOTS ? 2 : null,
+  retries: process.env.CI ? 2 : null,
   screenshotsFolder: 'cypress/debug',
   fixturesFolder: false,
 });

@@ -181,9 +181,7 @@ jobs:
         run: pnpm serve & pnpm wait-on http://localhost:5173 -t 1m
 
       - name: Run Cypress 🌳
-        run: pnpm cypress:run --env requireSnapshots=true
-        env:
-          CYPRESS_TAKE_SNAPSHOTS: true
+        run: pnpm cypress:run --env requireSnapshots=true --expose takeSnapshots=true
 
       - name: Upload debug screenshots and diffs on failure 🖼️
         uses: actions/upload-artifact@v4

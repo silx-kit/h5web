@@ -453,8 +453,8 @@ created.
 
 Taking consistent screenshots across platforms is impossible because the exact
 rendering of the app depends on the GPU. For this reason, visual regression
-tests are run only on the CI. This is done through an environment variable
-called `CYPRESS_TAKE_SNAPSHOTS`.
+tests are run only on the CI. This is done by running cypress with the
+`takeSnapshots` feature flag: `pnpm cypress:run --expose takeSnapshots=true`.
 
 > Locally, we run the tests without snapshots in Firefox, since it's our main
 > target browser. On the CI, Firefox takes flaky snapshots, so we have to run
