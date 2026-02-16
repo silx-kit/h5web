@@ -17,7 +17,7 @@
     "@react-hookz/web": "25.1.1",
     "@react-three/fiber": "8.18.0",
     "d3-array": "3.2.4",
-    "d3-format": "3.1.0",
+    "d3-format": "3.1.2",
     "greenlet": "1.1.0",
     "ndarray": "1.0.19",
     "normalize.css": "8.0.1",
@@ -28,21 +28,21 @@
   },
   "devDependencies": {
     "@esrf/eslint-config": "2.2.2",
-    "@storybook/addon-docs": "10.2.6",
-    "@storybook/addon-links": "10.2.6",
-    "@storybook/react-vite": "10.2.6",
+    "@storybook/addon-docs": "10.2.8",
+    "@storybook/addon-links": "10.2.8",
+    "@storybook/react-vite": "10.2.8",
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.0.14",
-    "@types/node": "^24.10.4",
-    "@types/react": "^18.3.27",
+    "@types/node": "^24.10.13",
+    "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "@types/three": "0.182.0",
     "eslint": "9.39.2",
     "remark-gfm": "4.0.1",
-    "storybook": "10.2.6",
+    "storybook": "10.2.8",
     "typescript": "5.9.3",
-    "vite": "7.3.0"
+    "vite": "7.3.1"
   },
   "browserslist": {
     "production": [
