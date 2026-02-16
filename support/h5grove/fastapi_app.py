@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 # coding: utf-8
-"""Tornado-based server sample code"""
+"""FastAPI-based server sample code"""
+
 import argparse
 import os
-import tornado.web
-import tornado.ioloop
+
+import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 # Disable libhdf5 file locking since h5grove is only reading files
 # This needs to be done before any import of h5py, so before h5grove import
 os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
-from h5grove.tornado_utils import get_handlers  # noqa
+from h5grove.fastapi_utils import router, settings  # noqa
 
 
 def parser_fn():
@@ -29,13 +32,20 @@ def parser_fn():
     return parser
 
 
+app = FastAPI()
+app.include_router(router)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins="*",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 if __name__ == "__main__":
     parser = parser_fn()
     options = parser.parse_args()
 
-    base_dir = os.path.abspath(options.basedir)
+    settings.base_dir = options.basedir
 
-    app = tornado.web.Application(get_handlers(base_dir, allow_origin="*"), debug=True)
-    app.listen(options.port, options.ip)
-    print(f"App is listening on {options.ip}:{options.port} serving from {base_dir}...")
-    tornado.ioloop.IOLoop.current().start()
+    uvicorn.run("fastapi_app:app", host=options.ip, port=options.port, log_level="info")

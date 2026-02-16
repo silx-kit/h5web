@@ -9,6 +9,8 @@ dist*/
 
 /coverage/
 
+/support/h5grove/__pycache__/
+
 .env.local
 .env.*.local
 
