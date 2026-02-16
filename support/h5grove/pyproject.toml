@@ -1,11 +1,11 @@
 [project]
-name = "h5grove-tornado"
+name = "h5grove-fastapi"
 version = "0.1.0"
-description = "h5grove tornado server for testing purposes"
+description = "h5grove FastAPI server for testing purposes"
 authors = [{name = "ESRF"}]
 requires-python = ">=3.12"
 dependencies = [
-  "h5grove[tornado] (==3.0.0rc1)",
+  "h5grove[fastapi] (==3.0.0)",
   "typing-extensions (~=4.10)"
 ]
 
