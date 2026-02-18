@@ -4,7 +4,12 @@ import { KeepZoomProvider } from '@h5web/lib'; // eslint-disable-line import/no-
 import { useToggle } from '@react-hookz/web';
 import { Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
+import {
+  Group,
+  Panel,
+  Separator,
+  useDefaultLayout,
+} from 'react-resizable-panels';
 
 import styles from './App.module.css';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
@@ -17,6 +22,9 @@ import { useDataContext } from './providers/DataProvider';
 import Sidebar from './Sidebar';
 import VisConfigProvider from './VisConfigProvider';
 import Visualizer from './visualizer/Visualizer';
+
+const LAYOUT = ['h5w-sidebar', 'h5w-main-area'];
+const RESIZE_TARGET_MIN_SIZE = { coarse: 6, fine: 6 }; // match CSS width (.splitter::before)
 
 interface Props {
   sidebarOpen?: boolean;
@@ -45,6 +53,11 @@ function App(props: Props) {
     valuesStore.abortAll('entity changed', true);
   }
 
+  const { defaultLayout, onLayoutChanged } = useDefaultLayout({
+    id: 'h5web:layout',
+    panelIds: isSidebarOpen ? LAYOUT : undefined,
+  });
+
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
@@ -54,27 +67,29 @@ function App(props: Props) {
         }
       }}
     >
-      <ReflexContainer
+      <Group
         className={styles.root}
+        resizeTargetMinimumSize={RESIZE_TARGET_MIN_SIZE}
+        defaultLayout={defaultLayout}
+        onLayoutChanged={onLayoutChanged}
         data-fullscreen-root
         data-allow-dark-mode={disableDarkMode ? undefined : ''}
-        orientation="vertical"
       >
-        <ReflexElement
-          className={styles.sidebarArea}
-          style={{ display: isSidebarOpen ? undefined : 'none' }}
-          flex={25}
-          minSize={150}
-        >
-          <Sidebar selectedPath={selectedPath} onSelect={onSelectPath} />
-        </ReflexElement>
+        {isSidebarOpen && (
+          <>
+            <Panel
+              id={LAYOUT[0]}
+              className={styles.sidebarArea}
+              defaultSize="25%"
+              minSize={150}
+            >
+              <Sidebar selectedPath={selectedPath} onSelect={onSelectPath} />
+            </Panel>
+            <Separator className={styles.splitter} />
+          </>
+        )}
 
-        <ReflexSplitter
-          className={styles.splitter}
-          style={{ display: isSidebarOpen ? undefined : 'none' }}
-        />
-
-        <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
+        <Panel id={LAYOUT[1]} className={styles.mainArea} minSize={500}>
           <BreadcrumbsBar
             path={selectedPath}
             isSidebarOpen={isSidebarOpen}
@@ -107,8 +122,8 @@ function App(props: Props) {
               </KeepZoomProvider>
             </DimMappingProvider>
           </VisConfigProvider>
-        </ReflexElement>
-      </ReflexContainer>
+        </Panel>
+      </Group>
     </ErrorBoundary>
   );
 }

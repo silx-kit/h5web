@@ -1,4 +1,5 @@
 .tabBar {
+  flex: none;
   display: flex;
   height: var(--toolbar-height);
   font-size: 1.25rem;
