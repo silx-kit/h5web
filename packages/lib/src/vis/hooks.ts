@@ -9,11 +9,10 @@ import {
   getBoundsWithErrors,
   getValidDomainForScale,
 } from '@h5web/shared/vis-utils';
-import { useRerender, useSyncedRef } from '@react-hookz/web';
+import { useMediaQuery, useRerender, useSyncedRef } from '@react-hookz/web';
 import { type Camera, useFrame, useThree } from '@react-three/fiber';
 import {
   type RefCallback,
-  useCallback,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -166,19 +165,15 @@ export function useCameraState<T>(
 export function useCssColors(
   colorProperties: string[],
 ): [string[], RefCallback<HTMLElement>] {
-  const [styles, setStyles] = useState<CSSStyleDeclaration>();
+  const [elem, refCallback] = useState<HTMLElement | null>(null);
+  useMediaQuery('(prefers-color-scheme: dark)');
 
-  // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
-  const refCallback: RefCallback<HTMLElement> = useCallback(
-    (elem) => setStyles(elem ? globalThis.getComputedStyle(elem) : undefined),
-    [],
-  );
-
-  if (!styles) {
+  if (!elem) {
     // Return `transparent` colors on initial render
     return [colorProperties.map(() => 'transparent'), refCallback];
   }
 
+  const styles = globalThis.getComputedStyle(elem);
   const colors = colorProperties.map((p) => styles.getPropertyValue(p).trim());
 
   return [colors, refCallback];
