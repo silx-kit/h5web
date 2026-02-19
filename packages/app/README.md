@@ -521,8 +521,7 @@ interface DataContextValue {
 
 The three stores are created with the
 [react-suspense-fetch](https://github.com/dai-shi/react-suspense-fetch) library,
-which relies on
-[React Suspense](https://reactjs.org/docs/react-api.html#reactsuspense). A
+which relies on [React Suspense](https://react.dev/reference/react/Suspense). A
 component that uses one of these stores (e.g.
 `entitiesStore.get('/path/to/entity')`) must have a `Suspense` ancestor to
 manage the loading state.
