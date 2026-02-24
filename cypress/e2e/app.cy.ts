@@ -23,6 +23,15 @@ describe('/mock', () => {
     if (takeSnapshots) {
       cy.matchImageSnapshot('line_1D');
     }
+
+    cy.findByRole('button', { name: 'More controls' }).click();
+    cy.findByRole('button', { name: 'Aspect' }).click();
+    cy.findByLabelText('Points').click();
+    cy.waitForStableDOM();
+
+    if (takeSnapshots) {
+      cy.matchImageSnapshot('line_1D_points');
+    }
   });
 
   it('visualize 1D complex dataset as Line', () => {
