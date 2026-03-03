@@ -40,7 +40,7 @@ const scalarCplx = dataset('cplx', scalarShape(), cplxType(floatType()));
 const scalarCompound = dataset(
   'comp',
   scalarShape(),
-  compoundType({ int: intType() }),
+  compoundType([['int', intType()]]),
 );
 const oneDInt = dataset('int_1d', arrayShape([5]), intType());
 const oneDUint = dataset('uint_1d', arrayShape([5]), intType(false));
@@ -54,7 +54,7 @@ const oneDCplx = dataset('cplx_1d', arrayShape([10]), cplxType(floatType()));
 const oneDCompound = dataset(
   'comp_1d',
   arrayShape([5]),
-  compoundType({ int: intType() }),
+  compoundType([['int', intType()]]),
 );
 const twoDInt = dataset('int_2d', arrayShape([5, 3]), intType());
 const twoDUint = dataset('uint_2d', arrayShape([5, 3]), intType(false));
@@ -74,7 +74,7 @@ const threeDCplx = dataset(
 const twoDCompound = dataset(
   'comp_2d',
   arrayShape([5, 3]),
-  compoundType({ int: intType() }),
+  compoundType([['int', intType()]]),
 );
 
 const image = withImageAttr(
@@ -93,7 +93,7 @@ const imageScalar = withImageAttr(
 const nestedCompound = dataset(
   'comp_nested',
   arrayShape([2]),
-  compoundType({ comp: compoundType({ int: intType() }) }),
+  compoundType([['comp', compoundType([['int', intType()]])]]),
 );
 
 describe('Raw', () => {

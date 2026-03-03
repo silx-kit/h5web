@@ -625,7 +625,7 @@ export function hasPrintableCompoundType<O extends HasType<CompoundType>>(
   obj: O,
 ): obj is O & HasType<CompoundType<PrintableType>> {
   const { fields } = obj.type;
-  return Object.values(fields).every(isPrintableType);
+  return fields.values().every(isPrintableType);
 }
 
 export function assertPrintableCompoundType<O extends HasType<CompoundType>>(
@@ -662,7 +662,7 @@ export function assertScalarValue<T extends DType>(
     assertComplex(value);
   } else if (isCompoundType(type)) {
     assertArray(value);
-    Object.values(type.fields).forEach((fieldType, index) => {
+    type.fields.values().forEach((fieldType, index) => {
       assertScalarValue(value[index], fieldType);
     });
   }

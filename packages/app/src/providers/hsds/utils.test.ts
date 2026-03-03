@@ -114,10 +114,10 @@ describe('convertHsdsType', () => {
       ],
     };
     expect(convertHsdsType(compound)).toStrictEqual(
-      compoundType({
-        f1: beFloat.hdf5,
-        f2: vlenType(leInt.hdf5),
-      }),
+      compoundType([
+        ['f1', beFloat.hdf5],
+        ['f2', vlenType(leInt.hdf5)],
+      ]),
     );
   });
 
