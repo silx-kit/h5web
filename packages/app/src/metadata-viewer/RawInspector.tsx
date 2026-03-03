@@ -1,4 +1,4 @@
-import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
+import { type DType, type ProvidedEntity } from '@h5web/shared/hdf5-models';
 
 import styles from './RawInspector.module.css';
 
@@ -19,7 +19,16 @@ function RawInspector(props: Props) {
           entity,
           (key, value: unknown) => {
             // Bypass `value` and cyclic dependencies
-            return KEYS_TO_SKIP.has(key) ? undefined : value;
+            if (KEYS_TO_SKIP.has(key)) {
+              return undefined;
+            }
+
+            // Compound fields maps
+            if (value instanceof Map) {
+              return Object.fromEntries(value as Map<string, DType>);
+            }
+
+            return value;
           },
           2,
         )}

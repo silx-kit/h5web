@@ -193,12 +193,7 @@ export function parseDType(type: H5GroveType): DType {
 
   if (h5tClass === H5T_CLASS.COMPOUND) {
     return compoundOrCplxType(
-      Object.fromEntries(
-        Object.entries(type.members).map(([mName, mType]) => [
-          mName,
-          parseDType(mType),
-        ]),
-      ),
+      type.members.map(({ name, ...mType }) => [name, parseDType(mType)]),
     );
   }
 

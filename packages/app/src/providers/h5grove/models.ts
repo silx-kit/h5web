@@ -110,7 +110,7 @@ export interface H5GroveOpaqueType extends H5GroveBaseType {
 
 export interface H5GroveCompoundType extends H5GroveBaseType {
   class: 6;
-  members: Record<string, H5GroveType>;
+  members: ({ name: string } & H5GroveType)[];
 }
 
 export interface H5GroveReferenceType extends H5GroveBaseType {

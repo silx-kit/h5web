@@ -37,8 +37,8 @@ function MappedCompoundVis(props: Props) {
   const { customCellWidth, notation } = config;
 
   const { type, shape } = dataset;
-  const { fields } = type;
-  const fieldNames = Object.keys(fields);
+  const fieldNames = [...type.fields.keys()];
+  const fieldTypes = [...type.fields.values()];
   const cellWidth = getCellWidth(type);
 
   const [slicedDims, slicedMapping] = useSlicedDimsAndMapping(
@@ -53,17 +53,11 @@ function MappedCompoundVis(props: Props) {
   );
 
   const selection = getSliceSelection(dimMapping);
-  const fieldFormatters = Object.values(fields).map((field) =>
-    getFormatter(field, notation),
-  );
+  const fieldFormatters = fieldTypes.map((t) => getFormatter(t, notation));
 
   const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
     csv: () =>
-      generateCsv(
-        fieldNames,
-        mappedArray,
-        Object.values(fields).map((field) => getCsvFormatter(field)),
-      ),
+      generateCsv(fieldNames, mappedArray, fieldTypes.map(getCsvFormatter)),
   });
 
   return (

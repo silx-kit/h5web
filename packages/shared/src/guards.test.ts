@@ -41,10 +41,10 @@ describe('assertScalarValue', () => {
     expect(() =>
       assertScalarValue(
         [0, ''],
-        compoundType({
-          int: intType(),
-          str: strType(),
-        }),
+        compoundType([
+          ['int', intType()],
+          ['str', strType()],
+        ]),
       ),
     ).not.toThrowError();
   });
@@ -95,17 +95,17 @@ describe('assertScalarValue', () => {
       assertScalarValue([0, ''], cplxType(floatType())),
     ).toThrowError('Expected complex');
 
-    expect(() => assertScalarValue(0, compoundType({}))).toThrowError(
+    expect(() => assertScalarValue(0, compoundType([]))).toThrowError(
       'Expected array',
     );
     expect(() =>
-      assertScalarValue(0, compoundType({ foo: intType() })),
+      assertScalarValue(0, compoundType([['foo', intType()]])),
     ).toThrowError('Expected array');
     expect(() =>
-      assertScalarValue([], compoundType({ foo: intType() })),
+      assertScalarValue([], compoundType([['foo', intType()]])),
     ).toThrowError('Expected number');
     expect(() =>
-      assertScalarValue([''], compoundType({ foo: intType() })),
+      assertScalarValue([''], compoundType([['foo', intType()]])),
     ).toThrowError('Expected number');
   });
 });

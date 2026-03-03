@@ -34,7 +34,7 @@ import {
 const SUPPORTED_EXPORT_FORMATS = new Set<ExportFormat>(['npy', 'tiff']);
 
 export class H5GroveApi extends DataProviderApi {
-  /* API compatible with h5grove@3.0.0 */
+  /* API compatible with h5grove@4.0.0rc0 */
   public constructor(
     private readonly baseURL: string,
     filepath: string,

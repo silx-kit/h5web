@@ -100,7 +100,7 @@ export function getCellWidth(
   type: PrintableType | CompoundType<PrintableType>,
 ): number {
   if (type.class === DTypeClass.Compound) {
-    return Math.max(...Object.values(type.fields).map(getCellWidth));
+    return Math.max(...type.fields.values().map(getCellWidth));
   }
 
   if (type.class === DTypeClass.String) {
