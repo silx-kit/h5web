@@ -115,18 +115,43 @@
 .sidebarArea {
   display: flex;
   flex-direction: column;
-  scrollbar-width: thin;
   background-color: var(--primary-bg);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .splitter {
-  width: 5px !important;
-  border-color: lightgray !important;
-  transition: background-color 0.2s ease-in-out !important;
+  position: relative;
+  z-index: 1;
+  width: 2px;
+  background-color: #ddd;
 }
 
-.splitter:hover {
-  background-color: lightgray !important;
+.splitter:focus {
+  outline: none;
+}
+
+.splitter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  width: 6px;
+  background-color: #ddd;
+  transition: opacity 0.1s ease-in-out;
+  cursor: ew-resize;
+  opacity: 0;
+}
+
+.splitter:not([data-separator='inactive'])::before,
+.splitter:hover::before /* splitter becomes "inactive" after resizing even if still hovered */ {
+  opacity: 1;
+  transition-delay: 0.3s; /* delay showing (but not hiding) */
+}
+
+.splitter:focus-visible::before {
+  opacity: 1;
 }
 
 .mainArea {
